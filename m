@@ -1,214 +1,206 @@
-Return-Path: <linux-acpi+bounces-8097-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8098-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2160996981E
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 11:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B540969C2B
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 13:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A290D1F221A1
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 09:00:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0768E1F21C4D
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 11:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFB61C7690;
-	Tue,  3 Sep 2024 09:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3D71A42D6;
+	Tue,  3 Sep 2024 11:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CSyh2But"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kBvTXwjN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975C71C7660
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Sep 2024 09:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3695F19F422;
+	Tue,  3 Sep 2024 11:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725354041; cv=none; b=AWMLrj5DXHLnSqapkZocU51n5AcWIEP1zagCre41rb921vN6PiFQs0jmpp8C02gySWoV52Hjkb9bSqLsimeaeoMc4xSyJzynrsRZMpeVmEzuCcOD4zGgfg2dCHzp0NSPjqU+WRWZgDBGVbMzRhw3Zsyg63OY606vrRj8oIIJen8=
+	t=1725363644; cv=none; b=t8053X7s0e/FKPqJY9WW8AcKuWZSwUVJe8lmYBH6cgPiPw/LNjUup6kKBFnjbWaMqZMZyZ7f+mtoU4zyA1u+05YtUAUK+4XHU7ArEk+DTLhhFV3c95X6umMR9GAHWp2112Oc31roGXt/AKwpWtIhvFBPPIGrn9GR+WjI6KWtl64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725354041; c=relaxed/simple;
-	bh=1L04pRJHwpqlONziVoFoJ3562XOYBoFFgUHaSW/QS5A=;
+	s=arc-20240116; t=1725363644; c=relaxed/simple;
+	bh=TiMloUZtEOzhiMiKfurPxe7QoHWBPp0gKnxyea5FPRA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fqNsnt/BfGz0/8JEKN9dJWY31mttni0QDFpJUHg9duhf5EWUxNpuae3m2jSsqzxWwGsYYxOMPvwDAj1zhrPM4BgxmJOrWFvfxA/H7hkGesJzAU4WjOCyTeWz1zkgQLhlJl/kKwl70DomUNXyZ8wplioMCtvbO/tSg9+pqBdA43g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CSyh2But; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42bba6a003bso109115e9.0
-        for <linux-acpi@vger.kernel.org>; Tue, 03 Sep 2024 02:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725354038; x=1725958838; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mcAweApl0SMnSEwpMO3VeLlceofmGojlXD55ghcyISI=;
-        b=CSyh2But8I7HoheQN/a1dXoSfTIeM5mdGpE8LUYIJ1EmIOflz1ellUlIkJi+XJVvno
-         FO35y05Yxi3BvFoJwy1bysP1XaoyrLJr9VSrnYCa8J3dNQOckVp2uWWAdDlsc4TRZfo8
-         GpjWNYKbDoF6skFqciC4wbyjBLklrKsYLcHwp7+/JzKBv1a23Zs0E9Te8pZx/D2fhxLJ
-         ZpG8UVYDovQWoeKHojO1Nf1nkA+uUX2b70wb870YA+dvFzoldPcso0gsLAuMbxIAQWtz
-         7vPVlj4Qe3dw+/bLgLXM6qNJE85A3HGj6sQUrUKkUpDC6ge8r99xTAE/DFAUZC6S8wct
-         5LHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725354038; x=1725958838;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mcAweApl0SMnSEwpMO3VeLlceofmGojlXD55ghcyISI=;
-        b=W9U6yZ+phot0i9CE5lTcTE6Tm9bELsSCz98GfGS5L8Q6DjCHF2PJsQR7/Ku4h+RTDp
-         K2QOJO3y0sY2xQP4jrEIjlZIqOK/pMheHFLccl+cv3CoI49JVWaseFvHMU28DyqIqdEo
-         d8RK7l5AXHpiJHgut7AAR9RfQRb9uRGuseqR/IRv5tmAop735EJ6z3UCIUMlX6EwqM29
-         W9uURx8oK1EUgb74S/YvHKleGJa7HatAqr1UniAFxdZ7T7nn13n4EC91p9ciLCJipKcu
-         KR376/WQ3V0+b7mHZoy06TA3sLLvg3CXPnT2Tn5xd7ZWx2d9m0RgXOeWhCsxAUrWZpC2
-         kUNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWcdG/xDVFY/UNK2gzt+nMdVqgefw+PhPrSfGX6kJeOsPkopbHgM641SJUN4neHE65dKKoYmERZlkSX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXDs5hncEC/s5LhcV4UBclzdcdKp6dAfvLkm+mJ6xtAlXD+TeH
-	O4Q+NAP/73k812xIKb283MXyhT/AAI+Hbf2uCOk6ui1hVPicaTTTkXL6iT4C8A==
-X-Google-Smtp-Source: AGHT+IE6lmyFVDIzRDjMNMDJr7ziWFO9lcVLRUhmriJlMF/fW0JeEBIeoIvfxe2utlR5wgFziPhLlg==
-X-Received: by 2002:a05:600c:3485:b0:426:66a0:6df6 with SMTP id 5b1f17b1804b1-42c29f25f8bmr3176475e9.0.1725354037545;
-        Tue, 03 Sep 2024 02:00:37 -0700 (PDT)
-Received: from google.com (109.36.187.35.bc.googleusercontent.com. [35.187.36.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df84b9sm163907905e9.24.2024.09.03.02.00.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 02:00:37 -0700 (PDT)
-Date: Tue, 3 Sep 2024 09:00:32 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
-	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v2 8/8] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
-Message-ID: <ZtbQMDxKZUZCGfrR@google.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <8-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <ZtHuoDWbe54H1nhZ@google.com>
- <20240830170426.GV3773488@nvidia.com>
- <ZtWMGQAdR6sjBmer@google.com>
- <20240903003022.GF3773488@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DocEikGirmRrCH7ttziOoiC33wX4N9tqyQG9j/GvxdDt2w57NnTMwF8RAgUNuyegE58uDZtnbMcnT7cg/75oFvS8Tdjfvar9V87S1KCXPzVEDU9nAwu87DgKmn52P0hLJ42xNImev4Wc2v1grNr2dGgVCBw4KdS+BQm/R2nWFRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kBvTXwjN; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725363644; x=1756899644;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TiMloUZtEOzhiMiKfurPxe7QoHWBPp0gKnxyea5FPRA=;
+  b=kBvTXwjNKEc8gdmeRBUUa02xzMg+MdVsc2VLL4GYVJZ393Lfagdiftnt
+   Co6ZEC9VJElga5Ogs3etZBMuxs8b/Db3ReZsvAwtGTtrIzaDpd413o6Yh
+   KxuecPH1aLLdxGBQcECOU45fZdPhb51S/kpXULNr8ZKPW+aBpm9DXNDor
+   Jo6dUnijAiv/NKODOM7W9/cNWydFo3XOhRCkGXo2HFeMlktP3GiSnmTI+
+   Jmn5d2+RN5matrVQsKfRnKJ6E1diIMbrCcPAamKlqxKC8HeqjBuwpUKLE
+   Y0BNWZdVhRAIY9z5tC/DaDCpcYtBJUFVm+I1GzmLcB6x6c5yz7LHMImKQ
+   g==;
+X-CSE-ConnectionGUID: jf2M9tg7T+SOEyt4UyMLew==
+X-CSE-MsgGUID: yiq6FPocS/KmY+E/J1ccnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="27711949"
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; 
+   d="scan'208";a="27711949"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 04:40:43 -0700
+X-CSE-ConnectionGUID: HQD9FPlFRrCFVhb6qQT2Lg==
+X-CSE-MsgGUID: 02SRmlM4S3SyHIy3i8zzKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; 
+   d="scan'208";a="65389034"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by orviesa007.jf.intel.com with SMTP; 03 Sep 2024 04:40:33 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 03 Sep 2024 14:40:32 +0300
+Date: Tue, 3 Sep 2024 14:40:32 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Stephen Boyd <swboyd@chromium.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev, devicetree@vger.kernel.org,
+	Douglas Anderson <dianders@chromium.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	Guenter Roeck <groeck@chromium.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Lee Jones <lee@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-acpi@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH v4 03/18] usb: typec: Stub out typec_switch APIs when
+ CONFIG_TYPEC=n
+Message-ID: <Ztb1sI2W7t5k2yT7@kuha.fi.intel.com>
+References: <20240901040658.157425-1-swboyd@chromium.org>
+ <20240901040658.157425-4-swboyd@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240903003022.GF3773488@nvidia.com>
+In-Reply-To: <20240901040658.157425-4-swboyd@chromium.org>
 
-On Mon, Sep 02, 2024 at 09:30:22PM -0300, Jason Gunthorpe wrote:
-> On Mon, Sep 02, 2024 at 09:57:45AM +0000, Mostafa Saleh wrote:
-> > > > 2) Is there a reason the UAPI is designed this way?
-> > > > The way I imagined this, is that userspace will pass the pointer to the CD
-> > > > (+ format) not the STE (or part of it).
-> > > 
-> > > Yes, we need more information from the STE than just that. EATS and
-> > > STALL for instance. And the cachability below. Who knows what else in
-> > > the future.
-> > 
-> > But for example if that was extended later, how can user space know
-> > which fields are allowed and which are not?
+On Sat, Aug 31, 2024 at 09:06:41PM -0700, Stephen Boyd wrote:
+> Ease driver development by adding stubs for the typec_switch APIs when
+> CONFIG_TYPEC=n. Copy the same method used for the typec_mux APIs to be
+> consistent.
 > 
-> Changes the vSTE rules that require userspace being aware would have
-> to be signaled in the GET_INFO answer. This is the same process no
-> matter how you encode the STE bits in the structure.
-> 
-How? And why changing that in the future is not a problem as sanitising IDRs?
+> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: <linux-usb@vger.kernel.org>
+> Cc: Pin-yen Lin <treapking@chromium.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 
-> This confirmation of kernel support would then be reflected in the
-> vIDRs to the VM and the VM could know to set the extended bits.
-> 
-> Otherwise setting an invalidate vSTE will fail the ioctl, the VMM can
-> log the event, generate an event and install an abort vSTE.
-> 
-> > > Overall this sort of direct transparency is how I prefer to see these
-> > > kinds of iommufd HW specific interfaces designed. From a lot of
-> > > experience here, arbitary marshall/unmarshall is often an
-> > > antipattern :)
-> > 
-> > Is there any documentation for the (proposed) SMMUv3 UAPI for IOMMUFD?
-> 
-> Just the comments in this series?
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-But this is a UAPI. How can userspace implement that if it has no
-documentation, and how can it be maintained if there is no clear
-interface with userspace with what is expected/returned...
+> ---
+>  include/linux/usb/typec_mux.h | 43 +++++++++++++++++++++++++++++++----
+>  1 file changed, 38 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/usb/typec_mux.h b/include/linux/usb/typec_mux.h
+> index 2489a7857d8e..efb5ed32b813 100644
+> --- a/include/linux/usb/typec_mux.h
+> +++ b/include/linux/usb/typec_mux.h
+> @@ -3,6 +3,7 @@
+>  #ifndef __USB_TYPEC_MUX
+>  #define __USB_TYPEC_MUX
+>  
+> +#include <linux/err.h>
+>  #include <linux/property.h>
+>  #include <linux/usb/typec.h>
+>  
+> @@ -24,16 +25,13 @@ struct typec_switch_desc {
+>  	void *drvdata;
+>  };
+>  
+> +#if IS_ENABLED(CONFIG_TYPEC)
+> +
+>  struct typec_switch *fwnode_typec_switch_get(struct fwnode_handle *fwnode);
+>  void typec_switch_put(struct typec_switch *sw);
+>  int typec_switch_set(struct typec_switch *sw,
+>  		     enum typec_orientation orientation);
+>  
+> -static inline struct typec_switch *typec_switch_get(struct device *dev)
+> -{
+> -	return fwnode_typec_switch_get(dev_fwnode(dev));
+> -}
+> -
+>  struct typec_switch_dev *
+>  typec_switch_register(struct device *parent,
+>  		      const struct typec_switch_desc *desc);
+> @@ -42,6 +40,41 @@ void typec_switch_unregister(struct typec_switch_dev *sw);
+>  void typec_switch_set_drvdata(struct typec_switch_dev *sw, void *data);
+>  void *typec_switch_get_drvdata(struct typec_switch_dev *sw);
+>  
+> +#else
+> +
+> +static inline struct typec_switch *
+> +fwnode_typec_switch_get(struct fwnode_handle *fwnode)
+> +{
+> +	return NULL;
+> +}
+> +static inline void typec_switch_put(struct typec_switch *sw) {}
+> +static inline int typec_switch_set(struct typec_switch *sw,
+> +		     enum typec_orientation orientation)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline struct typec_switch_dev *
+> +typec_switch_register(struct device *parent,
+> +		      const struct typec_switch_desc *desc)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+> +static inline void typec_switch_unregister(struct typec_switch_dev *sw) {}
+> +
+> +static inline void typec_switch_set_drvdata(struct typec_switch_dev *sw, void *data) {}
+> +static inline void *typec_switch_get_drvdata(struct typec_switch_dev *sw)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+> +
+> +#endif /* CONFIG_TYPEC */
+> +
+> +static inline struct typec_switch *typec_switch_get(struct device *dev)
+> +{
+> +	return fwnode_typec_switch_get(dev_fwnode(dev));
+> +}
+> +
+>  struct typec_mux_state {
+>  	struct typec_altmode *alt;
+>  	unsigned long mode;
 
-> 
-> > I can understand reading IDRs from userspace (with some sanitation),
-> > but adding some more logic to map vSTE to STE needs more care of what
-> > kind of semantics are provided.
-> 
-> We can enhance the comment if you think it is not clear enough. It
-> lists the fields the userspace should pass through.
-> 
-> > Also, I am working on similar interface for pKVM where we “paravirtualize”
-> > the SMMU access for guests, it’s different semantics, but I hope we can
-> > align that with IOMMUFD (but it’s nowhere near upstream now)
-> 
-> Well, if you do paravirt where you just do map/unmap calls to the
-> hypervisor (ie classic virtio-iommu) then you don't need to do very
-> much.
-
-But we have a different model, with virtio-iommu, it typically presents
-the device to the VM and on the backend it calls VFIO MAP/UNMAP.
-Although technically we can have virtio-iommu in the hypervisor (EL2),
-that is a lot of complexit and increase in the TCB of pKVM.
-
-For pKVM, the VMM is not trusted and the hypervisor would do the map/unmap...,
-but the VMM will have to configure the virtual view of the device (Mapping of
-endpoints to virtual endpoints, vIRQs…), this requires a userspace interface
-to query some HW info (similar to VFIO VFIO_DEVICE_GET_IRQ_INFO and then mapping
-it to a GSI through KVM, but for IOMMUs)
-Though, this design is very early and in progress.
-
-> 
-> If you want to do nesting, then IMHO, just present a real vSMMU. It is
-> already intended to be paravirtualized and this is what the
-> confidential compute people are going to be doing as well.
-> 
-> Otherwise I'd expect you'd get more value to align with the
-> virtio-iommu nesting stuff, where they have layed out what information
-> the VM needs. iommufd is not intended to be just jammed directly into
-> a VM. There is an expectation that a VMM will sit there on top and
-> massage things.
-
-I haven’t been keeping up with iommufd lately, I will try to spend more
-time on that in the future.
-But my idea is that we would create an IOMMUFD, attach it to a device and then
-through some extra IOCTLs, we can configure some “virtual” topology for it which
-then relies on KVM, again this is very early, and we need to support pKVM IOMMUs
-in the host first (I plan to send v2 RFC soon for that)
-
-> 
-> > I see you are talking in LPC about IOMMUFD:
-> > https://lore.kernel.org/linux-iommu/0-v1-01fa10580981+1d-iommu_pt_jgg@nvidia.com/T/#m2dbb08f3bf8506a492bc7dda2de662e42371e683
-> > 
-> > Do you have any plans to talk about this also?
-> 
-> Nothing specific, this is LPC so if people in the room would like to
-> use the session for that then we can talk about it. Last year the room
-> wanted to talk about PASID mostly.
-> 
-> I haven't heard if someone is going to KVM forum to talk about
-> vSMMUv3? Eric? Nicolin do you know?
-
-I see, I won’t be in KVM forum, but I plan to attend LPC, we can discuss
-further there if people are interested.
-
-Thanks,
-Mostafa
-
-> 
-> Jason
+-- 
+heikki
 
