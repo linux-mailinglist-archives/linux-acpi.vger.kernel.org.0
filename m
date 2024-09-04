@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-8142-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8143-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CC396B6DA
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 11:36:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93E396B70B
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 11:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0161D1C20D56
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 09:36:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78DEEB2879A
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 09:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747481CEEB3;
-	Wed,  4 Sep 2024 09:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8981D1CF5E0;
+	Wed,  4 Sep 2024 09:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWkIiVbC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBmejodC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5A41CDA18;
-	Wed,  4 Sep 2024 09:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546441CCB29;
+	Wed,  4 Sep 2024 09:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725442583; cv=none; b=WZFHoXFafE7BQxIUYy7k88tLNtA7qFXjnisHuSDrPFj834s3db6Fq0mNtNnV4QIA4qpgCC3YEysIuioeToG+BP5LO+Gh0lnbSGE+IZx55shVxEgpVr5C0dtwu9UBXefxjUHwios5eHeSIKtQNXsYwyHpqmZuhbMa4kYPS9EnXN4=
+	t=1725442613; cv=none; b=A26zIk4NVI/x2h2pS/14WEBKJJgn73jh38SSlHXANgQSx/98YIpm76KXJDjYPqWILktYrTBqKAdP6MUi1jHD9OhE8gcOJ47j5ngol69DP5HeaeWFVdPylbDPke8i2t39CXuVXl6rtCcVR2CYxtHF6NRpEklCYtC6Sio/FbYdxCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725442583; c=relaxed/simple;
-	bh=9bAhJ9CJLtRo5g7kUHeOsxrCvaYqEyomg7XrEVlcoI0=;
+	s=arc-20240116; t=1725442613; c=relaxed/simple;
+	bh=MBwBMik3WdpeSRwdosVELrhielfxG8FEjRiwld/tWvY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jCa+nysnq1FX+MKi7BV0KOw/H1hCkbXCTQTe/iVunWl6xVJmTneLnbTtmT4PJ+DZBKjHJ9w7YK0y/79D9XS1URPLICRbovCkcd2g6odlgQ3gqKQe6YwmO4EeMi+8q6zhQ8nUTtQ2/IhUk3mT7t68arL/bMSWpf3Kln+cD3afD2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWkIiVbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EBDC4CEC9;
-	Wed,  4 Sep 2024 09:36:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OUyhOWiip4ab0MhSRYAdesFLyKlKn/5DxyVrA/LkF6B6uMb+BC70ipIRwn9zj3rl7mg20Frci9WRpTs9BQtiT7yoOLlgeRF0AvYUM30gDND5jc+GoVQAjolqj7wKvEi1GBhqK9uT+RcJG7BRD1UEoAEDZlh86hQPVB6bOgNT1n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBmejodC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08A4C4CEC6;
+	Wed,  4 Sep 2024 09:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725442582;
-	bh=9bAhJ9CJLtRo5g7kUHeOsxrCvaYqEyomg7XrEVlcoI0=;
+	s=k20201202; t=1725442613;
+	bh=MBwBMik3WdpeSRwdosVELrhielfxG8FEjRiwld/tWvY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZWkIiVbCKmH2u8CfkCeJrYGIdpLJbYj6kBpbhH/s8NG1I5YWKI721mj7Lzt43ELUr
-	 4Y/RWuEqQecX+uHlVulZn5bFL26l4g7DDrh/CsAUjWAD/gkxjxo5Gw8nKZgA1qUFKP
-	 ddsnw1cBv9lkrSBYrj3fXi6N7cyMOaQBad+MHS0REatztT25RnzRjXgmy3fkdN4OYe
-	 YE9QqbovUWfEnjcCfdZioSRwdtlvWWN9GveHaApRiw2JDeW47I2by+BAeP5y4eFp0+
-	 nCxYUhP9VZeZHBJi5/yvUHifdUDcB7+hi+9ptjKGG8X2eL9sPITVHfDH+5PiTH+K7a
-	 VUusR+s9t1Q4Q==
-Date: Wed, 4 Sep 2024 09:36:15 +0000
+	b=JBmejodC5PZ/bZIdUTxfbws8t13TO0dZx2NADVSzFiCdFZFONf/s5E9sIcxpk+JCj
+	 ATqP3UeW/yxC5clX1Ak7Yaw2th9C9qYdbNGKyDsxM5YEGWfx+CHKOTG10nyO9Z8kj8
+	 gAVqGaS7J/ed/cn3a4aQdjgY3JhaMrYopF5etv5xjpGUOGtHnV0hhCOF88BwO95epj
+	 +pv2ovc++y4PXoo4NLK7icGN2N9DDHJP/SUyAnmZR6d6OwnZBZhFaWyrsQKQRMjpzP
+	 c01rOWAS9ey3OIMv8vl1KhcWAyqBb2jWn7vPC8mvVlGCYQ+fLTEALKKSot5K9t+K2B
+	 JkDEuYjxYbDSQ==
+Date: Wed, 4 Sep 2024 09:36:45 +0000
 From: Tzung-Bi Shih <tzungbi@kernel.org>
 To: Stephen Boyd <swboyd@chromium.org>
 Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -77,11 +77,11 @@ Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH v4 17/18] platform/chrome: cros_ec_typec: Support DP
- muxing
-Message-ID: <ZtgqD3JaX2FmVWGu@google.com>
+Subject: Re: [PATCH v4 18/18] platform/chrome: cros_ec_typec: Handle lack of
+ HPD information
+Message-ID: <ZtgqLZXbJbpG65vD@google.com>
 References: <20240901040658.157425-1-swboyd@chromium.org>
- <20240901040658.157425-18-swboyd@chromium.org>
+ <20240901040658.157425-19-swboyd@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -90,25 +90,34 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240901040658.157425-18-swboyd@chromium.org>
+In-Reply-To: <20240901040658.157425-19-swboyd@chromium.org>
 
-On Sat, Aug 31, 2024 at 09:06:55PM -0700, Stephen Boyd wrote:
-> Most ARM based chromebooks with two usb-c-connector nodes and one DP
-> controller are muxing the DP lanes between the two USB ports. This is
-> done so that the type-c ports are at least equal in capability if not
-> functionality. Either an analog mux is used to steer the DP signal to
-> one or the other port, or a DP bridge chip has two lanes (e.g. DP
-> ML0/ML1) wired to one type-c port while the other two (e.g. DP ML2/ML3)
-> are wired to another type-c port.
-> 
+On Sat, Aug 31, 2024 at 09:06:56PM -0700, Stephen Boyd wrote:
+> +static void cros_typec_inject_hpd(struct cros_typec_data *typec,
+> +				  struct ec_response_usb_pd_mux_info *resp,
+> +				  struct cros_typec_port *port)
+> +{
+[...]
+> +	/*
+> +	 * Only read the mux GPIO setting if we need to change the active port.
+> +	 * Otherwise, an active port is already set and HPD going high or low
+> +	 * doesn't change the muxed port until DP mode is exited.
+> +	 */
+> +	if (!typec->active_dp_port) {
+
+Given that cros_typec_inject_hpd() is called before `typec->active_dp_port`
+would be set (from previous patch "platform/chrome: ...  Support DP muxing"),
+would it possibly wrongly fall into here at the beginning?  (E.g.:
+cros_typec_probe() -> cros_typec_port_update() -> cros_typec_configure_mux()
+-> cros_typec_inject_hpd().)
+
 > [...]
-> 
-> Cc: Prashant Malani <pmalani@chromium.org>
-> Cc: Benson Leung <bleung@chromium.org>
-> Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-> Cc: <chrome-platform@lists.linux.dev>
-> Cc: Pin-yen Lin <treapking@chromium.org>
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> +	/* Inject HPD from the GPIO state if EC firmware is broken. */
+> +	if (typec->hpd_asserted)
+> +		resp->flags |= USB_PD_MUX_HPD_LVL;
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+`typec->hpd_asserted` is shared between all typec->ports[...].  Would it be
+possible that a HPD is asserted for another port but not current `port`?
+E.g.: cros_typec_inject_hpd() for port 2 and cros_typec_dp_bridge_hpd_notify()
+gets called due to port 1 at the same time?
 
