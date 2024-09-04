@@ -1,91 +1,189 @@
-Return-Path: <linux-acpi+bounces-8146-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8147-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A75F96BCB4
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 14:44:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDC796BD81
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 15:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1281C225F8
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 12:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B096A1F21153
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 13:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F47A1D9335;
-	Wed,  4 Sep 2024 12:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9E31D79AC;
+	Wed,  4 Sep 2024 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+lsso+K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B4XpwumY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98611D58B0;
-	Wed,  4 Sep 2024 12:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F381D0491;
+	Wed,  4 Sep 2024 13:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725453886; cv=none; b=LMW/aZPAZmILQNSaFctVPVzPUM79ZweVR6G1c/YmbuB8TPfeJeH3L1GoJZ/rb6UyrDH0pBC40gur9zaI2Ir5FFBlfnKN21XG9L2GrZJWpRFTHpd2Y1p7om8m6yGecRogBy+rj0Ja3J8g0g7jePmVMWApLJ9HNv9aXk6DGFDOw28=
+	t=1725454902; cv=none; b=mL0LnuESfhjsZfzr5Pnd/CPjGfbaPSlHq1iQfSdjEspMggWcd+dDp52NlSoj3L522sAEBw4HYUcTlRFf56TlH1YAbRrK/4SAKskAs1Y3QSKRBCkr9Kk8Iip4BnAed8wba3IozBv/6e8NTS16Q922SSZ84lU+X/TZfToZmD4CyjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725453886; c=relaxed/simple;
-	bh=gWBcDXpnwV66JzP9agnNz1yjQNRH/lnU5CCm2VgO5ZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X1VMLe8kQOFFq7+wAsM/O6uq0u+yYfSEmbOMA0tdfDNaGSs69kreQUxGCFMFr0bNPlb+YaQT2IasDiUytzxSQwIE+H1x3isYJeXOyEH1ODVpwAQgMkHWyZ4rJAFTuUkSW1UT1Nko4E+VInE6V4LIF26y5laDJCciFuw0QHrqu5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+lsso+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FE9C4CEC6;
-	Wed,  4 Sep 2024 12:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725453885;
-	bh=gWBcDXpnwV66JzP9agnNz1yjQNRH/lnU5CCm2VgO5ZU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=V+lsso+KGn5IEHcldCoBJPqtLQMGdt8IjSTnQkiE4v6bhrPkZPpNvY1idL1JR8eMn
-	 AVFwFvKHetRQ5Ksdl/ZsW0IREm7jqNeGgXPHVEdeKMbyqtSKE36KOkhzuFi3q5y14c
-	 A0hlDPOPTmxna/4P6ZqUCYjf/nMUJDWdMNJB/aGzZw8TZi4I9Lxk9ZWHkvxkZ8SJlc
-	 CuqusVLI4XJGQhOaym6obkFaFYRccsxdb+WgLacf5bFVaiBH9nQv2uAXG4qW/nifsC
-	 BIsi+guLIUmNoWDNUO3kU85vOoycKyEm8g5QawDk46F6j17P1UdNfLPmdsCRylObAZ
-	 9d5hTwEWW4TOQ==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5df9343b5b8so4188069eaf.0;
-        Wed, 04 Sep 2024 05:44:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX2jgdEvLHGnjzKE1Vl5Xp4VTK6s+vRUALM/hrFp5BoCTpICVH4KbQLq1N7g3Nb29UWUTJPx/LSPmBTlfO2@vger.kernel.org, AJvYcCXPD5lfNcqh9IpCi5YzW01SkGHH3XBZN9gURUPlyAlQ3OMrAv+0aG2k3yOwm90BkslwgIarGQZAgSZ2@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtGB7ZIaGyKL7hGLpE3K2g8pfkDx2NH4HAkj2MeMcH9u51KjvS
-	P9KGzXPaQioTMd0ahgbmSK9URTERpVt18w6bmfVwSQou6fr3stFH9NJifSTaCpLSmUQNiQpnfqI
-	jpj2SSpUa1+FNF15rZy2Cjvcbed4=
-X-Google-Smtp-Source: AGHT+IEp499+TpEPUrVKQyS4saF7KGklaNfDvGSGHqxz1J8u892Paq6EOcylAGzZQjNDOFGKD6Li9hTms7relqG+Btg=
-X-Received: by 2002:a05:6820:545:b0:5d5:a343:d135 with SMTP id
- 006d021491bc7-5dfacddf0a9mr18406823eaf.1.1725453884784; Wed, 04 Sep 2024
- 05:44:44 -0700 (PDT)
+	s=arc-20240116; t=1725454902; c=relaxed/simple;
+	bh=6Kw6B3185mdUtc47auQpHWY0ReGfCqoefhPtw0as7VY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m4RcAeVMw8NiBvQNzfwLTBfthf41+TQxJRekPcrv55Yd9mN/ijouNEc33ECZQEe3f1I4iBDkLQCuZD1CTRu9c45iNhUEexd198shqDABIuktMZ2IyTq+IzAWM0NemJeslOntHiIWECDiKS/+zwBP68GFIQ9J/wTd0n0wzBUjaTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B4XpwumY; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725454901; x=1756990901;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6Kw6B3185mdUtc47auQpHWY0ReGfCqoefhPtw0as7VY=;
+  b=B4XpwumYDwR0jjGaaENm24F7X3p4EIefa4XPryHzw3ZYvCZ8oOUBbrFf
+   vx1lri9KyYADUqttSypYEgQ4UPkQqJOa8X7ufGiCo7BfiNVGEB6Y4uIQN
+   1ZFgbRt5UtUz8i+4DpQuo1R/S+5SNLzcP7OJvl9CuU6H58CGjSoeN5sof
+   YtaIGZs0axcjxjoPQuZ2r9US/QAVneSx31QBzt877b2iuJxXzbQtwJenG
+   0kRCKIPw+/ozKhwFXWSpnUcebYQg+MoCR5pUyAfEBmBLh04VIDqPEhSsQ
+   /EIcKLEcGccs4Z3dZqIF+F/f12TP1byaOX6/RfYkuJ5AVyhU139s1H7c2
+   g==;
+X-CSE-ConnectionGUID: uyaKw6Q2QtORT7ikjRCQJw==
+X-CSE-MsgGUID: 059JZ4ohQ5GE3NDm4UUkLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="34713859"
+X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
+   d="scan'208";a="34713859"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 06:01:40 -0700
+X-CSE-ConnectionGUID: zt+H+du4TBWU8QDtHMqVYQ==
+X-CSE-MsgGUID: jdxwf08QTkW9tnDCY81T8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
+   d="scan'208";a="95996608"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 06:01:30 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1slpd3-000000054Ce-3bap;
+	Wed, 04 Sep 2024 16:00:57 +0300
+Date: Wed, 4 Sep 2024 16:00:57 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Stephen Boyd <swboyd@chromium.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev, devicetree@vger.kernel.org,
+	Douglas Anderson <dianders@chromium.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	Guenter Roeck <groeck@chromium.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Lee Jones <lee@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-acpi@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH v4 06/18] drm/bridge: aux-hpd: Support USB Type-C DP
+ altmodes via DRM lane assignment
+Message-ID: <ZthaCQel2aHhyIu4@smile.fi.intel.com>
+References: <20240901040658.157425-1-swboyd@chromium.org>
+ <20240901040658.157425-7-swboyd@chromium.org>
+ <ZtWjEudmlR51zkU9@smile.fi.intel.com>
+ <CAE-0n51eSxxvnJXwnfPrXx1=rei=8OGGEtCAgw6nhCktZ0iQDw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904-acpi-battery-cleanups-v1-0-a3bf74f22d40@weissschuh.net>
-In-Reply-To: <20240904-acpi-battery-cleanups-v1-0-a3bf74f22d40@weissschuh.net>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 4 Sep 2024 14:44:33 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gAaMLrSyva_cZBxJpzAFM3Lb_SiuTxESjAmHJLxnThGA@mail.gmail.com>
-Message-ID: <CAJZ5v0gAaMLrSyva_cZBxJpzAFM3Lb_SiuTxESjAmHJLxnThGA@mail.gmail.com>
-Subject: Re: [PATCH 0/5] ACPI: battery: various cleanups
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAE-0n51eSxxvnJXwnfPrXx1=rei=8OGGEtCAgw6nhCktZ0iQDw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Sep 4, 2024 at 9:13=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weisssc=
-huh.net> wrote:
->
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> ---
-> Thomas Wei=C3=9Fschuh (5):
->       ACPI: battery: check result of register_pm_notifier()
->       ACPI: battery: allocate driver data through devm_ APIs
->       ACPI: battery: initialize mutexes through devm_ APIs
->       ACPI: battery: use DEFINE_SIMPLE_DEV_PM_OPS
->       ACPI: battery: install notify handler through ACPI core
->
->  drivers/acpi/battery.c | 41 +++++++++++------------------------------
->  1 file changed, 11 insertions(+), 30 deletions(-)
-> ---
+On Tue, Sep 03, 2024 at 06:20:14PM -0400, Stephen Boyd wrote:
+> Quoting Andy Shevchenko (2024-09-02 04:35:46)
+> > On Sat, Aug 31, 2024 at 09:06:44PM -0700, Stephen Boyd wrote:
 
-Since it is a bit late in the cycle and this material does not appear
-to be urgent, I'd prefer to defer it until 6.12-rc1 is out.
+> > > Extend the aux-hpd bridge driver to support assigning DP lanes to USB
+> > > type-c pins based on typec mux state entry. Existing users of this
+> > > driver only need the HPD signaling support, so leave that in place and
+> > > wrap the code with a variant that supports more features of USB type-c
+> >
+> > Isn't the proper spelling "USB Type-C"?
+> 
+> Perhaps in a title?
+
+I am talking about the commit message :-)
+
+> > > DP altmode, i.e. pin configurations. Prefix that code with
+> > > 'drm_dp_typec_bridge' to differentiate it from the existing
+> > > 'drm_aux_hpd_bridge' code.
+> > >
+> > > Parse the struct typec_mux_state members to determine if DP altmode has
+> > > been entered and if HPD is asserted or not. Signal HPD to the drm bridge
+> > > chain when HPD is asserted. Similarly, parse the pin assignment and map
+> > > the DP lanes to the usb-c output lanes, taking into account any lane
+> > > remapping from the data-lanes endpoint property. Pass that lane mapping
+> > > to the previous drm_bridge in the bridge chain during the atomic check
+> > > phase.
+
+...
+
+> > > +     adev->dev.of_node = of_node_get(parent->of_node);
+> >
+> > device_set_node() ?
+> 
+> Or device_set_of_node_from_dev()?
+
+This is quite unclear to me. The second one bumps the reference count IIRC
+for no reason (in usual cases). Also only few drivers use that, I would hear
+what OF people can tell about this API and its usage scope.
+
+...
+
+> > > +static int dp_lane_to_typec_lane(enum dp_lane lane)
+> > > +{
+> > > +     switch (lane) {
+> > > +     case DP_ML0:
+> > > +             return USB_SSTX2;
+> > > +     case DP_ML1:
+> > > +             return USB_SSRX2;
+> > > +     case DP_ML2:
+> > > +             return USB_SSTX1;
+> > > +     case DP_ML3:
+> > > +             return USB_SSRX1;
+> > > +     }
+> >
+> > > +     return -EINVAL;
+> >
+> > Hmm... This can be simply made as default case.
+> 
+> And then the enum is always "covered" and the compiler doesn't complain
+> about missing cases (I don't think we have -Wswitch-enum)? Seems worse.
+
+Hmm... You mean if I remove one of the above cases I will get the warning?
+
+> > > +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
