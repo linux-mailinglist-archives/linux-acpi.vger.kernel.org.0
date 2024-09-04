@@ -1,189 +1,200 @@
-Return-Path: <linux-acpi+bounces-8147-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8148-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDC796BD81
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 15:01:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EDF96C030
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 16:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B096A1F21153
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 13:01:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019A1282787
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 14:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9E31D79AC;
-	Wed,  4 Sep 2024 13:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B4XpwumY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADB71E00B0;
+	Wed,  4 Sep 2024 14:20:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F381D0491;
-	Wed,  4 Sep 2024 13:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DEB1D4170;
+	Wed,  4 Sep 2024 14:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725454902; cv=none; b=mL0LnuESfhjsZfzr5Pnd/CPjGfbaPSlHq1iQfSdjEspMggWcd+dDp52NlSoj3L522sAEBw4HYUcTlRFf56TlH1YAbRrK/4SAKskAs1Y3QSKRBCkr9Kk8Iip4BnAed8wba3IozBv/6e8NTS16Q922SSZ84lU+X/TZfToZmD4CyjE=
+	t=1725459645; cv=none; b=CDDg74boSo9STR95b2yaL5elDzkjCxTc63OKYtbjgkM1FLgtoq3Go9oCa8DjHf9wa9m1jnDf1ucXCh4vQarG3eLeUCH3bakauwSsfOVbWDwfbCcLDhxFPRP748KIdw66wkJracaANG15eVI/tKpHjbaOeYlGHFh5RCpnccWrIoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725454902; c=relaxed/simple;
-	bh=6Kw6B3185mdUtc47auQpHWY0ReGfCqoefhPtw0as7VY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m4RcAeVMw8NiBvQNzfwLTBfthf41+TQxJRekPcrv55Yd9mN/ijouNEc33ECZQEe3f1I4iBDkLQCuZD1CTRu9c45iNhUEexd198shqDABIuktMZ2IyTq+IzAWM0NemJeslOntHiIWECDiKS/+zwBP68GFIQ9J/wTd0n0wzBUjaTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B4XpwumY; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725454901; x=1756990901;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6Kw6B3185mdUtc47auQpHWY0ReGfCqoefhPtw0as7VY=;
-  b=B4XpwumYDwR0jjGaaENm24F7X3p4EIefa4XPryHzw3ZYvCZ8oOUBbrFf
-   vx1lri9KyYADUqttSypYEgQ4UPkQqJOa8X7ufGiCo7BfiNVGEB6Y4uIQN
-   1ZFgbRt5UtUz8i+4DpQuo1R/S+5SNLzcP7OJvl9CuU6H58CGjSoeN5sof
-   YtaIGZs0axcjxjoPQuZ2r9US/QAVneSx31QBzt877b2iuJxXzbQtwJenG
-   0kRCKIPw+/ozKhwFXWSpnUcebYQg+MoCR5pUyAfEBmBLh04VIDqPEhSsQ
-   /EIcKLEcGccs4Z3dZqIF+F/f12TP1byaOX6/RfYkuJ5AVyhU139s1H7c2
-   g==;
-X-CSE-ConnectionGUID: uyaKw6Q2QtORT7ikjRCQJw==
-X-CSE-MsgGUID: 059JZ4ohQ5GE3NDm4UUkLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="34713859"
-X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
-   d="scan'208";a="34713859"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 06:01:40 -0700
-X-CSE-ConnectionGUID: zt+H+du4TBWU8QDtHMqVYQ==
-X-CSE-MsgGUID: jdxwf08QTkW9tnDCY81T8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,201,1719903600"; 
-   d="scan'208";a="95996608"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 06:01:30 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1slpd3-000000054Ce-3bap;
-	Wed, 04 Sep 2024 16:00:57 +0300
-Date: Wed, 4 Sep 2024 16:00:57 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Stephen Boyd <swboyd@chromium.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev, devicetree@vger.kernel.org,
-	Douglas Anderson <dianders@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	Guenter Roeck <groeck@chromium.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Lee Jones <lee@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-acpi@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH v4 06/18] drm/bridge: aux-hpd: Support USB Type-C DP
- altmodes via DRM lane assignment
-Message-ID: <ZthaCQel2aHhyIu4@smile.fi.intel.com>
-References: <20240901040658.157425-1-swboyd@chromium.org>
- <20240901040658.157425-7-swboyd@chromium.org>
- <ZtWjEudmlR51zkU9@smile.fi.intel.com>
- <CAE-0n51eSxxvnJXwnfPrXx1=rei=8OGGEtCAgw6nhCktZ0iQDw@mail.gmail.com>
+	s=arc-20240116; t=1725459645; c=relaxed/simple;
+	bh=3NFixX3Kl1y5WBzsUh6ZkbNWiMteGWvyfBElaxW/K1Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Hnz0mWuBFVkecVvbldDSrtEloQGFf6Ucdr4K4JnBlkPsphMb34b6mTSO5T3ncl8rlMkJRKjfGVDvD5A7hfrF4qvqzipsjxAxjz8q7o/tWQZQbCERlXJ1/5ZaJuUNTckh8KNIJcNrBwEcCUONc+NbgMB7mhM9kj3vwdRIWmZbvBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WzPfQ4FJsz20nLZ;
+	Wed,  4 Sep 2024 22:15:42 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id CDD681400D7;
+	Wed,  4 Sep 2024 22:20:39 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 4 Sep 2024 22:20:38 +0800
+Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
+ lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
+ Wed, 4 Sep 2024 15:20:37 +0100
+From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To: Jason Gunthorpe <jgg@nvidia.com>, "acpica-devel@lists.linux.dev"
+	<acpica-devel@lists.linux.dev>, "Guohanjun (Hanjun Guo)"
+	<guohanjun@huawei.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
+ Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
+ Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>
+CC: Alex Williamson <alex.williamson@redhat.com>, Eric Auger
+	<eric.auger@redhat.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
+	"Nicolin Chen" <nicolinc@nvidia.com>, "patches@lists.linux.dev"
+	<patches@lists.linux.dev>, Mostafa Saleh <smostafa@google.com>
+Subject: RE: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+Thread-Topic: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+Thread-Index: AQHa+JkNXX8oIDp/tkauz0b2cgKn4bJHsELw
+Date: Wed, 4 Sep 2024 14:20:36 +0000
+Message-ID: <85aa5e8eb6f243fd9df754fdc96471b8@huawei.com>
+References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+In-Reply-To: <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAE-0n51eSxxvnJXwnfPrXx1=rei=8OGGEtCAgw6nhCktZ0iQDw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Sep 03, 2024 at 06:20:14PM -0400, Stephen Boyd wrote:
-> Quoting Andy Shevchenko (2024-09-02 04:35:46)
-> > On Sat, Aug 31, 2024 at 09:06:44PM -0700, Stephen Boyd wrote:
 
-> > > Extend the aux-hpd bridge driver to support assigning DP lanes to USB
-> > > type-c pins based on typec mux state entry. Existing users of this
-> > > driver only need the HPD signaling support, so leave that in place and
-> > > wrap the code with a variant that supports more features of USB type-c
-> >
-> > Isn't the proper spelling "USB Type-C"?
-> 
-> Perhaps in a title?
 
-I am talking about the commit message :-)
+> -----Original Message-----
+> From: Jason Gunthorpe <jgg@nvidia.com>
+> Sent: Tuesday, August 27, 2024 4:52 PM
+> To: acpica-devel@lists.linux.dev; Guohanjun (Hanjun Guo)
+> <guohanjun@huawei.com>; iommu@lists.linux.dev; Joerg Roedel
+> <joro@8bytes.org>; Kevin Tian <kevin.tian@intel.com>;
+> kvm@vger.kernel.org; Len Brown <lenb@kernel.org>; linux-
+> acpi@vger.kernel.org; linux-arm-kernel@lists.infradead.org; Lorenzo Piera=
+lisi
+> <lpieralisi@kernel.org>; Rafael J. Wysocki <rafael@kernel.org>; Robert
+> Moore <robert.moore@intel.com>; Robin Murphy
+> <robin.murphy@arm.com>; Sudeep Holla <sudeep.holla@arm.com>; Will
+> Deacon <will@kernel.org>
+> Cc: Alex Williamson <alex.williamson@redhat.com>; Eric Auger
+> <eric.auger@redhat.com>; Jean-Philippe Brucker <jean-
+> philippe@linaro.org>; Moritz Fischer <mdf@kernel.org>; Michael Shavit
+> <mshavit@google.com>; Nicolin Chen <nicolinc@nvidia.com>;
+> patches@lists.linux.dev; Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; Mostafa Saleh
+> <smostafa@google.com>
+> Subject: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+>=20
+> Force Write Back (FWB) changes how the S2 IOPTE's MemAttr field
+> works. When S2FWB is supported and enabled the IOPTE will force cachable
+> access to IOMMU_CACHE memory when nesting with a S1 and deny cachable
+> access otherwise.
+>=20
+> When using a single stage of translation, a simple S2 domain, it doesn't
+> change anything as it is just a different encoding for the exsting mappin=
+g
+> of the IOMMU protection flags to cachability attributes.
+>=20
+> However, when used with a nested S1, FWB has the effect of preventing the
+> guest from choosing a MemAttr in it's S1 that would cause ordinary DMA to
+> bypass the cache. Consistent with KVM we wish to deny the guest the
+> ability to become incoherent with cached memory the hypervisor believes i=
+s
+> cachable so we don't have to flush it.
+>=20
+> Turn on S2FWB whenever the SMMU supports it and use it for all S2
+> mappings.
+>=20
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
 
-> > > DP altmode, i.e. pin configurations. Prefix that code with
-> > > 'drm_dp_typec_bridge' to differentiate it from the existing
-> > > 'drm_aux_hpd_bridge' code.
-> > >
-> > > Parse the struct typec_mux_state members to determine if DP altmode has
-> > > been entered and if HPD is asserted or not. Signal HPD to the drm bridge
-> > > chain when HPD is asserted. Similarly, parse the pin assignment and map
-> > > the DP lanes to the usb-c output lanes, taking into account any lane
-> > > remapping from the data-lanes endpoint property. Pass that lane mapping
-> > > to the previous drm_bridge in the bridge chain during the atomic check
-> > > phase.
+(...)
 
-...
+> @@ -932,7 +948,8 @@ arm_64_lpae_alloc_pgtable_s1(struct io_pgtable_cfg
+> *cfg, void *cookie)
+>  	if (cfg->quirks & ~(IO_PGTABLE_QUIRK_ARM_NS |
+>  			    IO_PGTABLE_QUIRK_ARM_TTBR1 |
+>  			    IO_PGTABLE_QUIRK_ARM_OUTER_WBWA |
+> -			    IO_PGTABLE_QUIRK_ARM_HD))
+> +			    IO_PGTABLE_QUIRK_ARM_HD |
+> +			    IO_PGTABLE_QUIRK_ARM_S2FWB))
+>  		return NULL;
 
-> > > +     adev->dev.of_node = of_node_get(parent->of_node);
-> >
-> > device_set_node() ?
-> 
-> Or device_set_of_node_from_dev()?
+This should be added to arm_64_lpae_alloc_pgtable_s2(), not here.
 
-This is quite unclear to me. The second one bumps the reference count IIRC
-for no reason (in usual cases). Also only few drivers use that, I would hear
-what OF people can tell about this API and its usage scope.
+With the above fixed, I was able to assign a n/w VF dev to a Guest on a
+test hardware that supports S2FWB.
 
-...
+However host kernel has this WARN message:
+[ 1546.165105] WARNING: CPU: 5 PID: 7047 at drivers/iommu/arm/arm-smmu-v3/a=
+rm-smmu-v3.c:1086 arm_smmu_entry_qword_diff+0x124/0x138
+....
+[ 1546.330312]  arm_smmu_entry_qword_diff+0x124/0x138
+[ 1546.335090]  arm_smmu_write_entry+0x38/0x22c
+[ 1546.339346]  arm_smmu_install_ste_for_dev+0x158/0x1ac
+[ 1546.344383]  arm_smmu_attach_dev+0x138/0x240
+[ 1546.348639]  __iommu_device_set_domain+0x7c/0x11c
+[ 1546.353330]  __iommu_group_set_domain_internal+0x60/0x134
+[ 1546.358714]  iommu_group_replace_domain+0x3c/0x68
+[ 1546.363404]  iommufd_device_do_replace+0x334/0x398
+[ 1546.368181]  iommufd_device_change_pt+0x26c/0x650
+[ 1546.372871]  iommufd_device_replace+0x18/0x24
+[ 1546.377214]  vfio_iommufd_physical_attach_ioas+0x28/0x68
+[ 1546.382514]  vfio_df_ioctl_attach_pt+0x98/0x170
 
-> > > +static int dp_lane_to_typec_lane(enum dp_lane lane)
-> > > +{
-> > > +     switch (lane) {
-> > > +     case DP_ML0:
-> > > +             return USB_SSTX2;
-> > > +     case DP_ML1:
-> > > +             return USB_SSRX2;
-> > > +     case DP_ML2:
-> > > +             return USB_SSTX1;
-> > > +     case DP_ML3:
-> > > +             return USB_SSRX1;
-> > > +     }
-> >
-> > > +     return -EINVAL;
-> >
-> > Hmm... This can be simply made as default case.
-> 
-> And then the enum is always "covered" and the compiler doesn't complain
-> about missing cases (I don't think we have -Wswitch-enum)? Seems worse.
 
-Hmm... You mean if I remove one of the above cases I will get the warning?
+And when I tried to use the assigned n/w dev, it seems to do a reset
+continuously.
 
-> > > +}
+root@localhost:/# ping 150.0.124.42
+PING 150.0.124.42 (150.0.124.42): 56 data bytes
+64 bytes from 150.0.124.42: seq=3D0 ttl=3D64 time=3D47.648 ms
+[ 1395.958630] hns3 0000:c2:00.0 eth1: NETDEV WATCHDOG: CPU: 1: transmit qu=
+eue 10 timed out 5260 ms
+[ 1395.960187] hns3 0000:c2:00.0 eth1: DQL info last_cnt: 42, queued: 42, a=
+dj_limit: 0, completed: 0
+[ 1395.961758] hns3 0000:c2:00.0 eth1: queue state: 0x6, delta msecs: 5260
+[ 1395.962925] hns3 0000:c2:00.0 eth1: tx_timeout count: 1, queue id: 10, S=
+W_NTU: 0x1, SW_NTC: 0x0, napi state: 16
+[ 1395.964677] hns3 0000:c2:00.0 eth1: tx_pkts: 0, tx_bytes: 0, sw_err_cnt:=
+ 0, tx_pending: 0
+[ 1395.966114] hns3 0000:c2:00.0 eth1: seg_pkt_cnt: 0, tx_more: 0, restart_=
+queue: 0, tx_busy: 0
+[ 1395.967598] hns3 0000:c2:00.0 eth1: tx_push: 1, tx_mem_doorbell: 0
+[ 1395.968687] hns3 0000:c2:00.0 eth1: BD_NUM: 0x7f HW_HEAD: 0x0, HW_TAIL: =
+0x0, BD_ERR: 0x0, INT: 0x1
+[ 1395.970291] hns3 0000:c2:00.0 eth1: RING_EN: 0x1, TC: 0x0, FBD_NUM: 0x0 =
+FBD_OFT: 0x0, EBD_NUM: 0x400, EBD_OFT: 0x0
+[ 1395.972134] hns3 0000:c2:00.0: received reset request from VF enet
 
--- 
-With Best Regards,
-Andy Shevchenko
+All this works fine on a hardware without S2FWB though.
+
+Also on this test hardware, it works fine with legacy VFIO assignment.
+
+Not debugged further. Please let me know if you have any hunch.
+
+Thanks,
+Shameer
+
 
 
 
