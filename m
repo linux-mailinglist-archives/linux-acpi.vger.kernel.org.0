@@ -1,253 +1,190 @@
-Return-Path: <linux-acpi+bounces-8158-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8159-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F86A96C97C
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 23:20:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F76496C9AF
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 23:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F02FC1F26634
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 21:20:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34EE1F22896
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 21:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD244156F42;
-	Wed,  4 Sep 2024 21:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74BC158DD9;
+	Wed,  4 Sep 2024 21:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m5az4+5V"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CaPpySJo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996FC149DFF;
-	Wed,  4 Sep 2024 21:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADAE14F102
+	for <linux-acpi@vger.kernel.org>; Wed,  4 Sep 2024 21:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725484789; cv=none; b=s9fAHnGZLPYSaNIGvQj546DwlrDmi2XRJNxeYxucrwbJsw9bMoACp11MifkmHHBd0NEakcOTT1+RcPC8wyjOoy5qgBsY1WofRFULg1THRKrl8WPVOtOd0TNIZOdoFLwDlIquEFKvqpsUA2ZhrCUFqypov4F9qGWhV/n6aWz63K8=
+	t=1725486340; cv=none; b=NV4Z3gT6cLPAleDtF5jC8Mw/gWBoha4+LzjDFVMtceC+4uh+Uhc4hVnSTQj3bznBTEiwGI3RwI/kmhPZnuCHioXGCY9NqW3Wa7fiR1AlZLtsQeTlXkMbtofkYBfH0Bz/aUeogJ/yxOnzETuV7Pm3QATaVzDSlH+jM6qL8xCHl9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725484789; c=relaxed/simple;
-	bh=I2LCAvm7Y0zo0WMz3B9ixJymul+nOF2oWdfEiM56SU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GV9CcVaw5PxZrQ97YYzgTn19z/YxMuJOY0FqvO9IwX7qtyMZ2O4criC6YUEssOpu8BC/YDOYmaR9duzkMdBUItPrUVggCLvdIxMpIkXI8m6ffeOBH26HxsbkrlZ3DchGmTHrC4/8snabHEvZViHG0e7CdgzJDOW32Z9OidXM3gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m5az4+5V; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725484784; x=1757020784;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I2LCAvm7Y0zo0WMz3B9ixJymul+nOF2oWdfEiM56SU4=;
-  b=m5az4+5Vz8n3WAyB5eOADQtoGNaOU8hHlugdz3BBVXegTRZ1DRszF6C7
-   M8HPBQVokTu/xOFp2pBev7fgYVexjW7WpAelRkdJdTmpu/21wVj8nqRGt
-   BOhJXrEkFOA7YYiYofQjc4BtdrxSRhVEwY3XPMBDy3S7u+fQy47bnBfvg
-   MRn+0eM9uhFwuuzMTRXx8VvQK2P0pvH6apRY6txE0+sKP0vCwtthvg0gj
-   zmm74/H6wnADZFYe1s9IYBZ+7XZtqfDKdGpWVH/g/akul2JNdqzNYSjbp
-   MWkM3yfRvHhA/1SpUvFzabaTgSN1733Q0M3+xeJp0i52VwBRAuUcoBRgH
-   g==;
-X-CSE-ConnectionGUID: G5Ea6eBaQBOvLjIpWcVGKA==
-X-CSE-MsgGUID: gQfQw5uyRmOGMtBNbb7CtQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="27961111"
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="27961111"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 14:19:44 -0700
-X-CSE-ConnectionGUID: TEbomKlNRKmO3hsT5T+YeA==
-X-CSE-MsgGUID: sUpmoz9HTliFK7oUjoM7wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="65227548"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 04 Sep 2024 14:19:41 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1slxPe-0008Z1-2k;
-	Wed, 04 Sep 2024 21:19:38 +0000
-Date: Thu, 5 Sep 2024 05:18:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mario Limonciello <superm1@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	"(maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <x86@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	"(open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <linux-kernel@vger.kernel.org>,
-	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v2 07/11] x86/amd: Detect preferred cores in
- amd_get_boost_ratio_numerator()
-Message-ID: <202409050432.AoAbkkyJ-lkp@intel.com>
-References: <20240903203701.2695040-8-superm1@kernel.org>
+	s=arc-20240116; t=1725486340; c=relaxed/simple;
+	bh=R6UUe3TKwZrNrftTEihL/R7hIMY02P3GHWSniiD2wQk=;
+	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t9nh5oZsZbC9T0i5BDS3Ed//GEZMk4JVvKxa31yAA53Tl6zidCNrkTzlaYHZsp1EfjTglYOePU9REh/ubdS+Z12ITRZpiNEJDHVKJV01iZEf3fRqonFRtscmOkfb7amyA0zx4RxpLy4GxEoHO1ay+e7311YqwVW//twl90rWotI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CaPpySJo; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7a802deea39so5919585a.2
+        for <linux-acpi@vger.kernel.org>; Wed, 04 Sep 2024 14:45:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1725486338; x=1726091138; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f4gRtmbeYp5evTSGdV4aMzXH03sVn24oEBxx8YLA2ew=;
+        b=CaPpySJoRER0VJrJrn7ls5OedaSsBwRwCjo3cLjtFsUTpeXnR2ZmZfpCs1rqFgRcLu
+         LfKpJXGbjcO7GkmJYrO/vWwP9xl1kAlyrlvvrdSeirVdO2U61yFtf2tT6yCIiLVOtpnr
+         aEY+1O5kGC2JNm1hYSpM6JciS3VRbihft1FiA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725486338; x=1726091138;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f4gRtmbeYp5evTSGdV4aMzXH03sVn24oEBxx8YLA2ew=;
+        b=uP0tpRKLZazgdIj+URK9blQYtf5w6qHKdgTc1ROvtsLAFeExV8c6L2IomXnxn2raes
+         MCf6cB75rah8b+CBB0gP/dmyYBpVRaAXx/60ZOpkElAEpbgrvjiicvFAbu3KYEwLyddd
+         p8q1u+ILRMjepaELKUQewz2d1aQICL85huBlxa7Oi4i11PvCnvmk+zlaF2nmAhYDHJkA
+         USSw6eirMuBXER190BMgpsbASBWlLL7pXLNpCFfYRQkqQ9paGvo4XR4eGzaICoJqGKsl
+         LdDpnJNOYLDbkhmifpJuLBqFkEu9jER4gDphLCvgiWua/M2Z35WkwsgNslVnh/+BuXYd
+         qTnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXW2Rm6vnuBTvabSECJDqVCfLIuLxj3P+f9pfu9PX5NOm1EyimL/3gzVzvhYc9Udz8WdryOaBhgBF8b@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgMKPXcq1OgKdd6bSm581QqGIE/kU5Nu6KzSlROHxH7CFVDBdb
+	I2QkKsAxc/IedU+WVLldtJYsujjU60uEik7rjVdGwad5dcE9sgq9d4HfzwRpQuVdPNAdLv78boY
+	4n0TCdYWlyS9rov/vYp6Ehvklyo0INpe1rN6D
+X-Google-Smtp-Source: AGHT+IE3j/hFyhOgq6UHD/BuDzpg0SIVGw+m/kAN1oVv8xhNaZUR6LUlzSWku14uLG7tUpAnX8c5Trg6ijcjDc3jYq8=
+X-Received: by 2002:a05:620a:19a6:b0:79d:569a:699f with SMTP id
+ af79cd13be357-7a8041da30cmr2373807985a.39.1725486337639; Wed, 04 Sep 2024
+ 14:45:37 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Sep 2024 14:45:36 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240903203701.2695040-8-superm1@kernel.org>
+In-Reply-To: <ZtgqLZXbJbpG65vD@google.com>
+References: <20240901040658.157425-1-swboyd@chromium.org> <20240901040658.157425-19-swboyd@chromium.org>
+ <ZtgqLZXbJbpG65vD@google.com>
+From: Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date: Wed, 4 Sep 2024 14:45:36 -0700
+Message-ID: <CAE-0n51w3AAtLPq5M-i8F6z2jSOT3xFw3g8HM1h48xXBSeoZnA@mail.gmail.com>
+Subject: Re: [PATCH v4 18/18] platform/chrome: cros_ec_typec: Handle lack of
+ HPD information
+To: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, devicetree@vger.kernel.org, 
+	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, dri-devel@lists.freedesktop.org, 
+	Guenter Roeck <groeck@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
+	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Vinod Koul <vkoul@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Mario,
+Quoting Tzung-Bi Shih (2024-09-04 02:36:45)
+> On Sat, Aug 31, 2024 at 09:06:56PM -0700, Stephen Boyd wrote:
+> > +static void cros_typec_inject_hpd(struct cros_typec_data *typec,
+> > +                               struct ec_response_usb_pd_mux_info *resp,
+> > +                               struct cros_typec_port *port)
+> > +{
+> [...]
+> > +     /*
+> > +      * Only read the mux GPIO setting if we need to change the active port.
+> > +      * Otherwise, an active port is already set and HPD going high or low
+> > +      * doesn't change the muxed port until DP mode is exited.
+> > +      */
+> > +     if (!typec->active_dp_port) {
+>
+> Given that cros_typec_inject_hpd() is called before `typec->active_dp_port`
+> would be set (from previous patch "platform/chrome: ...  Support DP muxing"),
+> would it possibly wrongly fall into here at the beginning?  (E.g.:
+> cros_typec_probe() -> cros_typec_port_update() -> cros_typec_configure_mux()
+> -> cros_typec_inject_hpd().)
 
-kernel test robot noticed the following build errors:
+We wouldn't get here if 'hpd_asserted' is false though. We want to fall
+into this case in the beginning, i.e. 'active_dp_port' is NULL, so that
+we can read the mux and figure out which port is actually selected.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge tip/x86/core tip/master linus/master v6.11-rc6 next-20240904]
-[cannot apply to tip/auto-latest]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+If we don't have a mux gpio we assume that we aren't muxing and that
+there's only one port to begin with. I'll add a comment after the if
+(mux_gpio) condition with this info.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/x86-amd-Move-amd_get_highest_perf-from-amd-c-to-cppc-c/20240904-044140
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20240903203701.2695040-8-superm1%40kernel.org
-patch subject: [PATCH v2 07/11] x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240905/202409050432.AoAbkkyJ-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240905/202409050432.AoAbkkyJ-lkp@intel.com/reproduce)
+>
+> > [...]
+> > +     /* Inject HPD from the GPIO state if EC firmware is broken. */
+> > +     if (typec->hpd_asserted)
+> > +             resp->flags |= USB_PD_MUX_HPD_LVL;
+>
+> `typec->hpd_asserted` is shared between all typec->ports[...].  Would it be
+> possible that a HPD is asserted for another port but not current `port`?
+> E.g.: cros_typec_inject_hpd() for port 2 and cros_typec_dp_bridge_hpd_notify()
+> gets called due to port 1 at the same time?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409050432.AoAbkkyJ-lkp@intel.com/
+I'd like to avoid synchronizing the hpd notify and this injection code,
+if that's what you're asking. Thinking about this though, I've realized
+that it's broken even when HPD is working on the EC. Consider this
+scenario with two type-c ports C0 and C1:
 
-All errors (new ones prefixed by >>):
+	Plug in C1
+	EC notifies AP
+	AP queues cros_typec_port_work()
+	HPD asserted
+	EC picks C1 for DP // First to have hpd asserted
+	EC notifies AP
+	AP tries to queue cros_typec_port_work() but it's pending. Skip.
+	Plug in C0
+	EC notifies AP
+	AP tries to queue cros_typec_port_work() but it's pending. Skip.
+	HPD asserted
+	EC notifies AP
+	AP tries to queue cros_typec_port_work() but it's pending. Skip.
+	Finally cros_typec_port_work() runs!
+	 for (i = 0; i < typec->num_ports; i++) // typec->num_ports = 2
+	  cros_typec_port_update(port_num=0)
+	   cros_ec_cmd(EC_CMD_USB_PD_CONTROL.port=0) // In DP mode
+	   cros_typec_configure_mux(port_num=0)
+	    cros_ec_cmd(EC_CMD_USB_PD_MUX_INFO.port=0) // hpd asserted
+	    if (!active_dp_port)
+	     active_dp_port = port0
 
-   In file included from drivers/cpufreq/amd-pstate.c:42:
->> include/acpi/cppc_acpi.h:242:19: error: static declaration of 'amd_get_highest_perf' follows non-static declaration
-     242 | static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
-         |                   ^~~~~~~~~~~~~~~~~~~~
-   include/acpi/cppc_acpi.h:141:12: note: previous declaration of 'amd_get_highest_perf' with type 'int(unsigned int,  u32 *)' {aka 'int(unsigned int,  unsigned int *)'}
-     141 | extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
-         |            ^~~~~~~~~~~~~~~~~~~~
->> include/acpi/cppc_acpi.h:246:19: error: static declaration of 'amd_get_boost_ratio_numerator' follows non-static declaration
-     246 | static inline int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator)
-         |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/acpi/cppc_acpi.h:142:12: note: previous declaration of 'amd_get_boost_ratio_numerator' with type 'int(unsigned int,  u64 *)' {aka 'int(unsigned int,  long long unsigned int *)'}
-     142 | extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
-         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This is bad. The worker could be significantly delayed, although it's
+really unlikely in practice. It would be better if the EC pushed a
+message to AP about what happened, instead of having to query the EC
+about the state of USB. Or the EC could have a sequence number or
+something so AP could ask for the history of events. We can't fix all
+the EC firmwares though, so we get what we get.
 
+I think one solution would be to read the mux all the time and ignore
+tracking the active port based on hpd state. If we do that then we don't
+get tripped up by a delayed work iterating over both typec ports. The
+logic will be a bit more complicated though, because we'll have to
+consider all the ports when entering and exiting DP mode on one port so
+that we don't assign DP to the wrong port.
 
-vim +/amd_get_highest_perf +242 include/acpi/cppc_acpi.h
-
-337aadff8e4567 Ashwin Chaugule    2015-10-02  140  
-7885bc49834406 Mario Limonciello  2024-09-03  141  extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
-7885bc49834406 Mario Limonciello  2024-09-03  142  extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
-8a02d99876362f Rafael J. Wysocki  2021-03-16  143  #ifdef CONFIG_ACPI_CPPC_LIB
-1757d05f3112ac Xiongfeng Wang     2019-02-17  144  extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
-0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  145  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
-12753d71e8c5c3 Meng Li            2024-01-19  146  extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
-337aadff8e4567 Ashwin Chaugule    2015-10-02  147  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
-337aadff8e4567 Ashwin Chaugule    2015-10-02  148  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
-fb0b00af04d083 Jinzhou Su         2021-12-24  149  extern int cppc_set_enable(int cpu, bool enable);
-337aadff8e4567 Ashwin Chaugule    2015-10-02  150  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
-ae2df912d1a557 Jeremy Linton      2022-09-12  151  extern bool cppc_perf_ctrs_in_pcc(void);
-50b813b147e9eb Vincent Guittot    2023-12-11  152  extern unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf);
-50b813b147e9eb Vincent Guittot    2023-12-11  153  extern unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq);
-a28b2bfc099c6b Ionela Voinescu    2020-12-14  154  extern bool acpi_cpc_valid(void);
-3cc30dd00a580c Pierre Gondois     2022-05-18  155  extern bool cppc_allow_fast_switch(void);
-a28b2bfc099c6b Ionela Voinescu    2020-12-14  156  extern int acpi_get_psd_map(unsigned int cpu, struct cppc_cpudata *cpu_data);
-be8b88d7d98771 Prakash, Prashanth 2016-08-16  157  extern unsigned int cppc_get_transition_latency(int cpu);
-ad3bc25a320742 Borislav Petkov    2018-12-05  158  extern bool cpc_ffh_supported(void);
-8b356e536e69f3 Mario Limonciello  2022-07-05  159  extern bool cpc_supported_by_cpu(void);
-ad3bc25a320742 Borislav Petkov    2018-12-05  160  extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
-ad3bc25a320742 Borislav Petkov    2018-12-05  161  extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
-7bc1fcd3990182 Perry Yuan         2023-01-31  162  extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
-7bc1fcd3990182 Perry Yuan         2023-01-31  163  extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable);
-c984f5d5d45bd5 Wyes Karny         2023-03-07  164  extern int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps);
-c984f5d5d45bd5 Wyes Karny         2023-03-07  165  extern int cppc_set_auto_sel(int cpu, bool enable);
-cfa6630658f7de Mario Limonciello  2024-09-03  166  extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
-402eea79aece78 Mario Limonciello  2024-09-03  167  extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
-7885bc49834406 Mario Limonciello  2024-09-03  168  extern int amd_detect_prefcore(bool *detected);
-8a02d99876362f Rafael J. Wysocki  2021-03-16  169  #else /* !CONFIG_ACPI_CPPC_LIB */
-8a02d99876362f Rafael J. Wysocki  2021-03-16  170  static inline int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  171  {
-e224a868e488cf Mario Limonciello  2024-09-03  172  	return -EOPNOTSUPP;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  173  }
-0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  174  static inline int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
-0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  175  {
-e224a868e488cf Mario Limonciello  2024-09-03  176  	return -EOPNOTSUPP;
-0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  177  }
-12753d71e8c5c3 Meng Li            2024-01-19  178  static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
-12753d71e8c5c3 Meng Li            2024-01-19  179  {
-e224a868e488cf Mario Limonciello  2024-09-03  180  	return -EOPNOTSUPP;
-12753d71e8c5c3 Meng Li            2024-01-19  181  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  182  static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  183  {
-e224a868e488cf Mario Limonciello  2024-09-03  184  	return -EOPNOTSUPP;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  185  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  186  static inline int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  187  {
-e224a868e488cf Mario Limonciello  2024-09-03  188  	return -EOPNOTSUPP;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  189  }
-fb0b00af04d083 Jinzhou Su         2021-12-24  190  static inline int cppc_set_enable(int cpu, bool enable)
-fb0b00af04d083 Jinzhou Su         2021-12-24  191  {
-e224a868e488cf Mario Limonciello  2024-09-03  192  	return -EOPNOTSUPP;
-fb0b00af04d083 Jinzhou Su         2021-12-24  193  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  194  static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  195  {
-e224a868e488cf Mario Limonciello  2024-09-03  196  	return -EOPNOTSUPP;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  197  }
-ae2df912d1a557 Jeremy Linton      2022-09-12  198  static inline bool cppc_perf_ctrs_in_pcc(void)
-ae2df912d1a557 Jeremy Linton      2022-09-12  199  {
-ae2df912d1a557 Jeremy Linton      2022-09-12  200  	return false;
-ae2df912d1a557 Jeremy Linton      2022-09-12  201  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  202  static inline bool acpi_cpc_valid(void)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  203  {
-8a02d99876362f Rafael J. Wysocki  2021-03-16  204  	return false;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  205  }
-3cc30dd00a580c Pierre Gondois     2022-05-18  206  static inline bool cppc_allow_fast_switch(void)
-3cc30dd00a580c Pierre Gondois     2022-05-18  207  {
-3cc30dd00a580c Pierre Gondois     2022-05-18  208  	return false;
-3cc30dd00a580c Pierre Gondois     2022-05-18  209  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  210  static inline unsigned int cppc_get_transition_latency(int cpu)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  211  {
-8a02d99876362f Rafael J. Wysocki  2021-03-16  212  	return CPUFREQ_ETERNAL;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  213  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  214  static inline bool cpc_ffh_supported(void)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  215  {
-8a02d99876362f Rafael J. Wysocki  2021-03-16  216  	return false;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  217  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  218  static inline int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  219  {
-e224a868e488cf Mario Limonciello  2024-09-03  220  	return -EOPNOTSUPP;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  221  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  222  static inline int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
-8a02d99876362f Rafael J. Wysocki  2021-03-16  223  {
-e224a868e488cf Mario Limonciello  2024-09-03  224  	return -EOPNOTSUPP;
-8a02d99876362f Rafael J. Wysocki  2021-03-16  225  }
-7bc1fcd3990182 Perry Yuan         2023-01-31  226  static inline int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
-7bc1fcd3990182 Perry Yuan         2023-01-31  227  {
-e224a868e488cf Mario Limonciello  2024-09-03  228  	return -EOPNOTSUPP;
-7bc1fcd3990182 Perry Yuan         2023-01-31  229  }
-7bc1fcd3990182 Perry Yuan         2023-01-31  230  static inline int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
-7bc1fcd3990182 Perry Yuan         2023-01-31  231  {
-e224a868e488cf Mario Limonciello  2024-09-03  232  	return -EOPNOTSUPP;
-7bc1fcd3990182 Perry Yuan         2023-01-31  233  }
-c984f5d5d45bd5 Wyes Karny         2023-03-07  234  static inline int cppc_set_auto_sel(int cpu, bool enable)
-c984f5d5d45bd5 Wyes Karny         2023-03-07  235  {
-e224a868e488cf Mario Limonciello  2024-09-03  236  	return -EOPNOTSUPP;
-c984f5d5d45bd5 Wyes Karny         2023-03-07  237  }
-c984f5d5d45bd5 Wyes Karny         2023-03-07  238  static inline int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps)
-c984f5d5d45bd5 Wyes Karny         2023-03-07  239  {
-e224a868e488cf Mario Limonciello  2024-09-03  240  	return -EOPNOTSUPP;
-c984f5d5d45bd5 Wyes Karny         2023-03-07  241  }
-cfa6630658f7de Mario Limonciello  2024-09-03 @242  static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
-cfa6630658f7de Mario Limonciello  2024-09-03  243  {
-cfa6630658f7de Mario Limonciello  2024-09-03  244  	return -ENODEV;
-cfa6630658f7de Mario Limonciello  2024-09-03  245  }
-402eea79aece78 Mario Limonciello  2024-09-03 @246  static inline int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator)
-402eea79aece78 Mario Limonciello  2024-09-03  247  {
-402eea79aece78 Mario Limonciello  2024-09-03  248  	return -EOPNOTSUPP;
-402eea79aece78 Mario Limonciello  2024-09-03  249  }
-7885bc49834406 Mario Limonciello  2024-09-03  250  static inline int amd_detect_prefcore(bool *detected)
-7885bc49834406 Mario Limonciello  2024-09-03  251  {
-7885bc49834406 Mario Limonciello  2024-09-03  252  	return -ENODEV;
-7885bc49834406 Mario Limonciello  2024-09-03  253  }
-8a02d99876362f Rafael J. Wysocki  2021-03-16  254  #endif /* !CONFIG_ACPI_CPPC_LIB */
-337aadff8e4567 Ashwin Chaugule    2015-10-02  255  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Also, when hpd is broken on the EC I see an error message when I unplug
+the DP cable. It's the "No valid DP mode provided." error from
+cros_typec_enable_dp(). When I inject hpd that error goes away. I'll
+need to look closer to understand why, but I suspect I'll need to keep
+injecting hpd to avoid it.
 
