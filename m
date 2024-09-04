@@ -1,189 +1,253 @@
-Return-Path: <linux-acpi+bounces-8157-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8158-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7274996C7B7
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 21:41:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F86A96C97C
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 23:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17E201F26569
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 19:41:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F02FC1F26634
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 21:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67EE1E8B68;
-	Wed,  4 Sep 2024 19:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD244156F42;
+	Wed,  4 Sep 2024 21:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Imk5S1Da"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m5az4+5V"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F721E767E;
-	Wed,  4 Sep 2024 19:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996FC149DFF;
+	Wed,  4 Sep 2024 21:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725478840; cv=none; b=UaYG8SL5lb1pXrBF0R/KpQB8HgQbEE6bw8ah62tu1F+zsseYzRssBABpw711bV962gD66ma+h/A3l28lzSVZuYgFv9yET0nr1mT0lhGEpJ322iLgVRbzdy2izKXI4T0gSjPYIBW+nY0OyEdxOwXiSxzLtbvpT2qeuvOPsvaBCJk=
+	t=1725484789; cv=none; b=s9fAHnGZLPYSaNIGvQj546DwlrDmi2XRJNxeYxucrwbJsw9bMoACp11MifkmHHBd0NEakcOTT1+RcPC8wyjOoy5qgBsY1WofRFULg1THRKrl8WPVOtOd0TNIZOdoFLwDlIquEFKvqpsUA2ZhrCUFqypov4F9qGWhV/n6aWz63K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725478840; c=relaxed/simple;
-	bh=cYwzTz9GsiU/4PBHM5XIMAa9OeOLvkWUEfxxR0zWAaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ih8bRi5f68phQ9jipm634BsBOY1//HSigHKm61nzhJR7GwCxQd/MCs6nzBrYxASjOeuPcxL/YZUv8i9eWDJeyLlWuRgXJYgPdp1Fq8YKN3TFDvSzAieiE9yUaLzVHtbBlZNs51kEYUlJ48qFeG3gNQEe3sRAMJfTx8hbX1p47kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Imk5S1Da; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2059204f448so120495ad.0;
-        Wed, 04 Sep 2024 12:40:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725478838; x=1726083638; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zp/2jcYweIzZoEi4LKaVA1NnGtCZQqq4uWclBscNyBM=;
-        b=Imk5S1DaczYyRJJAT3JeNpBvWYUQG6HyRWuiOE9gwiRSyaIjBKuMwhO6XXuccAbvWp
-         U9E4VnkJQHzc6JgA1XlZ7z1xwHJXDGrNJa3HP0akTvFO4opprLh9oMzgKjLWhlQR0YRN
-         AC7JWEKv3KjFAKjxqzoMSQkKJuIh1J3l0+D9cJp30KrM3ilWlgOc068bV6hJhmfw7/nP
-         JgORh+ZSVpZx7sdpI/BNISomrF1+IUty2HeCunaUv5E7LqphbqYoxjJpDKCdGuqD21yw
-         /9rq+DsTOEm2SM64tL4SwPtj/bfXalAOY90h4y+z5tpDkC16RxQMt+cG6Z4ICuv0QvL+
-         yO2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725478838; x=1726083638;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zp/2jcYweIzZoEi4LKaVA1NnGtCZQqq4uWclBscNyBM=;
-        b=QSM8ZrYYP4L6anziVKLRfwanCgk7ZQGknsDmw3yyTtf9KOy0pFdp0m1gqz+ekdLTCr
-         pHUpWsQDT6+VTbMpatwcQGvQi57mfC3cxAGdBelBM49JS/yOUxsKmuMKiYyPBQVAu/jL
-         TuKf+kBW/vK71DSYAVQJTBkaAO+7rZhL7uQAyFf/Oj2LHpgw4k5smIVk7/06mS70IJFp
-         7cXoLamwAIO3ciHgcmSmx8iWbpniR4YdSdv7ALwQt3e8Seucg4GkvUN9thOzd5MEBXfW
-         qfCxcTFSFSy1kH1Kek4mTunfhwIgmrFEypWcQBPkaQTLPgaJp35sdqGblqXnu+HTWuwo
-         a9MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfzrVFVqpZwsrihGuEk7A6K0SU2fb9meinNKrinPoZBB+TnnSL9G/ItvmefVOqFUPFmrM4IEcLbG6/ItRd@vger.kernel.org, AJvYcCVgpvUDa2SnY9z6abfSPMCgEkzB5kpfpZnoGa1KRmRw6VWHPw/tgQLh6e3mnfFKdKZQgBIWlgSqmMbxfKo=@vger.kernel.org, AJvYcCXWjtXWM1gBgWytYCnkkC6BVU2wK/IsUraOtE4XCV2OxJbaColHoovFFyRHOMa/mxte5RjnJj8XyBclZK5JECe2uJiZEQ==@vger.kernel.org, AJvYcCXpyaEVan4JK4ldXk2aWajKF5Uz3Xva441SZcx8YY/46I1ZQfv/CwXGgYdaC33bSiTfVeHBFxA3Y9zd@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzIHbUcubbWfz4VquMNnfze58P0Io2UcpPgEXfqN2fCHHS5zGb
-	qayyam6sh3Om8ucYCVeMb5JUDI/0HVDAKnK7UjLDFXJMpRUj3vmR
-X-Google-Smtp-Source: AGHT+IFgGoKOCtNS7FtR2+3Po3nWCzaa8qhDsnsGR4hwwylfAVbbDt5oqcr0HC3nEew2Cg0JRI/Qkw==
-X-Received: by 2002:a17:902:f605:b0:202:5af:47fc with SMTP id d9443c01a7336-206c7922d55mr23433335ad.13.1725478838380;
-        Wed, 04 Sep 2024 12:40:38 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206ae912357sm17024565ad.14.2024.09.04.12.40.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 12:40:37 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9c3139bf-b18f-4801-852e-08ac98611b1b@roeck-us.net>
-Date: Wed, 4 Sep 2024 12:40:35 -0700
+	s=arc-20240116; t=1725484789; c=relaxed/simple;
+	bh=I2LCAvm7Y0zo0WMz3B9ixJymul+nOF2oWdfEiM56SU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GV9CcVaw5PxZrQ97YYzgTn19z/YxMuJOY0FqvO9IwX7qtyMZ2O4criC6YUEssOpu8BC/YDOYmaR9duzkMdBUItPrUVggCLvdIxMpIkXI8m6ffeOBH26HxsbkrlZ3DchGmTHrC4/8snabHEvZViHG0e7CdgzJDOW32Z9OidXM3gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m5az4+5V; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725484784; x=1757020784;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I2LCAvm7Y0zo0WMz3B9ixJymul+nOF2oWdfEiM56SU4=;
+  b=m5az4+5Vz8n3WAyB5eOADQtoGNaOU8hHlugdz3BBVXegTRZ1DRszF6C7
+   M8HPBQVokTu/xOFp2pBev7fgYVexjW7WpAelRkdJdTmpu/21wVj8nqRGt
+   BOhJXrEkFOA7YYiYofQjc4BtdrxSRhVEwY3XPMBDy3S7u+fQy47bnBfvg
+   MRn+0eM9uhFwuuzMTRXx8VvQK2P0pvH6apRY6txE0+sKP0vCwtthvg0gj
+   zmm74/H6wnADZFYe1s9IYBZ+7XZtqfDKdGpWVH/g/akul2JNdqzNYSjbp
+   MWkM3yfRvHhA/1SpUvFzabaTgSN1733Q0M3+xeJp0i52VwBRAuUcoBRgH
+   g==;
+X-CSE-ConnectionGUID: G5Ea6eBaQBOvLjIpWcVGKA==
+X-CSE-MsgGUID: gQfQw5uyRmOGMtBNbb7CtQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="27961111"
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
+   d="scan'208";a="27961111"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 14:19:44 -0700
+X-CSE-ConnectionGUID: TEbomKlNRKmO3hsT5T+YeA==
+X-CSE-MsgGUID: sUpmoz9HTliFK7oUjoM7wg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
+   d="scan'208";a="65227548"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 04 Sep 2024 14:19:41 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1slxPe-0008Z1-2k;
+	Wed, 04 Sep 2024 21:19:38 +0000
+Date: Thu, 5 Sep 2024 05:18:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <superm1@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	"(maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <x86@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"(open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <linux-kernel@vger.kernel.org>,
+	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v2 07/11] x86/amd: Detect preferred cores in
+ amd_get_boost_ratio_numerator()
+Message-ID: <202409050432.AoAbkkyJ-lkp@intel.com>
+References: <20240903203701.2695040-8-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] hwmon: (hp-wmi-sensors) Check if WMI event data
- exists
-To: Hans de Goede <hdegoede@redhat.com>, Armin Wolf <W_Armin@gmx.de>
-Cc: james@equiv.tech, jlee@suse.com, corentin.chary@gmail.com,
- luke@ljones.dev, matan@svgalib.org, coproscefalo@gmail.com,
- ilpo.jarvinen@linux.intel.com, jdelvare@suse.com, rafael@kernel.org,
- lenb@kernel.org, platform-driver-x86@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240901031055.3030-1-W_Armin@gmx.de>
- <20240901031055.3030-2-W_Armin@gmx.de>
- <e90b40e9-b3a5-4228-8f12-b02a77b7789d@roeck-us.net>
- <bf7910d7-395a-4d01-960e-46789d836da4@redhat.com>
- <6f900fd9-f850-44a3-9409-18889add2cf3@roeck-us.net>
- <ea8adf37-9fe2-4a15-9666-e164c192bedb@redhat.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <ea8adf37-9fe2-4a15-9666-e164c192bedb@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240903203701.2695040-8-superm1@kernel.org>
 
-On 9/4/24 11:42, Hans de Goede wrote:
-> Hi Guenter,
-> 
-> On 9/4/24 8:38 PM, Guenter Roeck wrote:
->> On 9/4/24 10:55, Hans de Goede wrote:
->>> Hi All,
->>>
->>> On 9/2/24 4:28 PM, Guenter Roeck wrote:
->>>> On Sun, Sep 01, 2024 at 05:10:51AM +0200, Armin Wolf wrote:
->>>>> The BIOS can choose to return no event data in response to a
->>>>> WMI event, so the ACPI object passed to the WMI notify handler
->>>>> can be NULL.
->>>>>
->>>>> Check for such a situation and ignore the event in such a case.
->>>>>
->>>>> Fixes: 23902f98f8d4 ("hwmon: add HP WMI Sensors driver")
->>>>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->>>>> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->>>>
->>>> Applied.
->>>
->>> Thank you.
->>>
->>> Unfortunately patch 2/5 touches the same part of the file,
->>> so I cannot apply the rest of the series without first
->>> bringing this patch into platform-drivers-x86/for-next .
->>>
->>> Guenter, can you provide an immutable branch/tag with
->>> this patch on it; or drop this patch that I merge
->>> the entire series through platform-drivers-x86/for-next ?
->>>
->>
->> Can you wait a couple of days ? Since this is a bug fix, I had
->> planned to send a pull request either later today or; with that,
->> the patch would be upstream.
-> 
-> Yes I can wait a couple of days, thank you.
-> 
+Hi Mario,
 
-I sent a pull request, and the patch is already upstream.
+kernel test robot noticed the following build errors:
 
-Guenter
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge tip/x86/core tip/master linus/master v6.11-rc6 next-20240904]
+[cannot apply to tip/auto-latest]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/x86-amd-Move-amd_get_highest_perf-from-amd-c-to-cppc-c/20240904-044140
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20240903203701.2695040-8-superm1%40kernel.org
+patch subject: [PATCH v2 07/11] x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240905/202409050432.AoAbkkyJ-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240905/202409050432.AoAbkkyJ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409050432.AoAbkkyJ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/cpufreq/amd-pstate.c:42:
+>> include/acpi/cppc_acpi.h:242:19: error: static declaration of 'amd_get_highest_perf' follows non-static declaration
+     242 | static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
+         |                   ^~~~~~~~~~~~~~~~~~~~
+   include/acpi/cppc_acpi.h:141:12: note: previous declaration of 'amd_get_highest_perf' with type 'int(unsigned int,  u32 *)' {aka 'int(unsigned int,  unsigned int *)'}
+     141 | extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
+         |            ^~~~~~~~~~~~~~~~~~~~
+>> include/acpi/cppc_acpi.h:246:19: error: static declaration of 'amd_get_boost_ratio_numerator' follows non-static declaration
+     246 | static inline int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator)
+         |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/acpi/cppc_acpi.h:142:12: note: previous declaration of 'amd_get_boost_ratio_numerator' with type 'int(unsigned int,  u64 *)' {aka 'int(unsigned int,  long long unsigned int *)'}
+     142 | extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+vim +/amd_get_highest_perf +242 include/acpi/cppc_acpi.h
+
+337aadff8e4567 Ashwin Chaugule    2015-10-02  140  
+7885bc49834406 Mario Limonciello  2024-09-03  141  extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
+7885bc49834406 Mario Limonciello  2024-09-03  142  extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
+8a02d99876362f Rafael J. Wysocki  2021-03-16  143  #ifdef CONFIG_ACPI_CPPC_LIB
+1757d05f3112ac Xiongfeng Wang     2019-02-17  144  extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
+0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  145  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
+12753d71e8c5c3 Meng Li            2024-01-19  146  extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
+337aadff8e4567 Ashwin Chaugule    2015-10-02  147  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+337aadff8e4567 Ashwin Chaugule    2015-10-02  148  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+fb0b00af04d083 Jinzhou Su         2021-12-24  149  extern int cppc_set_enable(int cpu, bool enable);
+337aadff8e4567 Ashwin Chaugule    2015-10-02  150  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+ae2df912d1a557 Jeremy Linton      2022-09-12  151  extern bool cppc_perf_ctrs_in_pcc(void);
+50b813b147e9eb Vincent Guittot    2023-12-11  152  extern unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf);
+50b813b147e9eb Vincent Guittot    2023-12-11  153  extern unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq);
+a28b2bfc099c6b Ionela Voinescu    2020-12-14  154  extern bool acpi_cpc_valid(void);
+3cc30dd00a580c Pierre Gondois     2022-05-18  155  extern bool cppc_allow_fast_switch(void);
+a28b2bfc099c6b Ionela Voinescu    2020-12-14  156  extern int acpi_get_psd_map(unsigned int cpu, struct cppc_cpudata *cpu_data);
+be8b88d7d98771 Prakash, Prashanth 2016-08-16  157  extern unsigned int cppc_get_transition_latency(int cpu);
+ad3bc25a320742 Borislav Petkov    2018-12-05  158  extern bool cpc_ffh_supported(void);
+8b356e536e69f3 Mario Limonciello  2022-07-05  159  extern bool cpc_supported_by_cpu(void);
+ad3bc25a320742 Borislav Petkov    2018-12-05  160  extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+ad3bc25a320742 Borislav Petkov    2018-12-05  161  extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
+7bc1fcd3990182 Perry Yuan         2023-01-31  162  extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
+7bc1fcd3990182 Perry Yuan         2023-01-31  163  extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable);
+c984f5d5d45bd5 Wyes Karny         2023-03-07  164  extern int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps);
+c984f5d5d45bd5 Wyes Karny         2023-03-07  165  extern int cppc_set_auto_sel(int cpu, bool enable);
+cfa6630658f7de Mario Limonciello  2024-09-03  166  extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
+402eea79aece78 Mario Limonciello  2024-09-03  167  extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
+7885bc49834406 Mario Limonciello  2024-09-03  168  extern int amd_detect_prefcore(bool *detected);
+8a02d99876362f Rafael J. Wysocki  2021-03-16  169  #else /* !CONFIG_ACPI_CPPC_LIB */
+8a02d99876362f Rafael J. Wysocki  2021-03-16  170  static inline int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  171  {
+e224a868e488cf Mario Limonciello  2024-09-03  172  	return -EOPNOTSUPP;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  173  }
+0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  174  static inline int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
+0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  175  {
+e224a868e488cf Mario Limonciello  2024-09-03  176  	return -EOPNOTSUPP;
+0654cf05d17bc4 Rafael J. Wysocki  2021-09-04  177  }
+12753d71e8c5c3 Meng Li            2024-01-19  178  static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+12753d71e8c5c3 Meng Li            2024-01-19  179  {
+e224a868e488cf Mario Limonciello  2024-09-03  180  	return -EOPNOTSUPP;
+12753d71e8c5c3 Meng Li            2024-01-19  181  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  182  static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  183  {
+e224a868e488cf Mario Limonciello  2024-09-03  184  	return -EOPNOTSUPP;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  185  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  186  static inline int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  187  {
+e224a868e488cf Mario Limonciello  2024-09-03  188  	return -EOPNOTSUPP;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  189  }
+fb0b00af04d083 Jinzhou Su         2021-12-24  190  static inline int cppc_set_enable(int cpu, bool enable)
+fb0b00af04d083 Jinzhou Su         2021-12-24  191  {
+e224a868e488cf Mario Limonciello  2024-09-03  192  	return -EOPNOTSUPP;
+fb0b00af04d083 Jinzhou Su         2021-12-24  193  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  194  static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  195  {
+e224a868e488cf Mario Limonciello  2024-09-03  196  	return -EOPNOTSUPP;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  197  }
+ae2df912d1a557 Jeremy Linton      2022-09-12  198  static inline bool cppc_perf_ctrs_in_pcc(void)
+ae2df912d1a557 Jeremy Linton      2022-09-12  199  {
+ae2df912d1a557 Jeremy Linton      2022-09-12  200  	return false;
+ae2df912d1a557 Jeremy Linton      2022-09-12  201  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  202  static inline bool acpi_cpc_valid(void)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  203  {
+8a02d99876362f Rafael J. Wysocki  2021-03-16  204  	return false;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  205  }
+3cc30dd00a580c Pierre Gondois     2022-05-18  206  static inline bool cppc_allow_fast_switch(void)
+3cc30dd00a580c Pierre Gondois     2022-05-18  207  {
+3cc30dd00a580c Pierre Gondois     2022-05-18  208  	return false;
+3cc30dd00a580c Pierre Gondois     2022-05-18  209  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  210  static inline unsigned int cppc_get_transition_latency(int cpu)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  211  {
+8a02d99876362f Rafael J. Wysocki  2021-03-16  212  	return CPUFREQ_ETERNAL;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  213  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  214  static inline bool cpc_ffh_supported(void)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  215  {
+8a02d99876362f Rafael J. Wysocki  2021-03-16  216  	return false;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  217  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  218  static inline int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  219  {
+e224a868e488cf Mario Limonciello  2024-09-03  220  	return -EOPNOTSUPP;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  221  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  222  static inline int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
+8a02d99876362f Rafael J. Wysocki  2021-03-16  223  {
+e224a868e488cf Mario Limonciello  2024-09-03  224  	return -EOPNOTSUPP;
+8a02d99876362f Rafael J. Wysocki  2021-03-16  225  }
+7bc1fcd3990182 Perry Yuan         2023-01-31  226  static inline int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
+7bc1fcd3990182 Perry Yuan         2023-01-31  227  {
+e224a868e488cf Mario Limonciello  2024-09-03  228  	return -EOPNOTSUPP;
+7bc1fcd3990182 Perry Yuan         2023-01-31  229  }
+7bc1fcd3990182 Perry Yuan         2023-01-31  230  static inline int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
+7bc1fcd3990182 Perry Yuan         2023-01-31  231  {
+e224a868e488cf Mario Limonciello  2024-09-03  232  	return -EOPNOTSUPP;
+7bc1fcd3990182 Perry Yuan         2023-01-31  233  }
+c984f5d5d45bd5 Wyes Karny         2023-03-07  234  static inline int cppc_set_auto_sel(int cpu, bool enable)
+c984f5d5d45bd5 Wyes Karny         2023-03-07  235  {
+e224a868e488cf Mario Limonciello  2024-09-03  236  	return -EOPNOTSUPP;
+c984f5d5d45bd5 Wyes Karny         2023-03-07  237  }
+c984f5d5d45bd5 Wyes Karny         2023-03-07  238  static inline int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+c984f5d5d45bd5 Wyes Karny         2023-03-07  239  {
+e224a868e488cf Mario Limonciello  2024-09-03  240  	return -EOPNOTSUPP;
+c984f5d5d45bd5 Wyes Karny         2023-03-07  241  }
+cfa6630658f7de Mario Limonciello  2024-09-03 @242  static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
+cfa6630658f7de Mario Limonciello  2024-09-03  243  {
+cfa6630658f7de Mario Limonciello  2024-09-03  244  	return -ENODEV;
+cfa6630658f7de Mario Limonciello  2024-09-03  245  }
+402eea79aece78 Mario Limonciello  2024-09-03 @246  static inline int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator)
+402eea79aece78 Mario Limonciello  2024-09-03  247  {
+402eea79aece78 Mario Limonciello  2024-09-03  248  	return -EOPNOTSUPP;
+402eea79aece78 Mario Limonciello  2024-09-03  249  }
+7885bc49834406 Mario Limonciello  2024-09-03  250  static inline int amd_detect_prefcore(bool *detected)
+7885bc49834406 Mario Limonciello  2024-09-03  251  {
+7885bc49834406 Mario Limonciello  2024-09-03  252  	return -ENODEV;
+7885bc49834406 Mario Limonciello  2024-09-03  253  }
+8a02d99876362f Rafael J. Wysocki  2021-03-16  254  #endif /* !CONFIG_ACPI_CPPC_LIB */
+337aadff8e4567 Ashwin Chaugule    2015-10-02  255  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
