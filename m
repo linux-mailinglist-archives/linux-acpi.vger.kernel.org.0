@@ -1,76 +1,123 @@
-Return-Path: <linux-acpi+bounces-8148-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8149-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EDF96C030
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 16:23:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3342C96C18A
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 16:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019A1282787
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 14:23:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541A4B2C1F0
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Sep 2024 14:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADB71E00B0;
-	Wed,  4 Sep 2024 14:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACDD1DC061;
+	Wed,  4 Sep 2024 14:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Ah9GJ/LH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12olkn2015.outbound.protection.outlook.com [40.92.22.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DEB1D4170;
-	Wed,  4 Sep 2024 14:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725459645; cv=none; b=CDDg74boSo9STR95b2yaL5elDzkjCxTc63OKYtbjgkM1FLgtoq3Go9oCa8DjHf9wa9m1jnDf1ucXCh4vQarG3eLeUCH3bakauwSsfOVbWDwfbCcLDhxFPRP748KIdw66wkJracaANG15eVI/tKpHjbaOeYlGHFh5RCpnccWrIoo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725459645; c=relaxed/simple;
-	bh=3NFixX3Kl1y5WBzsUh6ZkbNWiMteGWvyfBElaxW/K1Q=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715F739FFE;
+	Wed,  4 Sep 2024 14:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.22.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725461814; cv=fail; b=NoLEwl36MNePBtO2V3yEyYlcOZ4j5LuZ/aBxxGzJv8De4CPtGcGO0jJl78V7nMOQ+ANTwYCvSu08vK6q7A2L6N5Wg4IZxRJbhz/o77mcXJUuuqQiBXVJB79l5bpEZYE5tXB4oz2Qnir1dzVsYHQsyBYQX6lg/ajvNktoeWh5YGA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725461814; c=relaxed/simple;
+	bh=QYT4ppreoByOoeUa2xseJAkIav818KoNFGUrGhBQX1Y=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Hnz0mWuBFVkecVvbldDSrtEloQGFf6Ucdr4K4JnBlkPsphMb34b6mTSO5T3ncl8rlMkJRKjfGVDvD5A7hfrF4qvqzipsjxAxjz8q7o/tWQZQbCERlXJ1/5ZaJuUNTckh8KNIJcNrBwEcCUONc+NbgMB7mhM9kj3vwdRIWmZbvBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WzPfQ4FJsz20nLZ;
-	Wed,  4 Sep 2024 22:15:42 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id CDD681400D7;
-	Wed,  4 Sep 2024 22:20:39 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 4 Sep 2024 22:20:38 +0800
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
- Wed, 4 Sep 2024 15:20:37 +0100
-From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, "acpica-devel@lists.linux.dev"
-	<acpica-devel@lists.linux.dev>, "Guohanjun (Hanjun Guo)"
-	<guohanjun@huawei.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
- Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
- Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>
-CC: Alex Williamson <alex.williamson@redhat.com>, Eric Auger
-	<eric.auger@redhat.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
-	"Nicolin Chen" <nicolinc@nvidia.com>, "patches@lists.linux.dev"
-	<patches@lists.linux.dev>, Mostafa Saleh <smostafa@google.com>
-Subject: RE: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Thread-Topic: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Thread-Index: AQHa+JkNXX8oIDp/tkauz0b2cgKn4bJHsELw
-Date: Wed, 4 Sep 2024 14:20:36 +0000
-Message-ID: <85aa5e8eb6f243fd9df754fdc96471b8@huawei.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
-In-Reply-To: <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
-Accept-Language: en-GB, en-US
+	 Content-Type:MIME-Version; b=BeHcfBM5VhipnvBNW79OO9T9ZCjL6qhptQQ+JNrhXtAcB4h2/tDMrGddpfjyK6NYECBBXCORlK4l9VDi8nklNDf7OSLnCgv/8SkkUIQAoHG1xoSGsv9CnzVuSbfvWDd0Ys2pYgl2cSW7GWYi8JSQfvbWeevw9BmIAgy8SHuQAGM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Ah9GJ/LH; arc=fail smtp.client-ip=40.92.22.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dwtgj0g61DeVfb8aeLsYghDCvfPHS9QiarzzRtlGFtb1PArLKTRCdJf81Rj1QQXD7YpqQEmNfBG15QVFDPs1FGv2JL9SSy5anMvaJk7CozKXzdzgkDUe1l18TUCM4XaUuOjkv+MXlYGjGhZ49YkE/HajjFNBLek0o25MYJv/9MdWhEiSFz37KElWC1Lutx7AH12JvlW5DgHAD94wmESjoYwKgnTu8vfL0c1WOp02yLWkvvguqXAegocGb/DAJug44efhcrcHp7LxnZCOeyQs4YoSVTFTGQRypGLB/RtpNaQoBjWy7AJ8cfnSsV8FhtwG9v0wBcAqDp5c0GBsoWk25w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wnFadsYLuFwzZklPUu3mrhPZM7zI6dvOc4F0+mCuSk0=;
+ b=uzGpjmulE/31DGkyAP2UzqQt76ZcrTBOtk5ZEJ5xz3+dOBQS6ZRpMtwgjhJSO/ODD9L+OrjZXGGUDq6d7lTOyk30X2PD8/CtqHfH81OtxCm6qPv4/2S4d2kWAg4yQYCuJpKdioo6KJaVSstIc56vPwGgrPBOs4E7ao+ERKMtQPt2otdEqstqg+yLsEwvH3J5UjsjTyBK4cRIKIUfg5c+vEyO58l+y85RTrztgBRtVkBUbsTewZtOyfCX3JHJTFy8buKJ9SBkErFYTW2CfarfIGyYsPxeBRlu+JKptAvAwN51NQVtvSG4zZ5lhTUozGIYbqEbr1HAPNc491HFHOySGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wnFadsYLuFwzZklPUu3mrhPZM7zI6dvOc4F0+mCuSk0=;
+ b=Ah9GJ/LHQN8I7fyqXOLKTjUmgkjWZdOmJ3VHeKZzh41rUDumeEU/Rexd3eQpm4MoQbRfrtHwW+OsHsP0CaqBFvlE2g4N2izLpxcwDr1slBXnnUlukf5vb23R9rbG9qPbIvLpyoPkwiEaTJqv8nEEhlAJSgt1tEFom1S6QCCscE9dB09uN65Y7DUlRVYm8GxJubPc9riXcSCuJ8X0rs5zAv5rATD/acac1ZqxVD4KYC5jzDxGPY4TYc8MxA0vlEFxzwqpjZwViXvfFEaGCycciZ2s6CCGOGIbFM0fzE1WMyw4cvzwtYyOJuRiD1jegRWrmtTskJNHa+gmmP8nNIeHGg==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by IA1PR02MB9061.namprd02.prod.outlook.com (2603:10b6:208:41b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 4 Sep
+ 2024 14:56:49 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
+ 14:56:49 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "kys@microsoft.com"
+	<kys@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, "decui@microsoft.com"
+	<decui@microsoft.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "kirill.shutemov@linux.intel.com"
+	<kirill.shutemov@linux.intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v2 4/9] x86/hyperv: Parse the ACPI wakeup mailbox
+Thread-Topic: [PATCH v2 4/9] x86/hyperv: Parse the ACPI wakeup mailbox
+Thread-Index: AQHa9bO0nzfAUElulUSDKnXvnxUSrLJC/MhAgAOU6oCAATX18A==
+Date: Wed, 4 Sep 2024 14:56:49 +0000
+Message-ID:
+ <SN6PR02MB4157963DE55041D0631188A4D49C2@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-5-yunhong.jiang@linux.intel.com>
+ <BN7PR02MB4148CC3F9091BC2604E457CFD4922@BN7PR02MB4148.namprd02.prod.outlook.com>
+ <20240903201917.GB105@yjiang5-mobl.amr.corp.intel.com>
+In-Reply-To: <20240903201917.GB105@yjiang5-mobl.amr.corp.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
+x-tmn: [CtM6usalJmcormzrmt9NTP+drlnirflQ]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|IA1PR02MB9061:EE_
+x-ms-office365-filtering-correlation-id: a38ee1bb-e8fc-4b01-6a7c-08dcccf1cdfd
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|15080799006|8060799006|19110799003|461199028|3412199025|440099028|102099032;
+x-microsoft-antispam-message-info:
+ 07aduoCqLcVUPwTiR3lgR1s3ltoDMYzut8dhzIH7uylfxEury5yTRVqC4kUPUpp0+ZyfFSwmCqI1uDusvIKgStYpD3i59zfIJmmj1OJyXRZk3jsTSFYyFw45ukLWHKiEIkn7C9lHoxxZ9s1BxGfNzwy3ssF25nQknXYll7KS84uDg42AXhxuLHUnVoRFPYXOrXFMdYYVu+/4hrOe2T6qiD5grPblztq6fko0giNpN6pWgiYAapRcDl7nbh/eteKAOgtFaTDHITA4DisjcEtS6aMeC39NPTeOXL1l1yQWquwxYw7vDy80g5XahvmlQP3znIWiKqoVPvqQX3Do/ki06eCYVfXuIfk6wYPFkStVgQFzyw30ogvnZuvjKhCzuYc+pDKObXtkZXSccHHv/xWJKfZfxVOfFbullASRvwubxMdzCR4EL0j1rcqEEUO7JhTz8PCAGaxnIGa6RCiiwcOgMqnQMVwgDrSz1BxW7oezhAPOqD2AEiWENQmCz3LtfaISPJmh/nx2x4O/BCMjmt1fSb+pmjFDpbTxvExleNT5KX+CTezSw8hO/DuufKvtTNbEiV756N3AMqLNSQVCAqcu64ua4p6ga65jpej+q0jTMqbkT5XOA+Q6YDHBd5QNMv0ujCW/hsxVj7TLyjoogJE0LO5lkqTZKkuBAwkpkdB0YXhSICkgobHrJHwKym4PkxHw
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?xGFUeKGWvYk7vQ30guaEjz8fZoSmWcBq7NEC2ZUxwPK2Y9RZO18MWiAPzQ/a?=
+ =?us-ascii?Q?zQlIUUIEXS1teNbZIf+uy3LI7RK2nXbe27bCdtd/8vxKd+STZhmsIscL5BbX?=
+ =?us-ascii?Q?eIODJk908jecQUahOSh7a/9LV8I4WPrnFf/WLO5nV3T6Az8lmtuifuVFet1n?=
+ =?us-ascii?Q?Kg0HzDCnfU24BYMlqytgeEOvozpifabdZootwXCweGJH0EJEUx0c2MuWeuUb?=
+ =?us-ascii?Q?F+rHeDNHY6XIvHIFW+db9yOcmKDXjZZ2ut8sYKfkcTJOhEXecBCz+ZwRohtR?=
+ =?us-ascii?Q?OA72vBYjDApywJ2f5HxV/YwC50uHblMpe/pmt7KXo2OfoXId6l+Nqt4aOn0W?=
+ =?us-ascii?Q?o9OdzJ5tz8ECvgBV7y+Kjka8/L8N0dgDqGxsmsffuAS5g+fZihvjM+abSTzg?=
+ =?us-ascii?Q?RT1Ojq4TqGorxscdvt5hYcLPuCiMOEzaaMyt/EdLY8xKbiQrL13C6W+N8fbI?=
+ =?us-ascii?Q?XRwwc3wjgloiwZAsK1r8dV8pMJoAjzBJwq8a/y39+6bzof6K0kYvp6xEUwfB?=
+ =?us-ascii?Q?Xr76b4vaWmKvMmSDFCkrJg6j0i1IMp91/89Nwlr7Gnu3PNVVRpJ1nRCfDzDp?=
+ =?us-ascii?Q?5fPYVpSQZybD88A5eD+R5F134I8yyBSTwgJpVslKvM70XRbyUw1yVj8wVC1U?=
+ =?us-ascii?Q?BM8CNpwxea962/9pj+KWKBVF2yOzO4XqQhe8exZ/G0l+LUmjFnrgH5DxFhEH?=
+ =?us-ascii?Q?dh2Zpf5td5weMiPFb0EWqha7N8NAkPvTLadhH2dICLNGn6eQPuGA7qRCUgGN?=
+ =?us-ascii?Q?9gDySdY9Z1qwXkJr0dcD+13QfyTpB7NRMWTT60BLvqfmFMwGLEquGuDbZYEW?=
+ =?us-ascii?Q?DzEsMfXDIO9zGdOAmmAEB2YiazaHHaUgXra616WONmFtOen4hOYKRN433+Ur?=
+ =?us-ascii?Q?9fVgQqiC3mFtGw6CbRI4WlWZLC6kNM3gmDe5iFvHZCu98hcqT11a8kjxjhk6?=
+ =?us-ascii?Q?dCG3zB/oK/xcEj1wrK3OXun28ghPP8SBzgX9QpGm1gvKDGSHE1/JWKKAMGuQ?=
+ =?us-ascii?Q?0FRQ6RDJuCMAwxXE6iiYQFdCCQt4Ga8sD+Owx3qe4XHY1GuEcDs0QioXVdJV?=
+ =?us-ascii?Q?HyWn5mIsMzr2c2N7+++XGGBsETOOS1nsD9sGCrE478pYwRbf7EVZ/8zBFDkI?=
+ =?us-ascii?Q?+yKhYzbMV9vNTGIzKVNgWeGc1aT4cVh6Vfgp1wIIMk27noZLHcObM7j9dBp0?=
+ =?us-ascii?Q?DQJtY0qTfZeXA0yIDFjSDJPGtfWEtM6kl3CGv0JC80/ONi2ur0HxNaSU98E?=
+ =?us-ascii?Q?=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -79,122 +126,136 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: a38ee1bb-e8fc-4b01-6a7c-08dcccf1cdfd
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2024 14:56:49.4371
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB9061
 
-
-
-> -----Original Message-----
-> From: Jason Gunthorpe <jgg@nvidia.com>
-> Sent: Tuesday, August 27, 2024 4:52 PM
-> To: acpica-devel@lists.linux.dev; Guohanjun (Hanjun Guo)
-> <guohanjun@huawei.com>; iommu@lists.linux.dev; Joerg Roedel
-> <joro@8bytes.org>; Kevin Tian <kevin.tian@intel.com>;
-> kvm@vger.kernel.org; Len Brown <lenb@kernel.org>; linux-
-> acpi@vger.kernel.org; linux-arm-kernel@lists.infradead.org; Lorenzo Piera=
-lisi
-> <lpieralisi@kernel.org>; Rafael J. Wysocki <rafael@kernel.org>; Robert
-> Moore <robert.moore@intel.com>; Robin Murphy
-> <robin.murphy@arm.com>; Sudeep Holla <sudeep.holla@arm.com>; Will
-> Deacon <will@kernel.org>
-> Cc: Alex Williamson <alex.williamson@redhat.com>; Eric Auger
-> <eric.auger@redhat.com>; Jean-Philippe Brucker <jean-
-> philippe@linaro.org>; Moritz Fischer <mdf@kernel.org>; Michael Shavit
-> <mshavit@google.com>; Nicolin Chen <nicolinc@nvidia.com>;
-> patches@lists.linux.dev; Shameerali Kolothum Thodi
-> <shameerali.kolothum.thodi@huawei.com>; Mostafa Saleh
-> <smostafa@google.com>
-> Subject: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+From: Yunhong Jiang <yunhong.jiang@linux.intel.com> Sent: Tuesday, Septembe=
+r 3, 2024 1:19 PM
 >=20
-> Force Write Back (FWB) changes how the S2 IOPTE's MemAttr field
-> works. When S2FWB is supported and enabled the IOPTE will force cachable
-> access to IOMMU_CACHE memory when nesting with a S1 and deny cachable
-> access otherwise.
+> On Mon, Sep 02, 2024 at 03:35:13AM +0000, Michael Kelley wrote:
+> > From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > >
+> > > Parse the wakeup mailbox VTL2 TDX guest. Put it to the guest_late_ini=
+t, so
+> > > that it will be invoked before hyperv_init() where the mailbox addres=
+s is
+> > > checked.
+> >
+> > Could you elaborate on the choice to set the wakeup_mailbox_address
+> > in ms_hyperv_late_init()? The code in hv_common.c is intended to be
+> > code that is architecture neutral (see the comment at the top of the mo=
+dule),
+> > so it's a red flag to see #ifdef CONFIG_X86_64. Couldn't the
+> > wakeup_mailbox_address be set in the x86 version of hyperv_init()
+> > before it is needed?
 >=20
-> When using a single stage of translation, a simple S2 domain, it doesn't
-> change anything as it is just a different encoding for the exsting mappin=
-g
-> of the IOMMU protection flags to cachability attributes.
+> Sure, will try to put it in hyperv_init() before it's needed.
+> >
+> > >
+> > > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > > ---
+> > >  arch/x86/include/asm/mshyperv.h | 3 +++
+> > >  arch/x86/kernel/cpu/mshyperv.c  | 2 ++
+> > >  drivers/hv/hv_common.c          | 8 ++++++++
+> > >  3 files changed, 13 insertions(+)
+> > >
+> > > diff --git a/arch/x86/include/asm/mshyperv.h b/arch/x86/include/asm/m=
+shyperv.h
+> > > index 390c4d13956d..5178b96c7fc9 100644
+> > > --- a/arch/x86/include/asm/mshyperv.h
+> > > +++ b/arch/x86/include/asm/mshyperv.h
+> > > @@ -10,6 +10,7 @@
+> > >  #include <asm/nospec-branch.h>
+> > >  #include <asm/paravirt.h>
+> > >  #include <asm/mshyperv.h>
+> > > +#include <asm/madt_wakeup.h>
+> > >
+> > >  /*
+> > >   * Hyper-V always provides a single IO-APIC at this MMIO address.
+> > > @@ -49,6 +50,8 @@ extern u64 hv_current_partition_id;
+> > >
+> > >  extern union hv_ghcb * __percpu *hv_ghcb_pg;
+> > >
+> > > +extern u64 wakeup_mailbox_addr;
+> > > +
+> > >  bool hv_isolation_type_snp(void);
+> > >  bool hv_isolation_type_tdx(void);
+> > >  u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2);
+> > > diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/msh=
+yperv.c
+> > > index 3d4237f27569..f6b727b4bd0b 100644
+> > > --- a/arch/x86/kernel/cpu/mshyperv.c
+> > > +++ b/arch/x86/kernel/cpu/mshyperv.c
+> > > @@ -43,6 +43,8 @@ struct ms_hyperv_info ms_hyperv;
+> > >  bool hyperv_paravisor_present __ro_after_init;
+> > >  EXPORT_SYMBOL_GPL(hyperv_paravisor_present);
+> > >
+> > > +u64 wakeup_mailbox_addr;
+> >
+> > This value duplicates acpi_mp_wake_mailbox_paddr in
+> > madt_wakeup.c. It looks like the duplicate value is used
+> > for two things:
+> >
+> > 1) In hv_is_private_mmio_tdx() to control the encrypted
+> > vs. decrypted mapping (Patch 5 of this series)
+> >
+> > 2) As a boolean in hv_vtl_early_init() to avoid overwriting
+> > the wakeup_secondary_cpu_64 value when
+> > dtb_parse_mp_wake() has set it to acpi_wakeup_cpu().
+> > (Patch 9 of this series).
+> >
+> > Having a duplicate value is messy, and I'm wondering if
+> > it can be avoided. For (1), hv_private_mmio_tdx() could call
+> > into a function added to madt_wakeup.c to make the
+> > check.  For (2), the check should probably be based on
+> > hv_isolation_type_tdx() instead of whether the wakeup
+> > mailbox address is set.  I'll note that Patch 5 of this series
+> > is using hv_isolation_type_tdx(), so there's a bit of an
+> > inconsistency in testing the wakeup_mailbox_addr in
+> > Patch 9.
 >=20
-> However, when used with a nested S1, FWB has the effect of preventing the
-> guest from choosing a MemAttr in it's S1 that would cause ordinary DMA to
-> bypass the cache. Consistent with KVM we wish to deny the guest the
-> ability to become incoherent with cached memory the hypervisor believes i=
-s
-> cachable so we don't have to flush it.
+> I think your comment includes two points, the duplicated variables and th=
+e
+> incosistency in the testing.
 >=20
-> Turn on S2FWB whenever the SMMU supports it and use it for all S2
-> mappings.
+> Thank you for pointing out the duplication of wakeup_mailbox_addr with
+> acpi_mp_wake_mailbox_paddr. I didn't realize it. Yes, such duplication sh=
+ould be
+> avoided and will fix it in next submission.
 >=20
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
+> Agree the inconsistency in testing wakeup_mailbox_addr and
+> hv_isolation_type_tdx() is not good. IMHO, the wakeup_mailbox_addr (or th=
+e new
+> function you proposed) is better than hv_isolation_type_tdx(), since the
+> wakeup_mailbox_addr is more directly related.  But hv_vtl_init_platform()
+> happens before DT parse, thus I have to use the hv_isolation_type_tdx() i=
+n it. I
+> don't have a good idea on how to fix this.
+>=20
+> Thanks
+> --jyh
+>=20
 
-(...)
+I don't think there's a requirement to set the "is_private_mmio"
+function in hv_vtl_init_platform(). It just needs to be set before
+acpi_wakeup_cpu() is called, which does the memremap() that will
+invoke the "is_private_mmio" function to decide whether to map
+as encrypted or decrypted.
 
-> @@ -932,7 +948,8 @@ arm_64_lpae_alloc_pgtable_s1(struct io_pgtable_cfg
-> *cfg, void *cookie)
->  	if (cfg->quirks & ~(IO_PGTABLE_QUIRK_ARM_NS |
->  			    IO_PGTABLE_QUIRK_ARM_TTBR1 |
->  			    IO_PGTABLE_QUIRK_ARM_OUTER_WBWA |
-> -			    IO_PGTABLE_QUIRK_ARM_HD))
-> +			    IO_PGTABLE_QUIRK_ARM_HD |
-> +			    IO_PGTABLE_QUIRK_ARM_S2FWB))
->  		return NULL;
+So maybe setting the "is_private_mmio" function could be
+done after dtb_parse_mp_wake() is called in its new location, and
+you know you have a valid wake mailbox address? Again, I haven't
+worked out all the details, so this approach might be just as messy,
+but in a different way. Use your judgment ... :-)
 
-This should be added to arm_64_lpae_alloc_pgtable_s2(), not here.
-
-With the above fixed, I was able to assign a n/w VF dev to a Guest on a
-test hardware that supports S2FWB.
-
-However host kernel has this WARN message:
-[ 1546.165105] WARNING: CPU: 5 PID: 7047 at drivers/iommu/arm/arm-smmu-v3/a=
-rm-smmu-v3.c:1086 arm_smmu_entry_qword_diff+0x124/0x138
-....
-[ 1546.330312]  arm_smmu_entry_qword_diff+0x124/0x138
-[ 1546.335090]  arm_smmu_write_entry+0x38/0x22c
-[ 1546.339346]  arm_smmu_install_ste_for_dev+0x158/0x1ac
-[ 1546.344383]  arm_smmu_attach_dev+0x138/0x240
-[ 1546.348639]  __iommu_device_set_domain+0x7c/0x11c
-[ 1546.353330]  __iommu_group_set_domain_internal+0x60/0x134
-[ 1546.358714]  iommu_group_replace_domain+0x3c/0x68
-[ 1546.363404]  iommufd_device_do_replace+0x334/0x398
-[ 1546.368181]  iommufd_device_change_pt+0x26c/0x650
-[ 1546.372871]  iommufd_device_replace+0x18/0x24
-[ 1546.377214]  vfio_iommufd_physical_attach_ioas+0x28/0x68
-[ 1546.382514]  vfio_df_ioctl_attach_pt+0x98/0x170
-
-
-And when I tried to use the assigned n/w dev, it seems to do a reset
-continuously.
-
-root@localhost:/# ping 150.0.124.42
-PING 150.0.124.42 (150.0.124.42): 56 data bytes
-64 bytes from 150.0.124.42: seq=3D0 ttl=3D64 time=3D47.648 ms
-[ 1395.958630] hns3 0000:c2:00.0 eth1: NETDEV WATCHDOG: CPU: 1: transmit qu=
-eue 10 timed out 5260 ms
-[ 1395.960187] hns3 0000:c2:00.0 eth1: DQL info last_cnt: 42, queued: 42, a=
-dj_limit: 0, completed: 0
-[ 1395.961758] hns3 0000:c2:00.0 eth1: queue state: 0x6, delta msecs: 5260
-[ 1395.962925] hns3 0000:c2:00.0 eth1: tx_timeout count: 1, queue id: 10, S=
-W_NTU: 0x1, SW_NTC: 0x0, napi state: 16
-[ 1395.964677] hns3 0000:c2:00.0 eth1: tx_pkts: 0, tx_bytes: 0, sw_err_cnt:=
- 0, tx_pending: 0
-[ 1395.966114] hns3 0000:c2:00.0 eth1: seg_pkt_cnt: 0, tx_more: 0, restart_=
-queue: 0, tx_busy: 0
-[ 1395.967598] hns3 0000:c2:00.0 eth1: tx_push: 1, tx_mem_doorbell: 0
-[ 1395.968687] hns3 0000:c2:00.0 eth1: BD_NUM: 0x7f HW_HEAD: 0x0, HW_TAIL: =
-0x0, BD_ERR: 0x0, INT: 0x1
-[ 1395.970291] hns3 0000:c2:00.0 eth1: RING_EN: 0x1, TC: 0x0, FBD_NUM: 0x0 =
-FBD_OFT: 0x0, EBD_NUM: 0x400, EBD_OFT: 0x0
-[ 1395.972134] hns3 0000:c2:00.0: received reset request from VF enet
-
-All this works fine on a hardware without S2FWB though.
-
-Also on this test hardware, it works fine with legacy VFIO assignment.
-
-Not debugged further. Please let me know if you have any hunch.
-
-Thanks,
-Shameer
-
-
-
+Michael
 
