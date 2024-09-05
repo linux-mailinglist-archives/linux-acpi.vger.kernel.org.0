@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-8184-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8185-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A8096DFC6
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 18:32:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FB596DFC9
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 18:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6E1F1C23B74
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 16:32:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C474528BC6B
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 16:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23081AD24A;
-	Thu,  5 Sep 2024 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D01AF4C9;
+	Thu,  5 Sep 2024 16:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDBnH6uM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEeRcFP4"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8677919DF4F;
-	Thu,  5 Sep 2024 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16811AE056;
+	Thu,  5 Sep 2024 16:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725553828; cv=none; b=AaNTyW+zSEzD4TvCwnuGaVEu+embesScZcr1PfzsdUgtXUMvPVDzERQTVgoyls2Na89mFDSxDNEExMIfZF/g+6a9S7C7JJX+BapMop/+n/2A9dj28zsvTMfUhQeYWHVTD/hEbTbRMkF01vxbT46mVN0GVjmqfjkjcUZDdF0glyQ=
+	t=1725553829; cv=none; b=PEYwYYJJl+jqj+abF3fpHZw92w8KGikkXP4H9TYt4yrdTo46L/Q2MGLk3EwZ9eDInfomWy/UNM/OSfZXOgsCXmPbySBiIIHG2hec8bc5Q+978vNSDUwdiWWxbpXtuIjIbFK+vCZ5NYl0FvACwNlCwRwZFkYMWU/kJhiNajnRiC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725553828; c=relaxed/simple;
-	bh=+sHrHnLT2FfYkGdEfPvMGy5X5VchYsR5Qb+fThI971s=;
+	s=arc-20240116; t=1725553829; c=relaxed/simple;
+	bh=Hvu/JDym95sl9P2OaGdfnlcHvW9GhdS42LXTs42qNMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePE7aIES5+m8ug8vuAJZCE6hdrKBHLUX0+5+zuA2V1PhoBkLYk/3V91I79sjdejMgZVufTwibSwt65Hs6aJisQzS25yu8e06/FGpzJ3PgoHUeYDjbCepbzLUn+I+2QOvy7LhiOrFItof4yFc/pfus3OxLcFwMQG6jJ7e3MQTqfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDBnH6uM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40559C4CECC;
-	Thu,  5 Sep 2024 16:30:27 +0000 (UTC)
+	 MIME-Version; b=ulutI5FSVs+uIQ7PtUIB6y7A6KsmASrO88aA6RKZyKfchWrRTJ6skB2nKs7323taALWwjpe7jzLv1Rk2XHnjaScfuOB44LMYHPiSvNUWIds9in7M40FHaTIElIb/4ovuDKwa8CZZRJt42ue+ud74REW+wmrQ2oiEzC73ivk75ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEeRcFP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2AFC4CEC3;
+	Thu,  5 Sep 2024 16:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725553828;
-	bh=+sHrHnLT2FfYkGdEfPvMGy5X5VchYsR5Qb+fThI971s=;
+	s=k20201202; t=1725553829;
+	bh=Hvu/JDym95sl9P2OaGdfnlcHvW9GhdS42LXTs42qNMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDBnH6uMKXrNppDFxcEi30uU1d9AUGQ8jutZRjvtXvmS78neX2sE7GVQYrZ0fXEaK
-	 KsFVUKDApoKvFDRu/01w16dAfCJ9cHzM322GBdl+NQAlAb3kdqC3UU49PRGdyfg0bG
-	 Lipd6KhoUvMm5QylDKb67VoYYj2NrHoLqO9cJs4nJ3bTHTMXdDHQZ2WOYRnpXAMm35
-	 zw9Pl2NqWod14s7TFL1Q3lWd2c/cgKb5jxeIJJ4agOCp+lzVGx19bcav1Zfm2oYPqf
-	 UaUXdz5rjPiccD4NwIZ9QcVL5Ee40P4yAHx8u+9zb8i9OWlQ5bNuogwTkFO0dtnsqp
-	 /O0ZDeGetTl/g==
+	b=UEeRcFP4hQ/4B4S3/fx4scu5EFBZCQs5mdXWnQl6OZt/ZUKSlNEHTj5Dnw1uIHQlx
+	 QZKUtYn86Rj/bbcGnCJEYF6Qu9yPrsUUgOmVOXhhxrRU0RygabQhrtCIAwDuIyJOTH
+	 5Dz1WiLw/LbS2PT/3Zl8IJzG8yw5BxJj+0hsWG0mXjQDdNtD7RX08cCV94WkhJ5gvu
+	 NcVNYL2VFj4dqhiUgZpOUdYzNPLvcjcP43vxNWNQ3IsAZfcVV4HoRzgTSpi5mIVRVH
+	 IuxKEEfIq3Gv4ll5F57H7fkjhpxX6zGjNEzhagZOZe26fTZZd5bjZXRZh9vux4ir81
+	 6CM1FsaZAR42A==
 From: Mario Limonciello <superm1@kernel.org>
 To: "Gautham R . Shenoy" <gautham.shenoy@amd.com>,
 	Perry Yuan <perry.yuan@amd.com>
@@ -51,9 +51,9 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	linux-acpi@vger.kernel.org (open list:ACPI),
 	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v3 09/11] cpufreq: amd-pstate: Optimize amd_pstate_update_limits()
-Date: Thu,  5 Sep 2024 11:30:05 -0500
-Message-ID: <20240905163007.1350840-10-superm1@kernel.org>
+Subject: [PATCH v3 10/11] cpufreq: amd-pstate: Add documentation for `amd_pstate_hw_prefcore`
+Date: Thu,  5 Sep 2024 11:30:06 -0500
+Message-ID: <20240905163007.1350840-11-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240905163007.1350840-1-superm1@kernel.org>
 References: <20240905163007.1350840-1-superm1@kernel.org>
@@ -67,44 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-Don't take and release the mutex when prefcore isn't present and
-avoid initialization of variables that will be initially set
-in the function.
+Explain that the sysfs file represents both preferred core being
+enabled by the user and supported by the hardware.
 
 Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/cpufreq/amd-pstate.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+v2->v3:
+ * Add tag
+---
+ Documentation/admin-guide/pm/amd-pstate.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 3ae41af6f041e..9312d4e40994f 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -797,17 +797,17 @@ static void amd_pstate_update_limits(unsigned int cpu)
- 	int ret;
- 	bool highest_perf_changed = false;
+diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
+index e13915c540648..d5c050ea390dc 100644
+--- a/Documentation/admin-guide/pm/amd-pstate.rst
++++ b/Documentation/admin-guide/pm/amd-pstate.rst
+@@ -263,6 +263,11 @@ lowest non-linear performance in `AMD CPPC Performance Capability
+ <perf_cap_>`_.)
+ This attribute is read-only.
  
--	mutex_lock(&amd_pstate_driver_lock);
--	if ((!amd_pstate_prefcore) || (!cpudata->hw_prefcore))
--		goto free_cpufreq_put;
-+	if (!amd_pstate_prefcore)
-+		return;
++``amd_pstate_hw_prefcore``
++
++Whether the platform supports the preferred core feature and it has been
++enabled. This attribute is read-only.
++
+ ``energy_performance_available_preferences``
  
-+	mutex_lock(&amd_pstate_driver_lock);
- 	ret = amd_get_highest_perf(cpu, &cur_high);
- 	if (ret)
- 		goto free_cpufreq_put;
- 
- 	prev_high = READ_ONCE(cpudata->prefcore_ranking);
--	if (prev_high != cur_high) {
--		highest_perf_changed = true;
-+	highest_perf_changed = (prev_high != cur_high);
-+	if (highest_perf_changed) {
- 		WRITE_ONCE(cpudata->prefcore_ranking, cur_high);
- 
- 		if (cur_high < CPPC_MAX_PERF)
+ A list of all the supported EPP preferences that could be used for
 -- 
 2.43.0
 
