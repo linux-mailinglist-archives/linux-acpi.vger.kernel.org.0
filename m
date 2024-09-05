@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-8179-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8181-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4025C96DFB6
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 18:31:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FFE96DFBB
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 18:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF231F237DC
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 16:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09A701C20DA5
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 16:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C650C1A2C26;
-	Thu,  5 Sep 2024 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F269E1A3BAB;
+	Thu,  5 Sep 2024 16:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOBw9jGW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="seQyZai6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7A51A2C14;
-	Thu,  5 Sep 2024 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94091A3A9D;
+	Thu,  5 Sep 2024 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725553822; cv=none; b=t/n8WvELJhViCkOjdsmTBYKdpwoKBR90hsMQImff0BdUr5rPjFLs+KdTe4dJL955LHfBqk/ZHyCo4U7r0YAlv7rqXPDQXM2ruS00gG5e+JR8QeGaEB6OstdX8Zho1+uf5eJ9i+uhrnpZd45VymkbyKx4YJ3ga6UO+AhYhUAWmAI=
+	t=1725553824; cv=none; b=KBDcHfcx9CmNb6fVgh9LPRHM2VkkMw5Lptg+3hmHGS5mCjE93FSOMFXnNCa09BnO4TKIxJd4J7hWPEATNEBkLdZ4+4PijmXcoSXLfaaCepDkrwn8lU+eZfi4TfJMQ3PkSAw/6WEPjBwIeQcpit2+H6Xzm+ExWmDLkCbk9dvbLIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725553822; c=relaxed/simple;
-	bh=Zt3i+cvHegpXXitpCTq/1E918OQsdv+WUjbGkfVqzaY=;
+	s=arc-20240116; t=1725553824; c=relaxed/simple;
+	bh=SN+VV989YznpmWRMUK1wgF+lwg7k+mPg1elKKPJ0iac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XP7BtSOjwC3/OXE1lTRWEFTvjd2bqD7JWH4szUpwqeM3BI5HhHCIycJVT9NcChNecvxmQZp61E5bf/+7X3ExDLQyTaZnSLIvv4eK9xSlIii9LTdJNYZZGn6An6oDWDXlEaeBiJleBHUF4kmdBodbOFwu6WXJb8ItQS3UAQGdFqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOBw9jGW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290D7C4CEC3;
-	Thu,  5 Sep 2024 16:30:21 +0000 (UTC)
+	 MIME-Version; b=OKCZ8+H58YEVwLzWw/1U8hSf7i6NWo4M6Vzqw+Y0Q3/9bl6XLn5YXlGQKh+2nKimX0oRJIMWf+GvOVnuPYhbrehTGs/wFP3Hw/nXfhnyZgxowenjizWxruMuK20xDmCCQR2aEz4g4eyGmFGYWqH8ej3MsXyqH5PSelFIfuPnqDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=seQyZai6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A097C4CEC7;
+	Thu,  5 Sep 2024 16:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725553822;
-	bh=Zt3i+cvHegpXXitpCTq/1E918OQsdv+WUjbGkfVqzaY=;
+	s=k20201202; t=1725553823;
+	bh=SN+VV989YznpmWRMUK1wgF+lwg7k+mPg1elKKPJ0iac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOBw9jGWBy6zH4mf7er170DBKItNU2UaaG4P/92GcBFXTjwYd70aDDdHQ+CcFgFUF
-	 k6SifQsr9Y/BmL+dV2e02RXQnCHzxkt0KHKJ8UmbhtrcIM23KWtANvbc6v4kunvuge
-	 RSy7uiJI+sfZ9dntVp5xjpncb1XvfQzJGQH2KaMf/y42Mdi+reQSF4G6wm2V0Mctwj
-	 H+VAsAHF+12/bQLQm++BylRbk8zdTiNG+rQeVzO2pxZrNG2eY2i9V/7RI2u1A5NXVe
-	 eqilM77OgaCD+XuUJKdT4tHdzuNVMc/JtsQwRG53YuS1q5lqi7CBr473l4kRDwH9al
-	 E6b3vcWhar2XQ==
+	b=seQyZai6qK17Jl2DWBqYRgCEG2VfAd8WrVIrexs3RGg4djkF70sVPEPM2UATuUBle
+	 PkOuT/q4J3MgRNOHNHjaXw4ilhegmFoR9haxV2BTx6vRJk7rqoZUPbZvnYtAwVR0Nw
+	 LVbPU4wKGIT9tq+QJGZ4XLvhwffQzxLFWTilqSp6TW5CIpO/oQQUYFEt++HZDSDqO1
+	 Z8hg/0Fg6RWw5ucM5dO+8jU0qoIzm9hSGie2y8WfQeBxR7iTo7K828XQUTcDkzfdMy
+	 wIzsgYLYc+NeTWmSUU9R8NyVTymfZJ7wV0R5dgvKUOAnbLxkRaboasTpcLjmrAMbGs
+	 C2wtGdkD9FMCw==
 From: Mario Limonciello <superm1@kernel.org>
 To: "Gautham R . Shenoy" <gautham.shenoy@amd.com>,
 	Perry Yuan <perry.yuan@amd.com>
@@ -51,10 +51,10 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	linux-acpi@vger.kernel.org (open list:ACPI),
 	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
 	Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R . Shenoy" <gautham.sheoy@amd.com>
-Subject: [PATCH v3 04/11] ACPI: CPPC: Drop check for non zero perf ratio
-Date: Thu,  5 Sep 2024 11:30:00 -0500
-Message-ID: <20240905163007.1350840-5-superm1@kernel.org>
+	Perry Yuan <Perry.Yuan@amd.com>
+Subject: [PATCH v3 05/11] ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn
+Date: Thu,  5 Sep 2024 11:30:01 -0500
+Message-ID: <20240905163007.1350840-6-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240905163007.1350840-1-superm1@kernel.org>
 References: <20240905163007.1350840-1-superm1@kernel.org>
@@ -68,41 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-perf_ratio is a u64 and SCHED_CAPACITY_SCALE is a large number.
-Shifting by one will never have a zero value.
+If the boost ratio isn't calculated properly for the system for any
+reason this can cause other problems that are non-obvious.
 
-Drop the check.
+Raise all messages to warn instead.
 
-Suggested-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Gautham R. Shenoy <gautham.sheoy@amd.com>
+Suggested-by: Perry Yuan <Perry.Yuan@amd.com>
+Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
-v2->v3:
- * Correct typo in commit message
- * Pick up tag
----
- arch/x86/kernel/acpi/cppc.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/x86/kernel/acpi/cppc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-index 660cfeb6384ba..e65c77afab318 100644
+index e65c77afab318..f0328ce98a8fe 100644
 --- a/arch/x86/kernel/acpi/cppc.c
 +++ b/arch/x86/kernel/acpi/cppc.c
-@@ -91,13 +91,8 @@ static void amd_set_max_freq_ratio(void)
+@@ -75,19 +75,19 @@ static void amd_set_max_freq_ratio(void)
+ 
+ 	rc = cppc_get_perf_caps(0, &perf_caps);
+ 	if (rc) {
+-		pr_debug("Could not retrieve perf counters (%d)\n", rc);
++		pr_warn("Could not retrieve perf counters (%d)\n", rc);
  		return;
  	}
  
--	perf_ratio = div_u64(numerator * SCHED_CAPACITY_SCALE, nominal_perf);
- 	/* midpoint between max_boost and max_P */
--	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
--	if (!perf_ratio) {
--		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
--		return;
--	}
-+	perf_ratio = (div_u64(numerator * SCHED_CAPACITY_SCALE, nominal_perf) + SCHED_CAPACITY_SCALE) >> 1;
+ 	rc = amd_get_boost_ratio_numerator(0, &numerator);
+ 	if (rc) {
+-		pr_debug("Could not retrieve highest performance (%d)\n", rc);
++		pr_warn("Could not retrieve highest performance (%d)\n", rc);
+ 		return;
+ 	}
+ 	nominal_perf = perf_caps.nominal_perf;
  
- 	freq_invariance_set_perf_ratio(perf_ratio, false);
- }
+ 	if (!nominal_perf) {
+-		pr_debug("Could not retrieve nominal performance\n");
++		pr_warn("Could not retrieve nominal performance\n");
+ 		return;
+ 	}
+ 
 -- 
 2.43.0
 
