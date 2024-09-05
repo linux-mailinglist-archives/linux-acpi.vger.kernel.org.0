@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-8163-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8164-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472E596D45D
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 11:52:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08E596D656
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 12:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05975281619
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 09:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4CED1C21A14
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 10:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346D31991AC;
-	Thu,  5 Sep 2024 09:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A19F19884A;
+	Thu,  5 Sep 2024 10:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="lUp5RD1L"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="CVnie2Zd"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A423A197A92
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Sep 2024 09:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFCD13AA2B
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Sep 2024 10:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529873; cv=none; b=Nf4QCbOHkxqKOlFuFVZ/k4u8T6WAkvJ2Uaj9WchB3gUthbIuVBO3C2OBT0ldV7+YNXxH44RibvC3NkMvLy3osEM3NBliV2bwVFa7aFSuJW6rE2tGTuBObnxvg/FCLxXNfwzQj7beXChpLeBFuO8nVJfAKmimmhJz0NlQsRULxOo=
+	t=1725533155; cv=none; b=WalsbBfRijturQy9j6Bgwt0HkrXQKpTTW6BUbNDC9OTSIUNReiPa7Mvr6cT+OvQstw7wxBFe5unHry/lB3V15L9DazL1LNEhlGdID509xX18SweIXP8xnd5WSxW8CKWaw3rZY3x/iFp8jA3QEq7zqaXXF/CG6Q6vpe/qchDxzYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529873; c=relaxed/simple;
-	bh=s22sEpkIHyNZou5KG+9+TTPT/LgMqGvgZLvy7phb97k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GMdpHMn0M1WgUi6H/ny0YUuoh5sdXQ7l7jruGzrJ2p+nh2MUmiezW8vZumu/1YKjBxL2BRcQZ9GirbXDLercZn9CFAwaz0l6Yb8BsbpAti7axwdOaqHw7KV+1as4WKoliFGJw+J5eFEf6+4HyRnHDZw0/31eVbhrEAXkkvYJSyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=lUp5RD1L; arc=none smtp.client-ip=80.237.130.52
+	s=arc-20240116; t=1725533155; c=relaxed/simple;
+	bh=CmMMSsWhbZqjVZ2QLpY6d23LZHtmvu341dfPY5ahduw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kQiYUtnIwA6uRSlXIXZBXOD8+QVWvtTx1BsWPIfYOJbMsPfRUUmOMN3IdIBlYfoix2E+rrEviboRCPLH7wEBodiXsz9fr6XiexlKELLswP3henZOe1/Kwhmm3X+q5J9zqsO6leJAvsKPmn8zAMcTCphbEBOa2yuqJ6flx+fzqyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=CVnie2Zd; arc=none smtp.client-ip=80.237.130.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:From:
 	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=N0JfUYpAhPp3+64gPISh0UU39JH+QWAkAqII6yOBlxE=; t=1725529869;
-	x=1725961869; b=lUp5RD1LjL+Cqqqgmj2sdo7Sq/PT5a4JB9pcz4eQPCBw950XWlz7cIyeV4hXw
-	VFj9L/2+76R3i/aT1uJZwFQFxxAGi9Vj7uIE2Bp3H+CwCaUC1B1ypQysYiDyrb248/fuWQyL47wBh
-	sCHuE100iHtvDYkkNhln2UjF/fuDBet4oxqqRLdfOWoH5ZMrJqbdyayKRijQOZPw9I70TZHFRYONR
-	JXTjPSoHFiKvFkMEVBWvAjJB1Rs5H6osB80C2Zbv44v95Tpjn1lmmg2G2JiiskOD8igJECimpHnEL
-	PelohrZzoEk99lNa20s5NJ1ys3cE1lk45G7OJsRu4TszDH7UdA==;
+	References; bh=Sa+w5qSoYbgMFGTe6vq350rI3ELYqLf+6z9xj9PQaIM=; t=1725533153;
+	x=1725965153; b=CVnie2ZdvekCzk+r6ldfBse7/+exgiMY+bqWEa0l/hRCO8TXJQFg5fa5S4Vvt
+	3Raaah6ZMDbRK6KDWeH7HsihN/SjjNdRzTXI79P7CwHeVw0gEh6C5K/1tzbl92DdRa1vAXcAfJvjE
+	9YyGDM9gUSdHykoXy6do9FEuEdAcUwGzeoA7GNUU8toB/9YuG7nJqVsP845mcxT5cHKPTUNuxGP3A
+	iQRjTJHwzEbTBTv3xDqAN4A35GOBNvQfGvzpmkWfNc0gPCaMl9aIhzW6I7gTt943Xb5oupzPkorcp
+	SfseEgkQNkvCl++/Zaj8Tae1epmfJSgjKEkelDlqnErndunBpA==;
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
 	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sm98t-0004WV-HP; Thu, 05 Sep 2024 11:51:07 +0200
-Message-ID: <c73420b7-c186-4b5d-a074-961b35ed829c@leemhuis.info>
-Date: Thu, 5 Sep 2024 11:51:07 +0200
+	id 1sm9zr-0007V4-IA; Thu, 05 Sep 2024 12:45:51 +0200
+Message-ID: <f79854bd-b338-458f-bc04-466376d05a65@leemhuis.info>
+Date: Thu, 5 Sep 2024 12:45:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,10 +56,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] ACPI: resource: Skip IRQ override on Asus Vivobook Go
  E1404GAB
+From: Thorsten Leemhuis <linux@leemhuis.info>
 To: Tamim Khan <tamim@fusetak.com>, linux-acpi@vger.kernel.org
 Cc: rafael@kernel.org, lenb@kernel.org
 References: <20240903014317.38858-1-tamim@fusetak.com>
-From: Thorsten Leemhuis <linux@leemhuis.info>
+ <c73420b7-c186-4b5d-a074-961b35ed829c@leemhuis.info>
 Content-Language: en-US, de-DE
 Autocrypt: addr=linux@leemhuis.info; keydata=
  xsFNBFJ4AQ0BEADCz16x4kl/YGBegAsYXJMjFRi3QOr2YMmcNuu1fdsi3XnM+xMRaukWby47
@@ -104,23 +105,41 @@ Autocrypt: addr=linux@leemhuis.info; keydata=
  ysaCIZqWxrlhHWWmJMvowVMkB92uPVkxs5IMhSxHS4c2PfZ6D5kvrs3URvIc6zyOrgIaHNzR
  8AF4PXWPAuZu1oaG/XKwzMqN/Y/AoxWrCFZNHE27E1RrMhDgmyzIzWQTffJsVPDMQqDfLBhV
  ic3b8Yec+Kn+ExIF5IuLfHkUgIUs83kDGGbV+wM8NtlGmCXmatyavUwNCXMsuI24HPl7gV2h n7RI
-In-Reply-To: <20240903014317.38858-1-tamim@fusetak.com>
+In-Reply-To: <c73420b7-c186-4b5d-a074-961b35ed829c@leemhuis.info>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1725529869;e59d994d;
-X-HE-SMSGID: 1sm98t-0004WV-HP
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1725533153;ce69f817;
+X-HE-SMSGID: 1sm9zr-0007V4-IA
 
-On 03.09.24 03:43, Tamim Khan wrote:
-> Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
-> that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
-> This override prevents the internal keyboard from working. This patch fixes
-> this problem by adding this laptop to the table that prevents the kernel from
-> overriding the IRQ.
+
+
+On 05.09.24 11:51, Thorsten Leemhuis wrote:
+> On 03.09.24 03:43, Tamim Khan wrote:
+>> Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
+>> that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+>> This override prevents the internal keyboard from working. This patch fixes
+>> this problem by adding this laptop to the table that prevents the kernel from
+>> overriding the IRQ.
+>>
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
 > 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
+> Thx for that. FWIW, I by chance noticed another such report about the
+> E1404GA: https://bugzilla.kernel.org/show_bug.cgi?id=219224
 
-Thx for that. FWIW, I by chance noticed another such report about the
-E1404GA: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+TWIMC, shortly after sending this mail I noticed there is another request
+for a quirk that was send to the list, bug afaics fall through the
+cracks. See here:
+https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
+
+It afaics add a X1704VAP:
+
+	{
+		/* Asus Vivobook X1704V */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
+		},
+	},
 
 Ciao, Thorsten
 
