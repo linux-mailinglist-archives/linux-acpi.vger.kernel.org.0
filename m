@@ -1,113 +1,167 @@
-Return-Path: <linux-acpi+bounces-8186-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8187-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2EF96DFCC
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 18:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC28996E762
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2024 03:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3647328B65B
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Sep 2024 16:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 464D72846A3
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2024 01:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D119E1B12FB;
-	Thu,  5 Sep 2024 16:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD7D17BA3;
+	Fri,  6 Sep 2024 01:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ry35W/6q"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ITtirQEP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DBE1B12DF;
-	Thu,  5 Sep 2024 16:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2504A1EA87;
+	Fri,  6 Sep 2024 01:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725553830; cv=none; b=Ilh+mEaInwhy8PaQGBdPlLCTOys4pXNUi5xn6dRPIQtGYReQpa8tEQweQBjZMeQ1b0h/Vb3pMo0xHidWcViyhVXcYauzJSR8FLjAfkNzl6dSSbRsJJIYa/3Fe6NHda2xz4L5Nv4L5OSyetuepqSIu0VJms2GMufVzVbauCa62K0=
+	t=1725587626; cv=none; b=KhA5+O4126RmT3W+qaYDTTwfN+E+8WgxHQpNoo1Oza0FFxpeqeQlcZr3SiTz50Pni3+lHWhUOH7mnyhOCobMvUeqPEW8aiZuIFpNglwE0BO4u+waJgssoXNMJRgfFVhrjW7EKKtdVP0dmKI3gwe2on/3XKBQPMlcTef1IoNzWPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725553830; c=relaxed/simple;
-	bh=XZ7K6Q+GJiNQh7jOC8M+XdWVBVAC/1BxSYrJDHfXPXQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2DIZqGSEjM8dD08I15I/01A7rTTrqHsX54HOcRV+R9hvkVN/wtTxymgIKzUEMI2X6UiSp9G56/ysh3aF/zHZPFxcd+XgP/++byk8q/xb0gWHvncm9b1ZMB8c0VRZI4sUh89Tw2pkL41RJ3Ms66mNfzUYTVGqxHuEWeg+Kexzm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ry35W/6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECC1C4CEC5;
-	Thu,  5 Sep 2024 16:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725553830;
-	bh=XZ7K6Q+GJiNQh7jOC8M+XdWVBVAC/1BxSYrJDHfXPXQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry35W/6quC7b4BBuc2q3MVv+P1Gy74ff9eX3m9FFLrQ/8sk+SXVUDYFE5ks4QTB4u
-	 1XlBMu7+WEW6j9soNmWYITemPs/0kaJPxTo8Vogs9M2+NXCg61XjWkg+E0PqeNY+jH
-	 7lFCS20Zo8RbNZmb/RqoJl6yKcU28y3aXipkOylKj91xI24//FjrRVRF7xBhKOxSJi
-	 xPp+JOOBKhR/w5DH0DYNjHA020DVhSqZOX2XJrAT8eyHxdyF811IG+wwCv+4s9UtkM
-	 SzHmYb/sArMNUzmFHGnRHRJZb2ThazTOkN4qKf5DxReJURdpQEHAVjtVAX25pSCiCI
-	 i918ESuJBSWXg==
-From: Mario Limonciello <superm1@kernel.org>
-To: "Gautham R . Shenoy" <gautham.shenoy@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v3 11/11] amd-pstate: Add missing documentation for `amd_pstate_prefcore_ranking`
-Date: Thu,  5 Sep 2024 11:30:07 -0500
-Message-ID: <20240905163007.1350840-12-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240905163007.1350840-1-superm1@kernel.org>
-References: <20240905163007.1350840-1-superm1@kernel.org>
+	s=arc-20240116; t=1725587626; c=relaxed/simple;
+	bh=a72T8cDYzUMTleXuRPYVQQflQxStcn2RcQeqC/p5UYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IfWFUDbgTzqam5hifoLnku2kuOXU8WxOJQvuTYJdHZwhZSuARkrt2WyIJzbPAc2ENLHBDlhn5IRzncFPCxuOidWe9VvdmN+vNvaOQ9EoAYZl6TLT7j1FltOKdlXwuttgfuA8Hl3K8OwSCHXsbFAiIXna4KRSstokI6zcR1yXObE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ITtirQEP; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1725587615; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=yXCCgOuWDZJBwrrZhsFP69ynA9Ps5ml3WXCsMeJVNTQ=;
+	b=ITtirQEPxGpi9kdKM+EdwFUZccl3xC2+TtkJSry5nuuL9eQWkVmhdX+h8aMjIKLt/GXC92uLdY73yTr5jfYnHamKgkq6k3i0nSZjmyi/H+zjcdafJ4grlNyE/CwGStFMZ+dOANiVMiwCRbPYsIzNNqNcO4q8bsfWsQFlJrP5i1E=
+Received: from 30.246.162.144(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WENXsHu_1725587611)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Sep 2024 09:53:33 +0800
+Message-ID: <34d5d58b-7fc2-4f93-9d3b-3051ec5e6a23@linux.alibaba.com>
+Date: Fri, 6 Sep 2024 09:53:30 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 1/3] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+To: Jarkko Sakkinen <jarkko@kernel.org>, bp@alien8.de, rafael@kernel.org,
+ wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
+ tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
+ james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
+ will@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+ ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+ baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20240902030034.67152-2-xueshuai@linux.alibaba.com>
+ <D3WS2P2DU0CE.SANBOLMHG6TC@kernel.org>
+ <bf984773-2a8e-4528-9af1-9775fdc7c4e2@linux.alibaba.com>
+ <D3YEWCUXEWY3.ALFECJPKZMMG@kernel.org> <D3YEYH69KMV4.13SX59Y2HT6D@kernel.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <D3YEYH69KMV4.13SX59Y2HT6D@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Mario Limonciello <mario.limonciello@amd.com>
 
-`amd_pstate_prefcore_ranking` reflects the dynamic rankings of a CPU
-core based on platform conditions.  Explicitly include it in the
-documentation.
 
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-v2->v3:
- * Add tag
----
- Documentation/admin-guide/pm/amd-pstate.rst | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+在 2024/9/5 22:17, Jarkko Sakkinen 写道:
+> On Thu Sep 5, 2024 at 5:14 PM EEST, Jarkko Sakkinen wrote:
+>> On Thu Sep 5, 2024 at 6:04 AM EEST, Shuai Xue wrote:
+>>>
+>>>
+>>> 在 2024/9/4 00:09, Jarkko Sakkinen 写道:
+>>>> On Mon Sep 2, 2024 at 6:00 AM EEST, Shuai Xue wrote:
+>>>>> Synchronous error was detected as a result of user-space process accessing
+>>>>> a 2-bit uncorrected error. The CPU will take a synchronous error exception
+>>>>> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
+>>>>> memory_failure() work which poisons the related page, unmaps the page, and
+>>>>> then sends a SIGBUS to the process, so that a system wide panic can be
+>>>>> avoided.
+>>>>>
+>>>>> However, no memory_failure() work will be queued unless all bellow
+>>>>> preconditions check passed:
+>>>>>
+>>>>> - `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
+>>>>> - `if (flags == -1)` in ghes_handle_memory_failure()
+>>>>> - `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
+>>>>> - `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
+>>>>>
+>>>>> In such case, the user-space process will trigger SEA again.  This loop
+>>>>> can potentially exceed the platform firmware threshold or even trigger a
+>>>>> kernel hard lockup, leading to a system reboot.
+>>>>>
+>>>>> Fix it by performing a force kill if no memory_failure() work is queued
+>>>>> for synchronous errors.
+>>>>>
+>>>>> Suggested-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>>>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>>>>>
+>>>>> ---
+>>>>>    drivers/acpi/apei/ghes.c | 10 ++++++++++
+>>>>>    1 file changed, 10 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>>>>> index 623cc0cb4a65..b0b20ee533d9 100644
+>>>>> --- a/drivers/acpi/apei/ghes.c
+>>>>> +++ b/drivers/acpi/apei/ghes.c
+>>>>> @@ -801,6 +801,16 @@ static bool ghes_do_proc(struct ghes *ghes,
+>>>>>    		}
+>>>>>    	}
+>>>>>    
+>>>>> +	/*
+>>>>> +	 * If no memory failure work is queued for abnormal synchronous
+>>>>> +	 * errors, do a force kill.
+>>>>> +	 */
+>>>>> +	if (sync && !queued) {
+>>>>> +		pr_err("Sending SIGBUS to %s:%d due to hardware memory corruption\n",
+>>>>> +			current->comm, task_pid_nr(current));
+>>>>
+>>>> Hmm... doest this need "hardware" or would "memory corruption" be
+>>>> enough?
+>>>>
+>>>> Also, does this need to say that it is sending SIGBUS when the signal
+>>>> itself tells that already?
+>>>>
+>>>> I.e. could "%s:%d has memory corruption" be enough information?
+>>>
+>>> Hi, Jarkko,
+>>>
+>>> Thank you for your suggestion. Maybe it could.
+>>>
+>>> There are some similar error info which use "hardware memory error", e.g.
+>>
+>> By tweaking my original suggestion just a bit:
+>>
+>> "%s:%d: hardware memory corruption"
+>>
+>> Can't get clearer than that, right?
+> 
+> And obvious reason that shorter and more consistent klog message is easy
+> to spot and grep. It is simply less convoluted.
+> 
+> If you want also SIGBUS, I'd just put it as "%s:%d: hardware memory
+> corruption (SIGBUS)"
+> 
+> BR, Jarkko
 
-diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
-index d5c050ea390dc..210a808b74ec2 100644
---- a/Documentation/admin-guide/pm/amd-pstate.rst
-+++ b/Documentation/admin-guide/pm/amd-pstate.rst
-@@ -252,7 +252,8 @@ In some ASICs, the highest CPPC performance is not the one in the ``_CPC``
- table, so we need to expose it to sysfs. If boost is not active, but
- still supported, this maximum frequency will be larger than the one in
- ``cpuinfo``. On systems that support preferred core, the driver will have
--different values for some cores than others.
-+different values for some cores than others and this will reflect the values
-+advertised by the platform at bootup.
- This attribute is read-only.
- 
- ``amd_pstate_lowest_nonlinear_freq``
-@@ -268,6 +269,12 @@ This attribute is read-only.
- Whether the platform supports the preferred core feature and it has been
- enabled. This attribute is read-only.
- 
-+``amd_pstate_prefcore_ranking``
-+
-+The performance ranking of the core. This number doesn't have any unit, but
-+larger numbers are preferred at the time of reading. This can change at
-+runtime based on platform conditions. This attribute is read-only.
-+
- ``energy_performance_available_preferences``
- 
- A list of all the supported EPP preferences that could be used for
--- 
-2.43.0
+Hi, Jarkko,
+
+I will change it to "%s:%d: hardware memory corruption (SIGBUS)".
+
+Thank you for valuable suggestion.
+
+Best Regards,
+Shuai
 
 
