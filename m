@@ -1,169 +1,162 @@
-Return-Path: <linux-acpi+bounces-8196-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8197-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79F796FE68
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2024 01:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5560396FFD9
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2024 05:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9004A2891E0
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Sep 2024 23:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 057FF2846BC
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2024 03:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1306615B14D;
-	Fri,  6 Sep 2024 23:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720DF1BC4E;
+	Sat,  7 Sep 2024 03:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VpJlkyaI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F0gXMJnC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F6715B125
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Sep 2024 23:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97489DDA6;
+	Sat,  7 Sep 2024 03:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725664974; cv=none; b=Fk0bCIWxZB0uHZA//0HWSJe0M1hQDbpha3kwnXumA7kUVN/uulmtXjYDjv4oUI1punIhIDOvro1bqM9ellfR07iuHfn84/CNwruVJl/Uf/jMP1WaHZ+YUdqSKDtDoEr9RDCSWu0UhEAfR2TCFl535M/PGumLs59YKtAeldM+7Rw=
+	t=1725679879; cv=none; b=Qazw7hQZaPSnIPGVDUIGCza40y0UBvSsYJ+vdtNn4npfC9zRdELM14w/yjXp2Bzk9nkL/oStxrRnQ2CybqG1OYbe3cmz01wwAma5/LVmwXSHfjuWY1NhWDBKpXMHBztBZx7w/TIBC5Ej9dyjWbgbEUsNm+6nLJ0XnAovj9iS/IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725664974; c=relaxed/simple;
-	bh=v9w2LTcgz/Jme+L6Qh9HHukhqTUREf69GMrFK2MCiXk=;
-	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QruRw8YkqiB3WfKos28/3I0SJc7G59raRk6JLbP1sHklHVneCscrfa9I9fa63rU0A5T1gZZ+O7FxPGo8dpmhdmst/F9KrVIgDOb1utjsi+Zi5a3/BVNlz5+gThJ2+yrDySIqAPHnTPqCDhabQCk7yIcHMyY3y5hYUkVAsu5vZm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VpJlkyaI; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7a99fd5beb6so73391385a.0
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Sep 2024 16:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1725664972; x=1726269772; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qy+mSIGNeS58++DzntcZUAiMsB2v+aaTI4VFNn3s3Og=;
-        b=VpJlkyaINW1yxAjcq0938EbVpI0kKEW3AIeylD1PLE2glDjHcRfXh5kTIgJjQ88YRY
-         zn6+tghLhHe9Yg01stTNe1SJVJ9PibjNediQQ3oOdUjgXy4n1E4ysnssAO8ljj1hFGrU
-         lzfgCXcYGaQz56TuIRw9IV/wEygbrborIm3m4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725664972; x=1726269772;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qy+mSIGNeS58++DzntcZUAiMsB2v+aaTI4VFNn3s3Og=;
-        b=hi9um7G5pC4Phq4t3Gb3xHm/rLvC5HYUtgNY3i6MkxYjCUfBnmDDjomFvyDN/LqLIe
-         ex4aLzOxqFVMrYPlZOE36cd7ROtCWaD20dHALk66+xmx7HPxhO8fHMyXI91Shef4piE9
-         v7AGO/Rtp4AhSA9GlLXJnxm/B/0R/4DMW5ds4v27IxIMNd1O+jDmkhLPtK9u+h9zHEZN
-         tu6kdGUKM2OEaFCjMUBQdIc9dYzYH9N7+DGcZ68riWodmkUM3OMu5DJuc7hIB2oWw/kx
-         ZcuVoSd4kkbyAyVwtXWMWnog9XbYUBlSIdJ0qi0QI1I8FtjeV8phuonDu1pCs5UQJmku
-         dJbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVirRlRbVzQ4MIBsiBD3JS6M7TQ+JR+KT/JVnBXiakmZCGgWwKyZZ8+0dK4CdWDvlLcuqwEkN/APETf@vger.kernel.org
-X-Gm-Message-State: AOJu0Yycegjvg942HXBhYLv38ohIp1Mmqp5/6E+PlHd/ccETQGRiUoCc
-	AIoY/mt/pNoUyOVqqfBn3ryzaly53+tHfvOUCs0wQYZiOwveV/Hdr2Mb5JK3HDlTr7DHSFlqCPZ
-	q7jHGwMbVbEShzXcYqlV0awBD8T8cv+2rxNGX
-X-Google-Smtp-Source: AGHT+IGdJ1Cu7WnFiLbpujMlY7s5pDdgGf67TdTERXFuJ3iEOOQRoyH/H06YxaP9An0lzToQtnM4yN/MAX8bQLOzGCM=
-X-Received: by 2002:a05:620a:4512:b0:79e:f878:7ffb with SMTP id
- af79cd13be357-7a996bb9ccdmr757628285a.9.1725664971979; Fri, 06 Sep 2024
- 16:22:51 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 6 Sep 2024 18:22:51 -0500
+	s=arc-20240116; t=1725679879; c=relaxed/simple;
+	bh=hEGaHKODjVXh1NimtLs72WsXNCmMTIIkMZXiMa9laZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W2FH1gihx7uRgJC1O8slzvCyKarug9/GB9E5PxVNe+Y/fvKfUUtjhRpDiig2SErgFA/sFoVnrLtTTzlixsETCpGBJhZS5TB8yGeEsK+JD8DwaY/3DnNXmZtNtViwc/gNCf2QPPDeQ7EumVTs0g+hVXXepK2HcuKrSFdaBwduBHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F0gXMJnC; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725679878; x=1757215878;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hEGaHKODjVXh1NimtLs72WsXNCmMTIIkMZXiMa9laZQ=;
+  b=F0gXMJnCYWTK9yNA6KuquFjKDE9J+lNMQDu6TXEMyiw5UF2umIGD9BPE
+   ++76+d1cFKicnXtZdNrJ2GotDyYIynWi6aSWvoJQQ5DaXBdjWDx6lacAf
+   +0t0Ek9eb6PdXx8aBilbr/yj40nGuKl+LWwLRSIhFYrpTflKhsoa+p/tG
+   tEn22NskjPGFlOTkUiQ5+N89d6cES5iqcxzT14gwuanhmMZ1ZZP6Vh+Mo
+   i3ao9o2vStkm6F1Ugl5dKodep+d3Ae/vFcbFzWqInpKOrk8aEBQ02m9SO
+   V8P30CK0KIJ15/jQ6AkPF2/H3kNOacnjmEXPdWTnhh4ZZDbupM+h8mI16
+   w==;
+X-CSE-ConnectionGUID: CzYRDQAmQAyA+bOpC0SPQw==
+X-CSE-MsgGUID: Bug3weRfSFeB8wSDQQ7P6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11187"; a="35115597"
+X-IronPort-AV: E=Sophos;i="6.10,209,1719903600"; 
+   d="scan'208";a="35115597"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2024 20:31:17 -0700
+X-CSE-ConnectionGUID: YcjMdzw1SKGwwAHhN3ztFg==
+X-CSE-MsgGUID: aDYgvrRLQsGKPCVLdQexNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,209,1719903600"; 
+   d="scan'208";a="70928207"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 06 Sep 2024 20:31:14 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1smmAJ-000C5q-0J;
+	Sat, 07 Sep 2024 03:31:11 +0000
+Date: Sat, 7 Sep 2024 11:30:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: KobaK <kobak@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	James Morse <james.morse@arm.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH V3] acpi/prmt: find block with specific type
+Message-ID: <202409071110.LWdX8txQ-lkp@intel.com>
+References: <20240905124950.512973-1-kobak@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <Ztq6zf8n09ZcJNjT@google.com>
-References: <20240901040658.157425-1-swboyd@chromium.org> <20240901040658.157425-19-swboyd@chromium.org>
- <ZtgqLZXbJbpG65vD@google.com> <CAE-0n51w3AAtLPq5M-i8F6z2jSOT3xFw3g8HM1h48xXBSeoZnA@mail.gmail.com>
- <Ztq6zf8n09ZcJNjT@google.com>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date: Fri, 6 Sep 2024 18:22:51 -0500
-Message-ID: <CAE-0n52mqK+by7O84fPMsNTfWSYzCwHpRZGi2Epfq0-iM7ysDg@mail.gmail.com>
-Subject: Re: [PATCH v4 18/18] platform/chrome: cros_ec_typec: Handle lack of
- HPD information
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, devicetree@vger.kernel.org, 
-	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, dri-devel@lists.freedesktop.org, 
-	Guenter Roeck <groeck@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
-	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Vinod Koul <vkoul@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240905124950.512973-1-kobak@nvidia.com>
 
-Quoting Tzung-Bi Shih (2024-09-06 01:18:21)
-> On Wed, Sep 04, 2024 at 02:45:36PM -0700, Stephen Boyd wrote:
-> > Quoting Tzung-Bi Shih (2024-09-04 02:36:45)
-> > > On Sat, Aug 31, 2024 at 09:06:56PM -0700, Stephen Boyd wrote:
-> > > > +     /* Inject HPD from the GPIO state if EC firmware is broken. */
-> > > > +     if (typec->hpd_asserted)
-> > > > +             resp->flags |= USB_PD_MUX_HPD_LVL;
-> > >
-> > > `typec->hpd_asserted` is shared between all typec->ports[...].  Would it be
-> > > possible that a HPD is asserted for another port but not current `port`?
-> > > E.g.: cros_typec_inject_hpd() for port 2 and cros_typec_dp_bridge_hpd_notify()
-> > > gets called due to port 1 at the same time?
-> >
-> > I'd like to avoid synchronizing the hpd notify and this injection code,
-> > if that's what you're asking. Thinking about this though, I've realized
-> > that it's broken even when HPD is working on the EC. Consider this
-> > scenario with two type-c ports C0 and C1:
-> >
-> > [...]
->
-> I understood it more: originally, I was wondering if it needs an array
-> `typec->hpd_asserted[...]` for storing HPD for each port.  But, no.
->
-> What cros_typec_dp_bridge_hpd_notify() get is just a connected/disconnected
-> signal.  It kicks off cros_typec_port_work() for finding which port is
-> supposed to trigger the event (with some logic with `active_dp_port`,
-> `mux_gpio`, and `hpd_asserted`).
+Hi KobaK,
 
-Ok, cool. I intend to split this device into multiple devices, one per
-DP bridge. I haven't done that though because I don't have any device
-that has two independent DP controllers.
+kernel test robot noticed the following build warnings:
 
->
->
-> Curious about one more scenario, is it possible:
->
-> Initially, no DP port and no mux is using:
->   active_dp_port = NULL
->   hpd_asserted = false
->   mux_gpio = NULL
->
-> CPU A                                        CPU B
-> ------------------------------------------------------------------------------
-> cros_typec_port_work()
->   cros_typec_port_update(port_num=0)
->                                              [C0 connected]
->                                              cros_typec_dp_bridge_hpd_notify()
->                                                hpd_asserted = true
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge linus/master v6.11-rc6 next-20240906]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The work is queued again here because it's already running.
+url:    https://github.com/intel-lab-lkp/linux/commits/KobaK/acpi-prmt-find-block-with-specific-type/20240905-205316
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20240905124950.512973-1-kobak%40nvidia.com
+patch subject: [PATCH V3] acpi/prmt: find block with specific type
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20240907/202409071110.LWdX8txQ-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240907/202409071110.LWdX8txQ-lkp@intel.com/reproduce)
 
->   cros_typec_port_update(port_num=1)
->     cros_typec_configure_mux(port_num=1)
->       cros_typec_inject_hpd()
->       active_dp_port = C1
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409071110.LWdX8txQ-lkp@intel.com/
 
-Yeah it's a problem because we need to read the mux_gpio to figure out
-which way it's steering. We can't recreate the "first to assert HPD"
-logic that the EC has because we can't control when the worker runs. At
-least we can skip reading the mux if only one port has entered DP mode.
-I'm hoping that the scenario where both ports are in DP mode almost
-never happens, but if it does then we'll have to read the mux when hpd
-is asserted to figure out which port DP is muxed to.
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/kernel.h:31,
+                    from drivers/acpi/prmt.c:17:
+   drivers/acpi/prmt.c: In function 'acpi_parse_prmt':
+>> include/linux/kern_levels.h:5:25: warning: format '%d' expects argument of type 'int', but argument 2 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
+         |                         ^~~~~~
+   include/linux/printk.h:437:25: note: in definition of macro 'printk_index_wrap'
+     437 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ^~~~
+   include/linux/printk.h:518:9: note: in expansion of macro 'printk'
+     518 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~
+   include/linux/kern_levels.h:12:25: note: in expansion of macro 'KERN_SOH'
+      12 | #define KERN_WARNING    KERN_SOH "4"    /* warning conditions */
+         |                         ^~~~~~~~
+   include/linux/printk.h:518:16: note: in expansion of macro 'KERN_WARNING'
+     518 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |                ^~~~~~~~~~~~
+   drivers/acpi/prmt.c:161:25: note: in expansion of macro 'pr_warn'
+     161 |                         pr_warn(
+         |                         ^~~~~~~
+>> include/linux/kern_levels.h:5:25: warning: format '%llx' expects a matching 'long long unsigned int' argument [-Wformat=]
+       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
+         |                         ^~~~~~
+   include/linux/printk.h:437:25: note: in definition of macro 'printk_index_wrap'
+     437 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ^~~~
+   include/linux/printk.h:518:9: note: in expansion of macro 'printk'
+     518 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~
+   include/linux/kern_levels.h:12:25: note: in expansion of macro 'KERN_SOH'
+      12 | #define KERN_WARNING    KERN_SOH "4"    /* warning conditions */
+         |                         ^~~~~~~~
+   include/linux/printk.h:518:16: note: in expansion of macro 'KERN_WARNING'
+     518 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |                ^~~~~~~~~~~~
+   drivers/acpi/prmt.c:161:25: note: in expansion of macro 'pr_warn'
+     161 |                         pr_warn(
+         |                         ^~~~~~~
+
+
+vim +5 include/linux/kern_levels.h
+
+314ba3520e513a Joe Perches 2012-07-30  4  
+04d2c8c83d0e3a Joe Perches 2012-07-30 @5  #define KERN_SOH	"\001"		/* ASCII Start Of Header */
+04d2c8c83d0e3a Joe Perches 2012-07-30  6  #define KERN_SOH_ASCII	'\001'
+04d2c8c83d0e3a Joe Perches 2012-07-30  7  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
