@@ -1,207 +1,144 @@
-Return-Path: <linux-acpi+bounces-8200-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8201-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1048970430
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2024 23:43:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3171B970522
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Sep 2024 07:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BF632837AD
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Sep 2024 21:43:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B87ED1F21EF4
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Sep 2024 05:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9EB15696E;
-	Sat,  7 Sep 2024 21:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F4E364D6;
+	Sun,  8 Sep 2024 05:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HpyXOs9F"
+	dkim=pass (2048-bit key) header.d=ljones.dev header.i=@ljones.dev header.b="dAdVZNkL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="M2kMpNDn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from fout3-smtp.messagingengine.com (fout3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA5245014;
-	Sat,  7 Sep 2024 21:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCC41114;
+	Sun,  8 Sep 2024 05:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725745412; cv=none; b=IFEHFYtW1BEjWmvQERgnt6F9LlCPaBNcjy4tdv1Uk6SZVIE1P51n1BbYIWz1VF+7Ff8tx3WPuj8qkOcNyciTpsUxMEfE++LqlAks8yBIrvMYFoI1nGR7vvnmWtYhRPP8SaOOTteryREWAgXdHjxTXUU2kzATf3vh28Bjg0n4YJA=
+	t=1725773778; cv=none; b=M4mSmwSriWfyr2ay6oRtQQmFb6Jn0FW+Ro505UrVrw3Fwej4RfDlxqCnerBuHUbsELG+A5Ly4HhGHDEsk1rjXkMlNbLmURcveQ5E+rvaxGvbA3LhEK4fCFk0wdkzAL5AP386Lkhd/UoAMJ/qUYFZxTcFv9fF0UR0YMFNHEvKQEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725745412; c=relaxed/simple;
-	bh=NhBq+HpdvAez9VKfaVCfbJGK/2jn9pImdKu3aKTa9ps=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=B6B4xleHa0PgkQQGQR3V5ukMUbADzOGXlU94Egcbi7VLIl0vgt2ybBFCAVu70w0xeSYQoNMYPs4tTE1zTevrbJQFa9kw40gu/6/6GL2k764VeVICZrpykRYQAB808yp9v9imVUnhj+YrH9B0Sq7PZ118Wvd3o3C6zLJ8LsNxzZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HpyXOs9F; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725745410; x=1757281410;
-  h=date:from:to:cc:subject:message-id;
-  bh=NhBq+HpdvAez9VKfaVCfbJGK/2jn9pImdKu3aKTa9ps=;
-  b=HpyXOs9FfTp17X8FxP/EGH4n6NgkdGX56LlUAHVwkvKynaMnsEXs2DHK
-   MbC9iKuwOrZsN/fNG4rs2O5SE/GH+13L4DLejVR4qfuWYM4+ZdXuq403t
-   Pa0RquJVgkZMQqLDmMQAD16KUDxybD/EdlnaQxw7+wOBJJrjXL5Ci5zZE
-   z2OC9OiVOU9rO9MMpoKAenguMGx/M8Xk8KLl9LQCPDMnZZDxvlA30zY+m
-   DkN4m2s+5JE5hQ/EWkKjyiPULmPyBTDIjwcthmyQM/StANdLCRVdNWkOJ
-   ErJ6eCqUsi75P9gSpZPf2dKE2F00rPkBH418JiDbq/4qmUyEnBSClNZ21
-   g==;
-X-CSE-ConnectionGUID: W66ywsDHSHuuB49EqXh7hA==
-X-CSE-MsgGUID: D6vp2FUMShmQWLKZ7dOWaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11188"; a="24637047"
-X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
-   d="scan'208";a="24637047"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2024 14:43:29 -0700
-X-CSE-ConnectionGUID: wJjai3EZT4+rYsVyfKKogA==
-X-CSE-MsgGUID: CC0Jb5ReRzCOc+LIzYJVRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
-   d="scan'208";a="70870640"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 07 Sep 2024 14:43:27 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sn3DJ-000D1n-1Z;
-	Sat, 07 Sep 2024 21:43:25 +0000
-Date: Sun, 08 Sep 2024 05:43:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- f0ff0c80a1cf2da2f8e105ee1eff184193a094fa
-Message-ID: <202409080508.wUeIPL0a-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1725773778; c=relaxed/simple;
+	bh=rpRYgTdMHGGe2A8iAOqjp0QcTLymtWVdC4fe6olEdZg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nKAZ9WZTTMZoU+v4C/3I/ZAPC961CNn6asYqMhxKjXeaw+u2LIASLijj3bYGS9dmJaaHS/oYmBQsqhIJTVLYLrs7YQwcQt6VpFSgnwMbVQXbtAn0w+5bmfkZpcQZY/6Q0yVV9ZJRQIUiL5sssUUNnuwnV7Javrr4l/p1e7uIjIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ljones.dev; spf=none smtp.mailfrom=ljones.dev; dkim=pass (2048-bit key) header.d=ljones.dev header.i=@ljones.dev header.b=dAdVZNkL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=M2kMpNDn; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ljones.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ljones.dev
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfout.phl.internal (Postfix) with ESMTP id 07004138012C;
+	Sun,  8 Sep 2024 01:36:15 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Sun, 08 Sep 2024 01:36:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1725773775; x=1725860175; bh=i3s05PCH2bZCBIKhbs5xm
+	5yHX2bnfCNCLNbQjYfnB4o=; b=dAdVZNkL0GHKYWliZV1Y1n27+qfAlbzmJt53d
+	k+Xby79C1NNQISEKIJo0FyQNWQy2Sjl2P4lpQ+rrNWRED/l6LgrljmawvsPlLy5p
+	ylzSLj8ppCUyDkbH+CFK6TdLcnlH0KC1CiJrMfgdzVVL2NU4Fjs2d0rSuAEBUOzf
+	lK2y4h6kjvVB4uqWC4PGS7ZeaE/UyQI98K4QvTicwhGfjHdWiJEoUcopbApsG9Hz
+	3BI5TIrRXUYrI2iF7L9BpTkLf8tWrN6zU0od9ZbrXPWgM8g21H6xaMxmIG0btrXg
+	vTHtVVD8rHf+hVe556wpYClVwLAssNE0mOgYDG3pJMsCJdSdg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1725773775; x=1725860175; bh=i3s05PCH2bZCBIKhbs5xm5yHX2bn
+	fCNCLNbQjYfnB4o=; b=M2kMpNDnvF/HJyI3Ri2MSRoNcfOEVXBJPGUp1AYWsuBJ
+	i3HL3A1Rb3JVPIKtKbNAApPNigwgcwoaBhqvMMbPNvc0yiaaS8p5R5jOJpHYRcI4
+	fuursr2g3jnNq7rfetWim1zT4SyAFO4nEs35omgDjxU7H/dbKsEBV1mTMHfZ2+1w
+	RC1epFReDVqAznkLyRWn0Zo5Q3UEbn1xkTlN+xeepcReg9ZrmVeJI14w26eejAbD
+	dZmPDeg59sztK7K5jwjxjvFECebOxcNJjGbvOg8oBS9p4sIwawTkGEDGj9P6jxpR
+	VsDuav79Osj2dhVEmEzpsuJv20SLveR7rv0xZtJoyw==
+X-ME-Sender: <xms:zjfdZnalC-3hFxvYTy0F4iCHNofnmdSbkhshbT5fcFbaxYV7EYfpHw>
+    <xme:zjfdZmaTW4kR7E_Mfm7cCV7XRNxcntDV9p-E3CUmamJ3sVvioK31mPZJg3NbwlNkE
+    Etq6adRktzT9zX-LwU>
+X-ME-Received: <xmr:zjfdZp--0w9J8CRgpFL6uJhb_7M5ctKHL4BCy49zNaCTR0RUo-lqyMkPD8VIMus>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeigedgleejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevuf
+    ffkffoggfgsedtkeertdertddtnecuhfhrohhmpedfnfhukhgvucffrdculfhonhgvshdf
+    uceolhhukhgvsehljhhonhgvshdruggvvheqnecuggftrfgrthhtvghrnheptdehkeeige
+    eggfelkeeufeefjeduvdejveduvdehtdegveeftdeugeetvdeltdejnecuffhomhgrihhn
+    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehluhhkvgeslhhjohhnvghsrdguvghvpdhnsggprhgtphhtthhopeeh
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhg
+    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    uhhkvgeslhhjohhnvghsrdguvghv
+X-ME-Proxy: <xmx:zjfdZtpv4tvoQcAEvZ8eT8SHpYa2wAGZilnv7HQPLQLWywp-bFVFww>
+    <xmx:zjfdZipAI3V129CzwwxgcVoWoEAR891TYZ0kc0Lq-K7F0v9kP9bUqw>
+    <xmx:zjfdZjSqRp-gXK3OJcswxrEUUlcMdwMyWir-N2VAqLnzcdhKKbPYxQ>
+    <xmx:zjfdZqrBjsAg5Gk-thLymVEZL-4CBEcB5JpVmvAx6BOpp-z0Qew__g>
+    <xmx:zjfdZrkbM2WQPu9dEROPGl704pFxllsRZuTCJoPnztHYRkd1LwmNSi5F>
+Feedback-ID: i5ec1447f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 8 Sep 2024 01:36:12 -0400 (EDT)
+From: "Luke D. Jones" <luke@ljones.dev>
+To: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	lenb@kernel.org,
+	rafael@kernel.org,
+	"Luke D. Jones" <luke@ljones.dev>
+Subject: [PATCH] ACPI: PM: Quirk ASUS ROG M16 to default to S3 sleep
+Date: Sun,  8 Sep 2024 17:36:07 +1200
+Message-ID: <20240908053607.4213-1-luke@ljones.dev>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: f0ff0c80a1cf2da2f8e105ee1eff184193a094fa  Merge branch 'thermal-core-experimental' into bleeding-edge
+The 2023 ASUS ROG Zephyrus M16 can suffer from quite a variety of events
+causing wakeup from s2idle sleep. The events may come from the EC being
+noisey, from the MMC reader, from the AniMe matrix display on some models
+or from AC events.
 
-elapsed time: 1555m
+Defaulting to S3 sleep prevents all these wakeup issues.
 
-configs tested: 113
-configs skipped: 3
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+---
+ drivers/acpi/sleep.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc-14.1.0
-alpha                            allyesconfig   clang-20
-alpha                               defconfig   gcc-14.1.0
-arc                              allmodconfig   clang-20
-arc                               allnoconfig   gcc-14.1.0
-arc                              allyesconfig   clang-20
-arc                                 defconfig   gcc-14.1.0
-arm                              allmodconfig   clang-20
-arm                               allnoconfig   gcc-14.1.0
-arm                              allyesconfig   clang-20
-arm                                 defconfig   gcc-14.1.0
-arm64                            allmodconfig   clang-20
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-14.1.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-14.1.0
-hexagon                          allmodconfig   clang-20
-hexagon                           allnoconfig   gcc-14.1.0
-hexagon                          allyesconfig   clang-20
-hexagon                             defconfig   gcc-14.1.0
-i386                             allmodconfig   clang-18
-i386                             allmodconfig   gcc-12
-i386                              allnoconfig   clang-18
-i386                              allnoconfig   gcc-12
-i386                             allyesconfig   clang-18
-i386                             allyesconfig   gcc-12
-i386         buildonly-randconfig-001-20240907   gcc-12
-i386         buildonly-randconfig-002-20240907   gcc-12
-i386         buildonly-randconfig-003-20240907   gcc-12
-i386         buildonly-randconfig-004-20240907   gcc-12
-i386         buildonly-randconfig-005-20240907   gcc-12
-i386         buildonly-randconfig-006-20240907   gcc-12
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240907   gcc-12
-i386                  randconfig-002-20240907   gcc-12
-i386                  randconfig-003-20240907   gcc-12
-i386                  randconfig-004-20240907   gcc-12
-i386                  randconfig-005-20240907   gcc-12
-i386                  randconfig-006-20240907   gcc-12
-i386                  randconfig-011-20240907   gcc-12
-i386                  randconfig-012-20240907   gcc-12
-i386                  randconfig-013-20240907   gcc-12
-i386                  randconfig-014-20240907   gcc-12
-i386                  randconfig-015-20240907   gcc-12
-i386                  randconfig-016-20240907   gcc-12
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                                defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-14.1.0
-openrisc                          allnoconfig   clang-20
-openrisc                            defconfig   gcc-12
-parisc                            allnoconfig   clang-20
-parisc                              defconfig   gcc-12
-parisc64                            defconfig   gcc-14.1.0
-powerpc                           allnoconfig   clang-20
-riscv                             allnoconfig   clang-20
-riscv                               defconfig   gcc-12
-s390                             allmodconfig   gcc-14.1.0
-s390                              allnoconfig   clang-20
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   gcc-12
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-12
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-12
-um                               allmodconfig   clang-20
-um                                allnoconfig   clang-20
-um                               allyesconfig   clang-20
-um                                  defconfig   gcc-12
-um                             i386_defconfig   gcc-12
-um                           x86_64_defconfig   gcc-12
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240907   gcc-12
-x86_64       buildonly-randconfig-002-20240907   gcc-12
-x86_64       buildonly-randconfig-003-20240907   gcc-12
-x86_64       buildonly-randconfig-004-20240907   gcc-12
-x86_64       buildonly-randconfig-005-20240907   gcc-12
-x86_64       buildonly-randconfig-006-20240907   gcc-12
-x86_64                              defconfig   clang-18
-x86_64                              defconfig   gcc-11
-x86_64                randconfig-001-20240907   gcc-12
-x86_64                randconfig-002-20240907   gcc-12
-x86_64                randconfig-003-20240907   gcc-12
-x86_64                randconfig-004-20240907   gcc-12
-x86_64                randconfig-005-20240907   gcc-12
-x86_64                randconfig-006-20240907   gcc-12
-x86_64                randconfig-011-20240907   gcc-12
-x86_64                randconfig-012-20240907   gcc-12
-x86_64                randconfig-013-20240907   gcc-12
-x86_64                randconfig-014-20240907   gcc-12
-x86_64                randconfig-015-20240907   gcc-12
-x86_64                randconfig-016-20240907   gcc-12
-x86_64                randconfig-071-20240907   gcc-12
-x86_64                randconfig-072-20240907   gcc-12
-x86_64                randconfig-073-20240907   gcc-12
-x86_64                randconfig-074-20240907   gcc-12
-x86_64                randconfig-075-20240907   gcc-12
-x86_64                randconfig-076-20240907   gcc-12
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 889f1c1a1fa9..c8ee8e42b0f6 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -351,6 +351,20 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "1025C"),
+ 		},
+ 	},
++	/*
++	 * The ASUS ROG M16 from 2023 has many events which wake it from s2idle
++	 * resulting in excessive battery drain and risk of laptop overheating,
++	 * these events can be caused by the MMC or  y AniMe display if installed.
++	 * The match is valid for all of the GU604V<x> range.
++	 */
++	{
++	.callback = init_default_s3,
++	.ident = "ASUS ROG Zephyrus M16 (2023)",
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "ROG Zephyrus M16 GU604V"),
++		},
++	},
+ 	/*
+ 	 * https://bugzilla.kernel.org/show_bug.cgi?id=189431
+ 	 * Lenovo G50-45 is a platform later than 2012, but needs nvs memory
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.46.0
+
 
