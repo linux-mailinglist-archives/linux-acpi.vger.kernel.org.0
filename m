@@ -1,210 +1,184 @@
-Return-Path: <linux-acpi+bounces-8215-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8216-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EE1973629
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 13:26:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D0D97377D
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 14:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6CC22837D4
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 11:26:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D371F26630
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 12:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8D018DF97;
-	Tue, 10 Sep 2024 11:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB56F1917F0;
+	Tue, 10 Sep 2024 12:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LO1Xbjex"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D861552FD;
-	Tue, 10 Sep 2024 11:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C3F191496
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2024 12:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725967563; cv=none; b=eE2GN/2pq216BuClGGJFn/XSZ5eX3D6BOXcxbqn1j0lcqiyM1jOXWz2yqds3HEQu7GgVt+0ZKxuHJ2KXHtywwnpWM4MwmkWwT4BbqYaesfz7i1f9Kur+OpqA3DPMQiYK8A7pK3qw828twIllGG1fGFeLAzjdjNcPiinN4DtRyIA=
+	t=1725971702; cv=none; b=dXgikPVkoXahOhuPEdkG8cteRt8yvDP7LCjTn453KSz/YHTb2CpB2/7/ke/7BLGLQRgbQUq6NW6hnJU28osS3Qxc7xgVU5pJznfPFkicfpZiW2aZPWzjjnt0XvQawOYsxfTkxnqDADM9eyyogcVNPBS1OCX/1SOLWv/OknXeMHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725967563; c=relaxed/simple;
-	bh=+q2bPFd6vBiv0igNdKQbKcSyGGd+Jk11U321LBkZs5Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JlY3XkQC0mgUQv25kpA9aU7QHddB2vcPaD4zQ9g+CDlcI7pmQCl9w1L0kelmna/qMGlKtgxNuq3oLftKggXZFQCOsfOqEG9aMTxBpd3D6rIBtyl0GIK0Qew14J6SUiksG/jh18tGBsnT54GeaJjucBlw6zG4YWiFjk6PhDas3ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4X31YJ4ND8zfbxj;
-	Tue, 10 Sep 2024 19:23:48 +0800 (CST)
-Received: from dggpemf500001.china.huawei.com (unknown [7.185.36.173])
-	by mail.maildlp.com (Postfix) with ESMTPS id AEA9A180087;
-	Tue, 10 Sep 2024 19:25:58 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- dggpemf500001.china.huawei.com (7.185.36.173) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Sep 2024 19:25:57 +0800
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
- Tue, 10 Sep 2024 12:25:55 +0100
-From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>, "Guohanjun
- (Hanjun Guo)" <guohanjun@huawei.com>, "iommu@lists.linux.dev"
-	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
-	<kevin.tian@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Len
- Brown" <lenb@kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
- Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
- Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, Alex Williamson
-	<alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer
-	<mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin Chen
-	<nicolinc@nvidia.com>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
-	Mostafa Saleh <smostafa@google.com>
-Subject: RE: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Thread-Topic: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Thread-Index: AQHa+JkNXX8oIDp/tkauz0b2cgKn4bJHsELwgAAEFICACUCfAA==
-Date: Tue, 10 Sep 2024 11:25:55 +0000
-Message-ID: <7482d2b872304e0ebf0f8fe7424616ac@huawei.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <85aa5e8eb6f243fd9df754fdc96471b8@huawei.com>
- <20240904150015.GH3915968@nvidia.com>
-In-Reply-To: <20240904150015.GH3915968@nvidia.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1725971702; c=relaxed/simple;
+	bh=YPxL+WStp4d5x5HW+heH1w6KnMYpLQkMgr/GiunWpXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jIM/zuq5ykLbbDLx7ydFjXK8FekSMjoI7+feNeyrjzukNex1uSjz+1AqqQxueX0Bf/q73u7BjiCrFTJoQNXILHWcU/n8/2DDl+MEOBHc7xxDmbhh0yha0lJTXHa97KPiu3+WPe8h+WYGgF6iNLOAJNb6Go7Qr1QECFucTTC/YD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LO1Xbjex; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c241feb80dso12447974a12.0
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2024 05:35:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1725971699; x=1726576499; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=LSsewx7UU6gQEwik2bNEi5/xY6888BEnxTjH/v5O+cc=;
+        b=LO1Xbjex5/aGLzTGQvlhGgCLVNO2MeUnpUOzuwdUc868j4YCrHgUZACCkQ7TflJQhc
+         SCC6Uneus0AgTOZmLKwhsEozoME6yERzSLbUesszHvMy7o1wnU8pYIvUkznAm6szliGb
+         O/KIyvRecjzI9hzusK1EpieoevkEkB1a4l+8SZ/HMisxOTpXfR5SU+YF2mNhkYQGv8+6
+         kkFHq70UlO6DrSIqoHgdTZk/nbsNlGo2bITXMzZegUnAq4Y1ZY6LcIM8hZG/P83Ase/m
+         Mpc0x/IiWYs/7BKZAP44mN0A8LibA1Pe/jvMQTrQg0TQrpV+5isdWNvIcVbmd82ejLUx
+         GdDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725971699; x=1726576499;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LSsewx7UU6gQEwik2bNEi5/xY6888BEnxTjH/v5O+cc=;
+        b=KzCBmeX/uXRY1ZmOrxsoyU7qSEELEFhAw6vV0D7i8+zjevTi8d7NfW/5WmZrEtBsVf
+         1uSGwFi0cF7Di0TAR/G/A8TkUZZyqS9AdERkJZQw5qcJVq9IfM2QZijQaf61QXb1SgF/
+         aZIYIN8Z4bk613479p4FzRa5PlulWmkkKtVh/xURue/qebf4uqhTNPi8jk3uu1ByYxdI
+         O7c6Q6X1SRkBRX1Ete+WSlXJM7pLUJ0ZcIMaKmxyzzHvmxLhZlvFcteGz1cqzFrJJ1BD
+         sHd319qeRs1UzjqGXJrwkPH8ju7RyoNtbPns3UhuXmTeodhtQc85bLEvY2y0j832JRhJ
+         nILg==
+X-Forwarded-Encrypted: i=1; AJvYcCXO0AIgKKjqyZ9AvDVmlkpRuok3jVZZy2wV/CzL/W/qa/1wP9rMkGVkX+IQDzdZG/MDk9ddzxaPQc86@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfmqr5+qvgMsXLZyQplL54wz8ywGEkMCya3AcFCK9LeIYO9WG0
+	6KmzGbVx88IY7AeCSDL8atkhkGkmZf/7hBizHimJmZNMYATfQhEMni3OtjZP2w==
+X-Google-Smtp-Source: AGHT+IHELrHmlAkPKV+ybsGZZAWa6S6u/zQgSyh6j6a/3oTZxhoBs4+pUZuEmgEWmeYEHs9VSlDY4A==
+X-Received: by 2002:a17:907:972a:b0:a72:7a71:7f4f with SMTP id a640c23a62f3a-a8ffb1b644emr55038566b.7.1725971698680;
+        Tue, 10 Sep 2024 05:34:58 -0700 (PDT)
+Received: from [10.156.60.236] (ip-037-024-206-209.um08.pools.vodafone-ip.de. [37.24.206.209])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25c61263sm478368866b.128.2024.09.10.05.34.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Sep 2024 05:34:58 -0700 (PDT)
+Message-ID: <6bed58f8-016f-4390-be4c-128eebff6545@suse.com>
+Date: Tue, 10 Sep 2024 14:34:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/7] xen: allow mapping ACPI data using a different
+ physical address
+To: Juergen Gross <jgross@suse.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-acpi@vger.kernel.org
+References: <20240910103932.7634-1-jgross@suse.com>
+ <20240910103932.7634-7-jgross@suse.com>
+Content-Language: en-US
+From: Jan Beulich <jbeulich@suse.com>
+Autocrypt: addr=jbeulich@suse.com; keydata=
+ xsDiBFk3nEQRBADAEaSw6zC/EJkiwGPXbWtPxl2xCdSoeepS07jW8UgcHNurfHvUzogEq5xk
+ hu507c3BarVjyWCJOylMNR98Yd8VqD9UfmX0Hb8/BrA+Hl6/DB/eqGptrf4BSRwcZQM32aZK
+ 7Pj2XbGWIUrZrd70x1eAP9QE3P79Y2oLrsCgbZJfEwCgvz9JjGmQqQkRiTVzlZVCJYcyGGsD
+ /0tbFCzD2h20ahe8rC1gbb3K3qk+LpBtvjBu1RY9drYk0NymiGbJWZgab6t1jM7sk2vuf0Py
+ O9Hf9XBmK0uE9IgMaiCpc32XV9oASz6UJebwkX+zF2jG5I1BfnO9g7KlotcA/v5ClMjgo6Gl
+ MDY4HxoSRu3i1cqqSDtVlt+AOVBJBACrZcnHAUSuCXBPy0jOlBhxPqRWv6ND4c9PH1xjQ3NP
+ nxJuMBS8rnNg22uyfAgmBKNLpLgAGVRMZGaGoJObGf72s6TeIqKJo/LtggAS9qAUiuKVnygo
+ 3wjfkS9A3DRO+SpU7JqWdsveeIQyeyEJ/8PTowmSQLakF+3fote9ybzd880fSmFuIEJldWxp
+ Y2ggPGpiZXVsaWNoQHN1c2UuY29tPsJgBBMRAgAgBQJZN5xEAhsDBgsJCAcDAgQVAggDBBYC
+ AwECHgECF4AACgkQoDSui/t3IH4J+wCfQ5jHdEjCRHj23O/5ttg9r9OIruwAn3103WUITZee
+ e7Sbg12UgcQ5lv7SzsFNBFk3nEQQCACCuTjCjFOUdi5Nm244F+78kLghRcin/awv+IrTcIWF
+ hUpSs1Y91iQQ7KItirz5uwCPlwejSJDQJLIS+QtJHaXDXeV6NI0Uef1hP20+y8qydDiVkv6l
+ IreXjTb7DvksRgJNvCkWtYnlS3mYvQ9NzS9PhyALWbXnH6sIJd2O9lKS1Mrfq+y0IXCP10eS
+ FFGg+Av3IQeFatkJAyju0PPthyTqxSI4lZYuJVPknzgaeuJv/2NccrPvmeDg6Coe7ZIeQ8Yj
+ t0ARxu2xytAkkLCel1Lz1WLmwLstV30g80nkgZf/wr+/BXJW/oIvRlonUkxv+IbBM3dX2OV8
+ AmRv1ySWPTP7AAMFB/9PQK/VtlNUJvg8GXj9ootzrteGfVZVVT4XBJkfwBcpC/XcPzldjv+3
+ HYudvpdNK3lLujXeA5fLOH+Z/G9WBc5pFVSMocI71I8bT8lIAzreg0WvkWg5V2WZsUMlnDL9
+ mpwIGFhlbM3gfDMs7MPMu8YQRFVdUvtSpaAs8OFfGQ0ia3LGZcjA6Ik2+xcqscEJzNH+qh8V
+ m5jjp28yZgaqTaRbg3M/+MTbMpicpZuqF4rnB0AQD12/3BNWDR6bmh+EkYSMcEIpQmBM51qM
+ EKYTQGybRCjpnKHGOxG0rfFY1085mBDZCH5Kx0cl0HVJuQKC+dV2ZY5AqjcKwAxpE75MLFkr
+ wkkEGBECAAkFAlk3nEQCGwwACgkQoDSui/t3IH7nnwCfcJWUDUFKdCsBH/E5d+0ZnMQi+G0A
+ nAuWpQkjM1ASeQwSHEeAWPgskBQL
+In-Reply-To: <20240910103932.7634-7-jgross@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 10.09.2024 12:39, Juergen Gross wrote:
+> When running as a Xen PV dom0 the system needs to map ACPI data of the
+> host using host physical addresses, while those addresses can conflict
+> with the guest physical addresses of the loaded linux kernel. The same
+> problem might apply in case a PV guest is configured to use the host
+> memory map.
+> 
+> This conflict can be solved by mapping the ACPI data to a different
+> guest physical address, but mapping the data via acpi_os_ioremap()
+> must still be possible using the host physical address, as this
+> address might be generated by AML when referencing some of the ACPI
+> data.
+> 
+> When configured to support running as a Xen PV domain, have an
+> implementation of acpi_os_ioremap() being aware of the possibility to
+> need above mentioned translation of a host physical address to the
+> guest physical address.
+> 
+> This modification requires to fix some #include of asm/acpi.h in x86
+> code to use linux/acpi.h instead.
+> 
+> Signed-off-by: Juergen Gross <jgross@suse.com>
 
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+with a request to comment a tiny bit more:
 
-> -----Original Message-----
-> From: Jason Gunthorpe <jgg@nvidia.com>
-> Sent: Wednesday, September 4, 2024 4:00 PM
-> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> Cc: acpica-devel@lists.linux.dev; Guohanjun (Hanjun Guo)
-> <guohanjun@huawei.com>; iommu@lists.linux.dev; Joerg Roedel
-> <joro@8bytes.org>; Kevin Tian <kevin.tian@intel.com>; kvm@vger.kernel.org=
-;
-> Len Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org; linux-arm-
-> kernel@lists.infradead.org; Lorenzo Pieralisi <lpieralisi@kernel.org>; Ra=
-fael J.
-> Wysocki <rafael@kernel.org>; Robert Moore <robert.moore@intel.com>; Robin
-> Murphy <robin.murphy@arm.com>; Sudeep Holla <sudeep.holla@arm.com>;
-> Will Deacon <will@kernel.org>; Alex Williamson
-> <alex.williamson@redhat.com>; Eric Auger <eric.auger@redhat.com>; Jean-
-> Philippe Brucker <jean-philippe@linaro.org>; Moritz Fischer <mdf@kernel.o=
-rg>;
-> Michael Shavit <mshavit@google.com>; Nicolin Chen <nicolinc@nvidia.com>;
-> patches@lists.linux.dev; Mostafa Saleh <smostafa@google.com>
-> Subject: Re: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
->=20
-> On Wed, Sep 04, 2024 at 02:20:36PM +0000, Shameerali Kolothum Thodi wrote=
-:
->=20
-> > This should be added to arm_64_lpae_alloc_pgtable_s2(), not here.
->=20
-> Woops! Yes:
->=20
-> -       /* The NS quirk doesn't apply at stage 2 */
-> -       if (cfg->quirks)
-> +       if (cfg->quirks & ~(IO_PGTABLE_QUIRK_ARM_S2FWB))
->                 return NULL;
->=20
-> > With the above fixed, I was able to assign a n/w VF dev to a Guest on
-> > a test hardware that supports S2FWB.
->=20
-> Okay great
->=20
-> > However host kernel has this WARN message:
-> > [ 1546.165105] WARNING: CPU: 5 PID: 7047 at
-> > drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c:1086
-> > arm_smmu_entry_qword_diff+0x124/0x138
-> > ....
->=20
-> Yes, my dumb mistake again, thanks for testing
->=20
-> @@ -1009,7 +1009,8 @@ void arm_smmu_get_ste_used(const __le64 *ent,
-> __le64 *used_bits)
->         /* S2 translates */
->         if (cfg & BIT(1)) {
->                 used_bits[1] |=3D
-> -                       cpu_to_le64(STRTAB_STE_1_EATS | STRTAB_STE_1_SHCF=
-G);
-> +                       cpu_to_le64(STRTAB_STE_1_S2FWB | STRTAB_STE_1_EAT=
-S |
-> +                                   STRTAB_STE_1_SHCFG);
->=20
-> > root@localhost:/# ping 150.0.124.42
-> > PING 150.0.124.42 (150.0.124.42): 56 data bytes
-> > 64 bytes from 150.0.124.42: seq=3D0 ttl=3D64 time=3D47.648 ms
->=20
-> So DMA is not totally broken if a packet flowed.
->=20
-> > [ 1395.958630] hns3 0000:c2:00.0 eth1: NETDEV WATCHDOG: CPU: 1:
-> > transmit queue 10 timed out 5260 ms
->=20
-> Timeout? Maybe interrupts are not working? Does /proc/interrupts suggest
-> that? That would point at the ITS mapping
+> @@ -836,6 +837,33 @@ void __init xen_do_remap_nonram(void)
+>  	pr_info("Remapped %u non-RAM page(s)\n", remapped);
+>  }
+>  
+> +#ifdef CONFIG_ACPI
+> +/*
+> + * Xen variant of acpi_os_ioremap() taking potentially remapped non-RAM
+> + * regions into acount.
 
-Interrupt seems to be Ok in this case as I can see /proc/interrupts increas=
-ing.
+(Nit: account)
 
-> Do you have all of Nicolin's extra patches in this kernel to make the ITS=
- work
-> with nesting?
+> + * Any attempt to map an area crossing a remap boundary will produce a
+> + * WARN() splat.
+> + */
+> +static void __iomem *xen_acpi_os_ioremap(acpi_physical_address phys,
+> +					 acpi_size size)
+> +{
+> +	unsigned int i;
+> +	const struct nonram_remap *remap = xen_nonram_remap;
+> +
+> +	for (i = 0; i < nr_nonram_remap; i++) {
+> +		if (phys + size > remap->maddr &&
+> +		    phys < remap->maddr + remap->size) {
+> +			WARN_ON(phys < remap->maddr ||
+> +				phys + size > remap->maddr + remap->size);
+> +			phys = remap->paddr + phys - remap->maddr;
 
-Yes. I am using his
- https://github.com/nicolinc/iommufd/commits/iommufd_viommu_p1-v2/
+This might be slightly easier / more logical to read as
 
-> From a page table POV, iommu_dma_get_msi_page() has:
->=20
-> 	int prot =3D IOMMU_WRITE | IOMMU_NOEXEC | IOMMU_MMIO;
->=20
-> So the ITS page should be:
->=20
-> 		if (prot & IOMMU_MMIO) {
-> 			pte |=3D ARM_LPAE_PTE_MEMATTR_DEV;
->=20
-> Which which still looks right under S2FWB unless I've misread the manual?
->=20
-> > [ 1395.960187] hns3 0000:c2:00.0 eth1: DQL info last_cnt: 42, queued:
-> > 42, adj_limit: 0, completed: 0 [ 1395.961758] hns3 0000:c2:00.0 eth1:
-> > queue state: 0x6, delta msecs: 5260 [ 1395.962925] hns3 0000:c2:00.0
-> > eth1: tx_timeout count: 1, queue id: 10, SW_NTU: 0x1, SW_NTC: 0x0,
-> > napi state: 16 [ 1395.964677] hns3 0000:c2:00.0 eth1: tx_pkts: 0,
-> > tx_bytes: 0, sw_err_cnt: 0, tx_pending: 0 [ 1395.966114] hns3
-> > 0000:c2:00.0 eth1: seg_pkt_cnt: 0, tx_more: 0, restart_queue: 0,
-> > tx_busy: 0 [ 1395.967598] hns3 0000:c2:00.0 eth1: tx_push: 1,
-> > tx_mem_doorbell: 0 [ 1395.968687] hns3 0000:c2:00.0 eth1: BD_NUM: 0x7f
-> > HW_HEAD: 0x0, HW_TAIL: 0x0, BD_ERR: 0x0, INT: 0x1 [ 1395.970291] hns3
-> > 0000:c2:00.0 eth1: RING_EN: 0x1, TC: 0x0, FBD_NUM: 0x0 FBD_OFT: 0x0,
-> > EBD_NUM: 0x400, EBD_OFT: 0x0 [ 1395.972134] hns3 0000:c2:00.0:
-> > received reset request from VF enet
-> >
-> > All this works fine on a hardware without S2FWB though.
-> >
-> > Also on this test hardware, it works fine with legacy VFIO assignment.
->=20
-> So.. Legacy VFIO assignment will use the S1, no nesting and not enable S2=
-FWB?
+			phys += remap->paddr - remap->maddr;
 
-Yes S1
-=20
-> Try to isolate if S2FWB is the exact cause by disabling it in the kernel =
-on this
-> system vs something else wrong?
+Also because of "phys" not consistently expressing a physical address
+(when you need convert it, the incoming value is a machine address) a
+comment may help here. In fact at the first glance (and despite having
+seen the code before) I thought the translation was done the wrong way
+round, simply because of the name of the variable.
 
-It looks like not related to S2FWB. I tried  commenting out S2FWB and issue=
- is still
-there.  Probably something related to this test setup.
-
-Thanks,
-Shameer
+Jan
 
