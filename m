@@ -1,213 +1,210 @@
-Return-Path: <linux-acpi+bounces-8214-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8215-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104AA9735F5
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 13:12:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EE1973629
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 13:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98118B2376A
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 11:12:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6CC22837D4
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 11:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6090918C912;
-	Tue, 10 Sep 2024 11:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3aP+G57w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8D018DF97;
+	Tue, 10 Sep 2024 11:26:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7541C1862B8
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2024 11:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D861552FD;
+	Tue, 10 Sep 2024 11:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725966749; cv=none; b=oszqaz98O8zE25IKsRFO6Xmb+dCpsbNcZwYbc8EpdeppMnABRHogosyrorYGQ9LzfDuSeX5BAIrWlgVR8M3gz7mL3/yx/PcoJKSKniTlJheQnFqhF+n+y50Kl+jbpMlHJhlvVnZZq/TQaJOOLdWEjySS/hxNEcCGOzpdvNqhnP4=
+	t=1725967563; cv=none; b=eE2GN/2pq216BuClGGJFn/XSZ5eX3D6BOXcxbqn1j0lcqiyM1jOXWz2yqds3HEQu7GgVt+0ZKxuHJ2KXHtywwnpWM4MwmkWwT4BbqYaesfz7i1f9Kur+OpqA3DPMQiYK8A7pK3qw828twIllGG1fGFeLAzjdjNcPiinN4DtRyIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725966749; c=relaxed/simple;
-	bh=UYj7aweKY056oMs7GM5XXWBsu2TkMRaSALM5bW7LDJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m6rYbneS9FjOrVYPy1a7o2cfpARYZiT+r1DcjDVEJDk5ywA53FRrDzydk+decI5YZy3TNe/A5reht772onJ4+1mVN6YC3gsPJN/KYx0iI6wmAGoli5Gu1oeQo4LA+nDnzbPq3fGsZBRrNXds/RcsxFZV/fz99XZO/Sgbd2i2IOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3aP+G57w; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c247dd0899so6661a12.1
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2024 04:12:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725966746; x=1726571546; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UYy4DmMGHFHCTGKn7bORTP8d4lFk3R5EHaNq4YeXwzM=;
-        b=3aP+G57wDR8GIYBh6ISTS9mQpKM2xJGooKSvcW/1zJs3uUy2Nl4GzcjkZOJSXOdvo2
-         tbOzMS79+lzVHhUo8f6eTAczUAMjoL8eINQp9CNKdFuPrulh7E3WtH03W/p+Umf4A/yp
-         hFyrf3OTO7GDiUkB4oV5gfziClpwMJRbZJWgaAFhv33e/l4speBx7uRLBsQ0WgyG1JDs
-         BDr9Lv/D/WcToKBSHOoSA7k3YLfz+PuB+OhOpdDWq+MTipUmeCkLOL2LeRVT9mfDC+Pr
-         hOvJUVNq5373zEu9AHOVYwzOxvn3XDi3mdKCh4i+LatgbtwC21VeXdqBgXyCzGFgl03f
-         KPIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725966746; x=1726571546;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UYy4DmMGHFHCTGKn7bORTP8d4lFk3R5EHaNq4YeXwzM=;
-        b=MiDV6OfyHDOMeYvwbUB8qpaXKQsvtEbSBmh7DmRxGrzJ/drsYFSYT6WdBnilbeor0N
-         gkdoYEO9fSmQju+EfxlZkV6NHf2Ieo0Nsu1Ac7GQqSOO8qIwkXGHSn8lLKcKDzcouvh/
-         6uBnKU2NqLuOjCuJ2pwCR4RZ0NsSFZXZAAE+o3si86eKOlMCq+Nd/gxZuTMHT3Z/QLvh
-         hO6o2vW6W8nkwEOY5L7OB41PSw0Bj+Po/ZGTFV4Q1p++Tqf2knST4QP2hh6+Qj/OrCN8
-         a3WmtSILdlY27KpaT7d31N3etHzUaGSGGG0wBGB3natE1kKrpj56RqV+ftLxkCL07rbr
-         eDNA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpMGJV6D1J72ut8cP5ZTm0Av5+H88Qwx9kLIHiUXY67bdHmf2qSm+fc+ZCyE0w8VW+ZkbMC9PuCzK5@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZRSyHp2/R64uflwFRIxX17DFQvU1Gzne4Kc9yOKsnA9RNIyNR
-	CM2eH8TnDQv5sTSaPAHIYb+HkZMJOY/mKqRsqJDwHpR6E8UT7/2F9H4LDOwKaw==
-X-Google-Smtp-Source: AGHT+IFie5nPTW6D5tNlRl7qFWvNiI/ySCh0zgRrb+aBAPhZhb7eVrcOK1eXSiw1bugwbN+BJ9aSog==
-X-Received: by 2002:a05:6402:1ec4:b0:59f:9f59:9b07 with SMTP id 4fb4d7f45d1cf-5c4029ef54amr158266a12.4.1725966745263;
-        Tue, 10 Sep 2024 04:12:25 -0700 (PDT)
-Received: from google.com (205.215.190.35.bc.googleusercontent.com. [35.190.215.205])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42caeb8120asm107512605e9.37.2024.09.10.04.12.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Sep 2024 04:12:24 -0700 (PDT)
-Date: Tue, 10 Sep 2024 11:12:20 +0000
-From: Mostafa Saleh <smostafa@google.com>
+	s=arc-20240116; t=1725967563; c=relaxed/simple;
+	bh=+q2bPFd6vBiv0igNdKQbKcSyGGd+Jk11U321LBkZs5Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JlY3XkQC0mgUQv25kpA9aU7QHddB2vcPaD4zQ9g+CDlcI7pmQCl9w1L0kelmna/qMGlKtgxNuq3oLftKggXZFQCOsfOqEG9aMTxBpd3D6rIBtyl0GIK0Qew14J6SUiksG/jh18tGBsnT54GeaJjucBlw6zG4YWiFjk6PhDas3ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4X31YJ4ND8zfbxj;
+	Tue, 10 Sep 2024 19:23:48 +0800 (CST)
+Received: from dggpemf500001.china.huawei.com (unknown [7.185.36.173])
+	by mail.maildlp.com (Postfix) with ESMTPS id AEA9A180087;
+	Tue, 10 Sep 2024 19:25:58 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ dggpemf500001.china.huawei.com (7.185.36.173) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 10 Sep 2024 19:25:57 +0800
+Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
+ lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
+ Tue, 10 Sep 2024 12:25:55 +0100
+From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
-	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v2 8/8] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
-Message-ID: <ZuAplEO7wyFahr6Z@google.com>
+CC: "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>, "Guohanjun
+ (Hanjun Guo)" <guohanjun@huawei.com>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
+	<kevin.tian@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Len
+ Brown" <lenb@kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
+ Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
+ Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, Alex Williamson
+	<alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer
+	<mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin Chen
+	<nicolinc@nvidia.com>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: RE: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+Thread-Topic: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+Thread-Index: AQHa+JkNXX8oIDp/tkauz0b2cgKn4bJHsELwgAAEFICACUCfAA==
+Date: Tue, 10 Sep 2024 11:25:55 +0000
+Message-ID: <7482d2b872304e0ebf0f8fe7424616ac@huawei.com>
 References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <8-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <ZtHuoDWbe54H1nhZ@google.com>
- <20240830170426.GV3773488@nvidia.com>
- <ZtWMGQAdR6sjBmer@google.com>
- <20240903003022.GF3773488@nvidia.com>
- <ZtbQMDxKZUZCGfrR@google.com>
- <20240903235532.GJ3773488@nvidia.com>
- <Ztrigx4LmpbFiMba@google.com>
- <20240906133444.GE1358970@nvidia.com>
+ <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <85aa5e8eb6f243fd9df754fdc96471b8@huawei.com>
+ <20240904150015.GH3915968@nvidia.com>
+In-Reply-To: <20240904150015.GH3915968@nvidia.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240906133444.GE1358970@nvidia.com>
 
-On Fri, Sep 06, 2024 at 10:34:44AM -0300, Jason Gunthorpe wrote:
-> On Fri, Sep 06, 2024 at 11:07:47AM +0000, Mostafa Saleh wrote:
-> 
-> > However, I believe the UAPI can be more clear and solid in terms of
-> > what is supported (maybe a typical struct with the CD, and some
-> > extra configs?) I will give it a think.
-> 
-> I don't think breaking up the STE into fields in another struct is
-> going to be a big improvement, it adds more code and corner cases to
-> break up and reassemble it.
-> 
-> #define STRTAB_STE_0_NESTING_ALLOWED                                         \
-> 	cpu_to_le64(STRTAB_STE_0_V | STRTAB_STE_0_CFG | STRTAB_STE_0_S1FMT | \
-> 		    STRTAB_STE_0_S1CTXPTR_MASK | STRTAB_STE_0_S1CDMAX)
-> #define STRTAB_STE_1_NESTING_ALLOWED                            \
-> 	cpu_to_le64(STRTAB_STE_1_S1DSS | STRTAB_STE_1_S1CIR |   \
-> 		    STRTAB_STE_1_S1COR | STRTAB_STE_1_S1CSH |   \
-> 		    STRTAB_STE_1_S1STALLD | STRTAB_STE_1_EATS)
-> 
-> It is 11 fields that would need to be recoded, that's alot.. Even if
-> you say the 3 cache ones are not needed it is still alot.
 
-I was thinking of providing a higher level semantics
-(no need for caching, valid...), something like:
 
-struct smmu_user_table {
-	u64 cd_table;
-	u32 smmu_cd_cfg;  /* linear or 2lvl,.... */
-	u32 smmu_trans_cfg; /* Translate, bypass, abort */
-	u32 dev_feat; /*ATS, STALL, …*/
-};
+> -----Original Message-----
+> From: Jason Gunthorpe <jgg@nvidia.com>
+> Sent: Wednesday, September 4, 2024 4:00 PM
+> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+> Cc: acpica-devel@lists.linux.dev; Guohanjun (Hanjun Guo)
+> <guohanjun@huawei.com>; iommu@lists.linux.dev; Joerg Roedel
+> <joro@8bytes.org>; Kevin Tian <kevin.tian@intel.com>; kvm@vger.kernel.org=
+;
+> Len Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; Lorenzo Pieralisi <lpieralisi@kernel.org>; Ra=
+fael J.
+> Wysocki <rafael@kernel.org>; Robert Moore <robert.moore@intel.com>; Robin
+> Murphy <robin.murphy@arm.com>; Sudeep Holla <sudeep.holla@arm.com>;
+> Will Deacon <will@kernel.org>; Alex Williamson
+> <alex.williamson@redhat.com>; Eric Auger <eric.auger@redhat.com>; Jean-
+> Philippe Brucker <jean-philippe@linaro.org>; Moritz Fischer <mdf@kernel.o=
+rg>;
+> Michael Shavit <mshavit@google.com>; Nicolin Chen <nicolinc@nvidia.com>;
+> patches@lists.linux.dev; Mostafa Saleh <smostafa@google.com>
+> Subject: Re: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+>=20
+> On Wed, Sep 04, 2024 at 02:20:36PM +0000, Shameerali Kolothum Thodi wrote=
+:
+>=20
+> > This should be added to arm_64_lpae_alloc_pgtable_s2(), not here.
+>=20
+> Woops! Yes:
+>=20
+> -       /* The NS quirk doesn't apply at stage 2 */
+> -       if (cfg->quirks)
+> +       if (cfg->quirks & ~(IO_PGTABLE_QUIRK_ARM_S2FWB))
+>                 return NULL;
+>=20
+> > With the above fixed, I was able to assign a n/w VF dev to a Guest on
+> > a test hardware that supports S2FWB.
+>=20
+> Okay great
+>=20
+> > However host kernel has this WARN message:
+> > [ 1546.165105] WARNING: CPU: 5 PID: 7047 at
+> > drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c:1086
+> > arm_smmu_entry_qword_diff+0x124/0x138
+> > ....
+>=20
+> Yes, my dumb mistake again, thanks for testing
+>=20
+> @@ -1009,7 +1009,8 @@ void arm_smmu_get_ste_used(const __le64 *ent,
+> __le64 *used_bits)
+>         /* S2 translates */
+>         if (cfg & BIT(1)) {
+>                 used_bits[1] |=3D
+> -                       cpu_to_le64(STRTAB_STE_1_EATS | STRTAB_STE_1_SHCF=
+G);
+> +                       cpu_to_le64(STRTAB_STE_1_S2FWB | STRTAB_STE_1_EAT=
+S |
+> +                                   STRTAB_STE_1_SHCFG);
+>=20
+> > root@localhost:/# ping 150.0.124.42
+> > PING 150.0.124.42 (150.0.124.42): 56 data bytes
+> > 64 bytes from 150.0.124.42: seq=3D0 ttl=3D64 time=3D47.648 ms
+>=20
+> So DMA is not totally broken if a packet flowed.
+>=20
+> > [ 1395.958630] hns3 0000:c2:00.0 eth1: NETDEV WATCHDOG: CPU: 1:
+> > transmit queue 10 timed out 5260 ms
+>=20
+> Timeout? Maybe interrupts are not working? Does /proc/interrupts suggest
+> that? That would point at the ITS mapping
 
-I feel that is a bit more clear for user space? Instead of
-partially setting the STE, and it should be easier to extend than
-masking the STE.
+Interrupt seems to be Ok in this case as I can see /proc/interrupts increas=
+ing.
 
-I’am not opposed to the vSTE, I just feel it's loosely defined,
-that's why I was asking for the docs.
+> Do you have all of Nicolin's extra patches in this kernel to make the ITS=
+ work
+> with nesting?
 
-> 
-> > > Reporting a static kernel capability through GET_INFO output is
-> > > easier/saner than providing some kind of policy flags in the GET_INFO
-> > > input to specify how the sanitization should work.
-> > 
-> > I don’t think it’s “policy”, it’s just giving userspace the minimum
-> > knowledge it needs to create the vSMMU, but again no really strong
-> > opinion about that.
-> 
-> There is no single "minimum knowledge" though, it depends on what the
-> VMM is able to support. IMHO once you go over to the "VMM has to
-> ignore bits it doesn't understand" you may as well just show
-> everything. Then the kernel side can't be wrong.
-> 
-> If the kernel side can be wrong, then you are back to handshaking
-> policy because the kernel can't assume that all existing VMMs wil not
-> rely on the kernel to do the masking.
->
+Yes. I am using his
+ https://github.com/nicolinc/iommufd/commits/iommufd_viommu_p1-v2/
 
-I agree it’s tricky, again no strong opinion on that, although I doubt
-that a VMM would care about all the SMMU features.
+> From a page table POV, iommu_dma_get_msi_page() has:
+>=20
+> 	int prot =3D IOMMU_WRITE | IOMMU_NOEXEC | IOMMU_MMIO;
+>=20
+> So the ITS page should be:
+>=20
+> 		if (prot & IOMMU_MMIO) {
+> 			pte |=3D ARM_LPAE_PTE_MEMATTR_DEV;
+>=20
+> Which which still looks right under S2FWB unless I've misread the manual?
+>=20
+> > [ 1395.960187] hns3 0000:c2:00.0 eth1: DQL info last_cnt: 42, queued:
+> > 42, adj_limit: 0, completed: 0 [ 1395.961758] hns3 0000:c2:00.0 eth1:
+> > queue state: 0x6, delta msecs: 5260 [ 1395.962925] hns3 0000:c2:00.0
+> > eth1: tx_timeout count: 1, queue id: 10, SW_NTU: 0x1, SW_NTC: 0x0,
+> > napi state: 16 [ 1395.964677] hns3 0000:c2:00.0 eth1: tx_pkts: 0,
+> > tx_bytes: 0, sw_err_cnt: 0, tx_pending: 0 [ 1395.966114] hns3
+> > 0000:c2:00.0 eth1: seg_pkt_cnt: 0, tx_more: 0, restart_queue: 0,
+> > tx_busy: 0 [ 1395.967598] hns3 0000:c2:00.0 eth1: tx_push: 1,
+> > tx_mem_doorbell: 0 [ 1395.968687] hns3 0000:c2:00.0 eth1: BD_NUM: 0x7f
+> > HW_HEAD: 0x0, HW_TAIL: 0x0, BD_ERR: 0x0, INT: 0x1 [ 1395.970291] hns3
+> > 0000:c2:00.0 eth1: RING_EN: 0x1, TC: 0x0, FBD_NUM: 0x0 FBD_OFT: 0x0,
+> > EBD_NUM: 0x400, EBD_OFT: 0x0 [ 1395.972134] hns3 0000:c2:00.0:
+> > received reset request from VF enet
+> >
+> > All this works fine on a hardware without S2FWB though.
+> >
+> > Also on this test hardware, it works fine with legacy VFIO assignment.
+>=20
+> So.. Legacy VFIO assignment will use the S1, no nesting and not enable S2=
+FWB?
 
-> > > > But this is a UAPI. How can userspace implement that if it has no
-> > > > documentation, and how can it be maintained if there is no clear
-> > > > interface with userspace with what is expected/returned...
-> > > 
-> > > I'm not sure what you are looking for here? I don't think an entire
-> > > tutorial on how to build a paravirtualized vSMMU is appropriate to
-> > > put in comments?
-> > 
-> > Sorry, I don’t think I was clear, I meant actual documentation for
-> > the UAPI, as in RST files for example. If I want to support that
-> > in kvmtool how can I implement it? 
-> 
-> Well, you need thousands of lines of code in kvtool to build a vIOMMU :)
-> 
-> Nicolin is looking at writing something, lets see.
-> 
-> I think for here we should focus on the comments being succinct but
-> sufficient to understand what the uAPI does itself.
-> 
-Actually I think the opposite, I think UAPI docs is more important
-here, especially for the vSTE, that's how we can compare the code to
-what is expected from user-space.
+Yes S1
+=20
+> Try to isolate if S2FWB is the exact cause by disabling it in the kernel =
+on this
+> system vs something else wrong?
 
-> > > I would *really* like everyone to sit down and figure out how to
-> > > manage virtual device lifecycle in a single language!
-> > 
-> > Yes, just like the guest_memfd work. There has been also
-> > some work to unify some of the guest HVC bits:
-> > https://lore.kernel.org/all/20240830130150.8568-1-will@kernel.org/
-> 
-> I think Dan Williams is being ringleader for the PCI side effort on CC
-
-Thanks, I will try to spend some time on the secure VFIO work.
+It looks like not related to S2FWB. I tried  commenting out S2FWB and issue=
+ is still
+there.  Probably something related to this test setup.
 
 Thanks,
-Mostafa
-
-> 
-> Jason
+Shameer
 
