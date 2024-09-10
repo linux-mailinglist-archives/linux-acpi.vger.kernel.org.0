@@ -1,309 +1,180 @@
-Return-Path: <linux-acpi+bounces-8212-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8213-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A579734C6
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 12:43:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317DC9735BA
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 12:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D5361C25008
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 10:43:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FC9DB244C3
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Sep 2024 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5175197A69;
-	Tue, 10 Sep 2024 10:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0017184549;
+	Tue, 10 Sep 2024 10:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="JekQfvfq";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="JekQfvfq"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cD16+RVy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0048C1974EA;
-	Tue, 10 Sep 2024 10:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B26185B4F
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2024 10:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964813; cv=none; b=j7SkMt1gRH6D0regEMr50gvA+Xv6qFhDS5VK0rB3aiLdx79OR51JqQXQ5tzDdtqVm3jV1OhRxisjmsD3caFcHbbCpos6Kts/6irOIfUNEY7ypX1S+NfKtPWeOWgzaTVCt2HfhZgYM9eCmG/ZcDEmS7/ca5XtU/T5C54CBDe+JM8=
+	t=1725965762; cv=none; b=dy6cf+Iy+ORZnOctFX9KelSfaNz3HFjNxbZ3Tp/tmFSSDVuRjHUr2E+YOUZNd7s+d13amZ7Ao4FgT4uRNzSq/rs9IdH80Xb/+SpfNXBiQLT8j1EHQ9BcH+x+lABCQ8QJBskwyhBGP66WasYoCwgsR1cL/yR4gSvvXm806BdSTL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964813; c=relaxed/simple;
-	bh=ycpAlu+sX/j10mk59bJJG9XZwz8FBkRtrrgRUvfSAnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTI/CzHYGUVJ+Lnin9542SRIbgsvC5d6TCGZKhc1f0eH4XWjg7sCR/Le41pPBDsnD03AyE4YbGWMaITup7MivXxFy9esDNsjyH17oFu0ZfcujQgy5QbdXVd4F099Jta+tX41fi5DtA5OwZB2HbJQSbDRmAShR2y4tzZviNFDDoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=JekQfvfq; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=JekQfvfq; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2A5D61F80E;
-	Tue, 10 Sep 2024 10:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1725964810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4E2YV8ab3rtlkcTkU/deOosd7xEwn8/WuMZMIwtC3dQ=;
-	b=JekQfvfqdCWVZv8gir3nbMWrqDjbnxmhtTvUzqduMIb/cXlETSOLb587XPD2PT1gqjEkCU
-	0hPa8CfTBFwZsUfIIVWBiBu6d+0Y66F3iF1bnMjHsvcWUTHI7gqBAeel7qDb9UCRBIttgn
-	jq8fhT8QfbGXixNYknZkAjoUfyCFXQc=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1725964810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4E2YV8ab3rtlkcTkU/deOosd7xEwn8/WuMZMIwtC3dQ=;
-	b=JekQfvfqdCWVZv8gir3nbMWrqDjbnxmhtTvUzqduMIb/cXlETSOLb587XPD2PT1gqjEkCU
-	0hPa8CfTBFwZsUfIIVWBiBu6d+0Y66F3iF1bnMjHsvcWUTHI7gqBAeel7qDb9UCRBIttgn
-	jq8fhT8QfbGXixNYknZkAjoUfyCFXQc=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BF262132CB;
-	Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NcobLQki4GbsYwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Tue, 10 Sep 2024 10:40:09 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	s=arc-20240116; t=1725965762; c=relaxed/simple;
+	bh=E0rU2Bx/jS99DDu2M3sefvBWt8JU8LAOi0vcShQGr6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QoYkpOxm1LHCLaySLumnTmLBmHbaJG8lRKDoa/r8TruMyKm5RbRr1BWj/qUsHdGL4mFuAonhdDvzZU3baPkBrZRXGBwMuxCnQUcqTbV06alsgJqAJBObwuB6NF0BJrLS+SzlHZSSrq4dZElYGP4Y2d3Tv+uHT9d9EoyuOgOYJMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cD16+RVy; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c2460e885dso11600a12.0
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Sep 2024 03:56:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725965759; x=1726570559; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vHmk114QIZCjlFSKd2nx+MtW7wZ0G3Zn0tQIsPkVXhc=;
+        b=cD16+RVy8eM9jzRWyDKago4J3Vok7SDzOz/X9qurVGKw8twoB/6rG3ms34NoVyqr6q
+         znpfcu/k3LJ3AyxmM0lIricHTYiXyd337F6eA1Hq81gaTBWC2j7ZhqhSpuu053307toG
+         VxTzGlg1Jz5Vg+AdcLvjNvrJxCu2uawlazXas6aSkSjMUHUZPooaNzzYdf36nCFcTOeV
+         Ra+Qlh5VeD+GCIMak4NEM8hyEPtitzWU11I7n4q7ZlF/DQ6zYcn53QSk77+LNiUFCmdW
+         A8gVyqpNGaed+OEHlUahmKFvl2Z4YElWGW36ytFGjTEPJvYUGjNhNCEdRLwNofISZl0J
+         p7gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725965759; x=1726570559;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vHmk114QIZCjlFSKd2nx+MtW7wZ0G3Zn0tQIsPkVXhc=;
+        b=GuvY1EkF9JPq3I3FK9hHWTA3g9Slr1m3U62T3Eodfdadp2l4qq9rglhwT1VlZyTsNh
+         3CUD/EBTSPgYyPsOtaZmxWUwUDf6uQJBgVBkvmxoqC7/S3lxkZYQAyfpU8x9wHmBehWi
+         DSNftlb+ieduNiEFJOD/dgose0Vb4/RQyIFNWm9ps890MGbVoJlxh8SXcXObiHSRDCMj
+         JjI6ja5iA9o0IrpaILsOmWDsK+kv+yKevhKoDBscU847yJ9T2N07q2Qp/hy25AVSCs5j
+         WMXg6Kuf/ZbksIur/eWTipmJQLGKfbofD4q/3CtJtujWsdXBqs/ogJOYLC9UsoRRb+Ph
+         216A==
+X-Forwarded-Encrypted: i=1; AJvYcCVftLe00ku+vJm/V7S4yHRs+1IahB5Ee7jj0K/G5R7r9uBO7Ly968m6agTTzxMU2BUwJESl7rHBc4tT@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxk9mXZVzjUG7F7jsH8EYrbUyNvClfwpMRyf+XKpw8EYYCiQl3L
+	DqFqepRGdepl1ILQ4iuzUdApxoal8xwokyWpE0ZK0YMnLVWDNv/mCCOfWvOTrQ==
+X-Google-Smtp-Source: AGHT+IH5Z6CO+MKfDYUG1iOU31Fa2e8Ac+77rN2VKHvSd6OZvtfGFA8hOAHmo3xhEkofbaoqsCkAhQ==
+X-Received: by 2002:a05:6402:34d5:b0:58b:15e4:d786 with SMTP id 4fb4d7f45d1cf-5c4040d9d24mr152948a12.5.1725965758834;
+        Tue, 10 Sep 2024 03:55:58 -0700 (PDT)
+Received: from google.com (205.215.190.35.bc.googleusercontent.com. [35.190.215.205])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42caeb8afc9sm108460105e9.44.2024.09.10.03.55.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 03:55:58 -0700 (PDT)
+Date: Tue, 10 Sep 2024 10:55:51 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v3 6/7] xen: allow mapping ACPI data using a different physical address
-Date: Tue, 10 Sep 2024 12:39:31 +0200
-Message-ID: <20240910103932.7634-7-jgross@suse.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240910103932.7634-1-jgross@suse.com>
-References: <20240910103932.7634-1-jgross@suse.com>
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Subject: Re: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+Message-ID: <ZuAlt9SsijRxuGLk@google.com>
+References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <ZtHhdj6RAKACBCUG@google.com>
+ <20240830164019.GU3773488@nvidia.com>
+ <ZtWFkR0eSRM4ogJL@google.com>
+ <20240903000546.GD3773488@nvidia.com>
+ <ZtbBTX96OWdONhaQ@google.com>
+ <20240903233340.GH3773488@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid,imap1.dmz-prg2.suse.org:helo];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+In-Reply-To: <20240903233340.GH3773488@nvidia.com>
 
-When running as a Xen PV dom0 the system needs to map ACPI data of the
-host using host physical addresses, while those addresses can conflict
-with the guest physical addresses of the loaded linux kernel. The same
-problem might apply in case a PV guest is configured to use the host
-memory map.
+On Tue, Sep 03, 2024 at 08:33:40PM -0300, Jason Gunthorpe wrote:
+> On Tue, Sep 03, 2024 at 07:57:01AM +0000, Mostafa Saleh wrote:
+> 
+> > Basically, I believe we shouldn’t set FWB blindly just because it’s supported,
+> > I don’t see how it’s useful for stage-2 only domains.
+> 
+> And the only problem we can see is some niche scenario where incoming
+> memory attributes that are already requesting cachable combine to a
+> different kind of cachable?
 
-This conflict can be solved by mapping the ACPI data to a different
-guest physical address, but mapping the data via acpi_os_ioremap()
-must still be possible using the host physical address, as this
-address might be generated by AML when referencing some of the ACPI
-data.
+No, it’s not about the niche scenario, as I mentioned I don’t think
+we should enable FWB because it just exists. One can argue the opposite,
+if S2FWB is no different why enable it?
 
-When configured to support running as a Xen PV domain, have an
-implementation of acpi_os_ioremap() being aware of the possibility to
-need above mentioned translation of a host physical address to the
-guest physical address.
+AFAIU, FWB would be useful in cases where the hypervisor(or VMM) knows
+better than the VM, for example some devices MMIO space are emulated so
+they are normal memory and it’s more efficient to use memory attributes.
 
-This modification requires to fix some #include of asm/acpi.h in x86
-code to use linux/acpi.h instead.
+Taking into consideration all the hassle that can happen if non-coherent
+devices use the wrong attribute, I’d suggest either set FWB only for
+coherent devices (I know it’s not easy to define, but maybe be should?)
+or we have a new CAP where the caller is aware of that. But I don’t think
+the driver should decide that on behalf of the caller.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
-V2:
-- new patch (Jan Beulich)
-V3:
-- add const attribute (Jan Beulich)
-- guard ACPI related code with CONFIG_ACPI (Jan Beulich)
-- use CONFIG_XEN_PV instead of CONFIG_XEN_PV_DOM0
----
- arch/x86/include/asm/acpi.h        |  8 +++++++
- arch/x86/kernel/acpi/boot.c        | 10 +++++++++
- arch/x86/kernel/mmconf-fam10h_64.c |  2 +-
- arch/x86/kernel/x86_init.c         |  2 +-
- arch/x86/xen/p2m.c                 | 34 ++++++++++++++++++++++++++++++
- arch/x86/xen/setup.c               |  2 +-
- 6 files changed, 55 insertions(+), 3 deletions(-)
+> 
+> > And I believe making assumptions about VFIO (which actually is not correctly
+> > enforced at the moment) is fragile.
+> 
+> VFIO requiring cachable is definately not fragile, and it also sets
+> the IOMMU_CACHE flag to indicate this. Revising VFIO to allow
+> non-cachable would be a signficant change and would also change what
+> IOMMU_CACHE flag it sets.
+> 
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index 21bc53f5ed0c..5ab1a4598d00 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -174,6 +174,14 @@ void acpi_generic_reduced_hw_init(void);
- void x86_default_set_root_pointer(u64 addr);
- u64 x86_default_get_root_pointer(void);
- 
-+#ifdef CONFIG_XEN_PV
-+/* A Xen PV domain needs a special acpi_os_ioremap() handling. */
-+extern void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys,
-+					 acpi_size size);
-+void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size);
-+#define acpi_os_ioremap acpi_os_ioremap
-+#endif
-+
- #else /* !CONFIG_ACPI */
- 
- #define acpi_lapic 0
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 9f4618dcd704..2de8510c56dd 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -1778,3 +1778,13 @@ u64 x86_default_get_root_pointer(void)
- {
- 	return boot_params.acpi_rsdp_addr;
- }
-+
-+#ifdef CONFIG_XEN_PV
-+void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-+{
-+	return ioremap_cache(phys, size);
-+}
-+
-+void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys, acpi_size size) =
-+	x86_acpi_os_ioremap;
-+#endif
-diff --git a/arch/x86/kernel/mmconf-fam10h_64.c b/arch/x86/kernel/mmconf-fam10h_64.c
-index c94dec6a1834..8347a29f9db4 100644
---- a/arch/x86/kernel/mmconf-fam10h_64.c
-+++ b/arch/x86/kernel/mmconf-fam10h_64.c
-@@ -9,12 +9,12 @@
- #include <linux/pci.h>
- #include <linux/dmi.h>
- #include <linux/range.h>
-+#include <linux/acpi.h>
- 
- #include <asm/pci-direct.h>
- #include <linux/sort.h>
- #include <asm/io.h>
- #include <asm/msr.h>
--#include <asm/acpi.h>
- #include <asm/mmconfig.h>
- #include <asm/pci_x86.h>
- 
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index 82b128d3f309..47ef8af23101 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -8,8 +8,8 @@
- #include <linux/ioport.h>
- #include <linux/export.h>
- #include <linux/pci.h>
-+#include <linux/acpi.h>
- 
--#include <asm/acpi.h>
- #include <asm/bios_ebda.h>
- #include <asm/paravirt.h>
- #include <asm/pci_x86.h>
-diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
-index 5b2aeae6f9e4..a64e9562733e 100644
---- a/arch/x86/xen/p2m.c
-+++ b/arch/x86/xen/p2m.c
-@@ -70,6 +70,7 @@
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/acpi.h>
- 
- #include <asm/cache.h>
- #include <asm/setup.h>
-@@ -836,6 +837,33 @@ void __init xen_do_remap_nonram(void)
- 	pr_info("Remapped %u non-RAM page(s)\n", remapped);
- }
- 
-+#ifdef CONFIG_ACPI
-+/*
-+ * Xen variant of acpi_os_ioremap() taking potentially remapped non-RAM
-+ * regions into acount.
-+ * Any attempt to map an area crossing a remap boundary will produce a
-+ * WARN() splat.
-+ */
-+static void __iomem *xen_acpi_os_ioremap(acpi_physical_address phys,
-+					 acpi_size size)
-+{
-+	unsigned int i;
-+	const struct nonram_remap *remap = xen_nonram_remap;
-+
-+	for (i = 0; i < nr_nonram_remap; i++) {
-+		if (phys + size > remap->maddr &&
-+		    phys < remap->maddr + remap->size) {
-+			WARN_ON(phys < remap->maddr ||
-+				phys + size > remap->maddr + remap->size);
-+			phys = remap->paddr + phys - remap->maddr;
-+			break;
-+		}
-+	}
-+
-+	return x86_acpi_os_ioremap(phys, size);
-+}
-+#endif /* CONFIG_ACPI */
-+
- /*
-  * Add a new non-RAM remap entry.
-  * In case of no free entry found, just crash the system.
-@@ -850,6 +878,12 @@ void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
- 		BUG();
- 	}
- 
-+#ifdef CONFIG_ACPI
-+	/* Switch to the Xen acpi_os_ioremap() variant. */
-+	if (nr_nonram_remap == 0)
-+		acpi_os_ioremap = xen_acpi_os_ioremap;
-+#endif
-+
- 	xen_nonram_remap[nr_nonram_remap].maddr = maddr;
- 	xen_nonram_remap[nr_nonram_remap].paddr = paddr;
- 	xen_nonram_remap[nr_nonram_remap].size = size;
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 2c79bb5a9cd0..1114e49937da 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -15,12 +15,12 @@
- #include <linux/cpuidle.h>
- #include <linux/cpufreq.h>
- #include <linux/memory_hotplug.h>
-+#include <linux/acpi.h>
- 
- #include <asm/elf.h>
- #include <asm/vdso.h>
- #include <asm/e820/api.h>
- #include <asm/setup.h>
--#include <asm/acpi.h>
- #include <asm/numa.h>
- #include <asm/idtentry.h>
- #include <asm/xen/hypervisor.h>
--- 
-2.43.0
+I meant the driver shouldn't assume the caller behaviour, if it's VFIO
+or something new.
 
+> > and we should only set FWB for coherent
+> > devices in nested setup only where the VMM(or hypervisor) knows better than
+> > the VM.
+> 
+> I don't want to touch the 'only coherent devices' question. Last time
+> I tried to do that I got told every option was wrong.
+> 
+> I would be fine to only enable for nesting parent domains. It is
+> mandatory here and we definitely don't support non-cachable nesting
+> today.  Can we agree on that?
+> 
+Why is it mandatory?
+
+I think a supporting point for this, is that KVM does the same for
+the CPU, where it enables FWB for VMs if supported. I have this on
+my list to study if that can be improved. But may be if we are out
+of options that would be a start.
+
+> Keep in mind SMMU S2FWB is really new and probably very little HW
+> supports it right now. So we are not breaking anything existing
+> here. IMHO it is better to always enable the stricter features going
+> forward, and then evaluate an in-kernel opt-out if someone comes with
+> a concrete use case.
+> 
+
+I agree, it’s unlikely that this breaks existing hardware, but I’d
+be concerned if FWB is enabled unconditionally it breaks devices in
+the future and we end up restricting it more.
+
+Thanks,
+Mostafa
+> Jason
 
