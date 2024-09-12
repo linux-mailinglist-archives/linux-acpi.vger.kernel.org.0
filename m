@@ -1,98 +1,196 @@
-Return-Path: <linux-acpi+bounces-8259-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8264-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C5C9762A4
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 09:27:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2A19762BB
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 09:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 674D7B2151A
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 07:27:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39AC11F2294F
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 07:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A806918E03A;
-	Thu, 12 Sep 2024 07:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434D918BBA6;
+	Thu, 12 Sep 2024 07:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mDstQUWS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EB41885A0;
-	Thu, 12 Sep 2024 07:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6704A188CDA
+	for <linux-acpi@vger.kernel.org>; Thu, 12 Sep 2024 07:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726126028; cv=none; b=kgvMNAB8kSeR5mrX5PNokcePssgjMBlbUA0X+XQqn9kIOxsPVt2GhjpMCPZXVHysA5jWDAULvBrz+lNCzSud2MNQQKDEjHceUHm0eBpgAVhzas4NnFL1uzDerZNT5hpf1BlEIBEUda7km3advB44hWR6Wnd5by+WZzJnXo6xiU4=
+	t=1726126376; cv=none; b=rKCTK01zxUIJ1FqRrGW3LtYa5qQgqRYN9cnKJqFs8FUldAujqxKLJn7/mXK6A5SCv9aTBxAEQ8sc3cILev/6pY8ZG/z7HutWR+TUIe9407Y+dYYQ3j+QgPNBu8rpUJNz+upMn6pabIql93rBuP+2TuRjpN6jAMtEoEhNm77PPxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726126028; c=relaxed/simple;
-	bh=ITHaZx556TCDhMkVOu8jwGakV8Wz+pHoCLmJF4zAQMA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jIujUmUikxtJNxzl98Fk47tvcWTp0cPI7z/xTgIh6ZiD3mUXkyKKybiQJlqgy/g5WlQopHPwNfe6KaKwDfjU+B3BkI/7C4MueR3YgPeGhBFdZfG/XZdOS7eNUGbA4qTUf5ge6EpJQipDHy+4gylkUy4T+C88duaKA107iArF7jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4X488q2j3LzmVFK;
-	Thu, 12 Sep 2024 15:24:59 +0800 (CST)
-Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
-	by mail.maildlp.com (Postfix) with ESMTPS id EB8A11800D4;
-	Thu, 12 Sep 2024 15:27:03 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
- (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 12 Sep
- 2024 15:27:03 +0800
-Message-ID: <95bc95ce-4964-44b3-5f19-813998ee53c3@hisilicon.com>
-Date: Thu, 12 Sep 2024 15:27:03 +0800
+	s=arc-20240116; t=1726126376; c=relaxed/simple;
+	bh=FzBKh+AU40CN9oHzR3BSVFgBams1zQxhZ8kcZSCD9k0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ILVUseFPbnDoYftcNqNw91ktTSs9X1zAsdDwD6qzkqCOA2Se1i9guDTzR2wuBMqAL75p86gp6TISg9Y2WuU2YKtMoj5EyJpBquCAblSQ2cD+8Bv5QkqUKBMfLy7rQhXvcBweESz+s6Xgxc3FmJtnquZ+p6U1dlmrn6MNVy6jrvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mDstQUWS; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5365b6bd901so666566e87.2
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Sep 2024 00:32:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1726126373; x=1726731173; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mORgeThFItSKRVvwL2eU52STgrT61e2xyY47HCtu0j0=;
+        b=mDstQUWSJRX8uSlNgce//qZYi6Hwex4k0yIuHiYiZruBEiYmJwgBWHlQThm+qf4Th0
+         xJEclNObmybulIGEAi58NDZDBzsazgnmIBjXNwpPZgfp4/d/uHFUnXX+X5No7rmDHYVM
+         bM4/twqLZRveYGWhK4eDq15mmJ6kDJxG29p4UNyTKj8qnA0fXGd62A2iElMXWdsVSanY
+         Z2vcLikEg/Hn0f8WsJ8cfF7LZJQkVKhW6vsF6Evkzu8K9p56Hi0vYe4KDh24KtUH+rHD
+         HnDiYDTYO0SDaxF6yFCls5CDbtbuo7s2sKLMl9A51CNvXNYHXMehPONPdOa2NE/0b0eY
+         vyiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726126373; x=1726731173;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mORgeThFItSKRVvwL2eU52STgrT61e2xyY47HCtu0j0=;
+        b=MJ7C2UaNuCtBTne/GADSW3qbp4UTpPOPZDagm8aXke72iTCw26GAhnN3M54PuPD+Cn
+         9zXQtrRmGpDGcasHUJe/RyM6sfhXHzVXomBMPIxNnCEweQT4rQMuTZ8oPWc/k7fNdk5m
+         vDEIKQjbTZu2mj6T8AMvIBbc9iqTS/6/KQ95CjWX5C1LAULMz1mDFPiAwAeDTfUGL24r
+         ZZichOGyl3Ij6H6lnlI63iMJWA5M0qRQOiVplLC98hhfWWjFaNR/PLGl9JnAM3kCUBrK
+         ZRavgHdvoXTBYzafu+o73cHCD/h2adjJ7RMCjoBdO9vnMaXxzmC0EBwZUfRYWY1MDlpb
+         Pq7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUfjWSJf6u8zMhkPIwYeKYyQdESMtR4gGhWPJC6nWy2QC4FMZfjxK8w/iPNJ1if2friC/t8n7D0YyOH@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1G9mBtAYh2AP8Wedj34KcvQObrkQvy775UsV1EUXrqiriVrox
+	gz/B2704Pu4kD6KujzpFN67EfCTH9bAeNBgjLBkoqtV/dWtGsu6i2NmbqtTy4Zr2uisEavq/+BP
+	cYLIoXnOYlulOjOU/z8qb6qzv0FmLhxjBR++w6Q==
+X-Google-Smtp-Source: AGHT+IE2qH+DDo5DbegofrZD/Jk3qp04GIJFuzg8g/g2YGLkO7heSfzNnSID+VNatE+0Yyh1SXo2NwGwNJsgxGu/4kI=
+X-Received: by 2002:a05:6512:ac9:b0:535:d4e9:28bb with SMTP id
+ 2adb3069b0e04-53678feb448mr861902e87.46.1726126371795; Thu, 12 Sep 2024
+ 00:32:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v2 0/3] cppc_cpufreq: Rework ->get() error handling when
- cores are idle
-To: <ionela.voinescu@arm.com>, <beata.michalska@arm.com>,
-	<wangxiongfeng2@huawei.com>, <viresh.kumar@linaro.org>, <rafael@kernel.org>
-CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <wanghuiqiang@huawei.com>,
-	<zhenglifeng1@huawei.com>, <lihuisong@huawei.com>, <yangyicong@huawei.com>,
-	<liaochang1@huawei.com>, <zengheng4@huawei.com>
-References: <20240912072001.433980-1-zhanjie9@hisilicon.com>
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <20240912072001.433980-1-zhanjie9@hisilicon.com>
+References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <Zs5Fom+JFZimFpeS@Asurada-Nvidia> <CABQgh9HChfeD-H-ghntqBxA3xHrySShy+3xJCNzHB74FuncFNw@mail.gmail.com>
+ <ee50c648-3fb5-4cb4-bc59-2283489be10e@linux.intel.com>
+In-Reply-To: <ee50c648-3fb5-4cb4-bc59-2283489be10e@linux.intel.com>
+From: Zhangfei Gao <zhangfei.gao@linaro.org>
+Date: Thu, 12 Sep 2024 15:32:40 +0800
+Message-ID: <CABQgh9H2+uTgsQxgLSuua7h0kxSwfYZE1=GM1TA4H30jNsM9OQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, acpica-devel@lists.linux.dev, 
+	Hanjun Guo <guohanjun@huawei.com>, iommu@lists.linux.dev, 
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, 
+	Alex Williamson <alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer <mdf@kernel.org>, 
+	Michael Shavit <mshavit@google.com>, patches@lists.linux.dev, 
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpeml500019.china.huawei.com (7.185.36.137)
 
-Sorry, please ignore this thread.
+On Thu, 12 Sept 2024 at 12:29, Baolu Lu <baolu.lu@linux.intel.com> wrote:
+>
+> On 9/12/24 11:42 AM, Zhangfei Gao wrote:
+> > On Wed, 28 Aug 2024 at 05:32, Nicolin Chen<nicolinc@nvidia.com>  wrote:
+> >> On Tue, Aug 27, 2024 at 12:51:30PM -0300, Jason Gunthorpe wrote:
+> >>> This brings support for the IOMMFD ioctls:
+> >>>
+> >>>   - IOMMU_GET_HW_INFO
+> >>>   - IOMMU_HWPT_ALLOC_NEST_PARENT
+> >>>   - IOMMU_DOMAIN_NESTED
+> >>>   - ops->enforce_cache_coherency()
+> >>>
+> >>> This is quite straightforward as the nested STE can just be built in the
+> >>> special NESTED domain op and fed through the generic update machinery.
+> >>>
+> >>> The design allows the user provided STE fragment to control several
+> >>> aspects of the translation, including putting the STE into a "virtual
+> >>> bypass" or a aborting state. This duplicates functionality available by
+> >>> other means, but it allows trivially preserving the VMID in the STE as we
+> >>> eventually move towards the VIOMMU owning the VMID.
+> >>>
+> >>> Nesting support requires the system to either support S2FWB or the
+> >>> stronger CANWBS ACPI flag. This is to ensure the VM cannot bypass the
+> >>> cache and view incoherent data, currently VFIO lacks any cache flushing
+> >>> that would make this safe.
+> >>>
+> >>> Yan has a series to add some of the needed infrastructure for VFIO cache
+> >>> flushing here:
+> >>>
+> >>>   https://lore.kernel.org/linux-iommu/20240507061802.20184-1-yan.y.zhao@intel.com/
+> >>>
+> >>> Which may someday allow relaxing this further.
+> >>>
+> >>> Remove VFIO_TYPE1_NESTING_IOMMU since it was never used and superseded by
+> >>> this.
+> >>>
+> >>> This is the first series in what will be several to complete nesting
+> >>> support. At least:
+> >>>   - IOMMU_RESV_SW_MSI related fixups
+> >>>      https://lore.kernel.org/linux-iommu/cover.1722644866.git.nicolinc@nvidia.com/
+> >>>   - VIOMMU object support to allow ATS and CD invalidations
+> >>>      https://lore.kernel.org/linux-iommu/cover.1723061377.git.nicolinc@nvidia.com/
+> >>>   - vCMDQ hypervisor support for direct invalidation queue assignment
+> >>>      https://lore.kernel.org/linux-iommu/cover.1712978212.git.nicolinc@nvidia.com/
+> >>>   - KVM pinned VMID using VIOMMU for vBTM
+> >>>      https://lore.kernel.org/linux-iommu/20240208151837.35068-1-shameerali.kolothum.thodi@huawei.com/
+> >>>   - Cross instance S2 sharing
+> >>>   - Virtual Machine Structure using VIOMMU (for vMPAM?)
+> >>>   - Fault forwarding support through IOMMUFD's fault fd for vSVA
+> >>>
+> >>> The VIOMMU series is essential to allow the invalidations to be processed
+> >>> for the CD as well.
+> >>>
+> >>> It is enough to allow qemu work to progress.
+> >>>
+> >>> This is on github:https://github.com/jgunthorpe/linux/commits/smmuv3_nesting
+> >>>
+> >>> v2:
+> >> As mentioned above, the VIOMMU series would be required to test
+> >> the entire nesting feature, which now has a v2 rebasing on this
+> >> series. I tested it with a paring QEMU branch. Please refer to:
+> >> https://lore.kernel.org/linux-iommu/cover.1724776335.git.nicolinc@nvidia.com/
+> >> Also, there is another new VIRQ series on top of the VIOMMU one
+> >> and this nesting series. And I tested it too. Please refer to:
+> >> https://lore.kernel.org/linux-iommu/cover.1724777091.git.nicolinc@nvidia.com/
+> >>
+> >> With that,
+> >>
+> >> Tested-by: Nicolin Chen<nicolinc@nvidia.com>
+> >>
+> > Have you tested the user page fault?
+> >
+> > I got an issue, when a user page fault happens,
+> >   group->attach_handle = iommu_attach_handle_get(pasid)
+> > return NULL.
+> >
+> > A bit confused here, only find IOMMU_NO_PASID is used when attaching
+> >
+> >   __fault_domain_replace_dev
+> > ret = iommu_replace_group_handle(idev->igroup->group, hwpt->domain,
+> > &handle->handle);
+> > curr = xa_store(&group->pasid_array, IOMMU_NO_PASID, handle, GFP_KERNEL);
+> >
+> > not find where the code attach user pasid with the attach_handle.
+>
+> Have you set iommu_ops::user_pasid_table for SMMUv3 driver?
 
-Jie
+Thanks Baolu, Nico
 
-On 12/09/2024 15:19, Jie Zhan wrote:
-> Internal:
-> 
-> A quick update of V2 with the feedback received today.
-> Also, cc'd a wider range of people.
-> Looking forward to further discussion and feedback.
-> 
-> -----------------
-> External:
-> 
-> CPPC feedback counters can be unchanged or 0 when cores are idle, e.g.
-> clock-gated or power-gated.  In such case, get the latest desired perf for
-> calculating frequency.  Also, the HiSilicon CPPC workaround is now handled
-> by the common code and can be removed.
-> 
-> Jie Zhan (3):
->   cppc_cpufreq: Return desired perf in ->get() if feedback counters are
->     0
->   cppc_cpufreq: Return latest desired perf if feedback counters don't
->     change
->   cppc_cpufreq: Remove HiSilicon CPPC workaround
-> 
->  drivers/cpufreq/cppc_cpufreq.c | 103 +++++++++------------------------
->  1 file changed, 27 insertions(+), 76 deletions(-)
-> 
+Yes, after arm_smmu_ops = {
++       .user_pasid_table       = 1,
+
+find_fault_handler can go inside attach_handle =
+iommu_attach_handle_get(IOMMU_NO_PASID);
+qemu handler also gets called.
+
+But hardware reports errors and needs reset, still in check.
+[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 0
+
+Thanks
 
