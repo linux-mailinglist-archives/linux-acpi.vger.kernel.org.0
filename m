@@ -1,55 +1,55 @@
-Return-Path: <linux-acpi+bounces-8273-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8274-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6977897701D
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 20:08:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACC1977022
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 20:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D70DEB2464D
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 18:08:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78EBE281517
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Sep 2024 18:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A331BFDF7;
-	Thu, 12 Sep 2024 18:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF841BD501;
+	Thu, 12 Sep 2024 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iY0xqR4i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOkDhm/n"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1D81BFDEE;
-	Thu, 12 Sep 2024 18:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502A11B1402;
+	Thu, 12 Sep 2024 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726164494; cv=none; b=NL/IpbHCJLMFpexz/IVCY07my8R4ofdsDDTjkaW5jjr/nyglUC0oSMBJ2qt7TibnvI+CCekul/bQQ5Mo/BJkaTc4sAIN6boOS28yFSmsTuJNLf7Uu4anFkRaP4TIj29so9CPdUsjlQMMmFneAgbtPolQuSAZM9z5Xkow2rUolIk=
+	t=1726164615; cv=none; b=jTaoLCoUxWg062FX09ra72OsOpbweZnezkMOHPcGqOtVPoLwFsF3geq3fUrfXrYf7AZ3fwtx/pMIzGxEZPf5SGLQcONhsmvfjdYxtr13RKbPWtYvKOxEwA19Ohy9mmbvINHgINGcgCCBETWnoApOtd085Ir1LZFfOr/f8J9SslI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726164494; c=relaxed/simple;
-	bh=gid7krXVX27L/aty4EOvU/vETo0leDus9x8d5iMnm/A=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=t1/qRm/V0QxFbc5KHCnpKZLJ1yr/J8zWe8I1N3z4D7R65qmrSObS+XL/H6DvxIkN8mYJF0NXBlwhV4gswZO7RyCDxPnnEzo+fOUFuV/L1cOsZf/TkFJ9jGH70IUI/KX9/AvFTM72lpiVXIX5CVYGsxcwgkJlhllQ+uR10y6dMoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iY0xqR4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7D6C4CEC3;
-	Thu, 12 Sep 2024 18:08:13 +0000 (UTC)
+	s=arc-20240116; t=1726164615; c=relaxed/simple;
+	bh=zqbdY4GUD+iDcU6h5D20MqtD+MioVg4cKsINF0CdFR0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CWl7lhVuP4W8STfwA6wCkMDDzKIXZNM+24InipEgzDAOCm3pM/wQCU1O8w/7RRnZSUe86xzqiWnzOkEwAuv8Q8XJMJ5wwWmvxE1/oACGt3dfPTCwmGSXfZtdVwP6U2r9Oubwxtvsl8vQH73r69NJ/O/rbh38pTuWEndAry9mvZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOkDhm/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D403FC4CEC3;
+	Thu, 12 Sep 2024 18:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726164493;
-	bh=gid7krXVX27L/aty4EOvU/vETo0leDus9x8d5iMnm/A=;
+	s=k20201202; t=1726164614;
+	bh=zqbdY4GUD+iDcU6h5D20MqtD+MioVg4cKsINF0CdFR0=;
 	h=From:Date:Subject:To:Cc:From;
-	b=iY0xqR4i/mhniBaANyLCdPYD/s7GWioPFfvSTPerE4ki8rg/vd3v/PFrljvLUAGov
-	 dN6s5MwYMg7qY3N+GxMi2AnyEciAlrWOOqEC1I+h5PTbkn18pjxaTDRGmzOeP7wkQd
-	 XuGRPW5UeRUSlAq/E6Ep92/1X76crN67P/typcTP+f92zq7EdGV4No9YzXavbC2jMk
-	 dc85uDI5kNrXOIEr2UE0RZCM84UEl6lminc2+QsyJYlFXuj/JksbvKkcWifuuDkuXV
-	 vhzlmyrW+s/e30NuEXMAFkYiPpp/SJ1SlNpqSHvmQXk/VfOHs3iiggS/64kZOn5gWc
-	 3PFqhUBr/wkgA==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-27051f63018so11836fac.3;
-        Thu, 12 Sep 2024 11:08:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWIkXPdFPhX+fl7kv/jUEu0Ty2gzlOpZsCpuCjpPDv0ThRf2MtbxGYsCxXCcwryD+o68dM14gqe9IzK@vger.kernel.org, AJvYcCXL2Fyt3OEwRS4Xq0r/VO0YdwvZPYw4QtiD+E03zqaWmI8yXe3X39I7rRO6DAuzIDsPZS/81l5BT4Pe9Fly@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDCGCgy9zr9KtiR4abb6VxIr35LlQeYdnuMw7QW+eV1nNYHj7D
-	antu/8uFXxKgPZZpzA4NOILTJiziHznetooLcf/ZOAjRM/b74SREmXKGGnLO9cCT7R2NK2Dfo4l
-	fpzt0wwPqLNikS3R3e3Rp2m5wUT8=
-X-Google-Smtp-Source: AGHT+IF5Z3l1d+LF8NMD7cdRe4IA2OKBePqJDtHWuhcIrP5Mr2RDddevMXZFTHyZoyDOun7Y0QO/8+sOJy9EJ8CwEng=
-X-Received: by 2002:a05:6870:44c6:b0:25e:1cdf:c604 with SMTP id
- 586e51a60fabf-27c68be3ed5mr204430fac.31.1726164492852; Thu, 12 Sep 2024
- 11:08:12 -0700 (PDT)
+	b=hOkDhm/njf5we3I+/MGRnsIxK+EmCZwK69t7poDFpPQhy170vNko8ZHBT9zH0Pfpi
+	 iKnusyHM6asqUdWV0rP6jLD64kxDNU/A5+VlgOu7tVf3KgILTfUIs3PueXGK0hTA05
+	 T0uJPgzN2+kmS4B5zJF6Hgf8P5KGfeSL6rxRsrE3Y7UJn5uS+wCWDapgzpVixvRJ2A
+	 yxaM5KA1p5tKRctbUb+/cjRJ4KZzJPJiM2/J8+LUQx9au9V64ZaercjLJD71HB1Z3I
+	 TtGpbFcoqUkzkvIXNVttPb6tCurmzTNfhZy1N1mthfsMgWfBI4oz0lSVawwFKRrbDh
+	 DT8le07docm/g==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-277efdcfa63so607109fac.2;
+        Thu, 12 Sep 2024 11:10:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVaYd444qwcO9+/v4RXYOKzZaLJm/y067tLcPpUP0+DGeZONd0BzqlP685wWXya67NU2yYwjonUxVACTE46@vger.kernel.org, AJvYcCXOEPS64awo1yaCYPY7v7xcmcvYnkXE9RYyoqiL2F9WZCtI3NQ6W92BZ7oN5tJnYFQOrn2zLH/WRlAG@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwnV5mywOjyQzY3RZ/UhuZtN/hznsX+p2jcWBuGtzQSaPl777C
+	BU5Qnvq8kDuovsZE1idBMe4nLODIHPp4qJ+K9ip+zbeX2/Varrt4hBkgFwvrSXS+T3YDODmAYEn
+	7UTjWqm9YfkuuMjIXCwtpgWNOYHw=
+X-Google-Smtp-Source: AGHT+IG778XhjkSePOaVXdbyb9aD2YarvXfmDy6ouD8d3STlb3BL+Zgr/mjog/7vGc8c0owVlSdiwDOScb8mZrxceaw=
+X-Received: by 2002:a05:6870:2481:b0:26f:f1ea:6a4f with SMTP id
+ 586e51a60fabf-27c3f256b78mr2659555fac.1.1726164614129; Thu, 12 Sep 2024
+ 11:10:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,335 +57,236 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 12 Sep 2024 20:08:01 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gJXBx0jM4n8eO3-_bh1xcCaZVCHRA2K+Y468dFSJf4yg@mail.gmail.com>
-Message-ID: <CAJZ5v0gJXBx0jM4n8eO3-_bh1xcCaZVCHRA2K+Y468dFSJf4yg@mail.gmail.com>
-Subject: [GIT PULL] Power management updates for v6.12-rc1
+Date: Thu, 12 Sep 2024 20:10:03 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g_7rOA1AvtCsHCHsde8wJqq8prFmXq3oKEPUY2buWvbg@mail.gmail.com>
+Message-ID: <CAJZ5v0g_7rOA1AvtCsHCHsde8wJqq8prFmXq3oKEPUY2buWvbg@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v6.12-rc1
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Linux PM <linux-pm@vger.kernel.org>, 
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
 Hi Linus,
 
 The next week will be all conference travel for me and I'll be traveling in
-the week after it too, so here's an early request to pull power management
+the week after it too, so here's an early request to pull thermal control
 updates for 6.12-rc1.
 
 To receive them, please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-6.12-rc1
+ thermal-6.12-rc1
 
-with top-most commit 0a06811d664b8695a7612d3e59c1defb4382f4e0
+with top-most commit 3bc5ed15bdc5077d7ee621f44872f550babbea3e
 
- Merge branches 'pm-sleep', 'pm-opp' and 'pm-tools'
+ Merge tag 'thermal-v6.12-rc1' of
+ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into
 
-on top of commit da3ea35007d0af457a0afc87e84fddaebc4e0b63
+on top of commit c0a1ef9c5be72ff28a5413deb1b3e1a066593c13
 
- Linux 6.11-rc7
+ thermal: of: Fix OF node leak in of_thermal_zone_find() error paths
 
-By the number of new lines of code, the most visible change here is the
-addition of hybrid CPU capacity scaling support to the intel_pstate
-driver.  Next are the amd-pstate driver changes related to the
-calculation of the AMD boost numerator and preferred core detection.
+to receive thermal control updates for 6.12-rc1.
 
-As far as new hardware support is concerned, the intel_idle driver will
-now handle Granite Rapids Xeon processors natively, the intel_rapl power
-capping driver will recognize family 1Ah of AMD processors and Intel
-ArrowLake-U chipos, and intel_pstate will handle Granite Rapids and
-Sierra Forest chips in the out-of-band (OOB) mode.
+These mostly continue to rework the thermal core and the thermal zone
+driver interface to make the code more straightforward and reduce bloat.
+The most significant piece of this work is a change of the code related
+to binding cooling devices to thermal zones which, among other things,
+replaces two previously existing thermal zone operations with one
+allowing driver implementations to be much simpler.
 
-Apart from the above, there is a usual collection of assorted fixes
-and code cleanups in many places and there are tooling updates.
+There is also a new thermal core testing module allowing mock thermal
+zones to be created and controlled via debugfs in order to exercise the
+thermal core functionality.  It is expected to be used for implementing
+thermal core self tests in the future.
+
+Apart from the above, there are assorted thermal driver updates.
 
 Specifics:
 
- - Remove LATENCY_MULTIPLIER from cpufreq (Qais Yousef).
+ - Update some thermal drivers to eliminate thermal_zone_get_trip()
+   calls from them and get rid of that function (Rafael Wysocki).
 
- - Add support for Granite Rapids and Sierra Forest in OOB mode to the
-   intel_pstate cpufreq driver (Srinivas Pandruvada).
+ - Update the thermal sysfs code to store trip point attributes in trip
+   descriptors and get to trip points via attribute pointers (Rafael
+   Wysocki).
 
- - Add basic support for CPU capacity scaling on x86 and make the
-   intel_pstate driver set asymmetric CPU capacity on hybrid systems
-   without SMT (Rafael Wysocki).
+ - Move the computation of the low and high boundaries for
+   thermal_zone_set_trips() to __thermal_zone_device_update() (Daniel
+   Lezcano).
 
- - Add missing MODULE_DESCRIPTION() macros to the powerpc cpufreq
-   driver (Jeff Johnson).
+ - Introduce a debugfs-based facility for thermal core testing (Rafael
+   Wysocki).
 
- - Several OF related cleanups in cpufreq drivers (Rob Herring).
+ - Replace the thermal zone .bind() and .unbind() callbacks for binding
+   cooling devices to thermal zones with one .should_bind() callback
+   used for deciding whether or not a given cooling devices should be
+   bound to a given trip point in a given thermal zone (Rafael Wysocki).
 
- - Enable COMPILE_TEST for ARM drivers (Rob Herring).
+ - Eliminate code that has no more users after the other changes, drop
+   some redundant checks from the thermal core and clean it up (Rafael
+   Wysocki).
 
- - Introduce quirks for syscon failures and use socinfo to get revision
-   for TI cpufreq driver (Dhruva Gole, Nishanth Menon).
+ - Fix rounding of delay jiffies in the thermal core (Rafael Wysocki).
 
- - Minor cleanups in amd-pstate driver (Anastasia Belova, Dhananjay
-   Ugwekar).
+ - Refuse to accept trip point temperature or hysteresis that would lead
+   to an invalid threshold value when setting them via sysfs (Rafael
+   Wysocki).
 
- - Minor cleanups for loongson, cpufreq-dt and powernv cpufreq drivers
-   (Danila Tikhonov, Huacai Chen, and Liu Jing).
+ - Adjust states of all uninitialized instances in the .manage()
+   callback of the Bang-bang thermal governor (Rafael Wysocki).
 
- - Make amd-pstate validate return of any attempt to update EPP limits,
-   which fixes the masking hardware problems (Mario Limonciello).
+ - Drop a couple of redundant checks along with the code depending on
+   them from the thermal core (Rafael Wysocki).
 
- - Move the calculation of the AMD boost numerator outside of amd-pstate,
-   correcting acpi-cpufreq on systems with preferred cores (Mario
-   Limonciello).
+ - Rearrange the thermal core to avoid redundant checks and simplify
+   control flow in a couple of code paths (Rafael Wysocki).
 
- - Harden preferred core detection in amd-pstate to avoid potential
-   false positives (Mario Limonciello).
+ - Add power domain DT bindings for new Amlogic SoCs (Georges Stark).
 
- - Add extra unit test coverage for mode state machine (Mario
-   Limonciello).
+ - Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() in the ST
+   driver and add a Kconfig dependency on THERMAL_OF subsystem for the
+   STi driver (Raphael Gallais-Pou).
 
- - Fix an "Uninitialized variables" issue in amd-pstate (Qianqiang Liu).
+ - Simplify the error code path in the probe functions in the brcmstb
+   driver with the help of dev_err_probe() (Yan Zhen).
 
- - Add Granite Rapids Xeon support to intel_idle (Artem Bityutskiy).
+ - Make imx_sc_thermal use dev_err_probe() (Alexander Stein).
 
- - Disable promotion to C1E on Jasper Lake and Elkhart Lake in
-   intel_idle (Kai-Heng Feng).
+ - Remove trailing space after \n newline in the Renesas driver (Colin
+   Ian King).
 
- - Use scoped device node handling to fix missing of_node_put() and
-   simplify walking OF children in the riscv-sbi cpuidle driver (Krzysztof
-   Kozlowski).
+ - Add DT binding compatible string for the SA8255p to the tsens thermal
+   driver (Nikunj Kela).
 
- - Remove dead code from cpuidle_enter_state() (Dhruva Gole).
+ - Use the devm_clk_get_enabled() helpers to simplify the init routine
+   in the sprd thermal driver (Huan Yang).
 
- - Change an error pointer to NULL to fix error handling in the
-   intel_rapl power capping driver (Dan Carpenter).
+ - Remove __maybe_unused notations for the functions by using the new
+   RUNTIME_PM_OPS() and SYSTEM_SLEEP_PM_OPS() macros on the IMx and
+   Qoriq drivers (Fabio Estevam)
 
- - Fix off by one in get_rpi() in the intel_rapl power capping
-   driver (Dan Carpenter).
-
- - Add support for ArrowLake-U to the intel_rapl power capping
-   driver (Sumeet Pawnikar).
-
- - Fix the energy-pkg event for AMD CPUs in the intel_rapl power capping
-   driver (Dhananjay Ugwekar).
-
- - Add support for AMD family 1Ah processors to the intel_rapl power
-   capping driver (Dhananjay Ugwekar).
-
- - Remove unused stub for saveable_highmem_page() and remove deprecated
-   macros from power management documentation (Andy Shevchenko).
-
- - Use ysfs_emit() and sysfs_emit_at() in "show" functions in the PM
-   sysfs interface (Xueqin Luo).
-
- - Update the maintainers information for the operating-points-v2-ti-cpu DT
-   binding (Dhruva Gole).
-
- - Drop unnecessary of_match_ptr() from ti-opp-supply (Rob Herring).
-
- - Add missing MODULE_DESCRIPTION() macros to devfreq governors (Jeff
-   Johnson).
-
- - Use devm_clk_get_enabled() in the exynos-bus devfreq driver (Anand
-   Moon).
-
- - Use of_property_present() instead of of_get_property() in the imx-bus
-   devfreq driver (Rob Herring).
-
- - Update directory handling and installation process in the pm-graph
-   Makefile and add .gitignore to ignore sleepgraph.py artifacts to
-   pm-graph (Amit Vadhavana, Yo-Jung Lin).
-
- - Make cpupower display residency value in idle-info (Aboorva
-   Devarajan).
-
- - Add missing powercap_set_enabled() stub function to cpupower (John
-   B. Wyatt IV).
-
- - Add SWIG support to cpupower (John B. Wyatt IV).
+ - Remove unused declarations from the ti-soc-thermal driver's header
+   file as the functions in question were removed previously (Zhang
+   Zekun).
 
 Thanks!
 
 
 ---------------
 
-Aboorva Devarajan (1):
-      tools/cpupower: display residency value in idle-info
+Alexander Stein (1):
+      thermal/drivers/imx_sc_thermal: Use dev_err_probe
 
-Amit Vadhavana (1):
-      pm-graph: Update directory handling and installation process in Makefile
+Colin Ian King (1):
+      thermal/drivers/renesas: Remove trailing space after \n newline
 
-Anand Moon (1):
-      PM / devfreq: exynos: Use Use devm_clk_get_enabled() helpers
+Daniel Lezcano (1):
+      thermal/core: Compute low and high boundaries in
+thermal_zone_device_update()
 
-Anastasia Belova (1):
-      cpufreq: amd-pstate: add check for cpufreq_cpu_get's return value
+Fabio Estevam (2):
+      thermal/drivers/qoriq: Remove __maybe_unused notations
+      thermal/drivers/imx: Remove __maybe_unused notations
 
-Andy Shevchenko (2):
-      Documentation: PM: Discourage use of deprecated macros
-      PM: hibernate: Remove unused stub for saveable_highmem_page()
+George Stark (1):
+      dt-bindings: thermal: amlogic,thermal: add optional power-domains
 
-Artem Bityutskiy (1):
-      intel_idle: add Granite Rapids Xeon support
+Huan Yang (1):
+      thermal/drivers/sprd: Use devm_clk_get_enabled() helpers
 
-Dan Carpenter (2):
-      powercap: intel_rapl: Fix off by one in get_rpi()
-      powercap: intel_rapl: Change an error pointer to NULL
+Nikunj Kela (1):
+      dt-bindings: thermal: tsens: document support on SA8255p
 
-Danila Tikhonov (1):
-      cpufreq: Add SM7325 to cpufreq-dt-platdev blocklist
+Rafael J. Wysocki (36):
+      thermal: broadcom: Use thermal_zone_get_crit_temp() in
+bcm2835_thermal_probe()
+      thermal: hisi: Use thermal_zone_for_each_trip() in
+hisi_thermal_register_sensor()
+      thermal: qcom: Use thermal_zone_get_crit_temp() in qpnp_tm_init()
+      thermal: tegra: Introduce struct trip_temps for critical and hot trips
+      thermal: tegra: Use thermal_zone_for_each_trip() for walking trip points
+      thermal: helpers: Drop get_thermal_instance()
+      thermal: trip: Get rid of thermal_zone_get_num_trips()
+      thermal: trip: Drop thermal_zone_get_trip()
+      thermal: core: Store trip sysfs attributes in thermal_trip_desc
+      thermal: sysfs: Get to trips via attribute pointers
+      thermal: sysfs: Refine the handling of trip hysteresis changes
+      thermal: Introduce a debugfs-based testing facility
+      thermal: core: Fold two functions into their respective callers
+      thermal: core: Rearrange checks in thermal_bind_cdev_to_trip()
+      thermal: core: Drop redundant thermal instance checks
+      thermal: sysfs: Use the dev argument in instance-related show/store
+      thermal: core: Move thermal zone locking out of bind/unbind functions
+      thermal: core: Introduce .should_bind() thermal zone callback
+      thermal: ACPI: Use the .should_bind() thermal zone callback
+      thermal: core: Unexport thermal_bind_cdev_to_trip() and
+thermal_unbind_cdev_from_trip()
+      platform/x86: acerhdf: Use the .should_bind() thermal zone callback
+      mlxsw: core_thermal: Use the .should_bind() thermal zone callback
+      thermal: imx: Use the .should_bind() thermal zone callback
+      thermal/of: Use the .should_bind() thermal zone callback
+      thermal: core: Drop unused bind/unbind functions and callbacks
+      thermal: core: Clean up trip bind/unbind functions
+      thermal: core: Fix rounding of delay jiffies
+      thermal: core: Rename cdev-to-thermal-zone bind/unbind functions
+      thermal: core: Drop redundant checks from thermal_bind_cdev_to_trip()
+      thermal: core: Drop tz field from struct thermal_instance
+      thermal: sysfs: Add sanity checks for trip temperature and hysteresis
+      thermal: gov_bang_bang: Adjust states of all uninitialized instances
+      thermal: core: Drop redundant lockdep_assert_held()
+      thermal: core: Drop dead code from monitor_thermal_zone()
+      thermal: core: Check passive delay in monitor_thermal_zone()
+      thermal: core: Drop thermal_zone_device_is_enabled()
 
-Dhananjay Ugwekar (3):
-      powercap/intel_rapl: Add support for AMD family 1Ah
-      powercap/intel_rapl: Fix the energy-pkg event for AMD CPUs
-      cpufreq/amd-pstate: Add the missing cpufreq_cpu_put()
+Raphael Gallais-Pou (2):
+      thermal/drivers/st: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      thermal/drivers/sti: Depend on THERMAL_OF subsystem
 
-Dhruva Gole (3):
-      cpuidle: remove dead code from cpuidle_enter_state()
-      dt-bindings: opp: operating-points-v2-ti-cpu: Update maintainers
-      cpufreq: ti-cpufreq: Use socinfo to get revision in AM62 family
+Yan Zhen (1):
+      thermal/drivers/brcmstb_thermal: Simplify with dev_err_probe()
 
-Huacai Chen (1):
-      cpufreq: loongson3: Use raw_smp_processor_id() in do_service_request()
-
-Jeff Johnson (2):
-      cpufreq: powerpc: add missing MODULE_DESCRIPTION() macros
-      PM/devfreq: governor: add missing MODULE_DESCRIPTION() macros
-
-John B. Wyatt IV (5):
-      pm:cpupower: Add missing powercap_set_enabled() stub function
-      pm:cpupower: Add SWIG bindings files for libcpupower
-      pm:cpupower: Include test_raw_pylibcpupower.py
-      MAINTAINERS: Add Maintainers for SWIG Python bindings
-      pm:cpupower: Add error warning when SWIG is not installed
-
-Kai-Heng Feng (1):
-      intel_idle: Disable promotion to C1E on Jasper Lake and Elkhart Lake
-
-Krzysztof Kozlowski (2):
-      cpuidle: riscv-sbi: Use scoped device node handling to fix
-missing of_node_put
-      cpuidle: riscv-sbi: Simplify with scoped for each OF child loop
-
-Liu Jing (1):
-      cpufreq: Fix the cacography in powernv-cpufreq.c
-
-Mario Limonciello (14):
-      cpufreq/amd-pstate: Catch failures for amd_pstate_epp_update_limit()
-      x86/amd: Move amd_get_highest_perf() from amd.c to cppc.c
-      ACPI: CPPC: Adjust return code for inline functions in
-!CONFIG_ACPI_CPPC_LIB
-      x86/amd: Rename amd_get_highest_perf() to amd_get_boost_ratio_numerator()
-      ACPI: CPPC: Drop check for non zero perf ratio
-      ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn
-      x86/amd: Move amd_get_highest_perf() out of amd-pstate
-      x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()
-      cpufreq: amd-pstate: Merge amd_pstate_highest_perf_set() into
-amd_get_boost_ratio_numerator()
-      cpufreq: amd-pstate: Optimize amd_pstate_update_limits()
-      cpufreq: amd-pstate: Add documentation for `amd_pstate_hw_prefcore`
-      amd-pstate: Add missing documentation for `amd_pstate_prefcore_ranking`
-      cpufreq/amd-pstate: Export symbols for changing modes
-      cpufreq/amd-pstate-ut: Add test case for mode switches
-
-Nishanth Menon (1):
-      cpufreq: ti-cpufreq: Introduce quirks to handle syscon fails appropriately
-
-Qais Yousef (1):
-      cpufreq: Remove LATENCY_MULTIPLIER
-
-Qianqiang Liu (1):
-      cpufreq/amd-pstate-ut: Fix an "Uninitialized variables" issue
-
-Rafael J. Wysocki (2):
-      x86/sched: Add basic support for CPU capacity scaling
-      cpufreq: intel_pstate: Set asymmetric CPU capacity on hybrid systems
-
-Rob Herring (Arm) (10):
-      cpufreq: Use of_property_present()
-      cpufreq: spear: Use of_property_for_each_u32() instead of open coding
-      cpufreq: qcom: Add explicit io.h include for readl/writel_relaxed
-      cpufreq: omap: Drop asm includes
-      cpufreq: armada-8k: Avoid excessive stack usage
-      opp: ti: Drop unnecessary of_match_ptr()
-      cpufreq: Enable COMPILE_TEST on Arm drivers
-      cpufreq: Drop CONFIG_ARM and CONFIG_ARM64 dependency on Arm drivers
-      cpufreq: Fix warning on unused of_device_id tables for !CONFIG_OF
-      PM / devfreq: imx-bus: Use of_property_present()
-
-Srinivas Pandruvada (1):
-      cpufreq: intel_pstate: Support Granite Rapids and Sierra Forest OOB mode
-
-Sumeet Pawnikar (1):
-      powercap: intel_rapl: Add support for ArrowLake-U platform
-
-Xueqin Luo (2):
-      PM: hibernate: Use sysfs_emit() and sysfs_emit_at() in "show" functions
-      PM: sleep: Use sysfs_emit() and sysfs_emit_at() in "show" functions
-
-Yo-Jung (Leo) Lin (1):
-      pm-graph: Make git ignore sleepgraph.py artifacts
+Zhang Zekun (1):
+      thermal/drivers/ti-soc-thermal: Remove unused declarations
 
 ---------------
 
- Documentation/admin-guide/pm/amd-pstate.rst        |  15 +-
- .../bindings/opp/operating-points-v2-ti-cpu.yaml   |   2 +-
- Documentation/power/pci.rst                        |  11 +-
- Documentation/power/runtime_pm.rst                 |   4 +-
- MAINTAINERS                                        |   3 +
- arch/x86/include/asm/processor.h                   |   3 -
- arch/x86/include/asm/topology.h                    |  13 ++
- arch/x86/kernel/acpi/cppc.c                        | 172 +++++++++++++-
- arch/x86/kernel/cpu/amd.c                          |  16 --
- arch/x86/kernel/cpu/aperfmperf.c                   |  89 +++++++-
- drivers/cpufreq/Kconfig                            |   2 -
- drivers/cpufreq/Kconfig.arm                        |  50 +++--
- drivers/cpufreq/acpi-cpufreq.c                     |  12 +-
- drivers/cpufreq/amd-pstate-ut.c                    |  41 +++-
- drivers/cpufreq/amd-pstate.c                       | 181 ++++++---------
- drivers/cpufreq/amd-pstate.h                       |  14 ++
- drivers/cpufreq/apple-soc-cpufreq.c                |   2 +-
- drivers/cpufreq/armada-8k-cpufreq.c                |   2 +-
- drivers/cpufreq/cpufreq-dt-platdev.c               |   1 +
- drivers/cpufreq/cpufreq-dt.c                       |  11 +-
- drivers/cpufreq/cpufreq.c                          |  27 +--
- drivers/cpufreq/intel_pstate.c                     | 240 +++++++++++++++++++-
- drivers/cpufreq/loongson3_cpufreq.c                |   2 +-
- drivers/cpufreq/maple-cpufreq.c                    |   1 +
- drivers/cpufreq/mediatek-cpufreq.c                 |   2 +-
- drivers/cpufreq/omap-cpufreq.c                     |   3 -
- drivers/cpufreq/pasemi-cpufreq.c                   |   1 +
- drivers/cpufreq/pmac64-cpufreq.c                   |   3 +-
- drivers/cpufreq/powernv-cpufreq.c                  |   3 +-
- drivers/cpufreq/ppc_cbe_cpufreq.c                  |   1 +
- drivers/cpufreq/qcom-cpufreq-hw.c                  |   1 +
- drivers/cpufreq/qcom-cpufreq-nvmem.c               |   2 +-
- drivers/cpufreq/spear-cpufreq.c                    |  18 +-
- drivers/cpufreq/sti-cpufreq.c                      |   2 +-
- drivers/cpufreq/sun50i-cpufreq-nvmem.c             |   2 +-
- drivers/cpufreq/ti-cpufreq.c                       |  31 ++-
- drivers/cpuidle/cpuidle-riscv-sbi.c                |  28 +--
- drivers/cpuidle/cpuidle.c                          |   5 +-
- drivers/devfreq/exynos-bus.c                       |  22 +-
- drivers/devfreq/governor_performance.c             |   1 +
- drivers/devfreq/governor_powersave.c               |   1 +
- drivers/devfreq/governor_simpleondemand.c          |   1 +
- drivers/devfreq/governor_userspace.c               |   1 +
- drivers/devfreq/imx-bus.c                          |   2 +-
- drivers/idle/intel_idle.c                          |  60 ++++-
- drivers/opp/ti-opp-supply.c                        |   2 +-
- drivers/powercap/intel_rapl_common.c               |  38 +++-
- include/acpi/cppc_acpi.h                           |  41 ++--
- include/linux/cpufreq.h                            |   6 -
- kernel/power/hibernate.c                           |  26 ++-
- kernel/power/main.c                                |  76 ++++---
- kernel/power/snapshot.c                            |   5 -
- tools/power/cpupower/bindings/python/.gitignore    |   8 +
- tools/power/cpupower/bindings/python/Makefile      |  33 +++
- tools/power/cpupower/bindings/python/README        |  59 +++++
- .../cpupower/bindings/python/raw_pylibcpupower.i   | 247 +++++++++++++++++++++
- .../bindings/python/test_raw_pylibcpupower.py      |  42 ++++
- tools/power/cpupower/lib/cpuidle.c                 |   8 +
- tools/power/cpupower/lib/cpuidle.h                 |   2 +
- tools/power/cpupower/lib/powercap.c                |   8 +
- tools/power/cpupower/utils/cpuidle-info.c          |   4 +
- tools/power/pm-graph/.gitignore                    |   3 +
- tools/power/pm-graph/Makefile                      | 111 +++++----
- 63 files changed, 1416 insertions(+), 407 deletions(-)
+ .../bindings/thermal/amlogic,thermal.yaml          |   3 +
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    |   1 +
+ Documentation/driver-api/thermal/sysfs-api.rst     |  68 +--
+ drivers/acpi/thermal.c                             |  66 +--
+ drivers/net/ethernet/mellanox/mlxsw/core_thermal.c | 115 ++---
+ drivers/platform/x86/acerhdf.c                     |  33 +-
+ drivers/thermal/Kconfig                            |  11 +-
+ drivers/thermal/Makefile                           |   1 +
+ drivers/thermal/broadcom/bcm2835_thermal.c         |   7 +-
+ drivers/thermal/broadcom/brcmstb_thermal.c         |  15 +-
+ drivers/thermal/gov_bang_bang.c                    |  14 +-
+ drivers/thermal/hisi_thermal.c                     |  25 +-
+ drivers/thermal/imx_sc_thermal.c                   |   3 +-
+ drivers/thermal/imx_thermal.c                      |  36 +-
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |  22 +-
+ drivers/thermal/qoriq_thermal.c                    |  10 +-
+ drivers/thermal/renesas/rcar_gen3_thermal.c        |   6 +-
+ drivers/thermal/renesas/rcar_thermal.c             |   2 +-
+ drivers/thermal/sprd_thermal.c                     |  14 +-
+ drivers/thermal/st/st_thermal.c                    |  32 +-
+ drivers/thermal/st/st_thermal_memmap.c             |   2 +-
+ drivers/thermal/st/stm_thermal.c                   |   8 +-
+ drivers/thermal/tegra/soctherm.c                   |  36 +-
+ drivers/thermal/tegra/tegra30-tsensor.c            |  57 +--
+ drivers/thermal/testing/Makefile                   |   7 +
+ drivers/thermal/testing/command.c                  | 221 ++++++++++
+ drivers/thermal/testing/thermal_testing.h          |  11 +
+ drivers/thermal/testing/zone.c                     | 468 +++++++++++++++++++++
+ drivers/thermal/thermal_core.c                     | 243 ++++-------
+ drivers/thermal/thermal_core.h                     |  38 +-
+ drivers/thermal/thermal_helpers.c                  |  32 +-
+ drivers/thermal/thermal_of.c                       | 171 ++------
+ drivers/thermal/thermal_sysfs.c                    | 222 +++++-----
+ drivers/thermal/thermal_trip.c                     |  53 +--
+ drivers/thermal/ti-soc-thermal/ti-bandgap.h        |   4 -
+ include/linux/thermal.h                            |  31 +-
+ 36 files changed, 1160 insertions(+), 928 deletions(-)
 
