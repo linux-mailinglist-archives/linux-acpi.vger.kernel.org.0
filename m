@@ -1,240 +1,111 @@
-Return-Path: <linux-acpi+bounces-8280-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8281-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12217977F3A
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 14:06:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E55978142
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 15:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DF5A1C21D75
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 12:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BE281C22486
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 13:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99561D86E6;
-	Fri, 13 Sep 2024 12:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5AB1DB93A;
+	Fri, 13 Sep 2024 13:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdMs9gNE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64B31BFDF6;
-	Fri, 13 Sep 2024 12:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B149B1DB936;
+	Fri, 13 Sep 2024 13:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726229183; cv=none; b=CsGVm9KeEjd0U0pIR3+s6f1TcyQ6QU5jeFtjiTUsIpH7x4W3NQ8shg/2FJtXAXeMo3405spCSIzRTWcP8JrxwFbAMPRBdguhXwrwtmjakl51QuDdzI5pUwOeSoX8lfVQ8QmpLhkbzz+j4iZOtni8GnLN1aDzVJ9CYb9up1zUJvA=
+	t=1726234501; cv=none; b=grmE25k1yNsuOKTj98IN5jXHJyw2b3Y2vgh51JXoIHdRrEk/o7jOkADcu/rWISkx7jmv7AcMwvo9ogeBtx+OWkqL3c7NzLA9jPiwq8b6C7QpVZL+N4FMPAEep3ZSkDEga9xKDIc1C5oiZtIQ+DWM+3/Sk9XilipSY3jSL8fSAK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726229183; c=relaxed/simple;
-	bh=87/tGkZmzXEk3vv9YL4PlH6QGuBQUythRPhFtSr41IE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=N8YCNrJQ09kbvWttkX9eLmAnZV4TvNAWovhd9OrkjIXB1YIXjKCJKMtXiOGO+/hYZD4ODPVjC5CzbG9eWmU8WMIA+6vDmqKwXeq/+ALW38jyOuar/lrfO0jqSon9XP6yjDPJSaqxmqcgPBCYp2xgw19Fgpt2e3aYiGM6a1UFMGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4X4tKq6LdVz1j6Bx;
-	Fri, 13 Sep 2024 20:05:19 +0800 (CST)
-Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
-	by mail.maildlp.com (Postfix) with ESMTPS id ACEEC1A0190;
-	Fri, 13 Sep 2024 20:05:51 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
- (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 13 Sep
- 2024 20:05:51 +0800
-Message-ID: <79353a26-7304-9d6a-9237-cfa8e7794601@hisilicon.com>
-Date: Fri, 13 Sep 2024 20:05:50 +0800
+	s=arc-20240116; t=1726234501; c=relaxed/simple;
+	bh=DC812cNP2cjU0UjaJrBz8Qs8libYI+MgnRXo4lg77Uo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DVB//cDIIyUg4GDtv+sC5gcftY9uv6NWrK6yEidRQ/M8IwN4uolGZZFiKaGMlinV9lqty/guRihBQ/0ibW5q7u/34Eh6cWJ5ZozpDyN01l4CgWruE03hv3z55hXpSYqoCIYw6wNMY+Lp/9q+2T3oYe9P9m1wCAdDdlPFPZjRkiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdMs9gNE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA23C4CEC0;
+	Fri, 13 Sep 2024 13:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1726234501;
+	bh=DC812cNP2cjU0UjaJrBz8Qs8libYI+MgnRXo4lg77Uo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CdMs9gNEXxn2HMZjDKQ5dPndDm7rPln8EE6zu6jv50x3A+Vdb18F36xEAPCAamAMF
+	 3WWoj44PwexEleU4b42D5Hw+aAWEzO9bD2YR4HQpvJsy3lIugN3hz9mL1LJCGmOS08
+	 wLgzhD+6wOo/dxU3g3uw129hN95bAEbwJ/A66glY=
+Date: Fri, 13 Sep 2024 15:34:58 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v1 1/1] software node: Simplify swnode_register() a bit
+Message-ID: <2024091300-afford-tamper-1831@gregkh>
+References: <20240913110523.3584749-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v2 1/3] cppc_cpufreq: Return desired perf in ->get() if
- feedback counters are 0
-To: Ionela Voinescu <ionela.voinescu@arm.com>
-CC: <beata.michalska@arm.com>, <wangxiongfeng2@huawei.com>,
-	<viresh.kumar@linaro.org>, <rafael@kernel.org>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<wanghuiqiang@huawei.com>, <zhenglifeng1@huawei.com>, <lihuisong@huawei.com>,
-	<yangyicong@huawei.com>, <liaochang1@huawei.com>, <zengheng4@huawei.com>
-References: <20240912072231.439332-1-zhanjie9@hisilicon.com>
- <20240912072231.439332-2-zhanjie9@hisilicon.com> <ZuK3sfcKf2gHssKa@arm.com>
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <ZuK3sfcKf2gHssKa@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500019.china.huawei.com (7.185.36.137)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240913110523.3584749-1-andriy.shevchenko@linux.intel.com>
 
-
-Hi Ionela,
-
-On 12/09/2024 17:43, Ionela Voinescu wrote:
-
-...
-
+On Fri, Sep 13, 2024 at 02:05:23PM +0300, Andy Shevchenko wrote:
+> By introducing two temporary variables simplify swnode_register() a bit.
+> No functional change intended.
 > 
-> A possible (slimmer) alternative implementation for you to consider
-> (this merges patches 1 & 2):
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/base/swnode.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index bafa32dd375d..c16be9651a6f 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
-> 
->         perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
->                                      &fb_ctrs);
-> +       if (!perf)
-> +               perf = cpu_data->perf_ctrls.desired_perf;
-> +
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index b0be765b12da..810c27a8c9c1 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -908,6 +908,7 @@ static struct fwnode_handle *
+>  swnode_register(const struct software_node *node, struct swnode *parent,
+>  		unsigned int allocated)
+>  {
+> +	struct kobject *kobj_parent = parent ? &parent->kobj : NULL;
 
-I think it's better to just return here.
-If feedback counters are successfully read but unchanged, the following
-calculation and update in cppc_scale_freq_workfn() is meaningless because it
-won't change anything.
+I despise ?: use just so much, EXCEPT for when it's used in something
+like this:
 
->         cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
-> 
->         perf <<= SCHED_CAPACITY_SHIFT;
-> @@ -726,7 +729,7 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
-> 
->         /* Check to avoid divide-by zero and invalid delivered_perf */
->         if (!delta_reference || !delta_delivered)
-> -               return cpu_data->perf_ctrls.desired_perf;
-> +               return 0;
+>  	struct swnode *swnode;
+>  	int ret;
+>  
+> @@ -934,12 +935,10 @@ swnode_register(const struct software_node *node, struct swnode *parent,
+>  
+>  	if (node->name)
+>  		ret = kobject_init_and_add(&swnode->kobj, &software_node_type,
+> -					   parent ? &parent->kobj : NULL,
+> -					   "%s", node->name);
+> +					   kobj_parent, "%s", node->name);
 
-This makes sense to me.
-Here is probably why Patch 2 looks bulky.
+Which really is the only valid way I'd put up with it :)
 
-> 
->         return (reference_perf * delta_delivered) / delta_reference;
->  }
-> @@ -736,7 +739,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->         struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
->         struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
->         struct cppc_cpudata *cpu_data;
-> -       u64 delivered_perf;
-> +       u64 delivered_perf = 0;
->         int ret;
-> 
->         if (!policy)
-> @@ -747,19 +750,22 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->         cpufreq_cpu_put(policy);
-> 
->         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
-> -       if (ret)
-> -               return 0;
-> -
-> -       udelay(2); /* 2usec delay between sampling */
-> -
-> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-> -       if (ret)
-> -               return 0;
-> +       if (!ret) {
-> +               udelay(2); /* 2usec delay between sampling */
-> +               ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-> +       }
-> +       if (!ret)
-> +               delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
-> +                                                      &fb_ctrs_t1);
+So can you rewrite the change above to be just:
 
-TBH, 'if (!ret)' style looks very strange to me.
-We haven't done so anywhere in cppc_cpufreq, so let's keep consistency and make
-it easier for people to read and maintain?
+	struct kobject *kobj_parent = NULL;
 
-> +       if ((ret == -EFAULT) || !delivered_perf) {
-> +               if (cppc_get_desired_perf(cpu, &delivered_perf))
-> +                       delivered_perf = cpu_data->perf_ctrls.desired_perf;
+	...
 
-will take this.
+	if (parent)
+		kobj_parent = &parent->kobj;
 
-> +       }
-> 
-> -       delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
-> -                                              &fb_ctrs_t1);
-> +       if (delivered_perf)
-> +               return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-> 
-> -       return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-> +       return 0;
->  }
-> 
-> disclaimer: not fully checked so likely not "production ready" code :)
-> 
-> Hope it helps,
-> Ionela.
-> 
->>  
->>  static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
->> -- 
->> 2.33.0
->>
-> 
+Which is much simpler to read, right?
 
-How about this? merged patch 1 & 2 as well.
+thanks,
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index bafa32dd375d..411303f2e8cb 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
-
-          perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
-                                       &fb_ctrs);
-+       if (!perf)
-+               return;
-+
-          cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
-
-          perf <<= SCHED_CAPACITY_SHIFT;
-@@ -726,7 +729,7 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
-
-          /* Check to avoid divide-by zero and invalid delivered_perf */
-          if (!delta_reference || !delta_delivered)
--               return cpu_data->perf_ctrls.desired_perf;
-+               return 0;
-
-          return (reference_perf * delta_delivered) / delta_reference;
-   }
-@@ -748,18 +751,32 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
-
-          ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
-          if (ret)
--               return 0;
-+               goto out_err;
-
-          udelay(2); /* 2usec delay between sampling */
-
-          ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-          if (ret)
--               return 0;
-+               goto out_err;
-
-          delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
-                                                 &fb_ctrs_t1);
-
-          return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-+
-+out_err:
-+       /*
-+        * Feedback counters could be 0 when cores are powered down.
-+        * Take desired perf for reflecting frequency in this case.
-+        */
-+       if (ret == -EFAULT) {
-+               if (cppc_get_desired_perf(cpu, &delivered_perf))
-+                       delivered_perf = cpu_data->perf_ctrls.desired_perf;
-+
-+               return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-+       }
-+
-+       return 0;
-   }
-
-   static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
----
-
-Thanks indeed!
-Jie
+greg k-h
 
