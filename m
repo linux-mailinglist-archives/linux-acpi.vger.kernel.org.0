@@ -1,124 +1,128 @@
-Return-Path: <linux-acpi+bounces-8287-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8288-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF5B9788DB
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 21:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575D59788E8
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 21:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C75A81C21F46
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 19:23:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911201C22B9D
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 19:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B15A13212B;
-	Fri, 13 Sep 2024 19:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECC114658B;
+	Fri, 13 Sep 2024 19:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=myyahoo.com header.i=@myyahoo.com header.b="prh0KXo0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VGWUeEDF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sonic312-20.consmr.mail.sg3.yahoo.com (sonic312-20.consmr.mail.sg3.yahoo.com [106.10.244.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A5E81ACA
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Sep 2024 19:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.244.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A164712DD90;
+	Fri, 13 Sep 2024 19:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726255392; cv=none; b=XDw33MlYDtS9eCCPSjZUtQ1sq45BhPg0B7Wxl8XcuMveKMfa06Uu1M5cTFgLl6IRN6BwE6+ujNaSodQtw2OcDFqxVTVb/HmLjoIr0N/IaYeRcD9yvR1pOo0a6b+jGbmuliGJHMzKiyM0tE83BEc+RRyqWGB7/xjZq8OpeiFH+HM=
+	t=1726255525; cv=none; b=Uje05k+TvtadV8q0F63jh8HV2CzEA3NGmmirbyX8hUiCj+gw2pY0p7U7kFjK7XdB8XuFYb3nnfVpdVjAUPDh9jQiXp81jBZ/IhmyXa4dlUmZYlEezhUFWii/h8U5wj7yfhTXcReQfbqRbQ+mrFOQl0YqmGCHKbCUK1Re4oWHoJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726255392; c=relaxed/simple;
-	bh=Yw3776WKS9ia5etI8DbaKho23ePP64KPB8wqyVoPAT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=C9OcXODdfioQ0pEHLYHgX51YCz567Dtm5HmV2n1fEeMxlQrFfFZ5p+rY6B9eL4EZugx/hexez1r4NN6G6yX6OgD9mB7wxwQAtobotvPMcWS4li0ldblw8bX5W1R26tuOmlIjR0Sgv5T0fZY4n4y+dXC6+aU3JLFzOo0q+/pomkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=myyahoo.com; spf=pass smtp.mailfrom=myyahoo.com; dkim=pass (2048-bit key) header.d=myyahoo.com header.i=@myyahoo.com header.b=prh0KXo0; arc=none smtp.client-ip=106.10.244.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=myyahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=myyahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=myyahoo.com; s=s2048; t=1726255387; bh=DRskhHXVllGtD1jjaKx3voZH0LlbhZ3PTYPp3M4Mee4=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=prh0KXo063tuRUz5U+yPVXjxcFN4EhLycmgr8QDn75xZXNG52SnWD1orhvu8KleatiAKCYHAzKALtCCmfXjAZO7lvPQLrrRnV78T9JzY1I6zdoPScteDIz2xCm8miWzVIT/vzaL0BeTS+EVqfALpqZriLMGhOdHQDkyt9cA0lEBEFXZYUG8yzQLi968mjUs+gBKCgwoL80Gr6CGIGcUJDMIc+cWiftZMaPGfT9/LkY1yu8447gwwuE7fL6uCRskmbYdXFW6bQk5OnkVR/vR+4fLnUWHxR/9Up5pIUX2Wg/jACz5RqYIKAnovJhVS93irlPEBE9lzWeZqKzngNQ9plQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1726255387; bh=5k2FfjPvQN17t/rNnjRq8e8aF5XbINC7RQT6dH9QAkv=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=ej26zaWS3bSawpssLgWX4I2uZ11hajYwwcRv8cREagMUkpLfRsTljcjXGb6aJzIJ2uOx+vdKl9LxkOhPl4WkGVn5a9lIHG8IDTpNHMrx0bk+CoID9fwwHUnF6CczKWs04BxvXFGpRT7ZafUtI+uyElATZdjNx97lhSjv0k1a2evkaA9LGhKvaKrEGm/ZFoQa9vYsue+SL5s75mClkLzR7apvuGJ6Dkz7B4lA2wsFS2ijsZY12rvIGTYUr1XWK3k46fIZAydebxv72+s/Kb0W0VvicsKOL3hvEAVmpuM3Flgr2psbbaIiIoIMJDE8oQXRFAP0oO8l+5KVAvgG4PBZkQ==
-X-YMail-OSG: b7v6AUEVM1n8eWHC9tAYUc.EeVkD7o8T5vrLtoJMruikpx.KpMqIcvVUzdvnGZi
- X6sgIeBY2ZTMSj.shEhitbAfXw8lVD0O97RBb6GwXycBsx.WcsgwZHDn88EqpmI_gyESQMGCGqIM
- z2YA7GLXJKF3yJNap6cp3HDLk0WfPHvHpUDSqM20aPRcXBp8AbmVVaVRa4_TbGdUAjA9EyXwD9Ea
- xyKmse1NM83K79BcUZcX10dRmAep0YnxIrnJRsNUTkdJTCN2qDlRt2D44P0vOm8uhw5X8F3uqH.E
- VCyn5ZeWjyIW4XqRtrXcg.3ixZWGvFo7EnvLOxHYVR1.o2HPOKjk4TfRa5p2kFqUzTXdt5Ucb_hS
- q7Ym4IosqM8FPkV5RUWwy76TyS2idTKcFaFMtxWE1cQnSWtabpQyBy2FQXecnIdt2tBr70rkoQZJ
- bpCAhiVx_vuO_CJ3ktE8sciLrJ8czlLQP.mGzhw3c_uKulBmE86_q5aXZ8fskgvgUo1QAE7sesPQ
- IvFEjoEQ0q1rRDxYOqj5LcG508wJvZ7iDmbRKT25o4Y98kHNUSRA_XtGMQaNxARqyW_V13wuBOWg
- GRNg2u4RNF8qD6gmonQaoJfqSrnfoh_LDOQ9JzGdkohDfICUUbOISz8gaQ8eZ28vv4LkV2CX.DGR
- 64YxsKjYNQpp8zB.fGnbVC3VQ3JcntdnjzHYFJy5FbBgCKfmtyb1.xuijgEn.8x7AV27zFaSOzlf
- GCQgberL0UpI3PH9qNsdVm6foqCZgCUGj2Lz35DAD0fXnmgwjZEk58QwAn3QE8oAR9vV_FVSRyyC
- 0cV1HUcZ4n0m4noE0nEK6GWlGREx.4yqTNLm9I_yqCIDXqqRxp9VWeVbqmuN5EzLdmUraxSeMEBj
- MU8iHi_GDVq8Kt9PdYh_8.u6GU0xyOTuQy4.qc3NfNDD3hTVmnnMNxKv3h2wbTsGXyRNm3VSGI05
- Fz3GPH9iMfyAYaWA51iofih4eM9IoJ.K8y5q.J4_QoEhPCuBBS_oRx_EHEzUz2GlPJqz2D.GvX7H
- C2gSAqh2E6BeLxbIaoxtErv2IhzvmXf0uUFETigUewffRAzPNf9_X3zPA45M3soSJ0NTDgN6hm0c
- lEQPsJX8orNmCEO5vEjZMGlsURGf3bKsWBV8Zd2V5RZqc0PrwZIl9WD6JVFErjRsEYh.dsUaIunj
- tFu5XvdwqFtLR0gnS.KjsC2GCrtInAMTVJ_HRLbvAHrKV5MhvZhEz1LnWjRMKuto2yvzl4i8.9np
- 13yR72Q8Dl8HDmqx1Mdo.i5opBN_O.DB1MWikydEpcPbpWA8_s.ZgroW01BoTMrMBKlqDLU5Kx65
- NRJbPSxtvzvzJa5iJctFRbhRALf4E1Fivy8pU8dvjcoUqlHzror_qmvtAAfnii0688aDDusE3vNi
- 0fXLgbFeYgvDhMuCiTIcjs_6TmAig6Vq1EulS1SHEJGHwnj.ityXvAUouSrcBdUz9D9ihXWrB21M
- ca.5sfJkewEAFBU8ZTWvHJmVs71WMGWILLSm6KHjVcqWyiEEMBymu9ERx8DkSLpvR0mS4qoICVuK
- dl70fEsghjAigjOrvAz7gs_OApXKULzQvHGGgwojvZ0ZjZyGZh0zGagtUtScvIwz5KJxnAwgcjVR
- rLpPc0u0efTOQc2fvzWIsAPzz7MBl3hT2lCIvHjUR6eG4icG_CxLaQ71YvyQ57A9WXy7XTYjN7jk
- E72Sf8YbcNVYLCxan11lIv7zjiArx07lJc0v98IJlpPz4dRYwfSh4iFmx3HKuHRDd1QJEShykm2Y
- bJLgKGcaI6a_xdHks8hhlTc7Gvh8GKrJwRIoYuoOX6l2jyxhQkWUaqzlqjT3qin_FoO8vzevnVTF
- JSq3P0ftOYF8drahukZPY9Tva400oplwIgws0ZfTbhsF1EErEJXH1QAbke2dSt0h0ZRTypn1PN30
- h0AihJOL6XXZOgeoWIzb6WbjIfi_BgVzzJxcdmbFx.NkwteG6xYW_I9aiA.9hMsIn9oPb6obC.K_
- tqLz4hHMz0Saux1A1AgRndjrJK.MkMMCQWEwVJWOJXCE7_FFda40bnW7Xbhv4PNqxd52ttAQWLHX
- uFZyl2.x_cUS6RXxex5f7WcxeXD_jN9ImY33169pBAuMwMoQQ0t5z_s4QgN3ikGYWsHlRpGKedkO
- 58UsikBQi8aiMJIXb0m2Q0ACxl.DU.VkskqwWYueNd.QF4DSWJekJLVJe.GojtDQcWiXI.tw_WkD
- DPqF6CK5T7XHAA15FsdCESXtu.9rEoAvAlPsf5X5uSFOGY62.VDJWTyDnFiMSNA--
-X-Sonic-MF: <abdul.rahim@myyahoo.com>
-X-Sonic-ID: c3f43d41-eb64-4ccd-82cc-425d2756e797
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.sg3.yahoo.com with HTTP; Fri, 13 Sep 2024 19:23:07 +0000
-Received: by hermes--production-sg3-fc85cddf6-9p6n9 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5341d66e59e0ab8320caf088ee6b6923;
-          Fri, 13 Sep 2024 19:12:55 +0000 (UTC)
-From: Abdul Rahim <abdul.rahim@myyahoo.com>
-To: rafael@kernel.org,
-	christophe.jaillet@wanadoo.fr,
-	rui.zhang@intel.com,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abdul Rahim <abdul.rahim@myyahoo.com>
-Subject: [PATCH] ACPI: thermal: Use strscpy() instead of strcpy()
-Date: Sat, 14 Sep 2024 00:42:49 +0530
-Message-ID: <20240913191249.51822-1-abdul.rahim@myyahoo.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1726255525; c=relaxed/simple;
+	bh=W4ftxM+Vy1qddWPmypN190iO08AqZXZ9CP4mAk6M7Iw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnaONMMdMPrvJHdfIAxvBo5bJgjUj7rOcjNoYko1u8IYbBE1YEdEKf2Ejq9F+k3kWjtP8ZHLcd9jc73gmfB8mvl1dk8khPT+7L9Bifw7DYlmCmOdlH/nKkeZ0Qf6zDeUENaZZIdFxSLdqpgs6w8qnXtFQoYUA4Y8PmZwpnQpm+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VGWUeEDF; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726255524; x=1757791524;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=W4ftxM+Vy1qddWPmypN190iO08AqZXZ9CP4mAk6M7Iw=;
+  b=VGWUeEDFjwnZ8h/TC9sj/pG0/ombDqEZVAEreei3eLAojc4vQpq2RsH2
+   PfQW1fGsYWl7uglf5Cu69RCQTmQw408f7nq6oXCUWFd3HAxFQ5hIBACsN
+   kFRQ5ICW8kBhuI6oBZjLs6F/Qwq1qX8trh3kKyJZbRNIkBV1DSijx++oD
+   NjsHiK3x2XFO51FZWiHkQOnVmsTRy2eRf8uuenLEFQYBu8l3Wt18+Zpfr
+   +2Myly/AhJpV3LqNSy8KPup9caeq5dSerzn8BIo1qby6coqxXtyiaojDO
+   sha+kCazRjMsWL+7sAbUs1NKL6jGo8hv/2tXzh2hpnLm8EEiJW47Zdf59
+   g==;
+X-CSE-ConnectionGUID: wG23mS7FSxOOO6oBplu8QQ==
+X-CSE-MsgGUID: e4EAsfp5Re2W3fV3iFbmfA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="28082863"
+X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
+   d="scan'208";a="28082863"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 12:25:23 -0700
+X-CSE-ConnectionGUID: 3mkzHVNqQgCnJJDwKiI80g==
+X-CSE-MsgGUID: XlM6aTHIRxKkCrVDcwDPEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
+   d="scan'208";a="72538028"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 12:25:21 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1spBuw-00000008PAs-45m2;
+	Fri, 13 Sep 2024 22:25:18 +0300
+Date: Fri, 13 Sep 2024 22:25:18 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v1 1/1] software node: Simplify swnode_register() a bit
+Message-ID: <ZuSRnoaUu-YCOX5L@smile.fi.intel.com>
+References: <20240913110523.3584749-1-andriy.shevchenko@linux.intel.com>
+ <2024091300-afford-tamper-1831@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20240913191249.51822-1-abdul.rahim.ref@myyahoo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024091300-afford-tamper-1831@gregkh>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-strcpy() is generally considered unsafe and use of strscpy() is
-recommended [1]
+On Fri, Sep 13, 2024 at 03:34:58PM +0200, Greg Kroah-Hartman wrote:
+> On Fri, Sep 13, 2024 at 02:05:23PM +0300, Andy Shevchenko wrote:
 
-this fixes checkpatch warning:
-    WARNING: Prefer strscpy over strcpy
+...
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-Signed-off-by: Abdul Rahim <abdul.rahim@myyahoo.com>
----
- drivers/acpi/thermal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> > +	struct kobject *kobj_parent = parent ? &parent->kobj : NULL;
+> 
+> I despise ?: use just so much, EXCEPT for when it's used in something
+> like this:
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 78db38c7076e..6671537cb4b7 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -796,9 +796,9 @@ static int acpi_thermal_add(struct acpi_device *device)
- 		return -ENOMEM;
- 
- 	tz->device = device;
--	strcpy(tz->name, device->pnp.bus_id);
--	strcpy(acpi_device_name(device), ACPI_THERMAL_DEVICE_NAME);
--	strcpy(acpi_device_class(device), ACPI_THERMAL_CLASS);
-+	strscpy(tz->name, device->pnp.bus_id);
-+	strscpy(acpi_device_name(device), ACPI_THERMAL_DEVICE_NAME);
-+	strscpy(acpi_device_class(device), ACPI_THERMAL_CLASS);
- 	device->driver_data = tz;
- 
- 	acpi_thermal_aml_dependency_fix(tz);
+> >  		ret = kobject_init_and_add(&swnode->kobj, &software_node_type,
+> > -					   parent ? &parent->kobj : NULL,
+> > -					   "%s", node->name);
+> > +					   kobj_parent, "%s", node->name);
+> 
+> Which really is the only valid way I'd put up with it :)
+
+I see your point!
+
+> So can you rewrite the change above to be just:
+> 
+> 	struct kobject *kobj_parent = NULL;
+> 
+> 	...
+> 
+> 	if (parent)
+> 		kobj_parent = &parent->kobj;
+> 
+> Which is much simpler to read, right?
+
+Yeah, but the point of the patch seems to be diminished. Let's just not
+continue with it for now. Maybe later it will make more sense.
+
+Thank you for the review!
+
 -- 
-2.46.0
+With Best Regards,
+Andy Shevchenko
+
 
 
