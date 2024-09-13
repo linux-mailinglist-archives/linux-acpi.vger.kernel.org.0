@@ -1,110 +1,119 @@
-Return-Path: <linux-acpi+bounces-8282-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8283-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56729784B2
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 17:23:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4E4978511
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 17:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B92AB24852
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 15:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86395281A9E
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 15:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3676558A5;
-	Fri, 13 Sep 2024 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFBE4EB51;
+	Fri, 13 Sep 2024 15:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="A/RwjYsX"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fd0RA/iw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21331C2BF
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Sep 2024 15:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F13A2B9C6
+	for <linux-acpi@vger.kernel.org>; Fri, 13 Sep 2024 15:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726240751; cv=none; b=Xz+lLqXsQXWf3YvyZV0oOCFErlub9tc80gbsCqRs1vcqpfHYJFGFm86P9cNYnJqunMbBu7Hp8cNhdk1/MK/4SGjilJOH/eAg/CYQ0E/zn1o19lri1GOwrPcSUxWkplrT4DDouJDFO4A48TKAvlOxeOTtoSHFF38ntb4SGl/Yups=
+	t=1726242234; cv=none; b=rYergZBATRKqGan/wKzcQ4jjVRElGNz3TL8TBtlyJtn7eUkVP8+G5gjZeWRQY1VVaCH/9x6fAZmAMyT+eIxAJWQhKquahjIbacTyQtpnJQm9GPiTy7gnWGpD425ma8ag+6oCkhERPl25ta6V+CLcO+4b4SVs0GBCNcThp7Zc8a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726240751; c=relaxed/simple;
-	bh=uTyIoxx8cjMSHGUGIV4TWEAzcatuSGegYiJJ1MwWAyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uc1dSeGPb2JfGLtfDCgCmdDlpTjFhba5v4FKLrmbRFlPPBjkHDkogdbhsLoX/vRWKSVh1aRjaHAsTj93l8owEA+T0w/1uFeNU20OUKTyBbbBnT7SE+6w+lP7vJXvJPKLHgI4/VTVBcYe22PpsQ/xkPmSAsRCAY9QFcVokEl5QSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=A/RwjYsX; arc=none smtp.client-ip=80.12.242.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id p83bsvxkw84dOp83bsbRYo; Fri, 13 Sep 2024 17:17:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1726240679;
-	bh=vEs0DfPjdzBgNWGqjgymjGSq4uWAwvRLJs4XJ8PAc/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=A/RwjYsXydMMgWWA5S0poMPTy5qspRrObAPkm0Dh6HR0uvd5PUfrbxRrYlCBF24Fv
-	 0q1iXfH2ac1/PELoesmNUSvCobQQ6eWK5x6VQzEy2bFcgf+Gr/d1s9BA1CJ554cJ2g
-	 f6ws7xSsiW2cbrlBb2300rs1ki918H1y95Lk6fz7sl4z5+bzPDXdKO3whpLbwTLNHx
-	 xEYcG1m1hNngeJ7BVY1Pa6BSu5Jl51mAFPKjzJlj+4iIJN933jwh4GP9jkXZacvGps
-	 49/60T3hEA0wFfhufwB/0Ubfxc4zur0G6GDnMbanY+9LhjxEMhS5UrAou3Mc+KH3Q0
-	 Z4uAzGWVWxTrQ==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 13 Sep 2024 17:17:59 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <693e5874-30bb-4076-910b-feb6488e7d85@wanadoo.fr>
-Date: Fri, 13 Sep 2024 17:17:58 +0200
+	s=arc-20240116; t=1726242234; c=relaxed/simple;
+	bh=UgejVN/99nwt2N3xq1SPwRkr/wpZolJE3Mk9WmbBWgo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+7MoHE88RuxbWiBrqWJMaH+vEtWwqL4+ory/jRds2WPCxJraa6wISzAShuPpisRBCNoM+mohVuS84HU7mMDOcYMTYb4goLPn3TteBFGMEMMObKlnb3Ope6L+P6jGH2w2mzzA4uH26SPZYMO9hv7syR4gY/jRmy66wUBAJhUHFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fd0RA/iw; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f75e5f3debso10505611fa.1
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Sep 2024 08:43:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1726242231; x=1726847031; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d1zLfAygLCX5nindDhcisFbkr71lDlDKqH7T8AVgiyk=;
+        b=fd0RA/iwySWKcdKG0GBkNSN1nCZxkmwLUEDOHY2opUOG0T3sgR8bStoBtqIzviXcdO
+         unjr5rtsTTomY6eimjXFd6F1/CrCcAggd0qPavRzNdjJS1Of4dQGgPddQr/jPJg7F1QN
+         A4tZXl+abo+TMt8aZliSxl+QOvYyNL5HwTFbbkbHCX4cJbmSIJAJTJ4HJ0DOXgnWgjaL
+         qL1S6DzLev0ClICUbSY5OUEQk4SfuZLiVRk046EAtzBIxkeiFTtGnhMb/E0dnJkuW5g1
+         kRmwArCUBrt4awCDDz61anRWB11o9Cq/97mCXZYx/ZTwb3TyQV5VFMjPIJRZiw4LdRWT
+         Bw6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726242231; x=1726847031;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d1zLfAygLCX5nindDhcisFbkr71lDlDKqH7T8AVgiyk=;
+        b=aJJsX7kgpi9+FrYrVq7n+bjQBgCxTxaKnASWCloKIICz/hvuF8W6Qp4IHNS/JCTLlP
+         TF2aFIVyD/FwCzKVhHvEgc6kYv9JfJh85L4WxXy8A7NzcL/tuwybBDKcGVFtckIJoOqr
+         QK3zvXL0ASPcuij6me0V6hE0BNKy3X8a/JzmE8BH/ubGOS7JVpLVG95Pp6uHkGKDhO2b
+         1dt5lORIONBfVTEtiER+SoX0E/KcdAbMlmg5w3gIKsFAUgLmhQkbaXWKcrugFbSLwN2Z
+         q9VCiVDsQqKV1sWVCOIW38+IL5RMVaPnnY7+YKm7hvVTqANb9W4DSlekqnPl+JULKz3m
+         HrQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUtcChvmjSqQb9Jpa4OHDzWE/0XBMGLces/+Ne+q+9CA1b36rkcfkkZoBQTnIltv8bp+xsgsY7O97g@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD24Iy0hV+BOsCvwrQVu/xBulp/YykVTAStY2w+GZfEI207QbY
+	yUY/pbR1+324VRTohzwDksZX021SUofjqrmJ9E46yonmW1BtD0bqmdHWHwnoOxvpzvVaL5we9Rz
+	o
+X-Google-Smtp-Source: AGHT+IHjEojEFl9I+KdlNdjvlxdqRp6uQW0BMPVHLr049XIwfxrFRE+znIjnvIhA2A3Ivu37qd1QSQ==
+X-Received: by 2002:a05:651c:b0f:b0:2f7:5914:c22e with SMTP id 38308e7fff4ca-2f7918e09e0mr20801991fa.6.1726242230552;
+        Fri, 13 Sep 2024 08:43:50 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c3ebd76efbsm7768944a12.67.2024.09.13.08.43.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 08:43:50 -0700 (PDT)
+Date: Fri, 13 Sep 2024 17:43:48 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Raul E Rangel <rrangel@chromium.org>
+Cc: linux-serial@vger.kernel.org, rafael.j.wysocki@intel.com,
+	ribalda@chromium.org, Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>, acpica-devel@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] ACPI: SPCR: Add support for rev 3
+Message-ID: <ZuRdtFNjFr1_-VEw@pathway.suse.cz>
+References: <20240912173901.3969597-1-rrangel@chromium.org>
+ <20240912113616.3.I1b7a5033a2191cb0cdbadc2d51666a97f16cc663@changeid>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: thermal: Use strscpy() instead of strcpy()
-To: Abdul Rahim <abdul.rahim@myyahoo.com>, rafael@kernel.org, lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240912205922.302036-1-abdul.rahim.ref@myyahoo.com>
- <20240912205922.302036-1-abdul.rahim@myyahoo.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240912205922.302036-1-abdul.rahim@myyahoo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240912113616.3.I1b7a5033a2191cb0cdbadc2d51666a97f16cc663@changeid>
 
-Le 12/09/2024 à 22:59, Abdul Rahim a écrit :
-> thermal: prefer strscpy() over strcpy()
+On Thu 2024-09-12 11:36:21, Raul E Rangel wrote:
+> Revision 3 supports specifying the UART input clock. This allows for
+> proper computation of the UART divisor when the baud rate is specified.
 > 
-> strcpy() is generally considered unsafe and use of strscpy() is
-> recommended [1]
+> The earlycon code can accept the following format (See `parse_options`
+> in `earlycon.c`.):
+> * <name>,io|mmio|mmio32|mmio32be,<addr>,<baud>,<uartclk>,<options>
 > 
-> this fixes checkpatch warning:
-> 	WARNING: Prefer strscpy over strcpy
+> This change makes it so the uartclk is passed along if it's defined in
+> the SPCR table.
 > 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-> Signed-off-by: Abdul Rahim <abdul.rahim@myyahoo.com>
-> ---
->   drivers/acpi/thermal.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> Booting with `earlycon` and a SPCR v3 table that has the uartclk and
+> baud defined:
+> [    0.028251] ACPI: SPCR: console: uart,mmio32,0xfedc9000,115200,48000000
+> [    0.028267] earlycon: uart0 at MMIO32 0x00000000fedc9000 (options '115200,48000000')
+> [    0.028272] printk: legacy bootconsole [uart0] enabled
 > 
-> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> index 78db38c7076e..a35e40976763 100644
-> --- a/drivers/acpi/thermal.c
-> +++ b/drivers/acpi/thermal.c
-> @@ -796,9 +796,9 @@ static int acpi_thermal_add(struct acpi_device *device)
->   		return -ENOMEM;
->   
->   	tz->device = device;
-> -	strcpy(tz->name, device->pnp.bus_id);
-> -	strcpy(acpi_device_name(device), ACPI_THERMAL_DEVICE_NAME);
-> -	strcpy(acpi_device_class(device), ACPI_THERMAL_CLASS);
-> +	strscpy(tz->name, device->pnp.bus_id);
-> +	strscpy(acpi_device_name(device), ACPI_THERMAL_DEVICE_NAME, MAX_ACPI_DEVICE_NAME_LEN);
+> Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table
+> 
+> Signed-off-by: Raul E Rangel <rrangel@chromium.org>
 
-Why the 3 parameters version here only?
-Is it needed?
+Looks good to me:
 
-CJ
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-> +	strscpy(acpi_device_class(device), ACPI_THERMAL_CLASS);
->   	device->driver_data = tz;
->   
->   	acpi_thermal_aml_dependency_fix(tz);
-
+Best Regards,
+Petr
 
