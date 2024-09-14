@@ -1,152 +1,178 @@
-Return-Path: <linux-acpi+bounces-8291-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8292-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7520C978AA7
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 23:34:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A1F978E86
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Sep 2024 08:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5001B243F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Sep 2024 21:34:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 195E21C226D7
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Sep 2024 06:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3501B15575F;
-	Fri, 13 Sep 2024 21:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=myyahoo.com header.i=@myyahoo.com header.b="ovws2alu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FEB1CCEFD;
+	Sat, 14 Sep 2024 06:53:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sonic306-20.consmr.mail.sg3.yahoo.com (sonic306-20.consmr.mail.sg3.yahoo.com [106.10.241.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5321714C3
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Sep 2024 21:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.241.140
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FA41CCEFC;
+	Sat, 14 Sep 2024 06:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726263215; cv=none; b=XEwXZi9xKSvkc96v4ms90XVEnuBp0noIEKML6hJO+O93PaH0kgtcfr/vUVG+hfDbg1wq9xP/QpdlOJYJS9R+Y5o2Y9l0Zu+xj2VcKZw+R9mpXnJPrww2UNz9Xt3uCW41HYeN3ivpMnV3/yjmlcoPMKbh27boflwrQyFVgh6TrXk=
+	t=1726296806; cv=none; b=jbITXLrzikxjakEkZtA90WXh4iRem+A1y5NF53Z6G5Hw/Lvg8iz/WFlrPfDlyWecdtIhh3aHgR5q+j2KflogjItU3Zb+0oz62N99UKtQY4/wNlpqD8P2N1fXij1TNl5cwuRimC5j17DRwl+Xsec6+rMblAJaPH7kFVs8ZbgvpRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726263215; c=relaxed/simple;
-	bh=GmIrA2s4GY1oMRi4z6JkX5QRAl/IPOLLybRw1y5NcVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NK44ohNqGYrbkhPcT590c4/ZdjUfiXQKSTa4ckjW7ckXigm40c3n9E6pOYx3y812c5Tx+vJKeG9LqVOYsdVumdXjyQnqJyPmTVb2kX9pdPvJP3grNKmqYzIGBAD4JLqM0VQJlTWa4s/hWHgd2R7tiX0zJVyhW9+ngei6NloeOrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=myyahoo.com; spf=pass smtp.mailfrom=myyahoo.com; dkim=pass (2048-bit key) header.d=myyahoo.com header.i=@myyahoo.com header.b=ovws2alu; arc=none smtp.client-ip=106.10.241.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=myyahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=myyahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=myyahoo.com; s=s2048; t=1726263211; bh=Xu6GHo+mOurlZPXAopl8mYcnnDPP7yNRQ27zJInbkvY=; h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject:Reply-To; b=ovws2aluJX84q4OF9a8PK/yZPP4zGZ/2BbuMXgaTw0f0w2mOOW1i9j0+uAttYumcKVvbkqdhu9m548r05R5KFU5ObslqjBIFTrbLCz4zRvV11oQuZgUbRq6UF8V8/kHC4DndjUN6ua7tAo9Ko/qdHLEhRmh0U4w3WYr7ceB0MUSfm36qhBO7qYnUVqYPRKP+2ni3tEseZ52vx/QW8aTbnljVOBW2x1VY021PLZwu0zwTq3Bfi2oy26RTu0iyfgci6yEb9YmOi7bh+kI0ORCKxtQz28M7h171Gm9V3sFRLg6xsAuICCcX8FoHVpDfRUbAXbsfEGot75bfvO7OGI3jJQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1726263211; bh=ZaqUjLlUcv9kNOwEEx/VznIcnFamu/ROzGEDkZJXG9m=; h=X-Sonic-MF:Date:From:To:Subject:From:Subject; b=KPn3JHTdX4nDlsjDo7Zmu0YkM3Vz1pn0jH9pPmYDXWLMGq5HWkb1NeWaoWgdWxcJIvOSGI6L7ugzDpc7BGIwEJ6rAE7HjH6nTpPZZdLioH8Z9VQ4/h+wZf6u8+B8BMh1pexhScrd03xxYEHRmPfmgh5SYN9H5o3jBtm2kBWnMDChweKYMu692c+ComUlMsBNDFkNMTRJTkK3EJ/4OMNnNgW+NdzdStMAE+9h92d3ZcI+lYdOT5yu0XUeRi1hX+NWLWYohjfNtrhKhidMSOoo7dcfB/EEeJoupAQ7XTwJGk9iaZ79KPdCOavXEVZ8MYHq93JGeqUHd22MX7oWZ+bJjg==
-X-YMail-OSG: T1a7AU8VM1nEBDDmRIEmB83gfcR6TEZnkGY.R59_IFXClwu1o174uY7gEWGL_ui
- q6sqI1JYbvvbM.zu8nSQpDYRf5TOz_O.IzxHN2c3S6AronuxLTS.xqo7YohS3UDo8FvPzv8rSKLR
- CylFbbAhUHeg4LCYDnTmaBthPgq6DGdBOdsfxwpth0RqjgavOKos0SI83lw5ym1JumyyZZISX5xf
- vxkZLp0FDJclq8jVdYKqkT6KwsmOsl5H1YoJumjfOT5b.LiSw6ZCuMnmFE1Kx4O7GyAw7bb4BAKF
- xqX5c8lapGIqUttTGmx1rWfK56GjEgtX5AZq.rMGcuiP01KuCQ_KByvEeaI_LWerSBtssr2SBZFX
- mskZRxCeaGyNNVBNsqDC_QmFQfwTRZYElHgBTpYF_6q2R9omXNwA83bRfc7XMAydO4r4seFUYRu5
- NyW3S4u4DX3RBWq.vl0pWVWuuJb476GwVvTf7luAL6Q14EfudG5.cpWBPIdd7_6.U5USV1hUuMwG
- SNQ0oIHChAYcrvMt3cPgys5.GacrlRiqDa3Orn72_alVdgdTGMnjFj_b6Y0N.jqeZaQ9M0.AyYkK
- _7xUcw3Z.khd844wb4f2TWTGTBBna4ATRDshHqZ5VLTfHA228XP2Pb1jD_oAy48GE9nraDecmNRW
- X_mBZm7zmG3kRS6XW7vdkkMWl32YrHxIEUGTSVVqM9bF0M5DwaOunEPouq64nLac.oHxwHFX8NYS
- AkbESaevCFN1EF6CSW1OOXkMOLNkNAyZRI0d6ccx7SbSUuvUp_giXQifKL1NqlaaCVbQb1xLDiYQ
- mcJAGaI6RXMGfMFp2a7iBGlTH677SjCCgVRmxng5q5g8xG5DPkciCiI28H8AclzcqjUTw9XBecwR
- 2oF1BO9e8HI9Iw0e2AIkwrHPpoNVinmgg4XHQnblWRYdl9SOE2OVkQ0d5k51dlLMjM44WCsUCsZk
- .1UzcepNGWbk.W4hhJDy4pVRsm8jrVmKZwcgtqR66i_B4gzE7LZ1bDJQlddTjAR1XTpbX7zFspsL
- qwqC0l1yUcTi4wtsttkg0.dvQsArtlB6BfLaPBG4yMFX3HmcS.A7WjNCMDAzqdZa3u6jWSV2h3SV
- cZnNOwFV7lHnYNIAZA01TKqKCutP8WZv8a6Y0lil5swZVv1zZatF4KbuCqK2Yj8ZoaI6FgkyOGz3
- MRfEy3cLcSiLrIkuCVtfgyM7Kj2uzqbIUvBKm5eyrsa.hZjnvJf3bHEdnF_60aNLYIHPHE.Ot70.
- PkOk9jhWxnW6KQqcroDvIftmKhQWGEEl74kE6GoBQBZ840SKO3VkRP0e8Ml4Ta0cl1bVrmRY5mev
- XqYWuIiwsAwPgfalpRe6X6TISReMLrCALRyDtMqECBDDzsiDN9hHlI_KyKE3K9b5TplH_dNDtf9s
- 0rDmN3FNKa8owfVV_gBMJK_H0DcWYKqhm_zt6dQ1PAluT3FcGTBibvCUWoAUGFVg0P0qNTIsbOvk
- oMQoY.6WTshG0csW1YuVsoRhAC9S3aj4lrzvY9PV7Qg7cPn6JHlJ9m7QAev1GLlAZyCm4NmU5PEh
- vxOMw.X.3BS31g92QJVgckUiyJuR_HVBzjwk.PgXJOvJj71ZuxqW2zDkfjibx_cspYsaEU91eaK8
- ZsNckF2fgJEsnTm9Ypm8CuN_tgBD15ne_ax.OuIj3a.HoSfHG8pq6I1pinFpl2Am7C8jRZEIV1p2
- 5INdxkdrOSOl5rzMqiG.LFxIfCP94iDghYEFVmD1zpvRrogWKwi5ffRLwATdy_Tu8IYffAdf3X4x
- hShfmcmJx04Qn0wFGhxdCHvxkzqdyInsgf5R8GPhD2EqacPk8ruJqloEQKV9q8.9KqK9b_1Tg44s
- YcZuQlJ_5N3Mf9SGLaZSxrJRPeRJMoMWFazD2DAVX2e.eSuaNC85ge1BTWjsy7Stt3tvXBEItpg7
- GsjNSqQl00HXOPGHmgCNGnDf0XfBhu9evSGSKtR1D2nvb.lxVokFMVtjIULQWwsBbb.M2p6uiTNn
- tDKeyIp6qdcuArb4c2sk8jUjhbgMQ41RlGbMwQdPOwYXlygRLgN46DiAUCbpB5j.MSzksOQQ0.7S
- 6c1pKYSLAfN52XFgh6ori3SrxZlegEJxBW8A36izopVOIKgvjuQZcp4mmvZ79SADs_7HU_Px1K_F
- PCm1YTgtGK3WHAr8YMEfRHlOAYHZBiljPihzSPgUjmlbRw794n6BX9yb2uqobpi8SkDYJv4eMcNA
- V7m1iAOil4ic2noAR9FjLJQoPWHz.cnPtQGMxc47ndoM2p6RdoBY-
-X-Sonic-MF: <abdul.rahim@myyahoo.com>
-X-Sonic-ID: 17a4e484-a3c1-4e96-8a9c-8efecad89cbd
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.sg3.yahoo.com with HTTP; Fri, 13 Sep 2024 21:33:31 +0000
-Received: by hermes--production-sg3-fc85cddf6-nnv8r (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 29fab85ab6d70373e5252eb4a6688490;
-          Fri, 13 Sep 2024 21:23:21 +0000 (UTC)
-Date: Sat, 14 Sep 2024 02:53:17 +0530
-From: Abdul Rahim <abdul.rahim@myyahoo.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: rafael@kernel.org, rui.zhang@intel.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: thermal: Use strscpy() instead of strcpy()
-Message-ID: <pjfihdom7drxw5jse7kd2w5umjavlu5vb7v2p3svwz4eymqfkf@artgu4pefe5k>
-References: <20240913191249.51822-1-abdul.rahim.ref@myyahoo.com>
- <20240913191249.51822-1-abdul.rahim@myyahoo.com>
- <c4e7b3ac-d8fa-47b9-84f6-e3332bb54e12@wanadoo.fr>
+	s=arc-20240116; t=1726296806; c=relaxed/simple;
+	bh=l+/346QSa7QIjAv6+GoFPf58pN0bicn9uc/P6Cd3Y/E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Igo3pMwueBMjFGanqKF/9hFfObaMPvxaL9JwJeKrr+OSW7Q1aDwGylLQVkyUdrXtql87/cmInkhT7D4/V6J1rcWq2muyJruJGcMVhF316Mh8C8l6gPn8yoygK+zizVt9CuhEBhX95olCDs517kGPV+IqdT64GwXJ5VOhC/khGP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8CxjerhMuVmF8gHAA--.18491S3;
+	Sat, 14 Sep 2024 14:53:21 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMAxSebfMuVmy50GAA--.37863S2;
+	Sat, 14 Sep 2024 14:53:19 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH v2] LoongArch: Enable ACPI BGRT handling
+Date: Sat, 14 Sep 2024 14:53:18 +0800
+Message-Id: <20240914065318.2099448-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c4e7b3ac-d8fa-47b9-84f6-e3332bb54e12@wanadoo.fr>
-X-Mailer: WebService/1.1.22645 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-CM-TRANSID:qMiowMAxSebfMuVmy50GAA--.37863S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Fri, Sep 13, 2024 at 09:31:57PM GMT, Christophe JAILLET wrote:
-> Le 13/09/2024 � 21:12, Abdul Rahim a �crit�:
-> > strcpy() is generally considered unsafe and use of strscpy() is
-> > recommended [1]
-> > 
-> > this fixes checkpatch warning:
-> >      WARNING: Prefer strscpy over strcpy
-> > 
-> > Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-> > Signed-off-by: Abdul Rahim <abdul.rahim@myyahoo.com>
-> 
-> Hi,
-> 
-> in order to ease the review process, when you send a new version of a patch,
-> the subject line should state the version: (i.e.: [PATCH v2] ...)
-> 
-> 
-> It is also a good practice to explain what has changed with the previous
-> version.
-> Finally, it is nice to provide the link on lore to the previous version.
-> All this should added below the first ---.
-> Here it could look like:
-> 
-> > ---
-> 
-> Changes in v2:
->   - Remove an unneeded extra parameter (MAX_ACPI_DEVICE_NAME_LEN) in the 2nd
-> strscpy() call
-> 
-> v1:
-> https://lore.kernel.org/all/20240912205922.302036-1-abdul.rahim@myyahoo.com/
-> 
-> CJ
-> 
-> >   drivers/acpi/thermal.c | 6 +++---
-> >   1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> > index 78db38c7076e..6671537cb4b7 100644
-> > --- a/drivers/acpi/thermal.c
-> > +++ b/drivers/acpi/thermal.c
-> > @@ -796,9 +796,9 @@ static int acpi_thermal_add(struct acpi_device *device)
-> >   		return -ENOMEM;
-> >   	tz->device = device;
-> > -	strcpy(tz->name, device->pnp.bus_id);
-> > -	strcpy(acpi_device_name(device), ACPI_THERMAL_DEVICE_NAME);
-> > -	strcpy(acpi_device_class(device), ACPI_THERMAL_CLASS);
-> > +	strscpy(tz->name, device->pnp.bus_id);
-> > +	strscpy(acpi_device_name(device), ACPI_THERMAL_DEVICE_NAME);
-> > +	strscpy(acpi_device_class(device), ACPI_THERMAL_CLASS);
-> >   	device->driver_data = tz;
-> >   	acpi_thermal_aml_dependency_fix(tz);
-> 
-> 
+Add ACPI BGRT support on LoongArch so it can display image provied by
+acpi table at boot stage and switch to graphical UI smoothly.
 
-Thanks CJ,
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409102056.DNqh6zzA-lkp@intel.com/
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+v1 ... v2:
+  1. Solve compile warning issue reported from lkp, return type of
+     function early_memunmap() is void *, that of function early_ioremap()
+     is void __iomem *, force type conversion is added.
+---
+ arch/loongarch/include/asm/io.h | 4 +---
+ arch/loongarch/kernel/acpi.c    | 8 ++++++--
+ arch/loongarch/mm/ioremap.c     | 9 +++++++++
+ drivers/acpi/Kconfig            | 2 +-
+ 4 files changed, 17 insertions(+), 6 deletions(-)
 
-https://lore.kernel.org/all/20240913211156.103864-1-abdul.rahim@myyahoo.com/
+diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
+index 5e95a60df180..3049bccec693 100644
+--- a/arch/loongarch/include/asm/io.h
++++ b/arch/loongarch/include/asm/io.h
+@@ -10,6 +10,7 @@
+ 
+ #include <asm/addrspace.h>
+ #include <asm/cpu.h>
++#include <asm/early_ioremap.h>
+ #include <asm/page.h>
+ #include <asm/pgtable-bits.h>
+ #include <asm/string.h>
+@@ -17,9 +18,6 @@
+ extern void __init __iomem *early_ioremap(u64 phys_addr, unsigned long size);
+ extern void __init early_iounmap(void __iomem *addr, unsigned long size);
+ 
+-#define early_memremap early_ioremap
+-#define early_memunmap early_iounmap
+-
+ #ifdef CONFIG_ARCH_IOREMAP
+ 
+ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
+diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
+index 929a497c987e..2993d7921198 100644
+--- a/arch/loongarch/kernel/acpi.c
++++ b/arch/loongarch/kernel/acpi.c
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/init.h>
+ #include <linux/acpi.h>
++#include <linux/efi-bgrt.h>
+ #include <linux/irq.h>
+ #include <linux/irqdomain.h>
+ #include <linux/memblock.h>
+@@ -39,14 +40,14 @@ void __init __iomem * __acpi_map_table(unsigned long phys, unsigned long size)
+ 	if (!phys || !size)
+ 		return NULL;
+ 
+-	return early_memremap(phys, size);
++	return (void __iomem *)early_memremap(phys, size);
+ }
+ void __init __acpi_unmap_table(void __iomem *map, unsigned long size)
+ {
+ 	if (!map || !size)
+ 		return;
+ 
+-	early_memunmap(map, size);
++	early_memunmap((void *)map, size);
+ }
+ 
+ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+@@ -212,6 +213,9 @@ void __init acpi_boot_table_init(void)
+ 	/* Do not enable ACPI SPCR console by default */
+ 	acpi_parse_spcr(earlycon_acpi_spcr_enable, false);
+ 
++	if (IS_ENABLED(CONFIG_ACPI_BGRT))
++		acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
++
+ 	return;
+ 
+ fdt_earlycon:
+diff --git a/arch/loongarch/mm/ioremap.c b/arch/loongarch/mm/ioremap.c
+index 70ca73019811..28562ac510c8 100644
+--- a/arch/loongarch/mm/ioremap.c
++++ b/arch/loongarch/mm/ioremap.c
+@@ -16,6 +16,15 @@ void __init early_iounmap(void __iomem *addr, unsigned long size)
+ 
+ }
+ 
++void __init *early_memremap(resource_size_t phys_addr, unsigned long size)
++{
++	return (__force void *)early_ioremap(phys_addr, size);
++}
++
++void __init early_memunmap(void *addr, unsigned long size)
++{
++}
++
+ void *early_memremap_ro(resource_size_t phys_addr, unsigned long size)
+ {
+ 	return early_memremap(phys_addr, size);
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index e3a7c2aedd5f..d67f63d93b2a 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -451,7 +451,7 @@ config ACPI_HED
+ 
+ config ACPI_BGRT
+ 	bool "Boottime Graphics Resource Table support"
+-	depends on EFI && (X86 || ARM64)
++	depends on EFI && (X86 || ARM64 || LOONGARCH)
+ 	help
+ 	  This driver adds support for exposing the ACPI Boottime Graphics
+ 	  Resource Table, which allows the operating system to obtain
+
+base-commit: 196145c606d0f816fd3926483cb1ff87e09c2c0b
+-- 
+2.39.3
+
 
