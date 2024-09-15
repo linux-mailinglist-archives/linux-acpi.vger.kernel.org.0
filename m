@@ -1,156 +1,113 @@
-Return-Path: <linux-acpi+bounces-8299-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8300-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F78B979482
-	for <lists+linux-acpi@lfdr.de>; Sun, 15 Sep 2024 04:58:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30379979820
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Sep 2024 20:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1B001F231AA
-	for <lists+linux-acpi@lfdr.de>; Sun, 15 Sep 2024 02:58:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B4B31C20BDC
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Sep 2024 18:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9BFC8CE;
-	Sun, 15 Sep 2024 02:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460CC1C9DEB;
+	Sun, 15 Sep 2024 18:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRs/assu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0D82F32
-	for <linux-acpi@vger.kernel.org>; Sun, 15 Sep 2024 02:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB1D2F4A;
+	Sun, 15 Sep 2024 18:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726369107; cv=none; b=Chra2l/FURmtEd08NoCINKdzJWUFGa4pYRzhjlZA0xqwxgcfWTVFKs8rTtN2dhx5yfQkPrxD6QRHfzViuGedrPNPo1NQK/d47+sXVN76or7l164rusNb7CBJ1Eycg18OSUeyjSZ5dRgrbuOTjAIhHkPRiDb3j7lwgoyIPoZ/Dp0=
+	t=1726425538; cv=none; b=gxav5SczadsoYMgXGoZgABKqOEOrqzjIc1l0W78Vy5/Cyk133NUaLftJnEAIB/tbdOOmgl7RtZxOf8L2cJIOOKXaI9SjnUirCXPoYPh+3bRVM8Sw3G5gseum1iRnTxi7VSPFni+PpsQprBljC2XP6/Qpvh2qKtVj3xTUuN3B8Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726369107; c=relaxed/simple;
-	bh=z+UqE0U/RSUElanrubdF3dIn6xXTrATxDHndfWc1KTA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=MD1w0b6vfWNgBTsfUNtqVjPYuXoJ9rRbwJK1/B+ApyQxk4erjdwDGoaPS/5g0lePLJP5O1gCcRQAp3DgWY3zQXuHtcvHCSUqkT+NMInBMPrWKhwH+EN/VNZShWHqmFMZAd3T9TvZnu1RoFtG/Ngq/FBXDiMVJDfrhfKpz3k9IDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-39f510b3f81so84563785ab.0
-        for <linux-acpi@vger.kernel.org>; Sat, 14 Sep 2024 19:58:25 -0700 (PDT)
+	s=arc-20240116; t=1726425538; c=relaxed/simple;
+	bh=GD0hS0R0EaLqxG1C3I6hXxh4u2ZYbLcQaO14hyxtczM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XzgtfZX47UWQpf8opIeCCzembf3DqV00trAbSuir6ZGNdu052+6D1B5vZr1fwHzGKpy5Zg1axOvHz4heVs0eMJoZyGv7XbVO3sN/jceB7cEQW5iE5bodtb+unu02eORYDF+o5tKBO2DPoCufEjoRz8x6NIwFfScOATnYauyBmFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRs/assu; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42cba8340beso29505135e9.1;
+        Sun, 15 Sep 2024 11:38:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726425535; x=1727030335; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S/QcDg3/f4nXWtxtIsOpnVBD30Dc1zURxuZ8j9D+WaM=;
+        b=MRs/assu2K16rs283qGhfYWPmbs7HSE9wzV8US30Gc4JyZv7yh30YXI1Y14wRH7IAH
+         /W2PBnkwL7oTrPeJ6fuGaHBp73ai/oDKpZBcdfWwzBTnYaH1iZHIIiINYaDuMQH9N7i/
+         v4Vex2+X4ZkFo/z6r0Y1k5iOh+Y23W4aoxvFvqr55h0/TrSI4DRhlrrJ7X7CzHqtWXuU
+         uQ1tKr9DKepGI65OSJBKDgSxzh9/dRTjRaky50qy/uqWVOJztjyioXJEbPpUITHwO24R
+         N4I1vRlhGuIdEUCwiEZ02qR8WUZ/Xp8/txGE0SdpbAGXoDRndM1Xn4NZigyTH0LQ+nDm
+         1ycQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726369105; x=1726973905;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hjLUsKGeoVoPKJ3al0/Nz3RmDdv0R6NiXx4KuJWRwHc=;
-        b=DkFmQtppu1z/USKGbjoupbxQ+CMa9wC8x54bMLXJnN/6j1/hm+318m81P1O5vkZFUR
-         Qz9kriNq5fwpfFeX02+oEiLFPFE8C8Gf0jxh7OYC8eJEn/JDTLqVO4lGw7rwfIXmQVYm
-         B2CCHF/aa++B90QRCCQODTp5N0yJd3/1f6AC3GIebOXtWCkA+9vYvR7zK/ibNiegrpiY
-         0yhUYxHfu+oaodHVfxkNIwDbZVtfBESkOmfPjUD9kAZB/d7esGtu/cfD1DsnVDJvP0NX
-         kXmjgPEJQSw2D5UUEAi6/M8c/uQv6p64JYW/v31ODhLaGE4qwTyuEerG8WkbuqFEFcnC
-         FGDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnM3S9qivtTD6VVm6soSAYeJUj1FGqmr0xzheCHHhvaGVKUSo6ei6HNTWAO8JGusOVe4oX1CxawhlH@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg8vqMGbl+tyDe3YLNs34dhXx81SAh31D/XVKRr8rUcPJ/OeUd
-	6ANOXxCr8pzHpRnEvL8xpEpR+dQXjBY3aDWxY+orB8bB1pZxvR1pe6MoIBSECt1m/nO/zA7fnUw
-	tCInOROZX7rWtKR7gtHkOzQawL+eYKp9OtOIZ32yuZFA69wJs31MNxD0=
-X-Google-Smtp-Source: AGHT+IESevztk4HmfitvDcTuYMhISYTTN0df7RIpThqtZPTssyZEyA3esCJB2Wm5A9txuzZtra60G1M7IJe02e6OwMyuB5UPqmPD
+        d=1e100.net; s=20230601; t=1726425535; x=1727030335;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S/QcDg3/f4nXWtxtIsOpnVBD30Dc1zURxuZ8j9D+WaM=;
+        b=to0ULZYMYWegnvyoeFM+C50S4dkYQC9NvV2OjShaUJ+Ppu/1Wy/heg1Uuf5wK+22Kn
+         TUStwcA/OJo2rPoOZ5wuub0yqnIyKZOC+rOsFo8f0O53CrH0jdVTZ+8aPgGGs7mND2sc
+         NBlJhUAXDl1XSXXnrrVqeAJSDEK/gCWlTglFVlMolfVvdW0u9hNIlP3fjgi2+/lvxmZM
+         3fqXfdL7bQESAxVU6JgahwsXXl7SNlLBT0AA5VCPp6HxEc/U8y/IPkqwItzr4FvGNDp6
+         wFDlhMVao+TICPaYuSCspTUh1tqb7J8MDmvXswiOvhLOPmHHDJQvB8F4eN+5i0b6Um04
+         10zg==
+X-Forwarded-Encrypted: i=1; AJvYcCUTCkZbRtoods8ATerFVf4SLnjq3ByxLN/Eu7TlsIGHWTP7lMDL13Ah7roqbnCkCeaPuMTlJCuOGkDA@vger.kernel.org, AJvYcCVhs4sIhda6ZzNA3ej+wV8qgWpE0JcEXNhV+XwsXudChHjkO87f/aKqmp0Vt/BhQvV6uQI0F5AJ/psXqe6/@vger.kernel.org
+X-Gm-Message-State: AOJu0YymAClLpI4rGaAQf8CN9IClG1zIteeart2BSFr91VEVj9N34cAz
+	DVAAfAlz7kk3ZSP2oVaGreiLg/1WvPzOJn4LnyujNsBAVu8ivCnP
+X-Google-Smtp-Source: AGHT+IGZ4ci5SkLCmeXgFDWTKuBpqNZLxkTlSazVcAexk8xbCfkU8YoJe1JXz7UmvEMQzM2muXVy8w==
+X-Received: by 2002:a05:600c:3b27:b0:42c:b81b:c49c with SMTP id 5b1f17b1804b1-42cbddeb447mr118442605e9.10.1726425534347;
+        Sun, 15 Sep 2024 11:38:54 -0700 (PDT)
+Received: from qamajeed.Home ([39.45.198.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e73f2001sm5162357f8f.48.2024.09.15.11.38.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Sep 2024 11:38:53 -0700 (PDT)
+From: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
+Subject: [PATCH 01/10] ACPI: apd: Use strscpy instead of strcpy.
+Date: Sun, 15 Sep 2024 23:38:13 +0500
+Message-ID: <20240915183822.34588-1-qasim.majeed20@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:505:b0:3a0:9c04:8047 with SMTP id
- e9e14a558f8ab-3a09c048195mr14619655ab.6.1726369104872; Sat, 14 Sep 2024
- 19:58:24 -0700 (PDT)
-Date: Sat, 14 Sep 2024 19:58:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000003f5a0c06221fa127@google.com>
-Subject: [syzbot] [acpi?] [nvdimm?] WARNING in to_nfit_bus_uuid
-From: syzbot <syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
-To: dan.j.williams@intel.com, dave.jiang@intel.com, ira.weiny@intel.com, 
-	lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, rafael@kernel.org, syzkaller-bugs@googlegroups.com, 
-	vishal.l.verma@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Replace strcpy() with strscpy() in the ACPI apd driver.
 
-syzbot found the following issue on:
+strcpy() has been deprecated because it is generally unsafe.
+Eliminating it from the kernel source.
 
-HEAD commit:    8d8d276ba2fb Merge tag 'trace-v6.11-rc6' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17987f29980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=61d235cb8d15001c
-dashboard link: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10be6797980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13386100580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-8d8d276b.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d23708af23a4/vmlinux-8d8d276b.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1aed2837c105/bzImage-8d8d276b.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-only secondary bus families can be translated
-WARNING: CPU: 0 PID: 15821 at drivers/acpi/nfit/core.c:80 to_nfit_bus_uuid+0x6f/0x90 drivers/acpi/nfit/core.c:79
-Modules linked in:
-CPU: 0 UID: 0 PID: 15821 Comm: syz-executor579 Not tainted 6.11.0-rc7-syzkaller-00020-g8d8d276ba2fb #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:to_nfit_bus_uuid+0x6f/0x90 drivers/acpi/nfit/core.c:79
-Code: 01 75 0d e8 23 74 76 fc 31 c0 5b c3 cc cc cc cc e8 16 74 76 fc c6 05 4d 34 e5 0a 01 90 48 c7 c7 40 92 6a 8c e8 32 98 38 fc 90 <0f> 0b 90 90 eb d8 e8 f6 73 76 fc 48 c7 c7 40 9d 0e 8f 48 89 de e8
-RSP: 0018:ffffc9000b6cfa90 EFLAGS: 00010246
-RAX: 48f74db0fdd0b300 RBX: 0000000000000000 RCX: ffff88801e0e8000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc9000b6cfc90 R08: ffffffff8155b372 R09: 1ffff11003fc519a
-R10: dffffc0000000000 R11: ffffed1003fc519b R12: ffff88801df22000
-R13: 000000000000000a R14: ffffc9000b6cfc20 R15: 1ffff920016d9f6c
-FS:  00007fb39f5416c0(0000) GS:ffff88801fe00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb39f546d30 CR3: 00000000377e2000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- acpi_nfit_ctl+0x8a9/0x24a0 drivers/acpi/nfit/core.c:489
- __nd_ioctl drivers/nvdimm/bus.c:1186 [inline]
- nd_ioctl+0x184d/0x1fe0 drivers/nvdimm/bus.c:1264
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb39f590b29
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 a1 1d 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fb39f541228 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007fb39f590b29
-RDX: 0000000020000180 RSI: 00000000c008640a RDI: 0000000000000003
-RBP: 00007fb39f6143c8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fb39f6143c0
-R13: 63646e2f7665642f R14: 00007ffd8b32c140 R15: 00007ffd8b32c228
- </TASK>
-
-
+Link: https://github.com/KSPP/linux/issues/88
+Signed-off-by: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/acpi/acpi_apd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 80f945cbec8a..403e9de396ae 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -86,7 +86,7 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 		if (!clk_data->name)
+ 			return -ENOMEM;
+ 
+-		strcpy(clk_data->name, obj->string.pointer);
++		strscpy(clk_data->name, obj->string.pointer, obj->string.length);
+ 	} else {
+ 		/* Set default name to mclk if entry missing in firmware */
+ 		clk_data->name = "mclk";
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
