@@ -1,264 +1,209 @@
-Return-Path: <linux-acpi+bounces-8318-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8319-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CF197A5CF
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Sep 2024 18:16:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D613897AE35
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 11:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C851D1F295E6
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Sep 2024 16:16:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A291C23689
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 09:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E425158DBA;
-	Mon, 16 Sep 2024 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE89154C0A;
+	Tue, 17 Sep 2024 09:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wZ5yqPMv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C398B154C14;
-	Mon, 16 Sep 2024 16:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53037175D5C
+	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 09:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726503394; cv=none; b=Dw9iWX6mSF1PhnTGokZ/ASu2aSFcLu02AB8Il2AcruHKFqoEJ8JDVGa9O4SVDcP7j7nkhsy2uxDJDADtlCfpY2Wn5ojD7YiUkjYEs6x/TG4cIYXHOyKVrVQCYN+j/IVNI/1h3r+QbTdTS0HKi9t1duDMSYo6CTAjafR+aOp1Q6Y=
+	t=1726566574; cv=none; b=fhMILl6PBNWNOYR64XssX/b2Lg/nnp8HPIS0QjmMGLibGFkkOP/KRDpD/BPwCBWYKkBgIu1vA5Tja9J0D+sgY1SOv/NaZUkuG0jJRS2TLuHTNbDAe/XGo1b6KNcoUd1/lTzYFX2yOJ7LhJ+e7U71liprEC/fx1e7X6xPTxGsjL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726503394; c=relaxed/simple;
-	bh=vqzYyA10Ra+Ue2aMyu+n6htlVt6+PdHenejO+zV5cVE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=rDbG8tQgukTmR0n3VaQZvlMCEHkZx7SlIUJ5hn1b5g3Lb+2BXxQXYczTsFDVbDajW+Wh30xpiwmwAt0orwgSQSBZNwi9e9uEwvyrI0x94OQeqRg1emfEzsddvHjq/nknxjrwAEiddMIg/8N1eXLTAljdkwfRWEunh5hYksX1190=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4X6qgM6yfmz6K9Cj;
-	Tue, 17 Sep 2024 00:12:15 +0800 (CST)
-Received: from frapeml100005.china.huawei.com (unknown [7.182.85.132])
-	by mail.maildlp.com (Postfix) with ESMTPS id F271E140C98;
-	Tue, 17 Sep 2024 00:16:27 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100005.china.huawei.com (7.182.85.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 16 Sep 2024 18:16:27 +0200
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Mon, 16 Sep 2024 18:16:27 +0200
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: Borislav Petkov <bp@alien8.de>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, "jgroves@micron.com"
-	<jgroves@micron.com>, "vsalve@micron.com" <vsalve@micron.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v12 01/17] EDAC: Add support for EDAC device features
- control
-Thread-Topic: [PATCH v12 01/17] EDAC: Add support for EDAC device features
- control
-Thread-Index: AQHbBCn2X0FlmKPPaUWpEENlHZJn/rJVzXyAgARPCJCAAAYMAIAAfGFw
-Date: Mon, 16 Sep 2024 16:16:27 +0000
-Message-ID: <518da468c15047c0b78781784688f4f5@huawei.com>
-References: <20240911090447.751-1-shiju.jose@huawei.com>
-	<20240911090447.751-2-shiju.jose@huawei.com>
-	<20240913164041.GKZuRrCeoFZBapVYaU@fat_crate.local>
-	<c31c733bb6e742f580721ec9d0e2f3b2@huawei.com>
- <20240916115014.000064bf@Huawei.com>
-In-Reply-To: <20240916115014.000064bf@Huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1726566574; c=relaxed/simple;
+	bh=x0Khn8huUisoszlE0mEAiaPbyYa2Sp+KfRqHCN9xHSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewsv/ckN+p2loMlRcucNZCYd/5FbhSPMtdzhC+p5JgL1j9Z37VG26A7m38i+OgCKZaEVH7oUHBmWvpUZ7SQi4cyN7rzzpxUb8BdRqlc5bpfJHQsGdFwZe/jnFViV/mUrVlkumEFI/amvcR6q6p2o3ef0sSKPuSjiWQDldEVu3aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wZ5yqPMv; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5356a2460ceso6896e87.0
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 02:48:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726566534; x=1727171334; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oNGxPHFyTwOGWUxhI2HLPoZN1QSNNpDRrCcM4Trhkt8=;
+        b=wZ5yqPMviFURadpe8eohJlqlVc91PGh2zC2sLhkqYnjV8WJ2LdeQDnCLUx7dCJH5nH
+         i7sEoIvXX/8EYL9D4VO41kk8GGhh4uVIcjuK2hrOs49BGgivubCD5IvjYg8mCf/WK8z1
+         AEUm8HRfyrx3HZxJhcKuMlJbMemu7dTl5+fa9PZFH5pcCP4oGy+rMXi82e26QfM91s+s
+         S96l40x+8Fik/iEoZPCEl3a7IHGMtI2UY0gZ2PPcPxhCshzSXPm1xPWZJKhlcgKOPvgj
+         JmHxNP4JL/dIedF5SwXNIJT2jVSV7MmOXXBxWW8MmAT4NoVFDlaDtjtpiBMNdDxYx+BD
+         jbvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726566534; x=1727171334;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oNGxPHFyTwOGWUxhI2HLPoZN1QSNNpDRrCcM4Trhkt8=;
+        b=HsJTWhWipJnlvflyra2yFYTjKIYKJGPgGrxLRqA9fg2X1TKCgi1vJaDIY4vbvCC8Fy
+         nw5Z+cUF3vz/z7tr0ZKpCj+3iC9F+GVPbIOA1MyF2NBI+I2nhLE3ytG3IRFkNVpseacz
+         TOU/BalAjIn4EhHRPrrN3V1j/DdbImWumINyUEZ/rLjUFRELJ7x7K/35b/GKfIIr2/8H
+         kDvQ05ATjkracu9wKnRmQTB32+IonYHCSgliStfemkppi4ucg89jJD2Rwy2ZC36pxDXA
+         S6uhV2KiQBFxQ0bKvcfgUMCmG+L8pIqKqa8vwI2BhTCaUu36w1shiwMC6Tj7yZxtFjst
+         5P+g==
+X-Forwarded-Encrypted: i=1; AJvYcCW868HISu1EYLRpBpTMbplN8t63U7wPiVbqBN71Z0Ty0zbT6HQdkTiGTxE/OVBdqfQ2xYtuIGqbm57Y@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiFd6KCPQ2m4O6Ej4YIMmCk6wD1Fkjdff+fA7FLxKbvBc+L1rg
+	LoRB26Pk97oCf7x9b2dBiLlRpQGyfqqv66oJAV+KQv9DqdFhhlfyh2/dxxDYAw==
+X-Google-Smtp-Source: AGHT+IG753oKcJhRrwoevlbm6QMdqTgcn7I6H4uCXXVzFfJ7Uy1lB5slwSYlnEJ6eqpTHciyovo7Lg==
+X-Received: by 2002:a05:6512:3da4:b0:536:52dc:291f with SMTP id 2adb3069b0e04-5369c3a3e71mr131542e87.1.1726566533718;
+        Tue, 17 Sep 2024 02:48:53 -0700 (PDT)
+Received: from google.com (205.215.190.35.bc.googleusercontent.com. [35.190.215.205])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e780016asm9132715f8f.85.2024.09.17.02.48.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Sep 2024 02:48:52 -0700 (PDT)
+Date: Tue, 17 Sep 2024 09:48:44 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Subject: Re: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
+Message-ID: <ZulQfG0fnGlABZrR@google.com>
+References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <ZtHhdj6RAKACBCUG@google.com>
+ <20240830164019.GU3773488@nvidia.com>
+ <ZtWFkR0eSRM4ogJL@google.com>
+ <20240903000546.GD3773488@nvidia.com>
+ <ZtbBTX96OWdONhaQ@google.com>
+ <20240903233340.GH3773488@nvidia.com>
+ <ZuAlt9SsijRxuGLk@google.com>
+ <20240910202251.GJ58321@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240910202251.GJ58321@nvidia.com>
 
->-----Original Message-----
->From: Jonathan Cameron <jonathan.cameron@huawei.com>
->Sent: 16 September 2024 11:50
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: Borislav Petkov <bp@alien8.de>; linux-edac@vger.kernel.org; linux-
->cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linux=
--
->kernel@vger.kernel.org; tony.luck@intel.com; rafael@kernel.org;
->lenb@kernel.org; mchehab@kernel.org; dan.j.williams@intel.com;
->dave@stgolabs.net; dave.jiang@intel.com; alison.schofield@intel.com;
->vishal.l.verma@intel.com; ira.weiny@intel.com; david@redhat.com;
->Vilas.Sridharan@amd.com; leo.duran@amd.com; Yazen.Ghannam@amd.com;
->rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
->erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->mike.malvestuto@intel.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; jgroves@micron.com;
->vsalve@micron.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
-><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
->kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->Linuxarm <linuxarm@huawei.com>
->Subject: Re: [PATCH v12 01/17] EDAC: Add support for EDAC device features
->control
->
->On Mon, 16 Sep 2024 10:21:58 +0100
->Shiju Jose <shiju.jose@huawei.com> wrote:
->
->> Thanks for reviewing.
->>
->> >-----Original Message-----
->> >From: Borislav Petkov <bp@alien8.de>
->> >Sent: 13 September 2024 17:41
->> >To: Shiju Jose <shiju.jose@huawei.com>
->> >Cc: linux-edac@vger.kernel.org; linux-cxl@vger.kernel.org; linux-
->> >acpi@vger.kernel.org; linux-mm@kvack.org;
->> >linux-kernel@vger.kernel.org; tony.luck@intel.com; rafael@kernel.org;
->> >lenb@kernel.org; mchehab@kernel.org; dan.j.williams@intel.com;
->> >dave@stgolabs.net; Jonathan Cameron <jonathan.cameron@huawei.com>;
->> >dave.jiang@intel.com; alison.schofield@intel.com;
->> >vishal.l.verma@intel.com; ira.weiny@intel.com; david@redhat.com;
->> >Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com;
->> >rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->> >dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->> >james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com;
->> >erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->> >mike.malvestuto@intel.com; gthelen@google.com;
->> >wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->> >wbs@os.amperecomputing.com; nifan.cxl@gmail.com; jgroves@micron.com;
->> >vsalve@micron.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
->> ><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
->> >kangkang.shen@futurewei.com; wanghuiqiang
-><wanghuiqiang@huawei.com>;
->> >Linuxarm <linuxarm@huawei.com>
->> >Subject: Re: [PATCH v12 01/17] EDAC: Add support for EDAC device
->> >features control
->> >
->> >On Wed, Sep 11, 2024 at 10:04:30AM +0100, shiju.jose@huawei.com wrote:
->> >> +/**
->> >> + * edac_dev_feature_init - Init a RAS feature
->> >> + * @parent: client device.
->> >> + * @dev_data: pointer to the edac_dev_data structure, which
->> >> +contains
->> >> + * client device specific info.
->> >> + * @feat: pointer to struct edac_dev_feature.
->> >> + * @attr_groups: pointer to attribute group's container.
->> >> + *
->> >> + * Returns number of scrub features attribute groups on success,
->> >
->> >Not "scrub" - this is an interface initializing a generic feature.
->> Will correct.
->> >
->> >> + * error otherwise.
->> >> + */
->> >> +static int edac_dev_feat_init(struct device *parent,
->> >> +			      struct edac_dev_data *dev_data,
->> >> +			      const struct edac_dev_feature *ras_feat,
->> >> +			      const struct attribute_group **attr_groups) {
->> >> +	int num;
->> >> +
->> >> +	switch (ras_feat->ft_type) {
->> >> +	case RAS_FEAT_SCRUB:
->> >> +		dev_data->scrub_ops =3D ras_feat->scrub_ops;
->> >> +		dev_data->private =3D ras_feat->ctx;
->> >> +		return 1;
->> >> +	case RAS_FEAT_ECS:
->> >> +		num =3D ras_feat->ecs_info.num_media_frus;
->> >> +		dev_data->ecs_ops =3D ras_feat->ecs_ops;
->> >> +		dev_data->private =3D ras_feat->ctx;
->> >> +		return num;
->> >> +	case RAS_FEAT_PPR:
->> >> +		dev_data->ppr_ops =3D ras_feat->ppr_ops;
->> >> +		dev_data->private =3D ras_feat->ctx;
->> >> +		return 1;
->> >> +	default:
->> >> +		return -EINVAL;
->> >> +	}
->> >> +}
->> >
->> >And why does this function even exist and has kernel-doc comments
->> >when all it does is assign a couple of values? And it gets called exact=
-ly once?
->> >
->> >Just merge its body into the call site. There you can reuse the
->> >switch-case there too. No need for too much noodling around.
->> edac_dev_feat_init () function is updated with feature specific function=
- call()
->etc in subsequent
->> EDAC feature specific patches. Thus added a separate function.
->> >
->> >> diff --git a/include/linux/edac.h b/include/linux/edac.h index
->> >> b4ee8961e623..b337254cf5b8 100644
->> >> --- a/include/linux/edac.h
->> >> +++ b/include/linux/edac.h
->> >> @@ -661,4 +661,59 @@ static inline struct dimm_info
->> >> *edac_get_dimm(struct mem_ctl_info *mci,
->> >>
->> >>  	return mci->dimms[index];
->> >>  }
->> >> +
->> >> +/* EDAC device features */
->> >> +
->> >> +#define EDAC_FEAT_NAME_LEN	128
->> >> +
->> >> +/* RAS feature type */
->> >> +enum edac_dev_feat {
->> >> +	RAS_FEAT_SCRUB,
->> >> +	RAS_FEAT_ECS,
->> >> +	RAS_FEAT_PPR,
->> >> +	RAS_FEAT_MAX
->> >
->> >I still don't know what ECS or PPR is.
->> I will add comment/documentation here with a short explanation of
->> features if that make sense?
->> Each feature is described in the subsequent EDAC feature specific patche=
-s.
->Can you bring the enum entries in with those patches?
->That way there is no reference to them before we have the information on w=
-hat
->they are.
-Will do.
->
->J
->> >
->> >--
->> >Regards/Gruss,
->> >    Boris.
->> >
->> >https://people.kernel.org/tglx/notes-about-netiquette
->>
+On Tue, Sep 10, 2024 at 05:22:51PM -0300, Jason Gunthorpe wrote:
+> On Tue, Sep 10, 2024 at 10:55:51AM +0000, Mostafa Saleh wrote:
+> > On Tue, Sep 03, 2024 at 08:33:40PM -0300, Jason Gunthorpe wrote:
+> > > On Tue, Sep 03, 2024 at 07:57:01AM +0000, Mostafa Saleh wrote:
+> > > 
+> > > > Basically, I believe we shouldn’t set FWB blindly just because it’s supported,
+> > > > I don’t see how it’s useful for stage-2 only domains.
+> > > 
+> > > And the only problem we can see is some niche scenario where incoming
+> > > memory attributes that are already requesting cachable combine to a
+> > > different kind of cachable?
+> > 
+> > No, it’s not about the niche scenario, as I mentioned I don’t think
+> > we should enable FWB because it just exists. One can argue the opposite,
+> > if S2FWB is no different why enable it?
+> 
+> Well, I'd argue that it provides more certainty for the kernel that
+> the DMA API behavior is matched by HW behavior. But I don't feel strongly.
+> 
+> I adjusted the patch to only enable it for nesting parents.
+> 
+> > AFAIU, FWB would be useful in cases where the hypervisor(or VMM) knows
+> > better than the VM, for example some devices MMIO space are emulated so
+> > they are normal memory and it’s more efficient to use memory attributes.
+> 
+> Not quite, the purpose of FWB is to allow the hypervisor to avoid
+> costly cache flushing. It is specifically to protect the hypervisor
+> against a VM causing the caches to go incoherent.
+> 
+> Caches that are unexpectedly incoherent are a security problem for the
+> hypervisor.
+
+I see, thanks for explaining, I got confused about the device emulation case,
+it’s also about corruption because of a mismatch of memory attributes,
+something like:
+https://bugzilla.redhat.com/show_bug.cgi?id=1679680
+
+At the moment, I see KVM doesn’t really touch guest memory, but it does CMO for
+guest map(in case memslot had already some data) and on unmap, which I
+believe has significant performance improvement.
+
+> 
+> > > > and we should only set FWB for coherent
+> > > > devices in nested setup only where the VMM(or hypervisor) knows better than
+> > > > the VM.
+> > > 
+> > > I don't want to touch the 'only coherent devices' question. Last time
+> > > I tried to do that I got told every option was wrong.
+> > > 
+> > > I would be fine to only enable for nesting parent domains. It is
+> > > mandatory here and we definitely don't support non-cachable nesting
+> > > today.  Can we agree on that?
+> > 
+> > Why is it mandatory?
+> 
+> Because iommufd/vfio doesn't have cache flushing.
+>  
+
+I see.
+
+> > I think a supporting point for this, is that KVM does the same for
+> > the CPU, where it enables FWB for VMs if supported. I have this on
+> > my list to study if that can be improved. But may be if we are out
+> > of options that would be a start.
+> 
+> When KVM turns on S2FWB it stops doing cache flushing. As I understand
+> it S2FWB is significantly a performance optimization.
+> 
+> On the VFIO side we don't have cache flushing at all. So enforcing
+> cache consistency is mandatory for security.
+> 
+> For native VFIO we set IOMMU_CACHE and expect that the contract with
+> the IOMMU is that no cache flushing is required.
+> 
+> For nested we set S2FWB/CANWBS to prevent the VM from disabling VFIO's
+> IOMMU_CACHE and again the contract with the HW is that no cache
+> flushing is required.
+> 
+> Thus VFIO is security correct even though it doesn't cache flush.
+> 
+> None of this has anything to do with device coherence capability. It
+> is why I keep saying incoherent devices must be blocked from VFIO
+> because it cannot operate them securely/correctly.
+> 
+> Fixing that is a whole other topic, Yi has a series for it on x86 at
+> least..
+
+I see, that makes sense to only support it for nested domains on
+the assumption they are only used for VFIO/IOMMUFD till we figure out
+non-coherent devices, I guess you are referring to:
+https://lore.kernel.org/all/ZltQ3PyHKiQmN9SU@nvidia.com/t/#me702dd242782393eb7769000c96702a0fed7f6ca
+
 Thanks,
-Shiju
-
-
-
+Mostafa
+> 
+> Jason
 
