@@ -1,209 +1,260 @@
-Return-Path: <linux-acpi+bounces-8319-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8320-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D613897AE35
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 11:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A571897AEF2
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 12:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A291C23689
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 09:50:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83A31C237E7
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 10:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE89154C0A;
-	Tue, 17 Sep 2024 09:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wZ5yqPMv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185F3167D80;
+	Tue, 17 Sep 2024 10:36:42 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53037175D5C
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 09:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117F816130C;
+	Tue, 17 Sep 2024 10:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726566574; cv=none; b=fhMILl6PBNWNOYR64XssX/b2Lg/nnp8HPIS0QjmMGLibGFkkOP/KRDpD/BPwCBWYKkBgIu1vA5Tja9J0D+sgY1SOv/NaZUkuG0jJRS2TLuHTNbDAe/XGo1b6KNcoUd1/lTzYFX2yOJ7LhJ+e7U71liprEC/fx1e7X6xPTxGsjL4=
+	t=1726569402; cv=none; b=gEogT8OEQg7uCmLysOISxAJKV6F+CbL7ja9G7yYcVrGiRfSI0iV9/PDonr+RaNdY5r06mSO37/giZU6GmhgCQeBHUhD0OWCvKoxZHYcqGlPrA5lk8W2n7juillJNfuFTL4bolok8N47ikKOo/dlOvzTcS4igFrYF6Dj+7qMQZRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726566574; c=relaxed/simple;
-	bh=x0Khn8huUisoszlE0mEAiaPbyYa2Sp+KfRqHCN9xHSg=;
+	s=arc-20240116; t=1726569402; c=relaxed/simple;
+	bh=Q9JsLsOTE9HWlKx4NBBWcpXXbT0Y/JlNm+xqL6UVWgY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ewsv/ckN+p2loMlRcucNZCYd/5FbhSPMtdzhC+p5JgL1j9Z37VG26A7m38i+OgCKZaEVH7oUHBmWvpUZ7SQi4cyN7rzzpxUb8BdRqlc5bpfJHQsGdFwZe/jnFViV/mUrVlkumEFI/amvcR6q6p2o3ef0sSKPuSjiWQDldEVu3aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wZ5yqPMv; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5356a2460ceso6896e87.0
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 02:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726566534; x=1727171334; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oNGxPHFyTwOGWUxhI2HLPoZN1QSNNpDRrCcM4Trhkt8=;
-        b=wZ5yqPMviFURadpe8eohJlqlVc91PGh2zC2sLhkqYnjV8WJ2LdeQDnCLUx7dCJH5nH
-         i7sEoIvXX/8EYL9D4VO41kk8GGhh4uVIcjuK2hrOs49BGgivubCD5IvjYg8mCf/WK8z1
-         AEUm8HRfyrx3HZxJhcKuMlJbMemu7dTl5+fa9PZFH5pcCP4oGy+rMXi82e26QfM91s+s
-         S96l40x+8Fik/iEoZPCEl3a7IHGMtI2UY0gZ2PPcPxhCshzSXPm1xPWZJKhlcgKOPvgj
-         JmHxNP4JL/dIedF5SwXNIJT2jVSV7MmOXXBxWW8MmAT4NoVFDlaDtjtpiBMNdDxYx+BD
-         jbvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726566534; x=1727171334;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oNGxPHFyTwOGWUxhI2HLPoZN1QSNNpDRrCcM4Trhkt8=;
-        b=HsJTWhWipJnlvflyra2yFYTjKIYKJGPgGrxLRqA9fg2X1TKCgi1vJaDIY4vbvCC8Fy
-         nw5Z+cUF3vz/z7tr0ZKpCj+3iC9F+GVPbIOA1MyF2NBI+I2nhLE3ytG3IRFkNVpseacz
-         TOU/BalAjIn4EhHRPrrN3V1j/DdbImWumINyUEZ/rLjUFRELJ7x7K/35b/GKfIIr2/8H
-         kDvQ05ATjkracu9wKnRmQTB32+IonYHCSgliStfemkppi4ucg89jJD2Rwy2ZC36pxDXA
-         S6uhV2KiQBFxQ0bKvcfgUMCmG+L8pIqKqa8vwI2BhTCaUu36w1shiwMC6Tj7yZxtFjst
-         5P+g==
-X-Forwarded-Encrypted: i=1; AJvYcCW868HISu1EYLRpBpTMbplN8t63U7wPiVbqBN71Z0Ty0zbT6HQdkTiGTxE/OVBdqfQ2xYtuIGqbm57Y@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiFd6KCPQ2m4O6Ej4YIMmCk6wD1Fkjdff+fA7FLxKbvBc+L1rg
-	LoRB26Pk97oCf7x9b2dBiLlRpQGyfqqv66oJAV+KQv9DqdFhhlfyh2/dxxDYAw==
-X-Google-Smtp-Source: AGHT+IG753oKcJhRrwoevlbm6QMdqTgcn7I6H4uCXXVzFfJ7Uy1lB5slwSYlnEJ6eqpTHciyovo7Lg==
-X-Received: by 2002:a05:6512:3da4:b0:536:52dc:291f with SMTP id 2adb3069b0e04-5369c3a3e71mr131542e87.1.1726566533718;
-        Tue, 17 Sep 2024 02:48:53 -0700 (PDT)
-Received: from google.com (205.215.190.35.bc.googleusercontent.com. [35.190.215.205])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e780016asm9132715f8f.85.2024.09.17.02.48.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Sep 2024 02:48:52 -0700 (PDT)
-Date: Tue, 17 Sep 2024 09:48:44 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
-	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Message-ID: <ZulQfG0fnGlABZrR@google.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <ZtHhdj6RAKACBCUG@google.com>
- <20240830164019.GU3773488@nvidia.com>
- <ZtWFkR0eSRM4ogJL@google.com>
- <20240903000546.GD3773488@nvidia.com>
- <ZtbBTX96OWdONhaQ@google.com>
- <20240903233340.GH3773488@nvidia.com>
- <ZuAlt9SsijRxuGLk@google.com>
- <20240910202251.GJ58321@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JdJj34NukQCt0d/k8Wd6l21epdzzHK1AtKvh3eosZ6GJJEXr/GcEJ4c3xuuDlyZB0FfEe/337jaejPCYEmG3W9PfOP8EMTFsww/KkBnZNsdES28OVFbF+NuTs1W7QAwcXzyaTp65yeavYsHPEP7ru6pya7I2l0mqinnDqpU98Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D82841007;
+	Tue, 17 Sep 2024 03:37:08 -0700 (PDT)
+Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.2.80.58])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A96B3F64C;
+	Tue, 17 Sep 2024 03:36:39 -0700 (PDT)
+Date: Tue, 17 Sep 2024 11:36:37 +0100
+From: Ionela Voinescu <ionela.voinescu@arm.com>
+To: Jie Zhan <zhanjie9@hisilicon.com>
+Cc: beata.michalska@arm.com, wangxiongfeng2@huawei.com,
+	viresh.kumar@linaro.org, rafael@kernel.org,
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxarm@huawei.com,
+	jonathan.cameron@huawei.com, wanghuiqiang@huawei.com,
+	zhenglifeng1@huawei.com, lihuisong@huawei.com,
+	yangyicong@huawei.com, liaochang1@huawei.com, zengheng4@huawei.com
+Subject: Re: [PATCH v2 1/3] cppc_cpufreq: Return desired perf in ->get() if
+ feedback counters are 0
+Message-ID: <ZulbtT8joKPXlFCL@arm.com>
+References: <20240912072231.439332-1-zhanjie9@hisilicon.com>
+ <20240912072231.439332-2-zhanjie9@hisilicon.com>
+ <ZuK3sfcKf2gHssKa@arm.com>
+ <79353a26-7304-9d6a-9237-cfa8e7794601@hisilicon.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240910202251.GJ58321@nvidia.com>
+In-Reply-To: <79353a26-7304-9d6a-9237-cfa8e7794601@hisilicon.com>
 
-On Tue, Sep 10, 2024 at 05:22:51PM -0300, Jason Gunthorpe wrote:
-> On Tue, Sep 10, 2024 at 10:55:51AM +0000, Mostafa Saleh wrote:
-> > On Tue, Sep 03, 2024 at 08:33:40PM -0300, Jason Gunthorpe wrote:
-> > > On Tue, Sep 03, 2024 at 07:57:01AM +0000, Mostafa Saleh wrote:
-> > > 
-> > > > Basically, I believe we shouldn’t set FWB blindly just because it’s supported,
-> > > > I don’t see how it’s useful for stage-2 only domains.
-> > > 
-> > > And the only problem we can see is some niche scenario where incoming
-> > > memory attributes that are already requesting cachable combine to a
-> > > different kind of cachable?
+Hi,
+
+On Friday 13 Sep 2024 at 20:05:50 (+0800), Jie Zhan wrote:
+> 
+> Hi Ionela,
+> 
+> On 12/09/2024 17:43, Ionela Voinescu wrote:
+> 
+> ...
+> 
 > > 
-> > No, it’s not about the niche scenario, as I mentioned I don’t think
-> > we should enable FWB because it just exists. One can argue the opposite,
-> > if S2FWB is no different why enable it?
-> 
-> Well, I'd argue that it provides more certainty for the kernel that
-> the DMA API behavior is matched by HW behavior. But I don't feel strongly.
-> 
-> I adjusted the patch to only enable it for nesting parents.
-> 
-> > AFAIU, FWB would be useful in cases where the hypervisor(or VMM) knows
-> > better than the VM, for example some devices MMIO space are emulated so
-> > they are normal memory and it’s more efficient to use memory attributes.
-> 
-> Not quite, the purpose of FWB is to allow the hypervisor to avoid
-> costly cache flushing. It is specifically to protect the hypervisor
-> against a VM causing the caches to go incoherent.
-> 
-> Caches that are unexpectedly incoherent are a security problem for the
-> hypervisor.
-
-I see, thanks for explaining, I got confused about the device emulation case,
-it’s also about corruption because of a mismatch of memory attributes,
-something like:
-https://bugzilla.redhat.com/show_bug.cgi?id=1679680
-
-At the moment, I see KVM doesn’t really touch guest memory, but it does CMO for
-guest map(in case memslot had already some data) and on unmap, which I
-believe has significant performance improvement.
-
-> 
-> > > > and we should only set FWB for coherent
-> > > > devices in nested setup only where the VMM(or hypervisor) knows better than
-> > > > the VM.
-> > > 
-> > > I don't want to touch the 'only coherent devices' question. Last time
-> > > I tried to do that I got told every option was wrong.
-> > > 
-> > > I would be fine to only enable for nesting parent domains. It is
-> > > mandatory here and we definitely don't support non-cachable nesting
-> > > today.  Can we agree on that?
+> > A possible (slimmer) alternative implementation for you to consider
+> > (this merges patches 1 & 2):
 > > 
-> > Why is it mandatory?
+> > diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> > index bafa32dd375d..c16be9651a6f 100644
+> > --- a/drivers/cpufreq/cppc_cpufreq.c
+> > +++ b/drivers/cpufreq/cppc_cpufreq.c
+> > @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+> > 
+> >         perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
+> >                                      &fb_ctrs);
+> > +       if (!perf)
+> > +               perf = cpu_data->perf_ctrls.desired_perf;
+> > +
 > 
-> Because iommufd/vfio doesn't have cache flushing.
->  
+> I think it's better to just return here.
+> If feedback counters are successfully read but unchanged, the following
+> calculation and update in cppc_scale_freq_workfn() is meaningless because it
+> won't change anything.
 
-I see.
+Agreed!
 
-> > I think a supporting point for this, is that KVM does the same for
-> > the CPU, where it enables FWB for VMs if supported. I have this on
-> > my list to study if that can be improved. But may be if we are out
-> > of options that would be a start.
 > 
-> When KVM turns on S2FWB it stops doing cache flushing. As I understand
-> it S2FWB is significantly a performance optimization.
+> >         cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
+> > 
+> >         perf <<= SCHED_CAPACITY_SHIFT;
+> > @@ -726,7 +729,7 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
+> > 
+> >         /* Check to avoid divide-by zero and invalid delivered_perf */
+> >         if (!delta_reference || !delta_delivered)
+> > -               return cpu_data->perf_ctrls.desired_perf;
+> > +               return 0;
 > 
-> On the VFIO side we don't have cache flushing at all. So enforcing
-> cache consistency is mandatory for security.
+> This makes sense to me.
+> Here is probably why Patch 2 looks bulky.
 > 
-> For native VFIO we set IOMMU_CACHE and expect that the contract with
-> the IOMMU is that no cache flushing is required.
+> > 
+> >         return (reference_perf * delta_delivered) / delta_reference;
+> >  }
+> > @@ -736,7 +739,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+> >         struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+> >         struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> >         struct cppc_cpudata *cpu_data;
+> > -       u64 delivered_perf;
+> > +       u64 delivered_perf = 0;
+> >         int ret;
+> > 
+> >         if (!policy)
+> > @@ -747,19 +750,22 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+> >         cpufreq_cpu_put(policy);
+> > 
+> >         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+> > -       if (ret)
+> > -               return 0;
+> > -
+> > -       udelay(2); /* 2usec delay between sampling */
+> > -
+> > -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+> > -       if (ret)
+> > -               return 0;
+> > +       if (!ret) {
+> > +               udelay(2); /* 2usec delay between sampling */
+> > +               ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+> > +       }
+> > +       if (!ret)
+> > +               delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+> > +                                                      &fb_ctrs_t1);
 > 
-> For nested we set S2FWB/CANWBS to prevent the VM from disabling VFIO's
-> IOMMU_CACHE and again the contract with the HW is that no cache
-> flushing is required.
-> 
-> Thus VFIO is security correct even though it doesn't cache flush.
-> 
-> None of this has anything to do with device coherence capability. It
-> is why I keep saying incoherent devices must be blocked from VFIO
-> because it cannot operate them securely/correctly.
-> 
-> Fixing that is a whole other topic, Yi has a series for it on x86 at
-> least..
+> TBH, 'if (!ret)' style looks very strange to me.
+> We haven't done so anywhere in cppc_cpufreq, so let's keep consistency and make
+> it easier for people to read and maintain?
 
-I see, that makes sense to only support it for nested domains on
-the assumption they are only used for VFIO/IOMMUFD till we figure out
-non-coherent devices, I guess you are referring to:
-https://lore.kernel.org/all/ZltQ3PyHKiQmN9SU@nvidia.com/t/#me702dd242782393eb7769000c96702a0fed7f6ca
+I agree it's a bit of a difficult read, that's why I only sent my code
+as a suggestion. I did like the benefit of not having to have two
+different calls to cppc_perf_to_khz() and making the code below common
+for the error and non-error paths. But it's up to you. 
+> 
+> > +       if ((ret == -EFAULT) || !delivered_perf) {
+> > +               if (cppc_get_desired_perf(cpu, &delivered_perf))
+> > +                       delivered_perf = cpu_data->perf_ctrls.desired_perf;
+> 
+> will take this.
+> 
+> > +       }
+> > 
+> > -       delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+> > -                                              &fb_ctrs_t1);
+> > +       if (delivered_perf)
+> > +               return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+> > 
+> > -       return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+> > +       return 0;
+> >  }
+> > 
+> > disclaimer: not fully checked so likely not "production ready" code :)
+> > 
+> > Hope it helps,
+> > Ionela.
+> > 
+> >>  
+> >>  static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
+> >> -- 
+> >> 2.33.0
+> >>
+> > 
+> 
+> How about this? merged patch 1 & 2 as well.
+> 
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index bafa32dd375d..411303f2e8cb 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+> 
+>           perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
+>                                        &fb_ctrs);
+> +       if (!perf)
+> +               return;
+> +
+>           cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
+> 
+>           perf <<= SCHED_CAPACITY_SHIFT;
+> @@ -726,7 +729,7 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
+> 
+>           /* Check to avoid divide-by zero and invalid delivered_perf */
+>           if (!delta_reference || !delta_delivered)
+> -               return cpu_data->perf_ctrls.desired_perf;
+> +               return 0;
+> 
+>           return (reference_perf * delta_delivered) / delta_reference;
+>    }
+> @@ -748,18 +751,32 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+> 
+>           ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+>           if (ret)
+> -               return 0;
+> +               goto out_err;
+> 
+>           udelay(2); /* 2usec delay between sampling */
+> 
+>           ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+>           if (ret)
+> -               return 0;
+> +               goto out_err;
+> 
+>           delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+>                                                  &fb_ctrs_t1);
+
+You need a check here for !delivered_perf (when at least one of the
+deltas is 0) in which case it would be good to take the same error path
+below. Something like:
+
+            if(delivered_perf)
+	            return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+	    else
+		ret = -EFAULT;
+
+That's why I did the tricky if/else dance above as we need to take the
+error path below for multiple cases.
 
 Thanks,
-Mostafa
+Ionela.
+
 > 
-> Jason
+>           return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+> +
+> +out_err:
+> +       /*
+> +        * Feedback counters could be 0 when cores are powered down.
+> +        * Take desired perf for reflecting frequency in this case.
+> +        */
+> +       if (ret == -EFAULT) {
+> +               if (cppc_get_desired_perf(cpu, &delivered_perf))
+> +                       delivered_perf = cpu_data->perf_ctrls.desired_perf;
+> +
+> +               return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+> +       }
+> +
+> +       return 0;
+>    }
+> 
+>    static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
+> ---
+> 
+> Thanks indeed!
+> Jie
 
