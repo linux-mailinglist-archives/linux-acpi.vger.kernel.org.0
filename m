@@ -1,109 +1,121 @@
-Return-Path: <linux-acpi+bounces-8323-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8324-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBB297B54C
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 23:36:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F20397B63F
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 01:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14470282225
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 21:36:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAD2DB24391
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Sep 2024 23:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F072D18D629;
-	Tue, 17 Sep 2024 21:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA26174EFA;
+	Tue, 17 Sep 2024 23:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ruhr-uni-bochum.de header.i=@ruhr-uni-bochum.de header.b="BJYBVQue"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lbPQyOsZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out1.mail.ruhr-uni-bochum.de (out1.mail.ruhr-uni-bochum.de [134.147.53.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB241531C5
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 21:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.147.53.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0B8A29;
+	Tue, 17 Sep 2024 23:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726608995; cv=none; b=QB3nbfQJrQ8UrNy+JqBicnfxVstr/mIz8aUsDUq4WT7i5ZuTSexgQsxHyF9f+1LMqQlUYFMhxjcqos7R7qk3dZ4SWwTcEoUTmnyY2MFa5FKhDwStvfRjVnVahTPOph8wglyChW5mDiiXvoAAfXAoIZtrLSfgiUPahk/1ebIeUzg=
+	t=1726616334; cv=none; b=S7BfwzNUT/ZcGB6Ctl6ui1qANsr1MmLKntNdeFuXB3j4J3HaFcM/DrbqbQZfOWJhpBVs5+NePKmtsqyNKKVEv3UxYlyHXm6UhF5OCqZ39THXPPNa4YyUspQGNFnMwVDIs+HLoDVS9oKdOHwFtL/5oWh/iK6V8mJmA+WkC3Jk/a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726608995; c=relaxed/simple;
-	bh=MnQdG0cw3WNE2DTkoF5pTlUjT9rnpLJglvirsfeafRA=;
-	h=MIME-Version:Date:From:To:Subject:Message-ID:Content-Type; b=cR+zSiu7wqqEggJBNp9A98Xk+xcsCe4zLM10Cjdt9euC1iSawavxDQ7/3XVjzvwFVKE4MFRy3HXNQ0HN171XASTefTigqDW4E14a3xxN5OV5rtHJz9lmjBlQ/9PIN2nBYCwwMEe4OZLM+cWfpz40DTXiINGZPSbg0RTy73rF9aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruhr-uni-bochum.de; spf=pass smtp.mailfrom=ruhr-uni-bochum.de; dkim=pass (1024-bit key) header.d=ruhr-uni-bochum.de header.i=@ruhr-uni-bochum.de header.b=BJYBVQue; arc=none smtp.client-ip=134.147.53.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruhr-uni-bochum.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruhr-uni-bochum.de
-Received: from mx1.mail.ruhr-uni-bochum.de (localhost [127.0.0.1])
-	by out1.mail.ruhr-uni-bochum.de (Postfix mo-ext) with ESMTP id 4X7ZdP5CPpz8SxF
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 23:28:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruhr-uni-bochum.de;
-	s=mail-2017; t=1726608489;
-	bh=MnQdG0cw3WNE2DTkoF5pTlUjT9rnpLJglvirsfeafRA=;
-	h=Date:From:To:Subject:From;
-	b=BJYBVQueNdzurqVZH9qTOopXjDQENEJlP6D2LWntFKem1n9CzxJIgjjHmGhsptf7Z
-	 3IfUHBo7Vh+ZhaZMOPre6sNrV1pZ/JaPk+Zjv/qoXImpQrGPh19EtcgIipvGTtsB1I
-	 8wXaBm0Pv8TnRQZclwa4XriUIutnpJFQBwgOlcJA=
-Received: from out1.mail.ruhr-uni-bochum.de (localhost [127.0.0.1])
-	by mx1.mail.ruhr-uni-bochum.de (Postfix idis) with ESMTP id 4X7ZdP4Q5fz8SvB
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 23:28:09 +0200 (CEST)
-X-RUB-Notes: Internal origin=IPv6:2a05:3e00:c:1001::8693:2aec
-X-Envelope-Sender: <David.Renz@ruhr-uni-bochum.de>
-Received: from mail2.mail.ruhr-uni-bochum.de (mail2.mail.ruhr-uni-bochum.de [IPv6:2a05:3e00:c:1001::8693:2aec])
-	by out1.mail.ruhr-uni-bochum.de (Postfix mi-int) with ESMTPS id 4X7ZdP2j6bz8Sw9
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 23:28:09 +0200 (CEST)
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 1.0.6 at mx1.mail.ruhr-uni-bochum.de
-Received: from webmail1.mail.ruhr-uni-bochum.de (webmail1.mail.ruhr-uni-bochum.de [IPv6:2a05:3e00:c:1001::8693:2aea])
-	by mail2.mail.ruhr-uni-bochum.de (Postfix) with ESMTPSA id 4X7ZdP0J00zDgyj
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Sep 2024 23:28:09 +0200 (CEST)
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 1.2.1 at mail2.mail.ruhr-uni-bochum.de
-Received: from 2a00:6020:409a:2f00:3ad5:7aff:fea6:38f9
- by webmail1.mail.ruhr-uni-bochum.de
- with HTTP (HTTP/1.1 POST); Tue, 17 Sep 2024 23:28:08 +0200
+	s=arc-20240116; t=1726616334; c=relaxed/simple;
+	bh=9dLqI6VMyyIafJzqhANNhGowYfulg3mQ892EOdSpBNw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q5ZygB/yKmLm3wJoPQjl5zZMMXpoJEfybbwRv1rtRuSTqZDFf2A4PLBRC521Gw/FatUNnNbVOhfhb9Z9LQzk33AEJNi27UTK6G8E9dbjy0AK5HnwoP8t4uRMIJKbf2/hPtCQLVhKv//csTxVVp0ojeZwk/MBvWq2xFJL0Z0OdY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lbPQyOsZ; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-206b9455460so2161595ad.0;
+        Tue, 17 Sep 2024 16:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726616333; x=1727221133; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KcWP11N1mECLdbFjOwZ7f9h1sIQvx2jN9KcgmIHEfqs=;
+        b=lbPQyOsZIqvIm+tYnxSz6wiG6tX218ckBMV5uPWWlhPY7/PxE2FB3sRTfgMoIeBJwz
+         fpq8U1vF/550FjSuyvTL08bAU8imd6xUWQLjhVrYrhIo3k5rnnf3QkFD3fQBDydRaWnm
+         ea//FHbsrKpNZPcie1oU9uLnS/5tJjjqZap40zsigB2tStV3jq8TUMEfYM5WgMY+/VSq
+         PznM+kIuYWOFo8XUfeTNMvQrNBrVEX3AsvC/4bGZs66A2YL8jUz5s7W4rRKON0h3hWYM
+         0zU7u67q/wRq/NFJln1eEn2jkr1cwtIjnalmw9YxAq1F/BOORt95J07uitbwWU+nB8zf
+         oaUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726616333; x=1727221133;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KcWP11N1mECLdbFjOwZ7f9h1sIQvx2jN9KcgmIHEfqs=;
+        b=py56KdaWVlUkB+7SAmHDLarDedRAjohnzG93j45u0JyrrNsLEtO/1e2l3YXgny0zsK
+         KwEDAAOG+BxqhGWwai+reUzvMK0emwvnw8rCKaFVi0Rc87owevVT1u19iPCN/vKvv/Af
+         5DlOj6QdgbglVuWYNBObdcS/fKqkt12N8y10ThEC8u1zD2+W+P9CF14oFpdDp82R7t5d
+         W5Nt4o/a++3p33TEJVQMV5gjoRJzZggj2+0OP4jk0AkXsNioz2iz6G9wy/XWlPAPKcRE
+         s0FrzG6FNwrXnMS5bYLRuS3sh0Z3I/bwEk6tVtaquWUZxwPMVKOtIWTZo3feVqJHmPB0
+         Uh4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWBNLWycDBHkVUUyiIczPNDGKjJZtxXQ7pgJ47PKVfbBRgtwXK5Wa03T7m/C8qg52SX9AmbUjios6jWzt3l@vger.kernel.org, AJvYcCXzn0hHr/Pc+S63+II4E57GC/7gOyyn5K2+LlNXAIRL3yM+GjzGP02nC3lmOuxCVCoMGKIeJ2H6Q8/2@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeTl+vM36JxyT2lV50mbUVi5yybF6rPjdx2DWsrYXehIHoNSVG
+	lq/bVAeAz4xTkYX6dCyvve9cBMqXovrfLa22JK3bgeKlm1bdZ4t/
+X-Google-Smtp-Source: AGHT+IHm9WpKunvYUYVdRVcqdRL0Bvu5XN7F6kHqwZuyCwxSybIQSyzr4LjktjFz8vvpFTrPR48dmQ==
+X-Received: by 2002:a17:902:e88b:b0:205:8763:6c2d with SMTP id d9443c01a7336-2076e56e3c5mr288594445ad.9.1726616332643;
+        Tue, 17 Sep 2024 16:38:52 -0700 (PDT)
+Received: from localhost.localdomain (111-240-85-119.dynamic-ip.hinet.net. [111.240.85.119])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20794740131sm54880525ad.290.2024.09.17.16.38.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Sep 2024 16:38:52 -0700 (PDT)
+From: Min-Hua Chen <minhuadotchen@gmail.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: Min-Hua Chen <minhuadotchen@gmail.com>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] acpi/arm64: remove unnecessary cast
+Date: Wed, 18 Sep 2024 07:38:24 +0800
+Message-ID: <20240917233827.73167-1-minhuadotchen@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 17 Sep 2024 23:28:08 +0200
-From: David Renz <David.Renz@ruhr-uni-bochum.de>
-To: linux-acpi@vger.kernel.org
-Subject: Testing and profiling ACPI code in a Cuckoo Sandbox
-User-Agent: RUB Webmail/1.6.8 via Mozilla/5.0 (X11; Linux x86_64; rv:130.0)
- Gecko/20100101 Firefox/130.0
-Message-ID: <40360caa659c02f5c423639862f9e210@ruhr-uni-bochum.de>
-X-Sender: David.Renz@ruhr-uni-bochum.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hello,
+DEFINE_RES_IRQ returns struct resource type, so it is
+unnecessary to cast it to struct resource.
 
-did anyone of you ever set up a Cuckoo Sandbox running Linux and used it 
-to test how the execution of the ACPI code affects the system?
+Remove the unnecessary cast to fix the following sparse warnings:
 
-A few years ago malwr.com was hosting a Cuckoo Sandbox running Windows 
-where you could upload any executable, let it run and then get a very 
-detailled overview how running the executable affected the virtual 
-Windows system, e. g. what changed were made in the registry, deployment 
-of files and internet connections.
+drivers/acpi/arm64/gtdt.c:355:19: sparse: warning: cast to non-scalar
+drivers/acpi/arm64/gtdt.c:355:19: sparse: warning: cast from non-scalar
 
-I think it should be possible to set up a Cuckoo Sandbox which uses QEMU 
-to run Linux and to provide specific ACPI tables when doing so. I just 
-don't know how well it works, so I was curious if anyone of you has 
-experiences with this.
+No functional changes intended.
 
-This won't apply to any of you developers of course, but it is just a 
-fact that any hacker could use modified ACPI as a means to compromise a 
-system, if he manages it to write the modified code to the tables. And 
-the execution of ACPI code during a Linux boot can't be avoided, so 
-basically this is a quite important issue/aspect, which shouldn't be 
-simply disregarded. E. g. an attacker needs only be able to hide the 
-calling of malicious code which is located at another memory area, and 
-then you're doomed, considering the privileges which the ACPI code has 
-while it is executed in kernel space.
+Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
+---
+ drivers/acpi/arm64/gtdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+index c0e77c1c8e09..24bd479de91f 100644
+--- a/drivers/acpi/arm64/gtdt.c
++++ b/drivers/acpi/arm64/gtdt.c
+@@ -352,7 +352,7 @@ static int __init gtdt_import_sbsa_gwdt(struct acpi_gtdt_watchdog *wd,
+ 	}
+ 
+ 	irq = map_gt_gsi(wd->timer_interrupt, wd->timer_flags);
+-	res[2] = (struct resource)DEFINE_RES_IRQ(irq);
++	res[2] = DEFINE_RES_IRQ(irq);
+ 	if (irq <= 0) {
+ 		pr_warn("failed to map the Watchdog interrupt.\n");
+ 		nr_res--;
+-- 
+2.43.0
 
-Kind regards and thanks in advance
-
-David
 
