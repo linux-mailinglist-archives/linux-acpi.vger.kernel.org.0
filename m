@@ -1,233 +1,126 @@
-Return-Path: <linux-acpi+bounces-8327-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8328-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED97597BAA0
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 12:16:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2357597BEBC
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 17:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C0791C2248A
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 10:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE6E0283CD9
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 15:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB2817AE0C;
-	Wed, 18 Sep 2024 10:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6129C1537B5;
+	Wed, 18 Sep 2024 15:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ppnk1eGU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C382158203;
-	Wed, 18 Sep 2024 10:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB4F1C8FC9
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Sep 2024 15:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726654556; cv=none; b=Z6+JrMv+kFc7Vau7G15oq/B5F59i0DRsFD4V1Xi8fsPAA+jQGSDzuvePtukQC4lzQb3bk6Stwl9RTD8T/UwkNoEyWXdboTU43o+U5Xu/9Azzu2VILVbNWrZl7XGPUOv0gjbVaKquBAiZy42BSxbGwRXfZXoMP6PoaXDbSPeUWis=
+	t=1726673943; cv=none; b=oDvDlA3DPyiFQhbvnoAWkhLCEryPE9Fscg8+1hOoZBvgkohjrHM7UJBLTt+nb2u19pg+PZEormDdQhkW388qDt4JOrdUlG5e+mUDgeLckahavl4nCnlJf3JL67W7YVjRd7sfc8WNuAMqOdfaupj/LYK9f/spho4VAFB9h4xBMOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726654556; c=relaxed/simple;
-	bh=AYNy7n0RD0uCOrEtstDLwoW0P8Nl+52lB/6v3tqLJuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwNVbQHajy6Jf/LWYLmOs/txkk8cTxdvi0w/zBeUjPctB4wXt8f+g7uOssRFvFGrdvsVAyNwPino26/K2mM56f/epBYGkLVBXskboUDhut+ulFV+lsvTXGNxe8fdUFX78npx1l4AYYogMivxUXrIN+sp3IxoWhK7u2sYR6vFyAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B2AFFEC;
-	Wed, 18 Sep 2024 03:16:23 -0700 (PDT)
-Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.2.80.58])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F7A73F64C;
-	Wed, 18 Sep 2024 03:15:53 -0700 (PDT)
-Date: Wed, 18 Sep 2024 11:15:51 +0100
-From: Ionela Voinescu <ionela.voinescu@arm.com>
-To: Jie Zhan <zhanjie9@hisilicon.com>
-Cc: beata.michalska@arm.com, wangxiongfeng2@huawei.com,
-	viresh.kumar@linaro.org, rafael@kernel.org,
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxarm@huawei.com,
-	jonathan.cameron@huawei.com, wanghuiqiang@huawei.com,
-	zhenglifeng1@huawei.com, lihuisong@huawei.com,
-	yangyicong@huawei.com, liaochang1@huawei.com, zengheng4@huawei.com
-Subject: Re: [PATCH v2 1/3] cppc_cpufreq: Return desired perf in ->get() if
- feedback counters are 0
-Message-ID: <ZuqoV/RmVXDkg6uv@arm.com>
-References: <20240912072231.439332-1-zhanjie9@hisilicon.com>
- <20240912072231.439332-2-zhanjie9@hisilicon.com>
- <ZuK3sfcKf2gHssKa@arm.com>
- <79353a26-7304-9d6a-9237-cfa8e7794601@hisilicon.com>
- <ZulbtT8joKPXlFCL@arm.com>
- <30147eff-6e2f-1651-3875-52c9401273fb@hisilicon.com>
+	s=arc-20240116; t=1726673943; c=relaxed/simple;
+	bh=vQCotvNNiYUQsgf8VD4VtrOxGDX5OqxOq4016Yi1Fk4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nReGAs+pFYTOj3IryixDNCZYUtInXLra+wwKcGlH18lf7PtzWOQCR3SPXDOFkSG9VVfpxOtB7GNAxDS01AkffF9pI6HTZrF80zOiDPkA1k1M7xFsWf9dT/bJ3R4TVPS6KZgYSaCchKSpRijEQ49u+9E300H56l+MEEKuZKpX8Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ppnk1eGU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726673940;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KdSt1VfVB9P3r3796KVdogAhGOTn7TpWjXb5rzTlrd4=;
+	b=Ppnk1eGUa+NnrAHOMtezKEk0gTvWnie0OJGG6+kTpX195nBV6OQT3FmKsx39xZGpCsTtBd
+	AQz30gyPjQXTEwr6atV8bEw5RBaCeByyVAb3CB67pgMDExQ/FbzGni18KlJeoOS5rMG1Vf
+	U1RZ3zsKl/rR1it9Xgu3gV9LI4z7TIM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-TigzuWihMCiArBPC1Nf28A-1; Wed,
+ 18 Sep 2024 11:38:59 -0400
+X-MC-Unique: TigzuWihMCiArBPC1Nf28A-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA8141955D59;
+	Wed, 18 Sep 2024 15:38:57 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.11])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C634F19560AA;
+	Wed, 18 Sep 2024 15:38:55 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	All applicable <stable@vger.kernel.org>
+Subject: [PATCH] ACPI: video: Add backlight=native quirk for Dell OptiPlex 5480 AIO
+Date: Wed, 18 Sep 2024 17:38:49 +0200
+Message-ID: <20240918153849.37221-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <30147eff-6e2f-1651-3875-52c9401273fb@hisilicon.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hi,
+Dell All In One (AIO) models released after 2017 may use a backlight
+controller board connected to an UART.
 
-On Wednesday 18 Sep 2024 at 10:05:13 (+0800), Jie Zhan wrote:
-> 
-> 
-> On 17/09/2024 18:36, Ionela Voinescu wrote:
-> 
-> ...
-> 
-> >>> @@ -747,19 +750,22 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
-> >>>         cpufreq_cpu_put(policy);
-> >>>
-> >>>         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
-> >>> -       if (ret)
-> >>> -               return 0;
-> >>> -
-> >>> -       udelay(2); /* 2usec delay between sampling */
-> >>> -
-> >>> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-> >>> -       if (ret)
-> >>> -               return 0;
-> >>> +       if (!ret) {
-> >>> +               udelay(2); /* 2usec delay between sampling */
-> >>> +               ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-> >>> +       }
-> >>> +       if (!ret)
-> >>> +               delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
-> >>> +                                                      &fb_ctrs_t1);
-> >>
-> >> TBH, 'if (!ret)' style looks very strange to me.
-> >> We haven't done so anywhere in cppc_cpufreq, so let's keep consistency and make
-> >> it easier for people to read and maintain?
-> > 
-> > I agree it's a bit of a difficult read, that's why I only sent my code
-> > as a suggestion. I did like the benefit of not having to have two
-> > different calls to cppc_perf_to_khz() and making the code below common
-> > for the error and non-error paths. But it's up to you. 
-> 
-> Yeah understood. I did try minimizing duplicate code, but ended up with either
-> duplicate 'get desired perf' stuff or duplicate cppc_perf_to_khz().
-> 
-> ...
-> >>
-> >>           delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
-> >>                                                  &fb_ctrs_t1);
-> > 
-> > You need a check here for !delivered_perf (when at least one of the
-> > deltas is 0) in which case it would be good to take the same error path
-> > below. Something like:
-> > 
-> >             if(delivered_perf)
-> > 	            return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-> > 	    else
-> > 		ret = -EFAULT;
-> > 
-> > That's why I did the tricky if/else dance above as we need to take the
-> > error path below for multiple cases.
-> > 
-> > Thanks,
-> > Ionela.
-> > 
-> 
-> Sure, thanks for reminding this.
-> 
-> ...
-> 
-> How does this look? I think this should have the least duplicate code except for
-> two cppc_perf_to_khz() calls, while keeping the logic easy to follow.
-> 
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index bafa32dd375d..6070444ed098 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
->  
->         perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
->                                      &fb_ctrs);
-> +       if (!perf)
-> +               return;
-> +
->         cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
->  
->         perf <<= SCHED_CAPACITY_SHIFT;
-> @@ -726,11 +729,27 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
->  
->         /* Check to avoid divide-by zero and invalid delivered_perf */
->         if (!delta_reference || !delta_delivered)
-> -               return cpu_data->perf_ctrls.desired_perf;
-> +               return 0;
->  
->         return (reference_perf * delta_delivered) / delta_reference;
->  }
->  
-> +static int cppc_get_perf_ctrs_sample(int cpu,
-> +                                    struct cppc_perf_fb_ctrs *fb_ctrs_t0,
-> +                                    struct cppc_perf_fb_ctrs *fb_ctrs_t1)
-> +{
-> +       int ret;
-> +
-> +       ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
-> +       if (ret)
-> +               return ret;
-> +
-> +       udelay(2); /* 2usec delay between sampling */
-> +
-> +       ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
+In DSDT this uart port will be defined as:
 
-nit: white line before return.
+   Name (_HID, "DELL0501")
+   Name (_CID, EisaId ("PNP0501")
 
-> +       return ret;
-> +}
-> +
->  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->  {
->         struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
-> @@ -746,20 +765,30 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->  
->         cpufreq_cpu_put(policy);
->  
-> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
-> -       if (ret)
-> -               return 0;
-> -
-> -       udelay(2); /* 2usec delay between sampling */
-> -
-> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-> -       if (ret)
-> -               return 0;
-> +       ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
-> +       if (ret) {
-> +               if (ret == -EFAULT)
-> +                       goto out_invalid_counters;
-> +               else
-> +                       return 0;
-> +       }
->  
->         delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
->                                                &fb_ctrs_t1);
-> +       if (!delivered_perf)
-> +               goto out_invalid_counters;
->  
->         return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-> +
-> +out_invalid_counters:
-> +       /*
-> +        * Feedback counters could be unchanged or 0 when a cpu enters a
-> +        * low-power idle state, e.g. clock-gated or power-gated.
-> +        * Get the lastest or cached desired perf for reflecting frequency.
-> +        */
-> +       if (cppc_get_desired_perf(cpu, &delivered_perf))
-> +               delivered_perf = cpu_data->perf_ctrls.desired_perf;
+The Dell OptiPlex 5480 AIO has an ACPI device for one if its UARTs with
+the above _HID + _CID. Loading the dell-uart-backlight driver fails with
+the following errors:
 
-nit: same white line before return here :).
+[   18.261353] dell_uart_backlight serial0-0: Timed out waiting for response.
+[   18.261356] dell_uart_backlight serial0-0: error -ETIMEDOUT: getting firmware version
+[   18.261359] dell_uart_backlight serial0-0: probe with driver dell_uart_backlight failed with error -110
 
-Looks good, thanks for the changes.
+Indicating that there is no backlight controller board attached to
+the UART, while the GPU's native backlight control method does work.
 
-Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
+Add a quirk to use the GPU's native backlight control method on this model.
 
-Ionela.
+Fixes: cd8e468efb4f ("ACPI: video: Add Dell UART backlight controller detection")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/video_detect.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> +       return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
->  }
->  
->  static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
-> 
-> 
-> Thanks!
-> Jie
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index b70e84e8049a..015bd8e66c1c 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -844,6 +844,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 	 * controller board in their ACPI tables (and may even have one), but
+ 	 * which need native backlight control nevertheless.
+ 	 */
++	{
++	 /* https://github.com/zabbly/linux/issues/26 */
++	 .callback = video_detect_force_native,
++	 /* Dell OptiPlex 5480 AIO */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 5480 AIO"),
++		},
++	},
+ 	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=2303936 */
+ 	 .callback = video_detect_force_native,
+-- 
+2.46.0
+
 
