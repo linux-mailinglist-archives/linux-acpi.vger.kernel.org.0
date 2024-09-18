@@ -1,292 +1,248 @@
-Return-Path: <linux-acpi+bounces-8329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE7997BF84
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 19:14:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A261D97C193
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 23:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 076891F22694
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 17:14:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A50D51C217B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 21:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9F1C9DDD;
-	Wed, 18 Sep 2024 17:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36251CB306;
+	Wed, 18 Sep 2024 21:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fp68HPbZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dWjcEzJX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880E61C8FD6;
-	Wed, 18 Sep 2024 17:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B8818A6C5;
+	Wed, 18 Sep 2024 21:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726679671; cv=none; b=UgnSbphU+HrtucoX2CL41ABhZbdMRG8laqYI+xGVFpCyt2L28eAGymfa8ZaAel0dmLRqICkP+93K4bCDIWFHWgGUwnZNy9COr3c8KmyHRH4sAp54fxX5VDmKvDYtip+zmyJsjdrMYu2/iJ+lO7NHA4IM4FkwdiZU+YWZq+l7Eog=
+	t=1726696373; cv=none; b=fM+JfhL6KUVXcE4UHysb8UUwBrkhCiXucnGOrlvgZdFJpJ0/WP+hDGmaSq94n9HlKDX/mw1Dv4ZAF1fWDXk5AMCwVkBBi9bJBxD7vkwvYq1+SWNZuHdGwYodK1mZgG4UvhNmQJy1oK9/xyfDpNHlXPFInCnSY4BvuK54zg1L4w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726679671; c=relaxed/simple;
-	bh=rViQ3bva6+6FyKcYlUSiAGsveIXqnBw0osY7XFGjjxs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=dqYYh2BK4cJ4fV2qWbER+6BulUY5GUYBnYQh+VAkzUta44O7sNbmzgcAQYtgcwPALatgw88hjDM56U+2ysoYlMWmTkKnUnaufhlF8en/W+aCDGmQGmW6/bNL4c1Kxm+HXPR64MtOopbk04vvoUi3s5dfTkgfbIIx1wtAaT9GtK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fp68HPbZ; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-718ebb01fd2so1395530b3a.2;
-        Wed, 18 Sep 2024 10:14:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726679669; x=1727284469; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L8XWEjshIeUyAJDr89/XlRuNEb4mgSG3Wk3IyKgdD2M=;
-        b=Fp68HPbZnoONsITiS5G7QVaANmsKoeI5Dbp+R8rIPZSSy2Xbqxl/73CS3HJn8Ii8cx
-         ilJtrAIDMdFBBXZka6ykmfCd4BPFdvSdGJ5tvXNMVSaf5iNCxtp2W82K4CZdSgj70DBj
-         eUqzWWNMv6A2p6pIRfbghoplZcHVDZuTku+ZXNtRTE9+4Vc7HwaNoapAwme1cRi2lw/R
-         zLpPJzUld4J2oneq8zaqojx7CNZJpawiUZKcZdj6bojqXLB57h6+dEUKpqBTeRqsA4pe
-         lOjLBFrZIcLvsuXvWschVsri4XSOt3z2RXAAw3OAMJomCpy6z15pWvmZBDv5mXh1RjVE
-         gYVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726679669; x=1727284469;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L8XWEjshIeUyAJDr89/XlRuNEb4mgSG3Wk3IyKgdD2M=;
-        b=CbW7thV16wb3WVt3KenYvBudXKtBg3viERRdtlk+VvR7p6c+0iGvYV/YrfJGQDArpT
-         TkqJtemdq4y4QohW2Fvgnwu8vFD+Kt9MFUf8NAzZ/LgAkYLZgGsV5ab5287u78EIaxJ4
-         4V3Si/nhgfqJFC7vgW1qZCV9ZyPpvUnDsA8fbqm6dCNJCDG1K6iorPWTGio+PX7x7pMO
-         2ErlQar3poWNaYOjR46sIjmF6IVbeO89LWEnr4mT3eVzu1w7wHq1Phi9rapL+ElpNoRx
-         dyr71sTgF9aTJTIV7IPfMYY3DKii6xuFXOL4sl9M/skqc+QT5HOd9ZUqQ54TJ/ispLlX
-         WPIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvnv4jv/eC5ieR8La4zveCrxvjljDpLEOR2l2BcMAgeKBJ+kHtmShLtXd+y62EAbAG3KFsVKuRdXpV@vger.kernel.org, AJvYcCVAE4UC0pwr7vtJUSBC/I4i5JVSHUlTuRfWhQK5vbIX7FEWyojSWDUbjGbARIHWRpXqL4U7zRkGOEbx@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtxF1tXPFS9YGOGEo+nWICluDHgkN+dziYSTaKn5727cxXB9UT
-	dFp63/z1bnhsuE6dOvxykOHOdn554xbGV+F0rOUuqolz5l7XdWfO
-X-Google-Smtp-Source: AGHT+IH6UrksX18YRMK53M8BYR7liw/I9T3GTtpyZHqa/05mpaP5k4izxrS5OWeY4OfGxRz7cwV6hg==
-X-Received: by 2002:a05:6a21:6da2:b0:1cf:2be2:5e5a with SMTP id adf61e73a8af0-1cf764cdd7bmr16397918637.10.1726679668417;
-        Wed, 18 Sep 2024 10:14:28 -0700 (PDT)
-Received: from smtpclient.apple (v133-130-115-230.a046.g.tyo1.static.cnode.io. [133.130.115.230])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7db4a5a8cf3sm6769905a12.85.2024.09.18.10.14.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 18 Sep 2024 10:14:27 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1726696373; c=relaxed/simple;
+	bh=KjosWc3YQGl++7cHwuyERfoMjEYoSmUFMJfCENozWAQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=jbop9kwUti7CwCBP64WlOpSS7Oatrp+zspxOrJ86AKF5fS7DRosojiiPAJA07FcBVpIGSY3YBkrz5DE6b2q++Vse5vVWCgBHraNbdEtShXubJE2EwzOChZ9cpgmrSu8ZLXv537FseulmXUJ2Nal2uATJli0MxAi+3BF+8gQVIUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dWjcEzJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C711AC4CEC2;
+	Wed, 18 Sep 2024 21:52:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726696373;
+	bh=KjosWc3YQGl++7cHwuyERfoMjEYoSmUFMJfCENozWAQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=dWjcEzJXX4ooRHUXZs1QKRISgq0BU0G8hNkX+kieyzIIGyJKsLFV2tRzO5yYceGcH
+	 K7MqyCs1l7uFHSn2AM8V/hxEVmDM01gL5WQ6r+lrAvkxXpRZOqEchapTg1/5N25FzV
+	 Z9J38Rzr5VyP5A4Bx36/b9OvnFCLEJ2b0XA1U2kYyX1L2ws5Oedick2Io1uyiaRVg+
+	 u13tTohXKkJbw9VooAQCTnxOPvTouaOTcoM9IOkt2An1+bqQ2Hm/PrUpAoH4oxTtIb
+	 ZFSJKoN/8RtX7NYroGqxCYTCS6cu8xp7L1Hy/OjV4h7zeTaN6KklRG9LvXy07VePbw
+	 ZFSLGUlmA9rUA==
+Date: Wed, 18 Sep 2024 14:52:50 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Jiqian Chen <Jiqian.Chen@amd.com>
+cc: Juergen Gross <jgross@suse.com>, 
+    Stefano Stabellini <sstabellini@kernel.org>, 
+    Bjorn Helgaas <bhelgaas@google.com>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, xen-devel@lists.xenproject.org, 
+    linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+    linux-acpi@vger.kernel.org, Huang Rui <ray.huang@amd.com>
+Subject: Re: [KERNEL PATCH v9 1/3] xen/pci: Add a function to reset device
+ for xen
+In-Reply-To: <20240912092352.1602724-2-Jiqian.Chen@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2409181450280.1417852@ubuntu-linux-20-04-desktop>
+References: <20240912092352.1602724-1-Jiqian.Chen@amd.com> <20240912092352.1602724-2-Jiqian.Chen@amd.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH v3] ACPI: PCI: check if the root io space is page aligned
-From: Miao Wang <shankerwangmiao@gmail.com>
-In-Reply-To: <F6307927-BCC8-4F61-A089-B26555D51E45@gmail.com>
-Date: Thu, 19 Sep 2024 01:14:11 +0800
-Cc: =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>,
- linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9CBE412E-25B3-4C36-80F6-5EA9248B9085@gmail.com>
-References: <20240814163711.GA351420@bhelgaas>
- <86348A3F-6AF4-4DC0-ACF5-08EC52E3828C@gmail.com>
- <F6307927-BCC8-4F61-A089-B26555D51E45@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-X-Mailer: Apple Mail (2.3776.700.51)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+
+On Thu, 12 Sep 2024, Jiqian Chen wrote:
+> When device on dom0 side has been reset, the vpci on Xen side
+> won't get notification, so that the cached state in vpci is
+> all out of date with the real device state.
+> To solve that problem, add a new function to clear all vpci
+> device state when device is reset on dom0 side.
+> 
+> And call that function in pcistub_init_device. Because when
+> using "pci-assignable-add" to assign a passthrough device in
+> Xen, it will reset passthrough device and the vpci state will
+> out of date, and then device will fail to restore bar state.
+> 
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
 
 
-> 2024=E5=B9=B48=E6=9C=8821=E6=97=A5 12:43=EF=BC=8CMiao Wang =
-<shankerwangmiao@gmail.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> Sorry for directly looping Andrew in. I think Andrew may be familiar =
-with
-> the code in question.
->=20
-> Some backgrounds: Mis-aligned addresses from ACPI table can pass along=20=
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 
-> pci_remap_iospace() -> vmap_page_range() -> vmap_pte_range() path, =
-leading to a
-> loop overrun in vmap_pte_range(). Bjorn and I wonder why all those
-> vmap_*_range() functions don't validate the alignment, assuming the =
-addresses
-> page-aligned. We want to know the best place to do this check.
->=20
->> 2024=E5=B9=B48=E6=9C=8815=E6=97=A5 12:28=EF=BC=8CMiao Wang =
-<shankerwangmiao@gmail.com> =E5=86=99=E9=81=93=EF=BC=9A
->>=20
->> Hi,
->>=20
->>> 2024=E5=B9=B48=E6=9C=8815=E6=97=A5 00:37=EF=BC=8CBjorn Helgaas =
-<helgaas@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->>>=20
->>> [+cc linux-mm for vmap page alignment checking question]
->>>=20
->>> On Wed, Aug 14, 2024 at 08:09:15PM +0800, Miao Wang via B4 Relay =
-wrote:
->>>> From: Miao Wang <shankerwangmiao@gmail.com>
->>>>=20
->>>> When the IO resource given by _CRS method is not page aligned, =
-especially
->>>> when the page size is larger than 4KB, serious problems will happen
->>>> because the misaligned address is passed down to =
-pci_remap_iospace(),
->>>> then to vmap_page_range(), and finally to vmap_pte_range(), where =
-the
->>>> length between addr and end is expected to be divisible by =
-PAGE_SIZE, or
->>>> the loop will overrun till the pfn_none check fails.
->>>=20
->>> What does this problem look like to a user?  Panic, oops, hang,
->>> warning backtrace?  I assume this is not a regression, but maybe
->>> something you tripped over because of a BIOS defect?  Does this need
->>> to be backported to stable kernels?
->>=20
->> Panic, or actually BUG in vmap_pte_range() at the =
-!pte_none(ptep_get(pte))
->> check, since misaligned addresses will cause the loop in =
-vmap_pte_range
->> overrun and finally reach one of the already mapped pages. This =
-happens on
->> a LS2k2000 machine, the buggy firmware of which declares the IO space =
-of
->> the PCI root controller as follows:
->>=20
->> QWordIO (ResourceProducer, MinFixed, MaxFixed, PosDecode, =
-EntireRange,
->>     0x0000000000000000, // Granularity
->>     0x0000000000004000, // Range Minimum
->>     0x0000000000009FFF, // Range Maximum
->>     0x000000FDFC000000, // Translation Offset
->>     0x0000000000006000, // Length
->>     ,, , TypeStatic, DenseTranslation)
->>=20
->> At first, I thought there might be some overlapping address spaces. =
-But when
->> I added some debug output in vmap_page_range(), I realized that it =
-was
->> because a loop overrun.
->>=20
->> Normally, loongarch64 kernel is compiled using 16K page size, and =
-thus the
->> length here is not page aligned. I tested my patch using a virtual =
-machine
->> with a deliberately modified DSDT table to reproduce this issue.
->>=20
->>> It seems sort of weird to me that all those vmap_*_range() functions
->>> take the full page address (not a PFN) and depend on the addr/size
->>> being page-aligned, but they don't validate the alignment.  But I'm
->>> not a VM person and I suppose there's a reason for passing the full
->>> address.
->> Ah, I also have this question.
->>>=20
->>> But it does mean that other users of vmap_page_range() are also
->>> potentially susceptible to this issue, e.g., vmap(), vm_map_ram(),
->>> ioremap_page_range(), etc., so I'm not sure that
->>> acpi_pci_root_remap_iospace() is the best place to check the
->>> alignment.
->> My first idea was that the misaligned address is introduced from DSDT
->> table and the check would be better to be done inside the ACPI =
-system.
->> However, lets wait for replies from  linux-mm to decide where should =
-be
->> the best place.
 
-It seems that there is no reply from linux-mm about this. I believe even =
-if
-there might be a better place for the mm subsystem to check the =
-alignment,
-it is still necessary to do the check here, because details about which =
-ACPI
-entry is causing the problem is only available here. If in the future, =
-we would
-developed another better place to do the alignment check, we may =
-refactor the
-code here.
 
->>>=20
->>>> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
->>>> ---
->>>> Changes in v3:
->>>> - Adjust code formatting.
->>>> - Reword the commit message for further description of the possible =
-reason
->>>> leading to misaligned IO resource addresses.
->>>> - Link to v2: =
-https://lore.kernel.org/r/20240814-check_pci_probe_res-v2-1-a03c8c9b498b@g=
-mail.com
->>>>=20
->>>> Changes in v2:
->>>> - Sorry for posting out the draft version in V1, fixed a silly =
-compiling issue.
->>>> - Link to v1: =
-https://lore.kernel.org/r/20240814-check_pci_probe_res-v1-1-122ee07821ab@g=
-mail.com
->>>> ---
->>>> drivers/acpi/pci_root.c | 14 +++++++++++---
->>>> 1 file changed, 11 insertions(+), 3 deletions(-)
->>>>=20
->>>> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
->>>> index d0bfb3706801..a425e93024f2 100644
->>>> --- a/drivers/acpi/pci_root.c
->>>> +++ b/drivers/acpi/pci_root.c
->>>> @@ -858,7 +858,7 @@ static void =
-acpi_pci_root_validate_resources(struct device *dev,
->>>> }
->>>> }
->>>>=20
->>>> -static void acpi_pci_root_remap_iospace(struct fwnode_handle =
-*fwnode,
->>>> +static void acpi_pci_root_remap_iospace(struct acpi_device =
-*device,
->>>> struct resource_entry *entry)
->>>> {
->>>> #ifdef PCI_IOBASE
->>>> @@ -868,7 +868,15 @@ static void acpi_pci_root_remap_iospace(struct =
-fwnode_handle *fwnode,
->>>> resource_size_t length =3D resource_size(res);
->>>> unsigned long port;
->>>>=20
->>>> - if (pci_register_io_range(fwnode, cpu_addr, length))
->>>> + if (!PAGE_ALIGNED(cpu_addr) || !PAGE_ALIGNED(length) ||
->>>> +     !PAGE_ALIGNED(pci_addr)) {
->>>> + dev_err(&device->dev,
->>>> + FW_BUG "I/O resource %pR or its offset %pa is not page =
-aligned\n",
->>>> + res, &entry->offset);
->>>> + goto err;
->>>> + }
->>>> +
->>>> + if (pci_register_io_range(&device->fwnode, cpu_addr, length))
->>>> goto err;
->>>=20
->>> This change verifies alignment for the ACPI case that leads to the
->>> pci_remap_iospace() -> vmap_page_range() -> vmap_pte_range() path, =
-but=20
->>> there are others even in drivers/pci/, e.g., pci_remap_iospace() is
->>> also used in the DT path, where I suppose a defective DT could cause =
-a
->>> similar issue.
->>>=20
->>>> port =3D pci_address_to_pio(cpu_addr);
->>>> @@ -910,7 +918,7 @@ int acpi_pci_probe_root_resources(struct =
-acpi_pci_root_info *info)
->>>> else {
->>>> resource_list_for_each_entry_safe(entry, tmp, list) {
->>>> if (entry->res->flags & IORESOURCE_IO)
->>>> - acpi_pci_root_remap_iospace(&device->fwnode,
->>>> + acpi_pci_root_remap_iospace(device,
->>>> entry);
->>>>=20
->>>> if (entry->res->flags & IORESOURCE_DISABLED)
->>>>=20
->>>> ---
->>>> base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
->>>> change-id: 20240813-check_pci_probe_res-27e3e6df72b2
->>>>=20
->>>> Best regards,
->>>> --=20
->>>> Miao Wang <shankerwangmiao@gmail.com>
->=20
->=20
-
+> ---
+> v8->v9 changes:
+> Due to the struct and name of the hypercall changed on Xen side, I did the corresponding changes, so removed the Reviewed-by of Stefano. But no function changes actually.
+> 
+> v5->v8 changes:
+> No.
+> 
+> v4->v5 changes:
+> Added Reviewed-by of Stefano.
+> 
+> v3->v4 changes:
+> Changed the code comment of PHYSDEVOP_pci_device_state_reset.
+> Used a new function pcistub_reset_device_state to wrap __pci_reset_function_locked and xen_reset_device_state, and called pcistub_reset_device_state in pci_stub.c.
+> 
+> v2->v3 changes:
+> Added condition to limit do xen_reset_device_state for no-pv domain in pcistub_init_device.
+> 
+> v1->v2 changes:
+> New patch to add a new function to call reset hypercall.
+> ---
+>  drivers/xen/pci.c                  | 13 +++++++++++++
+>  drivers/xen/xen-pciback/pci_stub.c | 18 +++++++++++++++---
+>  include/xen/interface/physdev.h    | 17 +++++++++++++++++
+>  include/xen/pci.h                  |  6 ++++++
+>  4 files changed, 51 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/xen/pci.c b/drivers/xen/pci.c
+> index 72d4e3f193af..bb59524b8bbd 100644
+> --- a/drivers/xen/pci.c
+> +++ b/drivers/xen/pci.c
+> @@ -177,6 +177,19 @@ static int xen_remove_device(struct device *dev)
+>  	return r;
+>  }
+>  
+> +int xen_reset_device(const struct pci_dev *dev)
+> +{
+> +	struct pci_device_reset device = {
+> +		.dev.seg = pci_domain_nr(dev->bus),
+> +		.dev.bus = dev->bus->number,
+> +		.dev.devfn = dev->devfn,
+> +		.flags = PCI_DEVICE_RESET_FLR,
+> +	};
+> +
+> +	return HYPERVISOR_physdev_op(PHYSDEVOP_pci_device_reset, &device);
+> +}
+> +EXPORT_SYMBOL_GPL(xen_reset_device);
+> +
+>  static int xen_pci_notifier(struct notifier_block *nb,
+>  			    unsigned long action, void *data)
+>  {
+> diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
+> index 4faebbb84999..3e162c1753e2 100644
+> --- a/drivers/xen/xen-pciback/pci_stub.c
+> +++ b/drivers/xen/xen-pciback/pci_stub.c
+> @@ -89,6 +89,16 @@ static struct pcistub_device *pcistub_device_alloc(struct pci_dev *dev)
+>  	return psdev;
+>  }
+>  
+> +static int pcistub_reset_device_state(struct pci_dev *dev)
+> +{
+> +	__pci_reset_function_locked(dev);
+> +
+> +	if (!xen_pv_domain())
+> +		return xen_reset_device(dev);
+> +	else
+> +		return 0;
+> +}
+> +
+>  /* Don't call this directly as it's called by pcistub_device_put */
+>  static void pcistub_device_release(struct kref *kref)
+>  {
+> @@ -107,7 +117,7 @@ static void pcistub_device_release(struct kref *kref)
+>  	/* Call the reset function which does not take lock as this
+>  	 * is called from "unbind" which takes a device_lock mutex.
+>  	 */
+> -	__pci_reset_function_locked(dev);
+> +	pcistub_reset_device_state(dev);
+>  	if (dev_data &&
+>  	    pci_load_and_free_saved_state(dev, &dev_data->pci_saved_state))
+>  		dev_info(&dev->dev, "Could not reload PCI state\n");
+> @@ -284,7 +294,7 @@ void pcistub_put_pci_dev(struct pci_dev *dev)
+>  	 * (so it's ready for the next domain)
+>  	 */
+>  	device_lock_assert(&dev->dev);
+> -	__pci_reset_function_locked(dev);
+> +	pcistub_reset_device_state(dev);
+>  
+>  	dev_data = pci_get_drvdata(dev);
+>  	ret = pci_load_saved_state(dev, dev_data->pci_saved_state);
+> @@ -420,7 +430,9 @@ static int pcistub_init_device(struct pci_dev *dev)
+>  		dev_err(&dev->dev, "Could not store PCI conf saved state!\n");
+>  	else {
+>  		dev_dbg(&dev->dev, "resetting (FLR, D3, etc) the device\n");
+> -		__pci_reset_function_locked(dev);
+> +		err = pcistub_reset_device_state(dev);
+> +		if (err)
+> +			goto config_release;
+>  		pci_restore_state(dev);
+>  	}
+>  	/* Now disable the device (this also ensures some private device
+> diff --git a/include/xen/interface/physdev.h b/include/xen/interface/physdev.h
+> index a237af867873..df74e65a884b 100644
+> --- a/include/xen/interface/physdev.h
+> +++ b/include/xen/interface/physdev.h
+> @@ -256,6 +256,13 @@ struct physdev_pci_device_add {
+>   */
+>  #define PHYSDEVOP_prepare_msix          30
+>  #define PHYSDEVOP_release_msix          31
+> +/*
+> + * Notify the hypervisor that a PCI device has been reset, so that any
+> + * internally cached state is regenerated.  Should be called after any
+> + * device reset performed by the hardware domain.
+> + */
+> +#define PHYSDEVOP_pci_device_reset      32
+> +
+>  struct physdev_pci_device {
+>      /* IN */
+>      uint16_t seg;
+> @@ -263,6 +270,16 @@ struct physdev_pci_device {
+>      uint8_t devfn;
+>  };
+>  
+> +struct pci_device_reset {
+> +    struct physdev_pci_device dev;
+> +#define PCI_DEVICE_RESET_COLD 0x0
+> +#define PCI_DEVICE_RESET_WARM 0x1
+> +#define PCI_DEVICE_RESET_HOT  0x2
+> +#define PCI_DEVICE_RESET_FLR  0x3
+> +#define PCI_DEVICE_RESET_MASK 0x3
+> +    uint32_t flags;
+> +};
+> +
+>  #define PHYSDEVOP_DBGP_RESET_PREPARE    1
+>  #define PHYSDEVOP_DBGP_RESET_DONE       2
+>  
+> diff --git a/include/xen/pci.h b/include/xen/pci.h
+> index b8337cf85fd1..424b8ea89ca8 100644
+> --- a/include/xen/pci.h
+> +++ b/include/xen/pci.h
+> @@ -4,10 +4,16 @@
+>  #define __XEN_PCI_H__
+>  
+>  #if defined(CONFIG_XEN_DOM0)
+> +int xen_reset_device(const struct pci_dev *dev);
+>  int xen_find_device_domain_owner(struct pci_dev *dev);
+>  int xen_register_device_domain_owner(struct pci_dev *dev, uint16_t domain);
+>  int xen_unregister_device_domain_owner(struct pci_dev *dev);
+>  #else
+> +static inline int xen_reset_device(const struct pci_dev *dev)
+> +{
+> +	return -1;
+> +}
+> +
+>  static inline int xen_find_device_domain_owner(struct pci_dev *dev)
+>  {
+>  	return -1;
+> -- 
+> 2.34.1
+> 
 
