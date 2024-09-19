@@ -1,339 +1,251 @@
-Return-Path: <linux-acpi+bounces-8332-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8333-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811FA97C1EF
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 00:49:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3702D97C263
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 03:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84A51F2223B
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Sep 2024 22:49:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5399D1C20FAA
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 01:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E861CA6B0;
-	Wed, 18 Sep 2024 22:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzZSG7rb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD78B673;
+	Thu, 19 Sep 2024 01:18:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BF6178CF6;
-	Wed, 18 Sep 2024 22:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B239171A7;
+	Thu, 19 Sep 2024 01:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726699748; cv=none; b=U6vSbkOj8P8325kpWK5jOl6esJlfPuwnHx2UjJr3FsA5EA/FTceWOlHPSJdjJesPqURSD0K5h5wDuDWYpMnt2zRRJQaTwvttBN9ej1xUXEfBeW43ZGMJLNaWIhhPvPhb9kvHdtxTtnV0icxeT0hxTHkLaU5hzfWLxwmnX00tKa4=
+	t=1726708682; cv=none; b=JqL9ujVn1/xkyptEgpdfwc/PeVik1bH0iJL5vJ36deKA7DeeIUO3zvwztdvoi6MJ/rZzf/+vhA8dVi9RNnIu4XVqJEApd8ccidw67zREEmR0/AdHLdP+CywaScMfZ2l5QrDSFC3RlnSieBUjl8pMUtR/6zWnHAiibJFI4TLy0bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726699748; c=relaxed/simple;
-	bh=EescuExRYeQnLOB8teX05hRRk6mAd/XsRJvQhRYTdKw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=OhLqsi9mhDR0haHm9vjkq4PcUydpz642xGsA1FNVYOVwTZ9OBH5jUd1O6iEZWiIXTDsNRRzCU0lRcmJN4LST373QDCIWTyAZMmvNzQvE0B+BD11xDSrsrfm2Zn+eyb8lghkyUjZsWE/JtbMv4hd93LMoAUdg/tb8PsqAuU0EOFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzZSG7rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B557C4CEC2;
-	Wed, 18 Sep 2024 22:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726699747;
-	bh=EescuExRYeQnLOB8teX05hRRk6mAd/XsRJvQhRYTdKw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=MzZSG7rbfe5bLhkOAJ2/+E5WO5Z3/dcyrwBl/LjU68XsM+ADZkmsH5VB6DTZAU4eU
-	 1O5l2vmicBqwvOfLIBsGGcyJOlDEuO9hh5swyIQnfst/+8VkITAueKiUcJfeYnu/u0
-	 lCCcBe2MZLzLsEf9/JC+qUbTSoXLJQt4i5Dotzcak4moBdHzIzoipUvRadx1vWXA8R
-	 WAR2A80bMAhWRXAxu2o+lOMHjghOktLWdTwSXfwsw+ydOW0RXKkjJVBlfS2OtUgGlq
-	 AZIxF32pwQHGHEQDFuW4A83hLx9YP0qccXdLrzNnWEMMETec/F4j6Gy93ujSflLi/N
-	 jm3oCysPKjuKQ==
-Date: Wed, 18 Sep 2024 15:49:04 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Jiqian Chen <Jiqian.Chen@amd.com>
-cc: Juergen Gross <jgross@suse.com>, 
-    Stefano Stabellini <sstabellini@kernel.org>, 
-    Bjorn Helgaas <bhelgaas@google.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, xen-devel@lists.xenproject.org, 
-    linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-    linux-acpi@vger.kernel.org, Huang Rui <ray.huang@amd.com>
-Subject: Re: [KERNEL PATCH v9 3/3] xen/privcmd: Add new syscall to get gsi
- from dev
-In-Reply-To: <20240912092352.1602724-4-Jiqian.Chen@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2409181522080.1417852@ubuntu-linux-20-04-desktop>
-References: <20240912092352.1602724-1-Jiqian.Chen@amd.com> <20240912092352.1602724-4-Jiqian.Chen@amd.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	s=arc-20240116; t=1726708682; c=relaxed/simple;
+	bh=LWSfe6FBhKQvo8lU3hiFHZAObPKLFUCOgNVGLdF1Us8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=OUlf/ywIbRjbWlTTen/xxE3NC0Nzbkh3nhrbeA0Vcz7HJPOqN6o8/ZwY4RYfYAodKlo//iAElKd5KfrQIAg73zG3sRoMSNRr67zjh3VZW/UEOfL9SJfIUxtkmAgSNEjw89s8Y31yKNjgQN+ZGJbTvWOung/sLrubWQEWU8b+cYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4X8Hbg3WFfz1HJjj;
+	Thu, 19 Sep 2024 09:14:07 +0800 (CST)
+Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
+	by mail.maildlp.com (Postfix) with ESMTPS id F41C814010C;
+	Thu, 19 Sep 2024 09:17:50 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
+ (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 19 Sep
+ 2024 09:17:50 +0800
+Message-ID: <81aad4a6-0276-297a-65d3-378dfdc629cc@hisilicon.com>
+Date: Thu, 19 Sep 2024 09:17:50 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH v2 1/3] cppc_cpufreq: Return desired perf in ->get() if
+ feedback counters are 0
+To: Ionela Voinescu <ionela.voinescu@arm.com>
+CC: <beata.michalska@arm.com>, <wangxiongfeng2@huawei.com>,
+	<viresh.kumar@linaro.org>, <rafael@kernel.org>, <linux-pm@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<wanghuiqiang@huawei.com>, <zhenglifeng1@huawei.com>, <lihuisong@huawei.com>,
+	<yangyicong@huawei.com>, <liaochang1@huawei.com>, <zengheng4@huawei.com>
+References: <20240912072231.439332-1-zhanjie9@hisilicon.com>
+ <20240912072231.439332-2-zhanjie9@hisilicon.com> <ZuK3sfcKf2gHssKa@arm.com>
+ <79353a26-7304-9d6a-9237-cfa8e7794601@hisilicon.com>
+ <ZulbtT8joKPXlFCL@arm.com>
+ <30147eff-6e2f-1651-3875-52c9401273fb@hisilicon.com>
+ <ZuqoV/RmVXDkg6uv@arm.com>
+From: Jie Zhan <zhanjie9@hisilicon.com>
+In-Reply-To: <ZuqoV/RmVXDkg6uv@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500019.china.huawei.com (7.185.36.137)
 
-On Thu, 12 Sep 2024, Jiqian Chen wrote:
-> On PVH dom0, when passthrough a device to domU, QEMU and xl tools
-> want to use gsi number to do pirq mapping, see QEMU code
-> xen_pt_realize->xc_physdev_map_pirq, and xl code
-> pci_add_dm_done->xc_physdev_map_pirq, but in current codes, the gsi
-> number is got from file /sys/bus/pci/devices/<sbdf>/irq, that is
-> wrong, because irq is not equal with gsi, they are in different
-> spaces, so pirq mapping fails.
-> And in current linux codes, there is no method to get gsi
-> for userspace.
+
+
+On 18/09/2024 18:15, Ionela Voinescu wrote:
+> Hi,
 > 
-> For above purpose, record gsi of pcistub devices when init
-> pcistub and add a new syscall into privcmd to let userspace
-> can get gsi when they have a need.
+> On Wednesday 18 Sep 2024 at 10:05:13 (+0800), Jie Zhan wrote:
+>>
+>>
+>> On 17/09/2024 18:36, Ionela Voinescu wrote:
+>>
+>> ...
+>>
+>>>>> @@ -747,19 +750,22 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>>>>>         cpufreq_cpu_put(policy);
+>>>>>
+>>>>>         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+>>>>> -       if (ret)
+>>>>> -               return 0;
+>>>>> -
+>>>>> -       udelay(2); /* 2usec delay between sampling */
+>>>>> -
+>>>>> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+>>>>> -       if (ret)
+>>>>> -               return 0;
+>>>>> +       if (!ret) {
+>>>>> +               udelay(2); /* 2usec delay between sampling */
+>>>>> +               ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+>>>>> +       }
+>>>>> +       if (!ret)
+>>>>> +               delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+>>>>> +                                                      &fb_ctrs_t1);
+>>>>
+>>>> TBH, 'if (!ret)' style looks very strange to me.
+>>>> We haven't done so anywhere in cppc_cpufreq, so let's keep consistency and make
+>>>> it easier for people to read and maintain?
+>>>
+>>> I agree it's a bit of a difficult read, that's why I only sent my code
+>>> as a suggestion. I did like the benefit of not having to have two
+>>> different calls to cppc_perf_to_khz() and making the code below common
+>>> for the error and non-error paths. But it's up to you. 
+>>
+>> Yeah understood. I did try minimizing duplicate code, but ended up with either
+>> duplicate 'get desired perf' stuff or duplicate cppc_perf_to_khz().
+>>
+>> ...
+>>>>
+>>>>           delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+>>>>                                                  &fb_ctrs_t1);
+>>>
+>>> You need a check here for !delivered_perf (when at least one of the
+>>> deltas is 0) in which case it would be good to take the same error path
+>>> below. Something like:
+>>>
+>>>             if(delivered_perf)
+>>> 	            return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+>>> 	    else
+>>> 		ret = -EFAULT;
+>>>
+>>> That's why I did the tricky if/else dance above as we need to take the
+>>> error path below for multiple cases.
+>>>
+>>> Thanks,
+>>> Ionela.
+>>>
+>>
+>> Sure, thanks for reminding this.
+>>
+>> ...
+>>
+>> How does this look? I think this should have the least duplicate code except for
+>> two cppc_perf_to_khz() calls, while keeping the logic easy to follow.
+>>
+>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+>> index bafa32dd375d..6070444ed098 100644
+>> --- a/drivers/cpufreq/cppc_cpufreq.c
+>> +++ b/drivers/cpufreq/cppc_cpufreq.c
+>> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+>>  
+>>         perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
+>>                                      &fb_ctrs);
+>> +       if (!perf)
+>> +               return;
+>> +
+>>         cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
+>>  
+>>         perf <<= SCHED_CAPACITY_SHIFT;
+>> @@ -726,11 +729,27 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
+>>  
+>>         /* Check to avoid divide-by zero and invalid delivered_perf */
+>>         if (!delta_reference || !delta_delivered)
+>> -               return cpu_data->perf_ctrls.desired_perf;
+>> +               return 0;
+>>  
+>>         return (reference_perf * delta_delivered) / delta_reference;
+>>  }
+>>  
+>> +static int cppc_get_perf_ctrs_sample(int cpu,
+>> +                                    struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+>> +                                    struct cppc_perf_fb_ctrs *fb_ctrs_t1)
+>> +{
+>> +       int ret;
+>> +
+>> +       ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       udelay(2); /* 2usec delay between sampling */
+>> +
+>> +       ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
 > 
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-> ---
-> v8->v9 changes:
-> Changed the syscall name from "IOCTL_PRIVCMD_GSI_FROM_DEV" to "IOCTL_PRIVCMD_PCIDEV_GET_GSI". Also changed the other functions name.
-> Changed the macro wrapping "pcistub_get_gsi_from_sbdf" from "CONFIG_XEN_ACPI" to "CONFIG_XEN_PCIDEV_BACKEND" to fix compile errors reported by CI robot.
-> Changed the parameter gsi of struct privcmd_pcidev_get_gsi from int to u32.
+> nit: white line before return.
 > 
-> v7->v8 changes:
-> In function privcmd_ioctl_gsi_from_dev, return -EINVAL when not confige CONFIG_XEN_ACPI.
-> Used PCI_BUS_NUM PCI_SLOT PCI_FUNC instead of open coding.
+>> +       return ret;
+>> +}
+>> +
+>>  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>>  {
+>>         struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+>> @@ -746,20 +765,30 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>>  
+>>         cpufreq_cpu_put(policy);
+>>  
+>> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+>> -       if (ret)
+>> -               return 0;
+>> -
+>> -       udelay(2); /* 2usec delay between sampling */
+>> -
+>> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+>> -       if (ret)
+>> -               return 0;
+>> +       ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
+>> +       if (ret) {
+>> +               if (ret == -EFAULT)
+>> +                       goto out_invalid_counters;
+>> +               else
+>> +                       return 0;
+>> +       }
+>>  
+>>         delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+>>                                                &fb_ctrs_t1);
+>> +       if (!delivered_perf)
+>> +               goto out_invalid_counters;
+>>  
+>>         return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+>> +
+>> +out_invalid_counters:
+>> +       /*
+>> +        * Feedback counters could be unchanged or 0 when a cpu enters a
+>> +        * low-power idle state, e.g. clock-gated or power-gated.
+>> +        * Get the lastest or cached desired perf for reflecting frequency.
+>> +        */
+>> +       if (cppc_get_desired_perf(cpu, &delivered_perf))
+>> +               delivered_perf = cpu_data->perf_ctrls.desired_perf;
 > 
-> v6->v7 changes:
-> Changed implementation to add a new parameter "gsi" to struct pcistub_device and set gsi when pcistub initialize device. Then when userspace wants to get gsi and pass sbdf, we can return that gsi.
+> nit: same white line before return here :).
 > 
-> v5->v6 changes:
-> Changed implementation to add a new syscall to translate irq to gsi, instead adding a new gsi sysfs node, because the pci Maintainer didn't allow to add that sysfs node.
+> Looks good, thanks for the changes.
 > 
-> v3->v5 changes:
-> No.
+> Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
 > 
-> v2->v3 changes:
-> Suggested by Roger: Abandoned previous implementations that added new syscall to get gsi from irq and changed to add a new sysfs node for gsi, then userspace can get gsi number from sysfs node.
-> ---
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202406090826.whl6Cb7R-lkp@intel.com/
-> ---
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202405171113.T431PC8O-lkp@intel.com/
-> ---
->  drivers/xen/privcmd.c              | 30 +++++++++++++++++++++++
->  drivers/xen/xen-pciback/pci_stub.c | 38 +++++++++++++++++++++++++++---
->  include/uapi/xen/privcmd.h         |  7 ++++++
->  include/xen/acpi.h                 |  9 +++++++
->  4 files changed, 81 insertions(+), 3 deletions(-)
+> Ionela.
+
+Sure, thanks. I'll send a V3 based on this.
+
+Jie
+
 > 
-> diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-> index 9563650dfbaf..1ed612d21543 100644
-> --- a/drivers/xen/privcmd.c
-> +++ b/drivers/xen/privcmd.c
-> @@ -46,6 +46,9 @@
->  #include <xen/page.h>
->  #include <xen/xen-ops.h>
->  #include <xen/balloon.h>
-> +#ifdef CONFIG_XEN_ACPI
-> +#include <xen/acpi.h>
-> +#endif
->  
->  #include "privcmd.h"
->  
-> @@ -844,6 +847,29 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
->  	return rc;
->  }
->  
-> +static long privcmd_ioctl_pcidev_get_gsi(struct file *file, void __user *udata)
-> +{
-> +#ifdef CONFIG_XEN_ACPI
-> +	int rc;
-> +	struct privcmd_pcidev_get_gsi kdata;
-> +
-> +	if (copy_from_user(&kdata, udata, sizeof(kdata)))
-> +		return -EFAULT;
-> +
-> +	rc = pcistub_get_gsi_from_sbdf(kdata.sbdf);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	kdata.gsi = rc;
-> +	if (copy_to_user(udata, &kdata, sizeof(kdata)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +#else
-> +	return -EINVAL;
-> +#endif
-> +}
-> +
->  #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
->  /* Irqfd support */
->  static struct workqueue_struct *irqfd_cleanup_wq;
-> @@ -1543,6 +1569,10 @@ static long privcmd_ioctl(struct file *file,
->  		ret = privcmd_ioctl_ioeventfd(file, udata);
->  		break;
->  
-> +	case IOCTL_PRIVCMD_PCIDEV_GET_GSI:
-> +		ret = privcmd_ioctl_pcidev_get_gsi(file, udata);
-> +		break;
-> +
->  	default:
->  		break;
->  	}
-> diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
-> index 8ce27333f54b..2ea8e4075adc 100644
-> --- a/drivers/xen/xen-pciback/pci_stub.c
-> +++ b/drivers/xen/xen-pciback/pci_stub.c
-> @@ -56,6 +56,9 @@ struct pcistub_device {
->  
->  	struct pci_dev *dev;
->  	struct xen_pcibk_device *pdev;/* non-NULL if struct pci_dev is in use */
-> +#ifdef CONFIG_XEN_ACPI
-> +	int gsi;
-> +#endif
->  };
->  
->  /* Access to pcistub_devices & seized_devices lists and the initialize_devices
-> @@ -88,6 +91,9 @@ static struct pcistub_device *pcistub_device_alloc(struct pci_dev *dev)
->  
->  	kref_init(&psdev->kref);
->  	spin_lock_init(&psdev->lock);
-> +#ifdef CONFIG_XEN_ACPI
-> +	psdev->gsi = -1;
-> +#endif
->  
->  	return psdev;
->  }
-> @@ -220,6 +226,25 @@ static struct pci_dev *pcistub_device_get_pci_dev(struct xen_pcibk_device *pdev,
->  	return pci_dev;
->  }
->  
-> +#ifdef CONFIG_XEN_PCIDEV_BACKEND
-
-
-This breaks configurations without CONFIG_ACPI and with
-CONFIG_XEN_PCIDEV_BACKEND.
-
-Also there should be no dependency between PCIDEV_BACKEND and
-pcistub_get_gsi_from_sbdf.
-
-I think we should solve the build issues this way:
-
-- privcmd_ioctl_pcidev_get_gsi should have:
-#if defined(CONFIG_XEN_ACPI) && defined(CONFIG_XEN_PCI_STUB)
-
-- here we should have #ifdef CONFIG_XEN_ACPI as you had before
-
-
-As far as I can tell the above should be able to address all valid
-combinations.
-
-
-
-> +int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-> +{
-> +	struct pcistub_device *psdev;
-> +	int domain = (sbdf >> 16) & 0xffff;
-> +	int bus = PCI_BUS_NUM(sbdf);
-> +	int slot = PCI_SLOT(sbdf);
-> +	int func = PCI_FUNC(sbdf);
-> +
-> +	psdev = pcistub_device_find(domain, bus, slot, func);
-> +
-> +	if (!psdev)
-> +		return -ENODEV;
-> +
-> +	return psdev->gsi;
-> +}
-> +EXPORT_SYMBOL_GPL(pcistub_get_gsi_from_sbdf);
-> +#endif
-> +
->  struct pci_dev *pcistub_get_pci_dev_by_slot(struct xen_pcibk_device *pdev,
->  					    int domain, int bus,
->  					    int slot, int func)
-> @@ -367,14 +392,20 @@ static int pcistub_match(struct pci_dev *dev)
->  	return found;
->  }
->  
-> -static int pcistub_init_device(struct pci_dev *dev)
-> +static int pcistub_init_device(struct pcistub_device *psdev)
->  {
->  	struct xen_pcibk_dev_data *dev_data;
-> +	struct pci_dev *dev;
->  #ifdef CONFIG_XEN_ACPI
->  	int gsi, trigger, polarity;
->  #endif
->  	int err = 0;
->  
-> +	if (!psdev)
-> +		return -EINVAL;
-> +
-> +	dev = psdev->dev;
-> +
->  	dev_dbg(&dev->dev, "initializing...\n");
->  
->  	/* The PCI backend is not intended to be a module (or to work with
-> @@ -452,6 +483,7 @@ static int pcistub_init_device(struct pci_dev *dev)
->  		err = xen_pvh_setup_gsi(gsi, trigger, polarity);
->  		if (err)
->  			goto config_release;
-> +		psdev->gsi = gsi;
->  	}
->  #endif
->  
-> @@ -494,7 +526,7 @@ static int __init pcistub_init_devices_late(void)
->  
->  		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
->  
-> -		err = pcistub_init_device(psdev->dev);
-> +		err = pcistub_init_device(psdev);
->  		if (err) {
->  			dev_err(&psdev->dev->dev,
->  				"error %d initializing device\n", err);
-> @@ -564,7 +596,7 @@ static int pcistub_seize(struct pci_dev *dev,
->  		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
->  
->  		/* don't want irqs disabled when calling pcistub_init_device */
-> -		err = pcistub_init_device(psdev->dev);
-> +		err = pcistub_init_device(psdev);
->  
->  		spin_lock_irqsave(&pcistub_devices_lock, flags);
->  
-> diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
-> index 8b8c5d1420fe..8e2c8fd44764 100644
-> --- a/include/uapi/xen/privcmd.h
-> +++ b/include/uapi/xen/privcmd.h
-> @@ -126,6 +126,11 @@ struct privcmd_ioeventfd {
->  	__u8 pad[2];
->  };
->  
-> +struct privcmd_pcidev_get_gsi {
-> +	__u32 sbdf;
-> +	__u32 gsi;
-> +};
-> +
->  /*
->   * @cmd: IOCTL_PRIVCMD_HYPERCALL
->   * @arg: &privcmd_hypercall_t
-> @@ -157,5 +162,7 @@ struct privcmd_ioeventfd {
->  	_IOW('P', 8, struct privcmd_irqfd)
->  #define IOCTL_PRIVCMD_IOEVENTFD					\
->  	_IOW('P', 9, struct privcmd_ioeventfd)
-> +#define IOCTL_PRIVCMD_PCIDEV_GET_GSI				\
-> +	_IOC(_IOC_NONE, 'P', 10, sizeof(struct privcmd_pcidev_get_gsi))
->  
->  #endif /* __LINUX_PUBLIC_PRIVCMD_H__ */
-> diff --git a/include/xen/acpi.h b/include/xen/acpi.h
-> index 3bcfe82d9078..393a73bfda24 100644
-> --- a/include/xen/acpi.h
-> +++ b/include/xen/acpi.h
-> @@ -91,4 +91,13 @@ static inline int xen_acpi_get_gsi_info(struct pci_dev *dev,
->  }
->  #endif
->  
-> +#ifdef CONFIG_XEN_PCIDEV_BACKEND
-> +int pcistub_get_gsi_from_sbdf(unsigned int sbdf);
-> +#else
-> +static inline int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-> +{
-> +	return -1;
-> +}
-> +#endif
-> +
->  #endif	/* _XEN_ACPI_H */
-> -- 
-> 2.34.1
+>> +       return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+>>  }
+>>  
+>>  static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
+>>
+>>
+>> Thanks!
+>> Jie
 > 
 
