@@ -1,251 +1,106 @@
-Return-Path: <linux-acpi+bounces-8333-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8340-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3702D97C263
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 03:18:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B0D97C651
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 10:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5399D1C20FAA
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 01:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9316C282CB6
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 08:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD78B673;
-	Thu, 19 Sep 2024 01:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A3A1991C2;
+	Thu, 19 Sep 2024 08:56:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mail-m127216.xmail.ntesmail.com (mail-m127216.xmail.ntesmail.com [115.236.127.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B239171A7;
-	Thu, 19 Sep 2024 01:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FF11957E7;
+	Thu, 19 Sep 2024 08:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.236.127.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726708682; cv=none; b=JqL9ujVn1/xkyptEgpdfwc/PeVik1bH0iJL5vJ36deKA7DeeIUO3zvwztdvoi6MJ/rZzf/+vhA8dVi9RNnIu4XVqJEApd8ccidw67zREEmR0/AdHLdP+CywaScMfZ2l5QrDSFC3RlnSieBUjl8pMUtR/6zWnHAiibJFI4TLy0bo=
+	t=1726736183; cv=none; b=iAzCnFropVjiPJdP8e1MrweJC+fHmpIAZ0FJXqDLeumj8xEqFPDZXt8f26pn7E0mzMkJpZ5zvcL2978ufRp/iUc96GBlvClu2DOI6iYfXpn1VcO/IfgKk8ha9Gcds+v+GjvzSqAWkZ6ptS6BLQJOsrKsOUyzNy75fxZfdDFI/1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726708682; c=relaxed/simple;
-	bh=LWSfe6FBhKQvo8lU3hiFHZAObPKLFUCOgNVGLdF1Us8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OUlf/ywIbRjbWlTTen/xxE3NC0Nzbkh3nhrbeA0Vcz7HJPOqN6o8/ZwY4RYfYAodKlo//iAElKd5KfrQIAg73zG3sRoMSNRr67zjh3VZW/UEOfL9SJfIUxtkmAgSNEjw89s8Y31yKNjgQN+ZGJbTvWOung/sLrubWQEWU8b+cYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4X8Hbg3WFfz1HJjj;
-	Thu, 19 Sep 2024 09:14:07 +0800 (CST)
-Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
-	by mail.maildlp.com (Postfix) with ESMTPS id F41C814010C;
-	Thu, 19 Sep 2024 09:17:50 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
- (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 19 Sep
- 2024 09:17:50 +0800
-Message-ID: <81aad4a6-0276-297a-65d3-378dfdc629cc@hisilicon.com>
-Date: Thu, 19 Sep 2024 09:17:50 +0800
+	s=arc-20240116; t=1726736183; c=relaxed/simple;
+	bh=/ixGIeAgu4kH+iosDw5OZDaR7cm/8EdtfaIqfr9QDRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=La5E3R/qWCPpIHi2F0+C6AJDaSg/I0B4ztJ7tGRRMA3Aj967M8TtcZmJ6iqrG5346yqtgwvwxtl+HXGfqnpGcTGRu9itVKJfHXSCs6n+jTyQLqONxG5ObSdGRYRZPQkpSyjPpgavbRnENeNNv8Hvr6H0RNLJH+L53MKffBovAR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hj-micro.com; spf=pass smtp.mailfrom=hj-micro.com; arc=none smtp.client-ip=115.236.127.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hj-micro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hj-micro.com
+Received: from localhost.localdomain (unknown [122.224.147.158])
+	by smtp.qiye.163.com (Hmail) with ESMTPA id 0E1F13808E3;
+	Thu, 19 Sep 2024 14:30:17 +0800 (CST)
+From: hunter.yu@hj-micro.com
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	jarkko.nikula@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	mika.westerberg@linux.intel.com,
+	jsd@semihalf.com,
+	andi.shyti@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	hunter.yu@hj-micro.com
+Subject: [PATCH 1/2] ACPI: APD: Add clock frequency for HJMC01 I2C controller
+Date: Thu, 19 Sep 2024 14:29:42 +0800
+Message-Id: <20240919062943.1551197-2-hunter.yu@hj-micro.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20240919062943.1551197-1-hunter.yu@hj-micro.com>
+References: <20240919062943.1551197-1-hunter.yu@hj-micro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v2 1/3] cppc_cpufreq: Return desired perf in ->get() if
- feedback counters are 0
-To: Ionela Voinescu <ionela.voinescu@arm.com>
-CC: <beata.michalska@arm.com>, <wangxiongfeng2@huawei.com>,
-	<viresh.kumar@linaro.org>, <rafael@kernel.org>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<wanghuiqiang@huawei.com>, <zhenglifeng1@huawei.com>, <lihuisong@huawei.com>,
-	<yangyicong@huawei.com>, <liaochang1@huawei.com>, <zengheng4@huawei.com>
-References: <20240912072231.439332-1-zhanjie9@hisilicon.com>
- <20240912072231.439332-2-zhanjie9@hisilicon.com> <ZuK3sfcKf2gHssKa@arm.com>
- <79353a26-7304-9d6a-9237-cfa8e7794601@hisilicon.com>
- <ZulbtT8joKPXlFCL@arm.com>
- <30147eff-6e2f-1651-3875-52c9401273fb@hisilicon.com>
- <ZuqoV/RmVXDkg6uv@arm.com>
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <ZuqoV/RmVXDkg6uv@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500019.china.huawei.com (7.185.36.137)
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaSxhMVhlPTk9CSRhMTR1ITlYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSUlVSUlPVUpPTFVKTkNZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0hVSk
+	tLVUpCS0tZBg++
+X-HM-Tid: 0a9208f96e6509cdkunm0e1f13808e3
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PjY6OAw5HzI5Pw0zCE0jAx8f
+	LUswFCpVSlVKTElNTElMT0pDSkJLVTMWGhIXVRMOFQ8eCVUCDjsTEVYWEhgJFFUYFBZFWVdZEgtZ
+	QVlKSUlVSUlPVUpPTFVKTkNZV1kIAVlBSUlMSTcG
 
+From: "hunter.yu" <hunter.yu@hj-micro.com>
 
+I2C clock frequency for HJMC01 is 200M, define a new ACPI
+HID for it.
 
-On 18/09/2024 18:15, Ionela Voinescu wrote:
-> Hi,
-> 
-> On Wednesday 18 Sep 2024 at 10:05:13 (+0800), Jie Zhan wrote:
->>
->>
->> On 17/09/2024 18:36, Ionela Voinescu wrote:
->>
->> ...
->>
->>>>> @@ -747,19 +750,22 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->>>>>         cpufreq_cpu_put(policy);
->>>>>
->>>>>         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
->>>>> -       if (ret)
->>>>> -               return 0;
->>>>> -
->>>>> -       udelay(2); /* 2usec delay between sampling */
->>>>> -
->>>>> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
->>>>> -       if (ret)
->>>>> -               return 0;
->>>>> +       if (!ret) {
->>>>> +               udelay(2); /* 2usec delay between sampling */
->>>>> +               ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
->>>>> +       }
->>>>> +       if (!ret)
->>>>> +               delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
->>>>> +                                                      &fb_ctrs_t1);
->>>>
->>>> TBH, 'if (!ret)' style looks very strange to me.
->>>> We haven't done so anywhere in cppc_cpufreq, so let's keep consistency and make
->>>> it easier for people to read and maintain?
->>>
->>> I agree it's a bit of a difficult read, that's why I only sent my code
->>> as a suggestion. I did like the benefit of not having to have two
->>> different calls to cppc_perf_to_khz() and making the code below common
->>> for the error and non-error paths. But it's up to you. 
->>
->> Yeah understood. I did try minimizing duplicate code, but ended up with either
->> duplicate 'get desired perf' stuff or duplicate cppc_perf_to_khz().
->>
->> ...
->>>>
->>>>           delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
->>>>                                                  &fb_ctrs_t1);
->>>
->>> You need a check here for !delivered_perf (when at least one of the
->>> deltas is 0) in which case it would be good to take the same error path
->>> below. Something like:
->>>
->>>             if(delivered_perf)
->>> 	            return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
->>> 	    else
->>> 		ret = -EFAULT;
->>>
->>> That's why I did the tricky if/else dance above as we need to take the
->>> error path below for multiple cases.
->>>
->>> Thanks,
->>> Ionela.
->>>
->>
->> Sure, thanks for reminding this.
->>
->> ...
->>
->> How does this look? I think this should have the least duplicate code except for
->> two cppc_perf_to_khz() calls, while keeping the logic easy to follow.
->>
->> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->> index bafa32dd375d..6070444ed098 100644
->> --- a/drivers/cpufreq/cppc_cpufreq.c
->> +++ b/drivers/cpufreq/cppc_cpufreq.c
->> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
->>  
->>         perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
->>                                      &fb_ctrs);
->> +       if (!perf)
->> +               return;
->> +
->>         cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
->>  
->>         perf <<= SCHED_CAPACITY_SHIFT;
->> @@ -726,11 +729,27 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
->>  
->>         /* Check to avoid divide-by zero and invalid delivered_perf */
->>         if (!delta_reference || !delta_delivered)
->> -               return cpu_data->perf_ctrls.desired_perf;
->> +               return 0;
->>  
->>         return (reference_perf * delta_delivered) / delta_reference;
->>  }
->>  
->> +static int cppc_get_perf_ctrs_sample(int cpu,
->> +                                    struct cppc_perf_fb_ctrs *fb_ctrs_t0,
->> +                                    struct cppc_perf_fb_ctrs *fb_ctrs_t1)
->> +{
->> +       int ret;
->> +
->> +       ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
->> +       if (ret)
->> +               return ret;
->> +
->> +       udelay(2); /* 2usec delay between sampling */
->> +
->> +       ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
-> 
-> nit: white line before return.
-> 
->> +       return ret;
->> +}
->> +
->>  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->>  {
->>         struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
->> @@ -746,20 +765,30 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->>  
->>         cpufreq_cpu_put(policy);
->>  
->> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
->> -       if (ret)
->> -               return 0;
->> -
->> -       udelay(2); /* 2usec delay between sampling */
->> -
->> -       ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
->> -       if (ret)
->> -               return 0;
->> +       ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
->> +       if (ret) {
->> +               if (ret == -EFAULT)
->> +                       goto out_invalid_counters;
->> +               else
->> +                       return 0;
->> +       }
->>  
->>         delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
->>                                                &fb_ctrs_t1);
->> +       if (!delivered_perf)
->> +               goto out_invalid_counters;
->>  
->>         return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
->> +
->> +out_invalid_counters:
->> +       /*
->> +        * Feedback counters could be unchanged or 0 when a cpu enters a
->> +        * low-power idle state, e.g. clock-gated or power-gated.
->> +        * Get the lastest or cached desired perf for reflecting frequency.
->> +        */
->> +       if (cppc_get_desired_perf(cpu, &delivered_perf))
->> +               delivered_perf = cpu_data->perf_ctrls.desired_perf;
-> 
-> nit: same white line before return here :).
-> 
-> Looks good, thanks for the changes.
-> 
-> Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
-> 
-> Ionela.
+Signed-off-by: hunter.yu <hunter.yu@hj-micro.com>
+---
+ drivers/acpi/acpi_apd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Sure, thanks. I'll send a V3 based on this.
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 800f97868448..bc271d1cb31b 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -181,6 +181,11 @@ static const struct apd_device_desc hip08_spi_desc = {
+ 	.setup = acpi_apd_setup,
+ 	.fixed_clk_rate = 250000000,
+ };
++
++static const struct apd_device_desc hjmc_i2c_desc = {
++	.setup = acpi_apd_setup,
++	.fixed_clk_rate = 200000000,
++};
+ #endif /* CONFIG_ARM64 */
+ 
+ #endif
+@@ -252,6 +257,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+ 	{ "HISI02A3", APD_ADDR(hip08_lite_i2c_desc) },
+ 	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
+ 	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
++	{ "HJMC3001", APD_ADDR(hjmc_i2c_desc) },
+ #endif
+ 	{ }
+ };
+-- 
+2.27.0
 
-Jie
-
-> 
->> +       return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
->>  }
->>  
->>  static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
->>
->>
->> Thanks!
->> Jie
-> 
 
