@@ -1,304 +1,307 @@
-Return-Path: <linux-acpi+bounces-8348-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8350-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A16F97CF31
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 00:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5758897D090
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 06:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A0911C21DE7
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Sep 2024 22:15:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA491C22EA7
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 04:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B2919E972;
-	Thu, 19 Sep 2024 22:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB4B381C4;
+	Fri, 20 Sep 2024 04:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JW881aYO"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MjOIBuLN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0657A13AD39;
-	Thu, 19 Sep 2024 22:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D602574B;
+	Fri, 20 Sep 2024 04:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726784123; cv=none; b=PZTf9yMxJQEkQAgiDnLvKWObO2jqQ6Rxeb3GGgwhLF8Mu40ygAMblVmf13NFe8Yi9ojh4bOtp1zkEyeHkGxMTL6ycueqESy1w/Dn+Y6iLUzO9Ndi1R1DnvJyKTA2W9AL3n9K6Xw5P7CeyMQR+arRSZriitQwF3LdARAx2zifb+s=
+	t=1726806654; cv=none; b=rs6UNV6Uc+S+NVvH4D7F6M7Or6rbg1daZ19grSxgxDG9IDLwrEWvIfuh0xoRanrYTeGxUXN7anup7LEQMngjuT7vNLJ1DJuJSPNCQ4yAaGWu/qR4Lagy2TDIoSF41BdfDy9CMCr5PMb8btghwgPGw6wRFj14d1K2udqjjk7QB80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726784123; c=relaxed/simple;
-	bh=rhLJmk4kuQBVOQE5cPyh+wnbf8by3qiA8vQzxSAE8Zg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kc0FcPNuNxb6e/28P7lPk93wuuFHP9V++Y+bwsXKA4/OpKvjvCWc5vhr7DCNL0GL85NfBcGTYeCfifzqgadJ+PPkeCseiAy1AU6tfEehSYNu+Bm6QCz/mGaLTezXGPCD5eXsQF1iwDVA88PEmLeUxORZnUmx+5pavYxcLnqusYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JW881aYO; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726784122; x=1758320122;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rhLJmk4kuQBVOQE5cPyh+wnbf8by3qiA8vQzxSAE8Zg=;
-  b=JW881aYOe8rcyilJ/3ifOxw5m20m0tp1vJtNWCoKPuG1KFi2pr+59NJ9
-   2QbdAlHQbdKqj49ZvXWfp/C1hnpvFE4Hi1BeFE1nsX+kAf1GdbAu/pjYc
-   cvDRJjq3bZM4ThC9cnYCJQCbTb0DBPT8ZfRk06cEy5GtpicEurLxKmigg
-   ze6Cu05/GCpuL/FHCCn6immCcrff1LF9XMS5/S0e9M0bfNpPW3kd3xXEt
-   m9bBF0HOF0gYYLzSX50ZSR9U6eJevBIvYR3OgF9iSQBPZ1Lnp9NcnBVEu
-   ZRksFlW90ElRLfidDfmij7/BicM8tTal64RrkHC8GjjVJ7LzIXpJjwOHG
-   g==;
-X-CSE-ConnectionGUID: qaAL8oE9Rp2vTWB6t4xTcg==
-X-CSE-MsgGUID: EGa+pfPkSRK+W4v6Ddjm/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="36907165"
-X-IronPort-AV: E=Sophos;i="6.10,243,1719903600"; 
-   d="scan'208";a="36907165"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 15:15:21 -0700
-X-CSE-ConnectionGUID: USGk/vrfRTmMx9MJYeYlLw==
-X-CSE-MsgGUID: PbHmwOY5SGCByAFvS7Pj9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,243,1719903600"; 
-   d="scan'208";a="75054953"
-Received: from yjiang5-mobl.amr.corp.intel.com (HELO localhost) ([10.124.27.106])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 15:15:20 -0700
-Date: Thu, 19 Sep 2024 15:15:19 -0700
-From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, rafael@kernel.org, lenb@kernel.org,
-	kirill.shutemov@linux.intel.com, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
- mailbox
-Message-ID: <20240919221431.GA14771@yjiang5-mobl.amr.corp.intel.com>
-References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
- <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
- <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
- <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
- <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
- <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
- <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
+	s=arc-20240116; t=1726806654; c=relaxed/simple;
+	bh=61+D44caa7v8N/CkTnNqF63lgoQQciLap3XVaJodn3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rdUMUoTrlqeFlOkYFuIBcCv678sRTbVpAk/tVMUDWiBtFrfFzR4ZoGLEr+gx2aBtmEc40DClvLkb3+FJxd+vOSZ6jdMDrlWUiEzLXGuhlUivRVrXjEN+Zp5YTXbz2kKGZVDYBn5fzBgS1WXVQUVeT0eDSMJF8V++OrLy8v6+e7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MjOIBuLN; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1726806642; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=CgWPrHA1WqKU122KWW54ucmriKCe6Cyz7dYNTHTUd0w=;
+	b=MjOIBuLNL7+rwM+izs9LVNsZmBkD2Zhtp1tbnwIgdanvuDf4u0jrk0ZlaBoWNw0P53Zx28ZqblCUzXWPru/VNrWcbAshEpb866bEAiTYrSNTC228LxZAcecUNijMn5xJrzVNZ38r8uOSHkD53eqHJH4xDbWAvxiWlVhoQI+essM=
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WFJd0I._1726806637)
+          by smtp.aliyun-inc.com;
+          Fri, 20 Sep 2024 12:30:40 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: mark.rutland@arm.com,
+	catalin.marinas@arm.com,
+	mingo@redhat.com,
+	robin.murphy@arm.com,
+	Jonathan.Cameron@Huawei.com,
+	bp@alien8.de,
+	rafael@kernel.org,
+	wangkefeng.wang@huawei.com,
+	tanxiaofei@huawei.com,
+	mawupeng1@huawei.com,
+	tony.luck@intel.com,
+	linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com,
+	james.morse@arm.com,
+	tongtiangen@huawei.com,
+	gregkh@linuxfoundation.org,
+	will@kernel.org,
+	jarkko@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org,
+	x86@kernel.org,
+	xueshuai@linux.alibaba.com,
+	justin.he@arm.com,
+	ardb@kernel.org,
+	ying.huang@intel.com,
+	ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com,
+	tglx@linutronix.de,
+	dave.hansen@linux.intel.com,
+	lenb@kernel.org,
+	hpa@zytor.com,
+	robert.moore@intel.com,
+	lvying6@huawei.com,
+	xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: [PATCH v13 0/3] ACPI: APEI: handle synchronous errors in task work
+Date: Fri, 20 Sep 2024 12:30:24 +0800
+Message-ID: <20240920043027.21907-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 19, 2024 at 12:19:01PM -0700, Yunhong Jiang wrote:
-> On Mon, Sep 16, 2024 at 10:56:38AM +0200, Krzysztof Kozlowski wrote:
-> > On 10/09/2024 08:13, Yunhong Jiang wrote:
-> > > On Tue, Aug 27, 2024 at 01:45:49PM -0700, Yunhong Jiang wrote:
-> > >> On Sun, Aug 25, 2024 at 09:10:01AM +0200, Krzysztof Kozlowski wrote:
-> > >>> On Fri, Aug 23, 2024 at 04:23:20PM -0700, Yunhong Jiang wrote:
-> > >>>> Add the binding to use mailbox wakeup mechanism to bringup APs.
-> > >>>>
-> > >>>> Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > >>>> ---
-> > >>>>  .../devicetree/bindings/x86/wakeup.yaml       | 64 +++++++++++++++++++
-> > >>>>  1 file changed, 64 insertions(+)
-> > >>>>  create mode 100644 Documentation/devicetree/bindings/x86/wakeup.yaml
-> > >>>>
-> > >>>> diff --git a/Documentation/devicetree/bindings/x86/wakeup.yaml b/Documentation/devicetree/bindings/x86/wakeup.yaml
-> > >>>> new file mode 100644
-> > >>>> index 000000000000..cb84e2756bca
-> > >>>> --- /dev/null
-> > >>>> +++ b/Documentation/devicetree/bindings/x86/wakeup.yaml
-> > >>>> @@ -0,0 +1,64 @@
-> > >>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > >>>> +# Copyright (C) 2024 Intel Corporation
-> > >>>> +%YAML 1.2
-> > >>>> +---
-> > >>>> +$id: http://devicetree.org/schemas/x86/wakeup.yaml#
-> > >>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > >>>> +
-> > >>>> +title: x86 mailbox wakeup
-> > >>>> +maintainers:
-> > >>>> +  - Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > >>>> +
-> > >>>> +description: |
-> > >>>> +  The x86 mailbox wakeup mechanism defines a mechanism to let the bootstrap
-> > >>>> +  processor (BSP) to wake up application processors (APs) through a wakeup
-> > >>>> +  mailbox.
-> > >>>> +
-> > >>>> +  The "wakeup-mailbox-addr" property specifies the wakeup mailbox address. The
-> > >>>> +  wakeup mailbox is a 4K-aligned 4K-size memory block allocated in the reserved
-> > >>>> +  memory.
-> > >>>> +
-> > >>>> +  The wakeup mailbox structure is defined as follows.
-> > >>>> +
-> > >>>> +    uint16_t command;
-> > >>>> +    uint16_t reserved;
-> > >>>> +    uint32_t apic_id;
-> > >>>> +    uint64_t wakeup_vector;
-> > >>>> +    uint8_t  reservedForOs[2032];
-> > >>>> +
-> > >>>> +  The memory after reservedForOs field is reserved and OS should not touch it.
-> > >>>> +
-> > >>>> +  To wakes up a AP, the BSP prepares the wakeup routine, fills the wakeup
-> > >>>> +  routine's address into the wakeup_vector field, fill the apic_id field with
-> > >>>> +  the target AP's APIC_ID, and write 1 to the command field. After receiving the
-> > >>>> +  wakeup command, the target AP will jump to the wakeup routine.
-> > >>>> +
-> > >>>> +  For each AP, the mailbox can be used only once for the wakeup command. After
-> > >>>> +  the AP jumps to the wakeup routine, the mailbox will no longer be checked by
-> > >>>> +  this AP.
-> > >>>> +
-> > >>>> +  The wakeup mailbox structure and the wakeup process is the same as
-> > >>>> +  the Multiprocessor Wakeup Mailbox Structure defined in ACPI spec version 6.5,
-> > >>>> +  section 5.2.12.19 [1].
-> > >>>> +
-> > >>>> +  References:
-> > >>>> +
-> > >>>> +  [1] https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html
-> > >>>> +
-> > >>>> +select: false
-> > >>>
-> > >>> This schema is still a no-op because of this false.
-> > >>>
-> > >>> What is the point of defining one property if it is not placed anywhere?
-> > >>> Every device node can have it? Seems wrong...
-> > >>>
-> > >>> You need to come with proper schema. Lack of an example is another thing
-> > >>> - this cannot be even validated by the tools. 
-> > >>>
-> > >>> Best regards,
-> > >>> Krzysztof
-> > > 
-> > > Hi, Krzysztof, I'm working to address your comments and have some questions.
-> > > Hope to get help/guide from your side.
-> > > 
-> > > For the select, the writing-schema.rst describes it as "A json-schema used to
-> > > match nodes for applying the schema" but I'm a bit confused. In my case, should
-> > > it be "cpus" node? Is there any code/tools that uses this property, so that I
-> > > can have a better understanding?
-> > 
-> > Usually we expect matching by compatible, but it does not seem suitable
-> > here because it is not related to any specific device, right? That is
-> > the problem with all this DT-reuse-for-virtual-stuff work. It just does
-> > not follow usual expectations and guidelines - you do not describe a device.
-> 
-> Thank you for the reply.
-> 
-> I'm a bit confused on your "do not describe a device".
-> I think VM is also a device, it's just a virtual device, but I don't see much
-> difference of the virtual and physical device from DT point of view, possibly I
-> missed some point.
->  
-> > 
-> > You can still match by nodes. See all top-level bindings.
-> 
-> After checking the code at
-> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/validator.py,
-> seems the 'select' is translated to 'if'/'then'.
-> 
-> Do you have any example of "top-level bindings"? I tried to check binding for
-> enable-methods like arm/cpu-enable-method/nuvoton,npcm750-smp or
-> cpu/idle-states.yaml, but they are either not schema file, or quite different.
-> 
-> I have been struggling on this device binding document for a while. I
-> reconsidered what this binding is for. This binding means, if the cpus node has
-> "enable-method" as "acpi-wakeup-mailbox", then the device should have property
-> "wakeup-mailbox-addr" with uint64 type.
-> 
-> In that case, I'm considering to set the "select" to be true so that it will
-> apply to any potential device, and add if/then keyword to check the
-> enable-method. But seems it does not work and I'm still trying to figure out the
-> reason (I'm new to the json/json schema and is still learning).
-> 
-> I received followed error:
-> cpus: '#address-cells', '#size-cells', 'cpu@0', 'enable-method' do not match any of the regexes: 'pinctrl-[0-9]+'
->         from schema $id: http://devicetree.org/schemas/x86/wakeup.yaml#
-> cpu@0: 'device_type', 'reg' do not match any of the regexes: 'pinctrl-[0-9]+'
->         from schema $id: http://devicetree.org/schemas/x86/wakeup.yaml#
-> 
-> With the followed yaml file (I delete some description).
-> 
-> $ cat Documentation/devicetree/bindings/x86/wakeup.yaml
-> # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> # Copyright (C) 2024 Intel Corporation
-> %YAML 1.2
-> ---
-> $id: http://devicetree.org/schemas/x86/wakeup.yaml#
-> $schema: http://devicetree.org/meta-schemas/core.yaml#
-> 
-> title: x86 mailbox wakeup
-> maintainers:
->   - Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> 
-> description: |
->   ......
->   Removed to save space.
-> 
-> properties:
->   wakeup-mailbox-addr:
->     $ref: /schemas/types.yaml#/definitions/uint32
->     description: |
->       ......
->       Removed to save space.
-> 
-> select: true
-> 
-> if:
->   properties:
->     enable-method:
->       contains:
->         const: acpi-wakeup-mailbox
->   required:
->     - enable-method
-> 
-> then:
->   required:
->     - wakeup-mailbox-addr
-> 
-> additionalProperties: false
-> 
-> examples:
->   - |
->     cpus {
->       #address-cells = <1>;
->       #size-cells = <0>;
->       enable-method = "acpi-wakeup-mailbox";
->       wakeup-mailbox-addr = <0x1c000500>;
->       cpu@0 {
->         device_type = "cpu";
->         reg = <0x1>;
->       };
->     };
-> ...
-> 
-> > 
-> > > 
-> > > For your "validated by the tools", can you please share the tools you used to
-> > > validate the schema? I used "make dt_binding_check" per the
-> > > submitting-patches.rst but I think your comments is about another tool.
-> > 
-> > See writing-schema document.
-> Yes, I figured out in the end that the validate tools means the dt-schema tools.
-> 
-> Thank you
-> --jyh
+## Changes Log
 
-One thing just come to my mind. The
-Documentation/devicetree/bindings/x86/wakeup.yaml only adds one property,
-wakeup-mailbox-addr, to the cpus node, and it does not specify any new object.
-Per my understanding, the json schema file normally specifies a new object.
-Is my change a supported scenario in current Documentation/devicetree?
+changes since v12:
+- tweak error message for force kill (per Jarkko)
+- fix comments style (per Jarkko)
+- fix commit log typo (per Jarko)
 
-I checked similar scenario like arm/cpu-enable-method/nuvoton and
-npcm750-smp/cpu-enable-method/al,alpine-smp, they don't present as a json
-schema file. Wonder if it's because the same reason.
+changes since v11:
+- rebase to Linux 6.11-rc6
+- fix grammer and typo in commit log (per Borislav)
+- remove `sync_` perfix of `sync_task_work`  (per Borislav)
+- comments flags and description of `task_work`  (per Borislav)
 
-> 
-> > 
-> > 
-> > Best regards,
-> > Krzysztof
-> > 
-> > 
-> 
+changes since v10:
+- rebase to v6.8-rc2
+
+changes since v9:
+- split patch 2 to address exactly one issue in one patch (per Borislav)
+- rewrite commit log according to template (per Borislav)
+- pickup reviewed-by tag of patch 1 from James Morse
+- alloc and free twcb through gen_pool_{alloc, free) (Per James)
+- rewrite cover letter
+
+changes since v8:
+- remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
+- remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
+- rewrite the return value comments of memory_failure (per Naoya Horiguchi)
+
+changes since v7:
+- rebase to Linux v6.6-rc2 (no code changed)
+- rewritten the cover letter to explain the motivation of this patchset
+
+changes since v6:
+- add more explicty error message suggested by Xiaofei
+- pick up reviewed-by tag from Xiaofei
+- pick up internal reviewed-by tag from Baolin
+
+changes since v5 by addressing comments from Kefeng:
+- document return value of memory_failure()
+- drop redundant comments in call site of memory_failure() 
+- make ghes_do_proc void and handle abnormal case within it
+- pick up reviewed-by tag from Kefeng Wang 
+
+changes since v4 by addressing comments from Xiaofei:
+- do a force kill only for abnormal sync errors
+
+changes since v3 by addressing comments from Xiaofei:
+- do a force kill for abnormal memory failure error such as invalid PA,
+unexpected severity, OOM, etc
+- pcik up tested-by tag from Ma Wupeng
+
+changes since v2 by addressing comments from Naoya:
+- rename mce_task_work to sync_task_work
+- drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+- add steps to reproduce this problem in cover letter
+
+changes since v1:
+- synchronous events by notify type
+- Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+
+## Cover Letter
+
+There are two major types of uncorrected recoverable (UCR) errors :
+
+- Synchronous error: The error is detected and raised at the point of the
+  consumption in the execution flow, e.g. when a CPU tries to access
+  a poisoned cache line. The CPU will take a synchronous error exception
+  such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+  Exception (MCE) on X86. OS requires to take action (for example, offline
+  failure page/kill failure thread) to recover this uncorrectable error.
+
+- Asynchronous error: The error is detected out of processor execution
+  context, e.g. when an error is detected by a background scrubber. Some data
+  in the memory are corrupted. But the data have not been consumed. OS is
+  optional to take action to recover this uncorrectable error.
+
+Currently, both synchronous and asynchronous error use
+memory_failure_queue() to schedule memory_failure() exectute in kworker
+context. As a result, when a user-space process is accessing a poisoned
+data, a data abort is taken and the memory_failure() is executed in the
+kworker context:
+
+  - will send wrong si_code by SIGBUS signal in early_kill mode, and
+  - can not kill the user-space in some cases resulting a synchronous
+    error infinite loop
+
+Issue 1: send wrong si_code in early_kill mode
+
+Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
+could be used to determine whether a synchronous exception occurs on
+ARM64 platform.  When a synchronous exception is detected, the kernel is
+expected to terminate the current process which has accessed poisoned
+page. This is done by sending a SIGBUS signal with an error code
+BUS_MCEERR_AR, indicating an action-required machine check error on
+read.
+
+However, when kill_proc() is called to terminate the processes who have
+the poisoned page mapped, it sends the incorrect SIGBUS error code
+BUS_MCEERR_AO because the context in which it operates is not the one
+where the error was triggered.
+
+To reproduce this problem:
+
+  # STEP1: enable early kill mode
+  #sysctl -w vm.memory_failure_early_kill=1
+  vm.memory_failure_early_kill = 1
+
+  # STEP2: inject an UCE error and consume it to trigger a synchronous error
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 5 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
+error and it is not fact.
+
+To fix it, queue memory_failure() as a task_work so that it runs in
+the context of the process that is actually consuming the poisoned data.
+
+After this patch set:
+
+  # STEP1: enable early kill mode
+  #sysctl -w vm.memory_failure_early_kill=1
+  vm.memory_failure_early_kill = 1
+
+  # STEP2: inject an UCE error and consume it to trigger a synchronous error
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 4 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
+error as we expected.
+
+Issue 2: a synchronous error infinite loop due to memory_failure() failed
+
+If a user-space process, e.g. devmem, a poisoned page which has been set
+HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
+current processs with error info. Because the memory_failure() is
+executed in the kworker contex, it will just do nothing but return
+EFAULT. So, devmem will access the posioned page and trigger an
+excepction again, resulting in a synchronous error infinite loop. Such
+loop may cause platform firmware to exceed some threshold and reboot
+when Linux could have recovered from this error.
+
+To reproduce this problem:
+
+  # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 4 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+  # STEP 2: access the same page and it will trigger a synchronous error infinite loop
+  devmem 0x4092d55b400
+
+To fix it, if memory_failure() failed, perform a force kill to current process.
+
+Issue 3: a synchronous error infinite loop due to no memory_failure() queued
+
+No memory_failure() work is queued unless all bellow preconditions check passed:
+
+- `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
+- `if (flags == -1)` in ghes_handle_memory_failure()
+- `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
+- `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
+
+If the preconditions are not passed, the user-space process will trigger SEA again.
+This loop can potentially exceed the platform firmware threshold or even
+trigger a kernel hard lockup, leading to a system reboot.
+
+To fix it, if no memory_failure() queued, perform a force kill to current process.
+
+And the the memory errors triggered in kernel-mode[5], also relies on this
+patchset to kill the failure thread.
+
+Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
+Acknowledge to discussion with them.
+
+[1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
+[2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
+[3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
+[4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
+[5] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20240528085915.1955987-1-tongtiangen@huawei.com/
+
+Shuai Xue (3):
+  ACPI: APEI: send SIGBUS to current task if synchronous memory error
+    not recovered
+  mm: memory-failure: move return value documentation to function
+    declaration
+  ACPI: APEI: handle synchronous exceptions in task work
+
+ arch/x86/kernel/cpu/mce/core.c |  7 ---
+ drivers/acpi/apei/ghes.c       | 86 +++++++++++++++++++++-------------
+ include/acpi/ghes.h            |  3 --
+ include/linux/mm.h             |  1 -
+ mm/memory-failure.c            | 22 +++------
+ 5 files changed, 60 insertions(+), 59 deletions(-)
+
+-- 
+2.39.3
+
 
