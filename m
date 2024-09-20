@@ -1,400 +1,602 @@
-Return-Path: <linux-acpi+bounces-8351-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8353-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3710597D094
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 06:31:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06D697D3CA
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 11:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7BDB287030
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 04:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36161C2186B
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Sep 2024 09:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401CF2AE8C;
-	Fri, 20 Sep 2024 04:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5936F1CD2C;
+	Fri, 20 Sep 2024 09:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="FbklQAx1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X+XX9bqJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10594225D9;
-	Fri, 20 Sep 2024 04:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A02757F3
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Sep 2024 09:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726806659; cv=none; b=cOcR3aNQbvfrnn3gH71uOjyClAz9DGnGFfChpQ1CHqfjhAOYepRx7n2lOoemhpqMmiXoXcy/CGLZC+UoxLulst/Uz1zWwfKFdlhEBtxTTI4+MQZQUID3STrsPXuBgUhYkGMsZBZBfW1JL6Lj548jLk93n1NacYmNdpg4BLcZppA=
+	t=1726825142; cv=none; b=RD43ZQJmMiVFUuZkKleXgiNgO0fjBfI4zYGBSdnfqkuej1UpZY3j8Q6mgEmJp5O93k2SvrQ5SqrZ0OuQMZdYHfWeuwV7EAvdRwB4EsSrNUE/BOGGFzPr6DljD9T7jfqxYgm/iWA55T2oI8vxSJLCShItmEGpBYFjEgXlXv/+qx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726806659; c=relaxed/simple;
-	bh=fIMLD1rt+41xDZuWXGa73wInGBXQeaBM6YkQYwFzPrE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2b4cFmB+/R51J7mGYRHqpbsp1ooqiWnkQmsYy7Rybe4yEilXpLvJHrGuIB7eR1vk/C1g591lLuLzZ+ch5+hViMEV+sxZKyinsUh9dVZU7Bbe+Q4ZNCXepn+LiijDJZKINK7/7zSKGV/o8xEMtY7dfvzNFUqSgPpYuxVnGia0Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FbklQAx1; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1726806648; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=8jM9dyWnnwjU50YL8fxan8rwEju68SjJDB73GCBd/LY=;
-	b=FbklQAx1aAo2SBpdHltmCRfZoQPdyqntJeU1OBWz6ySar0pLVrH6RSfX31AV4nC1CQka/Dif7ANojcOTYKuQlLjiWMl/2oqGy6NwgjG5TOofTo4ObbLos6qDAQo02nA179dHzaWxVx7JFhpqN0TH3opB36LAxMSN4f+DNHl+Lqo=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WFJd0KC_1726806645)
-          by smtp.aliyun-inc.com;
-          Fri, 20 Sep 2024 12:30:46 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: mark.rutland@arm.com,
-	catalin.marinas@arm.com,
-	mingo@redhat.com,
-	robin.murphy@arm.com,
-	Jonathan.Cameron@Huawei.com,
-	bp@alien8.de,
-	rafael@kernel.org,
-	wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com,
-	mawupeng1@huawei.com,
-	tony.luck@intel.com,
-	linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com,
-	james.morse@arm.com,
-	tongtiangen@huawei.com,
-	gregkh@linuxfoundation.org,
-	will@kernel.org,
-	jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org,
-	x86@kernel.org,
-	xueshuai@linux.alibaba.com,
-	justin.he@arm.com,
-	ardb@kernel.org,
-	ying.huang@intel.com,
-	ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com,
-	tglx@linutronix.de,
-	dave.hansen@linux.intel.com,
-	lenb@kernel.org,
-	hpa@zytor.com,
-	robert.moore@intel.com,
-	lvying6@huawei.com,
-	xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: [PATCH v13 3/3] ACPI: APEI: handle synchronous exceptions in task work
-Date: Fri, 20 Sep 2024 12:30:27 +0800
-Message-ID: <20240920043027.21907-4-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+	s=arc-20240116; t=1726825142; c=relaxed/simple;
+	bh=j591OMxZW91/nUKO/svkLkwNmZBlVOlaT9CaWA6kncE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oNyK51kV3wnGPSReky/Ua3XB5/bEjvl/wALe+i86Vggk7uTL1LAor0KWE6SUMfcgcDRBB3my1M7jpDV3zmQIbhzugH5igSKQWso9iEc4FuT9ixTZzVIcllGtgOHKJBYCtrQUNQOVw7k/SyKTyrSf+/zcjgrwyv7PKxlHBhdx0cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X+XX9bqJ; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53567b4c3f4so2012683e87.2
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Sep 2024 02:38:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1726825137; x=1727429937; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3Isga6WhNpBJPKKZLFSzZ37SuHnie4715ui4RDqxHIU=;
+        b=X+XX9bqJUNLGAbQFnk7WgsRkoEKMsN2joHRyCFOw5zKvmtSQT/USMY0OhvEUF8G3XC
+         QCTK6PqIghKMMk3p0JvWpm7cOCxY9Dw2ECdzXGGSLajm4gFLBtSp3KKCkun6bKXLLkQd
+         ISdl9rNsmZuI/ZFr8rMcTS7Udzbbh2XSavT07lXL4qGNB+0R8zGOYSLkQLR9Sj0LIqoK
+         QesJexlImB/zmrB5z8sHxINtlaApMmpIEXEUzzdjuJd8+Aq2lnNSvli6lR3JesGql0lU
+         mvvy/YTHJs/gxof9orOxz5rPVYvB7kNCDVFzHYMMAtKVLwo2hbqkVJSIQwp+o4hcF/xC
+         IABg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726825137; x=1727429937;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Isga6WhNpBJPKKZLFSzZ37SuHnie4715ui4RDqxHIU=;
+        b=RjIafj1UggFSCb8XGC7F4+HwhgKOzylfq5SLoS6Fnfp0YYpRPL2JKYmTVPIq8AWpLc
+         kC1R37JCwBtOsaJWlbktzIr7ICtf15UCnRgSZ8oy3QEiM/jLaaF61uqDIpSUlFSCs3Hi
+         fI/4nNHDkqZ9rDOH9ZA004/Vmoh00kySvLH6xlTz5CQrQ0Q/Exie8Su3KCAiDypN1/89
+         9zq9wKGr5n5jyNKdqfigaioMywT/BBO5E8QizG5rlAVogpIGCVAnJKUZtvN2H7tb6+gZ
+         7Mpup3VifRI8wa68+2V26Q1Gh1GHSXSLVg7kCu8qDGSmQa0I+CmDV/DTzaG3RHJpzbHE
+         pyzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVBEMH3Dy6mkyzxOMIhcA3ZEtJRwxZ9LzJM5++Fiqg4KWc6AalP6/M8Jy5lKJoLhg/56vQdbsgbXRCS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/L6frSnjObI8P5VnrjoOuHFBpe3Sv0znWR3QgfJ0Ae+5etR3W
+	70uVPrxwBgKSUQJNN3IZEkN/Gb8C3gIA1e1Q7Rl9ktrWtkTNscZ/nwvnVWfThr4=
+X-Google-Smtp-Source: AGHT+IEyf+L3alOBO+IDE5tXohIeKgqQE+M9l4Enih5DCS15gfbRAxlZH2hDf1Cm6A3BQnla8U5uuQ==
+X-Received: by 2002:a05:6512:3d91:b0:533:3268:b959 with SMTP id 2adb3069b0e04-536ac33b3afmr1366248e87.53.1726825136859;
+        Fri, 20 Sep 2024 02:38:56 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53687096859sm2077814e87.176.2024.09.20.02.38.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Sep 2024 02:38:56 -0700 (PDT)
+Date: Fri, 20 Sep 2024 12:38:53 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Stephen Boyd <swboyd@chromium.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, devicetree@vger.kernel.org, 
+	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, 
+	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org, 
+	Guenter Roeck <groeck@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
+	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Vinod Koul <vkoul@kernel.org>, 
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
+ google,cros-ec-typec for DP altmode
+Message-ID: <phdcjgqqpjpruxp7v2mw446q73xr3eg4wfgfbjw5tasgr2pgg2@77swbk47b2tg>
+References: <20240901040658.157425-1-swboyd@chromium.org>
+ <20240901040658.157425-16-swboyd@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240901040658.157425-16-swboyd@chromium.org>
 
-The memory uncorrected error could be signaled by asynchronous interrupt
-(specifically, SPI in arm64 platform), e.g. when an error is detected by
-a background scrubber, or signaled by synchronous exception
-(specifically, data abort excepction in arm64 platform), e.g. when a CPU
-tries to access a poisoned cache line. Currently, both synchronous and
-asynchronous error use memory_failure_queue() to schedule
-memory_failure() exectute in kworker context.
+On Sat, Aug 31, 2024 at 09:06:53PM GMT, Stephen Boyd wrote:
+> Add a DT graph binding to google,cros-ec-typec so that it can combine
+> DisplayPort (DP) and USB SuperSpeed (SS) data into a USB type-c endpoint
+> that is connected to the usb-c-connector node's SS endpoint. This also
+> allows us to connect the DP and USB nodes in the graph to the USB type-c
+> connectors, providing the full picture of the USB type-c data flows in
+> the system.
+> 
+> Allow there to be multiple typec nodes underneath the EC node so that
+> one DT graph exists per DP bridge. The EC is actually controlling TCPCs
+> and redrivers that combine the DP and USB signals together so this more
+> accurately reflects the hardware design without introducing yet another
+> DT node underneath the EC for USB type-c.
+> 
+> If the type-c ports are being shared between a single DP controller then
+> the ports need to know about each other and determine a policy to drive
+> DP to one type-c port. If the type-c ports each have their own dedicated
+> DP controller then they're able to operate independently and enter/exit
+> DP altmode independently as well. We can't connect the DP controller's
+> endpoint to one usb-c-connector port@1 endpoint and the USB controller's
+> endpoint to another usb-c-connector port@1 endpoint either because the
+> DP muxing case would have DP connected to two usb-c-connector endpoints
+> which the graph binding doesn't support.
+> 
+> Therefore, one typec node is required per the capabilities of the type-c
+> port(s) being managed. This also lets us indicate which type-c ports the
+> DP controller is wired to. For example, if DP was connected to ports 0
+> and 2, while port 1 was connected to another DP controller we wouldn't
+> be able to implement that without having some other DT property to
+> indicate which output ports are connected to the DP endpoint.
 
-As a result, when a user-space process is accessing a poisoned data, a
-data abort is taken and the memory_failure() is executed in the kworker
-context:
+Based on our disccusions at LPC, here are several DT examples that seem
+sensible to implement this case and several related cases from other
+ChromeBooks.
 
-  - will send wrong si_code by SIGBUS signal in early_kill mode, and
-  - can not kill the user-space in some cases resulting a synchronous
-    error infinite loop
+typec {
+	compatible = "google,cros-ec-typec";
 
-Issue 1: send wrong si_code in early_kill mode
+	port {
+		typec_dp_in: endpoint {
+			remote-endpoint = <&usb_1_qmp_phy_out_dp>;
+		};
+	};
 
-Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
-could be used to determine whether a synchronous exception occurs on
-ARM64 platform.  When a synchronous exception is detected, the kernel is
-expected to terminate the current process which has accessed poisoned
-page. This is done by sending a SIGBUS signal with an error code
-BUS_MCEERR_AR, indicating an action-required machine check error on
-read.
+	usb_c0: connector@0 {
+		compatible = "usb-c-connector";
+		reg = <0>;
 
-However, when kill_proc() is called to terminate the processes who have
-the poisoned page mapped, it sends the incorrect SIGBUS error code
-BUS_MCEERR_AO because the context in which it operates is not the one
-where the error was triggered.
+		ports {
+			port@0 {
+				reg = <0>;
+				usb_c0_hs_in: endpoint {
+					remote-endpoint = <&usb_hub_dfp1_hs>;
+				};
+			};
 
-To reproduce this problem:
+			port@1 {
+				reg = <1>;
+				usb_c0_ss_in: endpoint {
+					remote-endpoint = <&usb_hub_dfp1_ss>;
+				};
+			};
+		};
+	};
 
-  #sysctl -w vm.memory_failure_early_kill=1
-  vm.memory_failure_early_kill = 1
+	usb_c1: connector@1 {
+		compatible = "usb-c-connector";
+		reg = <1>;
 
-  # STEP2: inject an UCE error and consume it to trigger a synchronous error
-  #einj_mem_uc single
-  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-  injecting ...
-  triggering ...
-  signal 7 code 5 addr 0xffffb0d75000
-  page not present
-  Test passed
+		ports {
+			port@0 {
+				reg = <0>;
+				usb_c1_hs_in: endpoint {
+					remote-endpoint = <&usb_hub_dfp2_hs>;
+				};
+			};
 
-The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
-error and it is not fact.
+			port@1 {
+				reg = <1>;
+				usb_c1_ss_in: endpoint {
+					remote-endpoint = <&usb_hub_dfp2_ss>;
+				};
+			};
+		};
+	};
+};
 
-After this patch:
+&usb_1_qmpphy {
+	ports {
+		port@0 {
+			endpoint@0 {
+				data-lanes = <0 1>;
+				// this might go to USB-3 hub
+			};
 
-  # STEP1: enable early kill mode
-  #sysctl -w vm.memory_failure_early_kill=1
-  vm.memory_failure_early_kill = 1
-  # STEP2: inject an UCE error and consume it to trigger a synchronous error
-  #einj_mem_uc single
-  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-  injecting ...
-  triggering ...
-  signal 7 code 4 addr 0xffffb0d75000
-  page not present
-  Test passed
+			usb_1_qmp_phy_out_dp: endpoint@1 {
+				remote-endpoint = <&typec_dp_in>;
+				data-lanes = <2 3>;
+			};
+		}
+	};
+};
 
-The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
-error as we expected.
+-------
 
-Issue 2: a synchronous error infinite loop
+typec {
+	connector@0 {
+		port@1 {
+			endpoint@0 {
+				remtoe = <&usb_hub_0>;
+			};
 
-If a user-space process, e.g. devmem, a poisoned page which has been set
-HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
-current processs with error info. Because the memory_failure() is
-executed in the kworker contex, it will just do nothing but return
-EFAULT. So, devmem will access the posioned page and trigger an
-excepction again, resulting in a synchronous error infinite loop. Such
-loop may cause platform firmware to exceed some threshold and reboot
-when Linux could have recovered from this error.
+			endpoint@1 {
+				remote = <&dp_bridge_out_0>;
+			};
+		};
+	};
 
-To reproduce this problem:
+	connector@1 {
+		port@1 {
+			endpoint@0 {
+				remtoe = <&usb_hub_1>;
+			};
 
-  # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
-  #einj_mem_uc single
-  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-  injecting ...
-  triggering ...
-  signal 7 code 4 addr 0xffffb0d75000
-  page not present
-  Test passed
+			endpoint@1 {
+				remote = <&dp_bridge_out_1>;
+			};
+		};
+	};
+};
 
-  # STEP 2: access the same page and it will trigger a synchronous error infinite loop
-  devmem 0x4092d55b400
+dp_bridge {
+	ports {
+		port@1 {
+			dp_bridge_out_0: endpoint@0 {
+				remote = <usb_c0_ss_dp>;
+				data-lanes = <0 1>;
+			};
 
-To fix above two issues, queue memory_failure() as a task_work so that it runs in
-the context of the process that is actually consuming the poisoned data.
+			dp_bridge_out_1: endpoint@1 {
+				remote = <usb_c1_ss_dp>;
+				data-lanes = <2 3>;
+			};
+		};
+	};
+};
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 78 +++++++++++++++++++++++-----------------
- include/acpi/ghes.h      |  3 --
- include/linux/mm.h       |  1 -
- mm/memory-failure.c      | 13 -------
- 4 files changed, 45 insertions(+), 50 deletions(-)
+-------
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 93eb11482832..60d8044f14d1 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -467,28 +467,42 @@ static void ghes_clear_estatus(struct ghes *ghes,
- }
- 
- /*
-- * Called as task_work before returning to user-space.
-- * Ensure any queued work has been done before we return to the context that
-- * triggered the notification.
-+ * struct task_work - for synchronous RAS event
-+ *
-+ * @twork:                callback_head for task work
-+ * @pfn:                  page frame number of corrupted page
-+ * @flags:                work control flags
-+ *
-+ * Structure to pass task work to be handled before
-+ * returning to user-space via task_work_add().
-  */
--static void ghes_kick_task_work(struct callback_head *head)
-+struct task_work {
-+	struct callback_head twork;
-+	u64 pfn;
-+	int flags;
-+};
-+
-+static void memory_failure_cb(struct callback_head *twork)
- {
--	struct acpi_hest_generic_status *estatus;
--	struct ghes_estatus_node *estatus_node;
--	u32 node_len;
-+	struct task_work *twcb = container_of(twork, struct task_work, twork);
-+	unsigned long pfn = twcb->pfn;
-+	int ret;
- 
--	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
--	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		memory_failure_queue_kick(estatus_node->task_work_cpu);
-+	ret = memory_failure(twcb->pfn, twcb->flags);
-+	gen_pool_free(ghes_estatus_pool, (unsigned long)twcb, sizeof(*twcb));
- 
--	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
--	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
--	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-+	if (!ret || ret == -EHWPOISON || ret == -EOPNOTSUPP)
-+		return;
-+
-+	pr_err("%#lx: Sending SIGBUS to %s:%d due to hardware memory corruption\n",
-+			pfn, current->comm, task_pid_nr(current));
-+	force_sig(SIGBUS);
- }
- 
- static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
-+	struct task_work *twcb;
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
- 		return false;
-@@ -501,6 +515,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- 		return false;
- 	}
- 
-+	if (flags == MF_ACTION_REQUIRED && current->mm) {
-+		twcb = (void *)gen_pool_alloc(ghes_estatus_pool, sizeof(*twcb));
-+		if (!twcb)
-+			return false;
-+
-+		twcb->pfn = pfn;
-+		twcb->flags = flags;
-+		init_task_work(&twcb->twork, memory_failure_cb);
-+		task_work_add(current, &twcb->twork, TWA_RESUME);
-+		return true;
-+	}
-+
- 	memory_failure_queue(pfn, flags);
- 	return true;
- }
-@@ -745,7 +771,7 @@ int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_cper_kfifo_get, CXL);
- 
--static bool ghes_do_proc(struct ghes *ghes,
-+static void ghes_do_proc(struct ghes *ghes,
- 			 const struct acpi_hest_generic_status *estatus)
- {
- 	int sev, sec_sev;
-@@ -810,8 +836,6 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			current->comm, task_pid_nr(current));
- 		force_sig(SIGBUS);
- 	}
--
--	return queued;
- }
- 
- static void __ghes_print_estatus(const char *pfx,
-@@ -1113,9 +1137,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 	struct ghes_estatus_node *estatus_node;
- 	struct acpi_hest_generic *generic;
- 	struct acpi_hest_generic_status *estatus;
--	bool task_work_pending;
- 	u32 len, node_len;
--	int ret;
- 
- 	llnode = llist_del_all(&ghes_estatus_llist);
- 	/*
-@@ -1130,25 +1152,16 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
--		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-+
-+		ghes_do_proc(estatus_node->ghes, estatus);
-+
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
- 			if (ghes_print_estatus(NULL, generic, estatus))
- 				ghes_estatus_cache_add(generic, estatus);
- 		}
--
--		if (task_work_pending && current->mm) {
--			estatus_node->task_work.func = ghes_kick_task_work;
--			estatus_node->task_work_cpu = smp_processor_id();
--			ret = task_work_add(current, &estatus_node->task_work,
--					    TWA_RESUME);
--			if (ret)
--				estatus_node->task_work.func = NULL;
--		}
--
--		if (!estatus_node->task_work.func)
--			gen_pool_free(ghes_estatus_pool,
--				      (unsigned long)estatus_node, node_len);
-+		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-+			      node_len);
- 
- 		llnode = next;
- 	}
-@@ -1209,7 +1222,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- 
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
--	estatus_node->task_work.func = NULL;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 
- 	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index be1dd4c1a917..ebd21b05fe6e 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -35,9 +35,6 @@ struct ghes_estatus_node {
- 	struct llist_node llnode;
- 	struct acpi_hest_generic *generic;
- 	struct ghes *ghes;
--
--	int task_work_cpu;
--	struct callback_head task_work;
- };
- 
- struct ghes_estatus_cache {
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 13bff7cf03b7..304fa2e0c75e 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3992,7 +3992,6 @@ enum mf_flags {
- int mf_dax_kill_procs(struct address_space *mapping, pgoff_t index,
- 		      unsigned long count, int mf_flags);
- extern int memory_failure(unsigned long pfn, int flags);
--extern void memory_failure_queue_kick(int cpu);
- extern int unpoison_memory(unsigned long pfn);
- extern atomic_long_t num_poisoned_pages __read_mostly;
- extern int soft_offline_page(unsigned long pfn, int flags);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 7984e0d99d09..31561855a87e 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2486,19 +2486,6 @@ static void memory_failure_work_func(struct work_struct *work)
- 	}
- }
- 
--/*
-- * Process memory_failure work queued on the specified CPU.
-- * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-- */
--void memory_failure_queue_kick(int cpu)
--{
--	struct memory_failure_cpu *mf_cpu;
--
--	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--	cancel_work_sync(&mf_cpu->work);
--	memory_failure_work_func(&mf_cpu->work);
--}
--
- static int __init memory_failure_init(void)
- {
- 	struct memory_failure_cpu *mf_cpu;
+This one is really tough example, we didn't reach a conclusion here.
+If the EC doesn't handle lane remapping, dp_bridge has to get
+orientation-switch and mode-switch properties (as in the end it is the
+dp_bridge that handles reshuffling of the lanes for the Type-C). Per the
+DisplayPort standard the lanes are fixed (e.g. DPCD 101h explicitly
+names lane 0, lanes 0-1, lanes 0-1-2-3).
+
+typec {
+	connector@0 {
+		port@1 {
+			endpoint@0 {
+				remtoe = <&usb_hub_0>;
+			};
+
+			endpoint@1 {
+				remote = <&dp_bridge_out_0>;
+			};
+		};
+	};
+};
+
+dp_bridge {
+	orientation-switch;
+	mode-switch;
+	ports {
+		port@1 {
+			dp_bridge_out_0: endpoint {
+				remote = <usb_c0_ss_dp>;
+				data-lanes = <0 1 2 3>;
+			};
+		};
+	};
+};
+
+-------
+
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Acked-by: Lee Jones <lee@kernel.org>
+> Cc: Benson Leung <bleung@chromium.org>
+> Cc: Guenter Roeck <groeck@chromium.org>
+> Cc: Prashant Malani <pmalani@chromium.org>
+> Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+> Cc: <devicetree@vger.kernel.org>
+> Cc: <chrome-platform@lists.linux.dev>
+> Cc: Pin-yen Lin <treapking@chromium.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ---
+>  .../bindings/mfd/google,cros-ec.yaml	  |   7 +-
+>  .../bindings/usb/google,cros-ec-typec.yaml    | 229 ++++++++++++++++++
+>  2 files changed, 233 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+> index c991626dc22b..bbe28047d0c0 100644
+> --- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+> @@ -98,9 +98,6 @@ properties:
+>  
+>    gpio-controller: true
+>  
+> -  typec:
+> -    $ref: /schemas/usb/google,cros-ec-typec.yaml#
+> -
+>    ec-pwm:
+>      $ref: /schemas/pwm/google,cros-ec-pwm.yaml#
+>      deprecated: true
+> @@ -166,6 +163,10 @@ patternProperties:
+>      type: object
+>      $ref: /schemas/extcon/extcon-usbc-cros-ec.yaml#
+>  
+> +  "^typec(-[0-9])*$":
+> +    type: object
+> +    $ref: /schemas/usb/google,cros-ec-typec.yaml#
+> +
+>  required:
+>    - compatible
+>  
+> diff --git a/Documentation/devicetree/bindings/usb/google,cros-ec-typec.yaml b/Documentation/devicetree/bindings/usb/google,cros-ec-typec.yaml
+> index 365523a63179..235b86da3cdd 100644
+> --- a/Documentation/devicetree/bindings/usb/google,cros-ec-typec.yaml
+> +++ b/Documentation/devicetree/bindings/usb/google,cros-ec-typec.yaml
+> @@ -26,6 +26,106 @@ properties:
+>    '#size-cells':
+>      const: 0
+>  
+> +  mux-gpios:
+> +    description: GPIOs indicating which way the DP mux is steered
+> +    maxItems: 1
+> +
+> +  no-hpd:
+> +    description: Indicates this endpoint doesn't signal HPD for DisplayPort
+> +    type: boolean
+> +
+> +  mode-switch:
+> +    $ref: usb-switch.yaml#properties/mode-switch
+> +
+> +  orientation-switch:
+> +    $ref: usb-switch.yaml#properties/orientation-switch
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    properties:
+> +      port@0:
+> +	$ref: /schemas/graph.yaml#/$defs/port-base
+> +	unevaluatedProperties: false
+> +	description: Output ports for combined DP and USB SS data
+> +	patternProperties:
+> +	  "^endpoint@([0-8])$":
+> +	    $ref: usb-switch.yaml#/$defs/usbc-out-endpoint
+> +	    unevaluatedProperties: false
+> +
+> +	anyOf:
+> +	  - required:
+> +	      - endpoint@0
+> +	  - required:
+> +	      - endpoint@1
+> +	  - required:
+> +	      - endpoint@2
+> +	  - required:
+> +	      - endpoint@3
+> +	  - required:
+> +	      - endpoint@4
+> +	  - required:
+> +	      - endpoint@5
+> +	  - required:
+> +	      - endpoint@6
+> +	  - required:
+> +	      - endpoint@7
+> +	  - required:
+> +	      - endpoint@8
+> +
+> +      port@1:
+> +	$ref: /schemas/graph.yaml#/$defs/port-base
+> +	unevaluatedProperties: false
+> +	description:
+> +	  Input port to receive USB SuperSpeed (SS) data
+> +	patternProperties:
+> +	  "^endpoint@([0-8])$":
+> +	    $ref: usb-switch.yaml#/$defs/usbc-in-endpoint
+> +	    unevaluatedProperties: false
+> +
+> +	anyOf:
+> +	  - required:
+> +	      - endpoint@0
+> +	  - required:
+> +	      - endpoint@1
+> +	  - required:
+> +	      - endpoint@2
+> +	  - required:
+> +	      - endpoint@3
+> +	  - required:
+> +	      - endpoint@4
+> +	  - required:
+> +	      - endpoint@5
+> +	  - required:
+> +	      - endpoint@6
+> +	  - required:
+> +	      - endpoint@7
+> +	  - required:
+> +	      - endpoint@8
+> +
+> +      port@2:
+> +	$ref: /schemas/graph.yaml#/$defs/port-base
+> +	description:
+> +	  Input port to receive DisplayPort (DP) data
+> +	unevaluatedProperties: false
+> +
+> +	properties:
+> +	  endpoint:
+> +	    $ref: usb-switch.yaml#/$defs/dp-endpoint
+> +	    unevaluatedProperties: false
+> +
+> +	required:
+> +	  - endpoint
+> +
+> +    required:
+> +      - port@0
+> +
+> +    anyOf:
+> +      - required:
+> +	  - port@1
+> +      - required:
+> +	  - port@2
+> +
+>  patternProperties:
+>    '^connector@[0-9a-f]+$':
+>      $ref: /schemas/connector/usb-connector.yaml#
+> @@ -35,6 +135,40 @@ patternProperties:
+>  required:
+>    - compatible
+>  
+> +allOf:
+> +  - if:
+> +      required:
+> +	- no-hpd
+> +    then:
+> +      properties:
+> +	ports:
+> +	  required:
+> +	    - port@2
+> +  - if:
+> +      required:
+> +	- mux-gpios
+> +    then:
+> +      properties:
+> +	ports:
+> +	  required:
+> +	    - port@2
+> +  - if:
+> +      required:
+> +	- orientation-switch
+> +    then:
+> +      properties:
+> +	ports:
+> +	  required:
+> +	    - port@2
+> +  - if:
+> +      required:
+> +	- mode-switch
+> +    then:
+> +      properties:
+> +	ports:
+> +	  required:
+> +	    - port@2
+> +
+>  additionalProperties: false
+>  
+>  examples:
+> @@ -50,6 +184,8 @@ examples:
+>  
+>	  typec {
+>	    compatible = "google,cros-ec-typec";
+> +	  orientation-switch;
+> +	  mode-switch;
+>  
+>	    #address-cells = <1>;
+>	    #size-cells = <0>;
+> @@ -60,6 +196,99 @@ examples:
+>	      power-role = "dual";
+>	      data-role = "dual";
+>	      try-power-role = "source";
+> +
+> +	    ports {
+> +	      #address-cells = <1>;
+> +	      #size-cells = <0>;
+> +
+> +	      port@0 {
+> +		reg = <0>;
+> +		usb_c0_hs: endpoint {
+> +		  remote-endpoint = <&usb_hub_dfp3_hs>;
+> +		};
+> +	      };
+> +
+> +	      port@1 {
+> +		reg = <1>;
+> +		usb_c0_ss: endpoint {
+> +		  remote-endpoint = <&cros_typec_c0_ss>;
+> +		};
+> +	      };
+> +	    };
+> +	  };
+> +
+> +	  connector@1 {
+> +	    compatible = "usb-c-connector";
+> +	    reg = <1>;
+> +	    power-role = "dual";
+> +	    data-role = "dual";
+> +	    try-power-role = "source";
+> +
+> +	    ports {
+> +	      #address-cells = <1>;
+> +	      #size-cells = <0>;
+> +
+> +	      port@0 {
+> +		reg = <0>;
+> +		usb_c1_hs: endpoint {
+> +		  remote-endpoint = <&usb_hub_dfp2_hs>;
+> +		};
+> +	      };
+> +
+> +	      port@1 {
+> +		reg = <1>;
+> +		usb_c1_ss: endpoint {
+> +		  remote-endpoint = <&cros_typec_c1_ss>;
+> +		};
+> +	      };
+> +	    };
+> +	  };
+> +
+> +	  ports {
+> +	    #address-cells = <1>;
+> +	    #size-cells = <0>;
+> +
+> +	    port@0 {
+> +	      reg = <0>;
+> +	      #address-cells = <1>;
+> +	      #size-cells = <0>;
+> +
+> +	      cros_typec_c0_ss: endpoint@0 {
+> +		reg = <0>;
+> +		remote-endpoint = <&usb_c0_ss>;
+> +		data-lanes = <0 1 2 3>;
+> +	      };
+> +
+> +	      cros_typec_c1_ss: endpoint@1 {
+> +		reg = <1>;
+> +		remote-endpoint = <&usb_c1_ss>;
+> +		data-lanes = <2 3 0 1>;
+> +	      };
+> +	    };
+> +
+> +	    port@1 {
+> +	      reg = <1>;
+> +	      #address-cells = <1>;
+> +	      #size-cells = <0>;
+> +
+> +	      usb_in_0: endpoint@0 {
+> +		reg = <0>;
+> +		remote-endpoint = <&usb_ss_0_out>;
+> +	      };
+> +
+> +	      usb_in_1: endpoint@1 {
+> +		reg = <1>;
+> +		remote-endpoint = <&usb_ss_1_out>;
+> +	      };
+> +	    };
+> +
+> +	    port@2 {
+> +	      reg = <2>;
+> +	      dp_in: endpoint {
+> +		remote-endpoint = <&dp_phy>;
+> +		data-lanes = <0 1>;
+> +	      };
+> +	    };
+>	    };
+>	  };
+>	};
+> -- 
+> https://chromeos.dev
+> 
+
 -- 
-2.39.3
-
+With best wishes
+Dmitry
 
