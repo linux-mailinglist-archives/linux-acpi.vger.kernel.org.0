@@ -1,154 +1,123 @@
-Return-Path: <linux-acpi+bounces-8364-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8365-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800E897E059
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2024 08:41:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6EE97E074
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2024 09:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CE11F20F67
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2024 06:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D872816F2
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Sep 2024 07:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675AC192B84;
-	Sun, 22 Sep 2024 06:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="ILyw8A3w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DEF18E375;
+	Sun, 22 Sep 2024 07:45:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F15194082;
-	Sun, 22 Sep 2024 06:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+Received: from spindle.queued.net (spindle.queued.net [45.33.49.30])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0B8179BC;
+	Sun, 22 Sep 2024 07:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.33.49.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726987256; cv=none; b=SgnumTXjI4tdvgwehQWPqaP0C3IdG2/MsTNHgvftnGOdrk+Cuak3YmUYwrcL+D8AWRWrhfRtgPl2xLkMCi4HH7EpfPp47jNglOeLfiDgkho83SSkrHWuerP+Mdacyx2dJ3sCvt5kmchDF3hcWnnDw94PWocQb7mq4y63W81bTTg=
+	t=1726991126; cv=none; b=Q+9PJl0hseaSK72e0behJuVhIR0ffJ0/JT3t6S0RWotMHX52bsf4N0xAasVV/A4937hOZdqOdGIPNH48a0AbpjHTmSi2AX79VOnR7MgnknAIXmXDoYacYDj3iBKbqKLPBZlmkmQhEWHAXhdVq5NEeifike4IQVEYGiphVecKDs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726987256; c=relaxed/simple;
-	bh=ZUtwmKv0+8uzyC3LpsSYhaN7w1pqqTA2l9pOhf0ogMc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=naeiPlSB+iyh+oGOJaRE02B5s93V6sj+u/9XOpd2+bkCtMr+PJmhcCs/4i+EtvPlsay+lNy4Tc+LOVxaa/nDo1zawukwItKuTkfMThcAVu1oGXMH19GV0GZJff296+j3zL66t3uvrJ4N2TQmnGB/0XeQ1+xwWo6M6JZS8zHj/Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=ILyw8A3w; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1726987240; x=1727592040; i=w_armin@gmx.de;
-	bh=KA+0oXdhhScvc3Uq9mWyMMg/fCnFPW3cMzJuenHO3C8=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ILyw8A3wX2JegSPJDiMWGL8s/sOo0tJ+nionQKqu7+4HWMB+jSUBeONISQbsLSkv
-	 aVBvRg8tKDwn/aElqy/A8owy6w46gHeVo6jSu8t8tecktmeZ6tnUiX5guQ3Z41RZ8
-	 5vUF/URRBUKrLZEeM+QMnFGT8f307iczI0pUIpjDQo2cFkk5vUie8kpNRcFJW45cK
-	 Hhbw8TpUUrhDQERUivMO+4HALDrimt3M/biJ1GhasMDENt0CbaBESXo6IIhVTOd6L
-	 mhlPZ+OCzS3xLxGXOq25VrIMpn9PDls/K5rXOteCxUdYb+SrqGck8N44DWLRyOIjx
-	 zJ+2+U9OFEFBSPrDMg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MMGRA-1sZ5EE1E0M-00UWoE; Sun, 22 Sep 2024 08:40:40 +0200
-From: Armin Wolf <W_Armin@gmx.de>
-To: mjg59@srcf.ucam.org,
-	pali@kernel.org,
-	dilinger@queued.net
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] platform/x86: dell-laptop: Do not fail when encountering unsupported batteries
-Date: Sun, 22 Sep 2024 08:40:26 +0200
-Message-Id: <20240922064026.496422-4-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1726991126; c=relaxed/simple;
+	bh=SstBRO9uSGhsQP1k3Ho7AK7WFvoLvvVgCOaqRurHhVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lXJf8RsHs/y9/k5n6nBYeDIZyjCngSej9y9L2cwBhWZMRzY47dz9WuFeMehj/QHjt/MgZuNd3XABcl3rHoyl9Ha72vOGFoIe7yp5pvqb7j4mxFe34MxBXlFhXLsZHjtNKHrQu/R1k4A4rVrGOpkq0Ho4Xv0f7pjPzK3i36NiGxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=queued.net; spf=pass smtp.mailfrom=queued.net; arc=none smtp.client-ip=45.33.49.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=queued.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queued.net
+Received: by spindle.queued.net (Postfix, from userid 1001)
+	id 4F83710F262; Sun, 22 Sep 2024 03:45:18 -0400 (EDT)
+Received: from 5400 (unknown [172.56.163.43])
+	by spindle.queued.net (Postfix) with ESMTPSA id 0D99B10F24C;
+	Sun, 22 Sep 2024 03:45:15 -0400 (EDT)
+Date: Sun, 22 Sep 2024 03:45:13 -0400
+From: Andres Salomon <dilinger@queued.net>
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: mjg59@srcf.ucam.org, pali@kernel.org, rafael@kernel.org,
+ lenb@kernel.org, hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com,
+ platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] platform/x86: dell-laptop: Battery hook fixes
+Message-ID: <20240922034513.330343fb@5400>
 In-Reply-To: <20240922064026.496422-1-W_Armin@gmx.de>
 References: <20240922064026.496422-1-W_Armin@gmx.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1F99vtVdLm3Y/R4dwTNJzHeGgcAJvTjNtUzR/QMq1SsAcdFCtgA
- uKQWkkwKpW817fQzd+JCICWZsxTv1+fc8bsPTTnRgCoOp2IBmZ7N+oD3gWd9NRYVz8VUxIW
- G2Y9bmVLuEwU9SmgMo9MyaZjhsD5y8OHw8PTV37VPxeQ8Yy+c30jBXDxE8UN+Ty8gv7SAjx
- bU1YfKzQYNg+pdUJUcObQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jB/2nP6lybY=;GDf+aqYEXDqm7YWL9S9NZ78AIRW
- xNwywZ0HdxwjOi8RVjgc/tvyU1bNWpVmbsjDQUlINho0MYwWMoERin34ArT94kWrb0sU9CYXI
- RtwQx2f9dr/3RE1Ei6zMaM2unnZwBoY3220tlJyKn7tzv9p04oZE+CGr2AvJRA0mbVsa/+yqX
- 1f6mY+D8i4bh1wKj8KfrhPunGZaEC/KZRedaMQZzu08azOFEhDPzq/Vq/5ke7DtQcABLGJPpx
- elEvstRySOZi72dYVUor0q4Fep2wproU9hOTXxkXUCX6/ZoujMp4k07/RyBmfWiCwUyJGF3Xr
- 2t8rSUP1S5KqONzfvNe3MLy0e/9qJ6NsnG147Kq/1ntIAzx7w0hFtMXY7JyfkEic8QWFBOJut
- V/ZJcZDaqNmVGz8gWMy+kYoBc7SDwjVWzLx5fHdQo0xO+HlCXKT4HZMCmY/uliBTJ0nvo8jCe
- a7YSknKdkLP0JhAbJHH/NOwfRzdxAcZDn1h3la2IHMMf4od2mcnrVpG0svIJa0VmTou3OQG9V
- 3OkyLVh/aWUFKHj6fqqwvMs6uyvytLC/LjQMBBnHUuIb7MJE8zmGMiij1nQhV4p9FPOHGHj0a
- ZcfikwAhhdTlKrnKCVej9vVEqCjy9RHlEhGcGCupz8g4E/8fL+WKSR9HYrf0vlle9dWW/70LR
- Xhzx4VJX8r0v/9sR/LrvT3oIuGusT4OOhn+BW+UHUV+HDFlpn55+doH9+ngfCWajliHV35gmJ
- jLTXHvNJ+Er6QFjqdlXkONgS715ulShtCPT3jNHt4BsjLPmiPK2SQm53C/Ab1m0t2pcjOCpLc
- WAm9/ITG8ODz1cDBRi7ICyug==
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.5
 
-If the battery hook encounters a unsupported battery, it will
-return an error. This in turn will cause the battery driver to
-automatically unregister the battery hook.
+On Sun, 22 Sep 2024 08:40:23 +0200
+Armin Wolf <W_Armin@gmx.de> wrote:
 
-On machines with multiple batteries however, this will prevent
-the battery hook from handling the primary battery, since it will
-always get unregistered upon encountering one of the unsupported
-batteries.
+> This patch series fixes some issues around the battery hook handling
+> inside the ACPI battery driver and the dell-laptop driver.
+> 
+> The first patch simplifies the locking during battery hook removal as
+> a preparation for the second patch which fixes a possible crash when
+> unregistering a battery hook.
+> 
+> The third patch allows the dell-laptop driver to handle systems with
+> multiple batteries.
+> 
+> All patches where tested on a Dell Inspiron 3505 and appear to work.
 
-Fix this by simply ignoring unsupported batteries.
+Can you tell me more about the system? What type of battery is the second
+battery, and how is it attached? What do the kernel logs look like when the
+two batteries are registered? I'm still confused as to how the same
+battery->dev ends up being reused for multiple physical batteries.
 
-Fixes: ab58016c68cc ("platform/x86:dell-laptop: Add knobs to change batter=
-y charge settings")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/platform/x86/dell/dell-laptop.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+The patches look good to me, btw; feel free to add my Reviewed-by
+if that's helpful.
 
-diff --git a/drivers/platform/x86/dell/dell-laptop.c b/drivers/platform/x8=
-6/dell/dell-laptop.c
-index a3cd0505f282..5671bd0deee7 100644
-=2D-- a/drivers/platform/x86/dell/dell-laptop.c
-+++ b/drivers/platform/x86/dell/dell-laptop.c
-@@ -2391,12 +2391,18 @@ static struct attribute *dell_battery_attrs[] =3D =
-{
- };
- ATTRIBUTE_GROUPS(dell_battery);
+Also, with the caveat that I'm not quite understanding the aforementioned
+battery->dev conflict - worth noting that dell-laptop isn't the only driver
+that could have this problem with multiple batteries. A quick glance
+through some other drivers:
 
-+static bool dell_battery_supported(struct power_supply *battery)
-+{
-+	/* We currently only support the primary battery */
-+	return strcmp(battery->desc->name, "BAT0") =3D=3D 0;
-+}
-+
- static int dell_battery_add(struct power_supply *battery,
- 		struct acpi_battery_hook *hook)
- {
--	/* this currently only supports the primary battery */
--	if (strcmp(battery->desc->name, "BAT0") !=3D 0)
--		return -ENODEV;
-+	/* Return 0 instead of an error to avoid being unloaded */
-+	if (!dell_battery_supported(battery))
-+		return 0;
+ - asus-wmi.c does basically the same thing in checking for just the first
+   battery, and the comment implies that there may be multiple batteries.
 
- 	return device_add_groups(&battery->dev, dell_battery_groups);
- }
-@@ -2404,6 +2410,9 @@ static int dell_battery_add(struct power_supply *bat=
-tery,
- static int dell_battery_remove(struct power_supply *battery,
- 		struct acpi_battery_hook *hook)
- {
-+	if (!dell_battery_supported(battery))
-+		return 0;
-+
- 	device_remove_groups(&battery->dev, dell_battery_groups);
- 	return 0;
- }
-=2D-
-2.39.5
+ - system76.c claims that the EC only supports one battery, so maybe that
+   one is okay? But to be on the safe side, it should probably do the same
+   thing.
 
+ - thinkpad_acpi.c actually supports multiple batteries, so maybe it
+   doesn't have the problem. But if tpacpi_battery_probe() fails for one
+   of the batteries and the battery->dev is shared between the two
+   batteries, then same issue?
+
+
+> 
+> Changes since v1:
+> - fix the underlying issue inside the ACPI battery driver
+> - reword patch for dell-laptop
+> 
+> Armin Wolf (3):
+>   ACPI: battery: Simplify battery hook locking
+>   ACPI: battery: Fix possible crash when unregistering a battery hook
+>   platform/x86: dell-laptop: Do not fail when encountering unsupported
+>     batteries
+> 
+>  drivers/acpi/battery.c                  | 27 ++++++++++++++++---------
+>  drivers/platform/x86/dell/dell-laptop.c | 15 +++++++++++---
+>  include/acpi/battery.h                  |  1 +
+>  3 files changed, 31 insertions(+), 12 deletions(-)
+> 
+> --
+> 2.39.5
+> 
+
+
+
+-- 
+I'm available for contract & employment work, please contact me if
+interested.
 
