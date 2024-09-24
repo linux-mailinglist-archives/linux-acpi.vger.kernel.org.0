@@ -1,407 +1,314 @@
-Return-Path: <linux-acpi+bounces-8376-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8377-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A01983CE1
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2024 08:15:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF9E984A7D
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2024 19:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54B3F1C20981
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2024 06:15:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 823ACB20ED9
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Sep 2024 17:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C023253370;
-	Tue, 24 Sep 2024 06:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3253E1ABEA9;
+	Tue, 24 Sep 2024 17:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yR0MM+2U"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="b5B+S3qf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2077.outbound.protection.outlook.com [40.107.220.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DC374418;
-	Tue, 24 Sep 2024 06:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A92C5464A;
+	Tue, 24 Sep 2024 17:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727158514; cv=fail; b=qUGHHBttynw492JpB+5nIrr40r83b5rRk1D0dDUOUV5nb/pvu/UVdcowGkghgOehYPLCX7SLYPGLoBQFqEVhO2/DazRgnLRctSxixA5N8eP0DYNHQ6CSCbwGkCm6BIYmW0qkXU3RDd7trK0KrRt+cARGr551tMRA/icvJgJ6WAo=
+	t=1727200523; cv=fail; b=WAPCIUGJUYMiAd+C9JRo7OECraRiVz2c7b+fa2UzHnh/kWyb2jnktzYeoJ+VhszALdI6zUFrnAhmY8ufoxtUnzCwaMDnmy92Pfdtn0hUvO6blrKsjaxvkhzZxfmEI8/4Jj9FsPb+hHvvhAxrHD0k2o0Ad6LNSSu8vWZmsADuMXg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727158514; c=relaxed/simple;
-	bh=fCs00g/OPGmv5M8vWO3cFFWAM1ac7g4qnBUQ7cMs3YY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F7fYDS+5jBr+z3dLgC2k8DT+AcEWhWo8dEZwUR1fXaJ4+KSQQW5aRzn5F0uwBjMc1hQh+YuO2ZxGQJr/sey21fOHG4itiWEpbSgjiaKTIUfFxpkcxzrnzw4wxECSwSeLTMEIx0qklYgZGOhyFMLDLL2z/+aIaeP9e1t/H3HJgXU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yR0MM+2U; arc=fail smtp.client-ip=40.107.92.69
+	s=arc-20240116; t=1727200523; c=relaxed/simple;
+	bh=oBt+FDGp5/tCZK/aKoqJjQ5dnT3K1XHSFTgiDKxvZYY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=pRIfhqqW2uBletZiWUqxm/6sQwNc94u7/spmRk7sS62kezLQY+AZiLCeqNC2Q3vlIAEojPl5FmuEi8FRDOYNK+sYJgP7lktU5Cuips6D23hyL+1zsjkBFuPxluT5B4OuLyDPQkAeux6ObVQpMvY/zCxjtYrbgY4sA6j6aGYbjhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=b5B+S3qf; arc=fail smtp.client-ip=40.107.220.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SeopoSFdUo5/BaEaq/9jRqvjLyS/AuQXkDCVsfg3zAl3m4UBbPpg1W0UFO3C00p2uk40KucBXOkBY/DKo7UHWp/v1J4bLY2usEUMhndTfs8hqbdI+C1YePbN482SPygBMS3SdG3JaiiOv9t/rqQs/6ZVzw5nJRiLtOJVVSazmFVvkaFnI81xLrcsQaC+qCfsADLHzFOVfm/2zaUbaqTuiWB8pMQ2IFHwFGAfQRlSlkohQ37yF2vDb1PtaU1DIfd7Wdqc8wumxh+ZXGALo4/JO1qHSbCpHH+XHpHhwaeE7vbyRRWcKmJ0XiU5MqcdCB3TtnYoEHmEotbwFEFYBDOeQg==
+ b=wps0NSxvMkFivv7PpjpaBIKhssoZrcg1KeR6vZUzjGxr2Pn2wm8d+iXiBbTeDxLMm3fT9ud8FkpAUNCG56omBaIkBvTq4Nv7ZyeH16CCy7278SC/k4nNBFebnfoEbTP4TyHVHL5SYQXSIrlmeEUUo3+XtEFatWd8cw559mZX3acZCoYrY/zU5L/UrF1320/XOrQmP9tp3lAXK5cXbZd8wHWvz1/g7ENTlA9Evh2mgsBmGFIyQatrgYU2VPUnY+va+ok54ZApR7jP2zTFMuQJbJXdULhisMHdOk1uqHSUiiofWryJhhw1+6eS+1g29wuk1XijGBN8Qd80GDpdEfmTBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YQNwTPlybOdd+7qQR+gLZeq3rDHFlzkK3+lUznWBPzE=;
- b=VLgESB59QYADodXyYj/iMBqSbU9rNS1rMKSDJgep5xMcXmZlxvYzg/I68fgovPMwqMrtVr2sGK/ARdI+nFHgh/aQkXEyb3E4diRCbcn5Bfzujjz1tkHK1J+r1AaeYF0kDKtt/QQMnOMDocZ+q3VzbKWPUW6xZNsnAIzPdItwcepzn8jZeDdQA1MMy5RLCWppzc1wqdYYDSzNBdN2wVL0KWfb0M1K18OkIiBdOrwoHRUZOZM9Qh23E6gAh/1sRQzoaaW8CC3G8e4JSgV3IpJ33auD/b+mu4a3y1qWjdHy94/P9HUHR5OWjo07QNQfMSRPuwXge8twQxOfMTuWHuKf2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=6El/BGuoDI29VsKdTdYzFYXEYq3lLybU81BiccYQvtI=;
+ b=WLuVYLB/j9FSmxgTFZqukIAjGXUN+LVgxoQjkdW+IoGNV2ViqqMMXzQa7dIZWGeC9XsiWElW99RBMkOWJd0BPPQztpdmADCe4dfIt9q6gHkxQQXb3T4qqJcW04xnoBYkKYbbiPycy8IC7zv7i9s9MCIbnC78M8UZ8e4Q0eAoGGm6BDR0d+8WRHUQhYssrySCWn4sNeO43iHql3HmOp7oFjtDDZBjnolHNSIkz8p8eIkCkxrr0fk9mbeMGiXXkTCWBo/1u05K+juPH5WWO7teKVXRQbGMMENSbbeNUeBEJ6FSI8A+XPjJalL79a+ZDPasEtgIjO1gbvkDvypWnQzkAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YQNwTPlybOdd+7qQR+gLZeq3rDHFlzkK3+lUznWBPzE=;
- b=yR0MM+2UKlC8oj4STQXe8J70DgQjvzKyYuuyRbd1j6J7q/b8SITuu7oD3lSOhkG6CZlV8W4aLAFgYgXTCx6olE1dc8o5c7WjRiUrj24TxIqsGa0eZ4yn6dQKMeJC6HtdSeZN+PQDShltaW7fClUUaUMF4JT4lTRw9alzE1nibpM=
-Received: from MW4PR04CA0098.namprd04.prod.outlook.com (2603:10b6:303:83::13)
- by MN2PR12MB4286.namprd12.prod.outlook.com (2603:10b6:208:199::22) with
+ bh=6El/BGuoDI29VsKdTdYzFYXEYq3lLybU81BiccYQvtI=;
+ b=b5B+S3qfrGeJjGPw05n9sCA4SxlGsJYIEPUOz94bZ5+yJz9tjC+ohLiRs7GibBYtPQBY7xYK4oljD9UOCZgyCh8YhfLYf8iexE5CiXKpldF4FNm3liMHbIvfyjJ89zDmdoBA3lqBv9EFE3Fwx+i3KqMBx+ptHUPTyIiwPxpFMuM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by SJ0PR12MB7459.namprd12.prod.outlook.com (2603:10b6:a03:48d::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.27; Tue, 24 Sep
- 2024 06:15:08 +0000
-Received: from SJ5PEPF000001F3.namprd05.prod.outlook.com
- (2603:10b6:303:83:cafe::3a) by MW4PR04CA0098.outlook.office365.com
- (2603:10b6:303:83::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.26 via Frontend
- Transport; Tue, 24 Sep 2024 06:15:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF000001F3.mail.protection.outlook.com (10.167.242.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Tue, 24 Sep 2024 06:15:07 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 24 Sep
- 2024 01:15:04 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
-	<sstabellini@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "Rafael J .
- Wysocki" <rafael@kernel.org>
-CC: <xen-devel@lists.xenproject.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Jiqian Chen
-	<Jiqian.Chen@amd.com>, Huang Rui <ray.huang@amd.com>
-Subject: [KERNEL PATCH v10 3/3] xen/privcmd: Add new syscall to get gsi from dev
-Date: Tue, 24 Sep 2024 14:14:37 +0800
-Message-ID: <20240924061437.2636766-4-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240924061437.2636766-1-Jiqian.Chen@amd.com>
-References: <20240924061437.2636766-1-Jiqian.Chen@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.28; Tue, 24 Sep
+ 2024 17:55:18 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.7982.022; Tue, 24 Sep 2024
+ 17:55:17 +0000
+Message-ID: <91e179ca-ff2e-48b0-813d-7b819e300dca@amd.com>
+Date: Tue, 24 Sep 2024 12:55:15 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: unexptect ACPI GPE wakeup on Lenovo platforms
+To: Baochen Qiang <quic_bqiang@quicinc.com>, rafael@kernel.org,
+ mika.westerberg@linux.intel.com, ulf.hansson@linaro.org,
+ bhelgaas@google.com, Basavaraj.Natikar@amd.com, Shyam-sundar.S-k@amd.com,
+ mpearson@lenovo.com, markpearson@lenovo.com, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org
+References: <370d023e-ec53-4bf2-a005-48524c9cb4b2@quicinc.com>
+ <79d288c6-6042-4f73-b465-0ddcde14509a@amd.com>
+ <b51c89f0-035a-4e94-adc3-e1b4fc31dfdd@quicinc.com>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <b51c89f0-035a-4e94-adc3-e1b4fc31dfdd@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9P221CA0004.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:806:25::9) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F3:EE_|MN2PR12MB4286:EE_
-X-MS-Office365-Filtering-Correlation-Id: 77fee85f-7e44-45de-e3b8-08dcdc603d01
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ0PR12MB7459:EE_
+X-MS-Office365-Filtering-Correlation-Id: 33201037-c905-4a7e-04cd-08dcdcc20cd0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ixM6jeVTiwxlEVTMAgxabglyEbjXRsZlycuOYaCDZlpAuLGv+yqPkxY0JaSt?=
- =?us-ascii?Q?/UoCQmg+wk6JCiNK2qq06v1RLJJQY+cyFhT0+RfMgp3tYJYt4+LUKYlb3kzx?=
- =?us-ascii?Q?CkRYcal3yjvI6DS7KDfPxsFjKoANlJelVXN44uf+xJBQS5LSS1NGuL/MIFrb?=
- =?us-ascii?Q?eq0S3PjRuhM+CYrgoix25DK3npesjzC4FxI9vdSOt2h+6xn+zIOgs+qJJyok?=
- =?us-ascii?Q?e+dB8ZHtWi6DMJe5agD/deGgGbG2zD6nBwlG2BTcfIp/bV++MZ/jU9jAEY8K?=
- =?us-ascii?Q?EAoGCd/cAvTsoYx7/7mrtRFq6GkDgPv0ayMbCXPgOadeHZNb/Nk/6nj2x33e?=
- =?us-ascii?Q?zwx+A6bvyrPZjGrMSDKLTEJ/6dxwFNysUBDgAfYfN0WGKcA/OVuT1egOZQMQ?=
- =?us-ascii?Q?3ZqIfpqC+ix1u4YiD7CZ9pnDzW9zbKDtcnL3ypu7GenHTCKswoJCgIW2qHJ1?=
- =?us-ascii?Q?1PWMBNSZK3kNV7lAKYqvhITgPn13Nz/RgwJK5OlNWLrCvhNV84Tsam8KvFR9?=
- =?us-ascii?Q?juYz+2dBTah9okbIK3Aa0mUTApZ7YYfu3b7AkY5HNLIY5rSRFI2GEPT2IM2e?=
- =?us-ascii?Q?HuE1C33BChftr8mMEId2rdxEkHLlwCH5dPPw64ID/rX+dxbedIffhw5wmOrN?=
- =?us-ascii?Q?mWdACmNutkWAu1pDNFl18iDHRmBlYB1BVkYWShzBD5xC/PF/sdTKjDEc9r0I?=
- =?us-ascii?Q?aYbHxLI4LUfoxlMY+uyJhTQIDXYxNZZHvaWjzGraighlwtcqS0Lfg5Yt9MP+?=
- =?us-ascii?Q?hwqlRK1zMOj6b0sSeVwdyVzqf31jZns9JJfvCKiJbBLV6OrKnfT9icIFGc6+?=
- =?us-ascii?Q?2kxTLx8Gn8Gd1dULtinqbrO6EWCj5QCjQ7wgIZC1GcjE4d7klxjLdlOtoe7q?=
- =?us-ascii?Q?gIJdrTrEvpco6DYioDoI04Irt7PVu8+7Hm40xNN0spbuof8/9Jxe6PRJHkcR?=
- =?us-ascii?Q?NOKr8KzDnSq0dUS3rI5G94c2ba+l9RZW0hLM9Cs/g2jRa0H3Lso0/FtslEfE?=
- =?us-ascii?Q?K103EK3gZBVVcI2rO1cLq31x9s+9vW5tLPuqXAZbVnAjfwtczOLFjqY1p42X?=
- =?us-ascii?Q?temVqIHfGWklgOtqLdMXTYP/8SkU9pN6yiHmZ2uFMD6UmUJ4eVDehCv/D/ZL?=
- =?us-ascii?Q?MwUfz9QpTJSzH3GmSK+fAXlVq0Hurqv3IxA1Kb9P+wZSysM4ZiVblyBH0agG?=
- =?us-ascii?Q?emY/HWX/l898ZXi3AC+gIOmSfIEv8rwt7MEedLKM/pdCsUrN85XWSDjz3SxK?=
- =?us-ascii?Q?+mGe+/AbYfv+3fEtYXiQAbHxPiYVLK7zTXKLm565iUVFMRmpybbgBjU4HpxF?=
- =?us-ascii?Q?wRsw3d9VPLNxj6jZz+hsk8MWaEHN9OQKtF1wjxEmKLAbDiY4QGuojgWsbBMC?=
- =?us-ascii?Q?MN73rBX24On0NhgHrHrQk7Gizf1l/W4nNtWp6FgwQBiBjlwcxFdM4FyzbTVw?=
- =?us-ascii?Q?TB1mrC12euvMKjujav2DoTdcrsTp+w4W?=
+	=?utf-8?B?VDZ1T1N6ZlNBVXNITUR0NjN3TkxGOE9XY2Mxc1BNb0ZXaUsvZGIxWlkrTHVC?=
+ =?utf-8?B?NUJpY2xIdkk4K0pTZFJ0L1c5dyszMXcySnBYd2cweW9EWEVTZVh0eWcvN2ty?=
+ =?utf-8?B?NDA1QlZMd083RllNMWozdFJ5Y2dSR2crZmpid2JPZlEvNEU2RnRQeDFxZDZt?=
+ =?utf-8?B?cnAwREpoY0JPUVVOM0lVSldEeXhNemZJQ0dXTm1rY1dVeUh4R3Q5RUVnSCtC?=
+ =?utf-8?B?SkZCWXN0MVBCZDI5a0RTemVKMGJNYkV3UE1rRTVxbXlVUXI3RldOdjkreGNW?=
+ =?utf-8?B?c1lqeXY3aWxRamtLMjlDcGtuSW9jNUx4S3lQaERSekFDY1NFY3ppRjJaRkN4?=
+ =?utf-8?B?dmRDTkhETzU1WE93R2ExSWtQR1JUTFRYbWlUc3N0cUtFSUN2cFRjNjJVS3Bo?=
+ =?utf-8?B?RytBZGVtVDlqbkw0VGdRMStabEZkQ1lHaVVNMUxjcDZDeWdsSkdxb1VuazZT?=
+ =?utf-8?B?U0pFaEx4WkRheEZqT1QzT3JhYTRQVjQxQ1QxWjBzckhjMlQ0QS9WVTFUSCtV?=
+ =?utf-8?B?NlJVN2NzbTQyeWpJOHdBWUw3TitzVlhvczB5TFRsbXpVcVdpdGFzZnlOMklF?=
+ =?utf-8?B?VjdsTnRXcnBVSEJCTlZocGorRXVucUo3VnRGU09CeXkxMW1tMTgwK1lLWXJz?=
+ =?utf-8?B?OUZBNGFUVGcvWndTcTMrRjhwcTV5N0l3SU9ubHYrcHcyU1QybzlOMVd2NVph?=
+ =?utf-8?B?ZkZ6eGhwSHdZZFJ1OEVMZXRWdW9UZHZyRE1HRjFkbDJKMWhkYkdJRHlydVRE?=
+ =?utf-8?B?VktMRmZKNUx4cTduaGhxcDdtdjVMbmxYSXhVTWhCSHNrVXc0UnZSQkhIb0l2?=
+ =?utf-8?B?ZUx3YXJDVzdCV2dueTB2dGdyOTlBZHBHYkhXVitTN2lOZVBkL3NYc3lzZnhy?=
+ =?utf-8?B?cklzRUVENDV5bVZUUmhXTDhLcGltL0lvNW9QZGErN3BTYi9tRytQQkoya2xE?=
+ =?utf-8?B?OHBRZmpEbGJDUTVlUVg2QkYwcng1OEl5Y01WbnpNcVlpL1UrZEM0M0luZHNx?=
+ =?utf-8?B?c2Izb09hcW5Iby9LYXRpY2dpMGJSc3lxZ01TdllmZ1kwbFd4MHZkWjRFVkUv?=
+ =?utf-8?B?OVdvOTdXZWhyV2RRbTlpY1hqckp0bVUzbHNlTXlQVzlSeWIzT0t1cU1ldHBp?=
+ =?utf-8?B?cEx3cytoSlhqdk45d2pGS3cxekhnSE5oVmhxbXRnQ1VFdlNBM0NWWFhsWlFW?=
+ =?utf-8?B?ZHJLVHdjeWxyeGU2M2VrTW41c1E2WC9KVkVzT3Vwemg3Y1o4SnR6ck04LzBK?=
+ =?utf-8?B?WWhuNXJ5cXR4cjNqb1lWTS9HcW5wNU53eitjTmRGa3QzdUQ0azJsTnNvMHhI?=
+ =?utf-8?B?WDkyL2ZSWU5FczVLZmIvMHJFa216SzZQa1ZYeGdkRGdWNkpSamtWa3AvQnZS?=
+ =?utf-8?B?UkVWb1FlOGtERnFqTEcwSkdhS2Q4YVNXdTd5VEs3dnJYbHF5dHFpNFZ3b2VL?=
+ =?utf-8?B?ZXVJenQ3RE9KeVlVSHE3aGsrejB5L2tZSFVkd09xL1pEQ3dEMnlobVozV2pE?=
+ =?utf-8?B?dEEyQmxIQnN0M3Y2RDJiS0NqRDhSSTIzbXlid3dGbEhLUE0rOHVTVVV0Nys4?=
+ =?utf-8?B?Zm5jSEFCdk92VDhKdFpURE1BZmdJQk5tRGFWNGhiRThxNEVoY2JqNk5nQ2pz?=
+ =?utf-8?B?YXBOOUxVQm5qT0JieWlaeDhXMUZ3OVVUcG9Dc2R5am9JWG9sQytOUUdjaTJV?=
+ =?utf-8?B?bkMyZUQwei9TbGwwVDRLRXIwQyt2d253elZBTC9qdGhWNlZSdk1wMEZSY24z?=
+ =?utf-8?B?Uzc5akRpY0FhSE9rMnR1YThaMTFtRWc1aXg0eEd5NTVCR1Bxc1BKay95YzZh?=
+ =?utf-8?Q?TBBM2UpcGUtpAks3Q6E1SKNsGMIwJL+xsxpYU=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?elV2K1Y0YjJBK2JZbDEwNElSMjkyNmF4Q29nc1F0aHZhTUF4UlVmSTdxODJx?=
+ =?utf-8?B?U054aTBOMkFzNVVadlFoNTBlanlINCsycmRnMXdHSWJxekRramowNCszUExK?=
+ =?utf-8?B?SWFWSzBjRlFBenowMXo0MVZxUDZXZEtDSWd2T1VEYkJiN0FmQVVVczFkUlpZ?=
+ =?utf-8?B?R1k2Y3MzNnA4MG1ETm5zbEh2Qi9pU3c3bU5SdmdTQS91ZXFZc2Q4VHJPRTI0?=
+ =?utf-8?B?U0xOeDNpQmEvak53aW1nQWIzZUZ4TUt4cGI4anRsL1JkbXJvbkpDVlBNL29H?=
+ =?utf-8?B?ODhKUlp4eFl4b0RzQlZIVFB5TVNQZnJPcDU5Q1BOY3pUcWVhTzhHa1FRSVpR?=
+ =?utf-8?B?M3VtNkpES3dqRW05RGdQL3BQRjFmYTVtVFIvMm1nTVhDZlFOZDIvQzgvekpl?=
+ =?utf-8?B?Mk95d1FVOUdNeC9vb1l2bDhlb2VBZllDTzlHQ0pUaVdoREVPU1BXUnF4MS9z?=
+ =?utf-8?B?N0RPZ2JyL2NpdUt3Z0NRWk9GUFpPVmF3b0l3VTF3YUtXdGpMdUhZUVhrdHp5?=
+ =?utf-8?B?UVdnSjREQm5pQmYyNGN2Nk5MNUVXVlVCLzA1V00zMEd3WERXRXV2aUVwL25K?=
+ =?utf-8?B?WW00NTZEVzdoaU1JSStIQWxOa2FjaE1rem9ia0lUelJOT0hLc0NqeHNzc01H?=
+ =?utf-8?B?MmFsY05zSEYvc0VPZGN2aW5QMFE5cFYwdFh0c1I4Z1FEd0tOT3NWSnpJMVll?=
+ =?utf-8?B?SEJCc2lDOFdwWnhqSkZSYjhjTDhVczJoUGUxalZFSlh4LzdGYzR5NDU1ckVE?=
+ =?utf-8?B?V2UvM0k0c2FRMEdyV3Q2aDdGZ2ZYdjMrSVZtMVRwUW92YmVqTGNQc0NJaDVE?=
+ =?utf-8?B?RWhOVisyRTNlNHArbFpQdlEyeGVhbE8rN3NqVXhLL2I4aDJNLzJheENsZURR?=
+ =?utf-8?B?MnRIaGJDR0JrUG16ODVqTjRQM3dDc0ZHQ2pFb2FjMTRhWDl3SGpCdGxQMlo0?=
+ =?utf-8?B?UXV4bkk1cytYUHBFcWR3Mmd6aUwzVVNuM2lQOWFVSC9hcDB6RjNJQUtFdUhV?=
+ =?utf-8?B?Ynh3anNwTkt4NFd0N3JBN2t2ZGlEMEN2cnB4TjVYNkFlQWZJS1F2MGZCbSth?=
+ =?utf-8?B?bGc5T3VLYlNGRGx3NnB4VnQ2ZmdzWGd0UmxBZHptdFVNTWdRei9xS3pOQ01W?=
+ =?utf-8?B?UUZUYUVuMCtCbkU5MTdrZm44TkNZLytENzhGZ0tQZGRTNEdFV25PNmxpWjFs?=
+ =?utf-8?B?MnZQaDJrR2cvZnFaME1KVEN6SGM4ZkI2UGVnTjlzWktscktlWVFvalMvL2NX?=
+ =?utf-8?B?Qk15TmF3VU5tb3ZmVDRJckpYNnlmTGQ4cFViNEg1dDNvcEdIQTJLUkIveERh?=
+ =?utf-8?B?d05wYXdlSTlRdjQ1WlFkRldhZm1Ea21kQURxWmwySjNWUWtETkJBZEM4dkx5?=
+ =?utf-8?B?T0Uyb0VQMXJVKzcySWoxU2FxYnJjMDYxeSs3ZlpyVmlWeVU0bkdnK0ZhUW16?=
+ =?utf-8?B?Y1RTTmNaQktPNXd4RkprdXVXZmJwOGRjaS91bjloNDRmcTdIZlFCTmhlSi9h?=
+ =?utf-8?B?cStkdXp1TC9Lc3hFRWxkazA3ZlJzcFlFcWk0bnREbENpZktHOTZpb0pwTVAv?=
+ =?utf-8?B?c20xSStJSmljSyszcC9XdzJNMStKY2MvRElDTG1BZGR6SEFDUlRBM0RnSGtB?=
+ =?utf-8?B?VXMzL2ZNNEJ4UTlHUjVGYWZLS1V0N1NEQ1J4T0pWT2hGdkhkc1dEby9kYlVD?=
+ =?utf-8?B?WENPNDBTaU9QeGpFMTlDc2ZOblR2bWJKRUNaKy9KZzVDVW5yb3cwbVdCOFNz?=
+ =?utf-8?B?THFNTDBZM24wZUtBTHZiR3g4cm40T0JXeDd5QVZDN3B3M1Y3cW5XSzlvOU9I?=
+ =?utf-8?B?YjJVZmo1SFE4SS9qaEcxc3p5TFdPK3pDNEJkWXpBTCtBOEhRcTN5a242SlNi?=
+ =?utf-8?B?elNuYmsyQTBjK0dSRGJJSHJhby9iNS9UVnFNMzRXdU90bzBuRGhMSkhWbTlK?=
+ =?utf-8?B?SUFmN3lBekFidjZhMkdoZTVzbk9WRUQ5RlBwQVY5bDZEd3JhWFZyUVBwWmNG?=
+ =?utf-8?B?aE1UZnVxb0U3RG9pRzVxUzRKRjZlNTBGaTdPS0xCM3BHN3ZmS3lkejRkNHVs?=
+ =?utf-8?B?elhMSERWOHFqNGVKYllnMFZMbEhOZjNDNGp4Szhva2JhaHdvUVppQnFNN0l4?=
+ =?utf-8?Q?FhOMnCvFCzjdx5L96e9ybBqgV?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2024 06:15:07.6866
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33201037-c905-4a7e-04cd-08dcdcc20cd0
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2024 17:55:17.8169
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77fee85f-7e44-45de-e3b8-08dcdc603d01
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F3.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4286
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: J7Whc3blbS8XRnGln6EarZYVJGg8s7/qctkzacONYRNmmA3z6XDqmcqOtXhfaTFpUsa5RwUpGLljao2CsXgXoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7459
 
-On PVH dom0, when passthrough a device to domU, QEMU and xl tools
-want to use gsi number to do pirq mapping, see QEMU code
-xen_pt_realize->xc_physdev_map_pirq, and xl code
-pci_add_dm_done->xc_physdev_map_pirq, but in current codes, the gsi
-number is got from file /sys/bus/pci/devices/<sbdf>/irq, that is
-wrong, because irq is not equal with gsi, they are in different
-spaces, so pirq mapping fails.
-And in current linux codes, there is no method to get gsi
-for userspace.
+On 9/24/2024 00:52, Baochen Qiang wrote:
+> 
+> 
+> On 9/23/2024 9:37 PM, Mario Limonciello wrote:
+>> On 9/23/2024 05:07, Baochen Qiang wrote:
+>>> Hi,
+>>>
+>>> recently it is reported that on some Lenovo machines (P16v, Z13 etc.) unexpected ACPI event wakeup is seen with kernel 6.10 [1][2]. To summary, the unexpected wakeup is triggered by simply unplug AC power or close lid of the laptop. Regression test shows this is caused by below commit, and with that reverted the issue is gone:
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/ath/ath11k?id=166a490f59ac10340ee5330e51c15188ce2a7f8f
+>>>
+>>> Well what confuses me is that this commit basically resets WLAN hardware before going to suspend. that said, WLAN target maintains limited functionality (PCIe link handling etc...) during system suspend and is thus not expected to wakeup system.
+>>>
+>>> kernel log shows this is an ACPI GPE event wakeup:
+>>>
+>>> Sep 22 22:34:32 fedora kernel: PM: Triggering wakeup from IRQ 9
+>>> Sep 22 22:34:32 fedora kernel: ACPI: PM: ACPI non-EC GPE wakeup
+>>> ...
+>>> Sep 22 22:34:32 fedora kernel: PM: noirq resume of devices complete after 693.757 msecs
+>>> Sep 22 22:34:32 fedora kernel: ACPI: GPE event 0x07
+>>> Sep 22 22:34:32 fedora kernel: ACPI: GPE event 0x0e
+>>>
+>>> Consulting ACPI tables show GPE 0x07 is used by the EC and GPE 0x0e is used by GPP6 device:
+>>>
+>>> Scope (\_SB.PCI0.GPP6)
+>>> {
+>>>       ...
+>>>       Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
+>>>       {
+>>>           M460 ("PLA-ASL-\\_SB.PCI0.GPP6._PRW Return GPRW (0xE, 0x4)\n", 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+>>>           Return (Package (0x02)
+>>>           {
+>>>               0x0E,
+>>>               0x04
+>>>           })
+>>>       }
+>>>       ...
+>>> }
+>>>
+>>> while GPP6 is the PCI bridge (the PCIe root port in this case) to which WLAN target is attached to:
+>>>
+>>> Device (GPP6)
+>>> {
+>>>       Name (_ADR, 0x00020002)  // _ADR: Address
+>>>       ...
+>>> }
+>>>
+>>> Scope (_SB.PCI0.GPP6)
+>>> {
+>>>       Device (WLAN)
+>>>       {
+>>>           ...
+>>>       }
+>>>       ...
+>>> }
+>>>
+>>> and lspci also shows such relationship:
+>>>
+>>> $ lspci -vt
+>>> -[0000:00]-+-00.0  Advanced Micro Devices, Inc. [AMD] Device 14e8
+>>>              ...
+>>>              +-02.2-[03]----00.0  Qualcomm Technologies, Inc QCNFA765 Wireless Network Adapter
+>>>              ....
+>>>
+>>> Based on above info:
+>>> #1 is that valid to get the conclusion that this unexpected wakeup is triggered directly by PCIe bridge?
+>>> #2 if this is related to WLAN (seems so based on the regression test), is it the WLAN wake pin (a GPIO pin?) that originally triggers this? and how does it affect the bridge?
+>>> #3 quick tests show that with GPP6 wakeup disabled this issue is gone. so a workaround is to disable GPP6 wakeup before going to suspend and enable it back after resume. But is it safe to do so?
+>>>
+>>>
+>>>
+>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+>>> [2] https://bugzilla.redhat.com/show_bug.cgi?id=2301921
+>>>
+>>
+>> With pinctrl-amd there is an extra debugging message present [1] that is activated when you enable '/sys/power/pm_debug_messages' which will tell you if a GPIO is active during the suspend cycle.  That can help you to rule out whether this is the WoWLAN GPIO pin causing the behavior.
+>>
+>> [1] https://github.com/torvalds/linux/blob/v6.11/drivers/pinctrl/pinctrl-amd.c#L626
+> Thanks for the reminder, Mario.
+> 
+> I do notice that some reporters mentioned about this [1]. and I can also see this on my P16v machine:
+> 
+> [  881.799289] PM: suspend entry (s2idle)
+> ...
+> [  897.491440] PM: Triggering wakeup from IRQ 9
+> [  897.491714] ACPI: PM: ACPI non-EC GPE wakeup
+> [  897.491720] PM: resume from suspend-to-idle
+> ...
+> [  898.153259] PM: noirq resume of devices complete after 556.675 msecs
+> [  898.153443] ACPI: GPE event 0x07
+> [  898.153502] ACPI: GPE event 0x0e //GPE 0x0e triggered for the 1st time
+> ...
+> [  898.314804] mhi mhi0: Requested to power ON //WLAN begin to reinitialize
+> [  898.314841] mhi mhi0: Power on setup success
+> [  898.694562] mhi mhi0: Wait for device to enter SBL or Mission mode
+> [  899.305898] GPIO 18 is active: 0x10157a00 //I guess this is the WoWLAN GPIO pin
 
-For above purpose, record gsi of pcistub devices when init
-pcistub and add a new syscall into privcmd to let userspace
-can get gsi when they have a need.
+Yeah that's what it looks like to me too.  The easiest way to confirm 
+this (without a schematic that is) is to look at the _AEI / _EVT in the 
+SSDT and see what is notified when this is active.
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
-v9->v10 changes:
-Changed the macro wrapping "pcistub_get_gsi_from_sbdf" from "CONFIG_XEN_PCIDEV_BACKEND" to "CONFIG_XEN_ACPI".
-Added "imply CONFIG_XEN_PCIDEV_BACKEND" for CONFIG_XEN_PRIVCMD Kconfig definition.
-Added check "if (IS_REACHABLE(CONFIG_XEN_PCIDEV_BACKEND))" before calling pcistub_get_gsi_from_sbdf.
+> [  899.306089] ACPI: GPE event 0x0e //GPE 0x0e triggered for the 2nd time
+> [  899.333158] ath11k_pci 0000:03:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
+> [  899.333190] ath11k_pci 0000:03:00.0: fw_version 0x1106196e fw_build_timestamp 2024-01-12 11:30 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
+> ...
+> [  899.826378] PM: suspend exit
+> 
+> 
+> But I don;t think it is the wakeup source, it is just toggled during WLAN reinitialize AFTER system wakeup. actually even with ath11k module removed I can also see this GPE wakeup, but without GPIO 18 toggled:
 
-v8->v9 changes:
-Changed the syscall name from "IOCTL_PRIVCMD_GSI_FROM_DEV" to "IOCTL_PRIVCMD_PCIDEV_GET_GSI". Also changed the other functions name.
-Changed the macro wrapping "pcistub_get_gsi_from_sbdf" from "CONFIG_XEN_ACPI" to "CONFIG_XEN_PCIDEV_BACKEND" to fix compile errors reported by CI robot.
-Changed the parameter gsi of struct privcmd_pcidev_get_gsi from int to u32.
+I don't believe that just removing the kernel module is enough.  Can you 
+physically remove the hardware?
 
-v7->v8 changes:
-In function privcmd_ioctl_gsi_from_dev, return -EINVAL when not confige CONFIG_XEN_ACPI.
-Used PCI_BUS_NUM PCI_SLOT PCI_FUNC instead of open coding.
+> 
+> [ 2640.849342] PM: suspend entry (s2idle)
+> ...
+> [ 2650.806234] PM: Triggering wakeup from IRQ 9
+> ...
+> [ 2651.467653] PM: noirq resume of devices complete after 558.943 msecs
+> [ 2651.467880] ACPI: GPE event 0x07
+> [ 2651.467961] ACPI: GPE event 0x0e
+> ...
+> [ 2651.848848] PM: suspend exit
+> 
+> 
+> 
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219286
+> 
 
-v6->v7 changes:
-Changed implementation to add a new parameter "gsi" to struct pcistub_device and set gsi when pcistub initialize device. Then when userspace wants to get gsi and pass sbdf, we can return that gsi.
+Is it possible for you to put a scope on the GPIO and/or PCIe analzyer 
+on the bus?
 
-v5->v6 changes:
-Changed implementation to add a new syscall to translate irq to gsi, instead adding a new gsi sysfs node, because the pci Maintainer didn't allow to add that sysfs node.
-
-v3->v5 changes:
-No.
-
-v2->v3 changes:
-Suggested by Roger: Abandoned previous implementations that added new syscall to get gsi from irq and changed to add a new sysfs node for gsi, then userspace can get gsi number from sysfs node.
----
- drivers/xen/Kconfig                |  1 +
- drivers/xen/privcmd.c              | 32 +++++++++++++++++++++++++
- drivers/xen/xen-pciback/pci_stub.c | 38 +++++++++++++++++++++++++++---
- include/uapi/xen/privcmd.h         |  7 ++++++
- include/xen/acpi.h                 |  9 +++++++
- 5 files changed, 84 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
-index d5989871dd5d..fd83d51df2f4 100644
---- a/drivers/xen/Kconfig
-+++ b/drivers/xen/Kconfig
-@@ -261,6 +261,7 @@ config XEN_SCSI_BACKEND
- config XEN_PRIVCMD
- 	tristate "Xen hypercall passthrough driver"
- 	depends on XEN
-+	imply CONFIG_XEN_PCIDEV_BACKEND
- 	default m
- 	help
- 	  The hypercall passthrough driver allows privileged user programs to
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index 9563650dfbaf..588f99a2b8df 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -46,6 +46,9 @@
- #include <xen/page.h>
- #include <xen/xen-ops.h>
- #include <xen/balloon.h>
-+#ifdef CONFIG_XEN_ACPI
-+#include <xen/acpi.h>
-+#endif
- 
- #include "privcmd.h"
- 
-@@ -844,6 +847,31 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
- 	return rc;
- }
- 
-+static long privcmd_ioctl_pcidev_get_gsi(struct file *file, void __user *udata)
-+{
-+#if defined(CONFIG_XEN_ACPI)
-+	int rc = -EINVAL;
-+	struct privcmd_pcidev_get_gsi kdata;
-+
-+	if (copy_from_user(&kdata, udata, sizeof(kdata)))
-+		return -EFAULT;
-+
-+	if (IS_REACHABLE(CONFIG_XEN_PCIDEV_BACKEND))
-+		rc = pcistub_get_gsi_from_sbdf(kdata.sbdf);
-+
-+	if (rc < 0)
-+		return rc;
-+
-+	kdata.gsi = rc;
-+	if (copy_to_user(udata, &kdata, sizeof(kdata)))
-+		return -EFAULT;
-+
-+	return 0;
-+#else
-+	return -EINVAL;
-+#endif
-+}
-+
- #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
- /* Irqfd support */
- static struct workqueue_struct *irqfd_cleanup_wq;
-@@ -1543,6 +1571,10 @@ static long privcmd_ioctl(struct file *file,
- 		ret = privcmd_ioctl_ioeventfd(file, udata);
- 		break;
- 
-+	case IOCTL_PRIVCMD_PCIDEV_GET_GSI:
-+		ret = privcmd_ioctl_pcidev_get_gsi(file, udata);
-+		break;
-+
- 	default:
- 		break;
- 	}
-diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
-index 8ce27333f54b..d003402ce66b 100644
---- a/drivers/xen/xen-pciback/pci_stub.c
-+++ b/drivers/xen/xen-pciback/pci_stub.c
-@@ -56,6 +56,9 @@ struct pcistub_device {
- 
- 	struct pci_dev *dev;
- 	struct xen_pcibk_device *pdev;/* non-NULL if struct pci_dev is in use */
-+#ifdef CONFIG_XEN_ACPI
-+	int gsi;
-+#endif
- };
- 
- /* Access to pcistub_devices & seized_devices lists and the initialize_devices
-@@ -88,6 +91,9 @@ static struct pcistub_device *pcistub_device_alloc(struct pci_dev *dev)
- 
- 	kref_init(&psdev->kref);
- 	spin_lock_init(&psdev->lock);
-+#ifdef CONFIG_XEN_ACPI
-+	psdev->gsi = -1;
-+#endif
- 
- 	return psdev;
- }
-@@ -220,6 +226,25 @@ static struct pci_dev *pcistub_device_get_pci_dev(struct xen_pcibk_device *pdev,
- 	return pci_dev;
- }
- 
-+#ifdef CONFIG_XEN_ACPI
-+int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-+{
-+	struct pcistub_device *psdev;
-+	int domain = (sbdf >> 16) & 0xffff;
-+	int bus = PCI_BUS_NUM(sbdf);
-+	int slot = PCI_SLOT(sbdf);
-+	int func = PCI_FUNC(sbdf);
-+
-+	psdev = pcistub_device_find(domain, bus, slot, func);
-+
-+	if (!psdev)
-+		return -ENODEV;
-+
-+	return psdev->gsi;
-+}
-+EXPORT_SYMBOL_GPL(pcistub_get_gsi_from_sbdf);
-+#endif
-+
- struct pci_dev *pcistub_get_pci_dev_by_slot(struct xen_pcibk_device *pdev,
- 					    int domain, int bus,
- 					    int slot, int func)
-@@ -367,14 +392,20 @@ static int pcistub_match(struct pci_dev *dev)
- 	return found;
- }
- 
--static int pcistub_init_device(struct pci_dev *dev)
-+static int pcistub_init_device(struct pcistub_device *psdev)
- {
- 	struct xen_pcibk_dev_data *dev_data;
-+	struct pci_dev *dev;
- #ifdef CONFIG_XEN_ACPI
- 	int gsi, trigger, polarity;
- #endif
- 	int err = 0;
- 
-+	if (!psdev)
-+		return -EINVAL;
-+
-+	dev = psdev->dev;
-+
- 	dev_dbg(&dev->dev, "initializing...\n");
- 
- 	/* The PCI backend is not intended to be a module (or to work with
-@@ -452,6 +483,7 @@ static int pcistub_init_device(struct pci_dev *dev)
- 		err = xen_pvh_setup_gsi(gsi, trigger, polarity);
- 		if (err)
- 			goto config_release;
-+		psdev->gsi = gsi;
- 	}
- #endif
- 
-@@ -494,7 +526,7 @@ static int __init pcistub_init_devices_late(void)
- 
- 		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
- 
--		err = pcistub_init_device(psdev->dev);
-+		err = pcistub_init_device(psdev);
- 		if (err) {
- 			dev_err(&psdev->dev->dev,
- 				"error %d initializing device\n", err);
-@@ -564,7 +596,7 @@ static int pcistub_seize(struct pci_dev *dev,
- 		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
- 
- 		/* don't want irqs disabled when calling pcistub_init_device */
--		err = pcistub_init_device(psdev->dev);
-+		err = pcistub_init_device(psdev);
- 
- 		spin_lock_irqsave(&pcistub_devices_lock, flags);
- 
-diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
-index 8b8c5d1420fe..8e2c8fd44764 100644
---- a/include/uapi/xen/privcmd.h
-+++ b/include/uapi/xen/privcmd.h
-@@ -126,6 +126,11 @@ struct privcmd_ioeventfd {
- 	__u8 pad[2];
- };
- 
-+struct privcmd_pcidev_get_gsi {
-+	__u32 sbdf;
-+	__u32 gsi;
-+};
-+
- /*
-  * @cmd: IOCTL_PRIVCMD_HYPERCALL
-  * @arg: &privcmd_hypercall_t
-@@ -157,5 +162,7 @@ struct privcmd_ioeventfd {
- 	_IOW('P', 8, struct privcmd_irqfd)
- #define IOCTL_PRIVCMD_IOEVENTFD					\
- 	_IOW('P', 9, struct privcmd_ioeventfd)
-+#define IOCTL_PRIVCMD_PCIDEV_GET_GSI				\
-+	_IOC(_IOC_NONE, 'P', 10, sizeof(struct privcmd_pcidev_get_gsi))
- 
- #endif /* __LINUX_PUBLIC_PRIVCMD_H__ */
-diff --git a/include/xen/acpi.h b/include/xen/acpi.h
-index 3bcfe82d9078..daa96a22d257 100644
---- a/include/xen/acpi.h
-+++ b/include/xen/acpi.h
-@@ -91,4 +91,13 @@ static inline int xen_acpi_get_gsi_info(struct pci_dev *dev,
- }
- #endif
- 
-+#ifdef CONFIG_XEN_PCI_STUB
-+int pcistub_get_gsi_from_sbdf(unsigned int sbdf);
-+#else
-+static inline int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-+{
-+	return -1;
-+}
-+#endif
-+
- #endif	/* _XEN_ACPI_H */
--- 
-2.34.1
+It sounds to me that most likely what's going on is PME being asserted 
+from WLAN controller.
 
 
