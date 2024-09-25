@@ -1,57 +1,58 @@
-Return-Path: <linux-acpi+bounces-8389-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8390-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946F398584E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 13:41:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF1985851
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 13:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07E2DB236A5
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 11:41:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D6A285927
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 11:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2225D18BC3A;
-	Wed, 25 Sep 2024 11:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD1F18C023;
+	Wed, 25 Sep 2024 11:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8pBF2zj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vh5JFOFC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9CD18BBB5;
-	Wed, 25 Sep 2024 11:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DB218BBBA;
+	Wed, 25 Sep 2024 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264244; cv=none; b=LC/0hsDWUPy5DKP6OKaD7T/ikLUnrSdL7UyubDp45KdUG96hE1HSg5Wenj8nPmAVy06ui02LFypQ24Z3GmhXh8Jhh+nyGpFDGjXwXYuxYP5JWmHNLJdsPjQvvWK459DVx8EcOGwoR1oRPzkOAGkLd3uPLSXv0KHAQqlGH5iHgS8=
+	t=1727264245; cv=none; b=BZa8mznsdGs5laNw/qqBt6dsAIeg9g3iz2dd/tw3A6MnfXR2h7f/OY0Dxl4Htn7g6jWUupJVUAwrcxHVrOBty8K+vEOYCh5h+EDP1o1kLoSB4sTZCZRZHFABdp8XcTfcw4OvQmEbErFQHn9MoBHtIQK/oSxy5xkX6+efD2kMkYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264244; c=relaxed/simple;
-	bh=y14O5o0og6kS8zRSjGetIEJG31Qp5aqB3t7mWEs0gc4=;
+	s=arc-20240116; t=1727264245; c=relaxed/simple;
+	bh=+vRT/9sKMUBWk8ChoX3rH60aEURssGy3Awjy1YZ6UG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMqQICaiLP8YL80Py005cw0YALKPwBNeiXgOL3BHv8euSt+vhXcPHS20howUYC9lK2LyU5PMQ3R5PaMOOwEUIetagBCxMeN95GN6VPOqjAnEZiY4hpmPLz1z3L05L/FZ3EJheH6jZ7pDgDsv81Op3usDD9/9tu8VAuh3ZyaHDlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8pBF2zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C52C4CECF;
-	Wed, 25 Sep 2024 11:37:22 +0000 (UTC)
+	 MIME-Version; b=URBOhucLEjlWoo8jFy41E6EOZH+pOboElI1fXBIdKAMODXHhXZVQqRJMvzEQhknB4JLmYm8hhMswjhTipxk82Zc2BZJA3mGEJQvSAItdCnuRn9e+F3a6Fi+vhLJEZyCup1l/L5b0N4xsXnaMHckoEreoj9Wa69NNMRLYbVZ1kJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vh5JFOFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609D3C4CECE;
+	Wed, 25 Sep 2024 11:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264243;
-	bh=y14O5o0og6kS8zRSjGetIEJG31Qp5aqB3t7mWEs0gc4=;
+	s=k20201202; t=1727264245;
+	bh=+vRT/9sKMUBWk8ChoX3rH60aEURssGy3Awjy1YZ6UG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8pBF2zjYeqPDd7O7nBoSgc8BO8wgl8Io81IirLRdhANsJ7wmOWZJ6Bnjykdcn9Jv
-	 W50+pVVS2VbEXe3id/IGFkvb6vg6ANlH/jswz1BQ3HkltxUI3/jBcu6jVmdtvIkAeQ
-	 H3HD688yA4nfmmq4hV9erekL8zTlfPJgOZNt4cB+Lso/1aGK7jOYUXxsoEVtV1sQj3
-	 aWJ7gBdndjOwRQKkGlOYU3Y3Kgxw4ymGvPuJl3NY95Wg3LIXCbzXLYnmjJaxC8B3gO
-	 sgskJiz4ROAWj1hf3so0I3pZkarT8yVvxTLXYjY//FqqE2Eh8tRpwf/odGXajKHorh
-	 fZkFzDkX3HQJw==
+	b=Vh5JFOFCyl+/eI8gAXtJLhC1vJ4waINnvaVtxueV06TZFPsR5msVCkBluzUe/qhPH
+	 OiXBs+ufkcw7dOcnGoOYAaAhOQMRPRUtNYu73aubxyIeRIGde0SIj7tA4a7xJARPvf
+	 Gyaywf6PJyEfmXSSVj6oyP4IvxYzYy8O5XbjP2ERudN5XNMwAyVw0SMpbJAigdJlV2
+	 QG0eMllyOJp2CHuQqxxqayIn/I1JKnS1lTkOke+vUUnN7DpLt9fFARoC7go3g6JO5c
+	 mp5JtXYuEVwRLYnCGw/TgSYQ512LZkZS6e7wT7HbYKrTaxMETcB5LapQl85pMDkoBR
+	 3sz0BReviRKxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Seiji Nishikawa <snishika@redhat.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 017/244] ACPI: PAD: fix crash in exit_round_robin()
-Date: Wed, 25 Sep 2024 07:23:58 -0400
-Message-ID: <20240925113641.1297102-17-sashal@kernel.org>
+	robert.moore@intel.com,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 018/244] ACPICA: Fix memory leak if acpi_ps_get_next_namepath() fails
+Date: Wed, 25 Sep 2024 07:23:59 -0400
+Message-ID: <20240925113641.1297102-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -66,94 +67,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Seiji Nishikawa <snishika@redhat.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 0a2ed70a549e61c5181bad5db418d223b68ae932 ]
+[ Upstream commit 5accb265f7a1b23e52b0ec42313d1e12895552f4 ]
 
-The kernel occasionally crashes in cpumask_clear_cpu(), which is called
-within exit_round_robin(), because when executing clear_bit(nr, addr) with
-nr set to 0xffffffff, the address calculation may cause misalignment within
-the memory, leading to access to an invalid memory address.
+ACPICA commit 2802af722bbde7bf1a7ac68df68e179e2555d361
 
-----------
-BUG: unable to handle kernel paging request at ffffffffe0740618
-        ...
-CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
-        ...
-RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
-Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
-RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
-RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
-RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
-R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
-R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
-FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- ? acpi_pad_add+0x120/0x120 [acpi_pad]
- kthread+0x10b/0x130
- ? set_kthread_struct+0x50/0x50
- ret_from_fork+0x1f/0x40
-        ...
-CR2: ffffffffe0740618
+If acpi_ps_get_next_namepath() fails, the previously allocated
+union acpi_parse_object needs to be freed before returning the
+status code.
 
-crash> dis -lr ffffffffc0726923
-        ...
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
-0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
-0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
-0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
+The issue was first being reported on the Linux ACPI mailing list:
 
-crash> px tsk_in_cpu[14]
-$66 = 0xffffffff
-
-crash> px 0xffffffffc072692c+0x19cf4
-$99 = 0xffffffffc0740620
-
-crash> sym 0xffffffffc0740620
-ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
-
-crash> px pad_busy_cpus_bits[0]
-$42 = 0xfffc0
-----------
-
-To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
-cpumask_clear_cpu() in exit_round_robin(), just as it is done in
-round_robin_cpu().
-
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
-[ rjw: Subject edit, avoid updates to the same value ]
+Link: https://lore.kernel.org/linux-acpi/56f94776-484f-48c0-8855-dba8e6a7793b@yandex.ru/T/
+Link: https://github.com/acpica/acpica/commit/2802af72
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_pad.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/psargs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-index 350d3a8928896..e84720f0246e8 100644
---- a/drivers/acpi/acpi_pad.c
-+++ b/drivers/acpi/acpi_pad.c
-@@ -136,8 +136,10 @@ static void exit_round_robin(unsigned int tsk_index)
- {
- 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
+diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
+index 422c074ed2897..7debfd5ce0d86 100644
+--- a/drivers/acpi/acpica/psargs.c
++++ b/drivers/acpi/acpica/psargs.c
+@@ -820,6 +820,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
+ 			    acpi_ps_get_next_namepath(walk_state, parser_state,
+ 						      arg,
+ 						      ACPI_NOT_METHOD_CALL);
++			if (ACPI_FAILURE(status)) {
++				acpi_ps_free_op(arg);
++				return_ACPI_STATUS(status);
++			}
+ 		} else {
+ 			/* Single complex argument, nothing returned */
  
--	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
--	tsk_in_cpu[tsk_index] = -1;
-+	if (tsk_in_cpu[tsk_index] != -1) {
-+		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
-+		tsk_in_cpu[tsk_index] = -1;
-+	}
- }
+@@ -854,6 +858,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
+ 			    acpi_ps_get_next_namepath(walk_state, parser_state,
+ 						      arg,
+ 						      ACPI_POSSIBLE_METHOD_CALL);
++			if (ACPI_FAILURE(status)) {
++				acpi_ps_free_op(arg);
++				return_ACPI_STATUS(status);
++			}
  
- static unsigned int idle_pct = 5; /* percentage */
+ 			if (arg->common.aml_opcode == AML_INT_METHODCALL_OP) {
+ 
 -- 
 2.43.0
 
