@@ -1,57 +1,57 @@
-Return-Path: <linux-acpi+bounces-8402-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8403-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B001B985C51
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 14:44:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A4E985CAF
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 14:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75EBF287E69
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 12:44:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54E0DB23CEE
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 12:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EDE1CDFA4;
-	Wed, 25 Sep 2024 11:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5113E1CEEAF;
+	Wed, 25 Sep 2024 11:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="trhY/+AB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6nKYjk1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2733E1CDA3B;
-	Wed, 25 Sep 2024 11:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288A31CEEA9;
+	Wed, 25 Sep 2024 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265554; cv=none; b=nIKJ1WTUMGP8YHmJpOYmg/7OsmIDd5XGk9qxqkspk9Up/rPX+dA1mz8gwxVNGD8MEWydVQ4hYVDTWLEkbwS60iKn8Q2Z+WTcH4gAO+pdyL9PDIq0PF7sUD7VgcJDrxCrh2/kWkLb+JW5uVqhj57ZzuwhDeikH0Sg90lIjmOsigw=
+	t=1727265566; cv=none; b=LJe7npsG4iHjlWt10xmW/biYYoMx2hfz+783c3CBSKiTaOi4ANh/ANjCBcGqb8/DbBITqC1zLSu2777KeFdfj1ZSU1S+FKWHTZ8LPFwzNr2TGHmmSNhRfPZiVK04FI50adqk1n2eT639Gk6/NWQznCjnl1OLuMcwsKy2hKjBRc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265554; c=relaxed/simple;
-	bh=qpxkqniFqsfE95JUiw6oouGT8Ul4rggjTRmcJRWXDBo=;
+	s=arc-20240116; t=1727265566; c=relaxed/simple;
+	bh=tDosBEpQ0p+pvDe/oeuUkL2tz+nvxMO8a+E/xdlrT50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYrjBGVWSJwL0f1lCpJIVPOq+lAFMLT2gVkaL2JW1NDZiyXdPfdtptkkbOGpXsM70789RA8GQnUW/WDHTh2I3tO6Dcf+1p8/cjIn4AFfbeZ69yedzErC/qvxOJp+RvmaKZMAyeeLQBWE/CXytSkG+FhvG8XRLGqQOgBkY/k5sgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=trhY/+AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E2BC4CECD;
-	Wed, 25 Sep 2024 11:59:12 +0000 (UTC)
+	 MIME-Version; b=bsccUqnvHMe05Mo1dajLSCxsAhLw/yzvckq4oBmfkBGcNuHZjxIbbuJOHudYWKNhKw4+8UgBrZcM2djmPTWhR3HgcaxRPOMHwwYuTf8/4fYVYlzzo/BOVesvORiubMJwcV5iIjfoyPy86kSASUj5fAU52Yiyajmx4WnR7zXWKSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6nKYjk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5537C4CEC7;
+	Wed, 25 Sep 2024 11:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265554;
-	bh=qpxkqniFqsfE95JUiw6oouGT8Ul4rggjTRmcJRWXDBo=;
+	s=k20201202; t=1727265565;
+	bh=tDosBEpQ0p+pvDe/oeuUkL2tz+nvxMO8a+E/xdlrT50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trhY/+AB04GoXJVm8Whl9cSGAZKuPitnPjcbS7YfG7H7Xum/ejZWa72YBHby0VtHb
-	 ZCVZx3zbFh/CRCc4TWymrebZOtbsxOOVPY803RG0G7eHTzvLvBnu5ZIt1A/e9Pkk0g
-	 MSflWjXUoyopu2XliNCcMQQDuXxxuxXm+2RTGxlMv8kir0+njSQoQar0CVhdobYyF+
-	 RaLGOgZIaLS++yR7VOrjO8ivyt39JG4Nn8oaBjb9HSwDIjylVU4YTElIw4qXWIz0Of
-	 zMCgOtv2dLDjIeBri/MrQ5ht+7I9aAGJ+FA/dmzfYQB6ITKfId89Z2wyWbUZ9vnN0l
-	 OuFLGqZWJRcjQ==
+	b=Z6nKYjk1JBjNvKkrPqSo74/EBDDvRO0nTDf0u1gdlr5ksqnaQS5CWZBP0r8X1O5E9
+	 ynAO6Vn9Cxxa3aaGcDMtmHnjQJe7tIpa43TCOoBkN0mupZiQunT9S1rs+x+hKN4a09
+	 jGXXu1q3uUOREetLV002L8hsSmnU6UTEqfJyjNtAkVYpv+FDKbdl5JHFtrgTIADGtz
+	 zFHRZyKUyKt1WmbQsLekf31DgErpzjglE++HWny6OJDhY+NawMH2jVteWsIBYnBvtY
+	 Kkvfun3jTLKA+yL00lIrjCP0pxX034N8spPbL3/c+/wv6C1kWbdioPmIPA4hFpRy4A
+	 sbX1PZeZadplA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tamim Khan <tamim@fusetak.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 020/197] ACPI: resource: Skip IRQ override on Asus Vivobook Go E1404GAB
-Date: Wed, 25 Sep 2024 07:50:39 -0400
-Message-ID: <20240925115823.1303019-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 025/197] ACPI: video: Add force_vendor quirk for Panasonic Toughbook CF-18
+Date: Wed, 25 Sep 2024 07:50:44 -0400
+Message-ID: <20240925115823.1303019-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -66,46 +66,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 49e9cc315604972cc14868cb67831e3e8c3f1470 ]
+[ Upstream commit eb7b0f12e13ba99e64e3a690c2166895ed63b437 ]
 
-Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
-that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+The Panasonic Toughbook CF-18 advertises both native and vendor backlight
+control interfaces. But only the vendor one actually works.
 
-This override prevents the internal keyboard from working.
+acpi_video_get_backlight_type() will pick the non working native backlight
+by default, add a quirk to select the working vendor backlight instead.
 
-Fix the problem by adding this laptop to the table that prevents the kernel
-from overriding the IRQ.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Link: https://patch.msgid.link/20240903014317.38858-1-tamim@fusetak.com
-[ rjw: Changelog edits ]
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240907124419.21195-1-hdegoede@redhat.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index df5d5a554b388..c65c72c515e67 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index ff6f260433a11..48cf850dd08c7 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -254,6 +254,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "PCG-FRV35"),
  		},
  	},
 +	{
-+		/* Asus Vivobook Go E1404GAB */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
++	 .callback = video_detect_force_vendor,
++	 /* Panasonic Toughbook CF-18 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Matsushita Electric Industrial"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "CF-18"),
 +		},
 +	},
- 	{
- 		/* Asus Vivobook E1504GA */
- 		.matches = {
+ 
+ 	/*
+ 	 * Toshiba models with Transflective display, these need to use
 -- 
 2.43.0
 
