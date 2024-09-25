@@ -1,188 +1,194 @@
-Return-Path: <linux-acpi+bounces-8384-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8385-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF34798522F
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 07:15:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7309852ED
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 08:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4FC41C22A66
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 05:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94CE1281F81
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Sep 2024 06:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAF11514FB;
-	Wed, 25 Sep 2024 05:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dU7F8P7Y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34E113AA53;
+	Wed, 25 Sep 2024 06:30:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAFE2F32;
-	Wed, 25 Sep 2024 05:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635DE81E;
+	Wed, 25 Sep 2024 06:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727241302; cv=none; b=s3FlKCGZ6MCXSRjNWhJmODCAEZExjUf9IlxJ+D4Cf6uzgaLgVudsiA8inmcMof3Fk8Ub9Vb4tHS3k8Nqz2ljX/RNMAjjiyViWvlSBEQWXTVYpfEntL16F2/p5dhCkl4fg1fPpx4OTTtrgf4ZaN1NZvVNzI/KHnSJ75DW7lXaGco=
+	t=1727245823; cv=none; b=CkypWmjbu8RrHXzBQ43eWAhQLt06m03+sstCgxtg/aAq6L3hIL+VPLoaOz3r+YH+20a5EDTyqtjUL8tWF4/qqaiY/E8LQfVrAHOxACQuz6TSRQOG/fnmcSnmHSbXsogbSGBM8DOjCCHDJhmc4ZXUS91Yr3cbNl+GoDitrLSplnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727241302; c=relaxed/simple;
-	bh=BqcGnXf1vS6ovhP2XVDY480NLmrSKRMxm49twdwHJBw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FsgeZ9oRoZDDMlkzCEnPR104L/Skj/pB+QYd9utGs0JphG9RYxTDaZWBkgxufhTMYQ/sV4uSC6WOtaW3FQF3pkkE8Vk8uSJy4xgDwQzGEiAjbWQhPuYIzDE9E0QHkOzEfezOKoWYJCb1wUfQdON/FGMI9OKhbXvVlMGlzPMfApg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dU7F8P7Y; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48OHGeTX028857;
-	Wed, 25 Sep 2024 05:14:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3WeJE1USe/0dUxdGsgV9jXnMQKmZZilfXp5vTAgVn04=; b=dU7F8P7YGWnyzkxe
-	zzg+7kxqRHqNkcyCXZedwI9X3AVuJM5uatn6sjPh/6CR/ZOZU+uEPtiQvQqJx7Px
-	6s2KK55zK/nUZRA5sTAHAOAz8kXGqvgf9XJQ7C48pGMtDQC/WUV+gFblt1pCb5p2
-	GT3OjImHpopwIkptvj/8OU50DwPQtfxSRbKM2twfh3B5XWn4dYl1V1VI0aSLN9tv
-	5RINKPwzxYx25H5QXAqSWJflPxr/LEdpdfuhBjacQzgqkKmE3u/84HQ29431T1VA
-	oHAziR+/au6pppNt7b45iyc/mLcKRoKZhBi3D8bEHT4CHP4mX1VM/Frs9IzuUqE6
-	dJ777A==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41snfh33vp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Sep 2024 05:14:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48P5Egfe014851
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Sep 2024 05:14:42 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 24 Sep
- 2024 22:14:39 -0700
-Message-ID: <a932719b-5f8a-4af1-a9af-f4adf4e072c5@quicinc.com>
-Date: Wed, 25 Sep 2024 13:14:37 +0800
+	s=arc-20240116; t=1727245823; c=relaxed/simple;
+	bh=rY3m7yhYB/1rNY6tuLk33kopGZouZRv/J6mGg62Ah/U=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Pza/1BnCO7q0gsiZ+julfQI8cPQMe4JkdiNXdUkbvY6CUvr6FgfCLUq6w+JoHQ6VH/x8Dbzj2mp7hCpxeKe8NhStiMVfr+SA+58hzYdB+EFLzk3YNi+VQl2EVEPmDQck7MHunq+ukUwoXS7HhZx+h8c/W6KDl7eoz2eJxUN2b7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XD6Jk1kkpz1SBgD;
+	Wed, 25 Sep 2024 14:29:26 +0800 (CST)
+Received: from kwepemd100023.china.huawei.com (unknown [7.221.188.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id E6819140158;
+	Wed, 25 Sep 2024 14:30:13 +0800 (CST)
+Received: from [10.174.179.5] (10.174.179.5) by kwepemd100023.china.huawei.com
+ (7.221.188.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Sep
+ 2024 14:30:12 +0800
+Subject: Re: [PATCH v3 2/2] cppc_cpufreq: Remove HiSilicon CPPC workaround
+To: Jie Zhan <zhanjie9@hisilicon.com>, <ionela.voinescu@arm.com>,
+	<beata.michalska@arm.com>, <viresh.kumar@linaro.org>, <rafael@kernel.org>
+CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <wanghuiqiang@huawei.com>,
+	<zhenglifeng1@huawei.com>, <lihuisong@huawei.com>, <yangyicong@huawei.com>,
+	<liaochang1@huawei.com>, <zengheng4@huawei.com>
+References: <20240919084552.3591400-1-zhanjie9@hisilicon.com>
+ <20240919084552.3591400-3-zhanjie9@hisilicon.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Message-ID: <6305475a-3fbd-780d-e341-716fecf4b769@huawei.com>
+Date: Wed, 25 Sep 2024 14:30:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: unexptect ACPI GPE wakeup on Lenovo platforms
-To: Mario Limonciello <mario.limonciello@amd.com>, <rafael@kernel.org>,
-        <mika.westerberg@linux.intel.com>, <ulf.hansson@linaro.org>,
-        <bhelgaas@google.com>, <Basavaraj.Natikar@amd.com>,
-        <Shyam-sundar.S-k@amd.com>, <mpearson@lenovo.com>,
-        <markpearson@lenovo.com>, Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>
-References: <370d023e-ec53-4bf2-a005-48524c9cb4b2@quicinc.com>
- <79d288c6-6042-4f73-b465-0ddcde14509a@amd.com>
- <b51c89f0-035a-4e94-adc3-e1b4fc31dfdd@quicinc.com>
- <91e179ca-ff2e-48b0-813d-7b819e300dca@amd.com>
- <115efc10-60fd-436f-99b6-0b141f9585e7@quicinc.com>
- <5012908a-9ece-4c16-9d01-2633df740fbb@amd.com>
- <f3e31284-09d0-4a30-be74-34d33efe8535@quicinc.com>
- <8a218293-e2d7-4a1c-9a7d-f113a68f1449@amd.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <8a218293-e2d7-4a1c-9a7d-f113a68f1449@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: FY_9UekrO_JeWFAuB7qAb09aAxDh8ssc
-X-Proofpoint-GUID: FY_9UekrO_JeWFAuB7qAb09aAxDh8ssc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
- suspectscore=0 impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409250034
+In-Reply-To: <20240919084552.3591400-3-zhanjie9@hisilicon.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemd100023.china.huawei.com (7.221.188.33)
 
+Reviewed-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-
-On 9/25/2024 12:08 PM, Mario Limonciello wrote:
-> On 9/24/2024 23:02, Baochen Qiang wrote:
->>
->>
->> On 9/25/2024 11:46 AM, Mario Limonciello wrote:
->>> On 9/24/2024 21:18, Baochen Qiang wrote:
->>>>>
->>>>> Yeah that's what it looks like to me too.  The easiest way to confirm this (without a schematic that is) is to look at the _AEI / _EVT in the SSDT and see what is notified when this is active.
->>>> seems GPP6 is notified, does this mean GPIO18 is NOT bound to WLAN wakeup pin? but instead it is bound to the PCIe root port?
->>>
->>> There is a concept in AMD machines called "GPIO mirroring" where the status of a GPIO pin is mirrored into a GPE.
->>>
->>> Particularly GPE 0xE is often mirroring AMD GPIO 18.  This can be changed by BIOS though, so Lenovo would have to confirm it is the case or not.
->> this does not make sense to me because in the test where ath11k kernel module is removed, the GPE 0xE is active but GPIO 18 is not. if GPE 0xE mirrors GPIO 18, should I expect GPIO 18 and GPE 0xE to be in same status? I mean both active or both inactive?
->>
+On 2024/9/19 16:45, Jie Zhan wrote:
+> Since commit 6c8d750f9784 ("cpufreq / cppc: Work around for Hisilicon CPPC
+> cpufreq"), we introduce a workround for HiSilicon platforms that do not
+> support performance feedback counters, whereas they can get the actual
+> frequency from the desired perf register.  Later on, FIE is disabled in
+> that workaround as well.
 > 
-> Hmm, good point.  🤷 for now.
+> Now the workround can be handled by the common code.  Desired perf would be
+> read and converted to frequency if feedback counters don't change.  FIE
+> would be disabled if the CPPC regs are in PCC region.
 > 
->>>
->>> But it could explain why you see GPE active.
->>>
->>>
->>>>>
->>>>>> [  899.306089] ACPI: GPE event 0x0e //GPE 0x0e triggered for the 2nd time
->>>>>> [  899.333158] ath11k_pci 0000:03:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
->>>>>> [  899.333190] ath11k_pci 0000:03:00.0: fw_version 0x1106196e fw_build_timestamp 2024-01-12 11:30 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
->>>>>> ...
->>>>>> [  899.826378] PM: suspend exit
->>>>>>
->>>>>>
->>>>>> But I don;t think it is the wakeup source, it is just toggled during WLAN reinitialize AFTER system wakeup. actually even with ath11k module removed I can also see this GPE wakeup, but without GPIO 18 toggled:
->>>>>
->>>>> I don't believe that just removing the kernel module is enough.  Can you physically remove the hardware?
->>>> not possible, it is soldered, not a M.2 module
->>>
->>> Ah this makes it a lot harder for a debugging.  Is there option in BIOS to disable it?
->> I will check that. But to make it clear, by 'disable' you are meaning disable wakeup function of WLAN?
+> Hence, the workaround is no longer needed and can be safely removed, in an
+> effort to consolidate the driver procedure.
 > 
-> I'm meaning disable WLAN all together from BIOS.  It will drop off PCI bus.
+> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+> ---
+>  drivers/cpufreq/cppc_cpufreq.c | 71 ----------------------------------
+>  1 file changed, 71 deletions(-)
 > 
-> I don't know if Lenovo BIOS exposes this, I've seen it on some platforms.
-I manged to disable WLAN from BIOS. Now even with lspci I can not see the WLAN device and the PCI bridge to which WLAN is attached. and the GPP6 wakeup functionality is disabled:
-
-# cat /proc/acpi/wakeup
-Device  S-state   Status   Sysfs node
-...
-GPP6      S4    *disabled
-...
-
-Now the issue is gone and I don't see any GPE 0xe or GPIO 18 active events during suspend cycle.
-
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index e55192303a9f..0e95ad2303ea 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -36,24 +36,6 @@ static LIST_HEAD(cpu_data_list);
+>  
+>  static bool boost_supported;
+>  
+> -struct cppc_workaround_oem_info {
+> -	char oem_id[ACPI_OEM_ID_SIZE + 1];
+> -	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+> -	u32 oem_revision;
+> -};
+> -
+> -static struct cppc_workaround_oem_info wa_info[] = {
+> -	{
+> -		.oem_id		= "HISI  ",
+> -		.oem_table_id	= "HIP07   ",
+> -		.oem_revision	= 0,
+> -	}, {
+> -		.oem_id		= "HISI  ",
+> -		.oem_table_id	= "HIP08   ",
+> -		.oem_revision	= 0,
+> -	}
+> -};
+> -
+>  static struct cpufreq_driver cppc_cpufreq_driver;
+>  
+>  static enum {
+> @@ -78,7 +60,6 @@ struct cppc_freq_invariance {
+>  static DEFINE_PER_CPU(struct cppc_freq_invariance, cppc_freq_inv);
+>  static struct kthread_worker *kworker_fie;
+>  
+> -static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu);
+>  static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
+>  				 struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+>  				 struct cppc_perf_fb_ctrs *fb_ctrs_t1);
+> @@ -841,57 +822,6 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
+>  	.name = "cppc_cpufreq",
+>  };
+>  
+> -/*
+> - * HISI platform does not support delivered performance counter and
+> - * reference performance counter. It can calculate the performance using the
+> - * platform specific mechanism. We reuse the desired performance register to
+> - * store the real performance calculated by the platform.
+> - */
+> -static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
+> -{
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> -	struct cppc_cpudata *cpu_data;
+> -	u64 desired_perf;
+> -	int ret;
+> -
+> -	if (!policy)
+> -		return -ENODEV;
+> -
+> -	cpu_data = policy->driver_data;
+> -
+> -	cpufreq_cpu_put(policy);
+> -
+> -	ret = cppc_get_desired_perf(cpu, &desired_perf);
+> -	if (ret < 0)
+> -		return -EIO;
+> -
+> -	return cppc_perf_to_khz(&cpu_data->perf_caps, desired_perf);
+> -}
+> -
+> -static void cppc_check_hisi_workaround(void)
+> -{
+> -	struct acpi_table_header *tbl;
+> -	acpi_status status = AE_OK;
+> -	int i;
+> -
+> -	status = acpi_get_table(ACPI_SIG_PCCT, 0, &tbl);
+> -	if (ACPI_FAILURE(status) || !tbl)
+> -		return;
+> -
+> -	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+> -		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+> -		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+> -		    wa_info[i].oem_revision == tbl->oem_revision) {
+> -			/* Overwrite the get() callback */
+> -			cppc_cpufreq_driver.get = hisi_cppc_cpufreq_get_rate;
+> -			fie_disabled = FIE_DISABLED;
+> -			break;
+> -		}
+> -	}
+> -
+> -	acpi_put_table(tbl);
+> -}
+> -
+>  static int __init cppc_cpufreq_init(void)
+>  {
+>  	int ret;
+> @@ -899,7 +829,6 @@ static int __init cppc_cpufreq_init(void)
+>  	if (!acpi_cpc_valid())
+>  		return -ENODEV;
+>  
+> -	cppc_check_hisi_workaround();
+>  	cppc_freq_invariance_init();
+>  	populate_efficiency_class();
+>  
 > 
->>
->>>
->>>>>
->>>>>>
->>>>>> [ 2640.849342] PM: suspend entry (s2idle)
->>>>>> ...
->>>>>> [ 2650.806234] PM: Triggering wakeup from IRQ 9
->>>>>> ...
->>>>>> [ 2651.467653] PM: noirq resume of devices complete after 558.943 msecs
->>>>>> [ 2651.467880] ACPI: GPE event 0x07
->>>>>> [ 2651.467961] ACPI: GPE event 0x0e
->>>>>> ...
->>>>>> [ 2651.848848] PM: suspend exit
->>>>>>
->>>>>>
->>>>>>
->>>>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219286
->>>>>>
->>>>>
->>>>> Is it possible for you to put a scope on the GPIO and/or PCIe analzyer on the bus?
->>>> it is hard to me -- for the GPIO I need the schematic which is not available, and for the PCIe analyzer we need hardware rework for that, but I will try.
->>>
->>> At least from WLAN perspective, it should be well known pin for GPIO even without board schematic, right?  So should be relatively easy to look at with a scope.
->> Ah, you remind me. We can check it with WLAN wakeup pin.
->> OK, so seems I have no option but to scope the GPIO.
-> 
-> Yeah; unless some other guys on this D/L have any ideas here.
-
 
