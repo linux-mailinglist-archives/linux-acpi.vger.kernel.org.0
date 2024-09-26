@@ -1,146 +1,106 @@
-Return-Path: <linux-acpi+bounces-8430-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8431-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E162D986F24
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 10:44:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA69986F27
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 10:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC501C21909
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 08:44:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA1D8B20C6E
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 08:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5F41A4F16;
-	Thu, 26 Sep 2024 08:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627731A42AB;
+	Thu, 26 Sep 2024 08:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MiM9DgdY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBDA18F2F2;
-	Thu, 26 Sep 2024 08:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7B418C333;
+	Thu, 26 Sep 2024 08:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727340283; cv=none; b=ChLYz+YkNCEVNVUABd1Z4R6dLxb1gRgzzkTzNOOSpckIazX0pXWh2WLWXEJuQqkUbtrZQD5lLYslOfHqppi2W9t7kdQsQsac8oE1zEnzhPv4HIl/IuSv6J+2l10DRZsWyV36ZtY6cnRobjpyJUKl/HLMhAOVLTuFdh7asood5H8=
+	t=1727340299; cv=none; b=fjeLqYcJdpnhaBt4xobTdfjUKF+SFbVIxwVNPud1/n9GeCMSs6FVcW3hMoR3assuZ6MpWvZ0IhYoBTEeQq0mpOPqIvk4+4hy8jvoyUnmFY+Tue76e5+H59m2DD3XsEkdF6i3y9hw/l4VCWP2AYEOhpSMwmQ1mA8MSXzWfUDOaYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727340283; c=relaxed/simple;
-	bh=TgZ8xbjk0U5zw0mCJp1SNqt6tvdaH2wLHC49mMUW9EU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ewMAQRMcTa4M5iB9XovXclKLJX2Tx2hx8yE1aY73m2jVwWZBd1l8VwbzFXTsdv8lW2HtuJItDuU0sx43Am1EPKNIMAAlvJ2OADH734Du/9CfY/2+6qLxvSfnh92MMlj8xDb/UcdreCcQY2lf9AYQYvRd3RXPyd5d4ndN1TpIgMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XDnFH6Nk0z1SBqF;
-	Thu, 26 Sep 2024 16:43:47 +0800 (CST)
-Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
-	by mail.maildlp.com (Postfix) with ESMTPS id 05DA9180043;
-	Thu, 26 Sep 2024 16:44:37 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
- (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 26 Sep
- 2024 16:44:36 +0800
-Message-ID: <08f5f2fa-7bce-2374-f58b-a1df9f481255@hisilicon.com>
-Date: Thu, 26 Sep 2024 16:44:36 +0800
+	s=arc-20240116; t=1727340299; c=relaxed/simple;
+	bh=JqMJShm7YLgNXiFy1N3Et7Jwq6PhUFTOWYv3lI9TMHo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pdPWQ0a9xERFCS8ho5ptYklOyWkr46VQw99SL9EW7HDHzg6bo1nSy2cyYqEEB4N61bCpEKPK9vmwonfpfoKjlVveKoYAJzphl2cQaQAztJVZa8tkqT4t7SSSLyLSErn1KRVQPJsWagnQRG9NDo0H1l2/QxeHrgu0xvmDHXSnlxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MiM9DgdY; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727340296; x=1758876296;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JqMJShm7YLgNXiFy1N3Et7Jwq6PhUFTOWYv3lI9TMHo=;
+  b=MiM9DgdYsHyNR1xiB7pU7evoHMgVqGuyQCz3UXRboGB6etz3NGTZYuFN
+   M7S5BlAuPOdZOfMmmYZleTnsf9vwwp7I8DeWO4tkrOc2O8ScSmqlPaniW
+   zmv5QC0IteSaNhhEHcNJWUPto/STgUn6DPqYrdpv0x/xa2/DNZCZQascl
+   HvDPaNnq+MNPpondl+Tx+W/zBMPF0hNtV3s/gnLj9JazX6y1dhmxZaGhB
+   vVWgQPakHfdLnDJaxnAiMS2N4pIn86Kt7S1Ts1lTHUiCY3bUsQJChEumx
+   gguSkWNy1V7jCtQGCvTMgruGi7BzHkqp+AfUOXEUa23dxsA5sM6Dc5lPb
+   A==;
+X-CSE-ConnectionGUID: TY6EvM+UQVuGp408PE11aA==
+X-CSE-MsgGUID: nYFCUKc8S6y3DTFw4+M4OQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="26289706"
+X-IronPort-AV: E=Sophos;i="6.10,259,1719903600"; 
+   d="scan'208";a="26289706"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 01:44:56 -0700
+X-CSE-ConnectionGUID: ynSu07btTU6X6RgoMOSZ3g==
+X-CSE-MsgGUID: TYxoQrYPR4mprMCdknkrAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,259,1719903600"; 
+   d="scan'208";a="109541371"
+Received: from mylly.fi.intel.com (HELO [10.237.72.57]) ([10.237.72.57])
+  by orviesa001.jf.intel.com with ESMTP; 26 Sep 2024 01:44:54 -0700
+Message-ID: <1986acc5-6c6c-4795-b9c6-8dde5410c4cf@linux.intel.com>
+Date: Thu, 26 Sep 2024 11:44:52 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v3 1/2] cppc_cpufreq: Use desired perf if feedback ctrs
- are 0 or unchanged
-To: "lihuisong (C)" <lihuisong@huawei.com>, <ionela.voinescu@arm.com>,
-	<beata.michalska@arm.com>, <wangxiongfeng2@huawei.com>,
-	<viresh.kumar@linaro.org>, <rafael@kernel.org>
-CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <wanghuiqiang@huawei.com>,
-	<zhenglifeng1@huawei.com>, <yangyicong@huawei.com>, <liaochang1@huawei.com>,
-	<zengheng4@huawei.com>
-References: <20240919084552.3591400-1-zhanjie9@hisilicon.com>
- <20240919084552.3591400-2-zhanjie9@hisilicon.com>
- <f888bd45-120a-a045-c35c-52ae40ae8a9a@huawei.com>
- <887a977c-c5b0-10d5-256c-06f278b667f7@hisilicon.com>
- <e8fdf684-07ca-fc05-e490-72fca37657e4@huawei.com>
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <e8fdf684-07ca-fc05-e490-72fca37657e4@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500019.china.huawei.com (7.185.36.137)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] i2c: designware: Add a new ACPI HID for HJMC01 I2C
+ controller
+To: "hunter.yu" <hunter.yu@hj-micro.com>, andriy.shevchenko@linux.intel.com,
+ lenb@kernel.org, rafael@kernel.org, jsd@semihalf.com, andi.shyti@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+ andy.xu@hj-micro.com, peter.du@hj-micro.com
+References: <20240926024026.2539-1-hunter.yu@hj-micro.com>
+ <20240926024026.2539-3-hunter.yu@hj-micro.com>
+Content-Language: en-US
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+In-Reply-To: <20240926024026.2539-3-hunter.yu@hj-micro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-
-On 26/09/2024 14:07, lihuisong (C) wrote:
+On 9/26/24 5:40 AM, hunter.yu wrote:
+> Define a new ACPI HID for HJMC01
 > 
-> 在 2024/9/26 10:57, Jie Zhan 写道:
->>
->> On 25/09/2024 17:28, lihuisong (C) wrote:
->>> Hi Jie,
->>>
->>> LGTM except for some trivial,
->>> Reviewed-by: Huisong Li <lihuisong@huawei.com>
->> Thanks.
->>
->>>
->>> 在 2024/9/19 16:45, Jie Zhan 写道:
->>>> The CPPC performance feedback counters could be 0 or unchanged when the
->>>> target cpu is in a low-power idle state, e.g. power-gated or clock-gated.
->>>>
->>>> When the counters are 0, cppc_cpufreq_get_rate() returns 0 KHz, which makes
->>>> cpufreq_online() get a false error and fail to generate a cpufreq policy.
->>>>
->>>> When the counters are unchanged, the existing cppc_perf_from_fbctrs()
->>>> returns a cached desired perf, but some platforms may update the real
->>>> frequency back to the desired perf reg.
->>>>
->>>> For the above cases in cppc_cpufreq_get_rate(), get the latest desired perf
->>>> to reflect the frequency; if failed, return the cached desired perf.
->>>>
->>>> Fixes: 6a4fec4f6d30 ("cpufreq: cppc: cppc_cpufreq_get_rate() returns zero in all error cases.")
->>>> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
->>>> Reviewed-by: Zeng Heng <zengheng4@huawei.com>
->>>> Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
->>>> ---
->>>>    drivers/cpufreq/cppc_cpufreq.c | 49 +++++++++++++++++++++++++++-------
->>>>    1 file changed, 39 insertions(+), 10 deletions(-)
->>>>
->>>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->>>> index bafa32dd375d..e55192303a9f 100644
->>>> --- a/drivers/cpufreq/cppc_cpufreq.c
->>>> +++ b/drivers/cpufreq/cppc_cpufreq.c
->>>> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
->>>>          perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
->>>>                         &fb_ctrs);
->>>> +    if (!perf)
->>>> +        return;
->>>> +
->>>>        cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
->>>>          perf <<= SCHED_CAPACITY_SHIFT;
->>>> @@ -726,11 +729,26 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
->>>>          /* Check to avoid divide-by zero and invalid delivered_perf */
->>> Now this comment can be removed, right?
->> Didn't notice this comment, but, having a check, I think it still fits.
->> '!delta_reference' avoids divide-by zero, and '!delta_delivered' checks
->> invalid delivered_perf.
-> The comment  "avoid divide-by zero" is just for the below code: "(reference_perf * delta_delivered) / delta_reference".
-> So It is also useful, but I think It's obvious and it doesn't make much sense.
+> Signed-off-by: hunter.yu <hunter.yu@hj-micro.com>
+> ---
+>   drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> The comment "avoid invalid delivered_perf" is for the return value.
-> Now this func return zero which can't count as a valid delivered_perf, right?
+> diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+> index 2d0c7348e491..701506e92380 100644
+> --- a/drivers/i2c/busses/i2c-designware-platdrv.c
+> +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+> @@ -354,6 +354,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] = {
+>   	{ "HISI02A1", 0 },
+>   	{ "HISI02A2", 0 },
+>   	{ "HISI02A3", 0 },
+> +	{ "HJMC3001", 0 },
+>   	{ "HYGO0010", ACCESS_INTR_MASK },
+>   	{ "INT33C2", 0 },
+>   	{ "INT33C3", 0 },
 
-so, what about this?
-
-/*
- * Avoid divide-by zero and unchanged feedback counters.
- * Leave it for callers to handle.
- */
-
->>
->> So I think we just leave it unchanged.
->>
-
-...
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
