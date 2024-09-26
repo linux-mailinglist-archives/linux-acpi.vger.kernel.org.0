@@ -1,79 +1,133 @@
-Return-Path: <linux-acpi+bounces-8421-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8423-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745EF986B1D
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 05:00:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE626986B23
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 05:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FFC41F22CF4
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 03:00:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E9CAB231DE
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 03:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458A113C3D3;
-	Thu, 26 Sep 2024 03:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E78517C23D;
+	Thu, 26 Sep 2024 03:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzygvwhD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C161B960;
-	Thu, 26 Sep 2024 03:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F49D17B4F6;
+	Thu, 26 Sep 2024 03:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727319604; cv=none; b=gSlmRifPxJEl7oqRe/XZB4RUqtyC6quD0qzmMh4MTTHerUvxSMzZDN9uef/c5ttSwpTV0nb3JbnLDP83hxx2l0xHRPg/v4yFBw7ta3ShTz28xc3pubjulyF33cHrQX0Jtd8OPfwd14bBnW7Ba/VU5q+Z6bKQ+TxqoPbfEcrnLRU=
+	t=1727319608; cv=none; b=g0vmxyVTX8eh4TR24DyKhm1aMMtHr9bL06A0I9PgAorfYpnfe2nCWGEG8WjDhN91DRkxVr8kzfR6tMrhhS0qk1f+pI2SJNrYAyaQYNVGi8bxTFYkdWpG+wm4hX9oxwlX8gSFhEq+Ff1iExDyM9ZumiLaO8n+BZfwwo0ROFyHZUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727319604; c=relaxed/simple;
-	bh=GhISuCKRlFKxOEjaVsoixEdLZGTTfuejqM68zZIUYHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=fh2UwjYwvgf/t81UhozfS0QUFlU9U6bryAH/o3cedbAv3NYCRZDu1mSp2q5I2t5r9zBJ3UFI/EP4kGGIPnASpSfuKoM0o5Rp9KHe4+CGsKtdnn1f6ravkoaPmszNp2U6l2GU+kdumksrfpCIlJ05j9M4YqpYTTD1QW18pDz6T8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4XDdZr6Zv9z1T819;
-	Thu, 26 Sep 2024 10:58:28 +0800 (CST)
-Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
-	by mail.maildlp.com (Postfix) with ESMTPS id C674F14037E;
-	Thu, 26 Sep 2024 10:59:54 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
- (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 26 Sep
- 2024 10:59:54 +0800
-Message-ID: <6cda3a5a-7d9c-aa37-882c-38c192dc27db@hisilicon.com>
-Date: Thu, 26 Sep 2024 10:59:54 +0800
+	s=arc-20240116; t=1727319608; c=relaxed/simple;
+	bh=DQn0vH1OySQQskSdxWk+PEierBBh+i24Ih2z+s/Zr6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rN1koNTUH71RnxGOn/hOmVC7kpYIm/H4NCuvUhBwsI8kC6K3rfM+iE+p9uaJgKxJMjau9NyPwMByPXTVCvwAzLojdsxbZESYVCG6dfEamMJGPYwyvGBVvK82vz1XDKxzs6zror75ixj8iOEq/uKk4lNpQt/+uxbexyP9z9AC2kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzygvwhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE91C4CECE;
+	Thu, 26 Sep 2024 03:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727319607;
+	bh=DQn0vH1OySQQskSdxWk+PEierBBh+i24Ih2z+s/Zr6o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LzygvwhD+jk8H6oHSZsA8K6uguxfDYbyW2CPEziSd8933NLkE+bHxNb7moIB2uxun
+	 6KSDW0RM9gWuuHONxateHdCWqjziCn0ZKc0ejbn5DTAj/JT1RMRMHWy6Axcyjft5RD
+	 VMJ4qaVx0ZHBEtEvNRPakkAW/VcmpZGdFRRgPHZrLje/GrtDlOFq6sQbd1qhIKN8yI
+	 KnLp6oIHD92aAfdJ0QNZRz8uZEjapxtpD0AMxHUwnfKstr0FWYbgTHaie1y3tsR1xZ
+	 r0nS8dz5V/G4fsV+dqIdfOhOOc5UW36wgZxeLtGrINtvA8Zm2GGwPT+7dFRZhlphF0
+	 W3rXDgQh6di4g==
+From: Mario Limonciello <superm1@kernel.org>
+To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Luke D . Jones" <luke@ljones.dev>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>
+Cc: platform-driver-x86@vger.kernel.org (open list:AMD PMF DRIVER),
+	linux-kernel@vger.kernel.org (open list),
+	linux-acpi@vger.kernel.org (open list:ACPI),
+	"Derek J . Clark" <derekjohn.clark@gmail.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	me@kylegospodneti.ch,
+	Denis Benato <benato.denis96@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [RFC 1/2] ACPI: Add support for a 'custom' profile
+Date: Wed, 25 Sep 2024 21:59:54 -0500
+Message-ID: <20240926025955.1728766-2-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240926025955.1728766-1-superm1@kernel.org>
+References: <20240926025955.1728766-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v3 2/2] cppc_cpufreq: Remove HiSilicon CPPC workaround
-To: "lihuisong (C)" <lihuisong@huawei.com>, <ionela.voinescu@arm.com>,
-	<beata.michalska@arm.com>, <wangxiongfeng2@huawei.com>,
-	<viresh.kumar@linaro.org>, <rafael@kernel.org>
-CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <wanghuiqiang@huawei.com>,
-	<zhenglifeng1@huawei.com>, <yangyicong@huawei.com>, <liaochang1@huawei.com>,
-	<zengheng4@huawei.com>
-References: <20240919084552.3591400-1-zhanjie9@hisilicon.com>
- <20240919084552.3591400-3-zhanjie9@hisilicon.com>
- <82f4fa82-ee37-5328-4792-3143a2f0ac6f@huawei.com>
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <82f4fa82-ee37-5328-4792-3143a2f0ac6f@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500019.china.huawei.com (7.185.36.137)
+Content-Transfer-Encoding: 8bit
 
+From: Mario Limonciello <mario.limonciello@amd.com>
 
+Introduce a new profile type called 'custom' that can be set to allow
+changing settings outside of the standard profile settings.
 
-On 25/09/2024 17:36, lihuisong (C) wrote:
-> LGTM,
-> 
-> Reviewed-by: Huisong Li <lihuisong@huawei.com>
+The idea behind this is to enforce a state machine so that a user
+can't set 'balanced' then manually change one APU setting and confuse
+userspace because the system is no longer really behaving in balanced.
 
-Thanks, will pick it up.
+In practice the intention is that userspace would first set "custom"
+followed by modifying any settings. If userspace wants to go back to
+one of the predefined profiles then those profiles can be written to
+/sys/firmware/acpi/platform_profile.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ Documentation/ABI/testing/sysfs-platform_profile | 1 +
+ drivers/acpi/platform_profile.c                  | 1 +
+ include/linux/platform_profile.h                 | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
+index baf1d125f9f8..13dfe8aadbe2 100644
+--- a/Documentation/ABI/testing/sysfs-platform_profile
++++ b/Documentation/ABI/testing/sysfs-platform_profile
+@@ -15,6 +15,7 @@ Description:	This file contains a space-separated list of profiles supported for
+ 					power consumption with a slight bias
+ 					towards performance
+ 		performance		High performance operation
++		custom			Custom profile tuned by the user
+ 		====================	========================================
+ 
+ 		Userspace may expect drivers to offer more than one of these
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index d2f7fd7743a1..383f87c8c036 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -19,6 +19,7 @@ static const char * const profile_names[] = {
+ 	[PLATFORM_PROFILE_BALANCED] = "balanced",
+ 	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] = "balanced-performance",
+ 	[PLATFORM_PROFILE_PERFORMANCE] = "performance",
++	[PLATFORM_PROFILE_CUSTOM] = "custom",
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+ 
+diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+index f5492ed413f3..61273b615419 100644
+--- a/include/linux/platform_profile.h
++++ b/include/linux/platform_profile.h
+@@ -23,6 +23,7 @@ enum platform_profile_option {
+ 	PLATFORM_PROFILE_BALANCED,
+ 	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
+ 	PLATFORM_PROFILE_PERFORMANCE,
++	PLATFORM_PROFILE_CUSTOM,
+ 	PLATFORM_PROFILE_LAST, /*must always be last */
+ };
+ 
+-- 
+2.43.0
+
 
