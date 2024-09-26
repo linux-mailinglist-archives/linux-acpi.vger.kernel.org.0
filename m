@@ -1,316 +1,682 @@
-Return-Path: <linux-acpi+bounces-8450-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8451-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B797F987AB1
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 23:26:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71D4987B79
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 01:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAABBB21E91
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 21:25:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486BF280286
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 23:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBB7186E30;
-	Thu, 26 Sep 2024 21:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C441AFB3C;
+	Thu, 26 Sep 2024 23:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jllw0GgF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bka9ql2A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DAA185944;
-	Thu, 26 Sep 2024 21:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41842143C4C;
+	Thu, 26 Sep 2024 23:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727385947; cv=none; b=KA5wN3mj7qFtcMBqQsRJ3Gq53cZ40wzQaDY2LmGWtJjfor8Kns1PeM0HoX4FDyyEXx+7gMDq8PnHo22VqrC6e20PI/3fgAcakoNYCNkW+3UO7glfUaWJYEmfjtyOEfpZwmiCEWJbyVyIDW3p72V1zipsIL8RTz00M4CtFjsl0Z0=
+	t=1727391901; cv=none; b=vDNNZBtf24C8sUnXw/6XZ7DU4trrFKLmtxyiLFNIJQWVGyjt9KFgqlCqske+7uk4bqXjHRZ/rWi88pFjDIlKpEoYzAtWyVFr0e4vvw8JxOvSKggCbNV4ePc8zY1M8JUWrT1/f+vHmx2/mL+UJVxtVv9dzDdwG0B6oD/sfWwtoOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727385947; c=relaxed/simple;
-	bh=Z/k344jFIcduYbF/hloNr1fJqpx19RlTrt0oGOQ7ujY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=TTnvLgr1pFofqCGLzmBQBbg22uC6Q+aD6XvcvkBr+iDFSj8iSZb7IdvP6kB9dHkjZguWQ7v9sgx+Nf4IaVQM7xtvNjgTWxnmgwDsMBzS0nu9AXp+2I9mecpNeS4fXK7kyuR8s9Y2w5COS3vaJo+MiJGWQASzytP9C2rfc2ABwjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jllw0GgF; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727385945; x=1758921945;
-  h=date:from:to:cc:subject:message-id;
-  bh=Z/k344jFIcduYbF/hloNr1fJqpx19RlTrt0oGOQ7ujY=;
-  b=jllw0GgFnIW92KdujLk1wJWMhzkgMRxZ1wnqkep3GRormBjMB/3svifQ
-   grh0K9gWCJ6q+Kopo/9KoR/6UicszpOdozujSrPoaPqCqnHmXORfyUP5I
-   UAAU0PD03+Gl4Gz5ExiURCczRwdSkdGw8krftyY2nqn7sqLcGcSWj7f/F
-   LEjHoQ3tYcdfFwu6DCIaGe/N+gaLS6va9oFswUmOqem/0N8pvLc+FNRwi
-   cIjnHMuba/179BrY6EWu2BzRSZJDasL/DZpT+gMkP4SrwjzcrSrTqhl5Z
-   +1HIGmA92+o4m0D50FE14wmGyn/4ezNJAU8tuLScS5JaWaumyjJxzSPeG
-   Q==;
-X-CSE-ConnectionGUID: cZSV89YBQRudBAwRmXxgcg==
-X-CSE-MsgGUID: AHr/PMovQZ6SE5qoZdjAeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="29398837"
-X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
-   d="scan'208";a="29398837"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 14:25:45 -0700
-X-CSE-ConnectionGUID: 1i6SpoTjTbeQYr0gbfdJmw==
-X-CSE-MsgGUID: eJKve7rVTFWOeWCC3swEEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
-   d="scan'208";a="72301795"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Sep 2024 14:25:43 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1stvzY-000LD5-2s;
-	Thu, 26 Sep 2024 21:25:40 +0000
-Date: Fri, 27 Sep 2024 05:25:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 0da56073d802c38f74d82e9bfb8678408428e334
-Message-ID: <202409270526.psjUbZ45-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1727391901; c=relaxed/simple;
+	bh=Z2l+gcJewtaZGcQ8Bt7cX61r8ZpFy0rWccy06WX3iMI=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NB3oC2zpbyPw/OmHqAjll28DtH2+rQZEO4z1DBmNz0D+tIFqI7HVSGNghlg/zPE7Yv01MRxlANxNPgwtZ3sRqFjpWFpZYx3O95PtYNMF6vJeRZoqrE/MOvfLHqGORty1k+4APJynfF5Tz/MnN0Q92iqfCUn/eSDdbxlpo4lJwus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bka9ql2A; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71798a15ce5so1992890b3a.0;
+        Thu, 26 Sep 2024 16:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727391898; x=1727996698; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GMsIDMK1DDrg0Yyv1jX8w4F76evTMg1B64TtXPFTWOQ=;
+        b=bka9ql2AwuGz+wQUx2OU3HT9lm3+ZANd0637Gy6Yu7b/ZAfqT4/+ZxQ0Dyg9JjGE9n
+         SBFA/2WDFRdEd/c4hr4M6wk2nRGiAbjJmcSiNrAf0G8+WcUcW5+ptdXdDhGCvqdvfU+/
+         YtN/xZO7e/D2sQ8xxnvzDRP4kgudAoFn0EVmBCJzt/WcU5OFvjfp36/rdmCL5M7VOsix
+         CIsRUqWSaTB5lgFfuGxQeKrSyo1ZbX1LVXEpDjGIqo6h8PBBxOUquFrkk/58rBYpreLV
+         bsiORCYQN5ybVCn4IpqquLI8n/V8/og4202Er2304WNgf6uURAEBfHNCMRhAJENhYL8K
+         ZfhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727391898; x=1727996698;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GMsIDMK1DDrg0Yyv1jX8w4F76evTMg1B64TtXPFTWOQ=;
+        b=rv/clO1w3ca6XIuzZ3zhms7m2Sc7WK43RGFIfOS3YTiAEDcsViiK+yT0CqqP6er1n/
+         JgSYhgJUXYH9IV3d6Kn8HCOY5W3gq6ye2+fatRZQgrl7s6HUwknsl0Wbo2HPbISsj1RY
+         qxH2Jdtwuf+JVdtEvSAh2901FWkQOVBUjIaKoBLP85N++d01LR9ubD83vKJG05nSH3me
+         X1f+WnwHzWLHkRfrciTtaWneZeHf3zDfy7Lqk4LcP61bAKB115IZqouSdOmLNaPGPBtE
+         YQyGi9m2nAooToWDQCkcu6qaoPG13hP9nGwT9UkJ/iJMUilfv2jqWldbBd7HkwtDsX8y
+         ZiHA==
+X-Forwarded-Encrypted: i=1; AJvYcCVCgCO+hwm0S1Nyc0jCSAW8GViLGJhp5n5dBLATeBe8372M46OeDg7/owII4Rt11BngajCdIMj3LlMTiXNk@vger.kernel.org, AJvYcCVeMbubK+bPgTlqRUdYNQXU8adACFsy5pXCr5Q+ujvtcj2IJM18IeKk1eI52I67p6rrOsqBpsAFIHaO@vger.kernel.org, AJvYcCXOPjcKCrcUHlUN5+RRHNXHZ5FNRnBu320DHWTAEyA0ZpEml/UjO9Ikrx3jXMsdDpIiQ3oKilmT0C2M@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW+6FJc/88aiLass6gvZXtNtfGkYTt/IeVRvNYRdKPlR1UZr0D
+	d4HDiFp7/nNNxiQaaZRChdFVl4m2AENlXMffo0gLNzqRvDqoRcaz
+X-Google-Smtp-Source: AGHT+IF+nGkS9O9uGxE47Gicx01cKZPi/PnmWJEq3myiiVA2CsWcjjHbKBQ7EqG99fOgC6cSl2Zi8g==
+X-Received: by 2002:a05:6a20:b711:b0:1d4:fafb:845d with SMTP id adf61e73a8af0-1d4fafb8945mr1677142637.2.1727391898182;
+        Thu, 26 Sep 2024 16:04:58 -0700 (PDT)
+Received: from fan ([2601:646:8f03:9fee:8795:a5ca:b1bf:1a39])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b264bc88bsm421782b3a.71.2024.09.26.16.04.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2024 16:04:57 -0700 (PDT)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Thu, 26 Sep 2024 16:04:42 -0700
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com, jgroves@micron.com,
+	vsalve@micron.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH v12 02/17] EDAC: Add EDAC scrub control driver
+Message-ID: <ZvXoiiOB330Kv-2Q@fan>
+References: <20240911090447.751-1-shiju.jose@huawei.com>
+ <20240911090447.751-3-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240911090447.751-3-shiju.jose@huawei.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 0da56073d802c38f74d82e9bfb8678408428e334  Merge branch 'thermal-core-experimental' into bleeding-edge
+On Wed, Sep 11, 2024 at 10:04:31AM +0100, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Add generic EDAC scrub control driver supports configuring the memory scrubbers
+> in the system. The device with scrub feature, get the scrub descriptor from the
+> EDAC scrub and registers with the EDAC RAS feature driver, which adds the sysfs
+> scrub control interface. The scrub control attributes for a scrub instance are
+> available to userspace in /sys/bus/edac/devices/<dev-name>/scrub*/.
+> 
+> Generic EDAC scrub driver and the common sysfs scrub interface promotes
+> unambiguous access from the userspace irrespective of the underlying scrub
+> devices.
+> 
+> The sysfs scrub attribute nodes would be present only if the client driver
+> has implemented the corresponding attribute callback function and pass in ops
+> to the EDAC RAS feature driver during registration.
+> 
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  Documentation/ABI/testing/sysfs-edac-scrub |  69 ++++
+>  drivers/edac/Makefile                      |   1 +
+>  drivers/edac/edac_device.c                 |   6 +-
+>  drivers/edac/edac_scrub.c                  | 377 +++++++++++++++++++++
+>  include/linux/edac.h                       |  30 ++
+>  5 files changed, 482 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-edac-scrub
+>  create mode 100755 drivers/edac/edac_scrub.c
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-edac-scrub b/Documentation/ABI/testing/sysfs-edac-scrub
+> new file mode 100644
+> index 000000000000..f465cc91423f
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-edac-scrub
+> @@ -0,0 +1,69 @@
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*
 
-elapsed time: 1445m
+Based on the code below, we can only have scrub0, scrub1, etc.
+So should we use scrubX instead of scrub* here.
 
-configs tested: 222
-configs skipped: 3
+The same for below.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fan
 
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-alpha                               defconfig    gcc-14.1.0
-arc                              alldefconfig    clang-15
-arc                              allmodconfig    clang-20
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                              allyesconfig    gcc-13.2.0
-arc                                 defconfig    gcc-14.1.0
-arc                     haps_hs_smp_defconfig    gcc-14.1.0
-arc                   randconfig-001-20240926    gcc-14.1.0
-arc                   randconfig-002-20240926    gcc-14.1.0
-arc                           tb10x_defconfig    clang-20
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                              allyesconfig    gcc-14.1.0
-arm                       aspeed_g5_defconfig    clang-20
-arm                        clps711x_defconfig    clang-15
-arm                                 defconfig    gcc-14.1.0
-arm                          gemini_defconfig    clang-20
-arm                      integrator_defconfig    clang-15
-arm                        keystone_defconfig    clang-20
-arm                            mmp2_defconfig    clang-15
-arm                        multi_v7_defconfig    clang-20
-arm                         mv78xx0_defconfig    clang-15
-arm                         orion5x_defconfig    gcc-14.1.0
-arm                   randconfig-001-20240926    gcc-14.1.0
-arm                   randconfig-002-20240926    gcc-14.1.0
-arm                   randconfig-003-20240926    gcc-14.1.0
-arm                   randconfig-004-20240926    gcc-14.1.0
-arm                           sama5_defconfig    clang-15
-arm                           sunxi_defconfig    gcc-14.1.0
-arm                           u8500_defconfig    clang-20
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-arm64                               defconfig    gcc-14.1.0
-arm64                 randconfig-001-20240926    gcc-14.1.0
-arm64                 randconfig-002-20240926    gcc-14.1.0
-arm64                 randconfig-003-20240926    gcc-14.1.0
-arm64                 randconfig-004-20240926    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                                defconfig    clang-20
-csky                                defconfig    gcc-14.1.0
-csky                  randconfig-001-20240926    gcc-14.1.0
-csky                  randconfig-002-20240926    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-hexagon                             defconfig    gcc-14.1.0
-hexagon               randconfig-001-20240926    gcc-14.1.0
-hexagon               randconfig-002-20240926    gcc-14.1.0
-i386                             allmodconfig    clang-18
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    clang-18
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    clang-18
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20240926    gcc-12
-i386        buildonly-randconfig-002-20240926    gcc-12
-i386        buildonly-randconfig-003-20240926    gcc-12
-i386        buildonly-randconfig-004-20240926    gcc-12
-i386        buildonly-randconfig-005-20240926    gcc-12
-i386        buildonly-randconfig-006-20240926    gcc-12
-i386                                defconfig    clang-18
-i386                  randconfig-001-20240926    gcc-12
-i386                  randconfig-002-20240926    gcc-12
-i386                  randconfig-003-20240926    gcc-12
-i386                  randconfig-004-20240926    gcc-12
-i386                  randconfig-005-20240926    gcc-12
-i386                  randconfig-006-20240926    gcc-12
-i386                  randconfig-011-20240926    gcc-12
-i386                  randconfig-012-20240926    gcc-12
-i386                  randconfig-013-20240926    gcc-12
-i386                  randconfig-014-20240926    gcc-12
-i386                  randconfig-015-20240926    gcc-12
-i386                  randconfig-016-20240926    gcc-12
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch                           defconfig    gcc-14.1.0
-loongarch             randconfig-001-20240926    gcc-14.1.0
-loongarch             randconfig-002-20240926    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                          atari_defconfig    gcc-14.1.0
-m68k                                defconfig    gcc-14.1.0
-m68k                          hp300_defconfig    clang-20
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-microblaze                          defconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-mips                         bigsur_defconfig    clang-15
-mips                  cavium_octeon_defconfig    gcc-14.1.0
-mips                  decstation_64_defconfig    clang-15
-mips                  decstation_64_defconfig    clang-20
-mips                          eyeq5_defconfig    clang-20
-mips                           gcw0_defconfig    gcc-14.1.0
-mips                           ip22_defconfig    clang-15
-mips                           ip32_defconfig    clang-15
-mips                     loongson1b_defconfig    clang-15
-mips                         rt305x_defconfig    gcc-14.1.0
-mips                        vocore2_defconfig    clang-15
-nios2                             allnoconfig    gcc-14.1.0
-nios2                               defconfig    gcc-14.1.0
-nios2                 randconfig-001-20240926    gcc-14.1.0
-nios2                 randconfig-002-20240926    gcc-14.1.0
-openrisc                          allnoconfig    clang-20
-openrisc                          allnoconfig    gcc-14.1.0
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    clang-20
-parisc                            allnoconfig    gcc-14.1.0
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-12
-parisc                randconfig-001-20240926    gcc-14.1.0
-parisc                randconfig-002-20240926    gcc-14.1.0
-parisc64                            defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    clang-20
-powerpc                           allnoconfig    gcc-14.1.0
-powerpc                          allyesconfig    clang-20
-powerpc                          allyesconfig    gcc-14.1.0
-powerpc                    amigaone_defconfig    gcc-14.1.0
-powerpc                 canyonlands_defconfig    clang-20
-powerpc                        icon_defconfig    clang-15
-powerpc                      katmai_defconfig    gcc-14.1.0
-powerpc                 linkstation_defconfig    gcc-14.1.0
-powerpc                    mvme5100_defconfig    gcc-14.1.0
-powerpc                      ppc6xx_defconfig    gcc-14.1.0
-powerpc               randconfig-001-20240926    gcc-14.1.0
-powerpc               randconfig-002-20240926    gcc-14.1.0
-powerpc               randconfig-003-20240926    gcc-14.1.0
-powerpc                     stx_gp3_defconfig    clang-20
-powerpc                     tqm5200_defconfig    clang-20
-powerpc                 xes_mpc85xx_defconfig    clang-20
-powerpc64             randconfig-001-20240926    gcc-14.1.0
-powerpc64             randconfig-002-20240926    gcc-14.1.0
-powerpc64             randconfig-003-20240926    gcc-14.1.0
-riscv                            allmodconfig    clang-20
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    clang-20
-riscv                             allnoconfig    gcc-14.1.0
-riscv                            allyesconfig    clang-20
-riscv                            allyesconfig    gcc-14.1.0
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20240926    gcc-14.1.0
-riscv                 randconfig-002-20240926    gcc-14.1.0
-s390                             allmodconfig    clang-20
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                                defconfig    clang-20
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20240926    gcc-14.1.0
-s390                  randconfig-002-20240926    gcc-14.1.0
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                                  defconfig    gcc-12
-sh                         ecovec24_defconfig    gcc-14.1.0
-sh                    randconfig-001-20240926    gcc-14.1.0
-sh                    randconfig-002-20240926    gcc-14.1.0
-sh                          rsk7203_defconfig    clang-20
-sh                          rsk7269_defconfig    gcc-14.1.0
-sh                           se7343_defconfig    clang-15
-sh                           se7712_defconfig    gcc-14.1.0
-sh                             sh03_defconfig    clang-15
-sparc                            allmodconfig    gcc-14.1.0
-sparc                       sparc64_defconfig    clang-20
-sparc64                          alldefconfig    gcc-14.1.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20240926    gcc-14.1.0
-sparc64               randconfig-002-20240926    gcc-14.1.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-17
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20240926    gcc-14.1.0
-um                    randconfig-002-20240926    gcc-14.1.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-18
-x86_64                           allyesconfig    clang-18
-x86_64      buildonly-randconfig-001-20240926    gcc-11
-x86_64      buildonly-randconfig-002-20240926    gcc-11
-x86_64      buildonly-randconfig-003-20240926    gcc-11
-x86_64      buildonly-randconfig-004-20240926    gcc-11
-x86_64      buildonly-randconfig-005-20240926    gcc-11
-x86_64      buildonly-randconfig-006-20240926    gcc-11
-x86_64                              defconfig    clang-18
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-18
-x86_64                                  kexec    gcc-12
-x86_64                randconfig-001-20240926    gcc-11
-x86_64                randconfig-002-20240926    gcc-11
-x86_64                randconfig-003-20240926    gcc-11
-x86_64                randconfig-004-20240926    gcc-11
-x86_64                randconfig-005-20240926    gcc-11
-x86_64                randconfig-006-20240926    gcc-11
-x86_64                randconfig-011-20240926    gcc-11
-x86_64                randconfig-012-20240926    gcc-11
-x86_64                randconfig-013-20240926    gcc-11
-x86_64                randconfig-014-20240926    gcc-11
-x86_64                randconfig-015-20240926    gcc-11
-x86_64                randconfig-016-20240926    gcc-11
-x86_64                randconfig-071-20240926    gcc-11
-x86_64                randconfig-072-20240926    gcc-11
-x86_64                randconfig-073-20240926    gcc-11
-x86_64                randconfig-074-20240926    gcc-11
-x86_64                randconfig-075-20240926    gcc-11
-x86_64                randconfig-076-20240926    gcc-11
-x86_64                               rhel-8.3    gcc-12
-x86_64                          rhel-8.3-rust    clang-18
-xtensa                            allnoconfig    gcc-14.1.0
-xtensa                  audio_kc705_defconfig    gcc-14.1.0
-xtensa                randconfig-001-20240926    gcc-14.1.0
-xtensa                randconfig-002-20240926    gcc-14.1.0
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		The sysfs EDAC bus devices /<dev-name>/scrub* subdirectory
+> +		belongs to an instance of memory scrub control feature,
+> +		where <dev-name> directory corresponds to a device/memory
+> +		region registered with the EDAC scrub driver and thus
+> +		registered with the generic EDAC RAS driver.
+> +		The sysfs scrub attr nodes would be present only if the
+> +		client driver has implemented the corresponding attr
+> +		callback function and pass in ops to the EDAC RAS feature
+> +		driver during registration.
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/addr_range_base
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) The base of the address range of the memory region
+> +		to be scrubbed (on-demand scrubbing).
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/addr_range_size
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) The size of the address range of the memory region
+> +		to be scrubbed (on-demand scrubbing).
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/enable_background
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) Start/Stop background(patrol) scrubbing if supported.
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/enable_on_demand
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) Start/Stop on-demand scrubbing the memory region
+> +		if supported.
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/min_cycle_duration
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) Supported minimum scrub cycle duration in seconds
+> +		by the memory scrubber.
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/max_cycle_duration
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) Supported maximum scrub cycle duration in seconds
+> +		by the memory scrubber.
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/current_cycle_duration
+> +Date:		Oct 2024
+> +KernelVersion:	6.12
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) The current scrub cycle duration in seconds and must be
+> +		within the supported range by the memory scrubber.
+> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
+> index 4edfb83ffbee..fbf0e39ec678 100644
+> --- a/drivers/edac/Makefile
+> +++ b/drivers/edac/Makefile
+> @@ -10,6 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
+>  
+>  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
+>  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
+> +edac_core-y	+= edac_scrub.o
+>  
+>  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
+>  
+> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
+> index e4a5d010ea2d..6381896b6424 100644
+> --- a/drivers/edac/edac_device.c
+> +++ b/drivers/edac/edac_device.c
+> @@ -608,12 +608,16 @@ static int edac_dev_feat_init(struct device *parent,
+>  			      const struct edac_dev_feature *ras_feat,
+>  			      const struct attribute_group **attr_groups)
+>  {
+> -	int num;
+> +	int num, ret;
+>  
+>  	switch (ras_feat->ft_type) {
+>  	case RAS_FEAT_SCRUB:
+>  		dev_data->scrub_ops = ras_feat->scrub_ops;
+>  		dev_data->private = ras_feat->ctx;
+> +		ret = edac_scrub_get_desc(parent, attr_groups,
+> +					  ras_feat->instance);
+> +		if (ret)
+> +			return ret;
+>  		return 1;
+>  	case RAS_FEAT_ECS:
+>  		num = ras_feat->ecs_info.num_media_frus;
+> diff --git a/drivers/edac/edac_scrub.c b/drivers/edac/edac_scrub.c
+> new file mode 100755
+> index 000000000000..3f8f37629acf
+> --- /dev/null
+> +++ b/drivers/edac/edac_scrub.c
+> @@ -0,0 +1,377 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Generic EDAC scrub driver supports controlling the memory
+> + * scrubbers in the system and the common sysfs scrub interface
+> + * promotes unambiguous access from the userspace.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
+> +
+> +#define pr_fmt(fmt)     "EDAC SCRUB: " fmt
+> +
+> +#include <linux/edac.h>
+> +
+> +enum edac_scrub_attributes {
+> +	SCRUB_ADDR_RANGE_BASE,
+> +	SCRUB_ADDR_RANGE_SIZE,
+> +	SCRUB_ENABLE_BACKGROUND,
+> +	SCRUB_ENABLE_ON_DEMAND,
+> +	SCRUB_MIN_CYCLE_DURATION,
+> +	SCRUB_MAX_CYCLE_DURATION,
+> +	SCRUB_CURRENT_CYCLE_DURATION,
+> +	SCRUB_MAX_ATTRS
+> +};
+> +
+> +struct edac_scrub_dev_attr {
+> +	struct device_attribute dev_attr;
+> +	u8 instance;
+> +};
+> +
+> +struct edac_scrub_context {
+> +	char name[EDAC_FEAT_NAME_LEN];
+> +	struct edac_scrub_dev_attr scrub_dev_attr[SCRUB_MAX_ATTRS];
+> +	struct attribute *scrub_attrs[SCRUB_MAX_ATTRS + 1];
+> +	struct attribute_group group;
+> +};
+> +
+> +#define to_scrub_dev_attr(_dev_attr)      \
+> +		container_of(_dev_attr, struct edac_scrub_dev_attr, dev_attr)
+> +
+> +static ssize_t addr_range_base_show(struct device *ras_feat_dev,
+> +				    struct device_attribute *attr,
+> +				    char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u64 base, size;
+> +	int ret;
+> +
+> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", base);
+> +}
+> +
+> +static ssize_t addr_range_size_show(struct device *ras_feat_dev,
+> +				    struct device_attribute *attr,
+> +				    char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u64 base, size;
+> +	int ret;
+> +
+> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", size);
+> +}
+> +
+> +static ssize_t addr_range_base_store(struct device *ras_feat_dev,
+> +				     struct device_attribute *attr,
+> +				     const char *buf, size_t len)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u64 base, size;
+> +	int ret;
+> +
+> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = kstrtou64(buf, 0, &base);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->write_range(ras_feat_dev->parent, ctx->scrub[inst].private, base, size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t addr_range_size_store(struct device *ras_feat_dev,
+> +				     struct device_attribute *attr,
+> +				     const char *buf,
+> +				     size_t len)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u64 base, size;
+> +	int ret;
+> +
+> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = kstrtou64(buf, 0, &size);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->write_range(ras_feat_dev->parent, ctx->scrub[inst].private, base, size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t enable_background_store(struct device *ras_feat_dev,
+> +				       struct device_attribute *attr,
+> +				       const char *buf, size_t len)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	bool enable;
+> +	int ret;
+> +
+> +	ret = kstrtobool(buf, &enable);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->set_enabled_bg(ras_feat_dev->parent, ctx->scrub[inst].private, enable);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t enable_background_show(struct device *ras_feat_dev,
+> +				      struct device_attribute *attr, char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	bool enable;
+> +	int ret;
+> +
+> +	ret = ops->get_enabled_bg(ras_feat_dev->parent, ctx->scrub[inst].private, &enable);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%d\n", enable);
+> +}
+> +
+> +static ssize_t enable_on_demand_show(struct device *ras_feat_dev,
+> +				     struct device_attribute *attr, char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	bool enable;
+> +	int ret;
+> +
+> +	ret = ops->get_enabled_od(ras_feat_dev->parent, ctx->scrub[inst].private, &enable);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%d\n", enable);
+> +}
+> +
+> +static ssize_t enable_on_demand_store(struct device *ras_feat_dev,
+> +				      struct device_attribute *attr,
+> +				      const char *buf, size_t len)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	bool enable;
+> +	int ret;
+> +
+> +	ret = kstrtobool(buf, &enable);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->set_enabled_od(ras_feat_dev->parent, ctx->scrub[inst].private, enable);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t min_cycle_duration_show(struct device *ras_feat_dev,
+> +				       struct device_attribute *attr,
+> +				       char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u32 val;
+> +	int ret;
+> +
+> +	ret = ops->min_cycle_read(ras_feat_dev->parent, ctx->scrub[inst].private, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%u\n", val);
+> +}
+> +
+> +static ssize_t max_cycle_duration_show(struct device *ras_feat_dev,
+> +				       struct device_attribute *attr,
+> +				       char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u32 val;
+> +	int ret;
+> +
+> +	ret = ops->max_cycle_read(ras_feat_dev->parent, ctx->scrub[inst].private, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%u\n", val);
+> +}
+> +
+> +static ssize_t current_cycle_duration_show(struct device *ras_feat_dev,
+> +					   struct device_attribute *attr,
+> +					   char *buf)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	u32 val;
+> +	int ret;
+> +
+> +	ret = ops->cycle_duration_read(ras_feat_dev->parent, ctx->scrub[inst].private, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%u\n", val);
+> +}
+> +
+> +static ssize_t current_cycle_duration_store(struct device *ras_feat_dev,
+> +					    struct device_attribute *attr,
+> +					    const char *buf, size_t len)
+> +{
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +	long val;
+> +	int ret;
+> +
+> +	ret = kstrtol(buf, 0, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->cycle_duration_write(ras_feat_dev->parent, ctx->scrub[inst].private, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static umode_t scrub_attr_visible(struct kobject *kobj,
+> +				  struct attribute *a, int attr_id)
+> +{
+> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
+> +	struct device_attribute *dev_attr =
+> +				container_of(a, struct device_attribute, attr);
+> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(dev_attr))->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +
+> +	switch (attr_id) {
+> +	case SCRUB_ADDR_RANGE_BASE:
+> +	case SCRUB_ADDR_RANGE_SIZE:
+> +		if (ops->read_range && ops->write_range)
+> +			return a->mode;
+> +		if (ops->read_range)
+> +			return 0444;
+> +		return 0;
+> +	case SCRUB_ENABLE_BACKGROUND:
+> +		if (ops->get_enabled_bg && ops->set_enabled_bg)
+> +			return a->mode;
+> +		if (ops->get_enabled_bg)
+> +			return 0444;
+> +		return 0;
+> +	case SCRUB_ENABLE_ON_DEMAND:
+> +		if (ops->get_enabled_od && ops->set_enabled_od)
+> +			return a->mode;
+> +		if (ops->get_enabled_od)
+> +			return 0444;
+> +		return 0;
+> +	case SCRUB_MIN_CYCLE_DURATION:
+> +		return ops->min_cycle_read ? a->mode : 0;
+> +	case SCRUB_MAX_CYCLE_DURATION:
+> +		return ops->max_cycle_read ? a->mode : 0;
+> +	case SCRUB_CURRENT_CYCLE_DURATION:
+> +		if (ops->cycle_duration_read && ops->cycle_duration_write)
+> +			return a->mode;
+> +		if (ops->cycle_duration_read)
+> +			return 0444;
+> +		return 0;
+> +	default:
+> +		return 0;
+> +	}
+> +}
+> +
+> +#define EDAC_SCRUB_ATTR_RO(_name, _instance)       \
+> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RO(_name), \
+> +				     .instance = _instance })
+> +
+> +#define EDAC_SCRUB_ATTR_WO(_name, _instance)       \
+> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_WO(_name), \
+> +				     .instance = _instance })
+> +
+> +#define EDAC_SCRUB_ATTR_RW(_name, _instance)       \
+> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RW(_name), \
+> +				     .instance = _instance })
+> +
+> +static int scrub_create_desc(struct device *scrub_dev,
+> +			     const struct attribute_group **attr_groups,
+> +			     u8 instance)
+> +{
+> +	struct edac_scrub_context *scrub_ctx;
+> +	struct attribute_group *group;
+> +	int i;
+> +
+> +	scrub_ctx = devm_kzalloc(scrub_dev, sizeof(*scrub_ctx), GFP_KERNEL);
+> +	if (!scrub_ctx)
+> +		return -ENOMEM;
+> +
+> +	group = &scrub_ctx->group;
+> +	scrub_ctx->scrub_dev_attr[0] = EDAC_SCRUB_ATTR_RW(addr_range_base, instance);
+> +	scrub_ctx->scrub_dev_attr[1] = EDAC_SCRUB_ATTR_RW(addr_range_size, instance);
+> +	scrub_ctx->scrub_dev_attr[2] = EDAC_SCRUB_ATTR_RW(enable_background, instance);
+> +	scrub_ctx->scrub_dev_attr[3] = EDAC_SCRUB_ATTR_RW(enable_on_demand, instance);
+> +	scrub_ctx->scrub_dev_attr[4] = EDAC_SCRUB_ATTR_RO(min_cycle_duration, instance);
+> +	scrub_ctx->scrub_dev_attr[5] = EDAC_SCRUB_ATTR_RO(max_cycle_duration, instance);
+> +	scrub_ctx->scrub_dev_attr[6] = EDAC_SCRUB_ATTR_RW(current_cycle_duration, instance);
+> +	for (i = 0; i < SCRUB_MAX_ATTRS; i++)
+> +		scrub_ctx->scrub_attrs[i] = &scrub_ctx->scrub_dev_attr[i].dev_attr.attr;
+> +
+> +	sprintf(scrub_ctx->name, "%s%d", "scrub", instance);
+> +	group->name = scrub_ctx->name;
+> +	group->attrs = scrub_ctx->scrub_attrs;
+> +	group->is_visible  = scrub_attr_visible;
+> +
+> +	attr_groups[0] = group;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * edac_scrub_get_desc - get EDAC scrub descriptors
+> + * @scrub_dev: client device, with scrub support
+> + * @attr_groups: pointer to attrribute group container
+> + * @instance: device's scrub instance number.
+> + *
+> + * Returns 0 on success, error otherwise.
+> + */
+> +int edac_scrub_get_desc(struct device *scrub_dev,
+> +			const struct attribute_group **attr_groups,
+> +			u8 instance)
+> +{
+> +	if (!scrub_dev || !attr_groups)
+> +		return -EINVAL;
+> +
+> +	return scrub_create_desc(scrub_dev, attr_groups, instance);
+> +}
+> diff --git a/include/linux/edac.h b/include/linux/edac.h
+> index b337254cf5b8..aae8262b9863 100644
+> --- a/include/linux/edac.h
+> +++ b/include/linux/edac.h
+> @@ -674,6 +674,36 @@ enum edac_dev_feat {
+>  	RAS_FEAT_MAX
+>  };
+>  
+> +/**
+> + * struct scrub_ops - scrub device operations (all elements optional)
+> + * @read_range: read base and offset of scrubbing range.
+> + * @write_range: set the base and offset of the scrubbing range.
+> + * @get_enabled_bg: check if currently performing background scrub.
+> + * @set_enabled_bg: start or stop a bg-scrub.
+> + * @get_enabled_od: check if currently performing on-demand scrub.
+> + * @set_enabled_od: start or stop an on-demand scrub.
+> + * @min_cycle_read: minimum supported scrub cycle duration in seconds.
+> + * @max_cycle_read: maximum supported scrub cycle duration in seconds.
+> + * @cycle_duration_read: get the scrub cycle duration in seconds.
+> + * @cycle_duration_write: set the scrub cycle duration in seconds.
+> + */
+> +struct edac_scrub_ops {
+> +	int (*read_range)(struct device *dev, void *drv_data, u64 *base, u64 *size);
+> +	int (*write_range)(struct device *dev, void *drv_data, u64 base, u64 size);
+> +	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable);
+> +	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable);
+> +	int (*get_enabled_od)(struct device *dev, void *drv_data, bool *enable);
+> +	int (*set_enabled_od)(struct device *dev, void *drv_data, bool enable);
+> +	int (*min_cycle_read)(struct device *dev, void *drv_data,  u32 *min);
+> +	int (*max_cycle_read)(struct device *dev, void *drv_data,  u32 *max);
+> +	int (*cycle_duration_read)(struct device *dev, void *drv_data, u32 *cycle);
+> +	int (*cycle_duration_write)(struct device *dev, void *drv_data, u32 cycle);
+> +};
+> +
+> +int edac_scrub_get_desc(struct device *scrub_dev,
+> +			const struct attribute_group **attr_groups,
+> +			u8 instance);
+> +
+>  struct edac_ecs_ex_info {
+>  	u16 num_media_frus;
+>  };
+> -- 
+> 2.34.1
+> 
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+Fan Ni
 
