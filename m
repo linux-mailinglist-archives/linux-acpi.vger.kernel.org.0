@@ -1,202 +1,201 @@
-Return-Path: <linux-acpi+bounces-8445-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8446-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9CE9879B3
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 21:41:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15779879C7
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 21:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F147281118
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 19:41:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2FA9B21044
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 19:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBBF175D2C;
-	Thu, 26 Sep 2024 19:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688A615C148;
+	Thu, 26 Sep 2024 19:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="iaSpfOlv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4OGyDi5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17C2522A;
-	Thu, 26 Sep 2024 19:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D06215AD9C;
+	Thu, 26 Sep 2024 19:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727379696; cv=none; b=qeb/J8DH4gP5DKdBQRu7MUstC4wu5yB+lAEJbEwQhfyJg6nlIV8o0gfVEtmOwDL5t1EmQv9aKFJIuANbAe8njViFcyB5mD28TcRmcG925vst6cKmObCoHBRMHOlcE4ju1uIWnKnMu4j/EMWFNmHrdqk2o1TujMWGwDnH/1pPoi0=
+	t=1727380410; cv=none; b=ZzQoPYj9/I7c0URcm4wzphrxhVt9zed3MR3iLN8YV3iVLm35/A5q0FGfyp5K2MQKbPwX5Uy0rTWenkgjkPEm1wpupZSSjWUqdlQ84RBw+fk0kFzgTS9EKhKg6O3709UHlKoJriruOYyoTR8TIrIJfIgImYHW0rwjm3OfCOvYXPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727379696; c=relaxed/simple;
-	bh=VNcnHSI7FM+BtMXNej3KurhjVWYVotK8INRGf6D/xP4=;
+	s=arc-20240116; t=1727380410; c=relaxed/simple;
+	bh=GBl6AZCiyH0AHpBOXUejSjUQp7awTZ3QRZisiwzCxU0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O0mJpNDbdx+tfW1z+BqXa63T0v/1wAnR4Ny5wQe7jDeVe+UprSRm8r8LvrNDvyKe0qblq5mUerYjiztQAwN53dTyWoo2OF+/vZnp+/MJ3vcJgPmnIGNaVQM57KCYqlU9JPjO3464lhWYzYRoGvQ2GcwiCrGB+6BZyEeyOuwsolo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=iaSpfOlv; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id B35852E09B10;
-	Thu, 26 Sep 2024 22:41:29 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1727379690;
-	bh=ICC/6aiJ2busU2zThORGo4pOzWfpSkXMkwWmE5bK+oM=;
-	h=Received:From:Subject:To;
-	b=iaSpfOlvQZr6/8CqVUV/2d6gnHHXVtlq59aOFar7bsmmFpefdrHSLX2tLJxk0tjcd
-	 4PkVG7mfL3Syv228cRswo3o4tiZfE2U5baLR6dPupvH8JWiZKFzR3SnjyBvxJ32f22
-	 5NzeGGjtpEITyycRV6fmgx4qoaEGV9Gu7Mf1Mrbk=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.177) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f177.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f177.google.com with SMTP id
- 38308e7fff4ca-2f762de00e5so14800361fa.3;
-        Thu, 26 Sep 2024 12:41:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUBFhfDrGFqFlg2yvhvynPjc2rewtaZXWmdYhyHOTPDlrQxzpinLm6JS5mfE2b/QhyydcVAzu1eFJvX@vger.kernel.org,
- AJvYcCXMn5Nf4CJaw7577Yt+c873aX/jLvq/S0MFafJ6Ve3hZpDvW8MmUt4n7ve2kpS1MkAl4dT7aXjZHDfAXbNp@vger.kernel.org,
- AJvYcCXpHAAc8N4YXL5e7eV6DKMAJIRnCrgjYojKU1SwZBLKWLff9xWc0H/HAvdVfkSnBUiazrD6uz9aVfc1+8zQ5ryeI/ODRQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRwhSM5s5tm6wp0lu1GRoZHHW71e0nMrtoCcQhZlHyIuAlerZY
-	FCZfcbZsLlhifnAakgsupP8bmfwpOX5VUQkjaVrM584xh9HOmLPz3cwZAL3GPTWAPgwNqBRnR4+
-	GQR2TPSCkOHvyKl6NR491YlC0c34=
-X-Google-Smtp-Source: 
- AGHT+IG5HA7+aYtyorVW7IZ1zx+clU+uCV6jFRnTzbxIT3FjgsgELhDDlI7z6Hrje+s0qosjbhjjzt3+6XgooIoVm0w=
-X-Received: by 2002:a05:651c:b0f:b0:2ec:1810:e50a with SMTP id
- 38308e7fff4ca-2f9d417a581mr5532621fa.32.1727379688569; Thu, 26 Sep 2024
- 12:41:28 -0700 (PDT)
+	 To:Cc:Content-Type; b=Qi9P+8YaVOScr9vqcueHvAKm2zLia95XnXbOkTWHPEp2Yn++gcNrPxNaQ2lwyiAtU8PuB5laSiJaJdubpidUACDdmkKcLDPpewq8UMbyRPPg6A/tBTE5YOO2eS6A7b3BE179K0hcrvdHkqyZSPn1IMeZKHlZWo/HTLHXkvDFGYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4OGyDi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6821C4AF09;
+	Thu, 26 Sep 2024 19:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727380409;
+	bh=GBl6AZCiyH0AHpBOXUejSjUQp7awTZ3QRZisiwzCxU0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=M4OGyDi5cve1pT9SV62/FgEfl98HGc6NUNIbWa5dvAdQMzoa4F0EF9HHN34/4NnwY
+	 nnxnm12/+ACr46nFYwEjYdKxo5hzHVrVU+yWxu6g3HgT0Ws8zWMZahnlyA7CScWAcY
+	 T3K4M9sTSsKATultqf19P88i0exGwcghSPLUo3Ecy+XbOu5VDOYk7X1VakE0kSYHsS
+	 zQqSz48Je3dUSCNacqz9cFZGTC8J3CjJhUTUtkvrDhkncoilNapKGshHIrHJHZuHRE
+	 SlhmNz4FA5gGNRImH+7c2kvQOC2/2aGWPLF25Tp+N5pfHUnIl+upKKGcA47pQajL0F
+	 pNZ76PIFz/Now==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5e1c63c9822so723920eaf.0;
+        Thu, 26 Sep 2024 12:53:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUq0BTAeBLV4D2soJCbK6gUBF3KoZRDAmXIyWKOtTDQjYNx1st7UMv0ifm/FJO7NeV+qdlgVafmma+o@vger.kernel.org, AJvYcCXh/9iacHGe9J1FP8BjZ89KeLjEGWKaUWf0Kdr0dUsmXvclKxuvDa0NngGuYBxY3FAm5Be86v/qh1OT@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDl0FuecEYgUkQ7sAbsagSE8mJkh92ENU80TcJnIN7pOJ3zglZ
+	VljvWppRv6YrjIHRopGsbhSi2KcTfuT6C+D/H0q79JkkdMOBegD0q0+xGKdInlo214Gqe95LiO5
+	rf8Ya07/om4PcVCokDN9g4ZpUX44=
+X-Google-Smtp-Source: AGHT+IGfTciu8k8MtMrXi1yerNQVIyGGiGGREp+hRVvZ1R5J9R0WPtodq6tM5z6lm+gxQX1JMXjt5x7QIlaJa60B0/U=
+X-Received: by 2002:a05:6820:160c:b0:5e5:7086:ebd8 with SMTP id
+ 006d021491bc7-5e7725c8c9cmr546877eaf.2.1727380409068; Thu, 26 Sep 2024
+ 12:53:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926025955.1728766-1-superm1@kernel.org>
- <2d07d31e-87f6-4576-977d-336f3d0bbc81@app.fastmail.com>
- <7bfba4ef-0f42-4482-874f-77a4434eb338@kernel.org>
- <5dcc2f87-e8c0-4f33-9b75-054eb0acb81a@app.fastmail.com>
-In-Reply-To: <5dcc2f87-e8c0-4f33-9b75-054eb0acb81a@app.fastmail.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Thu, 26 Sep 2024 21:41:17 +0200
-X-Gmail-Original-Message-ID: 
- <CAGwozwFMXAPfPrUaVaNFch565Oh49m=ZWewx9K6603GPpO0Z4A@mail.gmail.com>
-Message-ID: 
- <CAGwozwFMXAPfPrUaVaNFch565Oh49m=ZWewx9K6603GPpO0Z4A@mail.gmail.com>
-Subject: Re: [RFC 0/2] "custom" ACPI platform profile support
-To: Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: Mario Limonciello <superm1@kernel.org>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Luke D . Jones" <luke@ljones.dev>,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "Derek J . Clark" <derekjohn.clark@gmail.com>,
-	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>
+References: <EqPNlJ6f78UUE-J-5aIWtMWCwa2RUsGoVOePPCp9pMFhWHu9d7hAR0kzJtsLcWwt_RnUQP6Zs_7nUBbaYLPhuBz6I-0iJ_M8AdVGPaDwovA=@protonmail.com>
+ <5068b802fb833cda3457e9cdbac7e6a5c82174d3.camel@intel.com>
+In-Reply-To: <5068b802fb833cda3457e9cdbac7e6a5c82174d3.camel@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 26 Sep 2024 21:53:17 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hP7s4YduPZoWpykaUk+dR9AG=bAW9nYpN3qVupqYkmEA@mail.gmail.com>
+Message-ID: <CAJZ5v0hP7s4YduPZoWpykaUk+dR9AG=bAW9nYpN3qVupqYkmEA@mail.gmail.com>
+Subject: Re: acpiphp module and Asus GA402RJ
+To: "athul.krishna.kr@protonmail.com" <athul.krishna.kr@protonmail.com>
+Cc: "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Bjorn Helgaas <helgaas@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>
+Content-Type: multipart/mixed; boundary="000000000000ad149006230b17a7"
+
+--000000000000ad149006230b17a7
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-PPP-Message-ID: <172737969008.545.2913244291928671667@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
 
-> >> Some suggestions:
-> >>
-> >> I'm wondering if we can make it so a driver can register only a 'custo=
-m' profile as an extra profile handler?
-> >>
-> >> The thinking here is the custom setting in this series is implemented =
-for the amd sps driver, and therefore on a regular Lenovo laptop wouldn't b=
-e used, as the thinkpad_acpi driver will grab the profile slot, Users on Le=
-novo systems aren't going to be able to get at these extra tweaks (unless t=
-hey unload thinkpad_acpi, which has other side effects).
-> >
-> > Well the RFC was just to show it for the AMD PMF driver, but I think
-> > that thinkpad_acpi, asus_armoury etc could all potentially implement th=
-e
-> > 'custom' bit too if they offer an ACPI-WMI interface to similar setting=
-s.
-> >
-> >>
-> >> If the sps driver can offer a custom mode, separately from thinkpad_ac=
-pi, then users can tweak settings to their hearts content but get back to r=
-egular mode when done.
+CC lists.
 
-I think I considered that as part of my userspace software and reached
-the conclusion that if there is an EC, for most users it is best to
-program it and forgo the extra features. Otherwise they get weird bugs
-and conflicts, such as incorrect fan curves or their settings being
-reset randomly.
-
-On the Legion and Thinkpad series, the hardware binds would also cause
-this (Fn + BMH)/(Legion Go L + Y), and for Legion series specifically,
-the power button will have the wrong color.
-
-So I do not know if it is worth exploring as having it controllable
-from userspace in such a clean way. Of course, tinkerers could mess
-around by disabling modules to try something out and that would work
-fine, but I do not think it will be usable day to day.
-
-I personally gave up on the idea. However, having a load order and
-falling back to amd-pmf does have merit. E.g., the legion go will need
-a quirk for pmf too, and probably most laptop lines going forward. So
-that should be explored.
-
-> >>
-> >> I also think there needs to be a way that when you switch from custom =
-back to a 'regular' profile that it would do a clean up of anything tweaked=
-. e.g. when switching away from custom the ppd driver should call a 'custom=
- mode cleanup' function, so things can be undone and returned to how they w=
-ere when it was started.
-> >>
-> >> Mark
-> >
-> > I guess what you're proposing is that multiple drivers register as
-> > profile handlers and they might not all export the same features.
-> >
-> > If we did something like this we could instead have the core call
-> > callbacks for all platform profile handlers.  We could also drop a pile
-> > of quirks from amd-pmf where there are some ASUS systems that advertise
-> > SPS in in the PMF framework and also asus-wmi provides it.
-> >
-> > If I'm following you right, I generally like this idea.
+On Wed, Sep 25, 2024 at 8:36=E2=80=AFPM Accardi, Kristen C
+<kristen.c.accardi@intel.com> wrote:
 >
-> Yep - that was the idea.
+> On Wed, 2024-09-25 at 17:52 +0000, Athul Krishna wrote:
+> > Device: Asus Zephyrus G14 GA402RJ
+> > Kernel: 6.11
+> > CPU: R7 67800H
+> > GPU: RX 6700S
+> >
+> > Hello Kristen,
+> >
+> > I'd like provide feedback on the acpiphp module. My laptop is all
+> > AMD(CPU+GPU). So the discrete gpu: \_SB_.PCI0.GPP0.SWUS.SWDS.VGA_,
+> > and the hotplug bridge: \_SB_.PCI0.GPP0. And there's two PCI-PCI
+> > bridges: SWUS and SWDS.
+> >
+> > Eject notification on the discrete GPU, will remove the GPU, and the
+> > two PCI bridges.
+> >
+> > The issue I've encountered is, Device check notification cannot reach
+> > GPU, as it's hotplug context is lost, with the current implementation
+> > of acpiphp(acpiphp_glue.c) module.
+> >
+> >
+> > I hope this helps. Also a small disclaimer: I'm a newbie to Linux
+> > kernel internals. So I might be limited in the help I can provide.
+> > I can provide dmesg logs or ACPI tables if required.
+> >
+> > Thanks & Regards,
+> > Athul
 >
-> This feels like a step towards giving more control to power users - whils=
-t keeping the basic simple for regular folk.
->
-> I can imagine utilities that would use this to enable specific configurat=
-ions, via the custom profile mode, for many different scenario's; whilst st=
-ill allowing a user to get back to the tested and vendor approved setting i=
-f things go badly.
+> Hi Athul,
+> I think that Rafael might be maintaining this driver these days. I've
+> copied him on this reply.
 
-I will note that for handhelds, having a TDP slider is basic
-functionality. So we need to find a way to give this control to users
-without tainting the kernel or requiring special workarounds in the
-case the manufacturer did not provide a WMI interface. This PR is a
-step in that direction, but then we need to deal with hardware limits
-and such to make sure it is safe.
+I don't maintain it (Bjorn does that AFAICS), but I may be one of the
+developers who have touched it most recently.
 
-As far as fPPT and sPPt go, I will be honest and say I never had a
-user ask for them. However, unless the driver implements a LUT or some
-basic logic to enable/disable some sort of boost, they will need to be
-exposed to sysfs so userspace can do it. It does not mean that
-userspace will need to show that to users, just that it will do the
-interpolation to apply the correct boost if that is requested.
+In any case, I don't think it is at fault here, but firmware
+expectations that go beyond provisions made by the ACPI specification:
 
-Here I will note Legion Space did not do that on the Legion Go on
-WIndows for the first 5-6 months of its release. This lead to custom
-mode being completely broken from a user's perspective. Since the
-device is STT, if the user set the spl to 10W, well sPPT was 32W and
-fPPT was 43W so the device just kept boosting forever.
+https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#dev=
+ice-object-notifications
 
-However, one of the first BIOS versions added sPPT and fPPT to WMI, so
-we never had that problem in Linux.
+because it seems to really want to trigger a bus rescan starting from
+a device that has been discovered already that will lead to a
+discovery of a specific "new" device along with its parent.  Sending a
+device check notification on a device that has not been discovered yet
+and whose parent has not been discovered yet either may reasonably be
+regarded as unsuitable for this purpose.
 
-Now, Legion Space added sPPT and fPPT as sliders, which just causes
-annoyance for users, as they have to edit 3 sliders instead of one to
-get their desired performance level.
+That said, it appears to be possible to adjust the generic ACPI device
+notification handling code to take this firmware behavior into account
+kind of as expected.  That is, if a device check notification is
+received on a device object without a hotplug context, look for its
+closest ancestor that has a hotplug context or otherwise can handle
+hotplug and trigger a bus check from it as though it got a bus check
+notification.
 
-To that end, both Asus and Lenovo offer sPPT and fPPT adjustment, so
-there is no risk with exposing that to userspace in Linux
-specifically. As long as the limits are bounded.
+Please check the attached (completely untested) patch.
 
-Antheas
+--000000000000ad149006230b17a7
+Content-Type: text/x-patch; charset="US-ASCII"; name="acpi-hotplig-extend.patch"
+Content-Disposition: attachment; filename="acpi-hotplig-extend.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_m1jozn720>
+X-Attachment-Id: f_m1jozn720
+
+LS0tCiBkcml2ZXJzL2FjcGkvc2Nhbi5jIHwgICA3OSArKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNTIgaW5zZXJ0aW9u
+cygrKSwgMjcgZGVsZXRpb25zKC0pCgpJbmRleDogbGludXgtcG0vZHJpdmVycy9hY3BpL3NjYW4u
+Ywo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09Ci0tLSBsaW51eC1wbS5vcmlnL2RyaXZlcnMvYWNwaS9zY2FuLmMKKysrIGxp
+bnV4LXBtL2RyaXZlcnMvYWNwaS9zY2FuLmMKQEAgLTQzNSw0MiArNDM1LDY4IEBAIHN0YXRpYyBp
+bnQgYWNwaV9nZW5lcmljX2hvdHBsdWdfZXZlbnQoc3QKIAlyZXR1cm4gLUVJTlZBTDsKIH0KIAot
+dm9pZCBhY3BpX2RldmljZV9ob3RwbHVnKHN0cnVjdCBhY3BpX2RldmljZSAqYWRldiwgdTMyIHNy
+YykKK3N0YXRpYyBpbnQgYWNwaV9kZXZpY2VfaG90cGx1Z19ub3RpZnkoc3RydWN0IGFjcGlfZGV2
+aWNlICphZGV2LCB1MzIgdHlwZSkKIHsKLQl1MzIgb3N0X2NvZGUgPSBBQ1BJX09TVF9TQ19OT05f
+U1BFQ0lGSUNfRkFJTFVSRTsKLQlpbnQgZXJyb3IgPSAtRU5PREVWOworCXdoaWxlIChhZGV2KSB7
+CisJCS8qCisJCSAqIFRoZSBkZXZpY2Ugb2JqZWN0J3MgQUNQSSBoYW5kbGUgY2Fubm90IGJlY29t
+ZSBpbnZhbGlkIGFzIGxvbmcKKwkJICogYXMgYWNwaV9zY2FuX2xvY2sgaXMgYmVpbmcgaGVsZCwg
+YnV0IGl0IG1pZ2h0IGhhdmUgYmVjb21lCisJCSAqIGludmFsaWQgYmVmb3JlIHRoYXQgbG9jayB3
+YXMgYWNxdWlyZWQuCisJCSAqLworCQlpZiAoYWRldi0+aGFuZGxlID09IElOVkFMSURfQUNQSV9I
+QU5ETEUpCisJCQlyZXR1cm4gLUVOT0RFVjsKIAotCWxvY2tfZGV2aWNlX2hvdHBsdWcoKTsKLQlt
+dXRleF9sb2NrKCZhY3BpX3NjYW5fbG9jayk7CisJCWlmIChhZGV2LT5mbGFncy5pc19kb2NrX3N0
+YXRpb24pCisJCQlyZXR1cm4gZG9ja19ub3RpZnkoYWRldiwgdHlwZSk7CiAKLQkvKgotCSAqIFRo
+ZSBkZXZpY2Ugb2JqZWN0J3MgQUNQSSBoYW5kbGUgY2Fubm90IGJlY29tZSBpbnZhbGlkIGFzIGxv
+bmcgYXMgd2UKLQkgKiBhcmUgaG9sZGluZyBhY3BpX3NjYW5fbG9jaywgYnV0IGl0IG1pZ2h0IGhh
+dmUgYmVjb21lIGludmFsaWQgYmVmb3JlCi0JICogdGhhdCBsb2NrIHdhcyBhY3F1aXJlZC4KLQkg
+Ki8KLQlpZiAoYWRldi0+aGFuZGxlID09IElOVkFMSURfQUNQSV9IQU5ETEUpCi0JCWdvdG8gZXJy
+X291dDsKLQotCWlmIChhZGV2LT5mbGFncy5pc19kb2NrX3N0YXRpb24pIHsKLQkJZXJyb3IgPSBk
+b2NrX25vdGlmeShhZGV2LCBzcmMpOwotCX0gZWxzZSBpZiAoYWRldi0+ZmxhZ3MuaG90cGx1Z19u
+b3RpZnkpIHsKLQkJZXJyb3IgPSBhY3BpX2dlbmVyaWNfaG90cGx1Z19ldmVudChhZGV2LCBzcmMp
+OwotCX0gZWxzZSB7Ci0JCWFjcGlfaHBfbm90aWZ5IG5vdGlmeTsKKwkJaWYgKGFkZXYtPmZsYWdz
+LmhvdHBsdWdfbm90aWZ5KQorCQkJcmV0dXJuIGFjcGlfZ2VuZXJpY19ob3RwbHVnX2V2ZW50KGFk
+ZXYsIHR5cGUpOwogCiAJCWFjcGlfbG9ja19ocF9jb250ZXh0KCk7Ci0JCW5vdGlmeSA9IGFkZXYt
+PmhwID8gYWRldi0+aHAtPm5vdGlmeSA6IE5VTEw7CisKKwkJaWYgKGFkZXYtPmhwKSB7CisJCQlh
+Y3BpX2hwX25vdGlmeSBub3RpZnkgPSBhZGV2LT5ocC0+bm90aWZ5OworCisJCQlhY3BpX3VubG9j
+a19ocF9jb250ZXh0KCk7CisKKwkJCWlmIChXQVJOX09OX09OQ0UoIW5vdGlmeSkpCisJCQkJcmV0
+dXJuIC1FSU5WQUw7CisKKwkJCXJldHVybiBub3RpZnkoYWRldiwgdHlwZSk7CisJCX0KKwogCQlh
+Y3BpX3VubG9ja19ocF9jb250ZXh0KCk7CisKIAkJLyoKIAkJICogVGhlcmUgbWF5IGJlIGFkZGl0
+aW9uYWwgbm90aWZ5IGhhbmRsZXJzIGZvciBkZXZpY2Ugb2JqZWN0cwotCQkgKiB3aXRob3V0IHRo
+ZSAuZXZlbnQoKSBjYWxsYmFjaywgc28gaWdub3JlIHRoZW0gaGVyZS4KKwkJICogd2l0aG91dCB0
+aGUgLmV2ZW50KCkgY2FsbGJhY2ssIHNvIGlnbm9yZSB0aGVtIGhlcmUsIGJ1dCBpZgorCQkgKiB0
+aGUgbm90aWZpY2F0aW9uIHR5cGUgaXMgZWl0aGVyIEFDUElfTk9USUZZX0RFVklDRV9DSEVDSyBv
+cgorCQkgKiBBQ1BJX05PVElGWV9CVVNfQ0hFQ0ssIHByb3BhZ2F0ZSB0byB0aGUgcGFyZW50IGFu
+ZCBhYm92ZSBpdC4KIAkJICovCi0JCWlmIChub3RpZnkpCi0JCQllcnJvciA9IG5vdGlmeShhZGV2
+LCBzcmMpOwotCQllbHNlCi0JCQlnb3RvIG91dDsKKwkJaWYgKHR5cGUgPT0gQUNQSV9OT1RJRllf
+REVWSUNFX0NIRUNLKQorCQkJdHlwZSA9IEFDUElfTk9USUZZX0JVU19DSEVDSzsKKwkJZWxzZSBp
+ZiAodHlwZSAhPSBBQ1BJX05PVElGWV9CVVNfQ0hFQ0spCisJCQlyZXR1cm4gMTsKKworCQlhZGV2
+ID0gYWNwaV9kZXZfcGFyZW50KGFkZXYpOwogCX0KLQlzd2l0Y2ggKGVycm9yKSB7CisKKwlyZXR1
+cm4gLUVOT0RFVjsKK30KKwordm9pZCBhY3BpX2RldmljZV9ob3RwbHVnKHN0cnVjdCBhY3BpX2Rl
+dmljZSAqYWRldiwgdTMyIHNyYykKK3sKKwl1MzIgb3N0X2NvZGUgPSBBQ1BJX09TVF9TQ19OT05f
+U1BFQ0lGSUNfRkFJTFVSRTsKKwlpbnQgcmV0OworCisJbG9ja19kZXZpY2VfaG90cGx1ZygpOwor
+CW11dGV4X2xvY2soJmFjcGlfc2Nhbl9sb2NrKTsKKworCXJldCA9IGFjcGlfZGV2aWNlX2hvdHBs
+dWdfbm90aWZ5KGFkZXYsIHNyYyk7CisJaWYgKHJldCA+IDApCisJCWdvdG8gb3V0OworCisJc3dp
+dGNoIChyZXQpIHsKIAljYXNlIDA6CiAJCW9zdF9jb2RlID0gQUNQSV9PU1RfU0NfU1VDQ0VTUzsK
+IAkJYnJlYWs7CkBAIC00ODUsNyArNTExLDYgQEAgdm9pZCBhY3BpX2RldmljZV9ob3RwbHVnKHN0
+cnVjdCBhY3BpX2RldgogCQlicmVhazsKIAl9CiAKLSBlcnJfb3V0OgogCWFjcGlfZXZhbHVhdGVf
+b3N0KGFkZXYtPmhhbmRsZSwgc3JjLCBvc3RfY29kZSwgTlVMTCk7CiAKICBvdXQ6Cg==
+--000000000000ad149006230b17a7--
 
