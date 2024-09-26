@@ -1,181 +1,172 @@
-Return-Path: <linux-acpi+bounces-8428-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8429-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EC7986C43
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 08:07:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A87C986F12
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 10:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76EF61C21D9D
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 06:07:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2921728AFA3
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 08:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2877C17BB30;
-	Thu, 26 Sep 2024 06:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110311A4E8D;
+	Thu, 26 Sep 2024 08:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="IY7aM5vm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF771171C;
-	Thu, 26 Sep 2024 06:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CC81D5ACF;
+	Thu, 26 Sep 2024 08:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727330861; cv=none; b=YxJCjdenRy7tmggRSfGNYE031oE9mnDzZJkLWYqZ6gSXER/sd+04dNBLEMvD1t1dOInm30gxUckIukWq/2U4ppbZ+M/iQQ1wt5JPJHwvj71a5qLXjfoxQ/7wdfxGOcZ46qedW+jcW7V0kQqlYwntARojgUdArLKJtH3sYyu/QEA=
+	t=1727340039; cv=none; b=RPRAMG70z1uJ8PzOo0QBXHlVHbD/UTaa5+8XdOmIz1AYTBAQHvyqJYTis864fbtuqWrMZRKHmUNC5F0SA7FefcXXJe3lhQCgx7AQZb4TIJ0YIbdugAiOSJdjtnTIVbNHW6eWJVcmg6rYKMED3i3HFtXlFT8UduDY8edJueEEmDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727330861; c=relaxed/simple;
-	bh=flE0/SxIw2s1/D3xi1uXsTnhucCGP69VaiwLMl+F8wM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UqEH+RAOZglR5+3XtpSQ3E1zFvK7Jz5MUMd2g2g4w2fcdgexM6LcS0/q41kSTsWd5Z1LxF5F7o4DNVK8wBfnAbbBXfCUYbwAldV/W0/pY+5sFhwnqgn4TbFBF4J9tnFi2U3FHc3hfmIWei5dAiLScNB/Q3QnI7QIZK0UcroVLng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XDjlN5xjnz10MfK;
-	Thu, 26 Sep 2024 14:06:08 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (unknown [7.193.23.242])
-	by mail.maildlp.com (Postfix) with ESMTPS id 26CEA1402CD;
-	Thu, 26 Sep 2024 14:07:35 +0800 (CST)
-Received: from [10.67.121.59] (10.67.121.59) by kwepemm600004.china.huawei.com
- (7.193.23.242) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 26 Sep
- 2024 14:07:34 +0800
-Message-ID: <e8fdf684-07ca-fc05-e490-72fca37657e4@huawei.com>
-Date: Thu, 26 Sep 2024 14:07:33 +0800
+	s=arc-20240116; t=1727340039; c=relaxed/simple;
+	bh=TORR6vSdlthDV3D7Mttqa6Y0d3EA/9COCIbgvfYa20w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=elpnZJo8ONzUoRWp8/ZfWj7rrA2VHJgkCQpHFZopXxwlcjza32XgNCIAG0WUxAng+OWRKDo0XXDu81I5AEIsfAdI/CjE4fAzR4ClPybrDQplmkAArTJNewpNtQiDdrpWPQ3aYsXFpObOtN6ku9gFq6KdrfmvB5KVIZg9NTnA5aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=IY7aM5vm; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 191E32E08154;
+	Thu, 26 Sep 2024 11:40:24 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1727340025;
+	bh=pCwNv+obHIaPpwKmIRsp2qsyEXFkpXtUdABVsbUprLg=;
+	h=Received:From:Subject:To;
+	b=IY7aM5vmd9EQ5EZTaPikKAwPD3zBsPiyx7rbvX6ahzQ1vDpgSUjHypBMTIfrc3Zzo
+	 0clJ8YLAt6uFOlwRu91Qj9OlLufSio1hrV9taekD6PeR+Nx2dfmnzbv6yGpEQAmvbZ
+	 6O32vS9qh+Do/KmlnhlEZsjPgutKANR4ejvhVRNs=
+Authentication-Results: linux1587.grserver.gr;
+        spf=pass (sender IP is 209.85.208.182) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f182.google.com
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+Received: by mail-lj1-f182.google.com with SMTP id
+ 38308e7fff4ca-2f762de00fbso8350191fa.2;
+        Thu, 26 Sep 2024 01:40:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVCnQF6ED35rk67M7WEskN71SmIA6tdNuTzcTA40xz1O6Qsgzx+HkYhXEZQMUx5apMiu5n/3tTdBGIs@vger.kernel.org,
+ AJvYcCVzN6N2BzWNlFEF1a0jtxcg0d76RRd35UayiFwyIgs0hLcbm36hFmRWkK8Dp/6/mtSiqLxMDJTsukmdAdPhGm7cVceNUw==@vger.kernel.org,
+ AJvYcCXw/amEBeQKRH/TDGf5fgSejzdYHNbRMzlRH8vYN+y58fVNIyZlm4GMSAO8/KrHOpxxk2APpF1feGC7HA4B@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2Ot5x62o2u/LHE9WPSKVS/tAFWA8LrTslTJhKrBRcLMgljAVQ
+	+OkXEsZ57pk7pRNZo19aU73oxsxfejcEDjT9O/VmVhX0LpX121OPWDyzJETRYLxridoog13FbSS
+	NmoJi7hfo9PWxUjXMDwMoQmWjprE=
+X-Google-Smtp-Source: 
+ AGHT+IHX/DXvRxsjnzkx9rGoyfzY+jG7EkBujq7y+0Eqs8DUTTnaxO4ZZjatpypglmAPIyo007/yI2+OCOhosiMuHf0=
+X-Received: by 2002:a2e:819:0:b0:2ef:2344:deec with SMTP id
+ 38308e7fff4ca-2f91ca61108mr22667141fa.45.1727340023091; Thu, 26 Sep 2024
+ 01:40:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v3 1/2] cppc_cpufreq: Use desired perf if feedback ctrs
- are 0 or unchanged
-To: Jie Zhan <zhanjie9@hisilicon.com>, <ionela.voinescu@arm.com>,
-	<beata.michalska@arm.com>, <wangxiongfeng2@huawei.com>,
-	<viresh.kumar@linaro.org>, <rafael@kernel.org>
-CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <wanghuiqiang@huawei.com>,
-	<zhenglifeng1@huawei.com>, <yangyicong@huawei.com>, <liaochang1@huawei.com>,
-	<zengheng4@huawei.com>
-References: <20240919084552.3591400-1-zhanjie9@hisilicon.com>
- <20240919084552.3591400-2-zhanjie9@hisilicon.com>
- <f888bd45-120a-a045-c35c-52ae40ae8a9a@huawei.com>
- <887a977c-c5b0-10d5-256c-06f278b667f7@hisilicon.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <887a977c-c5b0-10d5-256c-06f278b667f7@hisilicon.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600004.china.huawei.com (7.193.23.242)
+References: <20240926025955.1728766-1-superm1@kernel.org>
+In-Reply-To: <20240926025955.1728766-1-superm1@kernel.org>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Thu, 26 Sep 2024 10:40:11 +0200
+X-Gmail-Original-Message-ID: 
+ <CAGwozwFW-YfVb-CW0uVuZ4wG+Kw9oZaRNkMAZfjvQC98BYxp8Q@mail.gmail.com>
+Message-ID: 
+ <CAGwozwFW-YfVb-CW0uVuZ4wG+Kw9oZaRNkMAZfjvQC98BYxp8Q@mail.gmail.com>
+Subject: Re: [RFC 0/2] "custom" ACPI platform profile support
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>,
+	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+X-PPP-Message-ID: 
+ <172734002453.18578.3074044221983098740@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
+Hi Mario,
+Indeed, the proposal looks good but has a few rough edges that would
+make it unsuitable to use currently. Well, for the handheld use-case
+at least.
 
-在 2024/9/26 10:57, Jie Zhan 写道:
->
-> On 25/09/2024 17:28, lihuisong (C) wrote:
->> Hi Jie,
->>
->> LGTM except for some trivial,
->> Reviewed-by: Huisong Li <lihuisong@huawei.com>
-> Thanks.
->
->>
->> 在 2024/9/19 16:45, Jie Zhan 写道:
->>> The CPPC performance feedback counters could be 0 or unchanged when the
->>> target cpu is in a low-power idle state, e.g. power-gated or clock-gated.
->>>
->>> When the counters are 0, cppc_cpufreq_get_rate() returns 0 KHz, which makes
->>> cpufreq_online() get a false error and fail to generate a cpufreq policy.
->>>
->>> When the counters are unchanged, the existing cppc_perf_from_fbctrs()
->>> returns a cached desired perf, but some platforms may update the real
->>> frequency back to the desired perf reg.
->>>
->>> For the above cases in cppc_cpufreq_get_rate(), get the latest desired perf
->>> to reflect the frequency; if failed, return the cached desired perf.
->>>
->>> Fixes: 6a4fec4f6d30 ("cpufreq: cppc: cppc_cpufreq_get_rate() returns zero in all error cases.")
->>> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
->>> Reviewed-by: Zeng Heng <zengheng4@huawei.com>
->>> Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
->>> ---
->>>    drivers/cpufreq/cppc_cpufreq.c | 49 +++++++++++++++++++++++++++-------
->>>    1 file changed, 39 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->>> index bafa32dd375d..e55192303a9f 100644
->>> --- a/drivers/cpufreq/cppc_cpufreq.c
->>> +++ b/drivers/cpufreq/cppc_cpufreq.c
->>> @@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
->>>          perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
->>>                         &fb_ctrs);
->>> +    if (!perf)
->>> +        return;
->>> +
->>>        cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
->>>          perf <<= SCHED_CAPACITY_SHIFT;
->>> @@ -726,11 +729,26 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
->>>          /* Check to avoid divide-by zero and invalid delivered_perf */
->> Now this comment can be removed, right?
-> Didn't notice this comment, but, having a check, I think it still fits.
-> '!delta_reference' avoids divide-by zero, and '!delta_delivered' checks
-> invalid delivered_perf.
-The comment  "avoid divide-by zero" is just for the below code: 
-"(reference_perf * delta_delivered) / delta_reference".
-So It is also useful, but I think It's obvious and it doesn't make much 
-sense.
+This relates to issues of auto-discovery and how the kernel taint is
+applied. For the kernel taint, see my comments on patch 2.
 
-The comment "avoid invalid delivered_perf" is for the return value.
-Now this func return zero which can't count as a valid delivered_perf, 
-right?
+> There are two major ways to tune platform performance in Linux:
+>  * ACPI platform profile
+>  * Manually tuning APU performance
 >
-> So I think we just leave it unchanged.
+> Changing the ACPI platform profile is a "one stop shop" to change
+> performance limits and fan curves all at the same time.
+
+For laptops. A majority of users of handhelds find 3 settings too limiting.
+
+> On AMD systems the manual tuning methods typically involve changing
+> values of settings such as fPPT, sPPT or SPL.
+
+Those names are amd-pmf specific and this proposal does not allow for
+auto-discovery.
+
+Instead, expose attributes `custom_mode` and `custom_mode_choices`,
+that allow for querying the system for available custom modes and
+whether userspace can use them.
+
+In this case, the modes for amd-pmf could be `amd-pmf-spl` and `amd-pmf-user`.
+
+`amd-pmf-spl` could export the attrs {spl_min, spl_max, spl} and allow
+setting TDP using a slider a la Steam Deck. Here, manufacturers should
+be given complete control, e.g., with a LUT and the kernel should not
+taint.
+
+`amd-pmf-user` would expose what is shown in this proposal and taint
+the kernel. Unfortunately, without manufacturer intervention, this
+would be the default for the foreseeable future for boutique devices
+(e.g., GPD, OneXPlayer, Ayaneo).
+
+> The problem with changing these settings manually is that the definition
+> of the ACPI platform profile if supported by the hardware is no longer
+> accurate.  At best this can cause misrepresenting the state of the
+> platform to userspace and at worst can cause the state machine into an
+> invalid state.
 >
->>>        if (!delta_reference || !delta_delivered)
->>> -        return cpu_data->perf_ctrls.desired_perf;
->>> +        return 0;
->>>          return (reference_perf * delta_delivered) / delta_reference;
->>>    }
->>>    +static int cppc_get_perf_ctrs_sample(int cpu,
->>> +                     struct cppc_perf_fb_ctrs *fb_ctrs_t0,
->>> +                     struct cppc_perf_fb_ctrs *fb_ctrs_t1)
->>> +{
->>> +    int ret;
->>> +
->>> +    ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
->>> +    if (ret)
->>> +        return ret;
->>> +
->>> +    udelay(2); /* 2usec delay between sampling */
->>> +
->>> +    return cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
->>> +}
->>> +
->>>    static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->>>    {
->>>        struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
->>> @@ -746,18 +764,29 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->>>          cpufreq_cpu_put(policy);
->>>    -    ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
->>> -    if (ret)
->>> -        return 0;
->>> -
->>> -    udelay(2); /* 2usec delay between sampling */
->>> -
->>> -    ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
->>> -    if (ret)
->>> -        return 0;
->>> +    ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
->>> +    if (ret) {
->>> +        if (ret == -EFAULT)
->>> +            goto out_invalid_counters;
->> suggest that add some comments for ret == -EFAULT case.
->> Because this error code depands on the implementation of cppc_get_perf_ctrs.
->> If add a new exception case which also return -EFAULT, then this switch is unreasonable.
-> Sure. What about adding the following comment:
+> The existence and continued development of projects such as ryzenadj which
+> manipulate debugging interfaces show there is a demand for manually tuning
+> performance.
+
+-demand- -> requirement. Over 90% of handheld users will end up using a slider.
+
+> Furthermore some systems (such as ASUS and Lenovo handhelds) offer an
+> ACPI-WMI interface for changing these settings. If using anything outside
+> that WMI interface the state will be wrong.  If using that WMI interface
+> the platform profile will be wrong.
 >
-> /* -EFAULT indicates that any of the associated CPPC regs is 0. */
-Ack
-> .
+> This series introduces a "custom" ACPI platform profile and adds support
+> for the AMD PMF driver to use it when a user has enabled manual
+> adjustments.
+>
+> If agreeable a similar change should be made to asus-armoury and any other
+> drivers that export the ability to change these settings but also a
+> platform profile.
+
+Indeed, it would be nice if such a change could be made for all
+manufacturer drivers. Much of this proposal would lower the need for
+something like asus-armoury, as asus-wmi would be fully capable of
+supporting this with few changes and around 70% of the asus-armoury
+attrs would then live under /sys/platform.
+
+This also gives us the opportunity for a much needed rename of the variables.
+
+I can speak with the out-of-tree Lenovo Legion Linux's maintainers and
+see if they would like to collaborate on this as well.
+
+Antheas
 
