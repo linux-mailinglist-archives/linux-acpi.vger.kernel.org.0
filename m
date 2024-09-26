@@ -1,154 +1,316 @@
-Return-Path: <linux-acpi+bounces-8449-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8450-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73630987A37
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 22:52:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B797F987AB1
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 23:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6361F25BF9
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 20:52:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAABBB21E91
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 21:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EC617C9E7;
-	Thu, 26 Sep 2024 20:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBB7186E30;
+	Thu, 26 Sep 2024 21:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="Wa3BLzB4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jllw0GgF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C2C17A938;
-	Thu, 26 Sep 2024 20:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DAA185944;
+	Thu, 26 Sep 2024 21:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727383956; cv=none; b=Ge+Zq+Z6H4ASVBAFcOzO+SujscXM+gWHchc9GYvivCKct7dOJW8pvB9BuTyAHvl5MH9KbS8yQAoqcckTafV0evsctAaDWk6AwrMSDJMPsSLcGlPdETQkhg0WiEw9EyVcLNaSQBVzBrVh+cWwSrYI6YXg1cx4o2QGnmIkwf4V67A=
+	t=1727385947; cv=none; b=KA5wN3mj7qFtcMBqQsRJ3Gq53cZ40wzQaDY2LmGWtJjfor8Kns1PeM0HoX4FDyyEXx+7gMDq8PnHo22VqrC6e20PI/3fgAcakoNYCNkW+3UO7glfUaWJYEmfjtyOEfpZwmiCEWJbyVyIDW3p72V1zipsIL8RTz00M4CtFjsl0Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727383956; c=relaxed/simple;
-	bh=2quMK0yMCIuSgqe96zZ3SWNSss/+1orOAKmEa2WwBUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLH47eMh7X2jCLT8aEiCab8eCCTBokqe5pxwqyiOqqoZa120cIAXlW5OhjtWkX/QnDf2NlahufIWks/xK1KtBrusgVl2WTcVv/8Xu1arKj8cL0L9iH/nDoJNOpF5Sv/Q1voZVTbVjCtRFCZ1x79mLXmBjDXmDMouT3amnL2mjuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=Wa3BLzB4; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 092E21C00B3; Thu, 26 Sep 2024 22:52:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1727383951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jMhMO4FPAfkTMbs7d+Q6qQGCH4J/LL74pLoTL/dsHXk=;
-	b=Wa3BLzB4o4dVII2QzveLiXz4zSP/g0dP+29Hv03JOb431wnwMVoDjsURy3KZ5KsFw1+aVA
-	JWmPiUEvmqGpuOf03pbtWRsaHs79bmIa0durkcAm4+rIGW6g+POd4Bybq79Q42VScfo6SU
-	gnu6sR707pE3Qw0m33Mh4joEgIeLsCs=
-Date: Thu, 26 Sep 2024 22:52:29 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux@leemhuis.info,
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Bricked Thinkpad x220 with 6.12-rc0
-Message-ID: <ZvXJjU7gpAchSqiy@amd.ucw.cz>
-References: <ZvW9e8qBiAT5e0Ke@amd.ucw.cz>
- <CAHk-=whj9dbJD0mT6VUW7i16Les5waxWBb1o_XsDKrtQ9iBO1g@mail.gmail.com>
+	s=arc-20240116; t=1727385947; c=relaxed/simple;
+	bh=Z/k344jFIcduYbF/hloNr1fJqpx19RlTrt0oGOQ7ujY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=TTnvLgr1pFofqCGLzmBQBbg22uC6Q+aD6XvcvkBr+iDFSj8iSZb7IdvP6kB9dHkjZguWQ7v9sgx+Nf4IaVQM7xtvNjgTWxnmgwDsMBzS0nu9AXp+2I9mecpNeS4fXK7kyuR8s9Y2w5COS3vaJo+MiJGWQASzytP9C2rfc2ABwjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jllw0GgF; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727385945; x=1758921945;
+  h=date:from:to:cc:subject:message-id;
+  bh=Z/k344jFIcduYbF/hloNr1fJqpx19RlTrt0oGOQ7ujY=;
+  b=jllw0GgFnIW92KdujLk1wJWMhzkgMRxZ1wnqkep3GRormBjMB/3svifQ
+   grh0K9gWCJ6q+Kopo/9KoR/6UicszpOdozujSrPoaPqCqnHmXORfyUP5I
+   UAAU0PD03+Gl4Gz5ExiURCczRwdSkdGw8krftyY2nqn7sqLcGcSWj7f/F
+   LEjHoQ3tYcdfFwu6DCIaGe/N+gaLS6va9oFswUmOqem/0N8pvLc+FNRwi
+   cIjnHMuba/179BrY6EWu2BzRSZJDasL/DZpT+gMkP4SrwjzcrSrTqhl5Z
+   +1HIGmA92+o4m0D50FE14wmGyn/4ezNJAU8tuLScS5JaWaumyjJxzSPeG
+   Q==;
+X-CSE-ConnectionGUID: cZSV89YBQRudBAwRmXxgcg==
+X-CSE-MsgGUID: AHr/PMovQZ6SE5qoZdjAeA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="29398837"
+X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
+   d="scan'208";a="29398837"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 14:25:45 -0700
+X-CSE-ConnectionGUID: 1i6SpoTjTbeQYr0gbfdJmw==
+X-CSE-MsgGUID: eJKve7rVTFWOeWCC3swEEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
+   d="scan'208";a="72301795"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 26 Sep 2024 14:25:43 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1stvzY-000LD5-2s;
+	Thu, 26 Sep 2024 21:25:40 +0000
+Date: Fri, 27 Sep 2024 05:25:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 0da56073d802c38f74d82e9bfb8678408428e334
+Message-ID: <202409270526.psjUbZ45-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jb5XaZHlj7qzygoz"
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whj9dbJD0mT6VUW7i16Les5waxWBb1o_XsDKrtQ9iBO1g@mail.gmail.com>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 0da56073d802c38f74d82e9bfb8678408428e334  Merge branch 'thermal-core-experimental' into bleeding-edge
 
---jb5XaZHlj7qzygoz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 1445m
 
-Hi!
+configs tested: 222
+configs skipped: 3
 
-> > When I press power button, it starts producing some noise (hdd
-> > spinning up), but power light goes pulsating, not on, and I stare at
-> > black screen.
->=20
-> No beep?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-No beep. And no beep when I tried booting with RAM removed.
+tested configs:
+alpha                             allnoconfig    gcc-14.1.0
+alpha                            allyesconfig    clang-20
+alpha                               defconfig    gcc-14.1.0
+arc                              alldefconfig    clang-15
+arc                              allmodconfig    clang-20
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-14.1.0
+arc                              allyesconfig    clang-20
+arc                              allyesconfig    gcc-13.2.0
+arc                                 defconfig    gcc-14.1.0
+arc                     haps_hs_smp_defconfig    gcc-14.1.0
+arc                   randconfig-001-20240926    gcc-14.1.0
+arc                   randconfig-002-20240926    gcc-14.1.0
+arc                           tb10x_defconfig    clang-20
+arm                              allmodconfig    clang-20
+arm                               allnoconfig    gcc-14.1.0
+arm                              allyesconfig    clang-20
+arm                              allyesconfig    gcc-14.1.0
+arm                       aspeed_g5_defconfig    clang-20
+arm                        clps711x_defconfig    clang-15
+arm                                 defconfig    gcc-14.1.0
+arm                          gemini_defconfig    clang-20
+arm                      integrator_defconfig    clang-15
+arm                        keystone_defconfig    clang-20
+arm                            mmp2_defconfig    clang-15
+arm                        multi_v7_defconfig    clang-20
+arm                         mv78xx0_defconfig    clang-15
+arm                         orion5x_defconfig    gcc-14.1.0
+arm                   randconfig-001-20240926    gcc-14.1.0
+arm                   randconfig-002-20240926    gcc-14.1.0
+arm                   randconfig-003-20240926    gcc-14.1.0
+arm                   randconfig-004-20240926    gcc-14.1.0
+arm                           sama5_defconfig    clang-15
+arm                           sunxi_defconfig    gcc-14.1.0
+arm                           u8500_defconfig    clang-20
+arm64                            allmodconfig    clang-20
+arm64                             allnoconfig    gcc-14.1.0
+arm64                               defconfig    gcc-14.1.0
+arm64                 randconfig-001-20240926    gcc-14.1.0
+arm64                 randconfig-002-20240926    gcc-14.1.0
+arm64                 randconfig-003-20240926    gcc-14.1.0
+arm64                 randconfig-004-20240926    gcc-14.1.0
+csky                              allnoconfig    gcc-14.1.0
+csky                                defconfig    clang-20
+csky                                defconfig    gcc-14.1.0
+csky                  randconfig-001-20240926    gcc-14.1.0
+csky                  randconfig-002-20240926    gcc-14.1.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.1.0
+hexagon                          allyesconfig    clang-20
+hexagon                             defconfig    gcc-14.1.0
+hexagon               randconfig-001-20240926    gcc-14.1.0
+hexagon               randconfig-002-20240926    gcc-14.1.0
+i386                             allmodconfig    clang-18
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    clang-18
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    clang-18
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20240926    gcc-12
+i386        buildonly-randconfig-002-20240926    gcc-12
+i386        buildonly-randconfig-003-20240926    gcc-12
+i386        buildonly-randconfig-004-20240926    gcc-12
+i386        buildonly-randconfig-005-20240926    gcc-12
+i386        buildonly-randconfig-006-20240926    gcc-12
+i386                                defconfig    clang-18
+i386                  randconfig-001-20240926    gcc-12
+i386                  randconfig-002-20240926    gcc-12
+i386                  randconfig-003-20240926    gcc-12
+i386                  randconfig-004-20240926    gcc-12
+i386                  randconfig-005-20240926    gcc-12
+i386                  randconfig-006-20240926    gcc-12
+i386                  randconfig-011-20240926    gcc-12
+i386                  randconfig-012-20240926    gcc-12
+i386                  randconfig-013-20240926    gcc-12
+i386                  randconfig-014-20240926    gcc-12
+i386                  randconfig-015-20240926    gcc-12
+i386                  randconfig-016-20240926    gcc-12
+loongarch                        allmodconfig    gcc-14.1.0
+loongarch                         allnoconfig    gcc-14.1.0
+loongarch                           defconfig    gcc-14.1.0
+loongarch             randconfig-001-20240926    gcc-14.1.0
+loongarch             randconfig-002-20240926    gcc-14.1.0
+m68k                             allmodconfig    gcc-14.1.0
+m68k                              allnoconfig    gcc-14.1.0
+m68k                             allyesconfig    gcc-14.1.0
+m68k                          atari_defconfig    gcc-14.1.0
+m68k                                defconfig    gcc-14.1.0
+m68k                          hp300_defconfig    clang-20
+microblaze                       allmodconfig    gcc-14.1.0
+microblaze                        allnoconfig    gcc-14.1.0
+microblaze                       allyesconfig    gcc-14.1.0
+microblaze                          defconfig    gcc-14.1.0
+mips                              allnoconfig    gcc-14.1.0
+mips                         bigsur_defconfig    clang-15
+mips                  cavium_octeon_defconfig    gcc-14.1.0
+mips                  decstation_64_defconfig    clang-15
+mips                  decstation_64_defconfig    clang-20
+mips                          eyeq5_defconfig    clang-20
+mips                           gcw0_defconfig    gcc-14.1.0
+mips                           ip22_defconfig    clang-15
+mips                           ip32_defconfig    clang-15
+mips                     loongson1b_defconfig    clang-15
+mips                         rt305x_defconfig    gcc-14.1.0
+mips                        vocore2_defconfig    clang-15
+nios2                             allnoconfig    gcc-14.1.0
+nios2                               defconfig    gcc-14.1.0
+nios2                 randconfig-001-20240926    gcc-14.1.0
+nios2                 randconfig-002-20240926    gcc-14.1.0
+openrisc                          allnoconfig    clang-20
+openrisc                          allnoconfig    gcc-14.1.0
+openrisc                         allyesconfig    gcc-14.1.0
+openrisc                            defconfig    gcc-12
+parisc                           allmodconfig    gcc-14.1.0
+parisc                            allnoconfig    clang-20
+parisc                            allnoconfig    gcc-14.1.0
+parisc                           allyesconfig    gcc-14.1.0
+parisc                              defconfig    gcc-12
+parisc                randconfig-001-20240926    gcc-14.1.0
+parisc                randconfig-002-20240926    gcc-14.1.0
+parisc64                            defconfig    gcc-14.1.0
+powerpc                          allmodconfig    gcc-14.1.0
+powerpc                           allnoconfig    clang-20
+powerpc                           allnoconfig    gcc-14.1.0
+powerpc                          allyesconfig    clang-20
+powerpc                          allyesconfig    gcc-14.1.0
+powerpc                    amigaone_defconfig    gcc-14.1.0
+powerpc                 canyonlands_defconfig    clang-20
+powerpc                        icon_defconfig    clang-15
+powerpc                      katmai_defconfig    gcc-14.1.0
+powerpc                 linkstation_defconfig    gcc-14.1.0
+powerpc                    mvme5100_defconfig    gcc-14.1.0
+powerpc                      ppc6xx_defconfig    gcc-14.1.0
+powerpc               randconfig-001-20240926    gcc-14.1.0
+powerpc               randconfig-002-20240926    gcc-14.1.0
+powerpc               randconfig-003-20240926    gcc-14.1.0
+powerpc                     stx_gp3_defconfig    clang-20
+powerpc                     tqm5200_defconfig    clang-20
+powerpc                 xes_mpc85xx_defconfig    clang-20
+powerpc64             randconfig-001-20240926    gcc-14.1.0
+powerpc64             randconfig-002-20240926    gcc-14.1.0
+powerpc64             randconfig-003-20240926    gcc-14.1.0
+riscv                            allmodconfig    clang-20
+riscv                            allmodconfig    gcc-14.1.0
+riscv                             allnoconfig    clang-20
+riscv                             allnoconfig    gcc-14.1.0
+riscv                            allyesconfig    clang-20
+riscv                            allyesconfig    gcc-14.1.0
+riscv                               defconfig    gcc-12
+riscv                 randconfig-001-20240926    gcc-14.1.0
+riscv                 randconfig-002-20240926    gcc-14.1.0
+s390                             allmodconfig    clang-20
+s390                             allmodconfig    gcc-14.1.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.1.0
+s390                                defconfig    clang-20
+s390                                defconfig    gcc-12
+s390                  randconfig-001-20240926    gcc-14.1.0
+s390                  randconfig-002-20240926    gcc-14.1.0
+sh                               allmodconfig    gcc-14.1.0
+sh                                allnoconfig    gcc-14.1.0
+sh                               allyesconfig    gcc-14.1.0
+sh                                  defconfig    gcc-12
+sh                         ecovec24_defconfig    gcc-14.1.0
+sh                    randconfig-001-20240926    gcc-14.1.0
+sh                    randconfig-002-20240926    gcc-14.1.0
+sh                          rsk7203_defconfig    clang-20
+sh                          rsk7269_defconfig    gcc-14.1.0
+sh                           se7343_defconfig    clang-15
+sh                           se7712_defconfig    gcc-14.1.0
+sh                             sh03_defconfig    clang-15
+sparc                            allmodconfig    gcc-14.1.0
+sparc                       sparc64_defconfig    clang-20
+sparc64                          alldefconfig    gcc-14.1.0
+sparc64                             defconfig    gcc-12
+sparc64               randconfig-001-20240926    gcc-14.1.0
+sparc64               randconfig-002-20240926    gcc-14.1.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-17
+um                                allnoconfig    clang-20
+um                               allyesconfig    clang-20
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20240926    gcc-14.1.0
+um                    randconfig-002-20240926    gcc-14.1.0
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-18
+x86_64                           allyesconfig    clang-18
+x86_64      buildonly-randconfig-001-20240926    gcc-11
+x86_64      buildonly-randconfig-002-20240926    gcc-11
+x86_64      buildonly-randconfig-003-20240926    gcc-11
+x86_64      buildonly-randconfig-004-20240926    gcc-11
+x86_64      buildonly-randconfig-005-20240926    gcc-11
+x86_64      buildonly-randconfig-006-20240926    gcc-11
+x86_64                              defconfig    clang-18
+x86_64                              defconfig    gcc-11
+x86_64                                  kexec    clang-18
+x86_64                                  kexec    gcc-12
+x86_64                randconfig-001-20240926    gcc-11
+x86_64                randconfig-002-20240926    gcc-11
+x86_64                randconfig-003-20240926    gcc-11
+x86_64                randconfig-004-20240926    gcc-11
+x86_64                randconfig-005-20240926    gcc-11
+x86_64                randconfig-006-20240926    gcc-11
+x86_64                randconfig-011-20240926    gcc-11
+x86_64                randconfig-012-20240926    gcc-11
+x86_64                randconfig-013-20240926    gcc-11
+x86_64                randconfig-014-20240926    gcc-11
+x86_64                randconfig-015-20240926    gcc-11
+x86_64                randconfig-016-20240926    gcc-11
+x86_64                randconfig-071-20240926    gcc-11
+x86_64                randconfig-072-20240926    gcc-11
+x86_64                randconfig-073-20240926    gcc-11
+x86_64                randconfig-074-20240926    gcc-11
+x86_64                randconfig-075-20240926    gcc-11
+x86_64                randconfig-076-20240926    gcc-11
+x86_64                               rhel-8.3    gcc-12
+x86_64                          rhel-8.3-rust    clang-18
+xtensa                            allnoconfig    gcc-14.1.0
+xtensa                  audio_kc705_defconfig    gcc-14.1.0
+xtensa                randconfig-001-20240926    gcc-14.1.0
+xtensa                randconfig-002-20240926    gcc-14.1.0
 
-> > I removed everything, let it sit for a while, but behaviour was the
-> > same. I'm now letting machine "cool" with everything removed,
-> > but... It seems EC is very confused.
-> >
-> > Should I try removing CMOS battery?
->=20
-> It probably won't help. Last time I had something like that, it was
-> the EFI variables being messed up and messing up the boot as a result.
-> That's all in flash.
-
-EFI variables. Ouch. But those really should be later in the boot.
-
-> The CMOS battery these days tends to really just be for maintaining
-> the real-time clock.
->=20
-> But if it's easy to get at, it won't hurt to try either.
-
-I thought it was under RAM cover, but it is not.
-
-> > Is there some magic combination I can hold during boot?
->=20
-> I don't see anything  about keys during power-on in
->=20
->   https://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles_pdf/0a60739_04.=
-pdf
->=20
-> but you can try the usual suspects (hold ESC / Fn / etc during power-on).
->=20
-> But that lenovo pdf says
->  1. Make sure that every connector is connected tightly and correctly.
->  2. DIMM.
->  3. System board.
->=20
-> for your symptoms.
->=20
-> That said, my first suspicion would be a dead harddisk, just because
-> they happen and you hear noise (but it migth just be the disk getting
-> power on its own, and making noise even with a dead system board).
-
-I suspect it is disk spinning up on its own. Confused bios and
-harddisk dying at the same time seems like a lot of coincidence. (And
-it dies before initializing RAM, normally disk is way after that).
-
-I have spinning rust which is easy to reach, plus SSD which is not. I
-removed HDD, and now only reaction on power button is that power LED
-starts blinking.
-
-Nothing else, no CPU fan, nothing. No beeps with removed
-RAMs. I'd expect BIOS to initialize RAM, and then to access EFI
-variables. AFAICT it does not get there. So either hardware died, or
-EC is very confused and fails to boot main CPU.
-
-Not sure how EC keeps its state (not from CMOS battery -- right?) so I
-guess I should leave it without power for several hours hoping it
-clears the fault...?
-
-Best regards (and thanks for help),
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---jb5XaZHlj7qzygoz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZvXJjQAKCRAw5/Bqldv6
-8vZfAJsHyENTc9pKYkhV0AMdn0b2pOtxoACgiy1airpdlLOe3b0cCOKdSKVbqs8=
-=E/Hs
------END PGP SIGNATURE-----
-
---jb5XaZHlj7qzygoz--
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
