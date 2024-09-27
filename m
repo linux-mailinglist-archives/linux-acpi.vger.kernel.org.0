@@ -1,125 +1,102 @@
-Return-Path: <linux-acpi+bounces-8454-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8455-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A842898814A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 11:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816B49881D7
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 11:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556DA1F211A0
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 09:25:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3E11F222D2
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 09:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7061BAEEC;
-	Fri, 27 Sep 2024 09:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9508D187FEE;
+	Fri, 27 Sep 2024 09:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mF5cGAn9"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=skogtun.org header.i=@skogtun.org header.b="DwvNkBzQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [194.63.252.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0D16D9B8;
-	Fri, 27 Sep 2024 09:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4A018D62A;
+	Fri, 27 Sep 2024 09:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.63.252.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727429096; cv=none; b=ketDMOX2EgSbI2/BFbDva2yLO5RpWF/tHyPq/Zh/teooNaxOZ7s60A3WtzVOm0L0YyToqVCrg/1z39yZP19BQyQIFKXh4BxAKVDGec5BZ40oJ6qcbZh88eEt3n/RnELjdGZGBKbnQ2nf/1EOe33PyQ6zshaLdkZgntMPzA3znwM=
+	t=1727430644; cv=none; b=T3fRiMe1jaZd/fd/Jp5/UQU6LBftyQjogwcMEut/isg05g9a6a7eavtO9DUz3e5Hws4qVgNSnxFJLJHQe1+JF53ohYfb9mPMBxn927DuVpWCK25NPp+z54v26i5aGGjnpH0Xdh0UQISCoSu0Q3K82c31y0EIRy/qtqnobao4iRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727429096; c=relaxed/simple;
-	bh=y1yeiT+rifySbDZrsNczQQ8jpJCujtuGcNQPagD6zzU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CD/Oir3Nvy7e2pQeNCVEoC8f8stRaQ79CpuS7dnMv8eMJ+6v+snDlQGB4O2y2+Em9t2cAMFNzn2Ny0zPHcbsSSQcnsM2Q5QHjzcC2OGyHzDq1LuAs6Rhs1bQqd19rOIb70ZIzoIJHk+L3HmGHzeaRu16m/K2a8QvtiuXmg17kcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mF5cGAn9; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42cbb08a1a5so17764285e9.3;
-        Fri, 27 Sep 2024 02:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727429092; x=1728033892; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/RTT5aJJwYQeDfzc5Aoy2fETEx6khrTlU5RyNlFgzMY=;
-        b=mF5cGAn9PrERsnWB7joABixrQwrq9OB5UUOIQ4LsJXqSRfQf+n/H53hmOcT9d8GoWO
-         g4/31qpZwK2r9l49VyUSm+kFLaSoHFqNd1FMQmEZ2NSIq69WOERqrLh/UOORxpuZaOdE
-         DIBB4v4QrgTAxIK+qpzEgSHawDNMcIdKfQekXlUEgXjvwOE8gExgIi62EkMBS0dklNEZ
-         ngfHo/JA4E2B+OiTdY8RFeGf17480Ogn5Sw6EmnhHqQ0d1VqhXPzVSbtauC/1DhLdeMp
-         TP1gHZ8hsj4wDJ44nrJ/OgC2p+M+OV/XFo9TdJPUfU6FO9UIhMCIcMzvoxNlUUgUrbeE
-         4KIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727429092; x=1728033892;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/RTT5aJJwYQeDfzc5Aoy2fETEx6khrTlU5RyNlFgzMY=;
-        b=JW32M+5R1CtwSCnoKszXz0ncLVjkiuCO4bCZ2qtD6Ji1CNW0oxzRuIF75TLLAyJPEx
-         yFSA6gMFi/VPtIXj0qFqFBhxCks6S42FJt9WypsbyyOGYSG761XQLE8gOyjcirjMuGbS
-         Tdwvu8eqBZsEjxtTpVtYR7dyUh3DJvYkJjcBpm9TKi48BlvyMyOFf8Y6AhDTcWKwofBY
-         0yXvuPcjvdDrqD1sDeGJpdzphAbuUd+jaE/oKjB0KJJl39uQxkZkrF8TAYGh3q8yVi1H
-         Ld4nWCL9iXd8atIk6Xxwru9476xZDuuDkxkTyNWlxgcrWAp0RQySH454I3H9f6a2K7nM
-         CSfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVY3HRqs1CHuUujrdBb7iMmAI9+qpnnSPinIQfbTraYLyltCeW5bWz3V8IvlEFMUMSCUiw9ZjzDwIC@vger.kernel.org, AJvYcCWVHy8R6D4h9ukitBrnhIRB4ZKrUbXZJfqQtSzbQgZV+DC2rge4ZYSAQSlTRq0y5lIYgNvFpxUHdVvO6PnE@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/fEEn7TWZkXH+1BlNyFZb9LEXl1tDk+pP3xN3F6ksXM2kuF61
-	0yW1Wn8nqj8w60YDrCeLiKyO3D3N4ie6jpScG6qGxtIALv59DlFGIX7/Gg==
-X-Google-Smtp-Source: AGHT+IGpXpThTma6QJO1S+zAhN6KHrK6GEj4426UT+ny0xvzEoHGIZ6hAyI9Ihj1vpMmcRj2h6wDmw==
-X-Received: by 2002:a05:600c:3b11:b0:42c:b63e:fea6 with SMTP id 5b1f17b1804b1-42f58497f1dmr19294635e9.22.1727429091826;
-        Fri, 27 Sep 2024 02:24:51 -0700 (PDT)
-Received: from localhost.localdomain (158.red-88-11-182.dynamicip.rima-tde.net. [88.11.182.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd56e6665sm1942996f8f.54.2024.09.27.02.24.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 02:24:50 -0700 (PDT)
-From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-To: linux-pci@vger.kernel.org
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	bhelgaas@google.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] PCI: acpiphp_ampere_altra: Switch back to struct platform_driver::remove()
-Date: Fri, 27 Sep 2024 11:24:49 +0200
-Message-Id: <20240927092449.44628-1-sergio.paracuellos@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1727430644; c=relaxed/simple;
+	bh=N+iHZrpJ2KkaxzNy9JDcylLX5uxcG4z2UdR+OzmMOt0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mSTBb/DpMRrt8wzJe1xjfoiPgj5nh0/wjI041FI4bgS8ALIDhHEGb4HkWVF4SJAbljYI8iqaZ2qXlQTFpZPQKXR3hazGzQ0ncpurZSJvOTVoKo1A0NWtWx0fMQXdWS3EhC8PJsvWlwMaxSQBqfaDXMG+YFa3eRWzWkRZBXxB6OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=skogtun.org; spf=pass smtp.mailfrom=skogtun.org; dkim=pass (2048-bit key) header.d=skogtun.org header.i=@skogtun.org header.b=DwvNkBzQ; arc=none smtp.client-ip=194.63.252.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=skogtun.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skogtun.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=skogtun.org
+	; s=ds202312; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:Sender:Reply-To:
+	Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=x5ctretvgsVDiT6kUglBCR2+u5P1/Itys22V3gbPC/o=; b=D
+	wvNkBzQ7WWKMCsgWXROctXuAmLvAlydpe+6YcSEFuzL0QL9W+ixqpxRjio/WdZZFQnbdeeDieVJ8B
+	U5Iggd3JdN/rez2gxqxbI9htLzmG2Tl1EEqQhZiwJvOcrtAoaNflpZb5uS1jm8rsTEnYM42fWvV8m
+	++2on7/sk3iVeyxTPi+ljZX5p6mX/0E0gVtJS7IgO7W16DgQc7xgpS1uV06vkGUJgtuK1KLdDs/5R
+	4H4GyVDvhAqG8JxQWDCgjNXfD+FAjNP3jCKn1LFdduQPrWFc1LsZnWUhYP5ErlafhIX829MpumbWf
+	eFUpbDTDd+tPXiWgJrU1H9VBnY9HrQ78Q==;
+Received: from [2a01:799:d62:ac00:6417:a5fb:b81f:f312] (port=54372)
+	by smtp.domeneshop.no with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <linux@skogtun.org>)
+	id 1su7cR-00HG5x-8I;
+	Fri, 27 Sep 2024 11:50:35 +0200
+Message-ID: <ee575504-6f7c-494f-ba53-7a82a116c363@skogtun.org>
+Date: Fri, 27 Sep 2024 11:50:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bricked Thinkpad x220 with 6.12-rc0
+Content-Language: en-US
+To: Pavel Machek <pavel@ucw.cz>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux@leemhuis.info,
+ ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <ZvW9e8qBiAT5e0Ke@amd.ucw.cz>
+ <CAHk-=whj9dbJD0mT6VUW7i16Les5waxWBb1o_XsDKrtQ9iBO1g@mail.gmail.com>
+ <ZvXJjU7gpAchSqiy@amd.ucw.cz>
+From: Harald Arnesen <linux@skogtun.org>
+In-Reply-To: <ZvXJjU7gpAchSqiy@amd.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
+Pavel Machek [2024-09-26 22:52:29]:
 
-Convert all PCI controller drivers to use .remove(), with the eventual goal
-to drop struct platform_driver::remove_new(). As .remove() and .remove_new()
-have the same prototypes, conversion is done by just changing the structure
-member name in the driver initializer.
+> Hi!
+> 
+>>> When I press power button, it starts producing some noise (hdd
+>>> spinning up), but power light goes pulsating, not on, and I stare at
+>>> black screen.
+>> No beep?
+> No beep. And no beep when I tried booting with RAM removed.
 
-Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
----
- drivers/pci/hotplug/acpiphp_ampere_altra.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Just some random thoughts, probably not very helpful:
 
-Hi Bjorn,
+I assume you have tried pushing F1, F12 or the ThinkVantage Button 
+during boot?
 
-This is the last 'remove_new' inside 'drivers/pci' folder. Since it is
-not in controller I preferred to sent this patch alone.
+Remove and re-insert all ram.
 
-Thanks,
-   Sergio Paracuellos
+Especially if it has an i7 processor, could it be overheating? Try 
+removing the heat sink and apply new thermal grease (and clean the fan, 
+of course).
 
-diff --git a/drivers/pci/hotplug/acpiphp_ampere_altra.c b/drivers/pci/hotplug/acpiphp_ampere_altra.c
-index f5c9e741c1d4..70dbc0431fc6 100644
---- a/drivers/pci/hotplug/acpiphp_ampere_altra.c
-+++ b/drivers/pci/hotplug/acpiphp_ampere_altra.c
-@@ -119,7 +119,7 @@ static struct platform_driver altra_led_driver = {
- 		.acpi_match_table = altra_led_ids,
- 	},
- 	.probe = altra_led_probe,
--	.remove_new = altra_led_remove,
-+	.remove = altra_led_remove,
- };
- module_platform_driver(altra_led_driver);
- 
+I have one of these machines myself, never had any problem with it.
 -- 
-2.25.1
+Hilsen Harald
 
 
