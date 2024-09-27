@@ -1,682 +1,234 @@
-Return-Path: <linux-acpi+bounces-8451-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8452-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71D4987B79
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 01:05:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9181B987D6C
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 06:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486BF280286
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Sep 2024 23:05:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36D61C2194A
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Sep 2024 04:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C441AFB3C;
-	Thu, 26 Sep 2024 23:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A255C15383A;
+	Fri, 27 Sep 2024 04:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bka9ql2A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZ55A7/M"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41842143C4C;
-	Thu, 26 Sep 2024 23:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30C61BC5C;
+	Fri, 27 Sep 2024 04:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727391901; cv=none; b=vDNNZBtf24C8sUnXw/6XZ7DU4trrFKLmtxyiLFNIJQWVGyjt9KFgqlCqske+7uk4bqXjHRZ/rWi88pFjDIlKpEoYzAtWyVFr0e4vvw8JxOvSKggCbNV4ePc8zY1M8JUWrT1/f+vHmx2/mL+UJVxtVv9dzDdwG0B6oD/sfWwtoOU=
+	t=1727409694; cv=none; b=Y3PvtgSZsrk0j2zZEYEm4CwIw84+j7z6uvtpPnAxH5dStcwZTp7T34OGX7OkCZISNjqOBQ3od8DV94fHLxzAAYJpgyH4SkW7wm4HaIAC2nbPKr92YWaf1uWqnHxePEQCJtYfZq2yqpavM17ghLn5xN7mcdEhoF85HOy5cNUsxyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727391901; c=relaxed/simple;
-	bh=Z2l+gcJewtaZGcQ8Bt7cX61r8ZpFy0rWccy06WX3iMI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NB3oC2zpbyPw/OmHqAjll28DtH2+rQZEO4z1DBmNz0D+tIFqI7HVSGNghlg/zPE7Yv01MRxlANxNPgwtZ3sRqFjpWFpZYx3O95PtYNMF6vJeRZoqrE/MOvfLHqGORty1k+4APJynfF5Tz/MnN0Q92iqfCUn/eSDdbxlpo4lJwus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bka9ql2A; arc=none smtp.client-ip=209.85.210.180
+	s=arc-20240116; t=1727409694; c=relaxed/simple;
+	bh=OuwGjPs/0GDD3zQ5oI1PNZjx040lrl2Tct1/Dwm8PYM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ktRI0qGcd8++Bf9oNXyGT40B2+baFd5+EKSzTl8zwPp9zckJ4es3fH7GRoR6qP95e2sZcuvutTj4bVevBcIf8XdsLxusYVeex112iM/E+BwLugodCycbPmzEVI4S7EnUZIyxsJIr658cayxACKN0g8SEsjvwJGdRIlk2ijT5kzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZ55A7/M; arc=none smtp.client-ip=209.85.219.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71798a15ce5so1992890b3a.0;
-        Thu, 26 Sep 2024 16:04:58 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e24a2bc0827so1681963276.2;
+        Thu, 26 Sep 2024 21:01:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727391898; x=1727996698; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GMsIDMK1DDrg0Yyv1jX8w4F76evTMg1B64TtXPFTWOQ=;
-        b=bka9ql2AwuGz+wQUx2OU3HT9lm3+ZANd0637Gy6Yu7b/ZAfqT4/+ZxQ0Dyg9JjGE9n
-         SBFA/2WDFRdEd/c4hr4M6wk2nRGiAbjJmcSiNrAf0G8+WcUcW5+ptdXdDhGCvqdvfU+/
-         YtN/xZO7e/D2sQ8xxnvzDRP4kgudAoFn0EVmBCJzt/WcU5OFvjfp36/rdmCL5M7VOsix
-         CIsRUqWSaTB5lgFfuGxQeKrSyo1ZbX1LVXEpDjGIqo6h8PBBxOUquFrkk/58rBYpreLV
-         bsiORCYQN5ybVCn4IpqquLI8n/V8/og4202Er2304WNgf6uURAEBfHNCMRhAJENhYL8K
-         ZfhA==
+        d=gmail.com; s=20230601; t=1727409692; x=1728014492; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=si9NU6+TS92BTK0S+6BoVB1/3cDqujzSjrtcQVM8mWY=;
+        b=FZ55A7/M0fvag2VRIfsLHXEVV44CCAYUJrR8cPHBtTL6JF88T+5f84E6NRjSy+KYoY
+         UpZmkx3ZTV4EU6YgpfeL9FuYCjYo50h38Z61J3N7Ul5Eg+7fI9Ol4quu5+3jK+E0u8BS
+         ikkgkM9L1GlN5c2G7r425EObJwsLysa1Ux9EtRn8kkFOYVfSPi+0J8jJBuZY5NDyus59
+         uUU1nAj0WLd8X6wxk9w1REnhENenX4f7CF8UJgLGAXkW6xvKmc6xRlQrMqrMN2fVpxE/
+         2VGxCt663OdwM+VloJnjXeUUIVP2RQLOG5GOkYfoOhLDjCjJpOBKBin3GARjinmwn55E
+         gmNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727391898; x=1727996698;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GMsIDMK1DDrg0Yyv1jX8w4F76evTMg1B64TtXPFTWOQ=;
-        b=rv/clO1w3ca6XIuzZ3zhms7m2Sc7WK43RGFIfOS3YTiAEDcsViiK+yT0CqqP6er1n/
-         JgSYhgJUXYH9IV3d6Kn8HCOY5W3gq6ye2+fatRZQgrl7s6HUwknsl0Wbo2HPbISsj1RY
-         qxH2Jdtwuf+JVdtEvSAh2901FWkQOVBUjIaKoBLP85N++d01LR9ubD83vKJG05nSH3me
-         X1f+WnwHzWLHkRfrciTtaWneZeHf3zDfy7Lqk4LcP61bAKB115IZqouSdOmLNaPGPBtE
-         YQyGi9m2nAooToWDQCkcu6qaoPG13hP9nGwT9UkJ/iJMUilfv2jqWldbBd7HkwtDsX8y
-         ZiHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCgCO+hwm0S1Nyc0jCSAW8GViLGJhp5n5dBLATeBe8372M46OeDg7/owII4Rt11BngajCdIMj3LlMTiXNk@vger.kernel.org, AJvYcCVeMbubK+bPgTlqRUdYNQXU8adACFsy5pXCr5Q+ujvtcj2IJM18IeKk1eI52I67p6rrOsqBpsAFIHaO@vger.kernel.org, AJvYcCXOPjcKCrcUHlUN5+RRHNXHZ5FNRnBu320DHWTAEyA0ZpEml/UjO9Ikrx3jXMsdDpIiQ3oKilmT0C2M@vger.kernel.org
-X-Gm-Message-State: AOJu0YxW+6FJc/88aiLass6gvZXtNtfGkYTt/IeVRvNYRdKPlR1UZr0D
-	d4HDiFp7/nNNxiQaaZRChdFVl4m2AENlXMffo0gLNzqRvDqoRcaz
-X-Google-Smtp-Source: AGHT+IF+nGkS9O9uGxE47Gicx01cKZPi/PnmWJEq3myiiVA2CsWcjjHbKBQ7EqG99fOgC6cSl2Zi8g==
-X-Received: by 2002:a05:6a20:b711:b0:1d4:fafb:845d with SMTP id adf61e73a8af0-1d4fafb8945mr1677142637.2.1727391898182;
-        Thu, 26 Sep 2024 16:04:58 -0700 (PDT)
-Received: from fan ([2601:646:8f03:9fee:8795:a5ca:b1bf:1a39])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b264bc88bsm421782b3a.71.2024.09.26.16.04.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Sep 2024 16:04:57 -0700 (PDT)
-From: Fan Ni <nifan.cxl@gmail.com>
-X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
-Date: Thu, 26 Sep 2024 16:04:42 -0700
-To: shiju.jose@huawei.com
-Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
-	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
-	dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com, jgroves@micron.com,
-	vsalve@micron.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com, linuxarm@huawei.com
-Subject: Re: [PATCH v12 02/17] EDAC: Add EDAC scrub control driver
-Message-ID: <ZvXoiiOB330Kv-2Q@fan>
-References: <20240911090447.751-1-shiju.jose@huawei.com>
- <20240911090447.751-3-shiju.jose@huawei.com>
+        d=1e100.net; s=20230601; t=1727409692; x=1728014492;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=si9NU6+TS92BTK0S+6BoVB1/3cDqujzSjrtcQVM8mWY=;
+        b=CTMF/nO0snSFbYccRYycGGZnlgT0KQtq9XjegzKcyvCd1ZSCpS7x5z6CtoRO6p2lbS
+         X0LONhOZZMQ4S+xygjuQg+RA8HTXZMfui6VY8wS2f0eYWNLpMRaUM+IrMFIpeu6G4UOj
+         +Fuj1xZraWl6ZCcAGged2NS7RDA65zWpjsujN3Zz9bVgUplUWp3nsggrSSIKbtczWiQK
+         wmKX8qKVGFOg/V7ceJUR6oc3H9j/HsPQ0XCSwPSOBwn6+EL0ED2zekEcRnZThfmzFFyA
+         ulALqWIbFYv1xAG4Mk+iz3cuz9UM35xgIK/tD1YDDqqsCHH3AWG+oQFzbuRNmoIFjHWF
+         K7VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAlDY7W+3QEJT9USro7qr0mjk8L77wAoBlPLDD2g7PNxO1GAPT8al0yVer0poaTUqAZCCsL2ekCuQgwci/8dKGc1NWRw==@vger.kernel.org, AJvYcCWsgy36QV/Bj5FXwOz2iGFSW/4QC9185XMduuVFxcd0VVnLctJueVOhqphTQHOjuSUmaFyv4jlaF/ttGyFt@vger.kernel.org, AJvYcCXqNufQ6kafKL6Kqk8SIeWamc539gZux76MshgWoebMENZqeylKfDqlHKRK1sCxHvZiLc2C67xPLbLm@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh6Gbshp/SL5sX4UoDWWCk6PpEmdaclD8+MK0XviNzCYQWgNjO
+	w8yV2bfXOzRcxa1m9bUvCdMp3gYONfmbJKbV2laXP9kD5SrK+N+pIojos3TQoXdk8YUKV7/VQ6J
+	Pgd68Tl+H+HscS/JpFB780Y3kkUs=
+X-Google-Smtp-Source: AGHT+IGGYdHguIIvNcmndNmNv7SGpBbSVaqzaIER1HlDyuB1+UtqBvkcaa6eJX0t7Dulfh5X1cWbx0Ct8w2XJ4wTwno=
+X-Received: by 2002:a05:6902:150d:b0:e25:cf54:65d5 with SMTP id
+ 3f1490d57ef6-e2604b280d0mr1357366276.12.1727409691471; Thu, 26 Sep 2024
+ 21:01:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240911090447.751-3-shiju.jose@huawei.com>
+References: <20240926025955.1728766-1-superm1@kernel.org> <20240926025955.1728766-3-superm1@kernel.org>
+ <CAGwozwGXh1RV96hvSEd3HQoKGY+DeRPrhcKMxJUu7STRZURsmg@mail.gmail.com> <a7b94f15-114f-4088-9920-8cef790fc354@kernel.org>
+In-Reply-To: <a7b94f15-114f-4088-9920-8cef790fc354@kernel.org>
+From: Derek John Clark <derekjohn.clark@gmail.com>
+Date: Thu, 26 Sep 2024 21:01:20 -0700
+Message-ID: <CAFqHKTk8U1DoMjeZFYhm_abQ7mxWd6e6Phbm9kGCHPJHfOteHw@mail.gmail.com>
+Subject: Re: [RFC 2/2] platform/x86/amd: pmf: Add manual control support
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Antheas Kapenekakis <lkml@antheas.dev>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, me@kylegospodneti.ch, 
+	Denis Benato <benato.denis96@gmail.com>, Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 11, 2024 at 10:04:31AM +0100, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add generic EDAC scrub control driver supports configuring the memory scrubbers
-> in the system. The device with scrub feature, get the scrub descriptor from the
-> EDAC scrub and registers with the EDAC RAS feature driver, which adds the sysfs
-> scrub control interface. The scrub control attributes for a scrub instance are
-> available to userspace in /sys/bus/edac/devices/<dev-name>/scrub*/.
-> 
-> Generic EDAC scrub driver and the common sysfs scrub interface promotes
-> unambiguous access from the userspace irrespective of the underlying scrub
-> devices.
-> 
-> The sysfs scrub attribute nodes would be present only if the client driver
-> has implemented the corresponding attribute callback function and pass in ops
-> to the EDAC RAS feature driver during registration.
-> 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  Documentation/ABI/testing/sysfs-edac-scrub |  69 ++++
->  drivers/edac/Makefile                      |   1 +
->  drivers/edac/edac_device.c                 |   6 +-
->  drivers/edac/edac_scrub.c                  | 377 +++++++++++++++++++++
->  include/linux/edac.h                       |  30 ++
->  5 files changed, 482 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-edac-scrub
->  create mode 100755 drivers/edac/edac_scrub.c
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-edac-scrub b/Documentation/ABI/testing/sysfs-edac-scrub
-> new file mode 100644
-> index 000000000000..f465cc91423f
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-edac-scrub
-> @@ -0,0 +1,69 @@
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*
+Hello all,
 
-Based on the code below, we can only have scrub0, scrub1, etc.
-So should we use scrubX instead of scrub* here.
+>>> I appreciate the proposal, but giving users this control seems similar
+>>> to using tools like Ryzenadj or Ryzen Master, which are primarily for
+>>> overclocking. Atleast Ryzen Master has a dedicated mailbox with PMFW.
 
-The same for below.
+> In the laptop market I agree with you. However, in the handheld
+> market, users expect to be able to lower the power envelope of the
+> device on demand in a granular fashion. As the battery drop is
+> measured in Watts, tying a slider to Watts is a natural solution.
+>
+> Most of the time, when those controls are used it is to limit the
+> thermal envelope of the device, not exceed it. We want to remove the
+> use of these tools and allow manufacturers the ability to customise
+> the power envelope they offer to users.
 
-Fan
+I agree with Mario here. Due to the use case and battery size, handheld users
+intent is to minimize power draw while maintaining performance. The typical use
+case in "per-watt" control is to manage this. It is usually done
+per-game (either
+manually by the user or recalled with userspace tools). We have found that the
+'performance' profile alone won't always limit the power enough, which decreases
+the playtime, and 'balanced' will limit it too much, decreasing performance.
+Users want to be able to tune a "sweet spot" to get maximal performance from
+both metrics.
 
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		The sysfs EDAC bus devices /<dev-name>/scrub* subdirectory
-> +		belongs to an instance of memory scrub control feature,
-> +		where <dev-name> directory corresponds to a device/memory
-> +		region registered with the EDAC scrub driver and thus
-> +		registered with the generic EDAC RAS driver.
-> +		The sysfs scrub attr nodes would be present only if the
-> +		client driver has implemented the corresponding attr
-> +		callback function and pass in ops to the EDAC RAS feature
-> +		driver during registration.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/addr_range_base
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The base of the address range of the memory region
-> +		to be scrubbed (on-demand scrubbing).
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/addr_range_size
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The size of the address range of the memory region
-> +		to be scrubbed (on-demand scrubbing).
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/enable_background
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) Start/Stop background(patrol) scrubbing if supported.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/enable_on_demand
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) Start/Stop on-demand scrubbing the memory region
-> +		if supported.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/min_cycle_duration
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RO) Supported minimum scrub cycle duration in seconds
-> +		by the memory scrubber.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/max_cycle_duration
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RO) Supported maximum scrub cycle duration in seconds
-> +		by the memory scrubber.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrub*/current_cycle_duration
-> +Date:		Oct 2024
-> +KernelVersion:	6.12
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The current scrub cycle duration in seconds and must be
-> +		within the supported range by the memory scrubber.
-> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
-> index 4edfb83ffbee..fbf0e39ec678 100644
-> --- a/drivers/edac/Makefile
-> +++ b/drivers/edac/Makefile
-> @@ -10,6 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
->  
->  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
->  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
-> +edac_core-y	+= edac_scrub.o
->  
->  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
->  
-> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
-> index e4a5d010ea2d..6381896b6424 100644
-> --- a/drivers/edac/edac_device.c
-> +++ b/drivers/edac/edac_device.c
-> @@ -608,12 +608,16 @@ static int edac_dev_feat_init(struct device *parent,
->  			      const struct edac_dev_feature *ras_feat,
->  			      const struct attribute_group **attr_groups)
->  {
-> -	int num;
-> +	int num, ret;
->  
->  	switch (ras_feat->ft_type) {
->  	case RAS_FEAT_SCRUB:
->  		dev_data->scrub_ops = ras_feat->scrub_ops;
->  		dev_data->private = ras_feat->ctx;
-> +		ret = edac_scrub_get_desc(parent, attr_groups,
-> +					  ras_feat->instance);
-> +		if (ret)
-> +			return ret;
->  		return 1;
->  	case RAS_FEAT_ECS:
->  		num = ras_feat->ecs_info.num_media_frus;
-> diff --git a/drivers/edac/edac_scrub.c b/drivers/edac/edac_scrub.c
-> new file mode 100755
-> index 000000000000..3f8f37629acf
-> --- /dev/null
-> +++ b/drivers/edac/edac_scrub.c
-> @@ -0,0 +1,377 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Generic EDAC scrub driver supports controlling the memory
-> + * scrubbers in the system and the common sysfs scrub interface
-> + * promotes unambiguous access from the userspace.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + */
-> +
-> +#define pr_fmt(fmt)     "EDAC SCRUB: " fmt
-> +
-> +#include <linux/edac.h>
-> +
-> +enum edac_scrub_attributes {
-> +	SCRUB_ADDR_RANGE_BASE,
-> +	SCRUB_ADDR_RANGE_SIZE,
-> +	SCRUB_ENABLE_BACKGROUND,
-> +	SCRUB_ENABLE_ON_DEMAND,
-> +	SCRUB_MIN_CYCLE_DURATION,
-> +	SCRUB_MAX_CYCLE_DURATION,
-> +	SCRUB_CURRENT_CYCLE_DURATION,
-> +	SCRUB_MAX_ATTRS
-> +};
-> +
-> +struct edac_scrub_dev_attr {
-> +	struct device_attribute dev_attr;
-> +	u8 instance;
-> +};
-> +
-> +struct edac_scrub_context {
-> +	char name[EDAC_FEAT_NAME_LEN];
-> +	struct edac_scrub_dev_attr scrub_dev_attr[SCRUB_MAX_ATTRS];
-> +	struct attribute *scrub_attrs[SCRUB_MAX_ATTRS + 1];
-> +	struct attribute_group group;
-> +};
-> +
-> +#define to_scrub_dev_attr(_dev_attr)      \
-> +		container_of(_dev_attr, struct edac_scrub_dev_attr, dev_attr)
-> +
-> +static ssize_t addr_range_base_show(struct device *ras_feat_dev,
-> +				    struct device_attribute *attr,
-> +				    char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u64 base, size;
-> +	int ret;
-> +
-> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "0x%llx\n", base);
-> +}
-> +
-> +static ssize_t addr_range_size_show(struct device *ras_feat_dev,
-> +				    struct device_attribute *attr,
-> +				    char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u64 base, size;
-> +	int ret;
-> +
-> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "0x%llx\n", size);
-> +}
-> +
-> +static ssize_t addr_range_base_store(struct device *ras_feat_dev,
-> +				     struct device_attribute *attr,
-> +				     const char *buf, size_t len)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u64 base, size;
-> +	int ret;
-> +
-> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = kstrtou64(buf, 0, &base);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ops->write_range(ras_feat_dev->parent, ctx->scrub[inst].private, base, size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t addr_range_size_store(struct device *ras_feat_dev,
-> +				     struct device_attribute *attr,
-> +				     const char *buf,
-> +				     size_t len)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u64 base, size;
-> +	int ret;
-> +
-> +	ret = ops->read_range(ras_feat_dev->parent, ctx->scrub[inst].private, &base, &size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = kstrtou64(buf, 0, &size);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ops->write_range(ras_feat_dev->parent, ctx->scrub[inst].private, base, size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t enable_background_store(struct device *ras_feat_dev,
-> +				       struct device_attribute *attr,
-> +				       const char *buf, size_t len)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	bool enable;
-> +	int ret;
-> +
-> +	ret = kstrtobool(buf, &enable);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ops->set_enabled_bg(ras_feat_dev->parent, ctx->scrub[inst].private, enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t enable_background_show(struct device *ras_feat_dev,
-> +				      struct device_attribute *attr, char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	bool enable;
-> +	int ret;
-> +
-> +	ret = ops->get_enabled_bg(ras_feat_dev->parent, ctx->scrub[inst].private, &enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%d\n", enable);
-> +}
-> +
-> +static ssize_t enable_on_demand_show(struct device *ras_feat_dev,
-> +				     struct device_attribute *attr, char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	bool enable;
-> +	int ret;
-> +
-> +	ret = ops->get_enabled_od(ras_feat_dev->parent, ctx->scrub[inst].private, &enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%d\n", enable);
-> +}
-> +
-> +static ssize_t enable_on_demand_store(struct device *ras_feat_dev,
-> +				      struct device_attribute *attr,
-> +				      const char *buf, size_t len)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	bool enable;
-> +	int ret;
-> +
-> +	ret = kstrtobool(buf, &enable);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ops->set_enabled_od(ras_feat_dev->parent, ctx->scrub[inst].private, enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t min_cycle_duration_show(struct device *ras_feat_dev,
-> +				       struct device_attribute *attr,
-> +				       char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u32 val;
-> +	int ret;
-> +
-> +	ret = ops->min_cycle_read(ras_feat_dev->parent, ctx->scrub[inst].private, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%u\n", val);
-> +}
-> +
-> +static ssize_t max_cycle_duration_show(struct device *ras_feat_dev,
-> +				       struct device_attribute *attr,
-> +				       char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u32 val;
-> +	int ret;
-> +
-> +	ret = ops->max_cycle_read(ras_feat_dev->parent, ctx->scrub[inst].private, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%u\n", val);
-> +}
-> +
-> +static ssize_t current_cycle_duration_show(struct device *ras_feat_dev,
-> +					   struct device_attribute *attr,
-> +					   char *buf)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	u32 val;
-> +	int ret;
-> +
-> +	ret = ops->cycle_duration_read(ras_feat_dev->parent, ctx->scrub[inst].private, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%u\n", val);
-> +}
-> +
-> +static ssize_t current_cycle_duration_store(struct device *ras_feat_dev,
-> +					    struct device_attribute *attr,
-> +					    const char *buf, size_t len)
-> +{
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +	long val;
-> +	int ret;
-> +
-> +	ret = kstrtol(buf, 0, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = ops->cycle_duration_write(ras_feat_dev->parent, ctx->scrub[inst].private, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static umode_t scrub_attr_visible(struct kobject *kobj,
-> +				  struct attribute *a, int attr_id)
-> +{
-> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
-> +	struct device_attribute *dev_attr =
-> +				container_of(a, struct device_attribute, attr);
-> +	u8 inst = ((struct edac_scrub_dev_attr *)to_scrub_dev_attr(dev_attr))->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +
-> +	switch (attr_id) {
-> +	case SCRUB_ADDR_RANGE_BASE:
-> +	case SCRUB_ADDR_RANGE_SIZE:
-> +		if (ops->read_range && ops->write_range)
-> +			return a->mode;
-> +		if (ops->read_range)
-> +			return 0444;
-> +		return 0;
-> +	case SCRUB_ENABLE_BACKGROUND:
-> +		if (ops->get_enabled_bg && ops->set_enabled_bg)
-> +			return a->mode;
-> +		if (ops->get_enabled_bg)
-> +			return 0444;
-> +		return 0;
-> +	case SCRUB_ENABLE_ON_DEMAND:
-> +		if (ops->get_enabled_od && ops->set_enabled_od)
-> +			return a->mode;
-> +		if (ops->get_enabled_od)
-> +			return 0444;
-> +		return 0;
-> +	case SCRUB_MIN_CYCLE_DURATION:
-> +		return ops->min_cycle_read ? a->mode : 0;
-> +	case SCRUB_MAX_CYCLE_DURATION:
-> +		return ops->max_cycle_read ? a->mode : 0;
-> +	case SCRUB_CURRENT_CYCLE_DURATION:
-> +		if (ops->cycle_duration_read && ops->cycle_duration_write)
-> +			return a->mode;
-> +		if (ops->cycle_duration_read)
-> +			return 0444;
-> +		return 0;
-> +	default:
-> +		return 0;
-> +	}
-> +}
-> +
-> +#define EDAC_SCRUB_ATTR_RO(_name, _instance)       \
-> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RO(_name), \
-> +				     .instance = _instance })
-> +
-> +#define EDAC_SCRUB_ATTR_WO(_name, _instance)       \
-> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_WO(_name), \
-> +				     .instance = _instance })
-> +
-> +#define EDAC_SCRUB_ATTR_RW(_name, _instance)       \
-> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RW(_name), \
-> +				     .instance = _instance })
-> +
-> +static int scrub_create_desc(struct device *scrub_dev,
-> +			     const struct attribute_group **attr_groups,
-> +			     u8 instance)
-> +{
-> +	struct edac_scrub_context *scrub_ctx;
-> +	struct attribute_group *group;
-> +	int i;
-> +
-> +	scrub_ctx = devm_kzalloc(scrub_dev, sizeof(*scrub_ctx), GFP_KERNEL);
-> +	if (!scrub_ctx)
-> +		return -ENOMEM;
-> +
-> +	group = &scrub_ctx->group;
-> +	scrub_ctx->scrub_dev_attr[0] = EDAC_SCRUB_ATTR_RW(addr_range_base, instance);
-> +	scrub_ctx->scrub_dev_attr[1] = EDAC_SCRUB_ATTR_RW(addr_range_size, instance);
-> +	scrub_ctx->scrub_dev_attr[2] = EDAC_SCRUB_ATTR_RW(enable_background, instance);
-> +	scrub_ctx->scrub_dev_attr[3] = EDAC_SCRUB_ATTR_RW(enable_on_demand, instance);
-> +	scrub_ctx->scrub_dev_attr[4] = EDAC_SCRUB_ATTR_RO(min_cycle_duration, instance);
-> +	scrub_ctx->scrub_dev_attr[5] = EDAC_SCRUB_ATTR_RO(max_cycle_duration, instance);
-> +	scrub_ctx->scrub_dev_attr[6] = EDAC_SCRUB_ATTR_RW(current_cycle_duration, instance);
-> +	for (i = 0; i < SCRUB_MAX_ATTRS; i++)
-> +		scrub_ctx->scrub_attrs[i] = &scrub_ctx->scrub_dev_attr[i].dev_attr.attr;
-> +
-> +	sprintf(scrub_ctx->name, "%s%d", "scrub", instance);
-> +	group->name = scrub_ctx->name;
-> +	group->attrs = scrub_ctx->scrub_attrs;
-> +	group->is_visible  = scrub_attr_visible;
-> +
-> +	attr_groups[0] = group;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * edac_scrub_get_desc - get EDAC scrub descriptors
-> + * @scrub_dev: client device, with scrub support
-> + * @attr_groups: pointer to attrribute group container
-> + * @instance: device's scrub instance number.
-> + *
-> + * Returns 0 on success, error otherwise.
-> + */
-> +int edac_scrub_get_desc(struct device *scrub_dev,
-> +			const struct attribute_group **attr_groups,
-> +			u8 instance)
-> +{
-> +	if (!scrub_dev || !attr_groups)
-> +		return -EINVAL;
-> +
-> +	return scrub_create_desc(scrub_dev, attr_groups, instance);
-> +}
-> diff --git a/include/linux/edac.h b/include/linux/edac.h
-> index b337254cf5b8..aae8262b9863 100644
-> --- a/include/linux/edac.h
-> +++ b/include/linux/edac.h
-> @@ -674,6 +674,36 @@ enum edac_dev_feat {
->  	RAS_FEAT_MAX
->  };
->  
-> +/**
-> + * struct scrub_ops - scrub device operations (all elements optional)
-> + * @read_range: read base and offset of scrubbing range.
-> + * @write_range: set the base and offset of the scrubbing range.
-> + * @get_enabled_bg: check if currently performing background scrub.
-> + * @set_enabled_bg: start or stop a bg-scrub.
-> + * @get_enabled_od: check if currently performing on-demand scrub.
-> + * @set_enabled_od: start or stop an on-demand scrub.
-> + * @min_cycle_read: minimum supported scrub cycle duration in seconds.
-> + * @max_cycle_read: maximum supported scrub cycle duration in seconds.
-> + * @cycle_duration_read: get the scrub cycle duration in seconds.
-> + * @cycle_duration_write: set the scrub cycle duration in seconds.
-> + */
-> +struct edac_scrub_ops {
-> +	int (*read_range)(struct device *dev, void *drv_data, u64 *base, u64 *size);
-> +	int (*write_range)(struct device *dev, void *drv_data, u64 base, u64 size);
-> +	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable);
-> +	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable);
-> +	int (*get_enabled_od)(struct device *dev, void *drv_data, bool *enable);
-> +	int (*set_enabled_od)(struct device *dev, void *drv_data, bool enable);
-> +	int (*min_cycle_read)(struct device *dev, void *drv_data,  u32 *min);
-> +	int (*max_cycle_read)(struct device *dev, void *drv_data,  u32 *max);
-> +	int (*cycle_duration_read)(struct device *dev, void *drv_data, u32 *cycle);
-> +	int (*cycle_duration_write)(struct device *dev, void *drv_data, u32 cycle);
-> +};
-> +
-> +int edac_scrub_get_desc(struct device *scrub_dev,
-> +			const struct attribute_group **attr_groups,
-> +			u8 instance);
-> +
->  struct edac_ecs_ex_info {
->  	u16 num_media_frus;
->  };
-> -- 
-> 2.34.1
-> 
+>>> While some existing PMF mailboxes are being deprecated, and SPL has
+>>> been removed starting with Strix[1] due to the APTS method.
 
--- 
-Fan Ni
+>Hmm, what do you think about about offering a wrapper for this for
+>people to manipulate?
+
+>>> It's important to use some settings together rather than individually
+>>> (which the users might not be aware of). For instance, updating SPL
+>>> requires corresponding updates to STT limits to avoid negative outcomes.
+
+>The tough part about striking the balance here is how would an end user
+>know what values to set in tandem.  I think a lot of people just assume
+>they can "just change SPL" and that's it and have a good experience.
+
+I'm unsure of the generalized case here, but if we are using this to limit SPL
+rather than raise it over design spec, then it would seem to me that STT would
+be set to match or exceed SPL and the cooling solution would be able to
+compensate for that. I'm happy to be corrected here if this is not a correct
+assumption. I think there may be some variation on how manufacturers implement
+this in the BIOS. For example, the Legion Go uses STT to push TDP to the
+thermal limit (between SPL and SPPT) when using the ACPI profiles. Their
+"custom" profile changes the behavior to fully respect the user set SPL/SPPT/
+FPPT. I'm not sure if/how others handle this differently. In any case,
+I would expect
+the driver could handle this.
+
+>> This suggestion was referring to a combined slider, much like the
+>> suggestion below. So STT limits would be modified in tandem,
+>> respecting manufacturer profiles. See comments below.
+>>
+>> If you find the name SPL disagreeable, it could be named {tdp,
+>> tdp_min, tdp_max}. This is the solution used by Valve on the Steam
+>> Deck (power1_cap{+min,max}, power2_cap{+min,max}).
+
+>It's not so much that it's disagreeable term but Shyam is pointing out
+>that SPL is no longer a valid argument to the platform mailbox.
+
+I think intuitive generic terms would be ideal. [ppt|sppt|fppt]_limit[_min|_max]
+are well understood by power users currently. There should be some
+terminology that applies generally across different implementations of similar
+concepts.
+
+>> In addition, boost is seen as detrimental to handheld devices, with
+>> most users disliking and disabling it. Steam Deck does not use boost.
+>> It is disabled by Steam (power1_cap == power2_cap). So STT and STAPM
+>> are not very relevant. In addition, Steam Deck van gogh has a more
+>> linear response so TDP limits are less required.
+
+I find this to be case by case, some games have more sudden/dynamic loads and
+need the extra overhead, while others will waste it. Flexibility is important I
+think. The Deck also benefits from scale and Steam integration right now so
+publishers are able to, and do, tune for that device specifically. I don't know
+how far the lessons from that device transfer to other handhelds. Having them
+as an option, even if unused, would be a benefit.
+
+>>> Additionally, altering these parameters can exceed thermal limits and
+>>> potentially void warranties.
+>>>
+>>> Considering CnQF, why not let OEMs opt-in and allow the algorithm to
+>>> manage power budgets, rather than providing these controls to users
+>>> from the kernel when userspace tools already exist?
+
+>The problem is all of the RE tools rely upon PCI config space access or
+>/dev/mem access to manipulate undocumented register offsets.
+>
+>When the system is under kernel lockdown (such as with distro kernel
+>when UEFI secure boot is turned on) then those interfaces are
+>intentionally locked down.
+>
+>That's why I'm hoping we can strike some sort of balance at the request
+>for some advanced users being able to tune values in a predictable
+>fashion while also allowing OEMs to configure policies like CNQF or
+>Smart PC when users for users that don't tinker.
+
+>>> Please note that on systems with Smart PC enabled, if users manually
+>>> adjust the system thermals, it can lead to the thermal controls
+>>> becoming unmanageable.
+
+>Yeah; that's why as this RFC patch I didn't let CNQF, ITS or Smart PC
+>initialize.  Basically if manual control is enabled then "SPS" and
+>manual sysfs control is the only thing available.
+
+>> Much like you, we dislike AutoTDP solutions that use e.g., RyzenAdj, as they:
+>>   1) Do not respect manufacturer limits
+>>   2) Cause system instability such as stutters when setting values
+>>   3) Can cause crashes if they access the mailbox at the same time as
+>> the AMD drm driver.
+
+>Yes.  Exactly why I feel that if we offer an interface instead people
+>can use such an interface instead of these tools.
+
+The general consensus on the userspace development side is that we'd like to
+move away from needing to do these hacks to get the most from the hardware. I
+would say things like RyzenAdj, ryzen_smu, acpi_call, etc. have provided enough
+evidence that there is a gap in the baseline functionality that will ultimately
+be filled *somehow*. I'd like to see a move towards this as an acceptable
+in-kernel standard to replace those tools. In that same vein I think it's
+important that common sense defaults and manufacturers intent are respected. I
+have some ideas for how that could be done. If information is not
+available for a
+given device then the "custom" parameter will not be available in
+power_profile_available and attempts to set to it will -EINVAL.
+Similarly, have PPT
+attrs only show in sysfs if that data is available.
+
+- For legacy devices (and likely many smaller "boutique" manufacturers for the
+  foreseeable future) a DMI table with limits for each supported attribute
+  could provide this. Limiting this table to handhelds specifically would be
+  acceptable to me, I don't see the value for laptops personally. For almost
+  everything on the market currently we have this data, provided by the OEM.
+- For devices with WMI (Legion Go, ROG Ally) the manufacturer has provided the
+  methods to get these limits directly, so that could be handled in the
+  appropriate manufacturer WMI drivers.
+- For future devices this information should be (is?) included in the
+  PMF tables in the BIOS and enabled automatically when detected by the driver,
+  which will hopefully reduce the number of necessary kernel patches going
+  forward.
 
