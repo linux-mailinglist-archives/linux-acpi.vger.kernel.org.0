@@ -1,75 +1,75 @@
-Return-Path: <linux-acpi+bounces-8477-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8478-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE27D98912E
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Sep 2024 21:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2A5989131
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Sep 2024 21:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8188AB22B59
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Sep 2024 19:48:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB1D1C236EA
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Sep 2024 19:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DC5175D32;
-	Sat, 28 Sep 2024 19:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBC7185B72;
+	Sat, 28 Sep 2024 19:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VnWCcuhk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lxyt+6Qa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6832816193C;
-	Sat, 28 Sep 2024 19:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8C176AAE;
+	Sat, 28 Sep 2024 19:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727552866; cv=none; b=XcK/WzeX2w/gUb2jC2COnMuwlPuZ5g6Q2u1g3rZa6OlBLnEk2vWaGnVssh/pE4seXtYOg1PDsYRDDQnbh/KgDqA3P+OQ5wZgKkqLhqL3SueVqxtKOtdMaSTGPdI2ukAMjVgBkiis2WmpEXufr2dg3gs+cZ3cSIEgj8Sv1SEeHlo=
+	t=1727552867; cv=none; b=mfBSq5rtwG7rOs33TbrAUxzgG2tLM2DJy7W9mRZSvPL0PwBupIvuH8bPdPYpJQdhyjz/8dDUFlRztcdV7ajL+WJn7Q/wsbFBaiurK5iC22hF927zXP76CkjjHGlSyGMWM2Es4nOcfy4IYDG8pQifXcoi4k+Xlxj2mHI6WTCGVxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727552866; c=relaxed/simple;
-	bh=qpWlHZ/NTb2o2BGag6w0MPuw2Qc51lis5IwTedMxSUc=;
+	s=arc-20240116; t=1727552867; c=relaxed/simple;
+	bh=OmSLqQKAb/QVwFN4C7eKhQPVnPYgmYpfMCMk1y2cALQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PxMvORfbWu/ntYelnAmSzP1ZpFqmggME7k2rQoVOQzNEhadtR+rMBIE1wHlorJEooqcEZoCBnfeksiPdCxsoL5XkJTp+ymB6b0I6QQVGB0IgOW6I34uDpNdPmFmGf9+p9P1I+zsOlnzTiu5TDtdDZ/6bxKTEo/R+CiKMih8tfyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VnWCcuhk; arc=none smtp.client-ip=209.85.218.49
+	 In-Reply-To:To:Cc; b=J1MTbxf7jQiJ4euHx93KFE9U+4xYhPySi6x7WAcnn0ES0/8LLK/MWs2RacJxpVZVyL9iqST2xEfpE7YmPxWamxYCxRwcePCADJJpCufmTGHrMOM/oGGetRH7MIXNMTwhH/XgAPu4wKbaosvl+LKRUleBz5TFh965L2l3lFtFFvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lxyt+6Qa; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a8a7cdfdd80so484307666b.0;
-        Sat, 28 Sep 2024 12:47:44 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c8844f0ccaso2210234a12.0;
+        Sat, 28 Sep 2024 12:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727552862; x=1728157662; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727552864; x=1728157664; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=D3oxEQMoTQStUkn3dra5fpJFLUFy7oc4EXVsPFNPtyI=;
-        b=VnWCcuhkxuYY+eEhMqibieeXTgGQ3xMjbaSmv1hox582G7L67KGMPtOtSatXib8Lqt
-         WRDvuSOQ27bnleX2XPicm4IpsmeHqLeAw+dpHHSeuSZlt5WUQni7JqgC3Jtq0WQ5hiS2
-         Zw0En85zvz5Xl5ifRL5chUVlRKC5M5MoheoVweLUyHglJ9tdtX3nHyfkDYaTbkjo4hA+
-         z35qoTj/xhyjMcdvyrIGmIIWmgJe9dAf//SD/6lVgjd+Qx/ajBkHu22R22rySsDSXORx
-         S431dlsIwPMTyGPkFss28IF+Y5wSKT/p/PNQjy0A4BvFg6hTdL0VKl26ZDNO93Jtmrci
-         hKMw==
+        bh=2iltsOj2nm0hssOij02ApkpMdrgfT0iF/UOR+aKdBio=;
+        b=Lxyt+6Qa4/Pw6iiDXG0IfYGlurKBQcY5Au4R1ByadIRIewKLgdXyZTmkk1xFjgKDNN
+         aZwwInDU7REKF93cFLoejeCT0CA7/xkCtr7bfbx+VG/3Fc27aEnZ/Xu34feTv5sezSQK
+         xzV/Zrh3utKQ/gu16JSb1ireDMrciEDFfjKhaQfV3JgdvWUu4YoEuvSRnhiEfgOuCmZy
+         vUiMIoXVVqBEAEMQV6e2zypVUfMW+0Ohv+6xmipRIYE6pACXY0EJRfC772SPSNLn81py
+         bOx+jQWwBIEMjLO/gCzDjm0O/7YitM/50L0uL79ERbGB/GJilscOQ4Pi7zBuSvZlIWjC
+         K95w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727552862; x=1728157662;
+        d=1e100.net; s=20230601; t=1727552864; x=1728157664;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D3oxEQMoTQStUkn3dra5fpJFLUFy7oc4EXVsPFNPtyI=;
-        b=uK61+2amKV08AT0B0uBBhd7hBBD3F+3rLIr2UyC+cgoAtGuf39i4NNsPWKKFDTJviw
-         ipvNQO0xiFRSOBuUekyDm7BsLu9YbV2EFyu/lZz87VpxBX7r20zfSr2MG64VEZ1FfcHs
-         AEBm5OxCu9RpbEdgQw5pwKIeTTSNoHuT+hV6XAOAiGmlQ4kRZF1IaVhshfBkffX7zf34
-         dx0dZnKdWJpixqEYNriWsqKnjI4SnQMqOfP/KFeArbjm2pdGXqMqiE/3akqy4j+4lvUH
-         zBsOq6wR4lh/P24XQ3dakm9N5ZDmSfW9rOqZPTCYG7d9e6xglIEvRm3y9IVRi9WADdK6
-         AlpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgT4CnHwxBFIhD7ShvWifdF3/fQHiz+COHQRVTgsA75Z46d+mIdrB5GS9YkmctWY+I5Nf2XzIjHh03DLct@vger.kernel.org, AJvYcCX6PRXihAq783ysuoIEsAIKjho1a95CL8MWhPg3qSgvwTntWwPgq+BXPappAztJvQMIZ259CphPAnEW@vger.kernel.org
-X-Gm-Message-State: AOJu0YySuGOnyZLvDR+J/0ZiaCkCxAdHhgy6ay53FC/iQRYmYygI1+WT
-	vV7XcybgtHZV2Xm75LzRNjCz8uq1w6X9z5kEhF4c0M933OnszlAmiszAAg==
-X-Google-Smtp-Source: AGHT+IGSWiSfi9MOzvxotcEzEItEyOMuxAJNIYYdCRTAk8pdsv6wrtk6mfojkV8nVlRWfO8G+BUGuw==
-X-Received: by 2002:a17:906:4787:b0:a86:8953:e1fe with SMTP id a640c23a62f3a-a93c4a69b1fmr805274666b.47.1727552862166;
-        Sat, 28 Sep 2024 12:47:42 -0700 (PDT)
+        bh=2iltsOj2nm0hssOij02ApkpMdrgfT0iF/UOR+aKdBio=;
+        b=O5hyp0U4wiWHDj/AKi+ij5tGX3UCkCw14i/3D8+jBYiyqEvrMup0Ucqf4U3TvqTgd2
+         wOYAGIUNBdQgD79YZBDfgp8RIDR+zIclDQCA3/T9DXW8K/ZwBjb0nNZdgCjWr9rrua4D
+         DeJWWkRYGa9jBUDDqTS3CepL3HpDoyWWge/9cPzbu54afWRjDkkepgToFeSZ7aE3tSCW
+         BTihOG6nDUz+2U/JSYpkQzlfWbmKSiBPfDBznlFodvSw7QceCh7lmWasWCmwWafW35ux
+         pt2j3PFSswaxey+gvsNf53lkbduMTpppMQjYNXokj7kJsTSemtmy0dAZBFLP6JLdlGZT
+         UlXw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5ICVgDX9155HkRXDT1sm/d60pmdkYAFa+4BYhPAtS3qFT04NcvY+IevygywzeVCLFpGAjAyfvOy4SX6mF@vger.kernel.org, AJvYcCXZYu6JOcWmf/JPietJ66Zhim+6EfB71umky4BSiAEXhm/HyOqRrmh5+rtC8wmE/j+X/n4EY5/SpGbS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+ewQ4s+Skc7L6fAxsatZL+IB4bB2xFkN3H2fwY/lVcGGKgW3Q
+	Z6Z2Ad3GpKR0KL4eWSKT35JH84Nx6ckK+/A4P93ciYps0Kv+whgl1YgGEw==
+X-Google-Smtp-Source: AGHT+IFft1o19Zd9czA/C4i/Nk9M0s2es2Xe7eLAYuqbNn7Q27a2SfNiUuDSSopD0Eh+G1YkUuuPow==
+X-Received: by 2002:a17:907:6094:b0:a86:c372:14c3 with SMTP id a640c23a62f3a-a93c4a4e0e5mr933056566b.48.1727552863793;
+        Sat, 28 Sep 2024 12:47:43 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-2243-8f1c-2a7e-ca73.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:2243:8f1c:2a7e:ca73])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2775c22sm283707466b.20.2024.09.28.12.47.40
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2775c22sm283707466b.20.2024.09.28.12.47.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Sep 2024 12:47:41 -0700 (PDT)
+        Sat, 28 Sep 2024 12:47:43 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sat, 28 Sep 2024 21:47:36 +0200
-Subject: [PATCH 2/3] gpio: sim: switch to
+Date: Sat, 28 Sep 2024 21:47:37 +0200
+Subject: [PATCH 3/3] gpio: acpi: switch to
  device_for_each_child_node_scoped()
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240928-gpio_device_for_each_child_node_scoped-v1-2-c20eff315f4f@gmail.com>
+Message-Id: <20240928-gpio_device_for_each_child_node_scoped-v1-3-c20eff315f4f@gmail.com>
 References: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
 In-Reply-To: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
 To: Hoan Tran <hoan@os.amperecomputing.com>, 
@@ -92,11 +92,11 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-acpi@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727552857; l=1102;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727552857; l=1319;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=qpWlHZ/NTb2o2BGag6w0MPuw2Qc51lis5IwTedMxSUc=;
- b=exW502MojY/GuHnYjnxzF0t5w2M1q4MukLV5X5wjFNs3gRlr63O1Py6ybGW/BnO8t5t1kPHbj
- pRliwo5CcS6BeQeBw6hh8NZmKPneKGcnxKRozQXVMyjBY+hELNjNjTR
+ bh=OmSLqQKAb/QVwFN4C7eKhQPVnPYgmYpfMCMk1y2cALQ=;
+ b=eOSvEiYIr9MxSawrD21/c/lnXe8QWnJQBkoIprV+FI1oauBP+WU4gbv9Hmjc7olsJlQadDQEB
+ S+NLzUpfVpSDtsni7kcxNDp/2MgJhtuDG9m4jl5nQ/Qvsoup86C5A4m
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
@@ -108,31 +108,32 @@ without the required call to fwnode_handle_put().
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/gpio/gpio-sim.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpio/gpiolib-acpi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
-index dcca1d7f173e..f387dad81f29 100644
---- a/drivers/gpio/gpio-sim.c
-+++ b/drivers/gpio/gpio-sim.c
-@@ -520,15 +520,12 @@ static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
- static int gpio_sim_probe(struct platform_device *pdev)
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 78ecd56123a3..1f9fe50bba00 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1315,9 +1315,8 @@ acpi_gpiochip_parse_own_gpio(struct acpi_gpio_chip *achip,
+ static void acpi_gpiochip_scan_gpios(struct acpi_gpio_chip *achip)
  {
- 	struct device *dev = &pdev->dev;
--	struct fwnode_handle *swnode;
- 	int ret;
+ 	struct gpio_chip *chip = achip->chip;
+-	struct fwnode_handle *fwnode;
  
--	device_for_each_child_node(dev, swnode) {
-+	device_for_each_child_node_scoped(dev, swnode) {
- 		ret = gpio_sim_add_bank(swnode, dev);
--		if (ret) {
--			fwnode_handle_put(swnode);
-+		if (ret)
- 			return ret;
--		}
+-	device_for_each_child_node(chip->parent, fwnode) {
++	device_for_each_child_node_scoped(chip->parent, fwnode) {
+ 		unsigned long lflags;
+ 		enum gpiod_flags dflags;
+ 		struct gpio_desc *desc;
+@@ -1335,7 +1334,6 @@ static void acpi_gpiochip_scan_gpios(struct acpi_gpio_chip *achip)
+ 		ret = gpiod_hog(desc, name, lflags, dflags);
+ 		if (ret) {
+ 			dev_err(chip->parent, "Failed to hog GPIO\n");
+-			fwnode_handle_put(fwnode);
+ 			return;
+ 		}
  	}
- 
- 	return 0;
 
 -- 
 2.43.0
