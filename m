@@ -1,124 +1,84 @@
-Return-Path: <linux-acpi+bounces-8479-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8480-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF298989215
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 02:03:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17528989223
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 02:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B254280EA3
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 00:03:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1FBA281130
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 00:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE1023A0;
-	Sun, 29 Sep 2024 00:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="pXFFQGkt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F333F6;
+	Sun, 29 Sep 2024 00:30:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6C82594;
-	Sun, 29 Sep 2024 00:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67149538A;
+	Sun, 29 Sep 2024 00:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727568193; cv=none; b=evDgM+HBq8np80sVUjHjbO4n44tudVq4MAHepmE41dW5mJFtJhofjVsJKCsJxHamrKYgKep7CMYAJ3CVuvHBtTYoyNEKsTPAC9Fg3azgYBqp2X5Y8kJ03xyoqTMz94YvbiNeaEi9KMffHVIjIW/bJ7EbLeDr4n6wj4B11iLjA5U=
+	t=1727569852; cv=none; b=EbRWX4b9KFTFzauR7rTG1GyOlGqFRTZy52P4JQFOMKfQggifJqlJOYA7sWDHab1oYzOSXTCe+tOuolvmZeSeRNVHyfXbv1WrV+FVjEMBIzmjucvU5JsTyTsOvfHA1ZeWDiEHfB1UranjqlB4NDScIYlPi4fhVVURmeEFZhAW3eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727568193; c=relaxed/simple;
-	bh=U3e3anVP2I5mlSlWV5cTmjbYxuRmLsYw2ZO11ASv4R4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CCtgJ3Dd46RGte9V4NteEZl5hC1U8rBqgk3bVywAg5SbCwwsdPH8yLlgrV1KLE7mO6hWJeJvw+4DXCL+maorwlquXZ6V3EJgDamQcvq2b5jBwDwWlQXvIVmRn0PkLCqECJZpUAJwhyahQu2Iag3o4mb7dw/+oj6JGYh/KF0CbyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=pXFFQGkt; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=547Das7nJu/+ANxIPN+NDpwejelzHoEvg/AEGNlGgOQ=; b=pXFFQGkttYKM8lOY
-	8S3peTzXEZ+Ty3HnxmiUb66y9B+L+iPUAyt1nZxXyALJxYueYhgcm5D2yl04q6eRQuoLySBrq+TgR
-	dGpeoDywd6VOiMKq9sfNeXHWZHFuYqGob6oQ5etfjLT+9tk5grBQ8FMZUwiIv2vjoZ5nFRXh+QCTC
-	h9B/4TIEo4vCUmXTwCMeujl3gPCQEMenhNoy9ZkncGMh5KVnMHu98tEkygBCEY20+B74D97GUfUbA
-	r59FXbeofxDXZySFnSiTN8N1Ll0jc6K9yOMV8hgvZmwQhSYefsIR19S8NBqnVnp4hiQyWtSNLe/FR
-	ndO3+nc3Epupemqrrw==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1suhOs-007mHS-0o;
-	Sun, 29 Sep 2024 00:02:58 +0000
-From: linux@treblig.org
-To: robert.moore@intel.com,
-	rafael.j.wysocki@intel.com,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH] ACPICA: Remove unused 'acpi_ps_get_name'
-Date: Sun, 29 Sep 2024 01:02:53 +0100
-Message-ID: <20240929000253.418403-1-linux@treblig.org>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1727569852; c=relaxed/simple;
+	bh=wkC0ylvHkYKBubt20kyRIlUGtXWDFhbHoS4BMq2qwA0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=DEKaeeahvFU37Kt22Pwf5z3EdXO71lvmAPnvM14H/qppWyASQKfe6AQKC98gxbpk+7AEQfIGR88yYJOpOtXadLjp6Ez6vsQDcVLOZhN1kqQ9OHx1sJElh8ptFYNBwQClsLxUvYqLpZy29Yus6gRm9zWn3Ha5emK3hZTI2FeysDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 0E8B292009C; Sun, 29 Sep 2024 02:30:42 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 0AFD492009B;
+	Sun, 29 Sep 2024 01:30:42 +0100 (BST)
+Date: Sun, 29 Sep 2024 01:30:41 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Pavel Machek <pavel@ucw.cz>
+cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, linux@leemhuis.info, 
+    ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+    Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: Bricked Thinkpad x220 with 6.12-rc0
+In-Reply-To: <ZvXJjU7gpAchSqiy@amd.ucw.cz>
+Message-ID: <alpine.DEB.2.21.2409290048590.21893@angie.orcam.me.uk>
+References: <ZvW9e8qBiAT5e0Ke@amd.ucw.cz> <CAHk-=whj9dbJD0mT6VUW7i16Les5waxWBb1o_XsDKrtQ9iBO1g@mail.gmail.com> <ZvXJjU7gpAchSqiy@amd.ucw.cz>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+On Thu, 26 Sep 2024, Pavel Machek wrote:
 
-acpi_ps_get_name is currently unused, remove it.
+> > > When I press power button, it starts producing some noise (hdd
+> > > spinning up), but power light goes pulsating, not on, and I stare at
+> > > black screen.
+> > 
+> > No beep?
+> 
+> No beep. And no beep when I tried booting with RAM removed.
 
-I can't find any history of it's use since git, but I can
-see it was used in 2.5.0, and see a record of a removal
-of uses at Fri Aug 30 00:38:52 2002.
+ According to: 
+<https://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles_pdf/x220_x220i_x220tablet_x220itablet_ug_en.pdf>
+pulsating power-on LED indicates the sleep mode:
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/acpi/acpica/acparser.h |  2 --
- drivers/acpi/acpica/psutils.c  | 17 -----------------
- 2 files changed, 19 deletions(-)
+"The power switch stays lit whenever the computer is on, blinks when the 
+computer is in sleep (standby) mode, and is off when the computer is off."
 
-diff --git a/drivers/acpi/acpica/acparser.h b/drivers/acpi/acpica/acparser.h
-index 6dad786a382c..3a61853591d3 100644
---- a/drivers/acpi/acpica/acparser.h
-+++ b/drivers/acpi/acpica/acparser.h
-@@ -207,8 +207,6 @@ void acpi_ps_free_op(union acpi_parse_object *op);
- 
- u8 acpi_ps_is_leading_char(u32 c);
- 
--u32 acpi_ps_get_name(union acpi_parse_object *op);
--
- void acpi_ps_set_name(union acpi_parse_object *op, u32 name);
- 
- /*
-diff --git a/drivers/acpi/acpica/psutils.c b/drivers/acpi/acpica/psutils.c
-index d550c4af4702..3799ae9f6d39 100644
---- a/drivers/acpi/acpica/psutils.c
-+++ b/drivers/acpi/acpica/psutils.c
-@@ -181,23 +181,6 @@ u8 acpi_ps_is_leading_char(u32 c)
- 	return ((u8) (c == '_' || (c >= 'A' && c <= 'Z')));
- }
- 
--/*
-- * Get op's name (4-byte name segment) or 0 if unnamed
-- */
--u32 acpi_ps_get_name(union acpi_parse_object * op)
--{
--
--	/* The "generic" object has no name associated with it */
--
--	if (op->common.flags & ACPI_PARSEOP_GENERIC) {
--		return (0);
--	}
--
--	/* Only the "Extended" parse objects have a name */
--
--	return (op->named.name);
--}
--
- /*
-  * Set op's name
-  */
--- 
-2.46.2
+I guess the system has become confused somehow.  In the old days pressing 
+and holding <Insert> while powering a PC up would clear any leftover NVRAM 
+(ESCD BIOS) state (I earned a dinner once this way).  I guess this trick 
+no longer works nowadays?
 
+ I presume you've studied the linked document for any hints?
+
+ NB I do believe disconnecting all the power sources is enough for the EC 
+to get completely reset.  It's also what said document suggests to try if 
+you can't bring a system out of sleep (standby).
+
+  Maciej
 
