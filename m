@@ -1,39 +1,39 @@
-Return-Path: <linux-acpi+bounces-8484-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8483-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D657B9892EC
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 05:38:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC119892EB
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 05:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF3281C21D88
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 03:38:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B639C1F2189E
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 03:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF18B22F1C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182B12209D;
 	Sun, 29 Sep 2024 03:38:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A9E18622;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D355B8BE7;
 	Sun, 29 Sep 2024 03:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727581112; cv=none; b=ZJ4saBBl+FtiqXeUfq+JCXVJEebvLSgUz1KWtMzPESAgQiJYi2yc6xsQcXbcOReuk0yCkfrIWu8Q7N9MHmJWGV+em95g+i+WtAYqY2q7sS3mhbd7hlCyTDfKYECXgpJbiNvYoYUJPJSFd/RvBE2ougGAUfQObyhICQIw7b/fYl4=
+	t=1727581112; cv=none; b=pa50WaP9bbSZzJSMl+AuDSZDGZey27uS3gjrCdP0jTdkJPSm7N550W3X3YZppWiA2ztqS1bezew5oXYJ9M+KkNAqVm7E5PYieez+/WQ6QX3DC/SSGVor23JsfcUT7177reTjWnJQWy8NqsWy00q1ttGDichy7B8x6wRaujeXbis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727581112; c=relaxed/simple;
-	bh=QyhnZSCV/4kED/+WUoxOEjsEcTST7fFRK0mbp3oR//c=;
+	bh=yly9J4aGfls6izou1XSM7cihOA9T7xftqDWdWJRgugU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OCEgRQWCBbHuPy1XHNQQ6c1UpXl64ZLSERTT3/J20ylCVped0bSNz8MCBfxVYzlztcHDwhtJwB2STcDNGrfdJ/ep6OYKWOsPqD5Vhc/mVaWT9waN6Q2dOJI/FgqR+5UE5KfB2/SZ2KzjCx/51dDmTwNKmBMjRbN33JxFdun9pXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=tTMYikyo7tInhIYl+bsqW45su3+kxgE4OsA0cY8bqCZn1UtXwLkubYXgD7UIalhOKfgC3WeHXjfEBFtD1/d1gnkk7aQTuw6L+aePejwVIKrr5Lbvyj67Bw0JUprKL9VmLduiAJkFpMqG1AUFz+wXal9ZyxWTBbAUIHn538wCqFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XGVJN1dDmz2Dchg;
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XGVJN4FCmz2QTwJ;
 	Sun, 29 Sep 2024 11:37:24 +0800 (CST)
 Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
-	by mail.maildlp.com (Postfix) with ESMTPS id 579371A016C;
+	by mail.maildlp.com (Postfix) with ESMTPS id 8269B180041;
 	Sun, 29 Sep 2024 11:38:16 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  dggpeml500019.china.huawei.com (7.185.36.137) with Microsoft SMTP Server
@@ -47,9 +47,9 @@ CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
 	<zhanjie9@hisilicon.com>, <jonathan.cameron@huawei.com>,
 	<wanghuiqiang@huawei.com>, <zhenglifeng1@huawei.com>, <lihuisong@huawei.com>,
 	<yangyicong@huawei.com>, <liaochang1@huawei.com>, <zengheng4@huawei.com>
-Subject: [PATCH v4 1/2] cppc_cpufreq: Use desired perf if feedback ctrs are 0 or unchanged
-Date: Sun, 29 Sep 2024 11:32:13 +0800
-Message-ID: <20240929033214.1039485-2-zhanjie9@hisilicon.com>
+Subject: [PATCH v4 2/2] cppc_cpufreq: Remove HiSilicon CPPC workaround
+Date: Sun, 29 Sep 2024 11:32:14 +0800
+Message-ID: <20240929033214.1039485-3-zhanjie9@hisilicon.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20240929033214.1039485-1-zhanjie9@hisilicon.com>
 References: <20240929033214.1039485-1-zhanjie9@hisilicon.com>
@@ -64,120 +64,129 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  dggpeml500019.china.huawei.com (7.185.36.137)
 
-The CPPC performance feedback counters could be 0 or unchanged when the
-target cpu is in a low-power idle state, e.g. power-gated or clock-gated.
+Since commit 6c8d750f9784 ("cpufreq / cppc: Work around for Hisilicon CPPC
+cpufreq"), we introduce a workround for HiSilicon platforms that do not
+support performance feedback counters, whereas they can get the actual
+frequency from the desired perf register.  Later on, FIE is disabled in
+that workaround as well.
 
-When the counters are 0, cppc_cpufreq_get_rate() returns 0 KHz, which makes
-cpufreq_online() get a false error and fail to generate a cpufreq policy.
+Now the workround can be handled by the common code.  Desired perf would be
+read and converted to frequency if feedback counters don't change.  FIE
+would be disabled if the CPPC regs are in PCC region.
 
-When the counters are unchanged, the existing cppc_perf_from_fbctrs()
-returns a cached desired perf, but some platforms may update the real
-frequency back to the desired perf reg.
+Hence, the workaround is no longer needed and can be safely removed, in an
+effort to consolidate the driver procedure.
 
-For the above cases in cppc_cpufreq_get_rate(), get the latest desired perf
-from the CPPC reg to reflect the frequency because some platforms may
-update the actual frequency back there; if failed, use the cached desired
-perf.
-
-Fixes: 6a4fec4f6d30 ("cpufreq: cppc: cppc_cpufreq_get_rate() returns zero in all error cases.")
 Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-Reviewed-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
+Reviewed-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 Reviewed-by: Huisong Li <lihuisong@huawei.com>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 57 +++++++++++++++++++++++++++-------
- 1 file changed, 46 insertions(+), 11 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 71 ----------------------------------
+ 1 file changed, 71 deletions(-)
 
 diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 1a5ad184d28f..646b466002c6 100644
+index 646b466002c6..ae3424cb3335 100644
 --- a/drivers/cpufreq/cppc_cpufreq.c
 +++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+@@ -36,24 +36,6 @@ static LIST_HEAD(cpu_data_list);
  
- 	perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
- 				     &fb_ctrs);
-+	if (!perf)
-+		return;
-+
- 	cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
+ static bool boost_supported;
  
- 	perf <<= SCHED_CAPACITY_SHIFT;
-@@ -724,13 +727,31 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
- 	delta_delivered = get_delta(fb_ctrs_t1->delivered,
- 				    fb_ctrs_t0->delivered);
+-struct cppc_workaround_oem_info {
+-	char oem_id[ACPI_OEM_ID_SIZE + 1];
+-	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
+-	u32 oem_revision;
+-};
+-
+-static struct cppc_workaround_oem_info wa_info[] = {
+-	{
+-		.oem_id		= "HISI  ",
+-		.oem_table_id	= "HIP07   ",
+-		.oem_revision	= 0,
+-	}, {
+-		.oem_id		= "HISI  ",
+-		.oem_table_id	= "HIP08   ",
+-		.oem_revision	= 0,
+-	}
+-};
+-
+ static struct cpufreq_driver cppc_cpufreq_driver;
  
--	/* Check to avoid divide-by zero and invalid delivered_perf */
-+	/*
-+	 * Avoid divide-by zero and unchanged feedback counters.
-+	 * Leave it for callers to handle.
-+	 */
- 	if (!delta_reference || !delta_delivered)
--		return cpu_data->perf_ctrls.desired_perf;
-+		return 0;
+ static enum {
+@@ -78,7 +60,6 @@ struct cppc_freq_invariance {
+ static DEFINE_PER_CPU(struct cppc_freq_invariance, cppc_freq_inv);
+ static struct kthread_worker *kworker_fie;
  
- 	return (reference_perf * delta_delivered) / delta_reference;
- }
+-static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu);
+ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
+ 				 struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+ 				 struct cppc_perf_fb_ctrs *fb_ctrs_t1);
+@@ -847,57 +828,6 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
+ 	.name = "cppc_cpufreq",
+ };
  
-+static int cppc_get_perf_ctrs_sample(int cpu,
-+				     struct cppc_perf_fb_ctrs *fb_ctrs_t0,
-+				     struct cppc_perf_fb_ctrs *fb_ctrs_t1)
-+{
-+	int ret;
-+
-+	ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
-+	if (ret)
-+		return ret;
-+
-+	udelay(2); /* 2usec delay between sampling */
-+
-+	return cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
-+}
-+
- static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+-/*
+- * HISI platform does not support delivered performance counter and
+- * reference performance counter. It can calculate the performance using the
+- * platform specific mechanism. We reuse the desired performance register to
+- * store the real performance calculated by the platform.
+- */
+-static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
+-{
+-	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data;
+-	u64 desired_perf;
+-	int ret;
+-
+-	if (!policy)
+-		return -ENODEV;
+-
+-	cpu_data = policy->driver_data;
+-
+-	cpufreq_cpu_put(policy);
+-
+-	ret = cppc_get_desired_perf(cpu, &desired_perf);
+-	if (ret < 0)
+-		return -EIO;
+-
+-	return cppc_perf_to_khz(&cpu_data->perf_caps, desired_perf);
+-}
+-
+-static void cppc_check_hisi_workaround(void)
+-{
+-	struct acpi_table_header *tbl;
+-	acpi_status status = AE_OK;
+-	int i;
+-
+-	status = acpi_get_table(ACPI_SIG_PCCT, 0, &tbl);
+-	if (ACPI_FAILURE(status) || !tbl)
+-		return;
+-
+-	for (i = 0; i < ARRAY_SIZE(wa_info); i++) {
+-		if (!memcmp(wa_info[i].oem_id, tbl->oem_id, ACPI_OEM_ID_SIZE) &&
+-		    !memcmp(wa_info[i].oem_table_id, tbl->oem_table_id, ACPI_OEM_TABLE_ID_SIZE) &&
+-		    wa_info[i].oem_revision == tbl->oem_revision) {
+-			/* Overwrite the get() callback */
+-			cppc_cpufreq_driver.get = hisi_cppc_cpufreq_get_rate;
+-			fie_disabled = FIE_DISABLED;
+-			break;
+-		}
+-	}
+-
+-	acpi_put_table(tbl);
+-}
+-
+ static int __init cppc_cpufreq_init(void)
  {
- 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
-@@ -746,18 +767,32 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 	int ret;
+@@ -905,7 +835,6 @@ static int __init cppc_cpufreq_init(void)
+ 	if (!acpi_cpc_valid())
+ 		return -ENODEV;
  
- 	cpufreq_cpu_put(policy);
+-	cppc_check_hisi_workaround();
+ 	cppc_freq_invariance_init();
+ 	populate_efficiency_class();
  
--	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
--	if (ret)
--		return 0;
--
--	udelay(2); /* 2usec delay between sampling */
--
--	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
--	if (ret)
--		return 0;
-+	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
-+	if (ret) {
-+		if (ret == -EFAULT)
-+			/* Any of the associated CPPC regs is 0. */
-+			goto out_invalid_counters;
-+		else
-+			return 0;
-+	}
- 
- 	delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
- 					       &fb_ctrs_t1);
-+	if (!delivered_perf)
-+		goto out_invalid_counters;
-+
-+	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-+
-+out_invalid_counters:
-+	/*
-+	 * Feedback counters could be unchanged or 0 when a cpu enters a
-+	 * low-power idle state, e.g. clock-gated or power-gated.
-+	 * Use desired perf for reflecting frequency.  Get the latest register
-+	 * value first as some platforms may update the actual delivered perf
-+	 * there; if failed, resort to the cached desired perf.
-+	 */
-+	if (cppc_get_desired_perf(cpu, &delivered_perf))
-+		delivered_perf = cpu_data->perf_ctrls.desired_perf;
- 
- 	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
- }
 -- 
 2.33.0
 
