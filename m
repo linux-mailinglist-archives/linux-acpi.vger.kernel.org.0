@@ -1,141 +1,124 @@
-Return-Path: <linux-acpi+bounces-8478-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8479-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2A5989131
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Sep 2024 21:48:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF298989215
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 02:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB1D1C236EA
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Sep 2024 19:48:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B254280EA3
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Sep 2024 00:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBC7185B72;
-	Sat, 28 Sep 2024 19:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE1023A0;
+	Sun, 29 Sep 2024 00:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lxyt+6Qa"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="pXFFQGkt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8C176AAE;
-	Sat, 28 Sep 2024 19:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6C82594;
+	Sun, 29 Sep 2024 00:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727552867; cv=none; b=mfBSq5rtwG7rOs33TbrAUxzgG2tLM2DJy7W9mRZSvPL0PwBupIvuH8bPdPYpJQdhyjz/8dDUFlRztcdV7ajL+WJn7Q/wsbFBaiurK5iC22hF927zXP76CkjjHGlSyGMWM2Es4nOcfy4IYDG8pQifXcoi4k+Xlxj2mHI6WTCGVxM=
+	t=1727568193; cv=none; b=evDgM+HBq8np80sVUjHjbO4n44tudVq4MAHepmE41dW5mJFtJhofjVsJKCsJxHamrKYgKep7CMYAJ3CVuvHBtTYoyNEKsTPAC9Fg3azgYBqp2X5Y8kJ03xyoqTMz94YvbiNeaEi9KMffHVIjIW/bJ7EbLeDr4n6wj4B11iLjA5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727552867; c=relaxed/simple;
-	bh=OmSLqQKAb/QVwFN4C7eKhQPVnPYgmYpfMCMk1y2cALQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J1MTbxf7jQiJ4euHx93KFE9U+4xYhPySi6x7WAcnn0ES0/8LLK/MWs2RacJxpVZVyL9iqST2xEfpE7YmPxWamxYCxRwcePCADJJpCufmTGHrMOM/oGGetRH7MIXNMTwhH/XgAPu4wKbaosvl+LKRUleBz5TFh965L2l3lFtFFvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lxyt+6Qa; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c8844f0ccaso2210234a12.0;
-        Sat, 28 Sep 2024 12:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727552864; x=1728157664; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2iltsOj2nm0hssOij02ApkpMdrgfT0iF/UOR+aKdBio=;
-        b=Lxyt+6Qa4/Pw6iiDXG0IfYGlurKBQcY5Au4R1ByadIRIewKLgdXyZTmkk1xFjgKDNN
-         aZwwInDU7REKF93cFLoejeCT0CA7/xkCtr7bfbx+VG/3Fc27aEnZ/Xu34feTv5sezSQK
-         xzV/Zrh3utKQ/gu16JSb1ireDMrciEDFfjKhaQfV3JgdvWUu4YoEuvSRnhiEfgOuCmZy
-         vUiMIoXVVqBEAEMQV6e2zypVUfMW+0Ohv+6xmipRIYE6pACXY0EJRfC772SPSNLn81py
-         bOx+jQWwBIEMjLO/gCzDjm0O/7YitM/50L0uL79ERbGB/GJilscOQ4Pi7zBuSvZlIWjC
-         K95w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727552864; x=1728157664;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2iltsOj2nm0hssOij02ApkpMdrgfT0iF/UOR+aKdBio=;
-        b=O5hyp0U4wiWHDj/AKi+ij5tGX3UCkCw14i/3D8+jBYiyqEvrMup0Ucqf4U3TvqTgd2
-         wOYAGIUNBdQgD79YZBDfgp8RIDR+zIclDQCA3/T9DXW8K/ZwBjb0nNZdgCjWr9rrua4D
-         DeJWWkRYGa9jBUDDqTS3CepL3HpDoyWWge/9cPzbu54afWRjDkkepgToFeSZ7aE3tSCW
-         BTihOG6nDUz+2U/JSYpkQzlfWbmKSiBPfDBznlFodvSw7QceCh7lmWasWCmwWafW35ux
-         pt2j3PFSswaxey+gvsNf53lkbduMTpppMQjYNXokj7kJsTSemtmy0dAZBFLP6JLdlGZT
-         UlXw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5ICVgDX9155HkRXDT1sm/d60pmdkYAFa+4BYhPAtS3qFT04NcvY+IevygywzeVCLFpGAjAyfvOy4SX6mF@vger.kernel.org, AJvYcCXZYu6JOcWmf/JPietJ66Zhim+6EfB71umky4BSiAEXhm/HyOqRrmh5+rtC8wmE/j+X/n4EY5/SpGbS@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+ewQ4s+Skc7L6fAxsatZL+IB4bB2xFkN3H2fwY/lVcGGKgW3Q
-	Z6Z2Ad3GpKR0KL4eWSKT35JH84Nx6ckK+/A4P93ciYps0Kv+whgl1YgGEw==
-X-Google-Smtp-Source: AGHT+IFft1o19Zd9czA/C4i/Nk9M0s2es2Xe7eLAYuqbNn7Q27a2SfNiUuDSSopD0Eh+G1YkUuuPow==
-X-Received: by 2002:a17:907:6094:b0:a86:c372:14c3 with SMTP id a640c23a62f3a-a93c4a4e0e5mr933056566b.48.1727552863793;
-        Sat, 28 Sep 2024 12:47:43 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-2243-8f1c-2a7e-ca73.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:2243:8f1c:2a7e:ca73])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2775c22sm283707466b.20.2024.09.28.12.47.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Sep 2024 12:47:43 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sat, 28 Sep 2024 21:47:37 +0200
-Subject: [PATCH 3/3] gpio: acpi: switch to
- device_for_each_child_node_scoped()
+	s=arc-20240116; t=1727568193; c=relaxed/simple;
+	bh=U3e3anVP2I5mlSlWV5cTmjbYxuRmLsYw2ZO11ASv4R4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CCtgJ3Dd46RGte9V4NteEZl5hC1U8rBqgk3bVywAg5SbCwwsdPH8yLlgrV1KLE7mO6hWJeJvw+4DXCL+maorwlquXZ6V3EJgDamQcvq2b5jBwDwWlQXvIVmRn0PkLCqECJZpUAJwhyahQu2Iag3o4mb7dw/+oj6JGYh/KF0CbyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=pXFFQGkt; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=547Das7nJu/+ANxIPN+NDpwejelzHoEvg/AEGNlGgOQ=; b=pXFFQGkttYKM8lOY
+	8S3peTzXEZ+Ty3HnxmiUb66y9B+L+iPUAyt1nZxXyALJxYueYhgcm5D2yl04q6eRQuoLySBrq+TgR
+	dGpeoDywd6VOiMKq9sfNeXHWZHFuYqGob6oQ5etfjLT+9tk5grBQ8FMZUwiIv2vjoZ5nFRXh+QCTC
+	h9B/4TIEo4vCUmXTwCMeujl3gPCQEMenhNoy9ZkncGMh5KVnMHu98tEkygBCEY20+B74D97GUfUbA
+	r59FXbeofxDXZySFnSiTN8N1Ll0jc6K9yOMV8hgvZmwQhSYefsIR19S8NBqnVnp4hiQyWtSNLe/FR
+	ndO3+nc3Epupemqrrw==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1suhOs-007mHS-0o;
+	Sun, 29 Sep 2024 00:02:58 +0000
+From: linux@treblig.org
+To: robert.moore@intel.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] ACPICA: Remove unused 'acpi_ps_get_name'
+Date: Sun, 29 Sep 2024 01:02:53 +0100
+Message-ID: <20240929000253.418403-1-linux@treblig.org>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240928-gpio_device_for_each_child_node_scoped-v1-3-c20eff315f4f@gmail.com>
-References: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
-In-Reply-To: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
-To: Hoan Tran <hoan@os.amperecomputing.com>, 
- Serge Semin <fancer.lancer@gmail.com>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-acpi@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727552857; l=1319;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=OmSLqQKAb/QVwFN4C7eKhQPVnPYgmYpfMCMk1y2cALQ=;
- b=eOSvEiYIr9MxSawrD21/c/lnXe8QWnJQBkoIprV+FI1oauBP+WU4gbv9Hmjc7olsJlQadDQEB
- S+NLzUpfVpSDtsni7kcxNDp/2MgJhtuDG9m4jl5nQ/Qvsoup86C5A4m
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Transfer-Encoding: 8bit
 
-Switch to device_for_each_child_node_scoped() to simplify the code by
-removing the need for a call to fwnode_handle_put() in the error path.
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-This also prevents possible memory leaks if new error paths are added
-without the required call to fwnode_handle_put().
+acpi_ps_get_name is currently unused, remove it.
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+I can't find any history of it's use since git, but I can
+see it was used in 2.5.0, and see a record of a removal
+of uses at Fri Aug 30 00:38:52 2002.
+
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/acpi/acpica/acparser.h |  2 --
+ drivers/acpi/acpica/psutils.c  | 17 -----------------
+ 2 files changed, 19 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 78ecd56123a3..1f9fe50bba00 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1315,9 +1315,8 @@ acpi_gpiochip_parse_own_gpio(struct acpi_gpio_chip *achip,
- static void acpi_gpiochip_scan_gpios(struct acpi_gpio_chip *achip)
- {
- 	struct gpio_chip *chip = achip->chip;
--	struct fwnode_handle *fwnode;
+diff --git a/drivers/acpi/acpica/acparser.h b/drivers/acpi/acpica/acparser.h
+index 6dad786a382c..3a61853591d3 100644
+--- a/drivers/acpi/acpica/acparser.h
++++ b/drivers/acpi/acpica/acparser.h
+@@ -207,8 +207,6 @@ void acpi_ps_free_op(union acpi_parse_object *op);
  
--	device_for_each_child_node(chip->parent, fwnode) {
-+	device_for_each_child_node_scoped(chip->parent, fwnode) {
- 		unsigned long lflags;
- 		enum gpiod_flags dflags;
- 		struct gpio_desc *desc;
-@@ -1335,7 +1334,6 @@ static void acpi_gpiochip_scan_gpios(struct acpi_gpio_chip *achip)
- 		ret = gpiod_hog(desc, name, lflags, dflags);
- 		if (ret) {
- 			dev_err(chip->parent, "Failed to hog GPIO\n");
--			fwnode_handle_put(fwnode);
- 			return;
- 		}
- 	}
-
+ u8 acpi_ps_is_leading_char(u32 c);
+ 
+-u32 acpi_ps_get_name(union acpi_parse_object *op);
+-
+ void acpi_ps_set_name(union acpi_parse_object *op, u32 name);
+ 
+ /*
+diff --git a/drivers/acpi/acpica/psutils.c b/drivers/acpi/acpica/psutils.c
+index d550c4af4702..3799ae9f6d39 100644
+--- a/drivers/acpi/acpica/psutils.c
++++ b/drivers/acpi/acpica/psutils.c
+@@ -181,23 +181,6 @@ u8 acpi_ps_is_leading_char(u32 c)
+ 	return ((u8) (c == '_' || (c >= 'A' && c <= 'Z')));
+ }
+ 
+-/*
+- * Get op's name (4-byte name segment) or 0 if unnamed
+- */
+-u32 acpi_ps_get_name(union acpi_parse_object * op)
+-{
+-
+-	/* The "generic" object has no name associated with it */
+-
+-	if (op->common.flags & ACPI_PARSEOP_GENERIC) {
+-		return (0);
+-	}
+-
+-	/* Only the "Extended" parse objects have a name */
+-
+-	return (op->named.name);
+-}
+-
+ /*
+  * Set op's name
+  */
 -- 
-2.43.0
+2.46.2
 
 
