@@ -1,178 +1,141 @@
-Return-Path: <linux-acpi+bounces-8495-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8496-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC9E98A242
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 14:25:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01ED198A3F4
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 15:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF61C1C22645
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 12:25:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98093B23F07
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 13:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62F518E775;
-	Mon, 30 Sep 2024 12:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BC818E36E;
+	Mon, 30 Sep 2024 13:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OrJgl5QK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0ecTz2j"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7100191F7A
-	for <linux-acpi@vger.kernel.org>; Mon, 30 Sep 2024 12:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4AD18E028;
+	Mon, 30 Sep 2024 13:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727698810; cv=none; b=dvmkG4ImZs8pdqevUgBnZmod1WG3kUDx26Osrx3KR1sYBI7iehap73fVMw6a+6QZzRznhQo/7btJW+iVN5ic53F+ApWPUBMU89BYqPawlXv+bn+9BWxIWIKwP7YvqnZ9gaaz1ji4OvzQcuq7N1R6dHP6qhAa97oXw+LwnusK6WQ=
+	t=1727701602; cv=none; b=tgUKIPH8GiHsROTlbapVpFKzMyPKdUZm85en1FQ1uLLq9c7ud3bCGlxyeJVij9FIv6kyNG2tsxC3Uuysvmw2Acwg0x5+4m5Qa6d4yUYbTwlXQYIX8IHz7rBoUZagVtwj4mrKry5dP6iktlQCkNF//HawO2k76KhkbHVl4yX4OWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727698810; c=relaxed/simple;
-	bh=upziftDjOtjXCBeAhaL5D4joMGVDcSN71me9Unpd7/U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aK8OgFkNqsViHJSm2rT4gnuzjKpFRturtxKU+evm29NggsR0EXRknFLBynlyxsjTnRwCQq8vFhtztU6ZiCxHaY3Ek2jBCr8XsSZWtg+EbrScR9ywfwg+EvL17y4Oy47zdRVRpD/7nVhUvF1yZa7HC2RoFSwSLdlRdzCiwfT3cE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OrJgl5QK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727698806;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lV21n5TptWSBXsW0gI1flFcpJS2ZQipun79Pi6sYOpE=;
-	b=OrJgl5QKB3IHpj8wtcfzjNtPQFOnVyadH7M9E/aUdl8ZsBZcamCKN+NHbpyhNHMuydZv1S
-	rQQDP8Zs2AqEZKrftYF/LOhpNhEzKqjkvW5PJXHZxl94DyHvw3A8l20n1l2WxADzZERSjl
-	YgBB4tfdv/4xY5b2kZ6Pgs3cAdeh1P4=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-207-C79Opv61N8etbNQVr-zUnw-1; Mon, 30 Sep 2024 08:20:05 -0400
-X-MC-Unique: C79Opv61N8etbNQVr-zUnw-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a8d13a9cc7aso314635966b.1
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Sep 2024 05:20:05 -0700 (PDT)
+	s=arc-20240116; t=1727701602; c=relaxed/simple;
+	bh=k9HhX6mVAgfUlI2jzdcXzCBCDtSr0IR/SBeHvHmeGN8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZaQhAe+BAeDZtbchJJQrBRScm89O0yOd3STzk3qcq72yiRKZP7yWhxIkHGfL0Xq7Dn3A0euriPIKg8a6BnqpIH6v7GS2bdJ3a9xZaf+KhyZBNie/oA8IjbqpBUbtXuCTzkl7cqKEfalReoWC71Vvjhe9oQF1EasIheDx5g8mufA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0ecTz2j; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2facf48157dso10567321fa.2;
+        Mon, 30 Sep 2024 06:06:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727701599; x=1728306399; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u82CJhAwF4wrvx/NhAEt7j3Fh6rF3J/up6OgwQM+4uY=;
+        b=J0ecTz2jTURmmKpHdrmHyrsNvzbkjF7Evcvf/aAd1Vfo8xyhZrXc+yq2WntQua/bFx
+         KIYomrF72DVvPi4ePBtv2g+LosUpvpxKhYwlpC+IBjE4Fsd+q14TWFo/S/1reMQ81ctF
+         ImoCcNeDse1ryYpRTgbMxHyDisNhSLNVzG4FlzBLc2CRKlBvquIk0r0quDcFcM9xIYxC
+         56gm0pnbXKJYAVO9+QaecQk+82x0aFknrZQhuotNLmSayeSla2PqrMDHXx/dFt+J3dWT
+         M5mvZjBxBgK+LzaIOZO4GZl3/1xYD1c8D+27ohRp0Qz2NqjrnhNbDfssl2TcPsH2mVmQ
+         HJMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727698804; x=1728303604;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lV21n5TptWSBXsW0gI1flFcpJS2ZQipun79Pi6sYOpE=;
-        b=SBzYT3NQYZqPmJtyCEcfCzsPLBsSY/2KJ7BY+5hjWVs4nGPKHQa18NWn1Xp/e7MRlY
-         59+Vz/jhICABG4ASZ6K9pbRkXo249IP+GzlXB5btrFFP+O5YztINzs6zd7H2su+oD8aa
-         cFFnr/OTCnhrfl5TPkDLQ3EveFgn+UsIL8BLAWtfLEHSn5CJdotwQ8LiWqiTEMHI3n6r
-         N0i+Up74ZR1XB4V8lpI2Jm0+TLlIILIMBNFyV5fK2gffu9/3n/uUCOXHkF02Dbkuy3wq
-         hu2kjswB1bnNZVi4RX3MgsRgAcsVRI8pP4DmlOQcpNj+uzmBK6nUZVEKFqhn3YrfCCY0
-         4NRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMTw+vI/TbqyP4xCp1guHrO/4wSd4Yz6ZL5ue1Ox2ZL9cpnIGHBHIE4ciCz4Dyg8q+APczdIX5vezo@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVlMwPXwFr3V6uzMn8XjwZLhUHYqbyspkMC0FVBE1ADYPsYDWE
-	NIYqlkabNztXPLekEshGTtKYS1QOgfsv4V7XClwKwz+HsvY7RVXtwVua8m/hJ1FoeWsn7FVCozS
-	u4kRx76BsVdizLTp79J0p/KzM93I6wuWbdjmU+X0b0/RjxWb32LLDntGJasE=
-X-Received: by 2002:a17:907:1c0d:b0:a80:f81c:fd75 with SMTP id a640c23a62f3a-a93c47e0f3emr1236164966b.0.1727698804135;
-        Mon, 30 Sep 2024 05:20:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5r6xV30A0KWFiIupqSWHeAt3c63zQaRuFOMhJBFaAC8u4Gm0Qu/Co+ZdZTbvMsABRPM9dgg==
-X-Received: by 2002:a17:907:1c0d:b0:a80:f81c:fd75 with SMTP id a640c23a62f3a-a93c47e0f3emr1236161866b.0.1727698803700;
-        Mon, 30 Sep 2024 05:20:03 -0700 (PDT)
-Received: from [10.40.98.157] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2948013sm522911366b.130.2024.09.30.05.20.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Sep 2024 05:20:03 -0700 (PDT)
-Message-ID: <50273312-f158-4afe-b03e-bc6239a549aa@redhat.com>
-Date: Mon, 30 Sep 2024 14:20:02 +0200
+        d=1e100.net; s=20230601; t=1727701599; x=1728306399;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u82CJhAwF4wrvx/NhAEt7j3Fh6rF3J/up6OgwQM+4uY=;
+        b=K0jts+O2ThhIUbCxofQ6ExpRXcis4vVrOCk1uAWcG1xaE5lvTLfXshrE663JPYbUAG
+         EjZDtbCiVaI7zGiJkOLccay0LIzdurR3jxTNF0FtX7FH9/oYieLwqGrGF+W4Cise69x8
+         /zbSD5iRQ7cVczQAbS8GI3f07WBS9BQ9Xp5eWiutp8m8/0bBd9tNzqm/i5hi1AwEiNtT
+         m3FsNLfMwgfECmXCD7HzpB6cUNHwDOaGhQwCS/YLGcr7V4Jw/So5t1gDRiVxgHB/Bh+/
+         gDaV6EIOtNJQAIDP6W4AyiFESEiBVPk/FeEU7X7fk5CDumYHKsohksCm56W/CJZB7WNf
+         Eezg==
+X-Forwarded-Encrypted: i=1; AJvYcCUT0XH1ncDRMpH5pPoM3SwlGADeDL0cOfsSDnEm8nrrR03klXwtBB4uV8v088NcEXyT24HXVbTSlIvQQdyy@vger.kernel.org, AJvYcCWR6kwyg+afx+ohC2gpyIwVun7IOjRjIWBFCWjGHjQjAIdKEzzUXiJvygTsbuTrZqk7KDdkcWQRwMzs@vger.kernel.org, AJvYcCWdZiFf9Us4jyHa3xqE0pltKHlhskpa8PXX4+io+veap+oTfpqPeNqSCmc+tQaU4UN02N48JRmDzBwa9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMYFCbxa/dn+hBlk3G+/JQmMlek9IntuC5+EUdUC2R/Do5z7sr
+	ymAYsd6kV9eeWeLx+mTsOjFX9lMYIPcHDEdcAZN4RBvMnDj2sEzx
+X-Google-Smtp-Source: AGHT+IHH0o5GH3DGKhCASbDKiA/quy7Pz8CrVNMz6JQw2ZJhJAGpu4qxhVX/MfDPRVa4NaHbe0ivNg==
+X-Received: by 2002:a05:651c:1503:b0:2f6:61d7:ab63 with SMTP id 38308e7fff4ca-2f9d3e5f104mr63563021fa.23.1727701598737;
+        Mon, 30 Sep 2024 06:06:38 -0700 (PDT)
+Received: from mobilestation ([178.176.56.174])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f9d4618f39sm13893421fa.117.2024.09.30.06.06.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 06:06:38 -0700 (PDT)
+Date: Mon, 30 Sep 2024 16:06:35 +0300
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Hoan Tran <hoan@os.amperecomputing.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 1/3] gpio: dwapb: switch to
+ device_for_each_child_node_scoped()
+Message-ID: <kyjzvihhpsxkkuerkyg6ja6dcod7njgzmd6emz7rqd4c4lbn32@e7y4er3ngk3l>
+References: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
+ <20240928-gpio_device_for_each_child_node_scoped-v1-1-c20eff315f4f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] ACPI: resource: Loosen the Asus E1404GAB DMI match to
- also cover the E1404GA
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Ben Mayo <benny1091@gmail.com>,
- Tamim Khan <tamim@fusetak.com>, linux-acpi@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org
-References: <20240927141606.66826-1-hdegoede@redhat.com>
- <20240927141606.66826-2-hdegoede@redhat.com>
- <2f45a6ac-5bb7-4954-adb5-3bf706363062@molgen.mpg.de>
- <d69af7ad-244d-45e8-ad7e-4a3ebf30d04d@redhat.com>
- <CAJZ5v0gxSz-aeoDqhp1dS5g6aoDXSn8ZwYB0TuN7SU2Sbar8ow@mail.gmail.com>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0gxSz-aeoDqhp1dS5g6aoDXSn8ZwYB0TuN7SU2Sbar8ow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240928-gpio_device_for_each_child_node_scoped-v1-1-c20eff315f4f@gmail.com>
 
-Hi,
-
-On 30-Sep-24 2:18 PM, Rafael J. Wysocki wrote:
-> On Mon, Sep 30, 2024 at 12:56 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 30-Sep-24 12:42 PM, Paul Menzel wrote:
->>> Dear Hans,
->>>
->>>
->>> Thank you for your patch.
->>>
->>> Am 27.09.24 um 16:16 schrieb Hans de Goede:
->>>> Like other Asus Vivobooks, the Asus Vivobook Go E1404GA has a DSDT
->>>> describing IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
->>>>
->>>>      $ sudo dmesg | grep DMI:.*BIOS
->>>>      [    0.000000] DMI: ASUSTeK COMPUTER INC. Vivobook Go E1404GA_E1404GA/E1404GA, BIOS E1404GA.302 08/23/2023
->>>>      $ sudo cp /sys/firmware/acpi/tables/DSDT dsdt.dat
->>>>      $ iasl -d dsdt.dat
->>>>      $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
->>>>                  IRQ (Level, ActiveLow, Exclusive, )
->>>>                      {1}
->>>>
->>>> There already is an entry in the irq1_level_low_skip_override[] DMI match
->>>> table for the "E1404GAB", change this to match on "E1404GA" to cover
->>>> the E1404GA model as well (DMI_MATCH() does a substring match).
->>>
->>> Ah, good to know. Thank you for fixing it.
->>>
->>>> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
->>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
->>>> Cc: Tamim Khan <tamim@fusetak.com>
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>> Note this patch replaces Paul Menzel's patch which added a new entry
->>>> for the "E1404GA", instead of loosening the "E1404GAB" match:
->>>> https://lore.kernel.org/linux-acpi/20240911081612.3931-1-pmenzel@molgen.mpg.de/
->>>> ---
->>>>   drivers/acpi/resource.c | 4 ++--
->>>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->>>> index 1ff251fd1901..dfe108e2ccde 100644
->>>> --- a/drivers/acpi/resource.c
->>>> +++ b/drivers/acpi/resource.c
->>>> @@ -504,10 +504,10 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
->>>>           },
->>>>       },
->>>>       {
->>>> -        /* Asus Vivobook Go E1404GAB */
->>>> +        /* Asus Vivobook Go E1404GA* */
->>>
->>> I guess people are going to grep for the model, if something does not work, so maybe the known ones should listed. I know it’s not optimal, as the comments are very likely be incomplete, but it’s better than than not having it listed, in my opinion.
->>
->> That is a valid point, OTOH I don't think we want to take patches later just to update
->> the comment if more models show up.
->>
->> I guess we could change the comment to:
->>
->>                 /* Asus Vivobook Go E1404GA / E1404GAB */
->>
->> Rafael any preference from you here ?   (1)
+On Sat, Sep 28, 2024 at 09:47:35PM GMT, Javier Carrasco wrote:
+> Switch to device_for_each_child_node_scoped() to simplify the code by
+> removing the need for a  call to fwnode_handle_put() in the error path.
 > 
-> Not really.
+> This also prevents possible memory leaks if new error paths are added
+> without the required call to fwnode_handle_put().
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-Ok, then my vote goes to keeping this as is. So if you're happy
-with this series please merge it as is.
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
 
-Regards,
+-Serge(y)
 
-Hans
-
-
+> ---
+>  drivers/gpio/gpio-dwapb.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
+> index 798235791f70..bd374fc27174 100644
+> --- a/drivers/gpio/gpio-dwapb.c
+> +++ b/drivers/gpio/gpio-dwapb.c
+> @@ -571,7 +571,6 @@ static void dwapb_get_irq(struct device *dev, struct fwnode_handle *fwnode,
+>  
+>  static struct dwapb_platform_data *dwapb_gpio_get_pdata(struct device *dev)
+>  {
+> -	struct fwnode_handle *fwnode;
+>  	struct dwapb_platform_data *pdata;
+>  	struct dwapb_port_property *pp;
+>  	int nports;
+> @@ -592,7 +591,7 @@ static struct dwapb_platform_data *dwapb_gpio_get_pdata(struct device *dev)
+>  	pdata->nports = nports;
+>  
+>  	i = 0;
+> -	device_for_each_child_node(dev, fwnode)  {
+> +	device_for_each_child_node_scoped(dev, fwnode)  {
+>  		pp = &pdata->properties[i++];
+>  		pp->fwnode = fwnode;
+>  
+> @@ -600,7 +599,6 @@ static struct dwapb_platform_data *dwapb_gpio_get_pdata(struct device *dev)
+>  		    pp->idx >= DWAPB_MAX_PORTS) {
+>  			dev_err(dev,
+>  				"missing/invalid port index for port%d\n", i);
+> -			fwnode_handle_put(fwnode);
+>  			return ERR_PTR(-EINVAL);
+>  		}
+>  
+> 
+> -- 
+> 2.43.0
+> 
 
