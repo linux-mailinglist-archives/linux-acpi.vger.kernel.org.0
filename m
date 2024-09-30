@@ -1,128 +1,115 @@
-Return-Path: <linux-acpi+bounces-8503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8504-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD61C98AC68
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 20:53:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB4F98AC7C
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 21:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61C31C219D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 18:53:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53F41C21B87
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Sep 2024 19:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABF7198A11;
-	Mon, 30 Sep 2024 18:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30FB198E93;
+	Mon, 30 Sep 2024 19:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="cO2Y8auM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDTpP8m+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8C4198E93;
-	Mon, 30 Sep 2024 18:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5974153BD9;
+	Mon, 30 Sep 2024 19:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727722423; cv=none; b=KatejFoyuZGZtMASL46wLwmhbYos++CJ4Oy8loXjooSD+UAxIDARHHj4NVVMD16t6R7ehUSt/1NrAUwKJW5M+t8FY25xQj+DQZNvVcTqyI57FUli/S55J03CgGRXkTCXM6/+vRG0B7WVB/q/tDgqY/ejBzn/BUoEj5ZA8qgLEgQ=
+	t=1727723045; cv=none; b=QEPax+sq7wjBxrG2Ma8cHn/+urehtyvug41u6J7BwW4sxLywTWOifrEOg1Vge2EkfKB+EVRlc/GZiYkxB+V/hLhSiuwKOmW7Svkgf+DSB6qXSgesDLMAM38DwnFTfe90x2XAR+9+Bb+X1vkE0c6V/39v02BTqtz2/L8b+gZ1SkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727722423; c=relaxed/simple;
-	bh=ppReR8GcGyVCEegWkUwP4oz7BDNDQnUjnv0dlUVwO1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=D5lrDfrYc/JWTnDo7lsC4hKZs1XQDczmlAIigxg2FzEGixjGCbSzhcJ2uFdU0puTubm8G+PEx+pSDYJ8vC1bBH6o83tAF3/xykqzi4G3/xAGex6d3chs2bAtdPiJIhfuFC6yhy/q6+tCVWHi7Ldtojy9NWSN5gfwHtrVrIrD3LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=cO2Y8auM; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1727722401; x=1728327201; i=w_armin@gmx.de;
-	bh=qyNnKDWNIRzY7n2r+FhUqUDgrRdnczD0CqYqMHYr4jQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=cO2Y8auMeEy30LUbMwUCfy0CC0uvp4boY2j7s6vIzVV0fwEzmelaA/YeJP7/4o/L
-	 qdtWFIfRAhBPly9wFtLZdSDcQ4camxtGhEkevuNsQ1QUR7H+3V7iLJy16SsoNZCcS
-	 J3Ngjx+2BV9rReR/e6ZK80mZ+0Gfn1gvBBWv7NdxvvHR2kzd3eUGziD+BJ4K3n9yy
-	 EgHtf8PQWD4vQF+CUSG5mT1Rp+ny1vO/bPY4GVYGF0v9p0cPNjW21X6BqY7amAuqH
-	 NyOnfyc89CICzMsrJ7d0YNCksTHMb87ApuN8huSuhu5UgNkw6Vk7ynlr3sjs5boUm
-	 KGEW3B1HvTJvDU6Pjw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MMofW-1sembl3Ck8-00Nuf8; Mon, 30
- Sep 2024 20:53:21 +0200
-Message-ID: <92b62046-d225-4dd8-a894-30f051267f29@gmx.de>
-Date: Mon, 30 Sep 2024 20:53:18 +0200
+	s=arc-20240116; t=1727723045; c=relaxed/simple;
+	bh=e6/lb4h3dcPvUj2TD9KX5+dXrCl8l2K+qw6RADogTTI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LnxtoCXoxKE4FyCWbnhk4CdGw15vdR+khoM0kfvVO2xi8mvcBJA3chUFiB+b7Lft8qPIjq/vuSfpmxcHA96M67rCndsuFhha6h3qizC7qkhKyyAKU5E3b15ikhef1CRs+3pqak8nYFytbmBrHQjDbYzAFoxcM8kYflqr6q6PEZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDTpP8m+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542D0C4CECE;
+	Mon, 30 Sep 2024 19:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727723045;
+	bh=e6/lb4h3dcPvUj2TD9KX5+dXrCl8l2K+qw6RADogTTI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KDTpP8m+mA4pqkFNJVRsWbh/d1FO/Djln9npkcRgdiXjzhZmltRPl7kTJ85iNWmKW
+	 u7mqTPsPK9N96rPk8k5yR35MSYQIjx0iGi2hXoTHWEHrHVkx0I8KpgrH1vSl+ZymKZ
+	 sXWs9DMfS7Ed2vkAXD9XgVGjqjQcKWqzgnJok06U1Q+SDHb04KnXyjtDZmU/YEbpN1
+	 eK0vGwxPqCjcHgsOXfSZgfon1ri5E2M1zIagbZncRqNZVQM1rUn9FEtgvoKFR6Uzex
+	 puXzpzpIOIdVNxly4pKht5bSFexcehP16k5jnSFbYM8w5eJ3Qgb9zzicKvLEfT5333
+	 FdGNmeR3aqpmg==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-710e910dd7dso3404849a34.2;
+        Mon, 30 Sep 2024 12:04:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUQiDycU3FBw6Hw0D0Sv5ovrIkVHEY3WCIj7WV+QcHIaE9febvqCnWfO2oPNvF67/l+tZaqa1ELseHI@vger.kernel.org, AJvYcCUzYEyZRHL7QI0sHEf76/k9vqEWwqAyhJq4epUf5Nl/A0aimDbe2ehK8ficOjfLg/MolLAiwuRMRVidl1OU@vger.kernel.org, AJvYcCWxNnVoD+cP3w0RbYWnTCjg/LWIyqrCeEtdY4GAGRcBhQhfL3KlJnX6lH5Gs31a2b/5KGGRMSrjVcfvHMCxHFxPbbcyTw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ/8aRKFFZrUC8fP5b96VUNqVQYofIZY0xI3BD77s6G/lAemxU
+	nDzHZSgItKi5xVXk123zmDw/NXkps3To94OFzgiRDI6Z77q4mdOHRSRNx1fWeg2soUxm6/yk054
+	HnTygY2DN3xP5qEevoEjMOf2cBLA=
+X-Google-Smtp-Source: AGHT+IEkvKq00Zd5Xgo+FpHgEmSOlof2ytB9S1tad7MI4lv5aIHonYRW5LWKLkZGKbmqOACBcBEhA3x2ysZ6GW4cdQE=
+X-Received: by 2002:a05:6830:6282:b0:713:7e24:6151 with SMTP id
+ 46e09a7af769-714fbf0ba08mr9676408a34.25.1727723044676; Mon, 30 Sep 2024
+ 12:04:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20240922064026.496422-1-W_Armin@gmx.de> <92b62046-d225-4dd8-a894-30f051267f29@gmx.de>
+In-Reply-To: <92b62046-d225-4dd8-a894-30f051267f29@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 30 Sep 2024 21:03:53 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gcJOVU-B3f34OJqHDQ1=2vKHifmqmTqH=Qi+c+Uaboww@mail.gmail.com>
+Message-ID: <CAJZ5v0gcJOVU-B3f34OJqHDQ1=2vKHifmqmTqH=Qi+c+Uaboww@mail.gmail.com>
 Subject: Re: [PATCH v2 0/3] platform/x86: dell-laptop: Battery hook fixes
-From: Armin Wolf <W_Armin@gmx.de>
-To: mjg59@srcf.ucam.org, pali@kernel.org, dilinger@queued.net
-Cc: rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com,
- ilpo.jarvinen@linux.intel.com, platform-driver-x86@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240922064026.496422-1-W_Armin@gmx.de>
-Content-Language: en-US
-In-Reply-To: <20240922064026.496422-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:bIvUH7micSPGPrZ9NXnFSmxVbu4ulZKux1Y2QH7fAX/LYAdN2j1
- itCxWE+ZdMFImPWCJ7be7TULPssKW/5adqrkE/wRPsyevChu2FuWDwY4XhPo0mCzH0SxPA5
- MNHakeUfiilwN8MJ/q5LUPy29ZK3LFUllp/DVo6aGF6usYSJk1q7JZQTHm1NWdmyMeZaglj
- Tv76BJsxsP1ApLe4DWFMQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Cziecr+DTkk=;AOniTTCBKVeGrews7r6KXJ5sZLb
- pzK3m4HMFhcpItGlGHpAgRDirpwtFAOKmTIjIGz5xZCAcQU9bEGBP1dL6c41e4FJLfHGro6w8
- BtCcPcDjQkXNuuNHm8M6VgZ5ooaY8Zit8tRvUHMLssV7rdRGCZBTdVVVKcFdV1IaB/lvkke5C
- 27F3Z5TftQq/9UBDi0cXzjheVmRFq4aHLihk+PqTPxaLYlmfApTwcJSOy8LIvQgd1SwqGrC7N
- 8WSQ2EHUX2fS37qY0nyGdSDW7qb9cnmtxttICp4e+4NHYl2lYwMZFj5itlRFmNh50yG1MDOsf
- k8qJMAKNmbWCO3yGXPST80VwGSnqP2AdCRzHQ9xB9Sdxdn0k8rBBaJTgxXBBusIMxD2biCiM/
- LhZ2oor2Kf8y1gmQffIQhpaadpMra1p2XFSL2G0JHl8Y2IPpiAtD5X1LIIRmW4kfwEFVETj0H
- LSKQyb2xxc1VSWMmsL9ArL1uHUqyfxrBkWKYmPDxYIJO7w3R9Iw8lbASTnIXQMFT/H2fkVePH
- QCkMN6JE0pz+PZvScni2pVKhcvHBRZ/5H0HxsHVlFnersm4RFMeklAwmhbCXBpWSgFoctcsDN
- weHA5cik1WB8SHiEeotJbNtBOvvLXLBqgr5iRtdwOD61QR2153124zAO6ui1XLpOZLHCC5j8G
- EbV2fNQ06raEfyWQdruBx+VuBRgZKWFM4K3Is/qYUw7Io2ZYhytYjHSz1bZ81wnT37KdXfeaX
- 0HMeHhMtJe/+jTQuWYXINwOigZ4ySx0UjE0P88VMW+kCBWVKWIgYPtJ8XVB5zfZiZuyYFIsRk
- AbD+/ABehy4FFXV5gJMBtEF+s7zAmrMjDTFWwbSzJDDZI=
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: mjg59@srcf.ucam.org, pali@kernel.org, dilinger@queued.net, 
+	rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com, 
+	ilpo.jarvinen@linux.intel.com, platform-driver-x86@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 22.09.24 um 08:40 schrieb Armin Wolf:
+On Mon, Sep 30, 2024 at 8:53=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 22.09.24 um 08:40 schrieb Armin Wolf:
+>
+> > This patch series fixes some issues around the battery hook handling
+> > inside the ACPI battery driver and the dell-laptop driver.
+> >
+> > The first patch simplifies the locking during battery hook removal as
+> > a preparation for the second patch which fixes a possible crash when
+> > unregistering a battery hook.
+> >
+> > The third patch allows the dell-laptop driver to handle systems with
+> > multiple batteries.
+> >
+> > All patches where tested on a Dell Inspiron 3505 and appear to work.
+>
+> Any thoughts from the ACPI maintainers?
 
-> This patch series fixes some issues around the battery hook handling
-> inside the ACPI battery driver and the dell-laptop driver.
->
-> The first patch simplifies the locking during battery hook removal as
-> a preparation for the second patch which fixes a possible crash when
-> unregistering a battery hook.
->
-> The third patch allows the dell-laptop driver to handle systems with
-> multiple batteries.
->
-> All patches where tested on a Dell Inspiron 3505 and appear to work.
+The first patch looks good to me, but I have a comment regarding the second=
+ one.
 
-Any thoughts from the ACPI maintainers?
+I'll get to this tomorrow.
 
-Thanks,
-Armin Wolf
-
-> Changes since v1:
-> - fix the underlying issue inside the ACPI battery driver
-> - reword patch for dell-laptop
->
-> Armin Wolf (3):
->    ACPI: battery: Simplify battery hook locking
->    ACPI: battery: Fix possible crash when unregistering a battery hook
->    platform/x86: dell-laptop: Do not fail when encountering unsupported
->      batteries
->
->   drivers/acpi/battery.c                  | 27 ++++++++++++++++---------
->   drivers/platform/x86/dell/dell-laptop.c | 15 +++++++++++---
->   include/acpi/battery.h                  |  1 +
->   3 files changed, 31 insertions(+), 12 deletions(-)
->
-> --
-> 2.39.5
->
->
+> > Changes since v1:
+> > - fix the underlying issue inside the ACPI battery driver
+> > - reword patch for dell-laptop
+> >
+> > Armin Wolf (3):
+> >    ACPI: battery: Simplify battery hook locking
+> >    ACPI: battery: Fix possible crash when unregistering a battery hook
+> >    platform/x86: dell-laptop: Do not fail when encountering unsupported
+> >      batteries
+> >
+> >   drivers/acpi/battery.c                  | 27 ++++++++++++++++--------=
+-
+> >   drivers/platform/x86/dell/dell-laptop.c | 15 +++++++++++---
+> >   include/acpi/battery.h                  |  1 +
+> >   3 files changed, 31 insertions(+), 12 deletions(-)
+> >
+> > --
 
