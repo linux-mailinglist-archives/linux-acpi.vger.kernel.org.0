@@ -1,123 +1,165 @@
-Return-Path: <linux-acpi+bounces-8517-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8518-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D3598C5B9
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2024 20:54:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AD898C5BE
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2024 20:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA6E283710
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2024 18:54:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1A55B225B3
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Oct 2024 18:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCEC1CCB58;
-	Tue,  1 Oct 2024 18:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9140C1CCB54;
+	Tue,  1 Oct 2024 18:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="C5U9crWm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVCvMRNJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A827F1C6F7F
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Oct 2024 18:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682DA1C2DB7;
+	Tue,  1 Oct 2024 18:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727808866; cv=none; b=TNpncjFqw3qxSEE0GaZxfDK5ADblgZJkx+qJ0UTl4yoW6gPClL16ErL2E91Zckd/Pb87B6+uFBHN4CYDzOfFid4+DIV2OiW1g/q8eU91MEnSOAObywEGeGWkuUkFLkQr9SUCchRyB/HaJHkm1G5EXIMSUkNjE+GTwdWafrp99oA=
+	t=1727809058; cv=none; b=CEWebn2sXAq95WNzs0pgonh3+hkbZGTz9sNcrxW/nxXrjhOQvXUx4eLS3RDM9eYGHU6/eZ24B46akmJyklJb/nFjUMFMaq5iP4lkBFoKsKjCbQXE9bghwHBubJuXeA2+lDGtBTRpVGICl6wim8kewTI8S+5Joc5Q3s8B99fNlhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727808866; c=relaxed/simple;
-	bh=V8rsnEJ/bDDCLpKjRyXRbNxIBoLlbXQh0oG8P+edN9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rD6IclqYnrNTgr5gppxf8keiOhwwboFEBMsR7s4/S0TWX15pvevG9b4ayP8tybReIEOhfoW5NTTu2renVTibHn0BZ1NO+zTCJaI2ACSMX4UZuZnkxak5zjb8nCUq7PeyblY7WD+Ln2c+tRTHnc8R0Km79q9zwW83RlGYzJIYDx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=C5U9crWm; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cbface8d6so71792775e9.3
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Oct 2024 11:54:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1727808863; x=1728413663; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g1XUtNuiLeh+ZpeCJ4wfUFMYT2T4esx58m8JhM7fcnE=;
-        b=C5U9crWm89KVyTfOB/MZISOAIzwzua0JroxrOylcqod7uJEobx2KWkpzDUh4pMorCk
-         emYeZp5TkJrGzZ0O/fxtS5dJ9RHkidUbr4D1ckpN0MF8ty6PITat4qNhCx/F39s1HlhO
-         q340FcA21HCwBGargw6bnCzydiKwFr0TmS227d0xP3vcjXY4MglqL2TfSs9A09h96OWq
-         zdEI3T1p3RWdzrrUSdcje2kCyQUlqFHLt829a8rj6X9fMx3+MOrVL5O3Z8q48wg/Tovo
-         7OYZd3ocfOLY2xyygeTFXskouejSXuEEtSd3dbr+PawcKnUdF/yAnxUL4bDz4TXy97aw
-         lnIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727808863; x=1728413663;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g1XUtNuiLeh+ZpeCJ4wfUFMYT2T4esx58m8JhM7fcnE=;
-        b=NdDiSMeSP9NpIsTV2Lim10rLLv+TaPu1kO45TxgvQ1mmmzd7ValM9dTJxRLeGj3A7V
-         71MEjpz2a9Z949joPVbcP6uXse30UNM+ing4k4cz3C9cd1KA0K2jky+2Q2W71M/D5xB+
-         6JLZj3abU+fO+E12yF/jjAfIMYnSGyai/GsS5G+NuhZSxLBEAeAvRoveBO4MT8uD/nxx
-         xMiBdlQ6qQrzCpzGRyv2ETUHDx/kTIu5sFnVv9OCPZyOnG/LzIEH3RBECAYqiPAcs19n
-         fyBmE/5ePrwhQjrEMURdRuEmfw4/pFGmU8HnmFtbK/qau1/0Hms0pW2mAT5o8bBgrPku
-         NhSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcGnFKEdoHVIvOXeXygRK2adSIIlmXa8CC5oIokh/G9Yr3RPNkLFDFcXCrRQrx1rNZlB5twtV8pbN/@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSGxinb6QSpCIYHnEs+hf23KqMeOTtB+W+w3x1XR/+/lxYTJd0
-	jYu+nIdNIPh7c17N5R7tSqrxHLPtjeiXvQQEzkwd/0NYo7cYHLG2UwjB/1bhnlk=
-X-Google-Smtp-Source: AGHT+IEhtJhtBwKR2sMbD1VilyL4791eO55gFkuoz0uz1E4J/iEweET1yk4/BmqbRTgoHKbhwpTl/g==
-X-Received: by 2002:a05:600c:3581:b0:42c:b508:750e with SMTP id 5b1f17b1804b1-42f777ba30cmr4053475e9.11.1727808862907;
-        Tue, 01 Oct 2024 11:54:22 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:b926:7e5e:6e5b:896])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969ddfc9sm188052035e9.5.2024.10.01.11.54.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 11:54:22 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Hoan Tran <hoan@os.amperecomputing.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/3] gpio: switch to device_for_each_chilld_node_scoped()
-Date: Tue,  1 Oct 2024 20:54:20 +0200
-Message-ID: <172780884672.98871.5009069255744218803.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
-References: <20240928-gpio_device_for_each_child_node_scoped-v1-0-c20eff315f4f@gmail.com>
+	s=arc-20240116; t=1727809058; c=relaxed/simple;
+	bh=VYIHyPPIv2bf7I3RLjsI38d/asSeC/oQh1hx2nZUOiI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lFUC7Bp9Lx8AOI38J7baMrnYph3loSxkuytdmIqBFuexBzw0JVx+fQRyDtCsyCJ7Ff3pjxRrxWQzJFBC3SJq4Q5QCa0v5Eb7RtoMl74FITCtbKpmABhlI1wpNa6WWHqImDcH5YK5qWylpWYuzoUiv0q5pOoZrqEYpAKubE6rJS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVCvMRNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFBEC4CEC7;
+	Tue,  1 Oct 2024 18:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727809058;
+	bh=VYIHyPPIv2bf7I3RLjsI38d/asSeC/oQh1hx2nZUOiI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FVCvMRNJc4YDCd8GDQrCrPtaK1M7nM7Hu2SHlRilz8h24rWPoDE/lERHmXYYzX/FK
+	 hs+yvIFUnuE9k2nD28Z2LqgfqN/rnUvEIp0y+ts/s8Teh38YrHfWX1v5YQKzzO3Gq6
+	 tGvD7hTYAWaL5JZcrMxGTAD5CDz8kdkchxTbyQCNzjJUw2ZLs0JNPYdnC1PKxapba9
+	 bNnX6TLDK0rP17UBUCLqE6eHl5RYLi9L3sRGfgVhBfpkhWcJPJgMwVlsgQUYKfG6TR
+	 zTnrjGgleZCdcolykRCf5itx0yk78DaZ/FyqdEYRaOxjRuwFfsYoOvzIfViemyXFU+
+	 CNwsPT6S+85Pg==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5e1ba0adcb0so2789109eaf.0;
+        Tue, 01 Oct 2024 11:57:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUjtTIWXCgZAGwlVlDISjLL99atXE6Fpyrs9eGoADfZi0FkRo+NE2woeHkw+GW++/PUcuj0SuaHMbNo@vger.kernel.org, AJvYcCUp9mqMRs5ZIyHB677GexzXvmjk6eff8Ol2k6K3FdACZjgb2FUBL/tbhXN6eEkLv42RJ74ogJ7BHEPCV2oH@vger.kernel.org, AJvYcCXgaozdUALkkM1IzaK9mulKSVCVn7y0jPhNhkim89XwmWWlUCRr03iRnfSM/u5zZVOjVdDCnUyMZ3v5loFxtAnvISdkrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCc45wlbv5R2clgfVKOYO+9BSyo5+C2lyIouhdXZtA3VtTcLe/
+	Rzq/dXCpDsEf5vh1/nngTgVU0kbp8y0bGJwkRedg+b4czlRx1o16iDzBgD3da/gsqL4yt86AXHl
+	WqcdMaz1bv2BpP1AeXrDM1h5W7n8=
+X-Google-Smtp-Source: AGHT+IG37WO7IHfu9/dMzHVVPdks0hgjN0py7twk1gg4qvOlWS01dUobHR5yVOxiuGGuGJodquBfMJNaEcF9JJnkvQY=
+X-Received: by 2002:a05:6820:619:b0:5e1:cca3:97aa with SMTP id
+ 006d021491bc7-5e7b1e73fdemr604627eaf.6.1727809057546; Tue, 01 Oct 2024
+ 11:57:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20240922064026.496422-1-W_Armin@gmx.de> <20240922064026.496422-3-W_Armin@gmx.de>
+In-Reply-To: <20240922064026.496422-3-W_Armin@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 1 Oct 2024 20:57:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j4S66jp9QvTetj=KtOTqh-ae4gub_6b5DB5zkasB=yVA@mail.gmail.com>
+Message-ID: <CAJZ5v0j4S66jp9QvTetj=KtOTqh-ae4gub_6b5DB5zkasB=yVA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] ACPI: battery: Fix possible crash when
+ unregistering a battery hook
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: mjg59@srcf.ucam.org, pali@kernel.org, dilinger@queued.net, 
+	rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com, 
+	ilpo.jarvinen@linux.intel.com, platform-driver-x86@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Sun, Sep 22, 2024 at 8:40=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> When a battery hook returns an error when adding a new battery, then
+> the battery hook is automatically unregistered.
+> However the battery hook provider cannot know that, so it will later
+> call battery_hook_unregister() on the already unregistered battery
+> hook, resulting in a crash.
+>
+> Fix this by using a boolean flag to mark already unregistered battery
+> hooks as "dead" so that they can be ignored by
+> battery_hook_unregister().
+>
+> Fixes: fa93854f7a7e ("battery: Add the battery hooking API")
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>  drivers/acpi/battery.c | 11 ++++++++++-
+>  include/acpi/battery.h |  1 +
+>  2 files changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 10e9136897a7..b31a6183a082 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -719,6 +719,7 @@ static void battery_hook_unregister_unlocked(struct a=
+cpi_battery_hook *hook)
+>                         power_supply_changed(battery->bat);
+>         }
+>         list_del(&hook->list);
+> +       hook->dead =3D true;
 
+It looks like you could do
 
-On Sat, 28 Sep 2024 21:47:34 +0200, Javier Carrasco wrote:
-> This series switches from the device_for_each_child_node() macro to its
-> scoped variant. This makes the code more robust if new early exits are
-> added to the loops, because there is no need for explicit calls to
-> fwnode_handle_put(), which also simplifies existing code.
-> 
-> The non-scoped macros to walk over nodes turn error-prone as soon as
-> the loop contains early exits (break, goto, return), and patches to
-> fix them show up regularly, sometimes due to new error paths in an
-> existing loop [1].
-> 
-> [...]
+list_del_init((&hook->list);
 
-Applied, thanks!
+here and then do a list_emtpy() check below.
 
-[1/3] gpio: dwapb: switch to device_for_each_child_node_scoped()
-      commit: 0a53be8e080b53ef922e90204999f4ccef29cd57
-[2/3] gpio: sim: switch to device_for_each_child_node_scoped()
-      commit: d64d0287f4bc7013c60b07e34e43c3fc558e3808
+>
+>         pr_info("extension unregistered: %s\n", hook->name);
+>  }
+> @@ -726,7 +727,14 @@ static void battery_hook_unregister_unlocked(struct =
+acpi_battery_hook *hook)
+>  void battery_hook_unregister(struct acpi_battery_hook *hook)
+>  {
+>         mutex_lock(&hook_mutex);
+> -       battery_hook_unregister_unlocked(hook);
+> +       /*
+> +        * Ignore already unregistered battery hooks. This might happen
+> +        * if a battery hook was previously unloaded due to an error when
+> +        * adding a new battery.
+> +        */
+> +       if (!hook->dead)
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+if (!list_empty(&hook->list))
+
+> +               battery_hook_unregister_unlocked(hook);
+> +
+>         mutex_unlock(&hook_mutex);
+
+and the new struct field would not be necessary if I'm not mistaken.
+
+>  }
+>  EXPORT_SYMBOL_GPL(battery_hook_unregister);
+> @@ -737,6 +745,7 @@ void battery_hook_register(struct acpi_battery_hook *=
+hook)
+>
+>         mutex_lock(&hook_mutex);
+>         INIT_LIST_HEAD(&hook->list);
+
+Also the above statement is redundant, so maybe drop it while you're at it?
+
+> +       hook->dead =3D false;
+>         list_add(&hook->list, &battery_hook_list);
+>         /*
+>          * Now that the driver is registered, we need
+> diff --git a/include/acpi/battery.h b/include/acpi/battery.h
+> index c93f16dfb944..5cfe132bb7f5 100644
+> --- a/include/acpi/battery.h
+> +++ b/include/acpi/battery.h
+> @@ -16,6 +16,7 @@ struct acpi_battery_hook {
+>         int (*add_battery)(struct power_supply *battery, struct acpi_batt=
+ery_hook *hook);
+>         int (*remove_battery)(struct power_supply *battery, struct acpi_b=
+attery_hook *hook);
+>         struct list_head list;
+> +       bool dead;
+>  };
+>
+>  void battery_hook_register(struct acpi_battery_hook *hook);
+> --
 
