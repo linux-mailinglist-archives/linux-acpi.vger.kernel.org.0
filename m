@@ -1,187 +1,405 @@
-Return-Path: <linux-acpi+bounces-8532-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8533-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CB098D4D2
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 15:24:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1540F98D90A
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 16:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73750283A62
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 13:24:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FDF31C22D9B
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 14:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99221D0430;
-	Wed,  2 Oct 2024 13:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDED1D173A;
+	Wed,  2 Oct 2024 14:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cc2gdsxk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mhUpyPca"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2061.outbound.protection.outlook.com [40.107.223.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32151D043C;
-	Wed,  2 Oct 2024 13:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875466; cv=fail; b=t8YURTB6ltNtUBejwEsodXTJ+g7Ld1kE+QqkkeDD/VxxJ9Df17h4dAEcU4AvCqHBjUVAfX1xmOwvPhrhF9/ODE65zz3/gUIc723aowPAGjEaPe47DM/pQKl2bQxxtrwFa3B85NzkrNAHelPGG5b0aPhrocgGfxRnnwMmBleB/S8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875466; c=relaxed/simple;
-	bh=CUz9tNqPQw9H2JJkV9FYrcTOwgpIRyP41D1v6PtYJfo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UqsMDOXkk3QMCvAoXO3fOCcTC0e+FwwMgazjIeEOuzTwGzEZB9HnjqSbOsCShIOR9wjDEN+hbfbG5qX5fU6tGF2jHjQRlm6GcXEy5NsGT0QOm6+diPZliPnbGOt9YFv1JZqNoItg6mIiURdoQVYLPHDJQTap/Tcp2sI0oLBt7OA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cc2gdsxk; arc=fail smtp.client-ip=40.107.223.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YcTi3TE2ONAjB4pfDIW6AcvH5AB1YL1LvZM7QRMaFzOXPOjZYX/1pYZwYg6NBd/wjFYXkC5Hxi3n8wWUGS03Ajy9KFDqUTXrD0qv0J4FNQah/glHV9Uvin066kPJ8LPPh4/7Kicb61zAD8RMzE/fx7KwNXwH6Tkzo3XbHrud7Uuip2Ljqc6xUAwq1fr0EmeSUA73z2r7/fCODtWXCht0yXX4GsKybgwxcFvh/djQk4QAvC4f9gQQYDIMQ7gD59wRKyzYHCN/Tz10bfTTBzffMCcfcqIeE/zwJjkSMgY/Baxeq0D1jlIPI+Pe3+yXMbJBAN5BWIVEbSSeHgCxSflpxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qMc3CRaHMSAgoRdAN1ydC2xhAd9CMc7KpEqW+jLCj/4=;
- b=pxUXV+CDdb/OevBJOLZJYMUGx3kDdBnORgwf2km/589M7gxKwxa6FDB1foWBJttwwDzRWHxM4cOZZ42P+cKIP4/wFEM3tgq/4HGPQHeabuKVMY3CrcslU5mzIwZqZMwEK8I6rPr60Mt8z5jg81tHZkf4QZFiPLhdnmg9G9dThM5IiriExQUMPe9zH3RCKDFi0MGa8YwyVwy+GCDi309rWhxc+QmJUpxxGKapnd8nkL0TyoXCnWuvQvNeez8ldzvcFC/R7t9dVbkR+0q/P+OLOWwdR5B4VtWz4sZ6N++Kh9KK2iLWyVxnwIFM1YgV/ahqavKSDAi2AQjUJLhQYyf6HQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qMc3CRaHMSAgoRdAN1ydC2xhAd9CMc7KpEqW+jLCj/4=;
- b=cc2gdsxkLSaX+N+lt92wIhancnT+wi8qohBR80YAev1LZe2S+X7WEMZkirdcZOF9uoSU/8yPGZltKIvxQZbd/kTwFtmn4IdRpw4qH79UUysSSM7GLOZjNK+Fh9yhMFsrM9o3LS7nCjMAPN/lJMio4LNGNW4Hysw+M0i2L4RvbfI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA1PR12MB6065.namprd12.prod.outlook.com (2603:10b6:208:3ef::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
- 2024 13:24:22 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.8005.026; Wed, 2 Oct 2024
- 13:24:20 +0000
-Message-ID: <fd9a3ed9-08a5-48c2-af96-573c010439c1@amd.com>
-Date: Wed, 2 Oct 2024 08:24:18 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: s2idle issue on Dell G51 5155
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Armin Wolf <W_Armin@gmx.de>
-Cc: linux-acpi@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>
-References: <6274fdb7-ba80-4c34-94c8-04b7ff29a8c9@gmx.de>
- <CAJZ5v0hwUrnooYRTvpRogDjmn=tsEsR=uSPHkDAOtoDNT+poBg@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <CAJZ5v0hwUrnooYRTvpRogDjmn=tsEsR=uSPHkDAOtoDNT+poBg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0127.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c2::17) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A11D0DF4
+	for <linux-acpi@vger.kernel.org>; Wed,  2 Oct 2024 14:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727877759; cv=none; b=SLUfosyKrDmnzu2LS47Ux4Bw3LzZ7fKEx8IXP8L2ozvZI6Jhlbc6X7HFhFjy5yJF7KEkOuoRYdPjdYWSi6UKQCTzS35p/bKtl3aS+PYoLz7ZpEbcaCKiBvPBK9axb/Kh3fSVrPmKzoo1z9qr0js3RbJxYVUVF8CD6vgj/BPWSeY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727877759; c=relaxed/simple;
+	bh=iJLxbS+yCNUuo/C4ic9QV/YCOLXIQ/5CXKvr5tSj3oI=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:References:To:
+	 From:In-Reply-To; b=fdVO7XW2+XoWzY06gVu87orR8YY4nv4A36LjqKmfSce11KNd9z/j9/IOFO/USXojLw7+v7rsrafA/fUPw7bLQKugXi5gsqhs9GKrKPZW/Ma1+1AUt5XDv7LWRb52NTlaDH1yYgzIriGrnyLVpR7EenNvC2tMk7PSDmshR3BqpUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mhUpyPca; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3a2759a1b71so33793125ab.0
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Oct 2024 07:02:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727877757; x=1728482557; darn=vger.kernel.org;
+        h=in-reply-to:from:to:content-language:references:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KlQawy3t0iZD53rh6kwouw4EXUlmdf7CpLOESzQ/uR8=;
+        b=mhUpyPcaW8gg9TSw/RrUDgRH7i2mnyOi0SYniel7Nvv79OJycj2En+zt4Iq2ICQBo2
+         zPebcScsXipHA92MtFmX3Zo+lYhs8T3sRMu9dT4M/TSiFJhSFBUjFy9B6adUd8gn7AOl
+         mdXDMuy40F+p9Yf+vY/oUh9mpdtEHRysHJChrsNDrbnP8gYT738SPCH6bLI0oGoXYJQ8
+         +hQGXyfC5z51V9/qHnSX0tIiCV+6+Bc9iIUN6dvT3USpxfjJipDb4Pe4GxHlz/QOKCQP
+         sTZniRXC0nfBIr0aPtTrDM/EFuHK4J/CVzXyXfaASom9TTednavF7AmaSMdwRiLAmtsz
+         evdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727877757; x=1728482557;
+        h=in-reply-to:from:to:content-language:references:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KlQawy3t0iZD53rh6kwouw4EXUlmdf7CpLOESzQ/uR8=;
+        b=Z80PzTvO+EuOTxae/1WXUzw1BZ597Et8ymMRNpI2rn7kCuc2Ire1UHLUrfvmy2OIoo
+         zTP9Hw0EjAaeoMCr2NDhadM4hC9p3DctaRIcpV+U6CkA7+O2jnWju6XygwJHdknAVcmC
+         tyge9oLpBGb/TLfPMQ7RK8PnSu4KT/MyQZNsqCIalhwk+gvpQ6M//JOu6YQ0hjSXiO44
+         2t+mlKRXUfVSQKyE2gDNRz2oOsCTp1zVsYfYv3fcUqyBwijml06J0qRAQaubO6hWtn/G
+         oOf9GTbZSahk9FGTVAgRPSeRe99kIxWSlIX8tzPbeo0qGBiPVL1XvumxIgCkIV18IlhC
+         b5WA==
+X-Gm-Message-State: AOJu0Yw2wKkS/GKvzFaeJ/mdQ8UdX1AkVXGrzwCl9TmiwRrf+y2EXUeK
+	dQEy3Mead8g26b3Qf+y661ghQs+Gfy2lUatgeaj4B/v6Q9STbN0ItKPB+8gB
+X-Google-Smtp-Source: AGHT+IF+DLOgNQyxU/Bunm40obfd+ixw100W/DHcgI89VxusQOhQiAyewY2gywPD22qIBW0GRRn/kA==
+X-Received: by 2002:a92:b741:0:b0:3a3:68bc:a17a with SMTP id e9e14a558f8ab-3a368bca2b5mr13277965ab.11.1727877756439;
+        Wed, 02 Oct 2024 07:02:36 -0700 (PDT)
+Received: from [192.168.0.24] ([173.27.86.46])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3a344d6059bsm36684955ab.6.2024.10.02.07.02.35
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 07:02:35 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------IabLcf6ohXGbmcKq0V2pyy3G"
+Message-ID: <a9d469db-92c3-44e8-b9c4-be57bdaf60c9@gmail.com>
+Date: Wed, 2 Oct 2024 07:02:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA1PR12MB6065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a659758-40f1-4416-009a-08dce2e585fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bS9QeE83R2xVMmJFMWpBN2NYZ29YSlpmOW5LSXhoMjJ0NnAyR1ZUVXpiUlNi?=
- =?utf-8?B?NEFIVmdsUkR0M2dVME5Sc2p2NW1YQVhPbFN5NVJnaFVyVGZsSFZuTUlIQ1Rw?=
- =?utf-8?B?QVE2UENLbTBHUUVRQnJVb0J0dFNXNVpRZUtDRW9yZzZmNlVsbnhVODJBQ01E?=
- =?utf-8?B?L1hGV1lGKzZkV2ErUFNEbGhrMVEvMWhqVWJ1ZlFVRE84MU5UNzdOMnpzZzZ1?=
- =?utf-8?B?VUN4Z3dxT0FQR3ZOajYramhza0J1Z1cvcU01cEhEQXBhK3RFV0w1TUxFRGc0?=
- =?utf-8?B?aWg1SUh3Qk0wWFNLM3Y2c1lEdFRGaU1UaHRxQzJ6OXNHQWFYQ3h5TGw4M0pK?=
- =?utf-8?B?S2doVUVLUjNsTDJMcHBvRHN3dmUrNWZTWm9SWXU4ZEpoemxidE5ZTUpSUUc2?=
- =?utf-8?B?VGhwTHN5MFN2TzB2OFF1L2FZMzJXNWJjaVB1dXhCT0FFYVNqYjJVNmxNV3hQ?=
- =?utf-8?B?bDlVdVhNbHpqKytsd3VPS05kZU11YmhEaHloNlZBYkI3S0NkSGFkY3FEV0Qx?=
- =?utf-8?B?ZDlhc2ZBdDUzYnJtN2hKaWxJOWFhbUpyaHF0WDc3YlNvVXNQYk1BNDhJVHRM?=
- =?utf-8?B?eWlRWDVYNVVWdFhaMDdLYXZ5VjJXYUY2SE1PcDRlamxITnNoUTlTajBvb3Jn?=
- =?utf-8?B?Y3BncklKbWdVajNSbkwwNFVCWUtCdjNLb29qaHpYbjR1RnNWRUlTOGhGZVJm?=
- =?utf-8?B?dndYbFlKTWN1UnN1WHJYWk52anVtRlF4eFlFRS9yMC9IU3JaaGRpVTRTbnNw?=
- =?utf-8?B?cGNjY3RyendSd3dkTDMrcXgwQ080RVdaMjdGbGdEemQ3cnR0a3Baa1B4ZE5t?=
- =?utf-8?B?Y2lSR1MvR1p1TXlrWXNQaDV4NWM5aG43YjhPNzU0RGJndzN0V0xGTVQ1RFRn?=
- =?utf-8?B?dmQyOFZNYnNiSUNkV210QTRQTnNtUnZUNFRRMGdaNnhWd0g2WXhqTko4cVZS?=
- =?utf-8?B?K2NaSTA4THhwRU8yN050c3pNL1ZNcE5Mcm5qc1RFdTFhZ0Z1ZU95SmI5enha?=
- =?utf-8?B?SDJSdlJReHE4NEVIRThhUEJXcXJmZXlyb3NJRHFyTzNiWm81Y0Fha2pUVGx1?=
- =?utf-8?B?SVc0c3d1WjR5Qm0wNzh2Y3dJc3FNd0U0SEkxNnBiRDl4aXVIQ3ovMVNGQS9F?=
- =?utf-8?B?SlpSOTFUVHVzY1dpVXhxMmh3eTB3N09Lb2NmMmdxRkZFZkpJVzBtUC8vR0V6?=
- =?utf-8?B?OUJUWlhtUXgzdDR1dkp5N21NR2RHWEZNMmUvVEI5YUh0REg5dVBlekRWMm1Q?=
- =?utf-8?B?c1ZsZzdjTDNaNVFQQ0RmSjdHQlBhb0thcm1Xd0grZjNmd2trTnJNN0d0anUz?=
- =?utf-8?B?dnJFZnE1aUxlaWdsSTdnLyt6T3NodjdGaE5PbGh1NlRWU255ZkwyQXg0With?=
- =?utf-8?B?RlRRdEUyWW1Nd0p4dVFSd2E4V1ozc3dRWUhtWS9VdFJnNVVFdzlMM0FodWs3?=
- =?utf-8?B?OHN4Q2gvVVhSbkxzemhqQ3VwQkhiMEh6aFY1T1BtcWdMQmV6RlJ4TTBpV1Bo?=
- =?utf-8?B?SGg5N2lrYTNWYkluSlpiVGlIdkZvWFBpbkxPeVUzZlgrYjhqcHBydlVXZkxK?=
- =?utf-8?B?MkRVWGJvTmZRMmRJb3B2ZVBqKzZvT0tLeFkxam53d3FzUFNVMmYvN2JoOEhV?=
- =?utf-8?B?ZzUvdEpQTnRtUTlFQy96Z3BscEVCdVIrTDBZVkxGRSt3a3dvdCs2eGcvQ0x3?=
- =?utf-8?B?bElFTUg3R0ovclV5d1dXUjExVThYWmNNdkt5Vm00YUZFSjdqVXZ3NS93PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aStya0VZazNtQitnRGVTZDNBeUtWU0tZdjI5R3F2Z1QrTXZSVWdtMTRnWVJL?=
- =?utf-8?B?ekloek9wY0NnaEhNQzlneGFSR3k3aTNiVWI5SURUNENKWTYxS3lrWXNsbWNT?=
- =?utf-8?B?Qi8yZUFwUWVuajA5c2xIVU5ydStXNTVrVDA5QkxTd2NTZmJZREhydzBzcUlR?=
- =?utf-8?B?b3kvbndKOWNha0w4NTk0eE1vNElJSm5Gak1sVVl4cnNxTzlKRTBYSWExbW5R?=
- =?utf-8?B?ZDNsQ3g4bCtsUXc1ZzVyM2JXZTc3MldhZm4vSkk0MVJPbk04eXF3TVQ4eFds?=
- =?utf-8?B?VmQyK2hkSUNhVnZ1dVd1VlVxMDRTZm9pZStrZGp6THhrSlY1V0VPSkdHRVUv?=
- =?utf-8?B?eWdML2N1NVpRYU8wajBpWjRPejJpQWlrM0VSVktlaW5lb0VpZFhwTkhGZExk?=
- =?utf-8?B?cmhGVm1TWnNvU2FRa0w5WWJLcmIyZ0NZbENndVpOTnVMT0tjdzJib285TnE0?=
- =?utf-8?B?ZFZuc2M5TlJHUEprY2h4S1pSakhvUitza1Myb0x4dDFxczlXU09iVmpSQlp6?=
- =?utf-8?B?L0VWeGtpaWNFS2RONG9idGRRS1lqUHlubGVxV3EvR2J3RXY4ellacUEyUjVa?=
- =?utf-8?B?TU41Y0dmb3FBcVlsQWNVV25XNFdTU0lrT2xHZ2lCTG1OZUZEdGUwLzFuM1dV?=
- =?utf-8?B?WDI2NE1MT29WNlJTOW1oeWF4cUtwT2dFcTJMM2RKSmxCQVlkaHlYNmZ0ekNH?=
- =?utf-8?B?YXY4NVl0V2pUNUcxZ1NubS96ZmZvWFJXNFVTbjkzYklNMXV6K01VcWVKLzE3?=
- =?utf-8?B?ek1vb2k1SWJ3OStHcnRya2YrcWUxT3V0em5ldkdBTzg3R0gvQXVKTWZBaW1T?=
- =?utf-8?B?WDhzTDUwYU1HNzRWVEdCa3Vlc3pERW9aUmhDaUkwc3g4S25LbFg3RFMzUEpR?=
- =?utf-8?B?VjM4dXRRb2NDYVVLZlgyRlNJVnRSZHIxaGRlZEdBTjd6eWthQ3JEaHE1VVcv?=
- =?utf-8?B?cjM4SW5uUHppK3czdFc3bVk3Ymcya1VJVVVUTU5LZ1pTUC9UcFk1S3dSV04x?=
- =?utf-8?B?ZVk5ZFRpU0h5WFF1bVNTcXRzaERTd3dUQkNYVllzbzV5a0FjakdTYVk4NW1Y?=
- =?utf-8?B?a3VDZ2tSRjgzV1RLdDg3MHBJS2dLUU5YU1Z1RnNyL1IrbGEvNjJwSFRsREhk?=
- =?utf-8?B?QmZFK0dpYkozS210N1E0Z3BuTGZQcGJ2cVIxKzV3N3h6aUMybDJNakR3b3JB?=
- =?utf-8?B?MlNGSjJkaU5EeGFlai90M001RTVwN3lFcnNaQVl6YzJmWmJmZzJqKzQxU21l?=
- =?utf-8?B?YTlzNDZrYVRxU1M5dEJSZTY4bDlHMThPOTV1VXVHT2ZTejFPbVRPWm5qYVRB?=
- =?utf-8?B?OHpWS2p0TGI2R2JqSkI0RFAzVzMvbkNuQjV1N21BaXR5QkIwcEVqNVdJV1Yy?=
- =?utf-8?B?dmdwdGZMK0krL2FnamFOMWdRSjdMOFd2RnQzQzVra1N0a1Rvc3VLQmRyUGZU?=
- =?utf-8?B?NzNzZmVaNGtYZmhRMHNycE5jeFM5aHhpdG9ZYVRIblI2Y0N1R2lja1BJVDF6?=
- =?utf-8?B?bjlmVldzd2JFdksvb3ZyaUFvUnRCZ1R4Y0kvWmlZNGdJUkU4TWlQOVF3cE9u?=
- =?utf-8?B?aE44TTJ5WlpFNmZKVXEwa3l0ZUo5azFhU2lhbWhabWhQZXhUVmpOVzJtdmdm?=
- =?utf-8?B?VzFSaWR5KzIxQzVlUHBpb0wxMnAwNFFZOERMZlI5YnY5MWV5cHdVUUI3YWdk?=
- =?utf-8?B?NkNEKzhxUU81d2swOFpmVHEwNXQwZUhPUzdXUHR4T1FxUnY5cGp0cjRUS2Rw?=
- =?utf-8?B?a0w1ZFY2eHFLVkNBVWRrQWZWbFhPZVhpNUIzMTZJUmV4Wm5ZS1JVSklIYXhX?=
- =?utf-8?B?UTJXaFFqWW9BZUNTdng0anlObkplcjcwQ1dJU3JSMkpYaFhNMlFzVjNuZm5M?=
- =?utf-8?B?eW55WUVZNFd3YkFCZWZCQzhGRE9jd2RaQnRKYkp6YUhZKzd0WGFwRUF5em1i?=
- =?utf-8?B?OXdXajVyZjRqamtRNy9DRlllSFFXajk0ZXdiMm96bW5BQ3lwSGgwYURGK1dR?=
- =?utf-8?B?OVArNlNDS2o0SDErOG9BSzdtd01xMDMvZDk3eitIL1dRaFJvUHg3dUh5cHlh?=
- =?utf-8?B?RFU1YkYvK3RPdFUvY1RwekpjTFRPM0c2MzN0NlM1WFpPWTlGbzVLMDd1cndM?=
- =?utf-8?Q?oMh/9S+J+6tvvCfYKDE8FNd9e?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a659758-40f1-4416-009a-08dce2e585fa
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 13:24:20.4932
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AvVME2UppKrre+y2A6cHax2MSzPU60X7zEFRHizOcPfX5t7acH/jBI9cSsv7QVkv1lfglDwEjjXMpoDLakPauw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6065
+User-Agent: Betterbird (Linux)
+Subject: Fwd: HTML message rejected: Fwd: Fwd:
+ https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9
+References: <1727876989-30351-mlmmj-2e376003@vger.kernel.org>
+Content-Language: en-US
+To: linux-acpi@vger.kernel.org
+From: Al Heynneman <heynnema@gmail.com>
+In-Reply-To: <1727876989-30351-mlmmj-2e376003@vger.kernel.org>
+X-Forwarded-Message-Id: <1727876989-30351-mlmmj-2e376003@vger.kernel.org>
 
-On 10/2/2024 07:00, Rafael J. Wysocki wrote:
-> +Mario and linux-pm
-> 
-> On Wed, Oct 2, 2024 at 10:08 AM Armin Wolf <W_Armin@gmx.de> wrote:
->>
->> Hello,
->>
->> it seems a user has problems suspending its Dell G51 5155 using s2idle, see
->> https://bugzilla.kernel.org/show_bug.cgi?id=218337 for details.
->>
->> Does anyone have an idea on how to debug this?
->>
->> Thanks,
->> Armin Wolf
->>
->>
+This is a multi-part message in MIME format.
+--------------IabLcf6ohXGbmcKq0V2pyy3G
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thanks, I'll drop a suggestion on the bug and add myself to it.
+linux-acpi,
+
+Resend as text...
+
+
+-------- Forwarded Message --------
+Subject: 	HTML message rejected: Fwd: Fwd: 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9 
+
+Date: 	Wed, 02 Oct 2024 13:49:49 +0000
+From: 	linux-acpi+owner@vger.kernel.org
+To: 	heynnema@gmail.com
+
+
+
+Greetings!
+
+This is the mlmmj program managing the <linux-acpi@vger.kernel.org> mailing
+list.
+
+Your message to <linux-acpi@vger.kernel.org> was not delivered to the list
+because it contained a HTML part. Only text/plain messages are allowed on
+this list.
+
+Please configure your mail client to only send plain text mail.
+
+For your reference, the rejected message follows below.
+
+
+-- 
+*Al Heynneman*
+heynnema@gmail.com
+--------------IabLcf6ohXGbmcKq0V2pyy3G
+Content-Type: message/rfc822; name="message.eml"
+Content-Disposition: attachment; filename="message.eml"
+Content-Transfer-Encoding: 7bit
+
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A9417B421
+	for <linux-acpi@vger.kernel.org>; Wed,  2 Oct 2024 13:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727876989; cv=none; b=k+R8EZam0BHR0WcD+V3rxKcS9hJnv0ItHlphkt8vXKm5BhOBn3flScTkvgkGImHEu8YzAet9ZCIBF0o5JBK3nB7U5hYVPP3xbq9TDTofAZEtlUbWOgOjpQWU0jl0glLfg+MFqvZ8aS1D9jk9hKqDFvq2pIKPfrGfnbuJEUMufXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727876989; c=relaxed/simple;
+	bh=fyesRFWs14AgHUERhtAN1tvYFIFYzPjDpfHVek7/Bhk=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:References:To:
+	 Cc:From:In-Reply-To; b=mM44DK1WwWGniLeMxLSZ0PUZvC5kOpIsjxEBVA6S3zHGec9Ag3apMEUr7YEM+VV6W7t5ZbINsQcrdTe7JQvzgUz4hSx1mCUOfN381xspTckaUpIdz1BUg2te1un6LArxdM+8j3tLQkWZu1wfiePr8lyPad4XfIoOfk/He6RPxoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nVqGZodC; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nVqGZodC"
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-82cdb749598so381353839f.1
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Oct 2024 06:49:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727876987; x=1728481787; darn=vger.kernel.org;
+        h=in-reply-to:from:cc:to:references:content-language:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6Z1LcTgnbe20QTvSesocB73ckVqTMFr7uXL5Z6s3Vro=;
+        b=nVqGZodCjkmmTFK9HV1Um5Qz8SyqjZRraTR7eWZiO5VjNjG/rUuhq7uejXru6fiC+d
+         BzJ8vyrk7nxpY+U1bt62UFTAv8D/oqYr9nBw0xazSoPAhAhdWZVEY4cUmbT+BnxpXeY1
+         P3PvTv/b9Ph16u552wKejhEnJKP6umPpJqPEpkq3nhNBl3eOlf7iH23Zr66dfmi1P3GB
+         C7YD5dAtEZH7Gc+uiedUUYRJPObzbdinL5RAb3EcndY4VMOFIdYFFKWemSw4mz9M7hrX
+         XaX8FJMdx7g4P/WAwNSP9PkBwLaQ8iKxhwrl2BIinyms/BDSHgLVV/wyBba+7OcoZbZH
+         k9CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727876987; x=1728481787;
+        h=in-reply-to:from:cc:to:references:content-language:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6Z1LcTgnbe20QTvSesocB73ckVqTMFr7uXL5Z6s3Vro=;
+        b=k97FuvR8IDh8cqRPTNxH/aBuNGWgndi+FwdV2m53i0rpezb4jGyldWU4j1laf0NLBy
+         CR4aIViMbu2YQdNyy0uT12yssjJNB0DVzvHSeDL5Ps1ppB5QB8bAssQwC/jMmz9m0ktz
+         c1YLd2adDfU1Uk9FKvQIatDMtdPr89kOk57GGHH0FZneQ1PSyrfId+rdpTt0MOsXM+9r
+         nABi+bL7VQD6QC5l3rUyBrly8qA4AVPgTjwrV98KppHGgNP+kDS00SDr/ZICHFmeemTa
+         Jgp8TZEbws38os9k9/JILFLHZCK8XtkSAVRw/gGfNOHGsUUeVLXSt+EZranp+79nlSIv
+         tfkQ==
+X-Gm-Message-State: AOJu0Yzdsh9pC49mLvYw1zM19mxcXMPlrRWtNLOY+9/EX4E+TZKQrfN6
+	iG7odsDGe0901I5pcxoCdASJedjNyrovRtF0nONYiPm4lCDP/7haC9u3XtfL
+X-Google-Smtp-Source: AGHT+IEB+x09Lne2b6WsjDzovqWTCrIKOaGTHL1bM4eRoR4hNhU6mqGIBAvJ8FHfZmyh2nDo3AXj7A==
+X-Received: by 2002:a05:6602:1509:b0:82c:bdec:1c0e with SMTP id ca18e2360f4ac-834d83b644cmr295659739f.2.1727876986707;
+        Wed, 02 Oct 2024 06:49:46 -0700 (PDT)
+Received: from [192.168.0.24] ([173.27.86.46])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d8888c2c51sm3117175173.102.2024.10.02.06.49.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 06:49:46 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="------------kosMKYyUL7FEz0v4Ge0L0z50"
+Message-ID: <df516fb0-034e-430d-8173-b3fe844fa440@gmail.com>
+Date: Wed, 2 Oct 2024 06:49:44 -0700
+Precedence: bulk
+X-Mailing-List: linux-acpi@vger.kernel.org
+List-Id: <linux-acpi.vger.kernel.org>
+List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Betterbird (Linux)
+Subject: Fwd: Fwd:
+ https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9
+Content-Language: en-US
+References: <ded31d34-8c7b-4164-9d53-2c47b6b6e28d@intel.com>
+To: linux-acpi@vger.kernel.org
+Cc: hdegoede@redhat.com, pbmerland@gmail.com
+From: Al Heynneman <heynnema@gmail.com>
+In-Reply-To: <ded31d34-8c7b-4164-9d53-2c47b6b6e28d@intel.com>
+X-Forwarded-Message-Id: <ded31d34-8c7b-4164-9d53-2c47b6b6e28d@intel.com>
+
+This is a multi-part message in MIME format.
+--------------kosMKYyUL7FEz0v4Ge0L0z50
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+linux-acpi,
+
+Please see my bug report at:
+
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2067498
+
+Cheers, Al
+
+
+-------- Forwarded Message --------
+Subject: 	Re: Fwd: 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9 
+
+Date: 	Wed, 2 Oct 2024 15:36:19 +0200
+From: 	Wysocki, Rafael J <rafael.j.wysocki@intel.com>
+To: 	Al Heynneman <heynnema@gmail.com>
+CC: 	gregkh@linuxfoundation.org
+
+
+
+Hi,
+
+On 10/2/2024 3:06 PM, Al Heynneman wrote:
+> Rafael, Greg,
+>
+>
+> -------- Forwarded Message --------
+> Subject: 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9 
+>
+> Date: Wed, 2 Oct 2024 06:01:16 -0700
+> From: Al Heynneman <heynnema@gmail.com>
+> To: hdegoede@redhat.com, gregkh@linuxfoundation.org
+> CC: pbmerland@gmail.com
+>
+>
+>
+Please send your report to linux-acpi@vger.kernel.org with a CC to Hans.
+
+This way it is less likely to get missed.
+
+Thanks!
+
+
+
+> Hans, Greg,
+>
+> re: 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9
+>
+> The Dell Inspiron 7700 is also effected by this problem. Please see my 
+> bug report:
+>
+> https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2067498
+>
+> I don't know how to check my DSDT to see if my values are different 
+> than this:
+>
+> In DSDT this uart port will be defined as: Name (_HID, "DELL0501") 
+> Name (_CID, EisaId ("PNP0501")
+>
+> This may have to change, also, as my product name is "Inspiron 7700 AIO"
+>
+> + DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> + DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7760 AIO"),
+>
+> Cheers, Al
+> -- *Al Heynneman*
+> heynnema@gmail.com
+>
+> -- *Al Heynneman*
+> heynnema@gmail.com
+
+-- 
+*Al Heynneman*
+heynnema@gmail.com
+--------------kosMKYyUL7FEz0v4Ge0L0z50
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    linux-acpi,<br>
+    <br>
+    Please see my bug report at:<br>
+    <br>
+    <a class="moz-txt-link-freetext" href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2067498">https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2067498</a><br>
+    <br>
+    Cheers, Al<br>
+    <div class="moz-forward-container"><br>
+      <br>
+      -------- Forwarded Message --------
+      <table class="moz-email-headers-table" cellspacing="0"
+        cellpadding="0" border="0">
+        <tbody>
+          <tr>
+            <th valign="BASELINE" nowrap="nowrap" align="RIGHT">Subject:
+            </th>
+            <td>Re: Fwd:
+<a class="moz-txt-link-freetext" href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&amp;id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9">https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&amp;id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9</a></td>
+          </tr>
+          <tr>
+            <th valign="BASELINE" nowrap="nowrap" align="RIGHT">Date: </th>
+            <td>Wed, 2 Oct 2024 15:36:19 +0200</td>
+          </tr>
+          <tr>
+            <th valign="BASELINE" nowrap="nowrap" align="RIGHT">From: </th>
+            <td>Wysocki, Rafael J <a class="moz-txt-link-rfc2396E" href="mailto:rafael.j.wysocki@intel.com">&lt;rafael.j.wysocki@intel.com&gt;</a></td>
+          </tr>
+          <tr>
+            <th valign="BASELINE" nowrap="nowrap" align="RIGHT">To: </th>
+            <td>Al Heynneman <a class="moz-txt-link-rfc2396E" href="mailto:heynnema@gmail.com">&lt;heynnema@gmail.com&gt;</a></td>
+          </tr>
+          <tr>
+            <th valign="BASELINE" nowrap="nowrap" align="RIGHT">CC: </th>
+            <td><a class="moz-txt-link-abbreviated" href="mailto:gregkh@linuxfoundation.org">gregkh@linuxfoundation.org</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      Hi,<br>
+      <br>
+      On 10/2/2024 3:06 PM, Al Heynneman wrote:<br>
+      <blockquote type="cite">Rafael, Greg,<br>
+        <br>
+        <br>
+        -------- Forwarded Message --------<br>
+        Subject:
+<a class="moz-txt-link-freetext" href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&amp;id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9">https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&amp;id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9</a>
+        <br>
+        Date: Wed, 2 Oct 2024 06:01:16 -0700<br>
+        From: Al Heynneman <a class="moz-txt-link-rfc2396E" href="mailto:heynnema@gmail.com">&lt;heynnema@gmail.com&gt;</a><br>
+        To: <a class="moz-txt-link-abbreviated" href="mailto:hdegoede@redhat.com">hdegoede@redhat.com</a>, <a class="moz-txt-link-abbreviated" href="mailto:gregkh@linuxfoundation.org">gregkh@linuxfoundation.org</a><br>
+        CC: <a class="moz-txt-link-abbreviated" href="mailto:pbmerland@gmail.com">pbmerland@gmail.com</a><br>
+        <br>
+        <br>
+        <br>
+      </blockquote>
+      Please send your report to <a class="moz-txt-link-abbreviated" href="mailto:linux-acpi@vger.kernel.org">linux-acpi@vger.kernel.org</a> with a CC to
+      Hans.<br>
+      <br>
+      This way it is less likely to get missed.<br>
+      <br>
+      Thanks!<br>
+      <br>
+      <br>
+      <br>
+      <blockquote type="cite">Hans, Greg,<br>
+        <br>
+        re:
+<a class="moz-txt-link-freetext" href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&amp;id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9">https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.10.12&amp;id=5a04cc4450f4793760b1a7ced8f05f0f5f64e0a9</a><br>
+        <br>
+        The Dell Inspiron 7700 is also effected by this problem. Please
+        see my bug report:<br>
+        <br>
+        <a class="moz-txt-link-freetext" href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2067498">https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2067498</a><br>
+        <br>
+        I don't know how to check my DSDT to see if my values are
+        different than this:<br>
+        <br>
+        In DSDT this uart port will be defined as: Name (_HID,
+        "DELL0501") Name (_CID, EisaId ("PNP0501")<br>
+        <br>
+        This may have to change, also, as my product name is "Inspiron
+        7700 AIO"<br>
+        <br>
+        + DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),<br>
+        + DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7760 AIO"),<br>
+        <br>
+        Cheers, Al<br>
+        -- *Al Heynneman*<br>
+        <a class="moz-txt-link-abbreviated" href="mailto:heynnema@gmail.com">heynnema@gmail.com</a><br>
+        <br>
+        -- *Al Heynneman*<br>
+        <a class="moz-txt-link-abbreviated" href="mailto:heynnema@gmail.com">heynnema@gmail.com</a><br>
+      </blockquote>
+    </div>
+    <br>
+    <div class="moz-signature">-- <br>
+      <b>Al Heynneman</b><br>
+      <a class="moz-txt-link-abbreviated" href="mailto:heynnema@gmail.com">heynnema@gmail.com</a><br>
+    </div>
+  </body>
+</html>
+
+--------------kosMKYyUL7FEz0v4Ge0L0z50--
+
+--------------IabLcf6ohXGbmcKq0V2pyy3G--
 
