@@ -1,94 +1,89 @@
-Return-Path: <linux-acpi+bounces-8526-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8527-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8362F98CE5F
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 10:08:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B10B98D2A8
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 14:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35529B22FA5
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 08:08:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BE0928496C
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Oct 2024 12:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37ADA1946B0;
-	Wed,  2 Oct 2024 08:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF231194AD1;
+	Wed,  2 Oct 2024 12:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="SECLJeJs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmNIGeaD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB65E194A74
-	for <linux-acpi@vger.kernel.org>; Wed,  2 Oct 2024 08:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8341218D65A;
+	Wed,  2 Oct 2024 12:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727856503; cv=none; b=c2uKwgic1LZCjAa22STXWRBiCamKJ1Tva+g1a0qb9LiMVATKEYTZ54JIXJV+ng5MJtvdoVnzYNbk1acJVIf0MKcNH5w/+JacQM4AUrFwZyp/CcwvWz21oSZ37kbFpnIvoM0FH5elHOrgkCscC6PlMzwP0Vi8enyY3b9A3CQgzBA=
+	t=1727870451; cv=none; b=fEGYtOhQ9/ZxbXDtUXyQ+NyZBV4O6T58JDok4ohWbJtHjhD8Hhg14GO1p2de0lIGBud5QkHL6ksQMmvzLXUz06SUBLcelF+pTzPoBOG6v7biHN1t5UFmJqC/9OMGqi1taFKmabpEkpLfmZ7h+M1550p39ZpFUtyjLkKV0cJ4kJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727856503; c=relaxed/simple;
-	bh=aj2o+qVPkCK89hmPXymzEaqlhsQ+Ok5bYC/dohwnc5w=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=ojmgPYkSk4vIn52/xXOU7GQ4U0mqWRKXfuBs80q85n1wYur4TnCfqi3LSW+KG1MYNuDqHtORIyJtzwJdWUbRlSKcDfNiod4ZaI0p57mW84Ao8WS2k3NX2fsVMEV2EXQWegERuINatQnXJaOXd6PtLgFMA1ykKTDlJPoXLWqY7qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=SECLJeJs; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1727856497; x=1728461297; i=w_armin@gmx.de;
-	bh=aj2o+qVPkCK89hmPXymzEaqlhsQ+Ok5bYC/dohwnc5w=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:From:Subject:
-	 Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=SECLJeJs8pRlAMw04ONz0WrJ9bEdp+NCIpvoLL/Rd3xqYIUJQM+ydCoQnpPUIThp
-	 FvKRZvQB231PuVWpLaje8FTFU4W4m6iYnuXXYFbZyS0sBXyKoZxycfwQTcPSJv1ca
-	 7QrCUoHqlRfucfNxScUAFiJ0nPsNwa94SHwRUU8SHqm7vTGMIZZkXRbjN0ItF9kK0
-	 BM+2GKb/lF0gKR76qZQk6RuXeitiNzwIR03rBTkkfnDauxMVTDxF2Nr9Y+pKffw8X
-	 H7OJRLSEZjcQgd2W8OLuwk6lY0lO889hJ8QxSnEgbuJ5J7UfNSpsmsEsfpnXBnaTN
-	 nAH4MJNHlHqgaI8Odg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mg6dy-1sFONr3JE6-00bteC for
- <linux-acpi@vger.kernel.org>; Wed, 02 Oct 2024 10:08:17 +0200
-Message-ID: <6274fdb7-ba80-4c34-94c8-04b7ff29a8c9@gmx.de>
-Date: Wed, 2 Oct 2024 10:08:17 +0200
+	s=arc-20240116; t=1727870451; c=relaxed/simple;
+	bh=YsTB5TK8M68Gw9MSGX27NlhMbpOE2i3AlirRP7ds5ww=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I9lKRYJpLtNdV3M4Pz+mt8UNNfDPLuNMXaAmyfdPS1dC83+kigs3xWTONY8kxnAfK+BtilXH69ciJUcErBHXuOHJCe6IHolw4A35WJeU3omN2LqwjEtzV7L6uv3V2UYoZgfsb0rVHOExSMKNjjkUgdTbGICIu9ViB4pO2OeYrdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmNIGeaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12499C4CECD;
+	Wed,  2 Oct 2024 12:00:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727870451;
+	bh=YsTB5TK8M68Gw9MSGX27NlhMbpOE2i3AlirRP7ds5ww=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YmNIGeaDjmT878Q1nsighoNGmb+oz/Wdk5jYrVtKkcJSRa4TXRIaMh4PwgD5Ha3X0
+	 0ytng8ZMJPQUx+43UG9Z7RUtFK2h/pDg/JjtW7m8aFBW0v22eOOa4ZAn8oqw6+K6wh
+	 CDysRBZ1oWNTBtlpbqjAL/cTbs3ivBkmtNVgxVD39NUk0fsnUY3giS5rmgLbyl1MpX
+	 Rfp33GOiZIu5uIHHj8neBmx2BWOclgwc/5D7FzYTH4AqkW7M8fJFaf2ZIJ+U3KmI+v
+	 qiEBF3HO+z8pDcLi4V5eWKpE8TSXf3hEuKY+gQp0xEp+H9NY8mz6TFWhfU+YYxk/im
+	 Nfs5FE0bi3icQ==
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e137183587so2529348a91.3;
+        Wed, 02 Oct 2024 05:00:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVuinrTjV/ze2uEX4kwvEXXg8SxVH0W/5VObFBCFC9/aRr0DWpLm9PbBoNXL6u+1YhhehhW/JfxHg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSJazFa3w+eYFweZXSfHKqozScGY0cU7AVo/uBBJ6GDSgTlC+t
+	tk5m2GU4qdA4W9nHOJ1stGEJmjQlh87mD03EksbUV3rqJWcCfuUoK/aob9YKiDecftcmD4iEjMf
+	kFA9BiDPS1vT8OmjqC8aeEy3nNS0=
+X-Google-Smtp-Source: AGHT+IF9AdfL9AiVrvU/jnF0/V2Vadvf9H1lGZLc5Tjseo2j3fW+PAuVogLMV64dlQeiM2IJ/WOfP4tG3FAw8eYMO0M=
+X-Received: by 2002:a17:90a:ba95:b0:2e0:b755:c461 with SMTP id
+ 98e67ed59e1d1-2e18454ca88mr3379854a91.6.1727870450685; Wed, 02 Oct 2024
+ 05:00:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-acpi@vger.kernel.org
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-Subject: s2idle issue on Dell G51 5155
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:wO6hxmSxlMVjpK78JacnQrQWovBZSZjAvydiYcignP0JK7SRfss
- pmPbP6D7BRR4IoGummn+TJQJn3kzVZWSvF32tbn7L8FWCh1c/idJtrcif/22aPQl8nRPuYa
- ny0BkONXkR1zEvoNoFQeHHVc6U9QTwcvtieNgT0orUGTNCmitL8U30tT3lQ9uy3/THcNwqZ
- 2+4r5+kqOpvZppOU4kPEw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:eeAz5c2Nv/A=;yaHNjXSrgg8JRJxHtXT6Be0+S6G
- 2YFLMeH5sqpFdIuYSd/4emyy+B8QpHdRIad0WCTc1iS12cbQb/xitJaG77tmnghzNfTopL0dW
- lqLeJdeyV60aLvZQ2tBccW1rgXAs4wAS/bKJb3vbaDy1kHO4Sw3+jPH1p410rJaqZLyzuUgKI
- ApS3UIFYRzfQyFk05KX1KkM61GP5i5FZRdqKFUkh1NCHfzqUHl9ozTXEyjqJv+Gh7LuupnMKZ
- 2WiYNFNp+wMX3SfFrwQY/YnWrbfKG2icdwbTlXZetTy7KwGfZ6KyKrhDo/y4kIbprcduQgw8K
- 64jr63rb1Rdq6IKv9PsfmolK6ODFG5fyXdThHzCc8EHW6sKZiUz6b8iTqHF8wmxp682hFpvdQ
- Ok7QAo4RQTGwdsqy/NouUxBKIXzeB1oetT5dT/BevRY1Y3ZwI09Ix0biuUETzgmMHdTjwX9wY
- q1hp0l0co/ujK/NPU+RftQBu0n7lIVnDVWApILvxNqo/nnyd/l054W96EcivRbbf2l3GCpeHA
- Ob4vZ8/UQU2mo3DuXnRLSscD+ycMUyqR0ZjMvEYYQ4iv+YS2WoXm1V71r50LKkqpF4VL5Wc7m
- 8/UeBMTYfidMwaL8x0mEEf5qoMc7d5FY8D1RHNDhgTfYQNsxJzlTvGGxuIEyLAPDzw8xIUqcf
- 0AqhSa4/tUM5HyK94qAxIWVk/IR4wWNe4FMxL0CjjQx8Stedj70F0jEKMXNKQldCUl+xOtSAs
- a/lWjpAZYJCvbnrNl1hTzjxbinh+CueV/RZ5k7nUczfLGhAg+OvLMzae6/9/e7ebCG6uhpEhO
- rojGeRDh6evjMq4QORsf6HxddaIGdXVy0pbOdpQDY3TUQ=
+References: <6274fdb7-ba80-4c34-94c8-04b7ff29a8c9@gmx.de>
+In-Reply-To: <6274fdb7-ba80-4c34-94c8-04b7ff29a8c9@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 2 Oct 2024 14:00:35 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hwUrnooYRTvpRogDjmn=tsEsR=uSPHkDAOtoDNT+poBg@mail.gmail.com>
+Message-ID: <CAJZ5v0hwUrnooYRTvpRogDjmn=tsEsR=uSPHkDAOtoDNT+poBg@mail.gmail.com>
+Subject: Re: s2idle issue on Dell G51 5155
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: linux-acpi@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>, 
+	Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
++Mario and linux-pm
 
-it seems a user has problems suspending its Dell G51 5155 using s2idle, see
-https://bugzilla.kernel.org/show_bug.cgi?id=218337 for details.
-
-Does anyone have an idea on how to debug this?
-
-Thanks,
-Armin Wolf
-
+On Wed, Oct 2, 2024 at 10:08=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Hello,
+>
+> it seems a user has problems suspending its Dell G51 5155 using s2idle, s=
+ee
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D218337 for details.
+>
+> Does anyone have an idea on how to debug this?
+>
+> Thanks,
+> Armin Wolf
+>
+>
 
