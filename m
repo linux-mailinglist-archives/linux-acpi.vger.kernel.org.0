@@ -1,74 +1,88 @@
-Return-Path: <linux-acpi+bounces-8549-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8550-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEE698EFD1
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 14:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFFE98F904
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 23:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25377280CA1
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 12:57:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 056C928271D
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 21:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCA9197A6A;
-	Thu,  3 Oct 2024 12:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6259E1B85FA;
+	Thu,  3 Oct 2024 21:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QyMG2GY4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIhrxgwH"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D825B19309D;
-	Thu,  3 Oct 2024 12:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDB7748D
+	for <linux-acpi@vger.kernel.org>; Thu,  3 Oct 2024 21:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727960215; cv=none; b=DCH9UY0aOtu9G2EGq21tv4EZEfBtq+bgMzoD5Lcr2oHC2n1R9vgiqpAWqVm3AeaZs2X5EiK04IBPOZTz480qLBfaT4p+p0stwHtWfmIAxfCuqM9RrlEIOFPALSCBtRaaGgk+QqvrXUjIzuEB5EnbyetQxY5WJRiPfGhsjSFlvbs=
+	t=1727991495; cv=none; b=q6iWcvlFaW7LriIPJfa0HFm5d8TwL4wt1gJIMgVdpZQRYhGQ7MSLy+XCb3/u/6kbW9KA2rLyU4m4f39x4VVc+oNAIRaE+OynPGXsQe2d30HuimqH4p1UqTP7cch6ZmJE42DtVGJBCmnq79hkOsCxUqrw7t+QOkcltCZ75Sp7yRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727960215; c=relaxed/simple;
-	bh=b3o2grP0GZ7eFjxPtC+/l0sm8iFwDIbqgxFu4CCYHKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BRCb0CfIjRESlOS3la8VS/I/bBlJNcWdxU0ncGZh5QwefEoFFZzL/QiRKPhkYFqbOvCoc3ak40s4+OTyb5valzs3bXekg//gdKBpZPAqGGI8782kUY2iH9Amb+odnTri1yQC2S5D0s71C0amRlxhjRV7+p6I0LW9w+1IVOhe6DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QyMG2GY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5387C4CEC5;
-	Thu,  3 Oct 2024 12:56:54 +0000 (UTC)
+	s=arc-20240116; t=1727991495; c=relaxed/simple;
+	bh=/QJELql6ZGxKq1+b2fvQoOEmGBH3v38jarpB8mRF9OY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QVWSOoqxLOSy+pZy5PY4tJO40YycKTk8SZ9HM/7LUtXWW50isnzqSuQoo84JD7VYmLIReMC/wNtTg5cPaaeInCM/MWSGnEm2Fn7FeE0uM7PYnyqrdDTp27oqPIrlsGJhMJ/l3F3KWdBd9iVQfB7tDOJHn++Ykr3hT7aUyqZLS9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIhrxgwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B817C4CEC5;
+	Thu,  3 Oct 2024 21:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727960215;
-	bh=b3o2grP0GZ7eFjxPtC+/l0sm8iFwDIbqgxFu4CCYHKI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QyMG2GY4rWuFScIGN8gIwIxGohzUA8bKJPIzDyU18cSYOD4lkd0hcznsmfaQCpRwh
-	 qxhZ/C3/4ML2f/Nw6h/rvtznKLz0UwzT1PM90VL1MmSm4ffFcWOAEfS0WLhK23Dnmy
-	 YpHa0f7LtvRHsDLWtFQ2ajC90UP+LO5XKuSF7MyjDYwPJg4s3Dyjl1hV6SRsNndMkr
-	 Ru6GdGrxT180Gf6ercL3szFpwf8esA9dpPWC41AIs40Kb6t7eXEmnryzhgjB8aUQ59
-	 HK891PCOrnVEQF+Q1CsmrUcb+a2FHM10FUt+vLj9TWpDjMYxQKfGs4mHAB0fZejPzb
-	 EbEBpN3JDk1Lw==
-Date: Thu, 3 Oct 2024 14:56:51 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: "hunter.yu" <hunter.yu@hj-micro.com>
-Cc: andriy.shevchenko@linux.intel.com, jarkko.nikula@linux.intel.com, 
-	lenb@kernel.org, rafael@kernel.org, jsd@semihalf.com, linux-acpi@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, andy.xu@hj-micro.com, peter.du@hj-micro.com
-Subject: Re: [PATCH v2 0/2] i2c: Add ACPI support for HJMC01
-Message-ID: <z36ad43lbhitrb6z263d43fie3ykfjjw4wr76xd73quianocsn@5lccbdjen4bc>
-References: <20240926024026.2539-1-hunter.yu@hj-micro.com>
+	s=k20201202; t=1727991494;
+	bh=/QJELql6ZGxKq1+b2fvQoOEmGBH3v38jarpB8mRF9OY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aIhrxgwHol8KNWQqp+CnMF+z3EC23mQ7+uUwkEbol3JPoYnZ1dREbOfcfNzsdvU+u
+	 ESM31PIF7bX2w3F9b+/fH4VM4Z/2360wLgxWEx4pe42yLMVwNXYF33Xi7AFMcCvK4a
+	 xdeDWGKX2OOXXLGBxW83FQ4VJr4PE0aNUsbjIZLSbatV2HFdjZaSamXNYIiwldv+TN
+	 oMN29l3kmQQCXqjVNFIjYfNIzU2AIsd5xFcb0+GfAculRgpZvFV4sQG7YMsVS2fgW1
+	 F1EgSbrP3kI6KucVpLV9ERvLtCRNCmdr3QijxjegM8qSpJjKH5lq9Jo5WjNihVmRb+
+	 KcNAQop8X9sJw==
+From: Mario Limonciello <superm1@kernel.org>
+To: Borislav Petkov <bp@alien8.de>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: x86@kernel.org,
+	linux-acpi@vger.kernel.org,
+	Perry Yuan <perry.yuan@amd.com>,
+	gautham.shenoy@amd.com,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 0/2] Detect max performance values for heterogeneous AMD designs
+Date: Thu,  3 Oct 2024 16:37:57 -0500
+Message-ID: <20241003213759.3038862-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240926024026.2539-1-hunter.yu@hj-micro.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Hunter,
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-> hunter.yu (2):
->   ACPI: APD: Add clock frequency for HJMC01 I2C controller
->   i2c: designware: Add a new ACPI HID for HJMC01 I2C controller
+AMD heterogeneous designs such as the Ryzen AI 300 series processors have
+multiple core types that can reach different maximum clock values.
 
-Applied to i2c/i2c-host and I took the freedom to change
-"hunter.yu" with "Hunter Yu".
+This series uses the CPUID Fn_0x80000026 to detect such designs and to
+correct configure the boost numerator that is used to calculate maximum
+frequency.
 
-Thanks,
-Andi
+Mario Limonciello (1):
+  CPPC: Use heterogeneous core topology for identifying boost numerator
+
+Perry Yuan (1):
+  x86/cpufeatures: Add feature bits for AMD heterogeneous processor
+
+ arch/x86/include/asm/cpufeatures.h |  1 +
+ arch/x86/include/asm/processor.h   | 13 +++++++++++++
+ arch/x86/kernel/acpi/cppc.c        | 30 ++++++++++++++++++++++++++++++
+ arch/x86/kernel/cpu/amd.c          | 29 +++++++++++++++++++++++++++++
+ arch/x86/kernel/cpu/scattered.c    |  1 +
+ 5 files changed, 74 insertions(+)
+
+-- 
+2.43.0
+
 
