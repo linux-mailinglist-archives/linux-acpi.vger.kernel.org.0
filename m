@@ -1,128 +1,324 @@
-Return-Path: <linux-acpi+bounces-8546-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8547-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D7798E971
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 07:40:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE8098EB05
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 10:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DD732854BB
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 05:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2998A1F22EF0
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Oct 2024 08:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16D838384;
-	Thu,  3 Oct 2024 05:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB9512EBDB;
+	Thu,  3 Oct 2024 08:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y/M0wME3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWmzMzZ5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3C82110E
-	for <linux-acpi@vger.kernel.org>; Thu,  3 Oct 2024 05:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20974811E2;
+	Thu,  3 Oct 2024 08:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727934047; cv=none; b=hpPa4JQviB4XsspZ5U6imi5aqr5a3UKy+IwTaFtJSJIN3FXrJxfsqTvZ0B1lKz50KJokabAbUFmkBCeQiWCAcPRYWRpHh8R3sSu+maR36F0VsNwbwd2cYXQFbHugjkHtDR75YmMAthr1tO/mfNzRxG/PPjuQOKCVaDZcMymxKME=
+	t=1727942711; cv=none; b=ghw3vVEeASyyRyw5qs1/ITeAU93TvEuud+BG1wa9erSacf/nmAm3dIWwcmZxNiQOSZEo1Ly+hCzjlgyuHc+NsvlN2KNUwFH41bU4BrBTXfh5HHF/tPBIisglU5bDpf1m8T9+ekksdQjjc7ZTq3w56VaxpGaRY3Rt5kyInD9cPEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727934047; c=relaxed/simple;
-	bh=dnU4L/oEz0wymbgKZ4nhTdG9a6a4cXDE5YaEfelUT0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QmEx0qGAvzahkapNoS0IqiQzhGMcy1dOFN1hJQ3jxTEG05KE7YPlxtZdPMqfmzujhPDza+SiC7sRcn2z/v9E3n6z0xMfHzATltvtuPKUMNZM6RM2Si4k3UH/75xK+xv5Cu2FuYww8PTycCaRsUA0v+r/1OfU3FJiSqheoqY4e+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y/M0wME3; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20b6458ee37so5276665ad.1
-        for <linux-acpi@vger.kernel.org>; Wed, 02 Oct 2024 22:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727934046; x=1728538846; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x2c2so/LfztFajhVVrCfFRGf6/mFzkkOggzllbzK5Jo=;
-        b=y/M0wME3PuWoZp0bF/cOCpRWzrsTkqzDOVefixtCMHorBj47V1SFiGHkGpiBYFZoo2
-         oqXkfYVqN9rFYACoeRp1g3ukMn4gnHw/6GH83XUqjRK7CbTHr9+9F6VTjtOGdwGAFr+f
-         I/qUHEP6EK9lyPLYTF5d2/44qVvPoiUjiCHQ9steT0qDS30WMHilC2cVKknSqM6L+sn7
-         4/zsb0XLp3dUsHpbaAZYYVSCSElU6T1A+jdbsEKqxLoNVH2Dbar8iKSZ5YfL+uBCY6In
-         IDw+RKX4hmFIdTz+MBBnoEju8RK8XJ652Xh8NCOZUhdF969qkksur6LiTU0RlqeOJ889
-         mEuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727934046; x=1728538846;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x2c2so/LfztFajhVVrCfFRGf6/mFzkkOggzllbzK5Jo=;
-        b=eG1keeLUaPT08iOnlbUiokeKicurhS00vHhEBoVwqBVeuysdyHmNs4FGJdPvBqv11g
-         bBCgMJaBKmf4/MT5BI34fLg/bEBRpC3ipaE38WOsi+N0eOkZPM/scu5xBwh/UJDapMCD
-         oA6faUOFGjWWNCQ1pz7BDztnXy9OlVnFx7y4ngIE6FTHCh/X9F9VeS9HO6C85BYPNirm
-         ASq9VzcPbtCx+3iz2pGC6/BQ0INsR34qQGTxrQXCPZBUM73iOcanLxh2i7bfntF1/QYW
-         z321BILYrMPFOkG1YAwO9FL6lmFEbNiGyyTY1fci108uQVSTDB0N4KLWGa5Ne58Mky0Q
-         mSZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXptZi9X/WXxlGEHIEnAZQ8fu94X9QdCd2l61eOU5k3bGQ+1DK1SPJjE2ry6+wd3mVis2yNhQ/EhvC2@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlzJK+hBdRrdVBz9+jZjRGuhSE2xqpa4zmi9WHxEI6qjEqemje
-	SEPOMU9fz+F6WFb4XZG8MTPTyLRgYRYuKHHBNWiGuxNr3HKmHuac7hUXncsVLdM=
-X-Google-Smtp-Source: AGHT+IEcGgL7uF1src79jD8rHbjth6x1KA9onYNeT5aMNy4ktHVaQ33uT8b19o8yEH5ZSrE0/PFkgA==
-X-Received: by 2002:a17:903:41cf:b0:20b:419e:9f15 with SMTP id d9443c01a7336-20bc5a5cff3mr71019945ad.46.1727934045744;
-        Wed, 02 Oct 2024 22:40:45 -0700 (PDT)
-Received: from localhost ([122.172.83.237])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20beefb2e2asm2060535ad.234.2024.10.02.22.40.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 22:40:44 -0700 (PDT)
-Date: Thu, 3 Oct 2024 11:10:42 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Jie Zhan <zhanjie9@hisilicon.com>
-Cc: rafael@kernel.org, ionela.voinescu@arm.com, beata.michalska@arm.com,
-	wangxiongfeng2@huawei.com, linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxarm@huawei.com, jonathan.cameron@huawei.com,
-	wanghuiqiang@huawei.com, zhenglifeng1@huawei.com,
-	lihuisong@huawei.com, yangyicong@huawei.com, liaochang1@huawei.com,
-	zengheng4@huawei.com
-Subject: Re: [PATCH v4 0/2] cppc_cpufreq: Rework ->get() error handling when
- cores are idle
-Message-ID: <20241003054042.t463fqivfk6immen@vireshk-i7>
-References: <20240929033214.1039485-1-zhanjie9@hisilicon.com>
+	s=arc-20240116; t=1727942711; c=relaxed/simple;
+	bh=TZQRn6HBj+Hmqap/Gn9V0Nlxw8zKuq4PMP6Bu8AaazA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c23s3ZlZiI2TsYE8Ao03p33CU09XoP1llnRzHxjSaq3oSfowW7E215g674fLCdr4Lgf51C5ZSR6bp9XtsnpEgI7L/OcTQujI/qFspW5iGWyMbbhWuuzXlmIOH89ljc8rX+8Tz1jaB7905/e19Mxzvedi1/LsmBgy0yWV2dufzcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWmzMzZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E21C4CEC7;
+	Thu,  3 Oct 2024 08:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727942710;
+	bh=TZQRn6HBj+Hmqap/Gn9V0Nlxw8zKuq4PMP6Bu8AaazA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VWmzMzZ5bZo36Rd3NwsPpjsvH0NpoN8Sn0NDsYEo2PaIxM4T6TRDrG/+u27fcVYKW
+	 AHDbgjLpv9CxbHaJs4lcmL8eSZ2AX9xiRyU7r7HM0o1aYz71GBVH05LDAYawef0oMu
+	 yi44DbT7OOxrnGOoujMshL28Ertj2KseJM9Y4PxsmS6ZPdJ1HDzEsKUHNGGvkBTJ5P
+	 Xn3v3xRhciTRd4cFE1IFwq+RK1TP4vhdljbuaTSYWZg5oqp8qRuR4dEkH55yQFdL38
+	 eYccOmekWIlJSrFM/QYl7i+6WnEiA9GejEgtXNm3h/Q5SPLMoXfBe0E4MzZ07wm7bc
+	 Odo6JAvDwRFmw==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5398e33155fso756950e87.3;
+        Thu, 03 Oct 2024 01:05:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVoDoRCsIbjeZNiWnfeRtu5MNFq2VX8t+Ah5D7xI+97iPnzcHiS5oKpU2WmZw6mOh4WArUkrsDzQmtWHDmv@vger.kernel.org, AJvYcCVzVXLGYfo3KdaVKjVwK7lwcd8h+HNBFA0Lh1o453FcMdTwuXmVkKTdbh3eAVzVnLcehbSoZBbvndrT@vger.kernel.org, AJvYcCXWO/OzDW3pIh+4/I9Cg0+/UU+TI+vFxl7EHHxEMRd0odg2Z901ff5v6u/P4VbKfJPQm8DPbyAxokzO@vger.kernel.org
+X-Gm-Message-State: AOJu0YybxUWCeV+YM0eQGW3xeNYE2G4q96o+2tq+qqp/hawlkfSWbE+M
+	pH8g/XbJFwQBxZNSg2OYHnkgrmbRXXQBCmk0QyfKbU3lw1kQm2GCYi0q8wpSvcS8VjWuGffW/oT
+	2McyVDWzJeGqhfGqwEgGUWSeafDo=
+X-Google-Smtp-Source: AGHT+IESruK5+9yBmcTRq3OjOtWAN42HOQbPadPnfEku5CBi9MCS0KGGpNPnN6NM0k9jkp3vIIh8SXIO41rcQFkjz00=
+X-Received: by 2002:a05:6512:694:b0:539:8d46:4746 with SMTP id
+ 2adb3069b0e04-539a07aa3b0mr2941043e87.60.1727942708847; Thu, 03 Oct 2024
+ 01:05:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240929033214.1039485-1-zhanjie9@hisilicon.com>
+References: <20240911155536.3900579-1-kobak@nvidia.com> <CAJZ5v0gQVPcmMNL4J7UskHsTx8vugJ6pZ_T=Ob3qjsrGmhnFAw@mail.gmail.com>
+ <CAMj1kXH+xsEj6vC-+z=NcNyGNA6EVePd35iToLB-J-8LhKdD-w@mail.gmail.com> <1d88a9a8-c594-4474-ab85-1013e34deb73@nvidia.com>
+In-Reply-To: <1d88a9a8-c594-4474-ab85-1013e34deb73@nvidia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 3 Oct 2024 10:04:57 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGSrEtoL2xztrr+LgNRxS6w6kY8i+GhjZsn+XNyPfKDXQ@mail.gmail.com>
+Message-ID: <CAMj1kXGSrEtoL2xztrr+LgNRxS6w6kY8i+GhjZsn+XNyPfKDXQ@mail.gmail.com>
+Subject: Re: [PATCH V5] acpi/prmt: find block with specific type
+To: Koba Ko <kobak@nvidia.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Matt Ochs <mochs@nvidia.com>, Len Brown <lenb@kernel.org>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Zhang Rui <rui.zhang@intel.com>, linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 29-09-24, 11:32, Jie Zhan wrote:
-> CPPC feedback counters can be unchanged or 0 when cores are idle, e.g.
-> clock-gated or power-gated.  In such case, get the latest desired perf for
-> calculating frequency.
-> 
-> Also, the HiSilicon CPPC workaround can now be removed as it can be handled
-> by the common code.
-> 
-> ---
-> v4:
-> - Some additional comments as suggested. No functions changes.
+On Thu, 3 Oct 2024 at 05:45, Koba Ko <kobak@nvidia.com> wrote:
+>
+>
+> On 10/3/24 05:11, Ard Biesheuvel wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > On Wed, 2 Oct 2024 at 20:06, Rafael J. Wysocki <rafael@kernel.org> wrot=
+e:
+> >> On Wed, Sep 11, 2024 at 5:55=E2=80=AFPM KobaK <kobak@nvidia.com> wrote=
+:
+> >>> PRMT needs to find the correct type of block to
+> >>> translate the PA-VA mapping for EFI runtime services.
+> >>>
+> >>> The issue arises because the PRMT is finding a block of
+> >>> type EFI_CONVENTIONAL_MEMORY, which is not appropriate for
+> >>> runtime services as described in Section 2.2.2 (Runtime
+> >>> Services) of the UEFI Specification [1]. Since the PRM handler is
+> >>> a type of runtime service, this causes an exception
+> >>> when the PRM handler is called.
+> >>>
+> >>>      [Firmware Bug]: Unable to handle paging request in EFI runtime s=
+ervice
+> >>>      WARNING: CPU: 22 PID: 4330 at drivers/firmware/efi/runtime-wrapp=
+ers.c:341
+> >>>          __efi_queue_work+0x11c/0x170
+> >>>      Call trace:
+> >>>        __efi_queue_work+0x11c/0x170
+> >>>        efi_call_acpi_prm_handler+0x68/0xd0
+> >>>        acpi_platformrt_space_handler+0x198/0x258
+> >>>        acpi_ev_address_space_dispatch+0x144/0x388
+> >>>        acpi_ex_access_region+0x9c/0x118
+> >>>        acpi_ex_write_serial_bus+0xc4/0x218
+> >>>        acpi_ex_write_data_to_field+0x168/0x218
+> >>>        acpi_ex_store_object_to_node+0x1a8/0x258
+> >>>        acpi_ex_store+0xec/0x330
+> >>>        acpi_ex_opcode_1A_1T_1R+0x15c/0x618
+> >>>        acpi_ds_exec_end_op+0x274/0x548
+> >>>        acpi_ps_parse_loop+0x10c/0x6b8
+> >>>        acpi_ps_parse_aml+0x140/0x3b0
+> >>>        acpi_ps_execute_method+0x12c/0x2a0
+> >>>        acpi_ns_evaluate+0x210/0x310
+> >>>        acpi_evaluate_object+0x178/0x358
+> >>>        acpi_proc_write+0x1a8/0x8a0 [acpi_call]
+> >>>        proc_reg_write+0xcc/0x150
+> >>>        vfs_write+0xd8/0x380
+> >>>        ksys_write+0x70/0x120
+> >>>        __arm64_sys_write+0x24/0x48
+> >>>        invoke_syscall.constprop.0+0x80/0xf8
+> >>>        do_el0_svc+0x50/0x110
+> >>>        el0_svc+0x48/0x1d0
+> >>>        el0t_64_sync_handler+0x15c/0x178
+> >>>        el0t_64_sync+0x1a8/0x1b0
+> >>>
+> >>> Find a block with specific type to fix this.
+> >>> prmt find a block with EFI_RUNTIME_SERVICES_DATA for prm handler and
+> >>> find a block with EFI_RUNTIME_SERVICES_CODE for prm context.
+> >>> If no suitable block is found, a warning message will be prompted
+> >>> but the procedue continues to manage the next prm handler.
+> >>> However, if the prm handler is actullay called without proper allocat=
+ion,
+> >>> it would result in a failure during error handling.
+> >>>
+> >>> By using the correct memory types for runtime services,
+> >>> Ensure that the PRM handler and the context are
+> >>> properly mapped in the virtual address space during runtime,
+> >>> preventing the paging request error.
+> >>>
+> >>> [1] https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug=
+29.pdf
+> >> I need input from EFI people on this, so can you please resend the
+> >> patch with a CC to linux-efi@vger.kernel.org?
+> >>
+> >>> Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler fo=
+r the PlatformRtMechanism subtype")
+> >>> Signed-off-by: KobaK <kobak@nvidia.com>
+> > Please use your full name.
+> Hi Ardb,
+> Sure, will update.
+> >
+> >>> Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
+> >>> ---
+> >>> V2:
+> >>> 1. format the changelog and add more about error handling.
+> >>> 2. replace goto
+> >>> V3: Warn if parts of handler are missed during va-pa translating.
+> >>> V4: Fix the 0day
+> >>> V5: Fix typo and pr_warn warning
+> >>> ---
+> >>>   drivers/acpi/prmt.c | 49 +++++++++++++++++++++++++++++++-----------=
+---
+> >>>   1 file changed, 34 insertions(+), 15 deletions(-)
+> >>>
+> >>> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> >>> index c78453c74ef5..cd4a7f5491d6 100644
+> >>> --- a/drivers/acpi/prmt.c
+> >>> +++ b/drivers/acpi/prmt.c
+> >>> @@ -72,15 +72,17 @@ struct prm_module_info {
+> >>>          struct prm_handler_info handlers[] __counted_by(handler_coun=
+t);
+> >>>   };
+> >>>
+> >>> -static u64 efi_pa_va_lookup(u64 pa)
+> >>> +static u64 efi_pa_va_lookup(u64 pa, u32 type)
+> >>>   {
+> >>>          efi_memory_desc_t *md;
+> >>>          u64 pa_offset =3D pa & ~PAGE_MASK;
+> >>>          u64 page =3D pa & PAGE_MASK;
+> >>>
+> >>>          for_each_efi_memory_desc(md) {
+> >>> -               if (md->phys_addr < pa && pa < md->phys_addr + PAGE_S=
+IZE * md->num_pages)
+> >>> +               if ((md->type =3D=3D type) &&
+> >>> +                       (md->phys_addr < pa && pa < md->phys_addr + P=
+AGE_SIZE * md->num_pages)) {
+> >>>                          return pa_offset + md->virt_addr + page - md=
+->phys_addr;
+> >>> +               }
+> >>>          }
+> >>>
+> >>>          return 0;
+> >>> @@ -148,9 +150,18 @@ acpi_parse_prmt(union acpi_subtable_headers *hea=
+der, const unsigned long end)
+> >>>                  th =3D &tm->handlers[cur_handler];
+> >>>
+> >>>                  guid_copy(&th->guid, (guid_t *)handler_info->handler=
+_guid);
+> >>> -               th->handler_addr =3D (void *)efi_pa_va_lookup(handler=
+_info->handler_address);
+> >>> -               th->static_data_buffer_addr =3D efi_pa_va_lookup(hand=
+ler_info->static_data_buffer_address);
+> >>> -               th->acpi_param_buffer_addr =3D efi_pa_va_lookup(handl=
+er_info->acpi_param_buffer_address);
+> >>> +               th->handler_addr =3D
+> >>> +                       (void *)efi_pa_va_lookup(handler_info->handle=
+r_address, EFI_RUNTIME_SERVICES_CODE);
+> > Wouldn't it make more sense to test the EFI_MEMORY_RUNTIME attribute
+> > rather than expecting/assuming a certain memory type in each case?
+> > That attribute is precisely what controls whether or not a region has
+> > been remapped into the firmware's page tables.
+> Please see the below
+> >
+> >>> +               th->static_data_buffer_addr =3D
+> >>> +                       efi_pa_va_lookup(handler_info->static_data_bu=
+ffer_address, EFI_RUNTIME_SERVICES_DATA);
+> >>> +               th->acpi_param_buffer_addr =3D
+> >>> +                       efi_pa_va_lookup(handler_info->acpi_param_buf=
+fer_address, EFI_RUNTIME_SERVICES_DATA);
+> >>> +
+> >>> +               if (!th->handler_addr || !th->static_data_buffer_addr=
+ || !th->acpi_param_buffer_addr)
+> >>> +                       pr_warn(
+> >>> +                               "Idx: %llu, Parts of handler(GUID: %p=
+UL) are missed, handler_addr %p, data_addr %p, param_addr %p",
+> > Please improve this diagnostic: 'are missed' is not very helpful.
+>
+> Are these good for you
+>
 
-Merged with following diff to fix the warning.
+I /think/ it looks ok but please resend it as a proper patch - the
+whitespace got mangled and it is difficult to read.
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index ae3424cb3335..fd3e328a2d57 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -38,13 +38,13 @@ static bool boost_supported;
+> ```
+>
+> -static u64 efi_pa_va_lookup(u64 pa, u32 type)
+> +static u64 efi_pa_va_lookup(u64 pa)
+>   {
+>          efi_memory_desc_t *md;
+>          u64 pa_offset =3D pa & ~PAGE_MASK;
+>          u64 page =3D pa & PAGE_MASK;
+>
+>          for_each_efi_memory_desc(md) {
+> -               if ((md->type =3D=3D type) &&
+> +               if ((md->attribute & EFI_MEMORY_RUNTIME) &&
+>                          (md->phys_addr < pa && pa < md->phys_addr +
+> PAGE_SIZE * md->num_pages)) {
+>                          return pa_offset + md->virt_addr + page -
+> md->phys_addr;
+>                  }
+> @@ -150,18 +150,20 @@ acpi_parse_prmt(union acpi_subtable_headers
+> *header, const unsigned long end)
+>                  th =3D &tm->handlers[cur_handler];
+>
+>                  guid_copy(&th->guid, (guid_t *)handler_info->handler_gui=
+d);
+> -               th->handler_addr =3D
+> -                       (void
+> *)efi_pa_va_lookup(handler_info->handler_address,
+> EFI_RUNTIME_SERVICES_CODE);
+> -               th->static_data_buffer_addr =3D
+> - efi_pa_va_lookup(handler_info->static_data_buffer_address,
+> EFI_RUNTIME_SERVICES_DATA);
+> -               th->acpi_param_buffer_addr =3D
+> - efi_pa_va_lookup(handler_info->acpi_param_buffer_address,
+> EFI_RUNTIME_SERVICES_DATA);
+> -
+> -               if (!th->handler_addr || !th->static_data_buffer_addr ||
+> !th->acpi_param_buffer_addr)
+> -                       pr_warn(
+> -                               "Idx: %llu, Parts of handler(GUID: %pUL)
+> are missed, handler_addr %p, data_addr %p, param_addr %p",
+> -                               cur_handler, &th->guid, th->handler_addr,
+> -                               (void *)th->static_data_buffer_addr,
+> (void *)th->acpi_param_buffer_addr);
+> +               th->handler_addr =3D (void
+> *)efi_pa_va_lookup(handler_info->handler_address);
+> +               if (!th->handler_addr)
+> +                       pr_warn( "Idx: %llu, failed to find VA for
+> handler_addr(GUID: %pUL, PA: %p)",
+> +                               cur_handler, &th->guid, th->handler_addr)=
+;
+> +
+> +               th->static_data_buffer_addr =3D
+> efi_pa_va_lookup(handler_info->static_data_buffer_address);
+> +               if (!th->static_data_buffer_addr)
+> +                       pr_warn( "Idx: %llu, failed to find VA for
+> data_addr(PA: %p)",
+> +                               cur_handler, &th->guid, (void
+> *)th->static_data_buffer_addr);
+> +
+> +               th->acpi_param_buffer_addr =3D
+> efi_pa_va_lookup(handler_info->acpi_param_buffer_address);
+> +               if (!th->acpi_param_buffer_addr)
+> +                       pr_warn( "Idx: %llu, failed to find VA for
+> param_addr(PA: %p)",
+> +                               cur_handler, &th->guid, (void
+> *)th->acpi_param_buffer_addr);
+>
+> ```
+>
+...
+> >>> @@ -274,8 +293,10 @@ static acpi_status acpi_platformrt_space_handler=
+(u32 function,
+> >>>          case PRM_CMD_START_TRANSACTION:
+> >>>
+> >>>                  module =3D find_prm_module(&buffer->handler_guid);
+> >>> -               if (!module)
+> >>> -                       goto invalid_guid;
+> >>> +               if (!module) {
+> >>> +                       buffer->prm_status =3D PRM_HANDLER_GUID_NOT_F=
+OUND;
+> >>> +                       return AE_OK;
+> >>> +               }
+> > What is the reason for this change, and the ones down below?
+> As per Rui's comment, goto can be replaced with return.
+> So I modified them with return and PRM_HANDLER_GUID_NOT_FOUND.
 
- static struct cpufreq_driver cppc_cpufreq_driver;
-
-+#ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
- static enum {
-        FIE_UNSET = -1,
-        FIE_ENABLED,
-        FIE_DISABLED
- } fie_disabled = FIE_UNSET;
-
--#ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
- module_param(fie_disabled, int, 0444);
- MODULE_PARM_DESC(fie_disabled, "Disable Frequency Invariance Engine (FIE)");
-
--- 
-viresh
+I don't think this change is necessary, but it should be a separate
+patch at the very least.
 
