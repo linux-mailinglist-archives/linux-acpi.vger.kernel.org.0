@@ -1,373 +1,245 @@
-Return-Path: <linux-acpi+bounces-8562-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8563-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB8C9910D4
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Oct 2024 22:48:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDDB9910D9
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Oct 2024 22:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277E61F2293F
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Oct 2024 20:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908981C22B65
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Oct 2024 20:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2843A13957B;
-	Fri,  4 Oct 2024 20:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60957155C98;
+	Fri,  4 Oct 2024 20:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTMWDLkY"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="kszEJck6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B02231CAE;
-	Fri,  4 Oct 2024 20:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FAF231CAE;
+	Fri,  4 Oct 2024 20:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728074933; cv=none; b=Z+UWJom4UmcXi2MZPUxkKWz3/7GGivVjR0dOUp+H2e09wcXOuO/UeeViivT+Y/Js2wKYd+OvAj7iWX2QLMA9Fij+lmUEp3BJeOxsLjvOS5jvgdmzjg5RpkFbiy9xFuDJiGb37f21YnnnYEm199UTF4IGtpSXlvRFHdd6lacBh3g=
+	t=1728074982; cv=none; b=gJor7U+kzHVteJ6FK/87EdEjSVqOEIlMD/g1qpoVmQwKlkxd1BWUkvjYqSrtfW0ON2H7Szp4yqLS5kYa9vz1V2jsT0cB3BuRbK1hKOs5kYOudxnLTdgKqq9VCGchtCKxR91arTqocGETdQOgFKVMwmWTAdsHmoHr/IfD7URqcSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728074933; c=relaxed/simple;
-	bh=JjcTsSRlL+TG+XePePBv0xoIjY+Mi6GJKME0LYVDJLg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=coFm6RqdW/uV0nqnRJYvrnv5NgGL3eU5nPwoXaVWk7NGRynUzl3fhTprLiZcR8QcJaQxHRpR33RuKZFu2ng1cbjpGtgjvWjTCthXuybees9SgIxm7ubbSt0riIiv7EQ5pXhsZGGatuRpakGbwZ9ozFbCnNvD1x4ne2EXurOjmpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTMWDLkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEFBC4CEC6;
-	Fri,  4 Oct 2024 20:48:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728074932;
-	bh=JjcTsSRlL+TG+XePePBv0xoIjY+Mi6GJKME0LYVDJLg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qTMWDLkYpA0U+bchqE8cI/aYWco4M8EkyA2F2TSB6lLhXdIggrEiP41X4W9OYnca0
-	 AGp1j+aBYgshU2VJ6LdBXu8pEFtJ33xk+5xP1VXWTu5U9ZMtSo0X2MMaf7tjaKTOhn
-	 wZZNu45GcEVzvqSPP/sIQENukAVs9TjcgcYOSZoBQq/Xg5toNtvoqS0iWCNDyZ652r
-	 XM2povD2pF56r9+DPz3qniLcD45Aq/HvgpZJl/LMkELtb7yrY0/XmoAh1bJZQG5Vbc
-	 4BVZMobMKiqnMKHm3ltxIQR3duOGXIMWZ/Dz8F8vV1JDPEZbasgV044Vnp6YPQZRU6
-	 yP5aqKj5UEQ0w==
-From: Arnd Bergmann <arnd@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>
-Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH] acpi: allow building without CONFIG_HAS_IOPORT
-Date: Fri,  4 Oct 2024 20:47:35 +0000
-Message-Id: <20241004204845.970951-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1728074982; c=relaxed/simple;
+	bh=RYdiU1exZrBcmefnIjVyBtDkebyERCkXiX/EIoabMYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPn0+iBcK0u0W5XxBmt86DSCbVQ3XnWNGiKBh8MciKwD7BS04uYrr1o4Q0UZKSEhe0BpcI/O5a6vb8s4UOtBufCkMzN0sd744qnpd22NSyc4Dl2P/EANWiNFFxrKw9kdq0YtEu97wCERFfX9fS45UppXv7mNG5t8Czj7RKvDkTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=kszEJck6; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=wOok6V6JCrl5jJMFRFhd1GdooliC5J8onfuK7d6RQSU=; b=kszEJck6cw1yGFJD
+	bW2OoI0y131IBGx9JgypZ0gg+G1m62yE4rQZZTxW2pLjeBBcJ382IiUpctO/7+Mg9eJ0LsdxGy19H
+	XhczDgAjgnIIv1iuXcOQGppcXQK9LAHr47uB1Ys2MEOBaOO1xe3w+tFE4WAWLY4GOd6Slz+vOehIV
+	34Wuq6YPHVDksnANl5Lj+qKzN6gDe39+DVZU7e2Rj/nUsX/4znOCCDgIGVTwzpcjFMAqpH9KEFIVa
+	LmG7XHljyLwXZ/JbJSO43mcmGI/ip8xsxGiwbIGpXsDkenvhT7m9MoYdFpaMlWoEkZzPevMtHzvSW
+	F2tML7DvzYTLHJXC0g==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1swpEt-008zn2-2P;
+	Fri, 04 Oct 2024 20:49:27 +0000
+Date: Fri, 4 Oct 2024 20:49:27 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPCIA: Remove unused acpi_ns_one_complete_parse
+Message-ID: <ZwBU18gXU79qCZJs@gallifrey>
+References: <20240914140026.29144-1-linux@treblig.org>
+ <CAJZ5v0gbEJCHkgb_F5SjmzyaOhDqEF9Re8NMnSo4+3nkw6_7rw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gbEJCHkgb_F5SjmzyaOhDqEF9Re8NMnSo4+3nkw6_7rw@mail.gmail.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 20:49:07 up 149 days,  8:03,  1 user,  load average: 0.00, 0.00,
+ 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-From: Arnd Bergmann <arnd@arndb.de>
+* Rafael J. Wysocki (rafael@kernel.org) wrote:
+> On Sat, Sep 14, 2024 at 4:00 PM <linux@treblig.org> wrote:
+> >
+> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> >
+> > The last use of 'acpi_ns_one_complete_parse' was removed by commit
+> > aa342261bde5 ("ACPICA: Remove legacy module-level code support")
+> >
+> > Remove it.
+> >
+> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> 
+> In order to make changes in the ACPICA code, please submit them to the
+> upstream ACPICA project on GitHub from where they will be
+> automatically ported to the Linux kernel when the next upstream ACPICA
+> release is made.
 
-CONFIG_HAS_IOPORT will soon become optional and cause a build time
-failure when it is disabled but a driver calls inb()/outb(). At the
-moment, all architectures that can support ACPI have port I/O, but
-this is not necessarily the case in the future. The result is
-a set of errors like:
+OK, I'll go and have a dig in there for this and other related patches.
 
-drivers/acpi/osl.c: In function 'acpi_os_read_port':
-include/asm-generic/io.h:542:14: error: call to '_inb' declared with attribute error: inb()) requires CONFIG_HAS_IOPORT
+Dave
 
-In function 'acpi_ec_read_status',
-    inlined from 'advance_transaction' at drivers/acpi/ec.c:665:11:
-include/asm-generic/io.h:542:14: error: call to '_inb' declared with attribute error: inb()) requires CONFIG_HAS_IOPORT
-
-Since the embedded controller can only exist when port I/O is
-active, it makes sense to disable that code on targets that don't
-have it. The same is true for anything using acpi_os_read_port()
-and similar functions.
-
-Add compile-time conditionals around all of those and their callers.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-Should this be split up into smaller patches?
----
- drivers/acpi/Kconfig             | 1 +
- drivers/acpi/Makefile            | 2 +-
- drivers/acpi/acpica/Makefile     | 4 +++-
- drivers/acpi/acpica/evhandler.c  | 3 ++-
- drivers/acpi/acpica/exregion.c   | 2 ++
- drivers/acpi/acpica/hwregs.c     | 6 ++++--
- drivers/acpi/acpica/hwxface.c    | 3 ++-
- drivers/acpi/apei/apei-base.c    | 4 ++++
- drivers/acpi/bus.c               | 9 ++++++---
- drivers/acpi/cppc_acpi.c         | 6 ++++--
- drivers/acpi/osl.c               | 2 ++
- drivers/acpi/processor_perflib.c | 3 ++-
- drivers/acpi/scan.c              | 3 ++-
- 13 files changed, 35 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index b8924077163b..5ec58c4e0332 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -134,6 +134,7 @@ config ACPI_REV_OVERRIDE_POSSIBLE
- 
- config ACPI_EC_DEBUGFS
- 	tristate "EC read/write access through /sys/kernel/debug/ec"
-+	depends on HAS_IOPORT
- 	help
- 	  Say N to disable Embedded Controller /sys/kernel/debug interface
- 
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 61ca4afe83dc..132357815324 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -41,7 +41,7 @@ acpi-y				+= resource.o
- acpi-y				+= acpi_processor.o
- acpi-y				+= processor_core.o
- acpi-$(CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC) += processor_pdc.o
--acpi-y				+= ec.o
-+acpi-$(CONFIG_HAS_IOPORT)	+= ec.o
- acpi-$(CONFIG_ACPI_DOCK)	+= dock.o
- acpi-$(CONFIG_PCI)		+= pci_root.o pci_link.o pci_irq.o
- obj-$(CONFIG_ACPI_MCFG)		+= pci_mcfg.o
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index 8d18af396de9..9ba5e71348cb 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -80,10 +80,12 @@ acpi-y +=		\
- 	hwgpe.o		\
- 	hwregs.o	\
- 	hwsleep.o	\
--	hwvalid.o	\
- 	hwxface.o	\
- 	hwxfsleep.o
- 
-+acpi-$(CONFIG_HAS_IOPORT) += \
-+	hwvalid.o
-+
- acpi-$(CONFIG_PCI) += hwpci.o
- acpi-$(ACPI_FUTURE_USAGE) += hwtimer.o
- 
-diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
-index 1c8cb6d924df..20f61936ff9b 100644
---- a/drivers/acpi/acpica/evhandler.c
-+++ b/drivers/acpi/acpica/evhandler.c
-@@ -358,12 +358,13 @@ acpi_ev_install_space_handler(struct acpi_namespace_node *node,
- 			handler = acpi_ex_system_memory_space_handler;
- 			setup = acpi_ev_system_memory_region_setup;
- 			break;
--
-+#ifdef CONFIG_HAS_IOPORT
- 		case ACPI_ADR_SPACE_SYSTEM_IO:
- 
- 			handler = acpi_ex_system_io_space_handler;
- 			setup = acpi_ev_io_space_region_setup;
- 			break;
-+#endif
- #ifdef ACPI_PCI_CONFIGURED
- 		case ACPI_ADR_SPACE_PCI_CONFIG:
- 
-diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
-index c49b9f8de723..8f96828614ed 100644
---- a/drivers/acpi/acpica/exregion.c
-+++ b/drivers/acpi/acpica/exregion.c
-@@ -261,6 +261,7 @@ acpi_ex_system_memory_space_handler(u32 function,
- 	return_ACPI_STATUS(status);
- }
- 
-+#ifdef CONFIG_HAS_IOPORT
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ex_system_io_space_handler
-@@ -319,6 +320,7 @@ acpi_ex_system_io_space_handler(u32 function,
- 
- 	return_ACPI_STATUS(status);
- }
-+#endif
- 
- #ifdef ACPI_PCI_CONFIGURED
- /*******************************************************************************
-diff --git a/drivers/acpi/acpica/hwregs.c b/drivers/acpi/acpica/hwregs.c
-index f62d5d024205..845d88a01272 100644
---- a/drivers/acpi/acpica/hwregs.c
-+++ b/drivers/acpi/acpica/hwregs.c
-@@ -239,7 +239,8 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
- 							ACPI_DIV_8
- 							(access_width),
- 							&value64, access_width);
--			} else {	/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
-+			} else if (IS_ENABLED(CONFIG_HAS_IOPORT)) {
-+				/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
- 
- 				status = acpi_hw_read_port((acpi_io_address)
- 							   address +
-@@ -336,7 +337,8 @@ acpi_status acpi_hw_write(u64 value, struct acpi_generic_address *reg)
- 							 ACPI_DIV_8
- 							 (access_width),
- 							 value64, access_width);
--			} else {	/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
-+			} else if (IS_ENABLED(CONFIG_HAS_IOPORT)) {
-+				/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
- 
- 				status = acpi_hw_write_port((acpi_io_address)
- 							    address +
-diff --git a/drivers/acpi/acpica/hwxface.c b/drivers/acpi/acpica/hwxface.c
-index c31f803995c6..022e706e10a1 100644
---- a/drivers/acpi/acpica/hwxface.c
-+++ b/drivers/acpi/acpica/hwxface.c
-@@ -45,7 +45,8 @@ acpi_status acpi_reset(void)
- 		return_ACPI_STATUS(AE_NOT_EXIST);
- 	}
- 
--	if (reset_reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reset_reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
- 		/*
- 		 * For I/O space, write directly to the OSL. This bypasses the port
- 		 * validation mechanism, which may block a valid write to the reset
-diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-index c7c26872f4ce..19357f951bae 100644
---- a/drivers/acpi/apei/apei-base.c
-+++ b/drivers/acpi/apei/apei-base.c
-@@ -661,12 +661,14 @@ int apei_read(u64 *val, struct acpi_generic_address *reg)
- 		if (ACPI_FAILURE(status))
- 			return -EIO;
- 		break;
-+#ifdef CONFIG_HAS_IOPORT
- 	case ACPI_ADR_SPACE_SYSTEM_IO:
- 		status = acpi_os_read_port(address, (u32 *)val,
- 					   access_bit_width);
- 		if (ACPI_FAILURE(status))
- 			return -EIO;
- 		break;
-+#endif
- 	default:
- 		return -EINVAL;
- 	}
-@@ -694,11 +696,13 @@ int apei_write(u64 val, struct acpi_generic_address *reg)
- 		if (ACPI_FAILURE(status))
- 			return -EIO;
- 		break;
-+#ifdef CONFIG_HAS_IOPORT
- 	case ACPI_ADR_SPACE_SYSTEM_IO:
- 		status = acpi_os_write_port(address, val, access_bit_width);
- 		if (ACPI_FAILURE(status))
- 			return -EIO;
- 		break;
-+#endif
- 	default:
- 		return -EINVAL;
- 	}
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 16917dc3ad60..535d6a72ce1b 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1356,7 +1356,8 @@ static int __init acpi_bus_init(void)
- 	 * Do that before calling acpi_initialize_objects() which may trigger EC
- 	 * address space accesses.
- 	 */
--	acpi_ec_ecdt_probe();
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_ecdt_probe();
- 
- 	status = acpi_enable_subsystem(ACPI_NO_ACPI_ENABLE);
- 	if (ACPI_FAILURE(status)) {
-@@ -1391,7 +1392,8 @@ static int __init acpi_bus_init(void)
- 	 * Maybe EC region is required at bus_scan/acpi_get_devices. So it
- 	 * is necessary to enable it as early as possible.
- 	 */
--	acpi_ec_dsdt_probe();
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_dsdt_probe();
- 
- 	pr_info("Interpreter enabled\n");
- 
-@@ -1464,7 +1466,8 @@ static int __init acpi_init(void)
- 	acpi_arm_init();
- 	acpi_riscv_init();
- 	acpi_scan_init();
--	acpi_ec_init();
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_init();
- 	acpi_debugfs_init();
- 	acpi_sleep_proc_init();
- 	acpi_wakeup_device_init();
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 5b06e236aabe..cb545cdfdc19 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1017,7 +1017,8 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	*val = 0;
- 	size = GET_BIT_WIDTH(reg);
- 
--	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
- 		u32 val_u32;
- 		acpi_status status;
- 
-@@ -1090,7 +1091,8 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 
- 	size = GET_BIT_WIDTH(reg);
- 
--	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
- 		acpi_status status;
- 
- 		status = acpi_os_write_port((acpi_io_address)reg->address,
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 78a81969d90e..28eb5ff123a9 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -638,6 +638,7 @@ u64 acpi_os_get_timer(void)
- 		(ACPI_100NSEC_PER_SEC / HZ);
- }
- 
-+#ifdef CONFIG_HAS_IOPORT
- acpi_status acpi_os_read_port(acpi_io_address port, u32 *value, u32 width)
- {
- 	u32 dummy;
-@@ -680,6 +681,7 @@ acpi_status acpi_os_write_port(acpi_io_address port, u32 value, u32 width)
- }
- 
- EXPORT_SYMBOL(acpi_os_write_port);
-+#endif
- 
- int acpi_os_read_iomem(void __iomem *virt_addr, u64 *value, u32 width)
- {
-diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
-index 4265814c74f8..8be453d89ef8 100644
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -455,7 +455,8 @@ int acpi_processor_pstate_control(void)
- {
- 	acpi_status status;
- 
--	if (!acpi_gbl_FADT.smi_command || !acpi_gbl_FADT.pstate_control)
-+	if (!IS_ENABLED(CONFIG_HAS_IOPORT) ||
-+	    !acpi_gbl_FADT.smi_command || !acpi_gbl_FADT.pstate_control)
- 		return 0;
- 
- 	pr_debug("Writing pstate_control [0x%x] to smi_command [0x%x]\n",
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 7ecc401fb97f..9d5e6dd542bf 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2293,7 +2293,8 @@ static int acpi_bus_attach(struct acpi_device *device, void *first_pass)
- 	if (device->handler)
- 		goto ok;
- 
--	acpi_ec_register_opregions(device);
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_register_opregions(device);
- 
- 	if (!device->flags.initialized) {
- 		device->flags.power_manageable =
+> If you want an ACPICA code change that has already been merged into
+> upstream ACPICA to be ported to Linux before the next ACPICA release,
+> please send a Linux patch corresponding to it with a Link tag pointing
+> to the original ACPICA commit or pull request through which it was
+> submitted.
+> 
+> Thanks!
+> 
+> > ---
+> >  drivers/acpi/acpica/acnamesp.h |   5 --
+> >  drivers/acpi/acpica/nsparse.c  | 102 ---------------------------------
+> >  2 files changed, 107 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpica/acnamesp.h b/drivers/acpi/acpica/acnamesp.h
+> > index 9448bc026b9b..c3dd202e247f 100644
+> > --- a/drivers/acpi/acpica/acnamesp.h
+> > +++ b/drivers/acpi/acpica/acnamesp.h
+> > @@ -104,11 +104,6 @@ acpi_ns_parse_table(u32 table_index, struct acpi_namespace_node *start_node);
+> >  acpi_status
+> >  acpi_ns_execute_table(u32 table_index, struct acpi_namespace_node *start_node);
+> >
+> > -acpi_status
+> > -acpi_ns_one_complete_parse(u32 pass_number,
+> > -                          u32 table_index,
+> > -                          struct acpi_namespace_node *start_node);
+> > -
+> >  /*
+> >   * nsaccess - Top-level namespace access
+> >   */
+> > diff --git a/drivers/acpi/acpica/nsparse.c b/drivers/acpi/acpica/nsparse.c
+> > index 31e551cf4ea6..549dc16aed3c 100644
+> > --- a/drivers/acpi/acpica/nsparse.c
+> > +++ b/drivers/acpi/acpica/nsparse.c
+> > @@ -131,108 +131,6 @@ acpi_ns_execute_table(u32 table_index, struct acpi_namespace_node *start_node)
+> >         return_ACPI_STATUS(status);
+> >  }
+> >
+> > -/*******************************************************************************
+> > - *
+> > - * FUNCTION:    ns_one_complete_parse
+> > - *
+> > - * PARAMETERS:  pass_number             - 1 or 2
+> > - *              table_desc              - The table to be parsed.
+> > - *
+> > - * RETURN:      Status
+> > - *
+> > - * DESCRIPTION: Perform one complete parse of an ACPI/AML table.
+> > - *
+> > - ******************************************************************************/
+> > -
+> > -acpi_status
+> > -acpi_ns_one_complete_parse(u32 pass_number,
+> > -                          u32 table_index,
+> > -                          struct acpi_namespace_node *start_node)
+> > -{
+> > -       union acpi_parse_object *parse_root;
+> > -       acpi_status status;
+> > -       u32 aml_length;
+> > -       u8 *aml_start;
+> > -       struct acpi_walk_state *walk_state;
+> > -       struct acpi_table_header *table;
+> > -       acpi_owner_id owner_id;
+> > -
+> > -       ACPI_FUNCTION_TRACE(ns_one_complete_parse);
+> > -
+> > -       status = acpi_get_table_by_index(table_index, &table);
+> > -       if (ACPI_FAILURE(status)) {
+> > -               return_ACPI_STATUS(status);
+> > -       }
+> > -
+> > -       /* Table must consist of at least a complete header */
+> > -
+> > -       if (table->length < sizeof(struct acpi_table_header)) {
+> > -               return_ACPI_STATUS(AE_BAD_HEADER);
+> > -       }
+> > -
+> > -       aml_start = (u8 *)table + sizeof(struct acpi_table_header);
+> > -       aml_length = table->length - sizeof(struct acpi_table_header);
+> > -
+> > -       status = acpi_tb_get_owner_id(table_index, &owner_id);
+> > -       if (ACPI_FAILURE(status)) {
+> > -               return_ACPI_STATUS(status);
+> > -       }
+> > -
+> > -       /* Create and init a Root Node */
+> > -
+> > -       parse_root = acpi_ps_create_scope_op(aml_start);
+> > -       if (!parse_root) {
+> > -               return_ACPI_STATUS(AE_NO_MEMORY);
+> > -       }
+> > -
+> > -       /* Create and initialize a new walk state */
+> > -
+> > -       walk_state = acpi_ds_create_walk_state(owner_id, NULL, NULL, NULL);
+> > -       if (!walk_state) {
+> > -               acpi_ps_free_op(parse_root);
+> > -               return_ACPI_STATUS(AE_NO_MEMORY);
+> > -       }
+> > -
+> > -       status = acpi_ds_init_aml_walk(walk_state, parse_root, NULL,
+> > -                                      aml_start, aml_length, NULL,
+> > -                                      (u8)pass_number);
+> > -       if (ACPI_FAILURE(status)) {
+> > -               acpi_ds_delete_walk_state(walk_state);
+> > -               goto cleanup;
+> > -       }
+> > -
+> > -       /* Found OSDT table, enable the namespace override feature */
+> > -
+> > -       if (ACPI_COMPARE_NAMESEG(table->signature, ACPI_SIG_OSDT) &&
+> > -           pass_number == ACPI_IMODE_LOAD_PASS1) {
+> > -               walk_state->namespace_override = TRUE;
+> > -       }
+> > -
+> > -       /* start_node is the default location to load the table */
+> > -
+> > -       if (start_node && start_node != acpi_gbl_root_node) {
+> > -               status =
+> > -                   acpi_ds_scope_stack_push(start_node, ACPI_TYPE_METHOD,
+> > -                                            walk_state);
+> > -               if (ACPI_FAILURE(status)) {
+> > -                       acpi_ds_delete_walk_state(walk_state);
+> > -                       goto cleanup;
+> > -               }
+> > -       }
+> > -
+> > -       /* Parse the AML */
+> > -
+> > -       ACPI_DEBUG_PRINT((ACPI_DB_PARSE,
+> > -                         "*PARSE* pass %u parse\n", pass_number));
+> > -       acpi_ex_enter_interpreter();
+> > -       status = acpi_ps_parse_aml(walk_state);
+> > -       acpi_ex_exit_interpreter();
+> > -
+> > -cleanup:
+> > -       acpi_ps_delete_parse_tree(parse_root);
+> > -       return_ACPI_STATUS(status);
+> > -}
+> > -
+> >  /*******************************************************************************
+> >   *
+> >   * FUNCTION:    acpi_ns_parse_table
+> > --
+> > 2.46.0
+> >
+> >
+> 
 -- 
-2.39.2
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
