@@ -1,331 +1,397 @@
-Return-Path: <linux-acpi+bounces-8590-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8591-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D783993738
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 21:23:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18199993AB0
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Oct 2024 01:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 928381F23A63
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 19:23:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 331671C22C86
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 23:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB251DDC17;
-	Mon,  7 Oct 2024 19:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E859018CBFD;
+	Mon,  7 Oct 2024 23:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="X/mudOIA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QN++mMqm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="egLonC1B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1CB13B797;
-	Mon,  7 Oct 2024 19:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E2A18BC3B;
+	Mon,  7 Oct 2024 23:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728328989; cv=none; b=jWdmOJrH9Cd6FWF/OBkeqKgt0xToviNR/BdgZMiNlbj5L4T/xYX+fw/Eg/wRt2TE8N66LfgFKDgWsZdlXgseDpZxPuUkPnGibgwMZpX6iPxfkZLVXQoWWM+JgxZ21Zw4JjQ/qrooK8ru4JkaFzzJgJTuh05J/JZttR/hfmy30Hw=
+	t=1728342975; cv=none; b=SpdnTGCuWeDvLkekJ/oZl/N7cJ82HceFFNkgthRZ62zFgCYyam2jw1DrvmtwmbMvHBgpzVJqXMct72yze4RT/3HAwyrbCBEcSTILBZO41PXaFC+ySt5U/F8R3QhXB612ozW6OBNQ9EQgUe0iZFT9Bo+Ljd4wPJYAZ4fmoDQm0g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728328989; c=relaxed/simple;
-	bh=1LY4BGcMcs7/LpY3RmUIikPRuPqW8JaQcxHkzcYCGFo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=d903+UHI7JNf62kGcWKC+PwFYAB6FyWDBru13cKdj0GxXroWHVkUmBfeSWW5PvtfH+o2fWRVGLQaRHT2E6Ar6LADqS6BpWhGolkoIubbkr1hVqoTpsEtTdy0dHRC2Ktsl2tp4C+Fw5h9c9CmwxID00ejddyKs6W2/YDn4wn5QyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=X/mudOIA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QN++mMqm; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id CAC111380208;
-	Mon,  7 Oct 2024 15:23:05 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Mon, 07 Oct 2024 15:23:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1728328985;
-	 x=1728415385; bh=ybMwGV/+/3v9W/4x75Ns1/jnoGPLxucLg3bPgg1yBc8=; b=
-	X/mudOIAzUR+OqmV4vumrqVUJ3KvGZjGLI+Oh2rx+jBcQi1HvBtI0y0yyECl4EBM
-	FuvBfVS+v2PwUkbizumIzPxplhHY6iVYE/0G526elGFMY6XvY0gpusEPX6TeC+IR
-	+b14hfpFfmpGqzlsh7ccD37Jiz3cRJBi6/Z1GkUNqL/er1IBT2ZD/LKW8fgWzBT6
-	/1+7rsEeKig9zH7anxN0korc5KhUtZ02wGN1V46eOb6Gm3TMzbUGVNcFHJg/HCym
-	fsRKsRjSviW+XeAhCiSnIdpAzCQllVIwab3Pg0lJ6mzd7k3tB54bLdUKAO0HPXyP
-	7OFIhkePw8Z50+UtyB3tZQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1728328985; x=
-	1728415385; bh=ybMwGV/+/3v9W/4x75Ns1/jnoGPLxucLg3bPgg1yBc8=; b=Q
-	N++mMqmWEmWc7+zOfSTO4zUVFRUmEOGvfo+hTKtjeP2u0/8haYIjsewuuMp/ajoo
-	Xwo12USvtSeSIKFU+LWIzxLhlH6dlViWfYNohViJOuCQhxTeFZGYhLArb0wEQoeE
-	KOgdZ3EZc7KFPM2luvhGqdAPIHowfjxxPwX5ft+3evJxUql5k9AZGtxx4448TeiY
-	QMsO4rkRH/agW9ByX23Iwd1N4J8kQncfYcOQaRJ9TOrHXFw4sc0M01c/wdpUi8kR
-	mRqZZEKRBBkmrc9AU+/m/BasJw82EYeV6v906wPzwWIkO73b2XlpuegrM5Y6iYVC
-	2o6n9rCmHPXqAt2CnQ8pQ==
-X-ME-Sender: <xms:FzUEZzaGu-4T6HHkZB_H9b6DYFtFiQheTg4DbCb0ieqFGYPKP830hQ>
-    <xme:FzUEZybFKvbrGoC59GK93kDrhPo_GxVFBjlomzBQc7pyJzeoFfUKewWz3cUmjeOEr
-    Ijep8HGfxNnXatbzno>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvledgudefkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
-    jeenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpedvhfdvkeeuudevfffftefgvdevfedvleehvddv
-    geejvdefhedtgeegveehfeeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedu
-    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpd
-    hrtghpthhtohepjhgrmhgvshdrmhhorhhsvgesrghrmhdrtghomhdprhgtphhtthhopehj
-    ohhnrghthhgrnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhmpdhrtghpthhtoheprh
-    hosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepthhonhihrdhl
-    uhgtkhesihhnthgvlhdrtghomhdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrrghf
-    rggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgthhhnvghllhgvsehlihhnuh
-    igrdhisghmrdgtohhm
-X-ME-Proxy: <xmx:GDUEZ19tvuchl0O9c00KA-ezXqdKtKDFDh7XlAPG0iYDgCN8qiXS6Q>
-    <xmx:GDUEZ5pXzzxRzT1YTJqQ2aTih39ZryJh70f_T9-Bqcqq3v2fkpFzQw>
-    <xmx:GDUEZ-psOLeiizDc464FCvkT2oSVTH5DqK6sPtP2I7Y1R8um-IhZUw>
-    <xmx:GDUEZ_Q3f4nhHOfhMTzpSeIpwDWpIxjht47LbHK11wsS-m4BaWz-SQ>
-    <xmx:GTUEZz55nL4HknLe6IbxRBLKhtuMd04lXRM2UJFu7cAv6_kcA4zN75ug>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DBEAE2220071; Mon,  7 Oct 2024 15:23:03 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1728342975; c=relaxed/simple;
+	bh=OXoiarDQ/wZQh9c1DY7NZJoQbq5qxwtTSLb2/K7p9vg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MKuCZRAIRYVUzrOriui5Yn/hQgzWQlxjkB2BzA/77X6KuR7uZ6w/mXI7tzVUAlRx+970q2eWQznyL9v7cmlz1FRp7COf/fZP/GvdxFaM2LZ5dzEzsKAP4YmpFUfAt6YhVnSVRYOC3EGnCXEXufB8wUzo/n9FLnHK085uYVR91HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=egLonC1B; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728342974; x=1759878974;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=OXoiarDQ/wZQh9c1DY7NZJoQbq5qxwtTSLb2/K7p9vg=;
+  b=egLonC1Bs+JvqcxuYLqm21Ud3/NjVvKM7/cXIWYxo+ouLdlQREaIckKr
+   PPB7C2uCbvi+WolL6F56LbvHsUpqGkLhn1O39Bt2EG0FPvwdHbVyfzlci
+   UNnI4kizaQxdYGHNb65dTFBuwuzojMOXQgkzWEQlQ4AefLkR4wkx7nczf
+   bfnjAQvnO1LU0b6fW+voX1MlunPSWIYEtaHrz/K+bBl8WPMYOUp6sEXMv
+   YeTDqcfKC2OJd2dyHMpMJ1LOywI6TPb34gRd8c8zLvu/5bQ5QSv4J2jnw
+   0fTbuGEZX0K+YUUjUEG5X7CKVkNkcN14lQPkgJGbqkj5bbh26RfsBn5gZ
+   g==;
+X-CSE-ConnectionGUID: AbkELgYJR/OJDQ7HQQM0xA==
+X-CSE-MsgGUID: qj9FEI4gS6We1hZ0fNS6wA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="38078847"
+X-IronPort-AV: E=Sophos;i="6.11,185,1725346800"; 
+   d="scan'208";a="38078847"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 16:16:13 -0700
+X-CSE-ConnectionGUID: DhcaiU2SQNmdkSKk+kbcIA==
+X-CSE-MsgGUID: fRR9hNG+Spysj393Wiwd6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,185,1725346800"; 
+   d="scan'208";a="75634535"
+Received: from ldmartin-desk2.corp.intel.com (HELO localhost) ([10.125.110.112])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 16:16:09 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH v4 00/28] DCD: Add support for Dynamic Capacity Devices
+ (DCD)
+Date: Mon, 07 Oct 2024 18:16:06 -0500
+Message-Id: <20241007-dcd-type2-upstream-v4-0-c261ee6eeded@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 07 Oct 2024 19:22:39 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Robert Moore" <robert.moore@intel.com>,
- "Niklas Schnelle" <schnelle@linux.ibm.com>, "Len Brown" <lenb@kernel.org>,
- "James Morse" <james.morse@arm.com>, "Tony Luck" <tony.luck@intel.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- "Sunil V L" <sunilvl@ventanamicro.com>,
- "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALZrBGcC/4WPy07EMAxFf2WUNUGOkzqUFf+BWOTh0kjQVkmpG
+ I367ySVkAbEY3ktn3PtiyicExdxf7qIzFsqaZ5qMDcnEUY3PbNMsWaBgBoIjIwhyvW8MMq3pay
+ Z3auEEFU3ECoaoqigd4Wlz24KY0O/breFJfOQ3o/Wx6eax1TWOZ+PIzbVpn/2bUqCtMqTNso77
+ sxDmlZ+uQ3zYa+oAY2/o956gEioCbsrtF2y4f/tWBWDNRCMZdsr+q7QnwoDd4p+VOj2QOh9T8E
+ 7ivZase/7B4Sy1BeWAQAA
+To: Dave Jiang <dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Navneet Singh <navneet.singh@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Williams <dan.j.williams@intel.com>, 
+ Davidlohr Bueso <dave@stgolabs.net>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ linux-btrfs@vger.kernel.org, linux-cxl@vger.kernel.org, 
+ linux-doc@vger.kernel.org, nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Petr Mladek <pmladek@suse.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Chris Mason <clm@fb.com>, 
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
+ Johannes Thumshirn <johannes.thumshirn@wdc.com>, 
+ "Li, Ming" <ming4.li@intel.com>, 
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>, 
+ Robert Moore <robert.moore@intel.com>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
  acpica-devel@lists.linux.dev
-Message-Id: <641307d3-3fe5-401a-ba22-96ad5ef25fed@app.fastmail.com>
-In-Reply-To: 
- <CAJZ5v0immr4obYsu2qNKKY2DKxzLDR1a=6B4xY_YTHfPF5kADg@mail.gmail.com>
-References: <20241004204845.970951-1-arnd@kernel.org>
- <CAJZ5v0immr4obYsu2qNKKY2DKxzLDR1a=6B4xY_YTHfPF5kADg@mail.gmail.com>
-Subject: Re: [PATCH] acpi: allow building without CONFIG_HAS_IOPORT
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Mailer: b4 0.15-dev-37811
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728342968; l=13078;
+ i=ira.weiny@intel.com; s=20221211; h=from:subject:message-id;
+ bh=OXoiarDQ/wZQh9c1DY7NZJoQbq5qxwtTSLb2/K7p9vg=;
+ b=OIXwVAQ+2g0diR/ATNYjlq1WJGSxMRZ4G7mzX7Es2yd5P/qZ5jlB/Nh7jJ1Yyk4AYAEasFAI2
+ lmZZSVSM9eUBGM1Dw3sq9s50w4BviJbVXmp+O/lTe9BeLe/rK0SzMnH
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=noldbkG+Wp1qXRrrkfY1QJpDf7QsOEthbOT7vm0PqsE=
 
-On Mon, Oct 7, 2024, at 16:04, Rafael J. Wysocki wrote:
-> On Fri, Oct 4, 2024 at 10:48=E2=80=AFPM Arnd Bergmann <arnd@kernel.org=
-> wrote:
->>
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> CONFIG_HAS_IOPORT will soon become optional and cause a build time
->> failure when it is disabled but a driver calls inb()/outb(). At the
->> moment, all architectures that can support ACPI have port I/O, but
->> this is not necessarily the case in the future.
->
-> Can addressing this be deferred to that point?
+A git tree of this series can be found here:
 
-Yes. I would like to have all of arm64 and riscv be able to turn
-off HAS_IOPORT eventually, but nothing depends on doing this
-when ACPI is enabled.
+	https://github.com/weiny2/linux-kernel/tree/dcd-v4-2024-10-04
 
->> Since the embedded controller can only exist when port I/O is
->> active, it makes sense to disable that code on targets that don't
->> have it. The same is true for anything using acpi_os_read_port()
->> and similar functions.
->>
->> Add compile-time conditionals around all of those and their callers.
->>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->> Should this be split up into smaller patches?
->
-> No need, but the ACPICA part is kind of nasty.
+Series info
+===========
 
-Right, I see.
+This series has 5 parts:
 
->> --- a/drivers/acpi/acpica/evhandler.c
->> +++ b/drivers/acpi/acpica/evhandler.c
->> @@ -358,12 +358,13 @@ acpi_ev_install_space_handler(struct acpi_names=
-pace_node *node,
->>                         handler =3D acpi_ex_system_memory_space_handl=
-er;
->>                         setup =3D acpi_ev_system_memory_region_setup;
->>                         break;
->> -
->> +#ifdef CONFIG_HAS_IOPORT
->>                 case ACPI_ADR_SPACE_SYSTEM_IO:
->>
->>                         handler =3D acpi_ex_system_io_space_handler;
->>                         setup =3D acpi_ev_io_space_region_setup;
->>                         break;
->> +#endif
->
-> All changes like the above in the ACPICA code potentially increase the
-> number of times when upstream ACPICA patches will have to be ported to
-> Linux manually, which in turn increases the number of potential
-> mistakes in the process.
->
-> I'd rather avoid making them, if possible.
+Patch 1-3: Add %pra printk format for struct range
+Patch 4: Add core range_overlaps() function
+Patch 5-6: CXL clean up/prelim patches
+Patch 7-26: Core DCD support
+Patch 27-28: cxl_test support
 
-Understood. Does that mean that on the flip-side we can change
-the drivers/acpi/osl.c portion to turn acpi_os_read_port()
-and acpi_os_write_port() into a runtime error for configurations
-without port I/O, without causing the same maintenance overhead?
+Background
+==========
 
-The version below builds fine and doesn't touch acpica but
-it's a bit harder to predict what would happen at runtime.
+A Dynamic Capacity Device (DCD) (CXL 3.1 sec 9.13.3) is a CXL memory
+device that allows memory capacity within a region to change
+dynamically without the need for resetting the device, reconfiguring
+HDM decoders, or reconfiguring software DAX regions.
 
-      Arnd
+One of the biggest use cases for Dynamic Capacity is to allow hosts to
+share memory dynamically within a data center without increasing the
+per-host attached memory.
 
+The general flow for the addition or removal of memory is to have an
+orchestrator coordinate the use of the memory.  Generally there are 5
+actors in such a system, the Orchestrator, Fabric Manager, the Logical
+device, the Host Kernel, and a Host User.
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index b8924077163b..5ec58c4e0332 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -134,6 +134,7 @@ config ACPI_REV_OVERRIDE_POSSIBLE
-=20
- config ACPI_EC_DEBUGFS
- 	tristate "EC read/write access through /sys/kernel/debug/ec"
-+	depends on HAS_IOPORT
- 	help
- 	  Say N to disable Embedded Controller /sys/kernel/debug interface
-=20
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 61ca4afe83dc..132357815324 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -41,7 +41,7 @@ acpi-y				+=3D resource.o
- acpi-y				+=3D acpi_processor.o
- acpi-y				+=3D processor_core.o
- acpi-$(CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC) +=3D processor_pdc.o
--acpi-y				+=3D ec.o
-+acpi-$(CONFIG_HAS_IOPORT)	+=3D ec.o
- acpi-$(CONFIG_ACPI_DOCK)	+=3D dock.o
- acpi-$(CONFIG_PCI)		+=3D pci_root.o pci_link.o pci_irq.o
- obj-$(CONFIG_ACPI_MCFG)		+=3D pci_mcfg.o
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 16917dc3ad60..535d6a72ce1b 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1356,7 +1356,8 @@ static int __init acpi_bus_init(void)
- 	 * Do that before calling acpi_initialize_objects() which may trigger =
-EC
- 	 * address space accesses.
- 	 */
--	acpi_ec_ecdt_probe();
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_ecdt_probe();
-=20
- 	status =3D acpi_enable_subsystem(ACPI_NO_ACPI_ENABLE);
- 	if (ACPI_FAILURE(status)) {
-@@ -1391,7 +1392,8 @@ static int __init acpi_bus_init(void)
- 	 * Maybe EC region is required at bus_scan/acpi_get_devices. So it
- 	 * is necessary to enable it as early as possible.
- 	 */
--	acpi_ec_dsdt_probe();
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_dsdt_probe();
-=20
- 	pr_info("Interpreter enabled\n");
-=20
-@@ -1464,7 +1466,8 @@ static int __init acpi_init(void)
- 	acpi_arm_init();
- 	acpi_riscv_init();
- 	acpi_scan_init();
--	acpi_ec_init();
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_init();
- 	acpi_debugfs_init();
- 	acpi_sleep_proc_init();
- 	acpi_wakeup_device_init();
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index b73b3aa92f3f..326b73ae77a9 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1017,7 +1017,8 @@ static int cpc_read(int cpu, struct cpc_register_r=
-esource *reg_res, u64 *val)
- 	*val =3D 0;
- 	size =3D GET_BIT_WIDTH(reg);
-=20
--	if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
- 		u32 val_u32;
- 		acpi_status status;
-=20
-@@ -1090,7 +1091,8 @@ static int cpc_write(int cpu, struct cpc_register_=
-resource *reg_res, u64 val)
-=20
- 	size =3D GET_BIT_WIDTH(reg);
-=20
--	if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
- 		acpi_status status;
-=20
- 		status =3D acpi_os_write_port((acpi_io_address)reg->address,
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 78a81969d90e..04d3864073ba 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -642,6 +642,11 @@ acpi_status acpi_os_read_port(acpi_io_address port,=
- u32 *value, u32 width)
- {
- 	u32 dummy;
-=20
-+	if (!IS_ENABLED(CONFIG_HAS_IOPORT)) {
-+		*value =3D BIT_MASK(width);
-+		return AE_NOT_IMPLEMENTED;
-+	}
-+
- 	if (value)
- 		*value =3D 0;
- 	else
-@@ -665,6 +670,9 @@ EXPORT_SYMBOL(acpi_os_read_port);
-=20
- acpi_status acpi_os_write_port(acpi_io_address port, u32 value, u32 wid=
-th)
- {
-+	if (!IS_ENABLED(CONFIG_HAS_IOPORT))
-+		return AE_NOT_IMPLEMENTED;
-+
- 	if (width <=3D 8) {
- 		outb(value, port);
- 	} else if (width <=3D 16) {
-diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_p=
-erflib.c
-index 4265814c74f8..8be453d89ef8 100644
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -455,7 +455,8 @@ int acpi_processor_pstate_control(void)
- {
- 	acpi_status status;
-=20
--	if (!acpi_gbl_FADT.smi_command || !acpi_gbl_FADT.pstate_control)
-+	if (!IS_ENABLED(CONFIG_HAS_IOPORT) ||
-+	    !acpi_gbl_FADT.smi_command || !acpi_gbl_FADT.pstate_control)
- 		return 0;
-=20
- 	pr_debug("Writing pstate_control [0x%x] to smi_command [0x%x]\n",
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 7ecc401fb97f..9d5e6dd542bf 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2293,7 +2293,8 @@ static int acpi_bus_attach(struct acpi_device *dev=
-ice, void *first_pass)
- 	if (device->handler)
- 		goto ok;
-=20
--	acpi_ec_register_opregions(device);
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT))
-+		acpi_ec_register_opregions(device);
-=20
- 	if (!device->flags.initialized) {
- 		device->flags.power_manageable =3D
+Typical work flows are shown below.
+
+Orchestrator      FM         Device       Host Kernel    Host User
+
+    |             |           |            |              |
+    |-------------- Create region ----------------------->|
+    |             |           |            |              |
+    |             |           |            |<-- Create ---|
+    |             |           |            |    Region    |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |-- Add ----->|-- Add --->|--- Add --->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Accept -|<- Accept  -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |<- Create --->|
+    |             |           |            |   DAX dev    |-- Use memory
+    |             |           |            |              |   |
+    |             |           |            |              |   |
+    |             |           |            |<- Release ---| <-+
+    |             |           |            |   DAX dev    |
+    |             |           |            |              |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |-- Remove -->|- Release->|- Release ->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Release-|<- Release -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |              |
+    |-- Add ----->|-- Add --->|--- Add --->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Accept -|<- Accept  -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |<- Create ----|
+    |             |           |            |   DAX dev    |-- Use memory
+    |             |           |            |              |   |
+    |             |           |            |<- Release ---| <-+
+    |             |           |            |   DAX dev    |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |-- Remove -->|- Release->|- Release ->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Release-|<- Release -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |              |
+    |-- Add ----->|-- Add --->|--- Add --->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |<- Create ----|
+    |             |           |            |   DAX dev    |-- Use memory
+    |             |           |            |              |   |
+    |-- Remove -->|- Release->|- Release ->|              |   |
+    |  Capacity   |  Extent   |   Extent   |              |   |
+    |             |           |            |              |   |
+    |             |           |     (Release Ignored)     |   |
+    |             |           |            |              |   |
+    |             |           |            |<- Release ---| <-+
+    |             |           |            |   DAX dev    |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |             |- Release->|- Release ->|              |
+    |             |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Release-|<- Release -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |<- Destroy ---|
+    |             |           |            |   Region     |
+    |             |           |            |              |
+
+Implementation
+==============
+
+The series still requires the creation of regions and DAX devices to be
+closely synchronized with the Orchestrator and Fabric Manager.  The host
+kernel will reject extents if a region is not yet created.  It also
+ignores extent release if memory is in use (DAX device created).  These
+synchronizations are not anticipated to be an issue with real
+applications.
+
+In order to allow for capacity to be added and removed a new concept of
+a sparse DAX region is introduced.  A sparse DAX region may have 0 or
+more bytes of available space.  The total space depends on the number
+and size of the extents which have been added.
+
+Initially it is anticipated that users of the memory will carefully
+coordinate the surfacing of additional capacity with the creation of DAX
+devices which use that capacity.  Therefore, the allocation of the
+memory to DAX devices does not allow for specific associations between
+DAX device and extent.  This keeps allocations very similar to existing
+DAX region behavior.
+
+To keep the DAX memory allocation aligned with the existing DAX devices
+which do not have tags extents are not allowed to have tags.  Future
+support for tags is planned.
+
+Great care was taken to keep the extent tracking simple.  Some xarray's
+needed to be added but extra software objects were kept to a minimum.
+
+Region extents continue to be tracked as sub-devices of the DAX region.
+This ensures that region destruction cleans up all extent allocations
+properly.
+
+Some review tags were kept if a patch did not change.
+
+The major functionality of this series includes:
+
+- Getting the dynamic capacity (DC) configuration information from cxl
+  devices
+
+- Configuring the DC partitions reported by hardware
+
+- Enhancing the CXL and DAX regions for dynamic capacity support
+	a. Maintain a logical separation between hardware extents and
+	   software managed region extents.  This provides an
+	   abstraction between the layers and should allow for
+	   interleaving in the future
+
+- Get hardware extent lists for endpoint decoders upon
+  region creation.
+
+- Adjust extent/region memory available on the following events.
+        a. Add capacity Events
+	b. Release capacity events
+
+- Host response for add capacity
+	a. do not accept the extent if:
+		If the region does not exist
+		or an error occurs realizing the extent
+	b. If the region does exist
+		realize a DAX region extent with 1:1 mapping (no
+		interleave yet)
+	c. Support the event more bit by processing a list of extents
+	   marked with the more bit together before setting up a
+	   response.
+
+- Host response for remove capacity
+	a. If no DAX device references the extent; release the extent
+	b. If a reference does exist, ignore the request.
+	   (Require FM to issue release again.)
+
+- Modify DAX device creation/resize to account for extents within a
+  sparse DAX region
+
+- Trace Dynamic Capacity events for debugging
+
+- Add cxl-test infrastructure to allow for faster unit testing
+  (See new ndctl branch for cxl-dcd.sh test[1])
+
+- Only support 0 value extent tags
+
+Fan Ni's upstream of Qemu DCD was used for testing.
+
+Remaining work:
+
+	1) Allow mapping to specific extents (perhaps based on
+	   label/tag)
+	   1a) devise region size reporting based on tags
+	2) Interleave support
+
+Possible additional work depending on requirements:
+
+	1) Accept a new extent which extends (but overlaps) an existing
+	   extent(s)
+	2) Release extents when DAX devices are released if a release
+	   was previously seen from the device
+	3) Rework DAX device interfaces, memfd has been explored a bit
+
+[1] https://github.com/weiny2/ndctl/tree/dcd-region2-2024-10-01
+
+---
+Major changes in v4:
+- iweiny: rebase to 6.12-rc
+- iweiny: Add qos data to regions
+- Jonathan: Fix up shared region detection
+- Jonathan/jgroves/djbw/iweiny: Ignore 0 value tags
+- iweiny: Change DCD partition sysfs entries to allow for qos class and
+  additional parameters per partition
+- Petr/Andy: s/%par/%pra/
+- Andy: Share logic between printing struct resource and struct range
+- Link to v3: https://patch.msgid.link/20240816-dcd-type2-upstream-v3-0-7c9b96cba6d7@intel.com
+
+---
+Ira Weiny (14):
+      test printk: Add very basic struct resource tests
+      printk: Add print format (%pra) for struct range
+      cxl/cdat: Use %pra for dpa range outputs
+      range: Add range_overlaps()
+      dax: Document dax dev range tuple
+      cxl/pci: Delay event buffer allocation
+      cxl/cdat: Gather DSMAS data for DCD regions
+      cxl/region: Refactor common create region code
+      cxl/events: Split event msgnum configuration from irq setup
+      cxl/pci: Factor out interrupt policy check
+      cxl/core: Return endpoint decoder information from region search
+      dax/bus: Factor out dev dax resize logic
+      tools/testing/cxl: Make event logs dynamic
+      tools/testing/cxl: Add DC Regions to mock mem data
+
+Navneet Singh (14):
+      cxl/mbox: Flag support for Dynamic Capacity Devices (DCD)
+      cxl/mem: Read dynamic capacity configuration from the device
+      cxl/core: Separate region mode from decoder mode
+      cxl/region: Add dynamic capacity decoder and region modes
+      cxl/hdm: Add dynamic capacity size support to endpoint decoders
+      cxl/mem: Expose DCD partition capabilities in sysfs
+      cxl/port: Add endpoint decoder DC mode support to sysfs
+      cxl/region: Add sparse DAX region support
+      cxl/mem: Configure dynamic capacity interrupts
+      cxl/extent: Process DCD events and realize region extents
+      cxl/region/extent: Expose region extent information in sysfs
+      dax/region: Create resources on sparse DAX regions
+      cxl/region: Read existing extents on region creation
+      cxl/mem: Trace Dynamic capacity Event Record
+
+ Documentation/ABI/testing/sysfs-bus-cxl   | 120 +++-
+ Documentation/core-api/printk-formats.rst |  13 +
+ drivers/cxl/core/Makefile                 |   2 +-
+ drivers/cxl/core/cdat.c                   |  52 +-
+ drivers/cxl/core/core.h                   |  33 +-
+ drivers/cxl/core/extent.c                 | 486 +++++++++++++++
+ drivers/cxl/core/hdm.c                    | 213 ++++++-
+ drivers/cxl/core/mbox.c                   | 605 ++++++++++++++++++-
+ drivers/cxl/core/memdev.c                 | 130 +++-
+ drivers/cxl/core/port.c                   |  13 +-
+ drivers/cxl/core/region.c                 | 170 ++++--
+ drivers/cxl/core/trace.h                  |  65 ++
+ drivers/cxl/cxl.h                         | 122 +++-
+ drivers/cxl/cxlmem.h                      | 131 +++-
+ drivers/cxl/pci.c                         | 123 +++-
+ drivers/dax/bus.c                         | 352 +++++++++--
+ drivers/dax/bus.h                         |   4 +-
+ drivers/dax/cxl.c                         |  72 ++-
+ drivers/dax/dax-private.h                 |  47 +-
+ drivers/dax/hmem/hmem.c                   |   2 +-
+ drivers/dax/pmem.c                        |   2 +-
+ fs/btrfs/ordered-data.c                   |  10 +-
+ include/acpi/actbl1.h                     |   2 +
+ include/cxl/event.h                       |  32 +
+ include/linux/range.h                     |   7 +
+ lib/test_printf.c                         |  70 +++
+ lib/vsprintf.c                            |  55 +-
+ tools/testing/cxl/Kbuild                  |   3 +-
+ tools/testing/cxl/test/mem.c              | 960 ++++++++++++++++++++++++++----
+ 29 files changed, 3576 insertions(+), 320 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20230604-dcd-type2-upstream-0cd15f6216fd
+
+Best regards,
+-- 
+Ira Weiny <ira.weiny@intel.com>
+
 
