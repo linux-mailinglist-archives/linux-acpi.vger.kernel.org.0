@@ -1,115 +1,123 @@
-Return-Path: <linux-acpi+bounces-8587-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8588-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4529933F7
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 18:53:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73902993417
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 18:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC632854E2
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 16:53:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F44F1F23623
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 16:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609611DDA13;
-	Mon,  7 Oct 2024 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034AB1DC730;
+	Mon,  7 Oct 2024 16:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJndyasR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jf/5GY9/"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3150F1DC044;
-	Mon,  7 Oct 2024 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE481DC071;
+	Mon,  7 Oct 2024 16:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728319811; cv=none; b=RBhW41lMph+ARl4gTtqFzsLARjdftSDgB5ZXN1mTrHtLJVEqceCAmJR7B/xB86xsFetTeOBgRkqZFl3BMffREwdrOGGeSfO+/xu9snLQzKL1qOFwapKUdinSFVIpCd/OOghdzZzt88hM28ZL9VLchuV7AjlZFL//NUh+97ucH2g=
+	t=1728319917; cv=none; b=pcgZdVTMk+EIdF+B2qD6s/Rz7L+W9bsDkCveV68/GKR9uWNJMLVGqh56i6wuxE4JhkitwhAgrGeoA+kpHUwcoijbcbtYwB6/bz8ooJZmBrumDDkNkTEWDrsUedE2QGAjPNETmLH0fsS1OWhIeFA6wZIAS62WzodZvEahzYHrjjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728319811; c=relaxed/simple;
-	bh=09BehTu0np3k3gqErdXwoaN+dflDG4Hjj9OdiAtZCKE=;
+	s=arc-20240116; t=1728319917; c=relaxed/simple;
+	bh=mQ692TNlccdh3ekLUIq5Y+tz2OVkv0kzgv7FGWTnYH8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M8HoZfiJutfXJHdawkF7ain9i8CQNLgcrKHQKc3iROJNGyjoESJubUOna20le2YgbHaoEfZdoK9UgBdEgzzZ+ldSZNqGHMhbGa4DFjfmiKBjAZEjeFh3aqk6N2ERkayL/DSYgnSrevsbYgEzsXLo6pNwISIQeoQVPHa2Ani6cxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJndyasR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1C0C4CEDC;
-	Mon,  7 Oct 2024 16:50:10 +0000 (UTC)
+	 To:Cc:Content-Type; b=apIPFFiQl7m7qG/+Y+fRozG2lFRdcV+8HfJ6QHt+fUZP3DQ4qcpGxu0qXC7R1ITc86cOpE+Y1WJ1dVqiaouR3bxms6l/UI86wPkaCHYTxWYfMAPdBa8Wb5nShDszMk+wHoaL1kGDI52hZKk5mVI550vLiHsppx2NB04kAlrB1SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jf/5GY9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74304C4AF09;
+	Mon,  7 Oct 2024 16:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728319811;
-	bh=09BehTu0np3k3gqErdXwoaN+dflDG4Hjj9OdiAtZCKE=;
+	s=k20201202; t=1728319917;
+	bh=mQ692TNlccdh3ekLUIq5Y+tz2OVkv0kzgv7FGWTnYH8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WJndyasRPaSEr5M6LVrQbdI8yhLSAGiITpB3WOifpBFAa3jmF3D6pe3f/cR+0Fu9k
-	 jz3cZTP2NwkBRa+TV7fSgJ9umVOw+jleTK53f1Pd4Nib00dalZvadIUlSkEofy6fvx
-	 Ok30FZsdnJLdeYmS5l211vZnWWGb3j2BZ1T1o1ZkMTr2z8SRYMMAJvMEKbrJi6ePK+
-	 1ilBND8TkqgYEvD5Beays7tOOWRkkmzOcyXEcpMO9GucrX6LC/dFS6vpNjpzq+9j1C
-	 l3OET4pvHdl/Kmi2KbWSTXnyU0qt8nOMpfEzTOlJiGeeTlXKx6jzK5O4/c4JGV4yxR
-	 4G+TBU4w9Lbrw==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3e3a47ae905so2556952b6e.1;
-        Mon, 07 Oct 2024 09:50:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUzlTRtJ1OIl4pJYLm/kcB20IoVpt9EjWHLWIpkwF7v/+JpinkttL2KlgZOgVI3MGdGDcGQHd3kYuSjL9Cz@vger.kernel.org, AJvYcCWdNkFOIgtivBi735xFHXnqArVjtFwyw9u0iFdFLW8ZmMi76PmJqcMKasWQ0wG0jSF9RL23HHuN7nUJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwAGgOxko9IT2X9mt94FvjgYjNUyEUELSCv7NH52BonjKs0xVf
-	bw7ALLPgfvtDLNA/JZ/erSHQGAmDoKIEnDXe8CZ6P8Be8QInTfWqYeRK7Pdp3isNqSMPphRcMzW
-	jSdEaiTXwh0gpVu+N/aw74XJdFvc=
-X-Google-Smtp-Source: AGHT+IFaFT7upksMzg738DaCBgKDPELsw4HS8xXoTN4THFVUKONlVps8/TLcsrcFU0sBFQEK6omxO4xX67Pn6G+2jOQ=
-X-Received: by 2002:a05:6808:10cd:b0:3e2:7e47:fddc with SMTP id
- 5614622812f47-3e3c1556afcmr7768989b6e.34.1728319810055; Mon, 07 Oct 2024
- 09:50:10 -0700 (PDT)
+	b=jf/5GY9/+s9+S/fNqb6a9j4iizFNkCCIFLgf0GS1WuymVUkh6OqgLRuOPyb1sga88
+	 ksuposVNbs+QCJ6FQn2JLB0OvqumFQijkGIPrUCYVNiG4byQk2mqO5OrcUAQbJMqnd
+	 U23+OSc+zBnnVMaTQUTYKPalZwLKTiufDGxgS5tPKvLkxLeUe8Zm2rv4suoVYi7tDj
+	 43ovlqLX06AGJhn3FunQfxRIAZTOHoImAbytxffp+Q3SQYa5RODHGBDoBrC1nZGn+l
+	 4rwJux+Ap6V8/is9wMOZn1Tu8kh+51Sjrb2bD+SiRGRD2DGxpUWQfukTgr0UeXYgwj
+	 x+Oif5/pv9uJg==
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3e06b72f3e7so2161148b6e.0;
+        Mon, 07 Oct 2024 09:51:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7BbmIlI7rFJrFB+PsZpYzlMj6Zt6ohJWtahD9iSBAkAeWbh2DVrTWKsa5azRmKP+qxvTUfg574SzW@vger.kernel.org, AJvYcCW4vd213RJsPQMcQB8wI7qHt6/p4uCUSVxD12cTiUyXFCe/F03lp8djh2fWxK6JmwdeDsK1IAJ6jC080jEA@vger.kernel.org, AJvYcCWmKNVZOxqX0iH3+OlRPM3gVFduTMWYkK95S9UOMT19l14P3iZSGI0uperHQ2LZTzkxTGO6Fqea47M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTZMy7+an7/wfRbOtmqD8Xzo71W1lVffmTWLNoMRTFrMMSy5HF
+	YWIKx2UNWKPAYT2/IaQDI/82FhXpbTqM1lJo2NLp/wKBGkvwoqumXu8/2A2hSpmFXuN5qdwz89G
+	Z3CjnLcRA5qbzyZd+8fGnxZxnbIE=
+X-Google-Smtp-Source: AGHT+IFiOIOqw/qc4ZTHJxfoSzE6KMoRDbdjxV+x8/xIF8IxxUPacNXZKL7rCHi5nnkzXzSbE7rIDVx1ilQP30xw0C0=
+X-Received: by 2002:a05:6808:228d:b0:3df:a2f:4ad3 with SMTP id
+ 5614622812f47-3e3db5cc315mr123616b6e.11.1728319916851; Mon, 07 Oct 2024
+ 09:51:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904-acpi-battery-cleanups-v1-0-a3bf74f22d40@weissschuh.net>
- <CAJZ5v0gAaMLrSyva_cZBxJpzAFM3Lb_SiuTxESjAmHJLxnThGA@mail.gmail.com>
- <8291a067-cd9c-4fcf-b32d-0064f3225836@t-8ch.de> <CAJZ5v0g0sDTnt63BaK2aFR3LppzckO92svrFAenkmQh=Mpxo2w@mail.gmail.com>
-In-Reply-To: <CAJZ5v0g0sDTnt63BaK2aFR3LppzckO92svrFAenkmQh=Mpxo2w@mail.gmail.com>
+References: <20241005-power-supply-no-wakeup-source-v1-0-1d62bf9bcb1d@weissschuh.net>
+ <20241005-power-supply-no-wakeup-source-v1-2-1d62bf9bcb1d@weissschuh.net>
+In-Reply-To: <20241005-power-supply-no-wakeup-source-v1-2-1d62bf9bcb1d@weissschuh.net>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 7 Oct 2024 18:49:58 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g0B8UFqYza88ahMfC-1_FzzizeS6QN=Qtt7vGv9+TK1w@mail.gmail.com>
-Message-ID: <CAJZ5v0g0B8UFqYza88ahMfC-1_FzzizeS6QN=Qtt7vGv9+TK1w@mail.gmail.com>
-Subject: Re: [PATCH 0/5] ACPI: battery: various cleanups
+Date: Mon, 7 Oct 2024 18:51:45 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j=P9orUe9k0bsUfxE0YA8stsbAi=k+ge4_XBeuHVnyrw@mail.gmail.com>
+Message-ID: <CAJZ5v0j=P9orUe9k0bsUfxE0YA8stsbAi=k+ge4_XBeuHVnyrw@mail.gmail.com>
+Subject: Re: [PATCH 2/8] ACPI: battery: Register power supply with power_supply_register()
 To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Cc: Sebastian Reichel <sre@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	=?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
+	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	chrome-platform@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 7, 2024 at 5:14=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
-> wrote:
+On Sat, Oct 5, 2024 at 12:05=E2=80=AFPM Thomas Wei=C3=9Fschuh <linux@weisss=
+chuh.net> wrote:
 >
-> On Sat, Oct 5, 2024 at 9:27=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weiss=
-schuh.net> wrote:
-> >
-> > Hi Rafael,
-> >
-> > On 2024-09-04 14:44:33+0200, Rafael J. Wysocki wrote:
-> > > On Wed, Sep 4, 2024 at 9:13=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@w=
-eissschuh.net> wrote:
-> > > >
-> > > > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> > > > ---
-> > > > Thomas Wei=C3=9Fschuh (5):
-> > > >       ACPI: battery: check result of register_pm_notifier()
-> > > >       ACPI: battery: allocate driver data through devm_ APIs
-> > > >       ACPI: battery: initialize mutexes through devm_ APIs
-> > > >       ACPI: battery: use DEFINE_SIMPLE_DEV_PM_OPS
-> > > >       ACPI: battery: install notify handler through ACPI core
-> > > >
-> > > >  drivers/acpi/battery.c | 41 +++++++++++---------------------------=
----
-> > > >  1 file changed, 11 insertions(+), 30 deletions(-)
-> > > > ---
-> > >
-> > > Since it is a bit late in the cycle and this material does not appear
-> > > to be urgent, I'd prefer to defer it until 6.12-rc1 is out.
-> >
-> > 6.12-rc1 is out and other patches have been queued.
-> > Did this one fall through the cracks?
+> power_supply_register_no_ws() is going to be removed.
+> Switch to the general registration API.
 >
-> No, it didn't.
->
-> There were a couple of ACPI battery driver fixes I wanted to go in
-> before this series and they are in -rc2, so I'm going to apply it now.
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 
-And now applied except for the last patch which goes against the plan
-to turn the ACPI battery driver into a platform one (which it should
-be in the first place).
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@inte;.com>
+
+and I'm assuming this to be handled along with the rest of the series.
+
+> ---
+>  drivers/acpi/battery.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 65fa3444367a13ac83644444076a11f08152c382..9a3a475f8ad334bb365e6a027=
+3084034b8baa3bd 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -853,6 +853,7 @@ static int sysfs_add_battery(struct acpi_battery *bat=
+tery)
+>         struct power_supply_config psy_cfg =3D {
+>                 .drv_data =3D battery,
+>                 .attr_grp =3D acpi_battery_groups,
+> +               .no_wakeup_source =3D true,
+>         };
+>         bool full_cap_broken =3D false;
+>
+> @@ -888,7 +889,7 @@ static int sysfs_add_battery(struct acpi_battery *bat=
+tery)
+>         battery->bat_desc.type =3D POWER_SUPPLY_TYPE_BATTERY;
+>         battery->bat_desc.get_property =3D acpi_battery_get_property;
+>
+> -       battery->bat =3D power_supply_register_no_ws(&battery->device->de=
+v,
+> +       battery->bat =3D power_supply_register(&battery->device->dev,
+>                                 &battery->bat_desc, &psy_cfg);
+>
+>         if (IS_ERR(battery->bat)) {
+>
+> --
+> 2.46.2
+>
 
