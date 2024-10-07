@@ -1,115 +1,97 @@
-Return-Path: <linux-acpi+bounces-8584-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8585-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EB09930DA
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 17:14:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DF99930DC
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 17:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 298832855E3
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 15:14:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53D261C21755
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Oct 2024 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8BE1EB25;
-	Mon,  7 Oct 2024 15:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D471D79BB;
+	Mon,  7 Oct 2024 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CAhEf3Tf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHnfPs3J"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B5512E75;
-	Mon,  7 Oct 2024 15:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE401D2784;
+	Mon,  7 Oct 2024 15:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728314062; cv=none; b=IqvI2sXKSuxx9X6Z0ZmhuIbg19TBfrzpPTd8I+HEplDgWwMyEOJggTuyqSoRxnMzJRd1Ce0aU+l/xwUPBaR4Cajtt8Am1Bh05V39P7EArPdqTxh8ngaNz35lR19lS+YcimSyCFTYB0KjEiPkmDkszr4toN3IKKes1gLP6Bg+zyI=
+	t=1728314110; cv=none; b=VjbVLHp9wQAk3k83+hA5LX/LfWpbTvtSyKBgxeNb7a204uk7x5XhnIRfT5pdmfbbR7oUq3VbM/bRKVFqQeVO7NpV3noxs+8T0eIjxg+uZpTZH2N3TfjOGtDJQS+SBGkiITPCuV8kC8h5ReLi77W38x+njHiWDpIwZ/xUgH35fvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728314062; c=relaxed/simple;
-	bh=TqeKSTkmYuz8/ogDXIfKuzBAEiohkOF1qh1YEuWkMaM=;
+	s=arc-20240116; t=1728314110; c=relaxed/simple;
+	bh=4LDuThyWdMNsyf1fyk29kDAVrzEcbQF1sfliAgr2Rsk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VDClUGWTdBZsxdgKVassCEiKqKniQV78/iK1frhz+R6jBOwtOtaXVlsi5B+TccFVAfiZW7NTIBL4h9X9O/5YwjXf83uBK7euQrhUQeGfWD1js2dBPCF3HIAvOazVtPp2rM5VhuZ7CRazbEiyNHclce5F7gOr3GB1YCSDCKV25xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CAhEf3Tf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28698C4CEC7;
-	Mon,  7 Oct 2024 15:14:22 +0000 (UTC)
+	 To:Cc:Content-Type; b=SoUbB+Y/LgiBtSCDZnL85nFWpXwpgPkQP5Rn8FitQZ1ZEJ14JKDH+APA6M0GsIkpMT1zeL1D52ha5ECG+DPnI0nSiNr6T+WHJQI1OypyJFIje+3euJ5Q7Y24mXLI73xrcTJabiRK7n+uz1lCmzt9Nc+jXMf5FHM/9GCq44vQEg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHnfPs3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77A5C4CECF;
+	Mon,  7 Oct 2024 15:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728314062;
-	bh=TqeKSTkmYuz8/ogDXIfKuzBAEiohkOF1qh1YEuWkMaM=;
+	s=k20201202; t=1728314109;
+	bh=4LDuThyWdMNsyf1fyk29kDAVrzEcbQF1sfliAgr2Rsk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CAhEf3Tf8T+pcs6kt12iyvFnnKmC/ZS8FoFbhFehNyRzd7E3r9iJzRbiEzRLmlCuk
-	 QR8oBVu6krNq8GIudURR/fSqWl0zJd5T15vrgaqia532/5SR0H0lHwO7kiv+u+ZP7A
-	 64urWTCqgSugLd9D/2Z2YZxOzPqYuxnSM9OEPhHVZBz4khfdQEU2XsgJvHzLDOmmWg
-	 F6MFRSLnz+WLSPOzlwj+Z/bZ968HXifUPZzli71OlVnPoXhU5kJLTBGFaJelIxowC1
-	 mee7ElQxIJpOl8LaQ2J8eYVqOhpqT9fdprA2aSqNHx9e57PBy1YSJzP6IobLAuybmc
-	 gXQHob7fdpS/A==
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3e0719668e8so1891040b6e.0;
-        Mon, 07 Oct 2024 08:14:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVsSVJq4Q9Gkl84echfGF5C3ujho4tMDnxga1W0ZnfiBIo5En6iwWfmJVvCuVeknIubBuDMBO7jvDv4KOpL@vger.kernel.org, AJvYcCWXdWQ2OzU37f7uJz/0xokeJjHYiG2vUtWGN4cFGtamWUOauicKUUglvMESAPYYgVmODoNKUK8umGni@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/klpar5jpWdrRAxVULGFY2Zjh3iXGuVRVg3dHYkVEaYn7Qvim
-	UBW7ouh80+jGtXVU0197RpyHhibPYTq2MGM2/g1rt9zyOCnym6+yi9y7wzJuIuUXdIISQQKYnpJ
-	YMpMdkTSCFIJzeUrsEDmngviP8jw=
-X-Google-Smtp-Source: AGHT+IHE5KAdHGiu1RbPlIqzlWBUCff/hwRvlLkJr3QZhY4Df1PNAqtvhI1VMRZMEpiRRs38dtvghLAp3yHe60XMGso=
-X-Received: by 2002:a05:6808:1b0d:b0:3d6:2da2:2b4e with SMTP id
- 5614622812f47-3e3c155850amr6957985b6e.14.1728314061439; Mon, 07 Oct 2024
- 08:14:21 -0700 (PDT)
+	b=bHnfPs3JovhKOPJia6Y1mU/V6rjGoWMcRq3E0lkEHGoMLuUs4rmImXB/3maati9zr
+	 CZwz+Mh7NVY6QjBNAmjCpl72xi9Az93LGWfr6gU1RsDVFnZTRnKDKOtk/36THh3+c2
+	 AKNC7hA+zz+2kyG14l7LiutmL41s6+iwdqIA5Dm9uzcZLw+XkzOgmyh3PKz3z4xiR+
+	 WCV2P/yV3saTvMli00m6UoFYSCHJgalP34HsyL1Nv9KouPZxW+2hx4KcwwjoaH9/I9
+	 G1otuaV/xUKCjkwPNJVRx2Auw70iFitkReefVlHYDmfrTFjCg/N5hbvTFIw8/8f9YL
+	 gbN3BIt4Z5zLQ==
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3e0465e6bd5so1927418b6e.2;
+        Mon, 07 Oct 2024 08:15:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVEj+S1g/1kAA+UmXljCVVk+t/IdO8ito18xJBx40X1/c43jzB9n00PxSvICnQ7QD2XCPk4Lo6kbdRZ/mnJtjw5KTejag==@vger.kernel.org, AJvYcCVMj/2Yeaa3HDJNbR5+MZVmphVENrZvCN0zq6nY6BjfIJ9nzVGju9vJKq9Zr5TlMQSBXB+rkp2Ytuud@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqY1hgFmBJOA7sdk82SheGxcHGD+cKwmz9JdSogQmm4AGqtgDk
+	so6s7g3RBftNfkZIvwNSBek/a4RhrUt3nu7+7tbC1TuampnhO5JI3oq/7xuupHP4Il6R5gA0WPY
+	p9WyP8MSt0pLNWzM1IWqp0ox71uo=
+X-Google-Smtp-Source: AGHT+IHmku3lngjvNFQAQ4MNIc3A0Fzsojqg2B3RKxhVMeStHRmdpgbDqQ+g10BHOmCAhfnJzAXFQxTNeHpdBqOzLwQ=
+X-Received: by 2002:a05:6808:2388:b0:3de:16f1:7659 with SMTP id
+ 5614622812f47-3e3c1329770mr7176728b6e.11.1728314109027; Mon, 07 Oct 2024
+ 08:15:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904-acpi-battery-cleanups-v1-0-a3bf74f22d40@weissschuh.net>
- <CAJZ5v0gAaMLrSyva_cZBxJpzAFM3Lb_SiuTxESjAmHJLxnThGA@mail.gmail.com> <8291a067-cd9c-4fcf-b32d-0064f3225836@t-8ch.de>
-In-Reply-To: <8291a067-cd9c-4fcf-b32d-0064f3225836@t-8ch.de>
+References: <20241005212819.354681-1-hdegoede@redhat.com>
+In-Reply-To: <20241005212819.354681-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 7 Oct 2024 17:14:05 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g0sDTnt63BaK2aFR3LppzckO92svrFAenkmQh=Mpxo2w@mail.gmail.com>
-Message-ID: <CAJZ5v0g0sDTnt63BaK2aFR3LppzckO92svrFAenkmQh=Mpxo2w@mail.gmail.com>
-Subject: Re: [PATCH 0/5] ACPI: battery: various cleanups
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 7 Oct 2024 17:14:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iewd+hmF6ZrXSPTs5_aKov57taaRKEoBM5VaRefrdM1Q@mail.gmail.com>
+Message-ID: <CAJZ5v0iewd+hmF6ZrXSPTs5_aKov57taaRKEoBM5VaRefrdM1Q@mail.gmail.com>
+Subject: Re: [PATCH 0/4] ACPI: resource: Improve Asus skip IRQ override quirks
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, "Luke D . Jones" <luke@ljones.dev>, linux-acpi@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 5, 2024 at 9:27=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weisssc=
-huh.net> wrote:
+Hi Hans,
+
+On Sat, Oct 5, 2024 at 11:28=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+ wrote:
 >
 > Hi Rafael,
 >
-> On 2024-09-04 14:44:33+0200, Rafael J. Wysocki wrote:
-> > On Wed, Sep 4, 2024 at 9:13=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@wei=
-ssschuh.net> wrote:
-> > >
-> > > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> > > ---
-> > > Thomas Wei=C3=9Fschuh (5):
-> > >       ACPI: battery: check result of register_pm_notifier()
-> > >       ACPI: battery: allocate driver data through devm_ APIs
-> > >       ACPI: battery: initialize mutexes through devm_ APIs
-> > >       ACPI: battery: use DEFINE_SIMPLE_DEV_PM_OPS
-> > >       ACPI: battery: install notify handler through ACPI core
-> > >
-> > >  drivers/acpi/battery.c | 41 +++++++++++-----------------------------=
--
-> > >  1 file changed, 11 insertions(+), 30 deletions(-)
-> > > ---
-> >
-> > Since it is a bit late in the cycle and this material does not appear
-> > to be urgent, I'd prefer to defer it until 6.12-rc1 is out.
+> After receiving yet another Asus skip IRQ override bug report / patch:
+> https://lore.kernel.org/platform-driver-x86/a983e6d5-c7ab-4758-be9b-7dcfc=
+1b44ed3@gmail.com/
 >
-> 6.12-rc1 is out and other patches have been queued.
-> Did this one fall through the cracks?
-
-No, it didn't.
-
-There were a couple of ACPI battery driver fixes I wanted to go in
-before this series and they are in -rc2, so I'm going to apply it now.
-
-Thanks!
-
-
+> I have taken a closer look at the existing Asus quirks to see if they can
+> be simplied to cover more models.
 >
+> This patch series removes 8 quirks by making the quirks match more models=
+,
+> while extending coverage with 3 new models which also need a skip IRQ
+> override quirk for their keyboards to work (including the model from
+> the new report).
 >
-> Thanks,
-> Thomas
+> Please send these to Linus as 6.12-rc# fixes, since this fixes
+> the keyboard not working on 3 more models.
+
+I will, thanks!
 
