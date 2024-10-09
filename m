@@ -1,229 +1,243 @@
-Return-Path: <linux-acpi+bounces-8655-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8656-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F3C996CCD
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 15:54:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDB4996E6A
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 16:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 699EBB217C3
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 13:54:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 141B61F25A34
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 14:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78A019924D;
-	Wed,  9 Oct 2024 13:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDF219995D;
+	Wed,  9 Oct 2024 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N43sAW0c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvSnDEtv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E479638DE5;
-	Wed,  9 Oct 2024 13:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A9318BBB0;
+	Wed,  9 Oct 2024 14:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728482039; cv=none; b=DKZ3Dv2j8X422ZDk0VfTv79H7AvuNJO8YvutHzyqLXk7+MbAnkO8XZnxZCe70Va7iJfs8lFkGhxKOtLSQpNo4K0UKaVo41d598MQ9zG+Tex/cqCyzXjBzqMRu8XXSyPB+3M/5QUOtBkf37Mhj2T0tST3ry8S6yh/e/XXzpMfisY=
+	t=1728484979; cv=none; b=aRo12ZH92vC1xreMDYTequIBCBLOKIijRIU5SMI7WavpwO5jelidRleZ60DtDrIRFUH2FjxTj8n+i2mb8yygUOVvq0K5bn9i67LovAx0WM3kkx92muWXpsKGHsR1Uc4pB8PFQuKUX3yGTsHwnqg/Kxr+ToL7DvGRl2jlzleRdmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728482039; c=relaxed/simple;
-	bh=8N5jfzDOt7ZOjj9uSBVdMRUWIVi1JgHRbc8fx2TsvTE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=BboOgp4odLI4VQH9UCQmbezVUVyjCq6JxByvfM2eOazRjGi/MVIx7jFUCr/eJhWmOhHOB5aripGEDqfzx5TtTqTmrmMl2ZqjQ9RoFIgMUjqCniANaAf0vGVz51zHpZEXUa3Empcb8LGCRyzquYMcCPkArdyR630nBDwixNyulaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N43sAW0c; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728482038; x=1760018038;
-  h=date:from:to:cc:subject:message-id;
-  bh=8N5jfzDOt7ZOjj9uSBVdMRUWIVi1JgHRbc8fx2TsvTE=;
-  b=N43sAW0ccSNtipE5JeXyFmY0GsOySs7ksmKR4kmm3JowKwSIMwHALW8C
-   LIoG1C0xMH6y2QE/WbVPeC/Fh/edoaVw/Y6YfEbCLBTT+1sJ/Ko5lcwWt
-   zJLHtLD7VtsMh3CNZ5X0UQEtXBKEbudcYq0hIwrdhq67DUDgDtRgRMbJr
-   ykerjar7xdQlJsaZPq8hYqpvuTBzhQFZTGHzP8ywMxpZAhUT6PrwEuuM8
-   hqDaKNAc3vur0EzVRosZv4e1fA7XkqkkXLslE4JbdBsS+K/6mDUmPqKSw
-   NYZsuRZlhjr4Hb/5Ec/OvkaLqYR640iSjJWIt2KDXpmP+UFr/xdV0CefR
-   Q==;
-X-CSE-ConnectionGUID: n10vvN/IRQiaWapLHoE7kw==
-X-CSE-MsgGUID: Wn/IEHQsSRivw4bExxMzKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27731345"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; 
-   d="scan'208";a="27731345"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 06:53:58 -0700
-X-CSE-ConnectionGUID: OepCtk8BSBqZn+jWhFJcow==
-X-CSE-MsgGUID: rUsaUtsnQwi9n0hTNGnyUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; 
-   d="scan'208";a="99587864"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Oct 2024 06:53:56 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1syX8T-0009I8-1B;
-	Wed, 09 Oct 2024 13:53:53 +0000
-Date: Wed, 09 Oct 2024 21:53:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 942b486a07f61edf985ba5c1be8c8f887cf8c5cc
-Message-ID: <202410092124.0RRsFM9t-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1728484979; c=relaxed/simple;
+	bh=6JEg1IWQ9xC5kwBpzTwz9Zj3qaAc3eJWc5MRgFK88fQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QTPMaLY6dYCKwFWJ4OMyx8d0oQTynIQT/wKwzuO1kH4r81zbJpPEGEo/fQv+mh9lLMxxfVxGDilw2lIrrASa/b+uPdI8RVT7mrM6LCUVrJ81OvaXz2YFsiACMNlYb6k+2wc6wmQwL/DbSJzibf92QEiQCRpMVhWaOpap9pKDKLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvSnDEtv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596F7C4CED2;
+	Wed,  9 Oct 2024 14:42:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728484979;
+	bh=6JEg1IWQ9xC5kwBpzTwz9Zj3qaAc3eJWc5MRgFK88fQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TvSnDEtvtsN6C+/SM0y/Zbf/0mXF2Mn40y3by2HXHrux1RDGnG93kLUpMEWmcPDrK
+	 sOX+zsHqBO9edGNccIA/BCVzwphzpD+8sT1rkGL39LV+4W0hIPChLuzaCgFDX0tdGy
+	 99IVRBVIcPd2UUNFhIHbCdepzcA5TkxeWzO6/DBQLQGBKFDV2dchgAC/8u9eZEmdSM
+	 DUkmjUJm0gsBfLV8mqdVdGhYdlmkqSqM/x64gpO4AglxBO94SHpBjV2cfuXtgmN/GB
+	 A53oHen1qpgDxEIXmusKyzpNQeVORIpc9p/FWuCMW3NmDpM1hhfUcVeNWO26s7z7sk
+	 fBvhb+rJfGSzA==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5e98821b12eso427161eaf.0;
+        Wed, 09 Oct 2024 07:42:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUCDTaGPaRiKophEcChLd4fLRjBBqYiz1Tgi44WIbKTRmJw3GyXkutfnid2C9l2hIBp1a8ft8tHTqDS@vger.kernel.org, AJvYcCUxAd/FsL1Baa5zi69nVRrsWhmAocXfS+GfD46OJTmrk2ow09eR2wb+wjgt+U6QHs9tTK9O0cEuWRF6Gos=@vger.kernel.org, AJvYcCVPwbgIH3/MO21WeVLpeALCwCL7EYSYorkstwA1CjzlktPXEUG3UAFMedmOr7nX5zcsToTs6swQVoIPjdCI@vger.kernel.org, AJvYcCWCBxJOV52K+oVrq6NhQJ+bNp9TSuBKQ4aLqJ//suq0ceErs/F+wAYTb5t8TMgHlaEbDFxZ1EC0vI+Q@vger.kernel.org, AJvYcCX0ESV3g5fNOKZPpE9zLFnNPd08qCnta6O9EUkAG/AcHeLZTOV9tNZNzmdBKsGYDjtFIB1/6RbQgJ5z@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtltHQf5mg59GAWtTmEDOcal8Nuu2t4fWgjUQdg6193T0LEJC8
+	jZxoJhLHQ0vnjueDSvgRCln1MH6gXNObN1hztSv7pcedZiur6craOCYuXCOx1Qb9X2zt/pGynFi
+	LTT2g0FQjZ3RFp/NrBqrAbmuUkmU=
+X-Google-Smtp-Source: AGHT+IHDaVFF9QB5Ocw0e+agFVyqw6KDF/qmyIN+xkqeGE34qYEEyNH3bqQh/xYpVKP/VbDhTkTKtGu9dtJoOOgnpNU=
+X-Received: by 2002:a05:6820:80b:b0:5e1:e65d:5148 with SMTP id
+ 006d021491bc7-5e987ba3164mr1641923eaf.6.1728484978584; Wed, 09 Oct 2024
+ 07:42:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20241007-dcd-type2-upstream-v4-0-c261ee6eeded@intel.com> <20241007-dcd-type2-upstream-v4-12-c261ee6eeded@intel.com>
+In-Reply-To: <20241007-dcd-type2-upstream-v4-12-c261ee6eeded@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Oct 2024 16:42:47 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iFco4htzfW1sYYKKh67oe4GsnUBOPRiunHQ1n2FHa3hA@mail.gmail.com>
+Message-ID: <CAJZ5v0iFco4htzfW1sYYKKh67oe4GsnUBOPRiunHQ1n2FHa3hA@mail.gmail.com>
+Subject: Re: [PATCH v4 12/28] cxl/cdat: Gather DSMAS data for DCD regions
+To: Ira Weiny <ira.weiny@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Navneet Singh <navneet.singh@intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	linux-btrfs@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linux-doc@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Robert Moore <robert.moore@intel.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 942b486a07f61edf985ba5c1be8c8f887cf8c5cc  Merge branch 'thermal-core-testing' into bleeding-edge
+On Tue, Oct 8, 2024 at 1:17=E2=80=AFAM Ira Weiny <ira.weiny@intel.com> wrot=
+e:
+>
+> Additional DCD region (partition) information is contained in the DSMAS
+> CDAT tables, including performance, read only, and shareable attributes.
+>
+> Match DCD partitions with DSMAS tables and store the meta data.
+>
+> To: Robert Moore <robert.moore@intel.com>
+> To: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> To: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: acpica-devel@lists.linux.dev
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+>
+> ---
+> Changes:
+> [iweiny: new patch]
+> [iweiny: Gather shareable/read-only flags for later use]
+> ---
+>  drivers/cxl/core/cdat.c | 38 ++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/mbox.c |  2 ++
+>  drivers/cxl/cxlmem.h    |  3 +++
+>  include/acpi/actbl1.h   |  2 ++
+>  4 files changed, 45 insertions(+)
+>
+> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
+> index bd50bb655741..9b2f717a16e5 100644
+> --- a/drivers/cxl/core/cdat.c
+> +++ b/drivers/cxl/core/cdat.c
+> @@ -17,6 +17,8 @@ struct dsmas_entry {
+>         struct access_coordinate cdat_coord[ACCESS_COORDINATE_MAX];
+>         int entries;
+>         int qos_class;
+> +       bool shareable;
+> +       bool read_only;
+>  };
+>
+>  static u32 cdat_normalize(u16 entry, u64 base, u8 type)
+> @@ -74,6 +76,8 @@ static int cdat_dsmas_handler(union acpi_subtable_heade=
+rs *header, void *arg,
+>                 return -ENOMEM;
+>
+>         dent->handle =3D dsmas->dsmad_handle;
+> +       dent->shareable =3D dsmas->flags & ACPI_CDAT_DSMAS_SHAREABLE;
+> +       dent->read_only =3D dsmas->flags & ACPI_CDAT_DSMAS_READ_ONLY;
+>         dent->dpa_range.start =3D le64_to_cpu((__force __le64)dsmas->dpa_=
+base_address);
+>         dent->dpa_range.end =3D le64_to_cpu((__force __le64)dsmas->dpa_ba=
+se_address) +
+>                               le64_to_cpu((__force __le64)dsmas->dpa_leng=
+th) - 1;
+> @@ -255,6 +259,38 @@ static void update_perf_entry(struct device *dev, st=
+ruct dsmas_entry *dent,
+>                 dent->coord[ACCESS_COORDINATE_CPU].write_latency);
+>  }
+>
+> +
+> +static void update_dcd_perf(struct cxl_dev_state *cxlds,
+> +                           struct dsmas_entry *dent)
+> +{
+> +       struct cxl_memdev_state *mds =3D to_cxl_memdev_state(cxlds);
+> +       struct device *dev =3D cxlds->dev;
+> +
+> +       for (int i =3D 0; i < mds->nr_dc_region; i++) {
+> +               /* CXL defines a u32 handle while cdat defines u8, ignore=
+ upper bits */
+> +               u8 dc_handle =3D mds->dc_region[i].dsmad_handle & 0xff;
+> +
+> +               if (resource_size(&cxlds->dc_res[i])) {
+> +                       struct range dc_range =3D {
+> +                               .start =3D cxlds->dc_res[i].start,
+> +                               .end =3D cxlds->dc_res[i].end,
+> +                       };
+> +
+> +                       if (range_contains(&dent->dpa_range, &dc_range)) =
+{
+> +                               if (dent->handle !=3D dc_handle)
+> +                                       dev_warn(dev, "DC Region/DSMAS mi=
+s-matched handle/range; region %pra (%u); dsmas %pra (%u)\n"
+> +                                                     "   setting DC regi=
+on attributes regardless\n",
+> +                                               &dent->dpa_range, dent->h=
+andle,
+> +                                               &dc_range, dc_handle);
+> +
+> +                               mds->dc_region[i].shareable =3D dent->sha=
+reable;
+> +                               mds->dc_region[i].read_only =3D dent->rea=
+d_only;
+> +                               update_perf_entry(dev, dent, &mds->dc_per=
+f[i]);
+> +                       }
+> +               }
+> +       }
+> +}
+> +
+>  static void cxl_memdev_set_qos_class(struct cxl_dev_state *cxlds,
+>                                      struct xarray *dsmas_xa)
+>  {
+> @@ -278,6 +314,8 @@ static void cxl_memdev_set_qos_class(struct cxl_dev_s=
+tate *cxlds,
+>                 else if (resource_size(&cxlds->pmem_res) &&
+>                          range_contains(&pmem_range, &dent->dpa_range))
+>                         update_perf_entry(dev, dent, &mds->pmem_perf);
+> +               else if (cxl_dcd_supported(mds))
+> +                       update_dcd_perf(cxlds, dent);
+>                 else
+>                         dev_dbg(dev, "no partition for dsmas dpa: %pra\n"=
+,
+>                                 &dent->dpa_range);
+> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> index 4b51ddd1ff94..3ba465823564 100644
+> --- a/drivers/cxl/core/mbox.c
+> +++ b/drivers/cxl/core/mbox.c
+> @@ -1649,6 +1649,8 @@ struct cxl_memdev_state *cxl_memdev_state_create(st=
+ruct device *dev)
+>         mds->cxlds.type =3D CXL_DEVTYPE_CLASSMEM;
+>         mds->ram_perf.qos_class =3D CXL_QOS_CLASS_INVALID;
+>         mds->pmem_perf.qos_class =3D CXL_QOS_CLASS_INVALID;
+> +       for (int i =3D 0; i < CXL_MAX_DC_REGION; i++)
+> +               mds->dc_perf[i].qos_class =3D CXL_QOS_CLASS_INVALID;
+>
+>         return mds;
+>  }
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index 0690b917b1e0..c3b889a586d8 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+> @@ -466,6 +466,8 @@ struct cxl_dc_region_info {
+>         u64 blk_size;
+>         u32 dsmad_handle;
+>         u8 flags;
+> +       bool shareable;
+> +       bool read_only;
+>         u8 name[CXL_DC_REGION_STRLEN];
+>  };
+>
+> @@ -533,6 +535,7 @@ struct cxl_memdev_state {
+>
+>         u8 nr_dc_region;
+>         struct cxl_dc_region_info dc_region[CXL_MAX_DC_REGION];
+> +       struct cxl_dpa_perf dc_perf[CXL_MAX_DC_REGION];
+>
+>         struct cxl_event_state event;
+>         struct cxl_poison_state poison;
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 199afc2cd122..387fc821703a 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -403,6 +403,8 @@ struct acpi_cdat_dsmas {
+>  /* Flags for subtable above */
+>
+>  #define ACPI_CDAT_DSMAS_NON_VOLATILE        (1 << 2)
+> +#define ACPI_CDAT_DSMAS_SHAREABLE           (1 << 3)
+> +#define ACPI_CDAT_DSMAS_READ_ONLY           (1 << 6)
+>
+>  /* Subtable 1: Device scoped Latency and Bandwidth Information Structure=
+ (DSLBIS) */
+>
 
-elapsed time: 1078m
-
-configs tested: 135
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-alpha                               defconfig    gcc-14.1.0
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                                 defconfig    gcc-14.1.0
-arc                     haps_hs_smp_defconfig    gcc-14.1.0
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                                 defconfig    gcc-14.1.0
-arm                          exynos_defconfig    gcc-14.1.0
-arm                          gemini_defconfig    gcc-14.1.0
-arm                        multi_v7_defconfig    gcc-14.1.0
-arm                           sama5_defconfig    gcc-14.1.0
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-arm64                               defconfig    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                                defconfig    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-hexagon                             defconfig    gcc-14.1.0
-i386                             allmodconfig    clang-18
-i386                              allnoconfig    clang-18
-i386                             allyesconfig    clang-18
-i386        buildonly-randconfig-001-20241009    clang-18
-i386        buildonly-randconfig-002-20241009    clang-18
-i386        buildonly-randconfig-003-20241009    clang-18
-i386        buildonly-randconfig-004-20241009    clang-18
-i386        buildonly-randconfig-005-20241009    clang-18
-i386        buildonly-randconfig-006-20241009    clang-18
-i386                                defconfig    clang-18
-i386                  randconfig-001-20241009    clang-18
-i386                  randconfig-002-20241009    clang-18
-i386                  randconfig-003-20241009    clang-18
-i386                  randconfig-004-20241009    clang-18
-i386                  randconfig-005-20241009    clang-18
-i386                  randconfig-006-20241009    clang-18
-i386                  randconfig-011-20241009    clang-18
-i386                  randconfig-012-20241009    clang-18
-i386                  randconfig-013-20241009    clang-18
-i386                  randconfig-014-20241009    clang-18
-i386                  randconfig-015-20241009    clang-18
-i386                  randconfig-016-20241009    clang-18
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch                           defconfig    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                                defconfig    gcc-14.1.0
-m68k                       m5275evb_defconfig    gcc-14.1.0
-m68k                            mac_defconfig    gcc-14.1.0
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-microblaze                          defconfig    gcc-14.1.0
-microblaze                      mmu_defconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-mips                      bmips_stb_defconfig    gcc-14.1.0
-mips                           ci20_defconfig    gcc-14.1.0
-mips                     loongson1b_defconfig    gcc-14.1.0
-mips                      malta_kvm_defconfig    gcc-14.1.0
-mips                           rs90_defconfig    gcc-14.1.0
-mips                           xway_defconfig    gcc-14.1.0
-nios2                             allnoconfig    gcc-14.1.0
-nios2                               defconfig    gcc-14.1.0
-openrisc                          allnoconfig    gcc-14.1.0
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-12
-openrisc                 simple_smp_defconfig    gcc-14.1.0
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    gcc-14.1.0
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-12
-parisc64                            defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    gcc-14.1.0
-powerpc                          allyesconfig    gcc-14.1.0
-powerpc                     rainier_defconfig    gcc-14.1.0
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    gcc-14.1.0
-riscv                            allyesconfig    gcc-14.1.0
-riscv                               defconfig    gcc-12
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                                defconfig    gcc-12
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                                  defconfig    gcc-12
-sparc                            allmodconfig    gcc-14.1.0
-sparc64                             defconfig    gcc-12
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-17
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                           x86_64_defconfig    gcc-12
-x86_64                           alldefconfig    gcc-14.1.0
-x86_64                            allnoconfig    clang-18
-x86_64                           allyesconfig    clang-18
-x86_64      buildonly-randconfig-001-20241009    clang-18
-x86_64      buildonly-randconfig-002-20241009    clang-18
-x86_64      buildonly-randconfig-003-20241009    clang-18
-x86_64      buildonly-randconfig-004-20241009    clang-18
-x86_64      buildonly-randconfig-005-20241009    clang-18
-x86_64      buildonly-randconfig-006-20241009    clang-18
-x86_64                              defconfig    clang-18
-x86_64                                  kexec    clang-18
-x86_64                randconfig-001-20241009    clang-18
-x86_64                randconfig-002-20241009    clang-18
-x86_64                randconfig-003-20241009    clang-18
-x86_64                randconfig-004-20241009    clang-18
-x86_64                randconfig-005-20241009    clang-18
-x86_64                randconfig-006-20241009    clang-18
-x86_64                randconfig-011-20241009    clang-18
-x86_64                randconfig-012-20241009    clang-18
-x86_64                randconfig-013-20241009    clang-18
-x86_64                randconfig-014-20241009    clang-18
-x86_64                randconfig-015-20241009    clang-18
-x86_64                randconfig-016-20241009    clang-18
-x86_64                randconfig-071-20241009    clang-18
-x86_64                randconfig-072-20241009    clang-18
-x86_64                randconfig-073-20241009    clang-18
-x86_64                randconfig-074-20241009    clang-18
-x86_64                randconfig-075-20241009    clang-18
-x86_64                randconfig-076-20241009    clang-18
-x86_64                               rhel-8.3    gcc-12
-x86_64                          rhel-8.3-rust    clang-18
-xtensa                            allnoconfig    gcc-14.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Is there an upstream ACPICA commit for this?
 
