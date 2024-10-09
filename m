@@ -1,85 +1,96 @@
-Return-Path: <linux-acpi+bounces-8672-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8673-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330E3997530
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 20:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC1A997574
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 21:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0581282C84
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 18:59:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D259A284C32
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 19:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04201E04B5;
-	Wed,  9 Oct 2024 18:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5831A2643;
+	Wed,  9 Oct 2024 19:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bigon.be header.i=@bigon.be header.b="obXCxebf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVX1dmNR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1581013A244
-	for <linux-acpi@vger.kernel.org>; Wed,  9 Oct 2024 18:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185D11E0E08
+	for <linux-acpi@vger.kernel.org>; Wed,  9 Oct 2024 19:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728500363; cv=none; b=NTbc5kvUKVIqBYLk7/H9iY4j/xiU7F0KgxiNbDrvdquyTovJj30zKrp6/eijIqKG+0aIiMsRgQNR7dhH9MPxpYGoSWpaHU989YwO7DkqMXdqlBc33Kkuu+DFKMn5P3vF5DJKnRE43xYizaZGAWO9ACzrsParpttBOzDNVKpgNTU=
+	t=1728501042; cv=none; b=dwXNmJeYPxbrDE0zZd4uhFRc0itlWCVpgDN6FOqDPZy6f4G/9854BuBLcqXvtKphBTsVIpS5ZLZxG+XXgI+dFXdCXheV74493sIxGMQCyzONsKc/lynR4vrdPZ8mIvon+oA9WYT3kZyuh/KGNp5DmIGjVpp8JsrKxltw4xT9uzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728500363; c=relaxed/simple;
-	bh=gTph27nHFtSnf2P/6Cg3En2EqJPqxsLqn91GHuV0prs=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=cEzCHO1zL3Hdpl/6R2lwUmckwePImWCK0fd4QqyhxURuYKNukLhw4gv01RPuV0NqLYXzH4K20mYsRtH1GmkRvhKRmXWTDL3LXrpjPDnok3oEquKc0cy/3Z0rYLY+BqQ5MfEGOO7pOPG2GuN7kQQ8snSgyv+FIiRUAHwDO5RaU+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bigon.be; spf=pass smtp.mailfrom=bigon.be; dkim=pass (2048-bit key) header.d=bigon.be header.i=@bigon.be header.b=obXCxebf; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bigon.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bigon.be
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4XP2HL1zZTz9t1V
-	for <linux-acpi@vger.kernel.org>; Wed,  9 Oct 2024 20:59:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bigon.be; s=MBO0001;
-	t=1728500350;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tWJODsel5UXyhNhJacVYrGEf7E190L56BL5mqLHEFQY=;
-	b=obXCxebfufyAx4XIP7vUaYzxGpgQH/wKVJSJV/z3HLmoWbvdUWHczOOQGhhL6te9CMow9+
-	/U4ISrVoQE6S9C1NCL2F1us4ZhRn6D8y+x8dXpV5tJqxjcX4g99IZz4rF3EtwbZMiXNbPi
-	XhZXXI+ArGIedfs/yAMNHp4vU+Z0qT4dI/vVLQ8WVJ91Fuii13soUOI5Ew1JPZ7Hf5MQ6o
-	DBKCcEtKtc9HnC7peQD+6uEM23C5GJpppMoHIpBjTdfIDdXLAWhXU/hTpkP+Bzz1upIzx5
-	gtSbc8j6hNmCm7mkstP/QWdzI8xgok5ZN3Sbi3oGkxy679iG1K2i9Ndrzkd00A==
-Message-ID: <c9e29dcb-acfb-40e1-a283-4cef9b60c5b5@bigon.be>
-Date: Wed, 9 Oct 2024 20:59:08 +0200
+	s=arc-20240116; t=1728501042; c=relaxed/simple;
+	bh=64VCxJqJGNGh/NXOLvuOVDTcE/3wSEKJ/qJp2U8Y3N4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pAYqyWgnybiNJPcqTX7SmJFnoYCT7E8unnYEDcs+vn19fZuvyR9g+IKa1pks3chCYPd5lmNHGa34jOpwtrIXxvAqCaFSi8LjqXFh6WMDuA1XJdplVezmhmi4MP4Z1U537W1GI+TtPxyaOuoXdfOTLfuECiksfPMLRx+NReMtSm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVX1dmNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB93BC4CECC
+	for <linux-acpi@vger.kernel.org>; Wed,  9 Oct 2024 19:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728501041;
+	bh=64VCxJqJGNGh/NXOLvuOVDTcE/3wSEKJ/qJp2U8Y3N4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PVX1dmNRs0TvP7XL2stS/j/FwCM26d5lbbwXQXhDj8m/aAPsQjlZedfl+dE1T7AM+
+	 ao0Xh9T9FPXnQVvS4NMz7Vt2wJrzqj2DLToSfmdOGKDEQgc7QSHcoX7nVEeSV7MLGd
+	 zu3vqzvdjNz+1B7/z0hrvROBEh1jsjiOfTMLRmRqEqn6/Q5r3fMxJ9I1txq0X4fvM0
+	 heZlahivbgdOut754jZh+0YtWYFL267gkeNsHrg2KdpLeq3dpfW80rfTl4T2mRxDi3
+	 YATspyeUfdeINl+PAPyx0PCxR9TzCifMgBZHm61+BTErgeD8P0jGMkc4T17zwv6Rtw
+	 H+NXIfRgzKVsw==
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3e3e0a8aaabso79277b6e.3
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Oct 2024 12:10:41 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz0qxfns0aK8f2uuRaHzW3gibP/bcHcGJ3oU1iGH14PfMLvrUhy
+	j5x4FLLbvXTv8TMvf/l8/7Jl+PBgYQfbrNgaOV5lgTO9BatnuUY6BDtcxBGy88aeRxqWqJoHGzM
+	J/BcHQ77TZ/H3Pq7sOkOPkv5VzEg=
+X-Google-Smtp-Source: AGHT+IEWcctCfr9vhVUJ1wmxZda8IRBoDP4qowB5J9ACFw496LszPG5E8CsEjaEedrXXu7ncOTA9GU41Airss4qKRdo=
+X-Received: by 2002:a05:6808:2dce:b0:3e4:d683:c242 with SMTP id
+ 5614622812f47-3e4d683c2c7mr1455453b6e.15.1728501041089; Wed, 09 Oct 2024
+ 12:10:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US, fr-BE, fr
-To: linux-acpi@vger.kernel.org
-From: Laurent Bigonville <bigon@bigon.be>
-Subject: Dell Latitude 5530 battery drain in s2idle
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <c9e29dcb-acfb-40e1-a283-4cef9b60c5b5@bigon.be>
+In-Reply-To: <c9e29dcb-acfb-40e1-a283-4cef9b60c5b5@bigon.be>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Oct 2024 21:10:29 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jRHEj+Y1F5tmY7MYe4jY8dZ3TpDDqs+L6BS4QxfxQALQ@mail.gmail.com>
+Message-ID: <CAJZ5v0jRHEj+Y1F5tmY7MYe4jY8dZ3TpDDqs+L6BS4QxfxQALQ@mail.gmail.com>
+Subject: Re: Dell Latitude 5530 battery drain in s2idle
+To: Laurent Bigonville <bigon@bigon.be>
+Cc: linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi,
 
-I've a Dell Latitude 5530 and it only supports s2idle.
+On Wed, Oct 9, 2024 at 8:59=E2=80=AFPM Laurent Bigonville <bigon@bigon.be> =
+wrote:
+>
+> Hello,
+>
+> I've a Dell Latitude 5530 and it only supports s2idle.
+>
+> If I let my laptop in suspend and unplugged the battery can drain
+> completely overnight.
+>
+> Searching a bit, I'm apparently not the only one if this issue.
+>
+> Any idea what can be done to trouble shoot that?
+>
+> $ cat /sys/power/mem_sleep
+> [s2idle]
+>
+> Running debian unstable with kernel 6.11.2-1
 
-If I let my laptop in suspend and unplugged the battery can drain 
-completely overnight.
+File a bug at bugzilla.kernel.org and let me know its number.  We'll
+follow up in the BZ.
 
-Searching a bit, I'm apparently not the only one if this issue.
-
-Any idea what can be done to trouble shoot that?
-
-$ cat /sys/power/mem_sleep
-[s2idle]
-
-Running debian unstable with kernel 6.11.2-1
-
-Kind regards,
-
-Laurent Bigonville
-
+Thanks!
 
