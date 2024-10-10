@@ -1,128 +1,122 @@
-Return-Path: <linux-acpi+bounces-8682-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8684-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E441299869F
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 14:51:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C919989E8
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 16:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023F11C23BA9
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 12:51:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7464028B6E5
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 14:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F3E1C68BC;
-	Thu, 10 Oct 2024 12:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3071D041A;
+	Thu, 10 Oct 2024 14:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ExBlpLfp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A8A1C232C;
-	Thu, 10 Oct 2024 12:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759B31CBE92;
+	Thu, 10 Oct 2024 14:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728564681; cv=none; b=M9IxCZr19B3RIfQuUb9QXzXDyg5aPCqW1WR87MsaRhI4wEks7cFmEHB84akHh/i1kKKV90Ij3nd4teDDimvQlO0zt3mHCmIxJFLJtrVa9Bo1xElJ9zGm3AHALKLhaKNDhn/MlI5KJqMNhBNYhkK7bu9QO4mYSvRTswOaTab/1Nw=
+	t=1728570652; cv=none; b=sn6icexVpLVSf0ALvGeKUMXQjdQK2aW67AFzlxokd5io3YEJElIB/s2d8U7k4qVH4K1ahN6RiiHHoq6VgKHC0o/059VrLw60xXIbXlDWjOISLw/2rCzicW9WH7qaqRZ0aFuLYqjmEdhHSrNZj+tFzdvFyfbNJqzZkjjoXCctdmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728564681; c=relaxed/simple;
-	bh=kuek4LvQty7bWRHjQpDSPPA/0p7libjuJtkPrGUM6ZA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XfeiyqxZAbxOFC5vnjZr8vAtwAmBGqZPOoredMYkTNMjBVuL4hCxyfRGOeu1AF+wanThzWalHmjeUUaain2zB5ARxTdaGL8v8gGxs2gziZKv3WLj5dLxuptf6H66/dPnj30M6dHXGEezTlOR5lj1zD10NTha0tIhG8e7ciinWqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XPV2q1smPz6K6yr;
-	Thu, 10 Oct 2024 20:49:55 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2B02B1400D9;
-	Thu, 10 Oct 2024 20:51:16 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 10 Oct
- 2024 14:51:15 +0200
-Date: Thu, 10 Oct 2024 13:51:13 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ira Weiny <ira.weiny@intel.com>
-CC: Dave Jiang <dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, "Navneet
- Singh" <navneet.singh@intel.com>, Jonathan Corbet <corbet@lwn.net>, "Andrew
- Morton" <akpm@linux-foundation.org>, Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>, "Alison Schofield"
-	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
-	<linux-btrfs@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Robert Moore <robert.moore@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown
-	<lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>
-Subject: Re: [PATCH v4 12/28] cxl/cdat: Gather DSMAS data for DCD regions
-Message-ID: <20241010135113.00001135@Huawei.com>
-In-Reply-To: <20241007-dcd-type2-upstream-v4-12-c261ee6eeded@intel.com>
-References: <20241007-dcd-type2-upstream-v4-0-c261ee6eeded@intel.com>
-	<20241007-dcd-type2-upstream-v4-12-c261ee6eeded@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1728570652; c=relaxed/simple;
+	bh=ki1ge6uJ2MUXjDdkEh1JCuz/uTFqNmn8J3n+kLuQJ6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l1lMFYEJ7g8ZZgh4uFj4o3EvKFIM4xoO8AMB2YZaaHjxNDBIUAVbMiOoBmuYkXz8GGC/J4HNnGExhQUEq7gyiyfOBYObE7mKbz6lPvlEi0c7n9awwaMdQgEWEEXGQ78Tm3br6TVkJgDHDIHfdkhCwfDRrDKPbQrTvI3HEuNhXNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ExBlpLfp; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728570651; x=1760106651;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ki1ge6uJ2MUXjDdkEh1JCuz/uTFqNmn8J3n+kLuQJ6k=;
+  b=ExBlpLfppGdc2dcSes4bDZSqN4Vx0jfyqZas5DxL+HRpdnhmekjzh9hU
+   5Dm71kSkzCBnbEwcZbwa7/Zd011R1qelCWj3eV3e4aXenb6TW9SaUj6T0
+   jYEP9j+JIBwRzv0+CsU1oJsx0jtoq9DHq0bEeu0fQbazIwEcVrWjtlVyt
+   NdvJiEQYfttNtTf2abNPaZMylm3ukPgbBkuXAR/SOzaMqyrVXuGU3EIEM
+   DTeV60qcrp4408e+xi99a185Da3NHxkbw5E3sE7bWR7ckt+M9zj0/w7EE
+   SJ+o7olQ5GtxgTFQeqov+wXIBV1b8EZV82tTEh996Sv5fHeYAPQsiBA9L
+   Q==;
+X-CSE-ConnectionGUID: VEEFJzpdTwGCQ9q/keNgBw==
+X-CSE-MsgGUID: VTgzpJiPSqChLznQLO0ixg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="45410740"
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="45410740"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 07:30:50 -0700
+X-CSE-ConnectionGUID: hs40WszXRa6Z5D2Z/cwumA==
+X-CSE-MsgGUID: k4ACoV6ZTZ2MyWo9ckE43A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="76607191"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 07:30:45 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1syuBe-00000001YxS-2nFN;
+	Thu, 10 Oct 2024 17:30:42 +0300
+Date: Thu, 10 Oct 2024 17:30:42 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] net: dsa: mv88e6xxx: leds: fix led refcount
+ in error path
+Message-ID: <ZwflEqdeQ43Wgn2K@smile.fi.intel.com>
+References: <20241008-mv88e6xxx_leds_fwnode_put-v1-0-cfd7758cd176@gmail.com>
+ <20241008-mv88e6xxx_leds_fwnode_put-v1-2-cfd7758cd176@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241008-mv88e6xxx_leds_fwnode_put-v1-2-cfd7758cd176@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, 07 Oct 2024 18:16:18 -0500
-Ira Weiny <ira.weiny@intel.com> wrote:
-
-> Additional DCD region (partition) information is contained in the DSMAS
-> CDAT tables, including performance, read only, and shareable attributes.
+On Tue, Oct 08, 2024 at 06:10:28PM +0200, Javier Carrasco wrote:
+> The 'led' fwnode_handle within fwnode_for_each_child_node() must be
+> released upon early exits by means of an explicit call to
+> fwnode_handle_put(), which in this case is missing.
 > 
-> Match DCD partitions with DSMAS tables and store the meta data.
+> Instead of adding the missing call, and considering that this driver was
+> recently introduced, use a scoped variant of the loop to automatically
+> decrement the child's refcount when it goes out of scope.
 > 
-> To: Robert Moore <robert.moore@intel.com>
-> To: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> To: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: acpica-devel@lists.linux.dev
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-One trivial comment from me.
-As Rafael has raised, the ACPICA dependency in here is
-going to be the blocker :(
+> Note that the _avaialable_ version of the loop has been used, as there
+> is no apparent reason to walk over unavailable nodes.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+...
 
-> +static void update_dcd_perf(struct cxl_dev_state *cxlds,
-> +			    struct dsmas_entry *dent)
-> +{
-> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
-> +	struct device *dev = cxlds->dev;
-> +
-> +	for (int i = 0; i < mds->nr_dc_region; i++) {
-> +		/* CXL defines a u32 handle while cdat defines u8, ignore upper bits */
+> -	struct fwnode_handle *led = NULL, *leds = NULL;
+> +	struct fwnode_handle *leds = NULL;
 
-CDAT
+Can it be const now?
 
-> +		u8 dc_handle = mds->dc_region[i].dsmad_handle & 0xff;
-> +
-> +		if (resource_size(&cxlds->dc_res[i])) {
-> +			struct range dc_range = {
-> +				.start = cxlds->dc_res[i].start,
-> +				.end = cxlds->dc_res[i].end,
-> +			};
-> +
-> +			if (range_contains(&dent->dpa_range, &dc_range)) {
-> +				if (dent->handle != dc_handle)
-> +					dev_warn(dev, "DC Region/DSMAS mis-matched handle/range; region %pra (%u); dsmas %pra (%u)\n"
-> +						      "   setting DC region attributes regardless\n",
-> +						&dent->dpa_range, dent->handle,
-> +						&dc_range, dc_handle);
-> +
-> +				mds->dc_region[i].shareable = dent->shareable;
-> +				mds->dc_region[i].read_only = dent->read_only;
-> +				update_perf_entry(dev, dent, &mds->dc_perf[i]);
-> +			}
-> +		}
-> +	}
-> +}
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
