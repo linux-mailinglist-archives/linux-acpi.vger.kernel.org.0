@@ -1,130 +1,175 @@
-Return-Path: <linux-acpi+bounces-8690-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8691-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4577B999205
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 21:16:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 295CE999479
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 23:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE2E1F261C8
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 19:16:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AA631F24530
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 21:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C6819DFA2;
-	Thu, 10 Oct 2024 19:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCE31E0098;
+	Thu, 10 Oct 2024 21:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QegfFLXu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IGD8/3X/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174B915B0F2;
-	Thu, 10 Oct 2024 19:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3B61C9EBB
+	for <linux-acpi@vger.kernel.org>; Thu, 10 Oct 2024 21:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728587759; cv=none; b=MvdbSgBqVkmEJj0z68cmxY6Do4OjFim9hs2IMu0dAUumI5jEUBd25fsj8mI0aVeE9XddN6Wrk3Gf6NT7XA08n74bTwLgHTT9+6dYjdV7E624/JEGJHIrXs02shUWOAIz71o/eOF+4W3Vr+6P+zkR98dUHTgpfzTAQlTFcXbs/RQ=
+	t=1728595907; cv=none; b=lxUJAMBjC/S4W1JswG2GM07zaRAkk/AlXHPNcKuuqEhNfLqS5iYYlJLti08t0t9tRp+IsUXhB//mV6oS/embdpvzU7kGLaYal8RDqw9jAPKqG0A+C+9UzLQv5SBZy/leB5pG4My8EQ57MsznNOrWVZsr/t1jC5YbaNrP+P6kI5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728587759; c=relaxed/simple;
-	bh=eb3suY3zlniCKZkcu2EtYXos0KCvlIUBpsS0SaS9+ts=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vBERBozcMaSqi51wD5mqGquZLvI6zG4iqdLQF2RokYdubUgy5Hp/GOcLH9U185gdRp/zWrO1z60saNmAq+JJfUIBdx+biQYtHEIvZMjWWWM49IExkB/D82oKaWVbXi0b7FDhuaye1VF8ns7Mo6ylLsvBTU5fcXxKvZhtDhkq2zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QegfFLXu; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fac9eaeafcso14652611fa.3;
-        Thu, 10 Oct 2024 12:15:57 -0700 (PDT)
+	s=arc-20240116; t=1728595907; c=relaxed/simple;
+	bh=Yzqo2EvRl/hAMy9921B1F/vlHog+5QKQvX4eo6xSj5A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZvurH0D6fOjJs51iQnf/Olv9vAWehBHgXk0L+QLrrx/7m/GqHM8BE4lKNqAX3+s2eblM9vaHC8NCH747nUBgSvn/QP7n71Qtksu5ES8+oGrHB+ECi9j6UjmV+LLEcsPUjVAD1WR3uezai461jQIcjttShadYt4dUfQNJ4pmyTIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IGD8/3X/; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e32e920cf6so27003567b3.2
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Oct 2024 14:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728587756; x=1729192556; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DGEt1GNskh8ogSkNTTUTRly98dXsZVKOQebAZzWVN5s=;
-        b=QegfFLXu4m6njSSGaJx/nrW2/wOlPn59i9R513JeVrJQ2YD87AUSA2mE/tR/IP7oT7
-         lToDkAWMVFbceW0ww+PvVKRine7SRGxBRc6dgsYXC3FQQkWKzIm635AvLW6ofJdhqHQS
-         G/MuTToKmoXStsWnqR3ItQ8MqzHIFZHEsLhZEzBinqsUoMmxIAe2GznWrjsX916kL4I9
-         Yywv3RVsOMx1rBscXmLPBcxYF/khTjy1lS2FVQHcsBWGITFRKK/PWX24HwhdZ4ZzyLpY
-         IKJ7mBY4HNSoQtb2ApcLuQPxKtc5clvcpEjywQB7URmCLel4RGoaAlHYiO9LCRYL2Zmn
-         JmKw==
+        d=google.com; s=20230601; t=1728595904; x=1729200704; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJHAgR8eOYnfYjnDH+Ke7REFFOpEvhduZdZs2oNUNrQ=;
+        b=IGD8/3X/ciWjjAl1QsnWRuxJc0PxewqEr4rcm/D3kShmy2R8Fbj6jFXYvgsWpzt5KC
+         xb1XV/BhDo/Ucj3PCHY3ApcBzbbiK1kKmsaW6gvq+D96EbdcO+sILsnNodrIqOEx2il7
+         hVbjD2QaO3TZ2GU/up4MviwEXlyXokRb7NqmVvwRghzGo0tTH8uROofnqhMjL4+ms584
+         0KpumhkQuIt8coBDgpG4oAfgLMO8kqJOXPNhrqIlVz86a7BH2WquD0wYhcsN2+wX0ywy
+         otAnzNs9PfkJbdi5zNUk3B9seNuKuxYQc13XOM8E9Juvgg8SfoiHe5hCu1s4oxjAI4tB
+         kfSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728587756; x=1729192556;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DGEt1GNskh8ogSkNTTUTRly98dXsZVKOQebAZzWVN5s=;
-        b=BZDgqsoNVilxnyx1My+cRodf1EOxhQnplWbOOW1nel7E9rXL/kh+0i73Bw/oL6/Mgv
-         TRgEoYUyPJQKgmobz2ltSd5nAPbgszjapOoiX25mpHXvkV/EVUWUJ2eiAuftD4DIiBo+
-         eQtxyKNLPSib+VTB1YTy+DFbUPq8BfFhzfo7yTH0964YwBDSrzVETPXbqxAX7z6XsZqy
-         28pSiPMp0NVl7B539jR0ZG0jNCLVyI+Z4BGTe0QbcjxWwMCKMJ1kqwmbwhFSjxjIl9vI
-         4hUUXXw3JcGzYSJv51Ix+FL3aln+fM795cm5x/4vyk+dPhVxFRaX1cU+JgUvOBLPYzyW
-         x3+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUQNpjU5iuMN3X9hH90OVCDx7rAXq5xHQZlTcJ8wrnPz+osNopBVXX3fDl5Zl1UE0aMVjCeIflw@vger.kernel.org, AJvYcCW9cjegVyx5J+cfqHudTtUiYTULtF1XGZPxEnow3Gax08jQD7taQ8Zw3szofZQ2Rv1ddhpp0KZRqKkO@vger.kernel.org, AJvYcCXP1Yuawb2rR+4r8F09f+Mr9LBSWG6AWJ1rKfYERFXi9fRbnFgeswcLEaOs7DN51rsRI4gTbyo/zjTSenkl@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWA6bk8Q+WDGESpmGO7dzC4O3xHdPZmfIWvGmo2lcOMM0flaUH
-	fNATc0fTAAloxPgwkbxpJLd4NLi3uQtSQRsjf4Jz3Ws+KO3FPAM8o6DWHtVd
-X-Google-Smtp-Source: AGHT+IHVATcBWedVSai3TXL0IMdZ5y6RpCUK6PnRtWh37/7/oOPLAIQQbEomM6IC2zAqXggr9ixQEg==
-X-Received: by 2002:a05:651c:1a0b:b0:2fa:f5b0:a8a0 with SMTP id 38308e7fff4ca-2fb187c7900mr46126081fa.41.1728587755832;
-        Thu, 10 Oct 2024 12:15:55 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:5f5a:6b7f:166e:ac6d? (2a02-8389-41cf-e200-5f5a-6b7f-166e-ac6d.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:5f5a:6b7f:166e:ac6d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d70b4291sm56011545e9.35.2024.10.10.12.15.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Oct 2024 12:15:54 -0700 (PDT)
-Message-ID: <01ad0d96-cc40-437c-9033-56de465aa5f5@gmail.com>
-Date: Thu, 10 Oct 2024 21:15:52 +0200
+        d=1e100.net; s=20230601; t=1728595904; x=1729200704;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJHAgR8eOYnfYjnDH+Ke7REFFOpEvhduZdZs2oNUNrQ=;
+        b=jaT603PymnUiZJCrXXG6EN9hQg/jC8mVVnj2jWn2SaArm5LTBUdj6QpuLa6eZRFwrS
+         DMO1F45Q14KRZMZcVTTx/NqJqJIuYbK52/uBTJMd9CBUQIudM4I2VpS2vN5n9L3TZbiL
+         Sq22u93lw9SzQOSDD6pJlaVUl98riso93TFbcDAShVulBJ8O8BsSUocHJrCsnlaIvRsp
+         SsVs4o6ETifUh1SV8iIA6bGGpoL5z9IQztYHtnCgcwY6B05fb014CV4mZ5KEZqF/Xe5N
+         wExugLP72lpMgh7BbwzBpZC6cHL/UXXfxrvYaodPUfME9i1wadgYLlIY/KPXH6zHpLeJ
+         ZcPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWAK33Ii39qVIzMYzSF9WjAUALUdiUxVptPVMWhCZmr25NmWvHNMNdyLng1Rb8xnwbB9X9fOzTBBT0@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhnyLBmdl8c2yZpMpSWRW299B7R1n96sFbg5oCKF4wSyZvEhqr
+	rWouQfZhkUngejQKEIKu1tr0AgCX7RbszjYDfmpg7szoeZuSdSMkLLWNeaGoQI/WajSJPj6QPKj
+	N3yw4m6Xg3A==
+X-Google-Smtp-Source: AGHT+IFlkqx3xD0Q33jhVUIr5iUteh4Yw48/PxVPDblQ90mLsIhhb+hEXTRk5UZ9znbyyum31yvdj2omH/gr5Q==
+X-Received: from loggerhead.c.googlers.com ([fda3:e722:ac3:cc00:f3:525d:ac13:60e1])
+ (user=jmattson job=sendgmr) by 2002:a05:690c:48c1:b0:6e3:14c3:379f with SMTP
+ id 00721157ae682-6e3471eaeb7mr201857b3.0.1728595904524; Thu, 10 Oct 2024
+ 14:31:44 -0700 (PDT)
+Date: Thu, 10 Oct 2024 14:31:36 -0700
+In-Reply-To: <20230702162802.344176-1-rui.zhang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] net: dsa: mv88e6xxx: leds: fix leds refcount
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Scally
- <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Andrew Lunn <andrew@lunn.ch>,
- Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
- <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Linus Walleij <linus.walleij@linaro.org>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20241008-mv88e6xxx_leds_fwnode_put-v1-0-cfd7758cd176@gmail.com>
- <20241008-mv88e6xxx_leds_fwnode_put-v1-3-cfd7758cd176@gmail.com>
- <ZwflrDCm7qWVH0N3@smile.fi.intel.com>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <ZwflrDCm7qWVH0N3@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20230702162802.344176-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
+Message-ID: <20241010213136.668672-1-jmattson@google.com>
+Subject: Re: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
+From: Jim Mattson <jmattson@google.com>
+To: rui.zhang@intel.com
+Cc: bp@alien8.de, feng.tang@intel.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, peterz@infradead.org, 
+	rafael.j.wysocki@intel.com, tglx@linutronix.de, x86@kernel.org, 
+	jay.chen@amd.com, jon.grimm@amd.com, vladteodor@google.com, 
+	ajorgens@google.com, myrade@google.com, Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/10/2024 16:33, Andy Shevchenko wrote:
-> On Tue, Oct 08, 2024 at 06:10:29PM +0200, Javier Carrasco wrote:
->> The 'leds' fwnode_handle is initialized by calling
->> fwnode_get_named_child_node(), which requires an explicit call to
->> fwnode_handle_put() when the node is not required anymore.
->>
->> Instead of adding the missing call, and considering that this driver was
->> recently introduced, use the automatic clenaup mechanism to release the
->> node when it goes out of scope.
+> Currently, kernel enumerates the possible CPUs by parsing both ACPI MADT
+> Local APIC entries and x2APIC entries. So CPUs with "valid" APIC IDs,
+> even if they have duplicated APIC IDs in Local APIC and x2APIC, are
+> always enumerated.
 > 
+> Below is what ACPI MADT Local APIC and x2APIC describes on an
+> Ivebridge-EP system,
+> 
+> [02Ch 0044   1]                Subtable Type : 00 [Processor Local APIC]
+> [02Fh 0047   1]                Local Apic ID : 00
 > ...
+> [164h 0356   1]                Subtable Type : 00 [Processor Local APIC]
+> [167h 0359   1]                Local Apic ID : 39
+> [16Ch 0364   1]                Subtable Type : 00 [Processor Local APIC]
+> [16Fh 0367   1]                Local Apic ID : FF
+> ...
+> [3ECh 1004   1]                Subtable Type : 09 [Processor Local x2APIC]
+> [3F0h 1008   4]                Processor x2Apic ID : 00000000
+> ...
+> [B5Ch 2908   1]                Subtable Type : 09 [Processor Local x2APIC]
+> [B60h 2912   4]                Processor x2Apic ID : 00000077
 > 
->> -	leds = fwnode_get_named_child_node(p->fwnode, "leds");
->> +	struct fwnode_handle *leds __free(fwnode_handle) =
->> +		fwnode_get_named_child_node(p->fwnode, "leds");
+> As a result, kernel shows "smpboot: Allowing 168 CPUs, 120 hotplug CPUs".
+> And this wastes significant amount of memory for the per-cpu data.
+> Plus this also breaks https://lore.kernel.org/all/87edm36qqb.ffs@tglx/,
+> because __max_logical_packages is over-estimated by the APIC IDs in
+> the x2APIC entries.
 > 
-> Can it be const?
+> According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure,
+> "[Compatibility note] On some legacy OSes, Logical processors with APIC
+> ID values less than 255 (whether in XAPIC or X2APIC mode) must use the
+> Processor Local APIC structure to convey their APIC information to OSPM,
+> and those processors must be declared in the DSDT using the Processor()
+> keyword. Logical processors with APIC ID values 255 and greater must use
+> the Processor Local x2APIC structure and be declared using the Device()
+> keyword.".
 > 
+> Enumerate CPUs from x2APIC enties with APIC ID values 255 or greater,
+> when valid CPU from Local APIC is already detected.
+> 
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> ---
+> I didn't find any clear statement in the ACPI spec about if a mixture of
+> Local APIC and x2APIC entries is allowed or not. So it would be great if
+> this can be clarified.
 
-Hi Andy,
+Has this been clarified?
 
-in its current form, it could be const as its only assignment occurs in
-its declaration. But if the final decision is moving it to the top and
-giving it an initial NULL value, then that will not be possible for
-obvious reasons.
+The reason that I ask is that Google Cloud has a 360 vCPU Zen4 VM
+occupying two virtual sockets, and the corresponding MADT table has a
+mixture of Local APIC and X2APIC entries.
 
-I am fine with any of those options for v2.
+All of the LPUs in virtual socket 0 have extended APIC IDs below 255,
+and they have Local APIC entries. All of the LPUs in virtual socket 1
+have extended APIC IDs above 255, and they have X2APIC entries.
 
-Best regards,
-Javier Carrasco
+Prior to this change, Linux assigned CPU numbers to all even-numbered
+LPUs on virtual socket 0, followed by all even-numbered LPUs on
+virtual socket 1, followed by all odd-numbered LPUs on virtual socket
+0, followed by all odd-numbered LPUs on virtual socket 1.
+
+node  #0, CPUs:          #1   #2  ...   #87  #88  #89
+node  #1, CPUs:    #90  #91  #92  ...  #177 #178 #179
+node  #0, CPUs:   #180 #181 #182  ...  #267 #268 #269
+node  #1, CPUs:   #270 #271 #272  ...  #357 #358 #359
+
+After this change, however, Linux assigns CPU numbers to all LPUs on
+virtual socket 0 before assigning any CPU numbers to LPUs on virtual
+socket 1.
+
+node  #0, CPUs:          #1   #2  ...   #87  #88  #89
+node  #1, CPUs:   #180 #181 #182  ...  #267 #268 #269
+node  #0, CPUs:    #90  #91  #92  ...  #177 #178 #179
+node  #1, CPUs:   #270 #271 #272  ...  #357 #358 #359
+
+I suspect that this is because all Local APIC MADT entries are now
+processed before all X2APIC MADT entries, whereas they may have been
+interleaved before.
+
+TBH, I'm not sure that there is actually anything wrong with the new
+numbering scheme. The topology is reported correctly (e.g. in
+/sys/devices/system/cpu/cpu0/topology/thread_siblings_list). Yet, the
+new enumeration does seem to contradict user expectations.
+
+Thanks,
+
+--jim
 
