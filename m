@@ -1,85 +1,100 @@
-Return-Path: <linux-acpi+bounces-8675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAD69976DA
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 22:49:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12BD997A47
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 03:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E128E1F242E2
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Oct 2024 20:49:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C39D1F238EA
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Oct 2024 01:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62EE1E2821;
-	Wed,  9 Oct 2024 20:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bigon.be header.i=@bigon.be header.b="KQoClQ7w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596F327446;
+	Thu, 10 Oct 2024 01:49:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1D91E230A
-	for <linux-acpi@vger.kernel.org>; Wed,  9 Oct 2024 20:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFF3179A3;
+	Thu, 10 Oct 2024 01:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728506798; cv=none; b=PQfExEcgveePgBP1ODZx+fb815xxiLh/BAp3zsN3i0AGZVUcUAZLNMCSq8bPaHNWVRdhqgvDodRCQMrUWZRoKDeByPJFjNSE54RbtAKGbLEEL3pco62gv/TOBREGJ+QkBARlBOjTsRooPfMSVbbRHSUu5+pHFt842kvs9ZHlvK0=
+	t=1728524942; cv=none; b=RJr2fn6jNYJEvyoTcDrQOX8h4TmfwGVBRBkXMb72qsi4WuAMQPQjygYa3iCJGWVGtddmPbkYxbvzNJTQh9yOxhprqsjg2GGM0f60pqlugigrYi+v4uNuVpQKJlVLB/4e2GANxTGwpsJrxWp4mjDR8Sd2hiy624teiAmevxBC+a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728506798; c=relaxed/simple;
-	bh=9iBWv71FnXAn0PrI9UfxM7QejcGpNYKajR3Al8f1nyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TEs5/4mnTNhitBL2DBD9XCktRU8Z3/AmsMhQg/WtRFtWSX6eafbF4Fi9Z1BxwTNi7XON6ZdgEmZY11Dz3p1x8y4rCLaWc3xkkCI5uHTvFrtqNlulb85k7GqGbswy2sLZ976wSyPSyzON9ly7lAvXx21oYbk/D/PMXNrhTP7gjPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bigon.be; spf=pass smtp.mailfrom=bigon.be; dkim=pass (2048-bit key) header.d=bigon.be header.i=@bigon.be header.b=KQoClQ7w; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bigon.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bigon.be
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4XP4gD69Vnz9tq7;
-	Wed,  9 Oct 2024 22:46:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bigon.be; s=MBO0001;
-	t=1728506792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oy89mQDq9bPf0dPzFOUxB3KKTFtnHIC4dVrtfu1xCVM=;
-	b=KQoClQ7wA6oEG7qzb87udaoPLgh0AnLLWBQp9BBsUBRR9mrsLLpMekhyJUoVHbBGzJk2Wz
-	T54FEHx+HqTaJhJONgiDh/JgKiH5MFBSixxZKka/OLaV6hggc9NJE9B0BTsTTyGQ6QQJfk
-	lmTDXxIzTMdrm7/Jm+NZiVi3aP/Swy+esB3BUkdqo4PsI5WwIcUu1HuK1Kosa6k556xHvD
-	XKkk/mZqNpMQ+14WIiwa7+taJAKuW6Oc87HvlGAKQ9OKl5CdKWOngzdFQ3UJaCdyINZlbN
-	9vH8VNTOUwLH8c8x7REA+72GXOQyZEUzVmLq1HMhNkYdcT/7qu2DH820MJW95Q==
-Message-ID: <434041dd-34de-49c4-8224-3bed1f6aca8f@bigon.be>
-Date: Wed, 9 Oct 2024 22:46:31 +0200
+	s=arc-20240116; t=1728524942; c=relaxed/simple;
+	bh=hueCzQH/AfAa2c9bLUILdhl3uuN8EfCbcDmuU3f6jk0=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Ei3YrcZmfttvpux/ted4dvuTSY5mIzgWUZ8HjKwJrf3CyUe7RUEYHQIppZY6B/ZnLtkkhcK5YMwGwtDTAGR4VRnQw+sHMdSntirKH3EDN551AeDS6299rJLo++uwPH+R0l5NnIwFBRB+TibiP8n/ukWLtoiE41/pxPascZVNMns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XPCLt2fhFz1SCQ3;
+	Thu, 10 Oct 2024 09:47:50 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0795E18001B;
+	Thu, 10 Oct 2024 09:48:57 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 10 Oct 2024 09:48:55 +0800
+Subject: Re: [PATCH v3 2/9] ACPICA: IORT: Update for revision E.f
+To: Jason Gunthorpe <jgg@nvidia.com>, <acpica-devel@lists.linux.dev>,
+	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
+	<kevin.tian@intel.com>, <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, Lorenzo
+ Pieralisi <lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>
+CC: Alex Williamson <alex.williamson@redhat.com>, Eric Auger
+	<eric.auger@redhat.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin
+ Chen <nicolinc@nvidia.com>, <patches@lists.linux.dev>, "Rafael J. Wysocki"
+	<rafael.j.wysocki@intel.com>, Shameerali Kolothum Thodi
+	<shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
+References: <2-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <c19cd18c-fe36-52d9-754e-135af2018f0b@huawei.com>
+Date: Thu, 10 Oct 2024 09:48:55 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Dell Latitude 5530 battery drain in s2idle
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-References: <c9e29dcb-acfb-40e1-a283-4cef9b60c5b5@bigon.be>
- <CAJZ5v0jRHEj+Y1F5tmY7MYe4jY8dZ3TpDDqs+L6BS4QxfxQALQ@mail.gmail.com>
-Content-Language: en-US, fr
-From: Laurent Bigonville <bigon@bigon.be>
-In-Reply-To: <CAJZ5v0jRHEj+Y1F5tmY7MYe4jY8dZ3TpDDqs+L6BS4QxfxQALQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4XP4gD69Vnz9tq7
+In-Reply-To: <2-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Le 09-10-24 à 21:10, Rafael J. Wysocki a écrit :
+On 2024/10/10 0:23, Jason Gunthorpe wrote:
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> 
+> ACPICA commit c4f5c083d24df9ddd71d5782c0988408cf0fc1ab
+> 
+> The IORT spec, Issue E.f (April 2024), adds a new CANWBS bit to the Memory
+> Access Flag field in the Memory Access Properties table, mainly for a PCI
+> Root Complex.
+> 
+> This CANWBS defines the coherency of memory accesses to be not marked IOWB
+> cacheable/shareable. Its value further implies the coherency impact from a
+> pair of mismatched memory attributes (e.g. in a nested translation case):
+>    0x0: Use of mismatched memory attributes for accesses made by this
+>         device may lead to a loss of coherency.
+>    0x1: Coherency of accesses made by this device to locations in
+>         Conventional memory are ensured as follows, even if the memory
+>         attributes for the accesses presented by the device or provided by
+>         the SMMU are different from Inner and Outer Write-back cacheable,
+>         Shareable.
+> 
 
-Hello,
-> File a bug at bugzilla.kernel.org and let me know its number.  We'll
-> follow up in the BZ.
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
 
-I actually realize that I already open a bug about this a few month ago: 
-https://bugzilla.kernel.org/show_bug.cgi?id=218500
-
-Kind regards,
-
-Laurent Bigonville
-
+Thanks
+Hanjun
 
