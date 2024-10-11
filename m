@@ -1,172 +1,125 @@
-Return-Path: <linux-acpi+bounces-8707-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8708-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76503999F1C
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 10:34:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D482199A078
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 11:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3755B225DB
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 08:34:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56378B239A6
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 09:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7288020B200;
-	Fri, 11 Oct 2024 08:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A1F210C23;
+	Fri, 11 Oct 2024 09:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vj5HQyPX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JfGU+NTN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6875207A0C;
-	Fri, 11 Oct 2024 08:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DBA210C14;
+	Fri, 11 Oct 2024 09:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728635678; cv=none; b=BeFljWO3PZtSRg1NdvLSU1Qkcu58ihc2DIWrj9F2HgFWDGF4fivfKmWojXnFjNSu3rS7+3GpR2IKywGj5KS5umwGORP6iOKsB87midlTCle5SfW16IRRCp//aoZbDFhKa9vC3RLB1/g7wCBKNC3PkX8AhQQCQ3Or2NvoB0zUhU0=
+	t=1728640431; cv=none; b=sKZAjjmJtlobdLFEMaZp2X7N5u2K6RIQ927SJXDTsiA53+5krI5Mqy4IvPJTCCmI7YQ9aRPbLbnJspOKG/0DA461bHGYn9cC2s/Bm8TpZoSFgv2nNg8yJTKbIerOeBBjYI8w3dLwnETpxZmOpTcNz+ZW4BclP9kXPtI52s1o29c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728635678; c=relaxed/simple;
-	bh=LmjhTY6GCu3+5OjscFIYDFmoiR0z3ORGCyKHXVkHpPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p4acPXxuDYqlQYn7X5UwgEBW6IjvoQ3InihTuy/nc8tTLepWfGCwoG4rMUIbU0pMUr+neIatN7P9VYQqONuh0WWR/mEXOqM4pG8gEhrqJj46sQWK6L6oPa8WIbI1an7Mk9VYVuL/Za92Xbi7vWScEx4+w4nFrce8I5JldzpdB5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vj5HQyPX; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a99422c796eso292725166b.3;
-        Fri, 11 Oct 2024 01:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728635675; x=1729240475; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EABHLkxzcxramcO6WPe0bwKdtq63PUVd8Arf5wK5V0E=;
-        b=Vj5HQyPXfVnGYu9JjGXX1vXIX8/I6Woxy7Ue5T/FE4eZTdohj7ciKcrNBFbShCCpLx
-         WR0ROSgvGTIIxil5HtWHJ3UEUqgQCmLLfpGxneMoJXVNACZd5kOO+Nh8Xvry/MN428eF
-         hSCWBTl3GKYMESInfuuzTiDjexOm9CIDVSXcsVkvjwdnY1JAqhVyv8n2OnVlU/uvj6ff
-         0dBkhtMS7Z9Eh5FTB/gODEDN6ojcaEfrQKGovYb3414tSE6o6b7H3cJ9BAiLnRu6Btxj
-         O8XUFMpY6WLqsHKjU2uhJ92euvYIwpk/LQV6ZNN9tWFUjVb2kPTZ9/wZVS2qJGJOQgfq
-         WbgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728635675; x=1729240475;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EABHLkxzcxramcO6WPe0bwKdtq63PUVd8Arf5wK5V0E=;
-        b=ZZIjebM933uNcic8fr6B4rpb0j7/W17ulbnKp+JQMQj6vfUKjmqykV1miLoIAys+iC
-         9PJVLuouV/6oAsC/SfWwGTPApjh9nCdSxdtOr6KqlZt3kM9n9oLMioeDV0sBXXDpsM/e
-         ZAkfHADfyDyY1f6xQg9CoQiN0OD0w15R0ZtgYmhLEyCKk+EwkAdWwD2/3tz573ImYcMg
-         Srq70zOM/zzP/G6s9XSlgMVgbkr0u1P6KOkOrY02mXNEgqnpb6IGWPMEA2uq5WmMrDpf
-         z63N+kgu0OfaD36rrqVI1TnpNmKFs+wOJ34t6q6PlK7XwKCNy3fzpskjWpgQnZPjP3aQ
-         DMeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQckc74jgGhYRqPHqmbLB/3jbQXfJ8XnzINMkb+650NtfrWBwwnlpZSjwX/qYn1SuybgvmvQ8l@vger.kernel.org, AJvYcCVGuYPaYU23ECX569mQKXo0GrHteNMO0pt3qQOrnALmpGzEYGCqzWGKxrOFR2WvzoaGMPjfg6OSVkAA@vger.kernel.org, AJvYcCXWR8KY4QiC6HuQxE0SRWuEdiH6vP5e5jpebWlqfWghoGenzCgl8CuzL2EnGH7Yly3bsKLIPqER6S0R8u5t@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH9lv7ihDq+PqGv1Ra9R8WscpBUqCrEC2TBLgfNuJL2aJhgrDv
-	OleeDNMx25Wm5Ytae9WjU6HHTaJPnvB+pVOTM7/2yLm5WvzaS9O80mDLZXoP
-X-Google-Smtp-Source: AGHT+IEoHStOPruhFTLxbvfOGdkbObqF0fHHUkLsQl/p5cE5+vMJvg0KwdzS8imp9pLoy542WyuRJw==
-X-Received: by 2002:a17:907:9724:b0:a99:528f:2200 with SMTP id a640c23a62f3a-a99b93c8da1mr125834866b.28.1728635674572;
-        Fri, 11 Oct 2024 01:34:34 -0700 (PDT)
-Received: from [10.10.12.27] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7ec54cesm186137866b.32.2024.10.11.01.34.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 01:34:33 -0700 (PDT)
-Message-ID: <07ec0837-d7a3-413e-a281-e06feafe7f34@gmail.com>
-Date: Fri, 11 Oct 2024 10:34:32 +0200
+	s=arc-20240116; t=1728640431; c=relaxed/simple;
+	bh=eIZqDQo5dLLSytToQV22Rpep2s3UOmTEEKU222/W4XI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=blwVoOPKK15/f2lKsPVSG2f7c4DMEKI32JET2pvdh9ARTrgMVu5n0mG0h9oUSl47b3K1FmiYQ3AiqN0J6aOfltcOYZrFPlyiVkNR4OuT18P8HORDQF3cUf34015X89EPOBMLKl3+GtAgGDgmuH5ti2kAnJtjSALUSyTj8RhZoXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JfGU+NTN; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728640430; x=1760176430;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eIZqDQo5dLLSytToQV22Rpep2s3UOmTEEKU222/W4XI=;
+  b=JfGU+NTNO+aea5bsmyljKOWMZ+DGVVKYVVIP32uz7jJxafarrSAUyJpk
+   V+pMkQoWzxu1bi+hK1StvL17l2TrPUdEI9GJn7TGhweajJAj2W0wGAHrd
+   8Grr5torT2X+3q6UGZGdZwlN4HhZfiFfIO5WZsZzR0VokHTKRLrZAG7lz
+   r7whdxjv+u/Beg4FTyNuZa7iJG+37y4Gwz9zJT6TXtPLp8TO0Qgi+SJbY
+   RXsS4vLgXyH5AQh7erciNrd4zHMFPFvnWsBayDwb3u7hm0VpVAVGVHqxk
+   P3PYoS6Bgy2/xAEfskzE8G+idIqAMpBXcYpZNygLLsd/wxTx6//RxUjr6
+   w==;
+X-CSE-ConnectionGUID: A4mOLC9eQtC6WRkOzTNuEw==
+X-CSE-MsgGUID: TWOICVdCRbO6Vnfe7YKMcA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="27844078"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
+   d="scan'208";a="27844078"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 02:53:49 -0700
+X-CSE-ConnectionGUID: Ia+MkacoRnmGu2jnfXQXwQ==
+X-CSE-MsgGUID: 5TGN61KMRLe6uaY2CIEMqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
+   d="scan'208";a="80871058"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 02:53:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1szCLA-00000001qiD-14yV;
+	Fri, 11 Oct 2024 12:53:44 +0300
+Date: Fri, 11 Oct 2024 12:53:43 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Len Brown <lenb@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] acpi: allow building without CONFIG_HAS_IOPORT
+Message-ID: <Zwj1p3uMEA24a0sU@smile.fi.intel.com>
+References: <20241011061948.3211423-1-arnd@kernel.org>
+ <20241011061948.3211423-2-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] device property: Introduce
- fwnode_for_each_available_child_node_scoped()
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Linus Walleij <linus.walleij@linaro.org>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20241008-mv88e6xxx_leds_fwnode_put-v1-0-cfd7758cd176@gmail.com>
- <20241008-mv88e6xxx_leds_fwnode_put-v1-1-cfd7758cd176@gmail.com>
- <Zwi6Dn4yJxst4xv2@kekkonen.localdomain>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <Zwi6Dn4yJxst4xv2@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241011061948.3211423-2-arnd@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 11/10/2024 07:39, Sakari Ailus wrote:
-> Hi Javier,
+On Fri, Oct 11, 2024 at 06:18:18AM +0000, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> On Tue, Oct 08, 2024 at 06:10:27PM +0200, Javier Carrasco wrote:
->> Introduce the scoped variant of the
->> fwnode_for_each_available_child_node() to automatically decrement the
->> child's refcount when it goes out of scope, removing the need for
->> explicit calls to fwnode_handle_put().
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->> ---
->>  include/linux/property.h | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/include/linux/property.h b/include/linux/property.h
->> index 61fc20e5f81f..b37508ecf606 100644
->> --- a/include/linux/property.h
->> +++ b/include/linux/property.h
->> @@ -168,6 +168,11 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
->>  	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
->>  	     child = fwnode_get_next_available_child_node(fwnode, child))
->>  
->> +#define fwnode_for_each_available_child_node_scoped(fwnode, child)	       \
->> +	for (struct fwnode_handle *child __free(fwnode_handle) =	       \
->> +		fwnode_get_next_available_child_node(fwnode, NULL); child;     \
->> +	     child = fwnode_get_next_available_child_node(fwnode, child))
->> +
+> CONFIG_HAS_IOPORT will soon become optional and cause a build time
+> failure when it is disabled but a driver calls inb()/outb(). At the
+> moment, all architectures that can support ACPI have port I/O, but this
+> is not necessarily the case in the future on non-x86 architectures.
+> The result is a set of errors like:
 > 
-> On OF, the implementation of the .get_next_child_node() fwnode op is:
+> drivers/acpi/osl.c: In function 'acpi_os_read_port':
+> include/asm-generic/io.h:542:14: error: call to '_inb' declared with attribute error: inb()) requires CONFIG_HAS_IOPORT
 > 
-> static struct fwnode_handle *
-> of_fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
->                               struct fwnode_handle *child)
-> {
->         return of_fwnode_handle(of_get_next_available_child(to_of_node(fwnode),
->                                                             to_of_node(child)));
-> }
+> Nothing should actually call these functions in this configuration,
+> and if it does, the result would be undefined behavior today, possibly
+> a NULL pointer dereference.
 > 
-> On ACPI we currently have .device_is_available() returning false but that
-> probably should be returning true instead (it's been virtually unused
-> previously).
-> 
-> That makes fwnode_get_next_available_child_node() and
-> fwnode_get_next_child_node() equivalent on both ACPI and OF. Presumably
-> creating unavailable nodes would be useless on swnode, too.
-> 
-> So my question is: what do we gain by adding all these fwnode_*available()
-> helpers?
-> 
->>  struct fwnode_handle *device_get_next_child_node(const struct device *dev,
->>  						 struct fwnode_handle *child);
-> 
+> Change the low-level functions to return a proper error code when
+> HAS_IOPORT is disabled.
 
-Hi Sakari, thanks for your feedback.
+...
 
-I thought that the difference is not in OF (which either way ends up
-calling __of_device_is_available()), but in ACPI.
+> +	if (!IS_ENABLED(CONFIG_HAS_IOPORT)) {
+> +		*value = BIT_MASK(width);
+> +		return AE_NOT_IMPLEMENTED;
 
-For fwnode_for_each_child_node(), the ACPI callback is
-acpi_get_next_subnode(), and I don't see that the device_is_available()
-callback is used in that case.
+Perhaps it has already been discussed, but why do we need to file value with
+semi-garbage when we know it's invalid anyway?
 
-For fwnode_for_each_available_child_node(),
-fwnode_get_next_available_child_node() is used, which checks
-fwnode_device_is_available(), which then calls device_is_available().
+> +	}
 
-What's the catch?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Thanks again and best regards,
-Javier Carrasco
+
 
