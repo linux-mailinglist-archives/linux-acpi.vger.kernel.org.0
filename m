@@ -1,159 +1,79 @@
-Return-Path: <linux-acpi+bounces-8722-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8723-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1226899A94F
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 18:59:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B403C99ACCA
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 21:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFE1D282FF3
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 16:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 618F41F25814
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 19:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8BE19F11B;
-	Fri, 11 Oct 2024 16:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770371D0DF2;
+	Fri, 11 Oct 2024 19:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q7eTRUzD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5r+wo2H"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22577F9;
-	Fri, 11 Oct 2024 16:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5E01D07AC;
+	Fri, 11 Oct 2024 19:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728665971; cv=none; b=Xu1d6BwpUBdyc+ZZr8HjZJUod8jKs/RAMj8CS57e80Y2yAmVr2bNJ5kfJjI4SQorSq4tmiLidYFlmFw3V2BYd5QMhcBlRTs3jmsottg59HwNY9+2D6gJgCaqRQX12Mbham+qW5MILsS9j0nD1Lyf4VwJnRnXAZ5J94/GY6Jf1IE=
+	t=1728675254; cv=none; b=rlQgkJxXSOhX5g5K5HYchn/DEF33awHT70rO7n9AIvdIhhIh7OQ32syMwWV4LDC19fPm4EqetG4iOXBq+QwbRApIuqOoYP9q6A3kUqjnH1E/c+h/Jm1J0JqdTi4RBjhgrwD9mRiS3qg2JQ8HB5ZnX9yOq4GKf3fCzp6zxcDkoug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728665971; c=relaxed/simple;
-	bh=0bEaUbP5pxv2hiicfcPV9gdJhdDYsTu7CZu1IuYMxF0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=GNCuMkfNoDAqgmBT4uDwoNVSqlFfgWNkSYd9g1CEKV/LRMYNRSD8Q+xrw/7W/URC2ngIDw4a+3hte/ayDU7+DCCBWKDaRAwqaur32RqxqqEY9m5IubXiNMgVYm+da2Qs7MRpF3wURoJn7G09Cz2Ik6DctE/iSuaNp/aPC43Yk+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q7eTRUzD; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728665970; x=1760201970;
-  h=date:from:to:cc:subject:message-id;
-  bh=0bEaUbP5pxv2hiicfcPV9gdJhdDYsTu7CZu1IuYMxF0=;
-  b=Q7eTRUzDomcyxodv949J0/SUsHEC2MubP2+Q+LtuUiivPvl0cKJT3D/2
-   DDB1akV2rT80QSpjUFmz3m5G0aaVlU9NTi92XjsOOxXIpwk5205FcvpuR
-   dy3ajBZb8GbRljUGDRBP6WyDQ0HnB9mN+B0DDrYHrGY1l+BnBM/zD0xvH
-   LWWV2AvW2f78x67hU/zrx8F7dlJKpoGfgU903Rt2O36RU6r/Kko5A9KIf
-   nfYcYtb9TO5FgWaM+lSfZ+dVZfebCLFm5mnOYTBRiGcazkHU8ilDnhE6k
-   ieYfQFKh+5OE7bMZlcAB/m9AVzotBgRrEBlRsKdmmq2jVFzTrjx416oOs
-   w==;
-X-CSE-ConnectionGUID: a/PnXuBIQgOeyPP8aOtErQ==
-X-CSE-MsgGUID: fD0MtB51RQ+NY9QbwOn19Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="27963352"
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="27963352"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 09:59:30 -0700
-X-CSE-ConnectionGUID: oZjb1cOiTlitnJN5DWtw6w==
-X-CSE-MsgGUID: Sh+FbtyiRNCUx6JkxuXXFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="81963334"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 11 Oct 2024 09:59:28 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1szIz7-000CWX-2A;
-	Fri, 11 Oct 2024 16:59:25 +0000
-Date: Sat, 12 Oct 2024 00:58:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 9b8e59244dc48920c1a58d8185cf83550ddb68b8
-Message-ID: <202410120013.SuyZF9d4-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1728675254; c=relaxed/simple;
+	bh=nTshgEWGQlV/ozPsexbIbTTaFdAHZWMGLP23m169EyU=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Fy+IkLqvEo7nrxP/ymF0bAgF+jbymt7pjf2KKvZnHZJ5/IrFOsiIPXk6ZoK9qVN2QiYX0HlY6JTnJOs++x+XPStSfUDMb8uf0zS6f6wAaqGZR4dNDKfqmDPvLHpdXhzlyVVFVWQ+hKs/HrHzHyi8Nh3P2Gh5B0R8NDkTwuQzZbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5r+wo2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91EAC4CEC3;
+	Fri, 11 Oct 2024 19:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728675253;
+	bh=nTshgEWGQlV/ozPsexbIbTTaFdAHZWMGLP23m169EyU=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=e5r+wo2HVHC9ZQccju6QYaiHHWEQgRiWlkk8gxDw80AvIaz9bGMJ6l/ehIkU1jE30
+	 BujajLpKmS9iaRSaiYQ//bY2YDDjuCAd5+bFg2GUEZOwgsif0EhqtxZCG6wCLDS/Bh
+	 jaiMUkng7nyKMrtCZkvHMUNlzOsrZay0p+i53E7mpRinJNlYH+E3jsgMulgHHjVFhz
+	 aQta/4Kg8IcZYkazEprO75Mq0ESo8IFhuQZtEI66aKah4Y+H4+/U4e/+iieHrDIPXz
+	 /X3fOH3PNuGAs8XSdY6tF6Uu4L3cfWY63Q9RHDr3MssfJZKVeckfw1+V3TLFbjONyL
+	 u4SWljc6/XIPw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCFF38363FB;
+	Fri, 11 Oct 2024 19:34:19 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v6.12-rc3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0j9MrSTXS-uZxNy=hfx514QdBCqFQ25tC0nVV-URX2xBQ@mail.gmail.com>
+References: <CAJZ5v0j9MrSTXS-uZxNy=hfx514QdBCqFQ25tC0nVV-URX2xBQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0j9MrSTXS-uZxNy=hfx514QdBCqFQ25tC0nVV-URX2xBQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.12-rc3
+X-PR-Tracked-Commit-Id: 1af7e441feb08cdaab8f4a320577ed0bba1f5896
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 325354cf00c7031c32618feaadc0f22eadee790c
+Message-Id: <172867525824.2975359.6422921440743320653.pr-tracker-bot@kernel.org>
+Date: Fri, 11 Oct 2024 19:34:18 +0000
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 9b8e59244dc48920c1a58d8185cf83550ddb68b8  Merge branch 'thermal-core-experimental' into bleeding-edge
+The pull request you sent on Fri, 11 Oct 2024 17:36:39 +0200:
 
-elapsed time: 1129m
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.12-rc3
 
-configs tested: 65
-configs skipped: 2
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/325354cf00c7031c32618feaadc0f22eadee790c
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thank you!
 
-tested configs:
-alpha            allnoconfig    gcc-14.1.0
-alpha           allyesconfig    clang-20
-arc             allmodconfig    clang-20
-arc              allnoconfig    gcc-14.1.0
-arc             allyesconfig    clang-20
-arm             allmodconfig    clang-20
-arm              allnoconfig    gcc-14.1.0
-arm             allyesconfig    clang-20
-arm64           allmodconfig    clang-20
-arm64            allnoconfig    gcc-14.1.0
-csky             allnoconfig    gcc-14.1.0
-hexagon         allmodconfig    clang-20
-hexagon          allnoconfig    gcc-14.1.0
-hexagon         allyesconfig    clang-20
-i386            allmodconfig    clang-18
-i386             allnoconfig    clang-18
-i386            allyesconfig    clang-18
-i386               defconfig    clang-18
-loongarch       allmodconfig    gcc-14.1.0
-loongarch        allnoconfig    gcc-14.1.0
-m68k            allmodconfig    gcc-14.1.0
-m68k             allnoconfig    gcc-14.1.0
-m68k            allyesconfig    gcc-14.1.0
-microblaze      allmodconfig    gcc-14.1.0
-microblaze       allnoconfig    gcc-14.1.0
-microblaze      allyesconfig    gcc-14.1.0
-mips             allnoconfig    gcc-14.1.0
-nios2            allnoconfig    gcc-14.1.0
-openrisc         allnoconfig    clang-20
-openrisc        allyesconfig    gcc-14.1.0
-openrisc           defconfig    gcc-12
-parisc          allmodconfig    gcc-14.1.0
-parisc           allnoconfig    clang-20
-parisc          allyesconfig    gcc-14.1.0
-parisc             defconfig    gcc-12
-powerpc         allmodconfig    gcc-14.1.0
-powerpc          allnoconfig    clang-20
-powerpc         allyesconfig    gcc-14.1.0
-riscv           allmodconfig    gcc-14.1.0
-riscv            allnoconfig    clang-20
-riscv           allyesconfig    gcc-14.1.0
-riscv              defconfig    gcc-12
-s390            allmodconfig    gcc-14.1.0
-s390             allnoconfig    clang-20
-s390            allyesconfig    gcc-14.1.0
-s390               defconfig    gcc-12
-sh              allmodconfig    gcc-14.1.0
-sh               allnoconfig    gcc-14.1.0
-sh              allyesconfig    gcc-14.1.0
-sh                 defconfig    gcc-12
-sparc           allmodconfig    gcc-14.1.0
-sparc64            defconfig    gcc-12
-um              allmodconfig    clang-20
-um               allnoconfig    clang-20
-um              allyesconfig    clang-20
-um                 defconfig    gcc-12
-um            i386_defconfig    gcc-12
-um          x86_64_defconfig    gcc-12
-x86_64           allnoconfig    clang-18
-x86_64          allyesconfig    clang-18
-x86_64             defconfig    clang-18
-x86_64                 kexec    gcc-12
-x86_64              rhel-8.3    gcc-12
-x86_64         rhel-8.3-rust    clang-18
-xtensa           allnoconfig    gcc-14.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
