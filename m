@@ -1,118 +1,195 @@
-Return-Path: <linux-acpi+bounces-8714-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8715-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A64099A30D
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 13:57:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B1399A338
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 14:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14B5C285128
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 11:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 839721C21223
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 12:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C672B216A0C;
-	Fri, 11 Oct 2024 11:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D92216A2A;
+	Fri, 11 Oct 2024 12:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fPFwGSnz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NvbF05Ki"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619102AE7F;
-	Fri, 11 Oct 2024 11:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9C820C49B;
+	Fri, 11 Oct 2024 12:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728647860; cv=none; b=YLThuVLvnC7lV/H79lVF7nsuv8WtyL20hG6zfWr+n5yfKqj0mhE69+0AaBLsJhSvB5oJ9V+u9DGA5NDZS0XCHqmWa+j9/Lz5NxpTXiQZjIGZVUFI3Mb+TmAHrU/GSJF5+tjjkUXR/cEEaDVOfE1MKjgXjczJvi3KhGvOlfFbWRA=
+	t=1728648271; cv=none; b=KaHmziGNIOjLwIR+OJ1pQvmhW62lwpAl6tNSowbBzOFyZJ8TNsCz4TDyIssKfFvAQy4qeCNe1ienXUyZztzmfbC6pkzE8XhYRMVQYlBU8u7LE5DnqorbUwaPgYp/ZvetIufs4fjhyA6MWZwjva1nytIJyqHCAZ2ZltiXhE2deGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728647860; c=relaxed/simple;
-	bh=Q7XL/TXQyMBQb3KLaQfFLqc1QkvYBlgSvkt16YmJmnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oz+6qGYO6RRe5hnB7twzgMYwBtEcBBUydnYYMPNCPynmjAkWHw2Zm+mFCdUKKH357di5p4hs6/H5Ob1wnUJvne4BMMk3ESojDyuo6ZItfBQQY5tZVmGEUjKH+BU6Iu0ekjqypSYRKVWnx0+U2WVcadqNKFxOVgMOSin38o5xy6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fPFwGSnz; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 562BB40E0163;
-	Fri, 11 Oct 2024 11:57:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id HWnVobhI6GlO; Fri, 11 Oct 2024 11:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1728647843; bh=hsoYnwjk+bx8QIrA3aXqChgdJHxyjjoKqysOlGZEEkY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fPFwGSnzZ0M2UzmfA6nUwfF48I9ivtLQQvrDIoRbzU5FzEzX0nQj5KRn+dDvWLxKn
-	 rZhV2ynDeSiteHw5ciMbkH8AHVuSU3ijTWTe9GK8GvoMGKhMhFW9njVkUhNa7x8Z3z
-	 fhw3qMoQtXkf+OgPuFsuN7aid2byG/+hpWifp5oJUQzm6uW5FEZHBzfwL4MtPU9Wvh
-	 QPn53Gk5VWHRMXBW3aELv0baAcbi3KAimjbV0MailmDVy9QPd4ACNayZxfrDacX2b4
-	 wcU7NmxlXWpSw7/CySkeJEbg2w+YDvOEAT1sd4e5HPW27z5RwQKuImlZBGOpHt7eZZ
-	 amn1doPuPtqOheyEz5Uq0GhVcKFxFf6O8fjdOlkRFErLw4Yf9P1CJP7hkE586o7Ds5
-	 DiZho5h94B/RSxXWVFDfBs5Cgiu9YTSMMEdpW9rX3J5w77Z2/DR9/FLBBWUuglCmlg
-	 deRdjV3FBV7kKt4KqS/Obpx4NajH4JVNgRsnG83/oiabXZ8zSw1hcikHRWj2KcYgPY
-	 4PAG3ahMBeLPM/j4oxYMsTbw6kP2QoQO6TwnpObAc1yLbvd2PcHjOmI0da/sfjLos6
-	 uGf0Oafp5XugSIAmZUzk1dz0Q74oxoWJReJIQifCNDAWofXGvnPLZGdCGaxQHCIv9W
-	 9/mwydeq86B57gDCbxk6Kkcg=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E5A8640E0169;
-	Fri, 11 Oct 2024 11:57:12 +0000 (UTC)
-Date: Fri, 11 Oct 2024 13:57:07 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: James Morse <james.morse@arm.com>, Jonathan Corbet <corbet@lwn.net>,
-	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-edac@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] Fix issues with ARM Processor CPER records
-Message-ID: <20241011115707.GCZwkSk5ybx-s9AqMM@fat_crate.local>
-References: <cover.1725429659.git.mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1728648271; c=relaxed/simple;
+	bh=d2lsdLlJ23PzLx+t87PT/SQoDACaRKM+kkKERIEh25I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U063Nmb5AgUDJOkKFFscX6BrtXQeuDszyA9+/SO7Qo0qA8v1HAQswU3VUPNG3GRxHGn5Rlh2mwSVQiHIge9H1QVBEp5k4DS1XOAwepZExj9J9krmHDR+jgpOiK4I6EoouFJmJJaEf0XftLwDuZklFBt2zA/XcQ5DbbRPRc/TlPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NvbF05Ki; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5398e53ca28so2175172e87.3;
+        Fri, 11 Oct 2024 05:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728648267; x=1729253067; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AyShL+hX7deCzpof4F0fbg7eMw0Pnc7HEQfvWtO/NKM=;
+        b=NvbF05KiYYLN+x6VhpmQSaX8F3M6JPZDpqyioxOHzQ+u9P3BcelVt2acAP6hS/dFaJ
+         +vuNZhXQnHRc+KM2WK2DPbum0shqeAu/KOvIBZ0tEAt+hORzJLdHRnFEc+juq8CbOfRE
+         7v3sJ9tbSMM9ztvXodUesLvWFKygA7iF2H7Unyh5fjlq7L/eHsexEGEiZoFDxPtk4Jr8
+         DjndUI5yO/LWc0TmFiIyCAwVsdFanyeBG/+Lq66cqe4+PcLSWWOF1l8C8F6Xl+zuX+7I
+         gUYefWfW3j6T1jJtOJokeWSuLJh6QbYcYZfL30rozsg50l5ui+uTdCfTFGDMwwp7XKya
+         jOVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728648267; x=1729253067;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AyShL+hX7deCzpof4F0fbg7eMw0Pnc7HEQfvWtO/NKM=;
+        b=qx4dTOvJlUrp3yxy1/rfUblwOtvS+lUSvf79MAFwFzjS8lwVoMUnt4TeFGfQWGaSEB
+         tt1mVqYpl8IWfTQ2OeEqZsmHCBcijYYy+PmGP8NysK+VcmEIWOO0S7PpUdLE8uikebx7
+         pz2kaiskDum+5JEY3ABWZQ5PqzDGOp7UJujIgtsbcWBaZWn38gP1pm0GktbpfHyHvz+1
+         GPZp6zBHpmymsVD2bpkY/8vBRKMec7s48a3aSK6CmjPncqncBWvF6T5ljQic3v4IAXdX
+         qzrTMXqpE3J+Nr0pskiyXTbJzMaC3/PfC2svWNkxMb4fOE/8RBoP4zg7N1Y2rxfEw/FU
+         yiIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVtg4YBJbx/NpTi4t0iv4yfXLyqhldh8wzs3K74WIXSZD4VrU6kXOCZVxH84e2ccyzKimSeCnG//yu/@vger.kernel.org, AJvYcCWS7u4ZR0vh0919JoxmRmNe64RjUjoF6xK0S6SpbgrFXWr5aSkBpTvg0vcgzIvVGwrId1Sch+bv@vger.kernel.org, AJvYcCXv1y1Xo+S3TGHNMhwmajRdAwIVpEXVzOdtMEQeOZ1grFDvuMzE6ZhMIktQKmFcoV76YZ9mu/LYcZ6bGuTO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4mhNtLMwhJzEidr8pgp3SbXZDcmMZmuHaR1FlYDStSWHtLhBd
+	203P5Ywjla7zsquNDCya9o1rq/V/r/PgpgD523jSfZvF/5snniFJT5WL5NDB
+X-Google-Smtp-Source: AGHT+IEFmewdlQ1CPXu2nV+GJbqCzq5j5B1b19TApH5sZAJ+BffXTe4lNLUiGOh2G3Wr71IqwpAF9A==
+X-Received: by 2002:a05:6512:3b24:b0:539:9717:7ea0 with SMTP id 2adb3069b0e04-539da58b296mr1527424e87.55.1728648267031;
+        Fri, 11 Oct 2024 05:04:27 -0700 (PDT)
+Received: from [10.10.12.27] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f5c4c3sm206188966b.95.2024.10.11.05.04.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Oct 2024 05:04:26 -0700 (PDT)
+Message-ID: <105dfbaa-0b7f-4e9e-8ab8-16d35ec165d7@gmail.com>
+Date: Fri, 11 Oct 2024 14:04:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1725429659.git.mchehab+huawei@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] device property: Introduce
+ fwnode_for_each_available_child_node_scoped()
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20241008-mv88e6xxx_leds_fwnode_put-v1-0-cfd7758cd176@gmail.com>
+ <20241008-mv88e6xxx_leds_fwnode_put-v1-1-cfd7758cd176@gmail.com>
+ <Zwi6Dn4yJxst4xv2@kekkonen.localdomain>
+ <07ec0837-d7a3-413e-a281-e06feafe7f34@gmail.com>
+ <Zwj12J5bTNUEnxA0@kekkonen.localdomain>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <Zwj12J5bTNUEnxA0@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 04, 2024 at 08:07:13AM +0200, Mauro Carvalho Chehab wrote:
-> Jason Tian (1):
->   RAS: Report all ARM processor CPER information to userspace
+On 11/10/2024 11:54, Sakari Ailus wrote:
+> Hi Javier,
 > 
-> Mauro Carvalho Chehab (4):
->   efi/cper: Adjust infopfx size to accept an extra space
->   efi/cper: Add a new helper function to print bitmasks
->   efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
->   docs: efi: add CPER functions to driver-api
+> On Fri, Oct 11, 2024 at 10:34:32AM +0200, Javier Carrasco wrote:
+>> On 11/10/2024 07:39, Sakari Ailus wrote:
+>>> Hi Javier,
+>>>
+>>> On Tue, Oct 08, 2024 at 06:10:27PM +0200, Javier Carrasco wrote:
+>>>> Introduce the scoped variant of the
+>>>> fwnode_for_each_available_child_node() to automatically decrement the
+>>>> child's refcount when it goes out of scope, removing the need for
+>>>> explicit calls to fwnode_handle_put().
+>>>>
+>>>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>>>> ---
+>>>>  include/linux/property.h | 5 +++++
+>>>>  1 file changed, 5 insertions(+)
+>>>>
+>>>> diff --git a/include/linux/property.h b/include/linux/property.h
+>>>> index 61fc20e5f81f..b37508ecf606 100644
+>>>> --- a/include/linux/property.h
+>>>> +++ b/include/linux/property.h
+>>>> @@ -168,6 +168,11 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
+>>>>  	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
+>>>>  	     child = fwnode_get_next_available_child_node(fwnode, child))
+>>>>  
+>>>> +#define fwnode_for_each_available_child_node_scoped(fwnode, child)	       \
+>>>> +	for (struct fwnode_handle *child __free(fwnode_handle) =	       \
+>>>> +		fwnode_get_next_available_child_node(fwnode, NULL); child;     \
+>>>> +	     child = fwnode_get_next_available_child_node(fwnode, child))
+>>>> +
+>>>
+>>> On OF, the implementation of the .get_next_child_node() fwnode op is:
+>>>
+>>> static struct fwnode_handle *
+>>> of_fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+>>>                               struct fwnode_handle *child)
+>>> {
+>>>         return of_fwnode_handle(of_get_next_available_child(to_of_node(fwnode),
+>>>                                                             to_of_node(child)));
+>>> }
+>>>
+>>> On ACPI we currently have .device_is_available() returning false but that
+>>> probably should be returning true instead (it's been virtually unused
+>>> previously).
+>>>
+>>> That makes fwnode_get_next_available_child_node() and
+>>> fwnode_get_next_child_node() equivalent on both ACPI and OF. Presumably
+>>> creating unavailable nodes would be useless on swnode, too.
+>>>
+>>> So my question is: what do we gain by adding all these fwnode_*available()
+>>> helpers?
+>>>
+>>>>  struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+>>>>  						 struct fwnode_handle *child);
+>>>
+>>
+>> Hi Sakari, thanks for your feedback.
+>>
+>> I thought that the difference is not in OF (which either way ends up
+>> calling __of_device_is_available()), but in ACPI.
+>>
+>> For fwnode_for_each_child_node(), the ACPI callback is
+>> acpi_get_next_subnode(), and I don't see that the device_is_available()
+>> callback is used in that case.
 > 
->  .../driver-api/firmware/efi/index.rst         | 11 +++-
->  drivers/acpi/apei/ghes.c                      | 27 ++++----
->  drivers/firmware/efi/cper-arm.c               | 52 ++++++++--------
->  drivers/firmware/efi/cper.c                   | 62 ++++++++++++++++++-
->  drivers/ras/ras.c                             | 41 +++++++++++-
->  include/linux/cper.h                          | 12 ++--
->  include/linux/ras.h                           | 16 ++++-
->  include/ras/ras_event.h                       | 48 ++++++++++++--
->  8 files changed, 210 insertions(+), 59 deletions(-)
+> fwnode_get_next_available_child_node() also calls
+> fwnode_device_is_available() and that returns false on all non-device nodes
+> right now. As noted above, fwnode_device_is_available() should probably
+> return true for non-device nodes on ACPI. I'll post a patch.
+> 
 
-With the issues to patch 1 fixed:
+fwnode_device_is_available() is indeed called in
+fwnode_get_next_available_child_node(), as I stated a couple of lines below.
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+My question on the other hand was how that is called in
+fwnode_for_each_child_node(), as I could not see any call to check
+availability in acpi_get_next_subnode().
+That is what confused me about the _available_ macros being the same as
+their counterparts without the _available_.
 
-I'm presuming this'll go through Ard's tree. Alternatively, I can pick it up
-too with Ard's ack.
+Could you please clarify that? Thanks again.
 
-Thx.
+>>
+>> For fwnode_for_each_available_child_node(),
+>> fwnode_get_next_available_child_node() is used, which checks
+>> fwnode_device_is_available(), which then calls device_is_available().
+>>
+>> What's the catch?
+> 
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
