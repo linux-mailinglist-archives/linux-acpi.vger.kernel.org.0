@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-8704-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8705-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833A6999C81
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 08:20:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0C2999C87
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 08:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A711F241A1
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 06:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1732A1C21FA0
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Oct 2024 06:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BD71F9433;
-	Fri, 11 Oct 2024 06:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8438F208966;
+	Fri, 11 Oct 2024 06:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toH7zxqt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KtEHEosk"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEBF1CB33A;
-	Fri, 11 Oct 2024 06:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDFF1CCEC2;
+	Fri, 11 Oct 2024 06:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728627598; cv=none; b=Q9T2JEPQvhPIz/8vHdnRJYXtC11pWPDrceHHWK8IzvZAsOfHIhmjc8Mx4/lWONtxi71vHAvFkq6urEAXW9fZHBoXUk939o7qJMS2YjK+S1f0fR9j69Sj90L21b7yzTIw5tD2OZdM5Wd/D/SB+ygy+o58KKc8q7Fu/1g2akB++lk=
+	t=1728627626; cv=none; b=glQr3wbjQ+vWgdFMg8oJMWXh/45L1KNb5YbuGhqHdWKqVzNoJOCqF1JiyIw3KFf4DpmgUbi/LrSrc+jfrH32e1WGbDb2mBxEYXEbysg8a1uZ0Vk5wKyyphr5IzvnsE8TUHDmDn8zM4ZTsObmSMBvRXlgShm+r70xe8NqxkAv0fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728627598; c=relaxed/simple;
-	bh=HxKmmTfJ0W4go8rHbnUPDRa0FZRgZ6An1mPbA47ZZF8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g6bHl+OCZN3nFF5ZpBcW08qyUAXchSm4jz+gaa1oSo7dCwjKQWYDuVAKRMm8qoaSVCQpsaUC2xmaV+5urKfnzfKGQX9AzmufJ4iKIT01SDQN9/aRH+vUnM48jkzfjrDDOABuUzzpE28NbZYzJ907JZVLXjMfKzW/s/+9SXu+ZBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toH7zxqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D699C4CEC3;
-	Fri, 11 Oct 2024 06:19:55 +0000 (UTC)
+	s=arc-20240116; t=1728627626; c=relaxed/simple;
+	bh=Bg1PLwPa12hUim2QFdd4rWhuz44R0OSvKmpjhIlgV1w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bv9kBEvW6k26agFd5/O1W44zB6hZUvgs22HAw65/XtuK4vtZbS6m5uCvzWERyt9WNB3url8r53fCfJPE2CvtMaMcj9y3hna03upaLeFYOrYaNfJJUdOupg94ms54Z3augIcvwxF3BA++QHmzi+2gVlCHfOW5FiuhrBp2pd9YV7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KtEHEosk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6687C4CEC7;
+	Fri, 11 Oct 2024 06:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728627598;
-	bh=HxKmmTfJ0W4go8rHbnUPDRa0FZRgZ6An1mPbA47ZZF8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=toH7zxqtjLx4uPte9NGetyA2BSikaSLRjMsTMplZAeJ/fqYFQIicK5643mvOu70os
-	 Nk561v7XwLD3k7Lsrbciiu3NH4f3zOH1HJzTfxBPC+OGzKdFTQvxAvqgbwWJwepVx4
-	 T8HoAaxHQQP28RrKis9Ntolh6eTTLdtmMuV+onZzEv6bW8QridQ0WtghRL7Ue1Kw4R
-	 qGbTphhicOCyNRUZrJpPiax/r9x7Nm4ocT/m+p4Z7lYi9E3L9/Kl9z/ZiRtyE7Ypl7
-	 QH8l13GjPi91qxQFGWsxovTHsw1VzNXNHRocHO9u2jtts5Y/+3+ZtOZ1pWE9DsDANG
-	 8zupHm60TD6PA==
+	s=k20201202; t=1728627626;
+	bh=Bg1PLwPa12hUim2QFdd4rWhuz44R0OSvKmpjhIlgV1w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KtEHEoskxo73wM6C9zh2oO2M84T2dg767G5xJBQuajA5wR35d1gw0/8j0dTrMv6q0
+	 CPSHFh+1XSaHqMPb88itwtVTOE5WirjSLC1DTKNcx9OtO5bLgQ4uNtc8D2yd6HnXLu
+	 xaEoh4EqlSuvxk17UK4xhpwQCJWY9HdpmkOYOPaBkAkCSsV0L680LutwsEqEvHTG6A
+	 49cgjhWV3PjlQ7FXmrbVW3ktzf9mbrSzhF4D43PImJkN41kONU/GC/4TRTjg9FzDZ4
+	 uSnf8MviYzjZ9bPZiVNTsWyNpl+JyTeA2cBmhuwVy/m6zMu979aJd3Q421TSOTCiHR
+	 ngGxTVUFWxO1A==
 From: Arnd Bergmann <arnd@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: Len Brown <lenb@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Len Brown <lenb@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH v2 1/3] acpi: make EC support compile-time conditional
-Date: Fri, 11 Oct 2024 06:18:17 +0000
-Message-Id: <20241011061948.3211423-1-arnd@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/3] acpi: allow building without CONFIG_HAS_IOPORT
+Date: Fri, 11 Oct 2024 06:18:18 +0000
+Message-Id: <20241011061948.3211423-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241011061948.3211423-1-arnd@kernel.org>
+References: <20241011061948.3211423-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -68,362 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The embedded controller code is mainly used on x86 laptops and cannot
-work without PC style I/O port access.
+CONFIG_HAS_IOPORT will soon become optional and cause a build time
+failure when it is disabled but a driver calls inb()/outb(). At the
+moment, all architectures that can support ACPI have port I/O, but this
+is not necessarily the case in the future on non-x86 architectures.
+The result is a set of errors like:
 
-Make this a user-visible configuration option that is default enabled
-on x86 but otherwise disabled, and that can never be enabled unless
-CONFIG_HAS_IOPORT is also available.
+drivers/acpi/osl.c: In function 'acpi_os_read_port':
+include/asm-generic/io.h:542:14: error: call to '_inb' declared with attribute error: inb()) requires CONFIG_HAS_IOPORT
 
-The empty stubs in internal.h help ignore the EC code in configurations
-that don't support it. In order to see those stubs, the sbshc code also
-has to include this header and drop duplicate declarations.
+Nothing should actually call these functions in this configuration,
+and if it does, the result would be undefined behavior today, possibly
+a NULL pointer dereference.
 
-All the direct callers of ec_read/ec_write already had an x86
-dependency and now also need to depend on APCI_EC.
+Change the low-level functions to return a proper error code when
+HAS_IOPORT is disabled.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/acpi/Kconfig               | 11 ++++++++++-
- drivers/acpi/Makefile              |  2 +-
- drivers/acpi/internal.h            | 25 +++++++++++++++++++++++++
- drivers/acpi/sbshc.c               |  9 +--------
- drivers/char/Kconfig               |  1 +
- drivers/hwmon/Kconfig              |  3 ++-
- drivers/platform/x86/Kconfig       | 22 ++++++++++++----------
- drivers/platform/x86/dell/Kconfig  |  1 +
- drivers/platform/x86/hp/Kconfig    |  1 +
- drivers/platform/x86/intel/Kconfig |  2 +-
- include/linux/acpi.h               |  8 ++++++--
- 11 files changed, 61 insertions(+), 24 deletions(-)
+ drivers/acpi/cppc_acpi.c | 6 ++++--
+ drivers/acpi/osl.c       | 8 ++++++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index d67f63d93b2a..d65cd08ba8e1 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -132,8 +132,17 @@ config ACPI_REV_OVERRIDE_POSSIBLE
- 	  makes it possible to force the kernel to return "5" as the supported
- 	  ACPI revision via the "acpi_rev_override" command line switch.
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index b73b3aa92f3f..326b73ae77a9 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1017,7 +1017,8 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 	*val = 0;
+ 	size = GET_BIT_WIDTH(reg);
  
-+config ACPI_EC
-+	bool "Embedded Controller"
-+	depends on HAS_IOPORT
-+	default X86
-+	help
-+	  This driver handles communication with the microcontroller
-+	  on many x86 laptops and other machines.
-+
- config ACPI_EC_DEBUGFS
- 	tristate "EC read/write access through /sys/kernel/debug/ec"
-+	depends on ACPI_EC
- 	help
- 	  Say N to disable Embedded Controller /sys/kernel/debug interface
+-	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
++	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
++	    reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+ 		u32 val_u32;
+ 		acpi_status status;
  
-@@ -433,7 +442,7 @@ config ACPI_HOTPLUG_IOAPIC
+@@ -1090,7 +1091,8 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
  
- config ACPI_SBS
- 	tristate "Smart Battery System"
--	depends on X86
-+	depends on X86 && ACPI_EC
- 	select POWER_SUPPLY
- 	help
- 	  This driver supports the Smart Battery System, another
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 61ca4afe83dc..40208a0f5dfb 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -41,7 +41,7 @@ acpi-y				+= resource.o
- acpi-y				+= acpi_processor.o
- acpi-y				+= processor_core.o
- acpi-$(CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC) += processor_pdc.o
--acpi-y				+= ec.o
-+acpi-$(CONFIG_ACPI_EC)		+= ec.o
- acpi-$(CONFIG_ACPI_DOCK)	+= dock.o
- acpi-$(CONFIG_PCI)		+= pci_root.o pci_link.o pci_irq.o
- obj-$(CONFIG_ACPI_MCFG)		+= pci_mcfg.o
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index ced7dff9a5db..00910ccd7eda 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -215,6 +215,8 @@ extern struct acpi_ec *first_ec;
- /* External interfaces use first EC only, so remember */
- typedef int (*acpi_ec_query_func) (void *data);
+ 	size = GET_BIT_WIDTH(reg);
  
-+#ifdef CONFIG_ACPI_EC
-+
- void acpi_ec_init(void);
- void acpi_ec_ecdt_probe(void);
- void acpi_ec_dsdt_probe(void);
-@@ -231,6 +233,29 @@ void acpi_ec_flush_work(void);
- bool acpi_ec_dispatch_gpe(void);
- #endif
+-	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
++	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
++	    reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+ 		acpi_status status;
  
-+#else
-+
-+static inline void acpi_ec_init(void) {}
-+static inline void acpi_ec_ecdt_probe(void) {}
-+static inline void acpi_ec_dsdt_probe(void) {}
-+static inline void acpi_ec_block_transactions(void) {}
-+static inline void acpi_ec_unblock_transactions(void) {}
-+static inline int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
-+			      acpi_handle handle, acpi_ec_query_func func,
-+			      void *data)
-+{
-+	return -ENXIO;
-+}
-+static inline void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit) {}
-+static inline void acpi_ec_register_opregions(struct acpi_device *adev) {}
-+
-+static inline void acpi_ec_flush_work(void) {}
-+static inline bool acpi_ec_dispatch_gpe(void)
-+{
-+	return false;
-+}
-+
-+#endif
- 
- /*--------------------------------------------------------------------------
-                                   Suspend/Resume
-diff --git a/drivers/acpi/sbshc.c b/drivers/acpi/sbshc.c
-index 16f2daaa2c45..2b63cd18cca2 100644
---- a/drivers/acpi/sbshc.c
-+++ b/drivers/acpi/sbshc.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include "sbshc.h"
-+#include "internal.h"
- 
- #define ACPI_SMB_HC_CLASS	"smbus_host_ctl"
- #define ACPI_SMB_HC_DEVICE_NAME	"ACPI SMBus HC"
-@@ -236,12 +237,6 @@ static int smbus_alarm(void *context)
- 	return 0;
- }
- 
--typedef int (*acpi_ec_query_func) (void *data);
--
--extern int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
--			      acpi_handle handle, acpi_ec_query_func func,
--			      void *data);
--
- static int acpi_smbus_hc_add(struct acpi_device *device)
+ 		status = acpi_os_write_port((acpi_io_address)reg->address,
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 70af3fbbebe5..19342ccfabb9 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -642,6 +642,11 @@ acpi_status acpi_os_read_port(acpi_io_address port, u32 *value, u32 width)
  {
- 	int status;
-@@ -278,8 +273,6 @@ static int acpi_smbus_hc_add(struct acpi_device *device)
- 	return 0;
- }
+ 	u32 dummy;
  
--extern void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit);
--
- static void acpi_smbus_hc_remove(struct acpi_device *device)
- {
- 	struct acpi_smb_hc *hc;
-diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
-index 7c8dd0abcfdf..8fb33c90482f 100644
---- a/drivers/char/Kconfig
-+++ b/drivers/char/Kconfig
-@@ -238,6 +238,7 @@ config APPLICOM
- config SONYPI
- 	tristate "Sony Vaio Programmable I/O Control Device support"
- 	depends on X86_32 && PCI && INPUT
-+	depends on ACPI_EC || !ACPI
- 	help
- 	  This driver enables access to the Sony Programmable I/O Control
- 	  Device which can be found in many (all ?) Sony Vaio laptops.
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 65ea92529406..25ae0a00ea2c 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -1747,7 +1747,7 @@ source "drivers/hwmon/occ/Kconfig"
- 
- config SENSORS_OXP
- 	tristate "OneXPlayer EC fan control"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on X86
- 	help
- 		If you say yes here you get support for fan readings and control over
-@@ -2586,6 +2586,7 @@ config SENSORS_ASUS_WMI
- config SENSORS_ASUS_EC
- 	tristate "ASUS EC Sensors"
- 	depends on X86
-+	depends on ACPI_EC
- 	help
- 	  If you say yes here you get support for the ACPI embedded controller
- 	  hardware monitoring interface found in ASUS motherboards. The driver
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 3875abba5a79..0258dd879d64 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -52,6 +52,7 @@ config WMI_BMOF
- config HUAWEI_WMI
- 	tristate "Huawei WMI laptop extras driver"
- 	depends on ACPI_BATTERY
-+	depends on ACPI_EC
- 	depends on ACPI_WMI
- 	depends on INPUT
- 	select INPUT_SPARSEKMAP
-@@ -147,7 +148,7 @@ config YT2_1380
- 
- config ACERHDF
- 	tristate "Acer Aspire One temperature and fan driver"
--	depends on ACPI && THERMAL
-+	depends on ACPI_EC && THERMAL
- 	select THERMAL_GOV_BANG_BANG
- 	help
- 	  This is a driver for Acer Aspire One netbooks. It allows to access
-@@ -186,6 +187,7 @@ config ACER_WMI
- 	depends on SERIO_I8042
- 	depends on INPUT
- 	depends on RFKILL || RFKILL = n
-+	depends on ACPI_EC
- 	depends on ACPI_WMI
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
- 	depends on HWMON
-@@ -334,7 +336,7 @@ config MERAKI_MX100
- 
- config EEEPC_LAPTOP
- 	tristate "Eee PC Hotkey Driver"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on INPUT
- 	depends on RFKILL || RFKILL = n
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
-@@ -503,7 +505,7 @@ config SENSORS_HDAPS
- 
- config THINKPAD_ACPI
- 	tristate "ThinkPad ACPI Laptop Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on ACPI_BATTERY
- 	depends on INPUT
- 	depends on RFKILL || RFKILL = n
-@@ -682,7 +684,7 @@ config MEEGOPAD_ANX7428
- 
- config MSI_EC
- 	tristate "MSI EC Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on ACPI_BATTERY
- 	help
- 	  This driver allows various MSI laptops' functionalities to be
-@@ -690,7 +692,7 @@ config MSI_EC
- 
- config MSI_LAPTOP
- 	tristate "MSI Laptop Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on BACKLIGHT_CLASS_DEVICE
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
- 	depends on RFKILL
-@@ -796,7 +798,7 @@ config SAMSUNG_LAPTOP
- 
- config SAMSUNG_Q10
- 	tristate "Samsung Q10 Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	select BACKLIGHT_CLASS_DEVICE
- 	help
- 	  This driver provides support for backlight control on Samsung Q10
-@@ -804,7 +806,7 @@ config SAMSUNG_Q10
- 
- config ACPI_TOSHIBA
- 	tristate "Toshiba Laptop Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on ACPI_BATTERY
- 	depends on ACPI_WMI
- 	select LEDS_CLASS
-@@ -904,7 +906,7 @@ config ACPI_CMPC
- 
- config COMPAL_LAPTOP
- 	tristate "Compal (and others) Laptop Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on BACKLIGHT_CLASS_DEVICE
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
- 	depends on RFKILL
-@@ -949,7 +951,7 @@ config PANASONIC_LAPTOP
- 
- config SONY_LAPTOP
- 	tristate "Sony Laptop Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
- 	depends on BACKLIGHT_CLASS_DEVICE
- 	depends on INPUT
-@@ -972,7 +974,7 @@ config SONYPI_COMPAT
- 
- config SYSTEM76_ACPI
- 	tristate "System76 ACPI Driver"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on ACPI_BATTERY
- 	depends on HWMON
- 	depends on INPUT
-diff --git a/drivers/platform/x86/dell/Kconfig b/drivers/platform/x86/dell/Kconfig
-index 68a49788a396..dc21227dd66e 100644
---- a/drivers/platform/x86/dell/Kconfig
-+++ b/drivers/platform/x86/dell/Kconfig
-@@ -194,6 +194,7 @@ config DELL_WMI
- config DELL_WMI_PRIVACY
- 	bool "Dell WMI Hardware Privacy Support"
- 	depends on DELL_WMI
-+	depends on ACPI_EC
- 	help
- 	  This option adds integration with the "Dell Hardware Privacy"
- 	  feature of Dell laptops to the dell-wmi driver.
-diff --git a/drivers/platform/x86/hp/Kconfig b/drivers/platform/x86/hp/Kconfig
-index d776761cd5fd..dd51491b9bcd 100644
---- a/drivers/platform/x86/hp/Kconfig
-+++ b/drivers/platform/x86/hp/Kconfig
-@@ -37,6 +37,7 @@ config HP_ACCEL
- config HP_WMI
- 	tristate "HP WMI extras"
- 	default m
-+	depends on ACPI_EC
- 	depends on ACPI_WMI
- 	depends on INPUT
- 	depends on RFKILL || RFKILL = n
-diff --git a/drivers/platform/x86/intel/Kconfig b/drivers/platform/x86/intel/Kconfig
-index ad50bbabec61..eb698dcb9af9 100644
---- a/drivers/platform/x86/intel/Kconfig
-+++ b/drivers/platform/x86/intel/Kconfig
-@@ -62,7 +62,7 @@ config INTEL_INT0002_VGPIO
- 
- config INTEL_OAKTRAIL
- 	tristate "Intel Oaktrail Platform Extras"
--	depends on ACPI
-+	depends on ACPI_EC
- 	depends on ACPI_VIDEO || ACPI_VIDEO=n
- 	depends on RFKILL && BACKLIGHT_CLASS_DEVICE && ACPI
- 	help
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 4d5ee84c468b..7dd24acd9ffe 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1164,8 +1164,6 @@ int acpi_subsys_suspend_noirq(struct device *dev);
- int acpi_subsys_suspend(struct device *dev);
- int acpi_subsys_freeze(struct device *dev);
- int acpi_subsys_poweroff(struct device *dev);
--void acpi_ec_mark_gpe_for_wake(void);
--void acpi_ec_set_gpe_wake_mask(u8 action);
- int acpi_subsys_restore_early(struct device *dev);
- #else
- static inline int acpi_subsys_prepare(struct device *dev) { return 0; }
-@@ -1176,6 +1174,12 @@ static inline int acpi_subsys_suspend(struct device *dev) { return 0; }
- static inline int acpi_subsys_freeze(struct device *dev) { return 0; }
- static inline int acpi_subsys_poweroff(struct device *dev) { return 0; }
- static inline int acpi_subsys_restore_early(struct device *dev) { return 0; }
-+#endif
++	if (!IS_ENABLED(CONFIG_HAS_IOPORT)) {
++		*value = BIT_MASK(width);
++		return AE_NOT_IMPLEMENTED;
++	}
 +
-+#if defined(CONFIG_ACPI_EC) && defined(CONFIG_PM_SLEEP)
-+void acpi_ec_mark_gpe_for_wake(void);
-+void acpi_ec_set_gpe_wake_mask(u8 action);
-+#else
- static inline void acpi_ec_mark_gpe_for_wake(void) {}
- static inline void acpi_ec_set_gpe_wake_mask(u8 action) {}
- #endif
+ 	if (value)
+ 		*value = 0;
+ 	else
+@@ -665,6 +670,9 @@ EXPORT_SYMBOL(acpi_os_read_port);
+ 
+ acpi_status acpi_os_write_port(acpi_io_address port, u32 value, u32 width)
+ {
++	if (!IS_ENABLED(CONFIG_HAS_IOPORT))
++		return AE_NOT_IMPLEMENTED;
++
+ 	if (width <= 8) {
+ 		outb(value, port);
+ 	} else if (width <= 16) {
 -- 
 2.39.5
 
