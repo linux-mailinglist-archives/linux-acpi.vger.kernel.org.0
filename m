@@ -1,477 +1,247 @@
-Return-Path: <linux-acpi+bounces-8727-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8728-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DA599B2EA
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Oct 2024 12:18:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E72099B641
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Oct 2024 19:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AD821C21737
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Oct 2024 10:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88FD1F21E90
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Oct 2024 17:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F8415383E;
-	Sat, 12 Oct 2024 10:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCF3770F1;
+	Sat, 12 Oct 2024 17:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i/F/foFB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g6n1W9Zs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB6A22334
-	for <linux-acpi@vger.kernel.org>; Sat, 12 Oct 2024 10:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8058F77104;
+	Sat, 12 Oct 2024 17:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728728328; cv=none; b=Psn7fXOqys8F6wGJcs4TJenAEo6UMB/PNP3MzM250k1uXJN4WQaXrF3VRnCimGZbKy7uLKsc3FFSCtN47HtXo1jzr9harddQWJBGPGNimF/czZD0GSNuoZMkW+ZW1yt3283bh0430dxzuCsBeS3k8ssE3/0uXiXVzIFBnvMSAeg=
+	t=1728753977; cv=none; b=VI77z+hwCT0c8BAssNggSSBB9Ss3mJlVH1zfO8NX6dtJNRf9dmEzf6bEcJUNCOxzV+eSlygdFcjn7H5EdtLKvQVIHyuw747M/E7eMjOlEUxnSs+NQMbPZg9l641CB/NR17bAV0O3ei61861Jb0BdUHDLJYSW7ZxegSyDcT/YPBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728728328; c=relaxed/simple;
-	bh=4xOM8MC2EwyqmoD8ZTIT4Mo7EV8Znm3HaYlhK0DGMMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TawYF/FdWQZu+SDNVaN6/iP2AFw+OBK27LidY/MI7POGUeHAXg8jGyXaR3S9BWBHb7UwSkMlqJlRqRvDQlPzQ7b8uTOaxhnENc/lqRhl5rne9gfHIkevBr2XbR/98UD3q8X+EHB9DSzDBlRE1cV4DXQEI3qA73uPEfcGXm4b+gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i/F/foFB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728728324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2EGQy1IKdMVdQQEEg6lkanhZmI8siGes/J0zO83YsB0=;
-	b=i/F/foFB8SgaKCoXQCV1a9+cWQ5byQeCAgd79b0td95Qph6GPl8xBitxnNyK04auCMpw31
-	l4qSmp7Z+K/hKdUm/IZW/G9Hfl9T6DHL65bk0r1ySU1cvHg8+Nd3Dadjuy+a54i8C9dpJo
-	dmuTLs+bMQ3eNV6uesIqpLHVECacqi8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-BOGS7jB7MZK9YF1RSUjclQ-1; Sat, 12 Oct 2024 06:18:43 -0400
-X-MC-Unique: BOGS7jB7MZK9YF1RSUjclQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a99efc7d881so25146966b.1
-        for <linux-acpi@vger.kernel.org>; Sat, 12 Oct 2024 03:18:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728728322; x=1729333122;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2EGQy1IKdMVdQQEEg6lkanhZmI8siGes/J0zO83YsB0=;
-        b=dmhP2zF6gqOse3xmOKFgmceMs+dJJik+9dnSuEBheX2taAdVGmpKqnTJnWZ9GRwCgF
-         g344H+epzA0Qov1y233V5njyff+BLo1yA+i86u6MNjNtPIw4aTdnnb1xSF2XAXiZHCiL
-         /bfJQxXBg5adnsRqUZC1EyNGpeONPSmbFNIu7tDRC+Dl50ajBoxGlfLOVYsMuxF3leKa
-         /cSl6mtFMVDHb0yzUANUbBsONue0UKVxbNccH1xW2R60TdgMVP5MnYxOsNG+2wHpyupm
-         IDwL5sVedSadzaKTtwTERPIDCPDDX4RiJiFwNWAz4ce1kaq9LBTMflJr6Cm8AK5xDHOf
-         aUJA==
-X-Forwarded-Encrypted: i=1; AJvYcCValuHgtJQXNiHdbrQMi9m4GVyF29v4QKcgvxlLYKEEL8NhbZMxrtPPIv8hKFJicWdWycg5ZKdd8mhO@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTzERfxWmhaCeawNpgpJFrMTc6neZtJO3XZFLJBvogqsqhUUYz
-	jM19RFgRDI+PSv02b/awT5U0hNip/hNK6IoGqqORryspCXpCse7zMFISb+usB7ufhtMnE2+pWTN
-	fMeFvf7UePt5ogCrsvApbk4CfiGzDIqELxGorOIFdOVW+Qr/zxhE53vVO+5o=
-X-Received: by 2002:a17:906:f59b:b0:a99:f6ee:1ee3 with SMTP id a640c23a62f3a-a99f6ee218bmr24628866b.43.1728728321936;
-        Sat, 12 Oct 2024 03:18:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRlYyzh/lT/w96zA6tYryrsPaeMciJc2g9vf0Y81D3NpdcI+siPuUrgbFzloh58FkgpR5Vag==
-X-Received: by 2002:a17:906:f59b:b0:a99:f6ee:1ee3 with SMTP id a640c23a62f3a-a99f6ee218bmr24626566b.43.1728728321456;
-        Sat, 12 Oct 2024 03:18:41 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99e79a5e10sm71696666b.187.2024.10.12.03.18.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 12 Oct 2024 03:18:40 -0700 (PDT)
-Message-ID: <2c880375-a487-4965-be83-bcd67c616e34@redhat.com>
-Date: Sat, 12 Oct 2024 12:18:39 +0200
+	s=arc-20240116; t=1728753977; c=relaxed/simple;
+	bh=cY5C0A6vGeLZiz/fGsKc3Ax9Oq6EZhWa7uNfKHkZL/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y+lCYl1IoIFwA5q+NFjYk2KuBVfJEo1WJFV+I2AKTcs04VPG0Um6AmIx4FGJVWZrKqhxwQwTB/Oh/obAwHBhnYp8GQfoapsgIVu+TgjExDNHytbqK/BKRH1Eid5aAMFQ3QY7bKsFJSmGqRMQsKiTyuaNz7gLzAupt7tAaIR8iVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g6n1W9Zs; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728753974; x=1760289974;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cY5C0A6vGeLZiz/fGsKc3Ax9Oq6EZhWa7uNfKHkZL/4=;
+  b=g6n1W9ZsB5cNKwR21OWDMve0/U+hgcU2oEZKaIHnMOUvHMUVEX8WSpMb
+   6TuVgNOQu4LU+Z8nmmsRqNW68+IJV2FAw04TFQO807zs5l3oJQh7REFoG
+   Z3THYXPM7H+nd9Rt5yIZ5C39XnVZCIXtULa910hPX9DVT7CPFNcZmbBoq
+   Vut7gwiB/5JdAuFcWi9JtIud3huYsKR8IgYRYIXdLcSwiSE5TadVrx1Oh
+   qehMqX49XtLri+crYNvU31oaicBEEgUy79V3sXbLORYkFZBXbW3peOKgK
+   /PYtBUC3IHd8ULBEUUuCfwNqGBtU5SQwZtdPgrUlBIneawxsg2GlXTOci
+   A==;
+X-CSE-ConnectionGUID: SYhnRBW7Sv21Kat7yIqvDQ==
+X-CSE-MsgGUID: WcRLhyk4TMWfJ/CYzb84cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39524852"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="39524852"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2024 10:26:14 -0700
+X-CSE-ConnectionGUID: EJxMRPEsQV6ZCEOoUUMb1g==
+X-CSE-MsgGUID: JCztLeU2S5i0VgjvqX191w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="76831539"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 12 Oct 2024 10:26:11 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1szfsW-000DY7-2G;
+	Sat, 12 Oct 2024 17:26:08 +0000
+Date: Sun, 13 Oct 2024 01:26:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: KobaK <kobak@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	James Morse <james.morse@arm.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+	linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH V7] acpi/prmt: find block with specific type
+Message-ID: <202410130117.PZ2JPuxo-lkp@intel.com>
+References: <20241009064517.2678456-1-kobak@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] acpi: make EC support compile-time conditional
-To: Arnd Bergmann <arnd@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>
-Cc: Len Brown <lenb@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- platform-driver-x86@vger.kernel.org
-References: <20241011061948.3211423-1-arnd@kernel.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20241011061948.3211423-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241009064517.2678456-1-kobak@nvidia.com>
 
-Hi,
+Hi KobaK,
 
-On 11-Oct-24 8:18 AM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The embedded controller code is mainly used on x86 laptops and cannot
-> work without PC style I/O port access.
-> 
-> Make this a user-visible configuration option that is default enabled
-> on x86 but otherwise disabled, and that can never be enabled unless
-> CONFIG_HAS_IOPORT is also available.
-> 
-> The empty stubs in internal.h help ignore the EC code in configurations
-> that don't support it. In order to see those stubs, the sbshc code also
-> has to include this header and drop duplicate declarations.
-> 
-> All the direct callers of ec_read/ec_write already had an x86
-> dependency and now also need to depend on APCI_EC.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+kernel test robot noticed the following build warnings:
 
-Thanks, patch looks good to me.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge linus/master v6.12-rc2 next-20241011]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-For platform/driver/x86:
+url:    https://github.com/intel-lab-lkp/linux/commits/KobaK/acpi-prmt-find-block-with-specific-type/20241009-144658
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20241009064517.2678456-1-kobak%40nvidia.com
+patch subject: [PATCH V7] acpi/prmt: find block with specific type
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20241013/202410130117.PZ2JPuxo-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241013/202410130117.PZ2JPuxo-lkp@intel.com/reproduce)
 
-Acked-by: Hans de Goede <hdegoede@redhat.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410130117.PZ2JPuxo-lkp@intel.com/
 
-Regards,
+All warnings (new ones prefixed by >>):
 
-Hans
+>> drivers/acpi/prmt.c:88:60: warning: format specifies type 'void *' but the argument has type 'u64' (aka 'unsigned long long') [-Wformat]
+      88 |         pr_warn("Failed to find VA for GUID: %pUL, PA: %p", guid, pa);
+         |                                                        ~~         ^~
+         |                                                        %llu
+   include/linux/printk.h:543:37: note: expanded from macro 'pr_warn'
+     543 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |                                    ~~~     ^~~~~~~~~~~
+   include/linux/printk.h:490:60: note: expanded from macro 'printk'
+     490 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:462:19: note: expanded from macro 'printk_index_wrap'
+     462 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ~~~~    ^~~~~~~~~~~
+>> drivers/acpi/prmt.c:156:29: warning: passing 1-byte aligned argument to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an unaligned pointer access [-Walign-mismatch]
+     156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+         |                                                  ^
+   drivers/acpi/prmt.c:159:21: warning: passing 1-byte aligned argument to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an unaligned pointer access [-Walign-mismatch]
+     159 |                         efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
+         |                                          ^
+   drivers/acpi/prmt.c:162:21: warning: passing 1-byte aligned argument to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an unaligned pointer access [-Walign-mismatch]
+     162 |                         efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+         |                                          ^
+   4 warnings generated.
 
 
+vim +88 drivers/acpi/prmt.c
 
-> ---
->  drivers/acpi/Kconfig               | 11 ++++++++++-
->  drivers/acpi/Makefile              |  2 +-
->  drivers/acpi/internal.h            | 25 +++++++++++++++++++++++++
->  drivers/acpi/sbshc.c               |  9 +--------
->  drivers/char/Kconfig               |  1 +
->  drivers/hwmon/Kconfig              |  3 ++-
->  drivers/platform/x86/Kconfig       | 22 ++++++++++++----------
->  drivers/platform/x86/dell/Kconfig  |  1 +
->  drivers/platform/x86/hp/Kconfig    |  1 +
->  drivers/platform/x86/intel/Kconfig |  2 +-
->  include/linux/acpi.h               |  8 ++++++--
->  11 files changed, 61 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index d67f63d93b2a..d65cd08ba8e1 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -132,8 +132,17 @@ config ACPI_REV_OVERRIDE_POSSIBLE
->  	  makes it possible to force the kernel to return "5" as the supported
->  	  ACPI revision via the "acpi_rev_override" command line switch.
->  
-> +config ACPI_EC
-> +	bool "Embedded Controller"
-> +	depends on HAS_IOPORT
-> +	default X86
-> +	help
-> +	  This driver handles communication with the microcontroller
-> +	  on many x86 laptops and other machines.
-> +
->  config ACPI_EC_DEBUGFS
->  	tristate "EC read/write access through /sys/kernel/debug/ec"
-> +	depends on ACPI_EC
->  	help
->  	  Say N to disable Embedded Controller /sys/kernel/debug interface
->  
-> @@ -433,7 +442,7 @@ config ACPI_HOTPLUG_IOAPIC
->  
->  config ACPI_SBS
->  	tristate "Smart Battery System"
-> -	depends on X86
-> +	depends on X86 && ACPI_EC
->  	select POWER_SUPPLY
->  	help
->  	  This driver supports the Smart Battery System, another
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index 61ca4afe83dc..40208a0f5dfb 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -41,7 +41,7 @@ acpi-y				+= resource.o
->  acpi-y				+= acpi_processor.o
->  acpi-y				+= processor_core.o
->  acpi-$(CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC) += processor_pdc.o
-> -acpi-y				+= ec.o
-> +acpi-$(CONFIG_ACPI_EC)		+= ec.o
->  acpi-$(CONFIG_ACPI_DOCK)	+= dock.o
->  acpi-$(CONFIG_PCI)		+= pci_root.o pci_link.o pci_irq.o
->  obj-$(CONFIG_ACPI_MCFG)		+= pci_mcfg.o
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index ced7dff9a5db..00910ccd7eda 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -215,6 +215,8 @@ extern struct acpi_ec *first_ec;
->  /* External interfaces use first EC only, so remember */
->  typedef int (*acpi_ec_query_func) (void *data);
->  
-> +#ifdef CONFIG_ACPI_EC
-> +
->  void acpi_ec_init(void);
->  void acpi_ec_ecdt_probe(void);
->  void acpi_ec_dsdt_probe(void);
-> @@ -231,6 +233,29 @@ void acpi_ec_flush_work(void);
->  bool acpi_ec_dispatch_gpe(void);
->  #endif
->  
-> +#else
-> +
-> +static inline void acpi_ec_init(void) {}
-> +static inline void acpi_ec_ecdt_probe(void) {}
-> +static inline void acpi_ec_dsdt_probe(void) {}
-> +static inline void acpi_ec_block_transactions(void) {}
-> +static inline void acpi_ec_unblock_transactions(void) {}
-> +static inline int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
-> +			      acpi_handle handle, acpi_ec_query_func func,
-> +			      void *data)
-> +{
-> +	return -ENXIO;
-> +}
-> +static inline void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit) {}
-> +static inline void acpi_ec_register_opregions(struct acpi_device *adev) {}
-> +
-> +static inline void acpi_ec_flush_work(void) {}
-> +static inline bool acpi_ec_dispatch_gpe(void)
-> +{
-> +	return false;
-> +}
-> +
-> +#endif
->  
->  /*--------------------------------------------------------------------------
->                                    Suspend/Resume
-> diff --git a/drivers/acpi/sbshc.c b/drivers/acpi/sbshc.c
-> index 16f2daaa2c45..2b63cd18cca2 100644
-> --- a/drivers/acpi/sbshc.c
-> +++ b/drivers/acpi/sbshc.c
-> @@ -14,6 +14,7 @@
->  #include <linux/module.h>
->  #include <linux/interrupt.h>
->  #include "sbshc.h"
-> +#include "internal.h"
->  
->  #define ACPI_SMB_HC_CLASS	"smbus_host_ctl"
->  #define ACPI_SMB_HC_DEVICE_NAME	"ACPI SMBus HC"
-> @@ -236,12 +237,6 @@ static int smbus_alarm(void *context)
->  	return 0;
->  }
->  
-> -typedef int (*acpi_ec_query_func) (void *data);
-> -
-> -extern int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
-> -			      acpi_handle handle, acpi_ec_query_func func,
-> -			      void *data);
-> -
->  static int acpi_smbus_hc_add(struct acpi_device *device)
->  {
->  	int status;
-> @@ -278,8 +273,6 @@ static int acpi_smbus_hc_add(struct acpi_device *device)
->  	return 0;
->  }
->  
-> -extern void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit);
-> -
->  static void acpi_smbus_hc_remove(struct acpi_device *device)
->  {
->  	struct acpi_smb_hc *hc;
-> diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
-> index 7c8dd0abcfdf..8fb33c90482f 100644
-> --- a/drivers/char/Kconfig
-> +++ b/drivers/char/Kconfig
-> @@ -238,6 +238,7 @@ config APPLICOM
->  config SONYPI
->  	tristate "Sony Vaio Programmable I/O Control Device support"
->  	depends on X86_32 && PCI && INPUT
-> +	depends on ACPI_EC || !ACPI
->  	help
->  	  This driver enables access to the Sony Programmable I/O Control
->  	  Device which can be found in many (all ?) Sony Vaio laptops.
-> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> index 65ea92529406..25ae0a00ea2c 100644
-> --- a/drivers/hwmon/Kconfig
-> +++ b/drivers/hwmon/Kconfig
-> @@ -1747,7 +1747,7 @@ source "drivers/hwmon/occ/Kconfig"
->  
->  config SENSORS_OXP
->  	tristate "OneXPlayer EC fan control"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on X86
->  	help
->  		If you say yes here you get support for fan readings and control over
-> @@ -2586,6 +2586,7 @@ config SENSORS_ASUS_WMI
->  config SENSORS_ASUS_EC
->  	tristate "ASUS EC Sensors"
->  	depends on X86
-> +	depends on ACPI_EC
->  	help
->  	  If you say yes here you get support for the ACPI embedded controller
->  	  hardware monitoring interface found in ASUS motherboards. The driver
-> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-> index 3875abba5a79..0258dd879d64 100644
-> --- a/drivers/platform/x86/Kconfig
-> +++ b/drivers/platform/x86/Kconfig
-> @@ -52,6 +52,7 @@ config WMI_BMOF
->  config HUAWEI_WMI
->  	tristate "Huawei WMI laptop extras driver"
->  	depends on ACPI_BATTERY
-> +	depends on ACPI_EC
->  	depends on ACPI_WMI
->  	depends on INPUT
->  	select INPUT_SPARSEKMAP
-> @@ -147,7 +148,7 @@ config YT2_1380
->  
->  config ACERHDF
->  	tristate "Acer Aspire One temperature and fan driver"
-> -	depends on ACPI && THERMAL
-> +	depends on ACPI_EC && THERMAL
->  	select THERMAL_GOV_BANG_BANG
->  	help
->  	  This is a driver for Acer Aspire One netbooks. It allows to access
-> @@ -186,6 +187,7 @@ config ACER_WMI
->  	depends on SERIO_I8042
->  	depends on INPUT
->  	depends on RFKILL || RFKILL = n
-> +	depends on ACPI_EC
->  	depends on ACPI_WMI
->  	depends on ACPI_VIDEO || ACPI_VIDEO = n
->  	depends on HWMON
-> @@ -334,7 +336,7 @@ config MERAKI_MX100
->  
->  config EEEPC_LAPTOP
->  	tristate "Eee PC Hotkey Driver"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on INPUT
->  	depends on RFKILL || RFKILL = n
->  	depends on ACPI_VIDEO || ACPI_VIDEO = n
-> @@ -503,7 +505,7 @@ config SENSORS_HDAPS
->  
->  config THINKPAD_ACPI
->  	tristate "ThinkPad ACPI Laptop Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on ACPI_BATTERY
->  	depends on INPUT
->  	depends on RFKILL || RFKILL = n
-> @@ -682,7 +684,7 @@ config MEEGOPAD_ANX7428
->  
->  config MSI_EC
->  	tristate "MSI EC Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on ACPI_BATTERY
->  	help
->  	  This driver allows various MSI laptops' functionalities to be
-> @@ -690,7 +692,7 @@ config MSI_EC
->  
->  config MSI_LAPTOP
->  	tristate "MSI Laptop Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on BACKLIGHT_CLASS_DEVICE
->  	depends on ACPI_VIDEO || ACPI_VIDEO = n
->  	depends on RFKILL
-> @@ -796,7 +798,7 @@ config SAMSUNG_LAPTOP
->  
->  config SAMSUNG_Q10
->  	tristate "Samsung Q10 Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	select BACKLIGHT_CLASS_DEVICE
->  	help
->  	  This driver provides support for backlight control on Samsung Q10
-> @@ -804,7 +806,7 @@ config SAMSUNG_Q10
->  
->  config ACPI_TOSHIBA
->  	tristate "Toshiba Laptop Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on ACPI_BATTERY
->  	depends on ACPI_WMI
->  	select LEDS_CLASS
-> @@ -904,7 +906,7 @@ config ACPI_CMPC
->  
->  config COMPAL_LAPTOP
->  	tristate "Compal (and others) Laptop Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on BACKLIGHT_CLASS_DEVICE
->  	depends on ACPI_VIDEO || ACPI_VIDEO = n
->  	depends on RFKILL
-> @@ -949,7 +951,7 @@ config PANASONIC_LAPTOP
->  
->  config SONY_LAPTOP
->  	tristate "Sony Laptop Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on ACPI_VIDEO || ACPI_VIDEO = n
->  	depends on BACKLIGHT_CLASS_DEVICE
->  	depends on INPUT
-> @@ -972,7 +974,7 @@ config SONYPI_COMPAT
->  
->  config SYSTEM76_ACPI
->  	tristate "System76 ACPI Driver"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on ACPI_BATTERY
->  	depends on HWMON
->  	depends on INPUT
-> diff --git a/drivers/platform/x86/dell/Kconfig b/drivers/platform/x86/dell/Kconfig
-> index 68a49788a396..dc21227dd66e 100644
-> --- a/drivers/platform/x86/dell/Kconfig
-> +++ b/drivers/platform/x86/dell/Kconfig
-> @@ -194,6 +194,7 @@ config DELL_WMI
->  config DELL_WMI_PRIVACY
->  	bool "Dell WMI Hardware Privacy Support"
->  	depends on DELL_WMI
-> +	depends on ACPI_EC
->  	help
->  	  This option adds integration with the "Dell Hardware Privacy"
->  	  feature of Dell laptops to the dell-wmi driver.
-> diff --git a/drivers/platform/x86/hp/Kconfig b/drivers/platform/x86/hp/Kconfig
-> index d776761cd5fd..dd51491b9bcd 100644
-> --- a/drivers/platform/x86/hp/Kconfig
-> +++ b/drivers/platform/x86/hp/Kconfig
-> @@ -37,6 +37,7 @@ config HP_ACCEL
->  config HP_WMI
->  	tristate "HP WMI extras"
->  	default m
-> +	depends on ACPI_EC
->  	depends on ACPI_WMI
->  	depends on INPUT
->  	depends on RFKILL || RFKILL = n
-> diff --git a/drivers/platform/x86/intel/Kconfig b/drivers/platform/x86/intel/Kconfig
-> index ad50bbabec61..eb698dcb9af9 100644
-> --- a/drivers/platform/x86/intel/Kconfig
-> +++ b/drivers/platform/x86/intel/Kconfig
-> @@ -62,7 +62,7 @@ config INTEL_INT0002_VGPIO
->  
->  config INTEL_OAKTRAIL
->  	tristate "Intel Oaktrail Platform Extras"
-> -	depends on ACPI
-> +	depends on ACPI_EC
->  	depends on ACPI_VIDEO || ACPI_VIDEO=n
->  	depends on RFKILL && BACKLIGHT_CLASS_DEVICE && ACPI
->  	help
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 4d5ee84c468b..7dd24acd9ffe 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1164,8 +1164,6 @@ int acpi_subsys_suspend_noirq(struct device *dev);
->  int acpi_subsys_suspend(struct device *dev);
->  int acpi_subsys_freeze(struct device *dev);
->  int acpi_subsys_poweroff(struct device *dev);
-> -void acpi_ec_mark_gpe_for_wake(void);
-> -void acpi_ec_set_gpe_wake_mask(u8 action);
->  int acpi_subsys_restore_early(struct device *dev);
->  #else
->  static inline int acpi_subsys_prepare(struct device *dev) { return 0; }
-> @@ -1176,6 +1174,12 @@ static inline int acpi_subsys_suspend(struct device *dev) { return 0; }
->  static inline int acpi_subsys_freeze(struct device *dev) { return 0; }
->  static inline int acpi_subsys_poweroff(struct device *dev) { return 0; }
->  static inline int acpi_subsys_restore_early(struct device *dev) { return 0; }
-> +#endif
-> +
-> +#if defined(CONFIG_ACPI_EC) && defined(CONFIG_PM_SLEEP)
-> +void acpi_ec_mark_gpe_for_wake(void);
-> +void acpi_ec_set_gpe_wake_mask(u8 action);
-> +#else
->  static inline void acpi_ec_mark_gpe_for_wake(void) {}
->  static inline void acpi_ec_set_gpe_wake_mask(u8 action) {}
->  #endif
+    74	
+    75	static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+    76	{
+    77		efi_memory_desc_t *md;
+    78		u64 pa_offset = pa & ~PAGE_MASK;
+    79		u64 page = pa & PAGE_MASK;
+    80	
+    81		for_each_efi_memory_desc(md) {
+    82			if ((md->attribute & EFI_MEMORY_RUNTIME) &&
+    83			    (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)) {
+    84				return pa_offset + md->virt_addr + page - md->phys_addr;
+    85			}
+    86		}
+    87	
+  > 88		pr_warn("Failed to find VA for GUID: %pUL, PA: %p", guid, pa);
+    89	
+    90		return 0;
+    91	}
+    92	
+    93	#define get_first_handler(a) ((struct acpi_prmt_handler_info *) ((char *) (a) + a->handler_info_offset))
+    94	#define get_next_handler(a) ((struct acpi_prmt_handler_info *) (sizeof(struct acpi_prmt_handler_info) + (char *) a))
+    95	
+    96	static int __init
+    97	acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+    98	{
+    99		struct acpi_prmt_module_info *module_info;
+   100		struct acpi_prmt_handler_info *handler_info;
+   101		struct prm_handler_info *th;
+   102		struct prm_module_info *tm;
+   103		u64 *mmio_count;
+   104		u64 cur_handler = 0;
+   105		u32 module_info_size = 0;
+   106		u64 mmio_range_size = 0;
+   107		void *temp_mmio;
+   108	
+   109		module_info = (struct acpi_prmt_module_info *) header;
+   110		module_info_size = struct_size(tm, handlers, module_info->handler_info_count);
+   111		tm = kmalloc(module_info_size, GFP_KERNEL);
+   112		if (!tm)
+   113			goto parse_prmt_out1;
+   114	
+   115		guid_copy(&tm->guid, (guid_t *) module_info->module_guid);
+   116		tm->major_rev = module_info->major_rev;
+   117		tm->minor_rev = module_info->minor_rev;
+   118		tm->handler_count = module_info->handler_info_count;
+   119		tm->updatable = true;
+   120	
+   121		if (module_info->mmio_list_pointer) {
+   122			/*
+   123			 * Each module is associated with a list of addr
+   124			 * ranges that it can use during the service
+   125			 */
+   126			mmio_count = (u64 *) memremap(module_info->mmio_list_pointer, 8, MEMREMAP_WB);
+   127			if (!mmio_count)
+   128				goto parse_prmt_out2;
+   129	
+   130			mmio_range_size = struct_size(tm->mmio_info, addr_ranges, *mmio_count);
+   131			tm->mmio_info = kmalloc(mmio_range_size, GFP_KERNEL);
+   132			if (!tm->mmio_info)
+   133				goto parse_prmt_out3;
+   134	
+   135			temp_mmio = memremap(module_info->mmio_list_pointer, mmio_range_size, MEMREMAP_WB);
+   136			if (!temp_mmio)
+   137				goto parse_prmt_out4;
+   138			memmove(tm->mmio_info, temp_mmio, mmio_range_size);
+   139		} else {
+   140			tm->mmio_info = kmalloc(sizeof(*tm->mmio_info), GFP_KERNEL);
+   141			if (!tm->mmio_info)
+   142				goto parse_prmt_out2;
+   143	
+   144			tm->mmio_info->mmio_count = 0;
+   145		}
+   146	
+   147		INIT_LIST_HEAD(&tm->module_list);
+   148		list_add(&tm->module_list, &prm_module_list);
+   149	
+   150		handler_info = get_first_handler(module_info);
+   151		do {
+   152			th = &tm->handlers[cur_handler];
+   153	
+   154			guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+   155			th->handler_addr =
+ > 156				(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+   157	
+   158			th->static_data_buffer_addr =
+   159				efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
+   160	
+   161			th->acpi_param_buffer_addr =
+   162				efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+   163	
+   164		} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
+   165	
+   166		return 0;
+   167	
+   168	parse_prmt_out4:
+   169		kfree(tm->mmio_info);
+   170	parse_prmt_out3:
+   171		memunmap(mmio_count);
+   172	parse_prmt_out2:
+   173		kfree(tm);
+   174	parse_prmt_out1:
+   175		return -ENOMEM;
+   176	}
+   177	
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
