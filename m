@@ -1,212 +1,247 @@
-Return-Path: <linux-acpi+bounces-8751-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8752-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34C799C97E
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 13:54:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC9D99C9FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 14:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C8741F24DC7
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 11:54:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6480CB24235
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 12:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8E519E990;
-	Mon, 14 Oct 2024 11:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Oj3f4Ga7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033EF19F43B;
+	Mon, 14 Oct 2024 12:22:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB8919340F
-	for <linux-acpi@vger.kernel.org>; Mon, 14 Oct 2024 11:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F707E574;
+	Mon, 14 Oct 2024 12:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728906876; cv=none; b=Flbv69bDvGCtPPaIdOK9ZoKNtj+7vFbxbe+/AJPmtxGjcFmc7UEGlqo+XHfwTlwipCnCCPwChobDMWUPGo5W7oZ6hWwOj/TTo7fuAPSxJXLM1j81ZHBN2nBgcGPQgRG/MM51w2Hj37waurWes1P1g87KDnHa1Dck435mAAgYJHc=
+	t=1728908553; cv=none; b=D10Y2/TJGV+0Mx8xyAa5Wk6cM104xD1t6AkMuPibdO+KZ1WveoAOO+nLPHx7ZdjJMU8IxU+DapeTY+j+NQoZPIBXU7uACiLltfP333QhCbvzzz6/B2VI4eaa9LcAsmG3xkp7RAtyQOWBbcZ+WGZ6+nhLpsAG/LELMpxu5DDq4YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728906876; c=relaxed/simple;
-	bh=PXrpMgAf1em09n35snAXFKH9s/dIccNzU92Hs01D30I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VB+cnZMtmvqmXvGBWJBkdCE70uMvDH2UXBCv82uUwxNePWTu3YguRuD142qwCKketP86WtF1gTbCJ1UirN8P/E6ihW4RUHcf/GC21iozlS410jhUfBxud5C85yBbtMfgAZNrDQ6pllyf5NjIOfXN7fnHAFH1OZ8J8Yg2aSz0/hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Oj3f4Ga7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728906874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Sw8SdMoxvkqT+oJ6QjaS4Mdlocpgg8B3j/K0BV38W8E=;
-	b=Oj3f4Ga7WNmJFjCvbFdfIcfT4ACaH2ZHv7cw2UgspoOYhss1hM8hgdSEx6OgBwtozFxKdS
-	laF4ZVPY+YJL5sTEHHCwRTedDEIp5injzCTeR2kudZuYRDOJxIZoR+bx3VQZZ248DLE6wJ
-	139hjOpxUj6AInjygaLdz6/ZDoukFCI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-08QeHHMhOHCD7VraVeH-CA-1; Mon, 14 Oct 2024 07:54:32 -0400
-X-MC-Unique: 08QeHHMhOHCD7VraVeH-CA-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-37d5ca5bfc8so1276083f8f.0
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Oct 2024 04:54:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728906871; x=1729511671;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sw8SdMoxvkqT+oJ6QjaS4Mdlocpgg8B3j/K0BV38W8E=;
-        b=FQcOHMFl+8yjmD+gPSHzedjq89u52rUlwUEAvHFxxHbXqpECDHcUgMmHsUZpWkfv8P
-         DXCL433My9NGeOruU4LxU/xUTBUxlVdp2KMc/MMv3Z+6pJxqleCaqmHQ/Eq4FudY+X5A
-         lXNXuBjKcH4qpGVxdU2/3thAY/lQ0IxnRb88wJiDCD493Mvl9nqarXiU+JVa0KrYlBbA
-         WXy8DFmeJAiaE3Cm1TaA/AxotNz4arkQWE1EY57uC2bZGOgdZDbZ1QKJmNjp96jKp+ZC
-         veX+Wbl7elQ/5MNHdmZNjaJus71w+LQgVriZWf1OSVG7326uLLYzzzzrCo9IkYQyM5xu
-         YOoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXyr6FYYYmxHCc9nrZnfxdIMBmr2B7OQZ9o5fXQAcxJaBPOVw73NIlSf+M1zX7jzeTu04KEyMMbqVjj@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTHviBRub0pzkwsE1eNDr7wX8K1Mrudwxhk14k4HucuGwO1plJ
-	0TsGzXzdfRrXIh2go8kJQ2mkuMLL41Jj9pgeB3jXvu3TQAKcazPRKmYJolDeH6Cbx2W0HzcFDL0
-	O/IRO7Rndfzuv/6MsdBUOtIAN+fqPXZtfGVc0EQfvEX9lyCx/DYDXYUmlVww=
-X-Received: by 2002:a05:6000:1092:b0:375:c4c7:c7ac with SMTP id ffacd0b85a97d-37d552cb121mr7706961f8f.49.1728906870996;
-        Mon, 14 Oct 2024 04:54:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEACD/nWJW6zvguB1SSmBU+FZvicY4wNaBqIk+Gz5VEXsWYT2ZpRvnBnDHGA7inU6EB3h6eQw==
-X-Received: by 2002:a05:6000:1092:b0:375:c4c7:c7ac with SMTP id ffacd0b85a97d-37d552cb121mr7706932f8f.49.1728906870578;
-        Mon, 14 Oct 2024 04:54:30 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6bd584sm11152917f8f.31.2024.10.14.04.54.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 04:54:30 -0700 (PDT)
-Message-ID: <2c854e5e-c200-4ed9-bf21-778779af7e5b@redhat.com>
-Date: Mon, 14 Oct 2024 13:54:27 +0200
+	s=arc-20240116; t=1728908553; c=relaxed/simple;
+	bh=KYuZko1HpxDoLSWLWeZMeIWV/ky/H3yVkCUVxDuGZxQ=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ur4Ye6FvL9sFbM6+dB32zodmLr1yLgg2yqcjznumsNyHY7xrO1mr7ANUsWKhLXqjGX/9aqSOTnkkc9CJVDomGKwCOmqVp4v/sLF2aLjc7zNIBbkKa4VZuOGcJL9wnMdQYue4VayNSkcFyO6ZHIeDq5RUorkJx5rpWmg+RFp0Als=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XRxBV4zQKzkWhL;
+	Mon, 14 Oct 2024 20:20:02 +0800 (CST)
+Received: from kwepemd200010.china.huawei.com (unknown [7.221.188.124])
+	by mail.maildlp.com (Postfix) with ESMTPS id CE3451402CA;
+	Mon, 14 Oct 2024 20:22:28 +0800 (CST)
+Received: from [10.174.162.134] (10.174.162.134) by
+ kwepemd200010.china.huawei.com (7.221.188.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Mon, 14 Oct 2024 20:22:27 +0800
+Subject: Re: [PATCH v2] ACPI: GTDT: Tighten the check for the array of
+ platform timer structures
+To: Marc Zyngier <maz@kernel.org>
+CC: <lpieralisi@kernel.org>, <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
+	<mark.rutland@arm.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<daniel.lezcano@linaro.org>, <tglx@linutronix.de>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20241012085343.6594-1-zhengzengkai@huawei.com>
+ <8734l1usxe.wl-maz@kernel.org>
+From: Zheng Zengkai <zhengzengkai@huawei.com>
+Message-ID: <f316e8b5-c4c9-da6f-26e8-395cb7500f1d@huawei.com>
+Date: Mon, 14 Oct 2024 20:22:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] memory: extern memory_block_size_bytes and
- set_memory_block_size_order
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-cxl@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- akpm@linux-foundation.org, dan.j.williams@intel.com,
- Jonathan.Cameron@huawei.com, alison.schofield@intel.com, rrichter@amd.com,
- terry.bowman@amd.com, lenb@kernel.org, dave.jiang@intel.com,
- ira.weiny@intel.com
-References: <20241008044355.4325-1-gourry@gourry.net>
- <20241008044355.4325-2-gourry@gourry.net>
- <039e8c87-c5da-4469-b10e-e57dd5662cff@redhat.com>
- <ZwVG8Z3GRYLoL_Jk@PC2K9PVX.TheFacebook.com>
- <d3203f2c-eff6-4e84-80cd-3c6f58dab292@redhat.com>
- <ZwVOE6JRS8Fd9_a8@PC2K9PVX.TheFacebook.com>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <ZwVOE6JRS8Fd9_a8@PC2K9PVX.TheFacebook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <8734l1usxe.wl-maz@kernel.org>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemd200010.china.huawei.com (7.221.188.124)
 
-On 08.10.24 17:21, Gregory Price wrote:
-> On Tue, Oct 08, 2024 at 05:02:33PM +0200, David Hildenbrand wrote:
->> On 08.10.24 16:51, Gregory Price wrote:
->>>>> +int __weak set_memory_block_size_order(unsigned int order)
->>>>> +{
->>>>> +	return -ENODEV;
->>>>> +}
->>>>> +EXPORT_SYMBOL_GPL(set_memory_block_size_order);
->>>>
->>>> I can understand what you are trying to achieve, but letting arbitrary
->>>> modules mess with this sounds like a bad idea.
->>>>
->>>
->>> I suppose the alternative is trying to scan the CEDT from inside each
->>> machine, rather than the ACPI driver?  Seems less maintainable.
->>>
->>> I don't entirely disagree with your comment.  I hummed and hawwed over
->>> externing this - hence the warning in the x86 machine.
->>>
->>> Open to better answers.
+Hi Marc,
+
+ÔÚ 2024/10/13 1:34, Marc Zyngier Ð´µÀ:
+> On Sat, 12 Oct 2024 09:53:43 +0100,
+> Zheng Zengkai <zhengzengkai@huawei.com> wrote:
+>> As suggested by Marc and Lorenzo, first we need to check whether the
+>> platform_timer entry pointer is within gtdt bounds (< gtdt_end) before
+>> de-referencing what it points at to detect the length of the platform
+>> timer struct and then check that the length of current platform_timer
+>> struct is within gtdt_end too. Now next_platform_timer() only checks
+>> against gtdt_end for the entry of subsequent platform timer without
+>> checking the length of it and will not report error if the check failed.
 >>
->> Maybe an interface to add more restrictions on the maximum size might be
->> better (instead of setting the size/order, you would impose another upper
->> limit).
-> 
-> That is effectively what set_memory_block_size_order is, though.  Once
-> blocks are exposed to the allocators, its no longer safe to change the
-> size (in part because it was built assuming it wouldn't change, but I
-> imagine there are other dragons waiting in the shadows to bite me).
+>> Add check against table length (gtdt_end) for each element of platform
+>> timer array in acpi_gtdt_init() early, making sure that both their entry
+>> and length actually fit in the table.
+>>
+>> For the first platform timer, keep the check against the end of the
+>> acpi_table_gtdt struct, it is unnecessary for subsequent platform timer.
+> Really?
+>
+>> Suggested-by: Marc Zyngier <maz@kernel.org>
+>> Suggested-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
+>> ---
+>> Changes in v2:
+>> - Check against gtdt_end for both entry and len of each array element
+>>
+>> v1: https://lore.kernel.org/all/20241010144703.113728-1-zhengzengkai@huawei.com/
+>> ---
+>>   drivers/acpi/arm64/gtdt.c | 19 +++++++++++++++----
+>>   1 file changed, 15 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+>> index c0e77c1c8e09..f5f62643899d 100644
+>> --- a/drivers/acpi/arm64/gtdt.c
+>> +++ b/drivers/acpi/arm64/gtdt.c
+>> @@ -157,6 +157,8 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
+>>   {
+>>   	void *platform_timer;
+>>   	struct acpi_table_gtdt *gtdt;
+>> +	struct acpi_gtdt_header *gh;
+>> +	void *struct_end;
+>>   
+>>   	gtdt = container_of(table, struct acpi_table_gtdt, header);
+>>   	acpi_gtdt_desc.gtdt = gtdt;
+>> @@ -177,11 +179,20 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
+>>   	}
+>>   
+>>   	platform_timer = (void *)gtdt + gtdt->platform_timer_offset;
+>> -	if (platform_timer < (void *)table + sizeof(struct acpi_table_gtdt)) {
+>> -		pr_err(FW_BUG "invalid timer data.\n");
+>> -		return -EINVAL;
+>> +	struct_end = (void *)table + sizeof(struct acpi_table_gtdt);
+>> +	for (int i = 0; i < gtdt->platform_timer_count; i++) {
+>> +		gh = platform_timer;
+>> +		if (((i == 0 && platform_timer >= struct_end) || i != 0) &&
+> Why is only index 0 checked against the end of the table? Shouldn't
+> int be an invariant that all timer descriptions must not intersect
+> with the non-variable part of the GTDT table?
 
-Yes, we must run very early.
 
-How is this supposed to interact with code like
+AFAICS, after checking against the end of the acpi_table_gtdt struct for the
 
-set_block_size()
+first platform timer, the subsequent platform_timer pointer value
 
-that also calls set_memory_block_size_order() on UV systems (assuming 
-there will be CXL support sooner or later?)?
+computed via "platform_timer + gh->length" will also pass the check,
+
+as the gh->length is of u16 type.
 
 
-> 
-> So this would basically amount to a lock-bit being set in the architecture,
-> beyond which block size can no longer be changed and a big ol' splat
-> can be generated that says "NO TOUCH".
-> 
->> Just imagine having various users of such an interface ..
-> 
-> I don't wanna D:
+>> +			platform_timer < acpi_gtdt_desc.gtdt_end &&
+>> +			platform_timer + gh->length <= acpi_gtdt_desc.gtdt_end) {
+> Surely, assuming that length isn't zero, if the last term is true, the
+> previous one also is? And what if it is 0?
 
-Right, and it also doesn't make sense as explained in my other comment: 
-this should never apply to loaded modules. :)
 
--- 
-Cheers,
+Agree , the length should also be checked against 0,
 
-David / dhildenb
+but I think we should first check the platform_timer entry pointer,
 
+then check the size of the same platform_timer structure,
+
+not check them in the opposite order.
+
+
+> Again, you cannot trust *anything* you find in the ACPI table.
+>
+>> +			platform_timer += gh->length;
+> You are also reinventing the wheel, and repeating some of the worse
+> constructs in this code. It would be much better to build on (and
+> augment) the existing primitives to make the code *readable* instead
+> of being this pointer soup. Believe it or not, there is some value in
+> abstracting things.
+
+
+Yes. Abstract things common and reuse it is better.
+
+
+> I came up with the patchlet below, very lightly tested on my
+> Synquacer. It may not be optimal, but given that this is used exactly
+> once per boot, I'm sure we can afford a few extra comparisons. It
+> makes the iterator robust, and then uses that to implement the checks.
+>
+> 	M.
+>
+> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+> index c0e77c1c8e09d..dca814183cc5c 100644
+> --- a/drivers/acpi/arm64/gtdt.c
+> +++ b/drivers/acpi/arm64/gtdt.c
+> @@ -36,15 +36,24 @@ struct acpi_gtdt_descriptor {
+>   
+>   static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
+>   
+> -static inline __init void *next_platform_timer(void *platform_timer)
+> +static __init bool platform_timer_valid(void *platform_timer)
+>   {
+>   	struct acpi_gtdt_header *gh = platform_timer;
+>   
+> -	platform_timer += gh->length;
+> -	if (platform_timer < acpi_gtdt_desc.gtdt_end)
+> -		return platform_timer;
+> +	return (gh->length != 0 &&
+
+
+Shall we first check against gtdt_end for the platform_timer entry?
+
+making sure that platform timer entry(the gh) is within gtdt_end
+
+and valid
+
+
+Thanks!
+
+
+> +		platform_timer >= (void *)(acpi_gtdt_desc.gtdt + 1) &&
+> +		platform_timer + gh->length <= acpi_gtdt_desc.gtdt_end);
+> +}
+> +
+> +static __init void *next_platform_timer(void *platform_timer)
+> +{
+> +	struct acpi_gtdt_header *gh = platform_timer;
+>   
+> -	return NULL;
+> +	if (!platform_timer_valid(platform_timer) ||
+> +	    !platform_timer_valid(platform_timer + gh->length))
+> +		return NULL;
+> +
+> +	return platform_timer + gh->length;
+>   }
+>   
+>   #define for_each_platform_timer(_g)				\
+> @@ -155,8 +164,9 @@ bool __init acpi_gtdt_c3stop(int type)
+>   int __init acpi_gtdt_init(struct acpi_table_header *table,
+>   			  int *platform_timer_count)
+>   {
+> -	void *platform_timer;
+> +	void *platform_timer, *tmp;
+>   	struct acpi_table_gtdt *gtdt;
+> +	int cnt = 0;
+>   
+>   	gtdt = container_of(table, struct acpi_table_gtdt, header);
+>   	acpi_gtdt_desc.gtdt = gtdt;
+> @@ -177,7 +187,12 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
+>   	}
+>   
+>   	platform_timer = (void *)gtdt + gtdt->platform_timer_offset;
+> -	if (platform_timer < (void *)table + sizeof(struct acpi_table_gtdt)) {
+> +	for (tmp = platform_timer;
+> +	     tmp && platform_timer_valid(tmp);
+> +	     tmp = next_platform_timer(tmp))
+> +		cnt++;
+> +
+> +	if (cnt != gtdt->platform_timer_count) {
+>   		pr_err(FW_BUG "invalid timer data.\n");
+>   		return -EINVAL;
+>   	}
+>
 
