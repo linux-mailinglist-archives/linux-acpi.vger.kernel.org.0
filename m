@@ -1,249 +1,242 @@
-Return-Path: <linux-acpi+bounces-8783-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8784-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5221899D889
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 22:53:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E2A99D9D9
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 00:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B78B3B219BF
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 20:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13CFE2811C4
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 22:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662BA1D0796;
-	Mon, 14 Oct 2024 20:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052041D4341;
+	Mon, 14 Oct 2024 22:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H5FsnsKa"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="sdbVnrpc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576211A76B4;
-	Mon, 14 Oct 2024 20:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728939172; cv=fail; b=LylULQe2CFl02xrQkH27W6f1DK7TWVWom/WSGyiuZFWzjhYXoAYrCAqTFz04MWHuUrvInn0KRIyaUmWxnu1Zzr5yFM639VI63kWZsm4HTTms5/F8to2j212eQinF4AWOADHqFZleq+HXvP8/7qHVNGX5LmVZ6Uh6GwYq5e3Tn80=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728939172; c=relaxed/simple;
-	bh=GXDEJo1oqAuHGnmtu7QEspqM1c258jrvHATh+a5Mj7g=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z/JdA6DGXX/6s9Ro0h4j+iVOvp/BNw2GnB+n1lqfkKOHxWB5gAMMwYuhuT9coQQzkAnyIPlVG4+1HKl8VaAYuXwGFKIGpjcHI5qEZNQTHXN5yxFqre0hCd5pjy9JM0CnHvMBITLs47dQvhoEaYP0IV8IkebLgGG/kMOZwDNXXWo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H5FsnsKa; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728939170; x=1760475170;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=GXDEJo1oqAuHGnmtu7QEspqM1c258jrvHATh+a5Mj7g=;
-  b=H5FsnsKal6q/gY1z1py7wMh454UqanmZUaLjNimpHGKYeao3WTANY0Sa
-   g7+zdK8CHOFRXVB+13fnL9w6lq7fibYF+Gs2+EdvkxsfDrqNSDO6M+tmj
-   rNzQ6WySpjq0M8fptHCF7XAFarGZAoPr2EKgWn1xmUbfOaX8cxl0+ZTh+
-   gOjU1lP8+kdWwM/jJqNZDcETEb8o28LcR6d//ZqKHGyYf1zw4ym0VAO+i
-   lNq8FYxqasp8kRAuRxINFKr94l8/bcvVgYed7oBinxcRSej0/HYZh/0UK
-   4PAYs5nWWQ1qFGpwOgl+0c3Tpmta+bBbnNB04qbuv4Wnl5iR0sTlRusdw
-   Q==;
-X-CSE-ConnectionGUID: ZpobdXWDS9WZsAkkxPiB4A==
-X-CSE-MsgGUID: ASWVCKmaTvilzcUBPhaD+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="38943548"
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
-   d="scan'208";a="38943548"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 13:52:49 -0700
-X-CSE-ConnectionGUID: jl6+17TGQgaDA1CK1LsX8A==
-X-CSE-MsgGUID: KodWv6QjRYaoDQ8t2c7uSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
-   d="scan'208";a="81660504"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Oct 2024 13:52:49 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 14 Oct 2024 13:52:49 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 14 Oct 2024 13:52:49 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.48) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 14 Oct 2024 13:52:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ijh6PAGPC5qdzweri2ybASak+6hlrXPAUHkpmz7UFl80c7GMkVnKgi+ZIXH/KTU5Em/GBFbiRWiqKnQw9tNpeJBSYtgTOo/tBFP/Gae/sgg2JvINW1TKraYyQj5Zy7vGC/9tTKeVBYdYdkHKZFos7C/8w/E3zxlS8LyUhMYm2afxV7ho1HtEunsjCRvhLDnb8GHfMKqVA1lsv2Xm6ZwsFOd14KT6RHKYJxkJj+iqOygr+ne1K6EwdwZrsbP5vrK33leksZQAJ4FrWaIzN7Rf+cVUQu4VScXoq8H2eAbVL6R1fyxjBYEBaobEzGqjc4v8n/sOSDY6oakuaK3UE/C+LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X+54c6lB8xWVPIgbLfsNVeAUqO9co3OyXFUcbQ6Myv4=;
- b=ODoNbjlMibm2nqpHFMdgqZ6Fv/91IwVuBhaaXRBjoi8P526EkkCv3POv0cBtqwjIChvIvDxEZnaRzhdnU2jghmQyMr8BVN1baju16SJpZKZdofAeTyRiYsGIAl2MK4IInys+d3cPX2CEzzcNTWOzNOEQzY+U++H60Z2Sl6SS6QK07Hf/mNH22ZIn9K2aehMgio8XDHSfRexmHTuh5BoiX/+VGNra27ssQu5u2LCqYDknLNkyX62EqGNcpX2Iebz1Z9XEZy3Ew19E3N/SAoYmd8OACRszyc1jCtO2lD3aC/7dXXelRuKmC8XX13LMZ6lp1Q+Jbon4/NMh6RPP+UEtAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW5PR11MB5810.namprd11.prod.outlook.com (2603:10b6:303:192::22)
- by IA0PR11MB7933.namprd11.prod.outlook.com (2603:10b6:208:407::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Mon, 14 Oct
- 2024 20:52:46 +0000
-Received: from MW5PR11MB5810.namprd11.prod.outlook.com
- ([fe80::3a48:8c93:a074:a69b]) by MW5PR11MB5810.namprd11.prod.outlook.com
- ([fe80::3a48:8c93:a074:a69b%5]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
- 20:52:46 +0000
-Message-ID: <29531a24-a86e-4e2d-9f7b-d886177099d7@intel.com>
-Date: Mon, 14 Oct 2024 22:52:34 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/28] cxl/cdat: Gather DSMAS data for DCD regions
-To: Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Dave Jiang <dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>, Navneet Singh
-	<navneet.singh@intel.com>, Jonathan Corbet <corbet@lwn.net>, Andrew Morton
-	<akpm@linux-foundation.org>, Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>, Alison Schofield
-	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
-	<linux-btrfs@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Robert Moore <robert.moore@intel.com>, "Len
- Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>
-References: <20241007-dcd-type2-upstream-v4-0-c261ee6eeded@intel.com>
- <20241007-dcd-type2-upstream-v4-12-c261ee6eeded@intel.com>
- <CAJZ5v0iFco4htzfW1sYYKKh67oe4GsnUBOPRiunHQ1n2FHa3hA@mail.gmail.com>
- <67098cb436d87_a55db294f8@iweiny-mobl.notmuch>
-Content-Language: en-US
-From: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
-In-Reply-To: <67098cb436d87_a55db294f8@iweiny-mobl.notmuch>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TLZP290CA0005.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::12) To MW5PR11MB5810.namprd11.prod.outlook.com
- (2603:10b6:303:192::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7C01D0F61
+	for <linux-acpi@vger.kernel.org>; Mon, 14 Oct 2024 22:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728945623; cv=none; b=GNCzeTFin8BJWkNb/G6kHMRC/fqEVlcITnUnstpSnHVZtHI5krtYMp3mQPGagAkPjm58xOW8Z1jrgbCk0CRc2j7NUeU+i7sc+BJV94b8CFnUW5dh03hhaq0lZJJWnjiGtrHIcRDwCscuQEVzXExQGz/Q6XsuNxwRh77U/tAZ7T0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728945623; c=relaxed/simple;
+	bh=eJB5nm0LGipv6GkGY/aV3TbZ2J8W3GzqGON/tG1P9rM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XZXemL/k/vwWg1ZgaXShQa/Bv8kjt6Tc9rpSds3trGcuUUV5eDqmtt/fI+lM2h9rf5XzQ02r09Us/nGFstaWCu6Jn7XNA4YHOEx3hTnh5OZY0v7/faCzF3JHr8k+y5n9lelY8bxDrPqu0D8knfKJf6DI6jaH3jBvkt/Tg99S5iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=sdbVnrpc; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6cbcd49b833so39845426d6.3
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Oct 2024 15:40:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1728945621; x=1729550421; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aYw/DowXMP8iT0vBm8bMBxhj8l9VIuy2ovueWWo/kGY=;
+        b=sdbVnrpc4qcOrKPNsoHaC9fqjG9Voe2SSIiI/Cr5MacX/6CVypRYnnq7dEovbpVlxQ
+         scyn/jP7ySDvyHgw1FfMaSaqeGQJgz8uRiVNsgyGnm+fXzV+8g6Qt4CLV+w5RGNkZ2CP
+         s7WoTnGNvvNO1njtc2IbRub/NFE4TiVYMqghqEJw0hrG9IqrOpt4vMrgGHD4tJj7lisc
+         +dwqXsgCV6KQgeSaW0Sd2rXgwtaGdyBaLvbhAGrfaWt18ITeXvRPHH9ulVzHJMjRSdkI
+         XQ8Ffz3qk0UQ7R28wWELQim97cIvQJKakWXCwbA7VHoo1Gl8VrUczX1P+9JDyz60MTs0
+         hLTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728945621; x=1729550421;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aYw/DowXMP8iT0vBm8bMBxhj8l9VIuy2ovueWWo/kGY=;
+        b=eX5S/ZVM/MePpR4qpWxuYIYg6n76bW07Hd8eWNBGrqOcpMkAKLV2VpVfoCan0U+7/6
+         3tXS/71Qcecv4oKMTsnyUDWSLhS7O+niwqsjG9GwMQcaE5/sr0XW8L2FwPK5FAiCiXSb
+         ZbZ2PQ1NgZx309HuaE1tVO18BJRYha43sG/F/hSAdSfOxN1obtjVpNIBqf1J0s62OPCd
+         DMDjxTwYjV3JYeCl0ba3RXqku7EBu/SAIyduJX8cAQ07YjzLfwyix73kDOmIQJz1Qxk0
+         PqQCswM2HLd9fEWNebd8cvCF+8lrNLZDvVOqRqmXZAsuPNN66xQRLDnPxkfKT/ScSQFh
+         22Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0VLicb+ArKDwwLyvHDnmkDmk5KNTkK//kCX63fCwxoG3PKpXoL2fbX5ZEDsHZ7OA2spMRTpV4ixH3@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZRtaCf0JyCARYu+JNUnF48Y7rfItckeZnNEIH8KWeOhrxDN46
+	CKwZAr3MXv80/qjpIiDbBfywRUw9RX1Qye8E1KKl/HqdWltEZEy63vxO1DLsqgvInSyG7Ugo0d8
+	z
+X-Google-Smtp-Source: AGHT+IEF3dKRKqarTnBYXO5TAih258zYEUVmUl9i+Hckz/OMf3T05ro3fHPweLsgT86eMNWxUx0sCQ==
+X-Received: by 2002:a05:6214:33c3:b0:6cc:1dd9:296 with SMTP id 6a1803df08f44-6cc1dd9048bmr26873916d6.0.1728945621142;
+        Mon, 14 Oct 2024 15:40:21 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cc22910ecfsm392706d6.23.2024.10.14.15.40.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 15:40:19 -0700 (PDT)
+Date: Mon, 14 Oct 2024 18:40:00 -0400
+From: Gregory Price <gourry@gourry.net>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-cxl@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+	osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+	akpm@linux-foundation.org, dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com, alison.schofield@intel.com,
+	rrichter@amd.com, terry.bowman@amd.com, lenb@kernel.org,
+	dave.jiang@intel.com, ira.weiny@intel.com
+Subject: Re: [PATCH 1/3] memory: extern memory_block_size_bytes and
+ set_memory_block_size_order
+Message-ID: <Zw2dwG_rp7Hg-vIa@PC2K9PVX.TheFacebook.com>
+References: <20241008044355.4325-1-gourry@gourry.net>
+ <20241008044355.4325-2-gourry@gourry.net>
+ <039e8c87-c5da-4469-b10e-e57dd5662cff@redhat.com>
+ <ZwVG8Z3GRYLoL_Jk@PC2K9PVX.TheFacebook.com>
+ <d3203f2c-eff6-4e84-80cd-3c6f58dab292@redhat.com>
+ <ZwVOE6JRS8Fd9_a8@PC2K9PVX.TheFacebook.com>
+ <2c854e5e-c200-4ed9-bf21-778779af7e5b@redhat.com>
+ <Zw0p7-7ymn-0bPiC@PC2K9PVX.TheFacebook.com>
+ <01fbdcef-b923-4bb0-80b0-f1d3e57fe515@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW5PR11MB5810:EE_|IA0PR11MB7933:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9eda861d-5fd2-4115-0947-08dcec9227e2
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UUw3cUVCWG5IVFVjamZBM3V4eEZJb3RJVmVsckRXT3RMTk1YZ1pTWUthaWVY?=
- =?utf-8?B?dHR0ckgvUWt0Y2JMVDBTdW0vdllPL0pkZmo1ZDFGZHFiMHlkK2ZIc3lyaGtU?=
- =?utf-8?B?VjRhRUJHQ0NHeHF2VkdleDNaN0ZWR21FYXNiaUR0SVdxd0NzZkYyendZb0ti?=
- =?utf-8?B?MFU5czJ0cDMrcDAxOGlubEhkQmpKaFRUVWVrSzVRMmdxVjJzQ1VVS1orRkp5?=
- =?utf-8?B?MGFQRzBxeHNZbE1FVmtxMGVDRHJKYWF2ais2NFVoT1Nzd0w2REZzazQ2VkJV?=
- =?utf-8?B?K21Vanhicmc3MXRuUFJxWmZLdU96Rmc2dk91Q2IxQnhGdENOci9kOXY2VWJH?=
- =?utf-8?B?MVd0Sm1WWmdtdHd4VVB0WC82SklKT096SkFCUEJmU2JhNFBGMDNuOGVORjRF?=
- =?utf-8?B?d2dEeGxDWWZqVlh1elhpeVd4RDZaMVRpWHNqbGpobVliVTRzckRZQWk5YkZv?=
- =?utf-8?B?azgvWXZrT1JtRkkyM3JqMGVKMVNHSEhzdm5rVnNNU3J3OHhKU2ZOb1IwdG1Q?=
- =?utf-8?B?N0gwUUFQOXpYMU9FU29iSmd5MWFidi84UDFRMCtlWWlnNmxWaUJWRmdMSzA2?=
- =?utf-8?B?RUlFZ0V1L2Naa1hSdTc4bTAwQ2pPWjM1SVhWZTRKdGxWWVhFUzYwN0hCNUtQ?=
- =?utf-8?B?MmtGdjJvYzQ5MzFKdTlxalFpUGZiNmMxVWFheHFNMzlObGdPVkYxbDRsTVU5?=
- =?utf-8?B?eUhTcFlZSCtlck5jWTZ0RzRHa3RGRUtxUkkxMXZCMlE5dVQweU1OaG00WDA2?=
- =?utf-8?B?NGtSYnN0UEpKS0tESFZyc0lzTlVVSWhVckhlbk5lY29uZ2N3eUhXY09iZ3FM?=
- =?utf-8?B?SllkbGhHeUtwUlBOWDJSU1k0cmdoTStKYzJ4R3hrQ3JUOHFPeElwYXZDMWly?=
- =?utf-8?B?cDhaWlJZN0ZHMFhFc3huZ3VGM0F6UVc0U0pncTRDak5MSi9GZHZvcFp2dE4w?=
- =?utf-8?B?L3hhQkh1bWEvMTUxK2dJYVM0cjZObC8yanNxcFVYR0ZBMVlOUXRPUEVOdHdj?=
- =?utf-8?B?bTgwUjlPTTYxUnFWZkpnbHVYT0xRQzZTUU16S1FrcnRwOE5pWEFsYWI1b0tZ?=
- =?utf-8?B?c1NOUHlUUlYxbFpwSlNyb0tTME5NUnFqK0h3cTZQWGhVQzFrZU4rcEFmaFdh?=
- =?utf-8?B?MVloZmVqUDZZK28rOWdWTk5DZEFTT044VE9qbmxtMVczNnhhMzF5OHR0alR6?=
- =?utf-8?B?Y2xmcWw5NG0yMDJoblBCVHBzd0lSRjFuTXNxT3NFNmU1eVJoWVh3RTFQQzAw?=
- =?utf-8?B?OXNOMm9lTERWdVk2cDJDbG4vd1BpT0luVExkb3l4M080emRTTWpkRlhNSVpY?=
- =?utf-8?B?cVlGS3N4anFtZURPVHBSQmxISjYxNXNSNDBxaEZoWk1VT3hPK1ZvQllWR3dG?=
- =?utf-8?B?elpSTWdEZWZEQlZ5bmwvRDFiZnpVSTdGRUE1NHZmbVVSYjhCaHNCL0d4ZWM0?=
- =?utf-8?B?ZzhnSzZEQTI4UDEyZDM0ZkFhaEZqQldWelo3blJBZjMrWkQ5b1dWUlB5eTV5?=
- =?utf-8?B?VjlOYnNLaVNzeUlMZUduSGU4RklWbkN6blFIeVlJRFBBMkdPeTVCdXdEUk9U?=
- =?utf-8?B?TGNlV3dkMEtSYWFIUkdqbGF5V0Rvbi9HSDV5U0NMODB1TVhBNi96YlRiSmFI?=
- =?utf-8?B?bTZnYWtZR0I4Wk51RVhNL0FmR1AyU0ZGdEZUYktSVUtaVHMyZ1FMVDRYVXQv?=
- =?utf-8?B?VnhmbzB0Y29kaWFMeUs2OTlVQ2kveFd0YU00Mi9heFZVbUFQWnpXdHl3PT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5810.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OG1jeDA1NUhEanZQam9seUc5Wm5XZFI3OUVVMytVY1JoZFNsbzFWUTF4aC9K?=
- =?utf-8?B?b3BJejFOcTF2Y2NzMXRzZ2JaWTBNQXc5dUNiTmJCazEyOG55WjkvS2ZpSElt?=
- =?utf-8?B?WXNpSkptNW5XU1NsYW5YWlQrQXE0Y3g1N2E5Qk10TEs4SVVNSVluSFdmYnor?=
- =?utf-8?B?VnA0b2VHWE5rcnNLMEJ1cmc2MCtpenJEWFpmNmY2OU94RXBrVC8ycUxzSjlU?=
- =?utf-8?B?RGt6QmwwS3Q3TTNtbnFQaWZaTmlUeWpLQ3g3MHhBMGNCT3BnL2V0V2NUS0FE?=
- =?utf-8?B?ejV2VlByK1hTUlJxYWxZdVRXWE55UXo5aTdlYVFEb1lSOFd4WmFhT2JvNERO?=
- =?utf-8?B?bHNGOFliejdnTG9LSWRSYmZLbThBaEIrUWZkRFhtTWp2c21DcTJtUTZnc3NX?=
- =?utf-8?B?VmRkRm1MYy8vcmt6SVZMRFg1MWd6bWZEK1RJeXZLbEo2VXhMbEZtd1Q3Sllt?=
- =?utf-8?B?YnZ5d2xGYnpjRlU0d01yeVhITzNMeGtEbm9KNzNUT1FMNDlQL2Q5cTd3cTlV?=
- =?utf-8?B?Q2VJcXJDQTBqZ2d0ZDlXeGVJeWtkNjF1b2RoYlFkdG05MkQvNTNicDZPUW1U?=
- =?utf-8?B?VVg0Tk5ib1JqY1ZHOGVKMGJCQk9OSGt0TVFFQ0x3clZHV0pzZDlNc2toMmlQ?=
- =?utf-8?B?c2s5d1JHaitjV0JheC85YUNaZ29CRmh6bWdlUlVUL1MzV2NNWnZBb3c3QlBu?=
- =?utf-8?B?RGQ3VFFtR3F5VUdxMDY5WUt0R3RwR3AxNEFCSTk2dUlXQ1ZBbHpGZmcydG1n?=
- =?utf-8?B?VXRIQnU0SVpqaFNvRFdoWlFwaEpMcUY4UXZUTUF0NXp4aWh4ZG1ybVRPMllD?=
- =?utf-8?B?a2RZUlRpSmloWldvSTZzbS9wQ0VuMkwxWXlzV0lxKyt6YUJwMlZER3cwV0ds?=
- =?utf-8?B?aVhobGttejlCWmQvNmZCaXYrVkc0b1ZPTFJFZHlaLzRhMk9zSEgyOEtwa2lD?=
- =?utf-8?B?RDI0VTdpSGJtODY2S1RTdHB0bTZySmQ3ODZkWVAyejE0L044djhGQlRDaWtT?=
- =?utf-8?B?bVh5b0U3OXdWaElUckNlbUx3dW1WcGpWN2VEaHRZOEpQRkRGTGJ1emk3dDVE?=
- =?utf-8?B?aXVCaEZpVTNVS2NnWGswZlowM0RxYnhZY0lnWTJsU0pDTEZFOXoxSHhGWFQz?=
- =?utf-8?B?S0srL1ZjUHpGZ0QzMmp0eEdnd25UY2kzS20xM2JvdnR0Q05PR29Qd2dJTDRD?=
- =?utf-8?B?YmFzTERwVWJ2SjFxcjJyM243ZG5hUStBRmlwUTAyY1I2bjl5bThPZ1BHeFBq?=
- =?utf-8?B?TUk4VWc0S3dwanV4djBUY1llbFhRY0l2eUpteFlRcG1PSGFiT1poVVVoQnA4?=
- =?utf-8?B?VU0yMHpWd1dtTUs1akNjZnFVTmVJWUxJT3RORHNvNWQxQVZlUFZMWk1KLzVa?=
- =?utf-8?B?MEk3QUNyZ3NMTGxKT3FxNnFkTVdac1VIWHFQT2NlYlhuK1ZEbFFYY3dmK3V4?=
- =?utf-8?B?K29hSklGNUt1SURZSm1Pa3JOTmt6NUFyY3dKY09qWnd4MDIrSTlZYUV6ZytP?=
- =?utf-8?B?T2pTTUFESEFLeFE1THZWNEZLc3F6SFp6UW1yUzRHZDZ3OVdhMytPVHJrTjYr?=
- =?utf-8?B?dkY2NHlIS0xnSGVjbmFTZ0dVN0pJMnZvQy9ET3FpcTNLeXVsUnplTFEybExR?=
- =?utf-8?B?TEVXbDBVNnF1a0kvOTZ5NVhwRERtaVg1UlBBREZ1aTNqcHBxMHo2d05IL3Z2?=
- =?utf-8?B?Y2NVak9zQ2M2YnNmVU9MZExEa3VadkNaQVU4UUoyOFlidFN0UmJnMk9INHA3?=
- =?utf-8?B?ckgxRjU3c3g4QVhoYzc0V2dDR3R1ZmZjU3QzRUFSOGdHTndqSjRSelgvUTcr?=
- =?utf-8?B?WXQxd2FkUHQyN2dEYUU1MTVsUi9BMlFPWkpYRUJzSkZHd3BWYWhOajRRQURX?=
- =?utf-8?B?Zmppa2dJYlF4OExtcGhuTjM3bGliRmsyWnhoTnI3a255dklnbVpvSmM5WCsy?=
- =?utf-8?B?SFJTOHpYUjVOWHQzWkJPNUlLb3RHVnZIOTg3TXQyZml6N216NFZlWkhaektq?=
- =?utf-8?B?dmhlOWtYYUdNWVJIZ21MaTVoZ2twT3VzQW9ObVNNYjV6MUg1bVRjeGJSc3o3?=
- =?utf-8?B?NXdVak5UaWhvOXBiUURlY29qTjY4SGwzUWN4VXloaXBpVzhtNVBOc0JOcnFF?=
- =?utf-8?B?bEVpZmFLcmY0bUl2OUljeS9lZTkvRk5JdkxySFFmVHJHVElMZFJDTzMvdnhy?=
- =?utf-8?B?SVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9eda861d-5fd2-4115-0947-08dcec9227e2
-X-MS-Exchange-CrossTenant-AuthSource: MW5PR11MB5810.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 20:52:46.1558
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QWbrxA9W5N2E0Fhfhwkc7FjzumOM1xltvPujjisEzw711HJPc5bQIUPVyHKeRDVpITQb3vMyvAOXIGu84TQFnqDiOINUf9cpirWq9+OrxgM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7933
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01fbdcef-b923-4bb0-80b0-f1d3e57fe515@redhat.com>
 
-
-On 10/11/2024 10:38 PM, Ira Weiny wrote:
-> Rafael J. Wysocki wrote:
->> On Tue, Oct 8, 2024 at 1:17 AM Ira Weiny <ira.weiny@intel.com> wrote:
-> [snip]
+On Mon, Oct 14, 2024 at 10:32:36PM +0200, David Hildenbrand wrote:
+> On 14.10.24 16:25, Gregory Price wrote:
+> > On Mon, Oct 14, 2024 at 01:54:27PM +0200, David Hildenbrand wrote:
+> > > On 08.10.24 17:21, Gregory Price wrote:
+> > > > On Tue, Oct 08, 2024 at 05:02:33PM +0200, David Hildenbrand wrote:
+> > > > > On 08.10.24 16:51, Gregory Price wrote:
+> > > > > > > > +int __weak set_memory_block_size_order(unsigned int order)
+> > > > > > > > +{
+> > > > > > > > +	return -ENODEV;
+> > > > > > > > +}
+> > > > > > > > +EXPORT_SYMBOL_GPL(set_memory_block_size_order);
+> > > > > > > 
+> > > > > > > I can understand what you are trying to achieve, but letting arbitrary
+> > > > > > > modules mess with this sounds like a bad idea.
+> > > > > > > 
+> > > > > > 
+> > > > > > I suppose the alternative is trying to scan the CEDT from inside each
+> > > > > > machine, rather than the ACPI driver?  Seems less maintainable.
+> > > > > > 
+> > > > > > I don't entirely disagree with your comment.  I hummed and hawwed over
+> > > > > > externing this - hence the warning in the x86 machine.
+> > > > > > 
+> > > > > > Open to better answers.
+> > > > > 
+> > > > > Maybe an interface to add more restrictions on the maximum size might be
+> > > > > better (instead of setting the size/order, you would impose another upper
+> > > > > limit).
+> > > > 
+> > > > That is effectively what set_memory_block_size_order is, though.  Once
+> > > > blocks are exposed to the allocators, its no longer safe to change the
+> > > > size (in part because it was built assuming it wouldn't change, but I
+> > > > imagine there are other dragons waiting in the shadows to bite me).
+> > > 
+> > > Yes, we must run very early.
+> > > 
+> > > How is this supposed to interact with code like
+> > > 
+> > > set_block_size()
+> > > 
+> > > that also calls set_memory_block_size_order() on UV systems (assuming there
+> > > will be CXL support sooner or later?)?
+> > > 
+> > > 
+> > 
+> > Tying the other email to this one - just clarifying the way forward here.
+> > 
+> > It sounds like you're saying at a minimum drop EXPORT tags to prevent
+> > modules from calling it - but it also sounds like built-ins need to be
+> > prevented from touching it as well after a certain point in early boot.
+> 
+> Right, at least the EXPORT is not required.
+> 
+> > 
+> > Do you think I should go down the advise() path as suggested by Ira,
+> > just adding a arch_lock_blocksize() bit and have set_..._order check it,
+> > or should we just move towards each architecture having to go through
+> > the ACPI:CEDT itself?
+> 
+> Let's summarize what we currently have on x86 is:
+> 
+> 1) probe_memory_block_size()
+> 
+> Triggered on first memory_block_size_bytes() invocation. Makes a decision
+> based on:
+> 
+> a) Already set size using set_memory_block_size_order()
+> b) RAM size
+> c) Bare metal vs. virt (bare metal -> use max)
+> d) Virt: largest block size aligned to memory end
+> 
+> 
+> 2) set_memory_block_size_order()
+> 
+> Triggered by set_block_size() on UV systems.
+> 
+> 
+> I don't think set_memory_block_size_order() is the right tool to use. We
+> just want to leave that alone I think -- it's a direct translation of a
+> kernel cmdline parameter that should win.
+> 
+> You essentially want to tweak the b)->d) logic to take other alignment into
+> consideration.
+> 
+> Maybe have some simple callback mechanism probe_memory_block_size() that can
+> consult other sources for alignment requirements?
 >
->>> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
->>> index 199afc2cd122..387fc821703a 100644
->>> --- a/include/acpi/actbl1.h
->>> +++ b/include/acpi/actbl1.h
->>> @@ -403,6 +403,8 @@ struct acpi_cdat_dsmas {
->>>   /* Flags for subtable above */
->>>
->>>   #define ACPI_CDAT_DSMAS_NON_VOLATILE        (1 << 2)
->>> +#define ACPI_CDAT_DSMAS_SHAREABLE           (1 << 3)
->>> +#define ACPI_CDAT_DSMAS_READ_ONLY           (1 << 6)
->>>
->>>   /* Subtable 1: Device scoped Latency and Bandwidth Information Structure (DSLBIS) */
->>>
->> Is there an upstream ACPICA commit for this?
-> There is a PR for it now.
->
-> 	https://github.com/acpica/acpica/pull/976
->
-> Do I need to reference that in this patch?  Or wait for it to be merged
-> and drop this hunk?
 
-Wait for it to be merged first.  Then either drop this hunk and wait for 
-an ACPICA release (that may not happen soon, though), or send a Linux 
-patch corresponding to it with a Link tag pointing to the above.
+Thanks for this - I'll cobble something together.
 
-Thanks!
+Probably this ends up falling out similar to what Ira suggested. 
 
+drivers/acpi/numa/srat.c
+    acpi_numa_init():
+        order = parse_cfwm(...)
+        memblock_advise_size(order);
 
+drivers/base/memory.c
+    static int memblock_size_order = 0; /* let arch choose */
+
+    int memblock_advise_size(order)
+        int old_order;
+        int new_order;
+        if (order <= 0)
+            return -EINVAL;
+
+        do {
+            old_order = memblock_size_order;
+            new_order = MIN(old_order, order);
+        } while (!atomic_cmpxchg(&memblock_size_order, old_order, new_order));
+
+        /* memblock_size_order is now <= order, if -1 then the probe won */
+        return new_order;
+
+    int memblock_probe_size()
+        return atomic_xchg(&memblock_size_order, -1);
+
+drivers/base/memblock.h
+    #ifdef HOTPLUG
+        export memblock_advise_size()
+        export memblock_probe_size()
+    #else
+        static memblock_advice_size() { return -ENODEV; } /* always fail */
+        static memblock_probe_size() { return 0; } /* arch chooses */
+    #endif
+
+arch/*/mm/...
+    probe_block_size():
+        memblock_probe_size();
+        /* select minimum across above suggested values */
+
+> If that's not an option, then another way to set further min-alignment
+> requirements (whereby we take MIN(old_align, new_align))?
+> 
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
 
