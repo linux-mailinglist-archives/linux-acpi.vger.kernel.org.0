@@ -1,186 +1,129 @@
-Return-Path: <linux-acpi+bounces-8757-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8758-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B241999CCE7
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 16:26:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A0599CCEC
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 16:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408411F234CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 14:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11B951F2156D
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Oct 2024 14:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D3D1AAE23;
-	Mon, 14 Oct 2024 14:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeUihHqb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5172319E802;
+	Mon, 14 Oct 2024 14:26:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC37E571;
-	Mon, 14 Oct 2024 14:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242721AB512;
+	Mon, 14 Oct 2024 14:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915983; cv=none; b=CE/8VYWfNNFBlHdGPbTu9IQPKjz2I8xzOEVOtgdvtroC3zGER2dVzm4hrzbReFyiqb/a1rwEV8VsRaUtSF3lMHpboAHtE56Y6S8/oWXe1Lj5Xf+1GZFv5DUNE8UlX9+mGvYicRPG+4vrZG8D58dsERdROfAu++Q1KH9qiMp+w2E=
+	t=1728915993; cv=none; b=GQ7Jtc2FWw2A5hkKg9gYu7YxWH9HLo8dutSMWCvoZ/xHkMU1aEelhgtCIOg5OFcp5LYHTOjgZUXHa+K6RaZIf9Gk9Y3SDFuP53ItdXTAp+zptrul6XNkQJV3ekLYNJH9BIH3jYjJvzo/LdNMgWj51W45rQqEzK/cbbSa81+QDWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915983; c=relaxed/simple;
-	bh=htdeMYqzZVZ1IWH4JC74fCThAQafoLo4kvCLkF7l+Y4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J7lJJJAsVfIhF4PrTdN26ERxrNE3L2pbkH2MGBlMHvgCDT33FLIbxP9JOee2Bo7jEqMiNj4ag5BQNcri0jidVKI7GO9vHhw1u14vzbAL4cO0kbIBdzXUPa74upwt1DdnK5j3FCsLdkwPIWEGmzREekuKr++wLnuEy5nbEbcLAkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeUihHqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B8EC4CECF;
-	Mon, 14 Oct 2024 14:26:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728915983;
-	bh=htdeMYqzZVZ1IWH4JC74fCThAQafoLo4kvCLkF7l+Y4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OeUihHqb+rrucxLsD4KW4jlYjtEDlaTjvP8pzGsCOu0ve24Oj0oKsPiNE2LlPvFWy
-	 HdvJF1n26PPZ9q88Nr3CWzRABDvjUihArskESDdkKnuEuDaaoqOULk4uNmx4FCEZGs
-	 8sywtn6RhmW98Hw6yz7SIqjQKodJ40Cf2Kv81AKWypkYazwsBDD7kqir7z2iUccnqb
-	 PmGHmsARMGBHemXWvv9REOPBkJxp/MHy9FgTBVTecVkS3yUOAIfBZWpYNDr9Lr/Tfd
-	 fdsR9LehB6jfBWP5ZAcQakA045u8IaKWNhZj0nzhXhfRb+Q08Hx/c1yLa5fcwg6teu
-	 GjH8W4oNxxTtQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t0M1c-003Q59-PO;
-	Mon, 14 Oct 2024 15:26:20 +0100
-Date: Mon, 14 Oct 2024 15:26:19 +0100
-Message-ID: <868quq69ro.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Zheng Zengkai <zhengzengkai@huawei.com>
-Cc: <lpieralisi@kernel.org>,
-	<guohanjun@huawei.com>,
-	<sudeep.holla@arm.com>,
-	<mark.rutland@arm.com>,
-	<rafael@kernel.org>,
-	<lenb@kernel.org>,
-	<daniel.lezcano@linaro.org>,
-	<tglx@linutronix.de>,
-	<linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] ACPI: GTDT: Tighten the check for the array of platform timer structures
-In-Reply-To: <f316e8b5-c4c9-da6f-26e8-395cb7500f1d@huawei.com>
-References: <20241012085343.6594-1-zhengzengkai@huawei.com>
-	<8734l1usxe.wl-maz@kernel.org>
-	<f316e8b5-c4c9-da6f-26e8-395cb7500f1d@huawei.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1728915993; c=relaxed/simple;
+	bh=mLDhkk/oWc8jzbsrGOzq+yJ90yzYp9UwZOZz7ROfGXc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qKebRuRuhA166IQe6oNQSCuVFsetVVsxUzv1AppSNwy/MFYKLUvgGdg5FAAoUWJXuoA8INaJ8H2YYwaWwKVvfWIrkxgry1CYD0Azbg+C7vcrNP81uuQbjVqdL4prfV/SiC2635XiCH+J25H4SjhPldcEiJVwQHZEyRD9rropY3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XRzvF2rzKz6L75K;
+	Mon, 14 Oct 2024 22:22:01 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9E6521400CA;
+	Mon, 14 Oct 2024 22:26:28 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 14 Oct
+ 2024 16:26:27 +0200
+Date: Mon, 14 Oct 2024 15:26:25 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: <shiju.jose@huawei.com>
+CC: <linux-edac@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <bp@alien8.de>, <tony.luck@intel.com>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <mchehab@kernel.org>,
+	<dan.j.williams@intel.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
+	<leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v13 02/18] EDAC: Add scrub control feature
+Message-ID: <20241014152625.00003c62@Huawei.com>
+In-Reply-To: <20241009124120.1124-3-shiju.jose@huawei.com>
+References: <20241009124120.1124-1-shiju.jose@huawei.com>
+	<20241009124120.1124-3-shiju.jose@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: zhengzengkai@huawei.com, lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com, mark.rutland@arm.com, rafael@kernel.org, lenb@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Mon, 14 Oct 2024 13:22:26 +0100,
-Zheng Zengkai <zhengzengkai@huawei.com> wrote:
->=20
-> Hi Marc,
->=20
-> =E5=9C=A8 2024/10/13 1:34, Marc Zyngier =E5=86=99=E9=81=93:
-> > On Sat, 12 Oct 2024 09:53:43 +0100,
-> > Zheng Zengkai <zhengzengkai@huawei.com> wrote:
-> >> As suggested by Marc and Lorenzo, first we need to check whether the
-> >> platform_timer entry pointer is within gtdt bounds (< gtdt_end) before
-> >> de-referencing what it points at to detect the length of the platform
-> >> timer struct and then check that the length of current platform_timer
-> >> struct is within gtdt_end too. Now next_platform_timer() only checks
-> >> against gtdt_end for the entry of subsequent platform timer without
-> >> checking the length of it and will not report error if the check faile=
-d.
-> >>=20
-> >> Add check against table length (gtdt_end) for each element of platform
-> >> timer array in acpi_gtdt_init() early, making sure that both their ent=
-ry
-> >> and length actually fit in the table.
-> >>=20
-> >> For the first platform timer, keep the check against the end of the
-> >> acpi_table_gtdt struct, it is unnecessary for subsequent platform time=
-r.
-> > Really?
-> >=20
-> >> Suggested-by: Marc Zyngier <maz@kernel.org>
-> >> Suggested-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> >> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
-> >> ---
-> >> Changes in v2:
-> >> - Check against gtdt_end for both entry and len of each array element
-> >>=20
-> >> v1: https://lore.kernel.org/all/20241010144703.113728-1-zhengzengkai@h=
-uawei.com/
-> >> ---
-> >>   drivers/acpi/arm64/gtdt.c | 19 +++++++++++++++----
-> >>   1 file changed, 15 insertions(+), 4 deletions(-)
-> >>=20
-> >> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-> >> index c0e77c1c8e09..f5f62643899d 100644
-> >> --- a/drivers/acpi/arm64/gtdt.c
-> >> +++ b/drivers/acpi/arm64/gtdt.c
-> >> @@ -157,6 +157,8 @@ int __init acpi_gtdt_init(struct acpi_table_header=
- *table,
-> >>   {
-> >>   	void *platform_timer;
-> >>   	struct acpi_table_gtdt *gtdt;
-> >> +	struct acpi_gtdt_header *gh;
-> >> +	void *struct_end;
-> >>     	gtdt =3D container_of(table, struct acpi_table_gtdt, header);
-> >>   	acpi_gtdt_desc.gtdt =3D gtdt;
-> >> @@ -177,11 +179,20 @@ int __init acpi_gtdt_init(struct acpi_table_head=
-er *table,
-> >>   	}
-> >>     	platform_timer =3D (void *)gtdt + gtdt->platform_timer_offset;
-> >> -	if (platform_timer < (void *)table + sizeof(struct acpi_table_gtdt))=
- {
-> >> -		pr_err(FW_BUG "invalid timer data.\n");
-> >> -		return -EINVAL;
-> >> +	struct_end =3D (void *)table + sizeof(struct acpi_table_gtdt);
-> >> +	for (int i =3D 0; i < gtdt->platform_timer_count; i++) {
-> >> +		gh =3D platform_timer;
-> >> +		if (((i =3D=3D 0 && platform_timer >=3D struct_end) || i !=3D 0) &&
-> > Why is only index 0 checked against the end of the table? Shouldn't
-> > int be an invariant that all timer descriptions must not intersect
-> > with the non-variable part of the GTDT table?
->=20
->=20
-> AFAICS, after checking against the end of the acpi_table_gtdt struct for =
-the
-> first platform timer, the subsequent platform_timer pointer value
-> computed via "platform_timer + gh->length" will also pass the check,
-> as the gh->length is of u16 type.
+On Wed, 9 Oct 2024 13:41:03 +0100
+<shiju.jose@huawei.com> wrote:
 
-But this is something that isn't obvious to the casual reader of this
-code, and you want to keep validation code simple and localised, with
-as few separate cases as you can. This isn't performance critical
-code, and there is nothing to be gained by "optimising" this.
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Add generic EDAC scrub control in order to control the memory scrubbers
+> in the system. The device with scrub feature registers with EDAC device
+> driver, which retrieves the scrub descriptor from EDAC scrub driver and
+> expose the sysfs scrub control attributes for a scrub instance to userspace
+> in /sys/bus/edac/devices/<dev-name>/scrubX/.
+> 
+> The common sysfs scrub control interface abstracts the control of an
+> arbitrary scrubbing functionality to a common set of functions.
+> The sysfs scrub attribute nodes would be present only if the client driver
+> has implemented the corresponding attribute callback function and passed
+> in ops to the EDAC device driver during registration.
+> 
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 
->=20
->=20
-> >> +			platform_timer < acpi_gtdt_desc.gtdt_end &&
-> >> +			platform_timer + gh->length <=3D acpi_gtdt_desc.gtdt_end) {
-> > Surely, assuming that length isn't zero, if the last term is true, the
-> > previous one also is? And what if it is 0?
->=20
->=20
-> Agree , the length should also be checked against 0,
-> but I think we should first check the platform_timer entry pointer,
-> then check the size of the same platform_timer structure,
-> not check them in the opposite order.
+One follow on comment. Otherwise LGTM and the new macros definitely help on
+reducing code. (I'm not normally fan of macros at the function
+level, but here I'm convinced)
 
-Correct, that's something that needs fixing. Run with it.
+>  
+> @@ -657,17 +686,19 @@ int edac_dev_register(struct device *parent, char *name,
+>  
+>  	ret = dev_set_name(&ctx->dev, name);
+>  	if (ret)
+> -		goto groups_free;
+> +		goto data_mem_free;
+>  
+>  	ret = device_register(&ctx->dev);
+>  	if (ret) {
+>  		put_device(&ctx->dev);
+> -		goto groups_free;
+> +		goto data_mem_free;
+As in previous patch I think this goto is incorrect and should be dropped. 
+>  		return ret;
+>  	}
+>  
+>  	return devm_add_action_or_reset(parent, edac_dev_unreg, &ctx->dev);
+>  
+> +data_mem_free:
+> +	kfree(ctx->scrub);
+>  groups_free:
+>  	kfree(ras_attr_groups);
+>  ctx_free:
 
-	M.
-
---=20
-Without deviation from the norm, progress is not possible.
 
