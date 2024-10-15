@@ -1,308 +1,255 @@
-Return-Path: <linux-acpi+bounces-8795-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8796-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B2299ED74
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 15:28:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABC999EDA1
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 15:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A31287C15
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 13:28:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23066B21E10
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 13:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8C01D515D;
-	Tue, 15 Oct 2024 13:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DE0136E28;
+	Tue, 15 Oct 2024 13:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qVgeDOS6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ew1MCGii"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279BB1D514C
-	for <linux-acpi@vger.kernel.org>; Tue, 15 Oct 2024 13:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59631FC7C2;
+	Tue, 15 Oct 2024 13:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998793; cv=none; b=h1/1Q+KY4/24BSVlB31mjey0SfBWtkM997fc3y6xmKhOjqLCFgNgFrhW1rpfQiBlKayr3uAE6sJqtwPA7ZU9zIKUjyomzs9qdmqGvQ+maAxp1XTxJAwoCbKQav3+eqZiLTeVGekl2YA6LVQPcMB5rxsUnMZYAbNN7BHqHmG4ZvI=
+	t=1728999161; cv=none; b=gB4sVowd03oZCHKsL68UB9NvhAgq4Y3p7EdXOAUIvUXfb1dEAhWjLgLJesrxpWXudtOk17sclkhmKloGgti9UyqW2hw2h+JFMj0zRtv5hItTPM/TlNfAR97j3MJwSUmgn184fju7CA7FeKpJbEB+w7NohQRQfZoLRsYO2yrjT3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998793; c=relaxed/simple;
-	bh=qKh5mQ2YBQ4Sc6FtlfABWkNt9dQ/qxctRcvKuQHjIqA=;
+	s=arc-20240116; t=1728999161; c=relaxed/simple;
+	bh=5fIT9OmKwq1xHPg4nWK9yuoW/kODnF5lwDlL5KHxdbE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gNjei1VLpDTHwAaoAeixZph4w86nD5phrhZkhMXro9+879AXEkDUKrUslZYy0SxSwg2sM08p8EXXOyjxjzoISWCaC9LdA775We/Oca6OHGoVZXX6GuMhRo+Kp6VeSkGoJ7cuo+s9etDqkV8ik9ybqNp2IcCvCw1XqWhJW+I64Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qVgeDOS6; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20ca4877690so456395ad.1
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Oct 2024 06:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728998791; x=1729603591; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rZrZO9mYN60oTnls9qOvmYYHcHUYs3X1nSZh3U6AiPc=;
-        b=qVgeDOS6xVouIQKuvEOUyDWuNjU5FIxKbf/vvL/AD1sB6vgTGmsw5BwU9Ua1caym8k
-         6Mhmt/O3dSHx1WHsQfhX5A9RDa8itH6QHQYC2HVoGlCa0W2Z8odeZzpuNFmH7aRd7XjF
-         rUfrzYeI8iZPiUNPuEUxl49kzpJq+0n2AqlbzN6PQgCLtTVnlhot7r1Mxc+wC5z2H8VA
-         Ds63B1TFGkJBBhRtg3NKVKDKq2Stvqx4U07LYBFjarpnOt1Bd5sklTk9hQ1wVl4ArYDi
-         +a7p2Rpv50FU5KNVHsiXprXHBmQx6Wxly9pNzBhMVdDvSQWt2Jg1G+8kChRTVnEGxGd+
-         tyAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728998791; x=1729603591;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rZrZO9mYN60oTnls9qOvmYYHcHUYs3X1nSZh3U6AiPc=;
-        b=WYC0ZShLVA3ojkg4Wr/60pQb4LDv9YJlhAz1QxHq8HuyVzxwtUMMcH7CIsjma8CIfa
-         uNhHqN2L2jr479bnvQ1vnrm0mHohE3YV99bdLtNEfX6mIsbqhjR9vYezSZKiR8KBpt9y
-         MNg8EC5Z4xeYEVuC9Qb8ibhZm0/OOFAz7damUULhVaFfe1NTDSYQDsDyCVGSsqEz3+Mt
-         UUM8YfI3AvzxT1/hMpwuKIrAztEpW9xy9UM+W5NmpuRjyjcpIlfpkHVhKeXu2NZo/Koe
-         SCV2wCgteLdAbdCPdxx+JicD9HYLVqYj+9sDDBE53BAiRAsPkfjeXA7eIsBGsPME9xK5
-         +crA==
-X-Forwarded-Encrypted: i=1; AJvYcCWH2zlR82EUfeLtcimjEFeGrbs4gzEewEzika46am03ZePDZZ7P/j8UpBCkC2yZeTSgCGwJwrHgVU91@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL0iUBWF5OvQexy0yMxd03bFFKH6BtwbLgLJpquditVVCPMVEO
-	St4y2RvnfPcnB2l//fwURRvbz/yUVZ/+vPoLPPuo79tuPWU7Q5xyaFORFdsNzc2nB7Q+81O+DkR
-	SVm4wlvSgE9txVJ9Z9p0ERk23fB64JTBNUDV1
-X-Google-Smtp-Source: AGHT+IHHDflKcIxlAz2F8QROFOEpfrBi0nJ5tNzpMcFd27A+4Cj0cS5+ojoVYv9d6bYuYnZiWhofTdazcMJW8Ttdu2Q=
-X-Received: by 2002:a17:903:182:b0:205:8ceb:79a7 with SMTP id
- d9443c01a7336-20cc02d7070mr6051425ad.23.1728998791131; Tue, 15 Oct 2024
- 06:26:31 -0700 (PDT)
+	 To:Cc:Content-Type; b=X5Qi0rewQMizaOx96J+TyfzzxHcAHTRIKTWgWAEtwoa3HYK7YR6t2Rya5AZUpyQScMnGEM8XMZvkzMHlaF27c19DjVOtD5fb9DPhCFVVOKWmfoOfFx1LcAYRxOToFUAY7/Vw67+ZXIB4tc+AmJortDJbdZHJPrGkGuL3dHd+xEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ew1MCGii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A38C4CECE;
+	Tue, 15 Oct 2024 13:32:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728999160;
+	bh=5fIT9OmKwq1xHPg4nWK9yuoW/kODnF5lwDlL5KHxdbE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ew1MCGiimUYdnMV2OnA9mPw2zX+Lo/8sQxlvO3xGOROD8DmGJzveF+N2QQ0Ij3DOh
+	 JzRTfn6ziFZ3c+2epd/w6ubYtOKv2IqHe66K1aQan++eU14Dk8mUqVJo1RkorVIKU8
+	 exWfBmXZsC9+rHDDeyKIUnwZSiq39Is3dl+htJaQVHueBpuwNxKNLp0JDotHLB9b6l
+	 PvvSZKBW8bgXPQWobmMITW2ZVqHevhQ8tbXmcKsGyCTv3Yow5BnrPa6uNZsnnsYsEK
+	 AZQcQ2TTEuXz/Ec6rku+BrfQRQRZUdIigyHq431wGjIyiPWxugOUuDDjRdpRKrBVx2
+	 p9O5nyiQ4PZCQ==
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3e5ccec079eso1860286b6e.3;
+        Tue, 15 Oct 2024 06:32:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVDtHSyvHazyOGPYognEkTi2CV5Qog+13ArQZe65NO9sz3SBNYhBhTnlEbB3AE5GS1AiElG2CWPUg79@vger.kernel.org, AJvYcCWIkVzR8dDCVbffca3cmXatfBPoubzyPAo6JD1r18fuTwrFbikHYFlhDobUlTIfKn8CQdpcXNFOD+y8@vger.kernel.org, AJvYcCWj1pHPDG4f8lJD7eUtppIkRsTRiwoT5Bj/fQEoPCWPD7OOjw7hndLCFqm92lWeQB6A8jeCEvSPOmahAAV3@vger.kernel.org, AJvYcCXRBmukqEViyI7RbSWQBALUpQlI+O+iRgtdqM9K3HdOdh8ZGDn78/LUrwQKcMF14jnQKI2VZWUBKa96sg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNK3VQ4h9VD+s4x3r0XSJ/A3fBfNcEX0NxNIlNANY1zD9o0TOv
+	Rk6Io4ffO7vrMsuhVk3bJX8w5614+AXQmByZ3Jgk5Pt0/fDOgxOg2HAXkAaGBHbdhPb55rC9j4q
+	puV8AXxHN5HVfNZExn4XeLFVUbFk=
+X-Google-Smtp-Source: AGHT+IHuO1i4hxtn/TwfVt+toXC1+oAP+6GnGpmajF9HnA2MJ52+I8CyfiFQ6xobfIYee3MmOj6Drz38cNmnbBK/tZA=
+X-Received: by 2002:a05:6870:2896:b0:277:cc56:2300 with SMTP id
+ 586e51a60fabf-2886dd70fd1mr11104236fac.12.1728999159750; Tue, 15 Oct 2024
+ 06:32:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230702162802.344176-1-rui.zhang@intel.com> <20241010213136.668672-1-jmattson@google.com>
- <f5962c02ea46c3180e7c0e6e5e1f08f4209a1ca2.camel@intel.com>
- <CALMp9eQ9v0Ku0Kcrb2mwz6hb5FJRPKT1axyhX5pQ-nhrLzBY4g@mail.gmail.com>
- <f590669a7fa8d3e3f4d24ae3ed2d864ac14fbef8.camel@intel.com>
- <CALMp9eQRsQ7hs9vhDGzbyRaqyOuaHDFFgc6VSr9Ui1=J_4s9Nw@mail.gmail.com> <ac85fe73b3d7f46ce96d5033f8cf58a1b6b001f3.camel@intel.com>
-In-Reply-To: <ac85fe73b3d7f46ce96d5033f8cf58a1b6b001f3.camel@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 15 Oct 2024 06:26:18 -0700
-Message-ID: <CALMp9eRm+SZce73ujt2eLeHTa4C_i15izmjH9mL_NCgZtuY57Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
-To: "Zhang, Rui" <rui.zhang@intel.com>
-Cc: "ajorgens@google.com" <ajorgens@google.com>, "myrade@google.com" <myrade@google.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, 
-	"peterz@infradead.org" <peterz@infradead.org>, "Tang, Feng" <feng.tang@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "jay.chen@amd.com" <jay.chen@amd.com>, 
-	"vladteodor@google.com" <vladteodor@google.com>, "jon.grimm@amd.com" <jon.grimm@amd.com>
+References: <20241009124120.1124-1-shiju.jose@huawei.com> <20241009124120.1124-13-shiju.jose@huawei.com>
+ <20241014164339.00003e73@Huawei.com> <2024101410-turf-junior-7739@gregkh>
+ <2024101451-reword-animation-2179@gregkh> <20241014181654.00005180@Huawei.com>
+ <CAJZ5v0j-mwZmuciSTaL8MyAp530y=n9HbQ=uVvcnvGLR1n+YuQ@mail.gmail.com>
+ <20241015101025.00005305@Huawei.com> <20241015104021.00002906@huawei.com> <2024101517-bubbling-deploy-1be0@gregkh>
+In-Reply-To: <2024101517-bubbling-deploy-1be0@gregkh>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 15 Oct 2024 15:32:28 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iyc5gvpXjpZdmv-vh8+haPENz+UBXVSF6UDBCRT12fMg@mail.gmail.com>
+Message-ID: <CAJZ5v0iyc5gvpXjpZdmv-vh8+haPENz+UBXVSF6UDBCRT12fMg@mail.gmail.com>
+Subject: Re: [PATCH v13 12/18] platform: Add __free() based cleanup function
+ for platform_device_put
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linuxarm@huawei.com, 
+	shiju.jose@huawei.com, linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bp@alien8.de, tony.luck@intel.com, lenb@kernel.org, mchehab@kernel.org, 
+	dan.j.williams@intel.com, dave@stgolabs.net, dave.jiang@intel.com, 
+	alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com, 
+	david@redhat.com, Vilas.Sridharan@amd.com, leo.duran@amd.com, 
+	Yazen.Ghannam@amd.com, rientjes@google.com, jiaqiyan@google.com, 
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, 
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com, 
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com, 
+	gthelen@google.com, wschwartz@amperecomputing.com, 
+	dferguson@amperecomputing.com, wbs@os.amperecomputing.com, 
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com, 
+	wanghuiqiang@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 14, 2024 at 8:23=E2=80=AFPM Zhang, Rui <rui.zhang@intel.com> wr=
-ote:
+On Tue, Oct 15, 2024 at 12:17=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
 >
-> On Mon, 2024-10-14 at 11:00 -0700, Jim Mattson wrote:
-> > On Mon, Oct 14, 2024 at 6:05=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com=
->
-> > wrote:
+> On Tue, Oct 15, 2024 at 10:40:54AM +0100, Jonathan Cameron wrote:
+> > On Tue, 15 Oct 2024 10:10:25 +0100
+> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> >
+> > > On Mon, 14 Oct 2024 20:06:40 +0200
+> > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
 > > >
-> > > > > >
-> > > > > > TBH, I'm not sure that there is actually anything wrong with
-> > > > > > the
-> > > > > > new
-> > > > > > numbering scheme.
-> > > > > >  The topology is reported correctly (e.g. in
-> > > > > > /sys/devices/system/cpu/cpu0/topology/thread_siblings_list).
-> > > > > > Yet,
-> > > > > > the
-> > > > > > new enumeration does seem to contradict user expectations.
-> > > > > >
+> > > > On Mon, Oct 14, 2024 at 7:17=E2=80=AFPM Jonathan Cameron
+> > > > <Jonathan.Cameron@huawei.com> wrote:
 > > > > >
-> > > > > Well, we can say this is a violation of the ACPI spec.
-> > > > > "OSPM should initialize processors in the order that they
-> > > > > appear in
-> > > > > the
-> > > > > MADT." even for interleaved LAPIC and X2APIC entries.
+> > > > > On Mon, 14 Oct 2024 18:04:37 +0200
+> > > > > Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > > On Mon, Oct 14, 2024 at 06:00:51PM +0200, Greg KH wrote:
+> > > > > > > On Mon, Oct 14, 2024 at 04:43:39PM +0100, Jonathan Cameron wr=
+ote:
+> > > > > > > > On Wed, 9 Oct 2024 13:41:13 +0100
+> > > > > > > > <shiju.jose@huawei.com> wrote:
+> > > > > > > >
+> > > > > > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > > > > >
+> > > > > > > > > Add __free() based cleanup function for platform_device_p=
+ut().
+> > > > > > > > >
+> > > > > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.=
+com>
+> > > > > > > > > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> > > > > > > > > ---
+> > > > > > > > >  include/linux/platform_device.h | 1 +
+> > > > > > > > >  1 file changed, 1 insertion(+)
+> > > > > > > > >
+> > > > > > > > > diff --git a/include/linux/platform_device.h b/include/li=
+nux/platform_device.h
+> > > > > > > > > index d422db6eec63..606533b88f44 100644
+> > > > > > > > > --- a/include/linux/platform_device.h
+> > > > > > > > > +++ b/include/linux/platform_device.h
+> > > > > > > > > @@ -232,6 +232,7 @@ extern int platform_device_add_data(s=
+truct platform_device *pdev,
+> > > > > > > > >  extern int platform_device_add(struct platform_device *p=
+dev);
+> > > > > > > > >  extern void platform_device_del(struct platform_device *=
+pdev);
+> > > > > > > > >  extern void platform_device_put(struct platform_device *=
+pdev);
+> > > > > > > > > +DEFINE_FREE(platform_device_put, struct platform_device =
+*, if (_T) platform_device_put(_T))
+> > > > > > > > >
+> > > > > > > > >  struct platform_driver {
+> > > > > > > > >         int (*probe)(struct platform_device *);
+> > > > > > > >
+> > > > > > > > +CC Greg KH and Rafael.
+> > > > > > > >
+> > > > > > > > Makes sure to include them on v14 as this needs review from=
+ a driver core point
+> > > > > > > > of view I think.
+> > > > > > >
+> > > > > > > Why is this needed for a platform device?  This feels like yo=
+u will have
+> > > > > > > to do more work to "keep" the reference on the normal path th=
+an you to
+> > > > > > > today to release the reference on the error path, right?  Hav=
+e a pointer
+> > > > > > > to a patch that uses this?
+> > > > > >
+> > > > > > Ah, is it this one:
+> > > > > >       https://lore.kernel.org/all/20241014164955.00003439@Huawe=
+i.com/
+> > > > > > ?
+> > > > > >
+> > > > > > If so, no, that's an abuse of a platform device, don't do that,=
+ make a
+> > > > > > REAL device on the bus that this device lives on.  If it doesn'=
+t live on
+> > > > > > a real bus, then put it on the virtual bus but do NOT abuse the=
+ platform
+> > > > > > device layer for something like this.
+> > > > >
+> > > > > Ok.  Probably virtual bus it is then.  Rafael, what do you think =
+makes sense
+> > > > > for a 'feature' that is described only by an ACPI table (here RAS=
+2)?
+> > > > > Kind of similar(ish) to say IORT.
 > > > >
-> > > > Ah. Thanks. I didn't know that.
+> > > > Good question.
 > > > >
-> > > > > Maybe we need two steps for LAPIC/X2APIC parsing.
-> > > > > 1. check if there is valid LAPIC entry by going through all
-> > > > > LAPIC
-> > > > > entries first
-> > > > > 2. parse LAPIC/X2APIC strictly following the order in MADT.
-> > > > > (like
-> > > > > we do
-> > > > > before)
-> > > >
-> > > > That makes sense to me.
-> > > >
-> > > > Thanks,
-> > > >
-> > > > --jim
+> > > > I guess it depends on whether or not there are any registers to acc=
+ess
+> > > > or AML to interact with.  If so, I think that a platform device mak=
+es
+> > > > sense.
 > > >
-> > > Hi, Jim,
+> > > Unfortunately still a gray area I think.
 > > >
-> > > Please check if below patch restores the CPU IDs or not.
+> > > This does access mailbox memory addresses, but they are provided
+> > > by an existing platform device, so maybe platform device for this
+> > > device is still inappropriate :(
 > > >
-> > > thanks,
-> > > rui
+> > > What this uses is:
+> > > PCC channel (mailbox in memory + doorbells, etc but that is indirectl=
+y
+> > > provided as a service via reference in ACPI to the PCCT table entry
+> > > allowing this to find the mailbox device - which is a platform
+> > > device drivers/mailbox/pcc.c).
+> > > Because it's all spec defined content in the mailbox messages, we don=
+'t
+> > > have the more flexible (and newer I think) 'register' via operation r=
+egion
+> > > stuff in AML.
 > > >
-> > > From ec786dfe693cad2810b54b0d8afbfc7e4c4b3f8a Mon Sep 17 00:00:00
-> > > 2001
-> > > From: Zhang Rui <rui.zhang@intel.com>
-> > > Date: Mon, 14 Oct 2024 13:26:55 +0800
-> > > Subject: [PATCH] x86/acpi: Fix LAPIC/x2APIC parsing order
+> > > A wrinkle though.  The mailbox data is mapped into this driver via
+> > > an acpi_os_ioremap() call.
 > > >
-> > > On some systems, the same CPU (with same APIC ID) is assigned with
-> > > a
-> > > different logical CPU id after commit ec9aedb2aa1a ("x86/acpi:
-> > > Ignore
-> > > invalid x2APIC entries").
+> > > So I'm thinking we don't have a strong reason for a platform device
+> > > other than 'similarity' to other examples.  Never the strongest reaso=
+n!
 > > >
-> > > This means Linux enumerates the CPUs in a different order and it is
-> > > a
-> > > violation of
-> > > https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.ht=
-ml#madt-processor-local-apic-sapic-structure-entry-order
-> > > ,
+> > > We'll explore alternatives and see what they end up looking like.
 > > >
-> > >   "OSPM should initialize processors in the order that they appear
-> > > in
-> > >    the MADT"
+> > > Jonathan
 > > >
-> > > The offending commit wants to ignore x2APIC entries with APIC ID <
-> > > 255
-> > > when valid LAPIC entries exist, so it parses all LAPIC entries
-> > > before
-> > > parsing any x2APIC entries. This breaks the CPU enumeration order
-> > > for
-> > > systems that have x2APIC entries listed before LAPIC entries in
-> > > MADT.
-> > >
-> > > Fix the problem by checking the valid LAPIC entries separately,
-> > > before
-> > > parsing any LAPIC/x2APIC entries.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Reported-by: Jim Mattson <jmattson@google.com>
-> > > Closes:
-> > > https://lore.kernel.org/all/20241010213136.668672-1-jmattson@google.c=
-om/
-> > > Fixes: ec9aedb2aa1a ("x86/acpi: Ignore invalid x2APIC entries")
-> > > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> > > ---
-> > >  arch/x86/kernel/acpi/boot.c | 50
-> > > +++++++++++++++++++++++++++++++++----
-> > >  1 file changed, 45 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/arch/x86/kernel/acpi/boot.c
-> > > b/arch/x86/kernel/acpi/boot.c
-> > > index 4efecac49863..c70b86f1f295 100644
-> > > --- a/arch/x86/kernel/acpi/boot.c
-> > > +++ b/arch/x86/kernel/acpi/boot.c
-> > > @@ -226,6 +226,28 @@ acpi_parse_x2apic(union acpi_subtable_headers
-> > > *header, const unsigned long end)
-> > >         return 0;
-> > >  }
-> > >
-> > > +static int __init
-> > > +acpi_check_lapic(union acpi_subtable_headers *header, const
-> > > unsigned long end)
-> > > +{
-> > > +       struct acpi_madt_local_apic *processor =3D NULL;
-> > > +
-> > > +       processor =3D (struct acpi_madt_local_apic *)header;
-> > > +
-> > > +       if (BAD_MADT_ENTRY(processor, end))
-> > > +               return -EINVAL;
-> > > +
-> > > +       /* Ignore invalid ID */
-> > > +       if (processor->id =3D=3D 0xff)
-> > > +               return 0;
-> > > +
-> > > +       /* Ignore processors that can not be onlined */
-> > > +       if (!acpi_is_processor_usable(processor->lapic_flags))
-> > > +               return 0;
-> > > +
-> > > +       has_lapic_cpus =3D true;
-> > > +       return 0;
-> > > +}
-> > > +
-> > >  static int __init
-> > >  acpi_parse_lapic(union acpi_subtable_headers * header, const
-> > > unsigned long end)
-> > >  {
-> > > @@ -257,7 +279,6 @@ acpi_parse_lapic(union acpi_subtable_headers *
-> > > header, const unsigned long end)
-> > >                                processor->processor_id, /* ACPI ID
-> > > */
-> > >                                processor->lapic_flags &
-> > > ACPI_MADT_ENABLED);
-> > >
-> > > -       has_lapic_cpus =3D true;
-> > >         return 0;
-> > >  }
-> > >
-> > > @@ -1029,6 +1050,8 @@ static int __init
-> > > early_acpi_parse_madt_lapic_addr_ovr(void)
-> > >  static int __init acpi_parse_madt_lapic_entries(void)
-> > >  {
-> > >         int count, x2count =3D 0;
-> > > +       struct acpi_subtable_proc madt_proc[2];
-> > > +       int ret;
-> > >
-> > >         if (!boot_cpu_has(X86_FEATURE_APIC))
-> > >                 return -ENODEV;
-> > > @@ -1037,10 +1060,27 @@ static int __init
-> > > acpi_parse_madt_lapic_entries(void)
-> > >                                       acpi_parse_sapic,
-> > > MAX_LOCAL_APIC);
-> > >
-> > >         if (!count) {
-> > > -               count =3D
-> > > acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
-> > > -                                       acpi_parse_lapic,
-> > > MAX_LOCAL_APIC);
-> > > -               x2count =3D
-> > > acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
-> > > -                                       acpi_parse_x2apic,
-> > > MAX_LOCAL_APIC);
 > >
-> > The point is moot now, but I don't think the previous code did the
-> > right thing when acpi_table_parse_madt() returned a negative value
-> > (for errors).
+> > Greg,
+> >
+> > I'm struggling a little to figure out how you envision the virtual bus
+> > working here.  So before we spend too much time implementing the wrong =
+thing
+> > as it feels non trivial, let me check my understanding.
+> >
+> > Would this mean registering a ras2 bus via subsys_virtual_register().
+> > (Similar to done for memory tiers)
 >
-> Previous and current code checks for the negative value later after
-> parsing both LAPIC and x2APIC.
-> so what is the problem you're referring to?
-> Do you mean we should error out immediately when parsing LAPIC fails?
+> It should show up under /sys/devices/virtual/ is what I mean.
+>
+> > On that we'd then add all the devices: one per RAS2 PCC descriptor (the=
+se
+> > are one per independent feature). Each feature has its own mailbox sub
+> > channel (via a reference to the PCC mailbox devices .
+> > Typically you have one of these per feature type per numa node, but
+> > that isn't guaranteed.  That will then need wiring up with bus->probe()=
+ etc
+> > so that the RAS2 edac feature drivers can find this later and bind to i=
+t to
+> > register with edac etc.
+> >
+> > So spinning up a full new bus, to support this?  I'm not against that.
+>
+> No, again, see how the stuff that shows up in /sys/devices/virtual
+> works, that should be much simpler.
+>
+> But really, as this is a "bus", just make a new one.  I don't understand
+> why ACPI isn't creating your devices for you, as this is ACPI code,
+> perhaps just fix that up instead?  That would make much more sense to
+> me...
 
-My mistake. I should have looked at the full context rather than just
-the context of the patch.
+Because it is a data-only table, not AML.
 
-> >
-> > > +               /* Check if there are valid LAPIC entries */
-> > > +               acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
-> > > acpi_check_lapic, MAX_LOCAL_APIC);
-> >
-> > Two comments:
-> >
-> > 1) Should we check for a return value < 0 here, or just wait for one
-> > of the later walks to error out?
->
-> I'm okay with both.
->
-> > 2) It seems unfortunate to walk the entire table when the first entry
-> > may give you the answer, but perhaps modern systems have only X2APIC
-> > entries, so we will typically have to walk the entire table anyway.
->
-> yeah. There are systems with invalid LAPIC entries first, and
-> acpi_parse_entries_array() doesn't support graceful early termination,
-> so we have to check all the entries.
->
-> >
-> > Reviewed-and-tested-by: Jim Mattson <jmattson@google.com>
->
-> Thanks. I will submit the current version to keep your tags.
->
-> -rui
+It looks to me like this could be an auxiliary device, similar to the
+Intel VSEC driver: see intel_vsec_add_aux() etc.
 
-Thanks!
-
---jim
+Cheers, Rafael
 
