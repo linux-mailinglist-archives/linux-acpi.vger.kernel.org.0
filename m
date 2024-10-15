@@ -1,201 +1,213 @@
-Return-Path: <linux-acpi+bounces-8804-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8805-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A44F99F314
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 18:46:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E173299F4F6
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 20:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADBCC1C20B1B
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 16:46:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD112850FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Oct 2024 18:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68D51F76AE;
-	Tue, 15 Oct 2024 16:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D986B1FAF00;
+	Tue, 15 Oct 2024 18:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVs8Df2o"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3u0Fm/Fn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2058.outbound.protection.outlook.com [40.107.220.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0F21F6671;
-	Tue, 15 Oct 2024 16:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729010659; cv=none; b=ryjYNaaQOA/t83wyK5gpELRjuyeWzXDbHjB61u3HrNzPpA/SSmL+Nk27lcM7qgOS5EyGfNGa8epgef+Bav7xEE+3LsqmZFmcHfTO2jwwnWbymW6s5+49WCdYU914LSeQx/tRPFB0NSvKbAKDymiNp6PcU6OHc0M1si2DvOl2Lf0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729010659; c=relaxed/simple;
-	bh=1Yzhnbim0NFkYWi4viU/6zv+YCq/dxIxbqmb+G1U/uA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IKMM2nDe8EYIL9h9QvFpQmFklVXkXCVelP7yMM357j91vOZ66/qfmZuGj5mYpj7hXuvfDdNCf7cY1KydE4tGPYKBYo7LwyDc/FbP/cp2RVfwjsLjU8wZOpEGfgxwhesJi5ptHpNhrBL7z4dOrgLrmYbG/4byokTi8sba4PTfhRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVs8Df2o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10108C4CEC6;
-	Tue, 15 Oct 2024 16:44:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729010659;
-	bh=1Yzhnbim0NFkYWi4viU/6zv+YCq/dxIxbqmb+G1U/uA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PVs8Df2oWaAYxMWxxlXM02rbRSnryokH/HKXZjhOaLzdyuFgiQK98ogayz/SlLaI8
-	 nR+vzjBRdvMqL7n9UF8q+UXAKU5pPF13q0UV3uAXRAv536lg+zYnXLwv0t0TIQuaNo
-	 p8cxLNNhISYH2suyl//gZd7eyMvxWCfCBJ1NL4ruMh7h4neWE+2eQJLMFqXTfzL1v8
-	 1FOvdv2bZIsGsTFGirrU0BBHw9Aw4im0cUlUbWrPjawYjSBkDBp67PFKImA3Bbk626
-	 FoydSwzUvnWpxJ3lq0DtIqWnHGyHhsRxWqaGdJk1TXyMegxYx0uYKc3Ln+P8pmxqC2
-	 62Yw+e8Cwab0A==
-Date: Tue, 15 Oct 2024 18:44:13 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Zheng Zengkai <zhengzengkai@huawei.com>
-Cc: guohanjun@huawei.com, sudeep.holla@arm.com, mark.rutland@arm.com,
-	maz@kernel.org, rafael@kernel.org, lenb@kernel.org,
-	daniel.lezcano@linaro.org, tglx@linutronix.de,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI: GTDT: Tighten the check for the array of
- platform timer structures
-Message-ID: <Zw6b3V5Mk2tIGmy5@lpieralisi>
-References: <20241015152602.184108-1-zhengzengkai@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5362F38DC7;
+	Tue, 15 Oct 2024 18:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729016050; cv=fail; b=dgx00VmVRXXOtEZ0Op3yh2iPqswE/Iv+ZYGwJDKc28mEWI66PgQjBxTlh9j6nyKHpmMQXhr1sTGrpxlhTEe50+0EOD4sZfoj9ya2qPR8HNOSJA7FNAf16Xh2zn9wZ2QtVB3rpEd3MOK8mK/xRR/IaHzv9Cjk0HCmhpUGriMcuRI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729016050; c=relaxed/simple;
+	bh=Pvb+cMJSyboEfXXaDvmpoQ3Ez5b//E/m36K2vm/W2gw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=V19rxKJW3fsAbt8gX1qaIocQPwKax+Ch+/NzPCpUR+1gliiMeDLvrHh5il6ks1g37Ij9Zx6+gVHI5/0OmXT3/jk5Ku3cS1XvvXZdAjvJF9bRemwefkjAoq6MJDAk3Pp9Xyv7BNhB0j0lfo7QYPrllhQyMfadZpEisZx7r0W/E3g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3u0Fm/Fn; arc=fail smtp.client-ip=40.107.220.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ns734GobNNbzUbbCCD26hpKfu3U7KDdwoU7gKAWhI05mFrUXt3NxsTJYiov+mkEit4rEHArft9Dg4xrc/6gRJIyPCXBFKl835lsMQYTdIDViapWoeaIHvtB6/DvYY7W0H/l8EYU27a5TN35d5aM4+x5/9s2pSk5gKwxpLjHKlhwji7muJ8MXXtYPHcuQmZWCJwSpiQsmPxIYvKuu3bWS0qnyyyXA4OHDMj4kLtYcfUqgXJAeXz8Fe9NiYtCC29ZLzbZ9AGe2J+pqnaDFRxHgK3GAqMZzHVJ+4bfmzISZFz1QNmtFiYR0B0rsTtjLPgwaZfs/+lOnsAPfhieh59cOmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MdZeVCeqnpiYmiIxoQ/TRj/jP+46CNc7k/oAm8SgX34=;
+ b=S2HZRqDvcSXTjOtUfYO0yo6G1cCjoTAVBrTJQHQnbvV84lZ2vrq/fVfF/zjaW9eOx15jRCbiMFkxW/dDrKoMn61o+26GF3NLeZ6FrCokiEAYKg8Dh8Dne0e99aHZw11QlXM2mvrO5/xYqPF6tN4s3Rk+gVAXXALYs01EzXlEN1aeqQRIQEuKhBQk5jFJDeS1lYEQ6uMtfUQTWUuv5dLl6ei0zmho4IhtzKVHGjYDzAxpasQcygfilEUausNz2Y1vnCYGlb/DpDUL5RNiW4hVyedJ3/WgDTsgZbosIDAraNcwMfp8MyPzl/ozEXXux0j1RE0rF46rWO9M57yjXudNbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MdZeVCeqnpiYmiIxoQ/TRj/jP+46CNc7k/oAm8SgX34=;
+ b=3u0Fm/FnayPMn+mt0c1euHovQoCfzPJdotUeK6AAKxMZkq/46ixkFRlCYd8AVCUQjenFRmZIsIOu+brAZuHVqCCAvTv/NL1knmKk04ilrkCgXNroWal9N5izX3HL9hrnkSKI5ovwJSNJNxUMm3p46cCTQSjsqAyg6Vky5rAdmog=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH0PR12MB5388.namprd12.prod.outlook.com (2603:10b6:610:d7::15)
+ by CH3PR12MB9148.namprd12.prod.outlook.com (2603:10b6:610:19d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Tue, 15 Oct
+ 2024 18:14:04 +0000
+Received: from CH0PR12MB5388.namprd12.prod.outlook.com
+ ([fe80::a363:f18a:cdd1:9607]) by CH0PR12MB5388.namprd12.prod.outlook.com
+ ([fe80::a363:f18a:cdd1:9607%6]) with mapi id 15.20.8048.020; Tue, 15 Oct 2024
+ 18:14:04 +0000
+Message-ID: <86df5bba-1750-4dc9-ba3c-b357f562748c@amd.com>
+Date: Tue, 15 Oct 2024 13:14:01 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/5] x86/mce: Add wrapper for struct mce to export
+ vendor specific info
+To: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, Avadhut Naik
+ <avadhut.naik@amd.com>, "x86@kernel.org" <x86@kernel.org>,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+ "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "Luck, Tony" <tony.luck@intel.com>,
+ "rafael@kernel.org" <rafael@kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ "lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
+ <mchehab@kernel.org>, "james.morse@arm.com" <james.morse@arm.com>,
+ "airlied@gmail.com" <airlied@gmail.com>,
+ "yazen.ghannam@amd.com" <yazen.ghannam@amd.com>,
+ "john.allen@amd.com" <john.allen@amd.com>
+References: <20241001181617.604573-1-avadhut.naik@amd.com>
+ <20241001181617.604573-2-avadhut.naik@amd.com>
+ <CY8PR11MB713406B2C492D55428397AFA89452@CY8PR11MB7134.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: "Naik, Avadhut" <avadnaik@amd.com>
+In-Reply-To: <CY8PR11MB713406B2C492D55428397AFA89452@CY8PR11MB7134.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN6PR2101CA0002.namprd21.prod.outlook.com
+ (2603:10b6:805:106::12) To CH0PR12MB5388.namprd12.prod.outlook.com
+ (2603:10b6:610:d7::15)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015152602.184108-1-zhengzengkai@huawei.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5388:EE_|CH3PR12MB9148:EE_
+X-MS-Office365-Filtering-Correlation-Id: dfade003-35d1-4060-0f46-08dced4526cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M2ZDM3pjQllReUV2R0xKNGJiMy9FWmVvTW5mcGRUaEtEaGUzekpGcE9tSWs1?=
+ =?utf-8?B?VnNoVE1MNEJPL25YTTFUTUF2bS9JL1pqenNZa0NnSG9Rdk5nZXZoblAwdUox?=
+ =?utf-8?B?diszZDZJRGZoYmYybDZIWS8xNFJES3dMdHRxWnJQZ3NBbmM2MG9sWlh3dkx6?=
+ =?utf-8?B?THlrTVRaVUQ3RjdqUDNzV0VOTUlaN3cyeVpmOFEzMElZMlZibEU3YU1JblQ2?=
+ =?utf-8?B?MEJVcHNZdmJwaXlsWDlnbnQrVlFsY3lhMUZoN2FUQUt1bmtqMUttSDBpVFp2?=
+ =?utf-8?B?RjVzeGliL3RCeVF0ODhZV2xRUmNpN2FCS0poU1ZMYS9wNFFpd0lhVmk1UXp4?=
+ =?utf-8?B?Vko0eFdLV3Q0R2ZCVEZ4aWdHTXBhRDc5dHNTZC9Da1RyaS90blBRb1VsNitw?=
+ =?utf-8?B?T1VKZEhXZlhiNHB1ZkM1ay82Y3ZhTFRZSHF0OENnSllmd2NlVkZQcGZIR3N5?=
+ =?utf-8?B?SktPcXZBOFVjQzdDbndjbVlUOVdPL2xrZncwVk93YkE3dVUzU1RMbmU5di95?=
+ =?utf-8?B?dkZOVUpveDZmTng4bFRzalFjN0RtalcvOHFLWjlmM01EcTBxRzcvWkVqbHds?=
+ =?utf-8?B?WUE4SG1SRUpGM0RGNFhXVGxkL2ZIblBFb1hGOEVkNVZJeHBDbXVsQ1A4U3F6?=
+ =?utf-8?B?M2tOeU1mMmh2NnRvRlJzT1UrMnY4THc4RkVPYnJDN2luMTdDbDRsK3dhVUVC?=
+ =?utf-8?B?dHJzMGJYM0FyY2N4OWNGTGZRdTB5dEpMSHU3Z3NycnJGcEFPbTh5ZmU1d1JK?=
+ =?utf-8?B?L3NJc2xVZ1lvZjRCdk11MjloNDI5eTBwK0MrRjdhY3JmaDVqZjRoNDVWTGJo?=
+ =?utf-8?B?cUY1ZmxFNjFqNFNTOHpHZnBlSGhvV09CUnNjaUJtaUticm8xWGNJTFlMNENx?=
+ =?utf-8?B?QVE1ZTQrQnc1RzY3OE1JWi9JVGQzRllxQ1ovZ2RNMWpFdVlITDNwUS9oSXV4?=
+ =?utf-8?B?U1ozWldvaG5tb29JZkxmUGEza2lXY3lYVWxhQXBUVVBvMkJma3lTNWhQT1Fn?=
+ =?utf-8?B?bVFOTnBheCs2YVVOczIzR1FyS0pDNERlRm02U1J4VEplNDlGKzh3dHZpV2x0?=
+ =?utf-8?B?QjF3a1NaRi9VTUpNQ0E3ODZqR3pIYkZwVGNVSTJ2OEFMQmI3MmxPNkFtbWVN?=
+ =?utf-8?B?aHJLRjg2VDhlK01MN2gxZTE5RjhQZ29MTnJHTk9tVGJkRXFuS1NvWXFGU1oz?=
+ =?utf-8?B?eUNIUElEd3UvN0NZWmJRZ3dScU5GMGh2RDNSYUFjVHp1ay92dElYZHpCa1Qv?=
+ =?utf-8?B?N2UzcVpYb0FONXdDY09KWXNlakNoYW9ybmZhcUJNUWpwMnA1Y2w3cU56M29k?=
+ =?utf-8?B?WXdrNldoREsyMzB0QzlGVjlQS3RIdm1CZTE0b1ZMeE1WdWUyV2tOTVlEdW5I?=
+ =?utf-8?B?YUhhR3dMenVPaGxZLzNjbDdsOUxsVkRYV0s2VEZBQ1RXS0tNRTdsOFBIb2dH?=
+ =?utf-8?B?MGVBUERLUXgwZkpiVC9uU09ZUE9ySHhnclU2RVk1ZW1Ga01lckJBeWZNMmZE?=
+ =?utf-8?B?dWxvRTNqU080ellCS1lRT1V2NmRmdlNkTlEwalQ1MFRxeGsyTzlOS2lOVFB1?=
+ =?utf-8?B?Rk5tMmpveDN0TnJPSmFQVzNKcFk5cmJmcC9qT3Z4TXBOYTVCNFNPS21PYWF4?=
+ =?utf-8?B?QTVhdWJ3S1N5UlZxTGdGcmZxRmtLa0JGYTlCTXFBVGt5VGF5YW05dmxyRE00?=
+ =?utf-8?B?ZlpqVVZCZWZhWXJ3UWxYdjBBMDZlUytaOXdDRm1qL1MxRjJHRlJhOWJRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR12MB5388.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZkprZmVOckZUN1FjMmhLTVB0MjdjMWdheWk1QmEwQVRxdCtjd3B6cjk4bVlD?=
+ =?utf-8?B?K2g4ZlRUVkpCNDVvcng4TElrNWR0VWttV0lTamNsckM5elZaQnVJYVgyYXkz?=
+ =?utf-8?B?NE1GbUJvUndHYndYL1laZ21KY3d6Qll0LzdLQ0NPY3RiYjhnNnk2Tm1oRzlq?=
+ =?utf-8?B?NnBOcGVnR01yUDFzejc5RTJuMGZJTzFqT3RubkpXVXhkQWErc0ZydXIvUm45?=
+ =?utf-8?B?UytWYlBxbDVDclY2bDRIc1BRUTBpV0JJeHdSSVBYR1IvaXhqMEpmV1dkejkw?=
+ =?utf-8?B?MmRySkJXbTM4K05ZTFZEcVQwei9UQVdlalRRVDI4RVloaVhId3g5MzJEZk10?=
+ =?utf-8?B?cUdYNzg5TXhOWVhSR3VkL0IxOFdwNERXWGJ1bVNjcWJpWmpoYmZEcHlWbE0z?=
+ =?utf-8?B?dEZVTGErM202Wkg4cmkwRmszQ1BBbmRJc3lqcTlXbGM2cUZ5cHlZRUFpakZH?=
+ =?utf-8?B?bnZiVnZwVjRJUHBxS1VEdnRjV3QyZVMrTTl6a05Eb0pDckQ4SUJSSUdrZTdk?=
+ =?utf-8?B?K3Y2Y3gxNlhHZ1p0WUtML2tFU3pMWGR3R1BwS2FYVVVkblJRaEdpVEtJU05z?=
+ =?utf-8?B?SXVuZGdvVFZJekRmK2U2eDdCTTBMZkh2YzByQS8vckJjVDBEQmIvUXRVWTVS?=
+ =?utf-8?B?Y1Yvd0hqcy9JRzdyNXZYMTdsT1RudmhPMVowK0oyOEVlWDU5alRsNDdCMHRa?=
+ =?utf-8?B?SUFpN3BhdHhFbEdtbHYzMzhxT0ovci9Tdk1vVDVOd25hWmZhS3V5c2pUc3pD?=
+ =?utf-8?B?NjZjREI5ejc5WkE0VzlNc2c1UXByK3l3Uk1DYUhrdklKT2p2S0JwWHdBWFJB?=
+ =?utf-8?B?djErZi9iajZsa01ua09Sd1dadFV2Z0R4cnBXci9pMlppa3NsM2lJTG5xODQ3?=
+ =?utf-8?B?Q3IwdURIWEZmcHFnaW9IcC9vK0NOeVhKZTQ3OWpibGY5Ym1XNDgzVCtSM0FO?=
+ =?utf-8?B?THdoQzBOSUJWUW14N24zaUJDT3lBbEI5TXhvVEpYbHdRYVhJMXhvbnhKT1VV?=
+ =?utf-8?B?L2lVT3hGeVBPSlVSeDhBN3VkOFN1STY0ZHVTbUxHSjYxRmIrdlhmWk00ZzBh?=
+ =?utf-8?B?bTY0andzYVNxMDBIU0M0YjVNUWJIMGFvaWJrRkk2TEpRNDJHemI1aE82YlAv?=
+ =?utf-8?B?bjRGNnBCb2JtYXlucS9qSFV5K0taZldkL1pNVkJNM0x2dzRaTThxMS9WQnNw?=
+ =?utf-8?B?eUR2eENQSEh2WXJvVVZSblNUOTRVMVZOYk5FV3FLU0EwVTI0eUxKQkw5UUZE?=
+ =?utf-8?B?aldLYlc1ZnRUaW1sdCtScTA1SFR2Ni9heklITmxXdFlHVGxLS21tdUUzNkxk?=
+ =?utf-8?B?cXhRYnBXT2dHaXhPK2hXNGd4aExKalhkeU94aW94cCtrdXI2bTVOYlVtRHFh?=
+ =?utf-8?B?VWJQbWZMOERTdEFSUUFCVG80YW5uTEhuaFRDMzkxeWhGenF4YWlMRjNOQkNj?=
+ =?utf-8?B?MHFOdDRROS90UmlZV3Q2c2lYbDRYTlNvajA1SGF5Uk1iZCtDMjg2Z1hEK1l5?=
+ =?utf-8?B?MlpEMlEvdTI2eHJzUC9kU1RtRGh0MldSbDcxU1VscThmNnVFT1lacmh3eFN4?=
+ =?utf-8?B?K1lVQ3VuR0wveS9QOW9uV3BMSG1SYW1ZMGczUkhrblJkSkZpb0EyU0FpbDFN?=
+ =?utf-8?B?OXREVjJQeGpOckV6c014d0xBZkREbWZZdXJudlNCZHFleEtBM1dFc1B4WGg5?=
+ =?utf-8?B?SkNGbnY2OWdSZmVVdmtHdkFEaXRxampPVzk4MnY0K1NYUWt5YXlTRjVFMmJG?=
+ =?utf-8?B?dCt6UnFMSWppZDFMdnEyWEtkWjhKYlYyQnp2NGUyTEpWRk5VdDJNblRFZS9q?=
+ =?utf-8?B?ZGwvU01jelpzYWF5NEFqRCtrMmFvNTc3NHZTem1pZ0tZNmxqUUQ3MGVRRFRI?=
+ =?utf-8?B?bGcxNDNUdHB2T29jcHl1M3B2RjZVc3RFU0UrMUQvMFhUd1V1QW1sU0NnL0xu?=
+ =?utf-8?B?RGk1dU5ydVo0bitFY3Jlbm10cTBoMGJuaFdidXNXRlpldXNyL3R2VXFJM1lN?=
+ =?utf-8?B?L3BFeU9SVXNrQmR1aDYrL0dTeGZUQ1BQcFF5TWc2am9yMVdZT2lZeHBEb3BD?=
+ =?utf-8?B?b3kzNzRIRlVhdFNxK1UwdTBxVFZyRTFGY3BEQWwrRE5TU21VWEdKN0NMbGkv?=
+ =?utf-8?Q?MiIc=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfade003-35d1-4060-0f46-08dced4526cb
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5388.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 18:14:04.0905
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b9D5QwBwvJ9tXwESpj3FiuE2Q+Ze6Dg0VpmzD4tAcqAVHLGMSBI9KD0SFqA5aCl5Meb3L133uqFaRZOSinXmeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9148
 
-On Tue, Oct 15, 2024 at 11:26:02PM +0800, Zheng Zengkai wrote:
-> As suggested by Marc and Lorenzo, first we need to check whether the
 
-I would just describe the change, the tags and Link: are there to
-describe this patch history.
-
-> platform_timer entry pointer is within gtdt bounds (< gtdt_end) before
-> de-referencing what it points at to detect the length of the platform
-> timer struct and then check that the length of current platform_timer
-> struct is also valid, i.e. the length is not zero and within gtdt_end.
-> Now next_platform_timer() only checks against gtdt_end for the entry of
-> subsequent platform timer without checking the length of it and will
-> not report error if the check failed and the existing check in function
-> acpi_gtdt_init() is also not enough.
+[...]
+On 10/15/2024 01:53, Zhuo, Qiuxu wrote:
+>> From: Avadhut Naik <avadhut.naik@amd.com>
+>> [...]
+>> [...]
+>>  static __always_inline int
+>> -__mc_scan_banks(struct mce *m, struct pt_regs *regs, struct mce *final,
+>> +__mc_scan_banks(struct mce_hw_err *err, struct pt_regs *regs, struct mce *final,
 > 
-> Modify the for_each_platform_timer() iterator and use it combined with
-> a dedicated check function platform_timer_valid() to do the check
-> against table length (gtdt_end) for each element of platform timer
-> array in function acpi_gtdt_init(), making sure that both their entry
-> and length actually fit in the table.
+> The 'final' parameter should also be a pointer to this_cpu_ptr(&hw_errs_seen).
+> So, it's the final value with an entire 'mce_hw_err' structure stored to 
+> ' hw_errs_seen ',  not just a 'mce' structure got stored in 'hw_errs_seen'.
 > 
-> Suggested-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Co-developed-by: Marc Zyngier <maz@kernel.org>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
-> ---
-> Changes in v3:
-> - based on Marc's patch and reuse the for_each_platform_timer() loop
+> So,
+>    __mc_scan_banks(struct mce_hw_err *err, struct pt_regs *regs, struct mce_hw_err *final, ...
 > 
-> Changes in v2:
-> - Check against gtdt_end for both entry and len of each array element
-> Link to v2: https://lore.kernel.org/linux-arm-kernel/20241012085343.6594-1-zhengzengkai@huawei.com/
-> 
-> Link to v1: https://lore.kernel.org/all/20241010144703.113728-1-zhengzengkai@huawei.com/
-> ---
->  drivers/acpi/arm64/gtdt.c | 32 +++++++++++++++++++++-----------
->  1 file changed, 21 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-> index c0e77c1c8e09..3583c99afb0d 100644
-> --- a/drivers/acpi/arm64/gtdt.c
-> +++ b/drivers/acpi/arm64/gtdt.c
-> @@ -36,19 +36,25 @@ struct acpi_gtdt_descriptor {
->  
->  static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
->  
-> -static inline __init void *next_platform_timer(void *platform_timer)
-> +static __init bool platform_timer_valid(void *platform_timer)
->  {
->  	struct acpi_gtdt_header *gh = platform_timer;
->  
-> -	platform_timer += gh->length;
-> -	if (platform_timer < acpi_gtdt_desc.gtdt_end)
-> -		return platform_timer;
-> +	return (platform_timer >= (void *)(acpi_gtdt_desc.gtdt + 1) &&
-> +		platform_timer < acpi_gtdt_desc.gtdt_end &&
-> +		gh->length != 0 &&
-> +		platform_timer + gh->length <= acpi_gtdt_desc.gtdt_end);
-> +}
-> +
-> +static __init void *next_platform_timer(void *platform_timer)
-> +{
-> +	struct acpi_gtdt_header *gh = platform_timer;
->  
-> -	return NULL;
-> +	return platform_timer + gh->length;
->  }
->  
-> -#define for_each_platform_timer(_g)				\
-> -	for (_g = acpi_gtdt_desc.platform_timer; _g;	\
-> +#define for_each_platform_timer(_g, first_entry)	\
-> +	for (_g = first_entry; platform_timer_valid(_g);	\
->  	     _g = next_platform_timer(_g))
->  
->  static inline bool is_timer_block(void *platform_timer)
-> @@ -155,8 +161,9 @@ bool __init acpi_gtdt_c3stop(int type)
->  int __init acpi_gtdt_init(struct acpi_table_header *table,
->  			  int *platform_timer_count)
->  {
-> -	void *platform_timer;
-> +	void *platform_timer, *tmp;
 
-It makes more sense - thank you and Marc.
+Thanks for pointing this out. This may require a few other changes too.
+Will address them in the next revision.
 
-Nit: you don't really need another pointer (ie tmp) but you may keep
-it if that makes the code clearer - all you need to do is using
-platform_timer as an iterator and initialize
+>>  		unsigned long *toclear, unsigned long *valid_banks, int no_way_out,
+>>  		int *worst)
+>> [...]
 
-	acpi_gtdt_desc.platform_timer = (void *)gtdt + gtdt->platform_timer_offset;
-
-if all checks passed (you are using tmp just because after the loop
-platform_timer can't be used to initialize acpi_gtdt_desc.platform_timer).
-
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-
-(now let's see if this survives GTDTs out there :))
-
->  	struct acpi_table_gtdt *gtdt;
-> +	int cnt = 0;
->  
->  	gtdt = container_of(table, struct acpi_table_gtdt, header);
->  	acpi_gtdt_desc.gtdt = gtdt;
-> @@ -177,7 +184,10 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
->  	}
->  
->  	platform_timer = (void *)gtdt + gtdt->platform_timer_offset;
-> -	if (platform_timer < (void *)table + sizeof(struct acpi_table_gtdt)) {
-> +	for_each_platform_timer(tmp, platform_timer)
-> +		cnt++;
-> +
-> +	if (cnt != gtdt->platform_timer_count) {
->  		pr_err(FW_BUG "invalid timer data.\n");
->  		return -EINVAL;
->  	}
-> @@ -305,7 +315,7 @@ int __init acpi_arch_timer_mem_init(struct arch_timer_mem *timer_mem,
->  	void *platform_timer;
->  
->  	*timer_count = 0;
-> -	for_each_platform_timer(platform_timer) {
-> +	for_each_platform_timer(platform_timer, acpi_gtdt_desc.platform_timer) {
->  		if (is_timer_block(platform_timer)) {
->  			ret = gtdt_parse_timer_block(platform_timer, timer_mem);
->  			if (ret)
-> @@ -398,7 +408,7 @@ static int __init gtdt_sbsa_gwdt_init(void)
->  	if (ret || !timer_count)
->  		goto out_put_gtdt;
->  
-> -	for_each_platform_timer(platform_timer) {
-> +	for_each_platform_timer(platform_timer, acpi_gtdt_desc.platform_timer) {
->  		if (is_non_secure_watchdog(platform_timer)) {
->  			ret = gtdt_import_sbsa_gwdt(platform_timer, gwdt_count);
->  			if (ret)
-> -- 
-> 2.20.1
-> 
+-- 
+Thanks,
+Avadhut Naik
 
