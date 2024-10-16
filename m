@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-8817-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8818-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596049A0827
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2024 13:15:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED17D9A0828
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2024 13:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E51A1F228DB
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2024 11:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD5D282BD5
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Oct 2024 11:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF91207A3C;
-	Wed, 16 Oct 2024 11:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4E6208210;
+	Wed, 16 Oct 2024 11:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dg2i3tSq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="joRgA+9Y"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587012076CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D25D2076DE;
 	Wed, 16 Oct 2024 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729077309; cv=none; b=rE+Ldi6yfacmy7FRaHmh46yu3OzmQDsx5D/Ysmo3YIJFMXmGM8UG82kTJlbLF+x+q1xYHFp96ZAOSC6SB9OEGUfwdBs4QsIGnTu/zZehQy+VJlvICYtHlpJnvaozPIGPWl04KzeeWqcwZnVHwooS4XYs837mjTB2q5118kQsa7o=
+	t=1729077310; cv=none; b=cYWb1pX7qfqch+TDEaDmfSUW3qAiULJR4fGlR2JKn6ft5MVlczuY1EDng/dJwUM5c26JxVDZkZgAi5SUQINQy7r1CaN+a6d1/drjiv9Vw+bJg3gVeluJ+DIqaA1wmQ2W8wWHRkTDEUFUGiqiZwRVQ6dlrZXMFRWbVBXQD39SqZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729077309; c=relaxed/simple;
-	bh=2G12tmQBMRi94wiYlnzPggyN9sb1W4iSnDlgG9gAd9I=;
+	s=arc-20240116; t=1729077310; c=relaxed/simple;
+	bh=Vsji7fvGKoZdggpdAR7OdUv+hIBMd4JgmdmhDh86f/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=injQlmof7nGXhfaWe4xKUtFiKatohfQI5IYeFKVxtNvw0wkZP4wtqF1QJxeOwiUBXpRjzg5I0C7TJeD/o6xQj7CMlT0Hk3eU0c1kjZVSh5SlRVqAlMJFz8dznCfnbp3Ntlqr45c0kujkpgwwzVvUBmCA/u9gUYmiVBQFstmkITM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dg2i3tSq; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=GiI5tsm7v9pKQZDpowLF3we/Ycqf7Jug5S+0VhE6Ol6zSDzdrQw7kpw8nvbMXkignLFFMyLenB1Yb+Mf2+i1zLC9kQ1dpSMhVyscaUJsrDDR/54tnu80I77XBpSp6TaKyeflmcscd3FIUFg7+zxmwX71fs2vn8I6a/TW52gDwU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=joRgA+9Y; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,30 +36,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1729077309; x=1760613309;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2G12tmQBMRi94wiYlnzPggyN9sb1W4iSnDlgG9gAd9I=;
-  b=Dg2i3tSqi9qGiAudUVI+DZpGAmUJUkl4Xy0+wvQoEe6+xQhONkTTxiLV
-   oMFWpKuCVdUSHSHSilMvwhUFqrqHoRA6Jy+lm5J6bg56ZJXUxyhDqBMo5
-   YNQUemV0hcsSjbjpWsSfXJ8YekhdAx2Jo5GEC36qgAd+diZzF9AKf/jgl
-   7URdiKDVUodnA+5f+VHEo+4hYQhsQtE4l0WBvgwh04pbLrrE24fRSGNQD
-   XViIrLKP5OOMZOJtsQjqOmnQ/N3gYh/JJtTHUvUGp9xey8m0qUG/+FvIA
-   rcJruJWRAYEPl/zOFfCPIjDJuQ3d4LFaC3hbm1+X74GOx6L+hpDQCsE1M
-   A==;
-X-CSE-ConnectionGUID: R/zfUpSDRvKQDrMswyya+A==
-X-CSE-MsgGUID: EFSqUkQ1RMWQImD5z/Cwvw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39066168"
+  bh=Vsji7fvGKoZdggpdAR7OdUv+hIBMd4JgmdmhDh86f/Y=;
+  b=joRgA+9YVk2ua48mzggg30dePbba7bxBFvHXrzbQsAXYnzBJwPuDUYB5
+   cMr+iTJfCJieDWFPNBOEx+PccbT3RRIuU88IgiNtQf0oSQoKW+CzMmyMd
+   uA4V4NMR2Y4llT6hq6C2iQw22giUSAq40ZMKk4kfF98x7sMwCqcRGswgJ
+   YhNYkNX1+ET9PELHcHQZ0a8JVtZcccDEltLqDlLRydE0y/qv90lxXVQpJ
+   j3/ELpX+qqX1+zX5LKxYcIcqgfh2wjjSR0hYe/Uq+ypZ2xARp3eLwDzdX
+   pHdWY8XkFXxjKWF5Ky6OaqyW76GTrdj33tyMM2g7klbQZ/ir25hlck5hC
+   Q==;
+X-CSE-ConnectionGUID: 2Qws6h3uT0uLntklBTrqiQ==
+X-CSE-MsgGUID: nUFc0cADT/GmBiAVXpkYVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39066179"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="39066168"
+   d="scan'208";a="39066179"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 04:15:06 -0700
-X-CSE-ConnectionGUID: OSZnxQsVTTqIzlqFj+V4Sg==
-X-CSE-MsgGUID: q9Bkae3YSLiVD3IOv6T/Yg==
+X-CSE-ConnectionGUID: fqRJ8b2eRsif7EIGcZVWRg==
+X-CSE-MsgGUID: 6kn2GzlQS16R7ueit9HN5A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="83005216"
+   d="scan'208";a="83005218"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa003.jf.intel.com with ESMTP; 16 Oct 2024 04:15:02 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E3F9FCB; Wed, 16 Oct 2024 14:14:59 +0300 (EEST)
+	id EE0D31AC; Wed, 16 Oct 2024 14:14:59 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -79,10 +79,11 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>
-Subject: [PATCHv4, REBASED 1/4] x86/mm/ident_map: Fix virtual address wrap to zero
-Date: Wed, 16 Oct 2024 14:14:55 +0300
-Message-ID: <20241016111458.846228-2-kirill.shutemov@linux.intel.com>
+	Kai Huang <kai.huang@intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCHv4, REBASED 2/4] x86/acpi: Replace manual page table initialization with kernel_ident_mapping_init()
+Date: Wed, 16 Oct 2024 14:14:56 +0300
+Message-ID: <20241016111458.846228-3-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
 References: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
@@ -94,64 +95,130 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Calculation of 'next' virtual address doesn't protect against wrapping
-to zero. It can result in page table corruption and hang. The
-problematic case is possible if user sets high x86_mapping_info::offset.
+The function init_transition_pgtable() maps the page with
+asm_acpi_mp_play_dead() into an identity mapping.
 
-The wrapping to zero only occurs if the top PGD entry is accessed.
-There are no such users in the upstream. Only hibernate_64.c uses
-x86_mapping_info::offset, and it operates on the direct mapping range,
-which is not the top PGD entry.
-
-Replace manual 'next' calculation with p?d_addr_end() which handles
-wrapping correctly.
+Replace manual page table initialization with kernel_ident_mapping_init()
+to avoid code duplication. Use x86_mapping_info::offset to get the page
+mapped at the correct location.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- arch/x86/mm/ident_map.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/x86/kernel/acpi/madt_wakeup.c | 73 ++++++------------------------
+ 1 file changed, 15 insertions(+), 58 deletions(-)
 
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 437e96fb4977..5872f3ee863c 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -101,9 +101,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 		pmd_t *pmd;
- 		bool use_gbpage;
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index d5ef6215583b..f36f28405dcc 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -70,58 +70,6 @@ static void __init free_pgt_page(void *pgt, void *dummy)
+ 	return memblock_free(pgt, PAGE_SIZE);
+ }
  
--		next = (addr & PUD_MASK) + PUD_SIZE;
--		if (next > end)
--			next = end;
-+		next = pud_addr_end(addr, end);
- 
- 		/* if this is already a gbpage, this portion is already mapped */
- 		if (pud_leaf(*pud))
-@@ -154,10 +152,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- 		p4d_t *p4d = p4d_page + p4d_index(addr);
- 		pud_t *pud;
- 
--		next = (addr & P4D_MASK) + P4D_SIZE;
--		if (next > end)
--			next = end;
+-/*
+- * Make sure asm_acpi_mp_play_dead() is present in the identity mapping at
+- * the same place as in the kernel page tables. asm_acpi_mp_play_dead() switches
+- * to the identity mapping and the function has be present at the same spot in
+- * the virtual address space before and after switching page tables.
+- */
+-static int __init init_transition_pgtable(pgd_t *pgd)
+-{
+-	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
+-	unsigned long vaddr, paddr;
+-	p4d_t *p4d;
+-	pud_t *pud;
+-	pmd_t *pmd;
+-	pte_t *pte;
 -
-+		next = p4d_addr_end(addr, end);
- 		if (p4d_present(*p4d)) {
- 			pud = pud_offset(p4d, 0);
- 			result = ident_pud_init(info, pud, addr, next);
-@@ -199,10 +194,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 		pgd_t *pgd = pgd_page + pgd_index(addr);
- 		p4d_t *p4d;
- 
--		next = (addr & PGDIR_MASK) + PGDIR_SIZE;
--		if (next > end)
--			next = end;
+-	vaddr = (unsigned long)asm_acpi_mp_play_dead;
+-	pgd += pgd_index(vaddr);
+-	if (!pgd_present(*pgd)) {
+-		p4d = (p4d_t *)alloc_pgt_page(NULL);
+-		if (!p4d)
+-			return -ENOMEM;
+-		set_pgd(pgd, __pgd(__pa(p4d) | _KERNPG_TABLE));
+-	}
+-	p4d = p4d_offset(pgd, vaddr);
+-	if (!p4d_present(*p4d)) {
+-		pud = (pud_t *)alloc_pgt_page(NULL);
+-		if (!pud)
+-			return -ENOMEM;
+-		set_p4d(p4d, __p4d(__pa(pud) | _KERNPG_TABLE));
+-	}
+-	pud = pud_offset(p4d, vaddr);
+-	if (!pud_present(*pud)) {
+-		pmd = (pmd_t *)alloc_pgt_page(NULL);
+-		if (!pmd)
+-			return -ENOMEM;
+-		set_pud(pud, __pud(__pa(pmd) | _KERNPG_TABLE));
+-	}
+-	pmd = pmd_offset(pud, vaddr);
+-	if (!pmd_present(*pmd)) {
+-		pte = (pte_t *)alloc_pgt_page(NULL);
+-		if (!pte)
+-			return -ENOMEM;
+-		set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
+-	}
+-	pte = pte_offset_kernel(pmd, vaddr);
 -
-+		next = pgd_addr_end(addr, end);
- 		if (pgd_present(*pgd)) {
- 			p4d = p4d_offset(pgd, 0);
- 			result = ident_p4d_init(info, p4d, addr, next);
+-	paddr = __pa(vaddr);
+-	set_pte(pte, pfn_pte(paddr >> PAGE_SHIFT, prot));
+-
+-	return 0;
+-}
+-
+ static int __init acpi_mp_setup_reset(u64 reset_vector)
+ {
+ 	struct x86_mapping_info info = {
+@@ -130,6 +78,7 @@ static int __init acpi_mp_setup_reset(u64 reset_vector)
+ 		.page_flag      = __PAGE_KERNEL_LARGE_EXEC,
+ 		.kernpg_flag    = _KERNPG_TABLE_NOENC,
+ 	};
++	unsigned long mstart, mend;
+ 	pgd_t *pgd;
+ 
+ 	pgd = alloc_pgt_page(NULL);
+@@ -137,8 +86,6 @@ static int __init acpi_mp_setup_reset(u64 reset_vector)
+ 		return -ENOMEM;
+ 
+ 	for (int i = 0; i < nr_pfn_mapped; i++) {
+-		unsigned long mstart, mend;
+-
+ 		mstart = pfn_mapped[i].start << PAGE_SHIFT;
+ 		mend   = pfn_mapped[i].end << PAGE_SHIFT;
+ 		if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
+@@ -147,14 +94,24 @@ static int __init acpi_mp_setup_reset(u64 reset_vector)
+ 		}
+ 	}
+ 
+-	if (kernel_ident_mapping_init(&info, pgd,
+-				      PAGE_ALIGN_DOWN(reset_vector),
+-				      PAGE_ALIGN(reset_vector + 1))) {
++	mstart = PAGE_ALIGN_DOWN(reset_vector);
++	mend = mstart + PAGE_SIZE;
++	if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
+ 		kernel_ident_mapping_free(&info, pgd);
+ 		return -ENOMEM;
+ 	}
+ 
+-	if (init_transition_pgtable(pgd)) {
++	/*
++	 * Make sure asm_acpi_mp_play_dead() is present in the identity mapping
++	 * at the same place as in the kernel page tables.
++	 * asm_acpi_mp_play_dead() switches to the identity mapping and the
++	 * function must be present at the same spot in the virtual address space
++	 * before and after switching page tables.
++	 */
++	info.offset = __START_KERNEL_map - phys_base;
++	mstart = PAGE_ALIGN_DOWN(__pa(asm_acpi_mp_play_dead));
++	mend = mstart + PAGE_SIZE;
++	if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
+ 		kernel_ident_mapping_free(&info, pgd);
+ 		return -ENOMEM;
+ 	}
 -- 
 2.45.2
 
