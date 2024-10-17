@@ -1,191 +1,179 @@
-Return-Path: <linux-acpi+bounces-8844-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8845-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3DF9A257D
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 16:47:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7559A27D0
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 18:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E59C283AA6
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 14:47:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1957B1C20C2F
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 16:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA491DE8A1;
-	Thu, 17 Oct 2024 14:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KfiVtPSo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1629B1DF994;
+	Thu, 17 Oct 2024 16:01:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92AA1DE2DA;
-	Thu, 17 Oct 2024 14:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5408D1DF990;
+	Thu, 17 Oct 2024 16:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729176451; cv=none; b=mDBcV6HT/XKyhBA291PRApH+gwuLC8ZGmd5nFNmVS+4Ss9G5JruRAEHoSVh5obtetTmZULGoc5ZC452NgqyEa8c/f079DRmYXgNw7C+6rWlD+QmSbOYeSzDx5N+b9tnELVZlLlmUkl7vY4/YYIaT21XeyQg297G5oAGRAUttvPk=
+	t=1729180866; cv=none; b=fudtTSS5iYW1HejNVme+/R1ex59ZhI68ACRRim5s1bXZlNTntmTATjyWoiE8VJZEw5A7KjPoac/Ot3n5KgGA/pKdNQX8Nk6fG1j1UA/LsXr+n6lW+ydbVSRQhO0oajGLkLuhkK1aq2p+k0p721XbeapZ/to3G2sLVC2C6vR7+Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729176451; c=relaxed/simple;
-	bh=n++0dWRZYDCAyaiWPm42bR4v7wpbadovLOncC1mmLL4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=CIyfD3sUYixXp0hM3cvLewRnL8XhGQrFAOEe0xTGINubyi7F4WscomPRG0z/61tvJONhmHurJt2apGel4/VxfeXgmgzhd2keh2aTnhvt8PIFJO+obR7Ssruj1I3VaOjk/qA/ZpmDwu4iAHPfasSxFPkWZaqQO7+yH5xONE1oZl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KfiVtPSo; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729176450; x=1760712450;
-  h=date:from:to:cc:subject:message-id;
-  bh=n++0dWRZYDCAyaiWPm42bR4v7wpbadovLOncC1mmLL4=;
-  b=KfiVtPSoFVecA27OAtVsbq3uiJAbSjv6U0hyAbZgQXY4fWAMkTL/MfAV
-   zDiW4ULcBkQvy/az0h+Uliu12rXwNoMcg9yJUd7b2SQ59IGC0yR8bg62F
-   Ep9oTFfmSmpFdK3ZmUr0bRE4eihE1OcDElJoyVDJjCoOWks3M2gYtvTac
-   vOY+QEr1FfzFq2XNzZ+HyujEmcvAG6YMA1vLQky+07/lujJlwrKEniEVn
-   JoqoTLQ8Ax5ejwuyRpY3xBMcI4+8nYLinDHACe4GWZJtJP2fFLbYwqTVY
-   7NPfAseJU30YkdgGKMqfyvl3OENOy0M4Pd2/DtcM+vf8TwnHLiwoZ5dtP
-   Q==;
-X-CSE-ConnectionGUID: bUHqtdpJSg+7sZwFnHG8hA==
-X-CSE-MsgGUID: W36Z2d23RFu3lgHNIyADMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28815121"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28815121"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 07:47:29 -0700
-X-CSE-ConnectionGUID: I8XvLNwcQrWFw7tKZVV52w==
-X-CSE-MsgGUID: dJg+GYazRVe14+4kBLSpgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,211,1725346800"; 
-   d="scan'208";a="78907995"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 17 Oct 2024 07:47:27 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t1Rmf-000MTl-1c;
-	Thu, 17 Oct 2024 14:47:25 +0000
-Date: Thu, 17 Oct 2024 22:46:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- 8e487bb344184a8787ecab77eb2539ac74a1dbdc
-Message-ID: <202410172240.34zAwDaD-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1729180866; c=relaxed/simple;
+	bh=bS+rkQucKSUcZJ7eB4PfrXLRFrOfFerBhkp+0sbyatY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tiZWyVAdKC8pUv+0/FeQFDgUNTz6ur1Y7r4TrH6K66ICy+nCX4q52YOjWIOcxKE1ABSrcYRfRD1cQOPgCol74OxiCVTu9C0gUU9ggU3kSvZ3BvgfD6m0+0MscsGfzmpKTLrSgdOj6HRAdpIVW29Rx82xYee/qlHeGmEw4cgOEKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XTsw11gMqz6FHM1;
+	Thu, 17 Oct 2024 23:59:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id AA879140B67;
+	Fri, 18 Oct 2024 00:00:57 +0800 (CST)
+Received: from localhost (10.126.174.164) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Oct
+ 2024 18:00:56 +0200
+Date: Thu, 17 Oct 2024 17:00:55 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dave Jiang <dave.jiang@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
+	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
+	<ira.weiny@intel.com>
+Subject: Re: [RFC PATCH 2/6] acpi: numa: Add support to enumerate and store
+ extended linear address mode
+Message-ID: <20241017170055.00003547@Huawei.com>
+In-Reply-To: <20240927142108.1156362-3-dave.jiang@intel.com>
+References: <20240927142108.1156362-1-dave.jiang@intel.com>
+	<20240927142108.1156362-3-dave.jiang@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: 8e487bb344184a8787ecab77eb2539ac74a1dbdc  Merge branches 'pm-cpufreq-fixes' and 'pm-powercap' into fixes
+On Fri, 27 Sep 2024 07:16:54 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-elapsed time: 1084m
+> Store the address mode as part of the cache attriutes. Export the mode
+> attribute to sysfs as all other cache attributes.
+> 
+> Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Minor things inline. Basically looks fine.
 
-configs tested: 97
-configs skipped: 4
+Jonathan
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> ---
+>  Documentation/ABI/stable/sysfs-devices-node | 7 +++++++
+>  drivers/acpi/numa/hmat.c                    | 3 +++
+>  drivers/base/node.c                         | 2 ++
+>  include/linux/node.h                        | 7 +++++++
+>  4 files changed, 19 insertions(+)
+> 
+> diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+> index 402af4b2b905..9016cc4f027c 100644
+> --- a/Documentation/ABI/stable/sysfs-devices-node
+> +++ b/Documentation/ABI/stable/sysfs-devices-node
+> @@ -177,6 +177,13 @@ Description:
+>  		The cache write policy: 0 for write-back, 1 for write-through,
+>  		other or unknown.
+>  
+> +What:		/sys/devices/system/node/nodeX/memory_side_cache/indexY/mode
+> +Date:		September 2024
+> +Contact:	Dave Jiang <dave.jiang@intel.com>
+> +Description:
+> +		The address mode: 0 for reserved, 1 for extended-lniear,
 
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                           tb10x_defconfig    clang-20
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                         bcm2835_defconfig    clang-20
-arm                      integrator_defconfig    clang-20
-arm                   milbeaut_m10v_defconfig    clang-20
-arm                        mvebu_v5_defconfig    clang-20
-arm                        spear3xx_defconfig    clang-20
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-i386                             allmodconfig    clang-18
-i386                              allnoconfig    clang-18
-i386                             allyesconfig    clang-18
-i386        buildonly-randconfig-001-20241017    clang-18
-i386        buildonly-randconfig-002-20241017    clang-18
-i386        buildonly-randconfig-003-20241017    clang-18
-i386        buildonly-randconfig-004-20241017    clang-18
-i386        buildonly-randconfig-005-20241017    clang-18
-i386        buildonly-randconfig-006-20241017    clang-18
-i386                                defconfig    clang-18
-i386                  randconfig-001-20241017    clang-18
-i386                  randconfig-002-20241017    clang-18
-i386                  randconfig-003-20241017    clang-18
-i386                  randconfig-004-20241017    clang-18
-i386                  randconfig-005-20241017    clang-18
-i386                  randconfig-006-20241017    clang-18
-i386                  randconfig-011-20241017    clang-18
-i386                  randconfig-012-20241017    clang-18
-i386                  randconfig-013-20241017    clang-18
-i386                  randconfig-014-20241017    clang-18
-i386                  randconfig-015-20241017    clang-18
-i386                  randconfig-016-20241017    clang-18
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-mips                           mtx1_defconfig    clang-20
-nios2                             allnoconfig    gcc-14.1.0
-openrisc                          allnoconfig    clang-20
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    clang-20
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-12
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    clang-20
-powerpc                          allyesconfig    gcc-14.1.0
-powerpc                       maple_defconfig    clang-20
-powerpc                      mgcoge_defconfig    clang-20
-powerpc                     taishan_defconfig    clang-20
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    clang-20
-riscv                            allyesconfig    gcc-14.1.0
-riscv                               defconfig    gcc-12
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                          debug_defconfig    clang-20
-s390                                defconfig    gcc-12
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                                  defconfig    gcc-12
-sh                             espt_defconfig    clang-20
-sh                            migor_defconfig    clang-20
-sh                   sh7770_generic_defconfig    clang-20
-sparc                            allmodconfig    gcc-14.1.0
-sparc                       sparc32_defconfig    clang-20
-sparc64                             defconfig    gcc-12
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-18
-x86_64                           allyesconfig    clang-18
-x86_64                              defconfig    clang-18
-x86_64                                  kexec    gcc-12
-x86_64                               rhel-8.3    gcc-12
-xtensa                            allnoconfig    gcc-14.1.0
+linear
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+also, is 0 reserved or unknown? I'm confused.
+
+
+> +		other unknown.
+> +
+>  What:		/sys/devices/system/node/nodeX/x86/sgx_total_bytes
+>  Date:		November 2021
+>  Contact:	Jarkko Sakkinen <jarkko@kernel.org>
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 1a902a02390f..39524f36be5b 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -506,6 +506,9 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+>  	switch ((attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8) {
+>  	case ACPI_HMAT_CA_DIRECT_MAPPED:
+>  		tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+> +		/* Extended Linear mode is only valid if cache is direct mapped */
+> +		if (cache->address_mode == ACPI_HMAT_CACHE_MODE_EXTENDED_LINEAR)
+> +			tcache->cache_attrs.mode = NODE_CACHE_MODE_EXTENDED_LINEAR;
+>  		break;
+>  	case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
+>  		tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index eb72580288e6..744be5470728 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -244,12 +244,14 @@ CACHE_ATTR(size, "%llu")
+>  CACHE_ATTR(line_size, "%u")
+>  CACHE_ATTR(indexing, "%u")
+>  CACHE_ATTR(write_policy, "%u")
+> +CACHE_ATTR(mode, "%u")
+>  
+>  static struct attribute *cache_attrs[] = {
+>  	&dev_attr_indexing.attr,
+>  	&dev_attr_size.attr,
+>  	&dev_attr_line_size.attr,
+>  	&dev_attr_write_policy.attr,
+> +	&dev_attr_mode.attr,
+>  	NULL,
+>  };
+>  ATTRIBUTE_GROUPS(cache);
+> diff --git a/include/linux/node.h b/include/linux/node.h
+> index 9a881c2208b3..589951c5e36f 100644
+> --- a/include/linux/node.h
+> +++ b/include/linux/node.h
+> @@ -57,6 +57,11 @@ enum cache_write_policy {
+>  	NODE_CACHE_WRITE_OTHER,
+>  };
+>  
+> +enum cache_mode {
+> +	NODE_CACHE_MODE_UNKOWN,
+UNKNOWN
+
+> +	NODE_CACHE_MODE_EXTENDED_LINEAR,
+> +};
+> +
+>  /**
+>   * struct node_cache_attrs - system memory caching attributes
+>   *
+> @@ -65,6 +70,7 @@ enum cache_write_policy {
+>   * @size:		Total size of cache in bytes
+>   * @line_size:		Number of bytes fetched on a cache miss
+>   * @level:		The cache hierarchy level
+> + * @mode:		The address mode
+>   */
+>  struct node_cache_attrs {
+>  	enum cache_indexing indexing;
+> @@ -72,6 +78,7 @@ struct node_cache_attrs {
+>  	u64 size;
+>  	u16 line_size;
+>  	u8 level;
+> +	u16 mode;
+>  };
+>  
+>  #ifdef CONFIG_HMEM_REPORTING
+
 
