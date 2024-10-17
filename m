@@ -1,325 +1,116 @@
-Return-Path: <linux-acpi+bounces-8834-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8835-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2019D9A1D58
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 10:38:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CD79A1E40
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 11:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E0E61F21050
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 08:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA17F285E73
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 09:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159591D417C;
-	Thu, 17 Oct 2024 08:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E855D1D90DF;
+	Thu, 17 Oct 2024 09:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PUtzLwAa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5C51D097C;
-	Thu, 17 Oct 2024 08:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED861D6DB6;
+	Thu, 17 Oct 2024 09:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729154279; cv=none; b=TzRw/6AIa2rWpQT0krVzds8dytKB9yM5QYm5zP9Y5WXJpW7llwOm8dYbGrNPkK7eNUAbfBtKMimXnfvMHmN1IaT5Ewps4bvjmGvmpcT7IJc6W3Zrlz0As8Hok3tfuo9AmTRL6DU+rERf8jHswEOrhplbNydTkTjmSDWUQa7Rd8I=
+	t=1729157187; cv=none; b=ozbfsLr8A7eirQg5xB4LWGP+kTW79J9DdgizGUfxowKn3R9E1FPPuzHzsacZRESIh31MCFfDpin/phYRHTYdf9fs57NwfDiO2Nod5fVlWr1VQBe9106RWx0K7LSncOVoWv3IUjGoSusmW8GmM4bAnV0qG5Qk9D5ovZJVo3J8s24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729154279; c=relaxed/simple;
-	bh=V1Nxm3PFFy1wfn7H+Vz/8ZFWFV7bYvzpYltoz5NJiGY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jxySWyerGjrmDSf7gfmpA1oSgAvFmrGnAPhgu0cdRXBoGhLMEPPrVAtxlH6w+2MLlZ/ooDD+OY4YDxo9YlWHGQBiKWq8EFYlQZUbMW/Kvnf0E+NZ66gY6FF9EACfRKsZjCw+I/ifAG7UhNFh+r107gc7DkrtYfPb7cuj3j39KDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XTh605KJKz6K9C4;
-	Thu, 17 Oct 2024 16:37:12 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7DB13140119;
-	Thu, 17 Oct 2024 16:37:52 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 17 Oct 2024 10:37:52 +0200
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Thu, 17 Oct 2024 10:37:51 +0200
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v13 01/18] EDAC: Add support for EDAC device features
- control
-Thread-Topic: [PATCH v13 01/18] EDAC: Add support for EDAC device features
- control
-Thread-Index: AQHbGkjIT8EMR4nHhkSztyssI50yp7KJHpUAgABGrZA=
-Date: Thu, 17 Oct 2024 08:37:51 +0000
-Message-ID: <b59606d95d384e43900587b25dec1a4e@huawei.com>
-References: <20241009124120.1124-1-shiju.jose@huawei.com>
- <20241009124120.1124-2-shiju.jose@huawei.com>
- <20241016105832.GSZw-cWDOFweQMWRgZ@fat_crate.local>
-In-Reply-To: <20241016105832.GSZw-cWDOFweQMWRgZ@fat_crate.local>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1729157187; c=relaxed/simple;
+	bh=i/ffviO7W8leGXGgrXNxf9k3L3x8y4ClbupGs16ztO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JbnhP5q6Qci7qJhY8ogi2OcrJwSYKBfUyn/LUIvkuiiL9N8ox/Pj3l6DjGndzKmu+cYIYlPY/GvBl8S5onCmlPtK8v9+V182TYSYGwcjanhY/fLb5HUaE+vinfFmtdn5VD98KzkJqw5I2p1FA5za0STy/hW4DmqbuyYrNE+u2nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PUtzLwAa; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729157184; x=1760693184;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=i/ffviO7W8leGXGgrXNxf9k3L3x8y4ClbupGs16ztO8=;
+  b=PUtzLwAa5aLvntApHkACTUPzs7fJZUF4FiZwr2J9j4ykG1kdvKIGinAz
+   XCQi1XkBtIWL0HVnSIO5Mq6L7tK8nVeFniTNFTK4dSYP3nycYow/hCYzt
+   2JnW5iXZlidPjjQ8KCPu2hdfwUTQm/2G/MNvlSIbvL+FYIwDn/8nSonKS
+   wZWtXrRfGDkjRr49KvYsk1TqM0zoKEUNBcpFZB/+9T0dl51tXAxAu0k8A
+   cG9Hz9yrAhBDQUwvfI6R+XeDEVVUOfQ3byLeroLbdXmsmZu+5G7PoMHQR
+   uUHs1J+nUxrfpe2IqEaZTdBprR4Nv6cLMzPe1NhJZeynVvzPv9b2vgMkQ
+   Q==;
+X-CSE-ConnectionGUID: x/e8r/DoQTuerx18r+OB4Q==
+X-CSE-MsgGUID: xMoG75oaSBmcoKUOfcRKvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11227"; a="28766604"
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
+   d="scan'208";a="28766604"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 02:26:23 -0700
+X-CSE-ConnectionGUID: 53/tnFdwQxmkNhY2IfqlsQ==
+X-CSE-MsgGUID: SRls1vKkSyi+f7gLHIoewQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
+   d="scan'208";a="83046634"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 02:26:21 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1t1Mlu-0000000441r-2eU3;
+	Thu, 17 Oct 2024 12:26:18 +0300
+Date: Thu, 17 Oct 2024 12:26:18 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	"hunter.yu" <hunter.yu@hj-micro.com>, jarkko.nikula@linux.intel.com,
+	lenb@kernel.org, jsd@semihalf.com, linux-acpi@vger.kernel.org,
+	linux-i2c@vger.kernel.org, andy.xu@hj-micro.com,
+	peter.du@hj-micro.com
+Subject: Re: [PATCH v2 1/2] ACPI: APD: Add clock frequency for HJMC01 I2C
+ controller
+Message-ID: <ZxDYOrAJEddtPrWv@smile.fi.intel.com>
+References: <20240926024026.2539-1-hunter.yu@hj-micro.com>
+ <20240926024026.2539-2-hunter.yu@hj-micro.com>
+ <pmbvhdaz4qt57gxemuxoyb6xjrcmvusm2jzl5ps3o5ga52edo5@qabu6rcbdipp>
+ <CAJZ5v0gSyMYerPqH9LOA77EWdBEOL7kHrc1+P1R=8Epn77gfNw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gSyMYerPqH9LOA77EWdBEOL7kHrc1+P1R=8Epn77gfNw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Boris,
+On Wed, Oct 16, 2024 at 10:45:26PM +0200, Rafael J. Wysocki wrote:
+> On Thu, Oct 3, 2024 at 12:13 AM Andi Shyti <andi.shyti@kernel.org> wrote:
+> > On Thu, Sep 26, 2024 at 10:40:05AM GMT, hunter.yu wrote:
+> > > I2C clock frequency for HJMC01 is 200M, define a new ACPI
+> > > HID for it.
+> > >
+> > > Signed-off-by: hunter.yu <hunter.yu@hj-micro.com>
+> >
+> > Do you want your name to be hunter.yu or Hunter Yu? I prefer the
+> > second and if you browse the git log, you can see that everyone
+> > uses Name Surname.
+> 
+> It must be a real name as per submitting-patches.rst
 
-Thanks for the comments.
+Hasn't this been relaxed last year by the d4563201f33a ("Documentation:
+simplify and clarify DCO contribution example language")?
 
->-----Original Message-----
->From: Borislav Petkov <bp@alien8.de>
->Sent: 16 October 2024 11:59
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-edac@vger.kernel.org; linux-cxl@vger.kernel.org; linux-
->acpi@vger.kernel.org; linux-mm@kvack.org; linux-kernel@vger.kernel.org;
->tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->Cameron <jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: Re: [PATCH v13 01/18] EDAC: Add support for EDAC device features
->control
->
->On Wed, Oct 09, 2024 at 01:41:02PM +0100, shiju.jose@huawei.com wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add generic EDAC device features control supports registering RAS
->> features supported in the system. Driver exposes features control
->> attributes to userspace in
->> /sys/bus/edac/devices/<dev-name>/<ras-feature>/
->
->Chatgpt prompt:
->
->| Please check the grammar in this English text: "Add generic EDAC
->| device features control supports registering RAS features supported in t=
-he
->system.
->| Driver exposes features control attributes to userspace in
->| /sys/bus/edac/devices/<dev-name>/<ras-"feature>/
->
->Response:
->
->| Here's a corrected version of the text:
->|
->| "Add generic EDAC device feature control support for registering RAS
->| features supported in the system. The driver exposes feature control
->| attributes to userspace in /sys/bus/edac/devices/<dev-name>/<ras-feature=
->/."
->|
->| Changes made:
->|
->| * "features control" was changed to "feature control" for consistency
->| and clarity.
->|
->| * "supports registering" was changed to "support for registering" to
->| match the structure of the sentence.
->|
->| * Added "The" at the beginning of the second sentence for better flow.
->|
->| * Corrected the syntax around the file path to ensure clarity and
->| proper
->| * punctuation.
->
->Please run all your commit text through some LLM AI as they're apparently =
-good
->enough now to help me in correcting grammar.
-Will do.
->
->> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->>  drivers/edac/edac_device.c | 105
->+++++++++++++++++++++++++++++++++++++
->>  include/linux/edac.h       |  32 +++++++++++
->>  2 files changed, 137 insertions(+)
->>
->> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
->> index 621dc2a5d034..0b8aa8150239 100644
->> --- a/drivers/edac/edac_device.c
->> +++ b/drivers/edac/edac_device.c
->> @@ -570,3 +570,108 @@ void edac_device_handle_ue_count(struct
->edac_device_ctl_info *edac_dev,
->>  		      block ? block->name : "N/A", count, msg);  }
->> EXPORT_SYMBOL_GPL(edac_device_handle_ue_count);
->> +
->> +/* EDAC device feature */
->> +static void edac_dev_release(struct device *dev) {
->> +	struct edac_dev_feat_ctx *ctx =3D container_of(dev, struct
->> +edac_dev_feat_ctx, dev);
->> +
->> +	kfree(ctx->dev.groups);
->> +	kfree(ctx);
->> +}
->> +
->> +const struct device_type edac_dev_type =3D {
->> +	.name =3D "edac_dev",
->> +	.release =3D edac_dev_release,
->> +};
->> +
->> +static void edac_dev_unreg(void *data) {
->> +	device_unregister(data);
->> +}
->> +
->> +/**
->> + * edac_dev_register - register device for RAS features with EDAC
->> + * @parent: client device.
->
->If this is a client device, why is the variable called "parent" and not "c=
-lient"?
->
->I.e.,
->
->	struct device *client;
->
->For clarity and simplicity.
->
->Or call it "parent" because you do:
->
->	ctx->dev.parent =3D parent;
->
->and forget "client" altogether.
-Changed to "parent".=20
->
->> + * @name: client device's name.
->> + * @private: parent driver's data to store in the context if any.
->> + * @num_features: number of RAS features to register.
->> + * @ras_features: list of RAS features to register.
->> + *
->> + * Return:
->> + *  * %0       - Success.
->> + *  * %-EINVAL - Invalid parameters passed.
->> + *  * %-ENOMEM - Dynamic memory allocation failed.
->> + *
->> + * The new edac_dev_feat_ctx would be freed automatically.
->
->Why is this important to call out here?
->
->It is a common coding pattern of freeing resources in the release function=
-...
-Deleted.
->
->> + */
->> +int edac_dev_register(struct device *parent, char *name,
->> +		      void *private, int num_features,
->> +		      const struct edac_dev_feature *ras_features) {
->> +	const struct attribute_group **ras_attr_groups;
->> +	struct edac_dev_feat_ctx *ctx;
->> +	int attr_gcnt =3D 0;
->> +	int ret, feat;
->> +
->> +	if (!parent || !name || !num_features || !ras_features)
->> +		return -EINVAL;
->> +
->> +	/* Double parse to make space for attributes */
->> +	for (feat =3D 0; feat < num_features; feat++) {
->> +		switch (ras_features[feat].ft_type) {
->> +		/* Add feature specific code */
->> +		default:
->> +			return -EINVAL;
->> +		}
->> +	}
->> +
->> +	ctx =3D kzalloc(sizeof(*ctx), GFP_KERNEL);
->> +	if (!ctx)
->> +		return -ENOMEM;
->> +
->> +	ctx->dev.parent =3D parent;
->> +	ctx->private =3D private;
->> +
->> +	ras_attr_groups =3D kcalloc(attr_gcnt + 1, sizeof(*ras_attr_groups),
->GFP_KERNEL);
->> +	if (!ras_attr_groups) {
->> +		ret =3D -ENOMEM;
->> +		goto ctx_free;
->> +	}
->> +
->> +	attr_gcnt =3D 0;
->> +	for (feat =3D 0; feat < num_features; feat++, ras_features++) {
->> +		switch (ras_features->ft_type) {
->> +		/* Add feature specific code */
->> +		default:
->> +			ret =3D -EINVAL;
->> +			goto groups_free;
->> +		}
->> +	}
->> +
->> +	ras_attr_groups[attr_gcnt] =3D NULL;
->> +	ctx->dev.bus =3D edac_get_sysfs_subsys();
->> +	ctx->dev.type =3D &edac_dev_type;
->> +	ctx->dev.groups =3D ras_attr_groups;
->> +	dev_set_drvdata(&ctx->dev, ctx);
->> +
->> +	ret =3D dev_set_name(&ctx->dev, name);
->> +	if (ret)
->> +		goto groups_free;
->> +
->> +	ret =3D device_register(&ctx->dev);
->> +	if (ret) {
->> +		put_device(&ctx->dev);
->> +		goto groups_free;
->> +		return ret;
->		^^^^^^^^^^
->
->Come again?!
->
->There's code after a "goto"?
-Fixed.
->
->--
->Regards/Gruss,
->    Boris.
->
->https://people.kernel.org/tglx/notes-about-netiquette
+> The S-o-b is meaningless otherwise.
 
-Thanks,
-Shiju
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
