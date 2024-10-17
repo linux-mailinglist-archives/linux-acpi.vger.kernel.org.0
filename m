@@ -1,57 +1,56 @@
-Return-Path: <linux-acpi+bounces-8849-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8851-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB169A2967
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 18:46:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07B39A2971
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 18:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B9E3B23C19
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 16:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0791C27622
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 16:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419C71DFE2A;
-	Thu, 17 Oct 2024 16:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B511DFD88;
+	Thu, 17 Oct 2024 16:46:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137161DF75D;
-	Thu, 17 Oct 2024 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7B71DEFF7;
+	Thu, 17 Oct 2024 16:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729183268; cv=none; b=uAczNtredSu/r8+phLjSvTrcIuQWQ8FY6qX2QIFNYTorXxA+j3dCjJg/38oa5Rhnd/3Cw20cLCTv9akQ/tg2pqIJ59kVgNQIBECJvCD3/VFCbsA3AQD61fwaMLgWP4+ljDtowe3Y61Zh5hM9kL6ZuU4f0cNfCar+cJZ+av5GZJQ=
+	t=1729183604; cv=none; b=q1eXfw+H7qUebqB5YHGQ7qcg6Y6ZnxktkPfwDGp9PgyKP0hnyyhPxLhufmTyL7xLC/ARPOeUcXj2COXnuVSl2cTcunVCkPL4bAzr9h1JlBNewlDhsIcU4nd3VWCQpLIEFOOph43/GkjRY/DC0eOF0mvOfobXRjjBDNUiIGmEjuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729183268; c=relaxed/simple;
-	bh=X0A/LssMRj4VLoCivEQ4z/v91VHtuCg4Aoye4BcbcnQ=;
+	s=arc-20240116; t=1729183604; c=relaxed/simple;
+	bh=+OzZ/uW9lk9vatz9ccIyoWr/wHQampRc/RcX0fDAyz4=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gNzU7ocdYjL2bXlrLgjFdhyxN644yrW8tzu+lCaVrrnn4De7Yd+BzRic0K5+/xUeaNCaYU8hBDj3Xc163karbJkJopuktPU/FLdIvdro4pHNQd2+YiOC9bFNmy0LkgpvRb0jEV/UVRO9m25bPSzuFJiLv+X/gVdjNKHK03Am1o0=
+	 MIME-Version:Content-Type; b=XSZJ1UMiYcPJ8Ax+Ue5rir2Gw6UPSInKOL9pMF+BXpNH3aOxACmpNqM/Sp6876jkM7y6XRMYAUlstCMU9osbLT9Ykcyr8YENRve1BqiSwMKlYs3y4C58Pr/5vTShbH+ASM6zPUbmBS7pueYbDQcD5r30dVz4cKxrqYlI0so9hIQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XTtpD31yqz6K6F4;
-	Fri, 18 Oct 2024 00:39:16 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XTtxw4FWTz6K9Fp;
+	Fri, 18 Oct 2024 00:45:56 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0AA1614011A;
-	Fri, 18 Oct 2024 00:41:01 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 53BB814011A;
+	Fri, 18 Oct 2024 00:46:37 +0800 (CST)
 Received: from localhost (10.126.174.164) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Oct
- 2024 18:41:00 +0200
-Date: Thu, 17 Oct 2024 17:40:58 +0100
+ 2024 18:46:36 +0200
+Date: Thu, 17 Oct 2024 17:46:34 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Dave Jiang <dave.jiang@intel.com>
 CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
 	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
 	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
 	<ira.weiny@intel.com>
-Subject: Re: [RFC PATCH 6/6] cxl: Add mce notifier to emit aliased address
- for extended linear cache
-Message-ID: <20241017174058.000078bc@Huawei.com>
-In-Reply-To: <20240927142108.1156362-7-dave.jiang@intel.com>
+Subject: Re: [RFC PATCH 0/6] acpi/hmat / cxl: Add exclusive caching
+ enumeration and RAS support
+Message-ID: <20241017174634.000079a1@Huawei.com>
+In-Reply-To: <20240927142108.1156362-1-dave.jiang@intel.com>
 References: <20240927142108.1156362-1-dave.jiang@intel.com>
-	<20240927142108.1156362-7-dave.jiang@intel.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -65,34 +64,45 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Fri, 27 Sep 2024 07:16:58 -0700
+On Fri, 27 Sep 2024 07:16:52 -0700
 Dave Jiang <dave.jiang@intel.com> wrote:
 
-> Below is a setup with extended linear cache configuration with an example
-> layout of of memory region shown below presented as a single memory region
-> consists of 256G memory where there's 128G of DRAM and 128G of CXL memory.
-> The kernel sees a region of total 256G of system memory.
+> Hi all,
+> I'm looking for comments on the approach and the implementation of dealing with
+> this exclusive caching configuration. I have concerns with the discovering and
+> handling of I/O hole in the memory mapping and looking for suggestions on if
+> there are better ways to do it. I will be taking a 4 weeks sabbatical starting
+> next week and I apologize in advance in the delay on responses. Thank you in
+> advance for reviewing the patches.
 > 
->               128G DRAM                          128G CXL memory
-> |-----------------------------------|-------------------------------------|
+> The MCE folks will be interested in patch 6/6 where MCE_PRIO_CXL is added.
 > 
-> Data resides in either DRAM or far memory (FM) with no replication. Hot data
-> is swapped into DRAM by the hardware behind the scenes. When error is detected
-> in one location, it is possible that error also resides in the aliased
-> location. Therefore when a memory location that is flagged by MCE is part of
-> the special region, the aliased memory location needs to be offlined as well.
 > 
-> Add an mce notify callback to identify if the MCE address location is part of
-> an extended linear cache region and handle accordingly.
-> 
-> Added symbol export to set_mce_nospec() in x86 code in order to call
-> set_mce_nospec() from the CXL MCE notify callback.
+> Certain systems provide an exclusive caching memory configurations where a
+> 1:1 layout of DRAM and far memory (FR) such as CXL memory is utilized. In
+(FM) at least that is what you use later.
 
-Whilst not commenting on whether any other implementation might exist,
-this code should be written to be arch independent at some level.
 
+> this configuration, the memory region is provided as a single memory region
+> to the OS. For example such as below:
 > 
-> Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>              128GB DRAM                         128GB CXL memory
+> |------------------------------------|------------------------------------|
+
+So this differs slightly from what I expected.  
+The ACPI spec change I believe allows for the CXL memory to be be N times
+bigger than the cache.
+
+I'm not against only supporting 1:1, but I didn't immediately see code
+to check for that and scream if it sees something different.
+
+Also as I mention in one of the patches, I don't recall the ACPI stuff
+giving an 'order' to the two types of memory.  Maybe I'm missing that
+but in theory at least I think the code needs to be more flexible
+(or renamed perhaps).
+
+Jonathan
+
+
 
 
