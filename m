@@ -1,101 +1,120 @@
-Return-Path: <linux-acpi+bounces-8852-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8853-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1459A2A3E
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 19:07:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6CC9A3175
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Oct 2024 01:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1A3C2832A3
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 17:07:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3D661F22C35
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Oct 2024 23:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA9C1F6660;
-	Thu, 17 Oct 2024 16:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C9C20E314;
+	Thu, 17 Oct 2024 23:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="J1rrqGLn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A661DF744;
-	Thu, 17 Oct 2024 16:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCEC20E30D;
+	Thu, 17 Oct 2024 23:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729184393; cv=none; b=LG7LDeg7n2wZgwrPl+dIa+FPov4cjpWomF5QmGsEP8JpwOfy0vzPECU2IkiTquK/BhJgTFraYNGtnlQdae06b+KYgCZdMq+5DQ1q1ikCfIh1zz3YOcExkOJU61X1CT6EgGtAgkcX2gvCeVL+Rwx7IkLWfDCsUmPU3e7lmxQPCe8=
+	t=1729208518; cv=none; b=QHLgjcbjlWyQ5u8SuXFUZ4x2yll05hC7F8HkNqyBT2e8qiIFwsMiLI+ecWhpAhK2JbNGnxi8JdGmeGO8R7/DLIuab/FVzBpcOxKVrDxjzKnPUwePbWNEgxiRb6g4mworue1ctR0PbUg8HUkzioWZnkpVM/gKyK2gLO701A7EKjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729184393; c=relaxed/simple;
-	bh=ARY6QB40hS8SjbiQQrQF8tLLS7fueNq5q3sRfcztBfo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ljL9GoL3GP6PueP1XcYfliTk24Q17bmB9ylg6eTxMVYHxbQGHqCBZCXhpjXcWuDAkxRmpoT6wsYCTMzli+ltvb8/khAqvuKoXMUiw6lmqXB54f1BSuLqrtAhbFX5PEmcZcI7ITYpdsEbc/aeIGda77h3Y3rpU1Zh67PA+5qTWk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XTvCr6hG1z6K6kS;
-	Fri, 18 Oct 2024 00:58:00 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 871F7140B67;
-	Fri, 18 Oct 2024 00:59:45 +0800 (CST)
-Received: from localhost (10.126.174.164) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Oct
- 2024 18:59:44 +0200
-Date: Thu, 17 Oct 2024 17:59:42 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Luck, Tony" <tony.luck@intel.com>
-CC: "Jiang, Dave" <dave.jiang@intel.com>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
-	"bp@alien8.de" <bp@alien8.de>, "Williams, Dan J" <dan.j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, "Schofield, Alison"
-	<alison.schofield@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>
-Subject: Re: [RFC PATCH 4/6] acpi/hmat: Add helper functions to provide
- extended linear cache translation
-Message-ID: <20241017175942.000072b4@Huawei.com>
-In-Reply-To: <SJ1PR11MB6083FB95773B782EA494C985FC472@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <20240927142108.1156362-1-dave.jiang@intel.com>
-	<20240927142108.1156362-5-dave.jiang@intel.com>
-	<20241017173326.0000191a@Huawei.com>
-	<SJ1PR11MB6083FB95773B782EA494C985FC472@SJ1PR11MB6083.namprd11.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1729208518; c=relaxed/simple;
+	bh=rzTjsoxCvdckGmoxcEp2HsAOGoFFJ8K5tdixv7Ddc5M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pj9/RFrq0Ow69n1pZLwzuOaoUzONM/4H1HscbS5fhcKZ+ULFp38KOq4tuD02VPJZStDY7mU6nmXCmLarMYklN8h22toleaaqzr/QTeb8oWAvEyabCFk4W8NPFWMPb4Q/mUJR6nlY6soFOfrcJz9uXOgJUBjcz8X9/NhUZhvjNv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=J1rrqGLn; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1729208512; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=0aawDGjGNZQE0Mn+vyxLbUtklTzFw7RqZEkL6wKmfks=;
+	b=J1rrqGLnvWJkz8uIrPbobfLCGxm+MPAsOmmwOoTaOElI8N4wOTZmhrmqG+wU367O9PmslGZwk5Pz/lt0QlK0pnd8L4wr3EffwTqEK3ry6egZS5ijkeUEZrPXKFKPQbyA1l3+gGMrsEEgNmHBpe5KB8dXrjdLN3iGZe21IX5qqCY=
+Received: from 30.246.161.56(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WHLxo66_1729208507 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 18 Oct 2024 07:41:50 +0800
+Message-ID: <679e9acc-3d76-43dc-a00f-9301a1da0ce6@linux.alibaba.com>
+Date: Fri, 18 Oct 2024 07:41:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 1/3] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: mark.rutland@arm.com, catalin.marinas@arm.com, mingo@redhat.com,
+ robin.murphy@arm.com, bp@alien8.de, rafael@kernel.org,
+ wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
+ tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
+ james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
+ will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+ ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+ baolin.wang@linux.alibaba.com, tglx@linutronix.de,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com, linux-cxl@vger.kernel.org
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20241014084240.18614-2-xueshuai@linux.alibaba.com>
+ <20241017103923.00007033@Huawei.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20241017103923.00007033@Huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 17 Oct 2024 16:46:35 +0000
-"Luck, Tony" <tony.luck@intel.com> wrote:
 
-> > What does the I/O hole correspond to in the system?  
+
+在 2024/10/17 17:39, Jonathan Cameron 写道:
+> On Mon, 14 Oct 2024 16:42:38 +0800
+> Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 > 
-> PCIe mmio mapped space. 32-bit devices must have addresses below 4G
-> so X86 systems have a physical memory map that looks like:
+>> Synchronous error was detected as a result of user-space process accessing
+>> a 2-bit uncorrected error. The CPU will take a synchronous error exception
+>> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
+>> memory_failure() work which poisons the related page, unmaps the page, and
+>> then sends a SIGBUS to the process, so that a system wide panic can be
+>> avoided.
+>>
+>> However, no memory_failure() work will be queued when abnormal synchronous
+>> errors occur. These errors can include situations such as invalid PA,
+>> unexpected severity, no memory failure config support, invalid GUID
+>> section, etc. In such case, the user-space process will trigger SEA again.
+>> This loop can potentially exceed the platform firmware threshold or even
+>> trigger a kernel hard lockup, leading to a system reboot.
+>>
+>> Fix it by performing a force kill if no memory_failure() work is queued
+>> for synchronous errors.
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 > 
-> 0 - 2G: RAM
-> 2G-4G: MMIO
-> 4G-end of memory: RAM
-> end of memory-infinity: 64-bit MMIO
+> The subtle cases in here are the various other forms of delayed handling
+> buried in some of the record handling that don't set queued.
+> I've been through them all and have convinced myself that either
+> hey should never be synchronous or that there is no attempt to
+> recover in kernel today (non memory things such as CXL protocol
+> collapse, which might I guess be detected synchronously on a read
+> - though I'd expect poison and a memory error first) so the correct
+> thing to do is what you have here.
 > 
-> Depending on how much MMIO there is different systems put the
-> dividing line at other addresses than 2G.
-
-Ah, thanks. So this weird cache setup might be not quite linear
-module N aliases as described in the ACPI spec (System vs host
-physical addresses I guess).
-
-Had wrong mental model :(
-
-Ouch.
-
-
+> Fiddly code though with a lot of paths, so more eyes welcome!
 > 
-> -Tony
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
+> +CC linux-cxl for info.
 
+Thanks :)
+
+Best Regards,
+Shuai
 
