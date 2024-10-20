@@ -1,179 +1,127 @@
-Return-Path: <linux-acpi+bounces-8865-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8866-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19B19A5331
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Oct 2024 11:01:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B939A5368
+	for <lists+linux-acpi@lfdr.de>; Sun, 20 Oct 2024 11:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05762283929
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Oct 2024 09:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DA8F1F2201B
+	for <lists+linux-acpi@lfdr.de>; Sun, 20 Oct 2024 09:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CAB2B9DD;
-	Sun, 20 Oct 2024 09:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDD347F4A;
+	Sun, 20 Oct 2024 09:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Me/8UH54"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xezrpjh9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259251754B;
-	Sun, 20 Oct 2024 09:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503A156B81
+	for <linux-acpi@vger.kernel.org>; Sun, 20 Oct 2024 09:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729414881; cv=none; b=PO41d2N6Pm9TOFuyJsMiaYANuScEWEi8DYD7tOp41Sbzqih6lX8bkHHTNgc3bRxWoVFeWHhuY6gEDhAwhOuViFwMKGERyWyHpapNFN+zXDeZotPV2S86cc9M/vGrcudFFbbCxpNukAu2IrODk3QiQa0vc4sbo72wY+5lMDfrt2Q=
+	t=1729418340; cv=none; b=EoYGjka6MoCCifq2tJP0EOIyJYwWqaBFlzheEFAzL3krgfeMJTa5ah8Ax3gjhWt4Szi21MmR9RRgUZqhuusL7cQxaE/0arN5uvJ5O3NfIdhjx+H2Ah/Czlno9100kcZy3O7ERyc18UBr9aCoufs8nBJTgobd5PukkR7cB8wa6hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729414881; c=relaxed/simple;
-	bh=bNi3UlAVbvyjJRic/L8UHdlKecEsBMV+KKUYX3mNmjY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M0+Q81px9j+6rofC/QHqz2mUUNPD9ibDo9Sh79eroe3+GBsYfS/P75AEM7as9QoP3A9n+wPREd9Ant689mfMDjXz16HPOvZrumg34j3Xtz9dVU1vihrOtXpjXWghE6C3/cWPvyNVec1i8H3GyI6M9qXyI7qIsrn6V/0wFz67Nq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Me/8UH54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76D5C4CEC6;
-	Sun, 20 Oct 2024 09:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729414877;
-	bh=bNi3UlAVbvyjJRic/L8UHdlKecEsBMV+KKUYX3mNmjY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Me/8UH54qRnC+ERDPuiR1P7Zp2rZ/4bVI3px3v7Yb+Y9y3meIcbxCccI6W0A8KFL6
-	 EO3/2ejVig4WM28hIiIXRwNIzdX3iekW7difUgiZNLBZQpS7vp6pw6mcqFq0g652XP
-	 vILbUPh5cG9uVP7G0KDLii2BGUi/zsnQMEMFMTNPR59ml7eA6gYZu5LmsFIwRS5NzS
-	 qJjwkS2eX3X083+Z+zZCMzeB8SDasACC1y4EOUFWMGMbByNLMZGKYCOikrJohkF32R
-	 yFFNug3+nuDwqDsS9slWoyIww/KwzjfG5JcRoqlk5rA65qllTwXs8w7YwNeyoOgZ5d
-	 f/QZxp6KlN7Dw==
-Date: Sun, 20 Oct 2024 11:57:27 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	dan.j.williams@intel.com, ira.weiny@intel.com, david@redhat.com,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-	rafael@kernel.org, lenb@kernel.org, akpm@linux-foundation.org,
-	alison.schofield@intel.com, Jonathan.Cameron@huawei.com,
-	rrichter@amd.com, ytcoode@gmail.com, haibo1.xu@intel.com,
-	dave.jiang@intel.com
-Subject: Re: [PATCH v2 1/3] mm/memblock: implement memblock_advise_size_order
- and probe functions
-Message-ID: <ZxTF93VzRiygScA1@kernel.org>
-References: <20241016192445.3118-1-gourry@gourry.net>
- <20241016192445.3118-2-gourry@gourry.net>
+	s=arc-20240116; t=1729418340; c=relaxed/simple;
+	bh=c/xF12CRMjBW275//few5ITmMOvj11NnvQl59gra8Ao=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XIbf8z5hWLJd9m7zOysMbYx4pwzIO0x/WNtiSC/zCw7kWHiNjjNjgKEGyA6z2UotwIIUIZt/0S+OD9/390Ts6ZtIjZGgOcqX30fjYEiMJQ6r5PjPZdUyXCQgE77YZLyYKAf/6dlNwZa8x/LwfcJQ9LbLehQfRsKBCGP+Brzu7IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xezrpjh9; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2e2a999b287so2732422a91.0
+        for <linux-acpi@vger.kernel.org>; Sun, 20 Oct 2024 02:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729418337; x=1730023137; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bHphyOG2Gr9tzg50t0uQ4pxzQvEucKxsH4KsxFbRESY=;
+        b=Xezrpjh9GusxrbGCqR4lqkRh+db/dd4MS/B8Jcmhd1G8a4OuZFuXoyC6e2NshMGBRe
+         xyU9hxowGmJ3BxXpMVAp+bsLzlj52ldrIxY3wA2EbLVQCNV1tlr4O8bloI9xYKIa+UZg
+         x4K67Ha25ERNd/JViJPbLtWZ54LYWL5kwKgAupnr7Dwx8Dc2ANf5Tv1d9waS9iN/onmJ
+         /gTvpxFts7bGsMYmA6NLr46gfXhcgnJbi94XsZpn2XHTlDWXqV/gsKFnZPVLludySP8k
+         9P/9yMn4DhfCFClJw6c1KY4VqPEbP5JD7YIGmD/Q5VNBqZy6zfuwqvjJ8eHkpst6SXfj
+         yhnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729418337; x=1730023137;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bHphyOG2Gr9tzg50t0uQ4pxzQvEucKxsH4KsxFbRESY=;
+        b=IzSQMD0yxITYOoQZwL6rO8PLb17Fr4t6vQzJLEjMguASTCPA0HkhRHCEOI5gKoGyd6
+         abROiH164BoTP6TNF/nil39BH4aibRQz6IMpShoMdEfBU1KnBf6Aw0QkcPFCJGWpFOvt
+         BsaSd0wwFijnV61+4EE8vmM5UFAH2eyVkhPKxidYkFYVofmKcSx8q82eBs0UqQRe+7P+
+         j4hi+rVhJqui/bB7cfnWk6HxiVBMeufR377u9iDti3InsyXEb0LFLBOUIEoJ8dsLi+Z1
+         D08AgI+Rp4WAu4m042HtGvosBHcEGQ/ZUr292H1ZM62AfW457kvMCKzUuvKuF+UqQVph
+         VB+w==
+X-Gm-Message-State: AOJu0Yxa33L6ffg16zrzVYlWJ0KNvX2j3gfGX8e9g8NLDqurXM26CfSz
+	+It7/rQrXACH5khTxjY/9jn2LgjFxclsKHN1Bk8THvVzrcR94yl7iyRoDw==
+X-Google-Smtp-Source: AGHT+IGCj/+srD6rV2YLC0DQ+dsAtsmPN4EWBZYvt+/J0WFbdME+Er1NPGbKUbem0Qy8qPKea3R/JQ==
+X-Received: by 2002:a17:90b:197:b0:2d3:d063:bdb6 with SMTP id 98e67ed59e1d1-2e5615d619amr9595650a91.4.1729418336659;
+        Sun, 20 Oct 2024 02:58:56 -0700 (PDT)
+Received: from localhost.localdomain ([103.235.165.104])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e5ad388effsm1135968a91.34.2024.10.20.02.58.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Oct 2024 02:58:56 -0700 (PDT)
+From: Shubham Panwar <shubiisp8@gmail.com>
+To: linux-acpi@vger.kernel.org
+Cc: Shubham Panwar <shubiisp8@gmail.com>
+Subject: [v2] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
+Date: Sun, 20 Oct 2024 15:20:46 +0530
+Message-ID: <20241020095045.6036-2-shubiisp8@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016192445.3118-2-gourry@gourry.net>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 16, 2024 at 03:24:43PM -0400, Gregory Price wrote:
-> Hotplug memory sources may have opinions on what the memblock size
-> should be - usually for alignment purposes.  For example, CXL memory
-> extents can be as small as 256MB with a matching physical alignment.
-> 
-> Implement memblock_advise_size_order for use during early init, prior
-> to allocator and smp init, for software to advise the system as to what
-> the preferred block size should be.
-> 
-> The probe function is meant for arch_init code to fetch this value
-> once during memblock size calculation. Use of the advisement value
-> is arch-specific, and no guarantee is made that it will be used.
+Changes in v2:
+- Removed extra blank lines
+- Fixed whitespace issues
+- Added appropriate commit description
 
-I'm confused.
+This patch adds a DMI quirk for the Samsung Galaxy Book2 to fix the initial
+lid state detection issue. The _LID device incorrectly returns the lid
+status as "closed" during boot, causing the system to enter a suspend loop
+right after booting. This quirk ensures that the correct lid state is
+reported initially, preventing the system from immediately suspending
+after startup.
+
+This fix only addresses the initial lid state detection and ensures proper
+system behavior upon boot.
+
+Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
+---
+ drivers/acpi/button.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 51470208e..7773e6b86 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -130,6 +130,17 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
++	{
++		/*
++		 * Samsung galaxybook2 ,initial _LID device notification returns
++		 * lid closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{}
+ };
  
-Aren't we talking about memory blocks for hotplugable memory here?
-This functionality rather belongs to drivers/base/memory.c, doesn't it?
-
-> Calls to either function after probe results in -EBUSY to signal that
-> advisement is ignored or that memblock_get_size_bytes should be used.
-> 
-> Suggested-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  include/linux/memblock.h |  2 ++
->  mm/memblock.c            | 49 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 51 insertions(+)
-> 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index fc4d75c6cec3..efb1f7cfbd58 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -111,6 +111,8 @@ static inline void memblock_discard(void) {}
->  #endif
->  
->  void memblock_allow_resize(void);
-> +int memblock_advise_size_order(int order);
-> +int memblock_probe_size_order(void);
->  int memblock_add_node(phys_addr_t base, phys_addr_t size, int nid,
->  		      enum memblock_flags flags);
->  int memblock_add(phys_addr_t base, phys_addr_t size);
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 3b9dc2d89b8a..e0bdba011564 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2009,6 +2009,55 @@ void __init memblock_allow_resize(void)
->  	memblock_can_resize = 1;
->  }
->  
-> +/*
-> + * @order: bit-order describing the preferred minimum block size
-> + *
-> + * Intended for use by early-boot software prior to smp and allocator init to
-> + * advise the architecture what the minimum block size should be. Should only
-> + * be called during arch init before allocator and smp init.
-> + *
-> + * This value can only decrease after it has been initially set, the intention
-> + * is to identify the smallest supported alignment across all opinions.
-> + *
-> + * Use of this advisement value is arch-specific.
-> + *
-> + * Returns: 0 on success, -EINVAL if order is <=0, and -EBUSY if already probed
-> + */
-> +static int memblock_sz_order;
-> +#define MEMBLOCK_SZO_PROBED (-1)
-> +int memblock_advise_size_order(int order)
-> +{
-> +	if (order <= 0)
-> +		return -EINVAL;
-> +
-> +	if (memblock_sz_order == MEMBLOCK_SZO_PROBED)
-> +		return -EBUSY;
-> +
-> +	if (memblock_sz_order)
-> +		memblock_sz_order = min(order, memblock_sz_order);
-> +	else
-> +		memblock_sz_order = order;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * memblock_probe_size_order is intended for arch init code to probe one time,
-> + * for a suggested memory block size.  After the first call, the result will
-> + * always be -EBUSY. A late user should call memory_block_size_bytes instead to
-> + * determine the actual block size in use.
-> + *
-> + * Should only be called during arch init prior to allocator and smp init.
-> + *
-> + * Returns: block size order, 0 if never set, or -EBUSY if previously probed.
-> + */
-> +int memblock_probe_size_order(void)
-> +{
-> +	int rv = xchg(&memblock_sz_order, -1);
-> +
-> +	return (rv == -1) ? -EBUSY : rv;
-> +}
-> +
->  static int __init early_memblock(char *p)
->  {
->  	if (p && strstr(p, "debug"))
-> -- 
-> 2.43.0
-> 
-
 -- 
-Sincerely yours,
-Mike.
+2.47.0
+
 
