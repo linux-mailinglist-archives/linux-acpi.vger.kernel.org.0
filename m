@@ -1,161 +1,103 @@
-Return-Path: <linux-acpi+bounces-8867-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8868-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7679A60B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 11:52:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7A9A6377
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 12:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E036F1C21B5D
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 09:52:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBA1282124
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 10:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4BB1E3DF9;
-	Mon, 21 Oct 2024 09:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720461E8843;
+	Mon, 21 Oct 2024 10:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZZfn12au"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mg3/2crV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26251E376F
-	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 09:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D9539FD6
+	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 10:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729504308; cv=none; b=pUlr8/CxyN1plRg6PMTU+t1Ytq/DVmOgrJXi5Ws+G7gGj183BhCgVlWqlVyCjM0CykeXPW/IbkB3n6EtW2QZb/V+hvYgfQ4qJWGaQ5LSvwrW21/TGr/LyOTzOuA8xQcVNFukQdTUaMktDolCHWdf1zi4Qo6nRS+2X6lCxmurUNI=
+	t=1729506778; cv=none; b=pPhyp2zAA/Q7Us6KMTdVHflBzxZWR7fWyBYLJFjGIFYAh/IQsyk1tIdRUIOyl+clUHph+VOr9oPodspuSU31a5SiIPi3yBwPEUhrYQvBvp172BauH419ZtKfjd07NCbMPW3aG7/oNu6IEm8ij8hgBvkPhv0s3uT098sQpGD68h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729504308; c=relaxed/simple;
-	bh=ytPENfmd0OUkgNYTEli53dWkpmSBjoNnOIojmXzpoow=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P/cIMn490fCIE5mk82qtEIpuDpII+oioJ3yNuTKxwnpBsuqFThTgywKsHC8TsAV8pgrKMW12czs3O8Q9rv8xD9iTcxDjOFaM6o54wsCSEgoGYyqBQOgOLdHNG6wp9d8i0jyB+teR+QVe9sc7mJV9rMCWZ/vdnAzl3GMtEQq81M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZZfn12au; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729504305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4nn/+beuGSyT6IppBG0CXPg7AYEwhH2O7vh6xIs2kpA=;
-	b=ZZfn12auFXAfbUnpbsLJmb4GyG9Lw4O0a7eO5CFA9G4K0i/ZQyb05da2JurbSqBddOhxmx
-	OyXaMAhma6/6GYhN89uorNo/phcrTxVFV6C+eBhqmB+HfPN5ygeUyQCQkPpCDn/ei5oGIx
-	RZ4mAKT9v1ut3hKGU6xn9l5wYaJaQFA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-V6qgB1PyO42mSTSXiThoAA-1; Mon, 21 Oct 2024 05:51:42 -0400
-X-MC-Unique: V6qgB1PyO42mSTSXiThoAA-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315d98a873so27856225e9.1
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 02:51:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729504301; x=1730109101;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4nn/+beuGSyT6IppBG0CXPg7AYEwhH2O7vh6xIs2kpA=;
-        b=MZO1BjOH3ZVsYTR3+n4lfHYwXC8dyopi3PvcdlMnp8jVn5GUJgYPF7NdFfcVjyPxxO
-         KJ3HUqDPrK7bZV1mqdX9kW3Bymq6L+FsrpJFeUpJphOFFkjYvH2LjvFRitZwtu/XhEzj
-         dbNqisUoM7nVUFaesN3fVsxX0VT5IzdRZ/3G3lXK/26/VRiYZTTMbdDbNmRdRLY5ANcz
-         YshjSxqTfE1d19yq+fbSoN5xPHLEtjt2WLuGkTif9eqUwc6uyNAqs9hw9rgWdCkg0hMd
-         +IaYlmZmgjZk2tTwfE2Z0Lhs5Rem024sKK9TqqBIKvtgpR2PnmysJHKTnx2eZLF5hKHT
-         zbYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNl35kHRToI1DNYhRGnMgHVGNobcAclT0lGneIQyA4p/oaj71YAeCr/3bJhv/kXoPvqtCeI1vxRwS5@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywuaua5JPIzIAsvpCJud6eJ60jKAOhF8xawKYHxzGob54wLBama
-	Ce/aY/ZtPztB1wU88zAiKDwC4tSbKW1fc7n667HL9VsjuKA5PzxN/VfZy4iSHqIDCMSDpH/pkqk
-	OWYfrDDlwyyRlKXAA58njJu8sMeCG1/du+dZlALnUBBvBErEcK6kHqaNLRHs=
-X-Received: by 2002:a05:600c:1d1a:b0:431:6153:a258 with SMTP id 5b1f17b1804b1-43161641cdfmr87276475e9.13.1729504301191;
-        Mon, 21 Oct 2024 02:51:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGL1nqu+VttUCQ0203kNMq9H/NLS7ZxrRhe0hPz/aN+ndMq9UmgQAQTp//+Oz8jWOZFaykk3g==
-X-Received: by 2002:a05:600c:1d1a:b0:431:6153:a258 with SMTP id 5b1f17b1804b1-43161641cdfmr87276245e9.13.1729504300815;
-        Mon, 21 Oct 2024 02:51:40 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:36d3:2b96:a142:a05b? ([2a09:80c0:192:0:36d3:2b96:a142:a05b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a477d9sm3898910f8f.26.2024.10.21.02.51.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Oct 2024 02:51:40 -0700 (PDT)
-Message-ID: <c811debe-32db-4c77-a799-ee89427a5174@redhat.com>
-Date: Mon, 21 Oct 2024 11:51:38 +0200
+	s=arc-20240116; t=1729506778; c=relaxed/simple;
+	bh=AKOcCQBlyzOxI+Cpf9dEjBfxHMvSlhj+Dcp/fOGwOec=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oSSKCxGrDW2CCDOuJ2JjrM5civPXI65HgWPvg0wQukWz61eUANFS40g8snLXcF/DEH30qbx/f1Le9eudw+lu0+3mUORnEGsF0qf7rnLVbrpwuyhsW2l77hIllQWlPJ9brJMqOklswKg2+o5QFhunxqApdxBvsRgE5ZJImlIoDlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mg3/2crV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EDCC4CEC3
+	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 10:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729506778;
+	bh=AKOcCQBlyzOxI+Cpf9dEjBfxHMvSlhj+Dcp/fOGwOec=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mg3/2crVg4QKe9dJwsEnRwVfIzQF8dP3LvZBdK9VU4xN7X1D9brvHuGxDCp/cufvq
+	 Hv564Gj/NgG0PqEA6VbdFkaF3ZncgWW2rs439MyPqCsCuZS3Y+yXP4yTVYbJbBECoB
+	 176QM84iO789g5jnGsXNT7d2A6N2scy2uLDdQ8h16bSrcn4Ya6avBvwGBAZ/IsT9e+
+	 qR55D7AumH95djYUEadVJcjqc41ZM56unScqALq2lSCrYFgvXVVym2zcOyZqQWlZGu
+	 ZsR9CWrfiF58YiGxMvoW+ysSC25Eo+Oo860AaqYwXIV4c8AQGoGlilBvxH2HYEUPN8
+	 0ZSPuCGle9mSQ==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2891055c448so1476286fac.0
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 03:32:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUAa4nuQau4BQLiTDQvK3aWgTHn6zGoq0Xa7bv0Bh7MMKsVatlzI7+HNBcvhAseCVG6RAr6tRebZVeg@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCUBRF+/5tnl39qM3KwVYEuJm0p+jEDEdqieEb+i0Uhj/w6nB0
+	UHJ5E/fOS2I/0dl/st+5V96CFMAA3JaYLsamxqRbSIq5txVnLCOlOX7fCmfAGexgV/NvkwYcJYL
+	N86kz82ZOq641GON2K4ELaYBf34g=
+X-Google-Smtp-Source: AGHT+IFWjbZukgnLF9TGldtCJ2I/i4qju3X9DKVm9Qix7vSY43rJ4GwTWtNU44cl/Ke3lVFZQ/p+ZYaW/vFg4PvcIGI=
+X-Received: by 2002:a05:6870:440e:b0:277:f51d:3ed3 with SMTP id
+ 586e51a60fabf-2892c2def2emr8571121fac.16.1729506777283; Mon, 21 Oct 2024
+ 03:32:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm/memblock,x86,acpi: hotplug memory alignment
- advisement
-To: Gregory Price <gourry@gourry.net>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org
-Cc: dan.j.williams@intel.com, ira.weiny@intel.com,
- dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
- rafael@kernel.org, lenb@kernel.org, rppt@kernel.org,
- akpm@linux-foundation.org, alison.schofield@intel.com,
- Jonathan.Cameron@huawei.com, rrichter@amd.com, ytcoode@gmail.com,
- haibo1.xu@intel.com, dave.jiang@intel.com
-References: <20241016192445.3118-1-gourry@gourry.net>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20241016192445.3118-1-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241003213759.3038862-1-superm1@kernel.org> <20241003213759.3038862-2-superm1@kernel.org>
+ <20241018182440.GDZxKn6FkYji_9Xhau@fat_crate.local> <6271aaed-fb4c-4101-82a2-e18aba05b4d4@kernel.org>
+ <20241019101042.GCZxOFooaiQPq-Q-2p@fat_crate.local>
+In-Reply-To: <20241019101042.GCZxOFooaiQPq-Q-2p@fat_crate.local>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 21 Oct 2024 12:32:41 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hw-yxaqfOO4mdnFt8cVci1iVthYBAyH4nx__RJvYBJKQ@mail.gmail.com>
+Message-ID: <CAJZ5v0hw-yxaqfOO4mdnFt8cVci1iVthYBAyH4nx__RJvYBJKQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] x86/cpufeatures: Add feature bits for AMD
+ heterogeneous processor
+To: Borislav Petkov <bp@alien8.de>
+Cc: Mario Limonciello <superm1@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org, 
+	linux-acpi@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>, gautham.shenoy@amd.com, 
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Oct 19, 2024 at 12:11=E2=80=AFPM Borislav Petkov <bp@alien8.de> wro=
+te:
+>
+> On Fri, Oct 18, 2024 at 01:31:51PM -0500, Mario Limonciello wrote:
+> > 2) Rafael can drop this and the follow on and I'll resubmit with your
+> > feedback and we can bring through tip
+> >
+> > 3) I can amend with the fixes we take through linux-pm/linux-next to av=
+oid
+> > the acrobatics of 1 or 2.
+>
+> Since I don't see any conflicts with tip yet and you have other stuff whi=
+ch is
+> cross-tree, I could review the tip bits and then Rafael can pick them all=
+ up
+> and route them through the pm tree.
+>
+> Alternatively, I can route the tip bits through the tip tree and I can gi=
+ve
+> Rafael an immutable tip branch he can merge and then rebase the remaining=
+ pm
+> changes ontop.
+>
+> Rafael?
 
-
-Am 16.10.24 um 21:24 schrieb Gregory Price:
-> When physical address regions are not aligned to memory block size,
-> the misaligned portion is lost (stranded capacity).
-> 
-> Block size (min/max/selected) is architecture defined. Most architectures
-> tend to use the minimum block size or some simplistic heurist. On x86,
-> memory block size increases up to 2GB, and is otherwise fitted to the
-> alignment of non-hotplug (special purpose memory).
-> 
-> CXL exposes its memory for management through the ACPI CEDT (CXL Early
-> Detection Table) in a field called the CXL Fixed Memory Window.  Per
-> the CXL specification, this memory must be aligned to at least 256MB.
-> 
-> When a CFMW aligns on a size less than the block size, this causes a
-> loss of up to 2GB per CFMW on x86.  It is not uncommon for CFMW to be
-> allocated per-device - though this behavior is BIOS defined.
-> 
-> This patch set provides 3 things:
->   1) implement advise/probe functions in mm/memblock.c to report/probe
->      architecture agnostic hotplug memory alignment advice.
->   2) update x86 memblock size logic to consider the hotplug advice
->   3) add code in acpi/numa/srat.c to report CFMW alignment advice
-> 
-> The advisement interfaces are design to be called during arch_init
-> code prior to allocator and smp_init.  start_kernel will call these
-> through setup_arch() (via acpi and mm/init_64.c on x86), which occurs
-> prior to mm_core_init and smp_init - so no need for atomics.
-> 
-> There's an attempt to signal callers to advise() that probe has already
-> occurred, but this is predicated on the notion that probe() actually
-> occurs (which presently only happens on x86). This is to assist debugging
-> future users who may mistakenly call this after allocator or smp init.
-> 
-> Likewise, if probe() occurs more than once, we return -EBUSY to prevent
-> inconsistent values from being reported - i.e. this interaction should
-> happen exactly once, and all other behavior is an error / the probed
-> value should be acquired via memory_block_size_bytes() instead.
-> 
-> Suggested-by: Ira Weiny <ira.weiny@intel.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-
-Just as a side note, a while ago there was a discussion about variable-sized 
-memory blocks -- essentially removing memory_block_size_bytes().
-
-The main issue is that this would change /sys/devices/system/memory/ in ways it 
-could break existing user space. I believe there are other corner cases that are 
-a bit nasty to handle (e.g., removing parts of a larger memory block), but 
-likely it could be handled.
-
--- 
-Cheers,
-
-David / dhildenb
-
+I'd prefer the former.
 
