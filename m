@@ -1,134 +1,130 @@
-Return-Path: <linux-acpi+bounces-8875-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8876-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F8D9A6735
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 13:57:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D860A9A6771
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 14:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E061F211D7
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 11:57:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10E9A1C21542
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 12:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07C31E8858;
-	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760B31E6DFC;
+	Mon, 21 Oct 2024 12:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPtKl6Bg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7qExNj5"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786FD1E884E;
-	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCD1154BF0
+	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 12:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729511798; cv=none; b=nBVVvYw6Kwc7ec6WjVaXBpvcedKckg3Z3vNcZMAuSItN1CAuBtIseTchs4Q4P5m6GrvdRxJxgnqNEDiWss53v35so07DH3L06qQNt0nPLFF22K3CtJfFpf8nEzNX6EQ2BfFK1KTYKkZqQAIiAPOXpa1Si9/gW5Zypcocdy3lT7k=
+	t=1729512154; cv=none; b=YjNhWX7skQCjHxjQDh1tIm/LB5HhM0JfLDEbII84/iXvrWmQo/AWXyd6TFWWEzSlrvuaB+ufkkn7KJ+HXNeDubWUnsjuQkMHp/d5D2OAtZjoxHzGlkLxgRmoPY0aFfHHliUaopBvgJa+jcBmtuCN/72uiTEYY5PWiwTqKDEHJuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729511798; c=relaxed/simple;
-	bh=iZKzS4vmBiEZsEttEtxZcIb92mfcq/gi05eIuco9YVA=;
+	s=arc-20240116; t=1729512154; c=relaxed/simple;
+	bh=EiRjQ2RKhdvfx2Vxy5Gv5Y5UNymyxhkwtFbXgedgtms=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iUHwda2d8VLiNRTPBIBzdyOgxTtmo1ad7c8L/1h/RT8SSEiGJ/1uhHfsC9rVKnM1IvcwBBhlO7fyg1fYKOxdCLudKOGdryw/MxcovJGN8cCSiqBkghWAp318vOx1fBPPe47lSWNAPK0Qci7qJ6jQSsfTzz3Pwf82kt0Tnp8qwYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPtKl6Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C44EC4CEE8;
-	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
+	 To:Cc:Content-Type; b=ibMLujhoM+QUIZ4R7/bD28s4295p8FsX2/pC07u2XZjAxFTV1T8FCrNQmTWCX0J2MouUXhSK804pij3Zg2HK/QW5MgH3Q9MX4reLilLdFlU6BIE2MjETqNJcJoIzWvd7xiF8A3zVgTLmzsCOL3KArFRINbQiiswPY3lNG+0zWoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7qExNj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F048C4CEE6
+	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 12:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729511798;
-	bh=iZKzS4vmBiEZsEttEtxZcIb92mfcq/gi05eIuco9YVA=;
+	s=k20201202; t=1729512154;
+	bh=EiRjQ2RKhdvfx2Vxy5Gv5Y5UNymyxhkwtFbXgedgtms=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GPtKl6Bggt4/TamihrTZBB77XXeeJpGHQQXXlzjlEZKJsozvj2Agb8oOpdfFEhHP5
-	 /zCWStUHugubB24PJxmQXJdvgtMhwxMvXUVKcyfD8ru0bvCBIYUUxJfT+MZfKsmKDc
-	 f16aEDpzRJ3CkV+e2dizG+4/aCHSNSJD9GaI0Qxl/QeDdAqxDD3xTFJSfR65jyNGU4
-	 HTOD/YuqWJhbOm3uAYUWLqXarDdM6dT/LI+PuVvi72JOwitrLkBqF7guAxaZG0kOYg
-	 a2xuMBZ0w6MnBxy+uEc83TPLO9xrdlISEStDlXNMqIOLI3Vhn0YnDR01I3pN5GvYi9
-	 HAyvCdcW3W2fg==
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e5f9712991so2075948b6e.2;
-        Mon, 21 Oct 2024 04:56:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU25diKch/9lrvlhuHyH2Wvnn0h661i/OZpfP5hKVTLZrfBGOhHq789yxoqGAXGREZp8S7sU2qlpKks@vger.kernel.org, AJvYcCU3ufUWMwhKo9ZZs6a3jXJS9t/l8qAK+H37FtAl9enmaGsdThmqSYgnm8Z8gei59VnsRHRX7idgyVwL11Dl@vger.kernel.org, AJvYcCWPeqMcbm2JHiUhqicYX+WhsmiO1PYwkUNuU/dT7O5FWiz7G2QG0ekUonOTFWgZpkvxUCZGgCjB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDR36VDb1o/0ZDdg3g/Dy2fD/DL4xTMNufRB2X6vJGMFFTIC4L
-	XyKqhGv0MVjujfYje1NY2kQEuISdylgLeBwVoLooLISLqaf2yF9skD8Nr319zyyNha6AJ+98GKr
-	oRL5087oa2GtVoNJ2qky+ybIjf5c=
-X-Google-Smtp-Source: AGHT+IG5XhnUvagQdAMqem7+z6gKQWhQFAFH3ahh4zbsV1c6ekkCAHEo7YEbfB1J8j3e+1DzqVdfJ0Kk90T2t2VoakA=
-X-Received: by 2002:a05:6871:5824:b0:277:c28c:147e with SMTP id
- 586e51a60fabf-2892c352bb2mr8523011fac.21.1729511797250; Mon, 21 Oct 2024
- 04:56:37 -0700 (PDT)
+	b=T7qExNj5+yvmZXNcFTkL/AnISIoGnmvrJVhIorQFSfaSLCv0mD3+TyUU2ouJOyWTv
+	 2BOn/Vct/GI0WU8detzeKQinBuVrMX115BE3tAPqA7DAOeU+OLUKgGxLyZjsybwPY/
+	 glKM6trA1qiqXEkRewSGd7rA9LsnbzQbqAps6dFjlYQyPcDg5yO+/fdy6kOGFk7pLn
+	 gVjLu7AQVkD32nuuc1IBxz8dIFS5CPpdQA2bJAhxaQLQ/wkq9K4w3XcP76kIZore+o
+	 +wFA/NumMCPnv3mVtgRR4UfKRxTrujxyIyJikOTNQBAZdtXDcYG+J2B1dRRh8eDhjy
+	 XlSGDEaz/d/Kg==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2884e7fad77so2199873fac.2
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 05:02:34 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzLkPc7v030SAA+y08ytOWhbZUNY/kY7Y1msUB4CbBP4FKLkVDQ
+	0jSOxR2ZjUvyi2q2GVnu+xk+ejhIOeXLE0pxRLgllOyENhPa3QlfneRrlrYD2u54OHj6/iQqnCN
+	uCguQBxlive9fXKsw1gjl9F1t3Ug=
+X-Google-Smtp-Source: AGHT+IG69Ep0gOzTv2dQeR08Avqqp3NOXUtNzNJJnlxoqxKdnBvLbMDxd8lV3ZgC9HaCCiTn75Bh+RJTPRDz31N1axI=
+X-Received: by 2002:a05:6870:b28c:b0:27b:583b:bfa8 with SMTP id
+ 586e51a60fabf-2892c302f6bmr8036563fac.17.1729512153213; Mon, 21 Oct 2024
+ 05:02:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
-In-Reply-To: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
+References: <20241020095045.6036-2-shubiisp8@gmail.com>
+In-Reply-To: <20241020095045.6036-2-shubiisp8@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 21 Oct 2024 13:56:21 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hkNWNb912Ye7cgPVhLyCEHynNFtf0=xWiv0hBbPPwsAw@mail.gmail.com>
-Message-ID: <CAJZ5v0hkNWNb912Ye7cgPVhLyCEHynNFtf0=xWiv0hBbPPwsAw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
-To: Christian Heusel <christian@heusel.eu>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dirk Holten <dirk.holten@gmx.de>, stable@vger.kernel.org
+Date: Mon, 21 Oct 2024 14:02:17 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gYsdgGyHybRRK4gqRwfk=cAA9sU8ZBdwwHunS1EXJ15A@mail.gmail.com>
+Message-ID: <CAJZ5v0gYsdgGyHybRRK4gqRwfk=cAA9sU8ZBdwwHunS1EXJ15A@mail.gmail.com>
+Subject: Re: [v2] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix
+ initial lid detection issue
+To: Shubham Panwar <shubiisp8@gmail.com>
+Cc: linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 17, 2024 at 1:16=E2=80=AFPM Christian Heusel <christian@heusel.=
-eu> wrote:
+On Sun, Oct 20, 2024 at 11:59=E2=80=AFAM Shubham Panwar <shubiisp8@gmail.co=
+m> wrote:
 >
-> The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
-> described as ActiveLow in the DSDT, which the kernel overrides to EdgeHig=
-h
-> which breaks the keyboard.
->
-> Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
-> this.
->
-> Reported-by: Dirk Holten <dirk.holten@gmx.de>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219382
-> Cc: stable@vger.kernel.org
-> Suggested-by: Dirk Holten <dirk.holten@gmx.de>
-> Signed-off-by: Christian Heusel <christian@heusel.eu>
-> ---
-> Note that I do not have the relevant hardware since I'm sending in this
-> quirk at the request of someone else.
-> ---
 > Changes in v2:
-> - fix the double initialization warning reported by the kernel test
->   robot, which accidentially overwrote another quirk
+> - Removed extra blank lines
+> - Fixed whitespace issues
+> - Added appropriate commit description
+>
+> This patch adds a DMI quirk for the Samsung Galaxy Book2 to fix the initi=
+al
+> lid state detection issue. The _LID device incorrectly returns the lid
+> status as "closed" during boot, causing the system to enter a suspend loo=
+p
+> right after booting. This quirk ensures that the correct lid state is
+> reported initially, preventing the system from immediately suspending
+> after startup.
+>
+> This fix only addresses the initial lid state detection and ensures prope=
+r
+> system behavior upon boot.
+>
+> Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
 
 Applied as 6.12-rc material, thanks!
 
-> - Link to v1: https://lore.kernel.org/r/20241016-lg-gram-pro-keyboard-v1-=
-1-34306123102f@heusel.eu
 > ---
->  drivers/acpi/resource.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/acpi/button.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 >
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 129bceb1f4a27df93439bcefdb27fd9c91258028..7fe842dae1ec05ce6726af2ae=
-4fcc8eff3698dcb 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_ski=
-p_override[] =3D {
->                         DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
+> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+> index 51470208e..7773e6b86 100644
+> --- a/drivers/acpi/button.c
+> +++ b/drivers/acpi/button.c
+> @@ -130,6 +130,17 @@ static const struct dmi_system_id dmi_lid_quirks[] =
+=3D {
 >                 },
+>                 .driver_data =3D (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
 >         },
 > +       {
-> +               /* LG Electronics 16T90SP */
+> +               /*
+> +                * Samsung galaxybook2 ,initial _LID device notification =
+returns
+> +                * lid closed.
+> +                */
 > +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-> +                       DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO=
+., LTD."),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
 > +               },
+> +               .driver_data =3D (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
 > +       },
->         { }
+>         {}
 >  };
 >
->
-> ---
-> base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-> change-id: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
->
-> Best regards,
 > --
-> Christian Heusel <christian@heusel.eu>
+> 2.47.0
+>
 >
 
