@@ -1,228 +1,134 @@
-Return-Path: <linux-acpi+bounces-8874-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8875-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CBD9A6704
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 13:52:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F8D9A6735
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 13:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CA7B2828BA
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 11:52:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E061F211D7
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 11:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739201E5706;
-	Mon, 21 Oct 2024 11:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07C31E8858;
+	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSYLtcBh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPtKl6Bg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6611E1A3B;
-	Mon, 21 Oct 2024 11:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786FD1E884E;
+	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729511542; cv=none; b=iICNZSWWxevJO1YBQx8SmkqNLMMVvnF9oIhOdVIiL+iAMZLfIHl/vfCkObDn9floTzA1RNiP13dymYoq1x1DWm4PbOMqDtlXVzXBIss8vg48jpENUX7a347RY6HyxwEZHZLRfdV50B5jgS72HcjW8/9A4UiLc2y2KKFYKEKXrfw=
+	t=1729511798; cv=none; b=nBVVvYw6Kwc7ec6WjVaXBpvcedKckg3Z3vNcZMAuSItN1CAuBtIseTchs4Q4P5m6GrvdRxJxgnqNEDiWss53v35so07DH3L06qQNt0nPLFF22K3CtJfFpf8nEzNX6EQ2BfFK1KTYKkZqQAIiAPOXpa1Si9/gW5Zypcocdy3lT7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729511542; c=relaxed/simple;
-	bh=svJmMssGYz1wkQkC8PXANMosMeedZ6FHgwDuinCPMi8=;
+	s=arc-20240116; t=1729511798; c=relaxed/simple;
+	bh=iZKzS4vmBiEZsEttEtxZcIb92mfcq/gi05eIuco9YVA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BiWoX8sM6DQTupRQet/w9650ZTFi0JEvboLhFAAQl8/XT3qBmyGufkGNWHKjVJZ6y5bjmdlo0QlpQ54PjW8fyvgwjP7nwcb3hqjUAsSDuPS6vKH8OoB6Ex8R9Ca5swjA9JVgwsDjN0UCLpq1FYVRornEdqNJa3uC3Ej4urZfFSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSYLtcBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79DBC4CEC3;
-	Mon, 21 Oct 2024 11:52:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=iUHwda2d8VLiNRTPBIBzdyOgxTtmo1ad7c8L/1h/RT8SSEiGJ/1uhHfsC9rVKnM1IvcwBBhlO7fyg1fYKOxdCLudKOGdryw/MxcovJGN8cCSiqBkghWAp318vOx1fBPPe47lSWNAPK0Qci7qJ6jQSsfTzz3Pwf82kt0Tnp8qwYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPtKl6Bg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C44EC4CEE8;
+	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729511541;
-	bh=svJmMssGYz1wkQkC8PXANMosMeedZ6FHgwDuinCPMi8=;
+	s=k20201202; t=1729511798;
+	bh=iZKzS4vmBiEZsEttEtxZcIb92mfcq/gi05eIuco9YVA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cSYLtcBhJ9FgQFeJUyhLyaYS1qp40ivSLckG0nNrVmWrCojk7ONK9kDUF6cJC5zvq
-	 wdTvV/xxeAngzhtSBSYid7sqD6LFbVzl75jrRN7PS52I463cs4nPiN19DW9t25XVcI
-	 zQOjEMajyINpE2WaGDnuZ9V1NDzE5L8E7DC9VpYNgIWaYCAPssSXSSqO9lktAJ61JL
-	 POYXajnUPY/wI4NaO53h7G2tl6pT625ca96gEJZiwCxfor4DsOi8Pk1ptNanDhmwC7
-	 QTmhC8+nD83XHqAUSg7IPVjaHhpgvO/YLGVRbOvs0yjgeRgdvWZlhYMuVtmJfZgvAL
-	 bhiziCjgZJsyw==
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-71808e95ae2so2003753a34.0;
-        Mon, 21 Oct 2024 04:52:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV+U07hpT/FaP07RXE0PwOFW9wkmtBL1uygohjQzqMXyIqQgEfcbZnBdeeuN4HnTv4bpeH1SA6/Bn00@vger.kernel.org, AJvYcCWqXtw+n9DQrQxPzmwsORsN9VcMOaP88AAV00CkwkRiVAdbpGWSm0kONV+o2DI5kk/PhNnTw0DmMfN/@vger.kernel.org, AJvYcCWrRO3yrXdeIRrFeh9Wb9UE5K+OVVJFDbvpL9vW0LE7VORltibR+ijj1TfkKdmsX07max8ly+rsdTbuvfIi@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH1R70JY6697K/KVg++uBVpGbi+sWZvVIj6ztRBdWNxeZc7qV+
-	UB8C+r3r/bewZsYvkoY9ktqtcpfNKUPkxEP+ul+KjI6cb6TV3234/x/6o47+1xA25VhNsJxf+ld
-	oZQ4YmesuyiS00uUDDwEjkp554vY=
-X-Google-Smtp-Source: AGHT+IH5kuIPUKXkWOnc6Yk9qOzjcc8+DbNnyTdcZdozKceiiwGRfpoTnoOGjCPmRbOA/2WoMYPreGPfXVrYBcTSGWA=
-X-Received: by 2002:a05:6870:2054:b0:277:73ce:da7c with SMTP id
- 586e51a60fabf-2892d6e02d9mr6406849fac.23.1729511541062; Mon, 21 Oct 2024
- 04:52:21 -0700 (PDT)
+	b=GPtKl6Bggt4/TamihrTZBB77XXeeJpGHQQXXlzjlEZKJsozvj2Agb8oOpdfFEhHP5
+	 /zCWStUHugubB24PJxmQXJdvgtMhwxMvXUVKcyfD8ru0bvCBIYUUxJfT+MZfKsmKDc
+	 f16aEDpzRJ3CkV+e2dizG+4/aCHSNSJD9GaI0Qxl/QeDdAqxDD3xTFJSfR65jyNGU4
+	 HTOD/YuqWJhbOm3uAYUWLqXarDdM6dT/LI+PuVvi72JOwitrLkBqF7guAxaZG0kOYg
+	 a2xuMBZ0w6MnBxy+uEc83TPLO9xrdlISEStDlXNMqIOLI3Vhn0YnDR01I3pN5GvYi9
+	 HAyvCdcW3W2fg==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e5f9712991so2075948b6e.2;
+        Mon, 21 Oct 2024 04:56:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU25diKch/9lrvlhuHyH2Wvnn0h661i/OZpfP5hKVTLZrfBGOhHq789yxoqGAXGREZp8S7sU2qlpKks@vger.kernel.org, AJvYcCU3ufUWMwhKo9ZZs6a3jXJS9t/l8qAK+H37FtAl9enmaGsdThmqSYgnm8Z8gei59VnsRHRX7idgyVwL11Dl@vger.kernel.org, AJvYcCWPeqMcbm2JHiUhqicYX+WhsmiO1PYwkUNuU/dT7O5FWiz7G2QG0ekUonOTFWgZpkvxUCZGgCjB@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDR36VDb1o/0ZDdg3g/Dy2fD/DL4xTMNufRB2X6vJGMFFTIC4L
+	XyKqhGv0MVjujfYje1NY2kQEuISdylgLeBwVoLooLISLqaf2yF9skD8Nr319zyyNha6AJ+98GKr
+	oRL5087oa2GtVoNJ2qky+ybIjf5c=
+X-Google-Smtp-Source: AGHT+IG5XhnUvagQdAMqem7+z6gKQWhQFAFH3ahh4zbsV1c6ekkCAHEo7YEbfB1J8j3e+1DzqVdfJ0Kk90T2t2VoakA=
+X-Received: by 2002:a05:6871:5824:b0:277:c28c:147e with SMTP id
+ 586e51a60fabf-2892c352bb2mr8523011fac.21.1729511797250; Mon, 21 Oct 2024
+ 04:56:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241012205010.4165798-1-kobak@nvidia.com>
-In-Reply-To: <20241012205010.4165798-1-kobak@nvidia.com>
+References: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
+In-Reply-To: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 21 Oct 2024 13:52:05 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iA_8S13ZJLbhbj63+PQXXWd9m2jGbZOmvV_+G84cBZ-w@mail.gmail.com>
-Message-ID: <CAJZ5v0iA_8S13ZJLbhbj63+PQXXWd9m2jGbZOmvV_+G84cBZ-w@mail.gmail.com>
-Subject: Re: [PATCH V10] acpi/prmt: find block with specific type
-To: KobaK <kobak@nvidia.com>
-Cc: Matt Ochs <mochs@nvidia.com>, James Morse <james.morse@arm.com>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>, 
-	linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 21 Oct 2024 13:56:21 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hkNWNb912Ye7cgPVhLyCEHynNFtf0=xWiv0hBbPPwsAw@mail.gmail.com>
+Message-ID: <CAJZ5v0hkNWNb912Ye7cgPVhLyCEHynNFtf0=xWiv0hBbPPwsAw@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
+To: Christian Heusel <christian@heusel.eu>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Dirk Holten <dirk.holten@gmx.de>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 12, 2024 at 10:50=E2=80=AFPM KobaK <kobak@nvidia.com> wrote:
+On Thu, Oct 17, 2024 at 1:16=E2=80=AFPM Christian Heusel <christian@heusel.=
+eu> wrote:
 >
-> From: Koba Ko <kobak@nvidia.com>
+> The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
+> described as ActiveLow in the DSDT, which the kernel overrides to EdgeHig=
+h
+> which breaks the keyboard.
 >
-> PRMT needs to find the correct type of block to
-> translate the PA-VA mapping for EFI runtime services.
+> Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
+> this.
 >
-> The issue arises because the PRMT is finding a block of
-> type EFI_CONVENTIONAL_MEMORY, which is not appropriate for
-> runtime services as described in Section 2.2.2 (Runtime
-> Services) of the UEFI Specification [1]. Since the PRM handler is
-> a type of runtime service, this causes an exception
-> when the PRM handler is called.
->
->     [Firmware Bug]: Unable to handle paging request in EFI runtime servic=
-e
->     WARNING: CPU: 22 PID: 4330 at drivers/firmware/efi/runtime-wrappers.c=
-:341
->         __efi_queue_work+0x11c/0x170
->     Call trace:
->
-> Find a block with specific type to fix this.
-> PRMT find a block with EFI_MEMORY_RUNTIME for PRM handler and PRM context=
-.
-> If no suitable block is found, a warning message will be prompted
-> but the procedure continues to manage the next PRM handler.
-> However, if the PRM handler is actually called without proper allocation,
-> it would result in a failure during error handling.
->
-> By using the correct memory types for runtime services,
-> ensure that the PRM handler and the context are
-> properly mapped in the virtual address space during runtime,
-> preventing the paging request error.
->
-> The issue is really that only memory that has been remapped for
-> runtime by the firmware can be used by the PRM handler, and so the
-> region needs to have the EFI_MEMORY_RUNTIME attribute.
->
-> [1] https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug29.p=
-df
-> Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler for th=
-e PlatformRtMechanism subtype")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Koba Ko <kobak@nvidia.com>
-> Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
-> Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Reported-by: Dirk Holten <dirk.holten@gmx.de>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219382
+> Cc: stable@vger.kernel.org
+> Suggested-by: Dirk Holten <dirk.holten@gmx.de>
+> Signed-off-by: Christian Heusel <christian@heusel.eu>
 > ---
-> V2:
-> 1. format the changelog and add more about error handling.
-> 2. replace goto
-> V3: Warn if parts of handler are missed during va-pa translating.
-> V4: Fix the 0day
-> V5: Fix typo and pr_warn warning
-> V6: use EFI_MOMOERY_RUNTIME to find block and split goto refactor as a si=
-ngle
-> patch
-> V7:
-> 1. refine the codes and commit description as per comments
-> 2. drop goto refacotr
-> V8: Fix 0day and cc to stable
-> V9: Describe 0day fix
-> cast PA as (void *) in pr_warn
-> V10: use 0x%llx instead for PA in pr_warn
-
-Applied (under a new subject and with edits in the changelog) as
-6.12-rc material.
-
-Thanks!
-
+> Note that I do not have the relevant hardware since I'm sending in this
+> quirk at the request of someone else.
 > ---
->  drivers/acpi/prmt.c | 27 ++++++++++++++++++++++-----
->  1 file changed, 22 insertions(+), 5 deletions(-)
+> Changes in v2:
+> - fix the double initialization warning reported by the kernel test
+>   robot, which accidentially overwrote another quirk
+
+Applied as 6.12-rc material, thanks!
+
+> - Link to v1: https://lore.kernel.org/r/20241016-lg-gram-pro-keyboard-v1-=
+1-34306123102f@heusel.eu
+> ---
+>  drivers/acpi/resource.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index 1cfaa5957ac4..d59307a76ca3 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -72,17 +72,21 @@ struct prm_module_info {
->         struct prm_handler_info handlers[] __counted_by(handler_count);
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 129bceb1f4a27df93439bcefdb27fd9c91258028..7fe842dae1ec05ce6726af2ae=
+4fcc8eff3698dcb 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_ski=
+p_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
+>                 },
+>         },
+> +       {
+> +               /* LG Electronics 16T90SP */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
+> +               },
+> +       },
+>         { }
 >  };
 >
-> -static u64 efi_pa_va_lookup(u64 pa)
-> +static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
->  {
->         efi_memory_desc_t *md;
->         u64 pa_offset =3D pa & ~PAGE_MASK;
->         u64 page =3D pa & PAGE_MASK;
 >
->         for_each_efi_memory_desc(md) {
-> -               if (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE =
-* md->num_pages)
-> +               if ((md->attribute & EFI_MEMORY_RUNTIME) &&
-> +                   (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE=
- * md->num_pages)) {
->                         return pa_offset + md->virt_addr + page - md->phy=
-s_addr;
-> +               }
->         }
+> ---
+> base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
+> change-id: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
 >
-> +       pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa)=
-;
-> +
->         return 0;
->  }
->
-> @@ -148,9 +152,15 @@ acpi_parse_prmt(union acpi_subtable_headers *header,=
- const unsigned long end)
->                 th =3D &tm->handlers[cur_handler];
->
->                 guid_copy(&th->guid, (guid_t *)handler_info->handler_guid=
-);
-> -               th->handler_addr =3D (void *)efi_pa_va_lookup(handler_inf=
-o->handler_address);
-> -               th->static_data_buffer_addr =3D efi_pa_va_lookup(handler_=
-info->static_data_buffer_address);
-> -               th->acpi_param_buffer_addr =3D efi_pa_va_lookup(handler_i=
-nfo->acpi_param_buffer_address);
-> +               th->handler_addr =3D
-> +                       (void *)efi_pa_va_lookup(&th->guid, handler_info-=
->handler_address);
-> +
-> +               th->static_data_buffer_addr =3D
-> +                       efi_pa_va_lookup(&th->guid, handler_info->static_=
-data_buffer_address);
-> +
-> +               th->acpi_param_buffer_addr =3D
-> +                       efi_pa_va_lookup(&th->guid, handler_info->acpi_pa=
-ram_buffer_address);
-> +
->         } while (++cur_handler < tm->handler_count && (handler_info =3D g=
-et_next_handler(handler_info)));
->
->         return 0;
-> @@ -277,6 +287,13 @@ static acpi_status acpi_platformrt_space_handler(u32=
- function,
->                 if (!handler || !module)
->                         goto invalid_guid;
->
-> +               if (!handler->handler_addr ||
-> +                   !handler->static_data_buffer_addr ||
-> +                   !handler->acpi_param_buffer_addr) {
-> +                       buffer->prm_status =3D PRM_HANDLER_ERROR;
-> +                       return AE_OK;
-> +               }
-> +
->                 ACPI_COPY_NAMESEG(context.signature, "PRMC");
->                 context.revision =3D 0x0;
->                 context.reserved =3D 0x0;
+> Best regards,
 > --
-> 2.43.0
->
+> Christian Heusel <christian@heusel.eu>
 >
 
