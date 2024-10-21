@@ -1,103 +1,99 @@
-Return-Path: <linux-acpi+bounces-8868-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8869-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7A9A6377
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 12:35:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C22A9A655C
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 12:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBA1282124
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 10:35:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 082701F21C91
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 10:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720461E8843;
-	Mon, 21 Oct 2024 10:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A943D1F8909;
+	Mon, 21 Oct 2024 10:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mg3/2crV"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="I/n5yJg9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D9539FD6
-	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 10:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4B31EF084
+	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 10:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506778; cv=none; b=pPhyp2zAA/Q7Us6KMTdVHflBzxZWR7fWyBYLJFjGIFYAh/IQsyk1tIdRUIOyl+clUHph+VOr9oPodspuSU31a5SiIPi3yBwPEUhrYQvBvp172BauH419ZtKfjd07NCbMPW3aG7/oNu6IEm8ij8hgBvkPhv0s3uT098sQpGD68h4=
+	t=1729507816; cv=none; b=oPLi3VmogP4+dW4pddUw/S4014nnTKabBQqapssgcQGZQVh6f5KfASJbbioCVLI+LR1S9rHe200YsKKUy3aTnBDhvgYmPG9F9/zWXXFsu/rHcBZMDyda4/HLAre9/tZIOqng6+SQMAP1GzSoECSrihddKQBq46k21CjPG1H9oXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506778; c=relaxed/simple;
-	bh=AKOcCQBlyzOxI+Cpf9dEjBfxHMvSlhj+Dcp/fOGwOec=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oSSKCxGrDW2CCDOuJ2JjrM5civPXI65HgWPvg0wQukWz61eUANFS40g8snLXcF/DEH30qbx/f1Le9eudw+lu0+3mUORnEGsF0qf7rnLVbrpwuyhsW2l77hIllQWlPJ9brJMqOklswKg2+o5QFhunxqApdxBvsRgE5ZJImlIoDlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mg3/2crV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EDCC4CEC3
-	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 10:32:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729506778;
-	bh=AKOcCQBlyzOxI+Cpf9dEjBfxHMvSlhj+Dcp/fOGwOec=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mg3/2crVg4QKe9dJwsEnRwVfIzQF8dP3LvZBdK9VU4xN7X1D9brvHuGxDCp/cufvq
-	 Hv564Gj/NgG0PqEA6VbdFkaF3ZncgWW2rs439MyPqCsCuZS3Y+yXP4yTVYbJbBECoB
-	 176QM84iO789g5jnGsXNT7d2A6N2scy2uLDdQ8h16bSrcn4Ya6avBvwGBAZ/IsT9e+
-	 qR55D7AumH95djYUEadVJcjqc41ZM56unScqALq2lSCrYFgvXVVym2zcOyZqQWlZGu
-	 ZsR9CWrfiF58YiGxMvoW+ysSC25Eo+Oo860AaqYwXIV4c8AQGoGlilBvxH2HYEUPN8
-	 0ZSPuCGle9mSQ==
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2891055c448so1476286fac.0
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 03:32:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUAa4nuQau4BQLiTDQvK3aWgTHn6zGoq0Xa7bv0Bh7MMKsVatlzI7+HNBcvhAseCVG6RAr6tRebZVeg@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCUBRF+/5tnl39qM3KwVYEuJm0p+jEDEdqieEb+i0Uhj/w6nB0
-	UHJ5E/fOS2I/0dl/st+5V96CFMAA3JaYLsamxqRbSIq5txVnLCOlOX7fCmfAGexgV/NvkwYcJYL
-	N86kz82ZOq641GON2K4ELaYBf34g=
-X-Google-Smtp-Source: AGHT+IFWjbZukgnLF9TGldtCJ2I/i4qju3X9DKVm9Qix7vSY43rJ4GwTWtNU44cl/Ke3lVFZQ/p+ZYaW/vFg4PvcIGI=
-X-Received: by 2002:a05:6870:440e:b0:277:f51d:3ed3 with SMTP id
- 586e51a60fabf-2892c2def2emr8571121fac.16.1729506777283; Mon, 21 Oct 2024
- 03:32:57 -0700 (PDT)
+	s=arc-20240116; t=1729507816; c=relaxed/simple;
+	bh=lpt7XGrrmK/z49x2nGshDNYD4X44QR9REzDYaWUpEQs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TJ0uDEjUsaa3dj3etMIwGjY3pq5CLJ66adLGZGsZj9rDMhhbA6vY1mawO+0HZDCUC8ZTRAg6I/pLtQ5FAEwIh0zVPns8k2M6JpdJDdqwDOl7pbVi3IZSAMlwA2QHsqCYFuY9gpHPpDTUz7QhQleYxhaudwQlRHAubpTUbs777Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=I/n5yJg9; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3690540E0198;
+	Mon, 21 Oct 2024 10:50:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6Uh-frHOsQMb; Mon, 21 Oct 2024 10:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1729507800; bh=TdW3azBwytdbtsJKfBGL5ps/+ipPW4VizcMAf9DtfrQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I/n5yJg9aWkXUWjpW0/PqxXEfUm9hkp1Hc+4gREVprYVQnyihpx0pclfWqLWOIuYn
+	 MLwK+6ueiQwzgyJ/zx+mBUPS+E6YuOhz8swmNivDQjqGdV4U28SJXlN3ToqAsoDbYY
+	 zIUMWQuaFuXLCs5tgR3sRyL3ZlZXv6pZ1F11oPfd+0Wgvw9nXbK/uls6zN/czdOZNZ
+	 MrNVR/hMMAJo7yaeUBsB7Ie8Ln2jn4Hf/4Je5FYW2fXs3bHH5MBPC8Nz+oUxASn/xa
+	 nBzmsqT7LuYIuXFcrklM5K9N98AFL6YO5AIl46IkRGWmXPJgR3bXGFTEPq0yuHdz8k
+	 7z8dDy88+lI0f0I1wmt7E4fOVaCwJIf3ojVg+S5bIGg0bCQgxD+kryjS543kKmWIBP
+	 IONMdIvOAB9AIHvu5g2j3ShwdAW7eUu+7t+A4mPbIa/RdFPR0wzWgmNoupo8B/mbWH
+	 c/8Hk7QDQExi/qgI9jMW/0D5KWfCjEihoa+oM/R7aQz8xu7caKMH+lQA6H49Gyo1e+
+	 IOyAwVGJDm5dR+b18Y9P+yBhzxHrkGyCS1fHg4CpZnvf3wX6Ws7nIsiCxLSQQ9RKW9
+	 DJBluez/NI7w1+2u2IP4hlsw14RKzAV6ZHqD3d1wUkxL4lfjjaLJAQPXIb+bDepHsq
+	 +EMpAt+1pgl+U0noqYzNuHSQ=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2C05540E0219;
+	Mon, 21 Oct 2024 10:49:53 +0000 (UTC)
+Date: Mon, 21 Oct 2024 12:49:46 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mario Limonciello <superm1@kernel.org>, x86@kernel.org,
+	linux-acpi@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>,
+	gautham.shenoy@amd.com,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH 1/2] x86/cpufeatures: Add feature bits for AMD
+ heterogeneous processor
+Message-ID: <20241021104946.GBZxYxykR-1DKcCB6N@fat_crate.local>
+References: <20241003213759.3038862-1-superm1@kernel.org>
+ <20241003213759.3038862-2-superm1@kernel.org>
+ <20241018182440.GDZxKn6FkYji_9Xhau@fat_crate.local>
+ <6271aaed-fb4c-4101-82a2-e18aba05b4d4@kernel.org>
+ <20241019101042.GCZxOFooaiQPq-Q-2p@fat_crate.local>
+ <CAJZ5v0hw-yxaqfOO4mdnFt8cVci1iVthYBAyH4nx__RJvYBJKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241003213759.3038862-1-superm1@kernel.org> <20241003213759.3038862-2-superm1@kernel.org>
- <20241018182440.GDZxKn6FkYji_9Xhau@fat_crate.local> <6271aaed-fb4c-4101-82a2-e18aba05b4d4@kernel.org>
- <20241019101042.GCZxOFooaiQPq-Q-2p@fat_crate.local>
-In-Reply-To: <20241019101042.GCZxOFooaiQPq-Q-2p@fat_crate.local>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 21 Oct 2024 12:32:41 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hw-yxaqfOO4mdnFt8cVci1iVthYBAyH4nx__RJvYBJKQ@mail.gmail.com>
-Message-ID: <CAJZ5v0hw-yxaqfOO4mdnFt8cVci1iVthYBAyH4nx__RJvYBJKQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86/cpufeatures: Add feature bits for AMD
- heterogeneous processor
-To: Borislav Petkov <bp@alien8.de>
-Cc: Mario Limonciello <superm1@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org, 
-	linux-acpi@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>, gautham.shenoy@amd.com, 
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0hw-yxaqfOO4mdnFt8cVci1iVthYBAyH4nx__RJvYBJKQ@mail.gmail.com>
 
-On Sat, Oct 19, 2024 at 12:11=E2=80=AFPM Borislav Petkov <bp@alien8.de> wro=
-te:
->
-> On Fri, Oct 18, 2024 at 01:31:51PM -0500, Mario Limonciello wrote:
-> > 2) Rafael can drop this and the follow on and I'll resubmit with your
-> > feedback and we can bring through tip
-> >
-> > 3) I can amend with the fixes we take through linux-pm/linux-next to av=
-oid
-> > the acrobatics of 1 or 2.
->
-> Since I don't see any conflicts with tip yet and you have other stuff whi=
-ch is
-> cross-tree, I could review the tip bits and then Rafael can pick them all=
- up
-> and route them through the pm tree.
->
-> Alternatively, I can route the tip bits through the tip tree and I can gi=
-ve
-> Rafael an immutable tip branch he can merge and then rebase the remaining=
- pm
-> changes ontop.
->
-> Rafael?
+On Mon, Oct 21, 2024 at 12:32:41PM +0200, Rafael J. Wysocki wrote:
+> I'd prefer the former.
 
-I'd prefer the former.
+Ok, lemme look at those patches.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
