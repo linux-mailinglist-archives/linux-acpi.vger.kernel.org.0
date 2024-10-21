@@ -1,127 +1,161 @@
-Return-Path: <linux-acpi+bounces-8866-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8867-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B939A5368
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Oct 2024 11:59:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7679A60B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 11:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DA8F1F2201B
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Oct 2024 09:59:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E036F1C21B5D
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Oct 2024 09:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDD347F4A;
-	Sun, 20 Oct 2024 09:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4BB1E3DF9;
+	Mon, 21 Oct 2024 09:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xezrpjh9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZZfn12au"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503A156B81
-	for <linux-acpi@vger.kernel.org>; Sun, 20 Oct 2024 09:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26251E376F
+	for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 09:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729418340; cv=none; b=EoYGjka6MoCCifq2tJP0EOIyJYwWqaBFlzheEFAzL3krgfeMJTa5ah8Ax3gjhWt4Szi21MmR9RRgUZqhuusL7cQxaE/0arN5uvJ5O3NfIdhjx+H2Ah/Czlno9100kcZy3O7ERyc18UBr9aCoufs8nBJTgobd5PukkR7cB8wa6hQ=
+	t=1729504308; cv=none; b=pUlr8/CxyN1plRg6PMTU+t1Ytq/DVmOgrJXi5Ws+G7gGj183BhCgVlWqlVyCjM0CykeXPW/IbkB3n6EtW2QZb/V+hvYgfQ4qJWGaQ5LSvwrW21/TGr/LyOTzOuA8xQcVNFukQdTUaMktDolCHWdf1zi4Qo6nRS+2X6lCxmurUNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729418340; c=relaxed/simple;
-	bh=c/xF12CRMjBW275//few5ITmMOvj11NnvQl59gra8Ao=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XIbf8z5hWLJd9m7zOysMbYx4pwzIO0x/WNtiSC/zCw7kWHiNjjNjgKEGyA6z2UotwIIUIZt/0S+OD9/390Ts6ZtIjZGgOcqX30fjYEiMJQ6r5PjPZdUyXCQgE77YZLyYKAf/6dlNwZa8x/LwfcJQ9LbLehQfRsKBCGP+Brzu7IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xezrpjh9; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2e2a999b287so2732422a91.0
-        for <linux-acpi@vger.kernel.org>; Sun, 20 Oct 2024 02:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729418337; x=1730023137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bHphyOG2Gr9tzg50t0uQ4pxzQvEucKxsH4KsxFbRESY=;
-        b=Xezrpjh9GusxrbGCqR4lqkRh+db/dd4MS/B8Jcmhd1G8a4OuZFuXoyC6e2NshMGBRe
-         xyU9hxowGmJ3BxXpMVAp+bsLzlj52ldrIxY3wA2EbLVQCNV1tlr4O8bloI9xYKIa+UZg
-         x4K67Ha25ERNd/JViJPbLtWZ54LYWL5kwKgAupnr7Dwx8Dc2ANf5Tv1d9waS9iN/onmJ
-         /gTvpxFts7bGsMYmA6NLr46gfXhcgnJbi94XsZpn2XHTlDWXqV/gsKFnZPVLludySP8k
-         9P/9yMn4DhfCFClJw6c1KY4VqPEbP5JD7YIGmD/Q5VNBqZy6zfuwqvjJ8eHkpst6SXfj
-         yhnw==
+	s=arc-20240116; t=1729504308; c=relaxed/simple;
+	bh=ytPENfmd0OUkgNYTEli53dWkpmSBjoNnOIojmXzpoow=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P/cIMn490fCIE5mk82qtEIpuDpII+oioJ3yNuTKxwnpBsuqFThTgywKsHC8TsAV8pgrKMW12czs3O8Q9rv8xD9iTcxDjOFaM6o54wsCSEgoGYyqBQOgOLdHNG6wp9d8i0jyB+teR+QVe9sc7mJV9rMCWZ/vdnAzl3GMtEQq81M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZZfn12au; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729504305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4nn/+beuGSyT6IppBG0CXPg7AYEwhH2O7vh6xIs2kpA=;
+	b=ZZfn12auFXAfbUnpbsLJmb4GyG9Lw4O0a7eO5CFA9G4K0i/ZQyb05da2JurbSqBddOhxmx
+	OyXaMAhma6/6GYhN89uorNo/phcrTxVFV6C+eBhqmB+HfPN5ygeUyQCQkPpCDn/ei5oGIx
+	RZ4mAKT9v1ut3hKGU6xn9l5wYaJaQFA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-V6qgB1PyO42mSTSXiThoAA-1; Mon, 21 Oct 2024 05:51:42 -0400
+X-MC-Unique: V6qgB1PyO42mSTSXiThoAA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315d98a873so27856225e9.1
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Oct 2024 02:51:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729418337; x=1730023137;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bHphyOG2Gr9tzg50t0uQ4pxzQvEucKxsH4KsxFbRESY=;
-        b=IzSQMD0yxITYOoQZwL6rO8PLb17Fr4t6vQzJLEjMguASTCPA0HkhRHCEOI5gKoGyd6
-         abROiH164BoTP6TNF/nil39BH4aibRQz6IMpShoMdEfBU1KnBf6Aw0QkcPFCJGWpFOvt
-         BsaSd0wwFijnV61+4EE8vmM5UFAH2eyVkhPKxidYkFYVofmKcSx8q82eBs0UqQRe+7P+
-         j4hi+rVhJqui/bB7cfnWk6HxiVBMeufR377u9iDti3InsyXEb0LFLBOUIEoJ8dsLi+Z1
-         D08AgI+Rp4WAu4m042HtGvosBHcEGQ/ZUr292H1ZM62AfW457kvMCKzUuvKuF+UqQVph
-         VB+w==
-X-Gm-Message-State: AOJu0Yxa33L6ffg16zrzVYlWJ0KNvX2j3gfGX8e9g8NLDqurXM26CfSz
-	+It7/rQrXACH5khTxjY/9jn2LgjFxclsKHN1Bk8THvVzrcR94yl7iyRoDw==
-X-Google-Smtp-Source: AGHT+IGCj/+srD6rV2YLC0DQ+dsAtsmPN4EWBZYvt+/J0WFbdME+Er1NPGbKUbem0Qy8qPKea3R/JQ==
-X-Received: by 2002:a17:90b:197:b0:2d3:d063:bdb6 with SMTP id 98e67ed59e1d1-2e5615d619amr9595650a91.4.1729418336659;
-        Sun, 20 Oct 2024 02:58:56 -0700 (PDT)
-Received: from localhost.localdomain ([103.235.165.104])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e5ad388effsm1135968a91.34.2024.10.20.02.58.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Oct 2024 02:58:56 -0700 (PDT)
-From: Shubham Panwar <shubiisp8@gmail.com>
-To: linux-acpi@vger.kernel.org
-Cc: Shubham Panwar <shubiisp8@gmail.com>
-Subject: [v2] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
-Date: Sun, 20 Oct 2024 15:20:46 +0530
-Message-ID: <20241020095045.6036-2-shubiisp8@gmail.com>
-X-Mailer: git-send-email 2.47.0
+        d=1e100.net; s=20230601; t=1729504301; x=1730109101;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4nn/+beuGSyT6IppBG0CXPg7AYEwhH2O7vh6xIs2kpA=;
+        b=MZO1BjOH3ZVsYTR3+n4lfHYwXC8dyopi3PvcdlMnp8jVn5GUJgYPF7NdFfcVjyPxxO
+         KJ3HUqDPrK7bZV1mqdX9kW3Bymq6L+FsrpJFeUpJphOFFkjYvH2LjvFRitZwtu/XhEzj
+         dbNqisUoM7nVUFaesN3fVsxX0VT5IzdRZ/3G3lXK/26/VRiYZTTMbdDbNmRdRLY5ANcz
+         YshjSxqTfE1d19yq+fbSoN5xPHLEtjt2WLuGkTif9eqUwc6uyNAqs9hw9rgWdCkg0hMd
+         +IaYlmZmgjZk2tTwfE2Z0Lhs5Rem024sKK9TqqBIKvtgpR2PnmysJHKTnx2eZLF5hKHT
+         zbYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNl35kHRToI1DNYhRGnMgHVGNobcAclT0lGneIQyA4p/oaj71YAeCr/3bJhv/kXoPvqtCeI1vxRwS5@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywuaua5JPIzIAsvpCJud6eJ60jKAOhF8xawKYHxzGob54wLBama
+	Ce/aY/ZtPztB1wU88zAiKDwC4tSbKW1fc7n667HL9VsjuKA5PzxN/VfZy4iSHqIDCMSDpH/pkqk
+	OWYfrDDlwyyRlKXAA58njJu8sMeCG1/du+dZlALnUBBvBErEcK6kHqaNLRHs=
+X-Received: by 2002:a05:600c:1d1a:b0:431:6153:a258 with SMTP id 5b1f17b1804b1-43161641cdfmr87276475e9.13.1729504301191;
+        Mon, 21 Oct 2024 02:51:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGL1nqu+VttUCQ0203kNMq9H/NLS7ZxrRhe0hPz/aN+ndMq9UmgQAQTp//+Oz8jWOZFaykk3g==
+X-Received: by 2002:a05:600c:1d1a:b0:431:6153:a258 with SMTP id 5b1f17b1804b1-43161641cdfmr87276245e9.13.1729504300815;
+        Mon, 21 Oct 2024 02:51:40 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:36d3:2b96:a142:a05b? ([2a09:80c0:192:0:36d3:2b96:a142:a05b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a477d9sm3898910f8f.26.2024.10.21.02.51.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 02:51:40 -0700 (PDT)
+Message-ID: <c811debe-32db-4c77-a799-ee89427a5174@redhat.com>
+Date: Mon, 21 Oct 2024 11:51:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] mm/memblock,x86,acpi: hotplug memory alignment
+ advisement
+To: Gregory Price <gourry@gourry.net>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org
+Cc: dan.j.williams@intel.com, ira.weiny@intel.com,
+ dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+ rafael@kernel.org, lenb@kernel.org, rppt@kernel.org,
+ akpm@linux-foundation.org, alison.schofield@intel.com,
+ Jonathan.Cameron@huawei.com, rrichter@amd.com, ytcoode@gmail.com,
+ haibo1.xu@intel.com, dave.jiang@intel.com
+References: <20241016192445.3118-1-gourry@gourry.net>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20241016192445.3118-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Changes in v2:
-- Removed extra blank lines
-- Fixed whitespace issues
-- Added appropriate commit description
 
-This patch adds a DMI quirk for the Samsung Galaxy Book2 to fix the initial
-lid state detection issue. The _LID device incorrectly returns the lid
-status as "closed" during boot, causing the system to enter a suspend loop
-right after booting. This quirk ensures that the correct lid state is
-reported initially, preventing the system from immediately suspending
-after startup.
 
-This fix only addresses the initial lid state detection and ensures proper
-system behavior upon boot.
+Am 16.10.24 um 21:24 schrieb Gregory Price:
+> When physical address regions are not aligned to memory block size,
+> the misaligned portion is lost (stranded capacity).
+> 
+> Block size (min/max/selected) is architecture defined. Most architectures
+> tend to use the minimum block size or some simplistic heurist. On x86,
+> memory block size increases up to 2GB, and is otherwise fitted to the
+> alignment of non-hotplug (special purpose memory).
+> 
+> CXL exposes its memory for management through the ACPI CEDT (CXL Early
+> Detection Table) in a field called the CXL Fixed Memory Window.  Per
+> the CXL specification, this memory must be aligned to at least 256MB.
+> 
+> When a CFMW aligns on a size less than the block size, this causes a
+> loss of up to 2GB per CFMW on x86.  It is not uncommon for CFMW to be
+> allocated per-device - though this behavior is BIOS defined.
+> 
+> This patch set provides 3 things:
+>   1) implement advise/probe functions in mm/memblock.c to report/probe
+>      architecture agnostic hotplug memory alignment advice.
+>   2) update x86 memblock size logic to consider the hotplug advice
+>   3) add code in acpi/numa/srat.c to report CFMW alignment advice
+> 
+> The advisement interfaces are design to be called during arch_init
+> code prior to allocator and smp_init.  start_kernel will call these
+> through setup_arch() (via acpi and mm/init_64.c on x86), which occurs
+> prior to mm_core_init and smp_init - so no need for atomics.
+> 
+> There's an attempt to signal callers to advise() that probe has already
+> occurred, but this is predicated on the notion that probe() actually
+> occurs (which presently only happens on x86). This is to assist debugging
+> future users who may mistakenly call this after allocator or smp init.
+> 
+> Likewise, if probe() occurs more than once, we return -EBUSY to prevent
+> inconsistent values from being reported - i.e. this interaction should
+> happen exactly once, and all other behavior is an error / the probed
+> value should be acquired via memory_block_size_bytes() instead.
+> 
+> Suggested-by: Ira Weiny <ira.weiny@intel.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
----
- drivers/acpi/button.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Just as a side note, a while ago there was a discussion about variable-sized 
+memory blocks -- essentially removing memory_block_size_bytes().
 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 51470208e..7773e6b86 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -130,6 +130,17 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
- 		},
- 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
- 	},
-+	{
-+		/*
-+		 * Samsung galaxybook2 ,initial _LID device notification returns
-+		 * lid closed.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
-+		},
-+		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-+	},
- 	{}
- };
- 
+The main issue is that this would change /sys/devices/system/memory/ in ways it 
+could break existing user space. I believe there are other corner cases that are 
+a bit nasty to handle (e.g., removing parts of a larger memory block), but 
+likely it could be handled.
+
 -- 
-2.47.0
+Cheers,
+
+David / dhildenb
 
 
