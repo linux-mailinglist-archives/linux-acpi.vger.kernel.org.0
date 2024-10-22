@@ -1,43 +1,43 @@
-Return-Path: <linux-acpi+bounces-8914-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8916-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2799AB8BB
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 23:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B559AB8BE
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 23:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A93011F243A1
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 21:38:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D76C1F24336
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 21:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE381F8F12;
-	Tue, 22 Oct 2024 21:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD5C1FB3E4;
+	Tue, 22 Oct 2024 21:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="kAQ4UYWM"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="uni8z0HC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11021088.outbound.protection.outlook.com [52.101.62.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DB61CF5E6;
-	Tue, 22 Oct 2024 21:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C181A1F9EBF;
+	Tue, 22 Oct 2024 21:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729632892; cv=fail; b=n3Wm6/kf/68MobeBHpSSmnmW7woRma9/IludKgd/cC6qjfFVgRztkoEi3EhhwF7/iUskmfAwS6XtsjRmnvOeGUCRugQlHmTisfVck794yYHbfrAmTTbao1zewM9gR1VElr9xhY0SfBbqq2L3njb+jcwKCkBkqGHUNYdy6pSW1Ow=
+	t=1729632894; cv=fail; b=VoDRmBCb7io/dMcihIA9LwaJ6dZ2PzeYcrQuEqJozmTIA2DLMk6IqSNpVgwiPC/Opyq+stBoV+ha/u5pBgdJftSKxgEsvInaykKH6R3zw70Dd2WmLAHve4Fl+HJa7uNcqgvDQFD43nLoOvdziPsbHsdTshd/GgWzt9nPL0DqqJE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729632892; c=relaxed/simple;
-	bh=6K9Vu4L6/O1/OTZfk2//JqeRBYIJN79++zQgmwajSa0=;
+	s=arc-20240116; t=1729632894; c=relaxed/simple;
+	bh=inU4LKjxZ3bA+W+3VsFgqsEeAOCacrEw0PSnRO9AEbA=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=J07MW4T0yz2pdnSCFm//oZyJ4hLDQ88wzoZjsdviPRciSCnckgOaMiPONYPUyUzonBOEhF0wE6nJuWROckgt7Wvx/9NCs8J9VeAYZNcjpi35e8ckXUleTOubiyMNnzKfIL6ipv4fBkBSHYjrgmoRj6OdZGyblXhwWhIjYQSRGGM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=kAQ4UYWM; arc=fail smtp.client-ip=52.101.62.88
+	 Content-Type:MIME-Version; b=L7T7JWNHPUZjJNVIYmdG6AbGxEREs5y1q2++U5CYz8Qu4xcHkCqinniqiN2rIOQLzwOglflE23XF70gAvTnIuI2LsQEByQPpeCFIKveCzzbnJ+o/ZN71EOuZs6cbLSXp1RrbAk9Lz9wKImPM+7IZU33Xgi+PKvR6cu7t4xBknjE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=uni8z0HC; arc=fail smtp.client-ip=52.101.62.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yVT89+MGguB1O94gSoydQvopfjq5kkOWt0dhSC7cJSkaAu5LLAH3/J1hkwHYTfmfDqLmT11Ay5I9sq8WOaDeGgAgm1VMdlkxrrsyoL8UmsDmisdAjSgl4xPBDqU3fkcxBw29WadOMcaEcIatR+xI4EiJ0tAatfpPHEUdl/3BX1UDedbwEs8EOA4qbjFzlxHtZdT6ozGkWfboZeChm7p4GC4FvoT+2FBmZ33Q/IPlSqD1rC6Dlq9u6r/hzduaX1xj94bpTPH+SZJibCASymQZ0SaHLk0CRj+Y1G5+oVpUNleWpp3Ci4O4VZ4nCGME/AigR7O4MZzHb2svD+TEXPfw/w==
+ b=ee8fzLoidaX8/S6znVjYMI9dt7L3gixkXhcfO9YBaZq0em9JHGPoPN6HPtsbLJNhuwD+wI+inuW2/ToBmw1qda4rEB9p9DaZwZNx/huVGF5IPc3ijE7QDpDS1moFi9lOqC9f9QWi+gU9IKPnZV8fEujy5oFFukNLd1t1UQ6Ui8QAhbC/HQRhIxCbWOKhvuUvt090g7Y7TdgMe63Lm53HXFASH+Cnvs0NLWP3ltipTSgtV0yQyKE0zEEexWb2TuSh+2mJZBOoD6C4u/EA02yuyrNu9sTE40O3AdI1WRw+cBvnWZNMIc4eCl4fsKA/WsGLiVAmq+nz2cr5rt3wO5qzuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h4uw7zLZyAVtMaitfutAbQhVjfCOnOi6ttCLIFIsHGU=;
- b=jpOHZnKG5uNanVWwLgA24YC9WOZMywKoF0RiyrF1PW9N+4bqn3oKcFVHr0yR3x+yr8lV86CDerOMhmLc8Eb606TzS7hFfShroXjcPjgD6YF7YBJWk/kCj134rDIFm4zUvQPFSfFDSKW7BTAyY42O3lYdxu1WWqCP5yHfn3QDa98IvOvcMn8EKLjHUZYx9+eAoL2BVY758EaO4yQyZHJ9fyds4qYPK42bf7S2y93dNEfbPIio1BU0E5F/RqswmRJhLoF7zAl7GWgkPK8vB7O0si3sVGR7fmVMNpeQpg7VtkoDrSb+3ku4A91RU1S5JIK9liuDZfL81SnCCtRGbRrfYQ==
+ bh=hUrSB5OXVGInHjspH9AWJRqFUGr5GDfBfBHtLNol6nA=;
+ b=KUz4rVsjJJsHj90LhCtJpqCMAi9kgbNsI+vmyS81wAr9Pw0IDf9O7yMQZcTttMdpdxR1mlYM29GFGLlAgLaSTa43uXakN/E7/kVQFjXo8bbUt3cp35TuIZakCCRMZK+SJWS9neKpCp/Qib8V3x4mWm3+zXuqbAOGYuxQ5h2QieQT+w3yhLwbEVHcfzhkbo5xzX7DWVrGrF/A6ebRg0o89lvoU1QXwCUjDstfumvnIM00sJblnSWGznNEcS9P4kHT+rMhTco0CEyDMhOQIs4QDeyUeMWJuYYnydoZzIBRqbL7tSc/kQBUCkPo3fudU2AOZE/Qtevcag1GqtI/J5M+aw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -45,18 +45,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h4uw7zLZyAVtMaitfutAbQhVjfCOnOi6ttCLIFIsHGU=;
- b=kAQ4UYWMjEmLpRLXPm+mbLRItk4mJUeHw8zeVpOxU9jNqEwbWJ7EE31ZQ8f6XlulXokswBxTVrx2Qt895oSaxWFOqHXBMfCmCguJLwyeU/rPZgSbIgllywwAr8JKnObNbuF6x+2UR488wfBCimWRxz/Sftoc2ghh1EUjBAwa8k4=
+ bh=hUrSB5OXVGInHjspH9AWJRqFUGr5GDfBfBHtLNol6nA=;
+ b=uni8z0HC4fhjvzlMChFSIyr6Nq5iMLMTzDzCJEnAjhNNoOAYBeOEjGS8myD3OCsbFIyXNNj9uEFqYnv+QS5WC9PMqzouJXzKIcgurto6PJ9qCJmiu2x7r6yMsGJhMVZdSo5xU7uERAWNM3vbOko43zulBLz2HNW2CHIW3UA2pZs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from SN7PR01MB7903.prod.exchangelabs.com (2603:10b6:806:34f::17) by
  DS1PR01MB8991.prod.exchangelabs.com (2603:10b6:8:21b::16) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.16; Tue, 22 Oct 2024 21:34:46 +0000
+ 15.20.8093.16; Tue, 22 Oct 2024 21:34:47 +0000
 Received: from SN7PR01MB7903.prod.exchangelabs.com
  ([fe80::cf45:9855:a64e:382f]) by SN7PR01MB7903.prod.exchangelabs.com
  ([fe80::cf45:9855:a64e:382f%5]) with mapi id 15.20.8093.014; Tue, 22 Oct 2024
- 21:34:46 +0000
+ 21:34:47 +0000
 From: Zaid Alali <zaidal@os.amperecomputing.com>
 To: rafael@kernel.org,
 	lenb@kernel.org,
@@ -77,9 +77,9 @@ To: rafael@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	acpica-devel@lists.linux.dev
-Subject: [PATCH 4/8] ACPI: APEI: EINJ: Enable the discovery of EINJv2 capabilities
-Date: Tue, 22 Oct 2024 14:34:25 -0700
-Message-Id: <20241022213429.1561784-5-zaidal@os.amperecomputing.com>
+Subject: [PATCH 5/8] ACPI: APEI: EINJ: Add einjv2 extension struct
+Date: Tue, 22 Oct 2024 14:34:26 -0700
+Message-Id: <20241022213429.1561784-6-zaidal@os.amperecomputing.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241022213429.1561784-1-zaidal@os.amperecomputing.com>
 References: <20241022213429.1561784-1-zaidal@os.amperecomputing.com>
@@ -96,222 +96,130 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SN7PR01MB7903:EE_|DS1PR01MB8991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40388e7c-3b81-4b77-4cf0-08dcf2e15958
+X-MS-Office365-Filtering-Correlation-Id: d75ed08b-3682-4ea0-ccec-08dcf2e15a38
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?k0iso+viZqxJenZCqq5kumsYfTMHM6mZqDqb7t4dvjrdPs0ZJ3C/pci3vSg/?=
- =?us-ascii?Q?tuwb3hlqtkXEbycs9Mj2+QHC3AfSXuxXKoaOlmGmlu00x2eG9BGF+UbZEOG6?=
- =?us-ascii?Q?CWOfud6GyBU5SNRApu7xTr+Xa5v7zzqTOw/bW21nDIfCEsh7iopmtORkpOZt?=
- =?us-ascii?Q?LTqm3WazmUfVPZdhURSnZg3/4nCgPUVGdtzA/1NdrCP7SUypKWGuva2Fd/QG?=
- =?us-ascii?Q?8s9sQrEyZQEJuPmAnKg3L1lsSsNNEOlXepfIzMrOxvF8JV0EJzlBnYz1IwLO?=
- =?us-ascii?Q?oKGrvsostatfepMVnDE2I/xCd93CS0ELq5FYj5svCzvk3xLGoi/sq0M9GvZj?=
- =?us-ascii?Q?kSRtNKbqNTJ/GJBFL19pu8HOSEqS+JqGAQUWAo+5bdA4ITHPBpdcudxxTIms?=
- =?us-ascii?Q?g4VuSLTk0ZLsJaryFOhRr5fPWtlSIkvGo0HoZ50t4RItTOhlqOH+TjtmPB3T?=
- =?us-ascii?Q?I5m/Sa27KHDh7YESDUDFKn1DRoEgJ8mgoNzd2CeOpcNHdd7qgSr3WpPklVx3?=
- =?us-ascii?Q?sySi2xs7C+Ll9pCX32SCUJ4WQgpdMeXRTJXOTs+IY01Ia/0Iip1z+AcPoUMU?=
- =?us-ascii?Q?eZ5JavZyFFwxkmKqmJBeau+uSo2EWkiL7qErfcoAVq84UsFTIonT9qBj/3Yx?=
- =?us-ascii?Q?4HtPl0QtHOTHNC/rxkoiUyIvDTdEjpRh/gJ0JsQj5rdeysIZWHpvdzFCO1uI?=
- =?us-ascii?Q?l+CBkMb/QolVkVfxP7z/35MTsELrqMEvlIuRKHdxnwAbCKI8YDGtXKNGnB3I?=
- =?us-ascii?Q?pqEY8Y/pR8oY/jClDTRDorr2zh9x9TtfgYrIGm+JZTf98INvnh2tOWNXxOfZ?=
- =?us-ascii?Q?VY3308aqAaYcmUbO5PInoeXxjAvnhlgm02G7wKLvD9Mb/eALr+0vMKMV15x5?=
- =?us-ascii?Q?JyxnYz4UagM3nXpMvTvqmZw7QO6CJU3K2u6SczmycZIiaIod/Q82Dnn4l5Vv?=
- =?us-ascii?Q?HOPsaxdLFOPudIWM+WlVKWn36TF/8hx3ud0CLlhlAXLlxQv6Q2gMcruRtIES?=
- =?us-ascii?Q?oBOvMQaIbXRg0LURjfS33OyBxQidoYKO7iPcjRnBVzTUhIbiP35WU4rQesvN?=
- =?us-ascii?Q?hpYKAsk3GnHiVejnu5NLuuxtao6c6of8PVIV0EeIe6fYqW0y6+w3TkD5RGbl?=
- =?us-ascii?Q?72oKKtGmbh0S4QENqFAAhpeSM/rD9BO3JPbLjONmOpGkWEi2iaIde2EDDtvx?=
- =?us-ascii?Q?ELjdkYIvWXlu6c0uPUsi7JK/q1759MemyChjfLdMXfdrGaoL4VH3h/gj1ZPx?=
- =?us-ascii?Q?+vW3Q/+KVGOxrzuQfR+K0On67zh/ivoRTvIb243bqOfEzsdM+kgFWeAnTTZT?=
- =?us-ascii?Q?yNpT2X9kbg88B5xIZcUMJR+hLn+YWKV4WpW7q9cXDdVNLX4BIkWxr3TuQKow?=
- =?us-ascii?Q?HQbVMkliEwSGZmQC0vqX6YoI84Sm?=
+	=?us-ascii?Q?t3i6FxFFhrufUdSNPZcn8UlHOg52kymK213HVIskbolAaDY++/3kXDXwFmER?=
+ =?us-ascii?Q?OMKtJhcHCOuhgHO7ybUl9n14KjNzu3tCbJU0tvsLTxpqvE7GbTI+po6R1B7g?=
+ =?us-ascii?Q?z/w41Am8PAFlyyElVPlrsMvPS9Snoz0o7u0aLpPG1d92OcxGGKAaB9m6qndk?=
+ =?us-ascii?Q?UtrztLELSLlUh7neLltgtycG9Q5vLW+/h696UIiMeTSqP5goF1WXCRc8XKdE?=
+ =?us-ascii?Q?W6B9h2DKl4aK2N91JRPdMG6XKLILwfUzgCvibxmqAfYWbGe70tntk8XT88f/?=
+ =?us-ascii?Q?xgTFkR6svj6wNWefxOmyg+SRfn4z9evJet9R6P/k4ozk6tODV8hhqGAGfqmO?=
+ =?us-ascii?Q?ks/2h14K0VbQuC4PAkZwlL+1cLJFt7Uo1yktjz1lR/DQijQFVanEHLSlfu86?=
+ =?us-ascii?Q?iTM7PSEvzM//iptxVHTUJEtzWDTG3WVCJ38zPuXW3NT8uoTIZzxSIidtLab/?=
+ =?us-ascii?Q?NDRfWElDB/BSIYNGpxiF1y4/s9aHVr8HDrgNwgr+OrPCm0jfryk8DT889Hwn?=
+ =?us-ascii?Q?ZlpOxjSGKyUmPmnf6hpYgt7rKlB7n/bQl2NFRLLib0vxnQWaseCsMBgY4hLr?=
+ =?us-ascii?Q?CbgLz0xUYTgV7AnjEnTyO1vZ8ErQZnWpMbofCb60RHm1Z/Jar8QxmbviRvtW?=
+ =?us-ascii?Q?Cuj2xapT5zQ+BBv8kGTxUgq1YVu9y1vlXj9gN2ToyLbCKBzBlDBEbyiFTrMK?=
+ =?us-ascii?Q?F8q8THrtyq8+2R7Pq6ie9zfyMEZUS60sWLbF3WFG4wCAN8GUZuEd482ewhmJ?=
+ =?us-ascii?Q?L+urMvlY1glX6C/UWlGdkdelNVjCz6egWfJvaBdVdMbqJsz2Bg9dnLn8kj2z?=
+ =?us-ascii?Q?cp9ow5HFvFJULZkq4AIamWuk6SAKieBrsGqhybs1X2nfa+CWxu6PjfJdwgSY?=
+ =?us-ascii?Q?t0k4Msz5R/YBuuyckou3dLUdekuxIFfBt87r7I2YwYB5D0XHKzv3H5lAiHat?=
+ =?us-ascii?Q?mYoH9sU08AIQXsXSVpjOctuDX723BdsHiBWc0OX7VlLUyBI36555NlK7M9j0?=
+ =?us-ascii?Q?BdfAJPRV6WmQqWgkA1QPcPLn6AS+P1My1ybMOIkbAoenew+LIK5+1wqJDHxb?=
+ =?us-ascii?Q?o+DmM6CYj6/r9sAK5a/cSfplMmmGiKhN4OwT7iNonK7N+mJ3TIb+NZL57Xvm?=
+ =?us-ascii?Q?0lX7owcn1Cj/v+WboqjWRMLgXh5EL9o/zAr7no2xUZMqHDHfpryKIyyepdEP?=
+ =?us-ascii?Q?+fRaP1MNTxZE6VLZsEYJmO3oTY4QG8lPETJjXsaLrDNjjWpJq61/U7Sca66E?=
+ =?us-ascii?Q?A0sNLtQoI4KL2yZbdJ9AO+dJtCMIJkoNekv2YbltnfwkUpaI60opR+A9FZSS?=
+ =?us-ascii?Q?3Q60yxAdDfNbpIl6DpWl+bo1gXhe2rMDTt2x7MBfAA5S6Y1xwH8D3FpssEgb?=
+ =?us-ascii?Q?pJ2NZykNQPvuqvOeXccGXkfEhT4M?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR01MB7903.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?P7taSpamMOrNKrn3zi8zJ5LvvzELo5XSFHJlDunQEoMxlItBMIi29hlNB+4c?=
- =?us-ascii?Q?7Pd5l7dkcWn9G+0SEt1Fz8iFbGYAdFWmhPMB/tLQJRTKNwDfSxcPhgYHeA+w?=
- =?us-ascii?Q?hefwKhh7R9YtvoLtl6pThffuROzqxXh3dfhoKLyEfHtHYE1IEh6uW+XuNnNf?=
- =?us-ascii?Q?JCwDI6OFXzfXdhC6vtTtKZKGeQGwCIn0MKU+mdDsEvGD3CdV9iZNeWZvKNzK?=
- =?us-ascii?Q?reEhwg0xcskMtHG3NWZTWQ5RHsKJfRVECk1M2wcoQQaTqg3lWYQL/m6cf478?=
- =?us-ascii?Q?dr87HJdc+QHz+YhKvFlWgwDM2C/3NdTwVn9sT43fSaI/KMBCwR43yqTDPLF3?=
- =?us-ascii?Q?zQgzwZbiJFJ8Kk1S795BPZmk70kZtgb+d1qdp4mjQ0WzaCwtFCXWtePTmg+W?=
- =?us-ascii?Q?KfU77ofAdoMpRvHTItNgP2OvvMQGbV2A4mpXax3MQU/taVXAHcjqf+AbOSd8?=
- =?us-ascii?Q?yKmQpeEG7eECJ97Goe7B3BO5iZTQmZLIgU4Jcd53XFSzGW6mfYGqWqq7FxIU?=
- =?us-ascii?Q?dq3INNkTPoEUttCseqacTXS4DPzuv5a2vWtwa2qQ5imHVg7NZmK9iyvi4wFV?=
- =?us-ascii?Q?E67A9ul1ZNge18W/tCD34WqMAfmcVb7zuRG8EjjwnGNOWoqitnM9qhjqiPzZ?=
- =?us-ascii?Q?H9FS3O6KkMr679SCou48nI24+TvHer4sjw4IHcC/2m5SixxB5E65s94nDjGg?=
- =?us-ascii?Q?q33BzYNuKdrPAT480kKzE0pFHZUhw1EUbFhbOImTz4yr7BYPD2faY9jrchRe?=
- =?us-ascii?Q?Jg/Y7qDibF8e8B099r0YV5KXDIXF9X0Mnpm9nwIwgZ2bYUGePT8rSGf8rVTS?=
- =?us-ascii?Q?7Jwoako3NyW1rGsy4KhcxBoqwT2QEtI0C6a0MatjcZvblRi/kf/lTo+xPj4u?=
- =?us-ascii?Q?Seh1VhrxBT8fu/xMGzhNrhgUZ80XGuniKFWTfoYfE50YsoPcmX/5sP4yw5q+?=
- =?us-ascii?Q?mXQC85ohZSjPzdFKVkMFHJN8gbq4LEI8gVotzBblYXkFOXe+eNdgGSNCPDot?=
- =?us-ascii?Q?Wq3wQSitfoV8sFmVs77NaGEfmwULio5vVBsGMm2kVC/Yc7cGz5Pz6swj7A5L?=
- =?us-ascii?Q?fAVcu8LKCoQME+C1e6YGuBewUocqHXq7FjrK2mNakWQDeKkfOObZzHcO0WSW?=
- =?us-ascii?Q?Mtt6F/KbKd3G99YSfAVf7Bs/ISpPk84tIeWZWZfxzAn/RZDO8+lr9N213UC+?=
- =?us-ascii?Q?G/CQZn99gNefEyNTCUQWcMn+ebmYyc7rGVzolWlv93Jl0jgoa0rzETkX2pic?=
- =?us-ascii?Q?ZeoR2hjdDMA3TCbevs3HRjYnM8fVII7Ly9stlx3HBUP9onKsCWyohdiU0sok?=
- =?us-ascii?Q?9bsqGhNlMqFeF+N4vCXGfl7ggwkFDr5kVJjLzZBEblkvPByoRrX2hG5wbbso?=
- =?us-ascii?Q?ta6/G7C7SF2UXG3SI9Y/LECzkxUiBlOPCjii4MMFXcnoD/c8+eD2Fr1GsnEA?=
- =?us-ascii?Q?W2cmTxeMj2xxymFyVJQx3qWrcIQYa2CzAU33duuap2BM6BFnd8+IAP4q44Sf?=
- =?us-ascii?Q?p2oRTcKITh1uTcabpkaYtRbqaQguV87whYi0U9x293xM67w6ShnaOH28Ipi3?=
- =?us-ascii?Q?/v9zdswhBu9KdevLNBTEU0FseUUtvxswR3eRO43xKxktjrVOM8QeiC/EYw3L?=
- =?us-ascii?Q?VA7u3IyRxEOc9VaWhde+AjI=3D?=
+	=?us-ascii?Q?vgO2IN1bcxRb2D0PafVbYrv6zP6YAfsYB471njdN4huuljvOLxShINdACTT7?=
+ =?us-ascii?Q?DpeoK2YN7KkRyRwfDbxLXoY4nvS+1N6fUZcbi2EeLBMsmfEGhqyaTjvjGTFz?=
+ =?us-ascii?Q?RVrduUHkdapthmB234IrO0jb61W/fbxJcPoOngDOt3GLFY5c5Tw/jR5Wm1CH?=
+ =?us-ascii?Q?8TGguwdNw+43L5BS4KVorCaz0uZ0apnUQseERxVQ4XNUT0Drp2l8F7aVUZ/Z?=
+ =?us-ascii?Q?q4uO1tS+AEdI7kGdgjAXByGnIv+exawlFSQxA+IlgvQab2cEKQdRi0AX5z1a?=
+ =?us-ascii?Q?Z3x/Y0aetqx/2W2qQYRPAZzdnYeZdv6qzdZMr2Z1vbbZEWgjsAVglhUQX0w3?=
+ =?us-ascii?Q?9/alzJv+GIiNofvkM14jN2ybfg2tKRAtHSPt06F7WAT+P28lfuWGimwhMflo?=
+ =?us-ascii?Q?gYetqXfxErt3B/TcbaJQhNsSQSRWt6pfsksR0ocmJtgQNW1kCAQcQ1vom99x?=
+ =?us-ascii?Q?ieJiYILwaOf4ubglcu7ptn0QDUAM5xG/LKvoKgk/P77ezO1xU9KpTdNv9oYM?=
+ =?us-ascii?Q?jGcZ6fvMOp5A4HmtevDUrtS20vm9R713ZTygMq+wt/KuX1BWa58WyVuYhif3?=
+ =?us-ascii?Q?pAl0ONmxAaflZAyx7JDm6wQxKIe7MjrfbKolPWh3JAlb67bceRijxQRVytwR?=
+ =?us-ascii?Q?KIXIf/LvF29k7ZtQSpRKCaLdccwR02Hpfnc9KX+Rcpdkv9/MLz5CGQp2FPLL?=
+ =?us-ascii?Q?PChdTyjkFaGX8DyJ9C9aIp/AdeyIunPnVOCjP6NAS8g+iDbpJljmgAdhy8Ab?=
+ =?us-ascii?Q?FWo0Z8G59kurc3Uqznl6tBn2ZKAx8FWGRqfLvZmORrfLP7OqSrlLb7UYhW4d?=
+ =?us-ascii?Q?W5gHsSeluaGboyNPdGhImPSwkpJwfRnteXVESHyUn1zW2eFn46RKY+Qj/cd7?=
+ =?us-ascii?Q?Z+Fpu3M9WLx6Fg9c04bqXJ3kgIEyv9u82rM2cX7rb/7CzCF29eaSoul9N4PN?=
+ =?us-ascii?Q?HNoOO9scUHcmTIV4j9y+hGL+q6j1ZRw9g9wpzGinZHmd9NYkw4iUDvz70a7C?=
+ =?us-ascii?Q?gkW/Gydon8rLwg81Hh3+kEgRoCrwSC5hNKqRRlkmQ8+XdNSDWCMV5KoEPtbC?=
+ =?us-ascii?Q?6bYKDcrlvKj3reNYY/4Prpw5fUmnizUfpYVXoGGCLx+6h7cU2qFGj/I42qMn?=
+ =?us-ascii?Q?5tzRVvQ2R18IcWc8b/1ZH2We3r4rTpMY4cV62sxZUFzPTUoqvCDOby3L8lfU?=
+ =?us-ascii?Q?t9XfIG3be9JZfalYgYit5+5Njl7EaKNmgxpKTFzrqE4AdtV2kxIhCcngvQyG?=
+ =?us-ascii?Q?nBEH4Ks1ZmHxXun1KM/U9iiCf1jczM+srJ06veA4Ov+MFQ58umfY+8GSDEZK?=
+ =?us-ascii?Q?fmSI8M/34c26f0yJM3yAjj9xWOZe+QHy+hmb1ZLjh3bIp21vCoUjaLPM9n+5?=
+ =?us-ascii?Q?Hd8t/Yf2pd80cAQQIoVqm6p+zTDsnS8bEbCcXWs5MsUCit7mi1ccYXVOevNk?=
+ =?us-ascii?Q?6pz6T3gu4MA9H460BMYf99WbIZcoKDDJVZY0y5aVDuPtEazTsaqOWAYUW2XP?=
+ =?us-ascii?Q?xWEfP97Lr/3xEvJy3bTmmi0Jv5GMctiyZJsSKKb5TC/4bYgUEErV27ySL4IJ?=
+ =?us-ascii?Q?m9Bt4Q13P/Ffl8ElqV2mQsevx5J+gfQnmdWmObbTLH4iwPs8/e9GrVGM0CfW?=
+ =?us-ascii?Q?Jur4wwTDYhU0CsBCUE9TCbE=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40388e7c-3b81-4b77-4cf0-08dcf2e15958
+X-MS-Exchange-CrossTenant-Network-Message-Id: d75ed08b-3682-4ea0-ccec-08dcf2e15a38
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR01MB7903.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 21:34:46.1462
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 21:34:47.6776
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ranh8ELR11OK6WQLTIe8OrFC84yQGLcnh2lztlYG6aJJICjxAOoJKMeFe6ZJfXgBlbLOJ19m7GnnIWRK2u727FgrhB7IRPladt3S7nbh1J1qilwozpx76x5z+V5lzXEp
+X-MS-Exchange-CrossTenant-UserPrincipalName: nFuCPyy9Q4g14bOjJuUCJhigPbcrsMgo3R4XTZmAvg1vAVANS6yPNB4yq7YAVlRwzk9KhkDpUVE4xtmLq6S/uD0t8aRjR9uvbWzMU322gMbJJhE7cIXx4J/UcqLKnIx2
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS1PR01MB8991
 
-Enable the driver to show all supported error injections for EINJ
-and EINJv2 at the same time. EINJv2 capabilities can be discovered
-by checking the return value of get_error_type, where bit 30 set
-indicates EINJv2 support.
+Add einjv2 extension struct and EINJv2 error types to prepare
+the driver for EINJv2 support. ACPI specifications(1) enables
+EINJv2 by extending set_error_type_with_address strcut.
 
 Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
 ---
- drivers/acpi/apei/apei-internal.h |  2 +-
- drivers/acpi/apei/einj-core.c     | 33 +++++++++++++++++++++++--------
- drivers/acpi/apei/einj-cxl.c      |  2 +-
- 3 files changed, 27 insertions(+), 10 deletions(-)
+ drivers/acpi/apei/einj-core.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/acpi/apei/apei-internal.h b/drivers/acpi/apei/apei-internal.h
-index cd2766c69d78..9a3dbaeed39a 100644
---- a/drivers/acpi/apei/apei-internal.h
-+++ b/drivers/acpi/apei/apei-internal.h
-@@ -131,7 +131,7 @@ static inline u32 cper_estatus_len(struct acpi_hest_generic_status *estatus)
- 
- int apei_osc_setup(void);
- 
--int einj_get_available_error_type(u32 *type);
-+int einj_get_available_error_type(u32 *type, int version);
- int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
- 		      u64 param4);
- int einj_cxl_rch_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
 diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index 78c5a20115eb..3621f071a735 100644
+index 3621f071a735..31a13ad6c4e5 100644
 --- a/drivers/acpi/apei/einj-core.c
 +++ b/drivers/acpi/apei/einj-core.c
-@@ -33,6 +33,7 @@
- #define SLEEP_UNIT_MAX		5000			/* 5ms */
- /* Firmware should respond within 1 seconds */
- #define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
-+#define ACPI65_EINJV2_SUPP	BIT(30)
- #define ACPI5_VENDOR_BIT	BIT(31)
- #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
- 				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
-@@ -84,6 +85,7 @@ static struct debugfs_blob_wrapper vendor_errors;
- static char vendor_dev[64];
+@@ -50,6 +50,28 @@
+  */
+ static int acpi5;
  
- static u32 available_error_type;
-+static u32 available_error_type_v2;
- 
- /*
-  * Some BIOSes allow parameters to the SET_ERROR_TYPE entries in the
-@@ -159,13 +161,13 @@ static void einj_exec_ctx_init(struct apei_exec_context *ctx)
- 			   EINJ_TAB_ENTRY(einj_tab), einj_tab->entries);
- }
- 
--static int __einj_get_available_error_type(u32 *type)
-+static int __einj_get_available_error_type(u32 *type, int version)
- {
- 	struct apei_exec_context ctx;
- 	int rc;
- 
- 	einj_exec_ctx_init(&ctx);
--	rc = apei_exec_run(&ctx, ACPI_EINJ_GET_ERROR_TYPE);
-+	rc = apei_exec_run(&ctx, version);
- 	if (rc)
- 		return rc;
- 	*type = apei_exec_ctx_get_output(&ctx);
-@@ -174,12 +176,12 @@ static int __einj_get_available_error_type(u32 *type)
- }
- 
- /* Get error injection capabilities of the platform */
--int einj_get_available_error_type(u32 *type)
-+int einj_get_available_error_type(u32 *type, int version)
- {
- 	int rc;
- 
- 	mutex_lock(&einj_mutex);
--	rc = __einj_get_available_error_type(type);
-+	rc = __einj_get_available_error_type(type, version);
- 	mutex_unlock(&einj_mutex);
- 
- 	return rc;
-@@ -647,6 +649,11 @@ static struct { u32 mask; const char *str; } const einj_error_type_string[] = {
- 	{ BIT(11), "Platform Uncorrectable fatal"},
- 	{ BIT(31), "Vendor Defined Error Types" },
- };
-+static struct { u32 mask; const char *str; } const einjv2_error_type_string[] = {
-+	{ BIT(0), "EINJV2 Processor Error" },
-+	{ BIT(1), "EINJV2 Memory Error" },
-+	{ BIT(2), "EINJV2 PCI Express Error" },
++struct syndrome_array {
++	union {
++		u32	acpi_id;
++		u32	device_id;
++		u32	pcie_sbdf;
++		u8	vendor_id[16];
++	} comp_id;
++	union {
++		u32	proc_synd;
++		u32	mem_synd;
++		u32	pcie_synd;
++		u8	vendor_synd[16];
++	} comp_synd;
 +};
- 
- static int available_error_type_show(struct seq_file *m, void *v)
- {
-@@ -654,8 +661,13 @@ static int available_error_type_show(struct seq_file *m, void *v)
- 	for (int pos = 0; pos < ARRAY_SIZE(einj_error_type_string); pos++)
- 		if (available_error_type & einj_error_type_string[pos].mask)
- 			seq_printf(m, "0x%08x\t%s\n", einj_error_type_string[pos].mask,
--				   einj_error_type_string[pos].str);
--
-+					   einj_error_type_string[pos].str);
-+	if (available_error_type & ACPI65_EINJV2_SUPP) {
-+		for (int pos = 0; pos < ARRAY_SIZE(einjv2_error_type_string); pos++)
-+			if (available_error_type_v2 & einjv2_error_type_string[pos].mask)
-+				seq_printf(m, "0x%08x\t%s\n", einjv2_error_type_string[pos].mask,
-+						   einjv2_error_type_string[pos].str);
-+	}
- 	return 0;
- }
- 
-@@ -692,7 +704,7 @@ int einj_validate_error_type(u64 type)
- 	if (tval & (tval - 1))
- 		return -EINVAL;
- 	if (!vendor)
--		if (!(type & available_error_type))
-+		if (!(type & (available_error_type)))
- 			return -EINVAL;
- 
- 	return 0;
-@@ -769,9 +781,14 @@ static int __init einj_probe(struct platform_device *pdev)
- 		goto err_put_table;
- 	}
- 
--	rc = einj_get_available_error_type(&available_error_type);
-+	rc = einj_get_available_error_type(&available_error_type, ACPI_EINJ_GET_ERROR_TYPE);
- 	if (rc)
- 		return rc;
-+	if (available_error_type & ACPI65_EINJV2_SUPP) {
-+		rc = einj_get_available_error_type(&available_error_type_v2, ACPI_EINJV2_GET_ERROR_TYPE);
-+		if (rc)
-+			return rc;
-+	}
- 
- 	rc = -ENOMEM;
- 	einj_debug_dir = debugfs_create_dir("einj", apei_get_debugfs_dir());
-diff --git a/drivers/acpi/apei/einj-cxl.c b/drivers/acpi/apei/einj-cxl.c
-index a4e709937236..5ffc4a162c70 100644
---- a/drivers/acpi/apei/einj-cxl.c
-+++ b/drivers/acpi/apei/einj-cxl.c
-@@ -30,7 +30,7 @@ int einj_cxl_available_error_type_show(struct seq_file *m, void *v)
- 	int cxl_err, rc;
- 	u32 available_error_type = 0;
- 
--	rc = einj_get_available_error_type(&available_error_type);
-+	rc = einj_get_available_error_type(&available_error_type, ACPI_EINJ_GET_ERROR_TYPE);
- 	if (rc)
- 		return rc;
- 
++
++struct einjv2_extension_struct {
++	u32 length;
++	u16 revision;
++	u16 component_arr_count;
++	struct syndrome_array component_arr[];
++};
++
+ struct set_error_type_with_address {
+ 	u32	type;
+ 	u32	vendor_extension;
+@@ -58,6 +80,7 @@ struct set_error_type_with_address {
+ 	u64	memory_address;
+ 	u64	memory_address_range;
+ 	u32	pcie_sbdf;
++	struct	einjv2_extension_struct einjv2_struct;
+ };
+ enum {
+ 	SETWA_FLAGS_APICID = 1,
 -- 
 2.34.1
 
