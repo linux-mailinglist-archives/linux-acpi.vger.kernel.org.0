@@ -1,211 +1,194 @@
-Return-Path: <linux-acpi+bounces-8892-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8893-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C659A9546
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 03:11:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8D09A973E
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 05:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B0FA1F2272C
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 01:11:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D00B2833EA
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Oct 2024 03:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF0277111;
-	Tue, 22 Oct 2024 01:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21E546BA;
+	Tue, 22 Oct 2024 03:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bC3gFGbM"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vCE99R9F"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2065.outbound.protection.outlook.com [40.107.94.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DA7323D;
-	Tue, 22 Oct 2024 01:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729559510; cv=none; b=YLWl7NsmvU3kaxdEcMoKHGkugwyXMG57DeTVmHapbPLrP4+nUpkMaIMwE0jvuoO6CSHElvOnTVU0YSGoQ8/0esQYSJFmNw2T0/E9LE1DyVPK1oPmvUa7TKCFNU8UqTx7LjQ0Pl1AmBfBkKHWv4EMkKI95Yvr9uGDi7MC3xR+AXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729559510; c=relaxed/simple;
-	bh=dyaqIfWu5jk9N2YZ1V36RrpXXNxAHtG8g2KDweEv5es=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d1uUWDFZBsn394QeLStBJFWfVRJNhzts9VZ0MsoNOlkZrP/ZZlbkiiDqrwotVgmqRKm+iGR5zTxTT1h7BpgjRy/Voiq/LZ4fckmL9GCEk06m//o6ff+C26QqxVqP8GnXDM+Iz1eAepCb0d/rvKLYSu4s8utBGqedYRNr7YsXqfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bC3gFGbM; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1729559503; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Su0JCUUNtQowa7ZUF9W/JcsQXW+zdoUv4LGM6ZfbIrs=;
-	b=bC3gFGbMrgwot0glVG484iR6MOclDdfrgbMLWEbjCCWYCe5XNus7ounxXcWYetdISXL4ROkPn5M9SuSvS6Ucsdry1OHSOKs/OAjfnLtf7V4zFanOmaPnwV1posy9CX1D9/EIUxmk0OZaD3mvEE8muqWwW4CcGheHsa9hRkmvbKo=
-Received: from 30.246.160.103(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WHfusch_1729559498 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Oct 2024 09:11:40 +0800
-Message-ID: <05a8d26b-b023-426f-879c-7d33be4a6406@linux.alibaba.com>
-Date: Tue, 22 Oct 2024 09:11:37 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2371B2581;
+	Tue, 22 Oct 2024 03:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729568791; cv=fail; b=UROrd3ozcL3uuUlHxhuulcgEvuVPbyN+BiWo0aKqxibWd7Boz6qFGH/DDq2lRyNhX2//eeJoy6E4sIGBG3oOrPTvfWQX+58J7j2QUpWJlwDaRMm7jYibT/tCVNsy2zDOjr9gr/5iuLcUp7pBqzdhV7SC+z8Zxu7Bjn8sGqAg8VI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729568791; c=relaxed/simple;
+	bh=l22w2kSglp3ch7wFsqXfWVnD2jc+PoMuACtSqZBMxdE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FRpCE6/fPEK6KL/+b2jP5EC6KO0SnQv3njjNUlyjSIfsl+LaahEA/s65YYZBiiWQ15CP5uNpOca3RpXTHhlQtEhKr0D1b5aB5u9YOw4mWP5TO6hcg9gaCnztZ3gxVNz0JGKE+90FZs7m1kkhx/dCGw8xSXjGqP9aJVagnfBH4HA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vCE99R9F; arc=fail smtp.client-ip=40.107.94.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h1guP2rYY+Kiem32c7JKZscVEjfPona1z0KzyCTNXEJKJUbO1hvE84j9R52GpXTXPeHUX+898x2MW/L182HD8R2vRRbfc5QR9EBycawulVE6892pufD7ul2NbS6hhCPs5VhWqJE+hL0gEVvaf19i2LfGxTkBPZRH5sNIpvEWlemXjuQv0BBbyZ5awjfCCcAaaRQyA7W2hAJFNviKFWodFu/Ol5807HHevdG8BZAgxlQDHUKSilocbyK9PtLBr/3hadKgsxXcIBn/04WbAHcU6Rd7YxNFdfyeusigLBN2uAs06XUJVm3jOndJwdBXvCbkXEWxNu2wiC1piM+VQslRQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/JZbHk/BSxEEh78BAuGPu0BHtaSMKwv5BqhvmQo7tY0=;
+ b=n4n9UMjsh+sgEFF1kOm2LCd2okmviaOsAqhAfMFPeeQIwK6V4UTCT/fRlQoTDgje7CUsjcNP3cUc5/oGuHM5Jzk4U89oLz9zH0OiQ/QjFfw0/B0e65vS2xwBhkIMxZeMquO5XqboqemKx1sSSeULyqH8/PcHQhS27sW2PpxbqttBCuWt4adCwk9ArQUc8dbdWgB/5UurKQJPknPyZGfv/yOeiTadWA04kAKqgalEF+dnNzaPLO/HEw9QauwYlk9wmEp1Rf+ECS4TigWGxqIu/TsdBD1lOJW5Bvx29odv1Gh40DDATZi+xg4yNVbOp3m2VT9KwLk6tabHivq8/kvKJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/JZbHk/BSxEEh78BAuGPu0BHtaSMKwv5BqhvmQo7tY0=;
+ b=vCE99R9Fue6rgdgve4Fe2oNpiW7CV73LuCiehcPLH25V3XuvkrFGz9255w17BE4eymzaJlmz8HSpNht//f5gyufNOEd1Vb2QylhgxwCr7TtBmqlwvyH7+mMOL47i2mwgIT800xAUk4zEZBuXkYibqvBmXplbqfAX7lHz07vmREg=
+Received: from BN1PR14CA0030.namprd14.prod.outlook.com (2603:10b6:408:e3::35)
+ by IA0PR12MB7578.namprd12.prod.outlook.com (2603:10b6:208:43d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Tue, 22 Oct
+ 2024 03:46:27 +0000
+Received: from BN3PEPF0000B071.namprd04.prod.outlook.com
+ (2603:10b6:408:e3:cafe::6b) by BN1PR14CA0030.outlook.office365.com
+ (2603:10b6:408:e3::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.29 via Frontend
+ Transport; Tue, 22 Oct 2024 03:46:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B071.mail.protection.outlook.com (10.167.243.116) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8093.14 via Frontend Transport; Tue, 22 Oct 2024 03:46:26 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Oct
+ 2024 22:46:25 -0500
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>, "maintainer:X86 ARCHITECTURE
+ (32-BIT AND 64-BIT)" <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>, "Gautham R . Shenoy"
+	<gautham.shenoy@amd.com>, Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, Peter
+ Zijlstra <peterz@infradead.org>, Li RongQing <lirongqing@baidu.com>, "open
+ list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, "open list:AMD PSTATE DRIVER"
+	<linux-pm@vger.kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH v2 0/5] x86 Heterogeneous design identification
+Date: Mon, 21 Oct 2024 22:46:03 -0500
+Message-ID: <20241022034608.32396-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 3/3] ACPI: APEI: handle synchronous exceptions in task
- work
-To: mark.rutland@arm.com, catalin.marinas@arm.com, mingo@redhat.com,
- robin.murphy@arm.com, Jonathan.Cameron@Huawei.com, bp@alien8.de,
- rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
- mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
- naoya.horiguchi@nec.com, james.morse@arm.com, tongtiangen@huawei.com,
- gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20241014084240.18614-4-xueshuai@linux.alibaba.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20241014084240.18614-4-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B071:EE_|IA0PR12MB7578:EE_
+X-MS-Office365-Filtering-Correlation-Id: 347824ec-0c25-4679-985c-08dcf24c1b26
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?De6FUeMpuei52HIL/pQSgP/KxKN/hTytbdVJpejbn4d02T6jZhCO6l1xf9C6?=
+ =?us-ascii?Q?Q7fAIpWls3YpvVEjyiROFEupDoK0aB5VcN0YfcJmQeQUmTI/qkWjiiUoUeZI?=
+ =?us-ascii?Q?vkCnHG7SvRgNSo5qsciV34mRJQylLLpB3MQlmNWXDns8k+AD9QrHZYiH7PpA?=
+ =?us-ascii?Q?sryUBaIoMiYvbtqJ56icvZl5kSprYy0Dd6CRDARXmQUf4+6T0Hb3pH7e+01i?=
+ =?us-ascii?Q?Wsj34BcRtS87UbCXudHaMVP/sxIwxiqSMWLxc+SuEeusCRKjcTWOYwalJ6WX?=
+ =?us-ascii?Q?95tJcAyOAa6uAKy1jDduZ7BqM2N/Jw2IjICZUOpzdZ7YR04LqVFqM07r0yo6?=
+ =?us-ascii?Q?8wY2bbkkDJZLfaC4yT8kvCc0zGrSTplYlEuH/rlFUj9Ykcn0MUEx9m8LRlo2?=
+ =?us-ascii?Q?xbWQtQpm41QxslbHSNSRmzLURbsmxgFvOtxsxkH95T4Vu2CACdhxqESENADu?=
+ =?us-ascii?Q?l9g4Y0OGME655cZXyozKG9l1pKuWQIM3MeljB8k2DMS9rB++6U7N394xxNdb?=
+ =?us-ascii?Q?eV1DwcwCtciQH0/Z/2KNAdYRHW+hsRWj+abPwxnXY/7MUVqkvlLxp9ih24nI?=
+ =?us-ascii?Q?ags/8kplhrgr5JNMm4lnDph+FhjlspqOaRLQh0i5TJCqSMJHw0zoa+mNg+p+?=
+ =?us-ascii?Q?OlaE8k39hHuVV92EreXHScSrAF0bS/flymaE5wQyNhqfQ28/9XN2FIOYCGG7?=
+ =?us-ascii?Q?vyS5CrrUN8M8ZUm9ybBgAIBk2iGdCA2UCqoivYNCtNYyTskn/tnctpuwQKe+?=
+ =?us-ascii?Q?dCpQjdcUUims3rwkq1kZ7HayHbbjfKvFyjIM2EGLWu/udGGXBKwkKQ5faaI4?=
+ =?us-ascii?Q?4k5XcRgim0CXv/3eND1dZpw+R+46fe2Uitgx1a+tcXZJDxI2FOPTKDzfcgyU?=
+ =?us-ascii?Q?ZubGEl5YGo1YWtWW9BEeEyGUUaIt1ToNjR1kCm6/hVGXjDYYC/zrltArNPpy?=
+ =?us-ascii?Q?Bms41QFXyYmya8P6FmrAfwa/vTYmNMxyI5nuOMJkljacPlQxmTMRAZ+bBI/w?=
+ =?us-ascii?Q?tHZJq1RNczzbHjosOj1N3ky8yRtJjUh1SY+27x0QSWw2ELdnhXCgqAQjs7LU?=
+ =?us-ascii?Q?hS1FxMtofP5BXToxVTSC/tsppGiZ0QVu1pDnGeHq3ZwajBxCH2R1gDBZrKTQ?=
+ =?us-ascii?Q?XSgFD5jYA4o3B3deYcfI4R0DFynEMywtFkfsQoq+TVdXBg3NF6lncIbET7Hd?=
+ =?us-ascii?Q?GT9YkxjKK/uuZmQvcAYDy1BRYpG4SEBqmLcQTrGrbegdl4g2pun0Wxti5SPj?=
+ =?us-ascii?Q?zjgogW2NJSEkV3rQf6XLKNS77TcYHPFXWq8LfrA8ixD8/o8a4P8NGCQExgqa?=
+ =?us-ascii?Q?xD8tPKPCUCK/zHo2KJzJuWCZOQNwg8hAVeYpo1fhaSd9vZjeUADG9UomzdRD?=
+ =?us-ascii?Q?tT2u0NQx4wOlde7Gd+37ZMgzLC4bIjdHuANeY6c7Z9z6NVWGxREbryXMJRbZ?=
+ =?us-ascii?Q?zXnJsGJHcLg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 03:46:26.6093
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 347824ec-0c25-4679-985c-08dcf24c1b26
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B071.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7578
 
-Hi, Jarkko,
+This series adds topology identification for Intel and AMD processors and
+uses this identification in the AMD CPPC code to identify the boost
+numerator.
 
+This series was previously submitted as [1], but this was based on some
+patches in linux-pm/linux-next that will be dropped.
 
-在 2024/10/14 16:42, Shuai Xue 写道:
-> The memory uncorrected error could be signaled by asynchronous interrupt
-> (specifically, SPI in arm64 platform), e.g. when an error is detected by
-> a background scrubber, or signaled by synchronous exception
-> (specifically, data abort excepction in arm64 platform), e.g. when a CPU
-> tries to access a poisoned cache line. Currently, both synchronous and
-> asynchronous error use memory_failure_queue() to schedule
-> memory_failure() exectute in kworker context.
-> 
-> As a result, when a user-space process is accessing a poisoned data, a
-> data abort is taken and the memory_failure() is executed in the kworker
-> context:
-> 
->    - will send wrong si_code by SIGBUS signal in early_kill mode, and
->    - can not kill the user-space in some cases resulting a synchronous
->      error infinite loop
-> 
-> Issue 1: send wrong si_code in early_kill mode
-> 
-> Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
-> could be used to determine whether a synchronous exception occurs on
-> ARM64 platform.  When a synchronous exception is detected, the kernel is
-> expected to terminate the current process which has accessed poisoned
-> page. This is done by sending a SIGBUS signal with an error code
-> BUS_MCEERR_AR, indicating an action-required machine check error on
-> read.
-> 
-> However, when kill_proc() is called to terminate the processes who have
-> the poisoned page mapped, it sends the incorrect SIGBUS error code
-> BUS_MCEERR_AO because the context in which it operates is not the one
-> where the error was triggered.
-> 
-> To reproduce this problem:
-> 
->    #sysctl -w vm.memory_failure_early_kill=1
->    vm.memory_failure_early_kill = 1
-> 
->    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 5 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
-> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
-> error and it is not fact.
-> 
-> After this patch:
-> 
->    # STEP1: enable early kill mode
->    #sysctl -w vm.memory_failure_early_kill=1
->    vm.memory_failure_early_kill = 1
->    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 4 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
-> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
-> error as we expected.
-> 
-> Issue 2: a synchronous error infinite loop
-> 
-> If a user-space process, e.g. devmem, a poisoned page which has been set
-> HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
-> current processs with error info. Because the memory_failure() is
-> executed in the kworker contex, it will just do nothing but return
-> EFAULT. So, devmem will access the posioned page and trigger an
-> excepction again, resulting in a synchronous error infinite loop. Such
-> loop may cause platform firmware to exceed some threshold and reboot
-> when Linux could have recovered from this error.
-> 
-> To reproduce this problem:
-> 
->    # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 4 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
->    # STEP 2: access the same page and it will trigger a synchronous error infinite loop
->    devmem 0x4092d55b400
-> 
-> To fix above two issues, queue memory_failure() as a task_work so that it runs in
-> the context of the process that is actually consuming the poisoned data.
-> 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->   drivers/acpi/apei/ghes.c | 78 +++++++++++++++++++++++-----------------
->   include/acpi/ghes.h      |  3 --
->   include/linux/mm.h       |  1 -
->   mm/memory-failure.c      | 13 -------
->   4 files changed, 45 insertions(+), 50 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index f2ee28c44d7a..95e9520eb803 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -467,28 +467,42 @@ static void ghes_clear_estatus(struct ghes *ghes,
->   }
->   
->   /*
-> - * Called as task_work before returning to user-space.
-> - * Ensure any queued work has been done before we return to the context that
-> - * triggered the notification.
-> + * struct ghes_task_work - for synchronous RAS event
-> + *
-> + * @twork:                callback_head for task work
-> + * @pfn:                  page frame number of corrupted page
-> + * @flags:                work control flags
-> + *
-> + * Structure to pass task work to be handled before
-> + * returning to user-space via task_work_add().
->    */
+Instead the series is now based on tip/master.
+
+This also pulls one patch from Pawan's series [2] and adjusts it for all
+feedback while adding AMD support at the same time.
+
+[1] https://lore.kernel.org/all/20241021175509.2079-5-mario.limonciello@amd.com/T/
+[2] https://lore.kernel.org/all/20240930-add-cpu-type-v4-0-104892b7ab5f@linux.intel.com/
+
+Mario Limonciello (2):
+  x86/cpufeatures: Rename X86_FEATURE_FAST_CPPC to have AMD prefix
+  x86/amd: Use heterogeneous core topology for identifying boost
+    numerator
+
+Pawan Gupta (1):
+  x86/cpu: Add CPU type to struct cpuinfo_topology
+
+Perry Yuan (2):
+  x86/cpufeatures: Add feature bits for AMD heterogeneous processor
+  x86/cpu: Enable SD_ASYM_PACKING for PKG Domain on AMD Processors
+
+ arch/x86/include/asm/cpu.h               | 19 +++++++++++++++++++
+ arch/x86/include/asm/cpufeatures.h       |  3 ++-
+ arch/x86/include/asm/processor.h         | 18 ++++++++++++++++++
+ arch/x86/include/asm/topology.h          |  8 ++++++++
+ arch/x86/kernel/acpi/cppc.c              | 23 +++++++++++++++++++++++
+ arch/x86/kernel/cpu/amd.c                | 14 ++++++++++++++
+ arch/x86/kernel/cpu/debugfs.c            |  1 +
+ arch/x86/kernel/cpu/intel.c              | 18 ++++++++++++++++++
+ arch/x86/kernel/cpu/scattered.c          |  3 ++-
+ arch/x86/kernel/cpu/topology_amd.c       |  3 +++
+ arch/x86/kernel/cpu/topology_common.c    | 13 +++++++++++++
+ arch/x86/kernel/smpboot.c                |  5 +++--
+ drivers/cpufreq/amd-pstate.c             |  2 +-
+ tools/arch/x86/include/asm/cpufeatures.h |  2 +-
+ 14 files changed, 126 insertions(+), 6 deletions(-)
 
 
-Do you have any futer comments about this patch? Any comments are
-welcomed. If not, are you happy to explictly give the reveiwed-by tag?
+base-commit: 21f0d4005e7eb71b95cf6b55041fd525bdb11c1f
+-- 
+2.43.0
 
-Best Regard,
-Shuai
 
