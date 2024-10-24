@@ -1,213 +1,132 @@
-Return-Path: <linux-acpi+bounces-8948-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8949-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073129ADF41
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2024 10:34:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE169AE2C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2024 12:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C81284504
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2024 08:34:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C25F283CB5
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Oct 2024 10:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3925A1B0F16;
-	Thu, 24 Oct 2024 08:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31C01C57B2;
+	Thu, 24 Oct 2024 10:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L9IvI8YI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijZjmT05"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74817189BB3;
-	Thu, 24 Oct 2024 08:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10451C4A35;
+	Thu, 24 Oct 2024 10:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729758831; cv=none; b=FyVYtQ/Aoc6DDYWK77I9AJBgbfXYBhv0Uv7YKYRU+RwFWuJloSLAzS9XFS3CmLO4HvxErd2GVjfcL6FBldf5FNjCtJxO+TeAIMcRutyWczrAFSGvP/JVcqfQRgh9YAWcHMTXT7SUMsfVmAoQEOseqBbxMRMEY3pSdpNuBDYgwDA=
+	t=1729766402; cv=none; b=MEuGijlXF5X4Zn5ShjKjPKUP4rapPj+GVTySfYTclF3UuetR4VyqBCHj6Kh1sNnRoYKF0PLqRqvokCze5WPDX18htktjrOVmMsXGzXH7Jf+Px/fBoHZOU1o4cBRmod5PUJBXEJGc8P0vG2IcRrhyFLfWHcDSCpFjNsw3G4IxZE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729758831; c=relaxed/simple;
-	bh=440a4UowBscCj5x5jCi7O4w9UQNiUsfEUJpOX9n3XQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XEyyfdykVXexZH0sh4DT1T4zJBKrFjPJfG0Cpzg5dTTI7SZCQgjs1LJ3AKbXi3f4i41czUcMFzj7XIamBQUo4mDrIsh7SIrp+ti0qGdFC9OLi6TMHOaWSWhrDTJzGrdMayyDJUHl+ZBqmynTjUMaCdYmJs8I5SV3UY8CDdfTCHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L9IvI8YI; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729758828; x=1761294828;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=440a4UowBscCj5x5jCi7O4w9UQNiUsfEUJpOX9n3XQI=;
-  b=L9IvI8YIk3VVoue076fVFQtURhv60QGp2mHmaRF2MlHWgcRqMG8GGPHy
-   wBB2P6yVVjsZCk9iwbLQ+Xq1dbmw7gYTQhANOe/7s5pHQAAm6YJ0y1A2g
-   xLdFZPAe5E9m8NYFXLnem8gplMho7qHIP+UsRqX27s1eqnyjecDW4733q
-   UJZ+r03ThEDjFcrwqhZS+3sOx8k3XdRrL0+/DfrYnvnrR9xJPkXu0g+pG
-   ZK13mdPyo9QVIr4kW+PPPeI7VymLC/dIW+vBRcywLoX7vSISgzZjGLh2s
-   VnFl6qR661+UkzaeivX+2SqC/crRTPSSiCDQOS2b0WChxniTH6p5W9Jkl
-   Q==;
-X-CSE-ConnectionGUID: zW+nLrvHT6mIzP+ezejPTA==
-X-CSE-MsgGUID: FDWESXfVQHWUFxPAE0/BdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="40768682"
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="40768682"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 01:33:47 -0700
-X-CSE-ConnectionGUID: DRmIii6WQkOK83fLyDLxhQ==
-X-CSE-MsgGUID: hI6GWyVHQXytlid2aGlJeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="85075578"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 24 Oct 2024 01:33:43 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t3tHo-000WA4-0X;
-	Thu, 24 Oct 2024 08:33:40 +0000
-Date: Thu, 24 Oct 2024 16:33:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zaid Alali <zaidal@os.amperecomputing.com>, rafael@kernel.org,
-	lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
-	bp@alien8.de, robert.moore@intel.com, dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com, Benjamin.Cheatham@amd.com,
-	Avadhut.Naik@amd.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
-	ira.weiny@intel.com, dave.jiang@intel.com,
-	sthanneeru.opensrc@micron.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 7/8] ACPI: APEI: EINJ: Enable EINJv2 error injections
-Message-ID: <202410241620.oApALow5-lkp@intel.com>
-References: <20241022213429.1561784-8-zaidal@os.amperecomputing.com>
+	s=arc-20240116; t=1729766402; c=relaxed/simple;
+	bh=xpKzc+yti+VywMW+rD7x7G+PO/MU0Lu9i53Q4xsuIl0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r7YOOaxc7vTLY3RF3IT7iVNkvLDSzo0dO7B0FCWFJXQS8Y4V97eHzYNx6hftC0pJ3E/YizgeXOOVE0eVISx915nf46s5f9+q/p8+IVXysDxQNSmbNYxyyxxrPjV5GY3q3xsW25j/mdPR0qaiUoH4BuRbXwA/gBmOQYXB1W9OcxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijZjmT05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428CFC4CECD;
+	Thu, 24 Oct 2024 10:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729766402;
+	bh=xpKzc+yti+VywMW+rD7x7G+PO/MU0Lu9i53Q4xsuIl0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ijZjmT05WgTszLdqjOiFi7t7wHxWX4oaYB7o4b0YN3JYpYMbHNMCOmR1U8euf5Fgt
+	 IhgDaB1AApsRClVnWPyEXUHnSgPEatHIWpQPQxTbgSsq/09Q+8PWFqRsDadJ4gyawI
+	 cJB0ooX6RToroas1eSNHiI2OCfarROx9Y9iW3dkg5RI7u2uA/eRAPHXw30y+jibGA5
+	 DBMd1Fheu6Hp16DKCzvJaZTOeQG7Gx7q4mj4vU/QRpTg3Ii6yJJPM4aL0ERJJKRdkg
+	 P7h8FQCqKiSq1r77i5bd/bL4C1CEV1z/OijO7CjVmO+GLN1eQL6HLco3tPmdfAf/u3
+	 Z3F3GeS3ZetdQ==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539e690479cso790872e87.3;
+        Thu, 24 Oct 2024 03:40:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVDjBetQjx/PuHglW9lnBlkaind/jc8IlCn8AvYTv9fyQ6DaZWjr3AsLo0oOe0Gq34VIvNpU0jT74xnguCe@vger.kernel.org, AJvYcCW5AfEDQdOgQAY7V9ZL6OohNikMtEJK7hObh3ONlj+6OWk4xjt9pxVAN2fMgBWJ25ewyY5cVsLz1vYJ1uI+/Xk=@vger.kernel.org, AJvYcCWFujwWxiTntYAo3/qwRk4mM0mvqd8IKZYvP5kvu13aSwx+ooZvoFNCA4NVcPngV3JxLmWmr0gRTZn0dA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvURc0lnVzi7oT1hsRN6UUnCxcICxZlwyGT9TZ+ZvVui7tqPvK
+	zylttOw4HkqxGDIseXtVf4cZu3m+kJnYk56iVfq7CoQ3NaBFaxUYZaSAHQ4EX08+CBR8fyd1Nx4
+	45mGJIvedigd7Cir4TMDV3LD7gDc=
+X-Google-Smtp-Source: AGHT+IF4H6zTrna94vNlhEwFT8vm1ZoovqZTBEfuw+/mvfaWRMzzqJ4nAtwpbrDyFaY+Z2r9nr6H6301ydnonp7guLE=
+X-Received: by 2002:a05:6512:23a9:b0:52e:9b2f:c313 with SMTP id
+ 2adb3069b0e04-53b1a313464mr3298161e87.22.1729766400515; Thu, 24 Oct 2024
+ 03:40:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022213429.1561784-8-zaidal@os.amperecomputing.com>
+References: <3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain>
+In-Reply-To: <3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 24 Oct 2024 12:39:49 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFRUhkCyN0PjLrtw1uSCuy4m=9g=pwNO9tkxckj-koijg@mail.gmail.com>
+Message-ID: <CAMj1kXFRUhkCyN0PjLrtw1uSCuy4m=9g=pwNO9tkxckj-koijg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PRM: Clean Up guid type in struct prm_handler_info
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Koba Ko <kobak@nvidia.com>, Len Brown <lenb@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	kernel-janitors@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Zaid,
+On Thu, 24 Oct 2024 at 10:07, Dan Carpenter <dan.carpenter@linaro.org> wrote:
+>
+> Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
+>
+> drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
+> 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+> unaligned pointer access [-Werror,-Walign-mismatch]
+>   156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+>       |                                                  ^
+>
+> The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
+> is a regular guid_t.  The difference between the two types is the
+> alignment.  efi_guid_t is a typedef.
+>
+>         typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+>
+> It's possible that this a bug in Clang 19.  Even though the alignment of
+> &th->guid is not explicitly specified, it will still end up being aligned
+> at 4 or 8 bytes.
+>
+> Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
+> and that also makes the warning go away.
+>
+> Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Tested-by: Paul E. McKenney <paulmck@kernel.org>
 
-kernel test robot noticed the following build warnings:
+In case this wasn't implied already,
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on rafael-pm/bleeding-edge linus/master v6.12-rc4 next-20241024]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zaid-Alali/ACPICA-Update-values-to-hex-to-follow-ACPI-specs/20241023-054034
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20241022213429.1561784-8-zaidal%40os.amperecomputing.com
-patch subject: [PATCH 7/8] ACPI: APEI: EINJ: Enable EINJv2 error injections
-config: x86_64-randconfig-121-20241024 (https://download.01.org/0day-ci/archive/20241024/202410241620.oApALow5-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241024/202410241620.oApALow5-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410241620.oApALow5-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
-   drivers/acpi/apei/einj-core.c:261:11: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct vendor_error_type_extension *v @@     got void [noderef] __iomem * @@
-   drivers/acpi/apei/einj-core.c:261:11: sparse:     expected struct vendor_error_type_extension *v
-   drivers/acpi/apei/einj-core.c:261:11: sparse:     got void [noderef] __iomem *
-   drivers/acpi/apei/einj-core.c:270:29: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got struct vendor_error_type_extension *v @@
-   drivers/acpi/apei/einj-core.c:270:29: sparse:     expected void [noderef] __iomem *virt
-   drivers/acpi/apei/einj-core.c:270:29: sparse:     got struct vendor_error_type_extension *v
-   drivers/acpi/apei/einj-core.c:296:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct set_error_type_with_address *v5param @@     got void [noderef] __iomem * @@
-   drivers/acpi/apei/einj-core.c:296:25: sparse:     expected struct set_error_type_with_address *v5param
-   drivers/acpi/apei/einj-core.c:296:25: sparse:     got void [noderef] __iomem *
->> drivers/acpi/apei/einj-core.c:306:53: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got struct set_error_type_with_address *v5param @@
-   drivers/acpi/apei/einj-core.c:306:53: sparse:     expected void [noderef] __iomem *virt
-   drivers/acpi/apei/einj-core.c:306:53: sparse:     got struct set_error_type_with_address *v5param
-   drivers/acpi/apei/einj-core.c:307:41: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct set_error_type_with_address *v5param @@     got void [noderef] __iomem * @@
-   drivers/acpi/apei/einj-core.c:307:41: sparse:     expected struct set_error_type_with_address *v5param
-   drivers/acpi/apei/einj-core.c:307:41: sparse:     got void [noderef] __iomem *
-   drivers/acpi/apei/einj-core.c:316:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct einj_parameter *v4param @@     got void [noderef] __iomem * @@
-   drivers/acpi/apei/einj-core.c:316:25: sparse:     expected struct einj_parameter *v4param
-   drivers/acpi/apei/einj-core.c:316:25: sparse:     got void [noderef] __iomem *
-   drivers/acpi/apei/einj-core.c:320:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got struct einj_parameter *v4param @@
-   drivers/acpi/apei/einj-core.c:320:45: sparse:     expected void [noderef] __iomem *virt
-   drivers/acpi/apei/einj-core.c:320:45: sparse:     got struct einj_parameter *v4param
-   drivers/acpi/apei/einj-core.c:387:21: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct acpi_einj_trigger *trigger_tab @@     got void [noderef] __iomem * @@
-   drivers/acpi/apei/einj-core.c:387:21: sparse:     expected struct acpi_einj_trigger *trigger_tab
-   drivers/acpi/apei/einj-core.c:387:21: sparse:     got void [noderef] __iomem *
-   drivers/acpi/apei/einj-core.c:413:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void volatile [noderef] __iomem *addr @@     got struct acpi_einj_trigger *trigger_tab @@
-   drivers/acpi/apei/einj-core.c:413:17: sparse:     expected void volatile [noderef] __iomem *addr
-   drivers/acpi/apei/einj-core.c:413:17: sparse:     got struct acpi_einj_trigger *trigger_tab
-   drivers/acpi/apei/einj-core.c:414:21: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct acpi_einj_trigger *trigger_tab @@     got void [noderef] __iomem * @@
-   drivers/acpi/apei/einj-core.c:414:21: sparse:     expected struct acpi_einj_trigger *trigger_tab
-   drivers/acpi/apei/einj-core.c:414:21: sparse:     got void [noderef] __iomem *
-   drivers/acpi/apei/einj-core.c:477:25: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void volatile [noderef] __iomem *addr @@     got struct acpi_einj_trigger *trigger_tab @@
-   drivers/acpi/apei/einj-core.c:477:25: sparse:     expected void volatile [noderef] __iomem *addr
-   drivers/acpi/apei/einj-core.c:477:25: sparse:     got struct acpi_einj_trigger *trigger_tab
-   drivers/acpi/apei/einj-core.c:983:37: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got void *static [assigned] [toplevel] einj_param @@
-   drivers/acpi/apei/einj-core.c:983:37: sparse:     expected void [noderef] __iomem *virt
-   drivers/acpi/apei/einj-core.c:983:37: sparse:     got void *static [assigned] [toplevel] einj_param
-
-vim +306 drivers/acpi/apei/einj-core.c
-
-   272	
-   273	static void *einj_get_parameter_address(void)
-   274	{
-   275		int i;
-   276		u64 pa_v4 = 0, pa_v5 = 0;
-   277		struct acpi_whea_header *entry;
-   278	
-   279		entry = EINJ_TAB_ENTRY(einj_tab);
-   280		for (i = 0; i < einj_tab->entries; i++) {
-   281			if (entry->action == ACPI_EINJ_SET_ERROR_TYPE &&
-   282			    entry->instruction == ACPI_EINJ_WRITE_REGISTER &&
-   283			    entry->register_region.space_id ==
-   284			    ACPI_ADR_SPACE_SYSTEM_MEMORY)
-   285				pa_v4 = get_unaligned(&entry->register_region.address);
-   286			if (entry->action == ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS &&
-   287			    entry->instruction == ACPI_EINJ_WRITE_REGISTER &&
-   288			    entry->register_region.space_id ==
-   289			    ACPI_ADR_SPACE_SYSTEM_MEMORY)
-   290				pa_v5 = get_unaligned(&entry->register_region.address);
-   291			entry++;
-   292		}
-   293		if (pa_v5) {
-   294			struct set_error_type_with_address *v5param;
-   295	
-   296			v5param = acpi_os_map_iomem(pa_v5, sizeof(*v5param));
-   297			if (v5param) {
-   298				int offset, len;
-   299	
-   300				acpi5 = 1;
-   301				check_vendor_extension(pa_v5, v5param);
-   302				if (available_error_type & ACPI65_EINJV2_SUPP) {
-   303					len = v5param->einjv2_struct.length;
-   304					offset = offsetof(struct einjv2_extension_struct, component_arr);
-   305					nr_components = (len - offset) / 32;
- > 306					acpi_os_unmap_iomem(v5param, sizeof(*v5param));
-   307					v5param = acpi_os_map_iomem(pa_v5, sizeof(*v5param) + (
-   308						(nr_components) * sizeof(struct syndrome_array)));
-   309				}
-   310				return v5param;
-   311			}
-   312		}
-   313		if (param_extension && pa_v4) {
-   314			struct einj_parameter *v4param;
-   315	
-   316			v4param = acpi_os_map_iomem(pa_v4, sizeof(*v4param));
-   317			if (!v4param)
-   318				return NULL;
-   319			if (v4param->reserved1 || v4param->reserved2) {
-   320				acpi_os_unmap_iomem(v4param, sizeof(*v4param));
-   321				return NULL;
-   322			}
-   323			return v4param;
-   324		}
-   325	
-   326		return NULL;
-   327	}
-   328	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+> Sorry for the unfair Fixes tags since you obviously aren't to blame.  But it's
+> more practical if we avoid breaking the build in backports or etc.  Fixes tags
+> are quite often unfair in this way...
+>
+>  drivers/acpi/prmt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> index d59307a76ca3..747f83f7114d 100644
+> --- a/drivers/acpi/prmt.c
+> +++ b/drivers/acpi/prmt.c
+> @@ -52,7 +52,7 @@ struct prm_context_buffer {
+>  static LIST_HEAD(prm_module_list);
+>
+>  struct prm_handler_info {
+> -       guid_t guid;
+> +       efi_guid_t guid;
+>         efi_status_t (__efiapi *handler_addr)(u64, void *);
+>         u64 static_data_buffer_addr;
+>         u64 acpi_param_buffer_addr;
+> --
+> 2.45.2
+>
 
