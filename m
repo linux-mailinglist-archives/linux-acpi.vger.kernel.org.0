@@ -1,242 +1,112 @@
-Return-Path: <linux-acpi+bounces-8962-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8963-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23E59B0604
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 16:41:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7BE9B08E7
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 17:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64831C20CE2
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 14:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82EB51F22C46
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 15:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27023200B9E;
-	Fri, 25 Oct 2024 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B243166F33;
+	Fri, 25 Oct 2024 15:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsLuE4Yu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETOhtiKh"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EF91FB89A;
-	Fri, 25 Oct 2024 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E6521A4D1;
+	Fri, 25 Oct 2024 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729867257; cv=none; b=M/Gy4NtPGO/82MAB5dl8+ZhxOc4hxZJCWuaaMjt4Q4wsC7VCdRwE63dJpbuJQKvqm3BTdfRixuieSQ7cVZLyUW/07Y5RFUt1IXn5xJPeaCjH4U0HUCACT4tSmJ2ZmVNcYlQIRzJmOjOnO7uLXdpCWx5uVUcGkUdAlPVyP9mlBHI=
+	t=1729871458; cv=none; b=lgR7Mm+WBPiIYsHduOfpTsTPkn0drDWVnReX3OeGAnp+Gg7FKi1lWJUWx5Hkdr2RX6gGbGGP2FZarOFQhDyCZs1SzHc3UV5QiadlYTm/rbwzzxTQf6S7mGz0yjT8JOrD7dgYQfs0ZwpUkTKf1LkggZqzr2sV/1s2Avb2umep6dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729867257; c=relaxed/simple;
-	bh=dsMthO8Jrb9+1L6ZnDBu1t1OOQmY7jYi7dCIH4VZXdU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=LSyyhzggLpzzD3dgSDimIdYxRq6ahFzgNo4A8I+NuPtyQA7UeQnWYJyWmwrbTXxNabqD7mEkRMhJSxRs7kjOBon9wxqkSy9ZkBbHNUDmv8eMzKQg0yNErhxRw4vgvgV96u0gbkYhdxWTL805znLqEHzWUgR1SFe3GKWadqs2PxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsLuE4Yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79BFC4CEC3;
-	Fri, 25 Oct 2024 14:40:55 +0000 (UTC)
+	s=arc-20240116; t=1729871458; c=relaxed/simple;
+	bh=Fi11uiXIQ+iNyojKutyX4w7orO4RUqctsjHq2NJr7EA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=t0O6ys7Q596seaQ1gCNvjTYKj/2sD3JX6qoR0zR96n4YUJ6Xk3q4U4ugPDymfiGwJ2OIvHnlAwStrpof+VidcyS7XJQ/jWuSUPViVVA3wCL4kfUvj8ZSVnfVeW9KH2l6gjEX7UdNvApi3qblZREHlS8/m7z1Rts3UITAmxawE/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETOhtiKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57698C4CEC3;
+	Fri, 25 Oct 2024 15:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729867256;
-	bh=dsMthO8Jrb9+1L6ZnDBu1t1OOQmY7jYi7dCIH4VZXdU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=DsLuE4YuLKTOMLwG4QbYcC/9yEVkwhUZJSvX6byCliyWU1yve4qV6bXccnRnvPJjy
-	 hQt9TUaaD7vnPRgsNPSzA3knTTqaiRHdpAtWkgBqS3hwh5QYRN+DbjGSEPva2RuCai
-	 S6ywofDYDrnJ+cXFONwgAVuS0pjNLNS/pXX0O3fciG6Gin4qYttjqZf49GswGeVLQJ
-	 DIrSm19K/gfKrz+D7PFEVz8ZPZnZb4oJYVv2REqZnDHGgzX8ISatwGSkevd3Vz9wDK
-	 bZb70FzWq0oht19nQCS1hq2gcSqpV5A+b4J84N48CQCj1MggHe/KcTucXhYFuNf0x+
-	 rio8u6IbkoRCQ==
+	s=k20201202; t=1729871458;
+	bh=Fi11uiXIQ+iNyojKutyX4w7orO4RUqctsjHq2NJr7EA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=ETOhtiKhJcECkOBWApIkfsGMNyfmZtvZEIWbqjoJdlYPM0/pPrsC0+HHELse7TSK3
+	 laZ8M24MDX5kw7pRkJPI19dy+Emhd24OQTOfHmNhlBuba0/37aWckt7Ioc1a1Ar2Wu
+	 6TmKOrMZF8sDlAnGhCnk7J+HncwJxac2uKaz3J8y5OrRoLM6fK86RduvZ1zMHJrIa7
+	 PhLLiKsOEjXRkR7fxPImTYSTNzT+gbsFDm2xvQI1cOPblV8o9fdN3s7XeOfZ4XBsH2
+	 oEvlRD4Rpntwo1fsELvFhrxbWCWankw7jTGRUATAHtLmLz8TY75NEo0k+p1hVSgcvg
+	 VA+74it8A7VVg==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-28cdd9d8d01so1199528fac.1;
+        Fri, 25 Oct 2024 08:50:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUyWrPGFGu3Mj5XbrUz+CpDijjOj8A9FFIo/Q7Bc3pb7ztnLpP0ip+dmL0VPqYiMnREp5yzFdWHIT5a@vger.kernel.org, AJvYcCV7UkYrT5CvM1QTyAvmRVaPhlwrqLrtwBltfposaqMKUNnkD9vxXHMFGae8HvikXNkKNWqBYvMKD8GKprk4@vger.kernel.org
+X-Gm-Message-State: AOJu0YymLGEJS4ks0C/0F2kbxhDzoprOWbYEXLsAvna3u3hGtV32geM9
+	3pR7XkeC9FYQjgTOI3hebrk0mV7ejBDyEEuVsaobu0bycQYcsY5H0VSJMcAlmKBJQ24VSuaoeoK
+	Fv2x6nAKCUzTcx4w0oeRjKbRvc6M=
+X-Google-Smtp-Source: AGHT+IEexv+1+Np/f2c+G4k45uz21aAEHCVXbLx7OeEwEnn5lsuizjJKo8UnayxciDmSWeDhTX0jplzw4xBYqvqkaE0=
+X-Received: by 2002:a05:6870:c1cf:b0:288:6d23:5f24 with SMTP id
+ 586e51a60fabf-28ccb6ad0cdmr10773896fac.31.1729871457680; Fri, 25 Oct 2024
+ 08:50:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Oct 2024 17:40:52 +0300
-Message-Id: <D54YRGZ47LLS.2BGS3F7T80DF4@kernel.org>
-Cc: <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
- <linux-edac@vger.kernel.org>, <x86@kernel.org>, <justin.he@arm.com>,
- <ardb@kernel.org>, <ying.huang@intel.com>, <ashish.kalra@amd.com>,
- <baolin.wang@linux.alibaba.com>, <tglx@linutronix.de>,
- <dave.hansen@linux.intel.com>, <lenb@kernel.org>, <hpa@zytor.com>,
- <robert.moore@intel.com>, <lvying6@huawei.com>, <xiexiuqi@huawei.com>,
- <zhuo.song@linux.alibaba.com>
-Subject: Re: [PATCH v14 3/3] ACPI: APEI: handle synchronous exceptions in
- task work
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Shuai Xue" <xueshuai@linux.alibaba.com>, <mark.rutland@arm.com>,
- <catalin.marinas@arm.com>, <mingo@redhat.com>, <robin.murphy@arm.com>,
- <Jonathan.Cameron@Huawei.com>, <bp@alien8.de>, <rafael@kernel.org>,
- <wangkefeng.wang@huawei.com>, <tanxiaofei@huawei.com>,
- <mawupeng1@huawei.com>, <tony.luck@intel.com>, <linmiaohe@huawei.com>,
- <naoya.horiguchi@nec.com>, <james.morse@arm.com>, <tongtiangen@huawei.com>,
- <gregkh@linuxfoundation.org>, <will@kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20241014084240.18614-4-xueshuai@linux.alibaba.com>
- <05a8d26b-b023-426f-879c-7d33be4a6406@linux.alibaba.com>
-In-Reply-To: <05a8d26b-b023-426f-879c-7d33be4a6406@linux.alibaba.com>
+MIME-Version: 1.0
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 25 Oct 2024 17:50:46 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g9kJzKXGjF-q+r8NDTqYoDaa8J1cyOj=TRN-GMMHqiOg@mail.gmail.com>
+Message-ID: <CAJZ5v0g9kJzKXGjF-q+r8NDTqYoDaa8J1cyOj=TRN-GMMHqiOg@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v6.12-rc5
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue Oct 22, 2024 at 4:11 AM EEST, Shuai Xue wrote:
-> Hi, Jarkko,
->
->
-> =E5=9C=A8 2024/10/14 16:42, Shuai Xue =E5=86=99=E9=81=93:
-> > The memory uncorrected error could be signaled by asynchronous interrup=
-t
-> > (specifically, SPI in arm64 platform), e.g. when an error is detected b=
-y
-> > a background scrubber, or signaled by synchronous exception
-> > (specifically, data abort excepction in arm64 platform), e.g. when a CP=
-U
-> > tries to access a poisoned cache line. Currently, both synchronous and
-> > asynchronous error use memory_failure_queue() to schedule
-> > memory_failure() exectute in kworker context.
-> >=20
-> > As a result, when a user-space process is accessing a poisoned data, a
-> > data abort is taken and the memory_failure() is executed in the kworker
-> > context:
-> >=20
-> >    - will send wrong si_code by SIGBUS signal in early_kill mode, and
-> >    - can not kill the user-space in some cases resulting a synchronous
-> >      error infinite loop
-> >=20
-> > Issue 1: send wrong si_code in early_kill mode
-> >=20
-> > Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-> > MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRE=
-D
-> > could be used to determine whether a synchronous exception occurs on
-> > ARM64 platform.  When a synchronous exception is detected, the kernel i=
-s
-> > expected to terminate the current process which has accessed poisoned
-> > page. This is done by sending a SIGBUS signal with an error code
-> > BUS_MCEERR_AR, indicating an action-required machine check error on
-> > read.
-> >=20
-> > However, when kill_proc() is called to terminate the processes who have
-> > the poisoned page mapped, it sends the incorrect SIGBUS error code
-> > BUS_MCEERR_AO because the context in which it operates is not the one
-> > where the error was triggered.
-> >=20
-> > To reproduce this problem:
-> >=20
-> >    #sysctl -w vm.memory_failure_early_kill=3D1
-> >    vm.memory_failure_early_kill =3D 1
-> >=20
-> >    # STEP2: inject an UCE error and consume it to trigger a synchronous=
- error
-> >    #einj_mem_uc single
-> >    0: single   vaddr =3D 0xffffb0d75400 paddr =3D 4092d55b400
-> >    injecting ...
-> >    triggering ...
-> >    signal 7 code 5 addr 0xffffb0d75000
-> >    page not present
-> >    Test passed
-> >=20
-> > The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_A=
-O
-> > error and it is not fact.
-> >=20
-> > After this patch:
-> >=20
-> >    # STEP1: enable early kill mode
-> >    #sysctl -w vm.memory_failure_early_kill=3D1
-> >    vm.memory_failure_early_kill =3D 1
-> >    # STEP2: inject an UCE error and consume it to trigger a synchronous=
- error
-> >    #einj_mem_uc single
-> >    0: single   vaddr =3D 0xffffb0d75400 paddr =3D 4092d55b400
-> >    injecting ...
-> >    triggering ...
-> >    signal 7 code 4 addr 0xffffb0d75000
-> >    page not present
-> >    Test passed
-> >=20
-> > The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_A=
-R
-> > error as we expected.
-> >=20
-> > Issue 2: a synchronous error infinite loop
-> >=20
-> > If a user-space process, e.g. devmem, a poisoned page which has been se=
-t
-> > HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
-> > current processs with error info. Because the memory_failure() is
-> > executed in the kworker contex, it will just do nothing but return
-> > EFAULT. So, devmem will access the posioned page and trigger an
-> > excepction again, resulting in a synchronous error infinite loop. Such
-> > loop may cause platform firmware to exceed some threshold and reboot
-> > when Linux could have recovered from this error.
-> >=20
-> > To reproduce this problem:
-> >=20
-> >    # STEP 1: inject an UCE error, and kernel will set HWPosion flag for=
- related page
-> >    #einj_mem_uc single
-> >    0: single   vaddr =3D 0xffffb0d75400 paddr =3D 4092d55b400
-> >    injecting ...
-> >    triggering ...
-> >    signal 7 code 4 addr 0xffffb0d75000
-> >    page not present
-> >    Test passed
-> >=20
-> >    # STEP 2: access the same page and it will trigger a synchronous err=
-or infinite loop
-> >    devmem 0x4092d55b400
-> >=20
-> > To fix above two issues, queue memory_failure() as a task_work so that =
-it runs in
-> > the context of the process that is actually consuming the poisoned data=
-.
-> >=20
-> > Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> > Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> > Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> > Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > ---
-> >   drivers/acpi/apei/ghes.c | 78 +++++++++++++++++++++++----------------=
--
-> >   include/acpi/ghes.h      |  3 --
-> >   include/linux/mm.h       |  1 -
-> >   mm/memory-failure.c      | 13 -------
-> >   4 files changed, 45 insertions(+), 50 deletions(-)
-> >=20
-> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> > index f2ee28c44d7a..95e9520eb803 100644
-> > --- a/drivers/acpi/apei/ghes.c
-> > +++ b/drivers/acpi/apei/ghes.c
-> > @@ -467,28 +467,42 @@ static void ghes_clear_estatus(struct ghes *ghes,
-> >   }
-> >  =20
-> >   /*
-> > - * Called as task_work before returning to user-space.
-> > - * Ensure any queued work has been done before we return to the contex=
-t that
-> > - * triggered the notification.
-> > + * struct ghes_task_work - for synchronous RAS event
-> > + *
-> > + * @twork:                callback_head for task work
-> > + * @pfn:                  page frame number of corrupted page
-> > + * @flags:                work control flags
-> > + *
-> > + * Structure to pass task work to be handled before
-> > + * returning to user-space via task_work_add().
-> >    */
->
->
-> Do you have any futer comments about this patch? Any comments are
-> welcomed. If not, are you happy to explictly give the reveiwed-by tag?
+Hi Linus,
 
-Sorry I've been busy switching to a new job.
+Please pull from the tag
 
-I read this now through and both commit messages and the code changes
-look sane to me so I guess I don't have any problem with that:
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.12-rc5
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+with top-most commit 1646a3f2b1bda03a763f7aecf83504144fb8bba9
 
->
-> Best Regard,
-> Shuai
+ Merge branch 'pm-powercap'
 
-BR, Jarkko
+on top of commit 42f7652d3eb527d03665b09edac47f85fb600924
+
+ Linux 6.12-rc4
+
+to receive power management fixes for 6.12-rc5.
+
+These update cpufreq documentation to match the code after recent
+changes (Christian Loehle), fix a units conversion issue in the CPPC
+cpufreq driver (liwei), and fix an error check in the dtpm_devfreq
+power capping driver (Yuan Can).
+
+Thanks!
+
+
+---------------
+
+Christian Loehle (1):
+      cpufreq: docs: Reflect latency changes in docs
+
+Yuan Can (1):
+      powercap: dtpm_devfreq: Fix error check against dev_pm_qos_add_request()
+
+liwei (1):
+      cpufreq: CPPC: fix perf_to_khz/khz_to_perf conversion exception
+
+---------------
+
+ Documentation/admin-guide/pm/cpufreq.rst | 20 ++++++++++----------
+ drivers/acpi/cppc_acpi.c                 | 22 +++++++++++++++++-----
+ drivers/powercap/dtpm_devfreq.c          |  2 +-
+ 3 files changed, 28 insertions(+), 16 deletions(-)
 
