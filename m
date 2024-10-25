@@ -1,225 +1,242 @@
-Return-Path: <linux-acpi+bounces-8961-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8962-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE4F9B04DE
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 16:01:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E59B0604
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 16:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 712441C220DD
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 14:01:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64831C20CE2
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 14:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC1213AA2D;
-	Fri, 25 Oct 2024 14:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27023200B9E;
+	Fri, 25 Oct 2024 14:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CrpY7Tkx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsLuE4Yu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2054.outbound.protection.outlook.com [40.107.102.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FC7083F;
-	Fri, 25 Oct 2024 14:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729864854; cv=fail; b=PYot4m7dQBnvpJoTVQCwIjhjeKLRq54EXoVZKrq1ha1YGg0MfBZQ4mvo8FpK5+stUwe3+jHncwDfCl5AwZJbdO0vIfok0M6btHjVjB38OPX2UGXyRB4YqBCzODkKMYj9ljaI1XMHSF0QbsMssLW4dMhI/ObwPew6vKWoVfX19B8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729864854; c=relaxed/simple;
-	bh=Oc+UtHm2UAaar7wgqZtUJIoh4MlEm8ZpTvxmCRb9ZLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NE69bfmT4EyD8tmPTU68pSvhFAbJjEijCm8DWhOoIcJTiFwG33JWLCnf/NzefL2IdhoffYlsSqpJJkY1YvXcok8dyWBUIYGuQGYc7P+WsPiHQcCFb42vDzlvITwFFPTZ40BA71/dsP08hLJ7r1NqkTZhU6Yf8p5PPlzwlT5LxDc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CrpY7Tkx; arc=fail smtp.client-ip=40.107.102.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q6VR+hJ5ZrtbcifNxAYfT3MqKs7VvRxAVfEUFEkjsMWEMPjTlXpLN1TzJF2LMkWYdeb83N7E3gMQsYe5pXPdqHnyrxKtIf6Vh5GnRNViDRT2fWzRFMctc2iKjv9oMjWPyJt56weaNAXg4HhDj69eKVn5dVp+QVAAbjVVwieAxQfRCzhznNZyTs9OmhuhNaGkW7sd7+y4HaYnd7FLRLodyHXnsHRQ2U6hn8Lht0Qo03ttWRYelbgvDMUw1h+AuyR8MF2CsEz935eRU03gvrCHdE4IDPYG2OSp2m3Kf/dcgCgjsyDAXTfRLCV4LKNGffuSpUuHUzk4mVYFmnSQYuru2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HF7E9GxunQXOglzBZSufPGugXvqVoqtvZTiLe5T9cOM=;
- b=BBIga4FKxD7XCQd4Iz8Rlnzz4XJIcFKe+IhYALF6dRHtsPZSsHasvGBnzdb6fIiM3uTjWeMu/tvDj9F5d0iugcin35frzTR5EdY7SO9etKcsbe0LfjEXb4v7YHcJGp11TiAVMxdDdv2NNBNOddvAfYrcfARSHWqifGQR9RjXEC8uFutKrn9oZKR4EJDex9uArNniuS6Qs4AI9YfCKIKsxmWETOY9p7JvyNMSYcqIG40+l6L9rq8ijtVWMVi9zQ356LTviBnAFM5HoB55pQR0ZSIPCyWH4x+tiZewoNj9z33iHa6vkap6Wdvb85+uytJMGnsL5BmaKTyfm3iyTfk5Ow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HF7E9GxunQXOglzBZSufPGugXvqVoqtvZTiLe5T9cOM=;
- b=CrpY7Tkx+yNmDo2FQeXYKAreZdPyS4Wdg8oDIqPZt+g1UCWHJBAkx7IN7jswnMno4qUTYdkuhZMWud+ispHnNQafrWeLoShGuyk7Pp2gX/RIrEyqJZBwV3gEaS7XiikVIEQatpZh065cTf+lcnZziZ4VXpyy4wDZa3DH/lRrqhJz1soUgo32Rc5XGQqKYansvJ1783iQrXKVQL0pWO0OEkB72oYsYgsNLsbm7XwPCDjXNZeUW5g0omHTZtu9GO67bMB9RjpYDBQlFHUluOXqxeiDB6e2VRv/2n9C44/F786Glx6vUXJF7a+L7ZEptHb5LkA0euemxRoJtDp2Lbedyg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SA1PR12MB6679.namprd12.prod.outlook.com (2603:10b6:806:252::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.19; Fri, 25 Oct
- 2024 14:00:49 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8093.018; Fri, 25 Oct 2024
- 14:00:49 +0000
-Date: Fri, 25 Oct 2024 11:00:48 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Joerg Roedel <joro@8bytes.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	"Moore, Robert" <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
-	Mostafa Saleh <smostafa@google.com>
-Subject: Re: [PATCH v3 9/9] iommu/arm-smmu-v3: Use S2FWB for NESTED domains
-Message-ID: <20241025140048.GG6956@nvidia.com>
-References: <0-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
- <9-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
- <BN9PR11MB5276A5BCD028849E1658416D8C4E2@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BN9PR11MB5276A5BCD028849E1658416D8C4E2@BN9PR11MB5276.namprd11.prod.outlook.com>
-X-ClientProxiedBy: BN9PR03CA0041.namprd03.prod.outlook.com
- (2603:10b6:408:fb::16) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EF91FB89A;
+	Fri, 25 Oct 2024 14:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729867257; cv=none; b=M/Gy4NtPGO/82MAB5dl8+ZhxOc4hxZJCWuaaMjt4Q4wsC7VCdRwE63dJpbuJQKvqm3BTdfRixuieSQ7cVZLyUW/07Y5RFUt1IXn5xJPeaCjH4U0HUCACT4tSmJ2ZmVNcYlQIRzJmOjOnO7uLXdpCWx5uVUcGkUdAlPVyP9mlBHI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729867257; c=relaxed/simple;
+	bh=dsMthO8Jrb9+1L6ZnDBu1t1OOQmY7jYi7dCIH4VZXdU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=LSyyhzggLpzzD3dgSDimIdYxRq6ahFzgNo4A8I+NuPtyQA7UeQnWYJyWmwrbTXxNabqD7mEkRMhJSxRs7kjOBon9wxqkSy9ZkBbHNUDmv8eMzKQg0yNErhxRw4vgvgV96u0gbkYhdxWTL805znLqEHzWUgR1SFe3GKWadqs2PxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsLuE4Yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79BFC4CEC3;
+	Fri, 25 Oct 2024 14:40:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729867256;
+	bh=dsMthO8Jrb9+1L6ZnDBu1t1OOQmY7jYi7dCIH4VZXdU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=DsLuE4YuLKTOMLwG4QbYcC/9yEVkwhUZJSvX6byCliyWU1yve4qV6bXccnRnvPJjy
+	 hQt9TUaaD7vnPRgsNPSzA3knTTqaiRHdpAtWkgBqS3hwh5QYRN+DbjGSEPva2RuCai
+	 S6ywofDYDrnJ+cXFONwgAVuS0pjNLNS/pXX0O3fciG6Gin4qYttjqZf49GswGeVLQJ
+	 DIrSm19K/gfKrz+D7PFEVz8ZPZnZb4oJYVv2REqZnDHGgzX8ISatwGSkevd3Vz9wDK
+	 bZb70FzWq0oht19nQCS1hq2gcSqpV5A+b4J84N48CQCj1MggHe/KcTucXhYFuNf0x+
+	 rio8u6IbkoRCQ==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA1PR12MB6679:EE_
-X-MS-Office365-Filtering-Correlation-Id: d0d09501-5672-421a-baeb-08dcf4fd6e13
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?f30H2238AQ3zvKQA5Q6O2TEq7lVa+ts+eDYaKJmitLimCHAcG+Bf8/ktKrqJ?=
- =?us-ascii?Q?y+bCb0uQpNAnVjB5ZzEEx8nXG5a/FIWs/VOPSromXN1U5yDGtbId+QHpza96?=
- =?us-ascii?Q?bRtUd62dYQCX42MJZB9m57GUXTa+NVaE/VKjN2+gJ8+d0MFPnYuOy7kboN8M?=
- =?us-ascii?Q?IE2JOo29ERkKnQQNngp9PXx2Q5jdEy4SEqKxWnHrWTYkhkT7sQq1jjGesV+r?=
- =?us-ascii?Q?E+HeRyBBZqPxjI5c6oHWIsi1CtMZjoAStzu+xwkjKBh5/DXxwTi2vXYU1jVw?=
- =?us-ascii?Q?d9GY8osExfT9PKbWwjvl7RVeyp/Cq4J4ArAllQOYBOWw3PS3CN/xFxvNyvhy?=
- =?us-ascii?Q?+a8h2qXgwi1DH5KZiAdJR2tKHHF7VsuYyiCW0Z0K/R1otjECPZtBt3lPxFp6?=
- =?us-ascii?Q?OpcLcTcpjib6sOersJhJH91DiTBd6wQ0Cx7+42fPfkfGBaP+i7SnsDmCyjcu?=
- =?us-ascii?Q?EK7xyJ9wXyY82zw0zmLbIlXYY7oBYFa8FYPau7l4fWDiYgJ8EkGQi10GSyFn?=
- =?us-ascii?Q?Ij9wdnedr0fBIKgeaMNTTZBptTLU/i906JC2Ou/pdJ2F84z/iJNhRf4CVTrm?=
- =?us-ascii?Q?WpIQAW3fPILzFUtbE6LsNOY1fjG3dkNyJjSD3Ac9DP3shkpp6neUVb0p4zJN?=
- =?us-ascii?Q?iTQJoCJhxVCsR33A10E/HEtd63PAU3LTSYbkZA1q1oKheNo4rJSGbc9utbrN?=
- =?us-ascii?Q?I2+nmyqdnlxDNf3DDnbbqvYKHHtR1ZrAjuyGqsL+v2WORSmbPvzAuQy20cy6?=
- =?us-ascii?Q?Pgf99dSOos1aIJwSLto9ks8WpsJ3n+C8JQ5tAqC02Y/a7/dInDcrIeyVISyn?=
- =?us-ascii?Q?Zf5T8wrts/KxoYuyxZ9Dcp4Sv/qy+jvWSEyMSzgQIi+UW0qGJbpFASIpHgJe?=
- =?us-ascii?Q?oMfwb/+hdFWRASx7wsyO/NUeMxtImaubNDDDSRlA7JDYiZTeFoByitmlyd0u?=
- =?us-ascii?Q?aHwqOxBpis76v2+OstTxrEkcErNzkW/mznbkjVA3xlMk4o6VCkhASIXCcffe?=
- =?us-ascii?Q?jwHrdijpLHkYPQp05tvRfXZRjC6TeZAonG3ED5flsI8yMRoFAwXwNrJRgJYL?=
- =?us-ascii?Q?S6krMgULPlqM9a4GhI//fH4EIjH6Oz927bKR7pZ25Xe8fuUqFjqjSBjEMpEC?=
- =?us-ascii?Q?BJRskHa5adUC02Tj7fo5ZpWOoT2KTYl/sCPgpxmlSLDHAH4SbgDqyPLs2kOq?=
- =?us-ascii?Q?1/yvfOHVNpmJy5KeKP8N87V9k2f4CVMKxDD5mBxUfF5tcFpQ9K5aWxBfhqCL?=
- =?us-ascii?Q?n4b98BYRpAjd9fgBjwmGLKi4hi7Y5BitBVLL/moCUhA/HUJDEpxVr7OdL6Il?=
- =?us-ascii?Q?PskGYOB6k9KxJAjYbZRVWLvG?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6rytUPg5snRmQMKTA9zzCnLTknBvHNYLRDv6WY8qRG7GIy9xMENR2gk24BWp?=
- =?us-ascii?Q?fGYFMSJuVD/1MYJi4unwQKHAqNeZ79JRytKfwDtPtVelLZBGMsmRC0vh8FAC?=
- =?us-ascii?Q?uOsE5OYnFlQbPSAifg9ht/M1ShTCUkgFZRoSQoBctyQgLepEzhUBQ6d01dQ/?=
- =?us-ascii?Q?jD+90M7N4w9aJ6yGR3TEJi3hmrxxtZOsyv9R1C+cldiUkwiyn3wbEYTnHtEQ?=
- =?us-ascii?Q?OItSfn2tJlrE5GKF1IxyvvY4U6WMP3F+xXNOyE5aUd0iKFlet5yIfqGaR2qR?=
- =?us-ascii?Q?74smatIlfpNoBm7QQ6lI7ftMA7CERVpX7rOPDGIWYuAeBzDKaKVYAUGKCjtA?=
- =?us-ascii?Q?HcwCyv2ZGIMoQbrITVyjgtgGMAT50+5t281oVGBeWaCDv5smU2Mi45S2bIJS?=
- =?us-ascii?Q?uVXslGJpf20wVGkUckGiMg+JD30cZs88DC/jkyNcxXxLsoKMZFcAdmBPdjqP?=
- =?us-ascii?Q?uIEGgFJpp938aeReR5lnW6fp+xp8TP0g62tWx9/v47s+aRM6R1tcrBBkXb7Z?=
- =?us-ascii?Q?HtLU6egr3UkP91/pYr+FyjYpVFQDr8yMdkRFq16LA2qZpIQUEJ8s7eDgBeSz?=
- =?us-ascii?Q?qATpAFzv7d1DNKGD9alnogehcl9odjI8r7LFYzvCDEKbB2XnSagk+eh3n1RH?=
- =?us-ascii?Q?mgladKpW5umJIc7wYVBJluzeVGonZoSABbOoDKKs0R+cNtrgXaz2gtrM+KiX?=
- =?us-ascii?Q?lBbpJIAlBE5K4fIUpgVO9nQfKnY/VwTSFrd8va6E1NHY7Rpo3sNmmVQDCpWU?=
- =?us-ascii?Q?i8elVBzo6Sic4zSvc6HJio9WEPTfFky6jmyGrKWkHYzaB1WYHGKiOmz5Jex9?=
- =?us-ascii?Q?tXihO0lwG74ynK4zMBlU4FTMcWOw8ZUJWiDybyHf05WUUpxlxXRFIxdvKKa6?=
- =?us-ascii?Q?9dGIBDDCXyTRup2yJvBlSLFKV2Dlz1fcKM0uqj2El1Yyn2yAkwC/svQv39Iv?=
- =?us-ascii?Q?QXzqnH286xpuEzAFLTCZOqQQFZ8jZ8vz5fgpTzdsI5aUu+1QO5Aj81vOr+Cc?=
- =?us-ascii?Q?F9vBR2T34D4q22vaeTrYFi0GJWyUdltn6czzi2bUjUEbekDyIRKzUvg7ODUm?=
- =?us-ascii?Q?89Rf6M6AMwXDX0t8wsCqBKijJpv4rEq+qByoxNoShsG6HvNw1Ms35PQ5wLM+?=
- =?us-ascii?Q?u6Vh7cUvCkUkdFSRM6Q0FA8oB9LtSFZgn3I0prXhzehShvVViPSZm17OZH3a?=
- =?us-ascii?Q?DmEaWSXBqNfHF5G1csUauU95eHiVzsz/Pvqbnu7gI5Oq4j7/y4kXk4zo2RvM?=
- =?us-ascii?Q?XDvO8OYaVFxAzSOt+0Gl8IJsXBWIZqZZe8qbIRWOiVCo10w7AJdNRsFrFMOk?=
- =?us-ascii?Q?epT2ExoVUQe74mjYhOJPrdwH3FGxcng3G89wKPzouCGXCwyHirXNJXoYxJ9L?=
- =?us-ascii?Q?rxbeeYpei2O1uvjeRgCJDqB8Xi3vnUxdHhY/UHEV1EGsl2JJ1aVmWItcJMA/?=
- =?us-ascii?Q?g4L97WR6DnxW2fWCw5piAh4MdRmnG74/4kBOe7H6L8BAe/8dBCt0JXVnpgQz?=
- =?us-ascii?Q?J0TgMYSqTI2xnWQ/+BkK70QN9lJtJyKuSu/MVwgX9lI4IX2/p9GR73etnnpa?=
- =?us-ascii?Q?1elt6QOqIEOKzNEC77xsXc/cpbmPSHk9OExDcprl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0d09501-5672-421a-baeb-08dcf4fd6e13
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 14:00:49.2778
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4xeKJmuR5HHRC9KB/K2QFbdn8b3gIcVyAzJ65da8mh9yyKZGz2pK2ku+mGUgv4Va
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6679
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Oct 2024 17:40:52 +0300
+Message-Id: <D54YRGZ47LLS.2BGS3F7T80DF4@kernel.org>
+Cc: <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+ <linux-edac@vger.kernel.org>, <x86@kernel.org>, <justin.he@arm.com>,
+ <ardb@kernel.org>, <ying.huang@intel.com>, <ashish.kalra@amd.com>,
+ <baolin.wang@linux.alibaba.com>, <tglx@linutronix.de>,
+ <dave.hansen@linux.intel.com>, <lenb@kernel.org>, <hpa@zytor.com>,
+ <robert.moore@intel.com>, <lvying6@huawei.com>, <xiexiuqi@huawei.com>,
+ <zhuo.song@linux.alibaba.com>
+Subject: Re: [PATCH v14 3/3] ACPI: APEI: handle synchronous exceptions in
+ task work
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Shuai Xue" <xueshuai@linux.alibaba.com>, <mark.rutland@arm.com>,
+ <catalin.marinas@arm.com>, <mingo@redhat.com>, <robin.murphy@arm.com>,
+ <Jonathan.Cameron@Huawei.com>, <bp@alien8.de>, <rafael@kernel.org>,
+ <wangkefeng.wang@huawei.com>, <tanxiaofei@huawei.com>,
+ <mawupeng1@huawei.com>, <tony.luck@intel.com>, <linmiaohe@huawei.com>,
+ <naoya.horiguchi@nec.com>, <james.morse@arm.com>, <tongtiangen@huawei.com>,
+ <gregkh@linuxfoundation.org>, <will@kernel.org>
+X-Mailer: aerc 0.18.2
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20241014084240.18614-4-xueshuai@linux.alibaba.com>
+ <05a8d26b-b023-426f-879c-7d33be4a6406@linux.alibaba.com>
+In-Reply-To: <05a8d26b-b023-426f-879c-7d33be4a6406@linux.alibaba.com>
 
-On Thu, Oct 24, 2024 at 07:54:10AM +0000, Tian, Kevin wrote:
-> > From: Jason Gunthorpe <jgg@nvidia.com>
-> > Sent: Thursday, October 10, 2024 12:23 AM
-> > 
-> > Force Write Back (FWB) changes how the S2 IOPTE's MemAttr field
-> > works. When S2FWB is supported and enabled the IOPTE will force cachable
-> > access to IOMMU_CACHE memory when nesting with a S1 and deny cachable
-> > access otherwise.
-> 
-> didn't get the last part "deny cacheable access otherwise"
+On Tue Oct 22, 2024 at 4:11 AM EEST, Shuai Xue wrote:
+> Hi, Jarkko,
+>
+>
+> =E5=9C=A8 2024/10/14 16:42, Shuai Xue =E5=86=99=E9=81=93:
+> > The memory uncorrected error could be signaled by asynchronous interrup=
+t
+> > (specifically, SPI in arm64 platform), e.g. when an error is detected b=
+y
+> > a background scrubber, or signaled by synchronous exception
+> > (specifically, data abort excepction in arm64 platform), e.g. when a CP=
+U
+> > tries to access a poisoned cache line. Currently, both synchronous and
+> > asynchronous error use memory_failure_queue() to schedule
+> > memory_failure() exectute in kworker context.
+> >=20
+> > As a result, when a user-space process is accessing a poisoned data, a
+> > data abort is taken and the memory_failure() is executed in the kworker
+> > context:
+> >=20
+> >    - will send wrong si_code by SIGBUS signal in early_kill mode, and
+> >    - can not kill the user-space in some cases resulting a synchronous
+> >      error infinite loop
+> >=20
+> > Issue 1: send wrong si_code in early_kill mode
+> >=20
+> > Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+> > MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRE=
+D
+> > could be used to determine whether a synchronous exception occurs on
+> > ARM64 platform.  When a synchronous exception is detected, the kernel i=
+s
+> > expected to terminate the current process which has accessed poisoned
+> > page. This is done by sending a SIGBUS signal with an error code
+> > BUS_MCEERR_AR, indicating an action-required machine check error on
+> > read.
+> >=20
+> > However, when kill_proc() is called to terminate the processes who have
+> > the poisoned page mapped, it sends the incorrect SIGBUS error code
+> > BUS_MCEERR_AO because the context in which it operates is not the one
+> > where the error was triggered.
+> >=20
+> > To reproduce this problem:
+> >=20
+> >    #sysctl -w vm.memory_failure_early_kill=3D1
+> >    vm.memory_failure_early_kill =3D 1
+> >=20
+> >    # STEP2: inject an UCE error and consume it to trigger a synchronous=
+ error
+> >    #einj_mem_uc single
+> >    0: single   vaddr =3D 0xffffb0d75400 paddr =3D 4092d55b400
+> >    injecting ...
+> >    triggering ...
+> >    signal 7 code 5 addr 0xffffb0d75000
+> >    page not present
+> >    Test passed
+> >=20
+> > The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_A=
+O
+> > error and it is not fact.
+> >=20
+> > After this patch:
+> >=20
+> >    # STEP1: enable early kill mode
+> >    #sysctl -w vm.memory_failure_early_kill=3D1
+> >    vm.memory_failure_early_kill =3D 1
+> >    # STEP2: inject an UCE error and consume it to trigger a synchronous=
+ error
+> >    #einj_mem_uc single
+> >    0: single   vaddr =3D 0xffffb0d75400 paddr =3D 4092d55b400
+> >    injecting ...
+> >    triggering ...
+> >    signal 7 code 4 addr 0xffffb0d75000
+> >    page not present
+> >    Test passed
+> >=20
+> > The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_A=
+R
+> > error as we expected.
+> >=20
+> > Issue 2: a synchronous error infinite loop
+> >=20
+> > If a user-space process, e.g. devmem, a poisoned page which has been se=
+t
+> > HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
+> > current processs with error info. Because the memory_failure() is
+> > executed in the kworker contex, it will just do nothing but return
+> > EFAULT. So, devmem will access the posioned page and trigger an
+> > excepction again, resulting in a synchronous error infinite loop. Such
+> > loop may cause platform firmware to exceed some threshold and reboot
+> > when Linux could have recovered from this error.
+> >=20
+> > To reproduce this problem:
+> >=20
+> >    # STEP 1: inject an UCE error, and kernel will set HWPosion flag for=
+ related page
+> >    #einj_mem_uc single
+> >    0: single   vaddr =3D 0xffffb0d75400 paddr =3D 4092d55b400
+> >    injecting ...
+> >    triggering ...
+> >    signal 7 code 4 addr 0xffffb0d75000
+> >    page not present
+> >    Test passed
+> >=20
+> >    # STEP 2: access the same page and it will trigger a synchronous err=
+or infinite loop
+> >    devmem 0x4092d55b400
+> >=20
+> > To fix above two issues, queue memory_failure() as a task_work so that =
+it runs in
+> > the context of the process that is actually consuming the poisoned data=
+.
+> >=20
+> > Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> > Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+> > Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> > Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > ---
+> >   drivers/acpi/apei/ghes.c | 78 +++++++++++++++++++++++----------------=
+-
+> >   include/acpi/ghes.h      |  3 --
+> >   include/linux/mm.h       |  1 -
+> >   mm/memory-failure.c      | 13 -------
+> >   4 files changed, 45 insertions(+), 50 deletions(-)
+> >=20
+> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > index f2ee28c44d7a..95e9520eb803 100644
+> > --- a/drivers/acpi/apei/ghes.c
+> > +++ b/drivers/acpi/apei/ghes.c
+> > @@ -467,28 +467,42 @@ static void ghes_clear_estatus(struct ghes *ghes,
+> >   }
+> >  =20
+> >   /*
+> > - * Called as task_work before returning to user-space.
+> > - * Ensure any queued work has been done before we return to the contex=
+t that
+> > - * triggered the notification.
+> > + * struct ghes_task_work - for synchronous RAS event
+> > + *
+> > + * @twork:                callback_head for task work
+> > + * @pfn:                  page frame number of corrupted page
+> > + * @flags:                work control flags
+> > + *
+> > + * Structure to pass task work to be handled before
+> > + * returning to user-space via task_work_add().
+> >    */
+>
+>
+> Do you have any futer comments about this patch? Any comments are
+> welcomed. If not, are you happy to explictly give the reveiwed-by tag?
 
- Force Write Back (FWB) changes how the S2 IOPTE's MemAttr field
- works. When S2FWB is supported and enabled the IOPTE will force cachable
- access to IOMMU_CACHE memory when nesting with a S1 and deny cachable
- access when !IOMMU_CACHE.
+Sorry I've been busy switching to a new job.
 
-?
+I read this now through and both commit messages and the code changes
+look sane to me so I guess I don't have any problem with that:
 
-> > @@ -169,7 +169,8 @@ arm_smmu_domain_alloc_nesting(struct device *dev,
-> > u32 flags,
-> >  	 * Must support some way to prevent the VM from bypassing the
-> > cache
-> >  	 * because VFIO currently does not do any cache maintenance.
-> >  	 */
-> > -	if (!arm_smmu_master_canwbs(master))
-> > +	if (!arm_smmu_master_canwbs(master) &&
-> > +	    !(master->smmu->features & ARM_SMMU_FEAT_S2FWB))
-> >  		return ERR_PTR(-EOPNOTSUPP);
-> 
-> Probably can clarify the difference between CANWBS and S2FWB here
-> by copying some words from the previous commit message. especially
-> about the part of PCI nosnoop.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-	/*
-	 * Must support some way to prevent the VM from bypassing the cache
-	 * because VFIO currently does not do any cache maintenance. canwbs
-	 * indicates the device is fully coherent and no cache maintenance is
-	 * ever required, even for PCI No-Snoop. S2FWB means the S1 can't make
-	 * things non-coherent using the memattr, but No-Snoop behavior is not
-	 * effected.
-	 */
-	if (!arm_smmu_master_canwbs(master) &&
-	    !(master->smmu->features & ARM_SMMU_FEAT_S2FWB))
-		return ERR_PTR(-EOPNOTSUPP);
+>
+> Best Regard,
+> Shuai
 
-?
-
-Thanks,
-Jason
+BR, Jarkko
 
