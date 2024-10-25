@@ -1,259 +1,178 @@
-Return-Path: <linux-acpi+bounces-8957-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8958-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09FF9B0076
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 12:49:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286489B0477
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 15:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201671C2155D
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 10:49:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8147CB21B08
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 13:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E89A1F131D;
-	Fri, 25 Oct 2024 10:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CC11632DD;
+	Fri, 25 Oct 2024 13:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UO4WOclT"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CJW9J89y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EEC1CC8AB
-	for <linux-acpi@vger.kernel.org>; Fri, 25 Oct 2024 10:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111B01E52D;
+	Fri, 25 Oct 2024 13:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729853383; cv=none; b=V2oFENDrOXFZPeRK0iazsynOfiV+L8yA37CYwqniTyVTXw4We0U1Y0zANtXXyTCul9VY/sa/f6etQTMcShXPLjB/vTonb3kDdXMUqRAbhlaARjoWm1Y4+lIBP6mMBBSXMimZvr9/tZHbw7v/k1kWyj15mEYDYeVgFdKT4fSSXxU=
+	t=1729864082; cv=none; b=iy3OuVEd7XUdzzNYUk/UmiTdBTQRA+Z9mX/iINdOmlO36D0l7lVBl26G9EtR5HilYAjQ2Pl3iLJMlk12MXyYksVgfndp19yX2EpUOGkrxVvhAI87RLgKVOtKmMaZMyTi40l2XoG9GA24NfF4zI2nJ+/K+1l/HLY7dcfyrAGlg3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729853383; c=relaxed/simple;
-	bh=aCNAiagby3VBg8WVJeXCrYPX9K57S5WDB9gDJXTj/qI=;
+	s=arc-20240116; t=1729864082; c=relaxed/simple;
+	bh=OnFq4WteU5KRucioQ1H10LmdIxIH0KT/oS2vvPVepv0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nvrbLoYKQ6DI/P1GqOuyiDvynUJwfLhL+gcK1uZEa6tdYHAJtk4lMoCXRjYfKYTJTe3qAbu+A0+RV3/etKBjxWz8+TVS/GZ5dmQzY1K4fUlMhMs+G8rCxdu5dSK8EFUjvma1Y9w/9mwkar+TAvlEeq1e0cUiLmblr+y34+VSddw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UO4WOclT; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e59dadebso2487275e87.0
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Oct 2024 03:49:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729853379; x=1730458179; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tyqVh/eFIyYHOhM+diCDUXlgQP3U/MFtE2DeLsQCTPY=;
-        b=UO4WOclTbmHNjEpB2aPCOL++opnWaSONTq8hyfPEwqCrXJNQ9StmLWo2DRvJf6aelk
-         mZ3ojr+bg1G4igOnNym978x0gxLC6EwRX9KBOQRH6tnuZ9Fyyi114X7woWdvYJHn+zEK
-         Fz8BKK4Yqh/ec1Zx36dEQQdCOmiJyElq5jqZqWKVF5tFyASB30pa5kHFdGUXIOf19cAe
-         3NIvzl/8DLfdpcN/gb198JmJTthsGSJhpEY80hAX7KMqVWYC9GsV4nOFuoYF3Jw8L26m
-         vfk1gHcg0XyQOyWLrdoVzaN/vgNUzaUheeKvQHTeE17ge0bGVjElrNS7ZhF+VsRkLtJT
-         E4vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729853379; x=1730458179;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tyqVh/eFIyYHOhM+diCDUXlgQP3U/MFtE2DeLsQCTPY=;
-        b=fQkIARIHbeXyUGZZsQXPhOhOp6iDPIYnMcx7GU6bNGzdimWxdX7c7ZPQGnvai+SqVC
-         hnBs4VyU87/rtD70Qj3hblHkwkLqrzTMsvMVsFtW/Y9LgGm9VMvStHJFDRuqRKB3gqW9
-         Q3Kg4YhxUwhLkKZ36JCe8xJoY6t1Q0ryGG704gcesN9RLVGEea8RdsvhIjWmnvpuQYbI
-         TPqXxTh8/2yBbeHcrWpfVYsWuuHI4+b8SedK7rox/JrYFeez2e3EeRLiwscIzZaviaM5
-         yHoGYngJ15dCtOBHTWuX7DoBOOeHz9NaQkFK5AkHzLCmC9e10uRDoo5DVtQfOIaL9Tas
-         y3vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWSqN2KQ2tH5sl0wqEcFTuvAtCF91PYcR2E6kszu+k+//79+Zh/2wL4pgSud4qCsoj67m63TOv+UqNt@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYPd47lPlxzSAOcJm+NGNJ6BEEt5Pqh4QfM+QrOVH+FV/xOhNE
-	+dMht/RcPdNKj7734nbJTrMEf/6Gqm8UOVbcdKqPM2QuULAKnMOvuNw1WbBB980=
-X-Google-Smtp-Source: AGHT+IFd1s7XTf4EM8FOBisHkPGBM0CWX4Fva+d6WyJooHaUEk5EZV4vJ/wT+wZU4sf3FN36wyTG/g==
-X-Received: by 2002:a05:6512:3ba5:b0:539:fb56:7790 with SMTP id 2adb3069b0e04-53b23ddcfb2mr3231326e87.6.1729853378788;
-        Fri, 25 Oct 2024 03:49:38 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53b2e1dcb89sm132429e87.237.2024.10.25.03.49.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 03:49:38 -0700 (PDT)
-Date: Fri, 25 Oct 2024 13:49:36 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Stephen Boyd <swboyd@chromium.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, devicetree@vger.kernel.org, 
-	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, 
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org, 
-	Guenter Roeck <groeck@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
-	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
- google,cros-ec-typec for DP altmode
-Message-ID: <lf7y7wpuca6kzqcglgs5d443iusf7xjocum4adi7t3npfavccx@zgsp37oyztme>
-References: <20240901040658.157425-1-swboyd@chromium.org>
- <20240901040658.157425-16-swboyd@chromium.org>
- <phdcjgqqpjpruxp7v2mw446q73xr3eg4wfgfbjw5tasgr2pgg2@77swbk47b2tg>
- <CAE-0n514QMaQC2yjKP8bZqyfbv6B3AQm=+NJ87vxo6NdYiL03A@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=T/L2naQchu3QkTga8FxQsOn/b8CAzpHmhi/1UDFgvl36yDB/hJprs9pzDOk+o4Sr0lEk4avKEnRKqqgd3NlnQswGO0s/WnvKLVFDuqwtVkRS1YAZ0eK+g4+EXuT02n7EAmkpjNr9NCMgXxVra7To0jPFjZ/3DqbQ6hhVTgOVYs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CJW9J89y; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D9A7C40E0284;
+	Fri, 25 Oct 2024 13:47:53 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3w6nO41vcqtz; Fri, 25 Oct 2024 13:47:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1729864069; bh=T6XAVjF3P3ZWxOpvmiPo1HttyQrVPVhctAS392r3j/c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CJW9J89y6ecaVCStPYD7HSZzNw6DVYUorhjcN3hqj6CVHHdHqUzeyexEUlg6gcuTp
+	 bHZX8X+seYHJgfGkiyrR9FRefsBwyryGLG8/Skeq4jHA9FNH/Zp054WssoxvzFtSfN
+	 zLimaohmMVmA4A6Bi20PdKIzHtweTmqRCAYhCg6LF8b6lzd6zyeL8uQhkpIvsIlKtS
+	 HbO9P2t/s+4me6fTPsyKM4KcrxbZne08BUQEb9jMSs5X56eSqwMKOhWx9HZ6WM4z+l
+	 U/Gy4GMs3LlfUNfKNdXPD2i/NNQqQH+lzbTWNaNk/ZWdBfJOlcj2pHD3xxKDuGuq9I
+	 VClQh9HhiWEGi2qC3/mqN/7KbLOJAK0ZreMx2gKe5aKVCMF9PWY0vURPMXKnEBIt4N
+	 dZLsEuSegCa+K/2m9cl/ye21VxsSsewmHmBVm7QMu/WvO1F0nrLEP4pp0GidlfFf61
+	 G+fxYVO1ZrNe9QD8tYOamxgViMpFZBte8H0H1RpHt3QdajIkStghiI9pk6BwtgHYd1
+	 2HNuub94NNfuELIgLrxxNtvbibaNZy0rghRreIh8AkZ9UFD3GJrjU820rRRh05ntQ+
+	 ugJnX+W26rwGFV4VAZItja9ocozDsZDk/Gq3HbO1VNG5/wW3giCxAQ3OF75L2RKpnB
+	 GJzDtk+PT7+ate0lxRI4kkE8=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CED8140E028A;
+	Fri, 25 Oct 2024 13:47:33 +0000 (UTC)
+Date: Fri, 25 Oct 2024 15:47:27 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	"open list:AMD PSTATE DRIVER" <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v3 4/5] x86/cpu: Add CPU type to struct cpuinfo_topology
+Message-ID: <20241025134727.GOZxuhb0MSVESR5juz@fat_crate.local>
+References: <20241023174357.34338-1-mario.limonciello@amd.com>
+ <20241023174357.34338-5-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAE-0n514QMaQC2yjKP8bZqyfbv6B3AQm=+NJ87vxo6NdYiL03A@mail.gmail.com>
+In-Reply-To: <20241023174357.34338-5-mario.limonciello@amd.com>
 
-On Tue, Oct 22, 2024 at 06:15:47PM -0700, Stephen Boyd wrote:
-> Quoting Dmitry Baryshkov (2024-09-20 02:38:53)
-> > On Sat, Aug 31, 2024 at 09:06:53PM GMT, Stephen Boyd wrote:
-
+On Wed, Oct 23, 2024 at 12:43:56PM -0500, Mario Limonciello wrote:
+> From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 > 
-> Either way the problem seems to be that I need to associate one
-> drm_bridge with two displayport altmode drivers and pass some fwnode
-> handle to drm_connector_oob_hotplug_event() in a way that we can map
-> that back to the right output endpoint in the DP bridge graph. That
-> seems to imply that we need to pass the fwnode for the usb-c-connector
-> in addition to the fwnode for the drm_bridge, so that the drm_bridge
-> code can look at its DT graph and find the remote node connected.
-> Basically something like this:
+> Sometimes it is required to take actions based on if a CPU is a performance
+> or efficiency core. As an example, intel_pstate driver uses the Intel
+> core-type to determine CPU scaling. Also, some CPU vulnerabilities only
+> affect a specific CPU type, like RFDS only affects Intel Atom. Hybrid
+> systems that have variants P+E, P-only(Core) and E-only(Atom), it is not
+> straightforward to identify which variant is affected by a type specific
+> vulnerability.
 > 
->   void drm_connector_oob_hotplug_event(struct fwnode_handle *connector_fwnode,
->                                        struct fwnode_handle
-> *usb_connector_fwnode,
->                                        enum drm_connector_status status)
+> Such processors do have CPUID field that can uniquely identify them. Like,
+> P+E, P-only and E-only enumerates CPUID.1A.CORE_TYPE identification, while
+> P+E additionally enumerates CPUID.7.HYBRID. Based on this information, it
+> is possible for boot CPU to identify if a system has mixed CPU types.
 > 
-> (We might as well also pass the number of lanes here)
-
-I think this is a bit of an overkill.
-
-The drm_connector_oob_hotplug_event() is fine as it is, it gets
-"fwnode_handle to report the event on".
-
-What needs to be changed (in my humble opinion) is the
-drm_connector_find_by_fwnode() function (or likely a new function is to
-be added): if it can not find drm_connector for the passed fwnode, it
-should look it up on the parent, then on parent's parent, etc, until we
-actually find the drm_connector (good) or we reach the root (sad).
-
-And finally after getting the drm_connector, the oob_hotplug_event()
-callback should also receive the fwnode argument. This way the connector
-(or the bridge) can identify the fwnode (aka usb-c-connector in our
-case) that caused the event.
-
-WDYT?
-
-> Corsola could work with this design, but we'll need to teach
-> dp_altmode_probe() to look for the drm_bridge elsewhere besides as the
-> parent of the usb-c-connector node. That implies using the 'displayport'
-> property in the cros-ec-typec node or teaching dp_altmode_probe() to
-> look for the port@1/endpoint@1 remote-endpoint handle in the
-> usb-c-connector graph.
+> Add a new field hw_cpu_type to struct cpuinfo_topology that stores the
+> hardware specific CPU type. This saves the overhead of IPIs to get the CPU
+> type of a different CPU. CPU type is populated early in the boot process,
+> before vulnerabilities are enumerated.
 > 
-> Assuming the bindings you've presented here are fine and good and I got
-> over the differences between Trogdor and Corsola, then I can make mostly
-> everything work with the drm_connector_oob_hotplug_event() signature
-> change from above and some tweaks to dp_altmode_probe() to look for
-> port@1/endpoint@1 first because that's the "logical" DP input endpoint
-> in the usb-c-connector binding's graph. Great! The final roadblock I'm
-> at is that HPD doesn't work on Trogdor, so I can't signal HPD through
-> the typec framework.
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v2->v3:
+>  * Remove a bunch of boilerplate code
+>  * Convert to showing string in debugfs
+>  * Rename to get_topology_generic_cpu_type/get_topology_cpu_type_name
+>  * Add Intel definitions to intel-family.h
+> ---
+>  arch/x86/include/asm/intel-family.h   |  6 +++++
+>  arch/x86/include/asm/processor.h      | 18 ++++++++++++++
+>  arch/x86/include/asm/topology.h       |  9 +++++++
+>  arch/x86/kernel/cpu/debugfs.c         |  1 +
+>  arch/x86/kernel/cpu/topology_amd.c    |  3 +++
+>  arch/x86/kernel/cpu/topology_common.c | 34 +++++++++++++++++++++++++++
+>  6 files changed, 71 insertions(+)
 
-Hmm, I thought that a normal DP's HPD GPIO works on the trogdor. Was I
-misunderstanding it? But then we don't know, which USB-C connector
-triggered the HPD...
+Except the minor touchup below, I don't have any complaints about this
+anymore.
 
-> This series fixes that problem by "capturing" HPD state from the
-> upstream drm_bridge, e.g. msm_dp, by hooking the struct
-> drm_bridge_funcs::hpd_notify() path and injecting HPD into the typec
-> messages received from the EC. That's a workaround to make the typec
-> framework see HPD state changes that are otherwise invisible to the
-> kernel. Newer firmwares actually tell us the state of HPD properly, but
-> even then we have to read a gpio mux controlled by the EC to figure out
-> which usb-c-connector is actually muxing DP when HPD changes on either
-> typec_port. Having a drm_bridge in cros-ec-typec helped here because we
-> could hook this path and signal HPD if we knew the firmware was fixed.
-> If we don't have the drm_bridge anymore, I'm lost how to do this.
+Intel folks?
 
-It's probably okay to add one, but let me think if we can work without
-it. Can we make EC driver listen for that single HPD GPIO (by making it
-an actual GPIO rather than "dp_hot") and then react to it?
-
-> 
-> Maybe the right answer here is to introduce a drm_connector_dp_typec
-> structure that is created by the TCPM (cros-ec-typec) that sets a new
-> DRM_BRIDGE_OP_DP_TYPEC bridge op flag? And then teach
-> drm_bridge_connector about this new flag, similar to the HDMI one. The
-> drm_bridge could implement some function that maps the typec_port
-> (usb-c-connector) to the upstream drm_bridge (ANX7625) graph port,
-> possibly all in drm_bridge_connector_oob_hotplug_event() so that nothing
-> else really changes. It could also let us keep hooking the hpd_notify()
-> path for the workaround needed on Trogdor. And finally it may let us
-> harmonize the two DT bindings so that we only have one port@1/endpoint
-> node in the usb-c-connector.
-
-I think we have lightly discussed adding drm_connector_displayport, so
-that part is okay. But my gut feeling is that there should be no _typec
-part in thart picture. The DRM framework shouldn't need to know all the
-Type-C details.
-
-> 
-> 
-> >                 };
-> >         };
-> >
-> >         connector@1 {
-> >                 port@1 {
-> >                         endpoint@0 {
-> >                                 remtoe = <&usb_hub_1>;
-> >                         };
-> >
-> >                         endpoint@1 {
-> >                                 remote = <&dp_bridge_out_1>;
-> >                         };
-> >                 };
-> >         };
-> > };
-> >
-> > dp_bridge {
-> >         ports {
-> >                 port@1 {
-> >                         dp_bridge_out_0: endpoint@0 {
-> >                                 remote = <usb_c0_ss_dp>;
-> >                                 data-lanes = <0 1>;
-> >                         };
-> >
-> >                         dp_bridge_out_1: endpoint@1 {
-> >                                 remote = <usb_c1_ss_dp>;
-> >                                 data-lanes = <2 3>;
-> >                         };
-> >                 };
-> >         };
-> > };
-> >
-> > -------
-> >
-> > This one is really tough example, we didn't reach a conclusion here.
-> > If the EC doesn't handle lane remapping, dp_bridge has to get
-> > orientation-switch and mode-switch properties (as in the end it is the
-> > dp_bridge that handles reshuffling of the lanes for the Type-C). Per the
-> > DisplayPort standard the lanes are fixed (e.g. DPCD 101h explicitly
-> > names lane 0, lanes 0-1, lanes 0-1-2-3).
-> 
-> Are those logical or physical lanes?
-
-Physical lanes as far as I understand.
-
-> 
-> I think we'll punt on this one anyway though. We don't have any plans to
-> do this orientation control mechanism so far. Previous attempts failed
-> and we put an extra orientation switch control on the board to do the
-> orientation flipping.
-
-Okay, it's definitely easier this way.
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 795619ea1334..9f9376db64e3 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -156,7 +156,7 @@ extern unsigned int __num_threads_per_package;
+ extern unsigned int __num_cores_per_package;
+ 
+ const char *get_topology_cpu_type_name(struct cpuinfo_x86 *c);
+-enum x86_topology_cpu_type get_topology_generic_cpu_type(struct cpuinfo_x86 *c);
++enum x86_topology_cpu_type get_topology_cpu_type(struct cpuinfo_x86 *c);
+ 
+ static inline unsigned int topology_max_packages(void)
+ {
+diff --git a/arch/x86/kernel/cpu/topology_common.c b/arch/x86/kernel/cpu/topology_common.c
+index 60d5d74189a3..8277c64f88db 100644
+--- a/arch/x86/kernel/cpu/topology_common.c
++++ b/arch/x86/kernel/cpu/topology_common.c
+@@ -28,7 +28,7 @@ void topology_set_dom(struct topo_scan *tscan, enum x86_topology_domains dom,
+ 	}
+ }
+ 
+-enum x86_topology_cpu_type get_topology_generic_cpu_type(struct cpuinfo_x86 *c)
++enum x86_topology_cpu_type get_topology_cpu_type(struct cpuinfo_x86 *c)
+ {
+ 	if (c->x86_vendor == X86_VENDOR_INTEL) {
+ 		switch (c->topo.intel_type) {
+@@ -48,7 +48,7 @@ enum x86_topology_cpu_type get_topology_generic_cpu_type(struct cpuinfo_x86 *c)
+ 
+ const char *get_topology_cpu_type_name(struct cpuinfo_x86 *c)
+ {
+-	switch (get_topology_generic_cpu_type(c)) {
++	switch (get_topology_cpu_type(c)) {
+ 	case TOPO_CPU_TYPE_PERFORMANCE:
+ 		return "performance";
+ 	case TOPO_CPU_TYPE_EFFICIENCY:
 
 -- 
-With best wishes
-Dmitry
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
