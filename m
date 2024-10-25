@@ -1,61 +1,61 @@
-Return-Path: <linux-acpi+bounces-8996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE1E9B0F09
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 21:32:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A649B0F0A
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 21:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8017528328B
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 19:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE2711C22139
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 19:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A2B21442B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28ACE215C4C;
 	Fri, 25 Oct 2024 19:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="v0tZ1mBW"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WmyuSHN/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2075.outbound.protection.outlook.com [40.107.236.75])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2082.outbound.protection.outlook.com [40.107.220.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD50D214422;
-	Fri, 25 Oct 2024 19:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A80214427;
+	Fri, 25 Oct 2024 19:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729884691; cv=fail; b=W+Fd2EqmXtbwf94bsq7F3IHbOjC5B00SpTA6qcIc1BWG2kGMSXkEcO83Wi4IajMPbpsuiok1t5dlXAGu6olHjRdoxZkhiGNgcPKv9hrHdboF9cLYq5zFj1TEE2Bnx2PQ7XIlTLMcoKzXIDvTyLpro1D4CBK+3rQf1cciHkHY2U0=
+	t=1729884692; cv=fail; b=Ewvx2ixcDETztCpMV8Reo69NNUSZ5t1FW5eqS6vt2/tWFL1yCsPVqcurhGc3ZlwCa2Ypp4vW34VshsXK0hgfrKlhGaypWkvMb+To+jIZ6mBDVaM9onSHSZH8jfSBvko9OhF3TDVCTV22sF7v1MtQLrRlfe11yuvAq6X7gSAA4K0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729884691; c=relaxed/simple;
-	bh=spV1oWSxaiP0iUMve5lU/g7LPNUjsrqoRF2gYjL4k7Y=;
+	s=arc-20240116; t=1729884692; c=relaxed/simple;
+	bh=k/ANqFqNEwWa5R2ML/JsuMGBll6V454USlLRd2ET8Uw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uWpUBoK8Wbp9AmSFY6LccXuWHfYddiHuckLHSvXEnQhzKRmOyi3u7sBYtr3cfvrsYN97Wi62D0YB61mn+sP+JIogs6O/U9axJjujlnoJ39Ro1f0PyWtYA2zb4x22UcM9cKHId2egAAt21mippUT3i18pFLWkOUYcFHHiIaZYYgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=v0tZ1mBW; arc=fail smtp.client-ip=40.107.236.75
+	 MIME-Version:Content-Type; b=t1gbIlNL2+mrQbOZxCRcEJTzEChDfrfnD80IbuIJiA6RNBEyQ19HpwB859Fs2BX4+OQlD54PWSJpi4yM/ucrs6meA208IXrFf8OAPMUIokhbWNc6xp6P5Z6VoS0UJt3WWlqdi24+Z32fE8p8ylqHFNP9QUFhCQQfLK5zEU0+Wt4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WmyuSHN/; arc=fail smtp.client-ip=40.107.220.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XIsC88F6b9ITFFQpE8UIjJk9HJs4AJuTgBcmSpWctQ9HGm223z2hv7i5YDpXiN1VmeQrPn0bijApifgruj66fdqmxSQ1oAU6T36aV0LuUcAH6A8P1JgXM3jccFp+Wfnd7koLhZEeaS8C4TWI0gZQX5q9D4SHk93Ci49TAvgjQuKXJ+pSKk5K7FrSIq6gv8817IjoIquwXlaQ6u9IgpeDYzj1AnC/ieJ6U8Yt6dCMaI50RDdApD7ban+PfGR39VzpOJtfp5CJWi6ot8OKVMbwIrOF8a/m2Be9lwrJ7XPSMGGjdJiyJGW8nbgBbnhlPQ8xUFmf/tZnJh3ncR1/J6/0Mw==
+ b=lug6okoZi58DWxp6/2GAWt1uN4MDNhycP5up9FN+FkdumMcyeTdR8fciWM0V/6rjO8GGN7EqGE0/0iJ3Ml6orvMYPZ3r1VCp4NS5nIF3L6PnfF046rIH5fUAdlpjpFnxTCrGas34SbRRP/3JwiTCfhdNdi3QaFt0AN/hy5vLJT/HFIDRTA6KWfuEetPFk4qtoEhyHuoTc1wAyv2ax95It6mJZyDrr9Me9EU7ATD0jHzSdXDiHHYyKhTo0x85w3iCBPCkRuARegj6og0/tYPDdW0i/jQtR6rZZ+YSpuC6n2FD8dWC+v3chiTodlzVFyBX9dwC9hAQlSQfxBWp1y0I7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3c+zXUlBJmPUTl8NDGPU+lL5c162ZcPznfGyvRoHpRs=;
- b=FsUaRUI/fHkNPiRFTkVnb9wy0r90S4PeYXArnew/14f+B3xby+htUNdKDqhhHap/96u0gmi0HztzcB+0T7k+djmKbSR0AvvsCVKtGqrRVgW8tCMbH1CrZuayJfujH0SZcrNkkYgIsifeE9AT9X2GjBH2tKD161A2zEdRR187//1OqpOYjVN1FEjKjPHR5oy1Z5xZZJZSG0WjgzxrJUpmAcJO+wFuT3w5XqF7bFgnFE4QT8QTmWUhaIzwmGddgLc7oZYgNaUV5vcEGcmUjQqHe2BwNccIkhGClZuxuYBICl1GQfrA/6xzrPwcstiVPAywco3wu1Y0IYwFTT8oW/MrjA==
+ bh=OI4g1QYxLoaoVfoLJKM4B0sPq2gWIRwShicRPPMw/d8=;
+ b=FJ6BFCFSTDJxj5y7BsXf/osHvyesP4hyH3a6Isv7Voxp91M7kAh8mJ86TN+tLSynezj03FhGhUTQxHAW3+aWCOZpMso9j/h5v73aKzjDg2tNLh2JNNvCnQpDA1qMDZoOVr3WoliGOOqRvxwZTbNFwWgIuYLNsLTbiG9X9gB9oVi0ocaqaxsbivMRN5XaqrVBc8TJ2lrmgfZ+CxsV7PpDI7DGKOT5r7sqk2YP6Ej7p6bqiTmkA1sIXZosYmF1H84kXoFVpCCmh//cmKcOdci9LQNpjaNwtNO9HxLpHdhixjOBp31gBUgHJ5vQA/EdVnAeq7Gl/14ZbQxMKK5xd3mx0g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3c+zXUlBJmPUTl8NDGPU+lL5c162ZcPznfGyvRoHpRs=;
- b=v0tZ1mBWZeROccxGynmy2F7GfwRDxdG9horu+E9Bzgnt0tTRb6FrabhHh6ahyHpXf5AhrT/Kd2bGpWgr+SaEwnhRSrRrutca8OnFZ6+2pi7U6Xij32KTODm+6yBdLrB8rXPMFzCqHAUb10D69CWX3tpenxq1XR+GRWo7+7HT5O8=
-Received: from BL0PR02CA0094.namprd02.prod.outlook.com (2603:10b6:208:51::35)
- by SN7PR12MB6930.namprd12.prod.outlook.com (2603:10b6:806:262::5) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=OI4g1QYxLoaoVfoLJKM4B0sPq2gWIRwShicRPPMw/d8=;
+ b=WmyuSHN/MYnqSnFtzpZJpltLMcC2w8Qd0uv/uiEbNkpS/Y90Icw7O0HPm6YeJKk2PwvbgmIiOwMrZ1LK2sCULaEbZ0impe8HZrevGMe8U2IXm0irVfiNb1L7+qHQouVIrcOIfdD74EkbRoHV+SI8p0CWAI+JgkTsMER8Ig3yttY=
+Received: from BL6PEPF00016418.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1004:0:7) by IA0PR12MB9047.namprd12.prod.outlook.com
+ (2603:10b6:208:402::8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.23; Fri, 25 Oct
- 2024 19:31:23 +0000
-Received: from BN1PEPF0000468B.namprd05.prod.outlook.com
- (2603:10b6:208:51:cafe::3f) by BL0PR02CA0094.outlook.office365.com
- (2603:10b6:208:51::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.20 via Frontend
- Transport; Fri, 25 Oct 2024 19:31:22 +0000
+ 2024 19:31:25 +0000
+Received: from BN1PEPF0000468A.namprd05.prod.outlook.com
+ (2a01:111:f403:c803::3) by BL6PEPF00016418.outlook.office365.com
+ (2603:1036:903:4::a) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.24 via Frontend
+ Transport; Fri, 25 Oct 2024 19:31:24 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,13 +63,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF0000468B.mail.protection.outlook.com (10.167.243.136) with Microsoft
+ BN1PEPF0000468A.mail.protection.outlook.com (10.167.243.135) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8093.14 via Frontend Transport; Fri, 25 Oct 2024 19:31:22 +0000
+ 15.20.8093.14 via Frontend Transport; Fri, 25 Oct 2024 19:31:24 +0000
 Received: from AUS-P9-MLIMONCI.xilinx.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 25 Oct 2024 14:31:19 -0500
+ 15.1.2507.39; Fri, 25 Oct 2024 14:31:21 -0500
 From: Mario Limonciello <mario.limonciello@amd.com>
 To: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
 	<ilpo.jarvinen@linux.intel.com>
@@ -86,9 +86,9 @@ CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
 	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5/8] ACPI: platform_profile: Use guard(mutex) for register/unregister
-Date: Fri, 25 Oct 2024 14:30:52 -0500
-Message-ID: <20241025193055.2235-6-mario.limonciello@amd.com>
+Subject: [PATCH 6/8] ACPI: platform_profile: Only remove group when no more handler registered
+Date: Fri, 25 Oct 2024 14:30:53 -0500
+Message-ID: <20241025193055.2235-7-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241025193055.2235-1-mario.limonciello@amd.com>
 References: <20241025193055.2235-1-mario.limonciello@amd.com>
@@ -104,109 +104,89 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468B:EE_|SN7PR12MB6930:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4af54f72-5c31-4739-670f-08dcf52b9bdb
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468A:EE_|IA0PR12MB9047:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ef99606-3026-4fc3-b790-08dcf52b9d2f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700013|1800799024|82310400026;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OLSds4KUzU672NLEslTlQiM/rP3ak+jzbf6OBENgsqqe9nS5KLMqGaNxYHp/?=
- =?us-ascii?Q?1BSiS33gzc+MDcxDvk3EDuDymqFZaHS5F/wVJZLvQ7esunim7UY0BfnwLtNj?=
- =?us-ascii?Q?OwBD/RRJrueSoImoC1pZDiuYf1r5OoR+5Dx7qSDZoXKXwJsc2Mp2m1ZOej9H?=
- =?us-ascii?Q?doML8vZ0GLk2PemIqvub2FG/vTRQymW7wQbe1peZV9LHG++64Shp/tuhYug/?=
- =?us-ascii?Q?MVtZfP5HBFXWmvKcHNwzi0axsPQNLEi8jQO4tVIZ6kVfVwKY5fTCrv5t6BgM?=
- =?us-ascii?Q?vMuEmtqGAH/t4eFgYumC5Cias+j1XQMFsBBInd4jkiQKb7PyZOkXpu0z+yiV?=
- =?us-ascii?Q?esAXqfFn+npeBDtR8M4vLesty85w5EKxsSbZFY62DzHgNVXk+r3IWTigDQom?=
- =?us-ascii?Q?NR3qCxUMa0lL9WsAUBG/Ebw0VJDE6C5tGrBKuZGT034AeDKerYEa153PyHkA?=
- =?us-ascii?Q?ncRH7cVzImTeCb88lpm6vdiqrJaHc82ba3ZEu/0K91lUSCb82gvuF5WojuVR?=
- =?us-ascii?Q?0gPKc4OH3xwH+ewpdt1REwc3zlseRBl6i3zHe5IJl/Pvl2gSENgRYcvoA9i1?=
- =?us-ascii?Q?zzb+1yKWJo6nDJvAfcp7/K8sIAvY6ZhHah9JU0B1ZGoSU4kJ2GH02/Upk9/U?=
- =?us-ascii?Q?OzE2+56Y31pXd3wCBtHOkP3bulfK0pttzDIM4KkPo/iiU2s+4EC3eQUgqnX2?=
- =?us-ascii?Q?wpwl9BC2u18n88OEG4rYmo3xtrg59x3CU5KXcLeyraAjOBm1gr9tk/rHHlhP?=
- =?us-ascii?Q?Cf4S5CeLGTlz2Sh92JeX4marZiNE6kIvesokU7J5R18Dlp0p4Not9PViwxf4?=
- =?us-ascii?Q?ZVMFWZaXP7Y31kvFoOlyTVDWA1rrUD1ogp+AqqDhgpDv/h+npe4T+jPw2BMX?=
- =?us-ascii?Q?EdNh7ikTpVuAxsRxLA/XE21T8iKyOcRLH26ynhBllE834+xwe81+yjeeSDod?=
- =?us-ascii?Q?YCrhqGRw7xHC4dxgm4mKc3gbKcPXxF3SyiSYW4xxK7eWkOSPKCbJy/TAn1YR?=
- =?us-ascii?Q?/i7N15Y78JGdBEFQuN/pjQnX/USfb49hY4Fbr73xPItcnrivaFBn06FjA664?=
- =?us-ascii?Q?v8qMbHVscOljEQEdscr1QJDf3io3prpZw74Abpc3h8PoyIPbXoGO549o4mjr?=
- =?us-ascii?Q?gSUO0DQnmIckWMmDlEKExOHXjk0J1SHq3eHFyJHEJ6j13PKwUHe8oeM/mmp1?=
- =?us-ascii?Q?ZXMnSSjtaII6z0Trqw1oE4IwSB8x5ARJDWnO+zRsfqKF1ivyr57DxyRnyBfS?=
- =?us-ascii?Q?ALlx5Qt05JW2OfKgDHwOV6wgVqme4rM8/IUh2OGk0b0oi9xkzx/fGD895xZv?=
- =?us-ascii?Q?QFT9SQyFsA9swprGnXknTDK9wNaBiV04I+s9rwgu/i/Q1dJg8Xv3IgVke0xn?=
- =?us-ascii?Q?Chs/9cRmNMCYPE+2geHYti3EG9woN0ANxxR1W8Q9wD3lPlGYRQ=3D=3D?=
+	=?us-ascii?Q?5xjng2U4MHVH0zv1hVTPKSonS6Vzc5kujFoS85UCvjiQPqicTBhg4Zi7H2IB?=
+ =?us-ascii?Q?8bC5DYKpauCc+ijP4bPXj9u/HfVlTECrxvk1CsUVsDurZi8EQal5Oqq7QVV0?=
+ =?us-ascii?Q?JFZkysR0XSHS9iC5fFXqg/crchiobCUwQtZTrsFYSPjakymq9/rTVEaNMonN?=
+ =?us-ascii?Q?j8SV4Xx4qrON0zYLtH7OU5vUmcJKxoE6m3z5filBDIuwE6Whqn3++w8wYNFn?=
+ =?us-ascii?Q?3RiNQ3+WJ2npF8xESWhvLDjtlEvuGvDzHXt5EQa5rOtPngvp4MhOcedeqT+C?=
+ =?us-ascii?Q?hP2c08ToTOG63CZCzdyn07xRZ3OSrRajMJZdIu+JWW6gzlej9FM34DPiYxhP?=
+ =?us-ascii?Q?CwIoBarIWO1ai/2658jfEo3qU5ZnYRu1mCl/bQ2IGzPoGAMoc30Xzy5awxEL?=
+ =?us-ascii?Q?6x4KdOm7YlZANwh21o+7EEYalrz8N6MMUIVICLOzQflw+fyI+H6sjxBPL8VF?=
+ =?us-ascii?Q?5tsWb84jVXW0Y3SEYPceCBJbTWYxta4c3IhdzEFOLcH2aBqhwIarUOBFFz3w?=
+ =?us-ascii?Q?7xH3KOWkgWdtbIBMxjS+RNErovmxn6XcHN/lAOgRVH3vmp7w9NIbZfaF4Iab?=
+ =?us-ascii?Q?QHOP49nPIDYfIkQLjy4ihCeaOC4sptV3XcdoZ/Prv8bsoQZXDyPOQ9mq82E1?=
+ =?us-ascii?Q?ElqDchZdwcyAWGtIhU5VUPgIz2w0zHNdydveFdY6wJ1/Y5MGQSQnRMbylwR+?=
+ =?us-ascii?Q?WSvAKC/BGvUaPzk2uzxq9733pYfZI4wabI0Md0Gwzn9I1vfJVJf15Om90a9g?=
+ =?us-ascii?Q?qUvZ71knnN6X08cF+qeycR6J/OZ4qp/qiAjIAS3AL8wit5zn8ydOmsokMTnC?=
+ =?us-ascii?Q?33bxbLHRwnxyY4hng00Oy4ny50D53PhES+2rfuJRTKvd6BMhNyQ9r9cIfsYC?=
+ =?us-ascii?Q?FOo6XWqNIEc3U7rmxZEPOwRBTt/nyY3/pNAXD2UWvwUzmJ2bs0XFdicXVOnl?=
+ =?us-ascii?Q?nHy10RQOVFSuPggzbPl5/S1fI7xALM52sgZ5HpJgZTHIOSeKupNTVMucqjtU?=
+ =?us-ascii?Q?Cwz+2gKZ+TyCyt7/+5h/5zJadNhKOy+6bS7hSi+xJTyY88k0ZKXs4qbHABsh?=
+ =?us-ascii?Q?Zup4eAbmmVkID823ZZkP5TJ8ZxBvDQ5Uqw8hU0Xi354pLOLTmPMnSRlB7Vid?=
+ =?us-ascii?Q?j9oePVoXACrVBUixbAmDlFT3M0qUOw/FkXDGWzd8MEoM/NOH1915y1aNdxsJ?=
+ =?us-ascii?Q?iloBLrTFYgcjQB9G1xDiq/vaUaV1ZWEv5ELvR3OHC1Aff5rH9WbTUeRKHK4Z?=
+ =?us-ascii?Q?fAzkQv38hmiBYPDsVHsMQxHDE21P8dVDQ1OGGrCVapiKm0Ht+RaBPIDBjS+1?=
+ =?us-ascii?Q?jWZcICP1XP8SIzSLCUpExxSjTABF9p27ZPqgv8G/qvmZgO05EjtW4Ay6oSpq?=
+ =?us-ascii?Q?iQNUXL09Yee9vjay2E0hAMjcu0agj9n70I2/j/oaWK5fnuR79w=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 19:31:22.6388
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 19:31:24.8535
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4af54f72-5c31-4739-670f-08dcf52b9bdb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ef99606-3026-4fc3-b790-08dcf52b9d2f
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468B.namprd05.prod.outlook.com
+	BN1PEPF0000468A.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6930
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9047
 
-guard(mutex) can be used to automatically release mutexes when going
-out of scope.
+As multiple handlers may register for ACPI platform profile handler,
+only remove the sysfs group when the last one unregisters.
 
 Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/acpi/platform_profile.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ drivers/acpi/platform_profile.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 0c60fc970b6e8..81928adccfade 100644
+index 81928adccfade..091ca6941a925 100644
 --- a/drivers/acpi/platform_profile.c
 +++ b/drivers/acpi/platform_profile.c
-@@ -180,41 +180,34 @@ int platform_profile_register(struct platform_profile_handler *pprof)
- {
- 	int err;
+@@ -23,6 +23,15 @@ static const char * const profile_names[] = {
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
  
--	mutex_lock(&profile_lock);
-+	guard(mutex)(&profile_lock);
- 	/* We can only have one active profile */
--	if (cur_profile) {
--		mutex_unlock(&profile_lock);
-+	if (cur_profile)
- 		return -EEXIST;
--	}
- 
- 	/* Sanity check the profile handler field are set */
- 	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
--		!pprof->profile_set || !pprof->profile_get) {
--		mutex_unlock(&profile_lock);
-+		!pprof->profile_set || !pprof->profile_get)
- 		return -EINVAL;
--	}
- 
- 	err = sysfs_create_group(acpi_kobj, &platform_profile_group);
--	if (err) {
--		mutex_unlock(&profile_lock);
-+	if (err)
- 		return err;
--	}
- 	list_add_tail(&pprof->list, &platform_profile_handler_list);
- 
- 	cur_profile = pprof;
--	mutex_unlock(&profile_lock);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(platform_profile_register);
- 
- int platform_profile_remove(struct platform_profile_handler *pprof)
- {
-+	guard(mutex)(&profile_lock);
++static bool platform_profile_is_registered(void)
++{
++	struct list_head *pos;
++	int count = 0;
++	list_for_each(pos, &platform_profile_handler_list)
++		count++;
++	return count > 0;
++}
 +
+ static ssize_t platform_profile_choices_show(struct device *dev,
+ 					struct device_attribute *attr,
+ 					char *buf)
+@@ -206,8 +215,10 @@ int platform_profile_remove(struct platform_profile_handler *pprof)
+ 
  	list_del(&pprof->list);
  
- 	sysfs_remove_group(acpi_kobj, &platform_profile_group);
--	mutex_lock(&profile_lock);
+-	sysfs_remove_group(acpi_kobj, &platform_profile_group);
  	cur_profile = NULL;
--	mutex_unlock(&profile_lock);
++	if (!platform_profile_is_registered())
++		sysfs_remove_group(acpi_kobj, &platform_profile_group);
++
  	return 0;
  }
  EXPORT_SYMBOL_GPL(platform_profile_remove);
