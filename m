@@ -1,275 +1,234 @@
-Return-Path: <linux-acpi+bounces-8999-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9000-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0246F9B0F14
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 21:33:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB12A9B1580
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Oct 2024 08:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201D01C22B47
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Oct 2024 19:33:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E52C1F22775
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Oct 2024 06:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3548E21621B;
-	Fri, 25 Oct 2024 19:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123E716EBEC;
+	Sat, 26 Oct 2024 06:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HJEPTPnh"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="t8LIS3vP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6CC216208;
-	Fri, 25 Oct 2024 19:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729884698; cv=fail; b=BUOfGx1so9StLgi7Byb5KmzsJJjV3VG6gwvY4sP7fRJNRD9U0OSoc9Tq6W3Aa1rL8y/dNuJa7Q91WR67BAI7+9uaG10MILSniOfSW9u3xq8AliBWn/cDBoYWl3JP1eYvxTx9mLTWdTv1hJ2EepX5r3y4vdHCsrDvyGGnAgDID/g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729884698; c=relaxed/simple;
-	bh=l1NpPYbI1izrOBXlWSw8t//ZEymsa2FMxrONvbtd7M0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dBE42vn5HOTlaibU9lx+eEUINM81OMSaftP7mIyuifCcZUajycEmJExHZwfHdF7H1XN8zOXkPYJnJxB7gW1NuARiGWgkGfOqRj8MpNEGdAulkcU6rW0ZDrziMk790apZ5eEFlp8O++/Mr8SZyL6umYX2PVcNXqUnHCKBs5GC9vo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HJEPTPnh; arc=fail smtp.client-ip=40.107.243.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lkRbcbdaJthgXssKDJQdZx7Fu4CkRtyVIity4UPWteW56JG7VU8SoQXh7qs0hEChraxsfdEgUWBQBh714Ymq/Tv2M9N7G0CDuJpUj8jIhWaiWbLKEccHxS6x+8nhcHQCtSIPDFecicKd9scuhd/NixzZn9Z0cpjT/wmXp0U8ms/52oQKShDY97nPWIqga4Szv9iRljp+6VWYjXmL2+7d01/GJEZNtWxaTMyeNRqV79dk8c0O382V49/2KebCO/JMTWc9Ux3L/Kmi+RkuSXYl2E+hqeK1zg6eAUP6+bTDXSTSrWBFlQKXj52bgX8HL6na3LmJxt+qFjjt5v8QHXvFdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wULtWbk/f8Xi0zwfoBxp2g6NVV/1PuBYHNNKAVq3ltM=;
- b=AkKi/wdsPr+1Ysrv4OHiA2caO2mPaL0Df+c6dAIQUiumJ+YNOtwRL8SrKv8L2EEoRBZGXIPAP3TwvB9wetkeLQJgzJ8X19aW1JCWQMFEvMYP3bvxhcOANe03ETCxk+Jl5DVHvnCNoYjV6kn3/HzsW050UeXIxIwEPPLWLpIXyqR4T65dqdhM8NQVqV5KKwqAOVLT62dz0ldGx4oCoLiFoQO4WtOOfgqLl7NkZwbBe7jc6hfZeIXck+w5i1OnYMUH3UHs7Uu+z4GAr01srwl+HhXVgWiZQNSu2WMcf9VWD9naGnrGEdOgXfy1FqW5I9yqgWkE149kdOtETWX9zAk8zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wULtWbk/f8Xi0zwfoBxp2g6NVV/1PuBYHNNKAVq3ltM=;
- b=HJEPTPnhVg/UoCi3gOA72M9SBkRzTs7MnP13C/O0W/Oox+vvKA8Nk/uNkn5BP3NPYG2kmQsa0Fpk2e5iWoUHPhPD+B/rAIcHBSiuhFPYIPgMNjBT9F4Dv0PBJZdKVNTxfG+Z6EYtnbhaN6OqUtsdva9jsvMeWwPQneu3Bb18dTg=
-Received: from BN9PR03CA0366.namprd03.prod.outlook.com (2603:10b6:408:f7::11)
- by PH7PR12MB7331.namprd12.prod.outlook.com (2603:10b6:510:20e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.20; Fri, 25 Oct
- 2024 19:31:29 +0000
-Received: from BN1PEPF00004687.namprd05.prod.outlook.com
- (2603:10b6:408:f7:cafe::58) by BN9PR03CA0366.outlook.office365.com
- (2603:10b6:408:f7::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.23 via Frontend
- Transport; Fri, 25 Oct 2024 19:31:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF00004687.mail.protection.outlook.com (10.167.243.132) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8093.14 via Frontend Transport; Fri, 25 Oct 2024 19:31:29 +0000
-Received: from AUS-P9-MLIMONCI.xilinx.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 25 Oct 2024 14:31:26 -0500
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
-	<ilpo.jarvinen@linux.intel.com>
-CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, "Shyam
- Sundar S K" <Shyam-sundar.S-k@amd.com>, Corentin Chary
-	<corentin.chary@gmail.com>, "Luke D . Jones" <luke@ljones.dev>, Ike Panhc
-	<ike.pan@canonical.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	"Alexis Belmonte" <alexbelm48@gmail.com>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
-	<u.kleine-koenig@pengutronix.de>, Ai Chao <aichao@kylinos.cn>, Gergo Koteles
-	<soyer@irl.hu>, open list <linux-kernel@vger.kernel.org>, "open list:ACPI"
-	<linux-acpi@vger.kernel.org>, "open list:MICROSOFT SURFACE PLATFORM PROFILE
- DRIVER" <platform-driver-x86@vger.kernel.org>, "open list:THINKPAD ACPI
- EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
-	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 8/8] platform/x86/amd: pmf: Drop all quirks
-Date: Fri, 25 Oct 2024 14:30:55 -0500
-Message-ID: <20241025193055.2235-9-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241025193055.2235-1-mario.limonciello@amd.com>
-References: <20241025193055.2235-1-mario.limonciello@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F29429CE5;
+	Sat, 26 Oct 2024 06:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729925224; cv=none; b=QG+IotQaab0LmzYVJK0KArTVD91627oNn2T8ncH4kbY49AhVSXwaRvLPkGVjg323buz/RoseD4e/CSB/pfbdlke4rkYrF/SOJrJn8OcVG8sLeGk/glo64FCXvPk1o2zjC2AJDMgXVGYsw4xO3XtgS+nYc0loH11CMgAGMIsekME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729925224; c=relaxed/simple;
+	bh=9RN3xPCWK0Lk0NwGmuvZ6xvKv4nAC74l3VWLTq2+v7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UTZUSnO6IyS0wAACaXM45UY0V+0DRbJquv1AkGK4gHaah3lgQZucTUAofeG6EJAq+SF5m2AgBXnTWTp8jgZOwnXJ3ZPQyuDtzRJvAKQO3glR6O8pHBKTAV7FvX3wA2nqq46kpNXuKxvxKLdVBgMkj+y+6dxHiY+5t0fzqQhUp4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=t8LIS3vP; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1729925212; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=642D6GzLlUCKe9SzYd8cvk/nLxL5J/aN2kycl56LWxQ=;
+	b=t8LIS3vP2l2nE1sBKy4a5I/1tURadv+2kUyitWaRfS4SD2XkSgiN/S19zDiSsgsZChXUAoqFk8q1bb/RhoAk7HZfq5sUFRE9+Gdq4W6sN5Gde1ylxtmZzyCwc1gwNFF1ls75N7B3LllCrgw777eE+85FHhXbYFTE3PpHo7hNbIQ=
+Received: from 30.246.160.81(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WHuUzmp_1729925207 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 26 Oct 2024 14:46:50 +0800
+Message-ID: <ddb639c0-8966-4144-af20-0dd9b61d70a8@linux.alibaba.com>
+Date: Sat, 26 Oct 2024 14:46:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 3/3] ACPI: APEI: handle synchronous exceptions in task
+ work
+To: Jarkko Sakkinen <jarkko@kernel.org>, mark.rutland@arm.com,
+ catalin.marinas@arm.com, mingo@redhat.com, robin.murphy@arm.com,
+ Jonathan.Cameron@Huawei.com, bp@alien8.de, rafael@kernel.org,
+ wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
+ tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
+ james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
+ will@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+ ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+ baolin.wang@linux.alibaba.com, tglx@linutronix.de,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20241014084240.18614-4-xueshuai@linux.alibaba.com>
+ <05a8d26b-b023-426f-879c-7d33be4a6406@linux.alibaba.com>
+ <D54YRGZ47LLS.2BGS3F7T80DF4@kernel.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <D54YRGZ47LLS.2BGS3F7T80DF4@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004687:EE_|PH7PR12MB7331:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b68d2d1-4953-450d-83ee-08dcf52b9fe9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|36860700013|7416014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eZ/6MGAOJYd0ASO8IaGkZH98vEEjY8KHeFXYJjuqgyHTXJzGUPERA3LYPwzg?=
- =?us-ascii?Q?xuoDNa/5FgrMQRT/mlGkMUtj9MyoOJJFCm0IDhIJSY/lJf4FoqP5b0OkgFRA?=
- =?us-ascii?Q?Et503PqzqtG/iQ1Wyeo0Mh4xuiYqgV4RqwGNcTZClZbmlVwUNbPvel8sRRvW?=
- =?us-ascii?Q?owMbWwx7rOrIEP5ULNbeJF5IbW7TWBZXWHnVccLkJyFMcfgHcZMetQOYVq+l?=
- =?us-ascii?Q?vnoHE/Oh5mlksyVfJaXL7m7E7mnoJoteaviiI+OzRJSdD0RPe5A30bWIS8xC?=
- =?us-ascii?Q?LOMOZ9X2b5NZJZcQvX7TTDAEwhYw5ZsyiFWJ+jVqEbaEYzK/BdZ/QdiEWroU?=
- =?us-ascii?Q?DdpY+vvjCx7Y+dm8KOsSnIOra1faIATe3/9KIGwJja8gJGKrm5oxeo2MFxYv?=
- =?us-ascii?Q?v7R/XorBlLAU/0OkfQcQY0Ne/2dOkYZHddwjQU+35NZb/phO4cUzPn7lk25j?=
- =?us-ascii?Q?UESzqbMZowNsLoofQT4nKs/NtgOXEnwGn2eXA9Q/MMTpLvOpZOWtLzHOpIZB?=
- =?us-ascii?Q?hd+1WQItF5m+zvJ61GRPnL/gxm4wg9iptl2TH7qIQ3H/V+nFyA/inEYyiGmO?=
- =?us-ascii?Q?3HXMegeTf26tC4cw6VgM1WsvCFc/np75DE6AHXshvXLYZbCNDyCBWAiKizVm?=
- =?us-ascii?Q?bFwGNdKKIfNtBZZmucepn6fxFXCXo22oKwUzlO7MB+9GxlQV+gz9mmh8H6Vx?=
- =?us-ascii?Q?RulkvwYLodzjUcohIghdfdje6gBnmxmAAO6QP0UzeOwaM0MHYGS5jRoLIb1K?=
- =?us-ascii?Q?CZEuXlfmJLscSpZwyV6+FkXGTkrdXO26jLLBXzBkUIFZMoz0V/EZLcXfnhpy?=
- =?us-ascii?Q?lPg+RbSKLkXfb47SOPbIPmSQ7QKFNw7lSKI9gq2JlhIy6Ak7hrNOqCWDB1p6?=
- =?us-ascii?Q?T9YTT7TJbSh1Ia7UkfFsSI8NfRI7mSjkeS/68vYtleh7EvNHPepoNtpTfleU?=
- =?us-ascii?Q?b6T854VZE5o3l9W1OhA/ZJQO1spXR8B83LrWOuHunCVyPInpZHhFmnTtDkJE?=
- =?us-ascii?Q?KTYFEX0W/kJbsY6DRqsXT0WlkKmxuZmCnjDpKjbzc1Vntg1pLkAm4PDDab1O?=
- =?us-ascii?Q?cPFo4lw02xkDE3OSDo2Qljsh8SVplo0/JFgyhN2uYQayn7YaO4g+WJ4HJXZT?=
- =?us-ascii?Q?HrIZU6jjLI7axJGUz58YtFoLMj0EKx8ZcjMhjrQpjp12m2UgWSRKwuqAqNsz?=
- =?us-ascii?Q?pHGG3zA+rwTwaKjjBpt9VwVvWc3J3tVTrJHP4xifyLcExCHaVfff/kJwN4bV?=
- =?us-ascii?Q?uo7/U0y/lw2tQTKRV7YAXPMdMKSzD3Bdag2i401dw1OBBizLgS/5llHpe+Ce?=
- =?us-ascii?Q?Ysy+xphWeAvkkp49pNcPUR7RX0Ck1X66LzaOVhaSiJTOnkpk/uJ8GyV4nWWD?=
- =?us-ascii?Q?SKQAxpgDXePOCrNKilrHoSpr/0E4jL9KUgcyohFNv8A8nJtE5g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(7416014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 19:31:29.4422
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b68d2d1-4953-450d-83ee-08dcf52b9fe9
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004687.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7331
 
-As multiple platform profile handlers can now be registered, the quirks
-to avoid registering amd-pmf as a handler are no longer necessary.
-Drop them.
 
-Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/platform/x86/amd/pmf/Makefile     |  2 +-
- drivers/platform/x86/amd/pmf/core.c       |  1 -
- drivers/platform/x86/amd/pmf/pmf-quirks.c | 66 -----------------------
- drivers/platform/x86/amd/pmf/pmf.h        |  3 --
- 4 files changed, 1 insertion(+), 71 deletions(-)
- delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
 
-diff --git a/drivers/platform/x86/amd/pmf/Makefile b/drivers/platform/x86/amd/pmf/Makefile
-index 7d6079b02589c..6b26e48ce8ad2 100644
---- a/drivers/platform/x86/amd/pmf/Makefile
-+++ b/drivers/platform/x86/amd/pmf/Makefile
-@@ -7,4 +7,4 @@
- obj-$(CONFIG_AMD_PMF) += amd-pmf.o
- amd-pmf-objs := core.o acpi.o sps.o \
- 		auto-mode.o cnqf.o \
--		tee-if.o spc.o pmf-quirks.o
-+		tee-if.o spc.o
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index 47126abd13ca0..6ad00b3d472fe 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -455,7 +455,6 @@ static int amd_pmf_probe(struct platform_device *pdev)
- 	mutex_init(&dev->lock);
- 	mutex_init(&dev->update_mutex);
- 
--	amd_pmf_quirks_init(dev);
- 	apmf_acpi_init(dev);
- 	platform_set_drvdata(pdev, dev);
- 	amd_pmf_dbgfs_register(dev);
-diff --git a/drivers/platform/x86/amd/pmf/pmf-quirks.c b/drivers/platform/x86/amd/pmf/pmf-quirks.c
-deleted file mode 100644
-index 7cde5733b9cac..0000000000000
---- a/drivers/platform/x86/amd/pmf/pmf-quirks.c
-+++ /dev/null
-@@ -1,66 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * AMD Platform Management Framework Driver Quirks
-- *
-- * Copyright (c) 2024, Advanced Micro Devices, Inc.
-- * All Rights Reserved.
-- *
-- * Author: Mario Limonciello <mario.limonciello@amd.com>
-- */
--
--#include <linux/dmi.h>
--
--#include "pmf.h"
--
--struct quirk_entry {
--	u32 supported_func;
--};
--
--static struct quirk_entry quirk_no_sps_bug = {
--	.supported_func = 0x4003,
--};
--
--static const struct dmi_system_id fwbug_list[] = {
--	{
--		.ident = "ROG Zephyrus G14",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "GA403U"),
--		},
--		.driver_data = &quirk_no_sps_bug,
--	},
--	{
--		.ident = "ROG Ally X",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "RC72LA"),
--		},
--		.driver_data = &quirk_no_sps_bug,
--	},
--	{
--		.ident = "ASUS TUF Gaming A14",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "FA401W"),
--		},
--		.driver_data = &quirk_no_sps_bug,
--	},
--	{}
--};
--
--void amd_pmf_quirks_init(struct amd_pmf_dev *dev)
--{
--	const struct dmi_system_id *dmi_id;
--	struct quirk_entry *quirks;
--
--	dmi_id = dmi_first_match(fwbug_list);
--	if (!dmi_id)
--		return;
--
--	quirks = dmi_id->driver_data;
--	if (quirks->supported_func) {
--		dev->supported_func = quirks->supported_func;
--		pr_info("Using supported funcs quirk to avoid %s platform firmware bug\n",
--			dmi_id->ident);
--	}
--}
-diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
-index 8ce8816da9c16..b89aa38434faa 100644
---- a/drivers/platform/x86/amd/pmf/pmf.h
-+++ b/drivers/platform/x86/amd/pmf/pmf.h
-@@ -795,7 +795,4 @@ int amd_pmf_smartpc_apply_bios_output(struct amd_pmf_dev *dev, u32 val, u32 preq
- void amd_pmf_populate_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in);
- void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in);
- 
--/* Quirk infrastructure */
--void amd_pmf_quirks_init(struct amd_pmf_dev *dev);
--
- #endif /* PMF_H */
--- 
-2.43.0
+在 2024/10/25 22:40, Jarkko Sakkinen 写道:
+> On Tue Oct 22, 2024 at 4:11 AM EEST, Shuai Xue wrote:
+>> Hi, Jarkko,
+>>
+>>
+>> 在 2024/10/14 16:42, Shuai Xue 写道:
+>>> The memory uncorrected error could be signaled by asynchronous interrupt
+>>> (specifically, SPI in arm64 platform), e.g. when an error is detected by
+>>> a background scrubber, or signaled by synchronous exception
+>>> (specifically, data abort excepction in arm64 platform), e.g. when a CPU
+>>> tries to access a poisoned cache line. Currently, both synchronous and
+>>> asynchronous error use memory_failure_queue() to schedule
+>>> memory_failure() exectute in kworker context.
+>>>
+>>> As a result, when a user-space process is accessing a poisoned data, a
+>>> data abort is taken and the memory_failure() is executed in the kworker
+>>> context:
+>>>
+>>>     - will send wrong si_code by SIGBUS signal in early_kill mode, and
+>>>     - can not kill the user-space in some cases resulting a synchronous
+>>>       error infinite loop
+>>>
+>>> Issue 1: send wrong si_code in early_kill mode
+>>>
+>>> Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+>>> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
+>>> could be used to determine whether a synchronous exception occurs on
+>>> ARM64 platform.  When a synchronous exception is detected, the kernel is
+>>> expected to terminate the current process which has accessed poisoned
+>>> page. This is done by sending a SIGBUS signal with an error code
+>>> BUS_MCEERR_AR, indicating an action-required machine check error on
+>>> read.
+>>>
+>>> However, when kill_proc() is called to terminate the processes who have
+>>> the poisoned page mapped, it sends the incorrect SIGBUS error code
+>>> BUS_MCEERR_AO because the context in which it operates is not the one
+>>> where the error was triggered.
+>>>
+>>> To reproduce this problem:
+>>>
+>>>     #sysctl -w vm.memory_failure_early_kill=1
+>>>     vm.memory_failure_early_kill = 1
+>>>
+>>>     # STEP2: inject an UCE error and consume it to trigger a synchronous error
+>>>     #einj_mem_uc single
+>>>     0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+>>>     injecting ...
+>>>     triggering ...
+>>>     signal 7 code 5 addr 0xffffb0d75000
+>>>     page not present
+>>>     Test passed
+>>>
+>>> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
+>>> error and it is not fact.
+>>>
+>>> After this patch:
+>>>
+>>>     # STEP1: enable early kill mode
+>>>     #sysctl -w vm.memory_failure_early_kill=1
+>>>     vm.memory_failure_early_kill = 1
+>>>     # STEP2: inject an UCE error and consume it to trigger a synchronous error
+>>>     #einj_mem_uc single
+>>>     0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+>>>     injecting ...
+>>>     triggering ...
+>>>     signal 7 code 4 addr 0xffffb0d75000
+>>>     page not present
+>>>     Test passed
+>>>
+>>> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
+>>> error as we expected.
+>>>
+>>> Issue 2: a synchronous error infinite loop
+>>>
+>>> If a user-space process, e.g. devmem, a poisoned page which has been set
+>>> HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
+>>> current processs with error info. Because the memory_failure() is
+>>> executed in the kworker contex, it will just do nothing but return
+>>> EFAULT. So, devmem will access the posioned page and trigger an
+>>> excepction again, resulting in a synchronous error infinite loop. Such
+>>> loop may cause platform firmware to exceed some threshold and reboot
+>>> when Linux could have recovered from this error.
+>>>
+>>> To reproduce this problem:
+>>>
+>>>     # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
+>>>     #einj_mem_uc single
+>>>     0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+>>>     injecting ...
+>>>     triggering ...
+>>>     signal 7 code 4 addr 0xffffb0d75000
+>>>     page not present
+>>>     Test passed
+>>>
+>>>     # STEP 2: access the same page and it will trigger a synchronous error infinite loop
+>>>     devmem 0x4092d55b400
+>>>
+>>> To fix above two issues, queue memory_failure() as a task_work so that it runs in
+>>> the context of the process that is actually consuming the poisoned data.
+>>>
+>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>>> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+>>> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> ---
+>>>    drivers/acpi/apei/ghes.c | 78 +++++++++++++++++++++++-----------------
+>>>    include/acpi/ghes.h      |  3 --
+>>>    include/linux/mm.h       |  1 -
+>>>    mm/memory-failure.c      | 13 -------
+>>>    4 files changed, 45 insertions(+), 50 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>>> index f2ee28c44d7a..95e9520eb803 100644
+>>> --- a/drivers/acpi/apei/ghes.c
+>>> +++ b/drivers/acpi/apei/ghes.c
+>>> @@ -467,28 +467,42 @@ static void ghes_clear_estatus(struct ghes *ghes,
+>>>    }
+>>>    
+>>>    /*
+>>> - * Called as task_work before returning to user-space.
+>>> - * Ensure any queued work has been done before we return to the context that
+>>> - * triggered the notification.
+>>> + * struct ghes_task_work - for synchronous RAS event
+>>> + *
+>>> + * @twork:                callback_head for task work
+>>> + * @pfn:                  page frame number of corrupted page
+>>> + * @flags:                work control flags
+>>> + *
+>>> + * Structure to pass task work to be handled before
+>>> + * returning to user-space via task_work_add().
+>>>     */
+>>
+>>
+>> Do you have any futer comments about this patch? Any comments are
+>> welcomed. If not, are you happy to explictly give the reveiwed-by tag?
+> 
+> Sorry I've been busy switching to a new job.
+> 
+> I read this now through and both commit messages and the code changes
+> look sane to me so I guess I don't have any problem with that:
+> 
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> 
+>>
+>> Best Regard,
+>> Shuai
+> 
+> BR, Jarkko
+
+
+Thank you.
+
+BR. Shuai
 
 
