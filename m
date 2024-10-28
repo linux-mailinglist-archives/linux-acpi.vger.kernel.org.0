@@ -1,61 +1,61 @@
-Return-Path: <linux-acpi+bounces-9015-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9017-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C41B9B222A
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 03:02:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DAB9B2230
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 03:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A04501F21C43
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 02:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82BFC281D9D
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 02:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A267E17BB21;
-	Mon, 28 Oct 2024 02:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D380418858E;
+	Mon, 28 Oct 2024 02:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HNmP2vXz"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2oHv2Arn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2058.outbound.protection.outlook.com [40.107.236.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8454215C15E;
-	Mon, 28 Oct 2024 02:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D2D155312;
+	Mon, 28 Oct 2024 02:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730080925; cv=fail; b=bNUU/e4fATpjeb0Yp+F/OwShmlVnA6Pgava1D+gNbMV8g9Isvl+IBezQ2tIgTsHarr0YUy1Fnc74tKomUlRDts9A5b01Ttd5pOIsO/rpZDuwgX6H9cDo0t5pErnslNmQNtdTlT30KLRNAMTVECOwmffRjj/dECWrnHzBdGpq1L8=
+	t=1730080932; cv=fail; b=FhTqYql5i7I0Z7mPVYrYIKHF7E/5uMESU8v6tijdIm7BGpSjh/J8wjY8DGWfcU0TYX4KwwpB/4OoFUQEzc/+qFrROhFP4E1NQBlrl5uNxLngO8U6k/igIOxNe6u1jejMNGysOcbSKY1SPUZG3sYDwGRkC2IS9xD41JIAMa8CG/Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730080925; c=relaxed/simple;
-	bh=de3AWWNWRwnOjI5JEhl2BogaBfwkYA0AMi6Mqnsngm4=;
+	s=arc-20240116; t=1730080932; c=relaxed/simple;
+	bh=OoN3eZlkyfm6Mz9FzMTcdXwyJfv+MypM39VX7yFnSao=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P4ct9xYJBxeWml/aPhwQOqD0dvoHjFxLVO+rEBkpF2imLXv/wOyj6Rfl2rtVMncRelqWNaZcVeno++kyFcaybDlJXpAb0eDtkFSPjR6j+VvifE/pUiPWBYafQOz0au6R7pIItZYq8iBE59hSxvMS07Du+WNHqDrN4zaA9I3UNw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HNmP2vXz; arc=fail smtp.client-ip=40.107.237.68
+	 MIME-Version:Content-Type; b=u+LTS1wQlFcvVoxc5feQN5kGq7YWHu0wyUHQWa+5IplzCOdIdQ+GK/4VRfeKGWr0XO69Z2uvPX7ViM6DmnF2wWXlTC650G+uIE1wgUsyEnSiWr8Gv7CGlklz0mYWNYn02flKjbuDHMOSqv8n3kFGVZ9buHnlAGxh+mN9cjFCxFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2oHv2Arn; arc=fail smtp.client-ip=40.107.236.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dBaeVcakPJDFqfggl7xNdKyNHoYNz16+Xv3RrqRtv2gCjoR4tWMU7SbWfn4BaTBBmgjwGKFBeQrz5MHqMy1qYQJ6bpDixJ+m4UADDL44kgcSS5CcG/63byVyZy64PNV26QtoGl1bYHWk3Zh55xnXUV29oXb9udKqvKEwa08DwH2EkZ5L2Uu/J5s1YauSnydaGciCoG9adOhhU9NDaVJc6ShwTecf//SDCws4484ChMizwLSJHrjpEz79DmqQ88BquwX7JBLlo+vHoYoWCO87hd661mI3r5eZUlj6D5F8f4m3WCdR4OZ2hEOrJg7Z0M3PwnTaYCN9Fqok46RnsXDwzA==
+ b=Bg3vjtEGPATcOjtCeFYNpyLSZaBD90TZSOHB8vIUlacX6oPgxk8/boNBnie9188SBlKAdM4UKaB2JyiI1qfuygu1yMGd+beyoQlm56uPlpe9dsw6SngzILAsvfrfnxLmPS5nDt22jJEsS27kazbwUWSlISpxuy5OltqHMDInFRxmPk+SyzNocGX0svcHXNCG8NQPPP2uErDiqD7zW/nIjLMZFKj+VtDY20u1YUn0l2K+rBIyob59mh82CWYmAYIN4E9tOkhgOsD+YLMmyFTytwuZlhNdpuytXRe9SppmZw9OXYXVByLZbPAta/PryarJ2i4LgSMkpv4IyyI25Zi7dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FYjUGZfEpH17UmDTCllqNcF3L/ekuBp4y7Uh9aUsliU=;
- b=a58qUMKnUEZCMeM2jZ1NRJZsiTWBWhaKuDog1N6IiD/xXVv/kzv3iJ/XRuPYvtfhkgejDQPa0IxR8KMLI0tlvYEyzSrZY7omansuIXwansTcjd5t89PTM7exDC1uk4MC15LIu9XM6AxWXo3f3OoDKqKhtN835cotwnXazs8kAKvOctqas+qfGniI1Fanf8r9ZzgUt0mxjHRHyNPcUfiVWh0MFBZjk3cJGdnic9b2bZIeNCJRIUcnkq9ylaGqwBVnU3EKd9PjDu1wfaSnoaRmCjyAM8QkwuJghhShCj2SshYk9FFeE6IF3rhyTsedc62lKTb7LPX1ZlOg0LVvaBNF9A==
+ bh=FYlgHKWAOl+hz7FzS0RcOZOUWbEVRZznOwckRkpt9+k=;
+ b=MAIuji8XJPQNHYMAwDCPB3TxyBzOnCh/H+pq1AcaAQkHaYkoOogeM5DRYF3Baiz7AZSxySwc5O6UBZRDCxrhEPqEYWRnscsr3Ns8RUjofKs8tCFaqNtfOWRmAP67KTFMYnp6lNFo6BXn2ax6sS+LWdlN/FdPidWhPVBbrePgItRMQ8NlYU3Wp97NJGX1S56KChwQOTdMqrU0SW9IVD5vy0iEGd3sGof5ai3WRDnw1HXzn3/mnwD5LrLDaDdvsdsrtuhxRMNoFEuOp3fyOiMwGwDj1Ho7seZw+Fi7uQHnYgr5qz072rxL/7ctbSnqFE3H7OEuEUNODEd+RAEtbw2paQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FYjUGZfEpH17UmDTCllqNcF3L/ekuBp4y7Uh9aUsliU=;
- b=HNmP2vXzqB7F0WTG8+Eej6ZlcDdjoIecOYHDrOrHQ0GVAM+hkqV+efbTmdXp9XELXa5d55Ohwsd2rhscRPmZRxnu7ux33k77YV2+uhJjhst8VCoerR3rQ+9nKgWTONQBaFmHkrjKNvxDg6XdaOJM0wtBidkkAkWQ9XM48QtZ+Zo=
-Received: from BN8PR12CA0021.namprd12.prod.outlook.com (2603:10b6:408:60::34)
- by DS0PR12MB8443.namprd12.prod.outlook.com (2603:10b6:8:126::14) with
+ bh=FYlgHKWAOl+hz7FzS0RcOZOUWbEVRZznOwckRkpt9+k=;
+ b=2oHv2Arnn1DOOBy9db90A2bKYKDeWeoCVrSiMcV5r5S5CyYovc40Rmo0T9yN7UOxzgIJVR96zdOWholdrIatCZzhr0fuKQm86lbAAzD6gWLMVJ5FXAu2w0n+arkAx0zMEEXRypczSpMpnekhJkfTyi0ZOgacbisthd/Tz9y5M6E=
+Received: from BN8PR12CA0001.namprd12.prod.outlook.com (2603:10b6:408:60::14)
+ by MW4PR12MB7120.namprd12.prod.outlook.com (2603:10b6:303:222::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Mon, 28 Oct
- 2024 02:02:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Mon, 28 Oct
+ 2024 02:02:02 +0000
 Received: from BL02EPF00021F6E.namprd02.prod.outlook.com
- (2603:10b6:408:60:cafe::6) by BN8PR12CA0021.outlook.office365.com
- (2603:10b6:408:60::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25 via Frontend
- Transport; Mon, 28 Oct 2024 02:01:59 +0000
+ (2603:10b6:408:60:cafe::b) by BN8PR12CA0001.outlook.office365.com
+ (2603:10b6:408:60::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.26 via Frontend
+ Transport; Mon, 28 Oct 2024 02:02:02 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -65,11 +65,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BL02EPF00021F6E.mail.protection.outlook.com (10.167.249.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8114.16 via Frontend Transport; Mon, 28 Oct 2024 02:01:59 +0000
+ 15.20.8114.16 via Frontend Transport; Mon, 28 Oct 2024 02:02:02 +0000
 Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 27 Oct
- 2024 21:01:57 -0500
+ 2024 21:01:59 -0500
 From: Mario Limonciello <mario.limonciello@amd.com>
 To: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
 	<ilpo.jarvinen@linux.intel.com>
@@ -86,9 +86,9 @@ CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
 	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2 02/15] platform/surface: aggregator: Add platform handler pointer to device
-Date: Sun, 27 Oct 2024 21:01:18 -0500
-Message-ID: <20241028020131.8031-3-mario.limonciello@amd.com>
+Subject: [PATCH v2 03/15] ACPI: platform_profile: Add platform handler argument to platform_profile_remove()
+Date: Sun, 27 Oct 2024 21:01:19 -0500
+Message-ID: <20241028020131.8031-4-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241028020131.8031-1-mario.limonciello@amd.com>
 References: <20241028020131.8031-1-mario.limonciello@amd.com>
@@ -104,75 +104,240 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6E:EE_|DS0PR12MB8443:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7d75613-7e9c-46ad-cf26-08dcf6f48240
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6E:EE_|MW4PR12MB7120:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1104ca1-c746-4da8-9374-08dcf6f4840a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026;
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fob/NRHPivyvCHkYMcDYto/nhmQGbAwhpr1bFA54bT8A15CmHPnMuNbv4XOR?=
- =?us-ascii?Q?ZMYAe/zoJ1tG2K9XQjJEkfhwpSE8wrnexnHZdrtsrLoPSkOTLauMIV1wDqSC?=
- =?us-ascii?Q?MVhLJ2erW+vvJX4QSnNT+955q/r4joJsRi+5mYVMD7ywuKTXZ5zJfcS7QCAJ?=
- =?us-ascii?Q?9LRqCjjFktJ0khVzenejRwX75lf6czaRqkj7NoUkl+Q3RHLiBiP57qSAadtU?=
- =?us-ascii?Q?pjTWXKy3YUvZP3dNzpqRCt1s1fAC+zQ7XCytdJ/CEN9b4vAHqgozyU3FGkjE?=
- =?us-ascii?Q?03F7dsWs7WZ0pTprTYK0rM2vN+mpV24nJxVmW0jgF4oRD826zpBWIwUvKzmn?=
- =?us-ascii?Q?5XPRQOeSnC7gGXOadl25J9Vh2qoYyJmYbO1ms5vD6vhxBnKm91U5FwqXH16n?=
- =?us-ascii?Q?6YTPOIZK2BMab5XpHh5I6Z/E+I+L55Z20ty+Q9GTs9cIxRuepniSNq/EsquR?=
- =?us-ascii?Q?2ZRgiKAvckGr8SrbF4lLCjJq3SNqdGl4R0JQxkfgRbYn//Z5a7jDNdvqhVqx?=
- =?us-ascii?Q?S40HGqd+2nfu+f4z1kY2F3K3KLdpb1Ppwm6PNeffTeACim4IZM/zjKU/6tXy?=
- =?us-ascii?Q?y3Gs+eWadkAtgKirobAVDM5xdsGs2ZJb01sZ/RuwoCYLoeLiewMDin0q6HQd?=
- =?us-ascii?Q?lkynhnoqqvH+vSXbvPRPT+coK3k29aYDTetWbjVsi56M0ngoQs7xInR/a1Ls?=
- =?us-ascii?Q?ccn0D9NKrMB2245GErXmVlLwPawadhTe3nTptOwX80/VczKRhND8jnW4jF20?=
- =?us-ascii?Q?WbZ2OmJRS2P0fC4dk77CQZuNkk3qOJuN9TEK5T1k++OVkMp8KMfP80wy/RYH?=
- =?us-ascii?Q?TFBEe64vLrzNqXy/gYnMlVagjmNK8P4qwTEiKCSFOqz12TkMQrArwS6mBfNJ?=
- =?us-ascii?Q?NJonT59K9M+pQPzsqU3k2l4B+EV5fgTjSlVwPQoIDailKODqREGzbXbzM7e4?=
- =?us-ascii?Q?7bLwAV0bYbyCrywDfKy8V3pWAFPBjZKRDoZdRgTdwHpAb8FWP89iVkBCFvGh?=
- =?us-ascii?Q?CzicLurfmfAh3Oi+eoZ+g4f0yj2WUhwYseLrN50kxlL+qCVwoXs+h5DZkmbH?=
- =?us-ascii?Q?PvQ9tG6qDXh+4SR5sYWJqBcG6EccLc3/Lnz9LQFA7fXo81lMce2RuxSCY+Xo?=
- =?us-ascii?Q?b/N8Sa92F08y34vk9EDtnC0xbf2t4oTtxeu0gbiP9tf8MnQx3NyoETRnp+Yc?=
- =?us-ascii?Q?W1o0lfrBhX/MGwLN1k6a+xDGMZJb9frpaL9SGCXmGGmRiqxrjO6qtL/0r9z6?=
- =?us-ascii?Q?fAKYXu2IMwMVBEIAcr8lrIZz1M99cNw6FW8F5htgryqzuZ5+T4SuhYp2wEOg?=
- =?us-ascii?Q?EE5nV6Kcn5w/cvP1qUwEij6Nt36Re6KldXR9gjt9NNznFvvRw5IA7C6m1IYK?=
- =?us-ascii?Q?Kx97EbC2/xpW4bt8yaAqptePa2cXa52Nyn1k9d0PlvZoYouxOA=3D=3D?=
+	=?us-ascii?Q?TVUDrWURJigaqhCpwizrjpWU4K8r2L/rtlrMOu7QUQ7mgKkMH9D52VrDNvRx?=
+ =?us-ascii?Q?c4crGC6m+wYFllVwtsgODFRWIG8u4Jv2qDpqsa85NZ7VvbbetKtQ1gkwmjz1?=
+ =?us-ascii?Q?V5wyNn4ArGdRQIGJeIg5gZT85SkEwQtwdO0RD8ue1iD/9mYyDpCAr4ZmxLRQ?=
+ =?us-ascii?Q?89nUqT5OlX+Py/ETmiXM+K5QgoKvUFC50j5O1j3Tu3BIb9nc620oWsdfSEqB?=
+ =?us-ascii?Q?Nm9cbwtGAGAJ8LCjpBuBxG27mNkKwQef4ty9SwGeIChrqKKWK4zxXlCehSy3?=
+ =?us-ascii?Q?wEorHLm0DdYgajd7rJvp+/6jccpImz/h+6aCgdBN/zaoszNz4May9kHGjr52?=
+ =?us-ascii?Q?0T11SyjPe/3iwJTp0hjWs69rkAsoqkOQodvlA90g0XiGiwzdZGyYV29Mi7Xe?=
+ =?us-ascii?Q?kh8TNNRGbNhQ44gnq5ex8HYHJXmB03Z9za2k3jd//pxvlZYrIbKgaVlT9WJi?=
+ =?us-ascii?Q?Ll+8/DzehpWu4yPTQqcgoBzY114UbB1yrzZeDNihqELlnhihWvF08YIQJ76o?=
+ =?us-ascii?Q?3upfTSFSm22csk2gLpwxoD4et+7db4gkzq9251DH8zWO7NZMFtQ+0P7G/2/e?=
+ =?us-ascii?Q?pWOdZt1TEloZZRJNsTFbvL/WdhoUH13iiUIaMCH0nnBLj1iYolbh2E0/ij6F?=
+ =?us-ascii?Q?QZLXO+45WBzgql4wR4ZY1aHAmPQDETDZdfPqUI6szXueRfmMlIj8R3JYVaXi?=
+ =?us-ascii?Q?0s+d6PTIdjXSMhD/LzKNNc40eloJ7KIB8XzcpzI0JPty/ZNAX3c8Fynv6AXF?=
+ =?us-ascii?Q?GLbSr0ri9P8VIyEL8mp9Yo+jcvZijea7GOGh3xCOh45elGyWMbFRFCIr5lhh?=
+ =?us-ascii?Q?UDKES5/SyOOzLr0vuOTPNvdU+H1hnlCVvl0gLFZCFwE0+kBTp8NUAWbL0Re7?=
+ =?us-ascii?Q?D5FFoLOcjseS7M7JZGBX1v1XUNO4SwbUJK+TZb6Xi4pLMs8CF6Dg7tfJYqGW?=
+ =?us-ascii?Q?8Iq/dW2ehGT6NtCEMNbPorzwbB4lvjBlx0S63BYR79ta+6CvvMffh7JsrOvI?=
+ =?us-ascii?Q?AoLDPXZUIt1741hCKElccc5WfIMRGGMDO1PwNKfKUojVfQFksq/0mc/3CLLB?=
+ =?us-ascii?Q?HkICBy1eDwI66Sb0L/iB2vVypOI10l9ypUpdClqRe4A1Lx72qD6eumZAg09L?=
+ =?us-ascii?Q?d+nXs4ywP9nsD5+7XBCfEcRBjGtkvsYW5CApSTlH3z/TEp9CZv9+gl+bZcPa?=
+ =?us-ascii?Q?Rt6BmAvysDoi7NRITBW4iIsg8ndSeiaLfJpFXULDWFeq4jyrwseoBdeqZcJW?=
+ =?us-ascii?Q?qgX9bDDP67U9pLIE8WCAFXnAy4hh5nrL/sekKSh5/mtWg26Un94xkMj0qGmV?=
+ =?us-ascii?Q?mddO4QCfjKCnyTFhBCvYutXVhGBya0r1dWj4cTb3/+L6W8W/a4AoyUCPhxvc?=
+ =?us-ascii?Q?8T9uLd86RfSbRjiKKGx699LZ8XO9IfNOvgoO1VsAur8dS5icRQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 02:01:59.6881
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 02:02:02.6881
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7d75613-7e9c-46ad-cf26-08dcf6f48240
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1104ca1-c746-4da8-9374-08dcf6f4840a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BL02EPF00021F6E.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8443
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7120
 
-To be able to reference the platform handler in remove, add
-a pointer to `struct ssam_device`.
+To allow registering and unregistering multiple platform handlers calls
+to platform_profile_remove() will need to know which handler is to be
+removed.  Add an argument for this.
 
 Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
 v2:
- * Use ssam_device_set_drvdata()
+ * Use ssam_device_get_drvdata() for surface
 ---
- drivers/platform/surface/surface_platform_profile.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/platform_profile.c                     | 2 +-
+ drivers/platform/surface/surface_platform_profile.c | 5 ++++-
+ drivers/platform/x86/acer-wmi.c                     | 4 ++--
+ drivers/platform/x86/amd/pmf/sps.c                  | 2 +-
+ drivers/platform/x86/asus-wmi.c                     | 4 ++--
+ drivers/platform/x86/dell/dell-pc.c                 | 2 +-
+ drivers/platform/x86/hp/hp-wmi.c                    | 2 +-
+ drivers/platform/x86/ideapad-laptop.c               | 2 +-
+ drivers/platform/x86/inspur_platform_profile.c      | 5 ++++-
+ drivers/platform/x86/thinkpad_acpi.c                | 2 +-
+ include/linux/platform_profile.h                    | 2 +-
+ 11 files changed, 19 insertions(+), 13 deletions(-)
 
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index d2f7fd7743a13..c24744da20916 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -205,7 +205,7 @@ int platform_profile_register(struct platform_profile_handler *pprof)
+ }
+ EXPORT_SYMBOL_GPL(platform_profile_register);
+ 
+-int platform_profile_remove(void)
++int platform_profile_remove(struct platform_profile_handler *pprof)
+ {
+ 	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+ 
 diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
-index 61aa488a80eb5..a18eb93eebb92 100644
+index a18eb93eebb92..1c9e37b1f4761 100644
 --- a/drivers/platform/surface/surface_platform_profile.c
 +++ b/drivers/platform/surface/surface_platform_profile.c
-@@ -210,6 +210,7 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
- 		return -ENOMEM;
+@@ -228,7 +228,10 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
  
- 	tpd->sdev = sdev;
-+	ssam_device_set_drvdata(sdev, tpd);
+ static void surface_platform_profile_remove(struct ssam_device *sdev)
+ {
+-	platform_profile_remove();
++	struct ssam_platform_profile_device *tpd;
++
++	tpd = ssam_device_get_drvdata(sdev);
++	platform_profile_remove(&tpd->handler);
+ }
  
- 	tpd->handler.name = "Surface Platform Profile";
- 	tpd->handler.profile_get = ssam_platform_profile_get;
+ static const struct ssam_device_id ssam_platform_profile_match[] = {
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 53fbc9b4d3df7..71761d4220c26 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -2546,7 +2546,7 @@ static int acer_platform_probe(struct platform_device *device)
+ 
+ error_hwmon:
+ 	if (platform_profile_support)
+-		platform_profile_remove();
++		platform_profile_remove(&platform_profile_handler);
+ error_platform_profile:
+ 	acer_rfkill_exit();
+ error_rfkill:
+@@ -2569,7 +2569,7 @@ static void acer_platform_remove(struct platform_device *device)
+ 	acer_rfkill_exit();
+ 
+ 	if (platform_profile_support)
+-		platform_profile_remove();
++		platform_profile_remove(&platform_profile_handler);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
+index e2d0cc92c4396..cfa88c0c9e594 100644
+--- a/drivers/platform/x86/amd/pmf/sps.c
++++ b/drivers/platform/x86/amd/pmf/sps.c
+@@ -425,5 +425,5 @@ int amd_pmf_init_sps(struct amd_pmf_dev *dev)
+ 
+ void amd_pmf_deinit_sps(struct amd_pmf_dev *dev)
+ {
+-	platform_profile_remove();
++	platform_profile_remove(&dev->pprof);
+ }
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index c7c104c65a85a..f5f8cda7fd19c 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -4885,7 +4885,7 @@ static int asus_wmi_add(struct platform_device *pdev)
+ fail_custom_fan_curve:
+ fail_platform_profile_setup:
+ 	if (asus->platform_profile_support)
+-		platform_profile_remove();
++		platform_profile_remove(&asus->platform_profile_handler);
+ fail_fan_boost_mode:
+ fail_platform:
+ 	kfree(asus);
+@@ -4912,7 +4912,7 @@ static void asus_wmi_remove(struct platform_device *device)
+ 	asus_wmi_battery_exit(asus);
+ 
+ 	if (asus->platform_profile_support)
+-		platform_profile_remove();
++		platform_profile_remove(&asus->platform_profile_handler);
+ 
+ 	kfree(asus);
+ }
+diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/dell/dell-pc.c
+index 3cf79e55e3129..4196154cc37d9 100644
+--- a/drivers/platform/x86/dell/dell-pc.c
++++ b/drivers/platform/x86/dell/dell-pc.c
+@@ -273,7 +273,7 @@ static int thermal_init(void)
+ static void thermal_cleanup(void)
+ {
+ 	if (thermal_handler) {
+-		platform_profile_remove();
++		platform_profile_remove(thermal_handler);
+ 		kfree(thermal_handler);
+ 	}
+ }
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 26cac73caf2b9..bb8771d8b5cd8 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -1692,7 +1692,7 @@ static void __exit hp_wmi_bios_remove(struct platform_device *device)
+ 	}
+ 
+ 	if (platform_profile_support)
+-		platform_profile_remove();
++		platform_profile_remove(&platform_profile_handler);
+ }
+ 
+ static int hp_wmi_resume_handler(struct device *device)
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 1f94c14c3b832..50819ac919e87 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1135,7 +1135,7 @@ static void ideapad_dytc_profile_exit(struct ideapad_private *priv)
+ 	if (!priv->dytc)
+ 		return;
+ 
+-	platform_profile_remove();
++	platform_profile_remove(&priv->dytc->pprof);
+ 	mutex_destroy(&priv->dytc->mutex);
+ 	kfree(priv->dytc);
+ 
+diff --git a/drivers/platform/x86/inspur_platform_profile.c b/drivers/platform/x86/inspur_platform_profile.c
+index 03da2c8cf6789..d8fd59b826f3a 100644
+--- a/drivers/platform/x86/inspur_platform_profile.c
++++ b/drivers/platform/x86/inspur_platform_profile.c
+@@ -190,7 +190,10 @@ static int inspur_wmi_probe(struct wmi_device *wdev, const void *context)
+ 
+ static void inspur_wmi_remove(struct wmi_device *wdev)
+ {
+-	platform_profile_remove();
++	struct inspur_wmi_priv *priv;
++
++	priv = dev_get_drvdata(&wdev->dev);
++	platform_profile_remove(&priv->handler);
+ }
+ 
+ static const struct wmi_device_id inspur_wmi_id_table[] = {
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index c8c316b8507a5..619a4db74e5f3 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10637,7 +10637,7 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+ 
+ static void dytc_profile_exit(void)
+ {
+-	platform_profile_remove();
++	platform_profile_remove(&dytc_profile);
+ }
+ 
+ static struct ibm_struct  dytc_profile_driver_data = {
+diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+index 6fa988e417428..58279b76d740e 100644
+--- a/include/linux/platform_profile.h
++++ b/include/linux/platform_profile.h
+@@ -36,7 +36,7 @@ struct platform_profile_handler {
+ };
+ 
+ int platform_profile_register(struct platform_profile_handler *pprof);
+-int platform_profile_remove(void);
++int platform_profile_remove(struct platform_profile_handler *pprof);
+ int platform_profile_cycle(void);
+ void platform_profile_notify(void);
+ 
 -- 
 2.43.0
 
