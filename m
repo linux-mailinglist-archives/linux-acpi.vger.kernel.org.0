@@ -1,225 +1,612 @@
-Return-Path: <linux-acpi+bounces-9057-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9058-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9B49B37C3
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 18:37:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69CB9B3B25
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 21:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90B48282840
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 17:37:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23B1CB21E40
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 20:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0220A1DF72D;
-	Mon, 28 Oct 2024 17:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280F81DFDB9;
+	Mon, 28 Oct 2024 20:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gTBD4TGS"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="eMUDlKXQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="O1UZgTbU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2077.outbound.protection.outlook.com [40.107.237.77])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79941DF251;
-	Mon, 28 Oct 2024 17:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730137041; cv=fail; b=VTLXifO/8JoAoyXiMTHPoyAbpBHqKt7vYhKW7XFejxekmtsCGxEuJECTEeQW66z1yIiN6rRA0c6vD3656HxqHr+o2VjixngIHntA05Ve9Fp5aBwQbs4sFrYH1Qp1cS+SUGrvpZ2Te5Qbx+0IxYlJ6KHw1Iub5Lxe1wuX5AvesvU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730137041; c=relaxed/simple;
-	bh=+aHgGE8gHqpEnjkJd4Z/ckC87SGG1z3IkI62ZmMwcCI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tma0XuR0Q2CuAvY9wuf5o8E4+NkdtfnaggvmRLMlFakHqiTf6iwkEdOHLvRRlhoDzbbGmUXieEg0PRyrD91L+a8sFzuGr6YC5PCXFM62Ecc8HVM7WofAFqoRT068MpJJuZ2snxtpzpfGZBw4oUSvun9CdV0VVPmTzMyetESgVgY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gTBD4TGS; arc=fail smtp.client-ip=40.107.237.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N4clQMfTl2NRALrBDwC6ytz+nBYlLFsM/wZi9IYRBp5j1bwnVHN1XSbQdCdZNv6Zq2H+/JjqpccIOxfVARzBOtT+7+SA1i4yCYdBmrWPEyydCr8fGQl9GP2zBvAM5Gq76zFHUKjxo1imM6z3564jlHdtieHX8YGktkc5tMxvFiWmYIDLRw5OWtpE4/yL+ndaHhkKGjOx4oVWUZrmhsmD1vxp+ArS0KqD+kY1vG2I30PTbJ/mUNSvsHzfRyfgDa9IUMj2gHthe4osR/jXpsQETtMOpdFRr2/DQSbJ5694OggENTrTjUfhsmXQ2v5hVvZfAUdv8ahahkjVJ/1DW3Fs8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oWoH55bwphRaWv/KjCzxnxw3uli5rftDpSURhvRoLYA=;
- b=pT73z808LATdtqLcu0ARwLvCEHtifA6BTa9B/LM50eWBru7KbGmBiPrzuzodHARg3gCe8HlYZn9hDn2OEvBma6uLybfoTXDBJakIhDl7+Vrn4WJoDBYb7FH1dZR07myzzPpswiLmdj+0cTOGMJk6WMwiS4+Mx92P/BAYcN1djGr/j9x9SLTOg3dEc+duw/LQnDACjszJFABz9UwD7OzaYr8RjlAlp97IEshlqs/pyHZNVDGhlYmA7g3sG94294OR2uJWNbYny8c689TN2AOdkkKUqZftnr4VsH6QjcFlH61FDFbAYHpxYsteTmZKzcZX+Up/yyjk5CgVO3/YS69T6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oWoH55bwphRaWv/KjCzxnxw3uli5rftDpSURhvRoLYA=;
- b=gTBD4TGSjGSW9tBO/UARLyTKyxh6ob1kvDW+89qUscUQaRZ3WetouhFfGOBTHxPF9GO5RF3kgt1bqZPEdXghFTUj9h5mlau6sr/Xc8FecgB2Xv7iApwJDONWER762mhE8SYyXz9dOBe8ZE9ImVbkosWIQRUwwbr0EWg6Z0mjhoo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA1PR12MB7567.namprd12.prod.outlook.com (2603:10b6:208:42d::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Mon, 28 Oct
- 2024 17:37:17 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8093.021; Mon, 28 Oct 2024
- 17:37:17 +0000
-Message-ID: <3ae71745-4361-4056-9114-27af1caab63b@amd.com>
-Date: Mon, 28 Oct 2024 12:37:14 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/15] platform/surface: aggregator: Add platform
- handler pointer to device
-To: Maximilian Luz <luzmaximilian@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lee Chun-Yi <jlee@suse.com>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
- <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER"
- <ibm-acpi-devel@lists.sourceforge.net>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Matthew Schwartz <matthew.schwartz@linux.dev>
-References: <20241028020131.8031-1-mario.limonciello@amd.com>
- <20241028020131.8031-3-mario.limonciello@amd.com>
- <2934c00a-8bbc-4090-ad0d-8bc5f79cacaf@gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <2934c00a-8bbc-4090-ad0d-8bc5f79cacaf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA9PR13CA0048.namprd13.prod.outlook.com
- (2603:10b6:806:22::23) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61A21DED7D;
+	Mon, 28 Oct 2024 20:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730146312; cv=none; b=nRfsSBHaAm7H0oW/8ld1h6HP/Zr9ovC3K7yobTPaHtKOGfQ3Uxr2zCsHg/K3Yu1+hDaQdrtwbY4Al1OeiMoWRMMv4ovD5lVnugO3QD5IJWaaX0P6ZUeJaRUgUNQf2qpScJVxzOuR4S+fArBKixcWNm1dTvLRWY8vaMa3tJ+9Jjc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730146312; c=relaxed/simple;
+	bh=EZIUqw2MfVqHd/CNm6MFB0iS6dbL47MRrZZ+5yStQD4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=aM2WjHMLUjCYT7mA7OD03zu8deoO3PV/L1cZ/ZE3PqNQeHtwtGrpcgBOKWdURPADvVjM+dilWCT6g29ANqr7gr5tSRU4DZXYL1j7bACrlGWoBuv6iuV28MjfVlE0rZjHBdjN9P3gahXgDvqLq3WMKHkfwa3T9QkMqV8pDuiDjKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=eMUDlKXQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=O1UZgTbU; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id DF75C1380103;
+	Mon, 28 Oct 2024 16:11:46 -0400 (EDT)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-02.internal (MEProxy); Mon, 28 Oct 2024 16:11:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1730146306;
+	 x=1730232706; bh=/EiuwBrEUDdFW1FSp66tqtwfnmt6NloOsHBQldEyT9Q=; b=
+	eMUDlKXQlI/NIVb+fkOBbPWwk6mvcncK8S/8A1J4nxUlhEpPJUUm6kBpTT/wBBRj
+	yDMCjYdCA6R9OosmZHve3RDsKD5gtKG0BeH+7sfVm7j790wawEiZmUyz4NQnsD6i
+	L7iTaCk2b+EWY2n88ywfJuCOuE1LwamyMnEt81SfkeDMgmLU4mqmWwF7iABdaisL
+	19YDSQ+DrJSynAjfzcOa/WXLTLp5Uihd100cwycGxcO4D5V4+MSTbeUDi2c981qb
+	VZ33JdbgZXubH5jxMTFAArH7vVarz3V3AthVcjfNh0VgR7hvvVaE57oxbi7WGfDJ
+	H3pgOORLPYRy22ASgULciA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730146306; x=
+	1730232706; bh=/EiuwBrEUDdFW1FSp66tqtwfnmt6NloOsHBQldEyT9Q=; b=O
+	1UZgTbUAN9NfO+FOcKoyoNhmIawpUqnJALv1hGJ6YR4iZDIluOD56dszASCjvp4Q
+	zUlnZZuQTu7DxQY/xeyXFMPeKQ3+ngXjk0NB5zMvLwvAElce7/TZQTOhgYlXUpCH
+	shFneMjXhRQhWIDroCZGZLaIyY/hyXhL1eWWUPEByjgWDrulLBEDdU9qY7ZdgpRJ
+	TsZXW3xMHaxnnQNE3jQ3WqVeduPzo+kepKG6mT2Ielfm5zC1C64EsybYsUU+T7QL
+	JSEPb5J0aErhwyK2lByqOfLcD7gFHEuhLY479rsOWKqaC3UPWqBjr06jZvI6N2gc
+	YoaWnW//VLgNgu0D0cPug==
+X-ME-Sender: <xms:APAfZ-Puf5eWp79d7st0RYC6n-FxbppZt2sbux7MTxIYFRdGiFBp5g>
+    <xme:APAfZ8_EUs3MHTM91P78Iz_CsujYbt_FoZQL-0MTLkMZe5Lsws_UzvXC869Vkh68d
+    yYekoRIC7AOJeVDigs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejledguddtjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhephfeuvdeglefhvddt
+    vefgueejjedttefgkeekffduvefgteegheejveetieekhffgnecuffhomhgrihhnpehkvg
+    hrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhquh
+    gvsggsrdgtrgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehshhihrghmqdhsuhhnuggrrhdrshdqkhesrghmugdrtghomhdprhgtphhtth
+    hopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohep
+    ihhkvgdrphgrnhestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhopegrlhgvgigsvg
+    hlmhegkeesghhmrghilhdrtghomhdprhgtphhtthhopegtohhrvghnthhinhdrtghhrghr
+    hiesghhmrghilhdrtghomhdprhgtphhtthhopehluhiimhgrgihimhhilhhirghnsehgmh
+    grihhlrdgtohhmpdhrtghpthhtohephhhmhheshhhmhhdrvghnghdrsghrpdhrtghpthht
+    ohepshhohigvrhesihhrlhdrhhhupdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdroh
+    hrgh
+X-ME-Proxy: <xmx:APAfZ1QeRLFEz3r2broMAclZWSpV80Lnx511ALQg1IZNwSVDK9AmNQ>
+    <xmx:APAfZ-vNk7-PvpEKFRgFFbQiQctkIBxaa2j4TfCQWEOLs8fZdHQlRg>
+    <xmx:APAfZ2eT1zc_IgnGygUGYlk7XguVnxGXtaxLb2TRFRmbA5Wn8jER4g>
+    <xmx:APAfZy3pEisi5HXEHtQpVwJ0Q2TR-EzHCuqsiFBoJaPeonHBMKeOdA>
+    <xmx:AvAfZ0-xuGKlaRIP53b06Lo53byqNHcuqETt7CrfOory9RxPQsHAgrCV>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 85CB63C0070; Mon, 28 Oct 2024 16:11:44 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA1PR12MB7567:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14e7ca62-ab36-4496-173d-08dcf7772aba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Nk9KVitNUmdqaWRhdExsZ2pDTnhVSkNIN0hHQS9nS0ozNzEyUXFudlBUcHQz?=
- =?utf-8?B?SkZwVWZqdEdVZ21aRHJwb3c4azZRUHkvK3FtZjBJVkNLajlINzRvSXlCakZx?=
- =?utf-8?B?OUkvZkREb2JiSm9pVWFVcERMc0NiSm5nOXZJdmVlS3BkeUw5QncrSld4NUtX?=
- =?utf-8?B?RG5lVFI0dWJUMXJmZEtEcUZUbjM0a2krRENOS3Z3ZWpQYjlxZjZRVS9mMThv?=
- =?utf-8?B?UmRmN1J4NHJxaGxhNCthdGJ2bXVEbHVRSEZaTy9ZUVFMM0Q1VVZNSWNCMzlr?=
- =?utf-8?B?R3VLRVhUQjd5QjRveklqVzNHZCt1VTkrbkcyWW1SeXJyY3lSTExmRllDVGJs?=
- =?utf-8?B?Q2lqUEg5bVNkQ2xyZmZyNG1DbDNDWVVwWkRPbFVBMGhCUHpYeDVweDI0Q04x?=
- =?utf-8?B?Vmd5Qm9MVXBBTlphTEdzZW1iMk9XRmQxL0ZjOFk5NlpoR3lqTFJVQitNaTFm?=
- =?utf-8?B?VGJtZEw1U3h5dkpKV041T0J4cUcwWkRGTVNVZzVTanljTGFVUiswVW5NeEV4?=
- =?utf-8?B?NDlxaDJMdzd0eCthdENMR3RGY09NdEdzQlBQTFJLWXdKdUVsVEY0TkxXYUFr?=
- =?utf-8?B?aTRlMlpld21ESVcwTVM3SEpzemhBYmNMNzlSbmN4QW9Bc05JWTU2MnpsWUZp?=
- =?utf-8?B?bHIxdlNpUEszNUZMQ0FPTkh2Q3ZENHRoTGJnOE93dFdlUWtEVk5INGg5SVYz?=
- =?utf-8?B?cDBXRXBXNXNYbVRUbGZCZjhpNy8reHRrak9VT1pkaytuWWdPNlZ5N1BRNTFt?=
- =?utf-8?B?UjJ2cEdoSWY4d3pzWXpkOWxMWkg2dkhXTkZXcDUrVFJjRWN2Y3R6ZVhjbWZK?=
- =?utf-8?B?ejkwemN3VnVWOVNCckJTRW9Ea3ArZDgxamtYemR4OGhhV2ZlWTcyTWFBVGxN?=
- =?utf-8?B?RUkvOU81YS9RbzU5ZlhBTTlKOG5YeG9adnJ2SHBFbnBEZHBERXdxbEtpZ0Fk?=
- =?utf-8?B?ZGpIelNWbG9VU2FxUUx3UTdTN3pvOTFuQWhNZnNrTDdySGIzWXpSb2Rnd1lN?=
- =?utf-8?B?Wi9rbGtTbzJZZWxmUWJhQTM1TWN1c3FLWWVUY3p4K2prUnJtSVZiTklOcVFS?=
- =?utf-8?B?NEgvRWNqOHY1cXlQVjVsc3g0SkVEZlJXWE9rd1NrK1pNdnZhek44NW91Qm40?=
- =?utf-8?B?OHlOWXBuSjRFNVo5bnVoZmRmZ2JJM2xwQlFPYWtacm5MZ1ZSd09DL09WWVVX?=
- =?utf-8?B?T0t1NXJYYVYyeW1rcmh0OGJuN2NrU1ZWcWt6YzZmSHlnZjRUUTZXbXBaTjJn?=
- =?utf-8?B?d0VibUJJMllxN2RJOVRSdGdQU21SNFF6eHQyVTdPOUVGdU55clRpM3RPR1FL?=
- =?utf-8?B?UmxwTHdFblR0NzVSWjVwRDJvU3NVQk0xMmUwWkVBd2ZVb3hmVTdYS1IvRzZy?=
- =?utf-8?B?SWduYkcxMkxKNE5NcExWV051S29sK2Z2VTJyd2t3YU5LUjBEQmtUcjM0UDNJ?=
- =?utf-8?B?T08wNUI3WVd0QWwzTVoyTFJZMXgzNThCUHVlVEdFSUlMVUpFNWFrOXZ2R0Jk?=
- =?utf-8?B?b25WYWdZaFNmSzhneDYyRE9EQ1h4S3QzVTZpY0VWcGtNS1R0aEVkNTRoS0ZU?=
- =?utf-8?B?TnNYMjRyQkFiNW1ybmlxMlI2R24vVkpYTUF2ZUY1N25lSG5meFNXVmFvRklD?=
- =?utf-8?B?Rkl0cWh2djNwbzlLVXVTR1BwZEJHS1pIdEFGWG9DekFRbW1ISVR6SG1raXlN?=
- =?utf-8?B?MGhpaHBPMWJPTkFrdmNqODhGL3U4SDdTRTdwdWFSQ0tRNTZ0QnVyaDY4UGYx?=
- =?utf-8?Q?GSMya71QL85Ausrr/O96B4gd2pG6afmgyvuVqGz?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U0swRWdYK1drM0ZDQTlMdE01Z0JjY3pqTEhLZys2ZnhUbmFMT1EwTWVVR2p3?=
- =?utf-8?B?K3A3QnZIc0Qwem9NaFdETFBaZjYxTG5ScVkwbHZsZzU5bU5EZWV0NTU3UmJN?=
- =?utf-8?B?SWxISkkvbnJRR1FkZ1czQTNSZXVkcGZOQmpUTXRTQ2FUSEh4anphZWtXbzJE?=
- =?utf-8?B?Mlp4K1hzV2hjMUMrL1g4aHFod1R5ZTZsZjZkTG5aOFdrNFZ1cDZLVWFIb3Jy?=
- =?utf-8?B?V1lYMDl2UVlFdFNwYzlwbGRHYmhpZnMwa1VVK0pnN1NBU0kwbXlSTEJGU0Q0?=
- =?utf-8?B?a3ZJOTBEM09McHl2VFVMNkhoRExJelBQNUVsY1UwaEpLRWxHdDNvQkQ3SytO?=
- =?utf-8?B?VjhBRWIzcG5OaCtnV2xYcytBazBienpxOVRQV0FtQklqZVlkdUptTlJjcXFK?=
- =?utf-8?B?V0NueHhvZ2h4UlRkRjY2VzRLQ2dyNDgzRkJiOXE3d1MxZFoxaXRHV3hEbFIw?=
- =?utf-8?B?OEwycTRpMW5HQmlIVGprellFUnIwengrcnBNeCs3QkRvVUd2SU1CYXNZd2lw?=
- =?utf-8?B?VEpnMERkOXovSC9pTFF5Q0xPMEdXL0V0U3RkdnRWR3VCVmx3MnJLd2M2Nkpn?=
- =?utf-8?B?MzBpVThqUHVzKy9xMHlzZjdkZTI3NE1tSm1KSENVU2hXYWYwVWtLcEt5NjZ4?=
- =?utf-8?B?K2taNWVUMGZyeVZScHVqQnpLRnFWNm8wbmJwVmkrVHJ4R2l1SVY5NW0vaGFG?=
- =?utf-8?B?cVVIM2UyMW95dnV0NXdZRGhPQk5LRzlTcWdhZDBBUGlWOTJmNXRYNlVZeGZW?=
- =?utf-8?B?RG5EckJxdVRJQzdNQzMydk1hMWgwQ3RNUHNCcXBOQ3U3bE5Xc0dGU1lGYUI5?=
- =?utf-8?B?L1l3S2R3VEJxdVloSW96cmo3Z3BCM3Z4eXhXODd6VkpTa1hQQy9JczMxS0gv?=
- =?utf-8?B?S3k3OTA4aW5SbG1TaHlEQk5IdGw0eXlkb2FWZlRnTXlxNW5mbld5MzdOTVBD?=
- =?utf-8?B?bmlUMG01TURyTUpRa1VVeTAwK2JUSzM2aG56Vnd5dktxUEdwektPRlVvNU9V?=
- =?utf-8?B?MENUZExlNDFoemtKeS9sSi9qZzVRclpxTDhRbDFBR0xQMXBST2pDb3lWMm5t?=
- =?utf-8?B?eVF5bTJpRU41VlQwb1I4V285Wno1VkhGRzZyRnJZQnJIbXVsU1hWT0x2N0JC?=
- =?utf-8?B?bkIwZTEvVURNUXVZMmVIdHBsU3V0OFFyREUwcXpWOW1BRjFmOHJvUW9ZOVh3?=
- =?utf-8?B?ME5uS2U1WS9QeWdrNXVzRVV2MXpUNyswcTdYYzRldHI5QS9GYWFac3FjSkNn?=
- =?utf-8?B?M2FZQ1daYnVQZnV1TTl3VUtjNGRVaG1kWGhtNkNVZTZwU1pGYVdJZlZsd0hp?=
- =?utf-8?B?UGlZbWFtQ3Ryb3d6OW9TSTVrT29KYXh6UWdUTFZsVDFza1czbC82ZjJVeWVv?=
- =?utf-8?B?YzdseFdnZkNFT0VsMVNtQ2FUL09qSHREUWNzMzVHM0c1NEI1U3dtaW5HYmcy?=
- =?utf-8?B?U0h5RmJUaGY0bDJOZlA3aUZzM2E5WC9tN2lYeFJ1NUxLRU5TNmx6RW1ZZkFB?=
- =?utf-8?B?ZHhaNFlxSGozajRNQ2xZbXRNZE10SUpDcnllNS9sY0loZnVQTXZKODJENE5N?=
- =?utf-8?B?ZFZEd25KbFdUczV1MW1xZ242elh2cWRrbGJtaXlWS2NUZ2k5d0MvWnJ1ck80?=
- =?utf-8?B?SE1abUhzMzZYa291UXZ1NTQ2MkVZbjVDaWc2ZFpIeHQzSzlxcCs1cmY1SzBu?=
- =?utf-8?B?VmV1bTFNR2doWVQ2MndXOEd3L3JBS2srajNvbWowZU01UmgyeHEwWjhXRjR4?=
- =?utf-8?B?UUdRWE82ZHQwWmJQanAvVDMwa2NOS3VpRkRJYkZXdEVaUlI0VERoMldqbkV4?=
- =?utf-8?B?RnpvMGFOSzloQXdhN0huc25XNEQyZzdUa2RJSjhoY0dpRDNEWGFZK1RUaEJw?=
- =?utf-8?B?MmFIY3E1azg1Z2hxM1h3UHpqT0Q0Q2E2Y1RMbmd2NzczUkVYMXpaZVM5MkRM?=
- =?utf-8?B?SlZ3K3lXWERyQmcrOHdxeXVQblg1OVQvTzlEbGhUOWMzZ0x6WHZ5ZG0zaEUz?=
- =?utf-8?B?Z1VocnRVbytKeHAyM24yMmFuSUFHcFNRL0czZTdZZTU1RHF4QTdsUVM0VkRR?=
- =?utf-8?B?UGVteHdZanR4K01hRXg3Y1BObGRzWmJFTm04akdYK0xOQlBudjlJTU1tY0lQ?=
- =?utf-8?Q?Rhy73q9eMeb2YLRowjFzCiMMQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14e7ca62-ab36-4496-173d-08dcf7772aba
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 17:37:17.1341
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qWy+NlFwF9tYpFBwqJICXYFGmZM8uG0lQtQlQJUFPgEDK8duYnyYfHidyDW3UHo+SPKkLGmpwefG1MPFflGQng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7567
+Date: Mon, 28 Oct 2024 16:11:14 -0400
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Limonciello, Mario" <mario.limonciello@amd.com>,
+ "Hans de Goede" <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
+ "Maximilian Luz" <luzmaximilian@gmail.com>, "Lee Chun-Yi" <jlee@suse.com>,
+ "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
+ "Corentin Chary" <corentin.chary@gmail.com>,
+ "Luke D . Jones" <luke@ljones.dev>, "Ike Panhc" <ike.pan@canonical.com>,
+ "Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
+ "Alexis Belmonte" <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ "Ai Chao" <aichao@kylinos.cn>, "Gergo Koteles" <soyer@irl.hu>,
+ "open list" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>,
+ "Matthew Schwartz" <matthew.schwartz@linux.dev>
+Message-Id: <0e92dd4d-007c-4a73-9ad5-f869520b1373@app.fastmail.com>
+In-Reply-To: <d1debdce-5c86-4005-9ca1-29e646694942@amd.com>
+References: <20241025193055.2235-1-mario.limonciello@amd.com>
+ <20241025193055.2235-8-mario.limonciello@amd.com>
+ <bfafd7c5-6757-42e5-a3cf-d4695b6723cd@app.fastmail.com>
+ <f6b937ba-3e6c-400a-8fd0-de776c78f0cd@amd.com>
+ <93160eab-8b19-4b21-8539-85cf1c2a2dce@app.fastmail.com>
+ <d1debdce-5c86-4005-9ca1-29e646694942@amd.com>
+Subject: Re: [PATCH 7/8] ACPI: platform_profile: Add support for multiple handlers
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 10/28/2024 12:30, Maximilian Luz wrote:
-> On 10/28/24 3:01 AM, Mario Limonciello wrote:
->> To be able to reference the platform handler in remove, add
->> a pointer to `struct ssam_device`.
->>
->> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> ---
->> v2:
->>   * Use ssam_device_set_drvdata()
->> ---
->>   drivers/platform/surface/surface_platform_profile.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/platform/surface/surface_platform_profile.c b/ 
->> drivers/platform/surface/surface_platform_profile.c
->> index 61aa488a80eb5..a18eb93eebb92 100644
->> --- a/drivers/platform/surface/surface_platform_profile.c
->> +++ b/drivers/platform/surface/surface_platform_profile.c
->> @@ -210,6 +210,7 @@ static int surface_platform_profile_probe(struct 
->> ssam_device *sdev)
->>           return -ENOMEM;
->>       tpd->sdev = sdev;
->> +    ssam_device_set_drvdata(sdev, tpd);
->>       tpd->handler.name = "Surface Platform Profile";
->>       tpd->handler.profile_get = ssam_platform_profile_get;
-> 
-> Looks good to me now, thanks!
-> 
-> Maybe this could/should be squashed into patch 03 now that it's just a
-> one-line change, but I'll leave that decision to Hans or Ilpo.
-> 
-> Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
 
-Oh yeah; totally makes sense to squash now.  I'll merge the two patches 
-for the next go around and pick up your tag.
+
+On Mon, Oct 28, 2024, at 1:35 PM, Mario Limonciello wrote:
+> On 10/28/2024 12:20, Mark Pearson wrote:
+>> Thanks Mario,
+>> 
+>> On Mon, Oct 28, 2024, at 10:10 AM, Mario Limonciello wrote:
+>>> On 10/28/2024 06:01, Mark Pearson wrote:
+>>>> Hi Mario,
+>>>>
+>>>> On Fri, Oct 25, 2024, at 3:30 PM, Mario Limonciello wrote:
+>>>>> Multiple drivers may attempt to register platform profile handlers,
+>>>>> but only one may be registered and the behavior is non-deterministic
+>>>>> for which one wins.  It's mostly controlled by probing order.
+>>>>>
+>>>>> This can be problematic if one driver changes CPU settings and another
+>>>>> driver notifies the EC for changing fan curves.
+>>>>>
+>>>>> Modify the ACPI platform profile handler to let multiple drivers
+>>>>> register platform profile handlers and abstract this detail from userspace.
+>>>>>
+>>>>>   From userspace perspective the user will see profiles available across
+>>>>> both drivers.  However to avoid chaos only allow changing to profiles
+>>>>> that are common in both drivers.
+>>>>>
+>>>>> If any problems occur when changing profiles for any driver, then revert
+>>>>> back to the previous profile.
+>>>>>
+>>>>> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+>>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>>>> ---
+>>>>>    drivers/acpi/platform_profile.c | 203 ++++++++++++++++++--------------
+>>>>>    1 file changed, 117 insertions(+), 86 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+>>>>> index 091ca6941a925..915e3c49f0b5f 100644
+>>>>> --- a/drivers/acpi/platform_profile.c
+>>>>> +++ b/drivers/acpi/platform_profile.c
+>>>>> @@ -9,7 +9,6 @@
+>>>>>    #include <linux/platform_profile.h>
+>>>>>    #include <linux/sysfs.h>
+>>>>>
+>>>>> -static struct platform_profile_handler *cur_profile;
+>>>>>    static LIST_HEAD(platform_profile_handler_list);
+>>>>>    static DEFINE_MUTEX(profile_lock);
+>>>>>
+>>>>> @@ -36,26 +35,26 @@ static ssize_t platform_profile_choices_show(struct
+>>>>> device *dev,
+>>>>>    					struct device_attribute *attr,
+>>>>>    					char *buf)
+>>>>>    {
+>>>>> +	struct platform_profile_handler *handler;
+>>>>> +	unsigned long seen = 0;
+>>>>>    	int len = 0;
+>>>>> -	int err, i;
+>>>>> -
+>>>>> -	err = mutex_lock_interruptible(&profile_lock);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>> -
+>>>>> -	if (!cur_profile) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return -ENODEV;
+>>>>> +	int i;
+>>>>> +
+>>>>> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>>>>> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+>>>>> +			for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST) {
+>>>>> +				if (seen & BIT(i))
+>>>>> +					continue;
+>>>>> +				if (len == 0)
+>>>>> +					len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
+>>>>> +				else
+>>>>> +					len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
+>>>>> +				seen |= BIT(i);
+>>>>> +			}
+>>>>> +		}
+>>>>>    	}
+>>>>>
+>>>>> -	for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
+>>>>> -		if (len == 0)
+>>>>> -			len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
+>>>>> -		else
+>>>>> -			len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
+>>>>> -	}
+>>>>>    	len += sysfs_emit_at(buf, len, "\n");
+>>>>> -	mutex_unlock(&profile_lock);
+>>>>>    	return len;
+>>>>>    }
+>>>>>
+>>>>> @@ -64,22 +63,20 @@ static ssize_t platform_profile_show(struct device *dev,
+>>>>>    					char *buf)
+>>>>>    {
+>>>>>    	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+>>>>> +	struct platform_profile_handler *handler;
+>>>>>    	int err;
+>>>>>
+>>>>> -	err = mutex_lock_interruptible(&profile_lock);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>>
+>>>>> -	if (!cur_profile) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return -ENODEV;
+>>>>> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>>>>> +		if (!platform_profile_is_registered())
+>>>>> +			return -ENODEV;
+>>>>> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+>>>>> +			err = handler->profile_get(handler, &profile);
+>>>>> +			if (err)
+>>>>> +				return err;
+>>>>> +		}
+>>>>>    	}
+>>>>>
+>>>>> -	err = cur_profile->profile_get(cur_profile, &profile);
+>>>>> -	mutex_unlock(&profile_lock);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>> -
+>>>>>    	/* Check that profile is valid index */
+>>>>>    	if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
+>>>>>    		return -EIO;
+>>>>> @@ -91,37 +88,48 @@ static ssize_t platform_profile_store(struct device *dev,
+>>>>>    			    struct device_attribute *attr,
+>>>>>    			    const char *buf, size_t count)
+>>>>>    {
+>>>>> +	struct platform_profile_handler *handler;
+>>>>> +	enum platform_profile_option profile;
+>>>>>    	int err, i;
+>>>>>
+>>>>> -	err = mutex_lock_interruptible(&profile_lock);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>> -
+>>>>> -	if (!cur_profile) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return -ENODEV;
+>>>>> -	}
+>>>>> -
+>>>>>    	/* Scan for a matching profile */
+>>>>>    	i = sysfs_match_string(profile_names, buf);
+>>>>>    	if (i < 0) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>>    		return -EINVAL;
+>>>>>    	}
+>>>>>
+>>>>> -	/* Check that platform supports this profile choice */
+>>>>> -	if (!test_bit(i, cur_profile->choices)) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return -EOPNOTSUPP;
+>>>>> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>>>>> +		if (!platform_profile_is_registered())
+>>>>> +			return -ENODEV;
+>>>>> +
+>>>>> +		/* Check that all handlers support this profile choice */
+>>>>> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+>>>>> +			if (!test_bit(i, handler->choices))
+>>>>> +				return -EOPNOTSUPP;
+>>>>> +
+>>>>> +			/* save the profile so that it can be reverted if necessary */
+>>>>> +			err = handler->profile_get(handler, &profile);
+>>>>> +			if (err)
+>>>>> +				return err;
+>>>>> +		}
+>>>>> +
+>>>>> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+>>>>> +			err = handler->profile_set(handler, i);
+>>>>> +			if (err) {
+>>>>> +				pr_err("Failed to set profile for handler %s\n", handler->name);
+>>>>> +				break;
+>>>>> +			}
+>>>>> +		}
+>>>>> +		if (err) {
+>>>>> +			list_for_each_entry_continue_reverse(handler,
+>>>>> &platform_profile_handler_list, list) {
+>>>>> +				if (handler->profile_set(handler, profile))
+>>>>> +					pr_err("Failed to revert profile for handler %s\n",
+>>>>> handler->name);
+>>>>> +			}
+>>>>> +			return err;
+>>>>> +		}
+>>>>>    	}
+>>>>>
+>>>>> -	err = cur_profile->profile_set(cur_profile, i);
+>>>>> -	if (!err)
+>>>>> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>>>>> -
+>>>>> -	mutex_unlock(&profile_lock);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>>>>>    	return count;
+>>>>>    }
+>>>>>
+>>>>> @@ -140,7 +148,8 @@ static const struct attribute_group
+>>>>> platform_profile_group = {
+>>>>>
+>>>>>    void platform_profile_notify(void)
+>>>>>    {
+>>>>> -	if (!cur_profile)
+>>>>> +	guard(mutex)(&profile_lock);
+>>>>> +	if (!platform_profile_is_registered())
+>>>>>    		return;
+>>>>>    	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>>>>>    }
+>>>>> @@ -148,40 +157,65 @@ EXPORT_SYMBOL_GPL(platform_profile_notify);
+>>>>>
+>>>>>    int platform_profile_cycle(void)
+>>>>>    {
+>>>>> +	struct platform_profile_handler *handler;
+>>>>>    	enum platform_profile_option profile;
+>>>>> -	enum platform_profile_option next;
+>>>>> +	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
+>>>>> +	enum platform_profile_option next2 = PLATFORM_PROFILE_LAST;
+>>>>>    	int err;
+>>>>>
+>>>>> -	err = mutex_lock_interruptible(&profile_lock);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>> -
+>>>>> -	if (!cur_profile) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return -ENODEV;
+>>>>> -	}
+>>>>> -
+>>>>> -	err = cur_profile->profile_get(cur_profile, &profile);
+>>>>> -	if (err) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return err;
+>>>>> -	}
+>>>>> -
+>>>>> -	next = find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LAST,
+>>>>> -				  profile + 1);
+>>>>> -
+>>>>> -	if (WARN_ON(next == PLATFORM_PROFILE_LAST)) {
+>>>>> -		mutex_unlock(&profile_lock);
+>>>>> -		return -EINVAL;
+>>>>> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>>>>> +		/* first pass, make sure all handlers agree on the definition of
+>>>>> "next" profile */
+>>>>> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+>>>>> +
+>>>>> +			err = handler->profile_get(handler, &profile);
+>>>>> +			if (err)
+>>>>> +				return err;
+>>>>> +
+>>>>> +			if (next == PLATFORM_PROFILE_LAST)
+>>>>> +				next = find_next_bit_wrap(handler->choices,
+>>>>> +							  PLATFORM_PROFILE_LAST,
+>>>>> +							  profile + 1);
+>>>>> +			else
+>>>>> +				next2 = find_next_bit_wrap(handler->choices,
+>>>>> +							   PLATFORM_PROFILE_LAST,
+>>>>> +							   profile + 1);
+>>>>> +
+>>>>> +			if (WARN_ON(next == PLATFORM_PROFILE_LAST))
+>>>>> +				return -EINVAL;
+>>>>> +
+>>>>> +			if (next2 == PLATFORM_PROFILE_LAST)
+>>>>> +				continue;
+>>>>> +
+>>>>> +			if (next != next2) {
+>>>>> +				pr_warn("Next profile to cycle to is ambiguous between
+>>>>> platform_profile handlers\n");
+>>>>> +				return -EINVAL;
+>>>>> +			}
+>>>>> +			next = next2;
+>>>>> +		}
+>>>>> +
+>>>>> +		/*
+>>>>> +		 * Second pass: apply "next" to each handler
+>>>>> +		 * If any failures occur unwind and revert all back to the original
+>>>>> profile
+>>>>> +		 */
+>>>>> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+>>>>> +			err = handler->profile_set(handler, next);
+>>>>> +			if (err) {
+>>>>> +				pr_err("Failed to set profile for handler %s\n", handler->name);
+>>>>> +				break;
+>>>>> +			}
+>>>>> +		}
+>>>>> +		if (err) {
+>>>>> +			list_for_each_entry_continue_reverse(handler,
+>>>>> &platform_profile_handler_list, list) {
+>>>>> +				err = handler->profile_set(handler, profile);
+>>>>> +				if (err)
+>>>>> +					pr_err("Failed to revert profile for handler %s\n",
+>>>>> handler->name);
+>>>>> +			}
+>>>>> +		}
+>>>>>    	}
+>>>>>
+>>>>> -	err = cur_profile->profile_set(cur_profile, next);
+>>>>> -	mutex_unlock(&profile_lock);
+>>>>> -
+>>>>> -	if (!err)
+>>>>> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>>>>> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>>>>>
+>>>>> -	return err;
+>>>>> +	return 0;
+>>>>>    }
+>>>>>    EXPORT_SYMBOL_GPL(platform_profile_cycle);
+>>>>>
+>>>>> @@ -190,21 +224,19 @@ int platform_profile_register(struct
+>>>>> platform_profile_handler *pprof)
+>>>>>    	int err;
+>>>>>
+>>>>>    	guard(mutex)(&profile_lock);
+>>>>> -	/* We can only have one active profile */
+>>>>> -	if (cur_profile)
+>>>>> -		return -EEXIST;
+>>>>>
+>>>>>    	/* Sanity check the profile handler field are set */
+>>>>>    	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
+>>>>>    		!pprof->profile_set || !pprof->profile_get)
+>>>>>    		return -EINVAL;
+>>>>>
+>>>>> -	err = sysfs_create_group(acpi_kobj, &platform_profile_group);
+>>>>> -	if (err)
+>>>>> -		return err;
+>>>>> +	if (!platform_profile_is_registered()) {
+>>>>> +		err = sysfs_create_group(acpi_kobj, &platform_profile_group);
+>>>>> +		if (err)
+>>>>> +			return err;
+>>>>> +	}
+>>>>>    	list_add_tail(&pprof->list, &platform_profile_handler_list);
+>>>>>
+>>>>> -	cur_profile = pprof;
+>>>>>    	return 0;
+>>>>>    }
+>>>>>    EXPORT_SYMBOL_GPL(platform_profile_register);
+>>>>> @@ -215,7 +247,6 @@ int platform_profile_remove(struct
+>>>>> platform_profile_handler *pprof)
+>>>>>
+>>>>>    	list_del(&pprof->list);
+>>>>>
+>>>>> -	cur_profile = NULL;
+>>>>>    	if (!platform_profile_is_registered())
+>>>>>    		sysfs_remove_group(acpi_kobj, &platform_profile_group);
+>>>>>
+>>>>> -- 
+>>>>> 2.43.0
+>>>>
+>>>> I'm still going thru the code changes - but I'm a bit unsure on the implementation itself.
+>>>
+>>> FYI, I split it up in v2 to make each chunk and intent behind it more
+>>> manageable to review instead of patch 7 being "so" big.
+>>>
+>>> V2 covers some of the points below as well based on some feedback from
+>>> Hans and Armin.
+>>>
+>> 
+>> Ack - sorry for that, on PTO this week/last week and not checking email very often. Saw the v2 after I sent the comments on v1 (my inbox is a little bit out of control right now).
+>> I've just started looking thru that - let me know if better to move that conversation there
+>> 
+>>>>
+>>>> I'd expect that one of the advantages of having different profile handlers register is that you could support extra & new profiles that might be wanted. For example the recent discussion of the AMD handler providing better tools to tweak advanced system settings for gaming etc. Won't this approach limit that? You'll only be able to have common settings.
+>>>
+>>> Well that RFC it turns out won't really be scalable because SPS is done
+>>> differently in AMD Strix and newer.  I haven't revisited it yet.
+>>>
+>>> But yes this approach would conceptually limit that idea because common
+>>> settings are all that is presented.
+>>>
+>>>>
+>>>> I find having a common profile and two different handlers a bit tricky on how to handle. My concern is it can easily lead to conflict in settings.
+>>>> If two handlers are doing different operations to provide the same effect - then neither handler is (probably) providing what they think is required. With your CPU vs EC example, the EC will often set CPU clock thresholds and the CPU profile handler will be changing that. If this is done I think it should be explicit to the user (admittedly I'm doing this with my Lenovo hat on - but we certify our platforms with our EC profile handler)
+>>>>
+>>>> I could see providing two separate handlers. e.g. balanced-A and balanced-B (for driver-A and driver-B) and the user maybe choosing which one they want (or both - though the user interface for that is definitely tricky)
+>>>> But choosing one option for two different drivers seems confusing and with unknown side-effects. I appreciate it's complicated by your example wanting to add CPU and EC - I know how much work you've been doing on the AMD CPU front which benefits all systems.
+>>>>
+>>>
+>>> Thinking through your comments I guess another way to approach this
+>>> would be "per-driver" sysfs knobs.  Here's my thought.
+>>>
+>>> 1) /sys/firmware/acpi/platform_profile_choices would contain only things
+>>> that are common and if there is something NOT common then also the
+>>> string "custom".
+>>>
+>>> 2) /sys/firmware/acpi/platform_profile would accept writes for
+>>> everything in platform profile choices except "custom".
+>>>
+>>> 3) Each driver handler would also export it's own sysfs files to
+>>> represent the driver state.
+>>>
+>>> 3) If the user changed the main knob at
+>>> /sys/firmware/acpi/platform_profile then it would change all driver
+>>> handlers.
+>>>
+>>> 4) If the user changed sysfs for any driver individually then the main
+>>> knob /sys/firmware/acpi/platform_profile would export "custom".
+>> 
+>> I need to think about it a bit more - I still have some concerns about two drivers doing the same thing. In some cases they can complement each other nicely, but in other cases they will treat on each others toes.
+>> 
+>> Just to throw another idea on the pile:
+>> 
+>>   - If only one profile then it can have low-power, balanced, performance as currently
+>>   - If two or more profiles, belonging as an example to driverA and driverB, their profile names become balanced-driverA and balanced-driverB. You could choose specifically if you wanted to activate one of them by using the driver name
+>>   - Each driver would have a priority. I'm biased here, but a vendor platform driver would have priority 1, a CPU vendor driver priority 2, etc. This would be used to determine which driver version would be used for the cases where multiple options are present and user chooses, for example, just balanced. If two drivers of the same priority compete then first driver loaded wins.
+>> 
+>> So as an example: if we have the case where we have thinkpad_acpi (priority 1) and amd (priority 2) profile drivers offering all three profiles then:
+>> 
+>> /sys/blah/platform_profile_choices would offer:
+>> lower-power, balanced, performance, low-power-thinkpad_acpi, balanced-thinkpad_acpi, performance-thinkpad_acpi, low-power-amd, balanced-amd, performance-amd.
+>> 
+>> If the user chooses balanced - it would activate the balanced-thinkpad_acpi profile as it has the higher priority.
+>> The user could then also activate balanced-amd separately if they choose. Multi balanced profiles are OK.
+>> 
+>> Initially this would all be from command line, but I'm sure some nice user space GUI can be done to allow you to choose which profiles are available and active/in-active.
+>> 
+>> Maybe also add an option under platform-profiles to have an "enable all matching profiles" to override the priority implementation? In this case choosing balanced would enable all balanced profiles available (in priority order?)
+>> 
+>> Would that work for the ASUS case or not?
+>
+> At least for the ASUS case "today" I think "priority" could work, but 
+> what happens if one day ASUS prefers to use amd-pmf instead of the 
+> custom WMI stuff for some systems?  IMO you don't want to have it set in 
+> stone for priorities.
+>
+At that point they can submit a patch to set their priority according to their needs...as it only impacts their machines that's totally their choice how they want to do it.
+But (see below notes), I think I withdraw the idea, it is unnecessarily messy.
+
+> I do worry that generally though users won't know what they want if 
+> there is a "balanced", "balanced-vendor" and "balanced-cpu".
+>
+
+fair
+
+> And I don't think we can use the same interface to select multiple at 
+> once.  I think if we're to have multiple handlers exposed and allow 
+> different options then it needs to be a class interface (or something 
+> similar).
+>
+Yeah - saw the class proposal after sending this. That probably makes sense and is simpler.
+
+Still not sure how that solve the problem with multiple drivers offering the same profile and treading on each other. 
+
+I've been through various arguments in my head and whilst I am selfishly concerned about causing issues and supporting users, I suspect the reality is it will work out just fine and I'm over-thinking it and the profiles will play nicely together.
+
+Can we have a module argument so we can set a preferred profile driver, for cases where things go wrong? e.g platform_profile.use_only=thinkpad-acpi (as an example). 
+Just so if there are issues it's easy to debug if a particular profile handler is causing the problem. These changes are going to make debugging profile issues more complicated :)
+
+>> 
+>>>
+>>> Hans what do you think?
+>>>
+>> 
+>>>> Another concern - would this mean that another driver could limit the options available? For instance if someone wrote a new 'mega-turbo' only profile driver and it loaded - it would then mean no profiles were available for anything as no profiles matched?
+>>>
+>>> Yes.  I don't think it's a problem in practice right now (as we only
+>>> just recently have two drivers vying for this position), but it /could/
+>>> be something that happens.
+>>>
+>> 
+>> I'd certainly like to leave the window open so that there could be, for instance, a 'gaming' profile option that does some high-performance mode with maybe power shifting towards the GPU and some other graphics only tuning things?
+>> I wouldn't like to shut down the ability to have options for things like that.
+>> 
+>
+> It comes down to how much of a catch all this knob needs to be in the 
+> kernel.  If you put too much into the single knob it doesn't become 
+> useful anymore generically.
+>
+> At least for AMD APU + AMD dGPU designs there already exists a bias knob 
+> that lets you control the power share.
+>
+> https://docs.kernel.org/gpu/amdgpu/driver-misc.html#gpu-smartshift-information
+>
+> Similarly you can manually adjust clocks and performance profiles for 
+> GPU from standard files:
+>
+> https://docs.kernel.org/gpu/amdgpu/thermal.html#gpu-sysfs-power-state-interfaces
+>
+> So my gut says this idea of gaming mode should be stuck to userspace. 
+> There is already such a project for that:
+>
+> https://github.com/FeralInteractive/gamemode
+> 
+The gaming profile was just an example, but after more consideration, I think you're right that user space makes more sense for these cases, and similar others.
+
+Mark
 
