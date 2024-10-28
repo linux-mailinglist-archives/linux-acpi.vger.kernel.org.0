@@ -1,59 +1,58 @@
-Return-Path: <linux-acpi+bounces-9025-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9027-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAE79B224B
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 03:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806089B224F
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 03:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFCC81C20D9C
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 02:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E841C20F45
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 02:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFA018455B;
-	Mon, 28 Oct 2024 02:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7618E773;
+	Mon, 28 Oct 2024 02:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YwME/gla"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ICYQkUVT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2059.outbound.protection.outlook.com [40.107.102.59])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2082.outbound.protection.outlook.com [40.107.212.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ED618E744;
-	Mon, 28 Oct 2024 02:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F127D18E754;
+	Mon, 28 Oct 2024 02:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730080950; cv=fail; b=Y8z5vAvvO/JnL7yQ8CZ8GjxbkdkiYHtpvb+L8niE5n1lJ+L+zz5S2B0oqeg1ePnCN1wzNih3ZjNXbtK9Bgyhl2NvGDK9gXjNikGxEX+aJ0M8ZNjgX3jvyf9vDSABdYYjdu6UcG2YtRwCJ+i+LqHEZAACk/7PMD+c1kOSLNUjxpk=
+	t=1730080951; cv=fail; b=uxImHk2pueFXCW4y3wI/t3baKEVtulqw7tMzuCtXl4bPrBfRFQUcQZU6jfjYCY8wfgAeM2VBYrPCORfU2FBPMlycXyAC/mGy9UYDwv+H48A/4AXrRfXymHFzn1IfirzhpgCDr2DXxeoTz5MpcjXHQtl1fsvQL71g04ZCIJ5ZQoE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730080950; c=relaxed/simple;
-	bh=W+fSgJhDtdVD/6141uj9L3PIS1UUOjhO6wr49vbQxCY=;
+	s=arc-20240116; t=1730080951; c=relaxed/simple;
+	bh=aFwzSKPLz/YXemmVCdt8GJyf6EUcnLuQ4/HLB16K6Ks=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BkNzaRtLvnhiLM7G3H48FAUAtNDculsXgu4XyjJFBkqWle2OUKKZKnXxwIwWosW8tHDj0ClT0cS/AzUTfBITtjeWgcsQWiIFm5fSPGqVuiilp3IvWzrudiljkl7ZaxaII6WUULHR82XnhP0YEgoRasz2mNBrainKTAnc/mUhlM0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YwME/gla; arc=fail smtp.client-ip=40.107.102.59
+	 MIME-Version:Content-Type; b=CDs5yepy9G8tUrF3JDd56VOFJDFzR9r8+N9iGoxgK88HMWjPH6G1syMfNXnO4bkTGhnGMvqMx7fiRsr4Z2d9DMxaUUJtsi7CXYQIs8EE3PZhcY6zsH0HTHQb6MBU/Ufr9doKLXFI54kG9zrsiZiFTKVhZf4pqm+wTtPABGs1d4k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ICYQkUVT; arc=fail smtp.client-ip=40.107.212.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ud8LDt1DfCaGlX6vj9gODJOr8PWwVYV5yydDOGy842G56JUZTkYvhQ+pGMGUkvBzC7ozP94Uy3cLWS7EZXetkFJyD67xg5cimG8+2N83RbpTOr/A6YZruQT9hD9iLdh9OHmwx06xT2jWaiJ1DNCz48kTrNK3awnyE6P10k/gyMzSifgJ5P8JFQGIA5y6vnye+Lnx98reDO2VJteK+a06I9bPek6IN0r7XuC9KwBCGm+VNjnR495YnADLNnvMIzqW9bx6C4bRshEHP2PmrOt0JGQ8ZKbLNER/D2QjbqUtyemu9TDxlggXArrgCM3LZacrCyBkeuBBwr24/nJb3mamIg==
+ b=YPCJ+Q4p/Z+exmQM2hMfuZYqAJhWgRuSuDIwrim6hL3y3siFdoKfBn/wAXa0Gi6tqiGThVH6hnYH/OS3v2KJdy2bjOgMYkc+zEVukxmIDeebJOa3cxPNalTjMMsWigi9cP4NK4v0s5/rhFshWF7nyPhFrSdbc4HkkXNQk742Bl8XVIRUYAbCeD71Lb3xA2/+XDumidIkuXRJZvrTCXYkCoD3DL/dnWdV+HOUfnpfB//gebT8OrORgxI3v9d/n63ZVojGU3oedYWyLfOnUM6PKoTcE2stWlapOQb0TVUVklh/lYslXAuvt36/SALPaeWBcI2MdKwgSeH/oNTTrqmYmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ql6c7Js8FYvAm4PiZo27iRN5a3gxXJfJtHYC8UW3PnU=;
- b=VWujriMC88RZTwIFHkk5VFpTQVOT3Pa2bAwcbJ5cJJgyvA6/JEgUOlhp1y4Ti1t2fqWm5Iz6BzH7L4qB3925Bry55ZiE/Bgj4I5FE817Qzy9CRlfbfVegWPgSx/JJsWwRw3Sm6yl1GrlXfoMPSZGDst6Mr0i5VWxFx/x2zYtKDEejy3m2fzjX0FlR9ov0BEOTllhhmeJLBW58+SB+f72KM59+JqAcBA99SbaZLvR4mGEZYrpAsFevS2T3BSGwavdZzvKeYWAg73gOiz+Smt96h1Zp3mPTRbBc5w650gWzYvfywujYzf68z24ZiWQ29u4Ugt/b9Q/ehVubeM5qL4sBg==
+ bh=7kxczHy0H4hTAJE0R5okzA9R2sjEja1ZRGsbQuw3pv4=;
+ b=RWIHAtSAr/6rrftr2i/fkQb0UDO/WmVtJqbgCV2CpPj/7jqWo3XJbe6pRtHxFYgXAzSTm6OANZZshYGQIMAIOGjm6DXzIuFGcVl9MuOV6UDEUFX8AWyo+v9JYe/7uzw/MeOdBOVUPyStCNBk7Kt6am9dsGp6YBVEYBhpcLOiKOTcZ2106Uc9tUeP1qqTjciVzJ7RD3ZkOogRCkWsHSNSA2+6FUVYHrt8nhut1jJiKxeUgpEB4RS4tdyuXBWVQAxVqt1tY0N+lg5ydQD8zmzqaqdAfAzcW7tZiwbRcz31ksKV9ed3XCn/Qa+/5szT8NxanHNP4gpbVUlAkQlU0jK3KA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ql6c7Js8FYvAm4PiZo27iRN5a3gxXJfJtHYC8UW3PnU=;
- b=YwME/glaOTxtVRGLsZB7lRpOTK/Dti9Q8qaZdYY1iQZi27WXEvvMlpvwZByuPLswqbmmbJsQB+7PaZlRs8uIE7L4X1nLzTsdQHOKshqGVsFbOLdn1Zo8QB7ZSGIaYmzmAtlotJZV9U6U5KPFbPxsm5dpmi4GSLq+klkhLrX/KTM=
-Received: from BN9PR03CA0911.namprd03.prod.outlook.com (2603:10b6:408:107::16)
- by IA1PR12MB6410.namprd12.prod.outlook.com (2603:10b6:208:38a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Mon, 28 Oct
- 2024 02:02:23 +0000
+ bh=7kxczHy0H4hTAJE0R5okzA9R2sjEja1ZRGsbQuw3pv4=;
+ b=ICYQkUVT+6Z3rtkucM6863zA4Sg2G3c1trXel7U5TpgoPAV9wzlSgWcaUXvD+oNn37AkyAOVUlODRACap4ZtlZVZJ0xqPxPQ9qzQau6EANHcHh92/eqAedssVX55LWF+GqBRkVLoMAy2kgSo1rsshAQFps2nVimWtkycpkd9TN0=
+Received: from BN9PR03CA0927.namprd03.prod.outlook.com (2603:10b6:408:107::32)
+ by DS7PR12MB5910.namprd12.prod.outlook.com (2603:10b6:8:7b::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8093.24; Mon, 28 Oct 2024 02:02:23 +0000
 Received: from BL02EPF00021F69.namprd02.prod.outlook.com
- (2603:10b6:408:107:cafe::65) by BN9PR03CA0911.outlook.office365.com
- (2603:10b6:408:107::16) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:408:107:cafe::f9) by BN9PR03CA0927.outlook.office365.com
+ (2603:10b6:408:107::32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.21 via Frontend
  Transport; Mon, 28 Oct 2024 02:02:23 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -65,11 +64,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BL02EPF00021F69.mail.protection.outlook.com (10.167.249.5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8114.16 via Frontend Transport; Mon, 28 Oct 2024 02:02:22 +0000
+ 15.20.8114.16 via Frontend Transport; Mon, 28 Oct 2024 02:02:23 +0000
 Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 27 Oct
- 2024 21:02:19 -0500
+ 2024 21:02:20 -0500
 From: Mario Limonciello <mario.limonciello@amd.com>
 To: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
 	<ilpo.jarvinen@linux.intel.com>
@@ -86,9 +85,9 @@ CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
 	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2 12/15] ACPI: platform_profile: Make sure all profile handlers agree on profile
-Date: Sun, 27 Oct 2024 21:01:28 -0500
-Message-ID: <20241028020131.8031-13-mario.limonciello@amd.com>
+Subject: [PATCH v2 13/15] ACPI: platform_profile: Check all profile handler to calculate next
+Date: Sun, 27 Oct 2024 21:01:29 -0500
+Message-ID: <20241028020131.8031-14-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241028020131.8031-1-mario.limonciello@amd.com>
 References: <20241028020131.8031-1-mario.limonciello@amd.com>
@@ -104,114 +103,77 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F69:EE_|IA1PR12MB6410:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c8f6d72-da6a-4415-ef45-08dcf6f49024
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F69:EE_|DS7PR12MB5910:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fd22a2c-adca-46ba-9e62-08dcf6f49054
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7416014;
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZEz8A4/nGThEAHyxIFuDiJkcyaAkVMKVAEO+aeZNU401bbghYKV8myb4lTNP?=
- =?us-ascii?Q?XbNvQh6pv/ZFwVNfFzqq0FAwdQUaX5BnrCMrO82xA5uq8CAfdYC/sS1MuAcL?=
- =?us-ascii?Q?pKInTolNFgOcJiwcWe+CTyxHQjCVnns8NefBgFOLn1t6MuCb/oBLiCkHyK65?=
- =?us-ascii?Q?DhNUa33z4m9b63dAkN27dPjh5Cu82dbYqFQJvCFVOciE4nOwkeyL3hn9e8+k?=
- =?us-ascii?Q?zCnOd15bZM/IKmgbuZrsPJEK4MZBVmRAqO4M6HJUkiygnPG2yAO6ZzwnNN2X?=
- =?us-ascii?Q?ugDp6Sb7x5ZhPRXT1YzEw9MjxqVdm6bYcA+90m41J3B6FLfPy27yZnhXkbJP?=
- =?us-ascii?Q?CKTB71Egmw+rs/PE0ylXrkHTHBm9u8XeEFnbYifQ4cA49Dunxhf6NVJ8aav2?=
- =?us-ascii?Q?XbuJsCfjVR0SQGlkYHrGXeQbGu2L7G0txDzCuTWyGfI1Y7Z0YiGLf4bqVZMn?=
- =?us-ascii?Q?RdPDjGG99QKK5ET8e/9YIfArbB2rAnP1W9JwmGrR5KoGOgSNOJlY64eR7sW/?=
- =?us-ascii?Q?A8fRD1qVrWtFr36Z0RrqtiLOgmXBJf2+PwFhxbem7QPLtzX6rvOoal1uoPM6?=
- =?us-ascii?Q?JHhnSzWzJpO05kKNwgvwya2SWxUSm1kiBZWzH6j1pct2jzQETsfzrl0B+GHN?=
- =?us-ascii?Q?ivYmp/85aj6usKHB+q67cfNPHnUfsGHZKhA0NhI00oyaGTKPFx04SIy98uRK?=
- =?us-ascii?Q?4oKP5Gxx42fAOx/Hk4vim3BDJRyH2JEIOCXfaKxCcMVq8VI7kEhCnnRSgN4V?=
- =?us-ascii?Q?rn388Mo+mLIwyaxtjIz7RM47yIX0uVZ9g4wbjz4NZ2D/erDmhk8fw3OXP77q?=
- =?us-ascii?Q?emMhZyf1w9LbDNOc4U+f3g2mZEL1Jr1j+LgsL9kj+91dwzQir+rvIwSd6PJM?=
- =?us-ascii?Q?V6jXRO1Tv1Bi1304wa3/ZOWS971jGgV/a/LJeH97Z6ciVeGGC+bqbAsaiCg4?=
- =?us-ascii?Q?TVnm5LdSdwhGqIdjbPlTYiUq/eks1Y6RxM0Fd001YYibmmzOdFe+JYtb4zCH?=
- =?us-ascii?Q?hlsC4OexUqApa0QDp18lNZ4aOI1RHX6zDOKVHehSYxWT1FufKb/3cGK5mzDJ?=
- =?us-ascii?Q?Y6FjcHO4xqrcbvgD74nw6KUQAhpjky8RgQVAkY4WxLrTJmBcriWsOgzMlRx2?=
- =?us-ascii?Q?WjKS7QTS59bu2aOgYYU5pA4OPGaFEJSQ6TitkxdpgaHwvMg89XchvIYw8ytG?=
- =?us-ascii?Q?zy/oRKvxpl1+9Nl7IPHn6yNW1DoBNMkOC+cUAM+B+2Y6MlA2xkkfam0c01d3?=
- =?us-ascii?Q?PEHDRnGOUl2kG1EVkNFhQz4logzOgclsYf7M6ISnDAeN6A+DMkIsYPeCpyuk?=
- =?us-ascii?Q?tUNyaKLqk0FHj9GUCwP5jRiXhp5E/cRvyL+iZ+b6IG75QJMiJIHnS7dnOJSu?=
- =?us-ascii?Q?LXNKH9H7muUf1D+t5EjBV5RLoWrz59rdxfDtmWeKsQMxl+Pryw=3D=3D?=
+	=?us-ascii?Q?6sw3KkCx1cRngOWQNcg+I0qHJM08XE08Ep6XViSlMq05ICbz1qb5H6k5M/9q?=
+ =?us-ascii?Q?+5syauEzVqUf1lwcI7GCK7JKcWUolUOAWU1bL0Uz43dmafM50wzB+D3q93+2?=
+ =?us-ascii?Q?g+w9HvqMtqHgbSvAE9OIsy/2SSCbPCRVsf7wQJJkMgLhezO6kq7TrKP4G9SP?=
+ =?us-ascii?Q?fm9ys7nntp2pwt6NSx0c97rPeknuqRAJn74ONE70DjhTnY3ztMkRnwFtSnwL?=
+ =?us-ascii?Q?ZUrM13wQxhUs6lUOaofe5Eciz+lSaR6mqrl/1gcK7HUWXPM9xpqq5e6hyTHH?=
+ =?us-ascii?Q?Ad05kYti5re/wGB5577lyP7TAR8Rg+LnEko2+uEkMahinIkt2GgCVEPMV6WX?=
+ =?us-ascii?Q?YTnJbbhk7YrJPbkaHd2MLaM2RI7V8IMlJF8vWvm/9dgE7COpXWnhpqlilmVd?=
+ =?us-ascii?Q?9xyY+fvK6E5D2uV+uO5fwgMWHHVhdPq58x+koi2qYKNKWEnCFNze6wIXyPix?=
+ =?us-ascii?Q?J5M74WsuHdMXbaTgP54dQj+5hY+jkgegnfWqQsNdVH8338qg8esv479Rldxh?=
+ =?us-ascii?Q?bADy4BRoTF8uMjZJnLZ5AJLEcVIhyCWQ3MCpjPVVEBaQXJET2BvUernUaeIe?=
+ =?us-ascii?Q?5bAVNXmRQDVQWVP1LmOXAPxKRw/Tn+Ww5tTIqtwDw/M157TkeukUYEd4buBD?=
+ =?us-ascii?Q?1nJDjIf2tue+k55Lsav8m17QwDfkZMAiYTCQeSMJkq0rucScAwcmki40IMfY?=
+ =?us-ascii?Q?Et4GvsxKOuT1DpNbXNyCP77Hh6FNREclPfc46gu5vQc0s6nRr57qUe27zyg2?=
+ =?us-ascii?Q?PRU/SJ7VLquEXDju0lBDpmtCC2g28NUUeeTG0D/ocDbsT97VVO4Wvm8y5rKL?=
+ =?us-ascii?Q?jiaqs+oQU7gJ1IjYlDxf2vlwevyuVctNDMTlAe45bX5hUx+vBPF1b0wZZe+K?=
+ =?us-ascii?Q?YwksZY3M9jNs7QpHS4EOdhZWmdG40V3qRbBhXhxAJWPPZ6kRBhWWjvFNTgq2?=
+ =?us-ascii?Q?ylJW5wocsWnm4s8fz9RRU+Mmpsdfd4p0+fxMcrZg5QNdZMoBLmA+xGfSmgep?=
+ =?us-ascii?Q?9vO/kJG3JnZS7NRH7tLXchE8wbiPV9CFwjzDoHxMXIY4Eq2mew0dfF94qgtu?=
+ =?us-ascii?Q?mbb57XEaeImhchhy5KSIZH2zTFKwNyJz89yqgigau/563XK3r1vtviM6v0TL?=
+ =?us-ascii?Q?xFs2Sb/ufj3Nb3lPTT6FOL5+q215xnq7MfXvGGkvZV0dZZVd2tMFzhRHcIBH?=
+ =?us-ascii?Q?IGfoOUsg4pOW0LHp3Zg85POS29pBMZ2qO1IdzOfuPf6ApVhdMEHvHb77mdkn?=
+ =?us-ascii?Q?QcxACcvA5VM44r5yY002qm0AJrt04uClT9efD5Sul+KecDGCDc2VaOvKIEgD?=
+ =?us-ascii?Q?LACfDYfku7neZwd8fPmomTNdXjoFRVyFwhT+RVVAbWMz2fvKewSARvsv8dIb?=
+ =?us-ascii?Q?9ct2QLlzagBCBqjXylYuSYKwsBTJK96HUW16QK+qP58WFlmi4g=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 02:02:22.9935
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 02:02:23.3060
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c8f6d72-da6a-4415-ef45-08dcf6f49024
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fd22a2c-adca-46ba-9e62-08dcf6f49054
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BL02EPF00021F69.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6410
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5910
 
-If for any reason multiple profile handlers don't agree on the profile
-set for the system then the value shown in sysfs can be wrong.
+As multiple platform profile handlers might not all support the same
+profile, cycling to the next profile could have a different result
+depending on what handler are registered.
 
-Explicitly check that they match.
+Check what is active and supported by all handlers to decide what
+to do.
 
 Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/acpi/platform_profile.c | 61 ++++++++++++++++++++++++---------
- 1 file changed, 45 insertions(+), 16 deletions(-)
+ drivers/acpi/platform_profile.c | 52 +++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index db2ebd0393cf7..d22c4eb5f0c36 100644
+index d22c4eb5f0c36..e6ea5b600e2af 100644
 --- a/drivers/acpi/platform_profile.c
 +++ b/drivers/acpi/platform_profile.c
-@@ -51,6 +51,45 @@ static unsigned long platform_profile_get_choices(void)
- 	return seen;
- }
+@@ -196,40 +196,42 @@ EXPORT_SYMBOL_GPL(platform_profile_notify);
  
-+/* expected to be called under mutex */
-+static int platform_profile_get_active(enum platform_profile_option *profile)
-+{
+ int platform_profile_cycle(void)
+ {
++	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
 +	struct platform_profile_handler *handler;
-+	enum platform_profile_option active = PLATFORM_PROFILE_LAST;
-+	enum platform_profile_option active2 = PLATFORM_PROFILE_LAST;
-+	int err;
-+
-+	list_for_each_entry(handler, &platform_profile_handler_list, list) {
-+		if (active == PLATFORM_PROFILE_LAST)
-+			err = handler->profile_get(handler, &active);
-+		else
-+			err = handler->profile_get(handler, &active2);
-+		if (err) {
-+			pr_err("Failed to get profile for handler %s\n", handler->name);
-+			return err;
-+		}
-+
-+		if (WARN_ON(active == PLATFORM_PROFILE_LAST))
-+			return -EINVAL;
-+		if (active2 == PLATFORM_PROFILE_LAST)
-+			continue;
-+
-+		if (active != active2) {
-+			pr_warn("Profile handlers don't agree on current profile\n");
-+			return -EINVAL;
-+		}
-+		active = active2;
-+	}
-+
-+	/* Check that profile is valid index */
-+	if (WARN_ON((active < 0) || (active >= ARRAY_SIZE(profile_names))))
-+		return -EIO;
-+
-+	*profile = active;
-+
-+	return 0;
-+}
-+
- static ssize_t platform_profile_choices_show(struct device *dev,
- 					struct device_attribute *attr,
- 					char *buf)
-@@ -80,24 +119,14 @@ static ssize_t platform_profile_show(struct device *dev,
- 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+ 	enum platform_profile_option profile;
+-	enum platform_profile_option next;
++	unsigned long choices;
  	int err;
  
 -	err = mutex_lock_interruptible(&profile_lock);
@@ -221,25 +183,55 @@ index db2ebd0393cf7..d22c4eb5f0c36 100644
 -	if (!cur_profile) {
 -		mutex_unlock(&profile_lock);
 -		return -ENODEV;
+-	}
 +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-+		if (!platform_profile_is_registered())
-+			return -ENODEV;
 +		err = platform_profile_get_active(&profile);
 +		if (err)
 +			return err;
- 	}
  
 -	err = cur_profile->profile_get(cur_profile, &profile);
--	mutex_unlock(&profile_lock);
--	if (err)
+-	if (err) {
+-		mutex_unlock(&profile_lock);
 -		return err;
+-	}
++		choices = platform_profile_get_choices();
+ 
+-	next = find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LAST,
+-				  profile + 1);
++		next = find_next_bit_wrap(&choices,
++					  PLATFORM_PROFILE_LAST,
++					  profile + 1);
+ 
+-	if (WARN_ON(next == PLATFORM_PROFILE_LAST)) {
+-		mutex_unlock(&profile_lock);
+-		return -EINVAL;
++		list_for_each_entry(handler, &platform_profile_handler_list, list) {
++			err = handler->profile_set(handler, next);
++			if (err) {
++				pr_err("Failed to set profile for handler %s\n", handler->name);
++				break;
++			}
++		}
++		if (err) {
++			list_for_each_entry_continue_reverse(handler, &platform_profile_handler_list, list) {
++				err = handler->profile_set(handler, PLATFORM_PROFILE_BALANCED);
++				if (err)
++					pr_err("Failed to revert profile for handler %s\n", handler->name);
++			}
++		}
+ 	}
+ 
+-	err = cur_profile->profile_set(cur_profile, next);
+-	mutex_unlock(&profile_lock);
 -
--	/* Check that profile is valid index */
--	if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
--		return -EIO;
--
- 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+-	if (!err)
+-		sysfs_notify(acpi_kobj, NULL, "platform_profile");
++	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+ 
+-	return err;
++	return 0;
  }
+ EXPORT_SYMBOL_GPL(platform_profile_cycle);
  
 -- 
 2.43.0
