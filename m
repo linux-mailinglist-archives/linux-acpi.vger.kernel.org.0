@@ -1,478 +1,425 @@
-Return-Path: <linux-acpi+bounces-9042-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9043-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60629B2E4F
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 12:14:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4A29B2EBE
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 12:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D994E1C21B39
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 11:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EECD5285355
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Oct 2024 11:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9F91D966B;
-	Mon, 28 Oct 2024 11:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957AD1DE3DD;
+	Mon, 28 Oct 2024 11:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="gl1TAKl3";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kmyNWHmA"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CK3gJwuD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAE91D90AD;
-	Mon, 28 Oct 2024 11:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17F61DE2B0;
+	Mon, 28 Oct 2024 11:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730113339; cv=none; b=oJhrzYead/NK58GYVP2xJCq4DTIYg+BdF/U6yflncIMgw72j4+/s6Tm+dvhiHHRiE+SYdDv7Vq2uJBtwq4kFaeHuBZ827etBcVV4V1KMhZjSww9hR2wIXp1C0auUPChSAyIshEf5FC3nL5U3bS9nEF3E3fBY5uLytRuNj2fRFN4=
+	t=1730114260; cv=none; b=CG3lAZDKUKh5w9dsKRZDqQttVZ49DJQd4bCVI1locKMxIiApmReVqsCeX9doS73y/2LymkBUkcnHnBsUBceoga32EJoSemLBihez15whaDzKlykzOER47Q8Ab4a9I9Ij6QUWESkv39eek6K9JrYUbSjNxXRNSYYhNuLDcu2uyAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730113339; c=relaxed/simple;
-	bh=G4DEvRIB1hy/Xi0AYjOXvOLiwjdiW56J3Xa8p9tdjWQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=PMSx8STs44T7Jjp/7Y1FWzZ5TUBdQ4hzfPwPxQJWTmlIubIVi2YY5XgkmO24ciV9NpoS337ivKOxQ4/tA2TPM1CLRAvdsYpVKRaffaxPz20lHgl/hVr5BT+JFPzzdrX2DgQMmwOkVrm7BT3heuukZLouzQy0MD9lswwkrPc1Em0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=gl1TAKl3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kmyNWHmA; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 451D32540090;
-	Mon, 28 Oct 2024 07:02:14 -0400 (EDT)
-Received: from phl-imap-10 ([10.202.2.85])
-  by phl-compute-02.internal (MEProxy); Mon, 28 Oct 2024 07:02:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1730113334;
-	 x=1730199734; bh=O/D+6f3GkJ3PO4skFYQQ3StKkecOTla7RKcV9O6QbpY=; b=
-	gl1TAKl3HJOeCJNLbO4XW8ZsOExI+KS2HxxPOPqyxV0I9f80w5fc/8Yqb9CJYSp4
-	57PFlNFc7oWZrs1Xp+ScU1+KfTh1gLa2+zvX3hUO7IQ//DvWvEYN88RYwimLYl4Q
-	rTibjkYUG6CEtDqCN/AzqEJVpgGZZX227hk56ek48yf2tAVIefuhjqg/T3aSFv4X
-	o1/C7GtQwEvni98jv3VMIkrY4AWp1l352W0VCJzBTe6+45EfCgpIxHzLoZSUId7g
-	COgmUFLyEU8jZexJ4142BJa6eijOGGnk3wFaXrG1dY1pw+xncvkZgIFtgQ2SZBHm
-	yfUJ5PbVmcGWe9oy926row==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730113334; x=
-	1730199734; bh=O/D+6f3GkJ3PO4skFYQQ3StKkecOTla7RKcV9O6QbpY=; b=k
-	myNWHmAirwhhnkHaf9XO5UYOM4dLW+10QVsQCQ14YXyhXIAgukXsLqVfc/bhM6WD
-	YcANeVOLxUZwbFFWccao9e1/MYqRIoQh54PBTmzJfxBaz/iJObKJL6haYTMdl53v
-	U3oLAahr/ZG2hT4AnhkXIuLOwufUD+VltgjmsEcCzeLGR9fDIH1FdXWcBuuE7u4h
-	QSvX6T9qYbcdu3noQHCqcDHgzYgSnPRODPbrNKbZLcJP1kZ2T/ttodllLfRU/EfW
-	sh69DahD0buwHDPrsobfUX3fMzL9QuII6UxNpAIRTNb/UdxJankAYtMvao87N72O
-	49kp90orZCaRMNRdreEAw==
-X-ME-Sender: <xms:NW8fZ34pneBAaMV_PK7IQkBmPpOKYZiV2g07SEZQ-Tjm_sNPaEPTVg>
-    <xme:NW8fZ876T6IMUEKepPazEORH6TLzyI6HIc3PW0JI6uw89FZ5fK8o3EQoObtt1VYO3
-    qty7HOq9Uejhg1l4qA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejkedgvdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedfofgrrhhkucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnh
-    hovhhosehsqhhuvggssgdrtggrqeenucggtffrrghtthgvrhhnpefhuedvheetgeehtdeh
-    tdevheduvdejjefggfeijedvgeekhfefleehkeehvdffheenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdqlhgvnhhovhho
-    sehsqhhuvggssgdrtggrpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepshhhhigrmhdqshhunhgurghrrdhsqdhksegrmhgurdgtohhmpdhr
-    tghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtph
-    htthhopehikhgvrdhprghnsegtrghnohhnihgtrghlrdgtohhmpdhrtghpthhtoheprghl
-    vgigsggvlhhmgeeksehgmhgrihhlrdgtohhmpdhrtghpthhtoheptghorhgvnhhtihhnrd
-    gthhgrrhihsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhuiihmrgigihhmihhlihgr
-    nhesghhmrghilhdrtghomhdprhgtphhtthhopehhmhhhsehhmhhhrdgvnhhgrdgsrhdprh
-    gtphhtthhopehsohihvghrsehirhhlrdhhuhdprhgtphhtthhopehlvghnsgeskhgvrhhn
-    vghlrdhorhhg
-X-ME-Proxy: <xmx:NW8fZ-c1q8gRXTDsQYxqGyMatxZMnhyu1xid5NkPZrrRq9i6aRW4Sw>
-    <xmx:NW8fZ4LpKovAmhJsNxsv4BTTMDl7SMicWBWd_4X9T2w5hWzrxVdmPQ>
-    <xmx:NW8fZ7L8KwtmFi6MCm6wa2l87AYr25Wj8_kFxC7kuEAlKSQVVOfkWQ>
-    <xmx:NW8fZxwgwRebr1bcMvzRMQUgRBdENoQN3diT0Y-kWM5x51bbb5kzww>
-    <xmx:Nm8fZzKzQtVABJIEyV6Y9LhORHRZ0MCBAauwfRWGo-XLIukJA-fr-2TB>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 4D4033C0066; Mon, 28 Oct 2024 07:02:13 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1730114260; c=relaxed/simple;
+	bh=nI0ZCe9B8XTcVwbcRJwTIt3xdf75VCwrbvkULJxMMy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KGlz1TOAaclPqUvVpydguOySdHGpLLcc1tCqSuPH7sKQvqpkZSuJPjnfbfbCIQRHUiSGw/8e49pRw9gAazLQtp5yvCY95b6Mhidv5oU1ecMEYGE5d19vv9W0zEcdHtYkHoHOnuIIJw7bCAVxGacIO6BnYbeyDuX6irMdKKFBcgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CK3gJwuD; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A16B940E0198;
+	Mon, 28 Oct 2024 11:17:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id YWBf7PxV-zBo; Mon, 28 Oct 2024 11:17:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1730114249; bh=aQXjtMdPxcXQFLTjo1thwq4DHI1V42PctDkGBJnF/+0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CK3gJwuDuQBnlCE3o4SDY3/5iCsHbLCzO+vHjzamHleWqt+WYcO69bJsAASLHJC2q
+	 ti8RqEMlzOcv7Ux5ntYx8kAML4pLXzsvb1YxnYJuPspbRxqXKEl1mTguckHzn3Sl+G
+	 AUHvfxed+jn0CulXbHZq8twP4W+uDZ5sleZ5pW0W1X7mnBjwyRtIIukyWwhovog2yS
+	 CSNAQldYCihVxHRyGcn2WyWSLfnZEUdry5qSIp4KwlU141nOaW1S1/5p2g5/rYpXuf
+	 GyS6fOrlsWBGJAtd2wyQaVU4d+ZpRSZhlR3VpvXPRYkDHtPqaSbydAaHh5lwxHgBXu
+	 r9Xaf8d4tUDu7AyY54XoyTP/42bt7WCv1lgLY2pRdnCW2LNHfJeCVVMbeuqDOH3Nil
+	 vwgVyFBnSnB30uEfmEnTPEfCKjeM5p1Hc25hHnxPxf3MumAXCK2HYpvFiT/dtI3CGf
+	 Ij8WVjFgHfEicgmitayL1N2E4FueQgJWMU6bAq6j2QKwK8oSI4kpYM1c655qNxMpgS
+	 M8MTk1nUUCYSigSBEV2G629H1aOll/cax7kFcWBvmw0wY6R+cdqyB5/RvI3OjlTFjF
+	 uxPYhCQUrHlx2jzyO49OBSQGkvavl+8FNIhfdobnAPlb8WaRUPASwogUjvYM84LJf1
+	 TbrkOTRm3H3ec7oEOYG7tTfw=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 26F0C40E01A5;
+	Mon, 28 Oct 2024 11:16:43 +0000 (UTC)
+Date: Mon, 28 Oct 2024 12:16:37 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, gregkh@linuxfoundation.org,
+	sudeep.holla@arm.com, jassisinghbrar@gmail.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	dferguson@amperecomputing.com, wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com
+Subject: Re: [PATCH v14 03/14] EDAC: Add ECS control feature
+Message-ID: <20241028111637.GSZx9yleFPOjTklIVr@fat_crate.local>
+References: <20241025171356.1377-1-shiju.jose@huawei.com>
+ <20241025171356.1377-4-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 28 Oct 2024 07:01:53 -0400
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "Limonciello, Mario" <mario.limonciello@amd.com>,
- "Hans de Goede" <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
- "Maximilian Luz" <luzmaximilian@gmail.com>, "Lee Chun-Yi" <jlee@suse.com>,
- "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
- "Corentin Chary" <corentin.chary@gmail.com>,
- "Luke D . Jones" <luke@ljones.dev>, "Ike Panhc" <ike.pan@canonical.com>,
- "Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
- "Alexis Belmonte" <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- "Ai Chao" <aichao@kylinos.cn>, "Gergo Koteles" <soyer@irl.hu>,
- "open list" <linux-kernel@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>,
- "Matthew Schwartz" <matthew.schwartz@linux.dev>
-Message-Id: <bfafd7c5-6757-42e5-a3cf-d4695b6723cd@app.fastmail.com>
-In-Reply-To: <20241025193055.2235-8-mario.limonciello@amd.com>
-References: <20241025193055.2235-1-mario.limonciello@amd.com>
- <20241025193055.2235-8-mario.limonciello@amd.com>
-Subject: Re: [PATCH 7/8] ACPI: platform_profile: Add support for multiple handlers
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241025171356.1377-4-shiju.jose@huawei.com>
 
-Hi Mario,
+On Fri, Oct 25, 2024 at 06:13:44PM +0100, shiju.jose@huawei.com wrote:
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/log_entry_type
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) The log entry type of how the DDR5 ECS log is reported.
+> +		00b - per DRAM.
+> +		01b - per memory media FRU.
 
-On Fri, Oct 25, 2024, at 3:30 PM, Mario Limonciello wrote:
-> Multiple drivers may attempt to register platform profile handlers,
-> but only one may be registered and the behavior is non-deterministic
-> for which one wins.  It's mostly controlled by probing order.
->
-> This can be problematic if one driver changes CPU settings and another
-> driver notifies the EC for changing fan curves.
->
-> Modify the ACPI platform profile handler to let multiple drivers
-> register platform profile handlers and abstract this detail from userspace.
->
-> From userspace perspective the user will see profiles available across
-> both drivers.  However to avoid chaos only allow changing to profiles
-> that are common in both drivers.
->
-> If any problems occur when changing profiles for any driver, then revert
-> back to the previous profile.
->
-> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/platform_profile.c | 203 ++++++++++++++++++--------------
->  1 file changed, 117 insertions(+), 86 deletions(-)
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index 091ca6941a925..915e3c49f0b5f 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -9,7 +9,6 @@
->  #include <linux/platform_profile.h>
->  #include <linux/sysfs.h>
-> 
-> -static struct platform_profile_handler *cur_profile;
->  static LIST_HEAD(platform_profile_handler_list);
->  static DEFINE_MUTEX(profile_lock);
-> 
-> @@ -36,26 +35,26 @@ static ssize_t platform_profile_choices_show(struct 
-> device *dev,
->  					struct device_attribute *attr,
->  					char *buf)
->  {
-> +	struct platform_profile_handler *handler;
-> +	unsigned long seen = 0;
->  	int len = 0;
-> -	int err, i;
-> -
-> -	err = mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> -
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> +	int i;
+If the conversion function here is kstrtoul(), why are those values not "0"
+and "1" but in binary format?
+
 > +
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST) {
-> +				if (seen & BIT(i))
-> +					continue;
-> +				if (len == 0)
-> +					len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> +				else
-> +					len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> +				seen |= BIT(i);
-> +			}
-> +		}
->  	}
-> 
-> -	for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
-> -		if (len == 0)
-> -			len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> -		else
-> -			len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> -	}
->  	len += sysfs_emit_at(buf, len, "\n");
-> -	mutex_unlock(&profile_lock);
->  	return len;
->  }
-> 
-> @@ -64,22 +63,20 @@ static ssize_t platform_profile_show(struct device *dev,
->  					char *buf)
->  {
->  	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
-> +	struct platform_profile_handler *handler;
->  	int err;
-> 
-> -	err = mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> 
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		if (!platform_profile_is_registered())
-> +			return -ENODEV;
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			err = handler->profile_get(handler, &profile);
-> +			if (err)
-> +				return err;
-> +		}
->  	}
-> 
-> -	err = cur_profile->profile_get(cur_profile, &profile);
-> -	mutex_unlock(&profile_lock);
-> -	if (err)
-> -		return err;
-> -
->  	/* Check that profile is valid index */
->  	if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
->  		return -EIO;
-> @@ -91,37 +88,48 @@ static ssize_t platform_profile_store(struct device *dev,
->  			    struct device_attribute *attr,
->  			    const char *buf, size_t count)
->  {
-> +	struct platform_profile_handler *handler;
-> +	enum platform_profile_option profile;
->  	int err, i;
-> 
-> -	err = mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> -
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> -	}
-> -
->  	/* Scan for a matching profile */
->  	i = sysfs_match_string(profile_names, buf);
->  	if (i < 0) {
-> -		mutex_unlock(&profile_lock);
->  		return -EINVAL;
->  	}
-> 
-> -	/* Check that platform supports this profile choice */
-> -	if (!test_bit(i, cur_profile->choices)) {
-> -		mutex_unlock(&profile_lock);
-> -		return -EOPNOTSUPP;
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		if (!platform_profile_is_registered())
-> +			return -ENODEV;
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/log_entry_type_per_dram
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) True if current log entry type is per DRAM.
 > +
-> +		/* Check that all handlers support this profile choice */
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			if (!test_bit(i, handler->choices))
-> +				return -EOPNOTSUPP;
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/log_entry_type_per_memory_media
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) True if current log entry type is per memory media FRU.
+
+What's the point of those two if log_entry_type already gives you the same
+info?
+
+And the filename length is a bit too much...
+
 > +
-> +			/* save the profile so that it can be reverted if necessary */
-> +			err = handler->profile_get(handler, &profile);
-> +			if (err)
-> +				return err;
-> +		}
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/mode
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) The mode of how the DDR5 ECS counts the errors.
+> +		0 - ECS counts rows with errors.
+> +		1 - ECS counts codewords with errors.
+
+Now we have "0" and "1"s. Oh well.
+
+What are "rows", what are "codewords"? Explain them here pls for the user.
+
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/mode_counts_rows
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) True if current mode is ECS counts rows with errors.
 > +
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			err = handler->profile_set(handler, i);
-> +			if (err) {
-> +				pr_err("Failed to set profile for handler %s\n", handler->name);
-> +				break;
-> +			}
-> +		}
-> +		if (err) {
-> +			list_for_each_entry_continue_reverse(handler, 
-> &platform_profile_handler_list, list) {
-> +				if (handler->profile_set(handler, profile))
-> +					pr_err("Failed to revert profile for handler %s\n", 
-> handler->name);
-> +			}
-> +			return err;
-> +		}
->  	}
-> 
-> -	err = cur_profile->profile_set(cur_profile, i);
-> -	if (!err)
-> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> -
-> -	mutex_unlock(&profile_lock);
-> -	if (err)
-> -		return err;
-> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
->  	return count;
->  }
-> 
-> @@ -140,7 +148,8 @@ static const struct attribute_group 
-> platform_profile_group = {
-> 
->  void platform_profile_notify(void)
->  {
-> -	if (!cur_profile)
-> +	guard(mutex)(&profile_lock);
-> +	if (!platform_profile_is_registered())
->  		return;
->  	sysfs_notify(acpi_kobj, NULL, "platform_profile");
->  }
-> @@ -148,40 +157,65 @@ EXPORT_SYMBOL_GPL(platform_profile_notify);
-> 
->  int platform_profile_cycle(void)
->  {
-> +	struct platform_profile_handler *handler;
->  	enum platform_profile_option profile;
-> -	enum platform_profile_option next;
-> +	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
-> +	enum platform_profile_option next2 = PLATFORM_PROFILE_LAST;
->  	int err;
-> 
-> -	err = mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> -
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> -	}
-> -
-> -	err = cur_profile->profile_get(cur_profile, &profile);
-> -	if (err) {
-> -		mutex_unlock(&profile_lock);
-> -		return err;
-> -	}
-> -
-> -	next = find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LAST,
-> -				  profile + 1);
-> -
-> -	if (WARN_ON(next == PLATFORM_PROFILE_LAST)) {
-> -		mutex_unlock(&profile_lock);
-> -		return -EINVAL;
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		/* first pass, make sure all handlers agree on the definition of 
-> "next" profile */
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/mode_counts_codewords
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) True if current mode is ECS counts codewords with errors.
+
+Same question as above - redundant files.
+
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/reset
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(WO) ECS reset ECC counter.
+> +		1 - reset ECC counter to the default value.
+
+1 or any value?
+
+Looks like any to me...
+
+You should restrict it to "1" in case you want to extend this interface with
+"2" in the future, for example, doing something a bit different.
+
 > +
-> +			err = handler->profile_get(handler, &profile);
-> +			if (err)
-> +				return err;
+> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/threshold
+> +Date:		Jan 2025
+> +KernelVersion:	6.13
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) ECS threshold count per gigabits of memory cells.
+
+That definitely needs more explanation.
+
+> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
+> index 188501e676c7..b24c2c112d9c 100644
+> --- a/drivers/edac/Makefile
+> +++ b/drivers/edac/Makefile
+> @@ -10,7 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
+>  
+>  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
+>  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
+> -edac_core-y	+= scrub.o
+> +edac_core-y	+= scrub.o ecs.o
+>  
+>  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
+>  
+> diff --git a/drivers/edac/ecs.c b/drivers/edac/ecs.c
+> new file mode 100755
+> index 000000000000..a2b64d7bf6b6
+> --- /dev/null
+> +++ b/drivers/edac/ecs.c
+> @@ -0,0 +1,240 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Generic ECS driver in order to support control the on die
+> + * error check scrub (e.g. DDR5 ECS).
+
+This sentence needs grammar check.
+
+> The common sysfs ECS
+> + * interface abstracts the control of an arbitrary ECS
+> + * functionality to a common set of functions.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
 > +
-> +			if (next == PLATFORM_PROFILE_LAST)
-> +				next = find_next_bit_wrap(handler->choices,
-> +							  PLATFORM_PROFILE_LAST,
-> +							  profile + 1);
+
+#undef pr_fmt
+
+> +#define pr_fmt(fmt)     "EDAC ECS: " fmt
+
+Grep the tree for examples how to do that properly.
+
+Also, this pr_fmt looks unused.
+
+> +static umode_t ecs_attr_visible(struct kobject *kobj, struct attribute *a, int attr_id)
+> +{
+> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ecs_ops;
+> +
+> +	switch (attr_id) {
+> +	case ECS_LOG_ENTRY_TYPE:
+> +		if (ops->get_log_entry_type)  {
+> +			if (ops->set_log_entry_type)
+> +				return a->mode;
 > +			else
-> +				next2 = find_next_bit_wrap(handler->choices,
-> +							   PLATFORM_PROFILE_LAST,
-> +							   profile + 1);
-> +
-> +			if (WARN_ON(next == PLATFORM_PROFILE_LAST))
-> +				return -EINVAL;
-> +
-> +			if (next2 == PLATFORM_PROFILE_LAST)
-> +				continue;
-> +
-> +			if (next != next2) {
-> +				pr_warn("Next profile to cycle to is ambiguous between 
-> platform_profile handlers\n");
-> +				return -EINVAL;
-> +			}
-> +			next = next2;
+> +				return 0444;
+
+What is the goal for the access mode of all those sysfs entries? I sure hope
+it is going to be root-only no-matter what. I don't want normal users to cause
+scrub activity. Please make sure your whole set does that.
+
 > +		}
-> +
-> +		/*
-> +		 * Second pass: apply "next" to each handler
-> +		 * If any failures occur unwind and revert all back to the original 
-> profile
-> +		 */
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			err = handler->profile_set(handler, next);
-> +			if (err) {
-> +				pr_err("Failed to set profile for handler %s\n", handler->name);
-> +				break;
-> +			}
+> +		break;
+> +	case ECS_LOG_ENTRY_TYPE_PER_DRAM:
+> +		if (ops->get_log_entry_type_per_dram)
+> +			return a->mode;
+> +		break;
+> +	case ECS_LOG_ENTRY_TYPE_PER_MEMORY_MEDIA:
+> +		if (ops->get_log_entry_type_per_memory_media)
+> +			return a->mode;
+> +		break;
+> +	case ECS_MODE:
+> +		if (ops->get_mode) {
+> +			if (ops->set_mode)
+> +				return a->mode;
+> +			else
+> +				return 0444;
 > +		}
-> +		if (err) {
-> +			list_for_each_entry_continue_reverse(handler, 
-> &platform_profile_handler_list, list) {
-> +				err = handler->profile_set(handler, profile);
-> +				if (err)
-> +					pr_err("Failed to revert profile for handler %s\n", 
-> handler->name);
-> +			}
+> +		break;
+> +	case ECS_MODE_COUNTS_ROWS:
+> +		if (ops->get_mode_counts_rows)
+> +			return a->mode;
+> +		break;
+> +	case ECS_MODE_COUNTS_CODEWORDS:
+> +		if (ops->get_mode_counts_codewords)
+> +			return a->mode;
+> +		break;
+> +	case ECS_RESET:
+> +		if (ops->reset)
+> +			return a->mode;
+> +		break;
+> +	case ECS_THRESHOLD:
+> +		if (ops->get_threshold) {
+> +			if (ops->set_threshold)
+> +				return a->mode;
+> +			else
+> +				return 0444;
 > +		}
->  	}
-> 
-> -	err = cur_profile->profile_set(cur_profile, next);
-> -	mutex_unlock(&profile_lock);
-> -
-> -	if (!err)
-> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> 
-> -	return err;
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_cycle);
-> 
-> @@ -190,21 +224,19 @@ int platform_profile_register(struct 
-> platform_profile_handler *pprof)
->  	int err;
-> 
->  	guard(mutex)(&profile_lock);
-> -	/* We can only have one active profile */
-> -	if (cur_profile)
-> -		return -EEXIST;
-> 
->  	/* Sanity check the profile handler field are set */
->  	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
->  		!pprof->profile_set || !pprof->profile_get)
->  		return -EINVAL;
-> 
-> -	err = sysfs_create_group(acpi_kobj, &platform_profile_group);
-> -	if (err)
-> -		return err;
-> +	if (!platform_profile_is_registered()) {
-> +		err = sysfs_create_group(acpi_kobj, &platform_profile_group);
-> +		if (err)
-> +			return err;
+> +		break;
+> +	default:
+> +		break;
 > +	}
->  	list_add_tail(&pprof->list, &platform_profile_handler_list);
-> 
-> -	cur_profile = pprof;
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_register);
-> @@ -215,7 +247,6 @@ int platform_profile_remove(struct 
-> platform_profile_handler *pprof)
-> 
->  	list_del(&pprof->list);
-> 
-> -	cur_profile = NULL;
->  	if (!platform_profile_is_registered())
->  		sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> 
-> -- 
-> 2.43.0
+> +
+> +	return 0;
+> +}
+> +
+> +#define EDAC_ECS_ATTR_RO(_name, _fru_id)       \
+> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_RO(_name), \
+> +				     .fru_id = _fru_id })
+> +
+> +#define EDAC_ECS_ATTR_WO(_name, _fru_id)       \
+> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_WO(_name), \
+> +				     .fru_id = _fru_id })
+> +
+> +#define EDAC_ECS_ATTR_RW(_name, _fru_id)       \
+> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_RW(_name), \
+> +				     .fru_id = _fru_id })
+> +
+> +static int ecs_create_desc(struct device *ecs_dev,
+> +			   const struct attribute_group **attr_groups, u16 num_media_frus)
+> +{
+> +	struct edac_ecs_context *ecs_ctx;
+> +	u32 fru;
+> +
+> +	ecs_ctx = devm_kzalloc(ecs_dev, sizeof(*ecs_ctx), GFP_KERNEL);
+> +	if (!ecs_ctx)
+> +		return -ENOMEM;
+> +
+> +	ecs_ctx->num_media_frus = num_media_frus;
+> +	ecs_ctx->fru_ctxs = devm_kcalloc(ecs_dev, num_media_frus,
+> +					 sizeof(*ecs_ctx->fru_ctxs),
+> +					 GFP_KERNEL);
+> +	if (!ecs_ctx->fru_ctxs)
+> +		return -ENOMEM;
+> +
+> +	for (fru = 0; fru < num_media_frus; fru++) {
+> +		struct edac_ecs_fru_context *fru_ctx = &ecs_ctx->fru_ctxs[fru];
+> +		struct attribute_group *group = &fru_ctx->group;
+> +		int i;
+> +
+> +		fru_ctx->ecs_dev_attr[ECS_LOG_ENTRY_TYPE] = EDAC_ECS_ATTR_RW(log_entry_type, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_LOG_ENTRY_TYPE_PER_DRAM] =
+> +					EDAC_ECS_ATTR_RO(log_entry_type_per_dram, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_LOG_ENTRY_TYPE_PER_MEMORY_MEDIA] =
+> +					EDAC_ECS_ATTR_RO(log_entry_type_per_memory_media, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_MODE] = EDAC_ECS_ATTR_RW(mode, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_MODE_COUNTS_ROWS] =
+> +					EDAC_ECS_ATTR_RO(mode_counts_rows, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_MODE_COUNTS_CODEWORDS] =
+> +					EDAC_ECS_ATTR_RO(mode_counts_codewords, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_RESET] = EDAC_ECS_ATTR_WO(reset, fru);
+> +		fru_ctx->ecs_dev_attr[ECS_THRESHOLD] = EDAC_ECS_ATTR_RW(threshold, fru);
 
-I'm still going thru the code changes - but I'm a bit unsure on the implementation itself.
+Clearly too long variable and define names. Shorten pls.
 
-I'd expect that one of the advantages of having different profile handlers register is that you could support extra & new profiles that might be wanted. For example the recent discussion of the AMD handler providing better tools to tweak advanced system settings for gaming etc. Won't this approach limit that? You'll only be able to have common settings.
+Also, a new line here:
 
-I find having a common profile and two different handlers a bit tricky on how to handle. My concern is it can easily lead to conflict in settings. 
-If two handlers are doing different operations to provide the same effect - then neither handler is (probably) providing what they think is required. With your CPU vs EC example, the EC will often set CPU clock thresholds and the CPU profile handler will be changing that. If this is done I think it should be explicit to the user (admittedly I'm doing this with my Lenovo hat on - but we certify our platforms with our EC profile handler)
+<---
 
-I could see providing two separate handlers. e.g. balanced-A and balanced-B (for driver-A and driver-B) and the user maybe choosing which one they want (or both - though the user interface for that is definitely tricky) 
-But choosing one option for two different drivers seems confusing and with unknown side-effects. I appreciate it's complicated by your example wanting to add CPU and EC - I know how much work you've been doing on the AMD CPU front which benefits all systems.
 
-Another concern - would this mean that another driver could limit the options available? For instance if someone wrote a new 'mega-turbo' only profile driver and it loaded - it would then mean no profiles were available for anything as no profiles matched?
+> +		for (i = 0; i < ECS_MAX_ATTRS; i++)
+> +			fru_ctx->ecs_attrs[i] = &fru_ctx->ecs_dev_attr[i].dev_attr.attr;
+> +
+> +		sprintf(fru_ctx->name, "%s%d", EDAC_ECS_FRU_NAME, fru);
+> +		group->name = fru_ctx->name;
+> +		group->attrs = fru_ctx->ecs_attrs;
+> +		group->is_visible  = ecs_attr_visible;
+> +
+> +		attr_groups[fru] = group;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * edac_ecs_get_desc - get EDAC ECS descriptors
+> + * @ecs_dev: client device, supports ECS feature
+> + * @attr_groups: pointer to attribute group container
+> + * @num_media_frus: number of media FRUs in the device
+> + *
+> + * Return:
+> + *  * %0	- Success.
+> + *  * %-EINVAL	- Invalid parameters passed.
+> + *  * %-ENOMEM	- Dynamic memory allocation failed.
+> + */
+> +int edac_ecs_get_desc(struct device *ecs_dev,
+> +		      const struct attribute_group **attr_groups, u16 num_media_frus)
+> +{
+> +	if (!ecs_dev || !attr_groups || !num_media_frus)
+> +		return -EINVAL;
+> +
+> +	return ecs_create_desc(ecs_dev, attr_groups, num_media_frus);
+> +}
+> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
+> index 91552271b34a..5fc3ec7f25eb 100644
+> --- a/drivers/edac/edac_device.c
+> +++ b/drivers/edac/edac_device.c
+> @@ -626,6 +626,9 @@ int edac_dev_register(struct device *parent, char *name,
+>  			attr_gcnt++;
+>  			scrub_cnt++;
+>  			break;
+> +		case RAS_FEAT_ECS:
+> +			attr_gcnt += ras_features[feat].ecs_info.num_media_frus;
+> +			break;
+>  		default:
+>  			return -EINVAL;
+>  		}
+> @@ -667,6 +670,18 @@ int edac_dev_register(struct device *parent, char *name,
+>  			scrub_inst++;
+>  			attr_gcnt++;
+>  			break;
+> +		case RAS_FEAT_ECS:
+> +			if (!ras_features->ecs_ops)
+> +				goto data_mem_free;
 
-Let me know if I've misunderstood the architecture. I didn't fully get how the ASUS and Framework platforms were impacted in the intro I'm afraid.
+<---- newline here.
 
-Thanks!
-Mark
+> +			dev_data = &ctx->ecs;
+> +			dev_data->ecs_ops = ras_features->ecs_ops;
+> +			dev_data->private = ras_features->ctx;
+> +			ret = edac_ecs_get_desc(parent, &ras_attr_groups[attr_gcnt],
+> +						ras_features->ecs_info.num_media_frus);
+> +			if (ret)
+> +				goto data_mem_free;
+
+Ditto.
+
+> +			attr_gcnt += ras_features->ecs_info.num_media_frus;
+> +			break;
+>  		default:
+>  			ret = -EINVAL;
+>  			goto data_mem_free;
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
