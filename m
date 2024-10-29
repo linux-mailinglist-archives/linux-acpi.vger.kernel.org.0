@@ -1,190 +1,122 @@
-Return-Path: <linux-acpi+bounces-9076-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9077-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FE89B4BEF
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 15:17:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3745B9B4D16
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 16:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ABD0283FDC
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 14:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28DCA1C21C98
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 15:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D95206E81;
-	Tue, 29 Oct 2024 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8950718E379;
+	Tue, 29 Oct 2024 15:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AOlJ4yrv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293BB206E65;
-	Tue, 29 Oct 2024 14:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ED31885BD;
+	Tue, 29 Oct 2024 15:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730211415; cv=none; b=SIbglT1DhVYmbrOI7pE4eobO0eJlb4pme4ue7r8s07plenKEsZYZQWfNfih7s+q17WU4XnnzXmJen7CMzTJMzeXTLdThtpaaAz+iesLQ3f3xcZHOti9O7Q805M5oWkqF0X0h0T+4UZ5AulO8gMDzyeUWPJ2w2tynPjaR9WEr8mo=
+	t=1730214606; cv=none; b=LjSbySQP4A2K03q/IIk0eUCfyxXOGQM1kfibDHAXQVZeOZyR5smvgPP872YMB4G4vVGVBMKd+qhwxi+Sx+ZC1x4irk0Rtw0sumCoNUD2EY8w1o/LTztah6jlGBgiZWOu++w/iPNkf82Vzb1C20QLqNU4illeRJe17oHsafJaSFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730211415; c=relaxed/simple;
-	bh=frx8sGu1rwCpvPaSoX5EhggfnwG/IG6G9kp99x8qhoo=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=HRzhJ1n9wjalbqv3pgXRNOcTk2aN8zUPNfg3P74WSuWM9GuaVXTNcJfnGU5R2pmWuB2dQ+/+4TVidlFRC9LIizFim9JALP/zbs2tYi15Cq3NmoRujV8EC3+s/VqBqpE5on6o2FX40yami1qIExxUJEEwgEZ3yIgP0wgY6JlrSPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XdC343RtGzQsBc;
-	Tue, 29 Oct 2024 22:15:44 +0800 (CST)
-Received: from kwepemd200010.china.huawei.com (unknown [7.221.188.124])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1CCAF140157;
-	Tue, 29 Oct 2024 22:16:43 +0800 (CST)
-Received: from [10.174.162.134] (10.174.162.134) by
- kwepemd200010.china.huawei.com (7.221.188.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 29 Oct 2024 22:16:42 +0800
-Subject: Re: [PATCH v4] ACPI: GTDT: Tighten the check for the array of
- platform timer structures
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-CC: <guohanjun@huawei.com>, <sudeep.holla@arm.com>, <mark.rutland@arm.com>,
-	<maz@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<daniel.lezcano@linaro.org>, <tglx@linutronix.de>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20241016095458.34126-1-zhengzengkai@huawei.com>
- <Zw+O4nZisbkdvNtz@lpieralisi>
-From: Zheng Zengkai <zhengzengkai@huawei.com>
-Message-ID: <3bf1fe29-e135-c1ba-2774-d1e98c8b92b3@huawei.com>
-Date: Tue, 29 Oct 2024 22:16:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1730214606; c=relaxed/simple;
+	bh=zppHwKkF/7U28D07l6cGlNPFzKBueSR56H4LqPBf0Nc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kujxwtzzvp3sndZb/CeDBgmDWr5VF4d/iNHkwOMkoRhoPK/vk5RUCN2dvvZOlOqcK93fuWxvf4qmclRRwMa0bdNAK2HRl7MbAsKZ7EFI4zRaxs+WwTs2z/Oxog/WDHtrv/xRf90Tn7vitePrD6Bk0NwXKkCl3Ae1wQqO3lyFHqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AOlJ4yrv; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730214605; x=1761750605;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zppHwKkF/7U28D07l6cGlNPFzKBueSR56H4LqPBf0Nc=;
+  b=AOlJ4yrvcC1zKH7ypuTo9nZ4XM1dvV5cz26jvpescRNsgnq2oEWIYnyp
+   TtrTlXvtByP5vCiv96ibdxPaPHNi6gUtITaVFlm/tWa2phrwcInWTztKW
+   rf2A3aoENCwzBfGttdorl26IXVvVvYkKMEVj84ntvv4Z3TyU8lzKlb2iu
+   GohnpfXx58WL4VqppBV6BsSKkd+bxL1ZiNQ00yxzQr6NUSBFwh3W7Kjgu
+   jYCpu7VKbMD6G4bAxv0I5vuqCeXvpV4FQ/EWQ7YhfHLhkfipNB2lWrqJv
+   2ljrHMqcHw9wXB6BXqbjRM6CW/IZ4VwZ8ZqvPcWL2+GJh5MOtTJShEnB0
+   g==;
+X-CSE-ConnectionGUID: r2ss6uRCSBK+dss11/Zo3g==
+X-CSE-MsgGUID: aRy8A01FSxW7NIQgwtKDIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40958759"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="40958759"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 08:10:04 -0700
+X-CSE-ConnectionGUID: KFOHjn+WTaKQ3zRyNQdZbA==
+X-CSE-MsgGUID: hjkhL2pgR8qWEirbuh/+DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="86548084"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 29 Oct 2024 08:10:00 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 0743826B; Tue, 29 Oct 2024 17:09:58 +0200 (EET)
+Date: Tue, 29 Oct 2024 17:09:58 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Baoquan He <bhe@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Sean Christopherson <seanjc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCHv4, REBASED 0/4] x86: Reduce code duplication on page
+ table initialization
+Message-ID: <jtibkddkdwyx2fljoztmxpirzdilm7go2maem4z3osbiqk7seb@5pfzpdsukbxf>
+References: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <Zw+O4nZisbkdvNtz@lpieralisi>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemd200010.china.huawei.com (7.221.188.124)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
 
+On Wed, Oct 16, 2024 at 02:14:54PM +0300, Kirill A. Shutemov wrote:
+> Use kernel_ident_mapping_init() to initialize kernel page tables where
+> possible, replacing manual initialization, reducing code duplication.
+> 
+> v4:
+>  - Reviewed-bys from Kai;
+>  - Fix comment in acpi_mp_setup_reset() (Rafael);
+> v3:
+>  - Reviewed-bys from Tom;
+>  - Improve commit messages;
+> v2:
+>  - A separate patch to change what PA is mapped at relocate_kernel() VA.
+>  - Improve commit messages;
+>  - Add Reveiwed-by from Kai;
+> 
+> Kirill A. Shutemov (4):
+>   x86/mm/ident_map: Fix virtual address wrap to zero
+>   x86/acpi: Replace manual page table initialization with
+>     kernel_ident_mapping_init()
+>   x86/64/kexec: Map original relocate_kernel() in
+>     init_transition_pgtable()
+>   x86/64/kexec: Rewrite init_transition_pgtable() with
+>     kernel_ident_mapping_init()
+> 
+>  arch/x86/include/asm/kexec.h       |  5 +-
+>  arch/x86/kernel/acpi/madt_wakeup.c | 73 +++++-------------------
+>  arch/x86/kernel/machine_kexec_64.c | 89 +++++++++++-------------------
+>  arch/x86/mm/ident_map.c            | 14 +----
+>  4 files changed, 50 insertions(+), 131 deletions(-)
 
-Gentle ping.
+Any feedback on this series?
 
-This patch still can be applied to upstream now.
-
-Thanks!
-
-
-ÔÚ 2024/10/16 18:01, Lorenzo Pieralisi Ð´µÀ:
-> On Wed, Oct 16, 2024 at 05:54:58PM +0800, Zheng Zengkai wrote:
->> As suggested by Marc and Lorenzo, first we need to check whether the
->> platform_timer entry pointer is within gtdt bounds (< gtdt_end) before
->> de-referencing what it points at to detect the length of the platform
->> timer struct and then check that the length of current platform_timer
->> struct is also valid, i.e. the length is not zero and within gtdt_end.
->> Now next_platform_timer() only checks against gtdt_end for the entry of
->> subsequent platform timer without checking the length of it and will
->> not report error if the check failed and the existing check in function
->> acpi_gtdt_init() is also not enough.
->>
->> Modify the for_each_platform_timer() iterator and use it combined with
->> a dedicated check function platform_timer_valid() to do the check
->> against table length (gtdt_end) for each element of platform timer
->> array in function acpi_gtdt_init(), making sure that both their entry
->> and length actually fit in the table.
->>
->> Suggested-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Co-developed-by: Marc Zyngier <maz@kernel.org>
->> Signed-off-by: Marc Zyngier <maz@kernel.org>
->> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
->> ---
->> Changes in v4:
->> - remove the tmp pointer to make the code more concise.
->>
->> Changes in v3:
->> - based on Marc's patch and reuse the for_each_platform_timer() loop
->> Link to v3: https://lore.kernel.org/linux-arm-kernel/20241015152602.184108-1-zhengzengkai@huawei.com/
->>
->> Changes in v2:
->> - Check against gtdt_end for both entry and len of each array element
->> Link to v2: https://lore.kernel.org/linux-arm-kernel/20241012085343.6594-1-zhengzengkai@huawei.com/
->>
->> Link to v1: https://lore.kernel.org/all/20241010144703.113728-1-zhengzengkai@huawei.com/
->>
->> Link to previous related patches:
->> https://lore.kernel.org/all/20241008082429.33646-1-zhengzengkai@huawei.com/
->> https://lore.kernel.org/all/20240930030716.179992-1-zhengzengkai@huawei.com/
->> ---
->>   drivers/acpi/arm64/gtdt.c | 29 ++++++++++++++++++++---------
->>   1 file changed, 20 insertions(+), 9 deletions(-)
-> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
->
->> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
->> index c0e77c1c8e09..d7c4e1b9915b 100644
->> --- a/drivers/acpi/arm64/gtdt.c
->> +++ b/drivers/acpi/arm64/gtdt.c
->> @@ -36,19 +36,25 @@ struct acpi_gtdt_descriptor {
->>   
->>   static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
->>   
->> -static inline __init void *next_platform_timer(void *platform_timer)
->> +static __init bool platform_timer_valid(void *platform_timer)
->>   {
->>   	struct acpi_gtdt_header *gh = platform_timer;
->>   
->> -	platform_timer += gh->length;
->> -	if (platform_timer < acpi_gtdt_desc.gtdt_end)
->> -		return platform_timer;
->> +	return (platform_timer >= (void *)(acpi_gtdt_desc.gtdt + 1) &&
->> +		platform_timer < acpi_gtdt_desc.gtdt_end &&
->> +		gh->length != 0 &&
->> +		platform_timer + gh->length <= acpi_gtdt_desc.gtdt_end);
->> +}
->> +
->> +static __init void *next_platform_timer(void *platform_timer)
->> +{
->> +	struct acpi_gtdt_header *gh = platform_timer;
->>   
->> -	return NULL;
->> +	return platform_timer + gh->length;
->>   }
->>   
->>   #define for_each_platform_timer(_g)				\
->> -	for (_g = acpi_gtdt_desc.platform_timer; _g;	\
->> +	for (_g = acpi_gtdt_desc.platform_timer; platform_timer_valid(_g);\
->>   	     _g = next_platform_timer(_g))
->>   
->>   static inline bool is_timer_block(void *platform_timer)
->> @@ -157,6 +163,7 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
->>   {
->>   	void *platform_timer;
->>   	struct acpi_table_gtdt *gtdt;
->> +	int cnt = 0;
->>   
->>   	gtdt = container_of(table, struct acpi_table_gtdt, header);
->>   	acpi_gtdt_desc.gtdt = gtdt;
->> @@ -176,12 +183,16 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
->>   		return 0;
->>   	}
->>   
->> -	platform_timer = (void *)gtdt + gtdt->platform_timer_offset;
->> -	if (platform_timer < (void *)table + sizeof(struct acpi_table_gtdt)) {
->> +	acpi_gtdt_desc.platform_timer = (void *)gtdt + gtdt->platform_timer_offset;
->> +	for_each_platform_timer(platform_timer)
->> +		cnt++;
->> +
->> +	if (cnt != gtdt->platform_timer_count) {
->> +		acpi_gtdt_desc.platform_timer = NULL;
->>   		pr_err(FW_BUG "invalid timer data.\n");
->>   		return -EINVAL;
->>   	}
->> -	acpi_gtdt_desc.platform_timer = platform_timer;
->> +
->>   	if (platform_timer_count)
->>   		*platform_timer_count = gtdt->platform_timer_count;
->>   
->> -- 
->> 2.20.1
->>
-> .
->
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
