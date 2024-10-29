@@ -1,65 +1,97 @@
-Return-Path: <linux-acpi+bounces-9088-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9089-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA06D9B51E2
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 19:33:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3DA9B5273
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 20:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4061F2172B
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 18:33:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE2192847A4
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 19:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4328155316;
-	Tue, 29 Oct 2024 18:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0276206E93;
+	Tue, 29 Oct 2024 19:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OWRv2bVW"
+	dkim=pass (2048-bit key) header.d=lyndeno.ca header.i=@lyndeno.ca header.b="jeeXrg47";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="j7smLFMK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5A2107;
-	Tue, 29 Oct 2024 18:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076B91FBF50;
+	Tue, 29 Oct 2024 19:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730226775; cv=none; b=h1JbijC/a1V1xeSR58r1ybu1yMrALRzd2G1622lWz41llexZXbHaoMmCvpkCCH57Ow0qf/prgMlughMpj0cC5jkvi79VMsAJmpcaf2Dsl+IKpulbnIWxO15mFBn7ccoHVFjc+/8ca/xjutpgFBJnoEQONGaJY0mizB5spPxz/fs=
+	t=1730229069; cv=none; b=h7+/ZeSHyIbzjjmLQN57Jt6oB7S6+tyE2UXhyzV4W38CnaYZNuUjfEtRp+QgehyOhOTlbWx/TVTb23IPX3axf7za9gzMru6C5vCkzMkrqDOCMzv4FnmXJmImTosYIjP/gSmHO7phcmmFt3emOmaht6uKgxQ729FjJw25/k3+bUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730226775; c=relaxed/simple;
-	bh=2iCf5LaYMYP0f6vDDdCjb6d/lEtrQIo0CxHWClhvTwk=;
+	s=arc-20240116; t=1730229069; c=relaxed/simple;
+	bh=n9ca/wig78LRP2Bp6VofPAhsp3VTMSA7jWv2d7WpOTk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jOHuznvuRtguVy8jpMI2T1mvxWMxIJWxUOGKJcVPYXGD9Cu5CImZtX4z83hrl7gfd1Gi+7+heJ2GsLMyFytffiKsQ3jKOKBLBfuSqLQPXPGV7Mt2pbBdwtl395P18j9moC6uJKJLgkinw/1cIpYCM1qJSUF2h4NFbcX38mqzjxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OWRv2bVW; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730226773; x=1761762773;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2iCf5LaYMYP0f6vDDdCjb6d/lEtrQIo0CxHWClhvTwk=;
-  b=OWRv2bVWi3nwlPmDg1Q0OqEBOKqT52hLha5WYQUQ7CZNkKMYCvgVRXRu
-   LD95OCRtCUNFEqlA+yrhAdGrCKA8NVnI+Z1TyeBfSMliSWOFowIChVmBm
-   Q4rO7JAVDsqr9/vTGLixUMM5jinbZ/dUsV6TmPEG+jbb/9qeC0wMO1lvq
-   kTrjMMt46sYvIGq7E4Wua/Nt+3uu/g6my++ehsXylBccJoYSllZBSxMMK
-   oUg6x5L6KXn9vPeBn+xsvk8PcZ55SumiCpu2vLqWYrpj2KvCwTg3CBBCC
-   wHaKOlYgbpd/lTmny02bGk2/g5kYxBN9oT6vBX8b/8GEJOmiINfJLen23
-   A==;
-X-CSE-ConnectionGUID: ELHcOYmSSbqQbBu0Dd42Yg==
-X-CSE-MsgGUID: 9Sg8ZTNtSAq7oWhjFHjI7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="33685476"
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
-   d="scan'208";a="33685476"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 11:32:52 -0700
-X-CSE-ConnectionGUID: QUD7wlVIRaeHgKopSSyAiQ==
-X-CSE-MsgGUID: +5zIdsocS/GhuVYEbXDLfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
-   d="scan'208";a="112856060"
-Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.125.108.71]) ([10.125.108.71])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 11:32:49 -0700
-Message-ID: <67b569b0-1cd5-44e0-8465-064b41a1afd8@intel.com>
-Date: Tue, 29 Oct 2024 11:32:47 -0700
+	 In-Reply-To:Content-Type; b=H4lJOeLu1VtntMuJZpfQw7PUssUV2UcELpFVoqP3WgRVONtzfZhDLktFVfbfurQShUm70xUQqT5y57jgu1uvcM3ZFIztvxhBP3XA+/gP82o3D9aGf5oH+3hlf8ArkTUtKInJoImk4lah7GuY7p9z4aq1wC8HjZ3c9a9oIGqexE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lyndeno.ca; spf=pass smtp.mailfrom=lyndeno.ca; dkim=pass (2048-bit key) header.d=lyndeno.ca header.i=@lyndeno.ca header.b=jeeXrg47; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=j7smLFMK; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lyndeno.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lyndeno.ca
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id E1E3D138026E;
+	Tue, 29 Oct 2024 15:11:05 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Tue, 29 Oct 2024 15:11:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lyndeno.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1730229065;
+	 x=1730315465; bh=2/QxyYSwgEenSj5UTUbmSdnftP3pA8phAAui6JoA8Fc=; b=
+	jeeXrg47bqY3NVayEp6ZiQBpH9gK4vjUqifMdTEb/r84tW5WV46Qs8YJLV6hauHb
+	V63ix0dLzSDmyNqZK89/lzI1PmI2rbLH1zX3YNm6JGltSopd1+nuKa/J+Y7XUpnV
+	BuGqcCtY+wCOEhjLfUGjng0hNe4zqVdPMHosEtUMtdL3g42RoSVn/9CfXijqJTD3
+	GIS7Ww+DDOOsqH1eqBqpKq9XzdToLrmZU8QWHFD1Zy5tn4Fi9A4PJIl/Q45cLJcA
+	rJ8m8FKg6A3BTHrz6oPhe7jVAQt0/XWCMT2zPcxF/5QPMPDuTNLpp1at9O+YHHty
+	48yZPJ2p88Vh6kBbfwvXbQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730229065; x=
+	1730315465; bh=2/QxyYSwgEenSj5UTUbmSdnftP3pA8phAAui6JoA8Fc=; b=j
+	7smLFMKW1EKL5FybpJesytNP4oYH/UQ1E6C9oOIshioIaEJrq/eJB41Pz7A+RfVD
+	piULPk3t4imaxqhSWQ4fHZXKSWGlt0ZrmZjSde4R76ke7CHVG247/Czy+VFhpZfg
+	HZ75qjZjerZJwoMoQmTIlzo7XG2K3Q+VGNbM1dD6LDPkGGGru2rdl1x2s7brF5zd
+	wAtLbgI1LJMoDSj01FQu9sURHqra0h5HitpwVDiD1kDXcnO8tP9lyoJRu1I1mAYe
+	rGWIKMIZY9H5ulUVlbaeDWL6Ov3Qw898Q7NwCMOAIyvvGZNitmsMtjrptd083rRI
+	g3fpUX7j/zucv2kobYLwg==
+X-ME-Sender: <xms:SDMhZ63lvoaU3i_vizkqUVT8XLNglvg_LZhykXPiIFKd1hjP4vo6Mg>
+    <xme:SDMhZ9FUE-sq0vqgOxj8AAI4Khkr5jREWgKDbo8icRuJzDA1P1m9vLjXRh1L-Vobi
+    nJMpG3g_ZrNGNxPUCs>
+X-ME-Received: <xmr:SDMhZy47e9s_LMS4i7w6No7LzIbBblkeFtRADbqK6oIl6enw1EoVnVLryc1Ah-96H8kTUyFCop2EKl9-BETCojBUeWmFRcFV-OeRUkA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekuddgudduiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
+    jeenucfhrhhomhepnfihnhguohhnucfurghntghhvgcuoehlshgrnhgthhgvsehlhihnug
+    gvnhhordgtrgeqnecuggftrfgrthhtvghrnhepleegkefhuddtudejjeefgfeigeekfeel
+    ueekvdfgvdelffdvfeefhfeftdegieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomheplhhsrghntghhvgeslhihnhguvghnohdrtggrpdhnsggp
+    rhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrrhhioh
+    drlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehhuggvghhovggu
+    vgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepihhlphhordhjrghrvhhinhgvnheslh
+    hinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hluhiimhgrgihimhhilhhirghnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjhhlvggv
+    sehsuhhsvgdrtghomhdprhgtphhtthhopehshhihrghmqdhsuhhnuggrrhdrshdqkhesrg
+    hmugdrtghomhdprhgtphhtthhopegtohhrvghnthhinhdrtghhrghrhiesghhmrghilhdr
+    tghomh
+X-ME-Proxy: <xmx:SDMhZ73y7uHKOUDgeKHx2dBKR0Ib8epk0xLLzOW-0C9Hhe9bplAoKQ>
+    <xmx:SDMhZ9HsUsliQEVkPbOmN-KpmN4ihGWVjXx7jLZtYNawLe2_UlcgDg>
+    <xmx:SDMhZ083pUgmJmXdovwQRXCrJi3VKr4MsFU7AkaO0oivpC0SWiYHrg>
+    <xmx:SDMhZykYe09rSo2quQQJzjM0kzNoHnQwKJpOdW7FS9EIbSnTNDD3bg>
+    <xmx:STMhZ21aQX8ke23RvJZb18h51t6trSb42D5EEpUfd_LRlnbsTJva07Z8>
+Feedback-ID: i1719461a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 29 Oct 2024 15:11:01 -0400 (EDT)
+Message-ID: <75d6d50e-795c-4368-856e-ba530e1fbee3@lyndeno.ca>
+Date: Tue, 29 Oct 2024 13:10:57 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,230 +99,62 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 07/14] cxl/memfeature: Add CXL memory device patrol
- scrub control feature
-To: Shiju Jose <shiju.jose@huawei.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "bp@alien8.de" <bp@alien8.de>, "tony.luck@intel.com"
- <tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
- <mchehab@kernel.org>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
- "dave@stgolabs.net" <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
- "jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
- "alison.schofield@intel.com" <alison.schofield@intel.com>,
- "vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "david@redhat.com" <david@redhat.com>,
- "Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
- "leo.duran@amd.com" <leo.duran@amd.com>,
- "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
- "rientjes@google.com" <rientjes@google.com>,
- "jiaqiyan@google.com" <jiaqiyan@google.com>,
- "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
- "james.morse@arm.com" <james.morse@arm.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
- "erdemaktas@google.com" <erdemaktas@google.com>,
- "pgonda@google.com" <pgonda@google.com>,
- "duenwen@google.com" <duenwen@google.com>,
- "gthelen@google.com" <gthelen@google.com>,
- "wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
- "dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
- "wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
- "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
- tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)"
- <prime.zeng@hisilicon.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- "kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
- wanghuiqiang <wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-References: <20241025171356.1377-1-shiju.jose@huawei.com>
- <20241025171356.1377-8-shiju.jose@huawei.com>
- <3a007a70-136b-4a45-8dd2-d33725ea96bc@intel.com>
- <e6aed765394b4822ad5a70018c87ef1f@huawei.com>
+Subject: Re: [PATCH 1/8] ACPI: platform-profile: Add a name member to handlers
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241025193055.2235-1-mario.limonciello@amd.com>
+ <20241025193055.2235-2-mario.limonciello@amd.com>
 Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <e6aed765394b4822ad5a70018c87ef1f@huawei.com>
-Content-Type: text/plain; charset=UTF-8
+Followup-To: 20241025193055.2235-1-mario.limonciello@amd.com
+From: Lyndon Sanche <lsanche@lyndeno.ca>
+In-Reply-To: <20241025193055.2235-2-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 2024-10-25 1:30 p.m., Mario Limonciello wrote:
+> In order to prepare for allowing multiple handlers, introduce
+> a name field that can be used to distinguish between different
+> handlers.
+> 
+> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>   drivers/platform/surface/surface_platform_profile.c | 1 +
+>   drivers/platform/x86/acer-wmi.c                     | 1 +
+>   drivers/platform/x86/amd/pmf/sps.c                  | 1 +
+>   drivers/platform/x86/asus-wmi.c                     | 1 +
+>   drivers/platform/x86/dell/dell-pc.c                 | 1 +
+>   drivers/platform/x86/hp/hp-wmi.c                    | 1 +
+>   drivers/platform/x86/ideapad-laptop.c               | 1 +
+>   drivers/platform/x86/inspur_platform_profile.c      | 1 +
+>   drivers/platform/x86/thinkpad_acpi.c                | 1 +
+>   include/linux/platform_profile.h                    | 1 +
+>   10 files changed, 10 insertions(+)
 
+This scope of the patch looks good to me.
 
-On 10/29/24 10:00 AM, Shiju Jose wrote:
-> 
-> 
->> -----Original Message-----
->> From: Dave Jiang <dave.jiang@intel.com>
->> Sent: 29 October 2024 16:32
->> To: Shiju Jose <shiju.jose@huawei.com>; linux-edac@vger.kernel.org; linux-
->> cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linux-
->> kernel@vger.kernel.org
->> Cc: bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->> mchehab@kernel.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->> Cameron <jonathan.cameron@huawei.com>; gregkh@linuxfoundation.org;
->> sudeep.holla@arm.com; jassisinghbrar@gmail.com; alison.schofield@intel.com;
->> vishal.l.verma@intel.com; ira.weiny@intel.com; david@redhat.com;
->> Vilas.Sridharan@amd.com; leo.duran@amd.com; Yazen.Ghannam@amd.com;
->> rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->> dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->> james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
->> erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->> gthelen@google.com; wschwartz@amperecomputing.com;
->> dferguson@amperecomputing.com; wbs@os.amperecomputing.com;
->> nifan.cxl@gmail.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
->> <prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
->> kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->> Linuxarm <linuxarm@huawei.com>
->> Subject: Re: [PATCH v14 07/14] cxl/memfeature: Add CXL memory device patrol
->> scrub control feature
->>
->>
->>
->> On 10/25/24 10:13 AM, shiju.jose@huawei.com wrote:
->>> From: Shiju Jose <shiju.jose@huawei.com>
->>>
->>> CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub
->>> control feature. The device patrol scrub proactively locates and makes
->>> corrections to errors in regular cycle.
->>>
->>> Allow specifying the number of hours within which the patrol scrub
->>> must be completed, subject to minimum and maximum limits reported by the
->> device.
->>> Also allow disabling scrub allowing trade-off error rates against
->>> performance.
->>>
->>> Add support for patrol scrub control on CXL memory devices.
->>> Register with the EDAC device driver, which retrieves the scrub
->>> attribute descriptors from EDAC scrub and exposes the sysfs scrub
->>> control attributes to userspace. For example, scrub control for the
->>> CXL memory device "cxl_mem0" is exposed in
->> /sys/bus/edac/devices/cxl_mem0/scrubX/.
->>>
->>> Additionally, add support for region-based CXL memory patrol scrub control.
->>> CXL memory regions may be interleaved across one or more CXL memory
->>> devices. For example, region-based scrub control for "cxl_region1" is
->>> exposed in /sys/bus/edac/devices/cxl_region1/scrubX/.
->>>
->>> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->>> ---
->>>  Documentation/edac/edac-scrub.rst |  74 ++++++
->>>  drivers/cxl/Kconfig               |  18 ++
->>>  drivers/cxl/core/Makefile         |   1 +
->>>  drivers/cxl/core/memfeature.c     | 381 ++++++++++++++++++++++++++++++
->>>  drivers/cxl/core/region.c         |   6 +
->>>  drivers/cxl/cxlmem.h              |   7 +
->>>  drivers/cxl/mem.c                 |   4 +
->>>  7 files changed, 491 insertions(+)
->>>  create mode 100644 Documentation/edac/edac-scrub.rst  create mode
->>> 100644 drivers/cxl/core/memfeature.c
->>>
->>> diff --git a/Documentation/edac/edac-scrub.rst
->>> b/Documentation/edac/edac-scrub.rst
->>> new file mode 100644
->>> index 000000000000..4aad4974b208
->>> --- /dev/null
->>> +++ b/Documentation/edac/edac-scrub.rst
->>> @@ -0,0 +1,74 @@
->>> +.. SPDX-License-Identifier: GPL-2.0
->>> +
-> [...]
-> 
->>> +static int cxl_mem_ps_get_attrs(struct cxl_memdev_state *mds,
->>> +				struct cxl_memdev_ps_params *params) {
->>> +	size_t rd_data_size = sizeof(struct cxl_memdev_ps_rd_attrs);
->>> +	size_t data_size;
->>> +	struct cxl_memdev_ps_rd_attrs *rd_attrs __free(kfree) =
->>> +						kmalloc(rd_data_size,
->> GFP_KERNEL);
->>> +	if (!rd_attrs)
->>> +		return -ENOMEM;
->>> +
->>> +	data_size = cxl_get_feature(mds, cxl_patrol_scrub_uuid,
->>> +				    CXL_GET_FEAT_SEL_CURRENT_VALUE,
->>> +				    rd_attrs, rd_data_size);
->>> +	if (!data_size)
->>> +		return -EIO;
->>> +
->>> +	params->scrub_cycle_changeable =
->> FIELD_GET(CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK,
->>> +						   rd_attrs->scrub_cycle_cap);
->>> +	params->enable =
->> FIELD_GET(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
->>> +				   rd_attrs->scrub_flags);
->>> +	params->scrub_cycle_hrs =
->> FIELD_GET(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
->>> +					    rd_attrs->scrub_cycle_hrs);
->>> +	params->min_scrub_cycle_hrs =
->> FIELD_GET(CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK,
->>> +						rd_attrs->scrub_cycle_hrs);
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static int cxl_ps_get_attrs(struct device *dev, void *drv_data,
->>
->> Would a union be better than a void *drv_data for all the places this is used as a
->> parameter? How many variations of this are there?
->>
->> DJ
-> Hi Dave,
-> 
-> Can you give more info on this given this is a generic callback for the scrub control and each
-> implementation will have its own context struct (for eg. struct cxl_patrol_scrub_context here
-> for CXL scrub control), which in turn will be passed in and out as opaque data.
+Reviewed-by: Lyndon Sanche <lsanche@lyndeno.ca>
 
-Mainly I'm just seeing a lot of calls with (void *). Just asking if we want to make it a union that contains 'struct cxl_patrol_scrub_context' and etc.
+Thanks,
 
-> 
-> Thanks,
-> Shiju
->>
->>> +			    struct cxl_memdev_ps_params *params) {
->>> +	struct cxl_patrol_scrub_context *cxl_ps_ctx = drv_data;
->>> +	struct cxl_memdev *cxlmd;
->>> +	struct cxl_dev_state *cxlds;
->>> +	struct cxl_memdev_state *mds;
->>> +	u16 min_scrub_cycle = 0;
->>> +	int i, ret;
->>> +
->>> +	if (cxl_ps_ctx->cxlr) {
->>> +		struct cxl_region *cxlr = cxl_ps_ctx->cxlr;
->>> +		struct cxl_region_params *p = &cxlr->params;
->>> +
->>> +		for (i = p->interleave_ways - 1; i >= 0; i--) {
->>> +			struct cxl_endpoint_decoder *cxled = p->targets[i];
->>> +
->>> +			cxlmd = cxled_to_memdev(cxled);
->>> +			cxlds = cxlmd->cxlds;
->>> +			mds = to_cxl_memdev_state(cxlds);
->>> +			ret = cxl_mem_ps_get_attrs(mds, params);
->>> +			if (ret)
->>> +				return ret;
->>> +
->>> +			if (params->min_scrub_cycle_hrs > min_scrub_cycle)
->>> +				min_scrub_cycle = params-
->>> min_scrub_cycle_hrs;
->>> +		}
->>> +		params->min_scrub_cycle_hrs = min_scrub_cycle;
->>> +		return 0;
->>> +	}
->>> +	cxlmd = cxl_ps_ctx->cxlmd;
->>> +	cxlds = cxlmd->cxlds;
->>> +	mds = to_cxl_memdev_state(cxlds);
->>> +
->>> +	return cxl_mem_ps_get_attrs(mds, params); }
->>> +
-> [...]
->>
-> 
+Lyndon
 
 
