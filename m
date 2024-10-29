@@ -1,216 +1,209 @@
-Return-Path: <linux-acpi+bounces-9100-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9101-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDA99B5472
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 21:49:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8739B54A3
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 22:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1989B1F246A4
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 20:49:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709A01C229B1
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Oct 2024 21:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8643A207A25;
-	Tue, 29 Oct 2024 20:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5739D1B0F1B;
+	Tue, 29 Oct 2024 21:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="L5T5RK8J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d05sFa7I"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2081.outbound.protection.outlook.com [40.107.94.81])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60916205ACD;
-	Tue, 29 Oct 2024 20:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730234945; cv=fail; b=t8gams5ong06snerzbdtibEWDM7PfJAV566Z4tv4IGamChWm5YCZNTMWGdhXSQoaiHjpkARcV8TCliHYv81CldN03Hdhi881t2dYWnsWP+uy9BTlTfF91ycZX0tAqhjplbA4xSTkVbOSyH4cV8jyGgUjF5dK66QZNDJBDttvKMY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730234945; c=relaxed/simple;
-	bh=f88aDcCeJt5QxDGktbHr9+vkg622hlXjHn9tq4QWs2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mfZmOWmtUNP0uJEwcUORfh3cnWwKLj40gthW58owVobPvQo+90poUF7uBtYgJiRsyjW9/O42n8HZwRlhL3R7zC1LmMIpKiQkZAkjm2eDyOMhH2umS2db1dgVCxUdx0A63CVte78w5C+mR4pqrKui2/tr7ppgdCkdOZRmHCOFghk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=L5T5RK8J; arc=fail smtp.client-ip=40.107.94.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=weZU3hbIMFwvMcRf974+nFkse+pI7KZnWDkmgV4zQWVa7usewfpwynzVdZ0agG6j96VfKe7yRhsbzyTmR+6ioiGuAkqBlWnrmiczCWISbSv4My5IdMtTaNYlF00Ig84f6V14XPpP8F6FGqfQzQCA2CqSlOV0wIxdZS7VaItGPhuuy+yM/cQ8zgEciOsqv1RSg0g9/OqCBPT6r/+oE8bhhNF5MjGJ26ezEyr41jLhBBglkqIKM6AA9e0k9os1CCJj7i05f2hERV9LSYJZYvFyl0PGhbMG9n6yAykuSv+ZK+t92wK962PH3S0O4wig8IG03GcgDSlZuFS2oi+S4n1jyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0qInHwAAqNtYzaKKSVw+fUPol3Luq5fQ0ijhq60N/7Y=;
- b=RK8lBGpsw1cId/Lnbg8UXhGO0rzOPhNyF1ICDEKsQQ+HwVsCsx05PJq4NAGhVYRYYuZjEwLmDsBzbIKJ2rA+1NfGeme4+q1WgCScLl5JVM+BJSnENm52135gKDdsQ9G6a+mz+BoOtLk6gQR44pZHyZy3dhXbtop5CIJfBiRFLQmumZ1k1HC3t5E2gM3TS6tGYA04dtZ8joxM0ecm0PI2VRykNh2V+Ak9ooTvWA09teV7gONpI0bgrLSAErX3nr3vUTuRuiRHNx63Io/7g5wOSOQd8/6euMdPlN6+7sfFLjRJsLoR7ACxNDUyChIdj6r2v4v7dtkBu7pt7vsgu91QFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0qInHwAAqNtYzaKKSVw+fUPol3Luq5fQ0ijhq60N/7Y=;
- b=L5T5RK8JUQ9k816sH2aD5Snlwh43KCH0HGXpsAJo8eRP+BnTKeOFD0gJxEvrQRdvmcdXdt+hVGtfVHFfGNbxEcY8SF5cngLQX9q+coPlvnqerZk0uCmrxhN0/vGQGmNS3mCwmLJRJd7zOxTRHeLp6wPVqIQsYUy50j1siUSrhNo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.27; Tue, 29 Oct 2024 20:49:00 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%5]) with mapi id 15.20.8093.023; Tue, 29 Oct 2024
- 20:48:59 +0000
-Date: Tue, 29 Oct 2024 16:48:48 -0400
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: mark.rutland@arm.com, catalin.marinas@arm.com, mingo@redhat.com,
-	robin.murphy@arm.com, Jonathan.Cameron@huawei.com, bp@alien8.de,
-	rafael@kernel.org, wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
-	tongtiangen@huawei.com, gregkh@linuxfoundation.org, will@kernel.org,
-	jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v15 1/3] ACPI: APEI: send SIGBUS to current task if
- synchronous memory error not recovered
-Message-ID: <20241029204848.GA1229628@yaz-khff2.amd.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20241028081142.66028-2-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028081142.66028-2-xueshuai@linux.alibaba.com>
-X-ClientProxiedBy: BN9PR03CA0048.namprd03.prod.outlook.com
- (2603:10b6:408:fb::23) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1271DE892;
+	Tue, 29 Oct 2024 21:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730235697; cv=none; b=Ahogd6h5XkVd6CGUMymYoBS8jZHMkepDA1AsfOfhGP47DKvKuK+/QDf4Wyww2Em2yne1J6fIHTAvrL4oAsqCBVLxzqqGZqhz8NKeb9YJmWqC3IzFHCK/HSgANHWbcDizJ3zvgeNB1lVCCVppckMegJcvPHsXWhb2A+A5G46hfYQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730235697; c=relaxed/simple;
+	bh=cWwQZz5X+k5zYq/5Ls0hUi5+V7Q3QNCgVd+WIsKuI9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LdcrdlGkOXz3QuVnv6e1o/SXG7CeciUcczGMT1KBE/p15cMe1QjkReElkwMpBVTjwg2EpZPqVNdAsxyc/6sBcCcI35cyJUIVdkEimys/vqtscnQUIIcTu9G5iA6qgAVHsv6pC8uCzyuNOfd5++zowabvBWh6OGAeImIShBSaA/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d05sFa7I; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730235694; x=1761771694;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=cWwQZz5X+k5zYq/5Ls0hUi5+V7Q3QNCgVd+WIsKuI9g=;
+  b=d05sFa7IbOgFJeGzINZnyIbfVF4bL8mPOPllwcJ1f1yOo8DffjlPvWha
+   ULhd1ctb/1V+ApDUiOH6zsdsT8xTI8e8j74SXZ/Lde5yBHXeUWTlptc0u
+   6zxEAXFxKCYS1264C/oK/xDy+Li5vW9e4lvCyqJNrwFokQSeRssPki0Mu
+   QfhMvBaKIyJSMgw08c0T6lu7797I1z+ZA6hTId1S5xmK+ec0Dmibiud5A
+   aBw3bNx6N3WYKPHe45qykA9oilHXuSq7wcBUjQx81zExDvfs8i7sY/EJU
+   2fNeZCm9bwv17m4MusLIDRyalTYiNWBJO5Erc8fdJCvdNvoVlRrJH+pHg
+   A==;
+X-CSE-ConnectionGUID: Y0v6d8LGTDSGWgjQlLBzgA==
+X-CSE-MsgGUID: PbJRAxkUTsG0hJuODEIRrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="40520628"
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
+   d="scan'208";a="40520628"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 14:01:34 -0700
+X-CSE-ConnectionGUID: VgvcmNy/T32fK1x/EZNZLA==
+X-CSE-MsgGUID: J23KM/50RfKcqeCLAG0J/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
+   d="scan'208";a="82014265"
+Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.125.108.71]) ([10.125.108.71])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 14:01:33 -0700
+Message-ID: <effa2250-4385-464f-b377-b2143b754cf4@intel.com>
+Date: Tue, 29 Oct 2024 14:01:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|DS0PR12MB6413:EE_
-X-MS-Office365-Filtering-Correlation-Id: a97ee17f-ed17-420c-2bb0-08dcf85b1d3c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wPfj8igFWmV/3cSv7hrFb8Et6DsPYQMVfRXIkBaWe/hbbF0ZfbHs8MuHsevr?=
- =?us-ascii?Q?KuWxCASCRSz5JLisJVANh35cQPapjMnziI60z3ZSJCtgJ7RnetNsJ7U84cNi?=
- =?us-ascii?Q?oQul4w4EHrQwYlK3ZgOAS5kFNiDkkAVPelNCQuR6zzRhFEo+pv9RPM51Ttan?=
- =?us-ascii?Q?iefYo2oMw4mMGO23283wNm2ZNT4vANW3vx0S/lfYL2Qv0K8Q9fqUfixv3fs/?=
- =?us-ascii?Q?ErY2T7sZj88X7ceAwfnHqL1YFRFp6yO+n5nodzKuNXRgao4alI/83wZC6Sng?=
- =?us-ascii?Q?1GVru4dAASqvsbAw2E3ngSsNTUjecS8hSGM2Z1cEOYjyP4VRs9xaPImuHBgO?=
- =?us-ascii?Q?Xw4zko6ZdDcKO3l1+RrH+gtlXx/v9absHLThbDk7fbIx/yY8WDbM2gsGZox3?=
- =?us-ascii?Q?DVh6sQKLNOttd+2YrRHSbQoTqnThFFdQu0+vpPXRXdpIbIoTYUlnhvWQ245v?=
- =?us-ascii?Q?v7gw7auxLObirPbqKJ5UNGhb42qlsvBfa38TSN9S677tFQuIFIfT15sIhRXA?=
- =?us-ascii?Q?39md/cMKf1oNZ5JJmato+h18KeOWQTTpGppX3jEU56pJFt66BRsbGTydjNHA?=
- =?us-ascii?Q?ho8WnhElZp+O6Of+U88anm3DnliqSYvUYJf418OadQNDyW78DAMfuSJDVYTN?=
- =?us-ascii?Q?8yCjJpAVX/HOr1TnogywtJLk3CRsDqXdBtN2choTGORVjaS6fhwYU3NKw+1h?=
- =?us-ascii?Q?gwIBxo5fw0eaOlAXJUUR57KIuPevHmKywLELAkd36RehlBwY1kFYg7JI6PNG?=
- =?us-ascii?Q?P+g4TVuPYgS2Js+ZtrMgT1KjDitzcCqOQK1ZUKk9RAox5Lko33YFvUYtgY1R?=
- =?us-ascii?Q?huGTD4B+xtpJxtDlEyiyGC/zfneABluSu8meSzx1RtlxijTODfS/LXQmfyjr?=
- =?us-ascii?Q?1FB6xLJgQmxZfW6gZLYUeljTrF0qeZ/40pfyO+Fr/Ospk34V2Jkb3l4Q3JUP?=
- =?us-ascii?Q?XoEwbk4TPdopriTWUQG16xg47cTlkTYsvfsllycfyf9N6WdbnktZDE+AgzRH?=
- =?us-ascii?Q?vBMBRqFUOTIQ1Sfmr/8GXQhOaZilvPd+whhbJ4qZUaY4eies9zCFa82twsC6?=
- =?us-ascii?Q?oDi5olkc6k+UcKYKjH4zp3sDVoBwVIKmdyzPeLpLVDaPq3KsliXSi1Kf8ebZ?=
- =?us-ascii?Q?gnDNqqdkV8lMkYpQWRrIAbzpFkCBajgnh/eCvoMvUo9yfkldCECLcOmMOwS1?=
- =?us-ascii?Q?NlCRRHJEKOBMR9Q3vqHaRvMdb4sCFvpULNu46JwEp4J5ZDxbyoG7+qnaJPQM?=
- =?us-ascii?Q?3vWHDP9gAnhslSFomwI4HHaQjw8GN4IDHg6mJY6BhmMkHpIMfQrmiGIVwv+4?=
- =?us-ascii?Q?pFOWGQDTLQtttM03PuVUxqBm?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eSKdKHQqTkcUZ3GIbopJsgD35DOLbtlc91VAukMbZ+fyyEfmoIynctR3FMhx?=
- =?us-ascii?Q?OsZWrd7G+9K4M1YZMVNKkD2xUzAPlr+aU3RDB0f0oRTb5ReY6+OG46ypV732?=
- =?us-ascii?Q?/anxiTIxgQ2D2C5TB5NM/6CViQmV8nGOV8wSBSUk8Iiq4yg0aRR8eVFZaCCb?=
- =?us-ascii?Q?xWXRDcyYjs7dSERs7YUULB+jo9n74Oi4Ok2W357wSQ+PG/hnH5DTcZDg4UFT?=
- =?us-ascii?Q?gBqMc63OzhQWfip4gtl5N5dl0e+rRrZqECAO0wSSdPnNY3oCiCqU8z9uJ1jS?=
- =?us-ascii?Q?VPVVwxO7ytj5xTdXBD+kuxs1r5jUoJkxfxyhUl6HajLa8Vb73O3d09YXm7Nc?=
- =?us-ascii?Q?zvkdrWTYYvRBOE/SYaYnW8N61wLjJpw6ELwhnUrrqAz7TAwsdtbcCyViPfM/?=
- =?us-ascii?Q?w1G/fAvMVpcaQpMUreAE+1izmiOLxAvv9rieXnBjqN3eCRijAaPHM8KZH7N9?=
- =?us-ascii?Q?DJcpbtl8BoYoZd3bLj/KHhDfJgiMwQzJiC/CX6+tcj0+p8uGEx28Oo5rqYvj?=
- =?us-ascii?Q?Dx9xlKnXhrXtP87LjXNiKn9n4Z9F1VNqIy0O9j/UxsT8E5/r+LM3Oemav3kv?=
- =?us-ascii?Q?S2Y/sUeu7vjWaG/zKsa/+pgIXr3ZSq1psHstuYnOo2qwQk/vBql7nXkpJ6+y?=
- =?us-ascii?Q?rQVloeFNtqkWbI5FkGH8imjN8Esym2ONx1Lw0JZ1RPvqz6+uFmSVYWv3AlkK?=
- =?us-ascii?Q?XiR06lg0xXFlpVVSOWqp4H1DLxWVrXklTmp1ITGVl1qyTr5ZZ5B/ZIlB6vZO?=
- =?us-ascii?Q?gK6lRccMMNJxNgl9qhMOZh8vERydzcuKLxTei8DIl6KJo3QN3D6dRXyqtv0T?=
- =?us-ascii?Q?kICbYANWFePYQQsrWsLA9PBn1Hssz+io6ypvv5l5WSfsUCvrIHf8/Lvse3ZV?=
- =?us-ascii?Q?+d96xrwAmvio7bs/ABjpVWQZSZHg27mS3UJCMRv+/Wkzs8AN9AOd+gVuFkGK?=
- =?us-ascii?Q?iIxHWjLBNxNb+OZsDYZTqmEnRVKV4sle60IkOFahHq1dgNQCRefXq/Bd51AX?=
- =?us-ascii?Q?c979nYyvAR73KVvPUt93i2cDCyYRcjSdujOQvZSzaOTY+cJvoZXxi/o4/2aY?=
- =?us-ascii?Q?vkJT8MuI47dVbGVx99B7aNerXkHZedbzP8yYOYStmzPe7x6EkfiSgfkKh1YS?=
- =?us-ascii?Q?wSFC5xIcOTsz3p3HzLxYyGSUg7QA3cTCvbYp+rpyYyLJC3GNVzDwGzu36vra?=
- =?us-ascii?Q?WadfPHweftEuUGWDIk9wHAss8YEhmJNH/kIVOUespgS8dlNZ/YEKV/O6q3yZ?=
- =?us-ascii?Q?Lhmbtkt2VQLBdLH0o/rjb6kqS7iPLI4v0LPlJcH+D6lu9LR/tVheDK/qqD21?=
- =?us-ascii?Q?plMoa3mW8r7Bsc0W356YM/DpJM0Xt96ToilIXt0H2Y2nKrf60/VCElMSUO6I?=
- =?us-ascii?Q?Oyyi2jdQ8tfTYwGaYREuYuHcSDKX4vh87VvoFP40WIwQbUp0wr5gNj1NRUFe?=
- =?us-ascii?Q?0l00cM8+qQEVhHwL7V5Qa2gwqUKipB5M/hMuaRT8pjvVXNu4YfsIuQd2is8a?=
- =?us-ascii?Q?Ya2xuCxo4tlhLtyCoEi7z+OSN/yfTS05Pyn46310I2V9/o85jFYUpopFL8Bd?=
- =?us-ascii?Q?HOz6NstzTcMqk3b+oBii8Nt5KSvftvBmkEvzGRGg?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a97ee17f-ed17-420c-2bb0-08dcf85b1d3c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 20:48:59.8664
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /kwfxoBY35BUfea4+AsdhUM6taUwoGf3j2XnIQfeg1v2eoTYQZCCpmklTnQKxrC/1W1PdJyRjzdOq/t4O/3m/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6413
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/6] acpi: numa: Add support to enumerate and store
+ extended linear address mode
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
+ bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
+ dave@stgolabs.net, alison.schofield@intel.com, ira.weiny@intel.com
+References: <20240927142108.1156362-1-dave.jiang@intel.com>
+ <20240927142108.1156362-3-dave.jiang@intel.com>
+ <20241017170055.00003547@Huawei.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241017170055.00003547@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 28, 2024 at 04:11:40PM +0800, Shuai Xue wrote:
-> Synchronous error was detected as a result of user-space process accessing
-> a 2-bit uncorrected error. The CPU will take a synchronous error exception
-> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
-> memory_failure() work which poisons the related page, unmaps the page, and
-> then sends a SIGBUS to the process, so that a system wide panic can be
-> avoided.
-> 
-> However, no memory_failure() work will be queued when abnormal synchronous
-> errors occur. These errors can include situations such as invalid PA,
-> unexpected severity, no memory failure config support, invalid GUID
-> section, etc. In such case, the user-space process will trigger SEA again.
-> This loop can potentially exceed the platform firmware threshold or even
-> trigger a kernel hard lockup, leading to a system reboot.
-> 
-> Fix it by performing a force kill if no memory_failure() work is queued
-> for synchronous errors.
-> 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/acpi/apei/ghes.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index ada93cfde9ba..f2ee28c44d7a 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -801,6 +801,16 @@ static bool ghes_do_proc(struct ghes *ghes,
->  		}
->  	}
->  
-> +	/*
-> +	 * If no memory failure work is queued for abnormal synchronous
-> +	 * errors, do a force kill.
-> +	 */
-> +	if (sync && !queued) {
-> +		pr_err("%s:%d: hardware memory corruption (SIGBUS)\n",
-> +			current->comm, task_pid_nr(current));
 
-I think it would help to include the GHES_PFX to indicate where this
-message is coming from. The pr_fmt() macro could also be introduced
-instead.
 
-Also, you may want to include the HW_ERR prefix. Not all kernel messages
-related to hardware errors have this prefix today. But maybe that should
-be changed so there is more consistent messaging.
+On 10/17/24 9:00 AM, Jonathan Cameron wrote:
+> On Fri, 27 Sep 2024 07:16:54 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
+> 
+>> Store the address mode as part of the cache attriutes. Export the mode
+>> attribute to sysfs as all other cache attributes.
+>>
+>> Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> Minor things inline. Basically looks fine.
+> 
+> Jonathan
+> 
+>> ---
+>>  Documentation/ABI/stable/sysfs-devices-node | 7 +++++++
+>>  drivers/acpi/numa/hmat.c                    | 3 +++
+>>  drivers/base/node.c                         | 2 ++
+>>  include/linux/node.h                        | 7 +++++++
+>>  4 files changed, 19 insertions(+)
+>>
+>> diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+>> index 402af4b2b905..9016cc4f027c 100644
+>> --- a/Documentation/ABI/stable/sysfs-devices-node
+>> +++ b/Documentation/ABI/stable/sysfs-devices-node
+>> @@ -177,6 +177,13 @@ Description:
+>>  		The cache write policy: 0 for write-back, 1 for write-through,
+>>  		other or unknown.
+>>  
+>> +What:		/sys/devices/system/node/nodeX/memory_side_cache/indexY/mode
+>> +Date:		September 2024
+>> +Contact:	Dave Jiang <dave.jiang@intel.com>
+>> +Description:
+>> +		The address mode: 0 for reserved, 1 for extended-lniear,
+> 
+> linear
+> 
+> also, is 0 reserved or unknown? I'm confused.
 
-Thanks,
-Yazen
+It's labeled Reserved and indicates unknown in the document.
+
+0 - Reserved (Unknown Address Mode)
+
+I'll just remove "others unknown" line and have 0 as reserved and as well have the define as RESERVED below.
+
+DJ
+
+> 
+> 
+>> +		other unknown.
+>> +
+>>  What:		/sys/devices/system/node/nodeX/x86/sgx_total_bytes
+>>  Date:		November 2021
+>>  Contact:	Jarkko Sakkinen <jarkko@kernel.org>
+>> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+>> index 1a902a02390f..39524f36be5b 100644
+>> --- a/drivers/acpi/numa/hmat.c
+>> +++ b/drivers/acpi/numa/hmat.c
+>> @@ -506,6 +506,9 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+>>  	switch ((attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8) {
+>>  	case ACPI_HMAT_CA_DIRECT_MAPPED:
+>>  		tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
+>> +		/* Extended Linear mode is only valid if cache is direct mapped */
+>> +		if (cache->address_mode == ACPI_HMAT_CACHE_MODE_EXTENDED_LINEAR)
+>> +			tcache->cache_attrs.mode = NODE_CACHE_MODE_EXTENDED_LINEAR;
+>>  		break;
+>>  	case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
+>>  		tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
+>> diff --git a/drivers/base/node.c b/drivers/base/node.c
+>> index eb72580288e6..744be5470728 100644
+>> --- a/drivers/base/node.c
+>> +++ b/drivers/base/node.c
+>> @@ -244,12 +244,14 @@ CACHE_ATTR(size, "%llu")
+>>  CACHE_ATTR(line_size, "%u")
+>>  CACHE_ATTR(indexing, "%u")
+>>  CACHE_ATTR(write_policy, "%u")
+>> +CACHE_ATTR(mode, "%u")
+>>  
+>>  static struct attribute *cache_attrs[] = {
+>>  	&dev_attr_indexing.attr,
+>>  	&dev_attr_size.attr,
+>>  	&dev_attr_line_size.attr,
+>>  	&dev_attr_write_policy.attr,
+>> +	&dev_attr_mode.attr,
+>>  	NULL,
+>>  };
+>>  ATTRIBUTE_GROUPS(cache);
+>> diff --git a/include/linux/node.h b/include/linux/node.h
+>> index 9a881c2208b3..589951c5e36f 100644
+>> --- a/include/linux/node.h
+>> +++ b/include/linux/node.h
+>> @@ -57,6 +57,11 @@ enum cache_write_policy {
+>>  	NODE_CACHE_WRITE_OTHER,
+>>  };
+>>  
+>> +enum cache_mode {
+>> +	NODE_CACHE_MODE_UNKOWN,
+> UNKNOWN
+> 
+>> +	NODE_CACHE_MODE_EXTENDED_LINEAR,
+>> +};
+>> +
+>>  /**
+>>   * struct node_cache_attrs - system memory caching attributes
+>>   *
+>> @@ -65,6 +70,7 @@ enum cache_write_policy {
+>>   * @size:		Total size of cache in bytes
+>>   * @line_size:		Number of bytes fetched on a cache miss
+>>   * @level:		The cache hierarchy level
+>> + * @mode:		The address mode
+>>   */
+>>  struct node_cache_attrs {
+>>  	enum cache_indexing indexing;
+>> @@ -72,6 +78,7 @@ struct node_cache_attrs {
+>>  	u64 size;
+>>  	u16 line_size;
+>>  	u8 level;
+>> +	u16 mode;
+>>  };
+>>  
+>>  #ifdef CONFIG_HMEM_REPORTING
+> 
+
 
