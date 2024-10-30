@@ -1,134 +1,126 @@
-Return-Path: <linux-acpi+bounces-9112-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9113-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F53A9B6170
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:26:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A349B6232
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:47:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2D05B2366E
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 11:26:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABEB283452
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 11:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE6B1E4908;
-	Wed, 30 Oct 2024 11:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB0E1E571F;
+	Wed, 30 Oct 2024 11:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ULjmv6uR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2A11E47C3;
-	Wed, 30 Oct 2024 11:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD7F1DC759;
+	Wed, 30 Oct 2024 11:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730287595; cv=none; b=RA0mdQfU6Rea4/CU7G3vxkJ/Ic+5kWhdH8AtpBESAXRxtIy+B2n6khR9Aatay4ZcybEP+J3nBX7kTy7Fkwl0Nu5u9XXRDRqjhb6EZGLv9LaN/obJnkFnowErkBsU4QspkrPef2UIqv0c3oco6+4rEh3eguTI7WeJQaROj+pxjXM=
+	t=1730288868; cv=none; b=uqiAE8HYLAnyEWyt6VzLsHVl2Bic2vIXKy97OSFgIGZ64+FHYUKEXN5koAZsI4e4AXv5L7oKQdTg7BvEGcVHNmcIte9Y/1yz6VKsrbkmNCcTKJd07Ik4Geie7i3Ae2BGs6o+UFVLPzybnQEe4VOaBE09/UmumzYAWvNjEom5c6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730287595; c=relaxed/simple;
-	bh=PN1knUCRZXE/Uop20QO9Tkxhd9JCAkGT98weRl4zB0k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=D5VCntHemY2eK9OxTYN9BTcIe2GxI0kiRu4AHYqa4dHbr775tg4sHMgnZmEr/lFkpnIdcQN3G0khZtD1fR5p5WjrMgVoIu2OB4h+qLRqOjBtAeSf0yEwJxmPhhscIcTaxHouCyOX+1iGr2hdW8zQ/q1tVFHtaatTFOn2uY873Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XdlCr1rRqz6D94H;
-	Wed, 30 Oct 2024 19:25:12 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36760140A35;
-	Wed, 30 Oct 2024 19:26:30 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 30 Oct 2024 12:26:29 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Wed, 30 Oct 2024 12:26:24 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, "jassisinghbrar@gmail.com"
-	<jassisinghbrar@gmail.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"Roberto Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v14 07/14] cxl/memfeature: Add CXL memory device patrol
- scrub control feature
-Thread-Topic: [PATCH v14 07/14] cxl/memfeature: Add CXL memory device patrol
- scrub control feature
-Thread-Index: AQHbJwFiEsGT6VLXSEWw7XeCpRer7rKeIDaAgAEOqbA=
-Date: Wed, 30 Oct 2024 11:26:24 +0000
-Message-ID: <e01f73394d7e4f66a15b577ea42c164e@huawei.com>
-References: <20241025171356.1377-1-shiju.jose@huawei.com>
- <20241025171356.1377-8-shiju.jose@huawei.com>
- <20241029201653.GBZyFCtVpb3V4CcgKe@fat_crate.local>
-In-Reply-To: <20241029201653.GBZyFCtVpb3V4CcgKe@fat_crate.local>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1730288868; c=relaxed/simple;
+	bh=m566/Aw7BokwNE95AHhDC+A322x2cffvVlTff/86lYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MOLUDEokSdjU3JBgL3l5HPbN9r0DaM6o1dgXjDphlgbDqhOvaWUelVVd2cPfuz3K7JZNS0vwWV1zTvkcQr1YRKcAGRJ0TTyn7sghOovGg5nauj0AHeynudDLHUIi1ExyoaG/4nvMRuTMnOrsEdn6rWLQt+iidaNmvZNwgYQXaPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ULjmv6uR; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3561040E0219;
+	Wed, 30 Oct 2024 11:47:44 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id S9VEuAuA33Y3; Wed, 30 Oct 2024 11:47:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1730288860; bh=600G8edgGU8M7BuLs4swFcgrBvQ+28NzvVnBeZLi5DE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ULjmv6uRCnWbaMzdOD0q270221nwyjYiK+v3hPxMLHNF7J9ulZnnnWQJ8I0/2SydL
+	 K7obiq5YWgKYTrg89dbJJxJjDKBnPHyXncCqi3zGyZaCzbSaevTqsCS3squcY/fVVd
+	 RN69gP4fXiLYIFm0B2l2Lv08lYNHWw8fDNca9pRHF9hHDGpHFe6gmul8tJg8UFiKPl
+	 dc8Hjs8VxUmiE+TrUgX/QFE+wwj6uSG4/CSZLbEV2QbvmR5yaNuKfK5A4j6n3DsgBp
+	 Hwbw/8R9t6UakaAxcUYCIEe7Zf0eREaEpEstObDxPkFcnmWQuIWB3av+s6orMLzy8C
+	 /WKHE0xubYBkoBTkgq9mlJsXkFfl13XjaQ3oO9DtnFK2JbOk21sZ1/m2VnlshnrLly
+	 tg0Z+JubTgdvzFfUGA1znzk1PQGtFOS++spRIXRdMUdeZj4ka2XuGM+mBehzbGI5JY
+	 VlmuvbUxtLAoVSStgB3W32O2gOxXbaxCcAjILALFD45R/E27Xdg382mSnyydww0t1f
+	 sV3w2c8FMam4RT/VeasYrTrjNIYEfkef3XJLt5It1d2EpoTlw39ZKsu/23dt5Vqofo
+	 LGBSBgQ9XhhDSbSrU1yH6XQXRG0xGH+X1fzDrPELjIneSfcDorJZDBFoC4t3aLW80p
+	 7nDhrD8zflS3Dghyn9r4/zw8=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AD75940E0191;
+	Wed, 30 Oct 2024 11:47:21 +0000 (UTC)
+Date: Wed, 30 Oct 2024 12:47:12 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, Baoquan He <bhe@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sean Christopherson <seanjc@google.com>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Kai Huang <kai.huang@intel.com>
+Subject: Re: [PATCHv4, REBASED 1/4] x86/mm/ident_map: Fix virtual address
+ wrap to zero
+Message-ID: <20241030114712.GCZyIcwF9MyQacmRf1@fat_crate.local>
+References: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
+ <20241016111458.846228-2-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241016111458.846228-2-kirill.shutemov@linux.intel.com>
 
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBCb3Jpc2xhdiBQZXRrb3YgPGJwQGFs
-aWVuOC5kZT4NCj5TZW50OiAyOSBPY3RvYmVyIDIwMjQgMjA6MTcNCj5UbzogU2hpanUgSm9zZSA8
-c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPkNjOiBsaW51eC1lZGFjQHZnZXIua2VybmVsLm9yZzsg
-bGludXgtY3hsQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+YWNwaUB2Z2VyLmtlcm5lbC5vcmc7
-IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj50b255
-Lmx1Y2tAaW50ZWwuY29tOyByYWZhZWxAa2VybmVsLm9yZzsgbGVuYkBrZXJuZWwub3JnOw0KPm1j
-aGVoYWJAa2VybmVsLm9yZzsgZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tOyBkYXZlQHN0Z29sYWJz
-Lm5ldDsgSm9uYXRoYW4NCj5DYW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBn
-cmVna2hAbGludXhmb3VuZGF0aW9uLm9yZzsNCj5zdWRlZXAuaG9sbGFAYXJtLmNvbTsgamFzc2lz
-aW5naGJyYXJAZ21haWwuY29tOyBkYXZlLmppYW5nQGludGVsLmNvbTsNCj5hbGlzb24uc2Nob2Zp
-ZWxkQGludGVsLmNvbTsgdmlzaGFsLmwudmVybWFAaW50ZWwuY29tOyBpcmEud2VpbnlAaW50ZWwu
-Y29tOw0KPmRhdmlkQHJlZGhhdC5jb207IFZpbGFzLlNyaWRoYXJhbkBhbWQuY29tOyBsZW8uZHVy
-YW5AYW1kLmNvbTsNCj5ZYXplbi5HaGFubmFtQGFtZC5jb207IHJpZW50amVzQGdvb2dsZS5jb207
-IGppYXFpeWFuQGdvb2dsZS5jb207DQo+Sm9uLkdyaW1tQGFtZC5jb207IGRhdmUuaGFuc2VuQGxp
-bnV4LmludGVsLmNvbTsNCj5uYW95YS5ob3JpZ3VjaGlAbmVjLmNvbTsgamFtZXMubW9yc2VAYXJt
-LmNvbTsganRob3VnaHRvbkBnb29nbGUuY29tOw0KPnNvbWFzdW5kYXJhbS5hQGhwZS5jb207IGVy
-ZGVtYWt0YXNAZ29vZ2xlLmNvbTsgcGdvbmRhQGdvb2dsZS5jb207DQo+ZHVlbndlbkBnb29nbGUu
-Y29tOyBndGhlbGVuQGdvb2dsZS5jb207DQo+d3NjaHdhcnR6QGFtcGVyZWNvbXB1dGluZy5jb207
-IGRmZXJndXNvbkBhbXBlcmVjb21wdXRpbmcuY29tOw0KPndic0Bvcy5hbXBlcmVjb21wdXRpbmcu
-Y29tOyBuaWZhbi5jeGxAZ21haWwuY29tOyB0YW54aWFvZmVpDQo+PHRhbnhpYW9mZWlAaHVhd2Vp
-LmNvbT47IFplbmd0YW8gKEIpIDxwcmltZS56ZW5nQGhpc2lsaWNvbi5jb20+OyBSb2JlcnRvDQo+
-U2Fzc3UgPHJvYmVydG8uc2Fzc3VAaHVhd2VpLmNvbT47IGthbmdrYW5nLnNoZW5AZnV0dXJld2Vp
-LmNvbTsNCj53YW5naHVpcWlhbmcgPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPjsgTGludXhhcm0N
-Cj48bGludXhhcm1AaHVhd2VpLmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHYxNCAwNy8xNF0g
-Y3hsL21lbWZlYXR1cmU6IEFkZCBDWEwgbWVtb3J5IGRldmljZSBwYXRyb2wNCj5zY3J1YiBjb250
-cm9sIGZlYXR1cmUNCj4NCj5PbiBGcmksIE9jdCAyNSwgMjAyNCBhdCAwNjoxMzo0OFBNICswMTAw
-LCBzaGlqdS5qb3NlQGh1YXdlaS5jb20gd3JvdGU6DQo+PiArOk9yaWdpbmFsIFJldmlld2VyczoN
-Cj4+ICsNCj4+ICstIFdyaXR0ZW4gZm9yOiA2LjEzDQo+PiArLSBVcGRhdGVkIGZvcjoNCj4NCj5X
-aGF0IGFyZSB0aG9zZSBzdXBwb3NlZCB0byBtZWFuPw0KDQpJIGRlbGV0ZWQuDQo+DQo+LS0NCj5S
-ZWdhcmRzL0dydXNzLA0KDQo+ICAgIEJvcmlzLg0KDQpUaGFua3MsDQpTaGlqdQ0K
+On Wed, Oct 16, 2024 at 02:14:55PM +0300, Kirill A. Shutemov wrote:
+> Calculation of 'next' virtual address doesn't protect against wrapping
+> to zero. It can result in page table corruption and hang. The
+> problematic case is possible if user sets high x86_mapping_info::offset.
+> 
+> The wrapping to zero only occurs if the top PGD entry is accessed.
+> There are no such users in the upstream. Only hibernate_64.c uses
+> x86_mapping_info::offset, and it operates on the direct mapping range,
+> which is not the top PGD entry.
+> 
+> Replace manual 'next' calculation with p?d_addr_end() which handles
+> wrapping correctly.
+
+So this is a fix for a theoretical issue as it cannot happen currently?
+
+Can we call that out in the commit message so that the stable AI doesn't pick
+it up?
+
+And which commit is it fixing?
+
+aece27851d44 ("x86, 64bit, mm: Add generic kernel/ident mapping helper")
+perhaps?
+
+Always add Fixes: tags when a patch is fixing something - you know that.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
