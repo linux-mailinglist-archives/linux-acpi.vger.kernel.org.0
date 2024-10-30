@@ -1,115 +1,544 @@
-Return-Path: <linux-acpi+bounces-9132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A4C9B6922
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 17:28:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF35A9B692E
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 17:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 870301C213A9
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 16:28:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3F6282ABD
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 16:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FE62141D8;
-	Wed, 30 Oct 2024 16:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0DE214408;
+	Wed, 30 Oct 2024 16:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PaYyuMUT"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mr+W9Dej"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404C01F4700;
-	Wed, 30 Oct 2024 16:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D1321443D
+	for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 16:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730305681; cv=none; b=Mg6BjGW5djwNANI1DxVbQSt7NQOnW40WXWjkG5Bn7cnHRopcdcQOTgtO76HQnifUvg4ZqIsMsWWn6336pkmDedGbKo1XirwuNCYzUk6cIVTMl7yrgOpzyUVowIPjb9VkVvkmcmvxvbROiG+JHRyh+MxDeVtwkP2Ew4Kn3dKFAQk=
+	t=1730305774; cv=none; b=EdJCM+sNWTm/o/8024dtwX85XoEKhvQNPytBO1erat5QJFrg1NSGz73BMLZ+LEMg+e65mBmJJXNV4ply66JdITUI6esVUlrEBwdpnT6bqwIbDRbQWg7gAfdkv+w1c3UMaqRJB/I8iR4JmnCPxssmBOKiZ/IQEdi9IYXnqLg1zKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730305681; c=relaxed/simple;
-	bh=YapAEOo9WUhqkrcilX9GGul5Pc60jS1Np0QltkjGLZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=utw9EUXy7itWx9KfMPeXAaKl4NTFWX/kOWBD8og/geXaZbs879m8Eik3yN/4w8nYSIeHEgTa8Mh4JUxGGolEN/LWXl1glVlefFKdNRetShMnB6nPAnEnchNxxT5rDuTsnpNws4Do4hNHRKrJ2F6xCgLvjDt3+RQQYoeq5QGqR5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PaYyuMUT; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730305679; x=1761841679;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=YapAEOo9WUhqkrcilX9GGul5Pc60jS1Np0QltkjGLZk=;
-  b=PaYyuMUT8IQwmz2fGukhArT9Edd3AtC61M/TzpT+IwtJlhlYy9KU7Ouv
-   nay/E5hauGs5R7Swl2DP6XHkkRAqRTH8ZTlSvVMnQEllG4QFWId6V+Bmw
-   zaXLvu6yH7UplSDyysmY6bKxzwmJw6vA4nDeNpFXorfS2yKlOJ8B7g+qY
-   wKRP9oF0GYdpxvJNMsPZvMSFRaThgYIxHtGLsb4/8CammlLdIdc3wiNVv
-   F2VUT5BnduRD9brk++T2PRCSv9dEFB3sfrXM48RV8PCPgWSSyZBVzZ6hR
-   iGTqNKmvL83SllXbYK9my+b05qeCTomEsh1XteFhyZSZs4sPMGXp1w7D0
-   Q==;
-X-CSE-ConnectionGUID: mvwh/d6PTx60jSckoQOqMg==
-X-CSE-MsgGUID: f0S6A/GrSl6Wo6cOmHCtDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30166942"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30166942"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:27:59 -0700
-X-CSE-ConnectionGUID: oAlqyCWUS7ioDloAwnDYlA==
-X-CSE-MsgGUID: C1D5emNQTdmCxB77faLgCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="113217111"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 30 Oct 2024 09:27:57 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 9212F1CF; Wed, 30 Oct 2024 18:27:55 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] ACPI: battery: Check for error code from devm_mutex_init() call
-Date: Wed, 30 Oct 2024 18:27:54 +0200
-Message-ID: <20241030162754.2110946-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	s=arc-20240116; t=1730305774; c=relaxed/simple;
+	bh=md1HBRYmrYuVJq4LtV4huZbaYK/2NBkeE53jf9sL7Yc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NzktXZonGu/8d/J84ZCsOrjdyZNfK15cGGmAPnLR3OgeAGVhArhkpNZtaj5se/ocAimPGKM4pdvFUXfp6L7cFqZoTn5Qam3t/vLV4LbSaPxFYdd1Wz/60PEcDvx5myc04dmTTQcXoT+UK3bWFdWiaQwmenjXf0T5G52mYH/s3d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mr+W9Dej; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43150ea2db6so355e9.0
+        for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 09:29:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730305770; x=1730910570; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=N+b8KRc5zmIDoFCouEIsaDpmzreD1wdS/csixNpC9nU=;
+        b=mr+W9DejmyuiOnfPHvzSVyBjVENHiXY6SLpz4t8kXTyXq65HJh35GBXk86mUeBvtoi
+         QfWXBnRO1jDg2tg6hmCa4pJ+XUUraeKbTVBmYdZuiWiLe2uT9SINRLwCywBG9HYb1S32
+         7Fk7xNPcEJDN6R8EGU3rtCRS4Jj9Ls1hHj5mpRQktKUez+vD+DAd8SvwjMh4uCtlpAh9
+         VgEWYAxvW7rTKF/rFv8i7mkvaqppeCTqqVr1VIExMAo7+G/s2gPNc4BK2DStqDqU2iuj
+         RPQJmoQXA7AAWtrEjy4DOmZzY2++9eW7EtG+I4mKnF2f2oQqFFIGj1w0kZBB32rRMrZe
+         5U8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730305770; x=1730910570;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N+b8KRc5zmIDoFCouEIsaDpmzreD1wdS/csixNpC9nU=;
+        b=mO1r4rd5aDMPB07XWRS+9x6MUTsYHNWWlgpKvgudTEzNiM+nqD9fYG445m5uq9Jv8q
+         wkztDfFtnULkz/H/lWPfuefKxJ7hDBmggwvsiMVGQTK0DGrod2KZ/4+gFPPn72vliQ6K
+         jbwopwAlVLE8DsAIwCypdO+8/egBNZLRMioG4qqo3DtjiB9nO/sEO1SR9CkULlqnrq0x
+         LaozdrmZXOWebQ3HojboULRmvPbO+51TWZ8WU+k4xYTwwJAfgpRwtfzH+lW4BQGsNnCi
+         mQkuLA93oWGcw5Z/93kuuKPyz/6Q0VheV33MdHSnDGhQJM20d7cnPjCkH0NBBkp0gE3r
+         cyXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUbS9KNiWDX5KiQ0O0wKHuhhqVCF4ghROjigeNwh+CGcDPB3RBbDENoUXe2YXd3vrLVy5SUnNNBEBU@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7NA8ApN1DpWAXW4l7R4xDjeo/l5wX1yq7e//fvqDOLiSDEAMG
+	Mlk3lASZW0IqSxVrX6j5w9tDNGAQ0va6Y0Eu5EEz8H9oEwsZBI/MnJtCTh1i8w==
+X-Gm-Gg: ASbGncv1WoUOhCigCNM06nI/H6VKk64PrRyw9v/v6PX21TwwSk/3kLhxRKMqFj4nil1
+	WJvgcMY5/CvnPtqsTZLlVhEt8u/OLFUVltEfiolGc6mjO1kMyb831OKOEf0htv3Sbf3Nws4GuYY
+	4sEHBwKoQtlaZh1ttGy+oLykjPBauJyHJ+JO2FRqMdCF9Q7fLemAY67SgWRYmo0eghwm8kdaxzK
+	M+Fh1NvQsEWTVGIB0MLIl4B9XH43LEnN1GVcC8mPB7nKLaic5s2Y7tdXF4UQyCx3cUyUUpJsAtj
+	tGJoQP5V3w==
+X-Google-Smtp-Source: AGHT+IGdZE3KcqRXG596l1/z6mb5HgBOV8QBFXKlVU+7il4yIkzpxSGgNuKMW+f0EJ4DryrcypqYxA==
+X-Received: by 2002:a05:600c:34d1:b0:426:7018:2e2f with SMTP id 5b1f17b1804b1-431b4a39c00mr10289735e9.5.1730305769736;
+        Wed, 30 Oct 2024 09:29:29 -0700 (PDT)
+Received: from google.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd917fa7sm25675115e9.18.2024.10.30.09.29.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 09:29:28 -0700 (PDT)
+Date: Wed, 30 Oct 2024 16:29:24 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Subject: Re: [PATCH v3 8/9] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
+Message-ID: <ZyJe5M4_DHl37PTr@google.com>
+References: <0-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+ <8-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <8-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
 
-Even if it's not critical, the avoidance of checking the error code
-from devm_mutex_init() call today diminishes the point of using devm
-variant of it. Tomorrow it may even leak something. Add the missed
-check.
+Hi Jason,
 
-Fixes: 0710c1ce5045 ("ACPI: battery: initialize mutexes through devm_ APIs")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/battery.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On Wed, Oct 09, 2024 at 01:23:14PM -0300, Jason Gunthorpe wrote:
+> For SMMUv3 a IOMMU_DOMAIN_NESTED is composed of a S2 iommu_domain acting
+> as the parent and a user provided STE fragment that defines the CD table
+> and related data with addresses translated by the S2 iommu_domain.
+> 
+> The kernel only permits userspace to control certain allowed bits of the
+> STE that are safe for user/guest control.
+> 
+> IOTLB maintenance is a bit subtle here, the S1 implicitly includes the S2
+> translation, but there is no way of knowing which S1 entries refer to a
+> range of S2.
+> 
+> For the IOTLB we follow ARM's guidance and issue a CMDQ_OP_TLBI_NH_ALL to
+> flush all ASIDs from the VMID after flushing the S2 on any change to the
+> S2.
+> 
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     | 172 ++++++++++++++++++
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   |  25 ++-
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  37 ++++
+>  include/uapi/linux/iommufd.h                  |  20 ++
+>  4 files changed, 250 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+> index 3d2671031c9bb5..a9aa7514e65ce4 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+> @@ -29,3 +29,175 @@ void *arm_smmu_hw_info(struct device *dev, u32 *length, u32 *type)
+>  
+>  	return info;
+>  }
+> +
+> +static void arm_smmu_make_nested_cd_table_ste(
+> +	struct arm_smmu_ste *target, struct arm_smmu_master *master,
+> +	struct arm_smmu_nested_domain *nested_domain, bool ats_enabled)
+> +{
+> +	arm_smmu_make_s2_domain_ste(target, master, nested_domain->s2_parent,
+> +				    ats_enabled);
+> +
+> +	target->data[0] = cpu_to_le64(STRTAB_STE_0_V |
+> +				      FIELD_PREP(STRTAB_STE_0_CFG,
+> +						 STRTAB_STE_0_CFG_NESTED));
+> +	target->data[0] |= nested_domain->ste[0] &
+> +			   ~cpu_to_le64(STRTAB_STE_0_CFG);
+> +	target->data[1] |= nested_domain->ste[1];
+> +}
+> +
+> +/*
+> + * Create a physical STE from the virtual STE that userspace provided when it
+> + * created the nested domain. Using the vSTE userspace can request:
+> + * - Non-valid STE
+> + * - Abort STE
+> + * - Bypass STE (install the S2, no CD table)
+> + * - CD table STE (install the S2 and the userspace CD table)
+> + */
+> +static void arm_smmu_make_nested_domain_ste(
+> +	struct arm_smmu_ste *target, struct arm_smmu_master *master,
+> +	struct arm_smmu_nested_domain *nested_domain, bool ats_enabled)
+> +{
+> +	unsigned int cfg =
+> +		FIELD_GET(STRTAB_STE_0_CFG, le64_to_cpu(nested_domain->ste[0]));
+> +
+> +	/*
+> +	 * Userspace can request a non-valid STE through the nesting interface.
+> +	 * We relay that into an abort physical STE with the intention that
+> +	 * C_BAD_STE for this SID can be generated to userspace.
+> +	 */
+> +	if (!(nested_domain->ste[0] & cpu_to_le64(STRTAB_STE_0_V)))
+> +		cfg = STRTAB_STE_0_CFG_ABORT;
+> +
+> +	switch (cfg) {
+> +	case STRTAB_STE_0_CFG_S1_TRANS:
+> +		arm_smmu_make_nested_cd_table_ste(target, master, nested_domain,
+> +						  ats_enabled);
+> +		break;
+> +	case STRTAB_STE_0_CFG_BYPASS:
+> +		arm_smmu_make_s2_domain_ste(
+> +			target, master, nested_domain->s2_parent, ats_enabled);
+> +		break;
+> +	case STRTAB_STE_0_CFG_ABORT:
+> +	default:
+> +		arm_smmu_make_abort_ste(target);
+> +		break;
+> +	}
+> +}
+> +
+> +static int arm_smmu_attach_dev_nested(struct iommu_domain *domain,
+> +				      struct device *dev)
+> +{
+> +	struct arm_smmu_nested_domain *nested_domain =
+> +		to_smmu_nested_domain(domain);
+> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+> +	struct arm_smmu_attach_state state = {
+> +		.master = master,
+> +		.old_domain = iommu_get_domain_for_dev(dev),
+> +		.ssid = IOMMU_NO_PASID,
+> +		/* Currently invalidation of ATC is not supported */
+> +		.disable_ats = true,
+> +	};
+> +	struct arm_smmu_ste ste;
+> +	int ret;
+> +
+> +	if (nested_domain->s2_parent->smmu != master->smmu)
+> +		return -EINVAL;
+> +	if (arm_smmu_ssids_in_use(&master->cd_table))
+> +		return -EBUSY;
+> +
+> +	mutex_lock(&arm_smmu_asid_lock);
+> +	ret = arm_smmu_attach_prepare(&state, domain);
+> +	if (ret) {
+> +		mutex_unlock(&arm_smmu_asid_lock);
+> +		return ret;
+> +	}
+> +
+> +	arm_smmu_make_nested_domain_ste(&ste, master, nested_domain,
+> +					state.ats_enabled);
+> +	arm_smmu_install_ste_for_dev(master, &ste);
+> +	arm_smmu_attach_commit(&state);
+> +	mutex_unlock(&arm_smmu_asid_lock);
+> +	return 0;
+> +}
+> +
+> +static void arm_smmu_domain_nested_free(struct iommu_domain *domain)
+> +{
+> +	kfree(to_smmu_nested_domain(domain));
+> +}
+> +
+> +static const struct iommu_domain_ops arm_smmu_nested_ops = {
+> +	.attach_dev = arm_smmu_attach_dev_nested,
+> +	.free = arm_smmu_domain_nested_free,
+> +};
+> +
+> +static int arm_smmu_validate_vste(struct iommu_hwpt_arm_smmuv3 *arg)
+> +{
+> +	unsigned int cfg;
+> +
+> +	if (!(arg->ste[0] & cpu_to_le64(STRTAB_STE_0_V))) {
+> +		memset(arg->ste, 0, sizeof(arg->ste));
+> +		return 0;
+> +	}
+> +
+> +	/* EIO is reserved for invalid STE data. */
+> +	if ((arg->ste[0] & ~STRTAB_STE_0_NESTING_ALLOWED) ||
+> +	    (arg->ste[1] & ~STRTAB_STE_1_NESTING_ALLOWED))
+> +		return -EIO;
+> +
+> +	cfg = FIELD_GET(STRTAB_STE_0_CFG, le64_to_cpu(arg->ste[0]));
+> +	if (cfg != STRTAB_STE_0_CFG_ABORT && cfg != STRTAB_STE_0_CFG_BYPASS &&
+> +	    cfg != STRTAB_STE_0_CFG_S1_TRANS)
+> +		return -EIO;
+> +	return 0;
+> +}
+> +
+> +struct iommu_domain *
+> +arm_smmu_domain_alloc_nesting(struct device *dev, u32 flags,
+> +			      struct iommu_domain *parent,
+> +			      const struct iommu_user_data *user_data)
+> +{
+> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+> +	struct arm_smmu_nested_domain *nested_domain;
+> +	struct arm_smmu_domain *smmu_parent;
+> +	struct iommu_hwpt_arm_smmuv3 arg;
+> +	int ret;
+> +
+> +	if (flags || !(master->smmu->features & ARM_SMMU_FEAT_NESTING))
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	/*
+> +	 * Must support some way to prevent the VM from bypassing the cache
+> +	 * because VFIO currently does not do any cache maintenance.
+> +	 */
+> +	if (!arm_smmu_master_canwbs(master))
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	/*
+> +	 * The core code checks that parent was created with
+> +	 * IOMMU_HWPT_ALLOC_NEST_PARENT
+> +	 */
+> +	smmu_parent = to_smmu_domain(parent);
+> +	if (smmu_parent->smmu != master->smmu)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	ret = iommu_copy_struct_from_user(&arg, user_data,
+> +					  IOMMU_HWPT_DATA_ARM_SMMUV3, ste);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	ret = arm_smmu_validate_vste(&arg);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	nested_domain = kzalloc(sizeof(*nested_domain), GFP_KERNEL_ACCOUNT);
+> +	if (!nested_domain)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	nested_domain->domain.type = IOMMU_DOMAIN_NESTED;
+> +	nested_domain->domain.ops = &arm_smmu_nested_ops;
+> +	nested_domain->s2_parent = smmu_parent;
+> +	nested_domain->ste[0] = arg.ste[0];
+> +	nested_domain->ste[1] = arg.ste[1] & ~cpu_to_le64(STRTAB_STE_1_EATS);
+> +
+> +	return &nested_domain->domain;
+> +}
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> index b4b03206afbf48..eb401a4adfedc8 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> @@ -295,6 +295,7 @@ static int arm_smmu_cmdq_build_cmd(u64 *cmd, struct arm_smmu_cmdq_ent *ent)
+>  	case CMDQ_OP_TLBI_NH_ASID:
+>  		cmd[0] |= FIELD_PREP(CMDQ_TLBI_0_ASID, ent->tlbi.asid);
+>  		fallthrough;
+> +	case CMDQ_OP_TLBI_NH_ALL:
+>  	case CMDQ_OP_TLBI_S12_VMALL:
+>  		cmd[0] |= FIELD_PREP(CMDQ_TLBI_0_VMID, ent->tlbi.vmid);
+>  		break;
+> @@ -2230,6 +2231,15 @@ static void arm_smmu_tlb_inv_range_domain(unsigned long iova, size_t size,
+>  	}
+>  	__arm_smmu_tlb_inv_range(&cmd, iova, size, granule, smmu_domain);
+>  
+> +	if (smmu_domain->nest_parent) {
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 66662712e288..70f706d7634f 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1226,8 +1226,12 @@ static int acpi_battery_add(struct acpi_device *device)
- 	strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
- 	strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
- 	device->driver_data = battery;
--	devm_mutex_init(&device->dev, &battery->lock);
--	devm_mutex_init(&device->dev, &battery->sysfs_lock);
-+	result = devm_mutex_init(&device->dev, &battery->lock);
-+	if (result)
-+		return result;
-+	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
-+	if (result)
-+		return result;
- 	if (acpi_has_method(battery->device->handle, "_BIX"))
- 		set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
- 
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+Do we need a sync between the 2 invalidations to order them?
 
+> +		/*
+> +		 * When the S2 domain changes all the nested S1 ASIDs have to be
+> +		 * flushed too.
+> +		 */
+> +		cmd.opcode = CMDQ_OP_TLBI_NH_ALL;
+> +		arm_smmu_cmdq_issue_cmd_with_sync(smmu_domain->smmu, &cmd);
+> +	}
+> +
+>  	/*
+>  	 * Unfortunately, this can't be leaf-only since we may have
+>  	 * zapped an entire table.
+> @@ -2614,8 +2624,7 @@ static void arm_smmu_disable_pasid(struct arm_smmu_master *master)
+>  
+>  static struct arm_smmu_master_domain *
+>  arm_smmu_find_master_domain(struct arm_smmu_domain *smmu_domain,
+> -			    struct arm_smmu_master *master,
+> -			    ioasid_t ssid)
+> +			    struct arm_smmu_master *master, ioasid_t ssid)
+>  {
+>  	struct arm_smmu_master_domain *master_domain;
+>  
+> @@ -2644,6 +2653,8 @@ to_smmu_domain_devices(struct iommu_domain *domain)
+>  	if ((domain->type & __IOMMU_DOMAIN_PAGING) ||
+>  	    domain->type == IOMMU_DOMAIN_SVA)
+>  		return to_smmu_domain(domain);
+> +	if (domain->type == IOMMU_DOMAIN_NESTED)
+> +		return to_smmu_nested_domain(domain)->s2_parent;
+>  	return NULL;
+>  }
+>  
+> @@ -2716,7 +2727,8 @@ int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
+>  		 * enabled if we have arm_smmu_domain, those always have page
+>  		 * tables.
+>  		 */
+> -		state->ats_enabled = arm_smmu_ats_supported(master);
+> +		state->ats_enabled = !state->disable_ats &&
+> +				     arm_smmu_ats_supported(master);
+>  	}
+>  
+>  	if (smmu_domain) {
+> @@ -3107,9 +3119,13 @@ arm_smmu_domain_alloc_user(struct device *dev, u32 flags,
+>  	struct arm_smmu_domain *smmu_domain;
+>  	int ret;
+>  
+> +	if (parent)
+> +		return arm_smmu_domain_alloc_nesting(dev, flags, parent,
+> +						     user_data);
+> +
+>  	if (flags & ~PAGING_FLAGS)
+>  		return ERR_PTR(-EOPNOTSUPP);
+> -	if (parent || user_data)
+> +	if (user_data)
+>  		return ERR_PTR(-EOPNOTSUPP);
+>  
+>  	smmu_domain = arm_smmu_domain_alloc();
+> @@ -3122,6 +3138,7 @@ arm_smmu_domain_alloc_user(struct device *dev, u32 flags,
+>  			goto err_free;
+>  		}
+>  		smmu_domain->stage = ARM_SMMU_DOMAIN_S2;
+> +		smmu_domain->nest_parent = true;
+>  	}
+>  
+>  	smmu_domain->domain.type = IOMMU_DOMAIN_UNMANAGED;
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> index c9e5290e995a64..b5dbf5acbfc4db 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> @@ -243,6 +243,7 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
+>  #define STRTAB_STE_0_CFG_BYPASS		4
+>  #define STRTAB_STE_0_CFG_S1_TRANS	5
+>  #define STRTAB_STE_0_CFG_S2_TRANS	6
+> +#define STRTAB_STE_0_CFG_NESTED		7
+>  
+>  #define STRTAB_STE_0_S1FMT		GENMASK_ULL(5, 4)
+>  #define STRTAB_STE_0_S1FMT_LINEAR	0
+> @@ -294,6 +295,15 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
+>  
+>  #define STRTAB_STE_3_S2TTB_MASK		GENMASK_ULL(51, 4)
+>  
+> +/* These bits can be controlled by userspace for STRTAB_STE_0_CFG_NESTED */
+> +#define STRTAB_STE_0_NESTING_ALLOWED                                         \
+> +	cpu_to_le64(STRTAB_STE_0_V | STRTAB_STE_0_CFG | STRTAB_STE_0_S1FMT | \
+> +		    STRTAB_STE_0_S1CTXPTR_MASK | STRTAB_STE_0_S1CDMAX)
+> +#define STRTAB_STE_1_NESTING_ALLOWED                            \
+> +	cpu_to_le64(STRTAB_STE_1_S1DSS | STRTAB_STE_1_S1CIR |   \
+> +		    STRTAB_STE_1_S1COR | STRTAB_STE_1_S1CSH |   \
+> +		    STRTAB_STE_1_S1STALLD)
+> +
+>  /*
+>   * Context descriptors.
+>   *
+> @@ -513,6 +523,7 @@ struct arm_smmu_cmdq_ent {
+>  			};
+>  		} cfgi;
+>  
+> +		#define CMDQ_OP_TLBI_NH_ALL     0x10
+>  		#define CMDQ_OP_TLBI_NH_ASID	0x11
+>  		#define CMDQ_OP_TLBI_NH_VA	0x12
+>  		#define CMDQ_OP_TLBI_EL2_ALL	0x20
+> @@ -814,10 +825,18 @@ struct arm_smmu_domain {
+>  	struct list_head		devices;
+>  	spinlock_t			devices_lock;
+>  	bool				enforce_cache_coherency : 1;
+> +	bool				nest_parent : 1;
+>  
+>  	struct mmu_notifier		mmu_notifier;
+>  };
+>  
+> +struct arm_smmu_nested_domain {
+> +	struct iommu_domain domain;
+> +	struct arm_smmu_domain *s2_parent;
+> +
+> +	__le64 ste[2];
+> +};
+> +
+>  /* The following are exposed for testing purposes. */
+>  struct arm_smmu_entry_writer_ops;
+>  struct arm_smmu_entry_writer {
+> @@ -862,6 +881,12 @@ static inline struct arm_smmu_domain *to_smmu_domain(struct iommu_domain *dom)
+>  	return container_of(dom, struct arm_smmu_domain, domain);
+>  }
+>  
+> +static inline struct arm_smmu_nested_domain *
+> +to_smmu_nested_domain(struct iommu_domain *dom)
+> +{
+> +	return container_of(dom, struct arm_smmu_nested_domain, domain);
+> +}
+> +
+>  extern struct xarray arm_smmu_asid_xa;
+>  extern struct mutex arm_smmu_asid_lock;
+>  
+> @@ -908,6 +933,7 @@ struct arm_smmu_attach_state {
+>  	struct iommu_domain *old_domain;
+>  	struct arm_smmu_master *master;
+>  	bool cd_needs_ats;
+> +	bool disable_ats;
+>  	ioasid_t ssid;
+>  	/* Resulting state */
+>  	bool ats_enabled;
+> @@ -978,8 +1004,19 @@ tegra241_cmdqv_probe(struct arm_smmu_device *smmu)
+>  
+>  #if IS_ENABLED(CONFIG_ARM_SMMU_V3_IOMMUFD)
+>  void *arm_smmu_hw_info(struct device *dev, u32 *length, u32 *type);
+> +struct iommu_domain *
+> +arm_smmu_domain_alloc_nesting(struct device *dev, u32 flags,
+> +			      struct iommu_domain *parent,
+> +			      const struct iommu_user_data *user_data);
+>  #else
+>  #define arm_smmu_hw_info NULL
+> +static inline struct iommu_domain *
+> +arm_smmu_domain_alloc_nesting(struct device *dev, u32 flags,
+> +			      struct iommu_domain *parent,
+> +			      const struct iommu_user_data *user_data)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+>  #endif /* CONFIG_ARM_SMMU_V3_IOMMUFD */
+>  
+>  #endif /* _ARM_SMMU_V3_H */
+> diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+> index b5c94fecb94ca5..cd4920886ad05e 100644
+> --- a/include/uapi/linux/iommufd.h
+> +++ b/include/uapi/linux/iommufd.h
+> @@ -394,14 +394,34 @@ struct iommu_hwpt_vtd_s1 {
+>  	__u32 __reserved;
+>  };
+>  
+> +/**
+> + * struct iommu_hwpt_arm_smmuv3 - ARM SMMUv3 Context Descriptor Table info
+> + *                                (IOMMU_HWPT_DATA_ARM_SMMUV3)
+> + *
+
+That’s supposed to be stream table?
+
+Thanks,
+Mostafa
+
+> + * @ste: The first two double words of the user space Stream Table Entry for
+> + *       a user stage-1 Context Descriptor Table. Must be little-endian.
+> + *       Allowed fields: (Refer to "5.2 Stream Table Entry" in SMMUv3 HW Spec)
+> + *       - word-0: V, Cfg, S1Fmt, S1ContextPtr, S1CDMax
+> + *       - word-1: S1DSS, S1CIR, S1COR, S1CSH, S1STALLD
+> + *
+> + * -EIO will be returned if @ste is not legal or contains any non-allowed field.
+> + * Cfg can be used to select a S1, Bypass or Abort configuration. A Bypass
+> + * nested domain will translate the same as the nesting parent.
+> + */
+> +struct iommu_hwpt_arm_smmuv3 {
+> +	__aligned_le64 ste[2];
+> +};
+> +
+>  /**
+>   * enum iommu_hwpt_data_type - IOMMU HWPT Data Type
+>   * @IOMMU_HWPT_DATA_NONE: no data
+>   * @IOMMU_HWPT_DATA_VTD_S1: Intel VT-d stage-1 page table
+> + * @IOMMU_HWPT_DATA_ARM_SMMUV3: ARM SMMUv3 Context Descriptor Table
+>   */
+>  enum iommu_hwpt_data_type {
+>  	IOMMU_HWPT_DATA_NONE = 0,
+>  	IOMMU_HWPT_DATA_VTD_S1 = 1,
+> +	IOMMU_HWPT_DATA_ARM_SMMUV3 = 2,
+>  };
+>  
+>  /**
+> -- 
+> 2.46.2
+> 
 
