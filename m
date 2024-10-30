@@ -1,77 +1,296 @@
-Return-Path: <linux-acpi+bounces-9140-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9141-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882059B6C1A
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 19:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD599B700F
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 23:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348E21F2206F
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 18:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C326D1F2245F
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 22:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB93E1CB518;
-	Wed, 30 Oct 2024 18:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293A91E9065;
+	Wed, 30 Oct 2024 22:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="BBLI19gx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y4HVkxjb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75DC1BD9DA;
-	Wed, 30 Oct 2024 18:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352161CF5E0;
+	Wed, 30 Oct 2024 22:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730312981; cv=none; b=uaPflV4Qmi2YQ/VB44/oVZ322fKGNA0SRKd6pkWinvNZ+aJ+nl9oeL0Oqfbe/yZcplq2YAkAnrj6bZhfekTCDn4eN+ErD3uGurKaCemWdQnlrw6Q5VlWijdFuKyAaKlHzbD0gbw9Im9IvqhvMWvWaOqvbNdwjF9dstahyiRz+9Q=
+	t=1730328806; cv=none; b=ennAZ20FhVZGxzVHuQgppK4mJW+j/0nyvPSSkOQyQFTgsIc9rlk/WuSHCXbPdR4Rw10AkHbxtxfIOAYykBjH22l++JhmSN25HNawCcTv40dhfylSsZaDRN5E5r1h7tERwbsNcGXOPypvIr0HHy170KPlhnOQB38++HxgzpRuzpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730312981; c=relaxed/simple;
-	bh=hYoR0YqPyvmejtGbq8Tt3Ox/H/FdThrUkxzrtIn2j1o=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=mURA4feeFiuoiAtJv2Qi1lelK0shtovRTw5NfrPzGLMbTAw6jvfYfouqiUan2XVexI0REZDvbEpOhShj8qrh44ehtASbfang2kFunPgGpVNSREASHxbfupG3f2NSWhs8sDwJLLJktwFYiMbF2epsHIWHjXHwcBih5t5nEcij++U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=BBLI19gx; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1730312976;
-	bh=hYoR0YqPyvmejtGbq8Tt3Ox/H/FdThrUkxzrtIn2j1o=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=BBLI19gxXBoRT2hGgIYHeg3Xte60wUM5Ul+uXHj0WHDqcuuZtR36NZ1QmmJ6QTjYd
-	 8LtSmmd3mYpk12vavBj3NbqIiQH4bwu50hnmv1OAjCRXDjq1ZV+l2JBeeSQP93lWAc
-	 5DxY2HeydBl2DYgVZ9lSl1YrdFbYileezlNKhLtE=
-Date: Wed, 30 Oct 2024 12:29:31 -0600 (CST)
-From: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Message-ID: <550e1dd5-91fb-44ae-bbd5-a10ce1b73ad4@weissschuh.net>
-In-Reply-To: <ZyJtXzIReSHfKkd_@smile.fi.intel.com>
-References: <20241030162754.2110946-1-andriy.shevchenko@linux.intel.com> <63b16433-9f80-492f-9389-633a9852a223@weissschuh.net> <ZyJtXzIReSHfKkd_@smile.fi.intel.com>
-Subject: Re: [PATCH v1 1/1] ACPI: battery: Check for error code from
- devm_mutex_init() call
+	s=arc-20240116; t=1730328806; c=relaxed/simple;
+	bh=ta/3mu/K6XLdk9iyl+3tE+uEvy7rkf8Tqkm1e4chglE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m1zmGhoJx9A/UGMdhJ57sarPKwp7M1RabWD1Fqx6XThZ56p0yqdU2GWMjUH2PfHffZrmieyABOtilwCVTBtkNp+xOOmVV7ozstSm4/6eb8Bnu5i5uVRZdgYIk0TNtkiQGnHpVSrejh6UEJoUQzVkI1JLuegJca9+jlMA+6QoD2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y4HVkxjb; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730328804; x=1761864804;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ta/3mu/K6XLdk9iyl+3tE+uEvy7rkf8Tqkm1e4chglE=;
+  b=Y4HVkxjbTVjM/t/IdImsXyU4ClYfWVLUm3saVXCK3Hg1Rncpt6QcG0/i
+   3ya5RTteXcj+NRzHgRW/jWXzquAEkkEN8HkHuIlfVBh81r5rofczEePUu
+   AcnuANtaqqauk67nY2PTokXlw0kVy2ZNNLrZhp831z0gm7UeiFPnRbjk8
+   157MLiOF4x0bLs7ahCENjBkfyxZA5RBwGTaoGtXyJSPK954hwSwEpk2Ty
+   kFAko0hjKkLGe5UxFvc1Ba4EV6nghKbdtEQThDNF/cYnAUDBSqBFkLyUM
+   PN8fP6e+NKc/e4GpiGKwLwvtGeeiImkkE9MtAs1L28dwtbilviLYBf2hY
+   A==;
+X-CSE-ConnectionGUID: lE0pxd0ORKW9lV8gtne3fQ==
+X-CSE-MsgGUID: sNDDlxC4RqKINYyCR+86rQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30208206"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30208206"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 15:53:23 -0700
+X-CSE-ConnectionGUID: vSiz8NTnT5eA58POIRiUYA==
+X-CSE-MsgGUID: IQ/eeVpJSzyznBT1fLTPKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,246,1725346800"; 
+   d="scan'208";a="105776749"
+Received: from nnlnb-sb-019.ccr.corp.intel.com (HELO [10.125.108.160]) ([10.125.108.160])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 15:53:21 -0700
+Message-ID: <773c3a60-22eb-4719-84dd-64d642926230@intel.com>
+Date: Wed, 30 Oct 2024 15:53:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 4/6] acpi/hmat: Add helper functions to provide
+ extended linear cache translation
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
+ bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
+ dave@stgolabs.net, alison.schofield@intel.com, ira.weiny@intel.com
+References: <20240927142108.1156362-1-dave.jiang@intel.com>
+ <20240927142108.1156362-5-dave.jiang@intel.com>
+ <20241017173326.0000191a@Huawei.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241017173326.0000191a@Huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <550e1dd5-91fb-44ae-bbd5-a10ce1b73ad4@weissschuh.net>
+Content-Transfer-Encoding: 7bit
 
-Oct 30, 2024 11:31:21 Andy Shevchenko <andriy.shevchenko@linux.intel.com>:
 
-> On Wed, Oct 30, 2024 at 10:42:18AM -0600, Thomas Wei=C3=9Fschuh wrote:
->> Oct 30, 2024 10:28:03 Andy Shevchenko <andriy.shevchenko@linux.intel.com=
->:
+
+On 10/17/24 9:33 AM, Jonathan Cameron wrote:
+> On Fri, 27 Sep 2024 07:16:56 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
+> 
+>> Add helper functions to help do address translation for either the address
+>> of the extended linear cache or its alias address. The translation function
+>> attempt to detect an I/O hole in the proximity domain and adjusts the address
+>> if the hole impacts the aliasing of the address. The range of the I/O hole
+>> is retrieved by walking through the associated memory target resources.
+> 
+> What does the I/O hole correspond to in the system?
+> 
+>>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>> ---
+>>  drivers/acpi/numa/hmat.c | 136 +++++++++++++++++++++++++++++++++++++++
+>>  include/linux/acpi.h     |  14 ++++
+>>  2 files changed, 150 insertions(+)
+>>
+>> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+>> index d299f8d7af8c..834314582f4c 100644
+>> --- a/drivers/acpi/numa/hmat.c
+>> +++ b/drivers/acpi/numa/hmat.c
+>> @@ -152,6 +152,142 @@ int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(hmat_get_extended_linear_cache_size, CXL);
+>>  
+>> +static int alias_address_find_iohole(struct memory_target *target,
+>> +				     u64 address, u64 alias, struct range *hole)
+>> +{
+>> +	struct resource *alias_res = NULL;
+>> +	struct resource *res, *prev;
+>> +
+>> +	*hole = (struct range) {
+>> +		.start = 0,
+>> +		.end = -1,
+>> +	};
+>> +
+>> +	/* First find the resource that the address is in */
+>> +	prev = target->memregions.child;
+>> +	for (res = target->memregions.child; res; res = res->sibling) {
+>> +		if (alias >= res->start && alias <= res->end) {
+>> +			alias_res = res;
+>> +			break;
+>> +		}
+>> +		prev = res;
+>> +	}
+>> +	if (!alias_res)
+> 
+> 	if (!res) and you can just use res instead of alias_res for the following
+> as you exit the loop with it set to the right value.
 >
-> ...
+Ok will do that
+ 
+> 
+> 
+>> +		return -EINVAL;
+>> +
+>> +	/* No memory hole */
+>> +	if (alias_res == prev)
+>> +		return 0;
+>> +
+>> +	/* If address is within the current resource, no need to deal with memory hole */
+>> +	if (address >= alias_res->start)
+>> +		return 0;
+>> +
+>> +	*hole = (struct range) {
+>> +		.start = prev->end + 1,
+>> +		.end = alias_res->start - 1,
+>> +	};
+> Ordering assumption should be avoided in such a generic
+> sounding function.  Can the hole be first?
 
->> wouldn't it make sense to mark devm_mutex_init() as __must_check?
+Do you mean if the address mapping starts out with an MMIO range and then memory range? I'm not sure if such an implementation exists in the x86 world. And if the hole is behind all the ranges, then it shouldn't impact the address calculations. 
+
+> 
+> or rename the function to include preceding_hole or something like that.
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +int hmat_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid)
+>> +{
+>> +	unsigned int pxm = node_to_pxm(nid);
+>> +	struct memory_target *target;
+>> +	struct range iohole;
+>> +	int rc;
+>> +
+>> +	target = find_mem_target(pxm);
+>> +	if (!target)
+>> +		return -EINVAL;
+>> +
+>> +	rc = alias_address_find_iohole(target, address, *alias, &iohole);
+>> +	if (rc)
+>> +		return rc;
+>> +
+>> +	if (!range_len(&iohole))
+>> +		return 0;
+>> +
+> Maybe reformat like this and add comments on each condition.
+> 
+> 	if (address >= iohole.start)
+> 		return 0;
+> 
+> 	if (*alias <= iohole.start)
+> 		return 0;
+> 
+> 	*alias += range_len(&iohole);
+> 
+> 	return 0;
+> 
 >
-> It's macro, any idea how to do that for the macros?
 
-It should work on __devm_mutex_init().
-I don't think the expression macro=C2=A0 in between should interfere.
-Unfortunately I can't test it myself right now.
+Will change to that and add comments.
+ 	
+>> +	if (address < iohole.start) {
+>> +		if (*alias > iohole.start) {
+>> +			*alias = *alias + range_len(&iohole);
+>> +			return 0;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(hmat_extended_linear_cache_alias_xlat, CXL);
+>> +
+>> +static int target_address_find_iohole(struct memory_target *target,
+>> +				      u64 address, u64 alias,
+>> +				      struct range *hole)
+>> +{
+>> +	struct resource *addr_res = NULL;
+>> +	struct resource *res, *next;
+>> +
+>> +	*hole = (struct range) {
+>> +		.start = 0,
+>> +		.end = -1,
+>> +	};
+>> +
+>> +	/* First find the resource that the address is in */
+>> +	for (res = target->memregions.child; res; res = res->sibling) {
+>> +		if (address >= res->start && address <= res->end) {
+>> +			addr_res = res;
+> 
+> Could just use res as it's scope is outside the loop.
+
+Will update.
+
+> 
+>> +			break;
+>> +		}
+>> +	}
+>> +	if (!addr_res)
+>> +		return -EINVAL;
+>> +
+>> +	next = res->sibling;
+>> +	/* No memory hole after the region */
+>> +	if (!next)
+>> +		return 0;
+>> +
+>> +	/* If alias is within the current resource, no need to deal with memory hole */
+>> +	if (alias <= addr_res->end)
+>> +		return 0;
+>> +
+>> +	*hole = (struct range) {
+>> +		.start = addr_res->end + 1,
+>> +		.end = next->start - 1,
+>> +	};
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +int hmat_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid)
+>> +{
+>> +	unsigned int pxm = node_to_pxm(nid);
+>> +	struct memory_target *target;
+>> +	struct range iohole;
+>> +	int rc;
+>> +
+>> +	target = find_mem_target(pxm);
+>> +	if (!target)
+>> +		return -EINVAL;
+>> +
+>> +	rc = target_address_find_iohole(target, *address, alias, &iohole);
+>> +	if (rc)
+>> +		return rc;
+>> +
+>> +	if (!range_len(&iohole))
+>> +		return 0;
+>> +
+> 
+> Similar to above, maybe break into multiple reasons to exit early.
+> 
+
+Will update.
+
+>> +	if (alias > iohole.end) {
+>> +		if (*address < iohole.end) {
+>> +			*address = *address - range_len(&iohole);
+>> +			return 0;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(hmat_extended_linear_cache_address_xlat, CXL);
+>>
+> 
+> Jonathan
+
 
