@@ -1,209 +1,235 @@
-Return-Path: <linux-acpi+bounces-9106-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9107-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EB59B59C2
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 03:09:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B039B5A8C
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 05:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D8AC284545
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 02:09:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05BFA1F24A65
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 04:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3670517C224;
-	Wed, 30 Oct 2024 02:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89041991A5;
+	Wed, 30 Oct 2024 04:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kCq3rXyH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UZs3CITg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1348D531;
-	Wed, 30 Oct 2024 02:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A20194C83
+	for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 04:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730254185; cv=none; b=gH9tVP6zFsnbt7EDumUpTQuxbwjLaJy0if9gOUawvojSc9b7+QzM1Q5kxbT7Hk0jf0/zDeg9QIsgaKY04R5nHtMq2RZ4sUafbflyHOQKTQwa3xZ1G64mJbC2qcRURpSZuAhSJnBYRiWjmznuM/JRHlrienGKX3w4ka0kJ9+xRGk=
+	t=1730261192; cv=none; b=HKlpPyXeDNhL8qZngQsx+CeYuP+ZeplXhR7j32rNiS093tI44P2WLVsa7TGIfnpADG20KFfwItcioh5MEv0lWyo66BhsGfhabntZLMZz7HbdFqtDrnJYXM/6oaCtAgjO/W3/30TvHZ00i+Vy27U4j+ON54SH3lb8ie+rRu6h1dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730254185; c=relaxed/simple;
-	bh=tyxsw09VnP158ILhCIrWL66PS9WP3oA2XNlhC/L75e4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=I3eJNOB+Q08EYsB1r2z2sDmoXbE3LiRU+VlD3G/U9hXJH6P1M+0i09ug1ojjF+iwN//IVGd9G6d86kNxELyTicCTZUv6eKZ2DxeB6TvBn3eRU28VuB3V6+t+6sQWlH1B/3SMKyxqktvQElB+QBEPypSGWuyLRW9GKcRNiniGJs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kCq3rXyH; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730254182; x=1761790182;
-  h=date:from:to:cc:subject:message-id;
-  bh=tyxsw09VnP158ILhCIrWL66PS9WP3oA2XNlhC/L75e4=;
-  b=kCq3rXyHFGs2KjqWPXXTlCWfc+ZuJ0C2MyxZ5SBm+OkVZor3x6ndAu+U
-   79g0Fr3i0QmgBoUdDGUjDFAr5Ew7/CJf3EeUkLKajHOF6bXEjqq4mhytW
-   WVl9NLypoVe0PiDBb0hLUPlckps7pOZbmbO8echbY/UJl6L4xF2TIUrg0
-   I52yGq/TBnC4BRhOwl2K+4eXKa2Fu9sKj9aA+1czhh4rYCgQOJNNAy+HY
-   K8JeBnCdUKCUDGOXfPj11pAd0FwNS0t2Nyyvz2Q2UDWIhaHVHNI79NsS4
-   meHICdfMfuyb8tiGuZgiY8GezZc8WVCRPEImLis9H5pFYyiYwmqC82iDb
-   w==;
-X-CSE-ConnectionGUID: 7LfknW1CRFqRzCvW1/WiRA==
-X-CSE-MsgGUID: N09wo8UBQVycRzG61wEVow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="33735792"
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
-   d="scan'208";a="33735792"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 19:09:42 -0700
-X-CSE-ConnectionGUID: L7fMuRa/ThC9uuOvnYMgjQ==
-X-CSE-MsgGUID: 70hlRWACTju3KuxuoIj1NA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
-   d="scan'208";a="82971052"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 29 Oct 2024 19:09:41 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t5y9S-000eOu-0g;
-	Wed, 30 Oct 2024 02:09:38 +0000
-Date: Wed, 30 Oct 2024 10:09:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- c58e12abb31c51ef657e1d048682070212062106
-Message-ID: <202410301026.maEai9Cn-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1730261192; c=relaxed/simple;
+	bh=632XpUZRsR5/aU6sbXBuVov/ZpV5a8Ycg2UuG1IRfFU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UHPDY1OXp/jEzyz4fOWphFBV1JoDUYM1hN3ExD6Fm2RdAuTca67TznTcYAbTreqe2YArzf19haDaZrOnjwIJpWe2j6mZ57MHTaGV6ijXqF1m3YKu9EgAGvGj1XHajIrDod9bGbkUFQqAKpZbmv++hXlOHKUjYzj8W9TYLptfDFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UZs3CITg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730261189;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I6Fn1Bf3LTxjm3Pi7bGgRNx/dCat7AxttwP16Rp3WAQ=;
+	b=UZs3CITgqU0LllT0nUYIVD2fdBvd90tfIJ2FfleNpHvSHM5teSxFRPXJfgndiUyqTocvx6
+	EtKUXP83YK2Nswk+I98jcsS0aGzWYAnztOdwcxOJTz6zjKIq9xi0SJd4JPLyNoq6pd//k/
+	KEH/4oOLaRMEzV6i0Pb8uC3hJM1q0VM=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-b6Pe3zzIMrmNn7TpElc1MQ-1; Wed, 30 Oct 2024 00:06:27 -0400
+X-MC-Unique: b6Pe3zzIMrmNn7TpElc1MQ-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7ac9b08cb77so1267343585a.1
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Oct 2024 21:06:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730261187; x=1730865987;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I6Fn1Bf3LTxjm3Pi7bGgRNx/dCat7AxttwP16Rp3WAQ=;
+        b=IWba6iKBM3xOho01OYdStYqLUmKWF8R2nb/ShEyyJQXXg2wdce1zoxK6E23eyBNWfa
+         2TvBzVzABHwdiNfti+u7Cv3JJFWYe1g9JttRQi8mWWBkn0HOqr9iZPSBHBlN1OBbBcmz
+         FRyjddMIJj8tVzGKV5e0V4fLkSKGWFQ4q1+R+aK5Mx/Rc3tU0Z4dWR4q4Flls7g2Dj7l
+         auVSOC58FqcdlyQH/HO+MKNnvMsQKFKnMytjXLuaGnodgI8ijmkT5SDQXR6ajDKrNqqc
+         8VujvQ2F/GyjWczeNg55P/VtvaRPSbfqvhKyLfaqLtjXfy8gHgfJbanb7G7vENzcrVs/
+         2svQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Egepn6RJOIAf3M5vJUtLNL4NnccOvxCOM4noCPmDhjKzGxBUWD7NSEFJ5v0rJ44gK1zcZXQyalLV@vger.kernel.org
+X-Gm-Message-State: AOJu0YymsFuR1mURvGc7t8OuWitqUhyqRmU6wUqz8KPqbj5LFfQKoWjO
+	1u9fJ3O2f3UveVswVttSndOQT8lqizPp9ZdS1QP1IYu2TFwA0YA0VY6aWewnLg7Vg/6Ke4KxwYP
+	e9BI9dSkeBCRSk/5I7UAkbmg6fG17qzjlgCubrPfR32IcJm5hid9U6XS6Fqk=
+X-Received: by 2002:a05:620a:1a84:b0:7a9:b456:c5e6 with SMTP id af79cd13be357-7b193f35bf3mr1894409485a.42.1730261186703;
+        Tue, 29 Oct 2024 21:06:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrx1mmIynIiSGSVPWiqtshULFjxIn2aPt/C14LDu8Kq33y8t5ez+1+bvieZGhRPfYYDYfiJQ==
+X-Received: by 2002:a05:620a:1a84:b0:7a9:b456:c5e6 with SMTP id af79cd13be357-7b193f35bf3mr1894405985a.42.1730261186319;
+        Tue, 29 Oct 2024 21:06:26 -0700 (PDT)
+Received: from [192.168.40.163] ([70.105.235.240])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d2ca347sm481562385a.71.2024.10.29.21.06.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Oct 2024 21:06:25 -0700 (PDT)
+Message-ID: <469bcbeb-97e0-4fc4-9c2b-b86c59dbe24a@redhat.com>
+Date: Wed, 30 Oct 2024 00:06:08 -0400
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/9] Initial support for SMMUv3 nested translation
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>, acpica-devel@lists.linux.dev,
+ Hanjun Guo <guohanjun@huawei.com>, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+ kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
+ Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+References: <0-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+From: Donald Dutile <ddutile@redhat.com>
+In-Reply-To: <0-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: c58e12abb31c51ef657e1d048682070212062106  Merge branch 'acpi-cppc' into fixes
 
-elapsed time: 800m
 
-configs tested: 115
-configs skipped: 3
+On 10/9/24 12:23 PM, Jason Gunthorpe wrote:
+> This brings support for the IOMMFD ioctls:
+> 
+>   - IOMMU_GET_HW_INFO
+>   - IOMMU_HWPT_ALLOC_NEST_PARENT
+>   - IOMMU_DOMAIN_NESTED
+>   - ops->enforce_cache_coherency()
+> 
+> This is quite straightforward as the nested STE can just be built in the
+> special NESTED domain op and fed through the generic update machinery.
+> 
+> The design allows the user provided STE fragment to control several
+> aspects of the translation, including putting the STE into a "virtual
+> bypass" or a aborting state. This duplicates functionality available by
+> other means, but it allows trivially preserving the VMID in the STE as we
+> eventually move towards the vIOMMU owning the VMID.
+> 
+> Nesting support requires the system to either support S2FWB or the
+> stronger CANWBS ACPI flag. This is to ensure the VM cannot bypass the
+> cache and view incoherent data, currently VFIO lacks any cache flushing
+> that would make this safe.
+> 
+> Yan has a series to add some of the needed infrastructure for VFIO cache
+> flushing here:
+> 
+>   https://lore.kernel.org/linux-iommu/20240507061802.20184-1-yan.y.zhao@intel.com/
+> 
+> Which may someday allow relaxing this further.
+> 
+> Remove VFIO_TYPE1_NESTING_IOMMU since it was never used and superseded by
+> this.
+> 
+> This is the first series in what will be several to complete nesting
+> support. At least:
+>   - IOMMU_RESV_SW_MSI related fixups
+>      https://lore.kernel.org/linux-iommu/cover.1722644866.git.nicolinc@nvidia.com/
+>   - vIOMMU object support to allow ATS and CD invalidations
+>      https://lore.kernel.org/linux-iommu/cover.1723061377.git.nicolinc@nvidia.com/
+>   - vCMDQ hypervisor support for direct invalidation queue assignment
+>      https://lore.kernel.org/linux-iommu/cover.1712978212.git.nicolinc@nvidia.com/
+>   - KVM pinned VMID using vIOMMU for vBTM
+>      https://lore.kernel.org/linux-iommu/20240208151837.35068-1-shameerali.kolothum.thodi@huawei.com/
+>   - Cross instance S2 sharing
+>   - Virtual Machine Structure using vIOMMU (for vMPAM?)
+>   - Fault forwarding support through IOMMUFD's fault fd for vSVA
+> 
+> The vIOMMU series is essential to allow the invalidations to be processed
+> for the CD as well.
+> 
+> It is enough to allow qemu work to progress.
+> 
+> This is on github: https://github.com/jgunthorpe/linux/commits/smmuv3_nesting
+> 
+> v3:
+>   - Rebase on v6.12-rc2
+>   - Revise commit messages
+>   - Consolidate CANWB checks into arm_smmu_master_canwbs()
+>   - Add CONFIG_ARM_SMMU_V3_IOMMUFD to compile out iommufd only features
+>     like nesting
+>   - Shift code into arm-smmu-v3-iommufd.c
+>   - Add missed IS_ERR check
+>   - Add S2FWB to arm_smmu_get_ste_used()
+>   - Fixup quirks checks
+>   - Drop ARM_SMMU_FEAT_COHERENCY checks for S2FWB
+>   - Limit S2FWB to S2 Nesting Parent domains "just in case"
+> v2: https://patch.msgid.link/r/0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com
+>   - Revise commit messages
+>   - Guard S2FWB support with ARM_SMMU_FEAT_COHERENCY, since it doesn't make
+>     sense to use S2FWB to enforce coherency on inherently non-coherent hardware.
+>   - Add missing IO_PGTABLE_QUIRK_ARM_S2FWB validation
+>   - Include formal ACPIA commit for IORT built using
+>     generate/linux/gen-patch.sh
+>   - Use FEAT_NESTING to block creating a NESTING_PARENT
+>   - Use an abort STE instead of non-valid if the user requests a non-valid
+>     vSTE
+>   - Consistently use 'nest_parent' for naming variables
+>   - Use the right domain for arm_smmu_remove_master_domain() when it
+>     removes the master
+>   - Join bitfields together
+>   - Drop arm_smmu_cache_invalidate_user patch, invalidation will
+>     exclusively go via viommu
+> v1: https://patch.msgid.link/r/0-v1-54e734311a7f+14f72-smmuv3_nesting_jgg@nvidia.com
+> 
+> Jason Gunthorpe (6):
+>    vfio: Remove VFIO_TYPE1_NESTING_IOMMU
+>    iommu/arm-smmu-v3: Report IOMMU_CAP_ENFORCE_CACHE_COHERENCY for CANWBS
+>    iommu/arm-smmu-v3: Implement IOMMU_HWPT_ALLOC_NEST_PARENT
+>    iommu/arm-smmu-v3: Expose the arm_smmu_attach interface
+>    iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
+>    iommu/arm-smmu-v3: Use S2FWB for NESTED domains
+> 
+> Nicolin Chen (3):
+>    ACPICA: IORT: Update for revision E.f
+>    ACPI/IORT: Support CANWBS memory access flag
+>    iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO via struct
+>      arm_smmu_hw_info
+> 
+>   drivers/acpi/arm64/iort.c                     |  13 ++
+>   drivers/iommu/Kconfig                         |   9 +
+>   drivers/iommu/arm/arm-smmu-v3/Makefile        |   1 +
+>   .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     | 204 ++++++++++++++++++
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   | 114 ++++++----
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  83 ++++++-
+>   drivers/iommu/arm/arm-smmu/arm-smmu.c         |  16 --
+>   drivers/iommu/io-pgtable-arm.c                |  27 ++-
+>   drivers/iommu/iommu.c                         |  10 -
+>   drivers/iommu/iommufd/vfio_compat.c           |   7 +-
+>   drivers/vfio/vfio_iommu_type1.c               |  12 +-
+>   include/acpi/actbl2.h                         |   3 +-
+>   include/linux/io-pgtable.h                    |   2 +
+>   include/linux/iommu.h                         |   5 +-
+>   include/uapi/linux/iommufd.h                  |  55 +++++
+>   include/uapi/linux/vfio.h                     |   2 +-
+>   16 files changed, 465 insertions(+), 98 deletions(-)
+>   create mode 100644 drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+> 
+> 
+> base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Apologies for the delay; quite a few spec bits to lookup, as well as some SMMU refresh-ing on my part.
 
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-alpha                               defconfig    gcc-14.1.0
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                                 defconfig    gcc-14.1.0
-arc                     haps_hs_smp_defconfig    clang-20
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                                 defconfig    gcc-14.1.0
-arm                        keystone_defconfig    clang-20
-arm                        mvebu_v5_defconfig    clang-20
-arm                             rpc_defconfig    clang-20
-arm                         s5pv210_defconfig    clang-20
-arm                           sama7_defconfig    clang-20
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-arm64                               defconfig    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                                defconfig    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-hexagon                             defconfig    gcc-14.1.0
-i386                             allmodconfig    clang-19
-i386                              allnoconfig    clang-19
-i386                             allyesconfig    clang-19
-i386        buildonly-randconfig-001-20241030    gcc-12
-i386        buildonly-randconfig-002-20241030    gcc-12
-i386        buildonly-randconfig-003-20241030    gcc-12
-i386        buildonly-randconfig-004-20241030    gcc-12
-i386        buildonly-randconfig-005-20241030    gcc-12
-i386        buildonly-randconfig-006-20241030    gcc-12
-i386                                defconfig    clang-19
-i386                  randconfig-001-20241030    gcc-12
-i386                  randconfig-002-20241030    gcc-12
-i386                  randconfig-003-20241030    gcc-12
-i386                  randconfig-004-20241030    gcc-12
-i386                  randconfig-005-20241030    gcc-12
-i386                  randconfig-006-20241030    gcc-12
-i386                  randconfig-011-20241030    gcc-12
-i386                  randconfig-012-20241030    gcc-12
-i386                  randconfig-013-20241030    gcc-12
-i386                  randconfig-014-20241030    gcc-12
-i386                  randconfig-015-20241030    gcc-12
-i386                  randconfig-016-20241030    gcc-12
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch                           defconfig    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                                defconfig    gcc-14.1.0
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-microblaze                          defconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-mips                          ath79_defconfig    clang-20
-mips                        maltaup_defconfig    clang-20
-mips                          rb532_defconfig    clang-20
-nios2                             allnoconfig    gcc-14.1.0
-nios2                               defconfig    gcc-14.1.0
-openrisc                          allnoconfig    clang-20
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    clang-20
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-12
-parisc64                            defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    clang-20
-powerpc                          allyesconfig    gcc-14.1.0
-powerpc                       ppc64_defconfig    clang-20
-powerpc                     tqm8541_defconfig    clang-20
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    clang-20
-riscv                            allyesconfig    gcc-14.1.0
-riscv                               defconfig    gcc-12
-s390                             allmodconfig    clang-20
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                                defconfig    gcc-12
-sh                               alldefconfig    clang-20
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                                  defconfig    gcc-12
-sh                          rsk7264_defconfig    clang-20
-sh                  sh7785lcr_32bit_defconfig    clang-20
-sparc                            allmodconfig    gcc-14.1.0
-sparc64                             defconfig    gcc-12
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64                              defconfig    clang-19
-x86_64                                  kexec    clang-19
-x86_64                                  kexec    gcc-12
-x86_64                               rhel-8.3    gcc-12
-x86_64                           rhel-8.3-bpf    clang-19
-x86_64                         rhel-8.3-kunit    clang-19
-x86_64                           rhel-8.3-ltp    clang-19
-x86_64                          rhel-8.3-rust    clang-19
-xtensa                            allnoconfig    gcc-14.1.0
-xtensa                  audio_kc705_defconfig    clang-20
-xtensa                  cadence_csp_defconfig    clang-20
+Reviewed-by: Donald Dutile <ddutile@redhat.com>
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
