@@ -1,253 +1,115 @@
-Return-Path: <linux-acpi+bounces-9131-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9132-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDB09B691F
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 17:27:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A4C9B6922
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 17:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29CD282624
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 16:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 870301C213A9
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 16:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B401A214412;
-	Wed, 30 Oct 2024 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FE62141D8;
+	Wed, 30 Oct 2024 16:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cy/5HfUm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PaYyuMUT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BA4214402
-	for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 16:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404C01F4700;
+	Wed, 30 Oct 2024 16:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730305639; cv=none; b=GeySXycjJZn/SSV5tiJOYIEjIg6KmK0dJqp7h/WZ/L6RPrL8f9psSya8HqvxEJ0qti6B5ueeB3ln9f0BuCHbE9QkkFJtjrluP9YXg2146C6WtjgDRJbPUhw20SEdhwpYb42Puzg1PBXv+khK4IlSY6BXQvn/Fpr4AjQna0/g9lw=
+	t=1730305681; cv=none; b=Mg6BjGW5djwNANI1DxVbQSt7NQOnW40WXWjkG5Bn7cnHRopcdcQOTgtO76HQnifUvg4ZqIsMsWWn6336pkmDedGbKo1XirwuNCYzUk6cIVTMl7yrgOpzyUVowIPjb9VkVvkmcmvxvbROiG+JHRyh+MxDeVtwkP2Ew4Kn3dKFAQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730305639; c=relaxed/simple;
-	bh=UblSNSNMS2SOQAz7chOMf7T7raYYYerjDvTtLkicoW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M9MX4Y5+LqMXAD2WnKMOKzYruXEZD2t+ZRI4PkuB5VqFpe4xU691UjOo9Zqwl0GQ3Id5PSmL/g2o4YMKn59HaKR2KkrWA/y23jpkGpMuD+RwwmvynRGvqlOGJ2sivttnzkrAdzr605x26KYxh48G5IziQ9ZcqEuS0DI9iydm5CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cy/5HfUm; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43150ea2db6so262615e9.0
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 09:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730305635; x=1730910435; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yYoXZbQ0uAqOxJs4pfuNVgj8x5cCoQnCDnibucZBWDk=;
-        b=cy/5HfUm8N0MmnMlV3z95nmaKvlY5zyrVLfLTFzWe6lIVW7aexTo5OSAAMeTln4VXp
-         9/FzHUduYIopYKkJmYme4y9CeURJudoeyo8j3rmpsQ5QTS46dBL5hyDoGVld3vaBwEtq
-         pCVy6Lf170OnZiaUy9YL1Hxj/2Xg92L2vuX8PUGSj0mMHI06nUPlzWrP8aVc0gzkSb8A
-         66SPL9ij54X1L0VSXDM8NND0t0T48nIzhCWVfhw3J9uZG1xe3WM4Cd8JkCj9JTW5E3m7
-         AS1Oawz9dn+FCLZPXA4MrnhRrf2bAjG937eMVB3q0I6Z+JAe+vR1HuylIeuk1OulrmyU
-         57Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730305635; x=1730910435;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yYoXZbQ0uAqOxJs4pfuNVgj8x5cCoQnCDnibucZBWDk=;
-        b=S916r4UugwDj3HwjxLAz4OhOOFHU0yZf8W5VKd4ZXm87MsVc/Hur/hnzjFeuxjzVha
-         /Rjsggv3dQqdEMCl+dP6+muxTLCTwO5SAIH604H6l/mVyf0YsPdNK/DvOiHhU7M0Lpgn
-         jVZ7xxjYrGM+ZhW4f4xZ1Q5aFMfNC4M2iqDoJFXDkJStaQYQ9wF7qmyTBCm5lzRt8vVD
-         bzDAykb7HJS5A/np0uXJD4SwCFqainXjnCdY9+3uJATmqHbhru2+QAuiifjXKMLlr8rs
-         Dd0xS0r3x38MFCu3dIIP3529WYti2Ist8CNbXTZw6RzVYlE4gHn7xz/0Zc8265Ov4T8a
-         btYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPCMpW5NTAiKUIIb8PAwc2mgOUZZisAGwcpU5AJSf0L7AoH8+sOvqZIfxbOXsVk0hh+M+345CuCIyx@vger.kernel.org
-X-Gm-Message-State: AOJu0YyevH9aPOyMNOJA0M8BF18EtUOVXHN4KLO6lob3Vk0QDuQu2jr0
-	TZtg6/VvSIQfwCHnscjAby6z6H8C45KW7U59xH5pbujlBx9tpMRduycwtuMu2A==
-X-Gm-Gg: ASbGncsxMO+y4FjB9pN0KScOYnRq2l/ss8pmGow3phqrTDXvQh8vaZgBodaVrjhGq3X
-	VF8Uuy7e3I1FvqL6EZxCKXiqNZwVoSmlnDCYUbAEOmgfnGc7lEvSTKszzFSVuAduzQy645m47gO
-	x1eN3p0vGayf+OxbfDMCbbmVlZ0VgId2G/DBCkir+pHo4+TLPH7oWJ8qsgwdguxmvUPNU+7vrsa
-	cS+a1cTiIb2IzitQMKRXmPKN2gspSBNWQxyzmJqjRdLqaIY3cIXJHibUm7gqx6wqqD2qv6XocrH
-	VzhX8MhoLw==
-X-Google-Smtp-Source: AGHT+IEOBtDGTbd6gFd1Z2+Q52Kfzjw/j8SXp0CbEXKBAIwCsXgB74M2Jp4jqtd+Hp2Dw2dtDYw8jw==
-X-Received: by 2002:a05:600c:1d83:b0:42c:acd7:b59b with SMTP id 5b1f17b1804b1-431b3cdeb16mr11198215e9.6.1730305635387;
-        Wed, 30 Oct 2024 09:27:15 -0700 (PDT)
-Received: from google.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9ca818sm25801655e9.40.2024.10.30.09.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 09:27:08 -0700 (PDT)
-Date: Wed, 30 Oct 2024 16:26:59 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
-	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v3 7/9] iommu/arm-smmu-v3: Expose the arm_smmu_attach
- interface
-Message-ID: <ZyJeU9Kkos6RibsR@google.com>
-References: <0-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
- <7-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+	s=arc-20240116; t=1730305681; c=relaxed/simple;
+	bh=YapAEOo9WUhqkrcilX9GGul5Pc60jS1Np0QltkjGLZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=utw9EUXy7itWx9KfMPeXAaKl4NTFWX/kOWBD8og/geXaZbs879m8Eik3yN/4w8nYSIeHEgTa8Mh4JUxGGolEN/LWXl1glVlefFKdNRetShMnB6nPAnEnchNxxT5rDuTsnpNws4Do4hNHRKrJ2F6xCgLvjDt3+RQQYoeq5QGqR5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PaYyuMUT; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730305679; x=1761841679;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YapAEOo9WUhqkrcilX9GGul5Pc60jS1Np0QltkjGLZk=;
+  b=PaYyuMUT8IQwmz2fGukhArT9Edd3AtC61M/TzpT+IwtJlhlYy9KU7Ouv
+   nay/E5hauGs5R7Swl2DP6XHkkRAqRTH8ZTlSvVMnQEllG4QFWId6V+Bmw
+   zaXLvu6yH7UplSDyysmY6bKxzwmJw6vA4nDeNpFXorfS2yKlOJ8B7g+qY
+   wKRP9oF0GYdpxvJNMsPZvMSFRaThgYIxHtGLsb4/8CammlLdIdc3wiNVv
+   F2VUT5BnduRD9brk++T2PRCSv9dEFB3sfrXM48RV8PCPgWSSyZBVzZ6hR
+   iGTqNKmvL83SllXbYK9my+b05qeCTomEsh1XteFhyZSZs4sPMGXp1w7D0
+   Q==;
+X-CSE-ConnectionGUID: mvwh/d6PTx60jSckoQOqMg==
+X-CSE-MsgGUID: f0S6A/GrSl6Wo6cOmHCtDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30166942"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30166942"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:27:59 -0700
+X-CSE-ConnectionGUID: oAlqyCWUS7ioDloAwnDYlA==
+X-CSE-MsgGUID: C1D5emNQTdmCxB77faLgCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="113217111"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 30 Oct 2024 09:27:57 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 9212F1CF; Wed, 30 Oct 2024 18:27:55 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] ACPI: battery: Check for error code from devm_mutex_init() call
+Date: Wed, 30 Oct 2024 18:27:54 +0200
+Message-ID: <20241030162754.2110946-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7-v3-e2e16cd7467f+2a6a1-smmuv3_nesting_jgg@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 09, 2024 at 01:23:13PM -0300, Jason Gunthorpe wrote:
-> The arm-smmuv3-iommufd.c file will need to call these functions too.
-> Remove statics and put them in the header file. Remove the kunit
-> visibility protections from arm_smmu_make_abort_ste() and
-> arm_smmu_make_s2_domain_ste().
-> 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Even if it's not critical, the avoidance of checking the error code
+from devm_mutex_init() call today diminishes the point of using devm
+variant of it. Tomorrow it may even leak something. Add the missed
+check.
 
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Fixes: 0710c1ce5045 ("ACPI: battery: initialize mutexes through devm_ APIs")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/battery.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Thanks,
-Mostafa
-> ---
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 22 ++++-------------
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h | 27 +++++++++++++++++----
->  2 files changed, 27 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index 80847fa386fcd2..b4b03206afbf48 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -1549,7 +1549,6 @@ static void arm_smmu_write_ste(struct arm_smmu_master *master, u32 sid,
->  	}
->  }
->  
-> -VISIBLE_IF_KUNIT
->  void arm_smmu_make_abort_ste(struct arm_smmu_ste *target)
->  {
->  	memset(target, 0, sizeof(*target));
-> @@ -1632,7 +1631,6 @@ void arm_smmu_make_cdtable_ste(struct arm_smmu_ste *target,
->  }
->  EXPORT_SYMBOL_IF_KUNIT(arm_smmu_make_cdtable_ste);
->  
-> -VISIBLE_IF_KUNIT
->  void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
->  				 struct arm_smmu_master *master,
->  				 struct arm_smmu_domain *smmu_domain,
-> @@ -2505,8 +2503,8 @@ arm_smmu_get_step_for_sid(struct arm_smmu_device *smmu, u32 sid)
->  	}
->  }
->  
-> -static void arm_smmu_install_ste_for_dev(struct arm_smmu_master *master,
-> -					 const struct arm_smmu_ste *target)
-> +void arm_smmu_install_ste_for_dev(struct arm_smmu_master *master,
-> +				  const struct arm_smmu_ste *target)
->  {
->  	int i, j;
->  	struct arm_smmu_device *smmu = master->smmu;
-> @@ -2671,16 +2669,6 @@ static void arm_smmu_remove_master_domain(struct arm_smmu_master *master,
->  	spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
->  }
->  
-> -struct arm_smmu_attach_state {
-> -	/* Inputs */
-> -	struct iommu_domain *old_domain;
-> -	struct arm_smmu_master *master;
-> -	bool cd_needs_ats;
-> -	ioasid_t ssid;
-> -	/* Resulting state */
-> -	bool ats_enabled;
-> -};
-> -
->  /*
->   * Start the sequence to attach a domain to a master. The sequence contains three
->   * steps:
-> @@ -2701,8 +2689,8 @@ struct arm_smmu_attach_state {
->   * new_domain can be a non-paging domain. In this case ATS will not be enabled,
->   * and invalidations won't be tracked.
->   */
-> -static int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
-> -				   struct iommu_domain *new_domain)
-> +int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
-> +			    struct iommu_domain *new_domain)
->  {
->  	struct arm_smmu_master *master = state->master;
->  	struct arm_smmu_master_domain *master_domain;
-> @@ -2784,7 +2772,7 @@ static int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
->   * completes synchronizing the PCI device's ATC and finishes manipulating the
->   * smmu_domain->devices list.
->   */
-> -static void arm_smmu_attach_commit(struct arm_smmu_attach_state *state)
-> +void arm_smmu_attach_commit(struct arm_smmu_attach_state *state)
->  {
->  	struct arm_smmu_master *master = state->master;
->  
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> index 66261fd5bfb2d2..c9e5290e995a64 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> @@ -830,21 +830,22 @@ struct arm_smmu_entry_writer_ops {
->  	void (*sync)(struct arm_smmu_entry_writer *writer);
->  };
->  
-> +void arm_smmu_make_abort_ste(struct arm_smmu_ste *target);
-> +void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
-> +				 struct arm_smmu_master *master,
-> +				 struct arm_smmu_domain *smmu_domain,
-> +				 bool ats_enabled);
-> +
->  #if IS_ENABLED(CONFIG_KUNIT)
->  void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits);
->  void arm_smmu_write_entry(struct arm_smmu_entry_writer *writer, __le64 *cur,
->  			  const __le64 *target);
->  void arm_smmu_get_cd_used(const __le64 *ent, __le64 *used_bits);
-> -void arm_smmu_make_abort_ste(struct arm_smmu_ste *target);
->  void arm_smmu_make_bypass_ste(struct arm_smmu_device *smmu,
->  			      struct arm_smmu_ste *target);
->  void arm_smmu_make_cdtable_ste(struct arm_smmu_ste *target,
->  			       struct arm_smmu_master *master, bool ats_enabled,
->  			       unsigned int s1dss);
-> -void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
-> -				 struct arm_smmu_master *master,
-> -				 struct arm_smmu_domain *smmu_domain,
-> -				 bool ats_enabled);
->  void arm_smmu_make_sva_cd(struct arm_smmu_cd *target,
->  			  struct arm_smmu_master *master, struct mm_struct *mm,
->  			  u16 asid);
-> @@ -902,6 +903,22 @@ static inline bool arm_smmu_master_canwbs(struct arm_smmu_master *master)
->  	       IOMMU_FWSPEC_PCI_RC_CANWBS;
->  }
->  
-> +struct arm_smmu_attach_state {
-> +	/* Inputs */
-> +	struct iommu_domain *old_domain;
-> +	struct arm_smmu_master *master;
-> +	bool cd_needs_ats;
-> +	ioasid_t ssid;
-> +	/* Resulting state */
-> +	bool ats_enabled;
-> +};
-> +
-> +int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
-> +			    struct iommu_domain *new_domain);
-> +void arm_smmu_attach_commit(struct arm_smmu_attach_state *state);
-> +void arm_smmu_install_ste_for_dev(struct arm_smmu_master *master,
-> +				  const struct arm_smmu_ste *target);
-> +
->  #ifdef CONFIG_ARM_SMMU_V3_SVA
->  bool arm_smmu_sva_supported(struct arm_smmu_device *smmu);
->  bool arm_smmu_master_sva_supported(struct arm_smmu_master *master);
-> -- 
-> 2.46.2
-> 
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 66662712e288..70f706d7634f 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1226,8 +1226,12 @@ static int acpi_battery_add(struct acpi_device *device)
+ 	strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
+ 	strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
+ 	device->driver_data = battery;
+-	devm_mutex_init(&device->dev, &battery->lock);
+-	devm_mutex_init(&device->dev, &battery->sysfs_lock);
++	result = devm_mutex_init(&device->dev, &battery->lock);
++	if (result)
++		return result;
++	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
++	if (result)
++		return result;
+ 	if (acpi_has_method(battery->device->handle, "_BIX"))
+ 		set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
+ 
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
+
 
