@@ -1,149 +1,145 @@
-Return-Path: <linux-acpi+bounces-9115-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9116-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DA19B632A
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 13:37:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CAC9B6336
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 13:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C61282A50
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:37:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 891741C20B5F
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C991E570B;
-	Wed, 30 Oct 2024 12:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B365D1E8831;
+	Wed, 30 Oct 2024 12:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TldWA8YT"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="D+QsQA4F";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KQ345wXD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CAA1E1301;
-	Wed, 30 Oct 2024 12:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81831E1023;
+	Wed, 30 Oct 2024 12:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730291857; cv=none; b=YAKi3UVOv7iQ3ZqQOu9aRgXNvQttekyorbizv1Fk52dmz/BSchNV+QY2hx2yuW73iK4xPz4hH/vYBEL34MnxZFuKK4N7lFbms4Dm2+ISwuw9qfhw4sb3WbdPg1FWB/ouWSZ325HMdxiEkCJjNxLnmbQ6cMOkcszfNNghnX0IXV4=
+	t=1730292044; cv=none; b=Lg6v0DVz5fZjoZJZD2L6Jvck8zRpv4ZhgIgQk/qSQn+pltJqp9eXQeWe/a1jzSScEqe6CMDgrN8GkJgr6nvkLM6jNAVbU8i5mXuGISZeVvUNQVgPKB5rUQgF4LlK9zQmuKi9DEQkE3ScDVBMhgTDplXnfSpujWXSINRgCdPYEKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730291857; c=relaxed/simple;
-	bh=iQ5MWg6guKwc54quNaLMTdgp1XfHAz9Kqtg3TI+nJrk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GxklLGWGnjhTAnl9tHIyfdMGkunOIrzEyOPmFieTu63dQtK0bflYvnISqozgMsQoIKMr95eoBnxVrU6GIXEw5U4p6Upu0qvYFssptw1qNZ7VUZAUkFyMwjFafbUmt9h/P5DNz5P5+Kg4Zzpm7SCk8thLcRjd+JI39UpgWu55DUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TldWA8YT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2568C4CEE3;
-	Wed, 30 Oct 2024 12:37:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730291857;
-	bh=iQ5MWg6guKwc54quNaLMTdgp1XfHAz9Kqtg3TI+nJrk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TldWA8YTm6BRMU+Oi1vrsYUKDDlOK745njA6aZ71oGQmL0pP5h/HmhBUkpaZP0Jc9
-	 tHZn3TB3FWVGPONOKT01zdkbpEkFSYM/M8963gK9wqMQMbSnqqZnNr3IHiuO09AQL9
-	 CuQIhT4dWlIKqYojo+8ENR2f06AsqbxR3s5eTMuHi/QWqy6n1875leqn9mgq7MuOnk
-	 NTXo8a3SwQzi7lCjjW7uGct3GnHoMUj0+BUZFdZVuk1tsgpMrZxMQa9qDZVYZ1IU+D
-	 RW+AAAncR1n3oXHQ5MbuM4JUSYVfO/AV51ikheJ/vluK4Qhaco/gVQMrZLi0IoU2bM
-	 /zyecQk2UxKQw==
-From: Arnd Bergmann <arnd@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Len Brown <lenb@kernel.org>,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] [v3] acpi: allow building without CONFIG_HAS_IOPORT
-Date: Wed, 30 Oct 2024 12:36:41 +0000
-Message-Id: <20241030123701.1538919-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241030123701.1538919-1-arnd@kernel.org>
-References: <20241030123701.1538919-1-arnd@kernel.org>
+	s=arc-20240116; t=1730292044; c=relaxed/simple;
+	bh=0qAAzGekVtowe4cps1erqjPh++mnzXN1zf/BuEP3m4U=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=h6r/pABxOTnhPl6S1QVEXGpVRkCC8fpvWlRMG+BatohQSMhDlifn48fnXa85hUsjND5MkdnLWddhWVpih7GQAzSZPI5XjJgiJGbTLT0FZVsCCRNPSQRhbHz3kYSWkTyuXZoU66gZarGMCQ3+vbZ88lwKsLBezOWiQvv7b2G5j8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=D+QsQA4F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KQ345wXD; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id C90CE138021D;
+	Wed, 30 Oct 2024 08:40:39 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 30 Oct 2024 08:40:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1730292039;
+	 x=1730378439; bh=3/PyFIXHNwwlaFvxYykZOeb+fLtobP6/CYzQcrA2KAg=; b=
+	D+QsQA4FRY/8ASWL5YsRhv+9koR30qp+3O9GDYhtfannboPHAlDxTItLzipaT0Ay
+	jLEVuzVtnuQOgZrIPlF88mHICVocgbkPQWOofmbEKMfCjCImLWdVg7aSNu17CEI8
+	XjvXPR8w3w0OGOv1J++B06ed80CuwSSebh9JzT7kyHV2vk1vd/nQZD8fPe1ljMdr
+	KbF+Odgbp/9f51m4YM9GT7ZQlkXTXvaTRbRFV7I8yAaXQDL+/mFkDoC1LJtZ41nF
+	bRG+1dXvy65ZlJZruNwSNmJqLLYeVTX+gUpNIGsbKpbBpOaQTbvUbF18dU2rbSZo
+	h42CxIeSV1o0SHsiKeI7Hw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730292039; x=
+	1730378439; bh=3/PyFIXHNwwlaFvxYykZOeb+fLtobP6/CYzQcrA2KAg=; b=K
+	Q345wXDk/nPB3d/CqCW52yCIm+RpLnpA5NKv9NaEjvOH3RkR5xaB1AQ1HSVgWkzP
+	74vDHkfTXkeUcJ7ZjEkHZyaO4ODNZ3KddPage1n0G/U/OuSmM1gyK0AMENUrtUik
+	tjyRcY6X6otN09Ml1QxZsxqjEDiyIjaw5GrCR4k4e/KMhpXh1g2Nw6WjjQQdVsb9
+	UGrBqYjVqE9qKtoM7251gMvOiOddEOgoZdnJP9CEJ7HAXUJPvj5TMaFO29iLUtt2
+	XTeqwd9JEaB/vBzZSHCkZAxxJ2OCDkFlnM8GlH0ynWZMplXZfvPHz7IMENG4a5hH
+	K1a2XEg6M5BkCHMj2CpkA==
+X-ME-Sender: <xms:RykiZ2f3IqHF9f5UT5p3s9lpyCWltVEMbe3XL9fWSbYb_qoEMsqeMg>
+    <xme:RykiZwP9E7Oo1IsLrRus_PQkVuzpgBmliUqTEvGss4e8DbDtnBAsYaRJ3Ixzaiv3e
+    bFpev9tQ4Bk6KobH3o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekfedggedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
+    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudef
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjohhnrghthhgrnhdrtggrmhgvrh
+    honheshhhurgifvghirdgtohhmpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfh
+    grvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehilhhpohdrjhgrrhhvihhnvghn
+    sehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuh
+    igfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohephhguvghgohgvuggvsehrvggu
+    hhgrthdrtghomhdprhgtphhtthhopehlihhnuhigsehrohgvtghkqdhushdrnhgvthdprh
+    gtphhtthhopehjuggvlhhvrghrvgesshhushgvrdgtohhm
+X-ME-Proxy: <xmx:RykiZ3jE9wRvtMd7ykr9VA2jmaLtOIsUhT6X8S8mv1MTQKJOcWBBoA>
+    <xmx:RykiZz_jhStJmuADBQwO0N0-CAgcF54ooRyRGTIuQpadK65hSGNt0w>
+    <xmx:RykiZysghC6avGitncwY5ua74hKtCta3CXNaUEkdc8Rg6COJlxevMA>
+    <xmx:RykiZ6HwsvUWHgN6hJDO2E0KmT-ZgV6s7V1zefHJypnNqCVzU01nDw>
+    <xmx:RykiZzHXtXVCf-1-f7KdRUW9WpB1zhtavEXzHr3-4j-lTezpRj77Gkzg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 58DF52220071; Wed, 30 Oct 2024 08:40:39 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Wed, 30 Oct 2024 12:40:18 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Arnd Bergmann" <arnd@kernel.org>
+Cc: "Len Brown" <lenb@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Jean Delvare" <jdelvare@suse.com>, "Guenter Roeck" <linux@roeck-us.net>,
+ "Hans de Goede" <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Jonathan Cameron" <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org
+Message-Id: <43b6bbd9-ef5e-4031-9322-fecfa2a5c5cd@app.fastmail.com>
+In-Reply-To: 
+ <CAJZ5v0iCvPuey3EN5D5+0QNt5ZkQN5TtfKhA7Qod0_JBFbsB=g@mail.gmail.com>
+References: <20241011061948.3211423-1-arnd@kernel.org>
+ <CAJZ5v0jX1Ga9g8BweYJT2GQsJh03pD_imrY7tCP-Xg_gq0EbOA@mail.gmail.com>
+ <CAJZ5v0iCvPuey3EN5D5+0QNt5ZkQN5TtfKhA7Qod0_JBFbsB=g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] acpi: make EC support compile-time conditional
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Thu, Oct 24, 2024, at 15:49, Rafael J. Wysocki wrote:
+> On Mon, Oct 21, 2024 at 1:39=E2=80=AFPM Rafael J. Wysocki <rafael@kern=
+el.org> wrote:
+>> On Fri, Oct 11, 2024 at 8:19=E2=80=AFAM Arnd Bergmann <arnd@kernel.or=
+g> wrote:
+>> >
+>> > All the direct callers of ec_read/ec_write already had an x86
+>> > dependency and now also need to depend on APCI_EC.
+>> >
+>> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>>
+>> I think I can pick up this one as the other two patches in the series
+>> don't depend on it.
+>>
+>> Any concerns about doing that?
+>
+> No concerns, so applied (as 6.13 material, with minor edits in the sub=
+ject).
+>
+> The other two patches in the series need to be updated AFAICS.
 
-CONFIG_HAS_IOPORT will soon become optional and cause a build time
-failure when it is disabled but a driver calls inb()/outb(). At the
-moment, all architectures that can support ACPI have port I/O, but this
-is not necessarily the case in the future on non-x86 architectures.
-The result is a set of errors like:
+Thanks for picking up the first patch, I sent the other
+updated patches as well now.
 
-drivers/acpi/osl.c: In function 'acpi_os_read_port':
-include/asm-generic/io.h:542:14: error: call to '_inb' declared with attribute error: inb()) requires CONFIG_HAS_IOPORT
-
-Nothing should actually call these functions in this configuration,
-and if it does, the result would be undefined behavior today, possibly
-a NULL pointer dereference.
-
-Change the low-level functions to return a proper error code when
-HAS_IOPORT is disabled.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v3: fix the returned value and add a comment
----
- drivers/acpi/cppc_acpi.c |  6 ++++--
- drivers/acpi/osl.c       | 12 ++++++++++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 1a40f0514eaa..3757424b715f 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1017,7 +1017,8 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	*val = 0;
- 	size = GET_BIT_WIDTH(reg);
- 
--	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
- 		u32 val_u32;
- 		acpi_status status;
- 
-@@ -1091,7 +1092,8 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 
- 	size = GET_BIT_WIDTH(reg);
- 
--	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
-+	if (IS_ENABLED(CONFIG_HAS_IOPORT) &&
-+	    reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
- 		acpi_status status;
- 
- 		status = acpi_os_write_port((acpi_io_address)reg->address,
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 78a81969d90e..8ab1802c164b 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -642,6 +642,15 @@ acpi_status acpi_os_read_port(acpi_io_address port, u32 *value, u32 width)
- {
- 	u32 dummy;
- 
-+	if (!IS_ENABLED(CONFIG_HAS_IOPORT)) {
-+		/*
-+		 * set all-1 result as if reading from non-existing
-+		 * I/O port
-+		 */
-+		*value = GENMASK(width, 0);
-+		return AE_NOT_IMPLEMENTED;
-+	}
-+
- 	if (value)
- 		*value = 0;
- 	else
-@@ -665,6 +674,9 @@ EXPORT_SYMBOL(acpi_os_read_port);
- 
- acpi_status acpi_os_write_port(acpi_io_address port, u32 value, u32 width)
- {
-+	if (!IS_ENABLED(CONFIG_HAS_IOPORT))
-+		return AE_NOT_IMPLEMENTED;
-+
- 	if (width <= 8) {
- 		outb(value, port);
- 	} else if (width <= 16) {
--- 
-2.39.5
-
+    ARnd
 
