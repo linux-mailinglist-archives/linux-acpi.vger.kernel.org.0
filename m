@@ -1,145 +1,144 @@
-Return-Path: <linux-acpi+bounces-9116-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9117-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CAC9B6336
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 13:40:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0D69B6366
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 13:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 891741C20B5F
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31ED51F21D8E
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B365D1E8831;
-	Wed, 30 Oct 2024 12:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="D+QsQA4F";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KQ345wXD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC931E9065;
+	Wed, 30 Oct 2024 12:52:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81831E1023;
-	Wed, 30 Oct 2024 12:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51DA4D8A7;
+	Wed, 30 Oct 2024 12:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730292044; cv=none; b=Lg6v0DVz5fZjoZJZD2L6Jvck8zRpv4ZhgIgQk/qSQn+pltJqp9eXQeWe/a1jzSScEqe6CMDgrN8GkJgr6nvkLM6jNAVbU8i5mXuGISZeVvUNQVgPKB5rUQgF4LlK9zQmuKi9DEQkE3ScDVBMhgTDplXnfSpujWXSINRgCdPYEKg=
+	t=1730292767; cv=none; b=Y3JV3jAPWtCR8ugTt7w9m627t+6PLnEAI+43oIB4KcXEOzZYpneMBHuZfKNiGOMUyJKj8b9yiyNAJ6CTYgEDHNKTIWBbHB9hb2tTbj66DSPPkTWk82nJoLi8LxqCcW8NG3bz+fYUzmeyDoBrf8CVsUgvIYmhGz2G78srvMtrvF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730292044; c=relaxed/simple;
-	bh=0qAAzGekVtowe4cps1erqjPh++mnzXN1zf/BuEP3m4U=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=h6r/pABxOTnhPl6S1QVEXGpVRkCC8fpvWlRMG+BatohQSMhDlifn48fnXa85hUsjND5MkdnLWddhWVpih7GQAzSZPI5XjJgiJGbTLT0FZVsCCRNPSQRhbHz3kYSWkTyuXZoU66gZarGMCQ3+vbZ88lwKsLBezOWiQvv7b2G5j8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=D+QsQA4F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KQ345wXD; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id C90CE138021D;
-	Wed, 30 Oct 2024 08:40:39 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 30 Oct 2024 08:40:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1730292039;
-	 x=1730378439; bh=3/PyFIXHNwwlaFvxYykZOeb+fLtobP6/CYzQcrA2KAg=; b=
-	D+QsQA4FRY/8ASWL5YsRhv+9koR30qp+3O9GDYhtfannboPHAlDxTItLzipaT0Ay
-	jLEVuzVtnuQOgZrIPlF88mHICVocgbkPQWOofmbEKMfCjCImLWdVg7aSNu17CEI8
-	XjvXPR8w3w0OGOv1J++B06ed80CuwSSebh9JzT7kyHV2vk1vd/nQZD8fPe1ljMdr
-	KbF+Odgbp/9f51m4YM9GT7ZQlkXTXvaTRbRFV7I8yAaXQDL+/mFkDoC1LJtZ41nF
-	bRG+1dXvy65ZlJZruNwSNmJqLLYeVTX+gUpNIGsbKpbBpOaQTbvUbF18dU2rbSZo
-	h42CxIeSV1o0SHsiKeI7Hw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730292039; x=
-	1730378439; bh=3/PyFIXHNwwlaFvxYykZOeb+fLtobP6/CYzQcrA2KAg=; b=K
-	Q345wXDk/nPB3d/CqCW52yCIm+RpLnpA5NKv9NaEjvOH3RkR5xaB1AQ1HSVgWkzP
-	74vDHkfTXkeUcJ7ZjEkHZyaO4ODNZ3KddPage1n0G/U/OuSmM1gyK0AMENUrtUik
-	tjyRcY6X6otN09Ml1QxZsxqjEDiyIjaw5GrCR4k4e/KMhpXh1g2Nw6WjjQQdVsb9
-	UGrBqYjVqE9qKtoM7251gMvOiOddEOgoZdnJP9CEJ7HAXUJPvj5TMaFO29iLUtt2
-	XTeqwd9JEaB/vBzZSHCkZAxxJ2OCDkFlnM8GlH0ynWZMplXZfvPHz7IMENG4a5hH
-	K1a2XEg6M5BkCHMj2CpkA==
-X-ME-Sender: <xms:RykiZ2f3IqHF9f5UT5p3s9lpyCWltVEMbe3XL9fWSbYb_qoEMsqeMg>
-    <xme:RykiZwP9E7Oo1IsLrRus_PQkVuzpgBmliUqTEvGss4e8DbDtnBAsYaRJ3Ixzaiv3e
-    bFpev9tQ4Bk6KobH3o>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekfedggedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
-    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudef
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjohhnrghthhgrnhdrtggrmhgvrh
-    honheshhhurgifvghirdgtohhmpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfh
-    grvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehilhhpohdrjhgrrhhvihhnvghn
-    sehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuh
-    igfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohephhguvghgohgvuggvsehrvggu
-    hhgrthdrtghomhdprhgtphhtthhopehlihhnuhigsehrohgvtghkqdhushdrnhgvthdprh
-    gtphhtthhopehjuggvlhhvrghrvgesshhushgvrdgtohhm
-X-ME-Proxy: <xmx:RykiZ3jE9wRvtMd7ykr9VA2jmaLtOIsUhT6X8S8mv1MTQKJOcWBBoA>
-    <xmx:RykiZz_jhStJmuADBQwO0N0-CAgcF54ooRyRGTIuQpadK65hSGNt0w>
-    <xmx:RykiZysghC6avGitncwY5ua74hKtCta3CXNaUEkdc8Rg6COJlxevMA>
-    <xmx:RykiZ6HwsvUWHgN6hJDO2E0KmT-ZgV6s7V1zefHJypnNqCVzU01nDw>
-    <xmx:RykiZzHXtXVCf-1-f7KdRUW9WpB1zhtavEXzHr3-4j-lTezpRj77Gkzg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 58DF52220071; Wed, 30 Oct 2024 08:40:39 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1730292767; c=relaxed/simple;
+	bh=6FmvHYArbP9A5eMkduasERmZjhT6W53BfofWfnRc/y8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NOAQDTQASnYMmEUnWpzmJMmn212gNR00Q7FT9F0B0CIk7IoTm9HcoNN/4gx8il/szkcXsdzY3HrqD0bBU0yQh//SkHLeBAas9ICC9gBiwQo1Tx7EsfeP7h7XtJ3j9KTQMj9V/aQtTKLEedXUDaEtIfIyvsiVM4zWjHaU33o9IAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xdn604437z6K6YJ;
+	Wed, 30 Oct 2024 20:50:16 +0800 (CST)
+Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
+	by mail.maildlp.com (Postfix) with ESMTPS id 969AB140429;
+	Wed, 30 Oct 2024 20:52:41 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 30 Oct 2024 13:52:41 +0100
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Wed, 30 Oct 2024 13:52:41 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
+	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"Jonathan Cameron" <jonathan.cameron@huawei.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, "jassisinghbrar@gmail.com"
+	<jassisinghbrar@gmail.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
+	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
+	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
+	<gthelen@google.com>, "wschwartz@amperecomputing.com"
+	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
+	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"Roberto Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v14 07/14] cxl/memfeature: Add CXL memory device patrol
+ scrub control feature
+Thread-Topic: [PATCH v14 07/14] cxl/memfeature: Add CXL memory device patrol
+ scrub control feature
+Thread-Index: AQHbJwFiEsGT6VLXSEWw7XeCpRer7rKeH9CAgAEnCgA=
+Date: Wed, 30 Oct 2024 12:52:41 +0000
+Message-ID: <35c697489f2b486482ddc42d435861e4@huawei.com>
+References: <20241025171356.1377-1-shiju.jose@huawei.com>
+ <20241025171356.1377-8-shiju.jose@huawei.com>
+ <20241029201527.GTZyFCX_foMR_GouGN@fat_crate.local>
+In-Reply-To: <20241029201527.GTZyFCX_foMR_GouGN@fat_crate.local>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 30 Oct 2024 12:40:18 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Len Brown" <lenb@kernel.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Jean Delvare" <jdelvare@suse.com>, "Guenter Roeck" <linux@roeck-us.net>,
- "Hans de Goede" <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- platform-driver-x86@vger.kernel.org
-Message-Id: <43b6bbd9-ef5e-4031-9322-fecfa2a5c5cd@app.fastmail.com>
-In-Reply-To: 
- <CAJZ5v0iCvPuey3EN5D5+0QNt5ZkQN5TtfKhA7Qod0_JBFbsB=g@mail.gmail.com>
-References: <20241011061948.3211423-1-arnd@kernel.org>
- <CAJZ5v0jX1Ga9g8BweYJT2GQsJh03pD_imrY7tCP-Xg_gq0EbOA@mail.gmail.com>
- <CAJZ5v0iCvPuey3EN5D5+0QNt5ZkQN5TtfKhA7Qod0_JBFbsB=g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] acpi: make EC support compile-time conditional
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 24, 2024, at 15:49, Rafael J. Wysocki wrote:
-> On Mon, Oct 21, 2024 at 1:39=E2=80=AFPM Rafael J. Wysocki <rafael@kern=
-el.org> wrote:
->> On Fri, Oct 11, 2024 at 8:19=E2=80=AFAM Arnd Bergmann <arnd@kernel.or=
-g> wrote:
->> >
->> > All the direct callers of ec_read/ec_write already had an x86
->> > dependency and now also need to depend on APCI_EC.
->> >
->> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->>
->> I think I can pick up this one as the other two patches in the series
->> don't depend on it.
->>
->> Any concerns about doing that?
->
-> No concerns, so applied (as 6.13 material, with minor edits in the sub=
-ject).
->
-> The other two patches in the series need to be updated AFAICS.
-
-Thanks for picking up the first patch, I sent the other
-updated patches as well now.
-
-    ARnd
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEJvcmlzbGF2IFBldGtvdiA8
+YnBAYWxpZW44LmRlPg0KPlNlbnQ6IDI5IE9jdG9iZXIgMjAyNCAyMDoxNQ0KPlRvOiBTaGlqdSBK
+b3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IGxpbnV4LWVkYWNAdmdlci5rZXJuZWwu
+b3JnOyBsaW51eC1jeGxAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5hY3BpQHZnZXIua2VybmVs
+Lm9yZzsgbGludXgtbW1Aa3ZhY2sub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0K
+PnRvbnkubHVja0BpbnRlbC5jb207IHJhZmFlbEBrZXJuZWwub3JnOyBsZW5iQGtlcm5lbC5vcmc7
+DQo+bWNoZWhhYkBrZXJuZWwub3JnOyBkYW4uai53aWxsaWFtc0BpbnRlbC5jb207IGRhdmVAc3Rn
+b2xhYnMubmV0OyBKb25hdGhhbg0KPkNhbWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNv
+bT47IGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnOw0KPnN1ZGVlcC5ob2xsYUBhcm0uY29tOyBq
+YXNzaXNpbmdoYnJhckBnbWFpbC5jb207IGRhdmUuamlhbmdAaW50ZWwuY29tOw0KPmFsaXNvbi5z
+Y2hvZmllbGRAaW50ZWwuY29tOyB2aXNoYWwubC52ZXJtYUBpbnRlbC5jb207IGlyYS53ZWlueUBp
+bnRlbC5jb207DQo+ZGF2aWRAcmVkaGF0LmNvbTsgVmlsYXMuU3JpZGhhcmFuQGFtZC5jb207IGxl
+by5kdXJhbkBhbWQuY29tOw0KPllhemVuLkdoYW5uYW1AYW1kLmNvbTsgcmllbnRqZXNAZ29vZ2xl
+LmNvbTsgamlhcWl5YW5AZ29vZ2xlLmNvbTsNCj5Kb24uR3JpbW1AYW1kLmNvbTsgZGF2ZS5oYW5z
+ZW5AbGludXguaW50ZWwuY29tOw0KPm5hb3lhLmhvcmlndWNoaUBuZWMuY29tOyBqYW1lcy5tb3Jz
+ZUBhcm0uY29tOyBqdGhvdWdodG9uQGdvb2dsZS5jb207DQo+c29tYXN1bmRhcmFtLmFAaHBlLmNv
+bTsgZXJkZW1ha3Rhc0Bnb29nbGUuY29tOyBwZ29uZGFAZ29vZ2xlLmNvbTsNCj5kdWVud2VuQGdv
+b2dsZS5jb207IGd0aGVsZW5AZ29vZ2xlLmNvbTsNCj53c2Nod2FydHpAYW1wZXJlY29tcHV0aW5n
+LmNvbTsgZGZlcmd1c29uQGFtcGVyZWNvbXB1dGluZy5jb207DQo+d2JzQG9zLmFtcGVyZWNvbXB1
+dGluZy5jb207IG5pZmFuLmN4bEBnbWFpbC5jb207IHRhbnhpYW9mZWkNCj48dGFueGlhb2ZlaUBo
+dWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdAaGlzaWxpY29uLmNvbT47IFJvYmVy
+dG8NCj5TYXNzdSA8cm9iZXJ0by5zYXNzdUBodWF3ZWkuY29tPjsga2FuZ2thbmcuc2hlbkBmdXR1
+cmV3ZWkuY29tOw0KPndhbmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+OyBMaW51
+eGFybQ0KPjxsaW51eGFybUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjE0IDA3
+LzE0XSBjeGwvbWVtZmVhdHVyZTogQWRkIENYTCBtZW1vcnkgZGV2aWNlIHBhdHJvbA0KPnNjcnVi
+IGNvbnRyb2wgZmVhdHVyZQ0KPg0KPk9uIEZyaSwgT2N0IDI1LCAyMDI0IGF0IDA2OjEzOjQ4UE0g
+KzAxMDAsIHNoaWp1Lmpvc2VAaHVhd2VpLmNvbSB3cm90ZToNCj4+IGRpZmYgLS1naXQgYS9Eb2N1
+bWVudGF0aW9uL2VkYWMvZWRhYy1zY3J1Yi5yc3QNCj4+IGIvRG9jdW1lbnRhdGlvbi9lZGFjL2Vk
+YWMtc2NydWIucnN0DQo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPj4gaW5kZXggMDAwMDAwMDAw
+MDAwLi40YWFkNDk3NGIyMDgNCj4+IC0tLSAvZGV2L251bGwNCj4+ICsrKyBiL0RvY3VtZW50YXRp
+b24vZWRhYy9lZGFjLXNjcnViLnJzdA0KPj4gQEAgLTAsMCArMSw3NCBAQA0KPj4gKy4uIFNQRFgt
+TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wDQo+PiArDQpbLi4uXQ0KPj4gKzENCj4+ICtyb290
+QGxvY2FsaG9zdDp+IyBlY2hvIDAgPg0KPj4gKy9zeXMvYnVzL2VkYWMvZGV2aWNlcy9jeGxfcmVn
+aW9uMC9zY3J1YjAvZW5hYmxlX2JhY2tncm91bmQNCj4+ICtyb290QGxvY2FsaG9zdDp+IyBjYXQN
+Cj4+ICsvc3lzL2J1cy9lZGFjL2RldmljZXMvY3hsX3JlZ2lvbjAvc2NydWIwL2VuYWJsZV9iYWNr
+Z3JvdW5kDQo+PiArMA0KPg0KPlRoaXMgZmlsZSdzIGFkZGl0aW9uIGJlbG9uZ3MgdG8gc29tZSBF
+REFDIHBhdGNoIGluIHRoZSBzZXJpZXMsIG5vdCBoZXJlLg0KSSB3aWxsIGRvLg0KPg0KPkl0IGNv
+dWxkIGJlIGEgc2VwYXJhdGUsIGxhc3QgcGF0Y2ggaW4gdGhlIHNlcmllcyB0b28sIG9uY2UgZXZl
+cnl0aGluZyBpcyBzZXR0bGVkLg0KPg0KPlRoeC4NCj4NCj4tLQ0KPlJlZ2FyZHMvR3J1c3MsDQo+
+ICAgIEJvcmlzLg0KDQpUaGFua3MsDQpTaGlqdQ0K
 
