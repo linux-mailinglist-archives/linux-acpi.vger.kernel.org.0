@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-9110-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9111-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55C89B600E
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 11:27:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891059B6061
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 11:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99E31C20E3F
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 10:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47DD2282A47
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 10:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159131E32BB;
-	Wed, 30 Oct 2024 10:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124671E47B0;
+	Wed, 30 Oct 2024 10:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MciYac+2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dAdBnCVV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A68F1E260D
-	for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 10:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD8D1E47B2
+	for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 10:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730284020; cv=none; b=XoTUUePxFl5jkNMWzKX0Xt2yIz6LBAz6ZyQ+KnO/4OItEdUx+HNqI6S26hw8lKvFQz+FbHPO6axJZUyCayYzZVsBe7E3343R0AKA4jfFgDEc0gR27WfgK8j17KKMIkgUo7V7/oyLVMqyEksdBgXXFZbttRFmAUhs3w8Dym8mCJU=
+	t=1730284815; cv=none; b=qyNX5bxDtukBjyzUCy5qy5nB1k3WzGt8oPnJ2Hrwt0AfRmFtioJphKFy5jUw5f5sqxA6Je2blOuzFwRvHbhqs9pWXX/AzNh1mUk1fbTrdjvvsbtiQnyvSCfxHuii6lQuSygQePpI63swcy/BqFzEhRTWBPgNQ/PAp9Qe4jWRbwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730284020; c=relaxed/simple;
-	bh=enkQ8wGw2YmUqnOlwAoHiWN/YGXdL6fsjKLid6ZtMzA=;
+	s=arc-20240116; t=1730284815; c=relaxed/simple;
+	bh=MUptrIFZ5MmerslHECojm4cPD/lX7r1eKpNrQ0rEWbE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kHHareMa+ujb877jsvIr/Padmre5GY49quD9u0DIKR/gv91xV/BeFlbXLO2bXdnbXXr5kXEWzUPNUVcvjbY2MvoixXV/A6GF22LTMUH/xxHjOH14RSQlwXR7gDsl8dLof7r4xmRWH38EYcehBM6wg/pFdBY1PaKxuigONaevwYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MciYac+2; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=Po6lDGlL0EONpSXYW/j/lGyFurgkxPKyJg4Q1y2qsAyF0i7P60YOZ14mRvX9+I7rPBh5y+tMOoE7ZHfSgTW9hXo2oA79/x8Xb9/csPdFlGLaj33annSirUCqVyRoXn9xwU+NQolELFOBKjHmUtJYP2dgP7BRzGSnoEA1VVYOfIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dAdBnCVV; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730284017;
+	s=mimecast20190719; t=1730284812;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UAn5PtOTVly2a1DSq3FAj2+pYreXlzFZTwZTDVZFw+Y=;
-	b=MciYac+28K/jL3Wgw0hlyvdXn0QjRmhCWwOX7eauZVaQWXZvIVdRgmi5Eu5gV03P2GJqCB
-	NkUbh5a/1+zVJzi7F0o7t4ZvzBqjrgUzkbudV/iBLvnqztKJSqWNx5+GDiz8zb6aIsv9+C
-	ezpwx5of3S+CP4DcWMWzHYW5gk0QaaI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mLeQeKxO4bKCx0zllR0uO5tRuOw0Dm45NAsZWOAqEzw=;
+	b=dAdBnCVVJR0cGbrXuTWYB2H3nLGob02/EhIDpZJ6QNafQX9RM9pCuoLnxzLBvVSHzOOwz4
+	AuD2F2PUZ9xJxBixawxWd/JeM0C74Zt8+/cUXQ78YAe8/IZ4zu8OUPIkHxLopYK0FE95Rn
+	KwTY71j8NrOaounDfSFzLJUjVEtPK7o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-gT-RTM4FOHGFpeCXwwGHpg-1; Wed, 30 Oct 2024 06:26:55 -0400
-X-MC-Unique: gT-RTM4FOHGFpeCXwwGHpg-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d56061a4cso3453584f8f.2
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 03:26:55 -0700 (PDT)
+ us-mta-204-xo6fJ5dcOlCZUOKUHmwW8A-1; Wed, 30 Oct 2024 06:40:11 -0400
+X-MC-Unique: xo6fJ5dcOlCZUOKUHmwW8A-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315cefda02so46811305e9.0
+        for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 03:40:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730284014; x=1730888814;
+        d=1e100.net; s=20230601; t=1730284810; x=1730889610;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=UAn5PtOTVly2a1DSq3FAj2+pYreXlzFZTwZTDVZFw+Y=;
-        b=dRpM2k3qiElJBqRSe+60QBAsLiathkd5Djn+yRLd2I7IJQF2xAlRp68+/MMDY6ezHo
-         T/6fHk+6/oFU7F+LGePKNZyev1NKBZV68XRpOaI+qd9ZaItiRXOwZCTY86To2kky7HEh
-         Vy6fuGdSlnsg8H41LbR6wIP5PhjX34K3nGNoqhxhMif2j6rXAIkd2G5lVbaroSwbhdxq
-         VzONYw1R1n7EA54BHZLGS9VzIjG3Gl884zF+EZKNOREQvN0b+prDvpa6n5UN5X8Z53qm
-         sfsxLLqZjaa37Zc/KPoXyJf40eGjo3rQxXey0U+mAo3mezo8Nf6kLk8VXWti6TalAPP2
-         Wq0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUor7Zu1/NWqOUVVIAWUmTeJwk7ttMoB2BeVkSL0ZpoNW8uCQBwvI0E1S9DajtWZmurthU++Mw0kxlR@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQBGvGXKBv+I9X9Z4HaRtIRR71d8ddZLXBB2o/LwN7m8N0SRSP
-	PT3Wr6VzNeRno4Prv7bOb7yfawA+a4YOozUXNwk/Ysx3TcefVk6VJCZT90NhNEbY4UDzS0NLoLM
-	mN1en00fAfn66Q29sEPDLzI+u3sj6WmV9CbMog4p/nUbbDT8KTsMnuO7Dlfk=
-X-Received: by 2002:a5d:48c4:0:b0:374:b71f:72c9 with SMTP id ffacd0b85a97d-381b70762e8mr2234167f8f.16.1730284014544;
-        Wed, 30 Oct 2024 03:26:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhT/7VLXcmPTmel+O5szvYG/3aiGbWANU4AxCfbzCuMCvUvYX6/ZhW7mmaRxnmxOVhlaDgLQ==
-X-Received: by 2002:a5d:48c4:0:b0:374:b71f:72c9 with SMTP id ffacd0b85a97d-381b70762e8mr2234137f8f.16.1730284014109;
-        Wed, 30 Oct 2024 03:26:54 -0700 (PDT)
+        bh=mLeQeKxO4bKCx0zllR0uO5tRuOw0Dm45NAsZWOAqEzw=;
+        b=Zn6RxU2qJXvia8r6R3X6Cot/TAX+W0UlfsGXBj3d91XnHPVwzGfGqYyRNCWteIPZsg
+         YWh7yS/bxfoFxkR901mT/b1axfqyRAjF10Cikoh0zsLVCUUykgM0LfhlGxRzDvngoM1d
+         no8xEMxNsywR6JUXoR5PgY6lh7C3A2xpkvyjZqBFgVFsggCfRcJ1zBKqboRlfSRnjNJ1
+         d5vc5660fMOqYixK7KBFmMQghRUoF0e32ZLs38/3E07NANUko/lBlzt0tcek9RwhE6rL
+         PLHIRCbVLqvxmPVZ7XEA5FHtmAXdIqUmLcWPDszMsL7LEuRUJtfpWBE9MMk/jq+rllON
+         5EQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8OR7Pmmrt1CVfM0q9LYaUOgSZ8MgA8CArfvpm4iC0gL6UKHBWW/dzdYkfNVnAJl/NKHEh17F8cxq/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRk5mfHaQX6h6SYVniCDeZIVNF8m8kN0vUG6pVDo/vWi2Pa5pu
+	+14iR4QPeOZClXQO8MnGxr6dc0nWpRL8BxIMhXZwmVEWSMQA4+wkP+GzLGbPE7RTxfAyAgJq09E
+	8mypDkQEzLErvBW/QHZ4kZnIgf2l4M3IJTZ4DUpWOHnG80PTaYQ5JGStz/f8=
+X-Received: by 2002:a05:600c:3515:b0:430:5887:c238 with SMTP id 5b1f17b1804b1-4319aca3fe5mr112681575e9.11.1730284810321;
+        Wed, 30 Oct 2024 03:40:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGiEZzVF2gCazHGJtH0vEuDXfbOgnEmBrD4+SFTyK948KaP3norxDlCMnAsp660DUkE7QtV8A==
+X-Received: by 2002:a05:600c:3515:b0:430:5887:c238 with SMTP id 5b1f17b1804b1-4319aca3fe5mr112681295e9.11.1730284809957;
+        Wed, 30 Oct 2024 03:40:09 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c733:7c00:d067:e327:4f99:7546? (p200300cbc7337c00d067e3274f997546.dip0.t-ipconnect.de. [2003:cb:c733:7c00:d067:e327:4f99:7546])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b92f11sm14925113f8f.101.2024.10.30.03.26.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c44sm14957838f8f.80.2024.10.30.03.40.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 03:26:53 -0700 (PDT)
-Message-ID: <4fae9fa2-dc43-4a1a-af18-ec1c9c82fbf7@redhat.com>
-Date: Wed, 30 Oct 2024 11:26:52 +0100
+        Wed, 30 Oct 2024 03:40:09 -0700 (PDT)
+Message-ID: <c47337ea-f20e-44eb-95e8-c29b2db849a7@redhat.com>
+Date: Wed, 30 Oct 2024 11:40:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] x86: probe memory block size advisement value
- during mm init
+Subject: Re: [PATCH v4 3/3] acpi,srat: give memory block size advice based on
+ CFMWS alignment
 To: Gregory Price <gourry@gourry.net>, x86@kernel.org,
  linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org
 Cc: linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
@@ -95,7 +95,7 @@ Cc: linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
  rafael@kernel.org, lenb@kernel.org, osalvador@suse.de,
  gregkh@linuxfoundation.org, akpm@linux-foundation.org, rppt@kernel.org
 References: <20241029202041.25334-1-gourry@gourry.net>
- <20241029202041.25334-3-gourry@gourry.net>
+ <20241029202041.25334-4-gourry@gourry.net>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -143,63 +143,61 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20241029202041.25334-3-gourry@gourry.net>
+In-Reply-To: <20241029202041.25334-4-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 29.10.24 21:20, Gregory Price wrote:
-> Systems with hotplug may provide an advisement value on what the
-> memblock size should be.  Probe this value when the rest of the
-> configuration values are considered.
+> Capacity is stranded when CFMWS regions are not aligned to block size.
+> On x86, block size increases with capacity (2G blocks @ 64G capacity).
 > 
-> The new heuristic is as follows
+> Use CFMWS base/size to report memory block size alignment advice.
 > 
-> 1) set_memory_block_size_order value if already set (cmdline param)
-> 2) minimum block size if memory is less than large block limit
-> 3) if no hotplug advice: Max block size if system is bare-metal,
->     otherwise use end of memory alignment.
-> 4) if hotplug advice: lesser of advice and end of memory alignment.
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Gregory Price <gourry@gourry.net>
-> Acked-by: David Hildenbrand <david@redhat.com>
 > ---
->   arch/x86/mm/init_64.c | 16 ++++++++++------
->   1 file changed, 10 insertions(+), 6 deletions(-)
+>   drivers/acpi/numa/srat.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index ff253648706f..01876629f21f 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1452,16 +1452,20 @@ static unsigned long probe_memory_block_size(void)
->   	}
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 44f91f2c6c5d..a24aff38c465 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/errno.h>
+>   #include <linux/acpi.h>
+>   #include <linux/memblock.h>
+> +#include <linux/memory.h>
+>   #include <linux/numa.h>
+>   #include <linux/nodemask.h>
+>   #include <linux/topology.h>
+> @@ -338,12 +339,26 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+>   {
+>   	struct acpi_cedt_cfmws *cfmws;
+>   	int *fake_pxm = arg;
+> -	u64 start, end;
+> +	u64 start, end, align, size;
+>   	int node;
 >   
->   	/*
-> -	 * Use max block size to minimize overhead on bare metal, where
-> -	 * alignment for memory hotplug isn't a concern.
-> +	 * When hotplug alignment is not a concern, maximize blocksize
-> +	 * to minimize overhead. Otherwise, align to the lesser of advice
-> +	 * alignment and end of memory alignment.
->   	 */
-> -	if (!boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
-> +	bz = memory_block_advised_max_size();
-> +	if (!bz) {
->   		bz = MAX_BLOCK_SIZE;
-> -		goto done;
-> -	}
-> +		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR))
-> +			goto done;
-> +	} else
-> +		bz = max(min(bz, MAX_BLOCK_SIZE), MIN_MEMORY_BLOCK_SIZE);
+>   	cfmws = (struct acpi_cedt_cfmws *)header;
+>   	start = cfmws->base_hpa;
+> -	end = cfmws->base_hpa + cfmws->window_size;
+> +	size = cfmws->window_size;
+> +	end = cfmws->base_hpa + size;
+> +
+> +	/* Align memblock size to CFMW regions if possible */
+> +	for (align = SZ_64T; align >= SZ_256M; align >>= 1) {
+> +		if (IS_ALIGNED(start, align) && IS_ALIGNED(size, align))
+> +			break;
+> +	}
 
-Nit: coding style want you to use
+Are there maybe some nice tricks bi-tricks to avoid the loop and these 
+hardcoded limits? :)
 
-if () {
+align = 1UL << __ffs(start | end));
 
-} else {
-
-}
-
+Assuming "unsigned long" is sufficient in this code (64bit) and "start | 
+end" will never be 0.
 
 -- 
 Cheers,
