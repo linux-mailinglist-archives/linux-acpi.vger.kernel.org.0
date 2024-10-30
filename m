@@ -1,126 +1,149 @@
-Return-Path: <linux-acpi+bounces-9113-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9114-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A349B6232
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:47:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022B29B6328
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 13:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABEB283452
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 11:47:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CC89B21313
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Oct 2024 12:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB0E1E571F;
-	Wed, 30 Oct 2024 11:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6C81E260D;
+	Wed, 30 Oct 2024 12:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ULjmv6uR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpPB3Msg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD7F1DC759;
-	Wed, 30 Oct 2024 11:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710941E4AE;
+	Wed, 30 Oct 2024 12:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730288868; cv=none; b=uqiAE8HYLAnyEWyt6VzLsHVl2Bic2vIXKy97OSFgIGZ64+FHYUKEXN5koAZsI4e4AXv5L7oKQdTg7BvEGcVHNmcIte9Y/1yz6VKsrbkmNCcTKJd07Ik4Geie7i3Ae2BGs6o+UFVLPzybnQEe4VOaBE09/UmumzYAWvNjEom5c6A=
+	t=1730291827; cv=none; b=GIMrP5WdaIF7ZH/ai/TU3TUNk+ET0e+Wa+4XqxuWrGnWQYs7Gx+zyB7k0SysbWsLp3kiK5xnu9s8gnRKZF5uvaai3Fs/qRWCvUFr8bxuS4BaVVufmnPQbMoVweT5hRKNMEdfominRdF3lRBh54PXkuB2wr8231UaoJSkRafJnCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730288868; c=relaxed/simple;
-	bh=m566/Aw7BokwNE95AHhDC+A322x2cffvVlTff/86lYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOLUDEokSdjU3JBgL3l5HPbN9r0DaM6o1dgXjDphlgbDqhOvaWUelVVd2cPfuz3K7JZNS0vwWV1zTvkcQr1YRKcAGRJ0TTyn7sghOovGg5nauj0AHeynudDLHUIi1ExyoaG/4nvMRuTMnOrsEdn6rWLQt+iidaNmvZNwgYQXaPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ULjmv6uR; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3561040E0219;
-	Wed, 30 Oct 2024 11:47:44 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id S9VEuAuA33Y3; Wed, 30 Oct 2024 11:47:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1730288860; bh=600G8edgGU8M7BuLs4swFcgrBvQ+28NzvVnBeZLi5DE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ULjmv6uRCnWbaMzdOD0q270221nwyjYiK+v3hPxMLHNF7J9ulZnnnWQJ8I0/2SydL
-	 K7obiq5YWgKYTrg89dbJJxJjDKBnPHyXncCqi3zGyZaCzbSaevTqsCS3squcY/fVVd
-	 RN69gP4fXiLYIFm0B2l2Lv08lYNHWw8fDNca9pRHF9hHDGpHFe6gmul8tJg8UFiKPl
-	 dc8Hjs8VxUmiE+TrUgX/QFE+wwj6uSG4/CSZLbEV2QbvmR5yaNuKfK5A4j6n3DsgBp
-	 Hwbw/8R9t6UakaAxcUYCIEe7Zf0eREaEpEstObDxPkFcnmWQuIWB3av+s6orMLzy8C
-	 /WKHE0xubYBkoBTkgq9mlJsXkFfl13XjaQ3oO9DtnFK2JbOk21sZ1/m2VnlshnrLly
-	 tg0Z+JubTgdvzFfUGA1znzk1PQGtFOS++spRIXRdMUdeZj4ka2XuGM+mBehzbGI5JY
-	 VlmuvbUxtLAoVSStgB3W32O2gOxXbaxCcAjILALFD45R/E27Xdg382mSnyydww0t1f
-	 sV3w2c8FMam4RT/VeasYrTrjNIYEfkef3XJLt5It1d2EpoTlw39ZKsu/23dt5Vqofo
-	 LGBSBgQ9XhhDSbSrU1yH6XQXRG0xGH+X1fzDrPELjIneSfcDorJZDBFoC4t3aLW80p
-	 7nDhrD8zflS3Dghyn9r4/zw8=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AD75940E0191;
-	Wed, 30 Oct 2024 11:47:21 +0000 (UTC)
-Date: Wed, 30 Oct 2024 12:47:12 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Baoquan He <bhe@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCHv4, REBASED 1/4] x86/mm/ident_map: Fix virtual address
- wrap to zero
-Message-ID: <20241030114712.GCZyIcwF9MyQacmRf1@fat_crate.local>
-References: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
- <20241016111458.846228-2-kirill.shutemov@linux.intel.com>
+	s=arc-20240116; t=1730291827; c=relaxed/simple;
+	bh=lvwwq8+aFwmiSf/8QCpbYGtnBkZJ5CJmM5pqyvdaEAk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YTzXN0u8fogfLWNV3G0yC8ENAyRkcTaHqUT+UL1O3V804mdTInBpb9TZwf8hMHBurP6ItHjDfdWGsXeJHUaJWBCtNu1ekOiwC8sPeKREtrAOQTFZqHNncfN08Hrqf0zedYAfE/f0mPX4yNeg3WFnzjWMKU2Ti/aJHZl82qapZjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpPB3Msg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C314FC4CEE3;
+	Wed, 30 Oct 2024 12:37:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730291827;
+	bh=lvwwq8+aFwmiSf/8QCpbYGtnBkZJ5CJmM5pqyvdaEAk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NpPB3MsgUiPGOaV3xPOlsGWXEssnS87y1Wu7z7gXbzYiSzuNQd0dTDewkMV7C967z
+	 Fe/snDNrIAlG0tj9yTIcmNAk2pRTZZMin/JYDfrn1UDcdFCyLFOW3lIkDoDfwDQIXg
+	 /i9PtmbVEhTBVol+84gnvmMhVVvZNvMmJNBOgZBMFZaInFhlZkYVWBIDrmFKuZvgTB
+	 TCFyZnBt//33m0DZm2XgR5HIZw1i86EQv0JnXBymEXdonAWUZvNLogjLvmwQXzrUou
+	 WXSIOALb7WPjaPzA+yDWzvqllSqiB63/aOOjNvtnnerM8/KaMGqThheWoYDS3Dw3st
+	 myw9+gLf68JaQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] [v3] acpi: processor_perflib: extend X86 dependency
+Date: Wed, 30 Oct 2024 12:36:40 +0000
+Message-Id: <20241030123701.1538919-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241016111458.846228-2-kirill.shutemov@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 16, 2024 at 02:14:55PM +0300, Kirill A. Shutemov wrote:
-> Calculation of 'next' virtual address doesn't protect against wrapping
-> to zero. It can result in page table corruption and hang. The
-> problematic case is possible if user sets high x86_mapping_info::offset.
-> 
-> The wrapping to zero only occurs if the top PGD entry is accessed.
-> There are no such users in the upstream. Only hibernate_64.c uses
-> x86_mapping_info::offset, and it operates on the direct mapping range,
-> which is not the top PGD entry.
-> 
-> Replace manual 'next' calculation with p?d_addr_end() which handles
-> wrapping correctly.
+From: Arnd Bergmann <arnd@arndb.de>
 
-So this is a fix for a theoretical issue as it cannot happen currently?
+The majority of the processor_perflib code is only used by cpufreq
+drivers on the x86 architecture and makes no sense without the
+x86 SMI interactions that rely on I/O port access.
 
-Can we call that out in the commit message so that the stable AI doesn't pick
-it up?
+Replace the existing #ifdef checks with one that covers all of the
+code that is only used by x86 drivers, saving a little bit
+of kernel code size on other architectures.
 
-And which commit is it fixing?
+There is likely more code under CONFIG_ACPI_PROCESSOR that falls
+into this category, but changing those would require a larger
+rework.
 
-aece27851d44 ("x86, 64bit, mm: Add generic kernel/ident mapping helper")
-perhaps?
+Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+This is not needed for correctness, only as a small optimization.
 
-Always add Fixes: tags when a patch is fixing something - you know that.
+v3: fix build warning
+---
+ drivers/acpi/processor_perflib.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-Thx.
-
+diff --git a/drivers/acpi/processor_perflib.c b/drivers/acpi/processor_perflib.c
+index 4265814c74f8..53996f1a2d80 100644
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -24,8 +24,6 @@
+ 
+ #define ACPI_PROCESSOR_FILE_PERFORMANCE	"performance"
+ 
+-static DEFINE_MUTEX(performance_mutex);
+-
+ /*
+  * _PPC support is implemented as a CPUfreq policy notifier:
+  * This means each time a CPUfreq driver registered also with
+@@ -209,6 +207,10 @@ void acpi_processor_ppc_exit(struct cpufreq_policy *policy)
+ 	}
+ }
+ 
++#ifdef CONFIG_X86
++
++static DEFINE_MUTEX(performance_mutex);
++
+ static int acpi_processor_get_performance_control(struct acpi_processor *pr)
+ {
+ 	int result = 0;
+@@ -267,7 +269,6 @@ static int acpi_processor_get_performance_control(struct acpi_processor *pr)
+ 	return result;
+ }
+ 
+-#ifdef CONFIG_X86
+ /*
+  * Some AMDs have 50MHz frequency multiples, but only provide 100MHz rounding
+  * in their ACPI data. Calculate the real values and fix up the _PSS data.
+@@ -298,9 +299,6 @@ static void amd_fixup_frequency(struct acpi_processor_px *px, int i)
+ 			px->core_frequency = (100 * (fid + 8)) >> did;
+ 	}
+ }
+-#else
+-static void amd_fixup_frequency(struct acpi_processor_px *px, int i) {};
+-#endif
+ 
+ static int acpi_processor_get_performance_states(struct acpi_processor *pr)
+ {
+@@ -440,13 +438,11 @@ int acpi_processor_get_performance_info(struct acpi_processor *pr)
+ 	 * the BIOS is older than the CPU and does not know its frequencies
+ 	 */
+  update_bios:
+-#ifdef CONFIG_X86
+ 	if (acpi_has_method(pr->handle, "_PPC")) {
+ 		if(boot_cpu_has(X86_FEATURE_EST))
+ 			pr_warn(FW_BUG "BIOS needs update for CPU "
+ 			       "frequency support\n");
+ 	}
+-#endif
+ 	return result;
+ }
+ EXPORT_SYMBOL_GPL(acpi_processor_get_performance_info);
+@@ -788,3 +784,4 @@ void acpi_processor_unregister_performance(unsigned int cpu)
+ 	mutex_unlock(&performance_mutex);
+ }
+ EXPORT_SYMBOL(acpi_processor_unregister_performance);
++#endif
 -- 
-Regards/Gruss,
-    Boris.
+2.39.5
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
