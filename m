@@ -1,184 +1,236 @@
-Return-Path: <linux-acpi+bounces-9159-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9162-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE929B7205
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 02:37:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0F09B737F
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 05:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 316DA1F26476
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 01:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32AEE1C24095
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 04:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0765049638;
-	Thu, 31 Oct 2024 01:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D52413B5AF;
+	Thu, 31 Oct 2024 04:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="kOAMTMWR"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rMckm5bH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2083.outbound.protection.outlook.com [40.107.95.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0145D2FB;
-	Thu, 31 Oct 2024 01:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730338631; cv=none; b=aLwdno6xPZ9RN5F/VdI2c6K9ppH7BfAlx8NHAwYj0oQTAlkc3qXbZZsJ3mjyuF5lC/rGWRQCwZmwts/fhMksGtgJP458YJYGsAfcjs/s14j7x2DpHJhLssYJQJfODYF3eula7HcJMVnjHEJIiJyMiJ0BokT9Qc99Pi5193u60dY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730338631; c=relaxed/simple;
-	bh=lfjgKJ5opjQCVR3WWil6/01M2fEvUAOzIvEdpGyNQbY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QiGCRVbMEWrzTmWUV1v3ikfmtzQRZ98Qet+zwCvFmSsdVperBVppQkFtUX44b1cEkSz726VeU8N0NHg+GMnfT1VPl1Ihj8jWq/uPGnkV93mIiV5lQ+i0BgH3rwf2KUWobtXa4XzMwYwasjm/UIAefE7DIHhYD62drXM39Rr99rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=kOAMTMWR; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1730338624; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ZwUq071psuIhKucSfF2WgOJ4JR/ocIDnq9dWFuR/ybI=;
-	b=kOAMTMWRCU1vpoeHvxLJW8MujHzxBgBVg2M/BupAYkMSqv2rEP2/zl/mp2bVpzX0be+q20VTO0ZlMig5GPcFGrPuV9+uADhiz7CWp2ktlEvifXLGGKlCFG8kPzFKQXPI//gUk6Za6K7FRzGJ2vC6MrFYsk/7nGB0/x3eWmgr7Vs=
-Received: from 30.246.162.170(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WIGN02O_1730338618 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 31 Oct 2024 09:37:02 +0800
-Message-ID: <6979b369-7aeb-4157-a89e-3fc4b7f39333@linux.alibaba.com>
-Date: Thu, 31 Oct 2024 09:36:58 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0429F80BF8;
+	Thu, 31 Oct 2024 04:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730347831; cv=fail; b=rEvRzUUeH5IuVtLEGR6X6x0DG5rmy7js485/eH47eBlIUXwPDPkipspPpPE+RJelUkmg3OdsoBWsFCd5ZQ8DefSqSZfuedQEyKBgZTfgT9OgtLyfRKnRqYJtW55pTxvlhWsBIpjs0jnG+AnUaiQC8IzCKW20F6nN6fEAwQLR+28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730347831; c=relaxed/simple;
+	bh=Wg1hEDlde7m+l6dG3EQUa5AXHHyziQXnMdR1NCKx0eg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M9GlmYP5aw8Kcs1PT7gGaqPh18L6/NOz50Lr7uAqUVSF+EvzCxIdZ+e/i946hGtU0ed2pw06J9keiiCxaFlaCts+WDxk5IQksXqgJY+R6SvrvHmc+tR+ZpgUf84sGkncT0uTR6wt5pdYSXiit8E5XcQCwtlGEKTAiM1tEg58kjM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rMckm5bH; arc=fail smtp.client-ip=40.107.95.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ktBgXrVUfaUQE87D1XcMfMxme8kH0nnstJczfuSc+rA4XBVJfd9zZyLAuOPYHPbmtLUDdfN+wW5WDRHV4n7fFyPXQZKl0IxAh6rxoXILAY73EA3c5dG6LpzDit4i/cTlzCyPVcgB8ArA8A/UJYqJKTI5eOC2BL9yEDF48FZWY4MxVGG9/CLn9Izn55WFjaVD5O0RixVGqPWBDcHt854TpA/gTujQl0od/Dd1mk+iXJzivwQ888eoNPbovEqUNsZppeys3TvvrSPz2ngmmSpk1bIapRaH6BFtTQ0PlllyTY7ERbtGO9vOOMDvtmSLa5C9CgjyLh7jVXmMmDTN//QoBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=02p4+GuHVzKplMFtqUukAaxUsF+xBroiW+dOD9sQl48=;
+ b=HKgpq76GTNqhdY7079znoh/JWiBxHZdjhpfCbNDrk3ZLcn/c971xds4GGSdnUJzg1j0m+k0i+pLjAb75j6a4eKzOZnG3t3hv4H7nmwcc+iUSzEMwX7VDONpvLH7K1xxAbjq2Ol3DaZwwLfinCPvzRbyv1P+JfLFijDXAPAZjc7AlO6qMuAk3YFTpQY+YjHS6ivk75Uyats+LmNYRl4pZCxAXSLZtV3JNRKVeFLNWM6aRn7JIeeCLbGYiXVyv7axQqXwD8+EJO3KggGs/eOqY2ulPeHTer1a3Ftsddwb3lb2BXCyRPTxVUHUge+fWbdVdn8f0cypZI9OfJ9YYOm7faA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=02p4+GuHVzKplMFtqUukAaxUsF+xBroiW+dOD9sQl48=;
+ b=rMckm5bH+PTpg8ImOS7vRRG7vPDO8bbPgTz9cDmh9LmPvNKFVJVTPSn6wlfO/o3Q48mSZbGyehS4s+K2sI9rqfTvdza3l7wNHE7e/uoZZHkBztppHagQ04UWYsaI5nDGy6P7tnXO0ni9UwOa31jeTYMjLq+qfJr7oSCILy3awUk=
+Received: from DM5PR07CA0094.namprd07.prod.outlook.com (2603:10b6:4:ae::23) by
+ DS0PR12MB8042.namprd12.prod.outlook.com (2603:10b6:8:141::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8093.27; Thu, 31 Oct 2024 04:10:21 +0000
+Received: from CY4PEPF0000FCC0.namprd03.prod.outlook.com
+ (2603:10b6:4:ae:cafe::9b) by DM5PR07CA0094.outlook.office365.com
+ (2603:10b6:4:ae::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.20 via Frontend
+ Transport; Thu, 31 Oct 2024 04:10:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000FCC0.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8114.16 via Frontend Transport; Thu, 31 Oct 2024 04:10:21 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 30 Oct
+ 2024 23:10:18 -0500
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
+	<ilpo.jarvinen@linux.intel.com>
+CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, "Shyam
+ Sundar S K" <Shyam-sundar.S-k@amd.com>, Corentin Chary
+	<corentin.chary@gmail.com>, "Luke D . Jones" <luke@ljones.dev>, Ike Panhc
+	<ike.pan@canonical.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	"Alexis Belmonte" <alexbelm48@gmail.com>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>, Ai Chao <aichao@kylinos.cn>, Gergo Koteles
+	<soyer@irl.hu>, open list <linux-kernel@vger.kernel.org>, "open list:ACPI"
+	<linux-acpi@vger.kernel.org>, "open list:MICROSOFT SURFACE PLATFORM PROFILE
+ DRIVER" <platform-driver-x86@vger.kernel.org>, "open list:THINKPAD ACPI
+ EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
+	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v3 00/22] Add support for binding ACPI platform profile to multiple drivers
+Date: Wed, 30 Oct 2024 23:09:30 -0500
+Message-ID: <20241031040952.109057-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 1/3] ACPI: APEI: send SIGBUS to current task if
- synchronous memory error not recovered
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: mark.rutland@arm.com, catalin.marinas@arm.com, mingo@redhat.com,
- robin.murphy@arm.com, Jonathan.Cameron@huawei.com, bp@alien8.de,
- rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
- mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
- naoya.horiguchi@nec.com, james.morse@arm.com, tongtiangen@huawei.com,
- gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
- linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20241028081142.66028-2-xueshuai@linux.alibaba.com>
- <20241029204848.GA1229628@yaz-khff2.amd.com>
- <d62d775e-08e3-4a2d-88a8-437a4c04ebd3@linux.alibaba.com>
- <20241030140800.GA1288714@yaz-khff2.amd.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20241030140800.GA1288714@yaz-khff2.amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC0:EE_|DS0PR12MB8042:EE_
+X-MS-Office365-Filtering-Correlation-Id: 400f44a2-1804-43f6-bbd7-08dcf961f00c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?PtuECe5QJcxuopbjfr+3IFUcjsOnHw7Gg8iox4S4NmRG9kxFcbEnIvq1VvsK?=
+ =?us-ascii?Q?/WF5oGdBJ3+zNHpCB/y5w75YC5R2XMek/XotKoxnFEv5SE2Kj/cUZm6wbmL6?=
+ =?us-ascii?Q?jr2tP0FbBGci3wkcRWp9DOK5JPE1+0eDfp1vD/fYjULB+4bRrCB/PzMXo8rp?=
+ =?us-ascii?Q?aY6InGCdqimt0YVRMzpmkuIc/s4bXtNxr2Lyu6iis/tno9a7nZXPtKS1OGSq?=
+ =?us-ascii?Q?CVJ+gsHxFBVGEB+ybuUqVHG9BcY5Tji374h60voP7KSI6UOvBQZxzKnGNx7N?=
+ =?us-ascii?Q?YJNP7Q/uXkHo4zNMJp73PYHa48U5HayfkyK3jEw+UV1tE4Wwr3hIBVHUbqj7?=
+ =?us-ascii?Q?UsNtyMmu09ngO55qgpg/FDGd7r45ZlXB2DlX+vt5qjiD7NkZy7KCGprFOfUg?=
+ =?us-ascii?Q?DHeUU2a6ORuDpyFRgGhz/5ykFqHWZfq9258biEv+z0YM9haGxKMID+HnLapb?=
+ =?us-ascii?Q?/Zh4mWFwAjo/om1iAbJWYzzW+x+K+06H+vXuSyP3JF3a8wM9962ekL33G7LP?=
+ =?us-ascii?Q?+Vwe4urzWCmGGjbPIv8NWlqRnpn6OZf/qtXP58bVmMh5Qm+Z2zArOzMK6YzP?=
+ =?us-ascii?Q?A1uBFiOq4TqwmbJYijBYMuHK/gbWN6ejT3O5b2n2E35zyKwTgGrLsqYakdAr?=
+ =?us-ascii?Q?+fIa3LtqOfm3arEpoITxclsbiQmj4OHV9UaZH2svuOKb8y4W8XJCbUJ3UtuI?=
+ =?us-ascii?Q?4KwT7SAoKtAH1j3KGGiFuubB09n/nEfqIeh939qMd5+fVabgdCYpoVL4f6+p?=
+ =?us-ascii?Q?xOopylcHmV6SwG+4aCPqJ3bdgdRMKOr/7I+1TMZyROPLqfaaPYjyaDpz/K52?=
+ =?us-ascii?Q?sqWKp6Ak7sAB4e2hpXxv9TtSPDC/KoqdFEk5vSmNjv2KYGb9SP0/FRopWitX?=
+ =?us-ascii?Q?g81btwEHYuRnGNOdmQ5eh4uQadUWQvROzMuIaoJ+PuBUt9TFTEtbileLqAqD?=
+ =?us-ascii?Q?yaitXG5nLpXjYyvQR97L3gk3ije0TiBblCB3n7i7EePpbddBsat50l/vaq1M?=
+ =?us-ascii?Q?gfafmmmtIBZFk7kfJW3erNbj+Qw3LX/2BQ+mYPpfvOTvWaal/ubH2zqDkUJ1?=
+ =?us-ascii?Q?U5kYh9OkF9qVXkYz+7eHfIOg74wDcWMAHWw5XsBc+8FpjzAWBcTwcLFXhrIl?=
+ =?us-ascii?Q?IG10WvHFZjCGnkPpkRZaocjH+tBO/2C8K2l10Wls/LRoJwG6e+b5c9cXDTvQ?=
+ =?us-ascii?Q?m+HnDVtgF0/th5SuOCBEz0AdiFwPN6EVoGqsyegEFaVv2n0plSxAaj1uT2dk?=
+ =?us-ascii?Q?/phah8+Guhro8jteujX7YAXez2QrWlIPZm8UF6m+HYRUxSJuMjyC7tWYv01r?=
+ =?us-ascii?Q?whRrDcEBAOjTCqlmSEL3epgTuFGImBiSUFtHw2ON4O33JDQ5uMZqgy8NZeQh?=
+ =?us-ascii?Q?E8zs/PvyAiKgQ6LxymtL1+YASvzeWAePbECBWkJqrgcR7EwCQg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2024 04:10:21.1778
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 400f44a2-1804-43f6-bbd7-08dcf961f00c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000FCC0.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8042
 
+Currently there are a number of ASUS products on the market that happen to
+have ACPI objects for amd-pmf to bind to as well as an ACPI platform profile
+provided by asus-wmi.
 
+The ACPI platform profile support created by amd-pmf on these ASUS products is "Function 9"
+which is specifically for "BIOS or EC notification" of power slider position.
+This feature is actively used by some designs such as Framework 13 and Framework 16.
 
-在 2024/10/30 22:08, Yazen Ghannam 写道:
-> On Wed, Oct 30, 2024 at 09:54:00AM +0800, Shuai Xue wrote:
->>
->>
->> 在 2024/10/30 04:48, Yazen Ghannam 写道:
->>> On Mon, Oct 28, 2024 at 04:11:40PM +0800, Shuai Xue wrote:
->>>> Synchronous error was detected as a result of user-space process accessing
->>>> a 2-bit uncorrected error. The CPU will take a synchronous error exception
->>>> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
->>>> memory_failure() work which poisons the related page, unmaps the page, and
->>>> then sends a SIGBUS to the process, so that a system wide panic can be
->>>> avoided.
->>>>
->>>> However, no memory_failure() work will be queued when abnormal synchronous
->>>> errors occur. These errors can include situations such as invalid PA,
->>>> unexpected severity, no memory failure config support, invalid GUID
->>>> section, etc. In such case, the user-space process will trigger SEA again.
->>>> This loop can potentially exceed the platform firmware threshold or even
->>>> trigger a kernel hard lockup, leading to a system reboot.
->>>>
->>>> Fix it by performing a force kill if no memory_failure() work is queued
->>>> for synchronous errors.
->>>>
->>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->>>> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>> ---
->>>>    drivers/acpi/apei/ghes.c | 10 ++++++++++
->>>>    1 file changed, 10 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->>>> index ada93cfde9ba..f2ee28c44d7a 100644
->>>> --- a/drivers/acpi/apei/ghes.c
->>>> +++ b/drivers/acpi/apei/ghes.c
->>>> @@ -801,6 +801,16 @@ static bool ghes_do_proc(struct ghes *ghes,
->>>>    		}
->>>>    	}
->>>> +	/*
->>>> +	 * If no memory failure work is queued for abnormal synchronous
->>>> +	 * errors, do a force kill.
->>>> +	 */
->>>> +	if (sync && !queued) {
->>>> +		pr_err("%s:%d: hardware memory corruption (SIGBUS)\n",
->>>> +			current->comm, task_pid_nr(current));
->>>
->>> I think it would help to include the GHES_PFX to indicate where this
->>> message is coming from. The pr_fmt() macro could also be introduced
->>> instead.
->>
->> Yes, GHES_PFX is a effective prefix and will be consistent to other message
->> in GHES driver. Will add it in next version.
->>
->> What do you mean about pr_fmt()?
-> 
-> This can be used to set a prefix for an entire section of code. The
-> pr_*() macros will pick it up without needing to include a prefix for
-> each call.
-> 
-> This is described in "Documentation/core-api/printk-basics.rst".
+On these ASUS designs we keep on quirking more and more of them to turn off this
+notification so that asus-wmi can bind.
 
-Got you point, a pr_fmt is much more convenient, but it is beyond this 
-patch. I would like to send a patch to add pr_fmt and then replace each 
-call after this patch merged.
+This however isn't how Windows works.  "Multiple" things are notified for the power
+slider position. This series adjusts Linux to behave similarly.
 
-> 
->>
->>>
->>> Also, you may want to include the HW_ERR prefix. Not all kernel messages
->>> related to hardware errors have this prefix today. But maybe that should
->>> be changed so there is more consistent messaging.
->>>
->>
->> Do we really need a HW_ERR prefix? The other case which use HW_ERR prefix
->> are for hardware registers. The messages which send SIGBUS does
->> not include HW_ERR, e.g. in kill_proc(), kill_procs().
->>
->>      pr_err("%#lx: Sending SIGBUS to %s:%d due to hardware memory
->> corruption\n",...
->>      pr_err("%#lx: forcibly killing %s:%d because of failure to unmap
->> corrupted page\n",...
->>
->>
-> 
-> Correct, HW_ERR isn't used there. My interpretation is that it can be
-> used whenever an event is due to a hardware error (real or simulated).
-> This is a very clear message to a user.
-> 
-> It may be redundant in some cases (like here where the message already
-> says "hardware memory corruption"). But I think it would be go to use it
-> anyway for consistency.
-> 
-> I think other relevant places in the kernel should also be updated. But
-> that is beyond this patch, and I don't expect it to be done here and
-> now.
+Multiple drivers can now register an ACPI platform profile and will react to set requests.
 
-Ok, I will add the HW_ERR in next version, if no one else objects.
-> 
-> Thanks,
-> Yazen
+To avoid chaos, only positions that are common to both drivers are accepted
+when the legacy /sys/firmware/acpi/platform_profile interface is used.
 
-Thank you.
-Best Regards,
-Shuai
+This series also adds a new concept of a "custom" profile.  This allows userspace
+to discover that there are multiple driver handlers that are configured differently.
+
+This series also allows dropping all of the PMF quirks from amd-pmf.
+
+v3:
+ * Split to even more patches
+ * Add concept of class device for platform profile handlers
+ * Add concept of custom profile for legacy sysfs interface
+ * Pick up tags for some patches
+v2:
+ * Split to many more patches
+ * Account for feedback from M/L
+
+Mario Limonciello (22):
+  ACPI: platform-profile: Add a name member to handlers
+  platform/x86/dell: dell-pc: Create platform device
+  ACPI: platform_profile: Add device pointer into platform profile
+    handler
+  ACPI: platform_profile: Add platform handler argument to
+    platform_profile_remove()
+  ACPI: platform_profile: Add a list to platform profile handler
+  ACPI: platform_profile: Move sanity check out of the mutex
+  ACPI: platform_profile: Use guard(mutex) for register/unregister
+  ACPI: platform_profile: Use `scoped_cond_guard` for
+    platform_profile_choices_show()
+  ACPI: platform_profile: Use `scoped_cond_guard` for
+    platform_profile_show()
+  ACPI: platform_profile: Use `scoped_cond_guard` for
+    platform_profile_show()
+  ACPI: platform_profile: Use `scoped_cond_guard` for
+    platform_profile_cycle()
+  ACPI: platform_profile: Only remove group when no more handler
+    registered
+  ACPI: platform_profile: Require handlers to support balanced profile
+  ACPI: platform_profile: Notify change events on register and
+    unregister
+  ACPI: platform_profile: Only show profiles common for all handlers
+  ACPI: platform_profile: Set profile for all registered handlers
+  ACPI: platform_profile: Add concept of a "custom" profile
+  ACPI: platform_profile: Make sure all profile handlers agree on
+    profile
+  ACPI: platform_profile: Check all profile handler to calculate next
+  ACPI: platform_profile: Register class device for platform profile
+    handlers
+  ACPI: platform_profile: Allow multiple handlers
+  platform/x86/amd: pmf: Drop all quirks
+
+ drivers/acpi/platform_profile.c               | 330 ++++++++++++------
+ .../surface/surface_platform_profile.c        |   8 +-
+ drivers/platform/x86/acer-wmi.c               |  10 +-
+ drivers/platform/x86/amd/pmf/Makefile         |   2 +-
+ drivers/platform/x86/amd/pmf/core.c           |   1 -
+ drivers/platform/x86/amd/pmf/pmf-quirks.c     |  66 ----
+ drivers/platform/x86/amd/pmf/pmf.h            |   3 -
+ drivers/platform/x86/amd/pmf/sps.c            |   4 +-
+ drivers/platform/x86/asus-wmi.c               |   6 +-
+ drivers/platform/x86/dell/dell-pc.c           |  39 ++-
+ drivers/platform/x86/hp/hp-wmi.c              |   8 +-
+ drivers/platform/x86/ideapad-laptop.c         |   4 +-
+ .../platform/x86/inspur_platform_profile.c    |   7 +-
+ drivers/platform/x86/thinkpad_acpi.c          |   4 +-
+ include/linux/platform_profile.h              |   8 +-
+ 15 files changed, 303 insertions(+), 197 deletions(-)
+ delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
+
+-- 
+2.43.0
 
 
