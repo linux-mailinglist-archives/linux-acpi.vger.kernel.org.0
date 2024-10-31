@@ -1,281 +1,113 @@
-Return-Path: <linux-acpi+bounces-9183-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9184-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B089B7473
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 07:21:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761DC9B750E
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 08:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 832C0B21A99
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 06:21:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38BE828570B
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 07:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC74145A03;
-	Thu, 31 Oct 2024 06:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37049148314;
+	Thu, 31 Oct 2024 07:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IbQ2PG+H"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NG88voDa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E11142E9F
-	for <linux-acpi@vger.kernel.org>; Thu, 31 Oct 2024 06:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D0D1BD9D4;
+	Thu, 31 Oct 2024 07:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730355688; cv=none; b=bd3HpyE1Vyp3klTYrK1Jd57xy8IS7kfO9NnSiWjQ1FIkfF8Xd1944smVAsf6L8bO5Cr7aAQXxlr2lBo3t/8WIVXRhbmiGM9SeF88v0HRAGaerCrXmH7jWVbL4K2CQCS2FKUCpRCIlRBD03ZK+hENvA4dPzpo4wK1sbVhIH0Rwug=
+	t=1730358527; cv=none; b=LYE2tCz9hKJJbKq1ZjbEDN9nxf9VCBcZ/DqThZmgsHnYf06w9kLO9zONwasT1N3l9cgBDFghKEwbmTg5MbABDAOZDYJ7T+IRfROXxRjRkYX0CidT7MCzkua1o2rOBV6oPxpDQSE/0xiwuHVDbfEs4JJnYRwCx4Wc5+bCCXPXp+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730355688; c=relaxed/simple;
-	bh=XSZ6Hy52turl3LfxnjEUv5hVzdAx9oOcIHfaeoqhMiU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FPnasxBd1NFQI9OXK6o6j5HtGwThOtV2rnO+FADuCxxVm1MxdtLHQgJf5jH5UBYRg8bPIupQ8Wdhi6lWsJO0z12SIM2HFvnGiGvscsr1T2E8AVIrGjVdL2OfUsQKCUwo0eP/wSGPLjGWka8rN/uScZ+RU6pYWq1nZbQuXFEaJN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IbQ2PG+H; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539f58c68c5so1018878e87.3
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Oct 2024 23:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730355683; x=1730960483; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uCUVXtHK/IiMB+Oe4BWESMJU8Ob4rgGM97ZCX/sNfKI=;
-        b=IbQ2PG+Hgg7YT7gJqA1dQMmmGut5Eo7mDk3GFmH0VxYdV/HDp0pfS/4sR8pDVKi834
-         b3O5GY4KPkV65aKJEjY8NnEFOpV8HWqV3MiLlunRaGB9/Igqwp1bZh1AP2UCTpyxDl5n
-         GecggC2yreuC/KxAeZfh5+1i0XpVQUq911Zjh6foKC4iZcMGAbxxBuFLq3TVOBsEaBWd
-         lOBMY4jO65qqztRDvI94WD9rZV70zrrgpbi2+vSemb50BY3HP/bJX9rxnSH5LnOpIQjI
-         pnWS3i7KIzprJUv2LTq04VOZuZxG4x9Ljee2QvH8CE+AKk/VvVLNy4WB954PzSDvzuME
-         4Uog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730355683; x=1730960483;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uCUVXtHK/IiMB+Oe4BWESMJU8Ob4rgGM97ZCX/sNfKI=;
-        b=v73uL6GWFv3/7Vy+KC6KhDSCrLmBP9efg04ehULR4uoaRhM+rn05q4pnyMnlvyrMIY
-         CvrL7mdZS5EsaN1rmkeTEfTalg+e4uhhw7CuiEFYTqLUI8cqLbMBfZkkVtGUVmalv8Ub
-         MiGo1HkpYH802A+BeiS1iM99nnAQisSI/+tHxVo+J+nPVMi7C5how3v5LfIJmvPNzkeG
-         5sM65F2EEOvTCkZxAQMNNmkIRx/TEbaquCWV3DZkDF9npGRe9CZyPTP7IDy1MgJNw1wB
-         ra9iraPWzxHFR+7PMVeMLNCyCsAMvSaKGkZJAiodzmFyTbxP49OJGjPdMhRMoo+njgIs
-         7VkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXd20EvwGt6/6xdSWmvbDSXk3HlT/vn8j/1n488J4diHcK9hFkpNwS+2LkQxPjH/aT4GEi1IcemMC0n@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm2uFc9A9EU2Lo2dui+Nlw6zsAvOfD7AupJEzgEfvggjrGC5lO
-	w1VaydNQ77AFSOsS3O8w3f8+ENIdS6GiEoR4oQisaq2LSlGL+cwJ3tRTWrbORzf0CuRpXoFlddD
-	MlwvQA9Uea7uhaOMISi19k+vPBv4xmA+savZU5A==
-X-Google-Smtp-Source: AGHT+IH0g8oJXVs7VSlsOX60RHCa1G3irMHjbxsPtlD9vjSUFpsj7VgciJ4cq7Us8zzxRnsUwBQyyU+Qscm+a7G3kBw=
-X-Received: by 2002:a05:6512:3053:b0:539:a4ef:6765 with SMTP id
- 2adb3069b0e04-53b348ba142mr14459958e87.7.1730355683052; Wed, 30 Oct 2024
- 23:21:23 -0700 (PDT)
+	s=arc-20240116; t=1730358527; c=relaxed/simple;
+	bh=IDn+0uw1n+KZJJDlQX9EkB0sPuZecc7OMwI8wYbJWX8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A/yPSWpI0KvWY54HZOlMr1rJYx77WGez1l1XGcEL2Q+GZJQstbxNeZzGjimchOOXT/9WUO9tgCFUy0TlOXo7nuSTOz9nT1qJYGbUb3GS3J8CB2jU2+yk6BCqpI6yjLTjFxTqr+gXVaaK8heKezI66cCAf4gEoagvXDRvfU/iKaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NG88voDa; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730358525; x=1761894525;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=IDn+0uw1n+KZJJDlQX9EkB0sPuZecc7OMwI8wYbJWX8=;
+  b=NG88voDawtWDBcgQd+/sz8grvcvsCKmb0vMXGEneuTj5CMIseS7JpDFW
+   3QqRu0kJpwrmlUcvY26VBYF7/4wIJksLzMF2PSHgvlXhlVeDzIJEapBWA
+   fWTR0jSfAYpW1DYidyidItv4/1CFm4uuWcY/+efMHHjWBRTrOY8FeUmUT
+   MuNsAbkJnSc4b9cSKXDLdovrn2u7HSvAu6zdNo2ETMxJPtfgkPNv9nz1c
+   tzbXk5dpNMePrzt7w7ufR9U6P9o+OrrTW6EUe41NtHABEsX4vM6VEHGmo
+   DDVX13nLjsjB8AK35awPtyS8/Si5+iBON1mtCBXCASktZBGm0G+fLRz+l
+   g==;
+X-CSE-ConnectionGUID: KFRpWEAsQLOYiFLqlGpCmg==
+X-CSE-MsgGUID: bfBZ/AknTa+q6/cQ5Qs+Lg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="55480938"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="55480938"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 00:08:45 -0700
+X-CSE-ConnectionGUID: /XCVvICMThKo0AR8Zd9vLw==
+X-CSE-MsgGUID: zFVmURDrSjiv7WVGPLOtAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="87327784"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 00:08:43 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1t6PIO-00000009KOC-1J0c;
+	Thu, 31 Oct 2024 09:08:40 +0200
+Date: Thu, 31 Oct 2024 09:08:40 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@weissschuh.net>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v1 1/1] ACPI: battery: Check for error code from
+ devm_mutex_init() call
+Message-ID: <ZyMs-Ao8lUfMqYdB@smile.fi.intel.com>
+References: <20241030162754.2110946-1-andriy.shevchenko@linux.intel.com>
+ <63b16433-9f80-492f-9389-633a9852a223@weissschuh.net>
+ <ZyJtXzIReSHfKkd_@smile.fi.intel.com>
+ <550e1dd5-91fb-44ae-bbd5-a10ce1b73ad4@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com> <9-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
-In-Reply-To: <9-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
-From: Zhangfei Gao <zhangfei.gao@linaro.org>
-Date: Thu, 31 Oct 2024 14:21:11 +0800
-Message-ID: <CABQgh9HoGFGDTEqziQt6WrJ7Bm9d-0c259PYsms3nOVEidn5BA@mail.gmail.com>
-Subject: Re: [PATCH v4 09/12] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev, 
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, 
-	Alex Williamson <alex.williamson@redhat.com>, Donald Dutile <ddutile@redhat.com>, 
-	Eric Auger <eric.auger@redhat.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jerry Snitselaar <jsnitsel@redhat.com>, 
-	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
-	patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <550e1dd5-91fb-44ae-bbd5-a10ce1b73ad4@weissschuh.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, 31 Oct 2024 at 08:21, Jason Gunthorpe <jgg@nvidia.com> wrote:
->
-> For SMMUv3 a IOMMU_DOMAIN_NESTED is composed of a S2 iommu_domain acting
-> as the parent and a user provided STE fragment that defines the CD table
-> and related data with addresses translated by the S2 iommu_domain.
->
-> The kernel only permits userspace to control certain allowed bits of the
-> STE that are safe for user/guest control.
->
-> IOTLB maintenance is a bit subtle here, the S1 implicitly includes the S2
-> translation, but there is no way of knowing which S1 entries refer to a
-> range of S2.
->
-> For the IOTLB we follow ARM's guidance and issue a CMDQ_OP_TLBI_NH_ALL to
-> flush all ASIDs from the VMID after flushing the S2 on any change to the
-> S2.
->
-> The IOMMU_DOMAIN_NESTED can only be created from inside a VIOMMU as the
-> invalidation path relies on the VIOMMU to translate virtual stream ID used
-> in the invalidation commands for the CD table and ATS.
->
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> Reviewed-by: Donald Dutile <ddutile@redhat.com>
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     | 157 ++++++++++++++++++
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   |  17 +-
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   |  26 +++
->  include/uapi/linux/iommufd.h                  |  20 +++
->  4 files changed, 219 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-> index 60dd9e90759571..0b9fffc5b2f09b 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-> @@ -30,7 +30,164 @@ void *arm_smmu_hw_info(struct device *dev, u32 *length, u32 *type)
->         return info;
->  }
->
-> +static void arm_smmu_make_nested_cd_table_ste(
-> +       struct arm_smmu_ste *target, struct arm_smmu_master *master,
-> +       struct arm_smmu_nested_domain *nested_domain, bool ats_enabled)
-> +{
-> +       arm_smmu_make_s2_domain_ste(
-> +               target, master, nested_domain->vsmmu->s2_parent, ats_enabled);
-> +
-> +       target->data[0] = cpu_to_le64(STRTAB_STE_0_V |
-> +                                     FIELD_PREP(STRTAB_STE_0_CFG,
-> +                                                STRTAB_STE_0_CFG_NESTED));
-> +       target->data[0] |= nested_domain->ste[0] &
-> +                          ~cpu_to_le64(STRTAB_STE_0_CFG);
-> +       target->data[1] |= nested_domain->ste[1];
-> +}
-> +
-> +/*
-> + * Create a physical STE from the virtual STE that userspace provided when it
-> + * created the nested domain. Using the vSTE userspace can request:
-> + * - Non-valid STE
-> + * - Abort STE
-> + * - Bypass STE (install the S2, no CD table)
-> + * - CD table STE (install the S2 and the userspace CD table)
-> + */
-> +static void arm_smmu_make_nested_domain_ste(
-> +       struct arm_smmu_ste *target, struct arm_smmu_master *master,
-> +       struct arm_smmu_nested_domain *nested_domain, bool ats_enabled)
-> +{
-> +       unsigned int cfg =
-> +               FIELD_GET(STRTAB_STE_0_CFG, le64_to_cpu(nested_domain->ste[0]));
-> +
-> +       /*
-> +        * Userspace can request a non-valid STE through the nesting interface.
-> +        * We relay that into an abort physical STE with the intention that
-> +        * C_BAD_STE for this SID can be generated to userspace.
-> +        */
-> +       if (!(nested_domain->ste[0] & cpu_to_le64(STRTAB_STE_0_V)))
-> +               cfg = STRTAB_STE_0_CFG_ABORT;
-> +
-> +       switch (cfg) {
-> +       case STRTAB_STE_0_CFG_S1_TRANS:
-> +               arm_smmu_make_nested_cd_table_ste(target, master, nested_domain,
-> +                                                 ats_enabled);
-> +               break;
-> +       case STRTAB_STE_0_CFG_BYPASS:
-> +               arm_smmu_make_s2_domain_ste(target, master,
-> +                                           nested_domain->vsmmu->s2_parent,
-> +                                           ats_enabled);
-> +               break;
-> +       case STRTAB_STE_0_CFG_ABORT:
-> +       default:
-> +               arm_smmu_make_abort_ste(target);
-> +               break;
-> +       }
-> +}
-> +
-> +static int arm_smmu_attach_dev_nested(struct iommu_domain *domain,
-> +                                     struct device *dev)
-> +{
-> +       struct arm_smmu_nested_domain *nested_domain =
-> +               to_smmu_nested_domain(domain);
-> +       struct arm_smmu_master *master = dev_iommu_priv_get(dev);
-> +       struct arm_smmu_attach_state state = {
-> +               .master = master,
-> +               .old_domain = iommu_get_domain_for_dev(dev),
-> +               .ssid = IOMMU_NO_PASID,
-> +               /* Currently invalidation of ATC is not supported */
-> +               .disable_ats = true,
-> +       };
-> +       struct arm_smmu_ste ste;
-> +       int ret;
-> +
-> +       if (nested_domain->vsmmu->smmu != master->smmu)
-> +               return -EINVAL;
-> +       if (arm_smmu_ssids_in_use(&master->cd_table))
-> +               return -EBUSY;
-> +
-> +       mutex_lock(&arm_smmu_asid_lock);
-> +       ret = arm_smmu_attach_prepare(&state, domain);
-> +       if (ret) {
-> +               mutex_unlock(&arm_smmu_asid_lock);
-> +               return ret;
-> +       }
-> +
-> +       arm_smmu_make_nested_domain_ste(&ste, master, nested_domain,
-> +                                       state.ats_enabled);
-> +       arm_smmu_install_ste_for_dev(master, &ste);
-> +       arm_smmu_attach_commit(&state);
-> +       mutex_unlock(&arm_smmu_asid_lock);
-> +       return 0;
-> +}
-> +
-> +static void arm_smmu_domain_nested_free(struct iommu_domain *domain)
-> +{
-> +       kfree(to_smmu_nested_domain(domain));
-> +}
-> +
-> +static const struct iommu_domain_ops arm_smmu_nested_ops = {
-> +       .attach_dev = arm_smmu_attach_dev_nested,
-> +       .free = arm_smmu_domain_nested_free,
-> +};
-> +
-> +static int arm_smmu_validate_vste(struct iommu_hwpt_arm_smmuv3 *arg)
-> +{
-> +       unsigned int cfg;
-> +
-> +       if (!(arg->ste[0] & cpu_to_le64(STRTAB_STE_0_V))) {
-> +               memset(arg->ste, 0, sizeof(arg->ste));
-> +               return 0;
-> +       }
-> +
-> +       /* EIO is reserved for invalid STE data. */
-> +       if ((arg->ste[0] & ~STRTAB_STE_0_NESTING_ALLOWED) ||
-> +           (arg->ste[1] & ~STRTAB_STE_1_NESTING_ALLOWED))
-> +               return -EIO;
-> +
-> +       cfg = FIELD_GET(STRTAB_STE_0_CFG, le64_to_cpu(arg->ste[0]));
-> +       if (cfg != STRTAB_STE_0_CFG_ABORT && cfg != STRTAB_STE_0_CFG_BYPASS &&
-> +           cfg != STRTAB_STE_0_CFG_S1_TRANS)
-> +               return -EIO;
-> +       return 0;
-> +}
-> +
-> +static struct iommu_domain *
-> +arm_vsmmu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
-> +                             const struct iommu_user_data *user_data)
-> +{
-> +       struct arm_vsmmu *vsmmu = container_of(viommu, struct arm_vsmmu, core);
-> +       struct arm_smmu_nested_domain *nested_domain;
-> +       struct iommu_hwpt_arm_smmuv3 arg;
-> +       int ret;
-> +
-> +       if (flags)
-> +               return ERR_PTR(-EOPNOTSUPP);
+On Wed, Oct 30, 2024 at 12:29:31PM -0600, Thomas Weißschuh wrote:
+> Oct 30, 2024 11:31:21 Andy Shevchenko <andriy.shevchenko@linux.intel.com>:
+> > On Wed, Oct 30, 2024 at 10:42:18AM -0600, Thomas Weißschuh wrote:
+> >> Oct 30, 2024 10:28:03 Andy Shevchenko <andriy.shevchenko@linux.intel.com>:
 
-This check fails when using user page fault, with flags =
-IOMMU_HWPT_FAULT_ID_VALID (4)
-Strange, the check is not exist in last version?
+...
 
-iommufd_viommu_alloc_hwpt_nested ->
-viommu->ops->alloc_domain_nested(viommu, flags, user_data) ->
-arm_vsmmu_alloc_domain_nested
+> >> wouldn't it make sense to mark devm_mutex_init() as __must_check?
+> >
+> > It's macro, any idea how to do that for the macros?
+> 
+> It should work on __devm_mutex_init().
+> I don't think the expression macro  in between should interfere.
+> Unfortunately I can't test it myself right now.
+
+Okay, when you have a patch, feel free to Cc me for review.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Thanks
 
