@@ -1,139 +1,194 @@
-Return-Path: <linux-acpi+bounces-9196-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9197-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B8C9B7CC3
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 15:24:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0A09B7CFC
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 15:35:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89AFD281742
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 14:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E52C28189A
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 14:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5059419B3C5;
-	Thu, 31 Oct 2024 14:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2661A073F;
+	Thu, 31 Oct 2024 14:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NqBfKA4K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzERKkIR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6E142AA5;
-	Thu, 31 Oct 2024 14:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D920219DF99;
+	Thu, 31 Oct 2024 14:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730384639; cv=none; b=gxFm13xWIiCbfTmHpJHjseW5p2AfrF5UtGKHWRahuCFPeTJcet5FGHFmFb+bcJRmOIavtliYPdpraTovxsXCIQauymxqfsLVaDwhfkxB8h5reXx41ty28nZbkxKDztXWclPNj1o6pCfFFNc8BcwYdUhhFHpLxF6bolqkxE3pEu8=
+	t=1730385307; cv=none; b=YeFMOElMj5F7DFSqHuZpSF7y4vBVRl64VfqogF3oy4SJGB3Bgqlo5gnCqgkAasfW/mSeeu82Nsc+rtkMM+ml+jh+J3gUmwg5VoFDgVHmo5O+5tm2B3iAErhqeftF1CYSgLMswcbuuBRbNDT5f1Aos+ULftLG8KknzxbPWDYNiCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730384639; c=relaxed/simple;
-	bh=H1Jp3Eg6E4fHBpF5GYRklWf4a0t9FjB4azHH3cRT3W4=;
+	s=arc-20240116; t=1730385307; c=relaxed/simple;
+	bh=908GH7IBG1XfA0L7MNM6eq8gsxx7GOrv1X37ET8DUyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hF8LSCWAgqklxcpEtD79dOjfduxkDd3RacMxgfDZ9gdtrmI9s4M4xqKfCuD6sT8DszQ5YYLi2RuSM4MaLstgbFQVZSoLewgXNEtLZkFBZkB5Vkn1kQBh42QABNC/pkD0Bh2ZCmDX/yXF6tKyZQSsJuSVjqOQpWO7Hp63BVw87Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NqBfKA4K; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A3F7B40E0219;
-	Thu, 31 Oct 2024 14:23:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id o8pRZ717O3Mn; Thu, 31 Oct 2024 14:23:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1730384629; bh=TKKTDUk0ZXKijGga9iQFEGt/jssCC5AbXxtB6T55K3w=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=UZ0VvXxEUGkrJyO4bOPGNnUZUQA/9/2U0NOJaX8Y0Lc1D9KWE/vVv144CMm/uZgREIVaxrfq0fGitNMXxYq2B5GkKxxhfjgILW1DJuGAd6wVHYAXCBmgET98XFGehKiwljRR0e0QuA1DSSGq6l9pCkPMPKlgUayNp9KWnLiAgd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzERKkIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EEAC4AF1B;
+	Thu, 31 Oct 2024 14:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730385306;
+	bh=908GH7IBG1XfA0L7MNM6eq8gsxx7GOrv1X37ET8DUyw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NqBfKA4KWjWcr8JO2xzei/8PtUXbdQokvHuvhZE2QQQuEYZr7ArVWy2U/GSj6bqO9
-	 pt/AW3c2xbD5Hhbt79+/d9TbH6AojQll+airAvvcN4vguvixVik/vl4glChPiI9SYl
-	 UCAm+len+Va4sxlLpgvrSF/oykBLbmQuLxuIyQOslW43UwK5/NvuDzebCdf4lRCUIb
-	 N0Sa3O7DKhLtNaSQzPRBiqyLDeJ/PC93UkrjphI0DuES04J2oRlD+jQhOSSXsfGgTR
-	 Yk8ZKEDzkIJTABZ0yR3OvMOUnTTiAcbkyroNJRL52QL720Uj3RDAEQeezxJ+56Ju+R
-	 fIa8zBU37gB+5BBx6MmOsLKL3W2PXq1v3lDFPuDO7CeUIO+/eufvb19Dmj6CY+GOZ0
-	 FRBXIDnHKurNpz4Ke2WlfsvVm0beyEZRtpmMV+c/8npmoQ1y1/B3HHXi4NXrchzrA/
-	 aW5l1IHi+B9uqKY7sx+uQSWWKdJwL079sCOiDgsCtpnHnGYkeflxoz3G8A0gOw0zbc
-	 OH46Cn7FAI1p+dmkwqWxqkCJFbikEj8Wuvz4BIGg9iqoduUaUuMJwIauNT+O2oWJBG
-	 7Pj+08ohnUNfD5t4SGufEtkaqJiuaC8QNOfO9RNjjQzTujdz7umJBTgXVrefSLRqFk
-	 kfeKgXd16O9Ew9ZVK1CdDDdo=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E365E40E019C;
-	Thu, 31 Oct 2024 14:23:30 +0000 (UTC)
-Date: Thu, 31 Oct 2024 15:23:24 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Baoquan He <bhe@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCHv4, REBASED 3/4] x86/64/kexec: Map original
- relocate_kernel() in init_transition_pgtable()
-Message-ID: <20241031142324.GJZyOS3G62E3pn9ZJ-@fat_crate.local>
-References: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
- <20241016111458.846228-4-kirill.shutemov@linux.intel.com>
+	b=AzERKkIRwC/O4kQ8lXH0L4xaw8lcCpG9teRlnbXLQORdNS/jid5oXobAIqrFBvnMj
+	 8TavotafNAjfch6gf0LzZd7t4y0STCY6OrBp4+pmufLdZw1Fob2IJ4RKCx1QlAfwV9
+	 igjdjueqvbXLikgcF2avFhhxK4GjtzcQFneRgzqKo5j+kDvdftzhJhDxhFK67/RAo3
+	 ZZnTPKmuxzBoEiw+4Nr6Ej07BMw2Avy0n+cNU0B+udrtpRzcAdUbRXmmbF8dH36io5
+	 ZNTxQC63JDz1vnx9yl/KoBYUc48LeRNVURbhd+I75R8XMmmDJU2+T05l6ZtsAZv4qg
+	 xvwr8D+8DX0Bg==
+Date: Thu, 31 Oct 2024 16:31:03 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
+	dan.j.williams@intel.com, rrichter@amd.com, Terry.Bowman@amd.com,
+	dave.jiang@intel.com, ira.weiny@intel.com,
+	alison.schofield@intel.com, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
+	lenb@kernel.org, david@redhat.com, osalvador@suse.de,
+	gregkh@linuxfoundation.org, akpm@linux-foundation.org
+Subject: Re: [PATCH v4 1/3] memory: implement
+ memory_block_advise/probe_max_size
+Message-ID: <ZyOUp5Juz5x3Ivrn@kernel.org>
+References: <20241029202041.25334-1-gourry@gourry.net>
+ <20241029202041.25334-2-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241016111458.846228-4-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20241029202041.25334-2-gourry@gourry.net>
 
-On Wed, Oct 16, 2024 at 02:14:57PM +0300, Kirill A. Shutemov wrote:
-> The init_transition_pgtable() function sets up transitional page tables.
-> It ensures that the relocate_kernel() function is present in the
-> identity mapping at the same location as in the kernel page tables.
-> relocate_kernel() switches to the identity mapping, and the function
-> must be present at the same location in the virtual address space before
-> and after switching page tables.
+On Tue, Oct 29, 2024 at 04:20:39PM -0400, Gregory Price wrote:
+> Hotplug memory sources may have opinions on what the memblock size
+> should be - usually for alignment purposes.  For example, CXL memory
+> extents can be 256MB with a matching alignment. If this size/alignment
+> is smaller than the block size, it can result in stranded capacity.
 > 
-> init_transition_pgtable() maps a copy of relocate_kernel() in
-> image->control_code_page at the relocate_kernel() virtual address, but
-> the original physical address of relocate_kernel() would also work.
+> Implement memory_block_advise_max_size for use prior to allocator init,
+> for software to advise the system on the max block size.
 > 
-> It is safe to use original relocate_kernel() physical address cannot be
-					^^^^^^^^^^^^^^^
-
-something went missing here in that sentence. Reads weird.
-
-> overwritten until swap_pages() is called, and the relocate_kernel()
-> virtual address will not be used by then.
-
-...
-
-> diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-> index 9c9ac606893e..645690e81c2d 100644
-> --- a/arch/x86/kernel/machine_kexec_64.c
-> +++ b/arch/x86/kernel/machine_kexec_64.c
-> @@ -157,7 +157,7 @@ static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
->  	pte_t *pte;
+> Implement memory_block_probe_max_size for use by arch init code to
+> calculate the best block size. Use of advice is architecture defined.
+> 
+> The probe value can never change after first probe. Calls to advise
+> after probe will return -EBUSY to aid debugging.
+> 
+> On systems without hotplug, always return -ENODEV and 0 respectively.
+> 
+> Suggested-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  drivers/base/memory.c  | 48 ++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/memory.h | 10 +++++++++
+>  2 files changed, 58 insertions(+)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 67858eeb92ed..099a972c52dc 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -110,6 +110,54 @@ static void memory_block_release(struct device *dev)
+>  	kfree(mem);
+>  }
 >  
->  	vaddr = (unsigned long)relocate_kernel;
-> -	paddr = __pa(page_address(image->control_code_page)+PAGE_SIZE);
-> +	paddr = __pa(relocate_kernel);
->  	pgd += pgd_index(vaddr);
->  	if (!pgd_present(*pgd)) {
->  		p4d = (p4d_t *)get_zeroed_page(GFP_KERNEL);
+> +/**
+> + * memory_block_advise_max_size() - advise memory hotplug on the max suggested
+> + *				    block size, usually for alignment.
+> + * @size: suggestion for maximum block size. must be aligned on power of 2.
+> + *
+> + * Early boot software (pre-allocator init) may advise archs on the max block
+> + * size. This value can only decrease after initialization, as the intent is
+> + * to identify the largest supported alignment for all sources.
+> + *
+> + * Use of this value is arch-defined, as is min/max block size.
+> + *
+> + * Return: 0 on success
+> + *	   -EINVAL if size is 0 or not pow2 aligned
+> + *	   -EBUSY if value has already been probed
+> + */
+> +static size_t memory_block_advised_sz;
+> +static bool memory_block_advised_size_queried;
 
-Such changes always make me nervous so I'd queue them only after this merge
-window is over so that they can get maximal testing in next. Unless someone
-objects...
+kernel-doc will be unhappy about variable declarations between the doc
+block and the function it describes
+
+> +int memory_block_advise_max_size(size_t size)
+> +{
+> +	if (!size || !is_power_of_2(size))
+> +		return -EINVAL;
+> +
+> +	if (memory_block_advised_size_queried)
+> +		return -EBUSY;
+> +
+> +	if (memory_block_advised_sz)
+> +		memory_block_advised_sz = min(size, memory_block_advised_sz);
+> +	else
+> +		memory_block_advised_sz = size;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * memory_block_advised_max_size() - query advised max hotplug block size.
+> + *
+> + * After the first call, the value can never change. Callers looking for the
+> + * actual block size should use memory_block_size_bytes. This interface is
+> + * intended for use by arch-init when initializing the hotplug block size.
+> + *
+> + * Return: advised size in bytes, or 0 if never set.
+> + */
+> +size_t memory_block_advised_max_size(void)
+> +{
+> +	memory_block_advised_size_queried = true;
+> +	return memory_block_advised_sz;
+> +}
+> +
+>  unsigned long __weak memory_block_size_bytes(void)
+>  {
+>  	return MIN_MEMORY_BLOCK_SIZE;
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index c0afee5d126e..07e20a77b717 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -149,6 +149,14 @@ static inline int hotplug_memory_notifier(notifier_fn_t fn, int pri)
+>  {
+>  	return 0;
+>  }
+> +static inline int memory_block_advise_max_size(size_t size)
+> +{
+> +	return -ENODEV;
+> +}
+> +static inline size_t memory_block_advised_max_size(void)
+> +{
+> +	return 0;
+> +}
+>  #else /* CONFIG_MEMORY_HOTPLUG */
+>  extern int register_memory_notifier(struct notifier_block *nb);
+>  extern void unregister_memory_notifier(struct notifier_block *nb);
+> @@ -181,6 +189,8 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+>  void memory_block_add_nid(struct memory_block *mem, int nid,
+>  			  enum meminit_context context);
+>  #endif /* CONFIG_NUMA */
+> +int memory_block_advise_max_size(size_t size);
+> +size_t memory_block_advised_max_size(void);
+>  #endif	/* CONFIG_MEMORY_HOTPLUG */
+>  
+>  /*
+> -- 
+> 2.43.0
+> 
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sincerely yours,
+Mike.
 
