@@ -1,124 +1,146 @@
-Return-Path: <linux-acpi+bounces-9205-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9206-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504019B83A5
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 20:51:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A58F9B847D
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 21:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047291F226DC
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 19:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE831C21EDD
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 20:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C031CB331;
-	Thu, 31 Oct 2024 19:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989AA1CB520;
+	Thu, 31 Oct 2024 20:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="sK2Mu5Uv"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Sx49+CvE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E53C1A2562;
-	Thu, 31 Oct 2024 19:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B270197A6C;
+	Thu, 31 Oct 2024 20:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730404286; cv=none; b=K7fpz2AePsRo/817FhXmFVji3kBByiFp+mkSgcgn4/uIo1KvQqhyW2h/K7yNoCklRWaDNQ2/J7oa+jmJqyvrxUulDvI0PGynT9bPxL/hEIr8DucyZCsWYy5x7/lqY5IQKnAEwN9q3zuye/22Fo6/4t5EcnAeJlRm1kjBaCPtyt8=
+	t=1730407231; cv=none; b=pGUVgtCnnT8syW5JsDfADDWwprYlza4MQxqqTQeFXOCD9dncpj8yZbOkoRoXA5AwYrX5zD9VmtCFciSZORW2AkdD0NQTB0MO3ijXErSRKZnK2953Nqo+fDyRjC9j0N3OlNGuJ7T5urb0PwWR/9e881qzLEvtzZddeh2vL5kjJZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730404286; c=relaxed/simple;
-	bh=pWeTyJJNnr00Ds1a/IrE+1tdtM+/jzwGubwtgQ/p3RA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BRnnYqKCxMm9XQVAoYCduVfdkW3rlMID7LGWOhaQo2YiYyDAKjs/MJVM8lJJiSlW0A1soQVAzfw9WSXadcnAu9uBm5cnoJAJ+RUgOT4PRhLuKNSq9X75vxDx/7MS+cg1BpJ7/FjMEfEN5vnNI8lm1THR9Rrd0HP3MojyO2zRC0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=sK2Mu5Uv; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc (unknown [10.10.165.3])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 61BCD40777DF;
-	Thu, 31 Oct 2024 19:51:13 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 61BCD40777DF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1730404273;
-	bh=ANbGFTkYcuHN9MP7yhDSsW9JkyY2aWF7v/pBJSBGoLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sK2Mu5UvfLD+ZZnSKJGEh+JOx0In9VTgb+fmUGwhG0Xr6PTTb2L7Qp+4oDud+QgBx
-	 IS8U8Sgra+7jfgv5V6E+Ap4FBDBb/r610FIaUz7QBldHurlKqN9asHCMsrFwQy6+Ao
-	 cCTXHFvNDp1AEmwugIKBkM3/2EhQoyhKEdbauILY=
-Date: Thu, 31 Oct 2024 22:51:09 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: George Rurikov <grurikov@gmail.com>
-Cc: Robert Moore <robert.moore@intel.com>, lvc-project@linuxtesting.org,
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <lenb@kernel.org>
-Subject: Re: [PATCH] ACPICA: Fix dereference in
- acpi_ev_address_space_dispatch()
-Message-ID: <20241031-2f71908a9a589c4469480e73-pchelkin@ispras.ru>
-References: <20241031173146.1459-1-grurikov@gmail.com>
+	s=arc-20240116; t=1730407231; c=relaxed/simple;
+	bh=MV2PZMdCgyZVwxQqXYwbEL4UaF0wRJVB3Wcckw8d4vo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DdtJ1zsJKkcw2tZi2dL2DNJIPX1IgKvjYH3nXOeONe0VyajFObE+G1DV/sTrcaJ5jJVyjIcHb6czeWGt/4o8OP+zqZYSGNtyKDWKE1NJpOCW4b6f+yMSH3Qzuf5gbCc/BhzVT6B77NHuRo4/J9PkJaAGnhVq+HGs+Z1RKFPMMlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Sx49+CvE; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1730407150; x=1731011950; i=w_armin@gmx.de;
+	bh=BXG43c4ilcZXIfs6uhHqCHjCjELoxxdYvZiqLVDmo/M=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Sx49+CvEpA1KmgUAoDY71gw3MySZfBSPPwuvxH7mXXvOFeugVuDwsi/Vt1jR8ueB
+	 dKiE0OV07v9Nz4CweI6fks+GZOYbo/kKS8kzp8RQ1YP9PtR1JXFwP3CI0KKPRtVvh
+	 shPA9z5/ZRoBynL184fKdoCZId0A9c2HVjMsmaCB/jNP9cAymYHpVuwbYgKttryPe
+	 oEl2K4iMn+IdY2nWHtPy7WB6dbyPdwV1fG7qszpJ68+ykWdAikVK5MudLhQOEVSzM
+	 PglRzG6jD2wsJPJ8QS0fbSb3NEo2mnRtD6t74EoVeQuhTAvdwYD3xYAEFzSBlo5iA
+	 BcB/d/2jBmOPobd1uA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MGQjH-1t5DQh2ISz-009IZ2; Thu, 31
+ Oct 2024 21:39:10 +0100
+Message-ID: <40b52d41-e3d6-4223-b9e9-0db6b2a19265@gmx.de>
+Date: Thu, 31 Oct 2024 21:39:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241031173146.1459-1-grurikov@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/22] ACPI: platform_profile: Require handlers to
+ support balanced profile
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241031040952.109057-1-mario.limonciello@amd.com>
+ <20241031040952.109057-14-mario.limonciello@amd.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20241031040952.109057-14-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:9zQAKx0lk662rnl5CmEQRvMpMRajJCGH1oxs7owsE6gIQ6QBDJu
+ R1xPtxAIVX8LvLVwPX0Ryw6MXqZvUXhWZGdWd77LpjMcP5kd1EXMqXDOo0KBseV6VpA4XHG
+ AoZz1o8KX0Xf6Jav9WRWfv/flQeOVorWOa3tv9nL8DDsCMMYm9aLKXhyoVzzGS9aqvejdev
+ sTgUTU2uR6xLjKD+86+sg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:woXGqM+HeUU=;rAsgkzCdSQPkIiKVBZ8ELlIGNA0
+ ad2TN95RxXYCaQHi5re4V03ES3MmMgIS2fAI5RQ6y5mOt9pEtmNrR09ynUGdAFBZTlutRyREP
+ 4lKLiMXaGkrxgZSJK0KldHKcCpRg71js+MYvOtyhaiige+Uyxu1gO6r//8uOSTOpNNz1ItBtF
+ hgh05YhOUuP6DE03kJpdmMNLD/iTK7+VadT3VdvHyC/cVKlX42sV7PT3JaRKaRWPFg2OAmwGD
+ rpiTMoYizNDpLs+g6Eik7LHATLWH346LKT+Jc/gOi4qwqhb3beHEqOcwnRadqQ+YLtoKRx5kC
+ dFry1ryhhzng/0s5sdyyzvvA95d4JkB/QJuqZOFKk2VrVTRwMvTCFuYA+VciA/jGmz/e50G8Y
+ GyYySX8f1hcdn4FBuTgV4bSyePsK7oB0Ud7chfjWWmdUTtUh1yPUffUQa6pY/ogW0sF41vOtk
+ WYJkdG1UR3/KyHmlY7dFa/Eah1f3//8GMri+ltldvqjwOX1PGvVhhB5nZzUvuwIDN4Li2+0vO
+ dSiu71Pu9YPtwkgZnljh2Ex39oKNs80WdKKtA9F79Fikr/l2wK3coQeL0+lF//+4vdK2jfKXD
+ rez5oYofBJy7LTtog5yN88Sebe0ARqDh8ojPeF3OhOuD170txjkOJH0Ae4X99OoAPAs6tdUeq
+ pLg459TtF7yvYjrf9KgBHNFqcBkuICUfJRysQhxmYBidzZQcIGwOC9rol9W8KdrQinuBNoICM
+ ETqdYV5Mbnry6jn3QOoPj+g8xdDD5LKZ19hCtJkQEsv0qwR1K9Ex7DQzFtdOYDlHHo3GuZRzn
+ qUuPS9/30Se7172+Gsu56oew==
 
-On Thu, 31. Oct 20:31, George Rurikov wrote:
-> When support for  PCC Opregion was added, validation of field_obj
-> was missed.
-> Based on the acpi_ev_address_space_dispatch function description,
-> field_obj can be NULL, and also when acpi_ev_address_space_dispatch
-> is called in the acpi_ex_region_read() NULL is passed as field_obj.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special context data")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: George Rurikov <grurikov@gmail.com>
+Am 31.10.24 um 05:09 schrieb Mario Limonciello:
+
+> As support for multiple simultaneous platform handers is introduced it's
+> important they have at least the balanced profile in common.
+>
+> This will be used as a fallback in case setting the profile across one of the
+> handlers happens to fail.
+
+Do we actually need this patch anymore now that we have the "custom" platform profile?
+If setting the platform profile fails for some handlers, then we simply display the current
+platform profile as "custom".
+
+Thanks,
+Armin Wolf
+
+> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+> Suggested-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/acpi/acpica/evregion.c | 18 +++++++++++-------
-
-Hi George,
-
-ACPICA patches go first via a separate Github project [1].
-[1]: https://github.com/acpica/acpica
-
-Please see [2] and [3] for more info:
-[2]: https://lore.kernel.org/acpica-devel/CAJZ5v0i7LYzF13M0qdeYWXZ7uO6HUpAS7pE5RJnOAJtKB8o88A@mail.gmail.com/
-[3]: https://docs.kernel.org/driver-api/acpi/linuxized-acpica.html
-
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-> index cf53b9535f18..03e8b6f186af 100644
-> --- a/drivers/acpi/acpica/evregion.c
-> +++ b/drivers/acpi/acpica/evregion.c
-> @@ -164,13 +164,17 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
->  		}
->  
->  		if (region_obj->region.space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-> -			struct acpi_pcc_info *ctx =
-> -			    handler_desc->address_space.context;
-> -
-> -			ctx->internal_buffer =
-> -			    field_obj->field.internal_pcc_buffer;
-> -			ctx->length = (u16)region_obj->region.length;
-> -			ctx->subspace_id = (u8)region_obj->region.address;
-> +			if (field_obj != NULL) {
-> +				struct acpi_pcc_info *ctx =
-> +					handler_desc->address_space.context;
-> +
-> +				ctx->internal_buffer =
-> +					field_obj->field.internal_pcc_buffer;
-> +				ctx->length = (u16)region_obj->region.length;
-> +				ctx->subspace_id = (u8)region_obj->region.address;
-> +			} else {
-> +				return_ACPI_STATUS(AE_ERROR);
-> +			}
->  		}
->  
->  		if (region_obj->region.space_id ==
-> -- 
-> 2.34.1
+>   drivers/acpi/platform_profile.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index b70ceb11947d0..57c66d7dbf827 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -164,6 +164,10 @@ int platform_profile_register(struct platform_profile_handler *pprof)
+>   		pr_err("platform_profile: handler is invalid\n");
+>   		return -EINVAL;
+>   	}
+> +	if (!test_bit(PLATFORM_PROFILE_BALANCED, pprof->choices)) {
+> +		pr_err("platform_profile: handler does not support balanced profile\n");
+> +		return -EINVAL;
+> +	}
+>   	if (!pprof->dev) {
+>   		pr_err("platform_profile: handler device is not set\n");
+>   		return -EINVAL;
 
