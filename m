@@ -1,116 +1,137 @@
-Return-Path: <linux-acpi+bounces-9202-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9203-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4645A9B7FF1
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 17:23:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E639F9B8146
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 18:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B811EB2104D
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 16:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1E92831D7
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 17:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB95C1BB6B5;
-	Thu, 31 Oct 2024 16:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D8A1A0BFD;
+	Thu, 31 Oct 2024 17:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="gZUtTk+M"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dYnciURx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA89619D89E
-	for <linux-acpi@vger.kernel.org>; Thu, 31 Oct 2024 16:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B0F12BF24;
+	Thu, 31 Oct 2024 17:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730391800; cv=none; b=EbxiQMePvuTYzGYlUa6hFDXHy1p9Cgt9AWIGYZ24E31x8tpkqVx6PuIBzGVzjFkCSGYg4qBMW2YJeoS9bJNs/UBOpDGn5HTOvpyUKSwxwLvXXnzxFZFkg1ifmt1TfoYc9EjcF3g1VVLQ5nrUTQEmEYzu4Ep6+QbaF9ZMouT0pTk=
+	t=1730395937; cv=none; b=bSJ3b0XBTl5MYycv+twcwSk6sm3M+EtGW+ZL6IfFDn8p4zqpy51wrxubKLij2ZaA/ppLZIVFaxtbk8smp6XrCH0Witxe2oB/ZxIMEtDEnZBp0O12BRUTmejJi8C2/YS7NTaUMWU7dGN0o1+gOvFUviwvbjzLuCnNIGocH0fqzMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730391800; c=relaxed/simple;
-	bh=pHyLyRq9icEl7h1hajof/4uWohbq3D4kb9tZ1Q3TxCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVq5/dmih9LIEPNIoG590N1TpoahZkhpeLPI0e4Du2piHIkGaN/hI6YhDfybFJLNcA4aV8xqHG04xXOJ7XhB66YAK9q3OnyLg/sYWxBITFVHBTlFtr10Ca9aygrEAd0tZdiQkhMRHZj+bbZS5i/ujs9ewvUV5WtK03qJczNbqQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=gZUtTk+M; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7b13ff3141aso83277585a.1
-        for <linux-acpi@vger.kernel.org>; Thu, 31 Oct 2024 09:23:18 -0700 (PDT)
+	s=arc-20240116; t=1730395937; c=relaxed/simple;
+	bh=M0pIn94Azowchec7I7p7M49ATq272Lmt8o7hlwxwDKU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rHNaN0B8BniGPsi4bfkIr81KtqYk5UGvjU3cWWvwzOdhfR0hd17Q8mRh02l3j0Y/RdHXNxObqJUbZ4qGyLdHm8Ydui6MjGXQz3nWF+wsKJST7Vl+30jzHQKZPKXPpXbO16J0fnJxyFH+ZBOrL2/hC8SH8FHBBycTF/SyLaFTQnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dYnciURx; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e4908837so153709e87.0;
+        Thu, 31 Oct 2024 10:32:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1730391798; x=1730996598; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WrPPGPtF1r4JJPagnUAwxTz8GU4YzNxLE+E5DMVXteY=;
-        b=gZUtTk+MOx/uW8niUvTxtE1mx1wLd06xJ1Fzf0VAq/a37c8IE0CgMYqR/YRIqc/PeM
-         glruGuWnZaVdPQYgXSd3r3DDZsdiwdvNZf23sKfX0lOBuS8Dm1Tfrs2zE3gWIWpSm1HO
-         40gJLN7nRgORDTZL50O91uX9cXGHJTlcSSEAmpGcUsVvtwFgQqZEoqHtdwYEeITjcdTz
-         rUivGBFV+Wb/QTRTLlFvaJ4fh8N4HOouK7EvVs99+cdUHcWmBZtFzO8snywNYcHXDJEI
-         8lcg33HHjv7OmW9XiI7evMjeWYFS7jDrcHYJ7lUkI3EcDIG+5cL7Mzp5161pwtp8mvvD
-         U12g==
+        d=gmail.com; s=20230601; t=1730395934; x=1731000734; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4sLwJ1Za+GKDAjN1FVw7zfT75tbwo/FRlb/5kWrOi0=;
+        b=dYnciURxf/GaGkqrOXnL0AQacmy28UW4j7z5p4UMY4Oh6Gg2YhsRLJ5Antkjnc8wbc
+         J98X0Nwn8kmb+dKmFmjAWtcOO45P+WFKu16z1RQ1E1od6GfC011UyOtRsaiaZNW3WrdW
+         IbCTX0j+wVwTrpz4x/Cvz6YKSJp4OaBr6DrmvV3O7IhDguUwaSybT4u0PUUf8GSUfRCn
+         4wd+JoDoBqCbbKX3Ip7g3zmYrB1fEGdz5Rd0opz9SMzFS5x92xoDWKwdSV/AprUay1IR
+         fAOPM9Nyf43i9CR5QpzHnbdd+lLGAmrAyvAOuMX+neYC1rFXHowqhrFCmBy0NbRzcp62
+         xvow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730391798; x=1730996598;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WrPPGPtF1r4JJPagnUAwxTz8GU4YzNxLE+E5DMVXteY=;
-        b=DanBL7K5JGD/imH5tfI5zMm5trsGp2RbNix/sx+aDSKcAe3gYGAzG3Mjp7/wlrjqCL
-         sQtrWsySsikyimOhZ4VxAWp80Vjvfnqt6X3JhGINDzDDBMYbfC1POSktXG9V0CTUjEor
-         IBN5XSzO+ZWDcotf5SE/2NxLh+FWreDdUU9ZkLD72VXv/EvIOsylOVEsyADbJtWWhx+b
-         S7OmJd/yw+XwSTUkbbzbPehTiwKyRCaeDXVHHEOeeEZMvpyFgL0AjGDGU1anjgouW1lc
-         P7xt4eEykUbsIsTMlpbM7GTvhibFSROFS7pVTNyRH+jP00eggyIad4aEXunuhmkIh0sP
-         S3Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUQLoiO/dA2cp3RRTWzXRXJK1UrY2Bziypsc2U4krBWN3P/JOpDS+uJfVmtmIT7pdyPutNf2IuhcJgL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw44NunfCJG+0oFFo1LgLSJp8tw5YMsBE9of9sZS08SOaylMGAk
-	5q9ApRFq+wjCaiCDbrpzvP5ay/2pFWuU6yPelQoeM61BcrTc93YXduEIuXeno48=
-X-Google-Smtp-Source: AGHT+IG0mJPHTCww3DZQuqv9nxseKwFokKX1MWnv7+XcE4NElcJk7zAVUMyfqkFKAZ8kX5Mw9dP5qg==
-X-Received: by 2002:a05:620a:318b:b0:7a4:d685:caa9 with SMTP id af79cd13be357-7b1aee2c038mr1047669385a.48.1730391797615;
-        Thu, 31 Oct 2024 09:23:17 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39ebab8sm83428485a.8.2024.10.31.09.23.16
+        d=1e100.net; s=20230601; t=1730395934; x=1731000734;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d4sLwJ1Za+GKDAjN1FVw7zfT75tbwo/FRlb/5kWrOi0=;
+        b=ftQFXcxmO/S4NmQRjbe6XuNOr1EC0mJEdyaCRg2ZlD8vBD/et2Yc6/Fifw1VNjzQVL
+         Z65FcsLemUGt0JJfQ4p/l5fSB3NzTmaPv0+lUJMOgdgsZqL9mxNBLQBjfjB9qlpiL1Do
+         gfPVnDAv66QSoELlwon8ikPvDFrzQfArfun/GAgTol0gI+WhMsNrDt+O39U/7yEsakMV
+         2FAM6Fy9i1UEJmu9JzbmlYZiUCQVxtSzRmqPMVMiow9HExwp9nDsOZo9kMpSe3ohd7mh
+         YLrxf5A7WMS5LOcaNP96d9DXVPGfrhLKMVOP0v9owAwbFvOZgnT2/65uWllQ/EfxESD4
+         v2+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVAFDs61RKYCPEJKQr2uy93uOIXbmPnIC5fTwmjsUPHlmSrWDhwaQmf6TEbhpRE23sAWTCQObCHe9d3@vger.kernel.org, AJvYcCVmbI4C/uy7PEoK+6et7ip6uyhNKe4LUHe2MxLZimaMXYSBuHbags2dFFQVrl1ptAIBzr6oVftEuWGjtON0@vger.kernel.org, AJvYcCVunY7LKYYJxHWsmZTC7T3WKklJ4MlP8DYQOfa0M7/a3vEoRxObgHJYZ62EFRSj9cffaRoGLYiP@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKBUVoxtMi/+gPqJ7tBDr1PdorS5+/SI0xFgX6bF5X7KwErqMG
+	W4R3U0Z8T2w+MKU9q84Nnpzftkx++r66zi0d6+aBcJs3mh5SbPNt
+X-Google-Smtp-Source: AGHT+IFe87xKBVd4yftUeVT3qx9Oy2VAjU24uHaxTTbj4T2Gm9PoVBGwUR8pD/gNPDXKGc4fcsTaTA==
+X-Received: by 2002:a05:6512:2354:b0:52f:c142:6530 with SMTP id 2adb3069b0e04-53b3491cb47mr3046431e87.6.1730395933433;
+        Thu, 31 Oct 2024 10:32:13 -0700 (PDT)
+Received: from localhost.localdomain (109-252-121-216.nat.spd-mgts.ru. [109.252.121.216])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bde3287sm270315e87.273.2024.10.31.10.32.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 09:23:17 -0700 (PDT)
-Date: Thu, 31 Oct 2024 12:23:23 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com, rrichter@amd.com, Terry.Bowman@amd.com,
-	dave.jiang@intel.com, ira.weiny@intel.com,
-	alison.schofield@intel.com, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
-	lenb@kernel.org, david@redhat.com, osalvador@suse.de,
-	gregkh@linuxfoundation.org, akpm@linux-foundation.org
-Subject: Re: [PATCH v4 1/3] memory: implement
- memory_block_advise/probe_max_size
-Message-ID: <ZyOu-7MeTYGa7tf9@PC2K9PVX.TheFacebook.com>
-References: <20241029202041.25334-1-gourry@gourry.net>
- <20241029202041.25334-2-gourry@gourry.net>
- <ZyOUp5Juz5x3Ivrn@kernel.org>
+        Thu, 31 Oct 2024 10:32:13 -0700 (PDT)
+From: George Rurikov <grurikov@gmail.com>
+To: Robert Moore <robert.moore@intel.com>
+Cc: George Rurikov <grurikov@gmail.com>,
+	"Rafael J. Wysocki" <lenb@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ACPICA: Fix dereference in acpi_ev_address_space_dispatch()
+Date: Thu, 31 Oct 2024 20:31:46 +0300
+Message-Id: <20241031173146.1459-1-grurikov@gmail.com>
+X-Mailer: git-send-email 2.31.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyOUp5Juz5x3Ivrn@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 31, 2024 at 04:31:03PM +0200, Mike Rapoport wrote:
-> On Tue, Oct 29, 2024 at 04:20:39PM -0400, Gregory Price wrote:
-> > + * Return: 0 on success
-> > + *	   -EINVAL if size is 0 or not pow2 aligned
-> > + *	   -EBUSY if value has already been probed
-> > + */
-> > +static size_t memory_block_advised_sz;
-> > +static bool memory_block_advised_size_queried;
-> 
-> kernel-doc will be unhappy about variable declarations between the doc
-> block and the function it describes
-> 
+When support for  PCC Opregion was added, validation of field_obj
+was missed.
+Based on the acpi_ev_address_space_dispatch function description,
+field_obj can be NULL, and also when acpi_ev_address_space_dispatch
+is called in the acpi_ex_region_read() NULL is passed as field_obj.
 
-Yup, that was the warning I was waiting to clear KLP.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Learning new things n.n;; - new version shortly
+Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special context data")
+Cc: stable@vger.kernel.org
+Signed-off-by: George Rurikov <grurikov@gmail.com>
+---
+ drivers/acpi/acpica/evregion.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-~Gregory
+diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
+index cf53b9535f18..03e8b6f186af 100644
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -164,13 +164,17 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 		}
+ 
+ 		if (region_obj->region.space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
+-			struct acpi_pcc_info *ctx =
+-			    handler_desc->address_space.context;
+-
+-			ctx->internal_buffer =
+-			    field_obj->field.internal_pcc_buffer;
+-			ctx->length = (u16)region_obj->region.length;
+-			ctx->subspace_id = (u8)region_obj->region.address;
++			if (field_obj != NULL) {
++				struct acpi_pcc_info *ctx =
++					handler_desc->address_space.context;
++
++				ctx->internal_buffer =
++					field_obj->field.internal_pcc_buffer;
++				ctx->length = (u16)region_obj->region.length;
++				ctx->subspace_id = (u8)region_obj->region.address;
++			} else {
++				return_ACPI_STATUS(AE_ERROR);
++			}
+ 		}
+ 
+ 		if (region_obj->region.space_id ==
+-- 
+2.34.1
+
 
