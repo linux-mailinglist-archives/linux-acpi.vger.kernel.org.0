@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9208-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9209-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA499B84C1
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 21:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B599B84D7
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 22:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37AA1F25EA3
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 20:57:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0EE51F21837
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 21:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EAD1CC897;
-	Thu, 31 Oct 2024 20:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B371BBBC1;
+	Thu, 31 Oct 2024 21:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Wx4K0Qzo"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="eTRi7RP7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7181CC88C;
-	Thu, 31 Oct 2024 20:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E2813A87C;
+	Thu, 31 Oct 2024 21:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730408243; cv=none; b=PI0ZGcjGgnPvSjwcnfB1W+f6FmruvMcwLWaHSP/bb5D34olBzbrK5++h0trZiW5+rrwZ3vIIbhIvaYa9TJ9WiIDiWtjHP+xv3LTOdng/IXAHoCRRXQehkO6CBztPEokYieV2ZU5hAkWHImR01WfUP+NPidYUZ4a7Oe3moAi9hqU=
+	t=1730408567; cv=none; b=bUW+CBM8G9JmMvX1tw88BjY1YOkw6lrUYWHfnv8noyKZo8IJZN/SScDuDh1DdWv20ODgKZTCKFBXB6EtyMQ83boIq3N3c7Zb/FwGoTapVEnjktfAZARaFE6jn9CFSX5oHnTqmKZH/KErx1daWd7wKGfnwDcWcn0tbMEzYynPmaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730408243; c=relaxed/simple;
-	bh=QgbSe05f+ATEfG8KM30/iC/kH3Z1TSyBeQwG7cSj8Y8=;
+	s=arc-20240116; t=1730408567; c=relaxed/simple;
+	bh=9ogiSBCPi/Ij4wMiM+eoF11Iv+v0ajw3Tj9OgF3t5Sc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZgsmTGYkA3kTwduPc20+N3P5TOUq8eNdX7Gi08Dld/qzrv5XaxAsic/AoTI5GYYYaX2ArGfwn7Q/22WySeMMnQu+yA5erT65ngt69i87kpIqnOy3nxgH2M5dKZqW6/uDotiyJFHVajvh3wYzeIf9n3f4ZaCodvR+qBgMdJ5o08s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Wx4K0Qzo; arc=none smtp.client-ip=212.227.15.19
+	 In-Reply-To:Content-Type; b=caJNhmoRGI24gzc+fBTg2lecmkMdLDh/z4s9uaOljpnPxMSO7qObz32JKPa/YYMiOp1gaKxaavdSSqtg0CkPTftVblUsAcG3s1bYZ1XblS06FgfWlBFP5kWWbFyEbS9Ryht6ROQM0cWue8WY/ZEErSs2BEkcvice3UzKEJUKzC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=eTRi7RP7; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730408163; x=1731012963; i=w_armin@gmx.de;
-	bh=P4uDQWrodIz2gl730ysQ/mtbqQ2/NQw4r8MOFCBC0zw=;
+	s=s31663417; t=1730408489; x=1731013289; i=w_armin@gmx.de;
+	bh=9ogiSBCPi/Ij4wMiM+eoF11Iv+v0ajw3Tj9OgF3t5Sc=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=Wx4K0QzoE45FgTZ0wWkozSHHwKOBmKtYaOYDS7FLiEx/rHr5VA0HxGBT4Nlur/yc
-	 71Q7cheKaNMY4twA4ouIek6JBElw0TS4Ql0ImbhTfGi9qvHZlh7hZg4hdwU1v78Jl
-	 QHR/PCCTbz2XQKITGg2TO2vJs2jho9N8JxZO4cEtPz5vBLWLVYUPlg620ZNPSlX+r
-	 KlxBV4SRaM6nmbvJ2YUsyj85mja2WEVzLTik1+Pat4Da0W3byE/ovuYAlVnVLt2I5
-	 A2mtkxizc6FFNAs/2Flex2tKdP/hjkl7nNSH7bJnh0MMbXKSfIoNFtfNKMMXKLWRt
-	 1DBAleBgyv6pemaehA==
+	b=eTRi7RP77Ygg02U+HR4RNIURv0CPfFS+gr/6KBPTgL29U6KivvfXKeCnelXcjzqZ
+	 uK9D6/lM/3fE2qy6uPcwrL3kAY00HtRZLR4CEvCg6OAA2+SXHwelu+s4kWLVt/xeo
+	 cTNQFqm1qSOmUmLX6VbClmandKMYFaFFTvISVA4T5Y17Sg5AguyMPynhVuXTDZiT0
+	 S6nSJAd/eNo7PxprADFvwHKH7cOs+Ml+XGOT/NHrvB7+/gIJ5WPV6XzdoeQe+NeZl
+	 7GgE9w43sPbvID52LgR5GxQbZvKkFQGh4QhwjLkffgyNNvPd56wTPLyLZ9COxt8ul
+	 iPESOMcjFvHO9SOwXg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MeU4s-1tglqJ1MLU-00fuiy; Thu, 31
- Oct 2024 21:56:03 +0100
-Message-ID: <9fdcfdb4-bbdd-4f6a-9a69-73dceac7b14b@gmx.de>
-Date: Thu, 31 Oct 2024 21:55:59 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mw9UE-1tyJPZ1LYy-00xRjz; Thu, 31
+ Oct 2024 22:01:29 +0100
+Message-ID: <62756516-21cf-49c8-851f-f7fe3a0b0345@gmx.de>
+Date: Thu, 31 Oct 2024 22:01:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 20/22] ACPI: platform_profile: Register class device
- for platform profile handlers
+Subject: Re: [PATCH v3 13/22] ACPI: platform_profile: Require handlers to
+ support balanced profile
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,318 +81,121 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241031040952.109057-1-mario.limonciello@amd.com>
- <20241031040952.109057-21-mario.limonciello@amd.com>
+ <20241031040952.109057-14-mario.limonciello@amd.com>
+ <40b52d41-e3d6-4223-b9e9-0db6b2a19265@gmx.de>
+ <a95ed9c4-a112-4087-aca9-8323902273b2@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241031040952.109057-21-mario.limonciello@amd.com>
+In-Reply-To: <a95ed9c4-a112-4087-aca9-8323902273b2@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HUGvg3BSIktPNY0AM823fcuE7w7XZEIY4m2FaPR6+cmAYWEI8z8
- eEzUydwAMi5wfzDi1tt1f5Sza3kb+zAPMUjksn41u/5I126vDhWlbqkkDos4oISP4VVJHAJ
- XTgFdxOUr8HcqUUKufyBS/s9555glhCnVico66dRTYbB5SSjsT4TbAJ8JTDv4YZTgjKfXEr
- aYRn9MTxtsz6NhWG38sVg==
+X-Provags-ID: V03:K1:nitKPwsm+sUk2qj32a7KZXTO6fRl2IGCIeJa6oeRmAD/QaIdEuV
+ kRFfmKCcyfuA/OF0tlJ61iaV6JZdYbCTQ+3f6TgeKy/qdUmFVsqBZzphrix5TocM8lzsxB4
+ GwKNUG1OQJK0e58sCDS0UFMINU9/HPg0pAN6EGbhEgFtJKqSpof8EJsiMVSokyjF7dDPGq9
+ Ti0XteIFJRPARmXtcSHpg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:PJR475ov+SI=;AQQnA4pBdgULPm7RTkSBdLQ6MwI
- boRlOagFvlRkx8Gv8US6dY1RKwu3FpTdl0xuH5YWD+mUDUN66iVa/dBPdlZXkp9tzKDnRy+eM
- ndFj0mbwH93F1wxHUbh56XM8MicCizjp2rqXhGp68pxwyVGS73psIFcm4BDOYSe+K1uqKzNZp
- 9t/0S0q7HdiAb86hZ/X4ml7SCc0SQ4o7BzR1evma0WrmQl6lNX52kT0Fb1s2y7jaYs+ZgB9Jh
- tlXsL9XORe1VOvy3pQ5MP3nRhVRENhfdeGBFQAgUFHEpbRRUq+PLYfhGCFtLfgCUaoZO8vvPt
- 4ZFQQwBPaonN+YOOezvxH73H03V8DWYrjNYzPzioF6Ut746ijbmGqFLG81O50+H5tJPvqTLXX
- 4DgFotd90vQ7mbcUJY4Wf8z7nsgzZ513kJEPj0nH30jp/NCM15MreCUPTS4v9ejXb2a2u7VbI
- UAyTFE2XBTNmgPecqBHNMWawfh+H2POlwWQvcOY2mu5LXv176w8fm8YSarMSW6sPLljFYFrRN
- 4ugjccbYkR2tNyPYnONkG+HYahZ1EV5eW2vGnmyrPYdkG6YYcqz5cxAfs/7Dme1OK0q+m1sKb
- f+inEDBDfCGc0N1OqIH2kY3Fbfoh39VRpdIW/RHWwwjqDUhJPXmQ1+vDcy+FDtLtS39KIqEXo
- g0kJwVRCgWFFSaPddrwL2i09zKPr382ZhZzz2SHWBwAoTVMaErjRQ3axci5CEwMF2WMUy57Gm
- UaF0aD24PkpoBIlnZPlxXCcffCIZ77dpjqlBO4XXHqmt1CtgscuYsxhrXhNw9ld10rjiTBeiF
- QV7IvY9gLoeyyCqDO9K46D2eL5YItzxEHfGEkPqdTG+VU=
+UI-OutboundReport: notjunk:1;M01:P0:CFqAKbzVAnA=;lw0Sn/3Uk9uFo1yIrORsxptSK1E
+ mSNOEI3qA3RAm4A5aOvFAcVeFeLw+bKB0brwaSN+QkCeNVHZ2qzq9L8CGDlWNnDiEI5MgvH7E
+ qKs4fqTI77Cq2izn0crt75vACM6AtcEFE7ACXpHZJ8sd6DdnarUNkWQwvvgTjtWM1zDp/u+3q
+ sdrgqd7uXtKHu0YcaPJSXpdu/wlEQT0/BfslABk1u4XLSD5bQBCd3I+WnnJTsIdwS6HuES+An
+ ep06dqPPdNughd/ZNizvIsaecpDg4mdQdDVRMR8Q0fYwkQa81BmPEWq/rl4il8Y28vTAQvmHS
+ +i6dt2JfiMweYL2Xtu8sfJsN93wn1sntnLsy3xAVcSnsiZRzKg2ElL4S9rMYlm8B/1g8anq45
+ brdmXNFNWC1xsvVLGpjEOorNd9fEWw/Y0a9/WXRIRYbFskTCVDz8NPPE8ELTg1bfrsN9C35hX
+ fk3SzGr3Asj2nlU649HRqX4VbPRWrHaEW9Un6uspekTsX0FpQAh42ZRwXdLaPknXkonQK7PiF
+ 6KOLRS2m1BtPeYStg4Tp0v+H5rfaOToHgOkd3oXWcF3aHjWYaIhHmVdxDa/Ll/VJTvqu9dQm1
+ IrZRi7Fvhkza0p0ViiFrqDa0o4v1wOXixffNJuemRvL0DXfT51PHE3EuvUInNQ9OlRQfEYvgF
+ IZ5yrLjjlmFWdJU6iuQrRmfEYepVDGCfZGA+FAYXjBxQTeUTnJgMdCdrPXMQfqEzQiPJ0UPsI
+ VpuHV/U16FBQn9J/O8Y+ApOJcqHETAqywtxpcRU/UoXGwR0ZepnhWblIMlmtuZu31r5U3CbR1
+ DYqdR6HGPvvrB3rSmicyi+fA==
 
-Am 31.10.24 um 05:09 schrieb Mario Limonciello:
+Am 31.10.24 um 21:43 schrieb Mario Limonciello:
 
-> The "platform_profile" class device has the exact same semantics as the
-> platform profile files in /sys/firmware/acpi/ but it reflects values onl=
-y
-> present for a single platform profile handler.
+> On 10/31/2024 15:39, Armin Wolf wrote:
+>> Am 31.10.24 um 05:09 schrieb Mario Limonciello:
+>>
+>>> As support for multiple simultaneous platform handers is introduced
+>>> it's
+>>> important they have at least the balanced profile in common.
+>>>
+>>> This will be used as a fallback in case setting the profile across
+>>> one of the
+>>> handlers happens to fail.
+>>
+>> Do we actually need this patch anymore now that we have the "custom"
+>> platform profile?
+>> If setting the platform profile fails for some handlers, then we
+>> simply display the current
+>> platform profile as "custom".
 >
-> The expectation is that legacy userspace can change the profile for all
-> handlers in /sys/firmware/acpi/platform_profile and can change it for
-> individual handlers by /sys/class/platform_profile/*.
+> Yes; it's still needed because 'balanced' is used as the fallback of
+> something failed.=C2=A0 If you fail to write to a handler it gets you ba=
+ck
+> to a known place for all GPUs.
 >
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/acpi/platform_profile.c  | 93 ++++++++++++++++++++++++++++----
->   include/linux/platform_profile.h |  2 +
->   2 files changed, 85 insertions(+), 10 deletions(-)
+> Now I suppose it's up for discussion if that's really the right thing
+> to do.
 >
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
-file.c
-> index 9b681884ae324..1cc8182930dde 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -24,13 +24,24 @@ static const char * const profile_names[] =3D {
->   };
->   static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE_LAST);
+> Maybe because of custom we don't even need that.
 >
-> +static DEFINE_IDR(platform_profile_minor_idr);
-> +
-> +static const struct class platform_profile_class =3D {
-> +	.name =3D "platform-profile",
-> +};
-> +
->   static bool platform_profile_is_registered(void)
->   {
->   	lockdep_assert_held(&profile_lock);
->   	return !list_empty(&platform_profile_handler_list);
->   }
+> If I have 3 profile handlers in
+> low-power
+> balanced
+> balanced
 >
-> -static unsigned long platform_profile_get_choices(void)
-> +static bool platform_profile_is_class_device(struct device *dev)
-> +{
-> +	return dev && dev->class =3D=3D &platform_profile_class;
-> +}
-> +
-> +static unsigned long platform_profile_get_choices(struct device *dev)
->   {
->   	struct platform_profile_handler *handler;
->   	unsigned long aggregate =3D 0;
-> @@ -40,6 +51,9 @@ static unsigned long platform_profile_get_choices(void=
-)
->   	list_for_each_entry(handler, &platform_profile_handler_list, list) {
->   		unsigned long individual =3D 0;
+> IE I'm already in 'custom'.
 >
-> +		/* if called from a class attribute then only match that one */
-> +		if (platform_profile_is_class_device(dev) && handler->dev !=3D dev->p=
-arent)
-> +			continue;
-
-I do not like how the sysfs attributes for the platform-profile class are =
-handled:
-
-1. We should use .dev_groups instead of manually registering the sysfs att=
-ributes.
-2. Can we name the sysfs attributes for the class a bit differently ("prof=
-ile_choices" and "profile")
-    and use separate store/show functions for those?
-3. Why do we still need platform_profile_handler_list?
-
-This would allow us to get rid of platform_profile_is_class_device().
-
->   		for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST)
->   			individual |=3D BIT(i);
->   		if (!aggregate)
-> @@ -51,7 +65,7 @@ static unsigned long platform_profile_get_choices(void=
-)
->   	return aggregate;
->   }
+> If I try to write performance and the first two succeed but the third
+> fails what's better:
 >
-> -static int platform_profile_get_active(enum platform_profile_option *pr=
-ofile)
-> +static int platform_profile_get_active(struct device *dev, enum platfor=
-m_profile_option *profile)
->   {
->   	struct platform_profile_handler *handler;
->   	enum platform_profile_option active =3D PLATFORM_PROFILE_LAST;
-> @@ -60,6 +74,8 @@ static int platform_profile_get_active(enum platform_p=
-rofile_option *profile)
+> performance
+> performance
+> balanced
 >
->   	lockdep_assert_held(&profile_lock);
->   	list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +		if (platform_profile_is_class_device(dev) && handler->dev !=3D dev->p=
-arent)
-> +			continue;
->   		err =3D handler->profile_get(handler, &val);
->   		if (err) {
->   			pr_err("Failed to get profile for handler %s\n", handler->name);
-> @@ -69,6 +85,10 @@ static int platform_profile_get_active(enum platform_=
-profile_option *profile)
->   		if (WARN_ON(val >=3D PLATFORM_PROFILE_LAST))
->   			return -EINVAL;
+> Or
 >
-> +		/*
-> +		 * If the profiles are different for class devices then this must
-> +		 * show "custom" to legacy sysfs interface
-> +		 */
->   		if (active !=3D val && active !=3D PLATFORM_PROFILE_LAST) {
->   			*profile =3D PLATFORM_PROFILE_CUSTOM;
->   			return 0;
-> @@ -90,7 +110,7 @@ static ssize_t platform_profile_choices_show(struct d=
-evice *dev,
->   	int i;
+> balanced
+> balanced
+> balanced
 >
->   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock)
-> -		choices =3D platform_profile_get_choices();
-> +		choices =3D platform_profile_get_choices(dev);
->
->   	for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAST) {
->   		if (len =3D=3D 0)
-> @@ -113,7 +133,7 @@ static ssize_t platform_profile_show(struct device *=
-dev,
->   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
->   		if (!platform_profile_is_registered())
->   			return -ENODEV;
-> -		err =3D platform_profile_get_active(&profile);
-> +		err =3D platform_profile_get_active(dev, &profile);
->   		if (err)
->   			return err;
->   	}
-> @@ -138,12 +158,22 @@ static ssize_t platform_profile_store(struct devic=
-e *dev,
->   		if (!platform_profile_is_registered())
->   			return -ENODEV;
->
-> -		/* Check that all handlers support this profile choice */
-> -		choices =3D platform_profile_get_choices();
-> +		/* don't allow setting custom to legacy sysfs interface */
-> +		if (!platform_profile_is_class_device(dev) &&
-> +		     i =3D=3D PLATFORM_PROFILE_CUSTOM) {
-> +			pr_warn("Custom profile not supported for legacy sysfs interface\n")=
-;
-> +			return -EINVAL;
-> +		}
-> +
-> +		/* Check that applicable handlers support this profile choice */
-> +		choices =3D platform_profile_get_choices(dev);
->   		if (!test_bit(i, &choices))
->   			return -EOPNOTSUPP;
->
->   		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			if (platform_profile_is_class_device(dev) &&
-> +			    handler->dev !=3D dev->parent)
-> +				continue;
->   			err =3D handler->profile_set(handler, i);
->   			if (err) {
->   				pr_err("Failed to set profile for handler %s\n", handler->name);
-> @@ -152,6 +182,9 @@ static ssize_t platform_profile_store(struct device =
-*dev,
->   		}
->   		if (err) {
->   			list_for_each_entry_continue_reverse(handler, &platform_profile_han=
-dler_list, list) {
-> +				if (platform_profile_is_class_device(dev) &&
-> +				    handler->dev !=3D dev->parent)
-> +					continue;
->   				if (handler->profile_set(handler, PLATFORM_PROFILE_BALANCED))
->   					pr_err("Failed to revert profile for handler %s\n",
->   					       handler->name);
-> @@ -194,11 +227,11 @@ int platform_profile_cycle(void)
->   	int err;
->
->   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> -		err =3D platform_profile_get_active(&profile);
-> +		err =3D platform_profile_get_active(NULL, &profile);
->   		if (err)
->   			return err;
->
-> -		choices =3D platform_profile_get_choices();
-> +		choices =3D platform_profile_get_choices(NULL);
->
->   		next =3D find_next_bit_wrap(&choices,
->   					  PLATFORM_PROFILE_LAST,
-> @@ -228,6 +261,7 @@ EXPORT_SYMBOL_GPL(platform_profile_cycle);
->
->   int platform_profile_register(struct platform_profile_handler *pprof)
->   {
-> +	bool registered;
->   	int err;
->
->   	/* Sanity check the profile handler */
-> @@ -250,14 +284,49 @@ int platform_profile_register(struct platform_prof=
-ile_handler *pprof)
->   	if (cur_profile)
->   		return -EEXIST;
->
-> -	err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
-> +	registered =3D platform_profile_is_registered();
-> +	if (!registered) {
-> +		/* class for individual handlers */
-> +		err =3D class_register(&platform_profile_class);
-> +		if (err)
-> +			return err;
-
-Why do we need to unregister the class here? From my point of view, having=
- a empty class if no
-platform profiles are registered is totally fine.
-
-> +		/* legacy sysfs files */
-> +		err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
-> +		if (err)
-> +			goto cleanup_class;
-> +
-> +	}
-> +
-> +	/* create class interface for individual handler */
-> +	pprof->minor =3D idr_alloc(&platform_profile_minor_idr, pprof, 0, 0, G=
-FP_KERNEL);
-> +	pprof->class_dev =3D device_create(&platform_profile_class, pprof->dev=
-,
-> +					 MKDEV(0, pprof->minor), NULL, "platform-profile-%s",
-> +					 pprof->name);
-
-I would suggest that the name of the class devices should not contain the =
-platform profile name,
-as this would mean that two platform profile handlers cannot have the same=
- name.
-
-Maybe using "platform-profile-<minor>" would be a better solution here? Th=
-e name can instead be
-read using an additional sysfs property.
+I think the first is better, as we cannot really guarantee that setting "b=
+alanced" for all handlers
+will always work.
 
 Thanks,
 Armin Wolf
 
-> +	if (IS_ERR(pprof->class_dev)) {
-> +		err =3D PTR_ERR(pprof->class_dev);
-> +		goto cleanup_legacy;
-> +	}
-> +	err =3D sysfs_create_group(&pprof->class_dev->kobj, &platform_profile_=
-group);
->   	if (err)
-> -		return err;
-> +		goto cleanup_device;
-> +
->   	list_add_tail(&pprof->list, &platform_profile_handler_list);
->   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>>
+>> Thanks,
+>> Armin Wolf
+>>
+>>> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+>>> Suggested-by: Hans de Goede <hdegoede@redhat.com>
+>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>> ---
+>>> =C2=A0 drivers/acpi/platform_profile.c | 4 ++++
+>>> =C2=A0 1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/
+>>> platform_profile.c
+>>> index b70ceb11947d0..57c66d7dbf827 100644
+>>> --- a/drivers/acpi/platform_profile.c
+>>> +++ b/drivers/acpi/platform_profile.c
+>>> @@ -164,6 +164,10 @@ int platform_profile_register(struct
+>>> platform_profile_handler *pprof)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("platfor=
+m_profile: handler is invalid\n");
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> +=C2=A0=C2=A0=C2=A0 if (!test_bit(PLATFORM_PROFILE_BALANCED, pprof->ch=
+oices)) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("platform_profile: =
+handler does not support balanced
+>>> profile\n");
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+>>> +=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!pprof->dev) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("platfor=
+m_profile: handler device is not set\n");
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
 >
->   	cur_profile =3D pprof;
->   	return 0;
-> +
-> +cleanup_device:
-> +	device_destroy(&platform_profile_class, MKDEV(0, pprof->minor));
-> +
-> +cleanup_legacy:
-> +	if (!registered)
-> +		sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> +cleanup_class:
-> +	if (!registered)
-> +		class_unregister(&platform_profile_class);
-> +
-> +	return err;
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_register);
->
-> @@ -270,6 +339,10 @@ int platform_profile_remove(struct platform_profile=
-_handler *pprof)
->   	cur_profile =3D NULL;
->
->   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +
-> +	sysfs_remove_group(&pprof->class_dev->kobj, &platform_profile_group);
-> +	device_destroy(&platform_profile_class, MKDEV(0, pprof->minor));
-> +
->   	if (!platform_profile_is_registered())
->   		sysfs_remove_group(acpi_kobj, &platform_profile_group);
->
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_p=
-rofile.h
-> index da009c8a402c9..764c4812ef759 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -30,6 +30,8 @@ enum platform_profile_option {
->   struct platform_profile_handler {
->   	const char *name;
->   	struct device *dev;
-> +	struct device *class_dev;
-> +	int minor;
->   	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
->   	struct list_head list;
->   	int (*profile_get)(struct platform_profile_handler *pprof,
 
