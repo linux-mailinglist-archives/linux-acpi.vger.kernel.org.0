@@ -1,194 +1,188 @@
-Return-Path: <linux-acpi+bounces-9197-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9198-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0A09B7CFC
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 15:35:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943399B7D0D
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 15:37:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E52C28189A
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 14:35:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535C0281E6E
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 14:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2661A073F;
-	Thu, 31 Oct 2024 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DD21A073F;
+	Thu, 31 Oct 2024 14:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzERKkIR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O5K4f5fW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D920219DF99;
-	Thu, 31 Oct 2024 14:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1561419C556;
+	Thu, 31 Oct 2024 14:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730385307; cv=none; b=YeFMOElMj5F7DFSqHuZpSF7y4vBVRl64VfqogF3oy4SJGB3Bgqlo5gnCqgkAasfW/mSeeu82Nsc+rtkMM+ml+jh+J3gUmwg5VoFDgVHmo5O+5tm2B3iAErhqeftF1CYSgLMswcbuuBRbNDT5f1Aos+ULftLG8KknzxbPWDYNiCU=
+	t=1730385459; cv=none; b=g5exGW4+c5jXBOFQ3S8+PsjOILRuaqMMJqqOKtBOSlztYy9hxXf8rEMMVxpu1FgmqoYeHEht9vCsIhCyxIE525GzVgpK/XqP63Py+aPnftVWVENI1NBUwvHYB0eCmLrPXv4Fa8KY6RfKYvevbKFHRC2r1UmQB62mFCEf0GX7qgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730385307; c=relaxed/simple;
-	bh=908GH7IBG1XfA0L7MNM6eq8gsxx7GOrv1X37ET8DUyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UZ0VvXxEUGkrJyO4bOPGNnUZUQA/9/2U0NOJaX8Y0Lc1D9KWE/vVv144CMm/uZgREIVaxrfq0fGitNMXxYq2B5GkKxxhfjgILW1DJuGAd6wVHYAXCBmgET98XFGehKiwljRR0e0QuA1DSSGq6l9pCkPMPKlgUayNp9KWnLiAgd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzERKkIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EEAC4AF1B;
-	Thu, 31 Oct 2024 14:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730385306;
-	bh=908GH7IBG1XfA0L7MNM6eq8gsxx7GOrv1X37ET8DUyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AzERKkIRwC/O4kQ8lXH0L4xaw8lcCpG9teRlnbXLQORdNS/jid5oXobAIqrFBvnMj
-	 8TavotafNAjfch6gf0LzZd7t4y0STCY6OrBp4+pmufLdZw1Fob2IJ4RKCx1QlAfwV9
-	 igjdjueqvbXLikgcF2avFhhxK4GjtzcQFneRgzqKo5j+kDvdftzhJhDxhFK67/RAo3
-	 ZZnTPKmuxzBoEiw+4Nr6Ej07BMw2Avy0n+cNU0B+udrtpRzcAdUbRXmmbF8dH36io5
-	 ZNTxQC63JDz1vnx9yl/KoBYUc48LeRNVURbhd+I75R8XMmmDJU2+T05l6ZtsAZv4qg
-	 xvwr8D+8DX0Bg==
-Date: Thu, 31 Oct 2024 16:31:03 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com, rrichter@amd.com, Terry.Bowman@amd.com,
-	dave.jiang@intel.com, ira.weiny@intel.com,
-	alison.schofield@intel.com, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
-	lenb@kernel.org, david@redhat.com, osalvador@suse.de,
-	gregkh@linuxfoundation.org, akpm@linux-foundation.org
-Subject: Re: [PATCH v4 1/3] memory: implement
- memory_block_advise/probe_max_size
-Message-ID: <ZyOUp5Juz5x3Ivrn@kernel.org>
-References: <20241029202041.25334-1-gourry@gourry.net>
- <20241029202041.25334-2-gourry@gourry.net>
+	s=arc-20240116; t=1730385459; c=relaxed/simple;
+	bh=eRfzzU7Y4YIFR/gbChiOoc36llvu+XnhL4vpNp490ls=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=GtR2CXzYp29auchGsZz6fbPUt9scoKaN/p29ViIXmM1oerloWipW+LKe4dyiRDm6h+x5MAVQVk2zGsksJkg+cm8dQthHQQrG3+h5Dm6jRt9tYPL4SAiNeRTvyvQInSiLvSRRz5OYwcRiTQYyM09TDfR1X7kAct3IeimxuQhzzoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O5K4f5fW; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730385457; x=1761921457;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=eRfzzU7Y4YIFR/gbChiOoc36llvu+XnhL4vpNp490ls=;
+  b=O5K4f5fW0OEsQgafEBwF9vlNgfXPl2hGeeFxrP9MbF04v3Ko6GcPzU+V
+   8G3mF2YAP/JEf/sLN+QupfI9ANnu3gk6FE0IxY4TyxmYAjx91P6H6D00C
+   tsuTaO6bjSxFQUSZtD5mhTI2Sh+JVFcXYkSnO1/dlwzMZ9jVsdQxeVXar
+   MTWYOxPGyQmYm2Jn9XHjNGYAlwfwvvW1vlaHkrZ5nCIE3DDlBdyBAV/8Q
+   gMBZSPwAK9Ne2WeOV1EBwOoZko4mZPh3ggEAG7MPWWsUa9usEudQwkhpr
+   DK4lPtc6eCr+XuMmcSMj6zT5DjIo3UAXCuw6gPsWP6IyDXEiA9RupGKSp
+   g==;
+X-CSE-ConnectionGUID: QeBTmxD9QjyL6Bf+ToTcQw==
+X-CSE-MsgGUID: jlrdfVMRQdir2ZC47j9U6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30342952"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="30342952"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 07:37:36 -0700
+X-CSE-ConnectionGUID: CgLXysXHQ++XgolJCKLHlQ==
+X-CSE-MsgGUID: 9dpsncoXS6a/lyAuIIEAXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="86563874"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.160])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 07:37:29 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 31 Oct 2024 16:37:26 +0200 (EET)
+To: Mario Limonciello <mario.limonciello@amd.com>
+cc: Hans de Goede <hdegoede@redhat.com>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+    Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, 
+    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+    Corentin Chary <corentin.chary@gmail.com>, 
+    "Luke D . Jones" <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>, 
+    Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+    Alexis Belmonte <alexbelm48@gmail.com>, 
+    =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, 
+    Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, 
+    open list <linux-kernel@vger.kernel.org>, 
+    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
+    "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER" <platform-driver-x86@vger.kernel.org>, 
+    "open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, 
+    Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    Matthew Schwartz <matthew.schwartz@linux.dev>
+Subject: Re: [PATCH v3 16/22] ACPI: platform_profile: Set profile for all
+ registered handlers
+In-Reply-To: <362d8939-20ed-40c2-95b4-f687dc20f6cc@amd.com>
+Message-ID: <0fd4c5ec-3645-300e-baee-cb6468039f75@linux.intel.com>
+References: <20241031040952.109057-1-mario.limonciello@amd.com> <20241031040952.109057-17-mario.limonciello@amd.com> <7e2c26ab-9172-fa82-cd96-7f725d6c7687@linux.intel.com> <362d8939-20ed-40c2-95b4-f687dc20f6cc@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241029202041.25334-2-gourry@gourry.net>
+Content-Type: multipart/mixed; BOUNDARY="8323328-364525015-1730385262=:939"
+Content-ID: <d485431b-9418-e081-4e25-b15ce09f2744@linux.intel.com>
 
-On Tue, Oct 29, 2024 at 04:20:39PM -0400, Gregory Price wrote:
-> Hotplug memory sources may have opinions on what the memblock size
-> should be - usually for alignment purposes.  For example, CXL memory
-> extents can be 256MB with a matching alignment. If this size/alignment
-> is smaller than the block size, it can result in stranded capacity.
-> 
-> Implement memory_block_advise_max_size for use prior to allocator init,
-> for software to advise the system on the max block size.
-> 
-> Implement memory_block_probe_max_size for use by arch init code to
-> calculate the best block size. Use of advice is architecture defined.
-> 
-> The probe value can never change after first probe. Calls to advise
-> after probe will return -EBUSY to aid debugging.
-> 
-> On systems without hotplug, always return -ENODEV and 0 respectively.
-> 
-> Suggested-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  drivers/base/memory.c  | 48 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/memory.h | 10 +++++++++
->  2 files changed, 58 insertions(+)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 67858eeb92ed..099a972c52dc 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -110,6 +110,54 @@ static void memory_block_release(struct device *dev)
->  	kfree(mem);
->  }
->  
-> +/**
-> + * memory_block_advise_max_size() - advise memory hotplug on the max suggested
-> + *				    block size, usually for alignment.
-> + * @size: suggestion for maximum block size. must be aligned on power of 2.
-> + *
-> + * Early boot software (pre-allocator init) may advise archs on the max block
-> + * size. This value can only decrease after initialization, as the intent is
-> + * to identify the largest supported alignment for all sources.
-> + *
-> + * Use of this value is arch-defined, as is min/max block size.
-> + *
-> + * Return: 0 on success
-> + *	   -EINVAL if size is 0 or not pow2 aligned
-> + *	   -EBUSY if value has already been probed
-> + */
-> +static size_t memory_block_advised_sz;
-> +static bool memory_block_advised_size_queried;
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-kernel-doc will be unhappy about variable declarations between the doc
-block and the function it describes
+--8323328-364525015-1730385262=:939
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <082be37d-f769-5437-5cec-9d8440aa3114@linux.intel.com>
 
-> +int memory_block_advise_max_size(size_t size)
-> +{
-> +	if (!size || !is_power_of_2(size))
-> +		return -EINVAL;
-> +
-> +	if (memory_block_advised_size_queried)
-> +		return -EBUSY;
-> +
-> +	if (memory_block_advised_sz)
-> +		memory_block_advised_sz = min(size, memory_block_advised_sz);
-> +	else
-> +		memory_block_advised_sz = size;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * memory_block_advised_max_size() - query advised max hotplug block size.
-> + *
-> + * After the first call, the value can never change. Callers looking for the
-> + * actual block size should use memory_block_size_bytes. This interface is
-> + * intended for use by arch-init when initializing the hotplug block size.
-> + *
-> + * Return: advised size in bytes, or 0 if never set.
-> + */
-> +size_t memory_block_advised_max_size(void)
-> +{
-> +	memory_block_advised_size_queried = true;
-> +	return memory_block_advised_sz;
-> +}
-> +
->  unsigned long __weak memory_block_size_bytes(void)
->  {
->  	return MIN_MEMORY_BLOCK_SIZE;
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index c0afee5d126e..07e20a77b717 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -149,6 +149,14 @@ static inline int hotplug_memory_notifier(notifier_fn_t fn, int pri)
->  {
->  	return 0;
->  }
-> +static inline int memory_block_advise_max_size(size_t size)
-> +{
-> +	return -ENODEV;
-> +}
-> +static inline size_t memory_block_advised_max_size(void)
-> +{
-> +	return 0;
-> +}
->  #else /* CONFIG_MEMORY_HOTPLUG */
->  extern int register_memory_notifier(struct notifier_block *nb);
->  extern void unregister_memory_notifier(struct notifier_block *nb);
-> @@ -181,6 +189,8 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->  void memory_block_add_nid(struct memory_block *mem, int nid,
->  			  enum meminit_context context);
->  #endif /* CONFIG_NUMA */
-> +int memory_block_advise_max_size(size_t size);
-> +size_t memory_block_advised_max_size(void);
->  #endif	/* CONFIG_MEMORY_HOTPLUG */
->  
->  /*
-> -- 
-> 2.43.0
-> 
+On Thu, 31 Oct 2024, Mario Limonciello wrote:
 
--- 
-Sincerely yours,
-Mike.
+> On 10/31/2024 05:25, Ilpo J=E4rvinen wrote:
+> > On Wed, 30 Oct 2024, Mario Limonciello wrote:
+> >=20
+> > > If multiple platform profile handlers have been registered then when
+> > > setting a profile verify that all profile handlers support the reques=
+ted
+> > > profile and set it to each handler.
+> > >=20
+> > > If this fails for any given handler, revert all profile handlers back=
+ to
+> > > balanced and log an error into the kernel ring buffer.
+> > >=20
+> > > Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > ---
+> > >   drivers/acpi/platform_profile.c | 25 ++++++++++++++++++++-----
+> > >   1 file changed, 20 insertions(+), 5 deletions(-)
+> > >=20
+> > > diff --git a/drivers/acpi/platform_profile.c
+> > > b/drivers/acpi/platform_profile.c
+> > > index 90cbc0de4d5bc..c2bb325ba531c 100644
+> > > --- a/drivers/acpi/platform_profile.c
+> > > +++ b/drivers/acpi/platform_profile.c
+> > > @@ -99,6 +99,8 @@ static ssize_t platform_profile_store(struct device
+> > > *dev,
+> > >   =09=09=09    struct device_attribute *attr,
+> > >   =09=09=09    const char *buf, size_t count)
+> > >   {
+> > > +=09struct platform_profile_handler *handler;
+> > > +=09unsigned long choices;
+> > >   =09int err, i;
+> > >     =09/* Scan for a matching profile */
+> > > @@ -107,16 +109,29 @@ static ssize_t platform_profile_store(struct de=
+vice
+> > > *dev,
+> > >   =09=09return -EINVAL;
+> > >     =09scoped_cond_guard(mutex_intr, return -ERESTARTSYS,
+> > > &profile_lock) {
+> > > -=09=09if (!cur_profile)
+> > > +=09=09if (!platform_profile_is_registered())
+> > >   =09=09=09return -ENODEV;
+> > >   -=09=09/* Check that platform supports this profile choice */
+> > > -=09=09if (!test_bit(i, cur_profile->choices))
+> > > +=09=09/* Check that all handlers support this profile choice */
+> > > +=09=09choices =3D platform_profile_get_choices();
+> > > +=09=09if (!test_bit(i, &choices))
+> > >   =09=09=09return -EOPNOTSUPP;
+> > >   -=09=09err =3D cur_profile->profile_set(cur_profile, i);
+> > > -=09=09if (err)
+> > > +=09=09list_for_each_entry(handler, &platform_profile_handler_list,
+> > > list) {
+> > > +=09=09=09err =3D handler->profile_set(handler, i);
+> > > +=09=09=09if (err) {
+> > > +=09=09=09=09pr_err("Failed to set profile for handler
+> > > %s\n", handler->name);
+> > > +=09=09=09=09break;
+> > > +=09=09=09}
+> > > +=09=09}
+> > > +=09=09if (err) {
+> > > +=09=09=09list_for_each_entry_continue_reverse(handler,
+> > > &platform_profile_handler_list, list) {
+> >=20
+> > Too long line.
+> >=20
+> > This looks an error rollback though so instead of break inside the loop
+> > you could goto into a label at the end of the function and have much le=
+ss
+> > indentation to begin with.
+>=20
+> How does the scoped_cond_guard interact with a goto?  With the jump I had
+> guessed it goes out of scope, but I wasn't really sure what the compiler =
+does.
+>=20
+> I guess in the goto label I'll need another scoped_cond_guard()?
+
+Ah, the scope problem is a good point.
+
+Perhaps you could instead add e.g. platform_profile_reset_default() and=20
+call that before break, both patches that had the rollback did the same=20
+thing anyway so it can be reused too.
+
+--=20
+ i.
+--8323328-364525015-1730385262=:939--
 
