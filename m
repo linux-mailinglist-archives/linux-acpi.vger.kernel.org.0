@@ -1,181 +1,173 @@
-Return-Path: <linux-acpi+bounces-9189-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9190-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B786D9B78D0
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 11:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 646FB9B794E
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 12:06:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC411C2415D
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 10:40:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 959281C22935
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 11:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C08199392;
-	Thu, 31 Oct 2024 10:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF03199FD7;
+	Thu, 31 Oct 2024 11:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LT8Q80Eq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KvTcwFI3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60518593C;
-	Thu, 31 Oct 2024 10:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC24199FC2;
+	Thu, 31 Oct 2024 11:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730371238; cv=none; b=tx5+jP552+PCGWhl9vSPiQ/5W/Xqdca1gsbiui5S8e9V8ZRqqXcHAcxTqwkkrOgnEPhUUCruZIY7Jg/gly1NQSbkE8hXUmUZpKmYFcQ2hGnCibaMG9GIVL2OcU/CvJkQyYuoMuch/RRA5uC5yvKX1/TlgUQ+K9aaTvVTsUrtreE=
+	t=1730372775; cv=none; b=V0doI3nEUQ4TU7MXo5m/IEhfHTmmhNA56bFi416BH/LCLrFYSNhJLb+d7drtjJ1bP/pm/Ew8KFFSqYlaVQGAA+tcrlvfVmB8NjOLTE+12NHVM34Wd0rHpNTzoLOiiw5Yd3z2lwnOnll6yWKmSUmjndK4hvPfJkzned5CceApE88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730371238; c=relaxed/simple;
-	bh=9pxHDuQFnahO7h4g4uLSVfsqa6hZ0lzOKmSrX1WNWDg=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=i2vJ6fXQq9LORvPhKbnNrluBnt3b0NBWskh7DX4jhFe38kf2jO8Z1oMO0lfp2b80eC2gbFU64OUR2dBkJ661VDkf/1Zri+DWMLZ1FW0MXP+YkKPwYl5d8toaSHYAjQ0F8B+1kwleH9idWywwmrgEpPxG5FZYPQqr2vpaWiBxeYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LT8Q80Eq; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1730372775; c=relaxed/simple;
+	bh=xxAXBtNnzvPWfaLv9FXxglhIlWGQUeGwE4AbyyfaVZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hXj7Wc8SkrSF5Kt8zsaLAOtRNyUELFRIosxsedBYSDsqXN+jhwLKEKV7Py0/CnDupGRwhppsHP3X5Gjxr1y/nDT5YbWMEJq4cUiUPJ79imPrzHfCKI5ME3HrGNoWPd+o5ekUPWimSw5pZld9JQLPEmRrupRUXbTLv7dq2ERjsKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KvTcwFI3; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730371236; x=1761907236;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=9pxHDuQFnahO7h4g4uLSVfsqa6hZ0lzOKmSrX1WNWDg=;
-  b=LT8Q80Eqz8z7kU+a4TfKsdsCjNKJUqdSVkIdnzMhmlIR3Z8mLrgm5YlQ
-   PE5ra7PhvMR696GrgNJxkcpX1B/ig+DTxqmv7AiIATixQnUgoM2aHgQBQ
-   cCG9O0QIVjhTtA1gOsz9nXkqrNu9XU273mrYXspwrvOXsbBWgPee9BbPB
-   GTFOxE2CHTT8IVJGo/1JNMY0tsgZZD1V8pVznb1loB92epoul3aTm8bdz
-   CpN6dnXyHLzdii2y/HouhHvZ7mhHsN7vHPOYGiJzu3hUcnpvuFeUJm1EJ
-   XCRwwoECNSr7rCf3Tj7GYqL2aOp5o3LVo3E6dygixaStzMKBI7QiAe8XS
-   w==;
-X-CSE-ConnectionGUID: nwtlbhs+T1mb6ci7nYuvwg==
-X-CSE-MsgGUID: RTuv/nKNQyuEBPCLMSVBQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30268133"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30268133"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 03:40:35 -0700
-X-CSE-ConnectionGUID: Qz2aoTdeS/+2QhzzpvKwvg==
-X-CSE-MsgGUID: tZ1v9YUhQtmW+KRDt4DLHg==
+  t=1730372773; x=1761908773;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xxAXBtNnzvPWfaLv9FXxglhIlWGQUeGwE4AbyyfaVZo=;
+  b=KvTcwFI3cobqtUmiCmX2EmMyHQ82YFk8tifD0ZrCU6EI39Az2AzkyTzU
+   tOwbyGMWbxqB+C0P1xD41/gr1YfZhKoqapkgwInB1ybkeRsB/Oc3xh59v
+   7CFc7RlBO5jWbVWEUOxdOlJddqDJdsadTNSJAjjvGsbIvJ0NZxL4tP93G
+   LDzuZ+UtUsuf0z51siCl/AcznY2NYuPqqKaPIted4LsU1j+tzJPoP/xU7
+   4OogvIW+KQZx/Sd7HH/rjiEhPJ4N5KeBIxiDK++OKODFEOse3uVWPFjEU
+   704WY9tjTf+B6zoCeppllXK5Amdd/Pa8sK4p26+qzGVgmwQKAYasRiMy1
+   g==;
+X-CSE-ConnectionGUID: Qq4zecstQ+61C4dTGoz6XQ==
+X-CSE-MsgGUID: CyJvpgygSsKv3UJWjLppWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="30214662"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="30214662"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 04:06:12 -0700
+X-CSE-ConnectionGUID: XlORb1l6SPaF8zi7c93N6g==
+X-CSE-MsgGUID: m3WkWKG3Q3yadi6hFHXRbA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
-   d="scan'208";a="87133136"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.160])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 03:40:28 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Thu, 31 Oct 2024 12:40:26 +0200 (EET)
-To: Mario Limonciello <mario.limonciello@amd.com>
-cc: Hans de Goede <hdegoede@redhat.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, 
-    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-    Corentin Chary <corentin.chary@gmail.com>, 
-    "Luke D . Jones" <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>, 
-    Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-    Alexis Belmonte <alexbelm48@gmail.com>, 
-    =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, 
-    Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, 
-    open list <linux-kernel@vger.kernel.org>, 
-    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
-    "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER" <platform-driver-x86@vger.kernel.org>, 
-    "open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, 
-    Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    Matthew Schwartz <matthew.schwartz@linux.dev>
-Subject: Re: [PATCH v3 19/22] ACPI: platform_profile: Check all profile
- handler to calculate next
-In-Reply-To: <20241031040952.109057-20-mario.limonciello@amd.com>
-Message-ID: <86d94339-3651-c4ea-306c-05589bee0040@linux.intel.com>
-References: <20241031040952.109057-1-mario.limonciello@amd.com> <20241031040952.109057-20-mario.limonciello@amd.com>
+   d="scan'208";a="87198579"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 31 Oct 2024 04:06:10 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t6T0C-000g1Y-00;
+	Thu, 31 Oct 2024 11:06:08 +0000
+Date: Thu, 31 Oct 2024 19:05:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <superm1@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Len Brown <lenb@kernel.org>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ivan Shapovalov <intelfx@intelfx.name>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [PATCH] ACPI: processor: Move arch_init_invariance_cppc() call
+ later
+Message-ID: <202410311801.4Cjd0Myc-lkp@intel.com>
+References: <20241029174910.600482-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241029174910.600482-1-superm1@kernel.org>
 
-On Wed, 30 Oct 2024, Mario Limonciello wrote:
+Hi Mario,
 
-> As multiple platform profile handlers might not all support the same
-> profile, cycling to the next profile could have a different result
-> depending on what handler are registered.
-> 
-> Check what is active and supported by all handlers to decide what
-> to do.
-> 
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/platform_profile.c | 35 ++++++++++++++++++++++-----------
->  1 file changed, 23 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index 5baac1f9a9c0e..9b681884ae324 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -187,30 +187,41 @@ EXPORT_SYMBOL_GPL(platform_profile_notify);
->  
->  int platform_profile_cycle(void)
->  {
-> +	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
-> +	struct platform_profile_handler *handler;
->  	enum platform_profile_option profile;
-> -	enum platform_profile_option next;
-> +	unsigned long choices;
->  	int err;
->  
->  	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> -		if (!cur_profile)
-> -			return -ENODEV;
-> -
-> -		err = cur_profile->profile_get(cur_profile, &profile);
-> +		err = platform_profile_get_active(&profile);
+kernel test robot noticed the following build errors:
 
-If platform_profile_cycle() is called without any profiles registered, 
-platform_profile_get_active() will return success.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.12-rc5 next-20241031]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I suppose you'd want check first that there is one registered and return 
--EINVAL if none are, especially since this is an exported function.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-processor-Move-arch_init_invariance_cppc-call-later/20241030-015107
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20241029174910.600482-1-superm1%40kernel.org
+patch subject: [PATCH] ACPI: processor: Move arch_init_invariance_cppc() call later
+config: riscv-randconfig-r071-20241031 (https://download.01.org/0day-ci/archive/20241031/202410311801.4Cjd0Myc-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241031/202410311801.4Cjd0Myc-lkp@intel.com/reproduce)
 
->  		if (err)
->  			return err;
->  
-> -		next = find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LAST,
-> -					  profile + 1);
-> +		choices = platform_profile_get_choices();
->  
-> -		if (WARN_ON(next == PLATFORM_PROFILE_LAST))
-> -			return -EINVAL;
-> +		next = find_next_bit_wrap(&choices,
-> +					  PLATFORM_PROFILE_LAST,
-> +					  profile + 1);
->  
-> -		err = cur_profile->profile_set(cur_profile, next);
-> -		if (err)
-> -			return err;
-> +		list_for_each_entry(handler, &platform_profile_handler_list, list) {
-> +			err = handler->profile_set(handler, next);
-> +			if (err) {
-> +				pr_err("Failed to set profile for handler %s\n", handler->name);
-> +				break;
-> +			}
-> +		}
-> +		if (err) {
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410311801.4Cjd0Myc-lkp@intel.com/
 
-Same here, instead of break you could goto to a rollback label to 
-deindent the rollback loop a lot and make the code flow more obvious too.
+All errors (new ones prefixed by >>):
 
-> +			list_for_each_entry_continue_reverse(handler, &platform_profile_handler_list, list) {
-> +				err = handler->profile_set(handler, PLATFORM_PROFILE_BALANCED);
-> +				if (err)
-> +					pr_err("Failed to revert profile for handler %s\n", handler->name);
-> +			}
-> +		}
->  	}
->  
->  	sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_cycle);
-> 
+   drivers/acpi/processor_driver.c: In function 'acpi_processor_driver_init':
+>> drivers/acpi/processor_driver.c:273:9: error: implicit declaration of function 'arch_init_invariance_cppc' [-Wimplicit-function-declaration]
+     273 |         arch_init_invariance_cppc();
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [m]:
+   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
+
+
+vim +/arch_init_invariance_cppc +273 drivers/acpi/processor_driver.c
+
+   239	
+   240	/*
+   241	 * We keep the driver loaded even when ACPI is not running.
+   242	 * This is needed for the powernow-k8 driver, that works even without
+   243	 * ACPI, but needs symbols from this driver
+   244	 */
+   245	static enum cpuhp_state hp_online;
+   246	static int __init acpi_processor_driver_init(void)
+   247	{
+   248		int result = 0;
+   249	
+   250		if (acpi_disabled)
+   251			return 0;
+   252	
+   253		if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
+   254					       CPUFREQ_POLICY_NOTIFIER)) {
+   255			acpi_processor_cpufreq_init = true;
+   256			acpi_processor_ignore_ppc_init();
+   257		}
+   258	
+   259		result = driver_register(&acpi_processor_driver);
+   260		if (result < 0)
+   261			return result;
+   262	
+   263		result = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+   264					   "acpi/cpu-drv:online",
+   265					   acpi_soft_cpu_online, NULL);
+   266		if (result < 0)
+   267			goto err;
+   268		hp_online = result;
+   269		cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD, "acpi/cpu-drv:dead",
+   270					  NULL, acpi_soft_cpu_dead);
+   271	
+   272		acpi_processor_throttling_init();
+ > 273		arch_init_invariance_cppc();
+   274		return 0;
+   275	err:
+   276		driver_unregister(&acpi_processor_driver);
+   277		return result;
+   278	}
+   279	
 
 -- 
- i.
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
