@@ -1,497 +1,551 @@
-Return-Path: <linux-acpi+bounces-9213-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9214-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EFF9B8662
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 23:55:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA94C9B88F6
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 02:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1556C1C21635
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Oct 2024 22:55:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8536C283263
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 01:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768A61DBB36;
-	Thu, 31 Oct 2024 22:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F122136349;
+	Fri,  1 Nov 2024 01:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vkGovc4W"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="L3fUlF50"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EDD1D0E0D
-	for <linux-acpi@vger.kernel.org>; Thu, 31 Oct 2024 22:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD98134BD;
+	Fri,  1 Nov 2024 01:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730415300; cv=none; b=HRqCP4KN64b7kGl0v77BAGKizs9sIRN0H54Gc/QBOtVEKOeebpgcc2dhpk4r72KUR6TMl7ZCJnmQq7B2i4F3YXgSKvgypJEU3dPzzErDWTcgFzBeZvTMz6IB9eA38ZtfYwioQhPGsFldvVMdUUrPFt8Y8pZL7r8VZxQhWOKBYnw=
+	t=1730426189; cv=none; b=sDn+iAByPaJztBTXtd1+EvB0v6fhA6fteCXoC4raxKAaVHk9VbGHs8r2i5ESYaBMQ+wMv8CmnT25jrYzyExm5uXoQ+tWYQpTJJ0O9A3nS8jdfB6w2Q6NbNw25MlqN+0jfVbAU/QIFDHhiufb68hueZj5JZMWxewUpeJGSEXwdtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730415300; c=relaxed/simple;
-	bh=0XtiuL8HzPVUIcbQmp4W/ObpOQuqBuHvLMZmD4Hqmmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CVH+9UXcxMksC93FsyvSOMPxAsbJa24i28B+JRQ0vYQ0o5qDR8d9cLYWvmYLFHjxe0R/zcQyiG/j2hNWeP0FiT58xl3ZXDGvahm7UuxJsp1VyVkaRSARK5A05veO8A/DDZTl9AIsdox7u2qC100alpT7Fv+G7TlKOFAmfy8WdCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vkGovc4W; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539e3f35268so1870946e87.3
-        for <linux-acpi@vger.kernel.org>; Thu, 31 Oct 2024 15:54:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730415291; x=1731020091; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2xfjHXyb5eaHTGVlXfFi968g4q6zA2j3OKWo/NXVyLM=;
-        b=vkGovc4W9Go1HJMVBpaUJY4Z2+2IG68D8NOn+bmMThuipl+LNEo7VYpo5douwz1bA8
-         bWqmlN0Xkd+LdLS7sCdARYQJzZrIILm+vTf/dtVlh6ctpWB+9BDbFQZZu4+pf0cPBaVr
-         jFwY8wPEJb84eYK+pn5ZmLCzDNK2+mB1iq4l5WWfqb8k9Vphmb+VnV7P0xGXiGY4DwFU
-         O2pUAD2Ztnws2R2WGGaS+imLX8wPCHuxcW+Jh7hmAEhA+3MtE3f1btOhVXaNVHCl+3lp
-         B9IzU2P3lc/kFAsnceteVgcR4Ph9UMyfCfn+sXjxlD8vgZ2RU6QpACvYNsc3dw9epjwL
-         nBjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730415291; x=1731020091;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2xfjHXyb5eaHTGVlXfFi968g4q6zA2j3OKWo/NXVyLM=;
-        b=fTckH5TWYpGDQwEbHug6m2FLh3+LsNxPcS5tJ0WvWL5/jZDhu6Csp40dA2RTO84TWE
-         McLd3cnVWlZrqQOwQtYB8H6vwm1RX/WYvZlJSZE+ivYLvRPqbgBX0+8feJQKARgPABe0
-         ohPv2BCJmC7ch1eF3orJt5gOd8JjYHjoV2Wtd+ocWEGAvdRhQUy0fSXHf5y7n+B0t4EK
-         2tSqzzoka8Z9Zg0jljI7zG8faj+1iG/A8k6gQ9D+BnFAd1sOTcm09yOHzth4gKYgP5m9
-         oIZ02hTzS2Ja5cJU40+Culk3oHx02dKuy2xWB5CibrKRPQqPUzPMUCZaSuoooSPKh0/Q
-         mKYA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+3WhU9Pfr6K66oZ/sUV6XPxK56pJljjpyfPB6ykRUGb3evPDmInV74O0wu37PFZSlEmAPmf31B46n@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwgPxmBlKOZ/OCyWXFqstklR36xfQj/dD/MANUP7QZleHQobbi
-	lhjESNPWJ2/wchnxVcT+yXgacDbXfMc0pInjz/V9V23dqcspI/nyXlY/9dv5l10=
-X-Google-Smtp-Source: AGHT+IFPpRVk+mVtirKf0Jlz98/n7f35BC4uMgBDb7CL//fsMETaxYe+5vZzwJgBgkvRqyECZwvNrA==
-X-Received: by 2002:ac2:4c46:0:b0:52b:de5b:1b30 with SMTP id 2adb3069b0e04-53d65e1a5e7mr872060e87.44.1730415291364;
-        Thu, 31 Oct 2024 15:54:51 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc9bee0sm354438e87.79.2024.10.31.15.54.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 15:54:50 -0700 (PDT)
-Date: Fri, 1 Nov 2024 00:54:49 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Stephen Boyd <swboyd@chromium.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, devicetree@vger.kernel.org, 
-	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, 
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org, 
-	Guenter Roeck <groeck@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
-	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
- google,cros-ec-typec for DP altmode
-Message-ID: <gstohhcdnmnkszk4l2ikd5xiewtotgo5okia62paauj6zpaw7y@4wchyvoynm2p>
-References: <20240901040658.157425-1-swboyd@chromium.org>
- <20240901040658.157425-16-swboyd@chromium.org>
- <phdcjgqqpjpruxp7v2mw446q73xr3eg4wfgfbjw5tasgr2pgg2@77swbk47b2tg>
- <CAE-0n514QMaQC2yjKP8bZqyfbv6B3AQm=+NJ87vxo6NdYiL03A@mail.gmail.com>
- <lf7y7wpuca6kzqcglgs5d443iusf7xjocum4adi7t3npfavccx@zgsp37oyztme>
- <CAE-0n53-KmOS3zXmJPvOOZ7xxkek9-S=oBExgaY0PDnt_HjdNw@mail.gmail.com>
- <yk3xidaisbd56yndaucax7otijjauqmm7lqm6q4q633kdawlqo@qaq27lwxmvwd>
- <CAE-0n501j+8bMnMKabFyZjn+MLUy3Z68Hiv1PsfW0APy5ggN8g@mail.gmail.com>
+	s=arc-20240116; t=1730426189; c=relaxed/simple;
+	bh=nJ4Pe+K3BsKDJLNuhG83I1KCqF6cshQClQB6adT703g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qyVopkou35Q1s7s1i9vWwRp0uN4H9FNulFCc8AIaqk8Ld5TM/Rp9ukmOfZUKy+34zGYh27RWNFCiuj7r1bG0ydNYUQ2dZLU9X0lFj5FneH4TfuKW2haD/T5yKpx2b2RwKj5y0w8FCQ7MVEowNivfly4MTZpIvmd7cPbCav93m8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=L3fUlF50; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1730426102; x=1731030902; i=w_armin@gmx.de;
+	bh=nJ4Pe+K3BsKDJLNuhG83I1KCqF6cshQClQB6adT703g=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=L3fUlF50K5iiGVAlPhng2/iQn5HTk+0b3CgBLyFEidQEvNdfyQKZ1l3ILlFdG9jR
+	 0jyfMlB+JtT6/VBjslfsdG1YizbdTLrvXZv5u682EPldjqve3UFBy47HwpkWaiyfh
+	 kwvkIX3xzHAXpSvb98/2P8AxSmFH460qS8HjwXQGRIm3pmvaAi96hsfWss1z2ZYFB
+	 1l1H6u98DtbQLv792Vb6TBPjuBBZE3m8HHz69koCahA23MosR0831Sej6/4c3nxwd
+	 6QU5Z0F7FWPzqo3VRGbCOce+Gv0pcdX41jOn6RDfULYHhF8zecuYTFVsE5KMH01Zz
+	 OjmX54myE8n/eZddyw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4zAy-1tnkpt3swO-00wlGP; Fri, 01
+ Nov 2024 02:55:02 +0100
+Message-ID: <89fe1a59-506b-46c5-be5f-5440ff405abc@gmx.de>
+Date: Fri, 1 Nov 2024 02:54:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAE-0n501j+8bMnMKabFyZjn+MLUy3Z68Hiv1PsfW0APy5ggN8g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 20/22] ACPI: platform_profile: Register class device
+ for platform profile handlers
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241031040952.109057-1-mario.limonciello@amd.com>
+ <20241031040952.109057-21-mario.limonciello@amd.com>
+ <9fdcfdb4-bbdd-4f6a-9a69-73dceac7b14b@gmx.de>
+ <d9a19f6f-59bc-4ed0-8f9f-8a4fca195d80@amd.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <d9a19f6f-59bc-4ed0-8f9f-8a4fca195d80@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2lxWgS8KyrGjGR0firJEskazP1eE4taWGmEHc9c+aw3LFG7fxH6
+ IcrtPdhqByST3EO1BokmpbhWJ4yCN0ttKSBCcbgFfZhe2LOEYOf0qaZldB9FP6Gpt2FRDs5
+ XAjErh6j6DyYpMB81aL+nvYs3Xu2Q1DNCel7QOItTPOmF8jddGVRkoTaBqhU5SWEYWN1mFf
+ 9WvlSfnyVXJC7xKfywiVw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LE67b9Mh7wI=;mJmIlbo//wt3MCDSUy86QRRwrzB
+ 1c96ADT+Cn9Iy6M5DkKgo4xTto2gE9wcgh8lTE4EbM3y959/uxHMImb7LUne90duMerAfvUSD
+ TxQs9ZImMWAI5o6D6tV0xzfHpx4s1pwMHYhs9zaszL22BcU2luJupChSNtT0cHJ7MacxNhdPj
+ evfu5ASHWmjbyoqWoeMVzcgxwA6Zrpl4Kc/h41KdyvCI29IcdBteDdFAr9pXBkMD69DkDNji5
+ b0EQ2x5XGq2NTntir21qQUSzSre/XVdNywsbj78VOH1ni4AXQvYI0SN0JyANsBs6baTmcc7yz
+ me//ArVNu6Z2VT/5Xo+8mv1OBwzhWHTzwqIjKlwiT6r44eYonw8CUQNPSKJAXQQ4OvKjx4Hlp
+ zZ6ztUlhadnP71mhnPgRB+nho4GW6R19yZh8ulOw13hcnewbBodG7u7hxFdG3c8Wz4qAWJ+uc
+ rrPF5v2XZIXBwV14RbV5rU/9hWXW7N9bjh1ULwQLx0zWL9oVNbjZq70Dwn6F/D8H9HJsWMS0i
+ bY/HidaJ9V/hKNeofEv4wSYK4/AJHrF6ze7rO9TLE5vrsDGsp6aO0BGtx7j+aKkhsTz9FeSuk
+ HT5R7dkvPP/6XPaf9Tvqru4Rsg1cIlhLEW8EdPxTpuiRqwGyF5migMYdAHRy8/7RTfBtOmE2d
+ 7nnySHfTjC1C9f06J2TTgQzuNwauu5AqIti1A8zqZXPd9AOzJ0l0bdzVKvGG4mNxwJsQNxNNA
+ MHYRUqbwTkZGXFmfXiAUGMzUnENUQqV1bTpJs5Pcksm+nv/P+zKaVQigiHs0iGo3CR5/yu3Zc
+ l1w9UBZYN17duy6+gkugFDax8bOHQBgag3pvVAMLQwjE8=
 
-On Thu, Oct 31, 2024 at 02:45:29PM -0700, Stephen Boyd wrote:
-> Quoting Dmitry Baryshkov (2024-10-31 11:42:36)
-> > On Tue, Oct 29, 2024 at 01:15:51PM -0700, Stephen Boyd wrote:
-> > > At this point we need to tell the DP bridge, like IT6505, that it's one
-> > > or the other output endpoints that it should use, but we haven't
-> > > directly connected the usb-c-connector to the output ports of IT6505
-> > > because drm_of_find_panel_or_bridge() can't find the parent of the
-> > > usb-c-connector if we connect the DP bridge to the usb-c-connector
-> > > graphs. We'll need a way for the bridge to know which output port is
-> > > connected to a usb-c-connector fwnode. Some sort of API like
-> >
-> > I think that the final bridge should be the IT6505. It can save you from
-> > some troubles, like the inter-bridge lane negotiation. Please remember
-> > that using lanes 2-3 as primary lanes doesn't seem to fall into the
-> > standard DisplayPort usage. It is documented by USB-C and only because
-> > of the orientation switching.
-> 
-> If the final bridge is IT6505 then drm_of_find_panel_or_bridge() isn't
-> called and I think we're OK. But then we have to traverse the
-> remote-endpoint of the usb-c-connector to IT6505 in displayport.c in the
-> Corsola case while knowing to look at the parent of the usb-c-connector
-> node and traversing the remote-endpoint to the QMP phy in the Trogdor
-> case. The logic in dp_altmode_probe() is like
-> 
->   if (port@1/endpoint@1 exists in usb-c-connector)
->     connector_fwnode = port@1/endpoint@1/remote-endpoint
->   else if (cros-ec-typec/port exists)
->     connector_fwnode = cros-ec-typec/port@0/endpoint/remote-endpoint
->   else
->     original stuff
+Am 31.10.24 um 22:54 schrieb Mario Limonciello:
 
-I'd say, definitely ugh. Maybe we can add the swnode with the
-"displayport" property pointing back to the DP bridge / endpoint.
+> On 10/31/2024 15:55, Armin Wolf wrote:
+>> Am 31.10.24 um 05:09 schrieb Mario Limonciello:
+>>
+>>> The "platform_profile" class device has the exact same semantics as th=
+e
+>>> platform profile files in /sys/firmware/acpi/ but it reflects values
+>>> only
+>>> present for a single platform profile handler.
+>>>
+>>> The expectation is that legacy userspace can change the profile for al=
+l
+>>> handlers in /sys/firmware/acpi/platform_profile and can change it for
+>>> individual handlers by /sys/class/platform_profile/*.
+>>>
+>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>> ---
+>>> =C2=A0 drivers/acpi/platform_profile.c=C2=A0 | 93
+>>> ++++++++++++++++++++++++++++----
+>>> =C2=A0 include/linux/platform_profile.h |=C2=A0 2 +
+>>> =C2=A0 2 files changed, 85 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/
+>>> platform_profile.c
+>>> index 9b681884ae324..1cc8182930dde 100644
+>>> --- a/drivers/acpi/platform_profile.c
+>>> +++ b/drivers/acpi/platform_profile.c
+>>> @@ -24,13 +24,24 @@ static const char * const profile_names[] =3D {
+>>> =C2=A0 };
+>>> =C2=A0 static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE=
+_LAST);
+>>>
+>>> +static DEFINE_IDR(platform_profile_minor_idr);
+>>> +
+>>> +static const struct class platform_profile_class =3D {
+>>> +=C2=A0=C2=A0=C2=A0 .name =3D "platform-profile",
+>>> +};
+>>> +
+>>> =C2=A0 static bool platform_profile_is_registered(void)
+>>> =C2=A0 {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lockdep_assert_held(&profile_lock);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return !list_empty(&platform_profile_ha=
+ndler_list);
+>>> =C2=A0 }
+>>>
+>>> -static unsigned long platform_profile_get_choices(void)
+>>> +static bool platform_profile_is_class_device(struct device *dev)
+>>> +{
+>>> +=C2=A0=C2=A0=C2=A0 return dev && dev->class =3D=3D &platform_profile_=
+class;
+>>> +}
+>>> +
+>>> +static unsigned long platform_profile_get_choices(struct device *dev)
+>>> =C2=A0 {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct platform_profile_handler *handle=
+r;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long aggregate =3D 0;
+>>> @@ -40,6 +51,9 @@ static unsigned long
+>>> platform_profile_get_choices(void)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_entry(handler, &platform_=
+profile_handler_list,
+>>> list) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long i=
+ndividual =3D 0;
+>>>
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* if called from a class =
+attribute then only match that
+>>> one */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (platform_profile_is_cl=
+ass_device(dev) && handler->dev
+>>> !=3D dev->parent)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 co=
+ntinue;
+>>
+>> I do not like how the sysfs attributes for the platform-profile class
+>> are handled:
+>>
+>> 1. We should use .dev_groups instead of manually registering the
+>> sysfs attributes.
+>> 2. Can we name the sysfs attributes for the class a bit differently
+>> ("profile_choices" and "profile")
+>> =C2=A0=C2=A0=C2=A0 and use separate store/show functions for those?
+>
+> Sure.
+>
+>> 3. Why do we still need platform_profile_handler_list?
+>
+> The main reason for the list is for iteration and checking if it's empty=
+.
+> I guess class_for_each_device() could serve the same purpose, but this
+> patch probably needs to be way earlier in the series then.
+>
+Maybe we can introduce the class earlier. Basically we could:
 
-But... read below.
+1. Extend the public API.
+2. Introduce the class infrastructure (but still block multiple handlers).
+3. Introduce the ability to register multiple handlers.
 
-> If we have the crazy three usb-c-connector design it can still work
-> because we'd have something like
-> 
->   cros-ec-typec {
->     port {
->       dp_endpoint: endpoint {
->         remote-endpoint = <&dp_ml0_ml1>;
->       };
->     };
-> 
->     usb-c-connector@0 {
->       port@1 {
->         endpoint {
->           remote-endpoint = <&hub_ss0>;
->        };
->        // Implicitly dp_ml0_ml1
->       };
->     };
->     usb-c-connector@1 {
->       port@1 {
->         endpoint@0 {
->           remote-endpoint = <&hub_ss1>;
->         };
->         endpoint@1 {
->           remote-endpoint = <&dp_ml2_ml3>;
->         };
->       };
->     };
->     usb-c-connector@2 {
->       port@1 {
->         endpoint {
->           remote-endpoint = <&hub_ss2>;
->         };
->        // Implicitly dp_ml0_ml1
->       };
->     };
->   };
-> 
-> (I like thinking about this 3 connector case because it combines both
-> Trogdor and Corsola designs so I can talk about both cases at the same
-> time)
-> 
-> I don't know what happens when we have 4 connectors though, with 2 going
-> to one pair of lanes and 2 going to the other 2 lanes. Maybe it's better
-> to always have a DP input port in cros-ec-typec to avoid this problem
-> and map back to the endpoint explicitly.
-> 
->   cros-ec-typec {
->     port {
->       dp_endpoint0: endpoint@0 {
->         remote-endpoint = <&dp_ml0_ml1>;
->       };
->       dp_endpoint1: endpoint@1 {
->         remote-endpoint = <&dp_ml2_ml3>;
->       };
->     };
-> 
->     usb-c-connector@0 {
->       port@1 {
->         endpoint@0 {
->           remote-endpoint = <&hub_ss0>;
->        };
->        endpoint@1 {
->          remote-endpoint = <&dp_endpoint0>;
->        };
->       };
->     };
->     usb-c-connector@1 {
->       port@1 {
->         endpoint@0 {
->           remote-endpoint = <&hub_ss1>;
->         };
->         endpoint@1 {
->           remote-endpoint = <&dp_endpoint1>;
->         };
->       };
->     };
->     usb-c-connector@2 {
->       port@1 {
->         endpoint@0 {
->           remote-endpoint = <&hub_ss2>;
->         };
->         endpoint@1 {
->           remote-endpoint = <&dp_endpoint1>;
->         };
->       };
->     };
->   };
-> 
-> Or use a displayport property that goes to connector node itself so that
-> we don't extend the graph binding of the usb-c-connector.
-> 
->   cros-ec-typec {
->     usb-c-connector@0 {
->       altmodes {
->         displayport {
->           connector = <&dp_ml0_ml1>;
+This would allow for relying more on the class infrastructure for things l=
+ike
+device iteration, etc.
 
-I think this has been frowned upon. Not exactly this, but adding the
-displayport = <&foo>.
+Thanks,
+Armin Wolf
 
-Thus it can only go to the swnode that is generated in software by the
-cros-ec driver.
-
->         };
->       };
->       port@1 {
->         endpoint@0 {
->           remote-endpoint = <&hub_ss0>;
->        };
->       };
->     };
->     usb-c-connector@1 {
->       altmodes {
->         displayport {
->           connector = <&dp_ml2_ml3>;
->         };
->       };
->       port@1 {
->         endpoint {
->           remote-endpoint = <&hub_ss1>;
->         };
->       };
->     };
->     usb-c-connector@2 {
->       altmodes {
->         displayport {
->           connector = <&dp_ml2_ml3>;
->         };
->       };
->       port@1 {
->         endpoint {
->           remote-endpoint = <&hub_ss2>;
->         };
->       };
->     };
->   };
-> 
->   it6505 {
->     ports {
->       port@1 {
->         dp_ml0_ml1: endpoint@0 {
->           remote-endpoint = <??>;
->         };
->         dp_ml2_ml3: endpoint@1 {
->           remote-endpoint = <??>;
->         };
->       };
->     };
->   };
-> 
-> The logic could look at a node like usb-c-connector@2, find
-> altmodes/display node, and look for a 'connector' property that points
-> at the endpoint of the last bridge. If we don't use the OF graph binding
-> it makes it easier to point at the same endpoint in the QMP phy or the
-> IT6505 graph from more than one usb-c-connector. This also makes it very
-> clear that we intend to pass that fwnode as the 'connector_fwnode' to
-> oob_hotplug_event().
-> 
-> If we want to actually populate the 'remote-endpoint' property of IT6505
-> we will need to make a graph in cros-ec-typec.
-> 
->   cros-ec-typec {
->     port {
->       dp_endpoint0: endpoint@0 {
->         remote-endpoint = <&dp_ml0_ml1>;
->       };
->       dp_endpoint1: endpoint@1 {
->         remote-endpoint = <&dp_ml2_ml3>;
->       };
->     };
->     usb-c-connector@0 {
->       altmodes {
->         displayport {
->           connector = <&dp_endpoint0>;
->         };
->       };
->       port@1 {
->         endpoint@0 {
->           remote-endpoint = <&hub_ss0>;
->        };
->       };
->     };
->     usb-c-connector@1 {
->       altmodes {
->         displayport {
->           connector = <&dp_endpoint1>;
->         };
->       };
->       port@1 {
->         endpoint {
->           remote-endpoint = <&hub_ss1>;
->         };
->       };
->     };
->     usb-c-connector@2 {
->       altmodes {
->         displayport {
->           connector = <&dp_endpoint1>;
->         };
->       };
->       port@1 {
->         endpoint {
->           remote-endpoint = <&hub_ss2>;
->         };
->       };
->     };
->   };
-> 
->   it6505 {
->     ports {
->       port@1 {
->         dp_ml0_ml1: endpoint@0 {
->           remote-endpoint = <dp_endpoint0>;
->         };
->         dp_ml2_ml3: endpoint@1 {
->           remote-endpoint = <dp_endpoint1>;
->         };
->       };
->     };
->   };
-> 
-> and then the logic in displayport.c will have to check if the
-> 'connector' property points at a graph endpoint, traverse that to the
-> remote-endpoint, and consider that the connector_fwnode.
-> 
-> >
-> > Maybe that's just it? Register DP_bridge (or QMP PHY) as
-> > orientation-switch? Then you don't need any extra API for the lane
-> > mapping? The cross-ec-typec can provide orientation information and the
-> > USB-C-aware controller will follow the lane mapping.
-> 
-> I'm not really following but I don't think the DT binding discussed here
-> prevents that.
-
-I'm thinking about:
-
-it6505 {
-  orientation-switch;
-
-  ports {
-    port@1 {
-      it6505_dp_out: remote-endpoint = <&cros_ec_dp>;
-      data-lanes = <0 1>;
-    };
-  };
-};
-
-cros-ec {
-  port {
-    cross_ec_dp: remote-endpoint = <&it6505_dp_out>;
-  };
-
-  connector@0 {
-    reg = <0>;
-    cros,dp-orientation = "normal";
-
-    ports {
-      // all USB HS and SS ports as usual;
-    };
-  };
-
-  connector@1 {
-    reg = <1>;
-    cros,dp-orientation = "reverse";
-
-    ports {
-      // all USB HS and SS ports as usual;
-    };
-  };
-
-  connector@2 {
-    reg = <2>;
-    cros,dp-orientation = "reverse";
-
-    ports {
-      // all USB HS and SS ports as usual;
-    };
-  };
-
-  connector@3 {
-    reg = <3>;
-    cros,dp-orientation = "normal";
-
-    ports {
-      // all USB HS and SS ports as usual;
-    };
-  };
-};
-
-The cros-ec registers single drm bridge which will generate HPD events
-except on Trogdor, etc. At the same time, cros-ec requests the
-typec_switch_get(). When the cros-ec detects that the connector@N it
-being used for DP, it just generates corresponding typec_switch_set()
-call, setting the orientation of the it6505 (or QMP PHY). The rest can
-be handled either by EC's HPD code or by DP's HPD handler, the
-orientation should already be a correct one.
-
-So, yes. It requires adding the typec_switch_desc implementation _in_
-the it6505 (or in any other component which handles the 0-1 or 2-3
-selection). On the other hand as I wrote previously, the 0-1 / 2-3 is
-the USB-C functionality, not the DP one.
-
-[...]
-
-> 
-> >
-> > > > > Corsola could work with this design, but we'll need to teach
-> > > > > dp_altmode_probe() to look for the drm_bridge elsewhere besides as the
-> > > > > parent of the usb-c-connector node. That implies using the 'displayport'
-> > > > > property in the cros-ec-typec node or teaching dp_altmode_probe() to
-> > > > > look for the port@1/endpoint@1 remote-endpoint handle in the
-> > > > > usb-c-connector graph.
-> > > > >
-> > > > > Assuming the bindings you've presented here are fine and good and I got
-> > > > > over the differences between Trogdor and Corsola, then I can make mostly
-> > > > > everything work with the drm_connector_oob_hotplug_event() signature
-> > > > > change from above and some tweaks to dp_altmode_probe() to look for
-> > > > > port@1/endpoint@1 first because that's the "logical" DP input endpoint
-> > > > > in the usb-c-connector binding's graph. Great! The final roadblock I'm
-> > > > > at is that HPD doesn't work on Trogdor, so I can't signal HPD through
-> > > > > the typec framework.
-> > > >
-> > > > Hmm, I thought that a normal DP's HPD GPIO works on the trogdor. Was I
-> > > > misunderstanding it? But then we don't know, which USB-C connector
-> > > > triggered the HPD...
-> > >
-> > > By HPD not working on Trogdor I mean that the EC doesn't tell the kernel
-> > > about the state of HPD for a usb-c-connector in software. Instead, HPD
-> > > is signaled directly to the DP controller in hardware via a GPIO. It is
-> > > as you suspect, we don't know which USB-C connector has HPD unless we
-> > > read the mux controlled by the EC and combine that with what the DP
-> > > driver knows about the state of the HPD pin.
-> >
-> > I see. So the HPD event gets delivered to the DP controller, but we
-> > really need some API to read the port? If it's not the
-> > orientation-switch, of course.
-> 
-> Yes. This is needed to understand what USB type-c connector the DP
-> signals should go to. In the case of Corsola/IT6505 it's needed to know
-> which two lanes should be sent if both type-c connectors/ports are
-> capable of DP altmode. On Corsola, the EC could tell the kernel that
-> both ports are in DP altmode but the EC is also controlling the AUX
-> channel mux that decides which usb-c-connector type-c port is actually
-> displaying DP.
-
--- 
-With best wishes
-Dmitry
+>>
+>> This would allow us to get rid of platform_profile_is_class_device().
+>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for_each_set_bi=
+t(i, handler->choices, PLATFORM_PROFILE_LAST)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 individual |=3D BIT(i);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!aggregate)
+>>> @@ -51,7 +65,7 @@ static unsigned long
+>>> platform_profile_get_choices(void)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return aggregate;
+>>> =C2=A0 }
+>>>
+>>> -static int platform_profile_get_active(enum platform_profile_option
+>>> *profile)
+>>> +static int platform_profile_get_active(struct device *dev, enum
+>>> platform_profile_option *profile)
+>>> =C2=A0 {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct platform_profile_handler *handle=
+r;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum platform_profile_option active =3D=
+ PLATFORM_PROFILE_LAST;
+>>> @@ -60,6 +74,8 @@ static int platform_profile_get_active(enum
+>>> platform_profile_option *profile)
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lockdep_assert_held(&profile_lock);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_entry(handler, &platform_=
+profile_handler_list,
+>>> list) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (platform_profile_is_cl=
+ass_device(dev) && handler->dev
+>>> !=3D dev->parent)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 co=
+ntinue;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D handler=
+->profile_get(handler, &val);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 pr_err("Failed to get profile for handler %s\n",
+>>> handler->name);
+>>> @@ -69,6 +85,10 @@ static int platform_profile_get_active(enum
+>>> platform_profile_option *profile)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (WARN_ON(val=
+ >=3D PLATFORM_PROFILE_LAST))
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return -EINVAL;
+>>>
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * If the profiles ar=
+e different for class devices then
+>>> this must
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * show "custom" to l=
+egacy sysfs interface
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (active !=3D=
+ val && active !=3D PLATFORM_PROFILE_LAST) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 *profile =3D PLATFORM_PROFILE_CUSTOM;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return 0;
+>>> @@ -90,7 +110,7 @@ static ssize_t
+>>> platform_profile_choices_show(struct device *dev,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int i;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -E=
+RESTARTSYS, &profile_lock)
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 choices =3D platform_profi=
+le_get_choices();
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 choices =3D platform_profi=
+le_get_choices(dev);
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for_each_set_bit(i, &choices, PLATFORM_=
+PROFILE_LAST) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (len =3D=3D =
+0)
+>>> @@ -113,7 +133,7 @@ static ssize_t platform_profile_show(struct
+>>> device *dev,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -E=
+RESTARTSYS,
+>>> &profile_lock) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!platform_p=
+rofile_is_registered())
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return -ENODEV;
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D platform_profile_g=
+et_active(&profile);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D platform_profile_g=
+et_active(dev, &profile);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return err;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> @@ -138,12 +158,22 @@ static ssize_t platform_profile_store(struct
+>>> device *dev,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!platform_p=
+rofile_is_registered())
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return -ENODEV;
+>>>
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Check that all handlers=
+ support this profile choice */
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 choices =3D platform_profi=
+le_get_choices();
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* don't allow setting cus=
+tom to legacy sysfs interface */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!platform_profile_is_c=
+lass_device(dev) &&
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 i =3D=3D PLATFORM_PROFILE_CUSTOM) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr=
+_warn("Custom profile not supported for legacy sysfs
+>>> interface\n");
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+turn -EINVAL;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Check that applicable h=
+andlers support this profile
+>>> choice */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 choices =3D platform_profi=
+le_get_choices(dev);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!test_bit(i=
+, &choices))
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return -EOPNOTSUPP;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_e=
+ntry(handler,
+>>> &platform_profile_handler_list, list) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
+ (platform_profile_is_class_device(dev) &&
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 handler->dev !=3D dev->parent)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 continue;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 err =3D handler->profile_set(handler, i);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 if (err) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("Failed to set profile for handle=
+r %s\n",
+>>> handler->name);
+>>> @@ -152,6 +182,9 @@ static ssize_t platform_profile_store(struct
+>>> device *dev,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 list_for_each_entry_continue_reverse(handler,
+>>> &platform_profile_handler_list, list) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 if (platform_profile_is_class_device(dev) &&
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 handler->dev !=3D dev->paren=
+t)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 continue;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (handler->profile_set(handler,
+>>> PLATFORM_PROFILE_BALANCED))
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("Failed t=
+o revert profile for handler
+>>> %s\n",
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 handler->name);
+>>> @@ -194,11 +227,11 @@ int platform_profile_cycle(void)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -E=
+RESTARTSYS,
+>>> &profile_lock) {
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D platform_profile_g=
+et_active(&profile);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D platform_profile_g=
+et_active(NULL, &profile);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return err;
+>>>
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 choices =3D platform_profi=
+le_get_choices();
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 choices =3D platform_profi=
+le_get_choices(NULL);
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 next =3D find_n=
+ext_bit_wrap(&choices,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PLAT=
+FORM_PROFILE_LAST,
+>>> @@ -228,6 +261,7 @@ EXPORT_SYMBOL_GPL(platform_profile_cycle);
+>>>
+>>> =C2=A0 int platform_profile_register(struct platform_profile_handler *=
+pprof)
+>>> =C2=A0 {
+>>> +=C2=A0=C2=A0=C2=A0 bool registered;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Sanity check the profile handler */
+>>> @@ -250,14 +284,49 @@ int platform_profile_register(struct
+>>> platform_profile_handler *pprof)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (cur_profile)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EEXIST;
+>>>
+>>> -=C2=A0=C2=A0=C2=A0 err =3D sysfs_create_group(acpi_kobj, &platform_pr=
+ofile_group);
+>>> +=C2=A0=C2=A0=C2=A0 registered =3D platform_profile_is_registered();
+>>> +=C2=A0=C2=A0=C2=A0 if (!registered) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* class for individual ha=
+ndlers */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D class_register(&pl=
+atform_profile_class);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+turn err;
+>>
+>> Why do we need to unregister the class here? From my point of view,
+>> having a empty class if no
+>> platform profiles are registered is totally fine.
+>
+> Hmm, OK.
+>
+>>
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* legacy sysfs files */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D sysfs_create_group=
+(acpi_kobj, &platform_profile_group);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 go=
+to cleanup_class;
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0 /* create class interface for individual handler *=
+/
+>>> +=C2=A0=C2=A0=C2=A0 pprof->minor =3D idr_alloc(&platform_profile_minor=
+_idr, pprof, 0,
+>>> 0, GFP_KERNEL);
+>>> +=C2=A0=C2=A0=C2=A0 pprof->class_dev =3D device_create(&platform_profi=
+le_class,
+>>> pprof- >dev,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MKDEV(0, pprof->minor)=
+, NULL,
+>>> "platform-profile- %s",
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pprof->name);
+>>
+>> I would suggest that the name of the class devices should not contain
+>> the platform profile name,
+>> as this would mean that two platform profile handlers cannot have the
+>> same name.
+>>
+>> Maybe using "platform-profile-<minor>" would be a better solution
+>> here? The name can instead be
+>> read using an additional sysfs property.
+>
+> Sure makes sense.
+>
+>>
+>> Thanks,
+>> Armin Wolf
+>>
+>>> +=C2=A0=C2=A0=C2=A0 if (IS_ERR(pprof->class_dev)) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D PTR_ERR(pprof->cla=
+ss_dev);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto cleanup_legacy;
+>>> +=C2=A0=C2=A0=C2=A0 }
+>>> +=C2=A0=C2=A0=C2=A0 err =3D sysfs_create_group(&pprof->class_dev->kobj=
+,
+>>> &platform_profile_group);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return err;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto cleanup_device;
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_add_tail(&pprof->list, &platform_p=
+rofile_handler_list);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform=
+_profile");
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cur_profile =3D pprof;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>> +
+>>> +cleanup_device:
+>>> +=C2=A0=C2=A0=C2=A0 device_destroy(&platform_profile_class, MKDEV(0, p=
+prof->minor));
+>>> +
+>>> +cleanup_legacy:
+>>> +=C2=A0=C2=A0=C2=A0 if (!registered)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_remove_group(acpi_ko=
+bj, &platform_profile_group);
+>>> +cleanup_class:
+>>> +=C2=A0=C2=A0=C2=A0 if (!registered)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 class_unregister(&platform=
+_profile_class);
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0 return err;
+>>> =C2=A0 }
+>>> =C2=A0 EXPORT_SYMBOL_GPL(platform_profile_register);
+>>>
+>>> @@ -270,6 +339,10 @@ int platform_profile_remove(struct
+>>> platform_profile_handler *pprof)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cur_profile =3D NULL;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform=
+_profile");
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0 sysfs_remove_group(&pprof->class_dev->kobj,
+>>> &platform_profile_group);
+>>> +=C2=A0=C2=A0=C2=A0 device_destroy(&platform_profile_class, MKDEV(0, p=
+prof->minor));
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!platform_profile_is_registered())
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_remove_gr=
+oup(acpi_kobj, &platform_profile_group);
+>>>
+>>> diff --git a/include/linux/platform_profile.h b/include/linux/
+>>> platform_profile.h
+>>> index da009c8a402c9..764c4812ef759 100644
+>>> --- a/include/linux/platform_profile.h
+>>> +++ b/include/linux/platform_profile.h
+>>> @@ -30,6 +30,8 @@ enum platform_profile_option {
+>>> =C2=A0 struct platform_profile_handler {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *name;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev;
+>>> +=C2=A0=C2=A0=C2=A0 struct device *class_dev;
+>>> +=C2=A0=C2=A0=C2=A0 int minor;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long choices[BITS_TO_LONGS(PLA=
+TFORM_PROFILE_LAST)];
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct list_head list;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int (*profile_get)(struct platform_prof=
+ile_handler *pprof,
+>
+>
 
