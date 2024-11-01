@@ -1,143 +1,213 @@
-Return-Path: <linux-acpi+bounces-9239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9240-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1B69B9452
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 16:22:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFEF9B94AE
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 16:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31DAC1C21A2D
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 15:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B19211F21FF8
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 15:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F9F1C3F32;
-	Fri,  1 Nov 2024 15:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D058615B0E2;
+	Fri,  1 Nov 2024 15:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NTVAs67Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c4wVWhv4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB79C7482;
-	Fri,  1 Nov 2024 15:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690592CAB;
+	Fri,  1 Nov 2024 15:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730474546; cv=none; b=Y6ouS656wcrz6Q9vORbLBsbbHn5pJTRcesXdeQhr1XGfIHgRybT8SW/VfrXGNyGIeMaO/wkG330RhdLXlKAz+KizbMJRpLdhwSrUj3M/0z+AcPrdu1U2xIV1qTkqXYEU7PdYaioqT5C6DPRkkgByJiaX/kD9zsHxTckNejskLOQ=
+	t=1730475954; cv=none; b=B4AWyh9Iqzt+q6PgVAeXHZCszUo0M+DTilzAYq008i3WBs0gqjgPz78qkDX8hyZiQMwb2TXElyawSSJhKwQ736631y5lmDMRdtvYLfadg0GFn8uSsvpvEYjAeAZydoc/1gDPSJ4udELR0vFkaHc3MPXyPje+qqhKTmGnEke1nsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730474546; c=relaxed/simple;
-	bh=cVmHLaPGigvflDEqAOfwrZjRkmGQh8/WUjNZ4uZ48Co=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k1fYDmdiKUe7R4Y3d3fIBlEz8qSm//kYktkBizFT1P8YMDLWGlA/NBQMMl5q0VATj5X5iEFTZbWBHIcfzNMTuQl0vBsr8WPW791wq1YPqLhPaACJdQLgZOrYt8ejbO5QwK7uRLL0CwmY8sUamJI7Imz4PWAEo2UeRSxXx0WQAX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NTVAs67Y; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1730475954; c=relaxed/simple;
+	bh=AtLvIf40LVUPIr+E+dfnhbLSuY3QnClbgKbNsZaogN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qNnivzDeMm0SuPj5tDJX5wn9eSLekXlDK31L0IK0VPJvzBLeZU4/4U+q/A9zJ+I+RxLvIg7bGQRUxnGsEjnKDJz0iphTubKjKsqDnHg8q/8oUxbxUtlg0Lf+lQnhSOdPib9CnEADiCObUzQjhtTH2uqP2olVZ0oBgCb3VdaoaII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c4wVWhv4; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730474545; x=1762010545;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cVmHLaPGigvflDEqAOfwrZjRkmGQh8/WUjNZ4uZ48Co=;
-  b=NTVAs67YHrH0up6Er5FQ6tJcp1YcoYmkRQXuASjlCafDka3RZoRBVM8t
-   5G/Guxr13Rq8XSCMMYkr8NJ1/0zK3dWw02aWjgHCPD0XgwEXqCtKND7LU
-   xnf5EMdzuoWo3EYs6nI0I0bDQ4r5JYL8+RhB0OmhOhZLR1iKQRvbOXaBa
-   +0qLKj4iurGkBKMdIOd5+i2ksa6/53reJEWEgBWFP9R3m8hWNKzCid5+X
-   BBojgzUaZZyhhR8ya83EU4iHf5Ocgosbw6D+N7OYweV4xJZatuyLlk7rl
-   ktN0wTfwj4kLtKqNwWQI7ujXnKtGjJLtL1/tHHKMzVQuNyOf/3rcFnfMx
+  t=1730475952; x=1762011952;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AtLvIf40LVUPIr+E+dfnhbLSuY3QnClbgKbNsZaogN4=;
+  b=c4wVWhv40TRcG8cJd2SKOzmhuT8/Zc/P5Tay0w6Wczk/zK1NJzD9Vz4f
+   mzlAx00YIHKhIlaZblB03iZFduQK4MGHUkyHDTAHLof/sEIr3JOeaSC1q
+   TNkI+LKSq4v76PYjl162Ok++alLj2987LYcKe2M27vcGH3hFa1qw4FkLw
+   6aKxJN0vOldND5Zl8/EAouhs/NOkR0qfD85qtSHqfWnX2Ajpsda3BpH1k
+   iFYyZYrNl4RVv/m5ACv4duHMEdIq5OP2eVPwVleh6Enec08Zd0OA3n5wv
+   yciBBL7GnWrpMtF48gGkhuDUtOeZR7PO9jaDSDYu7VaymO7hBRIPS7dac
    w==;
-X-CSE-ConnectionGUID: 6C+0ZS4+TR2D95iUXxZimA==
-X-CSE-MsgGUID: vZXYeFOqTMapt2VgiPQc0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="47732930"
+X-CSE-ConnectionGUID: LTvIuaENT6eoxYZScj64Xw==
+X-CSE-MsgGUID: Fx6uxMk0RIOavwzRMSya+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="41638040"
 X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="47732930"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 08:22:23 -0700
-X-CSE-ConnectionGUID: VRzW+vvZQTCPenCgxv9uPg==
-X-CSE-MsgGUID: t/J48C2RS7m2W5ADNvk96A==
+   d="scan'208";a="41638040"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 08:45:51 -0700
+X-CSE-ConnectionGUID: nWBmi2iJTVKrItxMhYpRQg==
+X-CSE-MsgGUID: LyCahANDQCmoagk5lCwJ/A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="83330929"
-Received: from ccbilbre-mobl3.amr.corp.intel.com (HELO [10.124.220.146]) ([10.124.220.146])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 08:22:21 -0700
-Message-ID: <44325592-4185-4d14-8e8c-6b5b27bb4908@intel.com>
-Date: Fri, 1 Nov 2024 08:22:20 -0700
+   d="scan'208";a="87810812"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 01 Nov 2024 08:45:45 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t6tqJ-000hil-0T;
+	Fri, 01 Nov 2024 15:45:43 +0000
+Date: Fri, 1 Nov 2024 23:45:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Lee Chun-Yi <jlee@suse.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Corentin Chary <corentin.chary@gmail.com>,
+	"Luke D . Jones" <luke@ljones.dev>,
+	Ike Panhc <ike.pan@canonical.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Alexis Belmonte <alexbelm48@gmail.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	"open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER" <platform-driver-x86@vger.kernel.org>,
+	"open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v3 20/22] ACPI: platform_profile: Register class device
+ for platform profile handlers
+Message-ID: <202411012317.1pQLOspC-lkp@intel.com>
+References: <20241031040952.109057-21-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] x86: probe memory block size advisement value
- during mm init
-To: Gregory Price <gourry@gourry.net>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
- dan.j.williams@intel.com, rrichter@amd.com, Terry.Bowman@amd.com,
- dave.jiang@intel.com, ira.weiny@intel.com, alison.schofield@intel.com,
- dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
- rafael@kernel.org, lenb@kernel.org, david@redhat.com, osalvador@suse.de,
- gregkh@linuxfoundation.org, akpm@linux-foundation.org, rppt@kernel.org
-References: <20241101134706.1185-1-gourry@gourry.net>
- <20241101134706.1185-3-gourry@gourry.net>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20241101134706.1185-3-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241031040952.109057-21-mario.limonciello@amd.com>
 
-On 11/1/24 06:47, Gregory Price wrote:
-> Systems with hotplug may provide an advisement value on what the
-> memblock size should be.  Probe this value when the rest of the
-> configuration values are considered.
+Hi Mario,
 
-It's too bad this doesn't simplify any of the arch code, but it's also
-not making it much worse.  I assume this is something that will go
-through the mm tree, so:
+kernel test robot noticed the following build errors:
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.12-rc5 next-20241101]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-platform-profile-Add-a-name-member-to-handlers/20241031-121650
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20241031040952.109057-21-mario.limonciello%40amd.com
+patch subject: [PATCH v3 20/22] ACPI: platform_profile: Register class device for platform profile handlers
+config: x86_64-buildonly-randconfig-005-20241101 (https://download.01.org/0day-ci/archive/20241101/202411012317.1pQLOspC-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241101/202411012317.1pQLOspC-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411012317.1pQLOspC-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/acpi/platform_profile.c: In function 'platform_profile_register':
+>> drivers/acpi/platform_profile.c:303:42: error: implicit declaration of function 'MKDEV' [-Werror=implicit-function-declaration]
+     303 |                                          MKDEV(0, pprof->minor), NULL, "platform-profile-%s",
+         |                                          ^~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/MKDEV +303 drivers/acpi/platform_profile.c
+
+   261	
+   262	int platform_profile_register(struct platform_profile_handler *pprof)
+   263	{
+   264		bool registered;
+   265		int err;
+   266	
+   267		/* Sanity check the profile handler */
+   268		if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
+   269		    !pprof->profile_set || !pprof->profile_get) {
+   270			pr_err("platform_profile: handler is invalid\n");
+   271			return -EINVAL;
+   272		}
+   273		if (!test_bit(PLATFORM_PROFILE_BALANCED, pprof->choices)) {
+   274			pr_err("platform_profile: handler does not support balanced profile\n");
+   275			return -EINVAL;
+   276		}
+   277		if (!pprof->dev) {
+   278			pr_err("platform_profile: handler device is not set\n");
+   279			return -EINVAL;
+   280		}
+   281	
+   282		guard(mutex)(&profile_lock);
+   283		/* We can only have one active profile */
+   284		if (cur_profile)
+   285			return -EEXIST;
+   286	
+   287		registered = platform_profile_is_registered();
+   288		if (!registered) {
+   289			/* class for individual handlers */
+   290			err = class_register(&platform_profile_class);
+   291			if (err)
+   292				return err;
+   293			/* legacy sysfs files */
+   294			err = sysfs_create_group(acpi_kobj, &platform_profile_group);
+   295			if (err)
+   296				goto cleanup_class;
+   297	
+   298		}
+   299	
+   300		/* create class interface for individual handler */
+   301		pprof->minor = idr_alloc(&platform_profile_minor_idr, pprof, 0, 0, GFP_KERNEL);
+   302		pprof->class_dev = device_create(&platform_profile_class, pprof->dev,
+ > 303						 MKDEV(0, pprof->minor), NULL, "platform-profile-%s",
+   304						 pprof->name);
+   305		if (IS_ERR(pprof->class_dev)) {
+   306			err = PTR_ERR(pprof->class_dev);
+   307			goto cleanup_legacy;
+   308		}
+   309		err = sysfs_create_group(&pprof->class_dev->kobj, &platform_profile_group);
+   310		if (err)
+   311			goto cleanup_device;
+   312	
+   313		list_add_tail(&pprof->list, &platform_profile_handler_list);
+   314		sysfs_notify(acpi_kobj, NULL, "platform_profile");
+   315	
+   316		cur_profile = pprof;
+   317		return 0;
+   318	
+   319	cleanup_device:
+   320		device_destroy(&platform_profile_class, MKDEV(0, pprof->minor));
+   321	
+   322	cleanup_legacy:
+   323		if (!registered)
+   324			sysfs_remove_group(acpi_kobj, &platform_profile_group);
+   325	cleanup_class:
+   326		if (!registered)
+   327			class_unregister(&platform_profile_class);
+   328	
+   329		return err;
+   330	}
+   331	EXPORT_SYMBOL_GPL(platform_profile_register);
+   332	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
