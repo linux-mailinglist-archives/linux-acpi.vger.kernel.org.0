@@ -1,159 +1,90 @@
-Return-Path: <linux-acpi+bounces-9231-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9232-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA7C9B90CA
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 12:57:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE2A9B910F
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 13:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A20281EFE
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 11:57:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE3F3B219AD
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 12:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C1D19925B;
-	Fri,  1 Nov 2024 11:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A5C1946B4;
+	Fri,  1 Nov 2024 12:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBHuxN/p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05581990A8;
-	Fri,  1 Nov 2024 11:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65AC13C;
+	Fri,  1 Nov 2024 12:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730462209; cv=none; b=goowytoscdDwuGB+CPFtd52zb7oUFbM6XC4p5J0C4z8LkrpCAHWxnEoqRKRvZ+f6kKkVyzOLnHDXH5kM+V9Aa8nokm1GNSSEhX8UR4QhxpsPHeGl9L2gTaOAAm8cXm94uwIzn7IJep/uNFl72ZIfUjqzceEwZkbbPMuyuQlFZEc=
+	t=1730463539; cv=none; b=UJmUOXmKJYhUMtY/lR5P39HCvv3ppCjp2OzGVdVSuZW0XbgwAfo0bNsZLfxhPUuZONyhv9ojjrNvACyRESoEAqK4u5/WRz7YfEQHlW99KAMsZf5PuujbfdCxGksNuyilyo7VI8gA1KDuSm2ZrN0/LV+cf4fTnl6FUOPPvo/jrMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730462209; c=relaxed/simple;
-	bh=HDH6Le6Nd9Y+trNLwTMXuT0phkwNA0RZW0jTTClExUc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ntW7FWsuUZmvLnUL6oJ6yN9vtz8xhqjL2owd+7ePZzIGySz9ek9JSevX4dReGQDHlltILTS0Z1RVAqNSuyRF0hag7R4SaYJVaIeGEJhLehtU81ZmCT715gM9vWD468GLB0JEfR1VMw1QS6Fg12rhG81ghr7hBIkKzEAFQFWHcI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xfzjd1sdXz6LD1d;
-	Fri,  1 Nov 2024 19:51:49 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 41913140C72;
-	Fri,  1 Nov 2024 19:56:43 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 1 Nov
- 2024 12:56:42 +0100
-Date: Fri, 1 Nov 2024 11:56:40 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
-	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [RFC PATCH 4/6] acpi/hmat: Add helper functions to provide
- extended linear cache translation
-Message-ID: <20241101115640.00006491@Huawei.com>
-In-Reply-To: <773c3a60-22eb-4719-84dd-64d642926230@intel.com>
-References: <20240927142108.1156362-1-dave.jiang@intel.com>
-	<20240927142108.1156362-5-dave.jiang@intel.com>
-	<20241017173326.0000191a@Huawei.com>
-	<773c3a60-22eb-4719-84dd-64d642926230@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1730463539; c=relaxed/simple;
+	bh=+HDgzWKsUKx97E2mppbNA0tlv52sTXzgPdKbp7JsyHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EH2rRfi0EVqj+A25Al8Cs4RadLaY5Mwo+rAtJk0k7yCbJibz+5efhSdUp+sm4EIlz9iFL6EKrg7ePdZzcVxYPRiAHy3ubbGJQfxakjUF/x0zSlratMsvqdmDAINZ9WztHTaP9zWGYK1lOI2P3N3geBXw/q+QUJfG71BB4acM2D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBHuxN/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C80BC4CECD;
+	Fri,  1 Nov 2024 12:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730463539;
+	bh=+HDgzWKsUKx97E2mppbNA0tlv52sTXzgPdKbp7JsyHc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NBHuxN/pAPf8IHixhryTxZ/futb2LvKpXXCyR/SW5uqdlFGHVLyrlBC+FoDgxJK/8
+	 BXZ1Fn1ywsP56K2duT3rd3UI+AOCVdZmtR/HykfvCUXf3jv+5ZNKavkqEnCI4LKVwF
+	 LRMnqS48aXxmJsDs31Z4xPwsC+bm4UTb7nLroxbppw7andSl//KM3oM0Tk4BPncaBZ
+	 w1Qs2YqwVqIpnwUXRzbOyRf6LMKWgSiY+Z1kSvOokZF2WryjywWEbsMTi0AdGzTtx3
+	 DxocfHC4sNGzai1qJLidnKNIKvKXS5sFlWCK6RoNSgw6FiIuVJ2TXQJsams+pxngiG
+	 /RIoyXXF0y6rQ==
+Date: Fri, 1 Nov 2024 12:18:50 +0000
+From: Will Deacon <will@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+	kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+Message-ID: <20241101121849.GD8518@willie-the-truck>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Wed, 30 Oct 2024 15:53:20 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+On Wed, Oct 30, 2024 at 09:20:44PM -0300, Jason Gunthorpe wrote:
+> [This is now based on Nicolin's iommufd patches for vIOMMU and will need
+> to go through the iommufd tree, please ack]
 
-> On 10/17/24 9:33 AM, Jonathan Cameron wrote:
-> > On Fri, 27 Sep 2024 07:16:56 -0700
-> > Dave Jiang <dave.jiang@intel.com> wrote:
-> >   
-> >> Add helper functions to help do address translation for either the address
-> >> of the extended linear cache or its alias address. The translation function
-> >> attempt to detect an I/O hole in the proximity domain and adjusts the address
-> >> if the hole impacts the aliasing of the address. The range of the I/O hole
-> >> is retrieved by walking through the associated memory target resources.  
-> > 
-> > What does the I/O hole correspond to in the system?
-> >   
-> >>
-> >> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> >> ---
-> >>  drivers/acpi/numa/hmat.c | 136 +++++++++++++++++++++++++++++++++++++++
-> >>  include/linux/acpi.h     |  14 ++++
-> >>  2 files changed, 150 insertions(+)
-> >>
-> >> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> >> index d299f8d7af8c..834314582f4c 100644
-> >> --- a/drivers/acpi/numa/hmat.c
-> >> +++ b/drivers/acpi/numa/hmat.c
-> >> @@ -152,6 +152,142 @@ int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
-> >>  }
-> >>  EXPORT_SYMBOL_NS_GPL(hmat_get_extended_linear_cache_size, CXL);
-> >>  
-> >> +static int alias_address_find_iohole(struct memory_target *target,
-> >> +				     u64 address, u64 alias, struct range *hole)
-> >> +{
-> >> +	struct resource *alias_res = NULL;
-> >> +	struct resource *res, *prev;
-> >> +
-> >> +	*hole = (struct range) {
-> >> +		.start = 0,
-> >> +		.end = -1,
-> >> +	};
-> >> +
-> >> +	/* First find the resource that the address is in */
-> >> +	prev = target->memregions.child;
-> >> +	for (res = target->memregions.child; res; res = res->sibling) {
-> >> +		if (alias >= res->start && alias <= res->end) {
-> >> +			alias_res = res;
-> >> +			break;
-> >> +		}
-> >> +		prev = res;
-> >> +	}
-> >> +	if (!alias_res)  
-> > 
-> > 	if (!res) and you can just use res instead of alias_res for the following
-> > as you exit the loop with it set to the right value.
-> >  
-> Ok will do that
->  
-> > 
-> >   
-> >> +		return -EINVAL;
-> >> +
-> >> +	/* No memory hole */
-> >> +	if (alias_res == prev)
-> >> +		return 0;
-> >> +
-> >> +	/* If address is within the current resource, no need to deal with memory hole */
-> >> +	if (address >= alias_res->start)
-> >> +		return 0;
-> >> +
-> >> +	*hole = (struct range) {
-> >> +		.start = prev->end + 1,
-> >> +		.end = alias_res->start - 1,
-> >> +	};  
-> > Ordering assumption should be avoided in such a generic
-> > sounding function.  Can the hole be first?  
-> 
-> Do you mean if the address mapping starts out with an MMIO range and then memory range? I'm not sure if such an implementation exists in the x86 world. And if the hole is behind all the ranges, then it shouldn't impact the address calculations. 
-> 
-That was me not really understanding what the hole was.
-Tony filled in that gap.
+Can't we separate out the SMMUv3 driver changes? They shouldn't depend on
+Nicolin's work afaict.
 
-> > 
-> > or rename the function to include preceding_hole or something like that.  
-> >> +
-> >> +	return 0;
-> >> +}
-
-> 
-
+Will
 
