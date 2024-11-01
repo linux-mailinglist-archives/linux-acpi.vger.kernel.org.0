@@ -1,116 +1,103 @@
-Return-Path: <linux-acpi+bounces-9246-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9247-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C849B95DB
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 17:48:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374249B97A5
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 19:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C0D91F23EEB
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 16:48:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C1D1F216E0
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Nov 2024 18:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13C7155324;
-	Fri,  1 Nov 2024 16:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59E41CDFBD;
+	Fri,  1 Nov 2024 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HpLdezW8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qp5N510p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4BA1CA81;
-	Fri,  1 Nov 2024 16:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82FB1AB523;
+	Fri,  1 Nov 2024 18:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730479718; cv=none; b=UBip6bz9orGZMb6D1Fme9CJ8VkyyKMoSlgEgjsuAy15dVCCxapi0Jji+9ReGsY3gbw2A8tYrE8HGgPoi/oAkwb7XJ6KPBgIKV+A4EF6tU6+pWQv0WzrGTr/DN49PMYh9qL6RAsepRUr/7Ne2j7BMSPhnlAsbh44JwsPBqoE430U=
+	t=1730486125; cv=none; b=jl0sUpmPVKLOS3kXN+2GV94TXCJI+eyI8Sl9AL0CJ/yR6PxHNalBEjKGAc8dElaHoXqOuhN6YakaWwy81L6BjJmo/K94mkPDM3C1xRN9qe8etQP2IvyGWxe0k9wNh+o26yvcYl4iS165q9mqFaj/XjN3P9XhsQSVka/M2UIeqTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730479718; c=relaxed/simple;
-	bh=kBgcL3BfWWkILvcuUMtI4DpC5265s1HmZIUOzebuBTU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ImiXFZ4yYPObIc3QE6Owr0TH2frRJeOeV4t92xrnINN+JpFzhRP1fn3jodhqgww6b23MddjGoBv25MA2OxceEVr5KhKBjFEC9FuPWG4vfwUR7Gx10V6nQHv35xOxbFhLbdGFHkcu4GYjUAWyHOmhOicrP5v7rtxA7leTqDU4xkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HpLdezW8; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5E70740E021C;
-	Fri,  1 Nov 2024 16:48:33 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id e_X65bLd7ZEI; Fri,  1 Nov 2024 16:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1730479708; bh=OMMDrgLOSB2qpzgDwcq8B2U0GznJU8oQ+4h52sCCWjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HpLdezW89bcbIP48ARNiRiO1jZBz1adgCt9GZooz/jLAxxbfGeYjyAivPmbsqxd4c
-	 UwsPIl2tUaVrJ/Wl297DPj87dHaec9g0HbXlGSYtIZznpW9Uc1ARsguRWeJhYJJPma
-	 xJE/HibJR0GTPZv3gTluwzBLVNBM/bunsQWgQNrl+vB832YxnerRsP0+hhm+yhRYB3
-	 H/9krU239yGIljkrH4zsWBswaPylNbIRfsVW/2MHdTQbc5TyFLoJ6BZuESHMsIY+Ya
-	 9h1hCpGnf83g/HNH5Wk/9r4YcIa9DZSBvNhZknlROcuGzVAvOfrZ8z+CMg3gJCW7vM
-	 LQCGC4SbXDfo9+PpraS07geDr8IVQtF2nL8i3VCn3ySw1IGQJxoi5u64ItE1GAifjO
-	 LvRyxRv1LV7Vfe/MKJ0zhhJW9/0wkCuI8kk6JfvT/UnGOTauwjwQXmi8Vu7zg2kMTN
-	 1cl6iINfWBRpdRj/5jaa/YydoLx464xbaPHkAVFFJXNqA+XEDzAakE7+54ozTe8JWd
-	 ABl7ElLJnKQh9RVxIdg/IzNPwVYkotG+OidXRQLN2+t31YiY0YoiuffPuD6L/IgU/4
-	 d2xUQRRc2lmTbkrBvBMie6B7Xd1kOkO7tHOhx9loF7N0nIUfZLyDfdJI8uXYIAXiwV
-	 k50KPDzTo9HOBZfyqjC6tBq0=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1085540E0219;
-	Fri,  1 Nov 2024 16:48:02 +0000 (UTC)
-Date: Fri, 1 Nov 2024 17:48:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Gregory Price <gourry@gourry.net>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com, rrichter@amd.com, Terry.Bowman@amd.com,
-	dave.jiang@intel.com, ira.weiny@intel.com,
-	alison.schofield@intel.com, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-	mingo@redhat.com, hpa@zytor.com, rafael@kernel.org, lenb@kernel.org,
-	david@redhat.com, osalvador@suse.de, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, rppt@kernel.org
-Subject: Re: [PATCH v5 2/3] x86: probe memory block size advisement value
- during mm init
-Message-ID: <20241101164801.GDZyUGQbe6g4FqtPf6@fat_crate.local>
-References: <20241101134706.1185-1-gourry@gourry.net>
- <20241101134706.1185-3-gourry@gourry.net>
- <20241101155147.GBZyT5E190IxnQMzaP@fat_crate.local>
- <ZyT_fLBsVLlcnYNi@PC2K9PVX.TheFacebook.com>
+	s=arc-20240116; t=1730486125; c=relaxed/simple;
+	bh=Y3saQugEtHxlZ99FsJFD/ZNel2QdI2zPllmiplYSsFo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=E5O0jNOlKS06oifrC4iEADc6NPsyFja4hHK6g7TYSXDYpS4kBKEQQXpDTTjKR6J+g8QQqppSW6vAmTOBTidSXrenaHGSuEbOWbUVP9x2FFxci7tujJBVsSd0t/Tb0+61GDvFthvOfvgg+to9q+0qsn6cNU/D+m9o4yJ+xoKUItM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qp5N510p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340BCC4CECD;
+	Fri,  1 Nov 2024 18:35:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730486125;
+	bh=Y3saQugEtHxlZ99FsJFD/ZNel2QdI2zPllmiplYSsFo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=qp5N510psK6rElKAQmr3AEvb9hZIjtIDVBcrxIjdZA6CsEKSdxQ7znGIHu9ATdJP7
+	 E1kSgZUTNkl9tXg09kv5eXw92xWR66EVMP+TPR7yC/tW0KC5CkR4NdqqUmLVY8TdDj
+	 dv7ODBhioKNnl5BQZqksoB87C7A3I7E7k0G2kFO71TQkXwxdS3+0jiyd2RIFTLSf4c
+	 JegP2z9sMdzbIfWxO5USCPn5qMwTYeH9J78SHZ+vVLUDplGsSSHJTkkRjeadoC0Odl
+	 3WLdNZhhkbUuK9d2YDEolk2kkFh2/oCQ32APQZ7zJJVwKSuxGC4ePZLZ/GgOHtKNJu
+	 OFsqF4VwyMYtA==
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3e5f86e59f1so1172510b6e.1;
+        Fri, 01 Nov 2024 11:35:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV1wCSYOVADj+PPemIvA+o8E10DBbXXqbmy5grOmuYQ31pMhW8xWBICZn/rcPDzKGhuRLQlC2fIM4o=@vger.kernel.org, AJvYcCXcapRcvqM4J+7F00Il3d5UIBpOpALLr+lfjCdoQZNAqAqU3GK/Mu/7wXLBqZI0A6iD7u9QzVYC9A5TRDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd2etSJzkPKS6Rq8xlqWz2pNNS9/Kf+qj0Ov32YPE00OZ8fEhd
+	r26eWv6eZF65G2pdqa9cto9374pc0xepVo7oVwlBmannwGLNgRUUdJIBIWr+ft/Xy9V2IqUYWQ/
+	wXz2lJO8KyOhAGcqKSKxxVHc68No=
+X-Google-Smtp-Source: AGHT+IE3LWKfl/jtwEs/EJ7UTCMroim2eqpdpHD56WFCA0NjSRrpWdvV85kXGB1yYsyOuuobCJ2vKqGgGtvjGOGtOLA=
+X-Received: by 2002:a05:6870:d24b:b0:288:666b:9c5e with SMTP id
+ 586e51a60fabf-2948449c37cmr7826160fac.17.1730486124473; Fri, 01 Nov 2024
+ 11:35:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZyT_fLBsVLlcnYNi@PC2K9PVX.TheFacebook.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 1 Nov 2024 19:35:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jFxoRAoUkEGmUCg3-H4qhhNd1g4-w05bPnpgJndfDDWA@mail.gmail.com>
+Message-ID: <CAJZ5v0jFxoRAoUkEGmUCg3-H4qhhNd1g4-w05bPnpgJndfDDWA@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for v6.12-rc6
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Nov 01, 2024 at 12:19:08PM -0400, Gregory Price wrote:
-> I don't personally understand the implications of this switch off hand,
-> probably warrants a separate patch submission if you think it's important
-> given the original logic is boot_cpu_has and I don't want to increase
-> scope change here.
+Hi Linus,
 
-We want to switch the code to cpu_feature_enabled():
+Please pull from the tag
 
-https://lore.kernel.org/r/20241031103401.GBZyNdGQ-ZyXKyzC_z@fat_crate.local
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.12-rc6
 
-and it is not increasing the scope at all. You can simply say:
+with top-most commit 1c10941e34c5fdc0357e46a25bd130d9cf40b925
 
-"Convert to cpu_feature_enabled() while at it."
+ ACPI: CPPC: Make rmw_lock a raw_spin_lock
 
-in the commit message.
+on top of commit 81983758430957d9a5cb3333fe324fd70cf63e7e
 
-Thx.
+ Linux 6.12-rc5
 
--- 
-Regards/Gruss,
-    Boris.
+to receive an ACPI fix for 6.12-rc6.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+This makes the ACPI CPPC library use a raw spinlock for operations
+carried out in scheduler context via the schedutil governor and the
+ACPI CPPC cpufreq driver (Pierre Gondois).
+
+Thanks!
+
+
+---------------
+
+Pierre Gondois (1):
+      ACPI: CPPC: Make rmw_lock a raw_spin_lock
+
+---------------
+
+ drivers/acpi/cppc_acpi.c | 9 +++++----
+ include/acpi/cppc_acpi.h | 2 +-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
