@@ -1,69 +1,69 @@
-Return-Path: <linux-acpi+bounces-9253-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9254-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A919B9C31
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Nov 2024 03:15:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326169B9C36
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Nov 2024 03:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17F69B2190E
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Nov 2024 02:15:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B61D61F20593
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Nov 2024 02:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D20F74C14;
-	Sat,  2 Nov 2024 02:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A04D8DA;
+	Sat,  2 Nov 2024 02:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="hnqA5leK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="E0vdTR9s"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="F0MNO6YJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jaLeRXxv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E7F6F06B;
-	Sat,  2 Nov 2024 02:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0881D4C66;
+	Sat,  2 Nov 2024 02:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730513695; cv=none; b=GaHCsJYERfcZ3zoKNIDRVwqE9EsjKpiyQpVe7DhC7CnVXNIlW0iDx5ieMsUpie/6/q1mWAfSUe2X1fTpa5amTKy9kWgiRsGinan3qrk5Rc3HQk5jIduzrkN1FB/PE8o8UPnuffKlFiTfvpFuS5FAEjxQDKIUIsPlo39DS1X/0HA=
+	t=1730513726; cv=none; b=GXNUKqxMoCKS+TOF+yBJFZkMvJ7wczxAVrdnXBBlUmQ5XY/rQPbaEWNpr39dqwDR2sQxzycQTdYIdgdcDnaMlv10ENtjL+GXmmby2c2i8TztdrZqTZdp7Mw1wLfTXKMqx7ZB54zdCdm32IukLCiO5uP3iBqXvGOycsNoCUGG19k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730513695; c=relaxed/simple;
-	bh=7hIetJ7ZLmuC8PhP+rP6R3U697SB2sqjDj/ChX+YRXo=;
+	s=arc-20240116; t=1730513726; c=relaxed/simple;
+	bh=7FuObMeMXtj1F+pnKjCDhJqMWiePS2S35NscdZLglB8=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=vAgs29+pSW+foL/55ktMFAKhqgV+bebdsP6GpHi+e6dLF+s7K+U58inTm5R4ssi2BEhiBbRQgjeZoGMqHNe7Tzebri9YOXRfRSAXa6H50UgF4WD9vDmcjsQfnl9E50JreHodOm/VUW2/KcfuMqvpIAAEq0miSyxwe8NEsysY9mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=hnqA5leK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=E0vdTR9s; arc=none smtp.client-ip=202.12.124.157
+	 Subject:Content-Type; b=bVs+34x2kMCgRD+awSJLAU9sVhMu/cZ+As22DvQLgYZQmQSy5zLCLo2Ru5xZucxmpWEWwLdoWisZqbHtirzmA2I6YyjDbvrFwCVVEHHDewlfEbzMYWutJ/SBZiYy/jB7RomvOeYbCvv8bQPLQRe0zRvWJNl1UuJa/aNbsngb6nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=F0MNO6YJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jaLeRXxv; arc=none smtp.client-ip=202.12.124.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
 Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5B0D325400FC;
-	Fri,  1 Nov 2024 22:14:52 -0400 (EDT)
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 9BFB825400F3;
+	Fri,  1 Nov 2024 22:15:23 -0400 (EDT)
 Received: from phl-imap-10 ([10.202.2.85])
-  by phl-compute-02.internal (MEProxy); Fri, 01 Nov 2024 22:14:52 -0400
+  by phl-compute-02.internal (MEProxy); Fri, 01 Nov 2024 22:15:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1730513692;
-	 x=1730600092; bh=CkrPl1J6C0IRjJJqxSDvwcu6yt6xdBEFuHH1XZwtxT4=; b=
-	hnqA5leKwpfDw02iQCa76dsOowb09WlDqiQFWenoB/VjM0L/7gKBFk7EugXuXJcC
-	FLuD9hKPuOxPSojdkiiuS2dkfBsdd5fb+uzLAz47y9bNHZsCia//MC+h/atm0bMD
-	zuvZZIuL+IJfjocmCl6NtWBJnbB8aXHSVj0qgLRVu7Ou9REZhKdEnIq2EBStgqw5
-	tVjoZJAzzWHf1zalkhB5KYBVjZOD7HVc+esvCfoVoPnrZ70Vnn0AmMYxt0afPTwH
-	EpNTpY2TsXUik2eU9nShcUQ3lg2GXIODam2uLUhJPs4oAJbxu+GxzyHzMAJu+MNP
-	jQoDWOLeZTJnXsWHbgXpUQ==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1730513723;
+	 x=1730600123; bh=hhPyU/JFVlrGqI50WnmxKT9SwEq0unJ10nYucX7vUhQ=; b=
+	F0MNO6YJvsXh1gus8qudnkHnekNanEfYYIa0HP/U32gYtiynXrk3VYTjuA2NOR1V
+	QGZG27pFdoO2E6GCg8pdTTtdrzx2PmO1GyT3hyTo/jhYxyWOFt++/WepDr9dn+Fc
+	TNzTHsTJz4FXf4ZsFYxiKSggz6+UvzdoDyhtfFQTsZCoym3E5JY3uzLCdMMbC3Hf
+	bHVBxywVSnJK8/Hyf/Arf44iEdj75QDpp7Gcc0Xs8TEIOwE1uCb6R4HzZ3KSHt7l
+	g8R6EtrtxXfbaXAgAwRiwY59dz29+KzXiP1vLe+I0idbmp9seIxPGFebRozNvlzY
+	ZuhR2zPc9RhEz4L6ZQ3/1w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730513692; x=
-	1730600092; bh=CkrPl1J6C0IRjJJqxSDvwcu6yt6xdBEFuHH1XZwtxT4=; b=E
-	0vdTR9sQnVY1R8BWJXyoutjE/6jAeOnABNkeJYtuC6f4VufKx/m5l3+Izsphqixx
-	TnCEvWDMo4cHZ2ioWhC3YzJPbepVWTYSkSMXar6IfiNwQAz0EpIoaiqSNWHEY0V8
-	OuV2BsYvQj3TjkzU9edUX0mJMeOCCE4AWc//RfB0g7A7SBqDlsTTjnc9+PgQbuWZ
-	sJFgWZ150Kcw3nsMt69XWlMhTH2AnESGnZv81fox8vCPNZdbeNxq9cPc8acgHgmo
-	OTiHbHQ6rvpxU8Ge4kISU8tNxbatMiaa/bUG4w6XwsjNVtKJTBcXii3azPxUnG4e
-	Sp+X9qKABrfpDqR4J67YA==
-X-ME-Sender: <xms:HIslZ3iu5PxY0x5RPSEf348rdlX1c7ZhVo_bSMGIO7HhfxFFrz4hgQ>
-    <xme:HIslZ0A1tFDfcVzfA2yjWcc641HxknWT_wWh2wOD7I-GrXAITRfR-YtPf2jw7dolT
-    biJBktwCqCFSw5Tz9E>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730513723; x=
+	1730600123; bh=hhPyU/JFVlrGqI50WnmxKT9SwEq0unJ10nYucX7vUhQ=; b=j
+	aLeRXxv1X/r6SjEz2Q51eEvSj9G0bEkOkMkh2SlxEHtU7XEwhAD0VXUNTV2JfeuP
+	z+acCHfMvSbtmCe4z8cRuWGHT+K3pkNrSEAim2cbYTTslt3gUUGQgFsrw+5L/+Au
+	KQ2lb+sWQtZTT2dWRtnkLb2rxve8gJu+wgR0ipS5bOSSYIJ8+ozsOx2Pho312b6e
+	agAjbf6K28wvvNNa3DeMY221BQNdRvgpnVDBvRyostfxg4YofTxh8RQKwRvbof5i
+	U6gH2yyeiKSeQfWHKwB7Bkc5TFi2+ex7DEHfu/Jp1J4rQHecwXhOgCJZRXW9JJkM
+	+dToT9CapNOEUqpdL85GA==
+X-ME-Sender: <xms:O4slZ4Bt5O5koNvfVF-8joMpc6AQX9HJZOApuCinczfK_FBECJfZ4w>
+    <xme:O4slZ6i7mSuwgjhsGGhzdLvLdlt7T-z1HTRkfAoa0Ovmr66GRcqximn-pq7BI2k56
+    HjSHJRzYwsgdKmUgso>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeltddggeefucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
@@ -71,7 +71,7 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeltddggeefucetufdoteggod
     necuhfhrohhmpedfofgrrhhkucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnh
     hovhhosehsqhhuvggssgdrtggrqeenucggtffrrghtthgvrhhnpefhuedvheetgeehtdeh
     tdevheduvdejjefggfeijedvgeekhfefleehkeehvdffheenucevlhhushhtvghrufhiii
-    gvpeegnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdqlhgvnhhovhho
+    gvpeehnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdqlhgvnhhovhho
     sehsqhhuvggssgdrtggrpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouh
     htpdhrtghpthhtohepshhhhigrmhdqshhunhgurghrrdhsqdhksegrmhgurdgtohhmpdhr
     tghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtph
@@ -81,14 +81,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeltddggeefucetufdoteggod
     nhesghhmrghilhdrtghomhdprhgtphhtthhopehhmhhhsehhmhhhrdgvnhhgrdgsrhdprh
     gtphhtthhopehsohihvghrsehirhhlrdhhuhdprhgtphhtthhopehlvghnsgeskhgvrhhn
     vghlrdhorhhg
-X-ME-Proxy: <xmx:HIslZ3GE8tLHQ7mLkFhtWvhejna9mMMiDDRPFu8yNtxNwvZ6nw44DQ>
-    <xmx:HIslZ0RWTw-0cE-YtGdYGMnYu3SrD_vMM6jPCJAqwPUUwA_5v4StLA>
-    <xmx:HIslZ0yXPIdQZdkmdKK-OkHZPtzbPXNB4lCGZ2HgQU0tR9KrK9koFg>
-    <xmx:HIslZ65PsecglyYQxysPTPtBoW0UaQNZIsB4gaNgfrJDS2gATrMKug>
-    <xmx:HIslZxzKy-BimVu7KPudm_WCn59kRDMTvSxXdIyOcS-y3xxlfAVsfox6>
+X-ME-Proxy: <xmx:O4slZ7kuTlWyFycbiotMdT08c-oqxFSWPwr1eU4q8h9H4_skPZdE2w>
+    <xmx:O4slZ-yGs1WRqLzs7DmE-MvvIQaHZ07Bnnw9AzoM6RcGH0mOe0qQlw>
+    <xmx:O4slZ9Q-fA4NRlGe_HpJXHvaOMd-lJZJ8DsgaODkV89L59BWzAtwag>
+    <xmx:O4slZ5bUrw9nU40b-ozAoTCzx5hso3ATfCzL8ci0ddeh_g10etPg0g>
+    <xmx:O4slZ-Rjx8oQsrJIZaofi75QbhuLVKUBsMgilZrR6mu-0-J9EVkiATlm>
 Feedback-ID: ibe194615:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 051323C0066; Fri,  1 Nov 2024 22:14:52 -0400 (EDT)
+	id 45BE03C0066; Fri,  1 Nov 2024 22:15:23 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -96,7 +96,7 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 01 Nov 2024 22:14:31 -0400
+Date: Fri, 01 Nov 2024 22:15:03 -0400
 From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
 To: "Limonciello, Mario" <mario.limonciello@amd.com>,
  "Hans de Goede" <hdegoede@redhat.com>,
@@ -115,55 +115,94 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
  "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
  "open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>,
  "Matthew Schwartz" <matthew.schwartz@linux.dev>
-Message-Id: <2ed34c9d-bd75-4668-b1c8-ac663ad17b25@app.fastmail.com>
-In-Reply-To: <20241031040952.109057-15-mario.limonciello@amd.com>
+Message-Id: <7fec9e68-4cc7-4db9-a6a3-8a2917132ac8@app.fastmail.com>
+In-Reply-To: <20241031040952.109057-16-mario.limonciello@amd.com>
 References: <20241031040952.109057-1-mario.limonciello@amd.com>
- <20241031040952.109057-15-mario.limonciello@amd.com>
-Subject: Re: [PATCH v3 14/22] ACPI: platform_profile: Notify change events on register
- and unregister
+ <20241031040952.109057-16-mario.limonciello@amd.com>
+Subject: Re: [PATCH v3 15/22] ACPI: platform_profile: Only show profiles common for all
+ handlers
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
 On Thu, Oct 31, 2024, at 12:09 AM, Mario Limonciello wrote:
-> As multiple platform profile handlers may come and go, send a notification
-> to userspace each time that a platform profile handler is registered or
-> unregistered.
+> If multiple platform profile handlers have been registered, don't allow
+> switching to profiles unique to only one handler.
 >
 > Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/acpi/platform_profile.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/acpi/platform_profile.c | 38 +++++++++++++++++++++++++--------
+>  1 file changed, 29 insertions(+), 9 deletions(-)
 >
-> diff --git a/drivers/acpi/platform_profile.c 
-> b/drivers/acpi/platform_profile.c
-> index 57c66d7dbf827..7bd32f1e8d834 100644
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index 7bd32f1e8d834..90cbc0de4d5bc 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -182,6 +182,7 @@ int platform_profile_register(struct 
-> platform_profile_handler *pprof)
->  	if (err)
->  		return err;
->  	list_add_tail(&pprof->list, &platform_profile_handler_list);
-> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> @@ -29,23 +29,43 @@ static bool platform_profile_is_registered(void)
+>  	return !list_empty(&platform_profile_handler_list);
+>  }
 > 
->  	cur_profile = pprof;
->  	return 0;
-> @@ -195,6 +196,8 @@ int platform_profile_remove(struct 
-> platform_profile_handler *pprof)
->  	list_del(&pprof->list);
-> 
->  	cur_profile = NULL;
+> +static unsigned long platform_profile_get_choices(void)
+> +{
+> +	struct platform_profile_handler *handler;
+> +	unsigned long aggregate = 0;
+> +	int i;
 > +
-> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
->  	if (!platform_profile_is_registered())
->  		sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> +	lockdep_assert_held(&profile_lock);
+> +	list_for_each_entry(handler, &platform_profile_handler_list, list) {
+> +		unsigned long individual = 0;
+> +
+> +		for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST)
+> +			individual |= BIT(i);
+> +		if (!aggregate)
+> +			aggregate = individual;
+> +		else
+> +			aggregate &= individual;
+> +	}
+> +
+> +	return aggregate;
+> +}
+> +
+
+I realise this is very unlikely but isn't it possible that the number of profiles could overflow unsigned long number of bits? As handler->choices is an array of them. It should loop through BITS_TO_LONGS(PLATFORM_PROFILE_LAST) cycles.
+
+Also wondered if this could be simplified with setting aggregate = ~0 and then & it with each handler->choices to avoid having to scan individual bits?
+
+>  static ssize_t platform_profile_choices_show(struct device *dev,
+>  					struct device_attribute *attr,
+>  					char *buf)
+>  {
+> +	unsigned long choices;
+>  	int len = 0;
+>  	int i;
+> 
+> -	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+> -		if (!cur_profile)
+> -			return -ENODEV;
+> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock)
+> +		choices = platform_profile_get_choices();
+> 
+> -		for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
+> -			if (len == 0)
+> -				len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
+> -			else
+> -				len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
+> -		}
+> +	for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAST) {
+> +		if (len == 0)
+> +			len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
+> +		else
+> +			len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
+>  	}
+>  	len += sysfs_emit_at(buf, len, "\n");
 > 
 > -- 
 > 2.43.0
 
-Looks good to me.
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+This links in to the later patches - but I was wondering if at profile registration/unregistration if building a local choices selection would simplify things.
+Then instead of needing platform_profile_get_choices, you can just use your local choices selection to make decisions on what to show, or cycle to - instead of having to cycle thru the profiles and bits every time.
+
+Not 100% sure how well it would work out - but might be simpler and faster?
 
 Mark
 
