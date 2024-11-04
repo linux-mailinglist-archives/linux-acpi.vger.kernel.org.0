@@ -1,183 +1,223 @@
-Return-Path: <linux-acpi+bounces-9278-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9279-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6729BBB4D
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 18:17:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225929BBB99
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 18:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BE16281AB0
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 17:17:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2E7F1F21D9D
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 17:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8561C4A3C;
-	Mon,  4 Nov 2024 17:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836CB1C07EA;
+	Mon,  4 Nov 2024 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F337prcy"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Pq+nrTR8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2064.outbound.protection.outlook.com [40.107.92.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3520F1C4A25;
-	Mon,  4 Nov 2024 17:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730740628; cv=none; b=eEKCFY6aIBS6y16SFpQQKlbzDYz4SQiKTkAz2B4j0NnUD3PpQXVXiDtDi7zNzdZr3AKg0IWtV/I2qOZpxukBCqcffehKLJQEU8/MzUe3dcUaWNyM+EQysSpUqeuXtzzpZpS7IApczruN5Q5hDwUbydfMfuwCHYHfoWvRXrD0euM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730740628; c=relaxed/simple;
-	bh=xICU2lfpalo4u2NWwzN6EbIUM6yHFha/WhiEgSr88wM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IPnFglLaxC5McjYiFsdxurVsoxyPRFcyaXepR4oUrp+Y+PKlnkHUDBZfEO/Ycl/FRG55mtCvYO05S6kPt6eiprPBwlMxnW4gL0WHWzhPzxSk7lBvi/JST/70kC7DhA0K3rbxpafyyFpWRHtpY53MqMsOjnaG+HotXTBjiGj0RVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F337prcy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A90C4CECE;
-	Mon,  4 Nov 2024 17:17:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730740627;
-	bh=xICU2lfpalo4u2NWwzN6EbIUM6yHFha/WhiEgSr88wM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F337prcyYIWgUsGtkZpHscVk6J98fkB/nyuHwOC4/lzSG9KQh6W6/2vyCibuhPcI/
-	 ocobgKXxEntAb0cE4jHEJTF9nc1M6iM6wJLrc7wOQsJec4ZgI4LEIZP6XXvLlsvaRe
-	 O+Sitb3gZ4j/fqpzC+jlFjEW6wkoJKGBN8LrfCTAlVCMdJ+Pa4t6Sn3LC9dftJDgAr
-	 jPVTjHHuCBskDEkQIctwoCX5wWQIgIubwgjY6pH6Nec6fhRzL5ALhCfhtrCtAXgHPn
-	 PZh3QEYfzaQ+FANbZ3pXxYmd5YylGZxDhMiItYjqcsMNE6NsqZuIodNGSUAjVw+rG1
-	 eKkA42rPwDM8A==
-Message-ID: <c72e23ee-4a53-4f3b-8387-bd9b77c0a3fe@kernel.org>
-Date: Mon, 4 Nov 2024 11:17:05 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B987117583;
+	Mon,  4 Nov 2024 17:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730740779; cv=fail; b=JZwfBpm9XY86ySnhnuiOlE7su8nTPC1U2SqRXAjt+bDvV387xH8UmnJmG0RAsm9N71yYDLBVZEbm28dwdXzv1WZmMrMgEwKT3fvKC4l0kftK9GaS9+8jViX7wX6YasYDbOA6XJ1QiYwp2UmMBjCvQOYZaA78gRQfB7TdI75Un38=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730740779; c=relaxed/simple;
+	bh=we39yjYYVv+NU33nSWPruIN20Z4lWddW79T3+j2RUCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=N31b5DVqqorxtcrsNLRJj5RFMldA1qmxZzA4/vKyr/CLyCpKOVTTBaDyG0kezu3jbFE+9HC8tw+mSAgjByjxVcwahwCLJmIq56zoFMq3PJhuutY2WO2Fi/NTRj7bcURiuYOvHOcJv4Re0whlKxvYgxjTt4OT8BF5dS0OJArO1yA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Pq+nrTR8; arc=fail smtp.client-ip=40.107.92.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xPHuG9G7e00xbD/4CjupCQGniFxQGbkA6QS40h6MBBiRGlvrs33ZoJDNj91uPQOam0AAeD54xQnBEMyCaUacnZ3i+wBossQxO3QtxVIGDIUB0hQwzq3DTGyZTBeg18ve3KuilxhNVeH0iGutuV6ENDr1G56L2Q/RnBtKU83UdGevLq5decZgPZWYs2Px20q3G+T48pr3bSbMv76F4lL7FU4UY7aTL4n7CDh6ZxcO2H7sm6g/C9bCcs58dMJPN6sicXcb3f4rlvuHtuT/9hYhFm/OZUQy7jE7Cs3IEv4XFIOvMAmLnd7oHFEYojzWPib2RaHouwYRrE7sSZRRK0uGVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+LHXzcor6GjLh9WhzQGjATq7tg0klHr90ll+Q+kWGU0=;
+ b=YYbkZuZu1BpBkC+Yuq2EbLIn47WHtrlV2+Y1+t4fGJ+QYZ1M9Q7UfyFJMe0Vq4RjmMEsi8GsEN3YDpnaO5qkuEFvhyCHyW1kR27ZW4Jd7/klaf7ZY1Uh3ZYvFMoWfC32NyEvkFXZHXAxd5x2Q4x0ZaoD4MwLEdll2L+IdTe7l8THXoK3wb6sFAgGFFqUbvNhy5/JQU6bMHfXSkQMSp9uwpwVtvVp1qQxcAOr1hTxFhJMGasQ4EHCThFb8XiHea2bROfGhzS1q+Lvx1BJYxXCJi+jcEqAkUKH6kLS/D90A48jtcQOG+x0ycy8WYP/TRsT5+akkQnVzoXtIgwSdzNZRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+LHXzcor6GjLh9WhzQGjATq7tg0klHr90ll+Q+kWGU0=;
+ b=Pq+nrTR84WiP4G2v36W4HPchJpR+F/2cum0+tXXkn6PUV0dg/FA/v0bQCXhDtQxLIHkNqUT6CKsmAqd/8WtVroCbhThCwe+oaxNuhwYx6setpDEtADQ4MyEjR7CcqQ0HQvB6yOSwyqsqf8BBOtXtJuZP2gUlbyuQ+qtG9BnehXhNc/7DOTg4ESsWxz/TJiJ/BjDBRIN4VYaKyTNEEidgfyCzj3v1MXYDUp1La9T+Y0BBvd85CGDJN+5hUhObmM5hegz9QzGv3jPb9mlvJ6/TopyOL7ZXoKtRcPgB1SxllGmN8PKG3xexe+bKbipdtcFJpRPhqvcTdyPTlAdOHW9qCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SA3PR12MB8045.namprd12.prod.outlook.com (2603:10b6:806:31d::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
+ 2024 17:19:33 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8114.015; Mon, 4 Nov 2024
+ 17:19:33 +0000
+Date: Mon, 4 Nov 2024 13:19:31 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Zhangfei Gao <zhangfei.gao@linaro.org>
+Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+	kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 09/12] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
+Message-ID: <20241104171931.GB10193@nvidia.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <9-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <CABQgh9HoGFGDTEqziQt6WrJ7Bm9d-0c259PYsms3nOVEidn5BA@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABQgh9HoGFGDTEqziQt6WrJ7Bm9d-0c259PYsms3nOVEidn5BA@mail.gmail.com>
+X-ClientProxiedBy: BN9PR03CA0526.namprd03.prod.outlook.com
+ (2603:10b6:408:131::21) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ACPI: processor: Move arch_init_invariance_cppc() call
- later
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H . Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Mario Limonciello <mario.limonciello@amd.com>,
- "Gautham R . Shenoy" <gautham.shenoy@amd.com>,
- "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>, "open list:ACPI"
- <linux-acpi@vger.kernel.org>, Ivan Shapovalov <intelfx@intelfx.name>,
- Oleksandr Natalenko <oleksandr@natalenko.name>
-References: <20241102032353.2372544-1-superm1@kernel.org>
- <CAJZ5v0hVbJctHHMS4=c74Y1+qOw2VRfevkPi9W99nHHPejNw0w@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAJZ5v0hVbJctHHMS4=c74Y1+qOw2VRfevkPi9W99nHHPejNw0w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA3PR12MB8045:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c51e531-b36a-49c3-9ec7-08dcfcf4d965
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?N+eqDIoaEadXhfwUFlipMmafnbuyWq4fu+NWF4AW8VX4YdT6iofL5dKpfv0G?=
+ =?us-ascii?Q?yTIG47pgMD+dL21uK4OkMVEu5qpHlpcbsAAAmu8GIwxvw9z4NJ49fiIyaloR?=
+ =?us-ascii?Q?5jDrcpVvj06gfuwqjaUuXaWduK8m1TIX7Xss6Kji15cq+ZtMR5TRjYs1LyEz?=
+ =?us-ascii?Q?Bmndq3avYjBbGx4hx/Z+z2W9jC4ASMIROtRcxK1tZN1rZycA5fJvjViCkqgZ?=
+ =?us-ascii?Q?CMjIv1QZO98X8R8DMfZIrB67FnMjNFGGsPUsorsCwwqc568ePZVjvvad4RYS?=
+ =?us-ascii?Q?ObwXFK2vOCb6MPN+FWUrrNPKOW+H0uezZLRQX2RyKgwFNv0VoSZcHsKRO9Rt?=
+ =?us-ascii?Q?ydjrhdRJDtXlfX2qEu+EKxf9OmpecaEzKHbNxlt/996K9ttUNZzauGJBzNWQ?=
+ =?us-ascii?Q?nSHWlLiGcQhczwzg6GDUoqWPgqmLM0eaN/HRDX59TqU7FEUxbqX+MUsCBZYV?=
+ =?us-ascii?Q?Nr9YVIYRAXtx78yeS2//q8u4zzMFyteU+CPptj8q5YlXG32LMrXd8SI9REcj?=
+ =?us-ascii?Q?dNuZFVCvswtIK7KyvU2kd+Ly4yOEv9nbO2hhFc6HdzP8oCIIjFH49cMzqZUE?=
+ =?us-ascii?Q?sDKDqahKX+G+bmR9X9D3vgyxnsWaJBIvJmhUSiLhb9zCnAoHeR2JwZjSkfq9?=
+ =?us-ascii?Q?yQikMjN8CzS1NUbhUdkcqxGojenDV4Bw3LOoF3uIw38dpGdd8+50ZhC5/Anq?=
+ =?us-ascii?Q?I+U41KvV2Yqg2ROtuQf3rvdRTCw1Y4xIwuCWyl/BxlYnL19k0QOZi5kmeLZX?=
+ =?us-ascii?Q?1q8oCdhfJ+/8fOkFqHhFf4zb6VmgplAvZDul+sW5RvUo9mlhb6+cDUB/I43D?=
+ =?us-ascii?Q?5KkZhVVWRU7+Ql/lnjilwyUXrrLXrYmP7a04S7Ki+5PxObxsK3Y/mIiS8cfo?=
+ =?us-ascii?Q?itBEwLhYnGFtzkHjpCKTapVhwBeJNN/E/5Tja/OuJ04XVaH808uabDwKVEbH?=
+ =?us-ascii?Q?dWSQNuJ9WlLQ4JO06mdtP/xas8mq5aDlp20KYPQoHLjuqVTp+YVm7w5pM8+Z?=
+ =?us-ascii?Q?gLrSEJp3dtuVUm0KPc56pVsWbwRKRurX+OPc6SDiunXcNZQOY8+6jw6S9uNK?=
+ =?us-ascii?Q?LtR2D27LTump+sKESnRFkNNLN3xaauu0BdTuKHvCye/jNN0L01Vu7sxvJtHv?=
+ =?us-ascii?Q?67ZhZttm27DJhaitF6rMta9WMsAW3DspnIciC1WUx+A9nB4XUaGJ2txa3sI7?=
+ =?us-ascii?Q?jrLSHVLHxjNC/yi+rgW6+U1xklum2eJ3SZlXGeNBSZkImz7Be00iKDSx9qo6?=
+ =?us-ascii?Q?7Yg4UBnbEf9GcSYGMAxamg42X91cXLaog+GGBD78rP66AzZ2B2CNssay8f48?=
+ =?us-ascii?Q?QdVysyD4RfGJmZrVBZm/R6IB?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?radHqVYHyt91MS8NRF6/jTFywvLPzAXB9Ur/8q9V1eoDsODSuMuFlwiP31He?=
+ =?us-ascii?Q?srCb26z/xD4igcrvJPv2w+dDXSnSGzfI/j//+VHbnKxL5OuQZSL9Cv1H0UTD?=
+ =?us-ascii?Q?XExKbk+2AVmygu4TZgzCuoyFCtdISHWOZQ+bfkf+TCmmAXOKWv1tOIRXFwMf?=
+ =?us-ascii?Q?/TwL+cZwKOE4viZ8nEyHkHMnE3Xp04Md6CLVDgO1rj+FvOYohD43qlNWMDu+?=
+ =?us-ascii?Q?zz5+O1GLiDm69TL8aUm6U9B56K5tHw6Gia7VOi57VzQVvDKeHqNNnEiBcrmA?=
+ =?us-ascii?Q?jYhsc12J0ooI1lPoELnbEdvkgWYgO9Dh99QMDmCnCU4yh8aNO4jLE8Dw71Lu?=
+ =?us-ascii?Q?y/85HnLi/0r1EfFVcIk0L3xylPkG4nt9AK8Mm7MMop0ojypnMli8XcXOitf5?=
+ =?us-ascii?Q?YKzv34Lt8mfRYSMVCb6YHXhDG4cFMeR1qzFp89dQdubZiU8QzsOUGcJ1hwH6?=
+ =?us-ascii?Q?RBe5SBD9kkniYHjEiE2vUZCMppevFPQC5N1QCZqa2NKl+mneCUH/BxwynrM0?=
+ =?us-ascii?Q?7Eo+UWT01amb7UbMP0HLgpSCaBTRzr0YG/FA0s8j37biHDHsJwnaRDFhZRID?=
+ =?us-ascii?Q?gcEZQv1buxgXHfSKM00/ARtbrAmV8I+1TUNyl5Ofu7b6w1Knh0FCueTxMIFB?=
+ =?us-ascii?Q?57niPBUQSAZHLCisYAij9SM40pe77E8rBL1A4X3GF8ic/BmAN0K3eUCDNnl/?=
+ =?us-ascii?Q?7vUJajX8w/vM72tCSYsd9CSBzQ1ar+yNjJ0f6fTQ/2i2YmNhJqdvSjYL3j4l?=
+ =?us-ascii?Q?FNQ8k64Bc7MTK+bBiKCk1A6ahpspIlciL17uEopar4L3CVhNYLOyauVNBdSf?=
+ =?us-ascii?Q?N3ea5kkXOUzkLZCFkOdD85A36z6lN7veBnVCb0++RC31/F/x1KdYKf6wYRj0?=
+ =?us-ascii?Q?NsDBwLRy9N8PzUZzHlBwJ32zI6OJu0bL6yS3No+PuoMSYr/HPlTv97J+g1FP?=
+ =?us-ascii?Q?wMwJow59co/rfe3Bgge7gd4ZGMkDTEi2d2LjfjNTrLA0No6GseGg5TllfGts?=
+ =?us-ascii?Q?e062c675ACTshXkL+wc4sa087ljzZU0065F2AU0HQm74LxlFOhqOmW4ISqgx?=
+ =?us-ascii?Q?rJ6aEGKqlCUi6rZp0juKwWfIg8jK1OK8Egme5SwxcuANUK2l7KyQh8M3r8EZ?=
+ =?us-ascii?Q?YWoRbPLWDgu3MmsRkf6jI7f2s3R002dP4ZPOqipuzFw+DOxPqTr+JlDLxQ2t?=
+ =?us-ascii?Q?PgQ91qvkdHYYXa8U3ZfckWx+jUyIOc0OmIyrrqhRd52boj3Ifhli5k6bSPYK?=
+ =?us-ascii?Q?MdLJFR6VLQkHiJu12sKPMBOktPRV2FEB7prSXLm95CRsgKpuOUK6XdMm9jcc?=
+ =?us-ascii?Q?22pn4Sps1lMwiTBDrvCgTtKODOjk2jhTcAZW28nCysiyIxrlKYwoi1AS8H0f?=
+ =?us-ascii?Q?EDfTMwU+4DwxUgVirlW3VLyGbPvx5tcwCU0QpHrIxZv7zS3wJlZlA5tv/xCF?=
+ =?us-ascii?Q?YzHCVtXYaXBHURXMNBeRizIVTSmgkWRqi/Z1bUJVZRV7FRa+RfAlrO4KQZ02?=
+ =?us-ascii?Q?7i7B+WtlvHhH2Qbe01fgJrzT4xPoALBlH508C5ubDRjGoyhp2xFFBRowRYCb?=
+ =?us-ascii?Q?DoKACCZeSErPYFTSEds=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c51e531-b36a-49c3-9ec7-08dcfcf4d965
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 17:19:33.1748
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /QRymVrKHSBtR2chYZtOH0i3f5gR7OhkF0Yq1kdm0YwXGSMBDyTrfQ90BtPrPJGf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8045
 
-On 11/4/2024 10:55, Rafael J. Wysocki wrote:
-> On Sat, Nov 2, 2024 at 4:24 AM Mario Limonciello <superm1@kernel.org> wrote:
->>
->> From: Mario Limonciello <mario.limonciello@amd.com>
->>
->> arch_init_invariance_cppc() is called at the end of
->> acpi_cppc_processor_probe() in order to configure frequency invariance
->> based upon the values from _CPC.
->>
->> This however doesn't work on AMD CPPC shared memory designs that have
->> AMD preferred cores enabled because _CPC needs to be analyzed from all
->> cores to judge if preferred cores are enabled.
->>
->> This issue manifests to users as a warning since commit 21fb59ab4b97
->> ("ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn"):
->> ```
->> Could not retrieve highest performance (-19)
->> ```
->>
->> However the warning isn't the cause of this, it was actually
->> commit 279f838a61f9 ("x86/amd: Detect preferred cores in
->> amd_get_boost_ratio_numerator()") which exposed the issue.
->>
->> To fix this problem, push the call to the arch_init_invariance_cppc()
->> macro to the end of acpi_processor_driver_init().
->>
->> Fixes: 279f838a61f9 ("x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()")
->> Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219431
->> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> ---
->> v1->v2:
->>   * Fix LKP robot issue when CONFIG_ACPI_CPPC_LIB not defined
->> ---
->>   arch/x86/include/asm/topology.h | 2 ++
->>   drivers/acpi/cppc_acpi.c        | 6 ------
->>   drivers/acpi/processor_driver.c | 1 +
->>   3 files changed, 3 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
->> index abe3a8f22cbd..b04c5db7e945 100644
->> --- a/arch/x86/include/asm/topology.h
->> +++ b/arch/x86/include/asm/topology.h
->> @@ -295,6 +295,8 @@ extern void arch_scale_freq_tick(void);
->>   #ifdef CONFIG_ACPI_CPPC_LIB
->>   void init_freq_invariance_cppc(void);
->>   #define arch_init_invariance_cppc init_freq_invariance_cppc
->> +#else
->> +static inline void arch_init_invariance_cppc(void) { }
->>   #endif
->>
->>   #endif /* _ASM_X86_TOPOLOGY_H */
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index ed91dfd4fdca..9d48cd706659 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -671,10 +671,6 @@ static int pcc_data_alloc(int pcc_ss_id)
->>    *  )
->>    */
->>
->> -#ifndef arch_init_invariance_cppc
->> -static inline void arch_init_invariance_cppc(void) { }
->> -#endif
->> -
->>   /**
->>    * acpi_cppc_processor_probe - Search for per CPU _CPC objects.
->>    * @pr: Ptr to acpi_processor containing this CPU's logical ID.
->> @@ -905,8 +901,6 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->>                  goto out_free;
->>          }
->>
->> -       arch_init_invariance_cppc();
->> -
->>          kfree(output.pointer);
->>          return 0;
->>
->> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
->> index cb52dd000b95..59620e7bc664 100644
->> --- a/drivers/acpi/processor_driver.c
->> +++ b/drivers/acpi/processor_driver.c
->> @@ -270,6 +270,7 @@ static int __init acpi_processor_driver_init(void)
->>                                    NULL, acpi_soft_cpu_dead);
->>
->>          acpi_processor_throttling_init();
->> +       arch_init_invariance_cppc();
->>          return 0;
->>   err:
->>          driver_unregister(&acpi_processor_driver);
->> --
+On Thu, Oct 31, 2024 at 02:21:11PM +0800, Zhangfei Gao wrote:
+
+> > +static struct iommu_domain *
+> > +arm_vsmmu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
+> > +                             const struct iommu_user_data *user_data)
+> > +{
+> > +       struct arm_vsmmu *vsmmu = container_of(viommu, struct arm_vsmmu, core);
+> > +       struct arm_smmu_nested_domain *nested_domain;
+> > +       struct iommu_hwpt_arm_smmuv3 arg;
+> > +       int ret;
+> > +
+> > +       if (flags)
+> > +               return ERR_PTR(-EOPNOTSUPP);
 > 
-> Applied as a fix for 6.12-rc7.
+> This check fails when using user page fault, with flags =
+> IOMMU_HWPT_FAULT_ID_VALID (4)
+> Strange, the check is not exist in last version?
 > 
-> However, it would be good to add a comment explaining why
-> acpi_processor_driver_init() calls arch_init_invariance_cppc() at the
-> end.  The ACPI processor driver and CPPC are not otherwise related I
-> think?
+> iommufd_viommu_alloc_hwpt_nested ->
+> viommu->ops->alloc_domain_nested(viommu, flags, user_data) ->
+> arm_vsmmu_alloc_domain_nested
 
-Sure, I'm thinking a comment like this.
+It should permit IOMMU_HWPT_FAULT_ID_VALID, I'll add this hunk:
 
-/*
-  * Frequency invariance calculations on AMD platforms can't be run until
-  * _CPC has been evaluated on all processors which will only happen
-  * after probing is complete.
-  */
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+@@ -178,12 +178,18 @@ arm_vsmmu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
+                              const struct iommu_user_data *user_data)
+ {
+        struct arm_vsmmu *vsmmu = container_of(viommu, struct arm_vsmmu, core);
++       const u32 SUPPORTED_FLAGS = IOMMU_HWPT_FAULT_ID_VALID;
+        struct arm_smmu_nested_domain *nested_domain;
+        struct iommu_hwpt_arm_smmuv3 arg;
+        bool enable_ats = false;
+        int ret;
+ 
+-       if (flags)
++       /*
++        * Faults delivered to the nested domain are faults that originated by
++        * the S1 in the domain. The core code will match all PASIDs when
++        * delivering the fault due to user_pasid_table
++        */
++       if (flags & ~SUPPORTED_FLAGS)
+                return ERR_PTR(-EOPNOTSUPP);
+ 
+        ret = iommu_copy_struct_from_user(&arg, user_data,
 
-If that sounds good do you want to squash it in?  Or if you would prefer 
-another commit tacked on that's no problem I'll do that.
+Thanks,
+Jason
 
