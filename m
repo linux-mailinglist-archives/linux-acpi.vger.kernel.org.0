@@ -1,182 +1,130 @@
-Return-Path: <linux-acpi+bounces-9275-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9276-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEE19BBAA8
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 17:55:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0E49BBAAC
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 17:56:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B5221C22872
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 16:55:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C62381F223CF
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Nov 2024 16:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525831C3034;
-	Mon,  4 Nov 2024 16:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF981C232D;
+	Mon,  4 Nov 2024 16:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0U7Al4L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sk7Qu41H"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BFD1C2DB0;
-	Mon,  4 Nov 2024 16:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129951369B6;
+	Mon,  4 Nov 2024 16:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730739329; cv=none; b=NNKofDDnIx1Qzgiy88KVTeLdFC3XY9a8qEgx1KygqpZVnHUTfgoobjtd3RQZg2EJZAf59CH4fsvoA29mW5zrOrlM2b0PHUKiEhRr/pxvmJKTl8NCmj/CZAcQSWWo1fX2GogNNCQDnTXELvtlUT8/DhIxhCEY1Y9viKGTW4mfaag=
+	t=1730739397; cv=none; b=nfrX7YleIiaY69JqRP2bYJTFpFoOs1v7Op5W4KEHeIWPPL4v4kXyzI2ldVPaUOexPyNi0c1DilPqfJ5SHe8QX1KHGTa/Tn1v03hvJphXKekLN0qNhQByIfgnfgJ+96culk0d/IIYNQtWrz0Dao1gn8IVdfS6gaapcDVC7L6n2B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730739329; c=relaxed/simple;
-	bh=s/cEyXTysCb0R1C2uiaHoV1C76ecFccLT4ZoCw7EVLk=;
+	s=arc-20240116; t=1730739397; c=relaxed/simple;
+	bh=+KgTmQ9m+fs9YTuWdW7aG+cCQ9cVogjvZwU1FhHJIBg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gsrCS7WkrROsItna8Hyq28UEyJgA4aOY6CbM4kGRNhX3laGbk24YILrbDjV7z7J49PuiLQ/PBbP959czAAPJ/zi9zxnYfU9EgLk+jM8eeKYZb187PpJf3F/vCb7PEhrh/7fuWFC/r9k/vh2NypP1e7A8LXksSnSo/tA/dKvThEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0U7Al4L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4DCC4CED6;
-	Mon,  4 Nov 2024 16:55:28 +0000 (UTC)
+	 To:Cc:Content-Type; b=CA9mpefYv7E8inzXMNmZb0OptQkusBht0kA8RI6ItpnAfezpmyEQ2TdRbMXOEO50Bu3vk0NrjiISC2UWE/rUQdQDTyJpuMF1d9quwZxgIgq3ovXIGpH8x/mc9MhepZXM3Qc7711PkMN1gi5eyw76VHoCen4I8YpTmur8wgTBck4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sk7Qu41H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B63C4CECE;
+	Mon,  4 Nov 2024 16:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730739328;
-	bh=s/cEyXTysCb0R1C2uiaHoV1C76ecFccLT4ZoCw7EVLk=;
+	s=k20201202; t=1730739396;
+	bh=+KgTmQ9m+fs9YTuWdW7aG+cCQ9cVogjvZwU1FhHJIBg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=a0U7Al4Lm91F/JfDhvMobWgEmIYWD2kx/rDC9bZe52JYZxyN+5LKGnFF3Fthru0iL
-	 RJzei+7ojNdteW2eVx0rbsdcIzlCUjzCrHXPcAVQiZN5j320llmWd/eGotVPsozXyG
-	 8sIxh3b+BDDjiW4GWVSh7XyePgCT3JjiBgePxE3dPvJxuyLgc3xcdqNOgDYkxDGkDS
-	 01ojCVK10LLdg8Ddq+LzoH5jY48UMC3rLn/jqm99FLC8QA0helJQU12bUiRXVFYK5z
-	 DMpq9nb0Hgp774gnDKJRAgyQ+0eH4Nv8IoPcY4kED5uMaegjERIwx7MiJQhtCpbmUb
-	 j+kfEeHUl5zNw==
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3e63e5c0c50so2229544b6e.0;
-        Mon, 04 Nov 2024 08:55:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV2ldLOS1TOlKZPcbVsQ3W6+7R5oLJBEXtYponKjwhu+l1nFlc8iBCOZ/VNVy7VwjDHPuaOSEp6+x7AAxQw@vger.kernel.org, AJvYcCWCdZ6cKKutr8e6UdecCW85LjJJCDZ1vJ7btaI0dAyZQ2UTswSsMG53P5JMMUSTNmoMyoUKPDJDRsko@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyts3M+ysQ5AsIU5A9/lilS83ixG0M2/lBtMf4JLyKVkYzK2v2B
-	hkSvQfhmoU6pZk5m5+ypVd4n+6bYxOlHVChPAZ5Qc9K2krB5iXGImBhFMhQ9sCko2bqUuoBPOWL
-	H8PEPlMLsEnQ/+6L6YgCeETAHwKM=
-X-Google-Smtp-Source: AGHT+IEHt7vhaUxYa6RIIorHyqreoOHTEnTqJZWBB2MMj02UvbDZfcO0Q8cS//8Lvhp49uVO7OWHUySZ1hHtxnH9cck=
-X-Received: by 2002:a05:6808:15a8:b0:3e5:fd5f:e881 with SMTP id
- 5614622812f47-3e74c3daf85mr6664430b6e.16.1730739327854; Mon, 04 Nov 2024
- 08:55:27 -0800 (PST)
+	b=sk7Qu41H4GkK0MG2aMjjpLAHn/f6KnCk4oe6CHBze16mQjzwOC/UaY0c7r0SiTPOH
+	 qKZwV2CPtTeooezXzOmTxG66O52TrRi4gDz5tgLUMh2OLJFg3EPgxYzLfGs/r/9irA
+	 vYOBQ1N0vc4RfC1O8JHaWM1MBAyH1CdImQN6iOdF1Q29JhCPmORQQnht+c8M5GLI0A
+	 d0Ms3Nh+T2UaVCFYLgnPeE7CEV6Nwc4CscqvpkD2DOPd8AQy5d48JEggUB9fOM23Hv
+	 bR7kNBrcFXP0SatIgcPxnoffV4P51K7Z4P3SSAsGEvD4cZHv2ux2tyAzvqsRH6Jvey
+	 tecx++q9Ce0uQ==
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-71807ad76a8so2313890a34.0;
+        Mon, 04 Nov 2024 08:56:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVS6uzjSnYyfoNmz0xZO+fXAPV2Emddp0hIwZi4M/o7vTZS3o7/DqlzoIu4CNSJ/u61WZSHuvpO0wQM@vger.kernel.org, AJvYcCXHziFUjMVhh5x0mRz4lbclRrsW6FneulxtvCRIRhofXTYu0+Xq7r6/lcXDF4eTyG6OETLa6ymVTrgWS8R0@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHaNjVOzSu5hIxut0itcZCxp0tF2SVxIB9gGC8BmNUS61gGqnf
+	2+TzQxF+c4prKhR0GL3t4FqFUZvfy1izD8WTR2vWG/k+nuuJqj3vCDAPtfg6F/GqHeg0+7IGSbl
+	NGuLx0qxaRJ7x9jsi/PpS/qtswFQ=
+X-Google-Smtp-Source: AGHT+IGqClGbcCdHSjv8Vf4H2PhPkz4ezPZJC6cNLWeX2RBDPTAbEMbkUZvikotdP6EMbyljFkVsYmeSKRAxbeMvM08=
+X-Received: by 2002:a05:6871:c703:b0:277:f14c:844b with SMTP id
+ 586e51a60fabf-2948463078fmr14817784fac.37.1730739396262; Mon, 04 Nov 2024
+ 08:56:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241102032353.2372544-1-superm1@kernel.org>
-In-Reply-To: <20241102032353.2372544-1-superm1@kernel.org>
+References: <20241030162754.2110946-1-andriy.shevchenko@linux.intel.com> <63b16433-9f80-492f-9389-633a9852a223@weissschuh.net>
+In-Reply-To: <63b16433-9f80-492f-9389-633a9852a223@weissschuh.net>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 4 Nov 2024 17:55:16 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hVbJctHHMS4=c74Y1+qOw2VRfevkPi9W99nHHPejNw0w@mail.gmail.com>
-Message-ID: <CAJZ5v0hVbJctHHMS4=c74Y1+qOw2VRfevkPi9W99nHHPejNw0w@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: processor: Move arch_init_invariance_cppc() call later
-To: Mario Limonciello <superm1@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mario Limonciello <mario.limonciello@amd.com>, 
-	"Gautham R . Shenoy" <gautham.shenoy@amd.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>, 
-	"open list:ACPI" <linux-acpi@vger.kernel.org>, Ivan Shapovalov <intelfx@intelfx.name>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>
+Date: Mon, 4 Nov 2024 17:56:25 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ip=JacAZTLigdivuASCtNdqp=RZv99OMNiNPt4WYcnxA@mail.gmail.com>
+Message-ID: <CAJZ5v0ip=JacAZTLigdivuASCtNdqp=RZv99OMNiNPt4WYcnxA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] ACPI: battery: Check for error code from
+ devm_mutex_init() call
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 2, 2024 at 4:24=E2=80=AFAM Mario Limonciello <superm1@kernel.or=
-g> wrote:
+On Wed, Oct 30, 2024 at 5:42=E2=80=AFPM Thomas Wei=C3=9Fschuh <thomas@weiss=
+schuh.net> wrote:
 >
-> From: Mario Limonciello <mario.limonciello@amd.com>
+> Hi Andy,
 >
-> arch_init_invariance_cppc() is called at the end of
-> acpi_cppc_processor_probe() in order to configure frequency invariance
-> based upon the values from _CPC.
->
-> This however doesn't work on AMD CPPC shared memory designs that have
-> AMD preferred cores enabled because _CPC needs to be analyzed from all
-> cores to judge if preferred cores are enabled.
->
-> This issue manifests to users as a warning since commit 21fb59ab4b97
-> ("ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn")=
+> Oct 30, 2024 10:28:03 Andy Shevchenko <andriy.shevchenko@linux.intel.com>=
 :
-> ```
-> Could not retrieve highest performance (-19)
-> ```
 >
-> However the warning isn't the cause of this, it was actually
-> commit 279f838a61f9 ("x86/amd: Detect preferred cores in
-> amd_get_boost_ratio_numerator()") which exposed the issue.
+> > Even if it's not critical, the avoidance of checking the error code
+> > from devm_mutex_init() call today diminishes the point of using devm
+> > variant of it. Tomorrow it may even leak something. Add the missed
+> > check.
 >
-> To fix this problem, push the call to the arch_init_invariance_cppc()
-> macro to the end of acpi_processor_driver_init().
+> Thanks!
 >
-> Fixes: 279f838a61f9 ("x86/amd: Detect preferred cores in amd_get_boost_ra=
-tio_numerator()")
-> Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219431
-> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v1->v2:
->  * Fix LKP robot issue when CONFIG_ACPI_CPPC_LIB not defined
-> ---
->  arch/x86/include/asm/topology.h | 2 ++
->  drivers/acpi/cppc_acpi.c        | 6 ------
->  drivers/acpi/processor_driver.c | 1 +
->  3 files changed, 3 insertions(+), 6 deletions(-)
+> Assuming you found this via some sort of tool and you already fixed up al=
+l the other places in the tree missing these checks,
+> wouldn't it make sense to mark devm_mutex_init() as __must_check?
 >
-> diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topol=
-ogy.h
-> index abe3a8f22cbd..b04c5db7e945 100644
-> --- a/arch/x86/include/asm/topology.h
-> +++ b/arch/x86/include/asm/topology.h
-> @@ -295,6 +295,8 @@ extern void arch_scale_freq_tick(void);
->  #ifdef CONFIG_ACPI_CPPC_LIB
->  void init_freq_invariance_cppc(void);
->  #define arch_init_invariance_cppc init_freq_invariance_cppc
-> +#else
-> +static inline void arch_init_invariance_cppc(void) { }
->  #endif
+> > Fixes: 0710c1ce5045 ("ACPI: battery: initialize mutexes through devm_ A=
+PIs")
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 >
->  #endif /* _ASM_X86_TOPOLOGY_H */
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index ed91dfd4fdca..9d48cd706659 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -671,10 +671,6 @@ static int pcc_data_alloc(int pcc_ss_id)
->   *  )
->   */
->
-> -#ifndef arch_init_invariance_cppc
-> -static inline void arch_init_invariance_cppc(void) { }
-> -#endif
-> -
->  /**
->   * acpi_cppc_processor_probe - Search for per CPU _CPC objects.
->   * @pr: Ptr to acpi_processor containing this CPU's logical ID.
-> @@ -905,8 +901,6 @@ int acpi_cppc_processor_probe(struct acpi_processor *=
-pr)
->                 goto out_free;
->         }
->
-> -       arch_init_invariance_cppc();
-> -
->         kfree(output.pointer);
->         return 0;
->
-> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_dri=
-ver.c
-> index cb52dd000b95..59620e7bc664 100644
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-> @@ -270,6 +270,7 @@ static int __init acpi_processor_driver_init(void)
->                                   NULL, acpi_soft_cpu_dead);
->
->         acpi_processor_throttling_init();
-> +       arch_init_invariance_cppc();
->         return 0;
->  err:
->         driver_unregister(&acpi_processor_driver);
-> --
+> Reviewed-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 
-Applied as a fix for 6.12-rc7.
+Applied, thanks!
 
-However, it would be good to add a comment explaining why
-acpi_processor_driver_init() calls arch_init_invariance_cppc() at the
-end.  The ACPI processor driver and CPPC are not otherwise related I
-think?
+> > ---
+> > drivers/acpi/battery.c | 8 ++++++--
+> > 1 file changed, 6 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> > index 66662712e288..70f706d7634f 100644
+> > --- a/drivers/acpi/battery.c
+> > +++ b/drivers/acpi/battery.c
+> > @@ -1226,8 +1226,12 @@ static int acpi_battery_add(struct acpi_device *=
+device)
+> >     strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
+> >     strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
+> >     device->driver_data =3D battery;
+> > -   devm_mutex_init(&device->dev, &battery->lock);
+> > -   devm_mutex_init(&device->dev, &battery->sysfs_lock);
+> > +   result =3D devm_mutex_init(&device->dev, &battery->lock);
+> > +   if (result)
+> > +       return result;
+> > +   result =3D devm_mutex_init(&device->dev, &battery->sysfs_lock);
+> > +   if (result)
+> > +       return result;
+> >     if (acpi_has_method(battery->device->handle, "_BIX"))
+> >         set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
+> >
+> > --
+> > 2.43.0.rc1.1336.g36b5255a03ac
+>
 
