@@ -1,206 +1,392 @@
-Return-Path: <linux-acpi+bounces-9324-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9325-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39109BD347
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 18:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5E49BD4C9
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 19:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E12E1F233C3
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 17:22:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E0D1F234FD
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 18:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23C91E201E;
-	Tue,  5 Nov 2024 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563971E885E;
+	Tue,  5 Nov 2024 18:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EWSw5Uk8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j/HvX/nJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BA91E2007;
-	Tue,  5 Nov 2024 17:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE901E8856;
+	Tue,  5 Nov 2024 18:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730827345; cv=none; b=Z6SMYZw8IgZzFFkqtkNlsP4fttC9RNzMBhhfoVmDaPTdTD9Y3Y+G8SDcksKOB63HexPSZu2t+Nwi/9qQBguuPlAxAXp1GOuQ1KEDI5OSIxLTTXkl6TX6EfQdxqP19ocjRxhM0Hpe+AmZrWhtt2szwemaVyXQZk6BTmKn20tj6k4=
+	t=1730831911; cv=none; b=MydgD/gwtCn4+61y0gXA0E5YbiPbUg2f5CGx4m6YOAJo2V0kx2QN/QLHLi0ZDdgBAsxb7T9w7W5ApscPrLxrQnggFj3RlNhSs5Z7xA51tERmFzI0vJY17CBX5saHqX2KrKXnC+1461042Lgv3JIV3ARL0VrJDpwVgMblVrO9vw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730827345; c=relaxed/simple;
-	bh=fOVeXbQGB4t/BL9BtTDqtV361bSwIcfJ/2tZaOWzY+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gH1+GzA2PXv9Ieo6b6ht9NQv+orYlsTJmgP841UT2+6OeYfWOZwWgFr+1su4gKw7QnwIsiBuGo8k93G3WN9eRK14auqsCigNOPSCVxm5AnNafns6Nqx+PIpvurobGVKxIsawcdr/oKVN5IJGi2oFn7JVQ7V7UpfnlXpUZExWa2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EWSw5Uk8; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1730831911; c=relaxed/simple;
+	bh=NcAtedjSk0pob1xKBENF3OmGAMVOBAfjEzRoUJ8kt8U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tHbWJDPDDC8TAcp0DhfAOUlNRtuPaH054I98iAPEubKgBZd/EjrQjbvMcFFZSBuNqRHCDF2TCwvZKA67hno29Is8eOAJlR7M7sCq6C8g177jb3bCDBUiilKgjtqzjzygKM96wEIQuGgPXhzdNZtFh0hZWMvpm9C2PgY+Aiy7j4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j/HvX/nJ; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730827345; x=1762363345;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fOVeXbQGB4t/BL9BtTDqtV361bSwIcfJ/2tZaOWzY+8=;
-  b=EWSw5Uk8uHbQgK4F0Oawk9wCGYwwlX1+vnlKbU+ZJeaRZME9MpZNjpjB
-   FBPTZrZlsihA93T3tR6TzU4UVVJMFmOvTq5mQMkZ2xtw3n7ooGFujIKPC
-   vGBxxdg0j+9v4ctca3O0HApR4HCJdAE8MC32ogsdqsSfLvBZINng28fup
-   CSGg/BMSjK8vModcskywROJYu0G/F4ButVQNCuPy6j7u0+hJPj5wRHtKM
-   lYKvAcGktEfQClK8l8nUY9SBI4jVmjmaBq2KdNLBrZTmbtACHs43bRPIF
-   wOOX9Lw5+V9ed321RpFxLGIHDVFUbiJBDNjPDzRwMQR44iL33xsYDg0lA
-   w==;
-X-CSE-ConnectionGUID: SYwGG+QHQhuZA+w4Li+FnA==
-X-CSE-MsgGUID: jo7JziRUQr6b/wG/uXh/Qw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30545372"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30545372"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 09:22:23 -0800
-X-CSE-ConnectionGUID: 8eL9tSElRCKhFF2qqTPsUw==
-X-CSE-MsgGUID: dVJ9YNh1Sra4CUon2yA5JA==
+  t=1730831909; x=1762367909;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=NcAtedjSk0pob1xKBENF3OmGAMVOBAfjEzRoUJ8kt8U=;
+  b=j/HvX/nJn1Q6iTTvYkFyA/IvPtFo2MS8kOeb36Y58KgY/OFtT74ankHU
+   AdbZP60F/9zOSML7IZQLgzMHWZPT65lHYHqOZnilAJOwLpDIVc0nhu+th
+   ddQEflFHEGKzysaYdo5IEFtKL3zM5Swp4fyBJE/XCKlQ71dNbk0CT20m+
+   7WHb93rCz2kLxlCXHUVvhGaWWSUyrOEQ9K3lj/3Ox/TVNEvqavI4i5o6w
+   W5Tk6+/bJD6zu+w1emnYwQAglsP0JueWuPPVV92ta7Xs9aJXANJQe/hg1
+   Q5B5yRuOd/dtHC8chcKpV4NCLgHKiQpcHNIv6gaNJVY6CTSX2jnyAsN6+
+   g==;
+X-CSE-ConnectionGUID: mRRgrr/WTsSZFSgcJv1ALQ==
+X-CSE-MsgGUID: MxAe7na3TYCNTSD43LKxNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30708345"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
+   d="scan'208";a="30708345"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 10:38:28 -0800
+X-CSE-ConnectionGUID: D/pBym2mSRy21eis0jcHsA==
+X-CSE-MsgGUID: k5ZZ2g3ISNWcKfXI/UK0SA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
-   d="scan'208";a="114875996"
-Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.109.253]) ([10.125.109.253])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 09:22:18 -0800
-Message-ID: <ddac43ee-858c-4cd6-8319-b3c594d10752@intel.com>
-Date: Tue, 5 Nov 2024 10:22:17 -0700
+   d="scan'208";a="84948616"
+Received: from spandruv-mobl4.amr.corp.intel.com (HELO localhost) ([10.125.109.247])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 10:38:26 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH v6 00/27] DCD: Add support for Dynamic Capacity Devices
+ (DCD)
+Date: Tue, 05 Nov 2024 12:38:22 -0600
+Message-Id: <20241105-dcd-type2-upstream-v6-0-85c7fa2140fe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 12/15] cxl/mbox: Add support for PERFORM_MAINTENANCE
- mailbox command
-To: shiju.jose@huawei.com, linux-edac@vger.kernel.org,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: bp@alien8.de, tony.luck@intel.com, rafael@kernel.org, lenb@kernel.org,
- mchehab@kernel.org, dan.j.williams@intel.com, dave@stgolabs.net,
- jonathan.cameron@huawei.com, gregkh@linuxfoundation.org,
- sudeep.holla@arm.com, jassisinghbrar@gmail.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
- Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
- rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
- dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, james.morse@arm.com,
- jthoughton@google.com, somasundaram.a@hpe.com, erdemaktas@google.com,
- pgonda@google.com, duenwen@google.com, gthelen@google.com,
- wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
- wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
- prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
- kangkang.shen@futurewei.com, wanghuiqiang@huawei.com, linuxarm@huawei.com
-References: <20241101091735.1465-1-shiju.jose@huawei.com>
- <20241101091735.1465-13-shiju.jose@huawei.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20241101091735.1465-13-shiju.jose@huawei.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB5mKmcC/4XQS07EMAwG4KuMsibIedSZzop7oFnk4dJI0FZJq
+ RiNenfSSqBSFVg68v/Zzp1lSpEyu5zuLNEUc+y7UuDDifnWdi/EYyg1kyAVIGgefODjbSDJ34c
+ 8JrJvHHwQVYNSYBNYCTqbibtkO98u0Z/dS8OQqIkf69Tna6nbmMc+3dYlJrG8/jlvEhy4EQ6VF
+ s5SpZ9iN9Lro+9XvUQ1KPl71BkHEFAqlNUmumwyyf+ny0I0RoPXhkwtcE+oL0LDWeAhoZYDfO1
+ q9M5iMHtCfxMCwBwSuhBeoiBCokBhT1QbQtaHRFWIs1G1d2i8MttvvM7z/AkuOQuWHAIAAA==
+X-Change-ID: 20230604-dcd-type2-upstream-0cd15f6216fd
+To: Dave Jiang <dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Navneet Singh <navneet.singh@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Williams <dan.j.williams@intel.com>, 
+ Davidlohr Bueso <dave@stgolabs.net>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, 
+ nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+ David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
+ Johannes Thumshirn <johannes.thumshirn@wdc.com>, 
+ Robert Moore <robert.moore@intel.com>, Len Brown <lenb@kernel.org>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+ Li Ming <ming4.li@intel.com>, 
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Kees Cook <kees@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ linux-hardening@vger.kernel.org
+X-Mailer: b4 0.15-dev-2a633
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730831904; l=12775;
+ i=ira.weiny@intel.com; s=20221211; h=from:subject:message-id;
+ bh=NcAtedjSk0pob1xKBENF3OmGAMVOBAfjEzRoUJ8kt8U=;
+ b=sd8DJio9a8bzHDLhQ0h4iorSsGqxJiLt4WsbO5YCrJOnQjtSlzh8QjIcCVX0Rr3AQc3fxV+pS
+ reAU598UUZbDOQlxMIduCVBJQDwPq/xhQ3ZG6NVSlfN2tqx6Tz2++1A
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=noldbkG+Wp1qXRrrkfY1QJpDf7QsOEthbOT7vm0PqsE=
 
+A git tree of this series can be found here:
 
+	https://github.com/weiny2/linux-kernel/tree/dcd-v4-2024-11-05
 
-On 11/1/24 2:17 AM, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add support for PERFORM_MAINTENANCE mailbox command.
-> 
-> CXL spec 3.1 section 8.2.9.7.1 describes the Perform Maintenance command.
-> This command requests the device to execute the maintenance operation
-> specified by the maintenance operation class and the maintenance operation
-> subclass.
-> 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+This is a quick spin with minor clean ups Dave was going to apply as
+well as a couple of clean ups I had slated for after V4 landed.
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Series info
+===========
 
-> ---
->  drivers/cxl/core/mbox.c | 35 +++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxlmem.h    | 17 +++++++++++++++++
->  2 files changed, 52 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index 4b9e62de164b..381cf9d61c85 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -1084,6 +1084,41 @@ int cxl_set_feature(struct cxl_memdev_state *mds,
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_set_feature, CXL);
->  
-> +int cxl_do_maintenance(struct cxl_memdev_state *mds,
-> +		       u8 class, u8 subclass,
-> +		       void *data_in, size_t data_in_size)
-> +{
-> +	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
-> +	struct cxl_memdev_maintenance_pi {
-> +		struct cxl_mbox_do_maintenance_hdr hdr;
-> +		u8 data[];
-> +	}  __packed;
-> +	struct cxl_mbox_cmd mbox_cmd;
-> +	size_t hdr_size;
-> +
-> +	struct cxl_memdev_maintenance_pi *pi __free(kfree) =
-> +					kmalloc(cxl_mbox->payload_size, GFP_KERNEL);
-> +	pi->hdr.op_class = class;
-> +	pi->hdr.op_subclass = subclass;
-> +	hdr_size = sizeof(pi->hdr);
-> +	/*
-> +	 * Check minimum mbox payload size is available for
-> +	 * the maintenance data transfer.
-> +	 */
-> +	if (hdr_size + data_in_size > cxl_mbox->payload_size)
-> +		return -ENOMEM;
-> +
-> +	memcpy(pi->data, data_in, data_in_size);
-> +	mbox_cmd = (struct cxl_mbox_cmd) {
-> +		.opcode = CXL_MBOX_OP_DO_MAINTENANCE,
-> +		.size_in = hdr_size + data_in_size,
-> +		.payload_in = pi,
-> +	};
-> +
-> +	return cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_do_maintenance, CXL);
-> +
->  /**
->   * cxl_enumerate_cmds() - Enumerate commands for a device.
->   * @mds: The driver data for the operation
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index 9259c5d70a65..28290f7c89f7 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -533,6 +533,7 @@ enum cxl_opcode {
->  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	= 0x0500,
->  	CXL_MBOX_OP_GET_FEATURE		= 0x0501,
->  	CXL_MBOX_OP_SET_FEATURE		= 0x0502,
-> +	CXL_MBOX_OP_DO_MAINTENANCE	= 0x0600,
->  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
->  	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
->  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
-> @@ -909,6 +910,19 @@ struct cxl_mbox_set_feat_hdr {
->  	u8 rsvd[9];
->  }  __packed;
->  
-> +/*
-> + * Perform Maintenance CXL 3.1 Spec 8.2.9.7.1
-> + */
-> +
-> +/*
-> + * Perform Maintenance input payload
-> + * CXL rev 3.1 section 8.2.9.7.1 Table 8-102
-> + */
-> +struct cxl_mbox_do_maintenance_hdr {
-> +	u8 op_class;
-> +	u8 op_subclass;
-> +}  __packed;
-> +
->  int cxl_internal_send_cmd(struct cxl_mailbox *cxl_mbox,
->  			  struct cxl_mbox_cmd *cmd);
->  int cxl_dev_state_identify(struct cxl_memdev_state *mds);
-> @@ -986,4 +1000,7 @@ int cxl_set_feature(struct cxl_memdev_state *mds,
->  		    const uuid_t feat_uuid, u8 feat_version,
->  		    void *feat_data, size_t feat_data_size,
->  		    u8 feat_flag);
-> +int cxl_do_maintenance(struct cxl_memdev_state *mds,
-> +		       u8 class, u8 subclass,
-> +		       void *data_in, size_t data_in_size);
->  #endif /* __CXL_MEM_H__ */
+This series has 4 parts:
+
+Patch 1: Add core range_overlaps() function
+Patch 2-6: CXL clean up/prelim patches
+Patch 7-25: Core DCD support
+Patch 26-27: cxl_test support
+
+Background
+==========
+
+A Dynamic Capacity Device (DCD) (CXL 3.1 sec 9.13.3) is a CXL memory
+device that allows memory capacity within a region to change
+dynamically without the need for resetting the device, reconfiguring
+HDM decoders, or reconfiguring software DAX regions.
+
+One of the biggest use cases for Dynamic Capacity is to allow hosts to
+share memory dynamically within a data center without increasing the
+per-host attached memory.
+
+The general flow for the addition or removal of memory is to have an
+orchestrator coordinate the use of the memory.  Generally there are 5
+actors in such a system, the Orchestrator, Fabric Manager, the Logical
+device, the Host Kernel, and a Host User.
+
+Typical work flows are shown below.
+
+Orchestrator      FM         Device       Host Kernel    Host User
+
+    |             |           |            |              |
+    |-------------- Create region ----------------------->|
+    |             |           |            |              |
+    |             |           |            |<-- Create ---|
+    |             |           |            |    Region    |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |-- Add ----->|-- Add --->|--- Add --->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Accept -|<- Accept  -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |<- Create --->|
+    |             |           |            |   DAX dev    |-- Use memory
+    |             |           |            |              |   |
+    |             |           |            |              |   |
+    |             |           |            |<- Release ---| <-+
+    |             |           |            |   DAX dev    |
+    |             |           |            |              |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |-- Remove -->|- Release->|- Release ->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Release-|<- Release -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |              |
+    |-- Add ----->|-- Add --->|--- Add --->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Accept -|<- Accept  -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |<- Create ----|
+    |             |           |            |   DAX dev    |-- Use memory
+    |             |           |            |              |   |
+    |             |           |            |<- Release ---| <-+
+    |             |           |            |   DAX dev    |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |-- Remove -->|- Release->|- Release ->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Release-|<- Release -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |              |
+    |-- Add ----->|-- Add --->|--- Add --->|              |
+    |  Capacity   |  Extent   |   Extent   |              |
+    |             |           |            |<- Create ----|
+    |             |           |            |   DAX dev    |-- Use memory
+    |             |           |            |              |   |
+    |-- Remove -->|- Release->|- Release ->|              |   |
+    |  Capacity   |  Extent   |   Extent   |              |   |
+    |             |           |            |              |   |
+    |             |           |     (Release Ignored)     |   |
+    |             |           |            |              |   |
+    |             |           |            |<- Release ---| <-+
+    |             |           |            |   DAX dev    |
+    |<------------- Signal done --------------------------|
+    |             |           |            |              |
+    |             |- Release->|- Release ->|              |
+    |             |  Extent   |   Extent   |              |
+    |             |           |            |              |
+    |             |<- Release-|<- Release -|              |
+    |             |   Extent  |   Extent   |              |
+    |             |           |            |<- Destroy ---|
+    |             |           |            |   Region     |
+    |             |           |            |              |
+
+Implementation
+==============
+
+The series still requires the creation of regions and DAX devices to be
+closely synchronized with the Orchestrator and Fabric Manager.  The host
+kernel will reject extents if a region is not yet created.  It also
+ignores extent release if memory is in use (DAX device created).  These
+synchronizations are not anticipated to be an issue with real
+applications.
+
+In order to allow for capacity to be added and removed a new concept of
+a sparse DAX region is introduced.  A sparse DAX region may have 0 or
+more bytes of available space.  The total space depends on the number
+and size of the extents which have been added.
+
+Initially it is anticipated that users of the memory will carefully
+coordinate the surfacing of additional capacity with the creation of DAX
+devices which use that capacity.  Therefore, the allocation of the
+memory to DAX devices does not allow for specific associations between
+DAX device and extent.  This keeps allocations very similar to existing
+DAX region behavior.
+
+To keep the DAX memory allocation aligned with the existing DAX devices
+which do not have tags extents are not allowed to have tags.  Future
+support for tags is planned.
+
+Great care was taken to keep the extent tracking simple.  Some xarray's
+needed to be added but extra software objects were kept to a minimum.
+
+Region extents continue to be tracked as sub-devices of the DAX region.
+This ensures that region destruction cleans up all extent allocations
+properly.
+
+Some review tags were kept if a patch did not change.
+
+The major functionality of this series includes:
+
+- Getting the dynamic capacity (DC) configuration information from cxl
+  devices
+
+- Configuring the DC partitions reported by hardware
+
+- Enhancing the CXL and DAX regions for dynamic capacity support
+	a. Maintain a logical separation between hardware extents and
+	   software managed region extents.  This provides an
+	   abstraction between the layers and should allow for
+	   interleaving in the future
+
+- Get hardware extent lists for endpoint decoders upon
+  region creation.
+
+- Adjust extent/region memory available on the following events.
+        a. Add capacity Events
+	b. Release capacity events
+
+- Host response for add capacity
+	a. do not accept the extent if:
+		If the region does not exist
+		or an error occurs realizing the extent
+	b. If the region does exist
+		realize a DAX region extent with 1:1 mapping (no
+		interleave yet)
+	c. Support the event more bit by processing a list of extents
+	   marked with the more bit together before setting up a
+	   response.
+
+- Host response for remove capacity
+	a. If no DAX device references the extent; release the extent
+	b. If a reference does exist, ignore the request.
+	   (Require FM to issue release again.)
+
+- Modify DAX device creation/resize to account for extents within a
+  sparse DAX region
+
+- Trace Dynamic Capacity events for debugging
+
+- Add cxl-test infrastructure to allow for faster unit testing
+  (See new ndctl branch for cxl-dcd.sh test[1])
+
+- Only support 0 value extent tags
+
+Fan Ni's upstream of Qemu DCD was used for testing.
+
+Remaining work:
+
+	1) Allow mapping to specific extents (perhaps based on
+	   label/tag)
+	   1a) devise region size reporting based on tags
+	2) Interleave support
+
+Possible additional work depending on requirements:
+
+	1) Accept a new extent which extends (but overlaps) an existing
+	   extent(s)
+	2) Release extents when DAX devices are released if a release
+	   was previously seen from the device
+	3) Rework DAX device interfaces, memfd has been explored a bit
+
+[1] https://github.com/weiny2/ndctl/tree/dcd-region2-2024-10-01
+
+---
+Changes in v6:
+- Call memory invalidate on extent add to be consistent with the region
+  invalidate calls
+- Fix counted_by() typo
+- Fix typo
+- Add xarray.h
+- Use UUID for tag debug messages
+- Link to v5: https://patch.msgid.link/20241029-dcd-type2-upstream-v5-0-8739cb67c374@intel.com
+
+---
+Ira Weiny (13):
+      range: Add range_overlaps()
+      ACPI/CDAT: Add CDAT/DSMAS shared and read only flag values
+      dax: Document struct dev_dax_range
+      cxl/pci: Delay event buffer allocation
+      cxl/hdm: Use guard() in cxl_dpa_set_mode()
+      cxl/region: Refactor common create region code
+      cxl/cdat: Gather DSMAS data for DCD regions
+      cxl/events: Split event msgnum configuration from irq setup
+      cxl/pci: Factor out interrupt policy check
+      cxl/core: Return endpoint decoder information from region search
+      dax/bus: Factor out dev dax resize logic
+      tools/testing/cxl: Make event logs dynamic
+      tools/testing/cxl: Add DC Regions to mock mem data
+
+Navneet Singh (14):
+      cxl/mbox: Flag support for Dynamic Capacity Devices (DCD)
+      cxl/mem: Read dynamic capacity configuration from the device
+      cxl/core: Separate region mode from decoder mode
+      cxl/region: Add dynamic capacity decoder and region modes
+      cxl/hdm: Add dynamic capacity size support to endpoint decoders
+      cxl/mem: Expose DCD partition capabilities in sysfs
+      cxl/port: Add endpoint decoder DC mode support to sysfs
+      cxl/region: Add sparse DAX region support
+      cxl/mem: Configure dynamic capacity interrupts
+      cxl/extent: Process DCD events and realize region extents
+      cxl/region/extent: Expose region extent information in sysfs
+      dax/region: Create resources on sparse DAX regions
+      cxl/region: Read existing extents on region creation
+      cxl/mem: Trace Dynamic capacity Event Record
+
+ Documentation/ABI/testing/sysfs-bus-cxl | 125 ++++-
+ drivers/cxl/core/Makefile               |   2 +-
+ drivers/cxl/core/cdat.c                 |  45 +-
+ drivers/cxl/core/core.h                 |  34 +-
+ drivers/cxl/core/extent.c               | 502 +++++++++++++++++
+ drivers/cxl/core/hdm.c                  | 231 ++++++--
+ drivers/cxl/core/mbox.c                 | 610 +++++++++++++++++++-
+ drivers/cxl/core/memdev.c               | 128 ++++-
+ drivers/cxl/core/port.c                 |  19 +-
+ drivers/cxl/core/region.c               | 185 ++++--
+ drivers/cxl/core/trace.h                |  65 +++
+ drivers/cxl/cxl.h                       | 121 +++-
+ drivers/cxl/cxlmem.h                    | 132 ++++-
+ drivers/cxl/pci.c                       | 122 ++--
+ drivers/dax/bus.c                       | 356 ++++++++++--
+ drivers/dax/bus.h                       |   4 +-
+ drivers/dax/cxl.c                       |  71 ++-
+ drivers/dax/dax-private.h               |  66 ++-
+ drivers/dax/hmem/hmem.c                 |   2 +-
+ drivers/dax/pmem.c                      |   2 +-
+ fs/btrfs/ordered-data.c                 |  10 +-
+ include/acpi/actbl1.h                   |   2 +
+ include/cxl/event.h                     |  32 ++
+ include/linux/ioport.h                  |   3 +
+ include/linux/range.h                   |   8 +
+ tools/testing/cxl/Kbuild                |   3 +-
+ tools/testing/cxl/test/mem.c            | 958 ++++++++++++++++++++++++++++----
+ 27 files changed, 3506 insertions(+), 332 deletions(-)
+---
+base-commit: c2ee9f594da826bea183ed14f2cc029c719bf4da
+change-id: 20230604-dcd-type2-upstream-0cd15f6216fd
+
+Best regards,
+-- 
+Ira Weiny <ira.weiny@intel.com>
 
 
