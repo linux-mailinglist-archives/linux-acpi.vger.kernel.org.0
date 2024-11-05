@@ -1,293 +1,124 @@
-Return-Path: <linux-acpi+bounces-9319-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9320-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C339BD11C
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 16:54:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5D99BD2C5
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 17:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C3491C219E7
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 15:54:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4B031F232B8
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 16:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D5613D881;
-	Tue,  5 Nov 2024 15:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B71C1D9A7B;
+	Tue,  5 Nov 2024 16:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c0+UgyEe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmtn0Fc+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A21824BD;
-	Tue,  5 Nov 2024 15:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FD91D516F;
+	Tue,  5 Nov 2024 16:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730822070; cv=none; b=lKjq3XCy2GIlU2Hb8O7+aoSBROgHyc3CgKB3DYbH/F2kzZzGajJnbtA8fQrwhhdDFpJxb3GJb3tIcN6ad41vvbqEUOc/nL8E3Jvq9tLylgl/6QQJ/6oG2hZlJ4juEvRNhFMos2veD8Yl7VtO//nnK5SbFB705fvwbc7nJBMomrU=
+	t=1730825318; cv=none; b=ERDNomZcxnjETe4XdItTbw78dAvZWd3Bq+bY7IPkF9A6sLP5tzmKp18po/agIhN4U6aCmVPMgK3xCKfuiVAsDCzl2CI9KRyerfzzUlMG4VspV+oRvR9QFoGGtPy1zlJxhSiuDTsI9YwE4m1U1cLR5uyWv0uJRFb1AwtIwH1yPgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730822070; c=relaxed/simple;
-	bh=BGPFAVlm3k3zXnI1wXGr2t00y+WfCF4NssA0VmQIOhs=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=eobdmyBxLn2/q+Q/coJZzE25fSYp9CJd/xgE81zJ1HXPX8uCz1BIgv9AYcMDjXdgIiTgA8QnbpOJUh7L13wF4vn14c7ahn4guaEAQidpNiasSmmy1U2Tj9cppOcv7zOnV0vNkYP9MjQRi4lQoyt9/eLO5ac6TKC+blh9zgway1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c0+UgyEe; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730822069; x=1762358069;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=BGPFAVlm3k3zXnI1wXGr2t00y+WfCF4NssA0VmQIOhs=;
-  b=c0+UgyEe89WLC2OtvQS+dV5EOrz+h1QKgtLzrLhySIXnTROJuz0iQzc3
-   Ur2duqjw5H/jfyQkW5L7n+RmLh0Z4qlHmE/GWLrmADM0CpIVB7MK4LVDd
-   9qK/HaXP2YWOAO+NLpboANQFus55Z9TPPLQPzI+TmvxiB208qyQTCfnDH
-   ZrxFkKc/SikGcgKgqSzhd8Dq0REa8gS2YgRjQhHrRAxELus2pAGRmjpAX
-   yl1i2cyV7u8+Zz6i97XNaIvNowgEAB78HIcp22MXDI4UgyFVlWk0gzlIC
-   8dyKIKT6inCHeirrpXIlHhGv5HzSZhO30CNJoroM62/yl358AxUp8Mv69
-   w==;
-X-CSE-ConnectionGUID: M5oQtnA2Q/ywwlZx87iP1w==
-X-CSE-MsgGUID: oxccfTU1QtOGIbfzIku5AA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="41949492"
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
-   d="scan'208";a="41949492"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 07:54:19 -0800
-X-CSE-ConnectionGUID: 3X29JoASSECyBTaniMj7jQ==
-X-CSE-MsgGUID: uoOVPAKuSWWXtgIessZcnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
-   d="scan'208";a="88579678"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.201])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 07:54:12 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 5 Nov 2024 17:54:08 +0200 (EET)
-To: Mario Limonciello <mario.limonciello@amd.com>
-cc: Hans de Goede <hdegoede@redhat.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, 
-    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-    Corentin Chary <corentin.chary@gmail.com>, 
-    "Luke D . Jones" <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>, 
-    Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-    Alexis Belmonte <alexbelm48@gmail.com>, 
-    =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, 
-    Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, 
-    open list <linux-kernel@vger.kernel.org>, 
-    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
-    "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER" <platform-driver-x86@vger.kernel.org>, 
-    "open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, 
-    Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    Matthew Schwartz <matthew.schwartz@linux.dev>
-Subject: Re: [PATCH v4 08/20] ACPI: platform_profile: Use
- `scoped_cond_guard`
-In-Reply-To: <20241105153316.378-9-mario.limonciello@amd.com>
-Message-ID: <8634a0f9-fe38-08f9-8a75-6b5b1bcd3b7e@linux.intel.com>
-References: <20241105153316.378-1-mario.limonciello@amd.com> <20241105153316.378-9-mario.limonciello@amd.com>
+	s=arc-20240116; t=1730825318; c=relaxed/simple;
+	bh=C6Hk6/eHmDS2AcJbkrwiislpkRQ+Eud/EQoVHtBaVi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jav1RawW/cg6gfohV/NDvzLMoSp9qrSLsp6i3a2VN14LaZouhcBIg/TXIsTI6qH8C6rO/qdQKT+ZltvLKDalLtXjQ8TAyPOWTwU2v9Z7ebRNA9AxVZahbM1Jl7emPZQfdJ0W5kB0OCyoVWP1nGFtujNad/hq4qpn4+8rXGhE0oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmtn0Fc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75888C4CECF;
+	Tue,  5 Nov 2024 16:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730825318;
+	bh=C6Hk6/eHmDS2AcJbkrwiislpkRQ+Eud/EQoVHtBaVi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rmtn0Fc+AfgQDPMBkouiMKC3eMbKISVCgolNAoUN/NA08NJsrDiDA9CHq+EyGxYSX
+	 x2ht6NAKiLYE7I83LKoVjs7jg+WAKplOum+cjLQwPnx6QE9f02LK28NYh1DXSPoCIc
+	 V2jJkCSywBTrXd5witeNe/+Mem8bo9sJiXuA6P+kvoMMIBSHTeozVamDGGbscZz8rq
+	 PsqlL2kps4ABTYU7rNalIhA4+bFroEHsgrPpcKIHDt4XA+9J0K5MhGl6Jy0ZFq24yK
+	 YPX0YKXKx4Bnece0a0viT+b8tEQ2HwOFXJfdcO2IFpDmtcJjlCjHkk1rJw7Zj2OCDK
+	 qwTGI0NNtQgBw==
+Date: Tue, 5 Nov 2024 16:48:29 +0000
+From: Will Deacon <will@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+	kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+Message-ID: <20241105164829.GA12923@willie-the-truck>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241101121849.GD8518@willie-the-truck>
+ <20241101132503.GU10193@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-2016531546-1730822048=:949"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241101132503.GU10193@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Jason,
 
---8323328-2016531546-1730822048=:949
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+On Fri, Nov 01, 2024 at 10:25:03AM -0300, Jason Gunthorpe wrote:
+> On Fri, Nov 01, 2024 at 12:18:50PM +0000, Will Deacon wrote:
+> > On Wed, Oct 30, 2024 at 09:20:44PM -0300, Jason Gunthorpe wrote:
+> > > [This is now based on Nicolin's iommufd patches for vIOMMU and will need
+> > > to go through the iommufd tree, please ack]
+> > 
+> > Can't we separate out the SMMUv3 driver changes? They shouldn't depend on
+> > Nicolin's work afaict.
+> 
+> We can put everything before "iommu/arm-smmu-v3: Support
+> IOMMU_VIOMMU_ALLOC" directly on a rc and share a branch with your tree.
+> 
+> That patch and following all depend on Nicolin's work, as they rely on
+> the VIOMMU due to how different ARM is from Intel.
+> 
+> How about you take these patches:
+> 
+>  [PATCH v4 01/12] vfio: Remove VFIO_TYPE1_NESTING_IOMMU
+>  [PATCH v4 02/12] ACPICA: IORT: Update for revision E.f
+>  [PATCH v4 03/12] ACPI/IORT: Support CANWBS memory access flag
+>  [PATCH v4 04/12] iommu/arm-smmu-v3: Report IOMMU_CAP_ENFORCE_CACHE_COHERENCY for CANWBS
+>  [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO via struct arm_smmu_hw_info
+>  [PATCH v4 06/12] iommu/arm-smmu-v3: Implement IOMMU_HWPT_ALLOC_NEST_PARENT
+>  [PATCH v4 07/12] iommu/arm-smmu-v3: Expose the arm_smmu_attach interface
+> 
+> Onto a branch.
 
-On Tue, 5 Nov 2024, Mario Limonciello wrote:
+I've pushed these onto a new branch in the IOMMU tree:
 
-> Migrate away from using an interruptible mutex to scoped_cond_guard
-> in all functions.
->=20
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/platform_profile.c | 114 ++++++++++++--------------------
->  1 file changed, 44 insertions(+), 70 deletions(-)
->=20
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> index 4454c4a903c8f..fd1c4e9dccf0a 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -27,25 +27,21 @@ static ssize_t platform_profile_choices_show(struct d=
-evice *dev,
->  =09=09=09=09=09char *buf)
->  {
->  =09int len =3D 0;
-> -=09int err, i;
-> -
-> -=09err =3D mutex_lock_interruptible(&profile_lock);
-> -=09if (err)
-> -=09=09return err;
-> -
-> -=09if (!cur_profile) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return -ENODEV;
-> -=09}
-> -
-> -=09for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
-> -=09=09if (len =3D=3D 0)
-> -=09=09=09len +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> -=09=09else
-> -=09=09=09len +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> +=09int i;
-> +
-> +=09scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +=09=09if (!cur_profile)
-> +=09=09=09return -ENODEV;
-> +
-> +=09=09for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
-> +=09=09=09if (len =3D=3D 0)
-> +=09=09=09=09len +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> +=09=09=09else
-> +=09=09=09=09len +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> +=09=09}
->  =09}
->  =09len +=3D sysfs_emit_at(buf, len, "\n");
-> -=09mutex_unlock(&profile_lock);
-> +
->  =09return len;
->  }
-> =20
-> @@ -56,20 +52,15 @@ static ssize_t platform_profile_show(struct device *d=
-ev,
->  =09enum platform_profile_option profile =3D PLATFORM_PROFILE_BALANCED;
->  =09int err;
-> =20
-> -=09err =3D mutex_lock_interruptible(&profile_lock);
-> -=09if (err)
-> -=09=09return err;
-> +=09scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +=09=09if (!cur_profile)
-> +=09=09=09return -ENODEV;
-> =20
-> -=09if (!cur_profile) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return -ENODEV;
-> +=09=09err =3D cur_profile->profile_get(cur_profile, &profile);
-> +=09=09if (err)
-> +=09=09=09return err;
->  =09}
-> =20
-> -=09err =3D cur_profile->profile_get(cur_profile, &profile);
-> -=09mutex_unlock(&profile_lock);
-> -=09if (err)
-> -=09=09return err;
-> -
->  =09/* Check that profile is valid index */
->  =09if (WARN_ON((profile < 0) || (profile >=3D ARRAY_SIZE(profile_names))=
-))
->  =09=09return -EIO;
-> @@ -88,28 +79,20 @@ static ssize_t platform_profile_store(struct device *=
-dev,
->  =09if (i < 0)
->  =09=09return -EINVAL;
-> =20
-> -=09err =3D mutex_lock_interruptible(&profile_lock);
-> -=09if (err)
-> -=09=09return err;
-> +=09scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +=09=09if (!cur_profile)
-> +=09=09=09return -ENODEV;
-> =20
-> -=09if (!cur_profile) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return -ENODEV;
-> -=09}
-> +=09=09/* Check that platform supports this profile choice */
-> +=09=09if (!test_bit(i, cur_profile->choices))
-> +=09=09=09return -EOPNOTSUPP;
-> =20
-> -=09/* Check that platform supports this profile choice */
-> -=09if (!test_bit(i, cur_profile->choices)) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return -EOPNOTSUPP;
-> +=09=09err =3D cur_profile->profile_set(cur_profile, i);
-> +=09=09if (err)
-> +=09=09=09return err;
->  =09}
-> =20
-> -=09err =3D cur_profile->profile_set(cur_profile, i);
-> -=09if (!err)
-> -=09=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> -
-> -=09mutex_unlock(&profile_lock);
-> -=09if (err)
-> -=09=09return err;
-> +=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
+	iommufd/arm-smmuv3-nested
 
-Hi Mario,
+However, please can you give it a day or two to get some exposure in
+-next before you merge that into iommufd? I'll ping back here later in
+the week.
 
-While I think it's fine, could you please mention about this move outside=
-=20
-of the lock in the commit message.
+Cheers,
 
-Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-
---
- i.
-
->  =09return count;
->  }
-> =20
-> @@ -140,36 +123,27 @@ int platform_profile_cycle(void)
->  =09enum platform_profile_option next;
->  =09int err;
-> =20
-> -=09err =3D mutex_lock_interruptible(&profile_lock);
-> -=09if (err)
-> -=09=09return err;
-> +=09scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +=09=09if (!cur_profile)
-> +=09=09=09return -ENODEV;
-> =20
-> -=09if (!cur_profile) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return -ENODEV;
-> -=09}
-> +=09=09err =3D cur_profile->profile_get(cur_profile, &profile);
-> +=09=09if (err)
-> +=09=09=09return err;
-> =20
-> -=09err =3D cur_profile->profile_get(cur_profile, &profile);
-> -=09if (err) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return err;
-> -=09}
-> +=09=09next =3D find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE=
-_LAST,
-> +=09=09=09=09=09  profile + 1);
-> =20
-> -=09next =3D find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LA=
-ST,
-> -=09=09=09=09  profile + 1);
-> +=09=09if (WARN_ON(next =3D=3D PLATFORM_PROFILE_LAST))
-> +=09=09=09return -EINVAL;
-> =20
-> -=09if (WARN_ON(next =3D=3D PLATFORM_PROFILE_LAST)) {
-> -=09=09mutex_unlock(&profile_lock);
-> -=09=09return -EINVAL;
-> +=09=09err =3D cur_profile->profile_set(cur_profile, next);
-> +=09=09if (err)
-> +=09=09=09return err;
->  =09}
-> =20
-> -=09err =3D cur_profile->profile_set(cur_profile, next);
-> -=09mutex_unlock(&profile_lock);
-> -
-> -=09if (!err)
-> -=09=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> -
-> -=09return err;
-> +=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +=09return 0;
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_cycle);
-> =20
->=20
---8323328-2016531546-1730822048=:949--
+Will
 
