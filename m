@@ -1,58 +1,59 @@
-Return-Path: <linux-acpi+bounces-9305-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9309-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2812F9BD088
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 16:35:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7E49BD094
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 16:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEC351F237C3
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 15:35:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C190D1C21B7A
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Nov 2024 15:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F1817BB0D;
-	Tue,  5 Nov 2024 15:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9741D9A79;
+	Tue,  5 Nov 2024 15:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ji/DC1ib"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DAwQB/l9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2053.outbound.protection.outlook.com [40.107.95.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA12A16DC01;
-	Tue,  5 Nov 2024 15:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D517917C9F8;
+	Tue,  5 Nov 2024 15:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730820826; cv=fail; b=i+W4YS/b1phE7U23Y1bxK7Z2EzeGkknr3/vJOC6y5WJW+gPntGtSN82I2culM9csqR5Ew2r4oyifsg69lLBWbPYNXibKtKvGMLuEKIyp0cUyPM1tN16Gl2fE5bSVCaxeflYsxXbqf5NgwApm3km+7+i8t6rofnv7J3fC15cJPdE=
+	t=1730820829; cv=fail; b=FmXXFPtuQshWwY+hmtrSPavtnG5M9Ru8lfMlHegM+67OyKq+6lIOL0go6AKJXY2EqPpVvzBScTE1itpKzCgQOVi+PmJG2mCek+M9LOYixrcUT/uJ1zbEX2wH4H370AOpElROc6iyTiJi4xj74MvG2p2C47lHv8halz0Nn/ZVVWA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730820826; c=relaxed/simple;
-	bh=ZiSnrAZqpknDKmRTcVtO5k6/JrorA98CRKWnE2qaNnQ=;
+	s=arc-20240116; t=1730820829; c=relaxed/simple;
+	bh=TKrfIx/ehNBqFKp6HxS0kQpPp2ZLQ7nnOD0u69SIGUc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cActgx1FIutYG1mokfajtrkdXFKp/6aRxIbY3EpbN6DPeDMuGoeY77NzOLbmNAnmV2y1d2/R1KXv596y6tCJdICGVy6OxvZm0iqKeo2P9gR8INMta1+nnZOoGlbB1IbXC9/aJLpRIm5VX33vhS4lLdGmR1H/jN3dPJ6rRPd6OU0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ji/DC1ib; arc=fail smtp.client-ip=40.107.243.58
+	 MIME-Version:Content-Type; b=KWtdw11Od/Us4AWZEkWniOZ2BXL4Grm8HBmuLZTEGdwwQb09whLr9CmFjZeBdd1lcEN7t9o2fOZIQaHxdQ5SkasOvq2KcAowEc3PsJi82Ho8gzKTnG5wJEqCk6XPWO5OtNOBCwxWNWjBmLxdSZQUAEqsspfpRiqiA44mFplc4mU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DAwQB/l9; arc=fail smtp.client-ip=40.107.95.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jZyLT1bkgoff+yg7tGTBSum72kEhWbNi75wjsthMNKwasDPFCAVFnIeSH0eZKEPZzRAJ1dwRimsmbQWFWw/5j1iRt9GBf8R+bPeDnyD2oVAjJRSf5Y9nqbTpnbR4ZpU7e+6OUUz2pR+GTyG8WkobYH26PpTL/CrwvFAtbvlZ9ScFvwVRMwUB8F6OGKA7LRAqTCvEGXvk7ScNAwzLPcJ7k4E+zIAayJrrO+OTn8AjStR/c61vex4QoppINrJEmcaaouD+iDZekPLwk97RRn27tu9hVt8CoBRlOb9dZ8hVwNauCHXR1M1/CIaaCHbrULcLLR+pEAMVwqbVSQ/20MXzhQ==
+ b=q2WVmSn6+UAkxJvj2F4MS1zSzTllDnbP/Gz8saFycGyiVFxtojU9JnA2Xu1x6Gy3wziV8nSOKDcP6G/HtzFHhKK5ABGmEbjKEh+WEQ8PROEku8gqcSt26JC2hr1sbdiRP2xXNalV1IBMNYnFWkIHLkdGqwnmA/YjcyGPv3LYD6CIGEOzFcB8SgF1wkLKN9EcV+NS0ZnK1JZS4vpA7PQ5DzHllXMpnpbYc1nhQYKzcMCcYNi5hoFjk1LxcEZNAcUL6VIvYh8e4pwFt/Ob7tl9HPnNV5oPTgi5Kkx9lN5zwbdjmdieVtK57l7fI0r+5tdXV/5V8sFo+KmIPlkSvdvXfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=naMIE5K+E2Bm+Lw6C/PWo8a1NL6TcZTaCbH9D8/5SRQ=;
- b=VPrH6UcZ8X5Vj7Fkyj+xJHOZkPBRn1TrgMj6ZQ6KWGaN21HM2XgtZeBzQMiSQMQelUl4uL6UQdmwMl1qBtD0Q7HoQLxpis3ITIdR9aGgcdO2r4G3oV3jP9SACG3tiDsXhW8T4PIv4p1cR/DfF9TWo/H8GBaRugC9GB5FYqIvga9VmenBhjteDvVNCbkWqosqEajj7fmVG2q7tSgxYhfybKxb8TcK4/98bhxFOnKjC8FnF74qJ3mmBpQSK9pceZ0Tz86STLqFPPrHSe/LiLdHMt/2u5C909yi9ZmNBnDagSxHsWopokcDa84uVrgcmu+ufCrT9cUKr4RCB0Weru1r2A==
+ bh=xJpLiFAFUIKpH4h3eLZ/owU1Hf+GXYfHSQ/QgRftZXE=;
+ b=kgUiK5kHEfHcI9GU/+tzuk5KhEag4fv5x79azlTU9C3wP35pKg2LTUZZtRzgaRYOIH9O0MsRPvXBgcYGJE8zv6aNTY9+8iZ38GT4xQpeTc1UCef8Gdl9WaPpFjg+DjngphsbAcIdRLfqAbsbadZxj0Y4/CP8Mc1CA0ZKE5HtllUlWB0O/XitKL6Bj7hOdO/eiUBBTM7LZEuYsUk0FwhOwIJKMd7xKiwsSXhrWGUBbPmDgNiov2CwqwDn65bwqQXQDj76tyRySmz4UuPIH15IUOfCcDhOSbYmkkgKXzOIFgNurx9SFuN2bmauY7b6np2k+oz4/dItAtIKcrB5JSZfBQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=naMIE5K+E2Bm+Lw6C/PWo8a1NL6TcZTaCbH9D8/5SRQ=;
- b=ji/DC1ibGhcNgIp/8VRnSsGsSASuwZoY4ir5xSn38ZWTPovotAaCwg7wC8q5RucCOX5uo2UgbsGgLgVIZCCiPVbycGI6pQatm29MTNyisrvOUEb34Ywkx1FdVBx7rnbYUEQ6JEjVmyU5QEZ3LAJyK5PHd1jBQRoR05kWMfljGvM=
-Received: from MN0PR04CA0023.namprd04.prod.outlook.com (2603:10b6:208:52d::28)
- by DM4PR12MB5723.namprd12.prod.outlook.com (2603:10b6:8:5e::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8114.31; Tue, 5 Nov 2024 15:33:42 +0000
+ bh=xJpLiFAFUIKpH4h3eLZ/owU1Hf+GXYfHSQ/QgRftZXE=;
+ b=DAwQB/l9JEp1zPCdt6HOP8bKUW38NwE6fiHRJUQOdpQqyLoQAeqKOzG7f1EFISLBpPCMtpzW7K94soHjOiLiImqDjyIGIyHBXdWX/f17iwAuCOmmbR24SHVfpGMpdwyabvMlR18CAcVRkP70Ubj2jI9mqXKQf4PmWJVD1k+2M0E=
+Received: from MN0PR04CA0007.namprd04.prod.outlook.com (2603:10b6:208:52d::12)
+ by CH3PR12MB9455.namprd12.prod.outlook.com (2603:10b6:610:1c1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Tue, 5 Nov
+ 2024 15:33:42 +0000
 Received: from BN2PEPF000055DF.namprd21.prod.outlook.com
- (2603:10b6:208:52d:cafe::a4) by MN0PR04CA0023.outlook.office365.com
- (2603:10b6:208:52d::28) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:208:52d:cafe::93) by MN0PR04CA0007.outlook.office365.com
+ (2603:10b6:208:52d::12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31 via Frontend
  Transport; Tue, 5 Nov 2024 15:33:42 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -85,9 +86,9 @@ CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
 	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v4 11/20] ACPI: platform_profile: Add choices attribute for class interface
-Date: Tue, 5 Nov 2024 09:33:07 -0600
-Message-ID: <20241105153316.378-12-mario.limonciello@amd.com>
+Subject: [PATCH v4 12/20] ACPI: platform_profile: Add profile attribute for class interface
+Date: Tue, 5 Nov 2024 09:33:08 -0600
+Message-ID: <20241105153316.378-13-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241105153316.378-1-mario.limonciello@amd.com>
 References: <20241105153316.378-1-mario.limonciello@amd.com>
@@ -103,141 +104,198 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DF:EE_|DM4PR12MB5723:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41e95df9-60b1-4209-9cc5-08dcfdaf3a84
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DF:EE_|CH3PR12MB9455:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b06ef5d-1755-4d4d-e812-08dcfdaf3ad0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024;
+	BCL:0;ARA:13230040|7416014|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pfe6BQYxa98EN7ZFNRNWOjzMoTai5ByULv4sy9YIBnS+Z1rSf4zbQNKud5hS?=
- =?us-ascii?Q?60qmLE9GIbViXu1KSLxLd1xjf/ATg4beOroYiaE6ondH/s57RLIAWYWayvZj?=
- =?us-ascii?Q?wyNeX572zY4mOvaxeuvUsEdJKky8oPI3y19dbb1gKL6jC+aQMmQLbc6K2/cj?=
- =?us-ascii?Q?vX5fZD+EkGVAaiVVeKlB9nv9+UYJ7XkC405oScb40pXQEWwNE1Lv1VnWWY6X?=
- =?us-ascii?Q?nNytoQHH6yspkZs0wUCjrqVAAoFOCs3j7m25lA5WQ8DxLWHdr0hkMpEnWib5?=
- =?us-ascii?Q?AUU+SIZW6/llqx8KLffZ2BZxzlcWi+jqQJVPdRUwXP0hZk1xpiNc1ZrzauM8?=
- =?us-ascii?Q?aXkUjYVFV4MEyEy3TDJ7JtZ9HmxreBtJe4FX9ijCeD488ym5jlEijIPsJso1?=
- =?us-ascii?Q?1DU8q9urv+rO8fCT8MnKsLNqZvE6OCv5cuLx/VbIUIZY6DeGJFDe/W18daLH?=
- =?us-ascii?Q?4lM54FceKYLKTIohvRBtGxmAJBNdcWvzEvoMzEgCkcwIVhVXKsTeA+EoEaiu?=
- =?us-ascii?Q?o1TLaTYe1PKwPgI6ZR4vOqbsS0BWrmXM7trwNDUlwcN/w/hwa5R2ws59h510?=
- =?us-ascii?Q?wYc/pu5ffxoBy3O6MMvl8+f8Gur/5jJBzCui5DpJDJHCl9Sgecl72qT/XdaV?=
- =?us-ascii?Q?90VFGcoghj9p7vpxwI32n/sGhWxDEJAaiupHl7o/XQmY2Y89yUHytlThtBIx?=
- =?us-ascii?Q?Mtxl4uOIOl2RXRiqBA4NhAwZjGH/kBL6mihZ1vA+53U4Et24kPyBJYMRkE8e?=
- =?us-ascii?Q?GEKtCdAeuhxoIC2Pi5dtlbGxpgMFIYAiYISX9F0bCd12ieB3i+svQcASSdGa?=
- =?us-ascii?Q?icWex3cy2CCY752pVvsXmX6YYp8lNi3wZAeQ1/o8ey0K6QkOxZuCAqVTSN1C?=
- =?us-ascii?Q?OF2hDnIW4S8IkNviSII3NWlMsNOv59HTtqvcLgmDy93g0aGHmcI+d0SEZ/4n?=
- =?us-ascii?Q?/xYDbm7JrBaPlnp2fLo4/LcHfyDfWwtMG5iILmy3P19Xah8qGU3wqu4BSf62?=
- =?us-ascii?Q?npXlxz/1E3rbz2L8d0k3C6oHTkHmIzxQBdpEYR1YTY6IoD/fTHKevtoOZiXp?=
- =?us-ascii?Q?olhd+HW1FfmmYhMUousbmjQ/nbHb96DyDGUZ/+hmYjsVZ5YaEvaBiodT6WvY?=
- =?us-ascii?Q?HW7BBHIqpMUJCq3ntBga1K6R3qEAk7g4RCarKhL+6md4rVvbuaaOfOU561/e?=
- =?us-ascii?Q?Jlpr2vVc6qJUKD8YaprQVCzxM/2fGLH5TChGGnNJlR+LZFlhPd8oNxugBg9a?=
- =?us-ascii?Q?9A2Heo0K82dIuJLq9HRPF2ydzwWIF2nGQehPBWhDTH4cf0ozmKlywzTEezGQ?=
- =?us-ascii?Q?xfHncDiiYgqF6UqT7V8MIJdtu2CpeCP8eYOGULTnZY/2tKJYzR9gpjxbGtI0?=
- =?us-ascii?Q?BVUEy6V0f5cqWMB/FZvE+0H5Yp+xVwCb3f954HXwWz2maDurFA=3D=3D?=
+	=?us-ascii?Q?CvuLkxShw9THo/Uw3u4Jf9VNLdZXQ7RQsvIFIdoSu/ZiJ9TTKIT2hTgyuy9R?=
+ =?us-ascii?Q?6YNJmL+uRQr1AkXqAbX6pW2MWk2tgGTaxSRrWbuPqDDusrdRD0Z6esW/4q97?=
+ =?us-ascii?Q?a7/P0NrNxwoA6JqFcPgI7NGbUQyvArvSyuvvAhRjwW96Lth50AOfds8qdlpF?=
+ =?us-ascii?Q?GGvTc2SE0CRqzrxfU2xYabsmJd3heT1mZL5USmrRz702Tlj9Rc/9RwpsEV8q?=
+ =?us-ascii?Q?Mm1r9hBdpUHZg/TOv3hDWa9ZFKP75CAFfJ4mpjvhh0mLaELX/zaeJ2a0NCHW?=
+ =?us-ascii?Q?yLb/gRbi3cqEprdwz9I36/ctzqQQ2SkZdPXV+5HFXFsewI51I2ckxfambir2?=
+ =?us-ascii?Q?drp7eOkrMPZ8ynoSa6GURc6eLQCRL2LaTgjO352tH6TCgvWjzlaU9KmL1kxL?=
+ =?us-ascii?Q?XPDMqhQ8WhcvEBRPw4XlqZUbOB0f233Dr5MmlaZ3JmVEICjiJqUUlWRHLbFh?=
+ =?us-ascii?Q?CXWFsputOxSqvacKIyCYQA6GZJAqRub4pd0sgbzY+Pu6bTrSi0mr8oWUcovv?=
+ =?us-ascii?Q?bpknqiuxZbAjhxUTn9Nu7VYPRXg87Voz/4Hu/JV4nBlwDOvYQs9M/nG1R0+G?=
+ =?us-ascii?Q?GD26d3+CzG5wMqNyeWvE/P4UentDTlh6d6VNpjhQV5FF4ks2Qa5rGdhOc4I/?=
+ =?us-ascii?Q?GauzrI0W39J8snkTMzPKhOknUPzqZkzXxjJuEzP+kpqUlDBMqWrED1HQjB7R?=
+ =?us-ascii?Q?ig46J17o6Zmg81C7NhzUH6ZfRa6xbftwAllAPCsD4rkDT50Ioga1tK7BneCP?=
+ =?us-ascii?Q?Tl8rMtqiLb+ZBKIoJJelqioV2Oo4gSO9TfXn8UKk1CTPPppTRp2shlqjJdQT?=
+ =?us-ascii?Q?92NFWD7QbXHMW/VjoSlngzbQsTzii7we+dtuDfrkHWEAx5wOPOq3v8mm7SKU?=
+ =?us-ascii?Q?9pqJ99cmK9w0DDGks4nzL3gX4bGtwIlElkZasJQBlYE4FBwtNkdvaoERW9k9?=
+ =?us-ascii?Q?zi8KiiXYC5EwqIpgzWFB01WeSYJ9XIW4Dlk5coKBAaha9GLQTIguxQVXd1PU?=
+ =?us-ascii?Q?F9flcN5dw6ofglXW3M8lObpmCK+m1PLIBqDrHgBk9TduKZmtOHP6r6d0MEar?=
+ =?us-ascii?Q?vb0yxpYLVoUL86p4ktDhmSnYiWVChQVKyFCGnRUVDjxsmZ0r9QxP1THYbI/g?=
+ =?us-ascii?Q?/WPLpH4h/cobsbMa9OnZBI5pDIbXTHEt7Lf7GiRNfx5Oo7sKFewiKUvjMchr?=
+ =?us-ascii?Q?hFYib7OHlK8A3qypRO4CbzF1L53ellcXrBOnrl1POU8svDTJ/7HqMtJDiq5B?=
+ =?us-ascii?Q?Xs2CDMX/VWsL+XCYBjzuVgS+yPk7edARvxHgAZWZfu3nLvftX8UV6Ns0OexE?=
+ =?us-ascii?Q?aWqjVDi5WqJrehkLrwgCPuGkvfunee6CovI+7Hglmy3kmh6Je5cKBWhrnINN?=
+ =?us-ascii?Q?qAqU6Gdnx8LfOyLaLOQLaBcmrctoXddV2hNGevx5o64JcViZHg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 15:33:42.2016
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 15:33:42.7016
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41e95df9-60b1-4209-9cc5-08dcfdaf3a84
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b06ef5d-1755-4d4d-e812-08dcfdaf3ad0
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BN2PEPF000055DF.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5723
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9455
 
-The `choices` file will show all possible choices that a given platform
-profile handler can support.
+Reading and writing the `profile` sysfs file will use the callbacks for
+the platform profile handler to read or set the given profile.
 
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/acpi/platform_profile.c | 63 +++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+ drivers/acpi/platform_profile.c | 118 ++++++++++++++++++++++++++++++++
+ 1 file changed, 118 insertions(+)
 
 diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 986bd636be226..e1b6569c4ee70 100644
+index e1b6569c4ee70..79083d0bb22e3 100644
 --- a/drivers/acpi/platform_profile.c
 +++ b/drivers/acpi/platform_profile.c
-@@ -25,6 +25,47 @@ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
- 
- static DEFINE_IDR(platform_profile_minor_idr);
- 
-+/**
-+ * _commmon_choices_show - Show the available profile choices
-+ * @choices: The available profile choices
-+ * @buf: The buffer to write to
-+ * Return: The number of bytes written
-+ */
-+static ssize_t _commmon_choices_show(unsigned long choices, char *buf)
-+{
-+	int i, len = 0;
-+
-+	for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAST) {
-+		if (len == 0)
-+			len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
-+		else
-+			len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
-+	}
-+	len += sysfs_emit_at(buf, len, "\n");
-+
-+	return len;
-+}
-+
-+/**
-+ * _get_class_choices - Get the available profile choices for a class device
-+ * @dev: The class device
-+ * Return: The available profile choices
-+ */
-+static int _get_class_choices(struct device *dev, unsigned long *choices)
-+{
-+	struct platform_profile_handler *handler;
-+	int i;
-+
-+	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-+		handler = dev_get_drvdata(dev);
-+		for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST)
-+			*choices |= BIT(i);
-+	}
-+
-+	return 0;
-+}
-+
-+
- /**
-  * name_show - Show the name of the profile handler
-  * @dev: The device
-@@ -41,10 +82,32 @@ static ssize_t name_show(struct device *dev,
- 	return sysfs_emit(buf, "%s\n", handler->name);
+@@ -65,6 +65,78 @@ static int _get_class_choices(struct device *dev, unsigned long *choices)
+ 	return 0;
  }
  
 +/**
-+ * choices_show - Show the available profile choices
-+ * @dev: The device
-+ * @attr: The attribute
-+ * @buf: The buffer to write to
++ * _store_class_profile - Set the profile for a class device
++ * @dev: The class device
++ * @data: The profile to set
 + */
-+static ssize_t choices_show(struct device *dev,
-+			    struct device_attribute *attr,
-+			    char *buf)
++static int _store_class_profile(struct device *dev, void *data)
 +{
-+	unsigned long choices = 0;
++	enum platform_profile_option profile;
++	unsigned long choices;
++	int *i = (int *)data;
 +	int err;
 +
 +	err = _get_class_choices(dev, &choices);
 +	if (err)
 +		return err;
 +
-+	return _commmon_choices_show(choices, buf);
++	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
++		struct platform_profile_handler *handler;
++
++		if (!test_bit(*i, &choices))
++			return -EOPNOTSUPP;
++
++		handler = dev_get_drvdata(dev);
++		err = handler->profile_get(handler, &profile);
++		if (err)
++			return err;
++
++		err = handler->profile_set(handler, *i);
++		if (err) {
++			int recover_err;
++
++			dev_err(dev, "Failed to set profile: %d\n", err);
++			recover_err = handler->profile_set(handler, profile);
++			if (recover_err)
++				dev_err(dev, "Failed to reset profile: %d\n", recover_err);
++		}
++		sysfs_notify(&handler->class_dev->kobj, NULL, "platform_profile");
++		kobject_uevent(&handler->class_dev->kobj, KOBJ_CHANGE);
++	}
++
++	sysfs_notify(acpi_kobj, NULL, "platform_profile");
++	return err ? err : 0;
 +}
 +
++/**
++ * get_class_profile - Show the current profile for a class device
++ * @dev: The class device
++ * @profile: The profile to return
++ * Return: 0 on success, -errno on failure
++ */
++static int get_class_profile(struct device *dev,
++			     enum platform_profile_option *profile)
++{
++	struct platform_profile_handler *handler;
++	enum platform_profile_option val;
++	int err;
++
++	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
++		handler = dev_get_drvdata(dev);
++		err = handler->profile_get(handler, &val);
++		if (err) {
++			pr_err("Failed to get profile for handler %s\n", handler->name);
++			return err;
++		}
++	}
++
++	if (WARN_ON(val >= PLATFORM_PROFILE_LAST))
++		return -EINVAL;
++	*profile = val;
++
++	return 0;
++}
+ 
+ /**
+  * name_show - Show the name of the profile handler
+@@ -102,12 +174,58 @@ static ssize_t choices_show(struct device *dev,
+ 	return _commmon_choices_show(choices, buf);
+ }
+ 
++/**
++ * profile_show - Show the current profile for a class device
++ * @dev: The device
++ * @attr: The attribute
++ * @buf: The buffer to write to
++ * Return: The number of bytes written
++ */
++static ssize_t profile_show(struct device *dev,
++			    struct device_attribute *attr,
++			    char *buf)
++{
++	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
++	int err;
++
++	err = get_class_profile(dev, &profile);
++	if (err)
++		return err;
++
++	return sysfs_emit(buf, "%s\n", profile_names[profile]);
++}
++
++/**
++ * profile_store - Set the profile for a class device
++ * @dev: The device
++ * @attr: The attribute
++ * @buf: The buffer to read from
++ * @count: The number of bytes to read
++ * Return: The number of bytes read
++ */
++static ssize_t profile_store(struct device *dev,
++			     struct device_attribute *attr,
++			     const char *buf, size_t count)
++{
++	int i, ret;
++
++	i = sysfs_match_string(profile_names, buf);
++	if (i < 0)
++		return -EINVAL;
++
++	ret = _store_class_profile(dev, (void *)(long)&i);
++
++	return ret ? ret : count;
++}
  
  static DEVICE_ATTR_RO(name);
-+static DEVICE_ATTR_RO(choices);
+ static DEVICE_ATTR_RO(choices);
++static DEVICE_ATTR_RW(profile);
++
  static struct attribute *profile_attrs[] = {
  	&dev_attr_name.attr,
-+	&dev_attr_choices.attr,
+ 	&dev_attr_choices.attr,
++	&dev_attr_profile.attr,
  	NULL
  };
  ATTRIBUTE_GROUPS(profile);
