@@ -1,56 +1,40 @@
-Return-Path: <linux-acpi+bounces-9378-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9379-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23759BF84E
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:05:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F381C9BF850
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 925D0282AE5
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:05:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222171C21816
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF081D6DB7;
-	Wed,  6 Nov 2024 21:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="N/qmiQ18"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B7920968D;
+	Wed,  6 Nov 2024 21:05:35 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707B95B1FB;
-	Wed,  6 Nov 2024 21:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38E81D6DB7;
+	Wed,  6 Nov 2024 21:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730927110; cv=none; b=L72j2BbIl/cKIfqH8+wGBwbEsLZrOdA3k+gSZ5N7K5hpymNRhs60IDkE8iewKiy9agS7yqRfEFazCAkknUHeOWDisk+C4C5bq1Z6nkoMr8zbc23B5jOr3NSRzn/4f4n6OcXzHFJkmTYl7EvX3QnNVReL+xGp+oWRuNfqz70zY0c=
+	t=1730927135; cv=none; b=D26NCiTnBPZdTnOK6IYJQIwu1QMNi7YUiQs2/rRDR+tMXLauLhav3/LZdXXKTr5VpmYdu7dPCC0xSuwV7eceRvYJzSq5njue8c5dPtosKst3eGihHex9OmtcKhMxTNVVBnSyXRneG5DTvzOD6sIf1Yoyzqajj964lDtIGaCbnJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730927110; c=relaxed/simple;
-	bh=Ek/fPj5nMwmPNoaJtANmKTUXZ88Yvl97h8DjPn1tPB8=;
+	s=arc-20240116; t=1730927135; c=relaxed/simple;
+	bh=V5zGA+7TTCtQX65iL5fAXX3VQZwwLwuD0wSMEpDbyLo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MZSol0ZOSQAc+VfWe+r3JwWiv4ORVMzqJHMT3F78inSgxIPlFY7bB1I6iXjHGc2Y0OXQgquRrZxT6s6z74MCJYS5uvtEPmx/SehBfNi4YO/Caz8olCZCuf7svJNT7f3digpjcmRG6hu/zXiGwF5PHu/IFeOgwy2dZT2qeA3SSyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=N/qmiQ18; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730927044; x=1731531844; i=w_armin@gmx.de;
-	bh=Ek/fPj5nMwmPNoaJtANmKTUXZ88Yvl97h8DjPn1tPB8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=N/qmiQ18A9EkkwgYOeYMyeD4J1tsx2007bdzqyuFM22t7gDKh699gn7a0w3qRhGD
-	 GESsHRBqgPGZVGUAKW5WVxEZOdqTah28hGlqm74FSrxB2+M3oFU6K4nbFF1L0kW9e
-	 yXbw1x874xypxesqcAufpAd5xeQjrfRIp07GCPbo9RJFLxXr9PaSZSTmEZB+jhNYS
-	 PK/+8IRR7KQMGFmZJvEdPjSYLFti97Gf0dUEVOWU48FNTKaPAN3FSbhCD/BeILhbQ
-	 jTPQR4inI79Y1OmgBH3XiGmVGEBWRX9vNRG+nLWbzknh7euaqGiUgV+ReRoIY10f6
-	 nsxuzJSxcbNz/ysuJw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MacSe-1tf60k0JPm-00fLlA; Wed, 06
- Nov 2024 22:04:04 +0100
-Message-ID: <1f3c4bca-9a41-47e8-ab1b-48e80760bee3@gmx.de>
-Date: Wed, 6 Nov 2024 22:04:02 +0100
+	 In-Reply-To:Content-Type; b=QbZ5sYhnTk7WL3Hum6h7sGSpdAI1iD1zxvecBlIxArfhzhAAnvoP4fd66hgPZqPCe4tyVWwzgBas5A85g5YqkMpCq6o8x1QuYevZ5zr+oGkK9c4DkXPbnJxyg36V4YIDBM62NkNsRBxQ4nVfnyWjTrbrdyzrFYGyCje/NFNuYLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C19D7497;
+	Wed,  6 Nov 2024 13:06:01 -0800 (PST)
+Received: from [10.57.90.5] (unknown [10.57.90.5])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 920813F66E;
+	Wed,  6 Nov 2024 13:05:27 -0800 (PST)
+Message-ID: <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
+Date: Wed, 6 Nov 2024 21:05:26 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,222 +42,199 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/20] Add support for binding ACPI platform profile to
- multiple drivers
-To: Mario Limonciello <mario.limonciello@amd.com>,
- Mark Pearson <mpearson-lenovo@squebb.ca>, Hans de Goede
- <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- open list <linux-kernel@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER"
- <ibm-acpi-devel@lists.sourceforge.net>,
- Matthew Schwartz <matthew.schwartz@linux.dev>
-References: <20241105153316.378-1-mario.limonciello@amd.com>
- <26a494ee-d929-4aee-9c2e-d184e0efb842@app.fastmail.com>
- <4462f1d4-4f10-493c-b7ba-8f8d618a8fd7@amd.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <4462f1d4-4f10-493c-b7ba-8f8d618a8fd7@amd.com>
+Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO via
+ struct arm_smmu_hw_info
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Will Deacon <will@kernel.org>, acpica-devel@lists.linux.dev,
+ iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+ Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+ Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Hanjun Guo <guohanjun@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241104114723.GA11511@willie-the-truck> <20241104124102.GX10193@nvidia.com>
+ <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
+ <20241106180531.GA520535@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241106180531.GA520535@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Sx1c0VfmTsHSi1uJOn/rST/UX9GZnUEDbwmweqyaZJTgDghARxb
- UuytNJ9tUW6qGGo+GtfUMaKQDYOGoaI1tRZBNKxPvFfsJuj0VwnKMG7lW21G8QlY9hGse/k
- v8Gg/qhd7SlsiaBbe3hWo3+GTiOsaypA64lCyRU706OEBMCqgc6dTballly6TE9TEvnpXbS
- +6z8N0rwtyKZox5mURYSA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:4G9SF6161V8=;/49ABQHs6ErJifGFuHHfTuIhScT
- HdyPKLcf8J7IKPxc46Q/ctqvned7RERl+VI6Sm9sqjZd9D9RK6KbK/RnCCUk2kDnVKH+Frmdc
- CjXLCUR7SP9cxfsVhazDfNrIUFLuxs80MsetNbTELffXCxCQYIZviS6v26ZTIxfcIcj50BB3A
- 9IeQoC9mQiBrta+0DpndkvLH7MRd5sUuPm7x6iDvZTcyBYC1wBYBrxOIHYJ3oYeE331XgELsh
- giMWEW6cIdSx9C7rXyKRNzKYAE+EeBFRaj8MkhOVXL9UsyBgZugpzDAcFF7CfndPr59fP0USR
- 0YSvLpj9Le0lYD4AwXF4+omWvR1mFk0pJeLiIsLgQltz3g5JX9+Arw0IKVtsHNYj1yGDYqjzQ
- rkvykeL7QtSR+bzF2fxNaILyxdButzCfx69Ns2INoTM690dF90DRcUZmBpj4mEEb2sP+vB3ct
- 2pXYFt9XpKYQqH7xm4qWN3IoiAo9EYb7omTSvsqchEDnzF+ia3Lk5Q+GqDTmTBzIXmQIT0nXy
- OsVTqyr7fXmT/H61cXDvq0IaexaL/J3EBeX/94kkqFT19fyyDwEJi0Vkl/kuYIR/Yq20O/sDW
- 88Q6Pq28BG/P2HMMa8WOE+S5ph0HVSdpVtj2al88eL06rHKjDsB+Iwhv6whaYOqnHRQ8Ej8S5
- Hqa9LtdXwiqCI/DDGu3iu/SALR59hZr7z03SxWJYpLKiYWY3daMitYMX9R5UA91p9dppuD9Lk
- tN92KHCRY6Sy3D6tWqO1jh6TdXn9UWHVxMa0NyEojf3vf3dnxAovQ1IR2M+A1MsU9kCkNTz7M
- MeZPYsDfFosS2pjc5BDnS+fN1wgaBYl3WPoJci57JKKi0=
+Content-Transfer-Encoding: 7bit
 
-Am 06.11.24 um 02:11 schrieb Mario Limonciello:
+On 2024-11-06 6:05 pm, Jason Gunthorpe wrote:
+> On Wed, Nov 06, 2024 at 04:37:53PM +0000, Robin Murphy wrote:
+>> On 2024-11-04 12:41 pm, Jason Gunthorpe wrote:
+>>> On Mon, Nov 04, 2024 at 11:47:24AM +0000, Will Deacon wrote:
+>>>>> +/**
+>>>>> + * struct iommu_hw_info_arm_smmuv3 - ARM SMMUv3 hardware information
+>>>>> + *                                   (IOMMU_HW_INFO_TYPE_ARM_SMMUV3)
+>>>>> + *
+>>>>> + * @flags: Must be set to 0
+>>>>> + * @__reserved: Must be 0
+>>>>> + * @idr: Implemented features for ARM SMMU Non-secure programming interface
+>>>>> + * @iidr: Information about the implementation and implementer of ARM SMMU,
+>>>>> + *        and architecture version supported
+>>>>> + * @aidr: ARM SMMU architecture version
+>>>>> + *
+>>>>> + * For the details of @idr, @iidr and @aidr, please refer to the chapters
+>>>>> + * from 6.3.1 to 6.3.6 in the SMMUv3 Spec.
+>>>>> + *
+>>>>> + * User space should read the underlying ARM SMMUv3 hardware information for
+>>>>> + * the list of supported features.
+>>>>> + *
+>>>>> + * Note that these values reflect the raw HW capability, without any insight if
+>>>>> + * any required kernel driver support is present. Bits may be set indicating the
+>>>>> + * HW has functionality that is lacking kernel software support, such as BTM. If
+>>>>> + * a VMM is using this information to construct emulated copies of these
+>>>>> + * registers it should only forward bits that it knows it can support.
+>>
+>> But how *is* a VMM supposed to know what it can support?
+> 
+> I answered a related question to Mostafa with an example:
+> 
+> https://lore.kernel.org/linux-iommu/20240903235532.GJ3773488@nvidia.com/
+> 
+> "global" capabilities that are enabled directly from the CD entry
+> would follow the pattern.
+> 
+>> Are they all expected to grovel the host devicetree/ACPI tables and
+>> maintain their own knowledge of implementation errata to understand
+>> what's actually usable?
+> 
+> No, VMMs are expected to only implement base line features we have
+> working today and not blindly add new features based only HW registers
+> reported here.
+> 
+> Each future capability we want to enable at the VMM needs an analysis:
+> 
+>   1) Does it require kernel SW changes, ie like BTM? Then it needs a
+>      kernel_capabilities bit to say the kernel SW exists
+>   2) Does it require data from ACPI/DT/etc? Then it needs a
+>      kernel_capabilities bit
+>   3) Does it need to be "turned on" per VM, ie with a VMS enablement?
+>      Then it needs a new request flag in ALLOC_VIOMMU
+>   4) Otherwise it can be read directly from the idr[] array
+> 
+> This is why the comment above is so stern that the VMM "should only
+> forward bits that it knows it can support".
 
-> On 11/5/2024 16:47, Mark Pearson wrote:
->> Hi Mario,
->>
->> On Tue, Nov 5, 2024, at 10:32 AM, Mario Limonciello wrote:
->>> Currently there are a number of ASUS products on the market that
->>> happen to
->>> have ACPI objects for amd-pmf to bind to as well as an ACPI platform
->>> profile provided by asus-wmi.
->>>
->>> The ACPI platform profile support created by amd-pmf on these ASUS
->>> products is "Function 9" which is specifically for "BIOS or EC
->>> notification" of power slider position. This feature is actively used
->>> by some designs such as Framework 13 and Framework 16.
->>>
->>> On these ASUS designs we keep on quirking more and more of them to tur=
-n
->>> off this notification so that asus-wmi can bind.
->>>
->>> This however isn't how Windows works.=C2=A0 "Multiple" things are
->>> notified for
->>> the power slider position. This series adjusts Linux to behave
->>> similarly.
->>>
->>> Multiple drivers can now register an ACPI platform profile and will
->>> react
->>> to set requests.
->>>
->>> To avoid chaos, only positions that are common to both drivers are
->>> accepted when the legacy /sys/firmware/acpi/platform_profile interface
->>> is used.
->>>
->>> This series also adds a new concept of a "custom" profile. This allows
->>> userspace to discover that there are multiple driver handlers that are
->>> configured differently.
->>>
->>> This series also allows dropping all of the PMF quirks from amd-pmf.
->>>
->>> v4:
->>> =C2=A0 * Drop the list; iterate classes
->>> =C2=A0 * Drop patches that didn't make sense without list
->>> =C2=A0 * Cover alienware-wmi as well (recently merged to
->>> platform-x86/for-next)
->>> =C2=A0 * Drop requirement for balanced
->>> =C2=A0 * Rename platform-profile class members to 'profile', 'options'=
-,
->>> 'name'
->>> =C2=A0 * Drop the name in /sys/class/platform-profile and just use ida
->>> value.
->>> =C2=A0=C2=A0=C2=A0 IE platform-profile-0
->>>
->>> Mario Limonciello (20):
->>> =C2=A0=C2=A0 ACPI: platform-profile: Add a name member to handlers
->>> =C2=A0=C2=A0 platform/x86/dell: dell-pc: Create platform device
->>> =C2=A0=C2=A0 ACPI: platform_profile: Add device pointer into platform =
-profile
->>> =C2=A0=C2=A0=C2=A0=C2=A0 handler
->>> =C2=A0=C2=A0 ACPI: platform_profile: Add platform handler argument to
->>> =C2=A0=C2=A0=C2=A0=C2=A0 platform_profile_remove()
->>> =C2=A0=C2=A0 ACPI: platform_profile: Move sanity check out of the mute=
-x
->>> =C2=A0=C2=A0 ACPI: platform_profile: Move matching string for new prof=
-ile out of
->>> =C2=A0=C2=A0=C2=A0=C2=A0 mutex
->>> =C2=A0=C2=A0 ACPI: platform_profile: Use guard(mutex) for register/unr=
-egister
->>> =C2=A0=C2=A0 ACPI: platform_profile: Use `scoped_cond_guard`
->>> =C2=A0=C2=A0 ACPI: platform_profile: Create class for ACPI platform pr=
-ofile
->>> =C2=A0=C2=A0 ACPI: platform_profile: Add name attribute to class inter=
-face
->>> =C2=A0=C2=A0 ACPI: platform_profile: Add choices attribute for class i=
-nterface
->>> =C2=A0=C2=A0 ACPI: platform_profile: Add profile attribute for class i=
-nterface
->>> =C2=A0=C2=A0 ACPI: platform_profile: Notify change events on register =
-and
->>> =C2=A0=C2=A0=C2=A0=C2=A0 unregister
->>> =C2=A0=C2=A0 ACPI: platform_profile: Only show profiles common for all=
- handlers
->>> =C2=A0=C2=A0 ACPI: platform_profile: Add concept of a "custom" profile
->>> =C2=A0=C2=A0 ACPI: platform_profile: Make sure all profile handlers ag=
-ree on
->>> =C2=A0=C2=A0=C2=A0=C2=A0 profile
->>> =C2=A0=C2=A0 ACPI: platform_profile: Check all profile handler to calc=
-ulate next
->>> =C2=A0=C2=A0 ACPI: platform_profile: Allow multiple handlers
->>> =C2=A0=C2=A0 platform/x86/amd: pmf: Drop all quirks
->>> =C2=A0=C2=A0 Documentation: Add documentation about class interface fo=
-r platform
->>> =C2=A0=C2=A0=C2=A0=C2=A0 profiles
->>>
->>> =C2=A0 .../userspace-api/sysfs-platform_profile.rst=C2=A0 |=C2=A0 28 +=
-+
->>> =C2=A0 drivers/acpi/platform_profile.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 446
->>> ++++++++++++++----
->>> =C2=A0 .../surface/surface_platform_profile.c=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 8 +-
->>> =C2=A0 drivers/platform/x86/acer-wmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 10 +-
->>> =C2=A0 drivers/platform/x86/amd/pmf/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +-
->>> =C2=A0 drivers/platform/x86/amd/pmf/core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 -
->>> =C2=A0 drivers/platform/x86/amd/pmf/pmf-quirks.c=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 66 ---
->>> =C2=A0 drivers/platform/x86/amd/pmf/pmf.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 -
->>> =C2=A0 drivers/platform/x86/amd/pmf/sps.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +-
->>> =C2=A0 drivers/platform/x86/asus-wmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 6 +-
->>> =C2=A0 drivers/platform/x86/dell/alienware-wmi.c=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0=C2=A0 8 +-
->>> =C2=A0 drivers/platform/x86/dell/dell-pc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 39 +-
->>> =C2=A0 drivers/platform/x86/hp/hp-wmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 8 +-
->>> =C2=A0 drivers/platform/x86/ideapad-laptop.c=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +-
->>> =C2=A0 .../platform/x86/inspur_platform_profile.c=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 7 +-
->>> =C2=A0 drivers/platform/x86/thinkpad_acpi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +-
->>> =C2=A0 include/linux/platform_profile.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 7 +-
->>> =C2=A0 17 files changed, 456 insertions(+), 195 deletions(-)
->>> =C2=A0 delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
->>>
->>>
->>> base-commit: d68cb6023356af3bd3193983ad4ec03954a0b3e2
->>> --
->>> 2.43.0
->>
->> For the series - I tried it out on my T14s G6 AMD, and it all looks
->> to be working nicely and as expected.
->> The thinkpad-acpi and amd-pmf classes show up. I can tweak them
->> individually and 'custom' shows up under firmware/acpi/platform_profile=
-.
->> I tried various combo's and didn't see any issues.
->> If you have any recommendations of things to try let me know.
->>
->> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->>
->> Mark
->
-> Thanks for testing!=C2=A0 The fact that Lenovo and ASUS are both doing t=
-his
-> with recent laptops makes it all the stronger of a case to do it
-> rather than let them race for who gets the coveted platform profile slot=
-.
->
-> If you've already tried mixing and matching combinations that's all I
-> was going to suggest.
->
-> I'll wait for Armin's review and then I'll respin with the tags and
-> small things you and Ilpo found.
->
-Looking forward to the next iteration.
+So... you're saying this patch is in fact broken, or at least uselessly 
+incomplete, since VMMs aren't allowed to emulate a vSMMU at all without 
+first consulting some other interface which does not exist? Great.
+
+>> S2 tables it its own business. AFAICS, unless the VMM wants to do some
+>> fiddly CD shadowing, it's going to be kinda hard to prevent the SMMU seeing
+>> a guest CD with CD.HA and/or CD.HD set if the guest expects S1 HTTU to work.
+> 
+> If the VMM wrongly indicates HTTU support to the VM, because it
+> wrongly inspected those bits in the idr report, then it is just
+> broken.
+
+What do you mean? We could have a system right now where the hardware is 
+configured with SMMU_IDR0.HTTU=2, but it turned out that atomics were 
+broken in the interconnect so firmware sets the IORT "HTTU override" 
+field is set to 0. We know about that in the kernel, but all a VMM sees 
+is iommu_hw_info_arm_smmuv3.idr[0] indicating HTTU=2. If it is "broken" 
+to take the only information available at face value, assume HTTU is 
+available, and reflect that in a vSMMU interface, then what is the 
+correct thing to do, other than to not dare emulate a vSMMU at all, in 
+fear of a sternly worded comment?
+
+>> I would say it does. Advertising a feature when we already know it's not
+>> usable at all puts a non-trivial and unnecessary burden on the VMM and VM to
+>> then have to somehow derive that information from other sources, at the risk
+>> of being confused by unexpected behaviour if they don't.
+> 
+> That is not the purpose here, the register report is not to be used as
+> "advertising features". It describes details of the raw HW that the
+> VMM may need to use *some* of the fields.
+> 
+> There are quite a few fields that fit #4 today: OAS, VAX, GRAN, BBML,
+> CD2L, etc.
+> 
+> Basically we will pass most of the bits and mask a few. If we get the
+> masking wrong and pass something we shouldn't, then we've improved
+> nothing compared to this proposal. I think we are likely to get the
+> masking wrong :)
+
+Seriously? A simple inverse of the feature detection the kernel driver 
+already does for its own needs, implemented once in the same place, is hard?
+
+Compared to maintaining the exact same information within the driver but 
+in some new different form, and also maintaining it in the UAPI, and 
+having every VMM ever all do the same work to put the two together, and 
+always be up to date with the right UAPI, and never ever let any field 
+slip through as-is, especially not all the ones which were RES0 at time 
+of writing, enforced by a sternly worded comment? Why yes, of course I 
+can see how that's trivially easy and carries no risk whatsoever.
+
+>> We sanitise CPU ID registers for userspace and KVM, so I see no compelling
+>> reason for SMMU ID registers to be different.
+> 
+> We discussed this already:
+> 
+> https://lore.kernel.org/linux-iommu/20240904120103.GB3915968@nvidia.com
+> 
+> It is a false comparison, for KVM the kernel is responsible to control
+> the CPU ID registers. Reporting the registers the VM sees to the VMM
+> makes alot of sense. For SMMU the VMM exclusively controls the VM's ID
+> registers.
+
+Pointing out that two things are different is a false comparison because 
+they are different, by virtue of your choice to make them different? 
+Please try making sense.
+
+Your tautology still does not offer any reasoning against doing the 
+logical thing and following the same basic pattern: the kernel uses the 
+ID register mechanism itself to advertise the set of features it's 
+able/willing to support, by sanitising the values it offers to the VMM, 
+combining the notions of hardware and kernel support where the 
+distinction is irrelevant anyway. The VMM is then still free to take 
+those values and hide more features, or potentially add any that it is 
+capable of emulating without the kernel's help, and advertise that final 
+set to the VM. Obviously there are significant *implementation* 
+differences, most notably that the latter VMM->VM part doesn't need to 
+involve IOMMUFD at all since MMIO register emulation can stay entirely 
+in userspace, whereas for CPU system registers the final VM-visible 
+values need to be plugged back in to KVM for it to handle the traps.
+
+We are all asking you to explain why you think doing the kernel->VMM 
+advertisement naturally and intuitively is somehow bad, and forcing VMMs 
+to instead rely on a more complex, fragile, and crucially non-existent 
+additional interface is better. You should take "We discussed this 
+already" as more of a clue to yourself than to me - if 4 different 
+people have all said the exact same thing in so many words, perhaps 
+there's something in it...
+
+And in case I need to spell it out with less sarcasm, "we'll get masking 
+wrong in the kernel" only implies "we'll get kernel_capabilities wrong 
+in the kernel (and elsewhere)", so it's clearly not a useful argument to 
+keep repeating. Besides, as KVM + sysfs + MRS emulation shows, we're 
+pretty experienced at masking ID registers in the kernel. It's not hard 
+to do it right in a robust manner, where particularly with the nature of 
+SMMU features, the only real risk might be forgetting to expose 
+something new once we do actually support it.
+
+> If you still feel strongly about this please let me know by Friday and
+> I will drop the idr[] array from this cycle. We can continue to
+> discuss a solution for the next cycle.
+
+It already can't work as-is, I don't see how making it even more broken 
+would help. IMO it doesn't seem like a good idea to be merging UAPI at 
+all while it's still clearly incomplete and by its own definition unusable.
 
 Thanks,
-Armin Wolf
-
-> BTW if I missed any important feedback of yours from v3 please let me
-> know.=C2=A0 It was a lot of overhaul to switch to this way of doing thin=
-gs
-> and a lot of it didn't make sense anymore.
->
+Robin.
 
