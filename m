@@ -1,240 +1,346 @@
-Return-Path: <linux-acpi+bounces-9379-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9380-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F381C9BF850
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:05:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D75A9BF872
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222171C21816
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:05:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1B628405E
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B7920968D;
-	Wed,  6 Nov 2024 21:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D79D209F22;
+	Wed,  6 Nov 2024 21:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HbWosbMy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38E81D6DB7;
-	Wed,  6 Nov 2024 21:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730927135; cv=none; b=D26NCiTnBPZdTnOK6IYJQIwu1QMNi7YUiQs2/rRDR+tMXLauLhav3/LZdXXKTr5VpmYdu7dPCC0xSuwV7eceRvYJzSq5njue8c5dPtosKst3eGihHex9OmtcKhMxTNVVBnSyXRneG5DTvzOD6sIf1Yoyzqajj964lDtIGaCbnJc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730927135; c=relaxed/simple;
-	bh=V5zGA+7TTCtQX65iL5fAXX3VQZwwLwuD0wSMEpDbyLo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QbZ5sYhnTk7WL3Hum6h7sGSpdAI1iD1zxvecBlIxArfhzhAAnvoP4fd66hgPZqPCe4tyVWwzgBas5A85g5YqkMpCq6o8x1QuYevZ5zr+oGkK9c4DkXPbnJxyg36V4YIDBM62NkNsRBxQ4nVfnyWjTrbrdyzrFYGyCje/NFNuYLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C19D7497;
-	Wed,  6 Nov 2024 13:06:01 -0800 (PST)
-Received: from [10.57.90.5] (unknown [10.57.90.5])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 920813F66E;
-	Wed,  6 Nov 2024 13:05:27 -0800 (PST)
-Message-ID: <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
-Date: Wed, 6 Nov 2024 21:05:26 +0000
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2084.outbound.protection.outlook.com [40.107.223.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773B713A26F;
+	Wed,  6 Nov 2024 21:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730928353; cv=fail; b=Hn2M9pFNanNazP7UQnlFrwzd5agEiWwdH4K0UPP2PZxtLmP7Op+y6moBOvYMnbWYPBBVGeEHfoQggmIjo7ruRV0TAjvdOUd0leNmI4iNz/68WFWlysgTKTjlsb+7dkxtf+v6ZEjzQjBPm9sDd6xiN90ptrhZvPupPPIZnt9d1lI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730928353; c=relaxed/simple;
+	bh=XVBeAn6aa3sumcUe+UKTzAmFQXpYnP1py4peV9SYdnI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GndhOGUw/2PqdPV7Ml03w42rObynuj/kh4QKxQXkptagH1BSuPlXVGI8QokFUxopout/pdRi5gSyB0Xm0Qdyn/XfEimBY9AFzIKrlNXOFB7KE0ZKu0Kw+4jwku5Yao4ldTkf/lEOVDsuLxYYx7XpvZe4PZwMeqK/dnv7zWfWsAM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HbWosbMy; arc=fail smtp.client-ip=40.107.223.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gt2dllQH2WsM+waI5JM6umUFnl3hCyxNYcY+xDix+1f3ZkM4UembLW204SX2xVfv6U1Tyb1rIejla4ME8qs+snQ9/18jMvB2YpYUYJePn6+7+IX3ZR6jIcTyJeEH4V0jornNSYD0t4EAB/g//OALFDZU3ZZkmKHOtjDGeLiyyatkUYhhV9qSBLSB7gjqbxm4RUHrHi0JLP7vsRcB5B0WYdt61H30szGlv7TgGHrDAZMDh2eR24gVwjDT0etN0hRSu2EGK2Y+RwRXRQULzORtnp/J2f3SRdGdiEFEBdk+DcVBIcH/9Zo6+iVXwoM3lvHI4Ozrnjtt19Jt9iv/60vsmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NWbw27tk8UhXlrtjTAbIrJrDXXuEh+2msVIkAEjSzS8=;
+ b=eoqqbghMigPM22O8RA4IqNsMwaVfSkepVVQF8oXSR/DMCP19xaok8PmbVkORNJAdLhNlA56kqKKFgRQ30zZzKXJsO6BoDJNgO8eJRfmP4VlvSmR1gGGdvjOt2F/fFNPjRFh979JWLTNotTHH0mlICoCDgPt+qqT0jRykmmsizhvZU40rANDb5T5kPSw03Tw8fMI7hGk4LIQNDRbNIRMiWMjS9UEoc1i6/W3i6uLDLCNoH+QS4ucZMb1/ATfD1ZKIqSURZ1+JJC1f5DPVWf4oJ1nA5mGBcTgUdecU0BuhAUaz1uIw5CcgTYLwLc2e9ItWtCCYfG9kBXkoZ7i9BUvG3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NWbw27tk8UhXlrtjTAbIrJrDXXuEh+2msVIkAEjSzS8=;
+ b=HbWosbMyABgBWfcIsgb1zORMzqy9MH23UV11zbGEovWj7UwdzxVOH0hFyL5hScl9B3KjQ6doMGPaT6gutRZW0z2Ok481QtOqQZC+VDdbsBsGSukz4VZECKVRnQfQiyoSIPNLpL+5nEmtxqu92RjCQxZ3HKHdpWwU0FaPnNQVOLQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by SJ0PR12MB7083.namprd12.prod.outlook.com (2603:10b6:a03:4ae::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Wed, 6 Nov
+ 2024 21:25:48 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8114.028; Wed, 6 Nov 2024
+ 21:25:48 +0000
+Message-ID: <3cbbecf7-bba4-4a45-97da-ec461609b2f9@amd.com>
+Date: Wed, 6 Nov 2024 15:25:44 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 16/20] ACPI: platform_profile: Make sure all profile
+ handlers agree on profile
+To: Armin Wolf <W_Armin@gmx.de>, Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241105153316.378-1-mario.limonciello@amd.com>
+ <20241105153316.378-17-mario.limonciello@amd.com>
+ <a2bde9c6-6aa3-445b-b27b-2338d78d132d@gmx.de>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <a2bde9c6-6aa3-445b-b27b-2338d78d132d@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA1P222CA0035.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2d0::10) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO via
- struct arm_smmu_hw_info
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Will Deacon <will@kernel.org>, acpica-devel@lists.linux.dev,
- iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
- Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
- Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Robert Moore <robert.moore@intel.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Hanjun Guo <guohanjun@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
- Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
- patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Mostafa Saleh <smostafa@google.com>
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <20241104114723.GA11511@willie-the-truck> <20241104124102.GX10193@nvidia.com>
- <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
- <20241106180531.GA520535@nvidia.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20241106180531.GA520535@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ0PR12MB7083:EE_
+X-MS-Office365-Filtering-Correlation-Id: cc16418b-8af8-424e-1a52-08dcfea994ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NnVhMjRkWjdnY3phSURhRUpjWTVYL3pWelB0ZzVhWkJiKzZyNlppTHFhemtP?=
+ =?utf-8?B?YnRKbzdZNk5JWTRMUjRsRk1QZFJETElWVGpZK3BqNTEzenFLa1pMLzFwblox?=
+ =?utf-8?B?c0RwL2JESGxoeFJWWmptN0VJRG1QdU5WMGo0bnVjYXRHMTkyVzI0bG1qWXp3?=
+ =?utf-8?B?dzFNQkdtV3pPV20wQkMrenVRKzRYeHByUGdVWUdzRHBaN0xRMzVlc1laWkhx?=
+ =?utf-8?B?NVFGdW8wekVBS080N1o3a2hmUkI4czB6L09FSFM1TzdUZHVlbnhXVyt6MjJN?=
+ =?utf-8?B?RFpSR3F6anZUV3Q5RTJ0MGs4MC9Ca3VIaWxIcnhZMWJldCtHb3dNQS8xSkZE?=
+ =?utf-8?B?Zkswb0xWMEdSMGxMYVNNSDZyUHNsTG9CN2Y2emhqQkRMbEJ4bXZITGRlenZC?=
+ =?utf-8?B?ZUduelJrWnJxZG45QXhKTll4VHNFVGdCZHVrV2lZNlFKOC9yS1ZQZEVIcExq?=
+ =?utf-8?B?dEJqdjFyd1lMTm9VdDJFZUhhTHNFQnA1dlptVmZ0STh0bjVtS3lmWlYxRll0?=
+ =?utf-8?B?VkNGNVRPVGJpS1lDOVV1dTFnd3JMcTdnZWJZZWYyREE4NVJ5cVdqQjdOSW15?=
+ =?utf-8?B?c0N0UmJieUVLc2pyNG1ZUFg2bGhEWGJKbTVGZEZzSnp2a1UxTzV2K0lUQzRC?=
+ =?utf-8?B?SlhFVTVCY3FsYTJ5WE9rS2lLYkRxOGY0QWxFZHZIbll6Tk1FTXlDTFp3UllR?=
+ =?utf-8?B?RmNKNG9RRmljZ2hpVkJoNTVsczZWWGdzWFpXci9VU2o4bFM1RWp6Y2NFVit5?=
+ =?utf-8?B?RHNiUlpMS2JReThpR3hDdVJFRE5FaGVROVgyUmxUTXc4djh0RWJRaHdQbkg2?=
+ =?utf-8?B?VDU1SkFIcGI4ZVhlUndJNm5IckdlOXkvemQ4ZEp5dG9rczFUUERkVWZqd2Fi?=
+ =?utf-8?B?c0xLenN4SU9GeWQxeGdXVVdlV0lxZTNDSUJZVGRpOHgwZVlBblkzWFBGVllK?=
+ =?utf-8?B?aHhpZ0tlWS9TS1Rua0Y1WGUvMmxQblRiWkdDcGxUY0VUeEpHSGZkSkg5TE9E?=
+ =?utf-8?B?WllGb2xhVk5abkt6RnNHdzBTL0xRS05XSTd5Tjl6UWxXTTBBcUZsdytLNzlW?=
+ =?utf-8?B?bGxsNklleDVDZU9yeDU1aitmVXFXUThlUGZ0Z2Nzb1E2dFMveFhOSkk4TTNV?=
+ =?utf-8?B?OU1ReHV2c2dTTmhQbWkrWFFDRE5YaVZkbEh1RlhRSUtITWVpbC9MV015RTA4?=
+ =?utf-8?B?S2ZKUDcyU1ZtVlNvZU5GRHcySWVYOHJOV0pCblg4MkdaQmpSa2ZhNHA0MDBQ?=
+ =?utf-8?B?WFlnQy9nam8vRVVOUmlST1dxYmNXZ3NvR2taM3JHamphZnJXUFNWYlRtWjRI?=
+ =?utf-8?B?NkY0NERDL0J0akxwV1FaQU9iMGE1K2w4NDYvMHVnRGFJVkw0d1NZNGVMckVr?=
+ =?utf-8?B?SVhkZlFnK3FrNnlRaGF3TGhZVnM0Z2ZSRm00RkdkbVVIaEVNSG15VXIyTnpj?=
+ =?utf-8?B?UVBlaWFCcE5zcnZXOHpMSm95b2xZU0FsN2VFd25xb3RZeGFoZFlYWGFyM0pk?=
+ =?utf-8?B?bTZkU3YrR0NnN1l1R0FyWmxJVFhLd1BQSWk2RDdyeGc1QUNYbEdmakc4emU0?=
+ =?utf-8?B?UEw5S0tLWjNKZE1HWU1SUWFVTUpkdWpYWFBYYXNjZ0h4MkRKSDJ6ald3Wno0?=
+ =?utf-8?B?ai9xZkphWEY3dnVZZjcrSnkwQjNQa0tpLzRSOGhQVWRIYXdodmk3L0NIeEow?=
+ =?utf-8?B?NDAxVEhMK0NyaHdjakJLN2t0QWZ5YTl3eElTckpxTjBFWEhwM0loVVpDOFdu?=
+ =?utf-8?Q?danbKFVwrUmB0QNSpdNNO6FbQucB4/QHqbeOvio?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dy9WaFlHZEVYZGhDVTQ1STdXaC82QVFmYlc2ZUtGRk5UVGV4cm1pN09iWFQy?=
+ =?utf-8?B?U1VtN1kwaWFBZ0JFb05lejk3bnBZSDc0dVU3Z0ZXWkNQRmdXbkdibWpTTXA5?=
+ =?utf-8?B?OElNQ0JhNkMySncwZjZYd05oeGJ2ZmRpRXgyaG1NNjlrOUtOUEpnNm1MTnlm?=
+ =?utf-8?B?MHdwZ1hYMmUvZGVRVk9xNG1OSHE3c3NlVVVkQkRucC9NMGJwaXNvVUx5ZGdR?=
+ =?utf-8?B?NUF6QWt5Z2V0ZGExMk5uZUIrWlJVeHFSUFp5bXAzdzU3VTFtVW0yQWdKZkRS?=
+ =?utf-8?B?K1Z1cmZCZkpVbVZ1d3Q4VnB3QmNSTjlUOFg2Rzg5dkNVNi83NTdsV0swWGlP?=
+ =?utf-8?B?MlZ0OVdvYUkrWm5ycHphdTdhK0VZMnoyWXYyZStLb3VkeWJlZTRlS3d5T1Ax?=
+ =?utf-8?B?NGlzcVVHaUdOSnY4VVZ3d2JKSHplanFQMHEwaTBkWjQ4ZFplZGhveVE3OXdQ?=
+ =?utf-8?B?c2YyTUVWdmdSWTBjTnJhVHY3L0R3eC9RcmpKTVRrQ3Z3bnFGOGhoNlFMNXRq?=
+ =?utf-8?B?UFZ6eWduMkRFWXJOWlJCYUszZTYrV3ZlcjQ3N2pwUlFUaGYycUV1Yzd2ZHRE?=
+ =?utf-8?B?SWVqS2Y2cE41SDBrNlVxMFNvVSthcE9Gem5EZ21tczUwSWZ6QlAyVVJDU0dL?=
+ =?utf-8?B?d2lrQ05MZTArdG9XQS9BWU8rNXExbUxoZkI1Tm5pNkxGMlh3ZTE4c2xCYURm?=
+ =?utf-8?B?eDdHV2prd1lMc1RGbDZHakVnWkEzaXNwZXpkcWtXY1ZDd3dYa3VwK3RzSnFh?=
+ =?utf-8?B?UmtnNmdhNUdJTW5wVkFteUhKbndLMWk0QWcrT05FdHN0K0hhblVhQ0JXR1Az?=
+ =?utf-8?B?bG56dHJxK29XUzM2ejZ0Qkdmcmp2ME1CcUxVUUQ0ZlpvaENXMkNWZlp1Qk5h?=
+ =?utf-8?B?NFJDdmhubVdSUGM5R3NTbGhsV1dGM1o4NElYT2kwMWozQ2dacFFTQ1ZDdk1L?=
+ =?utf-8?B?NHJqMUV4UUtaalV6MFRnSS9ZNVIyZTI3UjlPeTViUmlvQXhNTERpNjRkKzE5?=
+ =?utf-8?B?TytFaStyU2J0TzRRUzZVVGJOR2VqMERkdTVVSFREV3pLTjlKR0hQNUpSUHhj?=
+ =?utf-8?B?cmU0YlY1aGtjSE82c3BXMVNMQTlKbTBjTVpCeVUxcnd5U0UyazlnY2F4Zlds?=
+ =?utf-8?B?N3c4cURRNytPcWpVdTRYUStRUThTb2V5Zjc5UnZsVGVjM2FSbElIeWpLRGhx?=
+ =?utf-8?B?aEdMQ3EzU2pwRGZ2M0ZwaE1oQTQyMll2T05qdkllYUFQbEpTYVV4RGErTHpm?=
+ =?utf-8?B?MTZQWTlJcjM2elZGMDhONFBvL2FGQURRTGtRZ0dLb2V5L1RkNWNPUFB3bEI5?=
+ =?utf-8?B?a1hmK0ptYm02RHV1bkFGeHArdzd0NGsvaVlmekVBTlhCenVXeGd5eVk2MmI2?=
+ =?utf-8?B?Y1NNNVRBWHpTS2xaYnNqWFR2MnZCRHcrZ0tGaFZQUm5CV0dndWdOYStKQ2dZ?=
+ =?utf-8?B?WGtHbklYZTBlQU9VeHJXbWxPMG1XSlo5cDZRaUJKWmdPUENRbG1TNG1Sb2Jy?=
+ =?utf-8?B?b0E0a2dHMHZ6OG1VK3RVU3YwRnI4Y09IVEFubDBEdUp4UDZUS1owRVVJeTJY?=
+ =?utf-8?B?M2dYN2tNc2Nidjc2SXk4N3FybUxFeGJIdUJNeVZaTTRidFZhL1BISjNlZkta?=
+ =?utf-8?B?R3owS3k4YnE1UXZEWS9pK3pjMmxLOEFkSURGNU1pVnA0MDlXQ0x4SzlraUMv?=
+ =?utf-8?B?a3BLZmdBMG9PeEcyMmRVeWFreFNnVGQ1S2NoRHE0Y2s4YjdiSEkzTXRqYXl5?=
+ =?utf-8?B?WkFPWXA3OUp6WjNBRWEvTVJUVFNmUngybEdPbnQ4TDFUMzN2YnNCTFo5V05M?=
+ =?utf-8?B?UWkrU1RJMC9XRXV3YnJJdVFVdnV1NFFCSEVhcWNMMXJvQkw2YnBMY2hEK0Zr?=
+ =?utf-8?B?V1Mwb01MbHFZSE5PZEszSnk5VnVjbjNpVk4zMzFlcjRHZTZWLzFZeG5HcTA1?=
+ =?utf-8?B?OU1IUTliUlExbWdvekhuNnlwUjYzbXZwREpxeFE5MTB3UXBPWHB4U2EvUmgv?=
+ =?utf-8?B?a2xMeE4rendpM1RtdzZ3ekV1N05YYTNpL0grZU9PVWp3bHZJMmhWMnRWMnp5?=
+ =?utf-8?B?Skh1VnJPbHE0b0xDN01CZnN4TTR6elIrUm5kZEdDN0FXazZRL2xIbHJISDV2?=
+ =?utf-8?Q?pVum8cUdPYE4hsxNJ5ibDVex4?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc16418b-8af8-424e-1a52-08dcfea994ca
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2024 21:25:48.0361
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IsZAjYMces6YqNtrRjeMQTK3rsBcJkFHpaJljf4++7ScYw6YLegLNExfyULZZQqAP3fapYf4YEm877ID7jdaqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7083
 
-On 2024-11-06 6:05 pm, Jason Gunthorpe wrote:
-> On Wed, Nov 06, 2024 at 04:37:53PM +0000, Robin Murphy wrote:
->> On 2024-11-04 12:41 pm, Jason Gunthorpe wrote:
->>> On Mon, Nov 04, 2024 at 11:47:24AM +0000, Will Deacon wrote:
->>>>> +/**
->>>>> + * struct iommu_hw_info_arm_smmuv3 - ARM SMMUv3 hardware information
->>>>> + *                                   (IOMMU_HW_INFO_TYPE_ARM_SMMUV3)
->>>>> + *
->>>>> + * @flags: Must be set to 0
->>>>> + * @__reserved: Must be 0
->>>>> + * @idr: Implemented features for ARM SMMU Non-secure programming interface
->>>>> + * @iidr: Information about the implementation and implementer of ARM SMMU,
->>>>> + *        and architecture version supported
->>>>> + * @aidr: ARM SMMU architecture version
->>>>> + *
->>>>> + * For the details of @idr, @iidr and @aidr, please refer to the chapters
->>>>> + * from 6.3.1 to 6.3.6 in the SMMUv3 Spec.
->>>>> + *
->>>>> + * User space should read the underlying ARM SMMUv3 hardware information for
->>>>> + * the list of supported features.
->>>>> + *
->>>>> + * Note that these values reflect the raw HW capability, without any insight if
->>>>> + * any required kernel driver support is present. Bits may be set indicating the
->>>>> + * HW has functionality that is lacking kernel software support, such as BTM. If
->>>>> + * a VMM is using this information to construct emulated copies of these
->>>>> + * registers it should only forward bits that it knows it can support.
+On 11/6/2024 14:58, Armin Wolf wrote:
+> Am 05.11.24 um 16:33 schrieb Mario Limonciello:
+> 
+>> If for any reason multiple profile handlers don't agree on the profile
+>> return the custom profile.
 >>
->> But how *is* a VMM supposed to know what it can support?
+>> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>   drivers/acpi/platform_profile.c | 84 +++++++++++++++++++++------------
+>>   1 file changed, 53 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/ 
+>> platform_profile.c
+>> index d8c2d195106c2..7861fccc2e58c 100644
+>> --- a/drivers/acpi/platform_profile.c
+>> +++ b/drivers/acpi/platform_profile.c
+>> @@ -280,55 +280,77 @@ static ssize_t 
+>> platform_profile_choices_show(struct device *dev,
+>>       return _commmon_choices_show(aggregate, buf);
+>>   }
+>>
+>> -static ssize_t platform_profile_show(struct device *dev,
+>> -                    struct device_attribute *attr,
+>> -                    char *buf)
+>> +/**
+>> + * _aggregate_profiles - Aggregate the profiles for legacy sysfs 
+>> interface
+>> + * @dev: The device
+>> + * @data: The profile to return
+>> + * Return: 0 on success, -errno on failure
+>> + */
+>> +static int _aggregate_profiles(struct device *dev, void *data)
+>>   {
+>> -    enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+>> +    enum platform_profile_option *profile = data;
+>> +    enum platform_profile_option val;
+>>       int err;
+>>
+>> -    scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>> -        if (!cur_profile)
+>> -            return -ENODEV;
+>> +    err = get_class_profile(dev, &val);
+>> +    if (err)
+>> +        return err;
+>>
+>> -        err = cur_profile->profile_get(cur_profile, &profile);
+>> -        if (err)
+>> -            return err;
+>> -    }
+>> +    if (*profile != PLATFORM_PROFILE_LAST && *profile != val)
+>> +        *profile = PLATFORM_PROFILE_CUSTOM;
+>> +    else
+>> +        *profile = val;
+>>
+>> -    /* Check that profile is valid index */
+>> -    if (WARN_ON((profile < 0) || (profile >= 
+>> ARRAY_SIZE(profile_names))))
+>> -        return -EIO;
 > 
-> I answered a related question to Mostafa with an example:
-> 
-> https://lore.kernel.org/linux-iommu/20240903235532.GJ3773488@nvidia.com/
-> 
-> "global" capabilities that are enabled directly from the CD entry
-> would follow the pattern.
-> 
->> Are they all expected to grovel the host devicetree/ACPI tables and
->> maintain their own knowledge of implementation errata to understand
->> what's actually usable?
-> 
-> No, VMMs are expected to only implement base line features we have
-> working today and not blindly add new features based only HW registers
-> reported here.
-> 
-> Each future capability we want to enable at the VMM needs an analysis:
-> 
->   1) Does it require kernel SW changes, ie like BTM? Then it needs a
->      kernel_capabilities bit to say the kernel SW exists
->   2) Does it require data from ACPI/DT/etc? Then it needs a
->      kernel_capabilities bit
->   3) Does it need to be "turned on" per VM, ie with a VMS enablement?
->      Then it needs a new request flag in ALLOC_VIOMMU
->   4) Otherwise it can be read directly from the idr[] array
-> 
-> This is why the comment above is so stern that the VMM "should only
-> forward bits that it knows it can support".
+> Please check the returned value from profile_get() first before doing
+> the custom platform
+> profile check.
 
-So... you're saying this patch is in fact broken, or at least uselessly 
-incomplete, since VMMs aren't allowed to emulate a vSMMU at all without 
-first consulting some other interface which does not exist? Great.
+You might have missed it - that's part of get_class_profile() already.
 
->> S2 tables it its own business. AFAICS, unless the VMM wants to do some
->> fiddly CD shadowing, it's going to be kinda hard to prevent the SMMU seeing
->> a guest CD with CD.HA and/or CD.HD set if the guest expects S1 HTTU to work.
 > 
-> If the VMM wrongly indicates HTTU support to the VM, because it
-> wrongly inspected those bits in the idr report, then it is just
-> broken.
-
-What do you mean? We could have a system right now where the hardware is 
-configured with SMMU_IDR0.HTTU=2, but it turned out that atomics were 
-broken in the interconnect so firmware sets the IORT "HTTU override" 
-field is set to 0. We know about that in the kernel, but all a VMM sees 
-is iommu_hw_info_arm_smmuv3.idr[0] indicating HTTU=2. If it is "broken" 
-to take the only information available at face value, assume HTTU is 
-available, and reflect that in a vSMMU interface, then what is the 
-correct thing to do, other than to not dare emulate a vSMMU at all, in 
-fear of a sternly worded comment?
-
->> I would say it does. Advertising a feature when we already know it's not
->> usable at all puts a non-trivial and unnecessary burden on the VMM and VM to
->> then have to somehow derive that information from other sources, at the risk
->> of being confused by unexpected behaviour if they don't.
+>> +    return 0;
+>> +}
+>> +
+>> +/**
+>> + * platform_profile_show - Show the current profile for legacy sysfs 
+>> interface
+>> + * @dev: The device
+>> + * @attr: The attribute
+>> + * @buf: The buffer to write to
+>> + * Return: The number of bytes written
+>> + */
+>> +static ssize_t platform_profile_show(struct device *dev,
+>> +                     struct device_attribute *attr,
+>> +                     char *buf)
+>> +{
+>> +    enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+>> +    int err;
+>> +
+>> +    err = class_for_each_device(&platform_profile_class, NULL,
+>> +                    &profile, _aggregate_profiles);
 > 
-> That is not the purpose here, the register report is not to be used as
-> "advertising features". It describes details of the raw HW that the
-> VMM may need to use *some* of the fields.
+> Missing error handling.
 > 
-> There are quite a few fields that fit #4 today: OAS, VAX, GRAN, BBML,
-> CD2L, etc.
+
+Right, got it.
+
+>>
+>>       return sysfs_emit(buf, "%s\n", profile_names[profile]);
+>>   }
+>>
+>> +/**
+>> + * platform_profile_store - Set the profile for legacy sysfs interface
+>> + * @dev: The device
+>> + * @attr: The attribute
+>> + * @buf: The buffer to read from
+>> + * @count: The number of bytes to read
+>> + * Return: The number of bytes read
+>> + */
+>>   static ssize_t platform_profile_store(struct device *dev,
+>> -                struct device_attribute *attr,
+>> -                const char *buf, size_t count)
+>> +                      struct device_attribute *attr,
+>> +                      const char *buf, size_t count)
+>>   {
+>> -    int err, i;
+>> +    int ret;
+>> +    int i;
+>>
+>>       /* Scan for a matching profile */
+>>       i = sysfs_match_string(profile_names, buf);
+>>       if (i < 0)
+>>           return -EINVAL;
+>> -
+>> -    scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>> -        if (!cur_profile)
+>> -            return -ENODEV;
+>> -
+>> -        /* Check that platform supports this profile choice */
+>> -        if (!test_bit(i, cur_profile->choices))
+>> -            return -EOPNOTSUPP;
+>> -
+>> -        err = cur_profile->profile_set(cur_profile, i);
+>> -        if (err)
+>> -            return err;
+>> +    if (i == PLATFORM_PROFILE_CUSTOM) {
+>> +        pr_warn("Custom profile not supported for legacy sysfs 
+>> interface\n");
 > 
-> Basically we will pass most of the bits and mask a few. If we get the
-> masking wrong and pass something we shouldn't, then we've improved
-> nothing compared to this proposal. I think we are likely to get the
-> masking wrong :)
-
-Seriously? A simple inverse of the feature detection the kernel driver 
-already does for its own needs, implemented once in the same place, is hard?
-
-Compared to maintaining the exact same information within the driver but 
-in some new different form, and also maintaining it in the UAPI, and 
-having every VMM ever all do the same work to put the two together, and 
-always be up to date with the right UAPI, and never ever let any field 
-slip through as-is, especially not all the ones which were RES0 at time 
-of writing, enforced by a sternly worded comment? Why yes, of course I 
-can see how that's trivially easy and carries no risk whatsoever.
-
->> We sanitise CPU ID registers for userspace and KVM, so I see no compelling
->> reason for SMMU ID registers to be different.
+> This would allow userspace applications to spam the kernel log. Please
+> just return -EINVAL here
+> and document this special case inside the interface specification.
 > 
-> We discussed this already:
+OK.
+
+> Thanks,
+> Armin Wolf
 > 
-> https://lore.kernel.org/linux-iommu/20240904120103.GB3915968@nvidia.com
-> 
-> It is a false comparison, for KVM the kernel is responsible to control
-> the CPU ID registers. Reporting the registers the VM sees to the VMM
-> makes alot of sense. For SMMU the VMM exclusively controls the VM's ID
-> registers.
+>> +        return -EINVAL;
+>>       }
+>>
+>> -    sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> -    return count;
+>> +    ret = class_for_each_device(&platform_profile_class, NULL, &i, 
+>> _store_class_profile);
+>> +
+>> +    return ret ? ret : count;
+>>   }
+>>
+>>   static DEVICE_ATTR_RO(platform_profile_choices);
 
-Pointing out that two things are different is a false comparison because 
-they are different, by virtue of your choice to make them different? 
-Please try making sense.
-
-Your tautology still does not offer any reasoning against doing the 
-logical thing and following the same basic pattern: the kernel uses the 
-ID register mechanism itself to advertise the set of features it's 
-able/willing to support, by sanitising the values it offers to the VMM, 
-combining the notions of hardware and kernel support where the 
-distinction is irrelevant anyway. The VMM is then still free to take 
-those values and hide more features, or potentially add any that it is 
-capable of emulating without the kernel's help, and advertise that final 
-set to the VM. Obviously there are significant *implementation* 
-differences, most notably that the latter VMM->VM part doesn't need to 
-involve IOMMUFD at all since MMIO register emulation can stay entirely 
-in userspace, whereas for CPU system registers the final VM-visible 
-values need to be plugged back in to KVM for it to handle the traps.
-
-We are all asking you to explain why you think doing the kernel->VMM 
-advertisement naturally and intuitively is somehow bad, and forcing VMMs 
-to instead rely on a more complex, fragile, and crucially non-existent 
-additional interface is better. You should take "We discussed this 
-already" as more of a clue to yourself than to me - if 4 different 
-people have all said the exact same thing in so many words, perhaps 
-there's something in it...
-
-And in case I need to spell it out with less sarcasm, "we'll get masking 
-wrong in the kernel" only implies "we'll get kernel_capabilities wrong 
-in the kernel (and elsewhere)", so it's clearly not a useful argument to 
-keep repeating. Besides, as KVM + sysfs + MRS emulation shows, we're 
-pretty experienced at masking ID registers in the kernel. It's not hard 
-to do it right in a robust manner, where particularly with the nature of 
-SMMU features, the only real risk might be forgetting to expose 
-something new once we do actually support it.
-
-> If you still feel strongly about this please let me know by Friday and
-> I will drop the idr[] array from this cycle. We can continue to
-> discuss a solution for the next cycle.
-
-It already can't work as-is, I don't see how making it even more broken 
-would help. IMO it doesn't seem like a good idea to be merging UAPI at 
-all while it's still clearly incomplete and by its own definition unusable.
-
-Thanks,
-Robin.
 
