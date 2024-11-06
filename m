@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9341-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9342-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A173B9BDDAF
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 04:37:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FDE9BDDB3
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 04:38:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59FE51F2455D
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 03:37:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5213A1C21CEA
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 03:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5C919047A;
-	Wed,  6 Nov 2024 03:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2099A19047A;
+	Wed,  6 Nov 2024 03:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="U79haMIq"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="BbpXquoa"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE2A190477;
-	Wed,  6 Nov 2024 03:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E671E190468;
+	Wed,  6 Nov 2024 03:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730864246; cv=none; b=AaxzgEZVWMXgKEmwxQeyd6hjjgEwP4uGGc8eYyVMuHZF8qA0sq7kQ01l3WfPJ5ZbdiSDq2lHeHU3mOCXXq6UgI/RD41VHDkHyf2hAEp5BhmVXn7sZN/JWt5USc+XXrqzuYAQYVpLC1oeNvXEHx4dGaRGUfIJxnNXu1pSVhgQ6As=
+	t=1730864314; cv=none; b=W9vdhrvkArDqLcl4EEI0qen6Wkt7uLmLgJ3vTCHAokpwuX2j1XPJivjt3QHBBTUa8wKeuLp2gaMOX5hEJZL6iBzWnfIL1Kyjmfc4dURay1uVJ314u8slZLddtuI6YjHgz6mYRccWpAp4QyEQwUqJVRc5YlLpRb83SPL++aFe8dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730864246; c=relaxed/simple;
-	bh=fVEscBiNx3NYvSYMZAzwz1v9OdfNq3HmnA/CZ7wTgV4=;
+	s=arc-20240116; t=1730864314; c=relaxed/simple;
+	bh=ko7ZAAicDgrNAs6yMid5aylS1uJgEAAC4ypSv/+ka8A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ImYeoWLx51NWZB12/c8oKxp1451w1Tx8kjN9W1K4HIugfBa6oGKmCW7J26QNdpQNYcL1uI3bRp7jiz+d7VtCDnxp42Vl93I/39ICXz2r3M5tAS9XDwu47DUXZorSE6MFeTFGdagsThU5qiBEOn6iyL2Z/wVua1dV4XrD644DKfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=U79haMIq; arc=none smtp.client-ip=212.227.17.22
+	 In-Reply-To:Content-Type; b=dZGGWG2b09f0nHOKVaRdvBgfnFkryaY0/m3QxFa643sWo9DgBtGG1XgU8YS5cFfKqBmUzjwjfMRYHastpJFad7yh5ppYEaLXvpzFqXDs+TCq1U5+D3kZ4KW+7MENa2fHftY6zQr53Ar44A0MXZ6XjkmLIBLkyBemsL2kF+/TKQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=BbpXquoa; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730864172; x=1731468972; i=w_armin@gmx.de;
-	bh=EkiJ8wWxkSExNecsS48AgS+9rEfX9MAhCBoyA9fB7Yw=;
+	s=s31663417; t=1730864240; x=1731469040; i=w_armin@gmx.de;
+	bh=yIns49Q8Setw9RDJC70feaKzOofvNaCgsq98AZRF7UM=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=U79haMIqxx7Xbi8To/ItChYsydSBenBEtOF3aLM68GgYMxskwPc7Rfi/+ttf7MjQ
-	 BWB4mPxB51tZW41jvZ60XCL+a0iEn/hSlVkIc9rXZ2N5+4QpWrUOJCo0NcNG6SEni
-	 jdiMPOfIROSxv0mApT8MN617aucWCCBAuUOhskVqvgaFbkDz7NQ68OJ830zFtQ7Vm
-	 1Sv+dslRxiofhQhzwZmLHC37EEFY1tL3FbtlI/S3oDOYwLQi5Cg7/WEROdViXP/aH
-	 AgkZ29ouBRw9821pWbeBRJBtn1LvXG1QpYPmgUzhwebHP6YWEeDkjbD3q28ZzJS3/
-	 YSQVrUF5fAtUjvPa/Q==
+	b=BbpXquoa2XG6ILECOGzSdD0SvxVibA3pVmHhC85xde/A7t15KYAXLG5NTg6vuwRm
+	 WqTMHmoBP2lQZej8AQmigid7SmfU7yEX49upGXLvNgzCWNWTVrSWVrtxVDADRWFd8
+	 B6cqafEdYtgkShmqTf4R2Eh3F5bwME5RAZODnGRT0H4jeLJq0v3HXB3k2IJa50R+1
+	 LcU9aBGo5XuuNFy522GmUEYNzI9VaNrONV0Ykznj/IGAaIlgM++tXf4Lct95yQdWe
+	 Gcj/NgrL2NzPxbxvWPVypaL4AoxRslEsH1brT5V2dLKZHcTz/Q5Mj39CyBQz6y1xL
+	 fXEovpPY03aV7F0P7Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Md6Mt-1thJl90fK7-00nAvd; Wed, 06
- Nov 2024 04:36:12 +0100
-Message-ID: <e7834fb2-bafe-4738-be9e-d6ad6a3dd32d@gmx.de>
-Date: Wed, 6 Nov 2024 04:36:10 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MaJ3t-1tN0tR23hF-00Ijqn; Wed, 06
+ Nov 2024 04:37:20 +0100
+Message-ID: <9f75db2f-6d41-4a5f-84e2-ebe183cb4016@gmx.de>
+Date: Wed, 6 Nov 2024 04:37:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/20] ACPI: platform_profile: Move matching string for
- new profile out of mutex
+Subject: Re: [PATCH v4 07/20] ACPI: platform_profile: Use guard(mutex) for
+ register/unregister
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,74 +81,89 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241105153316.378-1-mario.limonciello@amd.com>
- <20241105153316.378-7-mario.limonciello@amd.com>
+ <20241105153316.378-8-mario.limonciello@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241105153316.378-7-mario.limonciello@amd.com>
+In-Reply-To: <20241105153316.378-8-mario.limonciello@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WqvOoGMed2X4f5Htt/EKTv0KYNo8TsslzvKOHaTojpvwE6gtJaD
- bYygxda43zJ9SGk9IPrscTXW4zvwCghN/FBTwVC++MUzko5/H8STy6RybuWMLRDymxZ92cB
- i11jIvbruwwfOyLHRbqVPwyL3X3hD/epLyBUVZGA3XCNXZoT3d8jpiVR2likHeH1ClDPrLG
- zpbiMY9A5L4qkvg1qtD3g==
+X-Provags-ID: V03:K1:2P14AvhDFsbi26CeC4gs/qF+bu9pxeO2DNpRgJXbzTIXpng8Tm2
+ meNrFUZWZ+z8x66XQj1AVp3ccwYv/bbg9/sp3p03MRhknWCnI9dbJbpl/5bNJ/JlGPPGlgP
+ rI9Xw7UD3BFcMzpittxkIdTE3dY0AZEuFUFIHabv9BeqqnnZ/hbsJxAZTRIXQPu5Zqj2J8e
+ FE8XmZ52L+q9pgcPql91g==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:woIV+jK18Iw=;0SnLNiythgPLTxS64BYJXXlVgao
- tDnckdavy6g0Y7hvLcJzmrZQ2Qb8EFb1vjIM4qigui4wIN486E0b0cz0UmxJQoeePOJicU1Nu
- QO0FB8Czgp3yjHtdo2oJnT6kH/MEpLDNv77sXy3t2yp3tqDZDjjKVyxYTIAI4ctqw/Eapdvta
- qFlrttPhTkFcmzOSIdvm8DTT1zXohTYFs8voKfma36LfOoHK3ZkqoE0784WqPc7umPO8IDsKV
- PL9EHABlll65B35Mjw+SHw1XtQVU2fWMIEXBNNcf+J9t8sVpePpPeF2m+6pSYtZqct6Ws7m9H
- U5tehNlU7/XN8mYYttmo1wAqhdKmJP8DdTmm8+nOkg9wwl0B6r3sNzXyBn1A8N1EeB3HQYnlB
- +MrkeHf9uiHDsXx83KyVvMsCKK4T7GasP5DAfA8iVlnMM1sPghdjGCen1hxb5AYUc1jF2YYIM
- pm5gF55LUARTbygbeK+5oHhIPEHPCe7A3RABMUOWsLhRFt+nUlAwqYY93cuyWpklmatdgnSpr
- KCPb7s54QpKfHPfjV5Q8u4+NZLTEUtx5BCFtGJS6dNSrU8hcPCAmec8djARCYtTknveqM1PMK
- e6KBHUu3jiI4vxymzxB3/xI40P7yJDy4Pbph86nDcraK8OZjK+lG8fikBf0cO5ThPGZ0taB7x
- I2GVfyvtLPLCvMdo+pV2/I4lOzXI2OTh6ECzrun3Yi05tDH+EHu4JMCdhafSw5NxrbsqaT2vx
- a24C8YCeJEMBrwhJuCXMfOxG/bpP0oYo7oNP9cY/J+3dO5CwWPXswpN4+zLtKZXOax+YgajnC
- xb6BPFhJfExbL8kPpOhAz0nGRV4trmP7Pq8d5pac5kYdA=
+UI-OutboundReport: notjunk:1;M01:P0:462k/n9Dv10=;tBAJxaAwOwCpaJzAl7QsKt9ZSJb
+ vkyaHTDpLSttOKZ4CkInrKZ5jD6REJZSNcOkDmZwrWryLjy303HNCRHmmRw0OZDIe3hhinUpA
+ VZgwlz03dHgznL/DdM9hicuk1YZQQ8DOqq/9r6RAkodWYl0Hn6lXcyWIODChSVous0TZoGGU7
+ OP/jhxsWqWOpRCknNYadbBUcZg+nT3tkhTXu4hHgO7fCgCcULQ87dExCDII3TuAWp0XGFjYX0
+ uxfWDbPpWMH6C6IBGDlzQ6eWzmkNOQgofclsOxi6ONzZjdTiKmj23NfSJaAeTYWTKq57rSqaR
+ wtuGPTwRvdKgwi8Sp8JuaHqIKKIqpsVyfQrZ+cJmajSlDR1Nbd8oLbZ7zaoUxhTlSm+6cSAzo
+ b37E0228n/Bl/2cEHOFKXZxySYQ/dgCx4vpdbJGAofuBeJoU4hvnOZIiqbSbRUc4r+Ab9PhbF
+ 6m0p83V/fq/2A+6KzXBkeVqji63CpaihfxpmO1OC7lBOFniimFaSGD5bPoaIhu2/XepvtgT8F
+ HapfV+afJU7THQdEkv6pgIKMCfbcJUZ9JpZ8x8Wn82AdMHtWcgOlCIjalgguX3FzHAJwKY1tF
+ NY9bYCCEwQfvXhy3w8AKZwTeYqECx8GIGZaBzf/TjA/6fkvKQrc2VqU12VQnUlsPQQDImJmn9
+ aCXNEPXhvfgRv2Pyt2XW9DIk4p8j5dWHuETs9Tj7VXIri88Iyn7mX4iQ7S7c31q4ypVp+rZfI
+ IGuIS9XK09EjSYtJXl4xe2Esxf4+VD29IOTQ/Nbr+42XZBn7gyEc6a4Nr2XSN611wtT96ZflR
+ aATq/wX8kUvtH+whtjjfankXDMZWJARVZJbc83DPpyYFM=
 
 Am 05.11.24 um 16:33 schrieb Mario Limonciello:
 
-> Holding the mutex is not necessary while scanning the string passed into
-> platform_profile_store().
+> guard(mutex) can be used to automatically release mutexes when going
+> out of scope.
 
 Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 
+> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->   drivers/acpi/platform_profile.c | 12 +++++-------
->   1 file changed, 5 insertions(+), 7 deletions(-)
+>   drivers/acpi/platform_profile.c | 16 +++++-----------
+>   1 file changed, 5 insertions(+), 11 deletions(-)
 >
 > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
 file.c
-> index 4e8a155589c21..70e7f1ba68676 100644
+> index 70e7f1ba68676..4454c4a903c8f 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -83,6 +83,11 @@ static ssize_t platform_profile_store(struct device *=
-dev,
->   {
->   	int err, i;
->
-> +	/* Scan for a matching profile */
-> +	i =3D sysfs_match_string(profile_names, buf);
-> +	if (i < 0)
-> +		return -EINVAL;
-> +
->   	err =3D mutex_lock_interruptible(&profile_lock);
->   	if (err)
->   		return err;
-> @@ -92,13 +97,6 @@ static ssize_t platform_profile_store(struct device *=
-dev,
->   		return -ENODEV;
+> @@ -188,32 +188,26 @@ int platform_profile_register(struct platform_prof=
+ile_handler *pprof)
+>   		return -EINVAL;
 >   	}
 >
-> -	/* Scan for a matching profile */
-> -	i =3D sysfs_match_string(profile_names, buf);
-> -	if (i < 0) {
+> -	mutex_lock(&profile_lock);
+> +	guard(mutex)(&profile_lock);
+>   	/* We can only have one active profile */
+> -	if (cur_profile) {
 > -		mutex_unlock(&profile_lock);
-> -		return -EINVAL;
+> +	if (cur_profile)
+>   		return -EEXIST;
 > -	}
-> -
->   	/* Check that platform supports this profile choice */
->   	if (!test_bit(i, cur_profile->choices)) {
->   		mutex_unlock(&profile_lock);
+>
+>   	err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
+> -	if (err) {
+> -		mutex_unlock(&profile_lock);
+> +	if (err)
+>   		return err;
+> -	}
+>
+>   	cur_profile =3D pprof;
+> -	mutex_unlock(&profile_lock);
+>   	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(platform_profile_register);
+>
+>   int platform_profile_remove(struct platform_profile_handler *pprof)
+>   {
+> -	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> +	guard(mutex)(&profile_lock);
+>
+> -	mutex_lock(&profile_lock);
+> +	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+>   	cur_profile =3D NULL;
+> -	mutex_unlock(&profile_lock);
+>   	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(platform_profile_remove);
 
