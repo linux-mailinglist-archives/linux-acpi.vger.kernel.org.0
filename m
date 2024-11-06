@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9345-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9346-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303CA9BDDDE
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 05:01:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E849BDDE3
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 05:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D13102846EA
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 04:01:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8681F236DF
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 04:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B27F7FBA2;
-	Wed,  6 Nov 2024 04:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5B314F9D9;
+	Wed,  6 Nov 2024 04:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="r9kHJmhN"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="VA3X2yH6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED07A1362;
-	Wed,  6 Nov 2024 04:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D51362;
+	Wed,  6 Nov 2024 04:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730865671; cv=none; b=YVJ+ScuvMomIw75Ymp1P3zkbE3kA+/OEkDRXaX7iPllNS6MpKUyZpQFM2+blhjRSx1GSXlJJLTYOMCQ30UZzFXFd9bIaBdjFHVi689QbR8EfyfauSVKBq80TC8Uou6VvWrk+wr/4Uo59+UURJnVoWNURFiPNymCwWdAAHztlplc=
+	t=1730866307; cv=none; b=e8f0Ife9zOxER/xOzFQ9qmPEmoWarAWBnfCzswhyT+WhrY3hyoIoPy1zmpW1ecZpufiDVTiHY+pyTB0/ZRV5EuCpC2I+SMh4qwmWiqxpa9PoMI0YosLqbwtWkzmZ9a1Py4ohICzPRztZ5/eFUWboHeNXc3MmzGDxiSAQqUV9p0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730865671; c=relaxed/simple;
-	bh=ykHSkhanqUA68PwK4xOi6mE3bFrG6IuldaqT1U4YaDE=;
+	s=arc-20240116; t=1730866307; c=relaxed/simple;
+	bh=6YPu+laV3kL4NBdAILOhBmO0hd3sVmscvAhmEbnseBU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CakG2rmMI010EWGZMPxn9wPGudP3nozfMH2zs62XAl1ieI+FYgsrF/iI5/7VAwAqfWzpxDCQ2smVVkzZOJJezyFE94YEHpnVQ4y6MvfOJeP7I+UPjLqfErqLRj2vJqye/TcrJMjH1vWXoGT35Teg7SxdrgKkyFxpwTwx7kfVoBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=r9kHJmhN; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=fZqC8sZvzW95o2BduXlT3Ap0Ht6B7UFJBNYUUIhlUNXvNbqHvBxOgbtLmz9BJzqYqeNYnKr1EUzPcWerfBGHz5o07d0CD2j/gzdMN2MR8ZU7J/DH1Z9uHevpyQcnWpZq92B+e92OiYtCbxokTxmUBMahlh9mdj7DY4mkAPV8Ii8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=VA3X2yH6; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730865604; x=1731470404; i=w_armin@gmx.de;
-	bh=sSu5xj8EPzGmkuISpEXh9bDDRmYd24ewIYle0BJWLI8=;
+	s=s31663417; t=1730866235; x=1731471035; i=w_armin@gmx.de;
+	bh=P90XY2NUw+OCYceZZLJRRm/ynfK6FT0y/3DCDJdVjRI=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=r9kHJmhNEpZZs6TqfuRG/3ZwKhnZsUMgmNJOfBkY2OhdQw0dg8oK+Ak3dNkUVb24
-	 fGOasUQJGN+gmPzHdba7no+4mxVTZrMoyosQSEMaOPFWra861iK1oqbNv2RvBGALZ
-	 TrgDCykEO9L3e8bijSX8m6l4cwqgoxjd5om2zL3oy6E8WnoGxsB+o+jdqSVjYCY2F
-	 7mYjvAzvewpDNx3yM0Ro6NfmNueFK2QCgKNoab6ZLP3SjbY5417lo+2oOD37iO31b
-	 GnvUF62qHLGTzPyoxRJucG5j2r5fyL0F0RKZGEDE0kBE34N4V/olRPdSIWSP01/n8
-	 VTqCHQQMDJ8Kn2qdOw==
+	b=VA3X2yH6/kxysgwp4PrB0hWgC2BWy6qi/jXpen8JqekbE6tI/M0rH7Zdm6jfgg7y
+	 sZ6Zxa08L8cgjJAfQy3FBcKPUmgDAP3pcNieVk5R0R+4gnYL94sdCBxeEzMkx2LIW
+	 ftK7tbWwZIKivkdjz4Os78sa7KNow4PaQZTPIgxDiwG36TN/ie8+K9F8TyokTJhsD
+	 Dt5dzj6bi7WQDzOHrlfDc1YrAgYz8pi6N7ppljLf4eP0reil+3kEccTwSkJcE+ux/
+	 GRiNMb0/JIORw2fpJQ0Xkym1zAnx3+PcUlLjf+DB6JMZfTsWHHc69CBvOAG3zc77e
+	 CHqE4wzIvqiOQ7w12Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mkpex-1tXNmd2oGN-00cfHs; Wed, 06
- Nov 2024 05:00:04 +0100
-Message-ID: <cdb7523b-f37a-4b20-a1ab-8656dde40e61@gmx.de>
-Date: Wed, 6 Nov 2024 05:00:03 +0100
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mqs0X-1tdSOp3Chl-00ZTAy; Wed, 06
+ Nov 2024 05:10:34 +0100
+Message-ID: <dad36f32-5970-48c2-9ee1-78163958bf02@gmx.de>
+Date: Wed, 6 Nov 2024 05:10:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/20] ACPI: platform_profile: Add choices attribute
+Subject: Re: [PATCH v4 12/20] ACPI: platform_profile: Add profile attribute
  for class interface
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
@@ -81,134 +81,203 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241105153316.378-1-mario.limonciello@amd.com>
- <20241105153316.378-12-mario.limonciello@amd.com>
+ <20241105153316.378-13-mario.limonciello@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241105153316.378-12-mario.limonciello@amd.com>
+In-Reply-To: <20241105153316.378-13-mario.limonciello@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:u2wlgp7nTc1JQE0GDdRM9ndeGK6gJ1x1dIN1fiqP7DW7BX3j2A1
- XhqKrHCqDLe6N6DsVVQmTJjEfhxBWIiTZb+o6mFjzKdVYMA6vcYVg/7Muhlbp5/GDbwTYYY
- hpZ4PwFWqovN63OnNW3O3Ga1sRzKP4KEMB7ZT+IH2q008n23dDmf/2B8J3Lqj04VuPxxD86
- hmG0gSYE2rtXoUqBoMAhQ==
+X-Provags-ID: V03:K1:UIoLoCoMxfrOHXCBbg6f3jcJhJTAg3xcOjE6sneHRY+SBq3V+//
+ 5s+Y0upNsN1el4bpz6xUBWGa0MpBTxUkJVxzLwxPtxfy2OsX9TfN+yj/MCfpthmTFUQt3uE
+ 6nsa4ufMjN8Cg+ZxGiNwpHH0bIy1CCMmOx3sDorqG1fbsOBMdTbqyRdsDxqZ8IHiGuFXyhZ
+ s5ItUai3ZbjyDG4C2ROoA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:voOlv8cLmEU=;enAmOGYuvkLuTiOD4KVbjDTl0tQ
- GRjPiWgmqnnED1W09jgefVGEY++coFTQa1n4MDrXmGD+PkzBeAJXG4kCz3Qsh+5wwfMobgQzY
- l7iRSWDg5Mf+rozz6Vi404F8Je87bB/z7rF1+MiZAg70bfFk/uaKNJUuGMv+jRP4zOCAut5bu
- Kq2c9yOLHALUSufS2eCJGDkY2DLdgi5itf9axMRKgBgeB6u4nB5fBsWMmYoK7o1CsSG0/Om8a
- AMIqG4rnMLKdsdi8pPs6UeqmiQnhDt0etUORFP83LGtMXCZIFXzr05Dcs89LuBSbcMMY3hYim
- 8tlI43s4dCL7/J/W/GL7sKYMVu/bbsaiBkm8b7U+pSBnqrHtAZilVTeBm0A/jm8O1t58m2chg
- thcGY99Kh7d7VlideVND7jSieIQ9R13ylQ87E8CndlPQcglgJ/jx6yBE1F0fsjs6zMsu/csSp
- 3akn50ojbKqJ+GFtB7cuJqZ2hrsoD6vSnaut88NPd2DOwkcdSSMQu0jDc7vcHvVE/16RXMq6W
- TAIVDLaDQye1nR8OgkX5oL3sd93vgZjRr3i8BZKy0Q/yrafLodfZENBRUpczM1aDfesJYizPD
- kAApRlSuqw3Xl9IEjkg7jxHwispp85RZ9P1mL4bKSOSpcoRdbXpkmG8UUOfanKMXHSgipKqy3
- DRwjfEI1QD9NpPueBwWemx1CxnNBFsFeACLF+DMD9VRCyc1biQOcTv9AVoYU11osH1LX3DzN0
- fo+l8QF/CdZYdNjn4Ff2qIfUZZprBY5+OrdYr8bII1GyYcK/Y8gjsbsx817ZonBbhMqSUZVb2
- NGgJ5CYuohhPyIYdSIwoUG8WW4WRChCoXnhU01E66dALE=
+UI-OutboundReport: notjunk:1;M01:P0:c6IgiewnwMU=;MChqbM6jrv7UB2F6lD3CAj59QmX
+ Ulk0PK4AisBr9psLp2+2zVGQpjUikUjrOayPMotZa4FJlVLr6kADHj9XJt0+d6mxhoysrVIyL
+ UQLmpdTBiNJ0WmpMFHuHqfXXwrXzAflRr4WnP+6raB7UprG6uPLQUq/9sVdyLAW+GNmqDCr3j
+ aBejgXh6OY1BPYO3L8nBfTkXjpW2RqrwB1ZzQLdUVTaFONbO4OqfyC/QfVdeqtcJp2PZCKRR2
+ Quhmdf9Sq7GSuRuTYpcW5SYJBPezOeE/utdI7OFi045nWHlLbDiyuLAG8c0tkLyi12twUutXe
+ pOneledG58r8RayzZbwIbgAxd8ytdgt2SA4zHv1fu3+8eCFzLtvrco1CS5DXpRsTfvWN5fd+E
+ K7pO8sSQSidE1wB3yYlLlb2xWUVW9/m9OvaxwCxYJwrWE8VSOSpde+HFBTX5qJiC02BBCy+rY
+ Yvcf9QLqRh4kotQWPo3UmUY/09bwknO9dMGf3LUIt1IOp2Xgekso0JdJj0haAPKBNN257qX/q
+ tH1dx5lu3oNMesCJy5G+A2mQJj6Ths7MIZHdZKut1qeEfBsWb64XAxbcjkhkn3EqoqxYMLMy2
+ rayk6NuTf96Wzurp2iE77hGshjdVD7UorMraS2iy4SZs/n1AuHQB3SF7odSSH0PYDr20pLXtn
+ nRsUoKWEmd79wixIl01TnVifbMJim8JMYV5Hkn1T1IZH0Kp1D8QKdnBhD0f7zhYBKmA9pU0D6
+ P8EzDu9YJKJCeOXdCi65Lfwlx9eTeEqno2Hg8BA+rcAaK/RjoVXE5+D4Hkqf3iOZ61ogabgMt
+ LJELTInIWOOiTDUzODHcjBYg==
 
 Am 05.11.24 um 16:33 schrieb Mario Limonciello:
 
-> The `choices` file will show all possible choices that a given platform
-> profile handler can support.
+> Reading and writing the `profile` sysfs file will use the callbacks for
+> the platform profile handler to read or set the given profile.
 >
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->   drivers/acpi/platform_profile.c | 63 +++++++++++++++++++++++++++++++++
->   1 file changed, 63 insertions(+)
+>   drivers/acpi/platform_profile.c | 118 ++++++++++++++++++++++++++++++++
+>   1 file changed, 118 insertions(+)
 >
 > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
 file.c
-> index 986bd636be226..e1b6569c4ee70 100644
+> index e1b6569c4ee70..79083d0bb22e3 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -25,6 +25,47 @@ static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFO=
-RM_PROFILE_LAST);
->
->   static DEFINE_IDR(platform_profile_minor_idr);
->
-> +/**
-> + * _commmon_choices_show - Show the available profile choices
-> + * @choices: The available profile choices
-> + * @buf: The buffer to write to
-> + * Return: The number of bytes written
-> + */
-> +static ssize_t _commmon_choices_show(unsigned long choices, char *buf)
-> +{
-> +	int i, len =3D 0;
-> +
-> +	for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAST) {
-> +		if (len =3D=3D 0)
-> +			len +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> +		else
-> +			len +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> +	}
-> +	len +=3D sysfs_emit_at(buf, len, "\n");
-> +
-> +	return len;
-> +}
-> +
-> +/**
-> + * _get_class_choices - Get the available profile choices for a class d=
-evice
-> + * @dev: The class device
-> + * Return: The available profile choices
-> + */
-> +static int _get_class_choices(struct device *dev, unsigned long *choice=
-s)
-> +{
-> +	struct platform_profile_handler *handler;
-> +	int i;
-> +
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		handler =3D dev_get_drvdata(dev);
-> +		for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST)
-> +			*choices |=3D BIT(i);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +
-
-Please don't use multiple blank lines.
-
-Other than that:
-
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-
->   /**
->    * name_show - Show the name of the profile handler
->    * @dev: The device
-> @@ -41,10 +82,32 @@ static ssize_t name_show(struct device *dev,
->   	return sysfs_emit(buf, "%s\n", handler->name);
+> @@ -65,6 +65,78 @@ static int _get_class_choices(struct device *dev, uns=
+igned long *choices)
+>   	return 0;
 >   }
 >
 > +/**
-> + * choices_show - Show the available profile choices
-> + * @dev: The device
-> + * @attr: The attribute
-> + * @buf: The buffer to write to
+> + * _store_class_profile - Set the profile for a class device
+> + * @dev: The class device
+> + * @data: The profile to set
 > + */
-> +static ssize_t choices_show(struct device *dev,
-> +			    struct device_attribute *attr,
-> +			    char *buf)
+> +static int _store_class_profile(struct device *dev, void *data)
 > +{
-> +	unsigned long choices =3D 0;
+> +	enum platform_profile_option profile;
+> +	unsigned long choices;
+> +	int *i =3D (int *)data;
 > +	int err;
 > +
 > +	err =3D _get_class_choices(dev, &choices);
 > +	if (err)
 > +		return err;
 > +
-> +	return _commmon_choices_show(choices, buf);
+> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+> +		struct platform_profile_handler *handler;
+> +
+> +		if (!test_bit(*i, &choices))
+> +			return -EOPNOTSUPP;
+> +
+> +		handler =3D dev_get_drvdata(dev);
+> +		err =3D handler->profile_get(handler, &profile);
+> +		if (err)
+> +			return err;
+> +
+> +		err =3D handler->profile_set(handler, *i);
+> +		if (err) {
+> +			int recover_err;
+> +
+> +			dev_err(dev, "Failed to set profile: %d\n", err);
+> +			recover_err =3D handler->profile_set(handler, profile);
+> +			if (recover_err)
+> +				dev_err(dev, "Failed to reset profile: %d\n", recover_err);
+> +		}
+
+The whole recovery handling seems unnecessary to me. In setting the platfo=
+rm profile fails, then
+we should just return an error. The platform profile handler will tell us =
+the current platform
+profile anyway.
+
+> +		sysfs_notify(&handler->class_dev->kobj, NULL, "platform_profile");
+> +		kobject_uevent(&handler->class_dev->kobj, KOBJ_CHANGE);
+
+Please avoid sending those events when the platform profile is changed thr=
+ough the class sysfs interface.
+
+> +	}
+> +
+> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+
+Please avoid sending this event when the platform profile is changed throu=
+gh the legacy sysfs interface.
+
+> +	return err ? err : 0;
 > +}
 > +
+> +/**
+> + * get_class_profile - Show the current profile for a class device
+> + * @dev: The class device
+> + * @profile: The profile to return
+> + * Return: 0 on success, -errno on failure
+> + */
+> +static int get_class_profile(struct device *dev,
+> +			     enum platform_profile_option *profile)
+> +{
+> +	struct platform_profile_handler *handler;
+> +	enum platform_profile_option val;
+> +	int err;
+> +
+> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+> +		handler =3D dev_get_drvdata(dev);
+> +		err =3D handler->profile_get(handler, &val);
+> +		if (err) {
+> +			pr_err("Failed to get profile for handler %s\n", handler->name);
+> +			return err;
+> +		}
+> +	}
+> +
+> +	if (WARN_ON(val >=3D PLATFORM_PROFILE_LAST))
+> +		return -EINVAL;
+> +	*profile =3D val;
+> +
+> +	return 0;
+> +}
+>
+>   /**
+>    * name_show - Show the name of the profile handler
+> @@ -102,12 +174,58 @@ static ssize_t choices_show(struct device *dev,
+>   	return _commmon_choices_show(choices, buf);
+>   }
+>
+> +/**
+> + * profile_show - Show the current profile for a class device
+> + * @dev: The device
+> + * @attr: The attribute
+> + * @buf: The buffer to write to
+> + * Return: The number of bytes written
+> + */
+> +static ssize_t profile_show(struct device *dev,
+> +			    struct device_attribute *attr,
+> +			    char *buf)
+> +{
+> +	enum platform_profile_option profile =3D PLATFORM_PROFILE_LAST;
+> +	int err;
+> +
+> +	err =3D get_class_profile(dev, &profile);
+> +	if (err)
+> +		return err;
+> +
+> +	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+> +}
+> +
+> +/**
+> + * profile_store - Set the profile for a class device
+> + * @dev: The device
+> + * @attr: The attribute
+> + * @buf: The buffer to read from
+> + * @count: The number of bytes to read
+> + * Return: The number of bytes read
+> + */
+> +static ssize_t profile_store(struct device *dev,
+> +			     struct device_attribute *attr,
+> +			     const char *buf, size_t count)
+> +{
+> +	int i, ret;
+> +
+> +	i =3D sysfs_match_string(profile_names, buf);
+> +	if (i < 0)
+> +		return -EINVAL;
+> +
+> +	ret =3D _store_class_profile(dev, (void *)(long)&i);
+
+Please just pass &i.
+
+Thanks,
+Armin Wolf
+
+> +
+> +	return ret ? ret : count;
+> +}
 >
 >   static DEVICE_ATTR_RO(name);
-> +static DEVICE_ATTR_RO(choices);
+>   static DEVICE_ATTR_RO(choices);
+> +static DEVICE_ATTR_RW(profile);
+> +
 >   static struct attribute *profile_attrs[] =3D {
 >   	&dev_attr_name.attr,
-> +	&dev_attr_choices.attr,
+>   	&dev_attr_choices.attr,
+> +	&dev_attr_profile.attr,
 >   	NULL
 >   };
 >   ATTRIBUTE_GROUPS(profile);
