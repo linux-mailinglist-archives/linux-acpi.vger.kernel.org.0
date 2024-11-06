@@ -1,188 +1,453 @@
-Return-Path: <linux-acpi+bounces-9382-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9383-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4E79BF8BF
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:53:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F009BFA3A
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 00:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E90401C21BE7
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:53:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84B9628433C
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 23:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C2518FDA5;
-	Wed,  6 Nov 2024 21:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F44A20CCF9;
+	Wed,  6 Nov 2024 23:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KizVLTiv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BsKD38Ak"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8738320C008;
-	Wed,  6 Nov 2024 21:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730930015; cv=fail; b=Boh0sebQ5ecdt4EvHbixKBveyMpQ6KqLhQXaXydZx5oI8HdRi06IKdQKktOt4fFH+FPV5F8SDiQguGS9CaoVtwZtgIFsHa1E/XXhjb9JFl3rzmQGkf8x485g8PWieE0jkxbdXmLdQ3x989+lT8XQGBtCMRdtH16ikwq0NOePsPE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730930015; c=relaxed/simple;
-	bh=sbY1mUUl0mRsCygGqjnd1ersfTua6mNbznTxsZ7RXUU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ERFc5ujI6OZtlcLdlmBs0qvEhliBlu5A9Dkyo5BdUeMvI5EaWCKmPGIcCx/P+tqN1Ubfh4uwhyyS4gDXaG0eWdxs3sA5A4zWhr1NHMLolVA8dH7alUb8pFOYtyIIdL0ZMY5+gFsK+QABNvJwDi0cZwO7UO0hqJcB1HLv1aWGRPc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KizVLTiv; arc=fail smtp.client-ip=40.107.223.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QNOS9lGqv22Bo1IWRI68p37sZnF35VFUgZRi0Nv0fCb7HqU66TW2z0Y2ugUEemv/HRyQF36aE/QiLUnEOU0NKn4OVyQ27EHpMeLQ+2VvlGaFcGsTrJpERBYc1+5tiVgF3iuEZKlepxiBalW3cCcjFsnRevySkheLgxjYWVHl7SPQQqNzpN/OY3OxTheWBjfmWhJWAbyH0J3TNiyO4+cUTplVLQDN/ayDpy2jqjc2ha87DcjXHAMOjRlPWCyy4+z6jCaASpVNASIVh63fXn2v1Azlios/Sz9TBSWPg9oEHt1C38VuHJP3qxuBF9305FE1KKnn+mxe3Hrbow1Z/VjjmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eeBrkSbmAmRJo7VDs4EymTa1Gnln7vU9FxxHjW2QMQU=;
- b=xOEq+voR8CVO2wd4QIDVud1hQfm0fzqDx0l93ZkDljhRDjQtT6N04kAHhys3DuBmtMs3hET6uVwZzZobvuhfViOLqXit16J0r3YQoDlCSSqN4tjOVA+kRRYOA3z5Ai8txU8FmIO/bPpVbfxyyO2Nv8Pk5vqHJkm3Fj9XPHBz2Joujl8i4euODgzfECzXBb1+gCSodjBWRmrmVysFmXJQ3yzgkPJR5iq6jIyZVWT1OE0EJ6wLaQrZ4mPpB9QhrDR3UALPzMv5wj+5BaCcUHPVviE/mXtMXGEQFXTd26bHaV2OQxpcBexHjUtiHxtNPCy3VEiUsBjVVCeJo5yvh8uQMQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eeBrkSbmAmRJo7VDs4EymTa1Gnln7vU9FxxHjW2QMQU=;
- b=KizVLTivxXOCe22WVAd48I6d9ZWncp0SpzUXQFK8IbI6FcoVGELHRB7kTSxkhnQiIH/KLu0pzBlgbYACNQ92fV6GZfdwr3O7phBVcgyMUCF/pDbvZaGQd8dzFq+MgDQTmuMajPvwGvhIzYMR/orDDh0BkjwtAofm76AKTgDOYwqUOn/qy2UkwpKPSOe3XHh7ZBw+WD8d+kA3apMCmkBfB34wYV7WeOEcZ3e46ZZWmE2aHgqS0H9NLogUOisK50LfBVbn4U4T7u0EigeRdhaPBBKRZpYpY5YJ8jyPD6SSlXSlu4oROVOjSegYQOGXfxRdZXauOMlK0kOElr52F3Nouw==
-Received: from BY5PR13CA0004.namprd13.prod.outlook.com (2603:10b6:a03:180::17)
- by SA0PR12MB4494.namprd12.prod.outlook.com (2603:10b6:806:94::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Wed, 6 Nov
- 2024 21:53:30 +0000
-Received: from CO1PEPF000066E7.namprd05.prod.outlook.com
- (2603:10b6:a03:180:cafe::32) by BY5PR13CA0004.outlook.office365.com
- (2603:10b6:a03:180::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.16 via Frontend
- Transport; Wed, 6 Nov 2024 21:53:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000066E7.mail.protection.outlook.com (10.167.249.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8137.17 via Frontend Transport; Wed, 6 Nov 2024 21:53:29 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 6 Nov 2024
- 13:53:13 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 6 Nov 2024
- 13:53:12 -0800
-Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Wed, 6 Nov 2024 13:53:10 -0800
-Date: Wed, 6 Nov 2024 13:53:08 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Robin Murphy <robin.murphy@arm.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, Will Deacon <will@kernel.org>,
-	<acpica-devel@lists.linux.dev>, <iommu@lists.linux.dev>, Joerg Roedel
-	<joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
-	Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
- Moore" <robert.moore@intel.com>, Sudeep Holla <sudeep.holla@arm.com>, "Alex
- Williamson" <alex.williamson@redhat.com>, Donald Dutile <ddutile@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jerry Snitselaar
-	<jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>, Michael Shavit
-	<mshavit@google.com>, <patches@lists.linux.dev>, "Rafael J. Wysocki"
-	<rafael.j.wysocki@intel.com>, Shameerali Kolothum Thodi
-	<shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
-Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO
- via struct arm_smmu_hw_info
-Message-ID: <ZyvlRFi6W9vK5IZj@Asurada-Nvidia>
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <20241104114723.GA11511@willie-the-truck>
- <20241104124102.GX10193@nvidia.com>
- <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
- <20241106180531.GA520535@nvidia.com>
- <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB108168BD;
+	Wed,  6 Nov 2024 23:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730936097; cv=none; b=qgirOg8rAgte/L8eFa+VY35IbY+XRzJzVPWDFnshjHfjzrtyi7BJEc8fmoZne7MASsXZ8tbGir7lK8fqIlaByAe4NH5XEMrwSizRT3a7TO6C/IBm0mIxrodp8SfhLjmpVqT4j72M99f1mtF1bQR3BuGVQNIgPJBGvGORTGhxZI4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730936097; c=relaxed/simple;
+	bh=eSWnXMt84uuSKv4n1E/4P/zRZgnj3xbM9RKn/bEzlmg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z619IIwy3YJwVkeuLnKcP+az9t7TL4/8JsLXgrSMThbeTZrcxY6iB4XqMsqzTpbMq91yR9J3YdPBWuDc6pLxaRk6cvtOa4K4D3rRP7kLjljU087cByNGDlA+bnE2hQpkXUdMVQIjEmaWA8I2Zth3tTOss3go5nJRrWreylaNl60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BsKD38Ak; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730936095; x=1762472095;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eSWnXMt84uuSKv4n1E/4P/zRZgnj3xbM9RKn/bEzlmg=;
+  b=BsKD38AkrULm+wr/zQ9BPWj/Th71Jlc8hELZfr8kp/iga8RUwf85eMqX
+   /J+PKkZY0cKZtphZr3IqDifpRuO6wJ7Z057lUP1Z57BV/rg1h4DPtrx7d
+   FYvZM/MxjpUEeCXYQvjAau4J7f30AcfN7AuisKDjlGCLZdT8faARXi/Qd
+   9OWgLo277GX2xR8getPyHAlZ5GjsXnAMagdrc/DEvk6uImihefUpaPU3b
+   LI10lE6FnNQ9gXCt1zZS3iEifCWYAa68F2FOpFvNf/MG/CEZfK7/khZ4G
+   srOnZmc+Wv4FrTRWAEvway4mU8c3sBQmsseSrPPVY6JdstL+PcZ9KEk0o
+   Q==;
+X-CSE-ConnectionGUID: 7+WQTGzNRFy/00KuDUOY4w==
+X-CSE-MsgGUID: kTqo1h6UTqyOMrnV/nzpTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53317603"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="53317603"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 15:34:54 -0800
+X-CSE-ConnectionGUID: NF0vpozUQTikJA2BFFTzYg==
+X-CSE-MsgGUID: o1lNPTweSA64xESvsANXgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,264,1725346800"; 
+   d="scan'208";a="84912598"
+Received: from ehanks-mobl1.amr.corp.intel.com (HELO [10.125.110.92]) ([10.125.110.92])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 15:34:51 -0800
+Message-ID: <49228a3c-23b0-4aac-9c7f-e605045e3c8f@intel.com>
+Date: Wed, 6 Nov 2024 16:34:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066E7:EE_|SA0PR12MB4494:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9afa297-7052-44fb-44ed-08dcfead7361
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?O+OxZ18LkgHYRMoy2Clx9IHj0aqOtiI6ajxDREEePuvtE6Wkvj0gxtzErgRO?=
- =?us-ascii?Q?x8dGEPEHuiuMacPdiAHvrYuiRKviYUHTTu+qI4MINbctNnJnI2SCVsBJhm+c?=
- =?us-ascii?Q?2UPikwOAbaIbnB6LmpX/050WdCjkfyIR+hBhoECv3fJo1fZczesQDi3QC0ZK?=
- =?us-ascii?Q?Sfu0GwBnPu8PWHo80+XMZICVw+tR8RASUlGR94heCOGqEM6eH6rSI7+LJMHq?=
- =?us-ascii?Q?hTyIQOHkegTq7Sm/WQAGE4JR616TPOdRIoroi2R2XC7ITeoxz3uRx4oawu84?=
- =?us-ascii?Q?fMTc756oR7fx7ZDkc6ihOy6dWU2yUqj9PmYXlB7bwCa8b4LNgXkPpOHayhVX?=
- =?us-ascii?Q?slj0F92aWGPG9qj9E15qXVHs7YHeo1+JxIqjZC+/bR7AeCp26aG1dG9hqwKW?=
- =?us-ascii?Q?cZ8IEA7Vw058prdpZYZChqvcnNhAORYmJ+AdSCgfRKAuL1H3aYxtoFRlfhWU?=
- =?us-ascii?Q?Efe9pvsakMxFaACfpKoVRDBaTJnWkPz5kK44MDilXrfWhTipcE5bnDnkbM1j?=
- =?us-ascii?Q?pW/wl2Hqu/ThBEtCig0rDyHxKvyxmsjLQto7g/ay4CvkOzmI1daIx3PCM7f+?=
- =?us-ascii?Q?XT07ks6T8KwgrhE1nWWTOkA594ivotbQjgNlx3/R2iG/8qKy8WrDhatjFD8H?=
- =?us-ascii?Q?XeFk0NduaPAnSPLWa41xJaLDha+1XgeFbv5dMGRoaQORNxer0QLpuka8d1yn?=
- =?us-ascii?Q?u05i52Edc6Q+exX9Flb2osHEOG6NM8916sgwOF1q8StZ3bNpX9TmLmH0M3vr?=
- =?us-ascii?Q?58BU6/XcLdJ4TggF5GNQgTgTw+u16jOqNOzwc0K2n588NXl50jAWtAzKuVdR?=
- =?us-ascii?Q?OW/s0ZaMoPKSz3SsERVAP77VqH3ftKaDqSyhbl385PNvgeqPaf1EbIh26UcK?=
- =?us-ascii?Q?rY1iO46Kfs0em4IdoEILvL8P0ucAFFC5eQTdUJNh7mTvRcZcHDFaPiOldOnR?=
- =?us-ascii?Q?nF04CR+KLVCsEz4hbIEEBXWVRYHdReLzeILVKds1KgjFIO7H4Yf5IZWmognH?=
- =?us-ascii?Q?s+2Ov8k++S5M1c46OEdYQGx3/0OHTG8aJo+1Y0Q+Fqxtfs67v4AiJOBwyDLa?=
- =?us-ascii?Q?ROt1ebMTp+VIAN54jwuU9YtvZsHJP/gmpYnMrt8/y9aMu26anYByyWAOiCo0?=
- =?us-ascii?Q?Tl6/QPl+nVEPk2oMgvGqNiw7Big4EbVlTJXwltoeaXDkb/cO3WF/YRtN7vVR?=
- =?us-ascii?Q?sPZgDHOaguMmGgkLEsWUrQ4w+KfL8CbZ1tPelCnTYuGcLgI535BwxaeHOuTq?=
- =?us-ascii?Q?X8y9AmilcDfanmpXnwcfjqLS/GAzWhf2RFLVQfIov2eg/v6t/GNi5GetWL7i?=
- =?us-ascii?Q?o2xGtDe2kanbTLBS5mLnPV9bfjcWc/wkSQlz9wAfnON0NXflcPTJ96Nv83X8?=
- =?us-ascii?Q?hUmSnVYxu601Mk2AHMya2sNAgiUd5d0RIji3gI2YHGu9jGF6Bw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2024 21:53:29.7382
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9afa297-7052-44fb-44ed-08dcfead7361
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066E7.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4494
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 04/15] cxl: Add Get Supported Features command for
+ kernel usage
+To: shiju.jose@huawei.com, linux-edac@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: bp@alien8.de, tony.luck@intel.com, rafael@kernel.org, lenb@kernel.org,
+ mchehab@kernel.org, dan.j.williams@intel.com, dave@stgolabs.net,
+ jonathan.cameron@huawei.com, gregkh@linuxfoundation.org,
+ sudeep.holla@arm.com, jassisinghbrar@gmail.com, alison.schofield@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
+ Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+ rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+ dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, james.morse@arm.com,
+ jthoughton@google.com, somasundaram.a@hpe.com, erdemaktas@google.com,
+ pgonda@google.com, duenwen@google.com, gthelen@google.com,
+ wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+ wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+ prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+ kangkang.shen@futurewei.com, wanghuiqiang@huawei.com, linuxarm@huawei.com
+References: <20241101091735.1465-1-shiju.jose@huawei.com>
+ <20241101091735.1465-5-shiju.jose@huawei.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241101091735.1465-5-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 06, 2024 at 09:05:26PM +0000, Robin Murphy wrote:
-> On 2024-11-06 6:05 pm, Jason Gunthorpe wrote:
-> > If you still feel strongly about this please let me know by Friday and
-> > I will drop the idr[] array from this cycle. We can continue to
-> > discuss a solution for the next cycle.
+
+
+On 11/1/24 2:17 AM, shiju.jose@huawei.com wrote:
+> From: Dave Jiang <dave.jiang@intel.com>
 > 
-> It already can't work as-is, I don't see how making it even more broken
-> would help. IMO it doesn't seem like a good idea to be merging UAPI at
-> all while it's still clearly incomplete and by its own definition unusable.
+> CXL spec r3.1 8.2.9.6.1 Get Supported Features (Opcode 0500h)
+> The command retrieve the list of supported device-specific features
+> (identified by UUID) and general information about each Feature.
+> 
+> The driver will retrieve the feature entries in order to make checks and
+> provide information for the Get Feature and Set Feature command. One of
+> the main piece of information retrieved are the effects a Set Feature
+> command would have for a particular feature.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> Co-developed-by: Shiju Jose <shiju.jose@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 
-Robin, would you please give a clear suggestion for the hw_info?
+Found couple endien conversion changes below:
 
-My takeaway is that you would want the unsupported features (per
-firmware overrides and errata) to be stripped from the reporting
-IDR array. Alternatively, we could start with some basic nesting
-features less those advanced ones (HTTU/PRI or so), and then add
-then later once we're comfortable to advertise.
+> ---
+>  drivers/cxl/core/mbox.c      | 175 +++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxlmem.h         |  47 ++++++++++
+>  drivers/cxl/pci.c            |   4 +
+>  include/cxl/mailbox.h        |   4 +
+>  include/uapi/linux/cxl_mem.h |   1 +
+>  5 files changed, 231 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> index 5175138c4fb7..5045960e3bfe 100644
+> --- a/drivers/cxl/core/mbox.c
+> +++ b/drivers/cxl/core/mbox.c
+> @@ -67,6 +67,7 @@ static struct cxl_mem_command cxl_mem_commands[CXL_MEM_COMMAND_ID_MAX] = {
+>  	CXL_CMD(SET_SHUTDOWN_STATE, 0x1, 0, 0),
+>  	CXL_CMD(GET_SCAN_MEDIA_CAPS, 0x10, 0x4, 0),
+>  	CXL_CMD(GET_TIMESTAMP, 0, 0x8, 0),
+> +	CXL_CMD(GET_SUPPORTED_FEATURES, 0x8, CXL_VARIABLE_PAYLOAD, 0),
+>  };
+>  
+>  /*
+> @@ -795,6 +796,180 @@ static const uuid_t log_uuid[] = {
+>  	[VENDOR_DEBUG_UUID] = DEFINE_CXL_VENDOR_DEBUG_UUID,
+>  };
+>  
+> +static void cxl_free_features(void *features)
+> +{
+> +	kvfree(features);
+> +}
+> +
+> +static int cxl_get_supported_features_count(struct cxl_dev_state *cxlds)
+> +{
+> +	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
+> +	struct cxl_mbox_get_sup_feats_out mbox_out;
+> +	struct cxl_mbox_get_sup_feats_in mbox_in;
+> +	struct cxl_mbox_cmd mbox_cmd;
+> +	int rc;
+> +
+> +	memset(&mbox_in, 0, sizeof(mbox_in));
+> +	mbox_in.count = sizeof(mbox_out);
 
-Does this sound okay to you?
+mbox_in.count = cpu_to_le32(sizeof(mbox_out));
 
-Thanks
-Nicolin
+> +	memset(&mbox_out, 0, sizeof(mbox_out));
+> +	mbox_cmd = (struct cxl_mbox_cmd) {
+> +		.opcode = CXL_MBOX_OP_GET_SUPPORTED_FEATURES,
+> +		.size_in = sizeof(mbox_in),
+> +		.payload_in = &mbox_in,
+> +		.size_out = sizeof(mbox_out),
+> +		.payload_out = &mbox_out,
+> +		.min_out = sizeof(mbox_out),
+> +	};
+> +	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	cxl_mbox->num_features = le16_to_cpu(mbox_out.supported_feats);
+> +	if (!cxl_mbox->num_features)
+> +		return -ENOENT;
+> +
+> +	return 0;
+> +}
+> +
+> +int cxl_get_supported_features(struct cxl_memdev_state *mds)
+> +{
+> +	int remain_feats, max_size, max_feats, start, rc;
+> +	struct cxl_dev_state *cxlds = &mds->cxlds;
+> +	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
+> +	int feat_size = sizeof(struct cxl_feat_entry);
+> +	struct cxl_mbox_get_sup_feats_out *mbox_out;
+> +	struct cxl_mbox_get_sup_feats_in mbox_in;
+> +	int hdr_size = sizeof(*mbox_out);
+> +	struct cxl_mbox_cmd mbox_cmd;
+> +	struct cxl_mem_command *cmd;
+> +	void *ptr;
+> +
+> +	/* Get supported features is optional, need to check */
+> +	cmd = cxl_mem_find_command(CXL_MBOX_OP_GET_SUPPORTED_FEATURES);
+> +	if (!cmd)
+> +		return -EOPNOTSUPP;
+> +	if (!test_bit(cmd->info.id, mds->enabled_cmds))
+> +		return -EOPNOTSUPP;
+> +
+> +	rc = cxl_get_supported_features_count(cxlds);
+> +	if (rc)
+> +		return rc;
+> +
+> +	struct cxl_feat_entry *entries __free(kvfree) =
+> +		kvmalloc(cxl_mbox->num_features * feat_size, GFP_KERNEL);
+> +
+> +	if (!entries)
+> +		return -ENOMEM;
+> +
+> +	cxl_mbox->entries = no_free_ptr(entries);
+> +	rc = devm_add_action_or_reset(cxl_mbox->host, cxl_free_features,
+> +				      cxl_mbox->entries);
+> +	if (rc)
+> +		return rc;
+> +
+> +	max_size = cxl_mbox->payload_size - hdr_size;
+> +	/* max feat entries that can fit in mailbox max payload size */
+> +	max_feats = max_size / feat_size;
+> +	ptr = &cxl_mbox->entries[0];
+> +
+> +	mbox_out = kvmalloc(cxl_mbox->payload_size, GFP_KERNEL);
+> +	if (!mbox_out)
+> +		return -ENOMEM;
+> +
+> +	start = 0;
+> +	remain_feats = cxl_mbox->num_features;
+> +	do {
+> +		int retrieved, alloc_size, copy_feats;
+  +		int num_entries;
+> +
+> +		if (remain_feats > max_feats) {
+> +			alloc_size = sizeof(*mbox_out) + max_feats * feat_size;
+> +			remain_feats = remain_feats - max_feats;
+> +			copy_feats = max_feats;
+> +		} else {
+> +			alloc_size = sizeof(*mbox_out) + remain_feats * feat_size;
+> +			copy_feats = remain_feats;
+> +			remain_feats = 0;
+> +		}
+> +
+> +		memset(&mbox_in, 0, sizeof(mbox_in));
+> +		mbox_in.count = alloc_size;
+> +		mbox_in.start_idx = start;
+mbox_in.count = cpu_to_le32(alloc_size);
+mbox_in.start_idx = cpu_to_le16(start);
+
+
+> +		memset(mbox_out, 0, alloc_size);
+> +		mbox_cmd = (struct cxl_mbox_cmd) {
+> +			.opcode = CXL_MBOX_OP_GET_SUPPORTED_FEATURES,
+> +			.size_in = sizeof(mbox_in),
+> +			.payload_in = &mbox_in,
+> +			.size_out = alloc_size,
+> +			.payload_out = mbox_out,
+> +			.min_out = hdr_size,
+> +		};
+> +		rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
+> +		if (rc < 0)
+> +			goto err;
+> +		if (mbox_cmd.size_out <= hdr_size) {
+> +			rc = -ENXIO;
+> +			goto err;
+> +		}
+> +
+> +		/*
+> +		 * Make sure retrieved out buffer is multiple of feature
+> +		 * entries.
+> +		 */
+> +		retrieved = mbox_cmd.size_out - hdr_size;
+> +		if (retrieved % feat_size) {
+> +			rc = -ENXIO;
+> +			goto err;
+> +		}
+> +
+
+  +		num_entries = le16_to_cpu(mbox_out->num_entries);
+> +		/*
+> +		 * If the reported output entries * defined entry size !=
+> +		 * retrieved output bytes, then the output package is incorrect.
+> +		 */
+> +		if (mbox_out->num_entries * feat_size != retrieved) {
+if (num_entries * feat_size != retrieved) {
+> +			rc = -ENXIO;
+> +			goto err;
+> +		}
+> +
+> +		memcpy(ptr, mbox_out->ents, retrieved);
+> +		ptr += retrieved;
+> +		/*
+> +		 * If the number of output entries is less than expected, add the
+> +		 * remaining entries to the next batch.
+> +		 */
+> +		remain_feats += copy_feats - mbox_out->num_entries;
+> +		start += mbox_out->num_entries;
+remain_feat += copy_feats - num_entries;
+start += num_entries;
+
+> +	} while (remain_feats);
+> +
+> +	kfree(mbox_out);
+> +	return 0;
+> +
+> +err:
+> +	kfree(mbox_out);
+> +	cxl_mbox->num_features = 0;
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_get_supported_features, CXL);
+> +
+> +int cxl_get_supported_feature_entry(struct cxl_memdev_state *mds, const uuid_t *feat_uuid,
+> +				    struct cxl_feat_entry *feat_entry_out)
+> +{
+> +	struct cxl_dev_state *cxlds = &mds->cxlds;
+> +	struct cxl_feat_entry *feat_entry;
+> +	int count;
+> +
+> +	/* Check CXL dev supports the feature */
+> +	feat_entry = &cxlds->cxl_mbox.entries[0];
+> +	for (count = 0; count < cxlds->cxl_mbox.num_features; count++, feat_entry++) {
+> +		if (uuid_equal(&feat_entry->uuid, feat_uuid)) {
+> +			memcpy(feat_entry_out, feat_entry, sizeof(*feat_entry_out));
+> +			return 0;
+> +		}
+> +	}
+> +
+> +	return -EOPNOTSUPP;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_get_supported_feature_entry, CXL);
+> +
+>  /**
+>   * cxl_enumerate_cmds() - Enumerate commands for a device.
+>   * @mds: The driver data for the operation
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index 2a25d1957ddb..f88b10188632 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+> @@ -530,6 +530,7 @@ enum cxl_opcode {
+>  	CXL_MBOX_OP_GET_LOG_CAPS	= 0x0402,
+>  	CXL_MBOX_OP_CLEAR_LOG           = 0x0403,
+>  	CXL_MBOX_OP_GET_SUP_LOG_SUBLIST = 0x0405,
+> +	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	= 0x0500,
+>  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
+>  	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
+>  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
+> @@ -813,6 +814,48 @@ enum {
+>  	CXL_PMEM_SEC_PASS_USER,
+>  };
+>  
+> +/* Get Supported Features (0x500h) CXL r3.1 8.2.9.6.1 */
+> +struct cxl_mbox_get_sup_feats_in {
+> +	__le32 count;
+> +	__le16 start_idx;
+> +	u8 reserved[2];
+> +} __packed;
+> +
+> +/* Supported Feature Entry : Payload out attribute flags */
+> +#define CXL_FEAT_ENTRY_FLAG_CHANGABLE	BIT(0)
+> +#define CXL_FEAT_ENTRY_FLAG_DEEPEST_RESET_PERSISTENCE_MASK	GENMASK(3, 1)
+> +#define CXL_FEAT_ENTRY_FLAG_PERSIST_ACROSS_FIRMWARE_UPDATE	BIT(4)
+> +#define CXL_FEAT_ENTRY_FLAG_SUPPORT_DEFAULT_SELECTION	BIT(5)
+> +#define CXL_FEAT_ENTRY_FLAG_SUPPORT_SAVED_SELECTION	BIT(6)
+> +
+> +enum cxl_feat_attr_value_persistence {
+> +	CXL_FEAT_ATTR_VALUE_PERSISTENCE_NONE,
+> +	CXL_FEAT_ATTR_VALUE_PERSISTENCE_CXL_RESET,
+> +	CXL_FEAT_ATTR_VALUE_PERSISTENCE_HOT_RESET,
+> +	CXL_FEAT_ATTR_VALUE_PERSISTENCE_WARM_RESET,
+> +	CXL_FEAT_ATTR_VALUE_PERSISTENCE_COLD_RESET,
+> +	CXL_FEAT_ATTR_VALUE_PERSISTENCE_MAX
+> +};
+> +
+> +struct cxl_feat_entry {
+> +	uuid_t uuid;
+> +	__le16 id;
+> +	__le16 get_feat_size;
+> +	__le16 set_feat_size;
+> +	__le32 attr_flags;
+> +	u8 get_feat_ver;
+> +	u8 set_feat_ver;
+> +	__le16 set_effects;
+> +	u8 reserved[18];
+> +} __packed;
+> +
+> +struct cxl_mbox_get_sup_feats_out {
+> +	__le16 num_entries;
+> +	__le16 supported_feats;
+> +	u8 reserved[4];
+> +	struct cxl_feat_entry ents[] __counted_by_le(supported_feats);
+> +} __packed;
+> +
+>  int cxl_internal_send_cmd(struct cxl_mailbox *cxl_mbox,
+>  			  struct cxl_mbox_cmd *cmd);
+>  int cxl_dev_state_identify(struct cxl_memdev_state *mds);
+> @@ -872,4 +915,8 @@ struct cxl_hdm {
+>  struct seq_file;
+>  struct dentry *cxl_debugfs_create_dir(const char *dir);
+>  void cxl_dpa_debug(struct seq_file *file, struct cxl_dev_state *cxlds);
+> +
+> +int cxl_get_supported_features(struct cxl_memdev_state *mds);
+> +int cxl_get_supported_feature_entry(struct cxl_memdev_state *mds, const uuid_t *feat_uuid,
+> +				    struct cxl_feat_entry *feat_entry_out);
+>  #endif /* __CXL_MEM_H__ */
+> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+> index 188412d45e0d..5c2926eec3c3 100644
+> --- a/drivers/cxl/pci.c
+> +++ b/drivers/cxl/pci.c
+> @@ -887,6 +887,10 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  	if (rc)
+>  		return rc;
+>  
+> +	rc = cxl_get_supported_features(mds);
+> +	if (rc)
+> +		dev_dbg(&pdev->dev, "No features enumerated.\n");
+> +
+>  	rc = cxl_set_timestamp(mds);
+>  	if (rc)
+>  		return rc;
+> diff --git a/include/cxl/mailbox.h b/include/cxl/mailbox.h
+> index bacd111e75f1..cc66afec3473 100644
+> --- a/include/cxl/mailbox.h
+> +++ b/include/cxl/mailbox.h
+> @@ -14,6 +14,8 @@ struct cxl_mbox_cmd;
+>   * @mbox_mutex: mutex protects device mailbox and firmware
+>   * @mbox_wait: rcuwait for mailbox
+>   * @mbox_send: @dev specific transport for transmitting mailbox commands
+> + * @num_features: number of supported features
+> + * @entries: list of supported feature entries.
+>   */
+>  struct cxl_mailbox {
+>  	struct device *host;
+> @@ -21,6 +23,8 @@ struct cxl_mailbox {
+>  	struct mutex mbox_mutex; /* lock to protect mailbox context */
+>  	struct rcuwait mbox_wait;
+>  	int (*mbox_send)(struct cxl_mailbox *cxl_mbox, struct cxl_mbox_cmd *cmd);
+> +	int num_features;
+> +	struct cxl_feat_entry *entries;
+>  };
+>  
+>  int cxl_mailbox_init(struct cxl_mailbox *cxl_mbox, struct device *host);
+> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
+> index c6c0fe27495d..bd2535962f70 100644
+> --- a/include/uapi/linux/cxl_mem.h
+> +++ b/include/uapi/linux/cxl_mem.h
+> @@ -50,6 +50,7 @@
+>  	___C(GET_LOG_CAPS, "Get Log Capabilities"),			  \
+>  	___C(CLEAR_LOG, "Clear Log"),					  \
+>  	___C(GET_SUP_LOG_SUBLIST, "Get Supported Logs Sub-List"),	  \
+> +	___C(GET_SUPPORTED_FEATURES, "Get Supported Features"),		  \
+>  	___C(MAX, "invalid / last command")
+>  
+>  #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+
 
