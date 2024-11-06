@@ -1,313 +1,227 @@
-Return-Path: <linux-acpi+bounces-9352-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9353-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0069BE225
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 10:17:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5018D9BEB95
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 13:59:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CFE01F23683
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 09:17:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD483B24144
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 12:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4251A1D79B1;
-	Wed,  6 Nov 2024 09:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2451F81BA;
+	Wed,  6 Nov 2024 12:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E95CvxpQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b/DZp64n"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274D1183CD6;
-	Wed,  6 Nov 2024 09:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4E71E3786
+	for <linux-acpi@vger.kernel.org>; Wed,  6 Nov 2024 12:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730884643; cv=none; b=PCz/Q94zWyqtrxvBwlWzgBPE/Sxh/+FrhudN7yKg2MWsC1rHJVRDECcWyOIr/Hl1++0F3oV9ZV/B1cwGSvmSXBm6eTj6sNTQohwljdwz1Y3QlBdfk9snA5R0w/hnr6Hbm7qhHXZwYa5z+q0MwiG4mqydLofjmZL3rSH5Mn1vMyw=
+	t=1730897163; cv=none; b=KRSJakfWV8P3KfjHiPXtydIAToXE0YOuG++uFI1hsOC3tmhrTMs0p1Yyqe10HifBYBXxIGTDEIGvU1MVoaoYeYzRFnTREcDkAaZjR3hl1WABgSvxn0mhFmaKShEY4cKk6PbqvMi0eSlj7xhFMCd5wNuvL0oxE2chyh1Ebr0Mqz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730884643; c=relaxed/simple;
-	bh=AUvdT4ZLRmt7pPB3D7I1JlJH2jqJv3AAgO+GuVMFvwQ=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=P3diwfid0oiNjd+2DBhp7igPDMttl3hPSguDDHxyxVEozWcVdr7rYHDMzPFd4AKwA4ioTv5CmFUAUD54wBDilbb2vs9d6gd+mXFAxSUpJH3PT3Y/4Qwv9KTv4y8/2N7qOxSpGXp9KZOLAEueHSpV0B8JOnIT4MIoKSC8w5xmUU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E95CvxpQ; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730884641; x=1762420641;
-  h=date:from:to:cc:subject:message-id;
-  bh=AUvdT4ZLRmt7pPB3D7I1JlJH2jqJv3AAgO+GuVMFvwQ=;
-  b=E95CvxpQBJGol0ictpk4giKu3zRF7U0L/xtYAxO7Xq4HLoKbsxOB19BS
-   py/iStkB68ErG0DePGSfalwhdUazv6NjrZEZNcTAP8HQQ5K2lh56h1yeR
-   SUuE4bI0D+SrJZINRHMjIkP0h5/UtToH93HaHnMluXwtSKqiiGHC2z9S4
-   Xq96kNRM8SGipafwxStWoX3PIxrs9HDbuMGnjfm7cDr8JNjoOgfGmNgVm
-   1Q3OrCO+jaLoqGIayRLddOk4C7LFkLRTEzU1AGj0yg4bpNQjc1EwC8+rR
-   JgWDTBXkyzNGKdc5uF1Sv8ESCX6/GJWut0IhesIni+9jEpFjR1FYSYwKh
-   Q==;
-X-CSE-ConnectionGUID: rq8Chp/fTF28ldLeUIVRqg==
-X-CSE-MsgGUID: XXqUDqSXSmm/UNtiyEBIaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="42071341"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="42071341"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 01:17:21 -0800
-X-CSE-ConnectionGUID: MDfBvB1NSPife2VB6D7xfA==
-X-CSE-MsgGUID: aUznmMXkTgSrhxS7zy32Fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="107759766"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 06 Nov 2024 01:17:19 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t8cA8-000n8A-37;
-	Wed, 06 Nov 2024 09:17:16 +0000
-Date: Wed, 06 Nov 2024 17:16:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 877f3bea874dcd47641dcd1572e855271f0c5988
-Message-ID: <202411061734.6wSM30ec-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1730897163; c=relaxed/simple;
+	bh=oZEJpWFGDHrs92+9VxEMzdkrrPrA1W8Jk3Vu/SgYHOs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VDLV4YhoA5hKCohVRcuS35RLLBmg7JLQlu7HdT4ZXSON4XBZpkxW9GP0Mnm28MO+x63yYhTdpfSmJ0voOxWYdxVoQBBl55JqktV9eM05CrvW9TJGSrEL7e9tMoaJ7iWUzSNCBt3AOATgWltFj9w0j8fgK/zXLlvirm7lYLfio9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b/DZp64n; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730897160;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hNg/n323bdqLDvtiYjZOYqtT4/DprftsEjfi06zMFo4=;
+	b=b/DZp64nFRIidN/7BeVPdDtgQhCoE396tuCojdBZL/04HrGdXxXlbFtGq5Z+KT/pqYYD7r
+	ZHaOXoMLr+xZwZw9ASC+qsyslSA6/BNhd2/+s96rByNVhjCIOsZoRIMQjffzx9YdRqpEXm
+	zg5E0MBiQ82DCC5QYbuqLl3QuLZpCSk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-90-3mCF2cFgMP-6_frMXwVF4A-1; Wed, 06 Nov 2024 07:45:59 -0500
+X-MC-Unique: 3mCF2cFgMP-6_frMXwVF4A-1
+X-Mimecast-MFC-AGG-ID: 3mCF2cFgMP-6_frMXwVF4A
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4314f1e0f2bso44085645e9.1
+        for <linux-acpi@vger.kernel.org>; Wed, 06 Nov 2024 04:45:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730897158; x=1731501958;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hNg/n323bdqLDvtiYjZOYqtT4/DprftsEjfi06zMFo4=;
+        b=CVRHDj8QMCJHNcajK1aFfnMWhEX8cZyO6qgsoyQX0UcLOa4xFx6OMLL/xr/+I7xRGR
+         5SLsDBjkwt8E0ihEptamRf46VWkIxur5IEUQNNkEX3NpJfm4eQ8Iug/I5eJe1Oi+aeAt
+         /2JYuJ9ZVc7mMF0eTy+GcXKpXoKdEhP9XgoYyfk2T9KTXC6McWj0M1yexD4bEFWqrKRs
+         SkcRCeXnbxg8XvBpSHhTdhy1ZsrKCSZoWJ26hW8XpULF33Dg7yO8n4mYogAzLvSxmBsQ
+         WFgQVxFmuvFC1AE8Npi8Nxq4Z4xIQJSOf8EQ+pZe635oS6g7NuoigAD8IweLNV2VAi+b
+         gYZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXwdTQFTjwyV/LxcALHCC/ZnbJCzf9NEyID+MPGJlIfXcX4deH8/jNyscPQ2rNb01400u/acpWBRu2H@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKh+YwCelDhZOVR4u6WFWgqYefzjRe8irzq16ajKs3H/GQSKq4
+	6JXyP7oXTNsGI0OITInuC0EJwpkbV3XF9t2Lq6ezkHrfkMw2eLNQb84eRefxGix39e+ERHm/mf3
+	hzpNrTTlgyWlfSNbmq/cY70BROjtjJcRlmObybBTO/B0YQHl6+W4zbM96BnY=
+X-Received: by 2002:a05:600c:45ce:b0:431:4f29:9542 with SMTP id 5b1f17b1804b1-4328323f81amr157382755e9.6.1730897157679;
+        Wed, 06 Nov 2024 04:45:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQfzB4j6wZKp9l6UIeDmRJ4LIJfr9Pqvgh4gQlUv5xd8QSovnwaJl6hUPwGQpd2nurQexrTg==
+X-Received: by 2002:a05:600c:45ce:b0:431:4f29:9542 with SMTP id 5b1f17b1804b1-4328323f81amr157382555e9.6.1730897157284;
+        Wed, 06 Nov 2024 04:45:57 -0800 (PST)
+Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.142.6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6b60e9sm21059855e9.14.2024.11.06.04.45.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 04:45:56 -0800 (PST)
+Date: Wed, 6 Nov 2024 13:45:54 +0100
+From: Juri Lelli <juri.lelli@redhat.com>
+To: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-rt-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Tommaso Cucinotta <tommaso.cucinotta@santannapisa.it>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Frauke =?iso-8859-1?Q?J=E4ger?= <frauke@linutronix.de>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+Subject: [ANNOUNCE][CFP] Power Management and Scheduling in the Linux Kernel
+ VII edition (OSPM-summit 2025)
+Message-ID: <ZytlAkTiuZApK23Y@jlelli-thinkpadt14gen4.remote.csb>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 877f3bea874dcd47641dcd1572e855271f0c5988  Merge branches 'acpi-processor' and 'acpi-osl' into bleeding-edge
+Power Management and Scheduling in the Linux Kernel (OSPM-summit) VII edition
 
-elapsed time: 727m
+March 18-20, 2025
+Alte Fabrik
+Uhldingen-Mühlhofen, Germany
 
-configs tested: 219
-configs skipped: 7
+---
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+.:: FOCUS
 
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    clang-20
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-14.1.0
-arc                               allnoconfig    gcc-14.2.0
-arc                              allyesconfig    clang-20
-arc                          axs101_defconfig    gcc-14.2.0
-arc                                 defconfig    gcc-14.2.0
-arc                   randconfig-001-20241106    gcc-13.2.0
-arc                   randconfig-001-20241106    gcc-14.2.0
-arc                   randconfig-002-20241106    gcc-13.2.0
-arc                   randconfig-002-20241106    gcc-14.2.0
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                               allnoconfig    gcc-14.2.0
-arm                              allyesconfig    clang-20
-arm                         axm55xx_defconfig    gcc-14.2.0
-arm                                 defconfig    gcc-14.2.0
-arm                           imxrt_defconfig    gcc-14.2.0
-arm                             mxs_defconfig    gcc-14.2.0
-arm                           omap1_defconfig    gcc-14.2.0
-arm                   randconfig-001-20241106    gcc-14.2.0
-arm                   randconfig-002-20241106    clang-20
-arm                   randconfig-002-20241106    gcc-14.2.0
-arm                   randconfig-003-20241106    clang-20
-arm                   randconfig-003-20241106    gcc-14.2.0
-arm                   randconfig-004-20241106    clang-17
-arm                   randconfig-004-20241106    gcc-14.2.0
-arm                         socfpga_defconfig    gcc-14.2.0
-arm                           spitz_defconfig    gcc-14.2.0
-arm                           sunxi_defconfig    gcc-14.2.0
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-arm64                             allnoconfig    gcc-14.2.0
-arm64                               defconfig    gcc-14.2.0
-arm64                 randconfig-001-20241106    gcc-14.2.0
-arm64                 randconfig-002-20241106    gcc-14.2.0
-arm64                 randconfig-003-20241106    clang-20
-arm64                 randconfig-003-20241106    gcc-14.2.0
-arm64                 randconfig-004-20241106    clang-20
-arm64                 randconfig-004-20241106    gcc-14.2.0
-csky                              allnoconfig    gcc-14.1.0
-csky                              allnoconfig    gcc-14.2.0
-csky                                defconfig    gcc-14.2.0
-csky                  randconfig-001-20241106    gcc-14.2.0
-csky                  randconfig-002-20241106    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                           allnoconfig    gcc-14.2.0
-hexagon                          allyesconfig    clang-20
-hexagon                             defconfig    gcc-14.2.0
-hexagon               randconfig-001-20241106    clang-14
-hexagon               randconfig-001-20241106    gcc-14.2.0
-hexagon               randconfig-002-20241106    clang-16
-hexagon               randconfig-002-20241106    gcc-14.2.0
-i386                             allmodconfig    clang-19
-i386                              allnoconfig    clang-19
-i386                             allyesconfig    clang-19
-i386        buildonly-randconfig-001-20241106    gcc-12
-i386        buildonly-randconfig-002-20241106    gcc-12
-i386        buildonly-randconfig-003-20241106    gcc-12
-i386        buildonly-randconfig-004-20241106    gcc-12
-i386        buildonly-randconfig-005-20241106    gcc-12
-i386        buildonly-randconfig-006-20241106    gcc-12
-i386                                defconfig    clang-19
-i386                  randconfig-001-20241106    gcc-12
-i386                  randconfig-002-20241106    gcc-12
-i386                  randconfig-003-20241106    gcc-12
-i386                  randconfig-004-20241106    gcc-12
-i386                  randconfig-005-20241106    gcc-12
-i386                  randconfig-006-20241106    gcc-12
-i386                  randconfig-011-20241106    gcc-12
-i386                  randconfig-012-20241106    gcc-12
-i386                  randconfig-013-20241106    gcc-12
-i386                  randconfig-014-20241106    gcc-12
-i386                  randconfig-015-20241106    gcc-12
-i386                  randconfig-016-20241106    gcc-12
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch                           defconfig    gcc-14.2.0
-loongarch             randconfig-001-20241106    gcc-14.2.0
-loongarch             randconfig-002-20241106    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                                defconfig    gcc-14.2.0
-m68k                       m5208evb_defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-microblaze                          defconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.2.0
-mips                           gcw0_defconfig    gcc-14.2.0
-mips                            gpr_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.1.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20241106    gcc-14.2.0
-nios2                 randconfig-002-20241106    gcc-14.2.0
-openrisc                          allnoconfig    clang-20
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    clang-20
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-12
-parisc                randconfig-001-20241106    gcc-14.2.0
-parisc                randconfig-002-20241106    gcc-14.2.0
-parisc64                            defconfig    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    clang-20
-powerpc                          allyesconfig    gcc-14.2.0
-powerpc                      bamboo_defconfig    gcc-14.2.0
-powerpc                        cell_defconfig    gcc-14.2.0
-powerpc                      cm5200_defconfig    gcc-14.2.0
-powerpc                      mgcoge_defconfig    gcc-14.2.0
-powerpc                 mpc832x_rdb_defconfig    gcc-14.2.0
-powerpc                      ppc44x_defconfig    gcc-14.2.0
-powerpc                         ps3_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20241106    gcc-14.2.0
-powerpc               randconfig-002-20241106    gcc-14.2.0
-powerpc               randconfig-003-20241106    gcc-14.2.0
-powerpc                     skiroot_defconfig    gcc-14.2.0
-powerpc                      tqm8xx_defconfig    gcc-14.2.0
-powerpc64             randconfig-001-20241106    clang-20
-powerpc64             randconfig-001-20241106    gcc-14.2.0
-powerpc64             randconfig-002-20241106    clang-20
-powerpc64             randconfig-002-20241106    gcc-14.2.0
-powerpc64             randconfig-003-20241106    gcc-14.2.0
-riscv                            allmodconfig    gcc-14.2.0
-riscv                             allnoconfig    clang-20
-riscv                            allyesconfig    gcc-14.2.0
-riscv                               defconfig    gcc-12
-riscv                    nommu_virt_defconfig    gcc-14.2.0
-riscv                 randconfig-001-20241106    gcc-14.2.0
-riscv                 randconfig-002-20241106    clang-20
-riscv                 randconfig-002-20241106    gcc-14.2.0
-s390                             allmodconfig    clang-20
-s390                             allmodconfig    gcc-14.2.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20241106    gcc-14.2.0
-s390                  randconfig-002-20241106    clang-20
-s390                  randconfig-002-20241106    gcc-14.2.0
-sh                               allmodconfig    gcc-14.1.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-12
-sh                        edosk7705_defconfig    gcc-14.2.0
-sh                    randconfig-001-20241106    gcc-14.2.0
-sh                    randconfig-002-20241106    gcc-14.2.0
-sh                           se7724_defconfig    gcc-14.2.0
-sh                   secureedge5410_defconfig    gcc-14.2.0
-sh                   sh7724_generic_defconfig    gcc-14.2.0
-sh                        sh7757lcr_defconfig    gcc-14.2.0
-sh                        sh7785lcr_defconfig    gcc-14.2.0
-sh                          urquell_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20241106    gcc-14.2.0
-sparc64               randconfig-002-20241106    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-um                               allyesconfig    gcc-12
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20241106    clang-20
-um                    randconfig-001-20241106    gcc-14.2.0
-um                    randconfig-002-20241106    clang-17
-um                    randconfig-002-20241106    gcc-14.2.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241106    gcc-11
-x86_64      buildonly-randconfig-002-20241106    gcc-11
-x86_64      buildonly-randconfig-003-20241106    gcc-11
-x86_64      buildonly-randconfig-004-20241106    gcc-11
-x86_64      buildonly-randconfig-005-20241106    gcc-11
-x86_64      buildonly-randconfig-006-20241106    gcc-11
-x86_64                              defconfig    clang-19
-x86_64                                  kexec    clang-19
-x86_64                                  kexec    gcc-12
-x86_64                randconfig-001-20241106    gcc-11
-x86_64                randconfig-002-20241106    gcc-11
-x86_64                randconfig-003-20241106    gcc-11
-x86_64                randconfig-004-20241106    gcc-11
-x86_64                randconfig-005-20241106    gcc-11
-x86_64                randconfig-006-20241106    gcc-11
-x86_64                randconfig-011-20241106    gcc-11
-x86_64                randconfig-012-20241106    gcc-11
-x86_64                randconfig-013-20241106    gcc-11
-x86_64                randconfig-014-20241106    gcc-11
-x86_64                randconfig-015-20241106    gcc-11
-x86_64                randconfig-016-20241106    gcc-11
-x86_64                randconfig-071-20241106    gcc-11
-x86_64                randconfig-072-20241106    gcc-11
-x86_64                randconfig-073-20241106    gcc-11
-x86_64                randconfig-074-20241106    gcc-11
-x86_64                randconfig-075-20241106    gcc-11
-x86_64                randconfig-076-20241106    gcc-11
-x86_64                               rhel-8.3    gcc-12
-xtensa                            allnoconfig    gcc-14.1.0
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                  audio_kc705_defconfig    gcc-14.2.0
-xtensa                randconfig-001-20241106    gcc-14.2.0
-xtensa                randconfig-002-20241106    gcc-14.2.0
+OSPM is moving to Germany!
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The VII edition of the Power Management and Scheduling in the Linux
+Kernel (OSPM) summit aims at fostering discussions on power management
+and (real-time) scheduling techniques. Summit will be held in Uhldingen
+(Germany) on March 18-20, 2025.
+
+We welcome anybody interested in having discussions on the broad scope
+of scheduler techniques for reducing energy consumption while meeting
+performance and latency requirements, real-time systems, real-time and
+non-real-time scheduling, tooling, debugging and tracing.
+
+Feel free to take a look at what happened previous years:
+
+ I   edition - https://lwn.net/Articles/721573/
+ II  edition - https://lwn.net/Articles/754923/
+ III edition - https://lwn.net/Articles/793281/
+ IV  edition - https://lwn.net/Articles/820337/ (online)
+ V   edition - https://lwn.net/Articles/934142/
+               https://lwn.net/Articles/934459/
+               https://lwn.net/Articles/935180/
+ VI  edition - https://lwn.net/Articles/981371/
+
+.:: FORMAT
+
+The summit is organized to cover three days of discussions and talks.
+
+The list of topics of interest includes (but it is not limited to):
+
+ * Power management techniques
+ * Scheduling techniques (real-time and non real-time)
+ * Energy consumption and CPU capacity aware scheduling
+ * Real-time virtualization
+ * Mobile/Server power management real-world use cases (successes and
+   failures)
+ * Power management and scheduling tooling (configuration, integration,
+   testing, etc.)
+ * Tracing
+ * Recap/lightning talks
+
+Presentations (50 min) can cover recently developed technologies,
+ongoing work and new ideas. Please understand that this workshop is not
+intended for presenting sales and marketing pitches.
+
+.:: SUBMIT A TOPIC/PRESENTATION
+
+To submit a topic/presentation use the form available at
+https://forms.gle/Vbvpxsh8pqBffx8b6.
+
+Or, if you prefer, simply reply (only to me, please :) to this email
+specifying:
+
+- name/surname
+- affiliation
+- short bio
+- email address
+- title
+- abstract
+
+Deadline for submitting topics/presentations is December 9, 2024.
+Notifications for accepted topics/presentations will be sent out
+December 16, 2024.
+
+.:: ATTENDING
+
+Attending the OSPM-summit is free of charge, but registration to the
+event is mandatory. The event can allow a maximum of 50 people (so, be
+sure to register early!).
+
+Registrations open on December 16, 2024.
+To register fill in the registration form available at
+https://forms.gle/Yvk7aS79pvNR6hbv8.
+
+While it is not strictly required to submit a topic/presentation,
+registrations with a topic/presentation proposal will take precedence.
+
+.:: VENUE
+
+The conference will take place at Alte Fabrik [1], Daisendorfer Str. 4,
+88689 Uhldingen-Mühlhofen, Germany
+
+The conference venue is located in a 2 minute walking distance [2] to
+the Hotel Sternen [3] that has been pre-reserved for the participants.
+Since it is a very rural area, we recommend booking this hotel as it is
+close to the conference room. The price ranges per night incl. breakfast
+between 85€ (Standard Single Room) up to 149€ (Junior Suite). There is
+an availability of 37 rooms in the hotel. Another 13 rooms are
+pre-reserved in the Hotel Kreuz which is also a 5min walking distance to
+the conference location [4]. Cost is 75€ inkl. breakfast. Please choose
+your hotel (and room) and arrange booking yourself. We recommend arrival
+on March 17 and departure on March 21 due to the length of the trip.
+
+Please use the code ‘LINUTRONIX’ when booking your hotel room. 
+Deadline for hotel booking in Hotel Sternen is February 28, 2025.
+Deadline for hotel booking in Hotel Kreuz is January 17, 2025.  
+After these dates, cancellations are not free of charge anymore.
+
+You can reach Uhldingen-Mühlhofen best from Zürich Airport [5] or
+Friedrichshafen Airport [6]. From both airports there are train and/or
+bus connections to Uhldingen-Mühlhofen which you can check here [7]. The
+rides are quite long, so another possibility is to organize yourself in
+groups and share a taxi/shuttle [8].
+
+[1] https://www.fabrik-muehlhofen.de/
+[2] https://maps.app.goo.gl/S6cnTgx1KJAGRkMr7
+[3] https://www.steAlte Fabrik Mühlhofenrnen-muehlhofen.de/
+[4] https://www.bodensee-hotel-kreuz.de/
+[5] https://www.flughafen-zuerich.ch/de/passagiere/praktisches/parking-und-transport/zug-tram-und-bus
+[6] https://www.bodensee-airport.eu/passagiere-besucher/anreise-parken-uebernachten/
+[7] https://www.bahn.de/
+[8] https://airporttaxi24.ch/?gad_source=1&gclid=EAIaIQobChMIo_y9l56iiQMVfp6DBx16NxPtEAAYAiAAEgJOO_D_BwE
+
+.:: ORGANIZERS
+
+Juri Lelli (Red Hat)
+Frauke Jäger (Linutronix)
+Tommaso Cucinotta (SSSA)
+Lorenzo Pieralisi (Linaro)
+
 
