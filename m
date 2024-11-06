@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9340-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9341-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93629BDDAA
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 04:36:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A173B9BDDAF
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 04:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65515284D9F
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 03:36:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59FE51F2455D
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 03:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA5C19046E;
-	Wed,  6 Nov 2024 03:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5C919047A;
+	Wed,  6 Nov 2024 03:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Xle+/9tt"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="U79haMIq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4357F19004E;
-	Wed,  6 Nov 2024 03:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE2A190477;
+	Wed,  6 Nov 2024 03:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730864207; cv=none; b=OmWJyFR9fTHImlTFpKDO0NXZ8Hrn+JPgQ7E0d947WfizvdYaP6PAoxM9Pw+O/L4NEMrcekQMi1Xf7bIPrgrqbXHcBKbUDWRTJAao8cTTgVr8UirQT2H7PCx2eagp6/J7c3BuQb/QQVNMUNHVJYJAWjn2QUU/yr3vENaOT79mdlQ=
+	t=1730864246; cv=none; b=AaxzgEZVWMXgKEmwxQeyd6hjjgEwP4uGGc8eYyVMuHZF8qA0sq7kQ01l3WfPJ5ZbdiSDq2lHeHU3mOCXXq6UgI/RD41VHDkHyf2hAEp5BhmVXn7sZN/JWt5USc+XXrqzuYAQYVpLC1oeNvXEHx4dGaRGUfIJxnNXu1pSVhgQ6As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730864207; c=relaxed/simple;
-	bh=DuNwxyaz1AleDbmlDR/nEZe/JyQy8LcjkAIT5MEfnuU=;
+	s=arc-20240116; t=1730864246; c=relaxed/simple;
+	bh=fVEscBiNx3NYvSYMZAzwz1v9OdfNq3HmnA/CZ7wTgV4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ifx+rhQ92QLKrcL4AW+cJE9FKueWfUG/MVjxM3MZOBGsgsH03diALSNfO5m7Hu+kEzL5OICjKjhNMvrgKkJxL/mbeeAKPv5rzvQo0eSbPJ4V3y0YSy12BOk+STlVoN05m7sTWaABh5Pvbczwit8ZjlaE6VbVosSpobqV/lxmzHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Xle+/9tt; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=ImYeoWLx51NWZB12/c8oKxp1451w1Tx8kjN9W1K4HIugfBa6oGKmCW7J26QNdpQNYcL1uI3bRp7jiz+d7VtCDnxp42Vl93I/39ICXz2r3M5tAS9XDwu47DUXZorSE6MFeTFGdagsThU5qiBEOn6iyL2Z/wVua1dV4XrD644DKfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=U79haMIq; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730864137; x=1731468937; i=w_armin@gmx.de;
-	bh=jXqDYe1E/BAwByeQJ31UBQ/1XPkaUfqGAI18n6Ypbps=;
+	s=s31663417; t=1730864172; x=1731468972; i=w_armin@gmx.de;
+	bh=EkiJ8wWxkSExNecsS48AgS+9rEfX9MAhCBoyA9fB7Yw=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=Xle+/9ttiVKsdcDJRF/xgXMagIe/KbsoRZJ3shHE4DiR4Rp7v5ZN0YiEgt2Q+ABt
-	 bfOt1QE343eNaW2pVDJYMprEiNlipATQ/oHFb7no3VRMZIK4tLWRolOR8inADtxjh
-	 EGWtSGHoFqYwDbz/7t5h+CDXD16SN9DY98qJE1cygqF9Nco5xXP6NtjjWy1Y/R5yv
-	 bMRateE85P/PuG370JLJ7bh8Guod1onJJBSJkOiCmfTQRIrusHpoVvsIuOHBworqo
-	 beXUc3LWhHosaoAFZ+njX92UZNOeSjzhh31MbwFnCpvR5oXmrr1e3EVEjLfHyGkAP
-	 5DMxEk6tdtPUSgX7iQ==
+	b=U79haMIqxx7Xbi8To/ItChYsydSBenBEtOF3aLM68GgYMxskwPc7Rfi/+ttf7MjQ
+	 BWB4mPxB51tZW41jvZ60XCL+a0iEn/hSlVkIc9rXZ2N5+4QpWrUOJCo0NcNG6SEni
+	 jdiMPOfIROSxv0mApT8MN617aucWCCBAuUOhskVqvgaFbkDz7NQ68OJ830zFtQ7Vm
+	 1Sv+dslRxiofhQhzwZmLHC37EEFY1tL3FbtlI/S3oDOYwLQi5Cg7/WEROdViXP/aH
+	 AgkZ29ouBRw9821pWbeBRJBtn1LvXG1QpYPmgUzhwebHP6YWEeDkjbD3q28ZzJS3/
+	 YSQVrUF5fAtUjvPa/Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MY68T-1tKp413tBF-00KwST; Wed, 06
- Nov 2024 04:35:37 +0100
-Message-ID: <b08c3be4-14e3-432c-8a39-176bd77e2595@gmx.de>
-Date: Wed, 6 Nov 2024 04:35:35 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Md6Mt-1thJl90fK7-00nAvd; Wed, 06
+ Nov 2024 04:36:12 +0100
+Message-ID: <e7834fb2-bafe-4738-be9e-d6ad6a3dd32d@gmx.de>
+Date: Wed, 6 Nov 2024 04:36:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/20] ACPI: platform_profile: Move sanity check out of
- the mutex
+Subject: Re: [PATCH v4 06/20] ACPI: platform_profile: Move matching string for
+ new profile out of mutex
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,78 +81,74 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241105153316.378-1-mario.limonciello@amd.com>
- <20241105153316.378-6-mario.limonciello@amd.com>
+ <20241105153316.378-7-mario.limonciello@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241105153316.378-6-mario.limonciello@amd.com>
+In-Reply-To: <20241105153316.378-7-mario.limonciello@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:VjG1clnpRTw6AstJNkLk5to2AQ0/fW5t3qDNEdQlRVCfGugIBBp
- XguIwaoZN0+rppOJa6dqj0YLtIbPTTHYBMxmbzytmg+CSThw+0lZ+B1ZkE0eSto53pyAu3d
- 1V2g8q4t86yWO5BeRLh+ZU/fpqLLZb7jU4HKNBvpKxdZcyD1hkkNBqf3iFqhZXt46/ywZWx
- QM25L5RyRWX6js9rAFsTA==
+X-Provags-ID: V03:K1:WqvOoGMed2X4f5Htt/EKTv0KYNo8TsslzvKOHaTojpvwE6gtJaD
+ bYygxda43zJ9SGk9IPrscTXW4zvwCghN/FBTwVC++MUzko5/H8STy6RybuWMLRDymxZ92cB
+ i11jIvbruwwfOyLHRbqVPwyL3X3hD/epLyBUVZGA3XCNXZoT3d8jpiVR2likHeH1ClDPrLG
+ zpbiMY9A5L4qkvg1qtD3g==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tWsOFBeEygM=;7HsnlI6jS2zbt9WxjoPJpHgWqWa
- 3gKOv/3dFbOG+CHH9vH6kakYokU5aEskr622VkdxowGWxkYR8MO9GcSp907CcDJofJYl+pGUy
- u6HW6KNcdTx/U+08d14WTI6qkZl9TwWXMLpvf7ULp19RPR8WDK4AetCuCVi1LEFP+fNPj5zkG
- cwLCXTYpewIiHVoGubeqQncXpVX5EX474+0fCp1vG1U6kqO2tjTJDoRgzynNOpsMkUIT0bVGp
- BiWeR5ONwLNNjQbhTeK+JZnNRwJAiEnOo0Vc/ZUCRyaDkhyAdqPcck4TxciGjvVLsbZg0FAno
- s+mXmtWs7fiXYOhnqgMd/eAD1hdEiIhHxe7/URNbxt6ws2oh0BlSPDxQIus47aU48lxUPbF1P
- hmj7Vih1cMJ0Rbrl77fHbqOkPVs05FGsF2f1UKF0NnZL5Uktsh7YHwDwu0vV/JncVRM0r7P8D
- r3QYZZ8rhd97iZ0pp4AlWbel0H94q5csPGqBoPR56Eo/UqD5V8oVP32cZpej8fw0mVcLugzsb
- zEXxkYfiPIy7fI12nZm3X6N6+yZfkl+Ax/9bMR14iUT+y64dEQPUa5fQtWq13z4T538QAufMm
- AUHyBftOVtLlcIQTff4l9omKJ8rVKNSYIlAdZ58th5Q1rodO5gsLysF87Gohc+ZFxG9M+oSDO
- Wy2DIjcrEcUmaNpWQoG7bIXdDZCr1aKaeI0hqfgt4Y5xDN0kbt4qtgyjXHhYEkqbZVPPxkqoe
- LakubHf+LVglDqLIdLxWqw0lORBMzfUIy5AQVgilc8cKHQ4vJyVE3FCmouHmokeaq72uQkg2q
- +yb2+q8Mc5awLYQtbgDCnqq1ybciwiAC3LjCp+qGc9U8w=
+UI-OutboundReport: notjunk:1;M01:P0:woIV+jK18Iw=;0SnLNiythgPLTxS64BYJXXlVgao
+ tDnckdavy6g0Y7hvLcJzmrZQ2Qb8EFb1vjIM4qigui4wIN486E0b0cz0UmxJQoeePOJicU1Nu
+ QO0FB8Czgp3yjHtdo2oJnT6kH/MEpLDNv77sXy3t2yp3tqDZDjjKVyxYTIAI4ctqw/Eapdvta
+ qFlrttPhTkFcmzOSIdvm8DTT1zXohTYFs8voKfma36LfOoHK3ZkqoE0784WqPc7umPO8IDsKV
+ PL9EHABlll65B35Mjw+SHw1XtQVU2fWMIEXBNNcf+J9t8sVpePpPeF2m+6pSYtZqct6Ws7m9H
+ U5tehNlU7/XN8mYYttmo1wAqhdKmJP8DdTmm8+nOkg9wwl0B6r3sNzXyBn1A8N1EeB3HQYnlB
+ +MrkeHf9uiHDsXx83KyVvMsCKK4T7GasP5DAfA8iVlnMM1sPghdjGCen1hxb5AYUc1jF2YYIM
+ pm5gF55LUARTbygbeK+5oHhIPEHPCe7A3RABMUOWsLhRFt+nUlAwqYY93cuyWpklmatdgnSpr
+ KCPb7s54QpKfHPfjV5Q8u4+NZLTEUtx5BCFtGJS6dNSrU8hcPCAmec8djARCYtTknveqM1PMK
+ e6KBHUu3jiI4vxymzxB3/xI40P7yJDy4Pbph86nDcraK8OZjK+lG8fikBf0cO5ThPGZ0taB7x
+ I2GVfyvtLPLCvMdo+pV2/I4lOzXI2OTh6ECzrun3Yi05tDH+EHu4JMCdhafSw5NxrbsqaT2vx
+ a24C8YCeJEMBrwhJuCXMfOxG/bpP0oYo7oNP9cY/J+3dO5CwWPXswpN4+zLtKZXOax+YgajnC
+ xb6BPFhJfExbL8kPpOhAz0nGRV4trmP7Pq8d5pac5kYdA=
 
 Am 05.11.24 um 16:33 schrieb Mario Limonciello:
 
-> The sanity check that the platform handler had choices set doesn't
-> need the mutex taken.  Move it to earlier in the registration.
+> Holding the mutex is not necessary while scanning the string passed into
+> platform_profile_store().
 
 Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 
-> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->   drivers/acpi/platform_profile.c | 13 ++++++-------
->   1 file changed, 6 insertions(+), 7 deletions(-)
+>   drivers/acpi/platform_profile.c | 12 +++++-------
+>   1 file changed, 5 insertions(+), 7 deletions(-)
 >
 > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
 file.c
-> index c76b8e3fdcde6..4e8a155589c21 100644
+> index 4e8a155589c21..70e7f1ba68676 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -179,6 +179,12 @@ int platform_profile_register(struct platform_profi=
-le_handler *pprof)
+> @@ -83,6 +83,11 @@ static ssize_t platform_profile_store(struct device *=
+dev,
 >   {
->   	int err;
+>   	int err, i;
 >
-> +	/* Sanity check the profile handler */
-> +	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
-> +	    !pprof->profile_set || !pprof->profile_get) {
-> +		pr_err("platform_profile: handler is invalid\n");
+> +	/* Scan for a matching profile */
+> +	i =3D sysfs_match_string(profile_names, buf);
+> +	if (i < 0)
 > +		return -EINVAL;
-> +	}
->   	if (!pprof->dev) {
->   		pr_err("platform_profile: handler device is not set\n");
->   		return -EINVAL;
-> @@ -191,13 +197,6 @@ int platform_profile_register(struct platform_profi=
-le_handler *pprof)
->   		return -EEXIST;
+> +
+>   	err =3D mutex_lock_interruptible(&profile_lock);
+>   	if (err)
+>   		return err;
+> @@ -92,13 +97,6 @@ static ssize_t platform_profile_store(struct device *=
+dev,
+>   		return -ENODEV;
 >   	}
 >
-> -	/* Sanity check the profile handler field are set */
-> -	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
-> -		!pprof->profile_set || !pprof->profile_get) {
+> -	/* Scan for a matching profile */
+> -	i =3D sysfs_match_string(profile_names, buf);
+> -	if (i < 0) {
 > -		mutex_unlock(&profile_lock);
 > -		return -EINVAL;
 > -	}
 > -
->   	err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
->   	if (err) {
+>   	/* Check that platform supports this profile choice */
+>   	if (!test_bit(i, cur_profile->choices)) {
 >   		mutex_unlock(&profile_lock);
 
