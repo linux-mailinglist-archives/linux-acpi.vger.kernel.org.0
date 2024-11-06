@@ -1,145 +1,282 @@
-Return-Path: <linux-acpi+bounces-9347-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9348-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6800D9BDE54
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 06:39:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DB39BDE5B
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 06:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687661C22DC9
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 05:39:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CBB41F222DB
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 05:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07561917E4;
-	Wed,  6 Nov 2024 05:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66F418FDDA;
+	Wed,  6 Nov 2024 05:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gkxY0evp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icD4pqdq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5060C18FDD0
-	for <linux-acpi@vger.kernel.org>; Wed,  6 Nov 2024 05:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E0E2C80;
+	Wed,  6 Nov 2024 05:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730871570; cv=none; b=RhtpeygreDwHesQ21pC772gj3XVZA5o3c7lyVIGWLoM3ts77kDBbsQ9TiYJHFdXwQvgRydehr/hj72jRjGWyCBwwI2GNJ/VQ8dfJM5QWN0ybxgs21JW/zx9zMOBOAOzzwYuheXTLPATFVfcGffR6ci3Im1hb0E0d50+9raGbuHI=
+	t=1730871967; cv=none; b=Vii/tvqy2Hd5sV5EnzrkxYZIQZP8+xaQ4wiHlPOCCugjh1cfF6mZzZ7Pe/L3jvYEIPVSl+EGfgljTaMUFlx2c9/4+fxShfbdXKMO+yucb5/Ac/gh7y+USWK75UfjMiVqZBvz9vCTVQdtxq3H3jmAlvbtNHfBItzk6wwAQ/NyLkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730871570; c=relaxed/simple;
-	bh=3qBDiqpY9XDqbY2Y9odYYAPqOm9MdhCQLElgiaodrH0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y2vIu+HtZYJq/rJuEmTsVgw1orJteAu6RXpVKAs44BcNBpxodlBXFEnkJ2u9Mak4SZ90NLcR/dlAwR2+tJPPNldlzAF3DtWL+9wnZdss/A6pnWIMEFHlI1T9CEgONtyYIe2hmYAgESbx9VNeSqfZF+IhaHLvOhs3ptnWNdZ1bmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gkxY0evp; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539f53973fdso446518e87.1
-        for <linux-acpi@vger.kernel.org>; Tue, 05 Nov 2024 21:39:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730871565; x=1731476365; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AN4uQlg4JmmnskoZUbD9ajWs6/v+l9dkVw03I1zm8cw=;
-        b=gkxY0evpc78lyNkTILVk409H9nFTRzkmUYLkkxqIXf9UU6lmHGyKrEFkeynN+XO6WG
-         /Q9Tm8PR3aYI1fwbAtPXk2pus0+f4b8dgy22oH7m87l/yy3N6YUz4T1LB2DCfDi/L9CS
-         pJWvrrXJIqtam7RlqNMhIyC2s53syrMYWv6k7/GOpKntprws5X7vLWHi+wIAHn0/NKED
-         pjKlAOCNBMpENcEdrDYvuk5sObDjpoHESmLHh1HpQRgXBTE5Rs7EgdO03GvFzSqUFtJj
-         IQRf0mFOQGC9v+vPWaepd/nBs8s+SrNibqV2+EAmcfGdth+kaLRJ6zxQ+eczbIeKwNe+
-         pRWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730871565; x=1731476365;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AN4uQlg4JmmnskoZUbD9ajWs6/v+l9dkVw03I1zm8cw=;
-        b=wQMDOd6w+5TBMR7KULK7mZkfPws9j+I5d3B1NCG08o/jlZvwPupB8ZZDAS0T0emF9D
-         hmLfb3HDIeye1n8/9zd7Ocq7YhIS+tD54/SQXg+Q7fVzE/C1kJwBPddjE38iHjMdX/+S
-         +XqKe9zTioNQ9g1LcXRh/6qIjCX4kmkkKWUD3nN4wiIkiSOCpANOXUA68omnn4hezEL2
-         t9U2iDCiF3bnmU9RYlMNna92hBUirJjfQlvegG4d9QaDaCM18R0k8dLo4d4M0HYCP4R5
-         ZnSr9J9tkUNM9l1R8Bay9V/XHXnf+95Q5fAKKRfDYwyAtZYKX4apjmoLGFBHhueGdj9C
-         YsfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxMUjkuLv9Z0Xon/CaHNmMRb8buFEtTgm0qihHJBZg6hJ3f6mOJ8mwHaipFlGuh+CfFe3PZjUfKYsQ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5wcfmgxgsAJDeFPPIyMi7mTpvPq8fwTWIg4HqCJ+ooZgOdzCv
-	ooL3F28P8rniAxEnLaZqASUtlainAYW/HtXWMASrZ5grrTSwprgANxM564o7t0UXkeFH928cv29
-	IQnnKUghWXJN+C16VCztdSxsDIDJsYyhewJBOAg==
-X-Google-Smtp-Source: AGHT+IHkFZmS15Yat+yA6wTIjddaBPNP6Qu4/1YXgkU7r7C/EE/mZc+JCaJP3gRrzyZ+p7mBuvSg1qn/MJDQimjHDOk=
-X-Received: by 2002:a05:6512:4803:b0:53b:1ede:9174 with SMTP id
- 2adb3069b0e04-53d7cff7502mr316569e87.28.1730871564937; Tue, 05 Nov 2024
- 21:39:24 -0800 (PST)
+	s=arc-20240116; t=1730871967; c=relaxed/simple;
+	bh=KHaZm1BKPo5bIXvGUMESWUYC59KIwDNI0k37DvMlpVU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H8p7PiTh4kkQXg0rLCCUxjEsEFb5x57Y0a7kooJs2+ZNopSGqWy9YL+R3eFQyKpgIa5tO4uAGb7U6qnNR0dKcaWNn58O6hYjdnk40xYYHhVuUJyJIxEgocDdvNZPGzwK4fePNdVNuqhnXVJI72T2ptX+Q1575FxbS+Y4HOHyZ3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icD4pqdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324EAC4CECD;
+	Wed,  6 Nov 2024 05:46:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730871967;
+	bh=KHaZm1BKPo5bIXvGUMESWUYC59KIwDNI0k37DvMlpVU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=icD4pqdqQbBRzIIcf6NeBCcFIAJSVFiN9TeJxVABG7BURPDCOmZAAPgvIJamzvRtn
+	 CGZXA7R79dq1crymNi3cWzswnCh09gVwyPjwfXph1OGTXIaPb0ECVHMnImw7NCqBry
+	 MYfGKtiu/w7sQKRH7Je/1IyoHKFxx5XDzTlQYFGFEnWGL1bU3RjYfY4EgOZBHfxT+i
+	 7YMfvxB6frG+9OIU8qSEFhE68LFWpavf502hL2zLYAU4RqZMTzQFo+q8KwR85Fb6ot
+	 Hn1OrHPPBCl3U7dImAxF8Z0urkoh7q1OI8HBt5yYbhMozB4wKUNavUBrul+P7jGeq7
+	 h22INCnYiPRtw==
+Message-ID: <a40ef9a8-0589-4070-921e-f3461fa6759c@kernel.org>
+Date: Tue, 5 Nov 2024 23:46:02 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <9-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com> <CABQgh9HoGFGDTEqziQt6WrJ7Bm9d-0c259PYsms3nOVEidn5BA@mail.gmail.com>
- <20241104171931.GB10193@nvidia.com>
-In-Reply-To: <20241104171931.GB10193@nvidia.com>
-From: Zhangfei Gao <zhangfei.gao@linaro.org>
-Date: Wed, 6 Nov 2024 05:39:13 +0000
-Message-ID: <CABQgh9HSAhat3_P43F_z07oqDaJ9h_YrZ-+SdHZ=ijzrZD1CVw@mail.gmail.com>
-Subject: Re: [PATCH v4 09/12] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev, 
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, 
-	Alex Williamson <alex.williamson@redhat.com>, Donald Dutile <ddutile@redhat.com>, 
-	Eric Auger <eric.auger@redhat.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jerry Snitselaar <jsnitsel@redhat.com>, 
-	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
-	patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 12/20] ACPI: platform_profile: Add profile attribute
+ for class interface
+To: Armin Wolf <W_Armin@gmx.de>, Mario Limonciello
+ <mario.limonciello@amd.com>, Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241105153316.378-1-mario.limonciello@amd.com>
+ <20241105153316.378-13-mario.limonciello@amd.com>
+ <dad36f32-5970-48c2-9ee1-78163958bf02@gmx.de>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <dad36f32-5970-48c2-9ee1-78163958bf02@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 4 Nov 2024 at 17:19, Jason Gunthorpe <jgg@nvidia.com> wrote:
->
-> On Thu, Oct 31, 2024 at 02:21:11PM +0800, Zhangfei Gao wrote:
->
-> > > +static struct iommu_domain *
-> > > +arm_vsmmu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
-> > > +                             const struct iommu_user_data *user_data)
-> > > +{
-> > > +       struct arm_vsmmu *vsmmu = container_of(viommu, struct arm_vsmmu, core);
-> > > +       struct arm_smmu_nested_domain *nested_domain;
-> > > +       struct iommu_hwpt_arm_smmuv3 arg;
-> > > +       int ret;
-> > > +
-> > > +       if (flags)
-> > > +               return ERR_PTR(-EOPNOTSUPP);
-> >
-> > This check fails when using user page fault, with flags =
-> > IOMMU_HWPT_FAULT_ID_VALID (4)
-> > Strange, the check is not exist in last version?
-> >
-> > iommufd_viommu_alloc_hwpt_nested ->
-> > viommu->ops->alloc_domain_nested(viommu, flags, user_data) ->
-> > arm_vsmmu_alloc_domain_nested
->
-> It should permit IOMMU_HWPT_FAULT_ID_VALID, I'll add this hunk:
->
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
-> @@ -178,12 +178,18 @@ arm_vsmmu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
->                               const struct iommu_user_data *user_data)
->  {
->         struct arm_vsmmu *vsmmu = container_of(viommu, struct arm_vsmmu, core);
-> +       const u32 SUPPORTED_FLAGS = IOMMU_HWPT_FAULT_ID_VALID;
->         struct arm_smmu_nested_domain *nested_domain;
->         struct iommu_hwpt_arm_smmuv3 arg;
->         bool enable_ats = false;
->         int ret;
->
-> -       if (flags)
-> +       /*
-> +        * Faults delivered to the nested domain are faults that originated by
-> +        * the S1 in the domain. The core code will match all PASIDs when
-> +        * delivering the fault due to user_pasid_table
-> +        */
-> +       if (flags & ~SUPPORTED_FLAGS)
->                 return ERR_PTR(-EOPNOTSUPP);
 
-Thanks Jason, this works
+
+On 11/5/24 22:10, Armin Wolf wrote:
+> Am 05.11.24 um 16:33 schrieb Mario Limonciello:
+> 
+>> Reading and writing the `profile` sysfs file will use the callbacks for
+>> the platform profile handler to read or set the given profile.
+>>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>   drivers/acpi/platform_profile.c | 118 ++++++++++++++++++++++++++++++++
+>>   1 file changed, 118 insertions(+)
+>>
+>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/ 
+>> platform_profile.c
+>> index e1b6569c4ee70..79083d0bb22e3 100644
+>> --- a/drivers/acpi/platform_profile.c
+>> +++ b/drivers/acpi/platform_profile.c
+>> @@ -65,6 +65,78 @@ static int _get_class_choices(struct device *dev, 
+>> unsigned long *choices)
+>>       return 0;
+>>   }
+>>
+>> +/**
+>> + * _store_class_profile - Set the profile for a class device
+>> + * @dev: The class device
+>> + * @data: The profile to set
+>> + */
+>> +static int _store_class_profile(struct device *dev, void *data)
+>> +{
+>> +    enum platform_profile_option profile;
+>> +    unsigned long choices;
+>> +    int *i = (int *)data;
+>> +    int err;
+>> +
+>> +    err = _get_class_choices(dev, &choices);
+>> +    if (err)
+>> +        return err;
+>> +
+>> +    scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>> +        struct platform_profile_handler *handler;
+>> +
+>> +        if (!test_bit(*i, &choices))
+>> +            return -EOPNOTSUPP;
+>> +
+>> +        handler = dev_get_drvdata(dev);
+>> +        err = handler->profile_get(handler, &profile);
+>> +        if (err)
+>> +            return err;
+>> +
+>> +        err = handler->profile_set(handler, *i);
+>> +        if (err) {
+>> +            int recover_err;
+>> +
+>> +            dev_err(dev, "Failed to set profile: %d\n", err);
+>> +            recover_err = handler->profile_set(handler, profile);
+>> +            if (recover_err)
+>> +                dev_err(dev, "Failed to reset profile: %d\n", 
+>> recover_err);
+>> +        }
+> 
+> The whole recovery handling seems unnecessary to me. In setting the 
+> platform profile fails, then
+> we should just return an error. The platform profile handler will tell 
+> us the current platform
+> profile anyway.
+
+Sure, makes sense.  That also means no need to capture the profile 
+before setting it.
+
+> 
+>> +        sysfs_notify(&handler->class_dev->kobj, NULL, 
+>> "platform_profile");
+>> +        kobject_uevent(&handler->class_dev->kobj, KOBJ_CHANGE);
+> 
+> Please avoid sending those events when the platform profile is changed 
+> through the class sysfs interface.
+> 
+>> +    }
+>> +
+>> +    sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> 
+> Please avoid sending this event when the platform profile is changed 
+> through the legacy sysfs interface.
+
+In both above cases - why?
+
+* If I change using class interface then that implicitly means that 
+legacy interface changes.
+* If I change using legacy interface that implicitly means class 
+interface changes too.
+
+> 
+>> +    return err ? err : 0;
+>> +}
+>> +
+>> +/**
+>> + * get_class_profile - Show the current profile for a class device
+>> + * @dev: The class device
+>> + * @profile: The profile to return
+>> + * Return: 0 on success, -errno on failure
+>> + */
+>> +static int get_class_profile(struct device *dev,
+>> +                 enum platform_profile_option *profile)
+>> +{
+>> +    struct platform_profile_handler *handler;
+>> +    enum platform_profile_option val;
+>> +    int err;
+>> +
+>> +    scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>> +        handler = dev_get_drvdata(dev);
+>> +        err = handler->profile_get(handler, &val);
+>> +        if (err) {
+>> +            pr_err("Failed to get profile for handler %s\n", handler- 
+>> >name);
+>> +            return err;
+>> +        }
+>> +    }
+>> +
+>> +    if (WARN_ON(val >= PLATFORM_PROFILE_LAST))
+>> +        return -EINVAL;
+>> +    *profile = val;
+>> +
+>> +    return 0;
+>> +}
+>>
+>>   /**
+>>    * name_show - Show the name of the profile handler
+>> @@ -102,12 +174,58 @@ static ssize_t choices_show(struct device *dev,
+>>       return _commmon_choices_show(choices, buf);
+>>   }
+>>
+>> +/**
+>> + * profile_show - Show the current profile for a class device
+>> + * @dev: The device
+>> + * @attr: The attribute
+>> + * @buf: The buffer to write to
+>> + * Return: The number of bytes written
+>> + */
+>> +static ssize_t profile_show(struct device *dev,
+>> +                struct device_attribute *attr,
+>> +                char *buf)
+>> +{
+>> +    enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+>> +    int err;
+>> +
+>> +    err = get_class_profile(dev, &profile);
+>> +    if (err)
+>> +        return err;
+>> +
+>> +    return sysfs_emit(buf, "%s\n", profile_names[profile]);
+>> +}
+>> +
+>> +/**
+>> + * profile_store - Set the profile for a class device
+>> + * @dev: The device
+>> + * @attr: The attribute
+>> + * @buf: The buffer to read from
+>> + * @count: The number of bytes to read
+>> + * Return: The number of bytes read
+>> + */
+>> +static ssize_t profile_store(struct device *dev,
+>> +                 struct device_attribute *attr,
+>> +                 const char *buf, size_t count)
+>> +{
+>> +    int i, ret;
+>> +
+>> +    i = sysfs_match_string(profile_names, buf);
+>> +    if (i < 0)
+>> +        return -EINVAL;
+>> +
+>> +    ret = _store_class_profile(dev, (void *)(long)&i);
+> 
+> Please just pass &i.
+
+Ack.
+
+> 
+> Thanks,
+> Armin Wolf
+> 
+>> +
+>> +    return ret ? ret : count;
+>> +}
+>>
+>>   static DEVICE_ATTR_RO(name);
+>>   static DEVICE_ATTR_RO(choices);
+>> +static DEVICE_ATTR_RW(profile);
+>> +
+>>   static struct attribute *profile_attrs[] = {
+>>       &dev_attr_name.attr,
+>>       &dev_attr_choices.attr,
+>> +    &dev_attr_profile.attr,
+>>       NULL
+>>   };
+>>   ATTRIBUTE_GROUPS(profile);
+> 
+
 
