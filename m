@@ -1,165 +1,159 @@
-Return-Path: <linux-acpi+bounces-9358-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9359-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A066B9BF262
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 16:59:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D291F9BF35B
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 17:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FCF1F2393E
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 15:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837321F22CA8
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 16:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075E22064FB;
-	Wed,  6 Nov 2024 15:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="fCRPLyiZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CDE1E9099;
+	Wed,  6 Nov 2024 16:38:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9B32038DA
-	for <linux-acpi@vger.kernel.org>; Wed,  6 Nov 2024 15:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3183C18FC8C;
+	Wed,  6 Nov 2024 16:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730908748; cv=none; b=t0xCQllIYX43Uc9gcEsfPU9a6TvNsGP71oL3kLIIkM/DWs+o1nzvGY2aTuXQTEmBNHvh8NotwiM+CJZUkTFjAdCwYdfwWzfeebvTm6GeBNGVcLa+6co1cZ6qtn//zfkZPrIzrM+JBJRhDJGtiZHgCf9fztRGZMuJmL1/Nm+Tzxw=
+	t=1730911081; cv=none; b=XQx2vwb8sPMK2XiXgn5OgOTVc5JH8pzXepKhyo1NOVQvvsVyEpEkfzIDedb6IfpruxOSUFdrRES9GTeWvJbOQQW7Mn0ggbUO/2Bdd2O7YgOvDcIOOwCm1jR5Mpg7efEc/rdntQUGIbdPoT/91HmPwwLSoaiUrYFSMDTUu05Mhec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730908748; c=relaxed/simple;
-	bh=a2SRNhgByLYkEQQV8w/BUYuqaC8BJarO22cske/QxvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXa/zuGFSpWB6tUorA7UoKAc5d+0Ck8jWObZu4a3Mrszqz1lyK9uKG9eBvb9aTYf6c4IX7k1qePZ8cFpkD15Shv6CWEgtJ7euA05n4tSpYjr0L3YfyWM705FwQrw+bXwrjyMKNfvTzIQDcMJ75ijfjOAAdBMTtu/w4/ntvmpVOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=fCRPLyiZ; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b1507c42faso82704585a.0
-        for <linux-acpi@vger.kernel.org>; Wed, 06 Nov 2024 07:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1730908746; x=1731513546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dE7GBdO27UpsSNU1CxN3p2/3T9xO+pcffcnhhBLFfkk=;
-        b=fCRPLyiZs+9ptDNCDmtf7ik0bWzhFKd4BMazhLG6cy/alPFUiNI+GEx1762pXu5mZN
-         AKDBm5RFPgL0HN7JFp6vDUJB2F+q6iXUluKrvZonZU6NjYvyIbVsuKUcJ+pFzS3FcZ38
-         iD2nip8wqtN6NLt+DFgFlitub6QaIhi+AtsX6zozjH4Lx/Ewt13X+vqV2/P62vbx1PBa
-         qPaYkBl683qMGsb/Y/lY2UyTV3NlMYgMahjEFd7UjBqa9ZzDXZTJ1jX0QTDh2Xvlba5/
-         Ta4KYbbfXJ7ojUBUVGG0c8LElVjA2wm6l4ToaUY8y8LaVx8gmHELuz3XIF7YvU02YuCS
-         DOAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730908746; x=1731513546;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dE7GBdO27UpsSNU1CxN3p2/3T9xO+pcffcnhhBLFfkk=;
-        b=IHe5YrGc2B7CNnzDHwZEgBlHt21zW0J7f6C3ByvxkYJ0sRYQagbMwYC7OQiptegPRJ
-         wMv/lI5FMda06BdNwmAj5qhU5MR8jyVhkKvuNRIPCXbK0j3m/6DsOdJuI9Eco62LnJAW
-         QxIkwq28RN/vhygF6hOotS7WsgT8iujDd1jgwAZkpq5W3ZS8QCxHzyySR2dnHiomRdOc
-         A+Dgl48E9x0aqCQHWeZDdtlrRWs8M/MSv9w2EaISNyQg6LQX/A4Plo0MpeqqNKHnBe9i
-         nDHUliE5EUKFh64iR6m2vTBghDaFi3wprMZfcpsbcWo+1j83P5rqAHBKj5N2k6azW2fN
-         2WAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkwXrh8ShlM3wXfgp0Wx7MUBGeoUyEYUvH0/mOK0rKdoKqPSQrYZB3ZQBVbjq/IxSdRag56IEp8Dv0@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9bAWAAOcWxJ61WlNFVdX2sq8eVzKjUAG42TAsdERvKfIlILSk
-	gMpCtBdTrBAR5SJSw8cD2Fuu3bAyuDq0WnjhvFTHANt7vDefgMD4kt3KXewwbbg=
-X-Google-Smtp-Source: AGHT+IEUkctiVyqefq/YK8UzVAb3G1JlrVxWuRVPIwvQYFeNj0t51VLwtemS/L2Zn+W2U6AWN8z3Tg==
-X-Received: by 2002:a05:620a:bc4:b0:7b1:3c19:a665 with SMTP id af79cd13be357-7b3217fd138mr445393985a.19.1730908746378;
-        Wed, 06 Nov 2024 07:59:06 -0800 (PST)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39f7b85sm641377285a.31.2024.11.06.07.59.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 07:59:06 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-To: x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org,
-	kernel-team@meta.com,
-	Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com,
-	rrichter@amd.com,
-	Terry.Bowman@amd.com,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com,
-	alison.schofield@intel.com,
-	gourry@gourry.net,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hpa@zytor.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	david@redhat.com,
-	osalvador@suse.de,
-	gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org,
-	rppt@kernel.org
-Subject: [PATCH v6 3/3] acpi,srat: give memory block size advice based on CFMWS alignment
-Date: Wed,  6 Nov 2024 10:58:47 -0500
-Message-ID: <20241106155847.7985-4-gourry@gourry.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241106155847.7985-1-gourry@gourry.net>
-References: <20241106155847.7985-1-gourry@gourry.net>
+	s=arc-20240116; t=1730911081; c=relaxed/simple;
+	bh=NoUPWQGZ3FMIWDA+UGAU977oicgCj2D+ncc6vpw6caU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WNaHgcETXkzfeWBCmb5aQYYblnVrC7qwdtLlQW0Oc9EEgxYc+xSpwxdZqi4BdRcKxIBL0OYiLfHGuvYLWLeV4Ln4K4V8jZvcc4yrLZw6OXqVy4xFs5JAXFNHhXl8sf8RPpjJEzlvnDgdIhwMOuH0IXTdI8lRAwOH9c9p68IDkB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 118FC497;
+	Wed,  6 Nov 2024 08:38:28 -0800 (PST)
+Received: from [10.57.90.5] (unknown [10.57.90.5])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6850B3F528;
+	Wed,  6 Nov 2024 08:37:54 -0800 (PST)
+Message-ID: <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
+Date: Wed, 6 Nov 2024 16:37:53 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO via
+ struct arm_smmu_hw_info
+To: Jason Gunthorpe <jgg@nvidia.com>, Will Deacon <will@kernel.org>
+Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+ kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Hanjun Guo <guohanjun@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241104114723.GA11511@willie-the-truck> <20241104124102.GX10193@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241104124102.GX10193@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Capacity is stranded when CFMWS regions are not aligned to block size.
-On x86, block size increases with capacity (2G blocks @ 64G capacity).
+On 2024-11-04 12:41 pm, Jason Gunthorpe wrote:
+> On Mon, Nov 04, 2024 at 11:47:24AM +0000, Will Deacon wrote:
+>>> +/**
+>>> + * struct iommu_hw_info_arm_smmuv3 - ARM SMMUv3 hardware information
+>>> + *                                   (IOMMU_HW_INFO_TYPE_ARM_SMMUV3)
+>>> + *
+>>> + * @flags: Must be set to 0
+>>> + * @__reserved: Must be 0
+>>> + * @idr: Implemented features for ARM SMMU Non-secure programming interface
+>>> + * @iidr: Information about the implementation and implementer of ARM SMMU,
+>>> + *        and architecture version supported
+>>> + * @aidr: ARM SMMU architecture version
+>>> + *
+>>> + * For the details of @idr, @iidr and @aidr, please refer to the chapters
+>>> + * from 6.3.1 to 6.3.6 in the SMMUv3 Spec.
+>>> + *
+>>> + * User space should read the underlying ARM SMMUv3 hardware information for
+>>> + * the list of supported features.
+>>> + *
+>>> + * Note that these values reflect the raw HW capability, without any insight if
+>>> + * any required kernel driver support is present. Bits may be set indicating the
+>>> + * HW has functionality that is lacking kernel software support, such as BTM. If
+>>> + * a VMM is using this information to construct emulated copies of these
+>>> + * registers it should only forward bits that it knows it can support.
 
-Use CFMWS base/size to report memory block size alignment advice.
+But how *is* a VMM supposed to know what it can support? Are they all 
+expected to grovel the host devicetree/ACPI tables and maintain their 
+own knowledge of implementation errata to understand what's actually usable?
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
----
- drivers/acpi/numa/srat.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+>>> + *
+>>> + * In future, presence of required kernel support will be indicated in flags.
+>>
+>> What about the case where we _know_ that some functionality is broken in
+>> the hardware? For example, we nobble BTM support on MMU 700 thanks to
+>> erratum #2812531 yet we'll still cheerfully advertise it in IDR0 here.
+>> Similarly, HTTU can be overridden by IORT, so should we update the view
+>> that we advertise for that as well?
+> 
+> My knee jerk answer is no, these struct fields should just report the
+> raw HW register. A VMM should not copy these fields directly into a
+> VM. The principle purpose is to give the VMM the same details about the
+> HW as the kernel so it can apply erratas/etc.
+> 
+> For instance, if we hide these fields how will the VMM/VM know to
+> apply the various flushing errata? With vCMDQ/etc the VM is directly
+> pushing flushes to HW, it must know the errata.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 44f91f2c6c5d..34b6993e7d6c 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -14,6 +14,7 @@
- #include <linux/errno.h>
- #include <linux/acpi.h>
- #include <linux/memblock.h>
-+#include <linux/memory.h>
- #include <linux/numa.h>
- #include <linux/nodemask.h>
- #include <linux/topology.h>
-@@ -338,13 +339,22 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- {
- 	struct acpi_cedt_cfmws *cfmws;
- 	int *fake_pxm = arg;
--	u64 start, end;
-+	u64 start, end, align;
- 	int node;
- 
- 	cfmws = (struct acpi_cedt_cfmws *)header;
- 	start = cfmws->base_hpa;
- 	end = cfmws->base_hpa + cfmws->window_size;
- 
-+	/* Align memblock size to CFMW regions if possible */
-+	align = 1UL << __ffs(start | end);
-+	if (align >= SZ_256M) {
-+		if (memory_block_advise_max_size(align) < 0)
-+			pr_warn("CFMWS: memblock size advise failed\n");
-+	} else {
-+		pr_err("CFMWS: [BIOS BUG] base/size alignment violates spec\n");
-+	}
-+
- 	/*
- 	 * The SRAT may have already described NUMA details for all,
- 	 * or a portion of, this CFMWS HPA range. Extend the memblks
--- 
-2.43.0
+That doesn't seem like a valid argument. We obviously can't abstract 
+SMMU_IIDR, that would indeed be an invitation for trouble, but 
+otherwise, if an erratum affects S1 operation under conditions dependent 
+on an optional feature, then not advertising that feature would make the 
+workaround irrelevant anyway, since as far as the VM is concerned it 
+would be wrong to expect a non-existent feature to work in the first place.
 
+> For BTM/HTTU/etc - those all require kernel SW support and per-device
+> permission in the kernel to turn on. For instance requesting a nested
+> vSTE that needs BTM will fail today during attach. Turning on HTTU on
+> the S2 already has an API that will fail if the IORT blocks it.
+
+What does S2 HTTU have to do with the VM? How the host wants to maintain 
+its S2 tables it its own business. AFAICS, unless the VMM wants to do 
+some fiddly CD shadowing, it's going to be kinda hard to prevent the 
+SMMU seeing a guest CD with CD.HA and/or CD.HD set if the guest expects 
+S1 HTTU to work.
+
+I'm not sure what "vSTE that needs BTM" means. Even if the system does 
+support BTM, the only control is the global SMMU_CR2.PTM, and a vSMMU 
+can't usefully emulate changing that either way. Either the host set 
+PTM=0 before enabling the SMMU, so BTM can be advertised and expected to 
+work, or it didn't, in which case there can be no BTM, full stop.
+
+> Incrementally dealing with expanding the support is part of the
+> "required kernel support will be indicated in flags."
+> 
+> Basically, exposing the information as-is doesn't do any harm.
+
+I would say it does. Advertising a feature when we already know it's not 
+usable at all puts a non-trivial and unnecessary burden on the VMM and 
+VM to then have to somehow derive that information from other sources, 
+at the risk of being confused by unexpected behaviour if they don't.
+
+We sanitise CPU ID registers for userspace and KVM, so I see no 
+compelling reason for SMMU ID registers to be different.
+
+Thanks,
+Robin.
 
