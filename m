@@ -1,56 +1,55 @@
-Return-Path: <linux-acpi+bounces-9365-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9367-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29879BF688
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 20:32:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A98A9BF697
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 20:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5FF41C21F5E
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 19:32:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEF151C22A26
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 19:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7268208234;
-	Wed,  6 Nov 2024 19:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5B20A5E7;
+	Wed,  6 Nov 2024 19:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="mjNND1x6"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="PcvHh6zd"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272BD17B4FF;
-	Wed,  6 Nov 2024 19:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292A8209F3C;
+	Wed,  6 Nov 2024 19:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730921524; cv=none; b=C/gbpOwi4NoQScTwXJ+94f5sJ7lqTL6H7j9/JL+pUWJCIayYP88fjrqYhXRfRSqZ/I6K2EN1KWmc77itFal2bHVkUDOub2SPqKdGzK/5pDTbDJ7O3RCViRcJaJg5c9X7MhtL/2fOKhooggwwIVywBDhUQmHfxZc86piI8DWkXXw=
+	t=1730921658; cv=none; b=ouBZGK/r/nmwcIh9rjAUu4YjnpOdPfS+I7zPm87gAnXWXfj1degFUx6lLYhqeUH5H9nhkHj6y6mIybG7TKWfSYJhoOfTQ2OtusnySjdjhS+V3VarOpNdYrz/8JQVA0UPSgehfodsM9PcszwOmG7rX3z80J86fKbnQac80/T42t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730921524; c=relaxed/simple;
-	bh=TYKWR9DYBBL55wxoxPY3TsrD/AdbkcYTUKyQd7y0/AU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nZyKmXb/tYIAKjQC+QpVsqA+JS/G8SNWPPH92eXOY27WLw8i4f/Stjb/ybd1ytT8Z16oEhc08bWoKU2nwHYaOJx4K0xFouEvh/Zz66rWKcK0YfFqFwk2edsYyWGq9w1TivbZBFQCPvoOJdBjVSfL4PVUzSUqbZ4v4bsxzmyxWiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=mjNND1x6; arc=none smtp.client-ip=212.227.17.21
+	s=arc-20240116; t=1730921658; c=relaxed/simple;
+	bh=yZbr6t2r/51VOBGcLdopwAHQuZu8xeGQDcebwLwRMLA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aq+jM3UCQASDEA8FtRw5Z3sYK7OJIz8c1Gfox6K9IWWEN/HmZqA8jVSMSsyfew3Oiyc0j1SBvyou5Ah2+HzUFNW5hjAPpUCpPlsgOxLfrJk85rk5i9ZsVv5HHqFowbRVdrCnu2dRL0laZ1fPPQ1Fi3sqScfoAeq77XmlGUTFRTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=PcvHh6zd; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730921450; x=1731526250; i=w_armin@gmx.de;
-	bh=KIbzjUgUFUY+n6O++/E6r42sDRr1hTbs7/CdD6QYLjU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=mjNND1x6jOo42ZfvQhbA0hCH43q0bPV8Nn/LDeZt/HXJp1GWjkF5Bi5vvCEy51lj
-	 91joEnueK4zdZ5oic46Yo0LGxdOh7iOH7CCl+lBmuvw4ncsXGdjDT4Q9ElmSBD2Ym
-	 y9vz3HBhJHmkuiuYY/8CXShb72Dcn5CGaVwiL30mw/HjHnpiIgciI0CRwiJuESN0I
-	 5WM94EYHjOYon0HXolmbwBkSkcy3djTmdcOVXqKtoA4MipwH1YURKDaOTbQfzQjRV
-	 kQmvK1xMuyXvakC1b6Wfnst40b0K4pl1zOmGkWnFtjra4DrXhk4tqc6KShhPIGlCq
-	 e17cIoKkL5/rbDBTfA==
+	s=s31663417; t=1730921587; x=1731526387; i=w_armin@gmx.de;
+	bh=NC+6frFK+YWcDsZjV4UHxiwIbgV1D+/UHxIrix9H8CA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
+	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=PcvHh6zdFLqnLmnuOQ9L83vDW6UE9Vem9vwgjyyHeF/cMmQcjA+UsIg6GvUZPXPH
+	 Dmr3F/PIr7Odl5ixM4Dlz3vx9S6MeBLOcoT+JRL6nvfJ/AZsvqXp5AIk7pmFMzPbN
+	 hXoGqd25I/h9qRoAB0WwY1WmLVZIiZzd1nH3WNanoTwhKPJfikLUmWmZmvgrle82a
+	 Oy7GL+Mcx/DdhPS5CyFdqsFf5JGLEA2cy6BGOgeKv+LcqZ8qnWk1Jg2PcASCWAO39
+	 5bNS6mx12H3ZizOV9cGz7sC9Ej5nnrr5fbICYqLKghCYt8nZFwapNz1wOD20avPJY
+	 +8xgDf94qW3riLDq2g==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCsUC-1t00IT4252-004nbU; Wed, 06
- Nov 2024 20:30:50 +0100
-Message-ID: <bff49c3b-2151-4795-aec4-ae1187765a9d@gmx.de>
-Date: Wed, 6 Nov 2024 20:30:43 +0100
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4z6q-1trgso41fI-013QBt; Wed, 06
+ Nov 2024 20:33:07 +0100
+Message-ID: <cbf90e6e-1522-4235-b1fd-90dc54df35d5@gmx.de>
+Date: Wed, 6 Nov 2024 20:33:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,7 +57,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 19/20] platform/x86/amd: pmf: Drop all quirks
+Subject: Re: [PATCH v4 18/20] ACPI: platform_profile: Allow multiple handlers
+From: Armin Wolf <W_Armin@gmx.de>
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -80,165 +80,141 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241105153316.378-1-mario.limonciello@amd.com>
- <20241105153316.378-20-mario.limonciello@amd.com>
+ <20241105153316.378-19-mario.limonciello@amd.com>
+ <42623eed-1220-4cdf-aa7f-3a9777a3da4b@gmx.de>
 Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241105153316.378-20-mario.limonciello@amd.com>
+In-Reply-To: <42623eed-1220-4cdf-aa7f-3a9777a3da4b@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rRVCbRzphPVAZ6+vW+/uBuCps+005x+T1afnQ1mJWWq4Pa2O6Qi
- JVqG1g0lbf/DMjA4AxwgT5xomZUT+9Y5yCrGhDRgLJiI/BzyFweS6zqz0w9oDq47YygwdFu
- hs6J32Mtq63TTcIWBBlywQrr+7Vg+rl7dbCPkjg62swSzZDuiqMAa9t2O/Cu/r/KWaGMUX3
- XB+DG6BbHMH5OLGYH1FIg==
+X-Provags-ID: V03:K1:+XvEJZfJJZZ41PGe1l9dnx9BgPiF4v314WbePpZlv4IS10H+YXe
+ AWb+j4McYN61/wQewuiiW1kbROk36eUz+ObL18MUUC7wYsxFz8HQNm87haXu0AXIw4q845y
+ PYYZlSUZ8YkmT2qlXkTRbdVvbODBMJ3DEw8qq4LALvjIhf6PHy1eLu5yLD++VVcd12GtUcf
+ c+Jia7f+rP+LagQsLNnCQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:j5qyZvuXwxM=;6zPwP8NCVRsbDkstVL82SxdRUg3
- MTZTaDsI8arljzrqdJyDyBxGfxwcaFlotnRJzn7eWuM5533MOr3b1NmK5PrR3wGXBb+MCuHXd
- SdYC41UihbbtkccYAr2CV081H25mp30oyAYrVBSsWRtghfuC0qKWMVrywtMIlutpr3FhcTLyh
- Fx7DVrYOVhNXtiyfjxGFUq5JA3zll05XSp6N/idLZD+v7dozK5bAjuMUCGQOZlmtzmBzYFZ3N
- /JQZzAQqNXMuGLR2neIqQsFNWmeayaTYdHlG72v9TmpLDJqC71SUoHZsGzMEHKWXeboWQolfr
- 14XpldZp1Y2kdovpPE19AJI/+ZCl/WliD6nEbPr68IM7ZKxguZx09dCI6gTqXD02JjyRVkSV5
- eNWPETkVq45gbOhNidpeZFPTUIHO5pAn4nPRCLeSAzB57Z4Ba1JOaQ2ewsPJLVIhDV7yNOgAg
- qHwmoVBrzLz3ik02sYPAiy/w0T2XA1+0uTludxGwUwyN4y6tdMS5FMGbA4ro+RP/3WNBOXj26
- UmT3VPtcq11j9njXjQTdSrjZmW0ngNP8OnUEGZvzGqcYOEnfE0zGWX/1WU0xMcRJT7oQpf7yn
- 25x0eNtnh0NQC1MhDucsU32Zy9+1YTr0W+w7uG6WykpF4JR031PFgRqbrRaiJ9l1iSAkX+isl
- 4ffDAw6GlpS0JfOIyBc7qXyzXgw41Ve+clR3c4ixl6rfQxpWajg09zMx08d38DGxOAsVsiLYc
- HM46NbleIb8+yJc5c4Pk31QZ4ZlomFU9kpx04Hd6h5+QDuqesspcZiGa9HjG36OLr+48G3bWL
- JZiPRQu+5uboDrvwU3Kn4wtg==
+UI-OutboundReport: notjunk:1;M01:P0:kKo2Zz1k/5w=;Ls+NxHyQ+Qqv4RoCvJ7xVc28oM/
+ Wu70OcCldxqkWKFdlK+XlfAyNCC22wmzqpGn6BuJySWbF+QcelQ7CEJzwyCSlHcTvSyfEwJU5
+ Ndn4FsarVXVkqR8Yiw1mQuagVJ8BsU7Fu6WdDgy/ekY74rF3DgwGQ5jQxG5AoyUSCNj942btW
+ EiyVM1k35X0Vu7wc7wz1CKLRrodF3iLnIpI5uuCIF8PNWOrViCP+AIXTCObo7ln4nQxn6IH9o
+ 3MveOdGgZxfxwn7VZCH9r7mr4msSzD/JwxMGs1ckQjw77Wt9XSYN3FqWXuc2jkrXKr6QcU85D
+ 5wApwzrNbPMhD/28mZHUHpF4dhg+icHpk8Uk3lNW0YToQXPGKzRu0M3SE7ihnU0NZH4bXisSU
+ oJk0MHkNbSnYxZpOslsLSq3G0oHhtbUmwHFXTV3RH+OIIYC0F/znC11bEmx/dB+xWfoZHPIAl
+ 0LcGOUpcbXkvHvGLGebM6pf1rdK8o6KR/ENCYGVwjclae0mNdTmbLmt4w0rCeJ8+rnmKfOHHQ
+ Fk2Y4VA+/XzkQa5QDxmTHQpqU2N/dJ2gqkBr7ZJuzBeJH5AFG5UHsuIQg46WE8aAh+xiZeIj/
+ n208OVDcNyufiAPJhBBmUM+F0GjpzjZ5eaiyHSaygIArjcleThgdd0mlgrirTrLXz5iPUmMa/
+ f6/MWvOqsigaqEl9gVShAjJ4B/24zZg+DElrvwLxV4i+nkm6q4tzYjW0gm3pJJk9jlvGK1c4r
+ bTiBw/iEyqUTuv29zbw6a/UlnpNP5jMbCrutc+eAGY7vdWULUFF4IL/9vGjbhNc40XFMunYSh
+ MAw9n7KqvCvTKIvYusxI0u1QMH6MgoMvc06/9j40lQ1KN0usWBBsFnzDrTMhBONDsrDzvcGVe
+ bLjtlbb0sOqmw8V8a52LayIwlfsu3pRwS/UppzgJ7Sk+Bzuv03g29HacF
 
-Am 05.11.24 um 16:33 schrieb Mario Limonciello:
+Am 06.11.24 um 20:21 schrieb Armin Wolf:
 
-> As multiple platform profile handlers can now be registered, the quirks
-> to avoid registering amd-pmf as a handler are no longer necessary.
-> Drop them.
-
-I love it when we can get rid of quirk tables, so:
-
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-
-> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-> Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/platform/x86/amd/pmf/Makefile     |  2 +-
->   drivers/platform/x86/amd/pmf/core.c       |  1 -
->   drivers/platform/x86/amd/pmf/pmf-quirks.c | 66 -----------------------
->   drivers/platform/x86/amd/pmf/pmf.h        |  3 --
->   4 files changed, 1 insertion(+), 71 deletions(-)
->   delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
+> Am 05.11.24 um 16:33 schrieb Mario Limonciello:
 >
-> diff --git a/drivers/platform/x86/amd/pmf/Makefile b/drivers/platform/x8=
-6/amd/pmf/Makefile
-> index 7d6079b02589c..6b26e48ce8ad2 100644
-> --- a/drivers/platform/x86/amd/pmf/Makefile
-> +++ b/drivers/platform/x86/amd/pmf/Makefile
-> @@ -7,4 +7,4 @@
->   obj-$(CONFIG_AMD_PMF) +=3D amd-pmf.o
->   amd-pmf-objs :=3D core.o acpi.o sps.o \
->   		auto-mode.o cnqf.o \
-> -		tee-if.o spc.o pmf-quirks.o
-> +		tee-if.o spc.o
-> diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/=
-amd/pmf/core.c
-> index 47126abd13ca0..6ad00b3d472fe 100644
-> --- a/drivers/platform/x86/amd/pmf/core.c
-> +++ b/drivers/platform/x86/amd/pmf/core.c
-> @@ -455,7 +455,6 @@ static int amd_pmf_probe(struct platform_device *pde=
-v)
->   	mutex_init(&dev->lock);
->   	mutex_init(&dev->update_mutex);
+>> Multiple drivers may attempt to register platform profile handlers,
+>> but only one may be registered and the behavior is non-deterministic
+>> for which one wins.=C2=A0 It's mostly controlled by probing order.
+>>
+>> This can be problematic if one driver changes CPU settings and another
+>> driver notifies the EC for changing fan curves.
+>>
+>> Modify the ACPI platform profile handler to let multiple drivers
+>> register platform profile handlers and abstract this detail from
+>> userspace.
+>>
+>> To avoid undefined behaviors only offer profiles that are commonly
+>> advertised across multiple handlers.
+>>
+>> If any problems occur when changing profiles for any driver, then rever=
+t
+>> back to the balanced profile, which is now required.
 >
-> -	amd_pmf_quirks_init(dev);
->   	apmf_acpi_init(dev);
->   	platform_set_drvdata(pdev, dev);
->   	amd_pmf_dbgfs_register(dev);
-> diff --git a/drivers/platform/x86/amd/pmf/pmf-quirks.c b/drivers/platfor=
-m/x86/amd/pmf/pmf-quirks.c
-> deleted file mode 100644
-> index 7cde5733b9cac..0000000000000
-> --- a/drivers/platform/x86/amd/pmf/pmf-quirks.c
-> +++ /dev/null
-> @@ -1,66 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-or-later
-> -/*
-> - * AMD Platform Management Framework Driver Quirks
-> - *
-> - * Copyright (c) 2024, Advanced Micro Devices, Inc.
-> - * All Rights Reserved.
-> - *
-> - * Author: Mario Limonciello <mario.limonciello@amd.com>
-> - */
-> -
-> -#include <linux/dmi.h>
-> -
-> -#include "pmf.h"
-> -
-> -struct quirk_entry {
-> -	u32 supported_func;
-> -};
-> -
-> -static struct quirk_entry quirk_no_sps_bug =3D {
-> -	.supported_func =3D 0x4003,
-> -};
-> -
-> -static const struct dmi_system_id fwbug_list[] =3D {
-> -	{
-> -		.ident =3D "ROG Zephyrus G14",
-> -		.matches =3D {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "GA403U"),
-> -		},
-> -		.driver_data =3D &quirk_no_sps_bug,
-> -	},
-> -	{
-> -		.ident =3D "ROG Ally X",
-> -		.matches =3D {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "RC72LA"),
-> -		},
-> -		.driver_data =3D &quirk_no_sps_bug,
-> -	},
-> -	{
-> -		.ident =3D "ASUS TUF Gaming A14",
-> -		.matches =3D {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "FA401W"),
-> -		},
-> -		.driver_data =3D &quirk_no_sps_bug,
-> -	},
-> -	{}
-> -};
-> -
-> -void amd_pmf_quirks_init(struct amd_pmf_dev *dev)
-> -{
-> -	const struct dmi_system_id *dmi_id;
-> -	struct quirk_entry *quirks;
-> -
-> -	dmi_id =3D dmi_first_match(fwbug_list);
-> -	if (!dmi_id)
-> -		return;
-> -
-> -	quirks =3D dmi_id->driver_data;
-> -	if (quirks->supported_func) {
-> -		dev->supported_func =3D quirks->supported_func;
-> -		pr_info("Using supported funcs quirk to avoid %s platform firmware bu=
-g\n",
-> -			dmi_id->ident);
-> -	}
-> -}
-> diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/a=
-md/pmf/pmf.h
-> index 8ce8816da9c16..b89aa38434faa 100644
-> --- a/drivers/platform/x86/amd/pmf/pmf.h
-> +++ b/drivers/platform/x86/amd/pmf/pmf.h
-> @@ -795,7 +795,4 @@ int amd_pmf_smartpc_apply_bios_output(struct amd_pmf=
-_dev *dev, u32 val, u32 preq
->   void amd_pmf_populate_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf=
-_enact_table *in);
->   void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_ena=
-ct_table *in);
+> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 >
-> -/* Quirk infrastructure */
-> -void amd_pmf_quirks_init(struct amd_pmf_dev *dev);
-> -
->   #endif /* PMF_H */
+I just noticed that the following text might need to be removed:
+
+"If any problems occur when changing profiles for any driver, then revert
+  back to the balanced profile, which is now required."
+
+Thanks,
+Armin Wolf
+
+>> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+>> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>> =C2=A0 drivers/acpi/platform_profile.c | 12 ++----------
+>> =C2=A0 1 file changed, 2 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/acpi/platform_profile.c
+>> b/drivers/acpi/platform_profile.c
+>> index 568485e285061..b9eb25f58a2a2 100644
+>> --- a/drivers/acpi/platform_profile.c
+>> +++ b/drivers/acpi/platform_profile.c
+>> @@ -10,7 +10,6 @@
+>> =C2=A0 #include <linux/platform_profile.h>
+>> =C2=A0 #include <linux/sysfs.h>
+>>
+>> -static struct platform_profile_handler *cur_profile;
+>> =C2=A0 static DEFINE_MUTEX(profile_lock);
+>>
+>> =C2=A0 static const char * const profile_names[] =3D {
+>> @@ -368,8 +367,7 @@ static const struct attribute_group
+>> platform_profile_group =3D {
+>>
+>> =C2=A0 void platform_profile_notify(void)
+>> =C2=A0 {
+>> -=C2=A0=C2=A0=C2=A0 if (!cur_profile)
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>> +=C2=A0=C2=A0=C2=A0 guard(mutex)(&profile_lock);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!class_is_registered(&platform_profi=
+le_class))
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform_=
+profile");
+>> @@ -428,9 +426,6 @@ int platform_profile_register(struct
+>> platform_profile_handler *pprof)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard(mutex)(&profile_lock);
+>> -=C2=A0=C2=A0=C2=A0 /* We can only have one active profile */
+>> -=C2=A0=C2=A0=C2=A0 if (cur_profile)
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EEXIST;
+>>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!class_is_registered(&platform_profi=
+le_class)) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* class for ind=
+ividual handlers */
+>> @@ -451,9 +446,9 @@ int platform_profile_register(struct
+>> platform_profile_handler *pprof)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ERR(pprof->class_dev))
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return PTR_ERR(p=
+prof->class_dev);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_set_drvdata(pprof->class_dev, pprof)=
+;
+>> +
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform_=
+profile");
+>>
+>> -=C2=A0=C2=A0=C2=A0 cur_profile =3D pprof;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>
+>> =C2=A0 cleanup_class:
+>> @@ -467,13 +462,10 @@ int platform_profile_remove(struct
+>> platform_profile_handler *pprof)
+>> =C2=A0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard(mutex)(&profile_lock);
+>>
+>> -=C2=A0=C2=A0=C2=A0 cur_profile =3D NULL;
+>> -
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform_=
+profile");
+>>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 device_destroy(&platform_profile_class, =
+MKDEV(0, pprof->minor));
+>>
+>> -=C2=A0=C2=A0=C2=A0 cur_profile =3D NULL;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>> =C2=A0 }
+>> =C2=A0 EXPORT_SYMBOL_GPL(platform_profile_remove);
+>
 
