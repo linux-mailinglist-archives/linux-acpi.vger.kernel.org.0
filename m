@@ -1,310 +1,188 @@
-Return-Path: <linux-acpi+bounces-9381-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9382-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFAA9BF886
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4E79BF8BF
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 22:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ED501C214C2
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E90401C21BE7
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Nov 2024 21:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C572E20CCC4;
-	Wed,  6 Nov 2024 21:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C2518FDA5;
+	Wed,  6 Nov 2024 21:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="JhD4jIlJ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KizVLTiv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2818520C303;
-	Wed,  6 Nov 2024 21:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730928751; cv=none; b=tFcvWQstdJAgp6P8M1YaRtgJSdZQR4l6YwoKqPKT0DsGGQ7LzGN3mJ6C9iMr0uTZ0Z1u5rl3svgZMg7EA0IBjAljYStKN8ATcF3g/Q+RBgdK7nlwZUZk+7QEyAZyOiG6pYd8R+D7A/RwtHAQ555EOCbqvU2KrdPwewQUfco+O4Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730928751; c=relaxed/simple;
-	bh=gwhlm0CCnwYi/tqwFOQv659Bi7VoLJYF96hPb74QQoI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kocL0LFZJe16EW0pFb0g+NwDOQvs74daEeIDLhIGVeAvyz+1JaodtoX22GW2l3JZsll55qacv2ywegJM2ResqPZ8XXSfL/tVE2phy5lm2K7AHwyfN8ZCJQfGxnTbnMqTNtU6G29uqz4f5YGDgvDzMPbNH073To7yty05jkzkhLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=JhD4jIlJ; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730928686; x=1731533486; i=w_armin@gmx.de;
-	bh=gwhlm0CCnwYi/tqwFOQv659Bi7VoLJYF96hPb74QQoI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=JhD4jIlJSSYBbguusVBxMeuMst0Lo4r7MixN2nq2erM2Yw4E/WvXLWAmbcG9QoBq
-	 RpFsnxq91NGGPg/8TuqmnW8B8cFn3OcJf17rJbbXHqUKsLMhDLCxE3rMH9dyqMy2T
-	 Q4mOSIhW40mSFmyZ/Eg9sWAQz7ECUVbAVx6EtiR3F2RjyaDLE8WQ26NEMKCxkDELb
-	 XiU2MJW7B/Oyza/W/j3x6n0KrHTspWHeglIY308CesKUZOfObMP4t3cAzUyeTaU46
-	 QaMub3GcJiubFiUfcwGXi0SFEW0MUi1OgH3HranpYSfolsQ5VVP87GNOR3YTP+ITV
-	 nva4MXH9OZO1+lzSAw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M8ykW-1tDlyC2SRi-003165; Wed, 06
- Nov 2024 22:31:26 +0100
-Message-ID: <ffae13ae-ed92-44a0-ae15-b6b941620c8a@gmx.de>
-Date: Wed, 6 Nov 2024 22:31:23 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8738320C008;
+	Wed,  6 Nov 2024 21:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730930015; cv=fail; b=Boh0sebQ5ecdt4EvHbixKBveyMpQ6KqLhQXaXydZx5oI8HdRi06IKdQKktOt4fFH+FPV5F8SDiQguGS9CaoVtwZtgIFsHa1E/XXhjb9JFl3rzmQGkf8x485g8PWieE0jkxbdXmLdQ3x989+lT8XQGBtCMRdtH16ikwq0NOePsPE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730930015; c=relaxed/simple;
+	bh=sbY1mUUl0mRsCygGqjnd1ersfTua6mNbznTxsZ7RXUU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERFc5ujI6OZtlcLdlmBs0qvEhliBlu5A9Dkyo5BdUeMvI5EaWCKmPGIcCx/P+tqN1Ubfh4uwhyyS4gDXaG0eWdxs3sA5A4zWhr1NHMLolVA8dH7alUb8pFOYtyIIdL0ZMY5+gFsK+QABNvJwDi0cZwO7UO0hqJcB1HLv1aWGRPc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KizVLTiv; arc=fail smtp.client-ip=40.107.223.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QNOS9lGqv22Bo1IWRI68p37sZnF35VFUgZRi0Nv0fCb7HqU66TW2z0Y2ugUEemv/HRyQF36aE/QiLUnEOU0NKn4OVyQ27EHpMeLQ+2VvlGaFcGsTrJpERBYc1+5tiVgF3iuEZKlepxiBalW3cCcjFsnRevySkheLgxjYWVHl7SPQQqNzpN/OY3OxTheWBjfmWhJWAbyH0J3TNiyO4+cUTplVLQDN/ayDpy2jqjc2ha87DcjXHAMOjRlPWCyy4+z6jCaASpVNASIVh63fXn2v1Azlios/Sz9TBSWPg9oEHt1C38VuHJP3qxuBF9305FE1KKnn+mxe3Hrbow1Z/VjjmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eeBrkSbmAmRJo7VDs4EymTa1Gnln7vU9FxxHjW2QMQU=;
+ b=xOEq+voR8CVO2wd4QIDVud1hQfm0fzqDx0l93ZkDljhRDjQtT6N04kAHhys3DuBmtMs3hET6uVwZzZobvuhfViOLqXit16J0r3YQoDlCSSqN4tjOVA+kRRYOA3z5Ai8txU8FmIO/bPpVbfxyyO2Nv8Pk5vqHJkm3Fj9XPHBz2Joujl8i4euODgzfECzXBb1+gCSodjBWRmrmVysFmXJQ3yzgkPJR5iq6jIyZVWT1OE0EJ6wLaQrZ4mPpB9QhrDR3UALPzMv5wj+5BaCcUHPVviE/mXtMXGEQFXTd26bHaV2OQxpcBexHjUtiHxtNPCy3VEiUsBjVVCeJo5yvh8uQMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eeBrkSbmAmRJo7VDs4EymTa1Gnln7vU9FxxHjW2QMQU=;
+ b=KizVLTivxXOCe22WVAd48I6d9ZWncp0SpzUXQFK8IbI6FcoVGELHRB7kTSxkhnQiIH/KLu0pzBlgbYACNQ92fV6GZfdwr3O7phBVcgyMUCF/pDbvZaGQd8dzFq+MgDQTmuMajPvwGvhIzYMR/orDDh0BkjwtAofm76AKTgDOYwqUOn/qy2UkwpKPSOe3XHh7ZBw+WD8d+kA3apMCmkBfB34wYV7WeOEcZ3e46ZZWmE2aHgqS0H9NLogUOisK50LfBVbn4U4T7u0EigeRdhaPBBKRZpYpY5YJ8jyPD6SSlXSlu4oROVOjSegYQOGXfxRdZXauOMlK0kOElr52F3Nouw==
+Received: from BY5PR13CA0004.namprd13.prod.outlook.com (2603:10b6:a03:180::17)
+ by SA0PR12MB4494.namprd12.prod.outlook.com (2603:10b6:806:94::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Wed, 6 Nov
+ 2024 21:53:30 +0000
+Received: from CO1PEPF000066E7.namprd05.prod.outlook.com
+ (2603:10b6:a03:180:cafe::32) by BY5PR13CA0004.outlook.office365.com
+ (2603:10b6:a03:180::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.16 via Frontend
+ Transport; Wed, 6 Nov 2024 21:53:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1PEPF000066E7.mail.protection.outlook.com (10.167.249.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8137.17 via Frontend Transport; Wed, 6 Nov 2024 21:53:29 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 6 Nov 2024
+ 13:53:13 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 6 Nov 2024
+ 13:53:12 -0800
+Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Wed, 6 Nov 2024 13:53:10 -0800
+Date: Wed, 6 Nov 2024 13:53:08 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Robin Murphy <robin.murphy@arm.com>
+CC: Jason Gunthorpe <jgg@nvidia.com>, Will Deacon <will@kernel.org>,
+	<acpica-devel@lists.linux.dev>, <iommu@lists.linux.dev>, Joerg Roedel
+	<joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
+	Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
+ Moore" <robert.moore@intel.com>, Sudeep Holla <sudeep.holla@arm.com>, "Alex
+ Williamson" <alex.williamson@redhat.com>, Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>, Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jerry Snitselaar
+	<jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>, Michael Shavit
+	<mshavit@google.com>, <patches@lists.linux.dev>, "Rafael J. Wysocki"
+	<rafael.j.wysocki@intel.com>, Shameerali Kolothum Thodi
+	<shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO
+ via struct arm_smmu_hw_info
+Message-ID: <ZyvlRFi6W9vK5IZj@Asurada-Nvidia>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241104114723.GA11511@willie-the-truck>
+ <20241104124102.GX10193@nvidia.com>
+ <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
+ <20241106180531.GA520535@nvidia.com>
+ <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 16/20] ACPI: platform_profile: Make sure all profile
- handlers agree on profile
-To: Mario Limonciello <mario.limonciello@amd.com>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
- <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER"
- <ibm-acpi-devel@lists.sourceforge.net>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Matthew Schwartz <matthew.schwartz@linux.dev>
-References: <20241105153316.378-1-mario.limonciello@amd.com>
- <20241105153316.378-17-mario.limonciello@amd.com>
- <a2bde9c6-6aa3-445b-b27b-2338d78d132d@gmx.de>
- <3cbbecf7-bba4-4a45-97da-ec461609b2f9@amd.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <3cbbecf7-bba4-4a45-97da-ec461609b2f9@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rdO59OfRmgLFb0o/Ei2QWw43xNjk+/uC3OsbcLVnL5+STiOAsX6
- ptwFPk1YkC4G5gByAxH1OWXd3GlukMXON4v9T3zVxe811NY59ugSFDe+qQBq9A1hUKzFVlp
- 05IMIMlBwRpteaQIauIP+uE5LTlNzdcTY+JkFBEbCc7VZ5hDAt/OlclojgGkHanabWTxAqB
- RWhqhdZgVFTM3vSa2xwsg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:S9DIC7RETd8=;SnmWkfpFKp6edPvDdCtfQ8H33qf
- Z+RqYzn+ARQQWAlCEAvuhRP2q7DdA9y/EAogWBDvTHRYyIBd1BDiWtSH4IZSkRjCieuiPkogM
- StJ8Extc5BFJH0bVD80KayRI+MhJw2SDdJ6EuvWQLoXpLZVdgfcUWldWZ+8SZrwrKArWk1WX+
- P3favAkqeqmv7Kbqwpck4N77mX6+stK0hLydabnf/LyIWDys9SS+SOSGwkup0a65Pr4ofnuY+
- I+DUfgNnLiP9dHaWX3L8SvOVyGTcZwXVQcpbrPl+k+G5ZDGG+HvJ4fPWHHrSdeJAdvx1aWZHb
- R5fL1/oLjaQ2geq6Q6MGd8W/LyRTikpZrELrmH83Z4tYffnVZTMa4rbv9o+c7ZbNZKQ5dRG3t
- YhcaeTIz4ToIXrJxU1QgUN8ylxHckJy5eR5ZDwc1D4aMPcc305aUmMiOlupDbp0R9q4CieOVx
- pQENO49UnhEB6nF3/YJ/XMlQEyAimI712S5/XKIdJtNBzsu2X8jbNQwa2NqNzIs5+m4LjYSRq
- cuxAO7i5/IUeZ/igjzsfUdosBMSaR5vc03tWvFQdFlqJOWdLqZG/GygWpEmhuMAcMkN1Wr4FG
- C2E9GykEzEHmA7K6LibKHG/ROQyCsnaewxKcwxQzVafptVNspH4ig2+eDK7wSWzW/dgIO3408
- y64k9Lfm7wZq/UikJVcoN22NzsYDz9qqO00hzNx/liDgKnz73BNGvwMYUwlIq/T1y8C2xjdAu
- m3uFtp7VwCMBmK7f3biKhpaCTV35vuumQE148yLwmYFTFstjTuVL42RRd81//Kdr45xBxSkDy
- 1USXJSFXkToQV0jmz9atQ98jwj4MGGVgF/6DFZI3dgwdk=
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066E7:EE_|SA0PR12MB4494:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9afa297-7052-44fb-44ed-08dcfead7361
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?O+OxZ18LkgHYRMoy2Clx9IHj0aqOtiI6ajxDREEePuvtE6Wkvj0gxtzErgRO?=
+ =?us-ascii?Q?x8dGEPEHuiuMacPdiAHvrYuiRKviYUHTTu+qI4MINbctNnJnI2SCVsBJhm+c?=
+ =?us-ascii?Q?2UPikwOAbaIbnB6LmpX/050WdCjkfyIR+hBhoECv3fJo1fZczesQDi3QC0ZK?=
+ =?us-ascii?Q?Sfu0GwBnPu8PWHo80+XMZICVw+tR8RASUlGR94heCOGqEM6eH6rSI7+LJMHq?=
+ =?us-ascii?Q?hTyIQOHkegTq7Sm/WQAGE4JR616TPOdRIoroi2R2XC7ITeoxz3uRx4oawu84?=
+ =?us-ascii?Q?fMTc756oR7fx7ZDkc6ihOy6dWU2yUqj9PmYXlB7bwCa8b4LNgXkPpOHayhVX?=
+ =?us-ascii?Q?slj0F92aWGPG9qj9E15qXVHs7YHeo1+JxIqjZC+/bR7AeCp26aG1dG9hqwKW?=
+ =?us-ascii?Q?cZ8IEA7Vw058prdpZYZChqvcnNhAORYmJ+AdSCgfRKAuL1H3aYxtoFRlfhWU?=
+ =?us-ascii?Q?Efe9pvsakMxFaACfpKoVRDBaTJnWkPz5kK44MDilXrfWhTipcE5bnDnkbM1j?=
+ =?us-ascii?Q?pW/wl2Hqu/ThBEtCig0rDyHxKvyxmsjLQto7g/ay4CvkOzmI1daIx3PCM7f+?=
+ =?us-ascii?Q?XT07ks6T8KwgrhE1nWWTOkA594ivotbQjgNlx3/R2iG/8qKy8WrDhatjFD8H?=
+ =?us-ascii?Q?XeFk0NduaPAnSPLWa41xJaLDha+1XgeFbv5dMGRoaQORNxer0QLpuka8d1yn?=
+ =?us-ascii?Q?u05i52Edc6Q+exX9Flb2osHEOG6NM8916sgwOF1q8StZ3bNpX9TmLmH0M3vr?=
+ =?us-ascii?Q?58BU6/XcLdJ4TggF5GNQgTgTw+u16jOqNOzwc0K2n588NXl50jAWtAzKuVdR?=
+ =?us-ascii?Q?OW/s0ZaMoPKSz3SsERVAP77VqH3ftKaDqSyhbl385PNvgeqPaf1EbIh26UcK?=
+ =?us-ascii?Q?rY1iO46Kfs0em4IdoEILvL8P0ucAFFC5eQTdUJNh7mTvRcZcHDFaPiOldOnR?=
+ =?us-ascii?Q?nF04CR+KLVCsEz4hbIEEBXWVRYHdReLzeILVKds1KgjFIO7H4Yf5IZWmognH?=
+ =?us-ascii?Q?s+2Ov8k++S5M1c46OEdYQGx3/0OHTG8aJo+1Y0Q+Fqxtfs67v4AiJOBwyDLa?=
+ =?us-ascii?Q?ROt1ebMTp+VIAN54jwuU9YtvZsHJP/gmpYnMrt8/y9aMu26anYByyWAOiCo0?=
+ =?us-ascii?Q?Tl6/QPl+nVEPk2oMgvGqNiw7Big4EbVlTJXwltoeaXDkb/cO3WF/YRtN7vVR?=
+ =?us-ascii?Q?sPZgDHOaguMmGgkLEsWUrQ4w+KfL8CbZ1tPelCnTYuGcLgI535BwxaeHOuTq?=
+ =?us-ascii?Q?X8y9AmilcDfanmpXnwcfjqLS/GAzWhf2RFLVQfIov2eg/v6t/GNi5GetWL7i?=
+ =?us-ascii?Q?o2xGtDe2kanbTLBS5mLnPV9bfjcWc/wkSQlz9wAfnON0NXflcPTJ96Nv83X8?=
+ =?us-ascii?Q?hUmSnVYxu601Mk2AHMya2sNAgiUd5d0RIji3gI2YHGu9jGF6Bw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2024 21:53:29.7382
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9afa297-7052-44fb-44ed-08dcfead7361
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066E7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4494
 
-Am 06.11.24 um 22:25 schrieb Mario Limonciello:
+On Wed, Nov 06, 2024 at 09:05:26PM +0000, Robin Murphy wrote:
+> On 2024-11-06 6:05 pm, Jason Gunthorpe wrote:
+> > If you still feel strongly about this please let me know by Friday and
+> > I will drop the idr[] array from this cycle. We can continue to
+> > discuss a solution for the next cycle.
+> 
+> It already can't work as-is, I don't see how making it even more broken
+> would help. IMO it doesn't seem like a good idea to be merging UAPI at
+> all while it's still clearly incomplete and by its own definition unusable.
 
-> On 11/6/2024 14:58, Armin Wolf wrote:
->> Am 05.11.24 um 16:33 schrieb Mario Limonciello:
->>
->>> If for any reason multiple profile handlers don't agree on the profile
->>> return the custom profile.
->>>
->>> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>> ---
->>> =C2=A0 drivers/acpi/platform_profile.c | 84
->>> +++++++++++++++++++++------------
->>> =C2=A0 1 file changed, 53 insertions(+), 31 deletions(-)
->>>
->>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/
->>> platform_profile.c
->>> index d8c2d195106c2..7861fccc2e58c 100644
->>> --- a/drivers/acpi/platform_profile.c
->>> +++ b/drivers/acpi/platform_profile.c
->>> @@ -280,55 +280,77 @@ static ssize_t
->>> platform_profile_choices_show(struct device *dev,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return _commmon_choices_show(aggregate,=
- buf);
->>> =C2=A0 }
->>>
->>> -static ssize_t platform_profile_show(struct device *dev,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_attribute *att=
-r,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 char *buf)
->>> +/**
->>> + * _aggregate_profiles - Aggregate the profiles for legacy sysfs
->>> interface
->>> + * @dev: The device
->>> + * @data: The profile to return
->>> + * Return: 0 on success, -errno on failure
->>> + */
->>> +static int _aggregate_profiles(struct device *dev, void *data)
->>> =C2=A0 {
->>> -=C2=A0=C2=A0=C2=A0 enum platform_profile_option profile =3D PLATFORM_=
-PROFILE_BALANCED;
->>> +=C2=A0=C2=A0=C2=A0 enum platform_profile_option *profile =3D data;
->>> +=C2=A0=C2=A0=C2=A0 enum platform_profile_option val;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err;
->>>
->>> -=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -ERESTARTSYS,
->>> &profile_lock) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cur_profile)
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn -ENODEV;
->>> +=C2=A0=C2=A0=C2=A0 err =3D get_class_profile(dev, &val);
->>> +=C2=A0=C2=A0=C2=A0 if (err)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return err;
->>>
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D cur_profile->profi=
-le_get(cur_profile, &profile);
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn err;
->>> -=C2=A0=C2=A0=C2=A0 }
->>> +=C2=A0=C2=A0=C2=A0 if (*profile !=3D PLATFORM_PROFILE_LAST && *profil=
-e !=3D val)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *profile =3D PLATFORM_PROF=
-ILE_CUSTOM;
->>> +=C2=A0=C2=A0=C2=A0 else
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *profile =3D val;
->>>
->>> -=C2=A0=C2=A0=C2=A0 /* Check that profile is valid index */
->>> -=C2=A0=C2=A0=C2=A0 if (WARN_ON((profile < 0) || (profile >=3D
->>> ARRAY_SIZE(profile_names))))
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EIO;
->>
->> Please check the returned value from profile_get() first before doing
->> the custom platform
->> profile check.
->
-> You might have missed it - that's part of get_class_profile() already.
->
-You are right, my bad.
+Robin, would you please give a clear suggestion for the hw_info?
 
->>
->>> +=C2=A0=C2=A0=C2=A0 return 0;
->>> +}
->>> +
->>> +/**
->>> + * platform_profile_show - Show the current profile for legacy
->>> sysfs interface
->>> + * @dev: The device
->>> + * @attr: The attribute
->>> + * @buf: The buffer to write to
->>> + * Return: The number of bytes written
->>> + */
->>> +static ssize_t platform_profile_show(struct device *dev,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_attribut=
-e *attr,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 char *buf)
->>> +{
->>> +=C2=A0=C2=A0=C2=A0 enum platform_profile_option profile =3D PLATFORM_=
-PROFILE_LAST;
->>> +=C2=A0=C2=A0=C2=A0 int err;
->>> +
->>> +=C2=A0=C2=A0=C2=A0 err =3D class_for_each_device(&platform_profile_cl=
-ass, NULL,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &profile, _aggregate_profile=
-s);
->>
->> Missing error handling.
->>
->
-> Right, got it.
->
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return sysfs_emit(buf, "%s\n", profile_=
-names[profile]);
->>> =C2=A0 }
->>>
->>> +/**
->>> + * platform_profile_store - Set the profile for legacy sysfs interfac=
-e
->>> + * @dev: The device
->>> + * @attr: The attribute
->>> + * @buf: The buffer to read from
->>> + * @count: The number of bytes to read
->>> + * Return: The number of bytes read
->>> + */
->>> =C2=A0 static ssize_t platform_profile_store(struct device *dev,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 struct device_attribute *attr,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 const char *buf, size_t count)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_at=
-tribute *attr,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *buf,=
- size_t count)
->>> =C2=A0 {
->>> -=C2=A0=C2=A0=C2=A0 int err, i;
->>> +=C2=A0=C2=A0=C2=A0 int ret;
->>> +=C2=A0=C2=A0=C2=A0 int i;
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Scan for a matching profile */
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i =3D sysfs_match_string(profile_names,=
- buf);
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (i < 0)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
->>> -
->>> -=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -ERESTARTSYS,
->>> &profile_lock) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cur_profile)
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn -ENODEV;
->>> -
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Check that platform sup=
-ports this profile choice */
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!test_bit(i, cur_profi=
-le->choices))
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn -EOPNOTSUPP;
->>> -
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D cur_profile->profi=
-le_set(cur_profile, i);
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn err;
->>> +=C2=A0=C2=A0=C2=A0 if (i =3D=3D PLATFORM_PROFILE_CUSTOM) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_warn("Custom profile no=
-t supported for legacy sysfs
->>> interface\n");
->>
->> This would allow userspace applications to spam the kernel log. Please
->> just return -EINVAL here
->> and document this special case inside the interface specification.
->>
-> OK.
->
->> Thanks,
->> Armin Wolf
->>
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>
->>> -=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform_profile");
->>> -=C2=A0=C2=A0=C2=A0 return count;
->>> +=C2=A0=C2=A0=C2=A0 ret =3D class_for_each_device(&platform_profile_cl=
-ass, NULL, &i,
->>> _store_class_profile);
->>> +
->>> +=C2=A0=C2=A0=C2=A0 return ret ? ret : count;
->>> =C2=A0 }
->>>
->>> =C2=A0 static DEVICE_ATTR_RO(platform_profile_choices);
->
->
+My takeaway is that you would want the unsupported features (per
+firmware overrides and errata) to be stripped from the reporting
+IDR array. Alternatively, we could start with some basic nesting
+features less those advanced ones (HTTU/PRI or so), and then add
+then later once we're comfortable to advertise.
+
+Does this sound okay to you?
+
+Thanks
+Nicolin
 
