@@ -1,311 +1,234 @@
-Return-Path: <linux-acpi+bounces-9416-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9417-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720799C0A4E
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 16:46:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7859C0A6B
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 16:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C8C81C2219D
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 15:46:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8F0A1F23D9A
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 15:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036C9212164;
-	Thu,  7 Nov 2024 15:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7310F2144BE;
+	Thu,  7 Nov 2024 15:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dlgLLDFe"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CsuNDBpA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2052.outbound.protection.outlook.com [40.107.236.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE3A79D0;
-	Thu,  7 Nov 2024 15:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730994358; cv=none; b=PeUDDymxbUd7cGC3HeqATnV6QqW/+tp+MdSq1s+neRjpcCkVlLBkCoEtAW0A5WZAXlxv9yekN1NwcU40VNfo/0+kcNFFcyf1m2XZ953mlzYCySLtUoaX1BknzDrvG7RWGHg0OuE5XojQFcNE3MpuEeU5rtVbPesPH2KNYYfj7Os=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730994358; c=relaxed/simple;
-	bh=2u5FdQrUns8rNA1mGSI7NkwBMKElZL50YHCDGy8KDVY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=aMJq8BNh1/UmmGfNh/klg4beYjlluqPlKeu2hCHspjkd9jIYie9VRbajNBb8Imfi9VMirBF3/FOg+9QkFpcI5g7y7ArpGTqnxK96HkvDmKoHr1wn1MH5aqRAeP3dcuagjGxLKdcmjtcpzkqaYd7GhSSuRp9Q0Xpr6Ipuf5g8k0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dlgLLDFe; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-84fd616acf0so530435241.0;
-        Thu, 07 Nov 2024 07:45:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730994356; x=1731599156; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=a1DnKCOZhXoQPhfXyHAIbFfJO0eMPGIcLRUGVS5x2QM=;
-        b=dlgLLDFe48zUwhSGb+EQeoHuKTDVfaL/UJG3MGdVIUzZ5AluZ2oMmsS5yG5fJ7teZL
-         7kDwmP1553IUkjqrXRllhZoVswHrBSCJJazjTck0QPeYXZ7MZA60iKn167nrcXoY8spi
-         N9Sg5C8EfVChs/561o/2jRNMfvhhGLwcGSJta+r7/XczN8X8K9X6KVJnviqEO5Y+QfT+
-         /sKfkrLT8VPQnJq1aL+VpfQ8q29LsZcXY8oxYeBrh8TsYDEtMtwVhYI6SgoM1EqpYJsQ
-         EqsMyucISkBr7nAsPlVUbEznSPgm6K2Dti07RfVJfJ6CcqdhccBtG4OR4sTtbDz8//oh
-         8zmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730994356; x=1731599156;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a1DnKCOZhXoQPhfXyHAIbFfJO0eMPGIcLRUGVS5x2QM=;
-        b=BReCtd/TEx/3vZdGy0BqTXzKX6oG1guh7rwBCyuJjnhCmz/G1S0XjDFdZnypja16V2
-         t032ZOX7kKgNP7qsmERW+pLov4nwOUTh14RcxLQ2xhqcCkxuo5axpf7coNAu3+h1Pz4g
-         hpWKNo+CD5lrrZws+eflo4vj3eQgHTBSRazCiWBYUoFNYJe4sFRhNC3ueGqeLPHPTteo
-         htFDuPNILJ/UTEPx1OJ4ZCVOsyFDzYDRHqRWjKAlLKmPRBUKIeCWfOHC3qfXDEc7Xmpk
-         w6/6UNtrje/YGi02XYyVQqTKLZfuGt6UOvAdfKEVfrSN2dbYrTF11kjWh+qaDEYmk01P
-         J+QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJBxSG2TcXmxY/y1RGawTCY3qCjU4Zg4o8i2bk4jJDv8Zen/BFNd5v/YkfXeaeZu/hDhxcGnxsbu8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfXZCe2RV55dkKvn9QSN42yNT1ab8T5ulbtCiWKP03qbQbxkSO
-	Q+vNhi9atZSUddjNAZIaLPKYYXCW9CWFKv9G9zMXrr8dTUAtAyBy1oPuxc7gEmLa0iA3YpAxyU5
-	hpiMjgsz6uV6Y+ktGdtWGXdYR7XFoLxZp
-X-Google-Smtp-Source: AGHT+IHQHtGBSGu7zrAwBzMTI0FsOL8NKvh/J0bA6G7kLCSR16v9vZbZZw32jXiUZWqfseH+lTCEuLrcnNaeHI/tVRo=
-X-Received: by 2002:a05:6122:3111:b0:50d:4cb8:5afd with SMTP id
- 71dfb90a1353d-513fe914824mr614024e0c.4.1730994355494; Thu, 07 Nov 2024
- 07:45:55 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEE92144A5;
+	Thu,  7 Nov 2024 15:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730994716; cv=fail; b=qc5MU+wM3LliDkJUf/5rVvhAPiIf4jl3iqgSXBz8PtwhqOhdqTd2rOSiKRtQtHpwn9mZgCAg2/KHEuW2rPNwt56AYfQhYqC6tdOaTGk8DS0kKEeod+bIugE47lSRht9DWyF9tkjY/WbOKkv5xpY3/RxXtw4YM9h1pTSEhMolupc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730994716; c=relaxed/simple;
+	bh=DNfmREALQIdyYyW6Q0QZ9I7h0QFXduZqRg97GNwjtZ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mxQX+MqVcWMrUs+l8e+qOO/wxWsYKvKosM93WnTkD3AKVoq78IumvckyVN048edYAbh8q8GnfMfMsVr/pzmEyrJ3xTkXa3Q7jJjZ3N0gjOeFCyZRjbqZS51oDBxN+R4tTp1GvAMCQA3pHS6RC7/zft35q9eBE2lmYKLaNq8hlQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CsuNDBpA; arc=fail smtp.client-ip=40.107.236.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CEzQ5CktD9I2M1MsVoxJjz5MRtNJ8vFvdo98TYG2vPLf2kC0sTAgZ4+4plKdcuW2n9SQfNsNi8OGduEAB6/e2c7k1hEq69hYKJdDjUbJWwwkM/vkn7Tw+YugJaqZRoEyx00z2lYYiCtO/z6EiZNVQMybT5dBPjYnUMyAJUEkE416Lx3k9oCIXtPS/NyGpuEccmM5O76ro1vjPVxlXl7QsOodcdhglnBoeFLaljRj3zh0dzJJIdi4drGmXNeaqJMZQZ/m01vUsIa+DeKS5qARqdzskVQPZCpbJ4nitrOMLPGD2tgDfzVrhGyo3epRE+cq0lcMHluydqeroIMC/GwQJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jg6Ck2TA/9JqrHRFolKiu/83sEVbl4LjdEAd+5wJJ2w=;
+ b=G90OU/HoJyVqJc592cFAF/3O86hggLuVyiIwBLg6UCUvwYJjgN3CBf5DbRagmfhlkO5/R8RiDvC1JcEkE+cEmPjtmkICbTkFko9jpf6LHVALbM/WbvUTa2Pt+5Tl4QrdeN552s/lblSs41cTII6i36R3DPSNs+3/C1ioZyjk855Z42wSzgFvcLKAYqWHtqpxd9KS6oXPXlXti4wEztdzRWjaPIE37qSMVA1BwVcz0ycrMJ2EoA+DqzJmBAwVBEv1/HBPbpxC1lQYF5GEI7ytKNbIMWGeWrID1ESYyaUZiK9N9elIiqCo6pgUMAUeNsyFV/XkHokvysnWDVBFqH48LA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jg6Ck2TA/9JqrHRFolKiu/83sEVbl4LjdEAd+5wJJ2w=;
+ b=CsuNDBpARmua9P7YJF7fCPE2KnAsL3vKW/3xFh6ZpWFN8A7Ep2/i0Nqrl9x+2SPJ5uUvyho1GeBta9Ot3sZJ7NTHOz+kHJWXxdtYLb0ZqLsWc1f7KWWka7qMjYegT2LUpYaVG4wO1zG3GY1WLPvWIigdeZUCDJeieB0UcKMwr1LApJuI0tIK2+p2Oj2yIcx/20zFrlGdUQvia866ErOGLSyrxTm/YvsQ3TwTcZZ1pBuRRXpMM+Yc2p+SnAo1np8Yi5WsZptAyVIFwx5cikO43NWUviycbwbwihSAg888ouAI+KgmvTc7ch1U7tr/d7u+qQApXIr70N0NLGsN0/kMMg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CY8PR12MB7708.namprd12.prod.outlook.com (2603:10b6:930:87::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Thu, 7 Nov
+ 2024 15:51:50 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 15:51:49 +0000
+Date: Thu, 7 Nov 2024 11:51:48 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Will Deacon <will@kernel.org>, acpica-devel@lists.linux.dev,
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO
+ via struct arm_smmu_hw_info
+Message-ID: <20241107155148.GF520535@nvidia.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241104114723.GA11511@willie-the-truck>
+ <20241104124102.GX10193@nvidia.com>
+ <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
+ <20241106180531.GA520535@nvidia.com>
+ <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
+ <20241107023506.GC520535@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107023506.GC520535@nvidia.com>
+X-ClientProxiedBy: BL1PR13CA0252.namprd13.prod.outlook.com
+ (2603:10b6:208:2ba::17) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Konstantin Aladyshev <aladyshev22@gmail.com>
-Date: Thu, 7 Nov 2024 18:51:03 +0300
-Message-ID: <CACSj6VX77y6K9FNFZn-rMvEL9XSPS6rFDt-STGf1UxgkuS6msw@mail.gmail.com>
-Subject: Adding I2C devices to the SMBus (PIIX4) via the ACPI SSDT overlay method
-To: linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	andriy.shevchenko@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CY8PR12MB7708:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4abfc410-74b5-4487-5d04-08dcff441770
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?oQmlx1pjs9+a0NO+pLxGfPNHmPM51QAcSnp6yhGirxTjeeOGBoxmeGeUQXr/?=
+ =?us-ascii?Q?UG3ESmysX3rnj7VtMga5SIIFTwWd8pwWb+vaxNn1Cjea7sWxkCYC8y7nC2ND?=
+ =?us-ascii?Q?ElCwKUTBUvS7f2RnYoCrSt0Zu+lTZBnIRH4G4rQve0IyXld6dG8OGY16fGFZ?=
+ =?us-ascii?Q?Joe0GQp0/5wlcFJkYhhTGC9FbYYY2WH/7j1g2iUfqKvJLFqn87S/QYGkGsch?=
+ =?us-ascii?Q?l7f3OtFwKsibpQfNHfe+Z19g3ZSR7Uxfuvm01XtZRhL2CB62pv3oBV3WST1D?=
+ =?us-ascii?Q?zd6i+z0lVwGt7Te2vHK0cBI9gQdfDZDRHp0ONvh5IUOzhlrxcOoJUcqTl4tE?=
+ =?us-ascii?Q?OjZM+28eZf3R63ZOGbCHkF7bTtamgwimEfqpgeXzTqwqKjgxZHP2dmPalusg?=
+ =?us-ascii?Q?7W8p70EeJCJrk5LCxtGkI3Vang/bd/rfg4jUauL2N3o5a+TuTOvKXdrf1JRM?=
+ =?us-ascii?Q?0rO7Gy+sHcAwm6BZPOkaMbocjDQpf5wYiQOoSxjPcmlLnBRFj+C0ReNvSsML?=
+ =?us-ascii?Q?Yv7NuMZtE8sfQjTZV86pzvlZRQv27+EdTBKOnHYNarohBXlqx9lelLQzjX6K?=
+ =?us-ascii?Q?XoDNSnEThCtjT6QTEYOSgQK8BqZQdNPaITWtOttU+K6kAL5OPkvKLRewvbRq?=
+ =?us-ascii?Q?PScX/oRP6JV2vA1xDEDB4WWIJJz9AhhYFPWHSsL/FEdeAAv1Ox05WhHl4r+H?=
+ =?us-ascii?Q?swb0n3FjxWqUUja5P/J79ByBNdWd70lbWwMHKccIflp6mGMTS8CIV3aWShX8?=
+ =?us-ascii?Q?xp9qS02tNqI4uQsWynMUGJp0ZMwnga0mxFUNYQIRKKAlU35gZxS4aMpoUMJD?=
+ =?us-ascii?Q?0iYJPlZz6lHwWz6WjZl6jjojsKecZocU5soKYmwio+9VbyqiGfkLffdzsLqm?=
+ =?us-ascii?Q?0zZ6FZBJBKsXb8YnJtLWE0sDzP+6xokUxjUcwcAZLYTaFYBtN5kITzWRy3hb?=
+ =?us-ascii?Q?c/6Zd1Tm5rNuscQLFJAzN+lTFmY2LpoFiey7ax57lnRUd44rLzmEhpPYn93d?=
+ =?us-ascii?Q?sOwmFogLldFo3fayr0bYrqXq/gJyUc9w8fx0eBj2rBJCf2y2EXztS6usE9Wx?=
+ =?us-ascii?Q?WRda53ropX1MhhIwDelYMEo0/4cwI2U8JEutuq2qTaNzODGSwO1Aciv2c9Iv?=
+ =?us-ascii?Q?KgRdbUKoetTXt8d1X8+0aIk0fH36WMoa6Ubp1JOmoxzKPhjWHrjialyu5fj+?=
+ =?us-ascii?Q?KYwBcxXnkw2HG8hdiSfU6LGAq1oVgOjqwPoo25nEzx7EPEpu3sCnhVPMRJ3h?=
+ =?us-ascii?Q?2Yl6/ByjdPCtmO2ZCNYUVJDAky74XadcJr5hnHNxJMyjejqeNsD9XCqRKAgc?=
+ =?us-ascii?Q?q0KQ5ItW9BC8YsRJDaxj0cvh?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PEGEZkQHHfAKcUxFgvx/1zNH8Kcxh0EUtuZukZQwJeKKXAt6K4E5GPNi92Yz?=
+ =?us-ascii?Q?SF4rzLCHc0MdS/EwDr+0svLoV5q0l2mWU2R/By1PGaDPdJyvFa9A1al77WT2?=
+ =?us-ascii?Q?jUOLpUrGMga9E6Kr0U8bwM9aRM/hZMxN5g7MrcQKxEDQOdequqFJg+vA+SCL?=
+ =?us-ascii?Q?p3lrbU/E1kko5uw9I7+Exs4K2CuQrZRFVbXeCRRXjf4QGssj7pM5ChMJAhB9?=
+ =?us-ascii?Q?E0UsLu5m310Ei9Kh6QUixxA3dhI0liarfElPot9UdoFG4UZJFeePdt1nkgXn?=
+ =?us-ascii?Q?NaVYHJrWMyzp/Mg0gxDQmi6HCPdWXXlKRyX2Xut8N5ZRQNtMSC17CiiLZpDe?=
+ =?us-ascii?Q?zxHCqdn28xzWLrz4mWRW3qUFdENVoD6ItEo89ZbTEHmCdyM4ZAAsSwgW2K1E?=
+ =?us-ascii?Q?qPBmevmO0dUWvBGnDBtkQ7y+rHuEgouTgSx46UrepulHUj724EOkQ9/GCv7R?=
+ =?us-ascii?Q?9HZVu9YNeipsIebTQYNDjoLccEchN5AguZND0AvrHE+9UCkdBY13jqCmgxE9?=
+ =?us-ascii?Q?hvVXKfgmTQnTDIvIOjeGSgq56YTz00Usk+MC0cskoc2DSt+hQghV4uQKNsr/?=
+ =?us-ascii?Q?W2jqjUfe5eczvBjjNXsuZLD1jVk4bTbju+pdJ40TXHv9EItGkqjZ721UX3nY?=
+ =?us-ascii?Q?IzYZV2HHlaJWqCp438OqyuRHNsmZNOuIm+BO1J+RqSzd3R9Pv3JAKQGmbFoY?=
+ =?us-ascii?Q?LWNzus2Sos2dt0SarHWiMEGJfE9b67ayVyz8wdSelx6SY5HJG3PX/JG7D/+e?=
+ =?us-ascii?Q?WFqGHHnoosRUaUbgny3yqas0pDsbeOKRMc4dID81PYs8Ux+bOjYmHARzCbJp?=
+ =?us-ascii?Q?12UXEWI2avJbU1yfSoLnr3FwnuyPyzm1mSXSQ33StDjaVqOdvjon26YDD2Ox?=
+ =?us-ascii?Q?R9b91c51tW4kXWJF78HQHVnn07xUXH1VUYR2fCKd8fg8XuJd21Ky54/pvH9a?=
+ =?us-ascii?Q?vQnhECTM8DpBFsazI7coOTU8GZ0S8oT5ZTP85FDThvWbZh8c9/wvyUVstPi1?=
+ =?us-ascii?Q?DujQxxtXOh9Irr8Vh8fbpzcfG3q5YTDOaybW9Laa82YxkGURJd5gMbhj3+P3?=
+ =?us-ascii?Q?flzRfhOdcMv3ddvMU5X4AdSweLjBXJ/HQO0JLp4Ec0tONMoT6TEWAvhPmShi?=
+ =?us-ascii?Q?7tID8WeOOwCoYoPyM/96g7OQBhIxUjTySslahio/Blpga0coRezVaTekCxBi?=
+ =?us-ascii?Q?VEdiT1EEosge9oDFW9a29ZID8hQ9gRE24qN4ZrMuwuVj1WD1HilN5o897lmh?=
+ =?us-ascii?Q?vv27Jmuljh1LnY7Tj5Pg98HjaTQ11CxeBOrc2UmdiDF/eCXiMs45z6dy2Hpc?=
+ =?us-ascii?Q?gGraFVKzb/2VfTvImO86EKtvHDs5CiljeCyK7EWAH0SwSCGnLd2Vr2C6kSfa?=
+ =?us-ascii?Q?KIYeaoHnnuC12SEgI2UegjS9ArpZLN0inYnhxUVIXtnVhPkhom/9bpo/80+h?=
+ =?us-ascii?Q?oWQijrTC1/94kjmHeN8agu4OPAOX3pEuPNBcoG4shacz6q5WMuSE/99qUQiu?=
+ =?us-ascii?Q?EHDWtx+lo1CCRZWXZpIXwjjL0DRXpz0JCzTuzzkEei/8YXuG3b6bbFw3zWJt?=
+ =?us-ascii?Q?zg+cU+W3cYb1de1FNO3h3FWOGHLa6GxRs6SmZ+Jq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4abfc410-74b5-4487-5d04-08dcff441770
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 15:51:49.8710
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5mkUvx97nsdIr1UNo/hMmHVaMwVOlmlJunRXlyfFhlRVOLfteEqEMtFJ3Fo99LgH
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7708
 
-Hello!
+On Wed, Nov 06, 2024 at 10:35:07PM -0400, Jason Gunthorpe wrote:
 
-I'm trying to add I2C devices to I2C/SMBus buses via the ACPI SSDT
-overlay method. I've managed to do it for the I2C buses, but can't get
-it working for the SMBus (PIIX4).
+> I agree the kdoc does not describe what the baseline actually is.
 
-Now the long description of what I've tried and learned.
+Nicolin worked on this, here is a more detailed kdoc:
 
-I've successfully managed to add my I2C devices to the I2C buses. In
-this case I2C buses are described in the ACPI code of my system like
-this:
-```
-Device (I2CF)
-{
-    Name (_HID, "AMDI0010")
-    Name (_UID, 0x05)
-    Method (_CRS, 0, Serialized) {...}
-    Method (_STA, 0, NotSerialized) {...}
-}
-```
+/**
+ * struct iommu_hw_info_arm_smmuv3 - ARM SMMUv3 hardware information
+ *                                   (IOMMU_HW_INFO_TYPE_ARM_SMMUV3)
+ *
+ * @flags: Must be set to 0
+ * @__reserved: Must be 0
+ * @idr: Implemented features for ARM SMMU Non-secure programming interface
+ * @iidr: Information about the implementation and implementer of ARM SMMU,
+ *        and architecture version supported
+ * @aidr: ARM SMMU architecture version
+ *
+ * For the details of @idr, @iidr and @aidr, please refer to the chapters
+ * from 6.3.1 to 6.3.6 in the SMMUv3 Spec.
+ *
+ * This reports the raw HW capability, and not all bits are meaningful to be
+ * read by userspace. Only the following fields should be used:
+ *
+ * idr[0]: ST_LEVEL, TERM_MODEL, STALL_MODEL, TTENDIAN , CD2L, ASID16, TTF
+ * idr[1]: SIDSIZE, SSIDSIZE
+ * idr[3]: BBML, RIL
+ * idr[5]: VAX, GRAN64K, GRAN16K, GRAN4K
+ *
+ * - S1P should be assumed to be true if a NESTED HWPT can be created
+ * - VFIO/iommufd only support platforms with COHACC, it should be assumed to be
+ *   true.
+ * - ATS is a per-device property. If the VMM describes any devices as ATS
+ *   capable in ACPI/DT it should set the corresponding idr.
+ *
+ * This list may expand in future (eg E0PD, AIE, PBHA, D128, DS etc). It is
+ * important that VMMs do not read bits outside the list to allow for
+ * compatibility with future kernels. Several features in the SMMUv3
+ * architecture are not currently supported by the kernel for nesting: HTTU,
+ * BTM, MPAM and others.
+ */
 
-These buses are present in the system as:
-```
-$ i2cdetect -l
-i2c-0   unknown         Synopsys DesignWare I2C adapter         N/A
-...
-```
+This focuses on stuff we can actually test and gives a path to test
+and confirm a no-code update to future stuff.
 
-For my custom device (at24 EEPROM) I've created SSDT table:
-```
-DefinitionBlock ("at24.aml", "SSDT", 5, "", "AT24", 1)
-{
-    External (_SB_.I2CF, DeviceObj)
+The future list (E0PD/etc) reflects things the current kernel doesn't
+use. Our naive read of the spec suggests they are probably fine to
+just read the raw HW IDR. When someone implements guest kernel
+support, does a detailed spec read, and crucially tests them - then we
+can update the comment and have immediate support.
 
-    Scope (\_SB.I2CF)
-    {
-        Device (EEP0) {
-            Name (_HID, "PRP0001")
-            Name (_DDN, "Atmel AT24 compatible EEPROM")
-            Name (_CRS, ResourceTemplate () {
-                I2cSerialBusV2 (
-                    0x0050,              // I2C Slave Address
-                    ControllerInitiated,
-                    400000,              // Bus speed
-                    AddressingMode7Bit,
-                    "\\_SB.I2CF",   // Link to ACPI I2C host controller
-                    0
-                )
-            })
+HTTU, BTM, and others like that will need additional bits outside the
+IDR if someone wishes to enable them.
 
-            Name (_DSD, Package () {
-                ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-                Package () {
-                    Package () { "compatible", Package() { "atmel,24c128" } },
-                }
-            })
-        }
-    }
-}
-```
-
-And after I've loaded it via 'acpi_configfs' I can successfully see
-EEPROM in the system:
-```
-root@ubuntu-SP3:/home/ubuntu/acpi/custom# hexdump -C
-/sys/bus/i2c/devices/i2c-PRP0001\:00/eeprom
-00000000  63 6a a9 05 00 65 14 35  9f 81 a7 60 aa c2 18 d2  |cj...e.5...`....|
-00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
-*
-00004000
-```
-
-
-Now I'm trying to add devices to the SMBus bus. Which in my case is
-produced from the i2c_piix4 PCI device:
-```
-$ lspci -s 00:14.0 -vvvxxx
-00:14.0 SMBus: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller (rev 61)
-        Subsystem: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller
-        Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop-
-ParErr- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap- 66MHz+ UDF- FastB2B- ParErr- DEVSEL=medium
->TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-        NUMA node: 0
-        IOMMU group: 58
-        Kernel driver in use: piix4_smbus
-        Kernel modules: i2c_piix4, sp5100_tco
-00: 22 10 0b 79 03 04 20 02 61 00 05 0c 00 00 80 00
-10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-20: 00 00 00 00 00 00 00 00 00 00 00 00 22 10 0b 79
-30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-```
-
-It is described as simple as this in the system ACPI code:
-```
-Device (SMBS) // \_SB_.PCI0.SMBS
-{
-    Name (_ADR, 0x00140000)  // _ADR: Address
-}
-```
-And produces several I2C busses to the system:
-```
-i2c-7   unknown         SMBus PIIX4 adapter port 0 at 0b00      N/A
-i2c-8   unknown         SMBus PIIX4 adapter port 2 at 0b00      N/A
-i2c-9   unknown         SMBus PIIX4 adapter port 1 at 0b20      N/A
-```
-
-No matter how I've tried, I can't get to add my custom devices to
-these SMBus buses.
-
-Apparently just using "\\_SB.PCI0.SMBS" is not enough for this case.
-Maybe I need to somehow create port nodes for this Device? Or maybe it
-is not possible at all with the current piix driver?
-
-Anyway I've started digging and I've noticed that for the I2C device
-there are two physical_nodes in the sysfs. Where the 'physical_node'
-is a standard folder and 'physical_node1' is a direct link to the
-proper i2c bus:
-```
-$ ls -la /sys/bus/acpi/devices/AMDI0010\:03/
-total 0
-drwxr-xr-x   4 root root    0 Nov  7 18:07 .
-drwxr-xr-x 294 root root    0 Nov  7 18:05 ..
--r--r--r--   1 root root 4096 Nov  7 18:06 hid
--r--r--r--   1 root root 4096 Nov  7 18:06 modalias
--r--r--r--   1 root root 4096 Nov  7 18:06 path
-lrwxrwxrwx   1 root root    0 Nov  7 18:06 physical_node ->
-../../../platform/AMDI0010:03
-lrwxrwxrwx   1 root root    0 Nov  7 18:06 physical_node1 ->
-../../../platform/AMDI0010:03/i2c-1
-drwxr-xr-x   2 root root    0 Nov  7 18:06 power
--r--r--r--   1 root root 4096 Nov  7 18:06 status
-lrwxrwxrwx   1 root root    0 Nov  7 18:05 subsystem -> ../../../../bus/acpi
--rw-r--r--   1 root root 4096 Nov  7 18:05 uevent
--r--r--r--   1 root root 4096 Nov  7 18:06 uid
-drwxr-xr-x   3 root root    0 Nov  7 18:05 wakeup
-
-$ ls -la /sys/bus/acpi/devices/AMDI0010\:03/physical_node/
-total 0
-drwxr-xr-x    4 root root    0 Nov  7 18:08 .
-drwxr-xr-x 7335 root root    0 Nov  7 18:05 ..
-lrwxrwxrwx    1 root root    0 Nov  7 18:05 driver ->
-../../../bus/platform/drivers/i2c_designware
--rw-r--r--    1 root root 4096 Nov  7 18:08 driver_override
-lrwxrwxrwx    1 root root    0 Nov  7 18:08 firmware_node ->
-../../LNXSYSTM:00/LNXSYBUS:00/AMDI0010:03
-drwxr-xr-x    4 root root    0 Nov  7 18:05 i2c-1
--r--r--r--    1 root root 4096 Nov  7 18:08 modalias
-drwxr-xr-x    2 root root    0 Nov  7 18:08 power
-lrwxrwxrwx    1 root root    0 Nov  7 18:05 subsystem -> ../../../bus/platform
--rw-r--r--    1 root root 4096 Nov  7 18:05 uevent
-
-$ ls -la /sys/bus/acpi/devices/AMDI0010\:03/physical_node1/
-total 0
-drwxr-xr-x 4 root root    0 Nov  7 18:08 .
-drwxr-xr-x 4 root root    0 Nov  7 18:08 ..
---w------- 1 root root 4096 Nov  7 18:08 delete_device
-lrwxrwxrwx 1 root root    0 Nov  7 18:08 device -> ../../AMDI0010:03
-lrwxrwxrwx 1 root root    0 Nov  7 18:08 firmware_node ->
-../../../LNXSYSTM:00/LNXSYBUS:00/AMDI0010:03
-drwxr-xr-x 3 root root    0 Nov  7 18:05 i2c-dev
--r--r--r-- 1 root root 4096 Nov  7 18:05 name
---w------- 1 root root 4096 Nov  7 18:08 new_device
-drwxr-xr-x 2 root root    0 Nov  7 18:08 power
-lrwxrwxrwx 1 root root    0 Nov  7 18:05 subsystem -> ../../../../bus/i2c
--rw-r--r-- 1 root root 4096 Nov  7 18:05 uevent
--r--r--r-- 1 root root 4096 Nov  7 18:08 waiting_for_supplier
-```
-
-But in the case of SMBus there is only one 'physical_node' folder (but
-3 i2c buses) :
-```
-$ ls -l /sys/bus/acpi/devices/device\:25/
-total 0
--r--r--r-- 1 root root 4096 Nov  7 18:07 adr
--r--r--r-- 1 root root 4096 Nov  7 18:07 path
-lrwxrwxrwx 1 root root    0 Nov  7 18:07 physical_node ->
-../../../../pci0000:00/0000:00:14.0
-drwxr-xr-x 2 root root    0 Nov  7 18:07 power
-lrwxrwxrwx 1 root root    0 Nov  7 18:05 subsystem -> ../../../../../bus/acpi
--rw-r--r-- 1 root root 4096 Nov  7 18:05 uevent
-drwxr-xr-x 3 root root    0 Nov  7 18:05 wakeup
-
-$ ls -l /sys/bus/acpi/devices/device\:25/physical_node/
-total 0
--r--r--r-- 1 root root 4096 Nov  7 18:07 ari_enabled
--rw-r--r-- 1 root root 4096 Nov  7 18:07 broken_parity_status
--r--r--r-- 1 root root 4096 Nov  7 18:05 class
--rw-r--r-- 1 root root  256 Nov  7 18:07 config
--r--r--r-- 1 root root 4096 Nov  7 18:07 consistent_dma_mask_bits
--rw-r--r-- 1 root root 4096 Nov  7 18:07 d3cold_allowed
--r--r--r-- 1 root root 4096 Nov  7 18:05 device
--r--r--r-- 1 root root 4096 Nov  7 18:07 dma_mask_bits
-lrwxrwxrwx 1 root root    0 Nov  7 18:05 driver ->
-../../../bus/pci/drivers/piix4_smbus
--rw-r--r-- 1 root root 4096 Nov  7 18:07 driver_override
--rw-r--r-- 1 root root 4096 Nov  7 18:07 enable
-lrwxrwxrwx 1 root root    0 Nov  7 18:07 firmware_node ->
-../../LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:25
-drwxr-xr-x 4 root root    0 Nov  7 18:05 i2c-7
-drwxr-xr-x 4 root root    0 Nov  7 18:05 i2c-8
-drwxr-xr-x 4 root root    0 Nov  7 18:05 i2c-9
-lrwxrwxrwx 1 root root    0 Nov  7 18:07 iommu -> ../0000:00:00.2/iommu/ivhd3
-lrwxrwxrwx 1 root root    0 Nov  7 18:07 iommu_group ->
-../../../kernel/iommu_groups/58
--r--r--r-- 1 root root 4096 Nov  7 18:07 irq
-drwxr-xr-x 2 root root    0 Nov  7 18:07 link
--r--r--r-- 1 root root 4096 Nov  7 18:07 local_cpulist
--r--r--r-- 1 root root 4096 Nov  7 18:07 local_cpus
--r--r--r-- 1 root root 4096 Nov  7 18:07 modalias
--rw-r--r-- 1 root root 4096 Nov  7 18:07 msi_bus
--rw-r--r-- 1 root root 4096 Nov  7 18:07 numa_node
-drwxr-xr-x 2 root root    0 Nov  7 18:07 power
--r--r--r-- 1 root root 4096 Nov  7 18:07 power_state
---w--w---- 1 root root 4096 Nov  7 18:07 remove
---w------- 1 root root 4096 Nov  7 18:07 rescan
--r--r--r-- 1 root root 4096 Nov  7 18:05 resource
--r--r--r-- 1 root root 4096 Nov  7 18:07 revision
-lrwxrwxrwx 1 root root    0 Nov  7 18:05 subsystem -> ../../../bus/pci
--r--r--r-- 1 root root 4096 Nov  7 18:07 subsystem_device
--r--r--r-- 1 root root 4096 Nov  7 18:07 subsystem_vendor
--rw-r--r-- 1 root root 4096 Nov  7 18:05 uevent
--r--r--r-- 1 root root 4096 Nov  7 18:05 vendor
-```
-
-Maybe I need to modify ACPI code somehow to create these
-'physical_nodesX' folders for the relevant i2c-7/8/9 buses?
-
-Any feedback is appreciated.
-
-Best regards,
-Konstantin Aladyshev
+Jason
 
