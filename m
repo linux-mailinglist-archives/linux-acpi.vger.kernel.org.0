@@ -1,66 +1,66 @@
-Return-Path: <linux-acpi+bounces-9424-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9425-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A599C1178
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 23:05:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B114F9C1184
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 23:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0CB81F226C5
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 22:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71AFF282F6D
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 22:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA28B21830E;
-	Thu,  7 Nov 2024 22:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207D4218927;
+	Thu,  7 Nov 2024 22:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EVi/IgJn"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ArmeWfc1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2089.outbound.protection.outlook.com [40.107.212.89])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2043.outbound.protection.outlook.com [40.107.243.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BA1217465;
-	Thu,  7 Nov 2024 22:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637A7215C6D;
+	Thu,  7 Nov 2024 22:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731017113; cv=fail; b=PG+VGqmNikmqjNbfyCbWHyrYrxGNLGNctnThdLFmkXpqRkmjVaQoHQaagxZlkm9DKKO34zJPAZUf+QzzMCa9yd05FlhvTOh6k51ct/ya0MqAgd4vsCq+QK4Pb55TIWvce8hDh51YmJCq7pvGyQw58XOd92LJFxzDEbwVGCWqu9A=
+	t=1731017380; cv=fail; b=WHo+A/ER2jdzwgwArk6L93flrPJnYbekRJZIxMYHmyRxRI9ugr+gFLj0cY8TrgjfQyC0tCCml1k1NJN+y4OpXix6FOL9aeFf+INK2Rwb5NDqtLcKVb8aMZ1/yzYMeVms8ICBRW8zlG1bT/Dgd83xCK3coJgXi6LEpGjhrDvAqEo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731017113; c=relaxed/simple;
-	bh=Db0gKfbB9k19Ak+Rr9HHkiLcS3asGdPur27Wg1JPx1s=;
+	s=arc-20240116; t=1731017380; c=relaxed/simple;
+	bh=CMTVEzWcSsyLCLOHz6TkJeoBG88pCyfdlpOYMF009yc=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EQVv3OpvHiPtgSV7LPENh4/+in8tc15m3s6hYx8X3YC+5FVpNaaowo4f2GXaDns6wG7CTmY2uU3zLkftUpO4CRGfQUtZSJguEezc8JvXdYt4RVox0oaQJ1qqx9LOZA7C5RS7UPB58H2iY5zaUPBMv8nBOO0335YX0fJK4HtnLCc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EVi/IgJn; arc=fail smtp.client-ip=40.107.212.89
+	 Content-Type:MIME-Version; b=a002ZVfrZOUxl3SDXynDe4U8TDqLRfmL7S/6a7XAro9IrEM9ay4v6tEF9yM1izw/gwPMo4lN7UKIoE5vuej2bzdyYnygd5fmL+QgO/nGydp2DsNKUN5dnU5bGdXBlgmjXG6Ux4Xk5osc5GN1hfmo65D12t+AZP6hl3B8kAU6ss4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ArmeWfc1; arc=fail smtp.client-ip=40.107.243.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JqxN2NF9GG5b/saNVB9tJWk3S8E6fv5bhl1YPYPDxQ6//K9kuRwV0KuwAd9FGTn92OUMWowtqSKzo/uBLNguzT4t03yZhslnS2hbVGiOF4kYwoKJXuhzhmjeXUmGhbFapaeBTwhVzGErAHNqjyYc1gm+dStfSEfh0ushhx/sJwpAnmn1LElEosh2Hn+dbM6bq7nCzoO1svdZs8N7AR0MvTQci2TtxgwY/ORPvR//tW1Dk7S/m8GhXGjywle7tR9EKgNpFCnj8MJXf1U3ddZdgmkqfosVkMhc0s+eg+vgvo5QGG1Pswl4oDDIIYlsT9LRLfTJtzXYPRhC25Vh8IGaxg==
+ b=PHOARtBh1IQjVh0p/QJgX+XFv2OzcRyE05NutdUVqUTUs4pbCndquQ3+62Ep4POaeVkG5PhsUmRhCLRUzUJfO52IPfSQhRHmOmWu5NCYTFnpZVl9NUdedhNBTUyjhnCdUmsrvCHf4y0zgBjlFNVCDalUKXBqMtDHdt3Q201TpUBLtWmu+aha2w8JstlPwR5H/1nnF8HmOxY7iqM2B6BUtpn9+oMTtUvKp6ICd7QJlCbA0v5JbdkXivc7w9It0YWMUaHb09TsEm/YyrKne/SmHgrZwlmWJMHkAGPY0C40GMVUvFry+gNHWWHvpuLMA6EoFJ0ZDy/PltwdkQbQm8KPsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uF35CYqioND6Ghm77pDrZ71mQAnPtXgJsHg0cWOS90E=;
- b=t9FkNkCaMkYxDeVcycZd0ioJaVHuRTl+6QCn+YLbd4RW/s5phG8wBdivyhyYtDzg/0i9C5cVEJgQYbaZAF+KNulgJfdhZX3jhDW698F6o5fuIOTLWoH9G7tshM3dh27Sk56L2my74BNsJl1Wtdn1fLkNXmwWwVchMJP98812UC8ETlMsNlM6T+RF7Iba2nAANdSDYAGlszzSL5pNxRR7v3FHV76diCjowucCYQugAY1NCpApmztF9VLEeF73zTPiG+aNBnaeSK+1l3Z4x6bn7VsBY/J2IKCCcD8K/Oy9FwzsyI+SE9m0L4iJvQbLnl+ViKUUAO+GD0GRyEy2TIwcRg==
+ bh=L0Ey4LXFuMCJv3nx9V7cowAc/G7wyR3ysw5c5Wu69T4=;
+ b=kmbQIfW5gKREeIvcjAIoUwYLodXSsxKag6oqMSOzWukgLGgv8ynE6HPm5Xm7Htu6eLOtSEwAsWYjEYFQja3lYdv3mau3mhVcziXdWEjK8YlebzEm8H6HQBLntz0RDnEMdyjd2XRdYarmHRzwE2oTH3hZkQX3Y36MGPx0Fno3+vFvNAhVtJ2vjGgOgpVMbpekiA6bo/0eWjp0rWFEEipinWbQbD1vGSjH65h0TuD6yni0aZNNNJh81zgI95x/tiiEtgeF84aK28DsGoM+tR4BV7YH6B6xZYlyewWjeQfPqUoVc4emgxQ7cUlffkUTdH7sM8HLbC6Xa2V12TSUy5BfMA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uF35CYqioND6Ghm77pDrZ71mQAnPtXgJsHg0cWOS90E=;
- b=EVi/IgJnurDCJgBFwxCuxem2hFwKshDRchbiArbtixhOYixjvapmQviwYXe4jXqP6RUGK1Hzth2S5pzwQ6dFdmHm/Aykk/7tu7m18TxVVA6JI5+VAUe3JxDpjLHplSmvrQesv+PtJNbAxN3ifs2Dxf1BOBRL9iiH9rrLkvWJzVw=
+ bh=L0Ey4LXFuMCJv3nx9V7cowAc/G7wyR3ysw5c5Wu69T4=;
+ b=ArmeWfc17YysOXlxWBL3N+8e2vSPEYqa0Hg/VZGHB3B5PIl3TiNfqKcicDPxQdVBx8oNgtpRvxRqMdbO7S5mH1T3aO/v6xzLNbzMdEYFdMjxK7FEbugva0XVtLfUAYN9+pH/nfliugNgoEMYj8BpuvkEwljyLQA8V6W5Af4RgyY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA3PR12MB7857.namprd12.prod.outlook.com (2603:10b6:806:31e::16) with
+ by CY5PR12MB6478.namprd12.prod.outlook.com (2603:10b6:930:35::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 22:05:08 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Thu, 7 Nov
+ 2024 22:09:34 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8137.019; Thu, 7 Nov 2024
- 22:05:08 +0000
-Message-ID: <cbdc6ff5-627e-4237-a053-bbf2e77499da@amd.com>
-Date: Thu, 7 Nov 2024 16:05:05 -0600
+ 22:09:34 +0000
+Message-ID: <9dd1709c-de87-4aa3-aa33-8a520a305545@amd.com>
+Date: Thu, 7 Nov 2024 16:09:31 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/20] ACPI: platform_profile: Check all profile
- handler to calculate next
+Subject: Re: [PATCH v5 11/20] ACPI: platform_profile: Add choices attribute
+ for class interface
 To: Armin Wolf <W_Armin@gmx.de>, Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
@@ -81,15 +81,15 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241107060254.17615-1-mario.limonciello@amd.com>
- <20241107060254.17615-18-mario.limonciello@amd.com>
- <989e7297-97f9-4d55-be28-78128572fed2@gmx.de>
+ <20241107060254.17615-12-mario.limonciello@amd.com>
+ <7e302f04-cb4d-4ecd-b1a1-4b89f09e692b@gmx.de>
 Content-Language: en-US
 From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <989e7297-97f9-4d55-be28-78128572fed2@gmx.de>
+In-Reply-To: <7e302f04-cb4d-4ecd-b1a1-4b89f09e692b@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN1PR12CA0052.namprd12.prod.outlook.com
- (2603:10b6:802:20::23) To MN0PR12MB6101.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA0PR12CA0004.namprd12.prod.outlook.com
+ (2603:10b6:806:6f::9) To MN0PR12MB6101.namprd12.prod.outlook.com
  (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -98,196 +98,227 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA3PR12MB7857:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ca633c8-7c1f-40f6-8de0-08dcff783e3a
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY5PR12MB6478:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57f5dc63-0bf5-4db2-9409-08dcff78dc76
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SkpDbGV4TWhQYjY3bkVvOCsrK3Y0N2lNUGVLUExDd0REdzlCOVBwQ0V0Vm1v?=
- =?utf-8?B?cE5hNURWWkxDRWlYTjZrVG9YRnFWNzBPak1pWGE1SThTdk9oTDVuT2RSNkVG?=
- =?utf-8?B?cVFFYzV2MktKT3Z0YklPeTI5ZjRzYk4vQVgyVXFjMkovQTVDZDVEZDlJNGZy?=
- =?utf-8?B?VEZBMXF6QThyNWZjWUV4emdVQXlaRFl0cVF4NnB4MmgvSE9BMXlPQ0lpT3Rs?=
- =?utf-8?B?MEVxcHh4V25PKzUyQlZYZUF6dVV5V2lYdjh6YUQ3aEdZdzNJelIxcm1DT0Q2?=
- =?utf-8?B?QzJMb1J6QWJUcUNWNmhGcUwzenZGYzVwUDRkcEg2d2wvajcvanRpaHp5ZDJi?=
- =?utf-8?B?U24yd21mYVRwd05IU0ViWmU2dHFoM1pwWllHUHkyT25lVVovRnVvTlEzUTNa?=
- =?utf-8?B?dC9qL2NsLytnWkNzenZQSllXTG9nS2ZjYzBnVHk4UGswZVpWRkNlb2gzRFFl?=
- =?utf-8?B?MnpZQzVpajl5S1MxMTBBOEFiWks0cGtBUzdjS284cGcvbEhpMldPUUdMVXRu?=
- =?utf-8?B?dzlaN2VYaDRiZHJja0c1a20wTHl3c3ZobTZKRDEycE14a3FOVHpWdVJ5SU5R?=
- =?utf-8?B?Z1NGR3VrMkhqNW1PT3ExUU11cnkwR255YmIvVjkrOWhha3JqSVoxMVQ3QVRL?=
- =?utf-8?B?S0tGZ0F6N2xmUEtWaW42SGNxMmNTNk9RRWhxRW1nc3NIZWxzVW9xWXBIcU1o?=
- =?utf-8?B?cWdXYXZnWE02WWJFaUFaWVRjUjRlai9OV3hlTFVVS2cxT3AwSm9BeGlLdUZ6?=
- =?utf-8?B?dmRZT0k5MFZvSTBVN0UwczA2b1d4K2F4VVQ0cStxTEhuMEpXendrRW4xallV?=
- =?utf-8?B?TjBuM05adXJTakdjR2ZtL2wrVzlFZUVZdmhBNUNMTmRua2Z0VUlHU3ZtSzdZ?=
- =?utf-8?B?YkppUGlsWFVRSzhIa0Rhb29lWVhmMG5MRnd3QkwvVWNocm9JMW9aRTA0cWtZ?=
- =?utf-8?B?WjN5ZlVCUmpRZUpvR1poZG9mWUtNVVhCcm5BdDQ4T1pCMmxXU1BqeUo1SVpT?=
- =?utf-8?B?V2ptWXZ0TlZTeXl5R29XZ1U1UWhkQ0Y3YURFdWNGVUNXT09YdG45eEJ0R0kr?=
- =?utf-8?B?bDBzeHUrc3J2MnYxbU16MEpBQndqaWUzaGNtd0FPcWx3WlN1SndNcW1INTcz?=
- =?utf-8?B?TmdYWlF3UE16bTE1emd1Q3J0WUdhRFpDNTFzZ2RvMkpIZVdmYUErT2hQNjZv?=
- =?utf-8?B?ZXAwUEZtMko3OTVZbmNjNEp1MEFWaFM4T0oyVDd5T0R5VEkxZzhDMDZQVXBI?=
- =?utf-8?B?RTV0bWluUEIzRHlqRS9HS2gwL0VDQkVpd04rWllqOHZhU2lqZEFJaGR0UERO?=
- =?utf-8?B?MUZPN3NzbVpSWEdCa1J4ajhQM3hvV0VlSU05QTZCMGZDbUwwdVEvdFNaenRh?=
- =?utf-8?B?Z1BJUzNrZjRiSU5aYnNaUmd5aVFkNXZOaW1PK0ZnOUFadmZ0SGpJcUVJUWhr?=
- =?utf-8?B?NXNQQ1k1UTBMTjJIRklZMHhnU29yUnFjYllZUVB1UERkV3FIalJLTVRwdHNw?=
- =?utf-8?B?TjR4SjBnRXdRdHcvVGRYQkc4eGtXNzI2WFdndjUvTktQUkFERkJrTUdFSXN5?=
- =?utf-8?B?bUFQWmIzYjZQLzhxdVdyRFZCUFFFZ2Z3TE1weXAwU2xPdjJIckdqbzI2UERS?=
- =?utf-8?B?MUdPMitwUVYvejNqNGRabXlVSDgwOXpWcDV5aDJLRm90Z3dacytuMm43MVdK?=
- =?utf-8?B?OFhTVkVaSDlVTzlYYzk0RWJEUGZWU1d0SmJOWEFlMUFxei8yVWNzekpXN2Y4?=
- =?utf-8?Q?WGvfCC1NdjcDpgL4v1Sk4IgiShYb85wV/GUpzUc?=
+	=?utf-8?B?OU1jVFdOanhpcnhadEF0QnN4Rk5oUk1qMmlPdSt6UXZ1dFZ0d2UrU0swTWJE?=
+ =?utf-8?B?Rk82WjErU1NUQ1VKQ3B4M0xRd2xPcDVCYzJESUpRTUZIYk9JUTkwQndjeXZ0?=
+ =?utf-8?B?cEhtdnRlOHBBRzRPTHFnVXFaaEEwNE1OSFdJMURuK001dlFOL2N6dHBRaFNU?=
+ =?utf-8?B?WENoM25VTTloVmQ4cTMrR3FsbFFGS0E2SEQ1emc1VDRQYXlIM2NMck5iSXRE?=
+ =?utf-8?B?ZDNYbDhBY0F5M2NkMjB2ZzZMODNIazIvRnl6UGN1UCsxK25odG1UdDBIUHor?=
+ =?utf-8?B?NytCNWlNR1A3MkltdU45eDFLVjllVFB4U0VGY2pqYWp6NlYwZWRSdndtSTZs?=
+ =?utf-8?B?ZXpJUkc5ZEVtQVd6VkI1dVVZTW84TmdWTjBGd0kzRThLVHdXd0N3bFRaK2sw?=
+ =?utf-8?B?UTc4d0JreGNLN1A3MTE1bG1vOWR3aUhVN1lwZ1JTTHdVUFVuajYrRkxXUDF3?=
+ =?utf-8?B?UkFLMFJLY0dzeVNLNlNpY0RQSHJ1RFZiYlhqeE5RQ3ZjNmFOd0QyaXZiTUly?=
+ =?utf-8?B?QnN0Qkg2aHpDcGZnYUplQWxqUTlXVVk5RlJBbzNSNmJLZmh0VW9XY0FCaXQy?=
+ =?utf-8?B?QjZ4dmZKck10aUs5akpQblpYRFhteXQ3VmtxU0N0Qy9HZG5xekhYeUtuNVZh?=
+ =?utf-8?B?VVBGK09tNS9xLzVVeDgwdThVWjI5ZnEwWTRMVlBGbHZQeDduUmthV2Y1NVNz?=
+ =?utf-8?B?eGRtTStHYVNDdzZYWi94azVNS0NyYkhMc0dWS0hpdldnaHB1NC8rZ0Jhamx6?=
+ =?utf-8?B?TUlwSElWOW1wQ3RFM0w2eTJ3M0F5THJEdElYTG9LQmR1ZnZ5T1hjWlRGRmgz?=
+ =?utf-8?B?Qk5MU1B5ckxrWFE2OExwR3p1ZytJR1lEcytWT2VPSHVnak5kVExMczNlOG5s?=
+ =?utf-8?B?WEQyYWJ4UXp6dElFUi9LTzhtcDVCVTRaQVhyYWQyS0x1bnJTTUxuWGZSU0tN?=
+ =?utf-8?B?eTdRenZsU2g3d3NGNVM4cHp0MGlvclpMaEp2TUtwaHRGWCs1V2RQOG8wd0VT?=
+ =?utf-8?B?MU5IbTBUR2c3aFhobUF3NkNYTEhLMkZkTnc5eGZLMEtIcU51QjJ3UjYrT1Yr?=
+ =?utf-8?B?aXV5aGovanM0YTNGaC84eitVL1IzVnl1Witoc3JaeGdsZXFmQmx1VVNvNmR3?=
+ =?utf-8?B?UkRMb0doZVplU29jRDl2emZTWk9HNEJ0YzdGN1FnZmVzaU4weGtaaVZoa0NC?=
+ =?utf-8?B?QnR0Rk1aayswZkxyU2xveVJ6WEhqQ2U0cmU4WkZsUXJoNUl0MG5xQjR1MWNq?=
+ =?utf-8?B?RHpHZFc5Y1ZuaDg1Z3laN3IxVzNnWFA5anlCekhVWmdWdWNTcVpWSGdIZFZ4?=
+ =?utf-8?B?eG9KejNXdXA4aWJsVnZRNEFZRmpiTUNhL2tIT3N5bnliSURybHhxanBKWWcv?=
+ =?utf-8?B?Vy8xbHlsRVlHdUdBcitkSFFKM2dsZDd5RlhIUWFUWHZDK2UzWWhzdW82aEZQ?=
+ =?utf-8?B?ejUrT2JDc2VOU3c1Q1BJM25oVDVibExQOHpSOGpnaE9XZGRDYVF5NzhPSkpv?=
+ =?utf-8?B?YzI0aTg1NHlhMUkrbGUxMWN1YmxKdXZtK3NFMHZRbW4wS0JBaFFmWFNGSjJm?=
+ =?utf-8?B?SEV2UElOUnZQMlBEZHp5bXJsTGU3TFZQR2JYTlR1SHRBSWVObU84UUJkK2xo?=
+ =?utf-8?B?azF1UDdSalFoNkVLVWlvMU04a3docTAxSHl2T3pwYWZta2lpNGl3MDFCQXdw?=
+ =?utf-8?B?KzVDRWVTd0lMdmFjaEszTURlY1dWTS8veEViMnA2V1c3ME4zaXBIS3N6WW5q?=
+ =?utf-8?Q?IYJKyW9y5mkU4I6hc13MWZZaogxncvQVBxTe7kf?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Zi9hM05IN2FydXorODVvZFRYd01tWW9pSHA2R1dNdTBkKytENFJCbVc0N1dH?=
- =?utf-8?B?L21tMDBGSVhkd0hyRGFPaDY0T1llRFZRK1QydXFmSTZnNE03WldVL3dDR3py?=
- =?utf-8?B?VmQvWHN0QmRBMlgwMVFka2wxTkJiMGEvYTZGMk0yZS9iVVRDMHY4eWg0Vm9J?=
- =?utf-8?B?dU1zbW5KN0YrdDloQnhGYUc3aFIyTG13WVBqME53MkRYNk9vQmpCVEVrOHRD?=
- =?utf-8?B?dE5yOVB2T3d3QXl6SVpzOVEzaWFkYmFrWDNUejdJTUpZRWEzZklvZ2xVbGRl?=
- =?utf-8?B?OHIwcjJ0Q201VUtmQkVyNFJtRzhBN0pndlZGZmdHbmNWUGkyc2pHSS9FTDJt?=
- =?utf-8?B?ZUxiMGNBUHVGM0h4aGo1bksvZDl5YzFTcmdVNTdSbjc1RmtUaDZKamFuL09T?=
- =?utf-8?B?Tk5qZnMrZjZrVzBJSjE5bmFOK3B6Z0s0Si9hVDJaMXRGSml1QkU5dkNDckdF?=
- =?utf-8?B?bGtQVERReFBuVEZiN1gxWEJWTU9PbmxHU2s4dCs0V0xoU0FZM21PLzBvbmRT?=
- =?utf-8?B?dTF5dDNZOUt3Ynd3ck9DSHV3SmwvNEJJVUdWMWdMdVg5Sis5QXRDcDlFeGti?=
- =?utf-8?B?TDE0eTd3UVZ6eGUyaUZSQXdML3dXaENkZ3dsb3g4dGZWZEFBN0pON1hzWm5Z?=
- =?utf-8?B?cWYzZG5zZkJnOU5oK2djdHB1K2kvMW5MdVROZ3o2WFlTREZPSzJuV3IxVXhT?=
- =?utf-8?B?RUZ3TC9HREdjUU1oejV0ZnBIaWxuYk9hWGZ3akk2aFZMcGVPZlJ3YVNaNlV4?=
- =?utf-8?B?QlJaZkJ6U05vUktvQk1jdldrWDc3blRZNXE3dmppb1hEejJibUVQWDZDK0lF?=
- =?utf-8?B?TlB0Z2VGSjF2d2hkc0dWaGpwb0dmNTVjcGsybzVXZ0FMMTU5WUR6NmE1dnFI?=
- =?utf-8?B?V1FNQUxUbE9pOGgzU1hTYjFIaWhqUGRiMmt3OEoxQmlMcTdvUTFxRWxzMTZU?=
- =?utf-8?B?UVpRcUJyOVZwSU9IeG1JSy9CWEJCcDAxdEk4ZSt1Q1Iwa1orajdpVkh5VWtj?=
- =?utf-8?B?WmwwMEhEVWNMR21Ncy95WjFZMlVBRkI1K1VEcnFXdzM5ZXRvTldFdEJJWXVV?=
- =?utf-8?B?S1RMZmkvMEN2VFVjcVBKM2NVM0xpdXNrWitEa1ZHaVBRTTd1clcvSmtibGsx?=
- =?utf-8?B?dytjaFlPSkYyeFJLK2VJRlJtaXJYODhLMmQ1V2YvakxiWituRUFOWWt1cjZ0?=
- =?utf-8?B?LzhhQUxzc0RXUjIrdkY1dnl4Z2duUTNxSlVOK1hUbnEvRGt1eVpuTUNHUWFh?=
- =?utf-8?B?WFZJVVdwNU9CNEZRQ3N3VnpWWU1LMWdLVFl3WHkxRExkdEVlcGtUMWloY3hJ?=
- =?utf-8?B?aUMzTE1iaFkrZnpzVzR0aVY5N2IvelVjb040eUcwT1NjRVlTME5LSGk0Vno5?=
- =?utf-8?B?WHArK2wydkpodjlmQm9qK1JCL1RETkZtOGFhZkpIYWpQR3JGQ25adXBtME44?=
- =?utf-8?B?QWx5VWUvZit0T1I4amY2RU13T3Q3R01jMU0vYkNodEJCRlE3UVM2V2F6bWlD?=
- =?utf-8?B?WDRjN0I2Z0dsRS9uTDE1T3BEb0k4UW1WMkNJTDhLNi9aNXEvUnRkZmVyNkVk?=
- =?utf-8?B?dngyYzJ6SGdHeUcybkM2YlkrNVdWbjBzTEcvcm84ZWJrbkgvbVJTQ2VtN3Fx?=
- =?utf-8?B?bFNZejVjWUVxYTRzaDRsNldIeFkyTlU2TTRPY3R4QWZmakZPb0VTOFpRZU1P?=
- =?utf-8?B?azkxWXhMaXdtME00YnpOWnp0bjlLMi9VWHVweGZlQnB6L2pqYTROMzZwWU5O?=
- =?utf-8?B?aG1BZmIrOHptVElNT2NNQXhVY1NPdld4R1VFRG8vMFdFakUwNE1uZWxTeW1R?=
- =?utf-8?B?Q3JrQU1ndWgwTHlGek9Ydm9hZ29VZVBmdURxUkpzUjRxWlhNbndzLzFPdFFB?=
- =?utf-8?B?NVRkVEY2eDVGanlHNTFZSTlMRWF4TnlNQzRPNXl1S01wV0JRY0hMZHQzVXN6?=
- =?utf-8?B?MnZSM3dKVG5TOVh1ekxQRlpBcXVwV2p3TmRRTk44UTEyb2gwZ0dtN2RuM0dY?=
- =?utf-8?B?N0NGTklrdHRwZGxQSyttZnlucVlZVktTaEk0dU5XUDFYU3NybVlZZFV6MGtj?=
- =?utf-8?B?Y01aNjhVUFN0Q3R6UU9zbmRvbm5ENkNOMTNSOUFoNmhJYUgvZnUrUFQ0aHV1?=
- =?utf-8?Q?fPHsYKfY3GX3ZFcK3i0k51qtI?=
+	=?utf-8?B?UU1hSU1iUmI5NEZVKzY2UFhJN1RyaHY1MmY0K3dwbnV2Tk5zUDN3MDE5MTAx?=
+ =?utf-8?B?ZmhjMDhBR0tGcjludFpMK1I3MGJENzlTOVBGV0pTejJaREtOSllhT2puVEtP?=
+ =?utf-8?B?ZU93cXF2TlhnMkNFbmEyeWZhL0cxSmVXWURONGx4aE9aQzgwL1cwaEx2TVd4?=
+ =?utf-8?B?TXFPQW9pVHRIb3pGYWMvQ0xxM09BVkpTQUdPQmhxcUUvMHlXb0I2citFd1dZ?=
+ =?utf-8?B?YkcveTJ1aHhqNzdLZVpCYjFxMFlvSk9TSDFQanlhKzRVRUZEVnB2aE1EelUx?=
+ =?utf-8?B?VVdXdDBhVDRoSysxZGx6aWFsOEgwRTZ3eVBiMzE2NkRpSTlhWU5OQ0lZcVVB?=
+ =?utf-8?B?NlZEQjZ1RkF6ODBzRXIzbGRleFNPZ1VRZTA0cXBCQTZ4cWx2QUZxaGcwODJE?=
+ =?utf-8?B?UFhTMHJ0dDdLWFduMFRrYUtUa1ZzcnBxcWxHbzVzZjBPMWRkcG00TnlOTG1Z?=
+ =?utf-8?B?VnZjcUZYUzBDQkR2b0E5V3FFUGJueFVWTGNudlk4bUlMY093a3U4dEhmMXVa?=
+ =?utf-8?B?YzVlUEZydTBNUTdDN2VxS2RBWUZHc1F3K3ZCdjZOOVhFUE9xMFlIdERQNGNX?=
+ =?utf-8?B?SkNyMllJdjA1MkpKWHltQlRZR0tvbkFHUXpnQzhRaE9sREQwNm80V1N1OUR6?=
+ =?utf-8?B?NTd6RjR5QjJHOXZsQjEzUE5GMmg4SDdJNGtmUGIxWFNIRmdzL2c3SHR4YVFH?=
+ =?utf-8?B?SDNQUWloeXVZdEZhdFZIaWRyb3RLSXUyaVd3Tm1ubXc0WjJIQkNFaU9ZaHBF?=
+ =?utf-8?B?K295Y1hkRWNpNUdmMk50dlJ4TmZuYlRYVkt0dnhwNkc1WGFYRmJZS1VtZ0dE?=
+ =?utf-8?B?VG5WTlB6Um14TEo4TnBXUzQ5ZFJKMFB6MkNFd0IxZXc2Q1Q4YnV6UThKcmJh?=
+ =?utf-8?B?UGFSNk9tTCtmQU9CSmNNaG1VdUZtMi9IV0FLZGJVYjltVjAxY3ljUm96NWZw?=
+ =?utf-8?B?VXEyT2JsR3pBWEJlc1JrVXVjdXlPU0x2eEgyUVlmUHlNcTBQWW9FYi91VG51?=
+ =?utf-8?B?dHBLZzhzcnJielBxMmxYcGRsMlkyanJqRGpCY0x4Wm83VGYyazMzb28zKzhN?=
+ =?utf-8?B?RkRPTXZiZ3JVVVRiZktXQ2RnSmFEdGtEUkJnNi92WHY4WWZZV0dmaXU0eURE?=
+ =?utf-8?B?ZnVaS2NVeEUrSjVQOWNMRE9jU1V0Q2plOFR6OFd0TldkUXVPR3k0MHpyTGVO?=
+ =?utf-8?B?RlFWaWw4RU9KRGU5aDQ0VVpjVW5CbjRTVWZ4WU5nWWw3bXNObnU2bVJrRkxD?=
+ =?utf-8?B?MGlzZlFjL1cyaDNybUh3REw5SUhBcm1PVUx0dzJKckV5QnUveFAxRVRPYlFR?=
+ =?utf-8?B?akZpNWt3NGtVMkc2S3lXN3NPNGIxN2E0eDhDdlM3am1mSEFSWHJIUDJ4c1dl?=
+ =?utf-8?B?aGVhYjA1MVZwL0xGWXBDMkExcG5rZUtrdHlaMzVZRm53NWNNYnhQWEJPUlVw?=
+ =?utf-8?B?S3Z6RzlkSUFhTURVb244Mnk3U2crSngxL3MreVYzekRYZXVsc1o3Zm9ROG1Q?=
+ =?utf-8?B?dDE5eDhnYS9ZYzZUQXM5eTZGdVdiOUVkZ2VwSkk4VWZoSHlVT2wyd3d4MnNa?=
+ =?utf-8?B?LzFqbVlUZ2l6OUVlbE94eTVncUsxNjVNdHFCRHo0MXB2YVhML0N6cUJwODVj?=
+ =?utf-8?B?NFlEd29XWnk2bXdBZ0NqUUsrcDgzVjYrMEF3R01YT3pncHlOdlRyeEY2enhF?=
+ =?utf-8?B?emNaM2hqNHM0NTNwVk44Nko4d0NyUTZlWUZtaFNLY0lNOGdOZWpSSVA3Z1Z3?=
+ =?utf-8?B?WE1kZlBrbnpaMDBwaXRlMHhSUmRnT29hRm5JejUzTTczb2RvTmVJR1pjMmI1?=
+ =?utf-8?B?dlpLQmN1SHVlV0RUVkxBbU80S2VXN2w5dXdiby91S3ByNUtTQjRaNE54TEhl?=
+ =?utf-8?B?MWFDQktrcGlGTlNERFJQSkhTanNtcE1xaXlLSFhQeHZtK2xMWUZEMi9PemhT?=
+ =?utf-8?B?RkVJQStFRXdKdEJGdGRacEFrVWRVSVd4eVlWWDZOZmFMZVp6UEhTOUJGdkVH?=
+ =?utf-8?B?SUFTdWZmOE1kbG5HWnNxR1NKalJnN1JBOTZzOEFnMVVtdmthNkJUNjljNDJQ?=
+ =?utf-8?B?bUd3alRPemRHaTRUeGNML0U2cWVIZS9zQ3VNN3lSMFE4UXByRGpTdWs1V0JR?=
+ =?utf-8?Q?he00c+qEzxTNcIP6FPB8z3qmr?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ca633c8-7c1f-40f6-8de0-08dcff783e3a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57f5dc63-0bf5-4db2-9409-08dcff78dc76
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 22:05:08.6348
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 22:09:34.1342
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KRMqdOheXYl5IpMwSVCypFWS7kt22MUnWXsXmiSlq71PyyLAW50og25wh8Ti9ovh1Gm3IHI/iCsij5821ia3Lg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7857
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9Fwl033zhiTRDTvW3Pdvo62pEvcRMoKK3v6T45gNh9wU2SGgjMzBO/s27gwTUFLvqW+u5p7GUedGR9R66MgBVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6478
 
-On 11/7/2024 02:58, Armin Wolf wrote:
+On 11/7/2024 02:28, Armin Wolf wrote:
 > Am 07.11.24 um 07:02 schrieb Mario Limonciello:
 > 
->> As multiple platform profile handlers might not all support the same
->> profile, cycling to the next profile could have a different result
->> depending on what handler are registered.
->>
->> Check what is active and supported by all handlers to decide what
->> to do.
+>> The `choices` file will show all possible choices that a given platform
+>> profile handler can support.
 >>
 >> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 >> ---
 >> v5:
+>>   * Fix kdoc
+>>   * Add tag
+>>   * Fix whitespace
 >>   * Adjust mutex use
 >> ---
->>   drivers/acpi/platform_profile.c | 23 ++++++++++++++---------
->>   1 file changed, 14 insertions(+), 9 deletions(-)
+>>   drivers/acpi/platform_profile.c | 65 +++++++++++++++++++++++++++++++++
+>>   1 file changed, 65 insertions(+)
 >>
 >> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/ 
 >> platform_profile.c
->> index 7f302ac4d3779..2c466f2d16b42 100644
+>> index f605c2bd35c68..5e0bb91c5f451 100644
 >> --- a/drivers/acpi/platform_profile.c
 >> +++ b/drivers/acpi/platform_profile.c
->> @@ -411,34 +411,39 @@ EXPORT_SYMBOL_GPL(platform_profile_notify);
+>> @@ -25,6 +25,46 @@ static_assert(ARRAY_SIZE(profile_names) == 
+>> PLATFORM_PROFILE_LAST);
 >>
->>   int platform_profile_cycle(void)
->>   {
->> +    enum platform_profile_option next = PLATFORM_PROFILE_LAST;
->>       enum platform_profile_option profile;
->> -    enum platform_profile_option next;
->> +    unsigned long choices;
->>       int err;
+>>   static DEFINE_IDA(platform_profile_ida);
 >>
->>       if (!class_is_registered(&platform_profile_class))
->>           return -ENODEV;
+>> +/**
+>> + * _commmon_choices_show - Show the available profile choices
+>> + * @choices: The available profile choices
+>> + * @buf: The buffer to write to
+>> + * Return: The number of bytes written
+>> + */
+>> +static ssize_t _commmon_choices_show(unsigned long choices, char *buf)
+>> +{
+>> +    int i, len = 0;
+>> +
+>> +    for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAST) {
+>> +        if (len == 0)
+>> +            len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
+>> +        else
+>> +            len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
+>> +    }
+>> +    len += sysfs_emit_at(buf, len, "\n");
+>> +
+>> +    return len;
+>> +}
+>> +
+>> +/**
+>> + * _get_class_choices - Get the available profile choices for a class 
+>> device
+>> + * @dev: The class device
+>> + * @choices: Pointer to return the available profile choices
+>> + * Return: The available profile choices
+>> + */
+>> +static int _get_class_choices(struct device *dev, unsigned long 
+>> *choices)
+>> +{
+>> +    struct platform_profile_handler *handler;
+>> +    int i;
+>> +
+>> +    lockdep_assert_held(&profile_lock);
+>> +    handler = dev_get_drvdata(dev);
+>> +    for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST)
+>> +        *choices |= BIT(i);
+> 
+> Maybe just copying the bitmask would be enough here? In this case we 
+> could also drop
+> this function as well.
+
+Right now this could work, but choices and the use of it has gone 
+through great lengths to ensure that once there are too many profiles it 
+automatically becomes a bigger variable.
+
+	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+
+So I would rather keep this as is.
+
+> 
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   /**
+>>    * name_show - Show the name of the profile handler
+>>    * @dev: The device
+>> @@ -44,9 +84,34 @@ static ssize_t name_show(struct device *dev,
+>>       return -ERESTARTSYS;
+>>   }
 >>
->>       scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
->> -        if (!cur_profile)
->> -            return -ENODEV;
->> +        err = class_for_each_device(&platform_profile_class, NULL,
->> +                        &profile, _aggregate_profiles);
+>> +/**
+>> + * choices_show - Show the available profile choices
+>> + * @dev: The device
+>> + * @attr: The attribute
+>> + * @buf: The buffer to write to
+>> + */
+>> +static ssize_t choices_show(struct device *dev,
+>> +                struct device_attribute *attr,
+>> +                char *buf)
+>> +{
+>> +    unsigned long choices = 0;
+>> +    int err;
+>> +
+>> +    scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>> +        err = _get_class_choices(dev, &choices);
 >> +        if (err)
 >> +            return err;
->>
->> -        err = cur_profile->profile_get(cur_profile, &profile);
->> +        err = class_for_each_device(&platform_profile_class, NULL,
->> +                        &choices, _aggregate_choices);
->>           if (err)
->>               return err;
->>
->> -        next = find_next_bit_wrap(cur_profile->choices, 
->> PLATFORM_PROFILE_LAST,
->> +        next = find_next_bit_wrap(&choices,
->> +                      PLATFORM_PROFILE_LAST,
->>                         profile + 1);
+>> +    }
 > 
-> Could it be that this would lead to be "custom" profile being selected 
-> under some conditions?
+> Please directly use the choices field here, no need for a mutex  since 
+> the choices are static
+> across the lifetime of the platform profile.
 
-Yeah, you're right.  If all drivers supported custom then this could 
-happen.  I'll clear custom like this:
+But similarly to my other message, the class could be unregistered and 
+this needs to be protected.
 
-		choices &= ~BIT(PLATFORM_PROFILE_CUSTOM);
-
-> Also _aggregate_profiles() expects profile to be initialized with 
-> PLATFORM_PROFILE_LAST.
-
-Will correct initialization in platform_profile_cycle() to this.
-
-	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
-
-But this also raises a good point.  If _aggregate_profiles() returns
-custom then this should be an error because next profile is undefined.
-So I'll catch that like this.
-		err = class_for_each_device()
-		if (err)
-			return err;
-		if (profile == PLATFORM_PROFILE_CUSTOM)
-			return -EINVAL;
 > 
 > Thanks,
 > Armin Wolf
 > 
->>
->> -        if (WARN_ON(next == PLATFORM_PROFILE_LAST))
->> -            return -EINVAL;
->> +        err = class_for_each_device(&platform_profile_class, NULL, 
->> &next,
->> +                        _store_class_profile);
->>
->> -        err = cur_profile->profile_set(cur_profile, next);
->>           if (err)
->>               return err;
->>       }
->>
->>       sysfs_notify(acpi_kobj, NULL, "platform_profile");
->> -    return 0;
 >> +
->> +    return err;
->>   }
->>   EXPORT_SYMBOL_GPL(platform_profile_cycle);
->>
+>> +    return _commmon_choices_show(choices, buf);
+>> +}
+>> +
+>>   static DEVICE_ATTR_RO(name);
+>> +static DEVICE_ATTR_RO(choices);
+>> +
+>>   static struct attribute *profile_attrs[] = {
+>>       &dev_attr_name.attr,
+>> +    &dev_attr_choices.attr,
+>>       NULL
+>>   };
+>>   ATTRIBUTE_GROUPS(profile);
 
 
