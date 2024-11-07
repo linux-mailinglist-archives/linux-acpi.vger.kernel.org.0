@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9406-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9407-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8540F9BFFB4
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 09:09:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43259BFFCF
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 09:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4803D2837A5
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 08:09:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83A21C21600
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 08:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A22C1D04A0;
-	Thu,  7 Nov 2024 08:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971B71D8DFE;
+	Thu,  7 Nov 2024 08:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="WkRDY5D8"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="qgy1pHpk"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D38117DE36;
-	Thu,  7 Nov 2024 08:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB1F19882F;
+	Thu,  7 Nov 2024 08:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730966956; cv=none; b=F/pG+Bu0AaXmGstiztEJQu96Lx6lqBTr/1/iPPz84bIcXTIqppJbKgq+WDG3I1heh2olK+qwT+zi7OgIkMhoqzznBLSLlIvG4ACszDf08dsLyTr8zrsz8pfx5K0YWcHuOQtyRCT5iDj6LBhuAruNjP13ktf1xtequjSl5uNZT84=
+	t=1730967461; cv=none; b=so/5fBa0lHeT+wgBeWFQ9mB2LIr288DMulTX1caCIT9HvADNb2444eCsRK9raqJ/8OaLMy6xt5nnWkJj/4JJdUUoYM/d1hcYis9y6+eSI73n1KpqEUPdl1XqyuzaIm/zOroblU5MOqsC5o3ieUsXd8nrdJVv4Q/mYxvEQJPIjvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730966956; c=relaxed/simple;
-	bh=xN93vbxTt1KARVgg9O/phRnB94KjPdT5gScJ//vyk4I=;
+	s=arc-20240116; t=1730967461; c=relaxed/simple;
+	bh=2NjahVnCUgcQciT5lNgqb0JbXjkYEMai78e9B1QNy18=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qjWTBK+SuCHHzbMRZAFaJ56XTUD5lsAiFpabiNJYDWkWfwgA7o3hBKrgXBptffQZMTiSNu8Xf4zUsZZKPdSthfRDx5xT693OZck5QKDPDYDJn+pDms8DrOvwwoGjZpacyq0WkyiISi4WMjAMNxuJy27qCVyUCgqiDn2l9Mjfne0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=WkRDY5D8; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=We3Tqgqx0gvCrzvAwiA1bjWPyFIaiClylY/ClSuAV0cGHUnso7D6yryikfFEqC2Jo83GHW/nsBa8cWOrc4PWOTDSNGOo7UB7q7TLCJvIBtBVuUEsWZxgcjbv4GTAZCuae7SDgBs1uj9vkoMgz7ETEtXpnvsy5JCcgWy70P9OCaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=qgy1pHpk; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730966878; x=1731571678; i=w_armin@gmx.de;
-	bh=+sD67PMdHq3t7fB6r4132ZHSKpmpOxOGf4hTSOkDNlE=;
+	s=s31663417; t=1730967387; x=1731572187; i=w_armin@gmx.de;
+	bh=UGFzxjUb7KWED/miJsb/OCWPlLtXLgvQBQR657nyhBg=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=WkRDY5D8U10s+r0IdropUaQr3mwW4MHHroJ2VVy5Yr7pavLefp/rBWyyg8TdbkLm
-	 Jq1QoeUTGE7tDvrEY0Q7zuH1BOsLY6gUScEAdGQlbOvPQ8JE7Ud+fYZm/NhWXMWpK
-	 8w0cbYRIsgV2hg/+/hLnIrvOfimrGAAVrmOpoXJG2A31Z5EI+R/fs0BNb57KK/TYe
-	 ETViZmEtMzw6aY2YgYRa02KrBWl12SIoS2gmd2+JrpRBSGupLjDzcZVxWaplSefmo
-	 aIICGVSk//D8RJMMNK7tqilmHfAHZybuMOpBY+5QXPw65IaBSjq+sGjwT5Tyl+mBI
-	 hQMV1H0ZMzpGM0NpYQ==
+	b=qgy1pHpkZ+le6YtbjfBUJdiWi/7h02XWD+AqyEnpfUUHbodIkIaucDKe1D/p9UzK
+	 biHDfX8wbbEfyEGaoMuGFJ5fmwmRSBPVY8iP9PvZpECJCOz/Sv1RjQu5S6v7t79Og
+	 gefDe5rj1D7kJY+/WEBSh+flZSy1qJIVQgQ0UkDjWJI6iIa1xTdKOEyE7dRBaDQI6
+	 fIWpGZNbL0KjFlk1MkZOf7ts6gSRV8z7NQYxevNMZ69D9vBDWN6oV1QlWE8s86pr8
+	 StJ7785pcOHGRpxtO/+qWvlNNb1G2uSKFM8/xCsDkI3kcNZiwoi9Nm2/LAxrxYtaf
+	 zrRtk3I0VbNNGkV3kw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQ5vc-1tUs7a2I4W-00Qg28; Thu, 07
- Nov 2024 09:07:58 +0100
-Message-ID: <44462a90-5151-4b49-830e-528bc5451030@gmx.de>
-Date: Thu, 7 Nov 2024 09:07:52 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MXXuB-1tJZBs2CtD-00LUzK; Thu, 07
+ Nov 2024 09:16:27 +0100
+Message-ID: <84a647ba-50ec-4d60-b4be-758ff50335bd@gmx.de>
+Date: Thu, 7 Nov 2024 09:16:25 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/20] platform/x86/dell: dell-pc: Create platform
- device
+Subject: Re: [PATCH v5 08/20] ACPI: platform_profile: Create class for ACPI
+ platform profile
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,127 +81,180 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241107060254.17615-1-mario.limonciello@amd.com>
- <20241107060254.17615-3-mario.limonciello@amd.com>
+ <20241107060254.17615-9-mario.limonciello@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241107060254.17615-3-mario.limonciello@amd.com>
+In-Reply-To: <20241107060254.17615-9-mario.limonciello@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SMQWaSNdx1FuesT/I28AtdxEBOPax+cWkkuE/rRc6UY7kGdwXA2
- MRsf0zGrYruuYk5e6Zv0ZEuo5qJCxt8F2QTp6xtPMGHLMJcyYnbqgLtJzf09jFrD40OBAEo
- fUMZ744S5NoUQfpFWQYPqpAJI2C5LAEOxZ6ILC9tO8RP6tzW0qBR4Sdpcx4lbRTC1jpiW45
- LzGMJtInkzM0rBBwyoDcA==
+X-Provags-ID: V03:K1:Nn+j1vVOhxtyUpFwa6lTyQHFnFB3vcawej8N+j8It2wcC2uyRjR
+ pPzrv48D71bMjgSLpwiw4IQxWUFc1Cm3GNnxKzqzIuUCe+Fqrnuhbqg5pK6I0RRUx1kOQ0n
+ B30+MbkFe5J8iJ3tRx7P0NeiyD55rmFXxm2oSaUzY6mUoFpsSadfBLUPvnLFkTtiC3kK7Kj
+ oSEEpFjOO4LGfoaIuiUTg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Kj58pHIuaf8=;DMZmlhuVjlZKLOxJ2ObNdWoBhBT
- F+9ovY68nEZ5XBA3j8GQS+S6VuXyKVezFv2ACLk8ow24YVOBdMd2dY+qKPPruwt09wM6NDHyM
- 7O/wl4k9HWYaFsImBJ4Ytwdhtn41uWpx3EokA+o3z+Dmo6ahvV6azjW/Eq2lJ0/8pGokdhJAn
- xfQo9gog0fn3RkqVBxSpX8+W7HQmGWgP3XYFvgPEP1JsEq958sXmOj1rVLf6U1vluJDcol/bj
- 9Som1Xg9rkLLecuQU4WvFg6dh2D7BE6E6bMHhYA+VlEttndkN4T0qiYmo94mFRyt/g3jzkVSF
- XS4l8tNorR8nlYVcMTDFJMsesR2F2X40Y2WboroAHnuiHJxHq0u4q6IlcDD4BFXMHTmHx5fIB
- 3xJgbkmaqPkTElxpWRUlwkUiKFbmeqf/4j3yYceAUfwYyHznwe5eA0Rg5TL8jAao9jphLNEfY
- Se9EvP0+MAnVf9C0dA0i6lLvLHbV4J+iuXlrqSnovdovbyzFYYi6NUlbUb6zyRpUpuQACgglf
- vToQ30ER7KwDnzo1BtcNng+EKi9leGXZVSrjMrten6T8bWH0D9aCBFMouJCR2jRRmBOCX0bIz
- 8dhVw23fNXvi3yHSuG63qjZBcjN0DhI3aqVKKmuViivetuI6IrxyzxoOfrA6+34oYw3e4AjBy
- 8hUvLwFpW8u4o9wpIOHIepURhgSLXC8s6K4dzIf0c2yaXSvE+P/gaipkbo6LMP3olQvmfWUfJ
- IbWsvvdMS2zCOwaxBDKMeIcJfhFdO1jfpf4q3hocp3WPfrsdvuWq68rwx7ShrJ1HbIoxZPagp
- DriyMoLZESxB0K4Aav3HhxbT2H2d+HtVtFAqMJal2zf+s=
+UI-OutboundReport: notjunk:1;M01:P0:5EI5/5mBm9s=;jbk6v0AyLdxl1ZzXCLl+fJzWMa8
+ +6fei72x4zshBDNlru1jBO0b1HWIzh3wOYfBLNa6x0YVT3OrYpqBdv/smHjBUdiXH1gD233Zw
+ UKVQAlDFKEozs77PtkJOneelzTQw2j4uM+GiT1HUccZPbviVIoLkYn+gY5Yx5/3aLzyWfY56m
+ xqGzL+E4HyvGHIgE7UkwOl/lMNHpAh/mVvEzeWA4eaIcH9oHYiHqPQ85xdIb3S5AnqUTJxRh1
+ MkIaj6vnRlYzqs8YRIitafm5DiMA2f1c7VX2xZHF4UxricgB5/DWP7MGOkNFWnaQk2rblObDr
+ +p6S/fHL9HnwseIpmVaEyQ1Odh8lw+3qx8Jt1Hxynul/emavYfflKofhLEhKy7qs9dmxQHt1l
+ Qzpyh5QbJCmwZK2+sBeXcXHK/4Cdfl5+FbTYm5fL1XUQ0nW76OxTS8w0bNvNu5lu+z3jZj9Ks
+ WSRCAepL6/WBYWVMyjV0Vcq5xsDUhgLrjkJnQwRmIwH3vG9vUgdNH+mO9kX3b5ffXc+pA90HS
+ GwMbre1LjODtVvyFVOYVF8RNOXlY1GYA/Hv6N7hUASVmf6/XhQ5rqyRuKy+yfo2R1dh8cppq+
+ LRDJPCRkhgoCX0XFsEvrYJbAXr7Gx+S6D17Anov1b0k+Vjc8zzqRwXJmBg7c6jz5cyQfrl3cj
+ hK0chWTv9+GWDDtvvPJ4TNU9VxpY1g8blV4kb1j9JHkJTCsDnaactwCKTtjw7dwW1pgwNDutu
+ a7CwhMDhybuikbUgCR7lvXpxGF7jPJVsNydWJvaeVfsiroGEci62RwiykWo5cvjPraD10V0v8
+ IMPoCC2hAiaFRFN532LApw8/GyxwRl6slvcv9Z/MHfmZw=
 
 Am 07.11.24 um 07:02 schrieb Mario Limonciello:
 
-> In order to have a device for the platform profile core to reference
-> create a platform device for dell-pc.
+> When registering a platform profile handler create a class device
+> that will allow changing a single platform profile handler.
 >
-> While doing this change the memory allocation for the thermal handler
-> to be device managed to follow the lifecycle of that device.
->
-> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 > Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
 > v5:
->   * use platform_device_register_simple()
+>   * Use ida instead of idr
+>   * Use device_unregister instead of device_destroy()
+>   * MKDEV (0, 0)
 > ---
->   drivers/platform/x86/dell/dell-pc.c | 32 +++++++++++++++++++++--------
->   1 file changed, 23 insertions(+), 9 deletions(-)
+>   drivers/acpi/platform_profile.c  | 50 +++++++++++++++++++++++++++++---
+>   include/linux/platform_profile.h |  2 ++
+>   2 files changed, 48 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/=
-dell/dell-pc.c
-> index 3cf79e55e3129..0cd9b26572b61 100644
-> --- a/drivers/platform/x86/dell/dell-pc.c
-> +++ b/drivers/platform/x86/dell/dell-pc.c
-> @@ -18,10 +18,13 @@
->   #include <linux/kernel.h>
->   #include <linux/module.h>
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
+file.c
+> index 0450bdae7c88b..652034b71ee9b 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -5,6 +5,7 @@
+>   #include <linux/acpi.h>
+>   #include <linux/bits.h>
+>   #include <linux/init.h>
+> +#include <linux/kdev_t.h>
+>   #include <linux/mutex.h>
 >   #include <linux/platform_profile.h>
-> +#include <linux/platform_device.h>
->   #include <linux/slab.h>
+>   #include <linux/sysfs.h>
+> @@ -22,6 +23,12 @@ static const char * const profile_names[] =3D {
+>   };
+>   static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE_LAST);
 >
->   #include "dell-smbios.h"
->
-> +static struct platform_device *platform_device;
+> +static DEFINE_IDA(platform_profile_ida);
 > +
->   static const struct dmi_system_id dell_device_table[] __initconst =3D =
-{
->   	{
->   		.ident =3D "Dell Inc.",
-> @@ -244,9 +247,15 @@ static int thermal_init(void)
->   	if (!supported_modes)
->   		return 0;
+> +static const struct class platform_profile_class =3D {
+> +	.name =3D "platform-profile",
+> +};
+> +
+>   static ssize_t platform_profile_choices_show(struct device *dev,
+>   					struct device_attribute *attr,
+>   					char *buf)
+> @@ -113,6 +120,8 @@ void platform_profile_notify(void)
+>   {
+>   	if (!cur_profile)
+>   		return;
+> +	if (!class_is_registered(&platform_profile_class))
+> +		return;
+>   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>   }
+>   EXPORT_SYMBOL_GPL(platform_profile_notify);
+> @@ -123,6 +132,9 @@ int platform_profile_cycle(void)
+>   	enum platform_profile_option next;
+>   	int err;
 >
-> -	thermal_handler =3D kzalloc(sizeof(*thermal_handler), GFP_KERNEL);
-> -	if (!thermal_handler)
-> +	platform_device =3D platform_device_register_simple("dell-pc", -1, NUL=
-L, 0);
+> +	if (!class_is_registered(&platform_profile_class))
+> +		return -ENODEV;
+> +
+>   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>   		if (!cur_profile)
+>   			return -ENODEV;
+> @@ -163,20 +175,50 @@ int platform_profile_register(struct platform_prof=
+ile_handler *pprof)
+>   	if (cur_profile)
+>   		return -EEXIST;
+>
+> -	err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
+> -	if (err)
+> -		return err;
+> +	if (!class_is_registered(&platform_profile_class)) {
+> +		/* class for individual handlers */
+> +		err =3D class_register(&platform_profile_class);
+> +		if (err)
+> +			return err;
+> +		/* legacy sysfs files */
+> +		err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
+> +		if (err)
+> +			goto cleanup_class;
+> +	}
+> +
+> +	/* create class interface for individual handler */
+> +	pprof->minor =3D ida_alloc(&platform_profile_ida, GFP_KERNEL);
 
-Please keep using PLATFORM_DEVID_NONE here.
+Missing error handling.
+
+> +	pprof->class_dev =3D device_create(&platform_profile_class, NULL,
+> +					 MKDEV(0, 0), NULL, "platform-profile-%d",
+> +					 pprof->minor);
+
+Two things:
+
+1. Please allow drivers to pass in their struct device so the resulting cl=
+ass device
+has a parent device. This would allow userspace applications to determine =
+which device
+handles which platform profile device. This parameter is optional and can =
+be NULL.
+
+2. Please use the fourth argument of device_create() instead of dev_set_dr=
+vdata().
 
 Thanks,
 Armin Wolf
 
-> +	if (!platform_device)
->   		return -ENOMEM;
-> +
-> +	thermal_handler =3D devm_kzalloc(&platform_device->dev, sizeof(*therma=
-l_handler), GFP_KERNEL);
-> +	if (!thermal_handler) {
-> +		ret =3D -ENOMEM;
-> +		goto cleanup_platform_device;
+> +	if (IS_ERR(pprof->class_dev)) {
+> +		err =3D PTR_ERR(pprof->class_dev);
+> +		goto cleanup_ida;
 > +	}
->   	thermal_handler->name =3D "dell-pc";
->   	thermal_handler->profile_get =3D thermal_platform_profile_get;
->   	thermal_handler->profile_set =3D thermal_platform_profile_set;
-> @@ -262,20 +271,25 @@ static int thermal_init(void)
+> +	dev_set_drvdata(pprof->class_dev, pprof);
 >
->   	/* Clean up if failed */
->   	ret =3D platform_profile_register(thermal_handler);
-> -	if (ret) {
-> -		kfree(thermal_handler);
-> -		thermal_handler =3D NULL;
-> -	}
-> +	if (ret)
-> +		goto cleanup_thermal_handler;
+>   	cur_profile =3D pprof;
+>   	return 0;
 > +
-> +	return 0;
+> +cleanup_ida:
+> +	ida_free(&platform_profile_ida, pprof->minor);
 > +
-> +cleanup_thermal_handler:
-> +	thermal_handler =3D NULL;
+> +cleanup_class:
+> +	class_unregister(&platform_profile_class);
 > +
-> +cleanup_platform_device:
-> +	platform_device_unregister(platform_device);
->
->   	return ret;
+> +	return err;
 >   }
+>   EXPORT_SYMBOL_GPL(platform_profile_register);
 >
->   static void thermal_cleanup(void)
+>   int platform_profile_remove(struct platform_profile_handler *pprof)
 >   {
-> -	if (thermal_handler) {
-> +	if (thermal_handler)
->   		platform_profile_remove();
-> -		kfree(thermal_handler);
-> -	}
-> +	platform_device_unregister(platform_device);
->   }
+> +	int id;
+>   	guard(mutex)(&profile_lock);
 >
->   static int __init dell_init(void)
+> -	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> +	id =3D pprof->minor;
+> +	device_unregister(pprof->class_dev);
+> +	ida_free(&platform_profile_ida, id);
+> +
+>   	cur_profile =3D NULL;
+>   	return 0;
+>   }
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_p=
+rofile.h
+> index 58279b76d740e..d92a035e6ba6a 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -28,6 +28,8 @@ enum platform_profile_option {
+>
+>   struct platform_profile_handler {
+>   	const char *name;
+> +	struct device *class_dev;
+> +	int minor;
+>   	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+>   	int (*profile_get)(struct platform_profile_handler *pprof,
+>   				enum platform_profile_option *profile);
 
