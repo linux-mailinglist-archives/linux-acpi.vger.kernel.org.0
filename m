@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9408-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9409-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1329BFFD9
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 09:22:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130F09BFFE5
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 09:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EE5E1F22E8C
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 08:22:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B90D81F230DA
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 08:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A821E1D54C5;
-	Thu,  7 Nov 2024 08:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137D71D63F1;
+	Thu,  7 Nov 2024 08:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="aq80zYA0"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="RUmvNlzs"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339D518754F;
-	Thu,  7 Nov 2024 08:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8E617DE36;
+	Thu,  7 Nov 2024 08:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730967760; cv=none; b=HlkZkhLjkSrOgBi0/Ns13H04O1+X2QJxiEQkkdU876/IanaBYDASpZN+Jb8LEdfPsj8c2wN7T+l9iGtVeq5FpW88n9mJg/wDRcrVzmPWkO66qSeufPPa3qw3CoFEhuPvGvL2l84xlWyB4bYxZiRvvoZUmaBe0i7qaneEuRVPJDI=
+	t=1730967861; cv=none; b=KBsxMt4sjykVWpRH9TR9tJTPzNc4CoZhFVwkHCRxCFRyJxFdQBtrQ/fmyTfJDPsCqYR3N77rjPzh4rd1ssEdoWse/1K4QqwueXdV0vqwxaXB06nOIjSD2hE6TCg8LVHN+fJVMXGScXK5MONpr/zNIQhLRLU5vxmvsDjn7gV3rwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730967760; c=relaxed/simple;
-	bh=85d95EOC6Oqte7fumLBOEHPQaqEGaDtfepiLhrIjU2Y=;
+	s=arc-20240116; t=1730967861; c=relaxed/simple;
+	bh=uMvNaA/ePlBmRXjZMdlU5oo0/xFpHrVPTwkuIOutlWg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hSOn3JPKCgpcfdzFIPvYDlHBoJ8QMPAE/YmrBRJAJM/Fi38yWqevnXXnPUim/Gans/6F/LaXYC3T8tXWJaa0QsI4j+SnGHvNlDO/b5cIe2Aq6EmtPQDUBoVl82mPIenzoOZX7le8uybwQKTaDWrrJcBddsPiQdIyU6O0gNJ+y+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=aq80zYA0; arc=none smtp.client-ip=212.227.17.20
+	 In-Reply-To:Content-Type; b=kjtQdulOUZZCoWyZAh+v9D82LM0Y7ziVVgSAL/4C5Srk0pqBRUb8RXKyjiDGijSzJ/e/gtrdm78cvzsK2yKyX+DXgeU9FFtO45pRAmyHhSx4DLj/DLNGm7emxTidOK3baUhCS2/B8mTtcusD8eFwgbxXDsMIFZSfIUN+I+d+wGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=RUmvNlzs; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1730967677; x=1731572477; i=w_armin@gmx.de;
-	bh=I9hvSUFaE10X2EU9MI0Ox4sZPM3HYsfCnT+OYayOcG4=;
+	s=s31663417; t=1730967791; x=1731572591; i=w_armin@gmx.de;
+	bh=ZEG/MbdQS87cskKIaGEnuiEp/Ez4BntccyTa0UvzKdw=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=aq80zYA0oOf7lRL5GuVgjXeYTr6oVKkb9jEk2X/7Y49VrxyrI70/MNg8dQ3pXi1W
-	 IO2ecXMRWrPMQ1VrqIFTkIZlYQUQU1dVFBB02Mj3pTTAFHHMVpor4GLmxQHIMMYi3
-	 Q9D4nGqJjN9dpDMSkZ7Gh7Hb6zFwFv1dbo3l2dnfuyMMvJCoWR6KqeRtFteWjWnuO
-	 BD+HzkIQS9gzrtGakcwuvphDCZq7D/CNisxJBlCJsCfrJ5kpRmomXrpOuNLx/FZ1h
-	 rAfAeeSKAjrph+/+c851PZT+iA1IgZJB8VHD0vwMUFw4prs1qWlZSzeCTB3nPF1cx
-	 d7CW3zmPVmzIXbrDYA==
+	b=RUmvNlzsixhavxnXL9AZKC7weLiV2B9xe7FgJlVG7ViJQd4CukhAuewICPa/OH4+
+	 xR8M/5BoUxKNitxUPbHO9sQKkjTvCpSdA7w+uugO1KcwBX8jM6HdVT8gTBFZk4/ed
+	 sY4hI59ZE+pgiaEeeC9M0Ht3NOd7wBeA1ClEM1g3lKLaaaWxAufz24PfmEb8eCB/A
+	 c64O+7gY5OCOkiVxN6HXEnB/nRy61qF1ecs1lQJou0j0S8oUKQOLrJSVctffvB4NO
+	 Q7j5sKZjS8bAxpCdgOhE46JoXjxk30nIHX1bISOXgBey2s9e3Of6hsqtEoAGeBI/H
+	 8YSdAeMjibZQ2ChK5Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxlzC-1u1SWQ3g1G-00xLN5; Thu, 07
- Nov 2024 09:21:17 +0100
-Message-ID: <cf6eb834-2337-4f5c-87e3-012713301912@gmx.de>
-Date: Thu, 7 Nov 2024 09:21:14 +0100
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCsUC-1t085e3KzY-004nMH; Thu, 07
+ Nov 2024 09:23:10 +0100
+Message-ID: <d4281684-9055-4106-b357-79a0f415e129@gmx.de>
+Date: Thu, 7 Nov 2024 09:23:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/20] ACPI: platform_profile: Unregister class and
- sysfs group on module unload
+Subject: Re: [PATCH v5 10/20] ACPI: platform_profile: Add name attribute to
+ class interface
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,76 +81,93 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241107060254.17615-1-mario.limonciello@amd.com>
- <20241107060254.17615-10-mario.limonciello@amd.com>
+ <20241107060254.17615-11-mario.limonciello@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241107060254.17615-10-mario.limonciello@amd.com>
+In-Reply-To: <20241107060254.17615-11-mario.limonciello@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DNDRuxiUduqoXNutn07yCfcVzwa3VRWGUqD4YjURJO3LwV8KSsh
- +uhOh7PNOQ28hAv9h5MQPGh7LmWGXlyPeG/juYQ0PyDb6S5HcSdZKtn/C6SjMfGbPO7btLx
- UwtqxyyF6KWnmRB6aaE8nBFQyhlPJrM7RLw2Aelm5e9ZUU5GLnNyFi5QG7B4Ur7uS+olPcT
- WEg3uzveIbtRIynuEPrIg==
+X-Provags-ID: V03:K1:Du+KHovG/eG7wzqIxlLkfpDlOjiCIg12lEitfgXBiurN+POORWC
+ 4G9B9ncLUeCwo8K2HAuZ7mOkUu+jYAAvIe5Du4RaOQTgjE4j1Z1wl/sYKQVlTthZc+1rgy/
+ 4HKa+kO3cY2mEFA7vf+5jvFh37S8LOH/pQEuQZnX/hs0sBxQwLQ0qQYYxaWF77nS9jdYqHJ
+ YPE23NJStayhtTy0soFmQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ZkfA+QeJLX8=;MVnF8T7iuOxwegsUGTaYTgahovS
- cawtppZF6g215yjMCh9U3kVxU5X89op57n4N8/Ew1Zu8VgfyTURnbaR5L2TeOXT4HenKLkNrY
- ijBR/x/8PXQGhVPAlCcvolBuR811eoelEJTSVu8ycPttz42nFy9GvtXLuEHdrNtn4wdBJzpqy
- /ZC6xQVK0GwqaMpooImBFU6IYmozslE75V+mG0uXeuFGPU95Qfa7XxCokiGiA/h3rf+EGldbJ
- E4pNDg7GKH0Mc4qRkYJCFT61B1beCe22z0CMMyKtAUrmzTs3PxAGjmas/w8H9ZvFpqewP00WR
- GqBnoVBaKSULr8JsUY0PrZfpPgjsT9BD3G+zcyXVo41uhGaADSmPaOUROwYFQKzj9rEosUSfA
- R4gl5dXejQpqDno+hghk8O6Trgpgvssg5Sxequ+Q03fPGS7Bv2h17V9UVmjrxxkRdEIpxwft6
- TbmIgXiKaUIgwBVP49shvzQUK98sWaAhoCw+zS0offHyvDwro37LzBTf2eWXU2g9W2V7Dne9t
- WINUvBGXwQUsLxplxdlaOVlWtU8IbKIsYPpifh9yCVxr5Fzuuq9e9PInP964Cam0AnC2dRlUc
- he19xMX4ZafBa2H2+vDKi0yxkUAwCz0dyzErN/T4+Eir/Ha4wMzGcjyP0soMQWZuBhvl32x5E
- r9QXZjMX8/XQBFSSGyx/E0pekvWfyEH8NR/v9XvwJbYREiDdZIc/t+rYpOXVWzv2c7+8/kWWY
- X8a3PBMRD5sDqoYn1JSTWIlVr8n718CeqCmu2NmK4GjaJ2NLI2XmSNW4wvNWCZB2AQZuHfd4t
- oX6rzXWiwWkXvcTMv9CZzUgdyqXXY5KE/S2Uegc+kM0vam/XHSlyh8NE+6P6pfDqViqSWGphm
- ShnnXtT+qQrPpefulGi+rtmktrE2Ex1m5PtH9BfEZZKhQjfvbhrRcIlU9
+UI-OutboundReport: notjunk:1;M01:P0:sz2qMhspmKQ=;tcF3AysUmLjblsDeFPRwO5GlhGc
+ xhvEeP50z9YnpQz4pqW2HdOGw7hc5wdbBrRx9y+gadqnsEswQ18EfvcQWf+Ee7Y7WIlHeqJ8f
+ atFqg688PdorCvzrQrNbfJU4CeKxjdUU5P/45REF3aLoYWNG1ZMQEj2PA6IQMWFf4rQPJubYr
+ w1MV6P6y8EFIxC4G7uBxGNOsR1tDMQy+ICD9PvuDD3cysKf+Um4tDFniPcwGfOa1pvabBe0Xu
+ /G257cHYKaXxxwclxCruJTAGJZq+iLb+tMdaOmYSIAHeHXpS5aCtC/0g8jPw5Jhe6bhLDPuyQ
+ qGomldrgOnfEPE9ydqN8QKuG+QEm1Agb7DxEf039dwQNn1GVnVTAS0ZAlvXwlEI1deECq0U1P
+ cBNAGnsBqlfp54WCB3nnEcZ/7WNej/Ja77mQCkAUeH5HkBX+v6KPIzXjx+YAxgq7dN9ocnSy3
+ pd9Efbni4rRoXuPWT0lqScMNvyePpTg2+qrdxzE99uXFF2EUhHb9v+A8m5c2wEA5V2oQwoeSe
+ o4NmZh901eZI1wlpcSDJxZfzBH6EH62gtvOMMQusVOCaB2gPv/xvVqNkBX5hOcX9CGpeq/cJ7
+ 5SPKeAx+IvReUuPc5s1hAiYe9DkOiTHjWA+uzYigd/URUnQ33isYu62u8zUj84XslNl70TU5L
+ dpppUgBwDTwFvHnzUU7/4kxTgDjvjvLtCAADrk6OwhzU6pjDclAxZ+8VTWbaFNBN1U9DA2ixu
+ DYI08QQhgXbZ4eA21oWFb9+89JZPjEUEXd/v9kil6FMzTwl9aaGS2xLOBeOVhBf+v7IVBOMyG
+ KIKcBrlIgzdJE8XlZdUnAioJrbofUyB45rBffMz/7i8Lw=
 
 Am 07.11.24 um 07:02 schrieb Mario Limonciello:
 
-> The class and sysfs group are no longer needed when the platform profile
-> core is a module and unloaded.
+> The name attribute shows the name of the associated platform profile
+> handler.
 >
+> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->   drivers/acpi/platform_profile.c | 7 +++++++
->   1 file changed, 7 insertions(+)
+> v5:
+>   * Drop newline
+>   * Add mutex for sysfs access
+> ---
+>   drivers/acpi/platform_profile.c | 27 +++++++++++++++++++++++++++
+>   1 file changed, 27 insertions(+)
 >
 > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
 file.c
-> index 652034b71ee9b..9caf070f77f6a 100644
+> index 9caf070f77f6a..f605c2bd35c68 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -224,6 +224,13 @@ int platform_profile_remove(struct platform_profile=
-_handler *pprof)
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_remove);
+> @@ -25,8 +25,35 @@ static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFO=
+RM_PROFILE_LAST);
 >
-> +static void __exit platform_profile_exit(void)
+>   static DEFINE_IDA(platform_profile_ida);
+>
+> +/**
+> + * name_show - Show the name of the profile handler
+> + * @dev: The device
+> + * @attr: The attribute
+> + * @buf: The buffer to write to
+> + * Return: The number of bytes written
+> + */
+> +static ssize_t name_show(struct device *dev,
+> +			 struct device_attribute *attr,
+> +			 char *buf)
 > +{
-> +	class_unregister(&platform_profile_class);
-> +	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+> +		struct platform_profile_handler *handler =3D dev_get_drvdata(dev);
+> +
+> +		return sysfs_emit(buf, "%s\n", handler->name);
+> +	}
+> +	return -ERESTARTSYS;
 
-This will crash should the class still not exist.
-
-I suggest you register the class and the legacy sysfs group during module =
-initialization, and
-add a is_visible() callback to the legacy sysfs group. Then you can use sy=
-sfs_update_group() to
-update the visibility of the sysfs files when platform profiles come and g=
-o.
-
-Also please squash this patch with the patch introducing the class infrast=
-ructure.
+Is the mutex really necessary here? The name remains static across the lif=
+etime of the platform profile.
 
 Thanks,
 Armin Wolf
 
 > +}
-> +module_exit(platform_profile_exit);
 > +
->   MODULE_AUTHOR("Mark Pearson <markpearson@lenovo.com>");
->   MODULE_DESCRIPTION("ACPI platform profile sysfs interface");
->   MODULE_LICENSE("GPL");
+> +static DEVICE_ATTR_RO(name);
+> +static struct attribute *profile_attrs[] =3D {
+> +	&dev_attr_name.attr,
+> +	NULL
+> +};
+> +ATTRIBUTE_GROUPS(profile);
+> +
+>   static const struct class platform_profile_class =3D {
+>   	.name =3D "platform-profile",
+> +	.dev_groups =3D profile_groups,
+>   };
+>
+>   static ssize_t platform_profile_choices_show(struct device *dev,
 
