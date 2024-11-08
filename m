@@ -1,376 +1,525 @@
-Return-Path: <linux-acpi+bounces-9427-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9428-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBA99C1335
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 01:28:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F6B9C133B
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 01:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E2B2828A0
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 00:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 992381F2323F
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 00:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6421BD9D6;
-	Fri,  8 Nov 2024 00:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3613F1C36;
+	Fri,  8 Nov 2024 00:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VADj6bj/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oo0axgXJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC88E1FDD
-	for <linux-acpi@vger.kernel.org>; Fri,  8 Nov 2024 00:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291C0BA27;
+	Fri,  8 Nov 2024 00:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731025707; cv=none; b=kByZ/me0v+BU1lyCGSlc+uO0f3EP+wK3SRTR3Xsl1ip7NNkFW7qk6+9lmWO5NwSZf6BHUF2SUYpfW1HeVmh+7mPNlnUtnyKAaCqQqDy7bGEmGDJworE/IU30PTFX05fa0fVz9BTKB8kVYm6Nsw9E8TxaHF0P8+apm/u34qjeWjQ=
+	t=1731026185; cv=none; b=l+Rhg5fjabG7/hlP0owz3U+HcUQWH4de8IIlFAZrBlNQG7D89s6+6l+iqfHhotigDGDIW+pi8yQfeZ8LSaLnTCugWW176S7j3+f9ULwEcK2/aOpp2gQNx0kDV3C2iPNVGNrn4mT4K8bLKRiktPi4lVUKQzfEkJNmNHD8kN7UkgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731025707; c=relaxed/simple;
-	bh=n8An29nnn51M5AMiy7TBDNp8xzWYeVdPLwZ8pvL70Q4=;
-	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OmuBIC4KhEPwLu8ZdBi2aBV0/hKktwBiW7J4UT6Ieg7vlhXEvdwncb6ZoA7ZoQD1r0rGk+ofHtfsCQTF3M4uyJREiQHHlgRRwykYmI2wPCy6mQyhddCgyt85v9sm6ybyymszJesM8wFNek/9rsf43qP6stfEC0kyOjunZsHZrzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VADj6bj/; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5ebc04d4777so862622eaf.2
-        for <linux-acpi@vger.kernel.org>; Thu, 07 Nov 2024 16:28:25 -0800 (PST)
+	s=arc-20240116; t=1731026185; c=relaxed/simple;
+	bh=mxe6s/Gxf58O5Bv1Uja9mwxgeNp5mq6+g11SngRjXnA=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ic7juJECtRCyilFn4Uyiuw5qDIR7eyu3cNfYoN5lUS57jmoj41svP5FTHYn+9lfpuTd2p4VUmD19HDt/3WRKazWJMBZYGI/jU2WV9xBAqIsABk6TNg4fiR4IVQvfzS3lHNcfKj4m5SXQcJ10isIW7T5WKcPxH41J3icUnF4jXNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oo0axgXJ; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-720c2db824eso1619838b3a.0;
+        Thu, 07 Nov 2024 16:36:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1731025705; x=1731630505; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ykK/xTP5/T2FJy2fwIxlQJlzwn7+IvhQQ1cEFC5XytA=;
-        b=VADj6bj/cANjyZ96Why8sckQ667aco5+phcgmtcUP3N26YS/bMuUOAdLsv/DGC1j6b
-         kWs8ay0Y2/aSylv/pCiPa/2r48c+Di3pNenQ9EGA/u5/haodYsvMucUa0BONtI0ECURi
-         YSmIhu4MUhhJVLnjHtLXozeCgKJTo8ueClcFY=
+        d=gmail.com; s=20230601; t=1731026182; x=1731630982; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CjUJNAqUSD0fpIJN7hsUnikhrlQCt4BCY1mQOMqITlo=;
+        b=Oo0axgXJPLcRa1GqH4WuiQToa0RxKTStTFSqcqhIOgoEryj0/H93cbMnP9RFLtoSLO
+         Fc44zgbkPgNw2YqKT6BZC9xo/wr+VHT2P8dJd5CMYzzG8DW0cAASZO9m85T/Qe32bSV9
+         WVZ67Gqsk+eI/xWoF8lMFDcG5uZKw9P43jlwJ+av80S9BVZgSGSbax66cEK6BknPsQO4
+         59KJILT/hCTaNHMGrkSfTvBo1Rgw6Dj+rw1iFMX4ftcZl79ArtN4OzfX6md84mGQlnAA
+         XfLTIMuOx5TgBy5qbw9akYeFqAhJlVuL+irZ7pCWwO9m5b+Xgg4pZTP0LXWojWJpQ9DE
+         cqTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731025705; x=1731630505;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1731026182; x=1731630982;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ykK/xTP5/T2FJy2fwIxlQJlzwn7+IvhQQ1cEFC5XytA=;
-        b=QsfXcyokYn3twoKv9TArqmsiQ4zsGTAYMnGi7iiZyOQDsLP+lNvmELm954QWH0gIVP
-         LD2R6S22Gxp4ejN5VYNl9sr0SSzzw15Lu2bwmmJXWsrtE4+cjhLVd6YOmLJYel3xzNBG
-         Dl9f7yyZtLa9ZqjauwiLgNLneRJfzk/qFgRzRLGmvvGHhzv4KJUimgSVcLBsoVSbexZ3
-         SITM0g16OwCqiyuGnpHVeeriz1II6hkp2IUmDGPNRiokvMxgGDT16Z+kA1KJn+lDlHoe
-         DdrFL+QqWcBV4U/fOkcZjOs3FblEFsxp3UND4WEF6pG0Prxa0HCaaAozkRxowNDBpgcu
-         jDPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUh9dbVxa3TL+gWGbkBZT0Z1wJvGq8roTlWolRL9Z602PwFYDU3Xbxh925FSlH2Kdj5QNL73wTMdFib@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgXTPy62pw543dW6Uijz6sTkGTU59Q48g6+yuM4qhK4OrXdVtj
-	9CHA0YuC9p7Oo4r/EYovHdinzhCtWqn8334blykDrffqhArW4Ip9FmPjVUzMucJvGWkWsU7sROO
-	RSoVwJPRFUxHP5B9UZLzqyMUWTm7/4Rbo6yNP
-X-Google-Smtp-Source: AGHT+IHNejm+Dq8CxwZ9GRGsAr7ooJqtaB5Q4Wi1lrZmixd5aV283NtctcL4uDF0OVbLrpedqVYpuRLKa3C6xkilqlc=
-X-Received: by 2002:a05:6358:90cb:b0:1c3:7748:683d with SMTP id
- e5c5f4694b2df-1c641ebd8e1mr143460755d.7.1731025704863; Thu, 07 Nov 2024
- 16:28:24 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 Nov 2024 16:28:24 -0800
+        bh=CjUJNAqUSD0fpIJN7hsUnikhrlQCt4BCY1mQOMqITlo=;
+        b=Z5tSpzgj//uRWhTb2BDRdEw+Z0NefwXMzpL7/YSDiWMkWZ6EW1lLu3mjP8/LPEs3K3
+         2TcLwZtf945dbhdFkTQ8zMs2ntw5tceP1V0UPlHhsG292mFXLD2uTAyu5Mr0QGqEQ08B
+         lGCNvbCQLf2OBPSg9b6+mxD+R5AypVNGcsN7c21iMuu13hmBY2Qa5VH9FRKhNugnE2zk
+         lhMK74BQ8BueOBGytshMtkqf8Daa+CJe2MWM15xCsVzEcoQxDsyTxSE6L26RKZHdA26t
+         ZNfWMVU1b3UHjc2uYY08IZOhI21Nd2iVpmKzruz3ACoRH5K2chnkPjjc5/hmb8rivhjY
+         JraQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUE8JYIATFqUZXlhIOFqMTVXOo1gQXHvqfXDZKKRWlDPrwywkXWo9yF5oNIXwHhJXXuZsj+zkdvsthL@vger.kernel.org, AJvYcCVPBHh5Bih0YwM4Pn5VOJBBVjB4DVYoiGGZk5TOHM90ARG7yex+jjzJXb1KtYuxLs9wMq95MRZCg0yFTGsV@vger.kernel.org, AJvYcCXBQ1yYHR2JJtNONwVbT8ymURDuGORiX/d6w91O4xAKxbN9ctCQ0YMXHBNWODf08PCbp+67okT2cY4j@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjMgb66fKpOJof024dxtNeDWp3el9VmAtKzSPqdIZL8MZ21hm0
+	/r2jcRESQU/FyqQMIFLoWURA/xs+6B9uc8jeHEgLjiARmeV69eOd
+X-Google-Smtp-Source: AGHT+IGSNyH5XzLu6nhj/EOmVCetKhN54ggz5hDC7V0Mbx8kGXnmU8chmzVyuRxDOUtddvysNrWqxQ==
+X-Received: by 2002:aa7:8882:0:b0:71e:6c67:2ebf with SMTP id d2e1a72fcca58-724132bff58mr1393036b3a.11.1731026182280;
+        Thu, 07 Nov 2024 16:36:22 -0800 (PST)
+Received: from fan ([2601:646:8f03:9fee:6ed1:b454:5fd2:3850])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724079a3d38sm2429530b3a.122.2024.11.07.16.36.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 16:36:21 -0800 (PST)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Thu, 7 Nov 2024 16:36:17 -0800
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, gregkh@linuxfoundation.org,
+	sudeep.holla@arm.com, jassisinghbrar@gmail.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	dferguson@amperecomputing.com, wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com
+Subject: Re: [PATCH v15 02/15] EDAC: Add scrub control feature
+Message-ID: <Zy1dAazN9OPR0POI@fan>
+References: <20241101091735.1465-1-shiju.jose@huawei.com>
+ <20241101091735.1465-3-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <gstohhcdnmnkszk4l2ikd5xiewtotgo5okia62paauj6zpaw7y@4wchyvoynm2p>
-References: <20240901040658.157425-1-swboyd@chromium.org> <20240901040658.157425-16-swboyd@chromium.org>
- <phdcjgqqpjpruxp7v2mw446q73xr3eg4wfgfbjw5tasgr2pgg2@77swbk47b2tg>
- <CAE-0n514QMaQC2yjKP8bZqyfbv6B3AQm=+NJ87vxo6NdYiL03A@mail.gmail.com>
- <lf7y7wpuca6kzqcglgs5d443iusf7xjocum4adi7t3npfavccx@zgsp37oyztme>
- <CAE-0n53-KmOS3zXmJPvOOZ7xxkek9-S=oBExgaY0PDnt_HjdNw@mail.gmail.com>
- <yk3xidaisbd56yndaucax7otijjauqmm7lqm6q4q633kdawlqo@qaq27lwxmvwd>
- <CAE-0n501j+8bMnMKabFyZjn+MLUy3Z68Hiv1PsfW0APy5ggN8g@mail.gmail.com> <gstohhcdnmnkszk4l2ikd5xiewtotgo5okia62paauj6zpaw7y@4wchyvoynm2p>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date: Thu, 7 Nov 2024 16:28:24 -0800
-Message-ID: <CAE-0n50z6MNa7WOsg-NU7k8BpFeJJyYfHX3ov6DsthLWauSNpA@mail.gmail.com>
-Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
- google,cros-ec-typec for DP altmode
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, devicetree@vger.kernel.org, 
-	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, 
-	dri-devel@lists.freedesktop.org, Guenter Roeck <groeck@chromium.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
-	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241101091735.1465-3-shiju.jose@huawei.com>
 
-Quoting Dmitry Baryshkov (2024-10-31 15:54:49)
-> On Thu, Oct 31, 2024 at 02:45:29PM -0700, Stephen Boyd wrote:
-> > Quoting Dmitry Baryshkov (2024-10-31 11:42:36)
-> > > On Tue, Oct 29, 2024 at 01:15:51PM -0700, Stephen Boyd wrote:
-> >
-> > Or use a displayport property that goes to connector node itself so that
-> > we don't extend the graph binding of the usb-c-connector.
-> >
-> >   cros-ec-typec {
-> >     usb-c-connector@0 {
-> >       altmodes {
-> >         displayport {
-> >           connector = <&dp_ml0_ml1>;
->
-> I think this has been frowned upon. Not exactly this, but adding the
-> displayport = <&foo>.
+On Fri, Nov 01, 2024 at 09:17:20AM +0000, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Add a generic EDAC scrub control to manage memory scrubbers in the system.
+> Devices with a scrub feature register with the EDAC device driver, which
+> retrieves the scrub descriptor from the EDAC scrub driver and exposes the
+> sysfs scrub control attributes for a scrub instance to userspace at
+> /sys/bus/edac/devices/<dev-name>/scrubX/.
+> 
+> The common sysfs scrub control interface abstracts the control of
+> arbitrary scrubbing functionality into a common set of functions. The
+> sysfs scrub attribute nodes are only present if the client driver has
+> implemented the corresponding attribute callback function and passed the
+> operations(ops) to the EDAC device driver during registration.
+> 
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
 
-Do you have a pointer to that discussion? I'd like to understand the
-reasoning.
+Minor comments inline.
 
+>  Documentation/ABI/testing/sysfs-edac-scrub |  74 ++++++++
+>  drivers/edac/Makefile                      |   1 +
+>  drivers/edac/edac_device.c                 |  40 +++-
+>  drivers/edac/scrub.c                       | 209 +++++++++++++++++++++
+>  include/linux/edac.h                       |  34 ++++
+>  5 files changed, 354 insertions(+), 4 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-edac-scrub
+>  create mode 100755 drivers/edac/scrub.c
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-edac-scrub b/Documentation/ABI/testing/sysfs-edac-scrub
+> new file mode 100644
+> index 000000000000..d8d11165ff2a
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-edac-scrub
+  
+...
 
->
-> Thus it can only go to the swnode that is generated in software by the
-> cros-ec driver.
+> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
+> index e9229b5f8afe..cd700a64406e 100644
+> --- a/drivers/edac/edac_device.c
+> +++ b/drivers/edac/edac_device.c
+> @@ -576,6 +576,7 @@ static void edac_dev_release(struct device *dev)
+>  {
+>  	struct edac_dev_feat_ctx *ctx = container_of(dev, struct edac_dev_feat_ctx, dev);
+>  
+> +	kfree(ctx->scrub);
+>  	kfree(ctx->dev.groups);
+>  	kfree(ctx);
+>  }
+> @@ -609,6 +610,8 @@ int edac_dev_register(struct device *parent, char *name,
+>  		      const struct edac_dev_feature *ras_features)
+>  {
+>  	const struct attribute_group **ras_attr_groups;
+> +	int scrub_cnt = 0, scrub_inst = 0;
+> +	struct edac_dev_data *dev_data;
+>  	struct edac_dev_feat_ctx *ctx;
+>  	int attr_gcnt = 0;
+>  	int ret, feat;
+> @@ -619,7 +622,10 @@ int edac_dev_register(struct device *parent, char *name,
+>  	/* Double parse to make space for attributes */
+>  	for (feat = 0; feat < num_features; feat++) {
+>  		switch (ras_features[feat].ft_type) {
+> -		/* Add feature specific code */
+> +		case RAS_FEAT_SCRUB:
+> +			attr_gcnt++;
+> +			scrub_cnt++;
+> +			break;
+>  		default:
+>  			return -EINVAL;
+>  		}
+> @@ -635,13 +641,37 @@ int edac_dev_register(struct device *parent, char *name,
+>  		goto ctx_free;
+>  	}
+>  
+> +	if (scrub_cnt) {
+> +		ctx->scrub = kcalloc(scrub_cnt, sizeof(*ctx->scrub), GFP_KERNEL);
+> +		if (!ctx->scrub) {
+> +			ret = -ENOMEM;
+> +			goto groups_free;
+> +		}
+> +	}
+> +
+>  	attr_gcnt = 0;
 
-I recall swnode as a way to sidestep figuring out the DT bindings for
-usb typec. Where is this swnode being made? Somewhere inside the typec
-framework?
+If we use scrub_cnt the same way as we use attr_gcnt, we do not need
+scrub_inst.
 
->
-> >         };
-> >       };
-> >       port@1 {
-> >         endpoint@0 {
-> >           remote-endpoint = <&hub_ss0>;
-> >        };
-> >       };
-> >     };
-> >     usb-c-connector@1 {
-> >       altmodes {
-> >         displayport {
-> >           connector = <&dp_ml2_ml3>;
-> >         };
-> >       };
-> >       port@1 {
-> >         endpoint {
-[....]
-> >
-> > >
-> > > Maybe that's just it? Register DP_bridge (or QMP PHY) as
-> > > orientation-switch? Then you don't need any extra API for the lane
-> > > mapping? The cross-ec-typec can provide orientation information and the
-> > > USB-C-aware controller will follow the lane mapping.
-> >
-> > I'm not really following but I don't think the DT binding discussed here
-> > prevents that.
->
-> I'm thinking about:
->
-> it6505 {
->   orientation-switch;
->
->   ports {
->     port@1 {
->       it6505_dp_out: remote-endpoint = <&cros_ec_dp>;
->       data-lanes = <0 1>;
->     };
->   };
-> };
->
-> cros-ec {
->   port {
->     cross_ec_dp: remote-endpoint = <&it6505_dp_out>;
->   };
->
->   connector@0 {
->     reg = <0>;
->     cros,dp-orientation = "normal";
->
->     ports {
->       // all USB HS and SS ports as usual;
->     };
->   };
->
->   connector@1 {
->     reg = <1>;
->     cros,dp-orientation = "reverse";
->
->     ports {
->       // all USB HS and SS ports as usual;
->     };
->   };
->
->   connector@2 {
->     reg = <2>;
->     cros,dp-orientation = "reverse";
->
->     ports {
->       // all USB HS and SS ports as usual;
->     };
->   };
->
->   connector@3 {
->     reg = <3>;
->     cros,dp-orientation = "normal";
->
->     ports {
->       // all USB HS and SS ports as usual;
->     };
->   };
-> };
->
-> The cros-ec registers single drm bridge which will generate HPD events
-> except on Trogdor, etc. At the same time, cros-ec requests the
-> typec_switch_get(). When the cros-ec detects that the connector@N it
-> being used for DP, it just generates corresponding typec_switch_set()
-> call, setting the orientation of the it6505 (or QMP PHY). The rest can
-> be handled either by EC's HPD code or by DP's HPD handler, the
-> orientation should already be a correct one.
->
-> So, yes. It requires adding the typec_switch_desc implementation _in_
-> the it6505 (or in any other component which handles the 0-1 or 2-3
-> selection). On the other hand as I wrote previously, the 0-1 / 2-3 is
-> the USB-C functionality, not the DP one.
->
+Fan
+>  	for (feat = 0; feat < num_features; feat++, ras_features++) {
+>  		switch (ras_features->ft_type) {
+> -		/* Add feature specific code */
+> +		case RAS_FEAT_SCRUB:
+> +			if (!ras_features->scrub_ops ||
+> +			    scrub_inst != ras_features->instance)
+> +				goto data_mem_free;
+> +
+> +			dev_data = &ctx->scrub[scrub_inst];
+> +			dev_data->instance = scrub_inst;
+> +			dev_data->scrub_ops = ras_features->scrub_ops;
+> +			dev_data->private = ras_features->ctx;
+> +			ret = edac_scrub_get_desc(parent, &ras_attr_groups[attr_gcnt],
+> +						  ras_features->instance);
+> +			if (ret)
+> +				goto data_mem_free;
+> +
+> +			scrub_inst++;
+> +			attr_gcnt++;
+> +			break;
+>  		default:
+>  			ret = -EINVAL;
+> -			goto groups_free;
+> +			goto data_mem_free;
+>  		}
+>  	}
+>  
+> @@ -654,7 +684,7 @@ int edac_dev_register(struct device *parent, char *name,
+>  
+>  	ret = dev_set_name(&ctx->dev, name);
+>  	if (ret)
+> -		goto groups_free;
+> +		goto data_mem_free;
+>  
+>  	ret = device_register(&ctx->dev);
+>  	if (ret) {
+> @@ -664,6 +694,8 @@ int edac_dev_register(struct device *parent, char *name,
+>  
+>  	return devm_add_action_or_reset(parent, edac_dev_unreg, &ctx->dev);
+>  
+> +data_mem_free:
+> +	kfree(ctx->scrub);
+>  groups_free:
+>  	kfree(ras_attr_groups);
+>  ctx_free:
+> diff --git a/drivers/edac/scrub.c b/drivers/edac/scrub.c
+> new file mode 100755
+> index 000000000000..3978201c4bfc
+> --- /dev/null
+> +++ b/drivers/edac/scrub.c
+> @@ -0,0 +1,209 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * The generic EDAC scrub driver controls the memory scrubbers in the
+> + * system. The common sysfs scrub interface abstracts the control of
+> + * various arbitrary scrubbing functionalities into a unified set of
+> + * functions.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
+> +
+> +#include <linux/edac.h>
+> +
+> +enum edac_scrub_attributes {
+> +	SCRUB_ADDRESS,
+> +	SCRUB_SIZE,
+> +	SCRUB_ENABLE_BACKGROUND,
+> +	SCRUB_MIN_CYCLE_DURATION,
+> +	SCRUB_MAX_CYCLE_DURATION,
+> +	SCRUB_CUR_CYCLE_DURATION,
+> +	SCRUB_MAX_ATTRS
+> +};
+> +
+> +struct edac_scrub_dev_attr {
+> +	struct device_attribute dev_attr;
+> +	u8 instance;
+> +};
+> +
+> +struct edac_scrub_context {
+> +	char name[EDAC_FEAT_NAME_LEN];
+> +	struct edac_scrub_dev_attr scrub_dev_attr[SCRUB_MAX_ATTRS];
+> +	struct attribute *scrub_attrs[SCRUB_MAX_ATTRS + 1];
+> +	struct attribute_group group;
+> +};
+> +
+> +#define TO_SCRUB_DEV_ATTR(_dev_attr)      \
+> +		container_of(_dev_attr, struct edac_scrub_dev_attr, dev_attr)
+> +
+> +#define EDAC_SCRUB_ATTR_SHOW(attrib, cb, type, format)				\
+> +static ssize_t attrib##_show(struct device *ras_feat_dev,			\
+> +			     struct device_attribute *attr, char *buf)		\
+> +{										\
+> +	u8 inst = TO_SCRUB_DEV_ATTR(attr)->instance;				\
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);		\
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;		\
+> +	type data;								\
+> +	int ret;								\
+> +										\
+> +	ret = ops->cb(ras_feat_dev->parent, ctx->scrub[inst].private, &data);	\
+> +	if (ret)								\
+> +		return ret;							\
+> +										\
+> +	return sysfs_emit(buf, format, data);					\
+> +}
+> +
+> +EDAC_SCRUB_ATTR_SHOW(addr, read_addr, u64, "0x%llx\n")
+> +EDAC_SCRUB_ATTR_SHOW(size, read_size, u64, "0x%llx\n")
+> +EDAC_SCRUB_ATTR_SHOW(enable_background, get_enabled_bg, bool, "%u\n")
+> +EDAC_SCRUB_ATTR_SHOW(min_cycle_duration, get_min_cycle, u32, "%u\n")
+> +EDAC_SCRUB_ATTR_SHOW(max_cycle_duration, get_max_cycle, u32, "%u\n")
+> +EDAC_SCRUB_ATTR_SHOW(current_cycle_duration, get_cycle_duration, u32, "%u\n")
+> +
+> +#define EDAC_SCRUB_ATTR_STORE(attrib, cb, type, conv_func)			\
+> +static ssize_t attrib##_store(struct device *ras_feat_dev,			\
+> +			      struct device_attribute *attr,			\
+> +			      const char *buf, size_t len)			\
+> +{										\
+> +	u8 inst = TO_SCRUB_DEV_ATTR(attr)->instance;				\
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);		\
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;		\
+> +	type data;								\
+> +	int ret;								\
+> +										\
+> +	ret = conv_func(buf, 0, &data);						\
+> +	if (ret < 0)								\
+> +		return ret;							\
+> +										\
+> +	ret = ops->cb(ras_feat_dev->parent, ctx->scrub[inst].private, data);	\
+> +	if (ret)								\
+> +		return ret;							\
+> +										\
+> +	return len;								\
+> +}
+> +
+> +EDAC_SCRUB_ATTR_STORE(addr, write_addr, u64, kstrtou64)
+> +EDAC_SCRUB_ATTR_STORE(size, write_size, u64, kstrtou64)
+> +EDAC_SCRUB_ATTR_STORE(enable_background, set_enabled_bg, unsigned long, kstrtoul)
+> +EDAC_SCRUB_ATTR_STORE(current_cycle_duration, set_cycle_duration, unsigned long, kstrtoul)
+> +
+> +static umode_t scrub_attr_visible(struct kobject *kobj, struct attribute *a, int attr_id)
+> +{
+> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
+> +	struct device_attribute *dev_attr = container_of(a, struct device_attribute, attr);
+> +	u8 inst = TO_SCRUB_DEV_ATTR(dev_attr)->instance;
+> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
+> +
+> +	switch (attr_id) {
+> +	case SCRUB_ADDRESS:
+> +		if (ops->read_addr) {
+> +			if (ops->write_addr)
+> +				return a->mode;
+> +			else
+> +				return 0444;
+> +		}
+> +		break;
+> +	case SCRUB_SIZE:
+> +		if (ops->read_size) {
+> +			if (ops->write_size)
+> +				return a->mode;
+> +			else
+> +				return 0444;
+> +		}
+> +		break;
+> +	case SCRUB_ENABLE_BACKGROUND:
+> +		if (ops->get_enabled_bg) {
+> +			if (ops->set_enabled_bg)
+> +				return a->mode;
+> +			else
+> +				return 0444;
+> +		}
+> +		break;
+> +	case SCRUB_MIN_CYCLE_DURATION:
+> +		if (ops->get_min_cycle)
+> +			return a->mode;
+> +		break;
+> +	case SCRUB_MAX_CYCLE_DURATION:
+> +		if (ops->get_max_cycle)
+> +			return a->mode;
+> +		break;
+> +	case SCRUB_CUR_CYCLE_DURATION:
+> +		if (ops->get_cycle_duration) {
+> +			if (ops->set_cycle_duration)
+> +				return a->mode;
+> +			else
+> +				return 0444;
+> +		}
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +#define EDAC_SCRUB_ATTR_RO(_name, _instance)       \
+> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RO(_name), \
+> +					.instance = _instance })
+> +
+> +#define EDAC_SCRUB_ATTR_WO(_name, _instance)       \
+> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_WO(_name), \
+> +					.instance = _instance })
+> +
+> +#define EDAC_SCRUB_ATTR_RW(_name, _instance)       \
+> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RW(_name), \
+> +					.instance = _instance })
+> +
+> +static int scrub_create_desc(struct device *scrub_dev,
+> +			     const struct attribute_group **attr_groups, u8 instance)
+> +{
+> +	struct edac_scrub_context *scrub_ctx;
+> +	struct attribute_group *group;
+> +	int i;
+> +	struct edac_scrub_dev_attr dev_attr[] = {
+> +		[SCRUB_ADDRESS] = EDAC_SCRUB_ATTR_RW(addr, instance),
+> +		[SCRUB_SIZE] = EDAC_SCRUB_ATTR_RW(size, instance),
+> +		[SCRUB_ENABLE_BACKGROUND] = EDAC_SCRUB_ATTR_RW(enable_background, instance),
+> +		[SCRUB_MIN_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(min_cycle_duration, instance),
+> +		[SCRUB_MAX_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(max_cycle_duration, instance),
+> +		[SCRUB_CUR_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RW(current_cycle_duration, instance)
+> +	};
+> +
+> +	scrub_ctx = devm_kzalloc(scrub_dev, sizeof(*scrub_ctx), GFP_KERNEL);
+> +	if (!scrub_ctx)
+> +		return -ENOMEM;
+> +
+> +	group = &scrub_ctx->group;
+> +	for (i = 0; i < SCRUB_MAX_ATTRS; i++) {
+> +		memcpy(&scrub_ctx->scrub_dev_attr[i], &dev_attr[i], sizeof(dev_attr[i]));
+> +		scrub_ctx->scrub_attrs[i] = &scrub_ctx->scrub_dev_attr[i].dev_attr.attr;
+> +	}
+> +	sprintf(scrub_ctx->name, "%s%d", "scrub", instance);
+> +	group->name = scrub_ctx->name;
+> +	group->attrs = scrub_ctx->scrub_attrs;
+> +	group->is_visible  = scrub_attr_visible;
+> +
+> +	attr_groups[0] = group;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * edac_scrub_get_desc - get EDAC scrub descriptors
+> + * @scrub_dev: client device, with scrub support
+> + * @attr_groups: pointer to attribute group container
+> + * @instance: device's scrub instance number.
+> + *
+> + * Return:
+> + *  * %0	- Success.
+> + *  * %-EINVAL	- Invalid parameters passed.
+> + *  * %-ENOMEM	- Dynamic memory allocation failed.
+> + */
+> +int edac_scrub_get_desc(struct device *scrub_dev,
+> +			const struct attribute_group **attr_groups, u8 instance)
+> +{
+> +	if (!scrub_dev || !attr_groups)
+> +		return -EINVAL;
+> +
+> +	return scrub_create_desc(scrub_dev, attr_groups, instance);
+> +}
+> diff --git a/include/linux/edac.h b/include/linux/edac.h
+> index e19706311ec0..3620a09c0476 100644
+> --- a/include/linux/edac.h
+> +++ b/include/linux/edac.h
+> @@ -668,11 +668,43 @@ static inline struct dimm_info *edac_get_dimm(struct mem_ctl_info *mci,
+>  
+>  /* RAS feature type */
+>  enum edac_dev_feat {
+> +	RAS_FEAT_SCRUB,
+>  	RAS_FEAT_MAX
+>  };
+>  
+> +/**
+> + * struct edac_scrub_ops - scrub device operations (all elements optional)
+> + * @read_addr: read base address of scrubbing range.
+> + * @read_size: read offset of scrubbing range.
+> + * @write_addr: set base address of the scrubbing range.
+> + * @write_size: set offset of the scrubbing range.
+> + * @get_enabled_bg: check if currently performing background scrub.
+> + * @set_enabled_bg: start or stop a bg-scrub.
+> + * @get_min_cycle: get minimum supported scrub cycle duration in seconds.
+> + * @get_max_cycle: get maximum supported scrub cycle duration in seconds.
+> + * @get_cycle_duration: get current scrub cycle duration in seconds.
+> + * @set_cycle_duration: set current scrub cycle duration in seconds.
+> + */
+> +struct edac_scrub_ops {
+> +	int (*read_addr)(struct device *dev, void *drv_data, u64 *base);
+> +	int (*read_size)(struct device *dev, void *drv_data, u64 *size);
+> +	int (*write_addr)(struct device *dev, void *drv_data, u64 base);
+> +	int (*write_size)(struct device *dev, void *drv_data, u64 size);
+> +	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable);
+> +	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable);
+> +	int (*get_min_cycle)(struct device *dev, void *drv_data,  u32 *min);
+> +	int (*get_max_cycle)(struct device *dev, void *drv_data,  u32 *max);
+> +	int (*get_cycle_duration)(struct device *dev, void *drv_data, u32 *cycle);
+> +	int (*set_cycle_duration)(struct device *dev, void *drv_data, u32 cycle);
+> +};
+> +
+> +int edac_scrub_get_desc(struct device *scrub_dev,
+> +			const struct attribute_group **attr_groups,
+> +			u8 instance);
+> +
+>  /* EDAC device feature information structure */
+>  struct edac_dev_data {
+> +	const struct edac_scrub_ops *scrub_ops;
+>  	u8 instance;
+>  	void *private;
+>  };
+> @@ -680,11 +712,13 @@ struct edac_dev_data {
+>  struct edac_dev_feat_ctx {
+>  	struct device dev;
+>  	void *private;
+> +	struct edac_dev_data *scrub;
+>  };
+>  
+>  struct edac_dev_feature {
+>  	enum edac_dev_feat ft_type;
+>  	u8 instance;
+> +	const struct edac_scrub_ops *scrub_ops;
+>  	void *ctx;
+>  };
+>  
+> -- 
+> 2.34.1
+> 
 
-I don't think we should be adding typec code to pure display hardware
-drivers like IT6505. To keep the driver focused on display stuff I
-proposed implementing runtime lane assignment for drm_bridge chains
-because DP has lanes. My understanding is that not all display
-technologies have lanes, so implementing generic lane assignment
-functionality is overkill/incorrect. DP has physical lanes in hardware
-though, and those physical lanes are assigned to certain pins in the
-type-c DP altmode spec, so it's not overkill to think about lanes when
-the bridge is a DP bridge wired up to a type-c connector.
-
-Long story short, I don't see how we can avoid _any_ lane assignment
-logic in drm_bridge. The logic shouldn't walk the entire bridge chain,
-but it should at least act on the bridge that is a DP bridge. I think
-you're saying pretty much the same thing here, but you want the lane
-remapping to be done via the typec layer whereas I want it to be done in
-the drm_bridge layer. To me it looks out of place to add a
-typec_switch_desc inside each DP drm_bridge because we duplicate the
-logic about USB type-c DP altmode lane assignment to each DP bridge. A
-DP bridge should just think about DP and not know or care about USB
-type-c.
-
-This is what's leading me to think we need some sort of lane assignment
-capability at the DP connector. How that assignment flows from the DP
-connector created in drm_bridge_connector.c to the hardware is where it
-is less clear to me. Should that be implemented as a typec_switch_desc,
-essentially out of band with drm_bridge, or as some drm_bridge_funcs
-function similar to struct drm_bridge_funcs::hdmi_*()? If you look at
-IT6505 in it6505_get_extcon_property() it actually wants to pull the
-orientation of the type-c port with extcon_get_property(EXTCON_DISP_DP,
-EXTCON_PROP_USB_TYPEC_POLARITY). Maybe pushing the orientation to the DP
-bridge is backwards and we should be exposing this as some sort of
-connector API that the drm_bridge can query whenever it wants.
-
-What about ANX7625 where two DP lanes go to a cross-point switch before
-leaving the chip on one of two pairs of lanes? This hardware is a DP
-bridge smashed together with an orientation switch (typec_switch_desc)
-so that you can simply wire the output pins up to a USB type-c connector
-and support 2 lanes DP altmode. Qualcomm's QMP phy is quite similar.
-Presumably we'd want the ANX driver to implement both a drm_bridge and a
-typec_switch_desc if it was directly connected to a usb-c-connector
-node. It's also interesting to think of the DT binding here, likely we
-would have one output port in the ANX node's graph that represents the
-combined DP and USB data that's connected to the SuperSpeed endpoint in
-the usb-c-connector.
-
-In the case where two lanes are wired to one USB type-c connector and
-the other two lanes are wired to a different USB type-c connector it
-would be odd to keep the typec_switch_desc and figure out a way to
-mangle the lanes we want for a USB type-c connector by setting the
-orientation of the typec_switch_desc. The chip isn't really acting as a
-typec orientation control here because it isn't combining USB data and
-DP data for a single USB type-c port. In fact, the type-c port has an
-orientation and we actively don't want to tell the ANX7625 driver about
-that port orientation because the orientation control is implemented
-between the ANX part and the type-c connector by some redriver
-controlled by the EC.
-
-To satisfy all these cases it almost feels like we need to make the DP
-connector have an "orientation", per your earlier DT snippet it would be
-"reversed" or "normal", even though in hardware a DP connector has no
-such concept because it can only be plugged in one way. All cases look
-to be covered if we say that the drm_connector can have an orientation,
-"normal" or "reversed", and we allow the bridge drivers to query that
-whenever they want with some bridge/connector API. The typical case will
-be that the orientation is normal, but we can make
-drm_connector_oob_hotplug_event() change that to "reversed" when the
-port is different.
-
-This leaves us with the binding you propose above, and then some sort of
-property that indicates the orientation of the DP connector. Instead of
-being vendor specific I wonder if we can simply have a property like
-"dp-reverse-orientation" in the connector node that the displayport.c
-driver can look for to set the connector orientation to the reverse one
-when DP altmode is entered on the port.
-
-This is what I have:
-
- it6505 {
-   ports {
-     port@1 {
-       it6505_dp_out: remote-endpoint = <&cros_ec_dp>;
-       data-lanes = <0 1>;
-     };
-   };
- };
-
- cros-ec {
-   port {
-     cross_ec_dp: remote-endpoint = <&it6505_dp_out>;
-   };
-
-   connector@0 {
-     reg = <0>;
-
-     ports {
-       // all USB HS and SS ports as usual;
-     };
-   };
-
-   connector@1 {
-     reg = <1>;
-     dp-reverse-orientation;
-
-     ports {
-       // all USB HS and SS ports as usual;
-     };
-   };
-
-or ANX, swap out for it6505 node:
-
- anx7625 {
-   ports {
-     port@1 {
-       anx7625_dp_out: remote-endpoint = <&cros_ec_dp>;
-       data-lanes = <0 1>;
-     };
-   };
- };
-
-and then a drm_bridge is created in cros-ec to terminate the bridge
-chain. The displayport altmode driver will find the drm_bridge and the
-drm_connector from the cros-ec node. When DP altmode is entered the
-displayport altmode driver will set the drm_connector orientation based
-on the presence of the dp-reverse-orientation property. We'll be able to
-hook the hpd_notify() path in cros-ec by adding code to the drm_bridge
-made there to do the HPD workaround. I'm not sure we need to use an
-auxiliary device in this case, because it's a one-off solution for
-cros-ec. And we don't even need to signal HPD from the cros-ec
-drm_bridge because the oob_hotplug event will do it for us. If anything,
-we need that displayport.c code to skip sending the hotplug event when
-"no-hpd" is present in the cros-ec node. Note, this works for any number
-of usb-c-connector nodes. And finally, DP bridges like IT6505 don't need
-to implement a typec_switch_desc, they can simply support flipping the
-orientation by querying the drm_connector for the bridge chain when they
-see fit. ANX7625 can support that as well when it doesn't see the
-'orientation-switch' property.
-
-Did I miss anything? I suspect a drm_connector having an orientation is
-the most controversial part of this proposal.
+-- 
+Fan Ni
 
