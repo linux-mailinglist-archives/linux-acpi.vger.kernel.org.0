@@ -1,324 +1,283 @@
-Return-Path: <linux-acpi+bounces-9425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B114F9C1184
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 23:09:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A029C12EE
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 01:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71AFF282F6D
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Nov 2024 22:09:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A40C1F21018
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 00:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207D4218927;
-	Thu,  7 Nov 2024 22:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB611C36;
+	Fri,  8 Nov 2024 00:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ArmeWfc1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KFgtzVMD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2043.outbound.protection.outlook.com [40.107.243.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637A7215C6D;
-	Thu,  7 Nov 2024 22:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731017380; cv=fail; b=WHo+A/ER2jdzwgwArk6L93flrPJnYbekRJZIxMYHmyRxRI9ugr+gFLj0cY8TrgjfQyC0tCCml1k1NJN+y4OpXix6FOL9aeFf+INK2Rwb5NDqtLcKVb8aMZ1/yzYMeVms8ICBRW8zlG1bT/Dgd83xCK3coJgXi6LEpGjhrDvAqEo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731017380; c=relaxed/simple;
-	bh=CMTVEzWcSsyLCLOHz6TkJeoBG88pCyfdlpOYMF009yc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=a002ZVfrZOUxl3SDXynDe4U8TDqLRfmL7S/6a7XAro9IrEM9ay4v6tEF9yM1izw/gwPMo4lN7UKIoE5vuej2bzdyYnygd5fmL+QgO/nGydp2DsNKUN5dnU5bGdXBlgmjXG6Ux4Xk5osc5GN1hfmo65D12t+AZP6hl3B8kAU6ss4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ArmeWfc1; arc=fail smtp.client-ip=40.107.243.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PHOARtBh1IQjVh0p/QJgX+XFv2OzcRyE05NutdUVqUTUs4pbCndquQ3+62Ep4POaeVkG5PhsUmRhCLRUzUJfO52IPfSQhRHmOmWu5NCYTFnpZVl9NUdedhNBTUyjhnCdUmsrvCHf4y0zgBjlFNVCDalUKXBqMtDHdt3Q201TpUBLtWmu+aha2w8JstlPwR5H/1nnF8HmOxY7iqM2B6BUtpn9+oMTtUvKp6ICd7QJlCbA0v5JbdkXivc7w9It0YWMUaHb09TsEm/YyrKne/SmHgrZwlmWJMHkAGPY0C40GMVUvFry+gNHWWHvpuLMA6EoFJ0ZDy/PltwdkQbQm8KPsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L0Ey4LXFuMCJv3nx9V7cowAc/G7wyR3ysw5c5Wu69T4=;
- b=kmbQIfW5gKREeIvcjAIoUwYLodXSsxKag6oqMSOzWukgLGgv8ynE6HPm5Xm7Htu6eLOtSEwAsWYjEYFQja3lYdv3mau3mhVcziXdWEjK8YlebzEm8H6HQBLntz0RDnEMdyjd2XRdYarmHRzwE2oTH3hZkQX3Y36MGPx0Fno3+vFvNAhVtJ2vjGgOgpVMbpekiA6bo/0eWjp0rWFEEipinWbQbD1vGSjH65h0TuD6yni0aZNNNJh81zgI95x/tiiEtgeF84aK28DsGoM+tR4BV7YH6B6xZYlyewWjeQfPqUoVc4emgxQ7cUlffkUTdH7sM8HLbC6Xa2V12TSUy5BfMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L0Ey4LXFuMCJv3nx9V7cowAc/G7wyR3ysw5c5Wu69T4=;
- b=ArmeWfc17YysOXlxWBL3N+8e2vSPEYqa0Hg/VZGHB3B5PIl3TiNfqKcicDPxQdVBx8oNgtpRvxRqMdbO7S5mH1T3aO/v6xzLNbzMdEYFdMjxK7FEbugva0XVtLfUAYN9+pH/nfliugNgoEMYj8BpuvkEwljyLQA8V6W5Af4RgyY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CY5PR12MB6478.namprd12.prod.outlook.com (2603:10b6:930:35::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Thu, 7 Nov
- 2024 22:09:34 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8137.019; Thu, 7 Nov 2024
- 22:09:34 +0000
-Message-ID: <9dd1709c-de87-4aa3-aa33-8a520a305545@amd.com>
-Date: Thu, 7 Nov 2024 16:09:31 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/20] ACPI: platform_profile: Add choices attribute
- for class interface
-To: Armin Wolf <W_Armin@gmx.de>, Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
- <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER"
- <ibm-acpi-devel@lists.sourceforge.net>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Matthew Schwartz <matthew.schwartz@linux.dev>
-References: <20241107060254.17615-1-mario.limonciello@amd.com>
- <20241107060254.17615-12-mario.limonciello@amd.com>
- <7e302f04-cb4d-4ecd-b1a1-4b89f09e692b@gmx.de>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <7e302f04-cb4d-4ecd-b1a1-4b89f09e692b@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR12CA0004.namprd12.prod.outlook.com
- (2603:10b6:806:6f::9) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6903964A;
+	Fri,  8 Nov 2024 00:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731025031; cv=none; b=A9PX9vytHG7Q4uAbKvCJwrx3kt9N5a0dOzt5/PKUXPZdHB65ZUfFEtkhViWQS/H3BIqVvhq96maKWMktm2DW/0tMBU8pvMNEWzEFXRJPQdoWLbhYkJbZpbUwcTwXj+nxXNa41UpPuXpqwT0OXmH1u03yNBYL5APCtDPBJxtaBX8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731025031; c=relaxed/simple;
+	bh=SqWgJ4hm51ed+f1/VfQjX/x/DJppAZXyr0Z0K9vD9fU=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rnepCBG3F5niQn/p5A04cx/wTl8Vvetky9T4WdiY2h/0+IL1V0qPfFaRnnn0oTp+au1z+8gTr3VHW//xyB3OeLfgbp6MkUvo9M0WTWGN+8T26MP0OCDf+AUM6YCu7i9DRqhf/d7P+4+n622vosB+GQ03McXOKVV33jQLqyV6Cdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KFgtzVMD; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7ea9739647bso1209580a12.0;
+        Thu, 07 Nov 2024 16:17:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731025028; x=1731629828; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F+Do7zzo+KFbLuMYOM1790nmyhHrHI1nMAaNQb+68y4=;
+        b=KFgtzVMDkWzQvjqxuU1JCv6Hd/2K3hskJPnbnKW+4whQrDZXz6SjrgwujPEAvIt7GG
+         cqtu0+GDYiINl05TQQLkKTauvcmOw/8X/HrzXq8y/yc7lzuB43T2MImm6TAkoJxz5Azn
+         tc0Htcg+Xpt+54S3AUto4RPJ3Iew561Yp5EX4QqXrLrIK1ROktjt1FUaDkm/xezhZGE7
+         zKdXW5McUslWcMaMH/9Ld5nHqEKjIHXATQ12ivT5UHcLH+i+z+10eAJomwcFzZANO4pM
+         9hXLkPEHytEl2xOv3Uh1emDMmCJ1OsAd/PGpdJ4y4i6aKSuLZN5zEFwM1dJblg68p7ef
+         hvfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731025028; x=1731629828;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F+Do7zzo+KFbLuMYOM1790nmyhHrHI1nMAaNQb+68y4=;
+        b=b8rNXrhqiGlF7WpYQpAboDGOQdmupPougV5+ec9ZlQuLkco0ABt9naWNwq60TBwcX+
+         TKMvn1bT9+YZjIRnU7E4fWHYDyz7wYIFlwoUcHB3O3oz/JbiG2Guo7xjHvG3LZgvhZjU
+         xffNK3PaOXbVwGb2vrFpLJ/LTu68zhyO7rT/tXDNB8ImyolnI39e2Gtp6R6LTaNGeZ6f
+         qY2o252Ok+371GjAyH9s+0QQ+fYAboWNcIe5vaFG1MXUvkz+Biqnj4az+qbE8bjUWP/f
+         fy9/HRtaHz8+eCOmdXC0BxZaBthFsy3zAhKw1TO/3LIR0ZLiQu/Dl+mDej7Fkse5VwTC
+         J4Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2SoIfjnI1caxnKEOHvMQw2c13USuDRDhP1c7rRIMG1KKsvDGKiRf/fLDTu7IWzcOz1sQpDH09LSgP+qWp@vger.kernel.org, AJvYcCWt5SpYowoeQMJUH3Cw3mUbmbpOrt5s/+paoDngY0Vqj1MoDcxpt28zNZQMjyg8puTK9w+N9e4JTznA@vger.kernel.org, AJvYcCXqdN6nNOMWfIh1Wen/NKl73ekDR7ZlZeUmZJ2rXEL2WD6yjI/47PqblgMIEpfs0vS8Hyki5amEH3KO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0jKSx5U0FE146ZvwbtFKoDXiC+ujI5OwIJ1vKXHrHn774WhNh
+	Mt1iKuA0EYRMgHASZiy8SrzsC6mEqvEcFk2vfkUX7QsDoT7RAnvq
+X-Google-Smtp-Source: AGHT+IHx1CO0T4w9TtTYGzXOtCQnF3M6HiVi4INvxoMblwadJozIaZRzoVFV6fbzFBdcXMIqlR4KGA==
+X-Received: by 2002:a17:90b:1f8e:b0:2e0:d957:1b9d with SMTP id 98e67ed59e1d1-2e9b17163cbmr1575389a91.13.1731025028446;
+        Thu, 07 Nov 2024 16:17:08 -0800 (PST)
+Received: from fan ([2601:646:8f03:9fee:6ed1:b454:5fd2:3850])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9a5fd180fsm2187666a91.33.2024.11.07.16.17.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 16:17:07 -0800 (PST)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Thu, 7 Nov 2024 16:17:03 -0800
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, gregkh@linuxfoundation.org,
+	sudeep.holla@arm.com, jassisinghbrar@gmail.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	dferguson@amperecomputing.com, wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com
+Subject: Re: [PATCH v15 01/15] EDAC: Add support for EDAC device features
+ control
+Message-ID: <Zy1Yf5wfc9aYVGwA@fan>
+References: <20241101091735.1465-1-shiju.jose@huawei.com>
+ <20241101091735.1465-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY5PR12MB6478:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57f5dc63-0bf5-4db2-9409-08dcff78dc76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OU1jVFdOanhpcnhadEF0QnN4Rk5oUk1qMmlPdSt6UXZ1dFZ0d2UrU0swTWJE?=
- =?utf-8?B?Rk82WjErU1NUQ1VKQ3B4M0xRd2xPcDVCYzJESUpRTUZIYk9JUTkwQndjeXZ0?=
- =?utf-8?B?cEhtdnRlOHBBRzRPTHFnVXFaaEEwNE1OSFdJMURuK001dlFOL2N6dHBRaFNU?=
- =?utf-8?B?WENoM25VTTloVmQ4cTMrR3FsbFFGS0E2SEQ1emc1VDRQYXlIM2NMck5iSXRE?=
- =?utf-8?B?ZDNYbDhBY0F5M2NkMjB2ZzZMODNIazIvRnl6UGN1UCsxK25odG1UdDBIUHor?=
- =?utf-8?B?NytCNWlNR1A3MkltdU45eDFLVjllVFB4U0VGY2pqYWp6NlYwZWRSdndtSTZs?=
- =?utf-8?B?ZXpJUkc5ZEVtQVd6VkI1dVVZTW84TmdWTjBGd0kzRThLVHdXd0N3bFRaK2sw?=
- =?utf-8?B?UTc4d0JreGNLN1A3MTE1bG1vOWR3aUhVN1lwZ1JTTHdVUFVuajYrRkxXUDF3?=
- =?utf-8?B?UkFLMFJLY0dzeVNLNlNpY0RQSHJ1RFZiYlhqeE5RQ3ZjNmFOd0QyaXZiTUly?=
- =?utf-8?B?QnN0Qkg2aHpDcGZnYUplQWxqUTlXVVk5RlJBbzNSNmJLZmh0VW9XY0FCaXQy?=
- =?utf-8?B?QjZ4dmZKck10aUs5akpQblpYRFhteXQ3VmtxU0N0Qy9HZG5xekhYeUtuNVZh?=
- =?utf-8?B?VVBGK09tNS9xLzVVeDgwdThVWjI5ZnEwWTRMVlBGbHZQeDduUmthV2Y1NVNz?=
- =?utf-8?B?eGRtTStHYVNDdzZYWi94azVNS0NyYkhMc0dWS0hpdldnaHB1NC8rZ0Jhamx6?=
- =?utf-8?B?TUlwSElWOW1wQ3RFM0w2eTJ3M0F5THJEdElYTG9LQmR1ZnZ5T1hjWlRGRmgz?=
- =?utf-8?B?Qk5MU1B5ckxrWFE2OExwR3p1ZytJR1lEcytWT2VPSHVnak5kVExMczNlOG5s?=
- =?utf-8?B?WEQyYWJ4UXp6dElFUi9LTzhtcDVCVTRaQVhyYWQyS0x1bnJTTUxuWGZSU0tN?=
- =?utf-8?B?eTdRenZsU2g3d3NGNVM4cHp0MGlvclpMaEp2TUtwaHRGWCs1V2RQOG8wd0VT?=
- =?utf-8?B?MU5IbTBUR2c3aFhobUF3NkNYTEhLMkZkTnc5eGZLMEtIcU51QjJ3UjYrT1Yr?=
- =?utf-8?B?aXV5aGovanM0YTNGaC84eitVL1IzVnl1Witoc3JaeGdsZXFmQmx1VVNvNmR3?=
- =?utf-8?B?UkRMb0doZVplU29jRDl2emZTWk9HNEJ0YzdGN1FnZmVzaU4weGtaaVZoa0NC?=
- =?utf-8?B?QnR0Rk1aayswZkxyU2xveVJ6WEhqQ2U0cmU4WkZsUXJoNUl0MG5xQjR1MWNq?=
- =?utf-8?B?RHpHZFc5Y1ZuaDg1Z3laN3IxVzNnWFA5anlCekhVWmdWdWNTcVpWSGdIZFZ4?=
- =?utf-8?B?eG9KejNXdXA4aWJsVnZRNEFZRmpiTUNhL2tIT3N5bnliSURybHhxanBKWWcv?=
- =?utf-8?B?Vy8xbHlsRVlHdUdBcitkSFFKM2dsZDd5RlhIUWFUWHZDK2UzWWhzdW82aEZQ?=
- =?utf-8?B?ejUrT2JDc2VOU3c1Q1BJM25oVDVibExQOHpSOGpnaE9XZGRDYVF5NzhPSkpv?=
- =?utf-8?B?YzI0aTg1NHlhMUkrbGUxMWN1YmxKdXZtK3NFMHZRbW4wS0JBaFFmWFNGSjJm?=
- =?utf-8?B?SEV2UElOUnZQMlBEZHp5bXJsTGU3TFZQR2JYTlR1SHRBSWVObU84UUJkK2xo?=
- =?utf-8?B?azF1UDdSalFoNkVLVWlvMU04a3docTAxSHl2T3pwYWZta2lpNGl3MDFCQXdw?=
- =?utf-8?B?KzVDRWVTd0lMdmFjaEszTURlY1dWTS8veEViMnA2V1c3ME4zaXBIS3N6WW5q?=
- =?utf-8?Q?IYJKyW9y5mkU4I6hc13MWZZaogxncvQVBxTe7kf?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UU1hSU1iUmI5NEZVKzY2UFhJN1RyaHY1MmY0K3dwbnV2Tk5zUDN3MDE5MTAx?=
- =?utf-8?B?ZmhjMDhBR0tGcjludFpMK1I3MGJENzlTOVBGV0pTejJaREtOSllhT2puVEtP?=
- =?utf-8?B?ZU93cXF2TlhnMkNFbmEyeWZhL0cxSmVXWURONGx4aE9aQzgwL1cwaEx2TVd4?=
- =?utf-8?B?TXFPQW9pVHRIb3pGYWMvQ0xxM09BVkpTQUdPQmhxcUUvMHlXb0I2citFd1dZ?=
- =?utf-8?B?YkcveTJ1aHhqNzdLZVpCYjFxMFlvSk9TSDFQanlhKzRVRUZEVnB2aE1EelUx?=
- =?utf-8?B?VVdXdDBhVDRoSysxZGx6aWFsOEgwRTZ3eVBiMzE2NkRpSTlhWU5OQ0lZcVVB?=
- =?utf-8?B?NlZEQjZ1RkF6ODBzRXIzbGRleFNPZ1VRZTA0cXBCQTZ4cWx2QUZxaGcwODJE?=
- =?utf-8?B?UFhTMHJ0dDdLWFduMFRrYUtUa1ZzcnBxcWxHbzVzZjBPMWRkcG00TnlOTG1Z?=
- =?utf-8?B?VnZjcUZYUzBDQkR2b0E5V3FFUGJueFVWTGNudlk4bUlMY093a3U4dEhmMXVa?=
- =?utf-8?B?YzVlUEZydTBNUTdDN2VxS2RBWUZHc1F3K3ZCdjZOOVhFUE9xMFlIdERQNGNX?=
- =?utf-8?B?SkNyMllJdjA1MkpKWHltQlRZR0tvbkFHUXpnQzhRaE9sREQwNm80V1N1OUR6?=
- =?utf-8?B?NTd6RjR5QjJHOXZsQjEzUE5GMmg4SDdJNGtmUGIxWFNIRmdzL2c3SHR4YVFH?=
- =?utf-8?B?SDNQUWloeXVZdEZhdFZIaWRyb3RLSXUyaVd3Tm1ubXc0WjJIQkNFaU9ZaHBF?=
- =?utf-8?B?K295Y1hkRWNpNUdmMk50dlJ4TmZuYlRYVkt0dnhwNkc1WGFYRmJZS1VtZ0dE?=
- =?utf-8?B?VG5WTlB6Um14TEo4TnBXUzQ5ZFJKMFB6MkNFd0IxZXc2Q1Q4YnV6UThKcmJh?=
- =?utf-8?B?UGFSNk9tTCtmQU9CSmNNaG1VdUZtMi9IV0FLZGJVYjltVjAxY3ljUm96NWZw?=
- =?utf-8?B?VXEyT2JsR3pBWEJlc1JrVXVjdXlPU0x2eEgyUVlmUHlNcTBQWW9FYi91VG51?=
- =?utf-8?B?dHBLZzhzcnJielBxMmxYcGRsMlkyanJqRGpCY0x4Wm83VGYyazMzb28zKzhN?=
- =?utf-8?B?RkRPTXZiZ3JVVVRiZktXQ2RnSmFEdGtEUkJnNi92WHY4WWZZV0dmaXU0eURE?=
- =?utf-8?B?ZnVaS2NVeEUrSjVQOWNMRE9jU1V0Q2plOFR6OFd0TldkUXVPR3k0MHpyTGVO?=
- =?utf-8?B?RlFWaWw4RU9KRGU5aDQ0VVpjVW5CbjRTVWZ4WU5nWWw3bXNObnU2bVJrRkxD?=
- =?utf-8?B?MGlzZlFjL1cyaDNybUh3REw5SUhBcm1PVUx0dzJKckV5QnUveFAxRVRPYlFR?=
- =?utf-8?B?akZpNWt3NGtVMkc2S3lXN3NPNGIxN2E0eDhDdlM3am1mSEFSWHJIUDJ4c1dl?=
- =?utf-8?B?aGVhYjA1MVZwL0xGWXBDMkExcG5rZUtrdHlaMzVZRm53NWNNYnhQWEJPUlVw?=
- =?utf-8?B?S3Z6RzlkSUFhTURVb244Mnk3U2crSngxL3MreVYzekRYZXVsc1o3Zm9ROG1Q?=
- =?utf-8?B?dDE5eDhnYS9ZYzZUQXM5eTZGdVdiOUVkZ2VwSkk4VWZoSHlVT2wyd3d4MnNa?=
- =?utf-8?B?LzFqbVlUZ2l6OUVlbE94eTVncUsxNjVNdHFCRHo0MXB2YVhML0N6cUJwODVj?=
- =?utf-8?B?NFlEd29XWnk2bXdBZ0NqUUsrcDgzVjYrMEF3R01YT3pncHlOdlRyeEY2enhF?=
- =?utf-8?B?emNaM2hqNHM0NTNwVk44Nko4d0NyUTZlWUZtaFNLY0lNOGdOZWpSSVA3Z1Z3?=
- =?utf-8?B?WE1kZlBrbnpaMDBwaXRlMHhSUmRnT29hRm5JejUzTTczb2RvTmVJR1pjMmI1?=
- =?utf-8?B?dlpLQmN1SHVlV0RUVkxBbU80S2VXN2w5dXdiby91S3ByNUtTQjRaNE54TEhl?=
- =?utf-8?B?MWFDQktrcGlGTlNERFJQSkhTanNtcE1xaXlLSFhQeHZtK2xMWUZEMi9PemhT?=
- =?utf-8?B?RkVJQStFRXdKdEJGdGRacEFrVWRVSVd4eVlWWDZOZmFMZVp6UEhTOUJGdkVH?=
- =?utf-8?B?SUFTdWZmOE1kbG5HWnNxR1NKalJnN1JBOTZzOEFnMVVtdmthNkJUNjljNDJQ?=
- =?utf-8?B?bUd3alRPemRHaTRUeGNML0U2cWVIZS9zQ3VNN3lSMFE4UXByRGpTdWs1V0JR?=
- =?utf-8?Q?he00c+qEzxTNcIP6FPB8z3qmr?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57f5dc63-0bf5-4db2-9409-08dcff78dc76
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 22:09:34.1342
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9Fwl033zhiTRDTvW3Pdvo62pEvcRMoKK3v6T45gNh9wU2SGgjMzBO/s27gwTUFLvqW+u5p7GUedGR9R66MgBVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6478
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241101091735.1465-2-shiju.jose@huawei.com>
 
-On 11/7/2024 02:28, Armin Wolf wrote:
-> Am 07.11.24 um 07:02 schrieb Mario Limonciello:
+On Fri, Nov 01, 2024 at 09:17:19AM +0000, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
->> The `choices` file will show all possible choices that a given platform
->> profile handler can support.
->>
->> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> ---
->> v5:
->>   * Fix kdoc
->>   * Add tag
->>   * Fix whitespace
->>   * Adjust mutex use
->> ---
->>   drivers/acpi/platform_profile.c | 65 +++++++++++++++++++++++++++++++++
->>   1 file changed, 65 insertions(+)
->>
->> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/ 
->> platform_profile.c
->> index f605c2bd35c68..5e0bb91c5f451 100644
->> --- a/drivers/acpi/platform_profile.c
->> +++ b/drivers/acpi/platform_profile.c
->> @@ -25,6 +25,46 @@ static_assert(ARRAY_SIZE(profile_names) == 
->> PLATFORM_PROFILE_LAST);
->>
->>   static DEFINE_IDA(platform_profile_ida);
->>
->> +/**
->> + * _commmon_choices_show - Show the available profile choices
->> + * @choices: The available profile choices
->> + * @buf: The buffer to write to
->> + * Return: The number of bytes written
->> + */
->> +static ssize_t _commmon_choices_show(unsigned long choices, char *buf)
->> +{
->> +    int i, len = 0;
->> +
->> +    for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAST) {
->> +        if (len == 0)
->> +            len += sysfs_emit_at(buf, len, "%s", profile_names[i]);
->> +        else
->> +            len += sysfs_emit_at(buf, len, " %s", profile_names[i]);
->> +    }
->> +    len += sysfs_emit_at(buf, len, "\n");
->> +
->> +    return len;
->> +}
->> +
->> +/**
->> + * _get_class_choices - Get the available profile choices for a class 
->> device
->> + * @dev: The class device
->> + * @choices: Pointer to return the available profile choices
->> + * Return: The available profile choices
->> + */
->> +static int _get_class_choices(struct device *dev, unsigned long 
->> *choices)
->> +{
->> +    struct platform_profile_handler *handler;
->> +    int i;
->> +
->> +    lockdep_assert_held(&profile_lock);
->> +    handler = dev_get_drvdata(dev);
->> +    for_each_set_bit(i, handler->choices, PLATFORM_PROFILE_LAST)
->> +        *choices |= BIT(i);
+> Add generic EDAC device feature controls supporting the registration
+> of RAS features available in the system. The driver exposes control
+> attributes for these features to userspace in
+> /sys/bus/edac/devices/<dev-name>/<ras-feature>/
 > 
-> Maybe just copying the bitmask would be enough here? In this case we 
-> could also drop
-> this function as well.
-
-Right now this could work, but choices and the use of it has gone 
-through great lengths to ensure that once there are too many profiles it 
-automatically becomes a bigger variable.
-
-	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-
-So I would rather keep this as is.
-
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/edac/edac_device.c | 101 +++++++++++++++++++++++++++++++++++++
+>  include/linux/edac.h       |  30 +++++++++++
+>  2 files changed, 131 insertions(+)
 > 
->> +
->> +    return 0;
->> +}
->> +
->>   /**
->>    * name_show - Show the name of the profile handler
->>    * @dev: The device
->> @@ -44,9 +84,34 @@ static ssize_t name_show(struct device *dev,
->>       return -ERESTARTSYS;
->>   }
->>
->> +/**
->> + * choices_show - Show the available profile choices
->> + * @dev: The device
->> + * @attr: The attribute
->> + * @buf: The buffer to write to
->> + */
->> +static ssize_t choices_show(struct device *dev,
->> +                struct device_attribute *attr,
->> +                char *buf)
->> +{
->> +    unsigned long choices = 0;
->> +    int err;
->> +
->> +    scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
->> +        err = _get_class_choices(dev, &choices);
->> +        if (err)
->> +            return err;
->> +    }
-> 
-> Please directly use the choices field here, no need for a mutex  since 
-> the choices are static
-> across the lifetime of the platform profile.
+> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
+> index 621dc2a5d034..e9229b5f8afe 100644
+> --- a/drivers/edac/edac_device.c
+> +++ b/drivers/edac/edac_device.c
+> @@ -570,3 +570,104 @@ void edac_device_handle_ue_count(struct edac_device_ctl_info *edac_dev,
+>  		      block ? block->name : "N/A", count, msg);
+>  }
+>  EXPORT_SYMBOL_GPL(edac_device_handle_ue_count);
+> +
+> +/* EDAC device feature */
 
-But similarly to my other message, the class could be unregistered and 
-this needs to be protected.
+The comment is not very helpful to me, seems not quite relevant to what
+the function below does.
 
+Fan
+> +static void edac_dev_release(struct device *dev)
+> +{
+> +	struct edac_dev_feat_ctx *ctx = container_of(dev, struct edac_dev_feat_ctx, dev);
+> +
+> +	kfree(ctx->dev.groups);
+> +	kfree(ctx);
+> +}
+> +
+> +const struct device_type edac_dev_type = {
+> +	.name = "edac_dev",
+> +	.release = edac_dev_release,
+> +};
+> +
+> +static void edac_dev_unreg(void *data)
+> +{
+> +	device_unregister(data);
+> +}
+> +
+> +/**
+> + * edac_dev_register - register device for RAS features with EDAC
+> + * @parent: parent device.
+> + * @name: parent device's name.
+> + * @private: parent driver's data to store in the context if any.
+> + * @num_features: number of RAS features to register.
+> + * @ras_features: list of RAS features to register.
+> + *
+> + * Return:
+> + *  * %0       - Success.
+> + *  * %-EINVAL - Invalid parameters passed.
+> + *  * %-ENOMEM - Dynamic memory allocation failed.
+> + *
+> + */
+> +int edac_dev_register(struct device *parent, char *name,
+> +		      void *private, int num_features,
+> +		      const struct edac_dev_feature *ras_features)
+> +{
+> +	const struct attribute_group **ras_attr_groups;
+> +	struct edac_dev_feat_ctx *ctx;
+> +	int attr_gcnt = 0;
+> +	int ret, feat;
+> +
+> +	if (!parent || !name || !num_features || !ras_features)
+> +		return -EINVAL;
+> +
+> +	/* Double parse to make space for attributes */
+> +	for (feat = 0; feat < num_features; feat++) {
+> +		switch (ras_features[feat].ft_type) {
+> +		/* Add feature specific code */
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+> +	if (!ctx)
+> +		return -ENOMEM;
+> +
+> +	ras_attr_groups = kcalloc(attr_gcnt + 1, sizeof(*ras_attr_groups), GFP_KERNEL);
+> +	if (!ras_attr_groups) {
+> +		ret = -ENOMEM;
+> +		goto ctx_free;
+> +	}
+> +
+> +	attr_gcnt = 0;
+> +	for (feat = 0; feat < num_features; feat++, ras_features++) {
+> +		switch (ras_features->ft_type) {
+> +		/* Add feature specific code */
+> +		default:
+> +			ret = -EINVAL;
+> +			goto groups_free;
+> +		}
+> +	}
+> +
+> +	ctx->dev.parent = parent;
+> +	ctx->dev.bus = edac_get_sysfs_subsys();
+> +	ctx->dev.type = &edac_dev_type;
+> +	ctx->dev.groups = ras_attr_groups;
+> +	ctx->private = private;
+> +	dev_set_drvdata(&ctx->dev, ctx);
+> +
+> +	ret = dev_set_name(&ctx->dev, name);
+> +	if (ret)
+> +		goto groups_free;
+> +
+> +	ret = device_register(&ctx->dev);
+> +	if (ret) {
+> +		put_device(&ctx->dev);
+> +		return ret;
+> +	}
+> +
+> +	return devm_add_action_or_reset(parent, edac_dev_unreg, &ctx->dev);
+> +
+> +groups_free:
+> +	kfree(ras_attr_groups);
+> +ctx_free:
+> +	kfree(ctx);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(edac_dev_register);
+> diff --git a/include/linux/edac.h b/include/linux/edac.h
+> index b4ee8961e623..e19706311ec0 100644
+> --- a/include/linux/edac.h
+> +++ b/include/linux/edac.h
+> @@ -661,4 +661,34 @@ static inline struct dimm_info *edac_get_dimm(struct mem_ctl_info *mci,
+>  
+>  	return mci->dimms[index];
+>  }
+> +
+> +/* EDAC device features */
+> +
+> +#define EDAC_FEAT_NAME_LEN	128
+> +
+> +/* RAS feature type */
+> +enum edac_dev_feat {
+> +	RAS_FEAT_MAX
+> +};
+> +
+> +/* EDAC device feature information structure */
+> +struct edac_dev_data {
+> +	u8 instance;
+> +	void *private;
+> +};
+> +
+> +struct edac_dev_feat_ctx {
+> +	struct device dev;
+> +	void *private;
+> +};
+> +
+> +struct edac_dev_feature {
+> +	enum edac_dev_feat ft_type;
+> +	u8 instance;
+> +	void *ctx;
+> +};
+> +
+> +int edac_dev_register(struct device *parent, char *dev_name,
+> +		      void *parent_pvt_data, int num_features,
+> +		      const struct edac_dev_feature *ras_features);
+>  #endif /* _LINUX_EDAC_H_ */
+> -- 
+> 2.34.1
 > 
-> Thanks,
-> Armin Wolf
-> 
->> +
->> +    return _commmon_choices_show(choices, buf);
->> +}
->> +
->>   static DEVICE_ATTR_RO(name);
->> +static DEVICE_ATTR_RO(choices);
->> +
->>   static struct attribute *profile_attrs[] = {
->>       &dev_attr_name.attr,
->> +    &dev_attr_choices.attr,
->>       NULL
->>   };
->>   ATTRIBUTE_GROUPS(profile);
 
+-- 
+Fan Ni
 
