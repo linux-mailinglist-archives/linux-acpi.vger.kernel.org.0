@@ -1,65 +1,56 @@
-Return-Path: <linux-acpi+bounces-9448-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9449-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089CB9C22E8
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 18:27:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2455C9C23EB
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 18:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B356B2164F
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 17:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94831F21B85
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 17:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C981E9091;
-	Fri,  8 Nov 2024 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49883231CB2;
+	Fri,  8 Nov 2024 17:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IIPCquhp"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="qYkRcYTF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D316415B0F7;
-	Fri,  8 Nov 2024 17:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743222B3AD;
+	Fri,  8 Nov 2024 17:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731086854; cv=none; b=FeGd0cZ+LNzBqMlQjq2SEiINvxrg7yRbwgT4WmdMxoNNx1P+bUESSDBnk04u3i+UJj/Rlli19preQaKSMokl3Wd7FiORJYf9wT3Awq7oiCJQrMpY8einJfg+CRn/aI7M0geiN61dJLMIpPSI4RwWKe6XhWqHuo172G6Y8aDRpnk=
+	t=1731087375; cv=none; b=fkTs1Hly3TuROLJHL72ykV8Yq+jx5dxTiF8L42jjvQNbndORwWkPy6sBNTqGB+ySXqxLdEaWxR3Cot5JHoNcNAWH4+qd6tTI1L3FyR0GWp4AvKhOveOV4Oza71eN/CUtKih4BfV4+I1kY00fGO6WIZZeMU/jNJVTGPrb1QiBU4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731086854; c=relaxed/simple;
-	bh=f4PJaVljdIJ/oBBjOmHGAG8o+kWjkBTU3psAdpIWRAE=;
+	s=arc-20240116; t=1731087375; c=relaxed/simple;
+	bh=8OJq7HGD9qwWprJsJNrfBtO5OY2CfqkAFAanuuCmDr4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BorDpuAy3aTKZoOKGId8C1YiYieI+tjVOEOdSr8Nm8bx1otEpuX+tHcY34Y8YGMOamGAT7e+W6KRy+E4yTklAo6fXCU42ap+UiKOGWqEG+qd+G7JaIziqSZr2/MQr84vcjn0j0tSUVBBVw4aiVvpqD2bzpKJelbtTZi84dNEfMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IIPCquhp; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731086852; x=1762622852;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=f4PJaVljdIJ/oBBjOmHGAG8o+kWjkBTU3psAdpIWRAE=;
-  b=IIPCquhps4SSIIQDJoGhZPU2ksv2JyNOP+HAody799j5xSDG5foLE6LT
-   YjKlTUYwEXJOuvWmcP8dqKKWOkonuB995EAeQ1wC56xechYhY263+bw6+
-   997VHVcGSVKzWt2Bpcsy1zGaZcLIkykjPkqeKt7P6MKiUKMBC0FXFX1G4
-   OEelosQPEVXeoWYbHE7z5NGbxY7mvsv0gAjL3TqTB687HD+6LkotjuQAE
-   BsScM2DnPA3gRuv+lKideSbM2JZMds8U61YUlphw5Pp5lbUygQ6+2s3UT
-   20Kl1iJ+G+Le8x/6uM1tAZe7c+0CdqOygUbtdFsYabiqpJi38f9CKm/MB
-   g==;
-X-CSE-ConnectionGUID: BMxLxN3JTmW2sypEp+MSjw==
-X-CSE-MsgGUID: ZV4WMbujStaqywsOSW6g5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30937563"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30937563"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 09:27:30 -0800
-X-CSE-ConnectionGUID: haoDRfOqRGaNcx230Kdacg==
-X-CSE-MsgGUID: 19cBg4iPRZqh0P8i3L1N0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; 
-   d="scan'208";a="123176009"
-Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.110.245]) ([10.125.110.245])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 09:27:29 -0800
-Message-ID: <d02f217d-ae4f-476c-a20b-2b449cff73c0@intel.com>
-Date: Fri, 8 Nov 2024 10:27:28 -0700
+	 In-Reply-To:Content-Type; b=eGqWUmjtQ1nNLlUDKXCNbM5nsZ4mnwMCbzqtNcTi4xPvBqqMvHjgm+d1UjLaNCKTmlFoTPXX9dZWHr29YdOVzMstc9I8tzkBvcUlKntbpjEXkO5Izv++Fc8YRfd7PfqdM3vTUviLOCPVcjXUXTtSizCP4UG1vq4jClWtWld9Wjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=qYkRcYTF; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1731087298; x=1731692098; i=w_armin@gmx.de;
+	bh=8OJq7HGD9qwWprJsJNrfBtO5OY2CfqkAFAanuuCmDr4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=qYkRcYTFgroAyxnw4KKajQSR+3mjvjz3rJwnrY65wQ21Cw45R+5wuRP/T2HrR3sQ
+	 /Ku/u122z23fDtizdTUHECXM/k/hdVTLLtf3VDbVVy1FuqDG4rwPhyZbUluNfDYHu
+	 +bzqRtBirLScpSYxFPVO2/fhFmClby00RZIZuXfqAQZwCzA6NWW7i7AmtvKxY8Vx8
+	 SdpD3qWGiL/AFD6hD3x7kCqz7Kp+1y8BrbUGC8JiIFP/RoaxGy84s32ThgXpjStwk
+	 4TTXIlwiJ4WrDQ1SDhA6ajGSxt01ZIMlJWoLxd6xkrlI65RydRqkIZ68uvmYgGsmO
+	 oNxyYARZTxk8nA7u8Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSKu0-1tG1O609kW-00QmZV; Fri, 08
+ Nov 2024 18:34:58 +0100
+Message-ID: <b334d8b9-64ea-4808-a51f-45ee8da2aae0@gmx.de>
+Date: Fri, 8 Nov 2024 18:34:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,318 +58,261 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/27] DCD: Add support for Dynamic Capacity Devices
- (DCD)
-To: Ira Weiny <ira.weiny@intel.com>, Fan Ni <fan.ni@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Navneet Singh <navneet.singh@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Dan Williams <dan.j.williams@intel.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org,
- linux-doc@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
- linux-btrfs@vger.kernel.org, Johannes Thumshirn
- <johannes.thumshirn@wdc.com>, Robert Moore <robert.moore@intel.com>,
- Len Brown <lenb@kernel.org>, "Rafael J. Wysocki"
- <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev, Li Ming <ming4.li@intel.com>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-hardening@vger.kernel.org
-References: <20241107-dcd-type2-upstream-v7-0-56a84e66bc36@intel.com>
+Subject: Re: [PATCH v5 08/20] ACPI: platform_profile: Create class for ACPI
+ platform profile
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241107060254.17615-1-mario.limonciello@amd.com>
+ <20241107060254.17615-9-mario.limonciello@amd.com>
+ <84a647ba-50ec-4d60-b4be-758ff50335bd@gmx.de>
+ <67f147a9-9c4c-4923-95fb-6186f8b51d77@amd.com>
 Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20241107-dcd-type2-upstream-v7-0-56a84e66bc36@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <67f147a9-9c4c-4923-95fb-6186f8b51d77@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3D9m/5wKJr1h25IK/pB102QSnMzneqQEtTNMzpt6NdPjm5haZ4m
+ ydN8I+g+EDzSDpy21kfQkOxo1B+Qow9M3ZPu7INOogId5uzbnPJQemQssJ3hgpLPcTPr4Vm
+ jKl4r4PNPh/EG4scmsJsprCSTpmdmErCnR9OTMxEdLpI+zFKhNa/BDxj2uE3vja0/0P/h/o
+ Yqp8Kjb+c2hf+PhK4L8Fg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:phirCFRhYfw=;CYFd7KQAdtW1Fmrfct+VDvFYvwY
+ Sn0SxFfp7/zaxy/6UIgNsqrVqaXEsZDvnrMB7ImnVfXqj08ETsMyKft+z1ieC1gdbSdmxz5cJ
+ FNup97UT4h0wl+uOMQsguoE81I1YrZmbX729XOgd004remm2QDNMdUThBKnapoo4nmoJm75F8
+ 3yOU26+uWv84bAc0mnJVBnXKCsCWSHjTPUb/Mym9WtGfsiekm5UdqO6Bs0Z1rZpUwSXguvL2P
+ sWnvJB+dov0/dZgfMPSmewF6+EAZr1JtyZIrXvfBqW2RTAJogDP2WQcnnFJyGjhoF1ZTQTeos
+ mjEdpl3EbHS6TnGaWBly7nfZMi0AYCgx9Rx58VnVzNAfn5am8bwlRzJHBu5Yf1SbZwNTPytKg
+ PsTatuTyTCygfwOAsqKB91P41JwUAhHAo+wit59mADdMwUrK9mVxOcV13aEL785AthOxwkVvI
+ uhIuHCxLWkcYW85wN5yzLE4hx35v/bT38m8H8w2djmoJpFSlMrO2XL9UV5QGyEcpQpz6+OQSv
+ l5Tc+e6pjNurC7RNsSAVA8XvAzzquqX+/dxr5+VPyRjX5Bhvaur9EGR70cGIvGqyVhNcjPT4I
+ BzokPhSH7WGpCzrD9O8KnF9YR6AQr0tcaMvcyHy2klXLtVKwqzwhrSnb0ID66eN+0OkWUUoAZ
+ +j8UKcjvazBVa4u4jtzDVf81Ufg75B8pDGK1BcxN+Ur0yHyf1aw5gPPg9VjMRGSutoQr2oLun
+ 6R7y1MmqrSUwQ52Y/obv65t/709Pe4Q6Qxa9ioWgfyM8cL3J/bKvpGiMk4Xwce/zi++crW0qc
+ 7t/G6AvFC/hy2pJGGofYWRmja6rmMO0EjnZPw31dJuNzhEAlvg+zpAb8RahL0i93p1ulKrsTq
+ 8Y4V2SMBrHA/qyxr+5sf7Z6c4S6Km9Fr8Kra6puslM5LB3fpRm7xUfj2U
 
+Am 07.11.24 um 22:09 schrieb Mario Limonciello:
 
+> On 11/7/2024 02:16, Armin Wolf wrote:
+>> Am 07.11.24 um 07:02 schrieb Mario Limonciello:
+>>
+>>> When registering a platform profile handler create a class device
+>>> that will allow changing a single platform profile handler.
+>>>
+>>> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>> ---
+>>> v5:
+>>> =C2=A0 * Use ida instead of idr
+>>> =C2=A0 * Use device_unregister instead of device_destroy()
+>>> =C2=A0 * MKDEV (0, 0)
+>>> ---
+>>> =C2=A0 drivers/acpi/platform_profile.c=C2=A0 | 50
+>>> +++++++++++++++++++++++++++++---
+>>> =C2=A0 include/linux/platform_profile.h |=C2=A0 2 ++
+>>> =C2=A0 2 files changed, 48 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/
+>>> platform_profile.c
+>>> index 0450bdae7c88b..652034b71ee9b 100644
+>>> --- a/drivers/acpi/platform_profile.c
+>>> +++ b/drivers/acpi/platform_profile.c
+>>> @@ -5,6 +5,7 @@
+>>> =C2=A0 #include <linux/acpi.h>
+>>> =C2=A0 #include <linux/bits.h>
+>>> =C2=A0 #include <linux/init.h>
+>>> +#include <linux/kdev_t.h>
+>>> =C2=A0 #include <linux/mutex.h>
+>>> =C2=A0 #include <linux/platform_profile.h>
+>>> =C2=A0 #include <linux/sysfs.h>
+>>> @@ -22,6 +23,12 @@ static const char * const profile_names[] =3D {
+>>> =C2=A0 };
+>>> =C2=A0 static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE=
+_LAST);
+>>>
+>>> +static DEFINE_IDA(platform_profile_ida);
+>>> +
+>>> +static const struct class platform_profile_class =3D {
+>>> +=C2=A0=C2=A0=C2=A0 .name =3D "platform-profile",
+>>> +};
+>>> +
+>>> =C2=A0 static ssize_t platform_profile_choices_show(struct device *dev=
+,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_at=
+tribute *attr,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 char *buf)
+>>> @@ -113,6 +120,8 @@ void platform_profile_notify(void)
+>>> =C2=A0 {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cur_profile)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>>> +=C2=A0=C2=A0=C2=A0 if (!class_is_registered(&platform_profile_class))
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_notify(acpi_kobj, NULL, "platform=
+_profile");
+>>> =C2=A0 }
+>>> =C2=A0 EXPORT_SYMBOL_GPL(platform_profile_notify);
+>>> @@ -123,6 +132,9 @@ int platform_profile_cycle(void)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum platform_profile_option next;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err;
+>>>
+>>> +=C2=A0=C2=A0=C2=A0 if (!class_is_registered(&platform_profile_class))
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENODEV;
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -E=
+RESTARTSYS,
+>>> &profile_lock) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cur_profil=
+e)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return -ENODEV;
+>>> @@ -163,20 +175,50 @@ int platform_profile_register(struct
+>>> platform_profile_handler *pprof)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (cur_profile)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EEXIST;
+>>>
+>>> -=C2=A0=C2=A0=C2=A0 err =3D sysfs_create_group(acpi_kobj, &platform_pr=
+ofile_group);
+>>> -=C2=A0=C2=A0=C2=A0 if (err)
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return err;
+>>> +=C2=A0=C2=A0=C2=A0 if (!class_is_registered(&platform_profile_class))=
+ {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* class for individual ha=
+ndlers */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D class_register(&pl=
+atform_profile_class);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+turn err;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* legacy sysfs files */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D sysfs_create_group=
+(acpi_kobj, &platform_profile_group);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 go=
+to cleanup_class;
+>>> +=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0 /* create class interface for individual handler *=
+/
+>>> +=C2=A0=C2=A0=C2=A0 pprof->minor =3D ida_alloc(&platform_profile_ida, =
+GFP_KERNEL);
+>>
+>> Missing error handling.
+>
+> Ack.
+>
+>>
+>>> +=C2=A0=C2=A0=C2=A0 pprof->class_dev =3D device_create(&platform_profi=
+le_class, NULL,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MKDEV(0, 0), NULL, "pl=
+atform-profile-%d",
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pprof->minor);
+>>
+>> Two things:
+>>
+>> 1. Please allow drivers to pass in their struct device so the
+>> resulting class device
+>> has a parent device. This would allow userspace applications to
+>> determine which device
+>> handles which platform profile device. This parameter is optional and
+>> can be NULL.
+>>
+>
+> I previously did this indirectly by letting them set it in the
+> "struct platform_profile_handler *pprof" and then used that value.
+>
+> You had said that wasn't necessary so I dropped that patch.=C2=A0 I woul=
+d
+> rather go back to including that then having another argument to
+> platform_profile_register().
+>
+I meant that requiring "dev" to be set is not necessary. Having a "dev" fi=
+eld inside struct platform_profile_handler is fine.
 
-On 11/7/24 1:58 PM, Ira Weiny wrote:
-> A git tree of this series can be found here:
-> 
-> 	https://github.com/weiny2/linux-kernel/tree/dcd-v4-2024-11-07
-> 
-> This is a quick spin with minor clean ups Dave was going to apply as
-> well as a couple of clean ups I had slated for after V4 landed.
+Thanks,
+Armin Wolf
 
-Top 6 patches (for DCD preparation) applied to cxl/next for 6.13 merge window. 
-
-> 
-> Series info
-> ===========
-> 
-> This series has 4 parts:
-> 
-> Patch 1: Add core range_overlaps() function
-> Patch 2-6: CXL clean up/prelim patches
-> Patch 7-25: Core DCD support
-> Patch 26-27: cxl_test support
-> 
-> Patches 1-6 have received a lot of review and can be applied to cxl-next
-> straight away.  While 7-27 may need to wait for Dan review.
-> 
-> Background
-> ==========
-> 
-> A Dynamic Capacity Device (DCD) (CXL 3.1 sec 9.13.3) is a CXL memory
-> device that allows memory capacity within a region to change
-> dynamically without the need for resetting the device, reconfiguring
-> HDM decoders, or reconfiguring software DAX regions.
-> 
-> One of the biggest use cases for Dynamic Capacity is to allow hosts to
-> share memory dynamically within a data center without increasing the
-> per-host attached memory.
-> 
-> The general flow for the addition or removal of memory is to have an
-> orchestrator coordinate the use of the memory.  Generally there are 5
-> actors in such a system, the Orchestrator, Fabric Manager, the Logical
-> device, the Host Kernel, and a Host User.
-> 
-> Typical work flows are shown below.
-> 
-> Orchestrator      FM         Device       Host Kernel    Host User
-> 
->     |             |           |            |              |
->     |-------------- Create region ----------------------->|
->     |             |           |            |              |
->     |             |           |            |<-- Create ---|
->     |             |           |            |    Region    |
->     |<------------- Signal done --------------------------|
->     |             |           |            |              |
->     |-- Add ----->|-- Add --->|--- Add --->|              |
->     |  Capacity   |  Extent   |   Extent   |              |
->     |             |           |            |              |
->     |             |<- Accept -|<- Accept  -|              |
->     |             |   Extent  |   Extent   |              |
->     |             |           |            |<- Create --->|
->     |             |           |            |   DAX dev    |-- Use memory
->     |             |           |            |              |   |
->     |             |           |            |              |   |
->     |             |           |            |<- Release ---| <-+
->     |             |           |            |   DAX dev    |
->     |             |           |            |              |
->     |<------------- Signal done --------------------------|
->     |             |           |            |              |
->     |-- Remove -->|- Release->|- Release ->|              |
->     |  Capacity   |  Extent   |   Extent   |              |
->     |             |           |            |              |
->     |             |<- Release-|<- Release -|              |
->     |             |   Extent  |   Extent   |              |
->     |             |           |            |              |
->     |-- Add ----->|-- Add --->|--- Add --->|              |
->     |  Capacity   |  Extent   |   Extent   |              |
->     |             |           |            |              |
->     |             |<- Accept -|<- Accept  -|              |
->     |             |   Extent  |   Extent   |              |
->     |             |           |            |<- Create ----|
->     |             |           |            |   DAX dev    |-- Use memory
->     |             |           |            |              |   |
->     |             |           |            |<- Release ---| <-+
->     |             |           |            |   DAX dev    |
->     |<------------- Signal done --------------------------|
->     |             |           |            |              |
->     |-- Remove -->|- Release->|- Release ->|              |
->     |  Capacity   |  Extent   |   Extent   |              |
->     |             |           |            |              |
->     |             |<- Release-|<- Release -|              |
->     |             |   Extent  |   Extent   |              |
->     |             |           |            |              |
->     |-- Add ----->|-- Add --->|--- Add --->|              |
->     |  Capacity   |  Extent   |   Extent   |              |
->     |             |           |            |<- Create ----|
->     |             |           |            |   DAX dev    |-- Use memory
->     |             |           |            |              |   |
->     |-- Remove -->|- Release->|- Release ->|              |   |
->     |  Capacity   |  Extent   |   Extent   |              |   |
->     |             |           |            |              |   |
->     |             |           |     (Release Ignored)     |   |
->     |             |           |            |              |   |
->     |             |           |            |<- Release ---| <-+
->     |             |           |            |   DAX dev    |
->     |<------------- Signal done --------------------------|
->     |             |           |            |              |
->     |             |- Release->|- Release ->|              |
->     |             |  Extent   |   Extent   |              |
->     |             |           |            |              |
->     |             |<- Release-|<- Release -|              |
->     |             |   Extent  |   Extent   |              |
->     |             |           |            |<- Destroy ---|
->     |             |           |            |   Region     |
->     |             |           |            |              |
-> 
-> Implementation
-> ==============
-> 
-> The series still requires the creation of regions and DAX devices to be
-> closely synchronized with the Orchestrator and Fabric Manager.  The host
-> kernel will reject extents if a region is not yet created.  It also
-> ignores extent release if memory is in use (DAX device created).  These
-> synchronizations are not anticipated to be an issue with real
-> applications.
-> 
-> In order to allow for capacity to be added and removed a new concept of
-> a sparse DAX region is introduced.  A sparse DAX region may have 0 or
-> more bytes of available space.  The total space depends on the number
-> and size of the extents which have been added.
-> 
-> Initially it is anticipated that users of the memory will carefully
-> coordinate the surfacing of additional capacity with the creation of DAX
-> devices which use that capacity.  Therefore, the allocation of the
-> memory to DAX devices does not allow for specific associations between
-> DAX device and extent.  This keeps allocations very similar to existing
-> DAX region behavior.
-> 
-> To keep the DAX memory allocation aligned with the existing DAX devices
-> which do not have tags extents are not allowed to have tags.  Future
-> support for tags is planned.
-> 
-> Great care was taken to keep the extent tracking simple.  Some xarray's
-> needed to be added but extra software objects were kept to a minimum.
-> 
-> Region extents continue to be tracked as sub-devices of the DAX region.
-> This ensures that region destruction cleans up all extent allocations
-> properly.
-> 
-> Some review tags were kept if a patch did not change.
-> 
-> The major functionality of this series includes:
-> 
-> - Getting the dynamic capacity (DC) configuration information from cxl
->   devices
-> 
-> - Configuring the DC partitions reported by hardware
-> 
-> - Enhancing the CXL and DAX regions for dynamic capacity support
-> 	a. Maintain a logical separation between hardware extents and
-> 	   software managed region extents.  This provides an
-> 	   abstraction between the layers and should allow for
-> 	   interleaving in the future
-> 
-> - Get hardware extent lists for endpoint decoders upon
->   region creation.
-> 
-> - Adjust extent/region memory available on the following events.
->         a. Add capacity Events
-> 	b. Release capacity events
-> 
-> - Host response for add capacity
-> 	a. do not accept the extent if:
-> 		If the region does not exist
-> 		or an error occurs realizing the extent
-> 	b. If the region does exist
-> 		realize a DAX region extent with 1:1 mapping (no
-> 		interleave yet)
-> 	c. Support the event more bit by processing a list of extents
-> 	   marked with the more bit together before setting up a
-> 	   response.
-> 
-> - Host response for remove capacity
-> 	a. If no DAX device references the extent; release the extent
-> 	b. If a reference does exist, ignore the request.
-> 	   (Require FM to issue release again.)
-> 
-> - Modify DAX device creation/resize to account for extents within a
->   sparse DAX region
-> 
-> - Trace Dynamic Capacity events for debugging
-> 
-> - Add cxl-test infrastructure to allow for faster unit testing
->   (See new ndctl branch for cxl-dcd.sh test[1])
-> 
-> - Only support 0 value extent tags
-> 
-> Fan Ni's upstream of Qemu DCD was used for testing.
-> 
-> Remaining work:
-> 
-> 	1) Allow mapping to specific extents (perhaps based on
-> 	   label/tag)
-> 	   1a) devise region size reporting based on tags
-> 	2) Interleave support
-> 
-> Possible additional work depending on requirements:
-> 
-> 	1) Accept a new extent which extends (but overlaps) an existing
-> 	   extent(s)
-> 	2) Release extents when DAX devices are released if a release
-> 	   was previously seen from the device
-> 	3) Rework DAX device interfaces, memfd has been explored a bit
-> 
-> [1] https://github.com/weiny2/ndctl/tree/dcd-region2-2024-10-01
-> 
-> ---
-> Changes in v7:
-> - Pick up review tags
-> - Ming: Fix setting the more flag
-> - Link to v6: https://patch.msgid.link/20241105-dcd-type2-upstream-v6-0-85c7fa2140fe@intel.com
-> 
-> ---
-> Ira Weiny (13):
->       range: Add range_overlaps()
->       ACPI/CDAT: Add CDAT/DSMAS shared and read only flag values
->       dax: Document struct dev_dax_range
->       cxl/pci: Delay event buffer allocation
->       cxl/hdm: Use guard() in cxl_dpa_set_mode()
->       cxl/region: Refactor common create region code
->       cxl/cdat: Gather DSMAS data for DCD regions
->       cxl/events: Split event msgnum configuration from irq setup
->       cxl/pci: Factor out interrupt policy check
->       cxl/core: Return endpoint decoder information from region search
->       dax/bus: Factor out dev dax resize logic
->       tools/testing/cxl: Make event logs dynamic
->       tools/testing/cxl: Add DC Regions to mock mem data
-> 
-> Navneet Singh (14):
->       cxl/mbox: Flag support for Dynamic Capacity Devices (DCD)
->       cxl/mem: Read dynamic capacity configuration from the device
->       cxl/core: Separate region mode from decoder mode
->       cxl/region: Add dynamic capacity decoder and region modes
->       cxl/hdm: Add dynamic capacity size support to endpoint decoders
->       cxl/mem: Expose DCD partition capabilities in sysfs
->       cxl/port: Add endpoint decoder DC mode support to sysfs
->       cxl/region: Add sparse DAX region support
->       cxl/mem: Configure dynamic capacity interrupts
->       cxl/extent: Process DCD events and realize region extents
->       cxl/region/extent: Expose region extent information in sysfs
->       dax/region: Create resources on sparse DAX regions
->       cxl/region: Read existing extents on region creation
->       cxl/mem: Trace Dynamic capacity Event Record
-> 
->  Documentation/ABI/testing/sysfs-bus-cxl |  125 +++-
->  drivers/cxl/core/Makefile               |    2 +-
->  drivers/cxl/core/cdat.c                 |   45 +-
->  drivers/cxl/core/core.h                 |   34 +-
->  drivers/cxl/core/extent.c               |  502 +++++++++++++++
->  drivers/cxl/core/hdm.c                  |  231 ++++++-
->  drivers/cxl/core/mbox.c                 |  610 +++++++++++++++++-
->  drivers/cxl/core/memdev.c               |  128 +++-
->  drivers/cxl/core/port.c                 |   19 +-
->  drivers/cxl/core/region.c               |  185 ++++--
->  drivers/cxl/core/trace.h                |   65 ++
->  drivers/cxl/cxl.h                       |  122 +++-
->  drivers/cxl/cxlmem.h                    |  132 +++-
->  drivers/cxl/pci.c                       |  122 +++-
->  drivers/dax/bus.c                       |  356 +++++++++--
->  drivers/dax/bus.h                       |    4 +-
->  drivers/dax/cxl.c                       |   71 ++-
->  drivers/dax/dax-private.h               |   66 +-
->  drivers/dax/hmem/hmem.c                 |    2 +-
->  drivers/dax/pmem.c                      |    2 +-
->  fs/btrfs/ordered-data.c                 |   10 +-
->  include/acpi/actbl1.h                   |    2 +
->  include/cxl/event.h                     |   32 +
->  include/linux/ioport.h                  |    3 +
->  include/linux/range.h                   |    8 +
->  tools/testing/cxl/Kbuild                |    3 +-
->  tools/testing/cxl/test/mem.c            | 1019 +++++++++++++++++++++++++++----
->  27 files changed, 3568 insertions(+), 332 deletions(-)
-> ---
-> base-commit: c2ee9f594da826bea183ed14f2cc029c719bf4da
-> change-id: 20230604-dcd-type2-upstream-0cd15f6216fd
-> 
-> Best regards,
-
+>> 2. Please use the fourth argument of device_create() instead of
+>> dev_set_drvdata().
+>
+> OK.
+>
+>>
+>> Thanks,
+>> Armin Wolf
+>>
+>>> +=C2=A0=C2=A0=C2=A0 if (IS_ERR(pprof->class_dev)) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D PTR_ERR(pprof->cla=
+ss_dev);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto cleanup_ida;
+>>> +=C2=A0=C2=A0=C2=A0 }
+>>> +=C2=A0=C2=A0=C2=A0 dev_set_drvdata(pprof->class_dev, pprof);
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cur_profile =3D pprof;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>> +
+>>> +cleanup_ida:
+>>> +=C2=A0=C2=A0=C2=A0 ida_free(&platform_profile_ida, pprof->minor);
+>>> +
+>>> +cleanup_class:
+>>> +=C2=A0=C2=A0=C2=A0 class_unregister(&platform_profile_class);
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0 return err;
+>>> =C2=A0 }
+>>> =C2=A0 EXPORT_SYMBOL_GPL(platform_profile_register);
+>>>
+>>> =C2=A0 int platform_profile_remove(struct platform_profile_handler *pp=
+rof)
+>>> =C2=A0 {
+>>> +=C2=A0=C2=A0=C2=A0 int id;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard(mutex)(&profile_lock);
+>>>
+>>> -=C2=A0=C2=A0=C2=A0 sysfs_remove_group(acpi_kobj, &platform_profile_gr=
+oup);
+>>> +=C2=A0=C2=A0=C2=A0 id =3D pprof->minor;
+>>> +=C2=A0=C2=A0=C2=A0 device_unregister(pprof->class_dev);
+>>> +=C2=A0=C2=A0=C2=A0 ida_free(&platform_profile_ida, id);
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cur_profile =3D NULL;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>> =C2=A0 }
+>>> diff --git a/include/linux/platform_profile.h b/include/linux/
+>>> platform_profile.h
+>>> index 58279b76d740e..d92a035e6ba6a 100644
+>>> --- a/include/linux/platform_profile.h
+>>> +++ b/include/linux/platform_profile.h
+>>> @@ -28,6 +28,8 @@ enum platform_profile_option {
+>>>
+>>> =C2=A0 struct platform_profile_handler {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *name;
+>>> +=C2=A0=C2=A0=C2=A0 struct device *class_dev;
+>>> +=C2=A0=C2=A0=C2=A0 int minor;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long choices[BITS_TO_LONGS(PLA=
+TFORM_PROFILE_LAST)];
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int (*profile_get)(struct platform_prof=
+ile_handler *pprof,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum platform_profile_option *profile);
+>
 
