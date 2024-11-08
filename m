@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9452-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9453-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1B09C24AE
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 19:11:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048C49C24B3
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 19:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98BD1F21B36
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 18:11:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7F83281F3B
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 18:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605F0233D8A;
-	Fri,  8 Nov 2024 18:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EC2194C75;
+	Fri,  8 Nov 2024 18:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="VtrJr0wp"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="oChClnbi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179B2233D6B;
-	Fri,  8 Nov 2024 18:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A070199385;
+	Fri,  8 Nov 2024 18:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731089491; cv=none; b=OOuTCLELiBYqcU6Xx8OSCt5IBZAq38K9kWDaay9Np7NYZc6W5E+wIIZngixBBkFWrjg+DjRXGKfqoXqkR0B5Y6BqD16TOjzvTL++FDIqpWmQTY3IUXO4wnz7rArTc5IUhObCOxLzmC741lKvE8o4fe+43/iD6/njWPCNnZKp9XA=
+	t=1731089707; cv=none; b=lTApllVTmZhPn1EiheRtEPhBDb1RivZV+G/MFX1E1Uk2pD/QbV+dDv/4GeTBHL2V8MEH+DQn0gVol3crpeCydQJr+YWssifOECMwoon2By0OBBMPbnDL6b3tulcQrB3nOPXWD0Z/m7yVVfU8JG08OVHat3dkwFFT0juQaXgU2Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731089491; c=relaxed/simple;
-	bh=MKZMy4/m6Ynxjlm2TRtVe1K9RlORsn3BmBEJ9Cubqxw=;
+	s=arc-20240116; t=1731089707; c=relaxed/simple;
+	bh=8rtzwJu/kJY9rYTx+7yTtQQljUGAGzlP84nCEJes/+g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CGQNi5sN82bgMmnsPtlcpXwomi6x4R4BZsPSKDllVs3qRL1JnEBJ+1bBcYovuhFFT2Cn+qzY7G3VXJ2U95fjQ1636xc24rHAWC1WrCKVXateM7ptSXikveYYY28D0EVxznI+sR8lyUI76eTMa0aqWfgxoYgvfLF/K5a2xEZByU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=VtrJr0wp; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=X4UJJ5I7AFrzn7rXfiNFHmAgw6AsMAn43GCPWBYpqdFje1iOaA9uibmH0s+3veVjsrSGvMQ+TG276NXerHLWn2CeRPf508+QQY73F1LrWUgz8axg1LAAlvm0ivqrHn0bTN8Q2ec3bu4d3KADrpIRlQDxhWd0o1gJfwa8Tl7fYwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=oChClnbi; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1731089405; x=1731694205; i=w_armin@gmx.de;
-	bh=MKZMy4/m6Ynxjlm2TRtVe1K9RlORsn3BmBEJ9Cubqxw=;
+	s=s31663417; t=1731089637; x=1731694437; i=w_armin@gmx.de;
+	bh=8rtzwJu/kJY9rYTx+7yTtQQljUGAGzlP84nCEJes/+g=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=VtrJr0wpvZKLocQRTdsrWn5OSznL9tqNcGKuHSMAbEa3NvU8VPlIzzVPxDC47b8u
-	 et+U7alT57wqw6dxOKvY1Q8AAsEHIaxyZPVmyiR5VEz/G1GVVYvunYiLiCom3N7C1
-	 pfNvyVAbD75TTweAffoZLgt84VcuXl7K+lzn3mRwT9UEG3AZbzeI9p88s9vmRWs2d
-	 Sh08iKAlZACNJH5ujpjXl3Nqf3TRISiim7jUzAGNTeP5rUTnIk0NEqP4vhMNjUACW
-	 gypuFXUkDBKPWiPFqmUVD4+rypMCBp+z7gZOA99Ks3x6O4tFQth3W+Y71MX0szykK
-	 tp5byLGnGeKe3ZYodQ==
+	b=oChClnbiDiSzn5nyu7OsvxUVKh5CPsHQro5O+86LnlCKFZuH38e3mxqrq3HOp3WJ
+	 2s753g9P/Xh1zYxoXGGUuKm2MqyddTLZuRObmRcssmVhWEfA6zldWJR7QO1kwwENZ
+	 IOb/nCIndd5f3Pyug2FgplMh6jqJvJSx6C5wM6Rm1FimHSBn80BnQuInahJnx5jII
+	 X+wi7XeGgpzYfodzUTghWc8kewDTaEKmZlB9eFwQT5Kt+OL5wPUWgSeoLgqmi7RnA
+	 BgnwpYVcq2UfXPc+PtQTbMD77IfRzz1iAtEYrYCLUAjmQ9pGGjBl1EliK/g+s0JBv
+	 lJjZFIt7tVeT/ULs6A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSbx3-1tGJxk2QXJ-00OGNK; Fri, 08
- Nov 2024 19:10:05 +0100
-Message-ID: <79626508-d9da-45ae-947b-22fb8a62522d@gmx.de>
-Date: Fri, 8 Nov 2024 19:10:03 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N95eJ-1tua3v420F-00scmX; Fri, 08
+ Nov 2024 19:13:57 +0100
+Message-ID: <5c6f5c8a-09d6-4e6f-bb72-95ad47dee076@gmx.de>
+Date: Fri, 8 Nov 2024 19:13:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/20] ACPI: platform_profile: Check all profile
- handler to calculate next
+Subject: Re: [PATCH v5 00/20] Add support for binding ACPI platform profile to
+ multiple drivers
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,106 +81,184 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241107060254.17615-1-mario.limonciello@amd.com>
- <20241107060254.17615-18-mario.limonciello@amd.com>
- <989e7297-97f9-4d55-be28-78128572fed2@gmx.de>
- <cbdc6ff5-627e-4237-a053-bbf2e77499da@amd.com>
+ <d08d40f5-5482-4e7f-99b4-a5d9e403b828@gmx.de>
+ <fde868fa-d664-42bd-b6d4-6c3f2928f1cc@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <cbdc6ff5-627e-4237-a053-bbf2e77499da@amd.com>
+In-Reply-To: <fde868fa-d664-42bd-b6d4-6c3f2928f1cc@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-X-Provags-ID: V03:K1:myJGh482Z+YrBTYQad1jcozPin2+sMzpY+Nk9MnnWYERIr4+FFj
- W6MD1fuigoy7GbwdeqORzkhjvZQR1nXAP3ELaZ/rBdIaMye2mhsuEBzjdGg9jJx+3Uy+tGX
- 8BVc3Qx29RDx5tQwYnhQQsVc1+kZrD67xa3m5j2f+vsJKiO9gS1dmUtyc63QV9hVHkXP2OR
- tqT8QPoPscEGpQ+qmIP8A==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:l6Zj3lfjMg+Df4gIPaiNibkfRgSwoxl9Ubn9vIXXR4ZGoY9eXZ9
+ HujvpW2jL8GQ188A2qR/NQQX5hKbCLCXyll/ldrFJTgt1lNJkXpkCM/XEQ5ZyRfI94gu8iY
+ +kgC+Y6VgVyj3Mx2LSTjl9I35VZoeUZ1DY2glaMKbkO/dDDXnDrvcsZCgVArPgDeyB0art2
+ 2uTfikoXvB3nl8D9GfjAQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:rJPp5Jke6VQ=;0WKEAn8I3JbCSo2xgpbsFmnY9j2
- LPZKYo3p+nqZzg+Y8l0Ql8TznXEHpewSGVpwcSVqfU7WT4+q8cGsdRiytnJuoCQahmaeGGogg
- HVogQHI7wSU8LzG9rcVCPOUG0/8vSd6R8+NdrHcz1XX/n9N4EuZOVjfaJZeSQuaAyPPOpDqzS
- NVE4C65OfF8skY43BrhDJJQEJJf34BJFMUvIm95swQjktu/ojelHIU26vMbeFzMRG2aCP2upH
- GMAMtMTrxoCxwLBHhDbQtbMH3WvuiLtEdli2cU8ZHaarvfTf3WXwM1k/lxFGjl2oqzEn/ndhA
- NPCO1zEraGXNznLbcGkmBdrzPVHwoAPdXAhAicez0/PJw3BDxZhsg2w9k36OZgPJnZ50rRIM2
- JaAq2kmLSx4CiSFeamUPcDhwpbr/enWAjkUh3MtB1bT30/rNSLlIwMxxOPxsE26Op7y+4oiQA
- SEL4FgPGwvS4dULtlkCrZboex7vd+FpPoFLHRqw26p6jaGILFdMJFj7HrCE2EKCx8VUtAQ7D4
- 8BvbcsY1Gz1SAE+Vpjupf1cPGowiEmrqVyuyR/1QPFAZWIB2RVx7jniRFOasz1YuqCfHT963l
- R7Ciw8rWfz3woK7I0/p+FD3FMTXLIQX32Egf2rSQbbqi6SrbjWMlnRV6zn8MeJpfeYToEndVd
- uQXOpyZoYIkr1kJKX8XZa4ocXX+dc59g0kfGWcNsRWngNSwoNfRLo8zsTx6msqRyyfIM42rR+
- oiv9nQ58QuyFPg2MR3+uUwASny58xq2kd1rVen71Jjw1rUsXAuMA3jFmLrvPqDCbhj34EbPe+
- lltvTARIn5ke6nvoDbwyifeg==
+UI-OutboundReport: notjunk:1;M01:P0:bUhSlcX4s8o=;3q+n1tq3O9Gg9cXak9K7ijvCcwR
+ 8Anv4kBO95l3F81HlAvNiVo+q21rc52xCp+6u9ikSDB2O5FpgV6LNq01pWH21OIC6szFIOQVP
+ ziJSfwGA0rMMCTx2UtCyoEDNyFTA4QrkSyhbviqaAkGDx0WFpVR1jLSAmSQIY9RCfr6cZe7Tl
+ wx7ikRPSY9SxNO52RoDzUwjoNRkTaQNRRsQmkoqjLFhjJX/Jb6WF4aMFNb7PCWhi5kJ9aIzCW
+ Mjb2IwJrPsS1tCvQnYQyMbNSzeTbJJgeNYTlPGr9ss6hV1qcINPWek8sF3fY1Rcq/BM+f1yX9
+ kP7LYez1lEERapjnQZYQ0+pq3yp1cjiV0z5vzrFmkgpVRXLNMnCPANbZNF1EJSa8NpkEJjDnt
+ SWWjh3ulawaKnz6n/i3A4K5O6zaHNFFrHwG+2fzsS+frxBtNEvYoCkS16o1v/0JdUEpxRBg9v
+ VWTsDbV/OUiyZWxvuKwUVNgS3Xf00I3NcDdpdCz+za56efg2fJb5nunj9+HvRTU76S2qjIiBA
+ BdUbLSI1C0iHxLRxvT8QOWSXTJmZBls3X25ALW79OWHTUqidBSbMn0ENbOBZIpFBoz0jN1VS+
+ Ya7mvs1wIx2oD/FlHcoaqJ2aXPB7xSxEsO2xHQiTokx3D+zGzu0SLtT1aHdvOMPJiZPmGsIOn
+ M9lq0B+ineNi3vCT+m6bCr7506EbrSsRnAbe0Y0ExkrzxN3KMLjPt79OanFgHraCaE0J4T3Pk
+ Fn/aODg0rFMW3UHDhrpkUJS6em2R4PsJ7pPwsXcXE1o0iiE/SFJWhGD4JXVL/F1YGczMnJJUg
+ J5JLw45dsyDsoHcjtcp4QLmw==
 
-QW0gMDcuMTEuMjQgdW0gMjM6MDUgc2NocmllYiBNYXJpbyBMaW1vbmNpZWxsbzoNCg0KPiBPbiAx
-MS83LzIwMjQgMDI6NTgsIEFybWluIFdvbGYgd3JvdGU6DQo+PiBBbSAwNy4xMS4yNCB1bSAwNzow
-MiBzY2hyaWViIE1hcmlvIExpbW9uY2llbGxvOg0KPj4NCj4+PiBBcyBtdWx0aXBsZSBwbGF0Zm9y
-bSBwcm9maWxlIGhhbmRsZXJzIG1pZ2h0IG5vdCBhbGwgc3VwcG9ydCB0aGUgc2FtZQ0KPj4+IHBy
-b2ZpbGUsIGN5Y2xpbmcgdG8gdGhlIG5leHQgcHJvZmlsZSBjb3VsZCBoYXZlIGEgZGlmZmVyZW50
-IHJlc3VsdA0KPj4+IGRlcGVuZGluZyBvbiB3aGF0IGhhbmRsZXIgYXJlIHJlZ2lzdGVyZWQuDQo+
-Pj4NCj4+PiBDaGVjayB3aGF0IGlzIGFjdGl2ZSBhbmQgc3VwcG9ydGVkIGJ5IGFsbCBoYW5kbGVy
-cyB0byBkZWNpZGUgd2hhdA0KPj4+IHRvIGRvLg0KPj4+DQo+Pj4gVGVzdGVkLWJ5OiBNYXJrIFBl
-YXJzb24gPG1wZWFyc29uLWxlbm92b0BzcXVlYmIuY2E+DQo+Pj4gU2lnbmVkLW9mZi1ieTogTWFy
-aW8gTGltb25jaWVsbG8gPG1hcmlvLmxpbW9uY2llbGxvQGFtZC5jb20+DQo+Pj4gLS0tDQo+Pj4g
-djU6DQo+Pj4gwqAgKiBBZGp1c3QgbXV0ZXggdXNlDQo+Pj4gLS0tDQo+Pj4gwqAgZHJpdmVycy9h
-Y3BpL3BsYXRmb3JtX3Byb2ZpbGUuYyB8IDIzICsrKysrKysrKysrKysrLS0tLS0tLS0tDQo+Pj4g
-wqAgMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQo+Pj4N
-Cj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3BsYXRmb3JtX3Byb2ZpbGUuYyBiL2RyaXZl
-cnMvYWNwaS8gDQo+Pj4gcGxhdGZvcm1fcHJvZmlsZS5jDQo+Pj4gaW5kZXggN2YzMDJhYzRkMzc3
-OS4uMmM0NjZmMmQxNmI0MiAxMDA2NDQNCj4+PiAtLS0gYS9kcml2ZXJzL2FjcGkvcGxhdGZvcm1f
-cHJvZmlsZS5jDQo+Pj4gKysrIGIvZHJpdmVycy9hY3BpL3BsYXRmb3JtX3Byb2ZpbGUuYw0KPj4+
-IEBAIC00MTEsMzQgKzQxMSwzOSBAQCBFWFBPUlRfU1lNQk9MX0dQTChwbGF0Zm9ybV9wcm9maWxl
-X25vdGlmeSk7DQo+Pj4NCj4+PiDCoCBpbnQgcGxhdGZvcm1fcHJvZmlsZV9jeWNsZSh2b2lkKQ0K
-Pj4+IMKgIHsNCj4+PiArwqDCoMKgIGVudW0gcGxhdGZvcm1fcHJvZmlsZV9vcHRpb24gbmV4dCA9
-IFBMQVRGT1JNX1BST0ZJTEVfTEFTVDsNCj4+PiDCoMKgwqDCoMKgIGVudW0gcGxhdGZvcm1fcHJv
-ZmlsZV9vcHRpb24gcHJvZmlsZTsNCj4+PiAtwqDCoMKgIGVudW0gcGxhdGZvcm1fcHJvZmlsZV9v
-cHRpb24gbmV4dDsNCj4+PiArwqDCoMKgIHVuc2lnbmVkIGxvbmcgY2hvaWNlczsNCj4+PiDCoMKg
-wqDCoMKgIGludCBlcnI7DQo+Pj4NCj4+PiDCoMKgwqDCoMKgIGlmICghY2xhc3NfaXNfcmVnaXN0
-ZXJlZCgmcGxhdGZvcm1fcHJvZmlsZV9jbGFzcykpDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIHJl
-dHVybiAtRU5PREVWOw0KPj4+DQo+Pj4gwqDCoMKgwqDCoCBzY29wZWRfY29uZF9ndWFyZChtdXRl
-eF9pbnRyLCByZXR1cm4gLUVSRVNUQVJUU1lTLCANCj4+PiAmcHJvZmlsZV9sb2NrKSB7DQo+Pj4g
-LcKgwqDCoMKgwqDCoMKgIGlmICghY3VyX3Byb2ZpbGUpDQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgcmV0dXJuIC1FTk9ERVY7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGVyciA9IGNsYXNzX2Zv
-cl9lYWNoX2RldmljZSgmcGxhdGZvcm1fcHJvZmlsZV9jbGFzcywgTlVMTCwNCj4+PiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAmcHJvZmlsZSwgX2FnZ3Jl
-Z2F0ZV9wcm9maWxlcyk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGlmIChlcnIpDQo+Pj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGVycjsNCj4+Pg0KPj4+IC3CoMKgwqDCoMKgwqDCoCBl
-cnIgPSBjdXJfcHJvZmlsZS0+cHJvZmlsZV9nZXQoY3VyX3Byb2ZpbGUsICZwcm9maWxlKTsNCj4+
-PiArwqDCoMKgwqDCoMKgwqAgZXJyID0gY2xhc3NfZm9yX2VhY2hfZGV2aWNlKCZwbGF0Zm9ybV9w
-cm9maWxlX2NsYXNzLCBOVUxMLA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgICZjaG9pY2VzLCBfYWdncmVnYXRlX2Nob2ljZXMpOw0KPj4+IMKgwqDC
-oMKgwqDCoMKgwqDCoCBpZiAoZXJyKQ0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJl
-dHVybiBlcnI7DQo+Pj4NCj4+PiAtwqDCoMKgwqDCoMKgwqAgbmV4dCA9IGZpbmRfbmV4dF9iaXRf
-d3JhcChjdXJfcHJvZmlsZS0+Y2hvaWNlcywgDQo+Pj4gUExBVEZPUk1fUFJPRklMRV9MQVNULA0K
-Pj4+ICvCoMKgwqDCoMKgwqDCoCBuZXh0ID0gZmluZF9uZXh0X2JpdF93cmFwKCZjaG9pY2VzLA0K
-Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUExBVEZPUk1f
-UFJPRklMRV9MQVNULA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgcHJvZmlsZSArIDEpOw0KPj4NCj4+IENvdWxkIGl0IGJlIHRoYXQgdGhpcyB3b3Vs
-ZCBsZWFkIHRvIGJlICJjdXN0b20iIHByb2ZpbGUgYmVpbmcgDQo+PiBzZWxlY3RlZCB1bmRlciBz
-b21lIGNvbmRpdGlvbnM/DQo+DQo+IFllYWgsIHlvdSdyZSByaWdodC7CoCBJZiBhbGwgZHJpdmVy
-cyBzdXBwb3J0ZWQgY3VzdG9tIHRoZW4gdGhpcyBjb3VsZCANCj4gaGFwcGVuLsKgIEknbGwgY2xl
-YXIgY3VzdG9tIGxpa2UgdGhpczoNCj4NCj4gwqDCoMKgwqDCoMKgwqAgY2hvaWNlcyAmPSB+QklU
-KFBMQVRGT1JNX1BST0ZJTEVfQ1VTVE9NKTsNCj4NClNvdW5kIGdvb2QgdG8gbWUuDQoNCj4+IEFs
-c28gX2FnZ3JlZ2F0ZV9wcm9maWxlcygpIGV4cGVjdHMgcHJvZmlsZSB0byBiZSBpbml0aWFsaXpl
-ZCB3aXRoIA0KPj4gUExBVEZPUk1fUFJPRklMRV9MQVNULg0KPg0KPiBXaWxsIGNvcnJlY3QgaW5p
-dGlhbGl6YXRpb24gaW4gcGxhdGZvcm1fcHJvZmlsZV9jeWNsZSgpIHRvIHRoaXMuDQo+DQo+IMKg
-wqDCoMKgZW51bSBwbGF0Zm9ybV9wcm9maWxlX29wdGlvbiBwcm9maWxlID0gUExBVEZPUk1fUFJP
-RklMRV9MQVNUOw0KPg0KPiBCdXQgdGhpcyBhbHNvIHJhaXNlcyBhIGdvb2QgcG9pbnQuwqAgSWYg
-X2FnZ3JlZ2F0ZV9wcm9maWxlcygpIHJldHVybnMNCj4gY3VzdG9tIHRoZW4gdGhpcyBzaG91bGQg
-YmUgYW4gZXJyb3IgYmVjYXVzZSBuZXh0IHByb2ZpbGUgaXMgdW5kZWZpbmVkLg0KPiBTbyBJJ2xs
-IGNhdGNoIHRoYXQgbGlrZSB0aGlzLg0KPiDCoMKgwqDCoMKgwqDCoCBlcnIgPSBjbGFzc19mb3Jf
-ZWFjaF9kZXZpY2UoKQ0KPiDCoMKgwqDCoMKgwqDCoCBpZiAoZXJyKQ0KPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIHJldHVybiBlcnI7DQo+IMKgwqDCoMKgwqDCoMKgIGlmIChwcm9maWxlID09IFBM
-QVRGT1JNX1BST0ZJTEVfQ1VTVE9NKQ0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAt
-RUlOVkFMOw0KDQpHb29kIHBvaW50LCBwbGVhc2UgYWxzbyBjaGVjayBpZiBwcm9maWxlID09IFBM
-QVRGT1JNX1BST0ZJTEVfTEFTVCBpbiBjYXNlIG5vIHBsYXRmb3JtIHByb2ZpbGUgaGFuZGxlcnMg
-YXJlIGN1cnJlbnRseSBpbnN0YWxsZWQuDQoNClRoYW5rcywNCkFybWluIFdvbA0KDQo+Pg0KPj4g
-VGhhbmtzLA0KPj4gQXJtaW4gV29sZg0KPj4NCj4+Pg0KPj4+IC3CoMKgwqDCoMKgwqDCoCBpZiAo
-V0FSTl9PTihuZXh0ID09IFBMQVRGT1JNX1BST0ZJTEVfTEFTVCkpDQo+Pj4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgcmV0dXJuIC1FSU5WQUw7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGVyciA9IGNs
-YXNzX2Zvcl9lYWNoX2RldmljZSgmcGxhdGZvcm1fcHJvZmlsZV9jbGFzcywgTlVMTCwgDQo+Pj4g
-Jm5leHQsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgX3N0b3JlX2NsYXNzX3Byb2ZpbGUpOw0KPj4+DQo+Pj4gLcKgwqDCoMKgwqDCoMKgIGVyciA9
-IGN1cl9wcm9maWxlLT5wcm9maWxlX3NldChjdXJfcHJvZmlsZSwgbmV4dCk7DQo+Pj4gwqDCoMKg
-wqDCoMKgwqDCoMKgIGlmIChlcnIpDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0
-dXJuIGVycjsNCj4+PiDCoMKgwqDCoMKgIH0NCj4+Pg0KPj4+IMKgwqDCoMKgwqAgc3lzZnNfbm90
-aWZ5KGFjcGlfa29iaiwgTlVMTCwgInBsYXRmb3JtX3Byb2ZpbGUiKTsNCj4+PiAtwqDCoMKgIHJl
-dHVybiAwOw0KPj4+ICsNCj4+PiArwqDCoMKgIHJldHVybiBlcnI7DQo+Pj4gwqAgfQ0KPj4+IMKg
-IEVYUE9SVF9TWU1CT0xfR1BMKHBsYXRmb3JtX3Byb2ZpbGVfY3ljbGUpOw0KPj4+DQo+DQo+DQo=
+Am 07.11.24 um 22:45 schrieb Mario Limonciello:
+
+> On 11/7/2024 03:06, Armin Wolf wrote:
+>> Am 07.11.24 um 07:02 schrieb Mario Limonciello:
+>>
+>>> Currently there are a number of ASUS products on the market that
+>>> happen to
+>>> have ACPI objects for amd-pmf to bind to as well as an ACPI platform
+>>> profile provided by asus-wmi.
+>>>
+>>> The ACPI platform profile support created by amd-pmf on these ASUS
+>>> products is "Function 9" which is specifically for "BIOS or EC
+>>> notification" of power slider position. This feature is actively used
+>>> by some designs such as Framework 13 and Framework 16.
+>>>
+>>> On these ASUS designs we keep on quirking more and more of them to tur=
+n
+>>> off this notification so that asus-wmi can bind.
+>>>
+>>> This however isn't how Windows works.=C2=A0 "Multiple" things are
+>>> notified for
+>>> the power slider position. This series adjusts Linux to behave
+>>> similarly.
+>>>
+>>> Multiple drivers can now register an ACPI platform profile and will
+>>> react
+>>> to set requests.
+>>>
+>>> To avoid chaos, only positions that are common to both drivers are
+>>> accepted when the legacy /sys/firmware/acpi/platform_profile interface
+>>> is used.
+>>>
+>>> This series also adds a new concept of a "custom" profile. This allows
+>>> userspace to discover that there are multiple driver handlers that are
+>>> configured differently.
+>>>
+>>> This series also allows dropping all of the PMF quirks from amd-pmf.
+>>
+>> Thank you for this patch series. The overall design seems good to me,
+>> but i think
+>> you forgot to extend platform_profile_notify().
+>
+> What did you have in mind?=C2=A0 platform_profile_notify() is called fro=
+m
+> drivers and just used to notify the legacy sysfs in the event of a
+> change.
+>
+> Were you thinking it also needs to notify the class device perhaps?
+>
+If platform_profile_notify() only notifies the legacy sysfs interface, the=
+n userspace applications are forced to continue using the legacy sysfs int=
+erface
+for receiving notifications.
+
+Thanks,
+Armin Wolf
+
+>>
+>> Thanks,
+>> Armin Wolf
+>>
+>>> ---
+>>> v5:
+>>> =C2=A0 * Adjust mutex handling
+>>> =C2=A0 * Add missing error handling
+>>> =C2=A0 * Drop dev member
+>>> =C2=A0 * Add cleanup handling for module unload
+>>> =C2=A0 * Fix crash on accessing legacy files after all drivers unloade=
+d
+>>>
+>>> Mario Limonciello (20):
+>>> =C2=A0=C2=A0 ACPI: platform-profile: Add a name member to handlers
+>>> =C2=A0=C2=A0 platform/x86/dell: dell-pc: Create platform device
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Add platform handler argument to
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 platform_profile_remove()
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Move sanity check out of the mute=
+x
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Move matching string for new prof=
+ile out of
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 mutex
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Use guard(mutex) for register/unr=
+egister
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Use `scoped_cond_guard`
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Create class for ACPI platform pr=
+ofile
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Unregister class and sysfs group =
+on module
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 unload
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Add name attribute to class inter=
+face
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Add choices attribute for class i=
+nterface
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Add profile attribute for class i=
+nterface
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Notify change events on register =
+and
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 unregister
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Only show profiles common for all=
+ handlers
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Add concept of a "custom" profile
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Make sure all profile handlers ag=
+ree on
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 profile
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Check all profile handler to calc=
+ulate next
+>>> =C2=A0=C2=A0 ACPI: platform_profile: Allow multiple handlers
+>>> =C2=A0=C2=A0 platform/x86/amd: pmf: Drop all quirks
+>>> =C2=A0=C2=A0 Documentation: Add documentation about class interface fo=
+r platform
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 profiles
+>>>
+>>> =C2=A0 .../ABI/testing/sysfs-platform_profile=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 5 +
+>>> =C2=A0 .../userspace-api/sysfs-platform_profile.rst=C2=A0 |=C2=A0 28 +
+>>> =C2=A0 drivers/acpi/platform_profile.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 494
+>>> ++++++++++++++----
+>>> =C2=A0 .../surface/surface_platform_profile.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 7 +-
+>>> =C2=A0 drivers/platform/x86/acer-wmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 5 +-
+>>> =C2=A0 drivers/platform/x86/amd/pmf/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +-
+>>> =C2=A0 drivers/platform/x86/amd/pmf/core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 -
+>>> =C2=A0 drivers/platform/x86/amd/pmf/pmf-quirks.c=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 66 ---
+>>> =C2=A0 drivers/platform/x86/amd/pmf/pmf.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 -
+>>> =C2=A0 drivers/platform/x86/amd/pmf/sps.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 +-
+>>> =C2=A0 drivers/platform/x86/asus-wmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 5 +-
+>>> =C2=A0 drivers/platform/x86/dell/alienware-wmi.c=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0=C2=A0 3 +-
+>>> =C2=A0 drivers/platform/x86/dell/dell-pc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 35 +-
+>>> =C2=A0 drivers/platform/x86/hp/hp-wmi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 +-
+>>> =C2=A0 drivers/platform/x86/ideapad-laptop.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 +-
+>>> =C2=A0 .../platform/x86/inspur_platform_profile.c=C2=A0=C2=A0=C2=A0 |=
+=C2=A0=C2=A0 6 +-
+>>> =C2=A0 drivers/platform/x86/thinkpad_acpi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 +-
+>>> =C2=A0 include/linux/platform_profile.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 6 +-
+>>> =C2=A0 18 files changed, 488 insertions(+), 190 deletions(-)
+>>> =C2=A0 delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
+>>>
+>>>
+>>> base-commit: d68cb6023356af3bd3193983ad4ec03954a0b3e2
+>
+>
 
