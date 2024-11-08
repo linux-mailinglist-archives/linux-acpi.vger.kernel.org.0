@@ -1,237 +1,145 @@
-Return-Path: <linux-acpi+bounces-9442-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9443-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0899C1E58
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 14:47:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7939C1FB4
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 15:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13139282AAC
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 13:47:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D10428471E
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 14:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9CF1F1312;
-	Fri,  8 Nov 2024 13:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19C11F4282;
+	Fri,  8 Nov 2024 14:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZh606o7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045DF1F4700;
-	Fri,  8 Nov 2024 13:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CFD1803A;
+	Fri,  8 Nov 2024 14:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731073641; cv=none; b=bLDXc8jzXlcRy3OSNQUZ/OYmnLLvd7JAWfMvq5P4UUvv3QxMzsHsoKxiMAajk6gLf2pZWKrnyC5LOcrdxZUMnxTrL+RrGVTx1OS7CBXjClCq6vN3Q2Hwze1PrdIYetyA3psC01aHkFUQuB3Nuv549YJLrKJ/Cm2Y4ueEqMBamtw=
+	t=1731077611; cv=none; b=jRcplzXzObUN9sMHzAFf6I1+STtiICq46rfn3mZjCLDfO/j7ag7v+2UrtASkDt07igXcPEcodHGMVK3d7L6WUXpv0CuVL6rboE6/N52Gsr8h0tIn+Qgh2fSrqP1BO+9miertVdBOzFfMhl+T/MadCAtKUx109Et13EINfnvhb3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731073641; c=relaxed/simple;
-	bh=8knQ7wE4fQq4x8sY3mGFsnXaStycaIQDHgUGvkXqYZk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NZpOeuoVsRIC7ZVA9h6gw4fvimFE6lNxdFfW9ZnCZPuG2rDj2XBTh9CmuoGHeHnZr/5S9uiHl367s3SxPjoMceU9oN5vhfZ1dwXlx0I4x/BLqPlKCipNxhCnOI5x+sdOoZWiNLeAVGePCEYeEpdT5oDLg1OjimZSrfrqQTmSasw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XlKvd3Mp6z6K95G;
-	Fri,  8 Nov 2024 21:45:33 +0800 (CST)
-Received: from frapeml100008.china.huawei.com (unknown [7.182.85.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 96EED140133;
-	Fri,  8 Nov 2024 21:47:16 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100008.china.huawei.com (7.182.85.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 8 Nov 2024 14:47:16 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Fri, 8 Nov 2024 14:47:16 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Fan Ni <nifan.cxl@gmail.com>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, "jassisinghbrar@gmail.com"
-	<jassisinghbrar@gmail.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, tanxiaofei <tanxiaofei@huawei.com>, "Zengtao
- (B)" <prime.zeng@hisilicon.com>, "Roberto Sassu" <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v15 02/15] EDAC: Add scrub control feature
-Thread-Topic: [PATCH v15 02/15] EDAC: Add scrub control feature
-Thread-Index: AQHbLD7vCzL+HgVM6Umrx0HY63Gx9LKsgzCAgADs7ZA=
-Date: Fri, 8 Nov 2024 13:47:16 +0000
-Message-ID: <f6b1be9f02b94bc6a05ba4494e5b973b@huawei.com>
-References: <20241101091735.1465-1-shiju.jose@huawei.com>
-	<20241101091735.1465-3-shiju.jose@huawei.com> <Zy1dAazN9OPR0POI@fan>
-In-Reply-To: <Zy1dAazN9OPR0POI@fan>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1731077611; c=relaxed/simple;
+	bh=kZbPfuZ0ikYZXriOFOyM/wtjpbX2/SuwojvsPEaqSLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oPcNgYSDeZg/EglCRPD406jjMej4FNk5RUDZIJN2rNoRCTw+bXUkF1Mo9Y/Batxxg0LgbRV7GLJhAipjFY71AgH8u4ac2l6ci+8xnUZlayq0Xl2Iqm992mkHRD/5xopsHj/rDvUdjq/ZhsdBGHTN2NRn6AVU684VFFB1PwUajTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZh606o7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1CCC4CED5;
+	Fri,  8 Nov 2024 14:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731077611;
+	bh=kZbPfuZ0ikYZXriOFOyM/wtjpbX2/SuwojvsPEaqSLA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rZh606o7uJMo6Rkf6Lz4RxQEyMr7vA756y0kFoEQhrTmohzr9Rp23gAVJj0gPMiLJ
+	 fiXqcWwVsoZGUl2E1KYIZdbZGgQgoAxcy2j0yAULt+/HhwCWGPl7QQ10YIxm/N7GGE
+	 7HwCs+UTOIW82PdunYNwSqmiCw/688dnKn1I9smPqqH4dK5e4pkg6bUKnLWUeFXz1D
+	 jmlU9f6QgL0uLbtdWuN195GnRy/Q3rTRqlJHzsOyTbQUklcr9SF0nNwXgiyMyMbdaM
+	 uXxVGrW0J8Um2aCgd+5douR6vdS7u6p21BHrCfHKPj2T6ojdtMqDWvKmv2J3OKSwTA
+	 uQV4/Bd+cHtMA==
+Date: Fri, 8 Nov 2024 14:53:22 +0000
+From: Will Deacon <will@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, acpica-devel@lists.linux.dev,
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 05/12] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO
+ via struct arm_smmu_hw_info
+Message-ID: <20241108145320.GA17325@willie-the-truck>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <5-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241104114723.GA11511@willie-the-truck>
+ <20241104124102.GX10193@nvidia.com>
+ <8a5940b0-08f3-48b1-9498-f09f0527a964@arm.com>
+ <20241106180531.GA520535@nvidia.com>
+ <2a0e69e3-63ba-475b-a5a9-0863ad0f2bf8@arm.com>
+ <20241107023506.GC520535@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107023506.GC520535@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
+Hi guys,
 
->-----Original Message-----
->From: Fan Ni <nifan.cxl@gmail.com>
->Sent: 08 November 2024 00:36
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-edac@vger.kernel.org; linux-cxl@vger.kernel.org; linux-
->acpi@vger.kernel.org; linux-mm@kvack.org; linux-kernel@vger.kernel.org;
->bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->Cameron <jonathan.cameron@huawei.com>; gregkh@linuxfoundation.org;
->sudeep.holla@arm.com; jassisinghbrar@gmail.com; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: Re: [PATCH v15 02/15] EDAC: Add scrub control feature
->
->On Fri, Nov 01, 2024 at 09:17:20AM +0000, shiju.jose@huawei.com wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add a generic EDAC scrub control to manage memory scrubbers in the syste=
-m.
->> Devices with a scrub feature register with the EDAC device driver,
->> which retrieves the scrub descriptor from the EDAC scrub driver and
->> exposes the sysfs scrub control attributes for a scrub instance to
->> userspace at /sys/bus/edac/devices/<dev-name>/scrubX/.
->>
->> The common sysfs scrub control interface abstracts the control of
->> arbitrary scrubbing functionality into a common set of functions. The
->> sysfs scrub attribute nodes are only present if the client driver has
->> implemented the corresponding attribute callback function and passed
->> the
->> operations(ops) to the EDAC device driver during registration.
->>
->> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->
->Minor comments inline.
->
->>  Documentation/ABI/testing/sysfs-edac-scrub |  74 ++++++++
->>  drivers/edac/Makefile                      |   1 +
->>  drivers/edac/edac_device.c                 |  40 +++-
->>  drivers/edac/scrub.c                       | 209 +++++++++++++++++++++
->>  include/linux/edac.h                       |  34 ++++
->>  5 files changed, 354 insertions(+), 4 deletions(-)  create mode
->> 100644 Documentation/ABI/testing/sysfs-edac-scrub
->>  create mode 100755 drivers/edac/scrub.c
->>
->> diff --git a/Documentation/ABI/testing/sysfs-edac-scrub
->> b/Documentation/ABI/testing/sysfs-edac-scrub
->> new file mode 100644
->> index 000000000000..d8d11165ff2a
->> --- /dev/null
->> +++ b/Documentation/ABI/testing/sysfs-edac-scrub
->
->...
->
->> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
->> index e9229b5f8afe..cd700a64406e 100644
->> --- a/drivers/edac/edac_device.c
->> +++ b/drivers/edac/edac_device.c
->> @@ -576,6 +576,7 @@ static void edac_dev_release(struct device *dev)
->> {
->>  	struct edac_dev_feat_ctx *ctx =3D container_of(dev, struct
->> edac_dev_feat_ctx, dev);
->>
->> +	kfree(ctx->scrub);
->>  	kfree(ctx->dev.groups);
->>  	kfree(ctx);
->>  }
->> @@ -609,6 +610,8 @@ int edac_dev_register(struct device *parent, char
->*name,
->>  		      const struct edac_dev_feature *ras_features)  {
->>  	const struct attribute_group **ras_attr_groups;
->> +	int scrub_cnt =3D 0, scrub_inst =3D 0;
->> +	struct edac_dev_data *dev_data;
->>  	struct edac_dev_feat_ctx *ctx;
->>  	int attr_gcnt =3D 0;
->>  	int ret, feat;
->> @@ -619,7 +622,10 @@ int edac_dev_register(struct device *parent, char
->*name,
->>  	/* Double parse to make space for attributes */
->>  	for (feat =3D 0; feat < num_features; feat++) {
->>  		switch (ras_features[feat].ft_type) {
->> -		/* Add feature specific code */
->> +		case RAS_FEAT_SCRUB:
->> +			attr_gcnt++;
->> +			scrub_cnt++;
->> +			break;
->>  		default:
->>  			return -EINVAL;
->>  		}
->> @@ -635,13 +641,37 @@ int edac_dev_register(struct device *parent, char
->*name,
->>  		goto ctx_free;
->>  	}
->>
->> +	if (scrub_cnt) {
->> +		ctx->scrub =3D kcalloc(scrub_cnt, sizeof(*ctx->scrub),
->GFP_KERNEL);
->> +		if (!ctx->scrub) {
->> +			ret =3D -ENOMEM;
->> +			goto groups_free;
->> +		}
->> +	}
->> +
->>  	attr_gcnt =3D 0;
->
->If we use scrub_cnt the same way as we use attr_gcnt, we do not need
->scrub_inst.
+On Wed, Nov 06, 2024 at 10:35:06PM -0400, Jason Gunthorpe wrote:
+> On Wed, Nov 06, 2024 at 09:05:26PM +0000, Robin Murphy wrote:
+> > You should take "We discussed this already"
+> > as more of a clue to yourself than to me - if 4 different people have all
+> > said the exact same thing in so many words, perhaps there's something in
+> > it...
+> 
+> And all seemed to agree it was not a big deal after the discussion.
+> 
+> I think Mostafa was driving in a direction that we break up the IDR
+> into explicit fields and thus be explicit about what information the
+> VMM is able to access. This would effectively document and enforce
+> what the baseline is.
 
-Hi Fan,
-Thanks for suggestion. Modified and done the same for EDAC memory repair fe=
-ature as well.=20
->
->Fan
->>  	for (feat =3D 0; feat < num_features; feat++, ras_features++) {
->>  		switch (ras_features->ft_type) {
->> -		/* Add feature specific code */
-[...]
->--
->Fan Ni
->
-Thanks,
-Shiju
+As one of the four people mentioned above, I figured I'd chime in with
+my rationale for queuing this in case it's of any help or interest.
+
+Initially, I was reasonably sure that we should be sanitising the ID
+registers and being selective about what we advertise to userspace.
+However, after Jason's reply to my comments, mulling it over in my head
+and having lively conversations with Mostafa at lunchtime, I've come
+full circle. Is it a great interface? Not at all. It's 8 register values
+copied from the hardware to userspace. But is it good enough? I think it
+is. It's also extremely simple (i.e. easy to explain what it does and
+trivial to implement), which I think is a huge benefit given that the
+IOMMUFD work around it is still evolving.
+
+I'm firmly of the opinion that the VMM is going to need a tonne of help
+from other sources to expose a virtual IOMMU successfully. For example,
+anything relating to policy or configuration choices should be driven
+from userspace rather than the kernel. If we start to expose policy in
+the id registers for the cases where it happens to fit nicely, I fear
+that this will backfire and the VMM will end up second-guessing the
+kernel in cases where it decides it knows best. I'm not sold on the
+analogy with CPU ID registers as (a) we don't have big/little idiocy to
+deal with in the SMMU and (b) I don't think SMMU features always need
+support code in the host, which is quite unlike many CPU features that
+cannot be exposed safely without hypervisor context-switching support.
+
+On top of all that, this interface can be extended if we change our
+minds. If we decide we need to mask out fields, I think we could add
+that after the fact. Hell, if we all decide that it's a disaster in a
+few releases time, we can try something else. Ultimately, Jason is the
+one maintaining IOMMUFD and he gets to deal with the problems if his
+UAPI doesn't work out :)
+
+So, given where we are in the cycle, I think the pragmatic thing to do
+is to land this change now and enable the ongoing IOMMUFD work to
+continue. We still have over two months to resolve any major problems
+with the interface (and even unplug it entirely from the driver if we
+really get stuck) but for now I think it's "fine".
+
+Will
 
