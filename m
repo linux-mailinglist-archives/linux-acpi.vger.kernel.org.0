@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9451-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9452-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B2B9C24A7
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 19:08:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1B09C24AE
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 19:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE1531F218C9
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 18:08:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98BD1F21B36
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Nov 2024 18:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD92233D8F;
-	Fri,  8 Nov 2024 18:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605F0233D8A;
+	Fri,  8 Nov 2024 18:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="V04qsCof"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="VtrJr0wp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29165233D80;
-	Fri,  8 Nov 2024 18:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179B2233D6B;
+	Fri,  8 Nov 2024 18:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731089280; cv=none; b=r2VM6MeskUgEngxacCxkQcc6+UYW3GGzqUxi9Du0McEVCWoN2CrCHuGuOlCTYXxpafBy/JcTYflJhND6MljTMdbZM/KsKVlzmQZiZxJxc2MIWmv5whdz+ewPhGnj1hIyF8MQ5IhYTmquX8Zay36LLPTI++G4uDzSg97rxtwL6jE=
+	t=1731089491; cv=none; b=OOuTCLELiBYqcU6Xx8OSCt5IBZAq38K9kWDaay9Np7NYZc6W5E+wIIZngixBBkFWrjg+DjRXGKfqoXqkR0B5Y6BqD16TOjzvTL++FDIqpWmQTY3IUXO4wnz7rArTc5IUhObCOxLzmC741lKvE8o4fe+43/iD6/njWPCNnZKp9XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731089280; c=relaxed/simple;
-	bh=9Fy8f6wTEancl/b7oGAdJU6XSqQhdH/xQ/IEUwsnIoM=;
+	s=arc-20240116; t=1731089491; c=relaxed/simple;
+	bh=MKZMy4/m6Ynxjlm2TRtVe1K9RlORsn3BmBEJ9Cubqxw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BCj8WvkoJlAkNJGK4VKPEBuQzj4MeeBCJFLxYhfDfRhhNAQvC+jvlJNPSrnqmDcUrIFvjOLY9zLxM01FZ4PTKY2l7HRlWl/LK2dGT0XRK1d59cYyR3SJMKO5aL+DzIKdM0FWM5r1csVc4dOMy18p4Bd9H/WM93kUBWA0gk8g8Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=V04qsCof; arc=none smtp.client-ip=212.227.17.20
+	 In-Reply-To:Content-Type; b=CGQNi5sN82bgMmnsPtlcpXwomi6x4R4BZsPSKDllVs3qRL1JnEBJ+1bBcYovuhFFT2Cn+qzY7G3VXJ2U95fjQ1636xc24rHAWC1WrCKVXateM7ptSXikveYYY28D0EVxznI+sR8lyUI76eTMa0aqWfgxoYgvfLF/K5a2xEZByU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=VtrJr0wp; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1731089212; x=1731694012; i=w_armin@gmx.de;
-	bh=9Fy8f6wTEancl/b7oGAdJU6XSqQhdH/xQ/IEUwsnIoM=;
+	s=s31663417; t=1731089405; x=1731694205; i=w_armin@gmx.de;
+	bh=MKZMy4/m6Ynxjlm2TRtVe1K9RlORsn3BmBEJ9Cubqxw=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=V04qsCofJfMI/JEhWoQNoPqw9IE7mQFmHaF7b7c49b7yiRMRwHdqDgfasTLNO8eh
-	 xJjfsw0VAR4CTFj3kCFk72OYkuwzyNHyOTWSqCDYQEfojhHnRq7+ockjVD4cCjlSz
-	 BE1iaLzv3VTw6mUyx3KOdOUwmzmFXDLi/eoahpNTnYnhMTBwZvOS8wlRMrQOlPirz
-	 BAaPrEbhV94K58NjBI80Qs68LcYD2vnMA0qAMEjR7KI76qoOAOt+m3nbi7t18zpWw
-	 Cl1zAgQOuee67HJ58PfnTkXBy9EYIHpfHCzamXwmduZWtIHyMadZDkbn6cy8frqpQ
-	 MjLGqNzDYOY2wjyRTg==
+	b=VtrJr0wpvZKLocQRTdsrWn5OSznL9tqNcGKuHSMAbEa3NvU8VPlIzzVPxDC47b8u
+	 et+U7alT57wqw6dxOKvY1Q8AAsEHIaxyZPVmyiR5VEz/G1GVVYvunYiLiCom3N7C1
+	 pfNvyVAbD75TTweAffoZLgt84VcuXl7K+lzn3mRwT9UEG3AZbzeI9p88s9vmRWs2d
+	 Sh08iKAlZACNJH5ujpjXl3Nqf3TRISiim7jUzAGNTeP5rUTnIk0NEqP4vhMNjUACW
+	 gypuFXUkDBKPWiPFqmUVD4+rypMCBp+z7gZOA99Ks3x6O4tFQth3W+Y71MX0szykK
+	 tp5byLGnGeKe3ZYodQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVeI8-1tH8tb3iJo-00U5PY; Fri, 08
- Nov 2024 19:06:52 +0100
-Message-ID: <0ffe9b8b-814e-4b5a-a960-22797e327b4a@gmx.de>
-Date: Fri, 8 Nov 2024 19:06:50 +0100
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSbx3-1tGJxk2QXJ-00OGNK; Fri, 08
+ Nov 2024 19:10:05 +0100
+Message-ID: <79626508-d9da-45ae-947b-22fb8a62522d@gmx.de>
+Date: Fri, 8 Nov 2024 19:10:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/20] ACPI: platform_profile: Add choices attribute
- for class interface
+Subject: Re: [PATCH v5 17/20] ACPI: platform_profile: Check all profile
+ handler to calculate next
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,189 +81,106 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241107060254.17615-1-mario.limonciello@amd.com>
- <20241107060254.17615-12-mario.limonciello@amd.com>
- <7e302f04-cb4d-4ecd-b1a1-4b89f09e692b@gmx.de>
- <9dd1709c-de87-4aa3-aa33-8a520a305545@amd.com>
+ <20241107060254.17615-18-mario.limonciello@amd.com>
+ <989e7297-97f9-4d55-be28-78128572fed2@gmx.de>
+ <cbdc6ff5-627e-4237-a053-bbf2e77499da@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <9dd1709c-de87-4aa3-aa33-8a520a305545@amd.com>
+In-Reply-To: <cbdc6ff5-627e-4237-a053-bbf2e77499da@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:i6KkzGhtCShDZYq1bTXadJhCYusk/tewsN/WYepNcmbXkHhtFj2
- Pdst82mAqSHgDvhJAjTV+Mya6nXqEek8GqQk8c7P/jFSQXmkTo9YSwETLx1oFLPt82k/C+g
- Mu7XtPdvPb8zA0QOaDaJRGgQBt6By2s2SKA8acGWC0g0QU9JfFLvSkG/eFz3v1XpBpJ5XhS
- yYdUeJzYwLh8AR2SkJ1Uw==
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:myJGh482Z+YrBTYQad1jcozPin2+sMzpY+Nk9MnnWYERIr4+FFj
+ W6MD1fuigoy7GbwdeqORzkhjvZQR1nXAP3ELaZ/rBdIaMye2mhsuEBzjdGg9jJx+3Uy+tGX
+ 8BVc3Qx29RDx5tQwYnhQQsVc1+kZrD67xa3m5j2f+vsJKiO9gS1dmUtyc63QV9hVHkXP2OR
+ tqT8QPoPscEGpQ+qmIP8A==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7F1LpOvsouI=;Wo/jQ98kjZ3U1U8zk8Ce57H/Sva
- iyFWl/mQO+j/jlHZzPwMx/i5j0+P8qWWK7U6a7pbTomIGNKcgBsIJEZhzvSNjD2bl8zrh+ukV
- iruavtwEV6KmR+w3tvee41Opdk7m/xZdqihb15hqmKrd5Rll+GrkBA57mWo8JjiKABLOT8J47
- EV9K1iVuGXeKjVVZQsnbCwQs0p2X+a0IZ2xWxycpRo0M8MKB7rSN1d+qlT8zjOG+Tmr53TVr0
- 1cVr48X0oJD8Iy0c7c62NIojCKKanwaWjBKBlBESyhwToTvIpPnu1mUogD+Y71N/y1FZhNNqu
- IWcQSZFHulYKd/69UBCSD9HffZBRa49IpLe2g0n+mqGXdW+sa3CIchkKxZU5AFtfodzjmP0IU
- FW84X/fvXwcLQiFpPvBTSWf09xLjq9nhltpwtUcWn81GN345GrLH+14TrQGhmWkBRFNDD6LgK
- GRRJd908BF3m4oncsQXNsXw9Mm4Sw41V5fr9UaCSUR4CSnaCkF9y7PGYQEk5MIfP32h/GYcuC
- vIe83h5obhtecRHlCaWIgx337OBdw+XBENQH945zzPZ6pwmt9vr+5Xr5hr1KSxAUoOhcelL+6
- NkeS/jwagLhMopEvmp/ZOrAASrizEy6ial4mdS8ErppYo3bplQX7LolPcc5/2cd2o5O5y7bM1
- +tCL9BpGy6zvTEeE5TdkpDmQ8yw6s0Ka6syNKg9N8o+21Wc/e7a6bqLoG17i550+/m04j9Jz1
- UfkrzplgQCQ24gAWDZ1PFboaurLUL3ugfhPEgB+NAXRp0CJ7fg9CkFWsMS0NqP/iBmMXWjRnM
- BxDjj/RvDdZPSKNebxMpw+iryTqKHIHh68ql/k9qsaaifY34jiLhmJAgNZs5EgyxZ74L8ydIy
- RrIP+KTnyiYP94n5Wq0WZ6W2ptTqC5t9YQrnKVlYVL5YlDLE7nB2v90B/
+UI-OutboundReport: notjunk:1;M01:P0:rJPp5Jke6VQ=;0WKEAn8I3JbCSo2xgpbsFmnY9j2
+ LPZKYo3p+nqZzg+Y8l0Ql8TznXEHpewSGVpwcSVqfU7WT4+q8cGsdRiytnJuoCQahmaeGGogg
+ HVogQHI7wSU8LzG9rcVCPOUG0/8vSd6R8+NdrHcz1XX/n9N4EuZOVjfaJZeSQuaAyPPOpDqzS
+ NVE4C65OfF8skY43BrhDJJQEJJf34BJFMUvIm95swQjktu/ojelHIU26vMbeFzMRG2aCP2upH
+ GMAMtMTrxoCxwLBHhDbQtbMH3WvuiLtEdli2cU8ZHaarvfTf3WXwM1k/lxFGjl2oqzEn/ndhA
+ NPCO1zEraGXNznLbcGkmBdrzPVHwoAPdXAhAicez0/PJw3BDxZhsg2w9k36OZgPJnZ50rRIM2
+ JaAq2kmLSx4CiSFeamUPcDhwpbr/enWAjkUh3MtB1bT30/rNSLlIwMxxOPxsE26Op7y+4oiQA
+ SEL4FgPGwvS4dULtlkCrZboex7vd+FpPoFLHRqw26p6jaGILFdMJFj7HrCE2EKCx8VUtAQ7D4
+ 8BvbcsY1Gz1SAE+Vpjupf1cPGowiEmrqVyuyR/1QPFAZWIB2RVx7jniRFOasz1YuqCfHT963l
+ R7Ciw8rWfz3woK7I0/p+FD3FMTXLIQX32Egf2rSQbbqi6SrbjWMlnRV6zn8MeJpfeYToEndVd
+ uQXOpyZoYIkr1kJKX8XZa4ocXX+dc59g0kfGWcNsRWngNSwoNfRLo8zsTx6msqRyyfIM42rR+
+ oiv9nQ58QuyFPg2MR3+uUwASny58xq2kd1rVen71Jjw1rUsXAuMA3jFmLrvPqDCbhj34EbPe+
+ lltvTARIn5ke6nvoDbwyifeg==
 
-Am 07.11.24 um 23:09 schrieb Mario Limonciello:
-
-> On 11/7/2024 02:28, Armin Wolf wrote:
->> Am 07.11.24 um 07:02 schrieb Mario Limonciello:
->>
->>> The `choices` file will show all possible choices that a given platfor=
-m
->>> profile handler can support.
->>>
->>> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>> ---
->>> v5:
->>> =C2=A0 * Fix kdoc
->>> =C2=A0 * Add tag
->>> =C2=A0 * Fix whitespace
->>> =C2=A0 * Adjust mutex use
->>> ---
->>> =C2=A0 drivers/acpi/platform_profile.c | 65
->>> +++++++++++++++++++++++++++++++++
->>> =C2=A0 1 file changed, 65 insertions(+)
->>>
->>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/
->>> platform_profile.c
->>> index f605c2bd35c68..5e0bb91c5f451 100644
->>> --- a/drivers/acpi/platform_profile.c
->>> +++ b/drivers/acpi/platform_profile.c
->>> @@ -25,6 +25,46 @@ static_assert(ARRAY_SIZE(profile_names) =3D=3D
->>> PLATFORM_PROFILE_LAST);
->>>
->>> =C2=A0 static DEFINE_IDA(platform_profile_ida);
->>>
->>> +/**
->>> + * _commmon_choices_show - Show the available profile choices
->>> + * @choices: The available profile choices
->>> + * @buf: The buffer to write to
->>> + * Return: The number of bytes written
->>> + */
->>> +static ssize_t _commmon_choices_show(unsigned long choices, char *buf=
-)
->>> +{
->>> +=C2=A0=C2=A0=C2=A0 int i, len =3D 0;
->>> +
->>> +=C2=A0=C2=A0=C2=A0 for_each_set_bit(i, &choices, PLATFORM_PROFILE_LAS=
-T) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (len =3D=3D 0)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 le=
-n +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 le=
-n +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
->>> +=C2=A0=C2=A0=C2=A0 }
->>> +=C2=A0=C2=A0=C2=A0 len +=3D sysfs_emit_at(buf, len, "\n");
->>> +
->>> +=C2=A0=C2=A0=C2=A0 return len;
->>> +}
->>> +
->>> +/**
->>> + * _get_class_choices - Get the available profile choices for a
->>> class device
->>> + * @dev: The class device
->>> + * @choices: Pointer to return the available profile choices
->>> + * Return: The available profile choices
->>> + */
->>> +static int _get_class_choices(struct device *dev, unsigned long
->>> *choices)
->>> +{
->>> +=C2=A0=C2=A0=C2=A0 struct platform_profile_handler *handler;
->>> +=C2=A0=C2=A0=C2=A0 int i;
->>> +
->>> +=C2=A0=C2=A0=C2=A0 lockdep_assert_held(&profile_lock);
->>> +=C2=A0=C2=A0=C2=A0 handler =3D dev_get_drvdata(dev);
->>> +=C2=A0=C2=A0=C2=A0 for_each_set_bit(i, handler->choices, PLATFORM_PRO=
-FILE_LAST)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *choices |=3D BIT(i);
->>
->> Maybe just copying the bitmask would be enough here? In this case we
->> could also drop
->> this function as well.
->
-> Right now this could work, but choices and the use of it has gone
-> through great lengths to ensure that once there are too many profiles
-> it automatically becomes a bigger variable.
->
-> =C2=A0=C2=A0=C2=A0=C2=A0unsigned long choices[BITS_TO_LONGS(PLATFORM_PRO=
-FILE_LAST)];
->
-> So I would rather keep this as is.
->
-I think users of this function can do the locking themself and instead use=
- the functions from bitmap.h. Because _get_class_choices() will break once=
- "choices" becomes bigger.
-
-Thanks,
-Armin Wolf
-
->>
->>> +
->>> +=C2=A0=C2=A0=C2=A0 return 0;
->>> +}
->>> +
->>> =C2=A0 /**
->>> =C2=A0=C2=A0 * name_show - Show the name of the profile handler
->>> =C2=A0=C2=A0 * @dev: The device
->>> @@ -44,9 +84,34 @@ static ssize_t name_show(struct device *dev,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ERESTARTSYS;
->>> =C2=A0 }
->>>
->>> +/**
->>> + * choices_show - Show the available profile choices
->>> + * @dev: The device
->>> + * @attr: The attribute
->>> + * @buf: The buffer to write to
->>> + */
->>> +static ssize_t choices_show(struct device *dev,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 struct device_attribute *attr,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 char *buf)
->>> +{
->>> +=C2=A0=C2=A0=C2=A0 unsigned long choices =3D 0;
->>> +=C2=A0=C2=A0=C2=A0 int err;
->>> +
->>> +=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -ERESTARTSYS,
->>> &profile_lock) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D _get_class_choices=
-(dev, &choices);
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn err;
->>> +=C2=A0=C2=A0=C2=A0 }
->>
->> Please directly use the choices field here, no need for a mutex since
->> the choices are static
->> across the lifetime of the platform profile.
->
-> But similarly to my other message, the class could be unregistered and
-> this needs to be protected.
->
->>
->> Thanks,
->> Armin Wolf
->>
->>> +
->>> +=C2=A0=C2=A0=C2=A0 return _commmon_choices_show(choices, buf);
->>> +}
->>> +
->>> =C2=A0 static DEVICE_ATTR_RO(name);
->>> +static DEVICE_ATTR_RO(choices);
->>> +
->>> =C2=A0 static struct attribute *profile_attrs[] =3D {
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &dev_attr_name.attr,
->>> +=C2=A0=C2=A0=C2=A0 &dev_attr_choices.attr,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NULL
->>> =C2=A0 };
->>> =C2=A0 ATTRIBUTE_GROUPS(profile);
->
+QW0gMDcuMTEuMjQgdW0gMjM6MDUgc2NocmllYiBNYXJpbyBMaW1vbmNpZWxsbzoNCg0KPiBPbiAx
+MS83LzIwMjQgMDI6NTgsIEFybWluIFdvbGYgd3JvdGU6DQo+PiBBbSAwNy4xMS4yNCB1bSAwNzow
+MiBzY2hyaWViIE1hcmlvIExpbW9uY2llbGxvOg0KPj4NCj4+PiBBcyBtdWx0aXBsZSBwbGF0Zm9y
+bSBwcm9maWxlIGhhbmRsZXJzIG1pZ2h0IG5vdCBhbGwgc3VwcG9ydCB0aGUgc2FtZQ0KPj4+IHBy
+b2ZpbGUsIGN5Y2xpbmcgdG8gdGhlIG5leHQgcHJvZmlsZSBjb3VsZCBoYXZlIGEgZGlmZmVyZW50
+IHJlc3VsdA0KPj4+IGRlcGVuZGluZyBvbiB3aGF0IGhhbmRsZXIgYXJlIHJlZ2lzdGVyZWQuDQo+
+Pj4NCj4+PiBDaGVjayB3aGF0IGlzIGFjdGl2ZSBhbmQgc3VwcG9ydGVkIGJ5IGFsbCBoYW5kbGVy
+cyB0byBkZWNpZGUgd2hhdA0KPj4+IHRvIGRvLg0KPj4+DQo+Pj4gVGVzdGVkLWJ5OiBNYXJrIFBl
+YXJzb24gPG1wZWFyc29uLWxlbm92b0BzcXVlYmIuY2E+DQo+Pj4gU2lnbmVkLW9mZi1ieTogTWFy
+aW8gTGltb25jaWVsbG8gPG1hcmlvLmxpbW9uY2llbGxvQGFtZC5jb20+DQo+Pj4gLS0tDQo+Pj4g
+djU6DQo+Pj4gwqAgKiBBZGp1c3QgbXV0ZXggdXNlDQo+Pj4gLS0tDQo+Pj4gwqAgZHJpdmVycy9h
+Y3BpL3BsYXRmb3JtX3Byb2ZpbGUuYyB8IDIzICsrKysrKysrKysrKysrLS0tLS0tLS0tDQo+Pj4g
+wqAgMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQo+Pj4N
+Cj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3BsYXRmb3JtX3Byb2ZpbGUuYyBiL2RyaXZl
+cnMvYWNwaS8gDQo+Pj4gcGxhdGZvcm1fcHJvZmlsZS5jDQo+Pj4gaW5kZXggN2YzMDJhYzRkMzc3
+OS4uMmM0NjZmMmQxNmI0MiAxMDA2NDQNCj4+PiAtLS0gYS9kcml2ZXJzL2FjcGkvcGxhdGZvcm1f
+cHJvZmlsZS5jDQo+Pj4gKysrIGIvZHJpdmVycy9hY3BpL3BsYXRmb3JtX3Byb2ZpbGUuYw0KPj4+
+IEBAIC00MTEsMzQgKzQxMSwzOSBAQCBFWFBPUlRfU1lNQk9MX0dQTChwbGF0Zm9ybV9wcm9maWxl
+X25vdGlmeSk7DQo+Pj4NCj4+PiDCoCBpbnQgcGxhdGZvcm1fcHJvZmlsZV9jeWNsZSh2b2lkKQ0K
+Pj4+IMKgIHsNCj4+PiArwqDCoMKgIGVudW0gcGxhdGZvcm1fcHJvZmlsZV9vcHRpb24gbmV4dCA9
+IFBMQVRGT1JNX1BST0ZJTEVfTEFTVDsNCj4+PiDCoMKgwqDCoMKgIGVudW0gcGxhdGZvcm1fcHJv
+ZmlsZV9vcHRpb24gcHJvZmlsZTsNCj4+PiAtwqDCoMKgIGVudW0gcGxhdGZvcm1fcHJvZmlsZV9v
+cHRpb24gbmV4dDsNCj4+PiArwqDCoMKgIHVuc2lnbmVkIGxvbmcgY2hvaWNlczsNCj4+PiDCoMKg
+wqDCoMKgIGludCBlcnI7DQo+Pj4NCj4+PiDCoMKgwqDCoMKgIGlmICghY2xhc3NfaXNfcmVnaXN0
+ZXJlZCgmcGxhdGZvcm1fcHJvZmlsZV9jbGFzcykpDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIHJl
+dHVybiAtRU5PREVWOw0KPj4+DQo+Pj4gwqDCoMKgwqDCoCBzY29wZWRfY29uZF9ndWFyZChtdXRl
+eF9pbnRyLCByZXR1cm4gLUVSRVNUQVJUU1lTLCANCj4+PiAmcHJvZmlsZV9sb2NrKSB7DQo+Pj4g
+LcKgwqDCoMKgwqDCoMKgIGlmICghY3VyX3Byb2ZpbGUpDQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgcmV0dXJuIC1FTk9ERVY7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGVyciA9IGNsYXNzX2Zv
+cl9lYWNoX2RldmljZSgmcGxhdGZvcm1fcHJvZmlsZV9jbGFzcywgTlVMTCwNCj4+PiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAmcHJvZmlsZSwgX2FnZ3Jl
+Z2F0ZV9wcm9maWxlcyk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGlmIChlcnIpDQo+Pj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGVycjsNCj4+Pg0KPj4+IC3CoMKgwqDCoMKgwqDCoCBl
+cnIgPSBjdXJfcHJvZmlsZS0+cHJvZmlsZV9nZXQoY3VyX3Byb2ZpbGUsICZwcm9maWxlKTsNCj4+
+PiArwqDCoMKgwqDCoMKgwqAgZXJyID0gY2xhc3NfZm9yX2VhY2hfZGV2aWNlKCZwbGF0Zm9ybV9w
+cm9maWxlX2NsYXNzLCBOVUxMLA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICZjaG9pY2VzLCBfYWdncmVnYXRlX2Nob2ljZXMpOw0KPj4+IMKgwqDC
+oMKgwqDCoMKgwqDCoCBpZiAoZXJyKQ0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJl
+dHVybiBlcnI7DQo+Pj4NCj4+PiAtwqDCoMKgwqDCoMKgwqAgbmV4dCA9IGZpbmRfbmV4dF9iaXRf
+d3JhcChjdXJfcHJvZmlsZS0+Y2hvaWNlcywgDQo+Pj4gUExBVEZPUk1fUFJPRklMRV9MQVNULA0K
+Pj4+ICvCoMKgwqDCoMKgwqDCoCBuZXh0ID0gZmluZF9uZXh0X2JpdF93cmFwKCZjaG9pY2VzLA0K
+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUExBVEZPUk1f
+UFJPRklMRV9MQVNULA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgcHJvZmlsZSArIDEpOw0KPj4NCj4+IENvdWxkIGl0IGJlIHRoYXQgdGhpcyB3b3Vs
+ZCBsZWFkIHRvIGJlICJjdXN0b20iIHByb2ZpbGUgYmVpbmcgDQo+PiBzZWxlY3RlZCB1bmRlciBz
+b21lIGNvbmRpdGlvbnM/DQo+DQo+IFllYWgsIHlvdSdyZSByaWdodC7CoCBJZiBhbGwgZHJpdmVy
+cyBzdXBwb3J0ZWQgY3VzdG9tIHRoZW4gdGhpcyBjb3VsZCANCj4gaGFwcGVuLsKgIEknbGwgY2xl
+YXIgY3VzdG9tIGxpa2UgdGhpczoNCj4NCj4gwqDCoMKgwqDCoMKgwqAgY2hvaWNlcyAmPSB+QklU
+KFBMQVRGT1JNX1BST0ZJTEVfQ1VTVE9NKTsNCj4NClNvdW5kIGdvb2QgdG8gbWUuDQoNCj4+IEFs
+c28gX2FnZ3JlZ2F0ZV9wcm9maWxlcygpIGV4cGVjdHMgcHJvZmlsZSB0byBiZSBpbml0aWFsaXpl
+ZCB3aXRoIA0KPj4gUExBVEZPUk1fUFJPRklMRV9MQVNULg0KPg0KPiBXaWxsIGNvcnJlY3QgaW5p
+dGlhbGl6YXRpb24gaW4gcGxhdGZvcm1fcHJvZmlsZV9jeWNsZSgpIHRvIHRoaXMuDQo+DQo+IMKg
+wqDCoMKgZW51bSBwbGF0Zm9ybV9wcm9maWxlX29wdGlvbiBwcm9maWxlID0gUExBVEZPUk1fUFJP
+RklMRV9MQVNUOw0KPg0KPiBCdXQgdGhpcyBhbHNvIHJhaXNlcyBhIGdvb2QgcG9pbnQuwqAgSWYg
+X2FnZ3JlZ2F0ZV9wcm9maWxlcygpIHJldHVybnMNCj4gY3VzdG9tIHRoZW4gdGhpcyBzaG91bGQg
+YmUgYW4gZXJyb3IgYmVjYXVzZSBuZXh0IHByb2ZpbGUgaXMgdW5kZWZpbmVkLg0KPiBTbyBJJ2xs
+IGNhdGNoIHRoYXQgbGlrZSB0aGlzLg0KPiDCoMKgwqDCoMKgwqDCoCBlcnIgPSBjbGFzc19mb3Jf
+ZWFjaF9kZXZpY2UoKQ0KPiDCoMKgwqDCoMKgwqDCoCBpZiAoZXJyKQ0KPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIHJldHVybiBlcnI7DQo+IMKgwqDCoMKgwqDCoMKgIGlmIChwcm9maWxlID09IFBM
+QVRGT1JNX1BST0ZJTEVfQ1VTVE9NKQ0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAt
+RUlOVkFMOw0KDQpHb29kIHBvaW50LCBwbGVhc2UgYWxzbyBjaGVjayBpZiBwcm9maWxlID09IFBM
+QVRGT1JNX1BST0ZJTEVfTEFTVCBpbiBjYXNlIG5vIHBsYXRmb3JtIHByb2ZpbGUgaGFuZGxlcnMg
+YXJlIGN1cnJlbnRseSBpbnN0YWxsZWQuDQoNClRoYW5rcywNCkFybWluIFdvbA0KDQo+Pg0KPj4g
+VGhhbmtzLA0KPj4gQXJtaW4gV29sZg0KPj4NCj4+Pg0KPj4+IC3CoMKgwqDCoMKgwqDCoCBpZiAo
+V0FSTl9PTihuZXh0ID09IFBMQVRGT1JNX1BST0ZJTEVfTEFTVCkpDQo+Pj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgcmV0dXJuIC1FSU5WQUw7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGVyciA9IGNs
+YXNzX2Zvcl9lYWNoX2RldmljZSgmcGxhdGZvcm1fcHJvZmlsZV9jbGFzcywgTlVMTCwgDQo+Pj4g
+Jm5leHQsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgX3N0b3JlX2NsYXNzX3Byb2ZpbGUpOw0KPj4+DQo+Pj4gLcKgwqDCoMKgwqDCoMKgIGVyciA9
+IGN1cl9wcm9maWxlLT5wcm9maWxlX3NldChjdXJfcHJvZmlsZSwgbmV4dCk7DQo+Pj4gwqDCoMKg
+wqDCoMKgwqDCoMKgIGlmIChlcnIpDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0
+dXJuIGVycjsNCj4+PiDCoMKgwqDCoMKgIH0NCj4+Pg0KPj4+IMKgwqDCoMKgwqAgc3lzZnNfbm90
+aWZ5KGFjcGlfa29iaiwgTlVMTCwgInBsYXRmb3JtX3Byb2ZpbGUiKTsNCj4+PiAtwqDCoMKgIHJl
+dHVybiAwOw0KPj4+ICsNCj4+PiArwqDCoMKgIHJldHVybiBlcnI7DQo+Pj4gwqAgfQ0KPj4+IMKg
+IEVYUE9SVF9TWU1CT0xfR1BMKHBsYXRmb3JtX3Byb2ZpbGVfY3ljbGUpOw0KPj4+DQo+DQo+DQo=
 
