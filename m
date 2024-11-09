@@ -1,218 +1,407 @@
-Return-Path: <linux-acpi+bounces-9480-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9481-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD5B9C2A1B
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Nov 2024 05:47:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C6C9C2AEE
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Nov 2024 08:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30401B22965
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Nov 2024 04:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147EE1C21015
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Nov 2024 07:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB17198E6D;
-	Sat,  9 Nov 2024 04:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078EF13C9B8;
+	Sat,  9 Nov 2024 07:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VSjSz/pW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x2rNUr3m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDCC197A6A;
-	Sat,  9 Nov 2024 04:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731127387; cv=fail; b=JOb74QiJ8Kh4ICGRm+PNdrZFCaBkCktJ7xq0LGA08bE9vqbf2Mmuj3WKr5upRQ1XVeOSm71ifKzobiyCqdG17UMLVicOuEL95lZJg+h1FA20TR8wwJSQZTPeW6+Hfg04T6eM7SUNg9r/F5McvnYdvx5VwgJNcHZyMAzo9OL9OII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731127387; c=relaxed/simple;
-	bh=/+/ROlHIruuC8Ptk3wbPDnl/Q1PdBpPyHTOE4QQFJzE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g9/gfv84kkmQGeRrAN0UYbMrpB/U+23gMI2M3ZWRVxrPmkv9M5w+rJIB/E20T6roPbthd4u2HaXYdudeJ2u34vm4wmnxRlKg9wroTbmRY9ognMQbARrCOLuh6Z9ZFPn2l9ZJEoHqpFqRcK4vD0GJuig3ZBgLwQI7qc1XVOwHDlw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VSjSz/pW; arc=fail smtp.client-ip=40.107.237.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ellgB+9wHNiTkVpQi3zS129lXjeeNGUkZIsEhWZsQNT+TIfW4PU+jGoCpGuV4nb4/dVe1o0BDGTCBwgDl/oBoHWOMU+5wqwKPy913O2ZaHdz5Qc/4WsI4UVfEAexpEiNJEmzfDp74L9VMlnf2HCH1E2YyImRcX5bKH/1+gsEIv+r7b07n1QyDQoM4bBkIyfRyHgM/ULZbHmxnhYBBBRTtTJmciyQ78FeeWHZWaYpH7X2GBrmz4zyVw2rwKn4cVFUNMveE0mCeprVJC3irDw6Qr3ra/cLk9368bV4g0fBtJAT00F2MvyakpwuvDwyWuZUxJRNKazby5Ov7BC0PgVqgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xMYzj0HO6grQuskdeKK/x04e7ys9n7Ov1LkG/6DM3OQ=;
- b=MoWgFH3bh/Uwyq9wV72bOt8bg3QwN+n0hwBFz4Qr2FKAX6+PlIQ1t1KnGTW3Cdl2A9Xuat2tBBDzx2e4IPogaDqT1wh6+mt6ZYf9sS+TwMFnO32sfqxY1lKwOrkUmVbU0sZzuz1eRDQlsNcbM9QLbWsWiCRADktKdAj5xwQvWjTCRQOgBTgvbmPGmQY3BXjoeKDSIxHkKk/+qDe4rujzMCZJcOeJT2atXDq5YINu4xzecEvW8bmoSrSbmgpRy5hxJlrfiEZ1ttSobPApYDhqjCVIdzKehv4QgdhwJiaDjYyYvTUUxyM6I8tvudA3Qko2PO3k16s4Beerx2rZ0TX1KQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xMYzj0HO6grQuskdeKK/x04e7ys9n7Ov1LkG/6DM3OQ=;
- b=VSjSz/pWlJaZgaeuOM77sZeEC1qhWc/FZ8lexx6kbr0ApiY0JCr3rIA9ukawe7Xkh6Ifc/BnSTX4PfCOvfdw2ulg4MmyXRSATgc1uDL4hor6ep/QlDzuksOu4OJOM8XQc3NfLF3VT5OyyRrh8ns6ipeoLaoLtS6uNIWaMWRYUME=
-Received: from SN4PR0501CA0046.namprd05.prod.outlook.com
- (2603:10b6:803:41::23) by IA0PR12MB8974.namprd12.prod.outlook.com
- (2603:10b6:208:488::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18; Sat, 9 Nov
- 2024 04:43:01 +0000
-Received: from SN1PEPF00026369.namprd02.prod.outlook.com
- (2603:10b6:803:41:cafe::cf) by SN4PR0501CA0046.outlook.office365.com
- (2603:10b6:803:41::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.11 via Frontend
- Transport; Sat, 9 Nov 2024 04:43:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF00026369.mail.protection.outlook.com (10.167.241.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8137.17 via Frontend Transport; Sat, 9 Nov 2024 04:43:01 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 8 Nov
- 2024 22:42:59 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
-	<ilpo.jarvinen@linux.intel.com>
-CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, "Shyam
- Sundar S K" <Shyam-sundar.S-k@amd.com>, Corentin Chary
-	<corentin.chary@gmail.com>, "Luke D . Jones" <luke@ljones.dev>, Ike Panhc
-	<ike.pan@canonical.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	"Alexis Belmonte" <alexbelm48@gmail.com>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
-	<u.kleine-koenig@pengutronix.de>, Ai Chao <aichao@kylinos.cn>, Gergo Koteles
-	<soyer@irl.hu>, open list <linux-kernel@vger.kernel.org>, "open list:ACPI"
-	<linux-acpi@vger.kernel.org>, "open list:MICROSOFT SURFACE PLATFORM PROFILE
- DRIVER" <platform-driver-x86@vger.kernel.org>, "open list:THINKPAD ACPI
- EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, Mark Pearson
-	<mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v6 22/22] Documentation: Add documentation about class interface for platform profiles
-Date: Fri, 8 Nov 2024 22:41:51 -0600
-Message-ID: <20241109044151.29804-23-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241109044151.29804-1-mario.limonciello@amd.com>
-References: <20241109044151.29804-1-mario.limonciello@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF971CA6B
+	for <linux-acpi@vger.kernel.org>; Sat,  9 Nov 2024 07:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731135926; cv=none; b=EcVF9xjXwk46wUNKz3H3i2Eeny/Fuf9qXcUdW6PwN7Giy0mW5cr3snoVRl8Hf0VQc6yjYR18ONlR2cPDII4JtKavUfeRjh2Jf3Iv6Mp53PN9sCQjMAHwStyFPBil2Rwm40L1u4fNU70vnEe1TwOKxudFwJxTQUUZCOCu5cAYK9g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731135926; c=relaxed/simple;
+	bh=QBWrQAZe4RkfnNpuxREn7Ccetz0FPBegWZvSqiF28qk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XEQbeaUFKie8B5RdrCxeeQw1cAMLTbrbQFc9gcCSyOReHOYe+846Zg7eVJESiRGSEi4WnqAU7R/tQI9pjyZECM3vSSkHCM3cCJVxCk2OxX1n8KU/mIleWYQ682kdgWT5RpjxXHSD10z23jSuXFauPJFE3HWEUDQSWGF5v5X1/48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x2rNUr3m; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539f2b95775so3943637e87.1
+        for <linux-acpi@vger.kernel.org>; Fri, 08 Nov 2024 23:05:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731135923; x=1731740723; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qK89Gn/2BNMULqn/Te3QgPk+7HsFVw5alc1hlF/PKtw=;
+        b=x2rNUr3mkU3IdiSRGkJ2TqBwskqv0Mrv0p4SDlaffYWlhUsNTi9XUkesmoYIJ1TbfC
+         MniWZ8X1QPdv/F6DJL5hyFPrOYSmD3/H/ri7HpBcpv09NlZlUOvhEbn57rtrViUlydBL
+         eFaATcm1YJIghWVv6jXW/hTgStoh7FKp9MYU+g5oJ6IaF1lXtRNlypv1Wm1wLDkci4RQ
+         wMDznQmhJeWFqmrDaByT3PvWDnjvIo+XDXAAsGev5jVsG5h/BwXkLKtkRKcZIAJ+LWN8
+         xrF0Kmae/kZFndb2RBxh9gpijkERIdUIj/qLsbJXByJoBuVaQDhKYiyo59n/tUok8Tkw
+         KAMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731135923; x=1731740723;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qK89Gn/2BNMULqn/Te3QgPk+7HsFVw5alc1hlF/PKtw=;
+        b=eO2p8G46tnQ2tRqs+FeSjJ2vfbE74jANXU+JjC78sU6SIzVFXaaWZRRqpRR4mPrwQ4
+         5C3txqwqG3Iddeg1oYaOcCS/o4Xtc6EVL0p9MHzlaadRnmL3gB6pmaO6FppN/nHiwR15
+         iOjF0f3T1l/VzExoSGnPBK+CVaeut2bV6IPS9X5zqzzEAlZi0gXDXrTOHX97AsjZmZ5i
+         n1brT+1DTebWMp0N+yNEudu9fk/xlRlsQvfJkarXTpUsSi7sD6jRgZ1j8Fr3Pltb9SNM
+         6HrcL7WVSAbV14mpfMCrk/vIQGMKPQf8Q+jJqiXIDT/gqtn2KD+8yFDk0s2wHCto65wh
+         GZyw==
+X-Forwarded-Encrypted: i=1; AJvYcCX408LS8nwQAeoMkhmSzsG3L9/6S/304p+5wYY49XGYQKkrGE6LjMFK/LOv2HytDJ04kLBxhE7HHrfE@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3h4OIgs0umfFIvBM7PHzfyI2d5qpXYyM/yRXIUGGDIn+rQsoZ
+	wwORS8iC+GFLfcn7PqQdGlGJthoAxwkpCZau9lK/GHl/xLJ4K/BgpdHWrirepcE=
+X-Google-Smtp-Source: AGHT+IFDj1LLmHbRZOO+/S6hnT+C0wYhtqnCl28IZmhVg58DIluM8aGKuUuRjj41zc6/5ThGI4Rqiw==
+X-Received: by 2002:a05:6512:b83:b0:536:53e3:feae with SMTP id 2adb3069b0e04-53d862bebd9mr4269153e87.11.1731135922597;
+        Fri, 08 Nov 2024 23:05:22 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d82678641sm852333e87.10.2024.11.08.23.05.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 23:05:21 -0800 (PST)
+Date: Sat, 9 Nov 2024 09:05:18 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Stephen Boyd <swboyd@chromium.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, devicetree@vger.kernel.org, 
+	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, 
+	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org, 
+	Guenter Roeck <groeck@chromium.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
+	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
+ google,cros-ec-typec for DP altmode
+Message-ID: <hqmx7jtkvrwvb27n56hw7rpefhp37lhr3a5fawz7gsl76uuj5s@h7m6wpdhibkk>
+References: <20240901040658.157425-1-swboyd@chromium.org>
+ <20240901040658.157425-16-swboyd@chromium.org>
+ <phdcjgqqpjpruxp7v2mw446q73xr3eg4wfgfbjw5tasgr2pgg2@77swbk47b2tg>
+ <CAE-0n514QMaQC2yjKP8bZqyfbv6B3AQm=+NJ87vxo6NdYiL03A@mail.gmail.com>
+ <lf7y7wpuca6kzqcglgs5d443iusf7xjocum4adi7t3npfavccx@zgsp37oyztme>
+ <CAE-0n53-KmOS3zXmJPvOOZ7xxkek9-S=oBExgaY0PDnt_HjdNw@mail.gmail.com>
+ <yk3xidaisbd56yndaucax7otijjauqmm7lqm6q4q633kdawlqo@qaq27lwxmvwd>
+ <CAE-0n501j+8bMnMKabFyZjn+MLUy3Z68Hiv1PsfW0APy5ggN8g@mail.gmail.com>
+ <gstohhcdnmnkszk4l2ikd5xiewtotgo5okia62paauj6zpaw7y@4wchyvoynm2p>
+ <CAE-0n50z6MNa7WOsg-NU7k8BpFeJJyYfHX3ov6DsthLWauSNpA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00026369:EE_|IA0PR12MB8974:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2a6b79b-46fd-4b88-55ce-08dd0078fddb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Vn4gPE5YCOLR/tto7r0y26CsmogVlqpgTEciqZD3WJxRhh/7u4+ku/7nmNUW?=
- =?us-ascii?Q?xXcE5pth8vFfDWhf6QSrZE2k4u9Kwe9ddWlov9BptU0BwEwC5SH3GSgWwc6f?=
- =?us-ascii?Q?zThWhwPwymPc1YkcAO96zKGDfopcVKd5KSxSh4Y3mqvEeks0SD2zWRTuN+tU?=
- =?us-ascii?Q?UEBPvJ9T4ARdnW31gt24F9fqpQ7FTeCuRfSVhoHWv/gBDYNE3hPT525wKfOE?=
- =?us-ascii?Q?QMmBXW6+g8U4zVXlC82yII5OUuKqP8vYsUjt0yiyFq6l8DDTY8ysVaaOEVQ6?=
- =?us-ascii?Q?hdiiWZ5sQBdXGOkBZymF8/wbAFnZlP1LEOo0gXcrVPuY9LibeDvQV/CUiRKk?=
- =?us-ascii?Q?Gej3AwYE49QxVJbMda/9/dNLyczQpw6+dI4yMZX6eczrjL9eUs9/CZNp6zwx?=
- =?us-ascii?Q?wLTBokoMdGzFc5nZXdEiwZiqwwEHu4AADnarBpTbVJIWdLCJ897j6o2Ja1Ll?=
- =?us-ascii?Q?NwsXyteUaNCDTWVulPtg7h3pT5ICgoNutE/eQyEns4Q6cw/pHFEmkjE91qQx?=
- =?us-ascii?Q?B3ckBrbbIckF2Sb0a/lwNAcIcc/WR9aI30MiHmZ6v+IhPv0BqTACZMdBkEJv?=
- =?us-ascii?Q?VQChcHJRXw8xYCBxwaRzjXB/VWMRlog6zYIsnlvNYMJARdTVHKDInoUjnDeI?=
- =?us-ascii?Q?4G9B5g5VrqPuJv1em9irTTuaT2K+1P12iNPxoMmnKjjArGE0IDfjKzF3l2c2?=
- =?us-ascii?Q?HSCSksZBTmi78wloNsNpbuJdKkq9z1eIIVQJzf66btWayCEsjXbp68026+nD?=
- =?us-ascii?Q?qid5ROrr1svdq9+LeriehY4XO7SyC+fY1JPfOpTNWYEDf1Z3P7Dw+FuqhddR?=
- =?us-ascii?Q?Gu4m5pStMoKb+lOzbHbTgJcQAKothcNIsQutO8QbU+uCF20S48o5bsd0CXOy?=
- =?us-ascii?Q?pmvrHwvyhDfRW1lpEjqnNozB+e4uRFGi8cmngUdBgM2zhWEanHuvn/kodz4l?=
- =?us-ascii?Q?dr4sVkhzcCORUMxit78Ioc3glkPhu1hCtJTbyokb95xLr4f0dbXRMKBQIT6m?=
- =?us-ascii?Q?8Ei2BpCnjhseID066HkgmNkESF6QNPKD9eLI0paaE5AnbGeLDvmR46lPmZpo?=
- =?us-ascii?Q?N6qcrTRm4UTjbE2D3yvycdfvxVV5Ekjk46+GX8xQt3QHBEWP+fNnG0KmGeab?=
- =?us-ascii?Q?lKL8E5cMj+WFyeaj0l8tjyx0VwoqH7vaYoGhy8DHM0IdrNb8dvTNRnhjYafD?=
- =?us-ascii?Q?hJlUCLHlwj3OfrcDlgyQdOz9o0wAHnMK2sXqu3VwK4J8vl6vYQz8utP+Fd5u?=
- =?us-ascii?Q?AvjbNtazabRT4dUHBpF7xnvJhdl7aCIYwdCuoVJs+MYQsjjXtiQgRTwx39ry?=
- =?us-ascii?Q?HdrLhSyXiMp7G+hMCqHCRE+LBOi5KeGpBd2IP63OV++SJ3qU0Zh7lrtq1Ovh?=
- =?us-ascii?Q?2g7M6fqtPc+oOUhgATMKYzj1cPon9u3zfOgVW5TLpRhIGIg70Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2024 04:43:01.0782
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2a6b79b-46fd-4b88-55ce-08dd0078fddb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00026369.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8974
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAE-0n50z6MNa7WOsg-NU7k8BpFeJJyYfHX3ov6DsthLWauSNpA@mail.gmail.com>
 
-The class interface allows changing multiple platform profiles on a system
-to different values. The semantics of it are similar to the legacy
-interface.
+On Thu, Nov 07, 2024 at 04:28:24PM -0800, Stephen Boyd wrote:
+> Quoting Dmitry Baryshkov (2024-10-31 15:54:49)
+> > On Thu, Oct 31, 2024 at 02:45:29PM -0700, Stephen Boyd wrote:
+> > > Quoting Dmitry Baryshkov (2024-10-31 11:42:36)
+> > > > On Tue, Oct 29, 2024 at 01:15:51PM -0700, Stephen Boyd wrote:
+> > >
+> > > Or use a displayport property that goes to connector node itself so that
+> > > we don't extend the graph binding of the usb-c-connector.
+> > >
+> > >   cros-ec-typec {
+> > >     usb-c-connector@0 {
+> > >       altmodes {
+> > >         displayport {
+> > >           connector = <&dp_ml0_ml1>;
+> >
+> > I think this has been frowned upon. Not exactly this, but adding the
+> > displayport = <&foo>.
+> 
+> Do you have a pointer to that discussion? I'd like to understand the
+> reasoning.
 
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-v5:
- * Fix some typos
----
- .../ABI/testing/sysfs-platform_profile        |  5 ++++
- .../userspace-api/sysfs-platform_profile.rst  | 28 +++++++++++++++++++
- 2 files changed, 33 insertions(+)
+No, unfortunately I couldn't find it.
 
-diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
-index baf1d125f9f83..125324ab53a96 100644
---- a/Documentation/ABI/testing/sysfs-platform_profile
-+++ b/Documentation/ABI/testing/sysfs-platform_profile
-@@ -33,3 +33,8 @@ Description:	Reading this file gives the current selected profile for this
- 		source such as e.g. a hotkey triggered profile change handled
- 		either directly by the embedded-controller or fully handled
- 		inside the kernel.
-+
-+		This file may also emit the string 'custom' to indicate
-+		that multiple platform profiles drivers are in use but
-+		have different values.  This string can not be written to
-+		this interface and is solely for informational purposes.
-diff --git a/Documentation/userspace-api/sysfs-platform_profile.rst b/Documentation/userspace-api/sysfs-platform_profile.rst
-index 4fccde2e45639..b746c30432753 100644
---- a/Documentation/userspace-api/sysfs-platform_profile.rst
-+++ b/Documentation/userspace-api/sysfs-platform_profile.rst
-@@ -40,3 +40,31 @@ added. Drivers which wish to introduce new profile names must:
-  1. Explain why the existing profile names cannot be used.
-  2. Add the new profile name, along with a clear description of the
-     expected behaviour, to the sysfs-platform_profile ABI documentation.
-+
-+Multiple driver support
-+=======================
-+When multiple drivers on a system advertise a platform profile handler, the
-+platform profile handler core will only advertise the profiles that are
-+common between all drivers to the ``/sys/firmware/acpi`` interfaces.
-+
-+This is to ensure there is no ambiguity on what the profile names mean when
-+all handlers don't support a profile.
-+
-+Individual drivers will register a 'platform_profile' class device that has
-+similar semantics as the ``/sys/firmware/acpi/platform_profile`` interface.
-+
-+To discover available profiles from the class interface the user can read the
-+``choices`` attribute.
-+
-+If a user wants to select a profile for a specific driver, they can do so
-+by writing to the ``profile`` attribute of the driver's class device.
-+
-+This will allow users to set different profiles for different drivers on the
-+same system. If the selected profile by individual drivers differs the
-+platform profile handler core will display the profile 'custom' to indicate
-+that the profiles are not the same.
-+
-+While the ``platform_profile`` attribute has the value ``custom``, writing a
-+common profile from ``platform_profile_choices`` to the platform_profile
-+attribute of the platform profile handler core will set the profile for all
-+drivers.
+> 
+> 
+> >
+> > Thus it can only go to the swnode that is generated in software by the
+> > cros-ec driver.
+> 
+> I recall swnode as a way to sidestep figuring out the DT bindings for
+> usb typec. Where is this swnode being made? Somewhere inside the typec
+> framework?
+
+In the cros-ec driver?
+
+> 
+> >
+> > >         };
+> > >       };
+> > >       port@1 {
+> > >         endpoint@0 {
+> > >           remote-endpoint = <&hub_ss0>;
+> > >        };
+> > >       };
+> > >     };
+> > >     usb-c-connector@1 {
+> > >       altmodes {
+> > >         displayport {
+> > >           connector = <&dp_ml2_ml3>;
+> > >         };
+> > >       };
+> > >       port@1 {
+> > >         endpoint {
+> [....]
+> > >
+> > > >
+> > > > Maybe that's just it? Register DP_bridge (or QMP PHY) as
+> > > > orientation-switch? Then you don't need any extra API for the lane
+> > > > mapping? The cross-ec-typec can provide orientation information and the
+> > > > USB-C-aware controller will follow the lane mapping.
+> > >
+> > > I'm not really following but I don't think the DT binding discussed here
+> > > prevents that.
+> >
+> > I'm thinking about:
+> >
+> > it6505 {
+> >   orientation-switch;
+> >
+> >   ports {
+> >     port@1 {
+> >       it6505_dp_out: remote-endpoint = <&cros_ec_dp>;
+> >       data-lanes = <0 1>;
+> >     };
+> >   };
+> > };
+> >
+> > cros-ec {
+> >   port {
+> >     cross_ec_dp: remote-endpoint = <&it6505_dp_out>;
+> >   };
+> >
+> >   connector@0 {
+> >     reg = <0>;
+> >     cros,dp-orientation = "normal";
+> >
+> >     ports {
+> >       // all USB HS and SS ports as usual;
+> >     };
+> >   };
+> >
+> >   connector@1 {
+> >     reg = <1>;
+> >     cros,dp-orientation = "reverse";
+> >
+> >     ports {
+> >       // all USB HS and SS ports as usual;
+> >     };
+> >   };
+> >
+> >   connector@2 {
+> >     reg = <2>;
+> >     cros,dp-orientation = "reverse";
+> >
+> >     ports {
+> >       // all USB HS and SS ports as usual;
+> >     };
+> >   };
+> >
+> >   connector@3 {
+> >     reg = <3>;
+> >     cros,dp-orientation = "normal";
+> >
+> >     ports {
+> >       // all USB HS and SS ports as usual;
+> >     };
+> >   };
+> > };
+> >
+> > The cros-ec registers single drm bridge which will generate HPD events
+> > except on Trogdor, etc. At the same time, cros-ec requests the
+> > typec_switch_get(). When the cros-ec detects that the connector@N it
+> > being used for DP, it just generates corresponding typec_switch_set()
+> > call, setting the orientation of the it6505 (or QMP PHY). The rest can
+> > be handled either by EC's HPD code or by DP's HPD handler, the
+> > orientation should already be a correct one.
+> >
+> > So, yes. It requires adding the typec_switch_desc implementation _in_
+> > the it6505 (or in any other component which handles the 0-1 or 2-3
+> > selection). On the other hand as I wrote previously, the 0-1 / 2-3 is
+> > the USB-C functionality, not the DP one.
+> >
+> 
+> I don't think we should be adding typec code to pure display hardware
+> drivers like IT6505. To keep the driver focused on display stuff I
+> proposed implementing runtime lane assignment for drm_bridge chains
+> because DP has lanes. My understanding is that not all display
+> technologies have lanes, so implementing generic lane assignment
+> functionality is overkill/incorrect. DP has physical lanes in hardware
+> though, and those physical lanes are assigned to certain pins in the
+> type-c DP altmode spec, so it's not overkill to think about lanes when
+> the bridge is a DP bridge wired up to a type-c connector.
+
+DisplayPort has fixed lanes assignment in the standard. So any driver
+that reassigns / reallocates DisplayPort lanes dynamically implements
+Type-C functionality.
+
+> Long story short, I don't see how we can avoid _any_ lane assignment
+> logic in drm_bridge. The logic shouldn't walk the entire bridge chain,
+> but it should at least act on the bridge that is a DP bridge. I think
+> you're saying pretty much the same thing here, but you want the lane
+> remapping to be done via the typec layer whereas I want it to be done in
+> the drm_bridge layer. To me it looks out of place to add a
+> typec_switch_desc inside each DP drm_bridge because we duplicate the
+> logic about USB type-c DP altmode lane assignment to each DP bridge. A
+> DP bridge should just think about DP and not know or care about USB
+> type-c.
+> 
+> This is what's leading me to think we need some sort of lane assignment
+> capability at the DP connector. How that assignment flows from the DP
+> connector created in drm_bridge_connector.c to the hardware is where it
+> is less clear to me. Should that be implemented as a typec_switch_desc,
+> essentially out of band with drm_bridge, or as some drm_bridge_funcs
+> function similar to struct drm_bridge_funcs::hdmi_*()? If you look at
+> IT6505 in it6505_get_extcon_property() it actually wants to pull the
+> orientation of the type-c port with extcon_get_property(EXTCON_DISP_DP,
+> EXTCON_PROP_USB_TYPEC_POLARITY). Maybe pushing the orientation to the DP
+> bridge is backwards and we should be exposing this as some sort of
+> connector API that the drm_bridge can query whenever it wants.
+
+And it6505_get_extcon_property() / EXTCON_PROP_USB_TYPEC_POLARITY is a
+Type-C code, isn't it?
+
+> What about ANX7625 where two DP lanes go to a cross-point switch before
+> leaving the chip on one of two pairs of lanes? This hardware is a DP
+> bridge smashed together with an orientation switch (typec_switch_desc)
+> so that you can simply wire the output pins up to a USB type-c connector
+> and support 2 lanes DP altmode. Qualcomm's QMP phy is quite similar.
+> Presumably we'd want the ANX driver to implement both a drm_bridge and a
+> typec_switch_desc if it was directly connected to a usb-c-connector
+> node. It's also interesting to think of the DT binding here, likely we
+> would have one output port in the ANX node's graph that represents the
+> combined DP and USB data that's connected to the SuperSpeed endpoint in
+> the usb-c-connector.
+> 
+> In the case where two lanes are wired to one USB type-c connector and
+> the other two lanes are wired to a different USB type-c connector it
+> would be odd to keep the typec_switch_desc and figure out a way to
+> mangle the lanes we want for a USB type-c connector by setting the
+> orientation of the typec_switch_desc. The chip isn't really acting as a
+> typec orientation control here because it isn't combining USB data and
+> DP data for a single USB type-c port. In fact, the type-c port has an
+> orientation and we actively don't want to tell the ANX7625 driver about
+> that port orientation because the orientation control is implemented
+> between the ANX part and the type-c connector by some redriver
+> controlled by the EC.
+> 
+> To satisfy all these cases it almost feels like we need to make the DP
+> connector have an "orientation", per your earlier DT snippet it would be
+> "reversed" or "normal", even though in hardware a DP connector has no
+> such concept because it can only be plugged in one way. All cases look
+> to be covered if we say that the drm_connector can have an orientation,
+> "normal" or "reversed", and we allow the bridge drivers to query that
+> whenever they want with some bridge/connector API. The typical case will
+> be that the orientation is normal, but we can make
+> drm_connector_oob_hotplug_event() change that to "reversed" when the
+> port is different.
+
+The DP connector doesn't have the orientation, as you pointed out. Only
+Type-C does.
+
+> 
+> This leaves us with the binding you propose above, and then some sort of
+> property that indicates the orientation of the DP connector. Instead of
+> being vendor specific I wonder if we can simply have a property like
+> "dp-reverse-orientation" in the connector node that the displayport.c
+> driver can look for to set the connector orientation to the reverse one
+> when DP altmode is entered on the port.
+> 
+> This is what I have:
+> 
+>  it6505 {
+>    ports {
+>      port@1 {
+>        it6505_dp_out: remote-endpoint = <&cros_ec_dp>;
+>        data-lanes = <0 1>;
+>      };
+>    };
+>  };
+> 
+>  cros-ec {
+>    port {
+>      cross_ec_dp: remote-endpoint = <&it6505_dp_out>;
+>    };
+> 
+>    connector@0 {
+>      reg = <0>;
+> 
+>      ports {
+>        // all USB HS and SS ports as usual;
+>      };
+>    };
+> 
+>    connector@1 {
+>      reg = <1>;
+>      dp-reverse-orientation;
+> 
+>      ports {
+>        // all USB HS and SS ports as usual;
+>      };
+>    };
+> 
+> or ANX, swap out for it6505 node:
+> 
+>  anx7625 {
+>    ports {
+>      port@1 {
+>        anx7625_dp_out: remote-endpoint = <&cros_ec_dp>;
+>        data-lanes = <0 1>;
+>      };
+>    };
+>  };
+> 
+> and then a drm_bridge is created in cros-ec to terminate the bridge
+> chain. The displayport altmode driver will find the drm_bridge and the
+> drm_connector from the cros-ec node. When DP altmode is entered the
+> displayport altmode driver will set the drm_connector orientation based
+> on the presence of the dp-reverse-orientation property. We'll be able to
+> hook the hpd_notify() path in cros-ec by adding code to the drm_bridge
+> made there to do the HPD workaround. I'm not sure we need to use an
+> auxiliary device in this case, because it's a one-off solution for
+> cros-ec. And we don't even need to signal HPD from the cros-ec
+> drm_bridge because the oob_hotplug event will do it for us. If anything,
+> we need that displayport.c code to skip sending the hotplug event when
+> "no-hpd" is present in the cros-ec node. Note, this works for any number
+> of usb-c-connector nodes. And finally, DP bridges like IT6505 don't need
+> to implement a typec_switch_desc, they can simply support flipping the
+> orientation by querying the drm_connector for the bridge chain when they
+> see fit. ANX7625 can support that as well when it doesn't see the
+> 'orientation-switch' property.
+> 
+> Did I miss anything? I suspect a drm_connector having an orientation is
+> the most controversial part of this proposal.
+
+Yes... I understand that having orientation-switch handling in the DRM
+driver sounds strange, but this is what we do in the QMP PHY driver. It
+makes the code easier, as it keeps lane remapping local to the place
+where it belongs - to the Type-C handlers.
+
+
 -- 
-2.43.0
-
+With best wishes
+Dmitry
 
