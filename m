@@ -1,241 +1,186 @@
-Return-Path: <linux-acpi+bounces-9488-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9489-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44669C3D42
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Nov 2024 12:30:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827AE9C3DEB
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Nov 2024 13:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 333251F22C26
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Nov 2024 11:30:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43106280C99
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Nov 2024 12:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4831D196D80;
-	Mon, 11 Nov 2024 11:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB8617BECA;
+	Mon, 11 Nov 2024 12:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SuhjY9Xn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SETk7WdP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77374189BBB;
-	Mon, 11 Nov 2024 11:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D9415539A;
+	Mon, 11 Nov 2024 12:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731324565; cv=none; b=h9OmmAzsFi4RtSMxthjmYk87RAigsXQb5ROmSPrAqcZbmjEIi+igJr7Cqyjs2kb/wQneo/P0RRZkyfUKrvWz8sayjtL4Hehnj6/zSIfShlO8Pu46I618e+pPHYcHrK2WmCliFOb0QL1Gvxx1gXTMrUZ6QjMLgm2MzO8ndEdQCQc=
+	t=1731326684; cv=none; b=lU2nQuAslojJZisb+6lRztGWVuaGxIrmkpF6Y6v4limHly1Hbr9TVFarjWWRoAZNs8Lfhhrw+FDnPTHCXisjolcRBw56iBOng+K72jEEBc9KHV4HeNryzkstEIj6JBJ0BnoXfgf/NZ3YQZV/nm55vGlUyz9o16Bd2RLVNe7qTeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731324565; c=relaxed/simple;
-	bh=5cgp7iaZi8tgG12DuQYS4WxE3EZhYIb7ihHP94ue5g4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S+nVyKDgKgIHU6Uah9clMYVcdklsES2q5Twwygg/1w6//t59ctBMj2kM3zMAqo8shOBRS01aWahSF5N7KCIjchFEIM7CZZoGzpQVNZEMbR2RRJMwK1wguLCTw0z4lI7Satj7rTZ+00gWbspWQQCw+Zv7/yskIKhZ8U2E2ePieZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SuhjY9Xn; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7B3C040E01FE;
-	Mon, 11 Nov 2024 11:29:19 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id LH789wugla_b; Mon, 11 Nov 2024 11:29:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1731324553; bh=JihSgH5EEo1zZNt1PcMAqI+W39owOYa2GO/ORFME5H8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SuhjY9XnZ61YUXJC4uvZeRaxLqOrfY2JaVRfozxcZVCcQQoiMIzqFT+q9PDTupY4u
-	 Hz6vFjCezBUMp1Z9ilVs57fs5c6sOSvIgddWYN9XDQQbbHztkqGCUGJnu53EOeNcgV
-	 8xqOueQtp8xg415nHLXdvfrxQ0hxs+W7Rsj2K/Hha8+z9Wpqlt6/OUzOamqctNuVc6
-	 JEhLX+Zm2Uc8Y98c0WDxXUTOa+N3VASdpO9X12FoJ1MKyMVs8g5ps+Bjn7R5OsEuvm
-	 AzdopQYAzqqcC9Vv6zbV2pQAydaDbwevNcOHJGMg73p9bJcofd6iGewT0XED0AvR3Q
-	 cqzSB/hrFEJm9E2wnLLW24/0vbwSxWAbbL1+SDPKBoNr3A47OcbR9RBX56CY2dKTbv
-	 M75Mj7BP7raefAdBGWvIMkUYisRxJ3AsO2Mn5plb8jx6zaoxz3Tx1DhOfR2wKD51kq
-	 FmJ+KskVIy4cHuZqfCBB7FPAQC+gcPEnKb5lhfiWjkwJR7/qjrg4Bx4kkui9Mfgz6S
-	 tQhlJQofepQFryNPWV4eDH4/4QJcNt0cWG699kJQkKCK/fWqHHPYDxKe4BRbKJqddS
-	 v2Z7IqzW1qI2QfQyWdntY6GwFMG/gtHUeUYkCQLXd0A4SK+bD7GxMCW1/J3dk9/p6o
-	 rCqL4WPLRSj3eru4yUfxmUXk=
-Received: from zn.tnic (p200300ea973a31c3329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:973a:31c3:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C093040E015F;
-	Mon, 11 Nov 2024 11:28:26 +0000 (UTC)
-Date: Mon, 11 Nov 2024 12:28:19 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-	"jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH v15 11/15] EDAC: Add memory repair control feature
-Message-ID: <20241111112819.GCZzHqUz1Sz-vcW09c@fat_crate.local>
-References: <20241101091735.1465-1-shiju.jose@huawei.com>
- <20241101091735.1465-12-shiju.jose@huawei.com>
- <20241104061554.GOZyhmmo9melwI0c6q@fat_crate.local>
- <1ac30acc16ab42c98313c20c79988349@huawei.com>
+	s=arc-20240116; t=1731326684; c=relaxed/simple;
+	bh=XDMRgofP1EQDz+AMrkp03fxhwMShxc3/uITnZtP9/hA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mGdX3JpGGlpX9Ilzvp2ctiG5B2ARZHu80l4sQkQAw/70LjHoW1/h8YiFSCqLNiVo+FEZdYcvxh7IUbTd7IRyBZhB+jmUNKf4aXVgmgq/0vjyOj9bkpl4LHfNjzfqUBETdRubWr/nZy+xuyT4YzkOaBi0+cMesy3s087tKRX2nyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SETk7WdP; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7187e0041d5so2594751a34.2;
+        Mon, 11 Nov 2024 04:04:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731326682; x=1731931482; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yOhBF4mPrU4dB2Iuq+imlClyfFR5aLjqfJMpZx/Fwwo=;
+        b=SETk7WdPZL0kfwm9spYaK5uxBqFZCl/zrfMtD2pz+Zx5de3/46oFiWQLP0ZAKJBqCl
+         4Athe6D1PLPtF2SN7iU0yeI0wU44qGzwNboxV1CKWG6MBimk4bPF8x3sBgLq9wN4hjnV
+         2ThZUv5YWSY76iXXWG7TpbIYgowyXF0557qwHq4+C+ZDYxhwkjWZ2Eb8xT3Sz5Drx+/f
+         hg9mBPCy3OySXDCxyz9HPerTzTbdsQ9ri2krpbwPEvg/ZHFSrKE5ptwVMESjsGBEGTbH
+         nCpIufnoJdeTd/pz5S2DtFdAYFVG8LRwCBpwWL22aFCl6Z3v7e3AmJ6mSznq1TiS0Zs6
+         HjXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731326682; x=1731931482;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yOhBF4mPrU4dB2Iuq+imlClyfFR5aLjqfJMpZx/Fwwo=;
+        b=O92rCuxiYmPphZfLbn2705Tn+ClDASZbjxw76GCzC8+9Smb++6JJ/H0u9I+h+O7Aqe
+         pYwplZ1dMdPZJQ1fd07ypT3Or8mUuTrSPI+u8/5qcVUhYT3Gzja4T1O2D4Vxo6d+6pWx
+         be9986B8WuPYhazh5pnCZixMlIfBVFHTk9ip2Z0A0GtIUuBAGeWqvAexbIWx/pfNxEHJ
+         KQlCuYsEjZZr/D+9s/tdSmt8TP2ABAdYegjYYL66SmEQ+slfiSc4oKoRk69k5Ezl6z2X
+         6SVQmpGbRa/5ao1nbV56eqz0PLKUD3DJmEvIAWAxYhl0/BmgT/TvFoEkKNGIY7TaHFSp
+         BRaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUO44TCZocbFYqHzCPZtxJkBl/+12o7jMxAgQmgAuzRss1uLuiyBJYWXrKgcT9ZlPDz7yVulPHhN/k1@vger.kernel.org, AJvYcCWHOve5D5bwIc8VyTHYJiSmer6iov2bajhP3H1+Fm2KGmuVC8wSSnNDxPwLybEiwXDoZfJ97t6PFpDu@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy7KTDASK47tTs+H4ObaikghSQIEMqu90QdE4CNdRxPJSgdqsk
+	WMTtYeYl+2m8ivqh+deXIMZKML957qMOFN0Ja73MaIs+MmSJ/t8UrHsmKlIgJCmJudYBoRHLHOm
+	Oj+PJWGsWypE0GHIcFUKSnFsNbIIc1vw72Ms=
+X-Google-Smtp-Source: AGHT+IEDhSYNCJ/eKcicgFK7x/kTNvlQvG7YPtuUhlMVlBge5oJSDBwDM7huxviQjknKhH5uxr+uv/2AapuFbE1QWF8=
+X-Received: by 2002:a05:6358:72a2:b0:1c3:7415:693d with SMTP id
+ e5c5f4694b2df-1c641e749a2mr395840355d.5.1731326682184; Mon, 11 Nov 2024
+ 04:04:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1ac30acc16ab42c98313c20c79988349@huawei.com>
+References: <CACSj6VX77y6K9FNFZn-rMvEL9XSPS6rFDt-STGf1UxgkuS6msw@mail.gmail.com>
+ <Zy3P7ld7UUL8XCrR@smile.fi.intel.com> <7fc0f59b8264e965efc96c0aa0ba4c31@dev.tdt.de>
+ <CACSj6VW7WKv5tiAkLCvSujENJvXq1Mc7_7vtkQsRSz3JGY0i3Q@mail.gmail.com> <Zy4IRAeLvoku4LfL@smile.fi.intel.com>
+In-Reply-To: <Zy4IRAeLvoku4LfL@smile.fi.intel.com>
+From: Konstantin Aladyshev <aladyshev22@gmail.com>
+Date: Mon, 11 Nov 2024 15:09:55 +0300
+Message-ID: <CACSj6VU1pxDeJaGT6qsA4_ftn_z0rqDicTTB1Hert5Zc1fF0OA@mail.gmail.com>
+Subject: Re: Adding I2C devices to the SMBus (PIIX4) via the ACPI SSDT overlay method
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Florian Eckert <fe@dev.tdt.de>, linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 04, 2024 at 01:05:31PM +0000, Shiju Jose wrote:
-> More detailed explanation of PPR and memory sparing and use cases was added
-> in Documentation/edac/memory_repair.rst, which is part of the last common
-> patch ("EDAC: Add documentation for RAS feature control") added for
-> documentation of various RAS features supported in this series. Was not sure
-> the file to be part of this patch or not.
+Sorry, I needed some time to recompile my kernel.
+I've verified your patch for the jc42 driver and it works as expected.
+Now the driver correctly connects to the I2C device and the hwmon
+directory created in the sysfs.
+Thanks for the help!
 
-If the commit message doesn't contain a justification for a patch's existence,
-why do you even bother sending it?
+I've also sent a patchset for the piix4 documentation update as you've
+requested. Please review.
 
-IOW, no redirections pls - just state here what the use case is in short. You
-can always go nuts into details in the docs.
+Best regards,
+Konstantin Aladyshev
 
-> persist_mode used to readback the value of persist_mode presently set.  For
-> eg.  1 - soft memory sparing for a sparing instance, though the CXL memory
-> device supports both soft and hard sparing, which is configurable.
-> persist_mode_avail used to return the temporary and permanent repair
-> capability of the device.  
-
-Wait, sysfs does a one value per file thing. What does persist_mode_avail
-give?
-
-Surely you can't dump a list of all available modes...
-
-From that doc:
-
-root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/mem_repair0/persist_mode_avail
-0
-
-Does that mean only sPPR is available?
-
-If only one mode is available, why am I even querying things? There's no other
-option.
-
-Catch my drift?
-
-> Also I will update here with more details which was given in the last part
-> of this document about DPA.  Some memory devices (For eg. a CXL memory
-> device) may expect the Device Physical Address(DPA) for a repair operation
-> instead of Host Physical Address(HPA), because it may not have an active
-> mapping in the main host address physical address map.  'dpa_support'
-> attribute used to return this info to the user.  
-
-All this stuff needs to be documented properly and especially how one is
-supposed to use this interface. Not have people go read CXL specs just to be
-able to even try to use this. I'd like to see clear steps in the docs what to
-do and what they mean.
-
-> The nibble mask actually for CXL memory PPR and memory sparing operations,
-> which is reported by the device in DRAM Event Record and to the userspace in the
-> CXL DRAM trace event.
-> Please see the details from the spec.
-
-This is *exactly* what I mean!
-
-If I have to see the spec in order to use an interface, than that's a major
-fail.
-
-> I was not sure add or not these CXL specific details in this EDAC document.
-
-So that document should contain enough info on how to use the interface. You
-can always put links to the spec giving people further reading but some
-initial how-do-I-use-this-damn-thing example should be there so that people
-can find their way around this.
-
-> The visibility of these control attributes to the user  in sysfs is decided
-> by the is_visible() callback in the EDAC, which in turn depends on a memory
-> device support or not the control of a repair attribute. 
-
-That still doesn't answer my question: what are valid values I can put in all
-those?
-
-Try as many as I can until one sticks?
-
-This is not a good interface.
-
-And since sysfs does one-value-per-file, dumping ranges here is kinda wrong.
-
-> This attribute used request to determine availability of resources for a repair operation
-> (For eg. memory PPR and sparing operation) for a given address and memory attributes set.
-> The device may return result for this request in different ways.
-> For example, in CXL device request query resource command for a,  
-> 1. PPR operation returns resource availability as a return code of the command. 
-> 2. memory sparing operation, the device will report the resource availability by producing a
-> Memory Sparing Event Record and  memory sparing trace event to the userspace.
-> 
-> May be 'dry-run' better name instead of query?
-
-Maybe this should not exist at all: my simple thinking would say that
-determining whether resources are available should be part of the actual
-repair operation. If none are there, it should return "no resources
-available". If there are, it should simply use them and do the repair.
-
-Exposing this as an explicit step sounds silly.
-
-> >Yeh, this needs to be part of the interface and not hidden in some obscure doc.
-> Adding this info in Documentation/edac/memory_repair.rst is sufficient? 
-
-Yap, for example. You can always concentrate the whole documentation there and
-point to it from everywhere else.
-
-> The details of the repairing control was added in
-> Documentation/edac/memory_repair.rst, which is part of the common
-> patch ("EDAC: Add documentation for RAS feature control").
-
-Ok, point to it pls in this doc so that people can find it.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+On Fri, Nov 8, 2024 at 3:47=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Fri, Nov 08, 2024 at 02:48:44PM +0300, Konstantin Aladyshev wrote:
+> > Thanks for the help!
+>
+>
+> > $ cat /sys/bus/acpi/devices/device\:25/path
+>
+> These cat:s you made are mostly useless in this case. And you should look=
+ for
+> the real device folders in sysfs and firmware_node links there.
+>
+> ...
+>
+> > However I was using the at24 device only as an example.
+> > My real target device is jc42
+> > (https://github.com/torvalds/linux/blob/906bd684e4b1e517dd424a354744c5b=
+0aebef8af/drivers/hwmon/jc42.c#L600).
+>
+> > Does it mean that jc42 driver doesn't support ACPI binding?
+>
+> Kinda. I just sent a patch, please test and provide your Tested-by if it =
+helps.
+>
+> ...
+>
+> > Just in case here is my SSDT:
+> > ```
+> > DefinitionBlock ("jc42.aml", "SSDT", 5, "", "JC42", 1)
+> > {
+> >     External (_SB_.PCI0.SMBS, DeviceObj)
+> >
+> >     Scope (\_SB_.PCI0.SMBS)
+> >     {
+> >         Device (SMB0) {
+> >             Name (_ADR, 0)
+> >         }
+> >         Device (SMB1) {
+> >             Name (_ADR, 1)
+> >         }
+> >         Device (SMB2) {
+> >             Name (_ADR, 2)
+> >         }
+> >     }
+> >
+> >     Scope (\_SB.PCI0.SMBS)
+>
+> While this works, we expect Scope to be under the respective host control=
+ler, i.e.
+>
+>      Scope (\_SB.PCI0.SMBS.SMB0)
+>
+> in your case.
+>
+> >     {
+> >         Device (JC42) {
+> >             Name (_HID, "PRP0001")
+> >             Name (_DDN, "JC42 Temperature sensor")
+> >             Name (_CRS, ResourceTemplate () {
+> >                 I2cSerialBusV2 (
+> >                     0x001c,              // I2C Slave Address
+> >                     ControllerInitiated,
+> >                     400000,              // Bus speed
+> >                     AddressingMode7Bit,
+> >                     "\\_SB.PCI0.SMBS.SMB0",   // Link to ACPI I2C host
+> > controller
+> >                     0
+> >                 )
+> >             })
+> >
+> >             Name (_DSD, Package () {
+> >                 ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> >                 Package () {
+> >                     Package () { "compatible", Package() {
+> > "jedec,jc-42.4-temp" } },
+> >                 }
+> >             })
+> >         }
+> >     }
+> > }
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
