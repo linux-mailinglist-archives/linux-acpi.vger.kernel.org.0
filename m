@@ -1,187 +1,225 @@
-Return-Path: <linux-acpi+bounces-9494-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9495-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24E29C431B
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Nov 2024 18:01:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3367B9C4C57
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 03:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A491F21E3B
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Nov 2024 17:01:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6268287B87
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 02:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D1F1A3042;
-	Mon, 11 Nov 2024 17:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E631B208982;
+	Tue, 12 Nov 2024 02:14:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79802AF1C;
-	Mon, 11 Nov 2024 17:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233C6208971;
+	Tue, 12 Nov 2024 02:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731344480; cv=none; b=dq9cpQd15AZQ/gU6nMiG6ImAiGnOneas47cMC742DSmt+UtupN3EkiKCLNy91S10gzVTMOeZpPJFooapAZ9EuOc/zPqBNndAnqM2cTG/2Wqjfx6W/uiP2z0k3e4U2lbSCU5E3BUJ6gbzk0kSnGv6R0y4LQbe0P04MPwZqVJ7w3Q=
+	t=1731377678; cv=none; b=S5Rm4TpauD12zl0IdiGKZaGoCAmMM8CBZ6D7Ha7SQmuW9N84GXT1KZvhUQzzmDV2hfmJqHwyow0crxqTqLn6lmG3sN2ejcTDf+mWF8qS5clZYbEmdZeT3acva6FVqPguQ6dopDcrND+ajZbhYta+h1wsWjfAui93wjZyaYC7eHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731344480; c=relaxed/simple;
-	bh=T3LxACEy2Zjds7035OyJciNR2kucRD7O/RPJ2VLWR/Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=crtQV7ezc5g6/0FzEXBy82LJ30GegkYddeYniRjiLrn923Hdj/x4GEa9ubsLEtK4YPk1wBPbcLAbiOYVg8thF+N4BRgLgii6zkYzUDQZD5TFTSNGF3uoYpl7M1Rg/pwGr80qWtYxPFSdjo8L3v0P4jtVYWSwmHH/Swe4iCUP+7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+	s=arc-20240116; t=1731377678; c=relaxed/simple;
+	bh=IDtzZOHG5JBqnfrcxS2T7mLOiushLLE+N5GaCFCFo+U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HK/GABVFU6AUfhVOJY4bEIv5bRQiJ7HlXZrF6tWE9mTKLXrP9Q8fxKW0MhYQg4uI0ecZ5jwWyMOcGM8p/cRoIwVZzXgy1NvQ3UrpV73ymJQbnmbL7MobroiB2t5vwjMVwA216qUrEoU8FstggUTVi1tukf2HqHSvnu6jQxqJltI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XnG5r6N5vz6L72m;
-	Tue, 12 Nov 2024 01:01:04 +0800 (CST)
-Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
-	by mail.maildlp.com (Postfix) with ESMTPS id 12AB6140B3C;
-	Tue, 12 Nov 2024 01:01:15 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XnVLN1DNwz1jxtv;
+	Tue, 12 Nov 2024 10:12:44 +0800 (CST)
+Received: from dggemv711-chm.china.huawei.com (unknown [10.1.198.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id 45DB7180042;
+	Tue, 12 Nov 2024 10:14:32 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 11 Nov 2024 18:01:14 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Mon, 11 Nov 2024 18:01:14 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Fan Ni <nifan.cxl@gmail.com>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, "jassisinghbrar@gmail.com"
-	<jassisinghbrar@gmail.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, tanxiaofei <tanxiaofei@huawei.com>, "Zengtao
- (B)" <prime.zeng@hisilicon.com>, "Roberto Sassu" <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v15 11/15] EDAC: Add memory repair control feature
-Thread-Topic: [PATCH v15 11/15] EDAC: Add memory repair control feature
-Thread-Index: AQHbLD8AfemaRx1ca0GejEwzrXB007Ktlc0AgATHjxA=
-Date: Mon, 11 Nov 2024 17:01:14 +0000
-Message-ID: <c849dc3f43b14d26acc9c920b2247c40@huawei.com>
-References: <20241101091735.1465-1-shiju.jose@huawei.com>
- <20241101091735.1465-12-shiju.jose@huawei.com> <Zy5DXjsbsm4cQGaS@fan>
-In-Reply-To: <Zy5DXjsbsm4cQGaS@fan>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.1.2507.39; Tue, 12 Nov 2024 10:14:32 +0800
+Received: from localhost.localdomain (10.28.79.22) by
+ kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 12 Nov 2024 10:14:31 +0800
+From: Huisong Li <lihuisong@huawei.com>
+To: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<rafael@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <rui.zhang@intel.com>,
+	<liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>, <lihuisong@huawei.com>
+Subject: [PATCH] ACPI: thermal: Support for linking devices associated with the thermal zone
+Date: Tue, 12 Nov 2024 10:03:27 +0800
+Message-ID: <20241112020327.17781-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.22.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
->-----Original Message-----
->From: Fan Ni <nifan.cxl@gmail.com>
->Sent: 08 November 2024 16:59
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-edac@vger.kernel.org; linux-cxl@vger.kernel.org; linux-
->acpi@vger.kernel.org; linux-mm@kvack.org; linux-kernel@vger.kernel.org;
->bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->Cameron <jonathan.cameron@huawei.com>; gregkh@linuxfoundation.org;
->sudeep.holla@arm.com; jassisinghbrar@gmail.com; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: Re: [PATCH v15 11/15] EDAC: Add memory repair control feature
->
->On Fri, Nov 01, 2024 at 09:17:29AM +0000, shiju.jose@huawei.com wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add generic EDAC memory repair control, eg. PPR(Post Package Repair),
->> memory sparing etc, control driver in order to control memory repairs
->> in the system. Supports sPPR(soft PPR), hPPR(hard PPR), soft/hard
->> memory sparing, memory sparing at cacheline/row/bank/rank granularity et=
-c.
->> Device with memory repair features registers with EDAC device driver,
->> which retrieves memory repair descriptor from EDAC memory repair
->> driver and exposes the sysfs repair control attributes to userspace in
->> /sys/bus/edac/devices/<dev-name>/mem_repairX/.
->>
->> The common memory repair control interface abstracts the control of
->> arbitrary memory repair functionality into a standardized set of functio=
-ns.
->> The sysfs memory repair attribute nodes are only available if the
->> client driver has implemented the corresponding attribute callback
->> function and provided operations to the EDAC device driver during
->registration.
->>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->>  .../ABI/testing/sysfs-edac-memory-repair      | 168 ++++++++
->>  drivers/edac/Makefile                         |   2 +-
->>  drivers/edac/edac_device.c                    |  32 ++
->>  drivers/edac/mem_repair.c                     | 367 ++++++++++++++++++
->>  include/linux/edac.h                          |  87 +++++
->>  5 files changed, 655 insertions(+), 1 deletion(-)  create mode 100644
->> Documentation/ABI/testing/sysfs-edac-memory-repair
->>  create mode 100755 drivers/edac/mem_repair.c
->>
->> diff --git a/Documentation/ABI/testing/sysfs-edac-memory-repair
->> b/Documentation/ABI/testing/sysfs-edac-memory-repair
->> new file mode 100644
->> index 000000000000..393206b8d418
-[...]
->>
->> +	if (mem_repair_cnt) {
->> +		ctx->mem_repair =3D kcalloc(mem_repair_cnt, sizeof(*ctx-
->>mem_repair), GFP_KERNEL);
->> +		if (!ctx->mem_repair) {
->> +			ret =3D -ENOMEM;
->> +			goto groups_free;
->
->If the function returns here, we will have a leak from memory pointed by c=
-tx-
->>scrub.
-Thanks Fan for reporting.=20
-Fixed.
->
->Fan
->> +		}
->> +	}
->> +
-[...]
->--
->Fan Ni
+As ACPI spec said, '_TZD' evaluates to a package of device names.
+Each name corresponds to a device in the ACPI namespace that is
+associated with the thermal zone. The temperature reported by the
+thermal zone is roughly correspondent to that of each of the devices.
 
-Thanks,
-Shiju
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+---
+ drivers/acpi/thermal.c | 114 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 113 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 78db38c7076e..398195a5d42f 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -119,6 +119,9 @@ struct acpi_thermal {
+ 	struct work_struct thermal_check_work;
+ 	struct mutex thermal_check_lock;
+ 	refcount_t thermal_check_count;
++	int num_domain_devices;
++	struct acpi_device **domain_devices;
++	struct kobject *holders_dir;
+ };
+ 
+ /* --------------------------------------------------------------------------
+@@ -589,6 +592,103 @@ static const struct thermal_zone_device_ops acpi_thermal_zone_ops = {
+ 	.critical = acpi_thermal_zone_device_critical,
+ };
+ 
++static void acpi_thermal_remove_domain_devices(struct acpi_thermal *tz)
++{
++	int i;
++
++	if (!tz->num_domain_devices)
++		return;
++
++	for (i = 0; i < tz->num_domain_devices; i++) {
++		struct acpi_device *obj = tz->domain_devices[i];
++
++		if (!obj)
++			continue;
++
++		sysfs_remove_link(tz->holders_dir,
++				  kobject_name(&obj->dev.kobj));
++		acpi_dev_put(obj);
++	}
++
++	kfree(tz->domain_devices);
++	kobject_put(tz->holders_dir);
++	tz->num_domain_devices = 0;
++}
++
++static int acpi_thermal_read_domain_devices(struct acpi_thermal *tz)
++{
++	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
++	union acpi_object *pss;
++	acpi_status status;
++	int ret = 0;
++	int i;
++
++	status = acpi_evaluate_object(tz->device->handle, "_TZD", NULL,
++				      &buffer);
++	if (ACPI_FAILURE(status)) {
++		acpi_evaluation_failure_warn(tz->device->handle, "_TZD",
++					     status);
++		return -ENODEV;
++	}
++
++	pss = buffer.pointer;
++	if (!pss ||
++	    pss->type != ACPI_TYPE_PACKAGE) {
++		dev_err(&tz->device->dev, "Thermal zone invalid _TZD data\n");
++		ret = -EFAULT;
++		goto end;
++	}
++
++	if (!pss->package.count)
++		goto end;
++
++	tz->domain_devices = kcalloc(pss->package.count,
++				     sizeof(struct acpi_device *), GFP_KERNEL);
++	if (!tz->domain_devices) {
++		ret = -ENOMEM;
++		goto end;
++	}
++
++	tz->holders_dir = kobject_create_and_add("measures",
++						 &tz->device->dev.kobj);
++	if (!tz->holders_dir) {
++		ret = -ENOMEM;
++		goto exit_free;
++	}
++
++	tz->num_domain_devices = pss->package.count;
++	for (i = 0; i < pss->package.count; i++) {
++		struct acpi_device *obj;
++		union acpi_object *element = &pss->package.elements[i];
++
++		/* Refuse non-references */
++		if (element->type != ACPI_TYPE_LOCAL_REFERENCE)
++			continue;
++
++		/* Create a symlink to domain objects */
++		obj = acpi_get_acpi_dev(element->reference.handle);
++		tz->domain_devices[i] = obj;
++		if (!obj)
++			continue;
++
++		ret = sysfs_create_link(tz->holders_dir, &obj->dev.kobj,
++					kobject_name(&obj->dev.kobj));
++		if (ret) {
++			acpi_dev_put(obj);
++			tz->domain_devices[i] = NULL;
++		}
++	}
++
++	ret = 0;
++	goto end;
++
++exit_free:
++	kfree(tz->domain_devices);
++end:
++	kfree(buffer.pointer);
++	return ret;
++}
++
+ static int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
+ {
+ 	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
+@@ -602,8 +702,19 @@ static int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
+ 	ret = sysfs_create_link(&tzdev->kobj,
+ 				   &tz->device->dev.kobj, "device");
+ 	if (ret)
+-		sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
++		goto remove_thermal_zone;
+ 
++	/* _TZD method is optional. */
++	ret = acpi_thermal_read_domain_devices(tz);
++	if (ret != -ENODEV)
++		goto remove_device;
++
++	return 0;
++
++remove_device:
++	sysfs_remove_link(&tz->device->dev.kobj, "device");
++remove_thermal_zone:
++	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+ 	return ret;
+ }
+ 
+@@ -611,6 +722,7 @@ static void acpi_thermal_zone_sysfs_remove(struct acpi_thermal *tz)
+ {
+ 	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
+ 
++	acpi_thermal_remove_domain_devices(tz);
+ 	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+ 	sysfs_remove_link(&tzdev->kobj, "device");
+ }
+-- 
+2.22.0
+
 
