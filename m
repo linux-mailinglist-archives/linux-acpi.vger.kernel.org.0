@@ -1,309 +1,212 @@
-Return-Path: <linux-acpi+bounces-9500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAA59C5137
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 09:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3CF9C5C18
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 16:40:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10268B29E00
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 08:36:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C754DB60A05
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 15:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C39420BB49;
-	Tue, 12 Nov 2024 08:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B3A1FF046;
+	Tue, 12 Nov 2024 15:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dOUQF4ZJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A3PythOP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D822120B212
-	for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 08:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFCF1FF7BF;
+	Tue, 12 Nov 2024 15:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731400555; cv=none; b=dvPguHzj/gCbM9QGDkmZ/IgekgLNEDrQZEiifYqYqIw9uVwb8mZcBbQGPh4JDrULeu2IZ3gyWA/llG3ptV30x0oUthsC82j9anb28EvmnGRUvdQSqDwR4EpGUjJdmyrN7NAgdCXpU1vrd6XYNL/8BDQviwPiW/xFnbb/BmM4M+w=
+	t=1731424667; cv=none; b=CLFsp4pbSRtPbLUaBpXjvL3NzSAa8A5hyeH8O5hSWWqfGE4MJMXTGlxQNOofK4/Loe7HBJoIIRCrqs3x/vbZ0kR3tw6oi4Xbw4b9XUyNJpdIcmJkV2DKmBfz7bSkE9rsEfqhqW3mgQqk73IvNtL0mEzujU1QwiVhcW3pfybHpms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731400555; c=relaxed/simple;
-	bh=+YPn1qX5gaP+IdqhSdmwHbc0JIseY3+jbrKnjK8DzKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cPKdnWwHKQpn4y6LZCSMlTIwfqXrq8EkLLmr3uqQPw9N1oDQKkasCeOkaxzVfgGDJXn/XJnoxVw4n0CUSZDbHT0Qnn9vMFN39x/5m4cCp1CHJtaM202cZZGbXYWs8B3F+IPCmQ6CaRaks5ar1puK+BS3ZeQ/i5YmXpssopYqtOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dOUQF4ZJ; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43162cf1eaaso67835505e9.0
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 00:35:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731400551; x=1732005351; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7wU7M4Ptimw8PGOw+mLlRlglx7N9Aty1r1jPUgKLjYw=;
-        b=dOUQF4ZJIw2CUwF/u0vKbY561EfBC74C/SQh5KmO+ffR1beCwM2KgAx8POLgdxKeMs
-         KnoED8wMjBsDnGfGAtRPC/wllbILPJA8NkJVtIexakczzNRjkphwrDngcfwjWPXkThRB
-         WDeJ76P/9WQCGCngAGe1ZKwByOZoIsnaM+adwlRCBY+X4EiCxH6Gre6ReGYoQubsqPLj
-         mLmZzvWz43kO2dhENMa7Tx71FOVIutfs0J5Q+hvaaTX/ZC02SAuAsl+BZPKPuOUcQKkI
-         0oLc06PbsGfRgIoC2pvX1izBWnij01gNTsACGS685LSPh9fWZ2ZTKk4nvVi6uQU+kkO3
-         SDIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731400551; x=1732005351;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7wU7M4Ptimw8PGOw+mLlRlglx7N9Aty1r1jPUgKLjYw=;
-        b=NIa5pYGF52LafFG+VXCEkglyAyaDTD7oeTpUKCJIbXMCuKQaSnV3OF+VGIKdrrVPhB
-         l8GgYodV4k6bhrwczoutLdHz3w4MLf4R+bSk5zhn/SI7mZZ0gmWTbDMq/dyspl7y6c+d
-         zdFreTYZ99g1PxsYhdylZiD5LLFySuT7L5qEt5vKjW9W7mG9jOV040RKsO0BGVaxyziR
-         n8y2pZi17mtZ49Jv2SQTcIKmxZvkM+r75j8NhrSxoOiWRTKb8dIkXrFWVQY7SZIgfoxJ
-         VtaD+aVwx0gdHW3zYL0LXJMZKNurrSMygyq6Z8sEzSI1wO9TwR7w8vdcWHcmla2bqHT9
-         eqow==
-X-Forwarded-Encrypted: i=1; AJvYcCWiRkPWGtyd7hnRUSOUJzu7vVx1+iqdJN/Pcx7bcGHXxVU2WRwXd0Uj4jqB+/yDb2uZy8v0t27TfwlN@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMiFdKM7LiJuJG6S+AmKbdtOPB5hQIV0k7hg3co4KXdlUDW6p4
-	HHgrHXInBfnZ0Z+OBUrSmxZdrdI6/fO2AssjOE4Msc7LgiNUyg6nJ291TzWYs8k=
-X-Google-Smtp-Source: AGHT+IHiFASzlr7spoTUNhVJtwwvwJNa1Lv5GSiKW/D3V+iLqOWluUwxVMhT7WDK0J0Ds2e3n2yiJw==
-X-Received: by 2002:a5d:6da6:0:b0:37d:4b26:54ca with SMTP id ffacd0b85a97d-381f186bd00mr16726556f8f.14.1731400551110;
-        Tue, 12 Nov 2024 00:35:51 -0800 (PST)
-Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed998e6esm14903634f8f.55.2024.11.12.00.35.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 00:35:50 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Ben Cheatham <Benjamin.Cheatham@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Avadhut Naik <Avadhut.Naik@amd.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] acpi: Switch back to struct platform_driver::remove()
-Date: Tue, 12 Nov 2024 09:35:18 +0100
-Message-ID:  <9ee1a9813f53698be62aab9d810b2d97a2a9f186.1731397722.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1731424667; c=relaxed/simple;
+	bh=Iuhdp4YW1PKIzpegGZtWZUYGQeghO6KfqFIt7ql1ZwA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EWCApxG9R5gb/mewej5+uUNv4Z1jJk1DbweBWgIkxeIkp0LecbbXYRQdztHhR0zVY93I807QW5LKBbWbseQgUZyfN3SEj66BVCP9mudLu8mA1fZBM9suIDQ0rfO4+CgRW7j0euR47O9I64gqNVwD+liGE0cD5sxybiuNNystIpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A3PythOP; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731424666; x=1762960666;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Iuhdp4YW1PKIzpegGZtWZUYGQeghO6KfqFIt7ql1ZwA=;
+  b=A3PythOPsVJpR395d1MVvQMCQ8AtDN+TiK45UwFOMTjXBASBRsToqizw
+   RgENDy8nRsfRWEdRBPvyIJAeghZGXnrNOeAdjS13sLH4JxTH/PSJRKJAx
+   gVkVW8iFEDE3O/Ocu/OKd64+2vK0SyE0IPhtUfwMuvimQN2HOMKqe35Ss
+   BIBL2NfSxlRvMfTwhAAHg+h86r0Wh1cjazyo6aMvPOC7M9rnHqLK2Yk9L
+   V19sItL5ALc1GHInWujxB73h03nAnyBgbXUsQ6kSOY/N2e3uAYyI1ZAh0
+   fyW4HtqmvvdVHWMuP0Y+cV/qozmGK6/W3CKWbHTkJ/aDw65Oqm8pH1+18
+   w==;
+X-CSE-ConnectionGUID: Vb3q/ThURFmCIzXW5JIfHw==
+X-CSE-MsgGUID: 2OB35yaaQAyLVazhEPxesw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="41891067"
+X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; 
+   d="scan'208";a="41891067"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 07:17:45 -0800
+X-CSE-ConnectionGUID: 5/1F43/yQlOFxHRxk7tXcg==
+X-CSE-MsgGUID: L1NR3vMQSQeS+M+mDoFdTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; 
+   d="scan'208";a="87673925"
+Received: from mylly.fi.intel.com (HELO [10.237.72.151]) ([10.237.72.151])
+  by orviesa006.jf.intel.com with ESMTP; 12 Nov 2024 07:17:43 -0800
+Message-ID: <0e0f7ac2-d97d-41b3-9239-2daabe395d4a@linux.intel.com>
+Date: Tue, 12 Nov 2024 17:17:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7340; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=+YPn1qX5gaP+IdqhSdmwHbc0JIseY3+jbrKnjK8DzKU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnMxNI/ZbTVUEOBpYGZ8q7MY0VkhJKOMG4wkSjl hXt4aXh0BOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZzMTSAAKCRCPgPtYfRL+ TinZCACtViGxq/dG3QLNiGorxdJ9IV6j7DdeESdB/ykTYWapaxcagWWW/ptzn4ok3Btpt0OOzPn aqeZX44HlEzLsBo6rmHiBi9wExApLnPZY+Zb8C7hu2oRQQkrNNv6eiy/vktIz50C/iyBR3EIcST 7e5utVxD6ep0Zyq/V5zakt5wKGSYOmTh2V+YaurjC2ZozvGe+8+b5SMskGKtX+xxfu5a3NfXuaM cXV95X642noXUMIjdciLLQrRF/9GXrLig4vB8+5QDAaxR+a7fRBF2QEMO1v0EuCJaZl1JWNbKIo V15vNofDu/bvkAlNYG6CDPM64deSBjCDvuuTk9wVvncFEwwo
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] i3c: master: Add ACPI support to i3c subsystem
+To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Sanket.Goswami@amd.com, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20241108073323.523805-1-Shyam-sundar.S-k@amd.com>
+ <20241108073323.523805-3-Shyam-sundar.S-k@amd.com>
+Content-Language: en-US
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+In-Reply-To: <20241108073323.523805-3-Shyam-sundar.S-k@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
+Hi
 
-Convert all platform drivers below drivers/acpi to use .remove(), with
-the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done
-by just changing the structure member name in the driver initializer.
+On 11/8/24 9:33 AM, Shyam Sundar S K wrote:
+> As of now, the I3C subsystem only has ARM-specific initialization, and
+> there is no corresponding ACPI plumbing present. To address this, ACPI
+> support needs to be added to both the I3C core and DW driver.
+> 
+> Add support to get the ACPI handle from the _HID probed and parse the apci
+> object to retrieve the slave information from BIOS.
+> 
+> Based on the acpi object information propogated via BIOS, build the i3c
+> board information so that the same information can be used across the
+> driver to handle the slave requests.
+> 
+> Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
+> Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
+> Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+> ---
+> Cc: linux-acpi@vger.kernel.org
+> 
+>   drivers/i3c/internals.h            |  3 ++
+>   drivers/i3c/master.c               | 84 ++++++++++++++++++++++++++++++
+>   drivers/i3c/master/dw-i3c-master.c |  7 +++
+>   include/linux/i3c/master.h         |  1 +
+>   4 files changed, 95 insertions(+)
+> 
+To clarify: The DSDT example I mentioned in the previous version I meant 
+it would be good to have in the patch/series itself. It helps both 
+reviewing the patchset and future documentation.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
+First I was thinking commit log itself but I guess a full DSDT example 
+showing SDP target devices becomes too large and e.g. 
+Documentation/firmware-guide/acpi/enumeration.rst is better?
 
-I did a single patch for all of drivers/acpi. While I usually prefer
-to do one logical change per patch, this seems to be overengineering
-here as the individual changes are really trivial and shouldn't be much
-in the way for stable backports. But I'll happily split the patch if you
-prefer it split. Also if you object the indentation stuff, I can rework
-that.
+> diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+> index 433f6088b7ce..178bc0ebe6b6 100644
+> --- a/drivers/i3c/internals.h
+> +++ b/drivers/i3c/internals.h
+> @@ -10,6 +10,9 @@
+>   
+>   #include <linux/i3c/master.h>
+>   
+> +#define I3C_GET_PID		0x08
+> +#define I3C_GET_ADDR		0x7F
+> +
 
-This is based on yesterday's next, if conflicts arise when you apply it
-at some later time and don't want to resolve them, feel free to just
-drop the changes to the conflicting files. I'll notice and followup at a
-later time then. Or ask me for a fixed resend. (Having said that, I
-recommend b4 am -3 + git am -3 which should resolve most conflicts just
-fine.)
+These are bit confusing. One could think these are commands while 
+I3C_GET_PID is a shift and I3C_GET_ADDR is a mask in the code below.
 
-Best regards
-Uwe
+Since these are actually defines for the ACPI _ADR I tried to find are 
+there already similar defines in ACPI headers but could not find and 
+e.g. drivers/ata/libata-acpi.c is interpreting itself so I guess it's ok 
+to define here?
 
- drivers/acpi/ac.c                 | 2 +-
- drivers/acpi/acpi_pad.c           | 2 +-
- drivers/acpi/acpi_tad.c           | 2 +-
- drivers/acpi/apei/einj-core.c     | 2 +-
- drivers/acpi/apei/ghes.c          | 2 +-
- drivers/acpi/arm64/agdi.c         | 2 +-
- drivers/acpi/dptf/dptf_pch_fivr.c | 2 +-
- drivers/acpi/dptf/dptf_power.c    | 2 +-
- drivers/acpi/evged.c              | 2 +-
- drivers/acpi/fan_core.c           | 2 +-
- drivers/acpi/pfr_telemetry.c      | 2 +-
- drivers/acpi/pfr_update.c         | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+>   void i3c_bus_normaluse_lock(struct i3c_bus *bus);
+>   void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+>   
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index 6f3eb710a75d..0ceef2aa9161 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -2251,6 +2251,84 @@ static int of_i3c_master_add_dev(struct i3c_master_controller *master,
+>   	return ret;
+>   }
+>   
+> +#if IS_ENABLED(CONFIG_ACPI)
+> +static int i3c_acpi_configure_master(struct i3c_master_controller *master)
+> +{
+> +	struct acpi_buffer buf = {ACPI_ALLOCATE_BUFFER, NULL};
+> +	enum i3c_addr_slot_status addrstatus;
+> +	struct i3c_dev_boardinfo *boardinfo;
+> +	struct device *dev = &master->dev;
+> +	struct fwnode_handle *fwnode;
+> +	struct acpi_device *adev;
+> +	u32 slv_addr, num_dev;
+> +	acpi_status status;
+> +	u64 val;
+> +
+> +	status = acpi_evaluate_object_typed(master->ahandle, "_DSD", NULL, &buf, ACPI_TYPE_PACKAGE);
+> +	if (ACPI_FAILURE(status)) {
+> +		dev_err(&master->dev, "Error reading _DSD:%s\n", acpi_format_exception(status));
+> +		return -ENODEV;
+> +	}
+> +
+> +	num_dev = device_get_child_node_count(dev);
+> +	if (!num_dev) {
+> +		dev_err(&master->dev, "Error: no child node present\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	device_for_each_child_node(dev, fwnode) {
+> +		adev = to_acpi_device_node(fwnode);
+> +		if (!adev)
+> +			return -ENODEV;
+> +
+> +		status = acpi_evaluate_integer(adev->handle, "_ADR", NULL, &val);
+> +		if (ACPI_FAILURE(status)) {
+> +			dev_err(&master->dev, "Error: eval _ADR failed\n");
+> +			return -EINVAL;
+> +		}
+> +		slv_addr = val & I3C_GET_ADDR;
+> +
+> +		boardinfo = devm_kzalloc(dev, sizeof(*boardinfo), GFP_KERNEL);
+> +		if (!boardinfo)
+> +			return -ENOMEM;
+> +
+> +		if (slv_addr) {
+> +			if (slv_addr > I3C_MAX_ADDR)
+> +				return -EINVAL;
+> +
+> +			addrstatus = i3c_bus_get_addr_slot_status(&master->bus, slv_addr);
+> +			if (addrstatus != I3C_ADDR_SLOT_FREE)
+> +				return -EINVAL;
+> +		}
+> +
+> +		boardinfo->static_addr = slv_addr;
+> +		if (boardinfo->static_addr > I3C_MAX_ADDR)
+> +			return -EINVAL;
+> +
 
-diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index 7c5b040a83e8..1f69be8f51a2 100644
---- a/drivers/acpi/ac.c
-+++ b/drivers/acpi/ac.c
-@@ -290,7 +290,7 @@ static void acpi_ac_remove(struct platform_device *pdev)
- 
- static struct platform_driver acpi_ac_driver = {
- 	.probe = acpi_ac_probe,
--	.remove_new = acpi_ac_remove,
-+	.remove = acpi_ac_remove,
- 	.driver = {
- 		.name = "ac",
- 		.acpi_match_table = ac_device_ids,
-diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-index 42b7220d4cfd..4ec20fd56985 100644
---- a/drivers/acpi/acpi_pad.c
-+++ b/drivers/acpi/acpi_pad.c
-@@ -462,7 +462,7 @@ MODULE_DEVICE_TABLE(acpi, pad_device_ids);
- 
- static struct platform_driver acpi_pad_driver = {
- 	.probe = acpi_pad_probe,
--	.remove_new = acpi_pad_remove,
-+	.remove = acpi_pad_remove,
- 	.driver = {
- 		.dev_groups = acpi_pad_groups,
- 		.name = "processor_aggregator",
-diff --git a/drivers/acpi/acpi_tad.c b/drivers/acpi/acpi_tad.c
-index b831cb8e53dc..825c2a8acea4 100644
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -684,7 +684,7 @@ static struct platform_driver acpi_tad_driver = {
- 		.acpi_match_table = acpi_tad_ids,
- 	},
- 	.probe = acpi_tad_probe,
--	.remove_new = acpi_tad_remove,
-+	.remove = acpi_tad_remove,
- };
- MODULE_DEVICE_TABLE(acpi, acpi_tad_ids);
- 
-diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index 5c22720f43cc..04731a5b01fa 100644
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -880,7 +880,7 @@ static struct platform_device *einj_dev;
-  * triggering a section mismatch warning.
-  */
- static struct platform_driver einj_driver __refdata = {
--	.remove_new = __exit_p(einj_remove),
-+	.remove = __exit_p(einj_remove),
- 	.driver = {
- 		.name = "acpi-einj",
- 	},
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ada93cfde9ba..a2491905f165 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1605,7 +1605,7 @@ static struct platform_driver ghes_platform_driver = {
- 		.name	= "GHES",
- 	},
- 	.probe		= ghes_probe,
--	.remove_new	= ghes_remove,
-+	.remove		= ghes_remove,
- };
- 
- void __init acpi_ghes_init(void)
-diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-index f5f21dd0d277..e0df3daa4abf 100644
---- a/drivers/acpi/arm64/agdi.c
-+++ b/drivers/acpi/arm64/agdi.c
-@@ -88,7 +88,7 @@ static struct platform_driver agdi_driver = {
- 		.name = "agdi",
- 	},
- 	.probe = agdi_probe,
--	.remove_new = agdi_remove,
-+	.remove = agdi_remove,
- };
- 
- void __init acpi_agdi_init(void)
-diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
-index d202730fafd8..624fce67ce43 100644
---- a/drivers/acpi/dptf/dptf_pch_fivr.c
-+++ b/drivers/acpi/dptf/dptf_pch_fivr.c
-@@ -158,7 +158,7 @@ MODULE_DEVICE_TABLE(acpi, pch_fivr_device_ids);
- 
- static struct platform_driver pch_fivr_driver = {
- 	.probe = pch_fivr_add,
--	.remove_new = pch_fivr_remove,
-+	.remove = pch_fivr_remove,
- 	.driver = {
- 		.name = "dptf_pch_fivr",
- 		.acpi_match_table = pch_fivr_device_ids,
-diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
-index 8023b3e23315..3d3edd81b172 100644
---- a/drivers/acpi/dptf/dptf_power.c
-+++ b/drivers/acpi/dptf/dptf_power.c
-@@ -242,7 +242,7 @@ MODULE_DEVICE_TABLE(acpi, int3407_device_ids);
- 
- static struct platform_driver dptf_power_driver = {
- 	.probe = dptf_power_add,
--	.remove_new = dptf_power_remove,
-+	.remove = dptf_power_remove,
- 	.driver = {
- 		.name = "dptf_power",
- 		.acpi_match_table = int3407_device_ids,
-diff --git a/drivers/acpi/evged.c b/drivers/acpi/evged.c
-index 11778c93254b..5c35cbc7f6ff 100644
---- a/drivers/acpi/evged.c
-+++ b/drivers/acpi/evged.c
-@@ -185,7 +185,7 @@ static const struct acpi_device_id ged_acpi_ids[] = {
- 
- static struct platform_driver ged_driver = {
- 	.probe = ged_probe,
--	.remove_new = ged_remove,
-+	.remove = ged_remove,
- 	.shutdown = ged_shutdown,
- 	.driver = {
- 		.name = MODULE_NAME,
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index 7cea4495f19b..3ea9cfcff46e 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -448,7 +448,7 @@ static const struct dev_pm_ops acpi_fan_pm = {
- 
- static struct platform_driver acpi_fan_driver = {
- 	.probe = acpi_fan_probe,
--	.remove_new = acpi_fan_remove,
-+	.remove = acpi_fan_remove,
- 	.driver = {
- 		.name = "acpi-fan",
- 		.acpi_match_table = fan_device_ids,
-diff --git a/drivers/acpi/pfr_telemetry.c b/drivers/acpi/pfr_telemetry.c
-index a32798787ed9..32bdf8cbe8f2 100644
---- a/drivers/acpi/pfr_telemetry.c
-+++ b/drivers/acpi/pfr_telemetry.c
-@@ -422,7 +422,7 @@ static struct platform_driver acpi_pfrt_log_driver = {
- 		.acpi_match_table = acpi_pfrt_log_ids,
- 	},
- 	.probe = acpi_pfrt_log_probe,
--	.remove_new = acpi_pfrt_log_remove,
-+	.remove = acpi_pfrt_log_remove,
- };
- module_platform_driver(acpi_pfrt_log_driver);
- 
-diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
-index 8b2910995fc1..031d1ba81b86 100644
---- a/drivers/acpi/pfr_update.c
-+++ b/drivers/acpi/pfr_update.c
-@@ -565,7 +565,7 @@ static struct platform_driver acpi_pfru_driver = {
- 		.acpi_match_table = acpi_pfru_ids,
- 	},
- 	.probe = acpi_pfru_probe,
--	.remove_new = acpi_pfru_remove,
-+	.remove = acpi_pfru_remove,
- };
- module_platform_driver(acpi_pfru_driver);
- 
+slv_addr/static_addr > I3C_MAX_ADDR test is needless due masking above.
 
-base-commit: 6d59cab07b8d74d0f0422b750038123334f6ecc2
--- 
-2.45.2
+> +		boardinfo->pid = val >> I3C_GET_PID;
+> +		if ((boardinfo->pid & GENMASK_ULL(63, 48)) ||
+> +		    I3C_PID_RND_LOWER_32BITS(boardinfo->pid))
+> +			return -EINVAL;
+> +
 
+Bit shifting makes PID and also test incorrect?
 
