@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-9518-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9519-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB66B9C641A
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 23:13:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F959C641B
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 23:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7CA1F233C4
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 22:13:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5FAF1F233FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 22:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE78E21A4DE;
-	Tue, 12 Nov 2024 22:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8215F21A4D3;
+	Tue, 12 Nov 2024 22:13:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D029121A710;
-	Tue, 12 Nov 2024 22:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6748221A4D0;
+	Tue, 12 Nov 2024 22:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731449623; cv=none; b=Vu6Z/bomYwODZUaQD3NfFABj8aZ7icDHlNpUORmmmext9oIGk0H9ePw2miu+39xvYIXhd3IRQkTrSeExZYTnB/jKBWPg79/RweWebzmMpM7E/zBQJY3XFtI4uhNNz8wKlLBloyacxmgMA4fEj/CZEg+kOkNWCPRg4ZJW2eBBPiw=
+	t=1731449625; cv=none; b=lkempZFudFjOYSKyKSQyehiRZr/4yiJCHtEUV3+6DTjmuRfACNW210F2InFL5ojnR1L3d295VJpqKe+xMZxDfJ4fWl7znLd4hqApFQp4lUlBrtbBNVFv5UnBYyHD+X8fQC/azdqs8W9TpnmMploZZVGnky9uE37zi32QkxSm4MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731449623; c=relaxed/simple;
-	bh=3Livz62I9Mkdh27m5qVkYNWTFlbZXWnq1s8xDsiAejE=;
+	s=arc-20240116; t=1731449625; c=relaxed/simple;
+	bh=4yXJzY/uA6FPtaMBqtrwIL+v8IUP3W6xKxZ4p2ooj/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHsI+r4phKuEb0KsSyQUx6GG5Rosf5L3sKVoASQyd8Sm8jE/tbmphG5f0B68gVGRvCvj9PZ+ipD/W15A9NpWU40hlAs1hYCXEC/WvDC5obT2ow/O89v8XpGfdGcFuJg16QFkZN8iquqytovW8Nkgb1ayTuuFOLu8POP1ruBQpGA=
+	 MIME-Version; b=q4a4n1ebXD7gZxNG6IFGimwavPg9CWLCmeTOXVFpQR0IPJm0ddgEhrkFYadgexEF84AyZiEEZ/UM5liUPNt1OqJuaIIV7jZdLVtuUxeNOIlqMHgFSwujByH00bAz7KHFzBGDXnFXpnwusn+wLeWaRKJivJq5fyBKvu5e4MadssA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD79C4CECD;
-	Tue, 12 Nov 2024 22:13:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F4DC4CECD;
+	Tue, 12 Nov 2024 22:13:44 +0000 (UTC)
 From: Dave Jiang <dave.jiang@intel.com>
 To: linux-cxl@vger.kernel.org,
 	linux-acpi@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: rafael@kernel.org,
 	jonathan.cameron@huawei.com,
 	alison.schofield@intel.com,
 	ira.weiny@intel.com
-Subject: [RFC PATCH v2 4/5] cxl: Add extended linear cache address alias emission for cxl events
-Date: Tue, 12 Nov 2024 15:12:36 -0700
-Message-ID: <20241112221335.432583-5-dave.jiang@intel.com>
+Subject: [RFC PATCH v2 5/5] cxl: Add mce notifier to emit aliased address for extended linear cache
+Date: Tue, 12 Nov 2024 15:12:37 -0700
+Message-ID: <20241112221335.432583-6-dave.jiang@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112221335.432583-1-dave.jiang@intel.com>
 References: <20241112221335.432583-1-dave.jiang@intel.com>
@@ -54,325 +54,258 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the aliased address of extended linear cache when emitting event
-trace for DRAM and general media of CXL events.
+Below is a setup with extended linear cache configuration with an example
+layout of memory region shown below presented as a single memory region
+consists of 256G memory where there's 128G of DRAM and 128G of CXL memory.
+The kernel sees a region of total 256G of system memory.
 
+              128G DRAM                          128G CXL memory
+|-----------------------------------|-------------------------------------|
+
+Data resides in either DRAM or far memory (FM) with no replication. Hot
+data is swapped into DRAM by the hardware behind the scenes. When error is
+detected in one location, it is possible that error also resides in the
+aliased location. Therefore when a memory location that is flagged by MCE
+is part of the special region, the aliased memory location needs to be
+offlined as well.
+
+Add an mce notify callback to identify if the MCE address location is part
+of an extended linear cache region and handle accordingly.
+
+Added symbol export to set_mce_nospec() in x86 code in order to call
+set_mce_nospec() from the CXL MCE notify callback.
+
+Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
 v2:
-- Fix spelling errors. (Jonathan)
+- Move mce code to core/mce.c and add arch wrappers for CONFIG_X86_64. (Jonathan)
 ---
- drivers/cxl/core/acpi.c   | 10 ++++++++++
- drivers/cxl/core/core.h   |  7 +++++++
- drivers/cxl/core/mbox.c   | 42 ++++++++++++++++++++++++++++++++++++---
- drivers/cxl/core/region.c | 12 +++++++++++
- drivers/cxl/core/trace.h  | 24 ++++++++++++++--------
- include/linux/acpi.h      | 36 +++++++++++++--------------------
- 6 files changed, 98 insertions(+), 33 deletions(-)
+ arch/x86/include/asm/mce.h   |  1 +
+ arch/x86/mm/pat/set_memory.c |  1 +
+ drivers/cxl/core/Makefile    |  1 +
+ drivers/cxl/core/mbox.c      |  3 +++
+ drivers/cxl/core/mce.c       | 52 ++++++++++++++++++++++++++++++++++++
+ drivers/cxl/core/mce.h       | 14 ++++++++++
+ drivers/cxl/core/region.c    | 25 +++++++++++++++++
+ drivers/cxl/cxl.h            |  6 +++++
+ drivers/cxl/cxlmem.h         |  2 ++
+ 9 files changed, 105 insertions(+)
+ create mode 100644 drivers/cxl/core/mce.c
+ create mode 100644 drivers/cxl/core/mce.h
 
-diff --git a/drivers/cxl/core/acpi.c b/drivers/cxl/core/acpi.c
-index f13b4dae6ac5..f74136320fc3 100644
---- a/drivers/cxl/core/acpi.c
-+++ b/drivers/cxl/core/acpi.c
-@@ -9,3 +9,13 @@ int cxl_acpi_get_extended_linear_cache_size(struct resource *backing_res,
- {
- 	return hmat_get_extended_linear_cache_size(backing_res, nid, size);
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index 3b9970117a0f..a8ad140d5692 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -182,6 +182,7 @@ enum mce_notifier_prios {
+ 	MCE_PRIO_NFIT,
+ 	MCE_PRIO_EXTLOG,
+ 	MCE_PRIO_UC,
++	MCE_PRIO_CXL,
+ 	MCE_PRIO_EARLY,
+ 	MCE_PRIO_CEC,
+ 	MCE_PRIO_HIGHEST = MCE_PRIO_CEC
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 44f7b2ea6a07..1f85c29e118e 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2083,6 +2083,7 @@ int set_mce_nospec(unsigned long pfn)
+ 		pr_warn("Could not invalidate pfn=0x%lx from 1:1 map\n", pfn);
+ 	return rc;
  }
-+
-+int cxl_acpi_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid)
-+{
-+	return hmat_extended_linear_cache_address_xlat(address, alias, nid);
-+}
-+
-+int cxl_acpi_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid)
-+{
-+	return hmat_extended_linear_cache_alias_xlat(address, alias, nid);
-+}
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index c4dc9aefe25f..9b10039b0ca7 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -30,8 +30,13 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port);
- struct cxl_region *cxl_dpa_to_region(const struct cxl_memdev *cxlmd, u64 dpa);
- u64 cxl_dpa_to_hpa(struct cxl_region *cxlr, const struct cxl_memdev *cxlmd,
- 		   u64 dpa);
-+int cxl_region_nid(struct cxl_region *cxlr);
++EXPORT_SYMBOL_GPL(set_mce_nospec);
  
- #else
-+static inline int cxl_region_nid(struct cxl_region *cxlr)
-+{
-+	return NUMA_NO_NODE;
-+}
- static inline u64 cxl_dpa_to_hpa(struct cxl_region *cxlr,
- 				 const struct cxl_memdev *cxlmd, u64 dpa)
- {
-@@ -112,5 +117,7 @@ int cxl_port_get_switch_dport_bandwidth(struct cxl_port *port,
- 
- int cxl_acpi_get_extended_linear_cache_size(struct resource *backing_res,
- 					    int nid, resource_size_t *size);
-+int cxl_acpi_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid);
-+int cxl_acpi_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid);
- 
- #endif /* __CXL_CORE_H__ */
+ /* Restore full speculative operation to the pfn. */
+ int clear_mce_nospec(unsigned long pfn)
+diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+index 1a0c9c6ca818..d619fb11febd 100644
+--- a/drivers/cxl/core/Makefile
++++ b/drivers/cxl/core/Makefile
+@@ -17,3 +17,4 @@ cxl_core-y += cdat.o
+ cxl_core-y += acpi.o
+ cxl_core-$(CONFIG_TRACING) += trace.o
+ cxl_core-$(CONFIG_CXL_REGION) += region.o
++cxl_core-$(CONFIG_X86_MCE) += mce.o
 diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index 5175138c4fb7..3fa9c658a253 100644
+index 3fa9c658a253..2304786a1333 100644
 --- a/drivers/cxl/core/mbox.c
 +++ b/drivers/cxl/core/mbox.c
-@@ -856,6 +856,39 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, CXL);
+@@ -11,6 +11,7 @@
  
-+static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
+ #include "core.h"
+ #include "trace.h"
++#include "mce.h"
+ 
+ static bool cxl_raw_allow_all;
+ 
+@@ -1489,6 +1490,8 @@ struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
+ 	mds->ram_perf.qos_class = CXL_QOS_CLASS_INVALID;
+ 	mds->pmem_perf.qos_class = CXL_QOS_CLASS_INVALID;
+ 
++	cxl_register_mce_notifier(&mds->mce_notifier);
++
+ 	return mds;
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_memdev_state_create, CXL);
+diff --git a/drivers/cxl/core/mce.c b/drivers/cxl/core/mce.c
+new file mode 100644
+index 000000000000..801e4e4ef91a
+--- /dev/null
++++ b/drivers/cxl/core/mce.c
+@@ -0,0 +1,52 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
++#include <linux/notifier.h>
++#include <linux/set_memory.h>
++#include <asm/mce.h>
++#include <cxlmem.h>
++#include "mce.h"
++
++static int cxl_handle_mce(struct notifier_block *nb, unsigned long val,
++			  void *data)
 +{
-+	struct cxl_region_params *p = &cxlr->params;
-+	u64 alias, address;
-+	int nid, rc;
++	struct cxl_memdev_state *mds = container_of(nb, struct cxl_memdev_state,
++						    mce_notifier);
++	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
++	struct cxl_port *endpoint = cxlmd->endpoint;
++	struct mce *mce = (struct mce *)data;
++	u64 spa, spa_alias;
++	unsigned long pfn;
 +
-+	if (!p->cache_size)
-+		return ~0ULL;
++	if (!mce || !mce_usable_address(mce))
++		return NOTIFY_DONE;
 +
-+	nid = cxl_region_nid(cxlr);
-+	if (nid == NUMA_NO_NODE)
-+		nid = 0;
++	spa = mce->addr & MCI_ADDR_PHYSADDR;
 +
-+	if (hpa >= p->res->start + p->cache_size) {
-+		address = hpa - p->cache_size;
-+		alias = hpa;
-+		rc = cxl_acpi_extended_linear_cache_address_xlat(&address,
-+								 alias, nid);
-+		if (rc)
-+			return rc;
++	pfn = spa >> PAGE_SHIFT;
++	if (!pfn_valid(pfn))
++		return NOTIFY_DONE;
 +
-+		return address;
-+	}
++	spa_alias = cxl_port_get_spa_cache_alias(endpoint, spa);
++	if (!spa_alias)
++		return NOTIFY_DONE;
 +
-+	address = hpa;
-+	alias = hpa + p->cache_size;
-+	rc = cxl_acpi_extended_linear_cache_alias_xlat(address, &alias, nid);
-+	if (rc)
-+		return rc;
++	pfn = spa_alias >> PAGE_SHIFT;
 +
-+	return alias;
++	/*
++	 * Take down the aliased memory page. The original memory page flagged
++	 * by the MCE will be taken cared of by the standard MCE handler.
++	 */
++	dev_emerg(mds->cxlds.dev, "Offlining aliased SPA address: %#llx\n",
++		  spa_alias);
++	if (!memory_failure(pfn, 0))
++		set_mce_nospec(pfn);
++
++	return NOTIFY_OK;
 +}
 +
- void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
- 			    enum cxl_event_log_type type,
- 			    enum cxl_event_type event_type,
-@@ -871,7 +904,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
- 	}
- 
- 	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
--		u64 dpa, hpa = ULLONG_MAX;
-+		u64 dpa, hpa = ULLONG_MAX, hpa_alias;
- 		struct cxl_region *cxlr;
- 
- 		/*
-@@ -887,11 +920,14 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
- 		if (cxlr)
- 			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
- 
-+		hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
++void cxl_register_mce_notifier(struct notifier_block *mce_notifier)
++{
++	mce_notifier->notifier_call = cxl_handle_mce;
++	mce_notifier->priority = MCE_PRIO_CXL;
++	mce_register_decode_chain(mce_notifier);
++}
+diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
+new file mode 100644
+index 000000000000..1d747618bbc0
+--- /dev/null
++++ b/drivers/cxl/core/mce.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
++#ifndef _CXL_CORE_MCE_H_
++#define _CXL_CORE_MCE_H_
 +
- 		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
- 			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
--						&evt->gen_media);
-+						hpa_alias, &evt->gen_media);
- 		else if (event_type == CXL_CPER_EVENT_DRAM)
--			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
-+			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
-+				       &evt->dram);
- 	}
- }
- EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, CXL);
++#include <linux/notifier.h>
++
++#ifdef CONFIG_X86_MCE
++void cxl_register_mce_notifier(struct notifier_block *mce_notifer);
++#else
++static inline void cxl_register_mce_notifier(struct notifier_block *mce_notifier) {}
++#endif
++
++#endif
 diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index a37923c030a3..a7479b4aad8d 100644
+index a7479b4aad8d..d141ab11f784 100644
 --- a/drivers/cxl/core/region.c
 +++ b/drivers/cxl/core/region.c
-@@ -2405,6 +2405,18 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
- 	return true;
+@@ -3440,6 +3440,31 @@ int cxl_add_to_region(struct cxl_port *root, struct cxl_endpoint_decoder *cxled)
  }
+ EXPORT_SYMBOL_NS_GPL(cxl_add_to_region, CXL);
  
-+int cxl_region_nid(struct cxl_region *cxlr)
++u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa)
 +{
-+	struct cxl_region_params *p = &cxlr->params;
-+	struct resource *res;
++	struct cxl_region_ref *iter;
++	unsigned long index;
 +
-+	guard(rwsem_read)(&cxl_region_rwsem);
-+	res = p->res;
-+	if (!res)
-+		return NUMA_NO_NODE;
-+	return phys_to_target_node(res->start);
++	guard(rwsem_write)(&cxl_region_rwsem);
++
++	xa_for_each(&endpoint->regions, index, iter) {
++		struct cxl_region_params *p = &iter->region->params;
++
++		if (p->res->start <= spa && spa <= p->res->end) {
++			if (!p->cache_size)
++				return 0;
++
++			if (spa > p->res->start + p->cache_size)
++				return spa - p->cache_size;
++
++			return spa + p->cache_size;
++		}
++	}
++
++	return 0;
 +}
++EXPORT_SYMBOL_NS_GPL(cxl_port_get_spa_cache_alias, CXL);
 +
- static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
- 					  unsigned long action, void *arg)
+ static int is_system_ram(struct resource *res, void *arg)
  {
-diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-index 8672b42ee4d1..a63183e23ac8 100644
---- a/drivers/cxl/core/trace.h
-+++ b/drivers/cxl/core/trace.h
-@@ -316,9 +316,10 @@ TRACE_EVENT(cxl_generic_event,
- TRACE_EVENT(cxl_general_media,
- 
- 	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
--		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_gen_media *rec),
-+		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
-+		 struct cxl_event_gen_media *rec),
- 
--	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
-+	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
- 
- 	TP_STRUCT__entry(
- 		CXL_EVT_TP_entry
-@@ -332,6 +333,7 @@ TRACE_EVENT(cxl_general_media,
- 		__array(u8, comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE)
- 		/* Following are out of order to pack trace record */
- 		__field(u64, hpa)
-+		__field(u64, hpa_alias)
- 		__field_struct(uuid_t, region_uuid)
- 		__field(u16, validity_flags)
- 		__field(u8, rank)
-@@ -358,6 +360,7 @@ TRACE_EVENT(cxl_general_media,
- 			CXL_EVENT_GEN_MED_COMP_ID_SIZE);
- 		__entry->validity_flags = get_unaligned_le16(&rec->media_hdr.validity_flags);
- 		__entry->hpa = hpa;
-+		__entry->hpa_alias = hpa_alias;
- 		if (cxlr) {
- 			__assign_str(region_name);
- 			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
-@@ -370,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
- 	CXL_EVT_TP_printk("dpa=%llx dpa_flags='%s' " \
- 		"descriptor='%s' type='%s' transaction_type='%s' channel=%u rank=%u " \
- 		"device=%x comp_id=%s validity_flags='%s' " \
--		"hpa=%llx region=%s region_uuid=%pUb",
-+		"hpa=%llx hpa_alias=%llx region=%s region_uuid=%pUb",
- 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
- 		show_event_desc_flags(__entry->descriptor),
- 		show_mem_event_type(__entry->type),
-@@ -378,7 +381,8 @@ TRACE_EVENT(cxl_general_media,
- 		__entry->channel, __entry->rank, __entry->device,
- 		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
- 		show_valid_flags(__entry->validity_flags),
--		__entry->hpa, __get_str(region_name), &__entry->region_uuid
-+		__entry->hpa, __entry->hpa_alias, __get_str(region_name),
-+		&__entry->region_uuid
- 	)
- );
- 
-@@ -413,9 +417,10 @@ TRACE_EVENT(cxl_general_media,
- TRACE_EVENT(cxl_dram,
- 
- 	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
--		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_dram *rec),
-+		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
-+		 struct cxl_event_dram *rec),
- 
--	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
-+	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
- 
- 	TP_STRUCT__entry(
- 		CXL_EVT_TP_entry
-@@ -431,6 +436,7 @@ TRACE_EVENT(cxl_dram,
- 		__field(u32, row)
- 		__array(u8, cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE)
- 		__field(u64, hpa)
-+		__field(u64, hpa_alias)
- 		__field_struct(uuid_t, region_uuid)
- 		__field(u8, rank)	/* Out of order to pack trace record */
- 		__field(u8, bank_group)	/* Out of order to pack trace record */
-@@ -461,6 +467,7 @@ TRACE_EVENT(cxl_dram,
- 		memcpy(__entry->cor_mask, &rec->correction_mask,
- 			CXL_EVENT_DER_CORRECTION_MASK_SIZE);
- 		__entry->hpa = hpa;
-+		__entry->hpa_alias = hpa_alias;
- 		if (cxlr) {
- 			__assign_str(region_name);
- 			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
-@@ -474,7 +481,7 @@ TRACE_EVENT(cxl_dram,
- 		"transaction_type='%s' channel=%u rank=%u nibble_mask=%x " \
- 		"bank_group=%u bank=%u row=%u column=%u cor_mask=%s " \
- 		"validity_flags='%s' " \
--		"hpa=%llx region=%s region_uuid=%pUb",
-+		"hpa=%llx hpa_alias=%llx region=%s region_uuid=%pUb",
- 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
- 		show_event_desc_flags(__entry->descriptor),
- 		show_mem_event_type(__entry->type),
-@@ -484,7 +491,8 @@ TRACE_EVENT(cxl_dram,
- 		__entry->row, __entry->column,
- 		__print_hex(__entry->cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE),
- 		show_dram_valid_flags(__entry->validity_flags),
--		__entry->hpa, __get_str(region_name), &__entry->region_uuid
-+		__entry->hpa_alias, __entry->hpa, __get_str(region_name),
-+		&__entry->region_uuid
- 	)
- );
- 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 18a94d382d40..cdf6d42f5a94 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -436,34 +436,12 @@ int thermal_acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp);
- 
- #ifdef CONFIG_ACPI_HMAT
- int acpi_get_genport_coordinates(u32 uid, struct access_coordinate *coord);
--int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
--					resource_size_t *size);
--int hmat_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid);
--int hmat_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid);
+ 	struct cxl_region *cxlr = arg;
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 26466807fa7a..6b612a87469d 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -866,6 +866,7 @@ struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev);
+ int cxl_add_to_region(struct cxl_port *root,
+ 		      struct cxl_endpoint_decoder *cxled);
+ struct cxl_dax_region *to_cxl_dax_region(struct device *dev);
++u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa);
  #else
- static inline int acpi_get_genport_coordinates(u32 uid,
- 					       struct access_coordinate *coord)
+ static inline bool is_cxl_pmem_region(struct device *dev)
  {
- 	return -EOPNOTSUPP;
- }
--
--static inline int hmat_get_extended_linear_cache_size(struct resource *backing_res,
--						      int nid, resource_size_t *size)
--{
--	return -EOPNOTSUPP;
--}
--
--static inline int hmat_extended_linear_cache_alias_xlat(u64 address,
--							u64 *alias, int nid)
--{
--	return -EOPNOTSUPP;
--}
--
--static inline int hmat_extended_linear_cache_address_xlat(u64 *address,
--							  u64 alias, int nid)
--{
--	return -EOPNOTSUPP;
--}
- #endif
- 
- #ifdef CONFIG_ACPI_NUMA
-@@ -1115,12 +1093,26 @@ static inline acpi_handle acpi_get_processor_handle(int cpu)
- #ifdef CONFIG_ACPI_HMAT
- int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
- 					resource_size_t *size);
-+int hmat_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid);
-+int hmat_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid);
- #else
- static inline int hmat_get_extended_linear_cache_size(struct resource *backing_res,
- 						      int nid, resource_size_t *size)
+@@ -884,6 +885,11 @@ static inline struct cxl_dax_region *to_cxl_dax_region(struct device *dev)
  {
- 	return -EOPNOTSUPP;
+ 	return NULL;
  }
-+
-+static inline int hmat_extended_linear_cache_alias_xlat(u64 address,
-+							u64 *alias, int nid)
++static inline u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint,
++					       u64 spa)
 +{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int hmat_extended_linear_cache_address_xlat(u64 *address,
-+							  u64 alias, int nid)
-+{
-+	return -EOPNOTSUPP;
++	return 0;
 +}
  #endif
  
- extern void arch_post_acpi_subsys_init(void);
+ void cxl_endpoint_parse_cdat(struct cxl_port *port);
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index 2a25d1957ddb..55752cbf408c 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -477,6 +477,7 @@ static inline struct cxl_dev_state *mbox_to_cxlds(struct cxl_mailbox *cxl_mbox)
+  * @poison: poison driver state info
+  * @security: security driver state info
+  * @fw: firmware upload / activation state
++ * @mce_notifier: MCE notifier
+  *
+  * See CXL 3.0 8.2.9.8.2 Capacity Configuration and Label Storage for
+  * details on capacity parameters.
+@@ -503,6 +504,7 @@ struct cxl_memdev_state {
+ 	struct cxl_poison_state poison;
+ 	struct cxl_security_state security;
+ 	struct cxl_fw_state fw;
++	struct notifier_block mce_notifier;
+ };
+ 
+ static inline struct cxl_memdev_state *
 -- 
 2.47.0
 
