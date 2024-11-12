@@ -1,224 +1,192 @@
-Return-Path: <linux-acpi+bounces-9506-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9508-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C78F9C6281
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 21:26:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F84E9C628E
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 21:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E85901F25FCE
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 20:26:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12962284781
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 20:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA48219E4D;
-	Tue, 12 Nov 2024 20:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E5A219E21;
+	Tue, 12 Nov 2024 20:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm0ggcuY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHDMVJpD"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6DA219CB2;
-	Tue, 12 Nov 2024 20:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E922218D7C
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 20:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731443165; cv=none; b=dkOUB20qmgfosqeYbfQi1mgiAfxnFkBR3QyCARvBr5OWoG/U0sbhg88QHVVaRcR+6GE3lvSGfD0CxSeazvk4yxRrdvNDApKrtD467HZ7u11kgIeJi7OjJi3LsCWLafzwskkSvZrew+aHzA5aZ3d2nIC7oCDzr1jVeya5vatLwCo=
+	t=1731443281; cv=none; b=RazK4daR/Ut40OJlXF/wdP81dPtvb0BaPBT9Ba9kX8SXAgr9j4wiVhR+3cESsBgdqSGp2AcFkuPSWeg9biNUq6tU/ZvPjladAFePLZw6euPPUBLphe+DqacQEtq1ojN5vFh7Av1jimRjzLQXScvhv0sH+aIljgZWdcoWQXvp8K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731443165; c=relaxed/simple;
-	bh=Qcum8ubMRfMH0pNAD4awTm1xz9Aql0UVEtVhsoAChAA=;
+	s=arc-20240116; t=1731443281; c=relaxed/simple;
+	bh=TTeSjMglRilX+OdDe3ZcLFAs5KOWBRjepnj2CyVvG80=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fBL+6ikG0XX/2xbcBl0EMI83YVh4ZBEyJ4D8XNLSmSDLYZtzalXLPX+EPeoXbJcCixVeIChpdDM+zUQcoQ3Y1pkwAsbMyzX+QykkxYibtM3n1JWV5/M/5IXEGhx/WRmWKCGcj+1PnOt0EiCqwljBV2prKOIbC9ecO/yMskypznw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm0ggcuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC98EC4CEDC;
-	Tue, 12 Nov 2024 20:26:04 +0000 (UTC)
+	 To:Cc:Content-Type; b=FKx+/U9s3ZPP/Tx5+InpCT5+PqV/PvFmYDgWXA0wK3rLwZ97ja55L8II6KBDkCmZaOZUg0Y/qV31sF66gmmFPWDLvRXAtnMiBAODeCr+gA8tmkOkbwSX7gSyTbsTR44Fj/626OFA48Fz20IKPJ9+vQF5cClZde415up/7dQzREQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHDMVJpD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19A0C4CED5
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 20:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731443164;
-	bh=Qcum8ubMRfMH0pNAD4awTm1xz9Aql0UVEtVhsoAChAA=;
+	s=k20201202; t=1731443280;
+	bh=TTeSjMglRilX+OdDe3ZcLFAs5KOWBRjepnj2CyVvG80=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Hm0ggcuYlNUiIp9CbUr+YPxnNSMRhz0e+TTYH8gJBQIauhGSxC4ZefsUdoMreszHv
-	 MfjOWDKCin5gSVwTgo3nvFRJXhSLe8wHIqkPnM1ph7elEcTEpMxUDo6FIW6ft4KM2q
-	 Gs2ey3lwLwygEC3lflIWorsAuo69u1xeT6lj514pf78WC4CtO3w5JChOfhqcb6JLD6
-	 v9Dsv5UJknEllMOIPrrKewKIdF24kH6GYgInusc+l//Db1+v1fMwHYfWwmqpGRczB4
-	 xYC5Kcpk8lc11bu54p7XEhFV42EinBx/NcVscbkGqfBzkD8Ko+xHjgOPRgN4CVyezf
-	 pcZrHdGwNZEGQ==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5ebc349204cso2798717eaf.3;
-        Tue, 12 Nov 2024 12:26:04 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCULS5HWvl8nz8aX3VXeAWBVTSa4rCjWmsFLNQ1G9KlQ2xdSblsFi+n5uBClop6QO2xFa688URTm/ECEJYrc@vger.kernel.org, AJvYcCUMW5g+uXV1SddproIkeDkeYq4tyNabrhYjML4F36ujAc4+FUd1cSWAT8++USAvR4UrQ+dJZvEXAlxlO5rzusioSXZEiA==@vger.kernel.org, AJvYcCXP8+TPRcLIq56eaZsqeWRGEORfGV3ZZZmcQ5hU6USAXbTZ6LXwO9kTOiIhgK4HGciIRWoH+gwTUTJw@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvQc3i2VB/2ZTULcMc3sfj+R1Q1DsU/eEtKzUOTH8bMZVL1jbp
-	qIaDhCgQhytc0QdVuSPnbuetW+HQOEBhtfMacDmHJMGMJbAMP1v3FF0D94Sx1BH9Pqk1X8r4L0g
-	KaZPKBKyawWOxnrSuvBbGfkWZ5KA=
-X-Google-Smtp-Source: AGHT+IGueUF6YygHSoCLSttKQ5J82xFSJpZu1XOHp1U7sZTwXBi/RujuKdVKS0T4WDHw3EaUOQdo0MG0CaeY9cW9fsA=
-X-Received: by 2002:a05:6820:1f08:b0:5eb:85ee:2cbd with SMTP id
- 006d021491bc7-5ee57c60694mr12148398eaf.6.1731443164001; Tue, 12 Nov 2024
- 12:26:04 -0800 (PST)
+	b=aHDMVJpDgy2kYC0NxuBn+bZMfv5zZMIRGLtt6pRcc4J3X+f5q0jBVW3wO2Nbpy/Ru
+	 sNd156MYIJPgnWpu4mueNIfe/cJNPoiRDprYB4Faeb0vnV7m0pVSzEcEWIkANpc+o6
+	 kp7o9H+k/OmX8IfbaWR/OlcwYC6iscfI6j92h55AXZDDVajTeVJEiYkhBhnBWHRoiq
+	 I9FmncmCwWax+jpDeH5aXsupnazXxfGLW/x7DBjFtXJzAU0oZSy+4ZEJImeDd1ecGK
+	 MiYOm1xorXuOjw3vY6BtOFUTmEXBwqAeK2YvrTsf2uZzBrnwfLoNdhfsArVg3t8Sm4
+	 JcXzw/DEyEJtw==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5ee763f9779so1413981eaf.1
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 12:28:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUcKab1ruth1ZKaMsVxcLOBWmTKUTYHLn9mf2Q4NmcApsbdXypHSXJtqcSfqlhBlXY4q9H/bzVNu9TY@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9ovPTcoJFF/Wh/ckvHsOFlN9Weu+FuG5SKAjgOLg/1YN9p7pQ
+	PtpCbETZsWdk16Z4apB2z7+50kZAfyHjgzpQStT6McGgEb1+Z3doz3StzoUO5CPVwLORkIB6tXt
+	K49ElgOwmX0NozFBHQ0NBJpB0ty4=
+X-Google-Smtp-Source: AGHT+IG2RV2MLmwgRmM+G93ljwyuCp3i2uB8jJBAjuzf8qsufKrkleKW9gDwKPhxfjrhG68bsXMQdet+FGL6DKa4Zmc=
+X-Received: by 2002:a05:6820:1b08:b0:5ee:a5b:d172 with SMTP id
+ 006d021491bc7-5ee57c530cdmr11945144eaf.5.1731443279923; Tue, 12 Nov 2024
+ 12:27:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241109044151.29804-1-mario.limonciello@amd.com>
- <CAJZ5v0gaNKKbf29WD5keQxJdgP93P_iWiQMwp7cOL9NCUumeZA@mail.gmail.com> <411286d5-83c2-471f-a723-6a00aee3cc89@amd.com>
-In-Reply-To: <411286d5-83c2-471f-a723-6a00aee3cc89@amd.com>
+References: <20241109215936.83004-1-hdegoede@redhat.com>
+In-Reply-To: <20241109215936.83004-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 12 Nov 2024 21:25:52 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gj7qoSHd54q+KCLz44Hj+MpkgU7LZG1nNBHf+4dwVHpw@mail.gmail.com>
-Message-ID: <CAJZ5v0gj7qoSHd54q+KCLz44Hj+MpkgU7LZG1nNBHf+4dwVHpw@mail.gmail.com>
-Subject: Re: [PATCH v6 00/22] Add support for binding ACPI platform profile to
- multiple drivers
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Len Brown <lenb@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>, 
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Corentin Chary <corentin.chary@gmail.com>, 
-	"Luke D . Jones" <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>, 
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>, Alexis Belmonte <alexbelm48@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:ACPI" <linux-acpi@vger.kernel.org>, 
-	"open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER" <platform-driver-x86@vger.kernel.org>, 
-	"open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, Matthew Schwartz <matthew.schwartz@linux.dev>
+Date: Tue, 12 Nov 2024 21:27:48 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hKqWB7NCWa-83ofVPLjPeAy+dRHvRCWopcSKMixm11-A@mail.gmail.com>
+Message-ID: <CAJZ5v0hKqWB7NCWa-83ofVPLjPeAy+dRHvRCWopcSKMixm11-A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: x86: Make UART skip quirks work on PCI UARTs
+ without an UID
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 12, 2024 at 9:20=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Sat, Nov 9, 2024 at 10:59=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+ wrote:
 >
-> On 11/12/2024 14:16, Rafael J. Wysocki wrote:
-> > On Sat, Nov 9, 2024 at 5:42=E2=80=AFAM Mario Limonciello
-> > <mario.limonciello@amd.com> wrote:
-> >>
-> >> Currently there are a number of ASUS products on the market that happe=
-n to
-> >> have ACPI objects for amd-pmf to bind to as well as an ACPI platform
-> >> profile provided by asus-wmi.
-> >>
-> >> The ACPI platform profile support created by amd-pmf on these ASUS
-> >> products is "Function 9" which is specifically for "BIOS or EC
-> >> notification" of power slider position. This feature is actively used
-> >> by some designs such as Framework 13 and Framework 16.
-> >>
-> >> On these ASUS designs we keep on quirking more and more of them to tur=
-n
-> >> off this notification so that asus-wmi can bind.
-> >>
-> >> This however isn't how Windows works.  "Multiple" things are notified =
-for
-> >> the power slider position. This series adjusts Linux to behave similar=
-ly.
-> >>
-> >> Multiple drivers can now register an ACPI platform profile and will re=
-act
-> >> to set requests.
-> >>
-> >> To avoid chaos, only positions that are common to both drivers are
-> >> accepted when the legacy /sys/firmware/acpi/platform_profile interface
-> >> is used.
-> >>
-> >> This series also adds a new concept of a "custom" profile.  This allow=
-s
-> >> userspace to discover that there are multiple driver handlers that are
-> >> configured differently.
-> >>
-> >> This series also allows dropping all of the PMF quirks from amd-pmf.
-> >>
-> >> ---
-> >> v6:
-> >>   * Add patch dev patch but don't make mandatory
-> >
-> > Probably a typo?
+> The Vexia EDU ATLA 10 tablet (9V version) which shipped with Android 4.2
+> as factory OS has the usual broken DSDT issues for x86 Android tablets.
 >
-> Ah whoops, yes.
+> On top of that this tablet is special because all its LPSS island
+> peripherals are enumerated as PCI devices rather then as ACPI devices as
+> they typically are.
 >
-> >
-> > Which patch is it, BTW?
+> For the x86-android-tablets kmod to be able to instantiate a serdev clien=
+t
+> for the Bluetooth HCI on this tablet, an ACPI_QUIRK_UART1_SKIP quirk is
+> necessary.
 >
-> Patch 3.
+> Modify acpi_dmi_skip_serdev_enumeration() to work with PCI enumerated
+> UARTs without an UID, such as the UARTs on this tablet.
 >
-> >
-> > In any case, if the merge window for 6.13 starts on the upcoming
-> > weekend, which is likely to happen AFAICS, I'll defer applying this
-> > series until 6.13-rc1 is out.
-> >
-> > It's larger and it's been changing too often recently for me to catch
-> > up and I'll be much more comfortable if it spends some time in
-> > linux-next before going into the mainline (and not during a merge
-> > window for that matter).
-> >
+> Also make acpi_dmi_skip_serdev_enumeration() exit early if there are no
+> quirks, since there is nothing to do then.
 >
-> I'm thankful; Armin ended up having a lot of very valuable feedback.
+> And add the necessary quirks for the Vexia EDU ATLA 10 tablet.
 >
-> Yeah, it makes sense to defer to next cycle.
+> This should compile with CONFIG_PCI being unset without issues because
+> dev_is_pci() is defined as "(false)" then.
 >
-> Would you prefer me to rebase and resend as v7 after the merge window or
-> will you just add it to a TODO?
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/x86/utils.c | 49 ++++++++++++++++++++++++++++++++--------
+>  1 file changed, 40 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index 6af546b21574..3eec889d4f5f 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -12,6 +12,7 @@
+>
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+> +#include <linux/pci.h>
+>  #include <linux/platform_device.h>
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/intel-family.h>
+> @@ -391,6 +392,19 @@ static const struct dmi_system_id acpi_quirk_skip_dm=
+i_ids[] =3D {
+>                 .driver_data =3D (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+>                                         ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTE=
+RY),
+>         },
+> +       {
+> +               /* Vexia Edu Atla 10 tablet 9V version */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
+> +                       /* Above strings are too generic, also match on B=
+IOS date */
+> +                       DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
+> +               },
+> +               .driver_data =3D (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+> +                                       ACPI_QUIRK_UART1_SKIP |
+> +                                       ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTE=
+RY |
+> +                                       ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLE=
+RS),
+> +       },
+>         {
+>                 /* Whitelabel (sold as various brands) TM800A550L */
+>                 .matches =3D {
+> @@ -439,18 +453,35 @@ static int acpi_dmi_skip_serdev_enumeration(struct =
+device *controller_parent, bo
+>         struct acpi_device *adev =3D ACPI_COMPANION(controller_parent);
+>         const struct dmi_system_id *dmi_id;
+>         long quirks =3D 0;
+> -       u64 uid;
+> -       int ret;
+> -
+> -       ret =3D acpi_dev_uid_to_integer(adev, &uid);
+> -       if (ret)
+> -               return 0;
+> +       u64 uid =3D 0;
+>
+>         dmi_id =3D dmi_first_match(acpi_quirk_skip_dmi_ids);
+> -       if (dmi_id)
+> -               quirks =3D (unsigned long)dmi_id->driver_data;
+> +       if (!dmi_id)
+> +               return 0;
+>
+> -       if (!dev_is_platform(controller_parent)) {
+> +       quirks =3D (unsigned long)dmi_id->driver_data;
+> +
+> +       /* uid is left at 0 on errors and 0 is not a valid UART UID */
+> +       acpi_dev_uid_to_integer(adev, &uid);
+> +
+> +       /* For PCI UARTs without an UID */
+> +       if (!uid && dev_is_pci(controller_parent)) {
+> +               struct pci_dev *pdev =3D to_pci_dev(controller_parent);
+> +
+> +               /*
+> +                * Devfn values for PCI UARTs on Bay Trail SoCs, which ar=
+e
+> +                * the only devices where this fallback is necessary.
+> +                */
+> +               if (pdev->devfn =3D=3D PCI_DEVFN(0x1e, 3))
+> +                       uid =3D 1;
+> +               else if (pdev->devfn =3D=3D PCI_DEVFN(0x1e, 4))
+> +                       uid =3D 2;
+> +       }
+> +
+> +       if (!uid)
+> +               return 0;
+> +
+> +       if (!dev_is_platform(controller_parent) && !dev_is_pci(controller=
+_parent)) {
+>                 /* PNP enumerated UARTs */
+>                 if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid =3D=3D 1)
+>                         *skip =3D true;
+> --
 
-If rebasing is needed, it will be welcome.  Also if you need/want to
-make any changes in the meantime, please respin.  Otherwise I can just
-pick up the current series.
-
-> >>   * See other patches changelogs for individualized changes
-> >>
-> >> Mario Limonciello (22):
-> >>    ACPI: platform-profile: Add a name member to handlers
-> >>    platform/x86/dell: dell-pc: Create platform device
-> >>    ACPI: platform_profile: Add device pointer into platform profile
-> >>      handler
-> >>    ACPI: platform_profile: Add platform handler argument to
-> >>      platform_profile_remove()
-> >>    ACPI: platform_profile: Pass the profile handler into
-> >>      platform_profile_notify()
-> >>    ACPI: platform_profile: Move sanity check out of the mutex
-> >>    ACPI: platform_profile: Move matching string for new profile out of
-> >>      mutex
-> >>    ACPI: platform_profile: Use guard(mutex) for register/unregister
-> >>    ACPI: platform_profile: Use `scoped_cond_guard`
-> >>    ACPI: platform_profile: Create class for ACPI platform profile
-> >>    ACPI: platform_profile: Add name attribute to class interface
-> >>    ACPI: platform_profile: Add choices attribute for class interface
-> >>    ACPI: platform_profile: Add profile attribute for class interface
-> >>    ACPI: platform_profile: Notify change events on register and
-> >>      unregister
-> >>    ACPI: platform_profile: Only show profiles common for all handlers
-> >>    ACPI: platform_profile: Add concept of a "custom" profile
-> >>    ACPI: platform_profile: Make sure all profile handlers agree on
-> >>      profile
-> >>    ACPI: platform_profile: Check all profile handler to calculate next
-> >>    ACPI: platform_profile: Notify class device from
-> >>      platform_profile_notify()
-> >>    ACPI: platform_profile: Allow multiple handlers
-> >>    platform/x86/amd: pmf: Drop all quirks
-> >>    Documentation: Add documentation about class interface for platform
-> >>      profiles
-> >>
-> >>   .../ABI/testing/sysfs-platform_profile        |   5 +
-> >>   .../userspace-api/sysfs-platform_profile.rst  |  28 +
-> >>   drivers/acpi/platform_profile.c               | 537 ++++++++++++++--=
---
-> >>   .../surface/surface_platform_profile.c        |   8 +-
-> >>   drivers/platform/x86/acer-wmi.c               |  12 +-
-> >>   drivers/platform/x86/amd/pmf/Makefile         |   2 +-
-> >>   drivers/platform/x86/amd/pmf/core.c           |   1 -
-> >>   drivers/platform/x86/amd/pmf/pmf-quirks.c     |  66 ---
-> >>   drivers/platform/x86/amd/pmf/pmf.h            |   3 -
-> >>   drivers/platform/x86/amd/pmf/sps.c            |   4 +-
-> >>   drivers/platform/x86/asus-wmi.c               |  10 +-
-> >>   drivers/platform/x86/dell/alienware-wmi.c     |   8 +-
-> >>   drivers/platform/x86/dell/dell-pc.c           |  36 +-
-> >>   drivers/platform/x86/hp/hp-wmi.c              |   8 +-
-> >>   drivers/platform/x86/ideapad-laptop.c         |   6 +-
-> >>   .../platform/x86/inspur_platform_profile.c    |   7 +-
-> >>   drivers/platform/x86/thinkpad_acpi.c          |  16 +-
-> >>   include/linux/platform_profile.h              |   9 +-
-> >>   18 files changed, 553 insertions(+), 213 deletions(-)
-> >>   delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
-> >>
-> >>
-> >> base-commit: d68cb6023356af3bd3193983ad4ec03954a0b3e2
-> >> --
-> >> 2.43.0
-> >>
->
+Applied as 6.13 material, thanks!
 
