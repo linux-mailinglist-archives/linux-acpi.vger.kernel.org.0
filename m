@@ -1,156 +1,174 @@
-Return-Path: <linux-acpi+bounces-9514-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9521-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EFF9C6590
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 00:56:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5196F9C6570
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 00:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F29DB2AA47
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 22:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12BC72823D0
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Nov 2024 23:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5732B21A4D0;
-	Tue, 12 Nov 2024 22:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9B321A6EE;
+	Tue, 12 Nov 2024 23:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="aMQnJ4BO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B84521A4A7;
-	Tue, 12 Nov 2024 22:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B367D21CFA1
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 23:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731449618; cv=none; b=EJSQxwHFBbkJfQX2VROyFRtFBjcAS9QND/+vHoGWyKGUQNlbDNouCeD6J2hGqlkXaEWaiRy7LJgRhUGS5UVhcAUnV1ceMQ2kFL1TWjwdyUzHGIsgWyuTjkVcZb+KgiVNQKkkD3C6x8hoJ5H3/FkH3Ulx9tCT4CMXzok8mZgCKOg=
+	t=1731455281; cv=none; b=HTZpPRhLYGarFRc6U03xiOMyG5/jESDrXPDRiMd//1yXm9OBN0d8/vJkaT4AwicTOPOMF9qPXjrqLyDNoUovA/fCqvLbRexdDgz120P/RmTM9IXTEIFLbHMVHNMS5nDKo+gKq8ciYHz5pj5mktwiPJnD1UxmCMn/CTWIyUbnBAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731449618; c=relaxed/simple;
-	bh=r3gSCVx4mBfi39/3Mhartg80r4Jb6NJ4NVBvFg3cL7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KTaVaVuVxvCv9I+izPi2S02cvNdd5fKs3jdRFH7qsVIq3HJdZ2PVuiraIlqMLUpTBXPN55lYR7sxqGLIIr0P19UzQ80Fnn7cB3lrfIUtTbWMCKm4FKOwGoOHb31hpWs/+VZO6rgncM5ha8bXNxcluGlBcl/PQ8GKpiaoXA4BGvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D1AC4CECD;
-	Tue, 12 Nov 2024 22:13:37 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: rafael@kernel.org,
-	bp@alien8.de,
-	dan.j.williams@intel.com,
-	tony.luck@intel.com,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	alison.schofield@intel.com,
-	ira.weiny@intel.com
-Subject: [RFC PATCH v2 0/6] acpi/hmat / cxl: Add exclusive caching enumeration and RAS support
-Date: Tue, 12 Nov 2024 15:12:32 -0700
-Message-ID: <20241112221335.432583-1-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1731455281; c=relaxed/simple;
+	bh=N7dFYszMXv8mOrLoOkSsYfFtGY+5VlTWGDWy+wCc/Fw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PgY1trzdRuQY19vuYmaph6Of2PTuNBV7LshXmo1AmmFeNV03680s2ZjLhouJnjwrrWGlobC8qxj0FS3sUk01TRtXtYYCV9HKg32ARo0VJdXyIacvz88tZmzCTcESnv8pf/GE4W/EmMoXVbteA45hmEKZ8qmi8efP1oSs+Wkbyyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=aMQnJ4BO; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6ce3fc4e58bso36209256d6.0
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 15:47:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1731455278; x=1732060078; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nOX9DSgNLbyzHMkGOIxDMiwsq1o4f6ejGQOhBxaCHpU=;
+        b=aMQnJ4BOncOEUbjunI/ZUQTc01EBixAoSiqs6gb0lLss+sR65ega/+nqMc2vrZD4tI
+         qtBrJ4Qb5XcS2kHa3lQEq7tgX+HkZENJtaYFFekrlCWFgAfTtwzlP2n+dOjjoT/EOm2+
+         tXq5dcGpYzgr+cd8pgA0N4xr8xmDUHaHF59lCYjj7XLHjt70hFFpK7cwLD3G3xZd0d/s
+         EYfD10szDlD+m0I17jj/ifLMpGV4ONz8u/YBPWnpLJj1anqaV161w+sqWK3Xcn3/mK1V
+         PQGio9H+XsNZrUhiIa1YjzzIHUKPQTv7JYAZWVbhbyPHQ1IPjnXXhfKKuZvN0YtVgVIK
+         7PlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731455278; x=1732060078;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nOX9DSgNLbyzHMkGOIxDMiwsq1o4f6ejGQOhBxaCHpU=;
+        b=g9YE0fR21ztYJsQgdN0dQgd+inBBZjNsXWt72P2wAfUlv5cwzZFpB0BJLZ6Td4O17n
+         +56wcFGZ/Kw7VIj2a2lcmLz+lw69htUraQJk0/t59RBEbBpzjnCe70t052Z5L7uQ89Q6
+         nlSeoZuhHSe4l6OiYikomx6LFmlYCXeW28I0oKr11g+32eVX1sOgqR5IUUjBLq8SihjC
+         wmO8oouUPzFOJH0ewvsJoFoE2t4ddXIuz02ld8l58ew9XurkeXry+4MCZFgZh1Hmm+02
+         KEVxuSL4RdIS/E8f2GVU2Qd/BTQm9Qab8EsCxrRQsIP4vXmT3NBhj8Q3LCUswiXd/P9U
+         LdNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVuj8M0Q/96T6PfJkSOtpAMVpNTvIjiwCRERP+gezqPi5eUPLDK2bIP3y/GuWw+75OiDU+Bfi83Oflu@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5L5Kqw486D6yoDMffgt8bN/kA5ZGEX2ti2Scyzjb3G+bBGYK5
+	yAe+tJ7WzazK3ctukHMMhvw3B48YkfOKpMjmlUvrpYg/F6FuadcIC1xFr3jjGS4=
+X-Google-Smtp-Source: AGHT+IESCbVOvkdTgqqmwdwGBZDyO5gMTGBHvzuur/6mM+yLjVaQptGL8/RUONrYdiW+pZ1cU+a0nw==
+X-Received: by 2002:a05:6214:5b87:b0:6cb:f16f:65d5 with SMTP id 6a1803df08f44-6d3dd039d0emr15720396d6.12.1731455278579;
+        Tue, 12 Nov 2024 15:47:58 -0800 (PST)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d39643b678sm77555456d6.97.2024.11.12.15.47.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 15:47:58 -0800 (PST)
+Date: Tue, 12 Nov 2024 18:47:35 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, kernel-team@meta.com,
+	Jonathan.Cameron@huawei.com, rrichter@amd.com, Terry.Bowman@amd.com,
+	dave.jiang@intel.com, ira.weiny@intel.com,
+	alison.schofield@intel.com, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
+	lenb@kernel.org, david@redhat.com, osalvador@suse.de,
+	gregkh@linuxfoundation.org, akpm@linux-foundation.org,
+	rppt@kernel.org
+Subject: Re: [PATCH v6 3/3] acpi,srat: give memory block size advice based on
+ CFMWS alignment
+Message-ID: <ZzPpFzdzu-cis114@PC2K9PVX.TheFacebook.com>
+References: <20241106155847.7985-1-gourry@gourry.net>
+ <20241106155847.7985-4-gourry@gourry.net>
+ <6733cba395c30_10bc6294df@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6733cba395c30_10bc6294df@dwillia2-xfh.jf.intel.com.notmuch>
 
-v2:
-- Dropped 1/6 (ACPICA definition merged)
-- Change UNKNOWN to RESERVED for cache definition. (Jonathan)
-- Fix spelling errors (Jonathan)
-- Rename region_res_match_range() to region_res_match_cxl_range(). (Jonathan)
-- Add warning when cache is not 1:1 with backing region. (Jonathan)
-- Code and comments cleanup. (Jonathan)
-- Make MCE code access in CXL arch independent. (Jonathan)
-- Fixup 0-day reports.
+On Tue, Nov 12, 2024 at 01:41:55PM -0800, Dan Williams wrote:
+> Gregory Price wrote:
+> > Capacity is stranded when CFMWS regions are not aligned to block size.
+> > On x86, block size increases with capacity (2G blocks @ 64G capacity).
+> > 
+> > Use CFMWS base/size to report memory block size alignment advice.
+> > 
+> > Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > ---
+> >  drivers/acpi/numa/srat.c | 12 +++++++++++-
+> >  1 file changed, 11 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> > index 44f91f2c6c5d..34b6993e7d6c 100644
+> > --- a/drivers/acpi/numa/srat.c
+> > +++ b/drivers/acpi/numa/srat.c
+> > @@ -14,6 +14,7 @@
+> >  #include <linux/errno.h>
+> >  #include <linux/acpi.h>
+> >  #include <linux/memblock.h>
+> > +#include <linux/memory.h>
+> >  #include <linux/numa.h>
+> >  #include <linux/nodemask.h>
+> >  #include <linux/topology.h>
+> > @@ -338,13 +339,22 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+> >  {
+> >  	struct acpi_cedt_cfmws *cfmws;
+> >  	int *fake_pxm = arg;
+> > -	u64 start, end;
+> > +	u64 start, end, align;
+> >  	int node;
+> >  
+> >  	cfmws = (struct acpi_cedt_cfmws *)header;
+> >  	start = cfmws->base_hpa;
+> >  	end = cfmws->base_hpa + cfmws->window_size;
+> >  
+> > +	/* Align memblock size to CFMW regions if possible */
+> > +	align = 1UL << __ffs(start | end);
+> > +	if (align >= SZ_256M) {
+> > +		if (memory_block_advise_max_size(align) < 0)
+> > +			pr_warn("CFMWS: memblock size advise failed\n");
+> 
+> Oh, this made me go back to look at what happens if CFMWS has multiple
+> alignment suggestions. Should not memory_block_advise_max_size() be
+> considering the max advice?
+> 
+>     if (memory_block_advised_size) {
+>         ...    
+>     } else {
+>             memory_block_advised_size = max(memory_block_advised_size, size);
+>     }
+> 
+> For example, if region0 is an x4 region and region1 is an x1 region then
+> the memory block size should be 1GB, not 256M. I.e. CFMWS alignment
+> follows CXL hardware decoder alignment of "256M * InterleaveWays".
 
-I'm looking for comments on the approach and the implementation of dealing with
-this exclusive caching configuration. I have concerns with the discovering and
-handling of the PCIe MMIO space in the memory mapping (MMIO hole) and looking
-for suggestions on if there are better ways to do it. One example of MMIO hole
-can possibly look like:
-0 - 2G: RAM
-2G-4G: MMIO
-4G-end of memory: RAM
-end of memory-infinity: 64-bit MMIO
+Max size to minimize capacity loss to due alignment truncation.
 
-Certain systems provide an exclusive caching memory configurations where a
-1:1 layout of DRAM and far memory (FM) such as CXL memory is utilized. In
-this configuration, the memory region is provided as a single memory region
-to the OS. For example such as below:
+If CFMW-0 is aligned at 1GB and CFMW-1 is aligned at 256MB, if you select 1GB
+then some portion of CFMW-1 will be unmappable.
 
-             128GB DRAM                         128GB CXL memory
-|------------------------------------|------------------------------------|
+so you want min(memory_block_advised_size, size) to ensure the hotplug memblock
+size aligns to the *smallest* CFMW (or any other source) alignment.
 
-The kernel sees the region as a 256G system memory region. Data can reside
-in either DRAM or FM with no replication. Hot data is swapped into DRAM by
-the hardware behind the scenes.
+Unless I'm misunderstanding your feedback here.
 
-This kernel series introduces code to enumerate the side cache by the kernel
-when configured in a exclusive-cache configuration. It also adds RAS support
-to deal with the aliased memory addresses.
 
-A new ECN [1] to ACPI HMAT table was introduced and was approved to describe
-the "extended-linear" addressing for direct-mapped memory-side caches. A
-reserved field in the Memory Side Cache Information Structure of HMAT is
-redefined as "Address Mode" where a value of 1 is defined as Extended-linear
-mode. This value is valid if the cache is direct mapped. "It indicates that
-the associated address range (SRAT.MemoryAffinityStructure.Length) is
-comprised of the backing store capacity extended by the cache capacity." By
-augmenting the HMAT and SRAT parsing code, this new information can be stored
-by the HMAT handling code.
+I'm not clear on why the interleave data is relevant here - that just tells us
+how decoders line up with the memory region described in the CFMW.  The window
+still gets chopped up into N memblocks of memory_block_advised_size.
 
-Current CXL region enumeration code is not enlightened with the side cache
-configuration and therefore only presents the region size as the size of the
-CXL region. Add support to allow CXL region enumeration code to query the HMAT 
-handling code and retrieve the information regarding the side cache and adjust
-the region size accordingly. This should allow the CXL CLI to display the
-full region size rather than just the CXL only region size.
-
-There are 3 sources where the kernel may be notified that error is detected for
-memory.
-1. CXL DRAM event. This is a CXL event that is generated when an error is
-   detected by the CXL device patrol or demand scrubber. The trace_event is
-   augmented to display the aliased System Phyiscal Address (SPA) in addition
-   to the alerted address.  However, reporting of memory failure is TBD until
-   the discussion [2] of failure reporting is settled upstream.
-2. UCNA event from DRAM patrol or demand scrubber. This should eventually go
-   through the MCE callback chain.
-3. MCE from kernel consume poison.
-
-It is possible that all 3 sources may report at the same time and all report
-at the error.
-
-For 2 and 3, a MCE notifier callback is registered by the CXL on a per device
-basis. The callback will determine if the reported address is in one of the
-special regions and offline the aliased address if that is the case.
-
-[1]: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
-[2]: https://lore.kernel.org/linux-cxl/20240808151328.707869-2-ruansy.fnst@fujitsu.com/
-
----
-
-Dave Jiang (5):
-      acpi: numa: Add support to enumerate and store extended linear address mode
-      acpi/hmat / cxl: Add extended linear cache support for CXL
-      acpi/hmat: Add helper functions to provide extended linear cache translation
-      cxl: Add extended linear cache address alias emission for cxl events
-      cxl: Add mce notifier to emit aliased address for extended linear cache
-
- Documentation/ABI/stable/sysfs-devices-node |   6 ++
- arch/x86/include/asm/mce.h                  |   1 +
- arch/x86/mm/pat/set_memory.c                |   1 +
- drivers/acpi/numa/hmat.c                    | 195 ++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/base/node.c                         |   2 +
- drivers/cxl/core/Makefile                   |   2 +
- drivers/cxl/core/acpi.c                     |  21 ++++++
- drivers/cxl/core/core.h                     |  10 +++
- drivers/cxl/core/mbox.c                     |  45 ++++++++++-
- drivers/cxl/core/mce.c                      |  52 +++++++++++++
- drivers/cxl/core/mce.h                      |  14 ++++
- drivers/cxl/core/region.c                   | 107 +++++++++++++++++++++++++-
- drivers/cxl/core/trace.h                    |  24 ++++--
- drivers/cxl/cxl.h                           |   8 ++
- drivers/cxl/cxlmem.h                        |   2 +
- include/linux/acpi.h                        |  25 +++++++
- include/linux/node.h                        |   7 ++
- tools/testing/cxl/Kbuild                    |   1 +
- 18 files changed, 508 insertions(+), 15 deletions(-)
+~Gregory
 
