@@ -1,136 +1,127 @@
-Return-Path: <linux-acpi+bounces-9531-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9532-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05329C6941
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 07:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D520F9C69A3
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 08:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 806952877E1
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 06:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98786282E97
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 07:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37C21714BC;
-	Wed, 13 Nov 2024 06:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B36A17BB13;
+	Wed, 13 Nov 2024 07:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WQtqY1j5"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="Tz15j7pZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040C91779B8
-	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 06:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65282230996
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 07:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731479351; cv=none; b=pCCo2eN67WJ3hiFfROreCNnAmsB0TMAiMpao0bmhlEjPV6uYw9R8W7NfDrcW9ivCfxfs3t+4nA06ULMsvPY4mAZ8lqvkZJn4kgBNb7naVEB7XHcVXu2Q/e0cvzagu4zGjGk9KhEQwFwVqPCw0r4z0P+dXO7SK65pZaScnfTAS5Y=
+	t=1731481521; cv=none; b=JOIlyyAia1dZSJbzKnKLBqXWT5jBoYvyarchueNrD9MYGwrcVOszuKuiK8U1obrbMTJJeZGnRGb1L1vqEnVxaubQyIy4RReMlcYiFZaN60y5XAViDzx5M5+2hHujk1X+kHK6lJdtQQWW93/ke87/lFDYWL8neCSL+ZFi5yy0r3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731479351; c=relaxed/simple;
-	bh=ryKZ3ZF7sN+kjlkdznbBZ1GozgBjmJSrP4P2jIodaXI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aDkefEfaSpnWcald83f+Au+uf3FGEQBbcKnNo/PgQ2IOydVMmzcB7uBXd0G4M45IjfFYvxFGevu1N0PODGTzuAJL0xbldwF0bMpDlmMrvJjlIUSS2eSuIUET1rX8fLAOgZ0CyyAz5iQ4BvBn2ObMKcD5eYJTRPe5aJuD5sxg1ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WQtqY1j5; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53d9ff8f1e4so575493e87.2
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 22:29:09 -0800 (PST)
+	s=arc-20240116; t=1731481521; c=relaxed/simple;
+	bh=XzNpsyTqxzDr0Q1/DeMDEhXObeXQxZI8NonLpXgpY54=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wk/pp2nfObQqNuASTimdpmL5pyA74upQsKaA0yWN1vxMwyYz6ZTroMWZKwJeN17hJIrt/swuruF3JnurbQQYGGd/CXuP9t0CItTr8IZz5nd6cotEybLax5TScCFgF15rL3W9VAfk2kfx9VTuEGhnuIRCUVktqkfU82XghxTBuYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=Tz15j7pZ; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e60825aa26so3881883b6e.1
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 23:05:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731479348; x=1732084148; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9QCU/JLa948seWzRrNmkByaOgxKmnVBehQKimS55YRs=;
-        b=WQtqY1j5mGUp6K+OS8i21t023WgFcGnaPntb4Obk23sKqdmFCVqIEJ0Cm7yaZEanMV
-         gUOXp/4VV96oUyHB/rN22VI82czJAUNuFWPMUqL5GS8bFruFqO/+nlf6vgQ/iqU7JkJ+
-         xxdA5cpHOwmFJqb1xeCCJ8mJB3a9aPBwUcBYgitplO7IKEl1vDaALu81C5g+DbnWnZkP
-         BWC8+t0bp0bbM7VXEpAyIdNG6tf/H96kzWUcBeaR+WiDNNsZU1CMYCJWOBa0fhim/5NC
-         FcuPfwzGgBuEwuFEroqNB4vVJSQ7hkiwE/JQiV8S2ZxVWV/5WU89zm4f5j0Ql3NyA6KU
-         yjqw==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1731481518; x=1732086318; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RV5mKd+SWUX0HV1zXunMJLm1pgRUmXppt4+8Yzk2GwY=;
+        b=Tz15j7pZEj53QiXotR45LetjBIAQUrXYx9JLcSdgMpLHTl8IPQyJ5ehI0p3TS274OD
+         yDRrqG2IMVUgBMSPGhGxZfAPb9ymi5nxRV+LhGoNt6irUXwKX6vJicAkVpSHb1wJqYfE
+         x79FeBhbQmhYJLOgKkhXsKqzQ2Ds1/PgewlXMP1ijqXqj83jSEYcvmsI9QeD9ATdFAc1
+         USwXt1hxYFEpuvDQmlQoI30t2h7DI/+l4dnwagp4+zrxcVh5WYMHOXUcrZHpBRJu6z9h
+         XDEAiaHcnJj/Nz9bacnrT1yGnzfxLlSs5jpsOXqK4vCzwKLh04gG2/z5A073Lhg5EaAh
+         3EJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731479348; x=1732084148;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9QCU/JLa948seWzRrNmkByaOgxKmnVBehQKimS55YRs=;
-        b=Q+2HYqJyHc91m5U0FMncWnwlSVuSacOExn8scIc2KYX+pNTtj/3Iqpbm7Rnz0ScpbS
-         BqjOK5db5wVodwfF/CZcOHJlu/cxRzjD4gDUSicsHUVG2DqIQ3DWZydfBqumYygL9NLW
-         KZaQOg7bavISqWMUxgiPPan7fnjyorfnXC9eqJr3Y9RUEHHSzLOe1RQiraFhRidDVVAO
-         aS6VGb86nfnRIqfvTk1XBYad2q+F95g8jFk23ULdk4R/CBxYtddwtVTog8RMCHWjlEvI
-         z0qCrroDh8Uv0R/pVOKTd1sUALa6/s9DraQmjBDzdxVlAUawyALXPSQ/tIwJkJO+ZpmE
-         NezA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcqLsqr56/eDsEZzCTnDx1xLCq4C2lk2e2y9B29ULI8v3PNT6EWSRMQeNi1NHK3CbiGA8e/V8W6mL7@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOcNfkE9Wj1SlaTGEYIeh10jR9pkGxJtSu44p7Hsvn9YyLlBVF
-	XgkeVTrSg2Ly3BYA0oL8s5GRoM0wE5hL3PTndeWH2Ng2FkhQ1PBxWPnP79TpaWeMTUQJE5pskc1
-	//SySD9AhS/JayUKFBgF7qGDu7gMjqNAU8M7n3Q==
-X-Google-Smtp-Source: AGHT+IEEpcf7Vups7lw1NP9O1FTEPXG1XjljcLFymoWHBWMOkn9tB109/qtbls5Dq+XYyRVJ67vPr0ofrW4PZLq41wk=
-X-Received: by 2002:a05:6512:281b:b0:536:54fd:275b with SMTP id
- 2adb3069b0e04-53d86303095mr9309340e87.54.1731479348058; Tue, 12 Nov 2024
- 22:29:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731481518; x=1732086318;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RV5mKd+SWUX0HV1zXunMJLm1pgRUmXppt4+8Yzk2GwY=;
+        b=Oo+7JDVfYifp0f1P6BQJhM5MsTVIon9KRkfuSyHqThpArRJEMLYCG2Ko7llwzsKojT
+         cgOLbVvoO0D/73tT+np9i3NHMwcEhSWxdjUF1zfA7SK1BBIGcc+d33EnKW84J6i54VwK
+         3Z3D7uzlZm5ZldGZELdqI6olV3Wyr1XyHeHS6iIx73rqN0TIi/4fH4Qs6qXogH+0Chr8
+         RyG9oaELc1nAAQITwnKhBd8A38ZUfdhWGMit2h5sMhhcnU0VD3L37oVNo6arEVqZo/nx
+         kYabtoU0BQwvQip/q5/0QlGeDp6s3pB1ba/I35X8xdLPYUN2RBP7JldLQ1YB9aeSMF+R
+         iZWQ==
+X-Gm-Message-State: AOJu0YyxRzIifsPP211KOTHgmbvq/Kp5QotpDBsI+BWLr0cEpL28kL/6
+	VDR3JHjxHX2JxU4qaXxBUpgnkakoxXxOkVDAGX5dfQvvztsIDQ+VYowHcDja9zc=
+X-Google-Smtp-Source: AGHT+IGFw7DzRMngPvx+mv65K5j0/xVV3hwA8bu8072Y2SlIKW69JCxYqNFCGgCUgZj//dtqG2WJQA==
+X-Received: by 2002:a05:6808:3194:b0:3e7:5ab1:35b4 with SMTP id 5614622812f47-3e794706397mr18599233b6e.30.1731481517358;
+        Tue, 12 Nov 2024 23:05:17 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:e17:9700:16d2:7456:6634:9626? ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f714e8ae59sm788632a12.28.2024.11.12.23.05.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2024 23:05:16 -0800 (PST)
+Message-ID: <dfe6ca13-7c4b-4204-b3fb-7390eca3b18b@rivosinc.com>
+Date: Wed, 13 Nov 2024 08:05:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <20241112182938.GA172989@nvidia.com> <CABQgh9HOHzeRF7JfrXrRAcGB53o29HkW9rnVTf4JefeVWDvzyQ@mail.gmail.com>
- <20241113012359.GB35230@nvidia.com> <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
-In-Reply-To: <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
-From: Zhangfei Gao <zhangfei.gao@linaro.org>
-Date: Wed, 13 Nov 2024 14:28:56 +0800
-Message-ID: <CABQgh9F+K67YDYeg4==0dhdjya1YuX6uUttQA8zadWEZyRhNKw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, acpica-devel@lists.linux.dev, iommu@lists.linux.dev, 
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, 
-	Alex Williamson <alex.williamson@redhat.com>, Donald Dutile <ddutile@redhat.com>, 
-	Eric Auger <eric.auger@redhat.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jerry Snitselaar <jsnitsel@redhat.com>, 
-	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
-	patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: CPPC: fix bug that causes the value written in cpc
+ register to be wrong.
+To: Lifeng Zheng <zhenglifeng1@huawei.com>, rafael@kernel.org, lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ zhanjie9@hisilicon.com, lihuisong@huawei.com, fanghao11@huawei.com
+References: <20241113024933.2100519-1-zhenglifeng1@huawei.com>
+Content-Language: en-US
+From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+In-Reply-To: <20241113024933.2100519-1-zhenglifeng1@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi, Baolu
 
-On Wed, 13 Nov 2024 at 10:56, Baolu Lu <baolu.lu@linux.intel.com> wrote:
->
-> On 11/13/24 09:23, Jason Gunthorpe wrote:
-> >> https://github.com/Linaro/linux-kernel-uadk/tree/6.12-wip
-> >> https://github.com/Linaro/qemu/tree/6.12-wip
-> >>
-> >> Still need this hack
-> >> https://github.com/Linaro/linux-kernel-uadk/commit/
-> >> eaa194d954112cad4da7852e29343e546baf8683
-> >>
-> >> One is adding iommu_dev_enable/disable_feature IOMMU_DEV_FEAT_SVA,
-> >> which you have patchset before.
-> > Yes, I have a more complete version of that here someplace. Need some
-> > help on vt-d but hope to get that done next cycle.
->
-> Can you please elaborate this a bit more? Are you talking about below
-> change
->
-> +       ret = iommu_dev_enable_feature(idev->dev, IOMMU_DEV_FEAT_SVA);
-> +       if (ret)
-> +               return ret;
->
-> in iommufd_fault_iopf_enable()?
->
-> I have no idea about why SVA is affected when enabling iopf.
 
-In drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c,
-iommu_dev_enable_feature(IOMMU_DEV_FEAT_SVA) will real call
-iopf_queue_add_device,
-while iommu_dev_enable_feature(IOPF)  only set flag.
+On 13/11/2024 03:49, Lifeng Zheng wrote:
+> With these codes, the value written in cpc register will be the result of
+> the OR operatiion on input value and prev_val. This will causes the value
+> to be wrong.
+> 
+> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+> ---
+>  drivers/acpi/cppc_acpi.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 01192fd047a6..f69ef7cc0caf 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1146,7 +1146,6 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+>  			return -EFAULT;
+>  		}
+>  		val = MASK_VAL_WRITE(reg, prev_val, val);
+> -		val |= prev_val;
 
-arm_smmu_dev_enable_feature
-case IOMMU_DEV_FEAT_SVA:
-arm_smmu_master_enable_sva(master)
-iopf_queue_add_device(master->smmu->evtq.iopf, dev);
+Hi Lifeng,
 
-Thanks
+Indeed, MASK_VAL_WRITE() already takes care of ORing prev_val with the
+register mask. You can also add a Fixes:
+
+Fixes: 60949b7b8054 ("ACPI: CPPC: Fix MASK_VAL() usage")
+
+Thanks,
+
+Clément
+
+>  	}
+>  
+>  	switch (size) {
+
 
