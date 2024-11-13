@@ -1,125 +1,130 @@
-Return-Path: <linux-acpi+bounces-9527-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9528-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C56C9C6777
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 03:56:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEC19C6802
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 05:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC1FA283756
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 02:56:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C65FB257CF
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 04:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE5C158DC4;
-	Wed, 13 Nov 2024 02:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27A416C453;
+	Wed, 13 Nov 2024 04:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRUFIbR0"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="I2rqHbmU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD58D158848;
-	Wed, 13 Nov 2024 02:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186FA1632D6
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 04:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731466611; cv=none; b=n6UPCbTLC4EJEgG7EjbZWeKtL3EKQNuXZoYtGQ1FXrjKS+bZ3RR1EBjzfa61NvcxjCRbbt+GRVmbZyyX/lAQAh+xMDn9+4I13km+p7K6kBF8ZiZyBhcOhN04DpqkbFIqakAs3uuZlpDasSt6hZMBKDBod9UVfAUxWC4uhUDUi6I=
+	t=1731471323; cv=none; b=FQXtcoLOzcbTxrVvoYFAtgwR/aFkrqkgW7HWq/7vKYdxBdzld3dZ+4faJEr0XChJLQWIHRzNi+ZzafshFiBO73U/kMn4H+x8sdPzu2YRMi62AhOtOOdSWl5KXOh+EbWi1Q4CsDoW52TcPEpwyE1cF+4ecjDK2v0KnmAoQmDYdO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731466611; c=relaxed/simple;
-	bh=ceSuWOSaH+psoiQRK0fCAi9iXALt92xZBLKjvgklJjw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GmL5+5dJi6Kw5QGsX/b3DVzUWSQ58+ERI7Os3fYEStBlbR8rJdSNKLPFEC1eO6PTcd9RUjT8kCVDtJcEJFBhJ8JTEek4KtlzDxtQj/rAr6DkFqm8k2H6X6UgVBCEdu0l3thj3Om1T67kYa2j3mRjPeNuzDVTn8lZnxldlx/YBpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRUFIbR0; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731466610; x=1763002610;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ceSuWOSaH+psoiQRK0fCAi9iXALt92xZBLKjvgklJjw=;
-  b=dRUFIbR0ZE3whFc7iFp8DCHUbcHGtZsOrHEbqLd84LqKPKbrnYinXkKl
-   XqyxoxsUzsIOT4vVxtE9Epzd+lcPN+b5q4EHw3GoHhwSK0OL1dfFas1va
-   rsFujAdCAgwWVjFnVRWtvEAgHv0mCQA6i3M5mMyfr3No7ieJyDWZ63Y6u
-   itNJlNZJuBr1OHvZEwJTrzQIHmBCSoKFt2CqtERGbJK/FDZDp3CE+p420
-   Zv9sPgRb4N7KStPQUjkW5G94FL1X9MQPBuQlfiexEjTqqn/TlY6IWXIY7
-   MyJjJXNmf74XWfyu7ghbIFwMx2Y/zffs7tf2thxS562LmY5Nj0OU2krTO
-   A==;
-X-CSE-ConnectionGUID: zF3sdEj2Q9ikkFwYRS/KPg==
-X-CSE-MsgGUID: uaTabGEoR5m759qI4DoxWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="31442142"
-X-IronPort-AV: E=Sophos;i="6.12,149,1728975600"; 
-   d="scan'208";a="31442142"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 18:56:49 -0800
-X-CSE-ConnectionGUID: g2GulBb6RSSg5ikrECfKxg==
-X-CSE-MsgGUID: Oj2A52ANTnmNTqlZZd4sgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,149,1728975600"; 
-   d="scan'208";a="87703179"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 18:56:43 -0800
-Message-ID: <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
-Date: Wed, 13 Nov 2024 10:55:41 +0800
+	s=arc-20240116; t=1731471323; c=relaxed/simple;
+	bh=T2rdd7tXYgiIrzYHzCAL/PU41GbaxiH5Y8Q/Zohq1FE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DN6W+5kEmwYpf/GtTXVF8i+yR13uRQG3cPyFyILkPMgKq/XyYc4Tb/+UzLjkpMuAncOdTYrWQ/dVcWoZC1Za7kIuuhQ2Zgz4YlzIqFhpqBE5s5dXbowkJO7lsuUdsyZJbMJ1J/DIupPNQKA2k2PnKIvo1Va6CQTNYwDBRwS1IQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=I2rqHbmU; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b13fe8f4d0so411221085a.0
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 20:15:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1731471321; x=1732076121; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CUb1WojSD+HhOKe+sBVX703ySuQYQJYEhxr/ZtFrr20=;
+        b=I2rqHbmUPI8ue4wAeGFlxm4cr/jRTxxfKfLtbSaTS2FjnXx1w9RNgVGXWBs1icirL3
+         JKiE4XuouyoF3a+HT2Jj2GL70sEtwkAYZDmtzRM6F9xJcq5xA5bwQVcA4DUzgmi5KKJD
+         ySfDc8lieJklBiOzxSYFQSLlEOz5hBgPA+/TYQ2YWOqJmvCegWOEzjHlBicqkERK6ibp
+         MIULWyX9+46qR/9c1IOZIY63yd08OM6uBZkdz/W1iDyzlOCj/di32v7lxTPSIjuPUmxt
+         84vH3qPysyJwoCL/XS97MgvdiXkL7yDxOIh/hyrcsqi9OJs4sfdVY8GApmYzHQWrSZs6
+         5PLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731471321; x=1732076121;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CUb1WojSD+HhOKe+sBVX703ySuQYQJYEhxr/ZtFrr20=;
+        b=kVqk8pgdc0/fE9xxmOGclWid9PhWdmhCv34wOoT+CCFhi3LYLhLwfIi0GNuA7XHGNV
+         V0i2mH3SWc9/YCpkgtbPD4OyV6PLxhybWVSRD8N4MsmWyfBTqJDXptpYF+XmhWD7SjLM
+         OkpfZGRxZcg222Z174L6/vCshLyhnteIoGyNNQqt453yjfyDyQCmpoG/MFDlUOG215jg
+         Juyw15/VXANtfismPcwYhAqcgJqct9BOvSOchCoNp9+95U6HKeUIIZV3htVIv0x3XgS1
+         sFLJxEmgnlgysw2oS71jAaN3R9rKV9Dz5LgygP5p/peUrHgrsfkarJC6er63zoZng/5d
+         2FZA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1BZIjjN5Tepum3Yq0D1cnv3+QU7fsJl5S89mtllFd33+Che67N98lPn2Zmd9La4mBic1rK2+zxMMf@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyxMA5pr2KeSVdwa1T0jt8QGVKyS0J5YsChkGMKNkV2HlJguk2
+	i+aoFkIC9bpsy/kpdUxJX9c0bp2eCzq3aVHEWSb+JXxO1RZsMa+tdzMtG/sYsNY=
+X-Google-Smtp-Source: AGHT+IFZHlowe441qeuXq5e14Sj+kjnoWxQVfmLizMJ+32RwzXsN2gXKawIsTikUmXrXXVOr5Z+7Jw==
+X-Received: by 2002:a05:6214:2f03:b0:6d3:cebc:4cd2 with SMTP id 6a1803df08f44-6d3dd06b5b9mr18850226d6.34.1731471320966;
+        Tue, 12 Nov 2024 20:15:20 -0800 (PST)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32ac44082sm652302085a.38.2024.11.12.20.15.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 20:15:20 -0800 (PST)
+Date: Tue, 12 Nov 2024 23:14:55 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, kernel-team@meta.com,
+	Jonathan.Cameron@huawei.com, rrichter@amd.com, Terry.Bowman@amd.com,
+	dave.jiang@intel.com, ira.weiny@intel.com,
+	alison.schofield@intel.com, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
+	lenb@kernel.org, david@redhat.com, osalvador@suse.de,
+	gregkh@linuxfoundation.org, akpm@linux-foundation.org,
+	rppt@kernel.org
+Subject: Re: [PATCH v6 1/3] memory: implement
+ memory_block_advise/probe_max_size
+Message-ID: <ZzQnvzPLsamSs7i4@PC2K9PVX.TheFacebook.com>
+References: <20241106155847.7985-1-gourry@gourry.net>
+ <20241106155847.7985-2-gourry@gourry.net>
+ <6733c86390c40_10bc62945f@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
-To: Jason Gunthorpe <jgg@nvidia.com>, Zhangfei Gao <zhangfei.gao@linaro.org>
-Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
- Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
- kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Hanjun Guo <guohanjun@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
- Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
- patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Mostafa Saleh <smostafa@google.com>
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <20241112182938.GA172989@nvidia.com>
- <CABQgh9HOHzeRF7JfrXrRAcGB53o29HkW9rnVTf4JefeVWDvzyQ@mail.gmail.com>
- <20241113012359.GB35230@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20241113012359.GB35230@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6733c86390c40_10bc62945f@dwillia2-xfh.jf.intel.com.notmuch>
 
-On 11/13/24 09:23, Jason Gunthorpe wrote:
->> https://github.com/Linaro/linux-kernel-uadk/tree/6.12-wip
->> https://github.com/Linaro/qemu/tree/6.12-wip
->>
->> Still need this hack
->> https://github.com/Linaro/linux-kernel-uadk/commit/ 
->> eaa194d954112cad4da7852e29343e546baf8683
->>
->> One is adding iommu_dev_enable/disable_feature IOMMU_DEV_FEAT_SVA,
->> which you have patchset before.
-> Yes, I have a more complete version of that here someplace. Need some
-> help on vt-d but hope to get that done next cycle.
+On Tue, Nov 12, 2024 at 01:28:03PM -0800, Dan Williams wrote:
+> Gregory Price wrote:
+> > Hotplug memory sources may have opinions on what the memblock size
+> > should be - usually for alignment purposes.  For example, CXL memory
+> > extents can be 256MB with a matching alignment. If this size/alignment
+> > is smaller than the block size, it can result in stranded capacity.
+> > 
+> > Implement memory_block_advise_max_size for use prior to allocator init,
+> > for software to advise the system on the max block size.
+> > 
+> > Implement memory_block_probe_max_size for use by arch init code to
+> > calculate the best block size. Use of advice is architecture defined.
+> > 
+> > The probe value can never change after first probe. Calls to advise
+> > after probe will return -EBUSY to aid debugging.
+> > 
+> > On systems without hotplug, always return -ENODEV and 0 respectively.
+> 
+> Should the advice just succeed when the result does not matter?
+> 
 
-Can you please elaborate this a bit more? Are you talking about below
-change
+I figure at some point during __init the value will be probed and subsequent
+calls will be ignored. I'd rather fail explicitly in that case to assist
+debugging - otherwise it might be a little maddening to discover your callsite
+is too late in the process.
 
-+	ret = iommu_dev_enable_feature(idev->dev, IOMMU_DEV_FEAT_SVA);
-+	if (ret)
-+		return ret;
-
-in iommufd_fault_iopf_enable()?
-
-I have no idea about why SVA is affected when enabling iopf.
-
---
-baolu
+> Otherwise, it depends on the caller to not care based on config.
+> 
+> I do not feel that strongly about it, so either way:
+> 
+> Acked-by: Dan Williams <dan.j.williams@intel.com>
 
