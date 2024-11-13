@@ -1,91 +1,75 @@
-Return-Path: <linux-acpi+bounces-9528-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9529-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEC19C6802
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 05:15:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318D39C6823
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 05:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C65FB257CF
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 04:15:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BA64282110
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 04:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27A416C453;
-	Wed, 13 Nov 2024 04:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5134016EB76;
+	Wed, 13 Nov 2024 04:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="I2rqHbmU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QeYUUxzh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186FA1632D6
-	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 04:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50666157A48;
+	Wed, 13 Nov 2024 04:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731471323; cv=none; b=FQXtcoLOzcbTxrVvoYFAtgwR/aFkrqkgW7HWq/7vKYdxBdzld3dZ+4faJEr0XChJLQWIHRzNi+ZzafshFiBO73U/kMn4H+x8sdPzu2YRMi62AhOtOOdSWl5KXOh+EbWi1Q4CsDoW52TcPEpwyE1cF+4ecjDK2v0KnmAoQmDYdO0=
+	t=1731472701; cv=none; b=HUi8wxP1MKUL81Pb6hGq2zFRQCl+UE4vt71eyzur0o20VzXRTwA9/dNmtQEJPuXl5mwZ30e9W/rDn27w8iEV4eg9G+1lcwPLTgv+IcI+2NNDHW/bh0DEDoKBlhJypMtEzLKij80kL8ZM7GfS+1nWyg3Vk+Oh1t4MVgkhTf5a1kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731471323; c=relaxed/simple;
-	bh=T2rdd7tXYgiIrzYHzCAL/PU41GbaxiH5Y8Q/Zohq1FE=;
+	s=arc-20240116; t=1731472701; c=relaxed/simple;
+	bh=AcCyZU+sGfKI+NBCS604ev/S94TuTZpBGN+VbMQUj5s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DN6W+5kEmwYpf/GtTXVF8i+yR13uRQG3cPyFyILkPMgKq/XyYc4Tb/+UzLjkpMuAncOdTYrWQ/dVcWoZC1Za7kIuuhQ2Zgz4YlzIqFhpqBE5s5dXbowkJO7lsuUdsyZJbMJ1J/DIupPNQKA2k2PnKIvo1Va6CQTNYwDBRwS1IQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=I2rqHbmU; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b13fe8f4d0so411221085a.0
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Nov 2024 20:15:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1731471321; x=1732076121; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CUb1WojSD+HhOKe+sBVX703ySuQYQJYEhxr/ZtFrr20=;
-        b=I2rqHbmUPI8ue4wAeGFlxm4cr/jRTxxfKfLtbSaTS2FjnXx1w9RNgVGXWBs1icirL3
-         JKiE4XuouyoF3a+HT2Jj2GL70sEtwkAYZDmtzRM6F9xJcq5xA5bwQVcA4DUzgmi5KKJD
-         ySfDc8lieJklBiOzxSYFQSLlEOz5hBgPA+/TYQ2YWOqJmvCegWOEzjHlBicqkERK6ibp
-         MIULWyX9+46qR/9c1IOZIY63yd08OM6uBZkdz/W1iDyzlOCj/di32v7lxTPSIjuPUmxt
-         84vH3qPysyJwoCL/XS97MgvdiXkL7yDxOIh/hyrcsqi9OJs4sfdVY8GApmYzHQWrSZs6
-         5PLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731471321; x=1732076121;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CUb1WojSD+HhOKe+sBVX703ySuQYQJYEhxr/ZtFrr20=;
-        b=kVqk8pgdc0/fE9xxmOGclWid9PhWdmhCv34wOoT+CCFhi3LYLhLwfIi0GNuA7XHGNV
-         V0i2mH3SWc9/YCpkgtbPD4OyV6PLxhybWVSRD8N4MsmWyfBTqJDXptpYF+XmhWD7SjLM
-         OkpfZGRxZcg222Z174L6/vCshLyhnteIoGyNNQqt453yjfyDyQCmpoG/MFDlUOG215jg
-         Juyw15/VXANtfismPcwYhAqcgJqct9BOvSOchCoNp9+95U6HKeUIIZV3htVIv0x3XgS1
-         sFLJxEmgnlgysw2oS71jAaN3R9rKV9Dz5LgygP5p/peUrHgrsfkarJC6er63zoZng/5d
-         2FZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1BZIjjN5Tepum3Yq0D1cnv3+QU7fsJl5S89mtllFd33+Che67N98lPn2Zmd9La4mBic1rK2+zxMMf@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyxMA5pr2KeSVdwa1T0jt8QGVKyS0J5YsChkGMKNkV2HlJguk2
-	i+aoFkIC9bpsy/kpdUxJX9c0bp2eCzq3aVHEWSb+JXxO1RZsMa+tdzMtG/sYsNY=
-X-Google-Smtp-Source: AGHT+IFZHlowe441qeuXq5e14Sj+kjnoWxQVfmLizMJ+32RwzXsN2gXKawIsTikUmXrXXVOr5Z+7Jw==
-X-Received: by 2002:a05:6214:2f03:b0:6d3:cebc:4cd2 with SMTP id 6a1803df08f44-6d3dd06b5b9mr18850226d6.34.1731471320966;
-        Tue, 12 Nov 2024 20:15:20 -0800 (PST)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32ac44082sm652302085a.38.2024.11.12.20.15.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 20:15:20 -0800 (PST)
-Date: Tue, 12 Nov 2024 23:14:55 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com,
-	Jonathan.Cameron@huawei.com, rrichter@amd.com, Terry.Bowman@amd.com,
-	dave.jiang@intel.com, ira.weiny@intel.com,
-	alison.schofield@intel.com, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
-	lenb@kernel.org, david@redhat.com, osalvador@suse.de,
-	gregkh@linuxfoundation.org, akpm@linux-foundation.org,
-	rppt@kernel.org
-Subject: Re: [PATCH v6 1/3] memory: implement
- memory_block_advise/probe_max_size
-Message-ID: <ZzQnvzPLsamSs7i4@PC2K9PVX.TheFacebook.com>
-References: <20241106155847.7985-1-gourry@gourry.net>
- <20241106155847.7985-2-gourry@gourry.net>
- <6733c86390c40_10bc62945f@dwillia2-xfh.jf.intel.com.notmuch>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JO3LnHdxD3kP4jb6kAXhlroIezsq50xv/zcs03uKHJm2Tcsh3AvZiGYJgpALMOP1DfelkCk3wl2Zm/i+SxZzjhoaZzeiBWoi6TFN7PWxPQlFf+pOEmVvEvPiudn7l5niF1xXZ7iYdCY+QW3ZVIqqRWIvSbp2JJa6Ka5Qq/AcU1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QeYUUxzh; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731472699; x=1763008699;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AcCyZU+sGfKI+NBCS604ev/S94TuTZpBGN+VbMQUj5s=;
+  b=QeYUUxzhvtYqW4hzhgf6LuY2Q620i7pbAWsoqCu6Wzs4UfGGDcON41uV
+   7vPH2xULnwcRjn954+4ah+3MDxHWJgAl580gAitt8+upSMKJvFNkym2Vq
+   vEoVwDZgKni3AJrwf31O2XZGutrs5yHMBS0LMF7NeQ4YCtdwby+lXWFhw
+   LikSS7mKoAI0C5XT7Sraaellhut+encH5Fyz0kT//61jLhr1AkiVMjW9i
+   Nv7Q0HoCQgUHmD9J7ACOB7oyhNAue7NNAgcrD2bnTymRINC2ae+RDl0Ha
+   AXTFggZP/2C7NIaCnyyA2WxsXpbNrSU13HwZZxHnYYKwLtxaSK6T9EFJz
+   g==;
+X-CSE-ConnectionGUID: BrNCY7apTwG3qxNgK3RRXQ==
+X-CSE-MsgGUID: BRWuthFQR4ymjvDvSGBhzg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="41955252"
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; 
+   d="scan'208";a="41955252"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 20:38:19 -0800
+X-CSE-ConnectionGUID: o3uMUgp6SseI/i0lnO2VyQ==
+X-CSE-MsgGUID: s+d35522SXO67uYhejK/7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; 
+   d="scan'208";a="125265572"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.153])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 20:38:18 -0800
+Date: Tue, 12 Nov 2024 20:38:16 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: Suraj Sonawane <surajsonawane0215@gmail.com>
+Cc: dan.j.williams@intel.com, vishal.l.verma@intel.com,
+	dave.jiang@intel.com, ira.weiny@intel.com, rafael@kernel.org,
+	lenb@kernel.org, nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Subject: Re: [PATCH v2] acpi: nfit: vmalloc-out-of-bounds Read in
+ acpi_nfit_ctl
+Message-ID: <ZzQtOFiW1G4jAIzf@aschofie-mobl2.lan>
+References: <20241112052035.14122-1-surajsonawane0215@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -94,37 +78,56 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6733c86390c40_10bc62945f@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <20241112052035.14122-1-surajsonawane0215@gmail.com>
 
-On Tue, Nov 12, 2024 at 01:28:03PM -0800, Dan Williams wrote:
-> Gregory Price wrote:
-> > Hotplug memory sources may have opinions on what the memblock size
-> > should be - usually for alignment purposes.  For example, CXL memory
-> > extents can be 256MB with a matching alignment. If this size/alignment
-> > is smaller than the block size, it can result in stranded capacity.
-> > 
-> > Implement memory_block_advise_max_size for use prior to allocator init,
-> > for software to advise the system on the max block size.
-> > 
-> > Implement memory_block_probe_max_size for use by arch init code to
-> > calculate the best block size. Use of advice is architecture defined.
-> > 
-> > The probe value can never change after first probe. Calls to advise
-> > after probe will return -EBUSY to aid debugging.
-> > 
-> > On systems without hotplug, always return -ENODEV and 0 respectively.
+On Tue, Nov 12, 2024 at 10:50:35AM +0530, Suraj Sonawane wrote:
+> Fix an issue detected by syzbot with KASAN:
 > 
-> Should the advice just succeed when the result does not matter?
+> BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+> core.c:416 [inline]
+> BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+> drivers/acpi/nfit/core.c:459
 > 
+> The issue occurs in `cmd_to_func` when the `call_pkg->nd_reserved2`
+> array is accessed without verifying that `call_pkg` points to a
+> buffer that is sized appropriately as a `struct nd_cmd_pkg`. This
+> could lead to out-of-bounds access and undefined behavior if the
+> buffer does not have sufficient space.
+> 
+> To address this issue, a check was added in `acpi_nfit_ctl()` to
+> ensure that `buf` is not `NULL` and `buf_len` is greater than or
+> equal to `sizeof(struct nd_cmd_pkg)` before casting `buf` to
+> `struct nd_cmd_pkg *`. This ensures safe access to the members of
+> `call_pkg`, including the `nd_reserved2` array.
 
-I figure at some point during __init the value will be probed and subsequent
-calls will be ignored. I'd rather fail explicitly in that case to assist
-debugging - otherwise it might be a little maddening to discover your callsite
-is too late in the process.
+That all sounds good! A couple of coding conventions fixups suggested
+below -
 
-> Otherwise, it depends on the caller to not care based on config.
+snip
+
+> @@ -439,7 +439,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>  {
+>  	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+>  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> -	union acpi_object in_obj, in_buf, *out_obj;
+> +	union acpi_object in_obj, in_buf, *out_obj = NULL;
+>  	const struct nd_cmd_desc *desc = NULL;
+>  	struct device *dev = acpi_desc->dev;
+>  	struct nd_cmd_pkg *call_pkg = NULL;
+> @@ -454,8 +454,14 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>  	if (cmd_rc)
+>  		*cmd_rc = -EINVAL;
+>  
+> -	if (cmd == ND_CMD_CALL)
+> -		call_pkg = buf;
+> +	if (cmd == ND_CMD_CALL) {
+> +		if (buf == NULL || buf_len < sizeof(struct nd_cmd_pkg)) {
+
+Comparison to NULL and sizeof() usage preferred like this:
+	if (!buf || buf_len < sizeof(*call_pkg))
+
+
+-snip
 > 
-> I do not feel that strongly about it, so either way:
 > 
-> Acked-by: Dan Williams <dan.j.williams@intel.com>
 
