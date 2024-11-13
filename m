@@ -1,91 +1,158 @@
-Return-Path: <linux-acpi+bounces-9545-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9546-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D9C9C6F06
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 13:27:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EAC9C6FCA
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 13:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C469C1F21E81
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 12:27:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AE8288A97
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 12:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2561FF7D9;
-	Wed, 13 Nov 2024 12:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B232038B3;
+	Wed, 13 Nov 2024 12:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RfSpfs9X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BA01F8906
-	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 12:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6FC203705;
+	Wed, 13 Nov 2024 12:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731500825; cv=none; b=o9QZQCL4xkLbSxBc9RT86XnGrgV08AQKVZh3FGoA95JZspXzC2x/TLTYA6Hni91aNpjFfU1o+k/Sw7INwQNyGQNzp05cSWJVUlVTSQmELmz79ylnNCaOw72+HNZWxu/PPO6HHthU7CiAq+WW+aUln02+L/1A7OoCTBdIiJX6e9Y=
+	t=1731502332; cv=none; b=kyriVBbaboFIpoZ6eI+toPc0BU0OV758xlqlEh9K0ZUhCD3ZCHmOq/q9YdhpwfN5DDF91zJXBSw+v1VaS6pXkF0XsHih8fEfyv/oBnrIypuijb9v4j+wRO823u/8/wMCDocXqUHcdM3z/mZ4DIVuxTZplAJxcBiyvuGZIkVdH5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731500825; c=relaxed/simple;
-	bh=xiNg5znueipvPFwimPHq7hUeF96APnXAhZtTEakQbl8=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Zf01N2ate7te4E9NDZumgtrYBkS5pvwp7Mh4GUKsIyiImc2CW4pxiS2uhYloybz1a+NqOTMfmRpuEWR9pOVRkPf9c6REyIP7FQS8VlAWvExJmQ/QBQ2SGTB0H8YtD0y/RY2NTUgY7LLu/p5TpNY647wJA+e/eSzckyNrwBUFvwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a6c1907eeaso85010585ab.1
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 04:27:03 -0800 (PST)
+	s=arc-20240116; t=1731502332; c=relaxed/simple;
+	bh=IOO+gahwY6lUx7jzJRo2ttmcb/P3yYcCsKHSCzWDji8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KyAv09ZPe2/gv01yqUk4TjaF6I2LpPbQ0WEmym14b9ttLO4wnmfytwv0tPHukIHpzDjiB24y95SQpfScqMzjJQ14BwdHGTtjz7wjR5rTFFYoubj8z6xwVvHAJ4AS4R6X4NCia+Gcr8E3a0Z/QWNN73B4E+aUEauLnPhkvTrrXx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RfSpfs9X; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e9ecba5db0so1129764a91.2;
+        Wed, 13 Nov 2024 04:52:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731502330; x=1732107130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fXfaqI+XhSuEYFsBiNURhzLUN5JAhtELIqV1xO9NeS4=;
+        b=RfSpfs9XlxhZe9ysCTW+pepxo/ZoO2K92iORAeiCJGURVKtazothoLkme09q6Lq3Zs
+         OwTNnsmjhD9qdQNn916Vt/3IBRBaukAinSq/ZqbhB+it8UKGCZW0JmSBO9c/QA1X4LPf
+         B7h4jwBWkgqzOIZnn0+plmYqU9iPON/fmxUJRHLxtqStURG/9Plnc+PdXmqx12Eu5DN5
+         ehA4vOPCL0dVs3Rw0+OrV1xYuwcBNL6OOHiXzfGjMzUOiEQcYvcLmusxFCL4YlIqGZlV
+         zI1F0pv3eOqNqeRqZU8leJecBSNzmP8VLxh5yENiwfwUtCY60OR7LfJfkB2GvXS2m/QE
+         fYHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731500823; x=1732105623;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WkcdwbKwC54ksa1xeYHfLKc13WBWF+TVFlXOuA4rNF0=;
-        b=ANi4sgLoCOOCCfHrLlQINMqxsdOHOWdaqvpkzCWxH7DZ35u30kEYhv6FU90QffmK8k
-         8XFbNjGeHuDRFeTQBh/hXT2aOHEvKnjEPC0hWbRVUbcsEb6wJddf0fYVSvO31EI04avR
-         cf1uw5DwIC1c1/ofcVotgC6WDaer2pbeg997XOToE1muNbaNqxb3IgIVPypCcpWC5f/D
-         MSErQXgoN7tLXnxzmtpFnCVNUOi3/TylURekBkgwfWQeCHKlVwsngp6jK1LA9TLUdM/a
-         DTl8kLxzkc+CxzbJ1PwgCVdTe6omY56kaokWLU8/jHhBgzUM+rGGtMqaGVq4ULanrmYa
-         ljjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWca/9xrVaqmQebS1DXR8yXtlRypk1MDTvwDUwYqhLbBG0dAAwZtOq6dkm6L8mTvCQOqW1373/0byzf@vger.kernel.org
-X-Gm-Message-State: AOJu0YybhQRSWLtFf1bvF133QBPT4kMkXSVCHzUrYBCYF4yJgYZrIeis
-	otwh75uTXE8Gu6Q2DZgJ31SD7pMw+7Cz4mMSYuvOTQuUbUJZ72Gu1RkH+N6pQIAmLrDGM38pyZv
-	HG4/QmjjUwNvirVC5Rl7X3ZUpU9qDCR+4RdZFV1FN7rkR9mvlQtUSQAw=
-X-Google-Smtp-Source: AGHT+IH3YeeJ2wjRzyTxUBU/Fz7blpElgbrjvFEVwsIv4HlOM4uInB40FGzuJCij+kZxQsisXAtEUePo4IU5xrL3FSdx7sDQuG9E
+        d=1e100.net; s=20230601; t=1731502330; x=1732107130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fXfaqI+XhSuEYFsBiNURhzLUN5JAhtELIqV1xO9NeS4=;
+        b=BNAKWyuwUwsTT50Ni0ffhQ1ZNeew50WqyCB9No6eSjrr7CE3ZtXhD2FSOJ3Ti7I8bK
+         aRbWkLUQdBSw9lXNs41qEy+5sERRjryIBeM1WAxd+tLpW7HIrU5X+ISInZAr01yPo6nn
+         MB86ld1EJpRswpHIHlDX6Ruvrb8iiz9UoQvmqrA7I2+86QieM9pvruiUNL8meGPufnIe
+         LlwMDXLQeuwTrOvO9x2qzlqqwvpr0v3ZkeyMAW5v0ZqemC+SagM+SNNGpnboMqtebsGi
+         JG9VW97LF+S4l42mSYV2LCz342ze/E/HcyLoZ0mPCuFRQIfF8L//bC+ro6zaRiv4OApW
+         fUkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVjqDdHeXSVfcVoFA3FVTGwzQQ1xjsHtolnfbbCxFx2jdCO964rAMMMR9n2grhHxPxyIaQ59SIMUt5gBC4@vger.kernel.org, AJvYcCXpca8CL5qBAV79VpuVASoZnsD1cXGA4iYIIFBUgpBFBPuVFuo0fd+U9tXtICJyHWDMEXpjCcXRh5In@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUbG+VPipCl09QwhBVWP0sN1RJSqo5sxZD10vAPD+NCCEK5nHZ
+	bSpvL1Cd0CeFx5TVwGVFCzKWbg3PU3qFqTQTu+u8Rrlr5/MDpzrU
+X-Google-Smtp-Source: AGHT+IFezAIWYeQpIbbXmbe8WTIeLbdz1LgWEQWUIyHbss2jQ4NdhgbFSjIKCtuVZbAeXWoyERtmAQ==
+X-Received: by 2002:a17:90b:380a:b0:2e2:bd34:f23b with SMTP id 98e67ed59e1d1-2e9b178fd9dmr25130667a91.32.1731502329524;
+        Wed, 13 Nov 2024 04:52:09 -0800 (PST)
+Received: from purva-IdeaPad-Gaming-3-15IHU6.. ([14.139.108.62])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9f3f1138dsm1354513a91.35.2024.11.13.04.52.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 04:52:09 -0800 (PST)
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
+To: dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	ira.weiny@intel.com
+Cc: rafael@kernel.org,
+	lenb@kernel.org,
+	nvdimm@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Subject: [PATCH v3] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
+Date: Wed, 13 Nov 2024 18:21:57 +0530
+Message-Id: <20241113125157.14390-1-surajsonawane0215@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a6e:b0:3a3:b5ba:bfba with SMTP id
- e9e14a558f8ab-3a6f1a6440dmr210634735ab.15.1731500822810; Wed, 13 Nov 2024
- 04:27:02 -0800 (PST)
-Date: Wed, 13 Nov 2024 04:27:02 -0800
-In-Reply-To: <CAHiZj8j+=3paytYbPMDqof6cVYxSFjjaev1PTc0EUsNz8hXExg@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67349b16.050a0220.2a2fcc.000c.GAE@google.com>
-Subject: Re: [syzbot] [acpi?] [nvdimm?] KASAN: vmalloc-out-of-bounds Read in
- acpi_nfit_ctl (2)
-From: syzbot <syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com>
-To: dan.j.williams@intel.com, dave.jiang@intel.com, ira.weiny@intel.com, 
-	lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, rafael@kernel.org, surajsonawane0215@gmail.com, 
-	syzkaller-bugs@googlegroups.com, vishal.l.verma@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Fix an issue detected by syzbot with KASAN:
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+core.c:416 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+drivers/acpi/nfit/core.c:459
+
+The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
+array is accessed without verifying that call_pkg points to a buffer
+that is appropriately sized as a struct nd_cmd_pkg. This can lead
+to out-of-bounds access and undefined behavior if the buffer does not
+have sufficient space.
+
+To address this, a check was added in acpi_nfit_ctl() to ensure that
+buf is not NULL and that buf_len is greater than sizeof(*call_pkg)
+before casting buf to struct nd_cmd_pkg *. This ensures safe access
+to the members of call_pkg, including the nd_reserved2 array.
 
 Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
 Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+---
+V1: https://lore.kernel.org/lkml/20241111080429.9861-1-surajsonawane0215@gmail.com/
+V2: Initialized `out_obj` to `NULL` in `acpi_nfit_ctl()` to prevent
+potential uninitialized variable usage if condition is true.
+V3: Changed the condition to if (!buf || buf_len < sizeof(*call_pkg))
+and updated the Fixes tag to reference the correct commit.
 
-Tested on:
+ drivers/acpi/nfit/core.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-commit:         f1b785f4 Merge tag 'for_linus' of git://git.kernel.org..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17ca8df7980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d2aeec8c0b2e420c
-dashboard link: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=11d20b5f980000
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 5429ec9ef..eb5349606 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -439,7 +439,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ {
+ 	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+ 	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+-	union acpi_object in_obj, in_buf, *out_obj;
++	union acpi_object in_obj, in_buf, *out_obj = NULL;
+ 	const struct nd_cmd_desc *desc = NULL;
+ 	struct device *dev = acpi_desc->dev;
+ 	struct nd_cmd_pkg *call_pkg = NULL;
+@@ -454,8 +454,14 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	if (cmd_rc)
+ 		*cmd_rc = -EINVAL;
+ 
+-	if (cmd == ND_CMD_CALL)
+-		call_pkg = buf;
++	if (cmd == ND_CMD_CALL) {
++		if (!buf || buf_len < sizeof(*call_pkg)) {
++			rc = -EINVAL;
++			goto out;
++		}
++		call_pkg = (struct nd_cmd_pkg *)buf;
++	}
++
+ 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+ 	if (func < 0)
+ 		return func;
+-- 
+2.34.1
 
-Note: testing is done by a robot and is best-effort only.
 
