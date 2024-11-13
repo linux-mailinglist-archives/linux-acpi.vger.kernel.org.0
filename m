@@ -1,83 +1,83 @@
-Return-Path: <linux-acpi+bounces-9568-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9569-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A41A9C7CDF
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 21:24:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44869C7DBA
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 22:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD801F22B8E
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 20:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF0E1F23280
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 21:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813E320B801;
-	Wed, 13 Nov 2024 20:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3941818BC0A;
+	Wed, 13 Nov 2024 21:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aX/Ke4Ux"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tyGmpIxR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C0720ADC7
-	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 20:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B538D18B483
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 21:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731529345; cv=none; b=oVYJ62dO3/tEr5VoF7rh+MiDd0BBQfQoh7YIa6z9Uw0owgkSeMILk/3JrkC8bSCo3CZi3GAW8Fi/9l6poy/qiOzCSWznN/kXEkqP4gspsS7lcGUky4EtvBw+xQrw7HJM7CMvQPYIxZM1FxCjzuJ65s3UWo2d6d0TuCCU4ez3yBc=
+	t=1731533934; cv=none; b=YcB+Hcp67zpEVxXBVyPcBYvYebLPjCnDpPvGv3xZxLjtUnE8AqUyG81z1epKCzYhRnIf7AVpVLOWJOyU6sBnpP5zKFjWJRRHupwMeQaoAYD32cLnVn0Ue3KaZ8IDl2b20bUvlpYUbuMbTHA4S1SdcWenxr77k4vMribiNbHeqgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731529345; c=relaxed/simple;
-	bh=p+XmakqwAiwDGIYOiQzEgVOYQaa8EmkYL42DgFDyCTs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WjpBDwLMFxFKKgXlmNp+QDIWCvAg5oV5JjKL5DwHQG3hLwrFBSKp8A0xqDKmdPYdCrIQw6pfwk8p3iUFjwMptR0NIuhVhZnrPIvy1eEQyJDclaHexUMwOXPyusixjEOTpo0KDEnrmyYoB7YgJedwqhTa4ecnPmQCcBPzCOB5S+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aX/Ke4Ux; arc=none smtp.client-ip=209.85.219.201
+	s=arc-20240116; t=1731533934; c=relaxed/simple;
+	bh=h3pNFM0oblrUYOB6pkkCwK/sr+vTUFr1C8PiWtlv8rg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MEibl1XTVTO0mzLLmyI6ldWl6MQ8zMtSqLe/vj9reSjCswcX13gSGsCFo5EF2UT9YeOtUPiVw68dBc1DVwMI8urcbTQ106fToIqDLMeUOO8FXVf1YJjsmkM4ZkQfgEYd6K+d7bDoKFDM1rRRxops4iB5PFJdwUmssJNYRkg//+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tyGmpIxR; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e380f91920eso114254276.1
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 12:22:23 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-210e5369b7dso78257725ad.3
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 13:38:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731529342; x=1732134142; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O6/kGh6+RuUFesZuETCwx9Qh9Q+yRZLzARLiwYBV/A8=;
-        b=aX/Ke4UxyzrKqHliPSzniW7c2WlS4OtW4/buMUZyqQnjEJu7vIc/Wom09pyhkoeW+R
-         8TZChRsnt1OGKpmK7YeK17wRKQ59TCjCu9+vky8pomhgxi2bjh6H5EP8ZHKI0zj640W+
-         DLe3DwgYu8Y8nTy4Nj0jrnqwIK3I9UY4jVyWedQi9Q6b0skMUBlUw7FsQiuAZ+4xJNNK
-         dxdSTiLh43mz4UupqhZqTQmpfRDC5VZJvMjsa3YyrJAdF2lxVwTUs1t2MmDOGK+MsAvL
-         /TRTqhNMm3c+P2Jgo/zviB4nFH9I926qLYXch7OpnmLKuxEtIWmyBfoyzxqSOoLNBw9R
-         zuiA==
+        d=google.com; s=20230601; t=1731533932; x=1732138732; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z/SIxTh7J31xbTMjPP69b/bUoDVK1zzpUJ9rscgsMJY=;
+        b=tyGmpIxR2G8GWmo1ECXKwrB/S61FrGFI6J+mU082jp1bade0uh/BpZDpthLvYrd+hz
+         5p67nLz2PAyngYFFVQHsBVjXDyZ+0KoHoqqCK2D37x8bZ07TzMK6gPL4QLj2R4L0KgC3
+         sVOFagi8bvmbao9rvorJIJjCCB1Qz9J2e3JAiHirPwcJxFjSQlMJoEG6qZTiXFKIKLPJ
+         K/le1vkzw/1/nCcEzqlMc9hLCuKOscOi9yaLSF7bpBAPQvSP4KLu4o/q7W8cS//OASPT
+         i/yydlo/4UMMjKTjNEPkiMJmnVIH/gR4N3dstqf8YP5t+oOwdz4joxnbO631e2pQBDX/
+         xy0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731529342; x=1732134142;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O6/kGh6+RuUFesZuETCwx9Qh9Q+yRZLzARLiwYBV/A8=;
-        b=OLbIbKFr+4MXMWpsrUn5n1aVx072z8tmI5ku5lFSKDC7tTp+YoxXFa7WazIzR1L5Jt
-         RNGeZltIWUMj8UsS8W3fvSZumbrl0IBFFbKwl3WbPNUjBs5fL8jrTZakYHBEQC2Qutcu
-         N1r80DACRDs5YYPUjjjPOfAPG65fNK1ZpOGbhJ9lj6m9a8KS1CBcfXWGqEEZJA/X1AU1
-         fFHcokhFVxXbZNs5/Qj1QuTYDSSvT4g+QOSMXcuYrJenMGdqAig4Ix4WTLqlbSyEi85a
-         eQ/oMWRYNAee+NWwJBmWPDNRIzqSbxkHtXJTNlf2Fsj1n2pREaEEsggcPTn24dGOd/bS
-         QYbg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9J4lQZ3bX4HK1w2RzZgKHkpTtaWjk6WZkulTWw5daVWpDBuG60akSXe5JBXWlh9fFJipF0vzPyuDf@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4I3FRMXUUAXO5Y72Cstp1M8iwGrXv2Rwi80yKy39qry88fqEr
-	UmKz6iqrBAkj0EZTlbvJAC1hPAoFu7i8lIKN/fT9jzIFcZZMH9FgK6+QBfZR5OvLpwKeLEGirXe
-	DQFKNSw==
-X-Google-Smtp-Source: AGHT+IEBsYnUG+gqVm568orLvHFqdkgMle0kwsbwdhnl/4zxuRsHxS1zqJfijXNkgtpufHfFipAC0hwuiB5+
-X-Received: from jperaza.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:f86])
- (user=jperaza job=sendgmr) by 2002:a25:6888:0:b0:e29:9c5:5fcb with SMTP id
- 3f1490d57ef6-e380e241492mr9426276.4.1731529342458; Wed, 13 Nov 2024 12:22:22
- -0800 (PST)
-Date: Wed, 13 Nov 2024 20:22:14 +0000
-In-Reply-To: <20241113202214.1421739-1-jperaza@google.com>
+        d=1e100.net; s=20230601; t=1731533932; x=1732138732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z/SIxTh7J31xbTMjPP69b/bUoDVK1zzpUJ9rscgsMJY=;
+        b=lMbE9ULKDuG/efjbjrZtb+4GpR1gvQV1w6gJ4dSTKAzeQuKOLtznJp5OvWlDfDT18p
+         gwke+LNItgOxbSfCSaYTK3Esw4nk/WLwMMO11FGmPlpaJDzDfxvPUZ+/DXm7SBv1q8r/
+         yX2bb7khgbc1Ts61M/e1nJl/Zph4R5DjPtpHAzHnYPumDRnNGzS70RNSjoN3THqjsXdr
+         KAD8M9JhiJE8HuswuXX1PqOEoQymhB+2ouabtHLL6SM2rvDwPRL3KyYongZGydwzsJ/K
+         OypTMKjjMY+UsRRkFfY5eGojwmtiGTKuIkQyD0eSw91EhVDH+B6cr8cnOD63vQv7I0HI
+         0brA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+CgImi12GuMMIprWqwY9M+ZcZQ7UkJD8FTxUW8bacTX2aPDvzn6s6MrUq76c7RiV0VLKGlYtujll/@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGCxLn0p/wabSxh5nlPA+34YaNHTLr8WNE0FbwKTSYDTJEUzw0
+	D25X/bHmDvmUu+QRkFfsRQqN1KII9l6i3P1yYEhD0Sgcb1SX0cLmgUlvWZ817NBe5SXE93p+2N6
+	5S3kgDgHV23BUyLGQmQ5hwh7SW/SGZ6Ayuav5
+X-Google-Smtp-Source: AGHT+IFSTZo8eDq5AVjULTxkBdn1QAACx9SVOAxHbG2ogMZWy2xpiXhaZKNwmM2oe/A96ZXy7LtkzQ+cUTRsIShcqKg=
+X-Received: by 2002:a17:903:2447:b0:20c:895d:b41c with SMTP id
+ d9443c01a7336-21183d55336mr284292875ad.41.1731533931844; Wed, 13 Nov 2024
+ 13:38:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20220426172105.3663170-2-rajatja@google.com> <20241113202214.1421739-1-jperaza@google.com>
-X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241113202214.1421739-3-jperaza@google.com>
-Subject: [PATCH 2/2] PCI: Rename pci_dev->untrusted to pci_dev->untrusted_dma
-From: Joshua Peraza <jperaza@google.com>
-To: rajatja@google.com
+In-Reply-To: <20241113202214.1421739-1-jperaza@google.com>
+From: Rajat Jain <rajatja@google.com>
+Date: Wed, 13 Nov 2024 13:38:13 -0800
+Message-ID: <CACK8Z6FHBj2eUp9Wrqg_ehY76hUZF7iEa+y7tFP0eT_7rdVT1Q@mail.gmail.com>
+Subject: Re: [PATCH 0/2] PCI/ACPI: Support Microsoft's "DmaProperty"
+To: Joshua Peraza <jperaza@google.com>
 Cc: baolu.lu@linux.intel.com, bhelgaas@google.com, dtor@google.com, 
 	dwmw2@infradead.org, gregkh@linuxfoundation.org, helgaas@kernel.org, 
 	iommu@lists.linux-foundation.org, jean-philippe@linaro.org, joro@8bytes.org, 
@@ -85,232 +85,46 @@ Cc: baolu.lu@linux.intel.com, bhelgaas@google.com, dtor@google.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
 	mika.westerberg@linux.intel.com, oohall@gmail.com, pavel@denx.de, 
 	rafael.j.wysocki@intel.com, rafael@kernel.org, rajatxjain@gmail.com, 
-	will@kernel.org, Joshua Peraza <jperaza@google.com>
+	will@kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Rajat Jain <rajatja@google.com>
+On Wed, Nov 13, 2024 at 12:22=E2=80=AFPM Joshua Peraza <jperaza@google.com>=
+ wrote:
+>
+> This patchset rebases two previously posted patches supporting
+> recognition of Microsoft's DmaProperty.
+>
+> Rajat Jain (2):
+>   PCI/ACPI: Support Microsoft's "DmaProperty"
+>   PCI: Rename pci_dev->untrusted to pci_dev->untrusted_dma
 
-Rename the field to make it more clear, that the device can execute DMA
-attacks on the system, and thus the system may need protection from
-such attacks from this device.
+Thanks for resending. This probably dropped off my radar since I moved
+on to other things. But I can confirm a lot of Chromebooks today in
+the market already use this property (and this patchset) for
+identifying untrusted DMA capable devices.
 
-No functional change intended.
+Thanks & Best Regards,
 
-Signed-off-by: Rajat Jain <rajatja@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Joshua Peraza <jperaza@google.com>
----
- drivers/iommu/amd/iommu.c   |  2 +-
- drivers/iommu/dma-iommu.c   | 12 ++++++------
- drivers/iommu/intel/iommu.c |  2 +-
- drivers/iommu/iommu.c       |  2 +-
- drivers/pci/ats.c           |  2 +-
- drivers/pci/pci-acpi.c      |  2 +-
- drivers/pci/pci.c           |  2 +-
- drivers/pci/probe.c         |  8 ++++----
- drivers/pci/quirks.c        |  2 +-
- include/linux/pci.h         |  5 +++--
- 10 files changed, 20 insertions(+), 19 deletions(-)
+Rajat
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 8364cd6fa47d..baa86a0744bc 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2777,7 +2777,7 @@ static int amd_iommu_def_domain_type(struct device *dev)
- 		return 0;
- 
- 	/* Always use DMA domain for untrusted device */
--	if (dev_is_pci(dev) && to_pci_dev(dev)->untrusted)
-+	if (dev_is_pci(dev) && to_pci_dev(dev)->untrusted_dma)
- 		return IOMMU_DOMAIN_DMA;
- 
- 	/*
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 2a9fa0c8cc00..78b537c23f3c 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -598,16 +598,16 @@ static int iova_reserve_iommu_regions(struct device *dev,
- 	return ret;
- }
- 
--static bool dev_is_untrusted(struct device *dev)
-+static bool dev_has_untrusted_dma(struct device *dev)
- {
--	return dev_is_pci(dev) && to_pci_dev(dev)->untrusted;
-+	return dev_is_pci(dev) && to_pci_dev(dev)->untrusted_dma;
- }
- 
- static bool dev_use_swiotlb(struct device *dev, size_t size,
- 			    enum dma_data_direction dir)
- {
- 	return IS_ENABLED(CONFIG_SWIOTLB) &&
--		(dev_is_untrusted(dev) ||
-+		(dev_has_untrusted_dma(dev) ||
- 		 dma_kmalloc_needs_bounce(dev, size, dir));
- }
- 
-@@ -620,7 +620,7 @@ static bool dev_use_sg_swiotlb(struct device *dev, struct scatterlist *sg,
- 	if (!IS_ENABLED(CONFIG_SWIOTLB))
- 		return false;
- 
--	if (dev_is_untrusted(dev))
-+	if (dev_has_untrusted_dma(dev))
- 		return true;
- 
- 	/*
-@@ -1197,7 +1197,7 @@ dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
- 		 * swiotlb_tbl_map_single() has initialized the bounce buffer
- 		 * proper to the contents of the original memory buffer.
- 		 */
--		if (dev_is_untrusted(dev)) {
-+		if (dev_has_untrusted_dma(dev)) {
- 			size_t start, virt = (size_t)phys_to_virt(phys);
- 
- 			/* Pre-padding */
-@@ -1738,7 +1738,7 @@ size_t iommu_dma_opt_mapping_size(void)
- 
- size_t iommu_dma_max_mapping_size(struct device *dev)
- {
--	if (dev_is_untrusted(dev))
-+	if (dev_has_untrusted_dma(dev))
- 		return swiotlb_max_mapping_size(dev);
- 
- 	return SIZE_MAX;
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index e860bc9439a2..42f310d238a6 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4234,7 +4234,7 @@ static bool intel_iommu_is_attach_deferred(struct device *dev)
-  */
- static bool risky_device(struct pci_dev *pdev)
- {
--	if (pdev->untrusted) {
-+	if (pdev->untrusted_dma) {
- 		pci_info(pdev,
- 			 "Skipping IOMMU quirk for dev [%04X:%04X] on untrusted PCI link\n",
- 			 pdev->vendor, pdev->device);
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 83c8e617a2c5..8f436db65b37 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1745,7 +1745,7 @@ static int iommu_get_default_domain_type(struct iommu_group *group,
- 		driver_type = iommu_get_def_domain_type(group, gdev->dev,
- 							driver_type);
- 
--		if (dev_is_pci(gdev->dev) && to_pci_dev(gdev->dev)->untrusted) {
-+		if (dev_is_pci(gdev->dev) && to_pci_dev(gdev->dev)->untrusted_dma) {
- 			/*
- 			 * No ARM32 using systems will set untrusted, it cannot
- 			 * work.
-diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
-index 6afff1f1b143..51f232897c03 100644
---- a/drivers/pci/ats.c
-+++ b/drivers/pci/ats.c
-@@ -43,7 +43,7 @@ bool pci_ats_supported(struct pci_dev *dev)
- 	if (!dev->ats_cap)
- 		return false;
- 
--	return (dev->untrusted == 0);
-+	return (dev->untrusted_dma == 0);
- }
- EXPORT_SYMBOL_GPL(pci_ats_supported);
- 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index a457ae3e811a..12791a2533a9 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1465,7 +1465,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
- 
- 	pci_acpi_optimize_delay(pci_dev, adev->handle);
- 	pci_acpi_set_external_facing(pci_dev);
--	pci_dev->untrusted |= pci_dev_has_dma_property(pci_dev);
-+	pci_dev->untrusted_dma |= pci_dev_has_dma_property(pci_dev);
- 	pci_acpi_add_edr_notifier(pci_dev);
- 
- 	pci_acpi_add_pm_notifier(adev, pci_dev);
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 225a6cd2e9ca..1312df37f2cf 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1056,7 +1056,7 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
- 	caps->ctrl |= (caps->cap & PCI_ACS_UF);
- 
- 	/* Enable Translation Blocking for external devices and noats */
--	if (pci_ats_disabled() || dev->external_facing || dev->untrusted)
-+	if (pci_ats_disabled() || dev->external_facing || dev->untrusted_dma)
- 		caps->ctrl |= (caps->cap & PCI_ACS_TB);
- }
- 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index f1615805f5b0..065f886db0b4 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1631,7 +1631,7 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
- 		dev->is_thunderbolt = 1;
- }
- 
--static void set_pcie_untrusted(struct pci_dev *dev)
-+static void pci_set_untrusted_dma(struct pci_dev *dev)
- {
- 	struct pci_dev *parent;
- 
-@@ -1640,8 +1640,8 @@ static void set_pcie_untrusted(struct pci_dev *dev)
- 	 * untrusted as well.
- 	 */
- 	parent = pci_upstream_bridge(dev);
--	if (parent && (parent->untrusted || parent->external_facing))
--		dev->untrusted = true;
-+	if (parent && (parent->untrusted_dma || parent->external_facing))
-+		dev->untrusted_dma = true;
- }
- 
- static void pci_set_removable(struct pci_dev *dev)
-@@ -1945,7 +1945,7 @@ int pci_setup_device(struct pci_dev *dev)
- 	/* Need to have dev->cfg_size ready */
- 	set_pcie_thunderbolt(dev);
- 
--	set_pcie_untrusted(dev);
-+	pci_set_untrusted_dma(dev);
- 
- 	/* "Unknown power state" */
- 	dev->current_state = PCI_UNKNOWN;
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index dccb60c1d9cc..65624f4bbaf0 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5337,7 +5337,7 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
- 	ctrl |= (cap & PCI_ACS_CR);
- 	ctrl |= (cap & PCI_ACS_UF);
- 
--	if (pci_ats_disabled() || dev->external_facing || dev->untrusted)
-+	if (pci_ats_disabled() || dev->external_facing || dev->untrusted_dma)
- 		ctrl |= (cap & PCI_ACS_TB);
- 
- 	pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 573b4c4c2be6..34b53b237077 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -444,13 +444,14 @@ struct pci_dev {
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
--	 * Devices marked being untrusted are the ones that can potentially
-+	 * Devices marked with untrusted_dma are the ones that can potentially
- 	 * execute DMA attacks and similar. They are typically connected
- 	 * through external ports such as Thunderbolt but not limited to
- 	 * that. When an IOMMU is enabled they should be getting full
- 	 * mappings to make sure they cannot access arbitrary memory.
- 	 */
--	unsigned int	untrusted:1;
-+	unsigned int	untrusted_dma:1;
-+
- 	/*
- 	 * Info from the platform, e.g., ACPI or device tree, may mark a
- 	 * device as "external-facing".  An external-facing device is
--- 
-2.47.0.277.g8800431eea-goog
-
+>
+>  drivers/acpi/property.c     |  3 +++
+>  drivers/iommu/amd/iommu.c   |  2 +-
+>  drivers/iommu/dma-iommu.c   | 12 ++++++------
+>  drivers/iommu/intel/iommu.c |  2 +-
+>  drivers/iommu/iommu.c       |  2 +-
+>  drivers/pci/ats.c           |  2 +-
+>  drivers/pci/pci-acpi.c      | 22 ++++++++++++++++++++++
+>  drivers/pci/pci.c           |  2 +-
+>  drivers/pci/probe.c         |  8 ++++----
+>  drivers/pci/quirks.c        |  2 +-
+>  include/linux/pci.h         |  5 +++--
+>  11 files changed, 44 insertions(+), 18 deletions(-)
+>
+>
+> base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+> --
+> 2.47.0.277.g8800431eea-goog
+>
 
