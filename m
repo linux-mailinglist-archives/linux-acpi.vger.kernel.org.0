@@ -1,85 +1,125 @@
-Return-Path: <linux-acpi+bounces-9526-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9527-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0807F9C6770
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 03:49:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C56C9C6777
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 03:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2E66B2424B
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 02:49:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC1FA283756
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 02:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5866614BF8B;
-	Wed, 13 Nov 2024 02:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE5C158DC4;
+	Wed, 13 Nov 2024 02:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRUFIbR0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882E517C;
-	Wed, 13 Nov 2024 02:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD58D158848;
+	Wed, 13 Nov 2024 02:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731466181; cv=none; b=GnPLnIw3RzEKuQjxZjvb1gwG9uGTPn088J9A1GqT0T/iP1D6vsqnjBABqoZOkxnaRoKN59j6dciR/p26qf1WAAmyIHc/XgJ8XBT2FKLQmRajlCiuAvDE2Oyx7BtNhqKa8wqfl8IQSaLLfZ1U5G3KHmcF/K2xEWpnoew/cfwPd88=
+	t=1731466611; cv=none; b=n6UPCbTLC4EJEgG7EjbZWeKtL3EKQNuXZoYtGQ1FXrjKS+bZ3RR1EBjzfa61NvcxjCRbbt+GRVmbZyyX/lAQAh+xMDn9+4I13km+p7K6kBF8ZiZyBhcOhN04DpqkbFIqakAs3uuZlpDasSt6hZMBKDBod9UVfAUxWC4uhUDUi6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731466181; c=relaxed/simple;
-	bh=Zjc4WHxutICboKeSESIFxhRAQwm2TMaSiKKS6KfGRqE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pRZVeUeRLg6Ay5j07/5FgmZSZGU0UDI2iUMi6Gq1+IqiJMpiUiPN4lwh8w/05WuTuo8ieW626ocLZD/B++1Omet46VcWoZBe5AMJ01UKqzaLAU3DOIXOUMDJW5SiyX0G1nmW6iIkHzyJtsPVxKH9i2Zw2NDc7Tuk3/WLBGeusl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Xp74F2h61z10V8h;
-	Wed, 13 Nov 2024 10:47:41 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4BFE61800F2;
-	Wed, 13 Nov 2024 10:49:35 +0800 (CST)
-Received: from localhost.huawei.com (10.50.165.33) by
- kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 13 Nov 2024 10:49:34 +0800
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <fanghao11@huawei.com>,
-	<cleger@rivosinc.com>, <zhenglifeng1@huawei.com>
-Subject: [PATCH] ACPI: CPPC: fix bug that causes the value written in cpc register to be wrong.
-Date: Wed, 13 Nov 2024 10:49:33 +0800
-Message-ID: <20241113024933.2100519-1-zhenglifeng1@huawei.com>
-X-Mailer: git-send-email 2.33.0
+	s=arc-20240116; t=1731466611; c=relaxed/simple;
+	bh=ceSuWOSaH+psoiQRK0fCAi9iXALt92xZBLKjvgklJjw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GmL5+5dJi6Kw5QGsX/b3DVzUWSQ58+ERI7Os3fYEStBlbR8rJdSNKLPFEC1eO6PTcd9RUjT8kCVDtJcEJFBhJ8JTEek4KtlzDxtQj/rAr6DkFqm8k2H6X6UgVBCEdu0l3thj3Om1T67kYa2j3mRjPeNuzDVTn8lZnxldlx/YBpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRUFIbR0; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731466610; x=1763002610;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ceSuWOSaH+psoiQRK0fCAi9iXALt92xZBLKjvgklJjw=;
+  b=dRUFIbR0ZE3whFc7iFp8DCHUbcHGtZsOrHEbqLd84LqKPKbrnYinXkKl
+   XqyxoxsUzsIOT4vVxtE9Epzd+lcPN+b5q4EHw3GoHhwSK0OL1dfFas1va
+   rsFujAdCAgwWVjFnVRWtvEAgHv0mCQA6i3M5mMyfr3No7ieJyDWZ63Y6u
+   itNJlNZJuBr1OHvZEwJTrzQIHmBCSoKFt2CqtERGbJK/FDZDp3CE+p420
+   Zv9sPgRb4N7KStPQUjkW5G94FL1X9MQPBuQlfiexEjTqqn/TlY6IWXIY7
+   MyJjJXNmf74XWfyu7ghbIFwMx2Y/zffs7tf2thxS562LmY5Nj0OU2krTO
+   A==;
+X-CSE-ConnectionGUID: zF3sdEj2Q9ikkFwYRS/KPg==
+X-CSE-MsgGUID: uaTabGEoR5m759qI4DoxWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="31442142"
+X-IronPort-AV: E=Sophos;i="6.12,149,1728975600"; 
+   d="scan'208";a="31442142"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 18:56:49 -0800
+X-CSE-ConnectionGUID: g2GulBb6RSSg5ikrECfKxg==
+X-CSE-MsgGUID: Oj2A52ANTnmNTqlZZd4sgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,149,1728975600"; 
+   d="scan'208";a="87703179"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 18:56:43 -0800
+Message-ID: <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
+Date: Wed, 13 Nov 2024 10:55:41 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemh100008.china.huawei.com (7.202.181.93)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+To: Jason Gunthorpe <jgg@nvidia.com>, Zhangfei Gao <zhangfei.gao@linaro.org>
+Cc: acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+ kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Hanjun Guo <guohanjun@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241112182938.GA172989@nvidia.com>
+ <CABQgh9HOHzeRF7JfrXrRAcGB53o29HkW9rnVTf4JefeVWDvzyQ@mail.gmail.com>
+ <20241113012359.GB35230@nvidia.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20241113012359.GB35230@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-With these codes, the value written in cpc register will be the result of
-the OR operatiion on input value and prev_val. This will causes the value
-to be wrong.
+On 11/13/24 09:23, Jason Gunthorpe wrote:
+>> https://github.com/Linaro/linux-kernel-uadk/tree/6.12-wip
+>> https://github.com/Linaro/qemu/tree/6.12-wip
+>>
+>> Still need this hack
+>> https://github.com/Linaro/linux-kernel-uadk/commit/ 
+>> eaa194d954112cad4da7852e29343e546baf8683
+>>
+>> One is adding iommu_dev_enable/disable_feature IOMMU_DEV_FEAT_SVA,
+>> which you have patchset before.
+> Yes, I have a more complete version of that here someplace. Need some
+> help on vt-d but hope to get that done next cycle.
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
----
- drivers/acpi/cppc_acpi.c | 1 -
- 1 file changed, 1 deletion(-)
+Can you please elaborate this a bit more? Are you talking about below
+change
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 01192fd047a6..f69ef7cc0caf 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1146,7 +1146,6 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			return -EFAULT;
- 		}
- 		val = MASK_VAL_WRITE(reg, prev_val, val);
--		val |= prev_val;
- 	}
- 
- 	switch (size) {
--- 
-2.33.0
++	ret = iommu_dev_enable_feature(idev->dev, IOMMU_DEV_FEAT_SVA);
++	if (ret)
++		return ret;
 
+in iommufd_fault_iopf_enable()?
+
+I have no idea about why SVA is affected when enabling iopf.
+
+--
+baolu
 
