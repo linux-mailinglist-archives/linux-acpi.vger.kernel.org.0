@@ -1,158 +1,228 @@
-Return-Path: <linux-acpi+bounces-9546-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9547-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EAC9C6FCA
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 13:54:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0279C7366
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 15:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AE8288A97
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 12:54:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0611A1F22D5F
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 14:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B232038B3;
-	Wed, 13 Nov 2024 12:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481E4136326;
+	Wed, 13 Nov 2024 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RfSpfs9X"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gu2hrPpy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6FC203705;
-	Wed, 13 Nov 2024 12:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E507080F;
+	Wed, 13 Nov 2024 14:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731502332; cv=none; b=kyriVBbaboFIpoZ6eI+toPc0BU0OV758xlqlEh9K0ZUhCD3ZCHmOq/q9YdhpwfN5DDF91zJXBSw+v1VaS6pXkF0XsHih8fEfyv/oBnrIypuijb9v4j+wRO823u/8/wMCDocXqUHcdM3z/mZ4DIVuxTZplAJxcBiyvuGZIkVdH5o=
+	t=1731507712; cv=none; b=AcxQKicnFG7w2rw3rGUXkvFSfw0SsHfYqTzraNayCjAho71kmTUZGdMf3h+t9mT0mmgb9ysKFkLqEN29kcPQqxO3Q43SNZIY9y1xt9GgwK0XKDn8OZma9gb3+vY+XAau25P16Z6SOybMuZJi/OKdxFqUtngrU6J/JS3ZOmCpEr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731502332; c=relaxed/simple;
-	bh=IOO+gahwY6lUx7jzJRo2ttmcb/P3yYcCsKHSCzWDji8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KyAv09ZPe2/gv01yqUk4TjaF6I2LpPbQ0WEmym14b9ttLO4wnmfytwv0tPHukIHpzDjiB24y95SQpfScqMzjJQ14BwdHGTtjz7wjR5rTFFYoubj8z6xwVvHAJ4AS4R6X4NCia+Gcr8E3a0Z/QWNN73B4E+aUEauLnPhkvTrrXx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RfSpfs9X; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e9ecba5db0so1129764a91.2;
-        Wed, 13 Nov 2024 04:52:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731502330; x=1732107130; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fXfaqI+XhSuEYFsBiNURhzLUN5JAhtELIqV1xO9NeS4=;
-        b=RfSpfs9XlxhZe9ysCTW+pepxo/ZoO2K92iORAeiCJGURVKtazothoLkme09q6Lq3Zs
-         OwTNnsmjhD9qdQNn916Vt/3IBRBaukAinSq/ZqbhB+it8UKGCZW0JmSBO9c/QA1X4LPf
-         B7h4jwBWkgqzOIZnn0+plmYqU9iPON/fmxUJRHLxtqStURG/9Plnc+PdXmqx12Eu5DN5
-         ehA4vOPCL0dVs3Rw0+OrV1xYuwcBNL6OOHiXzfGjMzUOiEQcYvcLmusxFCL4YlIqGZlV
-         zI1F0pv3eOqNqeRqZU8leJecBSNzmP8VLxh5yENiwfwUtCY60OR7LfJfkB2GvXS2m/QE
-         fYHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731502330; x=1732107130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fXfaqI+XhSuEYFsBiNURhzLUN5JAhtELIqV1xO9NeS4=;
-        b=BNAKWyuwUwsTT50Ni0ffhQ1ZNeew50WqyCB9No6eSjrr7CE3ZtXhD2FSOJ3Ti7I8bK
-         aRbWkLUQdBSw9lXNs41qEy+5sERRjryIBeM1WAxd+tLpW7HIrU5X+ISInZAr01yPo6nn
-         MB86ld1EJpRswpHIHlDX6Ruvrb8iiz9UoQvmqrA7I2+86QieM9pvruiUNL8meGPufnIe
-         LlwMDXLQeuwTrOvO9x2qzlqqwvpr0v3ZkeyMAW5v0ZqemC+SagM+SNNGpnboMqtebsGi
-         JG9VW97LF+S4l42mSYV2LCz342ze/E/HcyLoZ0mPCuFRQIfF8L//bC+ro6zaRiv4OApW
-         fUkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVjqDdHeXSVfcVoFA3FVTGwzQQ1xjsHtolnfbbCxFx2jdCO964rAMMMR9n2grhHxPxyIaQ59SIMUt5gBC4@vger.kernel.org, AJvYcCXpca8CL5qBAV79VpuVASoZnsD1cXGA4iYIIFBUgpBFBPuVFuo0fd+U9tXtICJyHWDMEXpjCcXRh5In@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUbG+VPipCl09QwhBVWP0sN1RJSqo5sxZD10vAPD+NCCEK5nHZ
-	bSpvL1Cd0CeFx5TVwGVFCzKWbg3PU3qFqTQTu+u8Rrlr5/MDpzrU
-X-Google-Smtp-Source: AGHT+IFezAIWYeQpIbbXmbe8WTIeLbdz1LgWEQWUIyHbss2jQ4NdhgbFSjIKCtuVZbAeXWoyERtmAQ==
-X-Received: by 2002:a17:90b:380a:b0:2e2:bd34:f23b with SMTP id 98e67ed59e1d1-2e9b178fd9dmr25130667a91.32.1731502329524;
-        Wed, 13 Nov 2024 04:52:09 -0800 (PST)
-Received: from purva-IdeaPad-Gaming-3-15IHU6.. ([14.139.108.62])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9f3f1138dsm1354513a91.35.2024.11.13.04.52.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 04:52:09 -0800 (PST)
-From: Suraj Sonawane <surajsonawane0215@gmail.com>
-To: dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
-Subject: [PATCH v3] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
-Date: Wed, 13 Nov 2024 18:21:57 +0530
-Message-Id: <20241113125157.14390-1-surajsonawane0215@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1731507712; c=relaxed/simple;
+	bh=3DG3pVyaEIXykT94bHXydQtHV5qXoL01zSxkhQQgd14=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f5zHBdZ9PSYXwOHVI9K+yPhsFEbfrl+PtuuGsMWqmfEZa2C5rI7ddIbBX0jWUlTzDVTfQ5ZGLBgu+mr7fUycPC0Fn52ZPxi4Eq9jd4Kb3HKwbWy0rFCHXCDa2L5lqo0atk3hco6xQTM7M1TvZAPQeOvsz3Vq48PTcNLvWFP7uMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gu2hrPpy; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731507711; x=1763043711;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3DG3pVyaEIXykT94bHXydQtHV5qXoL01zSxkhQQgd14=;
+  b=gu2hrPpyk1kKxXRp/0GV3u7puBfY7Hx6jUf1Y7ZLIQ/j/LTwRnytJHfw
+   WjscwRShnedG3XoSda2N1GLa0+YR2g+52dAog0wuy8EOlcQuPUi7I3ozV
+   Z1+oZuVulMRyGmrR+arzWzrgitV76yNNXdXbKrLAGjN1VQ4yUX16hm0l4
+   gpKx/Soi20C+rVyLRClj5QXN3SLHOXqoZrQuiDxKh8EefdnSeXeMs3Fx8
+   yqKE4uBZ7F1aQOXlKsLE3so4WXd3nWXTy+LnV/XRHSf0j/i35g4KpevtB
+   gDRcIo6jOnb92gbn1shMxWgCFrfogNstRb8oZtzFocXyb6XbMH26JispH
+   A==;
+X-CSE-ConnectionGUID: RXb/XS0KTuCEKO3yrlOCfw==
+X-CSE-MsgGUID: oF5P/h2WR3Gi4Iqh5tHBqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31168886"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="31168886"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 06:21:51 -0800
+X-CSE-ConnectionGUID: zG5i5Y+xS82ELxp6o8cMUQ==
+X-CSE-MsgGUID: Vth3UAT9QeiHxEQOl1OTXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
+   d="scan'208";a="88282446"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by orviesa007.jf.intel.com with SMTP; 13 Nov 2024 06:21:48 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 13 Nov 2024 16:21:46 +0200
+Date: Wed, 13 Nov 2024 16:21:46 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Sanket.Goswami@amd.com, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] i3c: master: Add ACPI support to i3c subsystem
+Message-ID: <ZzS1-nJMPiCp5jDi@kuha.fi.intel.com>
+References: <20241108073323.523805-1-Shyam-sundar.S-k@amd.com>
+ <20241108073323.523805-3-Shyam-sundar.S-k@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241108073323.523805-3-Shyam-sundar.S-k@amd.com>
 
-Fix an issue detected by syzbot with KASAN:
+Hi,
 
-BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
-core.c:416 [inline]
-BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
-drivers/acpi/nfit/core.c:459
+On Fri, Nov 08, 2024 at 01:03:20PM +0530, Shyam Sundar S K wrote:
+> As of now, the I3C subsystem only has ARM-specific initialization, and
+> there is no corresponding ACPI plumbing present. To address this, ACPI
+> support needs to be added to both the I3C core and DW driver.
+> 
+> Add support to get the ACPI handle from the _HID probed and parse the apci
+> object to retrieve the slave information from BIOS.
+> 
+> Based on the acpi object information propogated via BIOS, build the i3c
+> board information so that the same information can be used across the
+> driver to handle the slave requests.
+> 
+> Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
+> Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
+> Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+> ---
+> Cc: linux-acpi@vger.kernel.org
+> 
+>  drivers/i3c/internals.h            |  3 ++
+>  drivers/i3c/master.c               | 84 ++++++++++++++++++++++++++++++
+>  drivers/i3c/master/dw-i3c-master.c |  7 +++
+>  include/linux/i3c/master.h         |  1 +
+>  4 files changed, 95 insertions(+)
+> 
+> diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+> index 433f6088b7ce..178bc0ebe6b6 100644
+> --- a/drivers/i3c/internals.h
+> +++ b/drivers/i3c/internals.h
+> @@ -10,6 +10,9 @@
+>  
+>  #include <linux/i3c/master.h>
+>  
+> +#define I3C_GET_PID		0x08
+> +#define I3C_GET_ADDR		0x7F
+> +
+>  void i3c_bus_normaluse_lock(struct i3c_bus *bus);
+>  void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+>  
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index 6f3eb710a75d..0ceef2aa9161 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -2251,6 +2251,84 @@ static int of_i3c_master_add_dev(struct i3c_master_controller *master,
+>  	return ret;
+>  }
+>  
+> +#if IS_ENABLED(CONFIG_ACPI)
+> +static int i3c_acpi_configure_master(struct i3c_master_controller *master)
+> +{
+> +	struct acpi_buffer buf = {ACPI_ALLOCATE_BUFFER, NULL};
+> +	enum i3c_addr_slot_status addrstatus;
+> +	struct i3c_dev_boardinfo *boardinfo;
+> +	struct device *dev = &master->dev;
+> +	struct fwnode_handle *fwnode;
+> +	struct acpi_device *adev;
+> +	u32 slv_addr, num_dev;
+> +	acpi_status status;
+> +	u64 val;
+> +
+> +	status = acpi_evaluate_object_typed(master->ahandle, "_DSD", NULL, &buf, ACPI_TYPE_PACKAGE);
+> +	if (ACPI_FAILURE(status)) {
+> +		dev_err(&master->dev, "Error reading _DSD:%s\n", acpi_format_exception(status));
+> +		return -ENODEV;
+> +	}
 
-The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
-array is accessed without verifying that call_pkg points to a buffer
-that is appropriately sized as a struct nd_cmd_pkg. This can lead
-to out-of-bounds access and undefined behavior if the buffer does not
-have sufficient space.
+Why do you need to do that?
 
-To address this, a check was added in acpi_nfit_ctl() to ensure that
-buf is not NULL and that buf_len is greater than sizeof(*call_pkg)
-before casting buf to struct nd_cmd_pkg *. This ensures safe access
-to the members of call_pkg, including the nd_reserved2 array.
+> +	num_dev = device_get_child_node_count(dev);
+> +	if (!num_dev) {
+> +		dev_err(&master->dev, "Error: no child node present\n");
+> +		return -EINVAL;
+> +	}
 
-Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
-Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
-Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
-Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
----
-V1: https://lore.kernel.org/lkml/20241111080429.9861-1-surajsonawane0215@gmail.com/
-V2: Initialized `out_obj` to `NULL` in `acpi_nfit_ctl()` to prevent
-potential uninitialized variable usage if condition is true.
-V3: Changed the condition to if (!buf || buf_len < sizeof(*call_pkg))
-and updated the Fixes tag to reference the correct commit.
+I think Jarkko already pointed out the problem with that. The whole
+check should be dropped.
 
- drivers/acpi/nfit/core.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> +	device_for_each_child_node(dev, fwnode) {
+> +		adev = to_acpi_device_node(fwnode);
+> +		if (!adev)
+> +			return -ENODEV;
+> +
+> +		status = acpi_evaluate_integer(adev->handle, "_ADR", NULL, &val);
+> +		if (ACPI_FAILURE(status)) {
+> +			dev_err(&master->dev, "Error: eval _ADR failed\n");
+> +			return -EINVAL;
+> +		}
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 5429ec9ef..eb5349606 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -439,7 +439,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- {
- 	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
- 	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
--	union acpi_object in_obj, in_buf, *out_obj;
-+	union acpi_object in_obj, in_buf, *out_obj = NULL;
- 	const struct nd_cmd_desc *desc = NULL;
- 	struct device *dev = acpi_desc->dev;
- 	struct nd_cmd_pkg *call_pkg = NULL;
-@@ -454,8 +454,14 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 	if (cmd_rc)
- 		*cmd_rc = -EINVAL;
- 
--	if (cmd == ND_CMD_CALL)
--		call_pkg = buf;
-+	if (cmd == ND_CMD_CALL) {
-+		if (!buf || buf_len < sizeof(*call_pkg)) {
-+			rc = -EINVAL;
-+			goto out;
-+		}
-+		call_pkg = (struct nd_cmd_pkg *)buf;
-+	}
-+
- 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
- 	if (func < 0)
- 		return func;
+val = acpi_device_adr(adev);
+
+> +		slv_addr = val & I3C_GET_ADDR;
+> +
+> +		boardinfo = devm_kzalloc(dev, sizeof(*boardinfo), GFP_KERNEL);
+> +		if (!boardinfo)
+> +			return -ENOMEM;
+> +
+> +		if (slv_addr) {
+> +			if (slv_addr > I3C_MAX_ADDR)
+> +				return -EINVAL;
+> +
+> +			addrstatus = i3c_bus_get_addr_slot_status(&master->bus, slv_addr);
+> +			if (addrstatus != I3C_ADDR_SLOT_FREE)
+> +				return -EINVAL;
+> +		}
+> +
+> +		boardinfo->static_addr = slv_addr;
+> +		if (boardinfo->static_addr > I3C_MAX_ADDR)
+> +			return -EINVAL;
+> +
+> +		addrstatus = i3c_bus_get_addr_slot_status(&master->bus,	boardinfo->static_addr);
+> +		if (addrstatus != I3C_ADDR_SLOT_FREE)
+> +			return -EINVAL;
+> +
+> +		boardinfo->pid = val >> I3C_GET_PID;
+> +		if ((boardinfo->pid & GENMASK_ULL(63, 48)) ||
+> +		    I3C_PID_RND_LOWER_32BITS(boardinfo->pid))
+> +			return -EINVAL;
+> +
+> +		/*
+> +		 * According to the specification, SETDASA is not supported for DIMM slaves
+> +		 * during device discovery. Therefore, BIOS will populate same initial
+> +		 * dynamic address as the static address.
+> +		 */
+> +		boardinfo->init_dyn_addr = boardinfo->static_addr;
+> +		list_add_tail(&boardinfo->node, &master->boardinfo.i3c);
+> +	}
+> +
+> +	return 0;
+> +}
+> +#else
+> +static int i3c_acpi_configure_master(struct i3c_master_controller *master) { return 0; }
+> +#endif
+
+I think this code should be placed into a separate file.
+
+If the goal is to add ACPI support for code that is written for DT
+only, then I think the first thing to do before that really should be
+to convert the existing code to use the unified device property
+interface, and move all the DT-only parts to a separate file(s).
+
+thanks,
+
 -- 
-2.34.1
-
+heikki
 
