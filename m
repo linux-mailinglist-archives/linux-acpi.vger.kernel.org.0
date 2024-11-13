@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-9566-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9567-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5B79C7CDA
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 21:24:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 745C89C7CDB
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 21:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94EDE1F22840
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 20:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0556D1F22C15
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Nov 2024 20:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781CC2076B3;
-	Wed, 13 Nov 2024 20:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEC0209669;
+	Wed, 13 Nov 2024 20:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vt9C9wpg"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2Dd8XyYX"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D815718A6C5
-	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 20:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DB8207A16
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 20:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731529340; cv=none; b=UAkAYQOrf//UWXKt3QyyASzx9XmzLo8VkRDr1sN5pz90kCmVE+4kRXy/nQ+t50AVeQNWj7W7wdy1p04MPF6eJmyKYt64YrOWYx/yWZIQrblThusZmiW8vTVakpMl4WWRzahwqEe6JAfeRmbvzBkuWsJ4DK6gua+CXP97QER5ThY=
+	t=1731529342; cv=none; b=MK53xMMYhu3hvzK+dsR439trluxeF47f8m+p40zENlyFgr4nhz/YvkyOSqeAm9HJHbUdbZGsf/wi3ewQAIUxdoCeJ5D0P5+9Xz/EzvT1/a84Xn+LPm+8DVGJZh9rjDAEWNm6ARQGW8q9M4Esj/4+Mj2fB7A6aMdwFJCYBgecvxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731529340; c=relaxed/simple;
-	bh=i1reo/puGs40XsgdXpRo5jLuvVCjJ2MdZ9V3/j/rjsQ=;
+	s=arc-20240116; t=1731529342; c=relaxed/simple;
+	bh=36UDIJFEtl8dI9uWjyjPxbwUnwsyY+Q/Xb1gKSZkPyo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X0QTyl2K5jSVo7kmAhy/qQq17yee6aGwMI9VJFKEJ0eUw1b4C5MMgf027FB+kuyzXAZBAxcki76JaaFuPwmdaNXEbTqDGh7jWjLFRkRTT6qhYVL1+gClA0kQ+88Crlpbd3+a8lMLB1yKXnNSdwyo0U0iw1ylDqTFvoo0ws/dLZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vt9C9wpg; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=HGZK1cJOdqipW+lZ47zCtImkS01YyruJyww1YpLw3dOQX8BttgfCaZVvrq4Tp5rAUbwYs0kAuwdErMsoEG04/hyiaKezAvHCHiQb7AgQX+iL8OLPbqXkCuffmTNLp6RZckKxAUZ+MCgF21hkjA2iOQwR3wsMRuXoKOo5Q01Ttgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2Dd8XyYX; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6ea33140094so129668407b3.1
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 12:22:18 -0800 (PST)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e376aa4586so143846627b3.1
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Nov 2024 12:22:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731529338; x=1732134138; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731529340; x=1732134140; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UJGyo8V7hZdpO0Kqq5qpbbvS7ePkaWzpyfoWKyhMfqw=;
-        b=vt9C9wpg+qlrz9flU9C8aOowOA3Uy374AEpUOCasqLGA7K+PBRQvbX36YXzkJnP5Lr
-         XoYYlQ+hBaRmtwGMgAV6VwdeM8xfMk0GmJsV6ENm1vHfJWh6RaU3AnsR+RCfHKj+hHuL
-         GJuYyM79ne6QgYkasMgpAvWMpfB4+JK1IWKvq2MxAIuY+CSfH5MOVeVg3XmyJhFOT3mJ
-         YQQGAngJH4WCDZAclu6wIHWa2gpnJFxko2E5dmx5H19wIHVz9cvGJXBqeNBXQasiUtrn
-         DXzibR/OFV0XadTxgKMXN3CMVIwpZmjnrSahcdJ9PqmI/5x6Kbr43rlGQNXutElTjEjD
-         tQRQ==
+        bh=kOD5CgsBv5t1tl/Irzq4wc0q+ucmZgxcGN9rsSwagCM=;
+        b=2Dd8XyYXTj486IlUvjdSAAddc2wXXa9bGdVFLV1RCxj4+c27ikfoTR/PxVgMfo+1/t
+         +MlOUaGsRPJlelRqGZu7ASSyHNjkWBqa0tIS1SSSQg18isnwqzqE07yjURoJ4JVm5Wjf
+         3ofaaRbOkDKqwGVhg/tcSUY9whN7g1C14SxZfiAa7A0o5I5mWHssEdX8pxh7W+FH2qM1
+         +Dlc5G3FUfVtirBEnhDDO2EENPD5DMH8f+G1QNvIXHlB48IXbYRSTWAMHsfVsg4abZLq
+         lT0eh3fzkEgfLIE/FrGXIskOCzWz51GpWPI+s+oNX29uoYpSuuqppasPhkwTGwYbMByU
+         ensA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731529338; x=1732134138;
+        d=1e100.net; s=20230601; t=1731529340; x=1732134140;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UJGyo8V7hZdpO0Kqq5qpbbvS7ePkaWzpyfoWKyhMfqw=;
-        b=K+pY6ntI5XuUxpnFKeYYP71B0/URGeEfC6HU5vJor31Mkn/U8LunjUpNznPCbven2j
-         RarKM1gbWt0DFFq5m09S/EpKrJJoRToZjFQ3hs5J8AhBL9uUoi60f0tjt/qgkDJYVu4f
-         Fn0d8fQ0d25u+mq5nZ8tg3mfKTo8Irni/69De7vA2639fWh0sXkohzpgjVZNo53TcOUc
-         Z/EV4rvoxObCMqQLzEIBafc1+4YYioXFcTGGGz8yDripKnCk5C2+gSUs7qYSYj+IbKXm
-         oZx0wIMHN8Yyi+ZY1O/VMYGmRPHl9AsVCvUiLB3r/ZyeFSOF1rtOz4sjdqkFPB4rIj8i
-         6dSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4BmVzVuzw29dF8qoKPAPA843KcM85RWbFjTu6UAsM0510DyPypS4QG+l/2cjNANICaPQBxQwquZq2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx09Hc1F8uDw21+ZqDOwZgYZj8NNmq3vhqeebt1Y/psIPmybhzQ
-	vt964ZALA+BZ1wLirmFNNRH8/4OehHSgBsEJNwXtPHt4NXCuuBnqBQ4DDIn2T9fncWjXHJkGw61
-	GSj2puQ==
-X-Google-Smtp-Source: AGHT+IEgGSNApUMGmwT/5GWxoKIRky9G2mDTqjPFWSUJWlfb9He+rGDVI8sa+ciqObwRMeOIZsiDz7ItzLGb
+        bh=kOD5CgsBv5t1tl/Irzq4wc0q+ucmZgxcGN9rsSwagCM=;
+        b=ciPs3nTvvEVgH8YhC6o228IHA4yv7zhBw23shzHbspk+kSSWI9gVyEjEAZj+WZf1DH
+         qIB8DTyZwR5bYUCI7Wr0mwTnQxxtnpQfO7H+9lT/v+iaAQ1DjyyhGWBQqwSHN7l2hxty
+         u1YjsaPWVl/EQ/zUqFlvPr4CYXuwON3DA64PtapXPo62eVPyJDWozlLLR3PG3KU3w4fX
+         bkRiyBOrKTtwakelNH2xc4lbfjqD3Cxs4EscRVsq8wZmhmGexJ493uj14opDhTQOOJTu
+         4QdjyQo8fOLURkSatXydCVY9mVAd3mvyIR2TBQKpClWgLC/lSK6rqMR31iBDNUyOTiVM
+         LnXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXyAU5b8ieZzyUsUBEYmR6yefVgB2h0pm9A7LqDaCRJXQVE83h/ExRfIxwDti7HOfcpk3hpUosaD7Xr@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVHTs2mcycUjNG4uG6G7Jhj02o4Mg/AidQc5PnN3oB4pMqJ7Nv
+	qah7N2SY7iKVgRH3S/G+Jt7dnigOlSQYiY5WHgt446Sr0b2BwhD+eq6okM/Q/eXY7OzilbH3cu8
+	fUBVZ6Q==
+X-Google-Smtp-Source: AGHT+IGct1AMLUzk0LVs3zMWt4t9KvflGEFbP2gZ3I7+ryVQ0uGBIkPYx72xsys5OE4o4f4iV5S+bzbUp/LG
 X-Received: from jperaza.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:f86])
- (user=jperaza job=sendgmr) by 2002:a05:690c:6608:b0:6de:19f:34d7 with SMTP id
- 00721157ae682-6ecb31b51f7mr2229637b3.2.1731529337892; Wed, 13 Nov 2024
- 12:22:17 -0800 (PST)
-Date: Wed, 13 Nov 2024 20:22:12 +0000
-In-Reply-To: <20220426172105.3663170-2-rajatja@google.com>
+ (user=jperaza job=sendgmr) by 2002:a81:b512:0:b0:6a9:3d52:79e9 with SMTP id
+ 00721157ae682-6eca4bc5c13mr937467b3.4.1731529340188; Wed, 13 Nov 2024
+ 12:22:20 -0800 (PST)
+Date: Wed, 13 Nov 2024 20:22:13 +0000
+In-Reply-To: <20241113202214.1421739-1-jperaza@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20220426172105.3663170-2-rajatja@google.com>
+References: <20220426172105.3663170-2-rajatja@google.com> <20241113202214.1421739-1-jperaza@google.com>
 X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241113202214.1421739-1-jperaza@google.com>
-Subject: [PATCH 0/2] PCI/ACPI: Support Microsoft's "DmaProperty"
+Message-ID: <20241113202214.1421739-2-jperaza@google.com>
+Subject: [PATCH 1/2] PCI/ACPI: Support Microsoft's "DmaProperty"
 From: Joshua Peraza <jperaza@google.com>
 To: rajatja@google.com
 Cc: baolu.lu@linux.intel.com, bhelgaas@google.com, dtor@google.com, 
@@ -88,28 +88,84 @@ Cc: baolu.lu@linux.intel.com, bhelgaas@google.com, dtor@google.com,
 	will@kernel.org, Joshua Peraza <jperaza@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This patchset rebases two previously posted patches supporting
-recognition of Microsoft's DmaProperty.
+From: Rajat Jain <rajatja@google.com>
 
-Rajat Jain (2):
-  PCI/ACPI: Support Microsoft's "DmaProperty"
-  PCI: Rename pci_dev->untrusted to pci_dev->untrusted_dma
+The "DmaProperty" is supported and currently documented and used by
+Microsoft [link 1 below], to flag internal PCIe root ports that need
+DMA protection [link 2 below]. We have discussed with them and reached
+a common understanding that they shall change their MSDN documentation
+to say that the same property can be used to protect any PCI device,
+and not just internal PCIe root ports (since there is no point
+introducing yet another property for arbitrary PCI devices). This helps
+with security from internal devices that offer an attack surface for
+DMA attacks (e.g. internal network devices).
 
- drivers/acpi/property.c     |  3 +++
- drivers/iommu/amd/iommu.c   |  2 +-
- drivers/iommu/dma-iommu.c   | 12 ++++++------
- drivers/iommu/intel/iommu.c |  2 +-
- drivers/iommu/iommu.c       |  2 +-
- drivers/pci/ats.c           |  2 +-
- drivers/pci/pci-acpi.c      | 22 ++++++++++++++++++++++
- drivers/pci/pci.c           |  2 +-
- drivers/pci/probe.c         |  8 ++++----
- drivers/pci/quirks.c        |  2 +-
- include/linux/pci.h         |  5 +++--
- 11 files changed, 44 insertions(+), 18 deletions(-)
+Support DmaProperty to mark DMA from a PCI device as untrusted.
 
+Link: [1] https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
+Link: [2] https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+Signed-off-by: Rajat Jain <rajatja@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Joshua Peraza <jperaza@google.com>
+---
+ drivers/acpi/property.c |  3 +++
+ drivers/pci/pci-acpi.c  | 22 ++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 80a52a4e66dd..139e042ad2cb 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -56,6 +56,9 @@ static const guid_t prp_guids[] = {
+ 	/* Storage device needs D3 GUID: 5025030f-842f-4ab4-a561-99a5189762d0 */
+ 	GUID_INIT(0x5025030f, 0x842f, 0x4ab4,
+ 		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
++	/* DmaProperty for PCI devices GUID: 70d24161-6dd5-4c9e-8070-705531292865 */
++	GUID_INIT(0x70d24161, 0x6dd5, 0x4c9e,
++		  0x80, 0x70, 0x70, 0x55, 0x31, 0x29, 0x28, 0x65),
+ };
+ 
+ /* ACPI _DSD data subnodes GUID [1]: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index af370628e583..a457ae3e811a 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1438,12 +1438,34 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+ 		dev->external_facing = 1;
+ }
+ 
++static int pci_dev_has_dma_property(struct pci_dev *dev)
++{
++	struct acpi_device *adev;
++	const union acpi_object *obj;
++
++	adev = ACPI_COMPANION(&dev->dev);
++	if (!adev)
++		return 0;
++
++	/*
++	 * Property used by Microsoft Windows to enforce IOMMU DMA
++	 * protection from any device, that the system may not fully trust;
++	 * we'll honour it the same way.
++	 */
++	if (!acpi_dev_get_property(adev, "DmaProperty", ACPI_TYPE_INTEGER,
++				   &obj) && obj->integer.value == 1)
++		return 1;
++
++	return 0;
++}
++
+ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+ {
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 
+ 	pci_acpi_optimize_delay(pci_dev, adev->handle);
+ 	pci_acpi_set_external_facing(pci_dev);
++	pci_dev->untrusted |= pci_dev_has_dma_property(pci_dev);
+ 	pci_acpi_add_edr_notifier(pci_dev);
+ 
+ 	pci_acpi_add_pm_notifier(adev, pci_dev);
 -- 
 2.47.0.277.g8800431eea-goog
 
