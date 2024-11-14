@@ -1,299 +1,194 @@
-Return-Path: <linux-acpi+bounces-9582-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9583-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856EB9C8537
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 09:50:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4119C85EA
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 10:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3A2FB24811
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 08:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB651F221FC
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 09:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1C81F8901;
-	Thu, 14 Nov 2024 08:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994091DED57;
+	Thu, 14 Nov 2024 09:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4tNE40q"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12F51F81B0;
-	Thu, 14 Nov 2024 08:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011D418B47A;
+	Thu, 14 Nov 2024 09:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731574110; cv=none; b=pcN5oSOuPCkdc6l/58/+yvr7a2sjprcki5nkNilKPdEpZEW3h36p6IsxXIZa67HeBtlnswDMsSx2x8/qYzyeRxw8HopjxUiljW3k00AEAmMWTlaTL7gPS4kJNgg4/gB+aod6LlPgFWHQ+droPQxiDxnK9yCi/q6Dsv3HDFKl/fk=
+	t=1731575976; cv=none; b=GaFWC31mQc/BBWPKVC1q5pq9G39EfvnbNyhQRr7G6m+0g1HpjstK+U1bL76bjCKsvy0cxS35/sT5kQOoBArx4lR6+H7HnSC/h83lMZsKFNLaZOYObttIGf0fIncMS6SdGfGI2purimvLJDmDhP2EYDidb1qB4D4BDcVjOfMFODk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731574110; c=relaxed/simple;
-	bh=DmkFSJ0Dc908RKzofhscowO6CKihQtsKpAiW71CIkdE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SRHYEXhOUId1IT5eYTRIk/H85UkHtNp2i7RUFPH1AoVoB5gfSzEMfKa2vUkiqMG0iDVaWYpzDh8bljZIwsYpnuiCmjxJeP15mhqEdQhwvBASI9RaMvcoZjjI8rGhDue0Sd7KrtxBiSiUo2n1vyGJc3MpEna7qaZK+FLl9Ixgenw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Xptz14HY7z1V3r2;
-	Thu, 14 Nov 2024 16:45:49 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id DF4F31800DE;
-	Thu, 14 Nov 2024 16:48:19 +0800 (CST)
-Received: from localhost.huawei.com (10.50.165.33) by
- kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 14 Nov 2024 16:48:19 +0800
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<viresh.kumar@linaro.org>
-CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <fanghao11@huawei.com>,
-	<zhenglifeng1@huawei.com>
-Subject: [PATCH 3/3] cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
-Date: Thu, 14 Nov 2024 16:48:16 +0800
-Message-ID: <20241114084816.1128647-4-zhenglifeng1@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20241114084816.1128647-1-zhenglifeng1@huawei.com>
-References: <20241114084816.1128647-1-zhenglifeng1@huawei.com>
+	s=arc-20240116; t=1731575976; c=relaxed/simple;
+	bh=NU1w+haqDXEPicku8Ol9S8ylkWjc+N2IczRGt6lLWy8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BOHiZkVU77Cx9JWnXPY16NI1kmrRLMR1WL6NjIfBW/RqcbcyPlkIZ1aeVQ9ixKo91aRxBHANExopsQzxyB2QjGMNBC0EgyumLAFaOZZzzOlnDmIh3Kjwe9HxGmtZSROhv/g4oydVcPoiOJqL1N+uj4ysft27GrDxFol70p3tl1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4tNE40q; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-211c1c144f5so3970625ad.1;
+        Thu, 14 Nov 2024 01:19:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731575974; x=1732180774; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FUt/EcD6vorUbwGG3Sx+YdUqBqHorJh6OABgPgdjzc8=;
+        b=D4tNE40qm1QLaYxFdlCaGaVLjHsl7w4JGsn4wnE297uR/yYIBAlkHJsUx9K8HVQu5c
+         rBGqCSA+8W1GyZIvxLcSQ25qnbfxLCiBSbeulalEzfhaKPdaFmcmDQTLphcVFm7VDL7t
+         IgGnvNbu5L5Z1a3Mnuafrn7KuZXjz29gHQdLDlwbXOsx2LNiG8SHRS6AgEj+afI+x6/n
+         Cul9e85p0qB4aB07Y5AKEx2hUSjmbA8PVcFlA0gNIvQbxXINebNp2E8Nj7vkJafwQK7M
+         XNrNH02xKtvlZ3iqMhXdibWMn1pdHto/tNBlcPlSosUnd3KaBtdM65MfzT2phmpAi5NX
+         hnyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731575974; x=1732180774;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FUt/EcD6vorUbwGG3Sx+YdUqBqHorJh6OABgPgdjzc8=;
+        b=L7BXzF/xpovbiTX2zS1FNBiaLwxyHfqigSBxxzSy4JQSXj7HWu2h9PerSASouEt8OP
+         bSKJRPMASPLAbUFMx82iqMDxM89gu/s30w4m32h88tO4x7jlLYj7+VUjCe31XA59OD5q
+         ZdsLZ2Fvw4zewFPBaT0kfxkXrPP4/gLSuIEZz7OGEE11buOWpUH/jjYd9LdCV8jF1l+y
+         LIgWNq2aEQRifaWphYRlQr0D3wp/tRc+i53o+ctsNf0W0fNK2Kwd1KVveEN5xnlvRtGv
+         3nPNqq9K3KFysRePHkGWaSh5YQrk64NNdJy24Hhm0THV5P71d+cw211mK/vNuvlqXH6i
+         sz8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWPXHywXtOZrCzPUJqApoAox0giEjJjk8R/ZUD3PQbJCz77h5RhbCGB3wu0Xlv3OMB6lHAK69T9CTG5sZK4@vger.kernel.org, AJvYcCXdwT+7YHR3UEx93DaIt8gPft00wY5D3NAM8QTESjWOwr/eZYXFQIIKzCTAN5hT/jq0KNEi648DhZOi@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGLSnINQfRth/SSbgKyifWAOAkObQ2utND6N/ggbvVIx/+be1m
+	aFZs53kCXXyoo9RoOdGA6riMN34ONC0WPJREUXycSiAuoiORWECM
+X-Google-Smtp-Source: AGHT+IFAsiiRUQ9C9JCTDYc5W3f/4gx2o3puNGPkDNQyTPO+rxV8Vtlfhiu/zcezOPbWY9TYDPq3nA==
+X-Received: by 2002:a17:902:f54a:b0:20b:6c1e:1e13 with SMTP id d9443c01a7336-211c0fbf416mr39095895ad.23.1731575974189;
+        Thu, 14 Nov 2024 01:19:34 -0800 (PST)
+Received: from [192.168.0.198] ([14.139.108.62])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7246a6e6fe8sm817929b3a.62.2024.11.14.01.19.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 01:19:33 -0800 (PST)
+Message-ID: <1cab2343-8d74-4477-9046-7940917fa7be@gmail.com>
+Date: Thu, 14 Nov 2024 14:49:26 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemh100008.china.huawei.com (7.202.181.93)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] acpi: nfit: vmalloc-out-of-bounds Read in
+ acpi_nfit_ctl
+To: Dave Jiang <dave.jiang@intel.com>, dan.j.williams@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com
+Cc: rafael@kernel.org, lenb@kernel.org, nvdimm@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+References: <20241113125157.14390-1-surajsonawane0215@gmail.com>
+ <c69d74f7-4484-4fc6-9b95-d2ae86ead794@intel.com>
+Content-Language: en-US
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
+In-Reply-To: <c69d74f7-4484-4fc6-9b95-d2ae86ead794@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
-driver.
+On 13/11/24 22:32, Dave Jiang wrote:
+> 
+> 
+> On 11/13/24 5:51 AM, Suraj Sonawane wrote:
+>> Fix an issue detected by syzbot with KASAN:
+>>
+>> BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+>> core.c:416 [inline]
+>> BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+>> drivers/acpi/nfit/core.c:459
+>>
+>> The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
+>> array is accessed without verifying that call_pkg points to a buffer
+>> that is appropriately sized as a struct nd_cmd_pkg. This can lead
+>> to out-of-bounds access and undefined behavior if the buffer does not
+>> have sufficient space.
+>>
+>> To address this, a check was added in acpi_nfit_ctl() to ensure that
+>> buf is not NULL and that buf_len is greater than sizeof(*call_pkg)
+>> before casting buf to struct nd_cmd_pkg *. This ensures safe access
+>> to the members of call_pkg, including the nd_reserved2 array.
+>>
+>> Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
+>> Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+>> Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
+>> Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+>> ---
+>> V1: https://lore.kernel.org/lkml/20241111080429.9861-1-surajsonawane0215@gmail.com/
+>> V2: Initialized `out_obj` to `NULL` in `acpi_nfit_ctl()` to prevent
+>> potential uninitialized variable usage if condition is true.
+>> V3: Changed the condition to if (!buf || buf_len < sizeof(*call_pkg))
+>> and updated the Fixes tag to reference the correct commit.
+>>
+>>   drivers/acpi/nfit/core.c | 12 +++++++++---
+>>   1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+>> index 5429ec9ef..eb5349606 100644
+>> --- a/drivers/acpi/nfit/core.c
+>> +++ b/drivers/acpi/nfit/core.c
+>> @@ -439,7 +439,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>>   {
+>>   	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+>>   	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>> -	union acpi_object in_obj, in_buf, *out_obj;
+>> +	union acpi_object in_obj, in_buf, *out_obj = NULL;
+> 
+> Looking at the code later, out_obj is always assigned before access. I'm not seeing a path where out_obj would be accessed unitialized...
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
----
- .../ABI/testing/sysfs-devices-system-cpu      |  54 +++++++
- drivers/cpufreq/cppc_cpufreq.c                | 141 ++++++++++++++++++
- 2 files changed, 195 insertions(+)
+I initialized out_obj to NULL to prevent potential issues where goto out 
+might access an uninitialized pointer, ensuring ACPI_FREE(out_obj) 
+handles NULL safely in the cleanup section. This covers cases where the 
+condition !buf || buf_len < sizeof(*call_pkg) triggers an early exit, 
+preventing unintended behavior.
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index 206079d3bd5b..ba7b8ea613e5 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -268,6 +268,60 @@ Description:	Discover CPUs in the same CPU frequency coordination domain
- 		This file is only present if the acpi-cpufreq or the cppc-cpufreq
- 		drivers are in use.
- 
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_select
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Autonomous selection enable
-+
-+		Read/write interface to control autonomous selection enable
-+			Read returns autonomous selection status:
-+				0: autonomous selection is disabled
-+				1: autonomous selection is enabled
-+
-+			Write '1' to enable autonomous selection.
-+			Write '0' to disable autonomous selection.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_act_window
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Autonomous activity window
-+
-+		This file indicates a moving utilization sensitivity window to
-+		the platform's autonomous selection policy.
-+
-+		Read/write an integer represents autonomous activity window (in
-+		microseconds) from/to this file. The max value to write is
-+		1270000000 but the max significand is 127. This means that if 128
-+		is written to this file, 127 will be stored. If the value is
-+		greater than 130, only the first two digits will be saved as
-+		significand.
-+
-+		Writing a zero value to this file enable the platform to
-+		determine an appropriate Activity Window depending on the workload.
-+
-+		Writing to this file only has meaning when Autonomous Selection is
-+		enabled.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/energy_perf
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Energy performance preference
-+
-+		Read/write an 8-bit integer from/to this file. This file
-+		represents a range of values from 0 (performance preference) to
-+		0xFF (energy efficiency preference) that influences the rate of
-+		performance increase/decrease and the result of the hardware's
-+		energy efficiency and performance optimization policies.
-+
-+		Writing to this file only has meaning when Autonomous Selection is
-+		enabled.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
- 
- What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
- Date:		August 2008
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 2b8708475ac7..b435e1751d0d 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -792,10 +792,151 @@ static ssize_t show_freqdomain_cpus(struct cpufreq_policy *policy, char *buf)
- 
- 	return cpufreq_show_cpus(cpu_data->shared_cpu_map, buf);
- }
-+
-+static ssize_t show_auto_select(struct cpufreq_policy *policy, char *buf)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_auto_sel(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%lld\n", val);
-+}
-+
-+static ssize_t store_auto_select(struct cpufreq_policy *policy,
-+				 const char *buf, size_t count)
-+{
-+	unsigned long val;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val > 1)
-+		return -EINVAL;
-+
-+	ret = cppc_set_auto_sel(policy->cpu, val);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+#define AUTO_ACT_WINDOW_SIG_BIT_SIZE	(7)
-+#define AUTO_ACT_WINDOW_EXP_BIT_SIZE	(3)
-+#define AUTO_ACT_WINDOW_MAX_SIG	((1 << AUTO_ACT_WINDOW_SIG_BIT_SIZE) - 1)
-+#define AUTO_ACT_WINDOW_MAX_EXP	((1 << AUTO_ACT_WINDOW_EXP_BIT_SIZE) - 1)
-+/* AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
-+#define AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
-+
-+static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
-+{
-+	int sig, exp;
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_auto_act_window(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	sig = val & AUTO_ACT_WINDOW_MAX_SIG;
-+	exp = (val >> AUTO_ACT_WINDOW_SIG_BIT_SIZE) & AUTO_ACT_WINDOW_MAX_EXP;
-+
-+	return sysfs_emit(buf, "%lld\n", sig * int_pow(10, exp));
-+}
-+
-+static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
-+				     const char *buf, size_t count)
-+{
-+	unsigned long usec;
-+	int digits = 0;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &usec);
-+	if (ret)
-+		return ret;
-+
-+	if (usec > AUTO_ACT_WINDOW_MAX_SIG * int_pow(10, AUTO_ACT_WINDOW_MAX_EXP))
-+		return -EINVAL;
-+
-+	while (usec > AUTO_ACT_WINDOW_SIG_CARRY_THRESH) {
-+		usec /= 10;
-+		digits += 1;
-+	}
-+
-+	if (usec > AUTO_ACT_WINDOW_MAX_SIG)
-+		usec = AUTO_ACT_WINDOW_MAX_SIG;
-+
-+	ret = cppc_set_auto_act_window(policy->cpu,
-+				       (digits << AUTO_ACT_WINDOW_SIG_BIT_SIZE) + usec);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+static ssize_t show_energy_perf(struct cpufreq_policy *policy, char *buf)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_epp_perf(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%lld\n", val);
-+}
-+
-+#define ENERGY_PERF_MAX	(0xFF)
-+
-+static ssize_t store_energy_perf(struct cpufreq_policy *policy,
-+				 const char *buf, size_t count)
-+{
-+	unsigned long val;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val > ENERGY_PERF_MAX)
-+		return -EINVAL;
-+
-+	ret = cppc_set_epp(policy->cpu, val);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
- cpufreq_freq_attr_ro(freqdomain_cpus);
-+cpufreq_freq_attr_rw(auto_select);
-+cpufreq_freq_attr_rw(auto_act_window);
-+cpufreq_freq_attr_rw(energy_perf);
- 
- static struct freq_attr *cppc_cpufreq_attr[] = {
- 	&freqdomain_cpus,
-+	&auto_select,
-+	&auto_act_window,
-+	&energy_perf,
- 	NULL,
- };
- 
--- 
-2.33.0
+> 
+> https://elixir.bootlin.com/linux/v6.12-rc7/source/drivers/acpi/nfit/core.c#L538
+>   
+>>   	const struct nd_cmd_desc *desc = NULL;
+>>   	struct device *dev = acpi_desc->dev;
+>>   	struct nd_cmd_pkg *call_pkg = NULL;
+>> @@ -454,8 +454,14 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>>   	if (cmd_rc)
+>>   		*cmd_rc = -EINVAL;
+>>   
+>> -	if (cmd == ND_CMD_CALL)
+>> -		call_pkg = buf;
+>> +	if (cmd == ND_CMD_CALL) {
+>> +		if (!buf || buf_len < sizeof(*call_pkg)) {
+>> +			rc = -EINVAL;
+>> +			goto out;
+>> +		}
+>> +		call_pkg = (struct nd_cmd_pkg *)buf;
+> 
+> Is the casting needed? It wasn't in the old code
+> 
 
+I tested the code both with and without the cast using syzbot, and it 
+didn't result in any errors in either case. Since the buffer (buf) is 
+being used as a pointer to struct nd_cmd_pkg, and the casting works in 
+both scenarios, it appears that the cast may not be strictly necessary 
+for this particular case.
+
+I can remove the cast and retain the original code structure, as it does 
+not seem to affect functionality. However, the cast was added for 
+clarity and type safety to ensure that buf is explicitly treated as a 
+struct nd_cmd_pkg *.
+
+Would you prefer to remove the cast, or should I keep it as is for type 
+safety and clarity?
+
+>> +	}
+>> +
+>>   	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+>>   	if (func < 0)
+>>   		return func;
+> 
+
+Thank you for your feedback and your time.
 
