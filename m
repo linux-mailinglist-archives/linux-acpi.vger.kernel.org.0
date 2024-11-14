@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-9590-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9591-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA1E9C8EB1
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 16:51:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BD39C8EEE
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 16:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FEEF1F21BAA
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 15:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 878BE289683
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Nov 2024 15:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C502218BBA3;
-	Thu, 14 Nov 2024 15:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9DF13AD39;
+	Thu, 14 Nov 2024 15:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dao/fzUG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nCLlFrDg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E161B18A6DD;
-	Thu, 14 Nov 2024 15:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E4E7DA66;
+	Thu, 14 Nov 2024 15:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731598977; cv=none; b=twELnMIEqJmVsZsXSVDYSbNoYLDH99/JrFy8fBL5dD/CO7fdxxCALf/Ba2AIi5GO/36F3GsoqHsZ6v2xF+SN5jQ4pneDEbfkRI/PY8Y0KmEMQPQ6ip5Ysiy5GIjEQhjDuKSkvRFdfxWfS4hfhPudXYXnAS8OXTO9TDCnk+oUxO4=
+	t=1731599559; cv=none; b=mwt5AB2JiHsknb9rHRVXC6roXi7NjTApaDCZdaTgXsgNrtfNd+RbjDHSh08krb/8f9LYnNT7Whb59rkecazZJVanSNa+IQ8TSUKg/JQMyeCQY8iBJ+fLs/l1ON/SOLYcAJCtRE64cfZNRFyWjzMnIK2Ce00zzLv7qfh7d1lKsYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731598977; c=relaxed/simple;
-	bh=jk4S6Bk4Q0fqz/lxF2uzaH+S7bSOgCsQ5hk+2n65F3s=;
+	s=arc-20240116; t=1731599559; c=relaxed/simple;
+	bh=e1ZQd5YARcU5Hvx35DjyE2bgdZJpyejVaDrJBO5aiOA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VlTeihdkYBDbyOoy943ox/1lmQvrEwpMXjfc+Mx62fwEOVvLRllkXzUfvktFIyBTpI9BbNuSyKsFaefp1qll6CXTd1W+tifuU4s5c8J8ENsrGcloDONoR6lBxAkvt9wx5MUkVVZXtRH2+YDK5PSM1tqQuXicgMOXbMbO/bIyog8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dao/fzUG; arc=none smtp.client-ip=198.175.65.18
+	 In-Reply-To:Content-Type; b=K9g4K0vsqNDdJTZaa3Hzn9KvQ4nQXVZbWzUSOjRO0tIqY0qTrMQ+eMJ3eOcATQy7dWEAo/Nrc0oN7n7PbuG9qAsIGafzDmL0zgasRrV0xrt7RegN6s03ajkhMY2iavzsxS7LnwCw0uFHqmuA0qgdDV8U5VU35z509qhquhg+UOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nCLlFrDg; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731598976; x=1763134976;
+  t=1731599558; x=1763135558;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=jk4S6Bk4Q0fqz/lxF2uzaH+S7bSOgCsQ5hk+2n65F3s=;
-  b=dao/fzUGXZjSPhLJ2cilhYux5eHM2rlOyZYHt3AHeKMdKEHPKcHcbt2X
-   dC9YaqRFJxs0nCrgOjqtyJykTGKSgBCRNU69LcjfEYEQzFTFw+AhhUJmp
-   ylO5XEUc+Uff9JXGwrZHBDY1ogjPkFZ/ZXOT7SxVYHUsANoLHyS2Z+CAp
-   Aq92NyiLXwj8ifrHQJmBzSMNSn3YE3qSGXPxP0dopjxc4YZ6ZWLJ+MYy5
-   cMB5EA4tNjM/uda9Bmpb8ib+z2KusNVvfHgK/o04dOFL+obiAlsjTTIn6
-   SDoCttyvXute2dKXp84+d583nxa60N2jgn3GxqrfTRCFItOWvd7pZY3Je
-   Q==;
-X-CSE-ConnectionGUID: 4Aq3UIgXR46OV/ny78fuCg==
-X-CSE-MsgGUID: lPsdtd3ZTWuosvNRFSUuwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31731222"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="31731222"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 07:42:56 -0800
-X-CSE-ConnectionGUID: H8PO0C5zRemi7dbFBenCpA==
-X-CSE-MsgGUID: /jsnB3PbSyyUcQ1c166UmQ==
+  bh=e1ZQd5YARcU5Hvx35DjyE2bgdZJpyejVaDrJBO5aiOA=;
+  b=nCLlFrDgOWRzysy6tExZZg+3iF9hHdRRwHKKfBD+PXTSkNfVS6g+4I3C
+   075bap5gmXLVOOFRmvqMT35OeUWhpwQe6nceGrYAlY6a0xmpoaVtIrAsO
+   H+CgKJqyKIvpdBLfT9Akt51yite+MPH7OPm28kimauDP35GNlHgZlcZUx
+   ARQP3ye4cz39cgvrxhtWOQb7GYQ2VD0da3jtfKOkLzgTfQfRAVPp6fCXe
+   jyAlTARmcNIr6Ohv+vVWtutA6hJG4v2FZoqXZ8vai8DuvcWEbiwPByatE
+   IuLkgOW9+1szMND/U8aYPMSkRc5U90A5bKKsconZ+nBejOSzDsGXAC+bH
+   g==;
+X-CSE-ConnectionGUID: dBabqjKKQa6tvKi1dPbbTA==
+X-CSE-MsgGUID: FeO6JtvnRMitz90m5rS8mA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="34408558"
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; 
+   d="scan'208";a="34408558"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 07:52:37 -0800
+X-CSE-ConnectionGUID: umsSu1FIQ1KX3rp+SI0g7w==
+X-CSE-MsgGUID: Usp726aQS2yHN322MdJmMQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; 
-   d="scan'208";a="89021628"
+   d="scan'208";a="93206310"
 Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.108.62]) ([10.125.108.62])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 07:42:54 -0800
-Message-ID: <f13b285d-cf5b-4edf-a7d5-933ccd20556a@intel.com>
-Date: Thu, 14 Nov 2024 08:42:53 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 07:52:36 -0800
+Message-ID: <86208fd4-2628-446c-bda5-fe3c79706f68@intel.com>
+Date: Thu, 14 Nov 2024 08:52:35 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,117 +67,42 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] acpi: nfit: vmalloc-out-of-bounds Read in
- acpi_nfit_ctl
-To: Suraj Sonawane <surajsonawane0215@gmail.com>, dan.j.williams@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com
-Cc: rafael@kernel.org, lenb@kernel.org, nvdimm@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
-References: <20241113125157.14390-1-surajsonawane0215@gmail.com>
- <c69d74f7-4484-4fc6-9b95-d2ae86ead794@intel.com>
- <1cab2343-8d74-4477-9046-7940917fa7be@gmail.com>
+Subject: Re: [RFC PATCH v2 5/5] cxl: Add mce notifier to emit aliased address
+ for extended linear cache
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
+ dan.j.williams@intel.com, tony.luck@intel.com, dave@stgolabs.net,
+ jonathan.cameron@huawei.com, alison.schofield@intel.com, ira.weiny@intel.com
+References: <20241112221335.432583-1-dave.jiang@intel.com>
+ <20241112221335.432583-6-dave.jiang@intel.com>
+ <20241113081128.GAZzRfMIuLpzwHY_R7@fat_crate.local>
+ <9cbccaa0-f83e-4e92-bfbd-65a7ec08b2bd@intel.com>
+ <20241114093217.GBZzXDoVnBPiAhVOvJ@fat_crate.local>
 Content-Language: en-US
 From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <1cab2343-8d74-4477-9046-7940917fa7be@gmail.com>
+In-Reply-To: <20241114093217.GBZzXDoVnBPiAhVOvJ@fat_crate.local>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 11/14/24 2:19 AM, Suraj Sonawane wrote:
-> On 13/11/24 22:32, Dave Jiang wrote:
->>
->>
->> On 11/13/24 5:51 AM, Suraj Sonawane wrote:
->>> Fix an issue detected by syzbot with KASAN:
->>>
->>> BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
->>> core.c:416 [inline]
->>> BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
->>> drivers/acpi/nfit/core.c:459
->>>
->>> The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
->>> array is accessed without verifying that call_pkg points to a buffer
->>> that is appropriately sized as a struct nd_cmd_pkg. This can lead
->>> to out-of-bounds access and undefined behavior if the buffer does not
->>> have sufficient space.
->>>
->>> To address this, a check was added in acpi_nfit_ctl() to ensure that
->>> buf is not NULL and that buf_len is greater than sizeof(*call_pkg)
->>> before casting buf to struct nd_cmd_pkg *. This ensures safe access
->>> to the members of call_pkg, including the nd_reserved2 array.
->>>
->>> Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
->>> Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
->>> Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
->>> Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
->>> Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
->>> ---
->>> V1: https://lore.kernel.org/lkml/20241111080429.9861-1-surajsonawane0215@gmail.com/
->>> V2: Initialized `out_obj` to `NULL` in `acpi_nfit_ctl()` to prevent
->>> potential uninitialized variable usage if condition is true.
->>> V3: Changed the condition to if (!buf || buf_len < sizeof(*call_pkg))
->>> and updated the Fixes tag to reference the correct commit.
->>>
->>>   drivers/acpi/nfit/core.c | 12 +++++++++---
->>>   1 file changed, 9 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
->>> index 5429ec9ef..eb5349606 100644
->>> --- a/drivers/acpi/nfit/core.c
->>> +++ b/drivers/acpi/nfit/core.c
->>> @@ -439,7 +439,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
->>>   {
->>>       struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
->>>       struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->>> -    union acpi_object in_obj, in_buf, *out_obj;
->>> +    union acpi_object in_obj, in_buf, *out_obj = NULL;
->>
->> Looking at the code later, out_obj is always assigned before access. I'm not seeing a path where out_obj would be accessed unitialized...
+On 11/14/24 2:32 AM, Borislav Petkov wrote:
+> On Wed, Nov 13, 2024 at 08:27:35AM -0700, Dave Jiang wrote:
+>> I'm actually looking for recommendation on what the proper one is. The
+>> handler is expected to offline the aliased address of the reported MCE if
+>> there is one.
 > 
-> I initialized out_obj to NULL to prevent potential issues where goto out might access an uninitialized pointer, ensuring ACPI_FREE(out_obj) handles NULL safely in the cleanup section. This covers cases where the condition !buf || buf_len < sizeof(*call_pkg) triggers an early exit, preventing unintended behavior.
+> Well, MCE_PRIO_EARLY will emit a trace record so that if you have error events
+> consumers like rasdaemon, it'll get that error record for reporting etc.
+> 
+> MCE_PRIO_UC calls memory_failure() on the error and thus offlines the page.
+> Functionality which you're partly replicating in your notifier.
+> 
+> And since you wanna do the same thing, why are you even adding a new priority
+> instead of using MCE_PRIO_UC? amdgpu_bad_page_notifier() uses that same prio
+> because it does a similar thing.
 
-ok
-
+Ok thanks for the explanation. I will use MCE_PRIO_UC. 
 > 
->>
->> https://elixir.bootlin.com/linux/v6.12-rc7/source/drivers/acpi/nfit/core.c#L538
->>  
->>>       const struct nd_cmd_desc *desc = NULL;
->>>       struct device *dev = acpi_desc->dev;
->>>       struct nd_cmd_pkg *call_pkg = NULL;
->>> @@ -454,8 +454,14 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
->>>       if (cmd_rc)
->>>           *cmd_rc = -EINVAL;
->>>   -    if (cmd == ND_CMD_CALL)
->>> -        call_pkg = buf;
->>> +    if (cmd == ND_CMD_CALL) {
->>> +        if (!buf || buf_len < sizeof(*call_pkg)) {
->>> +            rc = -EINVAL;
->>> +            goto out;
->>> +        }
->>> +        call_pkg = (struct nd_cmd_pkg *)buf;
->>
->> Is the casting needed? It wasn't in the old code
->>
-> 
-> I tested the code both with and without the cast using syzbot, and it didn't result in any errors in either case. Since the buffer (buf) is being used as a pointer to struct nd_cmd_pkg, and the casting works in both scenarios, it appears that the cast may not be strictly necessary for this particular case.
-> 
-> I can remove the cast and retain the original code structure, as it does not seem to affect functionality. However, the cast was added for clarity and type safety to ensure that buf is explicitly treated as a struct nd_cmd_pkg *.
-> 
-> Would you prefer to remove the cast, or should I keep it as is for type safety and clarity?
-
-I would just leave it as it was.
-
-> 
->>> +    }
->>> +
->>>       func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
->>>       if (func < 0)
->>>           return func;
->>
-> 
-> Thank you for your feedback and your time.
 
 
