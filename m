@@ -1,148 +1,170 @@
-Return-Path: <linux-acpi+bounces-9607-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9608-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84EC9CFB08
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 00:20:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFABF9CFBB1
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 01:33:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B71D8B32CCC
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Nov 2024 23:11:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B71B1F22C06
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 00:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732D21953B0;
-	Fri, 15 Nov 2024 23:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10D32114;
+	Sat, 16 Nov 2024 00:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="lmlTPDZn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C733414F9D9;
-	Fri, 15 Nov 2024 23:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85FB10E6;
+	Sat, 16 Nov 2024 00:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731712293; cv=none; b=QLjQblsfk4EGfQisYbQPC8l3rkBW5Ad5cXMG+zLJ2vWFiYMMLOLxAFolnZv5o1OeaB1KjNeQ/E4/KzOvuLO41KQaF1VzME9FwGe4H6iDivNmZmP6RblbnouXaKPGKluuUoE1O6p0i123hU/T8CK5mLn0iLUcGapoWy1sWqkVnRs=
+	t=1731717183; cv=none; b=jUyZpbcbq2bp8+rvI6sRT7XT3DwDbKjEosPry6M3krq2adFPf1AHN9SwlX2g2ASbJeELJSVmeYtNCUHH/YxWCAyFe1+QR6fY13XocV8IN+EC9uSnk6ukD+JMGP/HvcqRdnU/iYUL4dtA3643vptY6qF+hY3f0zZKl+cAj7xOwGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731712293; c=relaxed/simple;
-	bh=X2uV+UlO+oeyFtpTc37ncoYBy0ncSnOv9AW0Udtr1Sw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RGdRHHiCFkqw7f0hNGIYhgefgAJF4eeDKawl6R0NAcyhe26ZHQeRpv9a4KbmkWqnPrGuNYahIDV0bpPRdrD1wvzfvH7QF2lSIX3toMexfoZGFS1Oq3JdEvLz9xTl3OIEZ1d7Gr4rwi04WcHo+UgStmSCQrEZgN/IFqjWnBfhCUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: fS/R+NUcSEOLb7sKlcNqOA==
-X-CSE-MsgGUID: 3wzlmOXjTQSDY9VKTxIn9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11257"; a="35499991"
-X-IronPort-AV: E=Sophos;i="6.12,158,1728975600"; 
-   d="scan'208";a="35499991"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2024 15:11:31 -0800
-X-CSE-ConnectionGUID: 1o93KFeCQwyDEy9ptvPpIA==
-X-CSE-MsgGUID: VXddfeRZQx2L/9zWnIh/Cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,158,1728975600"; 
-   d="scan'208";a="88694780"
-Received: from gargmani-mobl1.amr.corp.intel.com (HELO lenb-Thinkpad-T16-Gen-3.mynetworksettings.com) ([10.124.221.226])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2024 15:11:28 -0800
-From: Len Brown <lenb@kernel.org>
-To: rafael@kernel.org
-Cc: anna-maria@linutronix.de,
-	tglx@linutronix.de,
-	peterz@infradead.org,
-	frederic@kernel.org,
-	corbet@lwn.net,
-	akpm@linux-foundation.org,
-	linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org,
+	s=arc-20240116; t=1731717183; c=relaxed/simple;
+	bh=T7RtKM+FtjTcEG3IPQwos/zWrHkVgFDeK3pjo2QBvC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HSVLfWTkzLjbKPOEZ5qcw60batYhVxx0r4z6UI8TWDt8xG2qNzYKIa4hqFWmtVQtbu8FpRh4vucGLckNWVPi/wj6J2g4LQ2m2SWHJ7OZXg6Du3LEATwCdGz3V4QkkZwhCmfHN3uQ4DEtjZD/kZ4ixZu/aF7MvG+nuLw0of10mEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=lmlTPDZn; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=O69RYa26PSMBV2S9yrDOnpZxIdp5LpKg7DZPibj60YM=; b=lmlTPDZnE4F0PENa
+	rs96Vt9CjL6fHsmROCUPK8M28fs62uFoWDV6gZlFjIpOBNGBhVNllDUA6ROsmpfmHUfPvXkegAQ9k
+	OcvqOqnZzf2zPJsw/Rh4YMBcSwW8kczZitdXmz0xZAwB1+G0bjwqC8e2mkaGxKJGv5sqCGl6BIPLG
+	44ic2otqRE7OtbRJZjarIrMJH6Is7nwUDT/ZsoGSx2DDow6/9HjBYgmlo1GbjoIdvyq5kaQc6ttAi
+	E51VpHxLBcf2e4yOzGRD3Z/GIzJn1cyje+sf7zeezQA7ewEc4G0h2MTRfVtnH13V2fJppMYFMYBzP
+	ZgXsJChKVEtp5mZr+w==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1tC6kA-000FLA-1D;
+	Sat, 16 Nov 2024 00:32:54 +0000
+From: linux@treblig.org
+To: andriy.shevchenko@linux.intel.com,
+	djrscally@gmail.com,
+	heikki.krogerus@linux.intel.com,
+	sakari.ailus@linux.intel.com,
+	rafael@kernel.org
+Cc: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Len Brown <len.brown@intel.com>,
-	Arjan van de Ven <arjan@linux.intel.com>,
-	Todd Brandt <todd.e.brandt@intel.com>
-Subject: [PATCH v2] ACPI: Replace msleep() with usleep_range() in acpi_os_sleep().
-Date: Fri, 15 Nov 2024 18:11:13 -0500
-Message-ID: <c7db7e804c453629c116d508558eaf46477a2d73.1731708405.git.len.brown@intel.com>
-X-Mailer: git-send-email 2.43.0
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] device: property: Remove deadcode
+Date: Sat, 16 Nov 2024 00:32:53 +0000
+Message-ID: <20241116003253.335337-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Reply-To: Len Brown <lenb@kernel.org>
-Organization: Intel Open Source Technology Center
 Content-Transfer-Encoding: 8bit
 
-From: Len Brown <len.brown@intel.com>
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Replace msleep() with usleep_range() in acpi_os_sleep().
+fwnode_graph_get_endpoint_count() was added in 2021 by
+commit c87b8fc56966 ("device property: Implement
+fwnode_graph_get_endpoint_count()")
 
-This has a significant user-visible performance benefit
-on some ACPI flows on some systems.  eg. Kernel resume
-time of a Dell XPS-13-9300 drops from 1943ms to 1127ms (42%).
+but has never been used.
 
-usleep_range(min, min) is used because there is scant
-opportunity for timer coalescing during ACPI flows
-related to system suspend, resume (or initialization).
+fwnode_graph_get_remote_port() has been unused since 2017's
+commit 6a71d8d77795 ("device property: Add fwnode_graph_get_port_parent")
 
-ie. During these flows usleep_range(min, max) is observed to
-be effectvely be the same as usleep_range(max, max).
+Remove them.
 
-Similarly, msleep() for long sleeps is not considered because
-these flows almost never have opportunities to coalesce
-with other activity on jiffie boundaries, leaving no
-measurably benefit to rounding up to jiffie boundaries.
-
-Background:
-
-acpi_os_sleep() supports the ACPI AML Sleep(msec) operator,
-and it must not return before the requested number of msec.
-
-Until Linux-3.13, this contract was sometimes violated by using
-schedule_timeout_interruptible(j), which could return early.
-
-Since Linux-3.13, acpi_os_sleep() uses msleep(),
-which doesn't return early, but is still subject
-to long delays due to the low resolution of the jiffie clock.
-
-Linux-6.12 removed a stray jiffie from msleep: commit 4381b895f544
-("timers: Remove historical extra jiffie for timeout in msleep()")
-The 4ms savings is material for some durations,
-but msleep is still generally too course. eg msleep(5)
-on a 250HZ system still takes 11.9ms.
-
-System resume performance of a Dell XPS 13 9300:
-
-Linux-6.11:
-msleep HZ 250	2460 ms
-
-Linux-6.12:
-msleep HZ 250	1943 ms
-msleep HZ 1000	1233 ms
-usleep HZ 250	1127 ms
-usleep HZ 1000	1130 ms
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216263
-Signed-off-by: Len Brown <len.brown@intel.com>
-Suggested-by: Arjan van de Ven <arjan@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- drivers/acpi/osl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/base/property.c  | 41 ----------------------------------------
+ include/linux/property.h |  4 ----
+ 2 files changed, 45 deletions(-)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 70af3fbbebe5..daf87e33b8ea 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -607,7 +607,9 @@ acpi_status acpi_os_remove_interrupt_handler(u32 gsi, acpi_osd_handler handler)
- 
- void acpi_os_sleep(u64 ms)
- {
--	msleep(ms);
-+	u64 us = ms * USEC_PER_MSEC;
-+
-+	usleep_range(us, us);
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 837d77e3af2b..0cf8a7afaaee 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -1116,22 +1116,6 @@ fwnode_graph_get_remote_port_parent(const struct fwnode_handle *fwnode)
  }
+ EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_port_parent);
  
- void acpi_os_stall(u32 us)
+-/**
+- * fwnode_graph_get_remote_port - Return fwnode of a remote port
+- * @fwnode: Endpoint firmware node pointing to the remote endpoint
+- *
+- * Extracts firmware node of a remote port the @fwnode points to.
+- *
+- * The caller is responsible for calling fwnode_handle_put() on the returned
+- * fwnode pointer.
+- */
+-struct fwnode_handle *
+-fwnode_graph_get_remote_port(const struct fwnode_handle *fwnode)
+-{
+-	return fwnode_get_next_parent(fwnode_graph_get_remote_endpoint(fwnode));
+-}
+-EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_port);
+-
+ /**
+  * fwnode_graph_get_remote_endpoint - Return fwnode of a remote endpoint
+  * @fwnode: Endpoint firmware node pointing to the remote endpoint
+@@ -1227,31 +1211,6 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
+ }
+ EXPORT_SYMBOL_GPL(fwnode_graph_get_endpoint_by_id);
+ 
+-/**
+- * fwnode_graph_get_endpoint_count - Count endpoints on a device node
+- * @fwnode: The node related to a device
+- * @flags: fwnode lookup flags
+- * Count endpoints in a device node.
+- *
+- * If FWNODE_GRAPH_DEVICE_DISABLED flag is specified, also unconnected endpoints
+- * and endpoints connected to disabled devices are counted.
+- */
+-unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+-					     unsigned long flags)
+-{
+-	struct fwnode_handle *ep;
+-	unsigned int count = 0;
+-
+-	fwnode_graph_for_each_endpoint(fwnode, ep) {
+-		if (flags & FWNODE_GRAPH_DEVICE_DISABLED ||
+-		    fwnode_graph_remote_available(ep))
+-			count++;
+-	}
+-
+-	return count;
+-}
+-EXPORT_SYMBOL_GPL(fwnode_graph_get_endpoint_count);
+-
+ /**
+  * fwnode_graph_parse_endpoint - parse common endpoint node properties
+  * @fwnode: pointer to endpoint fwnode_handle
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 61fc20e5f81f..4301f5130280 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -470,8 +470,6 @@ struct fwnode_handle *
+ fwnode_graph_get_port_parent(const struct fwnode_handle *fwnode);
+ struct fwnode_handle *fwnode_graph_get_remote_port_parent(
+ 	const struct fwnode_handle *fwnode);
+-struct fwnode_handle *fwnode_graph_get_remote_port(
+-	const struct fwnode_handle *fwnode);
+ struct fwnode_handle *fwnode_graph_get_remote_endpoint(
+ 	const struct fwnode_handle *fwnode);
+ 
+@@ -497,8 +495,6 @@ static inline bool fwnode_graph_is_endpoint(const struct fwnode_handle *fwnode)
+ struct fwnode_handle *
+ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
+ 				u32 port, u32 endpoint, unsigned long flags);
+-unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+-					     unsigned long flags);
+ 
+ #define fwnode_graph_for_each_endpoint(fwnode, child)				\
+ 	for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;	\
 -- 
-2.43.0
+2.47.0
 
 
