@@ -1,68 +1,72 @@
-Return-Path: <linux-acpi+bounces-9609-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9610-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746099CFDBA
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 10:58:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19229CFDBB
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 10:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C721F2662F
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 09:58:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5178AB253AF
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Nov 2024 09:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC1C155312;
-	Sat, 16 Nov 2024 09:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D851194C7D;
+	Sat, 16 Nov 2024 09:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bLOlAdfW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IGRCrUT3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EAD762E0
-	for <linux-acpi@vger.kernel.org>; Sat, 16 Nov 2024 09:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F30E19343E
+	for <linux-acpi@vger.kernel.org>; Sat, 16 Nov 2024 09:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731751113; cv=none; b=dMwwmvRdhRtBx7BONbrpnPery9KUn5+UD5uVBtnG+v5FbSR8qkC+vOJnDxPCHssW0PTKTscLce9yzRslt5rOuLgWnjD+kDxQnra19FBcp1JND0AUTuSxCy1gU7oMAqUz2zRgrQy83xRqTx1EJqzEcF9PYDHv3+WfNmu54OZKPR0=
+	t=1731751117; cv=none; b=lcvenRdAPlA8mjl39NOMkp69xAVq0pFJOg0/ANqRMYR7saDtMOSPWMpmD1xxn5RJnkP70YA1zlWn2kvqw58IdIiEkW21wiiua6m+TG0g3jJ1qjXlrpdnW+ZaHQ5vFshfwes/GL0EhbzQiUSG4AAnnenKx/t09jct6Ra7Q5u5c8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731751113; c=relaxed/simple;
-	bh=Yp4RxllDDHfNTggcpa44tvyNn785MFNW4sNDlDkbrqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DfYENpfemj/YVeXEbywMK3Pz9ta/fjw2vLAurmNCulPjG4vGgzbMyx5TwdSXRmyLcB6SlN38sZERsXeaDtIydYSmIo06xsSBeVsVOlxYvLjCqSr/ZIRPMUTJaSB5JKUqSuFpy1OQc76+G9vPPzY7hL8YMIJB7gVDsPkMoBCeHdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bLOlAdfW; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1731751117; c=relaxed/simple;
+	bh=ZesHOJvJZGeYpZy3Iww27lRYonLPtUtm3NG3M9MbofQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uHXRKBwRVKRD6/jjL/+kkJFLT2IxVr0VBEGEuxqNGjdKChXF5mNrJ4fZvwcYf1TolX1NE5NfAx4rufa2kZr3/no7tnt/IYW17C0kX+LIDXW4zbtBR8A2QLhA8fcP/aDsPT+nKOcc9i0uAZOjd02EqOLfs9+XGwMM/oLqizSYKZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IGRCrUT3; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731751110;
+	s=mimecast20190719; t=1731751114;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=joSefEB8eVCA/KWVmP5S5T++dKMqAGKy+aJwSPb5lHQ=;
-	b=bLOlAdfWyPPqzVy6pSe2JlfkD8oIb3AyU64/b+2Nc5pNTIz6KEI/j19NHvgKoL2D/qwgJg
-	4bR0e4TB7pcj1d3bIWlnvSm4u4hmgoYk8LtswvVNunPOwdffXwkiy6xf7OIY/5I+eXAvbf
-	c3EEe6cDWVbXroV9yECJIScItexhvGk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ndMaPY125NC3eUE4Hk5s6o0oqfnBVfnD7dTIqfILf9g=;
+	b=IGRCrUT3TjuCAK5wpAs4ZJFa18z6CT0P89cXbviGSOV32LzPYgy4o7RE7FKtDjB423jGY7
+	luYpjqXRo1+3lKsP7OBfH5qQgD37v2Qtm94SM8uVyjkMpotJTEbQTWtOq5bg3tNYq0wm2c
+	pJlzU8MamVB03sFrxkhC4vumfJE8QQo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-iTp-kMUTNWuih0jDsAxQ2g-1; Sat,
- 16 Nov 2024 04:58:28 -0500
-X-MC-Unique: iTp-kMUTNWuih0jDsAxQ2g-1
-X-Mimecast-MFC-AGG-ID: iTp-kMUTNWuih0jDsAxQ2g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-N6Zc1EX2MVuwXVXZLpR3rQ-1; Sat,
+ 16 Nov 2024 04:58:30 -0500
+X-MC-Unique: N6Zc1EX2MVuwXVXZLpR3rQ-1
+X-Mimecast-MFC-AGG-ID: N6Zc1EX2MVuwXVXZLpR3rQ
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CD469195608D;
-	Sat, 16 Nov 2024 09:58:27 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 917A719560A6;
+	Sat, 16 Nov 2024 09:58:29 +0000 (UTC)
 Received: from shalem.redhat.com (unknown [10.39.192.52])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 78C0419560A3;
-	Sat, 16 Nov 2024 09:58:26 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3ECA319560A3;
+	Sat, 16 Nov 2024 09:58:28 +0000 (UTC)
 From: Hans de Goede <hdegoede@redhat.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>
 Cc: Hans de Goede <hdegoede@redhat.com>,
 	Len Brown <lenb@kernel.org>,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH 1/2] ACPI: x86: Add skip i2c clients quirk for Acer Iconia One 8 A1-840
-Date: Sat, 16 Nov 2024 10:58:24 +0100
-Message-ID: <20241116095825.11660-1-hdegoede@redhat.com>
+Subject: [PATCH 2/2] ACPI: x86: Cleanup Asus entries in acpi_quirk_skip_dmi_ids[]
+Date: Sat, 16 Nov 2024 10:58:25 +0100
+Message-ID: <20241116095825.11660-2-hdegoede@redhat.com>
+In-Reply-To: <20241116095825.11660-1-hdegoede@redhat.com>
+References: <20241116095825.11660-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -72,53 +76,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-The Acer Iconia One 8 A1-840 (not to be confused with the A1-840FHD which
-is a different model) ships with Android 4.4 as factory OS and has
-the usual broken DSDT issues for x86 Android tablets.
+The Asus entries in the acpi_quirk_skip_dmi_ids[] table are the only
+entries with a comment which model they apply to. Add these comments.
 
-Add quirks to skip ACPI I2C client enumeration and disable ACPI battery/AC
-and ACPI GPIO event handlers.
-
-Also add the "INT33F5" HID for the TI PMIC used on this tablet to the list
-of HIDs for which not to skip i2c_client instantiation, since we do want
-an ACPI instantiated i2c_client for the PMIC.
+The Asus TF103C entry also is in the wrong place for what is supposed to
+be an alphabetically sorted list. Move it up so that the list is properly
+sorted and add a comment that the list is alphabetically sorted.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/x86/utils.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/acpi/x86/utils.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 423565c31d5e..1bb425b78032 100644
+index 1bb425b78032..cb45ef5240da 100644
 --- a/drivers/acpi/x86/utils.c
 +++ b/drivers/acpi/x86/utils.c
-@@ -308,6 +308,18 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+@@ -296,6 +296,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 	/*
+ 	 * 2. Devices which also have the skip i2c/serdev quirks and which
+ 	 *    need the x86-android-tablets module to properly work.
++	 *    Sorted alphabetically.
+ 	 */
+ #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+ 	{
+@@ -321,6 +322,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
++		/* Asus ME176C tablet */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ME176C"),
+@@ -330,6 +332,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
  					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
  					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
  	},
 +	{
-+		/* Acer Iconia One 8 A1-840 (non FHD version) */
++		/* Asus TF103C transformer 2-in-1 */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
-+			/* Above strings are too generic also match BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
 +		},
 +		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
 +					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
 +					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
 +	},
  	{
+ 		/* Lenovo Yoga Book X90F/L */
  		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-@@ -425,6 +437,7 @@ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
- 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
- 	{ "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
- 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
-+	{ "INT33F5", 0 },  /* TI Dollar Cove PMIC */
- 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
- 	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
- 	{ "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
+@@ -342,15 +354,6 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+-	{
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
+-		},
+-		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+-					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+-					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+-	},
+ 	{
+ 		/* Lenovo Yoga Tablet 2 1050F/L */
+ 		.matches = {
 -- 
 2.47.0
 
