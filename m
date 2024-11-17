@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-9621-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9622-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEF09D058B
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2024 20:27:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5EF9D058E
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2024 20:29:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59BF11F21A71
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2024 19:27:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE4D8B216BC
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2024 19:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91CA1DB349;
-	Sun, 17 Nov 2024 19:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64BE1DB366;
+	Sun, 17 Nov 2024 19:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="KLzS0lCK"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="hsfQcNSf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FDF1CB333;
-	Sun, 17 Nov 2024 19:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63311CB333;
+	Sun, 17 Nov 2024 19:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731871642; cv=none; b=hy7Kle5uLQyNt+2Zw+5mO7TfVNsxNvBqWtUqeB1r3wnf1JGHvvibBENPPxBlkwdFQDPhHsJTys+zJOE88KRlKoVj6nIXCZgI2xVeQe+P39vdsuxtIL1UDcwSIy96DrhcMo5/oxXMpj2BZI41Nxt8x3GnZOx0veuLkWRE2kfPX7s=
+	t=1731871745; cv=none; b=fYZ2Rk3NGajSvqkAP1B/kVkCGAN5LKPl9tCr4mj932zrcBx7R+tTiF74GQj9RbCi0G2gCf0RGjO82agBO9dWExOSx0e28CmwfjbBBl8rFq/i2PExOGZwDmmmWtvmHRN9M+oH7YgwGqeLsNUa6ja6PkmHHSzlzxfF9Eo6hKk1K5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731871642; c=relaxed/simple;
-	bh=bTKIc8osfkMRcgNNhba4axJRGgbyk6QiluPyLW+tzck=;
+	s=arc-20240116; t=1731871745; c=relaxed/simple;
+	bh=WFSi094f4p67vDIBC4yF+wS7+41NYBkUId6VchIXXW8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jXjq1LaUQbcHuq0HjUq5gQlMum146uFdMZjCsW0LCoRQi3TdJ9sV+K7+vBXm2O62YKeuR2LZIhf11PIwbNFb7BZynBgBSPGiGW+QM8R5O1aRGwELAA1AEeFGwqUhR/cIwPCAXUyvUJlEyDYrxHeuoKRAmTDJPgjIat8WpP1edXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=KLzS0lCK; arc=none smtp.client-ip=212.227.17.20
+	 In-Reply-To:Content-Type; b=nIFE5fLC1BlfrLVb39g5Tq88trmDJnIW3xe3wr/JxoVGHocsgawq4ldjc92W5kZBrpXAMzzmnlTzpOdbRx5tISTZji6Utf2/gPnWV63uHjvUjK1FdPDUDCzndpmAYWySJs1284BjwT1AmCp0AS17iZCfmCikRfDjSbdRTNu2ETA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=hsfQcNSf; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1731871569; x=1732476369; i=w_armin@gmx.de;
-	bh=0yJeSLMlouZ0d4ujB92mnLWqBgIH6KEj5Tu7SYni7V8=;
+	s=s31663417; t=1731871674; x=1732476474; i=w_armin@gmx.de;
+	bh=nwnH8rk43zwU8UY7I0DCRWKqoe00ljs13amHr+vNJOE=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=KLzS0lCKDukAkHhATEFnieyjeONhpVU8EkzHP7nZBG16OG2d1wYICeZdy8ZdiCtb
-	 0UDvrC4MRbk6o8dM9gmk3WITN4RjgWkZeGC5Q6UjV2ptFBSRTVSjdZHykbfFM+y6g
-	 EyOuaBp1FLHq/bSc6Hvb3fjYBKfZPseqqdqlaqLI67WYgJ7/ipDPaJzeakzlmdMQU
-	 kWcbdMNOJWAf7M+hVD3EejcRWMXInyDlPpVNOI99nmfYZYKGxVndOOg5L49WBNOZq
-	 /TbbjbHY8lYox2G0UFMNJVdYyrcK/5yZIx8khv9P2IctcFd60ih7ujFTFLKVQVtm7
-	 ki0J9afYACyE69wjFA==
+	b=hsfQcNSfttu/soBVfdkT+zdhvZtmbLFMhrjBNyoEPUIsljCBV3SM/WCyAQPM/Tok
+	 XMH1pYzl8v4RY0hA9F/F896iRrUckPnJECI+6rQg/qPovsyisVSVNiObrnJmTFMN4
+	 vocpRQSq9VLAZVJFXM/P4zSXQJc9LkIo3BNKkwliVvEucaDFBKww+mTuPNxuDpnC3
+	 tmkfO0pMze+MbQzEftYM8t1Izy4pqRMevJ77dfBEHetRGOJu1SQqMUkEdnPZK7mFO
+	 uEmkMivrQ6mTyar90yef7aRMJMk7YO/ToUKPsr+NSWeGE1V6CtD8trxZpd3ajSjEo
+	 I5KfLBJv1xt8UPVVMQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.0.14] ([141.30.226.119]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7b6b-1t7YmC2o1d-005X1v; Sun, 17
- Nov 2024 20:26:09 +0100
-Message-ID: <fe48ea0e-daf1-4458-bf84-f5590fc96ebf@gmx.de>
-Date: Sun, 17 Nov 2024 20:26:08 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M26vB-1tAq3f1wTZ-0000fO; Sun, 17
+ Nov 2024 20:27:54 +0100
+Message-ID: <22bc5489-e205-405c-a0f5-bc9fc01be99d@gmx.de>
+Date: Sun, 17 Nov 2024 20:27:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 19/22] ACPI: platform_profile: Notify class device from
- platform_profile_notify()
+Subject: Re: [PATCH v6 20/22] ACPI: platform_profile: Allow multiple handlers
 To: Mario Limonciello <mario.limonciello@amd.com>,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -81,59 +80,130 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Mark Pearson <mpearson-lenovo@squebb.ca>,
  Matthew Schwartz <matthew.schwartz@linux.dev>
 References: <20241109044151.29804-1-mario.limonciello@amd.com>
- <20241109044151.29804-20-mario.limonciello@amd.com>
+ <20241109044151.29804-21-mario.limonciello@amd.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241109044151.29804-20-mario.limonciello@amd.com>
+In-Reply-To: <20241109044151.29804-21-mario.limonciello@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:dvm/mbvdv8NXur5nvMFX8ZJBpGckSgbLEskEfUoPRkba+yXkrmK
- 2EMTZAybGDXNpvw7Bu4BmPxFOgBE1krqVrItfg2ul95f917onOykCOKS9x+DKxLTP09rcym
- XssLaRpMBrj8N5m3sycYvapo9GJVwIQ1FbXWyBeKCOBknJy98thXZ0St/4uIGOqBZ5w8pG8
- UgwoSyXUewXVNB7Ck09Vw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RStlMmxjrWUqrEgcwGt2nYqTaTwj1K5AqOK4KjEl+tRAFZfHrzY
+ 3TmIv2EJODOUEa1kn7odVv/l2RLrSNup/7WrIMUBfheTS0CuVVIPmmYuWKnXAsjoM0DCJ2m
+ rpfn+qsdgbJnuHfbronFC8nScE2CgvgsnZgmZn8wklSQrJRDVfeyqn51l5YrQnhDicDyL0J
+ mn+tnCKg52Oq5COnycEiA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FTEsjTrGLTY=;+sB7f1KZolpJpC3pkIMkNpADbnH
- zIhtR5In28Pp5MxeUmDnVoaECTlpqD08UPxyWFuDdt4coiI8C6DRclzO6W0oyoaAaRVgEscf/
- chFjBJ3WKOAdf24kOm1sxf5zNJwAzVkwo2zeaZxhuAJDPfZAXRUNWQwQKMAkN9epfS4KJUT+I
- A31DamZptHIX+8yEo2VKOa+SADazR2gkIawvY9U/grV2/eKoIReLi+YxBfu1cTlrlkhYJFOHN
- vQz71we4f6XHK3pfW4l2z0iwM5Y2ApZq+8YWZcSftn5Bnl/gE4E3tQ9suIdGaaarXf8CsLVKp
- EhNulKpCWO8KM07yvass2JeiuSm9yvBs5Ec/uxMMyNkvho6ONiNi9iSJN+I0kUGzJ1FzBJvuk
- MkghH31n5bC5vFPwYYZ/1/I3rmTL+/Ybzfus8PinMcw3I9ZoelMghelD/BPefSuHo3HoVK0JI
- Q1Ixxe+uZrVVImg63R5df8+/eemvxpWiMYDyKCGJ704731jk0cPaNRSH/4NJaz8mP19U3j00G
- wwWXDRPHP3oE9hR88kJIL6HqhYWhaxp9TDx9VdymCcGauwfKAOtWXtdKUVTNsq80L+TI0t+Pz
- Fa5wA43hygRI2T2cPdNOVzybZpBGct4f8cwRLQw4rBvOPF079ZQ1oi0eczp6MS89+p6eoWFXP
- CSYmTpuyaPr2g/m0bd1SfTXFb75yCTwQmVxRw7VjNObsoX8RPu+cXAnVipOWYkaTC8xKcXKjv
- QsjOmTvpWjjFNE9b2EDMV29slNRVe8RSG4RSeGP6wZnuK7rume4B/B+rDq6z56I9KU/9yMVZc
- KqWPKMtb8vBRBWnq+MGUk9SVpL0tPpggjgj/r/thWMMEB/XmrX+8xIzdibNW7VNvF7BGHxatY
- QTmowtom4SYiHSNZQm+ONRnmSi7KDX8pVWvOyM+coEXys0axu7fkrUbhO
+UI-OutboundReport: notjunk:1;M01:P0:7tPl5vNc9mo=;hcEeoMdoPRI0kOQbKSHHt6fJVUX
+ C15MOQ2DgkG4cfLJ6yL9oyqyGGMY0v9y6G5DOmzrsPLpMEadpIB0oawbLNdRNcRhtSZOQLeV8
+ iHr/WGMogjbtZv7eSzDjDyd0cffUW/JuGwXbol7HWnHHisrNBXQU85e2YzEAmcTuwxIduhcR3
+ A78G15utDyYXbW8Ho3ZUwne91OBIz7/tJDIlLD+ImS7ve+QrJRyG4/1tP7H144ERQiNcV781T
+ lwWic58wxfja0enVbP5LctUlKoVVuQxI7YVVPpTgbjbJmQARFdUD2Y6eejlMM0PChKqEpwdZK
+ AjDo3z6syjN+S+/XDGA7usTqcWGnkxviC1OkoAdOMxQ/F7SCQXVNzzKBkQR4+YLFIiHeUrM6C
+ vH9EIlUT0Plk1OyfWlBDDSjqjKnZ+tat2vVwmsx90A4yPT2zU6Gm263z3YroDWDuApDlTNSiD
+ OBBtrB+1gluConCL8/UZFeWe/7joRovfT4M8plyEEKKcJCni6c+d4mw6r0ly9fnT1zn+RV5KS
+ Msz5erJ0WobX3XrBh76Kux52A1iErea0K/+Mweqv0bQZtPrxNu9ESVriVbfZ5/dDaQgeFeoxl
+ f9It1ACeLGJOPwok2Nfw460PtSLu+5fZFDZCRCzwlrk9O38bKs2Rh/qgZbKxHaZZssxmElH9d
+ qZnwuc1eJkoOrOOLAillfs/BuXiE2vZQVVOC2J86sIUO1XpLQ/lF/Yw/yl8IYz5CCIzQtKSM6
+ 8+l5Ti0s/R9aCCUHQgZ3m6St6zOrN3MmCAlCdEgMPYajCiXcOyKUONitXRfqABJBqQ0vcReXq
+ yyyn4cYgtsoTflQu3N0FDqfAMX200BzYWbHOtm7XCu/oyYgakfhO0MnWLa2leCTVxRM54YNkN
+ HVerL0Sx02/5e5f/ZB/Cs2IAyQJPO3NMLBDEVLmiS+EkviBgQvV2qo/qU
 
 Am 09.11.24 um 05:41 schrieb Mario Limonciello:
 
-> When a driver has called platform_profile_notify() both the legacy sysfs
-> interface and the class device should be notified as userspace may listen
-> to either.
+> Multiple drivers may attempt to register platform profile handlers,
+> but only one may be registered and the behavior is non-deterministic
+> for which one wins.  It's mostly controlled by probing order.
 >
+> This can be problematic if one driver changes CPU settings and another
+> driver notifies the EC for changing fan curves.
+>
+> Modify the ACPI platform profile handler to let multiple drivers
+> register platform profile handlers and abstract this detail from userspa=
+ce.
+>
+> To avoid undefined behaviors only offer profiles that are commonly
+> advertised across multiple handlers.
+>
+> If any problems occur when changing profiles for any driver, then the
+> drivers that were already changed remain changed and the legacy sysfs
+> handler will report 'custom'.
+
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+
+> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+> Tested-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->   drivers/acpi/platform_profile.c | 1 +
->   1 file changed, 1 insertion(+)
+> v6:
+>   * rebase
+> v5:
+>   * reword commit message
+> ---
+>   drivers/acpi/platform_profile.c | 12 +-----------
+>   1 file changed, 1 insertion(+), 11 deletions(-)
 >
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index c574483be4fd1..7ad473982ab11 100644
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
+file.c
+> index 7ad473982ab11..0a8b86b44e161 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -417,6 +417,7 @@ void platform_profile_notify(struct platform_profile_handler *pprof)
+> @@ -10,7 +10,6 @@
+>   #include <linux/platform_profile.h>
+>   #include <linux/sysfs.h>
+>
+> -static struct platform_profile_handler *cur_profile;
+>   static DEFINE_MUTEX(profile_lock);
+>
+>   static const char * const profile_names[] =3D {
+> @@ -415,8 +414,7 @@ static const struct attribute_group platform_profile=
+_group =3D {
+>
+>   void platform_profile_notify(struct platform_profile_handler *pprof)
 >   {
->   	if (!cur_profile)
->   		return;
-> +	_notify_class_profile(NULL, pprof);
-
-You will need to supply the first argument ("dev") here or _notify_class_profile() will crash.
-
-Thanks,
-Armin Wolf
-
+> -	if (!cur_profile)
+> -		return;
+> +	guard(mutex)(&profile_lock);
+>   	_notify_class_profile(NULL, pprof);
 >   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
 >   }
->   EXPORT_SYMBOL_GPL(platform_profile_notify);
+> @@ -480,9 +478,6 @@ int platform_profile_register(struct platform_profil=
+e_handler *pprof)
+>   	}
+>
+>   	guard(mutex)(&profile_lock);
+> -	/* We can only have one active profile */
+> -	if (cur_profile)
+> -		return -EEXIST;
+>
+>   	/* create class interface for individual handler */
+>   	pprof->minor =3D ida_alloc(&platform_profile_ida, GFP_KERNEL);
+> @@ -498,8 +493,6 @@ int platform_profile_register(struct platform_profil=
+e_handler *pprof)
+>
+>   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>
+> -	cur_profile =3D pprof;
+> -
+>   	err =3D sysfs_update_group(acpi_kobj, &platform_profile_group);
+>   	if (err)
+>   		goto cleanup_cur;
+> @@ -507,7 +500,6 @@ int platform_profile_register(struct platform_profil=
+e_handler *pprof)
+>   	return 0;
+>
+>   cleanup_cur:
+> -	cur_profile =3D NULL;
+>   	device_unregister(pprof->class_dev);
+>
+>   cleanup_ida:
+> @@ -528,8 +520,6 @@ int platform_profile_remove(struct platform_profile_=
+handler *pprof)
+>
+>   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>
+> -	cur_profile =3D NULL;
+> -
+>   	sysfs_update_group(acpi_kobj, &platform_profile_group);
+>
+>   	return 0;
 
