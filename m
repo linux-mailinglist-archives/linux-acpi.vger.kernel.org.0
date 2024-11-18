@@ -1,292 +1,115 @@
-Return-Path: <linux-acpi+bounces-9624-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9625-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1F09D0599
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2024 20:57:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4429D0793
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 02:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9560B1F21A7C
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Nov 2024 19:57:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D563CB216BB
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 01:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8F51DB375;
-	Sun, 17 Nov 2024 19:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="dYyfPglV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD41946B;
+	Mon, 18 Nov 2024 01:29:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F3A1DA11A;
-	Sun, 17 Nov 2024 19:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013F817BA3;
+	Mon, 18 Nov 2024 01:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731873438; cv=none; b=LjIaJLQdow/IHj29M7qoIhK4TWFRG1YBMM/DH+qYx1jzSAY10AhU+3OxFgJYg5/NfwBwe6N/cfAILYo0aKJNoUVGItNZrDO5XDLDSa2rwRHDABtM2Y4fhfpPQDju1tbEyFKJzaweNyZFPtA55Cb2bwkL2ondnOZE642MRHUfSwo=
+	t=1731893394; cv=none; b=HHa2K9b/w2C0cp2I3ut7kcDjlhK/aiVc5dQgJE8qQb0N0sX+YdizfriwjL1XWYE+w+lrtrLt7WiixtlfS2SjvkopoxPSyAa9pxbJ99f5lD2P2Enwmrtk+XaYtdh5qjrPOe5T7UCp7GXzg0HEs4xKK9VF8C/C8vAuW7eucJWAmt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731873438; c=relaxed/simple;
-	bh=0D0rVlLazk3e9+UzYzAwJMY7U6wVdChYB6C/Cv5RJlc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=md+Z3jWYbdVCKwb3P5MQr+VVBg2FVBUH2RNlgpbMoK1D+hjnDzV7U7whYwphvy794dxtONFlUKYLmDv37Ea9p6nsPkygzACWY7WOrYp3MqBTFaA+9EGVUSQwVwjbjcJtXkqLOSXPqnHjyuGUIbnBbsJPX2AtQoifqv1lFUkXmLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=dYyfPglV; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1731873374; x=1732478174; i=w_armin@gmx.de;
-	bh=LpwvtYmMYMG3OMu+ZG7wRaqRDTH2ywal0co5/aDXKFM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=dYyfPglVGDQY8Rxfd39sK88medIG/xkR0P5eFRGyJjY44im1d6+gYnWv994E4Gej
-	 8EWhQcQYO6Ov6ykN4qRlKgjRCf818q1d2UmqA7wtham9erVDhPHqDO2XfNLyBNiSZ
-	 DXoCrVFH8X0NVdnLEnIrihFQ4nhMkUmU4qkYyWnDOEb9I9DJb20j19jWGqc+07A3q
-	 8Mzxohahh7HRBG9AdmhdJd14rz18+QYpah/zTjwbYyoH9fat7U9q14LGTmtrHY+HN
-	 bkrkjhWWE2i66Ly+Iz0fWSsJ0Ft6rUl9+hRFo/UOzCPjm7WUlGqAFBdsVqougD7D7
-	 EPEPHw1s3kujRiAO1A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.14] ([141.30.226.119]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUGiJ-1tLFgj0lNL-00TFtG; Sun, 17
- Nov 2024 20:56:14 +0100
-Message-ID: <c3fda59b-11c2-40ed-aa64-66c10805f74b@gmx.de>
-Date: Sun, 17 Nov 2024 20:56:08 +0100
+	s=arc-20240116; t=1731893394; c=relaxed/simple;
+	bh=lM9XoLTlH4w7aBEstkNtGMfmVvVr+vxFBznR54ornks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=BJtIqxzeVeUxaeTZ1EZ6jKFh78/8POUOzD5um2mkc90WKMMJE/cbI+hqUPfKsVFv/pm7Q0hnV/Fl6RmjonGY093jbFRG0UtYkq8Lr/UPXi2ADmA02la7fjcvF1yXO5Cm/igWCdsWVeRt8F0Xr02yPtlZ0CmmzU4HdNPJ5YBMg1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Xs93019Fwz10Rt3;
+	Mon, 18 Nov 2024 09:27:08 +0800 (CST)
+Received: from dggemv704-chm.china.huawei.com (unknown [10.3.19.47])
+	by mail.maildlp.com (Postfix) with ESMTPS id 93C8F1403A0;
+	Mon, 18 Nov 2024 09:29:43 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 18 Nov 2024 09:29:43 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Nov
+ 2024 09:29:42 +0800
+Message-ID: <ee3f6294-dc62-11d2-9467-53fd9241a922@huawei.com>
+Date: Mon, 18 Nov 2024 09:29:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 09/22] ACPI: platform_profile: Use `scoped_cond_guard`
-To: Mario Limonciello <mario.limonciello@amd.com>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
- <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER"
- <ibm-acpi-devel@lists.sourceforge.net>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Matthew Schwartz <matthew.schwartz@linux.dev>
-References: <20241109044151.29804-1-mario.limonciello@amd.com>
- <20241109044151.29804-10-mario.limonciello@amd.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241109044151.29804-10-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1://Vaf54lrdOn3E1YeZLvLbuxO6gyb+3fHRAE4h76tkHQz1Tgy7+
- MaT2snJnBA36FJ5mEZH/DogJZbbg6k4RLXzjXnUefk2lJ4GQacInAXDPh5yE1gWj5miZ1c9
- 1Ei8Z9tGMJgjq7sUWFZmVmk6bAlpElPZoL7KOP9IYh89kM9Br4Gx0LWH+1mym6PH0m1nhI4
- 1ulOyLnlL9TYlOqQLGynA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:cst14HlcA94=;oAgdpRj4miV2YIFQwWIUfxciMb6
- WGyjKaabbucOGbkaKzci+Kt0mpg425TnKrtcX9sHmDOieLbfTU89Pai+1S2iAgt7vGlt9H7aH
- x40fo/sLS4DqVn+Z6PVan3mS539BnQXVfvPMziLLAWtvxaOW8CtDF/3V1KBcEef32ImNjqj91
- ydmkpdaj9W8ataf2NLdQJjaPW6pHsO8jcP/SD8H5jDm0C0MqtEonXQ/NpfculPJ5f2/oyvnQb
- Mn5y8TDbsBjWP4fG+Fjlzv0VEkHQi2fGdc0hjcrJ5XF2SnMOeW+IQpWXQLfdpKpabZgZcYpwB
- td+zCx3nwhrcoqB5rwRijUq06WO9h1LHUA7sxrREm5//zsKO5No7yDU8zXZUq9xF3trcl/5Pg
- b/8YyzuOWZoXTg8rmUisNhO5ogiCw9QLsuclUt/4CKMB1oHQd4p77nCyinvnlqJ+CmKwSyJuu
- QKvy332OzfCto55elJMZWp/1eLPRlPgrGd5BP6bpoX7Z0HOswOjjaWsKPX4J4acgs5/iZEqaa
- rxkewd3AS4k4ZK8L5X28W0w3tC2JW97nNk6E+fptPyCY1tz9xNncUKV+OCESjssc4iVNS0dfe
- hZxhk7ardz2FMe3LPevVOGmZ4j3yAAVTTQmHPx9ywlE0zZEDyJJbjabl1kdV8OhjgXVIdR2ci
- bbfQ/73OiIdlypAJONs5ZyVTrzLk7/BKE1/wxnpYAAJIo8EVbljzumov7RdHunOHljORKV7jJ
- mqVOqCe7WTIbLfn/jarxDGXbF2LEhH29O5q45dxntWhnp/vTVFMgTvCjSm+lolaC6jFYfAAxj
- 8hW7AtHLuLtp0DhBbmUPfGZh01OdF+0R9I9NzsTaaloiVggOe8OiJr+W5rriTiFwIfG1JIo+B
- ViiX3NYoKw23GtaLAYd0hplU+zt7g128meGC2RxFo9iBtOkzu15PB5qKd
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2] ACPI: thermal: Support for linking devices associated
+ with the thermal zone
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <rui.zhang@intel.com>,
+	<liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>
+References: <20241113085634.7657-1-lihuisong@huawei.com>
+ <CAJZ5v0jTMg=Wipt2VPU1DDnnO7Rh5pu0VYvUjHRW5Nada--O8A@mail.gmail.com>
+ <52539572-6128-8c87-84e6-3f539d887b34@huawei.com>
+ <CAJZ5v0heL_wa=bimMDijn-x6G0SxsMf=yGhKZAe282P5+h2O3w@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0heL_wa=bimMDijn-x6G0SxsMf=yGhKZAe282P5+h2O3w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-Am 09.11.24 um 05:41 schrieb Mario Limonciello:
 
-> Migrate away from using an interruptible mutex to scoped_cond_guard
-> in all functions. While changing, move the sysfs notification
-> used in platform_profile_store() outside of mutex scope.
-
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-
-> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/acpi/platform_profile.c | 111 +++++++++++++-------------------
->   1 file changed, 43 insertions(+), 68 deletions(-)
+在 2024/11/14 19:53, Rafael J. Wysocki 写道:
+> Hi,
 >
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
-file.c
-> index 9729543df6333..32affb75e782d 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -27,25 +27,20 @@ static ssize_t platform_profile_choices_show(struct =
-device *dev,
->   					char *buf)
->   {
->   	int len =3D 0;
-> -	int err, i;
-> -
-> -	err =3D mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> -
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> -	}
-> -
-> -	for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
-> -		if (len =3D=3D 0)
-> -			len +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> -		else
-> -			len +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> +	int i;
-> +
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		if (!cur_profile)
-> +			return -ENODEV;
-> +		for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
-> +			if (len =3D=3D 0)
-> +				len +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
-> +			else
-> +				len +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
-> +		}
->   	}
->   	len +=3D sysfs_emit_at(buf, len, "\n");
-> -	mutex_unlock(&profile_lock);
-> +
->   	return len;
->   }
+> On Thu, Nov 14, 2024 at 9:37 AM lihuisong (C) <lihuisong@huawei.com> wrote:
+>> Hi Rafael,
+>>
+>> 在 2024/11/13 17:26, Rafael J. Wysocki 写道:
+>>> On Wed, Nov 13, 2024 at 10:07 AM Huisong Li <lihuisong@huawei.com> wrote:
+>>>> There are many 'cdevX' files which link cooling devices under
+>>>> '/sys/class/thermal/thermal_zoneX/'. These devices contain active cooling
+>>>> devices and passive cooling devices. And user cann't directly know which
+>>>> devices temperature is represented by the thermal zone.
+>>>>
+>>>> However, ACPI spec provides a '_TZD' object which evaluates to a package
+>>>> of device names. Each name corresponds to a device in the ACPI namespace
+>>>> that is associated with the thermal zone. The temperature reported by the
+>>>> thermal zone is roughly correspondent to that of each of the devices.
+>>>>
+>>>> User can get all devices a thermal zone measured by the 'measures'
+>>>> directory under the thermal zone device.
+>>> Well, that's kind of clear, but what exactly is the use case?  Why
+>>> does the user need to know that?
+>> IMO, this makes thermal zone information more friendly.
+>> For instance, user can directly know the temperature of CPUs or other
+>> devices is roughly represented by which thermal zone.
+>> This may offer the convenience for further usersapce application.
+>>
+>> BTW, the '_TZD' method is similar to the '_PMD' in acpi power meter.
+>> Since ACPI spec provides them, they should also have a role in their
+>> existence.
+> So there is no specific use case, but it is possible that somebody may
+> want to use this information, IIUC.
 >
-> @@ -56,20 +51,15 @@ static ssize_t platform_profile_show(struct device *=
-dev,
->   	enum platform_profile_option profile =3D PLATFORM_PROFILE_BALANCED;
->   	int err;
+> Well, let's defer making kernel changes until there is a user
+> wanting/needing this information.  Then we'll decide how to expose it.
 >
-> -	err =3D mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		if (!cur_profile)
-> +			return -ENODEV;
+> For one, I'm not convinced that exposing it under the ACPI
+> representation of a thermal zone is going to be really useful.
+All right. Thanks for your review.
 >
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> +		err =3D cur_profile->profile_get(cur_profile, &profile);
-> +		if (err)
-> +			return err;
->   	}
->
-> -	err =3D cur_profile->profile_get(cur_profile, &profile);
-> -	mutex_unlock(&profile_lock);
-> -	if (err)
-> -		return err;
-> -
->   	/* Check that profile is valid index */
->   	if (WARN_ON((profile < 0) || (profile >=3D ARRAY_SIZE(profile_names))=
-))
->   		return -EIO;
-> @@ -88,28 +78,21 @@ static ssize_t platform_profile_store(struct device =
-*dev,
->   	if (i < 0)
->   		return -EINVAL;
->
-> -	err =3D mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		if (!cur_profile)
-> +			return -ENODEV;
->
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> -	}
-> +		/* Check that platform supports this profile choice */
-> +		if (!test_bit(i, cur_profile->choices))
-> +			return -EOPNOTSUPP;
->
-> -	/* Check that platform supports this profile choice */
-> -	if (!test_bit(i, cur_profile->choices)) {
-> -		mutex_unlock(&profile_lock);
-> -		return -EOPNOTSUPP;
-> +		err =3D cur_profile->profile_set(cur_profile, i);
-> +		if (err)
-> +			return err;
->   	}
->
-> -	err =3D cur_profile->profile_set(cur_profile, i);
-> -	if (!err)
-> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
->
-> -	mutex_unlock(&profile_lock);
-> -	if (err)
-> -		return err;
->   	return count;
->   }
->
-> @@ -140,36 +123,28 @@ int platform_profile_cycle(void)
->   	enum platform_profile_option next;
->   	int err;
->
-> -	err =3D mutex_lock_interruptible(&profile_lock);
-> -	if (err)
-> -		return err;
-> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
-> +		if (!cur_profile)
-> +			return -ENODEV;
->
-> -	if (!cur_profile) {
-> -		mutex_unlock(&profile_lock);
-> -		return -ENODEV;
-> -	}
-> +		err =3D cur_profile->profile_get(cur_profile, &profile);
-> +		if (err)
-> +			return err;
->
-> -	err =3D cur_profile->profile_get(cur_profile, &profile);
-> -	if (err) {
-> -		mutex_unlock(&profile_lock);
-> -		return err;
-> -	}
-> +		next =3D find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LA=
-ST,
-> +					  profile + 1);
->
-> -	next =3D find_next_bit_wrap(cur_profile->choices, PLATFORM_PROFILE_LAS=
-T,
-> -				  profile + 1);
-> +		if (WARN_ON(next =3D=3D PLATFORM_PROFILE_LAST))
-> +			return -EINVAL;
->
-> -	if (WARN_ON(next =3D=3D PLATFORM_PROFILE_LAST)) {
-> -		mutex_unlock(&profile_lock);
-> -		return -EINVAL;
-> +		err =3D cur_profile->profile_set(cur_profile, next);
-> +		if (err)
-> +			return err;
->   	}
->
-> -	err =3D cur_profile->profile_set(cur_profile, next);
-> -	mutex_unlock(&profile_lock);
-> -
-> -	if (!err)
-> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
->
-> -	return err;
-> +	return 0;
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_cycle);
->
+> .
 
