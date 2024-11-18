@@ -1,213 +1,182 @@
-Return-Path: <linux-acpi+bounces-9630-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9631-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9A69D0E74
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 11:26:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7699D0F9A
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 12:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEBE1F21F43
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 10:26:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C048BB2D195
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 11:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD8A1974FE;
-	Mon, 18 Nov 2024 10:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4282E196C67;
+	Mon, 18 Nov 2024 11:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPBtFW6R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MS4XRzB0"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31936192D97;
-	Mon, 18 Nov 2024 10:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A56194A5A;
+	Mon, 18 Nov 2024 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731925543; cv=none; b=l4Oa5iRzkRzQjhQyEBbAUaZFJ1vGLjaVB04pz3xzQVER3QFGJn47EboB91pxVF3lvkFx9WejdL20vYNAVqamvBUFrgtwDUygx3K+9hRBKP3KgrWhk27MpPJfaPjVSZ2YldMB7IHBIXJFKHeL3plNqfCRWcjs9aN22TYigkVsGTI=
+	t=1731927824; cv=none; b=pPHDYoH5SXhraoPTX12dKUTDVTpDniOk8HNsWgXKZz/q9tsIsVJNOj6pKi8epfTKsXJIi7m6yxl7VKPisvB2nQ9+sx4sSH7sdk2gKuYl66TGMUaDbZ+aKu5MSWHT32sEm7daIa1lspoFaKrtUsIPM5H/oafPVcDSJUiKSaXiXv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731925543; c=relaxed/simple;
-	bh=QDfRNQIvlwjaYeOF45h2WoWUC3qqv0lyACNzU1NOqV0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Top0ZN4fBg90oWpCnOoF8Xk3RticGou6EoTBj2o/gtPKuneGmul6YbkF+6ED07QPYN/8qGF9aRTZjyvG86N1vyC+WlcsqwdIYcpiEBm1XQovOCuaCeXWJvmLAkCHU6p/iTvezqRngxaAqnw++C2XKG0bURLNvdaRBAyyien4P8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPBtFW6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A69C4CECC;
-	Mon, 18 Nov 2024 10:25:42 +0000 (UTC)
+	s=arc-20240116; t=1731927824; c=relaxed/simple;
+	bh=AOEBOSkZRti3bK8rQa/5CfKZopdyDgU2tBjztmiX0ks=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HXO8K49Zzpd4SeTrcp6WP+9GoghLgBCPgFKNq/qn1bfPGb/J5id2uYXo1kjBuykMe9+RDpdbvpeDWZ7O9eZhcyPnJmyZRvX8k8oK1QnB/uqz7bJqhlcO6s7XhDDvIm5czFbfDGCNlvBt/+tYYVOBTyGuutO1apcn5utO7+KIXgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MS4XRzB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32A3C4CED9;
+	Mon, 18 Nov 2024 11:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731925542;
-	bh=QDfRNQIvlwjaYeOF45h2WoWUC3qqv0lyACNzU1NOqV0=;
-	h=From:Date:Subject:To:Cc:From;
-	b=tPBtFW6RMCDlkA2XB4wsLOKFhltfSM3YW2okBzn8/th6iPKO7Lt9Tw5IcGJ1eRL8P
-	 doBQBHyIQ6X2VSqojTmu7eOlv6r3B0hceEUZmcuSlC3WNDrLG3lL9gwcqIVJW3a2mg
-	 BgM9NubA5/UXRe+7MK6Ob/y6/3fBcnmgfJuON8893wqP8uIx1fY8E4S0a1YfC/qjMw
-	 sUI5vqymkSJJ/OM/EGlE8HYgooyjQnf2yxWYRS04oPnjltFc2gOy/C695q8PkkGgzd
-	 8I8ufSPtWcXZvzkdxhYTNuNaZ1s2FpPbKyu68gpmS3WKog9UiPCTM2zIE3bZIWgaOL
-	 783GYx6DLKoqg==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-296252514c2so2487451fac.3;
-        Mon, 18 Nov 2024 02:25:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU27llnrhDpr2/UUWZ6KP62H5iBp08jq5JWOOSawpeP3MqLbZotdfG5/M75559EhUSiDBdSvsIy62Y=@vger.kernel.org, AJvYcCXSWrRrjCrbx3VCoVvTUbFXcc853djOf++rEzUbxKCDUiCzFzy1qLKMTLYD7sNeKn5vuYkQjFKUOy54MsM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzqq+pA5siQLikgqukp1RsWA0CPImrGVVJf/UcOhzLoYKdD8Fr3
-	AVlwQ6rpOWnHMtxFiG7Qi9EJtDwPWLnuX6jJoWqamPcKd+atZAnTQhOJ73oYuV8t3w9SYOlivvg
-	xXm9KuHv1TOwd7H7uxwebRtLY87s=
-X-Google-Smtp-Source: AGHT+IEgLgtg76At0fKYYK+vm+PcqDQMbKbm/vKpGXtbtfAiFEb4iBbnJlK+TR0rslax9lHvmUe+g71XIrpsHR0VagA=
-X-Received: by 2002:a05:6870:7904:b0:294:8f41:88c8 with SMTP id
- 586e51a60fabf-2962dde4e56mr9865603fac.21.1731925542028; Mon, 18 Nov 2024
- 02:25:42 -0800 (PST)
+	s=k20201202; t=1731927823;
+	bh=AOEBOSkZRti3bK8rQa/5CfKZopdyDgU2tBjztmiX0ks=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MS4XRzB0auiYkwS4Ba17T2nI3g6H62F8KCrCwnJJxMVfDGVlFad/i5aBx3Jdqtjgh
+	 d5Jt537gxAoGGZ35oymAMpazp/hYfrEWhm5E6jVmz9dzLsMk7ZYOVHCVgRWlszeipt
+	 trDteD+2RNEsrTy5Wu4tSjnKKqQU21UFKMF5etunuwlGxZU1dAe1JVrMIwUh/pyId7
+	 XSzJWfaEnXWoh2FEEC/N0WYKZzPfa4pDz+Lda7XZyLksIzj+8f3DF/KbMFd/lmg4wd
+	 y9PnTyp4oa5yLsUME8w4WyxNQpdEK7s7WE2c/Ha9Yo+P5VEv7p8iRvOICYyz4J96Ea
+	 ZcQjMmD1oUVfw==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2958ddf99a7so3687930fac.2;
+        Mon, 18 Nov 2024 03:03:43 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVMuCUgW4x3nnZXJLrhmnL+G7WbRff1UFyf32LgpfAV5dRAxeNYwMEpixQHl7rs4qAiLdS8ZnTuGu8=@vger.kernel.org, AJvYcCVeK4ZAg4skU2DpkzInGLFHAAULJjE9ruDVO9lguQXlSJ+a+yNZWUr4phSBoXR66iIvr/1+hDsAdU8FIGBT@vger.kernel.org, AJvYcCWAKQrnnIzTA/pyugbNyKEV1/Jw14k93KIp/BAkxh/gL3cT8Q6z4O6ut9WPedZ0PEbMuECOqSFgWMHE@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw53hBEMCuhTDFERPByRvXQD1xzm/VDuM8f3eHbaQsNqg/fDTQo
+	34AxuWZtUMzW5La6sgMKBqYVkTFpp8gRljOKyK0z5OplCV5gpioAJeg9swtf8Bg0+52cyEOS+0Q
+	WHYCBfm1Tj6vXwExdiNmh1L8m+6U=
+X-Google-Smtp-Source: AGHT+IG6CtV/1ZJaq2aGg/BqFu90ot62tko56Hij+PNazXnlfm090dz2SI4Uih6KXYZYUAKK9CkdNax5HxUvJze7qH8=
+X-Received: by 2002:a05:6870:828a:b0:287:a973:2c66 with SMTP id
+ 586e51a60fabf-2962dfeea85mr9037037fac.28.1731927822928; Mon, 18 Nov 2024
+ 03:03:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <c7db7e804c453629c116d508558eaf46477a2d73.1731708405.git.len.brown@intel.com>
+In-Reply-To: <c7db7e804c453629c116d508558eaf46477a2d73.1731708405.git.len.brown@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 18 Nov 2024 11:25:27 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hey+FYr5KAbs=Eg_6u9Hp=gqH99G8nCwfr_ibRgkkiQw@mail.gmail.com>
-Message-ID: <CAJZ5v0hey+FYr5KAbs=Eg_6u9Hp=gqH99G8nCwfr_ibRgkkiQw@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v6.13-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date: Mon, 18 Nov 2024 12:03:28 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iC3mX7Yh_ETTw4FY3xUbZeAUgS0Nc9_88fnT1q5EGWyA@mail.gmail.com>
+Message-ID: <CAJZ5v0iC3mX7Yh_ETTw4FY3xUbZeAUgS0Nc9_88fnT1q5EGWyA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: Replace msleep() with usleep_range() in acpi_os_sleep().
+To: Len Brown <lenb@kernel.org>
+Cc: rafael@kernel.org, anna-maria@linutronix.de, tglx@linutronix.de, 
+	peterz@infradead.org, frederic@kernel.org, corbet@lwn.net, 
+	akpm@linux-foundation.org, linux-acpi@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Len Brown <len.brown@intel.com>, Arjan van de Ven <arjan@linux.intel.com>, 
+	Todd Brandt <todd.e.brandt@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+On Sat, Nov 16, 2024 at 12:11=E2=80=AFAM Len Brown <lenb@kernel.org> wrote:
+>
+> From: Len Brown <len.brown@intel.com>
+>
+> Replace msleep() with usleep_range() in acpi_os_sleep().
+>
+> This has a significant user-visible performance benefit
+> on some ACPI flows on some systems.  eg. Kernel resume
+> time of a Dell XPS-13-9300 drops from 1943ms to 1127ms (42%).
 
-Please pull from the tag
+Sure.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.13-rc1
+And the argument seems to be that it is better to always use more
+resources in a given path (ACPI sleep in this particular case) than to
+be somewhat inaccurate which is visible in some cases.
 
-with top-most commit d47a60e487fbb65bbbca3d99e59009f0a4acf34d
+This would mean that hrtimers should always be used everywhere, but they ar=
+en't.
 
- Merge branch 'acpi-misc'
+While I have nothing against addressing the short sleeps issue where
+the msleep() inaccuracy is too large, I don't see why this requires
+using a hrtimer with no slack in all cases.
 
-on top of commit 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+The argument seems to be that the short sleeps case is hard to
+distinguish from the other cases, but I'm not sure about this.
 
- Linux 6.12-rc7
+Also, something like this might work, but for some reason you don't
+want to do it:
 
-to receive ACPI updates for 6.13-rc1.
+if (ms >=3D 12 * MSEC_PER_SEC / HZ) {
+        msleep(ms);
+} else {
+       u64 us =3D ms * USEC_PER_MSEC;
 
-These include a couple of fixes, a new ACPI backlight quirk for Apple
-MacbookPro11,2 and Air7,2 and a bunch of cleanups:
+      usleep_range(us, us / 8);
+}
 
- - Fix _CPC register setting issue for registers located in memory in
-   the ACPI CPPC library code (Lifeng Zheng).
-
- - Use DEFINE_SIMPLE_DEV_PM_OPS in the ACPI battery driver, make it use
-   devm_ for initializing mutexes and allocating driver data, and make
-   it check the register_pm_notifier() return value (Thomas Wei=C3=9Fschuh,
-   Andy Shevchenko).
-
- - Make the ACPI EC driver support compile-time conditional and allow
-   ACPI to be built without CONFIG_HAS_IOPORT (Arnd Bergmann).
-
- - Remove a redundant error check from the pfr_telemetry driver (Colin
-   Ian King).
-
- - Rearrange the processor_perflib code in the ACPI processor driver
-   to avoid compiling x86-specific code on other architectures (Arnd
-   Bergmann).
-
- - Add adev NULL check to acpi_quirk_skip_serdev_enumeration() and
-   make UART skip quirks work on PCI UARTs without an UID (Hans de
-   Goede).
-
- - Force native backlight handling Apple MacbookPro11,2 and Air7,2 in
-   the ACPI video driver (Jonathan Denose).
-
- - Switch several ACPI platform drivers back to using struct
-   platform_driver::remove() (Uwe Kleine-K=C3=B6nig).
-
- - Replace strcpy() with strscpy() in multiple places in the ACPI
-   subsystem (Muhammad Qasim Abdul Majeed, Abdul Rahim).
-
-Thanks!
-
-
----------------
-
-Abdul Rahim (1):
-      ACPI: thermal: Use strscpy() instead of strcpy()
-
-Andy Shevchenko (1):
-      ACPI: battery: Check for error code from devm_mutex_init() call
-
-Arnd Bergmann (3):
-      ACPI: EC: make EC support compile-time conditional
-      ACPI: processor_perflib: extend X86 dependency
-      ACPI: allow building without CONFIG_HAS_IOPORT
-
-Colin Ian King (1):
-      ACPI: pfr_telemetry: remove redundant error check on ret
-
-Hans de Goede (2):
-      ACPI: x86: Make UART skip quirks work on PCI UARTs without an UID
-      ACPI: x86: Add adev NULL check to acpi_quirk_skip_serdev_enumeration(=
-)
-
-Jonathan Denose (1):
-      ACPI: video: force native for Apple MacbookPro11,2 and Air7,2
-
-Lifeng Zheng (1):
-      ACPI: CPPC: Fix _CPC register setting issue
-
-Muhammad Qasim Abdul Majeed (9):
-      ACPI: APD: Use strscpy() instead of strcpy()
-      ACPI: EC: Use strscpy() instead of strcpy()
-      ACPI: event: Use strscpy() instead of strcpy()
-      ACPI: pci_link: Use strscpy() instead of strcpy()
-      ACPI: pci_root: Use strscpy() instead of strcpy()
-      ACPI: power: Use strscpy() instead of strcpy()
-      ACPI: SBS: Use strscpy() instead of strcpy()
-      ACPI: SBSHC: Use strscpy() instead of strcpy()
-      ACPI: scan: Use strscpy() instead of strcpy()
-
-Thomas Wei=C3=9Fschuh (4):
-      ACPI: battery: check result of register_pm_notifier()
-      ACPI: battery: allocate driver data through devm_ APIs
-      ACPI: battery: initialize mutexes through devm_ APIs
-      ACPI: battery: use DEFINE_SIMPLE_DEV_PM_OPS
-
-Uwe Kleine-K=C3=B6nig (1):
-      ACPI: Switch back to struct platform_driver::remove()
-
----------------
-
- drivers/acpi/Kconfig               | 11 ++++++++-
- drivers/acpi/Makefile              |  2 +-
- drivers/acpi/ac.c                  |  2 +-
- drivers/acpi/acpi_apd.c            |  2 +-
- drivers/acpi/acpi_pad.c            |  2 +-
- drivers/acpi/acpi_tad.c            |  2 +-
- drivers/acpi/apei/einj-core.c      |  2 +-
- drivers/acpi/apei/ghes.c           |  2 +-
- drivers/acpi/arm64/agdi.c          |  2 +-
- drivers/acpi/battery.c             | 31 +++++++++++-------------
- drivers/acpi/cppc_acpi.c           |  7 +++---
- drivers/acpi/dptf/dptf_pch_fivr.c  |  2 +-
- drivers/acpi/dptf/dptf_power.c     |  2 +-
- drivers/acpi/ec.c                  |  4 ++--
- drivers/acpi/event.c               |  4 ++--
- drivers/acpi/evged.c               |  2 +-
- drivers/acpi/fan_core.c            |  2 +-
- drivers/acpi/internal.h            | 25 +++++++++++++++++++
- drivers/acpi/osl.c                 | 12 ++++++++++
- drivers/acpi/pci_link.c            |  4 ++--
- drivers/acpi/pci_root.c            |  4 ++--
- drivers/acpi/pfr_telemetry.c       |  5 +---
- drivers/acpi/pfr_update.c          |  2 +-
- drivers/acpi/power.c               |  4 ++--
- drivers/acpi/processor_perflib.c   | 13 ++++------
- drivers/acpi/sbs.c                 |  4 ++--
- drivers/acpi/sbshc.c               | 13 +++-------
- drivers/acpi/scan.c                | 14 +++++------
- drivers/acpi/thermal.c             |  6 ++---
- drivers/acpi/video_detect.c        | 16 +++++++++++++
- drivers/acpi/x86/utils.c           | 49 +++++++++++++++++++++++++++++++---=
-----
- drivers/char/Kconfig               |  1 +
- drivers/hwmon/Kconfig              |  3 ++-
- drivers/platform/x86/Kconfig       | 22 +++++++++--------
- drivers/platform/x86/dell/Kconfig  |  1 +
- drivers/platform/x86/hp/Kconfig    |  1 +
- drivers/platform/x86/intel/Kconfig |  2 +-
- include/linux/acpi.h               |  8 +++++--
- 38 files changed, 189 insertions(+), 101 deletions(-)
+> usleep_range(min, min) is used because there is scant
+> opportunity for timer coalescing during ACPI flows
+> related to system suspend, resume (or initialization).
+>
+> ie. During these flows usleep_range(min, max) is observed to
+> be effectvely be the same as usleep_range(max, max).
+>
+> Similarly, msleep() for long sleeps is not considered because
+> these flows almost never have opportunities to coalesce
+> with other activity on jiffie boundaries, leaving no
+> measurably benefit to rounding up to jiffie boundaries.
+>
+> Background:
+>
+> acpi_os_sleep() supports the ACPI AML Sleep(msec) operator,
+> and it must not return before the requested number of msec.
+>
+> Until Linux-3.13, this contract was sometimes violated by using
+> schedule_timeout_interruptible(j), which could return early.
+>
+> Since Linux-3.13, acpi_os_sleep() uses msleep(),
+> which doesn't return early, but is still subject
+> to long delays due to the low resolution of the jiffie clock.
+>
+> Linux-6.12 removed a stray jiffie from msleep: commit 4381b895f544
+> ("timers: Remove historical extra jiffie for timeout in msleep()")
+> The 4ms savings is material for some durations,
+> but msleep is still generally too course. eg msleep(5)
+> on a 250HZ system still takes 11.9ms.
+>
+> System resume performance of a Dell XPS 13 9300:
+>
+> Linux-6.11:
+> msleep HZ 250   2460 ms
+>
+> Linux-6.12:
+> msleep HZ 250   1943 ms
+> msleep HZ 1000  1233 ms
+> usleep HZ 250   1127 ms
+> usleep HZ 1000  1130 ms
+>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D216263
+> Signed-off-by: Len Brown <len.brown@intel.com>
+> Suggested-by: Arjan van de Ven <arjan@linux.intel.com>
+> Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+> ---
+>  drivers/acpi/osl.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 70af3fbbebe5..daf87e33b8ea 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -607,7 +607,9 @@ acpi_status acpi_os_remove_interrupt_handler(u32 gsi,=
+ acpi_osd_handler handler)
+>
+>  void acpi_os_sleep(u64 ms)
+>  {
+> -       msleep(ms);
+> +       u64 us =3D ms * USEC_PER_MSEC;
+> +
+> +       usleep_range(us, us);
+>  }
+>
+>  void acpi_os_stall(u32 us)
+> --
+> 2.43.0
+>
 
