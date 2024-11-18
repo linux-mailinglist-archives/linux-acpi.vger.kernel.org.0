@@ -1,136 +1,299 @@
-Return-Path: <linux-acpi+bounces-9628-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9629-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B822A9D0DC3
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 11:08:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B8E9D0E6B
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 11:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CF3B2821F1
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 10:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E02021F21BD1
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 10:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837381922F2;
-	Mon, 18 Nov 2024 10:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FC3194C8D;
+	Mon, 18 Nov 2024 10:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJTMPvG2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sejU/WKd"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56965149E0E;
-	Mon, 18 Nov 2024 10:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77B7194AD8;
+	Mon, 18 Nov 2024 10:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731924487; cv=none; b=gvbYVbsWcSzjtJqECTYLZBOnCgT9ulBpZcwPuX8ffbSWMl10kPsdR2zwwzcQBHqMhunOJOxDVV8xHpSFLVitRF27qqepW/8CfDU+mMlRcLSwCneoAinu8KuItUpGwn1nAXCbuFUMPStEMlFODXW+uirhgW++iDbL58aeaKZKTRI=
+	t=1731925341; cv=none; b=nCWLRcngXZaKDC6Yy53yJQc3h+nAI2u4e5v95YaSbglJzc3F4DDnBtpAKp0CgCShU1QQV9fth+zoXyMdpZVR1jnXErtwO4LZ4wVkjZ9ZoESEik6552H3oEQjuT45LKtF7oYNUR0CnPTG+N/h1i+tLHOo20N339UIb0IIG5l05cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731924487; c=relaxed/simple;
-	bh=lxh0gMMp9eGAgGhRMnuFyMkB0OFqF6nvxw+gL9xR83I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V4I3pMMqMV8H1ts/eFSrT/vhyq1vF6hmcsRwAc0qbk2cOTsfVUh4fQkjZUiKfstqt1XIdF8Op/l5rMG1grZr4HbZ3onxtj/b8v21x5tqNT4QALZ3Ai6JLQoGk3/F16yLWuHF97Imacm78wqFtgKGwhQN211abN+EICxa6a2zqrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJTMPvG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D9DC4CECC;
-	Mon, 18 Nov 2024 10:08:06 +0000 (UTC)
+	s=arc-20240116; t=1731925341; c=relaxed/simple;
+	bh=F6LJAvT4xb9vEZMGIAEyCuPJQXJmFDXic1ZVvGyAo7Q=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ltyrpxJnF2aPXJzEJkmfq5ugkn8JOa1lVoT8vHZ4CsthXqjq+QL4sVM7ETOgxJwXZDqDH/9Bl94cyb8qgmzvVnpRVs/T4hL1THq2ZRMPONw5fZKVlBkaUY1eEDA+H04zr9xLuCJv6g2GyjiMMaz67qItCcQEWP0kbbz2I4hb1So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sejU/WKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D466C4CED0;
+	Mon, 18 Nov 2024 10:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731924486;
-	bh=lxh0gMMp9eGAgGhRMnuFyMkB0OFqF6nvxw+gL9xR83I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=vJTMPvG2Jr/Qt1Jl+m7KdLdFjz3CwKt6a+9BfThNPAPS4hYpBPpsKtqhoaZn7cYbt
-	 Y2yR3COBYUhZ/7iyw4Xmd6Iu1VDKNv/BHyLEnV5sz4i1V4zo6VD/JkAaDMd4iPkc66
-	 LlrPHS8q6CLbFWpiXoOoUB2H7oNwdMTpoSzqcRoNrpUpJewMvHpenDhe5LRcwN0DmW
-	 DyR+is8/eUBwXEml6JwSAIbDa6kNvt/ZJgS7a1R8I2SgE79UHpUDmnYjcgjgeRMPyp
-	 1CVgi/A4Za+I7UU+C8V7k9l0VBt9xBqG617Q8f1o6X09Qv7f1IaAeNQIQdlD5CjVaK
-	 C49Du0fbQKgoQ==
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3e60d3adecbso912469b6e.2;
-        Mon, 18 Nov 2024 02:08:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUhPsdB+kuzTNb4k7P2px2AxlnARKNfxJ2n3XfuR14a/Iy8r0xICcoroDp0jX5ruaZPUtojR8y7zXY=@vger.kernel.org, AJvYcCUyHkzlCICsaMqohnvp2MD1jc6BQ/SSVgA4AizhfF1TfUabpyV+ZP68KMEdbVCqGDov1bGlfH1EFsNi@vger.kernel.org, AJvYcCXeAajuEMLq1toXiiXWKbmTxVoxZkulbIrYg0GoCKvSLTrlifUskKz6jla18fnpolj9F7gqlb2KEsm9Q5OO@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrNBmjo9UlnjDd2nwWms0nsIWWuGoz2gzzVYUtTk3zXc3BpFSM
-	ivl/G9oZJ4PrwpIo4QsE0NOYbFcMKvJcVUk/tlR0nrQA3oXpvYBDVzJFAKVSd5v0eq1joknF4Gi
-	7hXYqK++bLPX9eUnMYfiQuP2YPSQ=
-X-Google-Smtp-Source: AGHT+IFxZkoTn6Npfb/jiXNak79sProbz3bDPP5Z1MLqEVyrzD84TNhh1EJIvv5murV5tXAfRdtUHkiY94kGO/q5xLg=
-X-Received: by 2002:a05:6808:1404:b0:3e7:5af4:f8e7 with SMTP id
- 5614622812f47-3e7bc7a908amr9718034b6e.1.1731924486130; Mon, 18 Nov 2024
- 02:08:06 -0800 (PST)
+	s=k20201202; t=1731925340;
+	bh=F6LJAvT4xb9vEZMGIAEyCuPJQXJmFDXic1ZVvGyAo7Q=;
+	h=From:Date:Subject:To:Cc:From;
+	b=sejU/WKd0mxfrHAtuHfxqiqX5wmCYPApAgzQ9+EaHK7VsmZDatYuXfe+zXZdtoFX6
+	 Lp2j+DgTpiqrvbupjVpYBZpUjTyfLrJ/1Qu8rm2rAi3eEoP342wbCfdgcAk9J5k/8K
+	 a4shxJQaSgjGftq+QawQgtV0gmMBU2zJtwb+rPns5Sn3OJr9071GS+CoGmTHhLESFU
+	 2KEnJcF+439v2O3hsYuP4asfy7ZvJAlhWK3oxk6tJtuIjGaVrrzQ8xGFEfCai/+LJ2
+	 IF5I+ObTf8PyOhH1tfA8Vd4N10SxnN9y9e3WXKRr2cPrxWkiLeS3HmlRPMiNgSzM6A
+	 pzXCIGNopNm0w==
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3e5f533e1c2so2121317b6e.3;
+        Mon, 18 Nov 2024 02:22:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVssu6FGHGK/z0htBHWcjVLhvXRZojNPgpzCeXt43eNLSAJ3jULEcJOezjmjiSFdAUTtyzTp3QLhGlgOZ3v@vger.kernel.org, AJvYcCVswRYpr+qV94r4LBjp8m/U6LN0x8wC28ZLfxiOudLgBisoyhYk9GhP6E3cNHoLYzBbj6rwN8MBjy/k@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCOyx1GdaoQEgb83RaTaYintN2acVeNfk+xRngMi3s/o3B96hj
+	QvDevWYdIevEn9ZS3DZ0oZ/GhFRoKWGrdSELXHQSHlH31gslhApUZic0JDPXWEm7ZSraK0VPvom
+	iHvh4vbCNO0N6Z036TgSTE1yrDLU=
+X-Google-Smtp-Source: AGHT+IGB0Q0xAufUUKH2H2oxeIC4U8QUE3WwW3fMFplzOdxQPzRm0oQ4NCT/hLkMR8nuu1Cyc7StjC87/kVZOJDldVs=
+X-Received: by 2002:a05:6808:1250:b0:3e5:d093:d6e with SMTP id
+ 5614622812f47-3e7bc85054bmr12253112b6e.31.1731925339441; Mon, 18 Nov 2024
+ 02:22:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
- <CAJZ5v0jcOUoN6gDDFkufu8xWF-BHXaSKnXqraHsTkq8JanJXuQ@mail.gmail.com>
- <CAJvTdKkucaRVDZm6EVeUxwyrQexyuYd7ECUBSkpP0nC9PwzspA@mail.gmail.com>
- <CAJZ5v0jvYitb7DLyLkqTRv0TT=6yBHDvEvb8tJLzAOVKa3hqnQ@mail.gmail.com>
- <CAJZ5v0gxVqrASiuJq=UX9jyZsG=XvriFn2=7CPmG6-1sKbmPEQ@mail.gmail.com>
- <CAJvTdK=-ETniiwzwLYH14+TeU0kA49gvTnqyRxH7-Hc6tzTBUw@mail.gmail.com>
- <CAJvTdKmpfs_nh4J0R8T=1P9WaAJ-nJ+mKj=rT3tqMpmvpUTisA@mail.gmail.com>
- <87frqoig98.fsf@somnus> <CAJZ5v0gTfhTQ4AMZ+ukuJZEG=RRo-wbPsf7NPbWA0snDeA5ivQ@mail.gmail.com>
- <878qwf9w84.fsf@somnus> <CAJvTdKmbwtrUmCAJxXb7UVJuVAyMLec2AF--AHbiy+YNhOg5-Q@mail.gmail.com>
- <CAJZ5v0gE07+Nin5Weji20M-xOmjyWrixQU5PUnzZt=YWeH+-YA@mail.gmail.com>
- <CAJvTdKm+w_VZ9TQ5bw6=2G4N7CR9xn2qLYAb+p96jC66BXFFug@mail.gmail.com>
- <CAJZ5v0gmtRAQtdi6fdUQDfLv7sKyukb3aXwsdsdtZvSH6QFRnw@mail.gmail.com> <CAJvTdKmHGJZ8kkoNc2CefW_j5oa-SB4eCqghF-tuab39XyqNUA@mail.gmail.com>
-In-Reply-To: <CAJvTdKmHGJZ8kkoNc2CefW_j5oa-SB4eCqghF-tuab39XyqNUA@mail.gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 18 Nov 2024 11:07:51 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0ht7qZ_Da63c=RNvRovD=HYtT9A8S+-ng7qiKm3McdwEQ@mail.gmail.com>
-Message-ID: <CAJZ5v0ht7qZ_Da63c=RNvRovD=HYtT9A8S+-ng7qiKm3McdwEQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Remove msleep() bloat from acpi_os_sleep()
-To: Len Brown <lenb@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Andrew Morton <akpm@linux-foundation.org>
+Date: Mon, 18 Nov 2024 11:22:04 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0i90sb6CC=obDdmji-WeJnkwSp4Agd3UhGhuo+TVm4uXg@mail.gmail.com>
+Message-ID: <CAJZ5v0i90sb6CC=obDdmji-WeJnkwSp4Agd3UhGhuo+TVm4uXg@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v6.13-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 15, 2024 at 11:05=E2=80=AFPM Len Brown <lenb@kernel.org> wrote:
->
-> > Performance lower than the possible maximum doesn't necessarily count a=
-s "bad".
->
-> System resume slower than 1 second will fail multiple product acceptance =
-tests.
->
-> That isn't good, it is bad :-)
->
-> > > Re: if long sleeps then use msleep()
-> > >
-> > > ... because a jiffy based timer effectively forces coalescing, and is
-> > > the lowest overhead.
-> > >
-> > > The problem with this logic is, as you mention, coalescing is a
-> > > function of the distribution of timer expirations over time,it is not
-> > > a function of the duration of those timers.
-> >
-> > I just think that high precision is not necessary for long timeouts.
-> >
-> > I also don't think that ASL programmers expect high precision in those =
-cases.
->
-> Precision isn't the question.
-> The benefit of additional delay is the question.
->
-> ie. if an ASL programmer asks for Sleep(100), they expect it to take
-> no less than 100ms.
->
-> msleep(100) takes 106ms -- effectively always.
+Hi Linus,
 
-For HZ=3D250.
+Please pull from the tag
 
-> usleep-range(100,100) takes 100ms, effectively always.
->
-> Is the additional 6ms delay really worth the saved overhead of using
-> jiffies rather than a timer for an ACPI flow?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.13-rc1
 
-Or the other way around, is the better timer precision worth the
-additional overhead?
+with top-most commit c6e2a4c9eed5249c4158bc621882d44e94af3371
 
-AFAICS, the reason why you are pushing so hard for this is
-suspend/resume delays due to loops of many iterations that sleep for a
-short time in every iteration.
+ Merge branch 'pm-tools'
 
-I'm kind of having a hard time with accepting the argument that the
-kernel needs to be made to use more resources always in the ACPI path
-to address just this one case.
+on top of commit 1a1030d10a6335bb5e6cdb24fc9388d3d9bcc1ac
+
+ cpufreq: intel_pstate: Rearrange locking in hybrid_init_cpu_capacity_scali=
+ng()
+
+to receive power management updates for 6.13-rc1.
+
+The amd-pstate cpufreq driver gets the majority of changes this time.
+They are mostly fixes and cleanups, but one of them causes it to become
+the default cpufreq driver on some AMD server platforms.
+
+Apart from that, the menu cpuidle governor is modified to not use iowait
+any more, the intel_idle gets a custom C-states table for Granite Rapids
+Xeon D, and the intel_pstate driver will use a more aggressive Balance-
+performance default EPP value on Granite Rapids now.
+
+There are also some fixes, cleanups and tooling updates.
+
+Specifics:
+
+ - Update the amd-pstate driver to set the initial scaling frequency
+   policy lower bound to be the lowest non-linear frequency (Dhananjay
+   Ugwekar).
+
+ - Enable amd-pstate by default on servers starting with newer AMD Epyc
+   processors (Swapnil Sapkal).
+
+ - Align more codepaths between shared memory and MSR designs in
+   amd-pstate (Dhananjay Ugwekar).
+
+ - Clean up amd-pstate code to rename functions and remove redundant
+   calls (Dhananjay Ugwekar, Mario Limonciello).
+
+ - Do other assorted fixes and cleanups in amd-pstate (Dhananjay Ugwekar
+   and Mario Limonciello).
+
+ - Change the Balance-performance EPP value for Granite Rapids in the
+   intel_pstate driver to a more performance-biased one (Srinivas
+   Pandruvada).
+
+ - Simplify MSR read on the boot CPU in the ACPI cpufreq driver (Chang
+   S. Bae).
+
+ - Ensure sugov_eas_rebuild_sd() is always called when sugov_init()
+   succeeds to always enforce sched domains rebuild in case EAS needs
+   to be enabled (Christian Loehle).
+
+ - Switch cpufreq back to platform_driver::remove() (Uwe Kleine-K=C3=B6nig)=
+.
+
+ - Use proper frequency unit names in cpufreq (Marcin Juszkiewicz).
+
+ - Add a built-in idle states table for Granite Rapids Xeon D to the
+   intel_idle driver (Artem Bityutskiy).
+
+ - Fix some typos in comments in the cpuidle core and drivers (Shen
+   Lichuan).
+
+ - Remove iowait influence from the menu cpuidle governor (Christian
+   Loehle).
+
+ - Add min/max available performance state limits to the Energy Model
+   management code (Lukasz Luba).
+
+ - Update pm-graph to v5.13 (Todd Brandt).
+
+ - Add documentation for some recently introduced cpupower utility
+   options (Tor Vic).
+
+ - Make cpupower inform users where cpufreq-bench.conf should be located
+   when opening it fails (Peng Fan).
+
+ - Allow overriding cross-compiling env params in cpupower (Peng Fan).
+
+ - Add compile_commands.json to .gitignore in cpupower (John B. Wyatt
+   IV).
+
+ - Improve disable c_state block in cpupower bindings and add a test to
+   confirm that CPU state is disabled to it (John B. Wyatt IV).
+
+ - Add Chinese Simplified translation to cpupower (Kieran Moy).
+
+ - Add checks for xgettext and msgfmt to cpupower (Siddharth Menon).
+
+Thanks!
+
+
+---------------
+
+Artem Bityutskiy (1):
+      intel_idle: add Granite Rapids Xeon D support
+
+Chang S. Bae (1):
+      cpufreq: ACPI: Simplify MSR read on the boot CPU
+
+Christian Loehle (2):
+      cpuidle: menu: Remove iowait influence
+      sched/cpufreq: Ensure sd is rebuilt for EAS check
+
+Dhananjay Ugwekar (11):
+      cpufreq/amd-pstate: Rename MSR and shared memory specific functions
+      cpufreq/amd-pstate: Remove the redundant verify() function
+      cpufreq/amd-pstate: Set the initial min_freq to lowest_nonlinear_freq
+      cpufreq/amd-pstate: Call amd_pstate_register() in amd_pstate_init()
+      cpufreq/amd-pstate: Call amd_pstate_set_driver() in
+amd_pstate_register_driver()
+      cpufreq/amd-pstate: Remove the switch case in amd_pstate_init()
+      cpufreq/amd-pstate: Remove the redundant amd_pstate_set_driver() call
+      cpufreq/amd-pstate: Rename functions that enable CPPC
+      cpufreq/amd-pstate: Do not attempt to clear MSR_AMD_CPPC_ENABLE
+      cpufreq/amd-pstate: Call cppc_set_epp_perf in the reenable function
+      cpufreq/amd-pstate: Align offline flow of shared memory and MSR
+based systems
+
+Gautham R. Shenoy (1):
+      amd-pstate: Set min_perf to nominal_perf for active mode performance =
+gov
+
+John B. Wyatt IV (3):
+      pm: cpupower: gitignore: Add compile_commands.json
+      pm: cpupower: bindings: Improve disable c_state block
+      pm: cpupower: bindings: Add test to confirm cpu state is disabled
+
+Kieran Moy (1):
+      cpupower: Add Chinese Simplified translation
+
+Lukasz Luba (1):
+      PM: EM: Add min/max available performance state limits
+
+Marcin Juszkiewicz (1):
+      cpufreq: use proper units for frequency
+
+Mario Limonciello (7):
+      cpufreq/amd-pstate: Fix non kerneldoc comment
+      cpufreq/amd-pstate: Don't update CPPC request in
+amd_pstate_cpu_boost_update()
+      cpufreq/amd-pstate: Use amd_pstate_update_min_max_limit() for EPP lim=
+its
+      cpufreq/amd-pstate: Drop needless EPP initialization
+      cpufreq/amd-pstate-ut: Add fix for min freq unit test
+      cpufreq/amd-pstate: Push adjust_perf vfunc init into cpu_init
+      cpufreq/amd-pstate: Move registration after static function call upda=
+te
+
+Peng Fan (2):
+      pm: cpupower: bench: print config file path when open
+cpufreq-bench.conf fails
+      pm: cpupower: Makefile: Allow overriding cross-compiling env params
+
+Shen Lichuan (1):
+      cpuidle: Correct some typos in comments
+
+Siddharth Menon (1):
+      cpupower: add checks for xgettext and msgfmt
+
+Srinivas Pandruvada (1):
+      cpufreq: intel_pstate: Update Balance-performance EPP for Granite Rap=
+ids
+
+Swapnil Sapkal (1):
+      amd-pstate: Switch to amd-pstate by default on some Server platforms
+
+Todd Brandt (1):
+      pm-graph v5.13
+
+Tor Vic (1):
+      tools/power/cpupower: Add documentation for some recently
+introduced options
+
+Uwe Kleine-K=C3=B6nig (1):
+      cpufreq: Switch back to struct platform_driver::remove()
+
+---------------
+
+ drivers/cpufreq/acpi-cpufreq.c                     |   9 +-
+ drivers/cpufreq/amd-pstate-ut.c                    |   6 +-
+ drivers/cpufreq/amd-pstate.c                       | 229 ++---
+ drivers/cpufreq/brcmstb-avs-cpufreq.c              |   2 +-
+ drivers/cpufreq/cpufreq-dt.c                       |   2 +-
+ drivers/cpufreq/cpufreq.c                          |   2 +-
+ drivers/cpufreq/davinci-cpufreq.c                  |   2 +-
+ drivers/cpufreq/imx-cpufreq-dt.c                   |   2 +-
+ drivers/cpufreq/imx6q-cpufreq.c                    |   2 +-
+ drivers/cpufreq/intel_pstate.c                     |   2 +
+ drivers/cpufreq/kirkwood-cpufreq.c                 |   2 +-
+ drivers/cpufreq/loongson3_cpufreq.c                |   2 +-
+ drivers/cpufreq/mediatek-cpufreq-hw.c              |   2 +-
+ drivers/cpufreq/omap-cpufreq.c                     |   2 +-
+ drivers/cpufreq/pcc-cpufreq.c                      |   2 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c                  |   2 +-
+ drivers/cpufreq/qcom-cpufreq-nvmem.c               |   2 +-
+ drivers/cpufreq/qoriq-cpufreq.c                    |   2 +-
+ drivers/cpufreq/raspberrypi-cpufreq.c              |   2 +-
+ drivers/cpufreq/scpi-cpufreq.c                     |   2 +-
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c             |   2 +-
+ drivers/cpufreq/tegra186-cpufreq.c                 |   2 +-
+ drivers/cpufreq/tegra194-cpufreq.c                 |   2 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c             |   2 +-
+ drivers/cpuidle/cpuidle-arm.c                      |   2 +-
+ drivers/cpuidle/cpuidle-qcom-spm.c                 |   2 +-
+ drivers/cpuidle/cpuidle.c                          |   2 +-
+ drivers/cpuidle/driver.c                           |   4 +-
+ drivers/cpuidle/governors/menu.c                   |  76 +-
+ drivers/idle/intel_idle.c                          |  48 ++
+ include/linux/energy_model.h                       |  29 +-
+ kernel/power/energy_model.c                        |  52 ++
+ kernel/sched/cpufreq_schedutil.c                   |   3 +-
+ tools/power/cpupower/.gitignore                    |   3 +
+ tools/power/cpupower/Makefile                      |  26 +-
+ tools/power/cpupower/bench/parse.c                 |   5 +-
+ .../bindings/python/test_raw_pylibcpupower.py      |  28 +-
+ tools/power/cpupower/man/cpupower-set.1            |  38 +-
+ tools/power/cpupower/po/zh_CN.po                   | 942 +++++++++++++++++=
+++++
+ tools/power/pm-graph/sleepgraph.8                  |   3 +
+ tools/power/pm-graph/sleepgraph.py                 |  59 +-
+ 41 files changed, 1330 insertions(+), 278 deletions(-)
 
