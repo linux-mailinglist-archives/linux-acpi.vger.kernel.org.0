@@ -1,118 +1,113 @@
-Return-Path: <linux-acpi+bounces-9626-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9627-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D524C9D0841
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 05:00:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66389D0B3F
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 09:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5991B2134E
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 04:00:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 731451F223C0
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 08:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2924A1E;
-	Mon, 18 Nov 2024 04:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17608186E46;
+	Mon, 18 Nov 2024 08:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kLZ19gA4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE5942AB3
-	for <linux-acpi@vger.kernel.org>; Mon, 18 Nov 2024 04:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B6D2907;
+	Mon, 18 Nov 2024 08:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731902422; cv=none; b=OlVXiR0GJ61QKUufYTjaz+YHtWCre0MOI1Ny5KvAVvAyls0mw7WNmoRyJqyxsQwikUDLQT47mfzzQ/AoH98HRqAXwXskJeUx9i7VP6lpLnaQDVONgB0/iIKC27aWEBcHPYycV9dym+zbYRTEqYEt8BJUoFHfNx5N4fRzfDNjhjs=
+	t=1731920061; cv=none; b=IdCsJhTFMmuRO/PgwIhBS9EgByaMymNCXVWIwqK/sXaRbzFgB94zwWzxEEJJj6lNVAbF9v/x7qDYof6RfyfsWGecOHJh2Fe9Qz4azcZxYBmxb45+AYhxyVULf9qHMwBPvDey+SrqywxcmxY4z8Rs0QTUt6iJAzaTnmJ2p2HTMXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731902422; c=relaxed/simple;
-	bh=qii1FsL0yIK97RwQ+eDKl4KndUN8v2wXy5JIqLNA/28=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=K3mnW9Q6kDwJbABluGeRCdqTaN++Nhu6Sk5WXkvsUaTZ06ppQ/2ToS4yWfbzGTFhZDHYmH8LJaxlZD1NIZxjlbktF8wpfuGB2oKh+ULqJpTcvlcEpYHPUBzu7Xk6Hr3GuuiCH7j5QaKophsckm1Zs1XUhr3oScF9eTNw9Sj4rUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XsDPS6rbQz1k06Y;
-	Mon, 18 Nov 2024 11:58:20 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id D1A771A016C;
-	Mon, 18 Nov 2024 12:00:16 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 18 Nov 2024 12:00:16 +0800
-Subject: Re: [PATCH] ACPI/IORT: Add PMCG platform information for HiSilicon
- HIP09A
-To: Qinxin Xia <xiaqinxin@huawei.com>, <lpieralisi@kernel.org>,
-	<sudeep.holla@arm.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<fanghao11@huawei.com>, <prime.zeng@hisilicon.com>, <yangyicong@huawei.com>,
-	<linuxarm@huawei.com>
-References: <20241107094036.2398983-1-xiaqinxin@huawei.com>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <7b52e89f-2afa-a5f3-3634-4916693076ad@huawei.com>
-Date: Mon, 18 Nov 2024 12:00:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	s=arc-20240116; t=1731920061; c=relaxed/simple;
+	bh=/nkoC7NwftY4QWQNAuXltSmyTEaoZqHqU6pXf07AWwY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AGfE2FvrivwcvNyUiGxoe0eteFH80qJx+yiXZz65RglW1/EwBwX3t7AzUpc7oxP6Jguwd3prgP2fLkXAsm0EdO3wmDZTBhstGDlZArKPDfeJOkl4TVa6+/Z1oq/2fYPT5lN2VHUPpH+h7CLkgrU30nk7W2qTWmEck2SkBRiJeGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kLZ19gA4; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731920060; x=1763456060;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/nkoC7NwftY4QWQNAuXltSmyTEaoZqHqU6pXf07AWwY=;
+  b=kLZ19gA40CyZLwB/w/dIEnGX85G8Mai236YV1EOc8/v0RWVxEKqqR5Ta
+   Prd6U+ECk7HrKmecJiaUJClQffD2cTQBFxXuMrExMuF+fc1feclxoUzY9
+   x8tzfMJqb3ItoGGkgWtPw+jHiMXCrS8dra8TBT3FP92P5nnn/Nw/tsEQb
+   yGzkJ2bBbyxcLVMYEhKYHqNGNQo5CPaZOXaILlmDLR4KcnbFSPYkpm6/W
+   hfY4kaYgJ3yFsTveV/+zJVYGL2+gu7KzBcE/ebtUdsbXfkLHEutskayP2
+   9SFrChGPbt9Mcmwa5NtJtxtCYaakAAv5rLCKQ3wiVi07BeVP7oS8m4u8w
+   Q==;
+X-CSE-ConnectionGUID: Or/INIu9Rk+3NF8qNdsRCA==
+X-CSE-MsgGUID: /WwurzVoSQSBuY4l7GfXmw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="43258650"
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
+   d="scan'208";a="43258650"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 00:54:19 -0800
+X-CSE-ConnectionGUID: 1dtxitoBQhiqmvgoC6y2ZQ==
+X-CSE-MsgGUID: mTuBJLA4TlyRF75rZn8Zdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
+   d="scan'208";a="89077810"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 00:54:17 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 0FE5411F8D9;
+	Mon, 18 Nov 2024 10:54:14 +0200 (EET)
+Date: Mon, 18 Nov 2024 08:54:14 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: linux@treblig.org
+Cc: andriy.shevchenko@linux.intel.com, djrscally@gmail.com,
+	heikki.krogerus@linux.intel.com, rafael@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] device: property: Remove deadcode
+Message-ID: <ZzsAtql66f4hd4d1@kekkonen.localdomain>
+References: <20241116003253.335337-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241107094036.2398983-1-xiaqinxin@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241116003253.335337-1-linux@treblig.org>
 
-On 2024/11/7 17:40, Qinxin Xia wrote:
-> HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
-> and thus suffers the same erratum. List them in the PMCG platform
-> information list without introducing a new SMMU PMCG Model.
+Hi David,
+
+Thanks for the patch.
+
+On Sat, Nov 16, 2024 at 12:32:53AM +0000, linux@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
 > 
-> Update the silicon-errata.rst as well.
+> fwnode_graph_get_endpoint_count() was added in 2021 by
+> commit c87b8fc56966 ("device property: Implement
+> fwnode_graph_get_endpoint_count()")
 > 
-> Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
-> ---
->   Documentation/arch/arm64/silicon-errata.rst | 4 ++--
->   drivers/acpi/arm64/iort.c                   | 2 ++
->   2 files changed, 4 insertions(+), 2 deletions(-)
+> but has never been used.
 > 
-> diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-> index 65bfab1b1861..b21c0b1ed567 100644
-> --- a/Documentation/arch/arm64/silicon-errata.rst
-> +++ b/Documentation/arch/arm64/silicon-errata.rst
-> @@ -255,8 +255,8 @@ stable kernels.
->   +----------------+-----------------+-----------------+-----------------------------+
->   | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
->   +----------------+-----------------+-----------------+-----------------------------+
-> -| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
-> -|                | ,11} SMMU PMCG  |                 |                             |
-> +| Hisilicon      | Hip{08,09x,10x, | #162001900      | N/A                         |
+> fwnode_graph_get_remote_port() has been unused since 2017's
+> commit 6a71d8d77795 ("device property: Add fwnode_graph_get_port_parent")
+> 
+> Remove them.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Since x is also a letter, I think it's better to add 09A after 09, with
-no confusion.
+Both of the functions also exist to span the same scope as the OF API,
+hence they should exist as long as the OF framework continues to provide
+these API functions. The equivalent OF functions are used by drivers
+currently.
 
-> +|                | 11} SMMU PMCG   |                 |                             |
->   +----------------+-----------------+-----------------+-----------------------------+
->   +----------------+-----------------+-----------------+-----------------------------+
->   | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 4c745a26226b..bf3be532e089 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -1703,6 +1703,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
->   	/* HiSilicon Hip09 Platform */
->   	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
->   	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-> +	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-> +	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
->   	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
->   	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
->   	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+-- 
+Kind regards,
 
-Please update the patch, and resend with Catalin and Will CCed.
-
-Thanks
-Hanjun
+Sakari Ailus
 
