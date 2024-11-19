@@ -1,327 +1,207 @@
-Return-Path: <linux-acpi+bounces-9650-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9651-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41349D1B23
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 23:31:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C809D1C86
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2024 01:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E077B21CEC
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Nov 2024 22:31:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68C34B22D28
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Nov 2024 00:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C391192598;
-	Mon, 18 Nov 2024 22:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF1F4437C;
+	Tue, 19 Nov 2024 00:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nS+dPnEO"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="M1I4DaxS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2070.outbound.protection.outlook.com [40.107.94.70])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E27814E2C0;
-	Mon, 18 Nov 2024 22:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731969093; cv=fail; b=OocSHrDs98M9LrhhRegMM0SWX76iqlaiSyBp1nKPwkAcmSNDQ7vJ2madtnj0+s9ePWacgilVrwNGWAIWoJ3SSDxzP4yr2IosLCbAWfx5PIHaoxHaEGWfPye2KfXJaTuEnZyJz1hHNyBVbQEiN0vJdHpG13pqvOgZ93eLrmK7gNQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731969093; c=relaxed/simple;
-	bh=IPDM6Xi/rfktkMP9P0viq7kN7n37KMdSEriNBoYvbNo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hKcBUQz8lkx+8Hz0Dgeo7G1qaq+630oPDElRkA5+/n7I+1titoSg8GrPA/XRbBOySOBZNm/ZEj6DktlTcXmsOZVGbYLbvf06kvJci0qr6nACFvcdD/KEUSi0Dr8ophZTVTD/qNSztCIxkYd+XhKUWuFCnmYRHAhprFnWX+rhlcc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nS+dPnEO; arc=fail smtp.client-ip=40.107.94.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xe0FcrPwmq/9yzKXdIYI/R0+EALkdnohDprx2CX9fbidv7wUDXrS1Fw1zZlYX+TQGT3ePjXAaCLTGRFxVPuzbs1RZCz/au0IAiyppdC21bAXC/8ry4sRzfdxCiBizmUfoMWa+Twpuuldocr23pm6u+xjtrAcvZEGPGDsYJ+fdpj9rPsLh6iAzM1VvQYXafuOGRDrXnQl9pgxLzgbl5gAMblQJa215U8Ibf47aM9r3djhGw47doEQyKD3HdsYi1gLe7fgZlK00IdhCRSKaknQ24Rx/Vrm1Tnz9MfHNX1obWFJtOr/BrODfcUJ6E8CjsrbVWh1ePOeXiXo20qZVzgmbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/63asJoWm8pwN8r28NzIlxrqGoL+04csiyKWrCKnlkY=;
- b=HJCoHzAdq2JNq3Wfo9fbu67WCRpuw9HcuJbDf2TVMq0fytyqOqZE+2vxamkKOmF/kwKrgPUhUegmfJwr0MAYDYD70QuDKSCVPr1WNaFqUwjKt7+j+kuibHbdYpMQrC0OM+KVUaFBmyG5Zjfk5goQlRVkp9uPHY2LclV9YvOh7zy7YVrUc82y/19C1YsDWYCrDHhIbdLWK/yXGwvqNTaNqJVdUHQzCI1e51YGvjKkYMy+nlj+7i+wd7Ej9BF9eWvb4DRY56zSnUd3sQrh6imSiWIs72EVeFpaAmxc2GnszZmtDDyAMtU4CidcdkQJCGRmjsCFKGaUN9uLlVLsthjdEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/63asJoWm8pwN8r28NzIlxrqGoL+04csiyKWrCKnlkY=;
- b=nS+dPnEOZ6co9lAwtT2hZF1v4sHx83GnXSzK1D73WZ7wCHDVhYVA0cU1FtZDCYXYoYmHCD2/Esb5VRK/M9T6FnAdeg5fjPKk7U3uTRkAdoNBR8zFvPpGF5qJdaQstaGOWc0YvvUaML+5q74XdHoHqd35inafLXp8cn5q3LEI9YM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5995.namprd12.prod.outlook.com (2603:10b6:208:39b::20)
- by DM4PR12MB8475.namprd12.prod.outlook.com (2603:10b6:8:190::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Mon, 18 Nov
- 2024 22:31:29 +0000
-Received: from BL1PR12MB5995.namprd12.prod.outlook.com
- ([fe80::7298:510:d37d:fa92]) by BL1PR12MB5995.namprd12.prod.outlook.com
- ([fe80::7298:510:d37d:fa92%5]) with mapi id 15.20.8158.021; Mon, 18 Nov 2024
- 22:31:29 +0000
-Date: Mon, 18 Nov 2024 16:31:13 -0600
-From: John Allen <john.allen@amd.com>
-To: Zaid Alali <zaidal@os.amperecomputing.com>
-Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-	tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	Benjamin.Cheatham@amd.com, Avadhut.Naik@amd.com,
-	viro@zeniv.linux.org.uk, arnd@arndb.de, ira.weiny@intel.com,
-	dave.jiang@intel.com, sthanneeru.opensrc@micron.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: Re: [PATCH 4/8] ACPI: APEI: EINJ: Enable the discovery of EINJv2
- capabilities
-Message-ID: <ZzvAMWuOvw4j4C5n@AUSJOHALLEN.amd.com>
-References: <20241022213429.1561784-1-zaidal@os.amperecomputing.com>
- <20241022213429.1561784-5-zaidal@os.amperecomputing.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022213429.1561784-5-zaidal@os.amperecomputing.com>
-X-ClientProxiedBy: SJ0PR13CA0149.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::34) To BL1PR12MB5995.namprd12.prod.outlook.com
- (2603:10b6:208:39b::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468FE17C8D;
+	Tue, 19 Nov 2024 00:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731976169; cv=none; b=In1Yhnrl7rC1jlZzWsbPrTg4ldtyt+fD+ZvxJeialm7bu5YpOg0kJLE6jtxZdUexi7c+gPkq6iEA2AhS68DXsN9Zh9vWyrx1LxX8JZ9VtJXoBYhZYxo6KeVzzGvxPCHGCF5wcy8PAdM77GjtUUoorC2Y9C2aipKlCzbCW/odhx8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731976169; c=relaxed/simple;
+	bh=Z8DqmcWjt1zrD0CYXeSpSjfpqvmdRKZWzMK9PjvpSrM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=CO4F0Rj4H+IUzaunb7uzUB+hXkEqh2DsW4wFFYvKMxyCQyppGD09QFe2IEE1NFTgeapfVRHyv80zUWKbd2cTNjAdyFMjM14PBzw37G6x/C6TcplfQILz6QeC7o3CV9sQSDPTwLKlrL/lh4eYOFyERRzD2B3jfXkyvM4KU/Xiz9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=M1I4DaxS; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1731976096; x=1732580896; i=w_armin@gmx.de;
+	bh=5hVcqyFvTu5vatuyXRiaENgjDo70JIP3TxdDakNOEoY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
+	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=M1I4DaxSnoCLq+cE/xr8pqVX7z8CJWeB8M1Lr5yZSm7/R1FS0vCWaGThSO8zFcoz
+	 GaMsive8zHBMQQtbFvs/BUs0eXEQ6UvWC/sLZoNOXntABtY8cCc5AZI3P1y6sNILs
+	 x5MeR6RQV0BGLU5xQx4/KnAZZBPQW73CLpf1y5PiszCBZj0MIrH2zboFcHQ0kSTLL
+	 93bqLzYfeD15BIoxos1shW+uxZpdP5z7Y150+LhPVb18gQD5BEhmrTzcr3Rr3n+t1
+	 ZcsftcDhrBSA5TRhImTR/zjovRQVZ/AC3EtHjiDcBEll6FJQkySjdYuvvaBuoDjuY
+	 X4kq6RS1Sreq6y0SYw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.14] ([141.30.226.119]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MxlzI-1txi8f3jgM-00zraz; Tue, 19
+ Nov 2024 01:28:16 +0100
+Message-ID: <6b7d2f80-0dde-4f07-b889-fa2cb99f5c88@gmx.de>
+Date: Tue, 19 Nov 2024 01:28:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5995:EE_|DM4PR12MB8475:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9264f65-0bcd-4008-c159-08dd0820beff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cPk1LmQhP7YjlV099YLD7kA2RY1ac/Q5s4CjExoeirPkjstR9iCRniTqqKQG?=
- =?us-ascii?Q?vip+BG4cF5avHu+RzuFo8TgiIq+diMOOnzQDFYLTrOJQDBXHX7wIvN2l7VO8?=
- =?us-ascii?Q?42Bk0LhehxL1Bc3v5OAog/QGBdcVhyzn9ULF02DxSynM5Y0U1MokwZr0FC9a?=
- =?us-ascii?Q?SuwY3xwVXQFnO1ZnHtjkVy3RWdeoJcXGwaYdAqnz94gmuXTkQvNysw5PxbMN?=
- =?us-ascii?Q?5HMvckMKH57+PNzXUHulnBjwjrOBVr/VM7UzGzTYmWKQ/CqTbwb3sg4y4RMW?=
- =?us-ascii?Q?lqRAvdndn/Ju0moHaqDzmLEPn0v9B3BS0eSOhIDvWtR0/lhRFoypwRc30BJT?=
- =?us-ascii?Q?ywauKlReMXc4nd7Fx6f2cgLgRAl1mmRKfl/K/O94Gskk8ogsASAX3e85BDXS?=
- =?us-ascii?Q?nKygMrhTdPGpmSVK0pgPyrh4gtEJK1DWCnRJM5FeXyfgi7tTL8tbVyRxvSnz?=
- =?us-ascii?Q?QU/nZaRFIut70yeDHIijSUClua91mI5peGxd1x9RSO9DmvpjsW4GPXUTWsVz?=
- =?us-ascii?Q?hMQGdkwsGkRqyxeNPtQY5UaH3LvW+sHcoJHmimsVhMPcqyVR+PYWdbcxFt6e?=
- =?us-ascii?Q?TK47YqCI+rNPGzO7mAb/1aB9IGuU0TQalrNz41jVdd09bWMVLwP9xjhmHntZ?=
- =?us-ascii?Q?VNaQRIloKVA8FEiuVD6JQLOR6nbqspjstusHfh1Jcol9Vsi3VOr3XdXxSTZA?=
- =?us-ascii?Q?vuK4LiU00sxBvNoS9jCIZ68kqb0yqxVCbaYoBQjjV5N2UWy4DVaSapecC8ig?=
- =?us-ascii?Q?zjMPQ+tDN2MsOWJG6dh/bXwlAwsh+tXEenq5M/B7Z/wLyKDs8xkBCRNFOtA+?=
- =?us-ascii?Q?VwFNGZfATtnl0HcwZF7LWZIQbKERr0eqKZCl7AlYRqpnAyRNzMN630oPGxYY?=
- =?us-ascii?Q?KyDDOfs/XXJkFJrY08B9RBmykjXfyxBtKt6VCOUmjpuW/jQG9NFtBqaL2Ji6?=
- =?us-ascii?Q?1AhmlyexQhvtZJJ4kzwwROKeS+iWMg18sWTTljjEjFC/fAj2SsDFpu93yijy?=
- =?us-ascii?Q?IllW8uw0fDJOlxTrVNQhBIeVymxXPLzJ1xkzAqcQLj/jXk6lRLpwaD70LzwS?=
- =?us-ascii?Q?Omfrygi0ntnQ76c6GsI3jkxeO8PSIkXxz/S3BboQco+mmHseHFrB0onI4f68?=
- =?us-ascii?Q?lmUpkiKuJbjJOlUil7FUjtpoQvdgT6r2OcDoT9FJNfdy0up5VpCrRixbZoX1?=
- =?us-ascii?Q?riENwht6ni7MYCrDT+6rNK89StuJsVOHh92n+QKI7ZX8iMVp5bdhk9TAhg1L?=
- =?us-ascii?Q?5UwJrx+B3zP2VwAUWvID12HLmTz79ZkmTyhWSKCINT1qXCt17NdsIWGQY6PN?=
- =?us-ascii?Q?f9yHjIaxVI3Obij5P2EYg0i+?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DdD5qWFTMgChJcTWtGYB4tdMkQCvZWYaeus/j78jsulE9rXF7Z/16Bdb0VHj?=
- =?us-ascii?Q?2DrsTV+8vrnHNP/fapYIgEiJfc1fyB9svmUCbSdG+JSQXpsaCYC/CYFQ4ocS?=
- =?us-ascii?Q?enzJTAOuaN2ieEdszVUkymmTs+iGGMXS/3w/WNMZgIiMbEHYf8p419Iw+Pgm?=
- =?us-ascii?Q?smlBsXbkzz+hY6mWt4xOHJ9hjrlm3TSraAM6GSSNbVXvTOu0Yh7SCBGCPUWu?=
- =?us-ascii?Q?27rYSPQEOzh3aM/UmfKnastRDdHr18tEvzpFHyQkHis2jNXg6Cwfnw/erBsZ?=
- =?us-ascii?Q?owe6n+i5Q5mW9AFKyXQ5LMzM1Qfxhy8faLHgfWni/JyJh2fmbQiJuJNJ9bAK?=
- =?us-ascii?Q?n1KJ9RyzYXzT+b3rKglJT+C+6/w8MHQBDCz2Ephl6tm+Dps8auTEMu+T1aYJ?=
- =?us-ascii?Q?Q2RM43TcA6kdCNo4AkuRUqSQ1gG4MT8I8dPXjoA3HMttS55go2l8DeDiLqZ7?=
- =?us-ascii?Q?HETUU0/4cdkj1gktcO7M5x8UUmZ/D10y7hliZ7d1uARmn7jqrnlBh53hB12q?=
- =?us-ascii?Q?DmNfrWNF+7AEC37ksutaRHDMbZGuT1MQzHk7B8qzitgzfBhYrxt8TKhlMN8d?=
- =?us-ascii?Q?fSc+u6Jp9GLgehyzjIUFzl9oa8pUAiUdirQavsxzLXMh6Dg1wd9fnhLn4Jy5?=
- =?us-ascii?Q?8djGKcfnuNwJZlGXUKS+uA/jhgtaziYFeGZ6xamMYQ3g4s0Ghq1hIBGJ9cCd?=
- =?us-ascii?Q?wQnDl/nGds83TT8QZgf5NUgcnjP2bO+UrifOPHOkwBq3xRMOwlWoUowr42rb?=
- =?us-ascii?Q?iCvRZqJjcnZZ127l8OxAfjFNyPpfcQ2OTwqolBR3kJhJgcBJpRFY6yXuTVww?=
- =?us-ascii?Q?2LfbPRfufwMX+OEGAO7VTTIIeSUj1sOWMuwkr798brQmmKYZSLGb1RxZzmr8?=
- =?us-ascii?Q?zRSeYRSg3GfPH1nzb1n0WNdot3Xg8ZGPjLN2EXTOPboy5H9FoFA50DQmXo0i?=
- =?us-ascii?Q?PGa88LeWi9tTcKG1AwLS/ZYvL26lEtHdh+HSDKIi6qQ8X/tYgCJcQ2In6t9K?=
- =?us-ascii?Q?7SSB6Map9n5GP9SiLD24F9IHr7yDxwNvmAOT9KjVr6E8HboGfFkD4zBlxRzc?=
- =?us-ascii?Q?q4BzFTRImIZdHTW7jmNDRxheYEswZkckdLLIq0BoGpYHmdDqhKHB9ss9iMGf?=
- =?us-ascii?Q?UI+ZujtlUp2Ju8Kb85iyJt2IiinvdZEzwXSO4QhPzEKGKY9IjBW5xhCcWC7g?=
- =?us-ascii?Q?rBqaXhjGyTZ+OSIi7fGVuPpJGPgYxiBnNvj25mJWbM5VnU6z0Me4tgcOu2q/?=
- =?us-ascii?Q?ZVkbp1DBiPiJsog5ZSes9IpCAh0dkq9dC34PG3EtkYr7yK0z5OhMqNtI2aTq?=
- =?us-ascii?Q?k8VjVTqNMkLatXkmdFRLIeC6XcjVaI6+XHJMnaPqAgpOF9HljorZ1cS0H8uJ?=
- =?us-ascii?Q?iwPWlvWeYO0YD2jWmbSaCd77QNcflxTn0WAuFuCxBTI2o7KWqWgujed6E0bi?=
- =?us-ascii?Q?U8SU957YlpQkU4t7Ld9RxFDnxJijP11C6hNKmYvqaiUEAOXl9gNvjsqI+OmE?=
- =?us-ascii?Q?WI00giezVQjqKJi3Egy/5bYpWdmcjPMP/ByaCtDLqLqafeuaG/qukkUbqi+H?=
- =?us-ascii?Q?osMxE6aFDqqFVMFwv1wUGeHthjialkLalxVaXDIE?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9264f65-0bcd-4008-c159-08dd0820beff
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5995.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 22:31:29.5129
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bdfp7yDVgzcepzPjnCRLcsllGjFv4CCo0OFmK35AbKeMLF+OanjF5xpjIczEtogH6YUiS5512UPAAeIqhop3CQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8475
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/22] ACPI: platform_profile: Add name attribute to
+ class interface
+From: Armin Wolf <W_Armin@gmx.de>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241109044151.29804-1-mario.limonciello@amd.com>
+ <20241109044151.29804-12-mario.limonciello@amd.com>
+ <29899120-efec-4264-b6a8-0bca4fc1f332@gmx.de>
+Content-Language: en-US
+In-Reply-To: <29899120-efec-4264-b6a8-0bca4fc1f332@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:bSMGx/uh1q7vg+W2/okqjuLaAoxzMkFQA4fCWCTTEXdCq3uQYq5
+ 4hcp/iGW1shsODj7zQga6ANI8rRrYgDYH7N/GKa14LI6/PzIcxe9X5GFgHc/Ze5UzJMKvgx
+ pYYRDNP/NF+gljOQ5Hc0/M5cly70I6mod49AJjRZ6MEQlo5GiB7mV8pJvigN6w1+S+0EyvX
+ 4RtbCRDd+SsikqtSTu55Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:anLUiQlL/Pg=;9BVvn4ZIFw1ZS8IzZF3GfZQok8R
+ N6gwacx8GN6z3hVhPIwhUAy2M9cLQRqKZalSIz/NVD2aVlaJpl+uqJdf9okZXVdH427FptXxm
+ ZzpXlEdBtWtFjro5PF8ymRsP0rZl5STKSojyQMG1eMkCS0KfSBII5SOmJzp+Gqfp+530oYNil
+ JYkKQvzW9zN66SAdH3vcBPXisnUI9zCRcQTEpc6llgXAhBfWlXokoRTIIL4tbglIRXegkfCbn
+ kI/O/CeXMLo09ybu26mVBUbEewqhtv/rJp9gsTiBb7Vw6GA4u+yawRWQ4eNgu0rXdC+lTh1qR
+ Or8hd+ynwapM7N4gjj4tJjpjD8FDVV4LQsq7+sCbFjhK32DOYXo/pWZ4QhtopeEEc5zrVhTDW
+ 5IxAc70BHE8boGDHpSc+UiY3D4gkRS+lF0UuPp5j6E1CDI2dQOZv6g4a2Ia6vKAbn8kppM/K1
+ rHdZ+5tNCqEbn2fRgXn8fC3sEeyXiYEwKXoRXW4SglxbvfCUngP7ag4E43h5ULsG0kI79jEnp
+ WW3//jyyDG1x4uqQEu2e3jjcaq5XS/v7ZmTw+XKuM2WZpIbVt8nGsveWNrXLkfL9p5vhcARyp
+ rGrCc8O4Jnlqs9shJCTdocC07gye6h9E95l8aMs3yjWBW6XfdnlXbz9Yw5+6jGY9j8Co71oCa
+ AASpTc5IWHg6/Xu7JRohn+A/VyxgB/gGHss/4yUqPLZJZ4NzGX2BvF8ZwhOrOvFKde2ejpm90
+ eo4HtmF9tF0ilX37xJOXWdbUOAPHhUbvu6eVd1uOwJOJh3Qj/dpAebVwXghJXdzNUGfH6NnW/
+ Itel1fvVSRzB2nGFfdD+rSbIKKYL/tcj0X11p6Qi/UaYssgxJIpaMLBc5Iaa5BSZ8kn8L+TXw
+ 9xmzEjdxMhTFVhxxHqOzjRAAHeKBCwNlrtP65H1Ww8HxpzBOoccxQpdM9
 
-On Tue, Oct 22, 2024 at 02:34:25PM -0700, Zaid Alali wrote:
-> Enable the driver to show all supported error injections for EINJ
-> and EINJv2 at the same time. EINJv2 capabilities can be discovered
-> by checking the return value of get_error_type, where bit 30 set
-> indicates EINJv2 support.
-> 
-> Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
-> ---
->  drivers/acpi/apei/apei-internal.h |  2 +-
->  drivers/acpi/apei/einj-core.c     | 33 +++++++++++++++++++++++--------
->  drivers/acpi/apei/einj-cxl.c      |  2 +-
->  3 files changed, 27 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/apei-internal.h b/drivers/acpi/apei/apei-internal.h
-> index cd2766c69d78..9a3dbaeed39a 100644
-> --- a/drivers/acpi/apei/apei-internal.h
-> +++ b/drivers/acpi/apei/apei-internal.h
-> @@ -131,7 +131,7 @@ static inline u32 cper_estatus_len(struct acpi_hest_generic_status *estatus)
->  
->  int apei_osc_setup(void);
->  
-> -int einj_get_available_error_type(u32 *type);
-> +int einj_get_available_error_type(u32 *type, int version);
->  int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
->  		      u64 param4);
->  int einj_cxl_rch_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
-> diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-> index 78c5a20115eb..3621f071a735 100644
-> --- a/drivers/acpi/apei/einj-core.c
-> +++ b/drivers/acpi/apei/einj-core.c
-> @@ -33,6 +33,7 @@
->  #define SLEEP_UNIT_MAX		5000			/* 5ms */
->  /* Firmware should respond within 1 seconds */
->  #define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
-> +#define ACPI65_EINJV2_SUPP	BIT(30)
->  #define ACPI5_VENDOR_BIT	BIT(31)
->  #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
->  				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
-> @@ -84,6 +85,7 @@ static struct debugfs_blob_wrapper vendor_errors;
->  static char vendor_dev[64];
->  
->  static u32 available_error_type;
-> +static u32 available_error_type_v2;
->  
->  /*
->   * Some BIOSes allow parameters to the SET_ERROR_TYPE entries in the
-> @@ -159,13 +161,13 @@ static void einj_exec_ctx_init(struct apei_exec_context *ctx)
->  			   EINJ_TAB_ENTRY(einj_tab), einj_tab->entries);
->  }
->  
-> -static int __einj_get_available_error_type(u32 *type)
-> +static int __einj_get_available_error_type(u32 *type, int version)
->  {
->  	struct apei_exec_context ctx;
->  	int rc;
->  
->  	einj_exec_ctx_init(&ctx);
-> -	rc = apei_exec_run(&ctx, ACPI_EINJ_GET_ERROR_TYPE);
-> +	rc = apei_exec_run(&ctx, version);
->  	if (rc)
->  		return rc;
->  	*type = apei_exec_ctx_get_output(&ctx);
-> @@ -174,12 +176,12 @@ static int __einj_get_available_error_type(u32 *type)
->  }
->  
->  /* Get error injection capabilities of the platform */
-> -int einj_get_available_error_type(u32 *type)
-> +int einj_get_available_error_type(u32 *type, int version)
->  {
->  	int rc;
->  
->  	mutex_lock(&einj_mutex);
-> -	rc = __einj_get_available_error_type(type);
-> +	rc = __einj_get_available_error_type(type, version);
->  	mutex_unlock(&einj_mutex);
->  
->  	return rc;
-> @@ -647,6 +649,11 @@ static struct { u32 mask; const char *str; } const einj_error_type_string[] = {
->  	{ BIT(11), "Platform Uncorrectable fatal"},
->  	{ BIT(31), "Vendor Defined Error Types" },
->  };
-> +static struct { u32 mask; const char *str; } const einjv2_error_type_string[] = {
-> +	{ BIT(0), "EINJV2 Processor Error" },
-> +	{ BIT(1), "EINJV2 Memory Error" },
-> +	{ BIT(2), "EINJV2 PCI Express Error" },
-> +};
->  
->  static int available_error_type_show(struct seq_file *m, void *v)
->  {
-> @@ -654,8 +661,13 @@ static int available_error_type_show(struct seq_file *m, void *v)
->  	for (int pos = 0; pos < ARRAY_SIZE(einj_error_type_string); pos++)
->  		if (available_error_type & einj_error_type_string[pos].mask)
->  			seq_printf(m, "0x%08x\t%s\n", einj_error_type_string[pos].mask,
-> -				   einj_error_type_string[pos].str);
-> -
-> +					   einj_error_type_string[pos].str);
+Am 18.11.24 um 20:43 schrieb Armin Wolf:
 
-This looks like it may have been unintentional. Alignment of the above
-line should be left alone and the newline kept.
+> Am 09.11.24 um 05:41 schrieb Mario Limonciello:
+>
+>> The name attribute shows the name of the associated platform profile
+>> handler.
+>>
+>> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>> =C2=A0 drivers/acpi/platform_profile.c | 27 +++++++++++++++++++++++++++
+>> =C2=A0 1 file changed, 27 insertions(+)
+>>
+>> diff --git a/drivers/acpi/platform_profile.c
+>> b/drivers/acpi/platform_profile.c
+>> index ef6af2c655524..4e2eda18f7f5f 100644
+>> --- a/drivers/acpi/platform_profile.c
+>> +++ b/drivers/acpi/platform_profile.c
+>> @@ -25,8 +25,35 @@ static_assert(ARRAY_SIZE(profile_names) =3D=3D
+>> PLATFORM_PROFILE_LAST);
+>>
+>> =C2=A0 static DEFINE_IDA(platform_profile_ida);
+>>
+>> +/**
+>> + * name_show - Show the name of the profile handler
+>> + * @dev: The device
+>> + * @attr: The attribute
+>> + * @buf: The buffer to write to
+>> + * Return: The number of bytes written
+>> + */
+>> +static ssize_t name_show(struct device *dev,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 struct device_attribute *attr,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 char *buf)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct platform_profile_handler *handler =3D dev_ge=
+t_drvdata(dev);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 scoped_cond_guard(mutex_intr, return -ERESTARTSYS, =
+&profile_lock) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return sysfs_emit(buf, "%s\=
+n", handler->name);
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 return -ERESTARTSYS;
+>
+> I still have a bad feeling about the locking inside the class
+> attributes...
+>
+> Can we assume that no sysfs accesses occur after unregistering the
+> class device?
+>
+> Even if this is not the case then the locking fails to protect the
+> platform_profile_handler here.
+> If the device is unregistered right after dev_get_drvdata() was
+> called, then we would sill operate
+> on possibly stale data once we take the profile_lock.
+>
+> Does someone have any clue how sysfs attributes act during removal?
+>
+I think i found the answer to my questions inside this patch series:
+https://lore.kernel.org/linux-kernel/1390951311-15325-1-git-send-email-tj@=
+kernel.org
 
-> +	if (available_error_type & ACPI65_EINJV2_SUPP) {
-> +		for (int pos = 0; pos < ARRAY_SIZE(einjv2_error_type_string); pos++)
-> +			if (available_error_type_v2 & einjv2_error_type_string[pos].mask)
-> +				seq_printf(m, "0x%08x\t%s\n", einjv2_error_type_string[pos].mask,
-> +						   einjv2_error_type_string[pos].str);
+It says that:
 
-Similarly, the above line should be aligned as the other one was
-previously:
+	kernfs / sysfs implement the "sever" semantic for userland accesses.
+	When a node is removed, no further userland operations are allowed and
+	the in-flight ones are drained before removal is finished.  This makes
+	policing post-mortem userland accesses trivial for its users.
 
-				seq_printf(m, "0x%08x\t%s\n", einj_error_type_string[pos].mask,
-					   einjv2_error_type_string[pos].str);
-
-> +	}
->  	return 0;
->  }
->  
-> @@ -692,7 +704,7 @@ int einj_validate_error_type(u64 type)
->  	if (tval & (tval - 1))
->  		return -EINVAL;
->  	if (!vendor)
-> -		if (!(type & available_error_type))
-> +		if (!(type & (available_error_type)))
-
-Why are these extra parens being added? Is there a reason for this?
-
->  			return -EINVAL;
->  
->  	return 0;
-> @@ -769,9 +781,14 @@ static int __init einj_probe(struct platform_device *pdev)
->  		goto err_put_table;
->  	}
->  
-> -	rc = einj_get_available_error_type(&available_error_type);
-> +	rc = einj_get_available_error_type(&available_error_type, ACPI_EINJ_GET_ERROR_TYPE);
->  	if (rc)
->  		return rc;
-> +	if (available_error_type & ACPI65_EINJV2_SUPP) {
-> +		rc = einj_get_available_error_type(&available_error_type_v2, ACPI_EINJV2_GET_ERROR_TYPE);
-
-checkpatch.pl complains about the above line being longer the 100 chars.
-This should be broken up.
+In this case taking the profile_lock when reading/writing class attributes=
+ seems to be unnecessary.
+Please remove the unnecessary locking inside the class attributes.
 
 Thanks,
-John
+Armin Wolf
 
-> +		if (rc)
-> +			return rc;
-> +	}
->  
->  	rc = -ENOMEM;
->  	einj_debug_dir = debugfs_create_dir("einj", apei_get_debugfs_dir());
-> diff --git a/drivers/acpi/apei/einj-cxl.c b/drivers/acpi/apei/einj-cxl.c
-> index a4e709937236..5ffc4a162c70 100644
-> --- a/drivers/acpi/apei/einj-cxl.c
-> +++ b/drivers/acpi/apei/einj-cxl.c
-> @@ -30,7 +30,7 @@ int einj_cxl_available_error_type_show(struct seq_file *m, void *v)
->  	int cxl_err, rc;
->  	u32 available_error_type = 0;
->  
-> -	rc = einj_get_available_error_type(&available_error_type);
-> +	rc = einj_get_available_error_type(&available_error_type, ACPI_EINJ_GET_ERROR_TYPE);
->  	if (rc)
->  		return rc;
->  
-> -- 
-> 2.34.1
-> 
+> Thanks,
+> Armin Wolf
+>
+>> +}
+>> +
+>> +static DEVICE_ATTR_RO(name);
+>> +static struct attribute *profile_attrs[] =3D {
+>> +=C2=A0=C2=A0=C2=A0 &dev_attr_name.attr,
+>> +=C2=A0=C2=A0=C2=A0 NULL
+>> +};
+>> +ATTRIBUTE_GROUPS(profile);
+>> +
+>> =C2=A0 static const struct class platform_profile_class =3D {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .name =3D "platform-profile",
+>> +=C2=A0=C2=A0=C2=A0 .dev_groups =3D profile_groups,
+>> =C2=A0 };
+>>
+>> =C2=A0 static ssize_t platform_profile_choices_show(struct device *dev,
+>
 
