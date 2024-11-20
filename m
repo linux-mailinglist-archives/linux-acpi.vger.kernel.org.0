@@ -1,170 +1,114 @@
-Return-Path: <linux-acpi+bounces-9709-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9710-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28479D4287
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Nov 2024 20:20:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7919D428A
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Nov 2024 20:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05980B25D04
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Nov 2024 19:20:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 558231F2379F
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Nov 2024 19:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E592A16DEB5;
-	Wed, 20 Nov 2024 19:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1ED619C543;
+	Wed, 20 Nov 2024 19:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PG3luQkl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PH/O9Un5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CB0824A0;
-	Wed, 20 Nov 2024 19:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D72824A0;
+	Wed, 20 Nov 2024 19:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732130431; cv=none; b=Hx9FVHYAq48f63OmkccBbG5MvcAaNYl8X2257SOIkqRaR0IF64mQtysC3tSxN6tHbrSfb9RhqvqeEdXZGaSjKchYjIUAuWR1MFzv39d4pVvhB9sYfw4xFdhqDQHfyCwy0ILTqhAU/HUovM0aSb5Et0QpQfVCTixvfwIEvPrvjU8=
+	t=1732130865; cv=none; b=UiXB3JdMGgujlvOFtm3mv4jDLOyAXeptposXQ/A+MomnqlYVwKkumeSPe+faE/ZkxiOyRDBtjRrrFDtKY/wFkIfdiw4EM79e7z+jmKQQeDyUKl/YThvol0gqHsem3nbBjivR4OLFj71PRNEJkNsD5cE11BkvsxHTeB1H0OSD3Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732130431; c=relaxed/simple;
-	bh=JRJRo2Oi0ybA7ydeHsWAVZYbwxKIaKC6OjZznr5mapM=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qaH1Q5tKRs0R5DUdDugWQi8LN50AaFJvXCi2GvP2OLL9FvYMFAMqWKUyGzvuR3GvrhJU5/fUozRPTRZ/iDqzSOVgshzUp6+hL7Ws2XL1Hr6xkBBM+4fnCuwbV85YvVKnhC3yvcpIlWtKfNeOSJM218bA5peGahHMS8i5qy0iunU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PG3luQkl; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21210eaa803so384455ad.2;
-        Wed, 20 Nov 2024 11:20:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732130430; x=1732735230; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WVkMS7SOnuy3G4XpehNHTXXOXgHnTj+iNth4NXTwJqU=;
-        b=PG3luQklfdD1GpxFQ2aS0qZ0LBqL3YMLag76cU53N2UR/mMwXeSSNMo3AU+MP6Eyu0
-         2TwadSYNK0yRmH2KD5S2XTC2RlW5x0pyczgKLqQD+eMMOj5e/VASO7jSwqwv18ImMPth
-         iXU4RD5t6NZgdLG2xEo5tQxTx53oxBaYRLSTUYyrIIz7cZFPgkd5PDsf71Ln7+iKqa8n
-         FW2RvksWI5XgDiwMv08U8nnsr6Y5gU0+RtFLMtduudu2bVdwIBhWX1NlRDvxnJzJ72la
-         awVlTCvmvgsPXWCP1d2VcIaMA/jQ9o4Kqzhi7kJoRnYwupZ1b8EVkQLnsqZ6+mNUcnYr
-         ipqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732130430; x=1732735230;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WVkMS7SOnuy3G4XpehNHTXXOXgHnTj+iNth4NXTwJqU=;
-        b=u3R6anDZlxfWf6Hsz4XZ3k1nDgoE2jBbzpdi1NVuR5fwzPCoMrvwuDjmyPDWn4iSu2
-         kmM32FwrQA49Q3sUloHj4nUJRsIA/cPRsxqBQmc0/plOpFEYyGWlaSrRAPIPTPy/gmhs
-         d8L+c9HgDFqiTjVIaureJMZVNYxQFKPZQMhnmn6FKHCXhPVy3usK9/gKJUduIuTwJahB
-         rDTh9ZZIDfQCi6euyt0Id96WMpGIpgXp6vU5wnRJPkP/IVipnEQZsgubdrGxFvgzSnxh
-         Aj6Hgv/1Kud9ZM3Q0KHjmJwH4cOKj4o0JleSsTE1jmDJsbbHWsy+tG3wob5/w+I+2mgi
-         n5eg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJu5LQ+ExRK6d1cOdjbL0qJFJTKYxN4ibxHCSfYQ30k/m4oNeAipsRQfV2Ft2T8KHeE1Tz0mD+ru4M@vger.kernel.org, AJvYcCXrSugMVECg/r0cH0TzkG4ikMRze4cnJHSFs8pZIPaBtQxbAxHfdAklReTV/mCz3y/TLY20ljvWQZOR@vger.kernel.org, AJvYcCXyCOGodHGC16Zt8OgmMP6wZdZ3f+TO1KLSvRRB6pMS5cq/18yfp03vGDAMGfGh5jSaBj8oGsQ0i8j5DDxm@vger.kernel.org
-X-Gm-Message-State: AOJu0YyajWgBQgLbA8RzC94sJ/4buzWB1GIzcMxP7sq0tzOWKUF6HfwP
-	lcxTObM1mBNd/Nt4swTVQt26HyXitFkmEzoIfvLAUviW9aeiRb2Z
-X-Google-Smtp-Source: AGHT+IGkeFT658eRFseEUmi+fYk0b8sEK0+TJIC98SNQyfI5clZCIt4++25ouRAtqYHNHR4LI1Nv3Q==
-X-Received: by 2002:a17:902:f606:b0:211:fb9c:b1ce with SMTP id d9443c01a7336-2126a3a4ab3mr45550455ad.17.1732130429634;
-        Wed, 20 Nov 2024 11:20:29 -0800 (PST)
-Received: from smc-140338-bm01 ([149.97.161.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21209a60aa3sm66621535ad.184.2024.11.20.11.20.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 11:20:29 -0800 (PST)
-From: Fan Ni <nifan.cxl@gmail.com>
-X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
-Date: Wed, 20 Nov 2024 19:20:26 +0000
-To: Gregory Price <gourry@gourry.net>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com,
-	Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
-	rrichter@amd.com, Terry.Bowman@amd.com, dave.jiang@intel.com,
-	ira.weiny@intel.com, alison.schofield@intel.com,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-	rafael@kernel.org, lenb@kernel.org, david@redhat.com,
-	osalvador@suse.de, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, rppt@kernel.org
-Subject: Re: [PATCH v6 0/3] memory,x86,acpi: hotplug memory alignment
- advisement
-Message-ID: <Zz42ehwdXDcX8rIu@smc-140338-bm01>
-References: <20241106155847.7985-1-gourry@gourry.net>
+	s=arc-20240116; t=1732130865; c=relaxed/simple;
+	bh=m9eVvBuAF1LQIlyeSWNL9oUJUXPUGqnSB+UORRlx3gY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LD5WKu0jUKGbfE3O77SOljiy8YwXrzu43FmAnJky0BbUYUnJbY7MnFvYjNQZbrwqlXz1lmXbQNcacDMX/Sqqtf4bJ4QOuuQsRE6vD4lqJY5RiANfX9DG2/B16dkVg4jd44Gqyh8u3ORvCEFhEvIkMMkV2MG1D01YzO1UI3G6z9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PH/O9Un5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A095C4CED0;
+	Wed, 20 Nov 2024 19:27:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732130865;
+	bh=m9eVvBuAF1LQIlyeSWNL9oUJUXPUGqnSB+UORRlx3gY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PH/O9Un5uCPqDdOaE40gIrdUmtDi90i+G2al5i29rZVlNiJls+aB573+CvLeVJytH
+	 PqAb2zPpMXgPVip93JmRZ33XYYLc9+q9/Np4aPdtS2Qe3x+OOM1/j0va5c/l+TKWzb
+	 6g/WtdVOfdHL0Li6TEjFt/bw9rf+pvvkc2PqR1ObWgo7fzuBc3+sIgOosLsYjCU+Ze
+	 rBJ2t8A/mojKaOO8tukaNyRRE+7czjtjz2m9jTNY7vdbcvIgx/KO9q8JdLBzb/NQrK
+	 wp2yvXGfa0A2oINflRvIZsW5Xi/MBUnc/euRMZjcIDDGDPlogs37JcmWn8HyAossc9
+	 x+8kNRJ5anzHA==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-27d0e994ae3so100344fac.3;
+        Wed, 20 Nov 2024 11:27:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUN5Jl5DRT1Rh0uYx+71gAuXOjn4Qvt8FCZmd5e/vLrx3xd3UawlkstlfwN7K20I61uryaO/daakriG@vger.kernel.org, AJvYcCWJYxXWaOyxphrCNc8Kbtc2wbzlFdS0MaBPiQLr9HeFrMZSwckz3EXUZn4zu2p2AW1AAgkOP7WolRUA8AQm@vger.kernel.org, AJvYcCXVXdTVwNKZJfxRSrcyhuqUTNPa2IBsTj8/nl2ewsClGj+30nlTqQDzt/PwY9iMSKiZMXJ7g076LXU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+moAeUPzCjj4kB4QdJ/aFTn5hA+H7L8tZmBK4q7JDjWBDIl7S
+	zTyOov4UqRx4Lw75Z/8xJX6eCpiVn7kuoFsvLMY7btyRurvhDQoKr2Wr0xLmo0zx4T4NZez4aGK
+	hSX0EUc5w0SnNudHne+50hOdZQsc=
+X-Google-Smtp-Source: AGHT+IH8aoIsQWcUpF/CbVUaABzlQMYS8qfpsmANgVvgqAlcKRj/IUjgJXoDAU0mN/Cq0Z3qyURaJL553CpRqgNs7hY=
+X-Received: by 2002:a05:6870:b4a1:b0:296:e2da:60c6 with SMTP id
+ 586e51a60fabf-296e2da7b5cmr3121531fac.40.1732130864531; Wed, 20 Nov 2024
+ 11:27:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241106155847.7985-1-gourry@gourry.net>
+References: <c7db7e804c453629c116d508558eaf46477a2d73.1731708405.git.len.brown@intel.com>
+ <CAJZ5v0iC3mX7Yh_ETTw4FY3xUbZeAUgS0Nc9_88fnT1q5EGWyA@mail.gmail.com>
+ <90818e23-0bdb-40ad-b2f9-5117c7d8045e@linux.intel.com> <CAJZ5v0gxNEQx5Q+KXs-AMn=bt7GD=jU-TseMHUc5mHp0tKSBtA@mail.gmail.com>
+ <0147ea1a-3595-47ae-a9d5-5625b267b7a8@linux.intel.com> <CAJZ5v0itnn3T4bwiAO3eAoKH4mLFYswcNWBx6JCrK1GFDEy7vg@mail.gmail.com>
+ <e0dd2cb8-eea2-443d-bf23-4d225528d33f@linux.intel.com> <CAJZ5v0h5=3LMVCa8kSoomNyF9r_7HLmpkH+YhYEO_N7H6-hAGQ@mail.gmail.com>
+ <CAJvTdK=Q1kwWA6Wxn8Zcf0OicDEk6cHYFAvQVizgA47mXu63+g@mail.gmail.com>
+In-Reply-To: <CAJvTdK=Q1kwWA6Wxn8Zcf0OicDEk6cHYFAvQVizgA47mXu63+g@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 20 Nov 2024 20:27:33 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0is4gRauBZUVBHvSzDUXFz-6+B1TW+E_w6C4_DbQN-BfA@mail.gmail.com>
+Message-ID: <CAJZ5v0is4gRauBZUVBHvSzDUXFz-6+B1TW+E_w6C4_DbQN-BfA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: Replace msleep() with usleep_range() in acpi_os_sleep().
+To: Len Brown <lenb@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Arjan van de Ven <arjan@linux.intel.com>, anna-maria@linutronix.de, 
+	tglx@linutronix.de, peterz@infradead.org, frederic@kernel.org, corbet@lwn.net, 
+	akpm@linux-foundation.org, linux-acpi@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Len Brown <len.brown@intel.com>, Todd Brandt <todd.e.brandt@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 06, 2024 at 10:58:44AM -0500, Gregory Price wrote:
-> When physical address regions are not aligned to memory block size,
-> the misaligned portion is lost (stranded capacity).
-> 
-> Block size (min/max/selected) is architecture defined. Most architectures
-> tend to use the minimum block size or some simplistic heurist. On x86,
-> memory block size increases up to 2GB, and is otherwise fitted to the
-> alignment of non-hotplug (i.e. not special purpose memory).
-> 
-> CXL exposes its memory for management through the ACPI CEDT (CXL Early
-> Detection Table) in a field called the CXL Fixed Memory Window.  Per
-> the CXL specification, this memory must be aligned to at least 256MB.
-> 
-> When a CFMW aligns on a size less than the block size, this causes a
-> loss of up to 2GB per CFMW on x86.  It is not uncommon for CFMW to be
-> allocated per-device - though this behavior is BIOS defined.
-> 
-> This patch set provides 3 things:
->  1) implement advise/query functions in driverse/base/memory.c to
->     report/query architecture agnostic hotplug block alignment advice.
->  2) update x86 memblock size logic to consider the hotplug advice
->  3) add code in acpi/numa/srat.c to report CFMW alignment advice
-> 
-> The advisement interfaces are design to be called during arch_init
-> code prior to allocator and smp_init.  start_kernel will call these
-> through setup_arch() (via acpi and mm/init_64.c on x86), which occurs
-> prior to mm_core_init and smp_init - so no need for atomics.
-> 
-> There's an attempt to signal callers to advise() that query has already
-> occurred, but this is predicated on the notion that query actually
-> occurs (which presently only happens on the x86 arch). This is to
-> assist debugging future users.  Otherwise, the advise() call has
-> been marked __init to help static discovery of bad call times.
-> 
-> Once query is called the first time, it will always return the same value.
-> 
-> Interfaces return -EBUSY and 0 respectively on systems without hotplug.
-> 
-> v6:
-> - boot_cpu_has -> cpu_feature_enabled() in x86 code
-> - ack tags
-> 
-> Suggested-by: Ira Weiny <ira.weiny@intel.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> 
+On Wed, Nov 20, 2024 at 7:55=E2=80=AFPM Len Brown <lenb@kernel.org> wrote:
+>
+> On Wed, Nov 20, 2024 at 1:50=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.=
+org> wrote:
+>
+> > > 50 usec is likely more than enough in practice.
+> >
+> > And would you use the same slack value regardless of the sleep
+> > duration, or make it somehow depend on the sleep duration?
+>
+> timerslack_ns is 50 usec for all user-space, no matter the duration.
+>
+> This part was done right -- it doesn't depend on the sleep duration.
+>
+> Coalescing depends on the pattern of wakeups over time.
 
-Tested on a CXL server with a directly attached cxl device, works as
-expected.
+So say there are two tasks that each sleep for 5 ms every 10 ms and
+that the first one starts its first sleep 70 us before the other one.
 
+That is, the first one always calles usleep_range(5000, 5000 + delta)
+70 us before the other one.
 
-Tested-by: Fan Ni <fan.ni@samsung.com>
+If delta is 50 us, their timers will never coalesce, but if delta is
+100 us, they'll always do.
 
-Fan
-> Gregory Price (3):
->   memory: implement memory_block_advise/probe_max_size
->   x86: probe memory block size advisement value during mm init
->   acpi,srat: give memory block size advice based on CFMWS alignment
-> 
->  arch/x86/mm/init_64.c    | 15 ++++++++----
->  drivers/acpi/numa/srat.c | 12 ++++++++-
->  drivers/base/memory.c    | 53 ++++++++++++++++++++++++++++++++++++++++
->  include/linux/memory.h   | 10 ++++++++
->  4 files changed, 84 insertions(+), 6 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+Generally speaking, longer delta values make coalescing more likely.
 
--- 
-Fan Ni (From gmail)
+> That pattern doesn't necessarily depend on sleep duration,
+> so it is a hard sell to tie them together.
+
+But it can be argued that delta can be somewhat larger (increasing the
+likelihood of timer coalescing) for longer sleeps because they
+generally don't need high precision.
 
