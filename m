@@ -1,212 +1,186 @@
-Return-Path: <linux-acpi+bounces-9716-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9717-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6609C9D52A2
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2024 19:39:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B279D52E0
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2024 19:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 279F028108D
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2024 18:39:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 900B8B25F8B
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Nov 2024 18:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2621A0BF2;
-	Thu, 21 Nov 2024 18:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774931DE3B2;
+	Thu, 21 Nov 2024 18:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+jmQgkQ"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="X4vKXci1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D04C6F06B
-	for <linux-acpi@vger.kernel.org>; Thu, 21 Nov 2024 18:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87B41D041B
+	for <linux-acpi@vger.kernel.org>; Thu, 21 Nov 2024 18:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732214380; cv=none; b=R6mSamocEPTtn/Au6jWbX+2DuBToBgcg4qUaBP6DWNkLF8o+tO7EK8e4Vl7Vz3h2MJJbFcmMb+6OVQ3mjkuTzweQaarkGHn9NAeXSQMsWVAGV5DAvwxl79psb8zMiOpNaQa3jRvJBYp1Q/FeOhvivwHWum3LNk8Y5z78OM1q/Yk=
+	t=1732215185; cv=none; b=pIWSDOWrdvZYcCcki2nYGU25waqYjDlv58zYlO+y7uyzVxbWZI+u3NFrUhycekT1DF+lb6lRYxNz5FjAYDb5UqdRGBXmEAOTNI39ti9C9jQ/QJsGpw5uWlzvLSPQk6AToOjGNhCVTRQR6mAiCJEUuUYGnnJhiCzwqbqnb+w59aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732214380; c=relaxed/simple;
-	bh=G8XOSFc7W5LX9nk1d6dB9lDKaf8fszfFMsNH4VlGnZQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aAI6sycASedCoSeNi55sThT2yIescG1zEI+HqzOrp2WpvnF1LADgBbEKw5G5rO8Spi2+3K8s1m4xGd7/nk6CGQZGTKi222GxCrFoy2SIevTA5W/np2kDPi6ClA4HZ9PVxG9xTqu2tQfwBXHGpHYaHsGSn8q7FCYwI5mmseeIkM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f+jmQgkQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732214377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R8LxgwuAPowXuHoG85RopJJmji4cVIb+ptva+m06qdM=;
-	b=f+jmQgkQFFHHngHhuoXF4ZE521rj2rNJoiOUNOPJC2z8UGhZdTc82itSUBEFgCHjJlE3Sr
-	+xD/aoMQA5kpp14eA3W8HHkfHjAH0K4IfFMH2Yygeh5+puQdrh/46x7C9FubR2qyI80kz6
-	seG52ma6tYsLe9DpA2Z0bd28C936tNo=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-V_9o-jmMMTK6Y0QrEX-q0g-1; Thu, 21 Nov 2024 13:39:36 -0500
-X-MC-Unique: V_9o-jmMMTK6Y0QrEX-q0g-1
-X-Mimecast-MFC-AGG-ID: V_9o-jmMMTK6Y0QrEX-q0g
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-539fb5677c9so1150315e87.0
-        for <linux-acpi@vger.kernel.org>; Thu, 21 Nov 2024 10:39:35 -0800 (PST)
+	s=arc-20240116; t=1732215185; c=relaxed/simple;
+	bh=x3cGfoVEihpQ6iJ8upGK+iS4YmQ7ELMjL/MQmp9LIhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WFFcR5MDCYyv7srIlhUBn2P3LDBuumqraUKQdVpWUrhjC48UvrmocRRJtLR9p+drrABDAKL6T0cNfhJu23DPtsz4k5w6DxRuTW5gEYBRjplAPbwC5EBOaB9t3BNjRb0KBguBS7Ncj9h3wa3VtvKnh4YQZAP0iWooinKtPRhphOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=X4vKXci1; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7240d93fffdso1057492b3a.2
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Nov 2024 10:53:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1732215183; x=1732819983; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p5Qth7Y59EGcplMI8RH/OJ6a3yjWKA2zdogBK7G3SxU=;
+        b=X4vKXci1kd9Ik7G1suw+1Oo6ENBq9Bsxi++oKGuhlO3nxcxYWaC6HrcC/F/jQlrYVi
+         d7IMEDreejwK07J7Zp6Fp8AmOP1OK67GgRfaybeS5ullbfbSihGG6X+rRoXzzQraqd4f
+         lFcIYhtjWDBkr5JNLs0gvsUF3494wCLp9F24M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732214374; x=1732819174;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R8LxgwuAPowXuHoG85RopJJmji4cVIb+ptva+m06qdM=;
-        b=Jn2mUEvHHBwR4mPOVechzAailZ0QRbiyl51WIYPa1mhXwQhiDNhcbqSJSE/QRWojVs
-         zfG+tnzpDYQf2K5iY+37SsvQwaw+tUK0knCSL8nwIxrxIZmX6Y/fkIW2d+zzGLiff4aU
-         PAifBJNGhtovvq4KbG0u13k1d4vRJHEcNN8I8zrwTF4lIMP6IMKHxCsjqx9qfpoaQtDY
-         3frDFeFfMLhbGIjGy6cnZBAGSIG/9aYtCzVzTtLPUnTdekSB0AZ8oBcb0XlWWjMQKS1O
-         OzbXz4f2Mm0Whv3pyUdT69QEI4VlVi71zZ/wOO/AatlFNiG/yLza9CWG64Mfi9BMLHqA
-         faYw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9fVSG+Rq1paEr2/qaUw08/Nnpr98pdnVVVXFLPl67vcet4YEjiUwnk2svSoCtAOhGtk2GHbRM8Ywp@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxHN9tWnjc+x7E+99Y63l+KE/9PuV6vq4PR1bO07UnjkQNB/kY
-	tEAakmNg48fLVc1pS8a0VubdXH6qW9f3DZhW5gPsbqq8W7jUXaeVGwbbDczXUd7P6g+pNxx3TGm
-	cOo2DZYT5iWepekN7WAjYM4dF0Rle6NMRiZsaNgEZ2Lpem3dKIPAu3VLXgwc=
-X-Gm-Gg: ASbGncvLZhjk9Ve7NmGnoXWCp95YtlwdSa9EKsmSeZwOhHm51NB6WHWu9IyaQJRA108
-	oOWSZBCEdgJm38ELxMwNbx5I7rpFJaxlm2l1rVVSIqVLjC5Yvdy1WA1DcCcoMz1YcAmtCK3qPCJ
-	OVrvs05VhnN8CxWRiJyAoRcRKSOjuvtfLNk/uc/ZEJDKAB2LyFN6Byqv1lnJoSWL51gf/RsIAJi
-	MkaBBDlzZ9jkqqbo3igExS5KzF6JW+P4aD8BvkE9R9L+2RNWUCheFU4zqvVSaOUkwrvnJ0QRKfg
-	3snEhXDqsQE48/gka6vpR4Zy2D2+FE+0usqugEDyQvCtdkyVBlVwn7Nfakr3BV9m/yrXfBZL/p/
-	BETAxjNijvuRSFKWY+HqIjwfj
-X-Received: by 2002:a05:6512:1288:b0:53d:a025:14bc with SMTP id 2adb3069b0e04-53dc13670d0mr4202647e87.41.1732214374429;
-        Thu, 21 Nov 2024 10:39:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGsMRcWipCf+gqmLcfQGX437D2za5bWeNpvmmk4uIvuIwkT8PhxWA8oZeXW/HHOKWEX1LNOFQ==
-X-Received: by 2002:a05:6512:1288:b0:53d:a025:14bc with SMTP id 2adb3069b0e04-53dc13670d0mr4202627e87.41.1732214374020;
-        Thu, 21 Nov 2024 10:39:34 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b52fa36sm1718866b.122.2024.11.21.10.39.33
+        d=1e100.net; s=20230601; t=1732215183; x=1732819983;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p5Qth7Y59EGcplMI8RH/OJ6a3yjWKA2zdogBK7G3SxU=;
+        b=o9VIi6gZYIBQjE8Kzn2QkJLphg7XJdNlIY3Qux7Q/IT0HOA69CrcZmi+1tpm7WnQ1n
+         4p49rK06etc2/5OapUnfGzAFYmbN9vuJwysZZf8qKAyLZbifvkdq0KvYdLPfgHNR8Go3
+         mvKK2RDMbQEfWcjEkvuS03wSX59VTIND0Kw2V5QosBnQVLCIAlmD8TrKTg8GdC7y+JcX
+         8c22g5qPmlXNyoT+3O0jZGljuY6WzBh/03JdODAN8WQzxOVoWBBQgeBHU2cMr3EuoSr1
+         FeCm/LqcCXaG3XARUCUHvB+MwEuq+ZSPq+HQHkBK8rdY+GTBSOoV7WHuqPN2mjs11q+d
+         UIog==
+X-Forwarded-Encrypted: i=1; AJvYcCWOw/KG/h40Wl6IzieAHACSPecAsZnl8/rbJ3T+Ssc9hyFxGaAjdnO61oQQZOKqMuBmiXKRnxE3WU3T@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzhpq9q2Y7j308Ivq4dYLtIQtA3FiismSaLlo+G+uvMJZNwq2cY
+	P19wu1Q1M2geGapsGtKyn+EbEuwVXq6HcsJVaTMl1bHUqbD+6Ku+rScXtf4EWA==
+X-Gm-Gg: ASbGncuYQyEYfnYErndVOyCf7SaENfNmyRcML8OcuduaNXMlkZ3mMVu+HhPGtdSggss
+	s0g8zRID2Bj/weB/oX7VcDCtpHYObhQg6VrMj+/sWvGg3bjSUy9q5gQsZ1feK77jVyoC+61rVWE
+	H+Syml2ekmEO61ZsrCkV3gj+V/3VH9d/aYKHLNYCeo8eYoVN1uKRJ9mRbSiY6qLc+H6AGYploX4
+	Q2U026r8LNVEe3l2pCOrIrG90jnmZW4lmW5ZzeQYbAQYbMRakfQLX+MExzsnUfYUztqSWJNIkyi
+	O09eo7AHfb28
+X-Google-Smtp-Source: AGHT+IEnHqovNtzlCmc+PDaMnUFqqZzrIPq8HhFFCMkNi3Dndp8nmsfdHbOYSzctEa5FweZZz0sEwg==
+X-Received: by 2002:a05:6a00:1a87:b0:71e:8023:c718 with SMTP id d2e1a72fcca58-724df5d0d90mr122658b3a.8.1732215183145;
+        Thu, 21 Nov 2024 10:53:03 -0800 (PST)
+Received: from localhost ([2a00:79e0:2e14:7:6485:23c4:db3b:3c93])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-724dea69e96sm62889b3a.73.2024.11.21.10.53.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Nov 2024 10:39:33 -0800 (PST)
-Message-ID: <c6315bb7-2943-4693-899b-da65cfecc7a6@redhat.com>
-Date: Thu, 21 Nov 2024 19:39:32 +0100
+        Thu, 21 Nov 2024 10:53:02 -0800 (PST)
+Date: Thu, 21 Nov 2024 10:53:00 -0800
+From: Brian Norris <briannorris@chromium.org>
+To: manivannan.sadhasivam@linaro.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	lukas@wunner.de, mika.westerberg@linux.intel.com,
+	Hsin-Yi Wang <hsinyi@chromium.org>
+Subject: Re: [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all
+ Devicetree based platforms
+Message-ID: <Zz-BjF3rZRyfv0Mg@google.com>
+References: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
+ <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC/RFT][PATCH v0.1] ACPI: OSL: Use usleep_range() in
- acpi_os_sleep()
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Len Brown <len.brown@intel.com>, Arjan van de Ven <arjan@linux.intel.com>,
- Pierre Gondois <pierre.gondois@arm.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-References: <5839859.DvuYhMxLoT@rjwysocki.net>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <5839859.DvuYhMxLoT@rjwysocki.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
 
-Hi,
+Hi Manivannan,
 
-On 21-Nov-24 2:15 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Dredging up an old one, but it seems like there was almost consensus on
+this patch, and yet it stalled because the series does too much. I'm
+interested in reviving it, but I also have some thoughts on the
+usability.
+
+On Fri, Aug 02, 2024 at 11:25:03AM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > 
-> As stated by Len in [1], the extra delay added by msleep() to the
-> sleep time value passed to it can be significant, roughly between
-> 1.5 ns on systems with HZ = 1000 and as much as 15 ms on systems with
-> HZ = 100, which is hardly acceptable, at least for small sleep time
-> values.
+> Unlike ACPI based platforms, there are no known issues with D3Hot for the
+> PCI bridges in the Devicetree based platforms. So let's allow the PCI
+> bridges to go to D3Hot during runtime. It should be noted that the bridges
+> need to be defined in Devicetree for this to work.
+
+IMO, it's not an amazing idea to key off the presence of a bridge DT
+node for this. AFAIK, that's not really required for most other things
+(especially if we're not mapping legacy INTx support), and many
+platforms I work with do not define a bridge node. But they do use DT,
+and I'd like to be able to suspend their bridges.
+
+Personally, I'd choose to match the same requirements as used by
+devm_pci_alloc_host_bridge() -> devm_of_pci_bridge_init() -- that the
+parent device under which the host bridge is created has an of_node.
+Code sample below.
+
+> Currently, D3Cold is not allowed since Vcc supply which is required for
+> transitioning the device to D3Cold is not exposed on all Devicetree based
+> platforms.
 > 
-> Address this by using usleep_range() in acpi_os_sleep() instead of
-> msleep().  For short sleep times this is a no-brainer, but even for
-> long sleeps usleep_range() should be preferred because timer wheel
-> timers are optimized for cancellation before they expire and this
-> particular timer is not going to be canceled.
-> 
-> Add at least 50 us on top of the requested sleep time in case the
-> timer can be subject to coalescing, which is consistent with what's
-> done in user space in this context [2], but for sleeps longer than 5 ms
-> use 1% of the requested sleep time for this purpose.
-> 
-> The rationale here is that longer sleeps don't need that much of a timer
-> precision as a rule and making the timer a more likely candidate for
-> coalescing in these cases is generally desirable.  It starts at 5 ms so
-> that the delta between the requested sleep time and the effective
-> deadline is a contiuous function of the former.
-> 
-> Link: https://lore.kernel.org/linux-pm/c7db7e804c453629c116d508558eaf46477a2d73.1731708405.git.len.brown@intel.com/ [1]
-> Link: https://lore.kernel.org/linux-pm/CAJvTdK=Q1kwWA6Wxn8Zcf0OicDEk6cHYFAvQVizgA47mXu63+g@mail.gmail.com/ [2]
-> Reported-by: Len Brown <lenb@kernel.org>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Tested-by: Hsin-Yi Wang <hsinyi@chromium.org>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
+>  drivers/pci/pci.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
 > 
-> This is a follow-up to the discussion started by [1] above and since
-> the beginning of it I have changed my mind a bit, as you can see.
-> 
-> Given Arjan's feedback, I've concluded that using usleep_range() for
-> all sleep values is the right choice and that some slack should be
-> used there.  I've taken 50 us as the minimum value of it because that's
-> what is used in user space FWICT and I'm not convinced that shorter
-> values would be suitable here.
-> 
-> The other part, using 1% of the sleep time as the slack for longer
-> sleeps, is likely more controversial.  It is roughly based on the
-> observation that if one timer interrupt is sufficient for something,
-> then using two of them will be wasteful even if this is just somewhat.
-> 
-> Anyway, please let me know what you think.  I'd rather do whatever
-> the majority of you are comfortable with.
-
-I know it is a bit early for this, but the patch looks good to me, so:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-
-> ---
->  drivers/acpi/osl.c |   22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
-> 
-> Index: linux-pm/drivers/acpi/osl.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/osl.c
-> +++ linux-pm/drivers/acpi/osl.c
-> @@ -607,7 +607,27 @@ acpi_status acpi_os_remove_interrupt_han
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index c7a4f961ec28..bc1e1ca673f1 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -2992,6 +2992,18 @@ static bool pci_bridge_d3_allowed(struct pci_dev *bridge, pci_power_t state)
+>  		if (pci_bridge_d3_force)
+>  			return true;
 >  
->  void acpi_os_sleep(u64 ms)
+> +		/*
+> +		 * Allow D3Hot for all Devicetree based platforms having a
+> +		 * separate node for the bridge. We don't allow D3Cold for now
+> +		 * since not all platforms are exposing the Vcc supply in
+> +		 * Devicetree which is required for transitioning the bridge to
+> +		 * D3Cold.
+> +		 *
+> +		 * NOTE: The bridge is expected to be defined in Devicetree.
+> +		 */
+> +		if (state == PCI_D3hot && dev_of_node(&bridge->dev))
+> +			return true;
+> +
+
+For me, a way to lighten the bridge-node restriction is:
+
+	struct pci_host_bridge *host_bridge;
+
+	...
+		/*
+		 * Allow D3 for all Device Tree based systems. We check
+		 * if our host bridge's parent has a Device Tree node.
+		 * None of the D3 restrictions that applied to old BIOS
+		 * systems are known to apply to DT systems.
+		 */
+		host_bridge = pci_find_host_bridge(bridge->bus);
+		if (dev_of_node(host_bridge->dev.parent))
+			return true;
+
+Brian
+
+>  		/* Even the oldest 2010 Thunderbolt controller supports D3. */
+>  		if (bridge->is_thunderbolt)
+>  			return true;
+> @@ -3042,7 +3054,7 @@ bool pci_bridge_d3cold_allowed(struct pci_dev *bridge)
+>   *
+>   * This function checks if the bridge is allowed to move to D3Hot.
+>   * Currently we only allow D3Hot for recent enough PCIe ports on ACPI based
+> - * platforms and Thunderbolt.
+> + * platforms, Thunderbolt and Devicetree based platforms.
+>   */
+>  bool pci_bridge_d3hot_allowed(struct pci_dev *bridge)
 >  {
-> -	msleep(ms);
-> +	u64 usec = ms * USEC_PER_MSEC, delta_us = 50;
-> +
-> +	/*
-> +	 * Use a hrtimer because the timer wheel timers are optimized for
-> +	 * cancellation before they expire and this timer is not going to be
-> +	 * canceled.
-> +	 *
-> +	 * Set the delta between the requested sleep time and the effective
-> +	 * deadline to at least 50 us in case there is an opportunity for timer
-> +	 * coalescing.
-> +	 *
-> +	 * Moreover, longer sleeps can be assumed to need somewhat less timer
-> +	 * precision, so sacrifice some of it for making the timer a more likely
-> +	 * candidate for coalescing by setting the delta to 1% of the sleep time
-> +	 * if it is above 5 ms (this value is chosen so that the delta is a
-> +	 * continuous function of the sleep time).
-> +	 */
-> +	if (ms > 5)
-> +		delta_us = (USEC_PER_MSEC / 100) * ms;
-> +
-> +	usleep_range(usec, usec + delta_us);
->  }
->  
->  void acpi_os_stall(u32 us)
+> 
+> -- 
+> 2.25.1
 > 
 > 
-> 
-
 
