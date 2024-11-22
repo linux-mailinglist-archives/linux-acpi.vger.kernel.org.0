@@ -1,136 +1,184 @@
-Return-Path: <linux-acpi+bounces-9762-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9763-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B09A9D64CA
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 21:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 042439D64DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 21:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72FDB20C64
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 20:13:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6030DB21E16
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 20:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331D9183CBE;
-	Fri, 22 Nov 2024 20:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0276518593A;
+	Fri, 22 Nov 2024 20:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2cfZWzg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EdprW1Me"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7CE1CA9C
-	for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 20:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C610715F40B;
+	Fri, 22 Nov 2024 20:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732306425; cv=none; b=G9iEMrrAOJcikmdN6ZvfBV4N3YrnjcQmSBlJZYdC6mHlURe185Bktbyy29SS2ACI6G11bxAEo6ejA6Ztc4icE48ARAKgqPa/wwBYM1BW55imU6BNxNct/dal9G7KbLHB4f9iDPyS2/X6vi+IIOk5VwL0XhoQUdU+yccqVlvKCWo=
+	t=1732307212; cv=none; b=aEZtWP4a8Vqr9xhtQuW9zHspUVcZGMcvTNrO3J/DcsrNdXsfyeTaDMcUUFDJDlpCcnXlGb52nUU6dAHoE/9xEcbmk1CM62JoSVwhe3IheEwVnuwYNFCC1TVTZI8aHr5JUAf9i5oTgdLHq5h/w1Vf7EoJwkcQG3UU2hpTqus0yQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732306425; c=relaxed/simple;
-	bh=W6eD8O9QsbAHcbn8tfe6TfBSrOpvd2qB6Q+S3anPjyc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LroiNOtxTabUTaJUb1RX3ThaoxSR5IKb+oybQRyfJTfPWKMwQog7xm0WOpTm2rtUMYdjIZwMOQGVz36+LNNhHuQgzE3w0buh3exoZfwSmpzsq/v/ywqsDf7EPu8/bzXzcgU+qEpD/+YbdEHovYq7WKvnknKl8LdlBKvD50ulzdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2cfZWzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA49C4CECE
-	for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 20:13:44 +0000 (UTC)
+	s=arc-20240116; t=1732307212; c=relaxed/simple;
+	bh=6B1BK6wIWPggwIoC0MMHmHuadgqKGKX5TpZp45ctLkA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=D2lvC/fcocMmXzUZhGehMQOGSTEDq9f4y9K5jLqEp6a87nb7/qSimOQDHL5ZnrGVEY3LE9gZ1DgiUt/Djs6MXb94MJzbqtJhq2s4hbdaI0SWQXPxNEY4Wyg/FGR7yLp0wnK5FQDCweJbHM+NpPKKTIJYrmPHwiHuXHECh8tgV3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EdprW1Me; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F74C4CED0;
+	Fri, 22 Nov 2024 20:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732306424;
-	bh=W6eD8O9QsbAHcbn8tfe6TfBSrOpvd2qB6Q+S3anPjyc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=U2cfZWzg8W0ozZ1KwGkExyo4PzhzsTFFzQ1a+ZUGbzmZDjBdr1cTtGZrvf2gu/5bF
-	 SwR/H/RCjachbV133ohCJRnteTxWTy8r97pflh/qf+IDtnvsKPM3Z4WJT4N53ViaQH
-	 t9d3GpUi3Y0MI9930eGR25s4d1S5KuT9fFnJT2aUftkXzu+OKG7gtv0MmtgQXqjQJl
-	 2RCpWSVy3BlgoeA6uJYCQSfF5eVJeT9kHWhPS4yK/7cdh/zbPS7Xj5cTCkSrEUM9Tx
-	 7gdUCI9pzM5qw1r6/+LvqSCb0mSDmNwK3lMc26QQUDBQRnMhuLZlwYx/YlhIGJLbij
-	 s/Ilpg9vbH3Jg==
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-295cee3a962so1681921fac.3
-        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 12:13:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU0F1VLv4IskYaVC1qDxLDX5rx8hYlpYfLQkJFMdA+OYYaH09nenjphIRH75pkKm+lCF1lckMin1b1S@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+IxT7U4GjCIu+BPrYv6Lx0Mncdd5UhHUVTZPdJgThQidXo/bQ
-	cQwEYuhSASMdLvrp44EhWlTnsX6AC/qzU6jDhplSt7l7uBvuOt6Eo2nO0OR7I8a+O5376I9QnPW
-	r5fIq78Z8+k5JdqGwrT4U9RZdisY=
-X-Google-Smtp-Source: AGHT+IERCAiWg1i7kKBBJQ3oJ/9drNbLV894o+440XhhvwqNIoM9hQQfLHoBcVD2wbXlgjgaRJZooktlsTnGRxwcrwA=
-X-Received: by 2002:a05:6870:2182:b0:297:8d9:693c with SMTP id
- 586e51a60fabf-29720d9058amr4332322fac.32.1732306424107; Fri, 22 Nov 2024
- 12:13:44 -0800 (PST)
+	s=k20201202; t=1732307212;
+	bh=6B1BK6wIWPggwIoC0MMHmHuadgqKGKX5TpZp45ctLkA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=EdprW1MeXYp3RkQlp1o7otuzojZq5RHMB8qVGAA3HKwV0DsCw2Vw05hLA0GzBf8Hq
+	 V82AYr9Dk68NnRbT7eLK7OMjs6RdEQD2hgSEpjdDrKPpKL7Tv3Bm92uHufzj3drNoP
+	 5gzoVLcjr/1x33jRcgDYvuMXU0kxxRadlf4/wb1V1KTxTYmzRAoziS4ZDjT6qgYiaa
+	 ZdjKhN5xbQD33BFKGJYA0yDW1PZdkotmWkrCVKWPzRrkU4ZHElzL+7s8koxMmjU0au
+	 bBE29i9g1xviKzmc1y5y9lX3lBaR9tKQgokA+C0CmAA35oypGWdVuCifnxhjDiSXpQ
+	 RH3KKnt7PsbtQ==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2689e7a941fso1667607fac.3;
+        Fri, 22 Nov 2024 12:26:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUFcc5IU7Ibtb/flX1I3nZIIgPiegJusK1+Eo+L4ILrEU73mM4DbDHT1JoN0zblKL+UVZ/moaVo1n3tklf1@vger.kernel.org, AJvYcCVcMHVpLMywoXUrT5uGw5juolMqJPROw7GnUQDTUBrdW5r5Szoj0aiBf8vydgK3PBl98zBeV3FRtQ+N@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJcXrUl/CUlaF4HGm3sg3iME9EjCIbK2smmSUBhfFxOqt60Joz
+	CKUTOCHGmUaUcfbRc9V7TPRsCzVr10Ni20hGk2MX4AQfJ3BJYeNzs7ILAl44hwZmeeXzRKhBljw
+	+MsRc9HpcdFSn52wV8JD0spaALZU=
+X-Google-Smtp-Source: AGHT+IFOwzXdy8zDTCELl4+jkEyaKqTWdZcYugf+a20MywIWgLg2h5okyVyRJsr1ECrMmSuOcKbKCjWFqJpaC3x1v1Y=
+X-Received: by 2002:a05:6870:330f:b0:296:e50e:628f with SMTP id
+ 586e51a60fabf-29720e7b0fcmr3306019fac.36.1732307211618; Fri, 22 Nov 2024
+ 12:26:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241116095825.11660-1-hdegoede@redhat.com>
-In-Reply-To: <20241116095825.11660-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 22 Nov 2024 21:13:31 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0incmvrSt0EcLrZ6rz8oB+vgrY-tWTUeAniSFS+dA+B8g@mail.gmail.com>
-Message-ID: <CAJZ5v0incmvrSt0EcLrZ6rz8oB+vgrY-tWTUeAniSFS+dA+B8g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPI: x86: Add skip i2c clients quirk for Acer Iconia
- One 8 A1-840
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Date: Fri, 22 Nov 2024 21:26:40 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hD-P3fK4qiZeu3xqnV120UtBiiH6UN4PE5xBqQfOZQmw@mail.gmail.com>
+Message-ID: <CAJZ5v0hD-P3fK4qiZeu3xqnV120UtBiiH6UN4PE5xBqQfOZQmw@mail.gmail.com>
+Subject: [GIT PULL] More power management updates for v6.13-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 16, 2024 at 10:58=E2=80=AFAM Hans de Goede <hdegoede@redhat.com=
-> wrote:
->
-> The Acer Iconia One 8 A1-840 (not to be confused with the A1-840FHD which
-> is a different model) ships with Android 4.4 as factory OS and has
-> the usual broken DSDT issues for x86 Android tablets.
->
-> Add quirks to skip ACPI I2C client enumeration and disable ACPI battery/A=
-C
-> and ACPI GPIO event handlers.
->
-> Also add the "INT33F5" HID for the TI PMIC used on this tablet to the lis=
-t
-> of HIDs for which not to skip i2c_client instantiation, since we do want
-> an ACPI instantiated i2c_client for the PMIC.
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/x86/utils.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index 423565c31d5e..1bb425b78032 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -308,6 +308,18 @@ static const struct dmi_system_id acpi_quirk_skip_dm=
-i_ids[] =3D {
->                                         ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTE=
-RY |
->                                         ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLE=
-RS),
->         },
-> +       {
-> +               /* Acer Iconia One 8 A1-840 (non FHD version) */
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
-> +                       /* Above strings are too generic also match BIOS =
-date */
-> +                       DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
-> +               },
-> +               .driver_data =3D (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-> +                                       ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTE=
-RY |
-> +                                       ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLE=
-RS),
-> +       },
->         {
->                 .matches =3D {
->                         DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER=
- INC."),
-> @@ -425,6 +437,7 @@ static const struct acpi_device_id i2c_acpi_known_goo=
-d_ids[] =3D {
->         { "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
->         { "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
->         { "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
-> +       { "INT33F5", 0 },  /* TI Dollar Cove PMIC */
->         { "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
->         { "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
->         { "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
-> --
+Hi Linus,
 
-Applied as 6.13-rc material along with the [2/2], thanks!
+Please pull from the tag
+
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.13-rc1-2
+
+with top-most commit f3e66e78f2ecb18a55374f7d58030556b751dd79
+
+ Merge branch 'pm-cpuidle'
+
+on top of commit ad52c55e1d3a2e85e05e47b6d7056c662a9c0246
+
+ Merge tag 'pm-6.13-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+to receive more power management updates for 6.13-rc1.
+
+These mostly are updates of cpufreq drivers used on ARM platforms plus
+one new DT-based cpufreq driver for virtualized guests and two cpuidle
+changes that should not make any difference on systems currently in
+the field, but will be needed for future development:
+
+ - Add virtual cpufreq driver for guest kernels (David Dai).
+
+ - Minor cleanup to various cpufreq drivers (Andy Shevchenko, Dhruva
+   Gole, Jie Zhan, Jinjie Ruan, Shuosheng Huang, Sibi Sankar, and Yuan
+   Can).
+
+ - Revert "cpufreq: brcmstb-avs-cpufreq: Fix initial command check" (Colin
+   Ian King).
+
+ - Improve DT bindings for qcom-hw driver (Dmitry Baryshkov, Konrad
+   Dybcio, and Nikunj Kela).
+
+ - Make cpuidle_play_dead() try all idle states with :enter_dead()
+   callbacks and change their return type to void (Rafael Wysocki).
+
+Thanks!
+
+
+---------------
+
+Andy Shevchenko (1):
+      cpufreq: loongson3: Check for error code from devm_mutex_init() call
+
+Colin Ian King (1):
+      Revert "cpufreq: brcmstb-avs-cpufreq: Fix initial command check"
+
+David Dai (2):
+      dt-bindings: cpufreq: add virtual cpufreq device
+      cpufreq: add virtual-cpufreq driver
+
+Dhruva Gole (2):
+      cpufreq: ti-cpufreq: Allow backward compatibility for efuse syscon
+      cpufreq: ti-cpufreq: Remove revision offsets in AM62 family
+
+Dmitry Baryshkov (1):
+      dt-bindings: cpufreq: cpufreq-qcom-hw: Add SAR2130P compatible
+
+Jie Zhan (2):
+      cppc_cpufreq: Use desired perf if feedback ctrs are 0 or unchanged
+      cppc_cpufreq: Remove HiSilicon CPPC workaround
+
+Jinjie Ruan (5):
+      cpufreq: CPPC: Fix possible null-ptr-deref for cpufreq_cpu_get_raw()
+      cpufreq: CPPC: Fix possible null-ptr-deref for cppc_get_cpu_cost()
+      cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_cost()
+      cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_power()
+      cpufreq: mediatek-hw: Fix wrong return value in
+mtk_cpufreq_get_cpu_power()
+
+Konrad Dybcio (2):
+      dt-bindings: cpufreq: cpufreq-qcom-hw: Add SC8180X compatible
+      arm64: dts: qcom: sc8180x: Add a SoC-specific compatible to cpufreq-hw
+
+Nikunj Kela (1):
+      dt-bindings: cpufreq: qcom-hw: document support for SA8255p
+
+Rafael J. Wysocki (2):
+      cpuidle: Do not return from cpuidle_play_dead() on callback failures
+      cpuidle: Change :enter_dead() driver callback return type to void
+
+Shuosheng Huang (1):
+      cpufreq: sun50i: add a100 cpufreq support
+
+Sibi Sankar (1):
+      cpufreq: scmi: Fix cleanup path when boost enablement fails
+
+Yuan Can (1):
+      cpufreq: loongson2: Unregister platform_driver on failure
+
+---------------
+
+ .../bindings/cpufreq/cpufreq-qcom-hw.yaml          |   6 +
+ .../bindings/cpufreq/qemu,virtual-cpufreq.yaml     |  48 +++
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi              |   2 +-
+ drivers/acpi/processor_idle.c                      |   7 +-
+ drivers/cpufreq/Kconfig                            |  14 +
+ drivers/cpufreq/Makefile                           |   1 +
+ drivers/cpufreq/brcmstb-avs-cpufreq.c              |   4 +-
+ drivers/cpufreq/cppc_cpufreq.c                     | 136 ++++-----
+ drivers/cpufreq/cpufreq-dt-platdev.c               |   1 +
+ drivers/cpufreq/loongson2_cpufreq.c                |   4 +-
+ drivers/cpufreq/loongson3_cpufreq.c                |   7 +-
+ drivers/cpufreq/mediatek-cpufreq-hw.c              |   2 +-
+ drivers/cpufreq/scmi-cpufreq.c                     |   4 +-
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c             |  28 ++
+ drivers/cpufreq/ti-cpufreq.c                       |  10 +-
+ drivers/cpufreq/virtual-cpufreq.c                  | 333 +++++++++++++++++++++
+ drivers/cpuidle/cpuidle.c                          |  10 +-
+ include/linux/arch_topology.h                      |   1 +
+ include/linux/cpuidle.h                            |   2 +-
+ 19 files changed, 517 insertions(+), 103 deletions(-)
 
