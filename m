@@ -1,184 +1,194 @@
-Return-Path: <linux-acpi+bounces-9763-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9764-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042439D64DD
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 21:26:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4829D64EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 21:34:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6030DB21E16
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 20:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8981618A0
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 20:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0276518593A;
-	Fri, 22 Nov 2024 20:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E922317BB13;
+	Fri, 22 Nov 2024 20:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EdprW1Me"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNH98kde"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C610715F40B;
-	Fri, 22 Nov 2024 20:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C352D19BBA
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 20:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732307212; cv=none; b=aEZtWP4a8Vqr9xhtQuW9zHspUVcZGMcvTNrO3J/DcsrNdXsfyeTaDMcUUFDJDlpCcnXlGb52nUU6dAHoE/9xEcbmk1CM62JoSVwhe3IheEwVnuwYNFCC1TVTZI8aHr5JUAf9i5oTgdLHq5h/w1Vf7EoJwkcQG3UU2hpTqus0yQk=
+	t=1732307648; cv=none; b=ttq/ZjzHkrm6t84zdBCRXBOEYmLrH6bCJ9fN3qYte7YcdeWEDRdfaQi+AVizVuZ4ZQ7MUq8BrQTu31u1u8AFP6+INM/9LRslS+Ec8cS40U+glDqC8AE81Zwsm9hCSkysHjy9AdHGzxMEgrltIgis5QpJkiW5qjceZkTvrSNEMF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732307212; c=relaxed/simple;
-	bh=6B1BK6wIWPggwIoC0MMHmHuadgqKGKX5TpZp45ctLkA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=D2lvC/fcocMmXzUZhGehMQOGSTEDq9f4y9K5jLqEp6a87nb7/qSimOQDHL5ZnrGVEY3LE9gZ1DgiUt/Djs6MXb94MJzbqtJhq2s4hbdaI0SWQXPxNEY4Wyg/FGR7yLp0wnK5FQDCweJbHM+NpPKKTIJYrmPHwiHuXHECh8tgV3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EdprW1Me; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F74C4CED0;
-	Fri, 22 Nov 2024 20:26:52 +0000 (UTC)
+	s=arc-20240116; t=1732307648; c=relaxed/simple;
+	bh=TcHCg6aN8mkh9HyNHFWkSQK0mjWOBxhwbHsro+MsW9o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=obB/YbeSmTpBQtI3/TY8aQPRTuayq6dDPBCUP8cbt0mmudofA6ykOeiXxem2k5nT0rbLx7lHhnkZiXHFGffOphKxK6G9Rd4GNb195EgBvcynRqHmfNcx1DKidRUo6r+dCU7HyGpbXWoXKQXLyzYkAkIFcvX2VI/4wDUfO9kC0RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNH98kde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF70C4CED2
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 20:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732307212;
-	bh=6B1BK6wIWPggwIoC0MMHmHuadgqKGKX5TpZp45ctLkA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=EdprW1MeXYp3RkQlp1o7otuzojZq5RHMB8qVGAA3HKwV0DsCw2Vw05hLA0GzBf8Hq
-	 V82AYr9Dk68NnRbT7eLK7OMjs6RdEQD2hgSEpjdDrKPpKL7Tv3Bm92uHufzj3drNoP
-	 5gzoVLcjr/1x33jRcgDYvuMXU0kxxRadlf4/wb1V1KTxTYmzRAoziS4ZDjT6qgYiaa
-	 ZdjKhN5xbQD33BFKGJYA0yDW1PZdkotmWkrCVKWPzRrkU4ZHElzL+7s8koxMmjU0au
-	 bBE29i9g1xviKzmc1y5y9lX3lBaR9tKQgokA+C0CmAA35oypGWdVuCifnxhjDiSXpQ
-	 RH3KKnt7PsbtQ==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2689e7a941fso1667607fac.3;
-        Fri, 22 Nov 2024 12:26:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUFcc5IU7Ibtb/flX1I3nZIIgPiegJusK1+Eo+L4ILrEU73mM4DbDHT1JoN0zblKL+UVZ/moaVo1n3tklf1@vger.kernel.org, AJvYcCVcMHVpLMywoXUrT5uGw5juolMqJPROw7GnUQDTUBrdW5r5Szoj0aiBf8vydgK3PBl98zBeV3FRtQ+N@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJcXrUl/CUlaF4HGm3sg3iME9EjCIbK2smmSUBhfFxOqt60Joz
-	CKUTOCHGmUaUcfbRc9V7TPRsCzVr10Ni20hGk2MX4AQfJ3BJYeNzs7ILAl44hwZmeeXzRKhBljw
-	+MsRc9HpcdFSn52wV8JD0spaALZU=
-X-Google-Smtp-Source: AGHT+IFOwzXdy8zDTCELl4+jkEyaKqTWdZcYugf+a20MywIWgLg2h5okyVyRJsr1ECrMmSuOcKbKCjWFqJpaC3x1v1Y=
-X-Received: by 2002:a05:6870:330f:b0:296:e50e:628f with SMTP id
- 586e51a60fabf-29720e7b0fcmr3306019fac.36.1732307211618; Fri, 22 Nov 2024
- 12:26:51 -0800 (PST)
+	s=k20201202; t=1732307648;
+	bh=TcHCg6aN8mkh9HyNHFWkSQK0mjWOBxhwbHsro+MsW9o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PNH98kde2U4k7sWcPZ9YIaMv+tnRyZSc8CpRzqTc0v3Fi0c1xYzlDNqBgclHUe6gu
+	 U0tGVF/m8dBOKa5bkseWM3FduuOojhl3z2USAN8/pSwjfPClDkwOs2NViQLFIbLWg3
+	 OiDHfNg34qczlG5DSqWxZpWKzhfATuDViBxednrqQeOvstr9yFaM4BO/dpIqh2HiTp
+	 0DvoNFV7EpsoE1S6H65/FrU2jiPfrg4jKDEEwBh9NVNiV/ZCXy3ZkeecrpZ7qTzcjd
+	 pGhxgUa+4sFH4nWuiyX5DI4xBDQNOKwT6xlSK7Rxx6lUIapqQBZqwVHqZt8H/8bSfS
+	 kC6IMmiO65FKA==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-29645a83b1bso1543284fac.1
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 12:34:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVys8UqEvQdSTtk7hCJclfulfgRTIvBkS2MEf5+2amTHgqdLula9yhtL2ugZ20dO4UmE3wH58I/DdF3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4di9Zn22yHk/fpVWuSb6FzblMoTE+/uh7yKlmetPhRhZUSmPI
+	+tRUMKB9AzZ8GVpK9RvHIacy1bAt5Z6T3tXMJ/MRYURkoiDcP98uhsqKHKHE3jHN/9zWi8mmxqH
+	RgmEiRbLZBk5HblK9XsWNgZLwxus=
+X-Google-Smtp-Source: AGHT+IGXWpH3f+Kr55W7HkdCqx5mQR/15zrCInu/7hL9xRBP/V3xL9ZNnuFy+ofcmgd6X8E/49jQLyy2xHXJ99+oHj0=
+X-Received: by 2002:a05:6870:4192:b0:296:e00e:22e9 with SMTP id
+ 586e51a60fabf-29720e5f19amr4285335fac.36.1732307647677; Fri, 22 Nov 2024
+ 12:34:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20241121-intro-acpi-arch-init-v4-1-b1fb517e7d8b@gmail.com>
+In-Reply-To: <20241121-intro-acpi-arch-init-v4-1-b1fb517e7d8b@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 22 Nov 2024 21:26:40 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hD-P3fK4qiZeu3xqnV120UtBiiH6UN4PE5xBqQfOZQmw@mail.gmail.com>
-Message-ID: <CAJZ5v0hD-P3fK4qiZeu3xqnV120UtBiiH6UN4PE5xBqQfOZQmw@mail.gmail.com>
-Subject: [GIT PULL] More power management updates for v6.13-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, 
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
+Date: Fri, 22 Nov 2024 21:33:55 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gmDghrLAx_ZpFS0oK8UAPLE8A2Mzt4yVJG7CtYYy0VUw@mail.gmail.com>
+Message-ID: <CAJZ5v0gmDghrLAx_ZpFS0oK8UAPLE8A2Mzt4yVJG7CtYYy0VUw@mail.gmail.com>
+Subject: Re: [PATCH v4] ACPI: introduce acpi_arch_init
+To: shankerwangmiao@gmail.com
+Cc: Hanjun Guo <guohanjun@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Sunil V L <sunilvl@ventanamicro.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, linux-acpi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+On Thu, Nov 21, 2024 at 3:25=E2=80=AFPM Miao Wang via B4 Relay
+<devnull+shankerwangmiao.gmail.com@kernel.org> wrote:
+>
+> From: Miao Wang <shankerwangmiao@gmail.com>
+>
+> To avoid arch-specific code in general ACPI initialization flow,
+> we introduce a weak symbol acpi_arch_init. Currently, arm64 and
+> riscv can utillize this to insert their arch-specific flow. In
+> the future, other architectures can also have chance to define
+> their own arch-specific acpi initialization process if necessary.
+>
+> Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Acked-by: Hanjun Guo <guohanjun@huawei.com>
+> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+> ---
+> Changes from v1
+> - Change acpi_arch_init from a static inline stub to a weak function
+>   according to Haijun Guo's advice
+> ---
+> Changes from v2:
+> - Add __init attribute to the weak acpi_arch_init stub
+> - Link to v2: https://lore.kernel.org/r/20240807-intro-acpi-arch-init-v2-=
+1-9231e23a7721@gmail.com
+> ---
+> Changes in v4:
+> - Rebased to recent Linus's tree
+> - Consolidate acpi_arm_init and acpi_riscv_init into acpi_arch_init
+> - Link to v3: https://lore.kernel.org/r/20240808-intro-acpi-arch-init-v3-=
+1-ba510859baff@gmail.com
+> ---
+>  drivers/acpi/arm64/init.c |  2 +-
+>  drivers/acpi/bus.c        |  5 +++--
+>  drivers/acpi/riscv/init.c |  2 +-
+>  include/linux/acpi.h      | 12 +-----------
+>  4 files changed, 6 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/acpi/arm64/init.c b/drivers/acpi/arm64/init.c
+> index d0c8aed90fd16f9a7fe62b8c551c0cd091cb91ec..7a47d8095a7dd5f3dac6e0754=
+d6271bf6de269ff 100644
+> --- a/drivers/acpi/arm64/init.c
+> +++ b/drivers/acpi/arm64/init.c
+> @@ -2,7 +2,7 @@
+>  #include <linux/acpi.h>
+>  #include "init.h"
+>
+> -void __init acpi_arm_init(void)
+> +void __init acpi_arch_init(void)
+>  {
+>         if (IS_ENABLED(CONFIG_ACPI_AGDI))
+>                 acpi_agdi_init();
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 16917dc3ad604cc537d05bb2c0034ff5a9181fd0..058910af82bca689577909e89=
+67073ca3198b3c8 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1434,6 +1434,8 @@ static int __init acpi_bus_init(void)
+>  struct kobject *acpi_kobj;
+>  EXPORT_SYMBOL_GPL(acpi_kobj);
+>
+> +void __weak __init acpi_arch_init(void) { }
+> +
+>  static int __init acpi_init(void)
+>  {
+>         int result;
+> @@ -1461,8 +1463,7 @@ static int __init acpi_init(void)
+>         acpi_viot_early_init();
+>         acpi_hest_init();
+>         acpi_ghes_init();
+> -       acpi_arm_init();
+> -       acpi_riscv_init();
+> +       acpi_arch_init();
+>         acpi_scan_init();
+>         acpi_ec_init();
+>         acpi_debugfs_init();
+> diff --git a/drivers/acpi/riscv/init.c b/drivers/acpi/riscv/init.c
+> index 5ef97905a72759ea2aab3195e56b7ee580eded96..673e4d5dd752719ae7ed0017c=
+8b5b1c688cf9b4b 100644
+> --- a/drivers/acpi/riscv/init.c
+> +++ b/drivers/acpi/riscv/init.c
+> @@ -7,7 +7,7 @@
+>  #include <linux/acpi.h>
+>  #include "init.h"
+>
+> -void __init acpi_riscv_init(void)
+> +void __init acpi_arch_init(void)
+>  {
+>         riscv_acpi_init_gsi_mapping();
+>  }
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 7dd24acd9ffeedbe47ac392bd939309408c0afa3..05f39fbfa4856d2e6b7d45d95=
+80cc82963764d55 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1530,17 +1530,7 @@ static inline int find_acpi_cpu_topology_hetero_id=
+(unsigned int cpu)
+>  }
+>  #endif
+>
+> -#ifdef CONFIG_ARM64
+> -void acpi_arm_init(void);
+> -#else
+> -static inline void acpi_arm_init(void) { }
+> -#endif
+> -
+> -#ifdef CONFIG_RISCV
+> -void acpi_riscv_init(void);
+> -#else
+> -static inline void acpi_riscv_init(void) { }
+> -#endif
+> +void acpi_arch_init(void);
+>
+>  #ifdef CONFIG_ACPI_PCC
+>  void acpi_init_pcc(void);
+>
+> ---
 
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-6.13-rc1-2
-
-with top-most commit f3e66e78f2ecb18a55374f7d58030556b751dd79
-
- Merge branch 'pm-cpuidle'
-
-on top of commit ad52c55e1d3a2e85e05e47b6d7056c662a9c0246
-
- Merge tag 'pm-6.13-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive more power management updates for 6.13-rc1.
-
-These mostly are updates of cpufreq drivers used on ARM platforms plus
-one new DT-based cpufreq driver for virtualized guests and two cpuidle
-changes that should not make any difference on systems currently in
-the field, but will be needed for future development:
-
- - Add virtual cpufreq driver for guest kernels (David Dai).
-
- - Minor cleanup to various cpufreq drivers (Andy Shevchenko, Dhruva
-   Gole, Jie Zhan, Jinjie Ruan, Shuosheng Huang, Sibi Sankar, and Yuan
-   Can).
-
- - Revert "cpufreq: brcmstb-avs-cpufreq: Fix initial command check" (Colin
-   Ian King).
-
- - Improve DT bindings for qcom-hw driver (Dmitry Baryshkov, Konrad
-   Dybcio, and Nikunj Kela).
-
- - Make cpuidle_play_dead() try all idle states with :enter_dead()
-   callbacks and change their return type to void (Rafael Wysocki).
-
-Thanks!
-
-
----------------
-
-Andy Shevchenko (1):
-      cpufreq: loongson3: Check for error code from devm_mutex_init() call
-
-Colin Ian King (1):
-      Revert "cpufreq: brcmstb-avs-cpufreq: Fix initial command check"
-
-David Dai (2):
-      dt-bindings: cpufreq: add virtual cpufreq device
-      cpufreq: add virtual-cpufreq driver
-
-Dhruva Gole (2):
-      cpufreq: ti-cpufreq: Allow backward compatibility for efuse syscon
-      cpufreq: ti-cpufreq: Remove revision offsets in AM62 family
-
-Dmitry Baryshkov (1):
-      dt-bindings: cpufreq: cpufreq-qcom-hw: Add SAR2130P compatible
-
-Jie Zhan (2):
-      cppc_cpufreq: Use desired perf if feedback ctrs are 0 or unchanged
-      cppc_cpufreq: Remove HiSilicon CPPC workaround
-
-Jinjie Ruan (5):
-      cpufreq: CPPC: Fix possible null-ptr-deref for cpufreq_cpu_get_raw()
-      cpufreq: CPPC: Fix possible null-ptr-deref for cppc_get_cpu_cost()
-      cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_cost()
-      cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_power()
-      cpufreq: mediatek-hw: Fix wrong return value in
-mtk_cpufreq_get_cpu_power()
-
-Konrad Dybcio (2):
-      dt-bindings: cpufreq: cpufreq-qcom-hw: Add SC8180X compatible
-      arm64: dts: qcom: sc8180x: Add a SoC-specific compatible to cpufreq-hw
-
-Nikunj Kela (1):
-      dt-bindings: cpufreq: qcom-hw: document support for SA8255p
-
-Rafael J. Wysocki (2):
-      cpuidle: Do not return from cpuidle_play_dead() on callback failures
-      cpuidle: Change :enter_dead() driver callback return type to void
-
-Shuosheng Huang (1):
-      cpufreq: sun50i: add a100 cpufreq support
-
-Sibi Sankar (1):
-      cpufreq: scmi: Fix cleanup path when boost enablement fails
-
-Yuan Can (1):
-      cpufreq: loongson2: Unregister platform_driver on failure
-
----------------
-
- .../bindings/cpufreq/cpufreq-qcom-hw.yaml          |   6 +
- .../bindings/cpufreq/qemu,virtual-cpufreq.yaml     |  48 +++
- arch/arm64/boot/dts/qcom/sc8180x.dtsi              |   2 +-
- drivers/acpi/processor_idle.c                      |   7 +-
- drivers/cpufreq/Kconfig                            |  14 +
- drivers/cpufreq/Makefile                           |   1 +
- drivers/cpufreq/brcmstb-avs-cpufreq.c              |   4 +-
- drivers/cpufreq/cppc_cpufreq.c                     | 136 ++++-----
- drivers/cpufreq/cpufreq-dt-platdev.c               |   1 +
- drivers/cpufreq/loongson2_cpufreq.c                |   4 +-
- drivers/cpufreq/loongson3_cpufreq.c                |   7 +-
- drivers/cpufreq/mediatek-cpufreq-hw.c              |   2 +-
- drivers/cpufreq/scmi-cpufreq.c                     |   4 +-
- drivers/cpufreq/sun50i-cpufreq-nvmem.c             |  28 ++
- drivers/cpufreq/ti-cpufreq.c                       |  10 +-
- drivers/cpufreq/virtual-cpufreq.c                  | 333 +++++++++++++++++++++
- drivers/cpuidle/cpuidle.c                          |  10 +-
- include/linux/arch_topology.h                      |   1 +
- include/linux/cpuidle.h                            |   2 +-
- 19 files changed, 517 insertions(+), 103 deletions(-)
+Applied as 6.13-rc material, thanks!
 
