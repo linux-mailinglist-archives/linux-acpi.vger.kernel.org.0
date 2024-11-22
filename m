@@ -1,58 +1,64 @@
-Return-Path: <linux-acpi+bounces-9732-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9733-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CA29D595A
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 07:21:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456219D5B0B
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 09:30:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2591F234F0
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 06:21:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93B1B21F90
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 08:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA0E176AD8;
-	Fri, 22 Nov 2024 06:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1127818BC32;
+	Fri, 22 Nov 2024 08:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="xrd7DFQd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C730170A01;
-	Fri, 22 Nov 2024 06:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045BB18B488;
+	Fri, 22 Nov 2024 08:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732256466; cv=none; b=LrjgipkLB+262fjLgZKAz3AiDCNLEP5lJZwQ4ZkClVUwDn8sqg8i6hSQQ/DMud/V5O0hlDmh1DvF/qu46/fxsP/BGajtPavdH1u70uzs8xaFmaUKQ6EhTPnNgjTkFYdDCIgbdDN72mpGLUxbTUys51gvy8QvAghDr8hRqyeNtcg=
+	t=1732264220; cv=none; b=Eug9t5IGR2LQDmtAcNQwziq8a8shp/kl2oiXk/SuOM79LwWYBKWtCFRMsK62Skho1xo8ovSqSjzD9qmCKivGa/8/G38LtyUsTbUl3AhmRY/hMFB8Q1LZsbS8g98c6dLVsm5JZhPjCuTTW9YhhzM28JjtjbowQe6SbPpF4VIrNos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732256466; c=relaxed/simple;
-	bh=KegWEtr6BZ3xiNwobCQnLHFuCTh+SSPdH77v6AumHfE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tSX12Wgam+iqCv/GSA4HAfh5NztUvek63cBqpB/eQdbPQuBg8k+hoJZm1UfBG7pT3EOtRV4XbbyydZIgoOHuPzmSIuEgPr9Lh6sA2ywzLt6eBYhGxGa22qxbF7bOxyspBA1isWs9OpnFA514U4xi725Ozeo6HPgeVPGsKO7ya+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XvlLV403Hz21lYC;
-	Fri, 22 Nov 2024 14:19:30 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id A2997180019;
-	Fri, 22 Nov 2024 14:20:54 +0800 (CST)
-Received: from localhost.huawei.com (10.50.165.33) by
- kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 22 Nov 2024 14:20:53 +0800
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<viresh.kumar@linaro.org>
-CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <hepeng68@huawei.com>,
-	<fanghao11@huawei.com>, <zhenglifeng1@huawei.com>
-Subject: [PATCH v2 3/3] cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
-Date: Fri, 22 Nov 2024 14:20:51 +0800
-Message-ID: <20241122062051.3658577-4-zhenglifeng1@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20241122062051.3658577-1-zhenglifeng1@huawei.com>
-References: <20241122062051.3658577-1-zhenglifeng1@huawei.com>
+	s=arc-20240116; t=1732264220; c=relaxed/simple;
+	bh=JqQZtXK40acXy58QX2YIIWMwHGb8xU/r3bW9Pix5Ipw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qMAuFzvL7/dq4WK+ZBqR6eNpG++oCbrNZEQ+kYfUhfoAygMVxKlBCY3P0OeU++OvWBVuK9eW+l8o67euhblbBGkUXYGDM1YgYvToythnMhmLkMAB6vRZ9+fdmSzHxfEs1Y/GQY6L3DBeHZARsW1IJnO+Qo3fTKu8W7IF33y5STg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=xrd7DFQd; arc=none smtp.client-ip=178.154.239.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:3012:0:640:8a85:0])
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id E2AB0609DF;
+	Fri, 22 Nov 2024 11:30:05 +0300 (MSK)
+Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6b8:b081:6416::1:22])
+	by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id vTP7lN0IYKo0-IIt9HvtQ;
+	Fri, 22 Nov 2024 11:30:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1732264203;
+	bh=5xXVJ5iVTPiPkoXzKdRU4pzuGZK7cFAxSxr+Q9wI+3s=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=xrd7DFQdB/R3YVNVCUsF0493/rygp/o3ZgbwFRr6UBDROXFOWHDsCeO56e5dVHJU1
+	 xmdOoU77Yy641kB55DBMSS4UpfspANZrcZ6Xz4scL8FDRkW/pahkDJypIiWrw9N0bQ
+	 Sor7ZlW506INGLhCMjmh6ek2sqMRbuX+xxr2wd/Q=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: Robert Moore <robert.moore@intel.com>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Erik Kaneda <erik.kaneda@intel.com>,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPICA: events/evxfregn: don't release the ContextMutex that was never acquired
+Date: Fri, 22 Nov 2024 11:29:54 +0300
+Message-Id: <20241122082954.658356-1-d-tatianin@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -60,238 +66,33 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemh100008.china.huawei.com (7.202.181.93)
 
-Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
-driver.
+This bug was first introduced in c27f3d011b08, where the author of the
+patch probably meant to do DeleteMutex instead of ReleaseMutex. The
+mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
+MutexRelease line was never removed, so do it now.
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://github.com/acpica/acpica/pull/982
+Fixes: c27f3d011b08 ("Fix race in GenericSerialBus (I2C) and GPIO OpRegion parameter handling")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- .../ABI/testing/sysfs-devices-system-cpu      |  54 +++++++
- drivers/cpufreq/cppc_cpufreq.c                | 138 ++++++++++++++++++
- 2 files changed, 192 insertions(+)
+ drivers/acpi/acpica/evxfregn.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index 206079d3bd5b..3d87c3bb3fe2 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -268,6 +268,60 @@ Description:	Discover CPUs in the same CPU frequency coordination domain
- 		This file is only present if the acpi-cpufreq or the cppc-cpufreq
- 		drivers are in use.
+diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
+index 95f78383bbdb..bff2d099f469 100644
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -232,8 +232,6 @@ acpi_remove_address_space_handler(acpi_handle device,
  
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_select
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Autonomous selection enable
-+
-+		Read/write interface to control autonomous selection enable
-+			Read returns autonomous selection status:
-+				0: autonomous selection is disabled
-+				1: autonomous selection is enabled
-+
-+			Write 'y' or '1' or 'on' to enable autonomous selection.
-+			Write 'n' or '0' or 'off' to disable autonomous selection.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_act_window
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Autonomous activity window
-+
-+		This file indicates a moving utilization sensitivity window to
-+		the platform's autonomous selection policy.
-+
-+		Read/write an integer represents autonomous activity window (in
-+		microseconds) from/to this file. The max value to write is
-+		1270000000 but the max significand is 127. This means that if 128
-+		is written to this file, 127 will be stored. If the value is
-+		greater than 130, only the first two digits will be saved as
-+		significand.
-+
-+		Writing a zero value to this file enable the platform to
-+		determine an appropriate Activity Window depending on the workload.
-+
-+		Writing to this file only has meaning when Autonomous Selection is
-+		enabled.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/energy_perf
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Energy performance preference
-+
-+		Read/write an 8-bit integer from/to this file. This file
-+		represents a range of values from 0 (performance preference) to
-+		0xFF (energy efficiency preference) that influences the rate of
-+		performance increase/decrease and the result of the hardware's
-+		energy efficiency and performance optimization policies.
-+
-+		Writing to this file only has meaning when Autonomous Selection is
-+		enabled.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
+ 			/* Now we can delete the handler object */
  
- What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
- Date:		August 2008
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 2b8708475ac7..351ecdd49ad4 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -792,10 +792,148 @@ static ssize_t show_freqdomain_cpus(struct cpufreq_policy *policy, char *buf)
- 
- 	return cpufreq_show_cpus(cpu_data->shared_cpu_map, buf);
- }
-+
-+static ssize_t show_auto_select(struct cpufreq_policy *policy, char *buf)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_auto_sel(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%llu\n", val);
-+}
-+
-+static ssize_t store_auto_select(struct cpufreq_policy *policy,
-+				 const char *buf, size_t count)
-+{
-+	bool val;
-+	int ret;
-+
-+	ret = kstrtobool(buf, &val);
-+	if (ret)
-+		return ret;
-+
-+	ret = cppc_set_auto_sel(policy->cpu, val);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+#define AUTO_ACT_WINDOW_SIG_BIT_SIZE	(7)
-+#define AUTO_ACT_WINDOW_EXP_BIT_SIZE	(3)
-+#define AUTO_ACT_WINDOW_MAX_SIG	((1 << AUTO_ACT_WINDOW_SIG_BIT_SIZE) - 1)
-+#define AUTO_ACT_WINDOW_MAX_EXP	((1 << AUTO_ACT_WINDOW_EXP_BIT_SIZE) - 1)
-+/* AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
-+#define AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
-+
-+static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
-+{
-+	unsigned int exp;
-+	u64 val, sig;
-+	int ret;
-+
-+	ret = cppc_get_auto_act_window(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	sig = val & AUTO_ACT_WINDOW_MAX_SIG;
-+	exp = (val >> AUTO_ACT_WINDOW_SIG_BIT_SIZE) & AUTO_ACT_WINDOW_MAX_EXP;
-+
-+	return sysfs_emit(buf, "%llu\n", sig * int_pow(10, exp));
-+}
-+
-+static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
-+				     const char *buf, size_t count)
-+{
-+	unsigned long usec;
-+	int digits = 0;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &usec);
-+	if (ret)
-+		return ret;
-+
-+	if (usec > AUTO_ACT_WINDOW_MAX_SIG * int_pow(10, AUTO_ACT_WINDOW_MAX_EXP))
-+		return -EINVAL;
-+
-+	while (usec > AUTO_ACT_WINDOW_SIG_CARRY_THRESH) {
-+		usec /= 10;
-+		digits += 1;
-+	}
-+
-+	if (usec > AUTO_ACT_WINDOW_MAX_SIG)
-+		usec = AUTO_ACT_WINDOW_MAX_SIG;
-+
-+	ret = cppc_set_auto_act_window(policy->cpu,
-+				       (digits << AUTO_ACT_WINDOW_SIG_BIT_SIZE) + usec);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+static ssize_t show_energy_perf(struct cpufreq_policy *policy, char *buf)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_epp_perf(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%llu\n", val);
-+}
-+
-+#define ENERGY_PERF_MAX	(0xFF)
-+
-+static ssize_t store_energy_perf(struct cpufreq_policy *policy,
-+				 const char *buf, size_t count)
-+{
-+	unsigned long val;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val > ENERGY_PERF_MAX)
-+		return -EINVAL;
-+
-+	ret = cppc_set_epp(policy->cpu, val);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
- cpufreq_freq_attr_ro(freqdomain_cpus);
-+cpufreq_freq_attr_rw(auto_select);
-+cpufreq_freq_attr_rw(auto_act_window);
-+cpufreq_freq_attr_rw(energy_perf);
- 
- static struct freq_attr *cppc_cpufreq_attr[] = {
- 	&freqdomain_cpus,
-+	&auto_select,
-+	&auto_act_window,
-+	&energy_perf,
- 	NULL,
- };
- 
+-			acpi_os_release_mutex(handler_obj->address_space.
+-					      context_mutex);
+ 			acpi_ut_remove_reference(handler_obj);
+ 			goto unlock_and_exit;
+ 		}
 -- 
-2.33.0
+2.34.1
 
 
