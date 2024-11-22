@@ -1,145 +1,136 @@
-Return-Path: <linux-acpi+bounces-9761-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9762-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B0D9D6491
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 20:27:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B09A9D64CA
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 21:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1134EB22036
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 19:27:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72FDB20C64
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Nov 2024 20:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445361DF96A;
-	Fri, 22 Nov 2024 19:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331D9183CBE;
+	Fri, 22 Nov 2024 20:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O54sxMbF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2cfZWzg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA0364A8F;
-	Fri, 22 Nov 2024 19:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7CE1CA9C
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 20:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732303666; cv=none; b=g38kliOnTp5bjLr269E8gZBz5QLJQ9rPwhpOaJq2alUN8SHfiKQB6v13OR4sIAFuKbfCQCXMdj9Oqg8hwTJ1LTootFEK7ENEF1XWDxNsF0MMlsYl4excVfrBfjK8Mj14KbEnzSS8kUubvY51NUtyS/k7sQSeEnsAlqLJhU2C/vI=
+	t=1732306425; cv=none; b=G9iEMrrAOJcikmdN6ZvfBV4N3YrnjcQmSBlJZYdC6mHlURe185Bktbyy29SS2ACI6G11bxAEo6ejA6Ztc4icE48ARAKgqPa/wwBYM1BW55imU6BNxNct/dal9G7KbLHB4f9iDPyS2/X6vi+IIOk5VwL0XhoQUdU+yccqVlvKCWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732303666; c=relaxed/simple;
-	bh=yguWofAVWAk41J3X5cJbVOW9/dPsoPltgyhYgkTdtNs=;
+	s=arc-20240116; t=1732306425; c=relaxed/simple;
+	bh=W6eD8O9QsbAHcbn8tfe6TfBSrOpvd2qB6Q+S3anPjyc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TpgKJFREWffzdCHpNEpv6jj0YZel0/eead/zSzj4dHqjTUXutIyc2lnkFT/uEXFLWw0i7Sv7V+qm3MdePZtyC5oTuhZOW6YTRad9BFwub182mqmZJNpw6wQvDzzn252w4g/MsPCMQjJUp59wXq/HkKlYRXnXAp+ajLdrguIS7nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O54sxMbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC52AC4CED7;
-	Fri, 22 Nov 2024 19:27:45 +0000 (UTC)
+	 To:Cc:Content-Type; b=LroiNOtxTabUTaJUb1RX3ThaoxSR5IKb+oybQRyfJTfPWKMwQog7xm0WOpTm2rtUMYdjIZwMOQGVz36+LNNhHuQgzE3w0buh3exoZfwSmpzsq/v/ywqsDf7EPu8/bzXzcgU+qEpD/+YbdEHovYq7WKvnknKl8LdlBKvD50ulzdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2cfZWzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA49C4CECE
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 20:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732303665;
-	bh=yguWofAVWAk41J3X5cJbVOW9/dPsoPltgyhYgkTdtNs=;
+	s=k20201202; t=1732306424;
+	bh=W6eD8O9QsbAHcbn8tfe6TfBSrOpvd2qB6Q+S3anPjyc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O54sxMbFoHRVAVs7VcZotltbPtUm1VGWvNoUHw4DPg2ODwVYY6QkpQjXfXQ7misB+
-	 nEJkikH25Ns40iQfM0Uqx4GYbnHXCOm9gRNgOZZHCbCqREAYXp09/TFt3YlCguevlr
-	 fPotLZEBu5myYOx48RSuIQ8Nv1Dw3c7bPNsXAug7D9OK5opCGlRmo+6Y2hoav09tuF
-	 CgLeh5qEVEI1LwvYWzjYB1dN+6kAg76xk6bkygmLhZnKWSyC/t/7viDYM/XAn7eogg
-	 YMojhZe5+fe8GpVmTHmFavGU7DOyuCB4IZFHwD776ru0Ae17WlOLzbmmtd/x1kCvV5
-	 ISelCto6yQe2A==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-296994dd3bfso1642909fac.0;
-        Fri, 22 Nov 2024 11:27:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVLJKQ260GdCYRS6uiAOH0WesXzBFAAx6r7tvieSHZNKxpgQTGN4VaocsbODZT3RUNm0j6s8CZRCws=@vger.kernel.org, AJvYcCWJb/X0vsy+pf9tD3l/3Km9MSUz29pWUjrk/L5CiBHxhD8Tngx5e2PhQLLuIX5k/wO0XE+LXnQrmgP4@vger.kernel.org, AJvYcCXtnPil95js2CklVPo9JysdSsXiw+ud0NuzO49uqQ+70rkBGeRZ427him6mI5iP4T+vmHPAsaEzADI7czrn@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFUoQIBwjeMyUBfby4FJ6LBpj7yj07o9XvkMtUtKPMP+3DMSKU
-	c6Fe4+m58pIdfQ3w7Ts44N9ISgAYvOR0ZzYkooy7OwVJ8ID8hH/x5/K1vMxs9XfEdHH+xi+D55T
-	HKo3tviSChDZTYm7VL29owr9KqI8=
-X-Google-Smtp-Source: AGHT+IGB8hg7lTSwwMDovfIEQoAKW7Y09+fDewSPgzj/Id1opr5d05VkEngC9LnrhggJ31OIWfQcA8qPRZWvSPigA44=
-X-Received: by 2002:a05:6870:46a2:b0:296:cdee:f7de with SMTP id
- 586e51a60fabf-29720c33a6fmr4725047fac.21.1732303665039; Fri, 22 Nov 2024
- 11:27:45 -0800 (PST)
+	b=U2cfZWzg8W0ozZ1KwGkExyo4PzhzsTFFzQ1a+ZUGbzmZDjBdr1cTtGZrvf2gu/5bF
+	 SwR/H/RCjachbV133ohCJRnteTxWTy8r97pflh/qf+IDtnvsKPM3Z4WJT4N53ViaQH
+	 t9d3GpUi3Y0MI9930eGR25s4d1S5KuT9fFnJT2aUftkXzu+OKG7gtv0MmtgQXqjQJl
+	 2RCpWSVy3BlgoeA6uJYCQSfF5eVJeT9kHWhPS4yK/7cdh/zbPS7Xj5cTCkSrEUM9Tx
+	 7gdUCI9pzM5qw1r6/+LvqSCb0mSDmNwK3lMc26QQUDBQRnMhuLZlwYx/YlhIGJLbij
+	 s/Ilpg9vbH3Jg==
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-295cee3a962so1681921fac.3
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Nov 2024 12:13:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU0F1VLv4IskYaVC1qDxLDX5rx8hYlpYfLQkJFMdA+OYYaH09nenjphIRH75pkKm+lCF1lckMin1b1S@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+IxT7U4GjCIu+BPrYv6Lx0Mncdd5UhHUVTZPdJgThQidXo/bQ
+	cQwEYuhSASMdLvrp44EhWlTnsX6AC/qzU6jDhplSt7l7uBvuOt6Eo2nO0OR7I8a+O5376I9QnPW
+	r5fIq78Z8+k5JdqGwrT4U9RZdisY=
+X-Google-Smtp-Source: AGHT+IERCAiWg1i7kKBBJQ3oJ/9drNbLV894o+440XhhvwqNIoM9hQQfLHoBcVD2wbXlgjgaRJZooktlsTnGRxwcrwA=
+X-Received: by 2002:a05:6870:2182:b0:297:8d9:693c with SMTP id
+ 586e51a60fabf-29720d9058amr4332322fac.32.1732306424107; Fri, 22 Nov 2024
+ 12:13:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5839859.DvuYhMxLoT@rjwysocki.net> <e7ac7561-f9ff-406a-b2d7-6d9e31ed6e98@amd.com>
-In-Reply-To: <e7ac7561-f9ff-406a-b2d7-6d9e31ed6e98@amd.com>
+References: <20241116095825.11660-1-hdegoede@redhat.com>
+In-Reply-To: <20241116095825.11660-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 22 Nov 2024 20:27:32 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jTxBt8+bc+EgUZmE84N+Vok_aM16D8HyLQUv=BSoqRCw@mail.gmail.com>
-Message-ID: <CAJZ5v0jTxBt8+bc+EgUZmE84N+Vok_aM16D8HyLQUv=BSoqRCw@mail.gmail.com>
-Subject: Re: [RFC/RFT][PATCH v0.1] ACPI: OSL: Use usleep_range() in acpi_os_sleep()
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Len Brown <len.brown@intel.com>, Arjan van de Ven <arjan@linux.intel.com>, 
-	Pierre Gondois <pierre.gondois@arm.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Hans de Goede <hdegoede@redhat.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+Date: Fri, 22 Nov 2024 21:13:31 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0incmvrSt0EcLrZ6rz8oB+vgrY-tWTUeAniSFS+dA+B8g@mail.gmail.com>
+Message-ID: <CAJZ5v0incmvrSt0EcLrZ6rz8oB+vgrY-tWTUeAniSFS+dA+B8g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: x86: Add skip i2c clients quirk for Acer Iconia
+ One 8 A1-840
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 21, 2024 at 11:27=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Sat, Nov 16, 2024 at 10:58=E2=80=AFAM Hans de Goede <hdegoede@redhat.com=
+> wrote:
 >
-> On 11/21/2024 07:15, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > As stated by Len in [1], the extra delay added by msleep() to the
-> > sleep time value passed to it can be significant, roughly between
-> > 1.5 ns on systems with HZ =3D 1000 and as much as 15 ms on systems with
-> > HZ =3D 100, which is hardly acceptable, at least for small sleep time
-> > values.
-> >
-> > Address this by using usleep_range() in acpi_os_sleep() instead of
-> > msleep().  For short sleep times this is a no-brainer, but even for
-> > long sleeps usleep_range() should be preferred because timer wheel
-> > timers are optimized for cancellation before they expire and this
-> > particular timer is not going to be canceled.
-> >
-> > Add at least 50 us on top of the requested sleep time in case the
-> > timer can be subject to coalescing, which is consistent with what's
-> > done in user space in this context [2], but for sleeps longer than 5 ms
-> > use 1% of the requested sleep time for this purpose.
-> >
-> > The rationale here is that longer sleeps don't need that much of a time=
-r
-> > precision as a rule and making the timer a more likely candidate for
-> > coalescing in these cases is generally desirable.  It starts at 5 ms so
-> > that the delta between the requested sleep time and the effective
-> > deadline is a contiuous function of the former.
-> >
-> > Link: https://lore.kernel.org/linux-pm/c7db7e804c453629c116d508558eaf46=
-477a2d73.1731708405.git.len.brown@intel.com/ [1]
-> > Link: https://lore.kernel.org/linux-pm/CAJvTdK=3DQ1kwWA6Wxn8Zcf0OicDEk6=
-cHYFAvQVizgA47mXu63+g@mail.gmail.com/ [2]
-> > Reported-by: Len Brown <lenb@kernel.org>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> The Acer Iconia One 8 A1-840 (not to be confused with the A1-840FHD which
+> is a different model) ships with Android 4.4 as factory OS and has
+> the usual broken DSDT issues for x86 Android tablets.
 >
-> You probably should also pick up this tag from the earlier version.
+> Add quirks to skip ACPI I2C client enumeration and disable ACPI battery/A=
+C
+> and ACPI GPIO event handlers.
 >
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D216263
+> Also add the "INT33F5" HID for the TI PMIC used on this tablet to the lis=
+t
+> of HIDs for which not to skip i2c_client instantiation, since we do want
+> an ACPI instantiated i2c_client for the PMIC.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/x86/utils.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index 423565c31d5e..1bb425b78032 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -308,6 +308,18 @@ static const struct dmi_system_id acpi_quirk_skip_dm=
+i_ids[] =3D {
+>                                         ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTE=
+RY |
+>                                         ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLE=
+RS),
+>         },
+> +       {
+> +               /* Acer Iconia One 8 A1-840 (non FHD version) */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
+> +                       /* Above strings are too generic also match BIOS =
+date */
+> +                       DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
+> +               },
+> +               .driver_data =3D (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+> +                                       ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTE=
+RY |
+> +                                       ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLE=
+RS),
+> +       },
+>         {
+>                 .matches =3D {
+>                         DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER=
+ INC."),
+> @@ -425,6 +437,7 @@ static const struct acpi_device_id i2c_acpi_known_goo=
+d_ids[] =3D {
+>         { "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
+>         { "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
+>         { "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
+> +       { "INT33F5", 0 },  /* TI Dollar Cove PMIC */
+>         { "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
+>         { "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
+>         { "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
+> --
 
-Good point.
-
-> > ---
-> >
-> > This is a follow-up to the discussion started by [1] above and since
-> > the beginning of it I have changed my mind a bit, as you can see.
-> >
-> > Given Arjan's feedback, I've concluded that using usleep_range() for
-> > all sleep values is the right choice and that some slack should be
-> > used there.  I've taken 50 us as the minimum value of it because that's
-> > what is used in user space FWICT and I'm not convinced that shorter
-> > values would be suitable here.
-> >
-> > The other part, using 1% of the sleep time as the slack for longer
-> > sleeps, is likely more controversial.  It is roughly based on the
-> > observation that if one timer interrupt is sufficient for something,
-> > then using two of them will be wasteful even if this is just somewhat.
-> >
-> > Anyway, please let me know what you think.  I'd rather do whatever
-> > the majority of you are comfortable with.
->
-> Generally I'm fine with this.
->
-> I'm about to head on US holiday, but I will forward this to folks that
-> aren't and get some testing input on it to bring back later when I'm back=
-.
-
-Thanks!
+Applied as 6.13-rc material along with the [2/2], thanks!
 
