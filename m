@@ -1,59 +1,57 @@
-Return-Path: <linux-acpi+bounces-9771-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9772-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BBC9D6EF2
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 13:57:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F379D6EF5
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 13:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAEBC2815B6
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 12:57:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F171280DFB
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 12:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAC21917CE;
-	Sun, 24 Nov 2024 12:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCB01BC9F0;
+	Sun, 24 Nov 2024 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PGvS2c6m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dduuAefm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68E01BB6B8;
-	Sun, 24 Nov 2024 12:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622B71BC08B;
+	Sun, 24 Nov 2024 12:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452344; cv=none; b=Huz9Ieni9YzzX2YWAe5V83ZUZCFqchapEGzMLJoVwGsAd7wQP7Fqs4DGsIaTNBIu+jCZvPAto2r72xgjd/cfCVr+kyzzlOhXDIDvarGTEMPm6hRlm0C6NlTIK/7g7jiPzodZ9bi/ohrl3cpVtY/qjSNZCw8uSpz68bVhttYEGZo=
+	t=1732452345; cv=none; b=EXJo48vj/DW6X/aBCIfDTBL6Mpl9pUDBiKlE1axVeHs6HcPAKAT9xHu3Zl4y/3yPluz/4hyFZDvmr7HRLid/rzZGrvg6epswSHWzrpwbgvOs44y1FmWuFXbMIeRBPewZaH0vys9Eps/hfuVfra9KpQBMfJk6qy0iddJbj/Wv5cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452344; c=relaxed/simple;
-	bh=eTgZQJpcD/PmjuNCIi0Xm4QqmNoFd66zhNMo0Cicm0o=;
+	s=arc-20240116; t=1732452345; c=relaxed/simple;
+	bh=/nFO8R32GZihlJSRZT3Unc2C2wdWxLOR2hiL2PoYzD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EELGCYOro0W6zRWrnxzWjvOTJ4EEbM604+Bv+7G91RyNsSrnayrSc5nDWqHdNVPiFwgTZThcw0sTeDWqb90EckkSH32w66LVCB9SZ2pM/P+ZkfLngic4BoqtH1vBwRxa0N43OkSh4ivYOwlwyKeSJBAjuQ28HZCw3jchZf5GlPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PGvS2c6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5E2C4CED1;
-	Sun, 24 Nov 2024 12:45:42 +0000 (UTC)
+	 MIME-Version; b=Gn6FoSYZ64wXU7dvJ78u8LM0eL2j6a9NQG/PQ24z5pEEDzz5M4sy+4aPxZ2LCqv7rZ/uvrX2y48VVp2QxXPgKorgDwvtlnFwNlopbCWExH990TOOJwuHQ4b9Xz/rlppYIuX+pyKkFdWmC++Jmv2MP2zK0Ycshwi4mA4WFD9wPuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dduuAefm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BC5C4CED6;
+	Sun, 24 Nov 2024 12:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452343;
-	bh=eTgZQJpcD/PmjuNCIi0Xm4QqmNoFd66zhNMo0Cicm0o=;
+	s=k20201202; t=1732452344;
+	bh=/nFO8R32GZihlJSRZT3Unc2C2wdWxLOR2hiL2PoYzD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGvS2c6mZdGWu96MZjKHyrtBZzKWRES5MyQwUwHaiDIULh+/vS9eggnqiz01TQ5vP
-	 qS8em1UHRgTIHUWf7u94UrCt9z8dkYjIfXefGxXxLUkcedwz3Zd9Xj8kj5KJmLkMNH
-	 VEQ18VinCo7TlHVjGAKayEqpelVd0kzWzIzb40cfdpIbL7XlziKds14h1+IgCw5Yq1
-	 M+0gGGH4cL7dYAch5bcKuRjRWBU3nGhcr2N9/0aWnUFfHo/N3Q9UhZmzRYrjXIvEPW
-	 XzEw42ECvOzRrWVk07zAotKEzZATlya6O9yKQiWt8XiwxtgxL5dd/LzvSMvuY7Er4/
-	 7KGk/AlyduNbA==
+	b=dduuAefmF+JQWYlRPOULkNrdqmEJewQaCNumDy4vNrbReq65zUwZRyQDNLHUxbwEY
+	 Dk7hRrIsGcfSDuRHa5qdzs0/LKii/zWtHAtiA4Plu9CZGki08zgsvO9EQ5uXwqc/11
+	 84RekB6WmbABcqRxodUNcdOVU9Ldec/KDh/DFeq5fc/5qjwKvBBFbcmwYNS9A9R7Oc
+	 nWxApNd7VExGfzVCw/9xMBO/HPTb+NKDAq87RAhAxQFbGjT7ow5lcJ9eMRIpm3mDrj
+	 du8cabGDQc5piuVzk9gyC2zEGJzM89fGTJZ+fXJUuX0hWXpeQmIkifOsLDMprMsbkq
+	 uHdb3Di0p2bRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
+Cc: Jonathan Denose <jdenose@google.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	mario.limonciello@amd.com,
-	tony.luck@intel.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 5/6] ACPI: x86: Add adev NULL check to acpi_quirk_skip_serdev_enumeration()
-Date: Sun, 24 Nov 2024 07:45:27 -0500
-Message-ID: <20241124124532.3337626-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 6/6] ACPI: video: force native for Apple MacbookPro11,2 and Air7,2
+Date: Sun, 24 Nov 2024 07:45:28 -0500
+Message-ID: <20241124124532.3337626-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124532.3337626-1-sashal@kernel.org>
 References: <20241124124532.3337626-1-sashal@kernel.org>
@@ -68,39 +66,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jonathan Denose <jdenose@google.com>
 
-[ Upstream commit 4a49194f587a62d972b602e3e1a2c3cfe6567966 ]
+[ Upstream commit 295991836b23c12ddb447f7f583a17fd3616ad7d ]
 
-acpi_dev_hid_match() does not check for adev == NULL, dereferencing
-it unconditional.
+There is a bug in the Macbook Pro 11,2 and Air 7,2 firmware similar to
+what is described in:
 
-Add a check for adev being NULL before calling acpi_dev_hid_match().
+commit 7dc918daaf29 ("ACPI: video: force native for Apple MacbookPro9,2")
 
-At the moment acpi_quirk_skip_serdev_enumeration() is never called with
-a controller_parent without an ACPI companion, but better safe than sorry.
+This bug causes their backlights not to come back after resume.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241109220028.83047-1-hdegoede@redhat.com
+Add DMI quirks to select the working native Intel firmware interface
+such that the backlght comes back on after resume.
+
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Link: https://patch.msgid.link/20241112222516.1.I7fa78e6acbbed56ed5677f5e2dacc098a269d955@changeid
+[ rjw: Changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/video_detect.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 5a3bf81746a55..ac6bc6482ce16 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -537,7 +537,7 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
- 	 * Set skip to true so that the tty core creates a serdev ctrl device.
- 	 * The backlight driver will manually create the serdev client device.
- 	 */
--	if (acpi_dev_hid_match(adev, "DELL0501")) {
-+	if (adev && acpi_dev_hid_match(adev, "DELL0501")) {
- 		*skip = true;
- 		/*
- 		 * Create a platform dev for dell-uart-backlight to bind to.
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index b05064578293f..fed3990bf6b1d 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -549,6 +549,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Apple MacBook Air 7,2 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookAir7,2"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Apple MacBook Air 9,1 */
+@@ -565,6 +573,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro9,2"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Apple MacBook Pro 11,2 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro11,2"),
++		},
++	},
+ 	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
+ 	 .callback = video_detect_force_native,
 -- 
 2.43.0
 
