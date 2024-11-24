@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-9767-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9768-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2669D6EE8
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 13:56:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA3C9D6EDD
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 13:55:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC27161DCC
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 12:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 409BA280C05
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Nov 2024 12:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4CE1AF0BD;
-	Sun, 24 Nov 2024 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920E61B0F11;
+	Sun, 24 Nov 2024 12:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IrYf0YUo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntYHN+CG"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5B91AF0C5;
-	Sun, 24 Nov 2024 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662C11B0F15;
+	Sun, 24 Nov 2024 12:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452324; cv=none; b=WSUhzmzVPpWYEeV079+wQJ5dtINjdMrdDRAm341DIHdsQiAqIeTwr9nHePsZ4n/g4zh1bgt5xzdE1v+BclcVoy97z76tY6RFpZRTqu+3/7Wq6uKncVLrY5fxdpaiVAQAEPddzcQsntI00KU7BDQWy60qVMJQ/f0mMVb/eZ+LxHQ=
+	t=1732452327; cv=none; b=QwXr3x5wEzsOvTw8xgxbAL7ZbbmNtfhCLD/ko9nlcQCM8dyGC4KlNT8XOfm8MolJCDTBhA95pBPNbrF4MT1vh/kdvHYvISXxIS7bv8iokdet9Ks1UDahvIfRVVYuaHc1RT5YaB19nbwfqqtRZVMNaYQAE9QPrHA334DSqrsWo+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452324; c=relaxed/simple;
-	bh=12wCPyuBjyDLwSLAM79QdYBeTCloV39JPe9AOBU71YM=;
+	s=arc-20240116; t=1732452327; c=relaxed/simple;
+	bh=LcZwJq3v2Ktit5H5ljQiBPyoVR6IvzaMMrJaaethwng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeL9xIeipAiLyPJbAr6vqjdsixGtx4T3U661OzIRN3Zn7C5YEYmo2V6ndSS1n/8rzbTij3Z2/V4OnZsljDXnlv/I959W404gdyFyX7+x8RJjuvcisRcaXbxajbMe/5s0Q32Ad28qTLRJYkTl59mOveBby2vHnedyhsK7hEh1MSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IrYf0YUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3247BC4CECC;
-	Sun, 24 Nov 2024 12:45:23 +0000 (UTC)
+	 MIME-Version; b=UyCtx7gNp8O4UPEBlU0ZM0sraYIpfN5WqyAGp+IFml/b+caKJ7X5GCqiSOT7+VPSd3NVCUmbKnwugZ/zOGBH2CSOXEYJe3Gh7JFEyQAtgTT9+cVzHY3deioxNvJuHeaLcDjAjjorVpdEC2I/ZitxBLyYBys1Vww6vX3D4gdpL6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntYHN+CG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011AFC4CED3;
+	Sun, 24 Nov 2024 12:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452324;
-	bh=12wCPyuBjyDLwSLAM79QdYBeTCloV39JPe9AOBU71YM=;
+	s=k20201202; t=1732452327;
+	bh=LcZwJq3v2Ktit5H5ljQiBPyoVR6IvzaMMrJaaethwng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IrYf0YUoR+EAtiXIybwVpFRv0edyn+DyhaMB6HOmhjHehXbqmePfpmQ1vh0o8MFV3
-	 h7MJ/w//MFRPyLE1Ide2wxo6QCprUHsqFqstaPoKcZsw4zuxwYxtio8g+nX2JEEonA
-	 ZzjNnRE9hgGk3dFOpWOhcgDW395WEXMrjpamsS6q+rmRmM5Cm2fy21XnLZZmA05TV+
-	 m4bxYkWvT+ANuIk9+xN9CpPmJHWQtNpFtKUpmzi8zjrS9JXZrsx9GijjFzNyGSF/yF
-	 zgpKEXKxeZyhss9tAFFRyW3cPLnmRNjpzBogZ0LB2sgNcsqIt/aYmYAcNdO92RNM1N
-	 croFYSRaucbzA==
+	b=ntYHN+CGcBzOFPTvJjbH6f9KJTL0B4qYA7JCY+enfhwilCfBbNrY5H4jcgb/yuyoQ
+	 2Z/8Ykbr7Yh4Uhk8wccQmH+uMnxkmtVWfbXE8C86Yu9Dnl9L0/HMrreQQoxX1K6Jj8
+	 uXPm8Os3Ibhz3vq5UaTU0RGQR4tP4/Vd3ouQ6iOmKRVZsl5TBYH3YldqHakZXa3Lpa
+	 QjSY5b/mapxVPiQw4fj0p26V9OMpZYBzOO8mWavdPWy3cTue8qHpXH0CvQmDgWwDso
+	 2Yg3KO7+ohnai9hNgT0mytCxsaPj8YlvKVgnvJoyfD9iF7Jk/pbHGUnUC4EnyEKrRt
+	 vDkn0D/KAIUqw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	mario.limonciello@amd.com,
 	tony.luck@intel.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 4/6] ACPI: x86: Make UART skip quirks work on PCI UARTs without an UID
-Date: Sun, 24 Nov 2024 07:45:09 -0500
-Message-ID: <20241124124516.3337485-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 5/6] ACPI: x86: Add adev NULL check to acpi_quirk_skip_serdev_enumeration()
+Date: Sun, 24 Nov 2024 07:45:10 -0500
+Message-ID: <20241124124516.3337485-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124516.3337485-1-sashal@kernel.org>
 References: <20241124124516.3337485-1-sashal@kernel.org>
@@ -70,114 +70,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 7f261203d7c2e0c06e668b25dfaaee091a79ab25 ]
+[ Upstream commit 4a49194f587a62d972b602e3e1a2c3cfe6567966 ]
 
-The Vexia EDU ATLA 10 tablet (9V version) which shipped with Android 4.2
-as factory OS has the usual broken DSDT issues for x86 Android tablets.
+acpi_dev_hid_match() does not check for adev == NULL, dereferencing
+it unconditional.
 
-On top of that this tablet is special because all its LPSS island
-peripherals are enumerated as PCI devices rather then as ACPI devices as
-they typically are.
+Add a check for adev being NULL before calling acpi_dev_hid_match().
 
-For the x86-android-tablets kmod to be able to instantiate a serdev client
-for the Bluetooth HCI on this tablet, an ACPI_QUIRK_UART1_SKIP quirk is
-necessary.
-
-Modify acpi_dmi_skip_serdev_enumeration() to work with PCI enumerated
-UARTs without an UID, such as the UARTs on this tablet.
-
-Also make acpi_dmi_skip_serdev_enumeration() exit early if there are no
-quirks, since there is nothing to do then.
-
-And add the necessary quirks for the Vexia EDU ATLA 10 tablet.
-
-This should compile with CONFIG_PCI being unset without issues because
-dev_is_pci() is defined as "(false)" then.
+At the moment acpi_quirk_skip_serdev_enumeration() is never called with
+a controller_parent without an ACPI companion, but better safe than sorry.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241109215936.83004-1-hdegoede@redhat.com
+Link: https://patch.msgid.link/20241109220028.83047-1-hdegoede@redhat.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 47 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 8 deletions(-)
+ drivers/acpi/x86/utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 6af546b21574f..3eec889d4f5f8 100644
+index 3eec889d4f5f8..423565c31d5ef 100644
 --- a/drivers/acpi/x86/utils.c
 +++ b/drivers/acpi/x86/utils.c
-@@ -12,6 +12,7 @@
- 
- #include <linux/acpi.h>
- #include <linux/dmi.h>
-+#include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
-@@ -391,6 +392,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
-+	{
-+		/* Vexia Edu Atla 10 tablet 9V version */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
-+		},
-+		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_UART1_SKIP |
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
-+	},
- 	{
- 		/* Whitelabel (sold as various brands) TM800A550L */
- 		.matches = {
-@@ -439,18 +453,35 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
- 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
- 	const struct dmi_system_id *dmi_id;
- 	long quirks = 0;
--	u64 uid;
--	int ret;
-+	u64 uid = 0;
- 
--	ret = acpi_dev_uid_to_integer(adev, &uid);
--	if (ret)
-+	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
-+	if (!dmi_id)
- 		return 0;
- 
--	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
--	if (dmi_id)
--		quirks = (unsigned long)dmi_id->driver_data;
-+	quirks = (unsigned long)dmi_id->driver_data;
-+
-+	/* uid is left at 0 on errors and 0 is not a valid UART UID */
-+	acpi_dev_uid_to_integer(adev, &uid);
-+
-+	/* For PCI UARTs without an UID */
-+	if (!uid && dev_is_pci(controller_parent)) {
-+		struct pci_dev *pdev = to_pci_dev(controller_parent);
-+
-+		/*
-+		 * Devfn values for PCI UARTs on Bay Trail SoCs, which are
-+		 * the only devices where this fallback is necessary.
-+		 */
-+		if (pdev->devfn == PCI_DEVFN(0x1e, 3))
-+			uid = 1;
-+		else if (pdev->devfn == PCI_DEVFN(0x1e, 4))
-+			uid = 2;
-+	}
-+
-+	if (!uid)
-+		return 0;
- 
--	if (!dev_is_platform(controller_parent)) {
-+	if (!dev_is_platform(controller_parent) && !dev_is_pci(controller_parent)) {
- 		/* PNP enumerated UARTs */
- 		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
- 			*skip = true;
+@@ -536,7 +536,7 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
+ 	 * Set skip to true so that the tty core creates a serdev ctrl device.
+ 	 * The backlight driver will manually create the serdev client device.
+ 	 */
+-	if (acpi_dev_hid_match(adev, "DELL0501")) {
++	if (adev && acpi_dev_hid_match(adev, "DELL0501")) {
+ 		*skip = true;
+ 		/*
+ 		 * Create a platform dev for dell-uart-backlight to bind to.
 -- 
 2.43.0
 
