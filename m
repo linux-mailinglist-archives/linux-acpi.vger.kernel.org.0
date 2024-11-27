@@ -1,150 +1,124 @@
-Return-Path: <linux-acpi+bounces-9785-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9786-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF959DABEA
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2024 17:40:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF539DAD37
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2024 19:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 234B8161DCE
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2024 16:40:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26E816601D
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Nov 2024 18:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29417200BA9;
-	Wed, 27 Nov 2024 16:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235F42010ED;
+	Wed, 27 Nov 2024 18:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glrBKOyd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D951FF7A2;
-	Wed, 27 Nov 2024 16:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A6D1FCD1B;
+	Wed, 27 Nov 2024 18:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732725620; cv=none; b=p43OYc0Gf7CfaQofRyC1v0WorXGT7v584zV2JVJlVRT3BGI4IT8U6WtnnxjsNpb3AvcBczvA53m7Uu50+AXHn106il6izR6wl3CWFmGsUuRucCJBz8H3xVSWruIUJX0WpJobw50TX6DV+CmX2S1IOp0q0rBn/h3A65+nR79e2Lc=
+	t=1732732656; cv=none; b=PK6ryht0dq29FlIXd7X6q1zVrJiiCzjVOy6Rst31pmD52QP9yp+2y9diTiJvo79Ot+cqGDeEIUdqqLFOe3CFDXy8qxc690ymsq0B5Heq2x8t1I9nRzIXH3E2IvM6lncNBTk3gdgXZC+/wl4zW1SO0L/Qyi5tBDrE4ktLbvUu+x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732725620; c=relaxed/simple;
-	bh=3lNlHugmwr43txdxbc84QtNopgv5nwA690S+GhrCdYc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z1d2DGpk1ze3aKuJnMlw6tjenkgK5I1QtfG7Sd8cO5eFiR8+KNRF7pLQAw/bztKwK98/hQryEqBhHZlYGPhu+g0y0L/hPnKyjQh5Xb/0msKmyd2AhsjuOCDlJogbqg8LFWRT4sUveOlhT8ZBaApRsNi1jr1F+daInv8P8p4tMJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xz4nx3Pkqz67QLY;
-	Thu, 28 Nov 2024 00:36:21 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2B33F1401DC;
-	Thu, 28 Nov 2024 00:40:15 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 27 Nov
- 2024 17:40:14 +0100
-Date: Wed, 27 Nov 2024 16:40:13 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
-	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [RFC PATCH v2 4/5] cxl: Add extended linear cache address alias
- emission for cxl events
-Message-ID: <20241127164013.000071ed@huawei.com>
-In-Reply-To: <20241112221335.432583-5-dave.jiang@intel.com>
-References: <20241112221335.432583-1-dave.jiang@intel.com>
-	<20241112221335.432583-5-dave.jiang@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1732732656; c=relaxed/simple;
+	bh=wvEICsJpjHmrh93qH8NdEZeaGqgdauRDbw+u+31oSEQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=On9RVt+TdMXjmBBBr0y7m6lREJqb8wYKAgiggX3OmIkkpN3N1T/AwLhWz6icV65hVsI+XpWlohEiGWqjtmkWtHqDrBBeTl7VoetEefKM+S1p77Dgj6SIWfj1KPgSJ5zRJBdAWC2w334RExcJ3vbTks7mWe2vBBRHvmCKyDcGdtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glrBKOyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C788FC4CECC;
+	Wed, 27 Nov 2024 18:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732732655;
+	bh=wvEICsJpjHmrh93qH8NdEZeaGqgdauRDbw+u+31oSEQ=;
+	h=From:Date:Subject:To:Cc:From;
+	b=glrBKOydxpjHjsVioexITpL/I8dbqzGIJ3RWoIf8mYXh9dR6D13nzvHZ+S5SIjFoU
+	 pT7gKy6Sv2cGLu3xOHFoP97bDesb6NSS2oKr70/thxcefQK5YQAECGnb9qnd8lksmJ
+	 jK4vMgP4tO9NavbateQ5T67cq298qUzfj35HPiS6Z4flqJ2GPFY1dTmE84kskbJtjB
+	 vf01XR4/2HPn8njYsn7bBcZMENyJ50r3p9eNCygESuq/Y/DLxKZp10DXHnu5u7dZS+
+	 ro0je6pN85dPcJhlFNOhlrZUwzyi3zkDKr+4EqqcbhsL27OJTuAZ6y4LEjJLnfbspo
+	 HyZQmLWOXuwhw==
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7251d20e7f2so113259b3a.0;
+        Wed, 27 Nov 2024 10:37:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUmC2J/j01+UCzWKCSQUdMtDZp/KIL2p/qLkStKToaGwxq90s+KQT9iMPPEtgJNKN4L8ggWHjiq/cDdHN8=@vger.kernel.org, AJvYcCW83HxKLW36wVE1y0UhIiXFLXSmgYcfePyXpDd77YVRhv5ohxuW/GRhlC+h3GvWiUT7+e+fHAt5MWU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyekYVbPIOSMfLDvtSPb34AvRp0xfKMKO+EFkeE7xk2Kwhbxv/r
+	AyZ2ddvqP834NNThgVn9NqUsgitlHHoX6eVNEHkyIhcNUWkGExBp6fOSsIGgkNxHcpyQMAHPzrm
+	d/qfSFiRl6ivp9nY9ojSrSrXcGX0=
+X-Google-Smtp-Source: AGHT+IGG413EY/PJaxpOvl+HvHWtH4fwsC4xurDql0GkMwR7Pn8MkX1ght6NayCxjnjBTr1VDRs36OlMzYuJkcWP0RE=
+X-Received: by 2002:a05:6a00:4654:b0:724:e77f:ffa6 with SMTP id
+ d2e1a72fcca58-7253012f899mr5152542b3a.16.1732732655408; Wed, 27 Nov 2024
+ 10:37:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- frapeml500008.china.huawei.com (7.182.85.71)
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 27 Nov 2024 19:37:23 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jH9yWHEymTNjWTw2h5Vgh4yXjjcYFjpmeRi8kskOwxuA@mail.gmail.com>
+Message-ID: <CAJZ5v0jH9yWHEymTNjWTw2h5Vgh4yXjjcYFjpmeRi8kskOwxuA@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v6.13-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 12 Nov 2024 15:12:36 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+Hi Linus,
 
-> Add the aliased address of extended linear cache when emitting event
-> trace for DRAM and general media of CXL events.
-> 
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Please pull from the tag
 
-There is some code movement in here I wasn't expecting to see.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.13-rc1-2
 
-Otherwise looks fine to me.
+with top-most commit 6f683c7feea45cbcd8748aafe73b0c79a6909e26
 
-Jonathan
+ Merge branches 'acpi-misc' and 'acpi-x86'
 
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 18a94d382d40..cdf6d42f5a94 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -436,34 +436,12 @@ int thermal_acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp);
->  
->  #ifdef CONFIG_ACPI_HMAT
->  int acpi_get_genport_coordinates(u32 uid, struct access_coordinate *coord);
-> -int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
-> -					resource_size_t *size);
-> -int hmat_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid);
-> -int hmat_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid);
->  #else
->  static inline int acpi_get_genport_coordinates(u32 uid,
->  					       struct access_coordinate *coord)
->  {
->  	return -EOPNOTSUPP;
->  }
-> -
-> -static inline int hmat_get_extended_linear_cache_size(struct resource *backing_res,
-> -						      int nid, resource_size_t *size)
-> -{
-> -	return -EOPNOTSUPP;
-> -}
-> -
-> -static inline int hmat_extended_linear_cache_alias_xlat(u64 address,
-> -							u64 *alias, int nid)
-> -{
-> -	return -EOPNOTSUPP;
-> -}
-> -
-> -static inline int hmat_extended_linear_cache_address_xlat(u64 *address,
-> -							  u64 alias, int nid)
-> -{
-> -	return -EOPNOTSUPP;
-> -}
->  #endif
->  
->  #ifdef CONFIG_ACPI_NUMA
-> @@ -1115,12 +1093,26 @@ static inline acpi_handle acpi_get_processor_handle(int cpu)
->  #ifdef CONFIG_ACPI_HMAT
->  int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
->  					resource_size_t *size);
-> +int hmat_extended_linear_cache_alias_xlat(u64 address, u64 *alias, int nid);
-> +int hmat_extended_linear_cache_address_xlat(u64 *address, u64 alias, int nid);
-If this makes sense can we put them here in the first place?
+on top of commit 4e9ad033b405336cea3c19b68e2acdf47d88c339
 
->  #else
->  static inline int hmat_get_extended_linear_cache_size(struct resource *backing_res,
->  						      int nid, resource_size_t *size)
->  {
->  	return -EOPNOTSUPP;
->  }
-> +
-> +static inline int hmat_extended_linear_cache_alias_xlat(u64 address,
-> +							u64 *alias, int nid)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline int hmat_extended_linear_cache_address_xlat(u64 *address,
-> +							  u64 alias, int nid)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
->  #endif
->  
->  extern void arch_post_acpi_subsys_init(void);
+ Merge tag 'acpi-6.13-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
+to receive more ACPI updates for 6.13-rc1.
+
+These add a common init function for arch-specific ACPI initialization,
+clean up idle states initialization in the ACPI processor_idle driver
+and update quirks:
+
+ - Introduce acpi_arch_init() for architecture-specific ACPI subsystem
+   initialization (Miao Wang).
+
+ - Clean up Asus quirks in acpi_quirk_skip_dmi_ids[] and add a quirk
+   to skip I2C clients on Acer Iconia One 8 A1-840 (Hans de Goede).
+
+ - Make the ACPI processor_idle driver use acpi_idle_play_dead() for
+   all idle states regardless of their types (Rafael Wysocki).
+
+Thanks!
+
+
+---------------
+
+Hans de Goede (2):
+      ACPI: x86: Add skip i2c clients quirk for Acer Iconia One 8 A1-840
+      ACPI: x86: Clean up Asus entries in acpi_quirk_skip_dmi_ids[]
+
+Miao Wang (1):
+      ACPI: introduce acpi_arch_init()
+
+Rafael J. Wysocki (1):
+      ACPI: processor_idle: Use acpi_idle_play_dead() for all C-states
+
+---------------
+
+ drivers/acpi/arm64/init.c     |  2 +-
+ drivers/acpi/bus.c            |  5 +++--
+ drivers/acpi/processor_idle.c | 12 ++++++------
+ drivers/acpi/riscv/init.c     |  2 +-
+ drivers/acpi/x86/utils.c      | 30 +++++++++++++++++++++++-------
+ include/linux/acpi.h          | 12 +-----------
+ 6 files changed, 35 insertions(+), 28 deletions(-)
 
