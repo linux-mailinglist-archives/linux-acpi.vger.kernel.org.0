@@ -1,47 +1,71 @@
-Return-Path: <linux-acpi+bounces-9791-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9792-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3326F9DB6E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2024 12:50:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43519DB85F
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2024 14:13:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1652B217F8
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2024 11:49:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AD681624FC
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2024 13:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479AB19ABAC;
-	Thu, 28 Nov 2024 11:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27751A0B04;
+	Thu, 28 Nov 2024 13:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcViEFYB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cNtNnSbw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0C3199385;
-	Thu, 28 Nov 2024 11:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1162C19EEB4;
+	Thu, 28 Nov 2024 13:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732794595; cv=none; b=KOczwO5m9eGY7UfAXFL0D2RN1YCYSwlnZ2Kueb3Fpz5W5122023eMreZoiX0qe+ssv4+GTVrgaNRxCjXdgXiXGkU4t98zlgewv7x0czkQP54ihYp+r9knK5VAAUKPUjQRdw97HzB3bno3D6Bx3ZVy6dsnmRf2BBH0bDzN+4W7sk=
+	t=1732799613; cv=none; b=u6NaECOaSn8rhz4bzjWjNKyGnGz1PF4IQoD4I/QzfFzymgp/uqFJllWDaFgKUlSdoLJ8MBv9BLtJmKLMbBN2bf3B5nPNP04TCeDz/KTVfwaKEdxV4pqSuXrB82iWKlwMvFSiPR1uznA9c9SXnr+ufoGchzOA5uEY4hzlm7qmZco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732794595; c=relaxed/simple;
-	bh=ZhFuMBHlq3QonHvTwWvCentjuDWHk4WmEzIyakRZtuU=;
+	s=arc-20240116; t=1732799613; c=relaxed/simple;
+	bh=kTDf+2YDrwIh0Mz60DV0j5nrN9wMfqDg1VVSUrckaKc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l48sj9GIXH9zNy/+8lltnsr1VFmDBuCGhPJv8OEyKuDk0GF3eKP5moslp6yf7jVzY7eCWhQVOgZLZ81Zc5Ykt8lxJujhrk2zIbwxnalBS5tjKhE2FEZ/H/H72ijXlViAH0gb359aAepti/UkzdrAryfvq0LljOfglyM5bBcMsg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcViEFYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B20C4CED2;
-	Thu, 28 Nov 2024 11:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732794594;
-	bh=ZhFuMBHlq3QonHvTwWvCentjuDWHk4WmEzIyakRZtuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vcViEFYBmCWOqalvl+ViIlBYyPFZvRbQiAjdxt3FqajCD/6JtRbc3smczdcenD7Ft
-	 0l+O8na5wO01KSjkaOwqKjlSxFFcuvcVdP3Cxr+Bn1xlIvWJi1JBg/O7roU1MM1mPr
-	 Q3gDdk2XvWpEgkd6+mdQ/Xf3t+Tf2n5fVA535haI=
-Date: Thu, 28 Nov 2024 12:49:23 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HVnWF1wSbzfYhAal5GtyZY5zk7FIhU0zfKEMdKaCxpPQXdzIpXhxr9ToyFfb0QCC8YeQQvFKSUWe8lsAEJzGWdX20B83OM+UDDKj+0zpLfGsJmmnGF2opLNnlHHu5K06M4Jq79XGFPnnA91LXiigqSDrUf3Im05UseNzbgHavRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cNtNnSbw; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732799612; x=1764335612;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kTDf+2YDrwIh0Mz60DV0j5nrN9wMfqDg1VVSUrckaKc=;
+  b=cNtNnSbwahxQsxwq4r+qrsSbuSonJdpmOzRBdTcBRA5iy3A1l7iC5vp3
+   2mEdm1E/YczW9so+v63TDZwo1rv+zVGuldH7+G20GPpvbRbwkQ/J3XJNm
+   Sa/XRJMZIXOWBervzq2eCaJvn0t7gMtNwvkfxiCbt4svvNvEElaeHBGvT
+   c4Y0aD32mK45PZWkOCvc74pT8nW7rk1v9Cypwe+sJvtThjRwZykL02mj9
+   qp6HkTExkwy5vER3Pq7c9BJ0n1xrPOtZq8PwdkE4A9fkn4X/xM7EWYWDj
+   v8/AJlTf1UOZ2+Arn+dP1+GD/bbzuLlgUJ986ElkwXTlvyDG2Do5H1uMu
+   A==;
+X-CSE-ConnectionGUID: 4Yv3ukK7SuuHtEePMcUZAw==
+X-CSE-MsgGUID: zCEJPzQMTBCr0wqHmurDMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="32397392"
+X-IronPort-AV: E=Sophos;i="6.12,192,1728975600"; 
+   d="scan'208";a="32397392"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2024 05:13:22 -0800
+X-CSE-ConnectionGUID: BUCQwED1S6KMVTZevbOKqw==
+X-CSE-MsgGUID: gv+tq33IRR2oyWVvpXdZWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,192,1728975600"; 
+   d="scan'208";a="123201100"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2024 05:13:19 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tGeKb-00000001vo2-0nkp;
+	Thu, 28 Nov 2024 15:13:17 +0200
+Date: Thu, 28 Nov 2024 15:13:16 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
@@ -49,7 +73,7 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 1/2] device property: do not leak child nodes when using
  NULL/error pointers
-Message-ID: <2024112810-drudge-factor-9bc7@gregkh>
+Message-ID: <Z0hsbNqXSkQjsR1v@smile.fi.intel.com>
 References: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -60,6 +84,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
 On Wed, Nov 27, 2024 at 09:39:34PM -0800, Dmitry Torokhov wrote:
 > The documentation to various API calls that locate children for a given
@@ -68,86 +93,54 @@ On Wed, Nov 27, 2024 at 09:39:34PM -0800, Dmitry Torokhov wrote:
 > passed in "child" argument is dropped unconditionally, however the
 > change that added checks for the main node to be NULL or error pointer
 > broke this promise.
-> 
+
+This commit message doesn't explain a use case. Hence it might be just
+a documentation issue, please elaborate.
+
 > Add missing fwnode_handle_put() calls to restore the documented
 > behavior.
-> 
-> Fixes: 002752af7b89 ("device property: Allow error pointer to be passed to fwnode APIs")
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> ---
->  drivers/base/property.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 837d77e3af2b..696ba43b8e8a 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -759,6 +759,12 @@ struct fwnode_handle *
->  fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
->  			   struct fwnode_handle *child)
+
+...
+
+While at it, please fix the kernel-doc (missing Return section).
+
 >  {
 > +	if (IS_ERR_OR_NULL(fwnode) ||
+
+Unneeded check as fwnode_has_op() has it already.
+
 > +	    !fwnode_has_op(fwnode, get_next_child_node)) {
 > +		fwnode_handle_put(child);
 > +		return NULL;
 > +	}
-> +
+
 >  	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
+
+Now it's useless to call the macro, you can simply take the direct call.
+
 >  }
->  EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
-> @@ -778,9 +784,6 @@ fwnode_get_next_available_child_node(const struct fwnode_handle *fwnode,
->  {
->  	struct fwnode_handle *next_child = child;
->  
-> -	if (IS_ERR_OR_NULL(fwnode))
-> -		return NULL;
-> -
->  	do {
->  		next_child = fwnode_get_next_child_node(fwnode, next_child);
->  		if (!next_child)
-> @@ -806,8 +809,10 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+
+...
+
+> @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
 >  	const struct fwnode_handle *fwnode = dev_fwnode(dev);
 >  	struct fwnode_handle *next;
->  
+
 > -	if (IS_ERR_OR_NULL(fwnode))
 > +	if (IS_ERR_OR_NULL(fwnode)) {
 > +		fwnode_handle_put(child);
 >  		return NULL;
 > +	}
->  
+
 >  	/* Try to find a child in primary fwnode */
 >  	next = fwnode_get_next_child_node(fwnode, child);
-> -- 
-> 2.47.0.338.g60cca15819-goog
-> 
 
-Hi,
+So, why not just moving the original check (w/o dropping the reference) here?
+Wouldn't it have the same effect w/o explicit call to the fwnode_handle_put()?
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-You are receiving this message because of the following common error(s)
-as indicated below:
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
 
