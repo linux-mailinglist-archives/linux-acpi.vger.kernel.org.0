@@ -1,158 +1,175 @@
-Return-Path: <linux-acpi+bounces-9795-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9796-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15349DBDE1
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Nov 2024 00:16:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA439DE8A7
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Nov 2024 15:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB1BCB21F2D
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Nov 2024 23:16:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F482829AD
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Nov 2024 14:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67B51C57AD;
-	Thu, 28 Nov 2024 23:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m7m9hscT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782C913AA26;
+	Fri, 29 Nov 2024 14:38:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27408157A67;
-	Thu, 28 Nov 2024 23:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692E083CD2;
+	Fri, 29 Nov 2024 14:38:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732835769; cv=none; b=nTCcNvnrb7DtALIyQ8tvBQPyN6d7qgsSUzaQg1PT+lb+nFPRdr8EhLQ1gva+IrwOuNgkYJZSzv0V2v7D4sv2lLQd8h4gk211PBqXzDilMsxdA5HRADrltnJe80MGG5NqrjxTEyStdlFrWvqfAvR8tv1CkcIuMvMMSinzOczEscM=
+	t=1732891105; cv=none; b=KI9IJF0SAoQG8vNFZkZeQ0nRxGoyPDEssbETJDC1GdkV0LoB8bb+2Dt7g1Hqxvv//A920ejfRvqsCuAvMvl0buUsq82G0lRPhjLMXoQTdBSLUqGOH6mXYkFfSf/afMN/a1ZavRa0RYgD6RsQ1LmHsWWOJdz1xAg8ROpv4691wrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732835769; c=relaxed/simple;
-	bh=DC3MRS4obiq9akDBXw/+rZUOFRaPaxg02JSBq4jldGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bWumR1+hWy8ZMY9yAFh5VD+jdExaJ9KaVLZjkM3pLAYnD7DrC/8WA05LFHsLuCZZ+JgkpGbe3eajzOhQzUOaKyQytYyHDfnLYJWY1iX6JMM/usOCkzDs8fKyOiDKt1/d40IJwWDBzU77Rqno6E5xswittwrNC1K42PikPbTekqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m7m9hscT; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-724f383c5bfso1018936b3a.1;
-        Thu, 28 Nov 2024 15:16:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732835767; x=1733440567; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eeoVHhClbRHMNEOjFXigSnIp+fG4ZCi/q2qwDZwIfdU=;
-        b=m7m9hscTpgeAA0Ca1yoMk5VJBTHkELXecc/ue7kTkG3uqqTc4nPpRjFNgDb4TWg0Dv
-         pbZeOi8iAGf7LR7e0vhPtFx7xER4Wg0awo+2QTRHyOb8zfgRTa0z8YkSYZgzBWx1pIWY
-         64wDXnhDJwS/LhRsziVIJI9TxRB85oJVhipWCtjwWsLOeYissz3R6XN281zk9ORBhOKi
-         69mBH7xPfSJlmTMOgYJwPlAYdtYkQSuNiFaWIGk6PAEUf9bUEkGK45+Ij+bRJg8edl/U
-         mgodo6oc01X5QUAzLvZDYrz0SBCDMbTv2gYU+xVMY3PSVnYCyV17w6/Dvd51fgfPPPJG
-         TMjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732835767; x=1733440567;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eeoVHhClbRHMNEOjFXigSnIp+fG4ZCi/q2qwDZwIfdU=;
-        b=O7emJLZ0GS2Fx+Xx2WIYkMpt2/HVOM3KR43CU7+Yhp6E25DO6wo3DmsAEuJUudtlfQ
-         y8daT/WQ+SRoE7ZT7vZleJcrC2ZumkXaAOpradA1Pxo1Na2TijwFES7aTyImSbNsW0/T
-         N3I0KYaeienwLZJh6MEeuevtO0MuWnD6hLPJ4ko62w56X8U7Xo7qnnc7BOZrmuDHJ0Ft
-         dSIdlrRzUJluOBS+3SyYWAR01VS2BcluolE4e8z2DMoPqfw2GPUDn56mk8ZuFL2P1yWI
-         rJO7aWoFxvgIDdM1qqc+mNWiIIoClgkRfVy4C3pd36ZAnF0itZqC99ts7gCYmkyP5Hdw
-         x+QA==
-X-Forwarded-Encrypted: i=1; AJvYcCUukp4gFE+G9G9cFDhxnRywr4SSNxdyu75m9TY6cCAkSULvAW37++WTr2KvwzJw0vzfNR8safPp1GfW@vger.kernel.org, AJvYcCVat555CM5gvgaq/m0GXqmG6yYnPcUIhy/WADq37iYGMCn5Rzd8R1snCt8SBM62MMeePts6aN+gcm3rRKpO@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8zsXxqbmcwHGDZIqssYk1E9yDJT+o5uYZOw4xeK9iEsfAyk/C
-	3ruTBLa98p9end3ZVpSsjCuVYzCcDBSZ4OfWPz4xgLqZWXyYC/SG
-X-Gm-Gg: ASbGnctiEP8qwBc525wlOjBqM3Xc0BaWHTBdO/3Je4Xj+EICHuvrSNydJyBOTdWmOQE
-	3AjcxETEj1Ro2yYUVElcgAuTRdywch4xi9uPbPk/toscwpseWjBTGkic8OCOWvP8gb0Cr/03opq
-	1n/2+Kyn0dkZXHza/ifOQ7f2T7fuqIzoD+8MEFLQPtmRK4Hlx3Z5h6sIV3/k7WICUv88HBN0UbA
-	tbSmCVESinx9TVobZD/C/IegEU4Rs9hVukk42w1tMVHXTVMFw==
-X-Google-Smtp-Source: AGHT+IGP7i1wkE6RXGcp1WsztRZKiZigxuAV4HWiC3crop7SkPxPXAbFlRQNSzk1+A6RQV8L30sT9A==
-X-Received: by 2002:a17:90b:3ec9:b0:2ea:8565:65bc with SMTP id 98e67ed59e1d1-2ee097c59f0mr11320529a91.23.1732835767263;
-        Thu, 28 Nov 2024 15:16:07 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:bb0d:3829:251:d17e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215218f455fsm18965175ad.29.2024.11.28.15.16.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2024 15:16:06 -0800 (PST)
-Date: Thu, 28 Nov 2024 15:16:04 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] device property: fix UAF in
- device_get_next_child_node()
-Message-ID: <Z0j5tGF9ikgVR_0w@google.com>
-References: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
- <20241128053937.4076797-2-dmitry.torokhov@gmail.com>
- <Z0huCS4Z7dkgpCQ8@smile.fi.intel.com>
+	s=arc-20240116; t=1732891105; c=relaxed/simple;
+	bh=snODN72p4HzgsG+wUkWfkP65kEyLAgKcZEAr8US8HZk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ki7rVqRfuoxkuLUjhuqraGQIQDKOSPsrGTCq8CprwlCNZpbjfhgVfMj0ZwnrpPVMTwD3G2z7bKLGxSWyaGpIT+JbbKQdtjWo4H01kSfP9tkaYW0/d/TMGiRgYy4Xy7vLwL2hUGnbItrWGTicX0jeoOxZJolFGXhlAFIalkbQy5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Y0G1R46fmz1V3n4;
+	Fri, 29 Nov 2024 22:35:23 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id C1079180357;
+	Fri, 29 Nov 2024 22:38:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 29 Nov 2024 22:38:12 +0800
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Fri, 29 Nov 2024 15:38:11 +0100
+From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To: Jason Gunthorpe <jgg@nvidia.com>, "acpica-devel@lists.linux.dev"
+	<acpica-devel@lists.linux.dev>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
+	<kevin.tian@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Len
+ Brown" <lenb@kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
+ Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
+ Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>
+CC: Alex Williamson <alex.williamson@redhat.com>, Donald Dutile
+	<ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>, "Guohanjun (Hanjun
+ Guo)" <guohanjun@huawei.com>, Jean-Philippe Brucker
+	<jean-philippe@linaro.org>, Jerry Snitselaar <jsnitsel@redhat.com>, "Moritz
+ Fischer" <mdf@kernel.org>, Michael Shavit <mshavit@google.com>, Nicolin Chen
+	<nicolinc@nvidia.com>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Mostafa Saleh
+	<smostafa@google.com>
+Subject: RE: [PATCH v4 08/12] iommu/arm-smmu-v3: Support IOMMU_VIOMMU_ALLOC
+Thread-Topic: [PATCH v4 08/12] iommu/arm-smmu-v3: Support IOMMU_VIOMMU_ALLOC
+Thread-Index: AQHbKyrKsqNlrqnGcUyZXy2u3OjB57LOfxbQ
+Date: Fri, 29 Nov 2024 14:38:10 +0000
+Message-ID: <8128e648ad014485a7db9771a94194de@huawei.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <8-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+In-Reply-To: <8-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z0huCS4Z7dkgpCQ8@smile.fi.intel.com>
 
-On Thu, Nov 28, 2024 at 03:20:09PM +0200, Andy Shevchenko wrote:
-> On Wed, Nov 27, 2024 at 09:39:35PM -0800, Dmitry Torokhov wrote:
-> > fwnode_get_next_child_node() always drops reference to the node passed
-> > as the "child" argument,
-> 
-> As commented previously,it might be just a documentation bug. So, please
+Hi Jason,
 
-No, absolutely not. Consider calling device_get_next_child_node() with
-"child" pointing to the last child of the primary fwnode.
-fwnode_get_next_child_node() will drop the reference to "child"
-rendering it unusable, and return NULL. The code will go and call
-fwnode_get_next_child_node(fwnode->secondary, child) with invalid child
-pointer, resulting in UAF condition.
+> -----Original Message-----
+> From: Jason Gunthorpe <jgg@nvidia.com>
+> Sent: Thursday, October 31, 2024 12:21 AM
+> To: acpica-devel@lists.linux.dev; iommu@lists.linux.dev; Joerg Roedel
+> <joro@8bytes.org>; Kevin Tian <kevin.tian@intel.com>;
+> kvm@vger.kernel.org; Len Brown <lenb@kernel.org>; linux-
+> acpi@vger.kernel.org; linux-arm-kernel@lists.infradead.org; Lorenzo
+> Pieralisi <lpieralisi@kernel.org>; Rafael J. Wysocki <rafael@kernel.org>;
+> Robert Moore <robert.moore@intel.com>; Robin Murphy
+> <robin.murphy@arm.com>; Sudeep Holla <sudeep.holla@arm.com>; Will
+> Deacon <will@kernel.org>
+> Cc: Alex Williamson <alex.williamson@redhat.com>; Donald Dutile
+> <ddutile@redhat.com>; Eric Auger <eric.auger@redhat.com>; Guohanjun
+> (Hanjun Guo) <guohanjun@huawei.com>; Jean-Philippe Brucker <jean-
+> philippe@linaro.org>; Jerry Snitselaar <jsnitsel@redhat.com>; Moritz
+> Fischer <mdf@kernel.org>; Michael Shavit <mshavit@google.com>; Nicolin
+> Chen <nicolinc@nvidia.com>; patches@lists.linux.dev; Rafael J. Wysocki
+> <rafael.j.wysocki@intel.com>; Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; Mostafa Saleh
+> <smostafa@google.com>
+> Subject: [PATCH v4 08/12] iommu/arm-smmu-v3: Support
+> IOMMU_VIOMMU_ALLOC
 
-Also, consider what happens next. Let's say we did not crash and instead
-returned first child of the secondary node (let's assume primary is an
-OF node and secondary is a software node). On the next iteration of
-device_get_next_child_node() we will call
-fwnode_get_next_child_node(fwnode, child) which results in passing
-swnode child to of_fwnode_get_next_child_node() which may or may not
-work. It all is very fragile.
+[...]
 
-That is why it is best to check if the child argument is indeed a child
-to a given parent before calling fwnode_get_next_child_node() on them.
+> +struct iommufd_viommu *arm_vsmmu_alloc(struct device *dev,
+> +				       struct iommu_domain *parent,
+> +				       struct iommufd_ctx *ictx,
+> +				       unsigned int viommu_type)
+> +{
+> +	struct arm_smmu_device *smmu =3D
+> +		iommu_get_iommu_dev(dev, struct arm_smmu_device,
+> iommu);
+> +	struct arm_smmu_master *master =3D dev_iommu_priv_get(dev);
+> +	struct arm_smmu_domain *s2_parent =3D to_smmu_domain(parent);
+> +	struct arm_vsmmu *vsmmu;
+> +
+> +	if (viommu_type !=3D IOMMU_VIOMMU_TYPE_ARM_SMMUV3)
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	if (!(smmu->features & ARM_SMMU_FEAT_NESTING))
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	if (s2_parent->smmu !=3D master->smmu)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	/*
+> +	 * Must support some way to prevent the VM from bypassing the
+> cache
+> +	 * because VFIO currently does not do any cache maintenance.
+> canwbs
+> +	 * indicates the device is fully coherent and no cache maintenance
+> is
+> +	 * ever required, even for PCI No-Snoop."
+> +	 */
+> +	if (!arm_smmu_master_canwbs(master))
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	vsmmu =3D iommufd_viommu_alloc(ictx, struct arm_vsmmu, core,
+> +				     &arm_vsmmu_ops);
+> +	if (IS_ERR(vsmmu))
+> +		return ERR_CAST(vsmmu);
+> +
+> +	vsmmu->smmu =3D smmu;
+> +	vsmmu->s2_parent =3D s2_parent;
+> +	/* FIXME Move VMID allocation from the S2 domain allocation to
+> here */
 
-> elaborate on the use case before this patch that leads to an issue.
-> 
-> > which makes "child" pointer no longer valid
-> > and we can not use it to scan the secondary node in case there are no
-> > more children in primary one.
-> > 
-> > Also, it is not obvious whether it is safe to pass children of the
-> > secondary node to fwnode_get_next_child_node() called on the primary
-> > node in subsequent calls to device_get_next_child_node().
-> > 
-> > Fix the issue by checking whether the child node passed in is indeed a
-> > child of primary or secondary node, and do not call
-> > fwnode_get_next_child_node() for the wrong parent node. Also set the
-> > "child" to NULL after unsuccessful call to fwnode_get_next_child_node()
-> > on primary node to make sure secondary node's children are scanned from
-> > the beginning.
-> 
-> To me it sounds over complicated. Why not just take reference to the child once
-> more and put it after we find next in either cases?
+I am planning to respin the " iommu/arm-smmu-v3: Use pinned KVM VMID for
+stage 2" [0] based on the latest IOMMUF code. One of the comment on that
+RFC was, we should associate the KVM pointer to the sub objects like  viomm=
+u
+instead of iommufd itself[1]. But at present the s2 domain is already final=
+ized
+with a VMID before a viommu object is allocated.
 
-You want to "reset" when switching from primary node over to secondary
-instead of hoping that passing child pointer which is not really a child
-to secondary node will somehow cause fwnode_get_next_child_node() to
-return first its child.
+So does the above comment indicates that we plan to do another
+S2 VMID allocation here and replace the old one?
 
-> Current solution provides
-> a lot of duplication and makes function less understandable.
+Please let me know your thoughts on this.
 
-The simplicity of the old version is deceiving. See the explanation
-above.
+Thanks,
+Shameer
+[0] https://lore.kernel.org/linux-iommu/20240208151837.35068-1-shameerali.k=
+olothum.thodi@huawei.com/
+[1] https://lore.kernel.org/linux-iommu/BN9PR11MB527662A2AB0A9BABD5E20E6D8C=
+D52@BN9PR11MB5276.namprd11.prod.outlook.com/
 
-Thanks.
-
--- 
-Dmitry
 
