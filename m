@@ -1,61 +1,61 @@
-Return-Path: <linux-acpi+bounces-9829-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9832-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8080D9DF0FC
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Nov 2024 15:11:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53279DF106
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Nov 2024 15:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFA51B22496
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Nov 2024 14:11:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5B392818DA
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Nov 2024 14:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CF41AA1C1;
-	Sat, 30 Nov 2024 14:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77B21C1F2A;
+	Sat, 30 Nov 2024 14:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UlBnV5jK"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="isD6464r"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2044.outbound.protection.outlook.com [40.107.93.44])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2067.outbound.protection.outlook.com [40.107.223.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB83A1A76DA;
-	Sat, 30 Nov 2024 14:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCC51AAE24;
+	Sat, 30 Nov 2024 14:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732975678; cv=fail; b=MyPDZ2A9grsIT2bzwT0WYN4eDvwAAf/LIYC0xizGarjG6G8zOxS14LJPeapeSzPf4Xw14BOUHxb/G+PRcrrytfhKnfKaS+OyGaKTt544YtMahtsMFvCWX/ZVCM5BBqfpG7mx9SVpILXc+6mH4vzNC3/o1V/uzFzbF4zGiFJa0tw=
+	t=1732975683; cv=fail; b=M9X7Svz3w1KNiIMwncbwzaxslRQJPEKYpjPXECbpqmurbNFxM+sMgpX3+8HHuCCcqw8YXc2IjCLGTPgDXkYzKEB0SxqT7zij+5zbpGsWA/+96nyDvLfd2dhKq+FAcNPCVXsSSstXIIZfDZpDF5ML7Th0tzmmTHwICb8dLqkLXwY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732975678; c=relaxed/simple;
-	bh=FpLsiRAJ0TzAVlqt/XYgzXMXQTsiGNGdRN6lg7gXd6k=;
+	s=arc-20240116; t=1732975683; c=relaxed/simple;
+	bh=IOvZRKAPWNZC84/xYTtOAnd86sJc053Z0HhsqFxH+/c=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jx7dNU3dmyKhXycYLCbCvUvPXZJUewYsrQezWXRphirlcUyyLqyV9lASZyh+5AxffykZCtz6/65jwrZ/sfCJl6XGejuEtvs4GM/xegWlxjTW5u6oB7r6HzUOqnC6B0JE1J3AIEvTGrEre+eNIAyVIRUwmjM2Yq92+zEaBsO+MAU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UlBnV5jK; arc=fail smtp.client-ip=40.107.93.44
+	 MIME-Version:Content-Type; b=d7NKq11233XsCOlbFZWfUsXCsz2hxJGWHyYvD/dk1JC7rtcEJRjsBTp8SolJLzUlZVeH5h8sigTMhovYyxycb7C5i0k4vrZzq51KSD/1u7nY/IUivJNVOnQw+czH5N84QHLPsDTCajlrZ+sV/f/Z+R8EoSNuXWbOnSaBw8nk3c0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=isD6464r; arc=fail smtp.client-ip=40.107.223.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Shwz4rkKAleUaNJbGa1b/TtgCUOV4OL42DzyI8YI5NdCT5pbtIovO/qtKSLZBGB5/qsesthi0tkFxWuGiT5TXE/0a+o6o4CJ36CYdj3flrwFKc+cmSBac+knVXX/PxVQQTDgWSHd5wu6q6IouGomv+7QrYLXwE7scVtOIel9YsXaxcgDiccz9YRfD11iFIMfcQqgl2lY5Tdb7ym4YpCoOBbm8CV1rMjs7cU+XNc5/76QDV0R+NKjk4NwBPfVHcpk6goQ9uEMyqKW1i42efmN/xiDs71nHbFrWE5z/r0vm85BznG61ydc12PbaggVVejh/mLiwvAPQsHHdfH+C7BuEQ==
+ b=RWpY9YiPFhzFyZz6SsUiJQCkGGbrgbfHCXIRrDsLHRjgiU1UgwtQ1x9bsvJCJUuES9G3Gc7qiQgTUqZtkr3E9pzmsVBqEmPUpYTcw4A5Gr930ekkWB08OD1/bn+WCDGh8iG5cs6L3ng/3yvpX5IzfQ3u2NRjtxtc7IGaz1UvV6HeU9wm9NQWlOAhwilkUPCkpC1kRypu3C85VwtKd+tNT9M8ic/sKAutWQ1GpO/NbhJxoFSl7a+i+V0CgEGsjarUmPp/RGRB8J7hmQb++OAcYCGeKpVbCa1yIcJid5/aTsXbnIOb89UcDa4gm+Qor6vDhmwbAEHRIJz1cZ3Z+yK7Jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RknzHyVcDROpyuEbZtKEZ2l63n4PQHm96/Tru68mFr0=;
- b=TS8P6LQRNoWBbTR6W7W+s6SXrrmN/zAAZ/028nGrsiNaDXRybIu+xntnyTlDGCqlfPoTXryGLBRQConBgzO8hQKrIWe+YTraEu3/lEsX31tzgi6RuwYjKzjt7aCAbz8n1V991JOEn6PQSzv+6Ox0or0AeeVfT6XkKENNUjMWWlM7tb/341NfxAceciKdailoXCpf3wxsnUpjQ/4K6aPTKB+mvngwtkZK4XFbj2tZn6l3KPBApb2QnkOYiHlZKHD/wWkbKgLM24R0x/d2K9xZka3UGAb++BHpOsdwKIsUT6AYWEQK9HzbfNM7xAJz+CNAh1gMk+SdazY2yl1ndzDsUA==
+ bh=9rQuoDc8UaCkJTYhrzlrm3g5L3+wEqX60J51gCi0g+c=;
+ b=BUHlwp59lrO2NEi3MvMvhD2ULF6jycDBsIFPXqkt8CkWqhM0A2nVrjBzGPUHU0cQs6T/b/kcg5j3cIhfLDrCoawu5HqvuSnUM67TCaSI3Trtjg6jUT5DV0W5xu3Rbqsb4NNOGWq+gkmiUbpLQ1kIlpWZGa4dZFLnBXIGtFMULP99X/dt4eGnjC/mXAEX8eRYEvEvMVvTT1dQ/Aat+G/IH5tTu6jUPwvEzVhkf1F5QleFmhhFM5Pwf0Y3QQmCuM0u98ze1/CilDVDVHNoHiP0Te0/9oMqCeMd9x7Xy9tvxoPsuv6VkjVy+m2LcF93S9Vtz5pITwedD50eCaE0Vc0Ofw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RknzHyVcDROpyuEbZtKEZ2l63n4PQHm96/Tru68mFr0=;
- b=UlBnV5jK1FpoGWAIx5kexSfGh94fzVis2Q5fxuILcyBBy3caW7BlPfkcecz+zIONEBCdgKr9otSKVTprlzImHUpZvpXoYHiI4WqQvFXdqZgxz+KMWGPfbv/59AQEUcc62ywBSWG66o8MkMbpuL6NvBhVk9YVxbktO5Abxfyux+w=
-Received: from SN1PR12CA0075.namprd12.prod.outlook.com (2603:10b6:802:20::46)
- by IA1PR12MB7710.namprd12.prod.outlook.com (2603:10b6:208:422::14) with
+ bh=9rQuoDc8UaCkJTYhrzlrm3g5L3+wEqX60J51gCi0g+c=;
+ b=isD6464rh4xxaNLI9TJ/3ImFvE3laZYB7lw269Knf9zUXV42bYibLCg9vcFk3PRcIQ26io/wQDkEcBPhpuFY0tDZ5exRtYLP6cIOlMbIQPRJkLqQVRx0hwQHefdbb5HkBzRl2s/Bq4vtdKyTH9vK8xaf3jFnL9DGenZ90aMsgxs=
+Received: from SN6PR04CA0081.namprd04.prod.outlook.com (2603:10b6:805:f2::22)
+ by CH3PR12MB8329.namprd12.prod.outlook.com (2603:10b6:610:12e::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.15; Sat, 30 Nov
- 2024 14:07:53 +0000
-Received: from SA2PEPF000015CD.namprd03.prod.outlook.com
- (2603:10b6:802:20:cafe::8) by SN1PR12CA0075.outlook.office365.com
- (2603:10b6:802:20::46) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.13 via Frontend Transport; Sat,
- 30 Nov 2024 14:07:52 +0000
+ 2024 14:07:54 +0000
+Received: from SA2PEPF000015CC.namprd03.prod.outlook.com
+ (2603:10b6:805:f2:cafe::81) by SN6PR04CA0081.outlook.office365.com
+ (2603:10b6:805:f2::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.14 via Frontend Transport; Sat,
+ 30 Nov 2024 14:07:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,13 +63,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF000015CD.mail.protection.outlook.com (10.167.241.203) with Microsoft
+ SA2PEPF000015CC.mail.protection.outlook.com (10.167.241.202) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8230.7 via Frontend Transport; Sat, 30 Nov 2024 14:07:52 +0000
+ 15.20.8230.7 via Frontend Transport; Sat, 30 Nov 2024 14:07:54 +0000
 Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sat, 30 Nov
- 2024 08:07:49 -0600
+ 2024 08:07:52 -0600
 From: Mario Limonciello <mario.limonciello@amd.com>
 To: Borislav Petkov <bp@alien8.de>
 CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -83,9 +83,9 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	"open list:ACPI" <linux-acpi@vger.kernel.org>, "open list:AMD PSTATE DRIVER"
 	<linux-pm@vger.kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Perry Yuan <Perry.Yuan@amd.com>
-Subject: [PATCH v7 07/12] platform/x86: hfi: add online and offline callback support
-Date: Sat, 30 Nov 2024 08:06:58 -0600
-Message-ID: <20241130140703.557-8-mario.limonciello@amd.com>
+Subject: [PATCH v7 08/12] platform/x86: hfi: add power management callback
+Date: Sat, 30 Nov 2024 08:06:59 -0600
+Message-ID: <20241130140703.557-9-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241130140703.557-1-mario.limonciello@amd.com>
 References: <20241130140703.557-1-mario.limonciello@amd.com>
@@ -101,181 +101,118 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CD:EE_|IA1PR12MB7710:EE_
-X-MS-Office365-Filtering-Correlation-Id: a838f119-4641-478a-a949-08dd11486159
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CC:EE_|CH3PR12MB8329:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59a76525-df0e-4b74-1e6c-08dd1148626e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014;
+	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700013|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?woMKsHdqXSXLJTo8u7vE5r1M1U9gg/heYNmcnEOzVoWRjhzB2sZEV8NRaPld?=
- =?us-ascii?Q?f2NJhJjGi5vG4gUQWgWuR9EPlIa9PBZC2lvMgfx5nZxL/2csTzz/4y7X4vNE?=
- =?us-ascii?Q?7Dm/B1LiXilP/v5vqqliw46LmssCnVMmlMNQQMAXNd5MIyxn9iFkZjlwl0Nt?=
- =?us-ascii?Q?7v3Y1qZDknR3cs6KUFYDNgK47pKCtvR9w6HuoYiS0AfCQK6IdqFhC7E8jx3s?=
- =?us-ascii?Q?ngo4Q2vlQ8vEulqT8HFEJPsXaFYO5pPVlnd40RbBEd6FbJH8Yd8mJEiB+Ffd?=
- =?us-ascii?Q?UCNjB1b4egkgHI42hVyg0wZrEr6bvpO0eYNIt24Cwu1RzR8QLLe1R6N89PzS?=
- =?us-ascii?Q?JmHf9uMX1Otf1ExnGJmCGoa1pzIlRCXhd3c1TNaAk6NhzyGen7Fj/j+6dvcB?=
- =?us-ascii?Q?P63qt1vvoHabAn8GcpilRIM/awGqyDWngcOtIExpqQ6Uye5GPYTayG10OOKi?=
- =?us-ascii?Q?irSnNU5imNHbB0SmxhtanyAE/I1ww0NpDmvilripXOOC0wfmp24awBb7i8jv?=
- =?us-ascii?Q?mw2VQo7ydq3jrIYbAT7mHIS+NTgiTdOduhCKkgSXhJ6BqfKMChCpStllS2D1?=
- =?us-ascii?Q?MQBnPECmwUA/tIYMCJO4fVudsp06oACssTbqZpyVtD0RkhPDZvRDV9yihoaQ?=
- =?us-ascii?Q?Fy9bT16s61+vZvLbiLVmbrDlslKGUVceZJM/NSLSy7mDCE+izSOyI8M88eu8?=
- =?us-ascii?Q?BXP5hHfTZ+Uml8tJrxjioAtPMO9nPB7tARJxwU+mi1QlYJ4E7M7MGpEt/X8F?=
- =?us-ascii?Q?17CqktMJLvTr52z0RMIfx2e6NTBRZpnRxdjWYBXz2cFnHhvtYZSq2xmZdHP3?=
- =?us-ascii?Q?q8fuZHjixZxsUCZeDfNOWT6G7VqwRbFp46lniXWIgNaRyJEJxl9N12ApUSjp?=
- =?us-ascii?Q?6JtMP2yRn9wUjHAwCdA2gohEOISQbxmzDSDQGbJy+UVzXIXxGFLjd+7KaDbS?=
- =?us-ascii?Q?OBb0KBH/S9PPbAz+2hN44Qh10Nt3AyQrG+RK5dqaYhnisi1WLp04OUV1XT08?=
- =?us-ascii?Q?bRib0ISy/u4y0o7117rHYhkQA3O6vWt07tl3IdnE94qXY6qiYoMTOvspBvYP?=
- =?us-ascii?Q?VL1+jTIjY607GK/VVnnMK3HOT38rzwNzHDmCW/Q+lmJMFm5p2n3ZF5KNUS6o?=
- =?us-ascii?Q?axxGWFLAxUrhVrVhKhKfKWVD7nzoYfPxF5XsD/k6FfeMV/lUh9TduHOC7OjV?=
- =?us-ascii?Q?93l4PSdtp5Ju78HLhw+MBDosbb2XQ+8tj9vc+6Y2sEWjh08hqaIpspAln99H?=
- =?us-ascii?Q?53xfl0yh53ec+RE1kkrbBytJ0cf+FovgojUDtkdiemE1lspA1TNQMbDWgkCM?=
- =?us-ascii?Q?OTwU9q4H5W1/YXHd+1Y6ARj+/A4X4y9oZpRpeGxZYUVxts7GcsiiQaPdIzjW?=
- =?us-ascii?Q?RokC8GKdr4AacGCPLwdLFUNJV6xbVoWbvuOHug/jf9obtXmSVdtIR72U2qBu?=
- =?us-ascii?Q?ioo8tzkysTUDt0lo3TuebYLpoqIjKRo6?=
+	=?us-ascii?Q?7YAfc/GGAmEQzQjL0jLsNTPC47CfAppFN+FdeJ+1UjwCVTXO5I9xVEE3JSRK?=
+ =?us-ascii?Q?wOS/SrN+rBwIDV/LgVDTmWDsrvEpIKqTVB/EQS+unIY9zR3jxJPt0MyoVPCV?=
+ =?us-ascii?Q?SwBwVlJA4fMCv0csp6d7Ia6nnp+TgwFb3fsNQco4l8u1rVQYvlMJ9ryaXBg9?=
+ =?us-ascii?Q?Vs9WiT34e7Kj23aQ1IrlPN1XylwUrhLF7uVxPVWgmbEfiv7EfvAkTsZKy9yH?=
+ =?us-ascii?Q?oZrja9qy7D7ZCXUZyGjS/IS4ftRP6JUPkQz508NDAxhvFDDHbxzPElQJuuOu?=
+ =?us-ascii?Q?uNRfHNuzWO1tCzWX9y+NHNJdFBRRqg2JzTDyIMdIcNcu1ZzNLpEDdtUMVylZ?=
+ =?us-ascii?Q?Ef+QeqBsbATYVq5K6z9LAgaqOa9pXBuxBDr0QKCy8pIXrgtDykz3JL77pj/s?=
+ =?us-ascii?Q?avv/xPVysPN0a+Qvm2jGYiK8khbUVmEcPB8zjlTTd6mkNwrVpTQO42YeAYom?=
+ =?us-ascii?Q?JfvkBcgER/YP1WQ24HxigHa6YEFjj3OoJNdu2AzIBGSGjV6fEQ2zm2+MXGY6?=
+ =?us-ascii?Q?Rcj/WbSNR/Lit6LlO1oN739Haug26OcQHifjNkuUvTKtLX4x1GQbCgpe+9J2?=
+ =?us-ascii?Q?St65nohF/7xYniBkn7zDwZMoR7qpD91qebY+QDvt/SLf3CJQk49srs3vYyN+?=
+ =?us-ascii?Q?Zc3pGhDJM3AxNu2VWK+q2vCPVBRGKlct0jDjD64ttbFy+NPJvh6Vv6Ji8lhl?=
+ =?us-ascii?Q?SflO3T7I0Ib+GvrNFykvrS+kavjPMDVCf2uViLbe6WfA3qFqAU4SN/MbeQ/f?=
+ =?us-ascii?Q?1xmAf/kr3i1MUGpbqQtiUjmaeTkrx2TFKSof1zGK0IlR5/jX2tcpjo1VFc3Q?=
+ =?us-ascii?Q?4sflx1KYmj/e5vbrlAUWgTW4AnC90n1uGSd6e/c8zOTE041ChRe+T+26Ek9U?=
+ =?us-ascii?Q?Ea6+HTvvQssXQPxTqX93HSWm2h16N3Bs+BdlfJEEp44d38l1dkINKltVLsgU?=
+ =?us-ascii?Q?Mh47uLXHQ0+u7bqvnuUrMwwiJcyxr161DV8fLf02eWUTHkxt/4fOKqWw8cXP?=
+ =?us-ascii?Q?Zn2swmuC65CUqmcROaBLVtBqbSos3Y4Ml0ZaaO5jdZGhe4BVUtbHcbjtZdWE?=
+ =?us-ascii?Q?HzHSWdFxyxYsn6YZ7YN/pfIIKj6Nvqqk0s5C07ZkHy+pXT0UTVAV2sBxwnMk?=
+ =?us-ascii?Q?msTr1tG19yxUnHWRKbFGcFWRGDry0Poj689VCYfRGfmAG+4KJZEZd18z+DOk?=
+ =?us-ascii?Q?dx9rZ0bvHipIFSvystHuIKORVb78/Yf6s9BbkjXjSF5Xr3RmYSdhbYmPR8zz?=
+ =?us-ascii?Q?tpqHRBsqCu1CPS5t/f3ZJz9Z+FVUgMalgj2Td/Asbsh4FjN/AymC3qJv5QL7?=
+ =?us-ascii?Q?rCupfq3VL73OB8TB6ddV9nvTMd5XGLCd7RWFAyGstVSU9TtTMZ894wl+fVTE?=
+ =?us-ascii?Q?GQk3je6kVVA5v0en0br5kbxZDys+VpKyW0sxnUX38xklgVRkpzy9IKk05LaB?=
+ =?us-ascii?Q?WMi9u9Ww7qpCPi5URIwSFOckOO2xA2KF?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2024 14:07:52.4124
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2024 14:07:54.2398
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a838f119-4641-478a-a949-08dd11486159
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59a76525-df0e-4b74-1e6c-08dd1148626e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015CD.namprd03.prod.outlook.com
+	SA2PEPF000015CC.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7710
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8329
 
 From: Perry Yuan <Perry.Yuan@amd.com>
 
-There are some firmware parameters that need to be configured
-when a CPU core is brought online or offline.
-
-when CPU is online, it will initialize the workload classification
-parameters to CPU firmware which will trigger the workload class ID
-updating function.
-
-Once the CPU is going to offline, it will need to disable the workload
-classification function and clear the history.
+Introduces power management callbacks for the `amd_hfi` driver.
+Specifically, the `suspend` and `resume` callbacks have been added
+to handle the necessary operations during system low power states
+and wake-up.
 
 Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 Signed-off-by: Perry Yuan <Perry.Yuan@amd.com>
 Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
-v7:
- * move mutex to this patch
----
- drivers/platform/x86/amd/hfi/hfi.c | 81 ++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ drivers/platform/x86/amd/hfi/hfi.c | 33 ++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/drivers/platform/x86/amd/hfi/hfi.c b/drivers/platform/x86/amd/hfi/hfi.c
-index 9671f07c76390..922a9ff0d447a 100644
+index 922a9ff0d447a..80ccc50ee0914 100644
 --- a/drivers/platform/x86/amd/hfi/hfi.c
 +++ b/drivers/platform/x86/amd/hfi/hfi.c
-@@ -113,6 +113,8 @@ struct amd_hfi_cpuinfo {
- 
- static DEFINE_PER_CPU(struct amd_hfi_cpuinfo, amd_hfi_cpuinfo) = {.class_index = -1};
- 
-+static DEFINE_MUTEX(hfi_cpuinfo_lock);
-+
- static int find_cpu_index_by_apicid(unsigned int target_apicid)
- {
- 	int cpu_index;
-@@ -235,6 +237,80 @@ static int amd_set_hfi_ipcc_score(struct amd_hfi_cpuinfo *hfi_cpuinfo, int cpu)
- 	return 0;
+@@ -380,6 +380,38 @@ static int amd_hfi_metadata_parser(struct platform_device *pdev,
+ 	return ret;
  }
  
-+static int amd_hfi_set_state(unsigned int cpu, bool state)
++static int amd_hfi_pm_resume(struct device *dev)
 +{
-+	int ret;
++	int ret, cpu;
 +
-+	ret = wrmsrl_on_cpu(cpu, AMD_WORKLOAD_CLASS_CONFIG, state);
-+	if (ret)
-+		return ret;
++	for_each_online_cpu(cpu) {
++		ret = amd_hfi_set_state(cpu, true);
++		if (ret < 0) {
++			dev_err(dev, "failed to enable workload class config: %d\n", ret);
++			return ret;
++		}
++	}
 +
-+	return wrmsrl_on_cpu(cpu, AMD_WORKLOAD_HRST, 0x1);
++	return 0;
 +}
 +
-+/**
-+ * amd_hfi_online() - Enable workload classification on @cpu
-+ * @cpu: CPU in which the workload classification will be enabled
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+static int amd_hfi_online(unsigned int cpu)
++static int amd_hfi_pm_suspend(struct device *dev)
 +{
-+	struct amd_hfi_cpuinfo *hfi_info = per_cpu_ptr(&amd_hfi_cpuinfo, cpu);
-+	struct amd_hfi_classes *hfi_classes;
-+	int ret;
++	int ret, cpu;
 +
-+	if (WARN_ON_ONCE(!hfi_info))
-+		return -EINVAL;
++	for_each_online_cpu(cpu) {
++		ret = amd_hfi_set_state(cpu, false);
++		if (ret < 0) {
++			dev_err(dev, "failed to disable workload class config: %d\n", ret);
++			return ret;
++		}
++	}
 +
-+	/*
-+	 * Check if @cpu as an associated, initialized and ranking data must be filled
-+	 */
-+	hfi_classes = hfi_info->amd_hfi_classes;
-+	if (!hfi_classes)
-+		return -EINVAL;
-+
-+	guard(mutex)(&hfi_cpuinfo_lock);
-+
-+	if (!zalloc_cpumask_var(&hfi_info->cpus, GFP_KERNEL))
-+		return -ENOMEM;
-+
-+	cpumask_set_cpu(cpu, hfi_info->cpus);
-+
-+	ret = amd_hfi_set_state(cpu, true);
-+	if (ret)
-+		pr_err("WCT enable failed for CPU %d\n", cpu);
-+
-+	return ret;
++	return 0;
 +}
 +
-+/**
-+ * amd_hfi_offline() - Disable workload classification on @cpu
-+ * @cpu: CPU in which the workload classification will be disabled
-+ *
-+ * Remove @cpu from those covered by its HFI instance.
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+static int amd_hfi_offline(unsigned int cpu)
-+{
-+	struct amd_hfi_cpuinfo *hfi_info = &per_cpu(amd_hfi_cpuinfo, cpu);
-+	int ret;
++static DEFINE_SIMPLE_DEV_PM_OPS(amd_hfi_pm_ops, amd_hfi_pm_suspend, amd_hfi_pm_resume);
 +
-+	if (WARN_ON_ONCE(!hfi_info))
-+		return -EINVAL;
-+
-+	guard(mutex)(&hfi_cpuinfo_lock);
-+
-+	ret = amd_hfi_set_state(cpu, false);
-+	if (ret)
-+		pr_err("WCT disable failed for CPU %d\n", cpu);
-+
-+	free_cpumask_var(hfi_info->cpus);
-+
-+	return ret;
-+}
-+
- static int update_hfi_ipcc_scores(void)
- {
- 	int cpu;
-@@ -340,6 +416,11 @@ static int amd_hfi_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/amd_hfi:online",
-+				amd_hfi_online, amd_hfi_offline);
-+	if (ret < 0)
-+		return ret;
-+
- 	return 0;
- }
- 
+ static const struct acpi_device_id amd_hfi_platform_match[] = {
+ 	{"AMDI0104", 0},
+ 	{ }
+@@ -428,6 +460,7 @@ static struct platform_driver amd_hfi_driver = {
+ 	.driver = {
+ 		.name = AMD_HFI_DRIVER,
+ 		.owner = THIS_MODULE,
++		.pm = &amd_hfi_pm_ops,
+ 		.acpi_match_table = ACPI_PTR(amd_hfi_platform_match),
+ 	},
+ 	.probe = amd_hfi_probe,
 -- 
 2.43.0
 
