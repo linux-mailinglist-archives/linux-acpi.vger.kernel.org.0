@@ -1,84 +1,96 @@
-Return-Path: <linux-acpi+bounces-9837-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9838-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AE89DF356
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Nov 2024 22:44:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693569DF475
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 03:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03CB2281266
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Nov 2024 21:44:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4A0CB21067
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 02:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6101AA1F8;
-	Sat, 30 Nov 2024 21:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B60C168BE;
+	Sun,  1 Dec 2024 02:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kIZCebaJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hV3mrotw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1BA130E27;
-	Sat, 30 Nov 2024 21:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7892BF9E8;
+	Sun,  1 Dec 2024 02:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733003051; cv=none; b=IXZSkZxhTaVyYX3NI8yGBOHk/w4hm0T+ZuoSPDIpVDrD1GsregPEqkS6E/DKmr5/00wnffLl17WFnnd0sO60MZueHO6LsQfFPv/bS186MBmoNSDeWTtBoUsdahyOCEUDjzZ0MCZf/l2WvBjNdXOycDjaT281H6XElCepC2htDq8=
+	t=1733021767; cv=none; b=i4gi+KYAWioHaMyL5dyTdUr1rDl+YIGypNXP5nhdqJcQko9Y7gi+fzx41zFJqucYCiAbTrdy3KInsfINXiOAUnvYQXwJ5VCspMJxjfJtkajfsCh2vEQmvW5ckoveUQZ2/DHTIRowRKWZJQTt5Vxf3oneC+eiVkqFLAmNFCOFy4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733003051; c=relaxed/simple;
-	bh=YvnE6yXibYSRVphsfuLW0ZRPXneTASycCwxmcTa7ToE=;
+	s=arc-20240116; t=1733021767; c=relaxed/simple;
+	bh=2MDLGdtixIr+eogn07QqelKmKPJW7oyKKYZK2ByJj5Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CJ+/0M0N4pVb8BeEE3pk6rjzjkzIZ3GxLnrvi76LerMe6jc0m6NWL8btK5NyVyoBv0XlKS0bsQmWWGvo/3veIRwtqjGGtW2qaRvUTkcLwa4YLKErnlrEFIHWf2h/HA/HsZclXDuJ9yFk7FfNn/tFkEbtMlP5B55c8BPiP3GDgSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kIZCebaJ; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=keAe4c+uavuY44QhCcoVQQz5q5qt7NjBcPudaLQ2oexUQYgTxTCElTRifBZMrKC8q+gPVKI2HSb34s5ModJLztVD+Z3UBKb5PXfcyBfu/7LWhXUx5V1UZiD8kU+JjBQZnXhr8ptTp8VYzH16fvBBYGLoLCg+vwv17SiK3I7PWMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hV3mrotw; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733003050; x=1764539050;
+  t=1733021765; x=1764557765;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=YvnE6yXibYSRVphsfuLW0ZRPXneTASycCwxmcTa7ToE=;
-  b=kIZCebaJ7+kcYDqhxU6O2iqhKp/eRmmcEaCJawPiuY+MZMYLCnUAdgXd
-   dXFwuKHGc8QPPjpAo/wBQaDXY/eyokMtjHTx5k1A6lEpnu8VhdH2KN0Y3
-   3/dyaO9lxaoVxubj0wu73tD+pSdHUhvkGbYpz5poBUcrc7wrW3smnloRe
-   +JZScie2aNRa4x0aEoJ9QZwdPdvCSsu7P5vvE9yE5t6GsK9RwUk0klD7l
-   fEsY4OSpgSfZID5p23Riw+gT+4fea1ZeVyj0Bbiz7xhdDCCTQloUCGpPY
-   KeB9YM5T55kpVsLM/muVfHjTaha08JAaRdcFICo7GcrY8YtN0YOIMT5tA
-   w==;
-X-CSE-ConnectionGUID: a7W3K7EGQxy1a7g/X4h8/g==
-X-CSE-MsgGUID: p8/Q1FanRTmb2PFqDMxMZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11272"; a="20786533"
+  bh=2MDLGdtixIr+eogn07QqelKmKPJW7oyKKYZK2ByJj5Y=;
+  b=hV3mrotwWQCv5TVV+POUpRLLshlMDO+NGJ2+G4WFHtFkURLjdnaprQ/7
+   rRkFtYJyKUM24LuWdta1GHezFQLZQdo09yzqU92r95m6kr+jdQv46M4yb
+   2MOvC7nlYfUCVIhadw+1b07fTzwBaq6W5YSZmSAQQuygou9F2DaxUTBjd
+   uocDk2qwBTPNdfVja8JRCdgzCl9saIBc+XovGJakgBjDpcwhfOZUD9PEJ
+   fKi4zJoT1u/ZQOkw/rCjrzeA/lDkfO6QqXzUxbILVS9WMGe2I3MPXVab7
+   +Gmq2R1EMS4aoNNc+rCLNnJmpT/Xgsk5MLNRNKrdykSrVUmN+NliMKMAJ
+   g==;
+X-CSE-ConnectionGUID: HXJMo9GbT/SI+gbM/GSATw==
+X-CSE-MsgGUID: jX1s19gDSuW6T6tPpbEqLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11272"; a="44248029"
 X-IronPort-AV: E=Sophos;i="6.12,199,1728975600"; 
-   d="scan'208";a="20786533"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2024 13:44:09 -0800
-X-CSE-ConnectionGUID: 3GdDkVDnRBmnWmn/6oAlKQ==
-X-CSE-MsgGUID: mJ3/5bgLSiW7NwRkn0XL6w==
+   d="scan'208";a="44248029"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2024 18:56:04 -0800
+X-CSE-ConnectionGUID: awvlkQ0XQouCl51C2mZQ+w==
+X-CSE-MsgGUID: NoGx+l5vQ26mWR/7dI8L2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,199,1728975600"; 
-   d="scan'208";a="116020974"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2024 13:44:07 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tHVG0-00000002fhb-2b2B;
-	Sat, 30 Nov 2024 23:44:04 +0200
-Date: Sat, 30 Nov 2024 23:44:04 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] device property: do not leak child nodes when using
- NULL/error pointers
-Message-ID: <Z0uHJJKMog-REw1D@smile.fi.intel.com>
-References: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
- <Z0hsbNqXSkQjsR1v@smile.fi.intel.com>
- <Z0j3EtRmYBmGFApu@google.com>
- <Z0nUpytu0GFUgQ9V@smile.fi.intel.com>
- <Z0q75n_P3sZYnviO@google.com>
+   d="scan'208";a="97890037"
+Received: from lkp-server02.sh.intel.com (HELO 36a1563c48ff) ([10.239.97.151])
+  by orviesa004.jf.intel.com with ESMTP; 30 Nov 2024 18:55:59 -0800
+Received: from kbuild by 36a1563c48ff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tHa7o-0001An-2a;
+	Sun, 01 Dec 2024 02:55:56 +0000
+Date: Sun, 1 Dec 2024 10:55:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?unknown-8bit?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Lee Chun-Yi <jlee@suse.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Corentin Chary <corentin.chary@gmail.com>,
+	"Luke D . Jones" <luke@ljones.dev>,
+	Ike Panhc <ike.pan@canonical.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Alexis Belmonte <alexbelm48@gmail.com>,
+	Uwe =?unknown-8bit?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	"open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER" <platform-driver-x86@vger.kernel.org>,
+	"open list:THINKPAD ACPI EXTRAS DRIVER" <ibm-acpi-devel@lists.sourceforge.net>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Armin Wolf <W_Armin@gmx.de>
+Subject: Re: [PATCH v8 02/22] platform/x86/dell: dell-pc: Create platform
+ device
+Message-ID: <202412011002.Hb0aRIsM-lkp@intel.com>
+References: <20241130140454.455-3-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,62 +99,94 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z0q75n_P3sZYnviO@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20241130140454.455-3-mario.limonciello@amd.com>
 
-On Fri, Nov 29, 2024 at 11:16:54PM -0800, Dmitry Torokhov wrote:
-> On Fri, Nov 29, 2024 at 04:50:15PM +0200, Andy Shevchenko wrote:
-> > On Thu, Nov 28, 2024 at 03:04:50PM -0800, Dmitry Torokhov wrote:
-> > > On Thu, Nov 28, 2024 at 03:13:16PM +0200, Andy Shevchenko wrote:
-> > > > On Wed, Nov 27, 2024 at 09:39:34PM -0800, Dmitry Torokhov wrote:
+Hi Mario,
 
-...
+kernel test robot noticed the following build warnings:
 
-> > > > > @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
-> > > > >  	const struct fwnode_handle *fwnode = dev_fwnode(dev);
-> > > > >  	struct fwnode_handle *next;
-> > > > 
-> > > > > -	if (IS_ERR_OR_NULL(fwnode))
-> > > > > +	if (IS_ERR_OR_NULL(fwnode)) {
-> > > > > +		fwnode_handle_put(child);
-> > > > >  		return NULL;
-> > > > > +	}
-> > > > 
-> > > > >  	/* Try to find a child in primary fwnode */
-> > > > >  	next = fwnode_get_next_child_node(fwnode, child);
-> > > > 
-> > > > So, why not just moving the original check (w/o dropping the reference) here?
-> > > > Wouldn't it have the same effect w/o explicit call to the fwnode_handle_put()?
-> > > 
-> > > Because if you rely on check in fwnode_get_next_child_node() you would
-> > > not know if it returned NULL because there are no more children or
-> > > because the node is invalid. In the latter case you can't dereference
-> > > fwnode->secondary.
-> > 
-> > Yes, so, how does it contradict my proposal?
-> 
-> I guess I misunderstood your proposal then. Could you please explain it
-> in more detail?
+[auto build test WARNING on 2ba9f676d0a2e408aef14d679984c26373bf37b7]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-platform-profile-Add-a-name-member-to-handlers/20241130-221102
+base:   2ba9f676d0a2e408aef14d679984c26373bf37b7
+patch link:    https://lore.kernel.org/r/20241130140454.455-3-mario.limonciello%40amd.com
+patch subject: [PATCH v8 02/22] platform/x86/dell: dell-pc: Create platform device
+config: x86_64-randconfig-121-20241201 (https://download.01.org/0day-ci/archive/20241201/202412011002.Hb0aRIsM-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241201/202412011002.Hb0aRIsM-lkp@intel.com/reproduce)
 
-Current code (in steps):
-	if (IS_ERR_OR_NULL()) check
-	trying primary
-	trying secondary if previous is NULL
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412011002.Hb0aRIsM-lkp@intel.com/
 
+sparse warnings: (new ones prefixed by >>)
+>> drivers/platform/x86/dell/dell-pc.c:252:32: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected long error @@     got struct platform_device *static [assigned] [toplevel] platform_device @@
+   drivers/platform/x86/dell/dell-pc.c:252:32: sparse:     expected long error
+   drivers/platform/x86/dell/dell-pc.c:252:32: sparse:     got struct platform_device *static [assigned] [toplevel] platform_device
+>> drivers/platform/x86/dell/dell-pc.c:252:31: sparse: sparse: incorrect type in return expression (different base types) @@     expected int @@     got void * @@
+   drivers/platform/x86/dell/dell-pc.c:252:31: sparse:     expected int
+   drivers/platform/x86/dell/dell-pc.c:252:31: sparse:     got void *
 
-My proposal
+vim +252 drivers/platform/x86/dell/dell-pc.c
 
-	trying primary
-	return if not NULL
-	if (IS_ERR_OR_NULL()) check in its current form (no put op)
-	trying secondary
-
-After your first patch IIUC this is possible as trying primary will put child uncoditionally.
+   233	
+   234	static int thermal_init(void)
+   235	{
+   236		int ret;
+   237		int supported_modes;
+   238	
+   239		/* If thermal commands are not supported, exit without error */
+   240		if (!dell_smbios_class_is_supported(CLASS_INFO))
+   241			return 0;
+   242	
+   243		/* If thermal modes are not supported, exit without error */
+   244		ret = thermal_get_supported_modes(&supported_modes);
+   245		if (ret < 0)
+   246			return ret;
+   247		if (!supported_modes)
+   248			return 0;
+   249	
+   250		platform_device = platform_device_register_simple("dell-pc", PLATFORM_DEVID_NONE, NULL, 0);
+   251		if (IS_ERR(platform_device))
+ > 252			return ERR_PTR(platform_device);
+   253	
+   254		thermal_handler = devm_kzalloc(&platform_device->dev, sizeof(*thermal_handler), GFP_KERNEL);
+   255		if (!thermal_handler) {
+   256			ret = -ENOMEM;
+   257			goto cleanup_platform_device;
+   258		}
+   259		thermal_handler->name = "dell-pc";
+   260		thermal_handler->profile_get = thermal_platform_profile_get;
+   261		thermal_handler->profile_set = thermal_platform_profile_set;
+   262	
+   263		if (supported_modes & DELL_QUIET)
+   264			set_bit(PLATFORM_PROFILE_QUIET, thermal_handler->choices);
+   265		if (supported_modes & DELL_COOL_BOTTOM)
+   266			set_bit(PLATFORM_PROFILE_COOL, thermal_handler->choices);
+   267		if (supported_modes & DELL_BALANCED)
+   268			set_bit(PLATFORM_PROFILE_BALANCED, thermal_handler->choices);
+   269		if (supported_modes & DELL_PERFORMANCE)
+   270			set_bit(PLATFORM_PROFILE_PERFORMANCE, thermal_handler->choices);
+   271	
+   272		/* Clean up if failed */
+   273		ret = platform_profile_register(thermal_handler);
+   274		if (ret)
+   275			goto cleanup_thermal_handler;
+   276	
+   277		return 0;
+   278	
+   279	cleanup_thermal_handler:
+   280		thermal_handler = NULL;
+   281	
+   282	cleanup_platform_device:
+   283		platform_device_unregister(platform_device);
+   284	
+   285		return ret;
+   286	}
+   287	
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
