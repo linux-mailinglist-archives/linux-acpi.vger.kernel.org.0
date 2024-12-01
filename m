@@ -1,55 +1,56 @@
-Return-Path: <linux-acpi+bounces-9839-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9840-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269249DF698
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 18:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574599DF69E
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 18:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6902162D5B
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 17:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11002162D71
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 17:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCB41D61AC;
-	Sun,  1 Dec 2024 17:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4745E1D79A3;
+	Sun,  1 Dec 2024 17:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="u53eJX/8"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="S1jrKzlW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20B62B9BC;
-	Sun,  1 Dec 2024 17:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79392B9BC;
+	Sun,  1 Dec 2024 17:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733073632; cv=none; b=bnx9lr+JE9kSlTFUUaq6+sz+77yLB7qOJHf+GuR7aidhDeUKVCXZ2IK2ExVd0bQxJUnqIbiO7G2x8kuwEcufBwlXcY3GHQGIxzoXyncv5fC1cZKbuW8kdyB3fyD4VCubxyelWhVi3YuDrjQDhVTzW/qrkXF1N7lKhTU9j6PQsGg=
+	t=1733073705; cv=none; b=RcHgkuLcah2gy7u14fYGasLHe9pdJ2hn2nHJeKd+b0P4wyTe0d1qZKxmEBplnfl310LHg81mi+2UQQ0Rv45A25H+/rXDkRipISMbXAutJoqSzdlTuwpu1gDS9jOHKras/K3UaFu5kLn6RvkCgB0oRCW3o/HbnIj2GcSnvHJLd5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733073632; c=relaxed/simple;
-	bh=u2bFIncavrS0FHGyxnB7nb0RZFC5xFTFQchJkao5KaQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=rzSWNmjMYzQ8YfhxvBwZG1lIIGCoJCMxqbhPAqRofLEzpjkLwqtqsNMkqQCMlGN/HzLCIN/CvLbCA1Pq5gKgdnYPsxM57uCl9nAuN1ZewLrs3nK3Z5QVzkKuIYxT8LWyzoWn52QZlX6W7yqyQJPyElFHV2lzhn+Mn2xaGuiT0Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=u53eJX/8; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1733073550; x=1733678350; i=markus.elfring@web.de;
-	bh=ipjQxmbFd+FSH7bHAZVB34gk1qD/mqa8FRKclwAOfz0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=u53eJX/84EfsVLGAXuqux36CWYm8uoiYaP8vZLAYJAsA885lJrKJB/9CyOsqvB8T
-	 XrbBIdLTkT/J1SHDUu5fbv48UBMX02BadbZwyLEoCW9YikgXhpy+XMTl6Age8cErx
-	 wK3ra8nzCTAjAmnmaVc1F1FrK73ii0b4Q0eVLY9yzaYZf63OjkAvAach+QeTUPntQ
-	 /NaUWJqQxGJ6LYj7Da7X2HNPpUoxc3LJBpIIk/YC+ocAnabIO/tCzz38YuQOoWQb3
-	 vQTf1vYbHVjdXChAtp1qsKCEZyyoYPxUB11UUsmSrPJXyfQEp/dgCB+IwgPAgMGP3
-	 CBnyxyP0Rs2vbemluA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mw9xG-1tYEWH3dPo-00sBNw; Sun, 01
- Dec 2024 18:19:09 +0100
-Message-ID: <7947c901-30a3-4e78-8877-08c8696bc84c@web.de>
-Date: Sun, 1 Dec 2024 18:18:52 +0100
+	s=arc-20240116; t=1733073705; c=relaxed/simple;
+	bh=WYM+3aoWpBMkzrC1SLc9RmBAak0AnFq3MZSg+R4I5xk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dilZY04E6XzdcaZk0UCDfzz9FQlQ5ATnHQ6knGFs8/ZUVrONp3CiHjWPjEdzHE7dQvicJLayQvZecWAP0Xy/jqaHg1aYDyoOkHo1Y4SUVkBzzkPHIGIRZ59yKD3FovC5K1MI5HvpK8CPWCGQbNbcsaKyKZvaVilEKRrZodYum04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=S1jrKzlW; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1733073631; x=1733678431; i=w_armin@gmx.de;
+	bh=jCx+3gGsxs2P5V42DaDTiaCKoU2vBLgtwXwpBVRgqlk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=S1jrKzlWF/B6mA8RU7kpThweWpZWnIaI1zEip/u1ScCci/Vxrr8ILUdYEGwPLouQ
+	 MdkJXniPL8jfkZ2A2eHvGnJBKKRzZcQRXtJ6uKcmGL7/4vDMqFCru5jZR2Uf8PUz3
+	 EN8qICsRxqlLdAhdRlILL6QqGbPBnimD1egCuMTDQF0UM3nHmjpIiJ27OXbzrx7qv
+	 E0CVnDWqIquVZYRjZ1cMvU2/4tAld5OwxU1RP7q452DA+OnTPl4U2pRiEBBkpy7QX
+	 qvUM2Tb71tYG0VwAg2okggWI+Nta3idcT/dWRytc3/GbQWJhsltXQP5I5khlR6s1h
+	 9JL8Lg4LzJ1SCesH7A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.14] ([141.30.226.119]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MK3Vu-1sxVqL0shC-00KkXS; Sun, 01
+ Dec 2024 18:20:31 +0100
+Message-ID: <fcc69efe-2c3f-467e-acd3-05af69082234@gmx.de>
+Date: Sun, 1 Dec 2024 18:20:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,74 +58,157 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 02/22] platform/x86/dell: dell-pc: Create platform
+ device
 To: Mario Limonciello <mario.limonciello@amd.com>,
- linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
  Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- ibm-acpi-devel@lists.sourceforge.net, Ai Chao <aichao@kylinos.cn>,
- Alexis Belmonte <alexbelm48@gmail.com>, Armin Wolf <W_Armin@gmx.de>,
- Chun-Yi Lee <jlee@suse.com>, Corentin Chary <corentin.chary@gmail.com>,
- Gergo Koteles <soyer@irl.hu>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Ike Panhc <ike.pan@canonical.com>, Len Brown <lenb@kernel.org>,
- "Luke D. Jones" <luke@ljones.dev>, Maximilian Luz <luzmaximilian@gmail.com>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Matthew Schwartz <matthew.schwartz@linux.dev>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
  Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-References: <20241130140454.455-10-mario.limonciello@amd.com>
-Subject: Re: [PATCH v8 09/22] ACPI: platform_profile: Use `scoped_cond_guard`
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241130140454.455-10-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241130140454.455-1-mario.limonciello@amd.com>
+ <20241130140454.455-3-mario.limonciello@amd.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20241130140454.455-3-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zk4BcCEFNeo7A7oMOewn2hhWkVgalz0F4D6UGrTClZa54R6XPTi
- G3oR9JsEr43NJIl5pKtzktmMTtu+Zp9FQHqmoFlEsnUXvt0G9Paqg72/e+FcLCCGeDUYXRO
- 40ouaus0nUQp4DiJsCf2Hz3MK6VF1WvgEPhZAYyLt1rgI+/RxaT9tPMSd+hf1zzt8xZ/7iN
- G4HHbVvuGgK0OmCIGGGCQ==
+X-Provags-ID: V03:K1:WylpFN/tvFGO1rQ2y2VT0txw3KcXPEIJRnYHXv2ZZ0j6CXPnORa
+ 1LlHK/NNeSL61mIXf9xVY5VTmdlV7MqrHvqQdhbmwJIk9Kvl9RhkTaPqW852Qe588xgWclE
+ 6t3UJoSyMLlnJ4ZU5zINDqJcTlTyfu8n0Pp3DSRPrmpL7qz9lDm1eLQHb13S17e7c9Oqdto
+ 9d2Wr9Bnz0S6rMiYR7MQQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dj4HGFO7zbU=;nrm2+y7HTmb+Ga0jDqC9d4vM63c
- i5RHADWcuYcJUFBu1FH8XMXT1XBZ2ayTKAfYdq1XHqcme3sJ51IkLoVohl3MlxN9RGY5UPEhV
- PHR2J2oWk+vyXX4rLrKIPoknoXV+jlarWeIBkPUFPhRCZJCRHWOOC1W/cDvAUIJKklAXPQXy+
- 2MiZnCDaBdIqeWzQR3q+twyKwAPgHkg5jMsYMYvSCcHyvyMvWcFYV81NbEO03xSDV8ZiKe2FF
- 5j+ztdgzSlI1MtIazrAuE7A7ZoSCPG38J9kbiTA8OtSjpChmknSOcTyURyEzFvn0n+gSPkbGv
- 85T7L/q/h6JpFsA0+5eI6Rk0jDspt+1U6lr47If9FYXz1/78cPECqQPwRHYCnws6i+dlHWf1I
- EYBqgwwqSNGpNk9AmSsO05xOYlAmJkY80CDQ0jSp5WDOPzM5+l8TWegagrV7w/ywWnTPZHFIy
- D4IclEFBXucwSGZ329Q1n0Zm2idsprgkm9vEd2BcLdiDf9GMizdxD6aYzjG6SP21G+UoG5P56
- 5q+lNLx15lzTllHuE8c/pA5Kx4kMwP69MTHs1rt5jYCFryB5gcLsg05Mo0HY3q03c5zQBf6A7
- JHHs7l+G1dlbIHRe+YTReY2rnCpKQy/47FZTaS7doQGmgaZVevNU0xfwjID0FjDEUlbUdrT74
- +QCr2W4OE7eJYyKqFxJbpTkSCuwv+3cI0rZdAFTjN8Zlduy0vj0qe4YMsT9OIDwc/wg7+hloz
- jqdtwhhKKHz9L2KisJc9UQNDPegq75gW3BXWHylVJhfx/EEa3DqylCbE7SSOAmsbfamxvZQhG
- /h/+1McJCyboKBC+qFHCbnbGZzYzdKvqPhZd9xsO116JcXZCleVUww+rx324z1hDDOFm35mR4
- mYOeLbiy9AqP3Mrpi6uuWpMGO0SuMPjJzFylWG/aZXgiyBRt2fprL10VnSTNt4WAx8HTbzDBL
- /ReqjFvevTFhc5xf9z4aTRVPyK2SNV9QqGjE8i9hulcnbKTcGszdL2tUCe2OtoKa6LO6JNZKy
- zEANlnfM/XAcnuK5vLeBgWAbn4Yl3GChazoK3YR0DUv7nUqmUN2sacMaKv9RimzS8aXslyzbl
- AJIPbRDgw=
+UI-OutboundReport: notjunk:1;M01:P0:vlPctLMIxKU=;GEAkJyy6WXnzLoClOZJc4riVMCn
+ QB27P9KKRW563JdiGQ5zmnQ7W99fFXHovDEc8c5g7/cOI3lgR69eDfiAPmgW0wSYz+0rOw+1V
+ 6cvLeK1qJgPXCit6PXePcZPwt7aFU6osOinveiwenIaH1o+v6Cd9AmHImpi7iKUkoybzqyPs7
+ KiDNZlarsPUM19sm6n90z63jSK5Rte0S6OcKjC+6OwNv/RjcdrDtQBLNXKJVosyillJ+M4Az9
+ fx/tMk+39pAcVhoVXdNCH9xBX6U0664qR8QLsBIdqgerYHbPBIFyAvt6EsqJBS1yuubFrNeGs
+ 7XAJ+xnpZlMqiBJdzhB6jfSJ8QxUWwLYFA+ra3SM1K9AImQGdNlsbYYeWes4HfB1q4M6ThOx5
+ AGZf0ecfQoINIkqPeS06RoEleyLF8Gu6TcriP15kRyBFAqusTKT2vK7pJ++klXs1p+tE/BApK
+ BskyfSjmU7QVIiuzRbWX9O8Ss+ntTV4KouowrmFPl2MPFioJU0hj+ezPaA3dm26m+XB1VywXz
+ X93QXxV44u8DBWuHMimbFm49XcsyY4m/CjKC7zt/GfABRa7VLAYP+NQIqztj2mk8UrGClorBF
+ 6yRuhOYMJsBVHEcjvjbyZjnn4pREREn2d+9Ac1xAMCl0eCq4WjEohOhi+peSNscmAU4JbPSQI
+ LoTs8qVkokKvft0ATCT2oK5lfzQnXr6+KAGvRB/r+tcL9RDWn8hO703Ml4yYNrPw50lpfB7z/
+ xEa2aOYwXFJWAngm6KnkwYYSSG1SkkbVx3nY+POdOzp0lOfNbWJk3Srvu3mjcuYe/fc6hrDBG
+ yUgjXpDV2J+XsbmgbR8OrL4qgqS9NtrvO8AIu5J6Pg8waKCs0dXwEd0GQD1TM/oWa4zPv+F4P
+ Ch2qY5h3V/adONmPn5qbXD5lam+i8Zv7KWOuw7cTPE8FGl15OC19r1Cl3TC7b5WRDNMWIUVmG
+ 1r9ttrODRd+RdXSkkTb9VEAIGtSeCZMn+JMTnjw3AgcbASXWuLlWxXucAgIcijXKPhxZNV4NB
+ wXJF/Z9Ibo+mrmrwxoe6d+3ztFcoUMUK4pSNP5Xr5JoW8T0hcsE6vC1KqkofywJ1cRUtsKfxP
+ D3c5lk12c5Z//m1J27418d2p7UUgh6
 
-=E2=80=A6
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -27,25 +27,20 @@ static ssize_t platform_profile_choices_show(struct =
-device *dev,
->  					char *buf)
->  {
-=E2=80=A6
-+		for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST) {
-+			if (len =3D=3D 0)
-+				len +=3D sysfs_emit_at(buf, len, "%s", profile_names[i]);
-+			else
-+				len +=3D sysfs_emit_at(buf, len, " %s", profile_names[i]);
-+		}
-=E2=80=A6
+Am 30.11.24 um 15:04 schrieb Mario Limonciello:
 
-How do you think about to integrate the following source code variant?
+> In order to have a device for the platform profile core to reference
+> create a platform device for dell-pc.
+>
+> While doing this change the memory allocation for the thermal handler
+> to be device managed to follow the lifecycle of that device.
+>
+> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v8:
+>   * Use IS_ERR()/ERR_PTR()
+> ---
+>   drivers/platform/x86/dell/dell-pc.c | 34 ++++++++++++++++++++---------
+>   1 file changed, 24 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/=
+dell/dell-pc.c
+> index 3cf79e55e3129..8bacbde0f0506 100644
+> --- a/drivers/platform/x86/dell/dell-pc.c
+> +++ b/drivers/platform/x86/dell/dell-pc.c
+> @@ -18,10 +18,13 @@
+>   #include <linux/kernel.h>
+>   #include <linux/module.h>
+>   #include <linux/platform_profile.h>
+> +#include <linux/platform_device.h>
+>   #include <linux/slab.h>
+>
+>   #include "dell-smbios.h"
+>
+> +static struct platform_device *platform_device;
+> +
+>   static const struct dmi_system_id dell_device_table[] __initconst =3D =
+{
+>   	{
+>   		.ident =3D "Dell Inc.",
+> @@ -244,9 +247,15 @@ static int thermal_init(void)
+>   	if (!supported_modes)
+>   		return 0;
+>
+> -	thermal_handler =3D kzalloc(sizeof(*thermal_handler), GFP_KERNEL);
+> -	if (!thermal_handler)
+> -		return -ENOMEM;
+> +	platform_device =3D platform_device_register_simple("dell-pc", PLATFOR=
+M_DEVID_NONE, NULL, 0);
+> +	if (IS_ERR(platform_device))
+> +		return ERR_PTR(platform_device);
 
-		for_each_set_bit(i, cur_profile->choices, PLATFORM_PROFILE_LAST)
-			len +=3D sysfs_emit_at(buf, len, (len ? " %s" : "%s"), profile_names[i]=
-);
+ERR_PTR() -> PTR_ERR()
 
+With that being fixed:
 
-Regards,
-Markus
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+
+> +
+> +	thermal_handler =3D devm_kzalloc(&platform_device->dev, sizeof(*therma=
+l_handler), GFP_KERNEL);
+> +	if (!thermal_handler) {
+> +		ret =3D -ENOMEM;
+> +		goto cleanup_platform_device;
+> +	}
+>   	thermal_handler->name =3D "dell-pc";
+>   	thermal_handler->profile_get =3D thermal_platform_profile_get;
+>   	thermal_handler->profile_set =3D thermal_platform_profile_set;
+> @@ -262,20 +271,25 @@ static int thermal_init(void)
+>
+>   	/* Clean up if failed */
+>   	ret =3D platform_profile_register(thermal_handler);
+> -	if (ret) {
+> -		kfree(thermal_handler);
+> -		thermal_handler =3D NULL;
+> -	}
+> +	if (ret)
+> +		goto cleanup_thermal_handler;
+> +
+> +	return 0;
+> +
+> +cleanup_thermal_handler:
+> +	thermal_handler =3D NULL;
+> +
+> +cleanup_platform_device:
+> +	platform_device_unregister(platform_device);
+>
+>   	return ret;
+>   }
+>
+>   static void thermal_cleanup(void)
+>   {
+> -	if (thermal_handler) {
+> +	if (thermal_handler)
+>   		platform_profile_remove();
+> -		kfree(thermal_handler);
+> -	}
+> +	platform_device_unregister(platform_device);
+>   }
+>
+>   static int __init dell_init(void)
 
