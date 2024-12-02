@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-9871-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9872-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2729E0187
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 13:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D636E9E0104
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 12:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF362B2F2E7
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 11:39:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FB76B24202
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 11:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6131FC7D1;
-	Mon,  2 Dec 2024 11:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A2C1FC0E8;
+	Mon,  2 Dec 2024 11:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lSk8gECf"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dF0vqT0I"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA281FC0E8;
-	Mon,  2 Dec 2024 11:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF421D932F;
+	Mon,  2 Dec 2024 11:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733139547; cv=none; b=Ja0zidTVIfdVg1KxZ6Uyj6E/hFOcziZ2P36DLSliKw6s1zkW/d/j4VxDTciPWv1It5emgfnPfuDe0D+qkvFU4xRhewvh5AYEu3CSXnfYUUnvw1NPRGqUWv7i7qjfZOczgj12pWDJuNh7x46iPrG2nwEdDfedcw5puIJPomeHpSY=
+	t=1733139618; cv=none; b=W3aXfFvYLoOkyZ3fK2P9RgIygr/OQNLnpvlAAJyx76QBwP1Yr7WpzT6xtR2NZSEBZzYx31ICsDqEIw67leGE25miiAlQ/VNTkxIffKF8sK9bzSerrRlLtbPDhtS5rO23UYgN3G6JGwEW/0mWK9GcnE2P/6ZSZOwQ3bidvMlqXEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733139547; c=relaxed/simple;
-	bh=MkxBK69WYUMHJR4OsCL7vBo90dufqF2DAt/LeOX9yKc=;
+	s=arc-20240116; t=1733139618; c=relaxed/simple;
+	bh=sVjfGzbM8GkA7FgUwyXuWWLlTiQo1APuR3f5at2NHJQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u2+nEBt22+0QTcRTfK514EjwqaIJqzEz4gPUOuVcT0085xksqvS/80x7j1tsmo+oabH1dAF43wJTAKw0NXNle9NDoUmp2uRp9FpynuDlvzBc2LudYQj5uq7OaElH/Wjsl/xcblousROExpAypmp7iJ7bSzHrieXCrNlG6JNjvuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lSk8gECf; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUMRFSYEttfGTOuixPiOO76+TB4GEsvzpNzvo4bX83k/91s93ywuk0wpGYDOhWdS7ZYVNcoqZDKjny6rV56iYGIQJADT0JRYAgKDHulVRBov2g/HEpmOtR6ciunE4mGJBB7FcHZIUZYpqGJDGm8t/LEnxotPwqVsOBlfwMUAj94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dF0vqT0I; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xBKU0lZ6XWUzkh5GXz9FM4/iCaLNcAkNoFYzLRwUHkw=; b=lSk8gECfPy8vJB5kAkZkd++G4l
-	C6DBtAch1GeEBCsfiGJxOarm8n6RES32JgK3pFtjfVnE9Eo3GLZ/pubYfmt1KMuVAFApp56NEkJ1w
-	Rca1ctd7xpVLQL52bcYr2qyFtH/6gvcb2xKtMygRUkhO9arrUyXY4MeDHJc+fsWKdlhtnUsKkVIcg
-	Yv9xgNnbljXSeOmVeFJ8vfmDvtuX6FNbwFD89k8emK31uGfX/B/fQ2mbya15tYAoyGAVfklYyMy+7
-	q162JpidKM6nUNvYp62IZEA3CP7KRFezxx+p8ONY012UYs9US/LAZheDNfltBWJFvgYkIU6xC2k1K
-	v0WObsFw==;
+	bh=dqsBUO2AtrBbl+piXnLKZ7wdM4LFuVUZ403tmHUrMW0=; b=dF0vqT0I7NWiSXHruEeDOFETCh
+	Dipy63vWKGBwNCNvUpfNBxrOjm5OJDdiBL1tG+cPSbgInDAX6Y75JnwPfJahzAXn1Cx1ZJn6US0nV
+	ocVY54wF+1aVkBTw8YQNBbNhV8O/Nd894BNLQwSGM4GfcWD82yEsCHn0YzQijzUuOHuKJ4LuiFcxM
+	9fe5sfqshiQCKNvFQ5crhsW+BsPw2RF7CZX00jDvXs3sce+s3WPMmPjZ40lG4yTz5NEiSmoAlID8S
+	NmuQbrXo+fS/mZ0/6ie0AlM7yHyn15huP5pNvRoqUwKv7NXp6xvhPzr1Uo0OTHDa0+9CKjxxs0ng/
+	Nc556o8g==;
 Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tI4lV-00000007uox-2o2K;
-	Mon, 02 Dec 2024 11:38:59 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tI4ma-00000002AFx-0hTS;
+	Mon, 02 Dec 2024 11:40:04 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8304E3006F1; Mon,  2 Dec 2024 12:38:58 +0100 (CET)
-Date: Mon, 2 Dec 2024 12:38:58 +0100
+	id 7F211300402; Mon,  2 Dec 2024 12:40:03 +0100 (CET)
+Date: Mon, 2 Dec 2024 12:40:03 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
@@ -64,11 +64,11 @@ Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
 	"open list:ACPI" <linux-acpi@vger.kernel.org>,
 	"open list:AMD PSTATE DRIVER" <linux-pm@vger.kernel.org>,
 	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: Re: [PATCH v7 07/12] platform/x86: hfi: add online and offline
- callback support
-Message-ID: <20241202113858.GB8562@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v7 09/12] x86/process: Clear hardware feedback history
+ for AMD processors
+Message-ID: <20241202114003.GC8562@noisy.programming.kicks-ass.net>
 References: <20241130140703.557-1-mario.limonciello@amd.com>
- <20241130140703.557-8-mario.limonciello@amd.com>
+ <20241130140703.557-10-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -77,17 +77,39 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241130140703.557-8-mario.limonciello@amd.com>
+In-Reply-To: <20241130140703.557-10-mario.limonciello@amd.com>
 
-On Sat, Nov 30, 2024 at 08:06:58AM -0600, Mario Limonciello wrote:
-
-> @@ -340,6 +416,11 @@ static int amd_hfi_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
+On Sat, Nov 30, 2024 at 08:07:00AM -0600, Mario Limonciello wrote:
+> From: Perry Yuan <perry.yuan@amd.com>
+> 
+> Incorporate a mechanism within the context switching code to reset
+> the hardware history for AMD processors. Specifically, when a task
+> is switched in, the class ID was read and reset the hardware workload
+> classification history of CPU firmware and then it start to trigger
+> workload classification for the next running thread.
+> 
+> Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  arch/x86/kernel/process_32.c | 4 ++++
+>  arch/x86/kernel/process_64.c | 4 ++++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
+> index 0917c7f25720b..0bb6391b9089b 100644
+> --- a/arch/x86/kernel/process_32.c
+> +++ b/arch/x86/kernel/process_32.c
+> @@ -213,6 +213,10 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
+>  	/* Load the Intel cache allocation PQR MSR. */
+>  	resctrl_sched_in(next_p);
 >  
-> +	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/amd_hfi:online",
-> +				amd_hfi_online, amd_hfi_offline);
+> +	/* Reset hw history on AMD CPUs */
+> +	if (cpu_feature_enabled(X86_FEATURE_AMD_WORKLOAD_CLASS))
+> +		wrmsrl(AMD_WORKLOAD_HRST, 0x1);
+> +
+>  	return prev_p;
+>  }
 
-By using online notifier, you will already have tasks running on this
-CPU before you initialize the HFI bits, is that okay?
+Are you really going to support all this jazz on 32bit builds?
 
