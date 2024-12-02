@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-9888-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9889-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5CE9E0BB5
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 20:08:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098B09E0BAD
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 20:07:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB2EB164455
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 19:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C36A5280C6C
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 19:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847A31DEFE4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3D01DEFF3;
 	Mon,  2 Dec 2024 19:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="p5ZdpFJd"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="tjMwBUH3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FB11D958E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604A1DED54;
 	Mon,  2 Dec 2024 19:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733166253; cv=none; b=kBI7Vk2D+TBDivsTfczw/BpYb++W96tRUaNcPbDPFDrnm+UUoyLTAgcvj+cx23oLMfNf2HHmCy3W4eymqCnF5BQnqsAlaNTIOvi2pjYDUvLklsQc4ptxcm6ak5xl3yDKxoKX2pf1XImWXUHSFTuAOBjmm+RHaXSq01tClpw9z0Y=
+	t=1733166253; cv=none; b=g6Su/JO2WYZi1BVDLZ55WisD7hw8SgERnDpsSomlBmTRj8gtJDqy2IYn+zcGjxRNiKzczIAEsT3gjaK682c98CQt5PA+vE22VVrASewuFeAJnpwHSrNY6OVNTmIoXoeNZhhlmAh2IxztRIMLWNToLD4AJh80olfFSSZxdSV6VuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733166253; c=relaxed/simple;
-	bh=s/bcJ0LBtQNLQMlmnLBuTDfzYiYUoVgtb9Rx7FMamO4=;
+	bh=idHnkK7FE+k9jSjzZJTwT9vCEnNXD5HcnIgvlgtivw0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OC9a/EqhOx7/1XMOdisQ0qisvmv5UPBeGXl/djpb7hMb6U2oiCsdMx240hYphDl9PQJYyfiiM8VPMFsstjp1LAVQ6GzvxEn4xb8VNtzKuxT8lNHg2Cy2L8+Biy4om7KUD2pc7OaTQUpQdtUKEYniU7Y7gRMyXlOpvessPdFYKAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=p5ZdpFJd; arc=none smtp.client-ip=159.69.126.157
+	 In-Reply-To:To:Cc; b=a2OBk9UvmPHqi1mmj1+I5z46pcZ+DEsCVK6lcDmQYkhRmaUl/kTwJwrJz/KT20yKMzVF/OGq1zJovDr1ge+XED76lU3NuwlbURps2bf/UlwW2M1R9yhV/s+0MhNHBUTinFch6UVj6FTASOXlHPCy94W3Fh5qSnbdfMEqGqp3YCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=tjMwBUH3; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1733166250;
-	bh=s/bcJ0LBtQNLQMlmnLBuTDfzYiYUoVgtb9Rx7FMamO4=;
+	bh=idHnkK7FE+k9jSjzZJTwT9vCEnNXD5HcnIgvlgtivw0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=p5ZdpFJdICUgCyVgmKl+X6L/gPNoWiIXmQwZaFL+00pHwGvBXfmvQL652ic3dehBi
-	 O9MJ1jxDI4k8uP1wEmO3m7Ap1XDQbEjKEBhKY5lMGOtMdIX0pQAt/JuEUxlTGcTqfR
-	 GdAutSxhP//Z8VUFIJuoqsR7gk6JGJ/7k3Jbr0ak=
+	b=tjMwBUH3vsaq40LH5EutpiDvDOJzXADuw0V4FvP8bnl9gY/wCKHr1x934oN+sbS1y
+	 lP3+DzkBRZZJXLWKRAAljtbFfqAvmHH/1AZM19n0SjPM1P8oA6dMsmqDVkkDiKHpPi
+	 mnR85mUcMJ1GWnL0kHtwkdW8P9BFVEXTdfP9QpPs=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 02 Dec 2024 20:04:09 +0100
-Subject: [PATCH 1/3] ACPI: BGRT: Mark bin_attribute as __ro_after_init
+Date: Mon, 02 Dec 2024 20:04:10 +0100
+Subject: [PATCH 2/3] ACPI: BGRT: Constify 'struct bin_attribute'
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,42 +49,51 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241202-sysfs-const-bin_attr-acpi-v1-1-78f3b38d350d@weissschuh.net>
+Message-Id: <20241202-sysfs-const-bin_attr-acpi-v1-2-78f3b38d350d@weissschuh.net>
 References: <20241202-sysfs-const-bin_attr-acpi-v1-0-78f3b38d350d@weissschuh.net>
 In-Reply-To: <20241202-sysfs-const-bin_attr-acpi-v1-0-78f3b38d350d@weissschuh.net>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733166249; l=785;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733166249; l=1037;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=s/bcJ0LBtQNLQMlmnLBuTDfzYiYUoVgtb9Rx7FMamO4=;
- b=z4KHS12m9aEwQCmu78SR62Wvv+3TxbEzyQ5lbDOsS/X6FE+tn8y/Dc3wMvahxUTjF18EHmQAj
- klaI/d4DPSrCr4ZcDBMWM7RbhtHnFTifppDMdG9FUytVs4Xc1M7Wxbo
+ bh=idHnkK7FE+k9jSjzZJTwT9vCEnNXD5HcnIgvlgtivw0=;
+ b=9PbT6StwmGEjLZCXb7lS1nBuP/j1AjHMbaEmPq5Ompous68ttVqUEcSqih4kTrMQRrd5+SOgK
+ dfSAgJfwvucCSsxLRFZOQDv3LNbivjanG2tz41NcYzR+bEglQ6qiiPQ
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-The attribute is only modified during __init phase.
-Protect it against accidental or intentional modifications afterwards.
+The sysfs core now allows instances of 'struct bin_attribute' to be
+moved into read-only memory. Make use of that to protect them against
+accidental or malicious modifications.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/acpi/bgrt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/bgrt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/bgrt.c b/drivers/acpi/bgrt.c
-index d1d9c9289087a1ca6b36e8497cb104bad3282737..88837c291a7630416f0ae3854d6d1a733a590961 100644
+index 88837c291a7630416f0ae3854d6d1a733a590961..35ece8e9f15d1d15c224fb6879d48730898fa3df 100644
 --- a/drivers/acpi/bgrt.c
 +++ b/drivers/acpi/bgrt.c
-@@ -29,7 +29,7 @@ BGRT_SHOW(type, image_type);
- BGRT_SHOW(xoffset, image_offset_x);
- BGRT_SHOW(yoffset, image_offset_y);
+@@ -40,14 +40,14 @@ static struct attribute *bgrt_attributes[] = {
+ 	NULL,
+ };
  
--static BIN_ATTR_SIMPLE_RO(image);
-+static __ro_after_init BIN_ATTR_SIMPLE_RO(image);
+-static struct bin_attribute *bgrt_bin_attributes[] = {
++static const struct bin_attribute *const bgrt_bin_attributes[] = {
+ 	&bin_attr_image,
+ 	NULL,
+ };
  
- static struct attribute *bgrt_attributes[] = {
- 	&bgrt_attr_version.attr,
+ static const struct attribute_group bgrt_attribute_group = {
+ 	.attrs = bgrt_attributes,
+-	.bin_attrs = bgrt_bin_attributes,
++	.bin_attrs_new = bgrt_bin_attributes,
+ };
+ 
+ int __init acpi_parse_bgrt(struct acpi_table_header *table)
 
 -- 
 2.47.1
