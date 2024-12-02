@@ -1,214 +1,322 @@
-Return-Path: <linux-acpi+bounces-9840-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9841-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574599DF69E
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 18:21:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11002162D71
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Dec 2024 17:21:46 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4745E1D79A3;
-	Sun,  1 Dec 2024 17:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="S1jrKzlW"
-X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312D29DF956
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 04:05:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79392B9BC;
-	Sun,  1 Dec 2024 17:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E15EB206B8
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 03:05:56 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056232AE90;
+	Mon,  2 Dec 2024 03:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="jtOGbj3/"
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8924F18E29;
+	Mon,  2 Dec 2024 03:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733073705; cv=none; b=RcHgkuLcah2gy7u14fYGasLHe9pdJ2hn2nHJeKd+b0P4wyTe0d1qZKxmEBplnfl310LHg81mi+2UQQ0Rv45A25H+/rXDkRipISMbXAutJoqSzdlTuwpu1gDS9jOHKras/K3UaFu5kLn6RvkCgB0oRCW3o/HbnIj2GcSnvHJLd5U=
+	t=1733108752; cv=none; b=EUGN9vm7pEUJG3ElyZQAVY0NcgJTqEfvmRT+x5Kn1ECzxT8vt4NG7JbOphcFEhmn7fi5+P7pT81qgZxUvEBuDmdJ5WOa9o/DxTeIrntyCtz9HpLB0SC83OOl4SR8lOw8poJIyHQu7Nl7afJFxlAf0SMf8w4gts3HAZXG5hQYehA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733073705; c=relaxed/simple;
-	bh=WYM+3aoWpBMkzrC1SLc9RmBAak0AnFq3MZSg+R4I5xk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dilZY04E6XzdcaZk0UCDfzz9FQlQ5ATnHQ6knGFs8/ZUVrONp3CiHjWPjEdzHE7dQvicJLayQvZecWAP0Xy/jqaHg1aYDyoOkHo1Y4SUVkBzzkPHIGIRZ59yKD3FovC5K1MI5HvpK8CPWCGQbNbcsaKyKZvaVilEKRrZodYum04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=S1jrKzlW; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1733073631; x=1733678431; i=w_armin@gmx.de;
-	bh=jCx+3gGsxs2P5V42DaDTiaCKoU2vBLgtwXwpBVRgqlk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=S1jrKzlWF/B6mA8RU7kpThweWpZWnIaI1zEip/u1ScCci/Vxrr8ILUdYEGwPLouQ
-	 MdkJXniPL8jfkZ2A2eHvGnJBKKRzZcQRXtJ6uKcmGL7/4vDMqFCru5jZR2Uf8PUz3
-	 EN8qICsRxqlLdAhdRlILL6QqGbPBnimD1egCuMTDQF0UM3nHmjpIiJ27OXbzrx7qv
-	 E0CVnDWqIquVZYRjZ1cMvU2/4tAld5OwxU1RP7q452DA+OnTPl4U2pRiEBBkpy7QX
-	 qvUM2Tb71tYG0VwAg2okggWI+Nta3idcT/dWRytc3/GbQWJhsltXQP5I5khlR6s1h
-	 9JL8Lg4LzJ1SCesH7A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.14] ([141.30.226.119]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MK3Vu-1sxVqL0shC-00KkXS; Sun, 01
- Dec 2024 18:20:31 +0100
-Message-ID: <fcc69efe-2c3f-467e-acd3-05af69082234@gmx.de>
-Date: Sun, 1 Dec 2024 18:20:26 +0100
+	s=arc-20240116; t=1733108752; c=relaxed/simple;
+	bh=9fM4jR2aizQRXMBny4QaQ+NhZyoLw48HjOhgn/LiKAw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K0n2JYLcvy1uMMDNQGcLnm/B6Dcij4lSwJl+JZv3rEW01HBd3c7Slba09LcCE/HQVAbAyTvujmcwY5QiN0M/0//1Rx/LIcLt57K/McnhAULsB+hYFqPQ9/z3NoJ3v3LVM/PaJTYp9w0OY9b3c3JUYgYUS4SMWOb9A7noGLx64Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=jtOGbj3/; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1733108741; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=8JYf3GInVGIfmVa3F07jaokRW/YyHRNh/YWxIYJGlRM=;
+	b=jtOGbj3/abfL5YHWTRTRSdFErz0NGIfkyXBB6IDD2AlHe+kZ8pePWtY09CkLWAooq6ZKb69Yt5h8bS2m03tJ+TiR30gNaAoKTkmfjkzycfHvKPlvfsGLa3Mz5lKDpB62GuA3tReyOwlC74Uz/cMENweggCggGQaTuH2EqXrqTds=
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WKbh0VL_1733108736 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 02 Dec 2024 11:05:38 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: yazen.ghannam@amd.com,
+	mark.rutland@arm.com,
+	catalin.marinas@arm.com,
+	mingo@redhat.com,
+	robin.murphy@arm.com,
+	Jonathan.Cameron@Huawei.com,
+	bp@alien8.de,
+	rafael@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	wangkefeng.wang@huawei.com,
+	tanxiaofei@huawei.com,
+	mawupeng1@huawei.com,
+	tony.luck@intel.com,
+	linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com,
+	james.morse@arm.com,
+	tongtiangen@huawei.com,
+	gregkh@linuxfoundation.org,
+	will@kernel.org,
+	jarkko@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org,
+	x86@kernel.org,
+	xueshuai@linux.alibaba.com,
+	justin.he@arm.com,
+	ardb@kernel.org,
+	ying.huang@intel.com,
+	ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com,
+	tglx@linutronix.de,
+	dave.hansen@linux.intel.com,
+	lenb@kernel.org,
+	hpa@zytor.com,
+	robert.moore@intel.com,
+	lvying6@huawei.com,
+	xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: [PATCH v17 0/3] ACPI: APEI: handle synchronous errors in task work
+Date: Mon,  2 Dec 2024 11:05:24 +0800
+Message-ID: <20241202030527.20586-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 02/22] platform/x86/dell: dell-pc: Create platform
- device
-To: Mario Limonciello <mario.limonciello@amd.com>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
- <platform-driver-x86@vger.kernel.org>,
- "open list:THINKPAD ACPI EXTRAS DRIVER"
- <ibm-acpi-devel@lists.sourceforge.net>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Matthew Schwartz <matthew.schwartz@linux.dev>
-References: <20241130140454.455-1-mario.limonciello@amd.com>
- <20241130140454.455-3-mario.limonciello@amd.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241130140454.455-3-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WylpFN/tvFGO1rQ2y2VT0txw3KcXPEIJRnYHXv2ZZ0j6CXPnORa
- 1LlHK/NNeSL61mIXf9xVY5VTmdlV7MqrHvqQdhbmwJIk9Kvl9RhkTaPqW852Qe588xgWclE
- 6t3UJoSyMLlnJ4ZU5zINDqJcTlTyfu8n0Pp3DSRPrmpL7qz9lDm1eLQHb13S17e7c9Oqdto
- 9d2Wr9Bnz0S6rMiYR7MQQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:vlPctLMIxKU=;GEAkJyy6WXnzLoClOZJc4riVMCn
- QB27P9KKRW563JdiGQ5zmnQ7W99fFXHovDEc8c5g7/cOI3lgR69eDfiAPmgW0wSYz+0rOw+1V
- 6cvLeK1qJgPXCit6PXePcZPwt7aFU6osOinveiwenIaH1o+v6Cd9AmHImpi7iKUkoybzqyPs7
- KiDNZlarsPUM19sm6n90z63jSK5Rte0S6OcKjC+6OwNv/RjcdrDtQBLNXKJVosyillJ+M4Az9
- fx/tMk+39pAcVhoVXdNCH9xBX6U0664qR8QLsBIdqgerYHbPBIFyAvt6EsqJBS1yuubFrNeGs
- 7XAJ+xnpZlMqiBJdzhB6jfSJ8QxUWwLYFA+ra3SM1K9AImQGdNlsbYYeWes4HfB1q4M6ThOx5
- AGZf0ecfQoINIkqPeS06RoEleyLF8Gu6TcriP15kRyBFAqusTKT2vK7pJ++klXs1p+tE/BApK
- BskyfSjmU7QVIiuzRbWX9O8Ss+ntTV4KouowrmFPl2MPFioJU0hj+ezPaA3dm26m+XB1VywXz
- X93QXxV44u8DBWuHMimbFm49XcsyY4m/CjKC7zt/GfABRa7VLAYP+NQIqztj2mk8UrGClorBF
- 6yRuhOYMJsBVHEcjvjbyZjnn4pREREn2d+9Ac1xAMCl0eCq4WjEohOhi+peSNscmAU4JbPSQI
- LoTs8qVkokKvft0ATCT2oK5lfzQnXr6+KAGvRB/r+tcL9RDWn8hO703Ml4yYNrPw50lpfB7z/
- xEa2aOYwXFJWAngm6KnkwYYSSG1SkkbVx3nY+POdOzp0lOfNbWJk3Srvu3mjcuYe/fc6hrDBG
- yUgjXpDV2J+XsbmgbR8OrL4qgqS9NtrvO8AIu5J6Pg8waKCs0dXwEd0GQD1TM/oWa4zPv+F4P
- Ch2qY5h3V/adONmPn5qbXD5lam+i8Zv7KWOuw7cTPE8FGl15OC19r1Cl3TC7b5WRDNMWIUVmG
- 1r9ttrODRd+RdXSkkTb9VEAIGtSeCZMn+JMTnjw3AgcbASXWuLlWxXucAgIcijXKPhxZNV4NB
- wXJF/Z9Ibo+mrmrwxoe6d+3ztFcoUMUK4pSNP5Xr5JoW8T0hcsE6vC1KqkofywJ1cRUtsKfxP
- D3c5lk12c5Z//m1J27418d2p7UUgh6
+Content-Transfer-Encoding: 8bit
 
-Am 30.11.24 um 15:04 schrieb Mario Limonciello:
+changes singce v16:
+- add reviewed-by tag for patch 1 and patch 2 from Yazen
+- rewrite warning message for force kill (per Yazen)
+- warn with dev_err in ghes (per Jarkko)
+- add return value -ENXIO in memory_failure comments  (per Yazen)
+- Link: https://lore.kernel.org/lkml/20241104015430.98599-1-xueshuai@linux.alibaba.com/
 
-> In order to have a device for the platform profile core to reference
-> create a platform device for dell-pc.
->
-> While doing this change the memory allocation for the thermal handler
-> to be device managed to follow the lifecycle of that device.
->
-> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v8:
->   * Use IS_ERR()/ERR_PTR()
-> ---
->   drivers/platform/x86/dell/dell-pc.c | 34 ++++++++++++++++++++---------
->   1 file changed, 24 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/=
-dell/dell-pc.c
-> index 3cf79e55e3129..8bacbde0f0506 100644
-> --- a/drivers/platform/x86/dell/dell-pc.c
-> +++ b/drivers/platform/x86/dell/dell-pc.c
-> @@ -18,10 +18,13 @@
->   #include <linux/kernel.h>
->   #include <linux/module.h>
->   #include <linux/platform_profile.h>
-> +#include <linux/platform_device.h>
->   #include <linux/slab.h>
->
->   #include "dell-smbios.h"
->
-> +static struct platform_device *platform_device;
-> +
->   static const struct dmi_system_id dell_device_table[] __initconst =3D =
-{
->   	{
->   		.ident =3D "Dell Inc.",
-> @@ -244,9 +247,15 @@ static int thermal_init(void)
->   	if (!supported_modes)
->   		return 0;
->
-> -	thermal_handler =3D kzalloc(sizeof(*thermal_handler), GFP_KERNEL);
-> -	if (!thermal_handler)
-> -		return -ENOMEM;
-> +	platform_device =3D platform_device_register_simple("dell-pc", PLATFOR=
-M_DEVID_NONE, NULL, 0);
-> +	if (IS_ERR(platform_device))
-> +		return ERR_PTR(platform_device);
+changes singce v15:
+- add HW_ERR and GHES_PFX prefix per Yazen 
 
-ERR_PTR() -> PTR_ERR()
+changes since v14:
+- add reviewed-by tags from Jarkko and Jonathan
+- remove local variable and use twcb->pfn
 
-With that being fixed:
+changes since v13:
+- add reviewed-by tag from Jarkko
+- rename task_work to ghes_task_work (per Jarkko)
 
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+changes since v12:
+- tweak error message for force kill (per Jarkko)
+- fix comments style (per Jarkko)
+- fix commit log typo (per Jarko)
 
-> +
-> +	thermal_handler =3D devm_kzalloc(&platform_device->dev, sizeof(*therma=
-l_handler), GFP_KERNEL);
-> +	if (!thermal_handler) {
-> +		ret =3D -ENOMEM;
-> +		goto cleanup_platform_device;
-> +	}
->   	thermal_handler->name =3D "dell-pc";
->   	thermal_handler->profile_get =3D thermal_platform_profile_get;
->   	thermal_handler->profile_set =3D thermal_platform_profile_set;
-> @@ -262,20 +271,25 @@ static int thermal_init(void)
->
->   	/* Clean up if failed */
->   	ret =3D platform_profile_register(thermal_handler);
-> -	if (ret) {
-> -		kfree(thermal_handler);
-> -		thermal_handler =3D NULL;
-> -	}
-> +	if (ret)
-> +		goto cleanup_thermal_handler;
-> +
-> +	return 0;
-> +
-> +cleanup_thermal_handler:
-> +	thermal_handler =3D NULL;
-> +
-> +cleanup_platform_device:
-> +	platform_device_unregister(platform_device);
->
->   	return ret;
->   }
->
->   static void thermal_cleanup(void)
->   {
-> -	if (thermal_handler) {
-> +	if (thermal_handler)
->   		platform_profile_remove();
-> -		kfree(thermal_handler);
-> -	}
-> +	platform_device_unregister(platform_device);
->   }
->
->   static int __init dell_init(void)
+changes since v11:
+- rebase to Linux 6.11-rc6
+- fix grammer and typo in commit log (per Borislav)
+- remove `sync_` perfix of `sync_task_work`  (per Borislav)
+- comments flags and description of `task_work`  (per Borislav)
+
+changes since v10:
+- rebase to v6.8-rc2
+
+changes since v9:
+- split patch 2 to address exactly one issue in one patch (per Borislav)
+- rewrite commit log according to template (per Borislav)
+- pickup reviewed-by tag of patch 1 from James Morse
+- alloc and free twcb through gen_pool_{alloc, free) (Per James)
+- rewrite cover letter
+
+changes since v8:
+- remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
+- remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
+- rewrite the return value comments of memory_failure (per Naoya Horiguchi)
+
+changes since v7:
+- rebase to Linux v6.6-rc2 (no code changed)
+- rewritten the cover letter to explain the motivation of this patchset
+
+changes since v6:
+- add more explicty error message suggested by Xiaofei
+- pick up reviewed-by tag from Xiaofei
+- pick up internal reviewed-by tag from Baolin
+
+changes since v5 by addressing comments from Kefeng:
+- document return value of memory_failure()
+- drop redundant comments in call site of memory_failure() 
+- make ghes_do_proc void and handle abnormal case within it
+- pick up reviewed-by tag from Kefeng Wang 
+
+changes since v4 by addressing comments from Xiaofei:
+- do a force kill only for abnormal sync errors
+
+changes since v3 by addressing comments from Xiaofei:
+- do a force kill for abnormal memory failure error such as invalid PA,
+unexpected severity, OOM, etc
+- pcik up tested-by tag from Ma Wupeng
+
+changes since v2 by addressing comments from Naoya:
+- rename mce_task_work to sync_task_work
+- drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+- add steps to reproduce this problem in cover letter
+
+changes since v1:
+- synchronous events by notify type
+- Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+
+## Cover Letter
+
+There are two major types of uncorrected recoverable (UCR) errors :
+
+- Synchronous error: The error is detected and raised at the point of the
+  consumption in the execution flow, e.g. when a CPU tries to access
+  a poisoned cache line. The CPU will take a synchronous error exception
+  such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+  Exception (MCE) on X86. OS requires to take action (for example, offline
+  failure page/kill failure thread) to recover this uncorrectable error.
+
+- Asynchronous error: The error is detected out of processor execution
+  context, e.g. when an error is detected by a background scrubber. Some data
+  in the memory are corrupted. But the data have not been consumed. OS is
+  optional to take action to recover this uncorrectable error.
+
+Currently, both synchronous and asynchronous error use
+memory_failure_queue() to schedule memory_failure() exectute in kworker
+context. As a result, when a user-space process is accessing a poisoned
+data, a data abort is taken and the memory_failure() is executed in the
+kworker context:
+
+  - will send wrong si_code by SIGBUS signal in early_kill mode, and
+  - can not kill the user-space in some cases resulting a synchronous
+    error infinite loop
+
+Issue 1: send wrong si_code in early_kill mode
+
+Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
+could be used to determine whether a synchronous exception occurs on
+ARM64 platform.  When a synchronous exception is detected, the kernel is
+expected to terminate the current process which has accessed poisoned
+page. This is done by sending a SIGBUS signal with an error code
+BUS_MCEERR_AR, indicating an action-required machine check error on
+read.
+
+However, when kill_proc() is called to terminate the processes who have
+the poisoned page mapped, it sends the incorrect SIGBUS error code
+BUS_MCEERR_AO because the context in which it operates is not the one
+where the error was triggered.
+
+To reproduce this problem:
+
+  # STEP1: enable early kill mode
+  #sysctl -w vm.memory_failure_early_kill=1
+  vm.memory_failure_early_kill = 1
+
+  # STEP2: inject an UCE error and consume it to trigger a synchronous error
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 5 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
+error and it is not fact.
+
+To fix it, queue memory_failure() as a task_work so that it runs in
+the context of the process that is actually consuming the poisoned data.
+
+After this patch set:
+
+  # STEP1: enable early kill mode
+  #sysctl -w vm.memory_failure_early_kill=1
+  vm.memory_failure_early_kill = 1
+
+  # STEP2: inject an UCE error and consume it to trigger a synchronous error
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 4 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
+error as we expected.
+
+Issue 2: a synchronous error infinite loop due to memory_failure() failed
+
+If a user-space process, e.g. devmem, a poisoned page which has been set
+HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
+current processs with error info. Because the memory_failure() is
+executed in the kworker contex, it will just do nothing but return
+EFAULT. So, devmem will access the posioned page and trigger an
+excepction again, resulting in a synchronous error infinite loop. Such
+loop may cause platform firmware to exceed some threshold and reboot
+when Linux could have recovered from this error.
+
+To reproduce this problem:
+
+  # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 4 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+  # STEP 2: access the same page and it will trigger a synchronous error infinite loop
+  devmem 0x4092d55b400
+
+To fix it, if memory_failure() failed, perform a force kill to current process.
+
+Issue 3: a synchronous error infinite loop due to no memory_failure() queued
+
+No memory_failure() work is queued unless all bellow preconditions check passed:
+
+- `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
+- `if (flags == -1)` in ghes_handle_memory_failure()
+- `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
+- `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
+
+If the preconditions are not passed, the user-space process will trigger SEA again.
+This loop can potentially exceed the platform firmware threshold or even
+trigger a kernel hard lockup, leading to a system reboot.
+
+To fix it, if no memory_failure() queued, perform a force kill to current process.
+
+And the the memory errors triggered in kernel-mode[5], also relies on this
+patchset to kill the failure thread.
+
+Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
+Acknowledge to discussion with them.
+
+[1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
+[2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
+[3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
+[4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
+[5] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20240528085915.1955987-1-tongtiangen@huawei.com/
+
+Shuai Xue (3):
+  ACPI: APEI: send SIGBUS to current task if synchronous memory error
+    not recovered
+  mm: memory-failure: move return value documentation to function
+    declaration
+  ACPI: APEI: handle synchronous exceptions in task work
+
+ arch/x86/kernel/cpu/mce/core.c |  7 ---
+ drivers/acpi/apei/ghes.c       | 86 +++++++++++++++++++++-------------
+ include/acpi/ghes.h            |  3 --
+ include/linux/mm.h             |  1 -
+ mm/memory-failure.c            | 23 +++------
+ 5 files changed, 61 insertions(+), 59 deletions(-)
+
+-- 
+2.39.3
+
 
