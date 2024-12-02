@@ -1,125 +1,127 @@
-Return-Path: <linux-acpi+bounces-9869-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9870-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A789DFE16
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 11:06:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2959E00B7
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 12:37:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF4B4280A76
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 10:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4C0165219
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 11:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557351FBEAE;
-	Mon,  2 Dec 2024 10:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092D01FC7EE;
+	Mon,  2 Dec 2024 11:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CMhHzCKk"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OgLH+sLN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA75F15A8;
-	Mon,  2 Dec 2024 10:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E1C1FA245;
+	Mon,  2 Dec 2024 11:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733133991; cv=none; b=CIs71xYvHIwpEBd4lc9sdRhAsAwSayxQPxET98zOuYTcwSBrE3RV7BDHIu/iRiedmlT9xZcVy2DYLcsitph0fRa8rluC0dblJYb4p5NZGcVAwg8ZxFx+2hbKINkSzxzgi4AGqRYaaDDcWc1KI1PW2bUWTM/pp4MNL0S+bLKZ5xk=
+	t=1733139330; cv=none; b=k/Ia2yC2+//nMp+phcot/fO/PkzegFN5SK90M5Jp0hnBX+dmMXV6MIZ3RNsJ96obvqiUdsoDhahil3buP9aNIG9Bv9jo+khTuzPRzGBjnTSo0xpmhOFWIj+10cQaDp61cY3QAJ4d7r7IXRx6uFymJKr9wQYcKEmpmrLWyXIQ8DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733133991; c=relaxed/simple;
-	bh=tpy+AYjN2uzbBBhjI4dQGOhHluG542LfSgKZ1ajIBiU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=EwgvARlJpVhdiOilMaZYNdJv038UsmwjvBa8te8g7KgKDVcy4V5E1WshMPy3YQq9cslhc+j80LsAWnJdr46v+zgPj8I53a6uIZ6z16qYtnif23fBnJ/kRACRj40fTs8xj0wRZo0C5C01nQKgKPM0a3jRnRWQB1brA+HE96Hty0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CMhHzCKk; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733133990; x=1764669990;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tpy+AYjN2uzbBBhjI4dQGOhHluG542LfSgKZ1ajIBiU=;
-  b=CMhHzCKkNKJ7KR8bCaKUCSyNnmNir5bxcTp9LqUvatdmvtjN7hwMCQPO
-   svOvDHC63IfRpxZdRsCo0ZD2rzdfTv5aeoY997zl8opV7VpeYoxtkJEGB
-   23zjBaoAy5aowZDZB5buoOD4KIQ6v7zCXjw2qPhVOjfDpePN4Wrlu1jKV
-   SX3jNBOrWcH8rjY090jB/cbvj1oDJp++WPt+rkX70SlzIsbu/oGOQJyVC
-   Lf3yF31M5X2ZZ4zxHPQ+OPOWJfAMVuuC9aXGdUYBjbLl/ZNUGOIaDUE+v
-   fCLDN/jxRBhwYNA5QRk1FpV9QmcItBmqQ8HpL54/lhThSb2Cc8YPEAW1i
-   A==;
-X-CSE-ConnectionGUID: h79MmLaWTrCJMlfqkX8pQw==
-X-CSE-MsgGUID: BfRc359WQz+91LHW0RhEeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="32647447"
-X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; 
-   d="scan'208";a="32647447"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 02:06:29 -0800
-X-CSE-ConnectionGUID: GRmKKbWxSYG8eqng4hw0jQ==
-X-CSE-MsgGUID: J2Uu1T3xTMertDKYaK2jSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,202,1728975600"; 
-   d="scan'208";a="97133350"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.61])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 02:06:26 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 1/1] ACPI: resource: Fix memory resource type union access
-Date: Mon,  2 Dec 2024 12:06:13 +0200
-Message-Id: <20241202100614.20731-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1733139330; c=relaxed/simple;
+	bh=9tNZcpjj1t7vWcFXyssqY/2Oi977Kh2rWYxRFEsh0YA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cCsY9gKUzcpQ60wCSWbMxDdxQOL5xxpMG5FfEsVUfme6jk6jzLSjE5sEki4tUH8QAHTxaFaSgPW3T4YLlXnJkdTqoJmBhGdIuS3ScPozoEGrgCWkQNu8zl4JzHQnClcYwTa08g3ig2KMhe0WX/+uKnxThViIaCYpC79h2svOYw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OgLH+sLN; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wF2I4tT7MqbewWmtnwf7ZhQdUn1g7F7H02RXRJD34KA=; b=OgLH+sLN9eaY85gIL0HAmTyE7Z
+	05Ait8dHXa/J9L7QzeZ9v1JpmM42U8OjeXXLSiYVFPIP2j7ShKg7SD+jwg2YgJ7d5gW4XELOtU1w4
+	fYp1pD5ipdI3tQZqEPzedlWZzf+p21seOKT1q4oEUZgnK5S1Gc88H848vxvsdWTAeLsYWsl4/XqBk
+	jMVdUyxWR0qxCNuBxcdh1TLn1A9/hvsATdE2q2bAMGEwWr1z/WSFCGkRxJWissjxsHqmrnjHrW4O4
+	cljl36zNa7AoC73ChOkdG+rRWFZas3ZFDUyS+Q0MrN9E3U7o99UO2TJwpaLHTOJ1HcqymByy5GU48
+	qFaKl6PQ==;
+Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tI4hs-00000007uc1-3AzO;
+	Mon, 02 Dec 2024 11:35:14 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 07A4330050D; Mon,  2 Dec 2024 12:35:13 +0100 (CET)
+Date: Mon, 2 Dec 2024 12:35:12 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	"open list:AMD PSTATE DRIVER" <linux-pm@vger.kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Subject: Re: [PATCH v7 04/12] platform/x86: hfi: Introduce AMD Hardware
+ Feedback Interface Driver
+Message-ID: <20241202113512.GA8562@noisy.programming.kicks-ass.net>
+References: <20241130140703.557-1-mario.limonciello@amd.com>
+ <20241130140703.557-5-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241130140703.557-5-mario.limonciello@amd.com>
 
-In acpi_decode_space() addr->info.mem.caching is checked on main level
-for any resource type but addr->info.mem is part of union and thus
-valid only if the resource type is memory range.
+On Sat, Nov 30, 2024 at 08:06:55AM -0600, Mario Limonciello wrote:
 
-Move the check inside the preceeding switch/case to only execute it
-when the union is of correct type.
+> +/**
+> + * struct amd_hfi_cpuinfo - HFI workload class info per CPU
+> + * @cpu:		cpu index
+> + * @cpus:		mask of cpus associated with amd_hfi_cpuinfo
+> + * @class_index:	workload class ID index
+> + * @nr_class:		max number of workload class supported
+> + * @amd_hfi_classes:	current cpu workload class ranking data
+> + *
+> + * Parameters of a logical processor linked with hardware feedback class
+> + */
+> +struct amd_hfi_cpuinfo {
+> +	int		cpu;
+> +	cpumask_var_t	cpus;
 
-Fixes: fcb29bbcd540 ("ACPI: Add prefetch decoding to the address space parser")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
+This appears unused.
 
-I only came across this while reading code around these parts (not
-because of investigating some issue).
+> +	s16		class_index;
+> +	u8		nr_class;
+> +	struct amd_hfi_classes	*amd_hfi_classes;
+> +};
+> +
+> +static DEFINE_PER_CPU(struct amd_hfi_cpuinfo, amd_hfi_cpuinfo) = {.class_index = -1};
+> +
+> +static int amd_hfi_alloc_class_data(struct platform_device *pdev)
+> +{
+> +	struct amd_hfi_cpuinfo *hfi_cpuinfo;
+> +	struct device *dev = &pdev->dev;
+> +	int idx;
+> +	int nr_class_id;
+> +
+> +	nr_class_id = cpuid_eax(AMD_HETERO_CPUID_27);
+> +	if (nr_class_id < 0 || nr_class_id > 255) {
+> +		dev_err(dev, "failed to get number of supported classes: %d\n",
+> +			nr_class_id);
+> +		return -EINVAL;
+> +	}
+> +
+> +	for_each_present_cpu(idx) {
 
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 7fe842dae1ec..821867de43be 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -250,6 +250,9 @@ static bool acpi_decode_space(struct resource_win *win,
- 	switch (addr->resource_type) {
- 	case ACPI_MEMORY_RANGE:
- 		acpi_dev_memresource_flags(res, len, wp);
-+
-+		if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
-+			res->flags |= IORESOURCE_PREFETCH;
- 		break;
- 	case ACPI_IO_RANGE:
- 		acpi_dev_ioresource_flags(res, len, iodec,
-@@ -265,9 +268,6 @@ static bool acpi_decode_space(struct resource_win *win,
- 	if (addr->producer_consumer == ACPI_PRODUCER)
- 		res->flags |= IORESOURCE_WINDOW;
- 
--	if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
--		res->flags |= IORESOURCE_PREFETCH;
--
- 	return !(res->flags & IORESOURCE_DISABLED);
- }
- 
--- 
-2.39.5
+This uses present, but does not have means of handling changes to
+present. Does this want to be possible?
 
 
