@@ -1,158 +1,211 @@
-Return-Path: <linux-acpi+bounces-9875-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9876-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A3C9E025E
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 13:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0121D9E0616
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 16:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D90ECB38D88
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 12:18:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AAACB47C17
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Dec 2024 14:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3CB1FF7C9;
-	Mon,  2 Dec 2024 12:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF3020DD65;
+	Mon,  2 Dec 2024 14:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="QsrFClBY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A50209F57;
-	Mon,  2 Dec 2024 12:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F38720D511;
+	Mon,  2 Dec 2024 14:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733141484; cv=none; b=OfOo+G7zd2pGFjg8Dowki4mF7MZgTTfZmZO1v7rnIcgTgFbWB7J7fqyka+6K1eYT9rfHcg3MuIkP3MvM2LTlqQJcc0O58FWWrGt3xlwT2Q7ouPrI2BJVdGq8ONUvhRv/YvLxDR/Hy5XzYXY0ZS5HHqgKj8aIwUqYOiJA/m//kbk=
+	t=1733149949; cv=none; b=ag/y+DV5+URchxo1ajDPs8BwPEFTq6K6KNHMft1CYIKMJg4uv/8KLjWwiEqXoxI3ga9s1XRdYrN4Ql+hx+kFkFZ9LtC1oYlkOfG483ROgkhzekiweyN1grJIz7ZxOR0hbKpP+KWB850Ns47/1OoJgxgilyNCvlM7n30b+pwPgk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733141484; c=relaxed/simple;
-	bh=opxfZQjUwIBGxhGvxvuJA2xcdMKZ94HOj9VRYSyC0T8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mr/Q25G28utUpxTnqgYcIsvX663kVdApuB+sfkhaRve41rZil7oPAr+Mvw1FSKJ8gHfilzTg+ytLD9ocuKP0v8iVlk9WuKWMfyrrQ4AQRmmy/ZdLtJQ8D21PThjcovYknqr4QfHU84EiqXK/b//2sklZM226/VQniUuKnWd6BGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Mon, 2 Dec
- 2024 15:11:12 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Mon, 2 Dec 2024
- 15:11:12 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
-	<sashal@kernel.org>, <stable@vger.kernel.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, "Rafael J. Wysocki"
-	<rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH 5.10.y 1/1] ACPI: PAD: fix crash in exit_round_robin()
-Date: Mon, 2 Dec 2024 04:11:04 -0800
-Message-ID: <20241202121104.35898-2-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241202121104.35898-1-n.zhandarovich@fintech.ru>
-References: <20241202121104.35898-1-n.zhandarovich@fintech.ru>
+	s=arc-20240116; t=1733149949; c=relaxed/simple;
+	bh=2zFv1AtOrG66Agxpkqi+vBOS91JwpVr62yukq7E/GxI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AKeqXd0uP8kIAWO26IrEZRsb/cP80PNqONT1vpJRF9MTfwI5jsPFU51zndOaDYiRzV5Svib/ZSLs1JnXReCO1knO7oJ+drW2RPWwcXZPzAW6j1LazTbUyq9edTax0jWdVOaqMZsLbwszTxwTnuWMlueER78VEVkAHx/LmbmKo3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=QsrFClBY; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1733149869; x=1733754669; i=w_armin@gmx.de;
+	bh=dff0OEGhYPTrkd11UE1HMB+sCm05D5j8m3PY3KktpLY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=QsrFClBYjV5plSIK2+YlpkAJuQuMi9HqfV5hDsskX7GySktJDusKoWT62KgrU41d
+	 wSR5516+uYOactq92I0zCqhQwtPRqKnAsS4VTYckzvRQAKjg0MrLoc/fr3wQPBcvg
+	 5CBZVLczgn9tIifODeq/ygz24w+PWPO85w1K41ad5p4Wth/45B7VT66M+3ssy/7fL
+	 wa9uFREwv1BstHpSe4sPgEjG9Vt+4e0AcRhT1FBWZr/YrEHDAe+NQ5tf7dZMZp2en
+	 tXND33LpkU8lojn30OJcoZRJEnFBaKu143lGXAwPDcjs67zbikAZOcW5Hg9pxRw+J
+	 EjzfM1Qb0pxRrwwk+A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.14] ([141.30.226.119]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MI5Q5-1tUXmM1Oad-001ZDQ; Mon, 02
+ Dec 2024 15:31:09 +0100
+Message-ID: <63590d1a-ea53-4cdb-b451-e83a7a3d9224@gmx.de>
+Date: Mon, 2 Dec 2024 15:31:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 00/22] Add support for binding ACPI platform profile to
+ multiple drivers
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Lee Chun-Yi <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
+ <luke@ljones.dev>, Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Alexis Belmonte <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:MICROSOFT SURFACE PLATFORM PROFILE DRIVER"
+ <platform-driver-x86@vger.kernel.org>,
+ "open list:THINKPAD ACPI EXTRAS DRIVER"
+ <ibm-acpi-devel@lists.sourceforge.net>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Matthew Schwartz <matthew.schwartz@linux.dev>
+References: <20241202055031.8038-1-mario.limonciello@amd.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20241202055031.8038-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:eHBOPBVM+ozXi7qQvpBCqWto44fLeja4GIMi+e5lWrFfndRsXCq
+ 4tHwZeYE8lkML/2kHdB+cqv+uaOiVwUn6DA67z8Wh/qqMKl92dVE0mU3TRLnKSPqRFfUyVZ
+ n0XiHzpWr4P9tZelasnUMN0mx54KPRzisa+dkARZvcdh6jIe4uYfZKbyRUwOTVf6XLx0klK
+ W2TjVXLlq+nmDmfUigGdw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:de05/H5W5HI=;Zgq16+20JqyrWwL8nwAn5SS32py
+ zBfg9xVBBjD1L0mo/qZyKTggO4QXFtWKClgOVxNdcLqRp5OE9dAgd/EWMHwZKWrh/jDMY6rBt
+ 7a0E4Pj1A14haKfOMLd3v5F1SrulRvVLdZD1vN7glsqS++pivTZtFyEG//E84pGFhTv3YGHd1
+ 8pUhtyic9z3c7rI8rKu+d2wfoK6WJB5ZID8C2Ia89zeuzKbK02E4HPrle3QlbOFQ7t95P+xRO
+ fQdSAtTsKy5sXcDIeNEp8KxLIC626vBXPoBktgxKWeTI16OnpKKKXPFgb6GWVO0wVPk/VSzRS
+ BNLkQLc3lren8IQz8BkOzE7PO6DeW0J+rJemZKo7niiR3bqzCgX41a3SU7/ezWAyrwBzQZkMn
+ 90wzeHD4jPdYYKL6bX1sl01x+cflWNlOueF1tqTcMqJ38ruG7q1/IpTMMvE+1kZ2S953WaolE
+ F761YMpW0knmyH9xbKvfXmyy4u+Yjxvp14mUhXHmx2r3qLT8qJ/L+Zx9zOrKew+UZPa3lDQ0v
+ tVnXEMVQ06/Bz8id3W8HhR3aRIgXUkd+GwLAwO3teVQcQC2bLCQH7j1fCvkrtuuaclNdPYWF+
+ 5z4+mRUxJ9G5GleDqspliMYspyNYMroWRTHrpeO5FbEKm63TRKg/9/CFHoQl+7a+URfUjsWsM
+ jlqKjoNFTe4SS8x5uMdOHViib6qYKOvcjI0JmojiLLjsK/J/VkxF1IneDNnCQYiXEfs6rCA8a
+ pGuhNHBAbmhTERr07HeaMJJUzCWuYedR/9bj/R7U4T2JKlCQLaSAvYld5BysBoNNiLfuGkECw
+ wR6rZvE/c1JLwnvqGXH44mEK+vjsl02oDk2DpAF2BnfmJvsdKRTwD4uhBmvopYCok8qN+TEo3
+ sDpastae1CNTN2BDeYt0o4zfzmsj4tVx8Zw28Se7N7LgFDfyaOxCAuzOYxp+znqBXvjeZAT1Y
+ bYth0pfy6FLVHzbIzDYilGXNwp6Rdrs4HDaRyOZlXW6proszH2XTJFKSN9DvWk0q1Kq5leW0v
+ 7bS+d2cCantwRLhfA8C7lVd/GN+NLMWkx/BRcHYwxLzJeoJ9unGde3oXeY4BH7vYJDaB2sLGL
+ RMcK/hicVeo/5vhEfffiCwY4jrY1Wv
 
-From: Seiji Nishikawa <snishika@redhat.com>
+Am 02.12.24 um 06:50 schrieb Mario Limonciello:
 
-[ Upstream commit 0a2ed70a549e61c5181bad5db418d223b68ae932 ]
+> Currently there are a number of ASUS products on the market that happen to
+> have ACPI objects for amd-pmf to bind to as well as an ACPI platform
+> profile provided by asus-wmi.
+>
+> The ACPI platform profile support created by amd-pmf on these ASUS
+> products is "Function 9" which is specifically for "BIOS or EC
+> notification" of power slider position. This feature is actively used
+> by some designs such as Framework 13 and Framework 16.
+>
+> On these ASUS designs we keep on quirking more and more of them to turn
+> off this notification so that asus-wmi can bind.
+>
+> This however isn't how Windows works.  "Multiple" things are notified for
+> the power slider position. This series adjusts Linux to behave similarly.
+>
+> Multiple drivers can now register an ACPI platform profile and will react
+> to set requests.
+>
+> To avoid chaos, only positions that are common to both drivers are
+> accepted when the legacy /sys/firmware/acpi/platform_profile interface
+> is used.
+>
+> This series also adds a new concept of a "custom" profile.  This allows
+> userspace to discover that there are multiple driver handlers that are
+> configured differently.
+>
+> This series also allows dropping all of the PMF quirks from amd-pmf.
+>
+> NOTE: Although this series changes code in acpi platform profile, I think
+>        it is better to go through the platform-x86 tree as more drivers can
+>        be introduced during the kernel cycle and should make the changes to
+>        support class interface when merging.
 
-The kernel occasionally crashes in cpumask_clear_cpu(), which is called
-within exit_round_robin(), because when executing clear_bit(nr, addr) with
-nr set to 0xffffffff, the address calculation may cause misalignment within
-the memory, leading to access to an invalid memory address.
+Thanks for all the good work, the whole series looks good to me.
 
-----------
-BUG: unable to handle kernel paging request at ffffffffe0740618
-        ...
-CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
-        ...
-RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
-Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
-RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
-RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
-RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
-R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
-R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
-FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- ? acpi_pad_add+0x120/0x120 [acpi_pad]
- kthread+0x10b/0x130
- ? set_kthread_struct+0x50/0x50
- ret_from_fork+0x1f/0x40
-        ...
-CR2: ffffffffe0740618
+Thanks,
+Armin Wolf
 
-crash> dis -lr ffffffffc0726923
-        ...
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
-0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
-0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
-0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
-
-crash> px tsk_in_cpu[14]
-$66 = 0xffffffff
-
-crash> px 0xffffffffc072692c+0x19cf4
-$99 = 0xffffffffc0740620
-
-crash> sym 0xffffffffc0740620
-ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
-
-crash> px pad_busy_cpus_bits[0]
-$42 = 0xfffc0
-----------
-
-To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
-cpumask_clear_cpu() in exit_round_robin(), just as it is done in
-round_robin_cpu().
-
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
-[ rjw: Subject edit, avoid updates to the same value ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ Nikita: fix conflict due to missing blank line from commit
-c8eb628cbdd9 ("ACPI: acpi_pad: add a missed blank line after
-declarations"). ]
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
- drivers/acpi/acpi_pad.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-index b84ab722feb4..6d592d8655cd 100644
---- a/drivers/acpi/acpi_pad.c
-+++ b/drivers/acpi/acpi_pad.c
-@@ -128,8 +128,11 @@ static void round_robin_cpu(unsigned int tsk_index)
- static void exit_round_robin(unsigned int tsk_index)
- {
- 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
--	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
--	tsk_in_cpu[tsk_index] = -1;
-+
-+	if (tsk_in_cpu[tsk_index] != -1) {
-+		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
-+		tsk_in_cpu[tsk_index] = -1;
-+	}
- }
- 
- static unsigned int idle_pct = 5; /* percentage */
--- 
-2.25.1
-
+> ---
+> v9:
+> - Rebase on top of 6.13-rc1 tag
+> - Fix LKP reported issues on patch 2
+> - Use Markus' logic update suggestion
+>
+> Mario Limonciello (22):
+>    ACPI: platform-profile: Add a name member to handlers
+>    platform/x86/dell: dell-pc: Create platform device
+>    ACPI: platform_profile: Add device pointer into platform profile
+>      handler
+>    ACPI: platform_profile: Add platform handler argument to
+>      platform_profile_remove()
+>    ACPI: platform_profile: Pass the profile handler into
+>      platform_profile_notify()
+>    ACPI: platform_profile: Move sanity check out of the mutex
+>    ACPI: platform_profile: Move matching string for new profile out of
+>      mutex
+>    ACPI: platform_profile: Use guard(mutex) for register/unregister
+>    ACPI: platform_profile: Use `scoped_cond_guard`
+>    ACPI: platform_profile: Create class for ACPI platform profile
+>    ACPI: platform_profile: Add name attribute to class interface
+>    ACPI: platform_profile: Add choices attribute for class interface
+>    ACPI: platform_profile: Add profile attribute for class interface
+>    ACPI: platform_profile: Notify change events on register and
+>      unregister
+>    ACPI: platform_profile: Only show profiles common for all handlers
+>    ACPI: platform_profile: Add concept of a "custom" profile
+>    ACPI: platform_profile: Make sure all profile handlers agree on
+>      profile
+>    ACPI: platform_profile: Check all profile handler to calculate next
+>    ACPI: platform_profile: Notify class device from
+>      platform_profile_notify()
+>    ACPI: platform_profile: Allow multiple handlers
+>    platform/x86/amd: pmf: Drop all quirks
+>    Documentation: Add documentation about class interface for platform
+>      profiles
+>
+>   .../ABI/testing/sysfs-platform_profile        |   5 +
+>   .../userspace-api/sysfs-platform_profile.rst  |  31 ++
+>   drivers/acpi/platform_profile.c               | 523 ++++++++++++++----
+>   .../surface/surface_platform_profile.c        |   8 +-
+>   drivers/platform/x86/acer-wmi.c               |  12 +-
+>   drivers/platform/x86/amd/pmf/Makefile         |   2 +-
+>   drivers/platform/x86/amd/pmf/core.c           |   1 -
+>   drivers/platform/x86/amd/pmf/pmf-quirks.c     |  66 ---
+>   drivers/platform/x86/amd/pmf/pmf.h            |   3 -
+>   drivers/platform/x86/amd/pmf/sps.c            |   4 +-
+>   drivers/platform/x86/asus-wmi.c               |   8 +-
+>   drivers/platform/x86/dell/alienware-wmi.c     |   8 +-
+>   drivers/platform/x86/dell/dell-pc.c           |  38 +-
+>   drivers/platform/x86/hp/hp-wmi.c              |   8 +-
+>   drivers/platform/x86/ideapad-laptop.c         |   6 +-
+>   .../platform/x86/inspur_platform_profile.c    |   7 +-
+>   drivers/platform/x86/thinkpad_acpi.c          |  16 +-
+>   include/linux/platform_profile.h              |   9 +-
+>   18 files changed, 541 insertions(+), 214 deletions(-)
+>   delete mode 100644 drivers/platform/x86/amd/pmf/pmf-quirks.c
+>
 
