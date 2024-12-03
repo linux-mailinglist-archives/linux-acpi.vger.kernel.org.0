@@ -1,289 +1,234 @@
-Return-Path: <linux-acpi+bounces-9899-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9900-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A851F9E2C3C
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 20:44:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7170E165BBC
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 19:44:31 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149011FF614;
-	Tue,  3 Dec 2024 19:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0xT2MM2"
-X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4A99E2D08
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 21:28:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B287E0E8
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Dec 2024 19:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733255071; cv=none; b=DD3AwdzNNz+U+ZsZ41yA0goWUiVhEf3Yg9qxnw0aXk6AiXnmmbEhqMHccdCNCxciaw6SFTDzBg2u4GE353M84Fwa6y3CP1EPORJPOGkkz3sujWO30Wt2HlLAtCMQ7Jtmkxvtah38cmE87sZF8QQqW65Id4BlMStd82O1FvrdZvc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733255071; c=relaxed/simple;
-	bh=UrxBpHNHJDYu4HYkmWioWv5Fxdc+8/33gVkFmOxEnZw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fn10itOE1mhSGl8oi2egJ64x6fTvm/qY72TO3WBk82BATl1sXLEmSM3feaK6VDcR7b62u/3xEuE1RZ2dF111uCByv7EsmLTF3chq8aUPDiUGoy8FkgiH7nJz8HHOjob2Sfnczzu0ar55ilTbegmjm0GRpr5MMEG2jfRB9vQrMvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0xT2MM2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CB9C4AF0B
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Dec 2024 19:44:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733255070;
-	bh=UrxBpHNHJDYu4HYkmWioWv5Fxdc+8/33gVkFmOxEnZw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=P0xT2MM2xPxYZygwtaTTooJPvGGQD14WSYzv4oBsYRz+g1mfvPpFztKYV0qr+5zyK
-	 tFvaAoFZkQIyw9ZXGGCy3WvAJ42WamvRaSDZ37sRnypdrBM9khwW0KTWU89OrVcYIH
-	 oS7048CDdSHSv/fPU5ngdU1qgeDCmzC5YJVs5f6gGZmttcCmsYYT2keQtnls1TmCMJ
-	 tmH6vqahPSgH0fbg2z+boSNZx442GmvIDzNbyN+hvEvUkH2+IBnVNoFQ9jcO0t1J1k
-	 1Be93R6tp4oC/5jZ5dXMEHsPHy3mS6w2gciE/KGfHGrUYu8BNm8gciK5IWlaQMhcfB
-	 tcrZqbfCoWRsw==
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-29737adb604so3316355fac.1
-        for <linux-acpi@vger.kernel.org>; Tue, 03 Dec 2024 11:44:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXpH/Gdgy8J2mpiwOJeTuwZrvR6zLV9HznGh0fDtFWcSE6tSSj1RY9km9E6tS/acL5kW/NFV+TGVLe8@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFwSpmljD581N/vab4C8Sq8RP7O3t2XSUjr2NGjALDSiT1xZZT
-	xWOtKU+s+MpTWVOA+6lBH90PKqiWT4sSWFttOfWOV2CUDFalssIAJeWNXTAnNhP2iwW6qg67yrI
-	xJPuPEHGtl9vzh/KSeIno+lfEAc0=
-X-Google-Smtp-Source: AGHT+IF8Li33r9PKsGvN6UGehYwvDSKL7p6Nxux11ULmWeDQdQ09sQQkdkjo0TcP8iQURD7kr2I8L6VZ75nPNgpXbrE=
-X-Received: by 2002:a05:6870:e386:b0:29e:7f8c:8f57 with SMTP id
- 586e51a60fabf-29e8884d9c9mr4841292fac.27.1733255069652; Tue, 03 Dec 2024
- 11:44:29 -0800 (PST)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFDF1282615
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 20:28:04 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F88A205E07;
+	Tue,  3 Dec 2024 20:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2JEi58Gi"
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E71205AA0;
+	Tue,  3 Dec 2024 20:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733257676; cv=fail; b=LZWU9f1DOHEbDk6DmTFjs1ARLaZkT5PNcW9zV4OgEKGlYEKqQ9OF1uAUdzZbGjubpfzHmc7+0DBXrjxn4L9oRR11HNaITmovS7bRODldLgK1H3KzVz9tOGV1QKOz9EcANytF0Y/kkYKX2VYcrPNXplN38BwPVFZWkNdPV9QN6ZI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733257676; c=relaxed/simple;
+	bh=T+LGpUoWHXjt3u0V5Pg3DjKZW8OJ+ISnJK2WkMW3B88=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=E7x1w27ji5KzXKSS9uFscndLtXDhj9D3mtFQymQEa/q3R8SXHOWx21RcEEz0L4mLip67NBRHStNkyAa9VfGPeX5Rr+KWWnqgdT8PGaJwovB9AY4dzqSnufvLbjaFTbwYGBg0o+/VRctCiyLzdF57wYI2K70RBSozg9rNtgT3dFk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2JEi58Gi; arc=fail smtp.client-ip=40.107.94.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PYpzHHQQHKTjKBwFQu9GbodPKPdqjqWjI1hfU5jvSp2Fkar80npy1tRQVnFY2M2CAiFUhRIHxvbfoxTCyyvr5iQTEniiDtgk0HT3P6v5o4//rTfMBCLnLxoWe2G6lzNkuEWrNfqvFvnY/4ZCOx2KXwgOI9cikev/gZjY6fzImrfqCM/8JbWWgVD7YGj7PwiyiSbRscesllfVE1od1ktVEj0X4wBFAmFbKatibdejDcD8DvhkMn2uxiyD+EdrNvZXxMssaYoy5N0kw9h9lX8ZtA0LrW1ckIfz+p7NTXJgaEm+ix3HH7hWcLSHlsS9BG6CVXTrSbgEvOdX+JHVkxrtSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rkF9MCFihEM2Y7q2LB2FTx0+Yyr7FjUuAA8DO9BfjxI=;
+ b=fUO8E+ZfPY5vfgeVwWDY8Cg6xTsEvdTY5VUpa9HenL0scwMZX8xQu9zc8QSH67e3U+ud8h7qN/nFOojfaqTJ9bYin7jHG0lO+q838dpgaqbs3eARFYpA6ocRdfdQ/t3sjYqLCgjt+WHk7ZX2amc/5SAzXS5DuOqaJsfaLpIyK2l3QSFv2BiojvqWoFgGO2oevxzJunZy4nxzrkcC1cHNGGpegPVoiiu7vy05F+/OtBZxG5Cjed1FVdBU/XoA1O2lVy03LP/OC8sD64u5mhXBJNnPfZ9kEvO3oIT3srXLkF2+x2vpPVzLhkMz7pcWSzyKgt81KcwgEyAhby6+vVmxpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rkF9MCFihEM2Y7q2LB2FTx0+Yyr7FjUuAA8DO9BfjxI=;
+ b=2JEi58Gi8dKaYdrQf/mETKcvkIoqP+2h5Nei0D2i6A8z6umW78lziDP9t5eHPNbghteu912b7d1KEr66YU+HRwGaYWyv8Yla4I+YMqA6UgjsTuBG6HMwwaI65lmRe9bxu3gJ05MuSgQwoNTr4wiWxQFXc3luOEEXOKrLVzEp5bI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CH3PR12MB7740.namprd12.prod.outlook.com (2603:10b6:610:145::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Tue, 3 Dec
+ 2024 20:27:50 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
+ 20:27:50 +0000
+Message-ID: <8517db8d-c755-4fa0-8d8e-fd477060d033@amd.com>
+Date: Tue, 3 Dec 2024 14:27:46 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 04/12] platform/x86: hfi: Introduce AMD Hardware
+ Feedback Interface Driver
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H . Peter Anvin" <hpa@zytor.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+ Perry Yuan <perry.yuan@amd.com>, Brijesh Singh <brijesh.singh@amd.com>,
+ Li RongQing <lirongqing@baidu.com>,
+ "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <linux-kernel@vger.kernel.org>, "open list:ACPI"
+ <linux-acpi@vger.kernel.org>,
+ "open list:AMD PSTATE DRIVER" <linux-pm@vger.kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+References: <20241130140703.557-1-mario.limonciello@amd.com>
+ <20241130140703.557-5-mario.limonciello@amd.com>
+ <20241202113512.GA8562@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20241202113512.GA8562@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0144.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c2::22) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4542595.LvFx2qVVIh@kreacher> <2927980.e9J7NaK4W3@kreacher> <C20272A3-65B5-4AAD-B6AD-0B93A95C5D93@gmail.com>
-In-Reply-To: <C20272A3-65B5-4AAD-B6AD-0B93A95C5D93@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Dec 2024 20:44:18 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jeE=3-0ad7OMWETnhYfQE+fhw2dQTfYTmn=_6gDnDghQ@mail.gmail.com>
-Message-ID: <CAJZ5v0jeE=3-0ad7OMWETnhYfQE+fhw2dQTfYTmn=_6gDnDghQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/7] ACPI: scan: Extract CSI-2 connection graph from _CRS
-To: Miao Wang <shankerwangmiao@gmail.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CH3PR12MB7740:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c1b9b44-971d-4f19-7bee-08dd13d8f538
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MEdZdjhhUUk0YXIrVGttNHZWdUtLV3VmSzVBMERHL3VLM2NiNkhycU4rbHZz?=
+ =?utf-8?B?cFFFT1k0VWM1NUM3dC9qQ1JRSFFyMFdEQ1dmTXpnTkZFaFVhaVFvRGVxelVQ?=
+ =?utf-8?B?ODBNNjBIWDBqaGZ4aERaai8vZzlLTEFvY01UK0d1WkNKMzlxcitKR2JJRVhH?=
+ =?utf-8?B?QStidW9DL0NjUW1qbDRUaHFpbVZOMUdDbmFMSFBrK0lwNXluYWhSNjRUYUcw?=
+ =?utf-8?B?M0NvL3RIdzdzYkxvenVVc29DQit6b3pIUXZIcnk5eXJuQ0RRVzRpVGlCZHRm?=
+ =?utf-8?B?cHJTOWNsdHVtUDRpYWwxUCtReERoTVVaODBlNWowSENpeHhRRmY0N2ZXQjY2?=
+ =?utf-8?B?MnRXbUlNSHY3bzhXSXBYdzJCTXZVYjUzSlkrdlhWdE80UTRJU3k5bEtZRHVk?=
+ =?utf-8?B?cytuMmFwWnhmUTJHWFU2a1lxVlNucDhEcWNDYlpyK0lxSlF4RUFnOHhaN201?=
+ =?utf-8?B?Kzl3NVB5MFFydnVDMjM3SXc0MHFjNFA4czU0RWVaT01zbFBpMzBKRzVjS0Fn?=
+ =?utf-8?B?UE5kbzU3RzQxU1p2QU0zQWNrVjQwczRVd2dzV3pXRE5aWVhTck0yTlJFMzlK?=
+ =?utf-8?B?eXZnbnNMYzQ2RU84aGU5a2hkN245aThldUZVOENsOFFLY3BOT1hrRitYYk12?=
+ =?utf-8?B?SDk4ODVZc1RoZW90dHAvOTAvWmRTcHpyRVF1NUFNYS9KdnpZS1NYdUtMVzdJ?=
+ =?utf-8?B?RkhUclFsWUVPWEJSQVJzZk9lR2hNYWp2dXZzZ0oyeVB5YmZ5ZDJPVXc0YWU5?=
+ =?utf-8?B?akNQd3NvNnA3cXViMS9wYWtkN0ZWUURRTnAwbXRlalRUTFFOd3BWeUl5cGQz?=
+ =?utf-8?B?WFd5ZFZCb3hDbzE1emN5eGRiRVVZTjhPOWgzZWZVSmtQanVHTFJsK3RhM3BN?=
+ =?utf-8?B?dWdvRm1rS1drWWRDWFR1bVBIQytielhCL0xCSDlicmMvZTNZb3cyUUVtQWlI?=
+ =?utf-8?B?N1VpQmZIaFphWWtadlFnQ0tBYTBTVDZDOWE0WVdBUTNSNk12ZlVwcnduajVJ?=
+ =?utf-8?B?bUlrRC9MSnpQbkJvc1NSdHZNWmxncnE2ZEpIUW1LTU4zR0pBcTlHL1l3MFFM?=
+ =?utf-8?B?MXJiSDVLVEhYcXRlVTlIV01xYjZnYjZIU2dtNFJhZ0wzMk9tZEwvNUFRcDFI?=
+ =?utf-8?B?RWN3M29NaDNnOTJNcDJLU0xTcHk4eU1pK2JZbkYxNndmQnlSeE9UM2pFcng0?=
+ =?utf-8?B?YnFGUm81ZHdjZEhjSnUvRHBRYXgvUWpheEpzSHE0azZtVGVvSm42dkptdnZ3?=
+ =?utf-8?B?WE5mZ1NjdEpzcHJzK0t3QWh5eElOY29iM012Skg3ZC9aeXE3YWNTYzBJRGJw?=
+ =?utf-8?B?QmhLak1oekVXalNxd3JzNGM2Z2o0aU9yL28ydTZJbTI0Sk9mTDZYMitTZTMy?=
+ =?utf-8?B?TEFEdzhwZjlJM3U4NFNpM3VjVXgzZ0F2TElWNkFtbTdpcEZ5Mk5vWnBBRGJR?=
+ =?utf-8?B?K3NtV3RkdFhFeVY3bEsvdG1Hdm5MK25OMkhyekZXbjQweEszaW1JUlZDdTJ3?=
+ =?utf-8?B?a2M4R0k2OHozKzhhcXRlWDlMRFFwOVZXQ2U5Sk1WTlpGb1FjN1lwVUo3c2JG?=
+ =?utf-8?B?eEpSYWdYSER3SnA0ekxnNFRmTXBYR1phcGtXL244TitVSTF2WmJTTk13THRw?=
+ =?utf-8?B?czE2YXZZbW0yejdMTm9DSVFLVk1SUGl0SXFuVUVtbVlqaGxoYnUwdWp2Ym16?=
+ =?utf-8?B?N3NSbDlKMnBNcHdoTE5rOFAzS29Cak15SzlVOFc3UENrcmpoYy8vTlh2YXFV?=
+ =?utf-8?B?S3MzUTRyb0cxTmVYUndDMy84YWdpaWZLeng3bWFHdzltNCtXcE9OdEczSytC?=
+ =?utf-8?B?WjdyQmdMMnpZNnd5YnFCZz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NklaSGVwSGhvcmNqNEFldWlSK3Z3N3dSM0JlVlRDZ2cxTCtTVUIrTVR6RlBp?=
+ =?utf-8?B?TUpHd0cycHpVUGpBQUFySyszTU8zMmFnT1lWOC9KWUVuQ3kwcFg2VEsyaFpM?=
+ =?utf-8?B?YmVHRjZta1hpeTNpOTljejV0YndjcjdvNnBXUzd3MVgwZlMwQkdhalc4cFMw?=
+ =?utf-8?B?TmtJcDdCZmozR3VpU3dYeXBFenJpeWRZbWhnb0tKRi9lUEhJcE82Y3RwYjhq?=
+ =?utf-8?B?K3V1LzJMb0FlKzRBdVJqUURkSmxtRDU5SXBvQXo2VnJiRjgxdkQrNU0rWnp0?=
+ =?utf-8?B?RER1blJaRG40SXA5bzl2QThrQkFlTzBrcnpnUVVHdTBNdWYwNTNzbS82bHJp?=
+ =?utf-8?B?WnRVNExIOHhHMksxTHNjZTh1b0EveUZYMFhSZHlrQUpET29XZjJ6akRVbHhX?=
+ =?utf-8?B?L1dLSVdMSFFyUHBHY3ZYWTJnV0YrM2VqY2JuZHlSc00zY3ROak9zNDBWMGJ1?=
+ =?utf-8?B?d1k0bytMWHhML3p5M0kzVGNpYzNzTzNtWU9kNjllU3RqR09DU1RwdFdFT1dV?=
+ =?utf-8?B?Tm5abHJTeGdZcCs4Rlg5MDkzc0J6bXorTVNKcFoyTFVRcVJOWTgwblhFZ20z?=
+ =?utf-8?B?OEZKTUVwY0dnZHRJaitiOWxDMmlhSHMvaTBYdm5YMzFsZ2N6dm5ZQ3lrOUZW?=
+ =?utf-8?B?Z2tUN1lZVVpDVXVLUGx6OXV6bUF4L2VKZ0t6MTltTnBQNDVwOTRLME5zWXY3?=
+ =?utf-8?B?bDV1VUxhS056RzNwNWIvVFZkc1VIcHE5SEJnckxSSlUxb2ZsV3RhMUo1M3hU?=
+ =?utf-8?B?Y2hvUVcrQWczZG5CZWFlTDg4TGlDYmQyakR5QkIvbXNFeExWYVdPQU1raVNX?=
+ =?utf-8?B?bWUwckFhVnFyS00vdDhzQVRhcnBMSkZvdGgySmtRcWxIbm95RElEemQ2Sy9i?=
+ =?utf-8?B?bnBjdkkvNkpzTk1xSEsxclF3RmlZWEZtbTdMTVJaNDdod1J1SWpHYm9kOTd4?=
+ =?utf-8?B?VndSSmFSTEUyVHdJbW5Rb09ZQnBvQzZsUmZoY2JaMGxBOW5URDRBek1wcFEz?=
+ =?utf-8?B?OXp4Wms2TXUwcXl4Z295MVVwYjB4RnlSL0UvRU1GTU1aUHZaYTd6dlVIaUF5?=
+ =?utf-8?B?YzJIN0xQbVA1dHloYndkM3FyR254d1Y5UHlwVkczVGFucDRPT1ViemwwM0J3?=
+ =?utf-8?B?TisyZTJCdFBlYW52RHZINVkzV3QzYUx4WTY4UDBDVlQxNE8rZWZuUVpvZlpY?=
+ =?utf-8?B?RVVSNzUvMlIwZDBiTGNyNXV0djFoaWdxT0RXSS8xOUR4RnFVeTRUZ3VyNWQx?=
+ =?utf-8?B?RGRVN2tPbFowc3o4ejZxWEh6ckNWRkNHa3JONmkycC9TN1kwOHgrRjhPNWxP?=
+ =?utf-8?B?VmdrdzFpZHhNWVRHcFFiZ1ZvZXNlSGpVY0FLL1dHMlBRbGxOcSt4SnFpZnc1?=
+ =?utf-8?B?V3VndzJiKzhxWFdyL1htVzNrQzZpYmhUanM2NE82QXpmeVhkUUlrY1JPL3Ns?=
+ =?utf-8?B?U2EwTUsxQ3Rlc1RFb01Sc2ltckJpbk5mSHFnYTkyeFhFcU1wOVU4OHN0MVRh?=
+ =?utf-8?B?UDlJQU5JQXp5YjNoZjhSd3BxSkoxK0JUbSt6c1VXaHVGemNwa200aFo0eHl0?=
+ =?utf-8?B?TDdaOUw1SlJxV3pXS1E0ZzVvY3ZJQ1hDUkhGL25iVkh5anFUa01yREVNcmxr?=
+ =?utf-8?B?ZlJISjNLaTVMSHpVajVkTXZTb1UxVTM2empsTlJaMXZWWG13UVplK0hldFlQ?=
+ =?utf-8?B?QnpWcWFJYlhTeGRzL3FRSUpVZFBvSm8zWjhDWUNYWDlmRFpMTUlQSmpPUjlO?=
+ =?utf-8?B?eDZVbkVkNTduVkpaR1RDY1kwRW8zL1RQeDJvcjZaT0xTZnplMldVVUpTSHpH?=
+ =?utf-8?B?eE9FSlh0ZHoxamcxenoydDZXQ3pNWFpWM2Q2NmgxZDVlc3RxWFAzbG1EWUJW?=
+ =?utf-8?B?dytKWUowekYvYjd3cjl0V2hic2FGMWJFWFpDQnZPUXIxRTZhd0EvMEdzcW5P?=
+ =?utf-8?B?SXd5Vy9obzlMdi9oT3p4SlJLYkRHTSt3b29Sa0c5dTVpdkhCaGdYbTMxdWFh?=
+ =?utf-8?B?U3JsSWZQbUcrTFkyZlVyRkpzYXNrbmVya0NNbE5vRVg3YmhSVWZIb2xPc0hO?=
+ =?utf-8?B?d1dzM3hxQm5sTDJlUjZ0SS9JOFc2dDM2bFZjTVI5cGFudkptVW0yVjllUThR?=
+ =?utf-8?Q?JsSoTWuR305forLLIeYsx8ItF?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c1b9b44-971d-4f19-7bee-08dd13d8f538
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 20:27:50.5642
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +REwfowVVMKaAJO6JD/wclzsJcjsso8V7dROLerSwQMTkrY9QuaSC9246OsMr90dChYuBhdFyU9dVfFttWeVKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7740
 
-Hi,
+On 12/2/2024 05:35, Peter Zijlstra wrote:
+> On Sat, Nov 30, 2024 at 08:06:55AM -0600, Mario Limonciello wrote:
+> 
+>> +/**
+>> + * struct amd_hfi_cpuinfo - HFI workload class info per CPU
+>> + * @cpu:		cpu index
+>> + * @cpus:		mask of cpus associated with amd_hfi_cpuinfo
+>> + * @class_index:	workload class ID index
+>> + * @nr_class:		max number of workload class supported
+>> + * @amd_hfi_classes:	current cpu workload class ranking data
+>> + *
+>> + * Parameters of a logical processor linked with hardware feedback class
+>> + */
+>> +struct amd_hfi_cpuinfo {
+>> +	int		cpu;
+>> +	cpumask_var_t	cpus;
+> 
+> This appears unused.
+> 
+>> +	s16		class_index;
+>> +	u8		nr_class;
+>> +	struct amd_hfi_classes	*amd_hfi_classes;
+>> +};
+>> +
+>> +static DEFINE_PER_CPU(struct amd_hfi_cpuinfo, amd_hfi_cpuinfo) = {.class_index = -1};
+>> +
+>> +static int amd_hfi_alloc_class_data(struct platform_device *pdev)
+>> +{
+>> +	struct amd_hfi_cpuinfo *hfi_cpuinfo;
+>> +	struct device *dev = &pdev->dev;
+>> +	int idx;
+>> +	int nr_class_id;
+>> +
+>> +	nr_class_id = cpuid_eax(AMD_HETERO_CPUID_27);
+>> +	if (nr_class_id < 0 || nr_class_id > 255) {
+>> +		dev_err(dev, "failed to get number of supported classes: %d\n",
+>> +			nr_class_id);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	for_each_present_cpu(idx) {
+> 
+> This uses present, but does not have means of handling changes to
+> present. Does this want to be possible?
+> 
+Thanks, I'll adjust this to *_possible().
 
-Sorry for the delay.
-
-On Thu, Nov 21, 2024 at 10:57=E2=80=AFPM Miao Wang <shankerwangmiao@gmail.c=
-om> wrote:
->
-> 2023=E5=B9=B411=E6=9C=887=E6=97=A5 00:09=EF=BC=8CRafael J. Wysocki <rjw@r=
-jwysocki.net> =E5=86=99=E9=81=93=EF=BC=9A
-> >
-> >  +static acpi_status acpi_bus_check_add(acpi_handle handle, bool first_=
-pass,
-> >                                     struct acpi_device **adev_p)
-> >   {
-> >       struct acpi_device *device =3D acpi_fetch_acpi_dev(handle);
-> >  @@ -2054,9 +2059,25 @@ static acpi_status acpi_bus_check_add(ac
-> >               if (acpi_device_should_be_hidden(handle))
-> >                       return AE_OK;
-> >
-> >  -            /* Bail out if there are dependencies. */
-> >  -            if (acpi_scan_check_dep(handle, check_dep) > 0)
-> >  -                    return AE_CTRL_DEPTH;
-> >  +            if (first_pass) {
-> >  +                    acpi_mipi_check_crs_csi2(handle);
-> >  +
-> >  +                    /* Bail out if there are dependencies. */
-> >  +                    if (acpi_scan_check_dep(handle) > 0) {
-> >  +                            /*
-> >  +                             * The entire CSI-2 connection graph need=
-s to be
-> >  +                             * extracted before any drivers or scan h=
-andlers
-> >  +                             * are bound to struct device objects, so=
- scan
-> >  +                             * _CRS CSI-2 resource descriptors for al=
-l
-> >  +                             * devices below the current handle.
-> >  +                             */
-> >  +                            acpi_walk_namespace(ACPI_TYPE_DEVICE, han=
-dle,
-> >  +                                                ACPI_UINT32_MAX,
-> >  +                                                acpi_scan_check_crs_c=
-si2_cb,
-> >  +                                                NULL, NULL, NULL);
-> >  +                            return AE_CTRL_DEPTH;
-> >  +                    }
-> >  +            }
-> >
-> >               fallthrough;
-> >       case ACPI_TYPE_ANY:     /* for ACPI_ROOT_OBJECT */
-> >
->
-> Hi, I'd like to report some issues caused by this patch. Correct me if I'=
-m wrong
-> since I'm not expert on ACPI. Before this patch, properties of ACPI devic=
-es with
-> _DEP relationship declared were evaluated after the initialization of the
-> depending devices, i.e. the execution of handler->attach(). With this pat=
-ch,
-> _CRS of all the ACPI devices are evaluated to check if the device contain=
-s a
-> CSI2 resource, regardless of the declaration of _DEP relationship.
-
-Yes, but the _DEP information is not relevant for whether or not _CRS
-may be evaluated at all.
-
-> The evaluation of _CRS is even before _STA
-
-Not really.  _STA has already been evaluated by
-acpi_ns_init_one_device() for all devices at this point.
-
-> and other methods indicating the status of the device.
-
-No, but it doesn't matter, at least by the spec.  Had the device been
-disabled, _CRS would have been expected to work anyway:
-
-"If a device is disabled, then _CRS returns a valid resource template
-for the device, but the actual resource assignments in the return byte
-stream are ignored." (ACPI 6.5, Section 6.2.2. _CRS (Current Resource
-Settings)).
-
-That said, adding a device status check before the _CRS evaluation in
-acpi_bus_check_add() is not inconceivable.
-
-> This has caused some issues in certain scenarios, where the DSDT contains=
- legacy
-> devices, which requires reading IO ports to form the result of its _CRS. =
-An
-> example of such a legacy device is declared in the DSDT is as below:
->
->     Device (LPT)
->     {
->         Name (_HID, EisaId ("PNP0400") /* Standard LPT Parallel Port */)
->         Name (_UID, 0x02)  // _UID: Unique ID
->         Name (_DDN, "LPT1")  // _DDN: DOS Device Name
->         Name (_DEP, Package (0x01)  // _DEP: Dependencies
->         {
->             \_SB.PCI0
->         })
->         OperationRegion (ITE1, SystemIO, 0x2E, 0x02)
->         Field (ITE1, ByteAcc, NoLock, Preserve) {INDX, 8,   DATA, 8}
->         IndexField (INDX, DATA, ByteAcc, NoLock, Preserve)
->         {
->             // Omitting some declarations of fields
->             IOAH,   8,
->             IOAL,   8,
->         }
->         Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settin=
-gs
->         {
->             Name (BUF0, ResourceTemplate ()
->             {
->                 IO (Decode16,
->                     0x0378,             // Range Minimum
->                     0x0378,             // Range Maximum
->                     0x01,               // Alignment
->                     0x08,               // Length
->                     _Y01)
->                 IRQ (Level, ActiveLow, Exclusive, _Y02)
->                     {7}
->             })
->             CreateByteField (BUF0, \LPT._CRS._Y01._MIN, IOLO)
->             CreateByteField (BUF0, 0x03, IOHI)
->             CreateByteField (BUF0, \LPT._CRS._Y01._MAX, IORL)
->             CreateByteField (BUF0, 0x05, IORH)
->             CreateByteField (BUF0, \LPT._CRS._Y01._LEN, LEN1)
->             CreateByteField (BUF0, \LPT._CRS._Y02._INT, IRQL)
->
->             IOLO =3D IOAL /* \LPT_.IOAL */
->             IORL =3D IOAL /* \LPT_.IOAL */
->             IOHI =3D IOAH /* \LPT_.IOAH */
->             IORH =3D IOAH /* \LPT_.IOAH */
->             // Omitting some assignments and calculations
->
->             Return (BUF0)
->         }
->     }
->
-> On non-x86 platforms, IO ports are implemented using MMIO. The memory is
-> remapped in the initialization of the PCI root, using its QWordIO resourc=
-e
-> declared in its _CRS, in acpi_pci_root_remap_iospace(). Before the
-> initialization of the PCI root, reads and writes of the IO ports will res=
-ult in
-> accessing memory region which is not mapped.
-
-That's not really straightforward.
-
-> Before this patch, adding a _DEP of Package(){PCI0} to these legacy devic=
-es will
-> postpone the initialization of these devices after the PCI root, solving =
-the
-> above problem. After this patch, however, the evaluation of _CRS regardle=
-ss of
-> _DEP declarations causes accessing IO ports before they are ready.
-
-Well, before this patch, Linux simply did not have to evaluate _CRS
-during device discovery.
-
-Nowhere in the spec it is stated that _CRS cannot be evaluated for a
-given device before enumerating all devices listed by its _DEP object.
-As it is currently defined, _DEP is only about operation region
-dependencies, not even about general device enumeration ordering (even
-though it is used for enforcing specific enumeration ordering in the
-field because OSes tend to enumerate devices in the order following
-from _DEP as a matter of fact).
-
-> I've checked the ACPI spec, and it states that ``OSPM must guarantee that=
- the
-> following operation regions are always accessible: SystemIO operation reg=
-ions"
-
-Which to me is clearly at odds with the SystemIO implementation
-description above.
-
-> and ``Since the region types above are permanently available, no _REG met=
-hods
-> are required, nor will OSPM evaluate any _REG methods that appear in the =
-same
-> scope as the operation region declaration(s) of these types". It seems th=
-at
-> from the view of the AML codes in the DSDT, it can never know when the IO=
- ports
-> are ready, and it is impossible for Linux on non-x86 platforms to ensure =
-IO
-> ports are always accessible.
-
-They aren't always accessible anyhow.  They become accessible after
-enumerating the PCI host bridge and they aren't accessible earlier.
-
-> I wonder if there would be a better solution to this problem.
-
-Well, it is a bit unfortunate that it took 6 kernel release cycles to
-realize that there was a problem.  Had this been reported earlier,
-there would have been more options on the table.
-
-At this point, the functionality related to CSI-2 connection graphs
-simply needs to be there, the only option for avoiding _CRS evaluation
-in acpi_bus_check_add() would be to somehow defer the enumeration of
-all devices using CSI-2 connections until the host bridge is
-enumerated.  Alternatively, the enumeration of the PCI host bridge
-might be pushed forward, but that would require addressing at least a
-few enumeration ordering issues.  None of these would be a small
-change and backporting any of that would have been a considerable
-effort.
-
-One of the things worth considering is whether or not CSI-2 is
-relevant for the architectures that rely on the old behavior related
-to _DEP.  If not at all, a Kconfig option could be added to disable
-CSI-2 graphs enumeration on those architectures and that would make
-the problem go away.
-
-Also I'm wondering if the firmware could be updated to survive a mere
-evaluation of _CRS if the hardware is not ready.
-
-Thanks!
+I think the *_present() calls make sense for the other consumers in 
+suspend/resume though. Agree?
 
