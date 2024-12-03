@@ -1,273 +1,199 @@
-Return-Path: <linux-acpi+bounces-9907-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9908-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15889E2F87
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 00:08:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB8A2164A73
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 23:08:52 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0721D1EF096;
-	Tue,  3 Dec 2024 23:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ULLyg7me"
-X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D799E3014
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 00:51:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA928460;
-	Tue,  3 Dec 2024 23:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 608A4B227B3
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 23:51:05 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6187209F38;
+	Tue,  3 Dec 2024 23:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RDOBMIxV"
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA5E1E0E16
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Dec 2024 23:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733267332; cv=none; b=mATviOIdyFgokgp7PsPlpg0yubT92ZmyBeMiiYONCv2P1nPVj7aQgH/UExwJGTNsW7d1PReLns856o/lnn9PqvHDdcboyKRujupZf+0sbq3OiiLN9PHz8s7C4v1bv1ES2+ik1JC//RODj4+rmJrWwFzr4m/jXtphGqsaZQM8rlA=
+	t=1733269861; cv=none; b=lzSRXkQZkxkejCziLxVdQ8j6SYC6zWtqQyv6se9aF++C0+w8qt19dUVuWKz4mp57Xi9/+EHm97rxkovcwm0ZJZjIyimZ7ajhnEFaYvIYKrlqvv8JmVZ8QKIYOTMsZXIEqC7JoYDaReYDjkDC+dn/xUnhBUb3s54aCyT7vOxGCMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733267332; c=relaxed/simple;
-	bh=rkEp1O41NocrRkA4h9ZAwh5CCEMQ39biIWMtOUQkeSU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MLSrWUtRxKspTJaJDLuL3DTxFK6Y901NXr020sqdsf8wnC4sNHrCfkqR5ZsIauYgIEbf8pg7+UyvZQhLFn8Ayj774jA+Ne4+349hbn7aEkompAECJ+g0LYQh4l2/vz63XPsF8aQBlYosn8HP2eMdBHX5q4TfYLo2ewSlP+tATyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ULLyg7me; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733267331; x=1764803331;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=rkEp1O41NocrRkA4h9ZAwh5CCEMQ39biIWMtOUQkeSU=;
-  b=ULLyg7meGhb3/C8jKPzx+6rxa0L+TWYj/hPTAmAc2LXm0sPVlomCXCHt
-   y/8przoRYLiSQUGpS4XMRaUZEBe0dBtXHCzGxUQoeWm5WSvA/Eo1MCR1F
-   ar+NGr8aLGNaz0bI0n8mWlrVDli1rzgiHUXD22EachV3xmcsKuwYr4d2Z
-   0gB3M8rnmG73aMEA2PspLVsarWdBMHbjXUc5G92YlpeiSR7KdGnJmg3lZ
-   mC9uRGTdJuVZl9WNAJtEhsmbpluTxafRtbLS3j1NgLJnrO61N5qa6VBXg
-   WSXeFw2BKABFJGOlRhSFvxaLWLpYD2J8iexDRaF9iVh2PQNlcSbrBf9ia
-   A==;
-X-CSE-ConnectionGUID: PvD/9QI5RNehTiNpkKIT/Q==
-X-CSE-MsgGUID: X0upzJVwRRCaj1oH+xt5FA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44893517"
-X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
-   d="scan'208";a="44893517"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:08:50 -0800
-X-CSE-ConnectionGUID: u6eN/TqeSuyW+5LeSvCW8w==
-X-CSE-MsgGUID: wa36mqrvSiSq6WFtyviRVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
-   d="scan'208";a="93471388"
-Received: from agladkov-desk.ger.corp.intel.com (HELO [10.125.111.238]) ([10.125.111.238])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:08:49 -0800
-Message-ID: <8d591c40-7954-441a-886d-8621fac16094@intel.com>
-Date: Tue, 3 Dec 2024 16:08:48 -0700
+	s=arc-20240116; t=1733269861; c=relaxed/simple;
+	bh=R45xxkijHNvo3KBLPSidEKjRiqPbaArVtuFKk4DrS9Y=;
+	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CrJcfIDRmPaAgjGT4okZa641d0+/iQ6WNfePiUp4fd76s0eB21Z8QcF7df+6pYEdqPwvTTT7Yq+8XVJmzwpoVe6CEbR3vD57xaFVSl4sIaRrs/ElSC+Oteykyr8RgKZZewh0MkHzhJpLoVPuk0Vm+mptmIjjdOKvYwEyxKHMcZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RDOBMIxV; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6d888c38841so36888376d6.3
+        for <linux-acpi@vger.kernel.org>; Tue, 03 Dec 2024 15:50:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733269859; x=1733874659; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EnjgP+/pVl9iI2xT3/J2oBRnCck1VdgzOQo4g6wMy/Y=;
+        b=RDOBMIxVRl0oMVWC0oFXwAUz5pK8kv+l9guJQGcjiTgsnnpPeNr5WM1vDRAxsYE1A7
+         ktEOxVW9cWLA8rEolAtqDCcyagdjmJy1Nkr3JwKpfF/OiS9S5jk6gds9nKiBfDTL6wiD
+         XYed4aOP/d4VVmblYx/wPcztTz5X7fsp9e374=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733269859; x=1733874659;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EnjgP+/pVl9iI2xT3/J2oBRnCck1VdgzOQo4g6wMy/Y=;
+        b=iWMy2vJhc0zg31w31qFpiYYWtfVz8OrPRdVik3KEQgyKrshq2xSOMp/MSxfk64RDao
+         M1G9LXYBj4Nfn8FhDZcV+CAuBePO73YZMiy6Nuh7OWe5Na0Z54sePl8KpALNXRSdtDuj
+         mB2R3spEzXC3ofLIIBnrhefn5nlENbZHJRIPg4dDD9r01Pi1p6QYWQfaW4AzoL09V5ke
+         bxuhVwiHsMB3KxnYvfd6xNDuJc7y1g/Mv0QpaB49GY4wXQg06K4yxT3qZ+I/1CrZ5Ja0
+         xTEmfik6zsMLgeUunLi3QIN3C3BYmp+DcvxlCB/Qhp7PUuQp49I2ilm9x+5HbQOQe557
+         s5hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfQxOETahGPZqQWfTwjDYul8B72CR99dFqei8yhC4t52OuG5Or3OdnXNvT7V0XW8CvCD0jdqGcthyV@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLCF8YYRiVKsvKvTy8gHDHPXP4Lg/zAiDpen9WoZhG0Wx2WRYb
+	vJs2E2qiKAe/R/zxjSl285rSxJ3glkUYXPk5aG9q1TvCtXvrx0FTac6JMqS2kbdX32/y2G4FY/Q
+	q4Yyo85e/uzzdozUPZYHAE4CQjW1CGOtowHML
+X-Gm-Gg: ASbGncvxgivN8LA1+QIOVaG9RTmBb3SC3fKY/RLRtUa9kxsJS+wogQFYqAIyhkRVoLK
+	4dEiGzVkXtWo3T1FjMc1lcluQ5kHd4m5p9YEQAj0mxz5mS8nvtTmi8A9ycS4=
+X-Google-Smtp-Source: AGHT+IHEgBXWoi8BJHO3jSXOG7m1oHxpYBSZUKMhC1usrxD/ibe1QmfujCFJzYfILghK3QdcAVLyYpr9Sv5mqRngbJA=
+X-Received: by 2002:a05:6214:2029:b0:6d3:7a47:2034 with SMTP id
+ 6a1803df08f44-6d8c443cefdmr40855326d6.3.1733269858918; Tue, 03 Dec 2024
+ 15:50:58 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 3 Dec 2024 15:50:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/5] acpi/hmat / cxl: Add extended linear cache
- support for CXL
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
- bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
- dave@stgolabs.net, alison.schofield@intel.com, ira.weiny@intel.com
-References: <20241112221335.432583-1-dave.jiang@intel.com>
- <20241112221335.432583-3-dave.jiang@intel.com>
- <20241126162301.0000090c@huawei.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20241126162301.0000090c@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <cartdeijkv6z23dgm7uif4lti3lahfqmuyxcmruzqbefhsp6yk@m6ocjhncs2ko>
+References: <lf7y7wpuca6kzqcglgs5d443iusf7xjocum4adi7t3npfavccx@zgsp37oyztme>
+ <yk3xidaisbd56yndaucax7otijjauqmm7lqm6q4q633kdawlqo@qaq27lwxmvwd>
+ <CAE-0n501j+8bMnMKabFyZjn+MLUy3Z68Hiv1PsfW0APy5ggN8g@mail.gmail.com>
+ <gstohhcdnmnkszk4l2ikd5xiewtotgo5okia62paauj6zpaw7y@4wchyvoynm2p>
+ <CAE-0n50z6MNa7WOsg-NU7k8BpFeJJyYfHX3ov6DsthLWauSNpA@mail.gmail.com>
+ <hqmx7jtkvrwvb27n56hw7rpefhp37lhr3a5fawz7gsl76uuj5s@h7m6wpdhibkk>
+ <CAE-0n50y1O2C47zOGJPmMjKXK_m6a=jhpEAP4nW+RymZbo2xyg@mail.gmail.com>
+ <5kisfv22tgqwzjpxqrbx56ywr7l4r7pny3pl2r7crv4rijqbwk@azricdasttg7>
+ <CAE-0n50Bxi2GfnxOmMwe-F+k5jMSiyAVPDb6K8pYm-i6hpJTOA@mail.gmail.com> <cartdeijkv6z23dgm7uif4lti3lahfqmuyxcmruzqbefhsp6yk@m6ocjhncs2ko>
+From: Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.12.dev1+gaa8c22fdeedb
+Date: Tue, 3 Dec 2024 15:50:58 -0800
+Message-ID: <CAE-0n51-QLLje0f7T4p3xK6Q-FRk4K0NUrVVm4cxkKoevuzktw@mail.gmail.com>
+Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
+ google,cros-ec-typec for DP altmode
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, devicetree@vger.kernel.org, 
+	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, 
+	dri-devel@lists.freedesktop.org, Guenter Roeck <groeck@chromium.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
+	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+
+Quoting Dmitry Baryshkov (2024-11-21 14:59:42)
+> On Tue, Nov 19, 2024 at 08:09:31PM -0500, Stephen Boyd wrote:
+> >
+> > It sounds like we're debating how to handle lane assignment in the
+> > kernel. Either way, the code is going to be implemented in the bridge
+> > driver because it's the one that has to change what physical lane a
+> > logical lane is assigned to. The question is if it should be some sort
+> > of bridge_funcs callback, or should bridge drivers hook into the typec
+> > framework to expose an orientation switch, or something else?
+>
+> I was assuming that orientation switch is such kind of a hook.
+>
+> >
+> > I'm thinking we should introduce some sort of bridge_funcs callback that
+> > can be called from the DP altmode driver, either parallel to the
+> > drm_connector_oob_hotplug_event() function or from it directly. If we
+> > can pass the fwnode for the usb-c-connector to the oob_hotplug_event
+> > callback, maybe that's all we need to figure out which lanes go where.
+> > And then in the 2 DP connector muxing world we can call
+> > drm_connector_oob_hotplug_event() with one or the other DP connector
+> > node, which will likely be children nodes of the "HPD redriver" device.
+>
+> If you call it from drm_bridge_connector's oob_hotplug_event handler,
+> this should fly. Does it cover your 3-DP or 4-DP usecases?
+>
+
+I think it will work as long as we're able to add some sort of property
+to the usb-c-connector node to indicate that the DP lanes are flipped.
+It feels like that should be in the displayport altmode node to keep
+things tidy because the SuperSpeed port is overloaded. Maybe the drm
+framework can have some API that can take the fwnode from the
+oob_hotplug_event handler and tell the bridge driver which way the
+orientation is.
+
+ connector {
+   compatible = "usb-c-connector";
+
+   altmodes {
+     displayport {
+       orientation-reversed;
+     }
+   };
+
+   ports {
+     ...
+   };
+ };
 
 
+ int drm_dp_typec_orientation_flipped(struct fwnode_handle *fwnode)
+ {
+   struct fwnode_handle *altmodes;
+   struct fwnode_handle *dp;
 
-On 11/26/24 9:23 AM, Jonathan Cameron wrote:
-> On Tue, 12 Nov 2024 15:12:34 -0700
-> Dave Jiang <dave.jiang@intel.com> wrote:
-> 
->> The current cxl region size only indicates the size of the CXL memory
->> region without accounting for the extended linear cache size. Retrieve the
->> cache size from HMAT and append that to the cxl region size for the cxl
->> region range that matches the SRAT range that has extended linear cache
->> enabled.
->>
->> The SRAT defines the whole memory range that includes the extended linear
->> cache and the CXL memory region. The new HMAT ECN/ECR to the Memory Side
->> Cache Information Structure defines the size of the extended linear cache
->> size and matches to the SRAT Memory Affinity Structure by the memory
->> proxmity domain. Add a helper to match the cxl range to the SRAT memory
->> range in order to retrieve the cache size.
->>
->> There are several places that checks the cxl region range against the
->> decoder range. Use new helper to check between the two ranges and address
->> the new cache size.
->>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> Hi Dave,
-> 
-> A few minor comments inline.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>  drivers/acpi/numa/hmat.c  | 44 ++++++++++++++++++++++++
->>  drivers/cxl/core/Makefile |  1 +
->>  drivers/cxl/core/acpi.c   | 11 ++++++
->>  drivers/cxl/core/core.h   |  3 ++
->>  drivers/cxl/core/region.c | 70 ++++++++++++++++++++++++++++++++++++---
->>  drivers/cxl/cxl.h         |  2 ++
->>  include/linux/acpi.h      | 19 +++++++++++
->>  tools/testing/cxl/Kbuild  |  1 +
->>  8 files changed, 147 insertions(+), 4 deletions(-)
->>  create mode 100644 drivers/cxl/core/acpi.c
->>
->> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> index 39524f36be5b..92b818b72ecc 100644
->> --- a/drivers/acpi/numa/hmat.c
->> +++ b/drivers/acpi/numa/hmat.c
->> @@ -108,6 +108,50 @@ static struct memory_target *find_mem_target(unsigned int mem_pxm)
->>  	return NULL;
->>  }
->>  
->> +/**
->> + * hmat_get_extended_linear_cache_size - Retrieve the extended linear cache size
->> + * @backing_res: resource from the backing media
->> + * @nid: node id for the memory region
->> + * @cache_size: (Output) size of extended linear cache.
->> + *
->> + * Return: 0 on success. Errno on failure.
->> + *
->> + */
->> +int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
->> +					resource_size_t *cache_size)
->> +{
->> +	unsigned int pxm = node_to_pxm(nid);
->> +	struct memory_target *target;
->> +	struct target_cache *tcache;
->> +	bool cache_found = false;
->> +	struct resource *res;
->> +
->> +	target = find_mem_target(pxm);
->> +	if (!target)
->> +		return -ENOENT;
->> +
->> +	list_for_each_entry(tcache, &target->caches, node) {
->> +		if (tcache->cache_attrs.mode == NODE_CACHE_MODE_EXTENDED_LINEAR) {
-> 
-> I'd flip this for slightly better readability.
+   altmodes = fwnode_get_named_child_node(fwnode, "altmodes");
+   if (!altmodes)
+     return -EINVAL;
 
-ok
+   dp = fwnode_get_named_child_node(altmodes, "displayport");
+   if (!dp)
+     return -EINVAL;
 
-> 		if (tcache->cache_attrs.mode != NODE_CACHE_MODE_EXTENDED_LINEAR)
-> 			continue;
-> 
-> 		res = ...
-> 
-> 
->> +			res = &target->memregions;
->> +			if (!resource_contains(res, backing_res))
->> +				continue;
->> +
->> +			cache_found = true;
->> +			break;
->> +		}
->> +	}
->> +
->> +	if (!cache_found) {
->> +		*cache_size = 0;
->> +		return 0;
->> +	}
->> +
->> +	*cache_size = tcache->cache_attrs.size;
-> 
-> Why not set this and return in the loop?
-> That way no need to have a local variable.
+   if (fwnode_property_read_bool(dp, "orientation-reversed"))
+     return 1;
 
-ok
+   return 0;
+ }
 
-> 
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(hmat_get_extended_linear_cache_size, CXL);
-> 
->> diff --git a/drivers/cxl/core/acpi.c b/drivers/cxl/core/acpi.c
->> new file mode 100644
->> index 000000000000..f13b4dae6ac5
->> --- /dev/null
->> +++ b/drivers/cxl/core/acpi.c
->> @@ -0,0 +1,11 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
->> +#include <linux/acpi.h>
->> +#include "cxl.h"
->> +#include "core.h"
-> 
-> Why do you need the cxl headers?  Maybe a forwards def of
-> struct resource, but I'm not seeing anything else being needed.
+There's another wrinkle on some Corsola devices where the EC says
+there's a usb-c-connector on the board, but in reality the DP lanes are
+connected to a DP-to-HDMI bridge that is controlled by the EC which goes
+to an HDMI connector on the side of the laptop. The EC does the
+arbitration as usual because there's only one DP source and one or two
+usb type-c connectors physically on the laptop in addition to the HDMI
+connector.
 
-The prototype is declared in core.h, and it seems core.h needs cxl.h. I wonder if core.h should just include cxl.h.
-> 
-> 
->> +
->> +int cxl_acpi_get_extended_linear_cache_size(struct resource *backing_res,
->> +					    int nid, resource_size_t *size)
->> +{
->> +	return hmat_get_extended_linear_cache_size(backing_res, nid, size);
->> +}
-> 
-> 
->> @@ -3215,6 +3229,42 @@ static int match_region_by_range(struct device *dev, void *data)
->>  	return rc;
->>  }
->>  
->> +static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
->> +					    struct resource *res)
->> +{
->> +	struct cxl_region_params *p = &cxlr->params;
->> +	int nid = phys_to_target_node(res->start);
->> +	resource_size_t size, cache_size;
->> +	int rc;
->> +
->> +	size = resource_size(res);
->> +	if (!size)
->> +		return -EINVAL;
->> +
->> +	rc = cxl_acpi_get_extended_linear_cache_size(res, nid, &cache_size);
->> +	if (rc)
->> +		return rc;
->> +
->> +	if (!cache_size)
->> +		return 0;
->> +
->> +	if (size != cache_size) {
->> +		dev_warn(&cxlr->dev, "Extended Linear Cache is not 1:1, unsupported!");
->> +		return -EOPNOTSUPP;
->> +	}
->> +
->> +	/*
->> +	 * Move the start of the range to where the cache range starts. The
->> +	 * implementation assumes that the cache range is in front of the
->> +	 * CXL range. This is not dictated by the HMAT spec but is how the
->> +	 * currently known implementation configured.
-> 
-> is configured
-
-will fix
-
-> 
->> +	 */
->> +	res->start -= cache_size;
->> +	p->cache_size = cache_size;
->> +
->> +	return 0;
->> +}
-> 
-> 
-
+The easiest way to imagine this is that we took the usb-c-connector and
+jammed an HDMI dongle in there with some glue so that it can never be
+removed. There isn't any USB going there either because it can't be
+used. I suppose we can continue to describe this with an
+altmodes/displayport node but then add some compatible like
+"usb-c-hdmi-connector" or another property to the altmodes/displayport
+node like "type = hdmi" that signifies this is a connector that only
+outputs HDMI.
 
