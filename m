@@ -1,151 +1,207 @@
-Return-Path: <linux-acpi+bounces-9906-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9905-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6089E2F7F
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 00:06:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDFF9E2FB7
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 00:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74922282E9E
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 23:06:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79C46B26FFC
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Dec 2024 22:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0073A1E25E3;
-	Tue,  3 Dec 2024 23:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A5820125D;
+	Tue,  3 Dec 2024 22:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P69f/2Kg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSPqTcZk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7B38460;
-	Tue,  3 Dec 2024 23:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8501362;
+	Tue,  3 Dec 2024 22:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733267157; cv=none; b=BldsYSqcZGZPL0kd8aQjAxk8ghe1sRICkuXkeTaw9VUn9pmpQq2aamdd8sSSYrEZMopNRyKOOLjBXSxnsxl3k8kmaNuBkydwK0aD0O1oCwq9xiIO597VoZ7dn8BHCTMgi5M3Wzp4F3qcOBKx6BX/Ds+zbIwW+XaYP6XGOeYwaDE=
+	t=1733265955; cv=none; b=eWxu19cBx4r17HeyY7fMMZn9mHPNQgfBR1i1XVCHBuNjs528Xn1lPk4elRJ9kvvf8gnNllNZnsO/ph1zNmbJrE1fPRWIh36C2wh3CpNzKLTrK2xnqxIWfPtQU2qHgxvN+F3k5AJKUrRBrH8/golQrgaNpNJjkRf1qNNq1sMJh08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733267157; c=relaxed/simple;
-	bh=rVT526fNSvIbb/Xk1Um21/qmPnAbW+h/jglS+K/QzgM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NqnevpTRTIKFhVJGsAbfiGFxMfWC+UM0vAhLmLdgF4VwqZgxxkhNhFcfnqhJhT8U1flCrhUf16z4emluH1Fvi0SeD7AWtxBVXTbhz0BGjz0vTNw7ySHhhiJcN2taHAy8jFN6GE11IZuk//yondRNxyWMRpGN1gvYbIvZ9AYSzWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P69f/2Kg; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733267156; x=1764803156;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=rVT526fNSvIbb/Xk1Um21/qmPnAbW+h/jglS+K/QzgM=;
-  b=P69f/2KgGM6WQhGKP9P7RX7f8MTWeol8cuHygfPhxS5MHlnzgWIfgoN/
-   70GE+wvVbQXUwpNLWDD539LRQJzFO1mztTeIREmlZa7Ez6DEp2w9fjgt0
-   CEBOLpkQxZCKzK/iv5naW98Iiat8CPsOzK2XEy/wr9n+TJ+W7oRbNaN+e
-   XiykPOkklrXHHrOfw129ta1S0Plr+M0Ws6ygedE8gcrGXDUOO4DuG/qc6
-   QKaYHPR1uTP5M7ykxVe1pdg++7fQTbtDptY/O4lo6gHXHqbYhkytMX23L
-   GGYXjOT/k1wwvOPJUttva6h9A8s5uB+s8dsq+eBAmbHWZius5hEsgXVxf
-   w==;
-X-CSE-ConnectionGUID: cxgLy57tTrKhtVoRg3rEDA==
-X-CSE-MsgGUID: uOqAvVhBSvGki6ZXsBRXlw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="33388177"
-X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
-   d="scan'208";a="33388177"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:05:56 -0800
-X-CSE-ConnectionGUID: HbQHPJKAQP6CewLMWTB50Q==
-X-CSE-MsgGUID: iM48SLyrQ1+0i9xLBpawBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
-   d="scan'208";a="93669878"
-Received: from agladkov-desk.ger.corp.intel.com (HELO [10.125.111.238]) ([10.125.111.238])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:05:55 -0800
-Message-ID: <f5d12829-5a2d-4522-a66b-e32794c97797@intel.com>
-Date: Tue, 3 Dec 2024 16:05:54 -0700
+	s=arc-20240116; t=1733265955; c=relaxed/simple;
+	bh=m6NpZ3ovnhZVXttFIef8JZWvTJbel+ks2sRypWuw3Gc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P48wnqEtNVOAsErnl4a0p4BvvQsjcafm6gTYrRAmfvxxdfoIMP0J34ujPP4KXYL1MvAv1/Hf5bTbkky91+eKit6SFGGgpj1HigxS5xPomKSeqesHKVPpK4lRBd0Rz6pQxJjolTFJhA3aKmlRuAmQ4Dk04z2V86KTAjXnzna5be0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSPqTcZk; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-215666ea06aso2360635ad.0;
+        Tue, 03 Dec 2024 14:45:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733265953; x=1733870753; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pHx4DW5vGcFckyTuXNmycozltFpTrZCe9Z2pGfrUuF4=;
+        b=TSPqTcZkvgKaTxF+IxIEwACX8HXwi+urZzoS6pdT6wxJszwqqIQNKTLf+ySVNG0u6m
+         mlVi9YL3DCyyN0NX+jmC7I8L/X2ykqM5MrfmmUnGrl+ioVo7MnEBShuYjrPDc6GcvY+H
+         J0eT6FnkQf8QgvHOh87jG2KRnUWtJK2RM4wcDk6huA5kdbx786YPzhnPLi5eIQO/+DfR
+         gnoYa72JBx85BJk79IWqw5MDiwAnpk+YkMKsrnUjj9oeS+94y/XdXnvMiB3wYzte/Yyf
+         wuZ0TLYR+lHSRWJ7OOUPgiLNq4CLqhEntWM9k196gH9mGHQJvUNumby3uiV9Wfpnllin
+         43jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733265953; x=1733870753;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pHx4DW5vGcFckyTuXNmycozltFpTrZCe9Z2pGfrUuF4=;
+        b=SUyId6JQFKVNE7s4yUe/QMTmhd8SjcQjjeZXlIgxKVxzEnZ7sfgQVRCOER4XYiMVCv
+         SdHfayQY079XaJ7eof7EzTeN9QuEy40ysW60b/5bC16mhhBZpB24LY72oMsnCW0+axCU
+         5rTag5Xprj7eyExt2Dmdl0Vlc6CeGGr7H2v+AuIIbsEgTyvXqjheAUQOGp4yFOXuz1ff
+         2cjOD0hjrUX3aOrnkAHYfpihA/ki9jB6fyJ5eTbTa40bNISc7oX2QWJEBFmoe/oDLef+
+         w79/An6s80pMf4yzg2wVl2/KUqg5GzfswAUI1BPJaa+aUbh5VdnxnUZ+75Vqkhko4Vqw
+         3YXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWRgDVKQUX9UEZeAEE3CifsS49s/hYMc3yK+hC6MpSuxJragZCycb1gfhTK4SQOtFD8rgxeqRfP4Ka8@vger.kernel.org, AJvYcCWaYl3mWeYZ9mz06Q4freSGzuwDRqVWrzFU3+IHtSdVKOgfmGRal5XFseqGn2EybPnhcQCvFaie6p3BL14R@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHiAPw0nHvJx/AGghiaNcmay0U5ygr8iihCnlv3I+ybJl/ejbg
+	qk08N/024v2GoEHBOKIJ80xROgBawSHiWMHpYnQFNLthFCYOgZB5
+X-Gm-Gg: ASbGncvP96+MJj1p5aAf4Esdg63ZYS2zDMMyF5CfatdqH4uwUT6w7HGIREeK5JKucH/
+	qcJ53FT4qj3tkdjdRPbuRM4JaW8pGYXYnS+nFuR45pl7dGtDyxTRnLsCOM9VgwXQh0RGyd20WlG
+	Sz0nf8etbU6enF+XjRWNj6DesLuHvMbg/mBS5ZYIK5iPzH1u2riNvTiR/StzunYkBCb2J4EXHAY
+	uS6Q9f3isz6vZ4buQUOru5uoxzIbDUytL0k4mXensngUgRo4Tw=
+X-Google-Smtp-Source: AGHT+IFNteVz+zDeTvojKEoPM0ZKuZcx4FTzyb15Sf/Huw+LEGghkyQG5vfjrGoV593uuDVF8tIZ3Q==
+X-Received: by 2002:a17:903:22cf:b0:215:7287:67bb with SMTP id d9443c01a7336-215bd3c6b27mr75611715ad.0.1733265953178;
+        Tue, 03 Dec 2024 14:45:53 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:a614:a365:7f4d:1d6c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21586986a4asm47603275ad.214.2024.12.03.14.45.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 14:45:52 -0800 (PST)
+Date: Tue, 3 Dec 2024 14:45:49 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] device property: do not leak child nodes when using
+ NULL/error pointers
+Message-ID: <Z0-KHYnhu81ljbDk@google.com>
+References: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
+ <Z0hsbNqXSkQjsR1v@smile.fi.intel.com>
+ <Z0j3EtRmYBmGFApu@google.com>
+ <Z0nUpytu0GFUgQ9V@smile.fi.intel.com>
+ <Z0q75n_P3sZYnviO@google.com>
+ <Z0uHJJKMog-REw1D@smile.fi.intel.com>
+ <Z06b0oTvxUi4DTlx@google.com>
+ <Z08HQ2JmETJLNuud@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/5] acpi: numa: Add support to enumerate and store
- extended linear address mode
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
- bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
- dave@stgolabs.net, alison.schofield@intel.com, ira.weiny@intel.com
-References: <20241112221335.432583-1-dave.jiang@intel.com>
- <20241112221335.432583-2-dave.jiang@intel.com>
- <20241126161622.00005ee8@huawei.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20241126161622.00005ee8@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z08HQ2JmETJLNuud@smile.fi.intel.com>
 
+On Tue, Dec 03, 2024 at 03:27:31PM +0200, Andy Shevchenko wrote:
+> On Mon, Dec 02, 2024 at 09:49:06PM -0800, Dmitry Torokhov wrote:
+> > On Sat, Nov 30, 2024 at 11:44:04PM +0200, Andy Shevchenko wrote:
+> > > On Fri, Nov 29, 2024 at 11:16:54PM -0800, Dmitry Torokhov wrote:
+> > > > On Fri, Nov 29, 2024 at 04:50:15PM +0200, Andy Shevchenko wrote:
+> > > > > On Thu, Nov 28, 2024 at 03:04:50PM -0800, Dmitry Torokhov wrote:
+> > > > > > On Thu, Nov 28, 2024 at 03:13:16PM +0200, Andy Shevchenko wrote:
+> > > > > > > On Wed, Nov 27, 2024 at 09:39:34PM -0800, Dmitry Torokhov wrote:
+> 
+> ...
+> 
+> > > > > > > > @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+> > > > > > > >  	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > > > > > >  	struct fwnode_handle *next;
+> > > > > > > 
+> > > > > > > > -	if (IS_ERR_OR_NULL(fwnode))
+> > > > > > > > +	if (IS_ERR_OR_NULL(fwnode)) {
+> > > > > > > > +		fwnode_handle_put(child);
+> > > > > > > >  		return NULL;
+> > > > > > > > +	}
+> > > > > > > 
+> > > > > > > >  	/* Try to find a child in primary fwnode */
+> > > > > > > >  	next = fwnode_get_next_child_node(fwnode, child);
+> > > > > > > 
+> > > > > > > So, why not just moving the original check (w/o dropping the reference) here?
+> > > > > > > Wouldn't it have the same effect w/o explicit call to the fwnode_handle_put()?
+> > > > > > 
+> > > > > > Because if you rely on check in fwnode_get_next_child_node() you would
+> > > > > > not know if it returned NULL because there are no more children or
+> > > > > > because the node is invalid. In the latter case you can't dereference
+> > > > > > fwnode->secondary.
+> > > > > 
+> > > > > Yes, so, how does it contradict my proposal?
+> > > > 
+> > > > I guess I misunderstood your proposal then. Could you please explain it
+> > > > in more detail?
+> > > 
+> > > 
+> > > Current code (in steps):
+> > > 	if (IS_ERR_OR_NULL()) check
+> > > 	trying primary
+> > > 	trying secondary if previous is NULL
+> > > 
+> > > 
+> > > My proposal
+> > > 
+> > > 	trying primary
+> > > 	return if not NULL
+> > > 	if (IS_ERR_OR_NULL()) check in its current form (no put op)
+> > > 	trying secondary
+> > > 
+> > > After your first patch IIUC this is possible as trying primary will put child uncoditionally.
+> > 
+> > Ah, I see. No, I do not think this is a good idea: it will make the code
+> > harder to understand for a casual reader: "Why do we check node validity
+> > only after we used it for the first time?"
+> 
+> Theare a re already a few API calls there that are hard to understand, I spent
+> some time on them to get it through and still got it wrong as this series
+> shows. So, I don't think we anyhow change this.
 
+The fact that some code is confusing does not mean that we should add
+more confusing code. We will not fix everything at once, but we can make
+things better bit by bit.
 
-On 11/26/24 9:16 AM, Jonathan Cameron wrote:
-> On Tue, 12 Nov 2024 15:12:33 -0700
-> Dave Jiang <dave.jiang@intel.com> wrote:
-> 
->> Store the address mode as part of the cache attriutes. Export the mode
->> attribute to sysfs as all other cache attributes.
->>
->> Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> One trivial suggestion that I don't care that much about.
-> 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
->> ---
->> v2:
->> - Fix spelling errors (Jonathan)
->> - Change UNKNOWN to RESERVED (Jonathan)
->> ---
->>  Documentation/ABI/stable/sysfs-devices-node | 6 ++++++
->>  drivers/acpi/numa/hmat.c                    | 3 +++
->>  drivers/base/node.c                         | 2 ++
->>  include/linux/node.h                        | 7 +++++++
->>  4 files changed, 18 insertions(+)
->>
->> diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
->> index 402af4b2b905..725ef0e1e01f 100644
->> --- a/Documentation/ABI/stable/sysfs-devices-node
->> +++ b/Documentation/ABI/stable/sysfs-devices-node
->> @@ -177,6 +177,12 @@ Description:
->>  		The cache write policy: 0 for write-back, 1 for write-through,
->>  		other or unknown.
->>  
->> +What:		/sys/devices/system/node/nodeX/memory_side_cache/indexY/mode
-> 
-> Mode feels perhaps a bit to vague.  Maybe address_mode?
+Look, the check where it is now makes total sense, you added it there
+yourself! It checks that we are dealing with a valid node and returns
+early. The intent is very easy to understand and the only thing that is
+missing is that "put" operation to satisfy the documented behavior.
+Anything more just makes things more complex for no good reason.
 
-ok
-
-DJ
 > 
->> +Date:		September 2024
->> +Contact:	Dave Jiang <dave.jiang@intel.com>
->> +Description:
->> +		The address mode: 0 for reserved, 1 for extended-linear.
->> +
->>  What:		/sys/devices/system/node/nodeX/x86/sgx_total_bytes
->>  Date:		November 2021
->>  Contact:	Jarkko Sakkinen <jarkko@kernel.org>
->> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> index 1a902a02390f..39524f36be5b 100644
->> --- a/drivers/acpi/numa/hmat.c
->> +++ b/drivers/acpi/numa/hmat.c
->> @@ -506,6 +506,9 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
->>  	switch ((attrs & ACPI_HMAT_CACHE_ASSOCIATIVITY) >> 8) {
->>  	case ACPI_HMAT_CA_DIRECT_MAPPED:
->>  		tcache->cache_attrs.indexing = NODE_CACHE_DIRECT_MAP;
->> +		/* Extended Linear mode is only valid if cache is direct mapped */
->> +		if (cache->address_mode == ACPI_HMAT_CACHE_MODE_EXTENDED_LINEAR)
->> +			tcache->cache_attrs.mode = NODE_CACHE_MODE_EXTENDED_LINEAR;
->>  		break;
->>  	case ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING:
->>  		tcache->cache_attrs.indexing = NODE_CACHE_INDEXED;
+> > For the code not in a hot path there is a lot of value in simplicity.
 > 
+> If you really want to go to this rabbit hole, think how we can get rid of
+> repetitive checks of the secondary or more if any in the future nodes in the
+> list.
+> 
+> So the basic idea is to have this all hidden (to some extent) behind the macro
+> or alike. In the code it would be something as
+> 
+>   for node in primary, secondary, ...
+>     call the API
+>     if (okay)
+> 	return result
+> 
+>   return error
+> 
+> This will indeed help.
 
+I think this will indeed help if we ever going to have more than primary
+and secondary nodes. It is also tricky if you want to transition
+seamlessly between different types of nodes (i.e. you have ACPI primary
+with OF overlay secondary with swnode as tertiary etc). And you probably
+want to add support for references between different typesof nodes
+(i.e. swnode being able to reference OF device node for example).
+
+This kind of rework is however out of scope of what I have time to do at
+the moment.
+
+Thanks.
+
+-- 
+Dmitry
 
