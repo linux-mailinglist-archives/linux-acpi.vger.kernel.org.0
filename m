@@ -1,133 +1,163 @@
-Return-Path: <linux-acpi+bounces-9921-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9922-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292D19E46CB
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 22:36:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782E69E470A
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 22:42:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9418DB252B7
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 20:55:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53BFB16790F
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 21:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663E717335C;
-	Wed,  4 Dec 2024 20:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D1E1922C6;
+	Wed,  4 Dec 2024 21:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CizoaqtZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtnTQzqc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27B418C930;
-	Wed,  4 Dec 2024 20:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EF918FC9F;
+	Wed,  4 Dec 2024 21:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733345719; cv=none; b=YhEZbPaAXwJmGfJZy1ZzHIkJUxQhPO8NPOqPnjv1NBdIKE00DO8fa7TgYBiHW27yBWqvaqGSgZomunuqRHWh9flskR8O6egUmNKF2YYA/qGZXhdUA4sNQeyAmGm7tY2YLI8/GxAMPq6TpewgfBEed1DEc4F9fBTY0HXzkkQs97M=
+	t=1733348517; cv=none; b=Jj27IQdOeAkYzqJvjkbRS+ccS17c1jyl0S8GyZyNdG0M3YLInb7WxlZOhPS0yCl2JLoCrv7R7MWtumO97V045vj7ZqsMRDhdADQSKsejs2QO6Q1xrlhI5KLnWOpcPtykigw0OIjUXwnm6dxpR1i86/NLYn1IJJQEfdixlbVE21w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733345719; c=relaxed/simple;
-	bh=dS7ckHGtE5hCBAFxg01h3TzM6QYneUMd4g8shhdWLCQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s8FjItWtZzcOYqb+6Qme3+ErbXsixR1eNtNqubVR45kWh8H+4BMFpjViAUJSr4aqiJ8JGfnUjMRo42ENueRCFjGIH46NLfzqea85tpT/T8YrGuvTNHJNIZy3TRRIic59Gr33Ape6LTAdau1XqPH9v4t1Q08420STgED8a075h+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CizoaqtZ; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733345718; x=1764881718;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dS7ckHGtE5hCBAFxg01h3TzM6QYneUMd4g8shhdWLCQ=;
-  b=CizoaqtZOM6L24cIOiEf846OjWLrQtbwF7LhM74P9UU6BuPN5pMCk2UM
-   +WyvoAQmM3PExIIV4nJczukbv4W6deE4jIvXl4rNLZOFH+pmZDsCI1rZT
-   f2Pap31oiGLJ0QjkBOZiPLCp8RUHoy0/WzlpmKUoOLEPh49EdaT4SPSyi
-   SU3ph7q7cesntTqG3wiOhDV7RMN6bAVJ9zxUBBe9l6FMchWTpQx+waGyK
-   FBsLsnKlxC9/wyttak2SNgnvDlun8W449cmwBkOWXw3cFVAs5AMClmJp3
-   KB5kmzrex7FfW+acTMEcINjyYuseBQVFGN4ZELp7VS8PeqYNDFSUfRkvM
-   g==;
-X-CSE-ConnectionGUID: u6octmNCSFOC+bdB5vsqcw==
-X-CSE-MsgGUID: v+JXehx3TUe3UzuSHRpzEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="33549488"
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="33549488"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 12:55:18 -0800
-X-CSE-ConnectionGUID: II8p9UuMRny536qM9wuXng==
-X-CSE-MsgGUID: 5fTGmjybSli+TkDvuFxg/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="93726894"
-Received: from agladkov-desk.ger.corp.intel.com (HELO [10.125.108.85]) ([10.125.108.85])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 12:55:16 -0800
-Message-ID: <6ab6a115-531d-4dfc-a273-61311d27d9a2@intel.com>
-Date: Wed, 4 Dec 2024 13:55:15 -0700
+	s=arc-20240116; t=1733348517; c=relaxed/simple;
+	bh=L+MXiSrlAdeLzXu2q7KS7LTJbiV6hJ7FNtxsnAgyNcc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SiPv5gXTclDfsijcWSdmRaK1BFhgvRxgKk7qQXtw3kyKlMOO5feEsQujkDMWj7fvFcVvkHv1LfBnAQVnuTCTyGIqQMV7G0c6sGX6krdOc9X9FavY/ZuU7AtOxZnABLpVs9glJv+2J/ArbB3seO++iJsnj5FdCCmIkkacE3xwrL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtnTQzqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47428C4AF09;
+	Wed,  4 Dec 2024 21:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733348516;
+	bh=L+MXiSrlAdeLzXu2q7KS7LTJbiV6hJ7FNtxsnAgyNcc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GtnTQzqcklmOErMSkXxjbNWK7Ek5JkdzQJKWaDrPjZ5zbDC/BZdbJ4q2M9CFGnwfJ
+	 pYegjtrE8zKvicVOQkY9RqlNe8/x3BQ6FPaxQJpWafpy4v/YytZV96cjW4UzoEaW31
+	 3fd+GXymWy3vGOVLYGoBj5f8NJNncThN7zOVQK/KlEvgRl/43DWI692B2S2cGhbpCC
+	 /chZWbWXbVWAYUA+Zr+7+k3L9TBNMEjj/nplo5KEn2rHuC9L339RXOZJr2PKe/XPBp
+	 Btam+AgdvJjcPLk8ACS7FVCyYoV2QOgwuf6I2NT58KSPLvtdXxBHwlA/KEVz6hp8XU
+	 dfFZYS2/nn0zQ==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3ea49150430so207402b6e.1;
+        Wed, 04 Dec 2024 13:41:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU/hF19VJRR3IWBCTCAXb0M5MfxG4bZdoKsjiwQe8u+3pksE1LeZsYOcg5pnmrtHLjvUHwN94GvWvjPkK0=@vger.kernel.org, AJvYcCW2o7XT6mOFjUUqjM5CPI/kx5Yi6AHbKGvbpivr3XNHAqc+3zou1LHU2p6dyEL+ZCtS1yUPTOnT90Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIqKHnfsDf8wpGaOkPHVISzeezYp9QV3aqSMrdU646iujD/JFM
+	0ZIZjGvcqcpOyhui3xShDlM0uT1+VR6MnHkoVmocKzRC72xcGMfGRVHbYBCm2iq4CDAlzu2r7Bj
+	ubR7p+JGgWktGoe2+mUeDuKP8OpI=
+X-Google-Smtp-Source: AGHT+IE2Y9fFiN5Lqdk+EEY5xp07PQODyKcqal+d0LX+D3tS2vLCiPjO3uaVoBhtjCh3hIVLrk3A++1UpJqLGOy5oAo=
+X-Received: by 2002:a05:6808:1c0d:b0:3ea:4bcc:4d9b with SMTP id
+ 5614622812f47-3eae4f3b758mr10479653b6e.18.1733348515605; Wed, 04 Dec 2024
+ 13:41:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI/HMAT: Move HMAT messages to pr_debug()
-To: Dan Williams <dan.j.williams@intel.com>,
- Kai-Heng Feng <kaihengf@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Priya Autee <priya.v.autee@intel.com>, linux-acpi@vger.kernel.org,
- linux-cxl@vger.kernel.org
-References: <170668982094.318782.2963631284830500182.stgit@dwillia2-xfh.jf.intel.com>
- <CAJZ5v0gTc_FzwkSxPEa7izbDYz6BWqx72TzEXxHGd3MRR8EUFQ@mail.gmail.com>
- <0ca3dbc4-e791-404c-8058-2b2c24051f5e@nvidia.com>
- <48ee2dde-de1b-4af4-91c8-eebb4e15e191@nvidia.com>
- <c2c5a70b-8b8c-414b-813a-f0a82562f718@nvidia.com>
- <6750b7003ed08_2508129452@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <6750b7003ed08_2508129452@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <5839859.DvuYhMxLoT@rjwysocki.net>
+In-Reply-To: <5839859.DvuYhMxLoT@rjwysocki.net>
+From: Len Brown <lenb@kernel.org>
+Date: Wed, 4 Dec 2024 16:41:43 -0500
+X-Gmail-Original-Message-ID: <CAJvTdKm4Fermz1zgTWohEGSoGpoB3CJL2FF-u6y9FAEBwBbcnQ@mail.gmail.com>
+Message-ID: <CAJvTdKm4Fermz1zgTWohEGSoGpoB3CJL2FF-u6y9FAEBwBbcnQ@mail.gmail.com>
+Subject: Re: [RFC/RFT][PATCH v0.1] ACPI: OSL: Use usleep_range() in acpi_os_sleep()
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Linux PM <linux-pm@vger.kernel.org>, Len Brown <len.brown@intel.com>, 
+	Arjan van de Ven <arjan@linux.intel.com>, Pierre Gondois <pierre.gondois@arm.com>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Hans de Goede <hdegoede@redhat.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Nov 21, 2024 at 8:15=E2=80=AFAM Rafael J. Wysocki <rjw@rjwysocki.ne=
+t> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> As stated by Len in [1], the extra delay added by msleep() to the
+> sleep time value passed to it can be significant, roughly between
+> 1.5 ns on systems with HZ =3D 1000 and as much as 15 ms on systems with
+> HZ =3D 100, which is hardly acceptable, at least for small sleep time
+> values.
 
+Maybe the problem statement is more clear with a concrete example:
 
-On 12/4/24 1:09 PM, Dan Williams wrote:
-> Kai-Heng Feng wrote:
->>
->>
->> On 2024/10/23 10:02 AM, Kai-Heng Feng wrote:
->>>
->>>
->>> On 2024/10/7 11:03 AM, Kai-Heng Feng wrote:
->>>> Hi Rafael,
->>>>
->>>> On 2024/1/31 7:54 PM, Rafael J. Wysocki wrote:
->>>>> On Wed, Jan 31, 2024 at 9:30 AM Dan Williams <dan.j.williams@intel.com> wrote:
->>>>>>
->>>>>> The HMAT messages printed at boot, beyond being noisy, can also print
->>>>>> details for nodes that are not yet enabled. The primary method to
->>>>>> consume HMAT details is via sysfs, and the sysfs interface gates what is
->>>>>> emitted by whether the node is online or not. Hide the messages by
->>>>>> default by moving them from "info" to "debug" log level.
->>>>>>
->>>>>> Otherwise, these prints are just a pretty-print way to dump the ACPI
->>>>>> HMAT table. It has always been the case that post-analysis was required
->>>>>> for these messages to map proximity-domains to Linux NUMA nodes, and as
->>>>>> Priya points out that analysis also needs to consider whether the
->>>>>> proximity domain is marked "enabled" in the SRAT.
->>>>>>
->>>>>> Reported-by: Priya Autee <priya.v.autee@intel.com>
->>>>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>>>>
->>>>> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>>>
->>>> This patch doesn't seem to be included in the tree.
->>>>
->>>> Is it possible to pick this up in the your tree? Thanks!
->>>
->>> A gentle ping...
->>
->> Another gentle ping...
-> 
-> Rafael acked it, so he probably expected me to take it through the CXL
-> tree? In any event we can get this queued up in cxl.git unless Rafael
-> beats me to it and applies it.
-> 
-I'll pick it up for cxl-next
+msleep(5) on the default HZ=3D250 on a modern PC takes about 11.9 ms.
+This results in over 800 ms of spurious system resume delay
+on systems such as the Dell XPS-13-9300, which use ASL Sleep(5ms)
+in a tight loop.
 
+(yes, this additional cost used to be over 1200 ms before the v6.12
+msleep rounding fix)
+
+> -       msleep(ms);
+> +       u64 usec =3D ms * USEC_PER_MSEC, delta_us =3D 50;
+
+> +       if (ms > 5)
+> +               delta_us =3D (USEC_PER_MSEC / 100) * ms
+
+I measured 100 resume cycles on the Dell XPS 13 9300 on 4 kernels.
+Here is the measured fastest kernel resume time in msec for each:
+
+1. 1921.292 v6.12 msleep (baseline)
+2. 1115.579 v6.12 delta_us =3D (USEC_PER_MSEC / 100) * ms (this patch)
+3. 1113.396 v6.12 delta_us =3D 50
+4. 1107.835 v6.12 delta_us =3D 0
+
+(I didn't average the 100 runs, because random very long device
+hiccups  throw off the average)
+
+So any of #2, #3 and #4 are a huge step forward from what is shipping today=
+!
+
+So considering #2 vs #3 vs #4....
+
+I agree that it is a problem for the timer sub-system to work to
+maintain a 1ns granularity
+that it can't actually deliver.
+
+I think it is fine for the timer sub-system to allow calls to opt into
+timer slack --
+some callers may actually know what number to use.
+
+However, I don't think that the timer sub-system should force callers to gu=
+ess
+how much slack is appropriate.  I think that a caller with 0 slack
+should be internally
+rounded up by the timer sub-system to the granularity that it can
+actually deliver
+with the timer that is currently in use on that system.
+
+Note also that slack of 0 doesn't mean that no coalescing can happen.
+A slack=3D0 timer can land within the slack another timer, and the other
+timer will be pulled forward to coalesce.
+
+The 50 usec default for user timer slack is certainly a magic number born
+of tests of interesting workloads on interesting systems on a certain date.
+It may not be the right number for other workloads, or other systems
+with other timers on other dates.
+
+My opinion...
+
+I don't see a justification for increasing timer slack with increasing dura=
+tion.
+User-space timers don't pay this additional delay, why should the ASL
+programmer?
+
+Also, the graduated increasing slack with duration is a guess no more
+valid than the guess of a flat 50 usec.
+
+A flat 50 or a flat 0 have the virtue of being simple -- they will be simpl=
+er
+to understand and maintain in the future.
+
+But I can live with any of these options, since they are all a big step for=
+ward.
+
+thanks,
+Len Brown, Intel Open Source Technology Center
 
