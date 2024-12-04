@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-9917-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9919-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BF49E4238
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 18:47:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B71F9E4315
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 19:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817F828642C
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 17:47:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DF2EB831A8
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 17:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACB8207DF0;
-	Wed,  4 Dec 2024 17:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3048E211706;
+	Wed,  4 Dec 2024 17:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1Qa1rCm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNCdZhwP"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C111207DEB;
-	Wed,  4 Dec 2024 17:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CD5211701;
+	Wed,  4 Dec 2024 17:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332367; cv=none; b=t4B9F5D5W8UJgwkSEkygt6dWgOGgn5ValnFiECmuqq/XrWJ3amdRzz7HxTQs0fDJiR1KpyHeJlaDg96MjL6PoQyaAfoWPLUKIc+pR+i0PHKDecyDCZk6z3ORmUN1DcUcJrMRSUViddSSRZ93DX/UrYz1dCKjxxCEVeafF7HjGMc=
+	t=1733332406; cv=none; b=lGsqu52DKjYT7/lSbntNfT+jphH/nNNJRKSt5HGH5Mp31rOWNVv4LCOnqmGpU0PDv+Tmy6RV8t3/oXCTM6NjbA/eae/vkfpz4/6AWHnYu5Hm5/OqEkhyZ2UHhEiWkiqnpMXDGqDGYmhm6ZSrRw8qnHPJquoLNVNW38QkRP9bf8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332367; c=relaxed/simple;
-	bh=JcQBRPnFqVpdCGukwP5CGlHoIqQWzo9rlbQJWSp6bGc=;
+	s=arc-20240116; t=1733332406; c=relaxed/simple;
+	bh=TIeH669NYdnSl4tcQ9WqZg4ziYiElouob+NA/15aZ3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m48RxVuqSmL2+Fbm28cvEM5NF+XNbllwgByrAhejIKeMvA6//XBiVONNZDAKQhoFlQ1hzEI7ipAyyEUbfkC8B7V75pBkf0R8NP68N2aLSFlnXEh8V9mBZlfGIiBc0x1QTos5uCP76EnM96xGVTlBuFlnUFLQM4FECa+xpHnK9Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1Qa1rCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F94C4CECD;
-	Wed,  4 Dec 2024 17:12:45 +0000 (UTC)
+	 MIME-Version; b=oKDfkTPgmq9XBbTXNPnUAIYyG90J454B+wgdUtl9cz3JvSYbadJz9QT2yF8/PlY1H8WoXN1HBN+qESwLUUMprEdm/b8KVoycWpxqMuFZg4lhh01IUNd6iAKpdOt/a47t9ltfMZlPyKBUqAVsooY+m006a8+8dxtkLOZYAOKUuC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNCdZhwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA605C4CECD;
+	Wed,  4 Dec 2024 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332367;
-	bh=JcQBRPnFqVpdCGukwP5CGlHoIqQWzo9rlbQJWSp6bGc=;
+	s=k20201202; t=1733332405;
+	bh=TIeH669NYdnSl4tcQ9WqZg4ziYiElouob+NA/15aZ3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1Qa1rCmcW+M9kNVD9YycgEkUPNItLernZYyu3D6PQjxrpS0fja/bXGFEPGenQqtS
-	 6V8jZAG0oBEoTPbjVG7E7pjmgenFkkiOIbprC3Nlwp4uRo7rS1obgglxPz+xtYSrZp
-	 51evHLVuxNGGHe6hx6DWvqFgE5ybgpSuqfrEEAs+HaOUWhJoB4aUDy5Rl70YcQT/MQ
-	 bONd41TRaO8yrnRLd+m8psFMcnA71dDJHeJkKmeVCOdkFN/JHvFQTfoYvvZoRszr7f
-	 JS0tjJqz1TxUsVnuIPEUh2p2HObiSujrbEx6n9a8IxNcLYY+NnKsqXSzv/RA4IA7GY
-	 gR9Pr44w+ROjg==
+	b=LNCdZhwPWW1Ymm4xou4xRByTQxEPZvOFl9kngCdV1gWikYmDKhQK/PpbTdS4d7/a6
+	 HlM1ZtMeI44GBiWOZQ3BwBT2tQvdI7zqVNBx19H61Z5WxVbcEhs62U6uPXUQrMUUQ1
+	 PuQXjY83wt6X1FbvAfmyt4x3PnpFUJz5iqj/WD2Khqut2pCeXcqP8ECSFAV/uJC/JC
+	 IyWUKMcftfaOj6BZrvS2ZSP4lQS6N/3n2CQQ3W8lBGkp+13TwRRQje5Qvj5B+NxsdW
+	 gq7wiTyd3PPRGDU9IRVmAqw+gcodNtvG0eVLfQ+BK4RMT4TXnmq2bdtk+wCq/1GAU4
+	 vVUBG379DIruA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -57,12 +57,12 @@ Cc: Esther Shimanovich <eshimanovich@chromium.org>,
 	x86@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/12] PCI: Detect and trust built-in Thunderbolt chips
-Date: Wed,  4 Dec 2024 11:01:04 -0500
-Message-ID: <20241204160115.2216718-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 3/6] PCI: Detect and trust built-in Thunderbolt chips
+Date: Wed,  4 Dec 2024 11:01:53 -0500
+Message-ID: <20241204160200.2217169-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204160115.2216718-1-sashal@kernel.org>
-References: <20241204160115.2216718-1-sashal@kernel.org>
+In-Reply-To: <20241204160200.2217169-1-sashal@kernel.org>
+References: <20241204160200.2217169-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
 From: Esther Shimanovich <eshimanovich@chromium.org>
@@ -135,11 +135,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 148 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-index ea2eb2ec90e2b..1e3bdefe9cb42 100644
+index 948656069cddd..f13c4e9194fa1 100644
 --- a/arch/x86/pci/acpi.c
 +++ b/arch/x86/pci/acpi.c
-@@ -250,6 +250,125 @@ void __init pci_acpi_crs_quirks(void)
- 		pr_info("Please notify linux-pci@vger.kernel.org so future kernels can do this automatically\n");
+@@ -162,6 +162,125 @@ void __init pci_acpi_crs_quirks(void)
+ 	       pci_use_crs ? "nocrs" : "use_crs");
  }
  
 +/*
@@ -265,10 +265,10 @@ index ea2eb2ec90e2b..1e3bdefe9cb42 100644
  static int check_segment(u16 seg, struct device *dev, char *estr)
  {
 diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 43159965e09e9..03b519a228403 100644
+index d9fc02a71baad..dd2134c7c4192 100644
 --- a/drivers/pci/probe.c
 +++ b/drivers/pci/probe.c
-@@ -1602,23 +1602,33 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
+@@ -1574,23 +1574,33 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
  
  static void set_pcie_untrusted(struct pci_dev *dev)
  {
@@ -307,7 +307,7 @@ index 43159965e09e9..03b519a228403 100644
  	 * device to be removable by the user. We're mainly concerned with
  	 * consumer platforms with user accessible thunderbolt ports that are
  	 * vulnerable to DMA attacks, and we expect those ports to be marked by
-@@ -1628,9 +1638,15 @@ static void pci_set_removable(struct pci_dev *dev)
+@@ -1600,9 +1610,15 @@ static void pci_set_removable(struct pci_dev *dev)
  	 * accessible to user / may not be removed by end user, and thus not
  	 * exposed as "removable" to userspace.
  	 */
@@ -326,10 +326,10 @@ index 43159965e09e9..03b519a228403 100644
  
  /**
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 2b7e45bae9408..2d1fb935a8c86 100644
+index 32805c3a37bb3..a97c2b9885e1b 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -2577,6 +2577,12 @@ pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
+@@ -2403,6 +2403,12 @@ pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
  static inline bool pci_pr3_present(struct pci_dev *pdev) { return false; }
  #endif
  
