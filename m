@@ -1,46 +1,45 @@
-Return-Path: <linux-acpi+bounces-9931-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9932-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910119E48CF
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 00:26:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601B09E48DD
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 00:27:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C5C3283F6C
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 23:26:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C04318812D2
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 23:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4529206F19;
-	Wed,  4 Dec 2024 23:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0A82066D3;
+	Wed,  4 Dec 2024 23:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MbzxFlQO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZK2vEKs"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778A6202C42;
-	Wed,  4 Dec 2024 23:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50718202C35;
+	Wed,  4 Dec 2024 23:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354754; cv=none; b=dBaFztmouGS+NxytPTK6dHlA4pWIQUNdD+PtYFlmvwyCdQMxPf4VVMbr2eAT37uhTAuSZtLroLabGWYGTy4u7mF8wwRSpiTVpdC7lVNNARYfvA4MO+w0EiQfSeGHAkH+9iCXJNmeaavvYRQ82tWU4p8FTzrbMPeqaYIT7LR5Pag=
+	t=1733354767; cv=none; b=BLBBiTKo51r+d6jtmltpdk0DpRMOT2Gpq/niT850y+DTZh3GY0y5TwJ/umSSv9hmhOpfJL9QutMVVUjgaEXJzJ1cs8rRXtG84zJOJXU0kzX4QlzAdCfcUz1gk6zrLTxgChJp5pve5POGWnBAaTLcIlKzXlAsqNea9RSOWul+EBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354754; c=relaxed/simple;
-	bh=WLx6owURrXIc+ued+Mb0K+pNfMQl50KcyfY7X+K9Gno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BoQ/KUZ79nY22EMPJAlnoMEMJGMRQqPx72srg2j2Jh1KvcZ/qh+xbRU1aV2V3nQhZHGrBq7l7q3zGgnbzZUxdF6/HSnBfbXmRGEVz8VrrcFlXuONRNrHsVpkSpoBaeJj55UaGsH/ltt7qZtaOJ25tzOn2geJ+NwquTLA7YW/3io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MbzxFlQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C40C4CED6;
-	Wed,  4 Dec 2024 23:25:52 +0000 (UTC)
+	s=arc-20240116; t=1733354767; c=relaxed/simple;
+	bh=gprUZ0/ApwnNfyPVB8OTQESZC7OYFeLCjA1Mz1mNCeQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B3dfTWRzyi5eVWXwbwn3D+gLx2KuunjoDBqJwaAFhPtwaP5K/Ldvs6HHzykKhBm4Ex2x8rq9CP0YxEbZcTYU+20R09PWo50E9p5GDwdW98cv8E0WKT83PXvbeICdyuNcjwftIdrR9nQvrf4ju6VAt5frGn3gU+0pIV+TGLZizSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZK2vEKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FFAC4CED2;
+	Wed,  4 Dec 2024 23:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354754;
-	bh=WLx6owURrXIc+ued+Mb0K+pNfMQl50KcyfY7X+K9Gno=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbzxFlQOy6VeLODpHgcNPCshFV8RSzRRiv/VKqR0GHG6YeR8dLW7yC+sR9syehMkZ
-	 ptfBG0Vm8fYq8kA7tAMTddz1PgEQEug9owRPIr38iNSgCQXBzCFWYwrTnlJG1tXFQ3
-	 lR7dW/Qlj8D9wlfqAwx6XBme6GageyotfniSZaxk/sdjBk4K71x0m4+f9zRKMkQUE/
-	 Co6siMwr7jf8ASaR5/IGV5PBsZeF7dH+ju784WT0UDTk1JGf1e5K04w88W/BQJ1uMt
-	 Iyba+lFo0gAP6pZD4LN7ikx+1PQn50/cXOgAvLwgDDdPZjqZiamiSD+cCrgkk7ZDCq
-	 AMZuwyfu41yrA==
+	s=k20201202; t=1733354765;
+	bh=gprUZ0/ApwnNfyPVB8OTQESZC7OYFeLCjA1Mz1mNCeQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IZK2vEKsXIGJr2jT6ZRJk0YkidmPdl5nK2ie4VrGWaxp5W9B5fZzf6rVbyTF6Vivd
+	 hZH6s8spnp0Ot+J/0vAL+xJ/9xoqQ78/aEGDwU5QLTNu4bgxPXDsUcyfa1U8FD9wAZ
+	 Q7vDeUHRNGRab0Amw4SlpjWEf7e/0IGvLA/l5yNYygA2LgbvSQL3ywHte4MnjgnO63
+	 6fwX7RfzjwRWIcdWewPp6ORJoZUDtnoDvleQvDiS62g7xzMU172z03HMJjYHFEtbu8
+	 VK6K7hN79tNUJo70983xHrvCcxhQ48ZFa37y7jouM4C9dWLWCZqdczGJ5p06EJ/SeX
+	 Sr4ropXmp4vyw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,12 +50,10 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	mario.limonciello@amd.com,
 	tony.luck@intel.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 2/3] ACPI: x86: Clean up Asus entries in acpi_quirk_skip_dmi_ids[]
-Date: Wed,  4 Dec 2024 17:14:24 -0500
-Message-ID: <20241204221431.2247102-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 1/3] ACPI: x86: Add skip i2c clients quirk for Acer Iconia One 8 A1-840
+Date: Wed,  4 Dec 2024 17:14:37 -0500
+Message-ID: <20241204221445.2247192-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204221431.2247102-1-sashal@kernel.org>
-References: <20241204221431.2247102-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,81 +62,63 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
+X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit bd8aa15848f5f21951cd0b0d01510b3ad1f777d4 ]
+[ Upstream commit 82f250ed1a1dcde0ad2a1513f85af7f9514635e8 ]
 
-The Asus entries in the acpi_quirk_skip_dmi_ids[] table are the only
-entries without a comment which model they apply to. Add these comments.
+The Acer Iconia One 8 A1-840 (not to be confused with the A1-840FHD which
+is a different model) ships with Android 4.4 as factory OS and has the
+usual broken DSDT issues for x86 Android tablets.
 
-The Asus TF103C entry also is in the wrong place for what is supposed to
-be an alphabetically sorted list. Move it up so that the list is properly
-sorted and add a comment that the list is alphabetically sorted.
+Add quirks to skip ACPI I2C client enumeration and disable ACPI battery/AC
+and ACPI GPIO event handlers.
+
+Also add the "INT33F5" HID for the TI PMIC used on this tablet to the list
+of HIDs for which not to skip i2c_client instantiation, since we do want
+an ACPI instantiated i2c_client for the PMIC.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241116095825.11660-2-hdegoede@redhat.com
-[ rjw: Changelog and subject edits ]
+Link: https://patch.msgid.link/20241116095825.11660-1-hdegoede@redhat.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/acpi/x86/utils.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 24af6a10cc5fc..16560d2c9711e 100644
+index e035cec614dc8..159ac2b19672d 100644
 --- a/drivers/acpi/x86/utils.c
 +++ b/drivers/acpi/x86/utils.c
-@@ -295,6 +295,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 	/*
- 	 * 2. Devices which also have the skip i2c/serdev quirks and which
- 	 *    need the x86-android-tablets module to properly work.
-+	 *    Sorted alphabetically.
- 	 */
- #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
- 	{
-@@ -320,6 +321,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+@@ -299,6 +299,18 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
  					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
  	},
++	{
++		/* Acer Iconia One 8 A1-840 (non FHD version) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
++			/* Above strings are too generic also match BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
++					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
++	},
  	{
-+		/* Asus ME176C tablet */
  		.matches = {
  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ME176C"),
-@@ -330,23 +332,24 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
--		/* Lenovo Yoga Book X90F/L */
-+		/* Asus TF103C transformer 2-in-1 */
- 		.matches = {
--			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
--					ACPI_QUIRK_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
-+		/* Lenovo Yoga Book X90F/L */
- 		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
+@@ -404,6 +416,7 @@ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
+ 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
+ 	{ "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
+ 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
++	{ "INT33F5", 0 },  /* TI Dollar Cove PMIC */
+ 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
+ 	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
+ 	{ "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
 -- 
 2.43.0
 
