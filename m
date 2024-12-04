@@ -1,63 +1,68 @@
-Return-Path: <linux-acpi+bounces-9914-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9915-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8D69E40FD
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 18:15:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495409E41F1
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 18:40:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F825289A7A
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 17:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077662840F3
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 17:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F062139DF;
-	Wed,  4 Dec 2024 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F3320E33F;
+	Wed,  4 Dec 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6Ensv+5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1yUQBFp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970692139D2;
-	Wed,  4 Dec 2024 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B36E2066D2;
+	Wed,  4 Dec 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331661; cv=none; b=MOPL+JrlDj3zmTVE/Om8A8cRyX97Le5UgKxVajuUuOdt3rIUXAJJDYShFKGXVVyKMmsGyJi6cQAYk6VbSO80kqYEAP5TpaHJiXIBeQo1DTvzrkGCEwZA/XkavPzA2jdWfl5tSjeuAPIr7Uq76Kequmjw9/195GDki3X6wX5vOLY=
+	t=1733332302; cv=none; b=fzzlOaeq8xpUSZDTyMuYhqgBDs9E80ogAFL49gyGeVZ2geRUF25FyyyXKb+XI5Qp+f3VVaGkR83r43YHAOxPej24PfMxlb8Tck50DkJxasf1x1lKW9c/pA7JSyWlPSXlEDoyAf/ptVPEPtw+Fimgr77yb0jIcggFVqKtgXDC4Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331661; c=relaxed/simple;
-	bh=7TN0xW6egqreWmtzs9zkF80AingF69k+BcAEFWULy5o=;
+	s=arc-20240116; t=1733332302; c=relaxed/simple;
+	bh=ela1h/XVvHIuc4iRWqEoZVUlzqyXzrFdIlWJq/f2/1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tgjk1Qt2Hsal6R8k8bbDJJ6fkzlWsWD1Dn7Wm2BEUBOtl3KG+cUd1T82n71uskNdoCFKkl9x+8qm7rqcg6wRBxJLwZ21KVL47MlySSDBdysHr08i797fwy6E4oRxnjENBwVZX/1Sy5CFByIRrLcKBE37Dmsg8/ww8QbwMwsUghA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6Ensv+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFB7C4CED1;
-	Wed,  4 Dec 2024 17:01:00 +0000 (UTC)
+	 MIME-Version; b=T5WFBvt4L++pnEEMvr77EyeUd2FJ8qRijzthfxtv9h+3LnmJTaNHCYW/nPamT6G5v3fktBEP1gklsyFwGFT5NJxL+G/xdI37SYSDZSRdY7kX0uWl2H1EJ5R/iLQQ9Y+0pmGP52CZvW4IRNgB4dSB//x4UpVny0/BUG62tiAHgUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1yUQBFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1312C4CED1;
+	Wed,  4 Dec 2024 17:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331661;
-	bh=7TN0xW6egqreWmtzs9zkF80AingF69k+BcAEFWULy5o=;
+	s=k20201202; t=1733332302;
+	bh=ela1h/XVvHIuc4iRWqEoZVUlzqyXzrFdIlWJq/f2/1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6Ensv+5PeX0kzepPdqcKGqyYGUumQz8XztAo6zJ8cKQ+Va9cYpe4pewTlDvHa/Aa
-	 iPP5eaAb18+2NmNkgGCm9HK0b5z7//NO4slD4Cgrf2tgkU9qbeqYmbAhZ6hPRuwZXO
-	 lgWTX0eOLMzuHzLLnFu9FQfKtDj7evqbviB6cVf8cRC5nYRnN0Is/GKl4cYtynpiIu
-	 xr3VYFeypdsbIpkitZRxLEpZ6uK8cUESi8X6MtFJ9yA1ZcH4fK3evOEUtoOQ1ipoVt
-	 fKK1eRqg7duZkdyWVYdmsORg4VaU5f9j+kgQOwPWoKHNlwT8z6X6vy7gmgHNuqwEjh
-	 8v5RSZfMYRFag==
+	b=f1yUQBFp0miG3ZWn0CZF06OAqexgcTUFPNqB4Bc5gCrNzaUcSzFZZBMANM3E/BJ5L
+	 cieGE9IQ3BSwqhp4j979dK7FNF7I0aoxnZx5FNfk3ejhsrZO4lw5rEwcWWEeCBKQNc
+	 buvzRGweWE54fqkhEkT1a5tPaKOkRELd7GYm6SyuqYr8KEo5+6Q/VrHQ9fSKmPutER
+	 p7RmRPcz0pwoIsED+7ODLXQqkjHputDFUEBorXg6IveqWih9BN2fYkQBKUV27M4F4x
+	 87aOq9o+mP+/rlhSaZmX4VXyttlFEx8R/h5X20wZr64dI9MtQSESPLlzs93jMqjnrR
+	 fpqF+wvW67Cog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Esther Shimanovich <eshimanovich@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	robert.moore@intel.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
 	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 33/33] mailbox: pcc: Check before sending MCTP PCC response ACK
-Date: Wed,  4 Dec 2024 10:47:46 -0500
-Message-ID: <20241204154817.2212455-33-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 07/15] PCI: Detect and trust built-in Thunderbolt chips
+Date: Wed,  4 Dec 2024 10:59:55 -0500
+Message-ID: <20241204160010.2216008-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204154817.2212455-1-sashal@kernel.org>
-References: <20241204154817.2212455-1-sashal@kernel.org>
+In-Reply-To: <20241204160010.2216008-1-sashal@kernel.org>
+References: <20241204160010.2216008-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,167 +71,277 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Adam Young <admiyo@os.amperecomputing.com>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 7f9e19f207be0c534d517d65e01417ba968cdd34 ]
+[ Upstream commit 3b96b895127b7c0aed63d82c974b46340e8466c1 ]
 
-Type 4 PCC channels have an option to send back a response
-to the platform when they are done processing the request.
-The flag to indicate whether or not to respond is inside
-the message body, and thus is not available to the pcc
-mailbox.
+Some computers with CPUs that lack Thunderbolt features use discrete
+Thunderbolt chips to add Thunderbolt functionality. These Thunderbolt
+chips are located within the chassis; between the Root Port labeled
+ExternalFacingPort and the USB-C port.
 
-If the flag is not set, still set command completion
-bit after processing message.
+These Thunderbolt PCIe devices should be labeled as fixed and trusted, as
+they are built into the computer. Otherwise, security policies that rely on
+those flags may have unintended results, such as preventing USB-C ports
+from enumerating.
 
-In order to read the flag, this patch maps the shared
-buffer to virtual memory. To avoid duplication of mapping
-the shared buffer is then made available to be used by
-the driver that uses the mailbox.
+Detect the above scenario through the process of elimination.
 
-Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+  1) Integrated Thunderbolt host controllers already have Thunderbolt
+     implemented, so anything outside their external facing Root Port is
+     removable and untrusted.
+
+     Detect them using the following properties:
+
+       - Most integrated host controllers have the "usb4-host-interface"
+         ACPI property, as described here:
+
+         https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#mapping-native-protocols-pcie-displayport-tunneled-through-usb4-to-usb4-host-routers
+
+       - Integrated Thunderbolt PCIe Root Ports before Alder Lake do not
+         have the "usb4-host-interface" ACPI property. Identify those by
+         their PCI IDs instead.
+
+  2) If a Root Port does not have integrated Thunderbolt capabilities, but
+     has the "ExternalFacingPort" ACPI property, that means the
+     manufacturer has opted to use a discrete Thunderbolt host controller
+     that is built into the computer.
+
+     This host controller can be identified by virtue of being located
+     directly below an external-facing Root Port that lacks integrated
+     Thunderbolt. Label it as trusted and fixed.
+
+     Everything downstream from it is untrusted and removable.
+
+The "ExternalFacingPort" ACPI property is described here:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-externally-exposed-pcie-root-ports
+
+Link: https://lore.kernel.org/r/20240910-trust-tbt-fix-v5-1-7a7a42a5f496@chromium.org
+Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 61 +++++++++++++++++++++++++++++++++++++------
- include/acpi/pcc.h    |  7 +++++
- 2 files changed, 60 insertions(+), 8 deletions(-)
+ arch/x86/pci/acpi.c | 119 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/pci/probe.c |  30 ++++++++---
+ include/linux/pci.h |   6 +++
+ 3 files changed, 148 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 94885e411085a..82102a4c5d688 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -269,6 +269,35 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- 	return !!val;
+diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+index 55c4b07ec1f63..0c316bae1726e 100644
+--- a/arch/x86/pci/acpi.c
++++ b/arch/x86/pci/acpi.c
+@@ -250,6 +250,125 @@ void __init pci_acpi_crs_quirks(void)
+ 		pr_info("Please notify linux-pci@vger.kernel.org so future kernels can do this automatically\n");
  }
  
-+static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
++/*
++ * Check if pdev is part of a PCIe switch that is directly below the
++ * specified bridge.
++ */
++static bool pcie_switch_directly_under(struct pci_dev *bridge,
++				       struct pci_dev *pdev)
 +{
-+	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
++	struct pci_dev *parent = pci_upstream_bridge(pdev);
 +
-+	if (pchan->type != ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
-+		return;
-+	/* If the memory region has not been mapped, we cannot
-+	 * determine if we need to send the message, but we still
-+	 * need to set the cmd_update flag before returning.
-+	 */
-+	if (pchan->chan.shmem == NULL) {
-+		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+		return;
-+	}
-+	memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
-+		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
++	/* If the device doesn't have a parent, it's not under anything */
++	if (!parent)
++		return false;
++
 +	/*
-+	 * The PCC slave subspace channel needs to set the command complete bit
-+	 * after processing message. If the PCC_ACK_FLAG is set, it should also
-+	 * ring the doorbell.
-+	 *
-+	 * The PCC master subspace channel clears chan_in_use to free channel.
++	 * If the device has a PCIe type, check if it is below the
++	 * corresponding PCIe switch components (if applicable). Then check
++	 * if its upstream port is directly beneath the specified bridge.
 +	 */
-+	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
-+		pcc_send_data(chan, NULL);
-+	else
-+		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+}
++	switch (pci_pcie_type(pdev)) {
++	case PCI_EXP_TYPE_UPSTREAM:
++		return parent == bridge;
 +
- /**
-  * pcc_mbox_irq - PCC mailbox interrupt handler
-  * @irq:	interrupt number
-@@ -306,14 +335,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 
- 	mbox_chan_received_data(chan, NULL);
- 
--	/*
--	 * The PCC slave subspace channel needs to set the command complete bit
--	 * and ring doorbell after processing message.
--	 *
--	 * The PCC master subspace channel clears chan_in_use to free channel.
--	 */
--	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
--		pcc_send_data(chan, NULL);
-+	check_and_ack(pchan, chan);
- 	pchan->chan_in_use = false;
- 
- 	return IRQ_HANDLED;
-@@ -365,14 +387,37 @@ EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
- void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
- {
- 	struct mbox_chan *chan = pchan->mchan;
-+	struct pcc_chan_info *pchan_info;
-+	struct pcc_mbox_chan *pcc_mbox_chan;
- 
- 	if (!chan || !chan->cl)
- 		return;
-+	pchan_info = chan->con_priv;
-+	pcc_mbox_chan = &pchan_info->chan;
-+	if (pcc_mbox_chan->shmem) {
-+		iounmap(pcc_mbox_chan->shmem);
-+		pcc_mbox_chan->shmem = NULL;
++	case PCI_EXP_TYPE_DOWNSTREAM:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_ENDPOINT:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_DOWNSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		if (!parent || pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
 +	}
- 
- 	mbox_free_channel(chan);
- }
- EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
- 
-+int pcc_mbox_ioremap(struct mbox_chan *chan)
-+{
-+	struct pcc_chan_info *pchan_info;
-+	struct pcc_mbox_chan *pcc_mbox_chan;
 +
-+	if (!chan || !chan->cl)
-+		return -1;
-+	pchan_info = chan->con_priv;
-+	pcc_mbox_chan = &pchan_info->chan;
-+	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
-+				       pcc_mbox_chan->shmem_size);
-+	return 0;
++	return false;
 +}
-+EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
 +
- /**
-  * pcc_send_data - Called from Mailbox Controller code. Used
-  *		here only to ring the channel doorbell. The PCC client
-diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-index 9b373d172a776..699c1a37b8e78 100644
---- a/include/acpi/pcc.h
-+++ b/include/acpi/pcc.h
-@@ -12,6 +12,7 @@
- struct pcc_mbox_chan {
- 	struct mbox_chan *mchan;
- 	u64 shmem_base_addr;
-+	void __iomem *shmem;
- 	u64 shmem_size;
- 	u32 latency;
- 	u32 max_access_rate;
-@@ -31,11 +32,13 @@ struct pcc_mbox_chan {
- #define PCC_CMD_COMPLETION_NOTIFY	BIT(0)
- 
- #define MAX_PCC_SUBSPACES	256
-+#define PCC_ACK_FLAG_MASK	0x1
- 
- #ifdef CONFIG_PCC
- extern struct pcc_mbox_chan *
- pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
- extern void pcc_mbox_free_channel(struct pcc_mbox_chan *chan);
-+extern int pcc_mbox_ioremap(struct mbox_chan *chan);
- #else
- static inline struct pcc_mbox_chan *
- pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
-@@ -43,6 +46,10 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	return ERR_PTR(-ENODEV);
- }
- static inline void pcc_mbox_free_channel(struct pcc_mbox_chan *chan) { }
-+static inline int pcc_mbox_ioremap(struct mbox_chan *chan)
++static bool pcie_has_usb4_host_interface(struct pci_dev *pdev)
 +{
-+	return 0;
-+};
++	struct fwnode_handle *fwnode;
++
++	/*
++	 * For USB4, the tunneled PCIe Root or Downstream Ports are marked
++	 * with the "usb4-host-interface" ACPI property, so we look for
++	 * that first. This should cover most cases.
++	 */
++	fwnode = fwnode_find_reference(dev_fwnode(&pdev->dev),
++				       "usb4-host-interface", 0);
++	if (!IS_ERR(fwnode)) {
++		fwnode_handle_put(fwnode);
++		return true;
++	}
++
++	/*
++	 * Any integrated Thunderbolt 3/4 PCIe Root Ports from Intel
++	 * before Alder Lake do not have the "usb4-host-interface"
++	 * property so we use their PCI IDs instead. All these are
++	 * tunneled. This list is not expected to grow.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_INTEL) {
++		switch (pdev->device) {
++		/* Ice Lake Thunderbolt 3 PCIe Root Ports */
++		case 0x8a1d:
++		case 0x8a1f:
++		case 0x8a21:
++		case 0x8a23:
++		/* Tiger Lake-LP Thunderbolt 4 PCIe Root Ports */
++		case 0x9a23:
++		case 0x9a25:
++		case 0x9a27:
++		case 0x9a29:
++		/* Tiger Lake-H Thunderbolt 4 PCIe Root Ports */
++		case 0x9a2b:
++		case 0x9a2d:
++		case 0x9a2f:
++		case 0x9a31:
++			return true;
++		}
++	}
++
++	return false;
++}
++
++bool arch_pci_dev_is_removable(struct pci_dev *pdev)
++{
++	struct pci_dev *parent, *root;
++
++	/* pdev without a parent or Root Port is never tunneled */
++	parent = pci_upstream_bridge(pdev);
++	if (!parent)
++		return false;
++	root = pcie_find_root_port(pdev);
++	if (!root)
++		return false;
++
++	/* Internal PCIe devices are not tunneled */
++	if (!root->external_facing)
++		return false;
++
++	/* Anything directly behind a "usb4-host-interface" is tunneled */
++	if (pcie_has_usb4_host_interface(parent))
++		return true;
++
++	/*
++	 * Check if this is a discrete Thunderbolt/USB4 controller that is
++	 * directly behind the non-USB4 PCIe Root Port marked as
++	 * "ExternalFacingPort". Those are not behind a PCIe tunnel.
++	 */
++	if (pcie_switch_directly_under(root, pdev))
++		return false;
++
++	/* PCIe devices after the discrete chip are tunneled */
++	return true;
++}
++
+ #ifdef	CONFIG_PCI_MMCONFIG
+ static int check_segment(u16 seg, struct device *dev, char *estr)
+ {
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index f1615805f5b07..ebb0c1d5cae25 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1633,23 +1633,33 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
+ 
+ static void set_pcie_untrusted(struct pci_dev *dev)
+ {
+-	struct pci_dev *parent;
++	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
++		return;
+ 	/*
+-	 * If the upstream bridge is untrusted we treat this device
++	 * If the upstream bridge is untrusted we treat this device as
+ 	 * untrusted as well.
+ 	 */
+-	parent = pci_upstream_bridge(dev);
+-	if (parent && (parent->untrusted || parent->external_facing))
++	if (parent->untrusted) {
++		dev->untrusted = true;
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as untrusted\n");
+ 		dev->untrusted = true;
++	}
+ }
+ 
+ static void pci_set_removable(struct pci_dev *dev)
+ {
+ 	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
++		return;
+ 	/*
+-	 * We (only) consider everything downstream from an external_facing
++	 * We (only) consider everything tunneled below an external_facing
+ 	 * device to be removable by the user. We're mainly concerned with
+ 	 * consumer platforms with user accessible thunderbolt ports that are
+ 	 * vulnerable to DMA attacks, and we expect those ports to be marked by
+@@ -1659,9 +1669,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ 	 * accessible to user / may not be removed by end user, and thus not
+ 	 * exposed as "removable" to userspace.
+ 	 */
+-	if (parent &&
+-	    (parent->external_facing || dev_is_removable(&parent->dev)))
++	if (dev_is_removable(&parent->dev)) {
++		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as removable\n");
+ 		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++	}
+ }
+ 
+ /**
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 573b4c4c2be61..4e77c4230c0a1 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2609,6 +2609,12 @@ pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
+ static inline bool pci_pr3_present(struct pci_dev *pdev) { return false; }
  #endif
  
- #endif /* _PCC_H */
++#if defined(CONFIG_X86) && defined(CONFIG_ACPI)
++bool arch_pci_dev_is_removable(struct pci_dev *pdev);
++#else
++static inline bool arch_pci_dev_is_removable(struct pci_dev *pdev) { return false; }
++#endif
++
+ #ifdef CONFIG_EEH
+ static inline struct eeh_dev *pci_dev_to_eeh_dev(struct pci_dev *pdev)
+ {
 -- 
 2.43.0
 
