@@ -1,275 +1,439 @@
-Return-Path: <linux-acpi+bounces-9972-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9973-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF29E5FFB
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 22:21:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDB09E6057
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 23:09:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0073F286D62
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 21:21:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF47B166EB0
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 22:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141E92309A1;
-	Thu,  5 Dec 2024 21:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC89E1C3054;
+	Thu,  5 Dec 2024 22:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="CpeGqdZt"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="m3UBIRjr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11020089.outbound.protection.outlook.com [52.101.61.89])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2067.outbound.protection.outlook.com [40.107.94.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAF822F396;
-	Thu,  5 Dec 2024 21:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D2B282FB;
+	Thu,  5 Dec 2024 22:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733433567; cv=fail; b=szDJFRjKDL/RBpvjTUA3U38tXXuI1AxfrL6NfSnBrqdhjhjwOBFDrYQcvbPN9X09+7BvY5pAlFug8GL+Y1Cb1HPt9S11rMrQ+RChNCALHx3W+GdNpduPNaYTwcZBmpWzWgUna9gOO/Ra1Tw6cOkmOwjQYTZTH5Q41ehDtLZXNm0=
+	t=1733436557; cv=fail; b=B2fBk4HpWZc013rkdxrdLsgUpDMBz4nOCgiN9iC//ReYHujI3G2bxFEPQAN6aacauJS+npQ7gL80QgEyUAgCGmBCug5RO3ufSF5QGDlkIxrCEfYUrj+xmZC7zYf2vJ6W4PhYAWBWE6FIJ6ixA0FPzPxetmgCgEvJVeN2DHcJ+vw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733433567; c=relaxed/simple;
-	bh=mmzn35yj6XENSuxp//oSo65ebPMNziCMGYIxU9u/GyY=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iKnhp3CM7hO6wUiMyAbSaccM0AcYG77gJ8hKs4ik2UEsiXHCzWo0mc+VtP9YVA6ztu75b7qdwtI5MOldFSbtyRBQP3+MKrfFWU6QWCyJqlWMqCW3Mn6uK79S0O6o9sNwk5/JSkiR9D1sr7TEWTEXtX4rdrqiay4nHbeqe7Zr9K8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=CpeGqdZt; arc=fail smtp.client-ip=52.101.61.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+	s=arc-20240116; t=1733436557; c=relaxed/simple;
+	bh=lrgiCV1S6NOgqbBArqrk8t/kfiq4JezkWNWZ7Rrq3K0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ma+tkFhdErKmuELQ/1nufHoTyXaIaMCi4XgyFfQFZE93xB/Xuk+mg9AdkmubZnDhURphG/Vtq8pBEl4TUmGFvEat1+POGM3agld6D+GnkrFXhgP3egQrsxiqyJPHNth3s9CX1sqkYH3kPHjZ7vlUpjc17XZsip48YIYHzAGFhcc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=m3UBIRjr; arc=fail smtp.client-ip=40.107.94.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gOdsBj2/c2VMF4x5k33nH68R4+odrvBQDYoqgWLzsuLe2lyoOC4uZ7QwbCJcQvRGBAI1O2fSCIK5djs/ubmJXtBCtWXaVDJwgPRHN7qSMHCi/bxffcFk3kb3sfQN5vgR4ZFToO1cNQS36yxeEhizGjHu9N56mqT7yHiutu77NN9VlJcEW4UhwwkC/TO1yJKu6qrnbC3/pLV1JGw9bFZumWTFYLt1N+PF9XJAgXiRrB2j4C5J1CuV00W6PpgTTyotEpDg17F5T98VxY1n/RSdUg14IVDCuBNSCvtlapXgii8+BxBM25oABBJTbm+kqJTezAUhPGYZvlLxp4mcYxqw+Q==
+ b=Tqjkbz8yHYCzQzvgXV/qScrbsUj7/hHZ6wWMJ9EzcZSoko7zknAS8FxS1Hibjqjo8gimtdghN7AsyzAJd/LnhDbqZiN9szA5ch6MkdKWIX/ixJEvhg14cteOCCH61IMurTeDYSvr1hS9VRSWjZCsklr1BZjVclxhvXwf7J81UbB7Y+j26zFwQnALMIMS/bGSvLYiRH2ygHBKsBwddyc7W7xk7Z1H8Thv/ccsj7lewvA3Yw3wjJxtoHBjy5MmRIgebKtGvPMlbpXFjHdI2RbItYWsuL3WEfq2aftZdgp3RXZedOgtdUYSxNmWwRcx1QNoLLGkPEUfhgU3He5OUjdJ4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=weo1G+zndL4DT+tGQW7rBSvQpZxgQHl1efYc7x6hcY8=;
- b=T0SiecdvnSBhfd9IyPn+jlllvxOMnafJS9olqT3ZkJC5Af7zTrlXJm+Ay5eoCVvssFY+4xgOs+iYgNNiJG0l44VwVDy9J8i8o/irAPcm3AObZ1BOibYk1SwpCJBhMfsZEtKaAmQd9i0rS3h2BqJAx14JkuVo+0T2+V1JpdRSIbIHeKNS4Yz9s06fwO+qReHZCgHnyrSLlHYlrGL2bQ/KGM72lHKZ6VU0fnV4EnpxxeTLUlD3p4ah7r6x7tu63MdBfrxTEvNptYB+tfIKDPnWU6TYV1myn5OYo0pZf6Mr4jRsGPIW3GFrNa3YC+2rBZSv/gdjGBPy8i5xi9Cdy376YQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
+ bh=i2oNJqsZFkdjC6f4t8Tnc11EcksGmoxUcgBJOkfzPoY=;
+ b=VwmK2oTBr+vql5c2HtzRA1z20V/u44HikdiDCQ/9NK04iMV0TEPaWmwiAV0+tsjMcdryaqrQxg/T6K1ghnHJfK7WsX8LGe8rtPqxj1I+PL9Yobg1c6Ig/MMp+cGtSSB6SGGxumbhFHL8PolwGuG0w5SMeA+J7kuMueyeKY1xKOYd+20vCPFYsry4t5q1TOSDEqalDdjfVHkTbkU1oyFuBsw/kOu5QDDSHKblCpx8y77Di4yw+Q8FhYg9yWHGByKlUQHA2jXYqXrT8LnVAFWr5etSyNYN8BqFqUwWW3f9d9dVXOyguwHIvE8263ZR2ds1OnIvKryilgnWOgy82sVXAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=weo1G+zndL4DT+tGQW7rBSvQpZxgQHl1efYc7x6hcY8=;
- b=CpeGqdZtSzJ8JBD5pqTrhngEOtCyNAGznJYpngiA2AdTkBy7WKL4r4ZGkovdZ9/tHHfMDYjp0EauARaejckjkYyH+4O1ChTt5ppdRMStFm0/B/qTUVT/sIWOrwVC919FdclAeXoZdVaZKOb3+OQN8OX6YKERpasqpfK8ZGfMF3Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from SN7PR01MB7903.prod.exchangelabs.com (2603:10b6:806:34f::17) by
- DS7PR01MB7759.prod.exchangelabs.com (2603:10b6:8:7e::12) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8251.9; Thu, 5 Dec 2024 21:19:19 +0000
-Received: from SN7PR01MB7903.prod.exchangelabs.com
- ([fe80::cf45:9855:a64e:382f]) by SN7PR01MB7903.prod.exchangelabs.com
- ([fe80::cf45:9855:a64e:382f%3]) with mapi id 15.20.8251.007; Thu, 5 Dec 2024
- 21:19:19 +0000
-From: Zaid Alali <zaidal@os.amperecomputing.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	james.morse@arm.com,
-	tony.luck@intel.com,
-	bp@alien8.de,
-	robert.moore@intel.com,
-	dan.j.williams@intel.com,
-	zaidal@os.amperecomputing.com,
-	Jonathan.Cameron@huawei.com,
-	Benjamin.Cheatham@amd.com,
-	Avadhut.Naik@amd.com,
-	viro@zeniv.linux.org.uk,
-	arnd@arndb.de,
-	ira.weiny@intel.com,
-	dave.jiang@intel.com,
-	sthanneeru.opensrc@micron.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH v2 9/9] ACPI: APEI: EINJ: Update the documentation for EINJv2 support
-Date: Thu,  5 Dec 2024 13:18:54 -0800
-Message-Id: <20241205211854.43215-10-zaidal@os.amperecomputing.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241205211854.43215-1-zaidal@os.amperecomputing.com>
-References: <20241205211854.43215-1-zaidal@os.amperecomputing.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MW4PR04CA0126.namprd04.prod.outlook.com
- (2603:10b6:303:84::11) To SN7PR01MB7903.prod.exchangelabs.com
- (2603:10b6:806:34f::17)
+ bh=i2oNJqsZFkdjC6f4t8Tnc11EcksGmoxUcgBJOkfzPoY=;
+ b=m3UBIRjrhQLVRFdx1aAAt1Gx1R1+1MjUO7Bj64YrXJCs4ZujsX8yVk/Rmqsw1iYply5MSWOvQqvFdpUfYKDXaZCTJWYdmgMnMoBc4DVfDUf6dm1DeGn85IvGdDCQp5S5/AakNqdeIXsICVV/pBll89Pd8hRDl1vxGBICdm/NYNQ=
+Received: from SJ0PR03CA0033.namprd03.prod.outlook.com (2603:10b6:a03:33e::8)
+ by SA1PR12MB8724.namprd12.prod.outlook.com (2603:10b6:806:38b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Thu, 5 Dec
+ 2024 22:09:00 +0000
+Received: from SJ5PEPF000001CE.namprd05.prod.outlook.com
+ (2603:10b6:a03:33e:cafe::ab) by SJ0PR03CA0033.outlook.office365.com
+ (2603:10b6:a03:33e::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.11 via Frontend Transport; Thu,
+ 5 Dec 2024 22:08:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SJ5PEPF000001CE.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8230.7 via Frontend Transport; Thu, 5 Dec 2024 22:08:59 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Dec
+ 2024 16:08:58 -0600
+Received: from [172.25.146.163] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Thu, 5 Dec 2024 16:08:57 -0600
+Message-ID: <b9d5636c-0485-4a27-bf17-fd092b0b8ef9@amd.com>
+Date: Thu, 5 Dec 2024 17:08:56 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] xen/cppc: introduce cppc data upload sub-hypercall
+To: Penny Zheng <Penny.Zheng@amd.com>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Len Brown" <lenb@kernel.org>
+CC: Ray Huang <Ray.Huang@amd.com>, Xenia Ragiadakou
+	<Xenia.Ragiadakou@amd.com>, <xen-devel@lists.xenproject.org>,
+	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+References: <20241205054252.471761-1-Penny.Zheng@amd.com>
+ <20241205054252.471761-5-Penny.Zheng@amd.com>
+Content-Language: en-US
+From: Jason Andryuk <jason.andryuk@amd.com>
+In-Reply-To: <20241205054252.471761-5-Penny.Zheng@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB03.amd.com: jason.andryuk@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR01MB7903:EE_|DS7PR01MB7759:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c0af457-df1d-4872-aeb0-08dd15727adf
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CE:EE_|SA1PR12MB8724:EE_
+X-MS-Office365-Filtering-Correlation-Id: 52b65e50-943e-4b44-3ac9-08dd15796b88
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|52116014|38350700014|921020;
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BhSbyqmPrRyQ/OyusgW0WvZQbdN0IQlQA8C2dNGSA80kCUh26cdIhdVNIl/S?=
- =?us-ascii?Q?v/epyfn1ynVG0GN/9QnS1GhJoR1/25YvRPbZxoRsPq91it/L5A0GRxivV9gJ?=
- =?us-ascii?Q?DMK0cSmmz+iQ1kT6Lq+FNX26VrqcYXlvrMAbxM0SX2uttN7UGdsadzz0FuvA?=
- =?us-ascii?Q?KmJ0+DxXBnIPa01yyx72i5CNRYeuI6uQd4M/Oq8Ts/Qm1ADn7pVgSYcmHJAc?=
- =?us-ascii?Q?zwzYQJNwhxVp+pow+LdvBKXEx1SsDoJkRcwofBaX/ttLaxnHIg49rJ5cWZur?=
- =?us-ascii?Q?a1v2Qv3Bf8s/8SP/fEgAEpn7brB+zzHyEvREjzJh9/SBn+d8+QTLCcfmzPMr?=
- =?us-ascii?Q?JXNqlZRoe8lEz9Pxw6mnA3FZkBNzgxXPxVGEji9u99WRWor68hzM+K1fUOgU?=
- =?us-ascii?Q?azhXBsXXZxWWb6afvpQgR5P1CQGhSyUYYTB7529IexsSKaIYFgO9g0u5Z9l2?=
- =?us-ascii?Q?j8/oal6I1JRc6aMnI9sSTwExM53Pp7cYTBi0paEpdLR5HjDtTEDskJmfAzV6?=
- =?us-ascii?Q?WKKb/baPLdYdcw56d2Bisa2PauBcjh/oUmEf7grKXwoEq2v/DGtUUgl1wtlb?=
- =?us-ascii?Q?+Ji4JWW1EGdZuBBMkSPZ5KIP7Wyjf7ejP697wSBLKJU7+IggNjoIC8NA96mS?=
- =?us-ascii?Q?efj4aRVwWbw4jE26WIucAsB5icL5CJdRXDYMInNr5wQVxkaOqxkSSG0t1KEL?=
- =?us-ascii?Q?NZ/hxtMtCqsrLyYzLFVyKbBqdbOj7l7CV3YJ/odIeXy+kZLjTI5ZF1LE2j35?=
- =?us-ascii?Q?Oib6+pJQsQnHNXjLF8qnBXjsN2UQzljWDN6I0ha0BkWs01TjWGE6j9kNzHSC?=
- =?us-ascii?Q?J4nOFlMQKRN02bBgnq01jcTIO4skmc9925MbTb2M1cuAvSB2fUrfuHodJiW0?=
- =?us-ascii?Q?Um7QDb7CrFpZQQD5XSque83wKE/TBXyj5xgsyg7KRoklsx1kSBLGKc+or7Gy?=
- =?us-ascii?Q?rspm/V+j+QpcIijE3PnRmpZ3oSZI7DHd20nsElrmrxwVgz9i763anQRcbh4z?=
- =?us-ascii?Q?QjnT5+/KUcb51VWPFGTrSvhy0zUp91FaTkxHfEXZczXK+UAowUg1M3PNrFmU?=
- =?us-ascii?Q?UwOUuucknkqgEu5muvHP1dlFTlpFOrRl/elltERrhL4L/dB4+qo9iOWHzveI?=
- =?us-ascii?Q?dd9C8cGWGwS0+ibANEYmGrIpYBqbhX5jTBVydZtT+3Nr9ESKfu3fv50Fpz6N?=
- =?us-ascii?Q?UJLRHBHGK2fOSOKhw3bJ0Smfnea03apy20dAf8LJS3yRjAGLldmDFrG2nbgp?=
- =?us-ascii?Q?a+XkqnmyqZOSUd0BbojKA1cf08EudwXTVt8bTyrfM52IiNWg0+7kjJJKqlnQ?=
- =?us-ascii?Q?L/URqYmd57bXap+N4Bauksamo+Z+D8qU6G+LY5cUordlusB3LVtFOBkRysqW?=
- =?us-ascii?Q?JuvyluKZCr1fprZRu/0wpeWYD6I8?=
+	=?utf-8?B?UkozUitXU2ZFVTg4Zit4V3B3ajJVNHNGZkJ2ZXJCR1VHRkV2dTlYK1h3UEdS?=
+ =?utf-8?B?WmRmRnBnVi9hNlNuYjBBQWJIeDhleG03dlJnV29ZWnY4N2JsZlUvWitiNVda?=
+ =?utf-8?B?Tys4VzJkUmxUVXNUTm5scGp5SG1UcGYwYTE3MkRFa1JaazdxVkQyYUZTUWJY?=
+ =?utf-8?B?S2tmeUxiOGx1SmtISnh6bmY0Z1NIQnhSR1B2R0JWczBVSU9tNU5mR2h3UWFW?=
+ =?utf-8?B?QzBtRmFDK0NWamxybGY4N0pvOVdqd0xQMExmMjBXWlREdklCSXRpTWdGN2tj?=
+ =?utf-8?B?YTFKRkJvSndWOUdDdmJiV0RydDN4KzFiV29mM3VWNHlLK0xUTzFDVjI5VE9p?=
+ =?utf-8?B?cFdPcVhrZkhJMXgzTnR0bndKQUkrU0RLN05vem81bVU3enVSS0VGZnhUSG15?=
+ =?utf-8?B?c3VtR2tIZExHTWRlZ0Z4Qkh6OUg3UFd4MXFkTExBeXlEVGEzRVVuWm1mR09q?=
+ =?utf-8?B?LzdBbE9GekpHV0JDUGJWWUlOMzUrRkJIWENuc242ZllsUlB4cjlpeXMySzdw?=
+ =?utf-8?B?MlRqVnpZcDlsZjdnNC9lZ0JCQy9ZWGpabHdNVklYVk5WZ21uNnljem0vbGVU?=
+ =?utf-8?B?N1BHQS83ZTJWSDJIa1htaXlBZG80dGlqRVl0RXAzbWJhR2ZTMUxaV1ltSmVS?=
+ =?utf-8?B?L24ycmE2Z0x3OWRyUmw4bVpWN0NLZUtVdUNtWWxXc01kdUpVcXhJQmVUT3NC?=
+ =?utf-8?B?ekdtR05ueEI2dFI5RzVyaysyT1BaMzhOMEJuRlkxS2ZmZjVvWm1kQTJjQjVF?=
+ =?utf-8?B?a3ZkMElSTVFseTRSL0gzU2hYbXZiUE9hU0N2UjY5OXNTL0RlM1RFb3lQNzBs?=
+ =?utf-8?B?QXd6V21OVjdFdUxDbitlSklQSzJBOWxnUEYwdGxCSXc5aUFQVlZFNm11NzRY?=
+ =?utf-8?B?TnQxZkF6TjlIanhxTnBmYzJsV0UrdHJKd1BQSmpZTnhXSWVqZ3BGN3hub0tJ?=
+ =?utf-8?B?R205ZktyZk5wYitHUS9LOWduc0VMZ1J0WVVHWkxvQ1oyYTh3V3dlQjIycjR4?=
+ =?utf-8?B?RUFUNFZXQmhlTjJqdWdveTZWbTc1WklRVUE1emlLYlVGNVk0Wk5jYUVDL0M4?=
+ =?utf-8?B?MFU0R3RsUCs1QisxMi96SE5adUswOUg5ZnpPWi9wdHB6RFlVRDB6ZG1JV1Fh?=
+ =?utf-8?B?NjZCdHRVSXhjcTQzMTJHUDRrSThQd0gvem5vS1REWE1kbG9la2IveW1icXBV?=
+ =?utf-8?B?d1lrNU5VMG1jQnpmR2pkZnZjMHEzQnZBRVM2Tm9LbUljRy9JdHNTZUFyR3Zm?=
+ =?utf-8?B?L09YMWpja1pBb0xYbzJic0E0U1lWVVpPSkV5eTR0enZOd3dpM055RVBEa2hV?=
+ =?utf-8?B?eHdDTElydFlzTFJqVWh0WHdIUEw1U2puU1d5SFYxcnA0b3NiT3A2YWZudlJp?=
+ =?utf-8?B?SzdjTTd1aUlJOVgyeTdFWjUxZVFPMGxMdFlYYUZxQ2RqcXR1amtoOC9UMHFu?=
+ =?utf-8?B?aWZLRy9JSUtnWnNMT2NGYUl3Y25lVXJmdnZtMllvVHF5ejRVMlBDZGxDbEM3?=
+ =?utf-8?B?R1BwUHdxSHpNTCtqQVhIZ1VQOWdEYk5CendTbnpXcE5hK1F6Wnk5OGlzcUg3?=
+ =?utf-8?B?TCtlRDlpYWUrN1NKUmZIZHoxdG12d1I0UUdXaDJYZFhLcjU1dkRVU0gzaXV3?=
+ =?utf-8?B?cmZpTTRaVlB5Q28vU3pXVTVXTXROSyswZXFDQ2RXcS9pODJVZGdQRXlzSEFI?=
+ =?utf-8?B?dkZjUjVsbHJGNitnUDBhVjlrQmtnL0d3N1NPUG55cWc3eDR0dDM5YkVZS1Jz?=
+ =?utf-8?B?dGNoVTRxVGhKUXRGbytiOGNKbVliZENvZUxyUlZKLzMwMXYzNXQra3FVSm5r?=
+ =?utf-8?B?SnZVaFJnb1ExcEU0UDZiS29aUmlkb2JGVlhtTzUvdjRuZEh2Vmd3ZHVxbkVv?=
+ =?utf-8?B?bzFKWnJkME1xM0ZpbUhYNFpHd2JYVFRwN2RmczZNK0ZOSnNhZGFHUkZMMENy?=
+ =?utf-8?Q?rh2YLT1jU4sm0Q1d54icIec5TccPTK/Z?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR01MB7903.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(52116014)(38350700014)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?loi45oqvPHccguczQhr18iIyh8wYANwRZLP+ZthTwKZOEI5ato5PqKuTmlXh?=
- =?us-ascii?Q?8fRyi0A0bC2cT/TWCb3S/oYR6tHvFkKIWcVbIcYtlhm0KMzM5GSga3GX/C0b?=
- =?us-ascii?Q?pQqoejEu3el0uOOyhvqohBH8/er09rIcZuHa4xfqLJJRyGI78OJilF4TBILT?=
- =?us-ascii?Q?tctz5FHLIck3UXfuPsUeyxhprdpXemok5dtkxnZKCR4NhfHupiuKcYSu2Idl?=
- =?us-ascii?Q?t9EhyKroD1xwCIcubSAUH1H/PEzwcoTEBRfmH3y4ha64OO+F5OJHNrcYEdiC?=
- =?us-ascii?Q?cXTyW9MLsbSy6EMe6i8I7KAEigh247vR5ZHp7ehh0F/M6xyzdYL/TZ7NOnKR?=
- =?us-ascii?Q?uAwFKjdgVcoByzcA0uYCMyusHdLRe3iJtnvDzoH2UHlLPZ/pNursPET3Cn/A?=
- =?us-ascii?Q?QHCxvvMC7fJThzGjOw86xCxkk3l5vV+nBGgoFw2MyG9I12P8fWzV7Kksa4zU?=
- =?us-ascii?Q?ogSD8+WmJwDIIix8ORlPSeL773kbnxGOCKj42frwy7kCULmi2pC7GCjhYeP2?=
- =?us-ascii?Q?OPY52J6lN8St1sFAoamq44TZCNZbbEgikOFXR8Afe6FsIJQsuXQ0evIySBva?=
- =?us-ascii?Q?jum3sgpdfaB/FbzW+4ozmTzaMGV+ffswr5VpsazqXf7PiIXm1e7y5El6dwwP?=
- =?us-ascii?Q?RMHr8rsnlJ7e8btPEhu9n5ltrA5kIUpXhOJsA8h5OLzZ39+MVGonLU/bUpCr?=
- =?us-ascii?Q?jn68sfgIR/+hyVyE4WGnCYTCpUGh8rKj0V1stAkXDOAoBxUf1CQZ1b2qhT+1?=
- =?us-ascii?Q?PUDboYUqmH9PwSPHkKQD9WZaJ/CbIuyxwQcfu7f/ImTNpN8eHaY41Y3OfIDa?=
- =?us-ascii?Q?WTqihTZDFg+qz+MnR1DBs4c+UoPNi69XbbRwHsV244X3he2OkBKQz8LbcsDI?=
- =?us-ascii?Q?GSEhwDRb82RquUDlwX6D25azis88kaxy1hSpFyyOjqA3f5Bx/7Ye47/z1XHc?=
- =?us-ascii?Q?MGGegGncLfmMjuLSbHo3uzovTYbaODMw/biWyFDkCc0rxeUKNGelYAJ6/wWI?=
- =?us-ascii?Q?/LAS8kIi//8/GO5aNXMkNsRW0QhxzfJxlHlScrMeiJ28Sx6wtg5ZzXahRcA+?=
- =?us-ascii?Q?aqhEW3hHl1rvaIcpVHiNF7FWwK1Ej4+kfrjsmHFHmzWG5vZr8S1XYHg6eSpe?=
- =?us-ascii?Q?teIGLOXSNm9V3cu/1iYPYPnF1kjOJ06Hqsytkq74o3lkmK6HybtqVUgIkV4N?=
- =?us-ascii?Q?O3f7i/a35EfhipQz0px4Lc9IKMyLbnVlMMaf1RsCc6SzhNAi6xNcXrmFoGWS?=
- =?us-ascii?Q?pGpQOwX3QTqSxRT6txFgTvGUShSs5hPvfv7eK2pskKa91OBG2L4gbx+ucW/l?=
- =?us-ascii?Q?kTL0rQpqHK2yVoBdPigmBvEk7SjleBP6ft7puc6/zYbe0gxJ6EgI97czNYfW?=
- =?us-ascii?Q?MyB6FP2GWqjhEuEy+UglGwx+9vdGNYo4vHlRqy4Jv0g1xqVF7+KaJFHpLTY+?=
- =?us-ascii?Q?CkccsuYutOzQzO3LZkBPqrxydK65+oZv5NKNp6I730oINP1QJHpUJi2dCSvn?=
- =?us-ascii?Q?f5kgAM5aI9n7WtXpr3mt9HSz7nD/xNjeo4YZnWMw68dug7B9go7hYR74O3Ok?=
- =?us-ascii?Q?w4p0Av4xTQn3XdoBOdPq0uzoE1/xEw5Vhbg8G0f13op9HtD0+BdN2aAniPEZ?=
- =?us-ascii?Q?kGnhqMcj9aOPlHNec55fVx4=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c0af457-df1d-4872-aeb0-08dd15727adf
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR01MB7903.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 21:19:18.9554
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 22:08:59.4388
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7+Q18Ie2ulPMbuyj983yDATDMxX+nt2vz+P+MAYF+Jur8K3GEoT8A6ng6qzIax4p0o6Jva0MWmwHXbcScsemZUwFVmdsi7Q4XDOFZzt7AJRTSILsF5feH/BcPoVsV34Z
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR01MB7759
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52b65e50-943e-4b44-3ac9-08dd15796b88
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8724
 
-Add documentation for the updated ACPI specs for EINJv2(1)(2)
+Adding Rafael and Len. and again keeping the full patch.
 
-(1)https://bugzilla.tianocore.org/show_bug.cgi?id=4615
-(2)https://bugzilla.tianocore.org/attachment.cgi?id=1446
+On 2024-12-05 00:42, Penny Zheng wrote:
+> As Xen is uncapable of parsing the ACPI dynamic table, this commit
 
-Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
----
- .../firmware-guide/acpi/apei/einj.rst         | 41 ++++++++++++++++++-
- 1 file changed, 39 insertions(+), 2 deletions(-)
+s/uncapable/incapable/
 
-diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
-index c52b9da08fa9..b1c0464f6002 100644
---- a/Documentation/firmware-guide/acpi/apei/einj.rst
-+++ b/Documentation/firmware-guide/acpi/apei/einj.rst
-@@ -59,6 +59,9 @@ The following files belong to it:
-   0x00000200        Platform Correctable
-   0x00000400        Platform Uncorrectable non-fatal
-   0x00000800        Platform Uncorrectable fatal
-+  V2_0x00000001     EINJV2 Processor Error
-+  V2_0x00000002     EINJV2 Memory Error
-+  V2_0x00000004     EINJV2 PCI Express Error
-   ================  ===================================
- 
-   The format of the file contents are as above, except present are only
-@@ -85,9 +88,11 @@ The following files belong to it:
-     Bit 0
-       Processor APIC field valid (see param3 below).
-     Bit 1
--      Memory address and mask valid (param1 and param2).
-+      Memory address and range valid (param1 and param2).
-     Bit 2
-       PCIe (seg,bus,dev,fn) valid (see param4 below).
-+    Bit 3
-+      EINJv2 extension structure is valid
- 
-   If set to zero, legacy behavior is mimicked where the type of
-   injection specifies just one bit set, and param1 is multiplexed.
-@@ -110,6 +115,7 @@ The following files belong to it:
-   Used when the 0x1 bit is set in "flags" to specify the APIC id
- 
- - param4
-+
-   Used when the 0x4 bit is set in "flags" to specify target PCIe device
- 
- - notrigger
-@@ -122,6 +128,18 @@ The following files belong to it:
-   this actually works depends on what operations the BIOS actually
-   includes in the trigger phase.
- 
-+- einjv2_component_count
-+
-+  The value from this file is used to set the "Component Array Count"
-+  field of EINJv2 Extension Structure.
-+
-+- einjv2_component_array
-+
-+  The contents of this file are used to set the "Component Array" field
-+  of the EINJv2 Extension Structure. The expected format is hex values
-+  for component id and syndrome separated by space, and multiple
-+  components are separated by new line.
-+
- CXL error types are supported from ACPI 6.5 onwards (given a CXL port
- is present). The EINJ user interface for CXL error types is at
- <debugfs mount point>/cxl. The following files belong to it:
-@@ -139,7 +157,6 @@ is present). The EINJ user interface for CXL error types is at
-   under <debugfs mount point>/apei/einj, while CXL 1.1/1.0 port injections
-   must use this file.
- 
--
- BIOS versions based on the ACPI 4.0 specification have limited options
- in controlling where the errors are injected. Your BIOS may support an
- extension (enabled with the param_extension=1 module parameter, or boot
-@@ -194,6 +211,26 @@ An error injection example::
-   # echo 0x8 > error_type			# Choose correctable memory error
-   # echo 1 > error_inject			# Inject now
- 
-+An EINJv2 error injection example::
-+
-+  # cd /sys/kernel/debug/apei/einj
-+  # cat available_error_type			# See which errors can be injected
-+  0x00000002	Processor Uncorrectable non-fatal
-+  0x00000008	Memory Correctable
-+  0x00000010	Memory Uncorrectable non-fatal
-+  0x00000001	EINJV2 Processor Error
-+  0x00000002	EINJV2 Memory Error
-+
-+  # echo 0x12345000 > param1			# Set memory address for injection
-+  # echo 0xfffffffffffff000 > param2		# Range - anywhere in this page
-+  # comp_arr="0x1 0x2				# Fill in the component array
-+    >0x1 0x4
-+    >0x2 0x4"
-+  # echo "$comp_arr" > einjv2_component_array
-+  # echo 0x2 > error_type			# Choose EINJv2 memory error
-+  # echo 0xa > flags				# set flags to indicate EINJv2
-+  # echo 1 > error_inject			# Inject now
-+
- You should see something like this in dmesg::
- 
-   [22715.830801] EDAC sbridge MC3: HANDLING MCE MEMORY ERROR
--- 
-2.34.1
+> introduces a new sub-hypercall XEN_PM_CPPC to deliver CPPC perf
+> caps data.
+> 
+> Signed-off-by: Penny Zheng <Penny.Zheng@amd.com>
+> ---
+>   drivers/acpi/cppc_acpi.c         |  1 +
+>   drivers/xen/xen-acpi-processor.c | 89 +++++++++++++++++++++++++++++++-
+>   include/acpi/processor.h         |  1 +
+>   include/xen/interface/platform.h | 11 ++++
+>   4 files changed, 101 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 3a436591da07..3570a52a5dbd 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -860,6 +860,7 @@ static int acpi_cppc_processor_parse(struct acpi_processor *pr, struct cpc_desc
+>   		cpc_ptr->cpc_regs[i].cpc_entry.int_value = 0;
+>   	}
+>   
+> +	pr->flags.has_cpc = 1;
+>   	pr_debug("Parsed _CPC entry for CPU: %d\n", pr->acpi_id);
+>   	kfree(output.pointer);
+>   	return 0;
+> diff --git a/drivers/xen/xen-acpi-processor.c b/drivers/xen/xen-acpi-processor.c
+> index e9f38f171240..8a39e46c1ebc 100644
+> --- a/drivers/xen/xen-acpi-processor.c
+> +++ b/drivers/xen/xen-acpi-processor.c
+> @@ -25,6 +25,7 @@
+>   #include <xen/xen.h>
+>   #include <xen/interface/platform.h>
+>   #include <asm/xen/hypercall.h>
+> +#include <acpi/cppc_acpi.h>
+>   
+>   static int no_hypercall;
+>   MODULE_PARM_DESC(off, "Inhibit the hypercall.");
+> @@ -45,8 +46,12 @@ static unsigned long *acpi_ids_done;
+>   static unsigned long *acpi_id_present;
+>   /* And if there is an _CST definition (or a PBLK) for the ACPI IDs */
+>   static unsigned long *acpi_id_cst_present;
+> +/* And if there is an _CPC entry for the ACPI IDs */
+> +static unsigned long *acpi_id_cpc_present;
+>   /* Which ACPI P-State dependencies for a enumerated processor */
+>   static struct acpi_psd_package *acpi_psd;
+> +/* ACPI CPPC structures for a enumerated processor */
+> +static struct cppc_perf_caps *acpi_cppc_data;
+>   
+>   static bool pr_initialized;
+>   
+> @@ -208,6 +213,44 @@ static int xen_copy_pct_data(struct acpi_pct_register *pct,
+>   	dst_pct->address = pct->address;
+>   	return 0;
+>   }
+> +static int push_cppc_to_hypervisor(struct acpi_processor *_pr)
+> +{
+> +	int ret = 0;
+> +	struct xen_platform_op op = {
+> +		.cmd            = XENPF_set_processor_pminfo,
+> +		.interface_version  = XENPF_INTERFACE_VERSION,
+> +		.u.set_pminfo.id    = _pr->acpi_id,
+> +		.u.set_pminfo.type  = XEN_PM_CPPC,
+> +	};
+> +	struct cppc_perf_caps *cppc_perf = acpi_cppc_data + _pr->acpi_id;
+> +
+> +	op.u.set_pminfo.cppc_data.highest_perf = cppc_perf->highest_perf;
+> +	op.u.set_pminfo.cppc_data.lowest_perf = cppc_perf->lowest_perf;
+> +	op.u.set_pminfo.cppc_data.nominal_perf = cppc_perf->nominal_perf;
+> +	op.u.set_pminfo.cppc_data.lowest_nonlinear_perf = cppc_perf->lowest_nonlinear_perf;
+> +	op.u.set_pminfo.cppc_data.lowest_freq = cppc_perf->lowest_freq;
+> +	op.u.set_pminfo.cppc_data.nominal_freq = cppc_perf->nominal_freq;
+> +
+> +	if (!no_hypercall)
+> +		ret = HYPERVISOR_platform_op(&op);
+> +
+> +	if (!ret) {
+> +		pr_debug("ACPI CPU%u - CPPC uploaded.\n", _pr->acpi_id);
+> +		pr_debug("     highest_perf: %d\n", cppc_perf->highest_perf);
+> +		pr_debug("     lowest_perf: %d\n", cppc_perf->lowest_perf);
+> +		pr_debug("     lowest_nonlinear_perf: %d\n", cppc_perf->lowest_nonlinear_perf);
+> +		pr_debug("     nominal_perf: %d\n", cppc_perf->nominal_perf);
+> +		pr_debug("     lowest_freq: %d Mhz\n", cppc_perf->lowest_freq);
+> +		pr_debug("     nominal_freq: %d Mhz\n", cppc_perf->nominal_freq);
+> +	} else if ((ret != -EINVAL) && (ret != -ENOSYS))
+> +		/* EINVAL means the ACPI ID is incorrect - meaning the ACPI
+> +		 * table is referencing a non-existing CPU - which can happen
+> +		 * with broken ACPI tables. */
+> +		pr_warn("(_CPC): Hypervisor error (%d) for ACPI CPU%u\n",
+> +			ret, _pr->acpi_id);
+> +
+> +		return ret;
+> +}
+>   static int push_pxx_to_hypervisor(struct acpi_processor *_pr)
+>   {
+>   	int ret = 0;
+> @@ -284,6 +327,9 @@ static int upload_pm_data(struct acpi_processor *_pr)
+>   	if (_pr->flags.power)
+>   		err = push_cxx_to_hypervisor(_pr);
+>   
+> +	if (_pr->flags.has_cpc)
+> +		err |= push_cppc_to_hypervisor(_pr);
+> +
+
+Older hypervisors without the xen changes will return an error since 
+they don't implement XEN_PM_CPPC.  We might want to ignore the return 
+when it's EINVAL, the default for the XEN_PM_* switch, but that may 
+ignore more than intended.
+
+The two calls to upload_pm_data() ignore the return value, so maybe it 
+doesn't matter.
+
+(This is the end of my comments.)
+
+Thanks,
+Jason
+
+>   	if (_pr->performance && _pr->performance->states)
+>   		err |= push_pxx_to_hypervisor(_pr);
+>   
+> @@ -488,6 +534,7 @@ read_acpi_id(acpi_handle handle, u32 lvl, void *context, void **rv)
+>   	union acpi_object object = { 0 };
+>   	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+>   	struct acpi_buffer cst_buf = { ACPI_ALLOCATE_BUFFER, NULL };
+> +	struct acpi_buffer cpc_buf = { ACPI_ALLOCATE_BUFFER, NULL };
+>   	acpi_io_address pblk = 0;
+>   
+>   	status = acpi_get_type(handle, &acpi_type);
+> @@ -567,11 +614,20 @@ read_acpi_id(acpi_handle handle, u32 lvl, void *context, void **rv)
+>   	/* .. and it has a C-state */
+>   	__set_bit(acpi_id, acpi_id_cst_present);
+>   
+> +	status = acpi_evaluate_object(handle, "_CPC", NULL, &cpc_buf);
+> +	if (ACPI_FAILURE(status)) {
+> +		return AE_OK;
+> +	}
+> +	kfree(cpc_buf.pointer);
+> +
+> +	/* .. and it has a _CPC entry */
+> +	__set_bit(acpi_id, acpi_id_cpc_present);
+> +
+>   	return AE_OK;
+>   }
+>   static int check_acpi_ids(struct acpi_processor *pr_backup)
+>   {
+> -	if (acpi_id_present && acpi_id_cst_present)
+> +	if (acpi_id_present && acpi_id_cst_present && acpi_id_cpc_present)
+>   		/* OK, done this once .. skip to uploading */
+>   		goto upload;
+>   
+> @@ -588,11 +644,19 @@ static int check_acpi_ids(struct acpi_processor *pr_backup)
+>   		return -ENOMEM;
+>   	}
+>   
+> +	acpi_id_cpc_present = bitmap_zalloc(nr_acpi_bits, GFP_KERNEL);
+> +	if (!acpi_id_cpc_present) {
+> +		bitmap_free(acpi_id_present);
+> +		bitmap_free(acpi_id_cst_present);
+> +		return -ENOMEM;
+> +	}
+> +
+>   	acpi_psd = kcalloc(nr_acpi_bits, sizeof(struct acpi_psd_package),
+>   			   GFP_KERNEL);
+>   	if (!acpi_psd) {
+>   		bitmap_free(acpi_id_present);
+>   		bitmap_free(acpi_id_cst_present);
+> +		bitmap_free(acpi_id_cpc_present);
+>   		return -ENOMEM;
+>   	}
+>   
+> @@ -608,6 +672,12 @@ static int check_acpi_ids(struct acpi_processor *pr_backup)
+>   			pr_backup->acpi_id = i;
+>   			/* Mask out C-states if there are no _CST or PBLK */
+>   			pr_backup->flags.power = test_bit(i, acpi_id_cst_present);
+> +			/* Mask out relevant flag if there are no _CPC */
+> +			pr_backup->flags.has_cpc = test_bit(i, acpi_id_cpc_present);
+> +			if (pr_backup->flags.has_cpc) {
+> +				if (xen_processor_get_perf_caps(pr_backup, acpi_cppc_data + i))
+> +					return -EINVAL;
+> +			}
+>   			/* num_entries is non-zero if we evaluated _PSD */
+>   			if (acpi_psd[i].num_entries) {
+>   				memcpy(&pr_backup->performance->domain_info,
+> @@ -726,6 +796,15 @@ static int __init xen_acpi_processor_init(void)
+>   		bitmap_free(acpi_ids_done);
+>   		return -ENOMEM;
+>   	}
+> +
+> +	acpi_cppc_data = kcalloc(nr_acpi_bits, sizeof(struct cppc_perf_caps),
+> +				GFP_KERNEL);
+> +	if (!acpi_cppc_data) {
+> +		pr_debug("Memory allocation error for acpi_cppc_data\n");
+> +		rc = -ENOMEM;
+> +		goto err1_out;
+> +	}
+> +
+>   	for_each_possible_cpu(i) {
+>   		if (!zalloc_cpumask_var_node(
+>   			&per_cpu_ptr(acpi_perf_data, i)->shared_cpu_map,
+> @@ -751,6 +830,11 @@ static int __init xen_acpi_processor_init(void)
+>   		rc = acpi_processor_get_performance_info(pr);
+>   		if (rc)
+>   			goto err_out;
+> +
+> +		pr->flags.pcc_unsupported = true;
+> +		rc = xen_processor_get_perf_caps(pr, acpi_cppc_data + i);
+> +		if (rc)
+> +			goto err_out;
+>   	}
+>   
+>   	rc = xen_upload_processor_pm_data();
+> @@ -766,6 +850,8 @@ static int __init xen_acpi_processor_init(void)
+>   
+>   err_out:
+>   	/* Freeing a NULL pointer is OK: alloc_percpu zeroes. */
+> +	kfree(acpi_cppc_data);
+> +err1_out:
+>   	free_acpi_perf_data();
+>   	bitmap_free(acpi_ids_done);
+>   	return rc;
+> @@ -779,6 +865,7 @@ static void __exit xen_acpi_processor_exit(void)
+>   	bitmap_free(acpi_id_present);
+>   	bitmap_free(acpi_id_cst_present);
+>   	kfree(acpi_psd);
+> +	kfree(acpi_cppc_data);
+>   	for_each_possible_cpu(i)
+>   		acpi_processor_unregister_performance(i);
+>   
+> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+> index 18499cc11366..66492f5d68a8 100644
+> --- a/include/acpi/processor.h
+> +++ b/include/acpi/processor.h
+> @@ -214,6 +214,7 @@ struct acpi_processor_flags {
+>   	u8 bm_control:1;
+>   	u8 bm_check:1;
+>   	u8 has_cst:1;
+> +	u8 has_cpc:1;
+>   	u8 pcc_unsupported:1;
+>   	u8 has_lpi:1;
+>   	u8 power_setup_done:1;
+> diff --git a/include/xen/interface/platform.h b/include/xen/interface/platform.h
+> index 79a443c65ea9..e11bb9443dc0 100644
+> --- a/include/xen/interface/platform.h
+> +++ b/include/xen/interface/platform.h
+> @@ -319,6 +319,7 @@ DEFINE_GUEST_HANDLE_STRUCT(xenpf_getidletime_t);
+>   #define XEN_PM_PX   1
+>   #define XEN_PM_TX   2
+>   #define XEN_PM_PDC  3
+> +#define XEN_PM_CPPC 4
+>   /* Px sub info type */
+>   #define XEN_PX_PCT   1
+>   #define XEN_PX_PSS   2
+> @@ -384,6 +385,15 @@ struct xen_processor_px {
+>   };
+>   DEFINE_GUEST_HANDLE_STRUCT(xen_processor_px);
+>   
+> +struct xen_processor_cppc {
+> +    uint32_t highest_perf;
+> +    uint32_t nominal_perf;
+> +    uint32_t lowest_perf;
+> +    uint32_t lowest_nonlinear_perf;
+> +    uint32_t lowest_freq;
+> +    uint32_t nominal_freq;
+> +};
+> +
+>   struct xen_psd_package {
+>   	uint64_t num_entries;
+>   	uint64_t revision;
+> @@ -412,6 +422,7 @@ struct xenpf_set_processor_pminfo {
+>   		struct xen_processor_power          power;/* Cx: _CST/_CSD */
+>   		struct xen_processor_performance    perf; /* Px: _PPC/_PCT/_PSS/_PSD */
+>   		GUEST_HANDLE(uint32_t)              pdc;
+> +		struct xen_processor_cppc           cppc_data; /* _CPC */
+>   	};
+>   };
+>   DEFINE_GUEST_HANDLE_STRUCT(xenpf_set_processor_pminfo);
 
 
