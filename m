@@ -1,146 +1,114 @@
-Return-Path: <linux-acpi+bounces-9933-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9934-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A799E48D9
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 00:26:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2109E4BDA
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 02:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CBD6282E5F
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Dec 2024 23:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AE57285247
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 01:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C820764A;
-	Wed,  4 Dec 2024 23:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enzcSQ4R"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77432482ED;
+	Thu,  5 Dec 2024 01:33:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94C5206F02;
-	Wed,  4 Dec 2024 23:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2235D47A73
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Dec 2024 01:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354768; cv=none; b=p3ZZ9C0SmGtOBprONkQijf60ccvMdhz7SxqMzDPS9LnlZvhJARizX2zRXDQa5Ee4gLaPaisxa+45dSOEgjhSgf7qBJsIpwR5uffWcTQLwA+5T5npIiYGWdiAq2rYONguwXNhz0gUNBAJzYCejEsUvCZ9px0mXHslUQDAEZPthfA=
+	t=1733362425; cv=none; b=hzUvxgrQzOoFKzgBrBQXusVrZQV44qp0hO1vZHOYVNMxho9hIOoILOI3MW26VSn3geyy7erR6EUwBuhx5XQLuiX+KIja0xQl+Dlg430fv51c9x8eWxW8NdNfGuWsCBpwB8b3RxowgNeig4C3hzi5FfOh0dJIa2una6Ay1fWAqSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354768; c=relaxed/simple;
-	bh=AmcnS98K5CV7Zi9qPcqk5ONcDG/eEZa5NnlUOdBArkk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HprBjWJpK7kdmXWJNefaB0ysEcR0UYuWXAPaV9SyBHJ1dXNmHzifBwlUlmqMhUnBqJUgN0jRmfRQjicRJPo78yNTxopnvTDDA6iHTU2d4P+WiTNjFCYfcxX5agh7h8qTyMyc2XF+yhexaJF5RFvr9A37QldIfr8Ye8ABleJZ2Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enzcSQ4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9044C4CECD;
-	Wed,  4 Dec 2024 23:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354768;
-	bh=AmcnS98K5CV7Zi9qPcqk5ONcDG/eEZa5NnlUOdBArkk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enzcSQ4RMvsgJIko9bjAK4mN2vx2MXdXPKoQ4h1qV8A+8Tmb5p3lv05bDq0DSJEQ5
-	 3m+Ok6SAziIFEuthGQ8NwLW1STr3q7x5scC1vsKkQMMeruonfws7BbX0HM2hUZUvWa
-	 YYKXv00uHmro1bQVjQfCAtv8rBQtnw9yetKHlLDpU9NwbfUMln0CLpZpBCtCDdWGNu
-	 xh/w+zyXplFwDN8Ng0LiDyTe1q7khU6JIZB8MiMfn8V9tXvz0c7lsQ9gYRoEMC0i1I
-	 VeZXpx30cgAgH4QHMeFqyNcAGT34bTqjbXhHpmO0zeo/IMgzoiyWlyHPxis9l3lD2u
-	 zawTof84ellMw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	tony.luck@intel.com,
-	mario.limonciello@amd.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 2/3] ACPI: x86: Clean up Asus entries in acpi_quirk_skip_dmi_ids[]
-Date: Wed,  4 Dec 2024 17:14:38 -0500
-Message-ID: <20241204221445.2247192-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204221445.2247192-1-sashal@kernel.org>
-References: <20241204221445.2247192-1-sashal@kernel.org>
+	s=arc-20240116; t=1733362425; c=relaxed/simple;
+	bh=2U89hio9pBpr1NuEmBFP1ej6/Jf5a1pxWhVBe99HR+M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G9FoOBbRxyK/rb9TZvQaS+Mgj+/fUjJOXR4MuODqa+UVfsNkCYVHLZfsism6F1DAETvVIZRV2Ul8Jia1qOu1zBMFarP+HyjlD4QE5e9YlmTAbvh2kF/zb3dEmXGge16m8ptQ7ZhftDypfi61YgEzbYVy7pqYByDDZozzKAoR8I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Y3cNs1XkRz1yrY2;
+	Thu,  5 Dec 2024 09:33:49 +0800 (CST)
+Received: from kwepemj200003.china.huawei.com (unknown [7.202.194.15])
+	by mail.maildlp.com (Postfix) with ESMTPS id 72AB21A016C;
+	Thu,  5 Dec 2024 09:33:33 +0800 (CST)
+Received: from localhost.huawei.com (10.90.30.45) by
+ kwepemj200003.china.huawei.com (7.202.194.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 5 Dec 2024 09:33:32 +0800
+From: Qinxin Xia <xiaqinxin@huawei.com>
+To: <guohanjun@huawei.com>, <lpieralisi@kernel.org>, <sudeep.holla@arm.com>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>
+CC: <fanghao11@huawei.com>, <prime.zeng@hisilicon.com>,
+	<yangyicong@huawei.com>, <linuxarm@huawei.com>, <xiaqinxin@huawei.com>
+Subject: [PATCH v2] ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A
+Date: Thu, 5 Dec 2024 09:33:31 +0800
+Message-ID: <20241205013331.1484017-1-xiaqinxin@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemj200003.china.huawei.com (7.202.194.15)
 
-From: Hans de Goede <hdegoede@redhat.com>
+HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
+and thus suffers the same erratum. List them in the PMCG platform
+information list without introducing a new SMMU PMCG Model.
 
-[ Upstream commit bd8aa15848f5f21951cd0b0d01510b3ad1f777d4 ]
+Update the silicon-errata.rst as well.
 
-The Asus entries in the acpi_quirk_skip_dmi_ids[] table are the only
-entries without a comment which model they apply to. Add these comments.
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
 
-The Asus TF103C entry also is in the wrong place for what is supposed to
-be an alphabetically sorted list. Move it up so that the list is properly
-sorted and add a comment that the list is alphabetically sorted.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241116095825.11660-2-hdegoede@redhat.com
-[ rjw: Changelog and subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 159ac2b19672d..a53fe120348eb 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -287,6 +287,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 	/*
- 	 * 2. Devices which also have the skip i2c/serdev quirks and which
- 	 *    need the x86-android-tablets module to properly work.
-+	 *    Sorted alphabetically.
- 	 */
- #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
- 	{
-@@ -312,6 +313,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
-+		/* Asus ME176C tablet */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ME176C"),
-@@ -322,23 +324,24 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
--		/* Lenovo Yoga Book X90F/L */
-+		/* Asus TF103C transformer 2-in-1 */
- 		.matches = {
--			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
--					ACPI_QUIRK_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
-+		/* Lenovo Yoga Book X90F/L */
- 		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
+Changes since V1:
+- Change the description of PMCG HIP09x to HIP09A in silicon-errata.rst
+- Link: https://lore.kernel.org/linux-arm-kernel/4ac9e057-725c-a0ae-e2db-612ea359bec1@huawei.com/T/#mf90dd6937b2aee3895a1b2cc9d0ec8a6061e5c8a
+
+Documentation/arch/arm64/silicon-errata.rst | 5 +++--
+drivers/acpi/arm64/iort.c                   | 2 ++
+2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index 77db10e944f0..b42fea07c5ce 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -255,8 +255,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
+-|                | ,11} SMMU PMCG  |                 |                             |
++| Hisilicon      | Hip{08,09,09A,10| #162001900      | N/A                         |
++|                | ,10C,11}        |                 |                             |
++|                | SMMU PMCG       |                 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip09           | #162100801      | HISILICON_ERRATUM_162100801 |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 1f7e4c691d9e..98759d6199d3 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1716,6 +1716,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip09 Platform */
+ 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
+ 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
 -- 
-2.43.0
+2.33.0
 
 
