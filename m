@@ -1,370 +1,326 @@
-Return-Path: <linux-acpi+bounces-9960-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9961-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601FE9E5FBA
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 21:49:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862759E5FC9
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 21:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAAED16C150
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 20:49:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558E016C0C5
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Dec 2024 20:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F2B1B87D0;
-	Thu,  5 Dec 2024 20:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46F01BD9E4;
+	Thu,  5 Dec 2024 20:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3kZQbGiK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXw9HduX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2057.outbound.protection.outlook.com [40.107.94.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9044B1B6D02;
-	Thu,  5 Dec 2024 20:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733431786; cv=fail; b=dAKysmtalMkILHEUhDWp6wFH4z5Y3j6ld7CRkkBVrz+DwIHLVZXUsJRv6zR5MD1zQ+tXZb2FyFsMTHbaaZqfnZOKJL2XUX1GjYRjbFU2R6W4TKJWlBg57t887QL/BpjjdtcMEz9/Qf0RFnEryS5YI/NoFNdmZ0+qDvbtk/Nk9ls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733431786; c=relaxed/simple;
-	bh=PFwi0W2Pvi0aTFQykr1/ewi02fK/Byx8dvsx6oDvNhE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=u3r87Iosvo3tFYLfDzeKnOt/A6dC31AxeqWi4LDuyTKEttWnm6b6R2eNaAzFPViPr51vio2fJ9whLpSUDMZ6Z2GlPE2O12G4zRI0O59XO1vmnZx1K2HXAzfbGl7lYeyIPTeqQ4tGIYrJHQ6shgP3hnA9TTzOT+Ta41wyZu1vdVA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3kZQbGiK; arc=fail smtp.client-ip=40.107.94.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=heyG+CQfYQ3jVLYGf18XZ6z4eK5POExv9CzHxH097VXwK2TQeo9/dyNYPGneeS0dQY/y7dxz6arAmD5K9N6KdvelVw87uDFF5wg3FHFu9+SYNpxBSvlARcFWSUywtaX4IHlsXjrIdiUUvXLWE0Fn0Bcf/Pl33ZfyAIEWEK5DhHjByxTZ1r3hV9gxiiTFiJucDlqXBJte+tXMI3pEaOhBRdz99yAb/Wfzfz+WJxVu+S6lXmgEFfqRZKPTYee8nQHYodl2+VsBXtZ4EtipB9HDUE4gc93M5UzOIPWlNyE6uCsJTjfiyQfJAO5mgo95OkiWWjP1UoIZvwCfsEuY0dAoiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Oq74//hu6lmUd9isYSuyOsexQ6x8BZCWdccvcwf0Vhs=;
- b=x1uioLgvBvaqI2IFS2iL4emAUNn9GNEcEIsPY5uMXCYbBvj6Fn4qfHVZJeZ02sPQxwx++j+9uT1RD/YbnxpPdRs7QppuHbMn1e1xrnB/21tg2GXpt0IqF8cmhBeSn5A6vrRNp1W0+NcAzJjHtgC7pwWJ6lfbypaDT/D8jknEH2Zz/lH+y80xFzEbZNiFcmbM0klhyAFi7B3gQzoKeXVoXlOjVIQMNnDdfpB1RWL9fACRprXjV2JNozAiEXhbY3xi+BnXxXVHXkCpKj9l9mPSlIeQpj6ghU+Nw+7D3zdzwwzIaHvszZzUd+9olUT+t2uCKFaDzZTicArPf6EsoU/MeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Oq74//hu6lmUd9isYSuyOsexQ6x8BZCWdccvcwf0Vhs=;
- b=3kZQbGiK1Wc8Y3ottcy4IHbKRIjNamtTXa0UD6gyJpv5OZSw7mGxpX5hssBlIPrqTZVNa157glirGW8AwYQOtGXr7UqKAx06KFcxFEcpeQ3cY7sNgdTN5D/ldYtfcOsueyZLnVCTBLh6/FsLX2X18hybl8rNh1ztJW2BZdXz4r4=
-Received: from SJ0PR03CA0265.namprd03.prod.outlook.com (2603:10b6:a03:3a0::30)
- by SN7PR12MB7978.namprd12.prod.outlook.com (2603:10b6:806:34b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Thu, 5 Dec
- 2024 20:49:40 +0000
-Received: from MWH0EPF000A6732.namprd04.prod.outlook.com
- (2603:10b6:a03:3a0:cafe::6d) by SJ0PR03CA0265.outlook.office365.com
- (2603:10b6:a03:3a0::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.19 via Frontend Transport; Thu,
- 5 Dec 2024 20:49:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- MWH0EPF000A6732.mail.protection.outlook.com (10.167.249.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8230.7 via Frontend Transport; Thu, 5 Dec 2024 20:49:39 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Dec
- 2024 14:49:38 -0600
-Received: from [172.25.146.163] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Thu, 5 Dec 2024 14:49:37 -0600
-Message-ID: <4227f19d-f065-4563-b48b-538aafe52ed9@amd.com>
-Date: Thu, 5 Dec 2024 15:49:37 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101B1B87ED;
+	Thu,  5 Dec 2024 20:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733432264; cv=none; b=cKKbe7/ncRJYZD4XHjarcMyOdlt4Ndu6N0e+lRu/e1kfZReXb34yPQhPM7IiQ7XLE21x+8c/W5M6EQ9c4ewcCWHMl4whxy5YvCedBXtMYFNowoTd358sUaWwldRf5LHqZU/WMTNWAfR98+zXANU5fcq0v30xM8ZVys+cx3orcSQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733432264; c=relaxed/simple;
+	bh=bXSzby0hvnLZ0qv9eLTFsdH85WbSNNxJt7ob8/XBARE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFIhmdf2mYE9lcCenXD+07GPChj1CWCbHvA53KgtznDVkDh4HRRQ/IocU9rwCc2yw4FmI2jiQ9srL7ZFAcEBCg44oGO63d3ZfePfyfcWFIAGHYy8UEhVQD8GQJq2jZnu7Z9TiJbq3qFJPEUV3awvkUfxpF+By9VftxRZuEIbp5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXw9HduX; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7e9e38dd5f1so1103568a12.0;
+        Thu, 05 Dec 2024 12:57:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733432262; x=1734037062; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yJYdYsCWZVuGog0Sfct40Fl4Auwk6UGWQUDUoRbidPg=;
+        b=PXw9HduXByNlex6OIyPtvBOs5WIC1uMpXLs4NSi7J12vg+HM/AVxIz4EmQzQJZ4W48
+         Wck2015GaxQsW9iJK8L9ybi2CUS2myjbrVH2e2CTtIMBKcyQlGnmoUBzbUd+puVEHbsb
+         lQ+TLg1lreUTnWgetELf7698xIjoLG3Gk88TmOZtSGTZu1e0y6kGBGzlC5kZy+GtYMjP
+         1Z7aUHCT99Rl0xmSz+4vuv6u1I3rbsOFHQcLG7vPC9jvHqr2n6HzpcOiPnrI3qvor5/s
+         Y49cdmA8JEMIn6Id3wdlmxtSetHULY3acuEA0u35ukSKUjxh81/0e4Ujm6AnEHkmJ3Ks
+         4ZKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733432262; x=1734037062;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yJYdYsCWZVuGog0Sfct40Fl4Auwk6UGWQUDUoRbidPg=;
+        b=xJrAl5xieIiI7w3xr1PmvuIRN5sQ13AS3Pp+JnJ6Iyzp73UcszLKVyDTumIMuIEOoU
+         cWVTMZvE1HGUMfylXxjdgDzJvyw/kTqP6iYGL+sRjZ+O9kAll9ffw4hb5x4h0NrObzrG
+         7ym6hBLZ62NurnX6UFWWQ0bL3jj4yPBRKLi3cWuYeYCxFaR/wp+X1y42RQ9Tspw+WLXM
+         fy1ZwSoEaB0SP3z68T3JbiaX0UM7x0CePz4qarq2dHtBB/P8RB6yxxnaMlBJ2fVXqpFo
+         D6w6ZgU4yxxoHzh3ZkDYNY5VoBIe6HR8t9K+/tSVCDAi5xx7ZNhF0lIOSIcElw/Kt7cJ
+         pRBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6SSI24ogvZd8wBHy46+NvvoIZF+FtDu37Dm86cO7GZIaW9bq52nlyibNkKNGuIJRHSp1E5vV+XFsMKK7p@vger.kernel.org, AJvYcCUPJlzUr1Gv9IKIVoc6sLMt93/v22RY+O9fy5k8RVB3du/dqxWbb513hIs43zarIFk37OuPyzOfOXLa@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu7UE4SbeIQOSC3odOri0cDYfIC/GKJuzLyzGv0wXhAR4SURg1
+	6ZQ+Uef+EESt5Frhal1ttdxv5gCq9819iIOtaUam4pJEltJ12uUh
+X-Gm-Gg: ASbGncsLSQMTpam36M6GBoa00loZjneQA9brrn/XmeCQil1oPdPV6RhhipinnTRwa9T
+	DV5S67rnepL/wg4lyEf/V6FkXhAYTBvbG4JAyVYABtJqxoZ0vfdk/i1jF05rpKxgbEmmcAFTneP
+	HQS5h1BglZkNpdsotfj9s48XtJRw03mqUaz8pmQHZpAhJoUFntOlOZx7ogX3MU5BoocXawGRBvl
+	OpN6nTs7v5uf6sxHiZt1lrqzKeiokeJfwzWMBSVOoy+orVDhkc=
+X-Google-Smtp-Source: AGHT+IGPQ7lBYi4pYB8s6MjQrrs0QfJIM629bd3og+IERFIGnD8s9P9180sbiXAKiPA/zSe9sVSNrQ==
+X-Received: by 2002:a05:6a20:7484:b0:1cf:3c60:b8d3 with SMTP id adf61e73a8af0-1e1870c66f8mr498600637.19.1733432262040;
+        Thu, 05 Dec 2024 12:57:42 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:1f09:3974:393a:8d85])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725a2ca62cesm1659382b3a.136.2024.12.05.12.57.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 12:57:41 -0800 (PST)
+Date: Thu, 5 Dec 2024 12:57:38 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] device property: do not leak child nodes when using
+ NULL/error pointers
+Message-ID: <Z1ITwpJcwPNc37X_@google.com>
+References: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
+ <Z0hsbNqXSkQjsR1v@smile.fi.intel.com>
+ <Z0j3EtRmYBmGFApu@google.com>
+ <Z0nUpytu0GFUgQ9V@smile.fi.intel.com>
+ <Z0q75n_P3sZYnviO@google.com>
+ <Z0uHJJKMog-REw1D@smile.fi.intel.com>
+ <Z06b0oTvxUi4DTlx@google.com>
+ <Z08HQ2JmETJLNuud@smile.fi.intel.com>
+ <Z0-KHYnhu81ljbDk@google.com>
+ <Z0-tcsOw5imlWZn4@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] acpi/cppc: extract _cpc entry parsing logic
-To: Penny Zheng <Penny.Zheng@amd.com>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	"Len Brown" <lenb@kernel.org>
-CC: Ray Huang <Ray.Huang@amd.com>, Xenia Ragiadakou
-	<Xenia.Ragiadakou@amd.com>, <xen-devel@lists.xenproject.org>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-References: <20241205054252.471761-1-Penny.Zheng@amd.com>
- <20241205054252.471761-3-Penny.Zheng@amd.com>
-Content-Language: en-US
-From: Jason Andryuk <jason.andryuk@amd.com>
-In-Reply-To: <20241205054252.471761-3-Penny.Zheng@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB03.amd.com: jason.andryuk@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6732:EE_|SN7PR12MB7978:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd1d4c96-c0ea-4b10-41a4-08dd156e5696
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dzJoT3dERnd0SFNkSlduSDVHbm85NG5jOXJPMk4yb3A3Tnhubmg5a09VZkVH?=
- =?utf-8?B?NjRNWDFTZWM3MGJ5TWh6Y3NLVlNNeS83NUtiOFpFT1I5VEpsZStHRW9ZdnJF?=
- =?utf-8?B?dWlDMFpobUc3RTNDbFFLY21US0xrOUhHTFVUY3NXVnVHU0luV1h5cFJNOVpl?=
- =?utf-8?B?bFVKMFNYUEI3LzJMMG9KU2dmNVBwQUFPaWtTL1BxMXVBekpyVTZScEYzTEdX?=
- =?utf-8?B?cGtnSDNsVU5FOE9URXBLQm1OeW1hWDFIUTVBWVZ2WVBPMklWYThLUFozNGhq?=
- =?utf-8?B?NUlQbGlubDVlZ0pHUkplTzQ0bGtaYVI1eTIyZTJPZndKbWI0cnJUWnp5MVU3?=
- =?utf-8?B?TzdmcGNxWmcxdVNZcUZVYmZ1bHRUVEdMZnQ0SEViUzNZZnI0UDdnOFhTbW05?=
- =?utf-8?B?NG8xeFBVK1dpLzVFM3hVdTJ0OEhETER6OVRsQmRZbFFnOHkvaEdWb2hmT05V?=
- =?utf-8?B?OVk1OVRLSkpGVzZJejQzc0pwczcxd0tsRzd2S2JrTEtGV1lmM2ZjZmtiYTBF?=
- =?utf-8?B?NlRyRTFXZU5Mc2czb0ZCSTRWMndDcFRjbXNBS3dWUnNtWXJUVnBwZVlYalhM?=
- =?utf-8?B?UGVJWXROK3I2NkROdlpUQ0FXT1pqVXVrVU5NbjA5QWNXN1p0YldSQ0w5Y0tR?=
- =?utf-8?B?b1l4dGVnUFBwaWZnZ3ZjT2pxVzJxYlV4bXRVbk5ROHc3ZEJ4SVF1YU0xLzU1?=
- =?utf-8?B?SS9PdEx4MmY4NEJEZndjTG9GWFdFMExEZTNYN0dBeUhndU4xWXhDK29QUmlL?=
- =?utf-8?B?UmRlSlNSZzBjbG1rckgrRWVGdUhKclJmRFM4ek5ORTdZVEVTU08xdUtybzl2?=
- =?utf-8?B?Q3RSbDFBcCtkN09jTHJmby9EdWh4ckdNOXN4dnJ5QzZjQzN4UU9VV2tIQzBY?=
- =?utf-8?B?a3diaW5uaWMxeGVqRVc2aTlRYTVUd0dxUVViOHRoaTVCUFhBT3B5NHdtR2FZ?=
- =?utf-8?B?Q3RrTEFkV0RQRWNmd1hJMG9iZGZOQnZYYlNYY3VIbm0wcVM3QmduYXlTN0E4?=
- =?utf-8?B?N25sMmpsRkxRTTU4Y2lKQlNGa1hzV252dHpHS055MW91R2lRc3poYzVGNDRj?=
- =?utf-8?B?dWFnUWpjeXhydm9qTVpXM290SHhnb1NHTVRlTFBDNVFaRjdPZUxBT3RpdnFw?=
- =?utf-8?B?M2NlbWJobXVpeTdVb1lGamNvUk9KNmxLajRTSmlGa3pGcmhZdUpiQjB3QUJo?=
- =?utf-8?B?blBDaVRnWDlCL0ZSa2FRQXNSR3VORGNUekpYbHEzQmY3VGdyYmU4QnhTdEFU?=
- =?utf-8?B?dExLRGQ0NnZYb012ZksxRFozWnd0QWduSW5oNWVPYXl1K1Byd3JMYmNsUElQ?=
- =?utf-8?B?Y0h3aSt5Vk11dk0xcmhHTWZ4RkF3TU9TelBWVnZGTEZXMjJoeFo4QzI1Q0ls?=
- =?utf-8?B?S1BWU3U3a0Q1Qm5GbUFwaDBNM0FZczZUYjVPS2FtZVl0aFBIemVEUmpJL1FB?=
- =?utf-8?B?OElScWF5N3cyZ2NTRkoraFJaOXNrWWZ0L0ZTLzFTREMwSTJrYW5YRnRlN2RZ?=
- =?utf-8?B?cDFPeUU1cG9LM3ArMXNwa1BtUHl1WlFLdE1kekhzYk9VZ0dLSU1PTENzTjRZ?=
- =?utf-8?B?ZHErTWt1QnJ6TlJZWnNPdWFDczI0bWloRC9sRzJ2WEVuMVR3QmM3MHlzZVJs?=
- =?utf-8?B?c0NySzlZNFVaZnZ2amhpZ0FFdDE3Uk5zSGxERWcxek11SkZ6dXJuR2JJbUsv?=
- =?utf-8?B?V0NVNDVnRHNTNVkwWGNuVlRVNm1MVmUweHBUTVBSa3F2UzlMN1Rqam95VFA4?=
- =?utf-8?B?dTF5WTM5cUFGOHJsZ1RyV0hoV1BXUkdwR2xpUGpua1l6WUYvUUZMeno4VnBy?=
- =?utf-8?B?TGsvNWVuMUNQS2dqUU5GRUR4T3RWb3BkeWlXTHlVOGhSNW5xRE80Qk9rbVow?=
- =?utf-8?B?di9qNjk2eHR4TXRMOWhLeVltTW5jblY5a1Z6alBSSVVEbTR1VVN1M3p5NlIy?=
- =?utf-8?Q?VvhMefGIbE+gOSfAsJarJ49TCN7pzzqM?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 20:49:39.8189
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd1d4c96-c0ea-4b10-41a4-08dd156e5696
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6732.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7978
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z0-tcsOw5imlWZn4@smile.fi.intel.com>
 
-Adding Rafael and Len, since the patch touches drivers/acpi/.
-
-On 2024-12-05 00:42, Penny Zheng wrote:
-> When running as Xen dom0 PVH guest, MADT table is customized
-> and may have the "wrong" UID processor number, which is
-> inconsistent with the UID in Processor entry in native DSDT.
+On Wed, Dec 04, 2024 at 03:16:34AM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 03, 2024 at 02:45:49PM -0800, Dmitry Torokhov wrote:
+> > On Tue, Dec 03, 2024 at 03:27:31PM +0200, Andy Shevchenko wrote:
+> > > On Mon, Dec 02, 2024 at 09:49:06PM -0800, Dmitry Torokhov wrote:
+> > > > On Sat, Nov 30, 2024 at 11:44:04PM +0200, Andy Shevchenko wrote:
+> > > > > On Fri, Nov 29, 2024 at 11:16:54PM -0800, Dmitry Torokhov wrote:
+> > > > > > On Fri, Nov 29, 2024 at 04:50:15PM +0200, Andy Shevchenko wrote:
+> > > > > > > On Thu, Nov 28, 2024 at 03:04:50PM -0800, Dmitry Torokhov wrote:
+> > > > > > > > On Thu, Nov 28, 2024 at 03:13:16PM +0200, Andy Shevchenko wrote:
+> > > > > > > > > On Wed, Nov 27, 2024 at 09:39:34PM -0800, Dmitry Torokhov wrote:
 > 
-> As a result, during ACPI boot-up for dom0, linux fails to set
-> up proper processor logical id <-> physical id map(acpi_map_cpuid).
-> Furthermore, It leads to that some ACPI processor feature data,
-> like per-cpu cpc_desc structure, failed to be correctly stored.
+> ...
 > 
-> In order to re-parse _CPC entry later for delivering correct data
-> in performance hypercall, firstly, we extract parsing logic from
-> acpi_cppc_processor_probe() and export it as a new function
-> acpi_cppc_processor_parse().
+> > > > > > > > > > @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+> > > > > > > > > >  	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > > > > > > > >  	struct fwnode_handle *next;
+> > > > > > > > > 
+> > > > > > > > > > -	if (IS_ERR_OR_NULL(fwnode))
+> > > > > > > > > > +	if (IS_ERR_OR_NULL(fwnode)) {
+> > > > > > > > > > +		fwnode_handle_put(child);
+> > > > > > > > > >  		return NULL;
+> > > > > > > > > > +	}
+> > > > > > > > > 
+> > > > > > > > > >  	/* Try to find a child in primary fwnode */
+> > > > > > > > > >  	next = fwnode_get_next_child_node(fwnode, child);
+> > > > > > > > > 
+> > > > > > > > > So, why not just moving the original check (w/o dropping the reference) here?
+> > > > > > > > > Wouldn't it have the same effect w/o explicit call to the fwnode_handle_put()?
+> > > > > > > > 
+> > > > > > > > Because if you rely on check in fwnode_get_next_child_node() you would
+> > > > > > > > not know if it returned NULL because there are no more children or
+> > > > > > > > because the node is invalid. In the latter case you can't dereference
+> > > > > > > > fwnode->secondary.
+> > > > > > > 
+> > > > > > > Yes, so, how does it contradict my proposal?
+> > > > > > 
+> > > > > > I guess I misunderstood your proposal then. Could you please explain it
+> > > > > > in more detail?
+> > > > > 
+> > > > > 
+> > > > > Current code (in steps):
+> > > > > 	if (IS_ERR_OR_NULL()) check
+> > > > > 	trying primary
+> > > > > 	trying secondary if previous is NULL
+> > > > > 
+> > > > > 
+> > > > > My proposal
+> > > > > 
+> > > > > 	trying primary
+> > > > > 	return if not NULL
+> > > > > 	if (IS_ERR_OR_NULL()) check in its current form (no put op)
+> > > > > 	trying secondary
+> > > > > 
+> > > > > After your first patch IIUC this is possible as trying primary will put child uncoditionally.
+> > > > 
+> > > > Ah, I see. No, I do not think this is a good idea: it will make the code
+> > > > harder to understand for a casual reader: "Why do we check node validity
+> > > > only after we used it for the first time?"
+> > > 
+> > > Theare a re already a few API calls there that are hard to understand, I spent
+> > > some time on them to get it through and still got it wrong as this series
+> > > shows. So, I don't think we anyhow change this.
+> > 
+> > The fact that some code is confusing does not mean that we should add
+> > more confusing code. We will not fix everything at once, but we can make
+> > things better bit by bit.
+> > 
+> > Look, the check where it is now makes total sense, you added it there
+> > yourself! It checks that we are dealing with a valid node and returns
+> > early. The intent is very easy to understand and the only thing that is
+> > missing is that "put" operation to satisfy the documented behavior.
+> > Anything more just makes things more complex for no good reason.
 > 
-> Also, replace logical processor id with ACPI ID, to show correct print
-> info in Xen dom0 PVH guest.
+> Right, that's why I think we need to go away from open coding the iteration
+> over the list of nodes (primary, secondary, etc).
 > 
-> Signed-off-by: Penny Zheng <Penny.Zheng@amd.com>
-
-Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
-
-No further comments by me - leaving untrimmed for Rafael and Len.
-
-Regards,
-Jason
-
-> ---
->   drivers/acpi/cppc_acpi.c | 93 +++++++++++++++++++++++-----------------
->   1 file changed, 53 insertions(+), 40 deletions(-)
+> > > > For the code not in a hot path there is a lot of value in simplicity.
+> > > 
+> > > If you really want to go to this rabbit hole, think how we can get rid of
+> > > repetitive checks of the secondary or more if any in the future nodes in the
+> > > list.
+> > > 
+> > > So the basic idea is to have this all hidden (to some extent) behind the macro
+> > > or alike. In the code it would be something as
+> > > 
+> > >   for node in primary, secondary, ...
+> > >     call the API
+> > >     if (okay)
+> > > 	return result
+> > > 
+> > >   return error
+> > > 
+> > > This will indeed help.
+> > 
+> > I think this will indeed help if we ever going to have more than primary
+> > and secondary nodes. It is also tricky if you want to transition
+> > seamlessly between different types of nodes (i.e. you have ACPI primary
+> > with OF overlay secondary with swnode as tertiary etc). And you probably
+> > want to add support for references between different typesof nodes
+> > (i.e. swnode being able to reference OF device node for example).
+> > 
+> > This kind of rework is however out of scope of what I have time to do at
+> > the moment.
 > 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index c3fc2c05d868..13d6ff84a1e9 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -675,19 +675,11 @@ static int pcc_data_alloc(int pcc_ss_id)
->   static inline void arch_init_invariance_cppc(void) { }
->   #endif
->   
-> -/**
-> - * acpi_cppc_processor_probe - Search for per CPU _CPC objects.
-> - * @pr: Ptr to acpi_processor containing this CPU's logical ID.
-> - *
-> - *	Return: 0 for success or negative value for err.
-> - */
-> -int acpi_cppc_processor_probe(struct acpi_processor *pr)
-> +static int acpi_cppc_processor_parse(struct acpi_processor *pr, struct cpc_desc *cpc_ptr)
->   {
->   	struct acpi_buffer output = {ACPI_ALLOCATE_BUFFER, NULL};
->   	union acpi_object *out_obj, *cpc_obj;
-> -	struct cpc_desc *cpc_ptr;
->   	struct cpc_reg *gas_t;
-> -	struct device *cpu_dev;
->   	acpi_handle handle = pr->handle;
->   	unsigned int num_ent, i, cpc_rev;
->   	int pcc_subspace_id = -1;
-> @@ -706,31 +698,24 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   	status = acpi_evaluate_object_typed(handle, "_CPC", NULL, &output,
->   			ACPI_TYPE_PACKAGE);
->   	if (ACPI_FAILURE(status)) {
-> -		ret = -ENODEV;
-> -		goto out_buf_free;
-> +		return -ENODEV;
->   	}
->   
->   	out_obj = (union acpi_object *) output.pointer;
->   
-> -	cpc_ptr = kzalloc(sizeof(struct cpc_desc), GFP_KERNEL);
-> -	if (!cpc_ptr) {
-> -		ret = -ENOMEM;
-> -		goto out_buf_free;
-> -	}
-> -
->   	/* First entry is NumEntries. */
->   	cpc_obj = &out_obj->package.elements[0];
->   	if (cpc_obj->type == ACPI_TYPE_INTEGER)	{
->   		num_ent = cpc_obj->integer.value;
->   		if (num_ent <= 1) {
->   			pr_debug("Unexpected _CPC NumEntries value (%d) for CPU:%d\n",
-> -				 num_ent, pr->id);
-> -			goto out_free;
-> +				 num_ent, pr->acpi_id);
-> +			goto out_pointer;
->   		}
->   	} else {
->   		pr_debug("Unexpected _CPC NumEntries entry type (%d) for CPU:%d\n",
-> -			 cpc_obj->type, pr->id);
-> -		goto out_free;
-> +			 cpc_obj->type, pr->acpi_id);
-> +		goto out_pointer;
->   	}
->   
->   	/* Second entry should be revision. */
-> @@ -739,14 +724,14 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   		cpc_rev = cpc_obj->integer.value;
->   	} else {
->   		pr_debug("Unexpected _CPC Revision entry type (%d) for CPU:%d\n",
-> -			 cpc_obj->type, pr->id);
-> -		goto out_free;
-> +			 cpc_obj->type, pr->acpi_id);
-> +		goto out_pointer;
->   	}
->   
->   	if (cpc_rev < CPPC_V2_REV) {
->   		pr_debug("Unsupported _CPC Revision (%d) for CPU:%d\n", cpc_rev,
-> -			 pr->id);
-> -		goto out_free;
-> +			 pr->acpi_id);
-> +		goto out_pointer;
->   	}
->   
->   	/*
-> @@ -758,8 +743,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   	    (cpc_rev == CPPC_V3_REV && num_ent != CPPC_V3_NUM_ENT) ||
->   	    (cpc_rev > CPPC_V3_REV && num_ent <= CPPC_V3_NUM_ENT)) {
->   		pr_debug("Unexpected number of _CPC return package entries (%d) for CPU:%d\n",
-> -			 num_ent, pr->id);
-> -		goto out_free;
-> +			 num_ent, pr->acpi_id);
-> +		goto out_pointer;
->   	}
->   	if (cpc_rev > CPPC_V3_REV) {
->   		num_ent = CPPC_V3_NUM_ENT;
-> @@ -793,7 +778,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   						goto out_free;
->   				} else if (pcc_subspace_id != gas_t->access_width) {
->   					pr_debug("Mismatched PCC ids in _CPC for CPU:%d\n",
-> -						 pr->id);
-> +						 pr->acpi_id);
->   					goto out_free;
->   				}
->   			} else if (gas_t->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-> @@ -848,7 +833,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   			memcpy(&cpc_ptr->cpc_regs[i-2].cpc_entry.reg, gas_t, sizeof(*gas_t));
->   		} else {
->   			pr_debug("Invalid entry type (%d) in _CPC for CPU:%d\n",
-> -				 i, pr->id);
-> +				 i, pr->acpi_id);
->   			goto out_free;
->   		}
->   	}
-> @@ -864,6 +849,45 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   		cpc_ptr->cpc_regs[i].cpc_entry.int_value = 0;
->   	}
->   
-> +	pr_debug("Parsed _CPC entry for CPU: %d\n", pr->acpi_id);
-> +	kfree(output.pointer);
-> +	return 0;
-> +
-> + out_free:
-> +	/* Free all the mapped sys mem areas for this CPU */
-> +	for (i = 2; i < cpc_ptr->num_entries; i++) {
-> +		void __iomem *addr = cpc_ptr->cpc_regs[i-2].sys_mem_vaddr;
-> +
-> +		if (addr)
-> +			iounmap(addr);
-> +	}
-> + out_pointer:
-> +	kfree(output.pointer);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * acpi_cppc_processor_probe - Search for per CPU _CPC objects.
-> + * @pr: Ptr to acpi_processor containing this CPU's logical ID.
-> + *
-> + *	Return: 0 for success or negative value for err.
-> + */
-> +int acpi_cppc_processor_probe(struct acpi_processor *pr)
-> +{
-> +	acpi_handle handle = pr->handle;
-> +	struct cpc_desc *cpc_ptr;
-> +	struct device *cpu_dev;
-> +	int pcc_subspace_id = -1;
-> +	int ret = -ENODATA;
-> +
-> +	cpc_ptr = kzalloc(sizeof(struct cpc_desc), GFP_KERNEL);
-> +	if (!cpc_ptr)
-> +		return -ENOMEM;
-> +
-> +	ret = acpi_cppc_processor_parse(pr, cpc_ptr);
-> +	if (ret)
-> +		goto out_free;
-> +	pcc_subspace_id = per_cpu(cpu_pcc_subspace_idx, pr->id);
->   
->   	/* Store CPU Logical ID */
->   	cpc_ptr->cpu_id = pr->id;
-> @@ -907,21 +931,10 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
->   
->   	arch_init_invariance_cppc();
->   
-> -	kfree(output.pointer);
->   	return 0;
->   
->   out_free:
-> -	/* Free all the mapped sys mem areas for this CPU */
-> -	for (i = 2; i < cpc_ptr->num_entries; i++) {
-> -		void __iomem *addr = cpc_ptr->cpc_regs[i-2].sys_mem_vaddr;
-> -
-> -		if (addr)
-> -			iounmap(addr);
-> -	}
->   	kfree(cpc_ptr);
-> -
-> -out_buf_free:
-> -	kfree(output.pointer);
->   	return ret;
->   }
->   EXPORT_SYMBOL_GPL(acpi_cppc_processor_probe);
+> I am not asking you to invest into big rework, the idea is to try to fold the
+> iterations to a kind of loop. Is it feasible?
 
+We could potentially do something like below.
+
+BTW, do you know why fwnode_property_get_reference_args() returns
+-ENOENT for NULL or error fwnode instead of -EINVAL as the rest of them?
+And would you object to unifying this?
+
+Thanks.
+
+-- 
+Dmitry
+
+index 0ca3c0908b0c..3b4c394138e2 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -18,6 +18,28 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ 
++#define FWNODE_ITERATE(n, result, cont_val, op, ...)				\
++({										\
++	int __ret = -EINVAL;							\
++	typeof(result) __r;							\
++										\
++	for (const struct fwnode_handle *__node = n;				\
++	     !IS_ERR_OR_NULL(__node);						\
++	     __node = __node->secondary) {					\
++	        if (!__node->ops || !__node->ops->op) {				\
++			__ret = -ENXIO;						\
++			continue;						\
++		}								\
++		__r = __node->ops->op(__node, ## __VA_ARGS__);			\
++		if (__r != cont_val) {						\
++			result = __r;						\
++			__ret = 0;						\
++			break;							\
++		}								\
++	}									\
++	__ret;									\
++})
++
+ struct fwnode_handle *__dev_fwnode(struct device *dev)
+ {
+ 	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+@@ -57,16 +79,14 @@ EXPORT_SYMBOL_GPL(device_property_present);
+ bool fwnode_property_present(const struct fwnode_handle *fwnode,
+ 			     const char *propname)
+ {
++	int error;
+ 	bool ret;
+ 
+-	if (IS_ERR_OR_NULL(fwnode))
++	error = FWNODE_ITERATE(fwnode, ret, false, property_present, propname);
++	if (error)
+ 		return false;
+ 
+-	ret = fwnode_call_bool_op(fwnode, property_present, propname);
+-	if (ret)
+-		return ret;
+-
+-	return fwnode_call_bool_op(fwnode->secondary, property_present, propname);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(fwnode_property_present);
+ 
+@@ -259,18 +279,15 @@ static int fwnode_property_read_int_array(const struct fwnode_handle *fwnode,
+ 					  unsigned int elem_size, void *val,
+ 					  size_t nval)
+ {
++	int error;
+ 	int ret;
+ 
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return -EINVAL;
+-
+-	ret = fwnode_call_int_op(fwnode, property_read_int_array, propname,
+-				 elem_size, val, nval);
+-	if (ret != -EINVAL)
+-		return ret;
++	error = FWNODE_ITERATE(fwnode, ret, -EINVAL, property_read_int_array,
++			       propname, elem_size, val, nval);
++	if (error)
++		return error;
+ 
+-	return fwnode_call_int_op(fwnode->secondary, property_read_int_array, propname,
+-				  elem_size, val, nval);
++	return ret;
+ }
+ 
+ /**
+@@ -414,18 +431,15 @@ int fwnode_property_read_string_array(const struct fwnode_handle *fwnode,
+ 				      const char *propname, const char **val,
+ 				      size_t nval)
+ {
++	int error;
+ 	int ret;
+ 
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return -EINVAL;
+-
+-	ret = fwnode_call_int_op(fwnode, property_read_string_array, propname,
+-				 val, nval);
+-	if (ret != -EINVAL)
+-		return ret;
++	error = FWNODE_ITERATE(fwnode, ret, -EINVAL, property_read_string_array,
++			       propname, val, nval);
++	if (error)
++		return error;
+ 
+-	return fwnode_call_int_op(fwnode->secondary, property_read_string_array, propname,
+-				  val, nval);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(fwnode_property_read_string_array);
+ 
 
