@@ -1,264 +1,309 @@
-Return-Path: <linux-acpi+bounces-9978-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-9974-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B9D9E626F
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 01:49:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C043F9E624E
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 01:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B1EF167E1C
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 00:49:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968F4162343
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 00:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68C052F9B;
-	Fri,  6 Dec 2024 00:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C009F1DDF5;
+	Fri,  6 Dec 2024 00:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OsI4Q80k"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB971E51D
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Dec 2024 00:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44D44C9A;
+	Fri,  6 Dec 2024 00:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733446135; cv=none; b=UbYvkWORyngLMBgt4Q9tzL2Zj5IdlIB8FoSrnBNzUFeMeWwX1NGC2mlbzPlNEoWBPG460fH2P7rxLnArg0VeDNZA8EDYZOBDUiRG6vNMHliKCfMm2HD49WnLOeDSygIhKcb4JvBlEiLhZwBALZt5LeSdkzJWiKJYtaz5pgTxEZ0=
+	t=1733445262; cv=none; b=JSUqiSWDwFA3LF2CxprkH7tTRc8cGcxwjPaZUOmR51i/Q5sLrb6LuKNpBQwezMdwK9pEF/YQi4BKuugUlNw3jF7Xpo5MdHQIq4GnEsy48JPnzmEJpIiWufM8+8UgsVFzsKRhywnocqEPeN7ZrDLJ9/dhp7oXqvDx3e3oOCCRF7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733446135; c=relaxed/simple;
-	bh=RDfVKyiGPkxjQWiZXYTMz5EOd1dIdsbHDvSH0iNDcAE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KqZld9Oq9mNthXUbVsK3S9st4f3AZenuh5mhjAkXh14DWw2cmShPaGNpsW1TgA1XSle0VL0e63J2OvGGILbfFNgYw7i4+FfKc9L0Ap8dpeRRjf/6T6AwGX09Jcdljxj3BkDfLo9E9Y9YgYuXJRhDwBaBLMQo8GPTDjyiTUduGhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1733446126-086e2312d5235b0001-I98ny2
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx1.zhaoxin.com with ESMTP id IQ6SxxUcIQQpJ0vr (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Fri, 06 Dec 2024 08:48:46 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 6 Dec
- 2024 08:48:45 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::3066:e339:e3d6:5264]) by
- ZXSHMBX1.zhaoxin.com ([fe80::3066:e339:e3d6:5264%7]) with mapi id
- 15.01.2507.039; Fri, 6 Dec 2024 08:48:45 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Dec
- 2024 19:40:53 +0800
-From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
-	<robert.moore@intel.com>, <avadhut.naik@amd.com>, <yazen.ghannam@amd.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-CC: <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
-	<LeoLiu-oc@zhaoxin.com>
-Subject: [PATCH v4 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-Date: Thu, 5 Dec 2024 19:40:48 +0800
-X-ASG-Orig-Subj: [PATCH v4 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-Message-ID: <20241205114048.60291-4-LeoLiu-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241205114048.60291-1-LeoLiu-oc@zhaoxin.com>
-References: <20241205114048.60291-1-LeoLiu-oc@zhaoxin.com>
+	s=arc-20240116; t=1733445262; c=relaxed/simple;
+	bh=6j3WnygxaesB+X744Fs8q8o2v0Vz5ciq/joPGLwU69Q=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=NZVhTzOKZQTQb5WmfkHloToZjDi+jX0Fp+I09o/niLVvoXJFaGlcjRE7siYiDM/nV+PSycxv8ePkGXBKtm3dmoAba6sL6JcvUY1rPF6hG9Yw03IkDVgVIj8RGxycO8hyEgh67Kwc16VtAnh3REjffpGuic6Ji9JnOyp3WdpOLso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OsI4Q80k; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733445261; x=1764981261;
+  h=date:from:to:cc:subject:message-id;
+  bh=6j3WnygxaesB+X744Fs8q8o2v0Vz5ciq/joPGLwU69Q=;
+  b=OsI4Q80k165OJ8Q0R7KtHEP1Mp2vuGZRc9iPeeYgZ6qRCskr+giyrK3m
+   FMSpoG9qABnZ2NBEtWLhI9PQ6BZo77axaEYCKHT2FjnIRtWYJ0RCJ87MH
+   RsGewHp77lNEA4xTkj1NBcgbGGHZ6THfadUSuhgRjOxN3tlyAxQpX/5p1
+   e5ufN716Q+P3diMYah7LzwZAcpgxjbm7bu1I7QhKods1Lt6UPHixqlizZ
+   MVtlyobnxoZZgu6eP4cCjydP9jy0fAZYULL7bEx8lCpDAVGcvoevqPSHH
+   +TfbtTA20Jw2H0h1Kx+W65Q/aAdpMaXQ8nE6P9PxTAUDQuZm28f2szcQb
+   Q==;
+X-CSE-ConnectionGUID: BcxQoWctQpS2kisNdPoYAQ==
+X-CSE-MsgGUID: BCh6GUO0Rwy5qX1EzRMJSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="56269954"
+X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; 
+   d="scan'208";a="56269954"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 16:34:20 -0800
+X-CSE-ConnectionGUID: rjDKojJ4TbCiPtjwqgz0hg==
+X-CSE-MsgGUID: ZL0oxD4UQqqLKwSBo3KVNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; 
+   d="scan'208";a="94455206"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 05 Dec 2024 16:34:18 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tJMIS-0000Wx-0k;
+	Fri, 06 Dec 2024 00:34:16 +0000
+Date: Fri, 06 Dec 2024 08:30:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 4e13aaa70332423fef1f18034070e35dd7faad04
+Message-ID: <202412060847.SKBMDpUg-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Moderation-Data: 12/6/2024 8:48:45 AM
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1733446126
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5221
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.134151
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
 
-From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 4e13aaa70332423fef1f18034070e35dd7faad04  Merge branch 'pm-sleep' into bleeding-edge
 
-Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
-the purpose of this function is to extract register value from HEST PCIe
-AER structures and program them into AER Capabilities. This function
-applies to all hardware platforms that has a PCI Express AER structure
-in HEST.
+elapsed time: 728m
 
-Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
----
- drivers/pci/pci-acpi.c | 103 +++++++++++++++++++++++++++++++++++++++++
- drivers/pci/pci.h      |   9 ++++
- drivers/pci/probe.c    |   1 +
- 3 files changed, 113 insertions(+)
+configs tested: 215
+configs skipped: 9
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e583..6e29af8e6cc4 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -19,6 +19,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <linux/rwsem.h>
-+#include <acpi/apei.h>
- #include "pci.h"
-=20
- /*
-@@ -806,6 +807,108 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
- 	return -ENODEV;
- }
-=20
-+#ifdef CONFIG_ACPI_APEI
-+/*
-+ * program_hest_aer_common() - configure AER common registers for Root Por=
-ts,
-+ * Endpoints and PCIe to PCI/PCI-X bridges
-+ */
-+static void program_hest_aer_common(struct acpi_hest_aer_common aer_common=
-,
-+				    struct pci_dev *dev, int pos)
-+{
-+	u32 uncor_mask;
-+	u32 uncor_severity;
-+	u32 cor_mask;
-+	u32 adv_cap;
-+
-+	uncor_mask =3D aer_common.uncorrectable_mask;
-+	uncor_severity =3D aer_common.uncorrectable_severity;
-+	cor_mask =3D aer_common.correctable_mask;
-+	adv_cap =3D aer_common.advanced_capabilities;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
-+	pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
-+}
-+
-+static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root,
-+				  struct pci_dev *dev, int pos)
-+{
-+	u32 root_err_cmd;
-+
-+	root_err_cmd =3D aer_root->root_error_command;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
-+}
-+
-+static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_=
-bridge,
-+				    struct pci_dev *dev, int pos)
-+{
-+	u32 uncor_mask2;
-+	u32 uncor_severity2;
-+	u32 adv_cap2;
-+
-+	uncor_mask2 =3D hest_aer_bridge->uncorrectable_mask2;
-+	uncor_severity2 =3D hest_aer_bridge->uncorrectable_severity2;
-+	adv_cap2 =3D hest_aer_bridge->advanced_capabilities2;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
-+}
-+
-+static void program_hest_aer_params(struct hest_parse_aer_info info)
-+{
-+	struct pci_dev *dev;
-+	int port_type;
-+	int pos;
-+	struct acpi_hest_aer_root *hest_aer_root;
-+	struct acpi_hest_aer *hest_aer_endpoint;
-+	struct acpi_hest_aer_bridge *hest_aer_bridge;
-+
-+	dev =3D info.pci_dev;
-+	port_type =3D pci_pcie_type(dev);
-+	pos =3D pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
-+	if (!pos)
-+		return;
-+
-+	switch (port_type) {
-+	case PCI_EXP_TYPE_ROOT_PORT:
-+		hest_aer_root =3D info.hest_aer_root_port;
-+		program_hest_aer_common(hest_aer_root->aer, dev, pos);
-+		program_hest_aer_root(hest_aer_root, dev, pos);
-+	break;
-+	case PCI_EXP_TYPE_ENDPOINT:
-+		hest_aer_endpoint =3D info.hest_aer_endpoint;
-+		program_hest_aer_common(hest_aer_endpoint->aer, dev, pos);
-+	break;
-+	case PCI_EXP_TYPE_PCI_BRIDGE:
-+		hest_aer_bridge =3D info.hest_aer_bridge;
-+		program_hest_aer_common(hest_aer_bridge->aer, dev, pos);
-+		program_hest_aer_bridge(hest_aer_bridge, dev, pos);
-+	break;
-+	default:
-+		return;
-+	break;
-+	}
-+}
-+
-+int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
-+{
-+	struct hest_parse_aer_info info =3D {
-+		.pci_dev =3D dev
-+	};
-+
-+	if (!pci_is_pcie(dev))
-+		return -ENODEV;
-+
-+	if (apei_hest_parse(hest_parse_pcie_aer, &info) =3D=3D 1)
-+		program_hest_aer_params(info);
-+
-+	return 0;
-+}
-+#endif
-+
- /**
-  * pciehp_is_native - Check whether a hotplug port is handled by the OS
-  * @bridge: Hotplug port to check
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 2e40fc63ba31..78bdc121c905 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -897,6 +897,15 @@ static inline void pci_save_aer_state(struct pci_dev *=
-dev) { }
- static inline void pci_restore_aer_state(struct pci_dev *dev) { }
- #endif
-=20
-+#ifdef CONFIG_ACPI_APEI
-+int pci_acpi_program_hest_aer_params(struct pci_dev *dev);
-+#else
-+static inline int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
-+{
-+	return 0;
-+}
-+#endif
-+
- #ifdef CONFIG_ACPI
- bool pci_acpi_preserve_config(struct pci_host_bridge *bridge);
- int pci_acpi_program_hp_params(struct pci_dev *dev);
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 2e81ab0f5a25..33b8b46ca554 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2304,6 +2304,7 @@ static void pci_configure_device(struct pci_dev *dev)
- 	pci_configure_serr(dev);
-=20
- 	pci_acpi_program_hp_params(dev);
-+	pci_acpi_program_hest_aer_params(dev);
- }
-=20
- static void pci_release_capabilities(struct pci_dev *dev)
---=20
-2.34.1
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    clang-20
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    clang-20
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    clang-20
+arc                         haps_hs_defconfig    gcc-13.2.0
+arc                        nsimosci_defconfig    clang-20
+arc                            randconfig-001    clang-20
+arc                   randconfig-001-20241205    clang-20
+arc                   randconfig-001-20241206    gcc-14.2.0
+arc                            randconfig-002    clang-20
+arc                   randconfig-002-20241205    clang-20
+arc                   randconfig-002-20241206    gcc-14.2.0
+arc                           tb10x_defconfig    clang-20
+arc                        vdk_hs38_defconfig    gcc-14.2.0
+arc                    vdk_hs38_smp_defconfig    gcc-14.2.0
+arm                              allmodconfig    clang-20
+arm                               allnoconfig    gcc-14.2.0
+arm                              allyesconfig    clang-20
+arm                         assabet_defconfig    gcc-14.2.0
+arm                         at91_dt_defconfig    gcc-14.1.0
+arm                          collie_defconfig    gcc-14.2.0
+arm                          exynos_defconfig    gcc-14.2.0
+arm                           imxrt_defconfig    clang-20
+arm                        keystone_defconfig    clang-20
+arm                            mps2_defconfig    clang-20
+arm                        multi_v7_defconfig    gcc-14.2.0
+arm                        mvebu_v5_defconfig    gcc-14.1.0
+arm                           omap1_defconfig    clang-20
+arm                           omap1_defconfig    gcc-14.2.0
+arm                          pxa910_defconfig    gcc-14.2.0
+arm                            randconfig-001    clang-20
+arm                   randconfig-001-20241205    clang-20
+arm                   randconfig-001-20241206    gcc-14.2.0
+arm                            randconfig-002    clang-20
+arm                   randconfig-002-20241205    clang-20
+arm                   randconfig-002-20241206    gcc-14.2.0
+arm                            randconfig-003    clang-20
+arm                   randconfig-003-20241205    clang-20
+arm                   randconfig-003-20241206    gcc-14.2.0
+arm                            randconfig-004    clang-20
+arm                   randconfig-004-20241205    clang-20
+arm                   randconfig-004-20241206    gcc-14.2.0
+arm                             rpc_defconfig    gcc-14.2.0
+arm                        shmobile_defconfig    gcc-14.2.0
+arm                          sp7021_defconfig    clang-20
+arm                          sp7021_defconfig    gcc-14.2.0
+arm                           spitz_defconfig    gcc-14.2.0
+arm                           u8500_defconfig    gcc-13.2.0
+arm                         wpcm450_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-20
+arm64                             allnoconfig    gcc-14.2.0
+arm64                          randconfig-001    clang-20
+arm64                 randconfig-001-20241205    clang-20
+arm64                 randconfig-001-20241206    gcc-14.2.0
+arm64                          randconfig-002    clang-20
+arm64                 randconfig-002-20241205    clang-20
+arm64                 randconfig-002-20241206    gcc-14.2.0
+arm64                          randconfig-003    clang-20
+arm64                 randconfig-003-20241205    clang-20
+arm64                 randconfig-003-20241206    gcc-14.2.0
+arm64                          randconfig-004    clang-20
+arm64                 randconfig-004-20241205    clang-20
+arm64                 randconfig-004-20241206    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.2.0
+hexagon                          allyesconfig    clang-20
+i386                 buildonly-randconfig-001    gcc-12
+i386        buildonly-randconfig-001-20241206    clang-19
+i386                 buildonly-randconfig-002    gcc-12
+i386        buildonly-randconfig-002-20241206    clang-19
+i386                 buildonly-randconfig-003    gcc-12
+i386        buildonly-randconfig-003-20241206    clang-19
+i386                 buildonly-randconfig-004    gcc-12
+i386        buildonly-randconfig-004-20241206    clang-19
+i386                 buildonly-randconfig-005    gcc-12
+i386        buildonly-randconfig-005-20241206    clang-19
+i386                 buildonly-randconfig-006    gcc-12
+i386        buildonly-randconfig-006-20241206    clang-19
+loongarch                        alldefconfig    gcc-14.2.0
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+m68k                             alldefconfig    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                       m5249evb_defconfig    gcc-14.2.0
+m68k                        m5307c3_defconfig    gcc-14.1.0
+m68k                            mac_defconfig    gcc-14.2.0
+m68k                          multi_defconfig    gcc-14.2.0
+m68k                           virt_defconfig    clang-20
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                          ath79_defconfig    clang-20
+mips                          eyeq6_defconfig    clang-20
+mips                           ip27_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+openrisc                         alldefconfig    clang-20
+openrisc                          allnoconfig    clang-20
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                  or1klitex_defconfig    gcc-14.2.0
+openrisc                 simple_smp_defconfig    clang-20
+openrisc                       virt_defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    clang-20
+parisc                           allyesconfig    gcc-14.2.0
+parisc                generic-64bit_defconfig    gcc-14.2.0
+parisc64                         alldefconfig    clang-20
+parisc64                         alldefconfig    gcc-14.1.0
+powerpc                     akebono_defconfig    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    clang-20
+powerpc                          allyesconfig    gcc-14.2.0
+powerpc                    amigaone_defconfig    gcc-14.1.0
+powerpc                      arches_defconfig    gcc-14.2.0
+powerpc                   bluestone_defconfig    gcc-13.2.0
+powerpc                   currituck_defconfig    clang-20
+powerpc                       ebony_defconfig    clang-18
+powerpc                       eiger_defconfig    gcc-14.2.0
+powerpc                     ep8248e_defconfig    clang-20
+powerpc                          g5_defconfig    gcc-14.2.0
+powerpc                    ge_imp3a_defconfig    gcc-13.2.0
+powerpc                       holly_defconfig    clang-20
+powerpc                        icon_defconfig    clang-20
+powerpc                  iss476-smp_defconfig    gcc-14.2.0
+powerpc                      mgcoge_defconfig    gcc-14.2.0
+powerpc                 mpc8313_rdb_defconfig    gcc-13.2.0
+powerpc                 mpc832x_rdb_defconfig    gcc-14.2.0
+powerpc                 mpc834x_itx_defconfig    gcc-14.2.0
+powerpc                 mpc837x_rdb_defconfig    clang-20
+powerpc                    mvme5100_defconfig    gcc-14.2.0
+powerpc                       ppc64_defconfig    clang-18
+powerpc                      ppc6xx_defconfig    gcc-14.2.0
+powerpc                         ps3_defconfig    gcc-14.2.0
+powerpc                     redwood_defconfig    gcc-14.2.0
+powerpc                     skiroot_defconfig    gcc-14.2.0
+powerpc                     tqm8540_defconfig    clang-20
+powerpc                     tqm8540_defconfig    gcc-14.2.0
+powerpc                     tqm8541_defconfig    gcc-14.2.0
+powerpc                     tqm8548_defconfig    clang-20
+powerpc                     tqm8555_defconfig    clang-20
+powerpc                     tqm8560_defconfig    clang-20
+powerpc64                        alldefconfig    clang-18
+riscv                            allmodconfig    gcc-14.2.0
+riscv                             allnoconfig    clang-20
+riscv                            allyesconfig    gcc-14.2.0
+riscv                               defconfig    gcc-13.2.0
+riscv                    nommu_virt_defconfig    gcc-14.2.0
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                        dreamcast_defconfig    clang-18
+sh                        dreamcast_defconfig    gcc-14.2.0
+sh                ecovec24-romimage_defconfig    gcc-13.2.0
+sh                         ecovec24_defconfig    clang-20
+sh                        edosk7760_defconfig    gcc-14.2.0
+sh                             espt_defconfig    gcc-14.2.0
+sh                 kfr2r09-romimage_defconfig    gcc-14.1.0
+sh                          landisk_defconfig    gcc-14.2.0
+sh                          lboxre2_defconfig    gcc-14.2.0
+sh                            migor_defconfig    gcc-14.2.0
+sh                          polaris_defconfig    gcc-14.2.0
+sh                          r7780mp_defconfig    clang-18
+sh                          rsk7269_defconfig    clang-18
+sh                           se7206_defconfig    clang-20
+sh                           se7343_defconfig    clang-20
+sh                           se7721_defconfig    gcc-14.2.0
+sh                           se7722_defconfig    gcc-14.2.0
+sh                           se7724_defconfig    gcc-14.2.0
+sh                   secureedge5410_defconfig    clang-18
+sh                           sh2007_defconfig    gcc-14.2.0
+sh                   sh7724_generic_defconfig    gcc-14.2.0
+sh                        sh7757lcr_defconfig    gcc-14.2.0
+sh                        sh7763rdp_defconfig    clang-20
+sh                             shx3_defconfig    clang-20
+sh                             shx3_defconfig    gcc-14.2.0
+sh                            titan_defconfig    gcc-14.2.0
+sh                          urquell_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                       sparc32_defconfig    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-20
+um                               allyesconfig    clang-20
+um                           x86_64_defconfig    gcc-13.2.0
+x86_64               buildonly-randconfig-001    gcc-12
+x86_64      buildonly-randconfig-001-20241205    clang-19
+x86_64      buildonly-randconfig-001-20241206    clang-19
+x86_64               buildonly-randconfig-002    gcc-12
+x86_64      buildonly-randconfig-002-20241205    clang-19
+x86_64      buildonly-randconfig-002-20241206    clang-19
+x86_64               buildonly-randconfig-003    gcc-12
+x86_64      buildonly-randconfig-003-20241205    clang-19
+x86_64      buildonly-randconfig-003-20241206    clang-19
+x86_64               buildonly-randconfig-004    gcc-12
+x86_64      buildonly-randconfig-004-20241205    clang-19
+x86_64      buildonly-randconfig-004-20241206    clang-19
+x86_64               buildonly-randconfig-005    gcc-12
+x86_64      buildonly-randconfig-005-20241205    clang-19
+x86_64      buildonly-randconfig-005-20241206    clang-19
+x86_64               buildonly-randconfig-006    gcc-12
+x86_64      buildonly-randconfig-006-20241205    clang-19
+x86_64      buildonly-randconfig-006-20241206    clang-19
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                  cadence_csp_defconfig    gcc-14.2.0
+xtensa                generic_kc705_defconfig    clang-20
+xtensa                          iss_defconfig    gcc-14.2.0
+xtensa                    xip_kc705_defconfig    gcc-14.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
