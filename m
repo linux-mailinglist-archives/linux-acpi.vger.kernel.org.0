@@ -1,207 +1,148 @@
-Return-Path: <linux-acpi+bounces-10010-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10011-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D5D9E6FFD
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 15:23:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D1F9E7A53
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 22:03:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07E916CAF2
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 14:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604D2284B2A
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 21:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16444207DFD;
-	Fri,  6 Dec 2024 14:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768C01F3D27;
+	Fri,  6 Dec 2024 21:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nnis4g0A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462962040BD;
-	Fri,  6 Dec 2024 14:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90BD1C3C18;
+	Fri,  6 Dec 2024 21:03:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733495019; cv=none; b=p6DS66aL1NKh7GojOPBcZSUnbaG4lco9egw5+RxIZm1bbdwFPymccY/iekdeNGtzrdUDJEyGczmMIWbl1ouJaw8/00hqPYenhnvt+dl8taV3Gm96t3It66j7FZCJ+qRWnO7b8ZRaa9bouB2EtfZAwFwT9Ii/OaxuuOklgDfMW1E=
+	t=1733519006; cv=none; b=d/PpMLT3NwD0zYTim4B8uffJs0JCw4WKRn/6k2IwEl1xqEb9MKBKGaLrorDf5wuS5eVn9G1mJEpaarbZ93NmyzO+ygpWWcqoI9z8HY3jTZwZJ2LSGAOvqk9AkY48QDwxxDGXpcd7oh3tekOXdoxexcJEj2pyqEun/tLmv6Wfw8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733495019; c=relaxed/simple;
-	bh=CZf69GeuxRSB4nHlFT99feBX5u7AwBAV/jb+fIEfn0o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mbMVsmd1wRtdg8YgbACxvdXWmrw1+2M7lhAfy5gnKbFHmQ6v1D4N/WljcoQ3T8KC9ypgxsoxYPE2PMMJUIZolTD0+siSrdYVaSI28y9Qn0n7MyCuMepB2BaXnl+MLH+G/J6HAOdZGBwXzuWSeTOUGM+tTD8/fw5r8xK2254VzzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6216FEC;
-	Fri,  6 Dec 2024 06:24:04 -0800 (PST)
-Received: from [10.57.68.20] (unknown [10.57.68.20])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2A8DD3F71E;
-	Fri,  6 Dec 2024 06:23:33 -0800 (PST)
-Message-ID: <0f113d9d-faac-420a-9c75-9b620bf5c3f6@arm.com>
-Date: Fri, 6 Dec 2024 15:23:32 +0100
+	s=arc-20240116; t=1733519006; c=relaxed/simple;
+	bh=rjYe+1mTHx2nCmLqd3cmIWfysX4E1LYaiuujOJeiI6E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fwj8Oc+008r5UauOByV2vTtjzkyzcFW4QngkkCGEYjrFTCSSkQ2A6pTOyNeABvB4GVQIbktCu27z9PyosnciTI9F72Ma2/Cd1QMOr+2/8CWSlwdjvTzgaLs/phWCjw0VFcVkeOJrXPIfS5JGirQ7lf3F0MsMkSnf9Lhft7rD7BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nnis4g0A; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733519005; x=1765055005;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rjYe+1mTHx2nCmLqd3cmIWfysX4E1LYaiuujOJeiI6E=;
+  b=nnis4g0Awp80RXkdPPH8wgQN1FbpDsoGxknMkf72MLK3FcBmd6JcQrnk
+   T2WslOwP/V7aw2hW0Hh0gjYhyh4QEzlzK9/40s5rOzCrGs7K03A/MjS4I
+   taVrmqOGDuFAEU6+gY5LrAY+TWYZzPiPhY0BgXxvSuQ9mud5AvnIl2eLx
+   Jj4M23BKy9/yuCMo1Xget2Vrz27zUvzYpr3+9D2jZ6xfmHZupThAfaDj+
+   gphWN2Avn08aGuqdzRKKPi5sxMnQyreAu7KjDB/ucypYHdoTqComdEKOC
+   Qc8rK84NP5ks4cgf0bck6AnlhJ/0rbBm6LoImxUViModFONm2mO9qExPM
+   A==;
+X-CSE-ConnectionGUID: c0cxSqSyT5SRllVGlujyMw==
+X-CSE-MsgGUID: D2Kt/jQFTuuPbDp5XB3h+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="33233818"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; 
+   d="scan'208";a="33233818"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 13:03:24 -0800
+X-CSE-ConnectionGUID: P11hVv+GRmOT2rr69RHaUg==
+X-CSE-MsgGUID: Rl6xV7T1RHG+DT2T+/YfCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; 
+   d="scan'208";a="125344723"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 06 Dec 2024 13:03:20 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tJfTo-0002Fx-2P;
+	Fri, 06 Dec 2024 21:03:16 +0000
+Date: Sat, 7 Dec 2024 05:02:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zaid Alali <zaidal@os.amperecomputing.com>, rafael@kernel.org,
+	lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
+	bp@alien8.de, robert.moore@intel.com, dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com, Benjamin.Cheatham@amd.com,
+	Avadhut.Naik@amd.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
+	ira.weiny@intel.com, dave.jiang@intel.com,
+	sthanneeru.opensrc@micron.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 5/9] ACPI: APEI: EINJ: Enable the discovery of EINJv2
+ capabilities
+Message-ID: <202412070418.9pHXTR91-lkp@intel.com>
+References: <20241205211854.43215-6-zaidal@os.amperecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ACPI: CPPC: Refactor register get and set ABIs
-To: Lifeng Zheng <zhenglifeng1@huawei.com>, rafael@kernel.org,
- lenb@kernel.org, robert.moore@intel.com, viresh.kumar@linaro.org
-Cc: acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- zhanjie9@hisilicon.com, lihuisong@huawei.com, fanghao11@huawei.com
-References: <20241114084816.1128647-1-zhenglifeng1@huawei.com>
- <20241114084816.1128647-2-zhenglifeng1@huawei.com>
-Content-Language: en-US
-From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <20241114084816.1128647-2-zhenglifeng1@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205211854.43215-6-zaidal@os.amperecomputing.com>
 
-Hello Lifeng,
+Hi Zaid,
 
-On 11/14/24 09:48, Lifeng Zheng wrote:
-> Refactor register get and set ABIs using cppc_get_reg() and cppc_set_reg().
-> 
-> Rename cppc_get_perf() to cppc_get_reg() as a generic function to read cppc
-> registers, with two changes:
-> 
-> 1. Change the error kind to "no such device" when pcc_ss_id < 0, which
-> means that this cpu cannot get a valid pcc_ss_id.
-> 
-> 2. Add a check to verify if the register is a cpc supported one before
-> using it.
-> 
-> Add cppc_set_reg() as a generic function for setting cppc registers. Unlike
-> other set reg ABIs, this function checks CPC_SUPPORTED right after getting
-> the register, because the rest of the operations are meaningless if this
-> register is not a cpc supported one.
-> 
-> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-> ---
->   drivers/acpi/cppc_acpi.c | 191 +++++++++++++++------------------------
->   1 file changed, 72 insertions(+), 119 deletions(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index c1f3568d0c50..306ced9c3376 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1179,10 +1179,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
->   	return ret_val;
->   }
->   
-> -static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
-> +static int cppc_get_reg(int cpunum, enum cppc_regs reg_idx, u64 *val)
->   {
->   	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
-> +	struct cppc_pcc_data *pcc_ss_data = NULL;
->   	struct cpc_register_resource *reg;
-> +	int pcc_ss_id;
-> +	int ret = 0;
+kernel test robot noticed the following build warnings:
 
-NIT: Might not be necessary if we save the value returned by cpc_read(),
-cf. other comment below.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge linus/master v6.13-rc1 next-20241206]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->   
->   	if (!cpc_desc) {
->   		pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
-> @@ -1191,20 +1194,23 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->   
->   	reg = &cpc_desc->cpc_regs[reg_idx];
->   
-> +	if (!CPC_SUPPORTED(reg)) {
-> +		pr_debug("CPC register (reg_idx=%u) is not supported\n", reg_idx);
-> +		return -EOPNOTSUPP;
-> +	}
-> +
->   	if (CPC_IN_PCC(reg)) {
-> -		int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
-> -		struct cppc_pcc_data *pcc_ss_data = NULL;
-> -		int ret = 0;
-> +		pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
->   
->   		if (pcc_ss_id < 0)
-> -			return -EIO;
-> +			return -ENODEV;
+url:    https://github.com/intel-lab-lkp/linux/commits/Zaid-Alali/ACPICA-Update-values-to-hex-to-follow-ACPI-specs/20241206-052420
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20241205211854.43215-6-zaidal%40os.amperecomputing.com
+patch subject: [PATCH v2 5/9] ACPI: APEI: EINJ: Enable the discovery of EINJv2 capabilities
+config: x86_64-randconfig-101-20241206 (https://download.01.org/0day-ci/archive/20241207/202412070418.9pHXTR91-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
 
-NIT: Could add here:
-   pr_debug("Invalid pcc_ss_id\n");
-just as you did in cppc_set_reg()
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412070418.9pHXTR91-lkp@intel.com/
 
->   
->   		pcc_ss_data = pcc_data[pcc_ss_id];
->   
->   		down_write(&pcc_ss_data->pcc_lock);
->   
->   		if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
-> -			cpc_read(cpunum, reg, perf);
-> +			cpc_read(cpunum, reg, val);
+cocci warnings: (new ones prefixed by >>)
+>> drivers/acpi/apei/einj-core.c:728:21-27: ERROR: application of sizeof to pointer
 
-This was not introduced by your patch, but cpc_read() return a value.
-Shouldn't we return it instead of 0 ?
+vim +728 drivers/acpi/apei/einj-core.c
 
->   		else
->   			ret = -EIO;
->   
-> @@ -1213,21 +1219,65 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->   		return ret;
->   	}
->   
-> -	cpc_read(cpunum, reg, perf);
-> +	cpc_read(cpunum, reg, val);
+   721	
+   722	static ssize_t error_type_set(struct file *file, const char __user *buf,
+   723					size_t count, loff_t *ppos)
+   724	{
+   725		int rc;
+   726		u64 val;
+   727	
+ > 728		memset(einj_buf, 0, sizeof(einj_buf));
+   729		if (copy_from_user(einj_buf, buf, count))
+   730			return -EFAULT;
+   731	
+   732		if (strncmp(einj_buf, "V2_", 3) == 0) {
+   733			if (!sscanf(einj_buf, "V2_%llx", &val))
+   734				return -EINVAL;
+   735		} else
+   736			if (!sscanf(einj_buf, "%llx", &val))
+   737				return -EINVAL;
+   738	
+   739		rc = einj_validate_error_type(val);
+   740		if (rc)
+   741			return rc;
+   742	
+   743		error_type = val;
+   744	
+   745		return count;
+   746	}
+   747	
 
-Same comment as above
-
->   
->   	return 0;
->   }
->   
-> +static int cppc_set_reg(int cpu, enum cppc_regs reg_idx, u64 val)
-
-Just to have similar functions, maybe 'cpu' should be renamed to 'cpunum' ?
-Or the other way around.
-
-> +{
-> +	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-> +	struct cppc_pcc_data *pcc_ss_data = NULL;
-> +	struct cpc_register_resource *reg;
-> +	int pcc_ss_id;
-> +	int ret;
-> +
-> +	if (!cpc_desc) {
-> +		pr_debug("No CPC descriptor for CPU:%d\n", cpu);
-> +		return -ENODEV;
-> +	}
-> +
-> +	reg = &cpc_desc->cpc_regs[reg_idx];
-> +
-> +	if (!CPC_SUPPORTED(reg)) {
-> +		pr_debug("CPC register (reg_idx=%u) is not supported\n", reg_idx);
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (CPC_IN_PCC(reg)) {
-> +		pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
-> +
-> +		if (pcc_ss_id < 0) {
-> +			pr_debug("Invalid pcc_ss_id\n");
-> +			return -ENODEV;
-> +		}
-> +
-> +		ret = cpc_write(cpu, reg, val);
-> +		if (ret)
-> +			return ret;
-> +
-> +		pcc_ss_data = pcc_data[pcc_ss_id];
-> +
-> +		down_write(&pcc_ss_data->pcc_lock);
-> +		/* after writing CPC, transfer the ownership of PCC to platform */
-> +		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
-> +		up_write(&pcc_ss_data->pcc_lock);
-> +		return ret;
-> +	}
-> +
-> +	return cpc_write(cpu, reg, val);
-> +}
-> +
-
-[snip]
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
