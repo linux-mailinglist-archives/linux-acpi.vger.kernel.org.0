@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-10009-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10010-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0829E6FF9
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 15:23:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D5D9E6FFD
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 15:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64211884F66
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 14:23:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07E916CAF2
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Dec 2024 14:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21792066F0;
-	Fri,  6 Dec 2024 14:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16444207DFD;
+	Fri,  6 Dec 2024 14:23:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CA221A0B;
-	Fri,  6 Dec 2024 14:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462962040BD;
+	Fri,  6 Dec 2024 14:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733495009; cv=none; b=LYSk5Ink0bOau25nF2IpKLkGWus3HIfJMv2y4KCX78qrmOS0bjb28VXtE0eMEkl0O9r453o+dhrf+UBOiFqTvj7A9B1u03d2tDYAVzvJ1oFSVZw5Z2+jGiFPn46zs0g9PzD8+qlW91zqNwFXj67lYUEnJyQvme4+2dYxcSzGNMQ=
+	t=1733495019; cv=none; b=p6DS66aL1NKh7GojOPBcZSUnbaG4lco9egw5+RxIZm1bbdwFPymccY/iekdeNGtzrdUDJEyGczmMIWbl1ouJaw8/00hqPYenhnvt+dl8taV3Gm96t3It66j7FZCJ+qRWnO7b8ZRaa9bouB2EtfZAwFwT9Ii/OaxuuOklgDfMW1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733495009; c=relaxed/simple;
-	bh=w5fW3fAgBvUrRh02El2yi1lCjRIXnseHiw4Q+x9NmWU=;
+	s=arc-20240116; t=1733495019; c=relaxed/simple;
+	bh=CZf69GeuxRSB4nHlFT99feBX5u7AwBAV/jb+fIEfn0o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mIIfH/zhTugLK2I4/ov90xkz6WHcmuAoU0FRHnirvmx0EKf/uOLKbX3qux6b3IMkTf12G9KjQZtQbuJ7UQ0upv6Bmuwd02VZdGWcZzkENvtFTG2oLL+eAHZKrpU7zWklXml8Bc7I2epLRJ6t0kFz9WQ+k6/7kruVSgA5h5rwYto=
+	 In-Reply-To:Content-Type; b=mbMVsmd1wRtdg8YgbACxvdXWmrw1+2M7lhAfy5gnKbFHmQ6v1D4N/WljcoQ3T8KC9ypgxsoxYPE2PMMJUIZolTD0+siSrdYVaSI28y9Qn0n7MyCuMepB2BaXnl+MLH+G/J6HAOdZGBwXzuWSeTOUGM+tTD8/fw5r8xK2254VzzE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9244FEC;
-	Fri,  6 Dec 2024 06:23:53 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6216FEC;
+	Fri,  6 Dec 2024 06:24:04 -0800 (PST)
 Received: from [10.57.68.20] (unknown [10.57.68.20])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11B213F71E;
-	Fri,  6 Dec 2024 06:23:22 -0800 (PST)
-Message-ID: <9f46991d-98c3-41f5-8133-6612b397e33a@arm.com>
-Date: Fri, 6 Dec 2024 15:23:20 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2A8DD3F71E;
+	Fri,  6 Dec 2024 06:23:33 -0800 (PST)
+Message-ID: <0f113d9d-faac-420a-9c75-9b620bf5c3f6@arm.com>
+Date: Fri, 6 Dec 2024 15:23:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,268 +42,166 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] cpufreq: CPPC: Support for autonomous selection in
- cppc_cpufreq
+Subject: Re: [PATCH 1/3] ACPI: CPPC: Refactor register get and set ABIs
 To: Lifeng Zheng <zhenglifeng1@huawei.com>, rafael@kernel.org,
  lenb@kernel.org, robert.moore@intel.com, viresh.kumar@linaro.org
 Cc: acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
  zhanjie9@hisilicon.com, lihuisong@huawei.com, fanghao11@huawei.com
 References: <20241114084816.1128647-1-zhenglifeng1@huawei.com>
- <20241114084816.1128647-4-zhenglifeng1@huawei.com>
+ <20241114084816.1128647-2-zhenglifeng1@huawei.com>
 Content-Language: en-US
 From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <20241114084816.1128647-4-zhenglifeng1@huawei.com>
+In-Reply-To: <20241114084816.1128647-2-zhenglifeng1@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hello Lifeng,
 
 On 11/14/24 09:48, Lifeng Zheng wrote:
-> Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
-> driver.
+> Refactor register get and set ABIs using cppc_get_reg() and cppc_set_reg().
+> 
+> Rename cppc_get_perf() to cppc_get_reg() as a generic function to read cppc
+> registers, with two changes:
+> 
+> 1. Change the error kind to "no such device" when pcc_ss_id < 0, which
+> means that this cpu cannot get a valid pcc_ss_id.
+> 
+> 2. Add a check to verify if the register is a cpc supported one before
+> using it.
+> 
+> Add cppc_set_reg() as a generic function for setting cppc registers. Unlike
+> other set reg ABIs, this function checks CPC_SUPPORTED right after getting
+> the register, because the rest of the operations are meaningless if this
+> register is not a cpc supported one.
 > 
 > Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
 > ---
->   .../ABI/testing/sysfs-devices-system-cpu      |  54 +++++++
->   drivers/cpufreq/cppc_cpufreq.c                | 141 ++++++++++++++++++
->   2 files changed, 195 insertions(+)
+>   drivers/acpi/cppc_acpi.c | 191 +++++++++++++++------------------------
+>   1 file changed, 72 insertions(+), 119 deletions(-)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-> index 206079d3bd5b..ba7b8ea613e5 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-> @@ -268,6 +268,60 @@ Description:	Discover CPUs in the same CPU frequency coordination domain
->   		This file is only present if the acpi-cpufreq or the cppc-cpufreq
->   		drivers are in use.
->   
-> +What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_select
-> +Date:		October 2024
-> +Contact:	linux-pm@vger.kernel.org
-> +Description:	Autonomous selection enable
-> +
-> +		Read/write interface to control autonomous selection enable
-> +			Read returns autonomous selection status:
-> +				0: autonomous selection is disabled
-> +				1: autonomous selection is enabled
-> +
-> +			Write '1' to enable autonomous selection.
-> +			Write '0' to disable autonomous selection.
-> +
-> +		This file only presents if the cppc-cpufreq driver is in use.
-> +
-> +What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_act_window
-> +Date:		October 2024
-> +Contact:	linux-pm@vger.kernel.org
-> +Description:	Autonomous activity window
-> +
-> +		This file indicates a moving utilization sensitivity window to
-> +		the platform's autonomous selection policy.
-> +
-> +		Read/write an integer represents autonomous activity window (in
-> +		microseconds) from/to this file. The max value to write is
-> +		1270000000 but the max significand is 127. This means that if 128
-> +		is written to this file, 127 will be stored. If the value is
-> +		greater than 130, only the first two digits will be saved as
-> +		significand.
-> +
-> +		Writing a zero value to this file enable the platform to
-> +		determine an appropriate Activity Window depending on the workload.
-> +
-> +		Writing to this file only has meaning when Autonomous Selection is
-> +		enabled.
-> +
-> +		This file only presents if the cppc-cpufreq driver is in use.
-> +
-> +What:		/sys/devices/system/cpu/cpuX/cpufreq/energy_perf
-> +Date:		October 2024
-> +Contact:	linux-pm@vger.kernel.org
-> +Description:	Energy performance preference
-> +
-> +		Read/write an 8-bit integer from/to this file. This file
-> +		represents a range of values from 0 (performance preference) to
-> +		0xFF (energy efficiency preference) that influences the rate of
-> +		performance increase/decrease and the result of the hardware's
-> +		energy efficiency and performance optimization policies.
-> +
-> +		Writing to this file only has meaning when Autonomous Selection is
-> +		enabled.
-> +
-> +		This file only presents if the cppc-cpufreq driver is in use.
-> +
->   
->   What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
->   Date:		August 2008
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 2b8708475ac7..b435e1751d0d 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -792,10 +792,151 @@ static ssize_t show_freqdomain_cpus(struct cpufreq_policy *policy, char *buf)
->   
->   	return cpufreq_show_cpus(cpu_data->shared_cpu_map, buf);
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index c1f3568d0c50..306ced9c3376 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1179,10 +1179,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+>   	return ret_val;
 >   }
-> +
-> +static ssize_t show_auto_select(struct cpufreq_policy *policy, char *buf)
-> +{
-> +	u64 val;
-> +	int ret;
-> +
-> +	ret = cppc_get_auto_sel(policy->cpu, &val);
-> +
-> +	/* show "<unsupported>" when this register is not supported by cpc */
-> +	if (ret == -EOPNOTSUPP)
-> +		return sysfs_emit(buf, "%s\n", "<unsupported>");
-> +
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%lld\n", val);
-> +}
-> +
-> +static ssize_t store_auto_select(struct cpufreq_policy *policy,
-> +				 const char *buf, size_t count)
-> +{
-> +	unsigned long val;
-> +	int ret;
-> +
-> +	ret = kstrtoul(buf, 0, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (val > 1)
-> +		return -EINVAL;
-> +
-> +	ret = cppc_set_auto_sel(policy->cpu, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +#define AUTO_ACT_WINDOW_SIG_BIT_SIZE	(7)
-> +#define AUTO_ACT_WINDOW_EXP_BIT_SIZE	(3)
-> +#define AUTO_ACT_WINDOW_MAX_SIG	((1 << AUTO_ACT_WINDOW_SIG_BIT_SIZE) - 1)
-> +#define AUTO_ACT_WINDOW_MAX_EXP	((1 << AUTO_ACT_WINDOW_EXP_BIT_SIZE) - 1)
-> +/* AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
-> +#define AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
+>   
+> -static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
+> +static int cppc_get_reg(int cpunum, enum cppc_regs reg_idx, u64 *val)
+>   {
+>   	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
+> +	struct cppc_pcc_data *pcc_ss_data = NULL;
+>   	struct cpc_register_resource *reg;
+> +	int pcc_ss_id;
+> +	int ret = 0;
 
-Maybe this would be better to place these macros in include/acpi/cppc_acpi.h
-(with a CPPC_XXX prefix)
+NIT: Might not be necessary if we save the value returned by cpc_read(),
+cf. other comment below.
 
-> +
-> +static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
-> +{
-> +	int sig, exp;
-> +	u64 val;
-> +	int ret;
-> +
-> +	ret = cppc_get_auto_act_window(policy->cpu, &val);
-> +
-> +	/* show "<unsupported>" when this register is not supported by cpc */
-> +	if (ret == -EOPNOTSUPP)
-> +		return sysfs_emit(buf, "%s\n", "<unsupported>");
-> +
-> +	if (ret)
-> +		return ret;
-> +
-> +	sig = val & AUTO_ACT_WINDOW_MAX_SIG;
-> +	exp = (val >> AUTO_ACT_WINDOW_SIG_BIT_SIZE) & AUTO_ACT_WINDOW_MAX_EXP;
-> +
-> +	return sysfs_emit(buf, "%lld\n", sig * int_pow(10, exp));
-> +}
-> +
-> +static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
-> +				     const char *buf, size_t count)
-> +{
-> +	unsigned long usec;
-> +	int digits = 0;
-> +	int ret;
-> +
-> +	ret = kstrtoul(buf, 0, &usec);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (usec > AUTO_ACT_WINDOW_MAX_SIG * int_pow(10, AUTO_ACT_WINDOW_MAX_EXP))
-> +		return -EINVAL;
-> +
-> +	while (usec > AUTO_ACT_WINDOW_SIG_CARRY_THRESH) {
-> +		usec /= 10;
-> +		digits += 1;
+>   
+>   	if (!cpc_desc) {
+>   		pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
+> @@ -1191,20 +1194,23 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
+>   
+>   	reg = &cpc_desc->cpc_regs[reg_idx];
+>   
+> +	if (!CPC_SUPPORTED(reg)) {
+> +		pr_debug("CPC register (reg_idx=%u) is not supported\n", reg_idx);
+> +		return -EOPNOTSUPP;
 > +	}
 > +
-> +	if (usec > AUTO_ACT_WINDOW_MAX_SIG)
-> +		usec = AUTO_ACT_WINDOW_MAX_SIG;
-> +
-> +	ret = cppc_set_auto_act_window(policy->cpu,
-> +				       (digits << AUTO_ACT_WINDOW_SIG_BIT_SIZE) + usec);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +static ssize_t show_energy_perf(struct cpufreq_policy *policy, char *buf)
+>   	if (CPC_IN_PCC(reg)) {
+> -		int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+> -		struct cppc_pcc_data *pcc_ss_data = NULL;
+> -		int ret = 0;
+> +		pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+>   
+>   		if (pcc_ss_id < 0)
+> -			return -EIO;
+> +			return -ENODEV;
+
+NIT: Could add here:
+   pr_debug("Invalid pcc_ss_id\n");
+just as you did in cppc_set_reg()
+
+>   
+>   		pcc_ss_data = pcc_data[pcc_ss_id];
+>   
+>   		down_write(&pcc_ss_data->pcc_lock);
+>   
+>   		if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
+> -			cpc_read(cpunum, reg, perf);
+> +			cpc_read(cpunum, reg, val);
+
+This was not introduced by your patch, but cpc_read() return a value.
+Shouldn't we return it instead of 0 ?
+
+>   		else
+>   			ret = -EIO;
+>   
+> @@ -1213,21 +1219,65 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
+>   		return ret;
+>   	}
+>   
+> -	cpc_read(cpunum, reg, perf);
+> +	cpc_read(cpunum, reg, val);
+
+Same comment as above
+
+>   
+>   	return 0;
+>   }
+>   
+> +static int cppc_set_reg(int cpu, enum cppc_regs reg_idx, u64 val)
+
+Just to have similar functions, maybe 'cpu' should be renamed to 'cpunum' ?
+Or the other way around.
+
 > +{
-> +	u64 val;
+> +	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+> +	struct cppc_pcc_data *pcc_ss_data = NULL;
+> +	struct cpc_register_resource *reg;
+> +	int pcc_ss_id;
 > +	int ret;
 > +
-> +	ret = cppc_get_epp_perf(policy->cpu, &val);
+> +	if (!cpc_desc) {
+> +		pr_debug("No CPC descriptor for CPU:%d\n", cpu);
+> +		return -ENODEV;
+> +	}
 > +
-> +	/* show "<unsupported>" when this register is not supported by cpc */
-> +	if (ret == -EOPNOTSUPP)
-> +		return sysfs_emit(buf, "%s\n", "<unsupported>");
+> +	reg = &cpc_desc->cpc_regs[reg_idx];
 > +
-> +	if (ret)
+> +	if (!CPC_SUPPORTED(reg)) {
+> +		pr_debug("CPC register (reg_idx=%u) is not supported\n", reg_idx);
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	if (CPC_IN_PCC(reg)) {
+> +		pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+> +
+> +		if (pcc_ss_id < 0) {
+> +			pr_debug("Invalid pcc_ss_id\n");
+> +			return -ENODEV;
+> +		}
+> +
+> +		ret = cpc_write(cpu, reg, val);
+> +		if (ret)
+> +			return ret;
+> +
+> +		pcc_ss_data = pcc_data[pcc_ss_id];
+> +
+> +		down_write(&pcc_ss_data->pcc_lock);
+> +		/* after writing CPC, transfer the ownership of PCC to platform */
+> +		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
+> +		up_write(&pcc_ss_data->pcc_lock);
 > +		return ret;
+> +	}
 > +
-> +	return sysfs_emit(buf, "%lld\n", val);
+> +	return cpc_write(cpu, reg, val);
 > +}
 > +
-> +#define ENERGY_PERF_MAX	(0xFF)
 
-Same comment to move to include/acpi/cppc_acpi.h
-
-> +
-> +static ssize_t store_energy_perf(struct cpufreq_policy *policy,
-> +				 const char *buf, size_t count)
-> +{
-> +	unsigned long val;
-> +	int ret;
-> +
-> +	ret = kstrtoul(buf, 0, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (val > ENERGY_PERF_MAX)
-> +		return -EINVAL;
-> +
-> +	ret = cppc_set_epp(policy->cpu, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
->   cpufreq_freq_attr_ro(freqdomain_cpus);
-> +cpufreq_freq_attr_rw(auto_select);
-> +cpufreq_freq_attr_rw(auto_act_window);
-> +cpufreq_freq_attr_rw(energy_perf);
-
-It might be better from a user PoV to hide the following entries:
-- auto_act_window
-- energy_perf
-if auto_select is not available or disabled.
-
-------
-
-Also just for reference, in ACPI 6.5, s8.4.6.1.2.3 Desired Performance Register
-"""
-When Autonomous Selection is enabled, it is not necessary for OSPM to assess processor workload performance
-demand and convey a corresponding performance delivery request to the platform via the Desired Register. If the
-Desired Performance Register exists, OSPM may provide an explicit performance requirement hint to the platform by
-writing a non-zero value.
-"""
-
-So it seems it still makes sense to have cpufreq requesting a certain performance
-level even though autonomous selection is enabled.
+[snip]
 
