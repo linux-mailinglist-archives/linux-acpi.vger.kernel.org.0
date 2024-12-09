@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-10021-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10022-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E729E9DD6
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 19:06:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9EF9E9DDC
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 19:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53DD51883B9F
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 18:06:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27177167026
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 18:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8327155325;
-	Mon,  9 Dec 2024 18:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3DB155327;
+	Mon,  9 Dec 2024 18:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U1ZTdznU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N2vdUnGw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98AA1F5F6;
-	Mon,  9 Dec 2024 18:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3161F5F6;
+	Mon,  9 Dec 2024 18:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733767592; cv=none; b=Gcx2+Vcd57bTDsvGnMXGCKV1QS1WsTlstQQkqJFSippwvnvsjWf4n/MYo2ru/+NLCL6WaIP2lzfv6FF7YcyrANkP0Z3uFX5Le4KEgG5KEi3L1chlyMF5BOpcdZsumxw285V7nrRoLCHp545t5PrwLDSGrNeuOe2nnMh61UPl3m0=
+	t=1733767909; cv=none; b=d7vouUISjgaT/YxJiX4DsoLsGFuWTTsWHqvWcCj16Zg8mieYeQRaKVr1zj5RVy6H8ZApFa5MKUqc9FVB39crCP/cHB8QXiDkDgmNDb6v20XdcI/uNv02iIpgmSkQ6djqmPT7SBZ59vk2NURhhlXwYzUNvSUlqKwwEC4Ad6ijQqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733767592; c=relaxed/simple;
-	bh=Y4l3ZfOIPZ+WCek7NkLHDtyXuwNXPzs0gg5OHknB2V4=;
+	s=arc-20240116; t=1733767909; c=relaxed/simple;
+	bh=HALWU73HHHPXsP1faQOW67Q/YjQtHp6d/UBGGuNnpyM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLoXsSTxWIS77wFQU6CeTp+pEWDA6vwKilTyWhNcO1HEsb9S5dACcfZtw0EYvalNRGm5R/8HeqnBvqYtFbP8UGJ2NKW6pwEuzRQvnzojNCcZsww7oLySf/FfHBt+aCYRxLPOsrl3eFI4iHng1rPpkw0pTp+hcHYsymbb76RIymc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U1ZTdznU; arc=none smtp.client-ip=198.175.65.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=clRaZoPcdGSdc5l3PBAC+NWJmRMpFTEA4LKe62Ss/TT65r1OSrkye1O5mWmQCsLntIm6+KCqjhgur8k8v7W/16Vt1L5zf8nei+ECDnI2hVs1HMJAnpqgyIEbc1baLMpFFyM2XdhDBRB7hJAjpgkyKHGKsza4WgVgyG343vQPYCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N2vdUnGw; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733767591; x=1765303591;
+  t=1733767907; x=1765303907;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Y4l3ZfOIPZ+WCek7NkLHDtyXuwNXPzs0gg5OHknB2V4=;
-  b=U1ZTdznUUMBmJZtsLQIRaVV4D3ik0Uzcn5kZJ+wVclx2Q1Qe6dLbZ1El
-   fN2S+QweTkws1q7a4XXVfpQeheaHWI+H9ewgJCvnkBqwVi1Q5q8/XKK1V
-   lIMK9MjAwKVytESsAZhXXO6I4EbvoG8Ra4Eb/7Q2dAH5vmUhPLZ0OroMv
-   HyV2hZnOOjGlp8HZNDNgRd1ySmmzG0+ekzyZ2lkUV9fb1uIHumtvwGNOc
-   QPOjmNcV6rLbMsFp0GSaHWGNMclBUcKU6nkj5tQbqOp68uEo5v0B8DWWt
-   5ENAClz2ycNfA0FrCYeJ+lrEnMYvI3XpWW+/ZF/On9d2QvKbm4fWlgb7T
-   w==;
-X-CSE-ConnectionGUID: Vxo5CIgXQFqy85/GGlpzhQ==
-X-CSE-MsgGUID: 14Lh4ymYRC6zl9+YbDK3wg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34214229"
+  bh=HALWU73HHHPXsP1faQOW67Q/YjQtHp6d/UBGGuNnpyM=;
+  b=N2vdUnGw63tIx+T/LWd6uNfAuye+5qwuYgA8flfQD2BUtpFTrYfRMbkM
+   6LY/gS9Nl+hhgHuqjA+Dz72k/uFX/h7fw7iIp14Q5wwhq5rvohFEFmuys
+   tm/4hoRiAYj6NrsE78DH9/aQM9gUNgs2a3goz1JNO30g0RGdYXT1jAbBk
+   Bbrm4z0YXaL8/iwVdZFyMUBOEIZzS/1KW1t+afrKyBcjAPzrAC90eMVYq
+   tl2iaQmwrKgDsrHmrxrNqNh6YHSW71hPamKWQywa0pdfkHodp68wnMEnd
+   00qrLyBkVa7R0c5QiqfATd2lXgUOlrtmuo1wQ7Gh7Fq70KL1szfWCHp2Q
+   g==;
+X-CSE-ConnectionGUID: ftB+X+q6SamGV9uv0UNbIw==
+X-CSE-MsgGUID: aAWvZeErRhy/DznBXE2kbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33420856"
 X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; 
-   d="scan'208";a="34214229"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 10:06:31 -0800
-X-CSE-ConnectionGUID: B7e4zTAmQaiXDCJjfx4OmA==
-X-CSE-MsgGUID: PVdSbbJ+Q8mtVg3NMCy5fw==
+   d="scan'208";a="33420856"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 10:11:46 -0800
+X-CSE-ConnectionGUID: dulZpdfURQ2v6FW0BvP97A==
+X-CSE-MsgGUID: OjizZAeXS6aSN/08umbp9A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; 
-   d="scan'208";a="100192653"
+   d="scan'208";a="118403655"
 Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 10:06:28 -0800
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 10:11:44 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tKi9J-00000005pHn-2HVa;
-	Mon, 09 Dec 2024 20:06:25 +0200
-Date: Mon, 9 Dec 2024 20:06:25 +0200
+	id 1tKiEP-00000005pQW-3jg9;
+	Mon, 09 Dec 2024 20:11:41 +0200
+Date: Mon, 9 Dec 2024 20:11:41 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -71,19 +71,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] device property: do not leak child nodes when using
- NULL/error pointers
-Message-ID: <Z1cxoUFCnkN0Ux24@smile.fi.intel.com>
-References: <Z0hsbNqXSkQjsR1v@smile.fi.intel.com>
- <Z0j3EtRmYBmGFApu@google.com>
- <Z0nUpytu0GFUgQ9V@smile.fi.intel.com>
- <Z0q75n_P3sZYnviO@google.com>
- <Z0uHJJKMog-REw1D@smile.fi.intel.com>
- <Z06b0oTvxUi4DTlx@google.com>
- <Z08HQ2JmETJLNuud@smile.fi.intel.com>
- <Z0-KHYnhu81ljbDk@google.com>
- <Z0-tcsOw5imlWZn4@smile.fi.intel.com>
- <Z1ITwpJcwPNc37X_@google.com>
+Subject: Re: [PATCH 2/2] device property: fix UAF in
+ device_get_next_child_node()
+Message-ID: <Z1cy3YuFXY0unhsY@smile.fi.intel.com>
+References: <20241128053937.4076797-1-dmitry.torokhov@gmail.com>
+ <20241128053937.4076797-2-dmitry.torokhov@gmail.com>
+ <Z0huCS4Z7dkgpCQ8@smile.fi.intel.com>
+ <Z0j5tGF9ikgVR_0w@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -92,156 +86,71 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z1ITwpJcwPNc37X_@google.com>
+In-Reply-To: <Z0j5tGF9ikgVR_0w@google.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Dec 05, 2024 at 12:57:38PM -0800, Dmitry Torokhov wrote:
-> On Wed, Dec 04, 2024 at 03:16:34AM +0200, Andy Shevchenko wrote:
-> > On Tue, Dec 03, 2024 at 02:45:49PM -0800, Dmitry Torokhov wrote:
-> > > On Tue, Dec 03, 2024 at 03:27:31PM +0200, Andy Shevchenko wrote:
-> > > > On Mon, Dec 02, 2024 at 09:49:06PM -0800, Dmitry Torokhov wrote:
-> > > > > On Sat, Nov 30, 2024 at 11:44:04PM +0200, Andy Shevchenko wrote:
-> > > > > > On Fri, Nov 29, 2024 at 11:16:54PM -0800, Dmitry Torokhov wrote:
-> > > > > > > On Fri, Nov 29, 2024 at 04:50:15PM +0200, Andy Shevchenko wrote:
-> > > > > > > > On Thu, Nov 28, 2024 at 03:04:50PM -0800, Dmitry Torokhov wrote:
-> > > > > > > > > On Thu, Nov 28, 2024 at 03:13:16PM +0200, Andy Shevchenko wrote:
-> > > > > > > > > > On Wed, Nov 27, 2024 at 09:39:34PM -0800, Dmitry Torokhov wrote:
-
-...
-
-> > > > > > > > > > > @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
-> > > > > > > > > > >  	const struct fwnode_handle *fwnode = dev_fwnode(dev);
-> > > > > > > > > > >  	struct fwnode_handle *next;
-> > > > > > > > > > 
-> > > > > > > > > > > -	if (IS_ERR_OR_NULL(fwnode))
-> > > > > > > > > > > +	if (IS_ERR_OR_NULL(fwnode)) {
-> > > > > > > > > > > +		fwnode_handle_put(child);
-> > > > > > > > > > >  		return NULL;
-> > > > > > > > > > > +	}
-> > > > > > > > > > 
-> > > > > > > > > > >  	/* Try to find a child in primary fwnode */
-> > > > > > > > > > >  	next = fwnode_get_next_child_node(fwnode, child);
-> > > > > > > > > > 
-> > > > > > > > > > So, why not just moving the original check (w/o dropping the reference) here?
-> > > > > > > > > > Wouldn't it have the same effect w/o explicit call to the fwnode_handle_put()?
-> > > > > > > > > 
-> > > > > > > > > Because if you rely on check in fwnode_get_next_child_node() you would
-> > > > > > > > > not know if it returned NULL because there are no more children or
-> > > > > > > > > because the node is invalid. In the latter case you can't dereference
-> > > > > > > > > fwnode->secondary.
-> > > > > > > > 
-> > > > > > > > Yes, so, how does it contradict my proposal?
-> > > > > > > 
-> > > > > > > I guess I misunderstood your proposal then. Could you please explain it
-> > > > > > > in more detail?
-> > > > > > 
-> > > > > > 
-> > > > > > Current code (in steps):
-> > > > > > 	if (IS_ERR_OR_NULL()) check
-> > > > > > 	trying primary
-> > > > > > 	trying secondary if previous is NULL
-> > > > > > 
-> > > > > > 
-> > > > > > My proposal
-> > > > > > 
-> > > > > > 	trying primary
-> > > > > > 	return if not NULL
-> > > > > > 	if (IS_ERR_OR_NULL()) check in its current form (no put op)
-> > > > > > 	trying secondary
-> > > > > > 
-> > > > > > After your first patch IIUC this is possible as trying primary will put child uncoditionally.
-> > > > > 
-> > > > > Ah, I see. No, I do not think this is a good idea: it will make the code
-> > > > > harder to understand for a casual reader: "Why do we check node validity
-> > > > > only after we used it for the first time?"
-> > > > 
-> > > > Theare a re already a few API calls there that are hard to understand, I spent
-> > > > some time on them to get it through and still got it wrong as this series
-> > > > shows. So, I don't think we anyhow change this.
-> > > 
-> > > The fact that some code is confusing does not mean that we should add
-> > > more confusing code. We will not fix everything at once, but we can make
-> > > things better bit by bit.
-> > > 
-> > > Look, the check where it is now makes total sense, you added it there
-> > > yourself! It checks that we are dealing with a valid node and returns
-> > > early. The intent is very easy to understand and the only thing that is
-> > > missing is that "put" operation to satisfy the documented behavior.
-> > > Anything more just makes things more complex for no good reason.
+On Thu, Nov 28, 2024 at 03:16:04PM -0800, Dmitry Torokhov wrote:
+> On Thu, Nov 28, 2024 at 03:20:09PM +0200, Andy Shevchenko wrote:
+> > On Wed, Nov 27, 2024 at 09:39:35PM -0800, Dmitry Torokhov wrote:
+> > > fwnode_get_next_child_node() always drops reference to the node passed
+> > > as the "child" argument,
 > > 
-> > Right, that's why I think we need to go away from open coding the iteration
-> > over the list of nodes (primary, secondary, etc).
-> > 
-> > > > > For the code not in a hot path there is a lot of value in simplicity.
-> > > > 
-> > > > If you really want to go to this rabbit hole, think how we can get rid of
-> > > > repetitive checks of the secondary or more if any in the future nodes in the
-> > > > list.
-> > > > 
-> > > > So the basic idea is to have this all hidden (to some extent) behind the macro
-> > > > or alike. In the code it would be something as
-> > > > 
-> > > >   for node in primary, secondary, ...
-> > > >     call the API
-> > > >     if (okay)
-> > > > 	return result
-> > > > 
-> > > >   return error
-> > > > 
-> > > > This will indeed help.
-> > > 
-> > > I think this will indeed help if we ever going to have more than primary
-> > > and secondary nodes. It is also tricky if you want to transition
-> > > seamlessly between different types of nodes (i.e. you have ACPI primary
-> > > with OF overlay secondary with swnode as tertiary etc). And you probably
-> > > want to add support for references between different typesof nodes
-> > > (i.e. swnode being able to reference OF device node for example).
-> > > 
-> > > This kind of rework is however out of scope of what I have time to do at
-> > > the moment.
-> > 
-> > I am not asking you to invest into big rework, the idea is to try to fold the
-> > iterations to a kind of loop. Is it feasible?
+> > As commented previously,it might be just a documentation bug. So, please
 > 
-> We could potentially do something like below.
+> No, absolutely not. Consider calling device_get_next_child_node() with
+> "child" pointing to the last child of the primary fwnode.
+> fwnode_get_next_child_node() will drop the reference to "child"
+> rendering it unusable, and return NULL. The code will go and call
+> fwnode_get_next_child_node(fwnode->secondary, child) with invalid child
+> pointer, resulting in UAF condition.
 > 
-> BTW, do you know why fwnode_property_get_reference_args() returns
-> -ENOENT for NULL or error fwnode instead of -EINVAL as the rest of them?
+> Also, consider what happens next. Let's say we did not crash and instead
+> returned first child of the secondary node (let's assume primary is an
+> OF node and secondary is a software node). On the next iteration of
+> device_get_next_child_node() we will call
+> fwnode_get_next_child_node(fwnode, child) which results in passing
+> swnode child to of_fwnode_get_next_child_node() which may or may not
+> work. It all is very fragile.
 
-I think we need to ask author, but I believe it's due to the OF analogue.
-(Haven't checked myself, though)
+It seems some of OF calls will crash on this.
 
-> And would you object to unifying this?
+> That is why it is best to check if the child argument is indeed a child
+> to a given parent before calling fwnode_get_next_child_node() on them.
 
-...
+> > elaborate on the use case before this patch that leads to an issue.
+> > 
+> > > which makes "child" pointer no longer valid
+> > > and we can not use it to scan the secondary node in case there are no
+> > > more children in primary one.
+> > > 
+> > > Also, it is not obvious whether it is safe to pass children of the
+> > > secondary node to fwnode_get_next_child_node() called on the primary
+> > > node in subsequent calls to device_get_next_child_node().
+> > > 
+> > > Fix the issue by checking whether the child node passed in is indeed a
+> > > child of primary or secondary node, and do not call
+> > > fwnode_get_next_child_node() for the wrong parent node. Also set the
+> > > "child" to NULL after unsuccessful call to fwnode_get_next_child_node()
+> > > on primary node to make sure secondary node's children are scanned from
+> > > the beginning.
+> > 
+> > To me it sounds over complicated. Why not just take reference to the child once
+> > more and put it after we find next in either cases?
+> 
+> You want to "reset" when switching from primary node over to secondary
+> instead of hoping that passing child pointer which is not really a child
+> to secondary node will somehow cause fwnode_get_next_child_node() to
+> return first its child.
 
-> +#define FWNODE_ITERATE(n, result, cont_val, op, ...)				\
+At some point we need to switch from primary to a secondary, yes, we need
+to "reset" it somehow to switch the type.
 
-for_each_fwnode() or alike.
+> > Current solution provides
+> > a lot of duplication and makes function less understandable.
+> 
+> The simplicity of the old version is deceiving. See the explanation
+> above.
 
-> +({										\
-> +	int __ret = -EINVAL;							\
-> +	typeof(result) __r;							\
-> +										\
-> +	for (const struct fwnode_handle *__node = n;				\
-> +	     !IS_ERR_OR_NULL(__node);						\
-> +	     __node = __node->secondary) {					\
-> +	        if (!__node->ops || !__node->ops->op) {				\
-> +			__ret = -ENXIO;						\
-> +			continue;						\
-> +		}								\
-> +		__r = __node->ops->op(__node, ## __VA_ARGS__);			\
-> +		if (__r != cont_val) {						\
-> +			result = __r;						\
-> +			__ret = 0;						\
-> +			break;							\
-> +		}								\
-> +	}									\
-> +	__ret;									\
-
-With a bit of polishing this may be the way to go.
-
-> +})
 
 -- 
 With Best Regards,
