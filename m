@@ -1,46 +1,58 @@
-Return-Path: <linux-acpi+bounces-10015-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10016-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CC49E8C94
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 08:49:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051A59E8D85
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 09:33:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777EA160EA1
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 07:49:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62A98188094B
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 08:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE3021504E;
-	Mon,  9 Dec 2024 07:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7D312CDAE;
+	Mon,  9 Dec 2024 08:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="c1vsOrD+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from sender4-pp-o92.zoho.com (sender4-pp-o92.zoho.com [136.143.188.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D539214A64;
-	Mon,  9 Dec 2024 07:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733730584; cv=none; b=ca6rORfab8RrKMkKJoZo9euXHOWiYqu/Z9P5Zl6+XS0mDSPZuk/57ThCHMWi4vyypPQVON/lNn2laQJsl+Qj62tBM/060DgBfB4vuUwnGVPtpXCJh2xqSq9nUziIJdSjjRbtfR9uhBWVXRmUvVP96SRG0mp2cW3Ea+IQ876DV80=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733730584; c=relaxed/simple;
-	bh=R8kCdwKbk8Fy59TANbitmY9vXQFcRjYWd5ShkaVdGAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YcXCDDhwY4gHg1ZQ3oZ+bkTP0zOx6DbnHjLwHCivLVAUxxAbV4nWfVguDDqM3IVnxu3CMHV8uDQIVDBC8jeIlr9KYmNbBlqM6se5TbSKSjN4ranrAs086Z7yWoK0R8TEKueRuxTHo00BvBzmtXVKTzQyDXYpv0w9HpurIOIsmJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Y6DT75Q7Bz11MCC;
-	Mon,  9 Dec 2024 15:46:35 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id DCAF6180357;
-	Mon,  9 Dec 2024 15:49:38 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
- (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Dec
- 2024 15:49:38 +0800
-Message-ID: <57e94a65-d9df-4114-bcee-998addb6e60f@huawei.com>
-Date: Mon, 9 Dec 2024 15:49:37 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA221519E;
+	Mon,  9 Dec 2024 08:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.92
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733733184; cv=pass; b=F6guPtc4QJ4gvpa2/7H0J8RTDV5+bm/5eaWB+6YaBHHA4+LBpn0nPNcYV9J9rr1wLTd3e6lyckKWkLcHJZwqmy1T0Gf20oWHYFguFEroCSd2QKSdcboF1OKM11srGehpTRyOoYdLOY4Tt9QSYrvY4nr9/M61jXdz/MSDqeiTim4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733733184; c=relaxed/simple;
+	bh=BWiJKufzv/F7esxI+0lHufeZPNgmfwU233MI1GEovmg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JGxfwhA69wdl1r7/7G4Pcps+Pm1BNiTjvoBFf6aBUT9KlRfs52N6Nye/TzUhuPDoz0nzCjRu0yofXrMuvNZS0fZzN7kEBbVPzWiLWbH7Hqya2f3YcmLX0+5uVdaGsruXXDBgOS9oHtzrSIZLBNhzj1kOUcxf/ZkG9NSCa/TYbog=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=c1vsOrD+; arc=pass smtp.client-ip=136.143.188.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1733733164; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=H/fhrr/k8GWNRA4j4ja9ejP7VoLCIo826F8CbVEZXTC/RslpL7S8neD4RTHceQ6WRePjSq/NFXCqr3ReEGPeBj0hWyxfPDzeFWYsLCHrMuNM+HP+07s0PbK29V/vduqNURKLIWX/U9uUIgDgtPbY8LOKrY8b/YS7YDW7pgwHV58=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1733733164; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=exzAwh9vuJJZYKGFl8F6lLjMefg+m9szNye3qUBtaAc=; 
+	b=VJz7ap91Jv1tZGHhGkL/V9odlBBShxRp1FlYThX/DkzkYH8Qcn9UiViLKlII8TBwRPMOmIb8o6MmNjjsWkRbxkQItWEb5APz2XnS5Hah6mCRL7VKV5V4hYgQxRvD5LVKmRaQIWObJ4OSUGlq5y11/Yghy/HMZ04W7cnCCOQbTVg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
+	dmarc=pass header.from=<ming.li@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733733164;
+	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
+	bh=exzAwh9vuJJZYKGFl8F6lLjMefg+m9szNye3qUBtaAc=;
+	b=c1vsOrD+vgyNQ5MknKxN7uWc/fH6Blq/EGI1v7vUKqPladXPpZOhFHm1J+hvg4F3
+	Xtc2e4It4yRhp+mOR6WxZ23up3ywe0a5GWPCtBGAceHBxtMmNMyhZO0RI2STnRtUKr5
+	nTiD9BLsA2rwrtAxfVJHLLx/ImGW8YgSLGHycdmA=
+Received: by mx.zohomail.com with SMTPS id 1733733160909206.39109231527607;
+	Mon, 9 Dec 2024 00:32:40 -0800 (PST)
+Message-ID: <abdb787d-81a7-47a7-8ee4-da250aa5355d@zohomail.com>
+Date: Mon, 9 Dec 2024 16:32:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -48,172 +60,164 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ACPI: CPPC: Refactor register get and set ABIs
-To: Pierre Gondois <pierre.gondois@arm.com>, <rafael@kernel.org>,
-	<lenb@kernel.org>, <robert.moore@intel.com>, <viresh.kumar@linaro.org>
-CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <fanghao11@huawei.com>,
-	"zhenglifeng (A)" <zhenglifeng1@huawei.com>
-References: <20241114084816.1128647-1-zhenglifeng1@huawei.com>
- <20241114084816.1128647-2-zhenglifeng1@huawei.com>
- <0f113d9d-faac-420a-9c75-9b620bf5c3f6@arm.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <0f113d9d-faac-420a-9c75-9b620bf5c3f6@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemh100008.china.huawei.com (7.202.181.93)
+Subject: Re: [PATCH 2/4] acpi/hmat / cxl: Add extended linear cache support
+ for CXL
+To: Dave Jiang <dave.jiang@intel.com>, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+Cc: rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
+ tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
+ alison.schofield@intel.com, ira.weiny@intel.com
+References: <20241204224827.2097263-1-dave.jiang@intel.com>
+ <20241204224827.2097263-3-dave.jiang@intel.com>
+From: Li Ming <ming.li@zohomail.com>
+In-Reply-To: <20241204224827.2097263-3-dave.jiang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Feedback-ID: rr08011227a39993a97540f2f7e4ef51c500005204a570abc3fd60156e35d552ac1a2388ce84b2080ad5ecbf:zu08011227162f4444b4f8d1a06fa95fc40000b63ce1a267dc4665fcc2eb3eb1de176d292df0fcc9e8de197f:rf0801122be3d9be6dc1a89891f866334000000d425160fff8b5bb21c9653fe282a635afd757d8628f32eb1d654a72f0:ZohoMail
+X-ZohoMailClient: External
 
-Hello Pierre，
+On 12/5/2024 6:46 AM, Dave Jiang wrote:
+> The current cxl region size only indicates the size of the CXL memory
+> region without accounting for the extended linear cache size. Retrieve the
+> cache size from HMAT and append that to the cxl region size for the cxl
+> region range that matches the SRAT range that has extended linear cache
+> enabled.
+>
+> The SRAT defines the whole memory range that includes the extended linear
+> cache and the CXL memory region. The new HMAT ECN/ECR to the Memory Side
+> Cache Information Structure defines the size of the extended linear cache
+> size and matches to the SRAT Memory Affinity Structure by the memory
+> proxmity domain. Add a helper to match the cxl range to the SRAT memory
+> range in order to retrieve the cache size.
+>
+> There are several places that checks the cxl region range against the
+> decoder range. Use new helper to check between the two ranges and address
+> the new cache size.
+>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+> RFC:
+> - Minor refactors (Jonathan)
+> - Fix grammar (Jonathan)
+> ---
+>  drivers/acpi/numa/hmat.c  | 39 ++++++++++++++++++++++
+>  drivers/cxl/core/Makefile |  1 +
+>  drivers/cxl/core/acpi.c   | 11 ++++++
+>  drivers/cxl/core/core.h   |  3 ++
+>  drivers/cxl/core/region.c | 70 ++++++++++++++++++++++++++++++++++++---
+>  drivers/cxl/cxl.h         |  2 ++
+>  include/linux/acpi.h      | 19 +++++++++++
+>  tools/testing/cxl/Kbuild  |  1 +
+>  8 files changed, 142 insertions(+), 4 deletions(-)
+>  create mode 100644 drivers/cxl/core/acpi.c
+>
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 976b3e1a6c2a..1c5b3c37ac29 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -108,6 +108,45 @@ static struct memory_target *find_mem_target(unsigned int mem_pxm)
+>  	return NULL;
+>  }
+>  
+> +/**
+> + * hmat_get_extended_linear_cache_size - Retrieve the extended linear cache size
+> + * @backing_res: resource from the backing media
+> + * @nid: node id for the memory region
+> + * @cache_size: (Output) size of extended linear cache.
+> + *
+> + * Return: 0 on success. Errno on failure.
+> + *
+> + */
+> +int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
+> +					resource_size_t *cache_size)
+> +{
+> +	unsigned int pxm = node_to_pxm(nid);
+> +	struct memory_target *target;
+> +	struct target_cache *tcache;
+> +	struct resource *res;
+> +
+> +	target = find_mem_target(pxm);
+> +	if (!target)
+> +		return -ENOENT;
+> +
+> +	list_for_each_entry(tcache, &target->caches, node) {
+> +		if (tcache->cache_attrs.address_mode ==
+> +				NODE_CACHE_ADDR_MODE_EXTENDED_LINEAR)
+> +			continue;
 
-On 2024/12/6 22:23, Pierre Gondois wrote:
-> Hello Lifeng,
-> 
-> On 11/14/24 09:48, Lifeng Zheng wrote:
->> Refactor register get and set ABIs using cppc_get_reg() and cppc_set_reg().
->>
->> Rename cppc_get_perf() to cppc_get_reg() as a generic function to read cppc
->> registers, with two changes:
->>
->> 1. Change the error kind to "no such device" when pcc_ss_id < 0, which
->> means that this cpu cannot get a valid pcc_ss_id.
->>
->> 2. Add a check to verify if the register is a cpc supported one before
->> using it.
->>
->> Add cppc_set_reg() as a generic function for setting cppc registers. Unlike
->> other set reg ABIs, this function checks CPC_SUPPORTED right after getting
->> the register, because the rest of the operations are meaningless if this
->> register is not a cpc supported one.
->>
->> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
->> ---
->>   drivers/acpi/cppc_acpi.c | 191 +++++++++++++++------------------------
->>   1 file changed, 72 insertions(+), 119 deletions(-)
->>
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index c1f3568d0c50..306ced9c3376 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -1179,10 +1179,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
->>       return ret_val;
->>   }
->>   -static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->> +static int cppc_get_reg(int cpunum, enum cppc_regs reg_idx, u64 *val)
->>   {
->>       struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
->> +    struct cppc_pcc_data *pcc_ss_data = NULL;
->>       struct cpc_register_resource *reg;
->> +    int pcc_ss_id;
->> +    int ret = 0;
-> 
-> NIT: Might not be necessary if we save the value returned by cpc_read(),
-> cf. other comment below.
-> 
->>         if (!cpc_desc) {
->>           pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
->> @@ -1191,20 +1194,23 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->>         reg = &cpc_desc->cpc_regs[reg_idx];
->>   +    if (!CPC_SUPPORTED(reg)) {
->> +        pr_debug("CPC register (reg_idx=%u) is not supported\n", reg_idx);
->> +        return -EOPNOTSUPP;
->> +    }
->> +
->>       if (CPC_IN_PCC(reg)) {
->> -        int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
->> -        struct cppc_pcc_data *pcc_ss_data = NULL;
->> -        int ret = 0;
->> +        pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
->>             if (pcc_ss_id < 0)
->> -            return -EIO;
->> +            return -ENODEV;
-> 
-> NIT: Could add here:
->   pr_debug("Invalid pcc_ss_id\n");
-> just as you did in cppc_set_reg()
+Should continue only when "tcache->cache_attrs.address_mode" is NOT "NODE_CACHE_ADDR_MODE_EXTENDED_LINEAR"?
 
-Will add it in next version, Thanks.
+[snip]
 
-> 
->>             pcc_ss_data = pcc_data[pcc_ss_id];
->>             down_write(&pcc_ss_data->pcc_lock);
->>             if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
->> -            cpc_read(cpunum, reg, perf);
->> +            cpc_read(cpunum, reg, val);
-> 
-> This was not introduced by your patch, but cpc_read() return a value.
-> Shouldn't we return it instead of 0 ?
+> +static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
+> +					    struct resource *res)
+> +{
+> +	struct cxl_region_params *p = &cxlr->params;
+> +	int nid = phys_to_target_node(res->start);
+> +	resource_size_t size, cache_size;
+> +	int rc;
+> +
+> +	size = resource_size(res);
+> +	if (!size)
+> +		return -EINVAL;
+> +
+> +	rc = cxl_acpi_get_extended_linear_cache_size(res, nid, &cache_size);
+> +	if (rc)
+> +		return rc;
+> +
+> +	if (!cache_size)
+> +		return 0;
+> +
+> +	if (size != cache_size) {
+> +		dev_warn(&cxlr->dev, "Extended Linear Cache is not 1:1, unsupported!");
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	/*
+> +	 * Move the start of the range to where the cache range starts. The
+> +	 * implementation assumes that the cache range is in front of the
+> +	 * CXL range. This is not dictated by the HMAT spec but is how the
+> +	 * current known implementation is configured.
+> +	 */
+> +	res->start -= cache_size;
+> +	p->cache_size = cache_size;
+> +
+> +	return 0;
+> +}
+> +
+>  /* Establish an empty region covering the given HPA range */
+>  static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>  					   struct cxl_endpoint_decoder *cxled)
+> @@ -3256,6 +3306,18 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>  
+>  	*res = DEFINE_RES_MEM_NAMED(hpa->start, range_len(hpa),
+>  				    dev_name(&cxlr->dev));
+> +
+> +	rc = cxl_extended_linear_cache_resize(cxlr, res);
+> +	if (rc) {
+> +		/*
+> +		 * Failing to support extended linear cache region resize does not
+> +		 * prevent the region from functioning. Only cause cxl list showing
+> +		 * incorrect region size.
+> +		 */
+> +		dev_warn(cxlmd->dev.parent,
+> +			 "Failed to support extended linear cache.\n");
+> +	}
+> +
 
-Indeed. Will optimize it, Thanks.
+cxl_extended_linear_cache_resize() will adjust res->start if there is an available cache_size.
 
-> 
->>           else
->>               ret = -EIO;
->>   @@ -1213,21 +1219,65 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->>           return ret;
->>       }
->>   -    cpc_read(cpunum, reg, perf);
->> +    cpc_read(cpunum, reg, val);
-> 
-> Same comment as above
-> 
->>         return 0;
->>   }
->>   +static int cppc_set_reg(int cpu, enum cppc_regs reg_idx, u64 val)
-> 
-> Just to have similar functions, maybe 'cpu' should be renamed to 'cpunum' ?
-> Or the other way around.
+Is it possible that below insert_resource() failed because "res->start" is less than "cxlrd->res->start"?
 
-I prefer 'cpu', 'cpunum' looks like the number of cpus to me.
-Will rename 'cpunum' to 'cpu' in cppc_get_reg(). Thanks.
+My understanding is that the address range of cxlrd->res comes from CFMWS, I don't find any description in patchset about the address range defined in CFMWS including extended linear cache size. So I guess that a CFMWS will not expose a address range with extended linear cache size?
 
-> 
->> +{
->> +    struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
->> +    struct cppc_pcc_data *pcc_ss_data = NULL;
->> +    struct cpc_register_resource *reg;
->> +    int pcc_ss_id;
->> +    int ret;
->> +
->> +    if (!cpc_desc) {
->> +        pr_debug("No CPC descriptor for CPU:%d\n", cpu);
->> +        return -ENODEV;
->> +    }
->> +
->> +    reg = &cpc_desc->cpc_regs[reg_idx];
->> +
->> +    if (!CPC_SUPPORTED(reg)) {
->> +        pr_debug("CPC register (reg_idx=%u) is not supported\n", reg_idx);
->> +        return -EOPNOTSUPP;
->> +    }
->> +
->> +    if (CPC_IN_PCC(reg)) {
->> +        pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
->> +
->> +        if (pcc_ss_id < 0) {
->> +            pr_debug("Invalid pcc_ss_id\n");
->> +            return -ENODEV;
->> +        }
->> +
->> +        ret = cpc_write(cpu, reg, val);
->> +        if (ret)
->> +            return ret;
->> +
->> +        pcc_ss_data = pcc_data[pcc_ss_id];
->> +
->> +        down_write(&pcc_ss_data->pcc_lock);
->> +        /* after writing CPC, transfer the ownership of PCC to platform */
->> +        ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
->> +        up_write(&pcc_ss_data->pcc_lock);
->> +        return ret;
->> +    }
->> +
->> +    return cpc_write(cpu, reg, val);
->> +}
->> +
-> 
-> [snip]
-> 
+I'm studying this patchset, please correct me if I'm wrong. Thank you.
+
+>  	rc = insert_resource(cxlrd->res, res);
+>  	if (rc) {
+>  		/*
+[snip]
+
+Ming
 
 
