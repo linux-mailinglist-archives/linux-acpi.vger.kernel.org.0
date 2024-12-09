@@ -1,58 +1,46 @@
-Return-Path: <linux-acpi+bounces-10016-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10017-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051A59E8D85
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 09:33:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DC79E8DAB
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 09:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62A98188094B
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 08:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45826164427
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Dec 2024 08:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7D312CDAE;
-	Mon,  9 Dec 2024 08:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="c1vsOrD+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606E321519F;
+	Mon,  9 Dec 2024 08:40:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-pp-o92.zoho.com (sender4-pp-o92.zoho.com [136.143.188.92])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA221519E;
-	Mon,  9 Dec 2024 08:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.92
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733733184; cv=pass; b=F6guPtc4QJ4gvpa2/7H0J8RTDV5+bm/5eaWB+6YaBHHA4+LBpn0nPNcYV9J9rr1wLTd3e6lyckKWkLcHJZwqmy1T0Gf20oWHYFguFEroCSd2QKSdcboF1OKM11srGehpTRyOoYdLOY4Tt9QSYrvY4nr9/M61jXdz/MSDqeiTim4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733733184; c=relaxed/simple;
-	bh=BWiJKufzv/F7esxI+0lHufeZPNgmfwU233MI1GEovmg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JGxfwhA69wdl1r7/7G4Pcps+Pm1BNiTjvoBFf6aBUT9KlRfs52N6Nye/TzUhuPDoz0nzCjRu0yofXrMuvNZS0fZzN7kEBbVPzWiLWbH7Hqya2f3YcmLX0+5uVdaGsruXXDBgOS9oHtzrSIZLBNhzj1kOUcxf/ZkG9NSCa/TYbog=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=c1vsOrD+; arc=pass smtp.client-ip=136.143.188.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
-ARC-Seal: i=1; a=rsa-sha256; t=1733733164; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=H/fhrr/k8GWNRA4j4ja9ejP7VoLCIo826F8CbVEZXTC/RslpL7S8neD4RTHceQ6WRePjSq/NFXCqr3ReEGPeBj0hWyxfPDzeFWYsLCHrMuNM+HP+07s0PbK29V/vduqNURKLIWX/U9uUIgDgtPbY8LOKrY8b/YS7YDW7pgwHV58=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1733733164; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=exzAwh9vuJJZYKGFl8F6lLjMefg+m9szNye3qUBtaAc=; 
-	b=VJz7ap91Jv1tZGHhGkL/V9odlBBShxRp1FlYThX/DkzkYH8Qcn9UiViLKlII8TBwRPMOmIb8o6MmNjjsWkRbxkQItWEb5APz2XnS5Hah6mCRL7VKV5V4hYgQxRvD5LVKmRaQIWObJ4OSUGlq5y11/Yghy/HMZ04W7cnCCOQbTVg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
-	dmarc=pass header.from=<ming.li@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733733164;
-	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
-	bh=exzAwh9vuJJZYKGFl8F6lLjMefg+m9szNye3qUBtaAc=;
-	b=c1vsOrD+vgyNQ5MknKxN7uWc/fH6Blq/EGI1v7vUKqPladXPpZOhFHm1J+hvg4F3
-	Xtc2e4It4yRhp+mOR6WxZ23up3ywe0a5GWPCtBGAceHBxtMmNMyhZO0RI2STnRtUKr5
-	nTiD9BLsA2rwrtAxfVJHLLx/ImGW8YgSLGHycdmA=
-Received: by mx.zohomail.com with SMTPS id 1733733160909206.39109231527607;
-	Mon, 9 Dec 2024 00:32:40 -0800 (PST)
-Message-ID: <abdb787d-81a7-47a7-8ee4-da250aa5355d@zohomail.com>
-Date: Mon, 9 Dec 2024 16:32:37 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BE012CDAE;
+	Mon,  9 Dec 2024 08:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733733631; cv=none; b=DQhzRt1j+GxtmBjRzFGuK4so/oIWsVivsDPG/4FrmbTufwln+si7o4Cxmk7M0FXGSGmJCwh4vs7bppWsUEsWK6XrpW1XClTeWholhUDXuQ4LhHhcG3rOQ+bcZep0ghW9iz6Uzm/rHmxlU9XzKi3kVHfayMJ7pkAc92PjTJTmoYc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733733631; c=relaxed/simple;
+	bh=COaN4ltrUDVu3wzgAQeHvftfqfKn3xsnGObd9ezVMps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Fz1yXG8NgD19zlPgZEWYfvg9BH7K4XflG5Y6nKZpxa0cZSwE1IkOK3W5Gp3rC4RnlmDmpI6JpFhZBpiGOI0koAMp4UVjwxnAX7TJ1orMzbhFNK+LpycABAA7bnNn+pYFYwKaT6MKaXVsjkBjWTQGDPwj0Q8yg5ERvSzL2VdRIrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Y6FcV4l2XzhZV7;
+	Mon,  9 Dec 2024 16:38:02 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0BC32140123;
+	Mon,  9 Dec 2024 16:40:25 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
+ (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Dec
+ 2024 16:40:24 +0800
+Message-ID: <fc7cbe88-64a3-4b65-ae37-3a1f50257f22@huawei.com>
+Date: Mon, 9 Dec 2024 16:40:23 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -60,164 +48,284 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] acpi/hmat / cxl: Add extended linear cache support
- for CXL
-To: Dave Jiang <dave.jiang@intel.com>, linux-cxl@vger.kernel.org,
- linux-acpi@vger.kernel.org
-Cc: rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
- tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
- alison.schofield@intel.com, ira.weiny@intel.com
-References: <20241204224827.2097263-1-dave.jiang@intel.com>
- <20241204224827.2097263-3-dave.jiang@intel.com>
-From: Li Ming <ming.li@zohomail.com>
-In-Reply-To: <20241204224827.2097263-3-dave.jiang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Feedback-ID: rr08011227a39993a97540f2f7e4ef51c500005204a570abc3fd60156e35d552ac1a2388ce84b2080ad5ecbf:zu08011227162f4444b4f8d1a06fa95fc40000b63ce1a267dc4665fcc2eb3eb1de176d292df0fcc9e8de197f:rf0801122be3d9be6dc1a89891f866334000000d425160fff8b5bb21c9653fe282a635afd757d8628f32eb1d654a72f0:ZohoMail
-X-ZohoMailClient: External
+Subject: Re: [PATCH 3/3] cpufreq: CPPC: Support for autonomous selection in
+ cppc_cpufreq
+To: Pierre Gondois <pierre.gondois@arm.com>, <rafael@kernel.org>,
+	<lenb@kernel.org>, <robert.moore@intel.com>, <viresh.kumar@linaro.org>
+CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <fanghao11@huawei.com>,
+	"zhenglifeng (A)" <zhenglifeng1@huawei.com>
+References: <20241114084816.1128647-1-zhenglifeng1@huawei.com>
+ <20241114084816.1128647-4-zhenglifeng1@huawei.com>
+ <9f46991d-98c3-41f5-8133-6612b397e33a@arm.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <9f46991d-98c3-41f5-8133-6612b397e33a@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-On 12/5/2024 6:46 AM, Dave Jiang wrote:
-> The current cxl region size only indicates the size of the CXL memory
-> region without accounting for the extended linear cache size. Retrieve the
-> cache size from HMAT and append that to the cxl region size for the cxl
-> region range that matches the SRAT range that has extended linear cache
-> enabled.
->
-> The SRAT defines the whole memory range that includes the extended linear
-> cache and the CXL memory region. The new HMAT ECN/ECR to the Memory Side
-> Cache Information Structure defines the size of the extended linear cache
-> size and matches to the SRAT Memory Affinity Structure by the memory
-> proxmity domain. Add a helper to match the cxl range to the SRAT memory
-> range in order to retrieve the cache size.
->
-> There are several places that checks the cxl region range against the
-> decoder range. Use new helper to check between the two ranges and address
-> the new cache size.
->
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> ---
-> RFC:
-> - Minor refactors (Jonathan)
-> - Fix grammar (Jonathan)
-> ---
->  drivers/acpi/numa/hmat.c  | 39 ++++++++++++++++++++++
->  drivers/cxl/core/Makefile |  1 +
->  drivers/cxl/core/acpi.c   | 11 ++++++
->  drivers/cxl/core/core.h   |  3 ++
->  drivers/cxl/core/region.c | 70 ++++++++++++++++++++++++++++++++++++---
->  drivers/cxl/cxl.h         |  2 ++
->  include/linux/acpi.h      | 19 +++++++++++
->  tools/testing/cxl/Kbuild  |  1 +
->  8 files changed, 142 insertions(+), 4 deletions(-)
->  create mode 100644 drivers/cxl/core/acpi.c
->
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 976b3e1a6c2a..1c5b3c37ac29 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -108,6 +108,45 @@ static struct memory_target *find_mem_target(unsigned int mem_pxm)
->  	return NULL;
->  }
->  
-> +/**
-> + * hmat_get_extended_linear_cache_size - Retrieve the extended linear cache size
-> + * @backing_res: resource from the backing media
-> + * @nid: node id for the memory region
-> + * @cache_size: (Output) size of extended linear cache.
-> + *
-> + * Return: 0 on success. Errno on failure.
-> + *
-> + */
-> +int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
-> +					resource_size_t *cache_size)
-> +{
-> +	unsigned int pxm = node_to_pxm(nid);
-> +	struct memory_target *target;
-> +	struct target_cache *tcache;
-> +	struct resource *res;
-> +
-> +	target = find_mem_target(pxm);
-> +	if (!target)
-> +		return -ENOENT;
-> +
-> +	list_for_each_entry(tcache, &target->caches, node) {
-> +		if (tcache->cache_attrs.address_mode ==
-> +				NODE_CACHE_ADDR_MODE_EXTENDED_LINEAR)
-> +			continue;
+Hello Pierre,
 
-Should continue only when "tcache->cache_attrs.address_mode" is NOT "NODE_CACHE_ADDR_MODE_EXTENDED_LINEAR"?
+On 2024/12/6 22:23, Pierre Gondois wrote:
+> Hello Lifeng,
+> 
+> On 11/14/24 09:48, Lifeng Zheng wrote:
+>> Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
+>> driver.
+>>
+>> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+>> ---
+>>   .../ABI/testing/sysfs-devices-system-cpu      |  54 +++++++
+>>   drivers/cpufreq/cppc_cpufreq.c                | 141 ++++++++++++++++++
+>>   2 files changed, 195 insertions(+)
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+>> index 206079d3bd5b..ba7b8ea613e5 100644
+>> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
+>> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+>> @@ -268,6 +268,60 @@ Description:    Discover CPUs in the same CPU frequency coordination domain
+>>           This file is only present if the acpi-cpufreq or the cppc-cpufreq
+>>           drivers are in use.
+>>   +What:        /sys/devices/system/cpu/cpuX/cpufreq/auto_select
+>> +Date:        October 2024
+>> +Contact:    linux-pm@vger.kernel.org
+>> +Description:    Autonomous selection enable
+>> +
+>> +        Read/write interface to control autonomous selection enable
+>> +            Read returns autonomous selection status:
+>> +                0: autonomous selection is disabled
+>> +                1: autonomous selection is enabled
+>> +
+>> +            Write '1' to enable autonomous selection.
+>> +            Write '0' to disable autonomous selection.
+>> +
+>> +        This file only presents if the cppc-cpufreq driver is in use.
+>> +
+>> +What:        /sys/devices/system/cpu/cpuX/cpufreq/auto_act_window
+>> +Date:        October 2024
+>> +Contact:    linux-pm@vger.kernel.org
+>> +Description:    Autonomous activity window
+>> +
+>> +        This file indicates a moving utilization sensitivity window to
+>> +        the platform's autonomous selection policy.
+>> +
+>> +        Read/write an integer represents autonomous activity window (in
+>> +        microseconds) from/to this file. The max value to write is
+>> +        1270000000 but the max significand is 127. This means that if 128
+>> +        is written to this file, 127 will be stored. If the value is
+>> +        greater than 130, only the first two digits will be saved as
+>> +        significand.
+>> +
+>> +        Writing a zero value to this file enable the platform to
+>> +        determine an appropriate Activity Window depending on the workload.
+>> +
+>> +        Writing to this file only has meaning when Autonomous Selection is
+>> +        enabled.
+>> +
+>> +        This file only presents if the cppc-cpufreq driver is in use.
+>> +
+>> +What:        /sys/devices/system/cpu/cpuX/cpufreq/energy_perf
+>> +Date:        October 2024
+>> +Contact:    linux-pm@vger.kernel.org
+>> +Description:    Energy performance preference
+>> +
+>> +        Read/write an 8-bit integer from/to this file. This file
+>> +        represents a range of values from 0 (performance preference) to
+>> +        0xFF (energy efficiency preference) that influences the rate of
+>> +        performance increase/decrease and the result of the hardware's
+>> +        energy efficiency and performance optimization policies.
+>> +
+>> +        Writing to this file only has meaning when Autonomous Selection is
+>> +        enabled.
+>> +
+>> +        This file only presents if the cppc-cpufreq driver is in use.
+>> +
+>>     What:        /sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
+>>   Date:        August 2008
+>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+>> index 2b8708475ac7..b435e1751d0d 100644
+>> --- a/drivers/cpufreq/cppc_cpufreq.c
+>> +++ b/drivers/cpufreq/cppc_cpufreq.c
+>> @@ -792,10 +792,151 @@ static ssize_t show_freqdomain_cpus(struct cpufreq_policy *policy, char *buf)
+>>         return cpufreq_show_cpus(cpu_data->shared_cpu_map, buf);
+>>   }
+>> +
+>> +static ssize_t show_auto_select(struct cpufreq_policy *policy, char *buf)
+>> +{
+>> +    u64 val;
+>> +    int ret;
+>> +
+>> +    ret = cppc_get_auto_sel(policy->cpu, &val);
+>> +
+>> +    /* show "<unsupported>" when this register is not supported by cpc */
+>> +    if (ret == -EOPNOTSUPP)
+>> +        return sysfs_emit(buf, "%s\n", "<unsupported>");
+>> +
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    return sysfs_emit(buf, "%lld\n", val);
+>> +}
+>> +
+>> +static ssize_t store_auto_select(struct cpufreq_policy *policy,
+>> +                 const char *buf, size_t count)
+>> +{
+>> +    unsigned long val;
+>> +    int ret;
+>> +
+>> +    ret = kstrtoul(buf, 0, &val);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    if (val > 1)
+>> +        return -EINVAL;
+>> +
+>> +    ret = cppc_set_auto_sel(policy->cpu, val);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    return count;
+>> +}
+>> +
+>> +#define AUTO_ACT_WINDOW_SIG_BIT_SIZE    (7)
+>> +#define AUTO_ACT_WINDOW_EXP_BIT_SIZE    (3)
+>> +#define AUTO_ACT_WINDOW_MAX_SIG    ((1 << AUTO_ACT_WINDOW_SIG_BIT_SIZE) - 1)
+>> +#define AUTO_ACT_WINDOW_MAX_EXP    ((1 << AUTO_ACT_WINDOW_EXP_BIT_SIZE) - 1)
+>> +/* AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
+>> +#define AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
+> 
+> Maybe this would be better to place these macros in include/acpi/cppc_acpi.h
+> (with a CPPC_XXX prefix)
 
-[snip]
+Will move them, Thanks.
 
-> +static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
-> +					    struct resource *res)
-> +{
-> +	struct cxl_region_params *p = &cxlr->params;
-> +	int nid = phys_to_target_node(res->start);
-> +	resource_size_t size, cache_size;
-> +	int rc;
-> +
-> +	size = resource_size(res);
-> +	if (!size)
-> +		return -EINVAL;
-> +
-> +	rc = cxl_acpi_get_extended_linear_cache_size(res, nid, &cache_size);
-> +	if (rc)
-> +		return rc;
-> +
-> +	if (!cache_size)
-> +		return 0;
-> +
-> +	if (size != cache_size) {
-> +		dev_warn(&cxlr->dev, "Extended Linear Cache is not 1:1, unsupported!");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	/*
-> +	 * Move the start of the range to where the cache range starts. The
-> +	 * implementation assumes that the cache range is in front of the
-> +	 * CXL range. This is not dictated by the HMAT spec but is how the
-> +	 * current known implementation is configured.
-> +	 */
-> +	res->start -= cache_size;
-> +	p->cache_size = cache_size;
-> +
-> +	return 0;
-> +}
-> +
->  /* Establish an empty region covering the given HPA range */
->  static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
->  					   struct cxl_endpoint_decoder *cxled)
-> @@ -3256,6 +3306,18 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
->  
->  	*res = DEFINE_RES_MEM_NAMED(hpa->start, range_len(hpa),
->  				    dev_name(&cxlr->dev));
-> +
-> +	rc = cxl_extended_linear_cache_resize(cxlr, res);
-> +	if (rc) {
-> +		/*
-> +		 * Failing to support extended linear cache region resize does not
-> +		 * prevent the region from functioning. Only cause cxl list showing
-> +		 * incorrect region size.
-> +		 */
-> +		dev_warn(cxlmd->dev.parent,
-> +			 "Failed to support extended linear cache.\n");
-> +	}
-> +
+> 
+>> +
+>> +static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
+>> +{
+>> +    int sig, exp;
+>> +    u64 val;
+>> +    int ret;
+>> +
+>> +    ret = cppc_get_auto_act_window(policy->cpu, &val);
+>> +
+>> +    /* show "<unsupported>" when this register is not supported by cpc */
+>> +    if (ret == -EOPNOTSUPP)
+>> +        return sysfs_emit(buf, "%s\n", "<unsupported>");
+>> +
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    sig = val & AUTO_ACT_WINDOW_MAX_SIG;
+>> +    exp = (val >> AUTO_ACT_WINDOW_SIG_BIT_SIZE) & AUTO_ACT_WINDOW_MAX_EXP;
+>> +
+>> +    return sysfs_emit(buf, "%lld\n", sig * int_pow(10, exp));
+>> +}
+>> +
+>> +static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
+>> +                     const char *buf, size_t count)
+>> +{
+>> +    unsigned long usec;
+>> +    int digits = 0;
+>> +    int ret;
+>> +
+>> +    ret = kstrtoul(buf, 0, &usec);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    if (usec > AUTO_ACT_WINDOW_MAX_SIG * int_pow(10, AUTO_ACT_WINDOW_MAX_EXP))
+>> +        return -EINVAL;
+>> +
+>> +    while (usec > AUTO_ACT_WINDOW_SIG_CARRY_THRESH) {
+>> +        usec /= 10;
+>> +        digits += 1;
+>> +    }
+>> +
+>> +    if (usec > AUTO_ACT_WINDOW_MAX_SIG)
+>> +        usec = AUTO_ACT_WINDOW_MAX_SIG;
+>> +
+>> +    ret = cppc_set_auto_act_window(policy->cpu,
+>> +                       (digits << AUTO_ACT_WINDOW_SIG_BIT_SIZE) + usec);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    return count;
+>> +}
+>> +
+>> +static ssize_t show_energy_perf(struct cpufreq_policy *policy, char *buf)
+>> +{
+>> +    u64 val;
+>> +    int ret;
+>> +
+>> +    ret = cppc_get_epp_perf(policy->cpu, &val);
+>> +
+>> +    /* show "<unsupported>" when this register is not supported by cpc */
+>> +    if (ret == -EOPNOTSUPP)
+>> +        return sysfs_emit(buf, "%s\n", "<unsupported>");
+>> +
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    return sysfs_emit(buf, "%lld\n", val);
+>> +}
+>> +
+>> +#define ENERGY_PERF_MAX    (0xFF)
+> 
+> Same comment to move to include/acpi/cppc_acpi.h
+> 
+>> +
+>> +static ssize_t store_energy_perf(struct cpufreq_policy *policy,
+>> +                 const char *buf, size_t count)
+>> +{
+>> +    unsigned long val;
+>> +    int ret;
+>> +
+>> +    ret = kstrtoul(buf, 0, &val);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    if (val > ENERGY_PERF_MAX)
+>> +        return -EINVAL;
+>> +
+>> +    ret = cppc_set_epp(policy->cpu, val);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    return count;
+>> +}
+>> +
+>>   cpufreq_freq_attr_ro(freqdomain_cpus);
+>> +cpufreq_freq_attr_rw(auto_select);
+>> +cpufreq_freq_attr_rw(auto_act_window);
+>> +cpufreq_freq_attr_rw(energy_perf);
+> 
+> It might be better from a user PoV to hide the following entries:
+> - auto_act_window
+> - energy_perf
+> if auto_select is not available or disabled.
 
-cxl_extended_linear_cache_resize() will adjust res->start if there is an available cache_size.
+Users might like to modify the value of auto_act_window and energy_perf
+before turning on auto_select. So I think it is freer for users to read and
+write them no matter what auto_select is. What do you think?
 
-Is it possible that below insert_resource() failed because "res->start" is less than "cxlrd->res->start"?
+> 
+> ------
+> 
+> Also just for reference, in ACPI 6.5, s8.4.6.1.2.3 Desired Performance Register
+> """
+> When Autonomous Selection is enabled, it is not necessary for OSPM to assess processor workload performance
+> demand and convey a corresponding performance delivery request to the platform via the Desired Register. If the
+> Desired Performance Register exists, OSPM may provide an explicit performance requirement hint to the platform by
+> writing a non-zero value.
+> """
+> 
+> So it seems it still makes sense to have cpufreq requesting a certain performance
+> level even though autonomous selection is enabled.
 
-My understanding is that the address range of cxlrd->res comes from CFMWS, I don't find any description in patchset about the address range defined in CFMWS including extended linear cache size. So I guess that a CFMWS will not expose a address range with extended linear cache size?
+We did struggle with this. This solves our doubts. Thanks!
 
-I'm studying this patchset, please correct me if I'm wrong. Thank you.
-
->  	rc = insert_resource(cxlrd->res, res);
->  	if (rc) {
->  		/*
-[snip]
-
-Ming
+> 
 
 
