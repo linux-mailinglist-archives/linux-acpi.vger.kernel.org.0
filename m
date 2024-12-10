@@ -1,136 +1,96 @@
-Return-Path: <linux-acpi+bounces-10035-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10036-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A61B9EB95D
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 19:31:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6FB9EB96C
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 19:36:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8755188A0F4
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 18:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3348F281553
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 18:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37FF19E97A;
-	Tue, 10 Dec 2024 18:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C96C1A00F8;
+	Tue, 10 Dec 2024 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAmDTS/g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIvPB8KV"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FB6195FEF;
-	Tue, 10 Dec 2024 18:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133673C17;
+	Tue, 10 Dec 2024 18:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733855502; cv=none; b=iCKS4ZqPk8qosMRQjIltgVjhd03gUoWAzvq82Bwu2Q0X7kicQbGB5gn1/DNq926ZGx+H48bCznVd7P1oB56Pl2dF8wG3NLzC5ZI+jsQP3Xe3cSqAEVS+yqSjVEYLnqmrQ8b371q88Qym4cOkV00IPCGYrflOMkiUtIcgWL6a2ik=
+	t=1733855790; cv=none; b=MoQJjpPKaVfTfysbE9gGRM9LUPt3ky6MoqsYQhh6gvAz/Qeb23eD9jqC/2PYZcieo9qcLMws/ougDxVZmR5AhqBUq+zSo8v3KzcOMfvMa0dA1KgRFaOJp4RlgKnLEKrcSr8KZzkePpA19yGYKwYIeFoi6KD0dvZYLkfDG16PjWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733855502; c=relaxed/simple;
-	bh=yMvDfYdMEC2GbNStQaUd8LmXaxCMcS26AvjUFzyncLc=;
+	s=arc-20240116; t=1733855790; c=relaxed/simple;
+	bh=ITOjEhppnIIzlZRuQ5yGsgyuxRc1qh55h/J/fSClFO8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jSMg1OeMHxKsijohOunzGJXsVD7Eh7/i6X3dbBB83CzKJG15yfqnAu43GlJgPhnh0Qt3VuAD2zX77Rlx3AeF7K5/Q/kJhQIIKl7pvH4haLE0sfDkaDxI1rYXoUMC9/BVlo5JRubpQFFThTSOiaau6NrFIcWVZyX001F9H58CiwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAmDTS/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7542CC4AF09;
-	Tue, 10 Dec 2024 18:31:42 +0000 (UTC)
+	 To:Cc:Content-Type; b=Bf4KY6KponC1lYJLdM/r7zknMMxtXWonUcJxcGrJdggjTS5ewqIjM0U6meMnBVAk6urH70R1+FhKS8dPXK1utqclw5jBANS/5DCEWN3IhSg2k2VMcYazWwZmrAWsFUiPdkS29fyM9V5pvdLnP8xnirBRWE8JFz7JsLY7TOvSIMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIvPB8KV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949BFC4CED6;
+	Tue, 10 Dec 2024 18:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733855502;
-	bh=yMvDfYdMEC2GbNStQaUd8LmXaxCMcS26AvjUFzyncLc=;
+	s=k20201202; t=1733855789;
+	bh=ITOjEhppnIIzlZRuQ5yGsgyuxRc1qh55h/J/fSClFO8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JAmDTS/gP3xwYtvGgG1Cp1ESfgypsbHpM7wf9vOebwtU3sQlgywaQe9Eydz61g/l8
-	 onyY4yRQ/4TAnTDfJeAAeYvVM2qNn4M8848djWKF5QYvQCnIf05xP8aqLaE4RjNYom
-	 T1VdNMigonKpuU7IbPAE9N3c7/vZf2wSEvUZKvN4SgqNenbR4d05am1+ia/YDD3u0T
-	 zmtyquH4/8rR0eDQFCN5ufdXZ5PP9tfDgkzmEjM+jBxBMCCXPjMlP/ooJydlycfrDZ
-	 7cils4KX1ltw97zK42IkfYUANMs+t2a1syYOOWYR8hmqhXZNpMfySg+K7BmIe1fgbt
-	 YaWZFjPWo/zHQ==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5f2ace8a94aso796496eaf.0;
-        Tue, 10 Dec 2024 10:31:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUgS7zHMWtI5XOLiN/BsKPQigqPSjMb+niDXII72Droa/9gIn4LIAGamVcx6texLIdVNR65YLadgv1Ez3k=@vger.kernel.org, AJvYcCV9tzQiL/Slgi0SXcDkklFZyEq/9ViNgqNf1KOkkwjA0VALouggChBrnRCMarpwuIqwBEnWhWzMxgiH@vger.kernel.org, AJvYcCVX1BNm6ekRR4AaFr9sN6GN/QWrQTmxiuks6qCJoyxv/RwfVo0ZCwCrv6siROYVly9/gjh86Ej/+H9yl3F0@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6hOPdsvvOKxFbGYrJ+WVGhgBYZV8x2OiOltU5dDIzXTJ/b8xq
-	plt8nq7Rc8EUgbIZAFr3/Ml1gkN5LOrDSZr6Rc0VfTPaveuMUCvTEqBw5UeUN541gMgAA9lJ327
-	6BN4eHARUSNGsCLb1rsb1PPZfFYY=
-X-Google-Smtp-Source: AGHT+IGrUjOmExbcetYeztZRi2yn7rV87vBJKoza5mnnu0jBPpeX3+Ebs1lT+UBA4sTBULYeIhZEaTbL6G8LbS4Zado=
-X-Received: by 2002:a05:6820:3101:b0:5ee:ebcb:e701 with SMTP id
- 006d021491bc7-5f2c8eb83f6mr3635752eaf.6.1733855501744; Tue, 10 Dec 2024
- 10:31:41 -0800 (PST)
+	b=oIvPB8KV4om2wIy1MEGNaS1HpoQMosu77yZAspVkNsSNY9os8931Ka2dVrlYyBl5H
+	 gfNJs+ADtJtR8dVbX38mEmx8L8np8wBHXDc8bzkVL7M2kVsDfbaZCjX4guoG2EKEZL
+	 2/h+u/DFf21ECKZvQNFw1Ia0CWCG3qrAxqK2B/gzo+j77ZvzL1mPpbycmrW9Mk829E
+	 YhDvN8CgOK0bjxLWpcZqL2EmATuK5iXGHRW7VpNDORundftnUqS2Xm6yy9za8Uve/b
+	 DAt7MpZLAt4gwOIarXxyao9lFOmTBqaPElLrwGS9Vt+coOAlsyfFlYsdgp1Q6XfXAg
+	 Ja+KNG04RE2dQ==
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5f2b71bdeeeso1082595eaf.0;
+        Tue, 10 Dec 2024 10:36:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVjBzyC+Y3KBT5LSDpFHagnCNMJtH7okRAZZ4zHj3IWqPLkFtcBt2T0Ninykqb9lvqXzl9aNccT/LeZCGJE@vger.kernel.org, AJvYcCXNvUtFDaxBA8paQddazOcWPXlN0Ir3OygGRf0EgO2+LuBKruPRg6ZWOQZCuQ7GS4hmUcok2Zi5XIa2@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUydBiDTV3V3LH/FfIux+uMqO6A4chj/gT3ZQKV6EJ5WbXrlLI
+	aJLi00uZnXW1vWZ5Kiw8xzE2VvlIX9/zDS5SBfl3nNavrScKSMDdkt8djMmainqCbtaKv+VoH4s
+	yFcoB0qrofZ80KCMwNNXLvq+LqTw=
+X-Google-Smtp-Source: AGHT+IHia3A5r4UsgHwjmpvjxjWEdb7G2QMNqqI07ydw5oy920qm7afYwrU7LRMwYyV0ZndkLASZyV6hhgaOXD0hquk=
+X-Received: by 2002:a05:6820:1acc:b0:5f2:aefe:5b8f with SMTP id
+ 006d021491bc7-5f2c8eb1b62mr3819072eaf.7.1733855788983; Tue, 10 Dec 2024
+ 10:36:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122-fix-ipu-v2-0-bba65856e9ff@chromium.org> <20241122-fix-ipu-v2-3-bba65856e9ff@chromium.org>
-In-Reply-To: <20241122-fix-ipu-v2-3-bba65856e9ff@chromium.org>
+References: <20241202-sysfs-const-bin_attr-acpi-v1-0-78f3b38d350d@weissschuh.net>
+In-Reply-To: <20241202-sysfs-const-bin_attr-acpi-v1-0-78f3b38d350d@weissschuh.net>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 10 Dec 2024 19:31:30 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i9SresLT14aWuyodKyi2y3yyC8wLMYzrSD4ec=9WVSvg@mail.gmail.com>
-Message-ID: <CAJZ5v0i9SresLT14aWuyodKyi2y3yyC8wLMYzrSD4ec=9WVSvg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] ACPI: bus: implement acpi_get_physical_device_location
- when !ACPI
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
+Date: Tue, 10 Dec 2024 19:36:18 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iWaFxPj2Yny=jQ3Xz8qNNN3dUOD6mZWcEwMV_Ej5HSig@mail.gmail.com>
+Message-ID: <CAJZ5v0iWaFxPj2Yny=jQ3Xz8qNNN3dUOD6mZWcEwMV_Ej5HSig@mail.gmail.com>
+Subject: Re: [PATCH 0/3] ACPI: Constify 'struct bin_attribute'
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 22, 2024 at 10:48=E2=80=AFAM Ricardo Ribalda <ribalda@chromium.=
-org> wrote:
+On Mon, Dec 2, 2024 at 8:04=E2=80=AFPM Thomas Wei=C3=9Fschuh <linux@weisssc=
+huh.net> wrote:
 >
-> Provide an implementation of acpi_get_physical_device_location that can
-> be used when CONFIG_ACPI is not set.
+> The sysfs core now allows instances of 'struct bin_attribute' to be
+> moved into read-only memory. Make use of that to protect them against
+> accidental or malicious modifications.
 >
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> The usage of read_new/write_new/bin_attrs_new is a transition mechanism
+> and will be reverted after the transition is complete.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 > ---
->  include/acpi/acpi_bus.h | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+> Thomas Wei=C3=9Fschuh (3):
+>       ACPI: BGRT: Mark bin_attribute as __ro_after_init
+>       ACPI: BGRT: Constify 'struct bin_attribute'
+>       ACPI: sysfs: Constify 'struct bin_attribute'
 >
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index eaafca41cf02..4888231422ea 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -43,9 +43,6 @@ acpi_status
->  acpi_evaluate_ost(acpi_handle handle, u32 source_event, u32 status_code,
->                   struct acpi_buffer *status_buf);
->
-> -acpi_status
-> -acpi_get_physical_device_location(acpi_handle handle, struct acpi_pld_in=
-fo **pld);
-> -
->  bool acpi_has_method(acpi_handle handle, char *name);
->  acpi_status acpi_execute_simple_method(acpi_handle handle, char *method,
->                                        u64 arg);
-> @@ -60,6 +57,9 @@ bool acpi_check_dsm(acpi_handle handle, const guid_t *g=
-uid, u64 rev, u64 funcs);
->  union acpi_object *acpi_evaluate_dsm(acpi_handle handle, const guid_t *g=
-uid,
->                         u64 rev, u64 func, union acpi_object *argv4);
->  #ifdef CONFIG_ACPI
-> +acpi_status
-> +acpi_get_physical_device_location(acpi_handle handle, struct acpi_pld_in=
-fo **pld);
-> +
->  static inline union acpi_object *
->  acpi_evaluate_dsm_typed(acpi_handle handle, const guid_t *guid, u64 rev,
->                         u64 func, union acpi_object *argv4,
-> @@ -1003,6 +1003,8 @@ static inline int unregister_acpi_bus_type(void *bu=
-s) { return 0; }
->
->  static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
->
-> +#define acpi_get_physical_device_location(handle, pld) (AE_ERROR)
+>  drivers/acpi/bgrt.c  | 6 +++---
+>  drivers/acpi/sysfs.c | 8 ++++----
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+> ---
 
-This is a function, so static inline please.
-
-Analogously in patches [4,6/7].
-
-And you can merge patches [2-6/7] together into one patch, as far as
-I'm concerned.
-
-> +
->  #define for_each_acpi_dev_match(adev, hid, uid, hrv)                   \
->         for (adev =3D NULL; false && (hid) && (uid) && (hrv);)
->
->
-> --
+All applied as 6.14 material, thanks!
 
