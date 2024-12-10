@@ -1,72 +1,74 @@
-Return-Path: <linux-acpi+bounces-10039-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10040-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6AE9EB9E6
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 20:14:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320D89EB9EE
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 20:14:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD32B283C85
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 19:14:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF8718889DE
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 19:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77287214208;
-	Tue, 10 Dec 2024 19:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B616214221;
+	Tue, 10 Dec 2024 19:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PibYboMV"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RM9p7KhX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090951C3F13
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 19:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BB32046BE
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 19:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733858050; cv=none; b=ni1E/zfMdx/JZHMnaVfwX7hUW+VmRbfpjyc2DAjUl0aDHyGstuPhlHZShLLJcjRkm2lU23AD6ubgW5wZ1z3pAOO97wxCmP/erhA+zB8ENMfrvSsTdIzSB4DlnUU0ZCqdVGlVs3t9WwdO6Frp2zm4d1tu0onJaW2orlNVs+ypziY=
+	t=1733858052; cv=none; b=IqG4PgVDhQNmn1D2DoJbWrpIjZrl8g3e0FqKARVuZY5nwVTgbSHzEu1wSSobiL0Whh47DkxUex0zKg/GduoDuduYCPSbxrMxN0Hv2cBc0uS+LEh0jAuRNriucEv9PTHhti/pgivfEJlSa2CzhG8IDFhYj8O1HK+Orsdk8UHXMZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733858050; c=relaxed/simple;
-	bh=8nB9LfqUIlx893EnVEn1oyPaKNloRLzhICUSkzKGANQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=luqybZHQgqfczYKfGY7/A5W/EyAhi/lUFTchcF3/Ldjt7dsZBzUzPuXGDYq0/6lmFXSzk+AYhIWuokfVoVJUnRa8JXKHTpfQ00vv9UtJQQnjtXAioQOLtrQOc7TFuElZ8s7ujhhKzVZB4OdZ71iYuOcIMqf8NfxLRXAGaaJya/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PibYboMV; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1733858052; c=relaxed/simple;
+	bh=LMzslre59gBSKbdGtmcX0vce8kxfJLik/pThTrlPDJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sBbMNjgBu7hf6/pFNo5T3sFIZD+mGy2GTsbWziwhmGkxbU/UzP4gTi1WGnSlrFVhND0pHDtWPp0SSkJAQZ+677HJ+AVV7X3WvnGwuWBLy9oEwB3fZhMCMpEdXSbs0PZcNbpgxUDYPZSJ5sNgCJXo5UPANWPBv306sIY4UR3bBP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RM9p7KhX; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7fd4998b0dbso2396431a12.0
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 11:14:08 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2163bd70069so28752285ad.0
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 11:14:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1733858048; x=1734462848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MysYNOOOtjPxn7x1jZehpCDsgb3N3i+OrdKPB7nkcnQ=;
-        b=PibYboMVU0w6jXbXBOCttKgijsfjv5A16l8vN/gCKYXQ95pQnZW0hSI13v9OkqKFuK
-         8wlOe8MKJZTSTt1PPaOEcRLv9krFmhHBs3QSBV9bPcDgM7DxxZJz9BJVxpU6rKHpM+Js
-         0BmQaPGMDXP5Z1IAoygaYzsSLyS7PbOl+3oQQ=
+        d=chromium.org; s=google; t=1733858050; x=1734462850; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S1VV7jv6a8iTXSgTXT3A313mUq1AvY1/xt0iu6Jh1cU=;
+        b=RM9p7KhXbG7UG1Of1i4R+n5+d8vVJzeyCJq2QPh6Wb1H2ypCegcHUHbAQ4/gPNU2C9
+         yKeB//7Mspd6DeIIUZe4KWftJCTwBNjEE6abjqNGiz1GmUxwHgr2ZUjSDjEhednwTjsX
+         qjV26SJDXiKLJ/wR1UsH/lgwwIxGj119p0HmQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733858048; x=1734462848;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MysYNOOOtjPxn7x1jZehpCDsgb3N3i+OrdKPB7nkcnQ=;
-        b=qrBNidQ+lpocVPSiEs54SmiNLTJBh8u00eKJTVLqiA7b5CXiPHxw2gVSZ3Z6Q3//st
-         s0bamBH5E7LFXGOkUHI0fuud8XbrobcdZcflZsE6pDGGZIvSyeZ9swUUQBcuixfdNqzQ
-         BwF7npEkIwcRRA/UNU4uPa59yaR+U6zKYf98rFwjF7WA9sVc4B4KB3h7Y3ZdlE+N/uJ8
-         QlA4tPGN64oeRh7yH/0DKt+tnEYVy0TXgCXf6hah9y8vTc4Y92OuakzJOZr702kAo1IN
-         Pua6fUn1BbZRJgTG5AlBb8VbMwpohVhdZQa3OxZlVB4whlNMKOnpC441h+vhZADW9g+j
-         G/nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAAJB686/H/d/VAJRUgMgUL/ND4xjzIN+fo181u0li4I3rshnMQIYHnJ5lbRyFQZE65FLKPP7aCxGC@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQIPlbNdcUDypyHSKVNKmYmg5AX4N7lodT9Pl/J/0Bcz4UBmjS
-	hHWVDbrYg6EIdqYItt44QHYpW0oBjkueJKTWaodTr4cRyhz5Ff3zoZlNegC/Sg==
-X-Gm-Gg: ASbGncsqyRQ4jVVXSS8dyGvUX5za/qRTAnjwCFBorwD2SpLeJXVqgJAAXNnPyTmxFUI
-	urn8a3dtBzusge+Zt3og6gRJCVXjZLzKdouTB5Sfzs5aq4vd8gxGRlvYIvQW6Q+yJyIBMP4ADIw
-	aqAeWOYagtp5CTDdZWosQXmub1rfHcEVLkreEZ5tdqzC9wDG/lUZWcGJgpvolG6hbISAqwTom9N
-	V8+OcoVt8wiSVquAtgOABfzBVUsvecRIt4dU0pjfQQXAZ7KK3JPKGot1+6mSZoagHJyQRrIHMKh
-	4M3BuoSKPtw58EC0
-X-Google-Smtp-Source: AGHT+IG1Y3K1qZ9CQcqUnkQEHUVS4XwePEyG43iObCbw1CEpZyvCGhCju0fkg5G3HVvnA7tqXu0KEw==
-X-Received: by 2002:a05:6a20:3943:b0:1e0:ca33:8ccf with SMTP id adf61e73a8af0-1e1c1360edamr639374637.34.1733858048251;
-        Tue, 10 Dec 2024 11:14:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733858050; x=1734462850;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S1VV7jv6a8iTXSgTXT3A313mUq1AvY1/xt0iu6Jh1cU=;
+        b=i4DKBA2C3XE8BLXKSYwoAzoqfe6ko/GqcRxf2GrL5cK3UmLE+HgpSoNLwty9+MUmxK
+         HL+1+hT+ceCt+PI6NyuZnHvupWAAq2+ZGcn19SwXxTXtd2ExNEoU88yfmwjSZSODlof7
+         uAA54YS/vzdtjlyJ/a854P8p2zEMmSOIWspchCG03sHFtNXmiDXuaSfGY/HB6P/DEnBb
+         j1hCt0qGr/AbDxQ07aHMvyLQLL9Xy6oLKIke4L99hlralH2yu3n1rGvQuR7ahN+hPuRp
+         jwpMWTYAREJlcwmEJ1Xw0djNF2TogxpnGNPuh0IzuNe0aPbwavXVCXnEEha7GZjT8wXp
+         gajA==
+X-Forwarded-Encrypted: i=1; AJvYcCVydU5pQXWMH5WrFZ2rW9IBm9QWbO3d/ST/iA30WdpXKQnxMN0Mh1QHxcUvN+sfKABCC3YevV8AgufM@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFf7ZJrWYwHSM/xvm+hoanllBQxeVn955NMBH3I6w6tI9QCfjA
+	GzDto+0y7O2lip/pnK2k5y/wkm1N1Iq+1MPVPHBkAaIyZZOtE2x4N/8EfiXvzw==
+X-Gm-Gg: ASbGncuYsJb4hpmCnCxzb1hoSu+zLhA1hnHa1p0LHF9ckj4fNChJi0zUhJnJzqVAjA2
+	XlrMmUxAEA2zhVeqfnpc6RMQyj+jYMyOM6npRkVVvIO6x2arDbpEOiKQiubp9Rh9fuebaOis8UI
+	AF7Oatl8JvIiochUJF8Wl2AY5J43NvwqMYA7WG15uGFPmDw9PIro2Mt0oHXPrD2SwrE1ImZvu1l
+	5FRZ2EDLCEbmXdssEB2vNw4fZcUSqDpNrHWeVIHS5HoKdXtTzWE6Qxz75tX+v/bEwtEU/Joeo1P
+	b3jKIBC5/QvzPfU0
+X-Google-Smtp-Source: AGHT+IE6haXYh8F2R8TB8U0iP9CV9F+e16h/v+MqPXwC2fQ7dKZF73gUnBnR/i+bSQwBHLpqHOAl6w==
+X-Received: by 2002:a17:902:d481:b0:216:4d1f:5c83 with SMTP id d9443c01a7336-217786a9bb7mr3112145ad.47.1733858050369;
+        Tue, 10 Dec 2024 11:14:10 -0800 (PST)
 Received: from localhost ([2a00:79e0:2e14:7:cf2b:44dd:668c:5818])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-7fd2f40dc81sm5905791a12.64.2024.12.10.11.14.07
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-216353ab708sm53576155ad.182.2024.12.10.11.14.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 11:14:07 -0800 (PST)
+        Tue, 10 Dec 2024 11:14:10 -0800 (PST)
 From: Brian Norris <briannorris@chromium.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -78,10 +80,12 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Rae Moar <rmoar@google.com>,
 	linux-acpi@vger.kernel.org,
 	Brian Norris <briannorris@chromium.org>
-Subject: [PATCH 0/4] drivers: base: Don't match device with NULL of_node/fwnode/etc + tests
-Date: Tue, 10 Dec 2024 11:13:29 -0800
-Message-ID: <20241210191353.533801-1-briannorris@chromium.org>
+Subject: [PATCH 1/4] drivers: base: Don't match devices with NULL of_node/fwnode/etc
+Date: Tue, 10 Dec 2024 11:13:30 -0800
+Message-ID: <20241210191353.533801-2-briannorris@chromium.org>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+In-Reply-To: <20241210191353.533801-1-briannorris@chromium.org>
+References: <20241210191353.533801-1-briannorris@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -90,30 +94,59 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series:
-1. makes the behavior of_find_device_by_node(),
-   bus_find_device_by_of_node(), bus_find_device_by_fwnode(), etc., more
-   consistent when provided with a NULL node/handle;
-2. adds kunit tests to validate the new NULL-argument behavior; and
-3. makes some related improvements and refactoring for the drivers/base/
-   kunit tests.
+of_find_device_by_node(), bus_find_device_by_of_node(),
+bus_find_device_by_fwnode(), ..., all produce arbitrary results when
+provided with a NULL of_node, fwnode, ACPI handle, etc. This is
+counterintuitive, and the source of a few bugs, such as the one fixed by
+commit 5c8418cf4025 ("PCI/pwrctrl: Unregister platform device only if
+one actually exists").
 
-This series aims to prevent problems like the ones resolved in commit
-5c8418cf4025 ("PCI/pwrctrl: Unregister platform device only if one
-actually exists").
+It's hard to imagine a good reason that these device_match_*() APIs
+should return 'true' for a NULL argument. Augment these to return 0
+(false).
 
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
 
-Brian Norris (4):
-  drivers: base: Don't match devices with NULL of_node/fwnode/etc
-  drivers: base: test: Enable device model tests with KUNIT_ALL_TESTS
-  drivers: base: test: Drop "devm" from platform-device-test names
-  drivers: base: test: Add ...find_device_by...(... NULL) tests
+ drivers/base/core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- drivers/base/core.c                      |  8 ++---
- drivers/base/test/Kconfig                |  1 +
- drivers/base/test/platform-device-test.c | 42 ++++++++++++++++++++----
- 3 files changed, 40 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 94865c9d8adc..2b7b13fc36d7 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -5246,13 +5246,13 @@ EXPORT_SYMBOL_GPL(device_match_name);
+ 
+ int device_match_of_node(struct device *dev, const void *np)
+ {
+-	return dev->of_node == np;
++	return np && dev->of_node == np;
+ }
+ EXPORT_SYMBOL_GPL(device_match_of_node);
+ 
+ int device_match_fwnode(struct device *dev, const void *fwnode)
+ {
+-	return dev_fwnode(dev) == fwnode;
++	return fwnode && dev_fwnode(dev) == fwnode;
+ }
+ EXPORT_SYMBOL_GPL(device_match_fwnode);
+ 
+@@ -5264,13 +5264,13 @@ EXPORT_SYMBOL_GPL(device_match_devt);
+ 
+ int device_match_acpi_dev(struct device *dev, const void *adev)
+ {
+-	return ACPI_COMPANION(dev) == adev;
++	return adev && ACPI_COMPANION(dev) == adev;
+ }
+ EXPORT_SYMBOL(device_match_acpi_dev);
+ 
+ int device_match_acpi_handle(struct device *dev, const void *handle)
+ {
+-	return ACPI_HANDLE(dev) == handle;
++	return handle && ACPI_HANDLE(dev) == handle;
+ }
+ EXPORT_SYMBOL(device_match_acpi_handle);
+ 
 -- 
 2.47.0.338.g60cca15819-goog
 
