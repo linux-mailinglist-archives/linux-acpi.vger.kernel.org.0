@@ -1,97 +1,103 @@
-Return-Path: <linux-acpi+bounces-10064-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10065-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B409EBC24
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 22:54:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5D69EBD71
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 23:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191F61887E4A
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 21:54:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FD1B164C75
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 22:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B56230D23;
-	Tue, 10 Dec 2024 21:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD04C23D420;
+	Tue, 10 Dec 2024 22:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AMG2zUjE"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="EKyqi0SA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D21323ED78;
-	Tue, 10 Dec 2024 21:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6790E2397BE
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 22:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733867685; cv=none; b=qwh9fe/tsFllz34MEnNkhdztRFazam0izln47A380chnmCo8c3ruhdcx+cf8ZRPoauoc8fUeSqCfSQJzEZxImGPXjz+oGuxiRryYFspL8EY0MvYDMz1ZBrdBJiL3+VC6zRpzpctHZKqiB4U6448d17/5L0URT5lQQaGbIW+G1yA=
+	t=1733868347; cv=none; b=jbCfspncdJmFT+NaifRy3+jwvs4De7kynCrz2VIU+nrak1PpKLHU/OgXjW3Lbi2t94fiav5NblN9+FRtGZyZzq66nAlbWFWjFog90hnacXujRramfGLPqXO5P0bmJ1hEB4eHSXyHkIiAHg7S0kITF1UjrO20g4eKBbV7AsjnH74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733867685; c=relaxed/simple;
-	bh=FoodDbJF85HSR7vqFb1SURwVFiFLxlq92hefFSTYsN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h534O8aGMQZN0PDbywHLZ5mjZfWH78bD9UP65AV70BWANCbuJ3HkbbfKl/xN1tvEkrj7Q21kIntku7Yzn9jt816xWV+Qg6e1FkLAx54Z1n+vmJU/tCoU4K2pUlzDQKwl55xiPXepo5Y9EyyKnamb2D0MWDnxhorAU8lg2pkYafI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AMG2zUjE; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ef7640e484so71444527b3.3;
-        Tue, 10 Dec 2024 13:54:42 -0800 (PST)
+	s=arc-20240116; t=1733868347; c=relaxed/simple;
+	bh=KBDt8XQ6WNq8J6YT/YXtGkmxgvjSQrEexeJW45WGLKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QkM+H0nm+zKCAzuUMowzRwsv+P+KnlkoStmSYf7FuY5e2NACZuoj8rw+II+1VHmsvtxFbc+sOai+po5iwvzMrdfsnn6LCAnYuoGHo+HUKUo2GBzrnHH3HPWcgnFN7h+aQtFanvSv0zLe78bIPCE5uKj2HoRoe0zJDkwdk5NMyRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=EKyqi0SA; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6d884e8341bso44095696d6.0
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 14:05:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733867682; x=1734472482; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1733868344; x=1734473144; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CLMeg3KtiYPYLHuefeREp3hhLN8tVuKnI5cE4Kch8vA=;
-        b=AMG2zUjExNyHeDsNLFJigdlTlXt3VZ7YOvgPeGTOsYX5FvZFBVaeQES9AQ/M+GWAfY
-         Lkc8NR3xXEv8AqglcDCgFaYeW/1JVmfbzCt8/qexp/QiAZuwiWATP1kDUkw7afItIc9A
-         EP8zOKjplVohei5Oysfgh5PrB1V9RoEB4k4hHGtGXZ0FquPFPD22ahcb5kO+cO6bUgNF
-         RDaqg4YWsysERVTkcpRs5j/rYv8gGzo9+K7uHbsx1S08ZXOInIsRcmRAsxPfEiAZ4+Mu
-         T0RzklMnDVH1SMptaaW0TwLGMqQUV//VumxfynS9AlisRvqsgcy+pogJ6Ts5Fyxek+SS
-         mHVw==
+        bh=UvgUsC8+OSYl1zj6uOGNQd8LMwZ5SWRB4r93/t1srT0=;
+        b=EKyqi0SAOzaLREivAT5m86LSRa8vpURY+dfI+Hak+CWSxB+IGJwwyRjxHtyvXXqXlr
+         woAloMsCwaMpcvVE96l0aXgOTXXkJWc4AaPatHolzpf/qorAf3stHaV7Cd5hIUtTS1Gj
+         UsrYBv+3ajzOxvS/6OxkmDq2oyi/S85L0B4rPHrHIqswwk6PSKh6cWb1JQ89U0m7LLaT
+         FvbSwLTv051+JsrVtV86eJ2lEI56yi9fLwuaQ2PQ9y/aOEqkjj6zUdYXtp7HfGHJ2p8u
+         xHKI0dHw04H22IKv2P3s/VH5l+OHw5Z4gFIIgZYmZFLKAykTjrTnfm8burSC5Usxvz85
+         q98g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733867682; x=1734472482;
+        d=1e100.net; s=20230601; t=1733868344; x=1734473144;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CLMeg3KtiYPYLHuefeREp3hhLN8tVuKnI5cE4Kch8vA=;
-        b=U5d3DKDQ3Xjqy5P+Me2cL53HYcGADZkTI6oNFsaWit28FrWCnwkwumH60rDMG0mV9K
-         igHw0q2VIAJm++uRkwhb+Yp+PsRdmWQS5yyHkfPmgTHEnZemmsIV9zpSDAGWHfWTzLXo
-         tx8+iE8dlR7xVFJVQJtdPc/VDPPdgmJfSZECAKiyCPe589x15eLrhBp+gWznFzBj2OdW
-         LJ2zJ7Hsy9LYR7pM9tSbgLXZEVbITxGSOpl97K6NLnjrUoqBsty9qL/aa+zGYBBdA6I9
-         KAOkmrHCEYzJpa7B6gadxxBZJLF+DhfWogTo4SpePyODNphTV7ZkGN9ILtIBSx3Vft5j
-         xs1g==
-X-Forwarded-Encrypted: i=1; AJvYcCUDSETVpN622UvDLvrm0FpNjCKlUBblDxfvOK/z8mp/1/dQbtbr2Nbu4OUnYJWF5iH/qX5ohDRyFAwj@vger.kernel.org, AJvYcCVRIDJCGYIoQ8FkMx8dQtZc8DGvJ85bYK/IAnZGelIl/CCJaVPb/9k8bXc7CgaYDeEXazoiLlVuGM/o8RCq@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/1B8Dy8VRreMzC8LuHO8zXeX5VpDESWrIhaczmkm4DCX8grFr
-	udAI+katcmWjSi330b1i9D8r9JP/xCAuBo42VfK5cii0dsDxzvlD
-X-Gm-Gg: ASbGncsUNOaMXqxo0C6BUnkwc//ifa5w2WyrQHyX0fkzSQ4xIAnQYJi+Sq802vGPcTU
-	pUOvvPg7ncjONYCelPSWO+JkCtro2vpaX5bZTSm0n61pjxwSxMYxm9WVgxFI//j9ypGo+2424pr
-	N1xxS/I4feFPU/1/CW7iVxA4B4QfaWFvaQ7v02cjaKt+YbxS1Ah+U+5CoUNFERI4FcegrzFhpR3
-	nHyXMuEg4dcE0C1uiZWpPwminKbIKpJu4+o9iBLyGguDVMPcKIRAwxEYCQ9yrOsmNcA5AaH4W0Q
-	AFk34hWKDA4t+iM=
-X-Google-Smtp-Source: AGHT+IEBU9zQf0CAnNhG1S1981KjuQutbNTd3IcROBOXkDqd2I0onmLUpHUjTZWJdHae7O25LE02ng==
-X-Received: by 2002:a05:690c:6e01:b0:6ee:7797:672 with SMTP id 00721157ae682-6f147fd1c9bmr8670717b3.7.1733867681690;
-        Tue, 10 Dec 2024 13:54:41 -0800 (PST)
-Received: from localhost (fwdproxy-nha-113.fbsv.net. [2a03:2880:25ff:71::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6efd3889bfbsm29374367b3.53.2024.12.10.13.54.39
+        bh=UvgUsC8+OSYl1zj6uOGNQd8LMwZ5SWRB4r93/t1srT0=;
+        b=TH3mTS6OxfsqjnWqdtYxOD8Enyh4H8K1JaYFmdtaV2xflObeD1oKUQkb2Y6B9yzYAy
+         mCyMrgYYYKUCq4g3+IOKV+ZZg6CS9Dr4zP67stpDPXR3y9zZ5yqYOhGdy7PrV+pDfQ4K
+         n+xcGPy6iqywj9f0kJR1nTHT3Y4oc/214WfvKBcN3Y1ZpYt4/aboe/FJ/4nGr08u9Tr/
+         ovRi4mlvwzPt5s80eXNj72DOS2HzKUObUkZdeivw9FTnP57iWgQBk8QDObV3IwbOoPkR
+         km73ZvoEwrRlR3gPOHgHFbvSwEAACWlGsin67k7SJv2EPcA5YboRzY6SIUuMRnekaZny
+         Mw2w==
+X-Forwarded-Encrypted: i=1; AJvYcCW12mW6cgkmu/L3vyenTQXTF+2HTZrYPVjwh5OXVI/vpckAzbTCw9ggr2gFnY8iOs09Tu06B/2vo09b@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx173vr1MukPnViZ8ezZDXdxNukAzdrF+HHZu37BwtLrAkKDn8t
+	W0btGTTeOQEPSf4/C/QStBjE10OmXtdN46REGGWnSxgUhWBK+2Bnz2x2fgAXePg=
+X-Gm-Gg: ASbGncuu5prVLBhJeuvAQTMD2YLGWmnjzYvs9xbG3aC2sZcqfXjyXy/gWXCWEWZM99i
+	HuRQo91OLZ8S2LNNjTuoCkdpYFhXXwBCP9/hY1DGYQ/PzcKJcuX+m6svlLee58cFhLDQEp7EsrN
+	fvj0iL/2tu5iKArEeicwRXhm5tRi2jgULTtXaJ5a14DvSfjSSW/+gHe1OuO3xnzgxMkqkyK2Me5
+	NOBc9ASYQs4tOMG0SpLt/kB1mMgamzhMI6ajaK4gdIsJAAcdvCZuMjsG0uwDSVF5hjJRozPQA3v
+	WEoCxiOoqQJbGuI7loOtDd2o7/sD4OyTp8YRwZ4=
+X-Google-Smtp-Source: AGHT+IE5ydpoL70LSKM9Nla3l7Xx3LL3OIA9p7ihHnld0+zQW3qbNmeKX9aX6FlxL/xgIC54FK+x8g==
+X-Received: by 2002:a05:6214:20a3:b0:6d8:b3a7:75a0 with SMTP id 6a1803df08f44-6d934c161d4mr12732836d6.47.1733868344301;
+        Tue, 10 Dec 2024 14:05:44 -0800 (PST)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8eeb132e1sm49707756d6.35.2024.12.10.14.05.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 13:54:40 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: gourry@gourry.net
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org,
-	honggyu.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	rakie.kim@sk.com,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
+        Tue, 10 Dec 2024 14:05:43 -0800 (PST)
+From: Gregory Price <gourry@gourry.net>
+To: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [RFC PATCH] mm/mempolicy: Weighted interleave auto-tuning
-Date: Tue, 10 Dec 2024 13:54:39 -0800
-Message-ID: <20241210215439.94819-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
+	linux-mm@kvack.org
+Cc: linux-cxl@vger.kernel.org,
+	kernel-team@meta.com,
+	dan.j.williams@intel.com,
+	ira.weiny@intel.com,
+	gourry@gourry.net,
+	dave.hansen@linux.intel.com,
+	david@redhat.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	osalvador@suse.de,
+	Fan Ni <fan.ni@samsung.com>
+Subject: [PATCH v7 0/3] memory,x86,acpi: hotplug memory alignment advisement
+Date: Tue, 10 Dec 2024 17:05:14 -0500
+Message-ID: <20241210220517.3744-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -100,436 +106,69 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On machines with multiple memory nodes, interleaving page allocations
-across nodes allows for better utilization of each node's bandwidth.
-Previous work by Gregory Price [1] introduced weighted interleave, which
-allowed for pages to be allocated across NUMA nodes according to
-user-set ratios.
+v7: collect tags and rebase on latest mm-unstable.
+    ACKs: x86 MM, Memblock/MM Init, Memory Hotplug, and CXL
+    Missing any critical acks? Best merge target seems -mm
 
-Ideally, these weights should be proportional to their bandwidth, so
-that under bandwidth pressure, each node uses its maximal efficient
-bandwidth and prevents latency from increasing exponentially.
+When physical address regions are not aligned to memory block size,
+the misaligned portion is lost (stranded capacity).
 
-At the same time, we want these weights to be as small as possible.
-Having ratios that involve large co-prime numbers like 7639:1345:7 leads
-to awkward and inefficient allocations, since the node with weight 7
-will remain mostly unused (and despite being proportional to bandwidth,
-will not aid in relieving the pressure present in the other two nodes).
+Block size (min/max/selected) is architecture defined. Most architectures
+tend to use the minimum block size or some simplistic heurist. On x86,
+memory block size increases up to 2GB, and is otherwise fitted to the
+alignment of non-hotplug (i.e. not special purpose memory).
 
-This patch introduces an auto-configuration for the interleave weights
-that aims to balance the two goals of setting node weights to be
-proportional to their bandwidths and keeping the weight values low.
-This balance is controlled by a value max_node_weight, which defines the
-maximum weight a single node can take.
+CXL exposes its memory for management through the ACPI CEDT (CXL Early
+Detection Table) in a field called the CXL Fixed Memory Window.  Per
+the CXL specification, this memory must be aligned to at least 256MB.
 
-Large max_node_weights generally lead to increased weight-bandwidth
-proportionality, but can lead to underutilized nodes (think worst-case
-scenario, which is 1:max_node_weight). Lower max_node_weights reduce the
-effects of underutilized nodes, but may lead to improperly loaded
-distributions.
+When a CFMW aligns on a size less than the block size, this causes a
+loss of up to 2GB per CFMW on x86.  It is not uncommon for CFMW to be
+allocated per-device - though this behavior is BIOS defined.
 
-This knob is exposed as a sysfs interface with a default value of 32.
-Weights are re-calculated once at boottime and then every time the knob
-is changed by the user, or when the ACPI table is updated.
+This patch set provides 3 things:
+ 1) implement advise/query functions in driverse/base/memory.c to
+    report/query architecture agnostic hotplug block alignment advice.
+ 2) update x86 memblock size logic to consider the hotplug advice
+ 3) add code in acpi/numa/srat.c to report CFMW alignment advice
 
-[1] https://lore.kernel.org/linux-mm/20240202170238.90004-1-gregory.price@memverge.com/
+The advisement interfaces are design to be called during arch_init
+code prior to allocator and smp_init.  start_kernel will call these
+through setup_arch() (via acpi and mm/init_64.c on x86), which occurs
+prior to mm_core_init and smp_init - so no need for atomics.
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+There's an attempt to signal callers to advise() that query has already
+occurred, but this is predicated on the notion that query actually
+occurs (which presently only happens on the x86 arch). This is to
+assist debugging future users.  Otherwise, the advise() call has
+been marked __init to help static discovery of bad call times.
+
+Once query is called the first time, it will always return the same value.
+
+Interfaces return -EBUSY and 0 respectively on systems without hotplug.
+
+Suggested-by: Ira Weiny <ira.weiny@intel.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Gregory Price <gourry@gourry.net>
-Co-Developed-by: Gregory Price <gourry@gourry.net>
----
- ...fs-kernel-mm-mempolicy-weighted-interleave |  24 +++
- drivers/acpi/numa/hmat.c                      |   1 +
- drivers/base/node.c                           |   7 +
- include/linux/mempolicy.h                     |   4 +
- mm/mempolicy.c                                | 195 ++++++++++++++++--
- 5 files changed, 211 insertions(+), 20 deletions(-)
+Tested-by: Fan Ni <fan.ni@samsung.com>
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-index 0b7972de04e9..2ef9a87ce878 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-@@ -23,3 +23,27 @@ Description:	Weight configuration interface for nodeN
- 		Writing an empty string or `0` will reset the weight to the
- 		system default. The system default may be set by the kernel
- 		or drivers at boot or during hotplug events.
-+
-+What:		/sys/kernel/mm/mempolicy/weighted_interleave/max_node_weight
-+Date:		December 2024
-+Contact:	Linux memory management mailing list <linux-mm@kvack.org>
-+Description:	Weight limiting / scaling interface
-+
-+		The maximum interleave weight for a memory node. When it is
-+		updated, any previous changes to interleave weights (i.e. via
-+		the nodeN sysfs interfaces) are ignored, and new weights are
-+		calculated using ACPI-reported bandwidths and scaled.
-+
-+		It is possible for weights to be greater than max_node_weight if
-+		the nodeN interfaces are directly modified to be greater.
-+
-+		Minimum weight: 1
-+		Default value: 32
-+		Maximum weight: 255
-+
-+		Writing an empty string will set the value to be the default
-+		(32). Writing a value outside the valid range  will return
-+		EINVAL and will not re-trigger a weight scaling.
-+
-+		Setting max_node_weight to 1 is equivalent to unweighted
-+		interleave.
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index a2f9e7a4b479..83f3858a773f 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -20,6 +20,7 @@
- #include <linux/list_sort.h>
- #include <linux/memregion.h>
- #include <linux/memory.h>
-+#include <linux/mempolicy.h>
- #include <linux/mutex.h>
- #include <linux/node.h>
- #include <linux/sysfs.h>
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index eb72580288e6..d45216386c03 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -7,6 +7,7 @@
- #include <linux/init.h>
- #include <linux/mm.h>
- #include <linux/memory.h>
-+#include <linux/mempolicy.h>
- #include <linux/vmstat.h>
- #include <linux/notifier.h>
- #include <linux/node.h>
-@@ -214,6 +215,12 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
- 			break;
- 		}
- 	}
-+
-+	/* When setting CPU access coordinates, update mempolicy */
-+	if (access == ACCESS_COORDINATE_CPU) {
-+		if (mempolicy_set_node_perf(nid, coord))
-+			pr_info("failed to set node%d mempolicy attrs\n", nid);
-+	}
- }
- EXPORT_SYMBOL_GPL(node_set_perf_attrs);
- 
-diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-index 931b118336f4..d564e9e893ea 100644
---- a/include/linux/mempolicy.h
-+++ b/include/linux/mempolicy.h
-@@ -11,6 +11,7 @@
- #include <linux/slab.h>
- #include <linux/rbtree.h>
- #include <linux/spinlock.h>
-+#include <linux/node.h>
- #include <linux/nodemask.h>
- #include <linux/pagemap.h>
- #include <uapi/linux/mempolicy.h>
-@@ -177,6 +178,9 @@ static inline bool mpol_is_preferred_many(struct mempolicy *pol)
- 
- extern bool apply_policy_zone(struct mempolicy *policy, enum zone_type zone);
- 
-+extern int mempolicy_set_node_perf(unsigned int node,
-+				   struct access_coordinate *coords);
-+
- #else
- 
- struct mempolicy {};
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index ee32a10e992c..f789280acdcb 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -109,6 +109,7 @@
- #include <linux/mmu_notifier.h>
- #include <linux/printk.h>
- #include <linux/swapops.h>
-+#include <linux/gcd.h>
- 
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
-@@ -153,24 +154,116 @@ static unsigned int mempolicy_behavior;
-  *
-  * iw_table is RCU protected
-  */
-+static unsigned long *node_bw_table;
-+static u8 __rcu *default_iw_table;
-+static DEFINE_MUTEX(default_iwt_lock);
-+
- static u8 __rcu *iw_table;
- static DEFINE_MUTEX(iw_table_lock);
- 
-+static int max_node_weight = 32;
-+
- static u8 get_il_weight(int node)
- {
--	u8 *table;
-+	u8 *table, *defaults;
- 	u8 weight;
- 
- 	rcu_read_lock();
-+	defaults = rcu_dereference(default_iw_table);
- 	table = rcu_dereference(iw_table);
--	/* if no iw_table, use system default */
--	weight = table ? table[node] : 1;
--	/* if value in iw_table is 0, use system default */
--	weight = weight ? weight : 1;
-+	/* if no iw_table, use system default - if no default, use 1 */
-+	weight = table ? table[node] : 0;
-+	weight = weight ? weight : (defaults ? defaults[node] : 1);
- 	rcu_read_unlock();
- 	return weight;
- }
- 
-+/*
-+ * Convert ACPI-reported bandwidths into weighted interleave weights for
-+ * informed page allocation.
-+ * Call with default_iwt_lock held
-+ */
-+static void reduce_interleave_weights(unsigned long *bw, u8 *new_iw)
-+{
-+	uint64_t ttl_bw = 0, ttl_iw = 0, scaling_factor = 1;
-+	unsigned int iw_gcd = 1, i = 0;
-+
-+	/* Recalculate the bandwidth distribution given the new info */
-+	for (i = 0; i < nr_node_ids; i++)
-+		ttl_bw += bw[i];
-+
-+	/* If node is not set or has < 1% of total bw, use minimum value of 1 */
-+	for (i = 0; i < nr_node_ids; i++) {
-+		if (bw[i]) {
-+			scaling_factor = 100 * bw[i];
-+			new_iw[i] = max(scaling_factor / ttl_bw, 1);
-+		} else {
-+			new_iw[i] = 1;
-+		}
-+		ttl_iw += new_iw[i];
-+	}
-+
-+	/*
-+	 * Scale each node's share of the total bandwidth from percentages
-+	 * to whole numbers in the range [1, max_node_weight]
-+	 */
-+	for (i = 0; i < nr_node_ids; i++) {
-+		scaling_factor = max_node_weight * new_iw[i];
-+		new_iw[i] = max(scaling_factor / ttl_iw, 1);
-+		if (unlikely(i == 0))
-+			iw_gcd = new_iw[0];
-+		iw_gcd = gcd(iw_gcd, new_iw[i]);
-+	}
-+
-+	/* 1:2 is strictly better than 16:32. Reduce by the weights' GCD. */
-+	for (i = 0; i < nr_node_ids; i++)
-+		new_iw[i] /= iw_gcd;
-+}
-+
-+int mempolicy_set_node_perf(unsigned int node, struct access_coordinate *coords)
-+{
-+	unsigned long *old_bw, *new_bw;
-+	unsigned long bw_val;
-+	u8 *old_iw, *new_iw;
-+
-+	/*
-+	 * Bandwidths above this limit causes rounding errors when reducing
-+	 * weights. This value is ~16 exabytes, which is unreasonable anyways.
-+	 */
-+	bw_val = min(coords->read_bandwidth, coords->write_bandwidth);
-+	if (bw_val > (U64_MAX / 10))
-+		return -EINVAL;
-+
-+	new_bw = kcalloc(nr_node_ids, sizeof(unsigned long), GFP_KERNEL);
-+	if (!new_bw)
-+		return -ENOMEM;
-+
-+	new_iw = kzalloc(nr_node_ids, GFP_KERNEL);
-+	if (!new_iw) {
-+		kfree(new_bw);
-+		return -ENOMEM;
-+	}
-+
-+	mutex_lock(&default_iwt_lock);
-+	old_bw = node_bw_table;
-+	old_iw = rcu_dereference_protected(default_iw_table,
-+					   lockdep_is_held(&default_iwt_lock));
-+
-+	if (old_bw)
-+		memcpy(new_bw, old_bw, nr_node_ids*sizeof(unsigned long));
-+	new_bw[node] = bw_val;
-+	node_bw_table = new_bw;
-+
-+	reduce_interleave_weights(new_bw, new_iw);
-+	rcu_assign_pointer(default_iw_table, new_iw);
-+
-+	mutex_unlock(&default_iwt_lock);
-+	synchronize_rcu();
-+	kfree(old_bw);
-+	kfree(old_iw);
-+	return 0;
-+}
-+
- /**
-  * numa_nearest_node - Find nearest node by state
-  * @node: Node id to start the search
-@@ -2001,7 +2094,7 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
- {
- 	nodemask_t nodemask;
- 	unsigned int target, nr_nodes;
--	u8 *table;
-+	u8 *table, *defaults;
- 	unsigned int weight_total = 0;
- 	u8 weight;
- 	int nid;
-@@ -2012,11 +2105,12 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
- 
- 	rcu_read_lock();
- 	table = rcu_dereference(iw_table);
-+	defaults = rcu_dereference(iw_table);
- 	/* calculate the total weight */
- 	for_each_node_mask(nid, nodemask) {
- 		/* detect system default usage */
--		weight = table ? table[nid] : 1;
--		weight = weight ? weight : 1;
-+		weight = table ? table[nid] : 0;
-+		weight = weight ? weight : (defaults ? defaults[nid] : 1);
- 		weight_total += weight;
- 	}
- 
-@@ -2025,8 +2119,8 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
- 	nid = first_node(nodemask);
- 	while (target) {
- 		/* detect system default usage */
--		weight = table ? table[nid] : 1;
--		weight = weight ? weight : 1;
-+		weight = table ? table[nid] : 0;
-+		weight = weight ? weight : (defaults ? defaults[nid] : 1);
- 		if (target < weight)
- 			break;
- 		target -= weight;
-@@ -2409,7 +2503,7 @@ static unsigned long alloc_pages_bulk_array_weighted_interleave(gfp_t gfp,
- 	unsigned long nr_allocated = 0;
- 	unsigned long rounds;
- 	unsigned long node_pages, delta;
--	u8 *table, *weights, weight;
-+	u8 *weights, weight;
- 	unsigned int weight_total = 0;
- 	unsigned long rem_pages = nr_pages;
- 	nodemask_t nodes;
-@@ -2458,16 +2552,8 @@ static unsigned long alloc_pages_bulk_array_weighted_interleave(gfp_t gfp,
- 	if (!weights)
- 		return total_allocated;
- 
--	rcu_read_lock();
--	table = rcu_dereference(iw_table);
--	if (table)
--		memcpy(weights, table, nr_node_ids);
--	rcu_read_unlock();
--
--	/* calculate total, detect system default usage */
- 	for_each_node_mask(node, nodes) {
--		if (!weights[node])
--			weights[node] = 1;
-+		weights[node] = get_il_weight(node);
- 		weight_total += weights[node];
- 	}
- 
-@@ -3396,6 +3482,7 @@ static ssize_t node_store(struct kobject *kobj, struct kobj_attribute *attr,
- }
- 
- static struct iw_node_attr **node_attrs;
-+static struct kobj_attribute *max_nw_attr;
- 
- static void sysfs_wi_node_release(struct iw_node_attr *node_attr,
- 				  struct kobject *parent)
-@@ -3413,6 +3500,10 @@ static void sysfs_wi_release(struct kobject *wi_kobj)
- 
- 	for (i = 0; i < nr_node_ids; i++)
- 		sysfs_wi_node_release(node_attrs[i], wi_kobj);
-+
-+	sysfs_remove_file(wi_kobj, &max_nw_attr->attr);
-+	kfree(max_nw_attr->attr.name);
-+	kfree(max_nw_attr);
- 	kobject_put(wi_kobj);
- }
- 
-@@ -3454,6 +3545,63 @@ static int add_weight_node(int nid, struct kobject *wi_kobj)
- 	return 0;
- }
- 
-+static ssize_t max_nw_show(struct kobject *kobj, struct kobj_attribute *attr,
-+			char *buf)
-+{
-+	return sysfs_emit(buf, "%d\n", max_node_weight);
-+}
-+
-+static ssize_t max_nw_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	unsigned long *bw;
-+	u8 *old_iw, *new_iw;
-+	u8 max_weight;
-+
-+	if (count == 0 || sysfs_streq(buf, ""))
-+		max_weight = 32;
-+	else if (kstrtou8(buf, 0, &max_weight) || max_weight == 0)
-+		return -EINVAL;
-+
-+	new_iw = kzalloc(nr_node_ids, GFP_KERNEL);
-+	if (!new_iw)
-+		return -ENOMEM;
-+
-+	mutex_lock(&default_iwt_lock);
-+	bw = node_bw_table;
-+
-+	if (!bw) {
-+		mutex_unlock(&default_iwt_lock);
-+		kfree(new_iw);
-+		return -ENODEV;
-+	}
-+
-+	max_node_weight = max_weight;
-+	old_iw = rcu_dereference_protected(default_iw_table,
-+					   lockdep_is_held(&default_iwt_lock));
-+
-+	reduce_interleave_weights(bw, new_iw);
-+	rcu_assign_pointer(default_iw_table, new_iw);
-+	mutex_unlock(&default_iwt_lock);
-+
-+	synchronize_rcu();
-+	kfree(old_iw);
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute wi_attr =
-+	__ATTR(max_node_weight, 0664, max_nw_show, max_nw_store);
-+
-+static struct attribute *wi_default_attrs[] = {
-+	&wi_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group wi_attr_group = {
-+	.attrs = wi_default_attrs,
-+};
-+
- static int add_weighted_interleave_group(struct kobject *root_kobj)
- {
- 	struct kobject *wi_kobj;
-@@ -3470,6 +3618,13 @@ static int add_weighted_interleave_group(struct kobject *root_kobj)
- 		return err;
- 	}
- 
-+	err = sysfs_create_group(wi_kobj, &wi_attr_group);
-+	if (err) {
-+		pr_err("failed to add sysfs [max_node_weight]\n");
-+		kobject_put(wi_kobj);
-+		return err;
-+	}
-+
- 	for_each_node_state(nid, N_POSSIBLE) {
- 		err = add_weight_node(nid, wi_kobj);
- 		if (err) {
+Gregory Price (3):
+  memory: implement memory_block_advise/probe_max_size
+  x86: probe memory block size advisement value during mm init
+  acpi,srat: give memory block size advice based on CFMWS alignment
+
+ arch/x86/mm/init_64.c    | 15 ++++++++----
+ drivers/acpi/numa/srat.c | 12 ++++++++-
+ drivers/base/memory.c    | 53 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/memory.h   | 10 ++++++++
+ 4 files changed, 84 insertions(+), 6 deletions(-)
+
 -- 
-2.43.5
+2.43.0
 
 
