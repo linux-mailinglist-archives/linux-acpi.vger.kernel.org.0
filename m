@@ -1,155 +1,112 @@
-Return-Path: <linux-acpi+bounces-10070-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10071-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1F09EBDE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 23:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F399EBE6A
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 23:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F301667D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 22:35:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFB1164E78
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 22:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50FD1EE7BC;
-	Tue, 10 Dec 2024 22:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BDE23D407;
+	Tue, 10 Dec 2024 22:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="F0+NbxGx"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Hpe8Lr2p";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3PJtkGAZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6F32451C7
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 22:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47034211286;
+	Tue, 10 Dec 2024 22:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733870152; cv=none; b=aSvHl3L8v7fkG+6x+8FZjcvJXK7saZf2VcU4KOuSWNCpa4wDhVRHd1Ndz34i7uzOofDtAB5G+hWN/WTkReztSTVBdERdmM0+yALl+I1D7tOfeFYYDYFrs7fxtUBsZVfKDb4hy5JY6n40/VKGTVCNHgm6X+Zl1nXIlY5ENQyxSxc=
+	t=1733871094; cv=none; b=OVPKQ5vPga9WnjHSBRlS66xsaXqDjFafx319K+Ez5yftbKPqGMnQMAUO/qkykj1yr3L0wccL/9MfcImP9tzckE1SnLPu0ltwQ75Ln+rubB9G8i6Jbxs3oYUe3cvlQcqxfn4XibYkEERhUr2/RJlerq8qw6FFhvwUfnLDyZzyOJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733870152; c=relaxed/simple;
-	bh=tvt3zv+eF6/MbzKSgaDb44zYstTrL0JwPAz1hDN8QLw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PnJc//1iqLiqAKyYk7D+WZ0LwhVNkZD5jmDbAB34VLhHpYSgq7FHbWTqHgVWgS4GZSJaqP9dPZxP/bjWeKlMmy3hfS1oaY6I73R6RKC0kP7yW1OBvXRrSbqvPX5PBrBZjKP/Q2m3VWUlJQEmvR+jn6KyL6GG9obTDVIRrT8Q1Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=F0+NbxGx; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-728ea1573c0so780404b3a.0
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 14:35:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1733870150; x=1734474950; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SegVvC3hp1egRino8jTe24lodQ7Lif4l65T8hABKrm0=;
-        b=F0+NbxGx72KEK+x3QzGnM4NLoRarvb7vZ8eyI7JWXeGCqXTMXaujVlAeUw3Ngccd/X
-         r25iG1CJB3/o+sRfyYnm0K765Fdc4CLL1VpsQxsJYEignk9AhY3bvcIKSSnyLN19fLV4
-         WNDIBIrI75h8lIWBbBZAbA2fwm/8aRjV29OHo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733870150; x=1734474950;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SegVvC3hp1egRino8jTe24lodQ7Lif4l65T8hABKrm0=;
-        b=Epct5k0xUfSXkYdd6tMVCMbZVxpRjcyjeQ/JDXoJktZMzThKzeNevOOOJb/rSr0D1i
-         F7gKvUpZdQ3E2Ci7XNQMx78qt63kQemPCNdk+rQVZB3rKAbKJniWzHICsZ2Bpijr4wgG
-         f3PBqgx+KV+IXQCiaMHnoDIFytmtwP9D05mqKt9RuTliKCVGIhBwhQBKeGf0I9yU4PxD
-         09Eadi0wgPaIJzIxF1zJmR9NI1kw5/9tjH6CqMOkLJYQpSVInZ8qLuBI6YTZZunUBXM1
-         rt7j+UTlMYZ/Zrt30i5SIhnHmWn66Klz/24P1ZQH3Ojvoz+EhtSnFy6+lt0rIlgN0BHM
-         UmZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXj7GEtufZ1OkQg/3VIrbe8LlZ/kEKd8g1icKW3hbvt/3LhUxmQ1ntXJjsE9Z3sG7yWuYmYpTEQAKnZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoRaRJ7atM05zJndNsdKy2iDtPy9IbtX4CPTXNN2/twy4FTpEJ
-	ClZDHbWWtj9AH6CdNVxMS1Sf4HVfU5b+G8leSaKTZhTX//AF1sQ7FKxWVqJMiEbrX8NUW4l7Bzs
-	=
-X-Gm-Gg: ASbGncuz4zjvYQPnJe1+cy/RxCEPBue+cAVBzZaVMF0blTEu2PL0BtBXgN5pfUDQnb8
-	iTlWAWLyagLmJ5NlI3pZ01bcjcZ5pECGc6BN09/W/7hwIICeq0jIVo3YbruQBaqH3z2rsE32Kdu
-	CYSaWXMpldDnImC2QkAdhNlSGKv4pX+8EDEAXUikU8yPp0DIDHs6cHHzCaUIRBNlIcu2ainhdWx
-	TO0T/RJ1ym+GWYpAnnEu6tp8RNO512hzmEWW9+MkcuR0OQTQx5VvqeveiNVrH83VbeMvlajxr5b
-	315oxFZTkJ7HfwAEfPEY
-X-Google-Smtp-Source: AGHT+IHFImOvoqZvepZ6ydG1MvXCL/wcJSvYTEAyciHLt7g+REpwiwjuqM8uDUyZatH9pzcaXFLmaw==
-X-Received: by 2002:a05:6a21:78aa:b0:1e1:b1bb:87a0 with SMTP id adf61e73a8af0-1e1c13832e8mr1180328637.34.1733870150472;
-        Tue, 10 Dec 2024 14:35:50 -0800 (PST)
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com. [209.85.215.173])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725db650e00sm6129881b3a.187.2024.12.10.14.35.48
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 14:35:48 -0800 (PST)
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7fd5248d663so2117357a12.0
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 14:35:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXPKywoT7gV/qxtVBC797FKR7bBC7D2ae2qPZqkACKIqUsufxPy/XWelpsoEm+0/tVhavizqv7yGap7@vger.kernel.org
-X-Received: by 2002:a17:90b:1c08:b0:2ef:67c2:4030 with SMTP id
- 98e67ed59e1d1-2f128032323mr929730a91.27.1733870147516; Tue, 10 Dec 2024
- 14:35:47 -0800 (PST)
+	s=arc-20240116; t=1733871094; c=relaxed/simple;
+	bh=K69Ux45BD8TVLDUfli+RAC+zkcPgZgSuvQUNWUWX1lI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Gt918CFVgYUFAKwJEN5DdmacWKFA1GTScNXrX7sG96zJQXUpONMZKRPD3Bs/FK96bcweCpuQV4PnsbAsspxctdGwM/Ad/6S0OLK8duw3wBsCgWJ9sp/8hyp2Hm+IhixkLVQ82vEdybWLJQJNX7nidN0Ct7Wpox4ZBxnQK5FhcYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Hpe8Lr2p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3PJtkGAZ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1733871091;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v6NdESGpM3LW08eQE9ohvVb9/KmGgoFA5HR70af0DFI=;
+	b=Hpe8Lr2pqhN5bEO7kcJO7sOZItSdReaoaNgV6F5j8WhWdT3eaDR/xQppMNiL2yITKPSPKv
+	cqq+JQPshlUJ6aifed1kH8yfSXAcjRuFpspC/47e8bWHGXNd0RIgL9Zb5eXHJ5TRga5MNE
+	eZ2ErT5FfxGRenJ6UgtMJ+SSvxa1pkL4ww2MNGYt8Biyzfys+6XXYg6GzSyvG27vUJjA1i
+	rx3/cHMfcG0FblIvVnQ7JE7aOZ0y+YyRDEABUJwBNJk9SRiGt5YrL0NZDJlYCsmjol/gLM
+	Rj06wOplVtYRTYuAestyDOhMkZDkyDbr60Os8XLH6anIkOmhm5zsJOQ9vsRCjA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1733871091;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v6NdESGpM3LW08eQE9ohvVb9/KmGgoFA5HR70af0DFI=;
+	b=3PJtkGAZWkH22/f2Of6bSYEXRv+PNFiMywj1UK2h1ZZWdlcsHgubHVg/Vee7wJBg5hcew6
+	KMT5dvmrCQ8TjhCw==
+To: Zhang Rui <rui.zhang@intel.com>, rafael@kernel.org, lenb@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org
+Cc: rui.zhang@intel.com, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jmattson@google.com
+Subject: Re: [PATCH] x86/acpi: Fix LAPIC/x2APIC parsing order
+In-Reply-To: <20241022001712.9218-1-rui.zhang@intel.com>
+References: <20241022001712.9218-1-rui.zhang@intel.com>
+Date: Tue, 10 Dec 2024 23:51:30 +0100
+Message-ID: <87zfl3b18t.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
- <20241210-fix-ipu-v3-6-00e409c84a6c@chromium.org> <Z1isHpuHqHSX-jHd@kekkonen.localdomain>
-In-Reply-To: <Z1isHpuHqHSX-jHd@kekkonen.localdomain>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Tue, 10 Dec 2024 23:35:35 +0100
-X-Gmail-Original-Message-ID: <CANiDSCt64N5iheWgE0UhmTriLC8duraAaTaiX5fb7+NpXBRiUw@mail.gmail.com>
-X-Gm-Features: AZHOrDk0jwuT4BPdDBgtbco-BoT1AXVUFGOsS3tfXUhEEPMwjjkEUWAtW-dj0G0
-Message-ID: <CANiDSCt64N5iheWgE0UhmTriLC8duraAaTaiX5fb7+NpXBRiUw@mail.gmail.com>
-Subject: Re: [PATCH v3 6/7] ACPI: bus: implement acpi_device_hid when !ACPI
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-On Tue, 10 Dec 2024 at 22:01, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+On Tue, Oct 22 2024 at 08:17, Zhang Rui wrote:
+> On some systems, the same CPU (with the same APIC ID) is assigned a
+> different logical CPU id after commit ec9aedb2aa1a ("x86/acpi: Ignore
+> invalid x2APIC entries").
 >
-> Hi Ricardo,
+> This means that Linux enumerates the CPUs in a different order, which
+> violates ACPI specification[1] that states:
 >
-> On Tue, Dec 10, 2024 at 07:56:03PM +0000, Ricardo Ribalda wrote:
-> > Provide an implementation of acpi_device_hid that can be used when
-> > CONFIG_ACPI is not set.
-> >
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  include/acpi/acpi_bus.h | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index 4f1b3a6f107b..c25914a152ee 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -1003,6 +1003,11 @@ static inline int unregister_acpi_bus_type(void *bus) { return 0; }
-> >
-> >  static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
-> >
-> > +static inline const char *acpi_device_hid(struct acpi_device *device)
-> > +{
-> > +     return "";
-> > +}
+>   "OSPM should initialize processors in the order that they appear in
+>    the MADT"
 >
-> I wonder if any caller might expect something of a string if provided?
-> Valid _HIDs are either 7 or 8 characters whereas the proper version of the
-> function returns "device" when one cannot be found (dummy_hid in
-> drivers/acpi/scan.c). Unlikely to be a problem perhaps.
+> The problematic commit parses all LAPIC entries before any x2APIC
+> entries, aiming to ignore x2APIC entries with APIC ID < 255 when valid
+> LAPIC entries exist. However, it disrupts the CPU enumeration order on
+> systems where x2APIC entries precede LAPIC entries in the MADT.
+>
+> Fix the problem by separately checking LAPIC entries before parsing any
+> LAPIC or x2APIC entries.
 
-Good point. I changed it to return "device"
+I really had to stare at the change to understand how this fixes
+anything. What you want to say is:
 
-Thanks!
+Fix this problem by:
 
->
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->
-> > +
-> >  static inline acpi_status
-> >  acpi_get_physical_device_location(acpi_handle handle, struct acpi_pld_info **pld)
-> >  {
-> >
->
-> --
-> Regards,
->
-> Sakari Ailus
+    1) Parsing LAPIC entries first without registering them in the
+       topology to evaluate whether valid LAPIC entries exist.
 
+    2) Restoring the MADT in order parser which invokes either the LAPIC or
+       the X2APIC parser function depending on the entry type.
 
+       The X2APIC parser still ignores entries < 0xff in case that #1
+       found valid LAPIC entries independent of their position in the
+       MADT table.
 
--- 
-Ricardo Ribalda
+Other than that:
+
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+
+       
 
