@@ -1,167 +1,120 @@
-Return-Path: <linux-acpi+bounces-10038-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10039-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716D39EB9A6
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 19:52:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892D518879D9
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 18:52:22 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59F2214206;
-	Tue, 10 Dec 2024 18:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3/EmaGw"
-X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6AE9EB9E6
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 20:14:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D7823ED41;
-	Tue, 10 Dec 2024 18:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD32B283C85
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Dec 2024 19:14:18 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77287214208;
+	Tue, 10 Dec 2024 19:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PibYboMV"
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090951C3F13
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 19:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733856736; cv=none; b=QKNghQBJfZaYBIGJEEibqLqHhqPkgqYFHfaqDiPa6GD6omGe8dD6HR+H2BJj3G18DcqPIHaTVLCl1udn3cxb3jUqV7pVm67D66VChKk1Skr9+Uz8+oum6itvuwaSp+gPIHEBH7zQQR8+FndE/M4Ryjwx5uZMERNtMN2ucWoTCBg=
+	t=1733858050; cv=none; b=ni1E/zfMdx/JZHMnaVfwX7hUW+VmRbfpjyc2DAjUl0aDHyGstuPhlHZShLLJcjRkm2lU23AD6ubgW5wZ1z3pAOO97wxCmP/erhA+zB8ENMfrvSsTdIzSB4DlnUU0ZCqdVGlVs3t9WwdO6Frp2zm4d1tu0onJaW2orlNVs+ypziY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733856736; c=relaxed/simple;
-	bh=K1bCEcql+Dy5pT5rqacU6v95YfdNRaf/sZWArH2Gqpw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RKGKQJZQYTZFRjyr8zV0klSYlkupH+Rw5pUol3x26phLJYtenNENgPc/FeYPOdDEbsU2eyDSC0gZi+QGHollrq36ODvKK+YfeXFrzw03H7DGb9jV0XPK1/K2cGs/8mN77/1JpV09pkGC70DpmNt5BMkY60hWBfTthynJVHGhWFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3/EmaGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E28C4CEE6;
-	Tue, 10 Dec 2024 18:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733856736;
-	bh=K1bCEcql+Dy5pT5rqacU6v95YfdNRaf/sZWArH2Gqpw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O3/EmaGwKZDvY78qriEolcalnxoWnZ47pF1lY1Rd+7cVtNX9Sc5tG6ZZIiq4FJ+/z
-	 T2UfGfjNNTEDL09gk1+7w3LrfTnaBWYA3ShgrX+/KxtFn5ccrxyDnF2wJkXjW9nfaq
-	 /+NfHzO2xMG/ufhezJW0PhIAnhdtoIGkaUPz3vfpoXvuGWHZeFCvFcpTrP47Bh/jV6
-	 tJ0ma6MG7a3a+CebUGInZQRizdmNk+1W5QFnmoQb0/srllt87g/mw3ZURR8IS7eyRU
-	 Frac+iYvvxbYwDJflV6lq7O94Mqzfqg4Omdwt4LqRpEfKIlDI0GsrkGrw85osXPPHB
-	 KpXsfyIlq2zzg==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5f2abc195f3so1222454eaf.0;
-        Tue, 10 Dec 2024 10:52:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUYb/mjjEG6UFVXCT97gHZ+C7EBpLjHE/IvGXlXHI9YkjCfbMNehlOlDZguxHXBHFDn6/gtHRlGKHp1jbLK@vger.kernel.org, AJvYcCV0qyDx93J/sl+H94aOhg6gmxgOQ9aqxmrAJ6E64ehjb0/aSGgjOO475iDJ/WOt4MVgPjqjLo+3/GQ=@vger.kernel.org, AJvYcCVgh+Ec7rL31N8/u+J/YI3CwxhFutK3KszZtq0RpHN5emg8NRwlM3nc5Iduhjgup54i6nULGpMTs37q@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKo+7eNES+S7sbugxp6M02p4xMCwxeBTj0728bUwLndxf6RvX3
-	xRy4Ud8OV93YWxmKe0wZc/f+ZpRso6QKSs6aPI57nqIUeWwtHMkmEIIPWre6N9ZTG8Wk07dd8ZU
-	PnA+cDx5vOyTtNxEOyXl9kAqyzeM=
-X-Google-Smtp-Source: AGHT+IEUVq2DG7knefuD9zoEnH3gP/20KGjUt5uUH68TvgFSufuWrRzLP6Ehja97D/mMTCDN6rSUF1q/wpb/iUTcTrI=
-X-Received: by 2002:a05:6820:1896:b0:5f2:af90:e90 with SMTP id
- 006d021491bc7-5f2da0c2491mr32734eaf.3.1733856735696; Tue, 10 Dec 2024
- 10:52:15 -0800 (PST)
+	s=arc-20240116; t=1733858050; c=relaxed/simple;
+	bh=8nB9LfqUIlx893EnVEn1oyPaKNloRLzhICUSkzKGANQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=luqybZHQgqfczYKfGY7/A5W/EyAhi/lUFTchcF3/Ldjt7dsZBzUzPuXGDYq0/6lmFXSzk+AYhIWuokfVoVJUnRa8JXKHTpfQ00vv9UtJQQnjtXAioQOLtrQOc7TFuElZ8s7ujhhKzVZB4OdZ71iYuOcIMqf8NfxLRXAGaaJya/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PibYboMV; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7fd4998b0dbso2396431a12.0
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 11:14:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733858048; x=1734462848; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MysYNOOOtjPxn7x1jZehpCDsgb3N3i+OrdKPB7nkcnQ=;
+        b=PibYboMVU0w6jXbXBOCttKgijsfjv5A16l8vN/gCKYXQ95pQnZW0hSI13v9OkqKFuK
+         8wlOe8MKJZTSTt1PPaOEcRLv9krFmhHBs3QSBV9bPcDgM7DxxZJz9BJVxpU6rKHpM+Js
+         0BmQaPGMDXP5Z1IAoygaYzsSLyS7PbOl+3oQQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733858048; x=1734462848;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MysYNOOOtjPxn7x1jZehpCDsgb3N3i+OrdKPB7nkcnQ=;
+        b=qrBNidQ+lpocVPSiEs54SmiNLTJBh8u00eKJTVLqiA7b5CXiPHxw2gVSZ3Z6Q3//st
+         s0bamBH5E7LFXGOkUHI0fuud8XbrobcdZcflZsE6pDGGZIvSyeZ9swUUQBcuixfdNqzQ
+         BwF7npEkIwcRRA/UNU4uPa59yaR+U6zKYf98rFwjF7WA9sVc4B4KB3h7Y3ZdlE+N/uJ8
+         QlA4tPGN64oeRh7yH/0DKt+tnEYVy0TXgCXf6hah9y8vTc4Y92OuakzJOZr702kAo1IN
+         Pua6fUn1BbZRJgTG5AlBb8VbMwpohVhdZQa3OxZlVB4whlNMKOnpC441h+vhZADW9g+j
+         G/nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAAJB686/H/d/VAJRUgMgUL/ND4xjzIN+fo181u0li4I3rshnMQIYHnJ5lbRyFQZE65FLKPP7aCxGC@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQIPlbNdcUDypyHSKVNKmYmg5AX4N7lodT9Pl/J/0Bcz4UBmjS
+	hHWVDbrYg6EIdqYItt44QHYpW0oBjkueJKTWaodTr4cRyhz5Ff3zoZlNegC/Sg==
+X-Gm-Gg: ASbGncsqyRQ4jVVXSS8dyGvUX5za/qRTAnjwCFBorwD2SpLeJXVqgJAAXNnPyTmxFUI
+	urn8a3dtBzusge+Zt3og6gRJCVXjZLzKdouTB5Sfzs5aq4vd8gxGRlvYIvQW6Q+yJyIBMP4ADIw
+	aqAeWOYagtp5CTDdZWosQXmub1rfHcEVLkreEZ5tdqzC9wDG/lUZWcGJgpvolG6hbISAqwTom9N
+	V8+OcoVt8wiSVquAtgOABfzBVUsvecRIt4dU0pjfQQXAZ7KK3JPKGot1+6mSZoagHJyQRrIHMKh
+	4M3BuoSKPtw58EC0
+X-Google-Smtp-Source: AGHT+IG1Y3K1qZ9CQcqUnkQEHUVS4XwePEyG43iObCbw1CEpZyvCGhCju0fkg5G3HVvnA7tqXu0KEw==
+X-Received: by 2002:a05:6a20:3943:b0:1e0:ca33:8ccf with SMTP id adf61e73a8af0-1e1c1360edamr639374637.34.1733858048251;
+        Tue, 10 Dec 2024 11:14:08 -0800 (PST)
+Received: from localhost ([2a00:79e0:2e14:7:cf2b:44dd:668c:5818])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-7fd2f40dc81sm5905791a12.64.2024.12.10.11.14.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 11:14:07 -0800 (PST)
+From: Brian Norris <briannorris@chromium.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	Rob Herring <robh@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	linux-acpi@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 0/4] drivers: base: Don't match device with NULL of_node/fwnode/etc + tests
+Date: Tue, 10 Dec 2024 11:13:29 -0800
+Message-ID: <20241210191353.533801-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241205-power-supply-extensions-v5-0-f0f996db4347@weissschuh.net>
- <20241205-power-supply-extensions-v5-1-f0f996db4347@weissschuh.net> <esivcfgbfewjcnvc3uhsdvxbu5dmh3r5z2hjjagzvfrxxsioav@cx2du3oznvhi>
-In-Reply-To: <esivcfgbfewjcnvc3uhsdvxbu5dmh3r5z2hjjagzvfrxxsioav@cx2du3oznvhi>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 10 Dec 2024 19:52:04 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iSVyfyBS=MtAW-0q8keJa9W=ztZDgPgZiNLNxFUcr6QQ@mail.gmail.com>
-Message-ID: <CAJZ5v0iSVyfyBS=MtAW-0q8keJa9W=ztZDgPgZiNLNxFUcr6QQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] ACPI: battery: Rename extensions to hook in messages
-To: Sebastian Reichel <sebastian.reichel@collabora.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Armin Wolf <W_Armin@gmx.de>, Hans de Goede <hdegoede@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, Len Brown <lenb@kernel.org>, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 6, 2024 at 1:40=E2=80=AFAM Sebastian Reichel
-<sebastian.reichel@collabora.com> wrote:
->
-> Hi,
->
-> On Thu, Dec 05, 2024 at 09:46:35PM +0100, Thomas Wei=C3=9Fschuh wrote:
-> > This functionality is called "hook" everywhere in the code.
-> > For consistency call it the same in the log messages.
-> >
-> > The power supply subsystem is about to get its own extension
-> > functionality. While the two are closely related and will be used
-> > together, the current wording leaves room for misinterpretation.
-> >
-> > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> >
-> > ---
-> > This patch can also be applied independently through the ACPI tree.
-> > ---
->
-> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+This series:
+1. makes the behavior of_find_device_by_node(),
+   bus_find_device_by_of_node(), bus_find_device_by_fwnode(), etc., more
+   consistent when provided with a NULL node/handle;
+2. adds kunit tests to validate the new NULL-argument behavior; and
+3. makes some related improvements and refactoring for the drivers/base/
+   kunit tests.
 
-Applied as 6.14 material, thanks!
+This series aims to prevent problems like the ones resolved in commit
+5c8418cf4025 ("PCI/pwrctrl: Unregister platform device only if one
+actually exists").
 
 
-> >  drivers/acpi/battery.c | 14 +++++++-------
-> >  1 file changed, 7 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> > index 3d5342f8d7b3ae4e259131f9c7b7144a6206cfdb..6760330a8af55d51c82a044=
-7623c2040ffdaab10 100644
-> > --- a/drivers/acpi/battery.c
-> > +++ b/drivers/acpi/battery.c
-> > @@ -717,7 +717,7 @@ static void battery_hook_unregister_unlocked(struct=
- acpi_battery_hook *hook)
-> >       }
-> >       list_del_init(&hook->list);
-> >
-> > -     pr_info("extension unregistered: %s\n", hook->name);
-> > +     pr_info("hook unregistered: %s\n", hook->name);
-> >  }
-> >
-> >  void battery_hook_unregister(struct acpi_battery_hook *hook)
-> > @@ -751,18 +751,18 @@ void battery_hook_register(struct acpi_battery_ho=
-ok *hook)
-> >               if (hook->add_battery(battery->bat, hook)) {
-> >                       /*
-> >                        * If a add-battery returns non-zero,
-> > -                      * the registration of the extension has failed,
-> > +                      * the registration of the hook has failed,
-> >                        * and we will not add it to the list of loaded
-> >                        * hooks.
-> >                        */
-> > -                     pr_err("extension failed to load: %s", hook->name=
-);
-> > +                     pr_err("hook failed to load: %s", hook->name);
-> >                       battery_hook_unregister_unlocked(hook);
-> >                       goto end;
-> >               }
-> >
-> >               power_supply_changed(battery->bat);
-> >       }
-> > -     pr_info("new extension: %s\n", hook->name);
-> > +     pr_info("new hook: %s\n", hook->name);
-> >  end:
-> >       mutex_unlock(&hook_mutex);
-> >  }
-> > @@ -805,10 +805,10 @@ static void battery_hook_add_battery(struct acpi_=
-battery *battery)
-> >       list_for_each_entry_safe(hook_node, tmp, &battery_hook_list, list=
-) {
-> >               if (hook_node->add_battery(battery->bat, hook_node)) {
-> >                       /*
-> > -                      * The notification of the extensions has failed,=
- to
-> > -                      * prevent further errors we will unload the exte=
-nsion.
-> > +                      * The notification of the hook has failed, to
-> > +                      * prevent further errors we will unload the hook=
-.
-> >                        */
-> > -                     pr_err("error in extension, unloading: %s",
-> > +                     pr_err("error in hook, unloading: %s",
-> >                                       hook_node->name);
-> >                       battery_hook_unregister_unlocked(hook_node);
-> >               }
-> >
-> > --
-> > 2.47.1
-> >
+Brian Norris (4):
+  drivers: base: Don't match devices with NULL of_node/fwnode/etc
+  drivers: base: test: Enable device model tests with KUNIT_ALL_TESTS
+  drivers: base: test: Drop "devm" from platform-device-test names
+  drivers: base: test: Add ...find_device_by...(... NULL) tests
+
+ drivers/base/core.c                      |  8 ++---
+ drivers/base/test/Kconfig                |  1 +
+ drivers/base/test/platform-device-test.c | 42 ++++++++++++++++++++----
+ 3 files changed, 40 insertions(+), 11 deletions(-)
+
+-- 
+2.47.0.338.g60cca15819-goog
+
 
