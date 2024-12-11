@@ -1,158 +1,120 @@
-Return-Path: <linux-acpi+bounces-10093-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10094-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAAA9EC7F2
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:57:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BFB9EC89C
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 10:15:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02D82898D5
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 08:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE8D1653E8
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5AE1F236A;
-	Wed, 11 Dec 2024 08:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1463F204F67;
+	Wed, 11 Dec 2024 09:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4x8tEW6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vymOPRtk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9711F2360;
-	Wed, 11 Dec 2024 08:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0691FDE38
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 09:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733907438; cv=none; b=aMid4V/qR9ttoJwK15xr5Tsblj30QYwFwkRXpGjaSpA5w3wlCy+h8Dx0FKCNpEK5/WLTi1+MiWUSKBprOmBtliEAWRKQ214oNwNUkPAnplL8mRP5tWtkhjhcv/nMWnTV6N1d8M5xD2o3Ei4K4aQd7rViKEcwWpy4NF1x57nuPOU=
+	t=1733908500; cv=none; b=bSUjRw5FzgO2csnM2ipQZ0lQLIimB8y7QPWpV837jREi+KHq1uJS62Nz44sf5MaJm+AWb+/cdD5PiK/lLOzro1RZi3X6iHpAsXHg06uOve6zqFpamtJFmJpTn1YfTozBytvQqiz35AXxdMXu9LjPsrKyllfSl4I+nOg2RotUubY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733907438; c=relaxed/simple;
-	bh=le+Mh1wjBLqBi2bTTLZH6gClWn3WW5fXnLXugLgMUN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bv4A/wkZP4tNMhHMMOq0GadJFFSiyZ++cRsC3UVfg1lwG9zVm7o4M8s3xMp3Lj0iKfcujx7av9KeWwMJmjsrm2AyRreXzsBlJ8ltXnaXL7IGNkV/AISVgO6u1kZCsQuz5WZ7Cp4vb5QeXQODXj971Lt3Hm44to33A3rA0XDczfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4x8tEW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC81C4CED2;
-	Wed, 11 Dec 2024 08:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733907437;
-	bh=le+Mh1wjBLqBi2bTTLZH6gClWn3WW5fXnLXugLgMUN0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=G4x8tEW6qh3o72XqlueHI99hHI5sdgY7JzBvC/ssQPnsr241HDBap/SW6bpTjx29d
-	 1OyEje2fmgLrmgDzruHlDK2OHbxeIngPoRdhxiyB7KBMVaW7Kf0GvYwMZLkF2uHOBI
-	 Y20t+42nJ/OR/sZzpFGNg2TIyKZ//bMFf/elyM8fYnm+rqK9rCtn48zOa6w0e51SnQ
-	 kRCAyg4M0AT55he3dau35ARu/sHsK5r65wiqSwU6yrxE51k3uAChFn4osqSab8XTSQ
-	 Q1MlUhtD0890xIk4ZrVHrI0MsihvikSh/Uv39l1WF1ly7AVy53dx9aqmGDycfYWvnY
-	 gM7y5fcXPIEhw==
-Date: Wed, 11 Dec 2024 09:57:11 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Ricardo Ribalda <ribalda@chromium.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
- <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>, "Rafael J.
- Wysocki" <rafael.j.wysocki@intel.com>, Dan Carpenter
- <dan.carpenter@linaro.org>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 6/7] ACPI: bus: implement acpi_device_hid when !ACPI
-Message-ID: <20241211095711.19909f0b@foz.lan>
-In-Reply-To: <Z1lR869cuIw_p2-l@kekkonen.localdomain>
+	s=arc-20240116; t=1733908500; c=relaxed/simple;
+	bh=JUXrxkRS6ra3CHJ9SyF7bUw/4jbQj+KL0Fb1Fh2MyHA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I7vxLV0mltNNPxvny4/dKQniRF7oN5nG9yeX/40RLHjlLQbNffaIyKSb0JzlmaSlcwVmCmmsyPt1cl8iRKFI08WVibc2wudjyup0OTFVwPSlr87Hd2cemzz+KzBYi9VpuNwss7wDE31YIx8RqII6MnTi6IVucP3rkGy/Iy/ruiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vymOPRtk; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3862a921123so3796471f8f.3
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 01:14:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733908497; x=1734513297; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6FDO3wL3i1XscIg74LPG2N/BXo43Ca59PIHDAIDDUjg=;
+        b=vymOPRtkPVD6OqtxNN3Zn78DuUPGf0D2EtPIVzre4dUGjBcy72cxW+ZKSHV9Uh8NWy
+         L+XdJKYILHL2gZ2nItX9wAJX0DeDjSg1ZjXi777nGzj7YWMBE0jvKlIaUwet6VyZUxtw
+         QNxJ0CfcHrvC8MEZ2mGb7sx9ZXQqix2buzRBYdfhLEX76dVWIIzfLU4v0AUXUmFoTTwV
+         Dy61krov4I8gSzSXaSKRhFqA9nQLxYbJ1fRWV2TAGqvLm9QDPBXcoOvZE3xC1cgHqhHe
+         ub1KvME6gyPg5rEe/pnxTaIFo+JKSEpujW2gEtBYZw7JMYz93jvG+/Hvxdw07gBNpXBi
+         Dghg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733908497; x=1734513297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6FDO3wL3i1XscIg74LPG2N/BXo43Ca59PIHDAIDDUjg=;
+        b=khhyt/ekh6Lc+b+empqcwXV36ol4sLMY5QERxfcMq4g66HZ/OiiZdOBKIFN0AmYcce
+         m2KSMaLZXTKicFYZPYYdEbOBwr+zAXXcDAYOCdqKfw3v2KMAVk3b2E/uEpjSgCkS8xMf
+         9WKtlsc+K9H0Gj480chahTypHB/Ea/pmQagfdBYG0VMdXKT183+ahWhEq8WtPCx6N5Ke
+         M0G7iuVTCyDuBdmTfV6HLNyWr7mV2Br/sCqCL79+jTciN1YaVzGr9R9+FY77vyvLaUFw
+         VyleRa6+PjoFPkqy5QxqItngEcVf8LPtmI3ZjBcW8c96Ut2A/DJP6uwxBprfr1wSPJPG
+         SwGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMMSn8FlUKPV4DnCeWkVHdfxNR2F/r1ZWofGtI1HVOImsgEt/8I/q698TlYUY9wOnniVP0KxeniqaN@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2p6DfSSFBVZY5VsvFZw6+X0G/zATREiOgr5dPzEhixduq6SvZ
+	54R6k9jRpsHvdjyn3yLyoP0fIy4zyJ1AC4ekuwPXB45ozeFda9ZSmp4dXofO31M=
+X-Gm-Gg: ASbGncs4V82Hn8+a61p1iSZawnLBzwPQf4Pb8E+HT0xYEdpar+WDczawq1n6LALOrhy
+	b5Xhi2EK20PxXH6wOJ/keJ/x8HUO//z1HVUkiKDeVP4u/aklEkY8Ypd8vtsfaOeqy4Sr/n7Lxna
+	wwpD4iW8tEFkJGC7McZnRuYz1l1/ENpvIfb+HbEnrO2otezKidWdrVQ6KSeb8nc2Z2/97VxoX+i
+	79XVYb1XDrSukYGHAczTYCenjJn5CILWE8Ab8uuNqjHg8aMYpU167cKfO0=
+X-Google-Smtp-Source: AGHT+IHOLK/ljbtyNYazbMd4hvX84Qm4ErHQ/BEuJGZ5dGRRjqOpg37GnjWdhZty1q73L7x1DOcRRA==
+X-Received: by 2002:a05:6000:178e:b0:386:3702:d2d8 with SMTP id ffacd0b85a97d-3864ced69c8mr1574947f8f.58.1733908496679;
+        Wed, 11 Dec 2024 01:14:56 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38782514dd9sm803351f8f.69.2024.12.11.01.14.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2024 01:14:56 -0800 (PST)
+Date: Wed, 11 Dec 2024 12:14:52 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
+Subject: Re: [PATCH v3 7/7] media: ipu-bridge: Remove unneeded conditional
+ compilations
+Message-ID: <a91a3993-6c81-4abc-8609-8f41804fdf62@stanley.mountain>
 References: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
-	<20241210-fix-ipu-v3-6-00e409c84a6c@chromium.org>
-	<Z1isHpuHqHSX-jHd@kekkonen.localdomain>
-	<CANiDSCt64N5iheWgE0UhmTriLC8duraAaTaiX5fb7+NpXBRiUw@mail.gmail.com>
-	<Z1lF0ij99KpbVKQs@kekkonen.localdomain>
-	<20241211094037.26aa369a@foz.lan>
-	<Z1lR869cuIw_p2-l@kekkonen.localdomain>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ <20241210-fix-ipu-v3-7-00e409c84a6c@chromium.org>
+ <20241211091954.42a5c778@foz.lan>
+ <Z1lOCGJvgFcqmR3R@kekkonen.localdomain>
+ <CANiDSCvPNf2KiEpr6Tboon6bjUxwEkD=+_AQjhiOA7RDTTpnCw@mail.gmail.com>
+ <20241211094854.407ddd54@foz.lan>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241211094854.407ddd54@foz.lan>
 
-Em Wed, 11 Dec 2024 08:48:51 +0000
-Sakari Ailus <sakari.ailus@linux.intel.com> escreveu:
-
-> Hi Mauro,
+On Wed, Dec 11, 2024 at 09:48:54AM +0100, Mauro Carvalho Chehab wrote:
+> Yet, based on the title, enforced by its description:
 > 
-> On Wed, Dec 11, 2024 at 09:40:37AM +0100, Mauro Carvalho Chehab wrote:
-> > Em Wed, 11 Dec 2024 07:57:06 +0000
-> > Sakari Ailus <sakari.ailus@linux.intel.com> escreveu:
-> >   
-> > > Hi Ricardo,
-> > > 
-> > > On Tue, Dec 10, 2024 at 11:35:35PM +0100, Ricardo Ribalda wrote:  
-> > > > On Tue, 10 Dec 2024 at 22:01, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:    
-> > > > >
-> > > > > Hi Ricardo,
-> > > > >
-> > > > > On Tue, Dec 10, 2024 at 07:56:03PM +0000, Ricardo Ribalda wrote:    
-> > > > > > Provide an implementation of acpi_device_hid that can be used when
-> > > > > > CONFIG_ACPI is not set.
-> > > > > >
-> > > > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > > > > ---
-> > > > > >  include/acpi/acpi_bus.h | 5 +++++
-> > > > > >  1 file changed, 5 insertions(+)
-> > > > > >
-> > > > > > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > > > > > index 4f1b3a6f107b..c25914a152ee 100644
-> > > > > > --- a/include/acpi/acpi_bus.h
-> > > > > > +++ b/include/acpi/acpi_bus.h
-> > > > > > @@ -1003,6 +1003,11 @@ static inline int unregister_acpi_bus_type(void *bus) { return 0; }
-> > > > > >
-> > > > > >  static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
-> > > > > >
-> > > > > > +static inline const char *acpi_device_hid(struct acpi_device *device)
-> > > > > > +{
-> > > > > > +     return "";
-> > > > > > +}    
-> > > > >
-> > > > > I wonder if any caller might expect something of a string if provided?
-> > > > > Valid _HIDs are either 7 or 8 characters whereas the proper version of the
-> > > > > function returns "device" when one cannot be found (dummy_hid in
-> > > > > drivers/acpi/scan.c). Unlikely to be a problem perhaps.    
-> > > > 
-> > > > Good point. I changed it to return "device"    
-> > > 
-> > > When ACPI is disabled, it's unlikely that string would be used anyway, vs.
-> > > the case when ACPI is enabled but there's no _HID. So I think an empty
-> > > string should be fine. I wonder what others think.
-> > >   
-> > Returning "" also caused me some attention at the original patch. IMO,
-> > placing a pseudo-valid HID would be better, but I guess "device" is also
-> > invalid, as, at least I always saw HIDs in uppercase. Also, I guess it
-> > is always a vendor ID + a 4 digit number.
-> > 
-> > so, IMHO, something like "DEVC9999" would be a better name if we fill it.  
+> 	> One of the quirks that we introduced to build with !ACPI && COMPILE_TEST
+> 	> throws the following smatch warning:
+> 	> drivers/media/pci/intel/ipu-bridge.c:752 ipu_bridge_ivsc_is_ready() warn: iterator 'i' not incremented
 > 
-> How about post a patch changing "device" in drivers/acpi/scan.c? :-)
+> I don't think it makes sense to c/c stable, as this is just a smatch
+> warning, for a configuration that will never be used in production.
 
-Yeah, keeping it coherent makes sense, but see:
+Yes.  Plus that check has a lot of false positives if you don't have the cross
+function DB enabled.  I thought I had fixed it, but I still need to work on it
+more.
 
-	static const char *dummy_hid = "device";
+regards,
+dan carpenter
 
-This is compiled for production kernels, and not just for COMPILE_TEST,
-while:
-
-	static inline const char *acpi_device_hid(struct acpi_device *device)
-	{
-		return "foo";
-	}
-
-is only COMPILE_TEST. They don't need to be aligned.
-
-> But I
-> think the string also needs to be an invalid as a _HID object so it's not
-> masking an actual hardware ID used by a real device.
-
-It doesn't matter if if ever conflicts to a real device, as this is
-for COMPILE_TEST only.
-
-Anyway, from my side, I'm just giving my 2 cents. I'm ok either way: 
-"", "device", "DEVC999", ...
-
-Thanks,
-Mauro
 
