@@ -1,64 +1,66 @@
-Return-Path: <linux-acpi+bounces-10092-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10093-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614479EC7AE
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:50:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BAAA9EC7F2
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:57:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 628681888AB7
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 08:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02D82898D5
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 08:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215841E9B10;
-	Wed, 11 Dec 2024 08:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5AE1F236A;
+	Wed, 11 Dec 2024 08:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7a5u8sd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4x8tEW6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A071C5F12;
-	Wed, 11 Dec 2024 08:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9711F2360;
+	Wed, 11 Dec 2024 08:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733907031; cv=none; b=h1j3HX85XSa51VSU41gMXxRFS6P8BZi4FVNpbSDYMLivTcLO0/fm0ch6D1VXwriNHZT9/eQ/begWI1d6g9jnKeEInPl+M7vS7SvW27a96ukMIv9PrZUMVNdR67iP3Juyv/H/xZhGuOjE3L+mASLsTcH6BquN5foGsZCuyjLG1C0=
+	t=1733907438; cv=none; b=aMid4V/qR9ttoJwK15xr5Tsblj30QYwFwkRXpGjaSpA5w3wlCy+h8Dx0FKCNpEK5/WLTi1+MiWUSKBprOmBtliEAWRKQ214oNwNUkPAnplL8mRP5tWtkhjhcv/nMWnTV6N1d8M5xD2o3Ei4K4aQd7rViKEcwWpy4NF1x57nuPOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733907031; c=relaxed/simple;
-	bh=ai8YESzxty1CKO1ZiELcR0rZG9JCE+LruFb2+gcI//s=;
+	s=arc-20240116; t=1733907438; c=relaxed/simple;
+	bh=le+Mh1wjBLqBi2bTTLZH6gClWn3WW5fXnLXugLgMUN0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U2Zhjvtob3Bv4fjK2MFmyGnSeB+7M4UiHp5mjpGupgQo93E/7WjHAn6TJCqFCswOjIBahLy7csINzdgU6Q9dwo2H6lVCt/7XEswEEJH1gQLnbF5LM9Nq7m7vpFab6GJrVMVVRTQ8Rbhjkoh3fZK5X9yAm2G97Dd1yASYwOkcmYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7a5u8sd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EF6C4CED2;
-	Wed, 11 Dec 2024 08:50:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bv4A/wkZP4tNMhHMMOq0GadJFFSiyZ++cRsC3UVfg1lwG9zVm7o4M8s3xMp3Lj0iKfcujx7av9KeWwMJmjsrm2AyRreXzsBlJ8ltXnaXL7IGNkV/AISVgO6u1kZCsQuz5WZ7Cp4vb5QeXQODXj971Lt3Hm44to33A3rA0XDczfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4x8tEW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC81C4CED2;
+	Wed, 11 Dec 2024 08:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733907030;
-	bh=ai8YESzxty1CKO1ZiELcR0rZG9JCE+LruFb2+gcI//s=;
+	s=k20201202; t=1733907437;
+	bh=le+Mh1wjBLqBi2bTTLZH6gClWn3WW5fXnLXugLgMUN0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S7a5u8sdt53aLg1ztDUhcO4F3nZIO9VYs8BIhiWMuY+mfJ+zG7aLouYtETFX5TvQN
-	 I4lZ9y8CKj4cVp/4noQ326Za7Kvqe4rVebZ56lrIg1YO1uUfKzK3CnsIrkXoZKlafb
-	 G+V7edTFAt2tpuV4HofB3a+9cpO4+qktpjQQYdXfknA6Klhskq13/4fMFeAu99tcnb
-	 6LuYid6mG2kkxwg9vwl1Iu4+aXBneNxwhwloDDAGCsokM2VRLdjRmJSuS9KqNxHILc
-	 n30f6ZJkQajbjDQczUU97YybPm0CNAf55NjTo4vEkrkUvVYkAm3P8fYEyI6wKhWhoQ
-	 k34a8xHqoTt/A==
-Date: Wed, 11 Dec 2024 09:50:24 +0100
+	b=G4x8tEW6qh3o72XqlueHI99hHI5sdgY7JzBvC/ssQPnsr241HDBap/SW6bpTjx29d
+	 1OyEje2fmgLrmgDzruHlDK2OHbxeIngPoRdhxiyB7KBMVaW7Kf0GvYwMZLkF2uHOBI
+	 Y20t+42nJ/OR/sZzpFGNg2TIyKZ//bMFf/elyM8fYnm+rqK9rCtn48zOa6w0e51SnQ
+	 kRCAyg4M0AT55he3dau35ARu/sHsK5r65wiqSwU6yrxE51k3uAChFn4osqSab8XTSQ
+	 Q1MlUhtD0890xIk4ZrVHrI0MsihvikSh/Uv39l1WF1ly7AVy53dx9aqmGDycfYWvnY
+	 gM7y5fcXPIEhw==
+Date: Wed, 11 Dec 2024 09:57:11 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Robert Moore
- <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Dan Carpenter
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Ricardo Ribalda <ribalda@chromium.org>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+ <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>, "Rafael J.
+ Wysocki" <rafael.j.wysocki@intel.com>, Dan Carpenter
  <dan.carpenter@linaro.org>, linux-media@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
  acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 7/7] media: ipu-bridge: Remove unneeded conditional
- compilations
-Message-ID: <20241211095024.66f8759a@foz.lan>
-In-Reply-To: <CANiDSCsHk+QbF3BtrFU8G3UOgZZjTbQf4RhwkYCr+BeFiTYrEg@mail.gmail.com>
+Subject: Re: [PATCH v3 6/7] ACPI: bus: implement acpi_device_hid when !ACPI
+Message-ID: <20241211095711.19909f0b@foz.lan>
+In-Reply-To: <Z1lR869cuIw_p2-l@kekkonen.localdomain>
 References: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
-	<20241210-fix-ipu-v3-7-00e409c84a6c@chromium.org>
-	<20241211091954.42a5c778@foz.lan>
-	<CANiDSCsHk+QbF3BtrFU8G3UOgZZjTbQf4RhwkYCr+BeFiTYrEg@mail.gmail.com>
+	<20241210-fix-ipu-v3-6-00e409c84a6c@chromium.org>
+	<Z1isHpuHqHSX-jHd@kekkonen.localdomain>
+	<CANiDSCt64N5iheWgE0UhmTriLC8duraAaTaiX5fb7+NpXBRiUw@mail.gmail.com>
+	<Z1lF0ij99KpbVKQs@kekkonen.localdomain>
+	<20241211094037.26aa369a@foz.lan>
+	<Z1lR869cuIw_p2-l@kekkonen.localdomain>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -69,142 +71,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Em Wed, 11 Dec 2024 09:25:33 +0100
-Ricardo Ribalda <ribalda@chromium.org> escreveu:
+Em Wed, 11 Dec 2024 08:48:51 +0000
+Sakari Ailus <sakari.ailus@linux.intel.com> escreveu:
 
-> [only Mauro]
+> Hi Mauro,
 > 
-> On Wed, 11 Dec 2024 at 09:20, Mauro Carvalho Chehab
-> <mchehab+huawei@kernel.org> wrote:
-> >
-> > Em Tue, 10 Dec 2024 19:56:04 +0000
-> > Ricardo Ribalda <ribalda@chromium.org> escreveu:
-> >  
-> > > The ACPI headers have introduced implementations for some of their
-> > > functions when the kernel is not configured with ACPI.
-> > >
-> > > Let's use them instead of our conditional compilation. It is easier to
-> > > maintain and less prone to errors.
-> > >
-> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > ---
-> > >  drivers/media/pci/intel/ipu-bridge.c | 28 +++++-----------------------
-> > >  1 file changed, 5 insertions(+), 23 deletions(-)
-> > >
-> > > diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
-> > > index be82bc3e27d0..1db994338fdf 100644
-> > > --- a/drivers/media/pci/intel/ipu-bridge.c
-> > > +++ b/drivers/media/pci/intel/ipu-bridge.c
-> > > @@ -2,6 +2,7 @@
-> > >  /* Author: Dan Scally <djrscally@gmail.com> */
-> > >
-> > >  #include <linux/acpi.h>
-> > > +#include <acpi/acpi_bus.h>
-> > >  #include <linux/cleanup.h>
-> > >  #include <linux/device.h>
-> > >  #include <linux/i2c.h>
-> > > @@ -107,7 +108,6 @@ static const char * const ipu_vcm_types[] = {
-> > >       "lc898212axb",
-> > >  };
-> > >
-> > > -#if IS_ENABLED(CONFIG_ACPI)
-> > >  /*
-> > >   * Used to figure out IVSC acpi device by ipu_bridge_get_ivsc_acpi_dev()
-> > >   * instead of device and driver match to probe IVSC device.
-> > > @@ -127,11 +127,11 @@ static struct acpi_device *ipu_bridge_get_ivsc_acpi_dev(struct acpi_device *adev
-> > >               const struct acpi_device_id *acpi_id = &ivsc_acpi_ids[i];
-> > >               struct acpi_device *consumer, *ivsc_adev;
-> > >
-> > > -             acpi_handle handle = acpi_device_handle(adev);
-> > > +             acpi_handle handle = acpi_device_handle(ACPI_PTR(adev));
-> > >               for_each_acpi_dev_match(ivsc_adev, acpi_id->id, NULL, -1)
-> > >                       /* camera sensor depends on IVSC in DSDT if exist */
-> > >                       for_each_acpi_consumer_dev(ivsc_adev, consumer)
-> > > -                             if (consumer->handle == handle) {
-> > > +                             if (ACPI_PTR(consumer->handle) == handle) {
-> > >                                       acpi_dev_put(consumer);
-> > >                                       return ivsc_adev;
-> > >                               }
-> > > @@ -139,12 +139,6 @@ static struct acpi_device *ipu_bridge_get_ivsc_acpi_dev(struct acpi_device *adev
-> > >
-> > >       return NULL;
-> > >  }
-> > > -#else
-> > > -static struct acpi_device *ipu_bridge_get_ivsc_acpi_dev(struct acpi_device *adev)
-> > > -{
-> > > -     return NULL;
-> > > -}
-> > > -#endif
-> > >
-> > >  static int ipu_bridge_match_ivsc_dev(struct device *dev, const void *adev)
-> > >  {
-> > > @@ -261,9 +255,8 @@ static enum v4l2_fwnode_orientation ipu_bridge_parse_orientation(struct acpi_dev
-> > >       struct acpi_pld_info *pld = NULL;
-> > >       acpi_status status = AE_ERROR;
-> > >
-> > > -#if IS_ENABLED(CONFIG_ACPI)
-> > > -     status = acpi_get_physical_device_location(adev->handle, &pld);
-> > > -#endif
-> > > +     status = acpi_get_physical_device_location(ACPI_PTR(adev->handle),
-> > > +                                                &pld);
-> > >       if (ACPI_FAILURE(status)) {
-> > >               dev_warn(ADEV_DEV(adev), "_PLD call failed, using default orientation\n");
-> > >               return V4L2_FWNODE_ORIENTATION_EXTERNAL;
-> > > @@ -498,9 +491,7 @@ static void ipu_bridge_create_connection_swnodes(struct ipu_bridge *bridge,
-> > >       if (sensor->csi_dev) {
-> > >               const char *device_hid = "";
-> > >
-> > > -#if IS_ENABLED(CONFIG_ACPI)
-> > >               device_hid = acpi_device_hid(sensor->ivsc_adev);
-> > > -#endif
-> > >
-> > >               snprintf(sensor->ivsc_name, sizeof(sensor->ivsc_name), "%s-%u",
-> > >                        device_hid, sensor->link);
-> > > @@ -671,11 +662,7 @@ static int ipu_bridge_connect_sensor(const struct ipu_sensor_config *cfg,
-> > >       struct acpi_device *adev = NULL;
-> > >       int ret;
-> > >
-> > > -#if IS_ENABLED(CONFIG_ACPI)
-> > >       for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
-> > > -#else
-> > > -     while (true) {
-> > > -#endif
-> > >               if (!ACPI_PTR(adev->status.enabled))
-> > >                       continue;  
-> >
-> > Heh, that's what I pointed on patch 1: you don't need it there, as this
-> > will be handled on patch 2.
-> >  
-> > >
-> > > @@ -768,15 +755,10 @@ static int ipu_bridge_ivsc_is_ready(void)
-> > >       unsigned int i;
-> > >
-> > >       for (i = 0; i < ARRAY_SIZE(ipu_supported_sensors); i++) {
-> > > -#if IS_ENABLED(CONFIG_ACPI)
-> > >               const struct ipu_sensor_config *cfg =
-> > >                       &ipu_supported_sensors[i];
-> > >
-> > >               for_each_acpi_dev_match(sensor_adev, cfg->hid, NULL, -1) {
-> > > -#else
-> > > -             while (false) {
-> > > -                     sensor_adev = NULL;
-> > > -#endif
-> > >                       if (!ACPI_PTR(sensor_adev->status.enabled))
-> > >                               continue;
-> > >
-> > >  
-> >
-> > Considering that you drop patch 1, and keep the ACPI dependencies
-> > at the header, as proposed by patches 2-6:
-> >
-> > Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kerenel.org>  
-> I will fix the typo in your email
+> On Wed, Dec 11, 2024 at 09:40:37AM +0100, Mauro Carvalho Chehab wrote:
+> > Em Wed, 11 Dec 2024 07:57:06 +0000
+> > Sakari Ailus <sakari.ailus@linux.intel.com> escreveu:
+> >   
+> > > Hi Ricardo,
+> > > 
+> > > On Tue, Dec 10, 2024 at 11:35:35PM +0100, Ricardo Ribalda wrote:  
+> > > > On Tue, 10 Dec 2024 at 22:01, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:    
+> > > > >
+> > > > > Hi Ricardo,
+> > > > >
+> > > > > On Tue, Dec 10, 2024 at 07:56:03PM +0000, Ricardo Ribalda wrote:    
+> > > > > > Provide an implementation of acpi_device_hid that can be used when
+> > > > > > CONFIG_ACPI is not set.
+> > > > > >
+> > > > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > > > ---
+> > > > > >  include/acpi/acpi_bus.h | 5 +++++
+> > > > > >  1 file changed, 5 insertions(+)
+> > > > > >
+> > > > > > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> > > > > > index 4f1b3a6f107b..c25914a152ee 100644
+> > > > > > --- a/include/acpi/acpi_bus.h
+> > > > > > +++ b/include/acpi/acpi_bus.h
+> > > > > > @@ -1003,6 +1003,11 @@ static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+> > > > > >
+> > > > > >  static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
+> > > > > >
+> > > > > > +static inline const char *acpi_device_hid(struct acpi_device *device)
+> > > > > > +{
+> > > > > > +     return "";
+> > > > > > +}    
+> > > > >
+> > > > > I wonder if any caller might expect something of a string if provided?
+> > > > > Valid _HIDs are either 7 or 8 characters whereas the proper version of the
+> > > > > function returns "device" when one cannot be found (dummy_hid in
+> > > > > drivers/acpi/scan.c). Unlikely to be a problem perhaps.    
+> > > > 
+> > > > Good point. I changed it to return "device"    
+> > > 
+> > > When ACPI is disabled, it's unlikely that string would be used anyway, vs.
+> > > the case when ACPI is enabled but there's no _HID. So I think an empty
+> > > string should be fine. I wonder what others think.
+> > >   
+> > Returning "" also caused me some attention at the original patch. IMO,
+> > placing a pseudo-valid HID would be better, but I guess "device" is also
+> > invalid, as, at least I always saw HIDs in uppercase. Also, I guess it
+> > is always a vendor ID + a 4 digit number.
+> > 
+> > so, IMHO, something like "DEVC9999" would be a better name if we fill it.  
+> 
+> How about post a patch changing "device" in drivers/acpi/scan.c? :-)
 
+Yeah, keeping it coherent makes sense, but see:
 
-Heh, slow start... I didn't take any caffeine today yet :-)
+	static const char *dummy_hid = "device";
 
-Thanks for noticing it!
+This is compiled for production kernels, and not just for COMPILE_TEST,
+while:
 
+	static inline const char *acpi_device_hid(struct acpi_device *device)
+	{
+		return "foo";
+	}
+
+is only COMPILE_TEST. They don't need to be aligned.
+
+> But I
+> think the string also needs to be an invalid as a _HID object so it's not
+> masking an actual hardware ID used by a real device.
+
+It doesn't matter if if ever conflicts to a real device, as this is
+for COMPILE_TEST only.
+
+Anyway, from my side, I'm just giving my 2 cents. I'm ok either way: 
+"", "device", "DEVC999", ...
 
 Thanks,
 Mauro
