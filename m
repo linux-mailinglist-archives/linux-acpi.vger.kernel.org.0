@@ -1,130 +1,140 @@
-Return-Path: <linux-acpi+bounces-10107-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10108-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0769ED53F
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 19:57:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDB71889F27
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 18:57:00 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E422446AB;
-	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqWAQq30"
-X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5469ED635
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 20:16:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DF32446A4;
-	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133AD283F53
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 19:16:17 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617E8200BA9;
+	Wed, 11 Dec 2024 19:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kfs3XOsj"
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BC92036FF
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 19:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943104; cv=none; b=hF3Gh3cynYOdJcRibvzLDqtuf0R4oPhDldChUBFqu2x5nl8NFua6MQ1mR7ndDJdazKN0D24q23Lc6df+miCbqNmADtHuJoeMerv9HFDjqQ11uXI+NCLr5Yyt6KE1IocWQvYdpjSVmMmN+htfUVa4eJoRfmSn+tG4isUd/8iyvjk=
+	t=1733943917; cv=none; b=SFxa+chH/tJGre5N/hX/9usEZaxb/oA9zhrHqfS8PmwrW9vzwciD+1P+0zkXfUao2vUppvxbq992PzEJL51KmEzTIbcFJY6T3BVwwFqNxEJbId0/TJt8xXKWZrFQxTPBYc4CHIO9TKGVNsFyNXKTPR2869fU2xe6wTd19okGT+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943104; c=relaxed/simple;
-	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AN/U3mduLkE9g5liCYCOp2lYPDeq22Q0bHI9uuZhNHC/452yuAtRdLVIYQ9+SV20nmhMRZDv4n5lrgr+HZT/T0fQMyBs0WoIUH5mA/iGbAM9XVsl/5i5sP8Ctgg1y3tj9p6kOEea6XB97zUzwVb0CmkBPVCEf8kWZYmHRaR4RC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqWAQq30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B54C4CED2;
-	Wed, 11 Dec 2024 18:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943104;
-	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqWAQq30T4UVCiDAWf7YvHrQJ9frLO9a1Fg87J/j1D8k6KH+CXAF6wn05RkBhRcMY
-	 jDXmFAHaYm7IaKvCkZN6/zf4kB+ZHiy/QTYLyvrbdD4bWleTanXz3KSWOPbtQkP3cG
-	 Vo0yb8rps2+f3hzpw/AxHH0Cim2TlW5XUukTxyQLrEz3hKSmBzlKn7M7NeKi1PG8Xv
-	 SlrDSG6Wfc8zkhi0JbcuIaUhpZwBwXVuBT+G6A/3u22l+dGqQvRmihTARpXpLB+9Ux
-	 0HmXE0conMktH1IWPaD9nisuYWmi8ANJ65TdAl+eYNcSa3B53nRCP4BMQ1T0+MbEVN
-	 casIJpH8VjLgw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Qinxin Xia <xiaqinxin@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	will@kernel.org,
-	corbet@lwn.net,
-	lpieralisi@kernel.org,
-	sudeep.holla@arm.com,
-	rafael@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 30/36] ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A
-Date: Wed, 11 Dec 2024 13:49:46 -0500
-Message-ID: <20241211185028.3841047-30-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
-References: <20241211185028.3841047-1-sashal@kernel.org>
+	s=arc-20240116; t=1733943917; c=relaxed/simple;
+	bh=zme2gExMIa8O0aULrlIuYHrrv6pTHmTlZfhZlsNBZLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mVtzN/dsNPRSzxgTNvIdD4kuPcK8TrU2rT9qxjXB8uiGXW1qg2n5PQjvhy3INJKK7jbLecoH10ATZUNXbmQ+BPX1hBy6LKF0ZqRVirc+bpg/XGcEbLXwsvlZhfWYROWfxFqYeNk/FPcUmBaZgcKAKoNqyeg3GKkINBwBeGqFVTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kfs3XOsj; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-725dbdf380aso3751943b3a.3
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 11:05:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733943915; x=1734548715; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pai2zwXnYb/yjLCpN+r5F2zZS5epTVdTJfIgHCAfO00=;
+        b=kfs3XOsj4VXdMejVP9AYaH/CO1FnDa71G8HckHwz8HS7X346+O7BQdk9CA99Oxgo5g
+         miaprk4LG0AZG8ufOQpNHa/G/Phkoryv5pr3HHs7t6qD2yUfofTrRyTfz6y9TkCzaQ//
+         8EeyWVUZsDdoqyYsbTpGAYgomGB75GSBNXeyc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733943915; x=1734548715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pai2zwXnYb/yjLCpN+r5F2zZS5epTVdTJfIgHCAfO00=;
+        b=RtBKlbW9TEKADFnjZtaKSOJ5urXf79EEgfijI4WeWUDP6C/PX+hEC/cHMZjymJLP3b
+         pE28L/FWBMj16YDSWvfxs8K0yv6inpmOt3O7zyZyAPFU+JvMdZMsQr/HNGjqrAE1uMxn
+         vF+AvFpmFe9RF5G1lZADFMYkS5fuqYkCOVk0SHk9Anr2LnakUP1NU/xhCJbonwIJNCw7
+         a6Lxqfv14OGQsaCjB0HGnD5SYT3VwQ22K402/EMkHaea+mEZyJ62cY96x8uIjAGbpMs7
+         YiiSnujleZkmN+zP/MqoAreSA52YBFP95OoXHY/9pfo1wM/mBcfOEYvqWs1RIvUZgXU1
+         0uKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQ/m1ohpEvMSHkNdx80S0P7xRZUT94jD74DQivK9itYFzqh0K9hQZSwdRUrxDEeXgwK3qjHa/LSzwh@vger.kernel.org
+X-Gm-Message-State: AOJu0YycgcbtMHImczZz9p0N29h4ba5uq1HQruq0CRuhvgnt+coflqUh
+	p+zBYPMpUjw77OMEB1ydMykFxMg3h4MuR0fwrYLupFX/NOoIcHQbamk3nQqeKQ==
+X-Gm-Gg: ASbGncvkh90eABAjclKLGX/RdTGymUBCf4xhZ/DAxwQypg3VcrzbDncPM91mh/G7RDZ
+	va9ODoaon5S8qtCjTsbKuUl/QG1mYbm3ILCR/rILdExqcNPupz0Vp/AtNuFPTJw6tMQrDDdCfHQ
+	UrCQZ7kz1g2TyZcX+YYPe0uwU10yKsBIypscW33/uHerMhIGuQI85htindzgDis7fF4Yf0VELQS
+	GQffXcUE9HzYHaKDS9Rxr36esO4QZjIOeohvgXlyn32W3R/HJSnrfmn7jsKiJGW3E1561shSCAg
+	bmgeBhx4b0FkXInQ
+X-Google-Smtp-Source: AGHT+IFdyWYx2G4cnbwA4oAxj0NmbbLvxDbwmi5Togy5gLT2zNlutIoYnOMD9+84fGHVxbzA+APUCg==
+X-Received: by 2002:a05:6a21:3395:b0:1e0:d380:fe66 with SMTP id adf61e73a8af0-1e1ce902bf2mr676714637.0.1733943915162;
+        Wed, 11 Dec 2024 11:05:15 -0800 (PST)
+Received: from localhost ([2a00:79e0:2e14:7:b1a5:9c72:5742:89e0])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-725e77b9a21sm6653260b3a.21.2024.12.11.11.05.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Dec 2024 11:05:14 -0800 (PST)
+Date: Wed, 11 Dec 2024 11:05:12 -0800
+From: Brian Norris <briannorris@chromium.org>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	Rob Herring <robh@kernel.org>, David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 3/4] drivers: base: test: Drop "devm" from
+ platform-device-test names
+Message-ID: <Z1niaC9Z5hCHxszZ@google.com>
+References: <20241210191353.533801-1-briannorris@chromium.org>
+ <20241210191353.533801-4-briannorris@chromium.org>
+ <uxpnt2u2vnoh2ienawlz5e2gbwseacb5eyldnomz2sal6u2224@wjwrfgicoez7>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.4
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <uxpnt2u2vnoh2ienawlz5e2gbwseacb5eyldnomz2sal6u2224@wjwrfgicoez7>
 
-From: Qinxin Xia <xiaqinxin@huawei.com>
+Hi Maxime,
 
-[ Upstream commit c2b46ae022704a2d845e59461fa24431ad627022 ]
+On Wed, Dec 11, 2024 at 06:05:49PM +0100, Maxime Ripard wrote:
+> On Tue, Dec 10, 2024 at 11:13:32AM -0800, Brian Norris wrote:
+> > This is a reasonably-helpful base for generic platform_device tests, and
+> > I'd like to add more tests that aren't specifically about "devm"
+> > functions. Drop the devm namings for the suite, for clarity.
+> > 
+> > Signed-off-by: Brian Norris <briannorris@chromium.org>
+> > ---
+> > 
+> >  drivers/base/test/platform-device-test.c | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/base/test/platform-device-test.c b/drivers/base/test/platform-device-test.c
+> > index ea05b8785743..fd871bb9e143 100644
+> > --- a/drivers/base/test/platform-device-test.c
+> > +++ b/drivers/base/test/platform-device-test.c
 
-HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
-and thus suffers the same erratum. List them in the PMCG platform
-information list without introducing a new SMMU PMCG Model.
+> > @@ -211,13 +211,13 @@ static struct kunit_case platform_device_devm_tests[] = {
+> >  	{}
+> >  };
+> >  
+> > -static struct kunit_suite platform_device_devm_test_suite = {
+> > -	.name = "platform-device-devm",
+> > -	.init = platform_device_devm_init,
+> > -	.test_cases = platform_device_devm_tests,
+> > +static struct kunit_suite platform_device_test_suite = {
+> > +	.name = "platform-device",
+> > +	.init = platform_device_init,
+> > +	.test_cases = platform_device_tests,
+> >  };
+> 
+> The rest of the patches look ok to me, but it still seems like it tests
+> something different (ie, devm actions) so I don't see why we should
+> group them in the same test suite.
 
-Update the silicon-errata.rst as well.
+My goal was to avoid adding a new test file for every sub-topic of "test
+platform devices". Would adding a second suite in this file make more
+sense, then? If so, I'll just drop this patch, and do that when adding
+the test.
 
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
-Link: https://lore.kernel.org/r/20241205013331.1484017-1-xiaqinxin@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- Documentation/arch/arm64/silicon-errata.rst | 5 +++--
- drivers/acpi/arm64/iort.c                   | 2 ++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+(I'm not that familiar with kunit conventions yet.)
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index 65bfab1b18614..a678ea0ae4a00 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -255,8 +255,9 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
--|                | ,11} SMMU PMCG  |                 |                             |
-+| Hisilicon      | Hip{08,09,09A,10| #162001900      | N/A                         |
-+|                | ,10C,11}        |                 |                             |
-+|                | SMMU PMCG       |                 |                             |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 4c745a26226b2..bf3be532e0895 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1703,6 +1703,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
- 	/* HiSilicon Hip09 Platform */
- 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
- 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-+	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-+	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
- 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
- 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
- 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
--- 
-2.43.0
-
+Brian
 
