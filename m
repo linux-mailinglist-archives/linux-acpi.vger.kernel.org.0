@@ -1,120 +1,131 @@
-Return-Path: <linux-acpi+bounces-10094-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10095-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8BFB9EC89C
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 10:15:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127399ECB48
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 12:33:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE8D1653E8
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:15:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8CF42818E5
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 11:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1463F204F67;
-	Wed, 11 Dec 2024 09:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A7F1C5CCB;
+	Wed, 11 Dec 2024 11:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vymOPRtk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTG3CUBL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0691FDE38
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 09:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96140238E27;
+	Wed, 11 Dec 2024 11:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733908500; cv=none; b=bSUjRw5FzgO2csnM2ipQZ0lQLIimB8y7QPWpV837jREi+KHq1uJS62Nz44sf5MaJm+AWb+/cdD5PiK/lLOzro1RZi3X6iHpAsXHg06uOve6zqFpamtJFmJpTn1YfTozBytvQqiz35AXxdMXu9LjPsrKyllfSl4I+nOg2RotUubY=
+	t=1733916800; cv=none; b=MFVuWhsdV+euuhSkpuOFkhSMq9mSVXkf/L6W5UJoa6W5xDQ/INlWiv/GEW+OJbEC8i8XhCdk0hi5qkovq6SKiOoRTkqmscL1CzhTkTrDaJ4l+3RTa5wlYZPvHqByFpWwXZTttslGMaCHtNEqhFHb0gGbh0PMhLFYchhZ+N1K1hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733908500; c=relaxed/simple;
-	bh=JUXrxkRS6ra3CHJ9SyF7bUw/4jbQj+KL0Fb1Fh2MyHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I7vxLV0mltNNPxvny4/dKQniRF7oN5nG9yeX/40RLHjlLQbNffaIyKSb0JzlmaSlcwVmCmmsyPt1cl8iRKFI08WVibc2wudjyup0OTFVwPSlr87Hd2cemzz+KzBYi9VpuNwss7wDE31YIx8RqII6MnTi6IVucP3rkGy/Iy/ruiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vymOPRtk; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3862a921123so3796471f8f.3
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 01:14:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733908497; x=1734513297; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6FDO3wL3i1XscIg74LPG2N/BXo43Ca59PIHDAIDDUjg=;
-        b=vymOPRtkPVD6OqtxNN3Zn78DuUPGf0D2EtPIVzre4dUGjBcy72cxW+ZKSHV9Uh8NWy
-         L+XdJKYILHL2gZ2nItX9wAJX0DeDjSg1ZjXi777nGzj7YWMBE0jvKlIaUwet6VyZUxtw
-         QNxJ0CfcHrvC8MEZ2mGb7sx9ZXQqix2buzRBYdfhLEX76dVWIIzfLU4v0AUXUmFoTTwV
-         Dy61krov4I8gSzSXaSKRhFqA9nQLxYbJ1fRWV2TAGqvLm9QDPBXcoOvZE3xC1cgHqhHe
-         ub1KvME6gyPg5rEe/pnxTaIFo+JKSEpujW2gEtBYZw7JMYz93jvG+/Hvxdw07gBNpXBi
-         Dghg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733908497; x=1734513297;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6FDO3wL3i1XscIg74LPG2N/BXo43Ca59PIHDAIDDUjg=;
-        b=khhyt/ekh6Lc+b+empqcwXV36ol4sLMY5QERxfcMq4g66HZ/OiiZdOBKIFN0AmYcce
-         m2KSMaLZXTKicFYZPYYdEbOBwr+zAXXcDAYOCdqKfw3v2KMAVk3b2E/uEpjSgCkS8xMf
-         9WKtlsc+K9H0Gj480chahTypHB/Ea/pmQagfdBYG0VMdXKT183+ahWhEq8WtPCx6N5Ke
-         M0G7iuVTCyDuBdmTfV6HLNyWr7mV2Br/sCqCL79+jTciN1YaVzGr9R9+FY77vyvLaUFw
-         VyleRa6+PjoFPkqy5QxqItngEcVf8LPtmI3ZjBcW8c96Ut2A/DJP6uwxBprfr1wSPJPG
-         SwGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMMSn8FlUKPV4DnCeWkVHdfxNR2F/r1ZWofGtI1HVOImsgEt/8I/q698TlYUY9wOnniVP0KxeniqaN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2p6DfSSFBVZY5VsvFZw6+X0G/zATREiOgr5dPzEhixduq6SvZ
-	54R6k9jRpsHvdjyn3yLyoP0fIy4zyJ1AC4ekuwPXB45ozeFda9ZSmp4dXofO31M=
-X-Gm-Gg: ASbGncs4V82Hn8+a61p1iSZawnLBzwPQf4Pb8E+HT0xYEdpar+WDczawq1n6LALOrhy
-	b5Xhi2EK20PxXH6wOJ/keJ/x8HUO//z1HVUkiKDeVP4u/aklEkY8Ypd8vtsfaOeqy4Sr/n7Lxna
-	wwpD4iW8tEFkJGC7McZnRuYz1l1/ENpvIfb+HbEnrO2otezKidWdrVQ6KSeb8nc2Z2/97VxoX+i
-	79XVYb1XDrSukYGHAczTYCenjJn5CILWE8Ab8uuNqjHg8aMYpU167cKfO0=
-X-Google-Smtp-Source: AGHT+IHOLK/ljbtyNYazbMd4hvX84Qm4ErHQ/BEuJGZ5dGRRjqOpg37GnjWdhZty1q73L7x1DOcRRA==
-X-Received: by 2002:a05:6000:178e:b0:386:3702:d2d8 with SMTP id ffacd0b85a97d-3864ced69c8mr1574947f8f.58.1733908496679;
-        Wed, 11 Dec 2024 01:14:56 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38782514dd9sm803351f8f.69.2024.12.11.01.14.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 01:14:56 -0800 (PST)
-Date: Wed, 11 Dec 2024 12:14:52 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 7/7] media: ipu-bridge: Remove unneeded conditional
- compilations
-Message-ID: <a91a3993-6c81-4abc-8609-8f41804fdf62@stanley.mountain>
-References: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
- <20241210-fix-ipu-v3-7-00e409c84a6c@chromium.org>
- <20241211091954.42a5c778@foz.lan>
- <Z1lOCGJvgFcqmR3R@kekkonen.localdomain>
- <CANiDSCvPNf2KiEpr6Tboon6bjUxwEkD=+_AQjhiOA7RDTTpnCw@mail.gmail.com>
- <20241211094854.407ddd54@foz.lan>
+	s=arc-20240116; t=1733916800; c=relaxed/simple;
+	bh=+VM/hzp5wXMCauHL67cEqJBthSxft/0uu55Nkx/Kt28=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U9zaxIn7z81eFoIYthOwZRDcfv7vnM8VWsGLos5+J5+g5rGZ9kYVKRnwniQ1i/0G1j7nFtDqfZRfLlWmdJL+EP9HxWovnbojfFUac4W4sQm0mi2hm5/VI/V1b+NDY8dYIQtJMGQhN12/b1i2OPiSyLRWK8J434u3cyYRJ+QB3k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTG3CUBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352EFC4CEDE;
+	Wed, 11 Dec 2024 11:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733916800;
+	bh=+VM/hzp5wXMCauHL67cEqJBthSxft/0uu55Nkx/Kt28=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jTG3CUBLBIF6ciX5X1bClXkR6kkwgk77lVDsE8iv4oev2ldWepUcNlyLuEm1bKB9o
+	 X0Nyg1foxuBU4Dzvf9SpCC4KuC/gOMETimXzfa18Z8ITBmwTjXRovsn+64ysx1ZJxE
+	 sUus0INmX5lxEE8POr9gvv9hebgEK/2iSNO0IME3PcMhSsI6VO5fJzoLra4v+5IPrm
+	 HmltwLoD6HP+RjcfRho0LLQU/7lmju/5/nF4Q+ioUy0ZxwFtCv4McfpFMNEz6qVDqF
+	 Da64RYE2UlcbUE+hs1SV7YA1SIksPxJOzxBmASa9C48m/suGI7fpHKP1KURCBEu7/s
+	 kr/tp7oC5HPUw==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5f2bdbca73cso795336eaf.2;
+        Wed, 11 Dec 2024 03:33:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUgnpgYC6WVlcRQnDYbnDprThkfznSyOylsAaBowLDa4fpEdpBePmZasN6JjwmcwMkAO8e5rtHyYUsqVcY=@vger.kernel.org, AJvYcCUkpBbKKAWNICsNC30HnjA5DXqf7tTbhTQLcCPCtNATUgMd6L0jiSwmBpIELHikaIPTwQyoYIxssE8jk4be@vger.kernel.org, AJvYcCXECvrgMT4Jqgq8PsNogwPX1oRPWp/ZC8blZmjx25X/ElQMJWniy9+BhjzVL6+zSLz3kpTv4HUqHylW@vger.kernel.org
+X-Gm-Message-State: AOJu0YztyTSjL3l1tmBf8/0zFA5UDfTLoLaDm+Hgd6lz7Gt79/UGFfk1
+	ygowkwwf/NwmUpwqoYzGfBEoTUT+ZuzAw/ALif8rcYMMI5LRz54Gpw4Issl0JD0ZCye/64X44MF
+	t7nCfpUH/HVjwgD+Q2uCeSlPI61s=
+X-Google-Smtp-Source: AGHT+IE2JX9wLDw7XGZFWMFEl/QZANF0fFOFWPSJjHSw+Ny8mSpK6DqmcMPXInglCCsZP3zGngbPGlDk8Cq5dyK7cl8=
+X-Received: by 2002:a4a:e70b:0:b0:5f2:df9a:83d4 with SMTP id
+ 006d021491bc7-5f2df9a8a96mr398155eaf.1.1733916799520; Wed, 11 Dec 2024
+ 03:33:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241211094854.407ddd54@foz.lan>
+References: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
+ <20241210-fix-ipu-v3-4-00e409c84a6c@chromium.org> <Z1irAT0KVwqhBSSZ@kekkonen.localdomain>
+ <CANiDSCsLOODLhGrpPwOQ1j+coSb9yHYi=wjGpZ+F7VbA7AM0og@mail.gmail.com> <Z1lGPWHYTdfcxFPL@kekkonen.localdomain>
+In-Reply-To: <Z1lGPWHYTdfcxFPL@kekkonen.localdomain>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 11 Dec 2024 12:33:08 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gjwmd81zKYYcsyMmRWpK_R9UsV_H6HfQU+xP7MpWRD5g@mail.gmail.com>
+Message-ID: <CAJZ5v0gjwmd81zKYYcsyMmRWpK_R9UsV_H6HfQU+xP7MpWRD5g@mail.gmail.com>
+Subject: Re: [PATCH v3 4/7] ACPI: header: implement acpi_device_handle when !ACPI
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Ricardo Ribalda <ribalda@chromium.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 09:48:54AM +0100, Mauro Carvalho Chehab wrote:
-> Yet, based on the title, enforced by its description:
-> 
-> 	> One of the quirks that we introduced to build with !ACPI && COMPILE_TEST
-> 	> throws the following smatch warning:
-> 	> drivers/media/pci/intel/ipu-bridge.c:752 ipu_bridge_ivsc_is_ready() warn: iterator 'i' not incremented
-> 
-> I don't think it makes sense to c/c stable, as this is just a smatch
-> warning, for a configuration that will never be used in production.
+On Wed, Dec 11, 2024 at 8:59=E2=80=AFAM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> On Tue, Dec 10, 2024 at 11:31:57PM +0100, Ricardo Ribalda wrote:
+> > On Tue, 10 Dec 2024 at 21:56, Sakari Ailus <sakari.ailus@linux.intel.co=
+m> wrote:
+> > >
+> > > Hi Ricardo,
+> > >
+> > > On Tue, Dec 10, 2024 at 07:56:01PM +0000, Ricardo Ribalda wrote:
+> > > > Provide an implementation of acpi_device_handle that can be used wh=
+en
+> > > > CONFIG_ACPI is not set.
+> > > >
+> > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > ---
+> > > >  include/linux/acpi.h | 6 ++++++
+> > > >  1 file changed, 6 insertions(+)
+> > > >
+> > > > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > > > index 05f39fbfa485..59a5d110ff54 100644
+> > > > --- a/include/linux/acpi.h
+> > > > +++ b/include/linux/acpi.h
+> > > > @@ -787,6 +787,12 @@ const char *acpi_get_subsystem_id(acpi_handle =
+handle);
+> > > >  #define acpi_dev_hid_uid_match(adev, hid2, uid2)     (adev && fals=
+e)
+> > > >
+> > > >  struct fwnode_handle;
+> > > > +struct acpi_device;
+> > > > +
+> > > > +static inline acpi_handle acpi_device_handle(struct acpi_device *a=
+dev)
+> > > > +{
+> > > > +     return NULL;
+> > > > +}
+> > > >
+> > > >  static inline bool acpi_dev_found(const char *hid)
+> > > >  {
+> > > >
+> > >
+> > > Please remove the extra forward declaration of struct acpi_device a f=
+ew
+> > > lines below this.
+> >
+> > Instead I have moved the function under the forward declaration. Let
+> > me know if you disagree.
+>
+> The same order in which the functions are found in the actual
+> implementation would be my suggestion. Rafael could also have an opinion.
 
-Yes.  Plus that check has a lot of false positives if you don't have the cross
-function DB enabled.  I thought I had fixed it, but I still need to work on it
-more.
-
-regards,
-dan carpenter
-
+It is nice, but it is not a requirement.
 
