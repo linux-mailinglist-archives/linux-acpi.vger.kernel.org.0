@@ -1,125 +1,95 @@
-Return-Path: <linux-acpi+bounces-10113-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10114-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45819ED87B
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 22:23:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8019E9EDA2A
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 23:39:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292CA1688BA
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 21:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72D3F28326C
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 22:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825AE1F0E4F;
-	Wed, 11 Dec 2024 21:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F5920DD5C;
+	Wed, 11 Dec 2024 22:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NrQKah9/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4HKpHYz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916C51F0E3F
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 21:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A14209F32
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 22:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733952120; cv=none; b=KyaBNUgNUuJI44bSuWPMI3HTXpZ7Xj6fHp/el1vnm/LL/j9l88/FVyyjAKEVmCUTDL5bMhABmhKsotjiTExLX12Qp5KL3RsbiHdimkkPE7L3qJMZ1MIs6oAmaoOnuh3inSdNXMpxWxJFzqkcEJu/xDP3diaUemGzM2hGn1VMUOY=
+	t=1733956387; cv=none; b=qhByB2oVNGLJA/7dBVhe2fJIos1FMHmk7iykaf+cqUsUnXB477Hw7msNvQ8PGMQMcey/6bCW0N9TKdszdycG7nnQbJjB7oBNlAed0GVLtsohRDXv1X+izd8u8S10sEmYLyUQpio0XeS2Pyg9EBVIs3JR0aBYsSwarD2Rm2XdsfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733952120; c=relaxed/simple;
-	bh=n0KCyGqSL5oapRSBhlfukCbAuOyAuMPivoVisArJl+M=;
-	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tUZudF86ekBbsCK7kLRdV6hjCoxnpX1HQJ8Tf/x76HDGtkG9nrgWTV/Hq2SDPvFEEZLBaON7rYvuvoVLrLyl8eOVqXfKepzI/+eHY4BI5LTSn/RMS33072Ll9ZS9Vk8IvZ3NfxUmTNRLVhrd0hP1TDxUxVQfLqACx6SDJFjEV1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NrQKah9/; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6ef4084df4cso57750567b3.1
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 13:21:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1733952117; x=1734556917; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n0KCyGqSL5oapRSBhlfukCbAuOyAuMPivoVisArJl+M=;
-        b=NrQKah9/GtAbLk+n5naUtjdmTSXP5ciHHBxWB3bwlMO5fbiDJNXe0y7IQAIr1kYopx
-         FcXU2UH41S+qnx13K+ygG5ITJ5YsX332Yh8kqf90EtdduGvgm8/gtQtLxojfsK5w059w
-         +yZ3SL98Ac34K4Whtv8TWDrluiH6qeiRFww/g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733952117; x=1734556917;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n0KCyGqSL5oapRSBhlfukCbAuOyAuMPivoVisArJl+M=;
-        b=Zpzd4eagVQgvXGAbHYasJBfEKlFWTt0PzPpqwUbEHyQt4HFPsm7xwtKXbMxD4PLmHD
-         wfWxg0wNkqaVxDBdxPFQwVIivhxK1+khLqLvrmbDAnklgibjF1YBBrwOLJEtq2GACwwt
-         UKJS03rY/igx8QpMhmoxAWHlYTWyghWedynG21bBYEC93bLID1LOUvbH6Icoc/PAFJCB
-         E+0x8NlfWprE4bA5f3f7E37HAW1nf/gz1+jk0v32XUedznMefqcrgNiWRBAfv/7plkOn
-         OdWyxe32461pKmu2NK+cDVFZ4MYgVMynbwgFnA7+8hh4wJ+uXoM9QlWy8LNFzEcHW1OS
-         3GCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTDOubEHqfN4nuG7oRhPNMPOS8UGIOurfSLT8+w/WqN9nLLUM0emxpzQWkTOMiRfO3We5iq6Y3HKFU@vger.kernel.org
-X-Gm-Message-State: AOJu0YzESjXROXPbXQQkTkzTf6TY8C+JlEnrpEbBfSH7JcvFWQrdOHcL
-	uszMmMKUdOPkmqJCo64SFjbtlbeWOJ6TJYdwBqhRkjdGTWZAZQzAvFiKtI75elMIMjGc/juGgIR
-	1bZoqfLMN6LYU0s+J0aZgIrLCt2XCaOuLsC1m
-X-Gm-Gg: ASbGnctLrbROu6r5lcwDsTG73I4Ci6+GV6AyqKKtJVGdfiCZ0f+tkltLuPjXVEXAGEE
-	yeGvVIxWK53KdDINpH82Ynlgpsv2is2jzxpEOPIHWDM+ewJp9pe/rKD8/6VJ8E9k=
-X-Google-Smtp-Source: AGHT+IEOpRCkZGb0mjL6N5K1OyWZ7lwzUq/9xZP89m+PnB//8BwUpGSf7eNg+mNPOjGTasCVPWXdK3o+/j/FVah3RXc=
-X-Received: by 2002:a05:690c:ecc:b0:6ea:7afd:d901 with SMTP id
- 00721157ae682-6f19e4fe961mr11687997b3.18.1733952117669; Wed, 11 Dec 2024
- 13:21:57 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 11 Dec 2024 13:21:57 -0800
+	s=arc-20240116; t=1733956387; c=relaxed/simple;
+	bh=6vzy9W7MutUOZNBEPu/ZaeFKt+pCcG6i2Mi81FMo/zo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EnBM1xwiider8xlJzzXHEh+X7k/+iSDh9Xz3DasYjJ7IcYyB5xviwG8p/tN7Tthnh90WBNpae8pvHpSCUhUDDEpQVT5AxZj2MFfIJ4/PSdBxPNp4S2LHiuNSZD4vnf22QMjV6FTmcPhfmOvzL0+oCMjCyrZDIcvlcD/v0eYY7Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4HKpHYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03B1C4CED2;
+	Wed, 11 Dec 2024 22:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733956386;
+	bh=6vzy9W7MutUOZNBEPu/ZaeFKt+pCcG6i2Mi81FMo/zo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=o4HKpHYz5SmpQqTC9GZTYYy4yG9JFVIeM+ayvy/+YFWquF15hl5vh5/qKEH5pK49v
+	 Sieu7dXVq6LpyNvgG6Ftq2AxnjNx7Shc2dADxtWMJv98WMfPVAN0CyRGwOlPl4UzRK
+	 DQ+aSQcSiq26XFF3vdiXybukEqBL+ue+nAhU9FcxjLus6W+b0DurNnzqZ38s90Y5Qp
+	 U4WwSSY6uJeUD4uqItXPW5GVeHBrx905oU0uOJ1f2/PIK78s84wyvLbykSNqaAi/hD
+	 9BS/2U3/CPf8fi0fQKyMn81FhMNGoFgySNjam1t4JouI8BmJqaQUyPj5B3C+ALubUm
+	 30gtmj941aCyQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3458B380A965;
+	Wed, 11 Dec 2024 22:33:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAA8EJppVgw1Qb4kGY1Y-A3-KrinKfX2zGUuwMCY_-gG96fgocA@mail.gmail.com>
-References: <yk3xidaisbd56yndaucax7otijjauqmm7lqm6q4q633kdawlqo@qaq27lwxmvwd>
- <hqmx7jtkvrwvb27n56hw7rpefhp37lhr3a5fawz7gsl76uuj5s@h7m6wpdhibkk>
- <CAE-0n50y1O2C47zOGJPmMjKXK_m6a=jhpEAP4nW+RymZbo2xyg@mail.gmail.com>
- <5kisfv22tgqwzjpxqrbx56ywr7l4r7pny3pl2r7crv4rijqbwk@azricdasttg7>
- <CAE-0n50Bxi2GfnxOmMwe-F+k5jMSiyAVPDb6K8pYm-i6hpJTOA@mail.gmail.com>
- <cartdeijkv6z23dgm7uif4lti3lahfqmuyxcmruzqbefhsp6yk@m6ocjhncs2ko>
- <CAE-0n51-QLLje0f7T4p3xK6Q-FRk4K0NUrVVm4cxkKoevuzktw@mail.gmail.com>
- <kidsjzklpxvvamct3glvoawavoi5mjuyh3on5kbtfp6gavwxxn@eack224zuqa3>
- <CAE-0n52F+cvVyXm8g8idN2eMfx4bpaEpWQRchr8=AO87N7E3fg@mail.gmail.com> <CAA8EJppVgw1Qb4kGY1Y-A3-KrinKfX2zGUuwMCY_-gG96fgocA@mail.gmail.com>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.12.dev1+gaa8c22fdeedb
-Date: Wed, 11 Dec 2024 13:21:56 -0800
-Message-ID: <CAE-0n50D40VWOsgnNqKzJR=GG44SKcps5mZb-HM=aix7XYn2hg@mail.gmail.com>
-Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
- google,cros-ec-typec for DP altmode
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, devicetree@vger.kernel.org, 
-	Douglas Anderson <dianders@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Benson Leung <bleung@chromium.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, 
-	dri-devel@lists.freedesktop.org, Guenter Roeck <groeck@chromium.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Lee Jones <lee@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Prashant Malani <pmalani@chromium.org>, 
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ivan Orlov <ivan.orlov0322@gmail.com>, 
-	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v4] ACPI: introduce acpi_arch_init
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <173395640299.1729195.506901103763287454.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Dec 2024 22:33:22 +0000
+References: <20241121-intro-acpi-arch-init-v4-1-b1fb517e7d8b@gmail.com>
+In-Reply-To: <20241121-intro-acpi-arch-init-v4-1-b1fb517e7d8b@gmail.com>
+To: Miao Wang via B4 Relay <devnull+shankerwangmiao.gmail.com@kernel.org>
+Cc: linux-riscv@lists.infradead.org, guohanjun@huawei.com, rafael@kernel.org,
+ lenb@kernel.org, sunilvl@ventanamicro.com, sudeep.holla@arm.com,
+ lpieralisi@kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, shankerwangmiao@gmail.com
 
-Quoting Dmitry Baryshkov (2024-12-11 13:16:56)
-> On Wed, 11 Dec 2024 at 23:11, Stephen Boyd <swboyd@chromium.org> wrote:
-> >
-> > It is pure DP. Maybe we can have a google,cros-ec-usbc-hdmi compatible
-> > string here because this is a weird design.
->
-> Just google,cros-ec-hdmi for the corresponding connector?
->
+Hello:
 
-Sure.
+This patch was applied to riscv/linux.git (fixes)
+by Rafael J. Wysocki <rafael.j.wysocki@intel.com>:
+
+On Thu, 21 Nov 2024 22:25:21 +0800 you wrote:
+> From: Miao Wang <shankerwangmiao@gmail.com>
+> 
+> To avoid arch-specific code in general ACPI initialization flow,
+> we introduce a weak symbol acpi_arch_init. Currently, arm64 and
+> riscv can utillize this to insert their arch-specific flow. In
+> the future, other architectures can also have chance to define
+> their own arch-specific acpi initialization process if necessary.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v4] ACPI: introduce acpi_arch_init
+    https://git.kernel.org/riscv/c/9d8a2b033db1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
