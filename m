@@ -1,206 +1,130 @@
-Return-Path: <linux-acpi+bounces-10106-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10107-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BDE9ED432
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 18:58:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0769ED53F
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 19:57:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D80512814E6
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 17:58:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDB71889F27
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 18:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8C9200B95;
-	Wed, 11 Dec 2024 17:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E422446AB;
+	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqWAQq30"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3761D6DA4;
-	Wed, 11 Dec 2024 17:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DF32446A4;
+	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733939925; cv=none; b=RD2jG5B+OeoeyBcIA0j6oDxAdzH4Q0kuiGeZlbLtXwDd/id06pCmv/vpGaMETvTjW6amVaUU0XCfeUmHbre8y/2z8Yv4dBOcX8fGAAaSz4OqhdbC3G+rdE3ULB/xgufBhs7wPHATUiSxAaYTRrmtUEfLhCoPOI4HEZVjVtdkc0I=
+	t=1733943104; cv=none; b=hF3Gh3cynYOdJcRibvzLDqtuf0R4oPhDldChUBFqu2x5nl8NFua6MQ1mR7ndDJdazKN0D24q23Lc6df+miCbqNmADtHuJoeMerv9HFDjqQ11uXI+NCLr5Yyt6KE1IocWQvYdpjSVmMmN+htfUVa4eJoRfmSn+tG4isUd/8iyvjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733939925; c=relaxed/simple;
-	bh=cGUL1g5soNzNs/G21jrfWDbCv/UQ7rxtUG3ID63/8RI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=b/imKcGwB2szwSeHSDiGkEUJTkjnk6Zm1p9ZZPtsUkWjfT1rWQ7M3JqHTm9W7gtNj8F4T7QEQpL8bnNb44hGX+cEAN2mX+PZFJuSJNmcdpkOJ8UdblS1GVS62DjTQEn0IbKcd8D+H56qNlpjRuMIuMTZB76snNmno9BtB7yV+zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Y7jtd4XGNz6D8bR;
-	Thu, 12 Dec 2024 01:55:21 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
-	by mail.maildlp.com (Postfix) with ESMTPS id 87E06140442;
-	Thu, 12 Dec 2024 01:58:38 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 11 Dec 2024 18:58:38 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Wed, 11 Dec 2024 18:58:38 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Shiju Jose <shiju.jose@huawei.com>, Dan Williams
-	<dan.j.williams@intel.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: "bp@alien8.de" <bp@alien8.de>, "tony.luck@intel.com"
-	<tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
-	<mchehab@kernel.org>, "dave@stgolabs.net" <dave@stgolabs.net>, "Jonathan
- Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v17 05/18] cxl: Add Get Supported Features command for
- kernel usage
-Thread-Topic: [PATCH v17 05/18] cxl: Add Get Supported Features command for
- kernel usage
-Thread-Index: AQHbPQkFb4DhmQwolUmt5xqDd6N+ZLLZxDuAgAQrVZCAA3+90A==
-Date: Wed, 11 Dec 2024 17:58:37 +0000
-Message-ID: <6e9c128e888c4cacb04b5dd53b1d1b79@huawei.com>
-References: <20241122180416.1932-1-shiju.jose@huawei.com>
-	<20241122180416.1932-6-shiju.jose@huawei.com>
-	<67536f6987656_10a08329480@dwillia2-xfh.jf.intel.com.notmuch>
- <e72011454204462eb8ccf10eef56106c@huawei.com>
-In-Reply-To: <e72011454204462eb8ccf10eef56106c@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1733943104; c=relaxed/simple;
+	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AN/U3mduLkE9g5liCYCOp2lYPDeq22Q0bHI9uuZhNHC/452yuAtRdLVIYQ9+SV20nmhMRZDv4n5lrgr+HZT/T0fQMyBs0WoIUH5mA/iGbAM9XVsl/5i5sP8Ctgg1y3tj9p6kOEea6XB97zUzwVb0CmkBPVCEf8kWZYmHRaR4RC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqWAQq30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B54C4CED2;
+	Wed, 11 Dec 2024 18:51:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733943104;
+	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qqWAQq30T4UVCiDAWf7YvHrQJ9frLO9a1Fg87J/j1D8k6KH+CXAF6wn05RkBhRcMY
+	 jDXmFAHaYm7IaKvCkZN6/zf4kB+ZHiy/QTYLyvrbdD4bWleTanXz3KSWOPbtQkP3cG
+	 Vo0yb8rps2+f3hzpw/AxHH0Cim2TlW5XUukTxyQLrEz3hKSmBzlKn7M7NeKi1PG8Xv
+	 SlrDSG6Wfc8zkhi0JbcuIaUhpZwBwXVuBT+G6A/3u22l+dGqQvRmihTARpXpLB+9Ux
+	 0HmXE0conMktH1IWPaD9nisuYWmi8ANJ65TdAl+eYNcSa3B53nRCP4BMQ1T0+MbEVN
+	 casIJpH8VjLgw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Qinxin Xia <xiaqinxin@huawei.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	will@kernel.org,
+	corbet@lwn.net,
+	lpieralisi@kernel.org,
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 30/36] ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A
+Date: Wed, 11 Dec 2024 13:49:46 -0500
+Message-ID: <20241211185028.3841047-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
+References: <20241211185028.3841047-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.4
+Content-Transfer-Encoding: 8bit
 
->-----Original Message-----
->From: Shiju Jose <shiju.jose@huawei.com>
->Sent: 09 December 2024 14:28
->To: Dan Williams <dan.j.williams@intel.com>; linux-edac@vger.kernel.org;
->linux-cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org;
->linux-kernel@vger.kernel.org
->Cc: bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; dave@stgolabs.net; Jonathan Cameron
-><jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: RE: [PATCH v17 05/18] cxl: Add Get Supported Features command for
->kernel usage
->
->>-----Original Message-----
->>From: Dan Williams <dan.j.williams@intel.com>
->>Sent: 06 December 2024 21:41
->>To: Shiju Jose <shiju.jose@huawei.com>; linux-edac@vger.kernel.org;
->>linux- cxl@vger.kernel.org; linux-acpi@vger.kernel.org;
->>linux-mm@kvack.org; linux- kernel@vger.kernel.org
->>Cc: bp@alien8.de; tony.luck@intel.com; rafael@kernel.org;
->>lenb@kernel.org; mchehab@kernel.org; dan.j.williams@intel.com;
->>dave@stgolabs.net; Jonathan Cameron <jonathan.cameron@huawei.com>;
->>dave.jiang@intel.com; alison.schofield@intel.com;
->>vishal.l.verma@intel.com; ira.weiny@intel.com; david@redhat.com;
->>Vilas.Sridharan@amd.com; leo.duran@amd.com; Yazen.Ghannam@amd.com;
->>rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->>dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->>james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com;
->>erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->>gthelen@google.com; wschwartz@amperecomputing.com;
->>dferguson@amperecomputing.com; wbs@os.amperecomputing.com;
->>nifan.cxl@gmail.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
->><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
->>kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->>Linuxarm <linuxarm@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
->>Subject: Re: [PATCH v17 05/18] cxl: Add Get Supported Features command
->>for kernel usage
->>
->>shiju.jose@ wrote:
->>> From: Dave Jiang <dave.jiang@intel.com>
->>>
->>> CXL spec r3.1 8.2.9.6.1 Get Supported Features (Opcode 0500h) The
->>> command retrieve the list of supported device-specific features
->>> (identified by UUID) and general information about each Feature.
->>>
->>> The driver will retrieve the feature entries in order to make checks
->>> and provide information for the Get Feature and Set Feature command.
->>> One of the main piece of information retrieved are the effects a Set
->>> Feature command would have for a particular feature.
->>>
->>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->>> Co-developed-by: Shiju Jose <shiju.jose@huawei.com>
->>> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->>> ---
->>>  drivers/cxl/core/mbox.c      | 179 +++++++++++++++++++++++++++++++++++
->>>  drivers/cxl/cxlmem.h         |  44 +++++++++
->>>  drivers/cxl/pci.c            |   4 +
->>>  include/cxl/mailbox.h        |   4 +
->>>  include/uapi/linux/cxl_mem.h |   1 +
->>>  5 files changed, 232 insertions(+)
->>
->>Hi Shiju,
->>
->>So I commented yesterday on this patch that is also duplicated in
->>Dave's series have a merge order ordering plan to propose.
->
->Hi Dan,
->
->Thanks for the suggestions.
->I tested your suggestions for CXL features commands in the fwctl series, i=
-n the
->EDAC CXL features setup, as replied.
+From: Qinxin Xia <xiaqinxin@huawei.com>
 
-Please find updated patches for your suggestions are shared here.
-https://github.com/shijujose4/linux/tree/edac-enhancement-ras-features_for_=
-v18
+[ Upstream commit c2b46ae022704a2d845e59461fa24431ad627022 ]
 
-However next version (v18) of EDAC series will send after receiving feedbac=
-ks from Borislav=20
-on v17 EDAC patches.
+HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
+and thus suffers the same erratum. List them in the PMCG platform
+information list without introducing a new SMMU PMCG Model.
 
->>
->>> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c index
-[...]
->
+Update the silicon-errata.rst as well.
 
-Thanks,
-Shiju
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+Link: https://lore.kernel.org/r/20241205013331.1484017-1-xiaqinxin@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ Documentation/arch/arm64/silicon-errata.rst | 5 +++--
+ drivers/acpi/arm64/iort.c                   | 2 ++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index 65bfab1b18614..a678ea0ae4a00 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -255,8 +255,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
+-|                | ,11} SMMU PMCG  |                 |                             |
++| Hisilicon      | Hip{08,09,09A,10| #162001900      | N/A                         |
++|                | ,10C,11}        |                 |                             |
++|                | SMMU PMCG       |                 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 4c745a26226b2..bf3be532e0895 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1703,6 +1703,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip09 Platform */
+ 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
+ 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+-- 
+2.43.0
+
 
