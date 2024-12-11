@@ -1,139 +1,141 @@
-Return-Path: <linux-acpi+bounces-10073-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10074-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA889EC350
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 04:28:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CDD9EC355
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 04:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 929F11677AB
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 03:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C77FD188A437
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 03:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A1820DD56;
-	Wed, 11 Dec 2024 03:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D09211268;
+	Wed, 11 Dec 2024 03:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="THZa8Uof"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="hl4Dsv4m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A2F9E6
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 03:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19511FCD0B
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Dec 2024 03:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733887703; cv=none; b=S2ZQ9j4Jp0dOWifsMHb4FZ9MphxnokMiLdH7kENqIiPntXLdm2dWK3ZjhcwM8A2KobzHJcHLnZadsr4fWgEce3OQdEA1akC2nvi+JaxDxoz5O+7dYEw32YrWCVzU4bK+E1Y0Q7x/6TKnMCX8SzJKsZZ8p501W9Gf5kkQu+Iwylg=
+	t=1733887832; cv=none; b=hfEYBa+jhzDLDDMHRYqtNCeImN/1w8jnd4Az1bnB933EytTwPyh+nS7TIPK4fFLgSosrStTQsEN4MSrtSFJW3YQLk4Bg3NpZtTBlSnopeJqzda4faqDLJbQ4/G3zr8TqluAXcHOup9CVJOWd71IrMdjKoATT0RYCqWABgff1Mqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733887703; c=relaxed/simple;
-	bh=chHa0B/VKMYr3cRxqY0Cl2TcliC5piJJ/sWAk9TE9Dc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NdW1mgvdFVfd2LBGWw+w/NqQJxyHLLqLEOHvl/fjxl7f/TeF3vtD+gRJ+I6XMegDdRjTZzDaCzYXECe79mi0x12iIDuhcjwzoWvfQDH3F+39gdrvypo73bVc+ZRHKBvzdwrbIpYiZGf4BFeBqwCtvaCUzf5R9NwaRMk9QV8xKE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=THZa8Uof; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1733887832; c=relaxed/simple;
+	bh=zT5MMkeVxdAxKNaqETEGqXnG8bqp0IPR3hmAjjBhxgg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UPEWFIinGVcc3idUmFrKJ3xVahOgSr9vBPoK7m1tun5IZxlkdckRUfDPBgaj2iKa5TA/BAqlQZspFXZ1whhAzfdQCuJGUoTDDjlhpT8s7q9qVP+0EKkgw7gZYHlmQMXdJwU1IZonvKNUxgIURxYDDt/556ZOlviEzuN5TaACaD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=hl4Dsv4m; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21649a7bcdcso29428295ad.1
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 19:28:20 -0800 (PST)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21628b3fe7dso36804875ad.3
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Dec 2024 19:30:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733887700; x=1734492500; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HCpioUYx/Wguc7AzIMqu+gxyV37dTLDMEwaUITpr4mk=;
-        b=THZa8UofxioYKoojDhuCnw4GNWqZkTt1hqJ5zx/QqV4w7gIXCyhKkCX6quf6jFSTnG
-         qAQ+Y22eQN9g03u1XLMyWtbVHReXmgXFifzkditICk5s5bel38UmZiXAgQ6gpbeolGBd
-         MGg3kofaOkNUcaMfWC+oILwrfDRPi5RNYK2bS8c44y1zZTBC2/yXPy7hT00+QMjafY3f
-         kmQt+BEh5mI/ol4TMQRDNSdUHF7bUoceIM/4nKkKW/aLXwz3pSu7SCG50XNT2VYc51VB
-         8iwNWPW/5iEm1sxiKhd5xTs/030G+YzIa/l3Gx6U9sQntH/dGqGl8v92rRec0H7+rWx9
-         Hmmw==
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733887830; x=1734492630; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nmKkjwShwXSsCgYfsWDcGD12PQmjyh1tzh4JMcmOWUQ=;
+        b=hl4Dsv4mXI8n1nPx7NWW7NCN1gPwJYyXzPbXkjNvEP5AutQklCC7escdRTVZaI64jK
+         4CT2qWF37PL6w7dndTTpYhcAEacOel4bPOAhNqoyQ2mCroO2iHQDNbdXcKfyE/zAaGzj
+         +MYqxO+dE8Beapvq4mUHaDZlSE2BtXvR8XBU5ptYyg7HZ9KBA9czbLo1zhchU1l9XQkZ
+         p/rl8FmQnX1pqLjnAupkpMnE0UL5kp4IgX+KnJnv4ZLT3mvDjRvSnRD+FdhvDtIJzblK
+         T8WR+cCSycEdYQmXxUE1DDZ6sH9ztHLYUcUF5JH+091BdiGKW8jJeD52Me3rfM+ln1wa
+         hHbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733887700; x=1734492500;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HCpioUYx/Wguc7AzIMqu+gxyV37dTLDMEwaUITpr4mk=;
-        b=dPrork6Hja7sHv2ix3JEg3XQysFlljZI+M5PszeQYf6hpDjXl1FWDvSFduF36aBdh0
-         XNoR2H0W4zjfVodl5ARGepQXFA8uvXIj84Lz1sRD1z7b06b3habXbPtZGaEK/xwNdKvF
-         qeeJxutoguSlfJtC0Tu9aTSQaZKJb8n9n5Ga70VZ9G9A/sGQ2ev4N6jgSvlHUNW9TzR4
-         MUqOOTTmchp4pcTWcZp0EyDQStgrqVQjx1xBZ6VDuXwlugwFtsWw7aU0FF2csMlNyuuI
-         O6bAclByXfqvonNGfvSM2SXtXquZd/40KE/dp6nFrKG0wwoII4Tu85g/G752ir4WSHqu
-         4wwA==
-X-Gm-Message-State: AOJu0Yw9dHmzMzaiY+caJqX8Wl+CZEpGF1PYpt1J5Ti0nDbQbb8zc77J
-	e0FOEJXPPLqogLSyczhvUSaGnkASlX9bF/uwzEykXE09morGjX+gKJBaOToj8jg=
-X-Gm-Gg: ASbGncvZbBtqscYeNjS5z7y6GQVC1GUQsFRpPeVViFbOfzKoEmHukVjbeuThlWcI//D
-	inqXe/EjSLUiUQCZHoxhNK/DF+J62VkpwFU9OED/FG/GD0zvIzlXaDP8UYUUwFUqWOlTGoEZCgB
-	O6MIuNs3U8oTk+2pQ0EhfLh8fmVrn9PToTMPhFrxYwhNmuEQqahrGGxTPnXoqW5If82FylrUVxo
-	Yo8KMkg31IeYO0Gog0R/CNreDjgDx41IPM9v2AxjIwiy6BLz6LeVxs40hCNXeWD9duO4i7xQDvU
-	Aw==
-X-Google-Smtp-Source: AGHT+IFPXXBfhrpsurEJ22iErnC6EpVy4/R3SgLPG2DG9fFg6ED11YCChjc1HyElKucKZySKKDl49g==
-X-Received: by 2002:a17:903:41cf:b0:216:4165:c05e with SMTP id d9443c01a7336-2177851dbafmr24167125ad.24.1733887700245;
-        Tue, 10 Dec 2024 19:28:20 -0800 (PST)
-Received: from localhost.localdomain ([2001:f70:39c0:3a00:6880:79c2:6ffe:8185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2162bd745b4sm64435835ad.73.2024.12.10.19.28.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 19:28:19 -0800 (PST)
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Subject: [PATCH v2] ACPI: fan: cleanup resources in the error path of .probe()
-Date: Wed, 11 Dec 2024 12:28:12 +0900
-Message-Id: <20241211032812.210164-1-joe@pf.is.s.u-tokyo.ac.jp>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1733887830; x=1734492630;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nmKkjwShwXSsCgYfsWDcGD12PQmjyh1tzh4JMcmOWUQ=;
+        b=w/SWJYGJM7RXjsUgRcfaILgoPol4KAg+3I7ZrxxLnnha/wFSqVD3b2xWhSogONH+LX
+         vQgwCwGA7BGlXNZcVPznv52w2bjt6zg9vsYKCnKywA6eERogaxIygyY0hm5oHkfsHOGM
+         +X1OfQKnqZWkYot058F3yyQvMvQ7W+kpenh2piTo/wI1O6MUo7U42LI/Q1jOE0t9M+fB
+         K6npyYjPFsWhoDVOkis82qUD2qDHHZpn+ZnXixmHpVbg9y7u16Bi2M02nyOQoO9x90qr
+         TzWQ/xkyUaWxASdKowbUspj6R+kI3upzmgSaKHwlDQnFo1pvUgPiM6T99XlrbsZxRFvz
+         9yhw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGytN1G/DP47+KchNnTVHR5L+YJx/oSIl+LQ6iYazki32IKTZzXIPiwrScK426QSo5OfT6zg0/v1gQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt8U4DYHDCP6Im7ItCmbk5mYBDDmqmDaaK5pDlFTDQZtb1NmGZ
+	ijhMTfXSkyjle+k8uRxrlN4ahmW07QOmevW/VANsV87O006FJ8yOVxmzL231aiHmXCgDJDrTbDf
+	EfqwdJA==
+X-Gm-Gg: ASbGncvFp2iqPqM81at3VeNcpnJ81oWqbEo8lbGz3hcEoETUqNsanoGMzQDlP7eIk19
+	3Ge2k/i40hfg58qrwQtAnNgftXU+oILjCOwZozJ4j4W+/FNbIiTwb4UT12Gsj+m99bBDn05IpyF
+	Lmk3mUD8LlCPLLdztbLOwAY59yj/8YL5NwE5Rvxy4K3KX2O9rx9zhnEmMeRLro4p6iauUtkMDrq
+	sEYPIEt4uX+cfl5U5rvFOzH3U1UcHE6whdhK6k1fHC+X1rFYl8eTozutXEvHYIKhIQSUPkNqQyo
+	Gz6Vay3ZZXP0BMdswpRM0BzpnDUrj8g=
+X-Google-Smtp-Source: AGHT+IG8wl4DRVKtbNL6VdgMgG8Re7lvavhEJFz6Tn1rhjJZPMnMOjNeoNM09rqEWPwpaEulSp6xVQ==
+X-Received: by 2002:a17:903:1d0:b0:215:b18d:ef with SMTP id d9443c01a7336-21778534b33mr25823235ad.25.1733887829851;
+        Tue, 10 Dec 2024 19:30:29 -0800 (PST)
+Received: from [192.168.0.78] (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd44fc859asm5126385a12.51.2024.12.10.19.30.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 19:30:29 -0800 (PST)
+Message-ID: <885b6efc-a294-419c-9161-8c5de94e9c18@pf.is.s.u-tokyo.ac.jp>
+Date: Wed, 11 Dec 2024 12:30:26 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: fan: cleanup resources in the error path of
+ .probe()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: lenb@kernel.org, linux-acpi@vger.kernel.org
+References: <20241203033018.1023827-1-joe@pf.is.s.u-tokyo.ac.jp>
+ <CAJZ5v0jywmZg3wEdtF5i7s4nDNi5XCh3=toH+dNOjGvt4ozFGg@mail.gmail.com>
+Content-Language: en-US
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+In-Reply-To: <CAJZ5v0jywmZg3wEdtF5i7s4nDNi5XCh3=toH+dNOjGvt4ozFGg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Call thermal_cooling_device_unregister() and sysfs_remove_link() in the
-error path of acpi_fan_probe() to fix possible memory leak.
+Hi Rafael,
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+Thank you for your review.
 
-Fixes: 05a83d972293 ("ACPI: register ACPI Fan as generic thermal cooling device")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
----
-Changes in V2:
-- Handle the case when the "thermal_cooling" symlink creation fails.
----
- drivers/acpi/fan_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+On 12/11/24 03:42, Rafael J. Wysocki wrote:
+> On Tue, Dec 3, 2024 at 4:30 AM Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp> wrote:
+>>
+>> Call thermal_cooling_device_unregister() and sysfs_remove_link() in the
+>> error path of acpi_fan_probe() to fix possible memory leak.
+>>
+>> Fixes: 05a83d972293 ("ACPI: register ACPI Fan as generic thermal cooling device")
+>> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+>> ---
+>>   drivers/acpi/fan_core.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+>> index 3ea9cfcff46e..8e3f62a3745e 100644
+>> --- a/drivers/acpi/fan_core.c
+>> +++ b/drivers/acpi/fan_core.c
+>> @@ -379,11 +379,14 @@ static int acpi_fan_probe(struct platform_device *pdev)
+>>                                     "device");
+>>          if (result) {
+>>                  dev_err(&pdev->dev, "Failed to create sysfs link 'device'\n");
+>> -               goto err_end;
+>> +               goto err_unregister;
+>>          }
+>>
+>>          return 0;
+>>
+>> +err_unregister:
+>> +       sysfs_remove_link(&pdev->dev.kobj, "thermal_cooling");
+>> +       thermal_cooling_device_unregister(cdev);
+>>   err_end:
+>>          if (fan->acpi4)
+>>                  acpi_fan_delete_attributes(device);
+>> --
+> 
+> What if the creation of the "thermal_cooling" symlink fails?
 
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index 3ea9cfcff46e..10016f52f4f4 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -371,19 +371,25 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 	result = sysfs_create_link(&pdev->dev.kobj,
- 				   &cdev->device.kobj,
- 				   "thermal_cooling");
--	if (result)
-+	if (result) {
- 		dev_err(&pdev->dev, "Failed to create sysfs link 'thermal_cooling'\n");
-+		goto err_unregister;
-+	}
- 
- 	result = sysfs_create_link(&cdev->device.kobj,
- 				   &pdev->dev.kobj,
- 				   "device");
- 	if (result) {
- 		dev_err(&pdev->dev, "Failed to create sysfs link 'device'\n");
--		goto err_end;
-+		goto err_remove_link;
- 	}
- 
- 	return 0;
- 
-+err_remove_link:
-+	sysfs_remove_link(&pdev->dev.kobj, "thermal_cooling");
-+err_unregister:
-+	thermal_cooling_device_unregister(cdev);
- err_end:
- 	if (fan->acpi4)
- 		acpi_fan_delete_attributes(device);
--- 
-2.34.1
+Should have handled that case as well. Fixed in the V2 patch.
 
+Best,
+Joe
 
