@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-10082-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10083-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B029EC6F5
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:20:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5419EC6FD
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 09:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85A07188C06C
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 08:20:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CAEA169728
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 08:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6E11D63E3;
-	Wed, 11 Dec 2024 08:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532F1D7E4E;
+	Wed, 11 Dec 2024 08:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuiLW79X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6u4cbya"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6692451C5;
-	Wed, 11 Dec 2024 08:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039AD1D61AF;
+	Wed, 11 Dec 2024 08:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733905200; cv=none; b=o86JjrUL4hnVOG8QZpyCaqjxXCaZdzgVQ4RmgXRi6GTKRvzWFTfN/5XbZxjhaDkKq6XkEjxFmZv9fanDKwaE2tSzgluFZxOL5BnSU8AgjrOVLCFHRjY5FYAlrUbUzR4hZ16/mZ6+YIS1s3KbhhsHIAHpBG+kOAmbnfKMjjULNT8=
+	t=1733905378; cv=none; b=YwKwfUzcr9Juo02o3SC7aqgwCGWFQYo7y+3yle/mW9uU3iUGe5SE7ocGc/uoJpqZu+4wI0/VVvQ0uyUkO6uWsTA0ZBcNYcIX1O0RAdE5ZB5oLv+mnJLJAKv1gzloBso24rubpBNZVOYWMJX203YlIr5kuruLUL4lmHaw0hp39FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733905200; c=relaxed/simple;
-	bh=r21WtUBRcZwcSHqLPko9GR/J8w+sSShlZLghGN9Gwuo=;
+	s=arc-20240116; t=1733905378; c=relaxed/simple;
+	bh=dEGW18FBs0efR5Q/XxoNJQlBdBeSlmtuoDZFTtu+PCw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u7Em7mUVKoZOBuWF7SbFD6I/FgjMuP0U03cOVQLlK2GJR2BmFVKFdZjIq6Ft4TgcMZhdfiEUln1HfOrmb3WSSImRLgnzXci9rMU/RfKvgW3+kBjMBpfEdtWCe+0ZphfWTIqfA23QvQ9fwTtGWCeVaCDOqP86H86fEYPcJrjAfLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuiLW79X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650FEC4CED2;
-	Wed, 11 Dec 2024 08:19:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s0L/MCP0ZguESkQ3b5hIpkqSBXhq1NYVg2fugC+sl6emrOzV4Cf7n1rtVgzZHoKBZ7UcGjf3wAEyaefX+Zd4R8GA97OYFBZcwRg9PZ7/UWCNYtkUtL/SzJizgxxpw7cQWK8tplA7MhHmEqlvl5iL4nf4AeU7CziwmJKpPMyhB+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6u4cbya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C313FC4CED2;
+	Wed, 11 Dec 2024 08:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733905200;
-	bh=r21WtUBRcZwcSHqLPko9GR/J8w+sSShlZLghGN9Gwuo=;
+	s=k20201202; t=1733905377;
+	bh=dEGW18FBs0efR5Q/XxoNJQlBdBeSlmtuoDZFTtu+PCw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iuiLW79XfjJ2N1gQfWS3HXYLgct6Gc2ZnbSbN+JmB6aHayYd8NPo+W5Vz1pip0XlO
-	 oD++IolMyu6nnxJeAies0r79HYPhH/tbIi5vo5DmKWb6mzflM4QK+fzl1g1FTl67+h
-	 C8hG6M5E0Q8NrAyBK7CpuzIjbWpKklMfwAe2U875zdvUEuHXsFyECGOUoz8zVELUsi
-	 1Nrmqxecw66DwkDxRBUGqJ2n5Ta8lGQjyQgmmDKfvJ4LMeF2sFvLp+TQ8M13VNNR8h
-	 Wj/9mxczs1s1FsEQKHHPl8ZhDT6U5emuhgxcPNqCYDDzKHI6236d9DkNrMx7XXcRdv
-	 MFl/Y4p/qPUow==
-Date: Wed, 11 Dec 2024 09:19:54 +0100
+	b=Q6u4cbyaWizD7UIkLypCj68iw9b5KEhYCNraM6qB0DzldXnjN7k4cDPoUDk5TbQ4A
+	 NfASi98zxNmEXWusJXSAo/fWBtM1PLUdacb0BVPv1iiHJ69X2lBjktBhWXaGaq92Qk
+	 sZqnnebnicFARG5i1AGktfz7QS17yxN0PmBd6SkLqHtW8fQRLhVcaOySARmrr1uwrb
+	 ZWLblb5MduCy+XUNy1RViLZnrmWEZoFiT/Jdihf9+ssGcO5eTrOMwCoGRo4TfPW24y
+	 D3/ZVmuAUATf8c2T7fyN9YREeRwKyMfRV+PVqofAi+ZfFyE8WXhafrWhykZ5Tstl4m
+	 C7rbChOGneY8g==
+Date: Wed, 11 Dec 2024 09:22:50 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Ricardo Ribalda <ribalda@chromium.org>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, "Rafael J. Wysocki"
@@ -50,13 +50,11 @@ Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, "Rafael J. Wysocki"
  Sakari Ailus <sakari.ailus@linux.intel.com>, Dan Carpenter
  <dan.carpenter@linaro.org>, linux-media@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 7/7] media: ipu-bridge: Remove unneeded conditional
- compilations
-Message-ID: <20241211091954.42a5c778@foz.lan>
-In-Reply-To: <20241210-fix-ipu-v3-7-00e409c84a6c@chromium.org>
+ acpica-devel@lists.linux.dev, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v3 0/7] ipu6: get rid of all the IS_ENABLED(CONFIG_ACPI)
+Message-ID: <20241211092250.02b38b50@foz.lan>
+In-Reply-To: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
 References: <20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org>
-	<20241210-fix-ipu-v3-7-00e409c84a6c@chromium.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -67,127 +65,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Em Tue, 10 Dec 2024 19:56:04 +0000
+Em Tue, 10 Dec 2024 19:55:57 +0000
 Ricardo Ribalda <ribalda@chromium.org> escreveu:
 
-> The ACPI headers have introduced implementations for some of their
-> functions when the kernel is not configured with ACPI.
+> We want to be able to compile_test the ipu6 driver in situations with
+> !ACPI.
 > 
-> Let's use them instead of our conditional compilation. It is easier to
-> maintain and less prone to errors.
+> In order to do this we had to add some conditional #ifs, which lead to
+> false positives on the static analysers.
 > 
+> Let's implement some helpers when !ACPI in the acpi headers to make the
+> code more easier to maintain.
+> 
+> We can land the first patch of this series ASAP to fix the current
+> smatch warning.
+> 
+> To: Mauro Carvalho Chehab <mchehab@kernel.org>
+> To: Rafael J. Wysocki <rafael@kernel.org>
+> To: Len Brown <lenb@kernel.org>
+> To: Robert Moore <robert.moore@intel.com>
+> To: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-acpi@vger.kernel.org
+> Cc: acpica-devel@lists.linux.dev
 > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> 
+> Changes in v3:
+> - Prefer static inlines to macros (Thanks Rafael).
+> - Link to v2: https://lore.kernel.org/r/20241122-fix-ipu-v2-0-bba65856e9ff@chromium.org
+> 
+> Changes in v2:
+> - Add helpers in acpi to avoid conditional compilation
+> - Link to v1: https://lore.kernel.org/r/20241122-fix-ipu-v1-1-246e254cb77c@chromium.org
+> 
 > ---
->  drivers/media/pci/intel/ipu-bridge.c | 28 +++++-----------------------
->  1 file changed, 5 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
-> index be82bc3e27d0..1db994338fdf 100644
-> --- a/drivers/media/pci/intel/ipu-bridge.c
-> +++ b/drivers/media/pci/intel/ipu-bridge.c
-> @@ -2,6 +2,7 @@
->  /* Author: Dan Scally <djrscally@gmail.com> */
->  
->  #include <linux/acpi.h>
-> +#include <acpi/acpi_bus.h>
->  #include <linux/cleanup.h>
->  #include <linux/device.h>
->  #include <linux/i2c.h>
-> @@ -107,7 +108,6 @@ static const char * const ipu_vcm_types[] = {
->  	"lc898212axb",
->  };
->  
-> -#if IS_ENABLED(CONFIG_ACPI)
->  /*
->   * Used to figure out IVSC acpi device by ipu_bridge_get_ivsc_acpi_dev()
->   * instead of device and driver match to probe IVSC device.
-> @@ -127,11 +127,11 @@ static struct acpi_device *ipu_bridge_get_ivsc_acpi_dev(struct acpi_device *adev
->  		const struct acpi_device_id *acpi_id = &ivsc_acpi_ids[i];
->  		struct acpi_device *consumer, *ivsc_adev;
->  
-> -		acpi_handle handle = acpi_device_handle(adev);
-> +		acpi_handle handle = acpi_device_handle(ACPI_PTR(adev));
->  		for_each_acpi_dev_match(ivsc_adev, acpi_id->id, NULL, -1)
->  			/* camera sensor depends on IVSC in DSDT if exist */
->  			for_each_acpi_consumer_dev(ivsc_adev, consumer)
-> -				if (consumer->handle == handle) {
-> +				if (ACPI_PTR(consumer->handle) == handle) {
->  					acpi_dev_put(consumer);
->  					return ivsc_adev;
->  				}
-> @@ -139,12 +139,6 @@ static struct acpi_device *ipu_bridge_get_ivsc_acpi_dev(struct acpi_device *adev
->  
->  	return NULL;
->  }
-> -#else
-> -static struct acpi_device *ipu_bridge_get_ivsc_acpi_dev(struct acpi_device *adev)
-> -{
-> -	return NULL;
-> -}
-> -#endif
->  
->  static int ipu_bridge_match_ivsc_dev(struct device *dev, const void *adev)
->  {
-> @@ -261,9 +255,8 @@ static enum v4l2_fwnode_orientation ipu_bridge_parse_orientation(struct acpi_dev
->  	struct acpi_pld_info *pld = NULL;
->  	acpi_status status = AE_ERROR;
->  
-> -#if IS_ENABLED(CONFIG_ACPI)
-> -	status = acpi_get_physical_device_location(adev->handle, &pld);
-> -#endif
-> +	status = acpi_get_physical_device_location(ACPI_PTR(adev->handle),
-> +						   &pld);
->  	if (ACPI_FAILURE(status)) {
->  		dev_warn(ADEV_DEV(adev), "_PLD call failed, using default orientation\n");
->  		return V4L2_FWNODE_ORIENTATION_EXTERNAL;
-> @@ -498,9 +491,7 @@ static void ipu_bridge_create_connection_swnodes(struct ipu_bridge *bridge,
->  	if (sensor->csi_dev) {
->  		const char *device_hid = "";
->  
-> -#if IS_ENABLED(CONFIG_ACPI)
->  		device_hid = acpi_device_hid(sensor->ivsc_adev);
-> -#endif
->  
->  		snprintf(sensor->ivsc_name, sizeof(sensor->ivsc_name), "%s-%u",
->  			 device_hid, sensor->link);
-> @@ -671,11 +662,7 @@ static int ipu_bridge_connect_sensor(const struct ipu_sensor_config *cfg,
->  	struct acpi_device *adev = NULL;
->  	int ret;
->  
-> -#if IS_ENABLED(CONFIG_ACPI)
->  	for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
-> -#else
-> -	while (true) {
-> -#endif
->  		if (!ACPI_PTR(adev->status.enabled))
->  			continue;
+> Ricardo Ribalda (7):
+>       media: ipu-bridge: Fix warning when !ACPI
 
-Heh, that's what I pointed on patch 1: you don't need it there, as this
-will be handled on patch 2.
+Not needed, as patch 7 will revert it.
 
->  
-> @@ -768,15 +755,10 @@ static int ipu_bridge_ivsc_is_ready(void)
->  	unsigned int i;
->  
->  	for (i = 0; i < ARRAY_SIZE(ipu_supported_sensors); i++) {
-> -#if IS_ENABLED(CONFIG_ACPI)
->  		const struct ipu_sensor_config *cfg =
->  			&ipu_supported_sensors[i];
->  
->  		for_each_acpi_dev_match(sensor_adev, cfg->hid, NULL, -1) {
-> -#else
-> -		while (false) {
-> -			sensor_adev = NULL;
-> -#endif
->  			if (!ACPI_PTR(sensor_adev->status.enabled))
->  				continue;
->  
-> 
+>       ACPI: bus: implement for_each_acpi_dev_match when !ACPI
+>       ACPI: bus: implement acpi_get_physical_device_location when !ACPI
+>       ACPI: header: implement acpi_device_handle when !ACPI
+>       ACPI: bus: implement for_each_acpi_consumer_dev when !ACPI
+>       ACPI: bus: implement acpi_device_hid when !ACPI
 
-Considering that you drop patch 1, and keep the ACPI dependencies
-at the header, as proposed by patches 2-6:
+patches 2-6 look ok to me, but I'll leave it to ACPI maintainers
+to review. From my side:
 
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kerenel.org>
+Acked-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+>       media: ipu-bridge: Remove unneeded conditional compilations
+
+See my review with my R-B.
+
+As the crucial changes are at ACPI side, I'm assuming that this will
+be merged via ACPI tree.
+
+Regards,
+Maur
 
 Thanks,
 Mauro
