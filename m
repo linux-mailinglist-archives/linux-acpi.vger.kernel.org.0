@@ -1,61 +1,62 @@
-Return-Path: <linux-acpi+bounces-10109-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10110-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E249ED65C
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 20:21:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A939ED6C2
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 20:47:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAFEC28149F
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 19:21:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DC0318841DD
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Dec 2024 19:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C172594AD;
-	Wed, 11 Dec 2024 19:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD23A1C5F09;
+	Wed, 11 Dec 2024 19:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AYdKBsio"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="H81OOFeI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2082.outbound.protection.outlook.com [40.107.102.82])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2081.outbound.protection.outlook.com [40.107.92.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C26E2594A2;
-	Wed, 11 Dec 2024 19:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8DC2594BD;
+	Wed, 11 Dec 2024 19:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733944872; cv=fail; b=BQ/CqqYC+Fn8aShmqN+tTdFOZXjiRowvFjUUQxOXg81fcxxEBoLm/qq2J10TEAkh5oAASQHl43qPG60laIDJkkpraJuf36GULAWCqiT+P1AonqWG5aEkCX+7IZQay4VGnPKkqnV+DJ2zcmfjEAqfbnV5bNHRWkq8XYVXlrV8kcM=
+	t=1733946469; cv=fail; b=OySPwQ+fCJTZvHHMBJX2arzbFaJ9fKrJANouTZ92MPZXIaHvYwX08zuRIQiiEWJE7Hqt2jAR+ZG1pe0w4r9uhvou9Jd6Kf4hnJqs1PMKIyfR0cmbZinyfgXXM7WjdMdjmDTWaiih6yIh09uACW4rIuKvm/+HDjjBWhsTn4P7JvY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733944872; c=relaxed/simple;
-	bh=N7fxG1hdlUEJYK8R7cGur6fqwTE4KWo/PR3rsSuMUb4=;
+	s=arc-20240116; t=1733946469; c=relaxed/simple;
+	bh=DCY8umbeEhfY+Z3N3ywwNiIbybD9JEBcVQc18gtcizo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mYeRJLYRGxV9YzqUeDwGj/jYuGdONBnhcUcDn/akPNmkHi0XZYWY4JioRSAIlJ1IMbkpIy9m6jq01GPv1vHHOm/zi2Ewdxmek8QI0FtwAvaEw4+ZaRr2oEBaWQrkDmHRJP+GeVZemITxbngJqvVOgf95Jz/G3YROg8vhHu2e+xQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AYdKBsio; arc=fail smtp.client-ip=40.107.102.82
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DmpW9MclhC0/j4udPpKfMUKpo9xmxrVMffYeHPFNNrH0bvgZiMniRmggKln8PTYh3uVFc3YyPnGEaYVYZALr4g1rbHINsFIxUdIqPP6WpfMVOYB6jGDBVde0hKiiborrbLTG9dkMkKO6MaxxEIg42Bef7LFg+1gK8YUlnKUAQe0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=H81OOFeI; arc=fail smtp.client-ip=40.107.92.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JMPaBHM5s1HP4aIWxORyfGOCs0qs0FnfLvmDqdEghfya9MZHyrNL+V5J15BoVDnbZBtIIG4KKzBJCR2Vmb++d1glNRy1ST6eBPgG0xiFEFRQQCgvJr3563LjPPJ3BCfK8/v+mo6JIsWgOSmLXfphlUlLQ/bCTa8akQKcuj27FDjd5eHCiYnKYVB3hNPArv6nIxv4ckDVHbzC3KguBje1YSz0+suMbHM+jfANe4xherL9chxRJXk2yXC97xUUhP7xKyapCE7QhUOeHfYGzhsouNcoBV3ErIcCCrwq8T2y+jL6Bjw22jp76tTA9SaRRAVFABEchEi5tY5vWzu3vS/BjA==
+ b=NHr1AmF8bL/3JVQvoMmDPqLRVf/3mblNlgtitQLnbjoNAEgtPGRCMmiRRQsrE6qUfy8bKI6y+NLcx9jLKN3aB1wZX3aY5UsNld3RnM8HZ4pJTO8QGSM6/yuIlHJ018DR3Lyx5A2Xt0YZvvaeBkamdWV8uCFEEjGsQYI2Et2DbOo5lweFGfvoUMvjnVATKb0qAgJQWIqqBzvNAsh+bp5eMGrmRYVk0H1a64hqyqxtZm0wURsPRxezTvU5limGrxdEamScKlrA8tsmgixqHgpMGlvOQWyXN/RorzKf3SxEwHGJpoOb/eHtuearjs/8mfW4GT1hMfWLekUEtXiQLP3Ekg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VZ8pq7qzfZVM4/KRkNAPIbtUpmui1Qw/UuBQ0o+0ySU=;
- b=iPKhqlVvj/FvEpda48V7RLJqBP06s+pWqqafJ9rhX6fyyy+v3pk2k3Pbn5BPn1/21HSmfKxJ9zRuwpuOWDMBejwVYjOGs8KPKxRTWZul8BtxlrSvliJHeSIecJ+T6ubtaI6SvakXMZ9WgXDKo5NXmkYgjNdjlyghuV1dtyg9/P9lTzIQVtRsPeCX6kuZT0L5TZmQmiYs1MRiNkU24OUFj+2Q4S1JAx4gVBxvl8aDOIX3PGS18U+qKCN2K8vq3n6Elx8nwZrbzQR6ArOywb6LYVBlYIcQQ7Q8DdDmk1ELHZ0y8TOcMP0m1c58TxR7HRUMVWq6I5VqDmjgLbCUnX9+dA==
+ bh=X+ct/Znm2GCeFpIfguKLollOWdUcvzJwPlkDdzg/FS8=;
+ b=d0iDZeOlcMiSvBs1Y5KnbtTfSUG3CrF4488VPII633mXUtybqBhc63FagV75TY21oHzSC0iqw08uABTQeYK+CxWbJVLL+6HZfpJ71Lhdwk4eu8TXPj1R+twU7uMSVzjvIA1EYGsteMssc2Bqy8MyHOeFOi7mwNpnXoZdodTswJVcXQ9Xd9dHIYw7Ojm0J1WKyEN+bsIPTyvG88GnnXtRAlqNE/5ky8ydAj6pdjQ3UD8dRwjOmtZraaOVMae5qIT2loORzhXugt5L1kV+1IBUNEAyhw1jPfTYJoTGfARZbuYtp/aHoy6gstqGAN5XuTuveoNQnjqZlCBsyVvOsYM3kw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VZ8pq7qzfZVM4/KRkNAPIbtUpmui1Qw/UuBQ0o+0ySU=;
- b=AYdKBsiom2pBeU30aEQehfpRa5X/P2+m2JIhzxI+LZ5YrFe8rjuDxBLCXLqnvRy+8/7kzE96vfaSbKKR/tUCDUFIBDrLqQu2C1k9BW/LOUiPwStSQRK6LxINjZosi7ReQYe/LnaaHUzDEs9b1nBFiRYokolMx8XSq44gdaNxi14=
+ bh=X+ct/Znm2GCeFpIfguKLollOWdUcvzJwPlkDdzg/FS8=;
+ b=H81OOFeIGGiwj4z52fq6gNIme/HaHPhsYx6oHw8Lkrq3Gdr5lmppIqCK4o9zlNuf/SuwYr+69ZQM9hHOZZs5o2kSdupVjWS3z51GjXs8mf+NVP76M9o4kUNc2T+NEd2Cqv7+RB99Xc9T4ZaEWb4b+WQ1iIqUgYsIt6cJCv22Lj4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- MN0PR12MB5932.namprd12.prod.outlook.com (2603:10b6:208:37f::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8251.14; Wed, 11 Dec 2024 19:21:00 +0000
+ MN2PR12MB4221.namprd12.prod.outlook.com (2603:10b6:208:1d2::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.15; Wed, 11 Dec
+ 2024 19:47:44 +0000
 Received: from DM4PR12MB6373.namprd12.prod.outlook.com
  ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
  ([fe80::12f7:eff:380b:589f%6]) with mapi id 15.20.8230.016; Wed, 11 Dec 2024
- 19:20:59 +0000
-Date: Wed, 11 Dec 2024 14:20:48 -0500
+ 19:47:44 +0000
+Date: Wed, 11 Dec 2024 14:47:35 -0500
 From: Yazen Ghannam <yazen.ghannam@amd.com>
 To: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
 Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
@@ -64,15 +65,15 @@ Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
 	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
 	CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com
-Subject: Re: [PATCH v4 1/3] ACPI/APEI: Add hest_parse_pcie_aer()
-Message-ID: <20241211192048.GA1960478@yaz-khff2.amd.com>
+Subject: Re: [PATCH v4 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
+Message-ID: <20241211194735.GB1960478@yaz-khff2.amd.com>
 References: <20241205114048.60291-1-LeoLiu-oc@zhaoxin.com>
- <20241205114048.60291-2-LeoLiu-oc@zhaoxin.com>
+ <20241205114048.60291-4-LeoLiu-oc@zhaoxin.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241205114048.60291-2-LeoLiu-oc@zhaoxin.com>
-X-ClientProxiedBy: BLAPR03CA0038.namprd03.prod.outlook.com
- (2603:10b6:208:32d::13) To DM4PR12MB6373.namprd12.prod.outlook.com
+In-Reply-To: <20241205114048.60291-4-LeoLiu-oc@zhaoxin.com>
+X-ClientProxiedBy: MN2PR20CA0039.namprd20.prod.outlook.com
+ (2603:10b6:208:235::8) To DM4PR12MB6373.namprd12.prod.outlook.com
  (2603:10b6:8:a4::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -81,253 +82,262 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|MN0PR12MB5932:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fa213ba-7aec-4fbf-51e8-08dd1a18f18e
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|MN2PR12MB4221:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe94e544-ddce-47ed-7d4c-08dd1a1cae52
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bcY580uVSaZdc+7Xz+sKK6/9svKS4zHuUUrBGv8wwLk7WxHc347Nu5FTYoK6?=
- =?us-ascii?Q?PZ/nsUtPjPOC7iIWZ3InY7bWhC6eTP48PcnmYubr08PgKiZlW7dakrjYrHFA?=
- =?us-ascii?Q?Z8ZpoNkngVzim3fPxlvsNm6YmimCrL4UJlRUfwIIWWbt8rKOjhdZhMAFk7ul?=
- =?us-ascii?Q?ppFPpwvp9PvjdFExpa44KybBdwyvsr/OF63yHk5gQpFzhaiQpr+gq4OQEdpJ?=
- =?us-ascii?Q?UV10M9xhVkFPMnefozrgOfeU19CLE5BXCaKwje3ZDPFm3YqHUVQ/nbOyZRmV?=
- =?us-ascii?Q?nrhvq2FT0PDuWzmjWbOc7mRmuOB4hFFR8LhOHiCtzFhgseT3HWO26U11H5gz?=
- =?us-ascii?Q?FAHvlQEuL1UA9vWBtn641val3HZhKnbOoFgMnbgZiRRO6U4F55HJ0RNtcDSv?=
- =?us-ascii?Q?J8k5X26NPal3LXVLZFNvmCBIN6vZuTNjrEDHaX9bDxOMvW2a0Ody3iOymtod?=
- =?us-ascii?Q?13zgYxU4DhKWGm2j/NSnDJAYGNCat8xL82lVLLo9wAXneBJXpCSVYgOWHMgA?=
- =?us-ascii?Q?c20mU6xgFO6YrnmLDUUVI0Nd/4xC+rm1d1+1Fw6c00XExBmyFT+Z4conTfu8?=
- =?us-ascii?Q?cOY57WisYZMf9kvOUinpHN5MfrXmHxFtJIVlM/bekmPbESAdhtrKKmzkDOTw?=
- =?us-ascii?Q?uRO6h4++BgFkCgyeCszYLnGxjLt7Kd64PLEmFQTtygFcIVwLxd9XeIMCo5FO?=
- =?us-ascii?Q?+yrT/Unx+sv8uPA5KI9Dh46HsecdigZ/5Dli8JvN8CkU9UucOpGLr8awQtjm?=
- =?us-ascii?Q?9wP6Tcd/AevQlRC1AJvdaiLZpODDHJcLqZwQjGSpiES5r3eZX/nRWKKQLdCc?=
- =?us-ascii?Q?SIH8QB1kUv1YrKedMxAVHc4jHLxEjDJsKaCoVmgs3/O+OPUnwTO1Sa80fJpT?=
- =?us-ascii?Q?GhueAJcE0VlPtUwhmNnb6OIzZ09E2pHZNgicvMdsO5rqbzLjHmp8DihQyvyu?=
- =?us-ascii?Q?2Wav4Cp5TlPGuIyEr7gkRQYY8Aizr5R21dCqUz3LslASrAV7O3TC2wOefwlx?=
- =?us-ascii?Q?+ojgKaILBwEIAXytVYyiI+UPdg0w2LoYSkiLmWw9ZJ5AudQTKz9nUOapdTag?=
- =?us-ascii?Q?0GGTWQ3NmzBcAkwkA8H3/QP0m7eR97Mgp/CcZpdBm7dbq4nm+kkhD3DTV3LV?=
- =?us-ascii?Q?SmcMODBPQsi2TwYPcYRy8OIersNpNbJHL8lPSt5lWfs2/VfggAUb+uaYa1wA?=
- =?us-ascii?Q?FValuX0vu86wlce6M6uhXv5PM25qtk21fV0yK/1HPchkE1XPECL3vlJLyT/d?=
- =?us-ascii?Q?ahI3TFAL6uY6Vbvtf5UbyguYKKaBh/d9DipyNrmytO6XxMsil49XRI67eRgS?=
- =?us-ascii?Q?kPWHKxydPXwqmPrvQUs9OaiesAl7HYbkp/Y/wfIFsgmZ2w=3D=3D?=
+	=?us-ascii?Q?1WxDml9QHgyBKjTlQ8W4mMZKpL3d7pIeyShiKaHUc5AAuTCb/Bq3YxmUZYnw?=
+ =?us-ascii?Q?5JaFS/12688K0lDFa0oNZxdQ41ZrWBt8EnGDnBBhyRYvRFZo3de1YyJfiY/Q?=
+ =?us-ascii?Q?wmAh1IquFJXD/nlvt/uX77ZVStabkHsFVYVmmOzeDSg0yE0Gjeog1bTyrkhH?=
+ =?us-ascii?Q?EhPKz9xvzgeSC6AfipL42CtlJlYXWCx3b5ByZN/UwvADel/zj941z5442q3q?=
+ =?us-ascii?Q?nl1nogY2UWKKPrO5/thf7uzAbEiWs4E8ndazA4x4qZbejVIMZFYwl0Fesa4R?=
+ =?us-ascii?Q?DozSztsXxSSGqlm0fptEfWoOuOaBK4czDtzw/KeQj+wea9WdskKkLN4F3zxy?=
+ =?us-ascii?Q?wsg8H3l2SHdW4iIy/x+w3IBLX9WTqjPsv58VHLvT1nmatP9Jbr6FLA+py7PQ?=
+ =?us-ascii?Q?6/bbQ6jwNmToMG1fo892VDfqpPdHd5V0tFgKIxTPc3ErEbNyAVwrcl1J8+1+?=
+ =?us-ascii?Q?ikK4RjpPDcmMQdEAylWBizzjAQlMdGx4Px5sXNKL9fXsXZxdUPBTWkUjlYNy?=
+ =?us-ascii?Q?DxOnMJN9HL9GlNkvGr00tTVSgwSrCUaRKKFh5Gg0OaMIxyiLYyUHggNW5b24?=
+ =?us-ascii?Q?V3OQHC0eMz4jpFhOshzE7zJglvM/mm+ToRnHXkulRtG1vOuZQgUSZ+KeMcSh?=
+ =?us-ascii?Q?Vz58qAs+BcnFt1veSGZzWVpn42mGGzk44D5EJxfexB0j4At3LukHRRDUZkR8?=
+ =?us-ascii?Q?Z/fVdWk020Ovz/sESYC+/onsUqf+3vJtWb5PsTRCMGYaCyiq+4GBLaB0+taM?=
+ =?us-ascii?Q?EYHcDEIihiy8S0yaBpgEY/I7Q1aO1c8Xehl8jAmg1g2YmrqzZMqa3kmczgxO?=
+ =?us-ascii?Q?9R4pplS1KIaIzPK2ahP0FI3Hm3htmjiMfQa6Sndb0QzOI9tkAw9mIt26H2YV?=
+ =?us-ascii?Q?qhy31OzZxZpK7zEN1miif97hZlLe2W4H0rlBda5IV55fSTVK1znlJwxhPxtV?=
+ =?us-ascii?Q?Dni14xawmnXAryUh5rdwre8T4D0C79WeYt9JK5ZXcdI4ZT4RN4SEk0QZKMCr?=
+ =?us-ascii?Q?Wq4nG4CdHK2pUUDKSJzqVeSepU/hh/HdDHUkVjTh34lqm0ZL53tM1noZfHyn?=
+ =?us-ascii?Q?WGEGnS+B79kNyQ3yGP/CMcFUaYt1dvuSxLbnYvhmi5nVE0+puhQ2bB4ZfMut?=
+ =?us-ascii?Q?3/rYp/+nAxRkQcLXRCkt1V4UW7CF2j4FcJ/M7KK/cOGUVaSXF9oHypRtyPSx?=
+ =?us-ascii?Q?3cBY12k3nl3/PGyDUriYvwP8BB03y2BkCUY9VU1Noh0IMBwe0L/FLZFYJNP/?=
+ =?us-ascii?Q?S8XOGMQxuXO2URdMd3TwQkaAGUNu0XxG5Q0w9q9GytCaqZo7j8UyKGqoc9lu?=
+ =?us-ascii?Q?lixSR3vtiKwO9Rnz1T4YuWHlZkpV0kwiZeHKcC7ZoucHSg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SO/SUUq1NVwodYhVUfhdJqgWQXbKEquJDK64I3efiAAdjLcwUINtpjyDPf7U?=
- =?us-ascii?Q?EPQuUB0uPNMaKI75r7/zdyaasyZeakOyXyakT0Sn1J0XdYgc2NRp/GAa7KHz?=
- =?us-ascii?Q?MDgCgK/SBMxUGLYFCQC1HpCVXPea6IS/0ssGo7Z70C3zDRlzhdERQvpSkrAr?=
- =?us-ascii?Q?qqk38+/eP1r6XhefgfPnfzphDAkQ5V593DK+k6wCe8m9ZC0+OJPtZTTK0sme?=
- =?us-ascii?Q?rVABNGD+BqceLZCNs3R68Vch4F9Sn9nj8gB31MGnhE1SW1abR29L8xaJuqEk?=
- =?us-ascii?Q?AP5DSD/+MzgXQAKsCksLehwZeLwBvu+k2Vu1W880jixUhvKHDIrYPfNqIhqt?=
- =?us-ascii?Q?MaUqun+mc6OABF1hRB9hcDW1yaxvP+OVft/LZwr7KIGVP72t8DISQKQfIVu1?=
- =?us-ascii?Q?1anMHT09xuIVBWAwtEjQDurwZ+hODatCh/ld6MAckY0nI7NP0Q3rxjK1fmvU?=
- =?us-ascii?Q?vAbfMh9Z/+iNCAquVx0RHVH2Iv8uWKBjl67NhsaAlhhc8sN75Z9BtH3N8DF9?=
- =?us-ascii?Q?xjLM/kg6Nl/+bHMuZLBFkZ7XNEklDQIk4yWefikmfGu9iJ0oBBJO2uu/c6qn?=
- =?us-ascii?Q?t0TGwSy5vbtvhI7fnRajbXQ2BLyN7r0xArUSbkfv15NxnqI1C9bok8vMYuuY?=
- =?us-ascii?Q?2TMQKi4Qylpk6d1TAx2oRIUxMN5rWfWqVYyYf8qiQ54W2OLEe8UlVSjKWdI3?=
- =?us-ascii?Q?UpffO+9R6vSUdxkw4HxuPYhNRLp68whUIqC0gxlUnn3KGLTvgVCtGuOwd9AS?=
- =?us-ascii?Q?qfIlEA6eIVLkWT+rcd+jYKY8EhSlXKadoPDUI0ZArYkB+4YmV3IKTouM8xXn?=
- =?us-ascii?Q?kJgm/Vl2qDEO0hEqHhTRuxtEo2XOxd2UylZFRBcU0RU59pGE+xsWQhea3mhC?=
- =?us-ascii?Q?4/QSe1/ANLJwlHjN8yZQQipNkrNeGnBHF1Ry92kkiFVl1cpNoll4z7EL8eNz?=
- =?us-ascii?Q?pvWa3ZrsDE0KchEF2fJ2zcD2F4ymRkSfzoHO5A8z9V/X2QxzT4g+hqPAixLx?=
- =?us-ascii?Q?c32f1QPBrWxo/kqtVpFvvvp+aMdLK9asFZjy1mUiSql4XEKPhGmMQsDJ1+9w?=
- =?us-ascii?Q?UXi0X4fdzSvEx6akwk8vKZ5cPLd/kdScfnAvd6fTcxq6G6/pPpuDNVwqSQGz?=
- =?us-ascii?Q?J9QBnftmpJVmYhqzb+GolT4oJb2XedOz+SBVu5igdrKJkWMIXpURE4N7PRAK?=
- =?us-ascii?Q?upvRrFE3M1wOKtN4XGz8K/JFtc+L+6snvqs6LI1l766iDKL7oHDRF8uTylk2?=
- =?us-ascii?Q?AWhilH14fRWByqlfQQUN28nOkp6ypHXC8YIH/zHp1uIdjHLF0kHMsUhHuiVn?=
- =?us-ascii?Q?ScwDW3pdB+QX7JusxlSrtWEqBXN25HjExCJruxrbnfbpv5eN6MDyvnkNYW9Q?=
- =?us-ascii?Q?Tli/YFtkwFS3woEeCaxurDyRM+07UB/xBAEahSYny+6xPqj9RwE5QLdA0+fF?=
- =?us-ascii?Q?ySjoGYjzlk1SWDG+JuxrYJIxelegVrcqHjAwzr0+ORHBp8ApqmeRJYoBBprk?=
- =?us-ascii?Q?JqrIUs66vJJSiMfxH5OeaDsw92PN13HgKn2zA6vmIienxXy7HXdwUsbL24Bq?=
- =?us-ascii?Q?doUzSTNJyaaFdIGuZHUqHE9jO3i2lXAqNJ3aOenN?=
+	=?us-ascii?Q?EcpjwxCKL+RxlnFuzVtEQrZkjWCvFJ2Z8jnFxYOn2T9DDIxGV45LY8MU2wFv?=
+ =?us-ascii?Q?ltAJVJFN82g9hwXaKko6RhRH3x7G/UU7ekM41cgZaXbSLK8XgK56N/s0NhYl?=
+ =?us-ascii?Q?gCXaStF14MW7UPLPz4ekasvFf01iWF4ue7e1TPEAlT1lPy1VVb9AIfLQB+bU?=
+ =?us-ascii?Q?Md1WCsKt1WGduZMfeAok7l9mskkyZz9QJZkmCr2EYQ1i/n/QvpgYQJuL3C7f?=
+ =?us-ascii?Q?nOGOSkBPaGSgU2MfByMwqlJaqy+68ALsD3HJmecrFYK4/c+cXISDVTxQhX+w?=
+ =?us-ascii?Q?aJDu5i/V1ZzFQZZhqfbzZdIIXm1AAJIdJBC6xVqb4aNw7OJwBAZKrqu4BYvM?=
+ =?us-ascii?Q?DyzqpbypIeUFvZfHaQeMuhjRghwa/78iiOw2nlSkvzPJxDOBb5OUi8J8qnyT?=
+ =?us-ascii?Q?xsWSET++xLj6AW2NEj5u0e8bSvX6J8T+iM3wQYcbOfKRT5lU9GRkj0Hags4w?=
+ =?us-ascii?Q?abFctk21rILnM+tRjPQnhVlZkv8aNcdufJsil2FAk3JIH7GEVWXXxpMV3fT5?=
+ =?us-ascii?Q?2cBUU4hUfDZWu0jarzz40HXjCjrIW9c0TCxlpS2mgOPr2szivQo70tPzZWFh?=
+ =?us-ascii?Q?kE+VmEEdLimDSi19aPeNbCV6UOsko83bujRB1BM5DtYJtc0wDJj1KakB1DOX?=
+ =?us-ascii?Q?Msy4oBq7lFYXY4Zi8/sml0rfEWCBnuV/jj3rouqwvENsSYtqY6zoOppCtYSG?=
+ =?us-ascii?Q?xU2e8M2CAh/V+68on1aSSd9DFkMqyCPVN9stDvyIfqhPV94rRmK8a44sGVqo?=
+ =?us-ascii?Q?EhZgJBvmcX/snZu6/0cVx1ZLBsrcenFQQ2hmMAvOuJg4D6ubn4YSzdsxr1SB?=
+ =?us-ascii?Q?VOgQZocHaZ95W4EH0wFtU7Yt9WWrD8yDr6nYMYjmx0fEfw/HJUX6HZ5LiP0N?=
+ =?us-ascii?Q?9bDK4z74aME9IqX6Ex3dYApxYdMCFwPLSKc/xRxf0JqWhBamZw4wtX58pqSm?=
+ =?us-ascii?Q?JNJheMJq4y+Jmd2rN+ulOkEJNh4lnhI89Pi6PxZ2sRgLeIDbTBg7NmMhiKoV?=
+ =?us-ascii?Q?Ar/BjZ4J3gCICGQ3nzo5Kru122yrZsAHlrxpNy2CfTI9qPe45zjgldNQtzdQ?=
+ =?us-ascii?Q?/b06ZWiEn3nw9pCE2iub5I0DJxJXDa5nNBgvODkJ91Sju9SKew90aZ4walyA?=
+ =?us-ascii?Q?VBZrSYNruY+fGi7cBnCvAX975AfTI9/kft2c1Rp8S/RsH5rYArmbgGahEOxQ?=
+ =?us-ascii?Q?X+zwbtbmXPVxAR8ZatCWYARY3onmCuqFukxxud1oDmZuT5qHyYZRSQhZxCaI?=
+ =?us-ascii?Q?2KEiuVXwl/pvdJBuCIHHWXKbYZH8gsLAeLI5sQueGkJUE7VU9SZirVNd6Xoh?=
+ =?us-ascii?Q?uHLlaGEH56qpGDQkEmSMe6hDIZxg9Uq8WuIZ4EDB7FAL1WKNble9XaBqj+nT?=
+ =?us-ascii?Q?a2KZTjBYtjiu8cAfdFXl78IJwRhZjZ4pT+QnP8ny4/3cnXJbE3rnJvJ4qU9i?=
+ =?us-ascii?Q?8SjWnNLpaquzbdwAxGZHcaFYwxrhgh0cFOAYDmAU1ADYKbL2Z4iLQ0V+fM54?=
+ =?us-ascii?Q?THyrF/Xqx3/nBNl6JZFlzk+BZR5k/ShnxTmo2nlaJoTeJ3h2QDlVDmT/+bg0?=
+ =?us-ascii?Q?p1SjGU98o7O2jmmdV1/YtUx1EF3Dm9ODaISxhi78?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa213ba-7aec-4fbf-51e8-08dd1a18f18e
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe94e544-ddce-47ed-7d4c-08dd1a1cae52
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 19:20:59.3201
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 19:47:44.4900
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: or7dkXxJLkjyzMeRul+84uJ+aL8CBOuZT6pcQxqowTjS6sLWa3dni96X9MX9pUkh8isvlbL82NChkJMUKnrVUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5932
+X-MS-Exchange-CrossTenant-UserPrincipalName: GL4/JzueIlWtQqFF/pgcO8GImhcBkBM6Jxz2lnfjMS5SZV0qAX+8MeqDJ3dUnsgp6Qur6AV1SNkw5hJYouob0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4221
 
-On Thu, Dec 05, 2024 at 07:40:46PM +0800, LeoLiu-oc wrote:
+On Thu, Dec 05, 2024 at 07:40:48PM +0800, LeoLiu-oc wrote:
 > From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 > 
-> The purpose of the function apei_hest_parse_aer() is used to parse and
-> extract register value from HEST PCIe AER structures. This applies to
-> all hardware platforms that has a PCI Express AER structure in HEST.
+> Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
+> the purpose of this function is to extract register value from HEST PCIe
+> AER structures and program them into AER Capabilities. This function
+> applies to all hardware platforms that has a PCI Express AER structure
+> in HEST.
 > 
 > Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 > ---
->  drivers/acpi/apei/hest.c | 77 ++++++++++++++++++++++++++++++++++++++--
->  include/acpi/apei.h      | 17 +++++++++
->  2 files changed, 92 insertions(+), 2 deletions(-)
+>  drivers/pci/pci-acpi.c | 103 +++++++++++++++++++++++++++++++++++++++++
+>  drivers/pci/pci.h      |   9 ++++
+>  drivers/pci/probe.c    |   1 +
+>  3 files changed, 113 insertions(+)
 > 
-> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-> index 20d757687e3d..13075f5aea25 100644
-> --- a/drivers/acpi/apei/hest.c
-> +++ b/drivers/acpi/apei/hest.c
-> @@ -22,6 +22,7 @@
->  #include <linux/kdebug.h>
->  #include <linux/highmem.h>
->  #include <linux/io.h>
-> +#include <linux/pci.h>
->  #include <linux/platform_device.h>
->  #include <acpi/apei.h>
->  #include <acpi/ghes.h>
-> @@ -132,9 +133,81 @@ static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
->  	return false;
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index af370628e583..6e29af8e6cc4 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/pm_qos.h>
+>  #include <linux/rwsem.h>
+> +#include <acpi/apei.h>
+>  #include "pci.h"
+>  
+>  /*
+> @@ -806,6 +807,108 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
+>  	return -ENODEV;
 >  }
 >  
-> -typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
 > +#ifdef CONFIG_ACPI_APEI
-
-Why is this needed? The entire hest.c file is only built if
-CONFIG_ACPI_APEI is enabled.
-
-> +static bool hest_match_pci_devfn(struct acpi_hest_aer_common *p,
-> +				 struct pci_dev *dev)
+> +/*
+> + * program_hest_aer_common() - configure AER common registers for Root Ports,
+> + * Endpoints and PCIe to PCI/PCI-X bridges
+> + */
+> +static void program_hest_aer_common(struct acpi_hest_aer_common aer_common,
+> +				    struct pci_dev *dev, int pos)
 > +{
-> +	return ACPI_HEST_SEGMENT(p->bus) == pci_domain_nr(dev->bus) &&
-> +	       ACPI_HEST_BUS(p->bus) == dev->bus->number &&
-> +	       p->device == PCI_SLOT(dev->devfn) &&
-> +	       p->function == PCI_FUNC(dev->devfn);
+> +	u32 uncor_mask;
+> +	u32 uncor_severity;
+> +	u32 cor_mask;
+> +	u32 adv_cap;
+> +
+> +	uncor_mask = aer_common.uncorrectable_mask;
+> +	uncor_severity = aer_common.uncorrectable_severity;
+> +	cor_mask = aer_common.correctable_mask;
+> +	adv_cap = aer_common.advanced_capabilities;
+> +
 
-It may be nice to align all these lines on the "==".
+These can be done at the same time as the declarations. Same for the
+remaining functions.
 
+> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
+> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
+> +	pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
+> +	pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
 > +}
 > +
-> +static bool hest_source_is_pcie_aer(struct acpi_hest_header *hest_hdr,
-> +				    struct pci_dev *dev)
+> +static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root,
+> +				  struct pci_dev *dev, int pos)
 > +{
-> +	u16 hest_type = hest_hdr->type;
-> +	u8 pcie_type = pci_pcie_type(dev);
-> +	struct acpi_hest_aer_common *common;
+> +	u32 root_err_cmd;
 > +
-> +	common = (struct acpi_hest_aer_common *)(hest_hdr + 1);
+> +	root_err_cmd = aer_root->root_error_command;
 > +
-> +	switch (hest_type) {
-> +	case ACPI_HEST_TYPE_AER_ROOT_PORT:
-> +		if (pcie_type != PCI_EXP_TYPE_ROOT_PORT)
-> +			return false;
-> +	break;
-
-The breaks should be indented to the "if". Same for the rest of the
-file.
-
-> +	case ACPI_HEST_TYPE_AER_ENDPOINT:
-> +		if (pcie_type != PCI_EXP_TYPE_ENDPOINT)
-> +			return false;
-> +	break;
-> +	case ACPI_HEST_TYPE_AER_BRIDGE:
-> +		if (pcie_type != PCI_EXP_TYPE_PCI_BRIDGE &&
-> +		    pcie_type != PCI_EXP_TYPE_PCIE_BRIDGE)
-> +			return false;
-> +	break;
-> +	default:
-> +		return false;
-> +	break;
-> +	}
-> +
-> +	if (common->flags & ACPI_HEST_GLOBAL)
-> +		return true;
-> +
-> +	if (hest_match_pci_devfn(common, dev))
-> +		return true;
-> +
-> +	return false;
+> +	pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
 > +}
 > +
-> +int hest_parse_pcie_aer(struct acpi_hest_header *hest_hdr, void *data)
+> +static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_bridge,
+> +				    struct pci_dev *dev, int pos)
 > +{
-> +	struct hest_parse_aer_info *info = data;
+> +	u32 uncor_mask2;
+> +	u32 uncor_severity2;
+> +	u32 adv_cap2;
 > +
-> +	if (!hest_source_is_pcie_aer(hest_hdr, info->pci_dev))
-> +		return 0;
+> +	uncor_mask2 = hest_aer_bridge->uncorrectable_mask2;
+> +	uncor_severity2 = hest_aer_bridge->uncorrectable_severity2;
+> +	adv_cap2 = hest_aer_bridge->advanced_capabilities2;
 > +
-> +	switch (hest_hdr->type) {
-> +	case ACPI_HEST_TYPE_AER_ROOT_PORT:
-> +		info->hest_aer_root_port = (struct acpi_hest_aer_root *)hest_hdr;
-> +		return 1;
-> +	break;
-> +	case ACPI_HEST_TYPE_AER_ENDPOINT:
-> +		info->hest_aer_endpoint = (struct acpi_hest_aer *)hest_hdr;
-> +		return 1;
-> +	break;
-> +	case ACPI_HEST_TYPE_AER_BRIDGE:
-> +		info->hest_aer_bridge = (struct acpi_hest_aer_bridge *)hest_hdr;
-> +		return 1;
-> +	break;
-> +	default:
-> +		return 0;
-> +	break;
-> +	}
+> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
+> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
+> +	pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
 > +}
-> +#endif
->  
-> -static int apei_hest_parse(apei_hest_func_t func, void *data)
-> +int apei_hest_parse(apei_hest_func_t func, void *data)
->  {
->  	struct acpi_hest_header *hest_hdr;
->  	int i, rc, len;
-> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-> index dc60f7db5524..82d3cdf53e22 100644
-> --- a/include/acpi/apei.h
-> +++ b/include/acpi/apei.h
-> @@ -23,6 +23,15 @@ enum hest_status {
->  	HEST_NOT_FOUND,
->  };
->  
-> +#ifdef CONFIG_ACPI_APEI
-> +struct hest_parse_aer_info {
-> +	struct pci_dev *pci_dev;
+> +
+> +static void program_hest_aer_params(struct hest_parse_aer_info info)
+> +{
+> +	struct pci_dev *dev;
+> +	int port_type;
+> +	int pos;
+> +	struct acpi_hest_aer_root *hest_aer_root;
 > +	struct acpi_hest_aer *hest_aer_endpoint;
-> +	struct acpi_hest_aer_root *hest_aer_root_port;
 > +	struct acpi_hest_aer_bridge *hest_aer_bridge;
-
-These three pointers are mutually exclusive. Can you save just one
-pointer and then cast it when checking the "port_type" in patch 3?
-
-> +};
-> +#endif
-
-I think the #ifdef is not needed, because this is not declaring an
-instance of the struct.
-
 > +
->  extern int hest_disable;
->  extern int erst_disable;
->  #ifdef CONFIG_ACPI_APEI_GHES
-> @@ -33,10 +42,18 @@ void __init acpi_ghes_init(void);
->  static inline void acpi_ghes_init(void) { }
+> +	dev = info.pci_dev;
+> +	port_type = pci_pcie_type(dev);
+> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
+> +	if (!pos)
+> +		return;
+> +
+> +	switch (port_type) {
+> +	case PCI_EXP_TYPE_ROOT_PORT:
+> +		hest_aer_root = info.hest_aer_root_port;
+> +		program_hest_aer_common(hest_aer_root->aer, dev, pos);
+> +		program_hest_aer_root(hest_aer_root, dev, pos);
+> +	break;
+> +	case PCI_EXP_TYPE_ENDPOINT:
+> +		hest_aer_endpoint = info.hest_aer_endpoint;
+> +		program_hest_aer_common(hest_aer_endpoint->aer, dev, pos);
+> +	break;
+> +	case PCI_EXP_TYPE_PCI_BRIDGE:
+> +		hest_aer_bridge = info.hest_aer_bridge;
+> +		program_hest_aer_common(hest_aer_bridge->aer, dev, pos);
+> +		program_hest_aer_bridge(hest_aer_bridge, dev, pos);
+> +	break;
+> +	default:
+> +		return;
+> +	break;
+> +	}
+> +}
+> +
+> +int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
+> +{
+> +	struct hest_parse_aer_info info = {
+> +		.pci_dev = dev
+> +	};
+> +
+> +	if (!pci_is_pcie(dev))
+> +		return -ENODEV;
+> +
+> +	if (apei_hest_parse(hest_parse_pcie_aer, &info) == 1)
+
+Don't need the "== 1".
+
+> +		program_hest_aer_params(info);
+> +
+> +	return 0;
+> +}
+> +#endif
+> +
+>  /**
+>   * pciehp_is_native - Check whether a hotplug port is handled by the OS
+>   * @bridge: Hotplug port to check
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 2e40fc63ba31..78bdc121c905 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -897,6 +897,15 @@ static inline void pci_save_aer_state(struct pci_dev *dev) { }
+>  static inline void pci_restore_aer_state(struct pci_dev *dev) { }
 >  #endif
 >  
-> +typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
-> +int apei_hest_parse(apei_hest_func_t func, void *data);
-> +
+> +#ifdef CONFIG_ACPI_APEI
+> +int pci_acpi_program_hest_aer_params(struct pci_dev *dev);
 
-Minor nit: this could be done as a separate patch.
+The return value is never checked, so this can return void.
 
-Patch 1: Move apei_hest_parse() to apei.h
-Patch 2: Add new hest_parse_pcie_aer()
-
->  #ifdef CONFIG_ACPI_APEI
->  void __init acpi_hest_init(void);
-> +int hest_parse_pcie_aer(struct acpi_hest_header *hest_hdr, void *data);
->  #else
->  static inline void acpi_hest_init(void) { }
-> +static inline int hest_parse_pcie_aer(struct acpi_hest_header *hest_hdr, void *data)
+> +#else
+> +static inline int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
 > +{
 > +	return 0;
 > +}
->  #endif
+> +#endif
+> +
+>  #ifdef CONFIG_ACPI
+>  bool pci_acpi_preserve_config(struct pci_host_bridge *bridge);
+>  int pci_acpi_program_hp_params(struct pci_dev *dev);
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 2e81ab0f5a25..33b8b46ca554 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2304,6 +2304,7 @@ static void pci_configure_device(struct pci_dev *dev)
+>  	pci_configure_serr(dev);
 >  
->  int erst_write(const struct cper_record_header *record);
-> -- 
+>  	pci_acpi_program_hp_params(dev);
+> +	pci_acpi_program_hest_aer_params(dev);
+
+This should not be called here unconditionally.
+
+OS should only write AER registers if granted permission through
+_OSC.
+
+It would be more appropriate to call this from pci_aer_init().
 
 Thanks,
 Yazen
