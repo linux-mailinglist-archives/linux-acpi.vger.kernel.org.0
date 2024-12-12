@@ -1,103 +1,49 @@
-Return-Path: <linux-acpi+bounces-10120-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10121-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7677A9EE3C7
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2024 11:10:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EEF9EE612
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2024 13:02:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1DD7286A16
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2024 10:10:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8DFB188966E
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Dec 2024 12:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A92A2101A0;
-	Thu, 12 Dec 2024 10:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BGsiyAQf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9C8212D61;
+	Thu, 12 Dec 2024 11:55:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7A320FA8A;
-	Thu, 12 Dec 2024 10:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABE7212D8E
+	for <linux-acpi@vger.kernel.org>; Thu, 12 Dec 2024 11:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733998217; cv=none; b=cx2fXV8h2Jk6Z2EBJ4vGX3n439TC/Esr94Vvrzq6rpKHzf4V0pVbuwdCV9nkPRUomm0QxP98RxZO/AzoAMSLghhrVj/EaVvkgStwc+EJjOrM+t93XHwGiNAQHLqwiszsNqHw2/nA5YvAeuXHoxF9kFLyYW8ml8TZ27XC0ZCBNFM=
+	t=1734004510; cv=none; b=baz7ldAYTlDH82YMnBIfVaKku+WTDL2sSmgCSnHruDIv5XD8KTKzDdGhvlXeJjF3TUSiP641N1u/hUTrcgjj/ailtZPpkHr4xZ6DASbG3gs/vEu9LsQXrSUimhc7n74K37CUApDxFhTD9r8Qes1/iQasqtNrqxonpzcwS+NGkUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733998217; c=relaxed/simple;
-	bh=AorsqWl1jCnLZ9DfDFY4FtXuOTptz0N+4mQHfMQ2WEY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GKAe/jwB2pIdz4PWZTDv03XBhhaxHeg2cC1W2UaD0DhaItbfC7hdu0C3s2DsoS17CKupfaVHyey7arJ28O5V7Wp6kqZasO2Iw16xlxsOGFZI8kCf3YQzibB88veAd4FaoHssFuDQPQ/XerdH7q14OKTdlxhKeYJDJaxzWE/AKmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BGsiyAQf; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-216281bc30fso4616865ad.0;
-        Thu, 12 Dec 2024 02:10:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733998215; x=1734603015; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZanVRx4WAhit1sZ/hOnh7NH4U6nFyxymYnnlN3ZoUU=;
-        b=BGsiyAQfYNayYDDnrN2C0MP48iEcA8LpCIzLPRP9w2djVMkLDaws5P+kmoqwaXklUP
-         MyjGlUaSykPNZNUUnDVV8yPyY8DNBktoekq+EmXQADuwaiaJUv9x849dl1C/L9EnMzoG
-         v3mAgNRyy1pApKHmj7EVTkkfrymEyXZC7Vl3kvOE2CesLEonJrzjv2yI6GGst/iTVJi2
-         Yc2Fe4Djnid0YMtRd4xbste8aAyM26d7K387/eq3m4dy506quhdtolHRGUWGGXuF5Zv1
-         pJq/i5vtkiDOwF053OpLaQyhzIJyWySavczhiOoKj/uX+5eb2JHMfcgXaz+X0MMu+oRJ
-         zNVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733998215; x=1734603015;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zZanVRx4WAhit1sZ/hOnh7NH4U6nFyxymYnnlN3ZoUU=;
-        b=CDvD+1kWsY68kN/MieHgUN4egLim/X/dI4K58kev7tZLfpo0ZiMqfQafjFtc2LIlEH
-         vhQDgzi4SQPC1bZ10zzRICFrdbjqJzxDfNhl4Qnm44c8f12UQ4/EHcjphWOW1hCDcrxt
-         nC7j8tQ5EsMaqdmoibVZ52SzdKO15iIOcB2v7Os5bw6ns5dATNs3TgbXnidkF9hj8ep/
-         5B5A/o0jASYXR0wHjUpy2cMecu6bxSH5ppVAVSiObfwyJE/oaN8LJbI8WO3wlLMIp/hf
-         wj3WZ8M9pQeAoT1QBXgSKblBME0bywNeyW7XHc1u5ds/9ZFchDnZRfV1pTpZ4NZ+5HbG
-         Ih/A==
-X-Forwarded-Encrypted: i=1; AJvYcCULlDYDiGj6Cz6+JGSwA68cbyrRBAOOTfVl8agA/EE9dMqQEAMqC35yHlXaXQar/Jnjaqdbhr9vXNKJ@vger.kernel.org, AJvYcCVJsDf67lKkN5OdX/RC6myCN5des5VfEyhrQbTGe7ulDlEpwl4ZM1GwHCD391mD8HyMsP83a+HBIt6K1A==@vger.kernel.org, AJvYcCVQfwjKVx0eEK1lV/pjPm+V+uY5d0RV6z43s27ZSAy1tZXLbiM077j0AuWRc2tMOhvGeQ6KHfpeNZ+4fiOa@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqSG3HtMwfZBz9dndiYxjM7BAchA8Gv0CIAKj8chiEwGufn4+l
-	uCvLw4oJLOVPQV2AtJPdC3jU6/vFwEQt7PcL8N0CjqyjAS6Fgq5u
-X-Gm-Gg: ASbGncuDrUeq9DoIBKgO5UGTnNR9NRdNSXzRCw+jB2A/4j8mx87G65lGHiCEgbwgkfy
-	NJrhwYBjcpE5gZJCkVaoWzjCEwpvY7G4DCnQ19OaYU+7Ops2x6XbbzUXgTywFmw0y26CT2kCPv/
-	5+jYn9YSfS4NQpc3XOYS9AKPtJAUVVgomkXYVtGgcZAqbezIcl2Xez6t1fVdMXgbfGtustaIoXX
-	uhLHCTZxBhrHxG1JcDA1NLonBI9X9oHGgwduCWdtPNqd9pRNrp9c9lSssthGvYIn8DvIWB/Chhz
-	Dyme
-X-Google-Smtp-Source: AGHT+IH6gcwPQeo8o7QWFQKnzChC6uQO93gPkmdmDG/SQmzj5FSwJNJHWHb5JoN5L+bUnuXzcp5J7w==
-X-Received: by 2002:a17:902:d389:b0:215:6816:6345 with SMTP id d9443c01a7336-21778536e08mr75258075ad.16.1733998214774;
-        Thu, 12 Dec 2024 02:10:14 -0800 (PST)
-Received: from localhost.localdomain ([36.110.106.149])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd1570ae4esm10519521a12.43.2024.12.12.02.10.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 02:10:14 -0800 (PST)
-From: Guo Weikang <guoweikang.kernel@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Guo Weikang <guoweikang.kernel@gmail.com>
-Cc: Ingo Molnar <mingo@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1734004510; c=relaxed/simple;
+	bh=+sNV3cwSmjgxKWkWkMwB6RVSMZl7QcvEaxTcLfnJMjQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PZWA5nhwgjacO+3C9tyBlnSAwmK/KXF8//YwoPj3vL4PchPtqdTiYtPAoWRf98S2rAPZyaqZiTV42I7XRmoOrawdoW+uwXXIYufJFDzVncZqbt7/DAlFFMvahDPY1stcJE4a/I/MuLuwKJIzi7xIZOm/hFAHyVye7gQi3baXNf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=162.243.164.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCHfqkPz1pnMEf6Cg--.28820S2;
+	Thu, 12 Dec 2024 19:54:55 +0800 (CST)
+Received: from phytium.com.cn (unknown [218.76.62.144])
+	by mail (Coremail) with SMTP id AQAAfwCn_HgOz1pnLRtoAA--.4841S3;
+	Thu, 12 Dec 2024 19:54:55 +0800 (CST)
+From: Xiong Yining <xiongyining1480@phytium.com.cn>
+To: rafael@kernel.org
+Cc: len@kernel.org,
 	linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/early_ioremap: Add null pointer checks to prevent NULL-pointer dereference
-Date: Thu, 12 Dec 2024 18:10:00 +0800
-Message-Id: <20241212101004.1544070-1-guoweikang.kernel@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	linx-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] acpi_driver: add CONFIG_ACPI_KERN_DEBUG config to enable KERN_DEBU
+Date: Thu, 12 Dec 2024 11:54:51 +0000
+Message-Id: <20241212115451.183076-1-xiongyining1480@phytium.com.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAJZ5v0gooYrx7er_gpNG_vickyh05HRt7beN_-RqnV6=h-RdVA@mail.gmail.com>
+References: <CAJZ5v0gooYrx7er_gpNG_vickyh05HRt7beN_-RqnV6=h-RdVA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -105,135 +51,64 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwCn_HgOz1pnLRtoAA--.4841S3
+X-CM-SenderInfo: x0lr0wp1lqx0bjrumio6sk53xlxphulrpou0/1tbiAQARBmdZ7XkF6wAGsU
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=xiongyinin
+	g1480@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxJr1xWF43Ww4rZw1DAF4rGrg_yoW8Xw1fp3
+	ySkFn3ArsrJa15Gw40yrWxWFW3A397KrW0kFWku3sruF45CryrAF4vgFy3AFn5Wr17WFWS
+	q3ZIgr17GFyDArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
 
-The early_ioremap interface can fail and return NULL in certain cases. To
-prevent NULL-pointer dereference crashes, fixed issues in the acpi_extlog
-and copy_early_mem interfaces, improving robustness when handling early
-memory.
+> > In the API module, there is no unified configuration switch to control de=
+	bug
 
-Signed-off-by: Guo Weikang <guoweikang.kernel@gmail.com>
----
- arch/x86/kernel/setup.c             |  5 ++++-
- drivers/acpi/acpi_extlog.c          | 14 ++++++++++++++
- include/asm-generic/early_ioremap.h |  2 +-
- mm/early_ioremap.c                  |  8 +++++++-
- 4 files changed, 26 insertions(+), 3 deletions(-)
+> You mean ACPI I suppose?
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index f1fea506e20f..cebee310e200 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -259,6 +259,7 @@ static void __init relocate_initrd(void)
- 	u64 ramdisk_image = get_ramdisk_image();
- 	u64 ramdisk_size  = get_ramdisk_size();
- 	u64 area_size     = PAGE_ALIGN(ramdisk_size);
-+	int ret = 0;
- 
- 	/* We need to move the initrd down into directly mapped mem */
- 	u64 relocated_ramdisk = memblock_phys_alloc_range(area_size, PAGE_SIZE, 0,
-@@ -272,7 +273,9 @@ static void __init relocate_initrd(void)
- 	printk(KERN_INFO "Allocated new RAMDISK: [mem %#010llx-%#010llx]\n",
- 	       relocated_ramdisk, relocated_ramdisk + ramdisk_size - 1);
- 
--	copy_from_early_mem((void *)initrd_start, ramdisk_image, ramdisk_size);
-+	ret = copy_from_early_mem((void *)initrd_start, ramdisk_image, ramdisk_size);
-+	if (ret)
-+		panic("Copy RAMDISK failed\n");
- 
- 	printk(KERN_INFO "Move RAMDISK from [mem %#010llx-%#010llx] to"
- 		" [mem %#010llx-%#010llx]\n",
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index ca87a0939135..f7fb7205028d 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -251,6 +251,10 @@ static int __init extlog_init(void)
- 	}
- 
- 	extlog_l1_hdr = acpi_os_map_iomem(l1_dirbase, l1_hdr_size);
-+	if (!extlog_l1_hdr) {
-+		rc = -ENOMEM;
-+		goto err_release_l1_hdr;
-+	}
- 	l1_head = (struct extlog_l1_head *)extlog_l1_hdr;
- 	l1_size = l1_head->total_len;
- 	l1_percpu_entry = l1_head->entries;
-@@ -268,6 +272,10 @@ static int __init extlog_init(void)
- 		goto err;
- 	}
- 	extlog_l1_addr = acpi_os_map_iomem(l1_dirbase, l1_size);
-+	if (!extlog_l1_addr) {
-+		rc = -ENOMEM;
-+		goto err_release_l1_dir;
-+	}
- 	l1_entry_base = (u64 *)((u8 *)extlog_l1_addr + l1_hdr_size);
- 
- 	/* remap elog table */
-@@ -279,6 +287,10 @@ static int __init extlog_init(void)
- 		goto err_release_l1_dir;
- 	}
- 	elog_addr = acpi_os_map_iomem(elog_base, elog_size);
-+	if (!elog_addr) {
-+		rc = -ENOMEM;
-+		goto err_release_elog;
-+	}
- 
- 	rc = -ENOMEM;
- 	/* allocate buffer to save elog record */
-@@ -300,6 +312,8 @@ static int __init extlog_init(void)
- 	if (extlog_l1_addr)
- 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
- 	release_mem_region(l1_dirbase, l1_size);
-+err_release_l1_hdr:
-+	release_mem_region(l1_dirbase, l1_hdr_size);
- err:
- 	pr_warn(FW_BUG "Extended error log disabled because of problems parsing f/w tables\n");
- 	return rc;
-diff --git a/include/asm-generic/early_ioremap.h b/include/asm-generic/early_ioremap.h
-index 9d0479f50f97..5db59a1efb65 100644
---- a/include/asm-generic/early_ioremap.h
-+++ b/include/asm-generic/early_ioremap.h
-@@ -35,7 +35,7 @@ extern void early_ioremap_reset(void);
- /*
-  * Early copy from unmapped memory to kernel mapped memory.
-  */
--extern void copy_from_early_mem(void *dest, phys_addr_t src,
-+extern int copy_from_early_mem(void *dest, phys_addr_t src,
- 				unsigned long size);
- 
- #else
-diff --git a/mm/early_ioremap.c b/mm/early_ioremap.c
-index ce06b2884789..ff35b84a7b50 100644
---- a/mm/early_ioremap.c
-+++ b/mm/early_ioremap.c
-@@ -245,7 +245,10 @@ early_memremap_prot(resource_size_t phys_addr, unsigned long size,
- 
- #define MAX_MAP_CHUNK	(NR_FIX_BTMAPS << PAGE_SHIFT)
- 
--void __init copy_from_early_mem(void *dest, phys_addr_t src, unsigned long size)
-+/*
-+ * If no empty slot, handle that and return -ENOMEM.
-+ */
-+int __init copy_from_early_mem(void *dest, phys_addr_t src, unsigned long size)
- {
- 	unsigned long slop, clen;
- 	char *p;
-@@ -256,12 +259,15 @@ void __init copy_from_early_mem(void *dest, phys_addr_t src, unsigned long size)
- 		if (clen > MAX_MAP_CHUNK - slop)
- 			clen = MAX_MAP_CHUNK - slop;
- 		p = early_memremap(src & PAGE_MASK, clen + slop);
-+		if (!p)
-+			return -ENOMEM;
- 		memcpy(dest, p + slop, clen);
- 		early_memunmap(p, clen + slop);
- 		dest += clen;
- 		src += clen;
- 		size -= clen;
- 	}
-+	return 0;
- }
- 
- #else /* CONFIG_MMU */
--- 
-2.25.1
+Oh~, Sorry for the typo.
+
+> > output, and the current approach is to enable debugging by adding "define=
+	DEBUG"
+> > in the file, which is both cumbersome and difficult to manage. a global d=
+	ebug config
+> > to control the debug output of the ACPI module will be more easily and cl=
+	early.
+
+> So there is only one KERN_DEBUG printk() statement in the entire
+  drivers/acpi/ directory, the rest is pr_debug() or dev_dbg() that
+  shouldn't need this change.
+
+The original intention of this patch is to manage the printing function 
+of all KERN_DEBUG levels in drivers/acpi, including acpi_handle_debug(), 
+pr_debug(), and dev_debg().
+
+Why don't pr_debug() need this change?
+
+> > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> > index cee82b473dc5..ea198ead57d7 100644
+> > --- a/drivers/acpi/Kconfig
+> > +++ b/drivers/acpi/Kconfig
+> > @@ -479,6 +479,12 @@ config ACPI_REDUCED_HARDWARE_ONLY
+> >
+> >           If you are unsure what to do, do not enable this option.
+> >
+> > +config ACPI_KERN_DEBUG
+> > +       bool "Acpi kernel debugging"
+
+> Please always spell ACPI in capitals.
+
+Got it, thanks.
+
+> > diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> > index eaa09bf52f17..d0a417e73071 100644
+> > --- a/drivers/acpi/Makefile
+> > +++ b/drivers/acpi/Makefile
+> >  ccflags-$(CONFIG_ACPI_DEBUG)   += -DACPI_DEBUG_OUTPUT
+> > +ccflags-$(CONFIG_ACPI_KERN_DEBUG)      := -DDEBUG
+
+> Isn't this kind of confusing?
+
+Indeed, i will change. Thanks.
 
 
