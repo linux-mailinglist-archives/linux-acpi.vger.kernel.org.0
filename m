@@ -1,144 +1,183 @@
-Return-Path: <linux-acpi+bounces-10131-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10132-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED569F0F5D
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 15:39:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336B1164D83
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 14:39:03 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40661E22ED;
-	Fri, 13 Dec 2024 14:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Te9L7yZS"
-X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E009F1211
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 17:28:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EA31E0DD9;
-	Fri, 13 Dec 2024 14:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E58281056
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 16:28:24 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8AB81E3DD3;
+	Fri, 13 Dec 2024 16:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="HFDpKVjy"
+X-Original-To: linux-acpi@vger.kernel.org
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902F71E0B75
+	for <linux-acpi@vger.kernel.org>; Fri, 13 Dec 2024 16:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734100735; cv=none; b=VWCaLpY02jlJfcQhiXlAlCxt/ZkVx+pDihOiZ8ndL+8AW0rMw0lOy3sjxVXT0yd8yBHNHvSWURu3YjTswefzAAVfQU7H1Shde1+HUMU9SH1nAAOZfrCc2ifpAWtQDFMdZwdxO8sbsDv+3kX2BSRSl8C9BVX01tHMkBG5W7mojG8=
+	t=1734107301; cv=none; b=HEvFGGie2mDqSiRo9RzQo2UHBcGkWG4WecHaw8WkWSHuJakvJc9qeFdEg57j7SgGulj2Zdx4KKKYp106wj/1EgW4Wsp8ljhfFbdDUO+9sB5lOc6Ncr6u1HDTHlot3mmeIovYqmygB8GT7n9cLG5YwywmB337iG0h2k8kRFXfOjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734100735; c=relaxed/simple;
-	bh=JyFF+T3NiQ3bpjkGsyF5HGaVVrJauE8H4Qo736pmrxg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iFb2SH7lG/QMEgQNPEG3eFgHKrCfgm392icjD7Aqt5R9hlcFd6zl+U/BK5zet6oIKpXrR6viOt78MQeXbo6Oz/baFQMaCikqNE6+dLYcLuKvSdLIbqCWmAb8u7y58pv5eYx15dzMu1znd/BNniT8LHvVbbw43tvKeNzWy85qgqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Te9L7yZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D2FC4CED0;
-	Fri, 13 Dec 2024 14:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734100734;
-	bh=JyFF+T3NiQ3bpjkGsyF5HGaVVrJauE8H4Qo736pmrxg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Te9L7yZS3fi5BAzVTCw/TKpltm3viGPM6Y6wVHP6IqR2cyiJGIWGogHdIEvgwA0Li
-	 W0d1LKfN0NS2tC4kjFaScJ00ATWk1kOby4Xd0psUf9jI3NKG2ey/piW1YW+zYD3Q15
-	 ufq17JWPYrDvyg0QusV//bVFykMyIxLd+hfD/toLAXsh7KQwTrS/VRRp+TshYJmH4/
-	 Fu+6A0oS5UqzmaJ7TiKVzHwkf66wmuRjYyne30s03GqiGqwdcOFmd8a8t+Ja4ZiZmQ
-	 UZ4FUcVtNHnnyeYc5JKcTJ1EZc6jTSLwH9bc5lJw+k3Y+AvjUssz7fFbrYcRXfSME0
-	 tZENXJYFW9hgA==
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3ea55a2a38bso962580b6e.1;
-        Fri, 13 Dec 2024 06:38:54 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUpGG7clk2S/wFZSpXfBbrp2SyorEaxiN9vdJRXJf40I/Gb1V0BkOPm8SFD2emndpP3elXX92UXWxHm@vger.kernel.org, AJvYcCUs2VxvSYdLgRF4cXqHZyL+70tdbHqUdOFmJBWEhBoOjkHlRV5lWzaSxYDDh/MQNSBHA+hZ4FRtCXehEaG0ftGc@vger.kernel.org, AJvYcCXp/X+FWdS7OTE5xObgIID8rA0S8URKZJjToiRv1rxg+WCjMj6brnQr8Ij4vykHl0cWzRsovaAxZZzejWuM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD4TnMi62+I1Sj3HOe2UYzBQmIqIR1GTm+AKvFtgBM9NQcbQ4J
-	//ekp+y7V8ux8saOF+hklfEyv/Q7YdSskR51uy1DQ2fvaFeGBlEDGPPov5LLQVTcfdvyZ+qeK9Z
-	JfpFhdZbo/Gdq8h+ilxK57lVnnwQ=
-X-Google-Smtp-Source: AGHT+IFyre0J9CImHbllUvwTGmrPYHXBt6ubdpS8LuYzsYwFeublEs32ivntjIy366aB7ladKYrxX9oaqIsEjn/3JZg=
-X-Received: by 2002:a05:6808:16a2:b0:3ea:44ae:a65 with SMTP id
- 5614622812f47-3eba67fe978mr1810634b6e.5.1734100734047; Fri, 13 Dec 2024
- 06:38:54 -0800 (PST)
+	s=arc-20240116; t=1734107301; c=relaxed/simple;
+	bh=Kqh/N7dctfb6yjgMfoH2Bl7LG1gFmDipJeF7A7hHmrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aDB0Vt2dBdjhAqVx9vkrlFKm3HO9lMO0gD5p+dLdWddi+ooxhRjWFBxv8xjnPvKxsvVpxBBDSBXC3nWP5WkQ6ryn/U2gvL7HLObAI8v+JRGfWRpJojNsODxZbbNwULDZIkAEam+qqmAP36o7FQoWVM3iw9ZtATp5gQQvlY1Nx5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=HFDpKVjy; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-467918c360aso22095871cf.0
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Dec 2024 08:28:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1734107298; x=1734712098; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0HkpUMdpT1bOGFdhaxI+95tgENUX+xpDF8wyAC3G/e8=;
+        b=HFDpKVjyFU2rd1aRv+B/qx/o+HSZpAwtgtnF0bNm1Kf4sCGSPf/nTWBnUWWv0tn3hw
+         M/ybGjWiiLLe7qmTpNPyRTOFLYT3h1YLfc8mVkxMY4AyLSV4SW9jnaylBUVVRzFJzd6j
+         oOlXERLaVUAvPWbxhOQdVOZznw/pQ9O1yyy7eyvjfrYHGveFfXd/WSPAoi5KENRHHbr8
+         81FPuxw29WNhzPIpy1UoQsRbpMZsvbXMswmPgQyqcVz9yXdK+IAMQDNOTAxyyOHQN5DO
+         Xzw9XM+I6wWhAwazped0PI15rx5vLnpMXxeJ4wKC9kwMkeUzdeckH/pQ+RVRgCl2SNQY
+         JvXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734107298; x=1734712098;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0HkpUMdpT1bOGFdhaxI+95tgENUX+xpDF8wyAC3G/e8=;
+        b=Av1Yg1zZg8hItTXuHJ00pn/8Qxn/MxBN4SQ5UIhvMdBtc3mMAxxC+u4O5E+4q/Uf0k
+         4GiEjc9jpGKLmK0ehDl+6QYbRMdzus3d7ux2I+GFFRnFbiJ1AKjJBhUfDr0CLCgSdLZK
+         vr5h508M8zX/IY3khgbXEn0BEwzQPXwlE5Soekr8UGDlposy8WZrAxfleZNlI/F7g0xg
+         906P0+OOW9541UqNmJg3Xi/FkFgJYSFTYL2LsQDfjs2FT4c++rwXt6d1vq3+h8mSpfy6
+         TuwenpUh84c+cbt9lFL2qBljQmLTmrqLA8q91I2BFkzeGB1n54FVr2a0RPBgI+UlaYwx
+         bdWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDBZJu68S37Dn8ZPDn/c3t+DcC6nwYV5kfBeSlzhkD+z73p6K4ABwn2dTRF89jVaIJ5LMxhtiXIJGr@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2zh8do0YMKIUi/GgKzRWXyuq7bsEFzSvx+Ped2+Cfjg3J/5/w
+	z3KCXpdc5Y5nfAwKlN/3XzfSeUvQo3cxQAUO0vQ+UF7Wnu+0/mpSH2TBEyOxpRQ=
+X-Gm-Gg: ASbGncvHdCcM2AWerAlRZAOcoMQd5FdBeJs5kY6BWTKBvQdURahNTBbFRErGCttTEQt
+	Q+a+m4x+x1mqaBf/u/qgRY9hES/0AyffrR4HCio2sW4zYXIg9fgbMAr18a84LW4FZYpcyMqkVPI
+	9efhdnHzrH8uv/JsKHSlkYwd4VNmg05lzX7TA8rr8GXC6koDHVXRJX2vaz3YvjCLkdO30Bfak+d
+	K1r5C4zpSyXZXPBohh7xmVIQ4jOw05JAp7MGS1QXZ7tN/NCWbZVwLsEV1yOT0vKYPtINIjqv+e4
+	1rZiIGr9YAI3HMX9MnND5Dmn6nLvVTxjOWTwEBGM8Q==
+X-Google-Smtp-Source: AGHT+IHEbODzADsorYd+LpJC068MW4TXFz13cw2XglTXpEdo0jaL87bcR5cQpr16MMrGC5XroMk8Hg==
+X-Received: by 2002:ac8:5a93:0:b0:466:a983:a15a with SMTP id d75a77b69052e-467a581d253mr49010891cf.42.1734107298364;
+        Fri, 13 Dec 2024 08:28:18 -0800 (PST)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4676e091d95sm49623571cf.12.2024.12.13.08.28.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Dec 2024 08:28:16 -0800 (PST)
+Date: Fri, 13 Dec 2024 11:28:05 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Hyeonggon Yoo <hyeonggon.yoo@sk.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, kernel_team@skhynix.com,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	=?utf-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKQ==?= System SW <honggyu.kim@sk.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	=?utf-8?B?6rmA65296riwKEtJTSBSQUtJRSk=?= System SW <rakie.kim@sk.com>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"horen.chuang@linux.dev" <horen.chuang@linux.dev>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"kernel-team@meta.com" <kernel-team@meta.com>
+Subject: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
+ auto-tuning
+Message-ID: <Z1xglcL7wb_2IwnS@PC2K9PVX.TheFacebook.com>
+References: <20241210215439.94819-1-joshua.hahnjy@gmail.com>
+ <4ddfa283-eb64-4032-880b-c19b07e407e1@sk.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241212003201.2098123-1-briannorris@chromium.org> <20241212003201.2098123-2-briannorris@chromium.org>
-In-Reply-To: <20241212003201.2098123-2-briannorris@chromium.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 13 Dec 2024 15:38:40 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0id5MxNniN7xndMWKU4mvegNZ2V-sGRC6cJ3jHCu0puCQ@mail.gmail.com>
-Message-ID: <CAJZ5v0id5MxNniN7xndMWKU4mvegNZ2V-sGRC6cJ3jHCu0puCQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] drivers: base: Don't match devices with NULL of_node/fwnode/etc
-To: Brian Norris <briannorris@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	linux-kselftest@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ddfa283-eb64-4032-880b-c19b07e407e1@sk.com>
 
-On Thu, Dec 12, 2024 at 1:32=E2=80=AFAM Brian Norris <briannorris@chromium.=
-org> wrote:
->
-> of_find_device_by_node(), bus_find_device_by_of_node(),
-> bus_find_device_by_fwnode(), ..., all produce arbitrary results when
-> provided with a NULL of_node, fwnode, ACPI handle, etc. This is
-> counterintuitive, and the source of a few bugs, such as the one fixed by
-> commit 5c8418cf4025 ("PCI/pwrctrl: Unregister platform device only if
-> one actually exists").
->
-> It's hard to imagine a good reason that these device_match_*() APIs
-> should return 'true' for a NULL argument. Augment these to return 0
-> (false).
->
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+On Fri, Dec 13, 2024 at 03:19:20PM +0900, Hyeonggon Yoo wrote:
+> On 2024-12-11 06:54 AM, Joshua Hahn wrote:
+> > This patch introduces an auto-configuration for the interleave weights
+> > that aims to balance the two goals of setting node weights to be
+> > proportional to their bandwidths and keeping the weight values low.
+> > This balance is controlled by a value max_node_weight, which defines the
+> > maximum weight a single node can take.
+> 
+> Hi Joshua,
+> 
+> I am wondering how this is going to work for host memory + CXL memory
+> interleaving. I guess by "the ACPI table" you mean the ACPI HMAT or CXL
+> CDAT, both of which does not provide the bandwidth of host memory.
 
-For the ACPI part
+Then your BIOS vendor needs to fix their ACPI table generation, because
+HMAT can absolutely contain that information.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[078h 0120   2]               Structure Type : 0001 [System Locality Latency and Bandwidth Information]
+[07Ah 0122   2]                     Reserved : 0000
+[07Ch 0124   4]                       Length : 00000030
+[080h 0128   1]        Flags (decoded below) : 00
+                            Memory Hierarchy : 0
+                   Use Minimum Transfer Size : 0
+                    Non-sequential Transfers : 0
+[081h 0129   1]                    Data Type : 00
+[082h 0130   1]        Minimum Transfer Size : 00
+[083h 0131   1]                    Reserved1 : 00
+[084h 0132   4] Initiator Proximity Domains # : 00000001
+[088h 0136   4]   Target Proximity Domains # : 00000002
+[08Ch 0140   4]                    Reserved2 : 00000000
+[090h 0144   8]              Entry Base Unit : 00000000000003E8
+[098h 0152   4] Initiator Proximity Domain List : 00000000
+[09Ch 0156   4] Target Proximity Domain List : 00000000
+[0A0h 0160   4] Target Proximity Domain List : 00000001
+[0A4h 0164   2]                        Entry : 006E
+[0A6h 0166   2]                        Entry : 01FE
 
-> ---
->
-> Changes in v2:
->  * Add Rob's Reviewed-by
->
->  drivers/base/core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 94865c9d8adc..2b7b13fc36d7 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -5246,13 +5246,13 @@ EXPORT_SYMBOL_GPL(device_match_name);
->
->  int device_match_of_node(struct device *dev, const void *np)
->  {
-> -       return dev->of_node =3D=3D np;
-> +       return np && dev->of_node =3D=3D np;
->  }
->  EXPORT_SYMBOL_GPL(device_match_of_node);
->
->  int device_match_fwnode(struct device *dev, const void *fwnode)
->  {
-> -       return dev_fwnode(dev) =3D=3D fwnode;
-> +       return fwnode && dev_fwnode(dev) =3D=3D fwnode;
->  }
->  EXPORT_SYMBOL_GPL(device_match_fwnode);
->
-> @@ -5264,13 +5264,13 @@ EXPORT_SYMBOL_GPL(device_match_devt);
->
->  int device_match_acpi_dev(struct device *dev, const void *adev)
->  {
-> -       return ACPI_COMPANION(dev) =3D=3D adev;
-> +       return adev && ACPI_COMPANION(dev) =3D=3D adev;
->  }
->  EXPORT_SYMBOL(device_match_acpi_dev);
->
->  int device_match_acpi_handle(struct device *dev, const void *handle)
->  {
-> -       return ACPI_HANDLE(dev) =3D=3D handle;
-> +       return handle && ACPI_HANDLE(dev) =3D=3D handle;
->  }
->  EXPORT_SYMBOL(device_match_acpi_handle);
->
-> --
-> 2.47.0.338.g60cca15819-goog
->
+[0A8h 0168   2]               Structure Type : 0001 [System Locality Latency and Bandwidth Information]
+[0AAh 0170   2]                     Reserved : 0000
+[0ACh 0172   4]                       Length : 00000030
+[0B0h 0176   1]        Flags (decoded below) : 00
+                            Memory Hierarchy : 0
+                   Use Minimum Transfer Size : 0
+                    Non-sequential Transfers : 0
+[0B1h 0177   1]                    Data Type : 03
+[0B2h 0178   1]        Minimum Transfer Size : 00
+[0B3h 0179   1]                    Reserved1 : 00
+[0B4h 0180   4] Initiator Proximity Domains # : 00000001
+[0B8h 0184   4]   Target Proximity Domains # : 00000002
+[0BCh 0188   4]                    Reserved2 : 00000000
+[0C0h 0192   8]              Entry Base Unit : 0000000000000064
+[0C8h 0200   4] Initiator Proximity Domain List : 00000000
+[0CCh 0204   4] Target Proximity Domain List : 00000000
+[0D0h 0208   4] Target Proximity Domain List : 00000001
+[0D4h 0212   2]                        Entry : 1200
+[0D6h 0214   2]                        Entry : 0064
+
+Obviously if information is missing, then manual is the only way forward.
+
+> > +		The maximum interleave weight for a memory node. When it is
+> > +		updated, any previous changes to interleave weights (i.e. via
+> > +		the nodeN sysfs interfaces) are ignored, and new weights are
+> > +		calculated using ACPI-reported bandwidths and scaled.
+> > +
+> 
+> At first this paragraph sounded like "previously stored weights are
+> discarded after setting max_node_weight", but I think you mean
+> "User can override the default values, but defaults values are calculated
+> regardless of the values set by the user". Right?
+> 
+
+Agree that these comments need clarification, we'll workshop it.
+
+~Gregory
 
