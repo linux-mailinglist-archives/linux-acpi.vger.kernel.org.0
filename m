@@ -1,179 +1,144 @@
-Return-Path: <linux-acpi+bounces-10130-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10131-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B4A9F0D6B
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 14:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DED569F0F5D
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 15:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2456C16941C
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 13:38:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336B1164D83
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 14:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AC91E0487;
-	Fri, 13 Dec 2024 13:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40661E22ED;
+	Fri, 13 Dec 2024 14:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZdP/ehl6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Te9L7yZS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266AE1E00AF;
-	Fri, 13 Dec 2024 13:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EA31E0DD9;
+	Fri, 13 Dec 2024 14:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734097082; cv=none; b=ZBKFq+GP1EAgzpmlJeIo0xVImEknGIez8NdOZ08qNF/FCGc43EKux/fXZGal3PIgD8Zbi0FClexsoosrf0Vzkatjz3JSdUzeVLGHSDFWUWHkJ+iIXbyK1QQyfuk0fnOPYsmDOwdCApsa4DbsBNwGd+sbF+tRkHiCbsc/he9f5gs=
+	t=1734100735; cv=none; b=VWCaLpY02jlJfcQhiXlAlCxt/ZkVx+pDihOiZ8ndL+8AW0rMw0lOy3sjxVXT0yd8yBHNHvSWURu3YjTswefzAAVfQU7H1Shde1+HUMU9SH1nAAOZfrCc2ifpAWtQDFMdZwdxO8sbsDv+3kX2BSRSl8C9BVX01tHMkBG5W7mojG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734097082; c=relaxed/simple;
-	bh=RYbRWaSDYuspkQLWKW9UGqYCbzVbTONjwsUN4tu1Bdc=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=I7znZUauloEjEwGwNW5o4HrZjAZBlItgKBExOpD2lhwoqLm6qontoP2s2i+9GOYPsB4GFo8N4OuIRHDSzoO7sU5gO1FypiYQCUHdALIbk9fscCNxCC8LXX2HtlsYKVornl8zEs+fyWF9Np1WovlTJG+SVuB8MQVfz8d8C/kqXXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZdP/ehl6; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734097080; x=1765633080;
-  h=date:from:to:cc:subject:message-id;
-  bh=RYbRWaSDYuspkQLWKW9UGqYCbzVbTONjwsUN4tu1Bdc=;
-  b=ZdP/ehl6j7BoiESlOtxoNc6MVKqnMzI8xt/RYL0y/tkuNONEYNmiZnQ8
-   bgI7FXDs9u9q+6ngViPkm/QwS3Kp0PAdzX2cb/wwTKfEwnyskOhQRO4vp
-   LeIXEZDLJUATrnaECmU2Rhomrk+Bf8eqNnI9XMrPzTuO3UvkbOv5socy8
-   g59cRCAuv8jbLXRFJ6yNNwD7ts9DAZxgRIVliO0SidIU1wATwxh1GTSo5
-   XcwSe4d49JLMoWRRi3o2TWCCsj9a9he4L/sGNQQIa4L9fQmpR2mMgs+Qk
-   vXk/HsQ0+mmHuqQDRvltR01g4uEVVLSqo4yqA3Mvp3iAjaf5rbRiKjQVJ
-   A==;
-X-CSE-ConnectionGUID: O5WS5/ZOQsiXgoDQ9EjNuA==
-X-CSE-MsgGUID: 9KR27u72Rpya6Nh2kGOHJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34784147"
-X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
-   d="scan'208";a="34784147"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 05:37:59 -0800
-X-CSE-ConnectionGUID: US3s7X0sRvmhXsd/cutf5Q==
-X-CSE-MsgGUID: 5bGmQQcEScysls2XRWb3Gw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="101627191"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 13 Dec 2024 05:37:58 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tM5rf-000C3x-1l;
-	Fri, 13 Dec 2024 13:37:55 +0000
-Date: Fri, 13 Dec 2024 21:37:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- d36ebd181c1e7b1b427812e6e8cbf6e33dac842f
-Message-ID: <202412132120.UvNZBtAM-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1734100735; c=relaxed/simple;
+	bh=JyFF+T3NiQ3bpjkGsyF5HGaVVrJauE8H4Qo736pmrxg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iFb2SH7lG/QMEgQNPEG3eFgHKrCfgm392icjD7Aqt5R9hlcFd6zl+U/BK5zet6oIKpXrR6viOt78MQeXbo6Oz/baFQMaCikqNE6+dLYcLuKvSdLIbqCWmAb8u7y58pv5eYx15dzMu1znd/BNniT8LHvVbbw43tvKeNzWy85qgqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Te9L7yZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D2FC4CED0;
+	Fri, 13 Dec 2024 14:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734100734;
+	bh=JyFF+T3NiQ3bpjkGsyF5HGaVVrJauE8H4Qo736pmrxg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Te9L7yZS3fi5BAzVTCw/TKpltm3viGPM6Y6wVHP6IqR2cyiJGIWGogHdIEvgwA0Li
+	 W0d1LKfN0NS2tC4kjFaScJ00ATWk1kOby4Xd0psUf9jI3NKG2ey/piW1YW+zYD3Q15
+	 ufq17JWPYrDvyg0QusV//bVFykMyIxLd+hfD/toLAXsh7KQwTrS/VRRp+TshYJmH4/
+	 Fu+6A0oS5UqzmaJ7TiKVzHwkf66wmuRjYyne30s03GqiGqwdcOFmd8a8t+Ja4ZiZmQ
+	 UZ4FUcVtNHnnyeYc5JKcTJ1EZc6jTSLwH9bc5lJw+k3Y+AvjUssz7fFbrYcRXfSME0
+	 tZENXJYFW9hgA==
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3ea55a2a38bso962580b6e.1;
+        Fri, 13 Dec 2024 06:38:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUpGG7clk2S/wFZSpXfBbrp2SyorEaxiN9vdJRXJf40I/Gb1V0BkOPm8SFD2emndpP3elXX92UXWxHm@vger.kernel.org, AJvYcCUs2VxvSYdLgRF4cXqHZyL+70tdbHqUdOFmJBWEhBoOjkHlRV5lWzaSxYDDh/MQNSBHA+hZ4FRtCXehEaG0ftGc@vger.kernel.org, AJvYcCXp/X+FWdS7OTE5xObgIID8rA0S8URKZJjToiRv1rxg+WCjMj6brnQr8Ij4vykHl0cWzRsovaAxZZzejWuM@vger.kernel.org
+X-Gm-Message-State: AOJu0YxD4TnMi62+I1Sj3HOe2UYzBQmIqIR1GTm+AKvFtgBM9NQcbQ4J
+	//ekp+y7V8ux8saOF+hklfEyv/Q7YdSskR51uy1DQ2fvaFeGBlEDGPPov5LLQVTcfdvyZ+qeK9Z
+	JfpFhdZbo/Gdq8h+ilxK57lVnnwQ=
+X-Google-Smtp-Source: AGHT+IFyre0J9CImHbllUvwTGmrPYHXBt6ubdpS8LuYzsYwFeublEs32ivntjIy366aB7ladKYrxX9oaqIsEjn/3JZg=
+X-Received: by 2002:a05:6808:16a2:b0:3ea:44ae:a65 with SMTP id
+ 5614622812f47-3eba67fe978mr1810634b6e.5.1734100734047; Fri, 13 Dec 2024
+ 06:38:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20241212003201.2098123-1-briannorris@chromium.org> <20241212003201.2098123-2-briannorris@chromium.org>
+In-Reply-To: <20241212003201.2098123-2-briannorris@chromium.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 13 Dec 2024 15:38:40 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0id5MxNniN7xndMWKU4mvegNZ2V-sGRC6cJ3jHCu0puCQ@mail.gmail.com>
+Message-ID: <CAJZ5v0id5MxNniN7xndMWKU4mvegNZ2V-sGRC6cJ3jHCu0puCQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] drivers: base: Don't match devices with NULL of_node/fwnode/etc
+To: Brian Norris <briannorris@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	linux-kselftest@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: d36ebd181c1e7b1b427812e6e8cbf6e33dac842f  Merge branch 'pm-runtime' into fixes
+On Thu, Dec 12, 2024 at 1:32=E2=80=AFAM Brian Norris <briannorris@chromium.=
+org> wrote:
+>
+> of_find_device_by_node(), bus_find_device_by_of_node(),
+> bus_find_device_by_fwnode(), ..., all produce arbitrary results when
+> provided with a NULL of_node, fwnode, ACPI handle, etc. This is
+> counterintuitive, and the source of a few bugs, such as the one fixed by
+> commit 5c8418cf4025 ("PCI/pwrctrl: Unregister platform device only if
+> one actually exists").
+>
+> It's hard to imagine a good reason that these device_match_*() APIs
+> should return 'true' for a NULL argument. Augment these to return 0
+> (false).
+>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-elapsed time: 1459m
+For the ACPI part
 
-configs tested: 85
-configs skipped: 1
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig    gcc-14.2.0
-arc                   randconfig-001-20241213    gcc-13.2.0
-arc                   randconfig-002-20241213    gcc-13.2.0
-arm                   randconfig-001-20241213    clang-16
-arm                   randconfig-002-20241213    clang-18
-arm                   randconfig-003-20241213    gcc-14.2.0
-arm                   randconfig-004-20241213    clang-18
-arm64                 randconfig-001-20241213    gcc-14.2.0
-arm64                 randconfig-002-20241213    gcc-14.2.0
-arm64                 randconfig-003-20241213    clang-18
-arm64                 randconfig-004-20241213    gcc-14.2.0
-csky                  randconfig-001-20241213    gcc-14.2.0
-csky                  randconfig-002-20241213    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20241213    clang-20
-hexagon               randconfig-002-20241213    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386        buildonly-randconfig-001-20241213    clang-19
-i386        buildonly-randconfig-002-20241213    gcc-12
-i386        buildonly-randconfig-003-20241213    gcc-12
-i386        buildonly-randconfig-004-20241213    clang-19
-i386        buildonly-randconfig-005-20241213    gcc-12
-i386        buildonly-randconfig-006-20241213    gcc-12
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch             randconfig-001-20241213    gcc-14.2.0
-loongarch             randconfig-002-20241213    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-nios2                 randconfig-001-20241213    gcc-14.2.0
-nios2                 randconfig-002-20241213    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                randconfig-001-20241213    gcc-14.2.0
-parisc                randconfig-002-20241213    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc               randconfig-001-20241213    gcc-14.2.0
-powerpc               randconfig-002-20241213    clang-20
-powerpc               randconfig-003-20241213    gcc-14.2.0
-powerpc64             randconfig-001-20241213    gcc-14.2.0
-powerpc64             randconfig-002-20241213    gcc-14.2.0
-powerpc64             randconfig-003-20241213    gcc-14.2.0
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                 randconfig-001-20241213    gcc-14.2.0
-riscv                 randconfig-002-20241213    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20241213    gcc-14.2.0
-s390                  randconfig-002-20241213    clang-19
-sh                               allmodconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20241213    gcc-14.2.0
-sh                    randconfig-002-20241213    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                 randconfig-001-20241213    gcc-14.2.0
-sparc                 randconfig-002-20241213    gcc-14.2.0
-sparc64               randconfig-001-20241213    gcc-14.2.0
-sparc64               randconfig-002-20241213    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20241213    gcc-12
-um                    randconfig-002-20241213    clang-16
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241213    gcc-12
-x86_64      buildonly-randconfig-002-20241213    gcc-12
-x86_64      buildonly-randconfig-003-20241213    gcc-12
-x86_64      buildonly-randconfig-004-20241213    gcc-12
-x86_64      buildonly-randconfig-005-20241213    gcc-12
-x86_64      buildonly-randconfig-006-20241213    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                randconfig-001-20241213    gcc-14.2.0
-xtensa                randconfig-002-20241213    gcc-14.2.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>
+> Changes in v2:
+>  * Add Rob's Reviewed-by
+>
+>  drivers/base/core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 94865c9d8adc..2b7b13fc36d7 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -5246,13 +5246,13 @@ EXPORT_SYMBOL_GPL(device_match_name);
+>
+>  int device_match_of_node(struct device *dev, const void *np)
+>  {
+> -       return dev->of_node =3D=3D np;
+> +       return np && dev->of_node =3D=3D np;
+>  }
+>  EXPORT_SYMBOL_GPL(device_match_of_node);
+>
+>  int device_match_fwnode(struct device *dev, const void *fwnode)
+>  {
+> -       return dev_fwnode(dev) =3D=3D fwnode;
+> +       return fwnode && dev_fwnode(dev) =3D=3D fwnode;
+>  }
+>  EXPORT_SYMBOL_GPL(device_match_fwnode);
+>
+> @@ -5264,13 +5264,13 @@ EXPORT_SYMBOL_GPL(device_match_devt);
+>
+>  int device_match_acpi_dev(struct device *dev, const void *adev)
+>  {
+> -       return ACPI_COMPANION(dev) =3D=3D adev;
+> +       return adev && ACPI_COMPANION(dev) =3D=3D adev;
+>  }
+>  EXPORT_SYMBOL(device_match_acpi_dev);
+>
+>  int device_match_acpi_handle(struct device *dev, const void *handle)
+>  {
+> -       return ACPI_HANDLE(dev) =3D=3D handle;
+> +       return handle && ACPI_HANDLE(dev) =3D=3D handle;
+>  }
+>  EXPORT_SYMBOL(device_match_acpi_handle);
+>
+> --
+> 2.47.0.338.g60cca15819-goog
+>
 
