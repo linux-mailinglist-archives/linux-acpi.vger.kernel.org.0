@@ -1,156 +1,166 @@
-Return-Path: <linux-acpi+bounces-10128-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10129-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7509F0BCA
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 13:00:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8AC9F0D5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 14:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C009166E7E
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 12:00:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6DEC188BD50
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Dec 2024 13:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772741DF26E;
-	Fri, 13 Dec 2024 12:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89AB1DFE1B;
+	Fri, 13 Dec 2024 13:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h20qHjUa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CqtRwlxj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474761A08A6;
-	Fri, 13 Dec 2024 11:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D6B38DE1;
+	Fri, 13 Dec 2024 13:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734091200; cv=none; b=pjYCgIIYIv+BK7ne0allwnK04vWn2qaQVtAWtk2Kq4Lt/+u+iSznVkXSL/Tjz0sv2g4krToDoVYpcfKZObtR5m1BJdBg27/x+LmkVIt4SiX4yeNCe9N+zYBI6enyMED31G8im0Ecf8fEix1sBIL0wNS8plig7Ssrf+7llPyoS7s=
+	t=1734096962; cv=none; b=frOJEVlfawQFoxOSG17rz5/+Rv235mJ6arrOr4mwberfpdT7TvKahnT6yS7ycbvcn4s9gHcwewu3xSWWNVhDQKEpjLiFCaRLq2RkwELLqhoOC8L1Wql9PSO0pFi7xaUPqhogo9mAniRmAqCU54s/Kn9sbH7Q/l7KtpsWk+93ueA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734091200; c=relaxed/simple;
-	bh=u0Sb066jR4i3kqSYmXzuGtO7rP72CJmz06cNlBH0hcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=czMnj5Qk2zlBGVhaHDadCnA8VQmibzfK0EQAXsRtgQTxDEeLJ5mVXQZqq0mrhX7Ik24s+nJuoytLPVgpBtBR/dE5Rc0ZxywOmqoeIPbWRw3jSyB93mi85KIneQ57MLdiDHCJuEGpAZxPJg60IC3NYK7dpXilEv/x1miJsIndLKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h20qHjUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE4CC4CED0;
-	Fri, 13 Dec 2024 11:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734091199;
-	bh=u0Sb066jR4i3kqSYmXzuGtO7rP72CJmz06cNlBH0hcA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h20qHjUaqsqR+9NToxHdTB+ZXljbPxXf5x7esKb1rptLnC+k0tAuDX7BDYy/Rxs9b
-	 FIe28TYqmNsuONipa9+1Oo3lnfvmxFU72y3DX+ExlO6j4WUtqg87z92VUp+jk4dqU1
-	 6FgmsVHGzERI2i50vy56E8dSWPmeC9VyLuDabda/AkdOjtKKXRrNczr9A3/UOQ2suK
-	 qdaHx+6l4ZmUZWjKKgemuVKveceuqNHwgjyaKy0nBcXEQapF7xo+0iQGdgliiJdnvv
-	 lLw93Pcd6XH4nmnOJZCsRQ++NngErwz1vQCOMmSVD+vL1zT+UkpUen/2ME8sC+h5k5
-	 AboVCEqYCSlBA==
-Date: Fri, 13 Dec 2024 12:59:57 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, kunit-dev@googlegroups.com, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 3/3] drivers: base: test: Add ...find_device_by...(...
- NULL) tests
-Message-ID: <20241213-athletic-strong-bumblebee-bfabf1@houat>
-References: <20241212003201.2098123-1-briannorris@chromium.org>
- <20241212003201.2098123-4-briannorris@chromium.org>
+	s=arc-20240116; t=1734096962; c=relaxed/simple;
+	bh=fy8JN0I7A6ZsQ/kqXcwYkqTeZzaGdUq3iTIsvru1u2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=CGSNqWorReCwdbMtgLKAZ2XY/ochroMOMk2gcz6oNSGJ15BQhju31XfkJvj8xeHiHK8wAUqKtZnVoEEzsKzC7Y7ifFO2aTQLn0ucEXIjrEqWj/D9gG1CrK+rCTyyGoRB1SJy8Mv4Thz6qpmqRryqZE8gUn45DESwvlfz5yCSkWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CqtRwlxj; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734096960; x=1765632960;
+  h=date:from:to:cc:subject:message-id;
+  bh=fy8JN0I7A6ZsQ/kqXcwYkqTeZzaGdUq3iTIsvru1u2Q=;
+  b=CqtRwlxjykghQTB4Xf18oQFOQSyM1ky6cDr0A9IhhwSolJpe+oGAvmoS
+   TDLB6MFVxmlXcDaKdTimDKWU7dxHzdT5Hln2EaMfiybffln0Wi27cdCNP
+   J5zDd37KxenjVFuMMmClJ1+OmLfFaq8Zwxvx1f9Vw/6dWjEx0Lujc0JWm
+   AucHDnYoyHCd8Rtd5iP9NkfqStzGYEgnHvKIEoLI7DmrpWchoX6VJsu1S
+   Z8NWInGjfemRZEqgs0PAHgMXK9ScOfFxKIP2UuFm/CvtC1MkbSYA2R/9Y
+   FWCD1azGaF/ZzDv6Wi2eyMd3GxWdPm9/WkdshCDAO+81ji4pPDr+Q2Zkg
+   A==;
+X-CSE-ConnectionGUID: xhGO4KuNRcqwYMyAi5EqNg==
+X-CSE-MsgGUID: QdT8Y6BnSCCLXOIAH2Z8jg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="37396058"
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="37396058"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 05:35:59 -0800
+X-CSE-ConnectionGUID: 1JrH20oiSdu5bb5vH0MfHg==
+X-CSE-MsgGUID: /yuU4UrDSUaZVUuOE5NfRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="101382613"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 13 Dec 2024 05:35:57 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tM5pj-000C3l-10;
+	Fri, 13 Dec 2024 13:35:55 +0000
+Date: Fri, 13 Dec 2024 21:34:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 4503c4a2dc6dccbec2069b7b2f3ae09f5224de6c
+Message-ID: <202412132147.PHCvGBGR-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="7snr6qwlmjeebc3w"
-Content-Disposition: inline
-In-Reply-To: <20241212003201.2098123-4-briannorris@chromium.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 4503c4a2dc6dccbec2069b7b2f3ae09f5224de6c  Merge branch 'experimental/intel_pstate-testing' into bleeding-edge
 
---7snr6qwlmjeebc3w
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 3/3] drivers: base: test: Add ...find_device_by...(...
- NULL) tests
-MIME-Version: 1.0
+elapsed time: 1456m
 
-Hi,
+configs tested: 72
+configs skipped: 0
 
-On Wed, Dec 11, 2024 at 04:31:41PM -0800, Brian Norris wrote:
-> We recently updated these device_match*() (and therefore, various
-> *find_device_by*()) functions to return a consistent 'false' value when
-> trying to match a NULL handle. Add tests for this.
->=20
-> This provides regression-testing coverage for the sorts of bugs that
-> underly commit 5c8418cf4025 ("PCI/pwrctrl: Unregister platform device
-> only if one actually exists").
->=20
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> ---
->=20
-> Changes in v2:
->  * Keep "devm" and "match" tests in separate suites
->=20
->  drivers/base/test/platform-device-test.c | 42 +++++++++++++++++++++++-
->  1 file changed, 41 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/base/test/platform-device-test.c b/drivers/base/test=
-/platform-device-test.c
-> index ea05b8785743..c8d4b0a385f2 100644
-> --- a/drivers/base/test/platform-device-test.c
-> +++ b/drivers/base/test/platform-device-test.c
-> @@ -3,6 +3,8 @@
->  #include <kunit/resource.h>
-> =20
->  #include <linux/device.h>
-> +#include <linux/device/bus.h>
-> +#include <linux/of_platform.h>
->  #include <linux/platform_device.h>
-> =20
->  #define DEVICE_NAME "test"
-> @@ -217,7 +219,45 @@ static struct kunit_suite platform_device_devm_test_=
-suite =3D {
->  	.test_cases =3D platform_device_devm_tests,
->  };
-> =20
-> -kunit_test_suite(platform_device_devm_test_suite);
-> +static void platform_device_find_by_null_test(struct kunit *test)
-> +{
-> +	struct platform_device *pdev;
-> +	int ret;
-> +
-> +	pdev =3D platform_device_alloc(DEVICE_NAME, PLATFORM_DEVID_NONE);
-> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pdev);
-> +
-> +	ret =3D platform_device_add(pdev);
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I *think* you have a bug there: if platform_device_add fails,
-KUNIT_ASSERT will stop the test execution and thus you will leak the
-platform_device you just allocated.
+tested configs:
+arc                   randconfig-001-20241213    gcc-13.2.0
+arc                   randconfig-002-20241213    gcc-13.2.0
+arm                   randconfig-001-20241213    clang-16
+arm                   randconfig-002-20241213    clang-18
+arm                   randconfig-003-20241213    gcc-14.2.0
+arm                   randconfig-004-20241213    clang-18
+arm64                 randconfig-001-20241213    gcc-14.2.0
+arm64                 randconfig-002-20241213    gcc-14.2.0
+arm64                 randconfig-003-20241213    clang-18
+arm64                 randconfig-004-20241213    gcc-14.2.0
+csky                  randconfig-001-20241213    gcc-14.2.0
+csky                  randconfig-002-20241213    gcc-14.2.0
+hexagon               randconfig-001-20241213    clang-20
+hexagon               randconfig-002-20241213    clang-20
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386        buildonly-randconfig-001-20241213    clang-19
+i386        buildonly-randconfig-002-20241213    gcc-12
+i386        buildonly-randconfig-003-20241213    gcc-12
+i386        buildonly-randconfig-004-20241213    clang-19
+i386        buildonly-randconfig-005-20241213    gcc-12
+i386        buildonly-randconfig-006-20241213    gcc-12
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch             randconfig-001-20241213    gcc-14.2.0
+loongarch             randconfig-002-20241213    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+nios2                 randconfig-001-20241213    gcc-14.2.0
+nios2                 randconfig-002-20241213    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                randconfig-001-20241213    gcc-14.2.0
+parisc                randconfig-002-20241213    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc               randconfig-001-20241213    gcc-14.2.0
+powerpc               randconfig-002-20241213    clang-20
+powerpc               randconfig-003-20241213    gcc-14.2.0
+powerpc64             randconfig-001-20241213    gcc-14.2.0
+powerpc64             randconfig-002-20241213    gcc-14.2.0
+powerpc64             randconfig-003-20241213    gcc-14.2.0
+riscv                             allnoconfig    gcc-14.2.0
+riscv                 randconfig-001-20241213    gcc-14.2.0
+riscv                 randconfig-002-20241213    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20241213    gcc-14.2.0
+s390                  randconfig-002-20241213    clang-19
+sh                               allmodconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20241213    gcc-14.2.0
+sh                    randconfig-002-20241213    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                 randconfig-001-20241213    gcc-14.2.0
+sparc                 randconfig-002-20241213    gcc-14.2.0
+sparc64               randconfig-001-20241213    gcc-14.2.0
+sparc64               randconfig-002-20241213    gcc-14.2.0
+um                                allnoconfig    clang-18
+um                    randconfig-001-20241213    gcc-12
+um                    randconfig-002-20241213    clang-16
+x86_64                            allnoconfig    clang-19
+x86_64      buildonly-randconfig-001-20241213    gcc-12
+x86_64      buildonly-randconfig-002-20241213    gcc-12
+x86_64      buildonly-randconfig-003-20241213    gcc-12
+x86_64      buildonly-randconfig-004-20241213    gcc-12
+x86_64      buildonly-randconfig-005-20241213    gcc-12
+x86_64      buildonly-randconfig-006-20241213    clang-19
+x86_64                              defconfig    gcc-11
+xtensa                randconfig-001-20241213    gcc-14.2.0
+xtensa                randconfig-002-20241213    gcc-14.2.0
 
-You need to call platform_device_put in such a case, but if
-platform_device_add succeeds then you need to call
-platform_device_unregister instead.
-
-It would be better to use kunit_platform_device_alloc and
-kunit_platform_device_add that already deal with this.
-
-The rest looks good to me, once fixed:
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-
-Maxime
-
---7snr6qwlmjeebc3w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ1whtgAKCRAnX84Zoj2+
-drgVAYC25+nvuEysmbcasOB2RjIFmcZ9PldsACXyDBDoeJeXBpB3YhMh6Vw90BIG
-EQQ03CABgKbWgKqxNLrM68+yaHDG9u7bdRhZDyRHxPS9jx20dAxOJSsQ1J3uB8Kq
-pc2gSDAyqw==
-=sA+0
------END PGP SIGNATURE-----
-
---7snr6qwlmjeebc3w--
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
