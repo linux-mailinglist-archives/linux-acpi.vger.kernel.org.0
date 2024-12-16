@@ -1,101 +1,126 @@
-Return-Path: <linux-acpi+bounces-10149-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10150-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE5B9F39FC
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 20:38:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C43E9F3A7B
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 21:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8F5B1885C1A
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 19:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDFB21888C43
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 20:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529DA207656;
-	Mon, 16 Dec 2024 19:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93541CEEB6;
+	Mon, 16 Dec 2024 20:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zww+pi3B"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DTv7N2gp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D03B206263
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 19:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642571CDA15
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 20:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734377910; cv=none; b=TQ7W350JM+LHzNtB9/C3wLk0G4nF5rxoi+Wkl2jiYPJGEws+PZebwI4wmDiXx6eE0gmVi/kWTZnSF8RmNSutiq2Iab0i7kWZYHa/2H2eCg7oS5eyiryq5XC9xMPf8owwV1PytDP947Nh0uVR2s0JzUFKTR3YWsCD4DmNhLY9WMw=
+	t=1734379919; cv=none; b=AhgfmmzM6pQek21msq/vWkNR+KWExPKPET49l8BvWAxxqncxTrmZ91mimScxCHQYpvplQkLiN5MRb3Q0zaPaVPz9qQBQgIOPQFQG0gtRIRopKlFNul5VTMm3fthisDXgmpY0iigkDi0uIb9VBxvC4iqEZW15r/GjceVoia4uQWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734377910; c=relaxed/simple;
-	bh=+dZxDPL8aCw/GvCJkbXcxyMH6APJipEyrtN09qf1cwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yl0VXCr9dbhcXc6R1aLM57RYWRG2FTF/XZwrDbnOMHCKAloXHXu9z9jwlEIvAivLUEoFbj4OKPhnxa0Q+ANQS6C898Mn6R+2UlaTU2G3CL5cPDE/V5ugNhuoCix+LmA0qaa2XpRFloWkTxR1uifTmIPMeWVYA4JnKt7X7X+VVqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zww+pi3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB90C4CED4
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 19:38:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734377909;
-	bh=+dZxDPL8aCw/GvCJkbXcxyMH6APJipEyrtN09qf1cwI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Zww+pi3B2emZlvtCIWIeUnF28tSUOj5Cx0RxVDR5+PIeTPzB0LqoAKxzo2q1KpNV7
-	 ZGCoq1bjlhMzPsy8b2tJi0vexerUas9iYBHKNnKimGdT7vGiYYdfV4dwb7xbIZemIc
-	 a3K1Mjl2AR6W17PPVTKL5MI+K1AWZCJAqVNvKBoXnr+Xmx7FBqzP8jaI8NIujde5m3
-	 4UO6X7uJDjKiprUE+h3JJd4ycJPlTPpU47Z7kYyTtCkEYXn00MfzPIV6a3q8ijYKuU
-	 KZvqiBvRHkygQl9QLnTvgx+c7cFyX5pG/8Q4llAe0uh1vjOlHyZvoReQPojpp61XxN
-	 AOhnufFUaB3HA==
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3eba347aa6fso2409327b6e.3
-        for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 11:38:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXylCF79/ZBI3H5zwwdcc/6GnCCrUSmfGlBsbSEABJSjbLsmpBwsMwJ1MdB03RmJkc8AHycp18+Ydaz@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7lRNRR7+v6n1PSKl0gff393nvquFOHhl9O5XMsqLYgkmBZypo
-	UH474e5JeOIZci0meyw+9oHnrukd3od8ZUod7KpgjmLueK1xNKPcbBWzF5416z6aJ/xGhMGJ3px
-	4SNZ1DlsVVO5LUhOhR+zVQVqfVR8=
-X-Google-Smtp-Source: AGHT+IG5s8aPzd4r1jE8TA79jBSVkfu1eKZK8VEhDSUkrgbODUbE2Ns3xHfNfpRi26tJZSSlMLIzlOsBLbPqpECnmKI=
-X-Received: by 2002:a05:6808:1444:b0:3eb:6044:5a7e with SMTP id
- 5614622812f47-3ebcb2b6496mr14971b6e.19.1734377909054; Mon, 16 Dec 2024
- 11:38:29 -0800 (PST)
+	s=arc-20240116; t=1734379919; c=relaxed/simple;
+	bh=MB50HxS4XH0AqjPhn5Rt0ZHwX9KYAvQUP7Mn+X0hDf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K3PPfS2vQsFm5iQJ/9ERQxvFk6opy5OIcPLYJgUW0ENLnAmyXB7/HnEwFLvNkKXd7BY7UkuVI4gsfjbJhC9k39vQ0Jzor9bFGHzxk143PYVHB1NQVAGoRS6CMo0S4r7MoIkhUZoljNAtdvJZj3qzb4GwXICFrA3rMWlcSAX/Kbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DTv7N2gp; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-218c8aca5f1so3406195ad.0
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 12:11:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734379918; x=1734984718; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wJDssvkykOLxnPgPj3hUuXjlWR0oF5mqDpbk9Gz8f6E=;
+        b=DTv7N2gpMFbixsIhveL3lVdYHruIx6TKfO6Jpdybg60ZOMO8/Vk1m2/jmzLZlq98lJ
+         NroZtPtjvfba9LZvM0/Iu7w3cVi7ve2TmkIIx6m4mIUeff49KQT9m1SwFq2Kp5W/dVwk
+         NMA+AoAi5ipYEsat0vWlGCKIKcOGoaN/y3sCQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734379918; x=1734984718;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wJDssvkykOLxnPgPj3hUuXjlWR0oF5mqDpbk9Gz8f6E=;
+        b=MpLbqfv/RZWIDfme6UfpWYzFMqtRTEI1qJ4mviJVJbclwQmu6VVd1Qh2rCWZjqkptY
+         P7IuLnN4u+vVx2aAo9NL6Ofdiq6lnJlOA1gUQOBDZYK+e+TUKsLdkNN4Bj3VYKKLc50G
+         lla0RxKcQTQ+y/fnfXvPissZX/LIeOpeJ2quEyP6qa6fm+hbGgD7Z3GMz0yIcS7/D1TD
+         op4Q/V+Ww0y4n7UvTH6az3ty2/5QWDndYyKQXW6gm8+FS/jlctw/87bZV24wBaFcz4o2
+         kHFpIeMya3DVWAuP606TdE/rC5f0AVcmbJjeYqWILF+nNjMCQAHep2iyNI37fy9WjmfX
+         6reA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6Hz3Z4oWWIqW9QodGY4yrWTJGMYbI1d73b8aliu3P9yaGHUjTj9ZdFFRNj8gxOyBtWvNie+J+YK3f@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxKIBbB1Uhuvd2E/7GwlAeI+s8LOfCGrm1zqb/Tj4Z8xZHZDDW
+	3wUN7RVsAeOKPpjQ6WipR+Twc1yY2oRcchNfLueAlY/Z1Zn3773/H0RSyRs04w==
+X-Gm-Gg: ASbGncsFdOL9AXOdXEXZXuhDMBz+/uqxcQukldvX9tmNZZLaJ497VJjhQCmRyv2uBr3
+	ZzbyXxjEkHXUcgRJ1T/7tDWYkYUxM3WJyeUIcA0rnlDv+w0R3azpMO5G8ozf1aeevczzOwF+aPb
+	6R5v3URSByKKEZe5UK254dFDQVUFiobQqJpbz/73M7ha6unyTcQjma4u8DKmfg0/3uBr/+KhaMB
+	v4tjjApjExBf68kzcT13JJhXYdY9Fgv5jL94K8FOrLoGOhIIPVS5CFHodDKPTdlaGg4N6cJqGfL
+	B4/WDbFaE2cN1TPRKg==
+X-Google-Smtp-Source: AGHT+IFPt/yzYkL+WqzS7KUdkz894jceh43TbHhApgYdMJ4tZu2dlgeGJiFcBrRdgNqp8SzfUDRSiQ==
+X-Received: by 2002:a17:903:1d2:b0:216:7cd8:e964 with SMTP id d9443c01a7336-218929e814cmr205215925ad.22.1734379917836;
+        Mon, 16 Dec 2024 12:11:57 -0800 (PST)
+Received: from localhost ([2a00:79e0:2e14:7:953:5b91:a52c:e817])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-218a1e501f1sm46466775ad.145.2024.12.16.12.11.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Dec 2024 12:11:57 -0800 (PST)
+From: Brian Norris <briannorris@chromium.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Maxime Ripard <mripard@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	Rae Moar <rmoar@google.com>,
+	Rob Herring <robh@kernel.org>,
+	David Gow <davidgow@google.com>,
+	linux-kselftest@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH v3 0/3] drivers: base: Don't match device with NULL of_node/fwnode/etc + tests
+Date: Mon, 16 Dec 2024 12:11:41 -0800
+Message-ID: <20241216201148.535115-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHGTsivNWhWMPnH-dDunoAH36GAxV97-xwaZ2Pi_YdpnpiLfnw@mail.gmail.com>
-In-Reply-To: <CAHGTsivNWhWMPnH-dDunoAH36GAxV97-xwaZ2Pi_YdpnpiLfnw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 16 Dec 2024 20:38:18 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g0UNSEN5g_x3WbQZrK5+E1oqD4y-Bj+hWP4QmjE=wrnA@mail.gmail.com>
-Message-ID: <CAJZ5v0g0UNSEN5g_x3WbQZrK5+E1oqD4y-Bj+hWP4QmjE=wrnA@mail.gmail.com>
-Subject: Re: Proposal: Defaulting to s2idle on Lenovo E14
-To: jack Bourke-Mckenna <jackbourkemckenna@gmail.com>
-Cc: "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 16, 2024 at 7:50=E2=80=AFPM jack Bourke-Mckenna
-<jackbourkemckenna@gmail.com> wrote:
->
-> Hi Rafael J. Wysocki and ACPI maintainers,
->
-> I wanted to ask about improving Linux support for the Lenovo ThinkPad
-> E14 Type 20RA. Right now, this laptop defaults to the "deep" sleep
-> state (S3), but it has resume issues. On the other hand, "s2idle"
-> works reliably, and users can enable it manually with the
-> mem_sleep_default=3Ds2idle kernel parameter.
->
-> Would it make sense to make a modification to the  ACP DMI table to
-> set "s2idle" as the default sleep mode for this laptop? It seems like
-> it would fix the suspend/resume problems out of the box without users
-> needing to tweak anything manually(this was a huge pain to debug).
+This series:
+1. makes the behavior of_find_device_by_node(),
+   bus_find_device_by_of_node(), bus_find_device_by_fwnode(), etc., more
+   consistent when provided with a NULL node/handle;
+2. adds kunit tests to validate the new NULL-argument behavior; and
+3. makes some related improvements and refactoring for the drivers/base/
+   kunit tests.
 
-Yes, if it works.
+This series aims to prevent problems like the ones resolved in commit
+5c8418cf4025 ("PCI/pwrctrl: Unregister platform device only if one
+actually exists").
 
-> Does this seem like the right way to address the issue? I=E2=80=99m happy=
- to
-> put together a patch and include logs showing the problem if you think
-> it=E2=80=99s worth pursuing. Or is it likely to be ignored because the E1=
-4 has
-> a relatively small user base?
+Changes in v3:
+ * Fix potential leak in test error case
 
-It won't be ignored, but if it is applied and some other users report
-a problem with it, it will need to be reverted.
+Changes in v2:
+ * CC LKML (oops!)
+ * Keep "devm" and "match" tests in separate suites
 
-Thanks!
+Brian Norris (3):
+  drivers: base: Don't match devices with NULL of_node/fwnode/etc
+  drivers: base: test: Enable device model tests with KUNIT_ALL_TESTS
+  drivers: base: test: Add ...find_device_by...(... NULL) tests
+
+ drivers/base/core.c                      |  8 ++---
+ drivers/base/test/Kconfig                |  1 +
+ drivers/base/test/platform-device-test.c | 41 +++++++++++++++++++++++-
+ 3 files changed, 45 insertions(+), 5 deletions(-)
+
+-- 
+2.47.1.613.gc27f4b7a9f-goog
+
 
