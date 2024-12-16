@@ -1,162 +1,163 @@
-Return-Path: <linux-acpi+bounces-10157-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10158-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DC49F3C13
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 22:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 063BF9F3C7F
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 22:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4875F16784F
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 21:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4218163631
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 21:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2391DDC2A;
-	Mon, 16 Dec 2024 20:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4AC1D47C1;
+	Mon, 16 Dec 2024 21:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuQEyXPv"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fxq8xg8Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B431D5CD7;
-	Mon, 16 Dec 2024 20:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0A114B94C
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 21:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734382023; cv=none; b=J4IuB8T3A5NHbX5ReeoleySe/4xN46iMPI2GS9M0GASBB9Jl3Ib/LX9UDolQ6IsBLzuc7c1dZrilnexYUAnhobgn3ifKFrmORIK2Sn6/KeSvqsP3C3Kf/Sro61bf6TyMBZO6jNaEGZPXoFYGhgqDPxNTh72QIyuW8PcNYesnBpo=
+	t=1734383846; cv=none; b=c8pw7+8Z9EngWT3veuXEZNrkfwtoHDLfbETVlzb4GqvfVjCJ1gkwoylPydb+EMp7vGIjc0rbclzgL2DWfhfggQ5WTjxrqBt6f0Ue9TijY8LqXgRN0QjdwXZjERMTjGoKtb3o9ua3QrCN/m1SYcR7xVf5la4KiPXuO4Kje+FOlaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734382023; c=relaxed/simple;
-	bh=FWc5NdQPEYcwjuJCRpQn2DI2k635tsMlyKRv5djZXc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MxgCGAjN6Vqu9CNWOmBlBYWMYQVu817LWEM4fQvexCSozV+N6fCdVG6qZUuhv39wOqsKvX0mqPpM/WeyRUzuK4Org9Uny+4cwuoJ/7Cu4WBwUz8T98TUuRaXCVlbv8Pf9CXgVyOe1WCQWsfH0mXVgAK+KSjUXzEy50E8Xgsop3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuQEyXPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7070EC4CEE0;
-	Mon, 16 Dec 2024 20:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734382023;
-	bh=FWc5NdQPEYcwjuJCRpQn2DI2k635tsMlyKRv5djZXc4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IuQEyXPvXKonOOTkvepkVBNlmMfiqSQcnp9g3pTh2y8sj8rJ0HflUG61JeXvzHHA7
-	 yoo4F0L8oSi0mMIJ4y+pZCIgxBHAyW31astTbj+kGqVZVHdAmZuApOWnrRsnIfH6XF
-	 QKz8Ap1LRrRmYs2IeNn2jLzBdxvfUI65e/c46663BBUytrYkDAlcjU3WL9kbirmuPO
-	 Mha6h0CRkLqERqPIDhchLakZMYxGU1cJcnArYAzcN6SLsS44EGhTEhj152+I3yS5/G
-	 c/yabSKMmZlTF8vqSLCTskZKsUrNXA0d77P7CvBrfyPwXzJQtVBpy8zz4MWHnpS3nf
-	 cnWl6dL9PgKrQ==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3eb9ba53f90so1227989b6e.1;
-        Mon, 16 Dec 2024 12:47:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVU8t9fRZkU8IiBGTcfr/WMgy6YOLtbR8SVEk7EcceD1hO+ac43PRghrA5g+z536cWKarA6aPEQlb69qBaL@vger.kernel.org, AJvYcCWnMNakxjB5S+iFmDl2ZGwrVv6MJcExQdpmwpA4zsJEsC4pP8XdqiMykx6qfOusFi407VL2EX/PADTC@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9MLH9v8FsLBvd0wyGHPMVPql8M2FVqnuLH4tPkA0KcVtJlyWn
-	D+gLt7PJxoNd7Wgx0VFcda47i8UDdztwSvR/zp16/vSEcneWvsSwEpMJTkHBorBb+LK8KEtKIJ9
-	BdZqhTwfJaO2gsALljTxF7Ibnct8=
-X-Google-Smtp-Source: AGHT+IG/PqLOxWQ8bMSvdSvxs245uuAzMTjbPmuXNov/t09dNQM5eGRDit9pYO8s1OU9IDNhOmX+QB/KyFhj5XZjq1I=
-X-Received: by 2002:a05:6808:1902:b0:3e7:b3ce:923 with SMTP id
- 5614622812f47-3ebcb317ea6mr117778b6e.23.1734382022723; Mon, 16 Dec 2024
- 12:47:02 -0800 (PST)
+	s=arc-20240116; t=1734383846; c=relaxed/simple;
+	bh=4fQYHchrSWa5uLGjxEoj3D06//Sn7ZmscruEw3/0WQA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=V4y2E70LCIue1vNb0zu3j+hgvYUxWcPV4VFKhAPLx1Mhf0pNbzsJSutXRPZ648yXbQfSvs9fj7/B5i23oU+FAwaKAepDh5Q7zTbrihtl1Vks9DcOXEeIokgLxVPvYcDALN+98uULO3r1xbqZyPvCs/bFz8He/TH5HS6sU4JMBII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fxq8xg8Z; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-467a37a2a53so41083501cf.2
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 13:17:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734383843; x=1734988643; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l8AmPG7e7RmI2AaOsk1iihtx1bcIXZSCEYdSKszNNH4=;
+        b=fxq8xg8ZfvL4k+CsJUh3V4P3x6sQwGywrHgEh21SURlsobd2pdgOtqM4o++lNh7vUi
+         mLJYU8OrJ0aJg/UTu/SPkJLoBrcBSvui37hYpGCMzGMM8Zda8GMgswDK9vORG3iUUQlY
+         xH66rIyULQHAEeTYg0Bw+pCU+cURnn8WoRVv0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734383843; x=1734988643;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l8AmPG7e7RmI2AaOsk1iihtx1bcIXZSCEYdSKszNNH4=;
+        b=is2MhuPuwUE75iUEhN/q/2y2/ms+pdjvqfUfdBb2vny7RIuLzC+YVaowA9U7vn+iLo
+         1Z66Sbnr1coMHKcQ4TgRKxp/GWhZCTGS00CvjhGYlNcRdoFMJBoRCaoimXOcvZYaraCO
+         GKd/X9wNWm+e18m9wd6RN5VU1cz5KNuj0TVAaeU3Lqns6wd7OhGOwfvHhVy8kaVOtEN6
+         tfJL3+K/8kHbDcbt08JKAyYUNdGXBpIb6gzgqFM1WozZxgKJSHXwhkBYitt68BRyagTa
+         qHh2N2nFU8OIpb7HI3QjVy30A/AMpW1+QbLolc8WDD5IqOmQo2qf2D+atWERGJdhkF1a
+         fAvQ==
+X-Gm-Message-State: AOJu0YzRhh5JvkFi3y22pIExVCNZtUzi1twOduC1jQApwBaL0ueKzNRj
+	cpTSspl21TPB5UBkg1wT0HkNA9DhxikMegLJrEYGct103xJZV4NAZTLGkNubxQ==
+X-Gm-Gg: ASbGncsVaY9TAqQ6B0dQuIAS1xQSqZRwHTL0UOPLp1ZHgNSECZmkpLrwbvofTDYJcnv
+	EHaAFhdxpj0qRgGq1yMKUz8EXEApT5G8MsUo5bD4QSkOwh7idPDpuR95T/nL4ynUF+cVwhTIi3H
+	SXhhIk8PCeqX96MPSqYJ/lfU/kuRxP+iZeF6lMzQdkpLAdzb4nVIYbtteIQ73sUtEaqby5VarV5
+	RzASopviH7EDEwcfLNaYrAocAurG0s0HdoBbl5Pp7W/HwoSzRhU7MGDcsVkRiy9NdVOBAh55+5D
+	t2gooUPit98zUQWNDpS2ShEcHPyolps=
+X-Google-Smtp-Source: AGHT+IE6nGYwK5u9N5YH85CBS/7ioSAcLwKhUyLy8jZqzGt9r49k/AYODQLmEjFBHtIiJqOxDlKquQ==
+X-Received: by 2002:a05:622a:48f:b0:467:8703:a740 with SMTP id d75a77b69052e-467a5755691mr274120391cf.18.1734383842824;
+        Mon, 16 Dec 2024 13:17:22 -0800 (PST)
+Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467b2e85c03sm31927501cf.69.2024.12.16.13.17.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Dec 2024 13:17:21 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v5 0/7] ipu6: get rid of all the IS_ENABLED(CONFIG_ACPI)
+Date: Mon, 16 Dec 2024 21:17:14 +0000
+Message-Id: <20241216-fix-ipu-v5-0-3d6b35ddce7b@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-fix-ipu-v4-0-4102e97aceb6@chromium.org>
- <20241211-fix-ipu-v4-2-4102e97aceb6@chromium.org> <CAJZ5v0gmN6+y2DveaBjSqWpTRWqm9zo2t0uDdvGwnVXcdQ777A@mail.gmail.com>
- <CANiDSCtF6XoAK6t0XNcT1KjGKHJMMFw8oKr1OSS0jkLuwgL8Og@mail.gmail.com>
-In-Reply-To: <CANiDSCtF6XoAK6t0XNcT1KjGKHJMMFw8oKr1OSS0jkLuwgL8Og@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 16 Dec 2024 21:46:51 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jyLZsbPY8bF5Ya6UojZrtk_fEhWaVH48wuUDw7TkjeWw@mail.gmail.com>
-Message-ID: <CAJZ5v0jyLZsbPY8bF5Ya6UojZrtk_fEhWaVH48wuUDw7TkjeWw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] ACPI: bus: implement acpi_get_physical_device_location
- when !ACPI
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANqYYGcC/3XNwQ6CMAwG4FchOzuzlTKYJ9/DeBizwA4I2YRoC
+ O/u4IJRPP5tv78TC+QdBXZKJuZpdMF19xiyQ8JsY+41cXeLmYEAlBKAV+7JXT9wAxVBoUWhFbJ
+ 43XuKq7Xpco25ceHR+ddaPMpl+tsxSi45oCLI0JZ5bs+28V3rhvbY+ZotNSP8ocAFL0ujsiJTp
+ Ktqh6YbBSk2mkYqBKHQtkCj9r7iJ5UbxUhRCiCdG0ul+qLzPL8BI8zt+FIBAAA=
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Robert Moore <robert.moore@intel.com>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org, 
+ acpica-devel@lists.linux.dev, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>, 
+ Ricardo Ribalda <ribalda@chromium.org>, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+X-Mailer: b4 0.13.0
 
-On Mon, Dec 16, 2024 at 9:42=E2=80=AFPM Ricardo Ribalda <ribalda@chromium.o=
-rg> wrote:
->
-> Hi Rafael
->
-> On Mon, 16 Dec 2024 at 21:17, Rafael J. Wysocki <rafael@kernel.org> wrote=
-:
-> >
-> > On Wed, Dec 11, 2024 at 5:07=E2=80=AFPM Ricardo Ribalda <ribalda@chromi=
-um.org> wrote:
-> > >
-> > > Provide an implementation of acpi_get_physical_device_location that c=
-an
-> > > be used when CONFIG_ACPI is not set.
-> > >
-> > > Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > Acked-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > ---
-> > >  include/acpi/acpi_bus.h | 12 +++++++++---
-> > >  1 file changed, 9 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > > index 2b09e513ecf3..b312a72f48ad 100644
-> > > --- a/include/acpi/acpi_bus.h
-> > > +++ b/include/acpi/acpi_bus.h
-> > > @@ -43,9 +43,6 @@ acpi_status
-> > >  acpi_evaluate_ost(acpi_handle handle, u32 source_event, u32 status_c=
-ode,
-> > >                   struct acpi_buffer *status_buf);
-> > >
-> > > -acpi_status
-> > > -acpi_get_physical_device_location(acpi_handle handle, struct acpi_pl=
-d_info **pld);
-> > > -
-> > >  bool acpi_has_method(acpi_handle handle, char *name);
-> > >  acpi_status acpi_execute_simple_method(acpi_handle handle, char *met=
-hod,
-> > >                                        u64 arg);
-> > > @@ -60,6 +57,9 @@ bool acpi_check_dsm(acpi_handle handle, const guid_=
-t *guid, u64 rev, u64 funcs);
-> > >  union acpi_object *acpi_evaluate_dsm(acpi_handle handle, const guid_=
-t *guid,
-> > >                         u64 rev, u64 func, union acpi_object *argv4);
-> > >  #ifdef CONFIG_ACPI
-> > > +acpi_status
-> > > +acpi_get_physical_device_location(acpi_handle handle, struct acpi_pl=
-d_info **pld);
-> > > +
-> > >  static inline union acpi_object *
-> > >  acpi_evaluate_dsm_typed(acpi_handle handle, const guid_t *guid, u64 =
-rev,
-> > >                         u64 func, union acpi_object *argv4,
-> > > @@ -1003,6 +1003,12 @@ static inline int unregister_acpi_bus_type(voi=
-d *bus) { return 0; }
-> > >
-> > >  static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
-> > >
-> > > +static inline acpi_status
-> > > +acpi_get_physical_device_location(acpi_handle handle, struct acpi_pl=
-d_info **pld)
-> > > +{
-> > > +       return AE_ERROR;
-> > > +}
-> >
-> > I overlooked this before, sorry.
-> >
-> > It generally is not OK to use acpi_status and/or AE_ error codes
-> > without CONFIG_ACPI and they really only should be used in
-> > drivers/acpi/ (and not everywhere in there for that matter).
-> >
-> > So acpi_get_physical_device_location() needs to be redefined to return
-> > something different from acpi_status (preferably bool) in order to be
-> > used in !CONFIG_ACPI code.
->
-> Shall I redefine it to
-> bool acpi_get_physical_device_location(acpi_handle handle, struct
-> acpi_pld_info **pld)/
->
-> For both the ACPI and !ACPI cases? or just for the !ACPI?
+We want to be able to compile_test the ipu6 driver in situations with
+!ACPI.
 
-For both cases, please.
+In order to do this we had to add some conditional #ifs, which lead to
+false positives on the static analysers.
+
+Let's implement some helpers when !ACPI in the acpi headers to make the
+code more easier to maintain.
+
+To: Rafael J. Wysocki <rafael@kernel.org>
+To: Len Brown <lenb@kernel.org>
+To: Robert Moore <robert.moore@intel.com>
+To: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: acpica-devel@lists.linux.dev
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+
+Changes in v5:
+- Remove Fixes tag
+- redefine acpi_get_physical_device_location() to return bool
+- Link to v4: https://lore.kernel.org/r/20241211-fix-ipu-v4-0-4102e97aceb6@chromium.org
+
+Changes in v4 (Thanks Sakari & Mauro):
+- Squash the two ipu changes and merge everything via ACPI
+- Space after ;
+- move acpi_device_handle to avoid fwd declaration.
+- Link to v3: https://lore.kernel.org/r/20241210-fix-ipu-v3-0-00e409c84a6c@chromium.org
+
+Changes in v3:
+- Prefer static inlines to macros (Thanks Rafael).
+- Link to v2: https://lore.kernel.org/r/20241122-fix-ipu-v2-0-bba65856e9ff@chromium.org
+
+Changes in v2:
+- Add helpers in acpi to avoid conditional compilation
+- Link to v1: https://lore.kernel.org/r/20241122-fix-ipu-v1-1-246e254cb77c@chromium.org
+
+---
+Ricardo Ribalda (7):
+      ACPI: bus: change the prototype for acpi_get_physical_device_location
+      ACPI: bus: implement for_each_acpi_dev_match when !ACPI
+      ACPI: bus: implement acpi_get_physical_device_location when !ACPI
+      ACPI: header: implement acpi_device_handle when !ACPI
+      ACPI: bus: implement for_each_acpi_consumer_dev when !ACPI
+      ACPI: bus: implement acpi_device_hid when !ACPI
+      media: ipu-bridge: Remove unneeded conditional compilations
+
+ drivers/acpi/mipi-disco-img.c        |  3 +--
+ drivers/acpi/scan.c                  |  4 +---
+ drivers/acpi/utils.c                 |  7 +++----
+ drivers/base/physical_location.c     |  4 +---
+ drivers/media/pci/intel/ipu-bridge.c | 29 ++++-------------------------
+ drivers/usb/core/usb-acpi.c          |  3 +--
+ include/acpi/acpi_bus.h              | 23 ++++++++++++++++++++---
+ include/linux/acpi.h                 |  5 +++++
+ 8 files changed, 36 insertions(+), 42 deletions(-)
+---
+base-commit: d216d9cb4dd854ef0a2ec1701f403facb298af51
+change-id: 20241122-fix-ipu-a2fe28908964
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 
