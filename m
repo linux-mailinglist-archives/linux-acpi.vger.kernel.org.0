@@ -1,175 +1,113 @@
-Return-Path: <linux-acpi+bounces-10141-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10145-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11799F2B31
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 08:54:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5579F2CB6
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 10:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A701886066
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 07:54:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C65C188A822
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 09:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EF41FF60C;
-	Mon, 16 Dec 2024 07:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456FC202C56;
+	Mon, 16 Dec 2024 09:16:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail3.skhynix.com (exvmail3.hynix.com [166.125.252.90])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B2B433C8;
-	Mon, 16 Dec 2024 07:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.90
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E1C20101E;
+	Mon, 16 Dec 2024 09:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734335643; cv=none; b=D1IFvT5+VZrzWvUHCPXjK9mzbxFJgk4o40ywrCmk/yo3q7b+Xr3DrPkYEHblVfCMUTYJo1BBPU/RIyy7jeBt8sPMA5furdyWhbrwKNO9TqU75XChg3EkGns0nOtD/K0dIWTSYDp7wu47LKXoc7CWiqJDCO2sDJj204ZHz02Clxk=
+	t=1734340576; cv=none; b=PwZMPV/9JiLNcrT1is9QPwd5NQ7F7RQc9tnPAmIdT6jD//5ig3dunMZEMHK2HqEk/qmbozvTTj/srHy0Ik27EnHEAHVpdvTKom3lJCvXNMRfQHu9sw1s7KKWkLsjagReHBSaWIB3TIW9/jRjjunTEaaqpFIqqoxqWrA+XvCi6hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734335643; c=relaxed/simple;
-	bh=4YUi9IIN+FDfpxF4emlc22UqQohODEXavHnNVnPLZE8=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XsEI2D/qelcIV6RQIGCEF/SsG2+0dAXEBOYCXHzp2mUYCe1uf+StLETdgRccncRtV+QvU0qOA5+hqxMrysATXfOouJ+1bB1eNLoZai1z/IzIfccYdyg0pYZO0m16ADaiKrm+UVk+82qD6GP5TLoY3RlaI2W+AnmbvB7Sxd08Wj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc59-7a9ff700000194b3-e2-675fdc8c7271
-Message-ID: <7ed89f33-6ba0-44c7-b4ea-0c72029fa33b@sk.com>
-Date: Mon, 16 Dec 2024 16:53:47 +0900
+	s=arc-20240116; t=1734340576; c=relaxed/simple;
+	bh=aX4HqyGzLzka94xiZImooBUJwmdy7RYEVbUgjk6BaS4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tMkjzFxv4JeDam1VgeWGjLq8acAYCXVMVIrhgcgR0GNyKc5EUg23OKw/NfJ5bR1AfTcMV31DlLSgR18CcPUTEfgMxbY5vsxpsfQ2pJ0cxcWytZpw32PUZJx4+BEVgk5GiC8TlNceXkfhnAhdTDxYPWElZVm/CXoT/7ysqvcVCf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4YBZ4H08G0zhZWW;
+	Mon, 16 Dec 2024 17:13:35 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id F361F1400D5;
+	Mon, 16 Dec 2024 17:16:04 +0800 (CST)
+Received: from localhost.huawei.com (10.50.165.33) by
+ kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 16 Dec 2024 17:16:04 +0800
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
+	<viresh.kumar@linaro.org>
+CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<linuxarm@huawei.com>, <pierre.gondois@arm.com>, <ionela.voinescu@arm.com>,
+	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
+	<lihuisong@huawei.com>, <zhenglifeng1@huawei.com>, <hepeng68@huawei.com>,
+	<fanghao11@huawei.com>
+Subject: [PATCH v3 0/4] Support for autonomous selection in cppc_cpufreq
+Date: Mon, 16 Dec 2024 17:15:59 +0800
+Message-ID: <20241216091603.1247644-1-zhenglifeng1@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: kernel_team@skhynix.com, 42.hyeyoo@gmail.com,
- "gourry@gourry.net" <gourry@gourry.net>,
- "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "gregkh@linuxfoundation.org"
- <gregkh@linuxfoundation.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- =?UTF-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKSBTeXN0ZW0gU1c=?=
- <honggyu.kim@sk.com>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- =?UTF-8?B?6rmA65296riwKEtJTSBSQUtJRSkgU3lzdGVtIFNX?= <rakie.kim@sk.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "dave.jiang@intel.com" <dave.jiang@intel.com>,
- "horen.chuang@linux.dev" <horen.chuang@linux.dev>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "kernel-team@meta.com" <kernel-team@meta.com>
-Subject: Re: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
- auto-tuning
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <4ddfa283-eb64-4032-880b-c19b07e407e1@sk.com>
- <20241213195754.2676135-1-joshua.hahnjy@gmail.com>
-Content-Language: en-US
-From: Hyeonggon Yoo <hyeonggon.yoo@sk.com>
-In-Reply-To: <20241213195754.2676135-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGIsWRmVeSWpSXmKPExsXC9ZZnkW7Pnfh0gw8LVCwm9hhYzFm/hs1i
-	+tQLjBYnbjayWfy8e5zdonnxejaL1Zt8LW73n2O1WLXwGpvF8a3z2C32XQSq3fnwLZvF8n39
-	jBaXd81hs7i35j+rxdwvU5ktVq/JcBD0OPzmPbPHzll32T262y6ze7QcecvqsXjPSyaPTas6
-	2Tw2fZrE7nFixm8Wj50PLT0WNkxl9tg/dw27x7mLFR6fN8kF8EZx2aSk5mSWpRbp2yVwZczq
-	7mIpeCle0fh8BmsD41ThLkZODgkBE4mV+6ayw9gzn21mBrF5BSwlPq36wgRiswioSkzsu8cK
-	EReUODnzCQuILSogL3H/1gywXmaB1+wS3R+dQWxhgRiJ7XeWM4LYIgKaEidaJ4HNFBLIkzi2
-	djkzRL24xK0n84Hmc3CwCWhJ7OhMBQlzCthLfL92nhWixEyia2sXI4QtL7H97RygVi6gM0+x
-	SyzoP8wCcbOkxMEVN1gmMArOQnLeLCQrZiGZNQvJrAWMLKsYRTLzynITM3OM9YqzMyrzMiv0
-	kvNzNzECY3dZ7Z/IHYzfLgQfYhTgYFTi4b1wKS5diDWxrLgy9xCjBAezkghvjUlsuhBvSmJl
-	VWpRfnxRaU5q8SFGaQ4WJXFeo2/lKUIC6YklqdmpqQWpRTBZJg5OqQbGOjXrw2uX3MqV5WP+
-	nsYa07ieeePlBc+9vKquRU1O7Snem7qIOUSg99BZNrl8ljnf5WqcE596f41PUZUwvvVf1+5h
-	uCf36Yprc8P3BwXua3XL1GL8ed6zu8LXZ6HF7d+Bcy4/mTRHZfGUzI8Cr5mOXHQ0eHYpwOE9
-	k7Sx6Qv9ssSLwTxr2w8osRRnJBpqMRcVJwIAlZmsEdkCAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJIsWRmVeSWpSXmKPExsXCNUOnRLfnTny6wfwlrBYTewws5qxfw2Yx
-	feoFRosTNxvZLH7ePc5u0bx4PZvF6k2+Fp+fvWa2uN1/jtVi1cJrbBbHt85jt9h3Eajh8NyT
-	rBY7H75ls1i+r5/R4vKuOWwW99b8Z7WY+2Uqs8Wha89ZLVavyXAQ8Tj85j2zx85Zd9k9utsu
-	s3u0HHnL6rF4z0smj02rOtk8Nn2axO5xYsZvFo+dDy09FjZMZfbYP3cNu8e5ixUe3257eCx+
-	8YHJ4/MmuQD+KC6blNSczLLUIn27BK6MWd1dLAUvxSsan89gbWCcKtzFyMkhIWAiMfPZZmYQ
-	m1fAUuLTqi9MIDaLgKrExL57rBBxQYmTM5+wgNiiAvIS92/NYAexmQVes0t0f3QGsYUFYiS2
-	31nOCGKLCGhKnGidBDZTSCBP4tja5cwQ9eISt57MB5rPwcEmoCWxozMVJMwpYC/x/dp5VogS
-	M4murV2MELa8xPa3c5gnMPLNQnLFLCSTZiFpmYWkZQEjyypGkcy8stzEzBwzveLsjMq8zAq9
-	5PzcTYzACF1W+2fSDsZvl90PMQpwMCrx8F64FJcuxJpYVlyZe4hRgoNZSYS3xiQ2XYg3JbGy
-	KrUoP76oNCe1+BCjNAeLkjivV3hqgpBAemJJanZqakFqEUyWiYNTqoHR8P3iud1rdubmmW1I
-	XWe7JJ6tmvVhTuzWH4eOTN6UNf+3pn3y6wgv9QVcdqbTjC+xrGK4eXax90f2G4asXtza2fsY
-	p0kY/zE/Vr5ht/eOB5lOOjxviidfLt8+LWv3g8bL2980VC1fKpKyP8MhVu9Aw/ZDCy+n3Pfl
-	UdjVFie1puX37kf/mNM7lViKMxINtZiLihMBvS4OA8wCAAA=
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
+Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
+driver.
 
+The patch series is organized in two parts:
 
-On 2024-12-14 4:57 AM, Joshua Hahn wrote:
-> On Fri, 13 Dec 2024 15:19:20 +0900 Hyeonggon Yoo <hyeonggon.yoo@sk.com> wrote:
-> 
->> On 2024-12-11 06:54 AM, Joshua Hahn wrote:
->>> This patch introduces an auto-configuration for the interleave weights
->>> that aims to balance the two goals of setting node weights to be
->>> proportional to their bandwidths and keeping the weight values low.
->>> This balance is controlled by a value max_node_weight, which defines the
->>> maximum weight a single node can take.
->>
->> Hi Joshua,
->>
->> I am wondering how this is going to work for host memory + CXL memory
->> interleaving. I guess by "the ACPI table" you mean the ACPI HMAT or CXL
->> CDAT, both of which does not provide the bandwidth of host memory.
->> If this feature does not consider the bandwidth of host memory, manual
->> configuration will be inevitable anyway.
-> 
-> Hi Hyeonggon,
-> 
-> Thank you for reviewing my patch!
+ - patch 1-2 refactor out the general CPPC register get and set functions
+   in cppc_acpi.c
 
-No problem :)
+ - patches 3-4 expose sysfs files for users to control CPPC autonomous
+   selection when supported
 
-> As Gregory showed in his reply, I think it would be possible to get host bandwidth information
-> using the ACPI HMAT.
+Since Pierre and me have discussed about whether or not to show
+auto_act_window and energy_perf when auto_select is disabled. It seems
+like whether to show these two files has their own points. We'd like to
+ask for some advice.
 
-You're right. I was wrong. I checked on our server, and its bandwidth 
-information was valid for both local memory and CXL memory. Sorry for
-the noise.
+Relevant discussion:
+[1] https://lore.kernel.org/all/522721da-1a5c-439c-96a8-d0300dd0f906@huawei.com/
 
-> [-----8<-----]
-> 
->>> +What:		/sys/kernel/mm/mempolicy/weighted_interleave/max_node_weight
->>> +Date:		December 2024
->>> +Contact:	Linux memory management mailing list <linux-mm@kvack.org>
->>> +Description:	Weight limiting / scaling interface
->>> +
->>> +		The maximum interleave weight for a memory node. When it is
->>> +		updated, any previous changes to interleave weights (i.e. via
->>> +		the nodeN sysfs interfaces) are ignored, and new weights are
->>> +		calculated using ACPI-reported bandwidths and scaled.
->>> +
->>
->> At first this paragraph sounded like "previously stored weights are
->> discarded after setting max_node_weight", but I think you mean
->> "User can override the default values, but defaults values are
->> calculated regardless of the values set by the user". Right?
-> 
-> In the implementation, the first way you interpreted is the correct
-> description. That is, if a user manually changes a ndoe weight,
-> then updates the max_node_weight, the previous manual change will
-> be overwritten by the newly scaled values.
- >
-> Does this behavior make sense?
+Change since v2:
+ - change cppc_get_reg() and cppc_set_reg() name to cppc_get_reg_val() and
+   cppc_set_reg_val()
+ - extract cppc_get_reg_val_in_pcc() and cppc_set_reg_val_in_pcc()
+ - return the result of cpc_read() in cppc_get_reg_val()
+ - add pr_debug() in cppc_get_reg_val_in_pcc() when pcc_ss_id < 0
+ - rename 'cpunum' to 'cpu' in cppc_get_reg_val()
+ - move some macros from drivers/cpufreq/cppc_cpufreq.c to
+   include/acpi/cppc_acpi.h with a CPPC_XXX prefix
 
-Ok. then current implementation overwrites the node weights
-previously set by the user.
+Change since v1:
+ - fix some incorrect placeholder
+ - change kstrtoul to kstrtobool in store_auto_select
 
-I think it makes sense to re-scale all nodes and overwrite manually set 
-node weights, because it's what the knob is meant to do, and the user 
-still can override the weight by setting node weight after updating
-max_node_weight.
+Lifeng Zheng (4):
+  ACPI: CPPC: Add cppc_get_reg_val and cppc_set_reg_val function
+  ACPI: CPPC: Refactor register value get and set ABIs
+  ACPI: CPPC: Add autonomous selection ABIs
+  cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
 
-By the way, could you please explain which part of this patch implements
-this rule? IIUC it does not invalidate iw_table after updating these
-default values, which makes get_il_weight() to use manully set node 
-weights even after updating max_node_weight. (Or probably I just
-misunderstood the code?)
+ .../ABI/testing/sysfs-devices-system-cpu      |  54 ++++
+ drivers/acpi/cppc_acpi.c                      | 266 +++++++++---------
+ drivers/cpufreq/cppc_cpufreq.c                | 129 +++++++++
+ include/acpi/cppc_acpi.h                      |  29 ++
+ 4 files changed, 347 insertions(+), 131 deletions(-)
 
-> Have a great day!
+-- 
+2.33.0
 
-Have a great day too :)
-
---
-Hyeonggon
 
