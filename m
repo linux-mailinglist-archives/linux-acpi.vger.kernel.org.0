@@ -1,59 +1,104 @@
-Return-Path: <linux-acpi+bounces-10144-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10147-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE789F2CB3
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 10:16:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC759F34E2
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 16:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B739188A9A4
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 09:16:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83C1F7A0302
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 15:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC7020125F;
-	Mon, 16 Dec 2024 09:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8041386BF;
+	Mon, 16 Dec 2024 15:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKQP1xrD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD091FFC6E;
-	Mon, 16 Dec 2024 09:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8549845C1C;
+	Mon, 16 Dec 2024 15:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734340572; cv=none; b=m4o0GNer9IhaEMdp5aQzE+TzUaanWDPEwlxYuNmLPImJHDvJUkXkBmygfVpPHLJt1FlDjQpWgHNuVJfO8smfSB4/ITzJ2NzABMAkwqgIj5Up0SByCe3VpHhAw+NSjTp87Ldaq3nCX5h4hPnXkbRolix9bm2QT7Ih8wWMTr3/o8o=
+	t=1734364011; cv=none; b=I8/eJaS+G3rnLQqrEJVSma8kqeCmFUZxJ5urTOkkyGDJNHR3Vu2qcEGEGiq1E8R9y37oYA3xIPiCPJbzoPRvKo3BwzgT4D9wso+bTzvRbIU3U/MdL9riVyZ+0raRUsw9vyU/xRtXffQ0ID24JThYssH2KaMeX5+ZizaN8d9+lPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734340572; c=relaxed/simple;
-	bh=S6GRo0t4CWP4T8IspQawT1xKdLunTDQ3Spf5DGVTn8M=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tDDpFZNffDHlNxAHuTZF9g3Ngcr8mWtUVaylYHZD1qebs5/kE2Eixt4AG30oq6pM39/vwrTjVaRl5Nlczu7Vxttd/s4P1ZJvGVZpMbDFU4IO/Veysqx0agSHJwO1EsXX5lBRXakn3Eg6auBo7NpBmD2NfP/SENBWfyFuvmZXxGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4YBZ590BNpzqV1W;
-	Mon, 16 Dec 2024 17:14:21 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4B96B1802D0;
-	Mon, 16 Dec 2024 17:16:07 +0800 (CST)
-Received: from localhost.huawei.com (10.50.165.33) by
- kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 16 Dec 2024 17:16:06 +0800
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<viresh.kumar@linaro.org>
-CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<linuxarm@huawei.com>, <pierre.gondois@arm.com>, <ionela.voinescu@arm.com>,
-	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
-	<lihuisong@huawei.com>, <zhenglifeng1@huawei.com>, <hepeng68@huawei.com>,
-	<fanghao11@huawei.com>
-Subject: [PATCH v3 4/4] cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
-Date: Mon, 16 Dec 2024 17:16:03 +0800
-Message-ID: <20241216091603.1247644-5-zhenglifeng1@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20241216091603.1247644-1-zhenglifeng1@huawei.com>
-References: <20241216091603.1247644-1-zhenglifeng1@huawei.com>
+	s=arc-20240116; t=1734364011; c=relaxed/simple;
+	bh=52p+YxtohD7VXL8b1WzYoec2dWIHx5VGUb3oMtcwsAY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HXtFK1PLngn8WCm+mnprQ5G1NJIQm7c5qTdCUBOeDEbPWKWdwR2qeC/1LC2GQE5eoYzqcjpsGege42jqJMlh/Zcpgmvld/9HFqEX7RmT2tvhryOWUPQ9F+uK6DyC5v/BP+ScW0OJOvoYH+3yVkcXc4mpEvCejNZc/lJm7U8qmV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKQP1xrD; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e3c8f39cab1so3293104276.0;
+        Mon, 16 Dec 2024 07:46:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734364008; x=1734968808; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4/L24M77KEHgjRD2S/cq3ONFt+aksrwaxpiJzcqZqpE=;
+        b=kKQP1xrDRDmNY19J2ypW1pCPeLN7FwsVISs9cGhNU2Ln6XTaaYOdcXsVqAe8JEVcbM
+         07auoS1z+qV9AW9MHkD1Sqy9fpULPuMj0cZt+q7Xp+7Uhi/pXAk+ULIcRr89/tR55DX8
+         8/leKGVojz/lZ16E34e8GFTDmyq5LpLI3Sdhcp7ZgUa2xV30dj4S26mr+UpZcX1gkBe7
+         d/8XEBJKag0WVdU8fmiD0S6VvoKFXmu8kaN3NH5p4AuSk5zrhUpGUjrNhfvGREPFxgUH
+         /wcWAlnw2C1qd8REOQb3iqhTREVTVsUSRO91hH/2Sb5Ba4vbKAEwQtdWIcCGulaLEeO3
+         zjow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734364008; x=1734968808;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4/L24M77KEHgjRD2S/cq3ONFt+aksrwaxpiJzcqZqpE=;
+        b=cCw21Qlg8/RLL5mRSm77DbXf9G7XUJGufN22j6FfVE/Ls3dBXX9TfUy8ElXZRcfnRU
+         JgBRpNWYxCNdW6+WeUBuLJHqf+2oBGyPFdKNTRCKiK7EdHeeBE4T0IBbDEgExlSBKREX
+         qaVpEeXTUWs9CQWO2/qjAqvgHBU+7vopdC+u+sXnUM8RKB02SHJzDrxM0sZkvQkuXBiX
+         dbbhWiG/3SQKZuDCPn3M8cfxM2CGKY7CmOlk4/e6Eh6n5SzVjWKsl3ipx+5p1zvRAD3v
+         0eNM5AsgQcgk3869fQPOEz0fFhK66bXNMKhZeG/QnI4PQk7csDe1tFQraimlFbptYrui
+         z3sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgq+HyG5rm9HEkVV2snJFWGsUT3jePg6t8JC3lQR/gcjdnQ9Ni8brlVXD8J1p85gUWY2vR6L34kT+LJjgC@vger.kernel.org, AJvYcCWMAb8miOJKtM0jhBGjbI2ZB1MPRMbOm77UX0PKl/lLztvv7sFoBTdhJisvUOHhOU1l8XLHdIk7ycwa@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZuWOzomSNrW/VqWTAZIy6Y+Ryl1/GfWdCl05RwkA/sHI5ALY+
+	WTsTM+F56yn184pLquk2Ex7LatSeOr40IHZ3rq22OWevNYnJ3wd1
+X-Gm-Gg: ASbGncvS43FML2Kphk6ZvhdGUw5H+L9T15z3i5vNRNv+1Q/R09jCcm3Ggq5V6kNXP8s
+	sKivgpVsPtq7wR+x0/SfuzoPosA1WXJ06mqtH8ud/ur0pthAKUmNgbM3OVUBgmc6tfUmnmuKXVy
+	GbHnFKmGVTGP9WCKLEhiOwe1Hq8Fh+CcyWOKU4jvRK0hQNnHipxBvw6nJV7aL3vMHW+YDjgFIuh
+	J4aigf+vKj/j1t+PnRTXNxFqiHNMeT0CVpGa6+V93RMGNVVNgVd2XdhMNhOnNAaNHwqTNnKgmZW
+	dxn0EqMuJ+GsCn7NDA==
+X-Google-Smtp-Source: AGHT+IE03JmeV99mfjBTG2bTimbuUBUR2MDJ2a7PMRUxwdPG69gs36EkqipuHIrHqvnQVAvu+4KPpQ==
+X-Received: by 2002:a25:86cf:0:b0:e38:259e:bddb with SMTP id 3f1490d57ef6-e41ecf8143emr11678223276.11.1734364008390;
+        Mon, 16 Dec 2024 07:46:48 -0800 (PST)
+Received: from localhost (fwdproxy-nha-115.fbsv.net. [2a03:2880:25ff:73::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e470e54d912sm1404678276.60.2024.12.16.07.46.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Dec 2024 07:46:47 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: hyeonggon.yoo@sk.com
+Cc: kernel_team@skhynix.com,
+	42.hyeyoo@gmail.com,
+	"gourry@gourry.net" <gourry@gourry.net>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	=?UTF-8?q?=EA=B9=80=ED=99=8D=EA=B7=9C=20System=20SW?= <honggyu.kim@sk.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	=?UTF-8?q?=EA=B9=80=EB=9D=BD=EA=B8=B0=20System=20SW?= <rakie.kim@sk.com>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"horen.chuang@linux.dev" <horen.chuang@linux.dev>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"kernel-team@meta.com" <kernel-team@meta.com>
+Subject: Re: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave auto-tuning
+Date: Mon, 16 Dec 2024 07:46:31 -0800
+Message-ID: <20241216154646.1499268-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <7ed89f33-6ba0-44c7-b4ea-0c72029fa33b@sk.com>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -61,250 +106,98 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemh100008.china.huawei.com (7.202.181.93)
 
-Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
-driver.
+On Mon, 16 Dec 2024 16:53:47 +0900 Hyeonggon Yoo <hyeonggon.yoo@sk.com> wrote:
+> 
+> On 2024-12-14 4:57 AM, Joshua Hahn wrote:
+> > On Fri, 13 Dec 2024 15:19:20 +0900 Hyeonggon Yoo <hyeonggon.yoo@sk.com> wrote:
+> > 
+> >> On 2024-12-11 06:54 AM, Joshua Hahn wrote:
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
----
- .../ABI/testing/sysfs-devices-system-cpu      |  54 ++++++++
- drivers/cpufreq/cppc_cpufreq.c                | 129 ++++++++++++++++++
- include/acpi/cppc_acpi.h                      |   9 ++
- 3 files changed, 192 insertions(+)
+[-----8<-----]
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index 206079d3bd5b..3d87c3bb3fe2 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -268,6 +268,60 @@ Description:	Discover CPUs in the same CPU frequency coordination domain
- 		This file is only present if the acpi-cpufreq or the cppc-cpufreq
- 		drivers are in use.
- 
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_select
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Autonomous selection enable
-+
-+		Read/write interface to control autonomous selection enable
-+			Read returns autonomous selection status:
-+				0: autonomous selection is disabled
-+				1: autonomous selection is enabled
-+
-+			Write 'y' or '1' or 'on' to enable autonomous selection.
-+			Write 'n' or '0' or 'off' to disable autonomous selection.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/auto_act_window
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Autonomous activity window
-+
-+		This file indicates a moving utilization sensitivity window to
-+		the platform's autonomous selection policy.
-+
-+		Read/write an integer represents autonomous activity window (in
-+		microseconds) from/to this file. The max value to write is
-+		1270000000 but the max significand is 127. This means that if 128
-+		is written to this file, 127 will be stored. If the value is
-+		greater than 130, only the first two digits will be saved as
-+		significand.
-+
-+		Writing a zero value to this file enable the platform to
-+		determine an appropriate Activity Window depending on the workload.
-+
-+		Writing to this file only has meaning when Autonomous Selection is
-+		enabled.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
-+What:		/sys/devices/system/cpu/cpuX/cpufreq/energy_perf
-+Date:		October 2024
-+Contact:	linux-pm@vger.kernel.org
-+Description:	Energy performance preference
-+
-+		Read/write an 8-bit integer from/to this file. This file
-+		represents a range of values from 0 (performance preference) to
-+		0xFF (energy efficiency preference) that influences the rate of
-+		performance increase/decrease and the result of the hardware's
-+		energy efficiency and performance optimization policies.
-+
-+		Writing to this file only has meaning when Autonomous Selection is
-+		enabled.
-+
-+		This file only presents if the cppc-cpufreq driver is in use.
-+
- 
- What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
- Date:		August 2008
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 2b8708475ac7..111fab50b7a0 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -792,10 +792,139 @@ static ssize_t show_freqdomain_cpus(struct cpufreq_policy *policy, char *buf)
- 
- 	return cpufreq_show_cpus(cpu_data->shared_cpu_map, buf);
- }
-+
-+static ssize_t show_auto_select(struct cpufreq_policy *policy, char *buf)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_auto_sel(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%llu\n", val);
-+}
-+
-+static ssize_t store_auto_select(struct cpufreq_policy *policy,
-+				 const char *buf, size_t count)
-+{
-+	bool val;
-+	int ret;
-+
-+	ret = kstrtobool(buf, &val);
-+	if (ret)
-+		return ret;
-+
-+	ret = cppc_set_auto_sel(policy->cpu, val);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
-+{
-+	unsigned int exp;
-+	u64 val, sig;
-+	int ret;
-+
-+	ret = cppc_get_auto_act_window(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	sig = val & CPPC_AUTO_ACT_WINDOW_MAX_SIG;
-+	exp = (val >> CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE) & CPPC_AUTO_ACT_WINDOW_MAX_EXP;
-+
-+	return sysfs_emit(buf, "%llu\n", sig * int_pow(10, exp));
-+}
-+
-+static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
-+				     const char *buf, size_t count)
-+{
-+	unsigned long usec;
-+	int digits = 0;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &usec);
-+	if (ret)
-+		return ret;
-+
-+	if (usec > CPPC_AUTO_ACT_WINDOW_MAX_SIG * int_pow(10, CPPC_AUTO_ACT_WINDOW_MAX_EXP))
-+		return -EINVAL;
-+
-+	while (usec > CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH) {
-+		usec /= 10;
-+		digits += 1;
-+	}
-+
-+	if (usec > CPPC_AUTO_ACT_WINDOW_MAX_SIG)
-+		usec = CPPC_AUTO_ACT_WINDOW_MAX_SIG;
-+
-+	ret = cppc_set_auto_act_window(policy->cpu,
-+				       (digits << CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE) + usec);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+static ssize_t show_energy_perf(struct cpufreq_policy *policy, char *buf)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = cppc_get_epp_perf(policy->cpu, &val);
-+
-+	/* show "<unsupported>" when this register is not supported by cpc */
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "%s\n", "<unsupported>");
-+
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%llu\n", val);
-+}
-+
-+static ssize_t store_energy_perf(struct cpufreq_policy *policy,
-+				 const char *buf, size_t count)
-+{
-+	unsigned long val;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val > CPPC_ENERGY_PERF_MAX)
-+		return -EINVAL;
-+
-+	ret = cppc_set_epp(policy->cpu, val);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
- cpufreq_freq_attr_ro(freqdomain_cpus);
-+cpufreq_freq_attr_rw(auto_select);
-+cpufreq_freq_attr_rw(auto_act_window);
-+cpufreq_freq_attr_rw(energy_perf);
- 
- static struct freq_attr *cppc_cpufreq_attr[] = {
- 	&freqdomain_cpus,
-+	&auto_select,
-+	&auto_act_window,
-+	&energy_perf,
- 	NULL,
- };
- 
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 134931b081a0..8176fca4c86b 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -32,6 +32,15 @@
- #define	CMD_READ 0
- #define	CMD_WRITE 1
- 
-+#define CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE	(7)
-+#define CPPC_AUTO_ACT_WINDOW_EXP_BIT_SIZE	(3)
-+#define CPPC_AUTO_ACT_WINDOW_MAX_SIG	((1 << CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE) - 1)
-+#define CPPC_AUTO_ACT_WINDOW_MAX_EXP	((1 << CPPC_AUTO_ACT_WINDOW_EXP_BIT_SIZE) - 1)
-+/* CPPC_AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
-+#define CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
-+
-+#define CPPC_ENERGY_PERF_MAX	(0xFF)
-+
- /* Each register has the folowing format. */
- struct cpc_reg {
- 	u8 descriptor;
--- 
-2.33.0
+> > Hi Hyeonggon,
+> > 
+> > Thank you for reviewing my patch!
+> 
+> No problem :)
+> 
+> > As Gregory showed in his reply, I think it would be possible to get host bandwidth information
+> > using the ACPI HMAT.
+> 
+> You're right. I was wrong. I checked on our server, and its bandwidth 
+> information was valid for both local memory and CXL memory. Sorry for
+> the noise.
 
+No worries, thank you for verifying from your end as well!
+
+> > [-----8<-----]
+> > 
+> >>> +What:		/sys/kernel/mm/mempolicy/weighted_interleave/max_node_weight
+> >>> +Date:		December 2024
+> >>> +Contact:	Linux memory management mailing list <linux-mm@kvack.org>
+> >>> +Description:	Weight limiting / scaling interface
+> >>> +
+> >>> +		The maximum interleave weight for a memory node. When it is
+> >>> +		updated, any previous changes to interleave weights (i.e. via
+> >>> +		the nodeN sysfs interfaces) are ignored, and new weights are
+> >>> +		calculated using ACPI-reported bandwidths and scaled.
+> >>> +
+> >>
+> >> At first this paragraph sounded like "previously stored weights are
+> >> discarded after setting max_node_weight", but I think you mean
+> >> "User can override the default values, but defaults values are
+> >> calculated regardless of the values set by the user". Right?
+> > 
+> > In the implementation, the first way you interpreted is the correct
+> > description. That is, if a user manually changes a ndoe weight,
+> > then updates the max_node_weight, the previous manual change will
+> > be overwritten by the newly scaled values.
+>  >
+> > Does this behavior make sense?
+> 
+> Ok. then current implementation overwrites the node weights
+> previously set by the user.
+> 
+> I think it makes sense to re-scale all nodes and overwrite manually set 
+> node weights, because it's what the knob is meant to do, and the user 
+> still can override the weight by setting node weight after updating
+> max_node_weight.
+
+Thank you for your feedback. There is a slight concern, however, where there
+is a semantic mismatch between the name "max_node_weight" and its value.
+Like the description suggests, it is possible for individual nodes to have
+weights greater than the "max node weight".
+
+However, the alternative would be to re-scale all weights whenever an
+individual node's weight is manually overwritten to be greater than
+the max, which I think makes even less sense since users probably don't
+expect changing one weight to influence other nodes as well.
+ 
+> By the way, could you please explain which part of this patch implements
+> this rule? IIUC it does not invalidate iw_table after updating these
+> default values, which makes get_il_weight() to use manully set node 
+> weights even after updating max_node_weight. (Or probably I just
+> misunderstood the code?)
+
+Ah, I am sorry for this mistake. It seems like I didn't update the
+actual iw table, updating the default instead. Thank you for the catch,
+this will be updated in the v2.
+
+Actually, there are a few more changes that I would like to make in the
+v2, the biggest of which is to lay down the intended behavior more
+explicitly in the documentation so that there is no ambiguity
+from the user perspective, and make sure that the code actually
+does reflect the intention as well. 
+
+> > Have a great day!
+> 
+> Have a great day too :)
+> 
+> --
+> Hyeonggon
+
+Thank you again for your feedback, happy holidays!
+
+Joshua
 
