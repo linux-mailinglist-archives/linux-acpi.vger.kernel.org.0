@@ -1,46 +1,35 @@
-Return-Path: <linux-acpi+bounces-10140-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10141-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3355F9F29B5
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 06:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11799F2B31
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 08:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1AE718815A4
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 05:46:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A701886066
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 07:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FB01B412D;
-	Mon, 16 Dec 2024 05:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="A97epH4K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EF41FF60C;
+	Mon, 16 Dec 2024 07:54:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E5E157469;
-	Mon, 16 Dec 2024 05:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+Received: from invmail3.skhynix.com (exvmail3.hynix.com [166.125.252.90])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B2B433C8;
+	Mon, 16 Dec 2024 07:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734328008; cv=none; b=m6smXiSWhm2v7oNFxCKUubuT3EKrkFWDu3jOPN4bDeHr1tP4AHL4s9W8OodhomP3o1MIJDavoxmzyGpK5X70qMhW7l/qCr+49ii97I4CDdtarnoHnCSoqswSaA7WyCpLZr63ZjaAh63mOzRzvOkEXSh1CTmrwg2G7XwWMoIZRiQ=
+	t=1734335643; cv=none; b=D1IFvT5+VZrzWvUHCPXjK9mzbxFJgk4o40ywrCmk/yo3q7b+Xr3DrPkYEHblVfCMUTYJo1BBPU/RIyy7jeBt8sPMA5furdyWhbrwKNO9TqU75XChg3EkGns0nOtD/K0dIWTSYDp7wu47LKXoc7CWiqJDCO2sDJj204ZHz02Clxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734328008; c=relaxed/simple;
-	bh=Id6NqKAnCpRu1xrCidnS+ko/d3C713wmPxlXq9fvkDU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iwvvCdvW2Ds/qZOzmRA5YWMMaZpJ8hh2azlSONPohtsi97iWWo/60OlfZLPkLkpMTQU+zVQaDrKP10jwG1Vi7ITsvSRj1OW3EmXjTFWbCGMZ5rK+YYt0Yenupy5Rxk1KsMhFLYPLu6bKG4LSPAxYsw85YKgtQsysVjWBFYyEORo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=A97epH4K; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1734327997; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=f81KfW85wEQNoq2nlGF77lObzOhpo6oJeeHyxrLLk54=;
-	b=A97epH4KKRrgOA4GhE6FVQSpffo7hOAO4BeMzUw7856Fbjr8SS4im66e/d/ONPVO5pFqm3huThjQNkQPTn/whec3W4V2AZk2KWrQOhvRI8xh90jY8bnpK1lgs168WO4lQe7DcGM/eexQCiT601/DbEBVq/gGitmYnt9S2Hj4hpE=
-Received: from 30.246.161.240(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WLWS82F_1734327991 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 16 Dec 2024 13:46:33 +0800
-Message-ID: <290a8ac7-4d4b-472d-a77d-a0c76d7b963e@linux.alibaba.com>
-Date: Mon, 16 Dec 2024 13:46:30 +0800
+	s=arc-20240116; t=1734335643; c=relaxed/simple;
+	bh=4YUi9IIN+FDfpxF4emlc22UqQohODEXavHnNVnPLZE8=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XsEI2D/qelcIV6RQIGCEF/SsG2+0dAXEBOYCXHzp2mUYCe1uf+StLETdgRccncRtV+QvU0qOA5+hqxMrysATXfOouJ+1bB1eNLoZai1z/IzIfccYdyg0pYZO0m16ADaiKrm+UVk+82qD6GP5TLoY3RlaI2W+AnmbvB7Sxd08Wj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc59-7a9ff700000194b3-e2-675fdc8c7271
+Message-ID: <7ed89f33-6ba0-44c7-b4ea-0c72029fa33b@sk.com>
+Date: Mon, 16 Dec 2024 16:53:47 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -48,269 +37,139 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 0/3] ACPI: APEI: handle synchronous errors in task
- work
-To: yazen.ghannam@amd.com, mark.rutland@arm.com, catalin.marinas@arm.com,
- mingo@redhat.com, robin.murphy@arm.com, Jonathan.Cameron@Huawei.com,
- bp@alien8.de, rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20241202030527.20586-1-xueshuai@linux.alibaba.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20241202030527.20586-1-xueshuai@linux.alibaba.com>
+Cc: kernel_team@skhynix.com, 42.hyeyoo@gmail.com,
+ "gourry@gourry.net" <gourry@gourry.net>,
+ "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+ <lenb@kernel.org>, "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ =?UTF-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKSBTeXN0ZW0gU1c=?=
+ <honggyu.kim@sk.com>,
+ "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+ =?UTF-8?B?6rmA65296riwKEtJTSBSQUtJRSkgU3lzdGVtIFNX?= <rakie.kim@sk.com>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+ "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+ "dave.jiang@intel.com" <dave.jiang@intel.com>,
+ "horen.chuang@linux.dev" <horen.chuang@linux.dev>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kernel-team@meta.com" <kernel-team@meta.com>
+Subject: Re: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
+ auto-tuning
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <4ddfa283-eb64-4032-880b-c19b07e407e1@sk.com>
+ <20241213195754.2676135-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Hyeonggon Yoo <hyeonggon.yoo@sk.com>
+In-Reply-To: <20241213195754.2676135-1-joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGIsWRmVeSWpSXmKPExsXC9ZZnkW7Pnfh0gw8LVCwm9hhYzFm/hs1i
+	+tQLjBYnbjayWfy8e5zdonnxejaL1Zt8LW73n2O1WLXwGpvF8a3z2C32XQSq3fnwLZvF8n39
+	jBaXd81hs7i35j+rxdwvU5ktVq/JcBD0OPzmPbPHzll32T262y6ze7QcecvqsXjPSyaPTas6
+	2Tw2fZrE7nFixm8Wj50PLT0WNkxl9tg/dw27x7mLFR6fN8kF8EZx2aSk5mSWpRbp2yVwZczq
+	7mIpeCle0fh8BmsD41ThLkZODgkBE4mV+6ayw9gzn21mBrF5BSwlPq36wgRiswioSkzsu8cK
+	EReUODnzCQuILSogL3H/1gywXmaB1+wS3R+dQWxhgRiJ7XeWM4LYIgKaEidaJ4HNFBLIkzi2
+	djkzRL24xK0n84Hmc3CwCWhJ7OhMBQlzCthLfL92nhWixEyia2sXI4QtL7H97RygVi6gM0+x
+	SyzoP8wCcbOkxMEVN1gmMArOQnLeLCQrZiGZNQvJrAWMLKsYRTLzynITM3OM9YqzMyrzMiv0
+	kvNzNzECY3dZ7Z/IHYzfLgQfYhTgYFTi4b1wKS5diDWxrLgy9xCjBAezkghvjUlsuhBvSmJl
+	VWpRfnxRaU5q8SFGaQ4WJXFeo2/lKUIC6YklqdmpqQWpRTBZJg5OqQbGOjXrw2uX3MqV5WP+
+	nsYa07ieeePlBc+9vKquRU1O7Snem7qIOUSg99BZNrl8ljnf5WqcE596f41PUZUwvvVf1+5h
+	uCf36Yprc8P3BwXua3XL1GL8ed6zu8LXZ6HF7d+Bcy4/mTRHZfGUzI8Cr5mOXHQ0eHYpwOE9
+	k7Sx6Qv9ssSLwTxr2w8osRRnJBpqMRcVJwIAlZmsEdkCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJIsWRmVeSWpSXmKPExsXCNUOnRLfnTny6wfwlrBYTewws5qxfw2Yx
+	feoFRosTNxvZLH7ePc5u0bx4PZvF6k2+Fp+fvWa2uN1/jtVi1cJrbBbHt85jt9h3Eajh8NyT
+	rBY7H75ls1i+r5/R4vKuOWwW99b8Z7WY+2Uqs8Wha89ZLVavyXAQ8Tj85j2zx85Zd9k9utsu
+	s3u0HHnL6rF4z0smj02rOtk8Nn2axO5xYsZvFo+dDy09FjZMZfbYP3cNu8e5ixUe3257eCx+
+	8YHJ4/MmuQD+KC6blNSczLLUIn27BK6MWd1dLAUvxSsan89gbWCcKtzFyMkhIWAiMfPZZmYQ
+	m1fAUuLTqi9MIDaLgKrExL57rBBxQYmTM5+wgNiiAvIS92/NYAexmQVes0t0f3QGsYUFYiS2
+	31nOCGKLCGhKnGidBDZTSCBP4tja5cwQ9eISt57MB5rPwcEmoCWxozMVJMwpYC/x/dp5VogS
+	M4murV2MELa8xPa3c5gnMPLNQnLFLCSTZiFpmYWkZQEjyypGkcy8stzEzBwzveLsjMq8zAq9
+	5PzcTYzACF1W+2fSDsZvl90PMQpwMCrx8F64FJcuxJpYVlyZe4hRgoNZSYS3xiQ2XYg3JbGy
+	KrUoP76oNCe1+BCjNAeLkjivV3hqgpBAemJJanZqakFqEUyWiYNTqoHR8P3iud1rdubmmW1I
+	XWe7JJ6tmvVhTuzWH4eOTN6UNf+3pn3y6wgv9QVcdqbTjC+xrGK4eXax90f2G4asXtza2fsY
+	p0kY/zE/Vr5ht/eOB5lOOjxviidfLt8+LWv3g8bL2980VC1fKpKyP8MhVu9Aw/ZDCy+n3Pfl
+	UdjVFie1puX37kf/mNM7lViKMxINtZiLihMBvS4OA8wCAAA=
+X-CFilter-Loop: Reflected
 
 
 
-在 2024/12/2 11:05, Shuai Xue 写道:
-> changes singce v16:
-> - add reviewed-by tag for patch 1 and patch 2 from Yazen
-> - rewrite warning message for force kill (per Yazen)
-> - warn with dev_err in ghes (per Jarkko)
-> - add return value -ENXIO in memory_failure comments  (per Yazen)
-> - Link: https://lore.kernel.org/lkml/20241104015430.98599-1-xueshuai@linux.alibaba.com/
+On 2024-12-14 4:57 AM, Joshua Hahn wrote:
+> On Fri, 13 Dec 2024 15:19:20 +0900 Hyeonggon Yoo <hyeonggon.yoo@sk.com> wrote:
 > 
-> changes singce v15:
-> - add HW_ERR and GHES_PFX prefix per Yazen
+>> On 2024-12-11 06:54 AM, Joshua Hahn wrote:
+>>> This patch introduces an auto-configuration for the interleave weights
+>>> that aims to balance the two goals of setting node weights to be
+>>> proportional to their bandwidths and keeping the weight values low.
+>>> This balance is controlled by a value max_node_weight, which defines the
+>>> maximum weight a single node can take.
+>>
+>> Hi Joshua,
+>>
+>> I am wondering how this is going to work for host memory + CXL memory
+>> interleaving. I guess by "the ACPI table" you mean the ACPI HMAT or CXL
+>> CDAT, both of which does not provide the bandwidth of host memory.
+>> If this feature does not consider the bandwidth of host memory, manual
+>> configuration will be inevitable anyway.
 > 
-> changes since v14:
-> - add reviewed-by tags from Jarkko and Jonathan
-> - remove local variable and use twcb->pfn
+> Hi Hyeonggon,
 > 
-> changes since v13:
-> - add reviewed-by tag from Jarkko
-> - rename task_work to ghes_task_work (per Jarkko)
-> 
-> changes since v12:
-> - tweak error message for force kill (per Jarkko)
-> - fix comments style (per Jarkko)
-> - fix commit log typo (per Jarko)
-> 
-> changes since v11:
-> - rebase to Linux 6.11-rc6
-> - fix grammer and typo in commit log (per Borislav)
-> - remove `sync_` perfix of `sync_task_work`  (per Borislav)
-> - comments flags and description of `task_work`  (per Borislav)
-> 
-> changes since v10:
-> - rebase to v6.8-rc2
-> 
-> changes since v9:
-> - split patch 2 to address exactly one issue in one patch (per Borislav)
-> - rewrite commit log according to template (per Borislav)
-> - pickup reviewed-by tag of patch 1 from James Morse
-> - alloc and free twcb through gen_pool_{alloc, free) (Per James)
-> - rewrite cover letter
-> 
-> changes since v8:
-> - remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
-> - remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
-> - rewrite the return value comments of memory_failure (per Naoya Horiguchi)
-> 
-> changes since v7:
-> - rebase to Linux v6.6-rc2 (no code changed)
-> - rewritten the cover letter to explain the motivation of this patchset
-> 
-> changes since v6:
-> - add more explicty error message suggested by Xiaofei
-> - pick up reviewed-by tag from Xiaofei
-> - pick up internal reviewed-by tag from Baolin
-> 
-> changes since v5 by addressing comments from Kefeng:
-> - document return value of memory_failure()
-> - drop redundant comments in call site of memory_failure()
-> - make ghes_do_proc void and handle abnormal case within it
-> - pick up reviewed-by tag from Kefeng Wang
-> 
-> changes since v4 by addressing comments from Xiaofei:
-> - do a force kill only for abnormal sync errors
-> 
-> changes since v3 by addressing comments from Xiaofei:
-> - do a force kill for abnormal memory failure error such as invalid PA,
-> unexpected severity, OOM, etc
-> - pcik up tested-by tag from Ma Wupeng
-> 
-> changes since v2 by addressing comments from Naoya:
-> - rename mce_task_work to sync_task_work
-> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
-> - add steps to reproduce this problem in cover letter
-> 
-> changes since v1:
-> - synchronous events by notify type
-> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
-> 
-> ## Cover Letter
-> 
-> There are two major types of uncorrected recoverable (UCR) errors :
-> 
-> - Synchronous error: The error is detected and raised at the point of the
->    consumption in the execution flow, e.g. when a CPU tries to access
->    a poisoned cache line. The CPU will take a synchronous error exception
->    such as Synchronous External Abort (SEA) on Arm64 and Machine Check
->    Exception (MCE) on X86. OS requires to take action (for example, offline
->    failure page/kill failure thread) to recover this uncorrectable error.
-> 
-> - Asynchronous error: The error is detected out of processor execution
->    context, e.g. when an error is detected by a background scrubber. Some data
->    in the memory are corrupted. But the data have not been consumed. OS is
->    optional to take action to recover this uncorrectable error.
-> 
-> Currently, both synchronous and asynchronous error use
-> memory_failure_queue() to schedule memory_failure() exectute in kworker
-> context. As a result, when a user-space process is accessing a poisoned
-> data, a data abort is taken and the memory_failure() is executed in the
-> kworker context:
-> 
->    - will send wrong si_code by SIGBUS signal in early_kill mode, and
->    - can not kill the user-space in some cases resulting a synchronous
->      error infinite loop
-> 
-> Issue 1: send wrong si_code in early_kill mode
-> 
-> Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
-> could be used to determine whether a synchronous exception occurs on
-> ARM64 platform.  When a synchronous exception is detected, the kernel is
-> expected to terminate the current process which has accessed poisoned
-> page. This is done by sending a SIGBUS signal with an error code
-> BUS_MCEERR_AR, indicating an action-required machine check error on
-> read.
-> 
-> However, when kill_proc() is called to terminate the processes who have
-> the poisoned page mapped, it sends the incorrect SIGBUS error code
-> BUS_MCEERR_AO because the context in which it operates is not the one
-> where the error was triggered.
-> 
-> To reproduce this problem:
-> 
->    # STEP1: enable early kill mode
->    #sysctl -w vm.memory_failure_early_kill=1
->    vm.memory_failure_early_kill = 1
-> 
->    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 5 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
-> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
-> error and it is not fact.
-> 
-> To fix it, queue memory_failure() as a task_work so that it runs in
-> the context of the process that is actually consuming the poisoned data.
-> 
-> After this patch set:
-> 
->    # STEP1: enable early kill mode
->    #sysctl -w vm.memory_failure_early_kill=1
->    vm.memory_failure_early_kill = 1
-> 
->    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 4 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
-> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
-> error as we expected.
-> 
-> Issue 2: a synchronous error infinite loop due to memory_failure() failed
-> 
-> If a user-space process, e.g. devmem, a poisoned page which has been set
-> HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
-> current processs with error info. Because the memory_failure() is
-> executed in the kworker contex, it will just do nothing but return
-> EFAULT. So, devmem will access the posioned page and trigger an
-> excepction again, resulting in a synchronous error infinite loop. Such
-> loop may cause platform firmware to exceed some threshold and reboot
-> when Linux could have recovered from this error.
-> 
-> To reproduce this problem:
-> 
->    # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 4 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
->    # STEP 2: access the same page and it will trigger a synchronous error infinite loop
->    devmem 0x4092d55b400
-> 
-> To fix it, if memory_failure() failed, perform a force kill to current process.
-> 
-> Issue 3: a synchronous error infinite loop due to no memory_failure() queued
-> 
-> No memory_failure() work is queued unless all bellow preconditions check passed:
-> 
-> - `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
-> - `if (flags == -1)` in ghes_handle_memory_failure()
-> - `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
-> - `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
-> 
-> If the preconditions are not passed, the user-space process will trigger SEA again.
-> This loop can potentially exceed the platform firmware threshold or even
-> trigger a kernel hard lockup, leading to a system reboot.
-> 
-> To fix it, if no memory_failure() queued, perform a force kill to current process.
-> 
-> And the the memory errors triggered in kernel-mode[5], also relies on this
-> patchset to kill the failure thread.
-> 
-> Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
-> Acknowledge to discussion with them.
-> 
-> [1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
-> [2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
-> [3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
-> [4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
-> [5] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20240528085915.1955987-1-tongtiangen@huawei.com/
-> 
-> Shuai Xue (3):
->    ACPI: APEI: send SIGBUS to current task if synchronous memory error
->      not recovered
->    mm: memory-failure: move return value documentation to function
->      declaration
->    ACPI: APEI: handle synchronous exceptions in task work
-> 
->   arch/x86/kernel/cpu/mce/core.c |  7 ---
->   drivers/acpi/apei/ghes.c       | 86 +++++++++++++++++++++-------------
->   include/acpi/ghes.h            |  3 --
->   include/linux/mm.h             |  1 -
->   mm/memory-failure.c            | 23 +++------
->   5 files changed, 61 insertions(+), 59 deletions(-)
-> 
+> Thank you for reviewing my patch!
 
-Hi, Rafael,
+No problem :)
 
-I hope this message finds you well.
+> As Gregory showed in his reply, I think it would be possible to get host bandwidth information
+> using the ACPI HMAT.
 
-I am writing to provide an update on the current status of the patch set, now
-at *revision 17*. Each patch has been thoroughly reviewed by 3-5 reviewers, and
-their feedback has been incorporated to address any concerns.
+You're right. I was wrong. I checked on our server, and its bandwidth 
+information was valid for both local memory and CXL memory. Sorry for
+the noise.
 
-Given the extensive review and iterations the patch set has undergone, I would
-like to inquire that are you happy to queue this patch set?
+> [-----8<-----]
+> 
+>>> +What:		/sys/kernel/mm/mempolicy/weighted_interleave/max_node_weight
+>>> +Date:		December 2024
+>>> +Contact:	Linux memory management mailing list <linux-mm@kvack.org>
+>>> +Description:	Weight limiting / scaling interface
+>>> +
+>>> +		The maximum interleave weight for a memory node. When it is
+>>> +		updated, any previous changes to interleave weights (i.e. via
+>>> +		the nodeN sysfs interfaces) are ignored, and new weights are
+>>> +		calculated using ACPI-reported bandwidths and scaled.
+>>> +
+>>
+>> At first this paragraph sounded like "previously stored weights are
+>> discarded after setting max_node_weight", but I think you mean
+>> "User can override the default values, but defaults values are
+>> calculated regardless of the values set by the user". Right?
+> 
+> In the implementation, the first way you interpreted is the correct
+> description. That is, if a user manually changes a ndoe weight,
+> then updates the max_node_weight, the previous manual change will
+> be overwritten by the newly scaled values.
+ >
+> Does this behavior make sense?
 
-Best Regards,
-Shuai
+Ok. then current implementation overwrites the node weights
+previously set by the user.
+
+I think it makes sense to re-scale all nodes and overwrite manually set 
+node weights, because it's what the knob is meant to do, and the user 
+still can override the weight by setting node weight after updating
+max_node_weight.
+
+By the way, could you please explain which part of this patch implements
+this rule? IIUC it does not invalidate iw_table after updating these
+default values, which makes get_il_weight() to use manully set node 
+weights even after updating max_node_weight. (Or probably I just
+misunderstood the code?)
+
+> Have a great day!
+
+Have a great day too :)
+
+--
+Hyeonggon
 
