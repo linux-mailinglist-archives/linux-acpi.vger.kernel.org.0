@@ -1,147 +1,129 @@
-Return-Path: <linux-acpi+bounces-10154-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10155-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EF19F3AA2
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 21:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31049F3AAF
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 21:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936F6188142A
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 20:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6EF9188937F
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Dec 2024 20:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2B41CEEA4;
-	Mon, 16 Dec 2024 20:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905091D4340;
+	Mon, 16 Dec 2024 20:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTNvLBw5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dD5kghWk"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FD413D29A;
-	Mon, 16 Dec 2024 20:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF8C13D29A
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 20:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734380260; cv=none; b=aHSE0XFXKM1UIsghy1kvC6m3WhNQwprmS4yuCKTNFBmUpq8AFW5f63sjdWWE4Z+i5TymhEkxaKWW2N36ma+wPqChN9YVUnmw0tXFvpqcVsLbJi4q//aJbViollU8wLlwKfeNqzc+3XvRRZgNrvwLxxrDjCtPN5p4ouqivRmLB9g=
+	t=1734380630; cv=none; b=Rap/QCba3NiO4P4D4SWFjAc/oMD9yo9wNdbWqJG9Ll3fwlqQ6X9Flce5k6OhtWZFCvCADTjnW0n4SY5og3yGIFOe0Sz43gylNBdS/UxCRAsLGQcO8jmVx00/W++XBBX8neH4+vkVNeqHd8wGXwQk8DPRT5YUuwKZdXKAmgQ4K84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734380260; c=relaxed/simple;
-	bh=KXqvjWiMSVH5syUt6Sl7U8sBOsToQ7b/XVL13BAKR14=;
+	s=arc-20240116; t=1734380630; c=relaxed/simple;
+	bh=tvnoFuXEaVOvSd1qeGMuaI3RTP+db1p57NYzO2Dz8yw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Et3BhB0fvDmoscHtLPEMvNjuVzURVOTpCID/RH6aX+i9yaKsZoRkokav9aLOtXNGhaoFdsDLxrcst940ZbXVIEhA2C3u9Q1yC7yCpzjbhgPPD4RK7MtpAcKMNgePxiQU0+9q0KZONWMz+07zLWQW0cMhpICPfVTlcpWzLSSHtqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTNvLBw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6278C4CED4;
-	Mon, 16 Dec 2024 20:17:39 +0000 (UTC)
+	 To:Cc:Content-Type; b=ZMUP2ZV+X38h58NIsFBAoYRgiJ3CnX+PrqVy76dwhbEdJH1TmxgHALcRUMj7msQWhn80L76MRbX2fqMYrhXP4J3tRJobA3Yg6Gs56VEAkvd+nlHCQFLmdRTh8+311sbL6LtzvlGdH+xEdujOCA7fUNwkwaYmfW92gcH4dp60GaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dD5kghWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0ADC4CED0
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 20:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734380259;
-	bh=KXqvjWiMSVH5syUt6Sl7U8sBOsToQ7b/XVL13BAKR14=;
+	s=k20201202; t=1734380630;
+	bh=tvnoFuXEaVOvSd1qeGMuaI3RTP+db1p57NYzO2Dz8yw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VTNvLBw5wBLHf0Ga1JK0h6B9YiQeKA2ODJR9b0ytg8fvIetTWHS9/jW/YhD2RjUGy
-	 7+gjIZFRM23RyMqqO/zV85QeJqNJHH9nxaZFlCIbzIT+PWQFyl7lyfr0sD1JnK93/W
-	 D0ICdqzmXDgJuuc6HicyHgEajlwQRQ4PtE6qf4e/37ulOSSOVADTgFObzuBa2W9LGs
-	 d51tsx4Oii+Rzhd/1KOA6Nqtj8BcdC1hIU99kKbM7xNhZCE48WM+xcVHE03Ud863yf
-	 n2r0s+AodheEiaVv75sNLHu9kyQifGlkQ7m+yEQzUs85Lwbc8Lp6hSMtzYG2Xtf/sw
-	 KDnbajW9a564g==
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3eb9a0a2089so2590904b6e.1;
-        Mon, 16 Dec 2024 12:17:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUg2JpqQt+lZGG9dKq5rXqPTPEYRk8barkF6leEIxJNrkI60tD7josemvvMI3krOkEZ7RJGh4sd7LHZ@vger.kernel.org, AJvYcCXpK2VH2lLZv3CQ6/R07UO4LGCC+jhwgGZb5U0tQkdpNNES5KP1YNLbVDKi3oRV7KRFQLad8GaUrXBQMYwp@vger.kernel.org
-X-Gm-Message-State: AOJu0YzziqRloQhqPhP4PmWLOuoGM1Fj0TIkKU7Pw0PKstyfkLqU4mzI
-	JuZ4admZ2uqtMq64F1gSxKN4T+5mtoAyo4tE5eR0UrWoZ62pdc2IAK5qDDBsjKYsNtgvUozIDsG
-	uuSFG5sgEnCtrBidcpbmtGD+09AA=
-X-Google-Smtp-Source: AGHT+IEiShw8w54t2n+KxDLI4IZEJWF1mNySxa+8zBzEosJsmwh5xKbuP+ot2fbuSzq3zRpqTEUHr9IPWYc7TNJbuAY=
-X-Received: by 2002:a05:6808:1907:b0:3eb:44a7:d3f8 with SMTP id
- 5614622812f47-3ebcb3ae9fbmr57086b6e.39.1734380259145; Mon, 16 Dec 2024
- 12:17:39 -0800 (PST)
+	b=dD5kghWkZDKJcM6Jw0rwEYyK6VeYvPb3yz/DhV3gk4HVML1ljQ4E0a1mw43146KvK
+	 1ifrWpdEvf7VJ4DBSxn5eMMkKvNEFaPPv80HrkHE7G4UGnvua6r7h9wrc2xoveAess
+	 +WkkBhwUyKtCkL6/Zwx6++f9R27md92hHTF69M7ngOgbII5oy7DlkZHkqW+mg9spQz
+	 OgHljc3nz5nRHkPeBIuMno4GYVCjPuqiNpqm+wqisbcOPntQfVioFySRzS3EuXWBlD
+	 E6aYX9AEkjksz+59QeK/zvV46WgDbdZjkqoMlPozToLiUnU9xNBvPsJv/Qh1Bh/i3L
+	 8ozLLwwqyFa8w==
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3ebb2d8dac4so1543982b6e.0
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Dec 2024 12:23:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWtg6BPrBGHxmb728YMCRjEyN87XkrDNGco4++OaS7lDd6HWADSYbUQnr6gNrarpL2ny1DVrUKGEU4G@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTzC++GIjE8Tvg07e95mpMYuG8JqEsxCU8iE86KquPtqMPAIdz
+	OZtoyuBmN4N2CEOfGLcMEv6ZhJmhnmmvWU3HaASM9NezwVGLfz4fjnRjoYLL1icEBPRYcdptxDl
+	XB+DEHjupJqKAkmJ2dH0zK05IDws=
+X-Google-Smtp-Source: AGHT+IFO4JxMc19olyI23/wooa+idWqoGBaK+OlKAFvgreRahwi2HVlwEPY6F5Ac7lXAHbgNFbhjF2xGlVhIx1OQ/js=
+X-Received: by 2002:a05:6808:1805:b0:3e6:5522:b333 with SMTP id
+ 5614622812f47-3ebcb2f190bmr119973b6e.22.1734380629349; Mon, 16 Dec 2024
+ 12:23:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-fix-ipu-v4-0-4102e97aceb6@chromium.org> <20241211-fix-ipu-v4-2-4102e97aceb6@chromium.org>
-In-Reply-To: <20241211-fix-ipu-v4-2-4102e97aceb6@chromium.org>
+References: <20241211032812.210164-1-joe@pf.is.s.u-tokyo.ac.jp>
+In-Reply-To: <20241211032812.210164-1-joe@pf.is.s.u-tokyo.ac.jp>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 16 Dec 2024 21:17:28 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gmN6+y2DveaBjSqWpTRWqm9zo2t0uDdvGwnVXcdQ777A@mail.gmail.com>
-Message-ID: <CAJZ5v0gmN6+y2DveaBjSqWpTRWqm9zo2t0uDdvGwnVXcdQ777A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] ACPI: bus: implement acpi_get_physical_device_location
- when !ACPI
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Date: Mon, 16 Dec 2024 21:23:38 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0id1irg3ByJNgREv_59-ekh3WmCRbQ7wbiHx92sTosEgQ@mail.gmail.com>
+Message-ID: <CAJZ5v0id1irg3ByJNgREv_59-ekh3WmCRbQ7wbiHx92sTosEgQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: fan: cleanup resources in the error path of .probe()
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 5:07=E2=80=AFPM Ricardo Ribalda <ribalda@chromium.o=
-rg> wrote:
+On Wed, Dec 11, 2024 at 4:28=E2=80=AFAM Joe Hattori <joe@pf.is.s.u-tokyo.ac=
+.jp> wrote:
 >
-> Provide an implementation of acpi_get_physical_device_location that can
-> be used when CONFIG_ACPI is not set.
+> Call thermal_cooling_device_unregister() and sysfs_remove_link() in the
+> error path of acpi_fan_probe() to fix possible memory leak.
 >
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Acked-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> This bug was found by an experimental static analysis tool that I am
+> developing.
+>
+> Fixes: 05a83d972293 ("ACPI: register ACPI Fan as generic thermal cooling =
+device")
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 > ---
->  include/acpi/acpi_bus.h | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+> Changes in V2:
+> - Handle the case when the "thermal_cooling" symlink creation fails.
+> ---
+>  drivers/acpi/fan_core.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 2b09e513ecf3..b312a72f48ad 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -43,9 +43,6 @@ acpi_status
->  acpi_evaluate_ost(acpi_handle handle, u32 source_event, u32 status_code,
->                   struct acpi_buffer *status_buf);
+> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+> index 3ea9cfcff46e..10016f52f4f4 100644
+> --- a/drivers/acpi/fan_core.c
+> +++ b/drivers/acpi/fan_core.c
+> @@ -371,19 +371,25 @@ static int acpi_fan_probe(struct platform_device *p=
+dev)
+>         result =3D sysfs_create_link(&pdev->dev.kobj,
+>                                    &cdev->device.kobj,
+>                                    "thermal_cooling");
+> -       if (result)
+> +       if (result) {
+>                 dev_err(&pdev->dev, "Failed to create sysfs link 'thermal=
+_cooling'\n");
+> +               goto err_unregister;
+> +       }
 >
-> -acpi_status
-> -acpi_get_physical_device_location(acpi_handle handle, struct acpi_pld_in=
-fo **pld);
-> -
->  bool acpi_has_method(acpi_handle handle, char *name);
->  acpi_status acpi_execute_simple_method(acpi_handle handle, char *method,
->                                        u64 arg);
-> @@ -60,6 +57,9 @@ bool acpi_check_dsm(acpi_handle handle, const guid_t *g=
-uid, u64 rev, u64 funcs);
->  union acpi_object *acpi_evaluate_dsm(acpi_handle handle, const guid_t *g=
-uid,
->                         u64 rev, u64 func, union acpi_object *argv4);
->  #ifdef CONFIG_ACPI
-> +acpi_status
-> +acpi_get_physical_device_location(acpi_handle handle, struct acpi_pld_in=
-fo **pld);
-> +
->  static inline union acpi_object *
->  acpi_evaluate_dsm_typed(acpi_handle handle, const guid_t *guid, u64 rev,
->                         u64 func, union acpi_object *argv4,
-> @@ -1003,6 +1003,12 @@ static inline int unregister_acpi_bus_type(void *b=
-us) { return 0; }
+>         result =3D sysfs_create_link(&cdev->device.kobj,
+>                                    &pdev->dev.kobj,
+>                                    "device");
+>         if (result) {
+>                 dev_err(&pdev->dev, "Failed to create sysfs link 'device'=
+\n");
+> -               goto err_end;
+> +               goto err_remove_link;
+>         }
 >
->  static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
+>         return 0;
 >
-> +static inline acpi_status
-> +acpi_get_physical_device_location(acpi_handle handle, struct acpi_pld_in=
-fo **pld)
-> +{
-> +       return AE_ERROR;
-> +}
-
-I overlooked this before, sorry.
-
-It generally is not OK to use acpi_status and/or AE_ error codes
-without CONFIG_ACPI and they really only should be used in
-drivers/acpi/ (and not everywhere in there for that matter).
-
-So acpi_get_physical_device_location() needs to be redefined to return
-something different from acpi_status (preferably bool) in order to be
-used in !CONFIG_ACPI code.
-
-> +
->  #define for_each_acpi_dev_match(adev, hid, uid, hrv)                   \
->         for (adev =3D NULL; false && (hid) && (uid) && (hrv); )
->
->
+> +err_remove_link:
+> +       sysfs_remove_link(&pdev->dev.kobj, "thermal_cooling");
+> +err_unregister:
+> +       thermal_cooling_device_unregister(cdev);
+>  err_end:
+>         if (fan->acpi4)
+>                 acpi_fan_delete_attributes(device);
 > --
+
+Applied as 6.14 material, thanks!
 
