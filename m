@@ -1,145 +1,127 @@
-Return-Path: <linux-acpi+bounces-10171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10172-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75A29F411E
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2024 04:05:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B2E9F453B
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2024 08:37:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1A2188C6E3
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2024 03:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3851888CE0
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Dec 2024 07:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE5E50276;
-	Tue, 17 Dec 2024 03:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="PH0/0c/O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D2718DF62;
+	Tue, 17 Dec 2024 07:37:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87027182CD;
-	Tue, 17 Dec 2024 03:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8F816EB7C
+	for <linux-acpi@vger.kernel.org>; Tue, 17 Dec 2024 07:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734404727; cv=none; b=D8VD8FjSb009TrBpbenexAAnPVGG/k0cW0cohbzMDTys3cQ52IKT7a/ZJcRu9MuBXhcCJbIvLB2mZYms6ApL9Dlu+fKyCRHZPfmq/DRcuq5hhD5iapXQ0T8cjMX2+fN0Bkb8qJI9Bnv9rHBkqXX9f4SbqpQNzIR3CifSogtQo0c=
+	t=1734421061; cv=none; b=SXMLd51D5u4idv+NyvK91d8PQTWwUt4RacxF+8SZWylJl/kxVpZZbiQfIFP8omKuL5MFZ1mW/XLpTElpY+4iETenuJRyRC9JaO3Mjl67pG/gzsdXSlDS6g/J8IGRm68lEaMfkdb0DBx21ayOHM2RZ0FeUU7/AMuSgU2yJHYh6lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734404727; c=relaxed/simple;
-	bh=/IhZ886Fl+MVJYlsp68aj9MUHIJ+gquw8xBlKwpHNT0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jLJ2npDRTSH8fzETC4fHsgec93dbHBrhMVZ/JGmTTTLEQJNgifi2R6kY7ZDmqg77TEnaN9m3r1fiTtwjcvaG3ArLyRWQxIDWQBz2XUY1ARaUoOxp6XbJiV95NF+g2F5JkAQOTHGCoA85nZMRX5O9zDx7CQvB5XL0fUHmMIkpZpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PH0/0c/O; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1734404715; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=JYaV8tUHY5DY/QNPB9vrWmARi1TH7zIIIk5o2rlYGdA=;
-	b=PH0/0c/OtyMeIukeEL7h1vhk9BKDpn+ZIVdSD18qd15tHEa76qiPQCsamM8cUPGt5kv58LchXUuWvEF/JlrLa1xRwvLvR6Lq1817LQfPeY1C5BYXm5pSxEj6qRkuIGTg6eYR47mYBbDM6ekhsT99gftVJePZyaX87WjpI7orccQ=
-Received: from 30.246.161.240(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WLh6bXS_1734404711 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 17 Dec 2024 11:05:13 +0800
-Message-ID: <1e0a0f9b-7c58-4f70-b2d4-6b3c2c4143de@linux.alibaba.com>
-Date: Tue, 17 Dec 2024 11:05:11 +0800
+	s=arc-20240116; t=1734421061; c=relaxed/simple;
+	bh=qk1pLnOgCMuXpFYHx8AiSmUj83Tvxx9m3apNTq2l47Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EE5yU1nKHXGGqGvtTolxwSPwZ2lrfkhLm2CNvNOfRKVWzso7shnQrLxTSHYWaGi5JLzDotGWPnXyzHODcrui8RmtGDYp5CUndJbcRdoY/Zm3ZoVVqVM6tuMOK4WNJG5PlbE+JY+FPfmwv36mgHWN3sYKYYlpmPSyrS/s203mraw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.7])
+	by gateway (Coremail) with SMTP id _____8Dx2uE8KmFnoLFXAA--.43062S3;
+	Tue, 17 Dec 2024 15:37:32 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.7])
+	by front1 (Coremail) with SMTP id qMiowMBxnsc2KmFnZgUAAA--.25S2;
+	Tue, 17 Dec 2024 15:37:31 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	"Rafael J . Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Xiaotian Wu <wuxiaotian@loongson.cn>,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH] ACPI: EC: Enable EC support on LoongArch by default
+Date: Tue, 17 Dec 2024 15:37:04 +0800
+Message-ID: <20241217073704.3339587-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 2/3] mm: memory-failure: move return value
- documentation to function declaration
-To: jane.chu@oracle.com, yazen.ghannam@amd.com, mark.rutland@arm.com,
- catalin.marinas@arm.com, mingo@redhat.com, robin.murphy@arm.com,
- Jonathan.Cameron@Huawei.com, bp@alien8.de, rafael@kernel.org,
- linux-arm-kernel@lists.infradead.org, wangkefeng.wang@huawei.com,
- tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
- linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
- tongtiangen@huawei.com, gregkh@linuxfoundation.org, will@kernel.org,
- jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20241202030527.20586-1-xueshuai@linux.alibaba.com>
- <20241202030527.20586-3-xueshuai@linux.alibaba.com>
- <51d231c2-3659-461a-b6c3-d0e7f9fddfc1@oracle.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <51d231c2-3659-461a-b6c3-d0e7f9fddfc1@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMBxnsc2KmFnZgUAAA--.25S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZrWrKw4fZFyDtFW8Cr18tFc_yoW8AF4Up3
+	9rZFy7Cr4UJF45Ar1DC3y8uFW5X3ZxGrW7uay7Cw1DuF9rur98Aw1jqF93JFyUAwsxAa40
+	vF95Wayj9an8WwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+	Ja73UjIFyTuYvjxU2MKZDUUUU
 
+Commit a6021aa24f6417416d933 ("ACPI: EC: make EC support compile-time
+conditional") only enable ACPI_EC on X86 by default, but the embedded
+controller is also widely used on LoongArch laptops so we also enable
+ACPI_EC for LoongArch.
 
+The laptop driver cannot work without EC, so also update the dependency
+of LOONGSON_LAPTOP to let it depend on APCI_EC.
 
-在 2024/12/17 07:37, jane.chu@oracle.com 写道:
-> 
-> On 12/1/2024 7:05 PM, Shuai Xue wrote:
->> Part of return value comments for memory_failure() were originally
->> documented at the call site. Move those comments to the function
->> declaration to improve code readability and to provide developers with
->> immediate access to function usage and return information.
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
->> ---
->>   arch/x86/kernel/cpu/mce/core.c |  7 -------
->>   mm/memory-failure.c            | 10 +++++++---
->>   2 files changed, 7 insertions(+), 10 deletions(-)
->>
->> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
->> index 7fb5556a0b53..d1dd7f892514 100644
->> --- a/arch/x86/kernel/cpu/mce/core.c
->> +++ b/arch/x86/kernel/cpu/mce/core.c
->> @@ -1398,13 +1398,6 @@ static void kill_me_maybe(struct callback_head *cb)
->>           return;
->>       }
->> -    /*
->> -     * -EHWPOISON from memory_failure() means that it already sent SIGBUS
->> -     * to the current process with the proper error info,
->> -     * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
->> -     *
->> -     * In both cases, no further processing is required.
->> -     */
->>       if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
->>           return;
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index a7b8ccd29b6f..14c316d7d38d 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -2211,9 +2211,13 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
->>    * Must run in process context (e.g. a work queue) with interrupts
->>    * enabled and no spinlocks held.
->>    *
->> - * Return: 0 for successfully handled the memory error,
->> - *         -EOPNOTSUPP for hwpoison_filter() filtered the error event,
->> - *         < 0(except -EOPNOTSUPP) on failure.
->> + * Return:
->> + *   0             - success,
->> + *   -ENXIO        - memory not managed by the kernel
->> + *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event,
->> + *   -EHWPOISON    - the page was already poisoned, potentially
->> + *                   kill process,
->> + *   other negative values - failure.
->>    */
->>   int memory_failure(unsigned long pfn, int flags)
->>   {
-> 
-> Looks good.
-> 
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> 
-> -jane
+Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ drivers/acpi/Kconfig               | 4 ++--
+ drivers/platform/loongarch/Kconfig | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index d65cd08ba8e1..d81b55f5068c 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -135,10 +135,10 @@ config ACPI_REV_OVERRIDE_POSSIBLE
+ config ACPI_EC
+ 	bool "Embedded Controller"
+ 	depends on HAS_IOPORT
+-	default X86
++	default X86 || LOONGARCH
+ 	help
+ 	  This driver handles communication with the microcontroller
+-	  on many x86 laptops and other machines.
++	  on many x86/LoongArch laptops and other machines.
+ 
+ config ACPI_EC_DEBUGFS
+ 	tristate "EC read/write access through /sys/kernel/debug/ec"
+diff --git a/drivers/platform/loongarch/Kconfig b/drivers/platform/loongarch/Kconfig
+index 5633e4d73991..447528797d07 100644
+--- a/drivers/platform/loongarch/Kconfig
++++ b/drivers/platform/loongarch/Kconfig
+@@ -18,7 +18,7 @@ if LOONGARCH_PLATFORM_DEVICES
+ 
+ config LOONGSON_LAPTOP
+ 	tristate "Generic Loongson-3 Laptop Driver"
+-	depends on ACPI
++	depends on ACPI_EC
+ 	depends on BACKLIGHT_CLASS_DEVICE
+ 	depends on INPUT
+ 	depends on MACH_LOONGSON64
+-- 
+2.43.5
 
-Thanks.
-
-Best Regards,
-Shuai
 
