@@ -1,138 +1,167 @@
-Return-Path: <linux-acpi+bounces-10187-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F2D9F7471
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 06:57:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4A79F79A5
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 11:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D057A1882356
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 05:57:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6252F7A1A97
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 10:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5E4217719;
-	Thu, 19 Dec 2024 05:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F33A217657;
+	Thu, 19 Dec 2024 10:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PYNIxsEy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9SLBIKu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840D3216E06;
-	Thu, 19 Dec 2024 05:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9677082B
+	for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2024 10:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734587739; cv=none; b=tiFP4ij1s+zUjzdXFXebFrfbxCHCLGimNUBXveR4N/DDk353JqvRtm8pYGpbPxA6+002j2/hUs4NUzTKfzltw2EbUNh8HhChpWqzKWIYVViD/WGwfWEuXNMY3svFs0mb3A7QyR9PUHdeOGEyZgKIhRsbePIUAJ8zjTB2U1sTcL4=
+	t=1734604337; cv=none; b=RBjCq/JpNo42MWKPeIOqhdtYjzw6hxd6h2Y4+2oiom9wfsiH4XWWQ4eLsIhYsop+JZxMUFMOQ4Meiy0rSScJO6Gei8cAOgfo+IoHF1/AvONaohmVFBkWRNaQeZXrzbrKlUsMUCB25Axggst3pebACR3SsgTN0EQw5pEFnUNozDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734587739; c=relaxed/simple;
-	bh=FXtzseKz/oEaUNrHZeU0GJBTRRMdMqSCrY61kkP2LXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=W3yfAllDcBC5gliRclYgwKx2V4encdQQ56Y1EANwwVV5b3gzS9LQXqRsyYF6CrvPjlvR/0odxtYYr19mZnLBMEPYgvoI/TO84NlKP4Ea2esRtLZVrkU+JQV3iepMcdrnqzu4zyssMeHSqQo6jO+YF5O1Wav+echekoxbQrRGf38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PYNIxsEy; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1734604337; c=relaxed/simple;
+	bh=zG2Xavuz8MqyDAoQmeXexU9/4+2ohB8n9xkIOKnVeKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LhIP+8S328s0MUYVZ8AWD4eAxRiXYy3VJc38WMBYYX2WKOfjmTiHppn0EzA4UvyQaE1upPoukXqGJeaBBJH5WcZ0OruOrjA9HaRgiFqtHbWIV/o5LJg65c8x8tXlks8CruxDqWbcgfBmMne+54Bvsn0dCBaouRKi7qwavWkjiJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9SLBIKu; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734587736; x=1766123736;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=FXtzseKz/oEaUNrHZeU0GJBTRRMdMqSCrY61kkP2LXA=;
-  b=PYNIxsEyJ6xjne6RZWM+FDC/NkHONG5MAmayxqKYtahXnBrlt72Xzs7E
-   ItFVhnYcEV0Z+LMU2I+LYm6EqDRz2HO8Oh6sE8z9eLbRhalF2rH1ODU4l
-   9FaSow7QEyxGfzhiSSYfd8Y1qZhupQj+DVH5FBbsc5znvHZAT31HxNnM3
-   MBIeemTnYA46K96EHspRauXhYkqMJFdvRpswhbI4FWArOclK0cA39P7YJ
-   P0EZsZxS9vHZLDYvFYhOM5CnEi3WSQPBdIEoa6HAjw6jyXYyg5pbDZ7B8
-   VWTFp/vBSKpkCCpkpKM8oo8PoEAAWnsh7zfSz3BLMIkU+5O6Edeg+N7VF
-   Q==;
-X-CSE-ConnectionGUID: 2DYz70onQVGpL+EpLdyhHQ==
-X-CSE-MsgGUID: 2mtqIpDqTFePJapIcDcLZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="60468481"
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; 
-   d="scan'208";a="60468481"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 21:55:36 -0800
-X-CSE-ConnectionGUID: DV1Bjg1qSlqSc28bi6q75g==
-X-CSE-MsgGUID: tukKylGWSvqPf/ueCDII5w==
+  t=1734604335; x=1766140335;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=zG2Xavuz8MqyDAoQmeXexU9/4+2ohB8n9xkIOKnVeKM=;
+  b=R9SLBIKuq6uw8itFaL8aJEh8r4UT4+EoDj6fOu42ypxCf91vhwYRc5kc
+   O/0d6M2MPCurgg2th/Vk3bgocUwOaW08KhuxeGVnMbO6t8ne17jaLFoaA
+   dO/CeSlZU9tO5R8qRVutYsEnmhqtFUoy0mZ2OCUa1VOQpu9O4Uk1o7hii
+   yniSpaDQ3xff3ZnMhjW7hx0F+itX4BkszFWMuLF4b5Z1Nb75w+38aBcny
+   dcC4K7VfsERxg48//6k1vF9HSXtQ7lNYXF+C8qEDhd2Lu0DtPsFY685CC
+   0U1xIoLeLeXNFVFVcImXdb8aiirlNZZGnvsrq+FCJVvCZBVoqWxzvyC+h
+   g==;
+X-CSE-ConnectionGUID: JaJ2nBaIQtGJZkgKKbCNew==
+X-CSE-MsgGUID: wwh5jC4ATAmOcNq4v0Kvrw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="22698012"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
+   d="scan'208";a="22698012"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 02:32:14 -0800
+X-CSE-ConnectionGUID: tbUiO1D0SJynij19q2tdBA==
+X-CSE-MsgGUID: MVM7zDtlS9+nyEtqh9sT9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,246,1728975600"; 
-   d="scan'208";a="98631045"
-Received: from lkp-server01.sh.intel.com (HELO a46f226878e0) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 18 Dec 2024 21:55:34 -0800
-Received: from kbuild by a46f226878e0 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tO9VT-000047-1R;
-	Thu, 19 Dec 2024 05:55:31 +0000
-Date: Thu, 19 Dec 2024 13:55:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: [rafael-pm:bleeding-edge 37/51] thermal_netlink.c:undefined
- reference to `sk_skb_reason_drop'
-Message-ID: <202412191310.7OD0ztSD-lkp@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="97983322"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 02:32:13 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id BCEF411FA41;
+	Thu, 19 Dec 2024 12:32:09 +0200 (EET)
+Date: Thu, 19 Dec 2024 10:32:09 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Rob Herring <robh@kernel.org>, andriy.shevchenko@linux.intel.com
+Subject: Re: [PATCH 1/1] ACPI: property: Consider data nodes as being
+ available
+Message-ID: <Z2P2KegQlxYLd9sd@kekkonen.localdomain>
+References: <20241218091622.914266-1-sakari.ailus@linux.intel.com>
+ <CAJZ5v0jRLJEUS=-6Ciuy1O7KG2B8sSvKgtzcK+85umbefLU=UQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jRLJEUS=-6Ciuy1O7KG2B8sSvKgtzcK+85umbefLU=UQ@mail.gmail.com>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   e2bbcfa0b21a5bb2cf1e5fff2f1336515fb228a9
-commit: 4596cbea0ed2ef4f563a92775c9f612700ece145 [37/51] thermal: intel: Remove explicit user_space governor selection
-config: i386-buildonly-randconfig-001-20241219 (https://download.01.org/0day-ci/archive/20241219/202412191310.7OD0ztSD-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241219/202412191310.7OD0ztSD-lkp@intel.com/reproduce)
+Hi Rafael,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412191310.7OD0ztSD-lkp@intel.com/
+Thanks for the review.
 
-All errors (new ones prefixed by >>):
+On Wed, Dec 18, 2024 at 12:07:52PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Dec 18, 2024 at 10:16 AM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Years after fwnode_device_is_available() was introduced, new functions
+> > making use of the function on data nodes have been added, such as
+> > fwnode_for_each_available_child_node(), it becomes apparent that returning
+> > "false" for all child nodes on ACPI wasn't a workable option.
+> 
+> Can you describe the problem in a bit more detail?
 
-   ld: drivers/thermal/thermal_netlink.o: in function `nla_put_u32':
-   thermal_netlink.c:(.text+0x13): undefined reference to `nla_put'
-   ld: drivers/thermal/thermal_netlink.o: in function `nla_nest_start_noflag':
-   thermal_netlink.c:(.text+0x279): undefined reference to `nla_put'
-   ld: drivers/thermal/thermal_netlink.o: in function `nla_put_string':
-   thermal_netlink.c:(.text+0x2b1): undefined reference to `nla_put'
-   ld: drivers/thermal/thermal_netlink.o: in function `nlmsg_trim':
-   thermal_netlink.c:(.text+0x53e): undefined reference to `skb_trim'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_genl_cmd_dumpit':
-   thermal_netlink.c:(.text+0x6f6): undefined reference to `genlmsg_put'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_group_has_listeners':
-   thermal_netlink.c:(.text+0x785): undefined reference to `init_net'
-   ld: thermal_netlink.c:(.text+0x78c): undefined reference to `netlink_has_listeners'
-   ld: drivers/thermal/thermal_netlink.o: in function `alloc_skb.constprop.0':
-   thermal_netlink.c:(.text+0x7c6): undefined reference to `__alloc_skb'
-   ld: drivers/thermal/thermal_netlink.o: in function `kfree_skb':
->> thermal_netlink.c:(.text+0x7dd): undefined reference to `sk_skb_reason_drop'
-   ld: drivers/thermal/thermal_netlink.o: in function `genlmsg_multicast.constprop.0.isra.0':
-   thermal_netlink.c:(.text+0x830): undefined reference to `init_net'
-   ld: thermal_netlink.c:(.text+0x842): undefined reference to `netlink_broadcast_filtered'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_genl_send_event':
-   thermal_netlink.c:(.text+0x8ba): undefined reference to `genlmsg_put'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_genl_cmd_doit':
-   thermal_netlink.c:(.text+0xe01): undefined reference to `genlmsg_put'
-   ld: thermal_netlink.c:(.text+0xe44): undefined reference to `init_net'
-   ld: thermal_netlink.c:(.text+0xe49): undefined reference to `netlink_unicast'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_genl_sampling_temp':
-   thermal_netlink.c:(.text+0xeb4): undefined reference to `genlmsg_put'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_netlink_init':
-   thermal_netlink.c:(.init.text+0xe): undefined reference to `genl_register_family'
-   ld: drivers/thermal/thermal_netlink.o: in function `thermal_netlink_exit':
-   thermal_netlink.c:(.init.text+0x22): undefined reference to `genl_unregister_family'
+How about:
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for THERMAL_NETLINK
-   Depends on [n]: THERMAL [=y] && NET [=n]
-   Selected by [m]:
-   - X86_PKG_TEMP_THERMAL [=m] && THERMAL [=y] && (X86 [=y] || X86_INTEL_QUARK [=n] || COMPILE_TEST [=y]) && X86_THERMAL_VECTOR [=y]
+Years after fwnode_device_is_available() was introduced, new functions
+making use of the data node availability information have been added, such
+as fwnode_for_each_available_child_node(). To enumerate the data nodes in
+various ways specific to those functions, the node availability test needs
+to pass.
+
+On ACPI, there is no explicit information on this in the first place and
+the original fwnode_device_is_available() implementation simply returnes
+false. This leads to the new functions enumerating only available nodes to
+never return any nodes on ACPI. On DT side most access functions, even
+those without "_available" part, did only operate on available nodes.
+
+Thus from now on, return true from fwnode_device_is_available() on all ACPI
+data nodes.
+
+> 
+> > On DT side most access functions, even those without "_available" part,
+> > did only operate on available nodes. That wasn't the case on ACPI where
+> > only device node availability is known explicitly.
+> >
+> > Thus from now on, return true from fwnode_device_is_available() on all
+> > ACPI data nodes.
+> >
+> > Fixes: 2294b3af05e9 ("device property: Introduce fwnode_device_is_available()")
+> 
+> Do you want people to backport this patch?
+
+Good question.
+
+There are just a couple of drivers using the new fwnode_*_available()
+functions and I think they're used on DT-based platforms *currently*. So
+nothing is broken right now as far as I can see (but likely will be in some
+time without the patch).
+
+I guess just dropping Fixes: is an alternative, this wasn't really a bug
+honestly. Backporting shouldn't hurt either though.
+
+> 
+> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > ---
+> >  drivers/acpi/property.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > index 80a52a4e66dd..1ee81e771ae6 100644
+> > --- a/drivers/acpi/property.c
+> > +++ b/drivers/acpi/property.c
+> > @@ -1492,7 +1492,7 @@ acpi_graph_get_remote_endpoint(const struct fwnode_handle *__fwnode)
+> >  static bool acpi_fwnode_device_is_available(const struct fwnode_handle *fwnode)
+> >  {
+> >         if (!is_acpi_device_node(fwnode))
+> > -               return false;
+> > +               return true;
+> >
+> >         return acpi_device_is_present(to_acpi_device_node(fwnode));
+> >  }
+> >
+> > base-commit: 7fa366f1b6e376c38966faa42da7f0f2e013fdab
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kind regards,
+
+Sakari Ailus
 
