@@ -1,203 +1,340 @@
-Return-Path: <linux-acpi+bounces-10192-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10193-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A66D9F7CD5
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 15:09:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC2A9F7D57
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 15:49:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F215818891CD
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 14:09:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58B0169260
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Dec 2024 14:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03466221447;
-	Thu, 19 Dec 2024 14:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF0C86349;
+	Thu, 19 Dec 2024 14:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ad2gyJT/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rpx60iSL"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DBD200A3
-	for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2024 14:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D7D78F2A;
+	Thu, 19 Dec 2024 14:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734617357; cv=none; b=ryxeJ2lu/iosk+ROI8kDhs9uxBLIG4Z7WwHalcKS6Q6Bf1YgtFl46m44iVdOASXgfSqEBI9GMyQL60PI99hVqhSYiTDalOGbd0UEdTN7/Bl0NruJ4xe2asxin9Wc+adQY0zt6AYqjgF2+5Jn2hpxWnXbGlnDwQG4jmmpkJT5Uis=
+	t=1734619791; cv=none; b=pKl7Mk+k7dbIuxqYLrHoYdhSrSYvydfZW/Bil+R2wQpGt8l/T2t+2W3TytAVroh3UyQlVyUDA4Eu3QZT9P1K/PY/CtWnaTS5LFCLXEN9rQQ+TJ8O8q3KGiJWVeeOAHf0C49+V5EX9EdLlWOHgfDJLxgxDS4ppNFtkyACVfiM/wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734617357; c=relaxed/simple;
-	bh=KVHR68tksDzTIZEbK2ieNprp1XI/QKZtbf9rR9CjrbM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iG2Y7BKfaP5w42QfRJMDP+s5jPFOVwBdqJYrPEqvqVzGsDsB/I7jDw+76dE6F/jz1RrvBnk32JebdSamf93z6lal7YqB06OgM/bOSPBbNbuVV379/wbY4lncmf1W5ftCwV7DOzPA2BIX5fS7aQ1lJt7qJ8nWWm+lvv/EU4NdsyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ad2gyJT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572FBC4CED0
-	for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2024 14:09:17 +0000 (UTC)
+	s=arc-20240116; t=1734619791; c=relaxed/simple;
+	bh=D4HGhhaz6x5Ojv478y5OG8tgiWNS97cMEjlajQwzTVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KN0BYy0YPag/wnDg1e07nR0u8YmpRUHHmiCApy/o/C2HeT5IocKsQVkwP8zSA6BEc9ECyGFv5kAdWsm+NTcKAGZLh5eSjx6xoof8KiBTGo/UHyMdEo9sAcQ108E25lVmO8BcwOZIkc0Ce5+ikNuSKTgzd1I1eIyDGNl/C4UKMHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rpx60iSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F9DC4CECE;
+	Thu, 19 Dec 2024 14:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734617357;
-	bh=KVHR68tksDzTIZEbK2ieNprp1XI/QKZtbf9rR9CjrbM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ad2gyJT/i6WS5tOtMYjHiOmMvvf5rRMbVawrym/GK2FAMmPVffRNKDH79YIpU+XTI
-	 XxVWOauaMumQk4owzs8sxAGwfH6jTeFLEAc7/8FFN9+waEfTalswaqAhy8ZUA4EwAn
-	 SE92LuSzLywJ42lae5HzLsQ2/nHD1VM5fdEInSCFctaijjkvp7Rt53AdcCHlLHU6eW
-	 0RPz5b38EwA0nE374mwbUdqbclxSpTZ2IKO5DsBuINS4tmB9NyWRw0HyX+ocbtAdnC
-	 OUreByaRkXYiYi5vZXs4bbwLXcAF0YXLmCzJsRWzBECK8zphJZyg8NmNweoq29beeY
-	 7DXPzsHVHfWaQ==
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-71e3005916aso202344a34.2
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Dec 2024 06:09:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUFC0ygjT93T1SXCCktHw+AmKfCRCX18f2bZg2h5swDyi/4+CloafQioafXy9xJh4Rfd/MYwCO+E77I@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxH784eN26Oz70nH/pfi5oDefUr8iOa7GeHKtC2jajPFBkBlqN
-	JOhwRLynFnWN0qjw3CGWb/WHCCRYDsPXosQOmaG58Lx1aCRLD8qwjsKl9MkMvWdk5zc3fY6uT4t
-	ryIM6lwBija9M2Jh7ycBK7wGFPSY=
-X-Google-Smtp-Source: AGHT+IHcY5grudYSFn2fSj+QCQuaXUzaf4PQgyFKRSeZ3r9oJ4mAoYkgKuYjZCZh2aLHKqye+jKeyjnzPx65RMnCp0E=
-X-Received: by 2002:a05:6871:8308:b0:29e:353b:8f25 with SMTP id
- 586e51a60fabf-2a7d07c66d3mr1558546fac.12.1734617356591; Thu, 19 Dec 2024
- 06:09:16 -0800 (PST)
+	s=k20201202; t=1734619791;
+	bh=D4HGhhaz6x5Ojv478y5OG8tgiWNS97cMEjlajQwzTVI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rpx60iSLgDtQVyYhgDxMQd622seaCxqGeIWiJAhaPowkdZ8BqakmvagdLftKhrXkK
+	 MEFO+lAQGsDPoqBT5J8dJfiJlLWua9tFm58DDloNJHVlHgPYCIpdFqK9f3uR1ut8QX
+	 GeLd71UFwyPMvWKDniii6JllRelWV5HXPhYNFCEEa4tuQmbUAmhY+W++VOhduKORqA
+	 /lxNb4P8csRHhuAlCSnCEbkJ7YZxhIfrkQOKliG3BYfDtLQF1YuoXBjBMyCI+YoHTL
+	 D9NUidpFZM3PO6tdYZrlzaYpErmUHAML0BLlbANdwu9mHLQIBgy9fdaCjaiapaldI4
+	 qNPXDCdn3Iy0g==
+Message-ID: <ba5a7961-de65-41a1-a556-338ed1b06faa@kernel.org>
+Date: Thu, 19 Dec 2024 08:49:47 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241218091622.914266-1-sakari.ailus@linux.intel.com>
- <CAJZ5v0jRLJEUS=-6Ciuy1O7KG2B8sSvKgtzcK+85umbefLU=UQ@mail.gmail.com>
- <Z2P2KegQlxYLd9sd@kekkonen.localdomain> <CAJZ5v0hkaR=1wDO3MuzSGWwryDUb+CBDupwm-kffdpYKPU8RDg@mail.gmail.com>
- <Z2QhhyduwdVItAbs@kekkonen.localdomain>
-In-Reply-To: <Z2QhhyduwdVItAbs@kekkonen.localdomain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 19 Dec 2024 15:09:05 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gf2zm9jmzYUWJ6V0rtNWhXGDGmvBxu9HAan_cWxCg7_A@mail.gmail.com>
-Message-ID: <CAJZ5v0gf2zm9jmzYUWJ6V0rtNWhXGDGmvBxu9HAan_cWxCg7_A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI: property: Consider data nodes as being available
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
-	Len Brown <lenb@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Rob Herring <robh@kernel.org>, andriy.shevchenko@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 2/2] platform/x86/amd: pmf: Add manual control support
+To: Antheas Kapenekakis <lkml@antheas.dev>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Luke D . Jones" <luke@ljones.dev>, Mark Pearson
+ <mpearson-lenovo@squebb.ca>,
+ "open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>, me@kylegospodneti.ch,
+ Denis Benato <benato.denis96@gmail.com>,
+ Mario Limonciello <mario.limonciello@amd.com>
+References: <20240926025955.1728766-1-superm1@kernel.org>
+ <20240926025955.1728766-3-superm1@kernel.org>
+ <CAGwozwFjo4uSFpCAXRKivK+VoeYz-Qftmw+iLtOrVnyhn3xpfA@mail.gmail.com>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <CAGwozwFjo4uSFpCAXRKivK+VoeYz-Qftmw+iLtOrVnyhn3xpfA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Sakari,
+On 12/19/2024 07:12, Antheas Kapenekakis wrote:
+> Hi Mario,
+> given that there is a Legion Go driver in the works, and Asus already
+> has a driver, the only thing that would be left for locking down ACPI
+> access is manufacturers w/o vendor APIs.
+> 
+> So, can we restart the conversation about this driver? It would be
+> nice to get to a place where we can lock down /dev/mem and ACPI by
+> spring.
 
-On Thu, Dec 19, 2024 at 2:37=E2=80=AFPM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Thu, Dec 19, 2024 at 12:25:22PM +0100, Rafael J. Wysocki wrote:
-> > Hi Sakari,
-> >
-> > On Thu, Dec 19, 2024 at 11:32=E2=80=AFAM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Hi Rafael,
-> > >
-> > > Thanks for the review.
-> > >
-> > > On Wed, Dec 18, 2024 at 12:07:52PM +0100, Rafael J. Wysocki wrote:
-> > > > On Wed, Dec 18, 2024 at 10:16=E2=80=AFAM Sakari Ailus
-> > > > <sakari.ailus@linux.intel.com> wrote:
-> > > > >
-> > > > > Years after fwnode_device_is_available() was introduced, new func=
-tions
-> > > > > making use of the function on data nodes have been added, such as
-> > > > > fwnode_for_each_available_child_node(), it becomes apparent that =
-returning
-> > > > > "false" for all child nodes on ACPI wasn't a workable option.
-> > > >
-> > > > Can you describe the problem in a bit more detail?
-> > >
-> > > How about:
-> >
-> > This is better IMV.  At least it actually matches my understanding of t=
-he issue.
-> >
-> > > Years after fwnode_device_is_available() was introduced, new function=
-s
-> > > making use of the data node availability information have been added,=
- such
-> > > as fwnode_for_each_available_child_node().
-> >
-> > I would rephrase the sentence above as follows:
-> >
-> > "New functions making use of the data node availability information,
-> > like fwnode_for_each_available_child_node(), have been added years
-> > after fwnode_device_is_available() was introduced."
->
-> Looks good to me.
->
-> >
-> > > To enumerate the data nodes in
-> > > various ways specific to those functions, the node availability test =
-needs
-> > > to pass.
-> > >
-> > > On ACPI, there is no explicit information on this
-> >
-> > I guess by "this" you mean the availability of the data (non-device) no=
-des?
->
-> Yes. I'll use:
->
-> On ACPI, there is no explicit data node availbility information in the
-> first place and the original fwnode_device_is_available() implementation
-> simply returns false.
->
-> >
-> > > in the first place and
-> > > the original fwnode_device_is_available() implementation simply retur=
-nes
-> >
-> > returns
-> >
-> > > false. This leads to the new functions enumerating only available nod=
-es to
-> > > never return any nodes on ACPI.
-> >
-> > I'd say "This causes new functions that only enumerate available nodes
-> > to never return any nodes on ACPI for leaf devices that have child
-> > data nodes."
->
-> Ack.
->
-> >
-> > > On DT side most access functions, even
-> > > those without "_available" part, did only operate on available nodes.
-> >
-> > On the DT side, :device_is_available points to
-> > of_device_is_available() that calls __of_device_is_available() which
-> > returns "true" for all nodes without the "status" property, so if I'm
-> > not mistaken, on the DT side fwnode_device_is_available() will return
-> > "true" for any nodes without the "status" property.
-> >
-> > I would say something like this:
-> >
-> > "However, on the DT side, fwnode_device_is_available() returns "true"
-> > for all nodes without the "status" property which are analogous to the
-> > ACPI data nodes, so there is a difference in behavior between DT and
-> > ACPI in that respect."
->
-> That's also true. I'll use that, dropping the quotes from "true".
->
-> The commit message would be, in its entirety:
->
-> New functions making use of the data node availability information, like
-> fwnode_for_each_available_child_node(), have been added years after
-> fwnode_device_is_available() was introduced. To enumerate the data nodes
-> in various ways specific to those functions, the node availability test
-> needs to pass.
->
-> On ACPI, there is no explicit data node availbility information in the
-> first place and the original fwnode_device_is_available() implementation
-> simply returns false. This causes new functions that only enumerate
-> available nodes to never return any nodes on ACPI for leaf devices that
-> have child data nodes.
->
-> However, on the DT side, fwnode_device_is_available() returns true
-> for all nodes without the "status" property which are analogous to the
-> ACPI data nodes, so there is a difference in behavior between DT and
-> ACPI in that respect.
->
-> Thus from now on, return true from fwnode_device_is_available() on all AC=
-PI
-> data nodes.
+As Shyam mentioned we don't have control for limits by the PMF driver 
+for this on PMF v2 (Strix) or later platforms.
 
-Looks good to me now, thanks!
+So if we were to revive this custom discussion it would only be for 
+Phoenix and Hawk Point platforms.
+
+> 
+> Moreover, since the other two proposed drivers use the
+> firmware_attributes API, should this be used here as well?
+
+I do feel that if we revive this conversation specifically for Phoenix 
+and Hawk Point platforms yes we should use the same API to expose it to 
+userspace as those other two drivers do.
+
+I'd like Shyam's temperature on this idea though before anyone spends 
+time on it.  If he's amenable would you want to work on it?
+
+> 
+> By the way, you were right about needing a taint for this. Strix Point
+> fails to enter a lower power state during sleep if you set it to lower
+> than 10W. This is not ideal, as hawk point could go down to 5 while
+> still showing a power difference, but I am unsure where this bug
+> should be reported. This is both through ryzenadj/ALIB
+
+Who is to say this is a bug?  Abusing a debugging interface with a 
+reverse engineered tool means you might be able to configure a platform 
+out of specifications.
+
+> 
+> Antheas
+> 
+> On Thu, 26 Sept 2024 at 05:00, Mario Limonciello <superm1@kernel.org> wrote:
+>>
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> A number of users resort to using reverse engineered software like
+>> ryzenadj to manipulate debugging interfaces for modifying APU settings.
+>>
+>> At a glance these tools are useful, but the problem is they break
+>> state machines in other software such as the PMF driver or the OEM
+>> EC.
+>>
+>> Offer a knob for PMF to allow 'manual control' which will users can
+>> directly change things like fPPT and sPPT. As this can be harmful for
+>> a system to try to push limits outside of a thermal design, taint the
+>> kernel and show a critical message when in use.
+>>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>   Documentation/ABI/testing/sysfs-amd-pmf | 10 +++
+>>   drivers/platform/x86/amd/pmf/Makefile   |  1 +
+>>   drivers/platform/x86/amd/pmf/core.c     |  9 +++
+>>   drivers/platform/x86/amd/pmf/manual.c   | 88 +++++++++++++++++++++++++
+>>   drivers/platform/x86/amd/pmf/pmf.h      |  5 ++
+>>   drivers/platform/x86/amd/pmf/sps.c      |  4 ++
+>>   6 files changed, 117 insertions(+)
+>>   create mode 100644 drivers/platform/x86/amd/pmf/manual.c
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-amd-pmf b/Documentation/ABI/testing/sysfs-amd-pmf
+>> index 7fc0e1c2b76b..6f3d5cbf443f 100644
+>> --- a/Documentation/ABI/testing/sysfs-amd-pmf
+>> +++ b/Documentation/ABI/testing/sysfs-amd-pmf
+>> @@ -11,3 +11,13 @@ Description: Reading this file tells if the AMD Platform Management(PMF)
+>>                  To turn off CnQF user can write "off" to the sysfs node.
+>>                  Note: Systems that support auto mode will not have this sysfs file
+>>                  available.
+>> +
+>> +What:          /sys/devices/platform/*/{spl, fppt, sppt, sppt_apu_only, stt_min, stt_limit_apu, stt_skip_temp}
+>> +Date:          December 2024
+>> +Contact:       Mario Limonciello <mario.limonciello@amd.com>
+>> +Description:   Manual control of AMD PMF APU coefficients
+>> +               .
+>> +               These files are used to manually control the APU coefficients.
+>> +               In order to write to these files the module most be
+>> +               loaded with manual_control=1 and the user must write "custom"
+>> +               to the ACPI platform profile.
+>> diff --git a/drivers/platform/x86/amd/pmf/Makefile b/drivers/platform/x86/amd/pmf/Makefile
+>> index 7d6079b02589..81444d6f4428 100644
+>> --- a/drivers/platform/x86/amd/pmf/Makefile
+>> +++ b/drivers/platform/x86/amd/pmf/Makefile
+>> @@ -7,4 +7,5 @@
+>>   obj-$(CONFIG_AMD_PMF) += amd-pmf.o
+>>   amd-pmf-objs := core.o acpi.o sps.o \
+>>                  auto-mode.o cnqf.o \
+>> +               manual.o \
+>>                  tee-if.o spc.o pmf-quirks.o
+>> diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+>> index d6af0ca036f1..52a68ca094be 100644
+>> --- a/drivers/platform/x86/amd/pmf/core.c
+>> +++ b/drivers/platform/x86/amd/pmf/core.c
+>> @@ -53,6 +53,10 @@ static bool force_load;
+>>   module_param(force_load, bool, 0444);
+>>   MODULE_PARM_DESC(force_load, "Force load this driver on supported older platforms (experimental)");
+>>
+>> +bool pmf_manual_control;
+>> +module_param_named(manual_control, pmf_manual_control, bool, 0444);
+>> +MODULE_PARM_DESC(manual_control, "Expose manual control knobs (experimental)");
+>> +
+>>   static int amd_pmf_pwr_src_notify_call(struct notifier_block *nb, unsigned long event, void *data)
+>>   {
+>>          struct amd_pmf_dev *pmf = container_of(nb, struct amd_pmf_dev, pwr_src_notifier);
+>> @@ -349,6 +353,10 @@ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
+>>                  dev_dbg(dev->dev, "SPS enabled and Platform Profiles registered\n");
+>>          }
+>>
+>> +       if (pmf_manual_control) {
+>> +               amd_pmf_init_manual_control(dev);
+>> +               return;
+>> +       }
+>>          amd_pmf_init_smart_pc(dev);
+>>          if (dev->smart_pc_enabled) {
+>>                  dev_dbg(dev->dev, "Smart PC Solution Enabled\n");
+>> @@ -485,6 +493,7 @@ static void amd_pmf_remove(struct platform_device *pdev)
+>>
+>>   static const struct attribute_group *amd_pmf_driver_groups[] = {
+>>          &cnqf_feature_attribute_group,
+>> +       &manual_attribute_group,
+>>          NULL,
+>>   };
+>>
+>> diff --git a/drivers/platform/x86/amd/pmf/manual.c b/drivers/platform/x86/amd/pmf/manual.c
+>> new file mode 100644
+>> index 000000000000..b33fc3cd8d61
+>> --- /dev/null
+>> +++ b/drivers/platform/x86/amd/pmf/manual.c
+>> @@ -0,0 +1,88 @@
+>> +// SPDX-License-Identifier: GPL-2.0-or-later
+>> +/*
+>> + * AMD Platform Management Framework Driver
+>> + *
+>> + * Copyright (c) 2024, Advanced Micro Devices, Inc.
+>> + * All Rights Reserved.
+>> + *
+>> + * Author: Mario Limonciello <mario.limonciello@amd.com>
+>> + */
+>> +
+>> +#include "pmf.h"
+>> +
+>> +#define pmf_manual_attribute(_name, _set_command, _get_command)                \
+>> +static ssize_t _name##_store(struct device *d,                         \
+>> +                            struct device_attribute *attr,             \
+>> +                            const char *buf, size_t count)             \
+>> +{                                                                      \
+>> +       struct amd_pmf_dev *dev = dev_get_drvdata(d);                   \
+>> +       uint val;                                                       \
+>> +                                                                       \
+>> +       if (dev->current_profile != PLATFORM_PROFILE_CUSTOM) {          \
+>> +               dev_warn_once(dev->dev,                                 \
+>> +                             "Manual control is disabled, please set " \
+>> +                             "platform profile to custom.\n");         \
+>> +               return -EINVAL;                                         \
+>> +       }                                                               \
+>> +                                                                       \
+>> +       if (kstrtouint(buf, 10, &val) < 0)                              \
+>> +               return -EINVAL;                                         \
+>> +                                                                       \
+>> +       amd_pmf_send_cmd(dev, _set_command, false, val, NULL);          \
+>> +                                                                       \
+>> +       return count;                                                   \
+>> +}                                                                      \
+>> +static ssize_t _name##_show(struct device *d,                          \
+>> +                          struct device_attribute *attr,               \
+>> +                          char *buf)                                   \
+>> +{                                                                      \
+>> +       struct amd_pmf_dev *dev = dev_get_drvdata(d);                   \
+>> +       uint val;                                                       \
+>> +                                                                       \
+>> +       amd_pmf_send_cmd(dev, _get_command, true, ARG_NONE, &val);      \
+>> +                                                                       \
+>> +       return sysfs_emit(buf, "%u\n", val);                            \
+>> +}
+>> +
+>> +pmf_manual_attribute(spl, SET_SPL, GET_SPL);
+>> +static DEVICE_ATTR_RW(spl);
+>> +pmf_manual_attribute(fppt, SET_FPPT, GET_FPPT);
+>> +static DEVICE_ATTR_RW(fppt);
+>> +pmf_manual_attribute(sppt, SET_SPPT, GET_SPPT);
+>> +static DEVICE_ATTR_RW(sppt);
+>> +pmf_manual_attribute(sppt_apu_only, SET_SPPT_APU_ONLY, GET_SPPT_APU_ONLY);
+>> +static DEVICE_ATTR_RW(sppt_apu_only);
+>> +pmf_manual_attribute(stt_min, SET_STT_MIN_LIMIT, GET_STT_MIN_LIMIT);
+>> +static DEVICE_ATTR_RW(stt_min);
+>> +pmf_manual_attribute(stt_limit_apu, SET_STT_LIMIT_APU, GET_STT_LIMIT_APU);
+>> +static DEVICE_ATTR_RW(stt_limit_apu);
+>> +pmf_manual_attribute(stt_skin_temp, SET_STT_LIMIT_HS2, GET_STT_LIMIT_HS2);
+>> +static DEVICE_ATTR_RW(stt_skin_temp);
+>> +
+>> +static umode_t manual_attr_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
+>> +{
+>> +       return pmf_manual_control ? 0660 : 0;
+>> +}
+>> +
+>> +static struct attribute *manual_attrs[] = {
+>> +       &dev_attr_spl.attr,
+>> +       &dev_attr_fppt.attr,
+>> +       &dev_attr_sppt.attr,
+>> +       &dev_attr_sppt_apu_only.attr,
+>> +       &dev_attr_stt_min.attr,
+>> +       &dev_attr_stt_limit_apu.attr,
+>> +       &dev_attr_stt_skin_temp.attr,
+>> +       NULL,
+>> +};
+>> +
+>> +const struct attribute_group manual_attribute_group = {
+>> +       .attrs = manual_attrs,
+>> +       .is_visible = manual_attr_is_visible,
+>> +};
+>> +
+>> +void amd_pmf_init_manual_control(struct amd_pmf_dev *dev)
+>> +{
+>> +       add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+>> +       pr_crit("Manual PMF control is enabled, please disable it before "
+>> +               "reporting any bugs unrelated to PMF.\n");
+>> +}
+>> diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
+>> index 8ce8816da9c1..ca3df63cf190 100644
+>> --- a/drivers/platform/x86/amd/pmf/pmf.h
+>> +++ b/drivers/platform/x86/amd/pmf/pmf.h
+>> @@ -798,4 +798,9 @@ void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *
+>>   /* Quirk infrastructure */
+>>   void amd_pmf_quirks_init(struct amd_pmf_dev *dev);
+>>
+>> +/* Manual configuration */
+>> +extern bool pmf_manual_control;
+>> +extern const struct attribute_group manual_attribute_group;
+>> +void amd_pmf_init_manual_control(struct amd_pmf_dev *dev);
+>> +
+>>   #endif /* PMF_H */
+>> diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
+>> index 92f7fb22277d..6db88e523a86 100644
+>> --- a/drivers/platform/x86/amd/pmf/sps.c
+>> +++ b/drivers/platform/x86/amd/pmf/sps.c
+>> @@ -305,6 +305,8 @@ int amd_pmf_get_pprof_modes(struct amd_pmf_dev *pmf)
+>>          case PLATFORM_PROFILE_LOW_POWER:
+>>                  mode = POWER_MODE_POWER_SAVER;
+>>                  break;
+>> +       case PLATFORM_PROFILE_CUSTOM:
+>> +               return 0;
+>>          default:
+>>                  dev_err(pmf->dev, "Unknown Platform Profile.\n");
+>>                  return -EOPNOTSUPP;
+>> @@ -412,6 +414,8 @@ int amd_pmf_init_sps(struct amd_pmf_dev *dev)
+>>          set_bit(PLATFORM_PROFILE_LOW_POWER, dev->pprof.choices);
+>>          set_bit(PLATFORM_PROFILE_BALANCED, dev->pprof.choices);
+>>          set_bit(PLATFORM_PROFILE_PERFORMANCE, dev->pprof.choices);
+>> +       if (pmf_manual_control)
+>> +               set_bit(PLATFORM_PROFILE_CUSTOM, dev->pprof.choices);
+>>
+>>          /* Create platform_profile structure and register */
+>>          err = platform_profile_register(&dev->pprof);
+>> --
+>> 2.43.0
+>>
+
 
