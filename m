@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-10234-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10233-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F549F9C3D
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 22:43:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1269F9C3A
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 22:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A15C716DF70
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 21:43:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13FF116AB0C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 21:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BC122D4C2;
-	Fri, 20 Dec 2024 21:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE44F22CBF1;
+	Fri, 20 Dec 2024 21:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fB5rg8Tu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SVB9Ms6+"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6BD22B8B0;
-	Fri, 20 Dec 2024 21:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5EB22B8D9;
+	Fri, 20 Dec 2024 21:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734730767; cv=none; b=FP0D1tY4EOOd4a/mcJ6Ga2pR1vDBNGqhp157/mGfpPXhB1QlDqtPoUIsaliibCZEnig3Bfl34+g0a13TwYn9/MmpAATrIr4/BMNV+FLy/WXZcu6SBchLB0z8OKim7Ux0bppq79pry4LjK1+BNa17gDpWT6hHJPHryw9efyaPImw=
+	t=1734730767; cv=none; b=Tt5EsMo0/gn8qAGDqqfUihMd0QGHvoO44Ok6ohKVQ4pXV0KEpllhn9KsHcWbKnOFafmjiNyivZ/CMZEK4op1JUMH5Zte0FBsEk4iVSajx4y1Zke1l5Y/73Lz+jcgjb/6bJmnWZ5LpwIppj5gIvaXkemIarL2PO0F9rkd5tuDfJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734730767; c=relaxed/simple;
-	bh=IY7m0pnKYc6827kwQJ/ud1WEARNr4WSixtaPdx1SIcw=;
+	bh=P7ru4qx+MPgk/Pvi5QoK/6DMjTyTZM1LsOislTZ21R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dv3mntVI+pWKS87YGDTc9JeDXxmb8Wilao0QqaQiSnIDGpZj+kPyc0n+VP2hujNrCwkus1+O+4/e6CaIFILLayt4wWF1Eo/5D0+X49epA24evwGFGiSveGVyYtnlxJl9/pj2mb/BrTdbIIv3aW7t8VA4Zu71/uLXbuR0V9QpgKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fB5rg8Tu; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=RCDEf5/cqWomf7iK9yPPjsMZtSb6LejC3t5KIC6TgOyplYy4+P3BzSBqmiQDu9XM9Nl7La2+OGriDJlVzveLw6z7+FKBcUkOy+jaKw8aUfEbJfljOzPiB8HdkMqgVPCP0DjecWjCyTf6IWZ6yWYJ+D1ZBXEtx7t+ICsZw5Uvag4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SVB9Ms6+; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1734730766; x=1766266766;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IY7m0pnKYc6827kwQJ/ud1WEARNr4WSixtaPdx1SIcw=;
-  b=fB5rg8Tuiwx7OHLjfYy3b2TBeHmATaVccBYlk8SLZ69u74grseCsWNnV
-   d4UJYr1GZW504o6nnCjKH7HQ6asOQjzcJ9hQOjxbhD8g9kiI3g9h2QcOv
-   Y/qvAg1Gm5ZnE3dmQMdZFUpNxQtZdjRVHgOi4Gq0FKiT33SQzX0iTVqnb
-   dnAT7kOXuBeTCfXUBzVLAsG8qZuMQBXbfnPdg4nvHVPxW05nOXBb19CnY
-   c8WBZ3aPt7GLiDA8HwmVDMtl+KEB/AbNkEtxf7M1mTi8MMjT4t/+oiiMu
-   gfNDY4mTbAYNlLQ6r3V3Uom9E0qPu6RjlGlhsqjU4KYCbfOSVXFESyIhV
+  bh=P7ru4qx+MPgk/Pvi5QoK/6DMjTyTZM1LsOislTZ21R4=;
+  b=SVB9Ms6+Bej9Svvy00zudQmAobfUDyczXmXBayot1ZgFOR03lkpMyyXC
+   6YUmwlHFEaLySnc295IjpHftvXqajEA/JUK6ra5EPGDOOXb9V/E/jUUm3
+   WAE/CFGw6bcdCv//bpG2iv+FluadQ0+qLe6OPPBb8lUcZFlgJKKige8EP
+   JgeWbgW6YDs3PMiYgDV3GsWuqyHkXa74FtH9/eN32zqpf5xvARX/vM7WE
+   obI8G5XXurjkxt4l2gdImGBGsH/pnei8cPUWp2HDKcNjihPksHOWboJRz
+   SnVNQz7ziPmRiNKVSZ0W87W2eEWET+bUInEhAgKXiOHtq/na2z/ZtxLcK
    Q==;
-X-CSE-ConnectionGUID: BJa2STe8SsegExI0dYY1fA==
-X-CSE-MsgGUID: V3sEdgYrSLGWYtZet2ZnIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="39070780"
+X-CSE-ConnectionGUID: RhLX0b/IQeuLunz/Fl8icw==
+X-CSE-MsgGUID: qKGr4nkyTtStz7m6M8XcGA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="39070794"
 X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; 
-   d="scan'208";a="39070780"
+   d="scan'208";a="39070794"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
   by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 13:39:20 -0800
-X-CSE-ConnectionGUID: 7aXvm4FOS3aLBLKlNQfO5w==
-X-CSE-MsgGUID: yJSFAI3+RuGqA8CR4R0AaA==
+X-CSE-ConnectionGUID: Vyab51gZQfeIHUm1FYygxw==
+X-CSE-MsgGUID: JmFcIO4bQDaV0caz/Pe/lg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="103223869"
+   d="scan'208";a="103223872"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by fmviesa005.fm.intel.com with ESMTP; 20 Dec 2024 13:39:19 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -89,9 +89,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [RFC PATCH 14/15] perf/x86: Simplify p6_pmu_init()
-Date: Fri, 20 Dec 2024 21:37:09 +0000
-Message-ID: <20241220213711.1892696-15-sohil.mehta@intel.com>
+Subject: [RFC PATCH 15/15] perf/x86/p4: Replace Pentium 4 model checks with VFM ones
+Date: Fri, 20 Dec 2024 21:37:10 +0000
+Message-ID: <20241220213711.1892696-16-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241220213711.1892696-1-sohil.mehta@intel.com>
 References: <20241220213711.1892696-1-sohil.mehta@intel.com>
@@ -103,73 +103,52 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A switch case is unnecessary when only a single case matters. Also, the
-gaps in the case numbers are due to no CPU with those model numbers
-being released.
-
-Avoid the switch case and combine the cases into simpler VFM checks.
-Also, this gets rid of one last few Intel x86_model comparisons. No
-functional change intended.
+Introduce names for some old pentium 4 models and replace with VFM based
+checks.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- arch/x86/events/intel/p6.c | 28 +++++++---------------------
- 1 file changed, 7 insertions(+), 21 deletions(-)
+ arch/x86/events/intel/p4.c          | 7 ++++---
+ arch/x86/include/asm/intel-family.h | 1 +
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/p6.c b/arch/x86/events/intel/p6.c
-index a6cffb4f4ef5..37e3beb6d633 100644
---- a/arch/x86/events/intel/p6.c
-+++ b/arch/x86/events/intel/p6.c
-@@ -2,6 +2,8 @@
+diff --git a/arch/x86/events/intel/p4.c b/arch/x86/events/intel/p4.c
+index 844bc4fc4724..fb726c6fc6e7 100644
+--- a/arch/x86/events/intel/p4.c
++++ b/arch/x86/events/intel/p4.c
+@@ -10,6 +10,7 @@
  #include <linux/perf_event.h>
- #include <linux/types.h>
  
+ #include <asm/perf_event_p4.h>
 +#include <asm/cpu_device_id.h>
-+
- #include "../perf_event.h"
+ #include <asm/hardirq.h>
+ #include <asm/apic.h>
  
- /*
-@@ -244,35 +246,19 @@ static __init void p6_pmu_rdpmc_quirk(void)
- 	}
- }
- 
-+/* Only called for Family 6 CPUs without X86_FEATURE_ARCH_PERFMON */
- __init int p6_pmu_init(void)
+@@ -732,9 +733,9 @@ static bool p4_event_match_cpu_model(unsigned int event_idx)
  {
- 	x86_pmu = p6_pmu;
- 
--	switch (boot_cpu_data.x86_model) {
--	case  1: /* Pentium Pro */
--		x86_add_quirk(p6_pmu_rdpmc_quirk);
--		break;
--
--	case  3: /* Pentium II - Klamath */
--	case  5: /* Pentium II - Deschutes */
--	case  6: /* Pentium II - Mendocino */
--		break;
--
--	case  7: /* Pentium III - Katmai */
--	case  8: /* Pentium III - Coppermine */
--	case 10: /* Pentium III Xeon */
--	case 11: /* Pentium III - Tualatin */
--		break;
--
--	case  9: /* Pentium M - Banias */
--	case 13: /* Pentium M - Dothan */
--		break;
--
--	default:
-+	if (boot_cpu_data.x86_vfm >= INTEL_CORE_YONAH) {
- 		pr_cont("unsupported p6 CPU model %d ", boot_cpu_data.x86_model);
- 		return -ENODEV;
+ 	/* INSTR_COMPLETED event only exist for model 3, 4, 6 (Prescott) */
+ 	if (event_idx == P4_EVENT_INSTR_COMPLETED) {
+-		if (boot_cpu_data.x86_model != 3 &&
+-			boot_cpu_data.x86_model != 4 &&
+-			boot_cpu_data.x86_model != 6)
++		if (boot_cpu_data.x86_vfm != INTEL_P4_PRESCOTT &&
++		    boot_cpu_data.x86_vfm != INTEL_P4_PRESCOTT_2M &&
++		    boot_cpu_data.x86_vfm != INTEL_P4_CEDARMILL)
+ 			return false;
  	}
  
-+	if (boot_cpu_data.x86_vfm == INTEL_PENTIUM_PRO)
-+		x86_add_quirk(p6_pmu_rdpmc_quirk);
-+
- 	memcpy(hw_cache_event_ids, p6_hw_cache_event_ids,
- 		sizeof(hw_cache_event_ids));
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 73e458440fcb..77840c0b0df3 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -192,6 +192,7 @@
+ #define INTEL_FAM15_START		IFM(15, 0x00) /* Notational marker */
+ #define INTEL_P4_WILLAMETTE		IFM(15, 0x01) /* Also Xeon Foster */
+ #define INTEL_P4_PRESCOTT		IFM(15, 0x03)
++#define INTEL_P4_PRESCOTT_2M		IFM(15, 0x04)
+ #define INTEL_P4_CEDARMILL		IFM(15, 0x06) /* Also Xeon Dempsey */
  
+ /* Family 19 */
 -- 
 2.43.0
 
