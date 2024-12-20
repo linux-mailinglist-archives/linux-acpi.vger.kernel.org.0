@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-10236-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10237-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2699F9D0B
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 00:13:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D1C9F9D13
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 00:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B899188B64B
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 23:13:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DED71893810
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 23:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835342288DF;
-	Fri, 20 Dec 2024 23:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA80A221442;
+	Fri, 20 Dec 2024 23:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CRLSthXm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X/QRusl+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0262C227583;
-	Fri, 20 Dec 2024 23:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECBC1BCA0F;
+	Fri, 20 Dec 2024 23:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734736427; cv=none; b=ccPxPdPqgCKd7SKf1ihsUDvACbtk97zE/UTqnFlHunN1aWlk/N0DRcP6uOfdFDIicatCsHlnbGwbI4+z03M+BVuE9UbFrF5s4t7ns6NRDa0gbUfz0D9PHxYG+DSc38hDxFtkLr9ThoaeTyxX0c1asdNWkgZJlDdaAOhOlv62FrY=
+	t=1734736841; cv=none; b=rzDbF9X17J3+O62JAgP+/QojC1TBZWX4od/jqzthYAKnXInCFaqaJWTTYaIMo3iJnA6gUbWnrLhIMQ9eg0Le5X10wVX2LSF6o3FZ5NcRrqjZ0pGppwKMNg3Gf686lIguwJePY0+97fc6sJjwzvWdgZwIirc/dKVz+C3IHREYQW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734736427; c=relaxed/simple;
-	bh=nb9B0waNAEDO0WNKafc8d7ClyqmQkO32YvdW1cSU4Ps=;
+	s=arc-20240116; t=1734736841; c=relaxed/simple;
+	bh=rTep+YM0bXq86QUhrjacIivnDdKY6rbiOJeHZDeWJIc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EOPIFBtWYtM/Nq0IQTEI31YpyncXobRREBM+tkAbnQsjQ8t4Y/f1xLm9xTN9I3cIUDRtaUrkgQMH8OokNQtwBihvRmOTqoJIbJm+3iPFfzGgMEkJc1lrmCeNzULCUtz/yd804VODIb+PQbk/fXh864vDtVimY4tFhsUtr6i765w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CRLSthXm; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=RStme9MZDkZqUiRNsaB6/McQ7ixohSRwUcq96zRZWnxG3ALQz8sW2+f1wKv4avchG0dShDcrJRIp8lct9u3TqhTAZM2YzDB5vfHcf2R8vQT2lLbnc8SrNGQAKy3/x8KcHSE76xRnwvh5tX/9zkqcOs67LqZ7+c19xsD4X+DAgs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X/QRusl+; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734736425; x=1766272425;
+  t=1734736839; x=1766272839;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=nb9B0waNAEDO0WNKafc8d7ClyqmQkO32YvdW1cSU4Ps=;
-  b=CRLSthXm9igahlk43RTQ0qLDCij/SbdDrZBR5iQje1CNFHbgEeQRhTtc
-   2vLkG3/ZLVyZhvhubuLPS1iwLBulA3TPyr47W75UmJcoS7oT5ZEGRj2FX
-   yF/CU9U1bXGcWNgxxQR1QUaEWdMDMQlZ1e+IwPmXiYD2NSVtb3zQSvbJi
-   09YncfY8xF4r3Nlb1yPoaMDXq+1p7rvUsyYYZMOYcXVajNzb/Vz9B78T0
-   T2F7LALxKsHqFhtUyi8nlooijY6QcfPDF1UXxhIhibNirc+Azerk7cBnX
-   nlKWQHC7vmSiA0KHRywCnb3usSeOLj5WXWyzToT0jL/qh3upmU+J2xGNs
-   Q==;
-X-CSE-ConnectionGUID: 0jouvl2LStSeuScnpt1j6Q==
-X-CSE-MsgGUID: jKAZNn9cTOy2ePz79zc8dA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="34614317"
+  bh=rTep+YM0bXq86QUhrjacIivnDdKY6rbiOJeHZDeWJIc=;
+  b=X/QRusl+qnSkJTIhcIzpz/leihItDchoVohU+jupb1fJp4ZpJajNL5k8
+   4rCW4uaycvLbop09hD7G9Mh8LcgH0wU1gtSE+KU0emrzCr2PVKeYK6KqH
+   D5TE8gYL9XM0eNOPFx91cxdv+riAE/B5HORB5hGk4XgVJ2Aj/mi3Bxw94
+   u0yvgcaKInCkrWphLTSj7Zqn1F0Ee07Yd1PtRogyRJphQjBMw/M7GJnPJ
+   rVdT7mLfc/RNRpTPEPPvh5jBSOOy92S33xdVByVbfkEBgNh4JTtsGwk+O
+   V17rt7FYhiEENpZ0OsSiZqEPHFNhQ6X16WFF9nJTDja9GcItBBLG9cLFg
+   A==;
+X-CSE-ConnectionGUID: JiHYJ1zrS6SCDwSBmI22+g==
+X-CSE-MsgGUID: WyQ+9tu8Rs+EYvdCO/Q90Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="39231521"
 X-IronPort-AV: E=Sophos;i="6.12,252,1728975600"; 
-   d="scan'208";a="34614317"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:13:43 -0800
-X-CSE-ConnectionGUID: DVX9e8MoT1Ga3cynbb2Rsw==
-X-CSE-MsgGUID: w2qW3NqxQtWSQKfv0tkTUw==
+   d="scan'208";a="39231521"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:20:38 -0800
+X-CSE-ConnectionGUID: I8oAOCyUQuWmzssLQj9kqA==
+X-CSE-MsgGUID: FHj0MRDBRliPRGrx2CC/fw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="135977218"
+   d="scan'208";a="103626489"
 Received: from jairdeje-mobl1.amr.corp.intel.com (HELO [10.124.221.219]) ([10.124.221.219])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:13:41 -0800
-Message-ID: <0553d913-0a8c-4508-9657-9b53b106f4bb@intel.com>
-Date: Fri, 20 Dec 2024 15:13:39 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:20:37 -0800
+Message-ID: <0875ab7b-0595-4195-924c-66da28074ef6@intel.com>
+Date: Fri, 20 Dec 2024 15:20:35 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/15] x86/apic: Fix 32-bit APIC initialization for
- extended Intel families
+Subject: Re: [RFC PATCH 02/15] x86/apic: Fix smp init delay for extended Intel
+ families
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -87,7 +87,7 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20241220213711.1892696-1-sohil.mehta@intel.com>
- <20241220213711.1892696-2-sohil.mehta@intel.com>
+ <20241220213711.1892696-3-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -133,47 +133,37 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20241220213711.1892696-2-sohil.mehta@intel.com>
+In-Reply-To: <20241220213711.1892696-3-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/20/24 13:36, Sohil Mehta wrote:
-> detect_init_APIC() limits the APIC detection to families 6 and 15.
-> Extend the check to family numbers beyond 15. Also, convert it to a VFM
-> check to make it simpler.
+> The MP specification version 1.4 references the i486 and early Pentium
+> processors in family 5. 
 
-This changelog doesn't _quite_ fit the code. I'd rather it was a bit
-more precise. It does not _just_ expand to "numbers beyond 15".
+Can you please elaborate on how this reference is relevant to the patch
+at hand?
 
-Also, It doesn't _really_ help to have the changelog tell us the
-function name. That's why we have diff -p.  How about:
-
-	APIC detection is currently limited to a few specific families
-	and will not match the upcoming families >=18.
-
-	Extend the check to include all families 6 or greater. Also
-	convert it to a VFM check to make it simpler.
-
->  arch/x86/kernel/apic/apic.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> However, all processors starting with family 6 likely do not need the
+> 10 msec INIT delay. The omission of the Pentium 4s (family 15) seems
+> like an oversight in the original check.
 > 
-> diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-> index c5fb28e6451a..13dac8f78213 100644
-> --- a/arch/x86/kernel/apic/apic.c
-> +++ b/arch/x86/kernel/apic/apic.c
-> @@ -2014,8 +2014,8 @@ static bool __init detect_init_APIC(void)
->  	case X86_VENDOR_HYGON:
->  		break;
->  	case X86_VENDOR_INTEL:
-> -		if (boot_cpu_data.x86 == 6 || boot_cpu_data.x86 == 15 ||
-> -		    (boot_cpu_data.x86 == 5 && boot_cpu_has(X86_FEATURE_APIC)))
-> +		if ((boot_cpu_data.x86 == 5 && boot_cpu_has(X86_FEATURE_APIC)) ||
-> +		    boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO)
->  			break;
->  		goto no_apic;
->  	default:
+> With some risk, choose a simpler check and extend the quirk to all
+> recent and upcoming Intel processors.
 
-With that changelog tweak:
+I'm struggling to follow this a bit.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+I think these are the facts that matter:
+
+ * init_udelay=0 means "no quirk"
+ * Modern CPUs don't have the quirk
+ * The current check says "only family 6 is modern"
+ * Family 15 is _probably_ modern and just forgotten about
+
+And this is what you're doing in the end:
+
+Consider everything PPro and later to be modern, including all of
+families 6, 15 and the new 18/19 CPUs.
+
+Right?
 
