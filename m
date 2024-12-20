@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-10237-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10238-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D1C9F9D13
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 00:20:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F629F9D1A
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 00:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DED71893810
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 23:20:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 676777A164A
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 23:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA80A221442;
-	Fri, 20 Dec 2024 23:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F51C227575;
+	Fri, 20 Dec 2024 23:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X/QRusl+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hv2d+c5D"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECBC1BCA0F;
-	Fri, 20 Dec 2024 23:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329961BC085;
+	Fri, 20 Dec 2024 23:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734736841; cv=none; b=rzDbF9X17J3+O62JAgP+/QojC1TBZWX4od/jqzthYAKnXInCFaqaJWTTYaIMo3iJnA6gUbWnrLhIMQ9eg0Le5X10wVX2LSF6o3FZ5NcRrqjZ0pGppwKMNg3Gf686lIguwJePY0+97fc6sJjwzvWdgZwIirc/dKVz+C3IHREYQW4=
+	t=1734737266; cv=none; b=RitAKkwyWpb0kgP7uyBWcGUjehhbxYKnkIZgQic77ix41q3d4ONlaJmpLEPWVzn1dcpi+CvR98Xe6IAzhdL4Gufeq7B3Y/ru1Ht47w1jGhra7nSQKQ6ShwmcU/aFdJlsB3MCEcmSydYtXbW0mTmoNkPHwo1E9ie/0NhOi8Sd+e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734736841; c=relaxed/simple;
-	bh=rTep+YM0bXq86QUhrjacIivnDdKY6rbiOJeHZDeWJIc=;
+	s=arc-20240116; t=1734737266; c=relaxed/simple;
+	bh=bassEf7wYorKcfQrHtmrGcx9m3DjqHQeQyJmMd2XTpo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RStme9MZDkZqUiRNsaB6/McQ7ixohSRwUcq96zRZWnxG3ALQz8sW2+f1wKv4avchG0dShDcrJRIp8lct9u3TqhTAZM2YzDB5vfHcf2R8vQT2lLbnc8SrNGQAKy3/x8KcHSE76xRnwvh5tX/9zkqcOs67LqZ7+c19xsD4X+DAgs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X/QRusl+; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:Content-Type; b=VmftG8xmzt4v82bYSzWJZ6CFpSCWhMTvQd3LOBk6HgfOXhOmemB8WkSAby3VP2aF6iyTI512Aj9m8P2s0cOxQ5hDtHW45tk9QzXBrjaTeWmL99qsrJmd4Ft+9n6/ylMF3rs7bmJRiYksuopDgUGWivqV7OeV8sPsjUNaBNaUOow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hv2d+c5D; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734736839; x=1766272839;
+  t=1734737264; x=1766273264;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=rTep+YM0bXq86QUhrjacIivnDdKY6rbiOJeHZDeWJIc=;
-  b=X/QRusl+qnSkJTIhcIzpz/leihItDchoVohU+jupb1fJp4ZpJajNL5k8
-   4rCW4uaycvLbop09hD7G9Mh8LcgH0wU1gtSE+KU0emrzCr2PVKeYK6KqH
-   D5TE8gYL9XM0eNOPFx91cxdv+riAE/B5HORB5hGk4XgVJ2Aj/mi3Bxw94
-   u0yvgcaKInCkrWphLTSj7Zqn1F0Ee07Yd1PtRogyRJphQjBMw/M7GJnPJ
-   rVdT7mLfc/RNRpTPEPPvh5jBSOOy92S33xdVByVbfkEBgNh4JTtsGwk+O
-   V17rt7FYhiEENpZ0OsSiZqEPHFNhQ6X16WFF9nJTDja9GcItBBLG9cLFg
-   A==;
-X-CSE-ConnectionGUID: JiHYJ1zrS6SCDwSBmI22+g==
-X-CSE-MsgGUID: WyQ+9tu8Rs+EYvdCO/Q90Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="39231521"
+  bh=bassEf7wYorKcfQrHtmrGcx9m3DjqHQeQyJmMd2XTpo=;
+  b=Hv2d+c5Dm5UQIAsXimmEz6YhZinrSighc+/oknd8VPbEzX16t7x5+DMf
+   BcCEXAp1R68sFy8G3co/VklYlV2qgWTirsXjL6M0kJa60yhcNRmMZ2Lo0
+   Z2CqcZ89WAk0Zj9tzwFt0oHFEoPptXjcF1tvaFwq6c6lvnz+ZXIuoyczh
+   T1LeYG5pY7ODEapbTOaHVngLoeEHgti6J4LdilydECWqXvbc0gSFv7FSu
+   oyhVs+TOhIf3ciNs+F/la+VT3QTwTMsx+9W5qJzDlWbPpImy9uPLgd7gv
+   pwS3yindtnsqxjTSQ/kTdL2zWItjCCiqD2MWpHl90kfljkCceCd8T/Zdg
+   g==;
+X-CSE-ConnectionGUID: QouRSCGdRh2+kVoqq1aI3A==
+X-CSE-MsgGUID: 3KrhVcPFQfOMzQlUN8OqTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="52818924"
 X-IronPort-AV: E=Sophos;i="6.12,252,1728975600"; 
-   d="scan'208";a="39231521"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:20:38 -0800
-X-CSE-ConnectionGUID: I8oAOCyUQuWmzssLQj9kqA==
-X-CSE-MsgGUID: FHj0MRDBRliPRGrx2CC/fw==
+   d="scan'208";a="52818924"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:27:43 -0800
+X-CSE-ConnectionGUID: Z2P57KKwSBe1ynLKVRHyNw==
+X-CSE-MsgGUID: DFTACmDMSLy6EQ6VWiFjgA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="103626489"
+   d="scan'208";a="121924328"
 Received: from jairdeje-mobl1.amr.corp.intel.com (HELO [10.124.221.219]) ([10.124.221.219])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:20:37 -0800
-Message-ID: <0875ab7b-0595-4195-924c-66da28074ef6@intel.com>
-Date: Fri, 20 Dec 2024 15:20:35 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:27:42 -0800
+Message-ID: <54df5b3f-8b98-42b8-b3ec-3860abd5ce67@intel.com>
+Date: Fri, 20 Dec 2024 15:27:41 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/15] x86/apic: Fix smp init delay for extended Intel
- families
+Subject: Re: [RFC PATCH 03/15] x86/cpu/intel: Fix init_intel() checks for
+ extended family numbers
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -87,7 +87,7 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20241220213711.1892696-1-sohil.mehta@intel.com>
- <20241220213711.1892696-3-sohil.mehta@intel.com>
+ <20241220213711.1892696-4-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -133,37 +133,26 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20241220213711.1892696-3-sohil.mehta@intel.com>
+In-Reply-To: <20241220213711.1892696-4-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/20/24 13:36, Sohil Mehta wrote:
-> The MP specification version 1.4 references the i486 and early Pentium
-> processors in family 5. 
+> X86_FEATURE_REP_GOOD is only set for family 6 processors.  Extend the
+> check to family numbers beyond 15.
 
-Can you please elaborate on how this reference is relevant to the patch
-at hand?
+Could you explain why, please?
 
-> However, all processors starting with family 6 likely do not need the
-> 10 msec INIT delay. The omission of the Pentium 4s (family 15) seems
-> like an oversight in the original check.
+> It is uncertain whether the Pentium 4s (family 15) should set the
+> feature flag as well. Commit 185f3b9da24c ("x86: make intel.c have
+> 64-bit support code") that originally set X86_FEATURE_REP_GOOD also set
+> the x86_cache_alignment preference for family 15 processors. The
+> omission of the family 15 seems intentional.
 > 
-> With some risk, choose a simpler check and extend the quirk to all
-> recent and upcoming Intel processors.
+> Also, the 32-bit user copy alignment preference is only set for family 6
+> and 15 processors. Extend the preference to family numbers beyond 15.
 
-I'm struggling to follow this a bit.
+Can you please provide some more context so it's clear which hunk this
+refers to?  Alternatively, can you break this out into a separate patch?
 
-I think these are the facts that matter:
-
- * init_udelay=0 means "no quirk"
- * Modern CPUs don't have the quirk
- * The current check says "only family 6 is modern"
- * Family 15 is _probably_ modern and just forgotten about
-
-And this is what you're doing in the end:
-
-Consider everything PPro and later to be modern, including all of
-families 6, 15 and the new 18/19 CPUs.
-
-Right?
 
