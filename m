@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-10227-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10228-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A17E9F9C2A
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 22:42:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FF49F9C2E
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 22:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E26A41892632
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 21:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A651898E1A
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 21:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C9622A1E5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED15622A800;
 	Fri, 20 Dec 2024 21:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yw/lTK6w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CsLfLkAa"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3CF229130;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CDE229666;
 	Fri, 20 Dec 2024 21:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734730763; cv=none; b=rLsTxzb8B3ZAxgza79Xz1yTrdeQf0dKafgn7Yd34nyqp6PRY7ErFhsv+rTCbIVlz9yePJXCE+W1H6EFxAFo2OI+ASNIiPCYejPbJ+zZO+M/9iqjmBv3/MS7XNE8MHYgH5qMprmaTPpyWj5gR+vP8Hyy+i441tzprKj0EJInNugc=
+	t=1734730763; cv=none; b=WIuxLHGTpyEAfNd5Bi1/njt8W8b2XQ9reovyJ79hxNLr2ZuivYdsMiDw++Me37Vp4+H+Ek8IgAyHoUYzwzbWt9TDTDfI+R3XSIfPEZDjJqe/9YqzWN8ANu3oLeXBrlcxMUbuwQVBsVcBktl5hT3dd68g9VZd2WTQn8vYb/lgrkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734730763; c=relaxed/simple;
-	bh=khcbHN+6/uEv0zea4Ln5lsuwyhVArEvDUPEFThN18B0=;
+	bh=O4ncBifRTq9YBhwAqZ5RW1n+vh570dNEbVhOk1ZSBJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsUf3bPckbBVlRsyOryH0zNeez9NZU69rol4aT2RQch8CFPC4UcJthZDkcUan1a36AAZsfZX9WBF6fUzxslC9A9aBx6QeR6AR0nCPu97sXj9ViOxx70qqD+LHrDaSepPPCtyoE9GhCLePArrsjdHn9qe9AL1RsMmisslAlmt32s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yw/lTK6w; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=N5pMk70WUQj2DsyaD6CIoXyQMZaG79pnJQsqDuCGXGRCz7+Y1ma8MY7nQaj2quk4O2HYGKeF9pyBYd3qVOfJwwt2g9iN8E7xNVuUnkSP2/3xCZcVU6dbPNFTKE4V/kQM2j0sw5SK9p1ZkjdP13t239WZ0BbeRphuebjISc3ADuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CsLfLkAa; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,28 +36,28 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1734730762; x=1766266762;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=khcbHN+6/uEv0zea4Ln5lsuwyhVArEvDUPEFThN18B0=;
-  b=Yw/lTK6wQeOBcTnxpLi7jtElnDtFfKZ5gGoFL2OtDAPJ5+LD8KLEuT4L
-   ChuwgsgxPO22jDrYXdFnAv/x4obh6cHVsu6q+i1/cLVpZT+FKFMT8Hjcb
-   qQZzu4xJTFfpdQZ5jTR4oVYf35gW552dN0fTb82neuhR15Dflv+ZLujIo
-   wLsiNiLrjk+pkHGoZwhMEkSqKytbKYBWwblu8QUv3kMpFXLZ1BS0Qw4IU
-   xdZgR8SEbpi6b4+GJYroMOwUwj78/emwv3aF0K+VJku3ZYkOSlCJVwSGW
-   qEEr/bnzNf4obzve/T0BzV/eWIJghFq37A8arejjRv9cLoAezpbFWtGNY
-   Q==;
-X-CSE-ConnectionGUID: 670lzGn0Ro2sTBLnwheH8Q==
-X-CSE-MsgGUID: gB+bBP4xTRGaiz5XqMVPNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="39070701"
+  bh=O4ncBifRTq9YBhwAqZ5RW1n+vh570dNEbVhOk1ZSBJw=;
+  b=CsLfLkAaDAADh0VprZQPtof4KuTsLHECDjiQbfHkBeH7lHDm7ClOmrm4
+   HS+JmQ8rG8n5JR0dIhv9KUsxJ838GMrhOt+LWlCGyM63aNYmBCigNQqT0
+   KOlpLTZ7Ky8d5O8HmUzmlURnADp4Gtn2HhpGcEL5ZM+V3DPc+dW+9aBvk
+   0k3Lka7PkVpGWrGns8KbNrLO+nRkyt+glLh4g1b9jHt6ke8eoqR/MnmpE
+   D5k0dbos5t6CL7IVUdKL419TmM5m45iasn6NNNbuzWo5HDoKLprXU7yoD
+   zk+wtvyNrW9TkYJctvVPpgbRLtgeELro/l0fq4x8VEhm27YzoyQZDKFn4
+   A==;
+X-CSE-ConnectionGUID: 81DmAPlCSb6Edh3JRDVrjg==
+X-CSE-MsgGUID: EpAjN+TNSMaJHbqcwO81+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="39070724"
 X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; 
-   d="scan'208";a="39070701"
+   d="scan'208";a="39070724"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 13:39:17 -0800
-X-CSE-ConnectionGUID: 5VroBSZYTgqwRrTN7cx7yQ==
-X-CSE-MsgGUID: GbSPoW/XRVSuVJcmu/w4LA==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 13:39:18 -0800
+X-CSE-ConnectionGUID: WRYG0StfRiiG+cO98DSeDA==
+X-CSE-MsgGUID: uRlwZ5epSAySRexzZPD09w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="103223850"
+   d="scan'208";a="103223853"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa005.fm.intel.com with ESMTP; 20 Dec 2024 13:39:16 -0800
+  by fmviesa005.fm.intel.com with ESMTP; 20 Dec 2024 13:39:17 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -89,9 +89,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [RFC PATCH 08/15] x86/cpu/intel: Replace early family 6 checks with VFM ones
-Date: Fri, 20 Dec 2024 21:37:03 +0000
-Message-ID: <20241220213711.1892696-9-sohil.mehta@intel.com>
+Subject: [RFC PATCH 09/15] x86/cpu/intel: Replace family 15 checks with VFM ones
+Date: Fri, 20 Dec 2024 21:37:04 +0000
+Message-ID: <20241220213711.1892696-10-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241220213711.1892696-1-sohil.mehta@intel.com>
 References: <20241220213711.1892696-1-sohil.mehta@intel.com>
@@ -103,81 +103,54 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce names for some old pentium models and replace with VFM based
+Introduce names for some old pentium 4 models and replace with VFM based
 checks.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- arch/x86/include/asm/intel-family.h |  3 +++
- arch/x86/kernel/cpu/intel.c         | 13 ++++++-------
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/intel-family.h | 4 ++++
+ arch/x86/kernel/cpu/intel.c         | 6 +++---
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 6d7b04ffc5fd..41278093bcd4 100644
+index 41278093bcd4..79cfd42c849f 100644
 --- a/arch/x86/include/asm/intel-family.h
 +++ b/arch/x86/include/asm/intel-family.h
-@@ -46,6 +46,9 @@
- #define INTEL_ANY			IFM(X86_FAMILY_ANY, X86_MODEL_ANY)
+@@ -182,6 +182,10 @@
+ /* Family 5 */
+ #define INTEL_QUARK_X1000		IFM(5, 0x09) /* Quark X1000 SoC */
  
- #define INTEL_PENTIUM_PRO		IFM(6, 0x01)
-+#define INTEL_PENTIUM_II_KLAMATH	IFM(6, 0x03)
-+#define INTEL_PENTIUM_III_TUALATIN	IFM(6, 0x0B)
-+#define INTEL_PENTIUM_M_DOTHAN		IFM(6, 0x0D)
- 
- #define INTEL_CORE_YONAH		IFM(6, 0x0E)
++/* Family 15 */
++#define INTEL_P4_WILLAMETTE		IFM(15, 0x01) /* Also Xeon Foster */
++#define INTEL_P4_PRESCOTT		IFM(15, 0x03)
++
+ /* Family 19 */
+ #define INTEL_PANTHERCOVE_X		IFM(19, 0x01) /* Diamond Rapids */
  
 diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index f44b2e618fb3..cde8f45ccd57 100644
+index cde8f45ccd57..26221f38db70 100644
 --- a/arch/x86/kernel/cpu/intel.c
 +++ b/arch/x86/kernel/cpu/intel.c
-@@ -195,7 +195,7 @@ void intel_unlock_cpuid_leafs(struct cpuinfo_x86 *c)
- 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
- 		return;
+@@ -256,8 +256,8 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ #endif
  
--	if (c->x86 < 6 || (c->x86 == 6 && c->x86_model < 0xd))
-+	if (c->x86_vfm < INTEL_PENTIUM_M_DOTHAN)
- 		return;
- 
- 	/*
-@@ -301,7 +301,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 	 * If fast string is not enabled in IA32_MISC_ENABLE for any reason,
- 	 * clear the fast string and enhanced fast string CPU capabilities.
- 	 */
--	if (c->x86 > 6 || (c->x86 == 6 && c->x86_model >= 0xd)) {
-+	if (c->x86_vfm >= INTEL_PENTIUM_M_DOTHAN) {
- 		rdmsrl(MSR_IA32_MISC_ENABLE, misc_enable);
- 		if (!(misc_enable & MSR_IA32_MISC_ENABLE_FAST_STRING)) {
- 			pr_info("Disabled fast string operations\n");
-@@ -350,9 +350,7 @@ static void bsp_init_intel(struct cpuinfo_x86 *c)
- int ppro_with_ram_bug(void)
- {
- 	/* Uses data from early_cpu_detect now */
--	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
--	    boot_cpu_data.x86 == 6 &&
--	    boot_cpu_data.x86_model == 1 &&
-+	if (boot_cpu_data.x86_vfm == INTEL_PENTIUM_PRO &&
- 	    boot_cpu_data.x86_stepping < 8) {
- 		pr_info("Pentium Pro with Errata#50 detected. Taking evasive action.\n");
- 		return 1;
-@@ -413,7 +411,8 @@ static void intel_workarounds(struct cpuinfo_x86 *c)
- 	 * SEP CPUID bug: Pentium Pro reports SEP but doesn't have it until
- 	 * model 3 mask 3
- 	 */
--	if ((c->x86<<8 | c->x86_model<<4 | c->x86_stepping) < 0x633)
-+	if ((c->x86_vfm == INTEL_PENTIUM_II_KLAMATH && c->x86_stepping < 3) ||
-+	    c->x86_vfm < INTEL_PENTIUM_II_KLAMATH)
- 		clear_cpu_cap(c, X86_FEATURE_SEP);
+ 	/* CPUID workaround for 0F33/0F34 CPU */
+-	if (c->x86 == 0xF && c->x86_model == 0x3
+-	    && (c->x86_stepping == 0x3 || c->x86_stepping == 0x4))
++	if (c->x86_vfm == INTEL_P4_PRESCOTT &&
++	    (c->x86_stepping == 0x3 || c->x86_stepping == 0x4))
+ 		c->x86_phys_bits = 36;
  
  	/*
-@@ -620,7 +619,7 @@ static unsigned int intel_size_cache(struct cpuinfo_x86 *c, unsigned int size)
- 	 * to determine which, so we use a boottime override
- 	 * for the 512kb model, and assume 256 otherwise.
+@@ -430,7 +430,7 @@ static void intel_workarounds(struct cpuinfo_x86 *c)
+ 	 * P4 Xeon erratum 037 workaround.
+ 	 * Hardware prefetcher may cause stale data to be loaded into the cache.
  	 */
--	if ((c->x86 == 6) && (c->x86_model == 11) && (size == 0))
-+	if (c->x86_vfm == INTEL_PENTIUM_III_TUALATIN && size == 0)
- 		size = 256;
- 
- 	/*
+-	if ((c->x86 == 15) && (c->x86_model == 1) && (c->x86_stepping == 1)) {
++	if (c->x86_vfm == INTEL_P4_WILLAMETTE && c->x86_stepping == 1) {
+ 		if (msr_set_bit(MSR_IA32_MISC_ENABLE,
+ 				MSR_IA32_MISC_ENABLE_PREFETCH_DISABLE_BIT) > 0) {
+ 			pr_info("CPU: C0 stepping P4 Xeon detected.\n");
 -- 
 2.43.0
 
