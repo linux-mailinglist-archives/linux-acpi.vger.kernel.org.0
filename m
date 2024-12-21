@@ -1,65 +1,77 @@
-Return-Path: <linux-acpi+bounces-10238-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10239-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F629F9D1A
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 00:27:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184FB9F9D67
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 01:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 676777A164A
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Dec 2024 23:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF8B168C8E
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 00:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F51C227575;
-	Fri, 20 Dec 2024 23:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C48EADC;
+	Sat, 21 Dec 2024 00:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hv2d+c5D"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="iX4vmOue"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329961BC085;
-	Fri, 20 Dec 2024 23:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA2D6AAD
+	for <linux-acpi@vger.kernel.org>; Sat, 21 Dec 2024 00:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734737266; cv=none; b=RitAKkwyWpb0kgP7uyBWcGUjehhbxYKnkIZgQic77ix41q3d4ONlaJmpLEPWVzn1dcpi+CvR98Xe6IAzhdL4Gufeq7B3Y/ru1Ht47w1jGhra7nSQKQ6ShwmcU/aFdJlsB3MCEcmSydYtXbW0mTmoNkPHwo1E9ie/0NhOi8Sd+e8=
+	t=1734740954; cv=none; b=nF+lTSKv1ztJYgntt8oASa6Q4Q//9zz2y6Kc1ROT1eqmO6LgbPOLfxJ4kCVBuB0Nk6VXAJxJNqlQ5TtHj0y9aw7AFlj8/J4VALHAJk2sg/Yh5A3SIXd3CSTGmYQElo7XKTjoTHLXzE432qLqUzbO74IA6RCwcGXCjoVsR066VKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734737266; c=relaxed/simple;
-	bh=bassEf7wYorKcfQrHtmrGcx9m3DjqHQeQyJmMd2XTpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VmftG8xmzt4v82bYSzWJZ6CFpSCWhMTvQd3LOBk6HgfOXhOmemB8WkSAby3VP2aF6iyTI512Aj9m8P2s0cOxQ5hDtHW45tk9QzXBrjaTeWmL99qsrJmd4Ft+9n6/ylMF3rs7bmJRiYksuopDgUGWivqV7OeV8sPsjUNaBNaUOow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hv2d+c5D; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734737264; x=1766273264;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bassEf7wYorKcfQrHtmrGcx9m3DjqHQeQyJmMd2XTpo=;
-  b=Hv2d+c5Dm5UQIAsXimmEz6YhZinrSighc+/oknd8VPbEzX16t7x5+DMf
-   BcCEXAp1R68sFy8G3co/VklYlV2qgWTirsXjL6M0kJa60yhcNRmMZ2Lo0
-   Z2CqcZ89WAk0Zj9tzwFt0oHFEoPptXjcF1tvaFwq6c6lvnz+ZXIuoyczh
-   T1LeYG5pY7ODEapbTOaHVngLoeEHgti6J4LdilydECWqXvbc0gSFv7FSu
-   oyhVs+TOhIf3ciNs+F/la+VT3QTwTMsx+9W5qJzDlWbPpImy9uPLgd7gv
-   pwS3yindtnsqxjTSQ/kTdL2zWItjCCiqD2MWpHl90kfljkCceCd8T/Zdg
-   g==;
-X-CSE-ConnectionGUID: QouRSCGdRh2+kVoqq1aI3A==
-X-CSE-MsgGUID: 3KrhVcPFQfOMzQlUN8OqTw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="52818924"
-X-IronPort-AV: E=Sophos;i="6.12,252,1728975600"; 
-   d="scan'208";a="52818924"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:27:43 -0800
-X-CSE-ConnectionGUID: Z2P57KKwSBe1ynLKVRHyNw==
-X-CSE-MsgGUID: DFTACmDMSLy6EQ6VWiFjgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="121924328"
-Received: from jairdeje-mobl1.amr.corp.intel.com (HELO [10.124.221.219]) ([10.124.221.219])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 15:27:42 -0800
-Message-ID: <54df5b3f-8b98-42b8-b3ec-3860abd5ce67@intel.com>
-Date: Fri, 20 Dec 2024 15:27:41 -0800
+	s=arc-20240116; t=1734740954; c=relaxed/simple;
+	bh=JOubcB4G4WGgdMvQDT82hSZMzQsiikON5vuT/uzQEJI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=cM+PwIja+MiMtCw29MmmSTOaWNBX3g0VSvsxfgim0Vu81/FDZt1umIhHqPd/MAB5uMBRlnUl0YLJZo6mKEDh10/HQXiOWUP+/iOGZ9Tuo04Scyy9kuUG/l8W++et00nwD7ZKYET1xFMWU2Hnt/q34Z6kLYZq+0M9J26DyPsXbcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=iX4vmOue; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43625c4a50dso17118375e9.0
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Dec 2024 16:29:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citrix.com; s=google; t=1734740951; x=1735345751; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:subject:references:cc:to:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jJhtITZ4lAQh7K0AUG62aoM5fzqsK11mdNKPUcHR19E=;
+        b=iX4vmOue1AGfuJOVQNaVZnCXVAiumNVv5T4cpMj/+72wW+s9DJpEp6p1TKIN/olAO4
+         Mlwa25KS9IU8jrEkctCb5v3ewmIGXr5zNlKEOEMjQ8FhtC5rVmI0G6ACTTw+XAkagQWa
+         lZotuL6g6XOPtbH153xUowq/OmN9AKSOBLdPU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734740951; x=1735345751;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:subject:references:cc:to:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jJhtITZ4lAQh7K0AUG62aoM5fzqsK11mdNKPUcHR19E=;
+        b=m4NUGxJeYvpHhV9fMnTqiUcc0efcNuHPVqASUiy3gxBnrAGPbdrUtLDpVScBvnfO6d
+         Hxss6c8iiFLqJtRJPmMhqe8F1mHDsw2hWiI2ToMfBIRF6rlO7hcEE7K3UkAL6E2CZO7+
+         HuU44+TSZVsKpYK+jfC+pqrF+KlxPr/L+os6IQ3MNsDxGgzqJ/b8pGbxzJeEm1R0iSQ4
+         PHMs+BqEgmodO/fVl9NFVaVbIoOLCB8vUL63oyGi14BVm47gajpt+WeUGJKwpFNAYkvZ
+         SO8lwSQDnqjEUlcpJolu23TBbLEQYHRtp3QcADzJUwNnhlgF94L8OdG9WoUj8FwCeC5T
+         y9cA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRNzpktrKOvJa0Esa0hb84mDR1QYgT3ZJo1f8a7rSQHKD41yfZkR/FP2rON7SGymnn1gl0f99sfVZW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd5utOBcSXH0UZmVoqBMAPykbntZk1RZbguvJpkGiiUrFe95yJ
+	BfyTnUFspprxHGwJEJU2pDoqZ13uGqR2yVUucH7n2eZ5BQqvrHrTyx2ER1nNhvY=
+X-Gm-Gg: ASbGncsyCVAITehRgSAt15ZdOZ91KIagEtq39hLoS2ttrFFJtJLqiVrloIFMldBLPlR
+	hwHt41O4JtU6sC1YRytiLuYFoH727tKDH+QnNJDtgVQpxSythAmrEkgkye1pXQsZY44DeJfGinG
+	P/jK3CZ8ZnqoMrWaDa5861XmZ7XE+ebVLJ+FOouetAG+0mh6/OdSM9WmCoU/DsWKNdNpE/h/GV5
+	Kms/RfXWqvcwSRle7J1UK1lOe8pLHnsIijKSRvshPMHhaCKxY+FY5zYlZSrFnD0uDilexbjKfUY
+	ifqqpHcL+4PWOd1MCwsN
+X-Google-Smtp-Source: AGHT+IECeMNav5CpQtcaNYfvmITM4dOtdZrobWjXidFoGQgpul8V7Zd2a6z5unpSRoQUQqmPQIqoPQ==
+X-Received: by 2002:a05:600c:45cf:b0:434:f739:7ce3 with SMTP id 5b1f17b1804b1-436686430aemr41364475e9.8.1734740951619;
+        Fri, 20 Dec 2024 16:29:11 -0800 (PST)
+Received: from [192.168.1.10] (host-92-26-98-202.as13285.net. [92.26.98.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b3b1f6sm94687385e9.31.2024.12.20.16.29.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 16:29:11 -0800 (PST)
+Message-ID: <f97c1228-7fca-4487-814c-6dd6ba581721@citrix.com>
+Date: Sat, 21 Dec 2024 00:29:10 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,92 +79,92 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/15] x86/cpu/intel: Fix init_intel() checks for
- extended family numbers
-To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kan Liang <kan.liang@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
- Fenghua Yu <fenghua.yu@intel.com>, Jean Delvare <jdelvare@suse.com>,
- Guenter Roeck <linux@roeck-us.net>, Zhang Rui <rui.zhang@intel.com>,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-hwmon@vger.kernel.org
+To: sohil.mehta@intel.com
+Cc: acme@kernel.org, adrian.hunter@intel.com,
+ alexander.shishkin@linux.intel.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, fenghua.yu@intel.com, hpa@zytor.com,
+ irogers@google.com, jdelvare@suse.com, jolsa@kernel.org,
+ kan.liang@linux.intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux@roeck-us.net, luto@kernel.org, mark.rutland@arm.com, mingo@redhat.com,
+ namhyung@kernel.org, peterz@infradead.org, rafael@kernel.org,
+ rui.zhang@intel.com, tglx@linutronix.de, tony.luck@intel.com,
+ viresh.kumar@linaro.org, x86@kernel.org
 References: <20241220213711.1892696-1-sohil.mehta@intel.com>
- <20241220213711.1892696-4-sohil.mehta@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20241220213711.1892696-4-sohil.mehta@intel.com>
+Subject: Re: [RFC PATCH 00/15] Prepare for new Intel family models
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <20241220213711.1892696-1-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/20/24 13:36, Sohil Mehta wrote:
-> X86_FEATURE_REP_GOOD is only set for family 6 processors.  Extend the
-> check to family numbers beyond 15.
+> ---Noteworthy quirks---
+> Pentium II Overdrive - A unique family number:
+>   Wikipedia says[2], In Intel's "Family/Model/Stepping" scheme, the Pentium II
+>   OverDrive CPU identifies itself as family 6, model 3, though this is 
+>   misleading, as it is not based on the family 6/model 3 Klamath core. As 
+>   mentioned in the Pentium II Processor update documentation from Intel, 
+>   "although this processor has a CPUID of 163xh, it uses a Pentium II processor 
+>   CPUID 065xh processor core."
+>
+>   A dump of the microcode file 06-03-02 shows:
+>     001/001: sig 0x00001632, pf_mask 0x00, 1998-06-10, rev 0x0002, size 2048
+>   An archived CPUID dump [3] also says:
+>     CPUID 00000001: 00001632-00000000-00000000-0183FBFF
+>
+>   That would translate to a family number of 22 (0x16). This aberration is 
+>   not explicitly handled anywhere in the kernel so the platform might already 
+>   be broken. This series might make it worse for the platform if the latest 
+>   kernel works on it by chance.
 
-Could you explain why, please?
+Are you sure?  Bits 13:12 are the type field, and the 0x1 you've got is
+for an OverDrive processor.
 
-> It is uncertain whether the Pentium 4s (family 15) should set the
-> feature flag as well. Commit 185f3b9da24c ("x86: make intel.c have
-> 64-bit support code") that originally set X86_FEATURE_REP_GOOD also set
-> the x86_cache_alignment preference for family 15 processors. The
-> omission of the family 15 seems intentional.
-> 
-> Also, the 32-bit user copy alignment preference is only set for family 6
-> and 15 processors. Extend the preference to family numbers beyond 15.
+x86_family() will consider this to be family 6 as far as I can see.
 
-Can you please provide some more context so it's clear which hunk this
-refers to?  Alternatively, can you break this out into a separate patch?
-
+~Andrew
 
