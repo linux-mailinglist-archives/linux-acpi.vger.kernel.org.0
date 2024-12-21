@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-10251-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10252-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D299FA16D
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 16:46:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574739FA17F
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 16:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 168261657FD
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 15:46:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F01F188D6FC
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 15:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2E413D539;
-	Sat, 21 Dec 2024 15:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2071465AD;
+	Sat, 21 Dec 2024 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzlpuwzS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fDEodna9"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9403570825;
-	Sat, 21 Dec 2024 15:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF1127453;
+	Sat, 21 Dec 2024 15:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734796000; cv=none; b=eSaV+YOqzioLIKssNFza2RLbC+nd2/bbMfiWgxev/eno6zsHbe2IqS6ZDoJhD4Wi8mdN2GBOXcgn9MHj0hTbK96DZOvrgYuDeS56XzBUwZ8RUGxjaLUkUAb8RqWd+MgmmWju4MzClof4bxzYgxeOzBAL7TC4LohgltPusblqUpA=
+	t=1734796637; cv=none; b=FqkBtfbnjRd/trW/27xBFxfYnkgvl6nhaeb2BnzHSqeKfqkKHkJQ7d0GPJJsafzLfKx3yvjg3x2d2ItrhVCnb+gvTVYdziZY2Zxfc8b28G5V0kg7NPDfnK0twbPkEdBwx/99hInohrqKs6wHQ/XaO57qjuH85e0JEyfLpik7paE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734796000; c=relaxed/simple;
-	bh=FGXqX8c+4+h8QZw+AQai0FPyeo5pX23WL62uroP4DsA=;
+	s=arc-20240116; t=1734796637; c=relaxed/simple;
+	bh=hRAW0Ot6GU1oRcyNhlPUyJ+uMJTQlrtApB5mJ++siTU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V4NCbpvYvupbqXcxY8sEGyEgnHTsl/AL9aOZ8c3u/tjTk+Dj+zuM4ma2QU241R2i1oWp/Ru4v1vAN1N9+WRegm8csyAJDknahRLjMr3KUEnOWUm5nNUvOt5XvQp6pK4WHcU09Lie96Rh3JXvDbOvNRYR6slCijNm9BWeFjy5FG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gzlpuwzS; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:Content-Type; b=pjiAelvWr5U5AraAR3abH3hMPbvl2zGFM+OX1k3FZtf98Kn9g35bZyrXpbHSL2HFLI7bGXu0Ro+VBQphs8SJ/eMm9kMWjioEQwL16c2FrV56wOS1SZOuLf5sDi4Q0BDVJUgEU7S5nZp2L32dFwKLKPEMkMnJ6Lm5DMHobPTE1fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fDEodna9; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734795998; x=1766331998;
+  t=1734796637; x=1766332637;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=FGXqX8c+4+h8QZw+AQai0FPyeo5pX23WL62uroP4DsA=;
-  b=gzlpuwzSX/3JvVvB8pHD2PAo0kahzkh8WF9SD6DE9xd5KzVzfVmpoq4t
-   CKS1HABU5ccQQR84DmPTKwAkzdwEnL2ZYqM73eSgg/QFVT2dMizsld/0z
-   A5YNQHX7uQXPMpMYA2+/M2tGNARHXFLwcvycmzFzH82sOkBjQBq/gXuJ6
-   skDTEGwtJenDodJ5qAUgTUMAgFxm9poBdKRiteLCan3DTSCpDBSEWxRq5
-   TSoYs8WYdEFXrWvyJwr1+eIYzbwxPAAj+5b75XYA02Em+fvNPyapUpv40
-   vU/Bv0fa0OHnhCJB0qPykj9XGVtsIRWN5buKNV/zIAytRnZ+YZAzLnVpt
+  bh=hRAW0Ot6GU1oRcyNhlPUyJ+uMJTQlrtApB5mJ++siTU=;
+  b=fDEodna9id6Z9pj6gwIiFD+acCuq3AlVuyAzr2lpnsWAf/jYR/CppLC2
+   TAL6rTjU0r/3CXzM6kvW9MYgmwlIOWuB6eqNMw2VlFLYlg9e1ZyoYog7d
+   sBqG4K1opLx/XQ/tOmOp6lHATYGjn1N5gcAX3h5dmAgvltlDrb1KcMEOb
+   tsb/AoUdYUAaOW8v44duhoyUkWfOrl9mWxcK2y8kuZudSVeMuMJ6lI5LG
+   sJe7p3oGT3nviKASyh+OD4MXuN0Ug2NJtum+nBnjH95Gd1b0qJdvJMiv3
+   rU5zLrZOQIZxyBtYZJ+AjYyTMVBlsMHdJosFCspoliTdmm5jxux7XjxSL
    A==;
-X-CSE-ConnectionGUID: gYEnuNVUTYqOlsJjvJ6a6g==
-X-CSE-MsgGUID: DjCTD0+rTNuh9gP5wF48UA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11293"; a="39008702"
+X-CSE-ConnectionGUID: VfFhgJjPRjOXOJpDWruW6A==
+X-CSE-MsgGUID: ToBT0KtJRgaQaOxzpO8PUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11293"; a="39009142"
 X-IronPort-AV: E=Sophos;i="6.12,253,1728975600"; 
-   d="scan'208";a="39008702"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 07:46:37 -0800
-X-CSE-ConnectionGUID: oSNbd3n7T5+cVRUbqwAzZQ==
-X-CSE-MsgGUID: inBbh5fnR1aNcervFm8OXw==
+   d="scan'208";a="39009142"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 07:57:16 -0800
+X-CSE-ConnectionGUID: ZkrKQ9DyS1+35bbqOKwY2A==
+X-CSE-MsgGUID: kMvF+w6MTZuzCN8R3ianwA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="102893745"
+   d="scan'208";a="99648199"
 Received: from msangele-mobl.amr.corp.intel.com (HELO [10.124.222.45]) ([10.124.222.45])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 07:46:34 -0800
-Message-ID: <1f3524fb-079d-463d-b6fa-68fda2d5cd22@intel.com>
-Date: Sat, 21 Dec 2024 07:46:33 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 07:57:12 -0800
+Message-ID: <40538b12-5929-4f05-b65e-8b807057abd5@intel.com>
+Date: Sat, 21 Dec 2024 07:57:10 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,12 +67,13 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 06/15] x86/microcode: Update the Intel processor flag
- scan check
-To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
+Subject: Re: [RFC PATCH 08/15] x86/cpu/intel: Replace early family 6 checks
+ with VFM ones
+To: David Laight <david.laight.linux@gmail.com>,
+ Sohil Mehta <sohil.mehta@intel.com>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Tony Luck <tony.luck@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
  Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
  Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
@@ -87,7 +88,8 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20241220213711.1892696-1-sohil.mehta@intel.com>
- <20241220213711.1892696-7-sohil.mehta@intel.com>
+ <20241220213711.1892696-9-sohil.mehta@intel.com>
+ <20241221103528.2ca530a5@dsl-u17-10>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -133,39 +135,46 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20241220213711.1892696-7-sohil.mehta@intel.com>
+In-Reply-To: <20241221103528.2ca530a5@dsl-u17-10>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/20/24 13:37, Sohil Mehta wrote:
-> --- a/arch/x86/kernel/cpu/microcode/intel.c
-> +++ b/arch/x86/kernel/cpu/microcode/intel.c
-> @@ -74,7 +74,8 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
->  	sig->pf = 0;
->  	sig->rev = intel_get_microcode_revision();
->  
-> -	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
-> +	/* TODO: Simplify this using a VFM check? */
-> +	if ((x86_family(sig->sig) == 6 && x86_model(sig->sig) >= 5) || x86_family(sig->sig) > 6) {
->  		unsigned int val[2];
->  
->  		/* get processor flags from MSR 0x17 */
+On 12/21/24 02:35, David Laight wrote:
+>>  #define INTEL_PENTIUM_PRO		IFM(6, 0x01)
+>> +#define INTEL_PENTIUM_II_KLAMATH	IFM(6, 0x03)
+>> +#define INTEL_PENTIUM_III_TUALATIN	IFM(6, 0x0B)
+>> +#define INTEL_PENTIUM_M_DOTHAN		IFM(6, 0x0D)
+>>  
+>>  #define INTEL_CORE_YONAH		IFM(6, 0x0E)
+> 
+> I think I'd add all the extra defines in one patch.
 
-I suspect this code is kinda bogus in the first place. sig->sig is just
-cpuid_eax(1) and:
+I actually prefer them being with their first user. That way, if patches
+get dropped or moved, nothing can be in the wrong order or unnecessary.
 
-	void cpu_detect(struct cpuinfo_x86 *c)
-	{
-		...
-                cpuid(0x00000001, &tfms, &misc, &junk, &cap0);
-                c->x86          = x86_family(tfms);
+> Isn't the order 'funny' as well.
+> I think it ends up being neither numeric or date order.
+> Increasing family order is probably best, but the headings for each
+> 'family' probably need to be a bit more descriptive (esp 15 - all P4
+> netburst).
 
-So I'm not quite sure why this code feels the need to redo CPUID and
-re-parse it. Other bits of the microcode update may need 'sig' in its
-unparsed form to conveniently compare with parts of the microcode image,
-but that's no reason to re-parse it too.
+<shrug>
 
-I _think_ this code can just use good old cpu_data() and the existing
-VFM mechanism.
+They're already out of order because Quark is a weirdo and we didn't
+want to look at it all the time so it got stuck at the bottom. It's
+_fine_ when it's 99% family 6 plus 2 other weirdos.
+
+But it should probably get sorted at some point because it's going to be
+hard to find Quark and P4 if the order is
+
+	fam 6,1
+	fam 5
+	fam 15
+	fam 18
+	fam 19
+	fam 20
+	...
+
+But I think all that has to be done is to move Quark up to the top.
 
 
