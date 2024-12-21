@@ -1,134 +1,123 @@
-Return-Path: <linux-acpi+bounces-10240-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10241-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA689F9E8A
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 06:58:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA209F9EF2
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 08:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A22327A2C50
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 05:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB4EE188727B
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 07:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF6E1DA0EB;
-	Sat, 21 Dec 2024 05:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5901DF244;
+	Sat, 21 Dec 2024 07:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="g8LzAB0T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eyggin4t"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11375370;
-	Sat, 21 Dec 2024 05:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9721DA60B;
+	Sat, 21 Dec 2024 07:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734760693; cv=none; b=RE/Ie81lRYWz2xPc/6A+nXycV3bSapPwHR3IsjCOcoJ43J2ebYFBCHdBYJVxCIH83tylT/bz7tUkw36bZhfm+pAF/DMTsOOKD6D0A2YLKN2xln2pUlaVyBjFm9PrXGugWiC3fz6TW1vrqg4qnKOYlTYQJKQFzbuMk6EpG9jXhMA=
+	t=1734764949; cv=none; b=f+7DJFD8zS8jaiHP4NJJw8qGS0D+jExGTQ9q8Vg96g3I5CJlKgFTxHdjvZsT9X2TGl1ULQo48b+5sznaT9lxSC7qD/RjZLI/hJHRX5Ru9ljqeE20FL1tbCD9CC1+/BclWKtLZcmCaLyK3MSDARt3t8eqYThmSwRFDbdH9BiZtpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734760693; c=relaxed/simple;
-	bh=JCcX79HP3FFv3A7xXMouqEaWOf9v2xAknUXLpGPOQK0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=R3v9z3DtxsSJX7eTwSHZezRzzpsckQUpHEdNobcg8y7UEqeowzBxmVquAwsSk/mED9XGVJ1TtuRRaBTIfEZdiupZhhkGv+K1iSRHAbw2H2jNGsaM2iZrRHWthNvAkhTrnaaT3GwAsdGX+cA8UVgcwzBmzFDJi/tVFzAsxF5EOAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=g8LzAB0T; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1734760682; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=6BmLQ7unvu8bhKnAukymqDC+DI3RHZRZDRA4zf6Bd9s=;
-	b=g8LzAB0TmwshF5HkyJX28rjBdg+2impixAc5f89BF8hFXXQg0yVw9d3YBaLQvliOGP84t+ODaG4A2xkhOMRm/i75/k+f2p0BeK56suF2+fcUV/LU0YgtEluvRlL+Z0YblBZR1xzy74fRM45hpYYHBvdlVN9P2BNOHjBAtmdJGX4=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WLvcNRy_1734760678 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 21 Dec 2024 13:58:00 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: hyeonggon.yoo@sk.com,  "gourry@gourry.net" <gourry@gourry.net>,
-  kernel_team@skhynix.com,  "rafael@kernel.org" <rafael@kernel.org>,
-  "lenb@kernel.org" <lenb@kernel.org>,  "gregkh@linuxfoundation.org"
- <gregkh@linuxfoundation.org>,  "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>,  =?utf-8?Q?=EA=B9=80=ED=99=8D=EA=B7=9C=28KIM?=
- =?utf-8?Q?_HONGGYU=29_System_SW?=
- <honggyu.kim@sk.com>,  =?utf-8?Q?=EA=B9=80=EB=9D=BD=EA=B8=B0=28KIM_RAKIE?=
- =?utf-8?Q?=29_System_SW?= <rakie.kim@sk.com>,
-  "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-  "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-  "dave.jiang@intel.com" <dave.jiang@intel.com>,  "horen.chuang@linux.dev"
- <horen.chuang@linux.dev>,  "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-  "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-  "linux-mm@kvack.org" <linux-mm@kvack.org>,  "kernel-team@meta.com"
- <kernel-team@meta.com>
-Subject: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
- auto-tuning
-In-Reply-To: <20241213195754.2676135-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Fri, 13 Dec 2024 11:57:31 -0800")
-References: <4ddfa283-eb64-4032-880b-c19b07e407e1@sk.com>
-	<20241213195754.2676135-1-joshua.hahnjy@gmail.com>
-Date: Sat, 21 Dec 2024 13:57:58 +0800
-Message-ID: <87jzbtr315.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1734764949; c=relaxed/simple;
+	bh=IBOjkAxmWX85HSWhNbeJoEaRo5euzpTy2DrGvjKLh1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JVfNlnwNalxghhWUSBcG4srK1BRJfo/1/WQIddNryfETlA0Hcjtv1oPt+DzlXCbHDwVJR5RzPuJovWQ57SS4Jscwr6RAZTMaLfctjG7dCh0dklTej9SqStU43Qg966So6wbtQmDY7UdD2CXYQG7Fx4/LT3yf4RRCMU6U7HWETE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eyggin4t; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e479e529ebcso2027818276.3;
+        Fri, 20 Dec 2024 23:09:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734764946; x=1735369746; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YaE/bnZbr4TWqX4P0Ld/mI5T+HOu2de0eOS1y64vr/Q=;
+        b=Eyggin4tWSJjBevd6d/+QvK6gCmAiJXhohRRSCzMKynIrR/tknZgfckl3xpUmYHarw
+         xaZLU1prB90A7ppJgWyIlh4fewcCc3p1z1GNkCyW8zDhlgzvYKTP1EPz3KuE9OPXu2OM
+         620I5xMm+ZwWwWi4FlM3M1ggjoC4Wsu01O+jHU7RASNKMvW5OFC9/qkNxwWHXXc97ZDy
+         57/DH6gy7QZ15SaIv4+4Q4sx63IfjUMzsDrUBnuobwS0TPdPC0YvNJZtMDX2lC35h54q
+         yQddxAtttJZWtCeSi+u6a8i7qSkUNbhbVrE6BqGbCCWcq/d8zRGvXbbogDtrsQOnKdoy
+         2vHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734764946; x=1735369746;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YaE/bnZbr4TWqX4P0Ld/mI5T+HOu2de0eOS1y64vr/Q=;
+        b=lyd62CxtOxTB6a6efK++Szly9ayuxFqIg9lBF/tnrbOg5+tzzFfD/FB8HlOZbqOw+s
+         f328n6vcgVfeAjqcwYKog5KNso27h/LimGPsmP/DSoZkEIMvUfHv3vKfoYEOFNsHSH5T
+         r7PZVAiOsv8Se/l/n3l53kum110kVVLM8lChb83S0jPbSAwH9/FDRH2f9+LJFrED/oVA
+         E9V7q+lF68PEvkO5Y1I2aU81M2llgHWD9ZMZTdAdCpPukSunQ9iVucrsEIMOLuqzurag
+         49z/jrvlHUJELzkzu8tQVbhYtB/uLFzTI1WMLKFQ2VR0qGtX19xZ/yh10rJloUWzm1YU
+         Szig==
+X-Forwarded-Encrypted: i=1; AJvYcCVAf4IE2Q7yKrnUXuk6x3JJnHwzgJRxIVwYd3WpcsirRmqMJelTo47Po2/9PhMt0WiInf+7gyom/BjBjkDY@vger.kernel.org, AJvYcCXYOZBEZclTu2YgoY2VW0NNA/8ydSFdZBLHerXeTt3cd21cg5GKesjn64DGi4nyJ+onviO06UqxfKpK@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOLW0fmEOSZu33dm8hrSUFfxoopNZTKYrjpx3vLQ1H27eZ8TLw
+	ZiaiZN7hJjtI8FOeG532vBeWx0facqrHfLYB8PvQ0lEuNbLfIxahxGb9ZA==
+X-Gm-Gg: ASbGncuZ3JcKGAsOkyHhzGhe7+G+yoxN8QIVvPQjJrHeVNeAgxR3njmOCkFZxUcZ6EC
+	6/l7geoqxWYWobHHyxZfRQojebz+DTRQDvQYvBnJVvSKz7sGTNV580K5ec4iGIBmDLHtS5xLSXr
+	6JE2qpNAawDw66PfgPBaedUwhG2HBg+IbOS45OG9XFL0G5Xc6pTVlC7jMNNbH/Ixj9CHqd7BU10
+	UNJbEbQ4a2YJhDvc1P1Hfg1S727QS2IXHNzzquxprvJc9yk9FBzHiEEGKkinHOQ
+X-Google-Smtp-Source: AGHT+IEnI43+A2gQFmTCpxHGkCwCiXPkPTkDB1GFq3XiiEX3I1MO9HKAqPNEVbdee/3eX3Jhta6Mcw==
+X-Received: by 2002:a05:690c:650a:b0:6ea:ef9d:fcba with SMTP id 00721157ae682-6f3f80d5f3fmr48171077b3.6.1734764946009;
+        Fri, 20 Dec 2024 23:09:06 -0800 (PST)
+Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f3e7498215sm12367977b3.60.2024.12.20.23.09.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 23:09:05 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+To: platform-driver-x86@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Gergo Koteles <soyer@irl.hu>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH 0/2] Device managed platform_profile_register()
+Date: Sat, 21 Dec 2024 02:08:16 -0500
+Message-ID: <20241221070817.3764-2-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Transfer-Encoding: 8bit
 
-Hi, Joshua,
+Hi :)
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+Now that the platform profile is tied to a device, this would be a nice
+thing to have. Let me know what you think!
 
-> On Fri, 13 Dec 2024 15:19:20 +0900 Hyeonggon Yoo <hyeonggon.yoo@sk.com> wrote:
->
->> On 2024-12-11 06:54 AM, Joshua Hahn wrote:
+I can also replace existing users of platform_profile_register() where
+it makes sense, if that's ok.
 
-[snip]
+This is meant to be merged on the pdx86 tree.
 
->
-> [-----8<-----]
->
->> > +What:		/sys/kernel/mm/mempolicy/weighted_interleave/max_node_weight
+~ Kurt
 
-I don't think that we need a new knob for this.  Just use a reasonable
-default value, for example, 32 or 16.  If it turns out that a knob will
-be really helpful, we can add it at that time.  For now, I don't think
-the requirements are clear.  And, this is a new ABI and we need to
-maintain it almost for ever.  We must be careful about new knob.
+Kurt Borja (2):
+  ACPI: platform_profile: Add devm_platform_profile_register()
+  alienware-wmi: Use devm_platform_profile_register()
 
->> > +Date:		December 2024
->> > +Contact:	Linux memory management mailing list <linux-mm@kvack.org>
->> > +Description:	Weight limiting / scaling interface
->> > +
->> > +		The maximum interleave weight for a memory node. When it is
->> > +		updated, any previous changes to interleave weights (i.e. via
->> > +		the nodeN sysfs interfaces) are ignored, and new weights are
->> > +		calculated using ACPI-reported bandwidths and scaled.
->> > +
->> 
->> At first this paragraph sounded like "previously stored weights are 
->> discarded after setting max_node_weight", but I think you mean
->> "User can override the default values, but defaults values are 
->> calculated regardless of the values set by the user". Right?
->
-> In the implementation, the first way you interpreted is the correct
-> description. That is, if a user manually changes a ndoe weight,
-> then updates the max_node_weight, the previous manual change will
-> be overwritten by the newly scaled values.
->
-> Does this behavior make sense? Perhaps it makes sense to ignore
-> user-changed values when doing the re-scaling if a user decides to
-> change the max_node_weight value themselves. 
->
-> Regardless of what implementation makes sense, I can re-write the
-> description so that there is no ambiguity when it comes to the
-> expected behavior of the code. Thank you for pointing this out!
+ drivers/acpi/platform_profile.c           | 27 +++++++++++++++++++++++
+ drivers/platform/x86/dell/alienware-wmi.c | 10 +--------
+ include/linux/platform_profile.h          |  2 +-
+ 3 files changed, 29 insertions(+), 10 deletions(-)
 
-I don't think that it's a good idea to override the user supplied
-configuration values.  User configurations always have higher priority
-than system default configurations.  IIUC, this is the general rule of
-Linux kernel user space interface.
 
----
-Best Regards,
-Huang, Ying
+base-commit: 9e0894d07072e50b83ef077ce91e504bdb7484a3
+-- 
+2.47.1
+
 
