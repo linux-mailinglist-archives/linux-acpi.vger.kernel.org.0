@@ -1,192 +1,171 @@
-Return-Path: <linux-acpi+bounces-10250-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10251-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6E09FA137
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 15:58:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D299FA16D
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 16:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4585E18834D6
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 14:58:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 168261657FD
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Dec 2024 15:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AC91F37DD;
-	Sat, 21 Dec 2024 14:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2E413D539;
+	Sat, 21 Dec 2024 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="kZ+weGHr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzlpuwzS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EC11F2C36
-	for <linux-acpi@vger.kernel.org>; Sat, 21 Dec 2024 14:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9403570825;
+	Sat, 21 Dec 2024 15:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734793094; cv=none; b=bH6QN4XcBLKbr3ejuGCul7KBMA18R18lj/H39ObxORFM9xfNry1r5V71ZSktZTNnbY9VtA+GW96kkiqS92g+Ct+f9MFFHrddhpGSWlGcYmTqBvfF4Smju64hueAUmqh4Sox7IyHAVvSOy/HlEtCEZZ+iUL4FXvRcw2h7jmBtglA=
+	t=1734796000; cv=none; b=eSaV+YOqzioLIKssNFza2RLbC+nd2/bbMfiWgxev/eno6zsHbe2IqS6ZDoJhD4Wi8mdN2GBOXcgn9MHj0hTbK96DZOvrgYuDeS56XzBUwZ8RUGxjaLUkUAb8RqWd+MgmmWju4MzClof4bxzYgxeOzBAL7TC4LohgltPusblqUpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734793094; c=relaxed/simple;
-	bh=bLJFJgUuUGa4aQRH9jlb2YXHP9UMyaPtaWlZTZQ5RLU=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XShI6Hqj9HIG1G4FGUJNONEUAeP5ckJSyhwNJoeZfXZMcnaud63Ay5edOxEGJMJIKNUlQDUk4owSkQEAMpxeFEXgJEltct75wtVYxU3XvNSJSZHrOVFIkc5D9kdqNTKFLmkT10sxo0ZyezbUNBIEFsDtrG4BkXDEwDMBmDz1OOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=kZ+weGHr; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b6eeff1fdfso233268285a.2
-        for <linux-acpi@vger.kernel.org>; Sat, 21 Dec 2024 06:58:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1734793092; x=1735397892; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pBgdCj8qzQbjXPZyDo9umjvbz0FQ++8ByuLBpWSlyEY=;
-        b=kZ+weGHrbTfSXVWHp2eXTDCUaM5CnQteqMkQ4BW5K7yKdEzCh2t7p2cHwOMWfoWGYs
-         W61lStpXLMBLpaRZov3xSnHs4191xDvorZcdFvnPvuUIYwxPcRM5uD6n8FhhSLg67LV3
-         gSaVlllBTIveoVc2Siv9ezn4yaKj1A765UC/JE6ay1AFnTLCnc6wTOvJkYa/iDkkMJI1
-         rqm2RlhMkXFCfv6pmzNqSKi4cFusztRL6i9k+v4WjiM6rgcdY1H0NnuQaPl7K8ogjsKI
-         RBK+D3Vx5kIsxkk60+MNbQA/9Ulrb8XOGQtenKSUDelhfCBFHQVc5/9isQo2IcfR/qR/
-         o+og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734793092; x=1735397892;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pBgdCj8qzQbjXPZyDo9umjvbz0FQ++8ByuLBpWSlyEY=;
-        b=YVABpAtObpK8ea4sqfJgEx/I0xGUo6BNY2BgGhVHw90AtfEwdZppkAwqgkjKFKHIF3
-         ivJQs0IWQ5AWEDG5B4jhieKH4t2wXgeBZ7fIWP5/bnd4JON744TD12UfqN6p2KHT+hO1
-         gm7wlF7J6if5kg6FcX6dIrxXVOseV3VlffPF9aSr1LgUhsNeg7pxNpUQJ9+pbWCtiK5S
-         RBWMxIRUNYtoe58W8cOgkpT4bJzmncheupHlGc3Zfgiljz+DjWD5JiKX4PFcxNVPb8sf
-         EiVGSbAVKooedqN/TONtg4rp4n9Ms/Cme6Xu/EKEuCFC++AfhiL7jZ7AfiLF9hUv5dT4
-         Yo0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWjym4HyzBV48CjCbL6M9S/VUC3UktqwajpRmIBXc/Xx9cNlIIgZHhhCWsXiqMEFR6BcuBMNuOvZcTw@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZBtbWe4rtd2T1RMdgZ6fSx4ssf6BddIGskYp6m5HjXZfj0HL1
-	B7H5doTq/3VjKu/2WtpVjPFy/fMq+5XfHDvQfF+doX6CT0EqM/1fyOULnj5r5TM=
-X-Gm-Gg: ASbGncvCuC4Bvi6FGGjJp3gMVVeCH2OuJfLd0O/4GdCjmB+qzEzHtE9x7Ujcwf2zG1m
-	e91cH85wQTEosQRkVmjXyCnv65VmXt9Q8+aFcPL9J3wlGbUNGqaJfXiXY4Y3ELeW/Tb6cJgd9Ns
-	WG02na5+DDkkJ5nHmEfBuDy9WfIrbuNOLrOdbKNd0z+8sXFa3+T7W4X714SZWr+XWeLVBWWEAqv
-	ozjqBROYfQwz5bybdw2xf5chDU6+EJwwvRXFI64m9o169ypuZphv50CmIXJqhqultXBK8EgQoOF
-	KLeq3nZa98Yy3AYYIy4ijlLIZkrX5ee0bA2eaLtig6jGIPJrQkwU92k=
-X-Google-Smtp-Source: AGHT+IEgen1JW0Sf/lyCSUkaoVFMrNI48GAZq54w9vfNDCg0KyyfP72OZmixkjresa0McFobW6rDgA==
-X-Received: by 2002:a05:620a:318c:b0:7b6:de65:9ee7 with SMTP id af79cd13be357-7b9ba7ee78dmr1161952785a.43.1734793091760;
-        Sat, 21 Dec 2024 06:58:11 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac4be70bsm227827985a.96.2024.12.21.06.58.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Dec 2024 06:58:10 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-X-Google-Original-From: Gregory Price <gourry@gourry-fedora-pf4vcd3f>
-Date: Sat, 21 Dec 2024 09:58:08 -0500
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, hyeonggon.yoo@sk.com,
-	"gourry@gourry.net" <gourry@gourry.net>, kernel_team@skhynix.com,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	=?utf-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKQ==?= System SW <honggyu.kim@sk.com>,
-	=?utf-8?B?6rmA65296riwKEtJTSBSQUtJRSk=?= System SW <rakie.kim@sk.com>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"horen.chuang@linux.dev" <horen.chuang@linux.dev>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"kernel-team@meta.com" <kernel-team@meta.com>
-Subject: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
- auto-tuning
-Message-ID: <Z2bXgMw5WPCqwGSk@gourry-fedora-PF4VCD3F>
-References: <4ddfa283-eb64-4032-880b-c19b07e407e1@sk.com>
- <20241213195754.2676135-1-joshua.hahnjy@gmail.com>
- <87jzbtr315.fsf@DESKTOP-5N7EMDA>
+	s=arc-20240116; t=1734796000; c=relaxed/simple;
+	bh=FGXqX8c+4+h8QZw+AQai0FPyeo5pX23WL62uroP4DsA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V4NCbpvYvupbqXcxY8sEGyEgnHTsl/AL9aOZ8c3u/tjTk+Dj+zuM4ma2QU241R2i1oWp/Ru4v1vAN1N9+WRegm8csyAJDknahRLjMr3KUEnOWUm5nNUvOt5XvQp6pK4WHcU09Lie96Rh3JXvDbOvNRYR6slCijNm9BWeFjy5FG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gzlpuwzS; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734795998; x=1766331998;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FGXqX8c+4+h8QZw+AQai0FPyeo5pX23WL62uroP4DsA=;
+  b=gzlpuwzSX/3JvVvB8pHD2PAo0kahzkh8WF9SD6DE9xd5KzVzfVmpoq4t
+   CKS1HABU5ccQQR84DmPTKwAkzdwEnL2ZYqM73eSgg/QFVT2dMizsld/0z
+   A5YNQHX7uQXPMpMYA2+/M2tGNARHXFLwcvycmzFzH82sOkBjQBq/gXuJ6
+   skDTEGwtJenDodJ5qAUgTUMAgFxm9poBdKRiteLCan3DTSCpDBSEWxRq5
+   TSoYs8WYdEFXrWvyJwr1+eIYzbwxPAAj+5b75XYA02Em+fvNPyapUpv40
+   vU/Bv0fa0OHnhCJB0qPykj9XGVtsIRWN5buKNV/zIAytRnZ+YZAzLnVpt
+   A==;
+X-CSE-ConnectionGUID: gYEnuNVUTYqOlsJjvJ6a6g==
+X-CSE-MsgGUID: DjCTD0+rTNuh9gP5wF48UA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11293"; a="39008702"
+X-IronPort-AV: E=Sophos;i="6.12,253,1728975600"; 
+   d="scan'208";a="39008702"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 07:46:37 -0800
+X-CSE-ConnectionGUID: oSNbd3n7T5+cVRUbqwAzZQ==
+X-CSE-MsgGUID: inBbh5fnR1aNcervFm8OXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="102893745"
+Received: from msangele-mobl.amr.corp.intel.com (HELO [10.124.222.45]) ([10.124.222.45])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 07:46:34 -0800
+Message-ID: <1f3524fb-079d-463d-b6fa-68fda2d5cd22@intel.com>
+Date: Sat, 21 Dec 2024 07:46:33 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jzbtr315.fsf@DESKTOP-5N7EMDA>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 06/15] x86/microcode: Update the Intel processor flag
+ scan check
+To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Fenghua Yu <fenghua.yu@intel.com>, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Zhang Rui <rui.zhang@intel.com>,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-hwmon@vger.kernel.org
+References: <20241220213711.1892696-1-sohil.mehta@intel.com>
+ <20241220213711.1892696-7-sohil.mehta@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20241220213711.1892696-7-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 21, 2024 at 01:57:58PM +0800, Huang, Ying wrote:
-> Hi, Joshua,
-> 
-> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
-> 
-> > On Fri, 13 Dec 2024 15:19:20 +0900 Hyeonggon Yoo <hyeonggon.yoo@sk.com> wrote:
-> >
-> >> On 2024-12-11 06:54 AM, Joshua Hahn wrote:
-> 
-> [snip]
-> 
-> >
-> > [-----8<-----]
-> >
-> >> > +What:		/sys/kernel/mm/mempolicy/weighted_interleave/max_node_weight
-> 
-> I don't think that we need a new knob for this.  Just use a reasonable
-> default value, for example, 32 or 16.  If it turns out that a knob will
-> be really helpful, we can add it at that time.  For now, I don't think
-> the requirements are clear.  And, this is a new ABI and we need to
-> maintain it almost for ever.  We must be careful about new knob.
-> 
+On 12/20/24 13:37, Sohil Mehta wrote:
+> --- a/arch/x86/kernel/cpu/microcode/intel.c
+> +++ b/arch/x86/kernel/cpu/microcode/intel.c
+> @@ -74,7 +74,8 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
+>  	sig->pf = 0;
+>  	sig->rev = intel_get_microcode_revision();
+>  
+> -	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
+> +	/* TODO: Simplify this using a VFM check? */
+> +	if ((x86_family(sig->sig) == 6 && x86_model(sig->sig) >= 5) || x86_family(sig->sig) > 6) {
+>  		unsigned int val[2];
+>  
+>  		/* get processor flags from MSR 0x17 */
 
-This is fair.  We spent a good amount of time modeling the best
-effective maximum weight and basically came to the conclusion that 32
-has a good balance of minimizing error and being somewhat aggressive.
+I suspect this code is kinda bogus in the first place. sig->sig is just
+cpuid_eax(1) and:
 
-Ripping out the sysfs is easy enough.
+	void cpu_detect(struct cpuinfo_x86 *c)
+	{
+		...
+                cpuid(0x00000001, &tfms, &misc, &junk, &cap0);
+                c->x86          = x86_family(tfms);
 
-> >
-> > Regardless of what implementation makes sense, I can re-write the
-> > description so that there is no ambiguity when it comes to the
-> > expected behavior of the code. Thank you for pointing this out!
-> 
-> I don't think that it's a good idea to override the user supplied
-> configuration values.  User configurations always have higher priority
-> than system default configurations.  IIUC, this is the general rule of
-> Linux kernel user space interface.
-> 
+So I'm not quite sure why this code feels the need to redo CPUID and
+re-parse it. Other bits of the microcode update may need 'sig' in its
+unparsed form to conveniently compare with parts of the microcode image,
+but that's no reason to re-parse it too.
 
-We discussed this and decided it was confusing no matter what we did.
+I _think_ this code can just use good old cpu_data() and the existing
+VFM mechanism.
 
-If new data comes in (CDAT data from a hotplug event), then the weights
-are now wrong for the new global state - regardless of whether the user
-set a weight manually or not.  This also allowed us to simplify the
-implementation a bit.
-
-But if generally we need to preserve user settings, then I think the
-best we can do to provide a sane system is ignore the user setting when
-re-weighting on a hotplug event.
-
-e.g. user has not set a value
-
-default_values [5,2,-] <- 1 node not set, expected to be hotplugged
-user_values    [-,-,-] <- user has not set values
-effective      [5,2,-]
-
-hotplug event
-default_values [2,1,1] - reweight has occurred
-user_values    [-,-,-]
-effective      [2,1,1]
-
-e.g. user has set a value
-
-default_values [5,2,-] <- 1 node not set, expected to be hotplugged
-user_values    [4,-,-] <- user has only set one value
-effective      [4,2,-]
-
-hotplug event
-default_values [2,1,1] - reweight has occurred
-user_values    [4,-,-]
-effective      [4,1,1]
-
-
-So default values get updated, but user values get left alone.
-
-If that's sane we'll fix it up.
-
-> ---
-> Best Regards,
-> Huang, Ying
 
