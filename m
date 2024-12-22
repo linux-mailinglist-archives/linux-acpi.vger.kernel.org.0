@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-10271-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10272-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080849FA862
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Dec 2024 23:10:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E341D9FA866
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Dec 2024 23:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A27816515F
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Dec 2024 22:10:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405641882C0B
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Dec 2024 22:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B4918FDC8;
-	Sun, 22 Dec 2024 22:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66772191F68;
+	Sun, 22 Dec 2024 22:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="mYrTncKV"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="JABr6vhI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39BB2B2CF;
-	Sun, 22 Dec 2024 22:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F009A2B2CF;
+	Sun, 22 Dec 2024 22:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734905439; cv=none; b=PgNuLWs+OST47dRoFaWuQszJJP/kSg4jzK+HEhPcOnSZfKv4xOQGqoacaa1VVP0Tj8JSr/WuXhJypsVlzqK5qP/I7QcKxw2rmUzl4s8NTA6Hqh5WVH5h7aTVDFyVzVaLtO8JxDdBVUt7btFNMFVtSKdcWsVzMXIaJvqjoa46fSM=
+	t=1734905613; cv=none; b=NdJFcKOMILcZ8gP6heDn/+hlpoOpUHV8qWciAkIfi1K4BsbPceRkDMOqAZhYQXLMYTNHO9GfyLw1jebXRBg4V8RkIaznsifQSt3RUbwsGcVUDXtoCnyuawsAd17KXUy/Agqo2CB5zt29ECg+oE8NJU899wUKFlW27AXItYSNzAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734905439; c=relaxed/simple;
-	bh=oqwVAE/6mgOoOJT2DNKvPP1Rxlwj3xgLdrbjl8vhjPE=;
+	s=arc-20240116; t=1734905613; c=relaxed/simple;
+	bh=1UPm4fiIzlhVb2H56fgXxTIPT+PYczdegzEGJDdOaGk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A837PWqcD2pluyg9a2GSyWnBzcyrntSy5l7oim5c4+elQz3IIsmzfyekXbfwnj0jkPs88bNMR+SSNEtj8og+u9UukQ2JjLhkkQorQP1Uyikb/NXQ1/Fay5M4cWC7z+ekPoXSrRMjwAp/cKVRqDQ03pGLvA74memiaB/Mk+aagRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=mYrTncKV; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=O64ntZ9O8WEEWmwTFdTx7mRL7u4ZTyHhBebyPmlwsbH2Jxn2WCQXEyQa4azd50ahKAy6NqcPJ4NftJs+Oo38TH2eombjYSGGa9RtUKkWmdeLFM4DWCwx1+OYaQOsM50UVKwnNiWw1eIuokVfOq5sekon12KERT7IWaWs3RTQvk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=JABr6vhI; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1734905388; x=1735510188; i=w_armin@gmx.de;
-	bh=9S5lsMKNvuL/3CybXeaq9ioLvqg9TfkUihqACV4c00w=;
+	s=s31663417; t=1734905564; x=1735510364; i=w_armin@gmx.de;
+	bh=lEBbXi1WrH9fKTLSx2dIlKkkhZMMuyo3GmA10w+rMug=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=mYrTncKV7SQ3Cq0e24YHChzUMYFR8+8k4yqQEWbH5msy4ItESR8COR/gdGKjxGPu
-	 mhG68v3IaW36bDEN/gCQ9E69cggwvwexSHbZEDSspspoAP4Z+3LXtaQtuTdAOlBJk
-	 R/NH34MjU8YW7Zzwuu+OccAXtTVLNtCzTkyycLAbvsvqmhJ1Ykz7oYVduCE8HFTtg
-	 bWwUslzVAkEnVUp1gD+5PgbqnvwUtUphMbDQrWXibUpUCgfkc2y+nUXE6qEnjTDbV
-	 K+G/E97MEL2NAiEfx1GqN0t4s7vujyrp9a2bJyfMnoqalKERXSz0tKHxBvA3R+eVv
-	 r6QukUJuZrBzjidrmA==
+	b=JABr6vhIsSKxoxlQDUaz4w60OneIwsF8hWU+3Bk24r9t6ctsphmvGuOMNmjvhkbB
+	 czqciIQIKJD68WRbFBCuE03j6mZVYEPBUPWEVcKtckyrTViApBiXUs94rE2GJWqxl
+	 2cD1qameHTKCqoZo66ocPJKN+eccIbrPY2nnoXbnCAUytjiLesSCqFCf078ExzmLm
+	 GDKINPKFdjYPJ6XD8w6HNt8Ew5kx3XZQSbNbC3ZFuKMfUKuAAVlLp+/L9DrnRPXwu
+	 v3bfLh8GrHOOma7UbhW2ukK9PgN46QNULE/9pXFk9x96OB5beHUTh/CG+/6g65xCL
+	 9QUfi5xT+5I9DY+yqQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.0.14] ([91.14.230.110]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0X8u-1tmWqN2cgW-00yN4u; Sun, 22
- Dec 2024 23:09:47 +0100
-Message-ID: <5f173547-f643-4ac1-919b-cd864b2969fe@gmx.de>
-Date: Sun, 22 Dec 2024 23:09:44 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJE6F-1t6ZSS3zlD-00IiXD; Sun, 22
+ Dec 2024 23:12:44 +0100
+Message-ID: <3924cdc3-0833-4cde-8473-6cde8513fe27@gmx.de>
+Date: Sun, 22 Dec 2024 23:12:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ACPI: platform_profile: Add
- devm_platform_profile_register()
+Subject: Re: [PATCH 2/2] alienware-wmi: Use devm_platform_profile_register()
 To: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
@@ -68,114 +67,82 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Hans de Goede <hdegoede@redhat.com>, Gergo Koteles <soyer@irl.hu>,
  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20241221070817.3764-2-kuurtb@gmail.com>
- <20241221070817.3764-4-kuurtb@gmail.com>
+ <20241221070817.3764-5-kuurtb@gmail.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241221070817.3764-4-kuurtb@gmail.com>
+In-Reply-To: <20241221070817.3764-5-kuurtb@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QON1IIn52thbvNWhV1q68pbvqld2x233FfUbiNKF8UuYfRgVUYN
- BrAyuTUWlNOjrAFBrV7XSRlIz5H1B4r2PlRk/txz7UtM+zKxOiofwYp7WzPp9et0wFbu6is
- fRTaowr20rhGYnLoDG4lrJOFnjIEo6fELyndzepYWGN2Onh4qs63uWNYKA04IH95KVIIJyC
- 6H7uQcCbkihNEdSW6ZW6Q==
+X-Provags-ID: V03:K1:5DgTJ/GWuvGTbJj5ZwTw4xSQ6LKVl/xMoNgEFkFVQJ8OdH7h4lZ
+ he4lfxmiU2jXoKMhxfVHT9Yw0MyFZ3K8rwxJAd8gLLqMetdXaiS/H5crKP6UX7tjFSBJBsz
+ d4x4BhzykJTO2ez3IOr5oErjD3GDbIvhAxV+mWPMCAYdcezAfyMRA+Up/3VeJt/RIhxkSZ2
+ +pOQF5chre6jyBJ31Lmpg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:viIFtTChA58=;Om7hwquKT4jOA2jMel/j/QIZpNW
- 2caFJPY4S1u8HfpwNhjCTd+buwUW8B4//93AyGieBue/lMRH0k5DDvA+8vUs8LSiJOQ9WKkzM
- KPGmMIRjj4rql5odgFzPjuDF1xlj4uwffBKsgJZRJwAgaDq+gmd/xAYdQ2DE74CTkcKmFooM4
- pSEjbmxuy7txN0PonnM3rMTEiZNm70iLhZtxrAvZzsQL5JIi3UmZvfPdM/M/PhUNCNFPX6Od7
- kcwrB6FcIktKTLPuniUHKv4fzPEyjxzv+UnArQrrjQ1frPbUJQsmXWwhUX74CMebcCj9xtJ7l
- +COhnn2ks5aCSYztB5To3dWKOlMrvYAKl0+lgEi76r+D8TvC5EBM/w6ixjcSY+tQiWC1OvOb5
- C+sp0F0ncn8zd1aR0/kSfFPSFm6J7KZNrbAOQyjiWim35OtIZ7G4RX5R9EqSe3pN1jbxBGebN
- +EbZryrFNZq3bwDwoFx9SyCGxWji5bJDy1jeHd4s2g5OqROIbmJlodPBHHG6eOXhpfT+jINyZ
- 73aqax9p5N/1T7b3Pfo8el9siKSerhyYu01/mgvpnwlwVejbToz3ZIXZiZuyXiZhYhELP5uxv
- kBgvvQEVzeKbiX/eorRXcETeh4EoWnzS3mm4XZYcOD11fx0Qn7DX46og/YAjsjSqAa/gsPQLK
- 52xJPBX8NqdtalUFVP4zMtIPj6LhHAA+3paI3wq+ZmsLnAC2SvwCgiRql2msm7Z6tO7jszkxN
- LiOq+FREGXhMzy/W1Bzfe7fYzdDuYYLq0USiHDYQBkvkSt/MTQ1mpVGxXGnAQxvwNkn1HDceS
- M3X+F/DpDNrWmcdajtN3lDStxFmFhkd96JUxRbzfhcoGpp10loaC2pEwLqI8DNCe+YLT93v14
- gomzQGUJx7y752lM/1CC8RGFTeWWNdqSQmdcLCddcuidICrXQwqsQK7f3yxXRQq16D+6CR8ar
- ikq5Ml58nNImXhwVQG8MaEjK2RX6h1CPiMDj8cSmUJ/5CiAk0Bup4pJQO7zXV0+jbsYnvHo61
- lRkVnD9ppVEhdfmmOwi8CHg13E/+oOJagEAjF6NIL2hLO37RH+CxRusRfAp+AjpogDvGyxTtR
- 9I5NNpbImpXabOJDP7JafBScscFDZl
+UI-OutboundReport: notjunk:1;M01:P0:j0aFrzsHxnk=;lm94DWojAjri3lRJ97ztJ/CVvwq
+ 2gVzdxuXxihVqvOXkIZIFl7CabtWL5l5zy9I2eNsnH+2VKi3kdJCVKI9mkTI45awmDjqhhnFQ
+ ijYi7PALOP6kErshL1K1meyg0tvRkvLFsZqEc62o+cSKoHzdc5rN2MwmzXUvmEJv7DblMo0SI
+ Nlkc73OaRknfBuQJBqtgbBPhdbgoEBl00nhe3N2Qh2i58AL1hnIZg2FHxaxpG/qjciO1Lffgz
+ sXQeOQlwq8Z3g5sTCPdfp5QCqLP4m3Agta1TBbhhTDxtqKVRyO8lIxFlaijQzF7jDiO52wQGx
+ bP0Fif3yLSEwUiDjOyvXTP0Bq8M6xD3VxMfOTP41hoDf2LYZ7dS2WqmMFQ7iTpDikBjk/DBb1
+ xepHluRfo6Ow/g5rbz7VdsN2gxxWHiyeEhntR5NwroLH+Gr3GVTwVsmekvbMYC5tSna7TOo+t
+ kjX1al+DwYLTnSYaA6I2Vy9jipFMUJEfjET5yGr7VrivvFDZCU6lhd4ui0gZVHwQvrfuwWvoW
+ pikVPAyic8JzEWVN3UBp2IIRel6i/9sxImn9exyz/tlo6ENGkZpCuIGq5aYM+J+BHWnV90HbC
+ UVurFQ+Bw3JJjScfbXr+U1TCPJir1jb1c4qzG7s/QvyaVt928NiITTV1QmI7+6NEvyhptv+Th
+ 0tDLZ/YSG4UHap5+eDAaPQw3FRiI+getciknJZ/lLnyX2THAF89FtnaNWSB4kFnhH40/lNZQc
+ 8YiTg55oOpq3imP7p4klyqaHmyOiv4Gxk+i/34isWHjWdIM8uCKsNeKpBkT0znsG4aUxjhmnP
+ E0CM0ruV+Cb9Esrzt9nZf85DGuyCqMiuW22jvjJDxEizZQSNAA8FFceEmxs/ZS6gRrnUTxGpr
+ 1S86F7GRM2Mfg4Or9gmeb73J/zBwxUpGE11uYkA+OXi2CnzdzA1SWojcmYsmMMKnBzC7E6AxS
+ OMWEp1IffLJZwPcYoaLn43f4DxzSLMO7WpXSRFJmqNUY4YT+kwH+MKu1lJqxzrwRG7ATL4vVG
+ qlkki/IGegS9cDzlPnZmcpq69sIuZOCq1X00HCaynUaL1xr0aMGYhHhjJP6JSDMjwwLHGGWQ8
+ JIRD5fV5/nkio3y12XXsvT57PG6PuV
 
 Am 21.12.24 um 08:08 schrieb Kurt Borja:
 
-> Platform profile's lifetime is usually tied to a device's lifetime,
-> therefore add a device managed version of platform_profile_register().
->
+> Replace platform_profile_register() with it's device managed version.
+> Drop remove_thermal_profile() because it's no longer needed.
+
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+
 > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 > ---
->   drivers/acpi/platform_profile.c  | 27 +++++++++++++++++++++++++++
->   include/linux/platform_profile.h |  2 +-
->   2 files changed, 28 insertions(+), 1 deletion(-)
+>   drivers/platform/x86/dell/alienware-wmi.c | 10 +---------
+>   1 file changed, 1 insertion(+), 9 deletions(-)
 >
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
-file.c
-> index 75a1415190ac..d0c88decef8b 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -519,6 +519,33 @@ int platform_profile_remove(struct platform_profile=
-_handler *pprof)
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_remove);
+> diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platfor=
+m/x86/dell/alienware-wmi.c
+> index e95d22c7b60c..7b3ee2d6a23d 100644
+> --- a/drivers/platform/x86/dell/alienware-wmi.c
+> +++ b/drivers/platform/x86/dell/alienware-wmi.c
+> @@ -1159,13 +1159,7 @@ static int create_thermal_profile(struct platform=
+_device *platform_device)
+>   	pp_handler.name =3D "alienware-wmi";
+>   	pp_handler.dev =3D &platform_device->dev;
 >
-> +static void devm_platform_profile_release(struct device *dev, void *res=
-)
-> +{
-> +	platform_profile_remove(*(struct platform_profile_handler **) res);
-
-Please introduce a local variable instead of using a convoluted cast like =
-this.
-
-> +}
-> +
-> +int devm_platform_profile_register(struct platform_profile_handler *ppr=
-of)
-> +{
-> +	struct platform_profile_handler **dr;
-> +	int ret;
-> +
-> +	dr =3D devres_alloc(devm_platform_profile_release, sizeof(*dr), GFP_KE=
-RNEL);
-> +	if (!dr)
-> +		return -ENOMEM;
-
-Maybe it would make sense to turn dr into a normal pointer? AFAIK there is=
- no benefit in
-having another pointer if we can just use the original pointer.
-
-Thanks,
-Armin Wolf
-
-> +
-> +	ret =3D platform_profile_register(pprof);
-> +	if (ret) {
-> +		devres_free(dr);
-> +		return ret;
-> +	}
-> +
-> +	*dr =3D pprof;
-> +	devres_add(pprof->dev, dr);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(devm_platform_profile_register);
-> +
->   static int __init platform_profile_init(void)
->   {
->   	int err;
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_p=
-rofile.h
-> index 0682bb4c57e5..d8114435865b 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -41,7 +41,7 @@ struct platform_profile_handler {
->
->   int platform_profile_register(struct platform_profile_handler *pprof);
->   int platform_profile_remove(struct platform_profile_handler *pprof);
-> +int devm_platform_profile_register(struct platform_profile_handler *ppr=
-of);
->   int platform_profile_cycle(void);
->   void platform_profile_notify(struct platform_profile_handler *pprof);
+> -	return platform_profile_register(&pp_handler);
+> -}
 > -
->   #endif  /*_PLATFORM_PROFILE_H_*/
+> -static void remove_thermal_profile(void)
+> -{
+> -	if (quirks->thermal)
+> -		platform_profile_remove(&pp_handler);
+> +	return devm_platform_profile_register(&pp_handler);
+>   }
+>
+>   static int __init alienware_wmi_init(void)
+> @@ -1239,7 +1233,6 @@ static int __init alienware_wmi_init(void)
+>
+>   fail_prep_zones:
+>   	alienware_zone_exit(platform_device);
+> -	remove_thermal_profile();
+>   fail_prep_thermal_profile:
+>   fail_prep_deepsleep:
+>   fail_prep_amplifier:
+> @@ -1260,7 +1253,6 @@ static void __exit alienware_wmi_exit(void)
+>   	if (platform_device) {
+>   		alienware_zone_exit(platform_device);
+>   		remove_hdmi(platform_device);
+> -		remove_thermal_profile();
+>   		platform_device_unregister(platform_device);
+>   		platform_driver_unregister(&platform_driver);
+>   	}
 
