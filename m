@@ -1,190 +1,125 @@
-Return-Path: <linux-acpi+bounces-10292-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10293-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267A49FBD35
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Dec 2024 13:18:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD439FBEED
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Dec 2024 15:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827DB1885212
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Dec 2024 12:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 418DC165FB6
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Dec 2024 14:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70361B653E;
-	Tue, 24 Dec 2024 12:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075271AF0C8;
+	Tue, 24 Dec 2024 14:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DZI28l6W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38583DDC5;
-	Tue, 24 Dec 2024 12:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F13419DF98;
+	Tue, 24 Dec 2024 14:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735042696; cv=none; b=X/2bgKfX3LZjLZD40syf0hQ+mEH41Cu/QShNkFPqGxh2u6HUDyWSrdoAAeEt5iEsL+gOpEvBQhMHj+oIT4D3+ozleEYZPdb1hi4a4PfBQ1GHzRmYUj30rqIgAcmGYmPb7xl+9LrP2904kDdxpxn5X8NDbIC2amcvrdXpF+lKjrM=
+	t=1735048940; cv=none; b=Yqzdbo9FTLHY7swZKUfuPrnU90N5b0lTxKVU4PGEhTMzBO8t2C5D4P33BoYmnbOxJi1XlQ6GFGo6VzwCoVCqIV2wnFtpXwqtKT7nvjgMfuegpxewJUf8vVhS3HKx0aCp8RI8LK8JmmuUn1vk6gLuwhY+03Difqv7HwtNe4kMY9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735042696; c=relaxed/simple;
-	bh=wKXXfgGuVK51SEFt+YOZKJbK2fI7BR/n7Zm9VXMNcSA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SSJsBVw72pPXeZ5KaYPLbF2zZkj2xJsqyZbRNxObWkTH6jYx5bBXkyIMKLR+t4GgyOGZ6g9ZYlXUfaBS9iEq3i06ilDfpNTE469q0DtSaQeil/aJlHyozlCvBH44Tw9HOBhOhv8EjeREYiG1uFI9037Xigmc/yuQ2ttERMedyhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YHYmB6Vzjz6LDF0;
-	Tue, 24 Dec 2024 20:16:58 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 20607140447;
-	Tue, 24 Dec 2024 20:18:12 +0800 (CST)
-Received: from localhost (10.126.171.172) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 24 Dec
- 2024 13:18:11 +0100
-Date: Tue, 24 Dec 2024 12:18:09 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
-	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [PATCH 4/4] cxl: Add mce notifier to emit aliased address for
- extended linear cache
-Message-ID: <20241224121809.0000439c@huawei.com>
-In-Reply-To: <20241204224827.2097263-5-dave.jiang@intel.com>
-References: <20241204224827.2097263-1-dave.jiang@intel.com>
-	<20241204224827.2097263-5-dave.jiang@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1735048940; c=relaxed/simple;
+	bh=2x/32LBBMrY9B9huAiVqNewYZMucStDSJdnGanOm4Xg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V6NyNbmOkYXOm2U1FRB3ZuhDlbKzxPwb67LgwPxj3n8DKhRIL+0LDm7KBH/ffCSu2qNsjRmUZNF9fAjNCMlqU+jumOjsMQUXAuXsPTFRfInP0NobAgfTO2ATgKpD0MEaJwXZtWWAZFCc5yBQR4/rCi4YyYjjVnD54v+mQYkUNQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DZI28l6W; arc=none smtp.client-ip=209.85.219.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e39779a268bso4494565276.1;
+        Tue, 24 Dec 2024 06:02:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735048938; x=1735653738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mTCSxNnvOAOyuHwrOZSUGtLRMMKrDqsd1nj8fO8Yy3s=;
+        b=DZI28l6WdI10rTw2fzckH02RGMXk/u8OJN4YsGSZJtP6qutQf3rCskuii8ys0p26pF
+         jZqNuQwNWFT7MifvpUeYO+3nME3aTuAQqun5bIdS4I8q9H+RdiZLPuA2cy8TFfZ8c/1m
+         J2Inxj9IZVSkIlh+YrF6AcnOdlthvkaKqnPMglcBeC4MBG1J/Olp+Ku+HSBtaTuXdoSI
+         tk1MHXKW0c01MhudB/R9txcCaYNVNH7ReinwpN/SGIEzhmIE3bbYmLrkjFyuww2m5P06
+         L0UuGJHAtRezg966MsuJfMXpLB1ywVlCAIPI6EhafUVbXG+sbUd9KRB6nwS4XGgNB0Q/
+         2evQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735048938; x=1735653738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mTCSxNnvOAOyuHwrOZSUGtLRMMKrDqsd1nj8fO8Yy3s=;
+        b=YhnlFvCjsiBjVcA4ZyEz0Oiop1vdI+PjU/ZF1BlCCh1NbPeyG54X22FlS4EBw+QH1l
+         7YAsktNOVOhIMq4302mRsckHv7bYTcBhvIhRC/srOnwBu1VL6v15od991TtL5kXNY+Yt
+         zFZWO7Via74a3xux3cWiiBm5CToDBYX1hU8zlZCQFBWVoH7tnd/jCYfZhox3l/4ANJyT
+         YGRIIZRF5mUd7MVMcWtE/Hv4g/v82d4EkxEkGTd7U+vJHiKLBeUssS3e+14/lekX6ml5
+         6mBtuCTsqBiqN3pTytC10j2xrIva9Mug9qB/jy62hRG5Dfnzyuj9EoZPG/G6VzJBW4mi
+         gYAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5spQBSb9gHMVMaUW76WFNHAAEwIjFcz4bAlXSff6KOJNelCla5YTGoUGsccDlctr/Ryr7hpeMdxlu+NVD@vger.kernel.org, AJvYcCXDX5oAseOXw+cEHu2WzRXrhkDaY8nqYQbsp3IAn43DhdGZa7vpJk4ztnj5w+wbcKEpnNHk82OuDZ66@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7s2UGhv03KQKNUwVTGnwrIc5Pmf7JxCnf5G8XU4bCmGQKmgvw
+	RlI2hLBsJlYFZ0IPvczXRH4PNTV/wUziB+t7fJ94tOc7xYM9583pUZfykg==
+X-Gm-Gg: ASbGnct0IHWw6x9vJAKgTQ10SbSnbHaYtzy+WTqhXo6ZHIaGgYJfZsVUP+wAPbuDC6h
+	KZiuDHeHcFbR40HNo8cto5lM3g9tguSpBbFH7SVDZ+9a2ME7i/JYWAKP+arHJC0U6+mGqXUV/8Q
+	9nwyamlvWYq0D4i7UwvAwQTDhtQgSMDDcv8nMvBX6WqUNTIAuzDOi+SHpGWc9J4zlL5fWyX7HwO
+	/58ztSoGZkzeFoOM2IJRILnJE7l/IqRuvuUVzibLlX4g+IXA5dA0diIGSuAFo9T
+X-Google-Smtp-Source: AGHT+IERUOn1WNhz9vE1Vyu9bC/Px6coDKYTxdnvCHSlpDlRsL0+C1j2pbj8SW/TFe02w2Qs3pkV8w==
+X-Received: by 2002:a05:6902:2602:b0:e38:230d:aee0 with SMTP id 3f1490d57ef6-e538d0b3662mr14613257276.23.1735048937903;
+        Tue, 24 Dec 2024 06:02:17 -0800 (PST)
+Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e537cc79049sm2976051276.33.2024.12.24.06.02.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Dec 2024 06:02:16 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+To: platform-driver-x86@vger.kernel.org
+Cc: W_Armin@gmx.de,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mario.limonciello@amd.com,
+	mpearson-lenovo@squebb.ca,
+	rafael@kernel.org,
+	soyer@irl.hu,
+	Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH v2 0/2] Device managed platform_profile_register()
+Date: Tue, 24 Dec 2024 09:01:30 -0500
+Message-ID: <20241224140131.30362-2-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
 
-On Wed, 4 Dec 2024 15:46:49 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+Hi :)
 
-> Below is a setup with extended linear cache configuration with an example
-> layout of memory region shown below presented as a single memory region
-> consists of 256G memory where there's 128G of DRAM and 128G of CXL memory.
-> The kernel sees a region of total 256G of system memory.
-> 
->               128G DRAM                          128G CXL memory
-> |-----------------------------------|-------------------------------------|
-> 
-> Data resides in either DRAM or far memory (FM) with no replication. Hot
-> data is swapped into DRAM by the hardware behind the scenes. When error is
-> detected in one location, it is possible that error also resides in the
-> aliased location. Therefore when a memory location that is flagged by MCE
-> is part of the special region, the aliased memory location needs to be
-> offlined as well.
-> 
-> Add an mce notify callback to identify if the MCE address location is part
-> of an extended linear cache region and handle accordingly.
-> 
-> Added symbol export to set_mce_nospec() in x86 code in order to call
-> set_mce_nospec() from the CXL MCE notify callback.
-> 
-> Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-A couple of minor editorial comments.
+This is meant to be merged on the pdx86 tree.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+~ Kurt
 
-> diff --git a/drivers/cxl/core/mce.c b/drivers/cxl/core/mce.c
-> new file mode 100644
-> index 000000000000..f983822992a4
-> --- /dev/null
-> +++ b/drivers/cxl/core/mce.c
-> @@ -0,0 +1,52 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-> +#include <linux/notifier.h>
-> +#include <linux/set_memory.h>
-> +#include <asm/mce.h>
-> +#include <cxlmem.h>
-> +#include "mce.h"
-> +
-> +static int cxl_handle_mce(struct notifier_block *nb, unsigned long val,
-> +			  void *data)
-> +{
-> +	struct cxl_memdev_state *mds = container_of(nb, struct cxl_memdev_state,
-> +						    mce_notifier);
-> +	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
-> +	struct cxl_port *endpoint = cxlmd->endpoint;
-> +	struct mce *mce = (struct mce *)data;
+v2:
+ - Replaced convoluted cast with intermediate variable (1/2)
+ - Restored dropped empty line (1/2)
+ - Couldn't incorporate Armin's second comment. I probably didn't
+   understand it (1/2)
+v1: 
+ - https://lore.kernel.org/platform-driver-x86/20241221070817.3764-2-kuurtb@gmail.com
 
-Explicit cast not needed or useful. C lets us not bother when casting
-from void *
+Kurt Borja (2):
+  ACPI: platform_profile: Add devm_platform_profile_register()
+  alienware-wmi: Use devm_platform_profile_register()
 
-> +	u64 spa, spa_alias;
-> +	unsigned long pfn;
-> +
-> +	if (!mce || !mce_usable_address(mce))
-> +		return NOTIFY_DONE;
-> +
-> +	spa = mce->addr & MCI_ADDR_PHYSADDR;
-> +
-> +	pfn = spa >> PAGE_SHIFT;
-> +	if (!pfn_valid(pfn))
-> +		return NOTIFY_DONE;
-> +
-> +	spa_alias = cxl_port_get_spa_cache_alias(endpoint, spa);
-> +	if (!spa_alias)
-> +		return NOTIFY_DONE;
-> +
-> +	pfn = spa_alias >> PAGE_SHIFT;
-> +
-> +	/*
-> +	 * Take down the aliased memory page. The original memory page flagged
-> +	 * by the MCE will be taken cared of by the standard MCE handler.
-> +	 */
-> +	dev_emerg(mds->cxlds.dev, "Offlining aliased SPA address: %#llx\n",
-> +		  spa_alias);
-> +	if (!memory_failure(pfn, 0))
-> +		set_mce_nospec(pfn);
-> +
-> +	return NOTIFY_OK;
-> +}
+ drivers/acpi/platform_profile.c           | 29 +++++++++++++++++++++++
+ drivers/platform/x86/dell/alienware-wmi.c | 10 +-------
+ include/linux/platform_profile.h          |  1 +
+ 3 files changed, 31 insertions(+), 9 deletions(-)
 
 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 8bf4efb2c48c..b279148ec3ff 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -3435,6 +3435,31 @@ int cxl_add_to_region(struct cxl_port *root, struct cxl_endpoint_decoder *cxled)
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_add_to_region, CXL);
->  
-> +u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa)
-> +{
-> +	struct cxl_region_ref *iter;
-> +	unsigned long index;
-> +
-> +	guard(rwsem_write)(&cxl_region_rwsem);
-> +
-> +	xa_for_each(&endpoint->regions, index, iter) {
-> +		struct cxl_region_params *p = &iter->region->params;
-> +
-> +		if (p->res->start <= spa && spa <= p->res->end) {
-> +			if (!p->cache_size)
-> +				return 0;
-> +
-> +			if (spa > p->res->start + p->cache_size)
-> +				return spa - p->cache_size;
-> +
-> +			return spa + p->cache_size;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_port_get_spa_cache_alias, CXL);
-
-Quotes needed (the patch that changed that has been annoying this cycle!)
-
+base-commit: 03f8e0e05510dad6377cd5ef029594d30e6c096d
+-- 
+2.47.1
 
 
