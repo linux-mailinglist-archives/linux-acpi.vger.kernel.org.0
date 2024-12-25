@@ -1,128 +1,144 @@
-Return-Path: <linux-acpi+bounces-10304-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10305-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8C19FC67F
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Dec 2024 21:32:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D786E9FC6DA
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Dec 2024 00:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDEA41882EB1
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Dec 2024 20:32:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3542C162561
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Dec 2024 23:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1561615443F;
-	Wed, 25 Dec 2024 20:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825EE155A4D;
+	Wed, 25 Dec 2024 23:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="uF4NZT+0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvsvKSfm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B9C1DA21;
-	Wed, 25 Dec 2024 20:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B090315B0F2;
+	Wed, 25 Dec 2024 23:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735158731; cv=none; b=rH1E+mhzJ54FIKu/lCOugF2ltCVE8ehhzN4fNvnAAbLIL5bRXQrvpGt7Wi3eYZBEoPmdxXMMIcqpCctX+cVadWiE/pezysGGK7qoxB7RmWHbRTF0dbBUl5v31DV037pe1b4Af9e7VzKr+2tW+bYF+OG7umoWTcNZC8wfFO5o5PA=
+	t=1735168197; cv=none; b=PeI8rLbjZiYN0/pvQR0CvTJjqXSiC7oQFqLLGeutN/Fl5nDbOR8Ry8f/DMjwRH4BosbUxnVy7nMFdEhk9NqKottCMHBb5AWsxcg8AkG7vHdEokcpFnGtbIsUDSxs5rzoYoeTeLMD3lQw263LWia0ylUR+fPFaqVgfq2GadC73Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735158731; c=relaxed/simple;
-	bh=N6tZbh2rxinOTZzDR/Zj9iWMCGgH9H9NNjC7z9uxuUI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rY4y/iVsX+0k6Gc/CwTYL8lATy7y5EQDnwZrqiPsL4Uy/ByfworyXVwfXcT8Q33cCBjhAjkQTax9ppci3mTPA3ll7ySmFc6s17QjcV+rUa6dc6LPByFKbM2SpuHe+Bwg0EYDS/UfKLH2+VO3e5rWi/e7k8l1e0c8kkbMrOtPg74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=uF4NZT+0; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1735158680; x=1735763480; i=w_armin@gmx.de;
-	bh=Iaq3MdClClX5fgSo8glyJxrlnP7rY+yJr5h5LF24T0g=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=uF4NZT+0bVSQ1jxwndBOMoqzE2rYgNpebyw8iQNDPInIUHYttsx7MUvVBtA7jHRz
-	 eAFMKyMJJ0+XESBLQk7PFuRIOUHpBoJSiRqUpgCZo3SfNk5+V8Op+EkWSU+CYdPYp
-	 GGCXOBTGqPoeQAzx5irW75ALtEXiuKvqQyOGfD9oHWsWCzNjNhSTS2qJwC/Hz4m9n
-	 OUvYA0gsay8LTocdQrFNaOrYhT9dEx6iRZA6nS7/otLvMv1JkNH7dqD7YLDfx/KYz
-	 wPp1w+QXH/omFJkqM2PJbFElRqqgZLWcPCw8+ZpMxEGUSHkylcmMaeQXKM09AtBd8
-	 dVkN6TZKrz1Xj9/1ZQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.35] ([91.137.126.34]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N9dsb-1tcycf2dgz-014CiD; Wed, 25
- Dec 2024 21:31:20 +0100
-Message-ID: <8680845b-fae0-4bc5-8baf-0b9bbaa9a298@gmx.de>
-Date: Wed, 25 Dec 2024 21:31:17 +0100
+	s=arc-20240116; t=1735168197; c=relaxed/simple;
+	bh=cXgffOIK+UGqcvAJB+/E8oSILbxrECit01h1rPWtz2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=WyzhQuT1mGrCqOtFzxWDBgHktczGqXqvsrpKPFvSdPUuT7n5GjVkF8SXDPwDSuSyjEsIgK2FOetIHmxPyMoNQCuapMyX9ecxA/ZQaj7Hx5fTDyyRuVM6rk1XGr1nVLWgwgKsoLRxmsRqsNSTFUJdTxIMQZtrLiW/OhYba/qsSac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvsvKSfm; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d27243ba8bso11663686a12.2;
+        Wed, 25 Dec 2024 15:09:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735168194; x=1735772994; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c9v+px78eG66InOEEBnkMK4cXXwgTr2T0JPbH4BNA8E=;
+        b=jvsvKSfm0Gndh3IndYjvlczb8+L6c5sWjKC+xM1ihaqxbcB0eEUoBTbgiCiGn3bWFr
+         W8hzQhAGhmpQnc51Ax//Gv7bEAzX9YisLG35V1hKRPFlcouuEUsqqve+/xLQ5t++x35O
+         gYdPpNm4tIXW0pviD1ap4jCfnFgJb2oqlzF7L08BVLOhD1xYxnKIfFs6mkYBIpuhQeR1
+         4Be34LZFEw6QY7yggTcUQB3mZ3Zp8hYUN3LtfiuX6iB+AFGVF9lLM0OtaqcKkk2wGgyB
+         VyNQHlFvxwkkJxVWoogEFk7xGo2QosWLFLI4Z+ME4jKfEVkeq9w/v45EddMDjGFUYPR9
+         Mj9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735168194; x=1735772994;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c9v+px78eG66InOEEBnkMK4cXXwgTr2T0JPbH4BNA8E=;
+        b=Dlg2+ztt6R5S/wSXbGjr+04CQ9W3j299XcTVXSyelqt6caruNVd8Dri2dvL/FHW8E+
+         t5EX7I5DGOtnmfdpl89EqsLhPywYuLMR/EYxAUxnvfS+SS9I1zCA0PLs/PsgTbl0+O4V
+         NcRVSyhED7xL1Id5QYajuDa4MHuBi++Q/QxYdIO+Z8DDK66V4u2vyl1dFKAc9h9WcrzO
+         8GK9RHg+hd84byhhoaX9lJpeD6GbDNPCRzd0CFoN+5Xj2EU0uMnAXMQapUxW4qAxtZvj
+         cjbt3bIEVaOAK280fxDzjuYcmU6Wzbgysf/FPZuPBHxxvQTAATcoxWfNHJAq5BMpCyZq
+         5zog==
+X-Forwarded-Encrypted: i=1; AJvYcCUBqXFkCTDKQnwo+6lN7nSWRhgrOtXBMW4besUknUH6m38CwmU/RkdiQ9Y3iRBJSJcbp8C33pl2Mt5jD0pL@vger.kernel.org, AJvYcCUwp8n3m0WfAL8ILarcZmHTXsoeAYyEFmGustTyn3Rco90qYeM8R7lOWJgiTNoBrQ7jEnP3Bep/xoQs@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOjF40L/5lalv/a7EssZ2CwgCnNtf/r6X/m0XtKWn2nk8wPlCw
+	hHoeZMp6wCpmLU5FP+kYG3yqlE6jpCI8bRBm/VZbZjY/JcqZiTBl
+X-Gm-Gg: ASbGncsnH3PJpXHFTgd0Ft6nXWk/JjEgssrNLMwGZa/f5BgIAB9mEYok7XIuEFD5qnE
+	EZDSjoDptMzc8EhDBtEtw1QGisUg8Uu0bZW7WWyicokJsmphFl0QEmRziGxVMriMRC4HwR9lYIt
+	XECKAbT34/zP6Fn28N2JVMJnUbkIN/IsZFYQjBbgjEaiuigPhs7pE5r5BaogmNCmHgYy8YxDdzp
+	p6ywXEJzLQw8yKkuAfra+FPquAddMdjeahSKohBWevzDz3WTf4QmBEDZ3LiiWM=
+X-Google-Smtp-Source: AGHT+IFmA+25Ix88Cs6aGxcufnGYvRlbbn3zhK/hJN7bbVC8PbiIb0lazhzgSE8YiH5F8BHuqE5i5g==
+X-Received: by 2002:a05:6402:50d0:b0:5d1:1f1:a283 with SMTP id 4fb4d7f45d1cf-5d81dd849efmr17082749a12.4.1735168193836;
+        Wed, 25 Dec 2024 15:09:53 -0800 (PST)
+Received: from debian.local ([31.94.62.22])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80678c8dbsm8065745a12.40.2024.12.25.15.09.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Dec 2024 15:09:52 -0800 (PST)
+Date: Wed, 25 Dec 2024 23:09:49 +0000
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: amd-gfx@lists.freedesktop.org, alex.hung@amd.com,
+	regressions@lists.linux.dev, tjakobi@math.uni-bielefeld.de,
+	rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/amd: Fix random crashes due to bad kfree
+Message-ID: <Z2yQvTyg_MWwrlj3@debian.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Device managed platform_profile_register()
-To: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org
-Cc: hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com, lenb@kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- mario.limonciello@amd.com, mpearson-lenovo@squebb.ca, rafael@kernel.org,
- soyer@irl.hu
-References: <20241224140131.30362-2-kuurtb@gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20241224140131.30362-2-kuurtb@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:X2ZirBSP3XK2hE8+PG1Fhz5nVGUOl3L0u/Uqu/+O8MysMNiD37P
- GUg39yTuIpEziNWSpZKhR3l8ActVPr5ptyLr1ve2vlCIzJAHOnUu9nLCIjGYdJi8ygVF1fz
- Pea/Ux2gCQXYHztocYpZtn97N5EJNmkSKHdV9XpMXXtTv8jHNu/RpVcCfMYHfsywwZzu19W
- Tpe1nXVeJ9xPC3lZAym0A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:uRNKfnT9eQ8=;vCyEhqq3kgrPN5JXNEDoaLhCQTf
- kxhf4AFjHvlMFl8BMnThWm9nVE1vdQ2pQ+/fscilfsWaReVMpFsPoQD2c+u66obrASAOYRvHa
- ieX6UQVrKVw+PXnatSo8Kj3D23T2p3B/8pP+JUB0M4DZH7boUOJ2B+vbur6QiBIw/ibCHr7Yj
- 5adsfButQggDkri9Wjh/yL6XAHtQqy6Pwa9TZe4STWmCXKhaBhkbOJZRZTckApeHFx3600pWQ
- UKLbEsS7Z6LuNz5iQQ2IXZdFF1puf107mpNZV0x1Cpm15X7De2L99QMetSmRBe0KGu5DF4yb8
- YaYicq8LSufrrBr0Xmhpkc4LpuvhcDcz7FNoRKoPAXGv3s4s0+4YEusjBQpiqHSUyB2GfCbq2
- U62hlnmNxllmjE0GDPCuh5MrsUZEwT6zI63jtu3AQe8KmeGZ1vlGbAvBtRn3swbtqPkg1wlWM
- tNcGBbvms5U1q2iAg1aRwlF/u75MF4DHV0CzkSDVj9hJVcK3A650jzjBWuNC1Kd1dMLsLb8HJ
- HG6F0TmSCk8ZwKSl3Gw9m6N3t/Oyuv/HnDv2vtR05nfaVwr+xm1SrdA4IRI4X4Yn3do+Sg/Cx
- eUC+XEAYCCrslgOI7Dn7y4Mz7iB8cek5fH/DaGZDrUTr/poySJ8NuV3ImxHh7sTsiFmAH8/mU
- R25NtUrlUMgqP2vp6oEvOCdqwFkhDSqCgt7fg8EhAO5JeZ966ZzIAhs6XQNxT4j0sP6umsrxI
- OVpaj8stOfH825ZW6dqIcZTIrvEw8pswSVKFN0TJVl06wqzR0TFnPNkaMi0K+wgHy7SUd2l2H
- Iar5AbEZCKGEFYQWUvhuyUPClWtKQplduBd3QLIxN3auox5mTMrqEun7qXuiIFpYkC6TVyduD
- rrc37tAnCPc+kEbLES1tzYAn7Qg2LFGfW5v4xxlJw10pnFAfknAQfMZlBBvaJ9M0N27iBUUb3
- nfeDatpf1tqdmbL+qf6l1fCpOwnUe5bdh4seovknLDL1G9yd7pyqbQnNdVn9E7wGaSQddbYvr
- ZYQaHseqRRYfwko6qGSFS557dNIgw+sqhq23+lUWYX4a0jlMWuRoZu/4LJQW2Yua4yP9juNPY
- sbnKUDUv27O1j5K3Uz2Kvj3CUlzp0V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Am 24.12.24 um 15:01 schrieb Kurt Borja:
+Commit c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if
+available for eDP") added function dm_helpers_probe_acpi_edid, which
+fetches the EDID from the BIOS by calling acpi_video_get_edid.
+acpi_video_get_edid returns a pointer to the EDID, but this pointer does
+not originate from kmalloc - it is actually the internal "pointer" field
+from an acpi_buffer struct (which did come from kmalloc).
+dm_helpers_probe_acpi_edid then attempts to kfree the EDID pointer,
+resulting in memory corruption which leads to random, intermittent
+crashes (e.g. 4% of boots will fail with some Oops).
 
-> Hi :)
->
-> This is meant to be merged on the pdx86 tree.
->
-> ~ Kurt
+Fix this by allocating a new array (which can be safely freed) for the
+EDID data in acpi_video_get_edid, and correctly freeing the acpi_buffer.
 
-After thinking about it my second commit regarding the first patch is invalid, so for the
-whole series:
+The only other caller of acpi_video_get_edid is nouveau_acpi_edid:
+remove the extraneous kmemdup here as the EDID data is now copied in
+acpi_video_get_edid.
 
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if available for eDP")
+---
+ drivers/acpi/acpi_video.c              | 3 ++-
+ drivers/gpu/drm/nouveau/nouveau_acpi.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-> v2:
->   - Replaced convoluted cast with intermediate variable (1/2)
->   - Restored dropped empty line (1/2)
->   - Couldn't incorporate Armin's second comment. I probably didn't
->     understand it (1/2)
-> v1:
->   - https://lore.kernel.org/platform-driver-x86/20241221070817.3764-2-kuurtb@gmail.com
->
-> Kurt Borja (2):
->    ACPI: platform_profile: Add devm_platform_profile_register()
->    alienware-wmi: Use devm_platform_profile_register()
->
->   drivers/acpi/platform_profile.c           | 29 +++++++++++++++++++++++
->   drivers/platform/x86/dell/alienware-wmi.c | 10 +-------
->   include/linux/platform_profile.h          |  1 +
->   3 files changed, 31 insertions(+), 9 deletions(-)
->
->
-> base-commit: 03f8e0e05510dad6377cd5ef029594d30e6c096d
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 8274a17872ed..151d1d534264 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1485,7 +1485,8 @@ int acpi_video_get_edid(struct acpi_device *device, int type, int device_id,
+ 		if (!length)
+ 			continue;
+ 
+-		*edid = buffer->buffer.pointer;
++		*edid = kmemdup(buffer->buffer.pointer, length, GFP_KERNEL);
++		kfree(buffer);
+ 		return length;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+index 8f0c69aad248..21b56cc7605c 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
++++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+@@ -384,7 +384,7 @@ nouveau_acpi_edid(struct drm_device *dev, struct drm_connector *connector)
+ 	if (ret < 0)
+ 		return NULL;
+ 
+-	return kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
++	return edid;
+ }
+ 
+ bool nouveau_acpi_video_backlight_use_native(void)
+-- 
+2.39.5
+
 
