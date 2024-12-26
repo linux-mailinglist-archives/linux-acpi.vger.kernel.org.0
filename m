@@ -1,137 +1,239 @@
-Return-Path: <linux-acpi+bounces-10307-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10308-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F4E9FC76A
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Dec 2024 02:27:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E229FC774
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Dec 2024 02:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA85716235C
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Dec 2024 01:27:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99B5B7A12C3
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Dec 2024 01:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205BCF9FE;
-	Thu, 26 Dec 2024 01:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB71842AA5;
+	Thu, 26 Dec 2024 01:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUwBAdUx"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="axF/D7rx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E620EB;
-	Thu, 26 Dec 2024 01:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DD62B9CD;
+	Thu, 26 Dec 2024 01:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735176453; cv=none; b=LrQ0hZx7KN6DGqgmV+v7IR2aAfa2MmBEbQqpM+f6n+iah3vWZwH1HB6uCPwCB+r8Zxyu3mEFihylbCrcuxNcAQJ3kA1+8xz82FbTGzBzM+W1zMnSLp4AyprIoED4mxpUz+OABB7qkZnXM99JJ1Y9ppd4bxyO+UqHZ8GBQtC1yb8=
+	t=1735176956; cv=none; b=GcBXGUUyp8Z1Te7t/Neujmna00SJjnBO25EbblG85jqPyITTeQB2F/5V8jrXSYqskMvyxkpHAycNs1DNRCsKSPMU3SAOSU2jrrHL42Loya4yYzZif87lrkWn4wZIYqwYRIprX+4v+fEkE/Corhzt/CJ7oMfV6rzDPl+r5p+VlMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735176453; c=relaxed/simple;
-	bh=n2c/pdJWTKjoyAi5f1u+wUe30qTvN+tUqOS5EdVBl+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e1PyigqeSRuo6NAgS8z4M0LRWU+QzV+BA47c1cYyBVeTz1PhbBZrmq1JadmfXjPVlaSRQ2+8mv09wG5VzJbH6q0Ti044rXyuXP6hLR9AyC4LOI2NnB/ibcuVA+aSkiGn3D28lCDejJszQ0W+ZrPZ488Vky1I+ePtz3crxntIk+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUwBAdUx; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4361f65ca01so60782515e9.1;
-        Wed, 25 Dec 2024 17:27:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735176449; x=1735781249; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w+1gJ6KVd4d91QuBEx/cbFE3H0/ijnRtOxNNQIBNOxI=;
-        b=HUwBAdUxhHMIJihcElNrVQFSKusNOny6HQrE/bEIvVsGMz6rpqJnhGkHpKTDnLsVKw
-         SrSeW1uO9at9eOWaDtxUf6uD3UOcjvENiNKtfBFgoc0ejesjOUJO60YtzS7yMOz5gBxV
-         UeyZKlrJLLxTb1cD9pyopPZlxgQ9V9ZQoihhRPV7LazZCe94eMBrQKxIsG+Y0+IcPnYW
-         yYvHMyKio9qSbRSt35rddzLBtgixqJh8WKniNRsOx+3Zd/wiS3fVHybx7AJ37LE//LuG
-         7f69CjB1V1PK466172hD7QB12Eat5tueMpHf2lFU74GKKY6Qpj5E22mEf96R+KCzeaet
-         zGkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735176449; x=1735781249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w+1gJ6KVd4d91QuBEx/cbFE3H0/ijnRtOxNNQIBNOxI=;
-        b=hwbMA84Au7qI6Fbsp8irDoWrUadUa/eV3IOfGt9QWzN00EkgnDdyppu9tlzWDRmuL+
-         GV2ZR45guWMUrF8yQvCT4nQssIUNke0v7cdAV6qsI9J+/tSYHwgj6yJyvwu2sta0yaol
-         6KllSBtLOMVoGBsBglxEKJArHNS246otDioqVB03H81/BIq8Kw+Odx2I9yhZP/LQm/Ba
-         0NTprkOeo2uhtAvgbwokzRV4QQhfjuz/BigJ0kiAq2Gzcc1QphJkmUV/xJJbnFB9E8aL
-         9wGtQAZ62aMqYBzsnK6ZdAlfKlYwDxGDjuV0+QuIgh0AMCz1OKBljA1tRkxpeRh+1VSE
-         L+gg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0o/6IOwxgXeYIA7R8qgEvo7/ugdFg+3rfqyrrG9hVqz2R3zSSAo+foElEFuDFP9y7EzRcAhMxtEkR@vger.kernel.org, AJvYcCWoZeXRV1PY/D7/fgals3QVz7kat7jPzFtol4CT62zGmqSNZbeMEb+rvwckBBJBPJXxkFIb4QuNXdo0EfZr@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK7j/Mqg6czigKHFR4Fo1vwKd9v794jl3H+KNsZ3a084IZT3pf
-	WBtcmcwslNJ86tGIqKgIeVr9tRnZw0vucg3ZpCuV0UUu/Mn4YMSQ
-X-Gm-Gg: ASbGnctuhDp7COBnMuAETmM13qBe7LfRTVC2qTpl8jZhSobvQcTjSuVZwQIJSirxMEB
-	Hgpkg3vgNkj8zedB1X/7SxcwRcDuAzIKM289YL5Y3zgCW4MRhTupdUfMQv2q4+kHxfKNAiPqAKO
-	MvyLeXmzXwSrvQHTnCgyjHKlwFy+g6IuE1VsIlkmO8SNawKTgz239rBXLn2306z7A3ps7v1qrDg
-	xwhEV1gNAmnvtYwHD8axl3J57FQkqJ3oygc0VWCeH2k+xpr2toYYitKpFz9Inc=
-X-Google-Smtp-Source: AGHT+IEhKxgf4hIQTI+Klr0apBS3ueanh/tTSMf0cm7MR8jqtmgAC2JCW+Dv1tvv1AYLHnhwnZnAgg==
-X-Received: by 2002:a5d:47c3:0:b0:385:e35e:9da8 with SMTP id ffacd0b85a97d-38a221f69e0mr18547954f8f.18.1735176449451;
-        Wed, 25 Dec 2024 17:27:29 -0800 (PST)
-Received: from debian.local ([31.94.62.22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43661219611sm218332885e9.23.2024.12.25.17.27.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Dec 2024 17:27:29 -0800 (PST)
-Date: Thu, 26 Dec 2024 01:27:25 +0000
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-To: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	amd-gfx@lists.freedesktop.org, alex.hung@amd.com,
-	regressions@lists.linux.dev, rafael@kernel.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/amd: Fix random crashes due to bad kfree
-Message-ID: <Z2yw_eJwR5ih1Npr@debian.local>
-References: <Z2yQvTyg_MWwrlj3@debian.local>
- <b98f2fa5-fbe8-4958-bf20-fa5d28c5a38b@math.uni-bielefeld.de>
+	s=arc-20240116; t=1735176956; c=relaxed/simple;
+	bh=cxN1/UykUiErM6n9pqaTT43SgrrU0uzHv3x3MhrjuOk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=p1PYpWqCNOPe4bbIWo9FUwOekRqhaps5UkQa5IGuXDg6E0so6cOVwVx+yOxh+SMNUvBm3Tz/qs8r0BpjVFrxEK5o/liJiG2jKJOsS9Bl5LpCwCplgVP6xWhn1+QB9TeWz4l88X0RHjJELxHnsx3zh4hBkiVEQtbAgEAvfVbxcos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=axF/D7rx; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1735176945; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=LgMyQTcokgOo73uKJV1KP+xRroEyuPt5ZYl/VKgG9TA=;
+	b=axF/D7rxGHcavi9GyHiGlssRXTIcK4d9pj1KqaOpg/bJkcpMw1qwdFjVCwrPW7LF9CVcmOMrJ2T0q/L8FIC521thRkHBC8z9LUNkawfMMUQ1kkgu19ERXO71GI8M2+RG5tYeIsuljsL1RJei5RMmddOcZsFxDqKjHqqG/0r5H+g=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WMGJQaw_1735176936 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 26 Dec 2024 09:35:44 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Gregory Price <gourry@gourry.net>,  hyeonggon.yoo@sk.com,
+  kernel_team@skhynix.com,  "rafael@kernel.org" <rafael@kernel.org>,
+  "lenb@kernel.org" <lenb@kernel.org>,  "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>,  "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>,  =?utf-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKQ==?=
+ System SW
+ <honggyu.kim@sk.com>,  =?utf-8?B?6rmA65296riwKEtJTSBSQUtJRSk=?= System SW
+ <rakie.kim@sk.com>,
+  "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+  "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+  "dave.jiang@intel.com" <dave.jiang@intel.com>,  "horen.chuang@linux.dev"
+ <horen.chuang@linux.dev>,  "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+  "linux-mm@kvack.org" <linux-mm@kvack.org>,  "kernel-team@meta.com"
+ <kernel-team@meta.com>
+Subject: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
+ auto-tuning
+In-Reply-To: <20241225093042.7710-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
+	message of "Wed, 25 Dec 2024 18:30:42 +0900")
+References: <20241225093042.7710-1-joshua.hahnjy@gmail.com>
+Date: Thu, 26 Dec 2024 09:35:32 +0800
+Message-ID: <874j2rp6or.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b98f2fa5-fbe8-4958-bf20-fa5d28c5a38b@math.uni-bielefeld.de>
+Content-Type: text/plain; charset=ascii
 
-On Thu, Dec 26, 2024 at 12:19:02AM +0100, Tobias Jakobi wrote:
-> Hi Chris!
-> 
-> On 12/26/24 00:09, Chris Bainbridge wrote:
-> 
-> > Commit c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if
-> > available for eDP") added function dm_helpers_probe_acpi_edid, which
-> > fetches the EDID from the BIOS by calling acpi_video_get_edid.
-> > acpi_video_get_edid returns a pointer to the EDID, but this pointer does
-> > not originate from kmalloc - it is actually the internal "pointer" field
-> > from an acpi_buffer struct (which did come from kmalloc).
-> > dm_helpers_probe_acpi_edid then attempts to kfree the EDID pointer,
-> > resulting in memory corruption which leads to random, intermittent
-> > crashes (e.g. 4% of boots will fail with some Oops).
-> > 
-> > Fix this by allocating a new array (which can be safely freed) for the
-> > EDID data in acpi_video_get_edid, and correctly freeing the acpi_buffer.
-> 
-> Hmm, maybe I'm missing something here. But shouldn't it suffice to just
-> remove the kfree call in dm_helpers_probe_acpi_edid()?
+Hi, Joshua,
 
-Yes, that would work to fix the bad kfree, but there would be a small
-memory leak of the acpi_buffer struct. It's not a huge problem since
-this code is rarely run, and the Nouveau code has never tried to free
-the edid buffer and apparently nobody noticed, but it would be better to
-do the correct thing.
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-One other curiosity is this comment in the code that allocates the
-memory:
+> Hi Gregory and Huang,
+>
+> Sorry for the silence on my end for the past few days. I decided to take
+> some time off of the computer, but I should be more reponsive now!
+>
+> On Wed, 25 Dec 2024 08:25:13 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
+>
+>> Gregory Price <gourry@gourry.net> writes:
+>> 
+>> > On Sun, Dec 22, 2024 at 04:29:30PM +0800, Huang, Ying wrote:
+>> >> Gregory Price <gourry@gourry.net> writes:
+>> >> 
+>> >> > On Sat, Dec 21, 2024 at 01:57:58PM +0800, Huang, Ying wrote:
+>
+> [.....8<.....]
+>
+>> > We decided when implementing weights that 0 was a special value that
+>> > reverts to the system default:
+>> >
+>> >   Writing an empty string or `0` will reset the weight to the
+>> >   system default. The system default may be set by the kernel
+>> >   or drivers at boot or during hotplug events.
+>> >
+>> > I'm ok pulling the default weights in collectively once the first one is
+>> > written, but 0 is an invalid value which causes issues.
+>> >
+>> > We went through that when we initially implemented the feature w/ task-local
+>> > weights and why the help function overrides it to 1 if it's ever seen.
+>> >
+>> > We'll revert back to our initial implementation w/ default_iw_table and
+>> > iw_table - where iw_table contains user-defined weights.  Writing a 0 to
+>> > iw_table[N] will allow get_il_weight() to retrieve default_iw_table[N]
+>> > as the docs imply it should.
+>> 
+>> So, the suggested behavior becomes the following?
+>> 
+>> default_values [5,2,-] <- 1 node not set, expected to be hotplugged
+>> user_values    [4,2,1] <- user has only set one value, not populated nodes have value 1
+>> effective      [4,2,1]
+>> 
+>> hotplug event
+>> default_values [2,1,1] - reweight has occurred
+>> user_values    [4,2,1]
+>> effective      [4,2,1]
+>
+> Yes, I think this was the intended effect when we were discussing what
+> interface made the most sense.
+>
+>> Even if so, we still have another issue.  The effective values may be a
+>> combination of default_values and user_values and it's hard for users to
+>> identify which one is from default_values and subject to change.  For
+>> example,
+>> 
+>> user reset weight of node 0 to default: echo 0 > node0
+>> default_values [2,1,1]
+>> user_values    [0,2,1]
+>> effective      [2,2,1]
+>> 
+>> change the default again
+>> default_values [3,1,1] - reweight again
+>> user_values    [0,2,1]
+>> effective      [3,2,1]
+>
+> Agreed. Actually, this confusion was partly what motivated our new
+> re-work of the patch in v2, which got rid of the default and user
+> layers, and made all internal values transparent to the user as well.
+> That way, there would be no confusion as to the true source of the
+> value, and the user could be aware that re-weighting would impact
+> all values, regardless of whehter they were default values or not.
+>
+> If we are moving away from allowing users to dynamically change the
+> weightiness (max_node_weight) parameter however, then I think that there
+> may be more merit to using the two-level default & user values system to
+> allow for more flexibility.
+>  
+>> This is still quite confusing.  Another possible solution is to copy the
+>> default value instead,
+>> 
+>> user reset weight of node 0 to default: echo 0 > node0
+>> default_values [2,1,1]
+>> user_values    [2,2,1] - copy default value when echo 0
+>> effective      [2,2,1]
+>> 
+>> change the default again
+>> default_values [3,1,1] - reweight again
+>> user_values    [2,2,1]
+>> effective      [2,2,1]
+>
+> This makes a lot sense to me, I think it lets us keep both the
+> transparency of the new one-layered system and all the benefits that
+> come with having default values that can adapt to hotplug events. One
+> thing we should consider is that the user should probably be able to
+> check what the default value is for a given node before deciding to
+> copy that value over to the weight table.
+>
+> Having two files for each node (nodeN, defaultN) seems a bit too
+> cluttered for the user perspective. Making the nodeN interfaces serve
+> multiple purposes (i.e. echo -1 into the nodes will output the default
+> value for that node) also seems a bit too complicated as well, in my
+> opinion. Maybe having a file 'weight_tables' that contains a table of
+> default/user/effective weights (as have been used in these conversations)
+> might be useful for the user? (Or maybe just the defaults)
+>
+> Then a workflow for the user may be as such:
+>
+> $ cat /sys/kernel/mm/mempolicy/weighted_interleave/weight_tables
+> default vales: [4,7,2]
+>   user values: [-,-,-]
+>     effective: [4,7,2]
 
-case ACPI_ALLOCATE_BUFFER:
-	/*
-	 * Allocate a new buffer. We directectly call acpi_os_allocate here to
-	 * purposefully bypass the (optionally enabled) internal allocation
-	 * tracking mechanism since we only want to track internal
-	 * allocations. Note: The caller should use acpi_os_free to free this
-	 * buffer created via ACPI_ALLOCATE_BUFFER.
-	 */
+AFAIK, this breaks the sysfs attribute format rule as follows.
 
-Which makes me wonder if all the calls to kfree on acpi_buffer structs
-with ACPI_ALLOCATE_BUFFER in acpi_video.c should actually be calls to
-acpi_os_free instead? I used kfree just for consistency with the
-existing code.
+https://docs.kernel.org/filesystems/sysfs.html#attributes
+
+It's hard to use array sysfs attribute here too.  Because the node ID
+may be non-consecutive.  This makes it hard to read.
+
+> $ echo 4 > /sys/kernel/mm/mempolicy/weighted_interleave/node2
+> 4
+> ...
+>
+>> The remaining issue is that we cannot revert to default atomically.
+>> That is, user_values may becomea  combination of old and new
+>> default_values if users echo 0 to each node one by one when kernel is
+>> changing default_values.  To resolve this, we may add another interface
+>> to do that, for example, "use_default".
+>> 
+>> echo 1 > use_default
+>> 
+>> will use default_values for all nodes.  We can check whether we are
+>> using default via
+>> 
+>> cat use_default
+>
+> Like mentioned in the previous comments, I think that the "setting one
+> value to set all the others" is a good method, especially since the
+> more I think about it (in my limited experience), I think there is rarely
+> a scenario where a user wants to use a hybrid of manually-set and
+> default values and is switching back and forth between default and
+> manual values.
+>
+>> Anyway, I think that we need a thorough thought about the user space
+>> interface.  And add good document, at least in change log.  It's really
+>> hard to make user space interface right.
+>> 
+>> I'm open to better user space interface design.
+>
+> I agree with this, thank you for your feedback. I think there has been
+> a lot of great points raised in these conversations, and I will do my
+> best to take these comments into consideration when writing better
+> documentation. 
+>
+> Thank you for your input! I hope you have a great day and happy holidays!
+
+Happy holidays!
+
+---
+Best Regards,
+Huang, Ying
 
