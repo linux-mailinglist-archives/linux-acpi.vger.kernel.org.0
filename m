@@ -1,166 +1,96 @@
-Return-Path: <linux-acpi+bounces-10311-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10312-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6372B9FCF89
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Dec 2024 02:59:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6869FD2A3
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Dec 2024 10:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB6E91883692
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Dec 2024 01:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFBA31625B4
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Dec 2024 09:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56211C6A3;
-	Fri, 27 Dec 2024 01:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E5156676;
+	Fri, 27 Dec 2024 09:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lWnXLV3I"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="IqRysj5I"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4A19A;
-	Fri, 27 Dec 2024 01:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BF114B95A;
+	Fri, 27 Dec 2024 09:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735264790; cv=none; b=PfLVfV0fx++3VUXfb+odQ+3xMHVBcT8KQkUlJG1jf2kF00x0eeBiBqgJ9qJhLiPddjRuB6SatDmF6ejvLCn7LCDaIJJifEEer3nNM+RVlDzC3NXIZaSJXcB0ikc18fferTCG5Bpl9GcgwjR16FJaJUApwIjwsd0K7z1uUSvPyEU=
+	t=1735293275; cv=none; b=VPwPptXETcqD4Lr/EaHVupB/kQWdlfSOxNjWnu0NlkCkNbOpIzKKBMzsHWhW0F7vDpEZMwG16+YJjohkQMRzgcU4FbeOE0j1VswHs3g8H0//zdPlmsgRowIc2yPzEUexjJAHhuPALtS3e77HvSKMlwjtarc8mR4SYZ4FwGmpnI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735264790; c=relaxed/simple;
-	bh=I1bjv/0RBQVqsXPywcPZLVPyKj/mD0eLmgcVxy69MYE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Rl2b2CnKFsrNXg4IeGzIGiUfpg9aG7jjc8zRIw9Mn6h90zrZvsQAjHWBZVkXbUskQfr+UPD0TFFAKwlP9S8PaLG395mijrrjleykwtrOYoE3kahvPsf2HXj0JI/PthqJTapopKHSgwoFguHDJKoA5L9GbTBB9lIrOts1sUIQKVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lWnXLV3I; arc=none smtp.client-ip=115.124.30.110
+	s=arc-20240116; t=1735293275; c=relaxed/simple;
+	bh=+BuDGxE35QLYjzJzpm3l/mexwmlnX4WJryj840LV4Oo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jriyz9lUmvC2SvDw5dsZM9gGguyQMfxVAQHX/mMXvVH1F9wlxpi3KjO359H0udAbUE8r5VZys+mAvtVsMxwD/it9Fmc3T4LhEUm6uHWYgIi+GZc/z7S4znNaKZ4zKv3Yr6gDMEf+vYxm2S5zQOfxf8QN8LeZlNKow0iBhKycgC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=IqRysj5I; arc=none smtp.client-ip=115.124.30.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1735264779; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=yg/jG1rpsLEYnYPzqiuf4YxmQ5oFpoPbwk3hphHZGDI=;
-	b=lWnXLV3I4wDvFPdLzou2VDAHHTofpZTFSQOoEu1qGwdevMc9TVWkDU5Sc03BdjQKBG5tenfx2ziOZfSChBJJke2kwwli/qtVDEGH31wNStbOg9wrJ3eehj98rMpaUTwSjqxS9ALXscwuNQlBmNBqP/DyGmr0P+hcwMjWTR6gl14=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WMJYFwA_1735264770 cluster:ay36)
+	t=1735293264; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=IcVxa8jX6N9CqPRS4pyMvj9wYh0OlHb85qBwCltl7JQ=;
+	b=IqRysj5Il9DzPdcTCRVMJZ3GtVpGmty5vVVbxCD/qO6wV1nrmPT6xWVdKybEEM+i2bfKUiphhOUaR5k46Eca2DSNHnuBUfHyHOmdbCTHnCeTw4bXBJiABwLEYi0iiQZcjBfpTRSlT2M5LfnlXhakZ8jWiNEvvfJYU4acLMUubWo=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0WMKtN23_1735293262 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 27 Dec 2024 09:59:37 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,  hyeonggon.yoo@sk.com,
-  kernel_team@skhynix.com,  "rafael@kernel.org" <rafael@kernel.org>,
-  "lenb@kernel.org" <lenb@kernel.org>,  "gregkh@linuxfoundation.org"
- <gregkh@linuxfoundation.org>,  "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>,  =?utf-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKQ==?=
- System SW
- <honggyu.kim@sk.com>,  =?utf-8?B?6rmA65296riwKEtJTSBSQUtJRSk=?= System SW
- <rakie.kim@sk.com>,
-  "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-  "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-  "dave.jiang@intel.com" <dave.jiang@intel.com>,  "horen.chuang@linux.dev"
- <horen.chuang@linux.dev>,  "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-  "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-  "linux-mm@kvack.org" <linux-mm@kvack.org>,  "kernel-team@meta.com"
- <kernel-team@meta.com>
-Subject: Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave
- auto-tuning
-In-Reply-To: <Z22cwZycFV47wOfX@gourry-fedora-PF4VCD3F> (Gregory Price's
-	message of "Thu, 26 Dec 2024 11:13:21 -0700")
-References: <20241225093042.7710-1-joshua.hahnjy@gmail.com>
-	<874j2rp6or.fsf@DESKTOP-5N7EMDA>
-	<Z22cwZycFV47wOfX@gourry-fedora-PF4VCD3F>
-Date: Fri, 27 Dec 2024 09:59:30 +0800
-Message-ID: <87cyhdhon1.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+          Fri, 27 Dec 2024 17:54:23 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: rafael@kernel.org,
+	Len Brown <lenb@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	ying.huang@linux.alibaba.com,
+	Feng Tang <feng.tang@linux.alibaba.com>
+Subject: [PATCH] acpi/ghes: Make ghes_panic_timeout adjustable as a parameter
+Date: Fri, 27 Dec 2024 17:54:22 +0800
+Message-Id: <20241227095422.44147-1-feng.tang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Transfer-Encoding: 8bit
 
-Gregory Price <gourry@gourry.net> writes:
+There is a problem report that when debugging a hard-to-reproduce panic
+issue, user wanted the kernel to not reboot by adding "panic=0" in
+kernel cmdline, so that the panic context could be kept, say the panic
+was caught randomly in the mid-night, and user hoped to check it in
+the morning. GHES panic handler may overwrite that user setting and
+force to reboot after 'ghes_panic_timeout'(30) seconds.
 
-> On Thu, Dec 26, 2024 at 09:35:32AM +0800, Huang, Ying wrote:
->> > Having two files for each node (nodeN, defaultN) seems a bit too
->> > cluttered for the user perspective. Making the nodeN interfaces serve
->> > multiple purposes (i.e. echo -1 into the nodes will output the default
->> > value for that node) also seems a bit too complicated as well, in my
->> > opinion. Maybe having a file 'weight_tables' that contains a table of
->> > default/user/effective weights (as have been used in these conversations)
->> > might be useful for the user? (Or maybe just the defaults)
->> >
->> > Then a workflow for the user may be as such:
->> >
->> > $ cat /sys/kernel/mm/mempolicy/weighted_interleave/weight_tables
->> > default vales: [4,7,2]
->> >   user values: [-,-,-]
->> >     effective: [4,7,2]
->> 
->> AFAIK, this breaks the sysfs attribute format rule as follows.
->> 
->> https://docs.kernel.org/filesystems/sysfs.html#attributes
->> 
->> It's hard to use array sysfs attribute here too.  Because the node ID
->> may be non-consecutive.  This makes it hard to read.
->>
->
-> Would generally agree. I think essentially a
->    use_defaults => (0 | 1)
-> interface is probably the best we can do.
->
-> Setting any node changes use_defaults from 1 => 0
-> echoing 1 into use_default clears user_values
->
-> This still allows 0 to be a manual "reset specific node to default"
-> mechanism for a specific node, and gives us a clean override.
+Make 'ghes_panic_timeout' a parameter can provide user some flexibility
+to change the timeout on demand, without changing current behavior.
 
-The difficulty is that users don't know the default value when they
-reset a node's weight.  We don't have an interface to show them.  So, I
-suggest to disable the functionality: "reset specific node to default".
-They can still use "echo 1 > use_defaults" to reset all nodes to
-default.
-
-> The only question is a matter of hotplug behavior
->
-> nodes_online: 0,1
->   default_values: [5,3]
->   user_values   : [-,-]
->
-> event: node1 is taken offline
->   default_values: [5,3] <-- nothing happens
->
-> event: node1 comes back online with different bandwidth attribute
->   default_values: [6,5] <-- reweight as occured silently
->
-> event: user sets a custom value (node1 <= 2)
->   default_values: [6,5]
->   user_values:    [6,2] <= note, *no reduction*
->
-> event: node1 is taken offline
->   default_values: [6,5]
->   user_values:    [6,2] <= value still present but not used
->
-> event: node1 comes back online with different bandwidth attribute
->   default_values: [5,3] <-- default reweight has occurred silently
->   user_values   : [6,2] <-- user responsible for triggering re-weight
->
-> The user has the option of
->
-> echo 1 > /sys/.../weghted_interleave/user_defaults
-> result
-> 	default_values: [5,3]
-> 	user_values   : [-,-]
-> or
-> echo 0 > /sys/.../weighted_interleave/node1
-> result
-> 	default_values: [5,3]
-> 	user_values   : [6,3] <= only node1 is updated, no re-weight
->
-> Basically, if the user ever sets any value, we never automatically pull
-> new values in, and the admin is responsible for triggering a re-weight
-> (use_default) or manually reweighting *all* nodes - because changing
-> values implies a change in the bandwidth distribution anyway.
->
-> I think this makes the most sense.
-
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
 ---
-Best Regards,
-Huang, Ying
+ drivers/acpi/apei/ghes.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 07789f0b59bc..a8a6310e476a 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -174,6 +174,7 @@ static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_
+ static atomic_t ghes_estatus_cache_alloced;
+ 
+ static int ghes_panic_timeout __read_mostly = 30;
++module_param(ghes_panic_timeout, int, 0644);
+ 
+ static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
+ {
+-- 
+2.39.5 (Apple Git-154)
+
 
