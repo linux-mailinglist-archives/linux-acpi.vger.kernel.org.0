@@ -1,155 +1,157 @@
-Return-Path: <linux-acpi+bounces-10317-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10318-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCC29FD9E8
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 11:24:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78199FDA96
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 13:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F26818832FE
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 10:24:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 219163A085D
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 12:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0CA13D8A3;
-	Sat, 28 Dec 2024 10:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32837156886;
+	Sat, 28 Dec 2024 12:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=i2labs.ca header.i=nolan@i2labs.ca header.b="aeKqf6PY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBDA69D2B;
-	Sat, 28 Dec 2024 10:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735381450; cv=none; b=p9qJUkUrAHhzDbjZgp8MtGrzuSVlT07YmmaBVfPEAL/RGHhkPs383OlK5ad+vYXV+gVAmLhxdpLXP8p+sbjQx3hFU//tFLmNLKUCFBv/QR+nEGmMG5WKdMRwCaC27dOiubnphv8qwhHa0DXAIUtkbCiwCpIkrEYvDsX8hgzcX70=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735381450; c=relaxed/simple;
-	bh=YngjxGWq1Tv+ALdG1TKrseFe9btby2iXeFwHDXig0dk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=V1GXhtyHVKkXTww2U5GixG/UGmVxOIE5Jc6pIubEyYEscGrcRlCW2y8QoV5wgAuHAxdmApcKNU9g+Kyt9XesWFVcDIHFwEqDJuU5wqka27pNjK8ccOZi4/nG9RoEig/tbFQTi4HNVD+2NWF1H3CRfAjBYDp9AfxN7yzSSl16Ml8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4YKz0S4JN2zgZVc;
-	Sat, 28 Dec 2024 18:20:56 +0800 (CST)
-Received: from dggpemf200009.china.huawei.com (unknown [7.185.36.246])
-	by mail.maildlp.com (Postfix) with ESMTPS id 335EE180A9E;
-	Sat, 28 Dec 2024 18:23:57 +0800 (CST)
-Received: from [10.67.121.188] (10.67.121.188) by
- dggpemf200009.china.huawei.com (7.185.36.246) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 28 Dec 2024 18:23:56 +0800
-Message-ID: <a980db9a-831b-c950-e5bf-80d422a91015@huawei.com>
-Date: Sat, 28 Dec 2024 18:23:56 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0813B1A2
+	for <linux-acpi@vger.kernel.org>; Sat, 28 Dec 2024 12:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735390547; cv=pass; b=VjBgsnizauJBpYvBcgTSkKnDwpuFalqMcRouiNDKYHHAGeW+hh5YkZT9DBzMsE9Sk5DLKoVtmWYjGZjJ8tp0InJ24uu5Z7HH6RZNa2SNS1mnXAWCcW/kMgQtsZ+27yuHWGLFqKadujJTQDAwodPMoWUft9KTSdJYbKR2NYKtX8U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735390547; c=relaxed/simple;
+	bh=dV5TMzMpkZdM5zUiOGttmCrbEL3paZJpNSRF93v6whM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=FqULLIOwNuQXZPMmaYf/vSl0q37+GR4J6jFZo7Sfs/+7PP9zdGmUybs9U20r83KQevod/qJAdVVsGu03gHVK06/lEmwqHqFJ2rbBBbFvSD6QIB+2gWH4J2sO9e2Cpwi7TYja1P69RUX8Lq5P9hDeH/2D1lYpp1uRoTzn1dSx2L8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=i2labs.ca; spf=pass smtp.mailfrom=i2labs.ca; dkim=pass (1024-bit key) header.d=i2labs.ca header.i=nolan@i2labs.ca header.b=aeKqf6PY; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=i2labs.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=i2labs.ca
+ARC-Seal: i=1; a=rsa-sha256; t=1735390543; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Bvi36ffLbTxZpTde4/P/kdBceUgMJfttK83n7/MQTooyPW3hjom5UKrVWSXEeph8VSgsln5nk5ksZddYrv6pX3Fb9jIPJfI418c0ki56hQsaBP3tKDjK/wlzXx+euXeLNLqxRprYUPIdcKmFE7ptN7oA6Ym4Jb3BW7y2VV9O3N0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1735390543; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=HKxOyj48CE1tZhFub/mTJpA/MraVrdv8U/EIjqGE/nE=; 
+	b=FV/sxi7Az1Tx3/JHe6zl04Z1Q+VycgqayVet+5hOSS+IFqhhl9IbiAIdPQpeMka5IvGsyHblQTZOgqb3IVBgDpWRrQq5BDKnVZoxv7xJfk2m46wzphhpqEfBwdYJBl7lR1B2/0XpIO+FneixvX8Fiax/jIMWb1AsfrhjSWPnICQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=i2labs.ca;
+	spf=pass  smtp.mailfrom=nolan@i2labs.ca;
+	dmarc=pass header.from=<nolan@i2labs.ca>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1735390543;
+	s=zoho; d=i2labs.ca; i=nolan@i2labs.ca;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=HKxOyj48CE1tZhFub/mTJpA/MraVrdv8U/EIjqGE/nE=;
+	b=aeKqf6PYxmsvZnuQGvy27CNOledpgL3LK1OiRpb2upMVL+cKMTVBdSlNQIUXRVVn
+	9AY9rINSC9+0PEsCpONFWvgWl4eD48B9+pGClsdsL6zArsoEz/vbgoP7Idfw5oqjy5r
+	Whebdan2ViO8CqgHTW1SrwwQInICAgHMwbV6lNxA=
+Received: by mx.zohomail.com with SMTPS id 1735390541107545.2005150358125;
+	Sat, 28 Dec 2024 04:55:41 -0800 (PST)
+Message-ID: <23b9ca13-9899-4ab4-a0dd-a47da3f34120@i2labs.ca>
+Date: Sat, 28 Dec 2024 19:55:37 +0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH] acpi: Fix hed module initialization order when it is
- built-in
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<M.Chehab@huawei.com>, <roberto.sassu@huawei.com>, <shiju.jose@huawei.com>,
-	<prime.zeng@hisilicon.com>, <linuxarm@huawei.com>,
-	<mchehab+huawei@kernel.org>
-References: <20241115035014.1339256-1-tanxiaofei@huawei.com>
- <CAJZ5v0h4-cSFs+ED3ymJKHKkEAproXCtB2t3cP1wcyd6eq=Sgg@mail.gmail.com>
- <dfa67fab-e9c1-baec-dd86-6c6ba79eabeb@huawei.com>
- <20241223193300.00000b32@huawei.com>
-From: Xiaofei Tan <tanxiaofei@huawei.com>
-In-Reply-To: <20241223193300.00000b32@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] acpi: Emit udev 'update' event after battery add hooks
+To: linux-acpi@vger.kernel.org
+References: <43d1d35b-d875-4e05-b0ff-a9bfde5ef34a@i2labs.ca>
+Content-Language: en-US
+From: Nolan Woods <nolan@i2labs.ca>
+In-Reply-To: <43d1d35b-d875-4e05-b0ff-a9bfde5ef34a@i2labs.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf200009.china.huawei.com (7.185.36.246)
+X-ZohoMailClient: External
 
-Hi Jonathan,
+Correction: the event action string is 'change' and not 'update' (not 
+sure where
+I got that from..).
 
-在 2024/12/24 3:33, Jonathan Cameron 写道:
-> On Mon, 23 Dec 2024 17:31:08 +0800
-> Xiaofei Tan <tanxiaofei@huawei.com> wrote:
->
->> Hi Rafael,
->>
->> 在 2024/12/11 1:59, Rafael J. Wysocki 写道:
->>> On Fri, Nov 15, 2024 at 4:56 AM Xiaofei Tan <tanxiaofei@huawei.com> wrote:
->>>> When the module hed is built-in, the init order is determined by
->>>> Makefile order.
->>> Are you sure?
->> yes
-> We had a similar fix in CXL recently (which is why I suggested this approach
-> internally when tanxiaofei mentioned the problem).
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/cxl?id=6575b268157f37929948a8d1f3bafb3d7c055bc1
->
-> The related discussion for the CXL patch was the first time I'd come across solution
-> to load order for built in cases.
->
-Yes :)
+Also, despite my IDEs repeated insistence the kobj member type is not a
+pointer. Here is my updated patch, I would still like some input on the
+items in my original message before finalizing the patch.
 
->>>> That order violates expectations. Because the module
->>>> hed init is behind evged. RAS records can't be handled in the
->>>> special time window that evged has initialized while hed not.
->>>> If the number of such RAS records is more than the APEI HEST error
->>>> source number, the HEST resources could be occupied all, and then
->>>> could affect subsequent RAS error reporting.
->>> Well, the problem is real, but does the change really prevent it from
->>> happening or does it just increase the likelihood of success?
->> It can be completely solved if the driver used as built-in way. If build HED as a
->> module, it not solved.
-> Can we enforce that condition not happening with appropriate Kconfig?
-> It's annoying to restrict build options, but if needed to make it work
-> then better than not working!
+---
+  drivers/acpi/battery.c | 1 +
+  1 file changed, 1 insertion(+)
 
-Agree,  i will change ACPI_HED from tristate to bool if there are no other comments, thanks.
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 3d5342f8d7b3..abe861946eb6 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -899,6 +899,7 @@ static int sysfs_add_battery(struct acpi_battery 
+*battery)
+          return result;
+      }
+      battery_hook_add_battery(battery);
++    kobject_uevent(&battery->bat->dev.kobj, KOBJ_CHANGE);
+      return 0;
+  }
+  --
 
+On 12/27/24 8:35 PM, Nolan Woods wrote:
+> A 'add' uevent is emitted after adding respective /sys/class/
+> power_supply/BAT* devices via battery.c:sysfs_add_battery(...) ->
+> power_supply_core.c:power_supply_register(...) ->
+> core.c:device_add(...). Additional drivers (asus-wmi for example) can
+> register hooks that are called after the sysfs attributes are added by
+> power_supply_register. These hooks are normally used to add additional
+> attributes to sysfs. These additional attributes are not available at
+> the time that the 'add' uevent is emitted. udev rules are not able to
+> interact with them as the hooks are called after the 'add' uevent is
+> resolved. An additional 'update' uevent is needed to allow udev rules to
+> trigger once all hooks have been processed.
 >
-> Jonathan
+> Signed-off-by: Nolan Woods <nolan@i2labs.ca>
+> ---
+>  drivers/acpi/battery.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 3d5342f8d7b3..abe861946eb6 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -899,6 +899,7 @@ static int sysfs_add_battery(struct acpi_battery 
+> *battery)
+>          return result;
+>      }
+>      battery_hook_add_battery(battery);
+> +    kobject_uevent(battery->bat->dev->kobj, KOBJ_CHANGE);
+>      return 0;
+>  }
+>  --
 >
 >
->>> In the latter case, and generally speaking too, it would be better to
->>> add explicit synchronization between evged and hed.
->>>   
->>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
->>>> ---
->>>>    drivers/acpi/Makefile | 8 +++++++-
->>>>    1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
->>>> index 61ca4afe83dc..54f60b7922ad 100644
->>>> --- a/drivers/acpi/Makefile
->>>> +++ b/drivers/acpi/Makefile
->>>> @@ -15,6 +15,13 @@ endif
->>>>
->>>>    obj-$(CONFIG_ACPI)             += tables.o
->>>>
->>>> +#
->>>> +# The hed.o needs to be in front of evged.o to avoid the problem that
->>>> +# RAS errors cannot be handled in the special time window of startup
->>>> +# phase that evged has initialized while hed not.
->>>> +#
->>>> +obj-$(CONFIG_ACPI_HED)         += hed.o
->>>> +
->>>>    #
->>>>    # ACPI Core Subsystem (Interpreter)
->>>>    #
->>>> @@ -95,7 +102,6 @@ obj-$(CONFIG_ACPI_HOTPLUG_IOAPIC) += ioapic.o
->>>>    obj-$(CONFIG_ACPI_BATTERY)     += battery.o
->>>>    obj-$(CONFIG_ACPI_SBS)         += sbshc.o
->>>>    obj-$(CONFIG_ACPI_SBS)         += sbs.o
->>>> -obj-$(CONFIG_ACPI_HED)         += hed.o
->>>>    obj-$(CONFIG_ACPI_EC_DEBUGFS)  += ec_sys.o
->>>>    obj-$(CONFIG_ACPI_BGRT)                += bgrt.o
->>>>    obj-$(CONFIG_ACPI_CPPC_LIB)    += cppc_acpi.o
->>>> --
->>>> 2.33.0
->>>>   
->>> .
-> .
+> This is my first contribution to this repo. Please let me know if 
+> there are any formatting issues of this submission.
+>
+> I am looking for feedback on if kobject_uevent() should be called as 
+> described in this patch or if it should be at the end of the 
+> definition of battery_hook_add_battery.
+>
+> Also, does it make sense that the "update" (KOBJ_CHANGE) event is sent 
+> after the battery hooks make arbitrary changes? or is "update" 
+> strictly for hardware/device initiated changes and I need to find a 
+> different mechanism to trigger user space logic after the battery hooks?
+>
+> An example udev rule that only works with this patch:
+> ACTION=="update", KERNEL=="BAT0", RUN+="/bin/chmod 666 
+> /sys/class/power_supply/BAT0/charge_control_end_threshold"
+>
+> The following does not work as 
+> /sys/class/power_supply/BAT0/charge_control_end_threshold does not 
+> exist when the event is resolved:
+> ACTION=="add", KERNEL=="BAT0", RUN+="/bin/chmod 666 
+> /sys/class/power_supply/BAT0/charge_control_end_threshold"
+>
+> charge_control_end_threshold is created at asus-wmi.c:1446.
+>
+> Thank you for your time.
 
