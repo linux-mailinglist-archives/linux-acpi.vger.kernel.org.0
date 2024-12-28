@@ -1,138 +1,155 @@
-Return-Path: <linux-acpi+bounces-10316-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10317-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623EF9FD91A
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 06:50:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCC29FD9E8
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 11:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D918916321F
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 05:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F26818832FE
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Dec 2024 10:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BCD2BAEC;
-	Sat, 28 Dec 2024 05:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b="QwtR7vug"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0CA13D8A3;
+	Sat, 28 Dec 2024 10:24:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.com (mout.gmx.com [74.208.4.200])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A09B8C1E;
-	Sat, 28 Dec 2024 05:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBDA69D2B;
+	Sat, 28 Dec 2024 10:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735365050; cv=none; b=CfZVQ0t4uUPncXjp2fwgZMeNpLXxlBh9lEvYYBAJayKqH3NIjoUXCAtxpJsrUdaeeAOYraZ94SYzG7fDFudyu0Fu8iRssw9bquOusKzZ7qD1zpKZU6+H2boo5XmbgCSh1MMFHVo9vM70ryLoqDFiDpoaBoPZ1RhITJBztRt651E=
+	t=1735381450; cv=none; b=p9qJUkUrAHhzDbjZgp8MtGrzuSVlT07YmmaBVfPEAL/RGHhkPs383OlK5ad+vYXV+gVAmLhxdpLXP8p+sbjQx3hFU//tFLmNLKUCFBv/QR+nEGmMG5WKdMRwCaC27dOiubnphv8qwhHa0DXAIUtkbCiwCpIkrEYvDsX8hgzcX70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735365050; c=relaxed/simple;
-	bh=HFTJPQV5ggm83ycWBf5cOP9Tytf+kZAH3u3ncZtf6AU=;
-	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=aNiwNMk6sFX2zZ0LuAYCA8yczY3+g+17efy2B6+eDJfVJb8oiTgrVON0YsMQhyi46ijCgwIos+ohlgKq0jRf/foutmJEFDvvJpK/ILBPfjUZf9M6szq2IUstruSDc3Y6KFXRelbkxDTzFdyPY5Pl4oJ47vc0rDrztZagKbwMPIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b=QwtR7vug; arc=none smtp.client-ip=74.208.4.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
-	s=s1089575; t=1735365047; x=1735969847; i=gazo11@mail.com;
-	bh=HFTJPQV5ggm83ycWBf5cOP9Tytf+kZAH3u3ncZtf6AU=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
-	 Content-Type:Date:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=QwtR7vugZx4stmJhzlvnACulzxLgFgLdDP3fVYdJZtvOX13Vp4zTOvgypwN9Gkuc
-	 ALV/hzQnIiv5WJ9rvHXT+EWVxn/FMxbXy7B4UXgKP8giRsr+P1nU4PCHvHcsMBG2N
-	 sbOw/0Un5GnnM/jlSskiQuFmas6afYhwUWfwNQKLvI7Po0yfH1W2CHwqnkaeBfg8l
-	 XAdA6NPnQ7O4MNabdLzmWrapD2MNr1WLxctWioWXy+Buu/wwZ821zYOYWFt6WYhKS
-	 HVTflREEkqSnHP3GBCa8nqiYF8BcFIY58C+0E9owOj2gzvn86cj0vL8/UM59LYQzp
-	 3AePBlykO0JB5RXlBQ==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [77.137.74.199] ([77.137.74.199]) by web-mail.mail.com
- (3c-app-mailcom-lxa14.server.lan [10.76.45.15]) (via HTTP); Sat, 28 Dec
- 2024 06:50:47 +0100
+	s=arc-20240116; t=1735381450; c=relaxed/simple;
+	bh=YngjxGWq1Tv+ALdG1TKrseFe9btby2iXeFwHDXig0dk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=V1GXhtyHVKkXTww2U5GixG/UGmVxOIE5Jc6pIubEyYEscGrcRlCW2y8QoV5wgAuHAxdmApcKNU9g+Kyt9XesWFVcDIHFwEqDJuU5wqka27pNjK8ccOZi4/nG9RoEig/tbFQTi4HNVD+2NWF1H3CRfAjBYDp9AfxN7yzSSl16Ml8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4YKz0S4JN2zgZVc;
+	Sat, 28 Dec 2024 18:20:56 +0800 (CST)
+Received: from dggpemf200009.china.huawei.com (unknown [7.185.36.246])
+	by mail.maildlp.com (Postfix) with ESMTPS id 335EE180A9E;
+	Sat, 28 Dec 2024 18:23:57 +0800 (CST)
+Received: from [10.67.121.188] (10.67.121.188) by
+ dggpemf200009.china.huawei.com (7.185.36.246) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 28 Dec 2024 18:23:56 +0800
+Message-ID: <a980db9a-831b-c950-e5bf-80d422a91015@huawei.com>
+Date: Sat, 28 Dec 2024 18:23:56 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
-From: Gustavo Azor <gazo11@mail.com>
-To: bugzilla-daemon@kernel.org, jwrdegoede@fedoraproject.org,
- linux-acpi@vger.kernel.org, stable@vger.kernel.org, rafael@kernel.org
-Subject: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to
- irq1_level_low_skip_override[]
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Dec 2024 06:50:47 +0100
-Importance: normal
-Sensitivity: Normal
-Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-X-Provags-ID: V03:K1:zG6UA10U/FGznR7TmVQ98PT/4NhvJwQj2g9YvHX7chZTi7HFgC12zdh6YMPt3A0Dve8s9
- Br7uLv3iKnF0cLFY5AH8khmVuk8u1Qe3v+mH7iDfjxKIil3XpOU00Gus7EzRtHVdfWk4t0IGaulC
- XbAGtUvl/KhzMhF3Ol/P2jpqMXsSTv8uGcTOwlK51pszsXBsqrNnjzUhpC9HCOVJQP4P0dfsvk8i
- UPQV+s1rkTiJHOpkPITQm4UymrQTYAgfSEuPEQ2AW+aEGD5r5MT3QAQGZbV3KIDdXxGVDGlib3+z
- P4=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tXtRA69sQ7g=;2cnjwoH0nRWhhDcoT1d3FzvSlTw
- U3CVJpLCsxv+hHPG+CoJH7p0sy9wpDlUC/Be4TnuL8ZznCfNxtW8a9E6r6ofPpZdrUDAnfQYT
- 5bOli26Cm2vSCbVXAgVX2foevcI3UuTlmU8PPC/TPEz25ATGR54PLYrJTLECcnT2MXPzXjWdf
- fL6UYYbRL3pbyLMyw4r2F93gpgA0JcoRyZayB/GqYRV7rQKBjrCM+TE9A0/R4w5WadsTHkcqX
- yYF2HcYNA5kZStw/gVt0UkH62/ngqERrDKbQ+pq7dK9X0ioDpjXy32NQKJiDVhHwPS/oA3ixv
- KK1l3tHCKNoe1SCGeqsLg2h59KbOYJU8zWfo8N6BaW0mfGZMywT1/Er0BfWmPkyiO6yW4SVn8
- 2lcg7dIgjn+TEDy7KZBKkF2Zy0Lm+p3O8ndEpxgNtKLdtBkCm6YgFHYh7kudShAtfAVYKQj/0
- niIGHSjrSJPPUA9Dujzx1lzbln86T8w/XFONe6YoqPPvUlJW0JX3wa5Za7EVu/6cn2aqyp6HY
- 8V+b2aYoR16MXVEfbyvD+WlTblcWCbA7SN9TGnFRFyUkahkLhMDP9xIUCP3yCzhiWvuiU4HBQ
- M09Se0ncaOFpT0akpuy60+zWHFWvIQoQhtQw+SIL5YwBAhFOTE9VtnViucbPACNPYSMtprPCn
- C9XGj+e1GhL2kFLro+lO6sCybufeOgkqpwtBLRpa8A2zPLxLzIozWX1j2lUxpnL2EWKuuP1Ck
- tnYolpxWL9p632Vk9SFBRj8aD7npE1HeQVzzji6qIgWi8ljPbAr7PqEkJsK1dHlibBUJQlFbD
- l6ZbuB/T+BO8dEkYvzB9O0RWBQGcqF2KZuZLqEPteMGuXYYfwGaPJrkF+Jl9YGwEEVJLtfdHI
- KKoqwnV/SFysyyUjurTA1cLMZV6+nhmYPZXE=
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH] acpi: Fix hed module initialization order when it is
+ built-in
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<M.Chehab@huawei.com>, <roberto.sassu@huawei.com>, <shiju.jose@huawei.com>,
+	<prime.zeng@hisilicon.com>, <linuxarm@huawei.com>,
+	<mchehab+huawei@kernel.org>
+References: <20241115035014.1339256-1-tanxiaofei@huawei.com>
+ <CAJZ5v0h4-cSFs+ED3ymJKHKkEAproXCtB2t3cP1wcyd6eq=Sgg@mail.gmail.com>
+ <dfa67fab-e9c1-baec-dd86-6c6ba79eabeb@huawei.com>
+ <20241223193300.00000b32@huawei.com>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
+In-Reply-To: <20241223193300.00000b32@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf200009.china.huawei.com (7.185.36.246)
 
+Hi Jonathan,
 
+在 2024/12/24 3:33, Jonathan Cameron 写道:
+> On Mon, 23 Dec 2024 17:31:08 +0800
+> Xiaofei Tan <tanxiaofei@huawei.com> wrote:
+>
+>> Hi Rafael,
+>>
+>> 在 2024/12/11 1:59, Rafael J. Wysocki 写道:
+>>> On Fri, Nov 15, 2024 at 4:56 AM Xiaofei Tan <tanxiaofei@huawei.com> wrote:
+>>>> When the module hed is built-in, the init order is determined by
+>>>> Makefile order.
+>>> Are you sure?
+>> yes
+> We had a similar fix in CXL recently (which is why I suggested this approach
+> internally when tanxiaofei mentioned the problem).
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/cxl?id=6575b268157f37929948a8d1f3bafb3d7c055bc1
+>
+> The related discussion for the CXL patch was the first time I'd come across solution
+> to load order for built in cases.
+>
+Yes :)
 
-=C2=A0
+>>>> That order violates expectations. Because the module
+>>>> hed init is behind evged. RAS records can't be handled in the
+>>>> special time window that evged has initialized while hed not.
+>>>> If the number of such RAS records is more than the APEI HEST error
+>>>> source number, the HEST resources could be occupied all, and then
+>>>> could affect subsequent RAS error reporting.
+>>> Well, the problem is real, but does the change really prevent it from
+>>> happening or does it just increase the likelihood of success?
+>> It can be completely solved if the driver used as built-in way. If build HED as a
+>> module, it not solved.
+> Can we enforce that condition not happening with appropriate Kconfig?
+> It's annoying to restrict build options, but if needed to make it work
+> then better than not working!
 
-Estimated people:
-Seems to me, I browse drivers/acpi/resources=2Ec: the patch was not includ=
-ed in kernel versions stable 6=2E12=2E7 or long term 6=2E6=2E68=2E
-I hope will be include in mainline 6=2E13=2E-rc5 to inform if work in the =
-ASUS Vivobook 15 X1504VAP_X1504VA keyboard=2E
-I have not idea how work with git diff or compiling kernels to try the pat=
-ch, and need to try in installed kernel=2E
-Thanks=2ERegards=2E
+Agree,  i will change ACPI_HED from tristate to bool if there are no other comments, thanks.
 
-Sent:=C2=A0Friday, December 20, 2024 at 8:23 PM
-From:=C2=A0bugzilla-daemon@kernel=2Eorg
-To:=C2=A0gazo11@mail=2Ecom
-Subject:=C2=A0[Bug 219224] Laptop Internal Keyboard not working on ASUS Vi=
-voBook E1404GA on ubuntu 24=2E04=2E
-https://bugzilla=2Ekernel=2Eorg/show_bug=2Ecgi?id=3D219224
-
---- Comment #11 from Hans de Goede (jwrdegoede@fedoraproject=2Eorg) ---
-(In reply to gazo11 from comment #10)
-> Hello I have the same problem for dmidecode:
+>
+> Jonathan
 >
 >
-> System Information
-> Manufacturer: ASUSTeK COMPUTER INC=2E
-> Product Name: ASUS Vivobook 15 X1504VAP_X1504VA
-> Version: 1=2E0
-> Serial Number: S1N0CV02L86302G
-> UUID: cdc508f0-d3f1-f743-bce4-5eb9d4c06fda
-> Wake-up Type: Power Switch
-> SKU Number:
-> Family: ASUS Vivobook 15
->
-> Its possible to get this model listed in future kernels? Thanks!
-
-Thank you for reporting this, I've submitted a patch to add this to the
-irq1_level_low_skip_override[] list:
-
-https://lore=2Ekernel=2Eorg/linux-acpi/20241220181352=2E25974-1-hdegoede@r=
-edhat=2Ecom/[https://lore=2Ekernel=2Eorg/linux-acpi/20241220181352=2E25974-=
-1-hdegoede@redhat=2Ecom/]
-
---
-You may reply to this email to add a comment=2E
-
-You are receiving this mail because:
-You are on the CC list for the bug=2E
+>>> In the latter case, and generally speaking too, it would be better to
+>>> add explicit synchronization between evged and hed.
+>>>   
+>>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>>>> ---
+>>>>    drivers/acpi/Makefile | 8 +++++++-
+>>>>    1 file changed, 7 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+>>>> index 61ca4afe83dc..54f60b7922ad 100644
+>>>> --- a/drivers/acpi/Makefile
+>>>> +++ b/drivers/acpi/Makefile
+>>>> @@ -15,6 +15,13 @@ endif
+>>>>
+>>>>    obj-$(CONFIG_ACPI)             += tables.o
+>>>>
+>>>> +#
+>>>> +# The hed.o needs to be in front of evged.o to avoid the problem that
+>>>> +# RAS errors cannot be handled in the special time window of startup
+>>>> +# phase that evged has initialized while hed not.
+>>>> +#
+>>>> +obj-$(CONFIG_ACPI_HED)         += hed.o
+>>>> +
+>>>>    #
+>>>>    # ACPI Core Subsystem (Interpreter)
+>>>>    #
+>>>> @@ -95,7 +102,6 @@ obj-$(CONFIG_ACPI_HOTPLUG_IOAPIC) += ioapic.o
+>>>>    obj-$(CONFIG_ACPI_BATTERY)     += battery.o
+>>>>    obj-$(CONFIG_ACPI_SBS)         += sbshc.o
+>>>>    obj-$(CONFIG_ACPI_SBS)         += sbs.o
+>>>> -obj-$(CONFIG_ACPI_HED)         += hed.o
+>>>>    obj-$(CONFIG_ACPI_EC_DEBUGFS)  += ec_sys.o
+>>>>    obj-$(CONFIG_ACPI_BGRT)                += bgrt.o
+>>>>    obj-$(CONFIG_ACPI_CPPC_LIB)    += cppc_acpi.o
+>>>> --
+>>>> 2.33.0
+>>>>   
+>>> .
+> .
 
