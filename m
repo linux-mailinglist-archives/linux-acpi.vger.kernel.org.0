@@ -1,212 +1,92 @@
-Return-Path: <linux-acpi+bounces-10321-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10322-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111889FDFE7
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Dec 2024 17:45:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280929FE2B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2024 06:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98CA18824E8
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Dec 2024 16:45:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EB01881E54
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2024 05:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4DC15B99E;
-	Sun, 29 Dec 2024 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E5715FD01;
+	Mon, 30 Dec 2024 05:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ifopUeQ6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359B926ACC;
-	Sun, 29 Dec 2024 16:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC399D530;
+	Mon, 30 Dec 2024 05:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735490717; cv=none; b=VnQNshxhttShivoXPai5hpEGREvkma/pNOkfaECm6Pj1wl2mQz5tZlqpsP08sKSI5UUMEH6EZAMgKtlNjMLR2OPxdDYKi6WX9OQZIBQF6a6jxG8cWlkES/eb210ubRnSti5gdMXBysb60nLFy5SPw/u7FZHxYu7YC4lk842u48s=
+	t=1735538096; cv=none; b=kkIgLPiCmkk7LEjBdYARmRqrxWvQ5QKInvYQG9yvS4DazrTJgLTO1fyrE03qn9ZzUkAjBYNRBhWKE4alfcl9iQtAsvYayvVeOEJllUWsvOHpumpcKlB6seDZWUf3JCif/XmMQj7aOUyFC8jZ8k0+nktsuJ7luetkRqUmPsm9FM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735490717; c=relaxed/simple;
-	bh=TpCV3afmp6BdyNdYrqeE7DF3QvY7MLFjaxCR3eQOJzM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QwknhckyL+RMe77odtVFVZ9sCIsxMxNhF9cyzgoyeTv6Atkrpw6ZM5zRCFElS462T1Sy8o6Ym94raO3p810zsn6FE8Ret88U2bIjz/flxwoelYlhxV1oVN3+lvCNG9H3e2Fck8ZSXq7WW5mJq6w/oHnvO4E3o1xSX0q3pcivOeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1tRwPg-00000004nnD-09oJ;
-	Sun, 29 Dec 2024 17:45:12 +0100
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power resource quirk
-Date: Sun, 29 Dec 2024 17:45:06 +0100
-Message-ID: <fdf629284a00da61384eadea6ac0cd78c20e7e11.1735490662.git.mail@maciej.szmigiero.name>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1735538096; c=relaxed/simple;
+	bh=TfUa5Uzza4nQwN32obVAylOoo5oLMRgsE+SyZoOJSWQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NQ8OPCRn3B3H54vuNBdZqDr2xZkios+Rx/1jisH4JCIQarXoK5XTd+76rYi5Ikjb9CM5vs3dJmnb2BNTfU7POP14uzS/cErjTAE4Jbs1wRpN3wToNlA1466dihoQvbsa3s1HC4C0D4NPcAM0g0bMFsIhCfkzkm0vu0kX1E+m5Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ifopUeQ6; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1735538090; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=dpC9yzgaxD+PWbYZLBhzYExpItW6diCLdDdM3iPkj3k=;
+	b=ifopUeQ6yQMSwGEzAXNMZWjSeCrznOU0MzXbO0/PnL4LL75vxvEmJCj8oHGCoLdMRLd4iS6/By5q+v56JVVnl4UK5BcDmOInDONzpQHfL5xaH85JHj07eZOisROgiQN4BMlmGh7Kg2ZEkksNtNKsxspAYIUonCibBeZFex88VmI=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WMSNgBk_1735538077 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 30 Dec 2024 13:54:49 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>,  rafael@kernel.org,  Len Brown
+ <lenb@kernel.org>,  James Morse <james.morse@arm.com>,  Tony Luck
+ <tony.luck@intel.com>,  linux-acpi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Ira Weiny <ira.weiny@intel.com>,  Dave
+ Jiang <dave.jiang@intel.com>,  Dan Williams <dan.j.williams@intel.com>,
+  Andi Kleen <ak@linux.intel.com>
+Subject: Re: [PATCH] acpi/ghes: Make ghes_panic_timeout adjustable as a
+ parameter
+In-Reply-To: <1EA3C309-6508-489B-9F13-7659E8388A17@alien8.de> (Borislav
+	Petkov's message of "Fri, 27 Dec 2024 11:09:40 +0100")
+References: <20241227095422.44147-1-feng.tang@linux.alibaba.com>
+	<1EA3C309-6508-489B-9F13-7659E8388A17@alien8.de>
+Date: Mon, 30 Dec 2024 13:54:36 +0800
+Message-ID: <87bjwtlnqb.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: mhej@vps-ovh.mhejs.net
+Content-Type: text/plain; charset=ascii
 
-This laptop (and possibly similar models too) has power resource called
-"GP12.PXP_" for its Intel XMM7360 WWAN modem.
+Hi, Boris,
 
-For this power resource to turn ON power for the modem it needs certain
-internal flag called "ONEN" to be set:
-Method (_ON, 0, NotSerialized) // _ON_: Power On
-{
-	If (^^^LPCB.EC0.ECRG)
-	{
-		If ((ONEN == Zero))
-		{
-                        Return (Zero)
-		}
-(..)
-	}
-}
+Borislav Petkov <bp@alien8.de> writes:
 
+> On December 27, 2024 10:54:22 AM GMT+01:00, Feng Tang <feng.tang@linux.alibaba.com> wrote:
+>>There is a problem report that when debugging a hard-to-reproduce panic
+>>issue, user wanted the kernel to not reboot by adding "panic=0" in
+>>kernel cmdline, so that the panic context could be kept, say the panic
+>>was caught randomly in the mid-night, and user hoped to check it in
+>>the morning. GHES panic handler may overwrite that user setting and
+>>force to reboot after 'ghes_panic_timeout'(30) seconds.
+>
+> Why doesn't the ghes panic handler honor a panic=0 setting?
 
-This flag only gets set from this power resource "_OFF" method, while the
-actual modem power gets turned off during suspend by "GP12.PTS" method
-called from the global "_PTS" (Prepare To Sleep) method.
+It appears that I introduced the ghes_panic_timeout originally.
 
-In fact, this power resource "_OFF" method implementation just sets the
-aforementioned flag:
-Method (_OFF, 0, NotSerialized) // _OFF: Power Off
-{
-	OFEN = Zero
-	ONEN = One
-}
+panic() is used for software errors, while ghes is used for hardware
+errors.  They may have different requirements.  For example, it may be
+OK to wait forever for a software error, but it may be better to reboot
+the system to contain the influence of the hardware error for some
+hardware errors.  So, we introduced another knob for that.
 
-Upon hibernation finish we try to set this power resource back ON since its
-"_STA" method returns 0 and the resource is still considered in use as it
-is declared as required for D0 for both the modem ACPI device (GP12.PWAN)
-and its parent PCIe port ACPI device (GP12).
-But the "_ON" method won't do anything since that "ONEN" flag is not set.
-
-Overall, this means the modem is dead after hibernation finish until the
-laptop is rebooted since the modem power has been cut by "_PTS" and its PCI
-configuration was lost and not able to be restored.
-
-The easiest way to workaround this issue is to call this power resource
-"_OFF" method before calling the "_ON" method to make sure the "ONEN"
-flag gets properly set.
-
-This makes the modem alive once again after hibernation finish - with
-properly restored PCI configuration space.
-
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 ---
- drivers/acpi/power.c | 75 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
-
-diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-index 25174c24d3d7..1db93cf8e4f6 100644
---- a/drivers/acpi/power.c
-+++ b/drivers/acpi/power.c
-@@ -23,6 +23,7 @@
- 
- #define pr_fmt(fmt) "ACPI: PM: " fmt
- 
-+#include <linux/delay.h>
- #include <linux/dmi.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -991,9 +992,57 @@ struct acpi_device *acpi_add_power_resource(acpi_handle handle)
- }
- 
- #ifdef CONFIG_ACPI_SLEEP
-+static const struct dmi_system_id dmi_hp_elitebook_gp12pxp_quirk[] = {
-+/*
-+ * This laptop (and possibly similar models too) has power resource called
-+ * "GP12.PXP_" for its WWAN modem.
-+ *
-+ * For this power resource to turn ON power for the modem it needs certain
-+ * internal flag called "ONEN" to be set.
-+ * This flag only gets set from this power resource "_OFF" method, while the
-+ * actual modem power gets turned off during suspend by "GP12.PTS" method
-+ * called from the global "_PTS" (Prepare To Sleep) method.
-+ * On the other hand, this power resource "_OFF" method implementation just
-+ * sets the aforementioned flag without actually doing anything else (it
-+ * doesn't contain any code to actually turn off power).
-+ *
-+ * The above means that when upon hibernation finish we try to set this
-+ * power resource back ON since its "_STA" method returns 0 (while the resource
-+ * is still considered in use) its "_ON" method won't do anything since
-+ * that "ONEN" flag is not set.
-+ * Overall, this means the modem is dead until laptop is rebooted since its
-+ * power has been cut by "_PTS" and its PCI configuration was lost and not able
-+ * to be restored.
-+ *
-+ * The easiest way to workaround the issue is to call this power resource
-+ * "_OFF" method before calling the "_ON" method to make sure the "ONEN"
-+ * flag gets properly set.
-+ */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 855 G7 Notebook PC"),
-+		},
-+	},
-+	{}
-+};
-+
-+static bool resource_is_gp12pxp(acpi_handle handle)
-+{
-+	const char *path;
-+	bool ret;
-+
-+	path = acpi_handle_path(handle);
-+	ret = path && strcmp(path, "\\_SB_.PCI0.GP12.PXP_") == 0;
-+	kfree(path);
-+
-+	return ret;
-+}
-+
- void acpi_resume_power_resources(void)
- {
- 	struct acpi_power_resource *resource;
-+	bool hp_eb_gp12pxp_quirk = dmi_check_system(dmi_hp_elitebook_gp12pxp_quirk);
- 
- 	mutex_lock(&power_resource_list_lock);
- 
-@@ -1012,8 +1061,34 @@ void acpi_resume_power_resources(void)
- 
- 		if (state == ACPI_POWER_RESOURCE_STATE_OFF
- 		    && resource->ref_count) {
-+			bool eb_gp12pxp = hp_eb_gp12pxp_quirk &&
-+				resource_is_gp12pxp(resource->device.handle);
-+
-+			if (eb_gp12pxp) {
-+				acpi_handle_notice(resource->device.handle,
-+						   "HP EB quirk - turning OFF before ON\n");
-+				__acpi_power_off(resource);
-+			}
-+
- 			acpi_handle_debug(resource->device.handle, "Turning ON\n");
- 			__acpi_power_on(resource);
-+
-+			if (eb_gp12pxp) {
-+				/*
-+				 * Use the same delay as DSDT uses in modem _RST
-+				 * method.
-+				 *
-+				 * Otherwise we get "Unable to change power
-+				 * state from unknown to D0, device
-+				 * inaccessible" error for the modem PCI device
-+				 * after thaw.
-+				 *
-+				 * This power resource is normally being enabled
-+				 * only during thaw (once) so this wait is not
-+				 * a performance issue.
-+				 */
-+				msleep(200);
-+			}
- 		}
- 
- 		mutex_unlock(&resource->resource_lock);
+Best Regards,
+Huang, Ying
 
