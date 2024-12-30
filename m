@@ -1,68 +1,47 @@
-Return-Path: <linux-acpi+bounces-10329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023CA9FE5C4
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2024 13:10:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B549FE624
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2024 14:04:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A0AE3A1E0E
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2024 12:10:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CFA67A118A
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Dec 2024 13:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019FD1A3AB8;
-	Mon, 30 Dec 2024 12:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40E11EA6F;
+	Mon, 30 Dec 2024 13:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Evptad4g"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="I9XAx7aY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A8D126C18;
-	Mon, 30 Dec 2024 12:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10541370;
+	Mon, 30 Dec 2024 13:04:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735560634; cv=none; b=Shle2PfC83GnTnVShdHEFd+VKbiFFTTeYj3NURI1wEYTXoR/izKjijH11Vq67NJk90l3ot7MRfzqCH7n1ZIkFQm+l8RMidRan19fkhAJ6vxK3ieOKiEKNdm6X916iVzKEDiyN0VPaKe8Bufua86Dd0wo5uncoK1sEUjgTEUIdZI=
+	t=1735563858; cv=none; b=r0deuBb9WalS/UFE/VsfiQHSF0kRpM8mh32wRGen9MeSfuQFW6DszRsKgiyM4PNG1Xk2/a1q6yIRcjxKLQMtP3PlOZ2ylyybjRT7w/+CrhxGDxITtbfIONwA2bWWWCBEFtryc/zFYuwKbgHhJ7Ztw94Ok9dp6KvMNNaAGvxPRgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735560634; c=relaxed/simple;
-	bh=y4vUF40SNU3r6lJHVy9PB5HpVHUlZEYQJQ5z8y1ZVzw=;
+	s=arc-20240116; t=1735563858; c=relaxed/simple;
+	bh=gGI7GK6FK59YdnveTIQXWsea2//BhfsHbymjnvJNEfY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbOj0bo3ZRQnt/kONI1QZkg+kqMYXg4OP3fbU7neHys3mvllo+T6Jn2SHN6vLBVf3Mv1X36ZqGgkOVwSEVIQ4nUPVDZidk2gsZ9oVsIAVYb6MM2EjRBwU99LmFMonxPl+nqPQcKKVsGiNzu3Uo4vRMzxmzz4yLJqGkiM8vQBLkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Evptad4g; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id ECD5440E02C4;
-	Mon, 30 Dec 2024 12:10:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Ls06U09l14tV; Mon, 30 Dec 2024 12:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1735560627; bh=KHSl7cwnALoJClsV/rXpUKHhFeegpXDKxNHK01L8fwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Evptad4g0blKOMlDTtrni/NjDC0jmoD7l2E0tZ0w7eL6/aZMJEoCdD6SmbWodbv8F
-	 5/WBXxG2GPkuyRZHNyFK79j/woncVyOTZpRzqfIh7O90UXqEZXr1wvcOwLr3mTtK1J
-	 ZANk4/EnjfCtonxSgUmfux1lgzMgfarGHULnES4HTvyYMX0qJAMxjnf/ALE8sxjCic
-	 LSIQbS5Ss7ANCsDGxoxfgf5zJp0VcuwRNLWyR9eCt6c1NBBzECfKqGjEhXpswg/jxn
-	 kPHeTkV3my2aIOTQ5bynuuuDJC2MbW4sInzhjgZojg7Ka8s1CDFKOIhH8a19Z/i9D/
-	 BRioSYLzmIaBsYfx332aKHkgW9bto8npzt4f/dlz93+3OkNkDIpt+W5nkvPQZtg5mN
-	 KH4JWacVFwS1pI1WXUFcCesosd8KqZb6SWUYwzon/W4kSTb/QSUH7lz1hJ3+wvV8Jz
-	 b8cr3V/HYnJChor975VOa6rsAPNG9bzUL3YEVdXEJQNjD8HjA1+Zv9nhlEGAVRSIcb
-	 IU0TdTJauX5oEWYHPdszPdBtVheko6FJ52irJUVpFRenwvjQEp3v8zNKDZk1O/JzWt
-	 UVoTmA1Yl77t9RLzW3lDv3pJEYZStsAP+0aJLey36UPeqmfR8brHYcIoXY/sM5uDFM
-	 UdnBhGYulg2mPF4y2xkRGPLs=
-Received: from zn.tnic (pd953008e.dip0.t-ipconnect.de [217.83.0.142])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CC8F940E021D;
-	Mon, 30 Dec 2024 12:10:14 +0000 (UTC)
-Date: Mon, 30 Dec 2024 13:10:09 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Feng Tang <feng.tang@linux.alibaba.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nHaCnpL2Q50BU2xYiltkLS4IHc4LgyffNINgDmzsq5kTIIIuqFlN+XEDZyb3mTvYs8jlfeKReDRDgEwx7nO8i2n1zhXagoX20WYOaXPXd+Zfs24CwOlIOsXjpLjRCzvtb+NJjTKm/PcGQMng5wQeGN5Di6/lAOkR5dAekjIOyUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=I9XAx7aY; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1735563853; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=Ez1VdcEKu+AOlow2xHxzJoOEFZHoSPKWW1tKYYJZGts=;
+	b=I9XAx7aYEknUJy99ilXhx3Iraf/aCIEOeAlp8hVu9KHSM6LOKN5pDGI28m9Ee101QiFK5l+rUTctjjUZUn1JOuZhTIl2Mkqo84Rtx+j1TWnd59I7LhxTysdgzBM6xtBL8zktYHBzAoeyXF0zDuAl6NomTT1TDR+4Hu+0V+ZBJ7U=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0WMY387b_1735563852 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 30 Dec 2024 21:04:12 +0800
+Date: Mon, 30 Dec 2024 21:04:11 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Borislav Petkov <bp@alien8.de>
 Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>, rafael@kernel.org,
 	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
 	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
@@ -72,7 +51,7 @@ Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>, rafael@kernel.org,
 	Andi Kleen <ak@linux.intel.com>
 Subject: Re: [PATCH] acpi/ghes: Make ghes_panic_timeout adjustable as a
  parameter
-Message-ID: <20241230121009.GDZ3KNoe0-hUwQDLG7@fat_crate.local>
+Message-ID: <Z3KaSxr2sjCC8FpJ@U-2FWC9VHC-2323.local>
 References: <20241227095422.44147-1-feng.tang@linux.alibaba.com>
  <1EA3C309-6508-489B-9F13-7659E8388A17@alien8.de>
  <87bjwtlnqb.fsf@DESKTOP-5N7EMDA>
@@ -80,6 +59,7 @@ References: <20241227095422.44147-1-feng.tang@linux.alibaba.com>
  <87wmfhjusk.fsf@DESKTOP-5N7EMDA>
  <20241230112608.GCZ3KDUNU2OVZanpFb@fat_crate.local>
  <Z3KGopUvilZLwsBK@U-2FWC9VHC-2323.local>
+ <20241230121009.GDZ3KNoe0-hUwQDLG7@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -88,30 +68,42 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z3KGopUvilZLwsBK@U-2FWC9VHC-2323.local>
+In-Reply-To: <20241230121009.GDZ3KNoe0-hUwQDLG7@fat_crate.local>
 
-On Mon, Dec 30, 2024 at 07:40:18PM +0800, Feng Tang wrote:
-> Still we may need to honor the user setting, say if user specifically set
-> "panic=XXX" in the cmdline, we should detect that case and skip overwritting
-> the panic_timeout? 
+On Mon, Dec 30, 2024 at 01:10:09PM +0100, Borislav Petkov wrote:
+> On Mon, Dec 30, 2024 at 07:40:18PM +0800, Feng Tang wrote:
+> > Still we may need to honor the user setting, say if user specifically set
+> > "panic=XXX" in the cmdline, we should detect that case and skip overwritting
+> > the panic_timeout? 
+> 
+> So the user has set panic timeout to something, machine encounters a hw error
+> which you want to log/report earlier but user's panic setting prevents you
+> from doing that.
+> 
+> So what do you do?
+> 
+> What has higher prio?
+> 
+> I guess we're something like this:
+> 
+> https://youtu.be/gLFQystE8vU?t=71
 
-So the user has set panic timeout to something, machine encounters a hw error
-which you want to log/report earlier but user's panic setting prevents you
-from doing that.
+Hah!
 
-So what do you do?
+As per kernel config, most ARCH has 'panic_timeout' as 0 by default, so
+need to set the kcmdline. For the case in my commit log, where user had
+clear requirement for not-reboot and wait, the manually set 'panic=0'
+should take priority here?  
 
-What has higher prio?
+Thanks,
+Feng
 
-I guess we're something like this:
-
-https://youtu.be/gLFQystE8vU?t=71
-
-:-P
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> :-P
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
 
