@@ -1,122 +1,157 @@
-Return-Path: <linux-acpi+bounces-10340-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10341-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540829FF0B9
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Dec 2024 17:42:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 380929FF59F
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2025 03:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 802533A2A52
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Dec 2024 16:42:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00EA2161582
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Jan 2025 02:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DDA19D06E;
-	Tue, 31 Dec 2024 16:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB823522F;
+	Thu,  2 Jan 2025 02:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b="DohU6D5w"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wBaaA+rG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.com (mout.gmx.com [74.208.4.200])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342892A1BA;
-	Tue, 31 Dec 2024 16:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65DF6FBF;
+	Thu,  2 Jan 2025 02:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735663323; cv=none; b=KENHZLjtq1G415/MtINBmlK1RGVa948EdUuWYTVfI/KX/ROkIESeK6o2BGxIk2E81hUrybflI9zqFjbwJA2Lr66ZjDWRVULlnXVPg22kWVbsxHoIpA7VA5qQCdKJnGEJpq3WRQmob7tuofUaH7oM5Onjb1PrBdf80ZGh6cuMIqg=
+	t=1735786349; cv=none; b=brpgXzcKLw4RdF+2iMpbwa6RMsUrO3yiWL60eqaUod2Y6hw7yOG2iFxLk2eYFRy1wHC8mTpksZS3gVE7+6nUdOi8JqeF08/ECjXG6rubteQdGpSNSsaUg+XUvfeKZ++cs+QGnT6MFqYU3VAtJytkQZBYij9Gn1cKd3oVNOMIuWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735663323; c=relaxed/simple;
-	bh=tzWjlGkq0gvv9aqRqZiW/06I+/RYgL7A+f2Hu+T1A28=;
-	h=MIME-Version:Message-ID:From:To:Cc:Subject:Content-Type:Date; b=aQ0nHm+pRo0abax8OoTA6IPipTTOjALrs7m2TsdOCDeU6DbQwyx+ev/O4OSE9OdE5pAZgEZrwAjLdwfgY2M6Kf+wKma8Lwlz8kEQ3vKnpUldPDfFygVUDjMLioF1WlpEnPmkEoszt7KIbmqvh6Ln/ZEiaKvUaf6WucqWIt/0Q28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b=DohU6D5w; arc=none smtp.client-ip=74.208.4.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
-	s=s1089575; t=1735663320; x=1736268120; i=gazo11@mail.com;
-	bh=VJkllFDb8o0ZOMglI2QhDJ5H1vp8AkF7zlhrTyhiq9A=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Cc:Subject:
-	 Content-Type:Date:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=DohU6D5w0P8UThMHMwPb4KCEEjmZa+w4JBibpq516cI2cum8h6t1w32y411UgIN1
-	 JzNuWFGf4sgBcr0htNSgiuRx/KkT25Wqq9mHhihBl0UL7kj7OAKNJRf1Jt+5bdvJX
-	 RXwnLMPdoix0SDGzrg7nPkdQjPpH5yUpEY2Yqt+9HkKlzDOoH81gQo8TIG99WhnBp
-	 i7Zb0wrAVrl8nxTs5tPGZwzuGd01Bbfv41PI9Q6J8F4gyjg476cUAeDPnoOXPRFwY
-	 66unkcO1AAoBrTvMuE0iODXyei7L5ZHzcaLdglT8rEef+HZ6nHqFWXS13owrhPTQB
-	 U9+DruT2dtA1N2X1og==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [77.137.74.199] ([77.137.74.199]) by web-mail.mail.com
- (3c-app-mailcom-lxa11.server.lan [10.76.45.12]) (via HTTP); Tue, 31 Dec
- 2024 17:42:00 +0100
+	s=arc-20240116; t=1735786349; c=relaxed/simple;
+	bh=oHvxO/5cTNEe9l1oJLbBxIsRtx/T9EZ4sKxQLC30xBg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cSEvKl1+g+MrWtGIm2rlWuBmvjKMp5c2RzcIO+cczbTULe7qA54wvWA7W+2Vlw2NAJCbB7/BG3ghXETH1xkgWoCNn+4267DYCra1nyUq7yOwTDfsckVjYDkascsOH5icfGbV0zsE5ZY785iClInE7wsvaZF2dWoeHpEeAe2u+8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wBaaA+rG; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1735786338; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=C+bMjV6YJCPfo+u3s9L7X3/PVE7kWQR4dSrIXgeY5ys=;
+	b=wBaaA+rG51AvWu7fRPhvAFsbKsXeexbljdyl/kUHQ9RJPayoA88tMstow9Xjv4aTsYk409y38ERVsRsKOEErDmrfqSTjrk01ihNWpVaLrbGklvQPywwuWC/9bjUsNy07P7swRc5ZrVVcRYSfgsGQb4sXnAVQl9mlmjNGuwk6+XM=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WMidez-_1735786016 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 02 Jan 2025 10:46:57 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>,  rafael@kernel.org,  Len Brown
+ <lenb@kernel.org>,  James Morse <james.morse@arm.com>,  Tony Luck
+ <tony.luck@intel.com>,  linux-acpi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Ira Weiny <ira.weiny@intel.com>,  Dave
+ Jiang <dave.jiang@intel.com>,  Dan Williams <dan.j.williams@intel.com>,
+  Andi Kleen <ak@linux.intel.com>
+Subject: Re: [PATCH] acpi/ghes: Make ghes_panic_timeout adjustable as a
+ parameter
+In-Reply-To: <20241231111314.GDZ3PRyq_tiU002p5d@fat_crate.local> (Borislav
+	Petkov's message of "Tue, 31 Dec 2024 12:13:14 +0100")
+References: <20241230101658.GAZ3JzGhRjn7UtoJPt@fat_crate.local>
+	<87wmfhjusk.fsf@DESKTOP-5N7EMDA>
+	<20241230112608.GCZ3KDUNU2OVZanpFb@fat_crate.local>
+	<Z3KGopUvilZLwsBK@U-2FWC9VHC-2323.local>
+	<20241230121009.GDZ3KNoe0-hUwQDLG7@fat_crate.local>
+	<Z3KaSxr2sjCC8FpJ@U-2FWC9VHC-2323.local>
+	<20241230132403.GEZ3Ke8zm7HxSv84pA@fat_crate.local>
+	<Z3OS4LCCxfVN32uH@U-2FWC9VHC-2323.local>
+	<20241231092358.GAZ3O4LroNtlnztneC@fat_crate.local>
+	<Z3PEXxFTGXW2j2F3@U-2FWC9VHC-2323.local>
+	<20241231111314.GDZ3PRyq_tiU002p5d@fat_crate.local>
+Date: Thu, 02 Jan 2025 10:46:54 +0800
+Message-ID: <87ikqydja9.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-1df112bc-962a-4f4e-96cd-f4089374378e-1735663320199@3c-app-mailcom-lxa11>
-From: Gustavo Azor <gazo11@mail.com>
-To: hdegoede@redhat.com
-Cc: stable@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org
-Subject: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to
- irq1_level_low_skip_override[]
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Dec 2024 17:42:00 +0100
-Importance: normal
-Sensitivity: Normal
-Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-X-Provags-ID: V03:K1:PV+Go9yvBLIqXkHr6SjDJZvhOTr/mvxXs5rwzWXtKOQ94SXNG8IViou9bG2rOBc5VPVJW
- p/oe5y5NPfBAyiIlkudVBC4pGmEi+W6pkiQsyeixJq7RGHgGY9ez+5aJUidxz3IQjqwvV5nL1bjx
- WDHLNpP40rX/VyEHmyn4ad2E1C1BFyWCW2+vNONbWGhiT+y+mhgWTV+pCUxhU33s0QAjHUmIerPy
- mpwJBrr6uSzOJqewPtDqCXG8IeHvb6i0XOmPsZa588qsXDdZhjzFrLc2FjXvWl5pM5xQMWaBhbxA
- 6I=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XOxAtwagxgo=;bR/AGJZ4/B9EfpdpAo5uVLouzQn
- ABo8HpGvAt8baAy6zDKmeMrNNDSwtdpXrBGZ+70i4WZleVjJf4qj4fOmS6i2085l68EXdB9VZ
- NhhkqFIdMniZChUCIR4Juf0ohLKy8QWwgS1y5gIRgizRX/tcaVYX85VzSPqx6GKa9pe/c0NDB
- v+mca3m0I/1BsZFm79UKKYAWnjwuNEyKTBMjeB3QAJHK/Kpj2ODGjOdf0XBWsVEPGURJy50Ex
- ngbWnJfDN212uLX5sIKFKLhrxpcqgWoOGKATlfZQdrV3C33NS5uL5r6sO8ijo2p6zGR1pIlQw
- 9PdW3HRwLsxkodEbFfwoYxJMB9lj2Ck1SFGbCaT5O6rgX7NFEdl0PaYuu4ePWUkItsG8t7+fJ
- fi4IsKD33vq72QmnJgRqjyo4PzDRO1hXV/4u5btzWFu2cy2MjzWev+RC3MpJuWkTzC3K7gxjT
- 6BFbJj41AMgbW6RLEjB9AJZfCyLQfXQ78259afeHfXOKt31ywih5DHg2KV8be+SGUK6ZFZjPz
- Qnn6RRz/4vrzNujrqsniU97omqGjnBh2fVRj5udIf+cN1Lk1JMrxvaHeVXg8JhGprWFMOW4Mt
- m0ETgBzXzKhHjYN9hY14h1E4KzBje0ezs1Qr2TGVCzZxseHu9Mi+CbIMTVsw6P+AaZJuSQqrA
- k9N3Pa6P7HHc4OhWVIVn5OPCDvu0yZ2U2siWC7kW98lD8VU/VY9sK2YowwpSbg/cOZyojMVDg
- l9lHgCh4BXOj+DxVZKaLDvUoaTl/k39WDZu35kLEJOIZpT/OjkYzulIem3AQII6uBBy2yatbN
- 2L+rTvCN8pFYUxYMQVMxLuU1aGvPkScnzjLfqqkITnJ2EyGcw4Holy7Yme/+6BFszx8qM6ilZ
- fbmOMWaNrASCnBuggUHF0C54Yf+M7jtTWBkA=
+Content-Type: text/plain; charset=ascii
 
+Borislav Petkov <bp@alien8.de> writes:
 
-Estimated people:
-=C2=A0
-I can confirm what the next patch works:
-=C2=A0
-diff --git a/drivers/acpi/resource=2Ec b/drivers/acpi/resource=2Ec
-index 821867de43be=2E=2Eab4c0e0b6b8e 100644
---- a/drivers/acpi/resource=2Ec
-+++ b/drivers/acpi/resource=2Ec
-@@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_skip=
-_override[] =3D {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook X1504VAP */
-+		=2Ematches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC=2E"),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
-+		},
-+	},
- 	{
- 		/* Asus Vivobook X1704VAP */
- 		=2Ematches =3D {
---=20
-2=2E47=2E1
+> On Tue, Dec 31, 2024 at 06:15:59PM +0800, Feng Tang wrote:
+>> Thanks for the hint! IIUC, you are mentioning the set_arch_panic_timeout().
+>> One thing is, most ARCHs' default timeout is 0, while in our case, the user
+>> will also set 'panic=0' :), so we can't easily detect if the 0 is the user-set
+>> value or the OS default one. Originally I even thought about adding a flag
+>> of 'timeout_user_changed'.  Any suggestion?
+>
+> Ok, enough talking. Let's get concrete:
+>
+> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+> Date: Tue, 31 Dec 2024 12:03:55 +0100
+> Subject: [PATCH] APEI: GHES: Have GHES honor the panic= setting
+>
+> The GHES driver overrides the panic= setting by rebooting the system
+> after a fatal hw error has been reported. The intent being that such an
+> error would be hopefully written out faster on non-volatile storage for
+> later inspection.
 
-I did all the steps in the tutorial https://docs=2Efedoraproject=2Eorg/en-=
-US/quick-docs/kernel-testing-patches/ and the keyboard Asus Vivobook X1504V=
-AP is working fine!!
-Please include the patch in future kernels=2E
-Thank you very much=2E
+IIUC, the hardware error will be written out on non-volatile storage at
+the same time with or without ghes_panic_timeout overriding.  The
+difference is that after rebooting, the error information in
+non-volatile storage can be extracted and reported via UI, SNMP, or
+MCTP earlier.
 
+> However, this is not optimal when a hard-to-debug issue requires long
+> time to reproduce and when that happens, the box will get rebooted after
+> 30 seconds and thus destroy the whole hw context of when the error
+> happened.
+>
+> So rip out the default GHES panic timeout and honor the global one.
+>
+> In the panic disabled (panic=0) case, the error will still be logged to
+> dmesg for later inspection and if panic after a hw error is really
+> required, then that can be controlled the usual way - use panic= on the
+> cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+>
+> Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> ---
+>  drivers/acpi/apei/ghes.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 07789f0b59bc..b72772494655 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -173,8 +173,6 @@ static struct gen_pool *ghes_estatus_pool;
+>  static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+>  static atomic_t ghes_estatus_cache_alloced;
+>  
+> -static int ghes_panic_timeout __read_mostly = 30;
+> -
+>  static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
+>  {
+>  	phys_addr_t paddr;
+> @@ -983,14 +981,16 @@ static void __ghes_panic(struct ghes *ghes,
+>  			 struct acpi_hest_generic_status *estatus,
+>  			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
+>  {
+> +	const char *msg = GHES_PFX "Fatal hardware error";
+> +
+>  	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+>  
+>  	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+>  
+> -	/* reboot to log the error! */
+>  	if (!panic_timeout)
+> -		panic_timeout = ghes_panic_timeout;
+> -	panic("Fatal hardware error!");
+> +		pr_emerg("%s but panic disabled\n", msg);
+> +
+> +	panic(msg);
+>  }
+>  
+>  static int ghes_proc(struct ghes *ghes)
+
+---
+Best Regards,
+Huang, Ying
 
