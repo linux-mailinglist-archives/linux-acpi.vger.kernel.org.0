@@ -1,74 +1,90 @@
-Return-Path: <linux-acpi+bounces-10347-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10348-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C8BA0070B
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2025 10:34:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45BFA008CF
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2025 12:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E76C1884582
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2025 09:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF80E3A45A2
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2025 11:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6B81F707C;
-	Fri,  3 Jan 2025 09:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64FD1CCB4B;
+	Fri,  3 Jan 2025 11:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mxCtzAwr"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aAhBqa4i"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5571F2398;
-	Fri,  3 Jan 2025 09:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2FB1C9DF0;
+	Fri,  3 Jan 2025 11:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735896839; cv=none; b=sosY60PGDY5In8i6j8hOAq3NEGkeZD5mMTJH4q6FvrHmondX3PdpZk4Hnn/T4KeDI9aD0nWikvEVKlsq0iRlUFg5iQJM12D5hTtzaFymnLvoTLUoi2yzqUN9md+MwY4xvR8qHa+Zu8jPCVpLMjHuvkyBjLb9+p/X4UvF0P4OLg4=
+	t=1735904577; cv=none; b=QNyABIfVKuFkABUkIzZorVFaaWQwK32cOrenaycNeP6/2073QlRudsqeoFp3DbigrVTV1xffOxI/2vEu4wJf0rE4pT0GJ1ByCkNjeCEwq1T7e/SFJGGroDawHe4ep9m5f62Q4OEXJ1CjQZE7Itxf1ztxXLkp2S7p3rf9xo3z9Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735896839; c=relaxed/simple;
-	bh=9fy/wvkR7p0+ogBKJN/ec62xCUItlL01OTdYhLufvp0=;
+	s=arc-20240116; t=1735904577; c=relaxed/simple;
+	bh=Uv99LYTK0zUbacU0U6he7tjsya8rnMgHbBh+fS2b2jw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q+N5JylEhj/kSu807A8RPIBcgA3Vs1p2A4pyGV9VvIxR5ewcMBSrSiInqn1j43pxIWhPjzARhjEBC/RBtlZMDS66OmGq0ZOlbbY2gqj41aVmiVhBHsXO2fKkbqUUxTyFO4bgJBxEW+ksgLVJ3I8jZ8iMaBoa8WL2b9aFCFHV6JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mxCtzAwr; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735896837; x=1767432837;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9fy/wvkR7p0+ogBKJN/ec62xCUItlL01OTdYhLufvp0=;
-  b=mxCtzAwrVMvao8yYJWwdumeWlrvDB3UdNHXYf6SkdRSk+zf8xCEBxu4h
-   BuumyKabCHFI44MVAACKIN3kyC4un2tOM5yGvTm1PRyPy5yRImq4K/2/Y
-   1wwwOB08X+1uLgohdPcAk68cJYqsp/cD8Z2upQPBl2XKi9RKFmSiA+toi
-   qe6fsC7ckeYxeC33MdTQLeWREkEYFgtNEQ4cLUP6V0JpBI4FZ8CGrcZqm
-   chlLJ7sYJbNb7Ui3DRR2da5KKE7gNOANZ2V7XawDkr4/5qAUDqLbx0ewU
-   FaML7xaPnNjMoTTwkcDCZIgFyNbnf0Z21ynG4dcBKQ+JNCOv8LMw/nZwm
-   w==;
-X-CSE-ConnectionGUID: Ry2+fZCiSY2Z46G/ZUHh/g==
-X-CSE-MsgGUID: h0i67f5gRo6tsWvBSAllhg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11303"; a="36259238"
-X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
-   d="scan'208";a="36259238"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2025 01:33:56 -0800
-X-CSE-ConnectionGUID: M64My0lgTJOAfplabiv2aA==
-X-CSE-MsgGUID: lr1VBd/mSP6fngD9Mo210w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="105801808"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 03 Jan 2025 01:33:54 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id BB1DFF4; Fri, 03 Jan 2025 11:33:53 +0200 (EET)
-Date: Fri, 3 Jan 2025 11:33:53 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Randolph Ha <rha051117@gmail.com>
-Cc: wsa+renesas@sang-engineering.com, linux-i2c@vger.kernel.org,
-	linux-acpi@vger.kernel.org, trivial@kernel.org
-Subject: Re: [PATCH 1/1] Force ELAN06FA touchpad I2C bus freq to 100KHz
-Message-ID: <20250103093353.GP3713119@black.fi.intel.com>
-References: <20250103051657.211966-1-rha051117@gmail.com>
- <20250103051657.211966-2-rha051117@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=itNAb4TSK+cUsUum3Iwyf4qzPxSVe94Wfrjbjkd1pcT6PuzV95hTIY82E/R31qyVU2qq8TnvmxDXtCc+ukoH2uuHdMfwep8O/a9SIyH8czsCS8W+1jjqO3tx1VI+xmnxl/OziQXQQ2rSjHlNOa75zIw2S2BUrAU0EeBvjHHFlow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=aAhBqa4i; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 28BB840E021C;
+	Fri,  3 Jan 2025 11:42:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id tnfMMyzi7jTQ; Fri,  3 Jan 2025 11:42:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1735904557; bh=dS9aeDbA2J+XdXLCPiJmDBE8ECZ7zdxygk6M6pb3jI0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aAhBqa4iddBtH6YyXT2qQ5M4szH55349aTo4zCkRpwy1ggI/dcZ8APuZSAfRLD7yS
+	 Zf4JcLzQYkibsnDeUclDFD9g99GRvv+b2+vCf6ulJL58ykliLrgjGgJUXvBp+4VpIt
+	 wvbg/tbGpMkWlCcn/sqSSbW8Ygn5DOkHjAhGD/hNyk0XC+mYq12e7OCljJUobTMVON
+	 9G0rEZPQHFvUImHNC1EjJ9waZOokmzhW5GvC+r8mXC1LqpWWb4Ki5uGUz7QCZAMne3
+	 ++5l0w+M3qJONf5e4qohmq43oOI+w6V9NMpWp9n8qgF5m1w3VXMEYFzvgNAJRaD97L
+	 qYU7gCP/41vYeAGqayzNZzgofB5uxhU+/mVurlhIhBjEjb3tp5sKl31uaW9NAwqJyB
+	 hKZRcvhAdOTPjyTaNARMbgFNDAYUTaS0jOuhVBJ/RxFFReeajXjenrFh3tBOVd4tTf
+	 5Bnkw086E/0neelC0ykQXy2p8a8tChVp8LimHSpP++7S7J+w1DpiQNE4SC8aeAModH
+	 7/Mkw8BoBGF8olQirsgkGge+BjDNoSwUKgwzsqV3p4q+AQQ5dU8dFSZPEha7+0OHli
+	 vVkCTmGM47waNZerIHlaqHqtGE4KGknpNWksLnZuCnsaL2vTSIuMQTqRmVC6bqy5QX
+	 ENIoQvgqd9+T4Elpu3Rsz98s=
+Received: from zn.tnic (p200300Ea971F93bA329c23Fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:93ba:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F123840E01C5;
+	Fri,  3 Jan 2025 11:41:53 +0000 (UTC)
+Date: Fri, 3 Jan 2025 12:41:45 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH v17 00/18] EDAC: Scrub: introduce generic EDAC RAS
+ control feature driver + CXL/ACPI-RAS2 drivers
+Message-ID: <20250103114109.GAZ3fM1dEsyBSn9lWA@fat_crate.local>
+References: <20241122180416.1932-1-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -77,58 +93,30 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250103051657.211966-2-rha051117@gmail.com>
+In-Reply-To: <20241122180416.1932-1-shiju.jose@huawei.com>
 
-Hi,
+On Fri, Nov 22, 2024 at 06:03:57PM +0000, shiju.jose@huawei.com wrote:
+>  drivers/edac/Makefile                         |    1 +
+>  drivers/edac/ecs.c                            |  207 +++
+>  drivers/edac/edac_device.c                    |  183 ++
+>  drivers/edac/mem_repair.c                     |  492 +++++
+>  drivers/edac/scrub.c                          |  209 +++
+>  drivers/ras/Kconfig                           |   10 +
+>  drivers/ras/Makefile                          |    1 +
+>  drivers/ras/acpi_ras2.c                       |  385 ++++
+>  include/acpi/ras2_acpi.h                      |   45 +
+>  include/cxl/features.h                        |   48 +
+>  include/cxl/mailbox.h                         |   45 +-
+>  include/linux/edac.h                          |  238 +++
+>  include/uapi/linux/cxl_mem.h                  |    3 +
 
-On Thu, Jan 02, 2025 at 11:16:52PM -0600, Randolph Ha wrote:
-> Some devices do not define valid bus frequencies for the ELAN06FA
-> touchpad in their ACPI table, and some controllers run them at
-> 400KHz by default. The 06FA touchpad exhibits excessive smoothing
-> behaviors when run at 400KHz, so force the bus frequency to 100KHz.
+So what's the plan here? Am I supposed to merge the EDAC/RAS bits through the
+RAS tree and then give folks an immutable branch or how do we want to proceed
+here?
 
-What are those "some devices" and "some controllers"?
+-- 
+Regards/Gruss,
+    Boris.
 
-Can you add the ACPI table snippet here too for reference?
-
-> Signed-off-by: Randolph Ha <rha051117@gmail.com>
-> ---
->  drivers/i2c/i2c-core-acpi.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index 14ae0cfc325e..b10f52e12fe8 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -355,6 +355,18 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
->  	{}
->  };
->  
-> +static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
-> +	/*
-> +	 * When a 400KHz freq is used on this model of ELAN touchpad instead
-> +	 * of 100Khz, excessive smoothing (similar to when there is noise in
-> +	 * the signal) is intermittently applied. As some devices' ACPI
-> +	 * tables do not specify the 100KHz frequency requirement, it is
-> +	 * necessary to force the speed to 100KHz.
-> +	 */
-> +	{ "ELAN06FA", 0 },
-> +	{}
-> +};
-> +
->  static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
->  					   void *data, void **return_value)
->  {
-> @@ -373,6 +385,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
->  	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
->  		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
->  
-> +	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
-> +		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
-> +
->  	return AE_OK;
->  }
->  
-> -- 
-> 2.47.1
+https://people.kernel.org/tglx/notes-about-netiquette
 
