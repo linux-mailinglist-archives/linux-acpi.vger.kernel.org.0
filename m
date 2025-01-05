@@ -1,203 +1,207 @@
-Return-Path: <linux-acpi+bounces-10355-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10356-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE53A01117
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Jan 2025 00:46:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D44A01886
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jan 2025 09:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C99B7A1C21
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Jan 2025 23:46:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ED1F3A2B19
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Jan 2025 08:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5761C233E;
-	Fri,  3 Jan 2025 23:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58D335976;
+	Sun,  5 Jan 2025 08:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSpMItao"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Asd5StWU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C857C1C330D;
-	Fri,  3 Jan 2025 23:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A9279C4;
+	Sun,  5 Jan 2025 08:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735948000; cv=none; b=Q/HIewPiJpU5CrxYcFa+XoPZVqfafHB+WwMbwSkyfKF2IaXyzFyRqNTCq6H0QYhWxM++IrNKMyo3aLFH+qd+T6tSvJe8wRut7Dc3czQCdLzBKfdWNdOzPOdfHW5hb7ZYP5dLd9Am1SZtbtSlqrDFmRqhl+WUUvNsWIixfVorbIA=
+	t=1736066043; cv=none; b=CyYrfwXzyg94Y83X0+4VixyuQEPPnjK+1HaR1F+wlsu20smHiKT9Lhe6QdXZO1J3c1bqG6LJtCdbEk/A8cUu9JkwqDILBUcsO8Qm2zngjqnmKYe0E3hdH8U32PIUia6SXZYFmL6AllV656UtzDpY3VRO4gIAOgUfN2FdSVdeYiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735948000; c=relaxed/simple;
-	bh=+kOFSTt1yN8C1HgklZWAujvYQ3HjOObE0C+E8KQnGb4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kcbuxa31dLWrYz1OTXAnI6pxmjVCAS1yb7y9cvYtmeAQhLL7EzJhmS8Ew2it8YSObllHjeUv/GNrqKAdSxfBYYHk0I7KuVGwF8nE/tKuWmIxIostgSXxU5vTtZhQi9YDF0phaMlJ5woeje+2Kx+aIxbO+UlGI4DeP8pG/PFm1dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSpMItao; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-215770613dbso131944695ad.2;
-        Fri, 03 Jan 2025 15:46:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735947998; x=1736552798; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=unpA7tQxhkzAIxg8ypn6vEp+bXYUhhoNAs0/O6Yuzu8=;
-        b=TSpMItaoOABOS4dYzAL3CwXwLrWbyTCWFbhWaJaDgoJ/b1RA6IhiNJUcLO26k2U1Ow
-         R9WbdnjUOWVW16jZeOjkisMrSkFeoRn6c73MnKGAYrnBbDUXC5RHXmo+dx3SQyqjshMj
-         6xxfYlDC9AtnEY1ITAtZuysJsxOXw/wk0Cs8cgLm1HS/Y5QPx1fGFhf2sMs8KAQWfIss
-         i4jyheQcwSqwFT4GVxI+dr4dH5aES9I28uyLJOLqr15qCWzpAh0spse6eTcYZR56wGUV
-         MgvbA1dKeLXFVeYYiMKCoceTeFwMZ+suhY4mcP6rV9Bx85xyqVCNtKh5O+o8RrKapuj5
-         PxHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735947998; x=1736552798;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=unpA7tQxhkzAIxg8ypn6vEp+bXYUhhoNAs0/O6Yuzu8=;
-        b=bS12uCHW/GETisszIFf5qYZolCCOEoDpgbAo2llTX/i9CUf42oBV09yXn1dNs6Ko4a
-         1zmto98CfXScibcWEzy08uergfNWgnujkH24Lj1jMikZ7sMdohv66/k99vex8xPe7tLw
-         UX65cIZuKYmITBWf9YS+RG6ddWaq0C5ZlCITl+C6BnMh+imu9pGzyCyOKoDUV2BKYWLL
-         uGCqqcCp/q9z4bXA2Ck65ZMxfQwUKRy+iVPGIDE3jLkuujTLiro1gWDldwBHoHil90R7
-         VqQh6PyqeVnrevOEbKQDGtnBcOi3KxfXLIqYuJq3acGPAtM9MakM42/wROG3ywib7rz8
-         qYdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmzYPh62HQvLflWCWhC1ZAsyH/tliEDxqBVFP6BAOM7dMSPPQn1UWqRpoj6c9XQn8Nsc7kWmJ6E8gU@vger.kernel.org, AJvYcCV1vcz+koQuL9BqsbfpcAwqgCMKonFJqydsp4LkmTsNgN84Ch5DL67BZ121f7B6RbAtq+rqPAlANi+z@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8WfbNFPPfWus+3WCyKS3EwL2c8Ps8NgzJOfxZpVQDwfRrkGQc
-	f8mYEBTYtqCFNdnUVUblumtuW8aoQL2dzhga/Ho1FA3bcOepXI5NeiFCOND4enh1eQ6omXN6VkC
-	d4PbReYrLexe8tskaYaY5Z4jP9E5KMnuV024=
-X-Gm-Gg: ASbGncu6kqh+uObpkg+9V30sex+4EAQ40GoZh3KY2dsAcGZm/IY73bxWpkwnFpX+yxO
-	29En+V4bmKLUKjpHQNPe21LLnWYJox1o9ssgsNw==
-X-Google-Smtp-Source: AGHT+IGPEUxJRAjHm+OUVK9TPOtQ9JZ+zbjuSrl9LulXqGOwiP1I3BNybRrvhvxY7KFZFHxcvqOnIsIoL5hnElDYRHQ=
-X-Received: by 2002:a17:902:db06:b0:216:2bd7:1c49 with SMTP id
- d9443c01a7336-219e6ebacdamr736392985ad.29.1735947998060; Fri, 03 Jan 2025
- 15:46:38 -0800 (PST)
+	s=arc-20240116; t=1736066043; c=relaxed/simple;
+	bh=HK0uWLs3KgLuoE1NQZE49bG1NVGbXZ96y8GV3SPnkWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h+hDE2dm0+GgX6MXBOyae4XshJ0fZT3eidSL3rPWqIFMYMG+VnpGBhpX6lgGjvt1GEoH9MyFRooe/NPRtibyH4d5fRD1fpb6f73l9E99rSBAZXxAJAHseyyCycnACrfpb+27hxtEb71+ZZmezT4VLRYgTfal3GHog3CLf348CKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Asd5StWU; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736066042; x=1767602042;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=HK0uWLs3KgLuoE1NQZE49bG1NVGbXZ96y8GV3SPnkWw=;
+  b=Asd5StWUdXeF5KKIC8iXvdFOW79jCMDhdgR44YEzOfwTWwJwO4e3EU/B
+   KCIHNlci8TfbUWBlotQqCyCLDFhc7VxEQ07ac/9fw2Tns+znvU/ZeT393
+   Y+vdCzn9euUFh3VUsacxfFj8gWTvzq/a+zRke+R3LU9L0Vr8752o0p8f1
+   bmvPlWYmGKX2NpV462IOfgbutxQg40BAxNkvZvenYs99DGkVAEYuW0Yco
+   WWCb5AHKIzm+BvydQaZjMl1esjLmSYpshtE7OdL17nG4IBrBzJuXOcdq5
+   4ikdtUp/7Yg8FVNBFIxT7SYdVl+DSC4wJ2EHaFCN1UiiyX2IkyD5FmptE
+   A==;
+X-CSE-ConnectionGUID: oe22YPnyRfSES3M9ghWg4g==
+X-CSE-MsgGUID: D/tv6y26QmOJO8FFxlbdAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11305"; a="36119576"
+X-IronPort-AV: E=Sophos;i="6.12,290,1728975600"; 
+   d="scan'208";a="36119576"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2025 00:34:02 -0800
+X-CSE-ConnectionGUID: mpPAVplvTwGiCoEe58+7Ww==
+X-CSE-MsgGUID: IDClCMzeSTayQe6naDuKJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="106792189"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 05 Jan 2025 00:34:00 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id B59E826A; Sun, 05 Jan 2025 10:33:58 +0200 (EET)
+Date: Sun, 5 Jan 2025 10:33:58 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: R Ha <rha051117@gmail.com>
+Cc: wsa+renesas@sang-engineering.com, linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org, trivial@kernel.org
+Subject: Re: [PATCH 1/1] Force ELAN06FA touchpad I2C bus freq to 100KHz
+Message-ID: <20250105083358.GU3713119@black.fi.intel.com>
+References: <20250103051657.211966-1-rha051117@gmail.com>
+ <20250103051657.211966-2-rha051117@gmail.com>
+ <20250103093353.GP3713119@black.fi.intel.com>
+ <CACHtJB-rZ6SKF3d3xTsbJ=zQ+fPVcCcYxXLX_yMRdpE_4tyYYw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103051657.211966-1-rha051117@gmail.com> <20250103051657.211966-2-rha051117@gmail.com>
- <20250103093353.GP3713119@black.fi.intel.com>
-In-Reply-To: <20250103093353.GP3713119@black.fi.intel.com>
-From: R Ha <rha051117@gmail.com>
-Date: Fri, 3 Jan 2025 17:46:27 -0600
-X-Gm-Features: AbW1kvbfs1lzAiCJ4uPJ0hnsfEJc0scGac-lOQkXBToBwShhlER-6QLubAgsPdo
-Message-ID: <CACHtJB-rZ6SKF3d3xTsbJ=zQ+fPVcCcYxXLX_yMRdpE_4tyYYw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Force ELAN06FA touchpad I2C bus freq to 100KHz
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: wsa+renesas@sang-engineering.com, linux-i2c@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, trivial@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACHtJB-rZ6SKF3d3xTsbJ=zQ+fPVcCcYxXLX_yMRdpE_4tyYYw@mail.gmail.com>
 
-Hello,
+On Fri, Jan 03, 2025 at 05:46:27PM -0600, R Ha wrote:
+> Hello,
+> 
+> Thanks for reading my patch!
+> 
+> On Fri, Jan 3, 2025 at 3:33 AM Mika Westerberg
+> <mika.westerberg@linux.intel.com> wrote:
+> > What are those "some devices" and "some controllers"?
+> 
+> The "Some Devices" are the Lenovo V15 G4 IRU, which I use, and
+> potentially the Lenovo V15 G4 AMN and Lenovo Ideapad Slim 3 15IAH8 as
+> well (based on issue reports from other users [1]).
+> The "Some Controllers" are the Designware I2C controller.
+> 
+> Sorry for not putting this in the commit message; I had tried to
+> follow the comments for the quirk I copied in Commit 7574c0db2e68c
+> ("i2c: acpi: Force bus speed to 400KHz if a Silead touchscreen is
+> present"), which left them out.
 
-Thanks for reading my patch!
+In general it is good to follow the existing changelogs but in this case I
+would prefer to add the details of the system in question (so we know what
+systems the quirk is applied to).
 
-On Fri, Jan 3, 2025 at 3:33=E2=80=AFAM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
-> What are those "some devices" and "some controllers"?
+> On Fri, Jan 3, 2025 at 3:33 AM Mika Westerberg
+> <mika.westerberg@linux.intel.com> wrote:
+> > Can you add the ACPI table snippet here too for reference?
+> 
+> I believe this is the correct snippet in my ACPI table (Again, V15 G4
+> IRU). Tried to edit it down as much as I could, hopefully this tells
+> everything. Please let me know how I should attach a longer snippet or
+> the full ACPI table if needed.
 
-The "Some Devices" are the Lenovo V15 G4 IRU, which I use, and
-potentially the Lenovo V15 G4 AMN and Lenovo Ideapad Slim 3 15IAH8 as
-well (based on issue reports from other users [1]).
-The "Some Controllers" are the Designware I2C controller.
+Okay thanks for sharing. I don't see the "SPED" beeing assigned in the
+below snipped though. I would expect this works in Windows? Have you
+checked if it uses 100 kHz or 400kHz there?
 
-Sorry for not putting this in the commit message; I had tried to
-follow the comments for the quirk I copied in Commit 7574c0db2e68c
-("i2c: acpi: Force bus speed to 400KHz if a Silead touchscreen is
-present"), which left them out.
-
-On Fri, Jan 3, 2025 at 3:33=E2=80=AFAM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
-> Can you add the ACPI table snippet here too for reference?
-
-I believe this is the correct snippet in my ACPI table (Again, V15 G4
-IRU). Tried to edit it down as much as I could, hopefully this tells
-everything. Please let me know how I should attach a longer snippet or
-the full ACPI table if needed.
-Scope (_SB.PC00.I2C1)
-{
-    [...]
-    Device (TPD0)
-    {
-        [...]
-        CreateWordField (SBFB, \_SB.PC00.I2C1.TPD0._Y53._ADR, BADR)
-// _ADR: Address
-        CreateDWordField (SBFB, \_SB.PC00.I2C1.TPD0._Y53._SPE, SPED)
-// _SPE: Speed
-        CreateWordField (SBFG, 0x17, INT1)
-        CreateDWordField (SBFI, \_SB.PC00.I2C1.TPD0._Y54._INT, INT2)
-// _INT: Interrupts
-        Method (_INI, 0, NotSerialized)  // _INI: Initialize
-        {
-            If ((OSYS < 0x07DC))
-            {
-                SRXO (0x09080011, One)
-            }
-
-            INT1 =3D GNUM (0x09080011)
-            INT2 =3D INUM (0x09080011)
-            If ((TPTY =3D=3D One))
-            {
-                _HID =3D "ELAN06FA"
-                _SUB =3D "ELAN0001"
-                BADR =3D 0x15
-                HID2 =3D One
-                Return (Zero)
-            }
-            [...]
-        }
-
-        Name (_HID, "XXXX0000")  // _HID: Hardware ID
-        Name (_CID, "PNP0C50" /* HID Protocol Device (I2C bus) */)  //
-_CID: Compatible ID
-        Name (_SUB, "XXXX0000")  // _SUB: Subsystem ID
-        Name (_S0W, 0x03)  // _S0W: S0 Device Wake State
-        Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-        {
-            If ((Arg0 =3D=3D HIDG))
-            {
-                Return (HIDD (Arg0, Arg1, Arg2, Arg3, HID2))
-            }
-
-            If ((Arg0 =3D=3D TP7G))
-            {
-                Return (TP7D (Arg0, Arg1, Arg2, Arg3, SBFB, SBFG))
-            }
-
-            Return (Buffer (One)
-            {
-                 0x00                                             // .
-            })
-        }
-        [...]
-        Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-        {
-            If ((OSYS < 0x07DC))
-            {
-                Return (SBFI) /* \_SB_.PC00.I2C1.TPD0.SBFI */
-            }
-
-            If ((TPDM =3D=3D Zero))
-            {
-                Return (ConcatenateResTemplate (I2CM (I2CX, BADR, SPED), SB=
-FG))
-            }
-
-            Return (ConcatenateResTemplate (I2CM (I2CX, BADR, SPED), SBFI))
-        }
-        [...]
-    }
-}
-
-For comparison, the properties for a device that I think did set a
-proper speed was like this:
-If ((TPNP =3D=3D 0xD64D))
-{
-    _HID =3D "GTCH7503"
-    HID2 =3D One
-    BADR =3D 0x10
-    SPED =3D 0x000F4240
-    Return (Zero)
-}
-
-[1]: https://bbs.archlinux.org/viewtopic.php?id=3D297092
+> Scope (_SB.PC00.I2C1)
+> {
+>     [...]
+>     Device (TPD0)
+>     {
+>         [...]
+>         CreateWordField (SBFB, \_SB.PC00.I2C1.TPD0._Y53._ADR, BADR)
+> // _ADR: Address
+>         CreateDWordField (SBFB, \_SB.PC00.I2C1.TPD0._Y53._SPE, SPED)
+> // _SPE: Speed
+>         CreateWordField (SBFG, 0x17, INT1)
+>         CreateDWordField (SBFI, \_SB.PC00.I2C1.TPD0._Y54._INT, INT2)
+> // _INT: Interrupts
+>         Method (_INI, 0, NotSerialized)  // _INI: Initialize
+>         {
+>             If ((OSYS < 0x07DC))
+>             {
+>                 SRXO (0x09080011, One)
+>             }
+> 
+>             INT1 = GNUM (0x09080011)
+>             INT2 = INUM (0x09080011)
+>             If ((TPTY == One))
+>             {
+>                 _HID = "ELAN06FA"
+>                 _SUB = "ELAN0001"
+>                 BADR = 0x15
+>                 HID2 = One
+>                 Return (Zero)
+>             }
+>             [...]
+>         }
+> 
+>         Name (_HID, "XXXX0000")  // _HID: Hardware ID
+>         Name (_CID, "PNP0C50" /* HID Protocol Device (I2C bus) */)  //
+> _CID: Compatible ID
+>         Name (_SUB, "XXXX0000")  // _SUB: Subsystem ID
+>         Name (_S0W, 0x03)  // _S0W: S0 Device Wake State
+>         Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+>         {
+>             If ((Arg0 == HIDG))
+>             {
+>                 Return (HIDD (Arg0, Arg1, Arg2, Arg3, HID2))
+>             }
+> 
+>             If ((Arg0 == TP7G))
+>             {
+>                 Return (TP7D (Arg0, Arg1, Arg2, Arg3, SBFB, SBFG))
+>             }
+> 
+>             Return (Buffer (One)
+>             {
+>                  0x00                                             // .
+>             })
+>         }
+>         [...]
+>         Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+>         {
+>             If ((OSYS < 0x07DC))
+>             {
+>                 Return (SBFI) /* \_SB_.PC00.I2C1.TPD0.SBFI */
+>             }
+> 
+>             If ((TPDM == Zero))
+>             {
+>                 Return (ConcatenateResTemplate (I2CM (I2CX, BADR, SPED), SBFG))
+>             }
+> 
+>             Return (ConcatenateResTemplate (I2CM (I2CX, BADR, SPED), SBFI))
+>         }
+>         [...]
+>     }
+> }
+> 
+> For comparison, the properties for a device that I think did set a
+> proper speed was like this:
+> If ((TPNP == 0xD64D))
+> {
+>     _HID = "GTCH7503"
+>     HID2 = One
+>     BADR = 0x10
+>     SPED = 0x000F4240
+>     Return (Zero)
+> }
+> 
+> [1]: https://bbs.archlinux.org/viewtopic.php?id=297092
 
