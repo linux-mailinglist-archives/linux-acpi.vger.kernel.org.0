@@ -1,208 +1,166 @@
-Return-Path: <linux-acpi+bounces-10358-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10359-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116D7A01E33
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 04:32:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C67FA01EA0
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 05:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727263A532D
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 03:32:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C3357A12F0
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 04:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F9D198A2F;
-	Mon,  6 Jan 2025 03:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F354C1AB6CB;
+	Mon,  6 Jan 2025 04:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tpbtAy6u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ThRBAJzh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2070.outbound.protection.outlook.com [40.107.96.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AFE15B547
-	for <linux-acpi@vger.kernel.org>; Mon,  6 Jan 2025 03:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736134326; cv=fail; b=fmnje7tt7lnZ4VPM5r7IuZkhhor1JRu0toWRCekZpK04cJKOS7xvbEN3aDPn6G1q55Pbam8xi68zpbUMaaZmaBN4YjE9U0mBUMdtTgGE4QU4eo3Ur4kxqmVWQQT2fWG+TSWHpuHncXShH5NbeqliFzP9bKc+BaYqUELQoiYitHs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736134326; c=relaxed/simple;
-	bh=qvqsPP9qi6yCOYX301TAURrNT3nXX4IjPxodf6VLR9U=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=InkksoKJa5HyBmrhVZgFcI2AcTI/eINRsJ1S6Vjuj0JyM9f779bW8bZr3R6SOoI6E/oshZbIzIC8EI5AMs2OqOjXlUlP8Kk47e1AGeQg7lzmAL+rVTMo9ucmFMzGiSyCghRWbqf6Z+ONfsl7z6RrQ4aJyGJGRdNBaHUSondbjA8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tpbtAy6u; arc=fail smtp.client-ip=40.107.96.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oihEtzr4Rt/maaMTr/CaJu7XA2Gz3QrCsemCL69m7uHzkiUldsOeRt2CpSLSoNCmfNC841KY/6Yh3vQiTJsoWxKAq6zZhcZFlh/u9qIcRjxmwAp+uBnWnVfWoUT2Ik1S2XRS6yVDbaWF7MwRIa3kl+ITxdvq5K1YgG4DVPJkeW2f3UXzQjZZHOmeFngo8ga8lgnLDi1BIvpNxIu3cGkpVcfvmq8HTjv5K0UbWhaKfJLg6PY7lY+uvyYQ8uhC8L9tHtL4XPVgM3Of4tmJ7oqR4UMpNEFpKcevDBll1445XlKcxnuZ+RCa8LMymVzXxMPDd+SmR6rFLRF6ljucuY67aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AQ8JpWjRjUIL/XuGtWUWngw9mNx0y/yMdjYUz237Tts=;
- b=VIha5oFP4THsF32i9u/tAUcVAGAGRTKGB58reFo9mEZDFcplM7sJImA7H4LecHxX6EijFP+BYRbwqJpZ20K38XiHdJDfoi75wkFQj9BjGeo1nTQExeo1HAKxiDJtjCxhTyXvCPCOUf9KEm6uNwaoUYTuRCA1oDuciFd+zyCgW03yeXmfyaEZNoe6RH8FmGK57EiBrncIr6mFe+VSKKYXUEfynqb6ZjVtiqERbD5saANjof3qlJ7+eNX870rhiqvLZocvsg1OY4blI1nrXcSXd7c6xD9urqOe5FP0rO8FQALyMjeC2RG27VjmVqibTaEGClWFRcX82JQ65NHERJZJtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AQ8JpWjRjUIL/XuGtWUWngw9mNx0y/yMdjYUz237Tts=;
- b=tpbtAy6uSX2gG17dWAgurCg+X/XIjJpSSjK4Kqq07i0MKEzVEbWIr/VgUuUFHHvVCerqKaJ7Lc0MhaYnULKang/SeKoUggRvXHfmcmgyVrQceYQiUy+7IH0mUd+Ah/YpfG2myzaDcnIk+hTXpb/AGFfz3zQ7fqXI4lNuKp55z7s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
- DS0PR12MB8528.namprd12.prod.outlook.com (2603:10b6:8:160::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8314.17; Mon, 6 Jan 2025 03:31:56 +0000
-Received: from DS7PR12MB6095.namprd12.prod.outlook.com
- ([fe80::c48a:6eaf:96b0:8405]) by DS7PR12MB6095.namprd12.prod.outlook.com
- ([fe80::c48a:6eaf:96b0:8405%5]) with mapi id 15.20.8293.000; Mon, 6 Jan 2025
- 03:31:56 +0000
-Message-ID: <92c1b02f-d9ba-48a1-80fb-8edd4addba8d@amd.com>
-Date: Sun, 5 Jan 2025 21:31:55 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: acpi_dev_irq_override(): Check DMI match last
-To: Hans de Goede <hdegoede@redhat.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, Werner Sembach <wse@tuxedocomputers.com>,
- linux-acpi@vger.kernel.org
-References: <20241228165253.42584-1-hdegoede@redhat.com>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20241228165253.42584-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR11CA0061.namprd11.prod.outlook.com
- (2603:10b6:806:d2::6) To DS7PR12MB6095.namprd12.prod.outlook.com
- (2603:10b6:8:9c::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C96714B94B;
+	Mon,  6 Jan 2025 04:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736138799; cv=none; b=RfNtTeJ5q9nmRnjObuHe4fa3wcMp5YVKEfVTunF0GpSTxGk4vBK6uBTZ40KeXApqXGvJJ5RwbAIAoTuxRozHk8kp+uZtYMFmRLlopaQvezwkh5gorWMICM34+Ysi62Vd0gXLoNi8L83RoA6Ov7zjudhd5ZFl+fAoahL279FjQFM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736138799; c=relaxed/simple;
+	bh=0UK9rbMYelMqeMWeC95Stip6XcGeeNC73TeXPHxGM2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b54Hsx6LNfC37VfgSsDFkCMRkuxYaZZsUms6JGr8cGXN0Yd0OBHeHpznkrYfdj5aX1x+VWzspv26I6n1v4U7z6d0jd7gCrn7BFKZ9X+4Lg14Csg/vPUpA9MIQAioNnhdSr0Vstu0oxP9QOLGiKC6J5kZ/naFEnDvN8jStxGVl3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ThRBAJzh; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4b2c0a7ef74so7897998137.2;
+        Sun, 05 Jan 2025 20:46:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736138796; x=1736743596; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aMfjSTD/Y23SgFVdemlIyRQvnFthuXsFFp+nN/PUiP0=;
+        b=ThRBAJzhZaEtFjGmMJIAqAnperpdRzlfwkgQ1jykY3lgRgfoIwJaxnAe8sS8U9djou
+         8OHpETt2aSZkVHp9hGALbWVTZDVEh+Z/Qv8qt9JEQM90gYRrigllgauudpFlLS/TzV9d
+         RzZVagnQB85orpP13v3+jN2a+ILkgkUvWtkvgGHfaS0OBBXktYeNBwiLSM/7LJXdEl6m
+         +0vecCYcmkOlCfItjAk4m9mrN9CLb8wtw4BLRND4rWTyaLDdKXJQJhabskiWo3oETPxu
+         llVaDoTaLodC0IjtYzJnlTwvT6r8FzEPEM09t9CrAbDCXoqAwCnuBlwcd0z5q9K0Y+2p
+         WHug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736138796; x=1736743596;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aMfjSTD/Y23SgFVdemlIyRQvnFthuXsFFp+nN/PUiP0=;
+        b=bks9SRTPJdVU5OVy7XrV5omlb07+yfF4qyk0ZXkORpMMEn3aqGbrJRt0Ip27IJaOQD
+         EolR9mri80vpiODPUgao07/0wZ7Kcz27YBC323LGXG8fr8hdbmODs1TEV5V3ydjv9m7G
+         AvVRgjDKNdoQb6MHwTHEF/rieywd636ifEEUqjfcn6HHbxYmT4nMniyiblkrz5UqW0Xn
+         BGKkeTeoQRpz7KQmWaO2BIzzAxPavDY5ieS8jtaoZ7u6UAejxJsfPvZkHcPt5nWOehrb
+         AXQcc+xya0s5MdR391i9d06/BYdX2tJ62G8U5P6jjLLz3piRr4KrkVsKElWuLCoDOJWq
+         3iPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEQw4oNHRD9fQH5LLIVty4EYut40D6eo9k1V/qNlg+vlRa5IW87LRSPrDylpr5Q+6sWTWmy5WO4P4RGwjv@vger.kernel.org, AJvYcCXQ6WbT8N/9EDRv6Z6LfeybAu7vF0R1YZedqRMuEB19wAkOZqdiF98Z/dlmiHq0uY/OawcpJbJYASX5@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4GWeAruEKIR3kss9VXaP5vm9B33YtRu+AjblOP4tGTctmcLWr
+	orZmDrkL5dxqb8iPd7WthKFPt5n2wB80mT8bsK7Odz3LLjJb16cm88E+4oUi
+X-Gm-Gg: ASbGnct/OGFrL57oRSjrKet4KGilaHbzBJw0EFsGDkRb2Yja8oPaPR2fB6eCOM1ghKS
+	HmH2OIBKEiLR2+0eK6pa8oKDg6g0caEeDPflmLDp7LaF3wZXHcI5lGVKzty/BudaCdqnBd6he/v
+	E36tMTXVuOQmiev9bp5dvMy1VCqmU2r5SCDveuRNaPAAW/pOr9P1vJoy7fFyipCaIf1gtWxRdXv
+	pzw3BO9OBXcdxmz/aHEQibNU47JmueEUO1UbMhxHK/LrWXkHBvCopyP9u+k/1fW
+X-Google-Smtp-Source: AGHT+IHAz58NwnGlKi8SyoMcgpW+cwu7YkwN6dC5ukWfnVdSdbxXzdJSnELWSOKyQgDq4dYG9qzPZw==
+X-Received: by 2002:a05:6102:6e88:b0:4af:e61d:e22f with SMTP id ada2fe7eead31-4b363593900mr10310184137.24.1736138796431;
+        Sun, 05 Jan 2025 20:46:36 -0800 (PST)
+Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b2bf98d1c9sm7083507137.4.2025.01.05.20.46.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jan 2025 20:46:35 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+To: platform-driver-x86@vger.kernel.org
+Cc: josh@joshuagrisham.com,
+	hridesh699@gmail.com,
+	derekjohn.clark@gmail.com,
+	Kurt Borja <kuurtb@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Lee, Chun-Yi" <jlee@suse.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Corentin Chary <corentin.chary@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Lyndon Sanche <lsanche@lyndeno.ca>,
+	Ike Panhc <ike.pan@canonical.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Alexis Belmonte <alexbelm48@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Ai Chao <aichao@kylinos.cn>,
+	Gergo Koteles <soyer@irl.hu>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dell.Client.Kernel@dell.com,
+	ibm-acpi-devel@lists.sourceforge.net
+Subject: [RFC PATCH 0/3] ACPI: platform_profile: Let drivers dynamically refresh choices
+Date: Sun,  5 Jan 2025 23:45:48 -0500
+Message-ID: <20250106044605.12494-1-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|DS0PR12MB8528:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0659686a-3e34-4da9-f8ee-08dd2e02abfe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NVVZU3RhVGpWWDhwMmVwZ1o3MjJFM3dsbUJrUjZ6R3gzYjRqaExmQjZWWlpp?=
- =?utf-8?B?bW1wZWVEYWU2YldlS1RNTGZTSVJSWWFBNDN0a3M5S1o0aW4rYXFlVzBPK0Ru?=
- =?utf-8?B?Ty9zMlJtTDBBRGNYcnFBWEVyM1hnMTVLSmlaSFo3WTNPUGY4YzRSc2doWTlY?=
- =?utf-8?B?aVpPNWZIRC9DeWdkTFRFRXArS3NLcU9raHlVd3YrdVFHcDR0dmlwVjNJemcy?=
- =?utf-8?B?Z2Y3YUJRMndWWUY1U2dYc0h3VzFralg2VEY2aUZSQkZDRHNoNlBFakFxMmNO?=
- =?utf-8?B?RUg5bC9Jek41cEduUHdUcjZIRHBIYVc0RStMUkxVMDRBN3gzNjJ2OTZvNlBo?=
- =?utf-8?B?ZFlrbXg3cjlxaWNONjE0d05QTGtVUHN2bHg2M09melJmNGpKMUJnY3JDZTFX?=
- =?utf-8?B?eDZNaGJ1ZGk5cG9Ta0tnY1djelE3T2luSVQ0Zk9JZm90bngyeWszc1l3VmZS?=
- =?utf-8?B?Vk1aeE8xUE1KOFZGdVIvd1NFVFhxT2dFMkhKbjdpc1dhQ2g3aURNUDBTeDcx?=
- =?utf-8?B?V2pQb3VEd2UwQVgyaWVMblJ2bTRSSElMcC9ISE9aVXZYeEM0b0JKYzBOMC8x?=
- =?utf-8?B?emtsWDBkamlxRGhpRm1XeFNnZ0VQSTBVcWEwYklOODEvSUVsYy9XSFREd0E2?=
- =?utf-8?B?eEVrQzFaWDVGZXhmem9NdnNVNXBDcjQvcTBFU0lMWEU2cVFCV3AzOVRsQ05n?=
- =?utf-8?B?NVJMQlhTa1pCZzgzYnVGZUhEUTBOWVRMQ2huVFUrT3Q1UE43OEtMRTNLRGRv?=
- =?utf-8?B?VVcra2hjeXUwKzd2ZHVQZUpVYjNhdEc2ak1QVTBrd1VoQnk4dTNOblFvVlJN?=
- =?utf-8?B?S0NvZjFhY1llRGZZMUZjVVNGU2N3OXVyZkR6OXhZd21jUHJCK2NJK2Y0eEx5?=
- =?utf-8?B?dC94U2wwUVI5YkJweFFYMXlJaTBIRkZWQnZZdHFLK0R2VFN6K1dZNkVIdlh5?=
- =?utf-8?B?NWlTRG1OSDlDN05pcTREU2FJTWtZSHVJemFBbE00WDduV2VtODRIRDdoQ29x?=
- =?utf-8?B?ZDhUenhDelFLZmt4OXJYUlNMMFFYaXFIYnQxVHQ5eHd5cHBJbXVGQXArSU0y?=
- =?utf-8?B?WTZ5UTFPSm9yRlhRRXU0dW1jeEZTL2Y3WkRZZnBHWW5WdWlOVE9FMld0aWR2?=
- =?utf-8?B?TkNmYk96UHRMWGIvelRCZ1NjRnhydElScExIT0IxazN3cSt4c3J3Z09YaHhh?=
- =?utf-8?B?Vkw1R2NaOGcxZ1hEdDBQd3hYaVZOcDkvM2dWalJvaU1TWWZxMGpjVk5nUzhP?=
- =?utf-8?B?M1FCRmVuOG5jYUt4MXFnUGxFbUJDUGRNdmdnQmZHL2hsc3A0cGJYVkVKVnRo?=
- =?utf-8?B?bFZxbXZoV2VQbjgrcGpKOW9qTW5wWjcwM2g2bTAyS21RV2h3UUdUMC94dm9s?=
- =?utf-8?B?QjV5SlJ4RWNDbXpNcS9iU2xHenNaMEtadk1wVHpEZTNDajdXN1MwOVpNQ25R?=
- =?utf-8?B?Q1RsYXp0Rit0blVHMVhtZW5zVHFpeXF0L1prdTVWektVRFc4c09LYkdQbFRN?=
- =?utf-8?B?eXNvSnVoYW0zOHFDOHN6d1c3YnFML2ZwdVZLYURuYXFEU09FTW5JVmlkSmwr?=
- =?utf-8?B?elRzWFlmMXl0aGZjUzNZbzZoWERkUzVEYXYrK3JYZTBaZGNJc1NqTzZqZEtE?=
- =?utf-8?B?SmQyWitpdUhZTWlLT3ZEK3hoRVM1N1RIZkhKQ3lOUWdxSWhzWWorc1kvRFFW?=
- =?utf-8?B?WEN1c1Jadmo5cFFOUkEzV0w1UnZXOFlHUlhyTkRMdXNRSjBKZnNRcE9jRVd4?=
- =?utf-8?B?TmNrZ0RscC84ajMyWEViV3FRaTl0eUhISWNJNTl0bndPbTVGSDZPbm5EZ3ZL?=
- =?utf-8?B?V2ZBWENiNG85OFY5eFJMTlQySXZ1NUVBa0dhMk9NVVVFSVVFTjNLOVhwNlQ1?=
- =?utf-8?Q?FWb4kTMtekXwp?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cHhyWnU4akh1ZGZrSGFuSDFmMGhBU0VjdndGZlFRMjJia1JvUkppWGpLM3lI?=
- =?utf-8?B?TzM4K3BYUUxUM2UxVkNlSW41cHdMdHdDd2VOSkg3elJrd3pnTHo0NmZ0ZlZ0?=
- =?utf-8?B?dmhKTFlZOUs2MTBDSnBodGNpb3p5UjFxRW8xNXo4ZXhUYjRZbGd1djl4UzhF?=
- =?utf-8?B?M1Z1YVBvSHhFdFlYam9UekVzeWVaMDRzWFNzeVB6T1RoZnpZSDlRTXJKK28w?=
- =?utf-8?B?aTRFQ0NjbXAvMTV2M1Vaa21kbkExSXpoRTQrVHBMS0lUODA2d1pqeVc3Wmdk?=
- =?utf-8?B?RVppWVN3eGhTVzVvRlpuWlRYQmc2bWRNdWlNTG9MWlppd3lTb3BLQXNxWHYv?=
- =?utf-8?B?cFZlbnNhdnlla3dURzA1WFAwL0dkY25mZXAxcUF6YWtHWFZVb0Q4TE1ab3J5?=
- =?utf-8?B?dk9CYm43YnRzZGJuZWFTU2VaTlhjZUlwTmhvem5OU3FYQTRETUpZd012cFN4?=
- =?utf-8?B?N3A2TVpTMWE1TzB0R3lwSXltZmlmdG9MRGoyeVovbnEyY0h0QWVzYkx6WWZW?=
- =?utf-8?B?eDhzblFvZk9SMGZRMFBTU1dLbU81cGszRnVMOS9mYklVN08rQ2RvaVlyNG5m?=
- =?utf-8?B?Z3RYT3F0bkZTZ1JZQi9LK0FjbXEvaWxab1lPclVuOWZ0Y0xhT1U5djVCa09j?=
- =?utf-8?B?RWZ6eHVtMUN3ZXVnbHYwc3FvSUpxT1lUazVGQmNDNUw4aTVEMFI4YzFIcHM3?=
- =?utf-8?B?TzdPcjZhOTRKbkV1aTRpbkRCTTBZdURaQisxRy9pd0todnRzb010Slk1ZHNL?=
- =?utf-8?B?T1VRSy9NNzl6aWxUTVlNWEgxME1OZDRwbVlqZ0RRRCtRV2tHRGNRNkFFbHJZ?=
- =?utf-8?B?eERmZ2M5ZWpqTmQ0RitYNi9kSW1Jc2lYRzY5QVI2T3pIa0FQTzV1RzZGWjZo?=
- =?utf-8?B?b3dsei9XdVRENUtiaFNhYVlIUnN2aUlKK0ZDalNySmVDenNWL3JKblh1Q1Ro?=
- =?utf-8?B?djUwRDREdjZZcHd3LzBBUHFuY1lpU0todzV1azZYWGZ0c3hsZXQreTlUck5l?=
- =?utf-8?B?dUsyMHpNQ29RaEdIMDdRYjNxaUxzR1pYdWJOSVgxaDJTQUpBb3NYNkpaTjY1?=
- =?utf-8?B?SDNVdUs5alFsR1NIWWtidGpjUG5iNnExenhMV25xNHFPYjZqbEljZ0Q2TDh4?=
- =?utf-8?B?MjFMZVZpMmhkM1kvUk5udktEdFlSQkl3cWIwN2VmQk1kMllLVDBsNjVHVXVV?=
- =?utf-8?B?NVA4UjlIdnA5dC8wUEtka0JrQmowVjc3bFZXMVFmNk9leFhQeHZnMG8xTXlN?=
- =?utf-8?B?MzlsT1FnNEJ4Ly9zQTZoQTlXY0c2VkhOVGNJc2VVUTE2UTRVNXh2STd6emFX?=
- =?utf-8?B?N1ZOa09zSmJKSVMybHdlN2FnaWhsMjZobVZNRTJWSFFJaDFhN1ZiOCtZeitn?=
- =?utf-8?B?TXRaS0hKU1RtWEt1UHhPZ1RpbVRZbGZCM2FkVGQ4RW5nRUVkVU9ENWRPWGhU?=
- =?utf-8?B?R09rcDd4VEZoUjNxa2JDM2JOYkVvRkpmRXpvVjExeTdHdk9ibExlZldsODJh?=
- =?utf-8?B?eW5oRUJUTTRUdmQzRGpuZHIxbmFvZXZ6Yy9FaU9vMGdRdmk1Q0d4bmc4eFM3?=
- =?utf-8?B?MWFIcUZnN0pKMlhiTVVjSDU2VUdYS2FMc3Q0dW9SdWFQRWYrZ1I5YVd3cGdX?=
- =?utf-8?B?VUdkS3BiWmVraDQrU21USXRQU3g2VHd0RSt4NkRKcDd2T0V1UGFndmRSaUYr?=
- =?utf-8?B?REpBYi9PRGdodExlbVZYVEdwR0w5cHZ2YW5jeDFGa3krM1V2d0R6aVpseUM5?=
- =?utf-8?B?Q0gwd0FEU0JGWjNLSnYwYzdiajFCVUdjUk5kaldrZGJlTTdzendNMUo5R0ZO?=
- =?utf-8?B?dkx1bVkyV1ppdmU0eHpYaUxGN3ZnOVMwMjZla1E4bzlFS3liUGRwM1dGakZS?=
- =?utf-8?B?bmUxdFZZeU91NkEyNVlrMS96WmdjMUxGY0JTYTVXakhrM2x0bWJWVXpscGlH?=
- =?utf-8?B?U1JVZVhwREV5MmsrYkJHTEtrUXk3QzBGMng4ZHVueGFQSGREV0xNRVgxSUxZ?=
- =?utf-8?B?VHJSRHJ3NkNWNlYyUExCRGRFTWFFNENrMWpGWEJ4UlkxRTRRM1ZRQTE3MUtD?=
- =?utf-8?B?TWFLZHV1TDduY2tNWldKL2EwaDl3ZXRsQ0Evck9LS1JvdVdVRXVxWk14dUlU?=
- =?utf-8?Q?wPpNKyy2boTWceEH/PbGTuHPu?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0659686a-3e34-4da9-f8ee-08dd2e02abfe
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2025 03:31:56.7944
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8/ojJomCGBnndatOzqrC7LGx9KS5qBtt/zuHfa+R2n3u5do6zpe+OJpz4+j28rVXy8r7y5sWm/zRb0ATZZDafQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8528
+Content-Transfer-Encoding: 8bit
 
-On 12/28/2024 10:52, Hans de Goede wrote:
-> acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
-> IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
-> the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
-> check is by far the most expensive check done by acpi_dev_irq_override(),
-> make this call the last check done by acpi_dev_irq_override() so that it
-> will be called at max 1 time instead of 30 times.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Hello,
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Some drivers may need to dynamically modify their selected `choices`.
+Such is the case of the acer-wmi driver, which implemented their own
+profile cycling method, because users expect different profiles to be
+available whether the laptop is on AC or not [1].
 
-> ---
->   drivers/acpi/resource.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index ab4c0e0b6b8e..7d6537ea176f 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -678,11 +678,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
->   	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
->   		const struct irq_override_cmp *entry = &override_table[i];
->   
-> -		if (dmi_check_system(entry->system) &&
-> -		    entry->irq == gsi &&
-> +		if (entry->irq == gsi &&
->   		    entry->triggering == triggering &&
->   		    entry->polarity == polarity &&
-> -		    entry->shareable == shareable)
-> +		    entry->shareable == shareable &&
-> +		    dmi_check_system(entry->system))
->   			return entry->override;
->   	}
->   
+These series would allow acer-wmi to simplify this custom cycling method
+to use platform_profile_cycle(), as it's already being proposed in these
+series [2]; without changing expected behaviors, by refreshing their
+selected choices on AC connect/disconnect events, which would also solve
+this discussion [3].
+
+Additionally, I think the platform_profile_ops approach would enable us
+to hide the platform_profile_handler in the future, and instead just pass
+the class device to get/set methods like the HWMON subsystem does.
+
+I think having this kind of flexibility is valuable. Let me know what you
+think!
+
+These series are based on top of pdx86/for-next branch.
+
+~ Kurt
+
+[1] https://lore.kernel.org/platform-driver-x86/6a9385e6-8c5a-4d08-8ff9-728ac40792d2@gmail.com/
+[2] https://lore.kernel.org/platform-driver-x86/20250104-platform_profile-v2-0-b58164718903@gmail.com/
+[3] https://lore.kernel.org/platform-driver-x86/20241210001657.3362-6-W_Armin@gmx.de/
+
+Kurt Borja (3):
+  ACPI: platform_profile: Add ops member to handlers
+  ACPI: platform_profile: Add `choices` to platform_profile_ops
+  ACPI: platform_profile: Add platform_profile_refresh_choices()
+
+ drivers/acpi/platform_profile.c               | 39 ++++++++++++--
+ .../surface/surface_platform_profile.c        | 24 ++++++---
+ drivers/platform/x86/acer-wmi.c               | 35 ++++++------
+ drivers/platform/x86/amd/pmf/sps.c            | 23 +++++---
+ drivers/platform/x86/asus-wmi.c               | 24 ++++++---
+ drivers/platform/x86/dell/alienware-wmi.c     | 19 ++++---
+ drivers/platform/x86/dell/dell-pc.c           | 34 +++++++-----
+ drivers/platform/x86/hp/hp-wmi.c              | 53 +++++++++++++------
+ drivers/platform/x86/ideapad-laptop.c         | 23 +++++---
+ .../platform/x86/inspur_platform_profile.c    | 22 +++++---
+ drivers/platform/x86/thinkpad_acpi.c          | 23 +++++---
+ include/linux/platform_profile.h              | 16 ++++--
+ 12 files changed, 237 insertions(+), 98 deletions(-)
+
+
+base-commit: 6b228cfc52a6e9b7149cf51e247076963d6561cd
+-- 
+2.47.1
 
 
