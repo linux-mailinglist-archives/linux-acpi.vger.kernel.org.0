@@ -1,161 +1,164 @@
-Return-Path: <linux-acpi+bounces-10385-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10386-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2439FA025F6
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 13:50:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C22A026C6
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 14:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75C223A5A48
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 12:49:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25CD5188503D
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 13:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142231DF255;
-	Mon,  6 Jan 2025 12:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9167A1DDC22;
+	Mon,  6 Jan 2025 13:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bMsA9zVJ"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="a6r/e+yp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99541DED79
-	for <linux-acpi@vger.kernel.org>; Mon,  6 Jan 2025 12:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D2C1DA100;
+	Mon,  6 Jan 2025 13:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736167663; cv=none; b=bgiDx8gzkAOxK7GHJ70+woUeF+BY9f5YT+pZCXKYs1UJn4fB4FUEY8YPuVmMUMC17NOdPUmvxdqGA96ZUQNC4DiwyBzUlcbFPhFOPNsVUOhA2cZT5+yhYPNoW5UgK/8rM4DWeC6xHY+/LmmqQB4UI+BuzggTy6287zyKeuQShwE=
+	t=1736170716; cv=none; b=D0XO/MN61rL4L3jTTu27Yv7/nZtQ12CZeePnfO3FKeD0g4Ww8OnerEAYCejjEp7HDXUuVgo14tBBM+mPP/XpcSSd+cqLOnpGlVcImu5lmRFGdFFuKhZXrBc4jSZ82AFh8pYPZM5ZJr2p22ZqnzViFuI2AgyqyvtdPN9WpDmZtEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736167663; c=relaxed/simple;
-	bh=cKNc9KoYETCeTPuJLTqCyQX106fXhXFr33sir8gG/24=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tqOccCZSS1O4N7PdkRbPWPuFMfP5t+XUDvUwxKyWKVFfWk+DSWDIgE7O7/3nrF3ZZp65bjAuzRzLZhoc+9DrGwsinQ+u+niY2h/sfdsXuIZ0Dq/Huoc17KjeQuZYIgcycwMES1Trluu4XMy0afMIKAvW8GsjpnmBV1vdWOq+pMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bMsA9zVJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736167660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dkb+rY3M+7dZ1Zo79DORBPQFm2iH+/jBnX4+iKG/QsU=;
-	b=bMsA9zVJB5upzqfO8/b3oKPNF6WY4/1BGkrL5O19rTm89vhWmyMUWPi5ZL+9NSshTbLjOX
-	gxOCNs5UoLE4l66dW7HVMd/MMR5xHwqq/hTtEs/CoJtk39LJYEaDRa0zdBBM+UqSnYra38
-	GjaNWHkI3FsrzlnIHTfdfXAjTXBhvRA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-NIfE1FERNwSk7HELHZKIdw-1; Mon, 06 Jan 2025 07:47:38 -0500
-X-MC-Unique: NIfE1FERNwSk7HELHZKIdw-1
-X-Mimecast-MFC-AGG-ID: NIfE1FERNwSk7HELHZKIdw
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aaf901a0ef9so343287966b.0
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Jan 2025 04:47:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736167657; x=1736772457;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dkb+rY3M+7dZ1Zo79DORBPQFm2iH+/jBnX4+iKG/QsU=;
-        b=D3BlhVGv+D66CZsLpRyv7ufyl7VAilggZUGOtiuO58ehQn1lrjUGhINUISg8ZxWy8F
-         8JGxTS63TANvB2m9JGnYPYO9WK3Y834INZbJN+NHZYXgfl96Bn5lKIp6KF25rX6ren+M
-         Qt0+c8IiBsFNPWp7828uK+KGaChKJc/DdkNFUr1KgOYHGcbjcV+oiQEhe2xAdz0/kcdh
-         xwv+dRThJ/DK2sa191Kec6kiiN7ZWXN7SJ7pguiebR0Sisrn08W3tngN3FtJJvm4jiNg
-         CLICmjdnIVkX6QVodEl4lcq1r3dYoIsqPxG4BAHCiOuBt8/xc+lBvmPimZ14oA2vLdph
-         O5Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVKmq5S913KIsgbW+z/v+Ov2NGbkCiF3Bsd4Y5uoqPk9L9hOXwTt/ciGaqXNZwTjdK+BdYmJJJf0aPZ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx27KkNNEP3egjgQfgLqFeu3iWKNh4LXmAQCzB7R7OhXcRsKK+8
-	Va/lecT1nnjvqVc+IhplIw9aI2QYrAudWWtE7MMeTvfH15EU6qy9FAwFfhKeWcBxrghfMyaz6qm
-	JBwIu0IO8UYCX4hRsjnZ/or2AaAiINocc44fRmCYDAxbC1CpOBfYK8ha52Lg=
-X-Gm-Gg: ASbGncvW+Yhb/Z1E2+5SoOnKcP/VP62EHevJ0WhaWyvpXHu23qiOypN8I+zxrwKD6e4
-	Uomy9q0mJyCOr5ICukPPbCEzWhognOE3ALAyRbN45WBawDHPEZbSPMRvsPAG8hRWl17g5CUUAGX
-	2xgcgj9WA7Jq6YBi93GeoRokKZBH3PhK5F3TFow7Hqor3FzoGrFOZD6rexyD5ZqbtZg3EO6EM88
-	J5UTBeYt0s14Oc8x1XFnomPcjKz0JtfThd1SP3C5tQfJnt90vJC2hWIbXIHTec=
-X-Received: by 2002:a17:907:3f9e:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-aac2d446f68mr4754742566b.6.1736167657220;
-        Mon, 06 Jan 2025 04:47:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2ZtMJkNlBqhQHyaJJvhOgi94/VowQ89yDD5sfDE7wLG6cS+OJlemHSlP0Pxsa12YGeTk1xw==
-X-Received: by 2002:a17:907:3f9e:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-aac2d446f68mr4754741066b.6.1736167656855;
-        Mon, 06 Jan 2025 04:47:36 -0800 (PST)
-Received: from [192.168.245.203] ([109.37.140.14])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e830af1sm2241780866b.14.2025.01.06.04.47.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 04:47:36 -0800 (PST)
-Message-ID: <f46c5c52-b49a-433b-81cb-ae1e5d5d3ed7@redhat.com>
-Date: Mon, 6 Jan 2025 13:47:35 +0100
+	s=arc-20240116; t=1736170716; c=relaxed/simple;
+	bh=+jOH/os/OH2wiXEF/8CVroc8Vk6VDiIIXXaceeAFkhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=umVzGu7IVkX/EAaNU7NVVxv4Pya4GL0zx675ziox/loaWF+uuAxc5sIuLi5I1AMXeW2B7ZFtUOTkIbiRuMoTx7aYqEi5e0lpcLIL+EAMSadvtKsp570Dqkqygz9k3naJ1cPVFBwlPQLPGHHR4ii84pquScCaeN2O+SJfyc0R95o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=a6r/e+yp; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B576540E0264;
+	Mon,  6 Jan 2025 13:38:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id H0HQOCO2LQHj; Mon,  6 Jan 2025 13:38:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1736170706; bh=vapTAC/GEEGTnYZ53xdjNO/fhQQizrf5LOYcJ/SbwYg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a6r/e+ypRHhvgbzh/mgij/5mJlINJJ6teS9ui0CKYuuhEQQzvPk88j8Qo1uF6HgVY
+	 y7uHlTsz+z4b28mjXefVpUxSVF3629CxLIPUPGob5zJpBPPTNxrZZlpIUA4spHVKgq
+	 8wv9JBYWNgKDxkBrxCUcHpkHed/D6r4VU8kvxaUMonfXUGpZCuQIBbkGKA0gLohUpj
+	 shXxeLOLWZrxRJEDJ7T0/I6MRqnuaLOvHEENc44GIdVSQrGmia1E5m0gFMKnEQQ+Cu
+	 HgN73nLNk2nX7sOgdye+iab+ZPug9yNYae2YqU2dyQ4n1xtRKsqyqW/xqxA7EJZdaM
+	 j2Pttwql9X5yJMtiFZzz3h9IQ+QAnezz/Yeu0DW6rnC7iKrMuk/P8tnaVxqu972FoF
+	 +bf5Wuwps1Zjis54u7LFzxu0zCmab48GtFzFhdSnhird8p/ekllkn3H4NialDr8mLC
+	 tC2JSsDD+tKqjO/IUSo0ZFRcXo+GhCL6qjdIX1/hehTzPJrh8zy/KKSy7LpTgqho8R
+	 qIxJqc5tGD1xvrPMSi0kY84DY7SZXv/mAxFbJooMcdJTbbrnBzI3sfiQpqMk1l6WAV
+	 rCyp1rTorZ9PAFQFqkTHydNY4/Ie+/fAfonKg/1wHK/yaED+HaUJwzSfbDnB8Wm9pg
+	 hrky52M2BnDnUbve+dlUu4yg=
+Received: from zn.tnic (p200300EA971f93E8329C23fFFeA6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:93e8:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2C9A140E0163;
+	Mon,  6 Jan 2025 13:37:43 +0000 (UTC)
+Date: Mon, 6 Jan 2025 14:37:36 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH v18 01/19] EDAC: Add support for EDAC device features
+ control
+Message-ID: <20250106133736.GDZ3vcoEBa-lJwqAxL@fat_crate.local>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+ <20250106121017.1620-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to
- irq1_level_low_skip_override[]
-To: Gustavo Azor <gazo11@mail.com>, bugzilla-daemon@kernel.org,
- jwrdegoede@fedoraproject.org, linux-acpi@vger.kernel.org,
- stable@vger.kernel.org, rafael@kernel.org
-References: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250106121017.1620-2-shiju.jose@huawei.com>
 
-Hi Gustavo,
+On Mon, Jan 06, 2025 at 12:09:57PM +0000, shiju.jose@huawei.com wrote:
+> +int edac_dev_register(struct device *parent, char *name,
+> +		      void *private, int num_features,
+> +		      const struct edac_dev_feature *ras_features)
+> +{
+> +	const struct attribute_group **ras_attr_groups;
+> +	struct edac_dev_feat_ctx *ctx;
+> +	int attr_gcnt = 0;
+> +	int ret, feat;
+> +
+> +	if (!parent || !name || !num_features || !ras_features)
+> +		return -EINVAL;
+> +
+> +	/* Double parse to make space for attributes */
+> +	for (feat = 0; feat < num_features; feat++) {
+> +		switch (ras_features[feat].ft_type) {
+> +		/* Add feature specific code */
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+> +	if (!ctx)
+> +		return -ENOMEM;
+> +
+> +	ras_attr_groups = kcalloc(attr_gcnt + 1, sizeof(*ras_attr_groups), GFP_KERNEL);
+> +	if (!ras_attr_groups) {
+> +		ret = -ENOMEM;
+> +		goto ctx_free;
+> +	}
+> +
+> +	attr_gcnt = 0;
+> +	for (feat = 0; feat < num_features; feat++, ras_features++) {
+> +		switch (ras_features->ft_type) {
+> +		/* Add feature specific code */
+> +		default:
+> +			ret = -EINVAL;
+> +			goto groups_free;
+> +		}
+> +	}
+> +
+> +	ctx->dev.parent = parent;
+> +	ctx->dev.bus = edac_get_sysfs_subsys();
+> +	ctx->dev.type = &edac_dev_type;
+> +	ctx->dev.groups = ras_attr_groups;
+> +	ctx->private = private;
+> +	dev_set_drvdata(&ctx->dev, ctx);
+> +
+> +	ret = dev_set_name(&ctx->dev, name);
+> +	if (ret)
+> +		goto groups_free;
+> +
+> +	ret = device_register(&ctx->dev);
+> +	if (ret) {
+> +		put_device(&ctx->dev);
+> +		return ret;
 
-Most of us have taken 2 weeks off around Christmas + New year.
+Who is freeing ctx and ras_attr_groups when you return here?
 
-Normal kernel patch review processes should be starting up again now,
-so some patience please and then this patch should be merged soon.
+-- 
+Regards/Gruss,
+    Boris.
 
-Regards,
-
-Hans
-
-
-
-On 28-Dec-24 6:50 AM, Gustavo Azor wrote:
-> 
-> 
->  
-> 
-> Estimated people:
-> Seems to me, I browse drivers/acpi/resources.c: the patch was not included in kernel versions stable 6.12.7 or long term 6.6.68.
-> I hope will be include in mainline 6.13.-rc5 to inform if work in the ASUS Vivobook 15 X1504VAP_X1504VA keyboard.
-> I have not idea how work with git diff or compiling kernels to try the patch, and need to try in installed kernel.
-> Thanks.Regards.
-> 
-> Sent: Friday, December 20, 2024 at 8:23 PM
-> From: bugzilla-daemon@kernel.org
-> To: gazo11@mail.com
-> Subject: [Bug 219224] Laptop Internal Keyboard not working on ASUS VivoBook E1404GA on ubuntu 24.04.
-> https://bugzilla.kernel.org/show_bug.cgi?id=219224
-> 
-> --- Comment #11 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-> (In reply to gazo11 from comment #10)
->> Hello I have the same problem for dmidecode:
->>
->>
->> System Information
->> Manufacturer: ASUSTeK COMPUTER INC.
->> Product Name: ASUS Vivobook 15 X1504VAP_X1504VA
->> Version: 1.0
->> Serial Number: S1N0CV02L86302G
->> UUID: cdc508f0-d3f1-f743-bce4-5eb9d4c06fda
->> Wake-up Type: Power Switch
->> SKU Number:
->> Family: ASUS Vivobook 15
->>
->> Its possible to get this model listed in future kernels? Thanks!
-> 
-> Thank you for reporting this, I've submitted a patch to add this to the
-> irq1_level_low_skip_override[] list:
-> 
-> https://lore.kernel.org/linux-acpi/20241220181352.25974-1-hdegoede@redhat.com/[https://lore.kernel.org/linux-acpi/20241220181352.25974-1-hdegoede@redhat.com/]
-> 
-> --
-> You may reply to this email to add a comment.
-> 
-> You are receiving this mail because:
-> You are on the CC list for the bug.
-> 
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
