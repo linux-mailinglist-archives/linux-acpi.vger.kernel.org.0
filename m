@@ -1,191 +1,163 @@
-Return-Path: <linux-acpi+bounces-10393-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10394-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DA9A030C6
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 20:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BECA03506
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 03:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 570F13A3122
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Jan 2025 19:37:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F493A4B39
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 02:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBAF1DFE1D;
-	Mon,  6 Jan 2025 19:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A9184D2B;
+	Tue,  7 Jan 2025 02:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="1ey1cL42";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZGt1F8RM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315211DFE1E;
-	Mon,  6 Jan 2025 19:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC122594A5;
+	Tue,  7 Jan 2025 02:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736192087; cv=none; b=FrxK522WDqRPlCvrT1I2aCSBT5jwUJHpkOIhZrgFVvyWZ8SJcDcGkR7MkzPDFL/boiSpLmQb9aJ65d36y1UNwfsqnsbXyKlgtELsZKm7JS6FB3HY+tRbacpfIq64mY7lwBnmBoX4OAyVNVMt88KHDbc7kPGxsQ2zE9vSGpN2g98=
+	t=1736216381; cv=none; b=uCS8cG8NgvnUezIdX1R6f15OESB5QZTiKQ1f7r+wiCyREV4PDFaUjA5DP0fPLR/FBqpLN/1OxFG3+fGog1c6fy1a5//i16QmX9e3H4UZwJLesqV2+ks/cOuHDhwEUl9ctHc+Xbj5W7tHZYqqFqHN8eLQz0JRa8Y3xii/s//0nog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736192087; c=relaxed/simple;
-	bh=vdpye+LKq96Nf2Fi3BtWeto4gqAogyIqiCrq//WLkxE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dJ+K1OsViFKeBUNoQhV4blh5an1xTxn9ESmjpudcVvzQ5PuRksm7YxfCEVrZjkJV3Nh5o6kAVR8C6+whM1fgUpmhha/jMsuB6/p2VF56dyVI97ruu5W3PCsqxkiQ3lce3A/9Be0fyOaLpSFZYzHGj0V9XSGT2GKZ1/niMpzet6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YRkm30fJWz6K60m;
-	Tue,  7 Jan 2025 03:30:11 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
-	by mail.maildlp.com (Postfix) with ESMTPS id 81746140A90;
-	Tue,  7 Jan 2025 03:34:41 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 6 Jan 2025 20:34:41 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Mon, 6 Jan 2025 20:34:41 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v18 02/19] EDAC: Add scrub control feature
-Thread-Topic: [PATCH v18 02/19] EDAC: Add scrub control feature
-Thread-Index: AQHbYDQd8xBjK3PZSkqZdrlJ+rHfL7MJ1jmAgABIhvA=
-Date: Mon, 6 Jan 2025 19:34:41 +0000
-Message-ID: <36665b7bf4974020a34d08a7ddf6d554@huawei.com>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
-	<20250106121017.1620-3-shiju.jose@huawei.com>
- <20250106155733.GAZ3v9bQspKvdi3lZE@fat_crate.local>
-In-Reply-To: <20250106155733.GAZ3v9bQspKvdi3lZE@fat_crate.local>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1736216381; c=relaxed/simple;
+	bh=whxcJEUUdxrpr853/By+jQ/3XvE0gYgglj51JD5j1jQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=C/8W3vtv6YJ9Fto9tDw5gM3Llf6ez6fEudLLy1yA+H1TYSS6SgsFtDV8MB8qLsSFmH8ICej78DzsXMxnrydRmHHxF/7VHGNV5SSS7bxrcjiZuZ4i2IDqVSt37WM8c3myOyozAWCqYW6N50fSDBhYSpQtb4VOLcBG6F9o4X0EYt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=1ey1cL42; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZGt1F8RM; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E29D111402C7;
+	Mon,  6 Jan 2025 21:19:37 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-02.internal (MEProxy); Mon, 06 Jan 2025 21:19:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1736216377;
+	 x=1736302777; bh=whxcJEUUdxrpr853/By+jQ/3XvE0gYgglj51JD5j1jQ=; b=
+	1ey1cL42WMzvARuyEMRIBMC9LrPdi4v1z8kYxhu9HtWXiDqYgLAPEM/YJYaJepdQ
+	42viM+jxqTLa9BjxvMk7vs0pvvyq6Quft1YhdN3rFHa8SO3EcYmNe9WbJkqo9OHV
+	CSvRpjpp4tWrAZR6nPlq53fH0FBB93pmYkoSSL09vH5dwl4/nFLSoon7ZSX/dnhj
+	FQaHqdPUY4G6n59yzCWOioEOpeB9GHoANzowt4vmpYEP7kb1Y95jJ84JTMnai15S
+	oFimElCd6b9YthOfSm9Zh0FnCVELSlI2ERJE16/l6nknsijXgHgiwfJc6LOJIGwi
+	nzT344WhGwaBMP8BFyTdpw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736216377; x=
+	1736302777; bh=whxcJEUUdxrpr853/By+jQ/3XvE0gYgglj51JD5j1jQ=; b=Z
+	Gt1F8RM2WkZ6kPyG8jDXCR0gFgMelur824ObxECH0o+99a+rkOUVCwhKT/VgwKgG
+	L49JiS1yRKuuCKO22JKT/CHpHLxTcAL67Sp+pneD/kg7mnLUxGvOjB+bSEol8i9S
+	uPo5IwvIB9TNe9a9Nofhs2IuARRdHO5/F65oKqXgBN4cFK43sZSNQ8aRgfnTcG9/
+	vKZLS0D26ZKxa2t0fQg8OHqJEUl2PxZssQP0A56oEf9jL+vJf+Lz5AJslS4ebaoQ
+	45okAxLdEjW2TUMYnnhGAUJhl2jQh1oIpEPEn0uacPjYTDjwnMYaYWo2zyxopMao
+	1Rxof4lVitvQfXONL4J4A==
+X-ME-Sender: <xms:N498Z2nHU_4oIfOt9pJSv0DjOhtM-b3Zz8jYeDTPrH2CQedZRZX9nQ>
+    <xme:N498Z91ZlrnjbDpVHSGg5Crg5q9SyDUtI8q69U7NQvluvKljUn8HFCmU3gF-z1JPX
+    zpK3jlSJhI1kPvk3Pw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeguddggeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedfofgrrhhkucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnh
+    hovhhosehsqhhuvggssgdrtggrqeenucggtffrrghtthgvrhhnpefhuedvheetgeehtdeh
+    tdevheduvdejjefggfeijedvgeekhfefleehkeehvdffheenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdqlhgvnhhovhho
+    sehsqhhuvggssgdrtggrpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepshhhhigrmhdqshhunhgurghrrdhsqdhksegrmhgurdgtohhmpdhr
+    tghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtph
+    htthhopehurdhklhgvihhnvgdqkhhovghnihhgsegsrgihlhhisghrvgdrtghomhdprhgt
+    phhtthhopehikhgvrdhprghnsegtrghnohhnihgtrghlrdgtohhmpdhrtghpthhtohepug
+    gvlhhlrdgtlhhivghnthdrkhgvrhhnvghlseguvghllhdrtghomhdprhgtphhtthhopegr
+    lhgvgigsvghlmhegkeesghhmrghilhdrtghomhdprhgtphhtthhopegtohhlihhnrdhird
+    hkihhnghesghhmrghilhdrtghomhdprhgtphhtthhopegtohhrvghnthhinhdrtghhrghr
+    hiesghhmrghilhdrtghomhdprhgtphhtthhopeguvghrvghkjhhohhhnrdgtlhgrrhhkse
+    hgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:N498Z0op3Y51SDYOkqk2ZtRdIMc3zl_Rj4aL8GdpBtAKS1PuWu4WYg>
+    <xmx:N498Z6l8XgiHhtNWEO08cmrs6tuPYrtJZ98SACGJ-AgIuRRydvNOlw>
+    <xmx:N498Z02uSipbzfLSVNWbIiB5OWdiFHmHWLWaQf4EhhsJw4B18mFmXQ>
+    <xmx:N498ZxsBSBBjfGCv60L6kw_rvshlfAmLt26kisLRkmnressUJp1b6w>
+    <xmx:OY98Z2HXH_teyoKA0gRjuLXUOjuzfNumWAgrVkQ-X9EycfIIeJIoCg9n>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id F00793C0066; Mon,  6 Jan 2025 21:19:34 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Mon, 06 Jan 2025 21:19:14 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Kurt Borja" <kuurtb@gmail.com>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
+Cc: josh@joshuagrisham.com, hridesh699@gmail.com,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
+ "Maximilian Luz" <luzmaximilian@gmail.com>,
+ "Hans de Goede" <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Lee Chun-Yi" <jlee@suse.com>,
+ "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
+ "Corentin Chary" <corentin.chary@gmail.com>,
+ "Luke D . Jones" <luke@ljones.dev>, "Lyndon Sanche" <lsanche@lyndeno.ca>,
+ "Ike Panhc" <ike.pan@canonical.com>,
+ "Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
+ "Armin Wolf" <W_Armin@gmx.de>, "Limonciello,
+ Mario" <mario.limonciello@amd.com>,
+ "Colin Ian King" <colin.i.king@gmail.com>,
+ "Alexis Belmonte" <alexbelm48@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ "Ai Chao" <aichao@kylinos.cn>, "Gergo Koteles" <soyer@irl.hu>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, Dell.Client.Kernel@dell.com,
+ ibm-acpi-devel@lists.sourceforge.net
+Message-Id: <33a5b6a2-e4df-4bfc-88a9-a9e8309c7f7a@app.fastmail.com>
+In-Reply-To: <20250106044605.12494-1-kuurtb@gmail.com>
+References: <20250106044605.12494-1-kuurtb@gmail.com>
+Subject: Re: [RFC PATCH 0/3] ACPI: platform_profile: Let drivers dynamically refresh
+ choices
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
-bGllbjguZGU+DQo+U2VudDogMDYgSmFudWFyeSAyMDI1IDE1OjU4DQo+VG86IFNoaWp1IEpvc2Ug
-PHNoaWp1Lmpvc2VAaHVhd2VpLmNvbT4NCj5DYzogbGludXgtZWRhY0B2Z2VyLmtlcm5lbC5vcmc7
-IGxpbnV4LWN4bEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPmFjcGlAdmdlci5rZXJuZWwub3Jn
-OyBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+dG9u
-eS5sdWNrQGludGVsLmNvbTsgcmFmYWVsQGtlcm5lbC5vcmc7IGxlbmJAa2VybmVsLm9yZzsNCj5t
-Y2hlaGFiQGtlcm5lbC5vcmc7IGRhbi5qLndpbGxpYW1zQGludGVsLmNvbTsgZGF2ZUBzdGdvbGFi
-cy5uZXQ7IEpvbmF0aGFuDQo+Q2FtZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsg
-ZGF2ZS5qaWFuZ0BpbnRlbC5jb207DQo+YWxpc29uLnNjaG9maWVsZEBpbnRlbC5jb207IHZpc2hh
-bC5sLnZlcm1hQGludGVsLmNvbTsgaXJhLndlaW55QGludGVsLmNvbTsNCj5kYXZpZEByZWRoYXQu
-Y29tOyBWaWxhcy5TcmlkaGFyYW5AYW1kLmNvbTsgbGVvLmR1cmFuQGFtZC5jb207DQo+WWF6ZW4u
-R2hhbm5hbUBhbWQuY29tOyByaWVudGplc0Bnb29nbGUuY29tOyBqaWFxaXlhbkBnb29nbGUuY29t
-Ow0KPkpvbi5HcmltbUBhbWQuY29tOyBkYXZlLmhhbnNlbkBsaW51eC5pbnRlbC5jb207DQo+bmFv
-eWEuaG9yaWd1Y2hpQG5lYy5jb207IGphbWVzLm1vcnNlQGFybS5jb207IGp0aG91Z2h0b25AZ29v
-Z2xlLmNvbTsNCj5zb21hc3VuZGFyYW0uYUBocGUuY29tOyBlcmRlbWFrdGFzQGdvb2dsZS5jb207
-IHBnb25kYUBnb29nbGUuY29tOw0KPmR1ZW53ZW5AZ29vZ2xlLmNvbTsgZ3RoZWxlbkBnb29nbGUu
-Y29tOw0KPndzY2h3YXJ0ekBhbXBlcmVjb21wdXRpbmcuY29tOyBkZmVyZ3Vzb25AYW1wZXJlY29t
-cHV0aW5nLmNvbTsNCj53YnNAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsgbmlmYW4uY3hsQGdtYWls
-LmNvbTsgdGFueGlhb2ZlaQ0KPjx0YW54aWFvZmVpQGh1YXdlaS5jb20+OyBaZW5ndGFvIChCKSA8
-cHJpbWUuemVuZ0BoaXNpbGljb24uY29tPjsgUm9iZXJ0bw0KPlNhc3N1IDxyb2JlcnRvLnNhc3N1
-QGh1YXdlaS5jb20+OyBrYW5na2FuZy5zaGVuQGZ1dHVyZXdlaS5jb207DQo+d2FuZ2h1aXFpYW5n
-IDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT47IExpbnV4YXJtDQo+PGxpbnV4YXJtQGh1YXdlaS5j
-b20+DQo+U3ViamVjdDogUmU6IFtQQVRDSCB2MTggMDIvMTldIEVEQUM6IEFkZCBzY3J1YiBjb250
-cm9sIGZlYXR1cmUNCj4NCj5PbiBNb24sIEphbiAwNiwgMjAyNSBhdCAxMjowOTo1OFBNICswMDAw
-LCBzaGlqdS5qb3NlQGh1YXdlaS5jb20gd3JvdGU6DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9l
-ZGFjL01ha2VmaWxlIGIvZHJpdmVycy9lZGFjL01ha2VmaWxlIGluZGV4DQo+PiBmOWNmMTlkOGQx
-M2QuLmExNjI3MjZjYzZiOSAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvZWRhYy9NYWtlZmlsZQ0K
-Pj4gKysrIGIvZHJpdmVycy9lZGFjL01ha2VmaWxlDQo+PiBAQCAtMTAsNiArMTAsNyBAQCBvYmot
-JChDT05GSUdfRURBQykJCQk6PSBlZGFjX2NvcmUubw0KPj4NCj4+ICBlZGFjX2NvcmUteQk6PSBl
-ZGFjX21jLm8gZWRhY19kZXZpY2UubyBlZGFjX21jX3N5c2ZzLm8NCj4+ICBlZGFjX2NvcmUteQkr
-PSBlZGFjX21vZHVsZS5vIGVkYWNfZGV2aWNlX3N5c2ZzLm8gd3Eubw0KPj4gK2VkYWNfY29yZS15
-CSs9IHNjcnViLm8NCj4NCj5Zb3UncmUgbm90IGJlaW5nIHNlcmlvdXMgaGVyZSAtIHRoaXMgc2Ny
-dWIgZ3VuayBpcyBlbmFibGVkIGJ5IGRlZmF1bHQgb24NCj4qZXZlcnl0aGluZyo/DQo+DQo+U28g
-dGhlIG1haW4gdXNlciBvZiB0aGlzIGlzIGdvaW5nIHRvIGJlIENYTCwgQUZBSUNULCBzbyB0aGUg
-c2NydWJiaW5nIGd1bmsgc2hvdWxkDQo+ZGVwZW5kIGF0IGxlYXN0IG9uIGl0IG9yIHNvLiBEZWZp
-bml0ZWx5IG5vdCB1bmNvbmRpdGlvbmFsbHkgZW5hYmxlZCBvbiBldmVyeSBidWlsZC4NClRoYW5r
-cyBmb3IgdGhlIGNvbW1lbnQuDQpNeSB1bmRlcnN0YW5kaW5nIGlzIHRoYXQgeW91IG1lYW50IHRo
-ZSBmb2xsb3dpbmcgY2hhbmdlcyAoZGlmZiB0byB0aGlzIHBhdGNoKSwgZm9yIHNjcnViPw0KKGFu
-ZCBzaW1pbGFyIGZvciBvdGhlciBmZWF0dXJlcykuIA0KUGxlYXNlIGxldCBtZSBrbm93IGlmIHlv
-dSBuZWVkIGFueSBjb3JyZWN0aW9ucy4NCiAgICANCj09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT0NCmRpZmYgLS1naXQgYS9kcml2ZXJzL2N4bC9LY29uZmlnIGIvZHJpdmVy
-cy9jeGwvS2NvbmZpZw0KaW5kZXggNjA3OGYwMmU4ODNiLi43ODg2MDk3Zjk5OGYgMTAwNjQ0DQot
-LS0gYS9kcml2ZXJzL2N4bC9LY29uZmlnDQorKysgYi9kcml2ZXJzL2N4bC9LY29uZmlnDQpAQCAt
-MTU4LDcgKzE1OCw3IEBAIGNvbmZpZyBDWExfUkFTX0ZFQVRVUkVTDQogCXRyaXN0YXRlICJDWEw6
-IE1lbW9yeSBSQVMgZmVhdHVyZXMiDQogCWRlcGVuZHMgb24gQ1hMX1BDSQ0KIAlkZXBlbmRzIG9u
-IENYTF9NRU0NCi0JZGVwZW5kcyBvbiBFREFDDQorCXNlbGVjdCBFREFDX0ZFQVRfU0NSVUINCiAJ
-aGVscA0KIAkgIFRoZSBDWEwgbWVtb3J5IFJBUyBmZWF0dXJlIGNvbnRyb2wgaXMgb3B0aW9uYWwg
-YW5kIGFsbG93cyBob3N0IHRvDQogCSAgY29udHJvbCB0aGUgUkFTIGZlYXR1cmVzIGNvbmZpZ3Vy
-YXRpb25zIG9mIENYTCBUeXBlIDMgZGV2aWNlcy4NCmRpZmYgLS1naXQgYS9kcml2ZXJzL2VkYWMv
-S2NvbmZpZyBiL2RyaXZlcnMvZWRhYy9LY29uZmlnDQppbmRleCAwNmY3YjQzYTZmNzguLjcwOWJk
-N2FkODAxNSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvZWRhYy9LY29uZmlnDQorKysgYi9kcml2ZXJz
-L2VkYWMvS2NvbmZpZw0KQEAgLTksNiArOSwxNCBAQCBjb25maWcgRURBQ19BVE9NSUNfU0NSVUIN
-CiBjb25maWcgRURBQ19TVVBQT1JUDQogCWJvb2wNCiANCitjb25maWcgRURBQ19GRUFUX1NDUlVC
-DQorCWJvb2wNCisJaGVscA0KKwkgIFRoZSBFREFDIHNjcnViIGZlYXR1cmUgaXMgb3B0aW9uYWwg
-YW5kIGlzIGRlc2lnbmVkIHRvIGNvbnRyb2wgdGhlDQorCSAgbWVtb3J5IHNjcnViYmVycyBpbiB0
-aGUgc3lzdGVtLiBUaGUgY29tbW9uIHN5c2ZzIHNjcnViIGludGVyZmFjZQ0KKwkgIGFic3RyYWN0
-cyB0aGUgY29udHJvbCBvZiB2YXJpb3VzIGFyYml0cmFyeSBzY3J1YmJpbmcgZnVuY3Rpb25hbGl0
-aWVzDQorCSAgaW50byBhIHVuaWZpZWQgc2V0IG9mIGZ1bmN0aW9ucy4NCisNCiBtZW51Y29uZmln
-IEVEQUMNCiAJdHJpc3RhdGUgIkVEQUMgKEVycm9yIERldGVjdGlvbiBBbmQgQ29ycmVjdGlvbikg
-cmVwb3J0aW5nIg0KIAlkZXBlbmRzIG9uIEhBU19JT01FTSAmJiBFREFDX1NVUFBPUlQgJiYgUkFT
-DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9lZGFjL01ha2VmaWxlIGIvZHJpdmVycy9lZGFjL01ha2Vm
-aWxlDQppbmRleCAxZGU5ZmU2NmFjNmIuLjcxYTUyMjI3MjIxNSAxMDA2NDQNCi0tLSBhL2RyaXZl
-cnMvZWRhYy9NYWtlZmlsZQ0KKysrIGIvZHJpdmVycy9lZGFjL01ha2VmaWxlDQpAQCAtMTAsNyAr
-MTAsOSBAQCBvYmotJChDT05GSUdfRURBQykJCQk6PSBlZGFjX2NvcmUubw0KIA0KIGVkYWNfY29y
-ZS15CTo9IGVkYWNfbWMubyBlZGFjX2RldmljZS5vIGVkYWNfbWNfc3lzZnMubw0KIGVkYWNfY29y
-ZS15CSs9IGVkYWNfbW9kdWxlLm8gZWRhY19kZXZpY2Vfc3lzZnMubyB3cS5vDQotZWRhY19jb3Jl
-LXkJKz0gc2NydWIubyBlY3MubyBtZW1fcmVwYWlyLm8NCisNCitlZGFjX2NvcmUtJChDT05GSUdf
-RURBQ19GRUFUX1NDUlVCKQkrPSBzY3J1Yi5vDQoNCiBlZGFjX2NvcmUtJChDT05GSUdfRURBQ19E
-RUJVRykJCSs9IGRlYnVnZnMubw0KIA0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvcmFzL0tjb25maWcg
-Yi9kcml2ZXJzL3Jhcy9LY29uZmlnDQppbmRleCBiNzc3OTBiZGM3M2EuLjg3MGYzNDY2YzJmNyAx
-MDA2NDQNCi0tLSBhL2RyaXZlcnMvcmFzL0tjb25maWcNCisrKyBiL2RyaXZlcnMvcmFzL0tjb25m
-aWcNCkBAIC00OSw3ICs0OSw3IEBAIGNvbmZpZyBSQVNfRk1QTQ0KIGNvbmZpZyBNRU1fQUNQSV9S
-QVMyDQogCXRyaXN0YXRlICJNZW1vcnkgQUNQSSBSQVMyIGRyaXZlciINCiAJZGVwZW5kcyBvbiBB
-Q1BJX1JBUzINCi0JZGVwZW5kcyBvbiBFREFDDQorCXNlbGVjdCBFREFDX0ZFQVRfU0NSVUINCiAJ
-aGVscA0KIAkgIFRoZSBkcml2ZXIgYmluZHMgdG8gdGhlIHBsYXRmb3JtIGRldmljZSBhZGRlZCBi
-eSB0aGUgQUNQSSBSQVMyDQogCSAgdGFibGUgcGFyc2VyLiBVc2UgYSBQQ0MgY2hhbm5lbCBzdWJz
-cGFjZSBmb3IgY29tbXVuaWNhdGluZyB3aXRoDQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9l
-ZGFjLmggYi9pbmNsdWRlL2xpbnV4L2VkYWMuaA0KaW5kZXggNWQwNzE5MmJmMWE3Li4wZjZjN2Yz
-NTgyYzMgMTAwNjQ0DQotLS0gYS9pbmNsdWRlL2xpbnV4L2VkYWMuaA0KKysrIGIvaW5jbHVkZS9s
-aW51eC9lZGFjLmgNCkBAIC02OTgsOSArNjk4LDE2IEBAIHN0cnVjdCBlZGFjX3NjcnViX29wcyB7
-DQogCWludCAoKnNldF9jeWNsZV9kdXJhdGlvbikoc3RydWN0IGRldmljZSAqZGV2LCB2b2lkICpk
-cnZfZGF0YSwgdTMyIGN5Y2xlKTsNCiB9Ow0KIA0KKyNpZiBJU19FTkFCTEVEKENPTkZJR19FREFD
-X0ZFQVRfU0NSVUIpDQogaW50IGVkYWNfc2NydWJfZ2V0X2Rlc2Moc3RydWN0IGRldmljZSAqc2Ny
-dWJfZGV2LA0KIAkJCWNvbnN0IHN0cnVjdCBhdHRyaWJ1dGVfZ3JvdXAgKiphdHRyX2dyb3VwcywN
-CiAJCQl1OCBpbnN0YW5jZSk7DQorI2Vsc2UNCitzdGF0aWMgaW5saW5lIGludCBlZGFjX3NjcnVi
-X2dldF9kZXNjKHN0cnVjdCBkZXZpY2UgKnNjcnViX2RldiwNCisJCQkJICAgICAgY29uc3Qgc3Ry
-dWN0IGF0dHJpYnV0ZV9ncm91cCAqKmF0dHJfZ3JvdXBzLA0KKwkJCQkgICAgICB1OCBpbnN0YW5j
-ZSkNCit7IHJldHVybiAtRU9QTk9UU1VQUDsgfQ0KKyNlbmRpZg0KIA0KIC4uLg0KPT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQo+DQo+LS0NCj5SZWdhcmRzL0dy
-dXNzLA0KPiAgICBCb3Jpcy4NCj4NCj5odHRwczovL3Blb3BsZS5rZXJuZWwub3JnL3RnbHgvbm90
-ZXMtYWJvdXQtbmV0aXF1ZXR0ZQ0KPg0KDQpUaGFua3MsDQpTaGlqdQ0K
+Hi Kurt,
+
+On Sun, Jan 5, 2025, at 11:45 PM, Kurt Borja wrote:
+> Hello,
+>
+> Some drivers may need to dynamically modify their selected `choices`.
+> Such is the case of the acer-wmi driver, which implemented their own
+> profile cycling method, because users expect different profiles to be
+> available whether the laptop is on AC or not [1].
+>
+> These series would allow acer-wmi to simplify this custom cycling method
+> to use platform_profile_cycle(), as it's already being proposed in these
+> series [2]; without changing expected behaviors, by refreshing their
+> selected choices on AC connect/disconnect events, which would also solve
+> this discussion [3].
+>
+> Additionally, I think the platform_profile_ops approach would enable us
+> to hide the platform_profile_handler in the future, and instead just pass
+> the class device to get/set methods like the HWMON subsystem does.
+>
+> I think having this kind of flexibility is valuable. Let me know what you
+> think!
+>
+
+I personally would love to see how this would be used for the acer issue highlighted to see how it would work out. It feels like the series is short a patch :)
+
+As a side note, I did (many moons ago) propose a change to alter profiles used depending on AC/battery mode (in the thinkpad driver), and it was rejected as something that should be done in user space.
+Your use case does seem somewhat different, but it's similar enough that if you get it working I'd be interested to see if I can take advantage of the approach too.
+
+Mark
 
