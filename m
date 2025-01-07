@@ -1,241 +1,312 @@
-Return-Path: <linux-acpi+bounces-10412-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10413-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3F3A0476D
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:00:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C90A04819
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A60C16645B
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 17:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E6E4164CD5
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 17:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30B41F1306;
-	Tue,  7 Jan 2025 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF891F63C4;
+	Tue,  7 Jan 2025 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zeoyJ4xv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XHDmZd+i"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2053.outbound.protection.outlook.com [40.107.94.53])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81681EBFE4;
-	Tue,  7 Jan 2025 17:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736269207; cv=fail; b=VVp+O8aSV+FTK+aB34iYhf9F7Ct5BeqUwg364NMImUsJE/5q25Z/vrSQbD8pH/RR7j7CK77+xcvqIeKlg6tEVXo1t/TnY12e6SuwNLb9Q2xmZo5K1ZczfdLPs8BiEgsylKHXs9dgNiMqqM+9Fr/BXNpvDcbT9KPtC4yT7KNugB8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736269207; c=relaxed/simple;
-	bh=olJlVousmY2vG3PpuaDn0gsDWLBZjwYfcQRxSPcvrvs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VAytGBwY1zdZKySupfZ95CjSAV37P9A3IEKML14Vow1sJIoJnSMzZCcSdZtsaBXIbCrPGIOGBFlIXqXVhRnTwrnQSyq58LWEDHp3C2WGizpY6SixGLdsp08O4QSe0y/iJkCjEPHK+Qv5ovI4IVqW4Z+VOKlDrzDv58fDxT/Y2Ys=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zeoyJ4xv; arc=fail smtp.client-ip=40.107.94.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Th2BsHXjgUHg2xOC7eLHiYmdC/xRAP86W6bXwC+VowVmFG+TylQs6L16pyyX9B/EsCqrw8WMRBnehFj66+1p1MQyoV0drYdUj9z3H8qPS8smmu+GS/nHQzl/gOe4FP3HC5yxg348l6euf4YwbcnRI6zwu4dvH+ExNFFsOuJgeXUrLbD6ehWwFVzRLNWa9FChDaC0QbdsKN1AfZX9ZLUPVsdYTAPGDCBEjFDUbv6yquCk7t/wytW9V+x3ixcBHzEFuaqy4qjv04n5LWM3CqVhoOdH7fHhp1ews2dExvcmMeMSrJ98JFKJzscbjamO4P0HgVlzcSFUNNa++1KhucsLTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h0oeLKFOSMvzPVCR6PKO85rhYJ1r3OXpjfpwbCva/I0=;
- b=AxGWiVcWRvBGDHNmHuqyljX6ESoGmweGkwf8BkfgkaeKH/htDBXUTpM8/rGTL4BMOjm8tRFQan5tlkvXRCgQP/gioZD6GoTGBUkd13zsKIEhfv+SORJGI8oAl6tNuVX4L2w52SgLk6M9XM3irx3kSVhRg3zHTeRfu1y0oGradsn4uiY/et2HjbgogOYRzC8T4WJRILwpyyajS3IURVsiIZDaRp4QWpOZcQlKxkk0iTwgkL+/I6VGkQlTdDTYD3MV8/2Io/vaZrByDrcyqYR9j7dkfjhP8XBgXO2gHNoW4QPY/+gyjeaPOzqV1O8X7YgujFiWOfYV1bVZq1BEFW16sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h0oeLKFOSMvzPVCR6PKO85rhYJ1r3OXpjfpwbCva/I0=;
- b=zeoyJ4xv8mkJ8V3hzZBmHUCtAgnx/9x4AobBNRH5PnIsWfreAoFffGKprBcQm0fuFjiaKNcqGKvzfKupha6VzcYCbZGuJS3skzbx172CQjtviz83R9gWP9yIvwt2cZnEHE+laGRvWyWLY2V7gFkRB9t4Lp8xsnjGcF6SKobAUic=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY5PR12MB6108.namprd12.prod.outlook.com (2603:10b6:930:27::15)
- by PH7PR12MB7114.namprd12.prod.outlook.com (2603:10b6:510:1ed::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.15; Tue, 7 Jan
- 2025 16:59:56 +0000
-Received: from CY5PR12MB6108.namprd12.prod.outlook.com
- ([fe80::46e5:5b51:72c3:3754]) by CY5PR12MB6108.namprd12.prod.outlook.com
- ([fe80::46e5:5b51:72c3:3754%6]) with mapi id 15.20.8293.000; Tue, 7 Jan 2025
- 16:59:56 +0000
-Message-ID: <b9b8ea58-1e06-4743-9b6c-7b29eeaff0d2@amd.com>
-Date: Tue, 7 Jan 2025 10:59:54 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amd: Fix random crashes due to bad kfree
-To: Chris Bainbridge <chris.bainbridge@gmail.com>
-Cc: amd-gfx@lists.freedesktop.org, alex.hung@amd.com,
- regressions@lists.linux.dev, tjakobi@math.uni-bielefeld.de, lenb@kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>
-References: <Z2yQvTyg_MWwrlj3@debian.local>
-Content-Language: en-US
-From: "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <Z2yQvTyg_MWwrlj3@debian.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0174.namprd13.prod.outlook.com
- (2603:10b6:806:28::29) To CY5PR12MB6108.namprd12.prod.outlook.com
- (2603:10b6:930:27::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2E111CAF;
+	Tue,  7 Jan 2025 17:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736270665; cv=none; b=L8NXKcyQsAzCqP1W6yXlTbWQt04Lh3ayhS1H2Ki/LuMPwapnxrjOY065AJHhcDrOlaRIV1+3ND/CcySsV//1IFqHphbsrc5EgggazCIbyDAEotxwupiXH9rWwyVgDsuKkn63x3oOvJGjXXpguBdK/iiCDIy84Qf/kpGbzQh2A+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736270665; c=relaxed/simple;
+	bh=PT2xxIgbqNizwbPrGMRRavfZUi+HmmVCJloYmVkGeuE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=peLcVwKMT6PRqQxpe7wYxZdMUZ28F54u+lzOa1DL2/56PEg8VfxMqaLkGyLBz9yFC8m7OYV8Z+O/GLEv7BA5xzgzGFuD+/T1l6rq3/FtpH3MNu17k/QtRT0YqU+2LvfuthJX+c9HUq6Z7rNHQUjH4fwrEPg55+2ItzSpdjMMZ8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XHDmZd+i; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736270662; x=1767806662;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PT2xxIgbqNizwbPrGMRRavfZUi+HmmVCJloYmVkGeuE=;
+  b=XHDmZd+i/FnGatJNfjnHxj5wngVsctMQvgaiogKQEzgZZYSZzzVvDOuy
+   I+US2wJADfKGetAT00FqXMqzihMrNPta/cO2DvwGrlqmwbF7GRxfb1kjC
+   UdZAXnU7fXOOdqmWhh37VzG6wka4rJkw0WhZ6B544tnY547ojJDzKfdtS
+   H33VzzU/cg1QbQnRa608ygDR7c/M9ovPASLQ4o4tzijBBWfwMM0szcsIW
+   kNphaQ9dgwrt9n1MIMmoEQ6K8YXKIvzht7sn8bNz19ZLZedOD0ccEqlT3
+   HuEqjK8zkl0Vqiy/8o0PJfnZ7E5Yt2LEtAcOku8EKZQ4ehq7EPUb39mtx
+   g==;
+X-CSE-ConnectionGUID: 4dSkKwu0Rd+qnrTdt4lCLA==
+X-CSE-MsgGUID: x1d+8aW+RJW8xCt+X3XmKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="35698043"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; 
+   d="scan'208";a="35698043"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 09:24:22 -0800
+X-CSE-ConnectionGUID: LN4/mm43Q9qVk2LtRzldpw==
+X-CSE-MsgGUID: Y9HV7T9bQJOhKhxz0o8QDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; 
+   d="scan'208";a="107702950"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.110.189]) ([10.125.110.189])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 09:24:21 -0800
+Message-ID: <accbbbc1-fd0f-4bba-bc0e-300a8edb270e@intel.com>
+Date: Tue, 7 Jan 2025 10:24:19 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6108:EE_|PH7PR12MB7114:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd7b27b6-be44-477e-cac6-08dd2f3cb65a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SmIrQStsVkZiM3FzenFGQlFMZWZ2WnRsb1Y3QVVKdGI5Qng5bGlQUmJLR3RH?=
- =?utf-8?B?VlB4dUg2NGN0bWhuWlJuSWVuRzlaZFhwWmhFWHVBNDdobTYzMXJmaUh3djJt?=
- =?utf-8?B?WjBMT1p6QlRIV29OWTh3dU5uOGI1Wmo1Vk9zeFltTWpud2ZsRFlLSGxPcFY3?=
- =?utf-8?B?ZFRnUHVYZmNqOXh4SmNhamZTR3BCd0ZUYm1NallqemFVbUQzOWQrT2xqK3Q4?=
- =?utf-8?B?b1B6L0JZUlZXTDE1bFpWUHFHcStjUmVTZUFEMDRnY0dCN2l6WktLZUlJZStO?=
- =?utf-8?B?ZXV5SExpYUZ6Z08yVFNoUWYyemtIRW5zdkhNN3JUdEhtVXlBaTRuVHBDUys0?=
- =?utf-8?B?TGEwM1N4ZmRFUU1GRHYzcjV1SWRZZThYcHhkQ0ovZVlheWQvd2grNitUSjRw?=
- =?utf-8?B?d2tKRUZwTnhlVjIzRTIxQ1JwMXFTWDdWL3ZyTENQT2ZlTlRNQ2liYXd4OURP?=
- =?utf-8?B?SnFwVG9qSlhhZ25NVTVzY3piSXhDMWNVd0s1Z1pnOGRhQ2dtQytxajBRTTJp?=
- =?utf-8?B?OGFZVVJkc0N1OS9aOVBIN3dNa05HOS9pNXZKc0t2OGE3MTBLQWlDL2ZoaHdY?=
- =?utf-8?B?UjgxSHp3Ym5mUkNJNHJGQzFjNEQwbWFaQjRnUGFiVFpkajRXOC9oRG5TVFFL?=
- =?utf-8?B?YWgxU2xQM2VoQWwrUVZjWDJOQ3hoT2h3dTdmL0ptS0JqRTJmNS9GNnEyWXNi?=
- =?utf-8?B?VVJ6ZUQ2UlVUZXhIWTR0VVlrcGNUZG42OWMzbkVaSHFVa0draTlnMXdBMGJi?=
- =?utf-8?B?ZDJ4bWV1SW1WaXFrUDJ2SG1RQXFsNTFFY3hMSFJteDJHOHVlQmhpczcwVUlM?=
- =?utf-8?B?bHF3UXQrbmUrUkU3Z2YwUlIwMWo0cTExbnVqbDRyNXFGVEg4eisvYjFWdlll?=
- =?utf-8?B?V0UvanFnS011cnREVmx3b1cybUZWOGwvWmlMTU5iTkFwT2srRy84ODQ5bVVj?=
- =?utf-8?B?VlNVTGlYdUZ1endva0JiU0gvSDRPR25BUm5ld3MyLzRJNDNFOFhuMmkwN2tM?=
- =?utf-8?B?YjJIenRhbnhvNHk0Z2lUL050c01pb096azIyOUtYWURhOUpnRm1BblRvTzYv?=
- =?utf-8?B?NVJuZHcvbVViOEtqc2pUQm9UV1pkT1M0ZGI4UTZYU0xZS0JFNDVIWC9kR2xy?=
- =?utf-8?B?blBRREZRUS9QbVE5ajQ4Ni9CWUM2dmk1Q3k1bXg3Z25uaVVINVpOVTRzQnpW?=
- =?utf-8?B?NGk5QU40V3hZaVBrekpmTU5TNFVGV0F3Nkt0WUhNaW1wMmlkUVBFUGVLRDRi?=
- =?utf-8?B?b3paNDZGMEpUL1UxZ3pXUWUxSDl3c2o0Q3lzdGlXRUpIWDhUbnc5ZUJweHdq?=
- =?utf-8?B?OFc3di9obXVJNjJObkgyMnB6TVpsd0s1R2FFR1NHV29mVkJGUngxZ1lhZGpR?=
- =?utf-8?B?cFR1b0JUc0YzMDNPTWN3Z1FmdVlacXJ5ZjA1MGFJdVBMZEFaRnY2MHYvdVBY?=
- =?utf-8?B?WUJzdFdrdEt4S2c4T2hyTE12S3hsdnhFdUYyd1YyOXcxL0Nwc3BuSSs2eVln?=
- =?utf-8?B?a0s4OVlBak01MFlRaFU2aWJtUHdINlFTOUUrZ1hqcmZsa054R0ZLR0dUWDc1?=
- =?utf-8?B?Y2JnUDBaaGdsWVpkMEFXQW02Yitwd25vbE5zeTRxdjlkUGFBbVFXY0lFZ1da?=
- =?utf-8?B?V0MzL3hYUi9TRzhuWHBCVFVVMTB6WlJGbTd6UGwrY1E4T3liY1NNYzFDWUE0?=
- =?utf-8?B?Y055REIzMGQ1UkpNVVM2TXZlbm5HVVA4WmY4Y3JwWDV2bHNqakFaT3ZVWUVS?=
- =?utf-8?B?a0YrcUlNdTNic3lUMHp1eitISkdjT1pqcnFtWVN4MUxQZDVEWFgwUm55UFpZ?=
- =?utf-8?B?L0FzSUFTQXJWZ1Nzb2NlMWFCb0NldFc3OGtWcXFlRFlXVGxFZnF2bWE2ME56?=
- =?utf-8?Q?S0LsGl1N44mO2?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6108.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QnEwdUlDVjQvOUZlS0VPc2tHRTBJMTdTZytzcFM1MmRUWG9tN1dhSkpFZVpi?=
- =?utf-8?B?UzEydlovcGhUa2tWS2xwaG5kc0FUVWdwdUpRYU9EM0RUQlN0UlR4UXB3Tmdh?=
- =?utf-8?B?aUtkV2N6ak1xMzhmZVZkK25ybS9KNDJhd0s5WXdrODcvQllZUDBpdWlVSjR1?=
- =?utf-8?B?TFFSamR3cStNdVdveEh0Q3ZJamtyNk9jbEpSUkwzek9lZjloNlR6S2lWT3Ni?=
- =?utf-8?B?VEUwWE40aUlqWGlXTmo1eVMvYUR1cHJYN1R6ekNRem95NVBXNi9OZEtGdE9q?=
- =?utf-8?B?b3hkUUduUGVqOUN6ZFpHTkpFTjFGaFg1MGZjemg1UnZHeWFrL1ZQenJQUkJa?=
- =?utf-8?B?ZFZGZGhQRTBTRFNKMjlOSnpDb0pDRzZvS0JrMnkweUFQUVhmMENLL2sycGJL?=
- =?utf-8?B?dG5oejFZcDB5bW1EaDZud2NrNDBpTk5jZXlhM1k5RkU1R2FiaHR2NmxlYmxD?=
- =?utf-8?B?eEcva2RjQ1k3S0pIT0UxR0xidTErQnBKSUtHRE1TaEtDdGNTM2F0cUJFY2Qy?=
- =?utf-8?B?RWsxaXhJUm1DRHByTFNRdTBHaTBJOGhITHUwQU9YVWJvbHBOTzI0aTRRbjhV?=
- =?utf-8?B?RWplS2h1cEFPTkpuRGdndnkzQWdlaUlJVk5rMUtZS3FueEdrR0daZlBXbytr?=
- =?utf-8?B?bmcxekNoVVBVdncvS0NKY0FWWGhYUmpGTUprYTBjbkMzdDVRQVhIZnR1Tk9j?=
- =?utf-8?B?aTNSejhzc1h5bk1rSHVLeUNjczNBUVYvZDhKMklVWitJd3d4MW5WYlhPQ0dq?=
- =?utf-8?B?eUtOcWVRY2FSR0ZHWTc2NXhrdGd5L0pQajEwdjVKYWIxcFA0VHFjeEt4emV2?=
- =?utf-8?B?ckhzbUowSldybjRmL3V4Nk8ycHM2OXlrQWtweVZyTjJzY2dYYUUzVHRKODlS?=
- =?utf-8?B?T1NWcnNCYW90Ni9xRVZkeUNOUDZ3OEFTekM3TzhtMUVRclNWc250RGxwNUQ4?=
- =?utf-8?B?Z3gwL3d3WkVmeGxVWnBqeithN0o1VktWV1pwYUNObENkNWQ3MmQvU29zY0pi?=
- =?utf-8?B?M2NYSjFCVzR1Tmt5SVkxRmJBNzNWY0JtSFFFZE1oNmJTSnN3NVRaQ0czOENo?=
- =?utf-8?B?eUlqbHVZa1VtaEMzc25nNHZlSUpWNW0rYTVha1o1ejhsTDI5VmdKMTVJblNo?=
- =?utf-8?B?clk1cTBWcmxPYlNKcUFYVjhzZU5wMnhFb0FJb2NLb1dhR1NLdHAvbGk4cDRX?=
- =?utf-8?B?dTNTd3FaWW9mSHV2TjdiVGQ5TVlJbElCemxkQkR6cEFwZHZ6cGNCaXAwNUc5?=
- =?utf-8?B?OHAwTE5pZVlJbWFwVkh2Z1ZlaXRhbXlSVmlUUmVuSnhPYkt6WDkzTUoyTGFt?=
- =?utf-8?B?U1Q3MjR2Zy9mRHY0NDJqejZhUzVYTFFvN1FiT29rbUtGY0xxQlVrMy9mRFZj?=
- =?utf-8?B?MU1ZYU5UNFB2UW0rU1BDakRablZuaE5VVkl4YnJKSnJteERCZkFxTmtsRTZR?=
- =?utf-8?B?dFBVc3JOTzZ6cFkrY2F1YWwzZEFoekNERkJGdHYrWDY5dVRpN0crK3N5TDYx?=
- =?utf-8?B?eU1uc2s3KzhmUDcySlhrenI0cUl2S2FpeWxsSUJUTHhlQ1phMHl1ejdZRk5L?=
- =?utf-8?B?eStJUnYvaUZJOEVLbVdMbHMrVTZRVTRLaE1zaVM3MFFYVTRJY3lrSDlLb01w?=
- =?utf-8?B?RGoxRFI5UU9JejhMWjFzUE0weUJKbTJqV2JWNG9DVURaeVNFVWd3UjlKdDg4?=
- =?utf-8?B?Yk1hbzlMaDFrSkVncDJOWGlmR3ZqVjdFc1Rwdi9wbzNyNE9POEJqUThOQXJL?=
- =?utf-8?B?OXJCMmxHb1M0cXZJdk9URG45RE93SWhnYXgxUWlaRWVGYVNYd2Nhc2d0TE9s?=
- =?utf-8?B?Z3pGSUc5QllPNzJnR3VOUFNMWFhYTVF4U3MwemdjMUxybHRZeVAyQkFOUnJF?=
- =?utf-8?B?N2dqLzEzUDBjR01FYSt5VUFOV1ROSm5zS2lySkRnMW5rZHhDWmRRRkxsOTNI?=
- =?utf-8?B?UkdaQ1dtTjZwU0pWYW8ycTZLOC9veGhFb2hQY0VXb05abllydVhuc2YvajRa?=
- =?utf-8?B?bUliNXdHd2d5OG91VGNOVS8rTkYrUEF0c0U5clZuS0M0cWZUOG1wb1V1R1ZE?=
- =?utf-8?B?YmVJa3BqaE9QbGdvbjhmVGJicnd0VUxRRVFuZU5WODNjZjdQZmMrTWg5RFk5?=
- =?utf-8?Q?9+5PTuXjh+0iF++S1Fx4Xmjh+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd7b27b6-be44-477e-cac6-08dd2f3cb65a
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6108.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 16:59:56.1556
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0UZBB9zkMr/Buu4aWl+8OXD2va07RUgaXQMXJk6INCyHdJjliRfecd8FhZJOl0NJ72xkcSjQgIzyY1KGueex1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7114
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] acpi/hmat / cxl: Add extended linear cache support
+ for CXL
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
+ bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
+ dave@stgolabs.net, alison.schofield@intel.com, ira.weiny@intel.com
+References: <20241204224827.2097263-1-dave.jiang@intel.com>
+ <20241204224827.2097263-3-dave.jiang@intel.com>
+ <20241224120535.000077e9@huawei.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241224120535.000077e9@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
 
-On 12/25/2024 5:09 PM, Chris Bainbridge wrote:
-> Commit c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if
-> available for eDP") added function dm_helpers_probe_acpi_edid, which
-> fetches the EDID from the BIOS by calling acpi_video_get_edid.
-> acpi_video_get_edid returns a pointer to the EDID, but this pointer does
-> not originate from kmalloc - it is actually the internal "pointer" field
-> from an acpi_buffer struct (which did come from kmalloc).
-> dm_helpers_probe_acpi_edid then attempts to kfree the EDID pointer,
-> resulting in memory corruption which leads to random, intermittent
-> crashes (e.g. 4% of boots will fail with some Oops).
+On 12/24/24 5:05 AM, Jonathan Cameron wrote:
+> On Wed, 4 Dec 2024 15:46:47 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
 > 
-> Fix this by allocating a new array (which can be safely freed) for the
-> EDID data in acpi_video_get_edid, and correctly freeing the acpi_buffer.
+>> The current cxl region size only indicates the size of the CXL memory
+>> region without accounting for the extended linear cache size. Retrieve the
+>> cache size from HMAT and append that to the cxl region size for the cxl
+>> region range that matches the SRAT range that has extended linear cache
+>> enabled.
+>>
+>> The SRAT defines the whole memory range that includes the extended linear
+>> cache and the CXL memory region. The new HMAT ECN/ECR to the Memory Side
+>> Cache Information Structure defines the size of the extended linear cache
+>> size and matches to the SRAT Memory Affinity Structure by the memory
+>> proxmity domain. Add a helper to match the cxl range to the SRAT memory
+>> range in order to retrieve the cache size.
+>>
+>> There are several places that checks the cxl region range against the
+>> decoder range. Use new helper to check between the two ranges and address
+>> the new cache size.
+>>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> Hi Dave,
 > 
-> The only other caller of acpi_video_get_edid is nouveau_acpi_edid:
-> remove the extraneous kmemdup here as the EDID data is now copied in
-> acpi_video_get_edid.
+> A few minor comments inline given you are going around again for the issue
+> Li Ming spotted.
 > 
-> Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-> Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if available for eDP")
-
-Thanks, I agree this is a better solution for this issue than 
-duplicating in the AMD driver code.
-
-However, the subject seems wrong given where it lands.  This is 
-primarily a patch to ACPI video, so it should be prefixed with "ACPI: 
-video" like other commits to acpi_video.c.
-
-With that subject fixed:
-
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-
-> ---
->   drivers/acpi/acpi_video.c              | 3 ++-
->   drivers/gpu/drm/nouveau/nouveau_acpi.c | 2 +-
->   2 files changed, 3 insertions(+), 2 deletions(-)
+> Jonathan
 > 
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 8274a17872ed..151d1d534264 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -1485,7 +1485,8 @@ int acpi_video_get_edid(struct acpi_device *device, int type, int device_id,
->   		if (!length)
->   			continue;
->   
-> -		*edid = buffer->buffer.pointer;
-> +		*edid = kmemdup(buffer->buffer.pointer, length, GFP_KERNEL);
-> +		kfree(buffer);
->   		return length;
->   	}
->   
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-> index 8f0c69aad248..21b56cc7605c 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-> @@ -384,7 +384,7 @@ nouveau_acpi_edid(struct drm_device *dev, struct drm_connector *connector)
->   	if (ret < 0)
->   		return NULL;
->   
-> -	return kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
-> +	return edid;
->   }
->   
->   bool nouveau_acpi_video_backlight_use_native(void)
+>> ---
+>> RFC:
+>> - Minor refactors (Jonathan)
+>> - Fix grammar (Jonathan)
+>> ---
+>>  drivers/acpi/numa/hmat.c  | 39 ++++++++++++++++++++++
+>>  drivers/cxl/core/Makefile |  1 +
+>>  drivers/cxl/core/acpi.c   | 11 ++++++
+>>  drivers/cxl/core/core.h   |  3 ++
+>>  drivers/cxl/core/region.c | 70 ++++++++++++++++++++++++++++++++++++---
+>>  drivers/cxl/cxl.h         |  2 ++
+>>  include/linux/acpi.h      | 19 +++++++++++
+>>  tools/testing/cxl/Kbuild  |  1 +
+>>  8 files changed, 142 insertions(+), 4 deletions(-)
+>>  create mode 100644 drivers/cxl/core/acpi.c
+>>
+>> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+>> index 976b3e1a6c2a..1c5b3c37ac29 100644
+>> --- a/drivers/acpi/numa/hmat.c
+>> +++ b/drivers/acpi/numa/hmat.c
+>> @@ -108,6 +108,45 @@ static struct memory_target *find_mem_target(unsigned int mem_pxm)
+>>  	return NULL;
+>>  }
+>>  
+>> +/**
+>> + * hmat_get_extended_linear_cache_size - Retrieve the extended linear cache size
+>> + * @backing_res: resource from the backing media
+>> + * @nid: node id for the memory region
+>> + * @cache_size: (Output) size of extended linear cache.
+>> + *
+>> + * Return: 0 on success. Errno on failure.
+>> + *
+>> + */
+>> +int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
+>> +					resource_size_t *cache_size)
+>> +{
+>> +	unsigned int pxm = node_to_pxm(nid);
+>> +	struct memory_target *target;
+>> +	struct target_cache *tcache;
+>> +	struct resource *res;
+>> +
+>> +	target = find_mem_target(pxm);
+>> +	if (!target)
+>> +		return -ENOENT;
+>> +
+>> +	list_for_each_entry(tcache, &target->caches, node) {
+>> +		if (tcache->cache_attrs.address_mode ==
+>> +				NODE_CACHE_ADDR_MODE_EXTENDED_LINEAR)
+>> +			continue;
+>> +
+>> +		res = &target->memregions;
+>> +		if (!resource_contains(res, backing_res))
+>> +			continue;
+>> +
+>> +		*cache_size = tcache->cache_attrs.size;
+>> +		return 0;
+>> +	}
+>> +
+>> +	*cache_size = 0;
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(hmat_get_extended_linear_cache_size, CXL);
+> 
+> Needs quotes around "CXL" now I think.
+
+Yep. That was a fun surprise coming back from the holidays.
+
+> 
+>> +
+>>  static struct memory_target *acpi_find_genport_target(u32 uid)
+>>  {
+>>  	struct memory_target *target;
+>> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+>> index 9259bcc6773c..1a0c9c6ca818 100644
+>> --- a/drivers/cxl/core/Makefile
+>> +++ b/drivers/cxl/core/Makefile
+>> @@ -14,5 +14,6 @@ cxl_core-y += pci.o
+>>  cxl_core-y += hdm.o
+>>  cxl_core-y += pmu.o
+>>  cxl_core-y += cdat.o
+>> +cxl_core-y += acpi.o
+>>  cxl_core-$(CONFIG_TRACING) += trace.o
+>>  cxl_core-$(CONFIG_CXL_REGION) += region.o
+> 
+>> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+>> index 70d0a017e99c..72ede9842dab 100644
+>> --- a/drivers/cxl/core/region.c
+>> +++ b/drivers/cxl/core/region.c
+>> @@ -824,6 +824,21 @@ static int match_free_decoder(struct device *dev, void *data)
+>>  	return 1;
+>>  }
+>>  
+>> +static bool region_res_match_cxl_range(struct cxl_region_params *p,
+>> +				       struct range *range)
+>> +{
+>> +	if (!p->res)
+>> +		return false;
+>> +
+>> +	/*
+>> +	 * The CXL range is assumed to be fronted by the DRAM range in
+>> +	 * current known implementation. This assumption will be made
+>> +	 * until a variant implementation exists.
+> Start with:
+> If an extended linear cache region then the CXL range is...
+> 
+> Otherwise the comment sounds more general that it is.
+
+ok
+
+> 
+>> +	 */
+>> +	return p->res->start + p->cache_size == range->start &&
+>> +		p->res->end == range->end;
+>> +}
+>> +
+>>  static int match_auto_decoder(struct device *dev, void *data)
+>>  {
+>>  	struct cxl_region_params *p = data;
+>> @@ -836,7 +851,7 @@ static int match_auto_decoder(struct device *dev, void *data)
+>>  	cxld = to_cxl_decoder(dev);
+>>  	r = &cxld->hpa_range;
+>>  
+>> -	if (p->res && p->res->start == r->start && p->res->end == r->end)
+>> +	if (region_res_match_cxl_range(p, r))
+>>  		return 1;
+>>  
+>>  	return 0;
+>> @@ -1413,8 +1428,7 @@ static int cxl_port_setup_targets(struct cxl_port *port,
+>>  	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
+>>  		if (cxld->interleave_ways != iw ||
+>>  		    cxld->interleave_granularity != ig ||
+>> -		    cxld->hpa_range.start != p->res->start ||
+>> -		    cxld->hpa_range.end != p->res->end ||
+>> +		    !region_res_match_cxl_range(p, &cxld->hpa_range) ||
+>>  		    ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)) {
+>>  			dev_err(&cxlr->dev,
+>>  				"%s:%s %s expected iw: %d ig: %d %pr\n",
+> 
+>> +
+>>  /* Establish an empty region covering the given HPA range */
+>>  static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>>  					   struct cxl_endpoint_decoder *cxled)
+>> @@ -3256,6 +3306,18 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>>  
+>>  	*res = DEFINE_RES_MEM_NAMED(hpa->start, range_len(hpa),
+>>  				    dev_name(&cxlr->dev));
+>> +
+>> +	rc = cxl_extended_linear_cache_resize(cxlr, res);
+>> +	if (rc) {
+>> +		/*
+>> +		 * Failing to support extended linear cache region resize does not
+>> +		 * prevent the region from functioning. Only cause cxl list showing
+> 
+> Only causes cxl list to show incorrect region size
+
+thank you
+> 
+>> +		 * incorrect region size.
+>> +		 */
+>> +		dev_warn(cxlmd->dev.parent,
+>> +			 "Failed to support extended linear cache.\n");
+>> +	}
+>> +
+>>  	rc = insert_resource(cxlrd->res, res);
+>>  	if (rc) {
+>>  		/*
+>> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+>> index f6015f24ad38..61df87a31e02 100644
+>> --- a/drivers/cxl/cxl.h
+>> +++ b/drivers/cxl/cxl.h
+>> @@ -492,6 +492,7 @@ enum cxl_config_state {
+>>   * @res: allocated iomem capacity for this region
+>>   * @targets: active ordered targets in current decoder configuration
+>>   * @nr_targets: number of targets
+>> + * @cache_size: extended linear cache size, if exists
+> 
+> otherwise zero. (as you don't check for existence - or remove "if exists"
+> and just have "extended linear cache size"
+> 
+
+ok
+
+
+>>   *
+>>   * State transitions are protected by the cxl_region_rwsem
+>>   */
+>> @@ -503,6 +504,7 @@ struct cxl_region_params {
+>>  	struct resource *res;
+>>  	struct cxl_endpoint_decoder *targets[CXL_DECODER_MAX_INTERLEAVE];
+>>  	int nr_targets;
+>> +	resource_size_t cache_size;
+>>  };
+>>  
+>>  /*
+> 
 
 
