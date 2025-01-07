@@ -1,113 +1,132 @@
-Return-Path: <linux-acpi+bounces-10420-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10421-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C526EA0491B
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 19:21:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACD2A04927
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 19:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9AA165FA6
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482853A5E6D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC501DE2CC;
-	Tue,  7 Jan 2025 18:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13BD1DF25C;
+	Tue,  7 Jan 2025 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5KKuXBD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MqrZZehn"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168A45027;
-	Tue,  7 Jan 2025 18:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94AA86330;
+	Tue,  7 Jan 2025 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736274075; cv=none; b=R0JibSKfQVtKQ3BkNUgxY2ueyyzw7vud8B0BeFfCXMWCb2kfA8fJh3mAzfyXe02C0BpM/5Hg7mJyQnGoCn5s2EYGwlvqVQ7ZRW68K6bVzHlwRMF7HAg8VixHyRFUH6gwNzXcI/1uulyJMpKjLJ4FjFv9R6t82n4c43IJo4a6zT4=
+	t=1736274300; cv=none; b=Z999IREH0BKwvJQp0qhM6Z7VvDrKtxcpSErXjwgpsX2O8D6znD7lt+XJm+4atJlSXUXpoqhbqmIbFLwzX2jBV2MfiCjeKUUyaaCiS4GF+zSlW0sLSTPCbtcqYkkhMnS2K7TPybSpF97zgK+QYa6zWXdSHdRhfCTCuRKM8AqYrkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736274075; c=relaxed/simple;
-	bh=laRPj4HM/p0XhfiaoGl7l+z9dop6OKtrUT+Mkuc4Qyk=;
+	s=arc-20240116; t=1736274300; c=relaxed/simple;
+	bh=lonG0IiiU1iXDkrCTGQsNefJ6Dp6UPc9VlN2BvNf6YM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sNA53VO/je7+YSmCPUp+O8NTAe5PRziAebv8bJcYgfNj3Y5pHYyYFENvUQ3HreyCB02rtjs1xbOKI08Vl/usHm1w9VsECUlvq9T8J5MVSIZmR6HkAKmelw6pPmMSHjQvXIV7fN49IudErSOwNnlSPUi3YbxTfVOlNin5auBivX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5KKuXBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29D2C4CEDE;
-	Tue,  7 Jan 2025 18:21:14 +0000 (UTC)
+	 To:Cc:Content-Type; b=rsF2pBjcBxGBXjInU4LswQbXX+xJOVoZNWmuUeSznEDhTATJvDJo3A3E1xINsusWYFL7X3ZnjKVDZrqasKv/hkucca1O/tzQ5VYGK7iBwCeEr0VOYDV77CTiEjJnsQ7qCW9PQT/vxIbbXgFWTikZGZEmAxZ9ck/zL0l66ITThkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqrZZehn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C36C4CEE0;
+	Tue,  7 Jan 2025 18:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736274074;
-	bh=laRPj4HM/p0XhfiaoGl7l+z9dop6OKtrUT+Mkuc4Qyk=;
+	s=k20201202; t=1736274300;
+	bh=lonG0IiiU1iXDkrCTGQsNefJ6Dp6UPc9VlN2BvNf6YM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=T5KKuXBDXX4Een3RezVbaCtGR/dddmAN0v4uCYxt9SLPHaAiOdKmXdg1ey8Nwew6y
-	 CszrZbc1an+tuLmHfZZkBfdWymdMzv/phRNzDyXIwNAwDdybZOuceWKO2j3C4je2Uf
-	 rhz5QNlrYR1Dwhgz4WK2iAefisPnOQfwGNyAFLudF1s4E4yBzEqB+gLRB5iVU9BsoV
-	 mudBvcwuMwY2/9+GusA7+DKUg023FAuq50oowuOu1TylrbBVKE2hyPwUUijcFR4Fxn
-	 71a7M1ipSGgEbiveQT/1GqxOharIoVk9+GBPcZtf6WywGul5sx9FrjGEK2DHMTlbBH
-	 wOGg7i9reIJWQ==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3ee29277d44so6454061b6e.1;
-        Tue, 07 Jan 2025 10:21:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUcjbgdCDRJ1UW7jekKs8sQOO48Eag+4QZkIyp5jcGyCI/nadjwOBOOd/jXAoztsHvzd5hWZQBf/hWU@vger.kernel.org, AJvYcCXM9ZTTFzJN+JEexA1l991ZmsnrqiV1/EMp+QVRU+pAYHE7MGNd4pFsW8vz6KTNtXf6t5OmVRkU@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLxJoAJjvRP3KtU91lHfNas5Js3TyCPg+4c9ixYeIn1Me+Edd8
-	uQaMoHMRjdt7iNvwvVa3l+l9vtNiEp4Dmsx/kNAJrd48Lmqq6dHsYgR1w6rhEYvoMOSSPCC0lme
-	9+USpphXwdlbz8xjO/PhvYNCgcLg=
-X-Google-Smtp-Source: AGHT+IGegoU5jW7VJIa0VqomoZoGNcruRV8F3AJH9FLGJYQImu8OcfHGmU8N7M4MF05/3Vo2UTl7FzUEFuupNn5Jf88=
-X-Received: by 2002:a05:6808:f16:b0:3eb:3b6e:a74b with SMTP id
- 5614622812f47-3ef2ec43249mr27575b6e.17.1736274074164; Tue, 07 Jan 2025
- 10:21:14 -0800 (PST)
+	b=MqrZZehnoRn2mzlOXEQ8H2WoyXC1mQyNQ96I69F2M8FrwFc5C+7+FN7iGh2GTZge2
+	 C2PMv0GO29Whonh9KpZKMxjM9c7sfVDZwhx6OQ07YFwhvTGD7uymDs94k4fpSZ2QUt
+	 wWlxUIG0HMxstQCyx/ikvCnX6CQKBLhUQ98KT3kAXTY5jXA0FJZdX9qGvpw8WDMVhI
+	 lNTpQk1K/8Pd+3Ela6Tp2kWxtjw/gumUux19M1YXHsNVNLU3isMohTKnHIF9VchRl1
+	 aQoWVXhCQYikSotJMcmNGhFnEFmPcl1vq2o6BszTojzMw0sONAWZcgZCkivZQXI0vg
+	 bLNvAvFx3YnwQ==
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3eb7ecc3c54so7940732b6e.0;
+        Tue, 07 Jan 2025 10:25:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU8kpbtdQBsCXKM4Ro/O6vMQcUyCmVVwpJkxKZA6E25sevFBG6KTpdNN5r5GzYkvG3yE40ScJTR@vger.kernel.org, AJvYcCX1XAPhnQXyaFJ6fdUSXWbpGt1mzS8SanRpw7VqBa//o9S1NtG57ryI07Tz2xyzH+HGysCJT+Sm8FBy@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaBNravcR34ycivwXUfb3ZAtYME4bOAVV+CesqMw2lHFRkmj9P
+	0B1eYpmGEZUbDEHhg+7jCvhUp5OFBVvPyuNdXBYXR1Pi2PkB+H/x4Hf2E8lOSAK9ZXrbNX8P4Ll
+	7+UnBECQgy/T5S+oeDUls7bl7+I4=
+X-Google-Smtp-Source: AGHT+IHrse1FktLgCYAp33BYjM1tcjpCmja83hq8TRbhAp00H9zVI2LaPokqH1fZi/5PS0YEtqMy4fxKQNamQ9xiL9c=
+X-Received: by 2002:a05:6808:302a:b0:3eb:6e12:add6 with SMTP id
+ 5614622812f47-3ef2edd3c48mr16771b6e.31.1736274299721; Tue, 07 Jan 2025
+ 10:24:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241220181352.25974-1-hdegoede@redhat.com>
-In-Reply-To: <20241220181352.25974-1-hdegoede@redhat.com>
+References: <20241228164845.42381-1-hdegoede@redhat.com>
+In-Reply-To: <20241228164845.42381-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 7 Jan 2025 19:21:03 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hJTOfdGEEW6VH239ZNso=gt5uZscWGx3iYsdSfWFan4w@mail.gmail.com>
-X-Gm-Features: AbW1kvbQF2nvgysBuJ8o_B8nExsK1O6bSqtxPsJHztZQ5NK0IdDzg8KVXdnEoMc
-Message-ID: <CAJZ5v0hJTOfdGEEW6VH239ZNso=gt5uZscWGx3iYsdSfWFan4w@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to irq1_level_low_skip_override[]
+Date: Tue, 7 Jan 2025 19:24:48 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0isL4ujPDKgWBV4StpQwrqa75xK+wjwv5t0DUs5bne5uw@mail.gmail.com>
+X-Gm-Features: AbW1kvYOcpTcT1oypowhJKmjBizTGwC7HuKbsqrNoeUPKufiuCjMvJ3CPc9WPEQ
+Message-ID: <CAJZ5v0isL4ujPDKgWBV4StpQwrqa75xK+wjwv5t0DUs5bne5uw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
 To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, stable@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Werner Sembach <wse@tuxedocomputers.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 20, 2024 at 7:14=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+On Sat, Dec 28, 2024 at 5:49=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
  wrote:
 >
-> Like the Vivobook X1704VAP the X1504VAP has its keyboard IRQ (1) describe=
-d
-> as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
-> breaks the keyboard.
+> The TongFang GM5HG0A is a TongFang barebone design which is sold under
+> various brand names.
 >
-> Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
-> this.
+> The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+> laptops in order for the IRQ to work.
 >
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219224
+> At least on the SKIKK Vanaheim variant the DMI product- and board-name
+> strings have been replaced by the OEM with "Vanaheim" so checking that
+> board-name contains "GM5HG0A" as is usually done for TongFang barebones
+> quirks does not work.
+>
+> The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
+> for a few other TongFang devices and the TongFang code-name string being
+> in the OEM strings seems to be something which is consistently true.
+>
+> Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hop=
+e
+> that this will work for other OEM versions of the "GM5HG0A" too.
+>
+> Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219614
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/acpi/resource.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/acpi/resource.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 >
 > diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 821867de43be..ab4c0e0b6b8e 100644
+> index 7d6537ea176f..90aaec923889 100644
 > --- a/drivers/acpi/resource.c
 > +++ b/drivers/acpi/resource.c
-> @@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_ski=
-p_override[] =3D {
->                         DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+> @@ -653,6 +653,17 @@ static const struct dmi_system_id irq1_edge_low_forc=
+e_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
 >                 },
 >         },
 > +       {
-> +               /* Asus Vivobook X1504VAP */
+> +               /*
+> +                * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel=
+ the
+> +                * board-name is changed, so check OEM strings instead. N=
+ote
+> +                * OEM string matches are always exact matches.
+> +                * https://bugzilla.kernel.org/show_bug.cgi?id=3D219614
+> +                */
 > +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."=
-),
-> +                       DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
+> +                       DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
 > +               },
 > +       },
->         {
->                 /* Asus Vivobook X1704VAP */
->                 .matches =3D {
+>         { }
+>  };
+>
 > --
 
 Applied as 6.13-rc material, thanks!
