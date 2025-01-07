@@ -1,222 +1,153 @@
-Return-Path: <linux-acpi+bounces-10415-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10416-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A083A0483E
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:29:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56782A04862
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98D767A38BB
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 17:28:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E8F18890B2
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 17:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8901F5426;
-	Tue,  7 Jan 2025 17:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wj0b63rv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078BC18C034;
+	Tue,  7 Jan 2025 17:37:08 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2089.outbound.protection.outlook.com [40.107.244.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9EB1F5400;
-	Tue,  7 Jan 2025 17:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736270893; cv=fail; b=FeChO9XgWL0fVoawxJ+78OjFKwocsYa9QV4vK+NbCfORqIzvCh0qsO1VCT1REOluG70wMHnedtb96aatO9DYRYjXJYCtnVqXppHvk1W7N7q/38VTEXeL58nSE9iFyXR+K+MOo9TX4jQxz4cVReTZP12SH4uLwkyxoeS5O5oM1Sk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736270893; c=relaxed/simple;
-	bh=k57lxjiWbSwTb1BfDOc7oiyDCbcPFBncJ7RlQtRBbLc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SuRq55+CKyOG1lm606/UIE2dlWt6mn+oOq6mI6CHHDgg5G45piGzx+hsG0ZVkZSOEjOLlzKFZqabBjHZZXKfglJwq37e0uUXXqwZvsyNxLMl5yiicVBn2E5tVjGBVVF+Zq/aAXAxyeLRJFNU2rcVkty5oC9Ma7gc7oaL9g7LJ5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wj0b63rv; arc=fail smtp.client-ip=40.107.244.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WH3SSK/F5j9ZaVc0wdqEn1mXpf8FK6X6LP5TORANhu8FI00hViKs8Y1YvDB9467CZU5p+Zb2XNch3pHscHHQyYSkUgz2afTyZfN/jxssXHKiOdnRhqmpWBUjpmni2lUZCE2dHs7zqHc4RAQbHsO0tsALZ7MCKA01TxJdKP5BSVi95+P4QSBsof2g7GvvQ3T78hnfbqY/4iwNGjdIGxpTnBSjuwS7GVuBvMfB3q+1KsKhPt1yOKZnNL3ElsbIIqG9H460oqOScp5owCDpgtmuksL0M2KeJqPz9kzRw0U5SkOypy5js7xgz4eAxI9NpTRnRZyp3m1hDGbyWpo5p0i4Qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ti7c7IOge13TqcnRj1ERRdlq6D98TIsp04w3l2CNnhY=;
- b=wuVunTyyAnHZRv+90wKn9NICmojYH4xjKXT6EaGH9FdaG80xJPEXdLkcOno6m7cUj9C/paMg0kIZjQB9BqgSCo0TeUJbZvoj0JFFy5EqtRXOlhSKj7P4vUICWRi2j02WiTReHtCLNr8TiANwRjY+GyjUThRxwR+iPSe5fCaCcuhJca/TvW7vyoMGLBMkJxF4QlyH7Hj9iQ/d/o2SAm1fF+q6BNtYjXPIBlUJQqIVZIhXyQNBjRg8Cktc9LPCqCSgMRSKa+zolJnBJexrVRAbpFQmPRQlfv0Fh4XdZ30bin/Yd6sNvxbTK3G9GzhcMr14V5bMuWz1Gwbmy3H2CWkhOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ti7c7IOge13TqcnRj1ERRdlq6D98TIsp04w3l2CNnhY=;
- b=Wj0b63rvVTguddBQbymyOywLzrVO22CVczpOkTikJfsyxIR4PiEOmMhG3qsBwqKPkqB+BLVNfbDEFcZu2dZgiTw1A04wt62dVqaCQ3eaAQ68Ycrutx1bDGIlMd8xJ3+PSGqu2zeRtd9wZhOosK+pJGuxA8EnFf1ahh8g7vLmF+U=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY5PR12MB6108.namprd12.prod.outlook.com (2603:10b6:930:27::15)
- by SN7PR12MB7934.namprd12.prod.outlook.com (2603:10b6:806:346::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Tue, 7 Jan
- 2025 17:28:08 +0000
-Received: from CY5PR12MB6108.namprd12.prod.outlook.com
- ([fe80::46e5:5b51:72c3:3754]) by CY5PR12MB6108.namprd12.prod.outlook.com
- ([fe80::46e5:5b51:72c3:3754%6]) with mapi id 15.20.8293.000; Tue, 7 Jan 2025
- 17:28:08 +0000
-Message-ID: <4cbfaa44-5ba6-4ccd-8db6-e74af8fe4bba@amd.com>
-Date: Tue, 7 Jan 2025 11:28:06 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] ACPI: platform_profile: Let drivers dynamically
- refresh choices
-To: Kurt Borja <kuurtb@gmail.com>
-Cc: Hridesh MG <hridesh699@gmail.com>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
- josh@joshuagrisham.com, "Derek J . Clark" <derekjohn.clark@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede
- <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>, Lee Chun-Yi <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones"
- <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>,
- Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>, Armin Wolf <W_Armin@gmx.de>,
- Colin Ian King <colin.i.king@gmail.com>,
- Alexis Belmonte <alexbelm48@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- linux-kernel@vger.kernel.org, Dell.Client.Kernel@dell.com,
- ibm-acpi-devel@lists.sourceforge.net
-References: <20250106044605.12494-1-kuurtb@gmail.com>
- <33a5b6a2-e4df-4bfc-88a9-a9e8309c7f7a@app.fastmail.com>
- <CALiyAonc81o1FreDaWiik3XaqKYVf=wYHX+vaE2_1w66LhJTnA@mail.gmail.com>
- <2e71a4a9-6ec6-4ac7-8640-d80dcdfd7776@amd.com>
- <CALiyAonp1eow2ht_Cmux0B5+-Ukx7YxsE59c4VzwfSvL61iQ5g@mail.gmail.com>
- <205c47ef-6651-4a57-bbe4-adf1b8a25983@amd.com>
- <zelin5tbkup26skhs3dwacwxl33h4ryzgrn3nefay7fxotb5v7@aumb6v7hexpc>
-Content-Language: en-US
-From: "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <zelin5tbkup26skhs3dwacwxl33h4ryzgrn3nefay7fxotb5v7@aumb6v7hexpc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR05CA0007.namprd05.prod.outlook.com
- (2603:10b6:806:2d2::9) To CY5PR12MB6108.namprd12.prod.outlook.com
- (2603:10b6:930:27::15)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70C418BC3B;
+	Tue,  7 Jan 2025 17:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736271427; cv=none; b=GucXMTMsGSqnr6NmxUocslXbCCzff2n/bcAQbumxxU4uYVSS0oTnGvKIVNgoiBrtyPU3GBkcvXUyTB3izFOCuftdTfgvdz9nbAZAD9nlYzgDBisJSnIjNqKHJQJtqWSEk+2lG9hgaZ+6SOiTJCqsGeut6NpoMFepOyvJZi4Lv+g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736271427; c=relaxed/simple;
+	bh=MCGVPEPwHTz5c7Yp4A7t785cwKwFxolZ7+d6KKuFyRw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V08/0Eyso0R77BM809dsdB9JlCzhcvGR0pv0eRqAFUZwwQqmb1vBKKrKacaW2jg1MWNsBCGoXU9ldZnldVLY+jz9XO4j/9AOSVdp7P/LCSCTDnayUY9gmzOrL7BaTS6owTHDtDWXBrKA4t5fwULr+GSDgyUBDyEn1QoPFhB2KKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D53C1424;
+	Tue,  7 Jan 2025 09:37:31 -0800 (PST)
+Received: from [172.27.42.65] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A30DF3F59E;
+	Tue,  7 Jan 2025 09:37:02 -0800 (PST)
+Message-ID: <85fb2b19-9d15-44ea-8f76-b3cac14e2810@arm.com>
+Date: Tue, 7 Jan 2025 11:37:01 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6108:EE_|SN7PR12MB7934:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13835fee-41cd-4445-cfc6-08dd2f40a725
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dmFxVDRuai8vS1d0VXRxVENnaGYwRVFyeTJwelJFUkhGeWxDQU0yYXZNSHpC?=
- =?utf-8?B?V2QvVllodlliSXpEbFgrZDh3RjhHRUtCMHRQRHN5OVBwNzVndTJkM0dKQ0Yx?=
- =?utf-8?B?QlpLcHBwc0hKVkJnVzR5eis5cE1kQ1g5cVVqNlp3RnRJbWVOa2s3ZXFaNXdn?=
- =?utf-8?B?MFVtOGpxQTlJQks0UWNFMnpyczdIdTZOZ1VlY0FjelYxWU1uSWVPeVJnVzFI?=
- =?utf-8?B?UW1DYngrSVhpWmVCTjJrMW5TUXNOMlB1ZzNXQlVreWNoMmRMRHVIVjFoSStx?=
- =?utf-8?B?S1F5WnNHTlliOWtEbG9PV3gvK1c4ajMyQUpmWGJLbjFWNjYwangyS04zeE55?=
- =?utf-8?B?ZDhMVFA5UzRtcVhLdEp0WjYvTC91cWs1d3NTYnZqSnIzYWhySTF3UVNXaHlX?=
- =?utf-8?B?TThCZ2NqZUtjTE5SOUpydzhyY0ZLNU44NHgzbGZZdXpPZm1pYlBjTDhVSEky?=
- =?utf-8?B?U25NbldXcjVsU3VISnJMR2tpNkJtNDN2NTNmT1FIMllXRnB1Vll5ZkhNYTRv?=
- =?utf-8?B?U1lwSUVFMGlIQ3pPcnNUbDIxMWljY21LZ1Vmb01vc256YkR3ZGJyc1pxVld4?=
- =?utf-8?B?TUlrL244dWgwTUZDS2Y2YzhQNzdhck5WMTJPQUs1Y09PNkxVZTczdXVYMDl6?=
- =?utf-8?B?R2hIeWxOSVhDV1dKNUhGZ2d6NjdlMWNtMDBSU0VabjdLSEc3WXZSUG9CUG5B?=
- =?utf-8?B?a291NzVKdjlhZ3p0a0JmeWJVN01ZU2tadlhZcEZoSm9RN244d1E0YmxGUFdK?=
- =?utf-8?B?aFd2MUdvRTd4dGh3V1N4Q0VTWlZNcTh4QTYxazc2dXhjN1ZmSGNId2N4WGdq?=
- =?utf-8?B?aTJLZWcrVDEzZFhMaTVpNG1yUjNwem00ZmRqUTlUU1BmOCt0VE5SeVJ0ZkdK?=
- =?utf-8?B?NVNTNjB4UjA5V01NNTRaZmE3T0k2NTdxd1FNNDd1UEdBb2FGeWxIdUdlYkF5?=
- =?utf-8?B?RDIzaXBKdDVFZTFNSlBsNkhYeWEzODU4aklWZmxvRUpnZDJzTWFqNGlTLzFz?=
- =?utf-8?B?V29NUUYvZ1hqUWNnaHBzTmtWYmFHU2hlK3JkQm9VbEtpK20yWEhyWGR4YVZH?=
- =?utf-8?B?OHE3RFQ5VHhpckVNcGl4ZWpLVFdyZVM2VEJHQUoxYmw1cjRYREZNNjFGQWJK?=
- =?utf-8?B?SFBsb1BITWRISW1HYzNSRUp2ekRCUnloQUwvV291cXpLQnBKYVJKZ2g0cTVQ?=
- =?utf-8?B?ckFJTE5PYzN4cWc4aDJSdzZkK0VINVp2ck9rUjNOQk9sMjRWYjlZMWoyN1JJ?=
- =?utf-8?B?UjhYWVBVdXY1amRpWEtvM3hXVUxZek9DWUlwUHlwVDRTMDVPSWtBRlNFOE0x?=
- =?utf-8?B?NHkxbVh0Mi81OGtsYkN2bU5OanUvSlozUTlreTFteGhTZXBxS3VLbEtnUFdq?=
- =?utf-8?B?Z1NjcXkrbEFNVlFudkJEa2pMckxFSm9nSk9BNUdDajlpdkJZTVBYcjJ2clB6?=
- =?utf-8?B?eHFFSGtEL1BRMGRFY0NyR0JIZmluWVNGcTBlZ21FbS9Xbmh4TnlsWjNZbSs5?=
- =?utf-8?B?L25UV2NURW4xT1BYKzN3U213Nm1TbjNrUWhqdXdxZ21vKzYvRzhsL1hBNTV6?=
- =?utf-8?B?MS9KcWpSdWlrenZwWnRWLys5NmNCK2YwSVhvODJHZkRRZTlPa294Y2Z0Wmdi?=
- =?utf-8?B?WkRiTkRzaVdwbHZtZHZxRkYrNHZIRmRRajFNdVpkUGh6dFBjRndHME9yVlRW?=
- =?utf-8?B?ZlZKa0V2dHBQbmNXNit3ZGNyekNqcmh2bUtteThmWlNGSWpwdURWa2NZd2pi?=
- =?utf-8?B?QkxnOGhIZXVzbVA0b29veWVnWUF2dDRrV2VNWFF0Q3NPYzFnTFZPTmNNT21q?=
- =?utf-8?B?ZzQ0VlFRenZPL2xtSUhybXRWdjlVb3RPS2xMMytsWkdrdHRDY2pPakFTSlVx?=
- =?utf-8?Q?mr0QKfF3R/rvZ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6108.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mjd2K2xlV2tIcXJJUUk1NXVwOFZTS05DWFFlYU1GeERHdTh5VGtqaDNEaUtm?=
- =?utf-8?B?TGR3Mkd1aTR6OUQ0R1FHRmErdlRvU3d1MjIxczJicG9TTUZIZWNSVU9ZS2s4?=
- =?utf-8?B?QmV3TXRKR1NyS3NXSktVSXl6ZDh0VTdteVE3dnFBMVJwTjNUeGdxZ05QbGZM?=
- =?utf-8?B?eGxrQVNsdUFNekxTSUlZZkRDd0lQdlBQQ1d6QWRXUWltOWxPYm5BU2VzSUFl?=
- =?utf-8?B?VzgvVnJyblBJekpObTJiWWp5TnJabzR4eHRqMm1aWFNhWnpCb1VuUnJFUGpr?=
- =?utf-8?B?RFZNWUl4UGg4ZjJLM1VNQVpLUWtVTjNXRGlhK1ZOcmhPK2x6RElqc2xxNjJP?=
- =?utf-8?B?YW5aVUV0RDRSaUd0Nk1rTU9peU85NU1Qak85QUNpakdLbUs2aDJHdmoxUkNr?=
- =?utf-8?B?eTZ4KysrVUhzTjBTV0lwSGV0VFJQbEdLc0VsbVdPRUlIOUF0N09aVC9aWDlk?=
- =?utf-8?B?Z0lTelFoWTRVa3FiaWREOFV0Smt3TmhQVHVubk84dzl3d1NhdDhSWXJBYXJj?=
- =?utf-8?B?elc4Vm5UM2Y0bXZFQnVIRWo5dWE4ZWZ2c2RRWVlLcTFDUEpDYm9XSkg1WVQw?=
- =?utf-8?B?Sm52WldPM1orM2dUNy9HK3JOSWlySFFZTmdONDlKdDd0SjFGa0lkZjJ1YTNw?=
- =?utf-8?B?ajZ4SVBSU20wYWdhRW9vSk5menJoNDZidmJOY29FVm5CQVpHenBmbkpnQ1B5?=
- =?utf-8?B?VjBxdTlkdWM1ckYxM3hQUjZQMVFwamRKdHp6WFIrNzdVYWR3UWxoNEdjdGxT?=
- =?utf-8?B?cFV0OU9WM0t1MjMzT1pKVEFsMTcxTXQyZE8xSkJRc3I1aVBFZ2h0bWllb0JN?=
- =?utf-8?B?dVp4NDQ5bTFPMVNmQ2h4YkowbkJvdjB4a3k0RHZURnJaSlRHeGJCWFE2RlM0?=
- =?utf-8?B?RWswdmE5RkxSQVB0ZEZUd1Y1RmV4VUxaZzFSMjJTbEVtaGlpU1lrSlVuUmxK?=
- =?utf-8?B?T29xZDlXT3lST1g0N1d3VHpVdUUxVjIzdmd5WnhQRjNmL3R4Qk1PZUU2amN3?=
- =?utf-8?B?ZnJUS1VRQklZT1RvTGR4RzJJdzN0bFk0b05rRkVjN01qNGJPbEk0ZFpReml1?=
- =?utf-8?B?N3dTcGdyeDNiTElVWjk3L3NDZ3hIVk00bzlFWUhxK0Z6YnA2M0tPdG1Ebjlw?=
- =?utf-8?B?cXJ3bDZFSUE4T25UVUhPbk10OEpvV0VFNkdNckliYzNXYVJyeDNxS1M0SUF2?=
- =?utf-8?B?QWxUMFlRcjltT0RkUFdLVXk2Q0hIMnEzR1k0eWw3T29nM3R5NXVYdjBaM2dy?=
- =?utf-8?B?TkdwVklnY1JDckRLbUNnaUVwZkFqci9RQW1PWW93a251c21mNjhBSTBtdnFq?=
- =?utf-8?B?NTcvZ21Ta2hLNitIN2R5TWoySWZqdXJDNEJzVHZ0V1JTUHlDcUNDYlpkNWVT?=
- =?utf-8?B?MFZEOUFiclhXZXd6TmFkV2Z1Qmdua1puUmpjQTEzNVBhaytzUk1mU2IwYXNz?=
- =?utf-8?B?K1p2d3VSN2VjU3A4d1lZWkN2SzJxYXRab2ZrTXRUM0EyR0VDYW5CczRFYTBK?=
- =?utf-8?B?aWlZOU04RG5GZWdicUdHbEEyTkpJWGVkMnBGK1VvRHlzTDU0TUdnUUU0dkhE?=
- =?utf-8?B?NkFRRzRDNHVnamt6MmFWWXZTVTZqYndTWDcwbFRMMytpUVcwZG5iMHpyM2Ns?=
- =?utf-8?B?dEF3ZERsMjZTbkJiUmQwOEl6b3AzU1l2aXRTOVVpMnRycEY1VkhodWV1dnk4?=
- =?utf-8?B?aHBaZThzZDB1OHd6Q0NseWcwQXBxQ0xRNldrR3diSG44bTg4RFErMGRpRkZk?=
- =?utf-8?B?cEhwc0tVL3N6d052eVpGbmxXVW9UYWZoZlg1RDU3SlJxSlo5K0M3dk1wZDdY?=
- =?utf-8?B?Rlk4cGhyYTBubXNCU1RadWlTNmR0VFhYdWJmRFMzTllVcFJ0WnMxNWN2L1ZR?=
- =?utf-8?B?bEVzK3NxMHNnNTBabXVoRi9pNVFjb3FMcEJBbnREZkUvS2g1SEhvU0lNS1J6?=
- =?utf-8?B?R2pEOSs0MUxIZFJxRmV6eVVVNmp1MEtYNVFmeDdMMVhLd2tzWS9LUTJXcG5M?=
- =?utf-8?B?M25wMEtCeXBTVmV0N1FyNnZIdkJvOTZKYUFNUCtDcVBXeEhoMk8yZUxETDFJ?=
- =?utf-8?B?TUtGVjBFVi8wUG9JYlJHcXh3OE5Xd2hHOVU0bnNqZ2ZjRXFzbzJYdWZySzAx?=
- =?utf-8?Q?QOaPjnKLW/ChcWButYJH3VFEw?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13835fee-41cd-4445-cfc6-08dd2f40a725
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6108.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 17:28:08.6389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AtAjlM/IQhH68ddMQACdeIQWR6CaiUXNQRreZoAtbWFOCyrThzWJQ5K9DRBsqkfwS0Q4NglwC+uHG8Xf7JoLaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7934
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/2] GENL interface for ACPI _DSM methods
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Wathsala Vithanage <wathsala.vithanage@arm.com>
+Cc: linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+ acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, lenb@kernel.org,
+ robert.moore@intel.com, bhelgaas@google.com, wei.huang2@amd.com,
+ honnappa.nagarahalli@arm.com, dhruv.tripathi@arm.com, rob.herring@arm.com,
+ Jason Gunthorpe <jgg@nvidia.com>
+References: <20250106163045.508959-1-wathsala.vithanage@arm.com>
+ <20250106180140.00005132@huawei.com>
+Content-Language: en-US
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20250106180140.00005132@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+On 1/6/25 12:01 PM, Jonathan Cameron wrote:
+> On Mon, 6 Jan 2025 16:30:43 +0000
+> Wathsala Vithanage <wathsala.vithanage@arm.com> wrote:
+> 
+>> Linux v6.13-rc1 added support for PCIe TPH and direct cache injection.
+>> As already described in the patch set[1] that introduced this feature,
+>> the cache injection in supported hardware allows optimal utilization of
+>> platform resources for specific requests on the PCIe bus. However, the
+>> patch set [1] implements the functionality for usage within the kernel.
+>> But certain user space applications, especially those whose performance
+>> is sensitive to the latency of inbound writes as seen by a CPU core, may
+>> benefit from using this information (E.g., the DPDK cache stashing
+>> feature discussed in RFC [2]). This RFC is an attempt to obtain the PCIe
+>> steering tag information from the kernel to be used by user mode
+>> applications. We understand that there is more than one way to provide
+>> this information. Please review and suggest alternatives if necessary.
+>>
+>> The first of the two patches introduced in this RFC attempts to overcome
+>> the kernel-only limitation by providing an API to kernel subsystems to
+>> hook up relevant _DSM methods to a GENL interface. User space
+>> applications can invoke a _DSM hooked up to this interface via the
+>> "acpi-event" GENL family socket, granted they have the minimum
+>> capabilities and message formats demanded by the kernel subsystem that
+>> hooked up the _DSM method. This feature is added by extending the
+>> "acpi-event" GENL family that multicasts ACPI events to the user-space
+>> applications such as acpid.
+>>
+>> The second patch of this RFC hooks up the PCIe root-port TLP Processing
+>> Hints (TPH) _DSM to the ACPI GENL interface. User space applications
+>> like [2] can now request the kernel to execute the _DSM on their behalf
+>> and return steering-tag information.
+>>
+>> [1] lore.kernel.org/linux-pci/20241002165954.128085-1-wei.huang2@amd.com
+>> [2] inbox.dpdk.org/dev/20241021015246.304431-2-wathsala.vithanage@arm.com
+> 
+> Hi Wathsala,
+> 
+> Superficially this feels like another potential interface that could be wrapped
+> up under appropriate fwctl. Jason, what do you think?
+> 
+> Mind you I'm not personally convinced that an interface that focuses on
+> exposing _DSM calls to userspace makes sense as opposed to subsystem specific
+> stuff.
+> 
+> Maybe consider associating the actual interface with the individual PCI functions
+> (which provides the first chunk of the message directly).
+
+Right,
+
+I think this was similar to a conversation we had internally, which was 
+basically to detect the PCIe extended capability and export a 'steering' 
+entry in sysfs on each PCIe device which can take a logical cpu/cache 
+value, translate those on write to the ACPI cpu/cache id's, make the 
+firmware call, then directly update the PCIe device's capability with 
+the result. This also leaves the door open for future 
+cpu/cache->steering tag translation methods to transparently replace the 
+_DSM call while leaving the userspace API the same.
+
 
 > 
-> After giving it some thought, I agree with you and Hridesh. Kernel
-> should not limit profile choices if they *are* selectable.
+> Also, _DSM is just one form of firmware interface used for PCI supporting
+> system. Tying the userspace interface to that feels unwise.  I can certainly
+> foresee a PSCI/SCMI or similar interface for this on ARM platforms
+> wrapped up in _DSM where ACPI is present but directly accessed when DT
+> is in use.
 > 
-> If a "proof of concept" patch is still interesting I'll be glad to send
-> it, otherwise I think my original idea has too many problems. User-space
-> should be able to handle these special cases.
+> I'd also request that you break out what goes in ARG0,1,2 as that is all
+> stuff that the kernel is aware of and not all reviewers have access to the
+> ECN (I do though).  In particular the fact there are ACPI UIDs may
+> need a more generic solution.
 > 
-> I think an attribute allowing/disallowing power sensitive values is
-> interesting. Maybe allow users too attach/detach individual profiles
-> from being selected/cycled? On that note, it would also be interesting to
-> be able to detach invidivual "profile handlers" from the legacy
-> `acpi_kobj`. But I'm not sure if this added complexity would be worth it.
+> Jonathan
 > 
-> Anyway.. Mario, do you think hiding platform_profile_handler from
-> drivers is something worth pursuing? Similar to what the hwmon class
-> does. I feel having some struct members like `minor` and `choices`
-> exposed, or having the profile_get/profile_set callbacks not being
-> const, while it's not the end of the world, could be problematic.
-
-Yeah, I think this is still an interesting idea that's still worth pursuing.
-
-Making the API simpler for drivers is a net benefit and reduction in tech
-debt.
+>> Wathsala Vithanage (2):
+>>    ACPI: Add support for invoking select _DSM methods from user space
+>>    PCI: Add generic netlink interface to TPH _DSM
+>>
+>>   drivers/acpi/Makefile                 |   3 +-
+>>   drivers/acpi/{event.c => acpi_genl.c} | 110 ++++++++++++++++++++++-
+>>   drivers/acpi/acpi_genl_dsm.c          |  76 ++++++++++++++++
+>>   drivers/pci/tph.c                     | 121 ++++++++++++++++++++++++++
+>>   include/acpi/acpi_genl.h              |  54 ++++++++++++
+>>   include/linux/acpi.h                  |   1 +
+>>   6 files changed, 360 insertions(+), 5 deletions(-)
+>>   rename drivers/acpi/{event.c => acpi_genl.c} (63%)
+>>   create mode 100644 drivers/acpi/acpi_genl_dsm.c
+>>   create mode 100644 include/acpi/acpi_genl.h
+>>
+> 
 
 
