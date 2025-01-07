@@ -1,278 +1,181 @@
-Return-Path: <linux-acpi+bounces-10423-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10424-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8B3A04978
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 19:46:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97C0A04A60
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 20:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7703A5FC2
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 18:46:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E393A67C3
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 19:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8101F428E;
-	Tue,  7 Jan 2025 18:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282681F63D7;
+	Tue,  7 Jan 2025 19:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oq45e6Wa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BtisyryQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EC418C937;
-	Tue,  7 Jan 2025 18:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15AB225D6;
+	Tue,  7 Jan 2025 19:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736275584; cv=none; b=GW8KXwXhbE3+lLXEr/o9tgABmqVYSxto5KVRYa/LJ70WKSj5RkXT4+4UizsDuviXRnmtQCuMOxIaudxGqw2PXhqxw+6ZgnCNLLEE6xAgVoDr4IRLuokQjPGyAzgbMnorD0nlnvFqztOezURpvlP/+v4NjkxygFZ8OPfrO26eQkc=
+	t=1736278919; cv=none; b=reVeN5QN2F/6hzWP9+M9u3ChzcpYCjvwsq4hJn6gkB/UfEi5lgBxha6K43jhDbbNTVCxBfJmAKOXUaqxyN2ZGSnJvzXip02ULM8JLFYkW9LLGj+kdy8wFzt02u9vpkgfWr+FRpZZNx6LYGl4HJ1Xo7pcD/4GtzsjCC3AZyHPjkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736275584; c=relaxed/simple;
-	bh=uIOiT+eWmOm2E4larc9CS/AZuK4Bj92iOncd6UmTiso=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IOBjc+W2DfrS7hiIWePYsXA6pJgkRaL1bylnZhHrXXuAc9KeWBZ+3g5MJNJMP5p5HkqXlbGfkisGNGdyJ2eyXQ3NFyKPvlwpRkZ+NXsSV+k+/3GZ9LglJTYi0xkZy+SuKHv6/dYFrUSzTDdeJ6mjkN6anHcEpLR4LNjhjpLM8UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oq45e6Wa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05ECC4CEDE;
-	Tue,  7 Jan 2025 18:46:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736275583;
-	bh=uIOiT+eWmOm2E4larc9CS/AZuK4Bj92iOncd6UmTiso=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Oq45e6WasYKc998P6sfLSQkdFovoP7/+bsJ341pfGoZ/1hBAzG9FQpKhgXSXvKSWf
-	 yPnapg5byAUuYQiwRsCcDqTXVnbhQFK06p7KSS5tHzqoR1VhYPzQWObKE9oGan2XTx
-	 lf6XmhBfIBoFsYgeGmV7p1yaJVqXB6NXf1kM3XkjQFAoJEfNlMPqh4pcSA2835UvyV
-	 Y+gadV+dbhjXyV8oIWUfdU0Fqpalc1iM/zvACfa6X9J7JB0BINywFIWICl6bNhGlmJ
-	 SuZ9w9hATVgKPGD9zmknnvnS1Fsg63JtbzgYoXOu2+rzcdOEVrQaAUkqAZZq+kqwhu
-	 yHWwqwO6nsNCg==
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5f4ce54feb8so7631559eaf.3;
-        Tue, 07 Jan 2025 10:46:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWlqA4kNsKRBWf/vwxYe9ZN8pNw4mThR2uRGf6IlSehmp0WR4p3B8OqcLbQD4UKnv2t9th3VzK1Zwla@vger.kernel.org, AJvYcCXg58BhJ096rmLFOmw1gbMvC7OXV1B2PDF9XbykaJgH5N5CxKFbRjFlg5BhlZ1g5RfZkufYOK/snJznD3c7@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWpDIwhkTkvNuJrr80iP4YI2X3a9cw/iYHI/xwrQXK/i+EUclo
-	SJ6idFoh6tQ0cBrGlSRsGEkS2esY0iUEM6XJ3POFCMffeERBN13sjGom4X0KeZiI9hgsZkjye9J
-	zhGUx5DNAK4j+sVIThkivFTHf13k=
-X-Google-Smtp-Source: AGHT+IHMEf1iHs1I89Sulr91TxTQd64FM84M60ywU4pPxg2O+t9kYUnBBZ56Rc4Z1uPRoSe3IccYBVudtVB4cs6rVTs=
-X-Received: by 2002:a05:6871:374a:b0:29e:5c37:a1c0 with SMTP id
- 586e51a60fabf-2aa06722377mr39015fac.21.1736275582878; Tue, 07 Jan 2025
- 10:46:22 -0800 (PST)
+	s=arc-20240116; t=1736278919; c=relaxed/simple;
+	bh=1J5prhZ3jGF82gvD2e/zn0E3vSX9GmnJU3BCB4h//Io=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jb1XozjVtuy5u4OrYQl3KNgi+I9oVlG7gDZXClMziKQERNuijRlUVg7g1oWPSXdlNIzjXrOEtaHyinMWXFtF3sPG7zZuyVUvyOuVYHSHhTOHEvpJv2FSLRh0n1R0gT79klt792dvh2bk5xJu3dHs/OG2c4DZ9tCwi2hnYUPlJUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BtisyryQ; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736278916; x=1767814916;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1J5prhZ3jGF82gvD2e/zn0E3vSX9GmnJU3BCB4h//Io=;
+  b=BtisyryQm1sNU9w//+/KVgGGcgid5NN1ebvu9b1ZpvUgjhteBbhFjDnU
+   h9MAVvOIhtX8MzQhOtlnKhlQWVmeEfzZ/bCE1WzAXOKoxz7QUa84PN3ka
+   Qr+eFsD3ponn533O4r3K6wUC/y8PThU5TPHH288Q+F+HpnzhQs2EOH4Yz
+   EsaDHCOoQe6HYQAycbw0A+p3RC2fZc+VPePAG91UuuUIiUhgjMtfgolul
+   FpyXAMS/o302o3l7fra4qMLQv1wRx9YZh8U3V8RIq3hS+KR3TiijRIO8o
+   rLKk6VI4iLTDZOLF+Q8f5tQUpIjHzYKyoq/BcPODhRQZ8LTwGojA8e6ZI
+   A==;
+X-CSE-ConnectionGUID: zo6po55GTsKCs5cavGiGRQ==
+X-CSE-MsgGUID: 3zVTq9WsQ22SwDJNqq9j1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="53899857"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; 
+   d="scan'208";a="53899857"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 11:41:49 -0800
+X-CSE-ConnectionGUID: EScFaYF8TBS0c3XQlqMXqQ==
+X-CSE-MsgGUID: 77pSGjfbQvaJNKpSVOlaNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="106881440"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.110.189]) ([10.125.110.189])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 11:41:47 -0800
+Message-ID: <f3d1b01f-9ed8-4c56-9bb3-409b51b59291@intel.com>
+Date: Tue, 7 Jan 2025 12:41:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <fdf629284a00da61384eadea6ac0cd78c20e7e11.1735490662.git.mail@maciej.szmigiero.name>
-In-Reply-To: <fdf629284a00da61384eadea6ac0cd78c20e7e11.1735490662.git.mail@maciej.szmigiero.name>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 7 Jan 2025 19:46:11 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0j+gUjTGAVCxBQad3Bb5D0ai+dRa5kmNu_ohf5TCnpUhQ@mail.gmail.com>
-X-Gm-Features: AbW1kvZCOjzoTm_M_pMuo07ezvHTr3JeIgxl1wEaPTAyoxwGjV1wfX3z943c8V0
-Message-ID: <CAJZ5v0j+gUjTGAVCxBQad3Bb5D0ai+dRa5kmNu_ohf5TCnpUhQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power
- resource quirk
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] cxl: Add extended linear cache address alias emission
+ for cxl events
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
+ bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
+ dave@stgolabs.net, alison.schofield@intel.com, ira.weiny@intel.com
+References: <20241204224827.2097263-1-dave.jiang@intel.com>
+ <20241204224827.2097263-4-dave.jiang@intel.com>
+ <20241224121113.00007eec@huawei.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241224121113.00007eec@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Dec 29, 2024 at 5:45=E2=80=AFPM Maciej S. Szmigiero
-<mail@maciej.szmigiero.name> wrote:
->
-> This laptop (and possibly similar models too) has power resource called
-> "GP12.PXP_" for its Intel XMM7360 WWAN modem.
->
-> For this power resource to turn ON power for the modem it needs certain
-> internal flag called "ONEN" to be set:
-> Method (_ON, 0, NotSerialized) // _ON_: Power On
-> {
->         If (^^^LPCB.EC0.ECRG)
->         {
->                 If ((ONEN =3D=3D Zero))
->                 {
->                         Return (Zero)
->                 }
-> (..)
->         }
-> }
->
->
-> This flag only gets set from this power resource "_OFF" method, while the
-> actual modem power gets turned off during suspend by "GP12.PTS" method
-> called from the global "_PTS" (Prepare To Sleep) method.
->
-> In fact, this power resource "_OFF" method implementation just sets the
-> aforementioned flag:
-> Method (_OFF, 0, NotSerialized) // _OFF: Power Off
-> {
->         OFEN =3D Zero
->         ONEN =3D One
-> }
->
-> Upon hibernation finish we try to set this power resource back ON since i=
-ts
-> "_STA" method returns 0 and the resource is still considered in use as it
-> is declared as required for D0 for both the modem ACPI device (GP12.PWAN)
-> and its parent PCIe port ACPI device (GP12).
-> But the "_ON" method won't do anything since that "ONEN" flag is not set.
->
-> Overall, this means the modem is dead after hibernation finish until the
-> laptop is rebooted since the modem power has been cut by "_PTS" and its P=
-CI
-> configuration was lost and not able to be restored.
->
-> The easiest way to workaround this issue is to call this power resource
-> "_OFF" method before calling the "_ON" method to make sure the "ONEN"
-> flag gets properly set.
->
-> This makes the modem alive once again after hibernation finish - with
-> properly restored PCI configuration space.
->
-> Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-Thanks for the patch, but I'd rather find a different way of
-addressing the problem at hand because there are at least two
-potential issues with this approach.
 
-> ---
->  drivers/acpi/power.c | 75 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
->
-> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> index 25174c24d3d7..1db93cf8e4f6 100644
-> --- a/drivers/acpi/power.c
-> +++ b/drivers/acpi/power.c
-> @@ -23,6 +23,7 @@
->
->  #define pr_fmt(fmt) "ACPI: PM: " fmt
->
-> +#include <linux/delay.h>
->  #include <linux/dmi.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> @@ -991,9 +992,57 @@ struct acpi_device *acpi_add_power_resource(acpi_han=
-dle handle)
->  }
->
->  #ifdef CONFIG_ACPI_SLEEP
-> +static const struct dmi_system_id dmi_hp_elitebook_gp12pxp_quirk[] =3D {
-> +/*
-> + * This laptop (and possibly similar models too) has power resource call=
-ed
-> + * "GP12.PXP_" for its WWAN modem.
-> + *
-> + * For this power resource to turn ON power for the modem it needs certa=
-in
-> + * internal flag called "ONEN" to be set.
-> + * This flag only gets set from this power resource "_OFF" method, while=
- the
-> + * actual modem power gets turned off during suspend by "GP12.PTS" metho=
-d
-> + * called from the global "_PTS" (Prepare To Sleep) method.
-> + * On the other hand, this power resource "_OFF" method implementation j=
-ust
-> + * sets the aforementioned flag without actually doing anything else (it
-> + * doesn't contain any code to actually turn off power).
-> + *
-> + * The above means that when upon hibernation finish we try to set this
-> + * power resource back ON since its "_STA" method returns 0 (while the r=
-esource
-> + * is still considered in use) its "_ON" method won't do anything since
-> + * that "ONEN" flag is not set.
-> + * Overall, this means the modem is dead until laptop is rebooted since =
-its
-> + * power has been cut by "_PTS" and its PCI configuration was lost and n=
-ot able
-> + * to be restored.
-> + *
-> + * The easiest way to workaround the issue is to call this power resourc=
-e
-> + * "_OFF" method before calling the "_ON" method to make sure the "ONEN"
-> + * flag gets properly set.
-> + */
-> +       {
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 855 G7 =
-Notebook PC"),
-> +               },
-> +       },
-> +       {}
-> +};
-> +
-> +static bool resource_is_gp12pxp(acpi_handle handle)
-> +{
-> +       const char *path;
-> +       bool ret;
-> +
-> +       path =3D acpi_handle_path(handle);
-> +       ret =3D path && strcmp(path, "\\_SB_.PCI0.GP12.PXP_") =3D=3D 0;
-> +       kfree(path);
-> +
-> +       return ret;
-> +}
-> +
->  void acpi_resume_power_resources(void)
->  {
->         struct acpi_power_resource *resource;
-> +       bool hp_eb_gp12pxp_quirk =3D dmi_check_system(dmi_hp_elitebook_gp=
-12pxp_quirk);
->
->         mutex_lock(&power_resource_list_lock);
->
-> @@ -1012,8 +1061,34 @@ void acpi_resume_power_resources(void)
->
->                 if (state =3D=3D ACPI_POWER_RESOURCE_STATE_OFF
->                     && resource->ref_count) {
-> +                       bool eb_gp12pxp =3D hp_eb_gp12pxp_quirk &&
-> +                               resource_is_gp12pxp(resource->device.hand=
-le);
+On 12/24/24 5:11 AM, Jonathan Cameron wrote:
+> On Wed, 4 Dec 2024 15:46:48 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
+> 
+>> Add the aliased address of extended linear cache when emitting event
+>> trace for DRAM and general media of CXL events.
+>>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> I wonder if you want to future proof the hpa_alias for potential case
+> of there being more than 1?  hpa_alias0 or similar so that we can add
+> more as needed?
 
-This is quite a bit of a useless overhead for all of the systems that
-don't actually contain this defective power resource.
+Do you mean when emitting via the trace? Yeah I can change it to hpa_alias0 in the output string.
 
-Also, according to your description, the problem is
-hibernation-specific and this function is also called on resume from
-suspend-to-RAM.
 
-> +
-> +                       if (eb_gp12pxp) {
-> +                               acpi_handle_notice(resource->device.handl=
-e,
-> +                                                  "HP EB quirk - turning=
- OFF before ON\n");
-> +                               __acpi_power_off(resource);
-> +                       }
-> +
->                         acpi_handle_debug(resource->device.handle, "Turni=
-ng ON\n");
->                         __acpi_power_on(resource);
-> +
-> +                       if (eb_gp12pxp) {
-> +                               /*
-> +                                * Use the same delay as DSDT uses in mod=
-em _RST
-> +                                * method.
-> +                                *
-> +                                * Otherwise we get "Unable to change pow=
-er
-> +                                * state from unknown to D0, device
-> +                                * inaccessible" error for the modem PCI =
-device
-> +                                * after thaw.
-> +                                *
-> +                                * This power resource is normally being =
-enabled
-> +                                * only during thaw (once) so this wait i=
-s not
-> +                                * a performance issue.
-> +                                */
-> +                               msleep(200);
-> +                       }
->                 }
->
->                 mutex_unlock(&resource->resource_lock);
+> 
+> 
+> Otherwise, looks like there is either a null point dereference or
+> overly paranoid existing code. I haven't checked which but changes
+> needed either way.
 
-It looks like the modem's driver is modular and not included into the
-initrd image, so the restore kernel doesn't initialize it during
-resume from hibernation.
+I'll move it under the if (cxlr) and also add a check for cxlr in the helper function.
 
-Have you tried to build that driver into the kernel or add it to the initrd=
-?
+DJ
+
+
+> 
+> Jonathan
+> 
+>> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+>> index 5175138c4fb7..4017b7afa78a 100644
+>> --- a/drivers/cxl/core/mbox.c
+>> +++ b/drivers/cxl/core/mbox.c
+>> @@ -856,6 +856,24 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, CXL);
+>>  
+>> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
+>> +{
+>> +	struct cxl_region_params *p = &cxlr->params;
+> 
+> Bad idea to unconditionally dereference I think. See below.
+> 
+>> +	int nid;
+>> +
+>> +	if (!p->cache_size)
+>> +		return ~0ULL;
+>> +
+>> +	nid = cxl_region_nid(cxlr);
+>> +	if (nid == NUMA_NO_NODE)
+>> +		nid = 0;
+>> +
+>> +	if (hpa >= p->res->start + p->cache_size)
+>> +		return hpa - p->cache_size;
+>> +
+>> +	return hpa + p->cache_size;
+>> +}
+>> +
+>>  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>>  			    enum cxl_event_log_type type,
+>>  			    enum cxl_event_type event_type,
+>> @@ -871,7 +889,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>>  	}
+>>  
+>>  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
+>> -		u64 dpa, hpa = ULLONG_MAX;
+>> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias;
+>>  		struct cxl_region *cxlr;
+>>  
+>>  		/*
+>> @@ -887,11 +905,14 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>>  		if (cxlr)
+>>  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
+>>  
+>> +		hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
+> 
+> If there is no region, and hence no hpa does it make sense to call this?
+> Particularly as first thing done in this is to dereference cxlr.
+> 
+> 
+>> +
+>>  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
+>>  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
+>> -						&evt->gen_media);
+>> +						hpa_alias, &evt->gen_media);
+>>  		else if (event_type == CXL_CPER_EVENT_DRAM)
+>> -			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
+>> +			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
+>> +				       &evt->dram);
+>>  	}
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, CXL);
+> 
+
 
