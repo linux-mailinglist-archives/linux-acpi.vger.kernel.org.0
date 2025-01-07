@@ -1,78 +1,116 @@
-Return-Path: <linux-acpi+bounces-10395-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10396-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E430A038C1
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 08:27:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88937A038D0
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 08:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 141141640E8
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 07:27:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D713A3954
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 07:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC4B78F49;
-	Tue,  7 Jan 2025 07:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1E7154BE2;
+	Tue,  7 Jan 2025 07:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R5PINFX8"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="a1iy5UTi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AB64C9D;
-	Tue,  7 Jan 2025 07:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B4C1862A;
+	Tue,  7 Jan 2025 07:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736234873; cv=none; b=pW2LIXooIvJVxjOUV1BPyo03s1fcDu5nJaGYL90hMz+tSBZ1meAFgF4eZZZ2Xjww76rxJJAH2toTW9aF01JkvOOagi4y/BLMIlkHl6YqE1PfaGcRFXCT56W1r+2K3UGMMcOWGxiL8kg3bKpW4JnxnERUFiv86Q5GVs2vCg61GRo=
+	t=1736235185; cv=none; b=X8fLdDXPICIkm7cRHnz19aJ0Lc39FbJR3kNOY6TJtkhAhZxu6C0ONAZCLhB6dlX0+1FI9dAPHjYBGMKnaXhGsdBN2HKOzFLVq5kLFfAp6hfbvpEkC4ZQ/1QlHB8kvtHniTr5OWzhcNon9wExpO26knM3Z4rOs6JFihD1vZ64Qzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736234873; c=relaxed/simple;
-	bh=CyQJ1mfHX+K4uMkM39P3plS0xz57q8rUpkBL11JEl6E=;
+	s=arc-20240116; t=1736235185; c=relaxed/simple;
+	bh=RRoVh0E2t0bccH/iELMMi9eHYgKC1deGS4Mbe0wK4xw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LMCwLVsw+oS9TjSAXfSug/Te3H/25KWAm6gzEjJIGpgJi4CRQYqUEkFGSegUpMX3G4Jca6mQneIzCd76MbAe6XQp6kXGnqGKUGdKkARotPy0mfDciqOeDf6UTrYqRbJLvDzKhAlmc/ILPJSrbNAURjYT2SW8MNDFt1tnFi2EtDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R5PINFX8; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736234871; x=1767770871;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=CyQJ1mfHX+K4uMkM39P3plS0xz57q8rUpkBL11JEl6E=;
-  b=R5PINFX8ofvvwqVtKaQyQlnfXe+5Qdfhh/Y/lb6bVcrRWq6R9w5ey6GR
-   258gtNfw/IQeV1WluCeez+DaN5toUB3qga3IJSWbe1eRD6hr8eJ7AYWUd
-   2D1IPiLKFDo7vB2Xmndmhh2TTJyRVsfH13SFA+1huwhwLYD5SHdB6w0kN
-   wbuNK6Fc2uOurZNGONrBREEKHI5kGAARHAwEynJEYh+CRb4hHW59eZH5b
-   jrNp7H7Hl9ugtVhtMvFzu3WoJJZ8f7DW5YL+cKKIXH+iD6jBt2zoIpJsX
-   D7lQnX3QdfoGKUjTpv3oGOoX+cg291XG24Uw0F1L8vYTc2MAx8SkZC5/g
-   Q==;
-X-CSE-ConnectionGUID: mGyBCBsyQwSvbG5SwahwIw==
-X-CSE-MsgGUID: fAJIsYX9QY6qsb8Bb15B4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="35699861"
-X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; 
-   d="scan'208";a="35699861"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 23:27:50 -0800
-X-CSE-ConnectionGUID: QiR4Sx+GR+m9JpCryRFOgA==
-X-CSE-MsgGUID: eEmh5cRfQBGQzxHVZnfkxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="107758268"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa005.jf.intel.com with ESMTP; 06 Jan 2025 23:27:49 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 1A8D6235; Tue, 07 Jan 2025 09:27:46 +0200 (EET)
-Date: Tue, 7 Jan 2025 09:27:46 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: R Ha <rha051117@gmail.com>
-Cc: wsa+renesas@sang-engineering.com, linux-i2c@vger.kernel.org,
-	linux-acpi@vger.kernel.org, trivial@kernel.org
-Subject: Re: [PATCH 1/1] Force ELAN06FA touchpad I2C bus freq to 100KHz
-Message-ID: <20250107072746.GW3713119@black.fi.intel.com>
-References: <20250103051657.211966-1-rha051117@gmail.com>
- <20250103051657.211966-2-rha051117@gmail.com>
- <20250103093353.GP3713119@black.fi.intel.com>
- <CACHtJB-rZ6SKF3d3xTsbJ=zQ+fPVcCcYxXLX_yMRdpE_4tyYYw@mail.gmail.com>
- <20250105083358.GU3713119@black.fi.intel.com>
- <CACHtJB94K5OLdHgs8dDj4jDBtZmsdymovboCcJJUt5OkD8o+Mg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WS7DfwMJBcotL8069xEJ2e12s/e3AAiClMVXHBP9PT/v86qqkrHf5+jSWe3S0arFq0l0ZHI5J1CJlNLbddoroPNZwSoaki+fFgSJgX5izAzsgQj4QMYq4eM5kOQRf4jXjLh8gzH/6tPOuP1aCWX6Dn7gD3s+WBO+hjkKRcE4ohE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=a1iy5UTi; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1F57440E0163;
+	Tue,  7 Jan 2025 07:32:59 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id gp_XynEJRAhn; Tue,  7 Jan 2025 07:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1736235169; bh=oWOPrGULgEDzUljnOv0D7y9Z2oqc2AFjwXl92zvjRa0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a1iy5UTiowwHwLV1fi/sYuVddu5lpqsuRs/YEyqpHiHv3k0ON4Sv3yMWFf3DJF3TP
+	 jtki+oxuBKIc/AA4s1FM2bNta348heviDtsXARKRf9xDxlXPeviIeejrNzd4TFYiYm
+	 VDtuQrnDfo+zDzpC918ygGN1JwaH3zMYRPEjGOK9CHD8wAsf3Do03hDEWV8ks/fUI0
+	 AkTWL3KWbtd2NZHP0I7Gnyf0WXuyiP1ZD2lSEanNT491YwVgD8Cb8anESLm0f6Ml/E
+	 cNvfdVSlVaw/FxbkAUT/HgWjuYLGxvRqMx2avEPCF8fggJnsVkrS7FtbgwqobTEEkm
+	 5xOCFv9oSlCT5vfyvNlHSKnohAeDl6OtvMPyJlQ+hp+Ykk7Q1zJe3G9kTJkLSzOhXJ
+	 bdcgamveUkpHh8mNTgZUzbVs7+W+S9dJBxnZ6vAtdQ76yIm4DAdt3oX/HKMbZtBrJY
+	 MVDdlP7PsHBZqS1Wb3E1mUbsCQbPM8dSpOcVUssj1ZAfqm20IYdwCiya7SkEfRqtPX
+	 yt+JYoTPBDpPFmVr2C0umut7sWa+7LoCP4xekvYGI4IQ7W+oVi31i06dexzY3TmNn6
+	 In4tZ0M6Yj02Aeb8dwQqZAnDtEcASRTiCP4uU4BLiC5RmkxKZC2FsPp53k4mJFEgCT
+	 MrPoyx76Fucd0FtQx2Y3UDiw=
+Received: from zn.tnic (p200300ea971F93e8329c23ffFea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:93e8:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 80BE340E0266;
+	Tue,  7 Jan 2025 07:32:05 +0000 (UTC)
+Date: Tue, 7 Jan 2025 08:32:04 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 02/19] EDAC: Add scrub control feature
+Message-ID: <20250107073204.GBZ3zYdOtWEbieKXiU@fat_crate.local>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+ <20250106121017.1620-3-shiju.jose@huawei.com>
+ <20250106155733.GAZ3v9bQspKvdi3lZE@fat_crate.local>
+ <36665b7bf4974020a34d08a7ddf6d554@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -81,85 +119,50 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACHtJB94K5OLdHgs8dDj4jDBtZmsdymovboCcJJUt5OkD8o+Mg@mail.gmail.com>
+In-Reply-To: <36665b7bf4974020a34d08a7ddf6d554@huawei.com>
 
-Hi,
+On Mon, Jan 06, 2025 at 07:34:41PM +0000, Shiju Jose wrote:
+> My understanding is that you meant the following changes (diff to this
+> patch), for scrub?  (and similar for other features).  Please let me know if
+> you need any corrections.
 
-On Mon, Jan 06, 2025 at 03:00:53AM -0600, R Ha wrote:
-> On Sun, Jan 5, 2025 at 2:34 AM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> > In general it is good to follow the existing changelogs but in this case I
-> > would prefer to add the details of the system in question (so we know what
-> > systems the quirk is applied to).
-> 
-> Alright, I sent an updated patch with a commit message that specifies
-> the devices affected.
-> 
-> On Sun, Jan 5, 2025 at 2:34 AM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> > Okay thanks for sharing. I don't see the "SPED" beeing assigned in the
-> > below snipped though.
-> 
-> I believe "SPED" is left unassigned. There are two reasons for this.
-> 1. I could not find a place where it was assigned in the ACPI table
-> (in the snippet, every line with the word "SPED" was already
-> included).
-> 2. In the file drivers/i2c/busses/i2c-designware-common.c, the code in
-> the function "i2c_dw_adjust_bus_speed" falls through to the "else"
-> case.
-> 
-> For (2), here is the relevant function where the control flow falls to
-> the "else" case. I found this by adding a print-debugging statement
-> after the last "else" statement.
-> static void i2c_dw_adjust_bus_speed(struct dw_i2c_dev *dev)
-> {
->     u32 acpi_speed = i2c_dw_acpi_round_bus_speed(dev->dev);
->     struct i2c_timings *t = &dev->timings;
-> 
->     /*
->      * Find bus speed from the "clock-frequency" device property, ACPI
->      * or by using fast mode if neither is set.
->      */
->     if (acpi_speed && t->bus_freq_hz)
->         t->bus_freq_hz = min(t->bus_freq_hz, acpi_speed);
->     else if (acpi_speed || t->bus_freq_hz)
->         t->bus_freq_hz = max(t->bus_freq_hz, acpi_speed);
->     else
->         t->bus_freq_hz = I2C_MAX_FAST_MODE_FREQ;
-> }
-> 
-> Actually, after some further investigation, I found that I missed a
-> few lines in my previous snippet. Specifically the line concerning the
-> method "I2CSerialBusV2".
-> Here is the full snippet pasted below since I don't want to miss
-> anything else, I'm sorry for the length but want to make sure
-> everything is included.
+Yes, something like that except "select" is evil and should be used only when
+the items it selects do not pull in more stuff. And since scrub is all
+optional, it should all be depends.
 
-Thanks! Okay the speed set in the I2CSerialBusV2 resource is 400kHZ but
-there is one more variable in this equation: \\_SB.PC00.I2C1 that's the I2C
-controller itself. DW I2C has some timing related methods (HCNT/LCNT) that
-may affect this so I wonder if you can share that one too?
+> diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
+> index 06f7b43a6f78..709bd7ad8015 100644
+> --- a/drivers/edac/Kconfig
+> +++ b/drivers/edac/Kconfig
+> @@ -9,6 +9,14 @@ config EDAC_ATOMIC_SCRUB
+>  config EDAC_SUPPORT
+>  	bool
+>  
+> +config EDAC_FEAT_SCRUB
 
-> Scope (_SB.PC00.I2C1)
-> {
->     Name (I2CN, Zero)
->     Name (I2CX, Zero)
->     Name (I2CI, One)
->     Method (_INI, 0, NotSerialized)  // _INI: Initialize
->     {
->         I2CN = SDS1 /* \SDS1 */
->         I2CX = One
->     }
-> 
->     Device (TPD0)
->     {
->         Name (HID2, Zero)
->         Name (SBFB, ResourceTemplate ()
->         {
->             I2cSerialBusV2 (0x002C, ControllerInitiated, 0x00061A80,
->                 AddressingMode7Bit, "\\_SB.PC00.I2C1",
->                 0x00, ResourceConsumer, _Y53, Exclusive,
->                 )
->         })
+EDAC_SCRUB is perfectly fine.
+
+> +	bool
+> +	help
+> +	  The EDAC scrub feature is optional and is designed to control the
+> +	  memory scrubbers in the system. The common sysfs scrub interface
+> +	  abstracts the control of various arbitrary scrubbing functionalities
+> +	  into a unified set of functions.
+
+This should come...
+
+> +
+>  menuconfig EDAC
+>  	tristate "EDAC (Error Detection And Correction) reporting"
+>  	depends on HAS_IOMEM && EDAC_SUPPORT && RAS
+
+... in here as it is part of EDAC.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
