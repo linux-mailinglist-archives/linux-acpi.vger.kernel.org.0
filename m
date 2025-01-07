@@ -1,305 +1,154 @@
-Return-Path: <linux-acpi+bounces-10404-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10405-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01D2A043A2
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 16:04:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED936A04520
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 16:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8796D162098
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 15:04:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD2391887890
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 15:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0D91F2381;
-	Tue,  7 Jan 2025 15:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EEF1F37DD;
+	Tue,  7 Jan 2025 15:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rdj4BTKq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OhOLfGZS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B981F1319;
-	Tue,  7 Jan 2025 15:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9201EE7BB;
+	Tue,  7 Jan 2025 15:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736262238; cv=none; b=cSeOTXKcFLTs27HTcv/TfLhk4Da3EoDATxJi0TlWutJ6B9XuQx0wUjuh9jn1qsCJ06j1zMgZgHUSCzbEHFTeC3Z8fNcU8sAL3quPmRHHoVYPrJ7OlsG5dJNj0Tl22OjOm3u0AaTH7s2DrhdY6pLLO3Pzf2zTgK2E26sS9pFgKvo=
+	t=1736264910; cv=none; b=PlR3OU2AHDlydmtdRqsZCu89WYTKyEWLEiPh9EZH0DiPpFTrGZ7eM9AP4aIn6j+bAjlsjTI/WG5Li75hrTVQC4XB/ee6j+Fi9xv3e3hMiWd7vwL1D4EShZ42f9mdml8Ioft3yQumI2O4ElFYprOGwchIjj5mtaBKzV8seR/RA04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736262238; c=relaxed/simple;
-	bh=r02ypHE2EsKzJCKXFySKfOuCF4xrzUgVMqfy3L+w+Lk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=otz/URyyE43X5BEF88Ra26q9K3wksTmKDpwC0H5QWQldiOWw/YInkDsaSNkCJXxu40QTyGznWQCbY4pfNVPuJMPeEQxLxKs+4d9rgPNsGDi+tc10jdU0bckLgaZ5y976sBnEvIrnh05ATL+uvtAkgcbcEXG7AUxt47ZH+lUzc7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rdj4BTKq; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50785q0m018311;
-	Tue, 7 Jan 2025 15:02:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=nGMTr1inoVWG3ARe8QoGoEOSwdCntu
-	qZy8bhdK6O/ME=; b=rdj4BTKquX38fA+V7vs9vGrg6z7HxUyoh1JCIFg2qPrBrc
-	ovRrqMTxob92ukiN9TlpZCs7CVUaqv6rh4Mi5tAIkhlcCaduaExoYeYLzmHkaH1C
-	S0jV8pQzj2Q2N++he2cxLihvsXN9Ws2JTtsztsnqZdNHB0F+gy5J9PuEu1tgZtJk
-	XpYyXE/McfMm5JLsDDKSEa0f3gOdZvqdAytY6OUzDZe71qUCT9y2i1ZigqqwPHmx
-	1mK+SyY6FXGKya5ump+AzYcnbek4K8yEjS0n+sKJkfNM1URBoiNo/3Sb4PjRN+s0
-	zgkOb4fRUrznizbOxQ8cOjfYiVbiPNEGSmJygikg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4410f39tfg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 15:02:55 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 507E2w4n027938;
-	Tue, 7 Jan 2025 15:02:54 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhk2t7y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 15:02:54 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 507F2nAY55837076
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Jan 2025 15:02:50 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C602420043;
-	Tue,  7 Jan 2025 15:02:49 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 683182004D;
-	Tue,  7 Jan 2025 15:02:48 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  7 Jan 2025 15:02:48 +0000 (GMT)
-Date: Tue, 7 Jan 2025 16:02:47 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Guo Weikang <guoweikang.kernel@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@linux.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sam Creasey <sammy@sammy.net>, Huacai Chen <chenhuacai@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-        rafael.j.wysocki@intel.com, Palmer Dabbelt <palmer@rivosinc.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Easwar Hariharan <eahariha@linux.microsoft.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
-        Christian Brauner <brauner@kernel.org>, KP Singh <kpsingh@kernel.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
-        WANG Xuerui <kernel@xen0n.name>, Michael Ellerman <mpe@ellerman.id.au>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>, Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Geoff Levand <geoff@infradead.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mm@kvack.org, linux-pm@vger.kernel.org,
-        Xi Ruoyao <xry111@xry111.site>
-Subject: Re: [PATCH v7] mm/memblock: Add memblock_alloc_or_panic interface
-Message-ID: <Z31CF9f//ZD+VH59@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20241222111537.2720303-1-guoweikang.kernel@gmail.com>
+	s=arc-20240116; t=1736264910; c=relaxed/simple;
+	bh=CaHjk1NO/x+gFM2Y+rIaeQEdIEy2bxyc/1fziZMlsBM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=iV8eMSywRN9N8pVmJiQzkNre+pGBXrfJoEypuL+CpcUKOE6nTx/mUggJa/2NsrZVXMbPhIi09Ew7Gcq3hucJHOYvXmNvDaPoQFoeU8nDntA8e4FK526aDXsBqq138NSV+b2MZzNMaR/7Fx8vXSiAOifgx/ncwBYvEjCZEn/XEvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OhOLfGZS; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736264909; x=1767800909;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=CaHjk1NO/x+gFM2Y+rIaeQEdIEy2bxyc/1fziZMlsBM=;
+  b=OhOLfGZS51JWDWQKR1kNdd6be3i9CSxcsRbsYAlNyMbkbEEJzfMSXgcW
+   2RLZULoguLPmmZDIq43TyGatjcGTUzbtKRSWKGLFgfQAYxTN3l4UcJzFL
+   9HZemvuAZJgVXL54woTPLh7piMwBhrnXQEUJijxvRHD3VpB7JXj6lOg74
+   0iMNmIPOV0iey0QegTEickzrbJRtL3pJ0uDROVdkWw/kX06jz3P/l6ZBC
+   kckh7XYrko34uF49jdYQuQyDjj8HOEKdOOXEadxscRP7PdbYHnw+vZzqa
+   wcE0DMju5B15u4ZJDpOQtNZ5Y2E8EdZ9Ywx9FZ6AaIJ6psIist/0/6K7l
+   g==;
+X-CSE-ConnectionGUID: InTC2WNwQ7a3zxFrG4Hdhg==
+X-CSE-MsgGUID: 874T0CPbRZu5igcLKG6YTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="47811359"
+X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; 
+   d="scan'208";a="47811359"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 07:48:28 -0800
+X-CSE-ConnectionGUID: cbU9Ei/ISo2GpH/dNdhiWQ==
+X-CSE-MsgGUID: +gjx2I2WRuuADvC7Aaymaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; 
+   d="scan'208";a="102705991"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.206])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 07:48:23 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 7 Jan 2025 17:48:19 +0200 (EET)
+To: Kurt Borja <kuurtb@gmail.com>
+cc: platform-driver-x86@vger.kernel.org, W_Armin@gmx.de, 
+    Hans de Goede <hdegoede@redhat.com>, lenb@kernel.org, 
+    linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    mario.limonciello@amd.com, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, soyer@irl.hu
+Subject: Re: [PATCH v2 0/2] Device managed platform_profile_register()
+In-Reply-To: <q45nl5wdout46frnjbkufvi2pmyhz3cfyp72qyqrsnhpnlmhue@3no6u65stho2>
+Message-ID: <687daa3a-af4e-f959-aeb9-43fccd1b8989@linux.intel.com>
+References: <20241224140131.30362-2-kuurtb@gmail.com> <00b64207-ec35-5c99-9bdc-13c77e51e453@linux.intel.com> <q45nl5wdout46frnjbkufvi2pmyhz3cfyp72qyqrsnhpnlmhue@3no6u65stho2>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241222111537.2720303-1-guoweikang.kernel@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: by_phAXyWBB4rrGUxAvoGmZnyCdgAMa_
-X-Proofpoint-ORIG-GUID: by_phAXyWBB4rrGUxAvoGmZnyCdgAMa_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=985
- spamscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501070126
+Content-Type: multipart/mixed; boundary="8323328-1276535145-1736264899=:1001"
 
-On Sun, Dec 22, 2024 at 07:15:37PM +0800, Guo Weikang wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Hi Guo,
+--8323328-1276535145-1736264899=:1001
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-> Before SLUB initialization, various subsystems used memblock_alloc to
-> allocate memory. In most cases, when memory allocation fails, an immediate
-> panic is required. To simplify this behavior and reduce repetitive checks,
-> introduce `memblock_alloc_or_panic`. This function ensures that memory
-> allocation failures result in a panic automatically, improving code
-> readability and consistency across subsystems that require this behavior.
+On Tue, 31 Dec 2024, Kurt Borja wrote:
+> On Mon, Dec 30, 2024 at 08:31:28PM +0200, Ilpo J=E4rvinen wrote:
+> > On Tue, 24 Dec 2024, Kurt Borja wrote:
+> >=20
+> > > Hi :)
+> > >=20
+> > > This is meant to be merged on the pdx86 tree.
+> > >=20
+> > > ~ Kurt
+> > >=20
+> > > v2:
+> > >  - Replaced convoluted cast with intermediate variable (1/2)
+> > >  - Restored dropped empty line (1/2)
+> > >  - Couldn't incorporate Armin's second comment. I probably didn't
+> > >    understand it (1/2)
+> > > v1:=20
+> > >  - https://lore.kernel.org/platform-driver-x86/20241221070817.3764-2-=
+kuurtb@gmail.com
+> > >=20
+> > > Kurt Borja (2):
+> > >   ACPI: platform_profile: Add devm_platform_profile_register()
+> > >   alienware-wmi: Use devm_platform_profile_register()
+> > >=20
+> > >  drivers/acpi/platform_profile.c           | 29 +++++++++++++++++++++=
+++
+> > >  drivers/platform/x86/dell/alienware-wmi.c | 10 +-------
+> > >  include/linux/platform_profile.h          |  1 +
+> > >  3 files changed, 31 insertions(+), 9 deletions(-)
+> >=20
+> > Thanks. I've now applied these.
+> >=20
+> > The first patch is already in the for-next branch and the second is=20
+> > currently in the review-ilpo-next branch (as I wanted to retain ability=
+ to=20
+> > easily separate changes into platform_profile.c from the rest, they go =
+to=20
+> > their own branch first).
+>=20
+> Thanks Ilpo!
+>=20
+> Should I rebase the alienware-wmi rework patch series on top of
+> review-ilpo-next in v3? Currently it's on top of for-next branch.
 
-I believe, you also want to make similar function against memblock_alloc_low().
+Hi Kurt,
 
-Please, find s390 comments below.
+You've probably seen it by now but in general, the content in those=20
+review-ilpo-* branches is just a staging area to what will become the=20
+for-next or fixes branch once LKP has been able to build test the changes.=
+=20
+If no issues appear, they'll become content of the for-next or fixes=20
+branch as is.
 
-...
+In case of problems, I will rebase/edit/drop patches in the=20
+review-ilpo-* branches with a relatively low bar so it might not always=20
+be fast-forwardable but other than that minor annoyance, I see no issue in=
+=20
+basing your work on top of those branches (in particular, if you know=20
+there are going to be conflicts).
 
-> diff --git a/arch/s390/kernel/numa.c b/arch/s390/kernel/numa.c
-> index ddc1448ea2e1..a33e20f73330 100644
-> --- a/arch/s390/kernel/numa.c
-> +++ b/arch/s390/kernel/numa.c
-> @@ -22,10 +22,7 @@ void __init numa_setup(void)
->  	node_set(0, node_possible_map);
->  	node_set_online(0);
->  	for (nid = 0; nid < MAX_NUMNODES; nid++) {
-> -		NODE_DATA(nid) = memblock_alloc(sizeof(pg_data_t), 8);
-> -		if (!NODE_DATA(nid))
-> -			panic("%s: Failed to allocate %zu bytes align=0x%x\n",
-> -			      __func__, sizeof(pg_data_t), 8);
-> +		NODE_DATA(nid) = memblock_alloc_or_panic(sizeof(pg_data_t), 8);
->  	}
+I might rebase also fixes and for-next at times, but I try to avoid=20
+having to do that.
 
-Please, also remove the cycle body brackets.
+--=20
+ i.
 
->  	NODE_DATA(0)->node_spanned_pages = memblock_end_of_DRAM() >> PAGE_SHIFT;
->  	NODE_DATA(0)->node_id = 0;
-> diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-> index 0ce550faf073..1298f0860733 100644
-> --- a/arch/s390/kernel/setup.c
-> +++ b/arch/s390/kernel/setup.c
-> @@ -376,11 +376,7 @@ static unsigned long __init stack_alloc_early(void)
->  {
->  	unsigned long stack;
->  
-> -	stack = (unsigned long)memblock_alloc(THREAD_SIZE, THREAD_SIZE);
-> -	if (!stack) {
-> -		panic("%s: Failed to allocate %lu bytes align=0x%lx\n",
-> -		      __func__, THREAD_SIZE, THREAD_SIZE);
-> -	}
-> +	stack = (unsigned long)memblock_alloc_or_panic(THREAD_SIZE, THREAD_SIZE);
->  	return stack;
->  }
->  
-> @@ -504,10 +500,7 @@ static void __init setup_resources(void)
->  	bss_resource.end = __pa_symbol(__bss_stop) - 1;
->  
->  	for_each_mem_range(i, &start, &end) {
-> -		res = memblock_alloc(sizeof(*res), 8);
-> -		if (!res)
-> -			panic("%s: Failed to allocate %zu bytes align=0x%x\n",
-> -			      __func__, sizeof(*res), 8);
-> +		res = memblock_alloc_or_panic(sizeof(*res), 8);
->  		res->flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM;
->  
->  		res->name = "System RAM";
-> @@ -526,10 +519,7 @@ static void __init setup_resources(void)
->  			    std_res->start > res->end)
->  				continue;
->  			if (std_res->end > res->end) {
-> -				sub_res = memblock_alloc(sizeof(*sub_res), 8);
-> -				if (!sub_res)
-> -					panic("%s: Failed to allocate %zu bytes align=0x%x\n",
-> -					      __func__, sizeof(*sub_res), 8);
-> +				sub_res = memblock_alloc_or_panic(sizeof(*sub_res), 8);
->  				*sub_res = *std_res;
->  				sub_res->end = res->end;
->  				std_res->start = res->end + 1;
-> @@ -816,9 +806,7 @@ static void __init setup_randomness(void)
->  {
->  	struct sysinfo_3_2_2 *vmms;
->  
-> -	vmms = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-> -	if (!vmms)
-> -		panic("Failed to allocate memory for sysinfo structure\n");
-> +	vmms = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
->  	if (stsi(vmms, 3, 2, 2) == 0 && vmms->count)
->  		add_device_randomness(&vmms->vm, sizeof(vmms->vm[0]) * vmms->count);
->  	memblock_free(vmms, PAGE_SIZE);
-> diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-> index 822d8e6f8717..d77aaefb59bd 100644
-> --- a/arch/s390/kernel/smp.c
-> +++ b/arch/s390/kernel/smp.c
-> @@ -611,9 +611,9 @@ void __init smp_save_dump_ipl_cpu(void)
->  	if (!dump_available())
->  		return;
->  	sa = save_area_alloc(true);
-> -	regs = memblock_alloc(512, 8);
-> -	if (!sa || !regs)
-> +	if (!sa)
->  		panic("could not allocate memory for boot CPU save area\n");
-
-Please, replace memblock_alloc() with memblock_alloc_or_panic() in
-save_area_alloc() and remove the error handling here and also in
-smp_save_dump_secondary_cpus().
-
-> +	regs = memblock_alloc_or_panic(512, 8);
->  	copy_oldmem_kernel(regs, __LC_FPREGS_SAVE_AREA, 512);
->  	save_area_add_regs(sa, regs);
->  	memblock_free(regs, 512);
-> @@ -792,10 +792,7 @@ void __init smp_detect_cpus(void)
->  	u16 address;
->  
->  	/* Get CPU information */
-> -	info = memblock_alloc(sizeof(*info), 8);
-> -	if (!info)
-> -		panic("%s: Failed to allocate %zu bytes align=0x%x\n",
-> -		      __func__, sizeof(*info), 8);
-> +	info = memblock_alloc_or_panic(sizeof(*info), 8);
->  	smp_get_core_info(info, 1);
->  	/* Find boot CPU type */
->  	if (sclp.has_core_type) {
-> diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-> index 0fd56a1cadbd..cf5ee6032c0b 100644
-> --- a/arch/s390/kernel/topology.c
-> +++ b/arch/s390/kernel/topology.c
-> @@ -548,10 +548,7 @@ static void __init alloc_masks(struct sysinfo_15_1_x *info,
->  		nr_masks *= info->mag[TOPOLOGY_NR_MAG - offset - 1 - i];
->  	nr_masks = max(nr_masks, 1);
->  	for (i = 0; i < nr_masks; i++) {
-> -		mask->next = memblock_alloc(sizeof(*mask->next), 8);
-> -		if (!mask->next)
-> -			panic("%s: Failed to allocate %zu bytes align=0x%x\n",
-> -			      __func__, sizeof(*mask->next), 8);
-> +		mask->next = memblock_alloc_or_panic(sizeof(*mask->next), 8);
->  		mask = mask->next;
->  	}
->  }
-> @@ -569,10 +566,7 @@ void __init topology_init_early(void)
->  	}
->  	if (!MACHINE_HAS_TOPOLOGY)
->  		goto out;
-> -	tl_info = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-> -	if (!tl_info)
-> -		panic("%s: Failed to allocate %lu bytes align=0x%lx\n",
-> -		      __func__, PAGE_SIZE, PAGE_SIZE);
-> +	tl_info = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
->  	info = tl_info;
->  	store_topology(info);
->  	pr_info("The CPU configuration topology of the machine is: %d %d %d %d %d %d / %d\n",
-
-Thanks!
+--8323328-1276535145-1736264899=:1001--
 
