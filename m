@@ -1,144 +1,204 @@
-Return-Path: <linux-acpi+bounces-10425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669BEA04C15
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 23:14:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F385A04EC4
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 02:21:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60147165BD9
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Jan 2025 22:14:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CFCB1888093
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 01:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C9E1A8411;
-	Tue,  7 Jan 2025 22:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lFOYiXlE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B503BBF0;
+	Wed,  8 Jan 2025 01:19:36 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6076119E99A
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Jan 2025 22:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+Received: from invmail3.skhynix.com (exvmail3.hynix.com [166.125.252.90])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D55478F34;
+	Wed,  8 Jan 2025 01:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736288086; cv=none; b=PTbhheBBk3fnwQn4h2pQN9R4+dwqK8IQEXnUtxafohFaVFFpWO0xxmdGMarWh8ohnGkPiyTXm0h52/PGIIBDv304RDDbg9JAqW9hurtfpRXNAlKSKRvGHKo/o20X0JJrnb3vXMgNRPtJfDmvB15Ld9NOS2vJmBZyOk7a3iGFcXo=
+	t=1736299176; cv=none; b=FFTX2SkKlwDjkIumGB1ZFG7vNFA388YJ61bvPXrGH7MHuMuqfHncH6wfbzXyeTOR4yBmw1ucYJCSGCllS2s+An0AhsgPMLX1STmpwBmpe86LvPycsWqPXvuadn2XO+nzPfBmjvjvYsIln0lOx6rp0Eo1Z6dHgqMI1LekBYY3KJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736288086; c=relaxed/simple;
-	bh=Q7gsPmAwcKW+iCD5IVNi31ZUXWQBjg1I4E0jayTr9Dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hpdU82aiMNqyPWqcgdNIWaqcbHMKvp20Vd8oc4sHIMp7sZfWXebyKGLEUvLotLcJVO6p1+sUDd7/+90ICRf+QTeQ4JcFSkQ9nv6WzpkB/icWmhq0fRcvsXsk6qh6nj+lHp1itNAtw0jNPpDrWz//fS2H9JJZEzd2awoQLFQ4Vi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lFOYiXlE; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2166f1e589cso20586065ad.3
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Jan 2025 14:14:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1736288084; x=1736892884; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RV+4e9KhhM+feBvIE88GxANGaUR7qFryxHJqEAou5R8=;
-        b=lFOYiXlEDbzSieWXPm/49QCQUL0R+ksdaM+8gQl1rc8uKy6gjUakUiagavB+G3l9le
-         /VzJC4ECyl2HpJacfH2ZzrtesaZBbdUSv9Dcqdcjg95TqECYwrxPcnvHDer1wVujXcyy
-         b9cydzzwJvKwz6gyWhT4NhdwMKojwajedu0Q4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736288084; x=1736892884;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RV+4e9KhhM+feBvIE88GxANGaUR7qFryxHJqEAou5R8=;
-        b=CczELyuyAOZ2eJyY0ndwM87HxygZk5nsEyEIOShgggov6acg38YqaqKF3iRxCujvRG
-         DIfCySFKJSZTIJl6WdwfKz3M0rvRS2NgJ8Z0H+RWVpAMjG+qdsTTONFOVf3LCfu9tu1t
-         6s2eT5Cisdx7eXb5imrLz2s7ACkYCuHGodFokgKDz8UDofwoIldJoSf4qyOUy254HNDN
-         5y16J3wloJTNLihgAE/WLmaxLaoD+Optra8VdAo3e71mKNGz+0PX9+zFN8TM2hF1mpM0
-         UnFV73GcJ1PER422CR1T6RsoCW4kXCqE0taFKb3RLoWEq7Z12AveCT9QQ7jQSjJDnZIn
-         sQOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbu6BNXkzjogqy42DKt2hM2BjSEZe75QNgwC4yil+45D9H8fwit6e2+I9D08ryE1DiBbRxiv30vSTx@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq5sl8Ej05vbXY2+SEDysupQZ6R9OotWYFULH0H20FcHyKqWCx
-	FgBxJv039hitL0xJiDfR+W/AsCVjDEdCDCrgLRlRdf+bJ8bEFislQKks85dP+Q==
-X-Gm-Gg: ASbGncsXQBGow7JqJdnBHfAb4Us5cZGwe/3ANcNf+kP75CK+cx4v1JJA11MTgI5Fny2
-	Nne0XiW09vxpq2D7BzqjOeCSmWNw7oYTYJtMXco81hLL5EKX0RX6I91BwOrba1is3bNJMHZJivv
-	11UpSK4e3TaWsB1I5rKI28ebyYzR7S3ap+0bHnkTOLF295z4lREiPe7FLUCxrTw5kSH1+3eyH3p
-	b3+6nYCfVZ2U4Vm/nQprj4DBQRrIA+TV58SeDt8V++y6IssAp8YhiOwORGV/dYAOcqXJkPSnfs2
-	Tm9lZm/pYdZiuToJPVU=
-X-Google-Smtp-Source: AGHT+IEkAisXGBz/e/a8gkUWJb8Iue3ft+92hn87eXDD4Dkl25YTjIs6OX+OKDfqwZwQcXi/uW2Pcg==
-X-Received: by 2002:a05:6a00:ad4:b0:725:ebab:bb32 with SMTP id d2e1a72fcca58-72d2201be2amr783291b3a.26.1736288084620;
-        Tue, 07 Jan 2025 14:14:44 -0800 (PST)
-Received: from localhost ([2a00:79e0:2e14:7:183c:e247:20b9:87a9])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-72aad8fd7b0sm23040661b3a.139.2025.01.07.14.14.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 14:14:44 -0800 (PST)
-Date: Tue, 7 Jan 2025 14:14:42 -0800
-From: Brian Norris <briannorris@chromium.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: Hsin-Yi Wang <hsinyi@chromium.org>, linux-kernel@vger.kernel.org,
-	mika.westerberg@linux.intel.com, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, lukas@wunner.de,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v5] PCI: Allow PCI bridges to go to D3Hot on all
- Devicetree based platforms
-Message-ID: <Z32nUpG3KzBOy-PH@google.com>
-References: <20241126151711.v5.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid>
+	s=arc-20240116; t=1736299176; c=relaxed/simple;
+	bh=dvrqP5BQ+dV+xcXVe2bnqQg2JUt0uaKvmhW72G/gHAE=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZpiQmh0g8985rsXBu35+CYn/A+Vj4YiUEpSmZMCpVA9gSWJJox1m323RVQtX+dUnM+5v2ajp3QJirAjd5ByU8VtdBHHHMDmdiMIb3P6LXDPaJwQ/+Y5iwwC6kCG69mF0FwXBJSj+06s817RuZlXSEiPhuuTQ54NPeFSzz9v9m/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc59-7a9ff700000194b3-30-677dd2985662
+Message-ID: <769f98b3-f5e5-448c-966e-4dd5468e5041@sk.com>
+Date: Wed, 8 Jan 2025 10:19:19 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241126151711.v5.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid>
+User-Agent: Mozilla Thunderbird
+Cc: kernel_team@skhynix.com, 42.hyeyoo@gmail.com,
+ "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+ <lenb@kernel.org>, "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ =?UTF-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKSBTeXN0ZW0gU1c=?=
+ <honggyu.kim@sk.com>, =?UTF-8?B?6rmA65296riwKEtJTSBSQUtJRSkgU3lzdGVtIFNX?=
+ <rakie.kim@sk.com>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+ "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+ "dave.jiang@intel.com" <dave.jiang@intel.com>,
+ "horen.chuang@linux.dev" <horen.chuang@linux.dev>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kernel-team@meta.com" <kernel-team@meta.com>
+Subject: Re: [External Mail] Re: [External Mail] [RFC PATCH] mm/mempolicy:
+ Weighted interleave auto-tuning
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <20241225093042.7710-1-joshua.hahnjy@gmail.com>
+ <874j2rp6or.fsf@DESKTOP-5N7EMDA> <Z22cwZycFV47wOfX@gourry-fedora-PF4VCD3F>
+ <87cyhdhon1.fsf@DESKTOP-5N7EMDA> <Z27JXDwEmplZCDEX@gourry-fedora-PF4VCD3F>
+ <874j2lll91.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Hyeonggon Yoo <hyeonggon.yoo@sk.com>
+In-Reply-To: <874j2lll91.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrBIsWRmVeSWpSXmKPExsXC9ZZnoe6MS7XpBoe+8VhM7DGwmLN+DZvF
+	9KkXGC1O3Gxks/h59zi7RfPi9WwWqzf5WtzuP8dqsWrhNTaL41vnsVvsuwhUu/PhWzaL5fv6
+	GS0u75rDZnFvzX9Wi7lfpjJbrF6T4SDocfjNe2aPnbPusnt0t11m92g58pbVY/Gel0wem1Z1
+	snls+jSJ3ePEjN8sHjsfWnosbJjK7LF/7hp2j3MXKzw+b5IL4I3isklJzcksSy3St0vgyjjY
+	0MZYsEyp4vKBH2wNjLckuxg5OSQETCTWn/7LCmPvvn0ZzOYVsJRY/auXDcRmEVCRWLftAgtE
+	XFDi5MwnYLaogLzE/Vsz2LsYuTiYBf6ySfQdOAvWLCyQI9F+/B5YkYhAjcTqxQtZQIqEBH4w
+	SjQs6QYrYhYQl7j1ZD5TFyMHB5uAlsSOzlSQMKeArsT7z1cYIUrMJLq2dkHZ8hLb385hBpkj
+	IXCOXeLBwzksEFdLShxccYNlAqPgLCQHzkKyYhaSWbOQzFrAyLKKUSQzryw3MTPHWK84O6My
+	L7NCLzk/dxMjMH6X1f6J3MH47ULwIUYBDkYlHl4Pudp0IdbEsuLK3EOMEhzMSiK8lrJAId6U
+	xMqq1KL8+KLSnNTiQ4zSHCxK4rxG38pThATSE0tSs1NTC1KLYLJMHJxSDYzVtnYqd7Z3lqW/
+	T61Y/MP0HHtf0cEGjo0mr9nTZqkeai7SLj/33a1m8U4Ty3/2oRGP2jdyfsravMdRNje7ZL3d
+	Bwl2pW/C2ULbn1e2iU4z4lS2kOd09Bf0+3Gg8FfYyQerFWdamU1Rj9JwmJHH8le2/ZZcUeSx
+	ngMPnp17XiG+SuxJvzjXQyWW4oxEQy3mouJEAHIZBd3bAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrNIsWRmVeSWpSXmKPExsXCNUOnRHf6pdp0gydvrCwm9hhYzFm/hs1i
+	+tQLjBYnbjayWfy8e5zdonnxejaL1Zt8LT4/e81scbv/HKvFqoXX2CyOb53HbrHvIlDD4bkn
+	WS12PnzLZrF8Xz+jxeVdc9gs7q35z2ox98tUZotD156zWqxek+Eg4nH4zXtmj52z7rJ7dLdd
+	ZvdoOfKW1WPxnpdMHptWdbJ5bPo0id3jxIzfLB47H1p6LGyYyuyxf+4ado9zFys8vt328Fj8
+	4gOTx+dNcgH8UVw2Kak5mWWpRfp2CVwZBxvaGAuWKVVcPvCDrYHxlmQXIyeHhICJxO7bl1lB
+	bF4BS4nVv3rZQGwWARWJddsusEDEBSVOznwCZosKyEvcvzWDvYuRi4NZ4C+bRN+Bs2DNwgI5
+	Eu3H74EViQjUSKxevJAFpEhI4AejRMOSbrAiZgFxiVtP5jN1MXJwsAloSezoTAUJcwroSrz/
+	fIURosRMomtrF5QtL7H97RzmCYx8s5DcMQvJpFlIWmYhaVnAyLKKUSQzryw3MTPHTK84O6My
+	L7NCLzk/dxMjMEqX1f6ZtIPx22X3Q4wCHIxKPLwecrXpQqyJZcWVuYcYJTiYlUR4LWWBQrwp
+	iZVVqUX58UWlOanFhxilOViUxHm9wlMThATSE0tSs1NTC1KLYLJMHJxSDYzJHx4eFAjYrXkw
+	Je3Fit1/NW+wblK+eGb9IwXvcOvq/80HF8/zvlaz6W6gTbtVSc3frZvW++3tt3MQX/dNbbu/
+	5kYLC+NMHQbvtj1JpnVyNpwx5j3G0r2vcvicZm8zF6k9detQZOudvVr5m9UUljXt21a2IcNY
+	d/lUuRCbo7+W7SvL1nq1dLsSS3FGoqEWc1FxIgCUdkf1zgIAAA==
+X-CFilter-Loop: Reflected
 
-Hi Bjorn,
 
-On Tue, Nov 26, 2024 at 03:17:11PM -0800, Brian Norris wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-> Unlike ACPI based platforms, there are no known issues with D3Hot for
-> the PCI bridges in Device Tree based platforms. Past discussions (Link
-> [1]) determined the restrictions around D3 should be relaxed for all
-> Device Tree systems. So let's allow the PCI bridges to go to D3Hot
-> during runtime.
-> 
-> To match devm_pci_alloc_host_bridge() -> devm_of_pci_bridge_init(), we
-> look at the host bridge's parent when determining whether this is a
-> Device Tree based platform. Not all bridges have their own node, but the
-> parent (controller) should.
-> 
-> Link: https://lore.kernel.org/linux-pci/20240227225442.GA249898@bhelgaas/ [1]
-> Link: https://lore.kernel.org/linux-pci/20240828210705.GA37859@bhelgaas/ [2]
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> [Brian: look at host bridge's parent, not bridge node; rewrite
-> description]
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> ---
-> Based on prior work by Manivannan Sadhasivam that was part of a bigger
-> series that stalled:
-> 
-> [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all Devicetree based platforms
-> https://lore.kernel.org/linux-pci/20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org/
-> 
-> I'm resubmitting this single patch, since it's useful and seemingly had
-> agreement. I massaged it a bit to relax some restrictions on how the
-> Device Tree should look.
-> 
-> Changes in v5:
-> - Pulled out of the larger series, as there were more controversial
->   changes in there, while this one had agreement (Link [2]).
-> - Rewritten with a relaxed set of rules, because the above patch
->   required us to modify many device trees to add bridge nodes.
 
-I'm wondering if you have any thoughts on this. Manivannan seemed happy
-with this in his reply. I'd like to see this land in mainline, so I can
-avoid the hacks that everyone seems to be picking up (such as adding
-"pcie_port_pm=force" to their command lines).
+On 2024-12-30 3:48 AM, Huang, Ying wrote:
+> Gregory Price <gourry@gourry.net> writes:
+> 
+>> On Fri, Dec 27, 2024 at 09:59:30AM +0800, Huang, Ying wrote:
+>>> Gregory Price <gourry@gourry.net> writes:
+>>>> This still allows 0 to be a manual "reset specific node to default"
+>>>> mechanism for a specific node, and gives us a clean override.
+>>>
+>>> The difficulty is that users don't know the default value when they
+>>> reset a node's weight.  We don't have an interface to show them.  So, I
+>>> suggest to disable the functionality: "reset specific node to default".
+>>> They can still use "echo 1 > use_defaults" to reset all nodes to
+>>> default.
+>>>
+>>
+>> Good point, and agree.  So lets just ditch 0.  Since that "feature"
+>> wasn't even functional in the current code (it just reset it to 1 at
+>> this point), it's probably safe to just ditch it.  Worst case scenario
+>> if someone takes issues, we can just have it revert the weight to 1.
+> 
+> Before implementing the new version, it's better to summarize the user
+> space interface design first.  So, we can check whether we have some
+> flaws.
 
-(While I'm at it ... apologies for the poor versioning. The subject here
-should probably be "v6", since I'm clearly quoting above that the prior
-version from Manivannan was v5.)
+Hi, hope you all had a nice year-end holiday :)
 
-Thanks,
-Brian
+Let me summarize the points we've discussed:
+
+- A new knob 'weightiness' is unnecessary until it's proven useful.
+   Just using an internal default weightiness value will be enough.
+
+- It will be counter-intuitive to update the value previously set by
+   user, even if the value will no longer be valid (e.g. due to CXL
+   memory hot-plug). User should update the weights accordingly in that
+   case, instead of the kernel updating automatically overwriting them.
+
+- Ditch the way of using 0 as 'system default' value because the user
+   won't know what will be the default when setting it anyway. 0 value
+   now means the kernel won't weight-interleave the node.
+
+- Setting a node weight to default value (e.g. via the previous
+   semantic of '0') could be problematic because it's not atomic -
+   the system may be updating default values while the user's
+   trying to set a node weight to default value.
+
+   To deal with that, Huang suggested 'use_defaults' to atomically update
+   all the weights to system default.
+
+Please let me know if there's any point we discussed that I am missing.
+
+Additionally I would like to mention that within an internal discussion
+my colleague Honggyu suggested introducing 'mode' parameter which can be
+either 'manual' or 'auto' instead of 'use_defaults' to be provide more
+intuitive interface.
+
+With Honggyu's suggestion and the points we've discussed,
+I think the interface could be:
+
+# At booting, the mode is 'auto' where the kernel can automatically
+# update any weights.
+
+mode             auto         # User hasn't specified any weight yet.
+effective        [2, 1, -, -] # Using system defaults for node 0-1,
+                               # and node 2-3 not populated yet.
+
+# When a new NUMA node is added (e.g. via hotplug) in the 'auto' mode,
+# all weights are re-calculated based on ACPI HMAT table, including the
+# weight of the new node.
+
+mode             auto         # User hasn't specified weights yet.
+effective        [2, 1, 1, -] # Using system defaults for node 0-2,
+                               # and node 3 not populated yet.
+
+# When user set at least one weight value, change the mode to 'manual'
+# where the kernel does not update any weights automatically without
+# user's consent.
+
+mode             manual       # User changed the weight of node 0 to 4,
+                               # changing the mode to manual config mode.
+effective        [4, 1, 1, -]
+
+
+# When a new NUMA node is added (e.g. via hotplug) in the manual mode,
+# the new node's weight is zero because it's in manual mode and user
+# did not specify the weight for the new node yet.
+
+mode             manual
+effective        [4, 1, 1, 0]
+
+# When user changes the mode to 'auto', all weights are changed to
+# system defaults based on the ACPI HMAT table.
+
+mode             auto
+effective        [2, 1, 1, 1]  # system defaults
+
+In the example I did not distinguish 'default weights' and 'user
+weights' because it's not important where the weight values came from --
+but it's important to know 1) what's the effective weights now and 2) if
+the kernel can update them.
+
+Any thoughts?
+
+---
+Best,
+Hyeonggon
 
