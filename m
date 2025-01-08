@@ -1,124 +1,181 @@
-Return-Path: <linux-acpi+bounces-10436-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10437-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB1AA065A9
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 20:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3666FA0669A
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 21:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E89A3A1DD4
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 19:59:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0BB3A637A
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 20:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1B3202C4A;
-	Wed,  8 Jan 2025 19:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E6D202F8F;
+	Wed,  8 Jan 2025 20:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CNHfqRhj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FA120127E;
-	Wed,  8 Jan 2025 19:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736366379; cv=none; b=U0Nx6/Z++2/D1TUhcNgVPc7Mr6gfcjWeue9ScigniylZ8dX5WHe6w4mOE2wfZKpR8FfbmZAnAlMYNxePoQcY9YWL4izD47GLIX7EkliU9sQXOUUdYa3cPjQk6hYcjNZqkrQ24bnwqPIOIOcaG5SaLEgt81S+qB5uL8kTUv6BELE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736366379; c=relaxed/simple;
-	bh=/KGS/8rQgUDzOWmbIuVURj9WEuwmEg34L0vx2hkYIUA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D3fyiflpJcxWmdSig2aNKXLGRLmIIYuRGwdn2yji8Tvy/pu96byLoZfOnwEq3YADOqfLIG0stHCzFgBtv3e+iaS6/ti9v1ImiZQ2jEWvcfDdwVXPmuAx3Ophxpz28AHHzP7nWm3xR70szcqZjmWmnoxdUAMBn+LLkT18reudACQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 673C213D5;
-	Wed,  8 Jan 2025 12:00:04 -0800 (PST)
-Received: from [172.27.42.68] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6FF2C3F66E;
-	Wed,  8 Jan 2025 11:59:35 -0800 (PST)
-Message-ID: <d35924de-a560-40aa-a99d-7278009c5ff3@arm.com>
-Date: Wed, 8 Jan 2025 13:59:35 -0600
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2070.outbound.protection.outlook.com [40.107.237.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2761DFE06;
+	Wed,  8 Jan 2025 20:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736369436; cv=fail; b=fYjdWZveqhoHrOyx9NvRFbgri+fVIAk+/5SLGG7n4Lid9e7Rn2O65O36VoN+39+I4MIUJ9XItnUoumJ1SNlCLZqdIuUcOVcQrdwHpwi+gkJFgm6djWSQIo5Iv5zwdOO7ZcHDpAZPRH7ohtp7LUflOHXiUmjmOv0mog030kkYjJQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736369436; c=relaxed/simple;
+	bh=V18eFdYJCK6i8xudtUFbQ1h6pFcftTkFnQn2OeS8W2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qJOH+cknMQiCTNabbqwIor1kojUknjTiiqxZdLNEFSPNXjmn1Ia7Fb5I3f2rlz5muPoG+Vn98QY7k22hcVCBgsffrjDp+lIOo/vbg3rRxF3LIZy9S0rE6Fv+ev8y2WRHty5+7UXYFEJgAeNhc5DT01P3LFGXiv7qc8ztI2Xewrw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CNHfqRhj; arc=fail smtp.client-ip=40.107.237.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Doq9ei5Y4N+7jahXS1sl/W4RnJtPo4w3aJBvuBsiFz0hLVvvDt9DhQPOniwtea2da1l+eQAqWhyvrnN9MTuofG5ayImoFnM2EPnI+lB8aOzc0DM4GBkBFGM+fLxsJsKsPom+97Qn0V2gsdL43IS47gb6Nql/k4r1EW0BlRAiykweqbXsCZodegusKk0IqGQVqbsU6muXSf19i9Og8+CF3QNDewwPfW0dUCJYjSS/AOJmpPVY4Y5HyjHPAjPIX9+XDq+9TsI4dea92M/KhdjbkbEZQ8CzQi+eh0uKFp0y/Spz4SHbEEJE/nPE4dgAFo4TvrY42KvwM0enpXid2liAcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o4i7lvJOEfqLjrsDiwkPSHuS/oiZVyi9w+mWiwt+Efc=;
+ b=HYwd3TADDkD4woLOWGLSxQnaZCRENmek6Iz6kpOGBttytL/t6D7c0DZUbKyZJGENGTz2b9NDtLCUfZbgUyQPw5FfYK66LE7hYPQTt/D8FEVSSPdivPdcn9oLUZdWL8noQMNLNxwgR/YTEJhMdXt4XmivHqwJmlj8KMgF7KGNc5xCxc7N6vHHPgOyPC4FNBeSOMbPka1iv2MEd2/Sc5qVepz8HlD4KMKA9j8wddrkDq7UiNKckVyI2S2e+6zwunY4Vp6kokgAN8Hwc1WLeRvKUNm6PH8+1MRTXEV7J88jqJbPJ5wUq23FYutewkxqdbxRwRVaUI3aaF7N2irCnwNI1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o4i7lvJOEfqLjrsDiwkPSHuS/oiZVyi9w+mWiwt+Efc=;
+ b=CNHfqRhjNLtB/TU1HRXwcTgbSfzyliQQI6ea/TvTyR6su416U+h5h4QbFVK1sUt4yjVxOTppkn9LRWu6Rwkt2GStoGjkBcFpXT8CU1TKVZ+KTdGzCaIuhf5ykco78+6vptug2pqyeqnnoOECABn3LAIbzc9t4gHC7VZYmP8Gb/DpAHP0MWR0TD0kNZU0c5gGdmMS8EKnMtEK5pp7BKl+b29Slhhc3GJUTC96nGF/3XjHeDRmOgbQGlMSDVzUk5EV9Kus4Mwf6xsmLCQyQUBPdmXy7ALRc4/ZsjT3aHfeDsdQ5EJKPxlVbcRr6R1oUUDyhLlSeVHKhY7Uys3S99ZbAw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DS0PR12MB7948.namprd12.prod.outlook.com (2603:10b6:8:152::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Wed, 8 Jan
+ 2025 20:50:31 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8314.015; Wed, 8 Jan 2025
+ 20:50:31 +0000
+Date: Wed, 8 Jan 2025 16:50:30 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Wathsala Vithanage <wathsala.vithanage@arm.com>,
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lenb@kernel.org, robert.moore@intel.com, bhelgaas@google.com,
+	wei.huang2@amd.com, honnappa.nagarahalli@arm.com,
+	dhruv.tripathi@arm.com, rob.herring@arm.com
+Subject: Re: [RFC 0/2] GENL interface for ACPI _DSM methods
+Message-ID: <20250108205030.GU5556@nvidia.com>
+References: <20250106163045.508959-1-wathsala.vithanage@arm.com>
+ <20250106180140.00005132@huawei.com>
+ <85fb2b19-9d15-44ea-8f76-b3cac14e2810@arm.com>
+ <20250107174842.GN5556@nvidia.com>
+ <d35924de-a560-40aa-a99d-7278009c5ff3@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d35924de-a560-40aa-a99d-7278009c5ff3@arm.com>
+X-ClientProxiedBy: BN6PR17CA0060.namprd17.prod.outlook.com
+ (2603:10b6:405:75::49) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/2] GENL interface for ACPI _DSM methods
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Wathsala Vithanage <wathsala.vithanage@arm.com>, linux-acpi@vger.kernel.org,
- linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org, lenb@kernel.org, robert.moore@intel.com,
- bhelgaas@google.com, wei.huang2@amd.com, honnappa.nagarahalli@arm.com,
- dhruv.tripathi@arm.com, rob.herring@arm.com
-References: <20250106163045.508959-1-wathsala.vithanage@arm.com>
- <20250106180140.00005132@huawei.com>
- <85fb2b19-9d15-44ea-8f76-b3cac14e2810@arm.com>
- <20250107174842.GN5556@nvidia.com>
-Content-Language: en-US
-From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <20250107174842.GN5556@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB7948:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee5b9f68-458f-40b0-7a53-08dd3026175b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?1M8NFUJSQRLfuk8kFSx3DDw0Nm6/0P0JOUsY2ssXgX8BJNLCzcq49digFGSw?=
+ =?us-ascii?Q?RdMLq2PCdfe2aNhAIngFcJMF1KF/KyylC3Xyp7P2ls3Rt/geBhGb2nA1X682?=
+ =?us-ascii?Q?JjpHsD9SMdbmU7QDaMZkTs2NmjwuY/gCct2BSTmDz724m2trAtSCvoLV+B9V?=
+ =?us-ascii?Q?jBBUmIZRuX/5HlAS/WXb3Lfjar6Jrre2eQjc8gvZIioAyu1SlZhHeI8M63SX?=
+ =?us-ascii?Q?vT/oZVq55Qhmsq7vyhk0x2BnMKuMxFp/lvSyCaJdWH7jFeFhGmgvgTu77wbW?=
+ =?us-ascii?Q?honZA+GW35cOc6jnfJ3KkrH/XtLXho3ZDQQc/nv3OQZoRCIayfg/DZipjzRb?=
+ =?us-ascii?Q?NEWL26noeSHiZN34f8sH2WBXlBdJn1oC/769ErKyR1QYRTEc4QIaNsi8OK/R?=
+ =?us-ascii?Q?4Y3oFUa4ktVxPvHiP2KCG4aLwYbRgEikOIx6q4D+KWUC9BG3pe332/n9mTiy?=
+ =?us-ascii?Q?/vtQYkUvIwv+b+WaC8+zvRaaAtC0rrnSzuGSBRGHBg2BofAa4sLQilzzB9QR?=
+ =?us-ascii?Q?n3SrT46iAoDQmUL+NNPtQM2Ih8H0GMyPbPlVCC4idI/RHKqo9FEMSnkPOCVR?=
+ =?us-ascii?Q?ny9h+6IT2STS4a3Q5UepKylzdg2FWs/8uXO6BhOq7NAyp5TtzB91q1ciiEEi?=
+ =?us-ascii?Q?54OThOfEQ1A2ok5+49xzKmJlZ3/ltgei8Dxvb5ATFTgDB2BUuPIwZUAvI2BW?=
+ =?us-ascii?Q?xPZf3rebGjl/rKs43XwnnhYY1aGfGqQS8WygGy5Wl56uhiT3jKrI2tmawa81?=
+ =?us-ascii?Q?LeuSF0Nvsuu3pyaVNzsCvUsg8Hxb6WIq2jj2plXTELZBiSx0geck+zJICfQw?=
+ =?us-ascii?Q?6W+xOYdYAiGc2borTMynWJJcD+XOjxUY9iniUzcKN/l8yI1JZlke9HhU+2al?=
+ =?us-ascii?Q?zPPSiF2kknxsbBaRU7mfKJbYs7Qo6w4L9SDpMBQ7Uj/WWqwjBvOZG3bLUtns?=
+ =?us-ascii?Q?DfwiSQdmOqlIErSbUf/Qh2ni9B6DJcsV9DHqUg1fQR1FcfRtuX4KIG9BYA8I?=
+ =?us-ascii?Q?4YlIiu/NCIw4UgAoZPBgIC0jRGvDZGDbkcPwuYsw4Hps58jUp71Nu1sY8+3o?=
+ =?us-ascii?Q?Oxt2RtjtZBVlCFK1/cV2FTlNg4ZGpd1eZt4FGkbQIuqcwmjKMQG9SjD/mp9N?=
+ =?us-ascii?Q?C1mzqm7DTannmY09n437rTVxewqVhaVl43magujKvlUDgDXWCTdgqGqzExPC?=
+ =?us-ascii?Q?HZb7u9wSjJn6U8Wc+nKIPaRg/fMHDpeRDK8+sP6oATPTpvfqQKW7zyy2bo97?=
+ =?us-ascii?Q?IGG6moepd9DXmucN2EcadMJ6oZwQW19bHTlJ497JpVRQANFAOEGOFor1nhwn?=
+ =?us-ascii?Q?K9IK3RtgqepZXrthieD09I1Bm3Fp0V5/jIPVAqRvkgxDiMO47sHYu1zzvc74?=
+ =?us-ascii?Q?AfJsWfQ+yWvSyLMUyxC3JoithlYV?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fJ3vPBVKrGigNLkegN/O6URt+Ju3GXh7cku/LabhrKL7vAFL2tv5QN2kVQ1o?=
+ =?us-ascii?Q?QiAeWHUPXlMs+VXBdWNIQy2kloWWXSUYaE9VXG4u6SwfQfvSVAnPLd938xTF?=
+ =?us-ascii?Q?HdpOSWPf6+rakMnk4avFEv0YeeND7z/1ZTbuIYS/VO4qoL3JcPY1UUqEyJCV?=
+ =?us-ascii?Q?w7zgTZv0B2AgWVRL5PyqdxKmiVKp7qbVTmiGPXUokTq65fYC1Rt1wzC7fYgL?=
+ =?us-ascii?Q?kFP+ElMu7GELDqPEaiPkXNafahi2Sv2Il2B4t/1nLN0WQH8m1RHPNCpmONyO?=
+ =?us-ascii?Q?gLV3UWeTxSP5aHpBjXEFtKlHK28xlUf5FG/4qQPTACoo8IAbaH4VuugqzAU5?=
+ =?us-ascii?Q?gHbnnIYtpzyxcrBy7vAJ2J7oV4VA8yeBv7jW8RMAewqMPLhUCY2MjGp6Sw/Y?=
+ =?us-ascii?Q?en2wSBUrbMrRdxfuj1YkmfJt5xD/btBRSKc1Qpkr+g8eZDaWfRM1i/y9umUf?=
+ =?us-ascii?Q?RTReqcIuxf68rZzS3bBZQw2QWtkakWCRChEgkir+5xfehMVn9hjEMauFRi/M?=
+ =?us-ascii?Q?SWLjgLKQsypVqXKKNsdSMUBW51HiJ9yzXT3HBqjLRxNgV+A6J8FCRiRcHrW6?=
+ =?us-ascii?Q?6HravRNrCYEAWNw/KR9BpODWjzR7hikwsYSKekqU4trBhAPy6zNT8ZWV3hMr?=
+ =?us-ascii?Q?1vCk7thALwl1zAW0ZyF2TRVo68MHQJYMMYROfL85N8YPc2TMpmpPm72Qke9B?=
+ =?us-ascii?Q?7B5LAxWPOH3a0zbRZfE4kAT0G3OgNJUDZXoXxoZSVGN0kIV7jX5o3G1XIqub?=
+ =?us-ascii?Q?/F/ARTe2aBtgT+FBL++T8ksbvxEkumzlMWPjmQ9u3+0uBzVgMYRXIa925/FE?=
+ =?us-ascii?Q?K+EMWGc1+Dnu7DPyf0M+OzxxMoYnAlJD7uLWnRm9seeMy/NR3spDt0vTMmZY?=
+ =?us-ascii?Q?wF3YIchjr69mbOvNVt8KDcEcGkS5NkzxV/AyipnC/O4RX4I8d96HVo7g2Ye2?=
+ =?us-ascii?Q?zy1eBual0d7KIAqrCKuSChtHsHh5swpX7wsEvckEVhY8bRKL1VCiJenM7pek?=
+ =?us-ascii?Q?7gXSTFv5SYh3fy37yL5PDo5YFUUeD4hCEYELJqdIvrTHntt5NUAeEKiddND4?=
+ =?us-ascii?Q?vJxoRCaqfzkMSchF+FwxHiGKLSB0GFoWQRTZe0zEOBw3uI6JtqNNQW3XCPMB?=
+ =?us-ascii?Q?8E5d3wFOBFWxIlqJ92ZSiBgH4n6AQWyCH9Nk1ZLCuWhGC32BtndEPU4zN+6p?=
+ =?us-ascii?Q?w3yFwKFBnD79cCmp1bsc/YhhI07mTnkbfJRL0gIved6gAKq017GPIvbH81J3?=
+ =?us-ascii?Q?XSHXGAkPkVY7cUmw8blBC0+5ej5KJUwMGfCBTpNx0SL/B+T0Yizql3WNkCXx?=
+ =?us-ascii?Q?LYn4+lGduhGL8PrpdPwZMmrDJcloLyTPQwppNijBuxlHDqIlhvQisvTnmMk2?=
+ =?us-ascii?Q?WsWv6fJ79AuNV013q0btpeEXDtrwKjKPs4MGWNaeCfBOpqsR/0Mva3paPeTT?=
+ =?us-ascii?Q?a8aSuX2+/rIfe877JiRKxa/+Vpfe7W/J/fb+VjqlAWwu3DAXSnUrj/uB3DeB?=
+ =?us-ascii?Q?2DMQ2loE9yCT7uDmB7QGh59j20k104wQB2pPtgR5yoEN+N+IIoAJAkBx/skx?=
+ =?us-ascii?Q?Pf1oGKOxVfDoiGiZDP0=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee5b9f68-458f-40b0-7a53-08dd3026175b
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 20:50:31.6627
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8zrQowy2tISohMJcwzDO5+KuYbfWoF6fMpyEM8fqxMK9dMtJmWj1VOzam32aFtJu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7948
 
-Hi,
+On Wed, Jan 08, 2025 at 01:59:35PM -0600, Jeremy Linton wrote:
 
-On 1/7/25 11:48 AM, Jason Gunthorpe wrote:
-> On Tue, Jan 07, 2025 at 11:37:01AM -0600, Jeremy Linton wrote:
->> Hi,
->>
->> On 1/6/25 12:01 PM, Jonathan Cameron wrote:
->>> On Mon, 6 Jan 2025 16:30:43 +0000
->>> Wathsala Vithanage <wathsala.vithanage@arm.com> wrote:
->>>
->>>> Linux v6.13-rc1 added support for PCIe TPH and direct cache injection.
->>>> As already described in the patch set[1] that introduced this feature,
->>>> the cache injection in supported hardware allows optimal utilization of
->>>> platform resources for specific requests on the PCIe bus. However, the
->>>> patch set [1] implements the functionality for usage within the kernel.
->>>> But certain user space applications, especially those whose performance
->>>> is sensitive to the latency of inbound writes as seen by a CPU core, may
->>>> benefit from using this information (E.g., the DPDK cache stashing
->>>> feature discussed in RFC [2]).
-> 
-> There is no way for userspace to program TPH information into a PCI
-> device without going through a kernel driver, and the kernel driver
-> must be the exclusive owner of the steering tag configuration or chaos
-> would ensue. Having a way for sysfs to override this seems very wrong
-> to me, and I think you should not go in this direction.
-> 
-> DPDK runs on VFIO or RDMA. It would natural to have an VFIO native API
-> to manipulate the steering tags, and we are already discussing what
-> RDMA support for steering tag would look like.
-> 
->>> Superficially this feels like another potential interface that could be wrapped
->>> up under appropriate fwctl. Jason, what do you think?
-> 
-> As above, I think this very squarely belongs under the appropriate
-> subsystems that are providing the kernel drivers for the device. There
-> is no reasonable way to share steering tags with unrelated userspace
-> through any mechanism. Basically it fails the independence test of
-> fwctl.
-> 
->> I think this was similar to a conversation we had internally, which was
->> basically to detect the PCIe extended capability and export a 'steering'
->> entry in sysfs on each PCIe device which can take a logical cpu/cache value,
->> translate those on write to the ACPI cpu/cache id's, make the firmware call,
->> then directly update the PCIe device's capability with the result.
-> 
-> Seems wrong, driver must do this. If the driver was already using that
-> entry for something else you've just wrecked it.
+> I'm under the impression this is a similar problem to cpu/irq/numa affinity
+> where the driver/subsystem should be making the choice, but the user is
+> provided the opportunity to override the defaults if they think there is
+> benefit in their environment. 
 
-Can you clarify what you mean by 'wrecked'? AFAIK a valid, if poorly 
-chosen, steering tag is going to be sub-optimal performance.
+Which I think has been proven to have been a mistake. Instead over
+overriding irq affinity though proc/irq under the covers of the driver
+and hoping for the best the driver itself should have the opportinuty
+to set the affinity for its objects directly.
 
-I'm under the impression this is a similar problem to cpu/irq/numa 
-affinity where the driver/subsystem should be making the choice, but the 
-user is provided the opportunity to override the defaults if they think 
-there is benefit in their environment. Again AFAIK, the whole 
-OS/software stashing is already well down the 'I know better than the HW 
-where to store this data' rabbit hole.
+Lets us not repeat this mistake with steering tag. The driver should
+always be involved in this stuff, if you want it to work with DPDK
+then go through the kernel driver that DPDK is running on top of (VFIO
+or RDMA)
 
-
-Thanks,
-
+Jason
 
