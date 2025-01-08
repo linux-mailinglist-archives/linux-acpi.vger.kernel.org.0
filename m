@@ -1,145 +1,256 @@
-Return-Path: <linux-acpi+bounces-10428-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10429-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504BBA05353
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 07:39:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA911A056E2
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 10:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 369507A2476
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 06:39:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99C716324E
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 09:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77DE1A7255;
-	Wed,  8 Jan 2025 06:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657721F12FB;
+	Wed,  8 Jan 2025 09:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dd+Lco9J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nCDfj3Dy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B26419EEBF;
-	Wed,  8 Jan 2025 06:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E761E181B8F;
+	Wed,  8 Jan 2025 09:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736318381; cv=none; b=YCfPU5x0h7zZJUolR/b7hblDcFoISPElMSuVUQKsdygTwVwKwqL4hAdMkUBlI3Yh6XUnXVIB7TS2MGDb6rxzRQb9yj5tHeanQFF2zE5o5jbDBcqlEn6gQ4B7ZxLsUKwENC01YkM6Yz/rGMKTs7g5Rgb847fvMPnXahmbn9oZx8A=
+	t=1736328587; cv=none; b=TiqibOVEocxwb3fzT57jJbJBvXGa4Al+J2Q+nJqUFBcMCgQtzr3sQMauGYHLa3dGqsLz8GCewbnKXU8XuNyzsM5DDsFH9Ue93XLISqfSO+Hz8LaXQURjfFPuPmvCYrn8ShOc2IH88JWPpNOMyf1UgzYUfb+i8ELgmHZA+eVIZwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736318381; c=relaxed/simple;
-	bh=Y2Rym7wN24H634GDba5XHQmmggHq37wC92W1HMI6jBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qC9lnmoq6xgkspTisVoKVhxP9DnZ0W950TwowFHpqTTW2PPmqB4OxdmRE78luIhCCH0/45LO3uz21ZoBaJHR4jpXufKbwj7IMHSAOzyh/MQ2wXx1RBxKXaAcVbq5h3wr0ZBK03GIPWUHq21GOCYhLbci8YbFmRiEJgBEyd+kOCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dd+Lco9J; arc=none smtp.client-ip=209.85.222.43
+	s=arc-20240116; t=1736328587; c=relaxed/simple;
+	bh=lbLgja7iFrxALEZWuG3Cn8M2bIoxMClSO0bPUsYntks=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JbeYsP2jLphuipaz5H+DZPw8ufYZqG36m/8RaYE3Lqz5ay/1HUSHFO2hYCXgZoro+KoUYcwSVVbb9B+MYNxuiOvuTY3IXUmVdX3VzcdSFBGUMVGCh9sZ8mXlVzTwmN5dFCSP0p2Emb47kwTi9lgMFVCz9QSHfT6G/E93wl8wEe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nCDfj3Dy; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85c4e74e2baso3127351241.0;
-        Tue, 07 Jan 2025 22:39:39 -0800 (PST)
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ee50ffcf14so1002115a91.0;
+        Wed, 08 Jan 2025 01:29:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736318379; x=1736923179; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HctyhvaChLTZSAhLoKirYpByW1qn38IXcafGBCGBDRs=;
-        b=Dd+Lco9Jfujqw5Fz0za3eaQajO7zAPf+qczFkIKDKJZN3Qiby7pOWkB19V6yn2MmZg
-         pJhC0tEPCEtyBlmdXJGjVVG0rcZCfHHDdk9quLHxhf+ireFOiz6d5huNClNdmK0C8f7n
-         mRN6462V269gfOPqR4B0WdwUKr2Or+j7GPYDkObPNGCII6oJj1yWbkgpD9MzgEP0uNAP
-         oATE1SwNi+GyQABhcc1Zknt7rBfm2A9H4mkSeFSVV39CLjGKqGaabz+gt7zSONr5sIMA
-         lDS/OeYqQ/SncXADG48fuL5ARODEJhnNRr0OOBJQD6KQEALNfVVZAKPrFkNPr+zYfSFW
-         aJiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736318379; x=1736923179;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1736328585; x=1736933385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HctyhvaChLTZSAhLoKirYpByW1qn38IXcafGBCGBDRs=;
-        b=D1gEe2ZfT5L5Tdpfxn8IV5WHHG4SiMsyOphxYWjixAq7FM/AENhZmaj8qGmY2uBkly
-         MwO+wgolXLHQ/9LAytnlZ0431B6UpKUV/laR8jt6ae93ETmmjlhCVGDGRN2ataMz/C+A
-         zkhb6DoNYUvzXn1wxxVdjie1saudnZLSAXQrvbQCqsqJ5xrxnDp9txEXk9E6hEH5Nbnf
-         /tfgx6TvD/oRnZr3+9jQkt28YYcUxBa6nAUs9Y8YZzLqkWP1ySKc+j5yv4Hb7mCLihGE
-         vdw9aA92Musvl4CXhEG5L12K40WXBUotc68SdlbX5VWoi3vtSKjp4Pg0Cyek2gAJHRaK
-         vB0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVgAnGHiK7nuMnnJkgpzN5ARCGyu/aT5jWqs7QX35uONkB6fDYg3WJI5Awiypmmhtyd2dVGeY+bVcrh@vger.kernel.org, AJvYcCWLzlr9XNR6ACEgCV3CHPyzT5FunUTLO1ujY4OvdpOpCqKnwARzeP0tL1X6CCS+YE95TPVisaDAzpxDy1lX@vger.kernel.org, AJvYcCXe80Zxm4yd34n8Htujzfjne2Uj4W0rxjVs/x6AwqxiVOyYHZe1fvxRa7J2IdRIWqXk94k0sSRxp4TAbo7ID/JhDIgj5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHEPx7zRHB1DfK7DCT34gksbSzgK6bC2KuYQAl4jxpzqOEmhIt
-	sEY3mCkTBmGn0r/kkWtYFG8NETfhaC54g8IRcbaNyNiumBL8mxdm
-X-Gm-Gg: ASbGncttvynZzM58QCT+AlGmjcOhvAobHk1zvsxVav7KPDhuyPkruOOnAvShAzxBWdf
-	D5l6ZSKqqesKHBhPoez5IEro7XNoDi6k9J1MlltnwHX4+eLUkV2tn4ALsopr+/G14qgz09/OaQ3
-	vDfOdah9Z4YEy0aN3M1ReePCgpCvA505qBWhUE9obZVjWEB76nuHkFKsrnavQT3DlqbYALbhFQ2
-	RwBxKsdW8AjOz7ZzPVhBUr7IErfwaFupq2nJyDcBSuAO2j8eAeXPw==
-X-Google-Smtp-Source: AGHT+IEtOp9GS/mUdKzXgnt0rnUKqaQvqnGHl+EKznX0I5rGzpwbicujKROtr/6Piq6xvztFo/bEug==
-X-Received: by 2002:a05:6102:1497:b0:4b2:4a38:7b8f with SMTP id ada2fe7eead31-4b3d10485c0mr1376005137.17.1736318379008;
-        Tue, 07 Jan 2025 22:39:39 -0800 (PST)
-Received: from alphacentauri ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8610ac4bce7sm8179585241.13.2025.01.07.22.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 22:39:38 -0800 (PST)
-Date: Wed, 8 Jan 2025 01:39:33 -0500
-From: Kurt Borja <kuurtb@gmail.com>
-To: "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc: Hridesh MG <hridesh699@gmail.com>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, josh@joshuagrisham.com, 
-	"Derek J . Clark" <derekjohn.clark@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Lee Chun-Yi <jlee@suse.com>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-	Corentin Chary <corentin.chary@gmail.com>, "Luke D . Jones" <luke@ljones.dev>, 
-	Lyndon Sanche <lsanche@lyndeno.ca>, Ike Panhc <ike.pan@canonical.com>, 
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>, Armin Wolf <W_Armin@gmx.de>, 
-	Colin Ian King <colin.i.king@gmail.com>, Alexis Belmonte <alexbelm48@gmail.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, linux-kernel@vger.kernel.org, Dell.Client.Kernel@dell.com, 
-	ibm-acpi-devel@lists.sourceforge.net
-Subject: Re: [RFC PATCH 0/3] ACPI: platform_profile: Let drivers dynamically
- refresh choices
-Message-ID: <sjno57hd66wvjlplnv42fgb7wt62y5xh2dpbsx2r22x6mlneth@ohnyf3za545l>
-References: <20250106044605.12494-1-kuurtb@gmail.com>
- <33a5b6a2-e4df-4bfc-88a9-a9e8309c7f7a@app.fastmail.com>
- <CALiyAonc81o1FreDaWiik3XaqKYVf=wYHX+vaE2_1w66LhJTnA@mail.gmail.com>
- <2e71a4a9-6ec6-4ac7-8640-d80dcdfd7776@amd.com>
- <CALiyAonp1eow2ht_Cmux0B5+-Ukx7YxsE59c4VzwfSvL61iQ5g@mail.gmail.com>
- <205c47ef-6651-4a57-bbe4-adf1b8a25983@amd.com>
- <zelin5tbkup26skhs3dwacwxl33h4ryzgrn3nefay7fxotb5v7@aumb6v7hexpc>
- <4cbfaa44-5ba6-4ccd-8db6-e74af8fe4bba@amd.com>
+        bh=Co1MX43J1KLoMimh8ejh62AJZqz0f32R+OMN2vhkJHg=;
+        b=nCDfj3DyKVDm3OTvprMehMoitckprKwGzWkErVNQIcSoCymPjQnu7LKTo+5lNkb4BD
+         TkL+Ww/iwQiemEllM7NBztkb+VMhK4BZGYLAHzV4Y7RuLwuzQk7JiKLT1HDni1k9QA9u
+         yRQ794zo9KZh6lhwZUVXMO64NMfUuviw9YUjiGRAjLil9+OUMhcm6UG1u47kcrBIHfN1
+         J1LYu4O43K+E5zSlqXtYIGNcSHFscMbzzHxm0xJBwxECXb/HEhzAm7XdLzGaChDqqXs6
+         nSkvrGajKT8w8R5E1cxZcErUwtGs9OrbscmH4CoXBDA2yIve9lB1gJy0IQ/gmDeT4zEn
+         7vIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736328585; x=1736933385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Co1MX43J1KLoMimh8ejh62AJZqz0f32R+OMN2vhkJHg=;
+        b=WrTB1ROaGa77SpxGoJ9hwTUhealfrFj9iMz7rB0BuQPPiPu2nJAaIiz3lqaMozhq8Q
+         5jH9F+ehBNkQpbVRLA702GouHNYD5tDKNmE5bjFiM8Js6Z0yBODnYFHGABDH7kMOfMAA
+         khe67tEZzZcCmCP/bnOK1D/OSEDDrW/NjFbVXiaCfm8O5x1zB5Nwp4og4ty5ePA+l8P6
+         6OfDpclmpwGSe7CtzxDXuLqryyidqiz+XcxRgR+k626BBMW6gLkvlZAHfa5eRD/MNVmK
+         hz1/xvIn2CbIZhPlo7JexW6u73CF111VpU98bNBeZ0Huz5kR1TD+lyqmV4xwHYBZgBEA
+         N7vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2dEY0oNjQmwP6vl4+5kOfGvhy1LkTpLwz3o3wUUv1if9Wno8Xcz+ndNbWrRpoIFssRbn7jydEPg+5@vger.kernel.org, AJvYcCWfkJ0DrOgi0bT3S+X9E56PVg6isutOzOFrdwZMNpoKVah19mdpAoFTkMD0ira05AIIjFy021GmwJQZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc0VkhezRd7Lml8sH2grh3F9/ZACKfc58s09KJcIkc0bNLICpT
+	YuEeOP262y1L9rXzUx9fSepVbXyslheQzw9CUEtKFg+OPGaNxmSP9NryPwjWDhK4AqfrLnPuPsT
+	JSRHO19/9eoBHLDOZWEeLKjyvlar2G/MTtCA=
+X-Gm-Gg: ASbGncvMjjZSBSPgPoR2NTzxVccmwQhB9wZgC82F6EZYSOu19os9+khCHZl0t4LL1hy
+	m9UNxKzQMmJ+1xfVswQCV+Pf/yX8yHlfMzdj30g==
+X-Google-Smtp-Source: AGHT+IGOsozX6DJwAwVyC37JOhFkTNhXkVC+9kdxtG1TOepF01FW0KXYOfnYCnglUlPx0X3/qvyNfAC/Z6EgYAaBu1E=
+X-Received: by 2002:a17:90b:2e4b:b0:2ee:463d:8e8d with SMTP id
+ 98e67ed59e1d1-2f53cc6e272mr9951514a91.14.1736328585083; Wed, 08 Jan 2025
+ 01:29:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4cbfaa44-5ba6-4ccd-8db6-e74af8fe4bba@amd.com>
+References: <20250103051657.211966-1-rha051117@gmail.com> <20250103051657.211966-2-rha051117@gmail.com>
+ <20250103093353.GP3713119@black.fi.intel.com> <CACHtJB-rZ6SKF3d3xTsbJ=zQ+fPVcCcYxXLX_yMRdpE_4tyYYw@mail.gmail.com>
+ <20250105083358.GU3713119@black.fi.intel.com> <CACHtJB94K5OLdHgs8dDj4jDBtZmsdymovboCcJJUt5OkD8o+Mg@mail.gmail.com>
+ <20250107072746.GW3713119@black.fi.intel.com> <CACHtJB-4UGaqKw5zZjE_vPeYX+bMUMiHPNfNYzD6Wmv6jdAuhg@mail.gmail.com>
+ <20250108055150.GY3713119@black.fi.intel.com>
+In-Reply-To: <20250108055150.GY3713119@black.fi.intel.com>
+From: R Ha <rha051117@gmail.com>
+Date: Wed, 8 Jan 2025 03:29:34 -0600
+X-Gm-Features: AbW1kvYaR7Cp_6kGvrDtcqtahfgcmOSppgfOSNFfbMggKzkx0EVI0F4tSyPEBo4
+Message-ID: <CACHtJB-33Pgoj0xORt75G0=cyoKem_K=Dfeg0iQNow18v2sV6Q@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Force ELAN06FA touchpad I2C bus freq to 100KHz
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>, wsa+renesas@sang-engineering.com, 
+	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org, trivial@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 07, 2025 at 11:28:06AM -0600, Limonciello, Mario wrote:
-> > 
-> > After giving it some thought, I agree with you and Hridesh. Kernel
-> > should not limit profile choices if they *are* selectable.
-> > 
-> > If a "proof of concept" patch is still interesting I'll be glad to send
-> > it, otherwise I think my original idea has too many problems. User-space
-> > should be able to handle these special cases.
-> > 
-> > I think an attribute allowing/disallowing power sensitive values is
-> > interesting. Maybe allow users too attach/detach individual profiles
-> > from being selected/cycled? On that note, it would also be interesting to
-> > be able to detach invidivual "profile handlers" from the legacy
-> > `acpi_kobj`. But I'm not sure if this added complexity would be worth it.
-> > 
-> > Anyway.. Mario, do you think hiding platform_profile_handler from
-> > drivers is something worth pursuing? Similar to what the hwmon class
-> > does. I feel having some struct members like `minor` and `choices`
-> > exposed, or having the profile_get/profile_set callbacks not being
-> > const, while it's not the end of the world, could be problematic.
-> 
-> Yeah, I think this is still an interesting idea that's still worth pursuing.
-> 
-> Making the API simpler for drivers is a net benefit and reduction in tech
-> debt.
+Hello,
 
-That's good to hear.
+On Tue, Jan 7, 2025 at 11:51=E2=80=AFPM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+> There should be Device() node for that too. The ones you listed are just
+> child devices connected to that bus.
 
-I'm working on it! Hopefully I'll be able to submit it in a couple of
-days.
+You're right, after searching for Device nodes I was able to find this
+snippet. But it doesn't seem to have anything related to HCNT/LCNT
+values either, but maybe they're hidden somewhere.
+Thanks for the tip again.
 
-~ Kurt
+Scope (_SB.PC00)
+{
+    Scope (\_SB.PC00)
+    {
+        Method (SOD3, 3, Serialized)
+        {
+            OperationRegion (ICB1, SystemMemory, (GPCB () + Arg0), 0x88)
+            If (Arg1)
+            {
+                Field (ICB1, ByteAcc, NoLock, Preserve)
+                {
+                    Offset (0x84),
+                    PMEC,   8
+                }
 
-> 
+                PMEC =3D 0x03
+                PMEC |=3D Zero
+            }
+
+            If ((Arg1 && Arg2))
+            {
+                Field (ICB1, AnyAcc, NoLock, Preserve)
+                {
+                    Offset (0x10),
+                    BAR0,   64
+                }
+
+                BAR0 =3D Zero
+            }
+        }
+    }
+
+    Method (I2CH, 1, Serialized)
+    {
+        OperationRegion (ICB1, SystemMemory, Arg0, 0x20)
+        Field (ICB1, AnyAcc, NoLock, Preserve)
+        {
+            Offset (0x10),
+            BAR0,   64,
+            BAR1,   64
+        }
+
+        Name (BUF0, ResourceTemplate ()
+        {
+            Memory32Fixed (ReadWrite,
+                0x00000000,         // Address Base
+                0x00001000,         // Address Length
+                _Y2B)
+        })
+        Name (BUF1, ResourceTemplate ()
+        {
+            Memory32Fixed (ReadWrite,
+                0x00000000,         // Address Base
+                0x00001000,         // Address Length
+                _Y2C)
+        })
+        CreateDWordField (BUF0, \_SB.PC00.I2CH._Y2B._BAS, ADR0)  //
+_BAS: Base Address
+        CreateDWordField (BUF1, \_SB.PC00.I2CH._Y2C._BAS, ADR1)  //
+_BAS: Base Address
+        ADR0 =3D (BAR0 & 0xFFFFFFFFFFFFF000)
+        ADR1 =3D (BAR1 & 0xFFFFFFFFFFFFF000)
+        ConcatenateResTemplate (BUF0, BUF1, Local0)
+        Return (Local0)
+    }
+
+    Device (I2C0)
+    {
+        If ((IM00 =3D=3D 0x02))
+        {
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Sett=
+ings
+            {
+                Return (I2CH (IC00))
+            }
+
+            Name (_STA, 0x08)  // _STA: Status
+        }
+
+        If ((IM00 =3D=3D One))
+        {
+            Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+            {
+                If (PCIC (Arg0))
+                {
+                    Return (PCID (Arg0, Arg1, Arg2, Arg3))
+                }
+
+                Return (Buffer (One)
+                {
+                     0x00                                             // .
+                })
+            }
+
+            Method (_PS3, 0, NotSerialized)  // _PS3: Power State 3
+            {
+                SOD3 (IC00, One, One)
+            }
+
+            Method (_PS0, 0, NotSerialized)  // _PS0: Power State 0
+            {
+            }
+        }
+
+        If (((IM00 =3D=3D One) || (IM00 =3D=3D Zero)))
+        {
+            Method (_ADR, 0, NotSerialized)  // _ADR: Address
+            {
+                Return (0x00150000)
+            }
+        }
+    }
+
+    [...I2C1-7 nodes removed]
+
+    Method (SPIH, 1, Serialized)
+    {
+        OperationRegion (ICB1, SystemMemory, Arg0, 0x20)
+        Field (ICB1, AnyAcc, NoLock, Preserve)
+        {
+            Offset (0x10),
+            BAR0,   64,
+            BAR1,   64
+        }
+
+        Name (BUF0, ResourceTemplate ()
+        {
+            Memory32Fixed (ReadWrite,
+                0x00000000,         // Address Base
+                0x00001000,         // Address Length
+                _Y2D)
+        })
+        Name (BUF1, ResourceTemplate ()
+        {
+            Memory32Fixed (ReadWrite,
+                0x00000000,         // Address Base
+                0x00001000,         // Address Length
+                _Y2E)
+        })
+        CreateDWordField (BUF0, \_SB.PC00.SPIH._Y2D._BAS, ADR0)  //
+_BAS: Base Address
+        CreateDWordField (BUF1, \_SB.PC00.SPIH._Y2E._BAS, ADR1)  //
+_BAS: Base Address
+        ADR0 =3D (BAR0 & 0xFFFFFFFFFFFFF000)
+        ADR1 =3D (BAR1 & 0xFFFFFFFFFFFFF000)
+        ConcatenateResTemplate (BUF0, BUF1, Local0)
+        Return (Local0)
+    }
+
+    [...SPI nodes removed]
+}
 
