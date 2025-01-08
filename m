@@ -1,196 +1,211 @@
-Return-Path: <linux-acpi+bounces-10430-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10431-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0616A0577F
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 10:56:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE06A05FAD
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 16:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427AF1887010
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 09:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CF8166487
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 15:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849571F76B9;
-	Wed,  8 Jan 2025 09:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5571FCFF2;
+	Wed,  8 Jan 2025 15:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CTrTYRXe"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iPqRXEDg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2078.outbound.protection.outlook.com [40.107.244.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946971F76C2;
-	Wed,  8 Jan 2025 09:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736330161; cv=none; b=KGLCkgZlYo5dl2kP6ebBCFxEQ0cGTZJfNWAS7KVvyiKksOx8xtabDegZOELYDCQ8G79vWpy5u23xnzfuZEGAMuyysjyZfdhGvr3/aZEGYlRE6PfRkhF+SHbO3zw3ntO60HlGxmTHpAM9SGfsQ9cla8+OCldEi3AYACWArWBtiZ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736330161; c=relaxed/simple;
-	bh=IZ+iP2nsjXJoqis1nS8rDf7as5EAhzqeumMQiQXrAuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a7x55cZ6vHNzxkXLaD25PJcOatGfaz8312c/TmUliLpeKu0isWFgHhsoHGwM3lk5EdxOtnH6XH+z65siLtaZwkOc3TTkgdVfjugJlEWd1bOUwDYo/Zex3Mpqx+fkXzrG7a5w6vAwAbMPsjMo3z+iQ23vPZnthKE2NYek/5DSNho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CTrTYRXe; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736330158; x=1767866158;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IZ+iP2nsjXJoqis1nS8rDf7as5EAhzqeumMQiQXrAuQ=;
-  b=CTrTYRXelmjEe+OiJY9lujG6NwCWmQOt24Eo+jjZgu+93sj+HOQlf3m2
-   Vr4qhvP27f/Nd0XAwWvd4xG7byGYf6aWc37qGQ8/XNkHTliQKEUXq2syg
-   +mG+XYxCWEsVDfI9uP8KHc3cwUaWdfLpvoYd7DWdgw8j0YwFJz/oCQco3
-   CQ8TyRq2RR92MBBmJ1gdtFE+lYaBE3/4hrqlwqi3AlVh8KGO11naxmOs8
-   C4lEsAYWezyU21a04uxdFfn5sOCbMT0L7Cx1Fe3B6AzQHzICYYH4sY/Zu
-   Zozczel9eq6d07a9c23M/SEOrMIbJZZNZ5VgvEmzEr/LxIVhEUQM0/qoy
-   g==;
-X-CSE-ConnectionGUID: L5GQXTxpQsqhBOZaxVZlZw==
-X-CSE-MsgGUID: CZswxysfRFy4PlHTFVEPww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="53962465"
-X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; 
-   d="scan'208";a="53962465"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 01:55:58 -0800
-X-CSE-ConnectionGUID: WcqJwRQDRKKlpnhlvZ0PiA==
-X-CSE-MsgGUID: WJcSKjWaTL62HONckQyVBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; 
-   d="scan'208";a="107916886"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.161.23])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 01:55:53 -0800
-Date: Wed, 8 Jan 2025 17:55:40 +0800
-From: "Lai, Yi" <yi1.lai@linux.intel.com>
-To: Zaid Alali <zaidal@os.amperecomputing.com>
-Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-	tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	Benjamin.Cheatham@amd.com, Avadhut.Naik@amd.com,
-	viro@zeniv.linux.org.uk, arnd@arndb.de, ira.weiny@intel.com,
-	dave.jiang@intel.com, sthanneeru.opensrc@micron.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8D81FC7F1;
+	Wed,  8 Jan 2025 15:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736349051; cv=fail; b=at6USyDnrVrP/MZeRbcB7ziVuzoQWNEcnOBydhnLASqWSFSoruspjXXpK3FzqLfuzEsnuCShHohHygnjvuXiTSOVG+z76NtMXNkNXGwwN3vSE80dz5goHpxuyhy9SeqG1rA0Gxiimq68XkBdhsSfFrI4mKWQT8D3q4s5kaG75ow=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736349051; c=relaxed/simple;
+	bh=0DFxD10dX0oK8bI0d4ohgeDap6vF41uPoem6QK6XxBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=A45LZ3COTVTTejPeOZFOiZr/oyPCIp0Z+yHFu7P1glC24BRgPxwwuR9MBcJfnpSIH1CbC1/i5kD7CBc5VBmvKo3lo/om5wis84ytXeoZGHjFUA28bQITlc+5KjDZmPlc6g8D8w2UaG5wFTcUJx7G24d0SUMy8EEA3rkDdQCsvsA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iPqRXEDg; arc=fail smtp.client-ip=40.107.244.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WxVUe7Iq0ebPvIBoK6/R6QnpA+QJ6ru/6KHTKPCZvrlV7wbqR5IUaYTmIyPhsyRcEc+s6uBdBNc7QA93N0FOzNZcoQ/BTiLMEzeGOCH9hcm2xrHy51UB6YnNh1tM9edW98AJdAf0ikRga681+AQ5KMIGsrC42hOue7Hx1eV3olOtLIVI2nRDBUHFf5rfwLezKmgmfTOqBrmY0EnANVjAaGi10ePpRJ9Ls1Le28yM14ejwzkvcI+FQog/uthsWb62jaYGXhSOSorPhO1UN6KVJou4GRHUq4cbBnECZP3SYz7otMZE6OCegaCeEKNCXE/i6UO5OPIJRTultfPx/67kyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UuwVl87SboOIXk//eLVds9n+OK1zQuOkxp82q/4TzoQ=;
+ b=Sjzjg2FG8zlNmjz8v5IQjW+GjKmM/L4Noh/OV1aajc3vGllY/pNRObKncxEC6WAGcMUK8BoKBcbvbC4FgSu3T6usn+E2tWRyTjWEnmTyswNe1FU9IPBDel9UH8hIKZCcXxY1KqCxeRUy9dIW+F8S63b/lOOOtFTYnrb0Epgv8qyMZyRepc8Y5ywwwm2mo2NtexCCLqhER1b0l6R7fTL51aTf4HCwlR2HutInRsjUMuzJkSoW2EKB5ZUinNntFDG3wbZa2Z9Ea9K7EQmYy6kb3qnwOM2lBi6zGsqGbl3qcM0QMMjJiv/9/DT2MyBX4HLyLRUYE+OlYbnHpAgRe6Pb7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UuwVl87SboOIXk//eLVds9n+OK1zQuOkxp82q/4TzoQ=;
+ b=iPqRXEDgdM4JqflWPaI3Cc/19rAjKgA9Yw2iJVWobVq5DnSFiA7CyP/RusNydAu9hjBJqDxRb+uzB6/c0r/RziFnDxd+3ZGgmHaBN3kSYo8kiGfaAZTyABuULpgPmp7UtNVFJsw7JGpo927ag+LxG1TAQrEK2ZYr+y28/9C5sPc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
+ IA0PR12MB8304.namprd12.prod.outlook.com (2603:10b6:208:3dc::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Wed, 8 Jan
+ 2025 15:10:47 +0000
+Received: from DM4PR12MB6373.namprd12.prod.outlook.com
+ ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
+ ([fe80::12f7:eff:380b:589f%6]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
+ 15:10:47 +0000
+Date: Wed, 8 Jan 2025 10:10:37 -0500
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+To: Robert Richter <rrichter@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
 	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v2 9/9] ACPI: APEI: EINJ: Update the documentation for
- EINJv2 support
-Message-ID: <Z35LnJIdGgct+8jm@ly-workstation>
-References: <20241205211854.43215-1-zaidal@os.amperecomputing.com>
- <20241205211854.43215-10-zaidal@os.amperecomputing.com>
+	John Allen <john.allen@amd.com>, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH] ACPI: PRM: Fix missing guid_t declaration in linux/prmt.h
+Message-ID: <20250108151037.GA1221136@yaz-khff2.amd.com>
+References: <20250107161923.3387552-1-rrichter@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250107161923.3387552-1-rrichter@amd.com>
+X-ClientProxiedBy: BL1P221CA0030.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c5::21) To DM4PR12MB6373.namprd12.prod.outlook.com
+ (2603:10b6:8:a4::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241205211854.43215-10-zaidal@os.amperecomputing.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|IA0PR12MB8304:EE_
+X-MS-Office365-Filtering-Correlation-Id: 882df1ea-e4d0-454f-546e-08dd2ff6a137
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OGRGSzB2alFZZDg4dnV2Y1psS3lGaTJLTTVaM3E5RUZZSTY5UkNjUmNMMnJu?=
+ =?utf-8?B?RjR2Qno4d1Y2UzdJVlBJWVdySGpjeEQ4ZDNlbUw3TE5SbnA0bkMwR2ZPMkFS?=
+ =?utf-8?B?c29VQWcyTFhGQ2c1czNITmZwQmsvMS9WdUs0bXZZZE1pbHVENnRNK3F5Vmht?=
+ =?utf-8?B?TE9YMmxma1EyTDkrR2ZTbk5ERXJiZVlla1VaWWExRjNaSGVpV2IrL2s2eGtq?=
+ =?utf-8?B?ZXZtMlF1bk1jY0tnZ01YSTNWSnNxR21xV0FhZXJJNnJuU2pZNk9iWXQ2eU5q?=
+ =?utf-8?B?b3gwNFdFcGxCMk5RUCtuWXYrb1VDd0JDN09WY0x0SlpRM2lHUENvZlRLRDJt?=
+ =?utf-8?B?Sm5ZS0xpY3d2ekViRWlidFFxZG04QWxUQWZpZFpUSGhaRjhSVnlMZGVCZ3dy?=
+ =?utf-8?B?OS9EWUtLLzlnOWxqdmNGeDVFTDZ5WDBhd296eVhCc01qZ3VkWkpheTVZYmRH?=
+ =?utf-8?B?ZnVFbnRaWW9iNzBlTHY0enB5WDRQZWhGUnpJVklMekVIZi9JbFV2SGpCc3BG?=
+ =?utf-8?B?VWt4a1gyM09tUlVVcVNMajZhSFFyWS9zSURKcW5hYW1DcUl4Y2RVWUk2dXdI?=
+ =?utf-8?B?aHVMcHhmOWdYeFBlOVY0MEhzQTVXY215UmxRTHVpem1RQmZaNkJheHZvUmFy?=
+ =?utf-8?B?czlDTXZLbXUwZllSUHgyNVowb3FqVG5WWnJweHVWWFg4TkZaSEs0VS9uV3Ir?=
+ =?utf-8?B?em1MWGhKdy80c0VTbXE1aTNaMGNJSVBhT0g4TGRXM1N5ckEzMzZjLzdqNHNC?=
+ =?utf-8?B?YXgveVBCRVpDZTE0QTU2NFp5RlZxaVpOd09xVzVqcWdxanozNDNmMExhbE9x?=
+ =?utf-8?B?RzhKNnl0aktxRkMwNmhnY3Y5cjhUTFdmbFpEcXhYMGdOblVkalhpTGlKRXdX?=
+ =?utf-8?B?elJGUjdiUXcrZEhPa0hUUEs2N09UUHAyRFRlcnZqdXhPckxhcVZlTzdwUktH?=
+ =?utf-8?B?eVFGc0p0YlFtcWQ4WVdjdDIrc0trWGZuSXhoc0xRNEpPb0E5TEtESVBzTnM0?=
+ =?utf-8?B?WUhrRDZ4T2Vlc3hvSjZXMENIQzdSdmczcjZiMHNmZ3lOM1VDOU1neEwvSk9z?=
+ =?utf-8?B?NWlKL2Z3TGNkZFI4b05SY056OVZlMDZCUE50L2p6Y0hWdmgrVDlQTmp0NVdU?=
+ =?utf-8?B?WjgwWlpQZFRxelF2U2VQU21FTjFjcDhBRFNuNlJWajJOUTdWbEwxSzdXdWVE?=
+ =?utf-8?B?U3h5WW5BZUFCZVk4NFB0UGxyOUxyRGdxK0pBN09oRko4eXFJa2tPbllQdjFq?=
+ =?utf-8?B?b3dIMzR1R1RiT01QVUJvSzJITDJzQkE5NXNHRDBFM2o5S2Z6WmMxNkQ1Qyth?=
+ =?utf-8?B?SGdLdDd6alQ1ektNcWhmaUpWcHExMTFtK1dZTXk5cHZrYk5Pd1ROVXBYR3BO?=
+ =?utf-8?B?bkFlTG1td0QyYVN0ZlB0QXUyQUdyNnBOTWYveXp4bDgrdUk2b3JYOHFZNnI5?=
+ =?utf-8?B?Y1F3enJ6T2g3UVdPNXp2T3lyaEhFdUlsS1NSWk9yMlI2c2hwZ21lUUYyZ1p1?=
+ =?utf-8?B?ZXNjNFBUR1VxNFN6eS9GcHhKM2NDM0pJMHpEUWJYajBaTjkzeGovbjFpdFBl?=
+ =?utf-8?B?dkNEK1lJckxKbXIyakJsSXF0VDMxT1FIenJ4WFhhQi9xTHU1VnN6c1ZQdkFB?=
+ =?utf-8?B?dnJndWpndmlUd2VxS1NqK0V1SkFzT0VnbXNqdldkc1ZocTB3eldhcTRzMW1O?=
+ =?utf-8?B?WmpoZ3F4dHVaRzN4SG1ZNnE1ZFhHT3NxanI2T2NRbGVsQ3BuTUdDZ1IwL0hp?=
+ =?utf-8?B?VEIxUEZsbE9GUFJsVVcxOHlGcVBKWkVNbVRQeUswZHlEbDEyQ090aEpLZXgr?=
+ =?utf-8?B?UjlxdUROcDFabllXVUQyNGk3VmVLTmo5UFdJQjdzYXIrWG1FV2ZxUnBhemwx?=
+ =?utf-8?Q?EVjROhxJbT4/C?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L2lCUzcybnltbGdiYmVCVkYvTzQ5ejJmQ2RuUDEwWlk3QVh5UlF4M1FjSmdK?=
+ =?utf-8?B?R0NJSEdYNE5PUmw1SkJQTFFJcC9PYXBqSEhMRGlSWExTbFBEZnAxV1BpMm0r?=
+ =?utf-8?B?b0p5M01UcWZmVndCQi9nN1J0d05vQkFxT2pUaGYwWEYzaS9uL3RHSFNzaEE2?=
+ =?utf-8?B?NU05K0RvQ0k0MklxdXR5Y1RFajBZcnpnUHdTbTJDcjE3SjN3L2hSR2RabEtU?=
+ =?utf-8?B?bnF2YVhjUkdtM2g1RXdHcXNqakM4VlQ3d3VZb3BiVlJOZzVzWHMzZmJnTTJw?=
+ =?utf-8?B?YWVwVFc4ajRyRE5lYVRPS0h4NFQxa3BjY0ViL1FSWkRRdGMvRjhWNE9Cc29E?=
+ =?utf-8?B?SnZ0SzE1dmoreW1TN3ZyekNjT0JpVjIxS0tIc1orYlk2R3lRUU9NbXNwRXNy?=
+ =?utf-8?B?K1JBOG5XWERoZVJMMHI4bTJnMnAxY292R2pVQ3hlSndMK3FyWkxnTTJHWkVa?=
+ =?utf-8?B?Q0JXS0dMWkFrTDhZa01CbEE1aTFhbUpCS0xoUjRrZkpTK0FQYmY3TUhiQXQv?=
+ =?utf-8?B?akw5cFpTUnZreFhGeGJRYUY1cnd6VWR0S0diakJXL3pQTU1HcC9nZk9laHZU?=
+ =?utf-8?B?ZHd2Q3ZaKzgyMW1WY1oxSnVPbG0yNUZtYWNkdEd2QmYrbUViQjdac29RNTdZ?=
+ =?utf-8?B?QTFBb09ab2Z5eVVZSjkwZkJNeXc1Qzl3K2E0dzZXQys2OWdsTkVOaEtUV0pu?=
+ =?utf-8?B?Y0FuMURyNjBJcHRjWXMzY0psQ1pIRzVkWEMvMlBYVHFZRlE1M2RjT1ltK1o1?=
+ =?utf-8?B?eHQvVmxnTHpaNUQ5VzJ6ZFpQajJDeWl5WVo4RFNpNTF0eHBlRW8rdDdLTE9v?=
+ =?utf-8?B?eTZTbERpNW91THk2ZVdSRlpVWGZ6OGtTd1c5QTJuNXZOUUF6Y3hlcXFkOVdk?=
+ =?utf-8?B?ZHJnWjVZRXA5amFmcGZXTU5jaWE2VXFYc3NXWk1Nb0VURnk4eG45V2tVenRD?=
+ =?utf-8?B?S3orZnBVc3dUMnBNa291a2FMQXZzaHhIMlhaU1F4eWNVZDR6NUNMSkNwMTFG?=
+ =?utf-8?B?U2xnV00rcjRHZlpPUU1HRmRiRm1QaDFpTG4vQnJjT1FxZUJJUS9HZlM3aU9p?=
+ =?utf-8?B?WTNCb1cxampZemVPOWRQMkttK1NmSC9Dd3ZmS0ZwZ1psMFJXdzRKdzZSamJB?=
+ =?utf-8?B?dCt5aFhPQXpWZ2F2N2dTZ3AxQkxzMlpxSjN3QXRsWDZNK2QwQnBmYmpOcW9O?=
+ =?utf-8?B?RFN2akV4RXp3WWZmV3QreFdFNWZzbnFqeU9VcUIxNHBWMDNoeDhHN20vMlVi?=
+ =?utf-8?B?NmwrNW1GQkJqQXljcWYvY3JKbEU1cDNQdW5kVzI1MzlFVUVUUGVQMTNCQXpY?=
+ =?utf-8?B?V29SUW9hQ2x3a0VJVUp1RUVGRTdmZDJpdkQrcnptV1FlMGhxb0h0RzArWE52?=
+ =?utf-8?B?ZXowMGllUHMrOGxmc2trRVZURGhNL09SUnBpUGl3bDVPWmpDQU5MWnJkM2VC?=
+ =?utf-8?B?Z3BPajJsSlpoM2FVSnAvbWl0SGQrMnJ2cVcvYmdVOTQxa290RWhvU0hyUjdj?=
+ =?utf-8?B?K2NPbGhEb3ZzUlRiYlNvREE0MHNrTkpyWTFVMlU5aTA1cVp4cjRWc2hSbXRt?=
+ =?utf-8?B?NklDVVozRUJBYTUvY1hsWWpGbGQ1Rkl0bnVLdDNxMUppNUgrbGFTMnJPWFdR?=
+ =?utf-8?B?NlpaeXJGL3BYQUprNkFodEg4LzdjRU9EclNuSHJQc2JNdWRRSFY5U1BUZ1Vm?=
+ =?utf-8?B?VExDeUQ1TWtxaElkYVlJSUg3dy9ldnF6Q25mVXhDbVkvRWZZbkZaMk1CQkdM?=
+ =?utf-8?B?ZzVsbm9VY0M1TzlkTWtrbmNOTHQzcUt1QUtldkJQeHl2Z3h2OEdQYnVJVG8r?=
+ =?utf-8?B?UVFzbDdoUHFycnIxUlJ5SUlXblhYWGUzSkhNWTVGbnZydFhLc2d1WG44ckZm?=
+ =?utf-8?B?TkRqem8zQW1NSmlsNnl5VmUvNjgrVkJlN2k4TElNNHVYK1p3Y1NCckVQaG0z?=
+ =?utf-8?B?elIrcDhsMXB4TlVsQ0hNWXZpWndtbk9tR1pmL0RxZDlGd0wwK2drSDJDTXNB?=
+ =?utf-8?B?MFhHVDdoR3FPblJXUVJVQjE2WUtxaHovRjI4aEZ4Tmc4RktTU1lhWGN5d1g4?=
+ =?utf-8?B?VGdTVGJ3Vyt5N2t0bG1VaUFZQ0ZvVnN0ekdJQmlZTU9pRVR4UkVhY3l4SHh2?=
+ =?utf-8?Q?GlrKiTJgexw8XyU7IsLVWDQMI?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 882df1ea-e4d0-454f-546e-08dd2ff6a137
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 15:10:47.1959
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2eEUl2WuscJjWYJPt+n6W9mgwySVT5hhXM/9Yi6OasI29ql0cVUPx402NfWWyuOBG8Vm2SkqMmVu9fqot0MyOQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8304
 
-On Thu, Dec 05, 2024 at 01:18:54PM -0800, Zaid Alali wrote:
-> Add documentation for the updated ACPI specs for EINJv2(1)(2)
+On Tue, Jan 07, 2025 at 05:19:22PM +0100, Robert Richter wrote:
+> Seen the following build error:
 > 
-> (1)https://bugzilla.tianocore.org/show_bug.cgi?id=4615
-> (2)https://bugzilla.tianocore.org/attachment.cgi?id=1446
+>  ./include/linux/prmt.h:5:27: error: unknown type name ‘guid_t’
+>      5 | int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer);
+>        |                           ^~~~~~
 > 
-> Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
+> The include file uses guid_t but it is not declared. Include
+> linux/uuid.h to fix this.
+> 
+> Cc: Yazen Ghannam <Yazen.Ghannam@amd.com>
+> Cc: John Allen <john.allen@amd.com>
+> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+> Signed-off-by: Robert Richter <rrichter@amd.com>
 > ---
->  .../firmware-guide/acpi/apei/einj.rst         | 41 ++++++++++++++++++-
->  1 file changed, 39 insertions(+), 2 deletions(-)
+>  include/linux/prmt.h | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
-> index c52b9da08fa9..b1c0464f6002 100644
-> --- a/Documentation/firmware-guide/acpi/apei/einj.rst
-> +++ b/Documentation/firmware-guide/acpi/apei/einj.rst
-> @@ -59,6 +59,9 @@ The following files belong to it:
->    0x00000200        Platform Correctable
->    0x00000400        Platform Uncorrectable non-fatal
->    0x00000800        Platform Uncorrectable fatal
-> +  V2_0x00000001     EINJV2 Processor Error
-> +  V2_0x00000002     EINJV2 Memory Error
-> +  V2_0x00000004     EINJV2 PCI Express Error
->    ================  ===================================
+> diff --git a/include/linux/prmt.h b/include/linux/prmt.h
+> index 9c094294403f..c53ab287e932 100644
+> --- a/include/linux/prmt.h
+> +++ b/include/linux/prmt.h
+> @@ -1,5 +1,7 @@
+>  /* SPDX-License-Identifier: GPL-2.0-only */
 >  
->    The format of the file contents are as above, except present are only
-> @@ -85,9 +88,11 @@ The following files belong to it:
->      Bit 0
->        Processor APIC field valid (see param3 below).
->      Bit 1
-> -      Memory address and mask valid (param1 and param2).
-> +      Memory address and range valid (param1 and param2).
->      Bit 2
->        PCIe (seg,bus,dev,fn) valid (see param4 below).
-> +    Bit 3
-> +      EINJv2 extension structure is valid
->  
->    If set to zero, legacy behavior is mimicked where the type of
->    injection specifies just one bit set, and param1 is multiplexed.
-> @@ -110,6 +115,7 @@ The following files belong to it:
->    Used when the 0x1 bit is set in "flags" to specify the APIC id
->  
->  - param4
+> +#include <linux/uuid.h>
 > +
->    Used when the 0x4 bit is set in "flags" to specify target PCIe device
->  
->  - notrigger
-> @@ -122,6 +128,18 @@ The following files belong to it:
->    this actually works depends on what operations the BIOS actually
->    includes in the trigger phase.
->  
-> +- einjv2_component_count
-> +
-> +  The value from this file is used to set the "Component Array Count"
-> +  field of EINJv2 Extension Structure.
-> +
-> +- einjv2_component_array
-> +
-> +  The contents of this file are used to set the "Component Array" field
-> +  of the EINJv2 Extension Structure. The expected format is hex values
-> +  for component id and syndrome separated by space, and multiple
-> +  components are separated by new line.
-> +
->  CXL error types are supported from ACPI 6.5 onwards (given a CXL port
->  is present). The EINJ user interface for CXL error types is at
->  <debugfs mount point>/cxl. The following files belong to it:
-> @@ -139,7 +157,6 @@ is present). The EINJ user interface for CXL error types is at
->    under <debugfs mount point>/apei/einj, while CXL 1.1/1.0 port injections
->    must use this file.
->  
-> -
->  BIOS versions based on the ACPI 4.0 specification have limited options
->  in controlling where the errors are injected. Your BIOS may support an
->  extension (enabled with the param_extension=1 module parameter, or boot
-> @@ -194,6 +211,26 @@ An error injection example::
->    # echo 0x8 > error_type			# Choose correctable memory error
->    # echo 1 > error_inject			# Inject now
->  
-> +An EINJv2 error injection example::
-> +
-> +  # cd /sys/kernel/debug/apei/einj
-> +  # cat available_error_type			# See which errors can be injected
-> +  0x00000002	Processor Uncorrectable non-fatal
-> +  0x00000008	Memory Correctable
-> +  0x00000010	Memory Uncorrectable non-fatal
-> +  0x00000001	EINJV2 Processor Error
-> +  0x00000002	EINJV2 Memory Error
-> +
-> +  # echo 0x12345000 > param1			# Set memory address for injection
-> +  # echo 0xfffffffffffff000 > param2		# Range - anywhere in this page
-> +  # comp_arr="0x1 0x2				# Fill in the component array
-> +    >0x1 0x4
-> +    >0x2 0x4"
-> +  # echo "$comp_arr" > einjv2_component_array
-> +  # echo 0x2 > error_type			# Choose EINJv2 memory error
-
-Missing the V2_ prefix here.
-
-Regards,
-Yi Lai
-
-> +  # echo 0xa > flags				# set flags to indicate EINJv2
-> +  # echo 1 > error_inject			# Inject now
-> +
->  You should see something like this in dmesg::
->  
->    [22715.830801] EDAC sbridge MC3: HANDLING MCE MEMORY ERROR
+>  #ifdef CONFIG_ACPI_PRMT
+>  void init_prmt(void);
+>  int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer);
 > -- 
-> 2.34.1
-> 
+
+Hi Robert,
+
+This looks correct. But can you please share how you've encountered the
+issue?
+
+Thanks,
+Yazen
 
