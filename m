@@ -1,196 +1,124 @@
-Return-Path: <linux-acpi+bounces-10435-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10436-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42CCA0653A
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 20:20:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB1AA065A9
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 20:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FC5A7A3314
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 19:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E89A3A1DD4
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Jan 2025 19:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1121E3786;
-	Wed,  8 Jan 2025 19:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NbP/SXCo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1B3202C4A;
+	Wed,  8 Jan 2025 19:59:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789E91AA795;
-	Wed,  8 Jan 2025 19:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FA120127E;
+	Wed,  8 Jan 2025 19:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736364026; cv=none; b=W/dXx7atNxxOXigmWEm462p7NqBGiKtcqmzm2IpoAYvdhC+KkErJ3kN9jOlpoffj1DUNKJUS63IuuUdeBYkGPD1K+68oj5JIEx30nIUogZn8GN+rwk8AJNrX72zY0GaXOU7doIIvWEgkMULi5erMx5Y4kgUXm+XsXSYvmnTW0oM=
+	t=1736366379; cv=none; b=U0Nx6/Z++2/D1TUhcNgVPc7Mr6gfcjWeue9ScigniylZ8dX5WHe6w4mOE2wfZKpR8FfbmZAnAlMYNxePoQcY9YWL4izD47GLIX7EkliU9sQXOUUdYa3cPjQk6hYcjNZqkrQ24bnwqPIOIOcaG5SaLEgt81S+qB5uL8kTUv6BELE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736364026; c=relaxed/simple;
-	bh=ZJyU/H/9tf9IFwYcVjncxPF/xuX+iYQU/nGGz1Af3So=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Nd8WGzFHS+UxBjmlDqK7f56cK2SSBwCGO1EBu0v3j/Ld3RILsoItOfHQ7/fC+gDEPTcAjyn2oDD2GsqfTuxLEw9+JEEGqBbeSdk4x6fFsbErdUlIzjiPevcqZxi+ak8yv74rO4HB0DeORgtIhwbAE8VW4CIWIZl/06WRMH0EgiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NbP/SXCo; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736364024; x=1767900024;
-  h=date:from:to:cc:subject:message-id;
-  bh=ZJyU/H/9tf9IFwYcVjncxPF/xuX+iYQU/nGGz1Af3So=;
-  b=NbP/SXCoycAaWnc8zam1pMc8ks65CJdXFyT05sTEZtwreAcY8jliBO9C
-   kJa9R1F9RFS0rASrLk//lfknTHujOSfxH0n40dYW7AfsIjeJbBk4JqtpG
-   L7zzIGQb72vzhmN/PaRyytCjeA4sO3EKZG+ae99rFlFH0vTFFuIcTWJNt
-   vrS7S9kWd0o4sX1fO+T2IE3ahfgN8aC9ILYKhkGNyQw8AFt8vnXhwph+9
-   HDFTU9ANaS1ObX9O1SsSNz9iV5xrV5yjgoou7AjYVO0QWGnPv9wZshzqa
-   QS83svgs+W8be1ooqAYY4Qodfhy080OTFM3/8Xur3PHXvngCXEpbiMofv
-   g==;
-X-CSE-ConnectionGUID: ZJVcj19VQkulyKx3Ay2l5A==
-X-CSE-MsgGUID: 6JEthGD8RDSwU6IraxKqIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="40372825"
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; 
-   d="scan'208";a="40372825"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 11:20:24 -0800
-X-CSE-ConnectionGUID: L0PACDFbRRavI0e7dgbaNg==
-X-CSE-MsgGUID: BumIr7j7TwiovBz177aeNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; 
-   d="scan'208";a="102990838"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 08 Jan 2025 11:20:23 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tVbbH-000GXj-32;
-	Wed, 08 Jan 2025 19:20:19 +0000
-Date: Thu, 09 Jan 2025 03:20:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c01d4e6d68e3023227cc7ad19e1a01a92cf2818d
-Message-ID: <202501090356.SfseXz5B-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1736366379; c=relaxed/simple;
+	bh=/KGS/8rQgUDzOWmbIuVURj9WEuwmEg34L0vx2hkYIUA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D3fyiflpJcxWmdSig2aNKXLGRLmIIYuRGwdn2yji8Tvy/pu96byLoZfOnwEq3YADOqfLIG0stHCzFgBtv3e+iaS6/ti9v1ImiZQ2jEWvcfDdwVXPmuAx3Ophxpz28AHHzP7nWm3xR70szcqZjmWmnoxdUAMBn+LLkT18reudACQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 673C213D5;
+	Wed,  8 Jan 2025 12:00:04 -0800 (PST)
+Received: from [172.27.42.68] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6FF2C3F66E;
+	Wed,  8 Jan 2025 11:59:35 -0800 (PST)
+Message-ID: <d35924de-a560-40aa-a99d-7278009c5ff3@arm.com>
+Date: Wed, 8 Jan 2025 13:59:35 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/2] GENL interface for ACPI _DSM methods
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Wathsala Vithanage <wathsala.vithanage@arm.com>, linux-acpi@vger.kernel.org,
+ linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org, lenb@kernel.org, robert.moore@intel.com,
+ bhelgaas@google.com, wei.huang2@amd.com, honnappa.nagarahalli@arm.com,
+ dhruv.tripathi@arm.com, rob.herring@arm.com
+References: <20250106163045.508959-1-wathsala.vithanage@arm.com>
+ <20250106180140.00005132@huawei.com>
+ <85fb2b19-9d15-44ea-8f76-b3cac14e2810@arm.com>
+ <20250107174842.GN5556@nvidia.com>
+Content-Language: en-US
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20250107174842.GN5556@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c01d4e6d68e3023227cc7ad19e1a01a92cf2818d  Merge branch 'linux-next' into bleeding-edge
+Hi,
 
-elapsed time: 1447m
+On 1/7/25 11:48 AM, Jason Gunthorpe wrote:
+> On Tue, Jan 07, 2025 at 11:37:01AM -0600, Jeremy Linton wrote:
+>> Hi,
+>>
+>> On 1/6/25 12:01 PM, Jonathan Cameron wrote:
+>>> On Mon, 6 Jan 2025 16:30:43 +0000
+>>> Wathsala Vithanage <wathsala.vithanage@arm.com> wrote:
+>>>
+>>>> Linux v6.13-rc1 added support for PCIe TPH and direct cache injection.
+>>>> As already described in the patch set[1] that introduced this feature,
+>>>> the cache injection in supported hardware allows optimal utilization of
+>>>> platform resources for specific requests on the PCIe bus. However, the
+>>>> patch set [1] implements the functionality for usage within the kernel.
+>>>> But certain user space applications, especially those whose performance
+>>>> is sensitive to the latency of inbound writes as seen by a CPU core, may
+>>>> benefit from using this information (E.g., the DPDK cache stashing
+>>>> feature discussed in RFC [2]).
+> 
+> There is no way for userspace to program TPH information into a PCI
+> device without going through a kernel driver, and the kernel driver
+> must be the exclusive owner of the steering tag configuration or chaos
+> would ensue. Having a way for sysfs to override this seems very wrong
+> to me, and I think you should not go in this direction.
+> 
+> DPDK runs on VFIO or RDMA. It would natural to have an VFIO native API
+> to manipulate the steering tags, and we are already discussing what
+> RDMA support for steering tag would look like.
+> 
+>>> Superficially this feels like another potential interface that could be wrapped
+>>> up under appropriate fwctl. Jason, what do you think?
+> 
+> As above, I think this very squarely belongs under the appropriate
+> subsystems that are providing the kernel drivers for the device. There
+> is no reasonable way to share steering tags with unrelated userspace
+> through any mechanism. Basically it fails the independence test of
+> fwctl.
+> 
+>> I think this was similar to a conversation we had internally, which was
+>> basically to detect the PCIe extended capability and export a 'steering'
+>> entry in sysfs on each PCIe device which can take a logical cpu/cache value,
+>> translate those on write to the ACPI cpu/cache id's, make the firmware call,
+>> then directly update the PCIe device's capability with the result.
+> 
+> Seems wrong, driver must do this. If the driver was already using that
+> entry for something else you've just wrecked it.
 
-configs tested: 102
-configs skipped: 2
+Can you clarify what you mean by 'wrecked'? AFAIK a valid, if poorly 
+chosen, steering tag is going to be sub-optimal performance.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I'm under the impression this is a similar problem to cpu/irq/numa 
+affinity where the driver/subsystem should be making the choice, but the 
+user is provided the opportunity to override the defaults if they think 
+there is benefit in their environment. Again AFAIK, the whole 
+OS/software stashing is already well down the 'I know better than the HW 
+where to store this data' rabbit hole.
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250108    gcc-13.2.0
-arc                   randconfig-002-20250108    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                   randconfig-001-20250108    gcc-14.2.0
-arm                   randconfig-002-20250108    gcc-14.2.0
-arm                   randconfig-003-20250108    clang-20
-arm                   randconfig-004-20250108    clang-18
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250108    gcc-14.2.0
-arm64                 randconfig-002-20250108    clang-20
-arm64                 randconfig-003-20250108    gcc-14.2.0
-arm64                 randconfig-004-20250108    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250108    gcc-14.2.0
-csky                  randconfig-002-20250108    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250108    clang-20
-hexagon               randconfig-002-20250108    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250108    clang-19
-i386        buildonly-randconfig-002-20250108    gcc-12
-i386        buildonly-randconfig-003-20250108    gcc-12
-i386        buildonly-randconfig-004-20250108    gcc-12
-i386        buildonly-randconfig-005-20250108    gcc-12
-i386        buildonly-randconfig-006-20250108    clang-19
-i386                                defconfig    clang-19
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250108    gcc-14.2.0
-loongarch             randconfig-002-20250108    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250108    gcc-14.2.0
-nios2                 randconfig-002-20250108    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                randconfig-001-20250108    gcc-14.2.0
-parisc                randconfig-002-20250108    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc               randconfig-001-20250108    clang-16
-powerpc               randconfig-002-20250108    gcc-14.2.0
-powerpc               randconfig-003-20250108    gcc-14.2.0
-powerpc64             randconfig-002-20250108    clang-16
-powerpc64             randconfig-003-20250108    clang-20
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                 randconfig-001-20250108    gcc-14.2.0
-riscv                 randconfig-002-20250108    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250108    gcc-14.2.0
-s390                  randconfig-002-20250108    gcc-14.2.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20250108    gcc-14.2.0
-sh                    randconfig-002-20250108    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250108    gcc-14.2.0
-sparc                 randconfig-002-20250108    gcc-14.2.0
-sparc64               randconfig-001-20250108    gcc-14.2.0
-sparc64               randconfig-002-20250108    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250108    gcc-12
-um                    randconfig-002-20250108    clang-16
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250108    clang-19
-x86_64      buildonly-randconfig-002-20250108    gcc-11
-x86_64      buildonly-randconfig-003-20250108    clang-19
-x86_64      buildonly-randconfig-004-20250108    gcc-12
-x86_64      buildonly-randconfig-005-20250108    gcc-12
-x86_64      buildonly-randconfig-006-20250108    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250108    gcc-14.2.0
-xtensa                randconfig-002-20250108    gcc-14.2.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+
 
