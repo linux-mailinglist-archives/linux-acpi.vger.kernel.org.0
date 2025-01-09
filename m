@@ -1,50 +1,50 @@
-Return-Path: <linux-acpi+bounces-10495-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10494-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D47A080B4
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 20:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA42EA080B1
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 20:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CE8188BC35
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 19:42:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F8AC188C12E
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 19:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857BF1FCF68;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822631FCD13;
 	Thu,  9 Jan 2025 19:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SV2rBhyc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrwUYS87"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D491FBEB6;
-	Thu,  9 Jan 2025 19:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CFA1FBCB9;
+	Thu,  9 Jan 2025 19:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736451749; cv=none; b=TDEqWIz2tOmwTAiWP6pqjFlzkVEgGYQbp89nKk0qkgNwyfHScBmgL5wlzIPiBL9HcxexjM7JDWj/aPbKtqpiVUMwue2InnYw4U/qiYRvL5O+IqVKG5mYtLHnie1A3DvKxM2iIFuu7wHNarokBEJeFxO4z95myZvRzy/wnhzJyCI=
+	t=1736451749; cv=none; b=CzRM9TZdk+4DuoEtaw+UAVfgUDxKfNyms0Itb2sbEw32qQrJbBalJCRGtL5HxTyGV6WQGV1QudfS31r7mQiaRwXo6E63z4L7j8bAYRWLljpMivbd38BuVBP2mBZyaEdAEVi+n4dlYVB+twXKlPMiLuR+mzvTpjhEMEusQEt/UtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736451749; c=relaxed/simple;
-	bh=P/AFLAXb4hWHF03R6Fsf5TTOyTk6z5nmszrgJp/DJ/o=;
+	bh=SReleW9OsRRKN79QlIuTYUST58IFqSH13JU+BxJdkEs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m/Q7Kd9cm3lJ55rwwpCfNWqr5a1nHLHEvJBjs3rsYsmz+WVGKXwUkqdfUi7vI851Pc0KLSsTVjylDmmJwoB5vdV3IR10fBEfmjRlbRA2LwRt27nuTYYJhVJE3bQsFyWvSqbGaBkqmJp+paoYiI/2TPmAUusd7Y/6SzMPiO/O8Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SV2rBhyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB335C4CEDF;
-	Thu,  9 Jan 2025 19:42:26 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=ekR49y4LCCZXsUpBUn8IQ0V5+jwzR5tRdzZWL5y4rrRJG7N2eDEIYWHIccPBoKPLsdvJ+s+EW49DJA5JqwVHVeEX8faRlut0cX9zuj1AJ/Kz7so5iXXyUYt8RGfVyNPrfem+gblYR15IGKCydE3u8ZmkHzDkMzyBKNFamwAFFRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrwUYS87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D723BC4CED2;
+	Thu,  9 Jan 2025 19:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736451746;
-	bh=P/AFLAXb4hWHF03R6Fsf5TTOyTk6z5nmszrgJp/DJ/o=;
+	s=k20201202; t=1736451748;
+	bh=SReleW9OsRRKN79QlIuTYUST58IFqSH13JU+BxJdkEs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SV2rBhyc9VwDbFJE9nxDTTjdaE8xFN8SQwaKnX0B6HRzKx0gXzQ+Qfv0GXbrTsBh4
-	 w2l5m8+yL+Jths1S0RjlAc7ezYgtaaKPSXSqI7ZSYgoWcZVzqwVkblFbeueYJtvmW6
-	 suW3/0gSmTXwtA1WpYWeP5iLxlClwlG9fZZX5/RvAm6vfZlXn85mqLfGEIZaOqZuTd
-	 90/X8VV5HopK139ozVaEWKl78dwFOVXtG5tkLsplrvnD5/v/ZISJ69aFs9dP21GRQ9
-	 ndwqug2+Tz+jepiGzNVoWPJqzGdxLsQTG3AcpbHAj/ccD7yNQJ9AKsPZRmQar2JG4T
-	 3a7mhFtepbvAQ==
+	b=OrwUYS87AQz8wE7C4sGt7YKR7y77qF0I+bgiaIDXF6rIcJmmI0mUuRhUaMcwFeeBE
+	 PxfL5RfQ6XYL3+mbcYeuqgTPBghf2duV0w5RQww3/JsMDvHntIykV3HuMw93CS8aQ4
+	 AoQX+JWJ2tt8+HA+vdCKHu54+JSSVg6BwQ8mXjhF/MRA9S09bocXpPzRLcSUB/h7Cm
+	 7Cg8OJp+UqlH+Bae0G2ZIc5zsOha3b8vRae5D6E9AZVuH+YKtgOoA+ACnGMN02LykG
+	 ycYlQW0Bmq7z/IyRm8GYeFo4rQBGk3a5BIHD5wY3QtZFgfkCp56LpMpRY+Tnaq8W0d
+	 4YicIGj/epVSA==
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Thu, 09 Jan 2025 13:42:05 -0600
-Subject: [PATCH 1/2] device property: Split property reading bool and
- presence test ops
+Date: Thu, 09 Jan 2025 13:42:06 -0600
+Subject: [PATCH 2/2] of: Warn when of_property_read_bool() is used on
+ non-boolean properties
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
+Message-Id: <20250109-dt-type-warnings-v1-2-0150e32e716c@kernel.org>
 References: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
 In-Reply-To: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
@@ -67,206 +67,104 @@ Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org
 X-Mailer: b4 0.15-dev
 
-The fwnode/device property API currently implement
-(fwnode|device)_property_read_bool() with (fwnode|device)_property_present().
-That does not allow having different behavior depending on the backend.
-
-Specifically, the usage of (fwnode|device)_property_read_bool() on
-non-boolean properties is deprecated on DT. In order to add a warning
-on this deprecated use, these 2 APIs need separate ops for the backend.
+The use of of_property_read_bool() for non-boolean properties is
+deprecated. The primary use of it was to test property presence, but
+that has been replaced in favor of of_property_present(). With those
+uses now fixed, add a warning to discourage new ones.
 
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- drivers/acpi/property.c  |  1 +
- drivers/base/property.c  | 38 ++++++++++++++++++++++++++++++++++++++
- drivers/base/swnode.c    |  1 +
- drivers/of/property.c    |  7 +++++++
- include/linux/fwnode.h   |  3 +++
- include/linux/of.h       |  4 +++-
- include/linux/property.h | 15 +++------------
- 7 files changed, 56 insertions(+), 13 deletions(-)
+ drivers/of/property.c | 26 ++++++++++++++++++++++++++
+ include/linux/of.h    | 25 +++++++------------------
+ 2 files changed, 33 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 80a52a4e66dd167e70c80a164a89beb8c834ae13..8c53959ee31e700004de098bdab21dec118cf111 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1656,6 +1656,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
- 			acpi_fwnode_device_dma_supported,		\
- 		.device_get_dma_attr = acpi_fwnode_device_get_dma_attr,	\
- 		.property_present = acpi_fwnode_property_present,	\
-+		.property_read_bool = acpi_fwnode_property_present,	\
- 		.property_read_int_array =				\
- 			acpi_fwnode_property_read_int_array,		\
- 		.property_read_string_array =				\
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 837d77e3af2bd5bf655e6fa0f64c10a05b361b90..c1392743df9c3f6c554f093f4efae3ea1ad1fdf2 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -70,6 +70,44 @@ bool fwnode_property_present(const struct fwnode_handle *fwnode,
- }
- EXPORT_SYMBOL_GPL(fwnode_property_present);
- 
-+/**
-+ * device_property_read_bool - Return the value for a boolean property of a device
-+ * @dev: Device whose property is being checked
-+ * @propname: Name of the property
-+ *
-+ * Return if property @propname is true or false in the device firmware description.
-+ *
-+ * Return: true if property @propname is present. Otherwise, returns false.
-+ */
-+bool device_property_read_bool(const struct device *dev, const char *propname)
-+{
-+	return fwnode_property_read_bool(dev_fwnode(dev), propname);
-+}
-+EXPORT_SYMBOL_GPL(device_property_read_bool);
-+
-+/**
-+ * fwnode_property_read_bool - Return the value for a boolean property of a firmware node
-+ * @fwnode: Firmware node whose property to check
-+ * @propname: Name of the property
-+ *
-+ * Return if property @propname is true or false in the firmware description.
-+ */
-+bool fwnode_property_read_bool(const struct fwnode_handle *fwnode,
-+			     const char *propname)
-+{
-+	bool ret;
-+
-+	if (IS_ERR_OR_NULL(fwnode))
-+		return false;
-+
-+	ret = fwnode_call_bool_op(fwnode, property_read_bool, propname);
-+	if (ret)
-+		return ret;
-+
-+	return fwnode_call_bool_op(fwnode->secondary, property_read_bool, propname);
-+}
-+EXPORT_SYMBOL_GPL(fwnode_property_read_bool);
-+
- /**
-  * device_property_read_u8_array - return a u8 array property of a device
-  * @dev: Device to get the property of
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index eb6eb25b343bafaa9c03f881b98a528305fa6093..b1726a3515f6fbe13c2186af1f74479263798e42 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -677,6 +677,7 @@ static const struct fwnode_operations software_node_ops = {
- 	.get = software_node_get,
- 	.put = software_node_put,
- 	.property_present = software_node_property_present,
-+	.property_read_bool = software_node_property_present,
- 	.property_read_int_array = software_node_read_int_array,
- 	.property_read_string_array = software_node_read_string_array,
- 	.get_name = software_node_get_name,
 diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 519bf9229e613906547b57d8c68e7b8558eff327..1b46be88cc0498fcbe74e7b988f22a86245c366e 100644
+index 1b46be88cc0498fcbe74e7b988f22a86245c366e..9a6d84d19ff371def8bedc009bb6ab488458a29b 100644
 --- a/drivers/of/property.c
 +++ b/drivers/of/property.c
-@@ -965,6 +965,12 @@ of_fwnode_device_get_dma_attr(const struct fwnode_handle *fwnode)
+@@ -31,6 +31,32 @@
  
- static bool of_fwnode_property_present(const struct fwnode_handle *fwnode,
- 				       const char *propname)
+ #include "of_private.h"
+ 
++/**
++ * of_property_read_bool - Find a property
++ * @np:		device node from which the property value is to be read.
++ * @propname:	name of the property to be searched.
++ *
++ * Search for a boolean property in a device node. Usage on non-boolean
++ * property types is deprecated.
++ *
++ * Return: true if the property exists false otherwise.
++ */
++bool of_property_read_bool(const struct device_node *np, const char *propname)
 +{
-+	return of_property_present(to_of_node(fwnode), propname);
-+}
-+
-+static bool of_fwnode_property_read_bool(const struct fwnode_handle *fwnode,
-+					 const char *propname)
- {
- 	return of_property_read_bool(to_of_node(fwnode), propname);
- }
-@@ -1562,6 +1568,7 @@ const struct fwnode_operations of_fwnode_ops = {
- 	.device_dma_supported = of_fwnode_device_dma_supported,
- 	.device_get_dma_attr = of_fwnode_device_get_dma_attr,
- 	.property_present = of_fwnode_property_present,
-+	.property_read_bool = of_fwnode_property_read_bool,
- 	.property_read_int_array = of_fwnode_property_read_int_array,
- 	.property_read_string_array = of_fwnode_property_read_string_array,
- 	.get_name = of_fwnode_get_name,
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0d79070c5a70f21e9d73751941f28cefb244950d..0731994b9d7c832cae8a30063f3a64194e4f19aa 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -112,6 +112,7 @@ struct fwnode_reference_args {
-  * @device_is_available: Return true if the device is available.
-  * @device_get_match_data: Return the device driver match data.
-  * @property_present: Return true if a property is present.
-+ * @property_read_bool: Return a boolean property value.
-  * @property_read_int_array: Read an array of integer properties. Return zero on
-  *			     success, a negative error code otherwise.
-  * @property_read_string_array: Read an array of string properties. Return zero
-@@ -141,6 +142,8 @@ struct fwnode_operations {
- 	(*device_get_dma_attr)(const struct fwnode_handle *fwnode);
- 	bool (*property_present)(const struct fwnode_handle *fwnode,
- 				 const char *propname);
-+	bool (*property_read_bool)(const struct fwnode_handle *fwnode,
-+				   const char *propname);
- 	int (*property_read_int_array)(const struct fwnode_handle *fwnode,
- 				       const char *propname,
- 				       unsigned int elem_size, void *val,
-diff --git a/include/linux/of.h b/include/linux/of.h
-index f921786cb8ac782286ed5ff4425a35668204d050..1cb4eb7fc2eded2246c697c3bcaf1b85d43108ab 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -1271,7 +1271,9 @@ static inline bool of_property_read_bool(const struct device_node *np,
-  */
- static inline bool of_property_present(const struct device_node *np, const char *propname)
- {
--	return of_property_read_bool(np, propname);
 +	struct property *prop = of_find_property(np, propname, NULL);
 +
++	/*
++	 * Boolean properties should not have a value. Testing for property
++	 * presence should either use of_property_present() or just read the
++	 * property value and check the returned error code.
++	 */
++	if (prop && prop->length)
++		pr_warn("%pOF: Read of boolean property '%s' with a value.\n", np, propname);
++
 +	return prop ? true : false;
- }
- 
++}
++EXPORT_SYMBOL(of_property_read_bool);
++
  /**
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 61fc20e5f81f8da992aa021996ddf68ef3eff0ed..e214ecd241eb4e6d9e0873d094f2c956bbf66c34 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -37,6 +37,7 @@ struct fwnode_handle *__dev_fwnode(struct device *dev);
- 		 struct device *: __dev_fwnode)(dev)
- 
- bool device_property_present(const struct device *dev, const char *propname);
-+bool device_property_read_bool(const struct device *dev, const char *propname);
- int device_property_read_u8_array(const struct device *dev, const char *propname,
- 				  u8 *val, size_t nval);
- int device_property_read_u16_array(const struct device *dev, const char *propname,
-@@ -54,6 +55,8 @@ int device_property_match_string(const struct device *dev,
- 
- bool fwnode_property_present(const struct fwnode_handle *fwnode,
- 			     const char *propname);
-+bool fwnode_property_read_bool(const struct fwnode_handle *fwnode,
-+			     const char *propname);
- int fwnode_property_read_u8_array(const struct fwnode_handle *fwnode,
- 				  const char *propname, u8 *val,
- 				  size_t nval);
-@@ -207,12 +210,6 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
- 
- unsigned int device_get_child_node_count(const struct device *dev);
- 
--static inline bool device_property_read_bool(const struct device *dev,
--					     const char *propname)
--{
--	return device_property_present(dev, propname);
--}
--
- static inline int device_property_read_u8(const struct device *dev,
- 					  const char *propname, u8 *val)
- {
-@@ -263,12 +260,6 @@ static inline int device_property_string_array_count(const struct device *dev,
- 	return device_property_read_string_array(dev, propname, NULL, 0);
+  * of_graph_is_present() - check graph's presence
+  * @node: pointer to device_node containing graph port
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 1cb4eb7fc2eded2246c697c3bcaf1b85d43108ab..0cdd58ff0a4190724309ba1eddbac51b188b6136 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -311,6 +311,7 @@ extern struct device_node *of_find_node_with_property(
+ extern struct property *of_find_property(const struct device_node *np,
+ 					 const char *name,
+ 					 int *lenp);
++extern bool of_property_read_bool(const struct device_node *np, const char *propname);
+ extern int of_property_count_elems_of_size(const struct device_node *np,
+ 				const char *propname, int elem_size);
+ extern int of_property_read_u32_index(const struct device_node *np,
+@@ -615,6 +616,12 @@ static inline struct device_node *of_find_compatible_node(
+ 	return NULL;
  }
  
--static inline bool fwnode_property_read_bool(const struct fwnode_handle *fwnode,
--					     const char *propname)
++static inline bool of_property_read_bool(const struct device_node *np,
++					const char *propname)
++{
++	return false;
++}
++
+ static inline int of_property_count_elems_of_size(const struct device_node *np,
+ 			const char *propname, int elem_size)
+ {
+@@ -1242,24 +1249,6 @@ static inline int of_property_read_string_index(const struct device_node *np,
+ 	return rc < 0 ? rc : 0;
+ }
+ 
+-/**
+- * of_property_read_bool - Find a property
+- * @np:		device node from which the property value is to be read.
+- * @propname:	name of the property to be searched.
+- *
+- * Search for a boolean property in a device node. Usage on non-boolean
+- * property types is deprecated.
+- *
+- * Return: true if the property exists false otherwise.
+- */
+-static inline bool of_property_read_bool(const struct device_node *np,
+-					 const char *propname)
 -{
--	return fwnode_property_present(fwnode, propname);
+-	const struct property *prop = of_find_property(np, propname, NULL);
+-
+-	return prop ? true : false;
 -}
 -
- static inline int fwnode_property_read_u8(const struct fwnode_handle *fwnode,
- 					  const char *propname, u8 *val)
- {
+ /**
+  * of_property_present - Test if a property is present in a node
+  * @np:		device node to search for the property.
 
 -- 
 2.45.2
