@@ -1,76 +1,76 @@
-Return-Path: <linux-acpi+bounces-10461-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10462-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135C5A07B58
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:11:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C16A07B55
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6011F7A3CAE
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:10:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE5D3A89CE
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B645E22258D;
-	Thu,  9 Jan 2025 15:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4BA223302;
+	Thu,  9 Jan 2025 15:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aj7YboJF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P5Qy2JFq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CF221CFFB;
-	Thu,  9 Jan 2025 15:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97FB21CA15;
+	Thu,  9 Jan 2025 15:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736435348; cv=none; b=jFzhdAPeoHbEN6DGNWvCShJP93eRYxd7c4KiZSJsbfcU5AR86fvnAHUc+v1GdLIAtgxSnQ+s3vfaw7U2+5xFRQIhITlsttYJQRDcOpQmdKYOIjkQJLvh7GNu6LjGusPiRTVA4XiSRlqU4EbB7m9doG6q3kzWTMIsvRVcUM6GQ14=
+	t=1736435353; cv=none; b=e9ZJjvOZX/HiVnZCr+T3paujAx2F03JtXp9IrurqjTBTBrk5rGcIutjazf0Myv/A4B57CyHg18iUKOmaIJA+WG5BzO9aiAdKihjYsNCKoRZRTQ9aD5sQ0CCa6MQHBo7uVEMr4wnHy8sEoT5crYd/OIxCon4l8jYB4k6MJobsavI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736435348; c=relaxed/simple;
-	bh=qLNpxdQHmr4FUi3kZDQjLaRkVRppkBFUeext+V90VxM=;
+	s=arc-20240116; t=1736435353; c=relaxed/simple;
+	bh=9Y6ZRZMbCwK5Qs2xCOR7ZHjxG1pU8jAdhife7DbEr6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tkm/sqmx9nxLy+MTtQztqod0elWuteCItEujREWT+wCNcYPJg8KfMAI52gsjzOt6HkiYYWYGhyJ0KPmI3cuTjqhY8kCIl51Bi2STWTywK48L6beG2jxDUGlD05MFFHNZ5zD21OPEItNvBYcNCdsBg5Qp55VdhCkHiYMwuWvyvck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aj7YboJF; arc=none smtp.client-ip=209.85.217.47
+	 MIME-Version; b=n7yUlM3B2+bVMNZQqL9/0Ds9DDNb0FXFx7jFCRvhqua20hVCTEktCbUTpm42DE6rlDZfclTicCa8amXlBF5lj6bLf1ApLnerqpESmfCpqm0KIAjJ/fbGCYOxJ1em0KL8MtYHlo9JLQO1CrwXroUPrZmY7wZvJuNOQjSNn7wW31s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P5Qy2JFq; arc=none smtp.client-ip=209.85.217.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4afed12283eso781444137.1;
-        Thu, 09 Jan 2025 07:09:04 -0800 (PST)
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4aff620b232so402897137.0;
+        Thu, 09 Jan 2025 07:09:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736435344; x=1737040144; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736435350; x=1737040150; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=re4+pG1FRpqOGyXJCRSQNyItv7j72+FDLGCOtmj2Lig=;
-        b=aj7YboJFSTP5uhfB+vzM6kdlLnZhY0vmRgcKTyw0dSTrd402k+9skMr9qiJZn2hxQ4
-         08Jf9ZasqkSPfaEN7M7EH4Wt9UlJljx5l3fiQXs+m//K6vW8VaGEqlL2Ldrzbc3uU/jE
-         8pJQpMsUIaLLQ2MGx8fDm6cHYDHcXtAsArGw7CV2AnKc5j5gzrP3lnbGVpaM6VACY3av
-         Zrvhd2nDvVCG9XHm9bKvMfy03LArWl24mOnh6gHVF5AtDkDUw5XMeTov9BO1VbatJaqo
-         RfyytwtBL9ubMdLHeZzRz0EEZ0/v0FZC0zzBUvQfqbRagEUyC2S+zj2nQNTvtr0wI5F1
-         fLXg==
+        bh=cadwM7mu1HtIGfCND4i7fxTwuLTCfqLApVy4IXNFf3k=;
+        b=P5Qy2JFq+ZIDsXfwh6g/levH92YrMLv6tRDvdqB0Mk0RURYHtyql2ebOJNgXaK1FDZ
+         tBcd9gpgn1jd4lIAeBor/HWoK979LogItj5RvBzLOQuinT2b2ZkZDfutPN8DZKYVcRzp
+         yu3IVFrbOQCtWSCY1PFc+iYIcny/nne9fWUIraVcCzeN+RerxyPXYEOlGh1yZ4dl7f3v
+         J3+uHldZjWcj9G0jVCLX9nEANwlH5baDhqUdXXTEzaiPBwNU6aZ7s1l4G+mVZMaP4ClQ
+         OQphQOe2kS3t1jSQsbmAxELD8PJ7aU9UqFIWQaL3Z7bJuceJJlsu+7CIk3yv8o0W9pAM
+         Hw3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736435344; x=1737040144;
+        d=1e100.net; s=20230601; t=1736435350; x=1737040150;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=re4+pG1FRpqOGyXJCRSQNyItv7j72+FDLGCOtmj2Lig=;
-        b=Bx0okKaLsfACGrsrd/9dSTKKrpvWNcL1uV+prVfMRZNd9Tb8yRwqUGQf5OJ2o0FFFQ
-         dIu5C+ae6ys7oHe9Bn/Cta7td6M5VLpXcoULo2xgaZRkxsZ/mAU5KQe7NFfNyKLgd0nQ
-         SjeFrKFeFCzbP+VKeLxzsAgeMitOCuTRMcYXZPPv1lwrRsB8oq9XXIrhtwqj9gzPvMIb
-         GV3XpVqlv6kt9QqfOdNtZqtbBpqgXB3vPGaSMljjQmC5BcXpopy0IGVuYikRluhQOQaJ
-         16NAegezHFITR+PkdWMFrQPaK8KW8hYJpKvWuP5fv3g+u48AWZ1CGxJhQ0QHdT0++Xe/
-         YEjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUlUZ04O1kWaAVJI1QT2AFwkx7ed4NMYxAQk5HKAu6bCIT6p86djvAvdynb1sJVuBSTPdPUTFggCRxptwnF@vger.kernel.org, AJvYcCXSAEo7nsVS4pkO7GweDI4sV+9DdK1avQWmnVsG0QCmfu3s12Q7ig47CQ1uFkV4LGGEROXoYvXP9yF+@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBytdwSdRFATJp6X+xvWFCHy8+z/QvEkwFnbOvwq4zrBDiQ64u
-	N57NOn4flpUOsGxH9PXfEvwNjd5sinfWquLhhRrdl85owF6slp3trxkIcuOd
-X-Gm-Gg: ASbGncvQL5+0aKXGa+H4wd3gbvsNEJRaE3rlILqmSUm3YVrsK6/5OSDUB2pUfVHpajD
-	ez7IOQlkDBXxGr9lIvoeJCIRuMMa62R1WYE8quffyKVDHxawLyQJXPtTnUhmDMe7cduMOccNkyg
-	myUC88ppjane7P6Pfjit3k5qZeZoHXEn12aQJdeyKBD2OFfEskbNgT30AesUNQrINNKB9feUWuw
-	vLKIapwWsRHTbqnl1Mn0upRt79YfrIFlLbBkSxkjZiU1RrN8rqBz2XTnJQMuUjh
-X-Google-Smtp-Source: AGHT+IEujRA0A36aLkuS6cpy6MKnOsgT8lfTISL9cm4bumoexauwj4sgzoivPoOWFQM+FXLk+rZ+Tg==
-X-Received: by 2002:a05:6102:440d:b0:4b1:1a11:9628 with SMTP id ada2fe7eead31-4b3d0eb96c5mr5449671137.24.1736435343867;
-        Thu, 09 Jan 2025 07:09:03 -0800 (PST)
+        bh=cadwM7mu1HtIGfCND4i7fxTwuLTCfqLApVy4IXNFf3k=;
+        b=DWo/v5tfzI867X3J2hzJCH3wObRFerpja1eFdI2sPU/a5x0vPftwxHzJSU625IiJ5I
+         yGvY2joV4gnkf9OwN06qx6JJ+eImjphRfQkwUu4dQv913RIhbqoYyclA0KeMFhaYhPLG
+         JVkBMZvT/0RuOx7Q2OrfZEZBBCrWD5DHv0oKgs9SZAj+bxRlQG8wPfm9yMaFR640lYuE
+         zPP3kW+xWyrST5T2T5D91Wshz2BRAIRyeX1Yd9+hya4E+jBNVHtiSQlu5Tgs+Ais4pTK
+         uQxhM8HGz36cIyCswbTAjlquFV1SWgt2LQ/9kr7znGraMwq8DnuAeOTFQ0mv9VSTg6xi
+         iU9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVCPSMEFJlLbqZtSJZYgHIiMhhE331fEJrgKybvEnuZ/d58jbX4X/eqDXBkU6tcDaAEuxuP47ySHkQE@vger.kernel.org, AJvYcCXvcdKTjXnNJspt0DI9oKe6IZ1e2IA2Qel/4iWsTj5JYuX87xyQGCMI/CH5S453oui/N0lijtymLWAMFPbE@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPTqgxGCevcaBBBMzNtp0DGfiftXWAnd6YfR1anKHc1nxtaVGd
+	lOoeM+T2RUSmxAIBoidZ120XsEub+YjHCSfUdlNaBWNxUvbDavF9zMrPBEHn
+X-Gm-Gg: ASbGncs/zIUZY9AsfnhehSL3YViE39A+sNnMwoWnzdET7yYI1fBLgfxAM4L9g/EZobb
+	E0Cf43aCJcw+G47+pOG3mHSWlcKEyaiXrJyvu/7Qggsrbvt5sD22EBNwgfhotb03t1fwHWo6WRg
+	4YL36R+ITUKCJkCiOa+O2fYldMTR0D2DfNPdp3kb2LYnmL+JU8Yf2uh8zt3qUfCKt35QXUk2qUI
+	6EXrTKHqUmBvd0/xjO5YCG7Ks1SkBQlQ/YuFmezb53s8gh4AIL2jhkq0JHLmYWK
+X-Google-Smtp-Source: AGHT+IFxq39jA6F7LUlex8wfOW9jZaQhVh2rXzXrM/QBMJz1bHhNNth0HMSULAyeCs1uEIg6wvHO4A==
+X-Received: by 2002:a05:6102:6d1:b0:4b1:8b53:2987 with SMTP id ada2fe7eead31-4b3d0f66c6cmr5904087137.1.1736435350353;
+        Thu, 09 Jan 2025 07:09:10 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f4a5ddsm1019887137.11.2025.01.09.07.09.00
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f4a5ddsm1019887137.11.2025.01.09.07.09.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 07:09:03 -0800 (PST)
+        Thu, 09 Jan 2025 07:09:10 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -95,13 +95,14 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Mark Pearson <mpearson-lenovo@squebb.ca>,
 	Colin Ian King <colin.i.king@gmail.com>,
 	Alexis Belmonte <alexbelm48@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	Ai Chao <aichao@kylinos.cn>,
 	Gergo Koteles <soyer@irl.hu>,
 	Dell.Client.Kernel@dell.com,
 	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH 12/18] platform/x86: inspur_platform_profile: Use devm_platform_profile_register()
-Date: Thu,  9 Jan 2025 10:06:25 -0500
-Message-ID: <20250109150731.110799-13-kuurtb@gmail.com>
+Subject: [PATCH 13/18] platform/x86: thinkpad_acpi: Use devm_platform_profile_register()
+Date: Thu,  9 Jan 2025 10:06:26 -0500
+Message-ID: <20250109150731.110799-14-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250109150731.110799-1-kuurtb@gmail.com>
 References: <20250109150731.110799-1-kuurtb@gmail.com>
@@ -114,63 +115,40 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace platform_profile_register() with it's device managed version.
-While at it, pass inspur_wmi_priv to the class device as drvdata and
-replace uses of container_of() with dev_get_drvdata().
 
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/platform/x86/inspur_platform_profile.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/inspur_platform_profile.c b/drivers/platform/x86/inspur_platform_profile.c
-index 43cb2a927fdf..543e4bce1a57 100644
---- a/drivers/platform/x86/inspur_platform_profile.c
-+++ b/drivers/platform/x86/inspur_platform_profile.c
-@@ -87,8 +87,7 @@ static int inspur_wmi_perform_query(struct wmi_device *wdev,
- static int inspur_platform_profile_set(struct platform_profile_handler *pprof,
- 				       enum platform_profile_option profile)
- {
--	struct inspur_wmi_priv *priv = container_of(pprof, struct inspur_wmi_priv,
--						    handler);
-+	struct inspur_wmi_priv *priv = dev_get_drvdata(&pprof->class_dev);
- 	u8 ret_code[4] = {0, 0, 0, 0};
- 	int ret;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index a72790cc5e0e..a0b8987bc328 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10649,7 +10649,7 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
  
-@@ -135,8 +134,7 @@ static int inspur_platform_profile_set(struct platform_profile_handler *pprof,
- static int inspur_platform_profile_get(struct platform_profile_handler *pprof,
- 				       enum platform_profile_option *profile)
- {
--	struct inspur_wmi_priv *priv = container_of(pprof, struct inspur_wmi_priv,
--						    handler);
-+	struct inspur_wmi_priv *priv = dev_get_drvdata(&pprof->class_dev);
- 	u8 ret_code[4] = {0, 0, 0, 0};
- 	int ret;
- 
-@@ -196,15 +194,7 @@ static int inspur_wmi_probe(struct wmi_device *wdev, const void *context)
- 	priv->handler.dev = &wdev->dev;
- 	priv->handler.ops = &inspur_platform_profile_ops;
- 
--	return platform_profile_register(&priv->handler, NULL);
--}
--
--static void inspur_wmi_remove(struct wmi_device *wdev)
--{
--	struct inspur_wmi_priv *priv;
--
--	priv = dev_get_drvdata(&wdev->dev);
--	platform_profile_remove(&priv->handler);
-+	return devm_platform_profile_register(&priv->handler, priv);
+ 	dytc_profile.dev = &tpacpi_pdev->dev;
+ 	/* Create platform_profile structure and register */
+-	err = platform_profile_register(&dytc_profile, NULL);
++	err = devm_platform_profile_register(&dytc_profile, NULL);
+ 	/*
+ 	 * If for some reason platform_profiles aren't enabled
+ 	 * don't quit terminally.
+@@ -10667,14 +10667,8 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+ 	return 0;
  }
  
- static const struct wmi_device_id inspur_wmi_id_table[] = {
-@@ -221,7 +211,6 @@ static struct wmi_driver inspur_wmi_driver = {
- 	},
- 	.id_table = inspur_wmi_id_table,
- 	.probe = inspur_wmi_probe,
--	.remove = inspur_wmi_remove,
- 	.no_singleton = true,
+-static void dytc_profile_exit(void)
+-{
+-	platform_profile_remove(&dytc_profile);
+-}
+-
+ static struct ibm_struct  dytc_profile_driver_data = {
+ 	.name = "dytc-profile",
+-	.exit = dytc_profile_exit,
  };
  
+ /*************************************************************************
 -- 
 2.47.1
 
