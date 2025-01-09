@@ -1,209 +1,279 @@
-Return-Path: <linux-acpi+bounces-10490-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10491-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DC4A07E96
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 18:18:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1B2A07FD4
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 19:35:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA991167A71
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 17:18:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7A683A7C95
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 18:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9975418A6A1;
-	Thu,  9 Jan 2025 17:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9KeIQJS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0DF1925B3;
+	Thu,  9 Jan 2025 18:34:58 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAD616FF4E;
-	Thu,  9 Jan 2025 17:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B9813B2B8;
+	Thu,  9 Jan 2025 18:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736443106; cv=none; b=LR+PNBLgzxI42gwJXmT854aWE6yicaSgaI24osVmfZ11SILm9FgtteBmjIKTsmtfwbF1ow5+nmO0LyQOWAPUk4goa+u/Csk+INBIpALtZ6BZZr9xu0BnI4XskdRrtkiWPvb2Q1aUfQSad/aujwPDxLpv0LCX+A0L1COzxEpG7JI=
+	t=1736447698; cv=none; b=k9urQ4YQDyo+ehiTRi9xO+qWR0XzkFIOOndm7/6IqYSGguSEx6fx75Qc5jC2al5S8vxCldF+CavxAE1ReYpCdhs2u7/VlgSfzaan3iTF4+68VfWT+1SfeVIJv1XC5WWWHimn28xrDVA+odinxDYxpQYgIBEum6d/JMVUt1/hYx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736443106; c=relaxed/simple;
-	bh=t5xZbPrwc+38ynVesi5T4jmflaqrCcd/wTI0JLX8jQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VK+NTg/42nq/WN2xegIIptR48obZy4h9UEeZFRqVNoPgoVRJKXvV0sBVT02u1Sm7zqfsWh73D+xN+oc4cGduSg8mhZ6xAK7LOG1wA6dhTGQAH6LEGjJeeW+ek4jXmSgtnwtmqczHcq69YI75b+xrfR/CYexh/q4uaKFcMDborsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9KeIQJS; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e545c1e8a15so1686463276.1;
-        Thu, 09 Jan 2025 09:18:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736443104; x=1737047904; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GUGgop6jtE3EgW6/6rlTjHVm8v6s3KcgoYismoC8low=;
-        b=N9KeIQJSpDcGDYdjAbUbcljIjlDn0dmWPy5Qbik1rPGBmr2JFfFLyIyYRo1dO2UhtP
-         O0iDY2vDTj+v2aUBy89zblpE1QaVim5XnJ5jDGiL8u/OfWTFF6hUHbEazhZUKv18FR4C
-         Utg1TtiewNBkZRTVXeApIYO5+zvFTnRu0Qfnl7EmBNy6oy8H8orf2m42K0er4v3nT0Cs
-         U4/rHtCWx8aUFplp2FixC58NWKIqlUtBX42gsO2Agb2hFhmgD8dwbC2ec+gCaMm7IhoT
-         DOhAQW5Bvfry923QdBqL2t5xVD/frk3+s1RlQ6fzS7s7Fsxi6WSGtALphg5NjQWrGMl1
-         b8KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736443104; x=1737047904;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GUGgop6jtE3EgW6/6rlTjHVm8v6s3KcgoYismoC8low=;
-        b=dRCACRN/VA+tVKJVdWYQ6S+pt828xK3rDJvj2FyoP1u/QiUn8C4y+b3Z3TpPpcsw0W
-         UroJc0qD9OGQZ1j0Ln+yrx+PP6Ep+L6hKKy4rXZ9cdFWX1anZORxjSxrp9w7SNU9BMPx
-         ud2yM01Z/ey1Zhh8NOwy2cSPBU8cC7xNL0LKpsUAvTBWNdxDfJ74UhCYa8/pIFbeSV6e
-         BzN4lbvfx8WW1xJ+E5d6ZK7H9eZvRtoCp1UD/YdtXtEB9qLzxBqo6bHZ0TaTL7OiLVBQ
-         7r3PSwQ0Gh6JomJO8ajONKA3HL8TxN3Q1tXz/xhOum4F7eKzEQbqP0aCu0rnlOxfHrNd
-         PJkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWggnkFZoHtdZrApr3WZ7j1j/S39C3FXr39URIg+x+EWoBSRirpHJDCRnV4jnS6SOUqnlPDhUrVLjCT4SHF@vger.kernel.org, AJvYcCXLBrsn627nPesOsd5Bt/E5TFyxtHHh6ZZop6QHVeFrMd/EPTXaaW2hflCOSic1Rz/A2/IjEVfjvERN@vger.kernel.org
-X-Gm-Message-State: AOJu0YygZ4S3FszIZNTEDQx3F4i2mTplq4NOjTow1SaHkZeKi1wqHxWs
-	ktePI+0neWlE97vlTl7c1AAcunwOavYoqtf+Ds9YOxvygXhZ6wXC
-X-Gm-Gg: ASbGncsi/V8RxCKVgYCSxwhQR0dOuh2MZK20zB/W8SxlrS53pVfJaVkYFxfIocNWEo7
-	GrJuNtAtRMgSjH44v/pBc8iL4OCuMUyv6DMvMwhj13+s0u5HUHBNcmsbAXJpr18nB3oWpTNOJqb
-	PVEzPToFKmh/gfk9o1Jy/wYukOGrMf8RSsBOy7E/Qtdn1K0Gdku2HbpmV3+j6WsKXyzBXFFW1/K
-	8B5vgIWwdL3h+u3791tN8C3ty6Xh1vkvl20xCy/3t6VPlAJ1xLSDlJv
-X-Google-Smtp-Source: AGHT+IELsYcB6T/ck4lH4klPT6vDU6KCIg9dPGWh9gmz8YJ7e4Z+gj6z3yGKPXuQMSRsPUErAOo4TA==
-X-Received: by 2002:a05:6902:108d:b0:e4b:6ef6:e7ba with SMTP id 3f1490d57ef6-e54ee2055ddmr6122667276.33.1736443103774;
-        Thu, 09 Jan 2025 09:18:23 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:70::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e55a597b658sm10842276.30.2025.01.09.09.18.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 09:18:23 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: Hyeonggon Yoo <hyeonggon.yoo@sk.com>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	kernel_team@skhynix.com,
-	42.hyeyoo@gmail.com,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	=?utf-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKQ==?= System SW <honggyu.kim@sk.com>,
-	=?utf-8?B?6rmA65296riwKEtJTSBSQUtJRSk=?= System SW <rakie.kim@sk.com>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"horen.chuang@linux.dev" <horen.chuang@linux.dev>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	s=arc-20240116; t=1736447698; c=relaxed/simple;
+	bh=S54WHLS3HOplqLcg789znsO+qN6VM9K4pzw2t67YItQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m1yiB+hnu2VTko0HGndXmESkbluWM5BFgmI2CkrtgackCyBmmJtMF8PacCAvhiQL2IdshPdi/e/9upGa/8WROqqzgmdAV8Nxkk0X+CAqs1Cb3ViFwewin1mDFz8EKApuUlG2fE1J1cbeiWupeH51OKp4Y4X92qAvC5ArsBItMyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YTYHT2wlcz6JBDN;
+	Fri, 10 Jan 2025 02:30:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 482AC14038F;
+	Fri, 10 Jan 2025 02:34:52 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 9 Jan
+ 2025 19:34:50 +0100
+Date: Thu, 9 Jan 2025 18:34:48 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Shiju Jose <shiju.jose@huawei.com>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"kernel-team@meta.com" <kernel-team@meta.com>
-Subject: Re: [External Mail] Re: [External Mail] [RFC PATCH] mm/mempolicy: Weighted interleave auto-tuning
-Date: Thu,  9 Jan 2025 09:18:18 -0800
-Message-ID: <20250109171821.3203865-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <Z3_xpKZ7YtVvCSG4@gourry-fedora-PF4VCD3F>
-References: 
+	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
+	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250109183448.000059ec@huawei.com>
+In-Reply-To: <20250109161902.GDZ3_29rH-sQMV4n0N@fat_crate.local>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+	<20250106121017.1620-5-shiju.jose@huawei.com>
+	<20250109091915.GAZ3-Uk3rkuh38cQyy@fat_crate.local>
+	<3b2d4275d1d24dbeacee0f192ac4d69b@huawei.com>
+	<20250109123222.GBZ3_B1g3Esgu1-MPi@fat_crate.local>
+	<20250109142433.00004ea7@huawei.com>
+	<20250109151854.GCZ3_o3rf6S24qUbtB@fat_crate.local>
+	<20250109160159.00002add@huawei.com>
+	<20250109161902.GDZ3_29rH-sQMV4n0N@fat_crate.local>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 9 Jan 2025 10:56:20 -0500 Gregory Price <gourry@gourry.net> wrote:
-
-> On Wed, Jan 08, 2025 at 10:19:19AM +0900, Hyeonggon Yoo wrote:
-> > Hi, hope you all had a nice year-end holiday :)
-> > 
-> ... snip ...
-> > Please let me know if there's any point we discussed that I am missing.
-> > 
-> > Additionally I would like to mention that within an internal discussion
-> > my colleague Honggyu suggested introducing 'mode' parameter which can be
-> > either 'manual' or 'auto' instead of 'use_defaults' to be provide more
-> > intuitive interface.
-> > 
-> > With Honggyu's suggestion and the points we've discussed,
-> > I think the interface could be:
-> > 
-> > # At booting, the mode is 'auto' where the kernel can automatically
-> > # update any weights.
-> > 
-> > mode             auto         # User hasn't specified any weight yet.
-> > effective        [2, 1, -, -] # Using system defaults for node 0-1,
-> >                               # and node 2-3 not populated yet.
-> > 
-> > # When a new NUMA node is added (e.g. via hotplug) in the 'auto' mode,
-> > # all weights are re-calculated based on ACPI HMAT table, including the
-> > # weight of the new node.
-> > 
-> > mode             auto         # User hasn't specified weights yet.
-> > effective        [2, 1, 1, -] # Using system defaults for node 0-2,
-> >                               # and node 3 not populated yet.
-> > 
-> > # When user set at least one weight value, change the mode to 'manual'
-> > # where the kernel does not update any weights automatically without
-> > # user's consent.
-> > 
-> > mode             manual       # User changed the weight of node 0 to 4,
-> >                               # changing the mode to manual config mode.
-> > effective        [4, 1, 1, -]
-> > 
-> > 
-> > # When a new NUMA node is added (e.g. via hotplug) in the manual mode,
-> > # the new node's weight is zero because it's in manual mode and user
-> > # did not specify the weight for the new node yet.
-> > 
-> > mode             manual
-> > effective        [4, 1, 1, 0]
-> > 
+On Thu, 9 Jan 2025 17:19:02 +0100
+Borislav Petkov <bp@alien8.de> wrote:
+	
+> On Thu, Jan 09, 2025 at 04:01:59PM +0000, Jonathan Cameron wrote:
+> > Ok. To me the fact it's not a single write was relevant. Seems not
+> > in your mental model of how this works.  For me a single write
+> > that you cannot query back is fine, setting lots of parameters and
+> > being unable to query any of them less so.  I guess you disagree.  
 > 
-> 0's cannot show up in the effective list - the allocators can never
-> percieve a 0 as there are (race) conditions where that may cause a div0.
+> Why can't you query it back?
 > 
-> The actual content of the list may be 0, but the allocator will see '1'.
+> grep -r . /sysfs/dir/
 > 
-> IIRC this was due to lock/sleep limitations in the allocator paths and
-> accessing this RCU protected memory. If someone wants to take another
-> look at the allocator paths and characterize the risk more explicitly,
-> this would be helpful.
+> All files' values have been previously set and should still be there on
+> a read, I'd strongly hope. Your ->read routines should give the values back.
 
-Hi Gregory and Hyeonggon,
+Today you can.  Seems we are talking cross purposes.
 
-Based on a quick look, I see that there can be a problematic scenario
-in alloc_pages_bulk_array_weighted_interleave where we sum up all
-the weights from iw_table and divide by this sum. This _can_ be problematic
-for two reasons, one of them being the div0 mentioned.
+I'm confused. I thought your proposal was for "bank" attribute to present an
+allowed range on read.
+"bank" attribute is currently written to and read back as the value of the bank on which
+to conduct a repair.  Maybe this disconnect is down to the fact max_ and min_
+attributes should have been marked as RO in the docs. They aren't controls,
+just presentation of limits to userspace.
 
-Currently, you can access the weights in one of two ways:
-The first way is to call get_il_weight, which will retrieve a specified
-node's weight under an rcu read lock. Within this function, it first
-checks if the value at iw_table[nid] is 0, and if it is, returns 1.
-Although this prevents a div0 scenario by ensuring that all weights are
-nonzero, there is a coherency problem, since each instance of get_il_weight
-creates a new rcu read lock. Therefore, retrieving node weights within a
-loop creates a race condition in which the state of iw_table may change
-in between iterations of the loop.
+Was intent a separate bank_range type attribute rather than max_bank, min_bank?
+One of those would be absolutely fine (similar to the _available attributes
+in IIO - I added those years ago to meet a similar need and we've never had
+any issues with those).
 
-The second way is to directly dereference iw_table under a rcu lock,
-copy its contents locally, then free the lock. This is how
-alloc_pages_bulk_array_weighted_interleave currently calculates the sum.
-The problem here is that even though we solve the coherency issue, there
-is no check to ensure that this sum is zero. Thus, while having an array of
-weights [0,0,0,0] gets translated into [1,1,1,1] when inspecting each
-node individually using get_il_weight, it is still stored internally as 0
-and can lead to a div0 here.
+> 
+> > In interests of progress I'm not going to argue further. No one is
+> > going to use this interface by hand anyway so the lost of useability
+> > I'm seeing doesn't matter a lot.  
+> 
+> I had the suspicion that this user interface is not really going to be used by
+> a user but by a tool. But then if you don't have a tool, you're lost.
+> 
+> This is one of the reasons why you can control ftrace directly on the shell
+> too - without a tool. This is very useful in certain cases where you cannot
+> run some userspace tools.
 
-There are a few workarounds:
-- Check that weight_total != 0 before performing the division.
-- During the weight sum iteration, add by weights[node] ? weights[node] : 1
-  like it is calculated within get_il_weight
-- Prevent users from ever storing 0 into a node.
+I fully agree. What I was saying was in response to me thinking you wanted it
+to not be possible to read back the user set values (overlapping uses of
+single bank attribute which wasn't what you meant). That is useful for a user
+wanting to do the cat /sys/... that you mention above, but not vital if they are
+directly reading the tracepoints for the error records and poking the
+sysfs interface.
 
-Of course, we can implement all three of these changes to make sure that
-there are no unforunate div0s. However, there are realistic scenarios
-where we may want the node to actually have a weight of 0, so perhaps
-it makes sense to just do the first to checks. I can write up a quick
-patch to perform these checks, if it looks good to everyone.
+Given it seems I misunderstood that suggestion, ignore my reply to that
+as irrelevant.
+ 
+> 
+> > In at least the CXL case I'm fairly sure most of them are not discoverable.
+> > Until you see errors you have no idea what the memory topology is.  
+> 
+> Ok.
+> 
+> > For that you'd need to have a path to read back what happened.  
+> 
+> So how is this scrubbing going to work? You get an error, you parse it for all
+> the attributes and you go and write those attributes into the scrub interface
+> and it starts scrubbing?
 
-Please let me know if I missed anything as well.
+Repair not scrubbing. They are different things we should keep separate,
+scrub corrects the value, if it can, but doesn't change the underlying memory to
+new memory cells to avoid repeated errors. Replacing scrub with repair 
+(which I think was the intent here)...
 
-Hope you all have a great day!
-Joshua
+You get error records that describe the error seen in hardware, write back the
+values into this interface and tell it to repair the memory.  This is not
+necessarily a synchronous or immediate thing - instead typically based on
+trend analysis.
+
+As an example, the decision might be that bit of ram threw up 3 errors
+over a month including multiple system reboots (for other reasons) and
+that is over some threshold so we use a spare memory line to replace it.
+
+> 
+> But then why do you even need the interface at all?
+> 
+> Why can't the kernel automatically collect all those attributes and start the
+> scrubbing automatically - no need for any user interaction...?
+> 
+> So why do you *actually* even need user interaction here and why can't the
+> kernel be smart enough to start the scrub automatically?
+
+Short answer, it needs to be very smart and there isn't a case of one size
+fits all - hence suggested approach of making it a user space problem.
+
+There are hardware autonomous solutions and ones handled by host firmware.
+That is how repair is done in many servers - at most software sees a slightly
+latency spike as the memory is repaired under the hood. Some CXL devices
+will do this as well. Those CXL devices may provide an additional repair
+interface for the less clear cut decisions that need more data processing
+/ analysis than the device firmware is doing. Other CXL devices will take
+the view the OS is best placed to make all the decisions - those sometimes
+will give a 'maintenance needed' indication in the error records but that
+is still a hint the host may or may not take any notice of.
+
+Given in the systems being considered here, software is triggering the repair,
+we want to allow for policy in the decision. In simple cases we could push
+that policy into the kernel e.g. just repair the moment we see an error record.
+
+These repair resources are very limited in number, so immediately repairing
+may a bad idea. We want to build up a history of errors before making
+such a decision.  That can be done in kernel. 
+
+The decision to repair memory is heavily influenced by policy and time considerations
+against device resource constraints.
+
+Some options that are hard to do in kernel.
+
+1. Typical asynchronous error report for a corrected error.
+
+   Tells us memory had an error (perhaps from a scrubbing engine on the device
+   running checks). No need to take action immediately. Instead build up more data
+   over time and if lots of errors occur make decision to repair as no we are sure it
+   is worth doing rather than a single random event. We may tune scrubbing engines
+   to check this memory more frequently and adjust our data analysis to take that
+   into account for setting thresholds etc.
+   When an admin considers it a good time to take action, offline the memory and
+   repair before bringing it back into use (sometimes by rebooting the machine).
+   Sometimes repair can be triggered in a software transparent way, sometimes not.
+   This also applies to uncorrectable errors though in that case you can't necessarily
+   repair it without ever seeing a synchronous poison with all the impacts that has.
+
+2. Soft repair across boots.  We are actually storing the error records, then only
+   applying the fix on reboot before using the memory - so maintaining a list
+   of bad memory and saving it to a file to read back on boot. We could provide
+   another kernel interface to get this info and reinject it after reboot instead
+   of doing it in userspace but that is another ABI to design.
+
+3. Complex policy across fleets.  A lot of work is going on around prediction techniques
+   that may change the local policy on each node dependent on the overall reliability
+   patterns of a particular batch of devices and local characteristics, service guarantees
+   etc. If it is hard repair, then once you've run out you need schedule an engineer
+   out to replace the DIMM. All complex inputs to the decision.
+
+Similar cases like CPU offlining on repeated errors are done in userspace (e.g.
+RAS Daemon) for similar reasons of long term data gathering and potentially
+complex algorithms.
+  
+> 
+> > Ok. Then can we just drop the range discoverability entirely or we go with
+> > your suggestion and do not support read back of what has been
+> > requested but instead have the reads return a range if known or "" /
+> > return -EONOTSUPP if simply not known?  
+> 
+> Probably.
+
+Too many options in the above paragraph so just to check...  Probably to which?
+If it's a separate attribute from the one we write the control so then
+we do what is already done here and don't present the interface at all if
+the range isn't discoverable.
+
+> 
+> > I can live with that though to me we are heading in the direction of
+> > a less intuitive interface to save a small number of additional files.  
+> 
+> This is not the point. I already alluded to this earlier - we're talking about
+> a user visible interface which, once it goes out, it is cast in stone forever.
+> 
+> So those files better have a good reason to exist...
+> 
+> And if we're not sure yet, we can upstream only those which are fine now and
+> then continue discussing the rest.
+
+Ok. Best path is drop the available range support then (so no min_ max_ or
+anything to replace them for now).
+
+Added bonus is we don't have to rush this conversation and can make sure we
+come to the right solution driven by use cases.
+
+Jonathan
+
+> HTH.
+> 
+
 
