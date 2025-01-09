@@ -1,251 +1,182 @@
-Return-Path: <linux-acpi+bounces-10467-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10468-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CEBA07B65
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:12:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46404A07BBE
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF561883C8E
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:12:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DD716A1C9
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6CB224892;
-	Thu,  9 Jan 2025 15:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA2E21C9F8;
+	Thu,  9 Jan 2025 15:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUOWJ5zw"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MSMASKI1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE0224888;
-	Thu,  9 Jan 2025 15:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE32B219A97;
+	Thu,  9 Jan 2025 15:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736435387; cv=none; b=UDH1I9741LmR2GYlz8OGgoYqp5NzlUBidzVghmjSCv3ax3Bm/ZoDtieT5wUWIRgVJwmt64CW6yaPSPVpaGM1xrRiNjA5VCCyo2ZvsLiIljKUCL/aILBthZdlgwEKA0YbOKv7Cf90nbRQycUEkrOKHb2i3TYNdopQ7XZQIQibuLE=
+	t=1736435992; cv=none; b=LAbfDVvq/Ww2Uq8RXn23jENbil6ZZJW+8vV5p36wPwu7jQHNzZgTsKkuGsLhggEQMBtRtdWNplTyiSXg6NZtTE2Cly8baccqnytYshlGFoCQL6Oc8sI2RAjWNIgTQLRgBlV1wBMcTU5VnVNV1aES9tgSMOkC4BvOqlbGd1JBDho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736435387; c=relaxed/simple;
-	bh=ueES1CpHxkIOmIdddrXeMAV9rO12JLZzujSA/AYR5iA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uo94KCC1jqqPLNVMee30SkJ9Kj5Zscky/aarmPF4xXALOO88Bd9SCcdqKrdAxjkE4tI7xigTh31GS8tOck/U32BDSRnWiazIHAFS+ErPFVtxoAtaql2qv/6X1UHicmd7jvGEYD0NbuHVDABlgVI4PdMdSgU7+LlDvx0aLuZbyek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUOWJ5zw; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4aff31b77e8so427887137.1;
-        Thu, 09 Jan 2025 07:09:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736435384; x=1737040184; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tXWFMX8a8Q4Pv2GPHLPCd0mT4LshIMD7WrNQh2s1+XA=;
-        b=HUOWJ5zwI6QVQBYyLBzSXQLAkG+H6cfWWZJV4G8+WvRDpoY1D2xMjqmqIG4vyE7eU/
-         W9yY61mMKeu8FdMW5moV4pMG38D3tf6qJ8uUqW1SL0j5M6DFF5Cn8SJZyqKlxHOigrUg
-         p5IBWitrMDuCJKOxMCNWoCBsfoIa9pJR0LPtnpb9HEaTqsS8Az74qI/peQa17eKWjuKH
-         0FuZqcRTeSkpviF+r2oKD6KwoR8HkftzyxdWeOHxLu7yFp8grDtCO8wKLQJ5mOblrKw0
-         dEZZYAwWv0h7totJf3+mtVOToYC+a6dbr6zrAWr5vGSFSPc481mkCo23MTJA8inVuQZ8
-         Z6Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736435384; x=1737040184;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tXWFMX8a8Q4Pv2GPHLPCd0mT4LshIMD7WrNQh2s1+XA=;
-        b=hl5BxvMDD6hSX2hDC3ldhM8NfzAzWxfOXAGtSCnz0r9/Ix+Ef/0HjWhkc1MXCsY8iU
-         NWNdy3dy1vXRforO3JR45u1KzV/05OTl8M5qyTumECtMPlzP0Fwcy6TAaRtsIub4+GIY
-         vhMmGHkzketHjYs4z/ww1f0EeEX2xhf0OEaifSFTndem9nKQoW7IkydJLLT6fd+Tm7D7
-         FlSdqPGmk/CltP8XISN33m7iAYTi+ccsr9Pw+D+yCqj021C77NcK7Ifqyu3eNOg5vVdQ
-         PwHmpFuf88mkLKpiMqYtIrDVWGzBh2eyhrl4lOS04kfLrkBNknyhEOiDL8xHJEwPxFfb
-         Of5w==
-X-Forwarded-Encrypted: i=1; AJvYcCV13LOjadxFlbyaBl/E5+23Xxee+d7cilUSf3VY4RwVMg5dltdh0EdCONbm9z+ZEmO1YE2F9A9vjeoPrgc2@vger.kernel.org, AJvYcCXk44Op/K9gMqhvZWgcJwUuTtF587360UXCDtkJ08P9Z/P/8HOniPBAnrG2f4RZsn+oiaUFyZcX2F2r@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxr9lFese2+RGEw6+aULeaHfUpYVnIpW/3B8ARYJc8pecpZPTer
-	UpzQSndGvRT9CnVNc0KfscTpBYTM/JdCAgj20NiDon2aPzE32x6Le/1V0VCc
-X-Gm-Gg: ASbGnctXeqvjGgWAq7n8Mqsk2ttdo9DUIR2a+pcZmAeEZbfUVveaE4qDpLSL3ZsnqXT
-	xMiJRdsYztDlknhjReDlcsLe19iZQ2V4hZr4Kag/6GOCcr6cc74b0ATReaidJRjs0HbfsR4EVFJ
-	svGu7JxSFBl+LRpTvo7hyR7AAGY3xG76ek/iJ6HKaYpnWkyF6D60RFGmAkaXnQSJt0bFFb3xKzh
-	kPphfuEZVEtJGfCa8Z49dRWaOYSX8jXrtuduHmCPyGIaDh51sQnL1GX1EoYES95
-X-Google-Smtp-Source: AGHT+IHTsiyxTdRhLAyXTzqH/vzYBKjh+K4a/SbVvKlT32OwOtIjQS0SYK32yrgF2TjbYCaJTMQ51w==
-X-Received: by 2002:a05:6102:cc6:b0:4b2:bc6a:2e8b with SMTP id ada2fe7eead31-4b3d0ef6127mr5990268137.3.1736435383993;
-        Thu, 09 Jan 2025 07:09:43 -0800 (PST)
-Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f4a5ddsm1019887137.11.2025.01.09.07.09.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 07:09:43 -0800 (PST)
-From: Kurt Borja <kuurtb@gmail.com>
-To: platform-driver-x86@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Mario Limonciello" <mario.limonciello@amd.com>,
-	"Armin Wolf" <W_Armin@gmx.de>,
-	Joshua Grisham <josh@joshuagrisham.com>,
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Hans de Goede" <hdegoede@redhat.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	"Lee, Chun-Yi" <jlee@suse.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Corentin Chary <corentin.chary@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Lyndon Sanche <lsanche@lyndeno.ca>,
-	Ike Panhc <ike.pan@canonical.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Alexis Belmonte <alexbelm48@gmail.com>,
-	Ai Chao <aichao@kylinos.cn>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Gergo Koteles <soyer@irl.hu>,
-	Dell.Client.Kernel@dell.com,
-	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH 18/18] ACPI: platform_profile: Add documentation
-Date: Thu,  9 Jan 2025 10:06:31 -0500
-Message-ID: <20250109150731.110799-19-kuurtb@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250109150731.110799-1-kuurtb@gmail.com>
-References: <20250109150731.110799-1-kuurtb@gmail.com>
+	s=arc-20240116; t=1736435992; c=relaxed/simple;
+	bh=LcD8D/O+tjtCsnATnq+o/+QJGJt2DNI3UWtiJj8dbvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k0byhXs05yxBIwihulRQclSkMXviqFac+XEzaaNZOX4I7WGEyga2YIN6GgrKljKWz0u3zOYZSDtdMZwUx0VujYlO5vmZJYP5PmFPVyEUFh8IQbTpjIHfM8e64KCzE2nHSx+23TAlzraIvtpRST4TXstROBySPPbJwQZEktppDAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MSMASKI1; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0CE2340E01F9;
+	Thu,  9 Jan 2025 15:19:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id tuK91XRnwJwF; Thu,  9 Jan 2025 15:19:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1736435983; bh=eRtSquyKGkO5VxcHauXskkyGRsl2V7wKCAQNwjFunh0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MSMASKI15NWKaVfiR4YFLTDuNJcQ7zUoJHND6KyAzhPYBIl7Nej56ZkbflXjDPccw
+	 SwZBaMflm8kkIYwWRdJdSBAk6qoXnWT+tXMcbHAe4oqr3Wevx8TMQ3C5tygnDc4yCI
+	 PxOPgdLj0AiZWKaJIDhkt/cLdoUrimgsahHFuu7muO+6o1e1J/vzx2BcEYtY6fa0D6
+	 62JD39Ez58+GyiMMJcBMWW2yJgWmDDbHEopn6Bpb8a/UU3hObDoFf9QnShcJBLaqs5
+	 3urjdMoyXTmhD8BhQKdQSJ8NXjvURv/J+Uzlk5MrSVpuGqKs8YEF7L5la7nyN6RfSD
+	 7dz7xoPOHR+BsRWtHRzQKwX55Rq1iMHM1A+gUVzI9FB4qFZ9fB2fO9X3wOz903/qM4
+	 VcyAAiDjiSbaTQS42DpS7hiubNZB3st7rxfgRPpsonFzXtMDqQdSpo0wNOSHMYbbya
+	 ZMlGBtQzu5GX2hYEhmVNkz0rlDLV1s4/VPv+X6FpI65+D55Iwszm79L/E7n026ae3D
+	 mY5uxowwdlXEZoLd7dfVW9vN9B+yX1mRQ4eKzrUe6Yd+0LSRcULioL5e6wls/n+PJW
+	 3unbGU24+aG4hvQg9FZWe8LuTep+M1uuejAjE8rtUIeDwmBN69AAZ22coopsw7Ocgi
+	 Nsb2+btJbJBenmpuOo3x69Wk=
+Received: from zn.tnic (p200300eA971f933C329c23fffEA6A903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:933c:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3B79440E0288;
+	Thu,  9 Jan 2025 15:19:00 +0000 (UTC)
+Date: Thu, 9 Jan 2025 16:18:54 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250109151854.GCZ3_o3rf6S24qUbtB@fat_crate.local>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+ <20250106121017.1620-5-shiju.jose@huawei.com>
+ <20250109091915.GAZ3-Uk3rkuh38cQyy@fat_crate.local>
+ <3b2d4275d1d24dbeacee0f192ac4d69b@huawei.com>
+ <20250109123222.GBZ3_B1g3Esgu1-MPi@fat_crate.local>
+ <20250109142433.00004ea7@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250109142433.00004ea7@huawei.com>
 
-Add kerneldoc and sysfs class documentation.
+On Thu, Jan 09, 2025 at 02:24:33PM +0000, Jonathan Cameron wrote:
+> To my thinking that would fail the test of being an intuitive interface.
+> To issue a repair command requires that multiple attributes be configured
+> before triggering the actual repair.
+> 
+> Think of it as setting the coordinates of the repair in a high dimensional
+> space.
 
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
----
- .../ABI/testing/sysfs-class-platform-profile  | 44 +++++++++++++++++++
- drivers/acpi/platform_profile.c               | 33 ++++++++++++++
- 2 files changed, 77 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profile
+Why?
 
-diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Documentation/ABI/testing/sysfs-class-platform-profile
-new file mode 100644
-index 000000000000..59486dc4313f
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-class-platform-profile
-@@ -0,0 +1,44 @@
-+What:		/sys/class/platform-profile/platform-profile-X/name
-+Date:		January 2025
-+Description:	Name of the class device given by the driver.
-+
-+		RO
-+
-+What:		/sys/class/platform-profile/platform-profile-X/choices
-+Date:		January 2025
-+Description:	This file contains a space-separated list of profiles supported for this device.
-+
-+		Drivers must use the following standard profile-names:
-+
-+		====================	========================================
-+		low-power		Low power consumption
-+		cool			Cooler operation
-+		quiet			Quieter operation
-+		balanced		Balance between low power consumption
-+					and performance
-+		balanced-performance	Balance between performance and low
-+					power consumption with a slight bias
-+					towards performance
-+		performance		High performance operation
-+		custom			Driver defined custom profile
-+		====================	========================================
-+
-+		RO
-+
-+What:		/sys/class/platform-profile/platform-profile-X/profile
-+Date:		January 2025
-+Description:	Reading this file gives the current selected profile for this
-+		device. Writing this file with one of the strings from
-+		platform_profile_choices changes the profile to the new value.
-+
-+		This file can be monitored for changes by polling for POLLPRI,
-+		POLLPRI will be signalled on any changes, independent of those
-+		changes coming from a userspace write; or coming from another
-+		source such as e.g. a hotkey triggered profile change handled
-+		either directly by the embedded-controller or fully handled
-+		inside the kernel.
-+
-+		This file may also emit the string 'custom' to indicate
-+		that the driver is using a driver defined custom profile.
-+
-+		RW
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 8c79ecab8a6d..5d74675c5419 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -426,6 +426,10 @@ static const struct attribute_group platform_profile_group = {
- 	.is_visible = profile_class_is_visible,
- };
- 
-+/**
-+ * platform_profile_notify - Notify class device and legacy sysfs interface
-+ * @dev: The class device
-+ */
- void platform_profile_notify(struct device *dev)
- {
- 	scoped_cond_guard(mutex_intr, return, &profile_lock) {
-@@ -435,6 +439,11 @@ void platform_profile_notify(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(platform_profile_notify);
- 
-+/**
-+ * platform_profile_cycle - Cycles profiles available on all registered class devices
-+ *
-+ * Return: 0 on success, -errno on failure
-+ */
- int platform_profile_cycle(void)
- {
- 	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
-@@ -478,6 +487,15 @@ int platform_profile_cycle(void)
- }
- EXPORT_SYMBOL_GPL(platform_profile_cycle);
- 
-+/**
-+ * platform_profile_register - Creates and registers a platform profile class device
-+ * @dev: Parent device
-+ * @name: Name of the class device
-+ * @drvdata: Driver data that will be attached to the class device
-+ * @ops: Platform profile's mandatory operations
-+ *
-+ * Return: pointer to the new class device on success, ERR_PTR on failure
-+ */
- struct device *platform_profile_register(struct device *dev, const char *name,
- 					 void *drvdata,
- 					 const struct platform_profile_ops *ops)
-@@ -548,6 +566,12 @@ struct device *platform_profile_register(struct device *dev, const char *name,
- }
- EXPORT_SYMBOL_GPL(platform_profile_register);
- 
-+/**
-+ * platform_profile_remove - Unregisters a platform profile class device
-+ * @dev: Class device
-+ *
-+ * Return: 0
-+ */
- int platform_profile_remove(struct device *dev)
- {
- 	struct platform_profile_handler *pprof = to_pprof_handler(dev);
-@@ -573,6 +597,15 @@ static void devm_platform_profile_release(struct device *dev, void *res)
- 	platform_profile_remove(*ppdev);
- }
- 
-+/**
-+ * devm_platform_profile_register - Device managed version of platform_profile_register
-+ * @dev: Parent device
-+ * @name: Name of the class device
-+ * @drvdata: Driver data that will be attached to the class device
-+ * @ops: Platform profile's mandatory operations
-+ *
-+ * Return: pointer to the new class device on success, ERR_PTR on failure
-+ */
- struct device *devm_platform_profile_register(struct device *dev, const char *name,
- 					      void *drvdata,
- 					      const struct platform_profile_ops *ops)
+You can write every attribute in its separate file and have a "commit" or
+"start" file which does that.
+
+Or you can designate a file which starts the process. This is how I'm
+injecting errors on x86:
+
+see readme_msg here: arch/x86/kernel/cpu/mce/inject.c
+
+More specifically:
+
+"flags:\t Injection type to be performed. Writing to this file will trigger a\n"
+"\t real machine check, an APIC interrupt or invoke the error decoder routines\n"
+"\t for AMD processors.\n"
+
+So you set everything else, and as the last step you set the injection type
+*and* you also trigger it with this one write.
+
+> Sure. In this case the addition of min/max was perhaps a wrong response to
+> your request for a way to those ranges rather than just rejecting a write
+> of something out of range as earlier version did.
+> 
+> We can revisit in future if range discovery becomes necessary.  Personally
+> I don't think it is given we are only taking these actions in response error
+> records that give us precisely what to write and hence are always in range.
+
+My goal here was to make this user-friendly. Because you need some way of
+knowing what valid ranges are and in order to trigger the repair, if it needs
+to happen for a range.
+
+Or, you can teach the repair logic to ignore invalid ranges and "clamp" things
+to whatever makes sense.
+
+Again, I'm looking at it from the usability perspective. I haven't actually
+needed this scrub+repair functionality yet to know whether the UI makes sense.
+So yeah, collecting some feedback from real-life use cases would probably give
+you a lot better understanding of how that UI should be designed... perhaps
+you won't ever need the ranges, whow knows.
+
+So yes, preemptively designing stuff like that "in the dark" is kinda hard.
+:-)
+
 -- 
-2.47.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
