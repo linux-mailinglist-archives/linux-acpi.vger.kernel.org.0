@@ -1,182 +1,186 @@
-Return-Path: <linux-acpi+bounces-10468-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10469-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46404A07BBE
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:21:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9781A07C9C
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DD716A1C9
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:21:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0BC2167FA9
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA2E21C9F8;
-	Thu,  9 Jan 2025 15:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A21621E0B2;
+	Thu,  9 Jan 2025 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MSMASKI1"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="jme0nqef"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE32B219A97;
-	Thu,  9 Jan 2025 15:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662A82185B3
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Jan 2025 15:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736435992; cv=none; b=LAbfDVvq/Ww2Uq8RXn23jENbil6ZZJW+8vV5p36wPwu7jQHNzZgTsKkuGsLhggEQMBtRtdWNplTyiSXg6NZtTE2Cly8baccqnytYshlGFoCQL6Oc8sI2RAjWNIgTQLRgBlV1wBMcTU5VnVNV1aES9tgSMOkC4BvOqlbGd1JBDho=
+	t=1736438186; cv=none; b=YYyNr93y1oJ+VHmWtXgnGpk9E+psOILAabU16cQ8sFaP/AG+Ynr1ZuVzul1NzlezxisryYdE34btWttb/BOq64TXxleVywEIOTjDDdOoo/wB3lfrsvBmirjxF6Z9JFmAFMXFp38BVLjJnI1h7LHHXjrtHQvbbOi5ViJIhCZVttU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736435992; c=relaxed/simple;
-	bh=LcD8D/O+tjtCsnATnq+o/+QJGJt2DNI3UWtiJj8dbvM=;
+	s=arc-20240116; t=1736438186; c=relaxed/simple;
+	bh=SNq2LYQn8P2UJIoVa9/m6PlNC1XQn/zQ2r61dvzCKlE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k0byhXs05yxBIwihulRQclSkMXviqFac+XEzaaNZOX4I7WGEyga2YIN6GgrKljKWz0u3zOYZSDtdMZwUx0VujYlO5vmZJYP5PmFPVyEUFh8IQbTpjIHfM8e64KCzE2nHSx+23TAlzraIvtpRST4TXstROBySPPbJwQZEktppDAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MSMASKI1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0CE2340E01F9;
-	Thu,  9 Jan 2025 15:19:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id tuK91XRnwJwF; Thu,  9 Jan 2025 15:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1736435983; bh=eRtSquyKGkO5VxcHauXskkyGRsl2V7wKCAQNwjFunh0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MSMASKI15NWKaVfiR4YFLTDuNJcQ7zUoJHND6KyAzhPYBIl7Nej56ZkbflXjDPccw
-	 SwZBaMflm8kkIYwWRdJdSBAk6qoXnWT+tXMcbHAe4oqr3Wevx8TMQ3C5tygnDc4yCI
-	 PxOPgdLj0AiZWKaJIDhkt/cLdoUrimgsahHFuu7muO+6o1e1J/vzx2BcEYtY6fa0D6
-	 62JD39Ez58+GyiMMJcBMWW2yJgWmDDbHEopn6Bpb8a/UU3hObDoFf9QnShcJBLaqs5
-	 3urjdMoyXTmhD8BhQKdQSJ8NXjvURv/J+Uzlk5MrSVpuGqKs8YEF7L5la7nyN6RfSD
-	 7dz7xoPOHR+BsRWtHRzQKwX55Rq1iMHM1A+gUVzI9FB4qFZ9fB2fO9X3wOz903/qM4
-	 VcyAAiDjiSbaTQS42DpS7hiubNZB3st7rxfgRPpsonFzXtMDqQdSpo0wNOSHMYbbya
-	 ZMlGBtQzu5GX2hYEhmVNkz0rlDLV1s4/VPv+X6FpI65+D55Iwszm79L/E7n026ae3D
-	 mY5uxowwdlXEZoLd7dfVW9vN9B+yX1mRQ4eKzrUe6Yd+0LSRcULioL5e6wls/n+PJW
-	 3unbGU24+aG4hvQg9FZWe8LuTep+M1uuejAjE8rtUIeDwmBN69AAZ22coopsw7Ocgi
-	 Nsb2+btJbJBenmpuOo3x69Wk=
-Received: from zn.tnic (p200300eA971f933C329c23fffEA6A903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:933c:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3B79440E0288;
-	Thu,  9 Jan 2025 15:19:00 +0000 (UTC)
-Date: Thu, 9 Jan 2025 16:18:54 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Shiju Jose <shiju.jose@huawei.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kx7XNkj6AAfO0EmjfOtmiOV6huNlLucCYD1nz+6Wk0Y6yqat0RTQo1ihQY9bythzYPZT95AHVfA7OJNeuh/vk/IYzIh2+5gXM39AICS2RSZQDvjC2YzDkJZN8GlnuHSGqtXDB8JzONMQTRtpUNFkcIOs97a+GYyNwmXPwwMHVAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=jme0nqef; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6dd43b08674so10031176d6.3
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Jan 2025 07:56:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1736438183; x=1737042983; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=njGbwrLBenkbPUY93SRaaO4DmnW4npNEqO6tdBDTIK4=;
+        b=jme0nqefzip8o0BUqR+QwB8AVuwgfyUxACkcVuaM/mF9Kz7+cZExgadeXOwvL8MM05
+         u9oiaP+TxLsB52xEiG17AawFV0HEcxhaYQlcJH2lBZeKSr9UljSfdzStSx1bLLjAWS+g
+         Qop4rPzLGsxmxP05SNYdawqvvMoV0UYRIe5w9FfdcCHLJC7+6pqOB2WcxY88P+o51+g8
+         5ShvUvJTthbSHRFdz0JkedVOFa1WqCqCPtc57J2Za8+a9sa85jTXOh8yZPywpVcRpo4z
+         d09+wwcCX0Gl/sJ/zLIyrPLMWjmpHSPyj1nKU4vqFZ9mzdWlc9t8hZDK7aUvzAUA4BqL
+         kXWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736438183; x=1737042983;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=njGbwrLBenkbPUY93SRaaO4DmnW4npNEqO6tdBDTIK4=;
+        b=lUFbOBHhnKI0YtZj6ZS83fwr7Ih030eaVTCgIPQF+8Q71qKMIkB31F6H5goTsRsGZS
+         Cy7L2tpnq7iQLYW496CpqRqXu/JQmdg6CJxetSDazwBIBTYUEzWk/BhlyF5sgoAzde3R
+         afYGrntm7JCVT3Y8DncSdxkKDASKd0jpeiLEhx7Jo9ueP4lbHN1zSDIMCJXn7cr1/FKu
+         7EKba+kNiXto3yitseNUg7V6iIJJQDtO2jyR0kQgz7xEfjoP6W1uP8DO4bdvaHuvBaPz
+         HncJouXv4dojt+YXYioL3w07ImkkAJM6O8Ovh39/mpswbJLEb++sjI+Dd0fyy3pw8v4b
+         fBjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVIhRtu+X0josatjCdUcLKd/SkqZt/6ZSSRi/9jE8svGYy5fh1BMttk1T7xV3QA9Wj3SgVO8tYP9fNK@vger.kernel.org
+X-Gm-Message-State: AOJu0YySHSWPhkQCm0Io9rDTynKYURU67M9Q+5D7Ua47NwHqzQNSjRlc
+	ANPEu+epOxVDlxQSDel0q3bg6bS7FdqVWnLEI2ze7nyRSqRtiOaXHwhsVBUnSco=
+X-Gm-Gg: ASbGncsBSrGS+oYnGi+KNTo2y21ZEmnBQygbYHQUuy3VXxn7ke8ata6ivKmfXNNrki2
+	UY3MX7DcU/Tt6CDHTzv83EWeNsb8jDQzlP6NVX7Q9V+mS14lZouB9cYzVQD1i7B6uNK1B3la0WH
+	lsC9+mm2lLv1JocFmNWY07UX+3taShY40La7zfb+KYUPvU3ww1fJBdGqnyLy2TCsz4UGI1oWTrE
+	SG6MnxDlTy71p+/4vZk+xMv3stOCv+GWIP95xKHGAvelpTRR2LR2PnXBQqhxr8TxSSUUlf07nr2
+	tCUBENXDrWntaoA9s4vvYRLo+iwHLuVNdXo1Neo=
+X-Google-Smtp-Source: AGHT+IFez9D+XlV+Dk3FYn6oJiRh6f1LxjuTL/0cjlz8YykT4uZIk0cd8uPDFKcv8Yq+uZvqm94bBg==
+X-Received: by 2002:a05:6214:23c5:b0:6d8:890c:1f08 with SMTP id 6a1803df08f44-6df9b2348a7mr117716776d6.26.1736438183258;
+        Thu, 09 Jan 2025 07:56:23 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dd181bba3fsm202468036d6.71.2025.01.09.07.56.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jan 2025 07:56:22 -0800 (PST)
+Date: Thu, 9 Jan 2025 10:56:20 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Hyeonggon Yoo <hyeonggon.yoo@sk.com>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, kernel_team@skhynix.com,
+	42.hyeyoo@gmail.com, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	=?utf-8?B?6rmA7ZmN6recKEtJTSBIT05HR1lVKQ==?= System SW <honggyu.kim@sk.com>,
+	=?utf-8?B?6rmA65296riwKEtJTSBSQUtJRSk=?= System SW <rakie.kim@sk.com>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"horen.chuang@linux.dev" <horen.chuang@linux.dev>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
 	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
-Message-ID: <20250109151854.GCZ3_o3rf6S24qUbtB@fat_crate.local>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
- <20250106121017.1620-5-shiju.jose@huawei.com>
- <20250109091915.GAZ3-Uk3rkuh38cQyy@fat_crate.local>
- <3b2d4275d1d24dbeacee0f192ac4d69b@huawei.com>
- <20250109123222.GBZ3_B1g3Esgu1-MPi@fat_crate.local>
- <20250109142433.00004ea7@huawei.com>
+	"kernel-team@meta.com" <kernel-team@meta.com>
+Subject: Re: [External Mail] Re: [External Mail] [RFC PATCH] mm/mempolicy:
+ Weighted interleave auto-tuning
+Message-ID: <Z3_xpKZ7YtVvCSG4@gourry-fedora-PF4VCD3F>
+References: <20241225093042.7710-1-joshua.hahnjy@gmail.com>
+ <874j2rp6or.fsf@DESKTOP-5N7EMDA>
+ <Z22cwZycFV47wOfX@gourry-fedora-PF4VCD3F>
+ <87cyhdhon1.fsf@DESKTOP-5N7EMDA>
+ <Z27JXDwEmplZCDEX@gourry-fedora-PF4VCD3F>
+ <874j2lll91.fsf@DESKTOP-5N7EMDA>
+ <769f98b3-f5e5-448c-966e-4dd5468e5041@sk.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250109142433.00004ea7@huawei.com>
+In-Reply-To: <769f98b3-f5e5-448c-966e-4dd5468e5041@sk.com>
 
-On Thu, Jan 09, 2025 at 02:24:33PM +0000, Jonathan Cameron wrote:
-> To my thinking that would fail the test of being an intuitive interface.
-> To issue a repair command requires that multiple attributes be configured
-> before triggering the actual repair.
+On Wed, Jan 08, 2025 at 10:19:19AM +0900, Hyeonggon Yoo wrote:
+> Hi, hope you all had a nice year-end holiday :)
 > 
-> Think of it as setting the coordinates of the repair in a high dimensional
-> space.
-
-Why?
-
-You can write every attribute in its separate file and have a "commit" or
-"start" file which does that.
-
-Or you can designate a file which starts the process. This is how I'm
-injecting errors on x86:
-
-see readme_msg here: arch/x86/kernel/cpu/mce/inject.c
-
-More specifically:
-
-"flags:\t Injection type to be performed. Writing to this file will trigger a\n"
-"\t real machine check, an APIC interrupt or invoke the error decoder routines\n"
-"\t for AMD processors.\n"
-
-So you set everything else, and as the last step you set the injection type
-*and* you also trigger it with this one write.
-
-> Sure. In this case the addition of min/max was perhaps a wrong response to
-> your request for a way to those ranges rather than just rejecting a write
-> of something out of range as earlier version did.
+... snip ...
+> Please let me know if there's any point we discussed that I am missing.
 > 
-> We can revisit in future if range discovery becomes necessary.  Personally
-> I don't think it is given we are only taking these actions in response error
-> records that give us precisely what to write and hence are always in range.
+> Additionally I would like to mention that within an internal discussion
+> my colleague Honggyu suggested introducing 'mode' parameter which can be
+> either 'manual' or 'auto' instead of 'use_defaults' to be provide more
+> intuitive interface.
+> 
+> With Honggyu's suggestion and the points we've discussed,
+> I think the interface could be:
+> 
+> # At booting, the mode is 'auto' where the kernel can automatically
+> # update any weights.
+> 
+> mode             auto         # User hasn't specified any weight yet.
+> effective        [2, 1, -, -] # Using system defaults for node 0-1,
+>                               # and node 2-3 not populated yet.
+> 
+> # When a new NUMA node is added (e.g. via hotplug) in the 'auto' mode,
+> # all weights are re-calculated based on ACPI HMAT table, including the
+> # weight of the new node.
+> 
+> mode             auto         # User hasn't specified weights yet.
+> effective        [2, 1, 1, -] # Using system defaults for node 0-2,
+>                               # and node 3 not populated yet.
+> 
+> # When user set at least one weight value, change the mode to 'manual'
+> # where the kernel does not update any weights automatically without
+> # user's consent.
+> 
+> mode             manual       # User changed the weight of node 0 to 4,
+>                               # changing the mode to manual config mode.
+> effective        [4, 1, 1, -]
+> 
+> 
+> # When a new NUMA node is added (e.g. via hotplug) in the manual mode,
+> # the new node's weight is zero because it's in manual mode and user
+> # did not specify the weight for the new node yet.
+> 
+> mode             manual
+> effective        [4, 1, 1, 0]
+> 
 
-My goal here was to make this user-friendly. Because you need some way of
-knowing what valid ranges are and in order to trigger the repair, if it needs
-to happen for a range.
+0's cannot show up in the effective list - the allocators can never
+percieve a 0 as there are (race) conditions where that may cause a div0.
 
-Or, you can teach the repair logic to ignore invalid ranges and "clamp" things
-to whatever makes sense.
+The actual content of the list may be 0, but the allocator will see '1'.
 
-Again, I'm looking at it from the usability perspective. I haven't actually
-needed this scrub+repair functionality yet to know whether the UI makes sense.
-So yeah, collecting some feedback from real-life use cases would probably give
-you a lot better understanding of how that UI should be designed... perhaps
-you won't ever need the ranges, whow knows.
+IIRC this was due to lock/sleep limitations in the allocator paths and
+accessing this RCU protected memory. If someone wants to take another
+look at the allocator paths and characterize the risk more explicitly,
+this would be helpful.
 
-So yes, preemptively designing stuff like that "in the dark" is kinda hard.
-:-)
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> # When user changes the mode to 'auto', all weights are changed to
+> # system defaults based on the ACPI HMAT table.
+> 
+> mode             auto
+> effective        [2, 1, 1, 1]  # system defaults
+> 
+> In the example I did not distinguish 'default weights' and 'user
+> weights' because it's not important where the weight values came from --
+> but it's important to know 1) what's the effective weights now and 2) if
+> the kernel can update them.
+> 
+> Any thoughts?
+> 
+> ---
+> Best,
+> Hyeonggon
 
