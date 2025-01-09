@@ -1,76 +1,76 @@
-Return-Path: <linux-acpi+bounces-10452-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10453-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA188A07B32
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:08:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560C0A07B36
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6364B188481E
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:08:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DFC73A7FEB
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 15:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E037421D00E;
-	Thu,  9 Jan 2025 15:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4075621CA1F;
+	Thu,  9 Jan 2025 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OmqX0+ZJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DzeJ/puM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2047F21C19F;
-	Thu,  9 Jan 2025 15:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E2B21C19F;
+	Thu,  9 Jan 2025 15:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736435290; cv=none; b=abWvLp+GF1fUNlwh+YudIj/mHAZWJ9HUV6pcN8035DG670SFLbabN2/9ios9Y9pZLL7MwBwz2jwDA+IMg8XkbHs2ta/sT6y7W/ojrP9jxM3ZmM5u08z6Kui43pfkcuwQjI6Q7UqVOQ1ZtCkHYmbHk2jqq7JW6UTBxtTyMZJ/oVU=
+	t=1736435297; cv=none; b=PrsqqRQmvQcbNICmTGngTIgUKn1JGcuZGUhPNE5F6wtO6XFMYd+WNCYDSo8EP4mf4wriIp8bEW3ot99FwJ0kJuvy3dPiyB+pyx88NtG9d5zz0yHVLxEZsllSq7u/e3WAvpk/3A6so4J2fGuZJFAEEcdWzb0uf49MBp7zDUqlEjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736435290; c=relaxed/simple;
-	bh=kQ0xyOrHLHgqL4B8cNM5E02Cets2aU9OrgEWK0BVjpY=;
+	s=arc-20240116; t=1736435297; c=relaxed/simple;
+	bh=kwXBt4b3+q4Y39p8H6JPM3rIsgMPMUcZC/17KDplxYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAWlJc5PsNFqd1AYVEy4kfE/mrLxESd7pY0hOLDZ7Tp8tmKysFpfmopPmXNr55uwypXgeZS5sfne1T/IJRz4nf8l3UkOs70Iezv98mnXWmPQ31xa79/sOEbRD6QQ1BXze0gDb2Dp0DafZJog5WmNbOEO7AzvA4OBUHLwIi1R6sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OmqX0+ZJ; arc=none smtp.client-ip=209.85.217.46
+	 MIME-Version; b=iJzuzOYvkVAwSboVYtBX7sQMmuEX2RsYhSb7KumKZZCjpj6t38txuALCzL5Nbr14yWJiL6BWhJZ7774qcIMNn+6/5KqqgMJ6XVv2sxNIQIo3TMc3X27CjR+U/cd56GWl84kbIaZIj4Hmj63pye2D6ZY7yohdjTpnbS7rEcA+S+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DzeJ/puM; arc=none smtp.client-ip=209.85.217.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4affd0fb6adso361771137.1;
-        Thu, 09 Jan 2025 07:08:09 -0800 (PST)
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-4b2c0a7ef74so656216137.2;
+        Thu, 09 Jan 2025 07:08:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736435288; x=1737040088; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736435294; x=1737040094; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1FO0DTPEiGjE6vOWmEKb4fddXaogxmmVS1xP1xC2Y+8=;
-        b=OmqX0+ZJEJuzej7XeKFPeU0aR8G/IMWCn+LMqxpccgKix0usCn1zRwftnqNzI7I/X8
-         AF29SiF8ca5JgyHD8c4flLgpHquEO8r00n6HYTp/SGwCAr29MjszXSlITEEzHvu0Fimp
-         +t+Q4FOU/aaPJRdkgYIIlLn4B6rRytKrNF7KI2LAqiWgu8sXy0kvSTKV2WzbPf31mVeI
-         2zeZBuA74CATNQC15deltFZYxxbheffPRR6TvIScXkOEBZLLOVhDav6ozGSJ0K4UmsvZ
-         e/SW5kScTtL8Jl7WabC6eTn1jX87S9Xj48lSob2zuc4iEBph6+rAOrQpGJQvCBuCMvzr
-         lNKw==
+        bh=DKirfVfr3JrJ4phvSlQyJq6q5S3I1b+zwqhd331cro8=;
+        b=DzeJ/puMoUjUzSPzdIaS8G2A0kD+rLVwo5gJur3s1Bep2GseSczmjXFH8dibH8RBp7
+         +bBYILCEYVtbJj7rbtmrvxzdzxwvlvswRw2y/Nd9+EBkAalMALvf/rd9h1au8ydDg5Rf
+         hxP7iK7r9Lleof+2/ztWcnJHKC4jb9brh4KtLvIgfDHrCXcJAtNRTZaaY6gOW7GBe1+e
+         p3lk/juuswDhug0815zfbrAZNkfz1gcdYNfK6icGgQwbVjkfBuwY06ICfoG13xbei0gW
+         RSmu1vb2gFq2+6HL7B+8FHABEsDS3AOp72YGvzWWERKeXbiQQXLAqckJivrlgOkPgzGt
+         1I9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736435288; x=1737040088;
+        d=1e100.net; s=20230601; t=1736435294; x=1737040094;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1FO0DTPEiGjE6vOWmEKb4fddXaogxmmVS1xP1xC2Y+8=;
-        b=sq7z1uxqdSyd4VyV5+yl5IbwNrzazhnc4AiRHEeIo/UlOSoDNRYwmQNzfF4fu01svM
-         x/jVPOtJfQy8H1spHEsVVO4TuTnJhHMtDx2pt6bK9UyySgAQyxn7lKpVvEnjaFnnmpbo
-         Ao9y8fQz24I2411xwqQGTmMQPoFaWP1TDtZT8DTJnf6cDn/pX2cJXMLUyroq687JM0h/
-         OhHeU58npiRvfK7tn4sf+S0grRi0JWkYFgnONYADlg2Y09+WStG4XP2B9rXBP+JPA3nk
-         OdEzSJNsfMkBrLLm7AAI+sYHWOnifTE+dcztca2c4GHzWid/N9dRVQZXFCIJd5lETG6T
-         ncTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvMN+/QewMuSCVU2PofaNSCta0S/2as82x4HIIb1pgE9OYA1G5i1OeT41Sh9FYdSevXvF7rG8oE/aO@vger.kernel.org, AJvYcCXs8YRcBMxJHMVnUytcSOu2K9JtO/4xjq06InKho4QPL7xLDlNlx0DIm69fUgpA5DgNaQW98gPVW3McXj7V@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwUeo6qgInSCjckfXIsePFaWc2NIqBvX16e790Fec20jozlQKG
-	59yBGhmf9CFou+vUGcL4XfkTcPT2X0zVx8uL1QCNfTL+Gmgg+7Zud//L8Jd/
-X-Gm-Gg: ASbGncvVDEqW0T5VIsE/TydiwlJXcU1ZiWUmtXM/01M5zRkku0/nj0aTI95PgGaePfQ
-	rcMuTPm3XZ8ACQ+b0WvCyTN8sGPT2MFPb0mEn+W4EvDBaBp8VyiVEO2DH9/u8/1YioZOHCz9PwR
-	66ERGEPewCgIHugMYTC+VGfn8oWFJnM8yMVuXzJj5aRMGYn1f+z0Y+f7h0Vn6Zpuh8dcEIe6xt4
-	EEnsObDU8SXUjt3V3AdpjoNdzT+ZQMH7eiz0MTOwkzyABCtWvASVLg3f7KdBsNG
-X-Google-Smtp-Source: AGHT+IGwteO2+oDnS4b7ZTJBs+pRAvKcXQBYzvIhgrDoQ5ggqeRAAPmRQBG7yUgUqLG97vOfhndg4A==
-X-Received: by 2002:a05:6102:94a:b0:4b2:bceb:1ac6 with SMTP id ada2fe7eead31-4b3d0e5f60amr6393154137.17.1736435287619;
-        Thu, 09 Jan 2025 07:08:07 -0800 (PST)
+        bh=DKirfVfr3JrJ4phvSlQyJq6q5S3I1b+zwqhd331cro8=;
+        b=PBSIwtB2bXAnHtt9eNTwjZGKmhNsxyzkCDyqkqfN41veSCs1wco0rf4WuoX5zwL/60
+         sb/vRBe//4HT736x2WOQm5P8Z1RTrk9fTm0984/oxhBOg8flpKjmHAXJmTNlGNnU1WNn
+         INBsQUE2UZj8t1qnQArpB7dM7xPaC4nDwsjw7SR+oxjI37tgdPBTgN01XSxTAr/Yg39W
+         fWlomgIRUT41OD3GGp9fXF6Exzd6dtmb+lEGYeQpibQthhlSjyajJ5F4Jo3P5um6irM0
+         ZzdKrDcnUeVkO0IRYZcaCopdZWWCnt83X4ijbsspz3nHlldQxzanMWG98aZ9xsbc3LR6
+         Rbkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWjKTQacazykICa9NO+gAfSo+uBvgnMHhE7RUuL2F9zhhq4f6vHagiopUUP+giC3xkT21hrDw49biks@vger.kernel.org, AJvYcCX6SxIxVbzW8mr9lx6ouvSwCMSbhTZ822JJQvI5T4BauCadhN8M1SieInR4EPFI4U96uyrJupaW6YokU+MO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9m2Ab4H5wc4Vxceu+Jo5hmBQ1OGUCDwmYpZLWLRKy6Dnbg4O2
+	5t9MhR6Lq9LnrnnAkSo9v0Ro538UBOUbf7i0bB9NMh1rr9WRZM3FaWxpJjGf
+X-Gm-Gg: ASbGncuElhgvpBD3iW1zzv38d8K3LyGXirDV+Sbc9aMdU4z31dz5DlhUef+Y32CaI2w
+	Fd4ZIeBXOxSkxX1LEukb6i7XizGCyJD1PrlpM0fZ/xZu+dBhdyOi9WCmSkbTG5Mz617GxctaFT/
+	9yiXSI0fYvSVtppEnqjYyyXCV56wcEyy7NLmtPfbm3jeb30Hi/ik/KbX21wxRXHvp1Knfn1ZpFx
+	PJRSRO6bwhfelaASP1CCs6ugXKjawHbfPtYrdw6A0F44nCzdUTkH4vT4NwC9T76
+X-Google-Smtp-Source: AGHT+IFJxb1VK/f6PtdkYvY/B1TzEVKdzi4rM/myKllQrpU6mJlwSpnWhlKays2Qs1u0wNVapOwGNQ==
+X-Received: by 2002:a05:6102:6e88:b0:4b4:27dc:ffe3 with SMTP id ada2fe7eead31-4b427dd0152mr4719591137.0.1736435294021;
+        Thu, 09 Jan 2025 07:08:14 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f4a5ddsm1019887137.11.2025.01.09.07.08.04
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f4a5ddsm1019887137.11.2025.01.09.07.08.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 07:08:07 -0800 (PST)
+        Thu, 09 Jan 2025 07:08:13 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -95,14 +95,13 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Mark Pearson <mpearson-lenovo@squebb.ca>,
 	Colin Ian King <colin.i.king@gmail.com>,
 	Alexis Belmonte <alexbelm48@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	Ai Chao <aichao@kylinos.cn>,
 	Gergo Koteles <soyer@irl.hu>,
 	Dell.Client.Kernel@dell.com,
 	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH 03/18] ACPI: platform_profile: Replace *class_dev member with class_dev
-Date: Thu,  9 Jan 2025 10:06:16 -0500
-Message-ID: <20250109150731.110799-4-kuurtb@gmail.com>
+Subject: [PATCH 04/18] ACPI: platform_profile: Let drivers set drvdata to the class device
+Date: Thu,  9 Jan 2025 10:06:17 -0500
+Message-ID: <20250109150731.110799-5-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250109150731.110799-1-kuurtb@gmail.com>
 References: <20250109150731.110799-1-kuurtb@gmail.com>
@@ -114,158 +113,210 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Instead of holding a reference to the class device, embed it the
-platform_profile_handler. This involves manually creating and
-registering the device and replacing dev_get_drvdata() with the newly
-created to_pprof_handler() macro.
+Add *drvdata to platform_profile_register() signature and assign it to
+the class device.
 
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/acpi/platform_profile.c  | 36 +++++++++++++++++---------------
- include/linux/platform_profile.h |  3 ++-
- 2 files changed, 21 insertions(+), 18 deletions(-)
+ drivers/acpi/platform_profile.c                     | 7 ++++---
+ drivers/platform/surface/surface_platform_profile.c | 2 +-
+ drivers/platform/x86/acer-wmi.c                     | 2 +-
+ drivers/platform/x86/amd/pmf/sps.c                  | 2 +-
+ drivers/platform/x86/asus-wmi.c                     | 2 +-
+ drivers/platform/x86/dell/alienware-wmi.c           | 2 +-
+ drivers/platform/x86/dell/dell-pc.c                 | 2 +-
+ drivers/platform/x86/hp/hp-wmi.c                    | 2 +-
+ drivers/platform/x86/ideapad-laptop.c               | 2 +-
+ drivers/platform/x86/inspur_platform_profile.c      | 2 +-
+ drivers/platform/x86/thinkpad_acpi.c                | 2 +-
+ include/linux/platform_profile.h                    | 4 ++--
+ 12 files changed, 16 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 9cb82173947c..3cbde8dfed0b 100644
+index 3cbde8dfed0b..5a867b912964 100644
 --- a/drivers/acpi/platform_profile.c
 +++ b/drivers/acpi/platform_profile.c
-@@ -10,6 +10,8 @@
- #include <linux/platform_profile.h>
- #include <linux/sysfs.h>
- 
-+#define to_pprof_handler(d)	(container_of(d, struct platform_profile_handler, class_dev))
-+
- static DEFINE_MUTEX(profile_lock);
- 
- static const char * const profile_names[] = {
-@@ -60,7 +62,7 @@ static int _store_class_profile(struct device *dev, void *data)
- 	int *bit = (int *)data;
- 
- 	lockdep_assert_held(&profile_lock);
--	handler = dev_get_drvdata(dev);
-+	handler = to_pprof_handler(dev);
- 	if (!test_bit(*bit, handler->choices))
- 		return -EOPNOTSUPP;
- 
-@@ -76,11 +78,11 @@ static int _store_class_profile(struct device *dev, void *data)
-  */
- static int _notify_class_profile(struct device *dev, void *data)
- {
--	struct platform_profile_handler *handler = dev_get_drvdata(dev);
-+	struct platform_profile_handler *handler = to_pprof_handler(dev);
- 
- 	lockdep_assert_held(&profile_lock);
--	sysfs_notify(&handler->class_dev->kobj, NULL, "profile");
--	kobject_uevent(&handler->class_dev->kobj, KOBJ_CHANGE);
-+	sysfs_notify(&handler->class_dev.kobj, NULL, "profile");
-+	kobject_uevent(&handler->class_dev.kobj, KOBJ_CHANGE);
- 
- 	return 0;
+@@ -461,7 +461,7 @@ int platform_profile_cycle(void)
  }
-@@ -100,7 +102,7 @@ static int get_class_profile(struct device *dev,
+ EXPORT_SYMBOL_GPL(platform_profile_cycle);
+ 
+-int platform_profile_register(struct platform_profile_handler *pprof)
++int platform_profile_register(struct platform_profile_handler *pprof, void *drvdata)
+ {
  	int err;
  
- 	lockdep_assert_held(&profile_lock);
--	handler = dev_get_drvdata(dev);
-+	handler = to_pprof_handler(dev);
- 	err = handler->ops->profile_get(handler, &val);
- 	if (err) {
- 		pr_err("Failed to get profile for handler %s\n", handler->name);
-@@ -124,7 +126,7 @@ static int get_class_profile(struct device *dev,
-  */
- static ssize_t name_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
--	struct platform_profile_handler *handler = dev_get_drvdata(dev);
-+	struct platform_profile_handler *handler = to_pprof_handler(dev);
+@@ -490,6 +490,7 @@ int platform_profile_register(struct platform_profile_handler *pprof)
  
- 	return sysfs_emit(buf, "%s\n", handler->name);
+ 	pprof->class_dev.class = &platform_profile_class;
+ 	pprof->class_dev.parent = pprof->dev;
++	dev_set_drvdata(&pprof->class_dev, drvdata);
+ 	dev_set_name(&pprof->class_dev, "platform-profile-%d", pprof->minor);
+ 	err = device_register(&pprof->class_dev);
+ 	if (err)
+@@ -537,7 +538,7 @@ static void devm_platform_profile_release(struct device *dev, void *res)
+ 	platform_profile_remove(*pprof);
  }
-@@ -142,7 +144,7 @@ static ssize_t choices_show(struct device *dev,
- 			    struct device_attribute *attr,
- 			    char *buf)
+ 
+-int devm_platform_profile_register(struct platform_profile_handler *pprof)
++int devm_platform_profile_register(struct platform_profile_handler *pprof, void *drvdata)
  {
--	struct platform_profile_handler *handler = dev_get_drvdata(dev);
-+	struct platform_profile_handler *handler = to_pprof_handler(dev);
+ 	struct platform_profile_handler **dr;
+ 	int ret;
+@@ -546,7 +547,7 @@ int devm_platform_profile_register(struct platform_profile_handler *pprof)
+ 	if (!dr)
+ 		return -ENOMEM;
  
- 	return _commmon_choices_show(handler->choices, buf);
+-	ret = platform_profile_register(pprof);
++	ret = platform_profile_register(pprof, drvdata);
+ 	if (ret) {
+ 		devres_free(dr);
+ 		return ret;
+diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
+index b69fcc4c3858..00a1178e552f 100644
+--- a/drivers/platform/surface/surface_platform_profile.c
++++ b/drivers/platform/surface/surface_platform_profile.c
+@@ -234,7 +234,7 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
+ 
+ 	tpd->has_fan = device_property_read_bool(&sdev->dev, "has_fan");
+ 
+-	return platform_profile_register(&tpd->handler);
++	return platform_profile_register(&tpd->handler, NULL);
  }
-@@ -229,7 +231,7 @@ static int _aggregate_choices(struct device *dev, void *data)
- 	unsigned long *aggregate = data;
  
- 	lockdep_assert_held(&profile_lock);
--	handler = dev_get_drvdata(dev);
-+	handler = to_pprof_handler(dev);
- 	if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
- 		bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
- 	else
-@@ -410,7 +412,7 @@ static const struct attribute_group platform_profile_group = {
- void platform_profile_notify(struct platform_profile_handler *pprof)
- {
- 	scoped_cond_guard(mutex_intr, return, &profile_lock) {
--		_notify_class_profile(pprof->class_dev, NULL);
-+		_notify_class_profile(&pprof->class_dev, NULL);
- 	}
- 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+ static void surface_platform_profile_remove(struct ssam_device *sdev)
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 1fa0cd69da8c..585d54d8d80c 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -1928,7 +1928,7 @@ static int acer_platform_profile_setup(struct platform_device *device)
+ 		platform_profile_handler.ops =
+ 			&acer_predator_v4_platform_profile_ops;
+ 
+-		err = platform_profile_register(&platform_profile_handler);
++		err = platform_profile_register(&platform_profile_handler, NULL);
+ 		if (err)
+ 			return err;
+ 
+diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
+index 37316bc3e071..8e75ebd25e21 100644
+--- a/drivers/platform/x86/amd/pmf/sps.c
++++ b/drivers/platform/x86/amd/pmf/sps.c
+@@ -425,7 +425,7 @@ int amd_pmf_init_sps(struct amd_pmf_dev *dev)
+ 	dev->pprof.ops = &amd_pmf_profile_ops;
+ 
+ 	/* Create platform_profile structure and register */
+-	err = platform_profile_register(&dev->pprof);
++	err = platform_profile_register(&dev->pprof, NULL);
+ 	if (err)
+ 		dev_err(dev->dev, "Failed to register SPS support, this is most likely an SBIOS bug: %d\n",
+ 			err);
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 3e94986078a6..248490571e8c 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -3895,7 +3895,7 @@ static int platform_profile_setup(struct asus_wmi *asus)
+ 	asus->platform_profile_handler.dev = dev;
+ 	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+ 
+-	err = platform_profile_register(&asus->platform_profile_handler);
++	err = platform_profile_register(&asus->platform_profile_handler, NULL);
+ 	if (err == -EEXIST) {
+ 		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
+ 		return 0;
+diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
+index 386b22e9c922..a8961de004ab 100644
+--- a/drivers/platform/x86/dell/alienware-wmi.c
++++ b/drivers/platform/x86/dell/alienware-wmi.c
+@@ -1169,7 +1169,7 @@ static int create_thermal_profile(struct platform_device *platform_device)
+ 	pp_handler.dev = &platform_device->dev;
+ 	pp_handler.ops = &awcc_platform_profile_ops;
+ 
+-	return devm_platform_profile_register(&pp_handler);
++	return devm_platform_profile_register(&pp_handler, NULL);
  }
-@@ -485,13 +487,13 @@ int platform_profile_register(struct platform_profile_handler *pprof)
- 	pprof->minor = ida_alloc(&platform_profile_ida, GFP_KERNEL);
- 	if (pprof->minor < 0)
- 		return pprof->minor;
--	pprof->class_dev = device_create(&platform_profile_class, pprof->dev,
--					 MKDEV(0, 0), pprof, "platform-profile-%d",
--					 pprof->minor);
--	if (IS_ERR(pprof->class_dev)) {
--		err = PTR_ERR(pprof->class_dev);
-+
-+	pprof->class_dev.class = &platform_profile_class;
-+	pprof->class_dev.parent = pprof->dev;
-+	dev_set_name(&pprof->class_dev, "platform-profile-%d", pprof->minor);
-+	err = device_register(&pprof->class_dev);
-+	if (err)
- 		goto cleanup_ida;
--	}
  
- 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+ static int __init alienware_wmi_init(void)
+diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/dell/dell-pc.c
+index ba366c28d9a6..1b6e60a63491 100644
+--- a/drivers/platform/x86/dell/dell-pc.c
++++ b/drivers/platform/x86/dell/dell-pc.c
+@@ -281,7 +281,7 @@ static int thermal_init(void)
+ 	thermal_handler->ops = &dell_pc_platform_profile_ops;
  
-@@ -502,7 +504,7 @@ int platform_profile_register(struct platform_profile_handler *pprof)
- 	return 0;
+ 	/* Clean up if failed */
+-	ret = platform_profile_register(thermal_handler);
++	ret = platform_profile_register(thermal_handler, NULL);
+ 	if (ret)
+ 		goto cleanup_thermal_handler;
  
- cleanup_cur:
--	device_unregister(pprof->class_dev);
-+	device_unregister(&pprof->class_dev);
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 3c2d4549eb7f..2cf1da00d5f9 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -1652,7 +1652,7 @@ static int thermal_profile_setup(struct platform_device *device)
+ 	platform_profile_handler.name = "hp-wmi";
+ 	platform_profile_handler.dev = &device->dev;
  
- cleanup_ida:
- 	ida_free(&platform_profile_ida, pprof->minor);
-@@ -517,7 +519,7 @@ int platform_profile_remove(struct platform_profile_handler *pprof)
- 	guard(mutex)(&profile_lock);
+-	err = platform_profile_register(&platform_profile_handler);
++	err = platform_profile_register(&platform_profile_handler, NULL);
+ 	if (err)
+ 		return err;
  
- 	id = pprof->minor;
--	device_unregister(pprof->class_dev);
-+	device_unregister(&pprof->class_dev);
- 	ida_free(&platform_profile_ida, id);
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index f5ea03763a54..43e4d9d8d595 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1123,7 +1123,7 @@ static int ideapad_dytc_profile_init(struct ideapad_private *priv)
+ 	priv->dytc->pprof.ops = &dytc_profile_ops;
  
- 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+ 	/* Create platform_profile structure and register */
+-	err = platform_profile_register(&priv->dytc->pprof);
++	err = platform_profile_register(&priv->dytc->pprof, NULL);
+ 	if (err)
+ 		goto pp_reg_failed;
+ 
+diff --git a/drivers/platform/x86/inspur_platform_profile.c b/drivers/platform/x86/inspur_platform_profile.c
+index 8fa9308d4686..43cb2a927fdf 100644
+--- a/drivers/platform/x86/inspur_platform_profile.c
++++ b/drivers/platform/x86/inspur_platform_profile.c
+@@ -196,7 +196,7 @@ static int inspur_wmi_probe(struct wmi_device *wdev, const void *context)
+ 	priv->handler.dev = &wdev->dev;
+ 	priv->handler.ops = &inspur_platform_profile_ops;
+ 
+-	return platform_profile_register(&priv->handler);
++	return platform_profile_register(&priv->handler, NULL);
+ }
+ 
+ static void inspur_wmi_remove(struct wmi_device *wdev)
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index a35453c3c605..a72790cc5e0e 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10649,7 +10649,7 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+ 
+ 	dytc_profile.dev = &tpacpi_pdev->dev;
+ 	/* Create platform_profile structure and register */
+-	err = platform_profile_register(&dytc_profile);
++	err = platform_profile_register(&dytc_profile, NULL);
+ 	/*
+ 	 * If for some reason platform_profiles aren't enabled
+ 	 * don't quit terminally.
 diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-index 972a62be60b2..f549067539af 100644
+index f549067539af..cadbd3168d84 100644
 --- a/include/linux/platform_profile.h
 +++ b/include/linux/platform_profile.h
-@@ -9,6 +9,7 @@
- #ifndef _PLATFORM_PROFILE_H_
- #define _PLATFORM_PROFILE_H_
- 
-+#include <linux/device.h>
- #include <linux/bitops.h>
- 
- /*
-@@ -40,7 +41,7 @@ struct platform_profile_ops {
- struct platform_profile_handler {
- 	const char *name;
- 	struct device *dev;
--	struct device *class_dev;
-+	struct device class_dev;
- 	int minor;
- 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -47,9 +47,9 @@ struct platform_profile_handler {
  	const struct platform_profile_ops *ops;
+ };
+ 
+-int platform_profile_register(struct platform_profile_handler *pprof);
++int platform_profile_register(struct platform_profile_handler *pprof, void *drvdata);
+ int platform_profile_remove(struct platform_profile_handler *pprof);
+-int devm_platform_profile_register(struct platform_profile_handler *pprof);
++int devm_platform_profile_register(struct platform_profile_handler *pprof, void *drvdata);
+ int platform_profile_cycle(void);
+ void platform_profile_notify(struct platform_profile_handler *pprof);
+ 
 -- 
 2.47.1
 
