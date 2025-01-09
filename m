@@ -1,65 +1,66 @@
-Return-Path: <linux-acpi+bounces-10482-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10483-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D85A07DD3
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 17:39:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2EEA07DD6
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 17:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0767160CB6
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:39:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ECD93A1BFE
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Jan 2025 16:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91EF221DB3;
-	Thu,  9 Jan 2025 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C91221DBD;
+	Thu,  9 Jan 2025 16:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="O5KUT+4x"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Xxy555cg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2058.outbound.protection.outlook.com [40.107.244.58])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FBD190472;
-	Thu,  9 Jan 2025 16:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F03F221DA3;
+	Thu,  9 Jan 2025 16:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736440779; cv=fail; b=WwO16KyBs9flj0tuBZb3FU/clJe6ulpaOTH3oD0hUF//F8b9qS9v0o2autcqz/hYsEleQwSsU64AoV4NVioYZNhyFm0FqKaXPEn1Vft4o6cRouU12ZDZWyNntT1UZAFb9HEfvucm25H9xbDyujl1xVpM6NKoAy9uw7K7CFx5kFc=
+	t=1736440837; cv=fail; b=UzyJBogT/auRPq0enlxSeFTFu8mJmk9sqPADHtdN3H7Tgw0ByGjbDHI+zKcca+1haxetf+8J8Iju5VUpw9nauQZIY1kqYiaAhVkJFTCMo//L2hntQekh2VfecKzxb9dnAH+qEXmtq6iUXxoIRASevGNLhLh/xS2jA+jcdjgoTXQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736440779; c=relaxed/simple;
-	bh=CAh1yQ8g/RaEUTIUyJHBgN3flWPWWe4DHX7c9ibw0GY=;
+	s=arc-20240116; t=1736440837; c=relaxed/simple;
+	bh=SFxj8sgrnZWmCXCurUTSkeE6OqKljc2F0H2G0daXd9o=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ph04CCD4px++gRKKUm4GbpiQLd4+Zi8MWEVt1N2tW0saerXz6LWCExN8W8bubkj3Fz/QtvCvx2Tuv8qZhhvLjMJgV4Cnyop3xErivtRTrpDJ3m/pv48kb7y1fwnRkqz2G822etJMdrRo81WZuXLfVIC5nbZIRpWXXwZauwurLMs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=O5KUT+4x; arc=fail smtp.client-ip=40.107.244.58
+	 Content-Type:MIME-Version; b=JRIRLWa3Q9AIyu3qIKn8gXbDmovhPGgo5Kk0GKqKNZCX/ibNwmuP6Gs7Upht/C6OdYQN3VXB+RrV4WJH5mYL000GBxT2tBlxGWluC0srE2MtnGwUKy6OLDmUyTkNBbhzJiG1lY2EoosUQ/LmFrF2ZpaP6pkqGx7ShU5PGweXlnQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Xxy555cg; arc=fail smtp.client-ip=40.107.237.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U2cWE16qdXK6dn2rNnyIZwBl22OGUHeG6keSzKAmXKhkSNPveTjRBvBTxW2AyaE5mVRHoCcfqkvzKldh/GB7gaHtBD0vgL+Lo+NoauwmlIobYQrxP8/Z0NTGvfdQhegrGCI6Zu05f0sww/frIDtAcAD7Xg5eo5Ac2uGYnTU40QtXgvU2XRKT4fkijyjFXn5gHYx4nzFy8sR80LPj4gzdGjrRJGibiJK1CyvZqNTu33B4xBOHtKKGEpu3XvzF4Av9extSDtWMtWvUcNeQOF3xdrliIsWO43f76pnFzGRRtWp7VgH2IdtTgrEnOWJtt6DAymFCUDTy50sxYXlI34bOig==
+ b=LNpT86dTNjJySPBZc6pMpYpNJof08YOpD32VUmpHXVUBotmQgYQFxRVQwXXXt3ApsiKBz8FeDuso8zKlgo/fgZZBWwo+Wr1A1pIElsKxXKiVJjftLQiVpQd2lm1WpXVInaVUo2YFhX9+dq/yQL/wHaRXTC0LDso+doXEXMnb7++ubTwEX0TnnO0N7dvoDuCRCLWbA5NRZti/i8raqXO2ZCkPvVMqVrx9uaQG4TC6mNcZMtWuCcrgdDICX8FhfS043WWVfSBosaS97TjBWU8VK/o+vbU4BrKVnTAowDKVFvgywR4pggsvqVbwVVyFobHR7MVAtyeLNp2ilA+ueWfH9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NC4WvP1GMxkGknZTclMVT0XFCr/2d+CYw9JozrvB5kw=;
- b=rFcqt0MohogFST/TkScPrHwRND+sCmBj/xKHx0nBVOA3Y9+IpLA8uJFM9HmUb7uJ/NMhmZniVljTovVMGKsbME2mFyr5WOQtQ0oLiUCiTnPQ9EylB2frnv6ngUzD0nLAXPb2qeqsu7x8IF1duqEPl1ltPkOLvteHADhE5k0imX0e8vmdmpohnbzMocDnFAmcfXHDWmvl/VNFHOz9Z7gQAxb9w6prXWxjxER92fYYfmLeW0j0QMKkSo/aGowAytz99cZwYeuzNpPPThZfpImI8/2tJCz3MO+wIpjPXx2QQ3XKz6kQbQSbsKBidFL7IUNB9taJkfHxiz5SV8WOGirI2A==
+ bh=T+YXiCpHnq7+hj8gKsFH+KQNxLPvzktKranJKkK0KaI=;
+ b=q5/ALPWod7AOcJhl22uv+uxrCmngIodsRlvrzu1YtCUIvQ8ur43r/JuoH1lgfvnDeoWCOZglUzozZZBKuuU7oFj7pMXoCr0zsIpMVGJJJ4BgHfIGsPDCa9i7D1F73C+Ixm7XSkt4P62QRSr2AZZFnnXJLX0zhRDPiFkGEBy1p4eqGTywj6H5Ik9hxnKHgiNf2cXilg2E8/b/oUCh5ytOMM7w0W3ESLjJxWIYo/QX7vyFvc6DIbTwDlXbRxWNpx5unQYySD24XhMvOMbaJGPCbHJnLKP0zgT7ftqaqeGeoEQRy50lLt2FSabCPoYpNee8kUmylTOM4/TMRGUbmFsw+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NC4WvP1GMxkGknZTclMVT0XFCr/2d+CYw9JozrvB5kw=;
- b=O5KUT+4xCa1bx/r46wu55C56hZuuXtTe1/lQqzK6qghhmBtrQlSodKRUi/5OwYE4Rj/O0T4nzWE4w/o9DKKwB0b4Lk8ZC1+mVm3Tc1OQv0bud83JF2c4bStm6bggWuuMvZZLvtYMJuWxl+nQDI41iHzp3z32CFdq/QW9SV7g7r0=
+ bh=T+YXiCpHnq7+hj8gKsFH+KQNxLPvzktKranJKkK0KaI=;
+ b=Xxy555cgmhw81vGqwH4OoG56O57GuvP39bpZbFutE4Ti9fHi02Q3idP6nzEBdowisRlcz0waxoeD2i96ygo715DEhlVuIpdWPQxA+ds8wfpvllaZVC9VgTK2cpGiPM7p5Kpt6perEApOuRVlVkhNYQhEduSlxYpyXspqxsSMkCk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
  by MN0PR12MB5906.namprd12.prod.outlook.com (2603:10b6:208:37a::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Thu, 9 Jan
- 2025 16:39:35 +0000
+ 2025 16:40:33 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8335.012; Thu, 9 Jan 2025
- 16:39:35 +0000
-Message-ID: <a81ef96a-e436-44ef-9ae1-e19d55c57438@amd.com>
-Date: Thu, 9 Jan 2025 10:39:40 -0600
+ 16:40:33 +0000
+Message-ID: <cf174e21-c9f1-4891-8c4b-b76a4e45e367@amd.com>
+Date: Thu, 9 Jan 2025 10:40:37 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/18] ACPI: platform_profile: Add documentation
+Subject: Re: [PATCH 16/18] ACPI: platform_profile: Move
+ platform_profile_handler
 To: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -80,13 +81,13 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com,
  ibm-acpi-devel@lists.sourceforge.net
 References: <20250109150731.110799-1-kuurtb@gmail.com>
- <20250109150731.110799-19-kuurtb@gmail.com>
+ <20250109150731.110799-17-kuurtb@gmail.com>
 Content-Language: en-US
 From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20250109150731.110799-19-kuurtb@gmail.com>
+In-Reply-To: <20250109150731.110799-17-kuurtb@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR01CA0004.prod.exchangelabs.com (2603:10b6:805:b6::17)
+X-ClientProxiedBy: SN6PR01CA0024.prod.exchangelabs.com (2603:10b6:805:b6::37)
  To MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -96,228 +97,154 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MN0PR12MB5906:EE_
-X-MS-Office365-Filtering-Correlation-Id: 770e794f-f00b-4bbe-95af-08dd30cc339e
+X-MS-Office365-Filtering-Correlation-Id: fcc35ab7-f5c7-4aaf-cc37-08dd30cc55f4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YkpaT3RWZGhFWHdaaVFSMTNJejF6M0RoNTB3WHVDdCtNMTkxWlMrbGltU09N?=
- =?utf-8?B?R1FrME5qN0FTM2tzRVhsNm9Lb2RsbTJEL3dkUy9uZUlxTnZIL2hEY2RPQnBH?=
- =?utf-8?B?UTMyRUNKVFM0cXVRRzlnTjk5ZTJqRVdJWmw3WGduK1kwdE5uS2FnWVZJTUsw?=
- =?utf-8?B?YzZiRTF5OHNtQVlvYnFsQ0plVVdkemdvbzA5MGkxaTB3aUd4TUtmaXJQRitV?=
- =?utf-8?B?V1RDODhBRFpFMndjNEw3eENEUGJnVTY1RkwyYWxSWTIwc1ZmYW9ZcTRnbTFq?=
- =?utf-8?B?ZGtVRHBFeGc2d05SQ1VURTBEaWJGU21Jeld2Nm1YMmJ1MkNmOWxVK2VWelNh?=
- =?utf-8?B?czE0R29rRGROU2lvc1EwT1RTemhiU3JMbUdDTXJPOS8rMXVueE5EK0tucFQ1?=
- =?utf-8?B?SVhpWHlvQ0k2ODI5ZllPMnpTWXVWeGpjN0FnR08rZG5LUWs1aWRPNnB6NVlT?=
- =?utf-8?B?UFhRYUNzMElyVVNPT0xaTU9qNnppK2RBc0RYNFZTSk5ic1VaUFgrYjlQcHA0?=
- =?utf-8?B?V3ZPUlZlT1IvVm9RWEtJaWpHMTVzOEpwbE1JdFR6RWVBTjZDdU9UZHdzVGhH?=
- =?utf-8?B?OXJldndFRXc5dFVCN2RseUJLZTZOM3dORERGMmhxTHdqWnBuTW5UaHYwVjFU?=
- =?utf-8?B?U0M5V0RhV2xuU0kvS1JtZy9yOSs0eGtYTVlJajdQQlMxSHpwNE5MUXdHTWZH?=
- =?utf-8?B?MEg3UFRxVDVnMWE0dE0wNENjaE9HSkEyRGpBSXgwQ1ZBYklIenQ3N055Qlpn?=
- =?utf-8?B?QnErZDRzTjlJVi9WU1lVVnlmeXZUc0RmR0llZTJDUTlCMnBpWnZxV2QxNDJx?=
- =?utf-8?B?dHhPMnJYVVBHVUZ5TjNRNm9ob2YzUm1ST1NKQkpxMjNsb3BFSnFOWTBvZlBu?=
- =?utf-8?B?NE1GTm1qUnFPMlNoS2NaOUJDMDJ5ZVJ4VWxjcG9hNlpnKzNrajA3b2VPQkth?=
- =?utf-8?B?UGZmZ3l0aWxDc0NrZ01sVXRUMXpOelhkdFg5d1pESzVxZkxacTN4MzVFQjdk?=
- =?utf-8?B?RSt5OWFzRG9IQ2xKKzdkSXZBZUUwUFQ2NGJUdjhqeUVHZXROcURpaFdUOFZm?=
- =?utf-8?B?VGZCVzdTMGczcUx1OG5XN2hIZkl6N2RZNnNsY05RNktOTWtYUGpEV3Q4QjFN?=
- =?utf-8?B?U0daa1JYZHh4clZaVnZtUUs5VzQyMERzZytvZDZiVjYwbjlsTUZGVm9IdW03?=
- =?utf-8?B?YndDQk04NVV2aGprNHRIdmxjYjBDUkVadXVFcVMzVmFnNmxrcU1qbGhGem1Y?=
- =?utf-8?B?b1Vqc1VQaUFPYUFRcU9UWVFObWcycGVJZkJidlppWnlCekFuSDdSRUFVc292?=
- =?utf-8?B?K1JaWk9XQnFuKzA0WmtkUVZ1bU1tYjVMR01FRkkxSDFZc2NUeVR1SzJDN3hP?=
- =?utf-8?B?MWM5VysrU0lBTFhEc212WXUvMDJmOElzR3czUG5xWlZHZ1NPN2laenRuWUtV?=
- =?utf-8?B?MzZjcjJaY3A0cTRpcWYvYURkSWJiWWlFeWVmdVNCRkNoeWFCNFZpMm5zd01x?=
- =?utf-8?B?TWY3SEdTU1FWYmFXdkdjamY2ckRhemo3aXNmM3dtWXkzVVByY2JxV2RKMVFW?=
- =?utf-8?B?emlyb09BYnF6alg3K2VxWUV3dUR4LzBOdmdhdzNybWRaeXgvOUEzd1V1L0dm?=
- =?utf-8?B?ZFVxR2V4dFM4VFNUNGJrOXZuT1BMa0QvUU8xNW5ZV1ZCdlRBK1Q4ZXhVd3R4?=
- =?utf-8?B?ZUowTW5YZHVTaTJtY3E0MlJ6ZzFxa2lGZkJMdlVKZTlVQnNoTXlYTTBFM3kv?=
- =?utf-8?B?ZmFPM2I0TVVlaDQ5ZzFTQXVLQ29vZ3dTS1VKV01pckFXL2xnYTB1Vlpad2Vw?=
- =?utf-8?B?ekltM1E1aWFCVHNCMmw0MG9IY1VMTVpvWTJWeTlLUEVWd2x1VVVUZFZaT29J?=
- =?utf-8?Q?F3mFwrCP49f8z?=
+	=?utf-8?B?VTBkeDAxU1VYeXVDUUhaSWdGQ0tJTUtMRGlPN21ZVHc4SGNIa3YwU25uYTYr?=
+ =?utf-8?B?cWp5bFNhMDRlaTAzWWxuemc2MzZNdmRucTNJMXFKWFoyODFFMlNGaVdGL0k1?=
+ =?utf-8?B?VFJBN2ZpZEpwSHZWN2U3SE00NkcrbFZrcDloN3pQOGhiRzdPRzhBOHV3Vm9D?=
+ =?utf-8?B?K3loK20rN3JRWHMreDlFY3Q0WVJ1ei9ISDZTeTc5TnI1dDdQc2FIRjhmOUhT?=
+ =?utf-8?B?ZlVhR0drZmM4L1k4TG8yenpYNDBzalRmOXlNc050QXNBV0FURGRYMUUxemli?=
+ =?utf-8?B?bDhqRStxcVlJTXB4Y2tmKzVEZUUyN0x2eUxxc2NNaXJ0a091SnlZeURZVVh6?=
+ =?utf-8?B?Uk40NGVITDhqaUZVUFhQaFdjT0RRTDlTcDN2a3IzOGUyd041NVB3N2paTEZL?=
+ =?utf-8?B?MlF2UUtIRTc2Nno4RU1MeGZtUGJPSlptZTlmWXVCSk9FT2F5M3FNSkM1akhV?=
+ =?utf-8?B?anErMEtOQVZnZjJJZHVQRUdBaThXeG9iQmlpZ0pwaU9JbUttUFJ2cGdXTWsv?=
+ =?utf-8?B?Vkl3bGlTTWpzYnZ1SDJvRjV4U0ZsY3lIaTNuSXhpZlVLb1BHRXk0aGx1WHo3?=
+ =?utf-8?B?SXQ2c2dZam05M1VMcGhQV2Zkak1mUnoyR01TcHEyTktVakM4SVViUFRSTWVN?=
+ =?utf-8?B?R1Q0ditjYkdJZExKZktBczFoamdsdUUzRjNYU1Z0YkJvSTlCRmM1RUE3Qnh1?=
+ =?utf-8?B?NnNqK1R0dmltSVd4L3NpYkZTZlIzd0llSkhnaUFKcnc5S0dtWG1LL0pQUGJw?=
+ =?utf-8?B?SkJBMTJielI4N2EweHNNTGFIVDdkUE5LTlZLZ0R5SjZ4MEhxa2h0bW53V2h0?=
+ =?utf-8?B?cmF2RUQ4QVI2T3dTUUV0STVrejQvZkRRaFBlOGhrRW5MTS9OaTB5VHVobDFq?=
+ =?utf-8?B?YURXTFVUcFhhbmsrNlp1bHNmY0gycko4amdWM3RMdjFnYWhLRWkzSzZBcVN5?=
+ =?utf-8?B?Y3ZJMTBuZjZMVExaRnc2dTB1cVJmeEo0djRtRmlCaDcvMjcyeHB5dmFtdWlS?=
+ =?utf-8?B?UmlKS3Y4bWVuQnJraEhaY0czc3VWcDk1VEFmaDBWWmc3VCtqS2x1eVZsMzVQ?=
+ =?utf-8?B?VG1WUDRpeDdYelRBczFsbnNHZlB6VFBXNTZCbFJmR1JBTTVKUmJ6R3laT1cy?=
+ =?utf-8?B?OWlzL1RoYllUaTNtM2lwZkhQV1hvamkzQ25FK0RDeXEzL2hoTDBFazJzcFNB?=
+ =?utf-8?B?czN5QVlJaXJlNWdjS0dQdHZsNmxUbVFCRDE0aktpQkFySUNGcjcyODR3dDBi?=
+ =?utf-8?B?TDVTTlRMaHZNcHFZK2NkTUhkYmlhdGhCMWhxMExHcXNLWWRLcHMwdWFFZjEw?=
+ =?utf-8?B?QXFBRlVLQ1BKTmsvSm5JODB1RmUvNlZxcWVYUFZYQUJYRHlna3hnWUZrdi93?=
+ =?utf-8?B?VWhZVUxlQWR0YkxRb1lMbkJFR0thQ21ISjZZOU9keStDT25JemR0UUJqeGIv?=
+ =?utf-8?B?Q3pmTENXaGgwRDJDM1M5ZnREMHdxcFlHejE2TXZQZGhBN2p5eG55dGx5WVZn?=
+ =?utf-8?B?UFc2cmk3UndjQVBnUGxmcU95c2doQkFuckRUUk50OHI4U2IxOFNSVUhIR1dV?=
+ =?utf-8?B?MDlLcytndmFmU0lEMXQxdHVNRzRHQVB4NkVUY3BQT3Yra2NpT0VZQ21DeVIx?=
+ =?utf-8?B?SEp2WW50amlhRUJmYWNSSDBwc1ZWQXVmdk90ejNoYk9nQ1J4T1JydFN1c28x?=
+ =?utf-8?B?cmlyOWFSU3ZqRGJmWGJIdmtEekdtVEY5K3cwRU8yZUpPNWlMcGxYd2lmZFFM?=
+ =?utf-8?B?QytwMWU4MXlSYjl2cXBOR1VmWVNwVW0wdDlEZ094T0dmajIreHdtNkZzbzY0?=
+ =?utf-8?B?TG1yRHBreVhrcmpFK0lDN0lGYlFUbVpPWml3N0F6ZUdsQzJjRXNaUHhGNjdp?=
+ =?utf-8?Q?Jhb3VX8znmexi?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dXJOU1ZpTjJ0Tm9hcmxmakhzeUhTcFNZSUdJYU9jemw0aW4xcGpJbHl2TmxL?=
- =?utf-8?B?blRjT3p1TUZteUo5RUF6azVhTFJQaUJMMldmdFV3UFZjM0pkNHJ4MzhKWGFL?=
- =?utf-8?B?U2VCbUI5NUZnYzNXdGNMTm9WclhtQitSYVdtSm52YVNsV1B3K2FGZzdhMVBS?=
- =?utf-8?B?TWRKTnZWaFJaNlg4UnU2bEdsV1phYUVYa0xNNGRJZDZVYjd2bUtVd2FPaU9q?=
- =?utf-8?B?dWVUaStRcW56ZFlUMkRoMWYxUVJEVnhDRWFGalZJL0l2clRlVDF5VjFMWjNX?=
- =?utf-8?B?ajQwNmpRb0VCdDlkQ0lkYXAwV3d3WjR4eHVjRlE1cUo5YitzbytyMkw3UDBz?=
- =?utf-8?B?d1pQc0M3bkNXdzNDdE5PM1lvUlNUTlArQzU4OXg4emlDbkpNZzRKWHVwYXBT?=
- =?utf-8?B?YSt1blNPdzlTV1pLVjg2S2c0VnpsWE81VnVWYlgxVlVFNVgzUmplbjVyTjN6?=
- =?utf-8?B?OFJjQ256b29sUFVySkt1MUtjSlRZM2JyTkZ2bUNHUGc2eXNjU2ZIQlBGK1ly?=
- =?utf-8?B?RE1UdGhTcnFLcXlIRU1NS1B2RE42M1lqZE9uMUNpODJuaFhZWm1WbERidjdB?=
- =?utf-8?B?aStFTTJRbVU4RHdtdGs4VndTLzIva1hEbkhieDVsNVRTSXBWNGxSR3pXYUo3?=
- =?utf-8?B?VnNzNmsxNyt5WHp6MGRwVGV1ZGs0eHlQdHEwVmkxa3orWDlZUGJVcjl0MFAw?=
- =?utf-8?B?MnIwUGJnSkVIMGY5U3ZlM2NiVkxxSEx2UUdlSGErRVUvNU1aNk1sdmtobHdr?=
- =?utf-8?B?Z1dNVTczMWJYektYbjlFdVQzWWdzNE9rbkJMMHhub0YwZkZud1R3UnZVcnZY?=
- =?utf-8?B?TlNDd25obThuY3YzUFlsMFYvNk9uS3VINUdOZUtmbXJla1ZRampsczhxV1Bm?=
- =?utf-8?B?b1FvWWRtZGUwK2RtaXhsc2N2ZGtwa2FJS0l2eVk2TU5ya0FRZHpadzB4R2Rw?=
- =?utf-8?B?cVBpRXRNQ3NqRVhWQ095a1NkTkZNRVZ4N1hWRHZIbk5QcVpIYTYzb254MTQw?=
- =?utf-8?B?ZVU3MG43b2JPS2hOWEtXMXZBMHVxZE5iRytFTmRWa0lTY1A3c00ycHJDTm5j?=
- =?utf-8?B?QktUd0UwU01HYW9IQU1qZ1Iyb1RVcTBJTUpoZW14T2NYYlBzWDNGU3ZVZFVS?=
- =?utf-8?B?cWFLeG1Ua05RUGtsWVQ2QkFoSTVxRWNNa1lqYXkyazYwQktBNWozRmJoNm5W?=
- =?utf-8?B?V2g3eHBvMFdaeFU0cWxxSEVscmwzV2xiYXVYTklQUUdlUEo5T3ROeHVwU1VL?=
- =?utf-8?B?SzNDY01qRitYUHpIcUN2VlpyTUVCd0F6WTBtMkJ6bmJwcytlNzZ4cjMrUTll?=
- =?utf-8?B?alhDRTlCYnREU2tYbndwRzVsVmNDZGdvVlhhdTJGK2Y5UjF3KzhNYWtodS83?=
- =?utf-8?B?ZFd3eTFSTmhGYUZUZ0gzMnJvRGp3M1hiMWNnY3gweDFzRE1IU0k3UWNicWdD?=
- =?utf-8?B?NDJGVnQxUHpPVVFXMEVsZk16Ykh4YmQrY1l5RVV1OS9paWhObmJrZ2Qva0RB?=
- =?utf-8?B?SlpXT29CWHl3WitDQnNIL3hURDZHem1MckNQc1ord3JwSjBsajNqRm5NQnUz?=
- =?utf-8?B?UUQwOHpjS0kxZkFmWStQU1JidXVtNExjNmtEeC8wOGZpL2RDT1dkOTQxVE1w?=
- =?utf-8?B?M2Y0YUp4MUsrNzVxU0NNM0JQejFvKzBCaTFmRXByY0Y3a012Mm9KVmtLdmly?=
- =?utf-8?B?ZFFtVjFOOUx1alJ4dVBCL3p3bndqbGU3WnE5UkFXdDdwMU5uZ0xlL3ltN2l4?=
- =?utf-8?B?M1ByY1J5U1FLS3NXSlRXVDdPejRDNFBaQVRNa2JEZVhodC9Fd2I4UWZWZzdq?=
- =?utf-8?B?bU9xMU5qNTF6TXFUcjFNeTFqdlF5cmhKcU1ReW8rbU5xMXlkUHJxZjFKVE1Y?=
- =?utf-8?B?TGt5Vk1nK05KbHRaMkF1TDBhZEFvNWw1Z0FvQ1JWSFdHOG9CaVdMWjBueHJv?=
- =?utf-8?B?bys2RVV3UkdjSmJzTkszR0dzQVBkcE5GVnVVTTlwUlBEWWh6RkhadHZEMHdw?=
- =?utf-8?B?QlhINDFIK0FDUENRL01odG1HVFp4eHpUUk0xOHdMNmpWQUNyMnFCUm9SenBI?=
- =?utf-8?B?NFppaVBxdmxqbFRaV2pXQ0tHckR2YWgwbGI3YTJyL05NeTdTNU43enRyOXJa?=
- =?utf-8?Q?+MRUPcLxO0cu91X6zZ5A/DA8Z?=
+	=?utf-8?B?cFlBVS9oN0FBSmc1c21GUGxkZ3IrQjg0VGxnR2kwSnV4SmFuRlRPOTVHME9s?=
+ =?utf-8?B?VGFGK0FJYzhRQ0pHK0Q3TnpOKy9PMHdUOVNnVGF6MEhLU29kcm9NcHd5bnUz?=
+ =?utf-8?B?VDZ0bnFkeWppSEFMRndVQUpHbjdXV1NUdkN2N2twWEFPKzNNRFR6cTFLSEhB?=
+ =?utf-8?B?UFV1L3MzUXp1S0krNXBoS25vREUvZEZmWmpkTjZVZFdLOTQ5OHQxMzVIeUpO?=
+ =?utf-8?B?YllIWXlCa1VCY2pId3hBR3BNTzZRN1BmdXlMalorY0NUV1JjendxbUxOZUc1?=
+ =?utf-8?B?RGdsdmxOcW40V3BSMGExemVrZEZxYjdZU205dmV3Z2cxTEFzNk9SVFhMcUly?=
+ =?utf-8?B?U01kbFZuMHBac09rUitMeDBVS1VEK1pKUUF4eWZOZmxnZ3NlZktpaEx1NnpC?=
+ =?utf-8?B?Y082VEtUdHc1Nms1dEZIalFpSzZJVVVNOC8wY0tFbjhFNFYwTUdnRUFWNmk1?=
+ =?utf-8?B?ZXVRL2hDdjBUVjRDOEtRZ1RZU0hsTXVveXBGUGlRbnFvNUxscis0WlRoUWdv?=
+ =?utf-8?B?TUk5SHhwYUlCMFhWM1JXa2tPVW9LT1RZQXFoOXFmaUgwK1Y0RGhKWk1tRTcx?=
+ =?utf-8?B?RHBkbFdCcFpvWW5SQ3hYNHNzOFJBTE04dTFXYVpYZmpjMDNGbTIyT28vN0VH?=
+ =?utf-8?B?VE5GSWZqM1IwMUlkNlZVQkFmVjlxMDZKeER1dnpNSDRVYVJ3d25QS3ZNSG9j?=
+ =?utf-8?B?bkY0QzVENWZtSXM5emM3MitDSnduWXFjV2NvTHh0ZTYySTlCQTJiWm52WnF5?=
+ =?utf-8?B?dmRqUjZxZHFoQlJxbDQvampjU1BJMjZJbEtzRmpocTcrWnNvb1VxZXBBbi8x?=
+ =?utf-8?B?QzRHeVRCUTU3NnI4OFVBd29YakRxOEluK2tiM2hoeVhtVWFJYStUb2ZuMGIv?=
+ =?utf-8?B?dGhWYVVWR3RKS3ZkVSt6YUoxbWdJd3BjTmx3Ulg0RC80dFFqRkRxb1lCN2JW?=
+ =?utf-8?B?RkZpVFErcVg1SXV4T2pYeFlQMWtrc2VlRlFsbEM3M2ZYT3hVOVE0b3pFbGh6?=
+ =?utf-8?B?U0ZYSjloVlArUGNRc1AxYmJtRkdCMzI1RUpBK1lWeW8vZGZLQzRzQjRRb1Ex?=
+ =?utf-8?B?UEdsZU5reEdEdFZyc044YkhBYnc0OElidVhndm1FNkIzRVJkaThWSVo0a09B?=
+ =?utf-8?B?Q25JdjJ1VVAyUGszRm9CS09LRXg2c0ZaM0VqSXNKcTdZNElMK0dLREVBWUl2?=
+ =?utf-8?B?MC8rQWJ1VjYwOXVnQ0hNU3JMY1FjREFZS3NnU1NKWGVyRlJPNmxsNkVIZ2hy?=
+ =?utf-8?B?R05ZYTBCSFljaWZBQzk1WnVIbEc4UDR2VDkzYlVEUmVqMlNwTTFOM0ZPZjM4?=
+ =?utf-8?B?cGZGN0NLNDFkR0ZRV3F5Zzg5L3J4V3p0eHhvK3lKYzk3NmhVZzNOSnJGTTU0?=
+ =?utf-8?B?bGQ3aUxrekJPY0VqbXFpdWdSN3ZORDVpVzNYSnk5dHA5bnVPNUV5QWZzQTBy?=
+ =?utf-8?B?ZUQremRwcDRPNEdNV0VobG1aSnhhZ05OYTZqUGJNUXQvcm5FeFM4R0xGbXlE?=
+ =?utf-8?B?M21hVTBhV0xBSW9EeE8rOGNvN3FZK0RpekpVSnBMSGNBVysvNkM4YzNOWmR4?=
+ =?utf-8?B?K040VWtCeE5jZEdBZm8wOUFxem5NWllxL1RKMnVJMEoyakdha1oyV1FoT2ly?=
+ =?utf-8?B?cVhETTlscSsyUDkzcm03U1k0dkMwL3dqNHlXUTBicTNoNEpjRWU0cndqNFBU?=
+ =?utf-8?B?S3NSbk9BdGhVS25DU1V1YzE2bll6bFRIclpvYmI1Z2xWaGdhR3IwVWlMbG5z?=
+ =?utf-8?B?WEg0cUJWYzJORU1PYnFGUkovR1UwclRmZTh4V2g0d3Q5OUhSWnVYS1JpM2hN?=
+ =?utf-8?B?UERRMUtSMkQ3cUZwYnFZRDNBU3RlaktEeHdIKysreU5KbExtS3lPWUhhSE54?=
+ =?utf-8?B?eEhTUWZQcXAwWktmbVdwSmE4SmFBbFpPOXFzcDZkR1E5QTBVN05HeUl6Rktw?=
+ =?utf-8?B?djJqRS9CMmwxdUsrOE9FNUpzNS9KdUI4V2wremRtU1VDUy9aaHlNMXJFNGwv?=
+ =?utf-8?B?WGsyZHZFWEFBRDJOMXQyaStUMERlY3NWalZWbk9qYjZ4TldDUlV5aHFGRWNU?=
+ =?utf-8?B?WGtOc1BNMC9Cd0ZjMytTMU9JYlFWQkREQm9mbXNPcDd5aUpFRmc1QmVUZWtw?=
+ =?utf-8?Q?qfh2ikPu+rlZ+pjILTIN65GQA?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 770e794f-f00b-4bbe-95af-08dd30cc339e
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcc35ab7-f5c7-4aaf-cc37-08dd30cc55f4
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 16:39:35.5258
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 16:40:33.1091
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8bCmN/CWzStIT5bXhLRgHexM7/kEMsEHVqVWSSyFzLRamO+Ry6RmSiy5oxQo/x9vW27R01a9YuiaG9mRr4aU6Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: HGXTI16wslkx9Sq25cLNCs3WqSnu3TTgUNbi28sA0ZTJo10RKrrlxOLZE3O/brNhmjxB8QTVOsd05UmVa/SBiA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5906
 
 On 1/9/2025 09:06, Kurt Borja wrote:
-> Add kerneldoc and sysfs class documentation.
+> platform_profile_handler is now an internal structure. Move it to
+> platform_profile.c.
 > 
 > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Reviewed-by: Mario Limonceillo <mario.limonciello@amd.com>
 > ---
->   .../ABI/testing/sysfs-class-platform-profile  | 44 +++++++++++++++++++
->   drivers/acpi/platform_profile.c               | 33 ++++++++++++++
->   2 files changed, 77 insertions(+)
->   create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profile
+>   drivers/acpi/platform_profile.c  |  9 +++++++++
+>   include/linux/platform_profile.h | 11 -----------
+>   2 files changed, 9 insertions(+), 11 deletions(-)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Documentation/ABI/testing/sysfs-class-platform-profile
-> new file mode 100644
-> index 000000000000..59486dc4313f
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
-> @@ -0,0 +1,44 @@
-> +What:		/sys/class/platform-profile/platform-profile-X/name
-> +Date:		January 2025
-> +Description:	Name of the class device given by the driver.
-> +
-> +		RO
-> +
-> +What:		/sys/class/platform-profile/platform-profile-X/choices
-> +Date:		January 2025
-> +Description:	This file contains a space-separated list of profiles supported for this device.
-> +
-> +		Drivers must use the following standard profile-names:
-> +
-> +		====================	========================================
-> +		low-power		Low power consumption
-> +		cool			Cooler operation
-> +		quiet			Quieter operation
-> +		balanced		Balance between low power consumption
-> +					and performance
-> +		balanced-performance	Balance between performance and low
-> +					power consumption with a slight bias
-> +					towards performance
-> +		performance		High performance operation
-> +		custom			Driver defined custom profile
-> +		====================	========================================
-> +
-> +		RO
-> +
-> +What:		/sys/class/platform-profile/platform-profile-X/profile
-> +Date:		January 2025
-> +Description:	Reading this file gives the current selected profile for this
-> +		device. Writing this file with one of the strings from
-> +		platform_profile_choices changes the profile to the new value.
-> +
-> +		This file can be monitored for changes by polling for POLLPRI,
-> +		POLLPRI will be signalled on any changes, independent of those
-signaled
-> +		changes coming from a userspace write; or coming from another
-> +		source such as e.g. a hotkey triggered profile change handled
-> +		either directly by the embedded-controller or fully handled
-> +		inside the kernel.
-> +
-> +		This file may also emit the string 'custom' to indicate
-> +		that the driver is using a driver defined custom profile.
-> +
-> +		RW
 > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index 8c79ecab8a6d..5d74675c5419 100644
+> index 8d034d928e32..c7a867bd01df 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -426,6 +426,10 @@ static const struct attribute_group platform_profile_group = {
->   	.is_visible = profile_class_is_visible,
+> @@ -15,6 +15,15 @@
+>   
+>   static DEFINE_MUTEX(profile_lock);
+>   
+> +struct platform_profile_handler {
+> +	const char *name;
+> +	struct device *dev;
+> +	struct device class_dev;
+> +	int minor;
+> +	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+> +	const struct platform_profile_ops *ops;
+> +};
+> +
+>   static const char * const profile_names[] = {
+>   	[PLATFORM_PROFILE_LOW_POWER] = "low-power",
+>   	[PLATFORM_PROFILE_COOL] = "cool",
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+> index 0824a12b9998..2c99aff7cd19 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -28,23 +28,12 @@ enum platform_profile_option {
+>   	PLATFORM_PROFILE_LAST, /*must always be last */
 >   };
 >   
-> +/**
-> + * platform_profile_notify - Notify class device and legacy sysfs interface
-> + * @dev: The class device
-> + */
->   void platform_profile_notify(struct device *dev)
->   {
->   	scoped_cond_guard(mutex_intr, return, &profile_lock) {
-> @@ -435,6 +439,11 @@ void platform_profile_notify(struct device *dev)
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_notify);
+> -struct platform_profile_handler;
+> -
+>   struct platform_profile_ops {
+>   	int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
+>   	int (*profile_set)(struct device *dev, enum platform_profile_option profile);
+>   	int (*choices)(void *drvdata, unsigned long *choices);
+>   };
 >   
-> +/**
-> + * platform_profile_cycle - Cycles profiles available on all registered class devices
-> + *
-> + * Return: 0 on success, -errno on failure
-> + */
->   int platform_profile_cycle(void)
->   {
->   	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
-> @@ -478,6 +487,15 @@ int platform_profile_cycle(void)
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_cycle);
->   
-> +/**
-> + * platform_profile_register - Creates and registers a platform profile class device
-> + * @dev: Parent device
-> + * @name: Name of the class device
-> + * @drvdata: Driver data that will be attached to the class device
-> + * @ops: Platform profile's mandatory operations
-> + *
-> + * Return: pointer to the new class device on success, ERR_PTR on failure
-> + */
+> -struct platform_profile_handler {
+> -	const char *name;
+> -	struct device *dev;
+> -	struct device class_dev;
+> -	int minor;
+> -	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+> -	const struct platform_profile_ops *ops;
+> -};
+> -
 >   struct device *platform_profile_register(struct device *dev, const char *name,
 >   					 void *drvdata,
->   					 const struct platform_profile_ops *ops)
-> @@ -548,6 +566,12 @@ struct device *platform_profile_register(struct device *dev, const char *name,
->   }
->   EXPORT_SYMBOL_GPL(platform_profile_register);
->   
-> +/**
-> + * platform_profile_remove - Unregisters a platform profile class device
-> + * @dev: Class device
-> + *
-> + * Return: 0
-> + */
->   int platform_profile_remove(struct device *dev)
->   {
->   	struct platform_profile_handler *pprof = to_pprof_handler(dev);
-> @@ -573,6 +597,15 @@ static void devm_platform_profile_release(struct device *dev, void *res)
->   	platform_profile_remove(*ppdev);
->   }
->   
-> +/**
-> + * devm_platform_profile_register - Device managed version of platform_profile_register
-> + * @dev: Parent device
-> + * @name: Name of the class device
-> + * @drvdata: Driver data that will be attached to the class device
-> + * @ops: Platform profile's mandatory operations
-> + *
-> + * Return: pointer to the new class device on success, ERR_PTR on failure
-> + */
->   struct device *devm_platform_profile_register(struct device *dev, const char *name,
->   					      void *drvdata,
->   					      const struct platform_profile_ops *ops)
+>   					 const struct platform_profile_ops *ops);
 
 
