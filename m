@@ -1,171 +1,79 @@
-Return-Path: <linux-acpi+bounces-10510-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10511-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD872A0947F
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 15:59:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE742A094A4
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 16:06:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F88E188D816
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 14:59:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6ACD164BD9
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 15:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D33210F65;
-	Fri, 10 Jan 2025 14:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A023211267;
+	Fri, 10 Jan 2025 15:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdAOMVR/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449ED20DD74;
-	Fri, 10 Jan 2025 14:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFFF20FA9D;
+	Fri, 10 Jan 2025 15:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736521165; cv=none; b=l2lx1MgDt6M5pD4tvpWuwGzBn6GcVHVhrnpNlj65MJ4tuK4VrjkNFAm5Tch0mNMCq7Hw5E6ZAHWAWr/9G+q8Vqhp9yFlhXo2VK1jvlG54SOz1bkEPHz1CTSrOvJTSKC55MvgJ/pIC0+BqJuhYzg+SOZw0gL1Hfcvx+RgqXlCW7k=
+	t=1736521555; cv=none; b=l6Z7iMe0Dl5YCELNMCfJOHyx6XKh/iVnbAw+RZaKOIK66P1q8Bdz2olgoXD8AHoYW0gpEVlOGpK1GwFHDoPbrRCnkTzSRq25/3ct0PJvAz25wvv1/JWKascWDIo+G/xH5Z+34DT/tlfko+P4ulEc2Au8HjeFRs4JHVaNPgWFGXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736521165; c=relaxed/simple;
-	bh=qoN4csxcH42JEKIUwkPsIuRENnJhK9htZfI1jnoH3+s=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EkulwvQzcfNIX9P+ib9CrqABemCzwNPbGe9eRSrspFDsChJ9FVhXYyTzZ3WKaqBYQYE7XFdpYiAVAClOU8E0vktkfe+qkZM1KNmLRIUkc83ZVL2FQ4t0qA1aKC+qcE4SaPMsTE0DOmkzOmvVJeS7qv76UMdhuIkwpnjUZJF6mFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YV4Wn6WSVz6D9CW;
-	Fri, 10 Jan 2025 22:57:41 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id C32001403D2;
-	Fri, 10 Jan 2025 22:59:19 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 10 Jan
- 2025 15:59:19 +0100
-Date: Fri, 10 Jan 2025 14:59:17 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
-	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [PATCH 3/4] cxl: Add extended linear cache address alias
- emission for cxl events
-Message-ID: <20250110145917.00006541@huawei.com>
-In-Reply-To: <f3d1b01f-9ed8-4c56-9bb3-409b51b59291@intel.com>
-References: <20241204224827.2097263-1-dave.jiang@intel.com>
-	<20241204224827.2097263-4-dave.jiang@intel.com>
-	<20241224121113.00007eec@huawei.com>
-	<f3d1b01f-9ed8-4c56-9bb3-409b51b59291@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1736521555; c=relaxed/simple;
+	bh=udSGBrfoVu0Dwss9JAiz5zlg6IwgRRjWDW4Hs6hvbbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TK2dxf55OobQ+sPqbzNOJDmCedcUXiE9XRHIGjRWPMQdXTaUUCXrwcP+IHj7Y5r03YtH7qZ8av/qu50zYM4IdmdE5NLOppv+XlUJaTdj2bVSL0emBd2Y1LO1GQhZ/dJIqU/os06YmFwkz6K4GHzBTuHaQkjEAuMHNbNBlsoBb/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdAOMVR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84840C4CEE1;
+	Fri, 10 Jan 2025 15:05:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736521555;
+	bh=udSGBrfoVu0Dwss9JAiz5zlg6IwgRRjWDW4Hs6hvbbw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DdAOMVR/OdBmq38TIZupU4QJHbQtq0+DsjbFS5sdMuR2OABpM/G3xMBWxmmQvFm7F
+	 xnW/eUbIVjARwMzej4VyXIhGCFU25F1Pbot+UU/6vKi6WDsG1c2jhQpcFGtgjGu2Pn
+	 ijniDq19wyDge7PodKdsvoDiCe7veypFN9yyOTPE=
+Date: Fri, 10 Jan 2025 16:05:51 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] device property: Split property reading bool and
+ presence test ops
+Message-ID: <2025011045-pleading-pacifism-c011@gregkh>
+References: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
+ <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
 
-On Tue, 7 Jan 2025 12:41:46 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+On Thu, Jan 09, 2025 at 01:42:05PM -0600, Rob Herring (Arm) wrote:
+> The fwnode/device property API currently implement
+> (fwnode|device)_property_read_bool() with (fwnode|device)_property_present().
+> That does not allow having different behavior depending on the backend.
+> 
+> Specifically, the usage of (fwnode|device)_property_read_bool() on
+> non-boolean properties is deprecated on DT. In order to add a warning
+> on this deprecated use, these 2 APIs need separate ops for the backend.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-> On 12/24/24 5:11 AM, Jonathan Cameron wrote:
-> > On Wed, 4 Dec 2024 15:46:48 -0700
-> > Dave Jiang <dave.jiang@intel.com> wrote:
-> >   
-> >> Add the aliased address of extended linear cache when emitting event
-> >> trace for DRAM and general media of CXL events.
-> >>
-> >> Signed-off-by: Dave Jiang <dave.jiang@intel.com>  
-> > I wonder if you want to future proof the hpa_alias for potential case
-> > of there being more than 1?  hpa_alias0 or similar so that we can add
-> > more as needed?  
-> 
-> Do you mean when emitting via the trace? Yeah I can change it to hpa_alias0 in the output string.
-> 
-
-err. Can't entirely remember what I meant but that seems sensible ;)
-
-> 
-> > 
-> > 
-> > Otherwise, looks like there is either a null point dereference or
-> > overly paranoid existing code. I haven't checked which but changes
-> > needed either way.  
-> 
-> I'll move it under the if (cxlr) and also add a check for cxlr in the helper function.
-> 
-> DJ
-> 
-> 
-> > 
-> > Jonathan
-> >   
-> >> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> >> index 5175138c4fb7..4017b7afa78a 100644
-> >> --- a/drivers/cxl/core/mbox.c
-> >> +++ b/drivers/cxl/core/mbox.c
-> >> @@ -856,6 +856,24 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
-> >>  }
-> >>  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, CXL);
-> >>  
-> >> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
-> >> +{
-> >> +	struct cxl_region_params *p = &cxlr->params;  
-> > 
-> > Bad idea to unconditionally dereference I think. See below.
-> >   
-> >> +	int nid;
-> >> +
-> >> +	if (!p->cache_size)
-> >> +		return ~0ULL;
-> >> +
-> >> +	nid = cxl_region_nid(cxlr);
-> >> +	if (nid == NUMA_NO_NODE)
-> >> +		nid = 0;
-> >> +
-> >> +	if (hpa >= p->res->start + p->cache_size)
-> >> +		return hpa - p->cache_size;
-> >> +
-> >> +	return hpa + p->cache_size;
-> >> +}
-> >> +
-> >>  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
-> >>  			    enum cxl_event_log_type type,
-> >>  			    enum cxl_event_type event_type,
-> >> @@ -871,7 +889,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
-> >>  	}
-> >>  
-> >>  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
-> >> -		u64 dpa, hpa = ULLONG_MAX;
-> >> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias;
-> >>  		struct cxl_region *cxlr;
-> >>  
-> >>  		/*
-> >> @@ -887,11 +905,14 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
-> >>  		if (cxlr)
-> >>  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
-> >>  
-> >> +		hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);  
-> > 
-> > If there is no region, and hence no hpa does it make sense to call this?
-> > Particularly as first thing done in this is to dereference cxlr.
-> > 
-> >   
-> >> +
-> >>  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
-> >>  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
-> >> -						&evt->gen_media);
-> >> +						hpa_alias, &evt->gen_media);
-> >>  		else if (event_type == CXL_CPER_EVENT_DRAM)
-> >> -			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
-> >> +			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
-> >> +				       &evt->dram);
-> >>  	}
-> >>  }
-> >>  EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, CXL);  
-> >   
-> 
-> 
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
