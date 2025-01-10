@@ -1,198 +1,105 @@
-Return-Path: <linux-acpi+bounces-10523-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10524-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4A6A098CB
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 18:43:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCD3A09CD9
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 22:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99757188BB6B
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 17:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2993D188E3A5
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 21:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1901214213;
-	Fri, 10 Jan 2025 17:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8991208965;
+	Fri, 10 Jan 2025 21:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ItBn/Sl0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0xUpFeL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68062135A5
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Jan 2025 17:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1A32080DA;
+	Fri, 10 Jan 2025 21:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736531014; cv=none; b=fLmzW5dzbaCpS5mo7b6WFgED18gRRMEDri8DYrS0+7SCD/cFogroFEEuu6eQ8i6mkXvLH7GfcdJolJrd5n2D/uX1ryVSWEtEJ1xVwocGjcYpaJnO9w583VKcfZvbzPfeCWWbuSaBSPs6TqotqDtX0KBNQLmXLGileUWABDEH4P0=
+	t=1736543672; cv=none; b=EjkBBy8zOBqBAWqY0xRYSSg21n42rJYwPKjoqSjLfUg7uZ1e349Z+2zqkVMbI5aNrRR4F4LyKDOlYefeJgxyjqzMFoGpEYy++crX22JPWEkZMsJQj41FJgKiIwsw5xyZtHbPmcnqT1fn9J/8bBSsuy/6bjfX7t1j+wrdDQNvLyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736531014; c=relaxed/simple;
-	bh=1Apa2WFTIcBJKzkJjvR6blkh0yURS6Fp5+goTMyn5BE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VnLIESRUwK+VO30v2QGBF368fwsXDlgv9kD3y1yxH59KA8DlA/OAJCmx89bQKK7iGklhaj/7An91RAtUuV6YelCgAmxNqRIMGzFGTEIa4LJQE4eW8WcE+XZSPNkbnhUl3136g32IUaluTfIOYAW4BsT18716GYG3ucrrULpUU2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ItBn/Sl0; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-436249df846so17347565e9.3
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Jan 2025 09:43:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736531011; x=1737135811; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LxJz8MqeXBjnKI6kFTM6HAt0VIbHBekV4LBKCGRzAS0=;
-        b=ItBn/Sl0wUbwH/TyLkf/EVlV47dPSqUB7tkJB6SBaQ/hF/y2ygWfQEqFxvMCLQFi+b
-         45ZImb9wX36QLqKqmESnWesWGhaTEXI7cx0/pFXWxWrUlLT9x4mNthgNTYDn0Q7ArsvB
-         IBaaiVV4fYlDspa9bxkbIghUBKiDDrXkgzwelNjCG8yntjd8mozWU+8SSq1am3XWlOD9
-         pB1xq9Vgrw5q+3cshgOKukTuwm+UV1vBP3l6CX0uEEeArWr0d9kTVDPQLIcbOoAORT5y
-         XYIznGem36lo6+FL0uvOziq25kKAyryt4vLZhO5Ph3N0Gt71pWz8vc8KU3nKpuxbgVJc
-         jJ/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736531011; x=1737135811;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LxJz8MqeXBjnKI6kFTM6HAt0VIbHBekV4LBKCGRzAS0=;
-        b=cMjUsfNvhNam6QkiH6CJrBtXGM3mAoOIuqhPKubetmK1rW49BjTSjCrZyrttX2LoXZ
-         2v3juwHpDSATTMSlaRqD5+1wyH6f4wuYSQFLw/sVd21bXrHHKhuVSyIAVjjz2OJH1uFL
-         vGq2Z38NWpminRcjRQ69G685A0mY9vdYnBgoUdyPmbZ2gAr0uvZWaZ3ky40TwfPQh2N8
-         MB5U/EfpJeLxrtzcvk/W39pcDAxoj2UVOQmEEpOTy/sPKedvGyR3s4OGisAZzWLFaNEl
-         wviCCM5oDvHwzOlpn3IdHbGCkjoX3ruJYdHyXehxhWXOr4F41opxu95ocV7ap1k4Kjf4
-         4bgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ4paMuEsx179Rs3cnIjN/DoX1/DRvcmZxomzQNDgywUVev4f+p1l9itptstxi9LFOBZc1us+oWKHa@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUMi8eimAeAFR/wAcmG/uNFOmu9/0dGMtZmxYaSF6HDerh04rB
-	XYnDh/rVBjikgSDIBO1b/lLlYZzeY7KPVK3Fk9VMRrgKfUr6WEfJ1Ck/bHzUHfM=
-X-Gm-Gg: ASbGncvXLaPDh5TEHf0+fK0pf5g8Z1XfW4T4RLonMe9VjkteZ9D8a+8zOjXiQWfNZuN
-	ZeUIJ3FxrJkfPzrXlp33pOm9W09ErApnrt/1qltj+0T3NxSnWb9CzAzGveS64FjviKoHoVkcaJV
-	wi/6GQWhdWLXwMZjr5vMgecQKav3jNhs7hDu3o35mf6Z+d18rddyKc25L+WIUvf9fu6fqzlk/6V
-	DJIvfJwiQRPvZ5F2LbmQHvnL0LksJ9KpvJ5KgC4d7v5VFFVRvnDJc/o9lkuvMWZMDGwTy1LcOo/
-	ZszeP/qQKfjKzu+ZKrmo
-X-Google-Smtp-Source: AGHT+IGD1p5BWi+8fdojfwO/xsLJX8SqpKI8+n+3hiWhMt/TQN/d5LHbHuIgZ1cAKgtewl4Ayk+PkQ==
-X-Received: by 2002:a05:600c:1ca4:b0:434:9f81:76d5 with SMTP id 5b1f17b1804b1-436e26d931bmr96425175e9.22.1736531011203;
-        Fri, 10 Jan 2025 09:43:31 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38a8e38efeesm5165684f8f.62.2025.01.10.09.43.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jan 2025 09:43:30 -0800 (PST)
-Message-ID: <286f5efc-cd15-4e0b-bec2-2e9bbb93dd37@linaro.org>
-Date: Fri, 10 Jan 2025 18:43:30 +0100
+	s=arc-20240116; t=1736543672; c=relaxed/simple;
+	bh=7hnTzDn30AqAgjejvXh5GiTjCJT28fwcQtwUBt9EVFs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Hah18CH1shsmCl02QCYAnqGXqG79nV0c/8IJE1OQBveE+cBqj3hWPjTdUiVdYI6F6KZH12LpIzqDDw8rrLd9t9Kc6PwbiCb6xM6L5lax/Ntpy4QSKnHma/SQuxxEmd9oZMR5X7cFn/sBhFjz/9lA0mKpSsZdJX0Ak2qSz6/6cbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0xUpFeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B92C4CEDD;
+	Fri, 10 Jan 2025 21:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736543672;
+	bh=7hnTzDn30AqAgjejvXh5GiTjCJT28fwcQtwUBt9EVFs=;
+	h=From:Date:Subject:To:Cc:From;
+	b=o0xUpFeLjgv3Ot2fd11PeCfYDLeVFk34zpAY/M6W7GpsMpuTcfSwZFoAacFjfTzvn
+	 h9ep2JB9FRg1wGidL+kS+no2W+2jwEjiCdtf6vL2SGyfrMZ/hWfmmoFGF+4oMEIw9V
+	 2StBTBK5TTbprtlTre0LDTT68PkdGg/Wbk6aEtjb3j22bEfXNypw7DtGtjlHwd0Iec
+	 f+HA/exkKNvdj2BiEktuKmqm/X0DAYiirTuTjopAmURrCW1T8tqyQqGvfMZ7SmNhsm
+	 efTHH1+Ul0pC21nk61v1LxNyePH3pjjL9RqFvfY+9bYKp897b2Z/2JSKrFb8aSgmRR
+	 Js2WzLPGoL24Q==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-29e149aff1dso792616fac.1;
+        Fri, 10 Jan 2025 13:14:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV+imWwjdJN4HBikciK8ipCmGeeIn6L7JaS1L5E7l1tQpu8Zf+jMH4N5yLFcJUa7l5a2xxemjw8yssO9Bs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfCdWyWzm0vEIYKCtK15ERqY0lzfDoKshDgr/UFBxf9pjzG0rP
+	HNe8y52XUtEf4Mgq17D+wGtmCmunQRLxgj6jiaF8GE0kg/K6gTlDam6XQ+FVRlEsKkP+OFhvPGe
+	0cOTCIKw7yvZ7Y7Zti88LyYWLyTE=
+X-Google-Smtp-Source: AGHT+IFSkBaR9Q3GScDFKtAyaOc2jOPiVOeXflBNmF6jo2hYdFoHAjPafuzpzfee4Kl4zfQJE0J6OG5nlIdAKgccczY=
+X-Received: by 2002:a05:6871:2084:b0:29e:4578:5f74 with SMTP id
+ 586e51a60fabf-2aa0665bd45mr6932494fac.4.1736543671516; Fri, 10 Jan 2025
+ 13:14:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Thermal driver with safeguards
-To: Werner Sembach <wse@tuxedocomputers.com>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: rui.zhang@intel.com, Hans de Goede <hdegoede@redhat.com>,
- Armin Wolf <W_Armin@gmx.de>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- platform-driver-x86@vger.kernel.org
-References: <41483e2b-361b-4b84-88a7-24fc1eaae745@tuxedocomputers.com>
- <6ed0eb0c-c31b-41b0-93ca-c6581249c7b7@linaro.org>
- <3fbab873-c11f-40f7-b3eb-fa3c18528ba2@tuxedocomputers.com>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <3fbab873-c11f-40f7-b3eb-fa3c18528ba2@tuxedocomputers.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 10 Jan 2025 22:14:20 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iDiC=NnXKBWt=Cx2jWr_Ke7M6Gfe-h3KXFvZPziDveCw@mail.gmail.com>
+X-Gm-Features: AbW1kvaLs4IYDNARMD1OpJ5LV9u0NpBkj8iOyntHu4KEkhGAcCSMqdomQsmXxNM
+Message-ID: <CAJZ5v0iDiC=NnXKBWt=Cx2jWr_Ke7M6Gfe-h3KXFvZPziDveCw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.13-rc7
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/01/2025 17:56, Werner Sembach wrote:
-> Hi Daniel,
-> 
-> Am 09.01.25 um 22:36 schrieb Daniel Lezcano:
->> On 02/12/2024 15:52, Werner Sembach wrote:
->>> Hi,
->>>
->>> given a pair of a temperature sensor and a fan, I want to implement a 
->>> driver. that allows userspace to directly control the fan if it wants 
->>> to. But have a minimum fan speed when certain high temperatures are 
->>> reached to avoid crashes or hardware damage.
->>
->> From the userspace, use directly the thermal-engine which is currently 
->> under development [1]. You can add your platform specific code in a 
->> plugin while the thermal engine will catch all the thermal events and 
->> pass them to it [2].
->>
->> The thermal engine has a configuration file which will setup the 
->> thermal framework to be woken up at different temperatures.
-> That still requires to trust userspace/the user to not write dangerous 
-> values directly to sysfs?
+Hi Linus,
 
-No, it is not a trip point but temperature thresholds. So if the 
-firmware defines trip points, the userspace can not change them.
+Please pull from the tag
 
-Userspace thresholds are new : https://lwn.net/Articles/986009/
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.13-rc7
 
->> The thermal engine will be proposed for a distro package, so the 
->> platform support will be automatically supported.
->>
->> Beside the trip points can be setup in the device to act on higher 
->> temperature.
-> As far as i can tell these trip points only notify userspace but you 
-> can't attach code executed in kernel to it.
+with top-most commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b
 
-[ ... ]
+ ACPI: resource: acpi_dev_irq_override(): Check DMI match last
 
->> What is unclear is how the fan is managed. I suggest to have a look at 
->> pwm-fan.c in drivers/hwmon
-> 
-> I already looked at hwmon, but that basically just writes trough values 
-> from and to userspace and has no kernel side management of temperatures 
-> and fan speeds whatsoever.
+on top of commit 9d89551994a430b50c4fffcb1e617a057fa76e20
 
-IIUC, you request was about having the userspace to deal with a fan and 
-the kernel to be a safe guard, so taking over the thermal management 
-when the temperature is too high.
+ Linux 6.13-rc6
 
-Obviously the monitored temperature must be for a device with a "slow" 
-temperature motion, userspace temperature management is not suitable for 
-fast temperature transitions.
+to receive ACPI fixes for 6.13-rc7.
 
-The thermal engine can for example configure different temperatures, 
-let's say: 43°C, 44°C, 46°C, 49°C and 54°C.
+These add two more ACPI IRQ override quirks and update the code using
+them to avoid unnecessary overhead (Hans de Goede).
 
-Then the DT describes additional trip points for mitigation, one trip 
-point for mitigation could be enough (eg 80°C). One for "hot" to send to 
-the thermal engine a notification about getting really high so it can do 
-some userspace action like killing an application, and finally a 
-"critical" trip point to shutdown the system.
-
-The fan would be a cooling device with 0-100 values representing the 
-speed in percentage. The trip point at 80°C would be associated with the 
-fan with the <0, 100> cooling states.
-
-The dynamic of the thermal management could be the following:
-
-The temperature is changing and stays in the [35°C - 60°C] boundaries. 
-The thermal engine receives the events at the different aforementioned 
-temperatures and manage to act on the pwm fan via hwmon.
-
-For any reason the temperature goes above 80°C, at this moment the 
-kernel takes over the management and will increase/decrease the fan 
-speed between the 0% - 100% limits until the temperature goes below the 
-80°C.
-
-If it continues to increase and reaches the "hot" trip point, then an 
-events is sent to the userspace which should take an action to reduce 
-the temperature (kill the application, reduce the battery charge, drop 
-the frame rates, etc ...).
-
-If it continues to increase and reaches the "critical" trip point, then 
-the system shuts down.
-
-If the temperature decreases and goes below 80°C, then it returns to the 
-normal state and the thermal engine can continue its work.
-
-Does it make sense ?
+Thanks!
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+---------------
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Hans de Goede (3):
+      ACPI: resource: Add Asus Vivobook X1504VAP to
+irq1_level_low_skip_override[]
+      ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
+      ACPI: resource: acpi_dev_irq_override(): Check DMI match last
+
+---------------
+
+ drivers/acpi/resource.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
