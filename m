@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-10514-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10515-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2C4A094E8
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 16:19:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBD1A094E7
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 16:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E9F87A11AE
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 15:19:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69806188B126
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 15:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4B521148E;
-	Fri, 10 Jan 2025 15:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC6E21149C;
+	Fri, 10 Jan 2025 15:19:22 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF802211492;
-	Fri, 10 Jan 2025 15:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF38211468;
+	Fri, 10 Jan 2025 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736522360; cv=none; b=kLPrBblpnRvG+hKOVuw4MCe8UH6p4LnB3mI0HtnyuP1ghELKrQuxdX/QFzXTvnU8W3x/jLXWeF46io44+VXHJOVlnXor+tCNWxIT+a6sU8BzS4UtMNn4mMzArZWCm4ytbsTpzM7hbMJ4dwnLvBFJSFDPXdmzyEppadq9uVafzZY=
+	t=1736522362; cv=none; b=uovjqesoQsxzr/q53gAoF9DYTli/RpQQqCGi9LWh3FZqIBUhst3pL3rhP0rgE9SO8tmmwkBqLzQ61r6/YcUyte2P2zpC1Xa7wt/iVIDbdCVKUth7+TITSkrep38fdnwdPs3DumIdeIwtSrps1LA37UC09OhL9Fmdhlc9EFfDydo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736522360; c=relaxed/simple;
-	bh=xVkRpt0+Vr1aG36tFy+vMdk7+Ou6sB2WN6WKiP2KcFU=;
+	s=arc-20240116; t=1736522362; c=relaxed/simple;
+	bh=cNAUHHP/mgsZxoHSJqGk3ILClPhxe16wDlfq5BtWIkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgpc6Ab80EpWzLZYsak+lkPqQ9ulk2Y8e1v6RXL4UA8yXhd68LJYiPiQqb6o9epKqhxFS5L7rU92xL9dAp3z6VCls8gWVnBLghDiBrQnlyPcyG8q1sYwTLwO9HRDTUTVJagbiw3i4mICTs5ECM1Hxrh9bc7ocpBREz4kCz017wc=
+	 MIME-Version; b=tMxbtdNObaZgKA7M9j8jAe379jxDBHRD7CVHiWVkUQVrcrgI03ems8ct+0SaNab2r+9+vs+9xxVwZi4IwOK2mwWmZjCDFbuUl8JUnWP5Egko1FdZYFzm4v3qzZRIyXN8m+A57dmYGcv6K3X6bDpbYXTttrVym99isRjXueAp5D4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478AEC4CED6;
-	Fri, 10 Jan 2025 15:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9A2C4CED6;
+	Fri, 10 Jan 2025 15:19:21 +0000 (UTC)
 From: Dave Jiang <dave.jiang@intel.com>
 To: linux-cxl@vger.kernel.org,
 	linux-acpi@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: rafael@kernel.org,
 	jonathan.cameron@huawei.com,
 	alison.schofield@intel.com,
 	ira.weiny@intel.com
-Subject: [PATCH v2 2/4] acpi/hmat / cxl: Add extended linear cache support for CXL
-Date: Fri, 10 Jan 2025 08:17:45 -0700
-Message-ID: <20250110151913.3462283-3-dave.jiang@intel.com>
+Subject: [PATCH v2 3/4] cxl: Add extended linear cache address alias emission for cxl events
+Date: Fri, 10 Jan 2025 08:17:46 -0700
+Message-ID: <20250110151913.3462283-4-dave.jiang@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110151913.3462283-1-dave.jiang@intel.com>
 References: <20250110151913.3462283-1-dave.jiang@intel.com>
@@ -54,308 +54,225 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The current cxl region size only indicates the size of the CXL memory
-region without accounting for the extended linear cache size. Retrieve the
-cache size from HMAT and append that to the cxl region size for the cxl
-region range that matches the SRAT range that has extended linear cache
-enabled.
-
-The SRAT defines the whole memory range that includes the extended linear
-cache and the CXL memory region. The new HMAT ECN/ECR to the Memory Side
-Cache Information Structure defines the size of the extended linear cache
-size and matches to the SRAT Memory Affinity Structure by the memory
-proxmity domain. Add a helper to match the cxl range to the SRAT memory
-range in order to retrieve the cache size.
-
-There are several places that checks the cxl region range against the
-decoder range. Use new helper to check between the two ranges and address
-the new cache size.
+Add the aliased address of extended linear cache when emitting event
+trace for DRAM and general media of CXL events.
 
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
 v2:
-- Remove redefinition reported by 0-day.
-- Fix checking for cache flag. (Ming)
-- Add comment about cache range vs CFMWS. (Ming)
-- Update new EXPORT_SYMOBOL_() input. (Jonathan)
-- Fix region_res_match_cxl_range() comment. (Jonathan)
-- Fix construct_region() comment. (Jonathan)
-- Fix 'cache_size' kdoc comment. (Jonathan)
+- Emit hpa_alias0 instead of hpa_alias. (Jonathan)
+- Check valid cxlr before dereference. (Jonathan)
 ---
- drivers/acpi/numa/hmat.c  | 39 +++++++++++++++++++++
- drivers/cxl/core/Makefile |  1 +
- drivers/cxl/core/acpi.c   | 11 ++++++
- drivers/cxl/core/core.h   |  3 ++
- drivers/cxl/core/region.c | 73 ++++++++++++++++++++++++++++++++++++---
- drivers/cxl/cxl.h         |  2 ++
- include/linux/acpi.h      | 11 ++++++
- tools/testing/cxl/Kbuild  |  1 +
- 8 files changed, 137 insertions(+), 4 deletions(-)
- create mode 100644 drivers/cxl/core/acpi.c
+ drivers/cxl/core/core.h   |  5 +++++
+ drivers/cxl/core/mbox.c   | 33 +++++++++++++++++++++++++++++----
+ drivers/cxl/core/region.c | 12 ++++++++++++
+ drivers/cxl/core/trace.h  | 24 ++++++++++++++++--------
+ 4 files changed, 62 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index a9172cf90002..6a210abb4a32 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -108,6 +108,45 @@ static struct memory_target *find_mem_target(unsigned int mem_pxm)
- 	return NULL;
- }
- 
-+/**
-+ * hmat_get_extended_linear_cache_size - Retrieve the extended linear cache size
-+ * @backing_res: resource from the backing media
-+ * @nid: node id for the memory region
-+ * @cache_size: (Output) size of extended linear cache.
-+ *
-+ * Return: 0 on success. Errno on failure.
-+ *
-+ */
-+int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
-+					resource_size_t *cache_size)
-+{
-+	unsigned int pxm = node_to_pxm(nid);
-+	struct memory_target *target;
-+	struct target_cache *tcache;
-+	struct resource *res;
-+
-+	target = find_mem_target(pxm);
-+	if (!target)
-+		return -ENOENT;
-+
-+	list_for_each_entry(tcache, &target->caches, node) {
-+		if (tcache->cache_attrs.address_mode !=
-+				NODE_CACHE_ADDR_MODE_EXTENDED_LINEAR)
-+			continue;
-+
-+		res = &target->memregions;
-+		if (!resource_contains(res, backing_res))
-+			continue;
-+
-+		*cache_size = tcache->cache_attrs.size;
-+		return 0;
-+	}
-+
-+	*cache_size = 0;
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(hmat_get_extended_linear_cache_size, "CXL");
-+
- static struct memory_target *acpi_find_genport_target(u32 uid)
- {
- 	struct memory_target *target;
-diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
-index 9259bcc6773c..1a0c9c6ca818 100644
---- a/drivers/cxl/core/Makefile
-+++ b/drivers/cxl/core/Makefile
-@@ -14,5 +14,6 @@ cxl_core-y += pci.o
- cxl_core-y += hdm.o
- cxl_core-y += pmu.o
- cxl_core-y += cdat.o
-+cxl_core-y += acpi.o
- cxl_core-$(CONFIG_TRACING) += trace.o
- cxl_core-$(CONFIG_CXL_REGION) += region.o
-diff --git a/drivers/cxl/core/acpi.c b/drivers/cxl/core/acpi.c
-new file mode 100644
-index 000000000000..f13b4dae6ac5
---- /dev/null
-+++ b/drivers/cxl/core/acpi.c
-@@ -0,0 +1,11 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+#include <linux/acpi.h>
-+#include "cxl.h"
-+#include "core.h"
-+
-+int cxl_acpi_get_extended_linear_cache_size(struct resource *backing_res,
-+					    int nid, resource_size_t *size)
-+{
-+	return hmat_get_extended_linear_cache_size(backing_res, nid, size);
-+}
 diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index 800466f96a68..0fb779b612d1 100644
+index 0fb779b612d1..afbefc72c8fa 100644
 --- a/drivers/cxl/core/core.h
 +++ b/drivers/cxl/core/core.h
-@@ -115,4 +115,7 @@ bool cxl_need_node_perf_attrs_update(int nid);
- int cxl_port_get_switch_dport_bandwidth(struct cxl_port *port,
- 					struct access_coordinate *c);
+@@ -30,8 +30,13 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port);
+ struct cxl_region *cxl_dpa_to_region(const struct cxl_memdev *cxlmd, u64 dpa);
+ u64 cxl_dpa_to_hpa(struct cxl_region *cxlr, const struct cxl_memdev *cxlmd,
+ 		   u64 dpa);
++int cxl_region_nid(struct cxl_region *cxlr);
  
-+int cxl_acpi_get_extended_linear_cache_size(struct resource *backing_res,
-+					    int nid, resource_size_t *size);
-+
- #endif /* __CXL_CORE_H__ */
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index b98b1ccffd1c..2d8699a86b24 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -824,6 +824,21 @@ static int match_free_decoder(struct device *dev, void *data)
- 	return 1;
- }
- 
-+static bool region_res_match_cxl_range(struct cxl_region_params *p,
-+				       struct range *range)
+ #else
++static inline int cxl_region_nid(struct cxl_region *cxlr)
 +{
-+	if (!p->res)
-+		return false;
++	return NUMA_NO_NODE;
++}
+ static inline u64 cxl_dpa_to_hpa(struct cxl_region *cxlr,
+ 				 const struct cxl_memdev *cxlmd, u64 dpa)
+ {
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 548564c770c0..d7999260f004 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -856,6 +856,28 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
+ 
++static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
++{
++	struct cxl_region_params *p;
++	int nid;
 +
-+	/*
-+	 * If an extended linear cache region then the CXL range is assumed
-+	 * to be fronted by the DRAM range in current known implementation.
-+	 * This assumption will be made until a variant implementation exists.
-+	 */
-+	return p->res->start + p->cache_size == range->start &&
-+		p->res->end == range->end;
++	if (!cxlr)
++		return ~0ULL;
++
++	p = &cxlr->params;
++	if (!p->cache_size)
++		return ~0ULL;
++
++	nid = cxl_region_nid(cxlr);
++	if (nid == NUMA_NO_NODE)
++		nid = 0;
++
++	if (hpa >= p->res->start + p->cache_size)
++		return hpa - p->cache_size;
++
++	return hpa + p->cache_size;
 +}
 +
- static int match_auto_decoder(struct device *dev, void *data)
- {
- 	struct cxl_region_params *p = data;
-@@ -836,7 +851,7 @@ static int match_auto_decoder(struct device *dev, void *data)
- 	cxld = to_cxl_decoder(dev);
- 	r = &cxld->hpa_range;
- 
--	if (p->res && p->res->start == r->start && p->res->end == r->end)
-+	if (region_res_match_cxl_range(p, r))
- 		return 1;
- 
- 	return 0;
-@@ -1424,8 +1439,7 @@ static int cxl_port_setup_targets(struct cxl_port *port,
- 	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
- 		if (cxld->interleave_ways != iw ||
- 		    cxld->interleave_granularity != ig ||
--		    cxld->hpa_range.start != p->res->start ||
--		    cxld->hpa_range.end != p->res->end ||
-+		    !region_res_match_cxl_range(p, &cxld->hpa_range) ||
- 		    ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)) {
- 			dev_err(&cxlr->dev,
- 				"%s:%s %s expected iw: %d ig: %d %pr\n",
-@@ -1949,7 +1963,7 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		return -ENXIO;
+ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+ 			    enum cxl_event_log_type type,
+ 			    enum cxl_event_type event_type,
+@@ -871,7 +893,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
  	}
  
--	if (resource_size(cxled->dpa_res) * p->interleave_ways !=
-+	if (resource_size(cxled->dpa_res) * p->interleave_ways + p->cache_size !=
- 	    resource_size(p->res)) {
- 		dev_dbg(&cxlr->dev,
- 			"%s:%s: decoder-size-%#llx * ways-%d != region-size-%#llx\n",
-@@ -3221,6 +3235,45 @@ static int match_region_by_range(struct device *dev, void *data)
- 	return rc;
+ 	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
+-		u64 dpa, hpa = ULLONG_MAX;
++		u64 dpa, hpa = ULLONG_MAX, hpa_alias = 0;
+ 		struct cxl_region *cxlr;
+ 
+ 		/*
+@@ -884,14 +906,17 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+ 
+ 		dpa = le64_to_cpu(evt->media_hdr.phys_addr) & CXL_DPA_MASK;
+ 		cxlr = cxl_dpa_to_region(cxlmd, dpa);
+-		if (cxlr)
++		if (cxlr) {
+ 			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
++			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
++		}
+ 
+ 		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
+ 			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
+-						&evt->gen_media);
++						hpa_alias, &evt->gen_media);
+ 		else if (event_type == CXL_CPER_EVENT_DRAM)
+-			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
++			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
++				       &evt->dram);
+ 	}
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, "CXL");
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 2d8699a86b24..5d23bd26d9ba 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -2417,6 +2417,18 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
+ 	return true;
  }
  
-+static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
-+					    struct resource *res)
++int cxl_region_nid(struct cxl_region *cxlr)
 +{
 +	struct cxl_region_params *p = &cxlr->params;
-+	int nid = phys_to_target_node(res->start);
-+	resource_size_t size, cache_size;
-+	int rc;
++	struct resource *res;
 +
-+	size = resource_size(res);
-+	if (!size)
-+		return -EINVAL;
-+
-+	rc = cxl_acpi_get_extended_linear_cache_size(res, nid, &cache_size);
-+	if (rc)
-+		return rc;
-+
-+	if (!cache_size)
-+		return 0;
-+
-+	if (size != cache_size) {
-+		dev_warn(&cxlr->dev, "Extended Linear Cache is not 1:1, unsupported!");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	/*
-+	 * Move the start of the range to where the cache range starts. The
-+	 * implementation assumes that the cache range is in front of the
-+	 * CXL range. This is not dictated by the HMAT spec but is how the
-+	 * current known implementation is configured.
-+	 *
-+	 * The cache range is expected to be within the CFMWS. The adjusted
-+	 * res->start should not be less than cxlrd->res->start.
-+	 */
-+	res->start -= cache_size;
-+	p->cache_size = cache_size;
-+
-+	return 0;
++	guard(rwsem_read)(&cxl_region_rwsem);
++	res = p->res;
++	if (!res)
++		return NUMA_NO_NODE;
++	return phys_to_target_node(res->start);
 +}
 +
- /* Establish an empty region covering the given HPA range */
- static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
- 					   struct cxl_endpoint_decoder *cxled)
-@@ -3267,6 +3320,18 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
+ 					  unsigned long action, void *arg)
+ {
+diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+index 8389a94adb1a..257f60f16e4c 100644
+--- a/drivers/cxl/core/trace.h
++++ b/drivers/cxl/core/trace.h
+@@ -316,9 +316,10 @@ TRACE_EVENT(cxl_generic_event,
+ TRACE_EVENT(cxl_general_media,
  
- 	*res = DEFINE_RES_MEM_NAMED(hpa->start, range_len(hpa),
- 				    dev_name(&cxlr->dev));
-+
-+	rc = cxl_extended_linear_cache_resize(cxlr, res);
-+	if (rc) {
-+		/*
-+		 * Failing to support extended linear cache region resize does not
-+		 * prevent the region from functioning. Only causes cxl list showing
-+		 * incorrect region size.
-+		 */
-+		dev_warn(cxlmd->dev.parent,
-+			 "Failed to support extended linear cache.\n");
-+	}
-+
- 	rc = insert_resource(cxlrd->res, res);
- 	if (rc) {
- 		/*
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index f6015f24ad38..6a1fb784f74a 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -492,6 +492,7 @@ enum cxl_config_state {
-  * @res: allocated iomem capacity for this region
-  * @targets: active ordered targets in current decoder configuration
-  * @nr_targets: number of targets
-+ * @cache_size: extended linear cache size if exists, otherwise zero.
-  *
-  * State transitions are protected by the cxl_region_rwsem
-  */
-@@ -503,6 +504,7 @@ struct cxl_region_params {
- 	struct resource *res;
- 	struct cxl_endpoint_decoder *targets[CXL_DECODER_MAX_INTERLEAVE];
- 	int nr_targets;
-+	resource_size_t cache_size;
- };
+ 	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
+-		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_gen_media *rec),
++		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
++		 struct cxl_event_gen_media *rec),
  
- /*
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 6adcd1b92b20..1bf5368337bc 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1090,6 +1090,17 @@ static inline acpi_handle acpi_get_processor_handle(int cpu)
+-	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
++	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
  
- #endif	/* !CONFIG_ACPI */
+ 	TP_STRUCT__entry(
+ 		CXL_EVT_TP_entry
+@@ -332,6 +333,7 @@ TRACE_EVENT(cxl_general_media,
+ 		__array(u8, comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE)
+ 		/* Following are out of order to pack trace record */
+ 		__field(u64, hpa)
++		__field(u64, hpa_alias)
+ 		__field_struct(uuid_t, region_uuid)
+ 		__field(u16, validity_flags)
+ 		__field(u8, rank)
+@@ -358,6 +360,7 @@ TRACE_EVENT(cxl_general_media,
+ 			CXL_EVENT_GEN_MED_COMP_ID_SIZE);
+ 		__entry->validity_flags = get_unaligned_le16(&rec->media_hdr.validity_flags);
+ 		__entry->hpa = hpa;
++		__entry->hpa_alias = hpa_alias;
+ 		if (cxlr) {
+ 			__assign_str(region_name);
+ 			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
+@@ -370,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
+ 	CXL_EVT_TP_printk("dpa=%llx dpa_flags='%s' " \
+ 		"descriptor='%s' type='%s' transaction_type='%s' channel=%u rank=%u " \
+ 		"device=%x comp_id=%s validity_flags='%s' " \
+-		"hpa=%llx region=%s region_uuid=%pUb",
++		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
+ 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
+ 		show_event_desc_flags(__entry->descriptor),
+ 		show_gmer_mem_event_type(__entry->type),
+@@ -378,7 +381,8 @@ TRACE_EVENT(cxl_general_media,
+ 		__entry->channel, __entry->rank, __entry->device,
+ 		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
+ 		show_valid_flags(__entry->validity_flags),
+-		__entry->hpa, __get_str(region_name), &__entry->region_uuid
++		__entry->hpa, __entry->hpa_alias, __get_str(region_name),
++		&__entry->region_uuid
+ 	)
+ );
  
-+#ifdef CONFIG_ACPI_HMAT
-+int hmat_get_extended_linear_cache_size(struct resource *backing_res, int nid,
-+					resource_size_t *size);
-+#else
-+static inline int hmat_get_extended_linear_cache_size(struct resource *backing_res,
-+						      int nid, resource_size_t *size)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
-+
- extern void arch_post_acpi_subsys_init(void);
+@@ -424,9 +428,10 @@ TRACE_EVENT(cxl_general_media,
+ TRACE_EVENT(cxl_dram,
  
- #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index b1256fee3567..1ae13987a8a2 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -61,6 +61,7 @@ cxl_core-y += $(CXL_CORE_SRC)/pci.o
- cxl_core-y += $(CXL_CORE_SRC)/hdm.o
- cxl_core-y += $(CXL_CORE_SRC)/pmu.o
- cxl_core-y += $(CXL_CORE_SRC)/cdat.o
-+cxl_core-y += $(CXL_CORE_SRC)/acpi.o
- cxl_core-$(CONFIG_TRACING) += $(CXL_CORE_SRC)/trace.o
- cxl_core-$(CONFIG_CXL_REGION) += $(CXL_CORE_SRC)/region.o
- cxl_core-y += config_check.o
+ 	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
+-		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_dram *rec),
++		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
++		 struct cxl_event_dram *rec),
+ 
+-	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
++	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
+ 
+ 	TP_STRUCT__entry(
+ 		CXL_EVT_TP_entry
+@@ -442,6 +447,7 @@ TRACE_EVENT(cxl_dram,
+ 		__field(u32, row)
+ 		__array(u8, cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE)
+ 		__field(u64, hpa)
++		__field(u64, hpa_alias)
+ 		__field_struct(uuid_t, region_uuid)
+ 		__field(u8, rank)	/* Out of order to pack trace record */
+ 		__field(u8, bank_group)	/* Out of order to pack trace record */
+@@ -472,6 +478,7 @@ TRACE_EVENT(cxl_dram,
+ 		memcpy(__entry->cor_mask, &rec->correction_mask,
+ 			CXL_EVENT_DER_CORRECTION_MASK_SIZE);
+ 		__entry->hpa = hpa;
++		__entry->hpa_alias = hpa_alias;
+ 		if (cxlr) {
+ 			__assign_str(region_name);
+ 			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
+@@ -485,7 +492,7 @@ TRACE_EVENT(cxl_dram,
+ 		"transaction_type='%s' channel=%u rank=%u nibble_mask=%x " \
+ 		"bank_group=%u bank=%u row=%u column=%u cor_mask=%s " \
+ 		"validity_flags='%s' " \
+-		"hpa=%llx region=%s region_uuid=%pUb",
++		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
+ 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
+ 		show_event_desc_flags(__entry->descriptor),
+ 		show_dram_mem_event_type(__entry->type),
+@@ -495,7 +502,8 @@ TRACE_EVENT(cxl_dram,
+ 		__entry->row, __entry->column,
+ 		__print_hex(__entry->cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE),
+ 		show_dram_valid_flags(__entry->validity_flags),
+-		__entry->hpa, __get_str(region_name), &__entry->region_uuid
++		__entry->hpa_alias, __entry->hpa, __get_str(region_name),
++		&__entry->region_uuid
+ 	)
+ );
+ 
 -- 
 2.47.1
 
