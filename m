@@ -1,79 +1,161 @@
-Return-Path: <linux-acpi+bounces-10511-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10512-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE742A094A4
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 16:06:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 909BCA094E4
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 16:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6ACD164BD9
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 15:05:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5736C168D7D
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 15:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A023211267;
-	Fri, 10 Jan 2025 15:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdAOMVR/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42B8210F76;
+	Fri, 10 Jan 2025 15:19:17 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFFF20FA9D;
-	Fri, 10 Jan 2025 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A54B674;
+	Fri, 10 Jan 2025 15:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736521555; cv=none; b=l6Z7iMe0Dl5YCELNMCfJOHyx6XKh/iVnbAw+RZaKOIK66P1q8Bdz2olgoXD8AHoYW0gpEVlOGpK1GwFHDoPbrRCnkTzSRq25/3ct0PJvAz25wvv1/JWKascWDIo+G/xH5Z+34DT/tlfko+P4ulEc2Au8HjeFRs4JHVaNPgWFGXQ=
+	t=1736522357; cv=none; b=uk3Rz+zYVaE65WwhMdXlUgSpBk9A99aqPL4NjG6QfuOvRxozRsXwE51hCEsCvSZUvJZD/kaynSZiuLIS58dvbz75M2HK8KVef8/n6VrDQRg/1ZyulAjYx13i0Dd0YxYXEBO3n8uQWaxpKhpkiG8EKJm/u2zoZ2pYOdsh5K/S03M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736521555; c=relaxed/simple;
-	bh=udSGBrfoVu0Dwss9JAiz5zlg6IwgRRjWDW4Hs6hvbbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TK2dxf55OobQ+sPqbzNOJDmCedcUXiE9XRHIGjRWPMQdXTaUUCXrwcP+IHj7Y5r03YtH7qZ8av/qu50zYM4IdmdE5NLOppv+XlUJaTdj2bVSL0emBd2Y1LO1GQhZ/dJIqU/os06YmFwkz6K4GHzBTuHaQkjEAuMHNbNBlsoBb/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdAOMVR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84840C4CEE1;
-	Fri, 10 Jan 2025 15:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736521555;
-	bh=udSGBrfoVu0Dwss9JAiz5zlg6IwgRRjWDW4Hs6hvbbw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DdAOMVR/OdBmq38TIZupU4QJHbQtq0+DsjbFS5sdMuR2OABpM/G3xMBWxmmQvFm7F
-	 xnW/eUbIVjARwMzej4VyXIhGCFU25F1Pbot+UU/6vKi6WDsG1c2jhQpcFGtgjGu2Pn
-	 ijniDq19wyDge7PodKdsvoDiCe7veypFN9yyOTPE=
-Date: Fri, 10 Jan 2025 16:05:51 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] device property: Split property reading bool and
- presence test ops
-Message-ID: <2025011045-pleading-pacifism-c011@gregkh>
-References: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
- <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
+	s=arc-20240116; t=1736522357; c=relaxed/simple;
+	bh=iI+zkuPPGC6KVu7GjaczTIH5hOYA56r8kmqssm6oh2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BH1I5+gVSRRyuj99KQUFHwC8dbkCju12AxvcosqBiCVZmC0WJf1WGMv5YIVD/e4ZlbOfBIA74Dl9HXrCqLQ7OmLz+pedXW8n3GU7derOORY12Of9rS9Ra0exbg5+IP6cXNzRrSnLehZ/cZnQoy36PxI3LosY0C8aqWPTdRfFV5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27446C4CEE1;
+	Fri, 10 Jan 2025 15:19:17 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: rafael@kernel.org,
+	bp@alien8.de,
+	dan.j.williams@intel.com,
+	tony.luck@intel.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	ira.weiny@intel.com
+Subject: [PATCH v2 0/4] acpi/hmat / cxl: Add exclusive caching enumeration and RAS support
+Date: Fri, 10 Jan 2025 08:17:43 -0700
+Message-ID: <20250110151913.3462283-1-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 09, 2025 at 01:42:05PM -0600, Rob Herring (Arm) wrote:
-> The fwnode/device property API currently implement
-> (fwnode|device)_property_read_bool() with (fwnode|device)_property_present().
-> That does not allow having different behavior depending on the backend.
-> 
-> Specifically, the usage of (fwnode|device)_property_read_bool() on
-> non-boolean properties is deprecated on DT. In order to add a warning
-> on this deprecated use, these 2 APIs need separate ops for the backend.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+v2:
+- Fix 0-day issues
+- Fix checking of cache flag. (Ming)
+- Add comment about cache range vs CFMWS. (Ming)
+- Update EXPORT_SYMBOL_(). (Jonathan)
+- Fix various code comments. (Jonathan)
+- Emit hpa_alias0 instead of hpa_alias. (Jonathan)
+- Introduce CONFIG_CXL_MCE to address kernel build dep issues.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v1:
+- Drop RFC prefix
+- Drop MMIO hole discovery. Will implement if there's real world implementation.
+- Drop MCE_PRI_CXL. Use MCE_PRI_UC. (Boris)
+- Minor refactors and grammar fixes. (Jonathan)
+- Rename 'mode' to 'address_mode'. (Jonathan)
+
+RFCv2:
+- Dropped 1/6 (ACPICA definition merged)
+- Change UNKNOWN to RESERVED for cache definition. (Jonathan)
+- Fix spelling errors (Jonathan)
+- Rename region_res_match_range() to region_res_match_cxl_range(). (Jonathan)
+- Add warning when cache is not 1:1 with backing region. (Jonathan)
+- Code and comments cleanup. (Jonathan)
+- Make MCE code access in CXL arch independent. (Jonathan)
+- Fixup 0-day reports.
+
+Certain systems provide an exclusive caching memory configurations where a
+1:1 layout of DRAM and far memory (FM) such as CXL memory is utilized. In
+this configuration, the memory region is provided as a single memory region
+to the OS. For example such as below:
+
+             128GB DRAM                         128GB CXL memory
+|------------------------------------|------------------------------------|
+
+The kernel sees the region as a 256G system memory region. Data can reside
+in either DRAM or FM with no replication. Hot data is swapped into DRAM by
+the hardware behind the scenes.
+
+This kernel series introduces code to enumerate the side cache by the kernel
+when configured in a exclusive-cache configuration. It also adds RAS support
+to deal with the aliased memory addresses.
+
+A new ECN [1] to ACPI HMAT table was introduced and was approved to describe
+the "extended-linear" addressing for direct-mapped memory-side caches. A
+reserved field in the Memory Side Cache Information Structure of HMAT is
+redefined as "Address Mode" where a value of 1 is defined as Extended-linear
+mode. This value is valid if the cache is direct mapped. "It indicates that
+the associated address range (SRAT.MemoryAffinityStructure.Length) is
+comprised of the backing store capacity extended by the cache capacity." By
+augmenting the HMAT and SRAT parsing code, this new information can be stored
+by the HMAT handling code.
+
+Current CXL region enumeration code is not enlightened with the side cache
+configuration and therefore only presents the region size as the size of the
+CXL region. Add support to allow CXL region enumeration code to query the HMAT 
+handling code and retrieve the information regarding the side cache and adjust
+the region size accordingly. This should allow the CXL CLI to display the
+full region size rather than just the CXL only region size.
+
+There are 3 sources where the kernel may be notified that error is detected for
+memory.
+1. CXL DRAM event. This is a CXL event that is generated when an error is
+   detected by the CXL device patrol or demand scrubber. The trace_event is
+   augmented to display the aliased System Phyiscal Address (SPA) in addition
+   to the alerted address.  However, reporting of memory failure is TBD until
+   the discussion [2] of failure reporting is settled upstream.
+2. UCNA event from DRAM patrol or demand scrubber. This should eventually go
+   through the MCE callback chain.
+3. MCE from kernel consume poison.
+
+It is possible that all 3 sources may report at the same time and all report
+at the error.
+
+For 2 and 3, a MCE notifier callback is registered by the CXL on a per device
+basis. The callback will determine if the reported address is in one of the
+special regions and offline the aliased address if that is the case.
+
+[1]: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
+[2]: https://lore.kernel.org/linux-cxl/20240808151328.707869-2-ruansy.fnst@fujitsu.com/
+
+---
+
+Dave Jiang (4):
+      acpi: numa: Add support to enumerate and store extended linear address mode
+      acpi/hmat / cxl: Add extended linear cache support for CXL
+      cxl: Add extended linear cache address alias emission for cxl events
+      cxl: Add mce notifier to emit aliased address for extended linear cache
+
+ Documentation/ABI/stable/sysfs-devices-node |   6 +++
+ arch/x86/mm/pat/set_memory.c                |   1 +
+ drivers/acpi/numa/hmat.c                    |  44 +++++++++++++++++++
+ drivers/base/node.c                         |   2 +
+ drivers/cxl/Kconfig                         |   4 ++
+ drivers/cxl/core/Makefile                   |   2 +
+ drivers/cxl/core/acpi.c                     |  11 +++++
+ drivers/cxl/core/core.h                     |   8 ++++
+ drivers/cxl/core/mbox.c                     |  36 ++++++++++++++--
+ drivers/cxl/core/mce.c                      |  53 +++++++++++++++++++++++
+ drivers/cxl/core/mce.h                      |  14 ++++++
+ drivers/cxl/core/region.c                   | 110 ++++++++++++++++++++++++++++++++++++++++++++++--
+ drivers/cxl/core/trace.h                    |  24 +++++++----
+ drivers/cxl/cxl.h                           |   8 ++++
+ drivers/cxl/cxlmem.h                        |   2 +
+ include/linux/acpi.h                        |  11 +++++
+ include/linux/node.h                        |   7 +++
+ tools/testing/cxl/Kbuild                    |   1 +
+ 18 files changed, 328 insertions(+), 16 deletions(-)
 
