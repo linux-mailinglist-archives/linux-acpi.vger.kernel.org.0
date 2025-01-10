@@ -1,65 +1,79 @@
-Return-Path: <linux-acpi+bounces-10522-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10523-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F4DA09886
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 18:29:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4A6A098CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 18:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A137316AB4A
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 17:29:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99757188BB6B
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Jan 2025 17:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C4C213253;
-	Fri, 10 Jan 2025 17:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1901214213;
+	Fri, 10 Jan 2025 17:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WFC1/UjZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ItBn/Sl0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79604212B1D;
-	Fri, 10 Jan 2025 17:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68062135A5
+	for <linux-acpi@vger.kernel.org>; Fri, 10 Jan 2025 17:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736530150; cv=none; b=Ps5dmcUGyPJkls0ANDkYE4J7MzYQ0YiVYvGokj6QFA03Yyh2NWjhoemxJ6ZrFLcfwqhsMjPC5Mr54nosuiM59OEuQzO3nSPgYQOSGugkG6DANL5fzslhPNvvWXFhhDQvIuDZ+EqpGmNaNiS7bpuD+x2X1pAOEezQZ8RtDkKEsi8=
+	t=1736531014; cv=none; b=fLmzW5dzbaCpS5mo7b6WFgED18gRRMEDri8DYrS0+7SCD/cFogroFEEuu6eQ8i6mkXvLH7GfcdJolJrd5n2D/uX1ryVSWEtEJ1xVwocGjcYpaJnO9w583VKcfZvbzPfeCWWbuSaBSPs6TqotqDtX0KBNQLmXLGileUWABDEH4P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736530150; c=relaxed/simple;
-	bh=nX6K2Eoqwd7DcwXxmsmxGyNHjl1HngOfstEj7pvQi24=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NUNvYIJSkY7iA/tSC5tOTIY+EhFVCha3ECK21D6zFjyTFjOJ1i6LZNbj4qvuYNteb8VRMdLfFYvGFKx/FrqGvkGX2Tg3kYHfvIONCZlmpJquQ3tuHtpCifLsiBtIKyiHia7CgIdck/yDNLkQ29/EJMQfv+Dh3z9x0XJCG4LDWzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WFC1/UjZ; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736530149; x=1768066149;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=nX6K2Eoqwd7DcwXxmsmxGyNHjl1HngOfstEj7pvQi24=;
-  b=WFC1/UjZKsFa6kjljtMnVzbI02DH4Z3sNcYiFgGQDC0I7oaHDBBtlIQS
-   lueISRbLssOkyGNOuT2ApRfmsQSTDfhBsW4x7Kjrc6qF58L03iZbLsLNx
-   pOB5MlqyFf4+luO1lu21x+54k3MEq91pJ8tyk54VMnqY46b/rd+n71Mzs
-   1zUeinJDUJZHkT9yBJIMUkGQYi+7B6eo5XmTMrv8svlNk2Hf8otzCYaxa
-   xgZ3ml0fKRXj/CdsxF7QZ1C115VbPHXSxyOnm4WMUfCSsh/n+KBjroOkh
-   sPXwA7Iq22JsELRbXEg8hCCccPwhNUfT/VPE7Fygaz+2GFjQHs+BaENdp
-   w==;
-X-CSE-ConnectionGUID: Rj8TQy2gTzSCb+zWtbgsDA==
-X-CSE-MsgGUID: HrbcI6qsT+2KjN9AI5Hkwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="48196316"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="48196316"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:29:08 -0800
-X-CSE-ConnectionGUID: VU7kELcRRVi8YKHDHRYwPw==
-X-CSE-MsgGUID: duymTrABSAOKF/SmCVUpnw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="103566659"
-Received: from ehanks-mobl1.amr.corp.intel.com (HELO [10.125.111.175]) ([10.125.111.175])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:29:08 -0800
-Message-ID: <51a8c6f6-7770-4791-8068-be0786f2dc81@intel.com>
-Date: Fri, 10 Jan 2025 10:29:06 -0700
+	s=arc-20240116; t=1736531014; c=relaxed/simple;
+	bh=1Apa2WFTIcBJKzkJjvR6blkh0yURS6Fp5+goTMyn5BE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VnLIESRUwK+VO30v2QGBF368fwsXDlgv9kD3y1yxH59KA8DlA/OAJCmx89bQKK7iGklhaj/7An91RAtUuV6YelCgAmxNqRIMGzFGTEIa4LJQE4eW8WcE+XZSPNkbnhUl3136g32IUaluTfIOYAW4BsT18716GYG3ucrrULpUU2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ItBn/Sl0; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-436249df846so17347565e9.3
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Jan 2025 09:43:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736531011; x=1737135811; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LxJz8MqeXBjnKI6kFTM6HAt0VIbHBekV4LBKCGRzAS0=;
+        b=ItBn/Sl0wUbwH/TyLkf/EVlV47dPSqUB7tkJB6SBaQ/hF/y2ygWfQEqFxvMCLQFi+b
+         45ZImb9wX36QLqKqmESnWesWGhaTEXI7cx0/pFXWxWrUlLT9x4mNthgNTYDn0Q7ArsvB
+         IBaaiVV4fYlDspa9bxkbIghUBKiDDrXkgzwelNjCG8yntjd8mozWU+8SSq1am3XWlOD9
+         pB1xq9Vgrw5q+3cshgOKukTuwm+UV1vBP3l6CX0uEEeArWr0d9kTVDPQLIcbOoAORT5y
+         XYIznGem36lo6+FL0uvOziq25kKAyryt4vLZhO5Ph3N0Gt71pWz8vc8KU3nKpuxbgVJc
+         jJ/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736531011; x=1737135811;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LxJz8MqeXBjnKI6kFTM6HAt0VIbHBekV4LBKCGRzAS0=;
+        b=cMjUsfNvhNam6QkiH6CJrBtXGM3mAoOIuqhPKubetmK1rW49BjTSjCrZyrttX2LoXZ
+         2v3juwHpDSATTMSlaRqD5+1wyH6f4wuYSQFLw/sVd21bXrHHKhuVSyIAVjjz2OJH1uFL
+         vGq2Z38NWpminRcjRQ69G685A0mY9vdYnBgoUdyPmbZ2gAr0uvZWaZ3ky40TwfPQh2N8
+         MB5U/EfpJeLxrtzcvk/W39pcDAxoj2UVOQmEEpOTy/sPKedvGyR3s4OGisAZzWLFaNEl
+         wviCCM5oDvHwzOlpn3IdHbGCkjoX3ruJYdHyXehxhWXOr4F41opxu95ocV7ap1k4Kjf4
+         4bgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ4paMuEsx179Rs3cnIjN/DoX1/DRvcmZxomzQNDgywUVev4f+p1l9itptstxi9LFOBZc1us+oWKHa@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUMi8eimAeAFR/wAcmG/uNFOmu9/0dGMtZmxYaSF6HDerh04rB
+	XYnDh/rVBjikgSDIBO1b/lLlYZzeY7KPVK3Fk9VMRrgKfUr6WEfJ1Ck/bHzUHfM=
+X-Gm-Gg: ASbGncvXLaPDh5TEHf0+fK0pf5g8Z1XfW4T4RLonMe9VjkteZ9D8a+8zOjXiQWfNZuN
+	ZeUIJ3FxrJkfPzrXlp33pOm9W09ErApnrt/1qltj+0T3NxSnWb9CzAzGveS64FjviKoHoVkcaJV
+	wi/6GQWhdWLXwMZjr5vMgecQKav3jNhs7hDu3o35mf6Z+d18rddyKc25L+WIUvf9fu6fqzlk/6V
+	DJIvfJwiQRPvZ5F2LbmQHvnL0LksJ9KpvJ5KgC4d7v5VFFVRvnDJc/o9lkuvMWZMDGwTy1LcOo/
+	ZszeP/qQKfjKzu+ZKrmo
+X-Google-Smtp-Source: AGHT+IGD1p5BWi+8fdojfwO/xsLJX8SqpKI8+n+3hiWhMt/TQN/d5LHbHuIgZ1cAKgtewl4Ayk+PkQ==
+X-Received: by 2002:a05:600c:1ca4:b0:434:9f81:76d5 with SMTP id 5b1f17b1804b1-436e26d931bmr96425175e9.22.1736531011203;
+        Fri, 10 Jan 2025 09:43:31 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38a8e38efeesm5165684f8f.62.2025.01.10.09.43.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 09:43:30 -0800 (PST)
+Message-ID: <286f5efc-cd15-4e0b-bec2-2e9bbb93dd37@linaro.org>
+Date: Fri, 10 Jan 2025 18:43:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,247 +81,118 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] cxl: Add extended linear cache address alias
- emission for cxl events
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
- tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
- alison.schofield@intel.com, ira.weiny@intel.com
-References: <20250110151913.3462283-1-dave.jiang@intel.com>
- <20250110151913.3462283-4-dave.jiang@intel.com>
+Subject: Re: Thermal driver with safeguards
+To: Werner Sembach <wse@tuxedocomputers.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: rui.zhang@intel.com, Hans de Goede <hdegoede@redhat.com>,
+ Armin Wolf <W_Armin@gmx.de>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ platform-driver-x86@vger.kernel.org
+References: <41483e2b-361b-4b84-88a7-24fc1eaae745@tuxedocomputers.com>
+ <6ed0eb0c-c31b-41b0-93ca-c6581249c7b7@linaro.org>
+ <3fbab873-c11f-40f7-b3eb-fa3c18528ba2@tuxedocomputers.com>
 Content-Language: en-US
-In-Reply-To: <20250110151913.3462283-4-dave.jiang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <3fbab873-c11f-40f7-b3eb-fa3c18528ba2@tuxedocomputers.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On 1/10/25 8:17 AM, Dave Jiang wrote:
-> Add the aliased address of extended linear cache when emitting event
-> trace for DRAM and general media of CXL events.
+On 10/01/2025 17:56, Werner Sembach wrote:
+> Hi Daniel,
 > 
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> ---
-> v2:
-> - Emit hpa_alias0 instead of hpa_alias. (Jonathan)
-> - Check valid cxlr before dereference. (Jonathan)
-> ---
->  drivers/cxl/core/core.h   |  5 +++++
->  drivers/cxl/core/mbox.c   | 33 +++++++++++++++++++++++++++++----
->  drivers/cxl/core/region.c | 12 ++++++++++++
->  drivers/cxl/core/trace.h  | 24 ++++++++++++++++--------
->  4 files changed, 62 insertions(+), 12 deletions(-)
+> Am 09.01.25 um 22:36 schrieb Daniel Lezcano:
+>> On 02/12/2024 15:52, Werner Sembach wrote:
+>>> Hi,
+>>>
+>>> given a pair of a temperature sensor and a fan, I want to implement a 
+>>> driver. that allows userspace to directly control the fan if it wants 
+>>> to. But have a minimum fan speed when certain high temperatures are 
+>>> reached to avoid crashes or hardware damage.
+>>
+>> From the userspace, use directly the thermal-engine which is currently 
+>> under development [1]. You can add your platform specific code in a 
+>> plugin while the thermal engine will catch all the thermal events and 
+>> pass them to it [2].
+>>
+>> The thermal engine has a configuration file which will setup the 
+>> thermal framework to be woken up at different temperatures.
+> That still requires to trust userspace/the user to not write dangerous 
+> values directly to sysfs?
+
+No, it is not a trip point but temperature thresholds. So if the 
+firmware defines trip points, the userspace can not change them.
+
+Userspace thresholds are new : https://lwn.net/Articles/986009/
+
+>> The thermal engine will be proposed for a distro package, so the 
+>> platform support will be automatically supported.
+>>
+>> Beside the trip points can be setup in the device to act on higher 
+>> temperature.
+> As far as i can tell these trip points only notify userspace but you 
+> can't attach code executed in kernel to it.
+
+[ ... ]
+
+>> What is unclear is how the fan is managed. I suggest to have a look at 
+>> pwm-fan.c in drivers/hwmon
 > 
-> diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-> index 0fb779b612d1..afbefc72c8fa 100644
-> --- a/drivers/cxl/core/core.h
-> +++ b/drivers/cxl/core/core.h
-> @@ -30,8 +30,13 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port);
->  struct cxl_region *cxl_dpa_to_region(const struct cxl_memdev *cxlmd, u64 dpa);
->  u64 cxl_dpa_to_hpa(struct cxl_region *cxlr, const struct cxl_memdev *cxlmd,
->  		   u64 dpa);
-> +int cxl_region_nid(struct cxl_region *cxlr);
->  
->  #else
-> +static inline int cxl_region_nid(struct cxl_region *cxlr)
-> +{
-> +	return NUMA_NO_NODE;
-> +}
->  static inline u64 cxl_dpa_to_hpa(struct cxl_region *cxlr,
->  				 const struct cxl_memdev *cxlmd, u64 dpa)
->  {
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index 548564c770c0..d7999260f004 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -856,6 +856,28 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
->  
-> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
-> +{
-> +	struct cxl_region_params *p;
-> +	int nid;
-> +
-> +	if (!cxlr)
-> +		return ~0ULL;
-> +
-> +	p = &cxlr->params;
-> +	if (!p->cache_size)
-> +		return ~0ULL;
-> +
-> +	nid = cxl_region_nid(cxlr);
-> +	if (nid == NUMA_NO_NODE)
-> +		nid = 0;
+> I already looked at hwmon, but that basically just writes trough values 
+> from and to userspace and has no kernel side management of temperatures 
+> and fan speeds whatsoever.
 
-Just noticed that this chunk and the related function can be dropped. Not used.
+IIUC, you request was about having the userspace to deal with a fan and 
+the kernel to be a safe guard, so taking over the thermal management 
+when the temperature is too high.
 
-DJ
+Obviously the monitored temperature must be for a device with a "slow" 
+temperature motion, userspace temperature management is not suitable for 
+fast temperature transitions.
+
+The thermal engine can for example configure different temperatures, 
+let's say: 43°C, 44°C, 46°C, 49°C and 54°C.
+
+Then the DT describes additional trip points for mitigation, one trip 
+point for mitigation could be enough (eg 80°C). One for "hot" to send to 
+the thermal engine a notification about getting really high so it can do 
+some userspace action like killing an application, and finally a 
+"critical" trip point to shutdown the system.
+
+The fan would be a cooling device with 0-100 values representing the 
+speed in percentage. The trip point at 80°C would be associated with the 
+fan with the <0, 100> cooling states.
+
+The dynamic of the thermal management could be the following:
+
+The temperature is changing and stays in the [35°C - 60°C] boundaries. 
+The thermal engine receives the events at the different aforementioned 
+temperatures and manage to act on the pwm fan via hwmon.
+
+For any reason the temperature goes above 80°C, at this moment the 
+kernel takes over the management and will increase/decrease the fan 
+speed between the 0% - 100% limits until the temperature goes below the 
+80°C.
+
+If it continues to increase and reaches the "hot" trip point, then an 
+events is sent to the userspace which should take an action to reduce 
+the temperature (kill the application, reduce the battery charge, drop 
+the frame rates, etc ...).
+
+If it continues to increase and reaches the "critical" trip point, then 
+the system shuts down.
+
+If the temperature decreases and goes below 80°C, then it returns to the 
+normal state and the thermal engine can continue its work.
+
+Does it make sense ?
 
 
-> +
-> +	if (hpa >= p->res->start + p->cache_size)
-> +		return hpa - p->cache_size;
-> +
-> +	return hpa + p->cache_size;
-> +}
-> +
->  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->  			    enum cxl_event_log_type type,
->  			    enum cxl_event_type event_type,
-> @@ -871,7 +893,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->  	}
->  
->  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
-> -		u64 dpa, hpa = ULLONG_MAX;
-> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias = 0;
->  		struct cxl_region *cxlr;
->  
->  		/*
-> @@ -884,14 +906,17 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->  
->  		dpa = le64_to_cpu(evt->media_hdr.phys_addr) & CXL_DPA_MASK;
->  		cxlr = cxl_dpa_to_region(cxlmd, dpa);
-> -		if (cxlr)
-> +		if (cxlr) {
->  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
-> +			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
-> +		}
->  
->  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
->  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
-> -						&evt->gen_media);
-> +						hpa_alias, &evt->gen_media);
->  		else if (event_type == CXL_CPER_EVENT_DRAM)
-> -			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
-> +			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
-> +				       &evt->dram);
->  	}
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, "CXL");
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 2d8699a86b24..5d23bd26d9ba 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -2417,6 +2417,18 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
->  	return true;
->  }
->  
-> +int cxl_region_nid(struct cxl_region *cxlr)
-> +{
-> +	struct cxl_region_params *p = &cxlr->params;
-> +	struct resource *res;
-> +
-> +	guard(rwsem_read)(&cxl_region_rwsem);
-> +	res = p->res;
-> +	if (!res)
-> +		return NUMA_NO_NODE;
-> +	return phys_to_target_node(res->start);
-> +}
-> +
->  static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
->  					  unsigned long action, void *arg)
->  {
-> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-> index 8389a94adb1a..257f60f16e4c 100644
-> --- a/drivers/cxl/core/trace.h
-> +++ b/drivers/cxl/core/trace.h
-> @@ -316,9 +316,10 @@ TRACE_EVENT(cxl_generic_event,
->  TRACE_EVENT(cxl_general_media,
->  
->  	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
-> -		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_gen_media *rec),
-> +		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
-> +		 struct cxl_event_gen_media *rec),
->  
-> -	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
-> +	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
->  
->  	TP_STRUCT__entry(
->  		CXL_EVT_TP_entry
-> @@ -332,6 +333,7 @@ TRACE_EVENT(cxl_general_media,
->  		__array(u8, comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE)
->  		/* Following are out of order to pack trace record */
->  		__field(u64, hpa)
-> +		__field(u64, hpa_alias)
->  		__field_struct(uuid_t, region_uuid)
->  		__field(u16, validity_flags)
->  		__field(u8, rank)
-> @@ -358,6 +360,7 @@ TRACE_EVENT(cxl_general_media,
->  			CXL_EVENT_GEN_MED_COMP_ID_SIZE);
->  		__entry->validity_flags = get_unaligned_le16(&rec->media_hdr.validity_flags);
->  		__entry->hpa = hpa;
-> +		__entry->hpa_alias = hpa_alias;
->  		if (cxlr) {
->  			__assign_str(region_name);
->  			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
-> @@ -370,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
->  	CXL_EVT_TP_printk("dpa=%llx dpa_flags='%s' " \
->  		"descriptor='%s' type='%s' transaction_type='%s' channel=%u rank=%u " \
->  		"device=%x comp_id=%s validity_flags='%s' " \
-> -		"hpa=%llx region=%s region_uuid=%pUb",
-> +		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
->  		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
->  		show_event_desc_flags(__entry->descriptor),
->  		show_gmer_mem_event_type(__entry->type),
-> @@ -378,7 +381,8 @@ TRACE_EVENT(cxl_general_media,
->  		__entry->channel, __entry->rank, __entry->device,
->  		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
->  		show_valid_flags(__entry->validity_flags),
-> -		__entry->hpa, __get_str(region_name), &__entry->region_uuid
-> +		__entry->hpa, __entry->hpa_alias, __get_str(region_name),
-> +		&__entry->region_uuid
->  	)
->  );
->  
-> @@ -424,9 +428,10 @@ TRACE_EVENT(cxl_general_media,
->  TRACE_EVENT(cxl_dram,
->  
->  	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
-> -		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_dram *rec),
-> +		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
-> +		 struct cxl_event_dram *rec),
->  
-> -	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
-> +	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
->  
->  	TP_STRUCT__entry(
->  		CXL_EVT_TP_entry
-> @@ -442,6 +447,7 @@ TRACE_EVENT(cxl_dram,
->  		__field(u32, row)
->  		__array(u8, cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE)
->  		__field(u64, hpa)
-> +		__field(u64, hpa_alias)
->  		__field_struct(uuid_t, region_uuid)
->  		__field(u8, rank)	/* Out of order to pack trace record */
->  		__field(u8, bank_group)	/* Out of order to pack trace record */
-> @@ -472,6 +478,7 @@ TRACE_EVENT(cxl_dram,
->  		memcpy(__entry->cor_mask, &rec->correction_mask,
->  			CXL_EVENT_DER_CORRECTION_MASK_SIZE);
->  		__entry->hpa = hpa;
-> +		__entry->hpa_alias = hpa_alias;
->  		if (cxlr) {
->  			__assign_str(region_name);
->  			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
-> @@ -485,7 +492,7 @@ TRACE_EVENT(cxl_dram,
->  		"transaction_type='%s' channel=%u rank=%u nibble_mask=%x " \
->  		"bank_group=%u bank=%u row=%u column=%u cor_mask=%s " \
->  		"validity_flags='%s' " \
-> -		"hpa=%llx region=%s region_uuid=%pUb",
-> +		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
->  		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
->  		show_event_desc_flags(__entry->descriptor),
->  		show_dram_mem_event_type(__entry->type),
-> @@ -495,7 +502,8 @@ TRACE_EVENT(cxl_dram,
->  		__entry->row, __entry->column,
->  		__print_hex(__entry->cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE),
->  		show_dram_valid_flags(__entry->validity_flags),
-> -		__entry->hpa, __get_str(region_name), &__entry->region_uuid
-> +		__entry->hpa_alias, __entry->hpa, __get_str(region_name),
-> +		&__entry->region_uuid
->  	)
->  );
->  
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
