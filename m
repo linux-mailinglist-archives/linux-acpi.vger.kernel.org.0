@@ -1,144 +1,158 @@
-Return-Path: <linux-acpi+bounces-10571-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10572-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4A6A0C107
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 20:10:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC3DA0C22B
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 20:55:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFE761885457
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 19:10:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6DA3A5FE5
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 19:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788AD1B86D5;
-	Mon, 13 Jan 2025 19:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EAF1C760D;
+	Mon, 13 Jan 2025 19:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfZKqT2b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IL5d+dpU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B90F240243;
-	Mon, 13 Jan 2025 19:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D152124022B;
+	Mon, 13 Jan 2025 19:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736795437; cv=none; b=AnXiMgyVqm5QTQBlAke76dVWg/ySKpX3d5AnTuEg2jf2Z2ZFQb6O0SkOVPbDwSZY2O6WfdsIYACC2VgYmF95OSV7hK7JCZQpDVg5AYyMGa4JJ3zJyJWlByryuR3nGaANpoaEWlKoXSRSBBLI4SW7GLysdeNZRXAP9RRrddjmMyw=
+	t=1736798045; cv=none; b=SsTKZYCys1h/x93+D9KoV6pTRn6esP6LpMn9aFDkqOy/bZLtsCXICRGhSaL+mBej09c3MJ8sa8oqKY5mDcBW9TSKcMqztVS/eZV3tpMXgCQVX7/pk69Jy3pifU09pCuhMMXxbIpSLYcdshN8Cy0we6uVZnsAgFFgWKkZ9wQOkfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736795437; c=relaxed/simple;
-	bh=bTCFDf8vCyq8nYMCcZs1lYvphn31XnUPAGDIocgH0TE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=koUL0DOE85iNNYrCRn4avLkbCfu/G/c6zm+OM3qsZi/liXjC3VKs9xxB6oXsqc0MBrI95QeJz8TRU1GXtB1nUEOo1nSFjGpw7NATYlhyhiapBrztbzh/pOk1nE3BHQEcNPbcUX42RtOaaA2ghJrBHgaVMcYZqRX0zD/qBqO7LNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfZKqT2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2167C4CEE2;
-	Mon, 13 Jan 2025 19:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736795436;
-	bh=bTCFDf8vCyq8nYMCcZs1lYvphn31XnUPAGDIocgH0TE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QfZKqT2bWMTV/3L/AcUNm1kI0/42VI/83XLFG+qRjhnr8V5mZlg9LNN+N56COT0ny
-	 w3gWs9QaxKfLzQydZoQubYcwkQUy12ZQOMvGC8/UHpzXalH9dFtUNBlgDEza/UtyAF
-	 zEvqO2XlEcSPgu4T0D4otttk3Q9WJqmUCUQ0TbnostfDoFd6cahXn84D3Bx3KUa1JK
-	 zsoqEGyiGQFjuW+ve/HszINNuYpSTNypmmHJefmnyDVaOKjktQ5UdQHmlRdWNJSz14
-	 fKN6KkX0++qnil9MFVfOqtBw1HAdHSHgCft9oL4iwBIFdw1E+0oN5e8q0yAMfsCak2
-	 ehAE19pqC1cPA==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-29fc424237bso3969586fac.0;
-        Mon, 13 Jan 2025 11:10:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV/q6As6Yx9FHbQPejnySYuSIYCmAayMkrug2bRHMeYx05bgrl3C63a+mDh22jcnQnSU/ptrLqED713bi1m@vger.kernel.org, AJvYcCVbl8A9N14XnGRIBVmM/FdRSSdPh2nPN45RwFJb/nVD2CLUf4SOjrWhSUbjjGBxZSat7wonNzaQa+J8@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPv8tL6OnPnZcliw+EEChfESYSsxSqku+DKNrFZsEHvlSWVMdv
-	VRtIHpbH6Sa8BV4oVxXxpNuS+2WxZ1zTS50Lhd+A22KIT4TGmaiASfYlnho/37D89ebdOrN7FWx
-	OCr+PGl6F56IRZuVkpx3rTBUcRNQ=
-X-Google-Smtp-Source: AGHT+IHbOkT372wvF7l4NndlribXQWuRLbK8G76+BOB3qhvYxzram7wGgZ0+Qn1COcLDTgfu52NR/4dzjR3YhbbyM/M=
-X-Received: by 2002:a05:6870:ef11:b0:29e:34ef:bd7d with SMTP id
- 586e51a60fabf-2aa06647c89mr12263944fac.2.1736795436000; Mon, 13 Jan 2025
- 11:10:36 -0800 (PST)
+	s=arc-20240116; t=1736798045; c=relaxed/simple;
+	bh=k4LKV03K423NSP5l/ihlxE8Wb1V7/r55T6m4NqGTao0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fqiYs99i32IfAKxrJm6mf+RP/V6tE6Eg7EcErIKlE6gJmXCofBnrc2tP/jOy6VPLATl0B15Sg1mc/QAOH1kmv31M7gpd22KUO6bCUR+zjAL7wWd/PDvZ+T+q1+jzlVd+V71883STUWomZMK/CGF/Vip+YiaRuRt/yMFB9ldXCoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IL5d+dpU; arc=none smtp.client-ip=209.85.166.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3a8ed4c8647so31347955ab.1;
+        Mon, 13 Jan 2025 11:54:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736798043; x=1737402843; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OKxXqQsXK67zY0f/rcAukBJy+7D1L/GVlyST+DZVEuM=;
+        b=IL5d+dpUVtILLfoanroCsFjx3Boiti7wU1J9EgbTsFNFn4vwY6cc5zPeDZQRejFbJi
+         Z1a5WoI4wvFByemxPbg3dFaeO9vzLiuXLCd4Gdx7nN1UPyM+b+jiWvVJKlCUGji4MXcj
+         retcm9OzjIN+lBzKqqq2n9onCpda1UuIr0lsrG38E4n9YR06BjYVdjgTux1PTZ0AUaYk
+         l5CNkIjLArYIvcXolTfli33GvLkK8NQXbNwJwTsTsqKjVKD3GLgAIbfNDZHZYgdZJykd
+         AwTfLd3zaOlKZvJ/EZ2xxfXKRFphlyujnOXW9qRFmXFH2TUNMfRczdhZtH3lTFQVLqiX
+         0djQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736798043; x=1737402843;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OKxXqQsXK67zY0f/rcAukBJy+7D1L/GVlyST+DZVEuM=;
+        b=r1ddkKrBA8YtGNOGdmczm/WTnhvqbLGapkh8U9/ncSk4Cx4cYYaZXhvJqVJ8DpDNdM
+         Pu91GrGlHDiq5agsveWdGhAzkogl4aXGAbSeeTTZs7JK/JiGKLTgbWxtsRk8+xBt6aGT
+         NEIn4A05kbAWADd2zBXu/8AZ/3rgWPMpai14Wgqjhzc8mh24/StbPY3y2iiQCkFfPTe2
+         y9LYi+v7oKiZmD80gLHwIsoUyTlQQTb95prnlao0shH4MtEwWGTtvndCy3thxmZm/VSs
+         A5juUBU4hgQMx9G+gT7ruORnOVThOJHG8KBcYCvWOv0dBa37rZ9PHQrxPNyTmj5RSSmh
+         xJHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4w7yDRsXvoxjAuYlkfFkZzj2ZE/SvzzE1k3i7oUO6aA7lEcVP6iZS2rr6AInY5J2Vxlz+1UqBXPRn@vger.kernel.org, AJvYcCWa0Xx8w1r5Hw9Qro0cnVJspdhJYYOhLDmiZuq5cSXfPfERX/dTbOck/qN43UBI2Awx4JnLrrSHGEws@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5AYEqoUREJFi3P7edck73ng8dTe2C1I74EY2CGDaIifR8kot1
+	zlM9UVJI5AJPqL05K68VpPGr8QpOfRydTyH2UOPPALsUIHEnVFyR
+X-Gm-Gg: ASbGnct7BtNwDx1JtO0T9hWcP3OIlSE7eRj15yEQS8dgayLcip68f4WKpZaJH2KQuBF
+	SLlGZ7Hq7mAYosnTwCuniVd2Bhwl0J4ujEJx6mDs69iLY1VrFs1xPGKP3p7iAk9MC0Zs/ZiSsEB
+	s30GP0CySymM7IGfcbycNw1msNto3kUCRu6B/IOwDGqFyjOnxWL3ZNJFZgK26osOc7XhvsGRVH5
+	PLfEnN+/oyehheEo9T+G7R2+wbEZ0LOgTfBm6Hz06JMQK3qXZ6sK0l7eRI0HEuIZy/s
+X-Google-Smtp-Source: AGHT+IEiwvzn83fg1Frt3wf+UWSofVoJHAie5XO+is/r7E1bOzADaXMj6y0grvmwXjN8wODaDURw8w==
+X-Received: by 2002:a05:6e02:194c:b0:3a7:7ec0:a3dc with SMTP id e9e14a558f8ab-3ce3a88a2femr183819145ab.14.1736798042856;
+        Mon, 13 Jan 2025 11:54:02 -0800 (PST)
+Received: from LENOVO-V15-G4-L.lan ([128.211.252.159])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ea1b5f93ffsm2922575173.18.2025.01.13.11.54.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 11:54:02 -0800 (PST)
+From: Randolph Ha <rha051117@gmail.com>
+To: mika.westerberg@linux.intel.com
+Cc: wsa+renesas@sang-engineering.com,
+	linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	trivial@kernel.org,
+	jarkko.nikula@linux.intel.com,
+	Randolph Ha <rha051117@gmail.com>
+Subject: [PATCH] Force ELAN06FA touchpad I2C bus freq to 100KHz
+Date: Mon, 13 Jan 2025 14:52:37 -0500
+Message-ID: <20250113195308.244372-2-rha051117@gmail.com>
+X-Mailer: git-send-email 2.48.0
+In-Reply-To: <20250113064802.GJ3713119@black.fi.intel.com>
+References: <20250113064802.GJ3713119@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250113174439.1965168-1-gourry@gourry.net> <20250113174439.1965168-4-gourry@gourry.net>
-In-Reply-To: <20250113174439.1965168-4-gourry@gourry.net>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 13 Jan 2025 20:10:24 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gU-VF_wDYP-WLxt3MsT4WqXQZStCwB4YkBphqQrS6y1w@mail.gmail.com>
-X-Gm-Features: AbW1kvbwxtKXkdt67DuIfKDHva3LhOsCwSa18Z-abQ2l0M082G5kljHn9SOjGqk
-Message-ID: <CAJZ5v0gU-VF_wDYP-WLxt3MsT4WqXQZStCwB4YkBphqQrS6y1w@mail.gmail.com>
-Subject: Re: [RESEND v7 3/3] acpi,srat: give memory block size advice based on
- CFMWS alignment
-To: gourry@gourry.net
-Cc: linux-mm@kvack.org, linux-acpi@vger.kernel.org, kernel-team@meta.com, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, dave.hansen@linux.intel.com, 
-	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, hpa@zytor.com, rafael@kernel.org, lenb@kernel.org, 
-	david@redhat.com, osalvador@suse.de, gregkh@linuxfoundation.org, 
-	akpm@linux-foundation.org, dan.j.williams@intel.com, 
-	Jonathan.Cameron@huawei.com, alison.schofield@intel.com, rrichter@amd.com, 
-	rppt@kernel.org, bfaccini@nvidia.com, haibo1.xu@intel.com, 
-	dave.jiang@intel.com, Fan Ni <fan.ni@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 13, 2025 at 6:44=E2=80=AFPM Gregory Price <gourry@gourry.net> w=
-rote:
->
-> Capacity is stranded when CFMWS regions are not aligned to block size.
-> On x86, block size increases with capacity (2G blocks @ 64G capacity).
->
-> Use CFMWS base/size to report memory block size alignment advice.
->
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Dan Williams <dan.j.williams@intel.com>
-> Tested-by: Fan Ni <fan.ni@samsung.com>
+When a 400KHz freq is used on this model of ELAN touchpad in Linux,
+excessive smoothing (similar to when the touchpad's firmware detects
+a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
+V15 G4) ACPI tables specify a 400KHz frequency for this device and
+some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
+force the speed to 100KHz as a workaround.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+For future investigation: This problem may be related to the default
+HCNT/LCNT values given by some busses' drivers, because they are not
+specified in the aforementioned devices' ACPI tables, and because
+the device works without issues on Windows at what is expected to be
+a 400KHz frequency. The root cause of the issue is not known.
 
-> ---
->  drivers/acpi/numa/srat.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 59fffe34c9d0..7526119fe945 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -14,6 +14,7 @@
->  #include <linux/errno.h>
->  #include <linux/acpi.h>
->  #include <linux/memblock.h>
-> +#include <linux/memory.h>
->  #include <linux/numa.h>
->  #include <linux/nodemask.h>
->  #include <linux/topology.h>
-> @@ -425,13 +426,22 @@ static int __init acpi_parse_cfmws(union acpi_subta=
-ble_headers *header,
->  {
->         struct acpi_cedt_cfmws *cfmws;
->         int *fake_pxm =3D arg;
-> -       u64 start, end;
-> +       u64 start, end, align;
->         int node;
->
->         cfmws =3D (struct acpi_cedt_cfmws *)header;
->         start =3D cfmws->base_hpa;
->         end =3D cfmws->base_hpa + cfmws->window_size;
->
-> +       /* Align memblock size to CFMW regions if possible */
-> +       align =3D 1UL << __ffs(start | end);
-> +       if (align >=3D SZ_256M) {
-> +               if (memory_block_advise_max_size(align) < 0)
-> +                       pr_warn("CFMWS: memblock size advise failed\n");
-> +       } else {
-> +               pr_err("CFMWS: [BIOS BUG] base/size alignment violates sp=
-ec\n");
-> +       }
-> +
->         /*
->          * The SRAT may have already described NUMA details for all,
->          * or a portion of, this CFMWS HPA range. Extend the memblks
-> --
-> 2.47.1
->
+Signed-off-by: Randolph Ha <rha051117@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 14ae0cfc325e..d2499f302b50 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -355,6 +355,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
+ 	{}
+ };
+ 
++static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
++	/*
++	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
++	 * excessive smoothing (similar to when the touchpad's firmware detects
++	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
++	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
++	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
++	 * force the speed to 100KHz as a workaround.
++	 *
++	 * For future investigation: This problem may be related to the default
++	 * HCNT/LCNT values given by some busses' drivers, because they are not
++	 * specified in the aforementioned devices' ACPI tables, and because
++	 * the device works without issues on Windows at what is expected to be
++	 * a 400KHz frequency. The root cause of the issue is not known.
++	 */
++	{ "ELAN06FA", 0 },
++	{}
++};
++
+ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 					   void *data, void **return_value)
+ {
+@@ -373,6 +392,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
+ 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
+ 
++	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
++		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
++
+ 	return AE_OK;
+ }
+ 
+-- 
+2.48.0
+
 
