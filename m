@@ -1,161 +1,206 @@
-Return-Path: <linux-acpi+bounces-10550-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10551-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C3A0B785
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 13:52:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D63CA0B787
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 13:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0AA3A102C
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 12:52:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 708143A0616
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 12:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DC922A4C6;
-	Mon, 13 Jan 2025 12:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JIUBdYPQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C34F22A4C6;
+	Mon, 13 Jan 2025 12:53:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5590C22CF28;
-	Mon, 13 Jan 2025 12:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEE422AE7E;
+	Mon, 13 Jan 2025 12:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736772765; cv=none; b=OjM9hYdoEiYEFyd4ZQPkUO1WW6EukZVFeXsC1so+RIFMswrQak8wUHMBBx6HTLgQJq0q4DP6featcEGPAAFfaLdZP2qyuHEUyzJd2UH4rW5J0xs0KKIiOs01ef7Dxu2EV3JmuX07YyWyF7vIV+oYj3u3SQ7Uz4m3wOqDgQDUKuk=
+	t=1736772795; cv=none; b=UA84886UFSIdtY6vCFEtwZjNQbHT0mfudVvBFjwqmYpxegTAr+2Qa9Dy8nX7lidKkEGgHyLPVGWHd8yeSXJHRhrsQLvgaMthrK/yRaT21Zesf1iZyYSBijSROMZ1LZ1NnmWNPBov8Kb9QDKKArHmzA97+rcGBnfMu1MMxT5PmTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736772765; c=relaxed/simple;
-	bh=8L2Bx6wyTsiMLFizzFAiv9h+iFO4RdTLh5spizOVB70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CWKrMNFdo2p/zNRccqlYEnX7WwnWNlyoHy0pHgXpwiNGKHcbtoWXvE723xQXHRbFk+16Juh/rPGj+m4Uie2R4UHTe/FimPl1sH6ZetU/pczdQT+rjliDIz7uYNT1j69lDwpsXNJyFc9x1JM9AUVgKgEHxhnMXbrBHB2u7nTU7LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JIUBdYPQ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 951E940E0269;
-	Mon, 13 Jan 2025 12:52:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id WEKjoHmI4xWX; Mon, 13 Jan 2025 12:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1736772758; bh=0UNV0bQTKwtwldy5i3LLGz/9XmmOjJYU/JIbccn+3jg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JIUBdYPQuY760k6lvoOdVL3UgnZ1b14nIz91SId0ofB9dFVMiso9zi3OL2zwCgDKx
-	 wSiCbW4N6l2Eo7NcyLIn8duCJ1giO+hNJ5Xm78E5scprXOrJICvWT8fpnniDo3uv5U
-	 UFjfoOC2iW4s7aWAyTYs8ahYnOevtDr0fbnZInRHI8xp9tyehtz2JSiKahMPn3javw
-	 WxP+g3ozK5c9y2+CwGenXWX/CyQNElq2lQkR8o4k13GNyHTJkmXsR44wezOLPGihfD
-	 2LOQePY69ewACorW8+J5hikH0/q8YKKRF7P/QqDbMQR5HjSQJnBRSFZZDdXeRDiVLe
-	 JoLFxjQFO5QCnCWk74IYhHyUuH1U6FGM4Fq0HN3/fc1VNclhz5lE2jJnCFDlOuwKve
-	 o4ovGEsgsh3lXmT33wLgzI89FOQ7FAWsf2GPgLrtjOQRR78C/n/iP+9xFndZg9QgPG
-	 014ElUDZdecvqlZiC4KTTMp119cF7yMZiz51QEzj9bEmCfJUsssJ77Kd7cQVLgnjE1
-	 rpm9jrPZtJ34OxthCLT2u0qlk0chDHZq7cFwtIh8mog2yFh9JGuveLMY47TtA8ADjL
-	 v3uGVbliHsGSLwj+9WXGWkT8R0NfxLFBbrpNhyfXWif4pXYkB0C5Y7YW1BN6ir/SWH
-	 pyIL4fMGpW7py3qH0gd9M5L8=
-Received: from zn.tnic (pd953008e.dip0.t-ipconnect.de [217.83.0.142])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E058840E01F9;
-	Mon, 13 Jan 2025 12:52:24 +0000 (UTC)
-Date: Mon, 13 Jan 2025 13:52:24 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>, rafael@kernel.org,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Andi Kleen <ak@linux.intel.com>
-Subject: [PATCH] APEI: GHES: Have GHES honor the panic= setting
-Message-ID: <20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local>
-References: <Z3KGopUvilZLwsBK@U-2FWC9VHC-2323.local>
- <20241230121009.GDZ3KNoe0-hUwQDLG7@fat_crate.local>
- <Z3KaSxr2sjCC8FpJ@U-2FWC9VHC-2323.local>
- <20241230132403.GEZ3Ke8zm7HxSv84pA@fat_crate.local>
- <Z3OS4LCCxfVN32uH@U-2FWC9VHC-2323.local>
- <20241231092358.GAZ3O4LroNtlnztneC@fat_crate.local>
- <Z3PEXxFTGXW2j2F3@U-2FWC9VHC-2323.local>
- <20241231111314.GDZ3PRyq_tiU002p5d@fat_crate.local>
- <87ikqydja9.fsf@DESKTOP-5N7EMDA>
- <20250102083509.GAZ3ZPvcUhl9v6Kbp_@fat_crate.local>
+	s=arc-20240116; t=1736772795; c=relaxed/simple;
+	bh=AA8jZnFmdoGbUCUabODJ9HmGqKlbVQE6we7iGv5E3VU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rwV33iCorRo4BnK/zm2pSfctAg/M1DmkcnV0kTc/Ivk+d1laJTrG7F0Mx7zwt3MW2kluZwGEkn6QFjyd5A/02v0JVK0zo3/ip3Hrv904KuKvR0bvhBnKqnfMi8QkDMXaavbRhY7dT539DkVOVMCkLaDXLK/LKHQLn7zRiB75zg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YWsZm1Vs7z6M4qx;
+	Mon, 13 Jan 2025 20:51:28 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 60FC2140A70;
+	Mon, 13 Jan 2025 20:53:10 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 13 Jan
+ 2025 13:53:09 +0100
+Date: Mon, 13 Jan 2025 12:53:08 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Dave Jiang <dave.jiang@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<rafael@kernel.org>, <bp@alien8.de>, <dan.j.williams@intel.com>,
+	<tony.luck@intel.com>, <dave@stgolabs.net>, <alison.schofield@intel.com>,
+	<ira.weiny@intel.com>
+Subject: Re: [PATCH v2 3/4] cxl: Add extended linear cache address alias
+ emission for cxl events
+Message-ID: <20250113125308.000016f9@huawei.com>
+In-Reply-To: <26ca18aa-6f77-4991-8cfd-42262dfa9f1a@intel.com>
+References: <20250110151913.3462283-1-dave.jiang@intel.com>
+	<20250110151913.3462283-4-dave.jiang@intel.com>
+	<20250110163234.00004c6f@huawei.com>
+	<26ca18aa-6f77-4991-8cfd-42262dfa9f1a@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250102083509.GAZ3ZPvcUhl9v6Kbp_@fat_crate.local>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-The GHES driver overrides the panic= setting by force-rebooting the
-system after a fatal hw error has been reported. The intent being that
-such an error would be reported earlier.
+On Fri, 10 Jan 2025 10:27:52 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-However, this is not optimal when a hard-to-debug issue requires long
-time to reproduce and when that happens, the box will get rebooted after
-30 seconds and thus destroy the whole hw context of when the error
-happened.
+> On 1/10/25 9:32 AM, Jonathan Cameron wrote:
+> > On Fri, 10 Jan 2025 08:17:46 -0700
+> > Dave Jiang <dave.jiang@intel.com> wrote:
+> >   
+> >> Add the aliased address of extended linear cache when emitting event
+> >> trace for DRAM and general media of CXL events.
+> >>
+> >> Signed-off-by: Dave Jiang <dave.jiang@intel.com>  
+> > I think the value set when there isn't a value differs between no
+> > cache and no region. That seems an odd bit of ABI.  Maybe go with ~0ULL in
+> > both cases?  
+> 
+> Not sure I follow. Currently both cases do return ~0ULL.
 
-So rip out the default GHES panic timeout and honor the global one.
-
-In the panic disabled (panic=0) case, the error will still be logged to
-dmesg for later inspection and if panic after a hw error is really
-required, then that can be controlled the usual way - use panic= on the
-cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
-
-Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 07789f0b59bc..b72772494655 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -173,8 +173,6 @@ static struct gen_pool *ghes_estatus_pool;
- static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
- 
--static int ghes_panic_timeout __read_mostly = 30;
--
- static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
- {
- 	phys_addr_t paddr;
-@@ -983,14 +981,16 @@ static void __ghes_panic(struct ghes *ghes,
- 			 struct acpi_hest_generic_status *estatus,
- 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
- {
-+	const char *msg = GHES_PFX "Fatal hardware error";
-+
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
--	/* reboot to log the error! */
- 	if (!panic_timeout)
--		panic_timeout = ghes_panic_timeout;
--	panic("Fatal hardware error!");
-+		pr_emerg("%s but panic disabled\n", msg);
-+
-+	panic(msg);
- }
- 
- static int ghes_proc(struct ghes *ghes)
--- 
-2.43.0
+See inline.  I don't think they do... In the no region case
+hpa is ~0ULL, hpa_alias is 0
 
 
--- 
-Regards/Gruss,
-    Boris.
+> 
+> DJ
+> 
+> > 
+> > Other than tidying that up this looks fine to me.
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >   
+> >> ---
+> >> v2:
+> >> - Emit hpa_alias0 instead of hpa_alias. (Jonathan)
+> >> - Check valid cxlr before dereference. (Jonathan)
+> >> ---
+> >>  drivers/cxl/core/core.h   |  5 +++++
+> >>  drivers/cxl/core/mbox.c   | 33 +++++++++++++++++++++++++++++----
+> >>  drivers/cxl/core/region.c | 12 ++++++++++++
+> >>  drivers/cxl/core/trace.h  | 24 ++++++++++++++++--------
+> >>  4 files changed, 62 insertions(+), 12 deletions(-)
+> >>
+> >> diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+> >> index 0fb779b612d1..afbefc72c8fa 100644
+> >> --- a/drivers/cxl/core/core.h
+> >> +++ b/drivers/cxl/core/core.h
+> >> @@ -30,8 +30,13 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port);
+> >>  struct cxl_region *cxl_dpa_to_region(const struct cxl_memdev *cxlmd, u64 dpa);
+> >>  u64 cxl_dpa_to_hpa(struct cxl_region *cxlr, const struct cxl_memdev *cxlmd,
+> >>  		   u64 dpa);
+> >> +int cxl_region_nid(struct cxl_region *cxlr);
+> >>  
+> >>  #else
+> >> +static inline int cxl_region_nid(struct cxl_region *cxlr)
+> >> +{
+> >> +	return NUMA_NO_NODE;
+> >> +}
+> >>  static inline u64 cxl_dpa_to_hpa(struct cxl_region *cxlr,
+> >>  				 const struct cxl_memdev *cxlmd, u64 dpa)
+> >>  {
+> >> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> >> index 548564c770c0..d7999260f004 100644
+> >> --- a/drivers/cxl/core/mbox.c
+> >> +++ b/drivers/cxl/core/mbox.c
+> >> @@ -856,6 +856,28 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
+> >>  }
+> >>  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
+> >>  
+> >> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
+> >> +{
+> >> +	struct cxl_region_params *p;
+> >> +	int nid;
+> >> +
+> >> +	if (!cxlr)
+> >> +		return ~0ULL;  
+> >   
+> >> +	p = &cxlr->params;
+> >> +	if (!p->cache_size)
+> >> +		return ~0ULL;  
+> > 
+> > So no cache is all 1s. .. See below.
+> >   
+> >> +
+> >> +	nid = cxl_region_nid(cxlr);
+> >> +	if (nid == NUMA_NO_NODE)
+> >> +		nid = 0;
+> >> +
+> >> +	if (hpa >= p->res->start + p->cache_size)
+> >> +		return hpa - p->cache_size;
+> >> +
+> >> +	return hpa + p->cache_size;
+> >> +}
+> >> +
+> >>  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+> >>  			    enum cxl_event_log_type type,
+> >>  			    enum cxl_event_type event_type,
+> >> @@ -871,7 +893,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+> >>  	}
+> >>  
+> >>  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
+> >> -		u64 dpa, hpa = ULLONG_MAX;
+> >> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias = 0;  
+> > 
+> > If I read this right if there is a region but no alias then the hpa_alias is
+> > ~0ULL but if there no region it is 0.  Seems a tiny bit inconsistent.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Here you set hpa_alias to 0.
+
+> >   
+> >>  		struct cxl_region *cxlr;
+> >>  
+> >>  		/*
+> >> @@ -884,14 +906,17 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+> >>  
+> >>  		dpa = le64_to_cpu(evt->media_hdr.phys_addr) & CXL_DPA_MASK;
+> >>  		cxlr = cxl_dpa_to_region(cxlmd, dpa);
+> >> -		if (cxlr)
+> >> +		if (cxlr) {
+
+If no region, nothing changes hpa_alias.
+
+> >>  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
+> >> +			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
+> >> +		}
+> >>  
+> >>  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
+> >>  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
+> >> -						&evt->gen_media);
+> >> +						hpa_alias, &evt->gen_media);
+> >>  		else if (event_type == CXL_CPER_EVENT_DRAM)
+> >> -			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
+> >> +			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
+> >> +				       &evt->dram);
+> >>  	}
+> >>  }  
+> > 
+> >   
+> 
+> 
+
 
