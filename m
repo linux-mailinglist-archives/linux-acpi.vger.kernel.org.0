@@ -1,551 +1,180 @@
-Return-Path: <linux-acpi+bounces-10558-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10559-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69091A0BCEF
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 17:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E10A0BF13
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 18:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BDBF1644BF
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 16:09:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5119167D99
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 17:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63E11CA8D;
-	Mon, 13 Jan 2025 16:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6B01BC9F6;
+	Mon, 13 Jan 2025 17:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhRuLy+e"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="gWD8sduM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925901C5D77;
-	Mon, 13 Jan 2025 16:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BCD18E764
+	for <linux-acpi@vger.kernel.org>; Mon, 13 Jan 2025 17:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736784567; cv=none; b=ZSlma7/EZ5+ZnVUPxFRxyMmHtvk2S950ly3iApml1YQ1xSRRTXhcu62M4Q0UXvsTCkgh7GZqh22W1XLthsR3ENwthY4y7iR9rYPdNSJDekNHN63aJLrpiCMQ3T8gHdtHzoiPZU0VxlLT6OLjXAIR56WrkA65nkFzeRWp1+SIksM=
+	t=1736790291; cv=none; b=sHz+sRrmsWT3wckslAzXuAM5u3Uj15VYqjf76s4EU2N2gI90iz9rUVYFxHZHZ38kuRgOHxrPY4Ow5lmpw4Ba9n6zsNrf71gEtlOD+diN8WFoKE3ksA40NDJXncafvTcEqR4RnMLpnPDg7P3kjbXoXyld0jRddxyYk3ERZ4mKTP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736784567; c=relaxed/simple;
-	bh=uCpbeZrOPACnClDrIepT6/MwVADSkxgnONV2Y/9ztxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Im0OwhXaTV/fLXKy0woLge3tnqWj841WQiEJAEbwXW4BoZ5EmR26NgY+6EtydF8Rpljp9cSEkIwU2zRSgTljyqYXk01O5W2ZrPC5/sPQZbbN4TEynk5WSuYu/TdoNPUwhzupVINPSbUL8j3WujjJwnVJ+cQWnI8sN/7XSeRp07Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhRuLy+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8630C4CED6;
-	Mon, 13 Jan 2025 16:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736784567;
-	bh=uCpbeZrOPACnClDrIepT6/MwVADSkxgnONV2Y/9ztxc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UhRuLy+eRqY84pPwgd+vB2nl37v6/ErmrtDFv7vcyF7gICkbi3dINuc1kIeqZwkuT
-	 DqvWPk+FpVOfKcKNHKpL2+4hP9cQ1OxNV7ZElrdJ6pMPS90wwkhWHC0z0o30IpQD9H
-	 gIVEFYMXEBAxei7FOT+Pvu0WTblbSvdU8NHmsh2rsqOxkzLvh4wMIXr6++F786fyDS
-	 rxjD4o0rrsjoZ1jFWUInfud+mcFTf3wIDF/QMgQBA387wnvSUg2fZiZRirKl0f5jAZ
-	 7371cKYXeXwqLXT6p0mfHKENRK0U2qCkjyWKoGKpaurUjrJizaORswq5S3EHTNXedO
-	 7xEbqKBWeBTMQ==
-Date: Mon, 13 Jan 2025 17:09:15 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: <shiju.jose@huawei.com>
-Cc: <linux-edac@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
- <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <bp@alien8.de>, <tony.luck@intel.com>,
- <rafael@kernel.org>, <lenb@kernel.org>, <mchehab@kernel.org>,
- <dan.j.williams@intel.com>, <dave@stgolabs.net>,
- <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
- <alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
- <ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
- <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
- <jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
- <naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
- <somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
- <duenwen@google.com>, <gthelen@google.com>,
- <wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
- <wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>,
- <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
- <roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
- <wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v18 03/19] EDAC: Add ECS control feature
-Message-ID: <20250113170915.0b752c99@foz.lan>
-In-Reply-To: <20250106121017.1620-4-shiju.jose@huawei.com>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
-	<20250106121017.1620-4-shiju.jose@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1736790291; c=relaxed/simple;
+	bh=pu7iIprMdueTl2ohHEpNV4okTctQsI90dmSFl4GE6TY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O3mg8RDQnuDEMAHVoD5V3PDyq17eqqDuxg9AIKFRl1jq9nWpn0XRYJTNMkL+g3lt7XLTtG+xhrDH6dYKkMq/ZGLWJQUiJFDGkY2ZkvqVKWHFQDrTi/c72wDQGNGdBseUwdCtQokljxi3vNeGOh2rSzD5SvXleVNvck4Gm4hrd0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=gWD8sduM; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7bcf33f698dso232638785a.2
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Jan 2025 09:44:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1736790288; x=1737395088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZDY+roqlFWFlucPr2s+hwWgkw5ODZbVNYznP3NH7H8=;
+        b=gWD8sduMLbWW+Q20AHNqlcJEWvTzLzSr7ZC3/B1ogXzD0/9Bp5Kp1II6hPCRDjCuzM
+         ARRqyz9fX62eOeyqlbPwsvZylX+2mVvCRVJVUDAZrMniZvtK/J68DFpaNTSfZj88Kzu7
+         qIMaguLEsP80Irw7kKm/yNgzBxlAlfSkCRFjEL1lmZ1OGKdkzgmA8+kS9+5NUoDABZe0
+         fLQKGetagvDx0/eXiPTYD0xIPNrWDNVxREaSvNTe+Qoc7WGDdsr/4fuxh2xbyf3QDT+D
+         FhwfVDL7TX0S9yoI+tcXdM2bSeKPciX5XS4u0XWLTSXvom6PVX1UAebuHrStnPDMdwdV
+         MpMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736790288; x=1737395088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eZDY+roqlFWFlucPr2s+hwWgkw5ODZbVNYznP3NH7H8=;
+        b=YBOuecshddodJRYSD1PfVUQOwBOpSLfbrHMlcj6d1KUTY3Xb9EKdhQqp+M+ljdNfcK
+         bkuzOmGdVUSpMLwVkQaN/mWeQCHO/mC6Tc1+x57RBLOqtwEr2ozAucmFIxa27YNpaj/4
+         uBa76rInVopetfXPyfwsoFJC1AbQYprnwAnhYb9r1WAoH3qTWPO0spNfJmv4SjFPN/Ur
+         Rhn0GcklRC8l1ElG6OtzvDHOJdqfErg85GR1t+EEVPaMCKYXGAbQPBLfuQAT/Ptq8MmH
+         hkzLWxT8jfXSx+3ZlJJhLBOCud71uXQiM3cbYMcGgZvIqZXAjGXqcnmXVKwMNfB6PD3O
+         wOPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxTpKdFXjDc7NMLv7Mq7sA5gh4qFlUkWPP21UJcg8uJov3LiVFcGODvYMEVPp7tKU8Afda03PYG6zk@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLqfbS5oqjisamoNHuS8ycTts/nVYRIOXHGY3IfsYXH3iOZJN+
+	g2ZCIPpLF91s/lTDA9S0ljNLQpesTgbtv1R7UxpfLnAjrBCyzwaAUQ9FTkCZI94=
+X-Gm-Gg: ASbGnct0VEaHcM9SpiIE+Q8yh7WwoEFfh4+tt/aQ7/9YGO4V4qvOCCltLAWQVw3Befu
+	g3yDgPVYtLeMnmIsrxroM2BxqWvEIploIV6kbJNm+kUIn1WhVm9zSaWAg9w+S8INFmDI/yRA8fg
+	b9i18q/p10qv2yR8gMWPDvvUnBBa3TeHVcpDsPJsrnsLyYOkcBYd/c00qbAPF8dDRQZGLUKgCj+
+	FRIBAiB+7AozkaxV0hFALsdWDS2j3rhshXHBx/Qu55HMO/MtZac7iV40P5IKyq3EQwxwkhAKx5p
+	sNy6f/lL7/4FaGxLTZHtSGwjUnj4P0xmDm3qt6DjnT4j
+X-Google-Smtp-Source: AGHT+IHX1aewgna2tPJ+Kpz+e7MVsUxTNCPKq11aXN8qXChUb+HG4maQWEFLCXjBLN1Qz50JhJ5yWg==
+X-Received: by 2002:a05:620a:248c:b0:7b7:106a:19a2 with SMTP id af79cd13be357-7bcd971c3f3mr3611917885a.31.1736790288625;
+        Mon, 13 Jan 2025 09:44:48 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce3248c80sm511214185a.49.2025.01.13.09.44.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 09:44:47 -0800 (PST)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org,
+	linux-acpi@vger.kernel.org
+Cc: kernel-team@meta.com,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	david@redhat.com,
+	osalvador@suse.de,
+	gregkh@linuxfoundation.org,
+	akpm@linux-foundation.org,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	alison.schofield@intel.com,
+	rrichter@amd.com,
+	rppt@kernel.org,
+	gourry@gourry.net,
+	bfaccini@nvidia.com,
+	haibo1.xu@intel.com,
+	dave.jiang@intel.com,
+	Ira Weiny <ira.weiny@intel.com>,
+	Fan Ni <fan.ni@samsung.com>
+Subject: [RESEND v7 0/3] memory,x86,acpi: hotplug memory alignment advisement
+Date: Mon, 13 Jan 2025 12:44:36 -0500
+Message-ID: <20250113174439.1965168-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Em Mon, 6 Jan 2025 12:09:59 +0000
-<shiju.jose@huawei.com> escreveu:
-
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add EDAC ECS (Error Check Scrub) control to manage a memory device's
-> ECS feature.
-> 
-> The Error Check Scrub (ECS) is a feature defined in JEDEC DDR5 SDRAM
-> Specification (JESD79-5) and allows the DRAM to internally read, correct
-> single-bit errors, and write back corrected data bits to the DRAM array
-> while providing transparency to error counts.
-> 
-> The DDR5 device contains number of memory media FRUs per device. The
-> DDR5 ECS feature and thus the ECS control driver supports configuring
-> the ECS parameters per FRU.
-> 
-> Memory devices support the ECS feature register with the EDAC device
-> driver, which retrieves the ECS descriptor from the EDAC ECS driver.
-> This driver exposes sysfs ECS control attributes to userspace via
-> /sys/bus/edac/devices/<dev-name>/ecs_fruX/.
-> 
-> The common sysfs ECS control interface abstracts the control of an
-> arbitrary ECS functionality to a common set of functions.
-> 
-> Support for the ECS feature is added separately because the control
-> attributes of the DDR5 ECS feature differ from those of the scrub
-> feature.
-> 
-> The sysfs ECS attribute nodes are only present if the client driver
-> has implemented the corresponding attribute callback function and
-> passed the necessary operations to the EDAC RAS feature driver during
-> registration.
-> 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-
-Patch LGTM, although I intend to do a more careful look on this series
-checking it against the specs before sending my R-B.
-
-> ---
->  Documentation/ABI/testing/sysfs-edac-ecs |  63 +++++++
->  Documentation/edac/scrub.rst             |   2 +
->  drivers/edac/Makefile                    |   2 +-
->  drivers/edac/ecs.c                       | 207 +++++++++++++++++++++++
->  drivers/edac/edac_device.c               |  17 ++
->  include/linux/edac.h                     |  41 ++++-
->  6 files changed, 329 insertions(+), 3 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-edac-ecs
->  create mode 100755 drivers/edac/ecs.c
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-edac-ecs b/Documentation/ABI/testing/sysfs-edac-ecs
-> new file mode 100644
-> index 000000000000..1160bec0603f
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-edac-ecs
-> @@ -0,0 +1,63 @@
-> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		The sysfs EDAC bus devices /<dev-name>/ecs_fruX subdirectory
-> +		pertains to the memory media ECS (Error Check Scrub) control
-> +		feature, where <dev-name> directory corresponds to a device
-> +		registered with the EDAC device driver for the ECS feature.
-> +		/ecs_fruX belongs to the media FRUs (Field Replaceable Unit)
-> +		under the memory device.
-> +		The sysfs ECS attr nodes are only present if the parent
-> +		driver has implemented the corresponding attr callback
-> +		function and provided the necessary operations to the EDAC
-> +		device driver during registration.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/log_entry_type
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The log entry type of how the DDR5 ECS log is reported.
-> +		0 - per DRAM.
-> +		1 - per memory media FRU.
-> +		All other values are reserved.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/mode
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The mode of how the DDR5 ECS counts the errors.
-> +		Error count is tracked based on two different modes
-> +		selected by DDR5 ECS Control Feature - Codeword mode and
-> +		Row Count mode. If the ECS is under Codeword mode, then
-> +		the error count increments each time a codeword with check
-> +		bit errors is detected. If the ECS is under Row Count mode,
-> +		then the error counter increments each time a row with
-> +		check bit errors is detected.
-> +		0 - ECS counts rows in the memory media that have ECC errors.
-> +		1 - ECS counts codewords with errors, specifically, it counts
-> +		the number of ECC-detected errors in the memory media.
-> +		All other values are reserved.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/reset
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(WO) ECS reset ECC counter.
-> +		1 - reset ECC counter to the default value.
-> +		All other values are reserved.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/ecs_fruX/threshold
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) DDR5 ECS threshold count per gigabits of memory cells.
-> +		The ECS error count is subject to the ECS Threshold count
-> +		per Gbit, which masks error counts less than the Threshold.
-> +		Supported values are 256, 1024 and 4096.
-> +		All other values are reserved.
-> diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
-> index 5a5108b744a4..5640f9aeee38 100644
-> --- a/Documentation/edac/scrub.rst
-> +++ b/Documentation/edac/scrub.rst
-> @@ -242,3 +242,5 @@ sysfs
->  Sysfs files are documented in
->  
->  `Documentation/ABI/testing/sysfs-edac-scrub`.
-> +
-> +`Documentation/ABI/testing/sysfs-edac-ecs`.
-> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
-> index a162726cc6b9..3a49304860f0 100644
-> --- a/drivers/edac/Makefile
-> +++ b/drivers/edac/Makefile
-> @@ -10,7 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
->  
->  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
->  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
-> -edac_core-y	+= scrub.o
-> +edac_core-y	+= scrub.o ecs.o
->  
->  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
->  
-> diff --git a/drivers/edac/ecs.c b/drivers/edac/ecs.c
-> new file mode 100755
-> index 000000000000..dae8e5ae881b
-> --- /dev/null
-> +++ b/drivers/edac/ecs.c
-> @@ -0,0 +1,207 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * The generic ECS driver is designed to support control of on-die error
-> + * check scrub (e.g., DDR5 ECS). The common sysfs ECS interface abstracts
-> + * the control of various ECS functionalities into a unified set of functions.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + */
-> +
-> +#include <linux/edac.h>
-> +
-> +#define EDAC_ECS_FRU_NAME "ecs_fru"
-> +
-> +enum edac_ecs_attributes {
-> +	ECS_LOG_ENTRY_TYPE,
-> +	ECS_MODE,
-> +	ECS_RESET,
-> +	ECS_THRESHOLD,
-> +	ECS_MAX_ATTRS
-> +};
-> +
-> +struct edac_ecs_dev_attr {
-> +	struct device_attribute dev_attr;
-> +	int fru_id;
-> +};
-> +
-> +struct edac_ecs_fru_context {
-> +	char name[EDAC_FEAT_NAME_LEN];
-> +	struct edac_ecs_dev_attr dev_attr[ECS_MAX_ATTRS];
-> +	struct attribute *ecs_attrs[ECS_MAX_ATTRS + 1];
-> +	struct attribute_group group;
-> +};
-> +
-> +struct edac_ecs_context {
-> +	u16 num_media_frus;
-> +	struct edac_ecs_fru_context *fru_ctxs;
-> +};
-> +
-> +#define TO_ECS_DEV_ATTR(_dev_attr)	\
-> +	container_of(_dev_attr, struct edac_ecs_dev_attr, dev_attr)
-> +
-> +#define EDAC_ECS_ATTR_SHOW(attrib, cb, type, format)				\
-> +static ssize_t attrib##_show(struct device *ras_feat_dev,			\
-> +			     struct device_attribute *attr, char *buf)		\
-> +{										\
-> +	struct edac_ecs_dev_attr *dev_attr = TO_ECS_DEV_ATTR(attr);		\
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);		\
-> +	const struct edac_ecs_ops *ops = ctx->ecs.ecs_ops;			\
-> +	type data;								\
-> +	int ret;								\
-> +										\
-> +	ret = ops->cb(ras_feat_dev->parent, ctx->ecs.private,			\
-> +		      dev_attr->fru_id, &data);					\
-> +	if (ret)								\
-> +		return ret;							\
-> +										\
-> +	return sysfs_emit(buf, format, data);					\
-> +}
-> +
-> +EDAC_ECS_ATTR_SHOW(log_entry_type, get_log_entry_type, u32, "%u\n")
-> +EDAC_ECS_ATTR_SHOW(mode, get_mode, u32, "%u\n")
-> +EDAC_ECS_ATTR_SHOW(threshold, get_threshold, u32, "%u\n")
-> +
-> +#define EDAC_ECS_ATTR_STORE(attrib, cb, type, conv_func)			\
-> +static ssize_t attrib##_store(struct device *ras_feat_dev,			\
-> +			      struct device_attribute *attr,			\
-> +			      const char *buf, size_t len)			\
-> +{										\
-> +	struct edac_ecs_dev_attr *dev_attr = TO_ECS_DEV_ATTR(attr);		\
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);		\
-> +	const struct edac_ecs_ops *ops = ctx->ecs.ecs_ops;			\
-> +	type data;								\
-> +	int ret;								\
-> +										\
-> +	ret = conv_func(buf, 0, &data);						\
-> +	if (ret < 0)								\
-> +		return ret;							\
-> +										\
-> +	ret = ops->cb(ras_feat_dev->parent, ctx->ecs.private,			\
-> +		      dev_attr->fru_id, data);					\
-> +	if (ret)								\
-> +		return ret;							\
-> +										\
-> +	return len;								\
-> +}
-> +
-> +EDAC_ECS_ATTR_STORE(log_entry_type, set_log_entry_type, unsigned long, kstrtoul)
-> +EDAC_ECS_ATTR_STORE(mode, set_mode, unsigned long, kstrtoul)
-> +EDAC_ECS_ATTR_STORE(reset, reset, unsigned long, kstrtoul)
-> +EDAC_ECS_ATTR_STORE(threshold, set_threshold, unsigned long, kstrtoul)
-> +
-> +static umode_t ecs_attr_visible(struct kobject *kobj, struct attribute *a, int attr_id)
-> +{
-> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_ecs_ops *ops = ctx->ecs.ecs_ops;
-> +
-> +	switch (attr_id) {
-> +	case ECS_LOG_ENTRY_TYPE:
-> +		if (ops->get_log_entry_type)  {
-> +			if (ops->set_log_entry_type)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	case ECS_MODE:
-> +		if (ops->get_mode) {
-> +			if (ops->set_mode)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	case ECS_RESET:
-> +		if (ops->reset)
-> +			return a->mode;
-> +		break;
-> +	case ECS_THRESHOLD:
-> +		if (ops->get_threshold) {
-> +			if (ops->set_threshold)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +#define EDAC_ECS_ATTR_RO(_name, _fru_id)       \
-> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_RO(_name), \
-> +				     .fru_id = _fru_id })
-> +
-> +#define EDAC_ECS_ATTR_WO(_name, _fru_id)       \
-> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_WO(_name), \
-> +				     .fru_id = _fru_id })
-> +
-> +#define EDAC_ECS_ATTR_RW(_name, _fru_id)       \
-> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_RW(_name), \
-> +				     .fru_id = _fru_id })
-> +
-> +static int ecs_create_desc(struct device *ecs_dev,
-> +			   const struct attribute_group **attr_groups, u16 num_media_frus)
-> +{
-> +	struct edac_ecs_context *ecs_ctx;
-> +	u32 fru;
-> +
-> +	ecs_ctx = devm_kzalloc(ecs_dev, sizeof(*ecs_ctx), GFP_KERNEL);
-> +	if (!ecs_ctx)
-> +		return -ENOMEM;
-> +
-> +	ecs_ctx->num_media_frus = num_media_frus;
-> +	ecs_ctx->fru_ctxs = devm_kcalloc(ecs_dev, num_media_frus,
-> +					 sizeof(*ecs_ctx->fru_ctxs),
-> +					 GFP_KERNEL);
-> +	if (!ecs_ctx->fru_ctxs)
-> +		return -ENOMEM;
-> +
-> +	for (fru = 0; fru < num_media_frus; fru++) {
-> +		struct edac_ecs_fru_context *fru_ctx = &ecs_ctx->fru_ctxs[fru];
-> +		struct attribute_group *group = &fru_ctx->group;
-> +		int i;
-> +
-> +		fru_ctx->dev_attr[ECS_LOG_ENTRY_TYPE] =
-> +					EDAC_ECS_ATTR_RW(log_entry_type, fru);
-> +		fru_ctx->dev_attr[ECS_MODE] = EDAC_ECS_ATTR_RW(mode, fru);
-> +		fru_ctx->dev_attr[ECS_RESET] = EDAC_ECS_ATTR_WO(reset, fru);
-> +		fru_ctx->dev_attr[ECS_THRESHOLD] =
-> +					EDAC_ECS_ATTR_RW(threshold, fru);
-> +
-> +		for (i = 0; i < ECS_MAX_ATTRS; i++)
-> +			fru_ctx->ecs_attrs[i] = &fru_ctx->dev_attr[i].dev_attr.attr;
-> +
-> +		sprintf(fru_ctx->name, "%s%d", EDAC_ECS_FRU_NAME, fru);
-> +		group->name = fru_ctx->name;
-> +		group->attrs = fru_ctx->ecs_attrs;
-> +		group->is_visible  = ecs_attr_visible;
-> +
-> +		attr_groups[fru] = group;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * edac_ecs_get_desc - get EDAC ECS descriptors
-> + * @ecs_dev: client device, supports ECS feature
-> + * @attr_groups: pointer to attribute group container
-> + * @num_media_frus: number of media FRUs in the device
-> + *
-> + * Return:
-> + *  * %0	- Success.
-> + *  * %-EINVAL	- Invalid parameters passed.
-> + *  * %-ENOMEM	- Dynamic memory allocation failed.
-> + */
-> +int edac_ecs_get_desc(struct device *ecs_dev,
-> +		      const struct attribute_group **attr_groups, u16 num_media_frus)
-> +{
-> +	if (!ecs_dev || !attr_groups || !num_media_frus)
-> +		return -EINVAL;
-> +
-> +	return ecs_create_desc(ecs_dev, attr_groups, num_media_frus);
-> +}
-> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
-> index 60b20eae01e8..1c1142a2e4e4 100644
-> --- a/drivers/edac/edac_device.c
-> +++ b/drivers/edac/edac_device.c
-> @@ -625,6 +625,9 @@ int edac_dev_register(struct device *parent, char *name,
->  			attr_gcnt++;
->  			scrub_cnt++;
->  			break;
-> +		case RAS_FEAT_ECS:
-> +			attr_gcnt += ras_features[feat].ecs_info.num_media_frus;
-> +			break;
->  		default:
->  			return -EINVAL;
->  		}
-> @@ -669,6 +672,20 @@ int edac_dev_register(struct device *parent, char *name,
->  			scrub_cnt++;
->  			attr_gcnt++;
->  			break;
-> +		case RAS_FEAT_ECS:
-> +			if (!ras_features->ecs_ops)
-> +				goto data_mem_free;
-> +
-> +			dev_data = &ctx->ecs;
-> +			dev_data->ecs_ops = ras_features->ecs_ops;
-> +			dev_data->private = ras_features->ctx;
-> +			ret = edac_ecs_get_desc(parent, &ras_attr_groups[attr_gcnt],
-> +						ras_features->ecs_info.num_media_frus);
-> +			if (ret)
-> +				goto data_mem_free;
-> +
-> +			attr_gcnt += ras_features->ecs_info.num_media_frus;
-> +			break;
->  		default:
->  			ret = -EINVAL;
->  			goto data_mem_free;
-> diff --git a/include/linux/edac.h b/include/linux/edac.h
-> index ace8b10bb028..979e91426701 100644
-> --- a/include/linux/edac.h
-> +++ b/include/linux/edac.h
-> @@ -667,6 +667,7 @@ static inline struct dimm_info *edac_get_dimm(struct mem_ctl_info *mci,
->  /* RAS feature type */
->  enum edac_dev_feat {
->  	RAS_FEAT_SCRUB,
-> +	RAS_FEAT_ECS,
->  	RAS_FEAT_MAX
->  };
->  
-> @@ -700,9 +701,40 @@ int edac_scrub_get_desc(struct device *scrub_dev,
->  			const struct attribute_group **attr_groups,
->  			u8 instance);
->  
-> +/**
-> + * struct edac_ecs_ops - ECS device operations (all elements optional)
-> + * @get_log_entry_type: read the log entry type value.
-> + * @set_log_entry_type: set the log entry type value.
-> + * @get_mode: read the mode value.
-> + * @set_mode: set the mode value.
-> + * @reset: reset the ECS counter.
-> + * @get_threshold: read the threshold count per gigabits of memory cells.
-> + * @set_threshold: set the threshold count per gigabits of memory cells.
-> + */
-> +struct edac_ecs_ops {
-> +	int (*get_log_entry_type)(struct device *dev, void *drv_data, int fru_id, u32 *val);
-> +	int (*set_log_entry_type)(struct device *dev, void *drv_data, int fru_id, u32 val);
-> +	int (*get_mode)(struct device *dev, void *drv_data, int fru_id, u32 *val);
-> +	int (*set_mode)(struct device *dev, void *drv_data, int fru_id, u32 val);
-> +	int (*reset)(struct device *dev, void *drv_data, int fru_id, u32 val);
-> +	int (*get_threshold)(struct device *dev, void *drv_data, int fru_id, u32 *threshold);
-> +	int (*set_threshold)(struct device *dev, void *drv_data, int fru_id, u32 threshold);
-> +};
-> +
-> +struct edac_ecs_ex_info {
-> +	u16 num_media_frus;
-> +};
-> +
-> +int edac_ecs_get_desc(struct device *ecs_dev,
-> +		      const struct attribute_group **attr_groups,
-> +		      u16 num_media_frus);
-> +
->  /* EDAC device feature information structure */
->  struct edac_dev_data {
-> -	const struct edac_scrub_ops *scrub_ops;
-> +	union {
-> +		const struct edac_scrub_ops *scrub_ops;
-> +		const struct edac_ecs_ops *ecs_ops;
-> +	};
->  	u8 instance;
->  	void *private;
->  };
-> @@ -711,13 +743,18 @@ struct edac_dev_feat_ctx {
->  	struct device dev;
->  	void *private;
->  	struct edac_dev_data *scrub;
-> +	struct edac_dev_data ecs;
->  };
->  
->  struct edac_dev_feature {
->  	enum edac_dev_feat ft_type;
->  	u8 instance;
-> -	const struct edac_scrub_ops *scrub_ops;
-> +	union {
-> +		const struct edac_scrub_ops *scrub_ops;
-> +		const struct edac_ecs_ops *ecs_ops;
-> +	};
->  	void *ctx;
-> +	struct edac_ecs_ex_info ecs_info;
->  };
->  
->  int edac_dev_register(struct device *parent, char *dev_name,
+resend: Not clear if this should go through -mm or -acpi
+	clean rebase on mm-unstable as of Jan 13, no changes
 
 
+When physical address regions are not aligned to memory block size,
+the misaligned portion is lost (stranded capacity).
 
-Thanks,
-Mauro
+Block size (min/max/selected) is architecture defined. Most architectures
+tend to use the minimum block size or some simplistic heurist. On x86,
+memory block size increases up to 2GB, and is otherwise fitted to the
+alignment of non-hotplug (i.e. not special purpose memory).
+
+CXL exposes its memory for management through the ACPI CEDT (CXL Early
+Detection Table) in a field called the CXL Fixed Memory Window.  Per
+the CXL specification, this memory must be aligned to at least 256MB.
+
+When a CFMW aligns on a size less than the block size, this causes a
+loss of up to 2GB per CFMW on x86.  It is not uncommon for CFMW to be
+allocated per-device - though this behavior is BIOS defined.
+
+This patch set provides 3 things:
+ 1) implement advise/query functions in driverse/base/memory.c to
+    report/query architecture agnostic hotplug block alignment advice.
+ 2) update x86 memblock size logic to consider the hotplug advice
+ 3) add code in acpi/numa/srat.c to report CFMW alignment advice
+
+The advisement interfaces are design to be called during arch_init
+code prior to allocator and smp_init.  start_kernel will call these
+through setup_arch() (via acpi and mm/init_64.c on x86), which occurs
+prior to mm_core_init and smp_init - so no need for atomics.
+
+There's an attempt to signal callers to advise() that query has already
+occurred, but this is predicated on the notion that query actually
+occurs (which presently only happens on the x86 arch). This is to
+assist debugging future users.  Otherwise, the advise() call has
+been marked __init to help static discovery of bad call times.
+
+Once query is called the first time, it will always return the same value.
+
+Interfaces return -EBUSY and 0 respectively on systems without hotplug.
+
+Suggested-by: Ira Weiny <ira.weiny@intel.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Tested-by: Fan Ni <fan.ni@samsung.com>
+
+Gregory Price (3):
+  memory: implement memory_block_advise/probe_max_size
+  x86: probe memory block size advisement value during mm init
+  acpi,srat: give memory block size advice based on CFMWS alignment
+
+ arch/x86/mm/init_64.c    | 15 ++++++++----
+ drivers/acpi/numa/srat.c | 12 ++++++++-
+ drivers/base/memory.c    | 53 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/memory.h   | 10 ++++++++
+ 4 files changed, 84 insertions(+), 6 deletions(-)
+
+-- 
+2.47.1
+
 
