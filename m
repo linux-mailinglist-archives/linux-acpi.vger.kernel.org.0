@@ -1,39 +1,39 @@
-Return-Path: <linux-acpi+bounces-10548-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10546-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72F9A0B6C1
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 13:23:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB2EA0B6BC
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 13:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 328563A94D0
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 12:22:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A85B3A8985
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 12:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A658422A4F6;
-	Mon, 13 Jan 2025 12:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E80A235C0E;
+	Mon, 13 Jan 2025 12:21:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A595A22AE7B;
-	Mon, 13 Jan 2025 12:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DAA22F16F;
+	Mon, 13 Jan 2025 12:21:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736770886; cv=none; b=qDVRrnLv4rak+lhEbQJ9PuE8dzPOuGNV8Uu+MmJJqKLci0zd/Fi5igPljyh3kSR2AQFzMUMpDZNM7LaV9HEXpZpLaLX9rN3ULiaFnEV+OwCzejS7x3aFADCt/bWj0P2lOfFx+utSGwma1wIsQATUXsKat0epI09b73h6reY7kfM=
+	t=1736770878; cv=none; b=WKJK27MJwr9BucKDHf2G4nWgGeWGxx5f/6dbUt+tZWLMjpM3d6LDBQ6Uu+l0Bw5RYVa5r8EZa4gCbNKknx9g+5H7JHsMWo6JEJtSFS+cXJsbr2hwePOxD5QY7lgmV3A7qvVvhIabvoaEeZVoOdreBI0rKduxDSa5/B3rzCXzJVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736770886; c=relaxed/simple;
-	bh=zekOdi6n3VYMxHGrckuhAG8bsTJ3kkcv6UwM1qs/lgI=;
+	s=arc-20240116; t=1736770878; c=relaxed/simple;
+	bh=DgeWfTAb19/rlBYtwRFwnmywValUACebTt0zebMV+l0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T/4xxALigUsBsk7kfsRPSeg0OPWduJd+KVE6OWKPH050W16rN0YLqn82Gfyr9ozahM+hT28QDkxoQ/iVtTfQ53c4ojrC9uzjC1LEme2jywGF4euppvs9QoJHGzDDzn4cOrFCSXz30mVgdotLgUjhV/G5eLSpEPtaZBpE9R7FpOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=AXWguXcFEz7lHlAKxsMTeHnKxwJfW+w79bSDKLV6c6VwZ22o9dTpdu3gnxRk9vaKwLGvxbvWVTSVjAdgkWPaqqxP2W8bqSm5xXaYrTLLoMXtZURShasIITWZfK8z/v8X8nBkrfpMdndRmMsTKtLz5M7E22RYfgyXyCcOGkBd8wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YWrs24b89z22l71;
-	Mon, 13 Jan 2025 20:18:46 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4YWrs30tGSzRlFg;
+	Mon, 13 Jan 2025 20:18:47 +0800 (CST)
 Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 265111401F4;
+	by mail.maildlp.com (Postfix) with ESMTPS id D219F1401F0;
 	Mon, 13 Jan 2025 20:21:07 +0800 (CST)
 Received: from localhost.huawei.com (10.50.165.33) by
  kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
@@ -48,9 +48,9 @@ CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
 	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
 	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <zhenglifeng1@huawei.com>,
 	<hepeng68@huawei.com>, <fanghao11@huawei.com>
-Subject: [PATCH v4 1/6] ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro
-Date: Mon, 13 Jan 2025 20:20:59 +0800
-Message-ID: <20250113122104.3870673-2-zhenglifeng1@huawei.com>
+Subject: [PATCH v4 2/6] ACPI: CPPC: Add cppc_get_reg_val and cppc_set_reg_val function
+Date: Mon, 13 Jan 2025 20:21:00 +0800
+Message-ID: <20250113122104.3870673-3-zhenglifeng1@huawei.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20250113122104.3870673-1-zhenglifeng1@huawei.com>
 References: <20250113122104.3870673-1-zhenglifeng1@huawei.com>
@@ -65,30 +65,200 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemh100008.china.huawei.com (7.202.181.93)
 
-Add IS_OPTIONAL_CPC_REG macro to judge if a cpc_reg is an optional one.
+Rename cppc_get_perf() to cppc_get_reg_val() as a generic function to read
+cppc registers, with four changes:
+
+1. Change the error kind to "no such device" when pcc_ss_id < 0, which
+means that this cpu cannot get a valid pcc_ss_id.
+
+2. Add a check to verify if the register is a mandatory or cpc supported
+one before using it.
+
+3. Extract the operations if register is in pcc out as
+cppc_get_reg_val_in_pcc().
+
+4. Return the result of cpc_read() instead of 0.
+
+Add cppc_set_reg_val() as a generic function for setting cppc registers
+value, with this features:
+
+1. Check register type. If a register is writeable, it must be a buffer.
+
+2. Check if the register is a optional and null one right after getting the
+register.  Because if so, the rest of the operations are meaningless.
+
+3. Extract the operations if register is in pcc out as
+cppc_set_reg_val_in_pcc().
+
+These functions can be used to reduce some existing code duplication.
 
 Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
 ---
- drivers/acpi/cppc_acpi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/cppc_acpi.c | 105 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 82 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index f193e713825a..6454b469338f 100644
+index 6454b469338f..571f94855dce 100644
 --- a/drivers/acpi/cppc_acpi.c
 +++ b/drivers/acpi/cppc_acpi.c
-@@ -129,6 +129,12 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
- #define CPC_SUPPORTED(cpc) ((cpc)->type == ACPI_TYPE_INTEGER ?		\
- 				!!(cpc)->cpc_entry.int_value :		\
- 				!IS_NULL_REG(&(cpc)->cpc_entry.reg))
+@@ -1181,43 +1181,102 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 	return ret_val;
+ }
+ 
+-static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
++static int cppc_get_reg_val_in_pcc(int cpu, struct cpc_register_resource *reg, u64 *val)
+ {
+-	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
++	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
++	struct cppc_pcc_data *pcc_ss_data = NULL;
++	int ret;
 +
-+/* These indicate optional of the per-cpu cpc_regs[]. */
-+#define REG_OPTIONAL (0b111111100011111010000)
++	if (pcc_ss_id < 0) {
++		pr_debug("Invalid pcc_ss_id\n");
++		return -ENODEV;
++	}
 +
-+#define IS_OPTIONAL_CPC_REG(reg_idx) (REG_OPTIONAL & (1U << (reg_idx)))
++	pcc_ss_data = pcc_data[pcc_ss_id];
 +
- /*
-  * Arbitrary Retries in case the remote processor is slow to respond
-  * to PCC commands. Keeping it high enough to cover emulators where
++	down_write(&pcc_ss_data->pcc_lock);
++
++	if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
++		ret = cpc_read(cpu, reg, val);
++	else
++		ret = -EIO;
++
++	up_write(&pcc_ss_data->pcc_lock);
++
++	return ret;
++}
++
++static int cppc_get_reg_val(int cpu, enum cppc_regs reg_idx, u64 *val)
++{
++	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+ 	struct cpc_register_resource *reg;
+ 
+ 	if (!cpc_desc) {
+-		pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
++		pr_debug("No CPC descriptor for CPU:%d\n", cpu);
+ 		return -ENODEV;
+ 	}
+ 
+ 	reg = &cpc_desc->cpc_regs[reg_idx];
+ 
+-	if (CPC_IN_PCC(reg)) {
+-		int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+-		struct cppc_pcc_data *pcc_ss_data = NULL;
+-		int ret = 0;
+-
+-		if (pcc_ss_id < 0)
+-			return -EIO;
++	if (IS_OPTIONAL_CPC_REG(reg_idx) && !CPC_SUPPORTED(reg)) {
++		pr_debug("CPC register (reg_idx=%d) is not supported\n", reg_idx);
++		return -EOPNOTSUPP;
++	}
+ 
+-		pcc_ss_data = pcc_data[pcc_ss_id];
++	if (CPC_IN_PCC(reg))
++		return cppc_get_reg_val_in_pcc(cpu, reg, val);
+ 
+-		down_write(&pcc_ss_data->pcc_lock);
++	return cpc_read(cpu, reg, val);
++}
+ 
+-		if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
+-			cpc_read(cpunum, reg, perf);
+-		else
+-			ret = -EIO;
++static int cppc_set_reg_val_in_pcc(int cpu, struct cpc_register_resource *reg, u64 val)
++{
++	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
++	struct cppc_pcc_data *pcc_ss_data = NULL;
++	int ret;
+ 
+-		up_write(&pcc_ss_data->pcc_lock);
++	if (pcc_ss_id < 0) {
++		pr_debug("Invalid pcc_ss_id\n");
++		return -ENODEV;
++	}
+ 
++	ret = cpc_write(cpu, reg, val);
++	if (ret)
+ 		return ret;
++
++	pcc_ss_data = pcc_data[pcc_ss_id];
++
++	down_write(&pcc_ss_data->pcc_lock);
++	/* after writing CPC, transfer the ownership of PCC to platform */
++	ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
++	up_write(&pcc_ss_data->pcc_lock);
++
++	return ret;
++}
++
++static int cppc_set_reg_val(int cpu, enum cppc_regs reg_idx, u64 val)
++{
++	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
++	struct cpc_register_resource *reg;
++
++	if (!cpc_desc) {
++		pr_debug("No CPC descriptor for CPU:%d\n", cpu);
++		return -ENODEV;
+ 	}
+ 
+-	cpc_read(cpunum, reg, perf);
++	reg = &cpc_desc->cpc_regs[reg_idx];
+ 
+-	return 0;
++	/* if a register is writeable, it must be a buffer */
++	if ((reg->type != ACPI_TYPE_BUFFER) ||
++	    (IS_OPTIONAL_CPC_REG(reg_idx) && IS_NULL_REG(&reg->cpc_entry.reg))) {
++		pr_debug("CPC register (reg_idx=%d) is not supported\n", reg_idx);
++		return -EOPNOTSUPP;
++	}
++
++	if (CPC_IN_PCC(reg))
++		return cppc_set_reg_val_in_pcc(cpu, reg, val);
++
++	return cpc_write(cpu, reg, val);
+ }
+ 
+ /**
+@@ -1229,7 +1288,7 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
+  */
+ int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
+ {
+-	return cppc_get_perf(cpunum, DESIRED_PERF, desired_perf);
++	return cppc_get_reg_val(cpunum, DESIRED_PERF, desired_perf);
+ }
+ EXPORT_SYMBOL_GPL(cppc_get_desired_perf);
+ 
+@@ -1242,7 +1301,7 @@ EXPORT_SYMBOL_GPL(cppc_get_desired_perf);
+  */
+ int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
+ {
+-	return cppc_get_perf(cpunum, NOMINAL_PERF, nominal_perf);
++	return cppc_get_reg_val(cpunum, NOMINAL_PERF, nominal_perf);
+ }
+ 
+ /**
+@@ -1254,7 +1313,7 @@ int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
+  */
+ int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+ {
+-	return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
++	return cppc_get_reg_val(cpunum, HIGHEST_PERF, highest_perf);
+ }
+ EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
+ 
+@@ -1267,7 +1326,7 @@ EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
+  */
+ int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
+ {
+-	return cppc_get_perf(cpunum, ENERGY_PERF, epp_perf);
++	return cppc_get_reg_val(cpunum, ENERGY_PERF, epp_perf);
+ }
+ EXPORT_SYMBOL_GPL(cppc_get_epp_perf);
+ 
 -- 
 2.33.0
 
