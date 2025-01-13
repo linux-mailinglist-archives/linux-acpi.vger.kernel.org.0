@@ -1,940 +1,342 @@
-Return-Path: <linux-acpi+bounces-10556-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10557-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E95A0BC9B
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 16:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B64A0BCBB
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 16:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF4763A4E60
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 15:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C79153A126A
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Jan 2025 15:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC531FBBCF;
-	Mon, 13 Jan 2025 15:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5641FBBCF;
+	Mon, 13 Jan 2025 15:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmTlcF4y"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nWaTlSgA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2084.outbound.protection.outlook.com [40.107.244.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373B014B08E;
-	Mon, 13 Jan 2025 15:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736783445; cv=none; b=bw6LDbDwfwuzU0wT6W5mrMFxXWko/XMO7gd+GRzMlkhoKcxfjLyhcE8Z6MB49Kofa9SDe3ls4HHfD1dbHzuQIo+IAvDupx+UhNErpIUUHCFybO3StF+YqXMc9Q7Q0YhmtLNnMpyzs5D420FtkPedaFaglOc4pPSTajho4phDA0c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736783445; c=relaxed/simple;
-	bh=8AMTPaL4ud/nRdu2tV4EHcD5bEgAjPEz5LtQrkf2fLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ydf+FiUoyLG/0CxMzx/MHFGeA8oazCvKTgC057MDE0gh9Zmgc3pKnRKhzqFfzQ/fuNS84mG3JWnRUZj+BdPZ8VQ5ee45etklr5EcgMoUhazLFi1cJjHVhf0LlbY4ycYn8nJ3PH4Z2r2Qs1i7esx5WG7bXAWS3PcaypMrSPh5lew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmTlcF4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E78C4CED6;
-	Mon, 13 Jan 2025 15:50:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736783444;
-	bh=8AMTPaL4ud/nRdu2tV4EHcD5bEgAjPEz5LtQrkf2fLM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pmTlcF4y0KQOELjIKqfDngBBrRhVrCTzg4yvPUjR1SPoM3R9ggOvDa6hJ/JdkA+uB
-	 nw555rbU0YOfFukGCglh3XdS7bazyvlC7HD9PeA7+LFnPD+gGuL7V/eBd9E5cF9iiS
-	 J779XSMi9DBhsXDwsoechntjYakrTM/Tug5uySYRUBssFeuh+WuD1OPX7Sra2DHR23
-	 JqctX7+IcqPmtOGyyQrIL03IxEriq4BpuIoaIUcxaw/Nm03FsFDATWx/1HZw//1rYX
-	 N5I6TMzEditjkMTfDoOAsMkjPh+K0jS+xi/D8pamBEoSIKwdoTtrFcgy5f8GKlvwCU
-	 x3CyKrX5gjMng==
-Date: Mon, 13 Jan 2025 16:50:32 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: <shiju.jose@huawei.com>
-Cc: <linux-edac@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
- <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <bp@alien8.de>, <tony.luck@intel.com>,
- <rafael@kernel.org>, <lenb@kernel.org>, <mchehab@kernel.org>,
- <dan.j.williams@intel.com>, <dave@stgolabs.net>,
- <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
- <alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
- <ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
- <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
- <jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
- <naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
- <somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
- <duenwen@google.com>, <gthelen@google.com>,
- <wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
- <wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>,
- <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
- <roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
- <wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v18 02/19] EDAC: Add scrub control feature
-Message-ID: <20250113165032.2f3edb5a@foz.lan>
-In-Reply-To: <20250106121017.1620-3-shiju.jose@huawei.com>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
-	<20250106121017.1620-3-shiju.jose@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75D91420DD;
+	Mon, 13 Jan 2025 15:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736783968; cv=fail; b=Jh/d/Fyn+YGvCGizGta/2ren4/zoL4F1xF/NgqEoyohG/BDVW3CYnlIORiz1b+ImIk8JA3R7ty17qQ14PbF4PT2W/shzuYdM81AzC1clS5/31ILi7uGipKrPRrNOCb7wY/WMJ99JSTEAfvx/X7uN1HfqFInWdZuF9yQ8KF5r5nE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736783968; c=relaxed/simple;
+	bh=CSTWBF0uChfkL8RuDOkaqxQ5+hTDzilT5Qa4vQe3FVM=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bmdkEU+eHQzJyeGINOOgi1TbhFyRqpFGuDi+oQOjSO+T60/j+2hECnDXQrtwpWLAlrI+AGPHNVrbgcjU1ZfMLf/TtPa17QeA6SS5iZYALSIhJutfo3SAQRGisSci1vMvrsDRWdgTH+n69e6A6ijqjI6PpSVthFqkxIVglEXXU0A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nWaTlSgA; arc=fail smtp.client-ip=40.107.244.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I51kA+qBLArP1p0hO9RLqU9mT4gkMRat87KwdXgfr+I8XVaOReh/GQaenBYV1IsRe3LXmXUtxc4FuW1zdizFokL0i4Ad00U9ciwcLVp1aaF9Ro7QotlrGLN8C/lZi8gQ+JEFiPL3iLbKOcd5JGowxqRHnqyBGCsttNPaferuIHFJtPpW2XIPzyL/Xow2kEG/xe84+1743VGc86Ogj+IoaCR23h1ODDILbELfzD24ZxmVIn0w1LNqKr6KR8DfyHyLgoGcSPtSGbA8KPdcbXOFvrAX6xzIIuB3zOOwxkEVHdlsL3gHiKlgP1dvkdCmFUeOVKAmc3IY7S+vqDg3iozCfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+ABqzL03q5IJFHO8JGpUvjQacJcDqjFg8RF6X+swTOw=;
+ b=HIbVUktUIv0gtf09hhxD7C6nRJJUzlvtcx5xvaQmvuMKrkGxBKHueCmujMchOYCYyT9gU0+niWkp2fpoVRg8KCrJgQpfigEgU5vpopeHMg8TNKoEem/YK0AWwk3e/JP/7Z6HftfTVJQqIUT0J/9V0CaNfJZASqVbmcYLh8X+XNktzxW2wUb5iqOTHZMh9qAsse1SYMajp20DMyC50J90OGrqFkudzS8FLPZYsN+4GdMezD7Kfbo/oB+vGVfRI8rs6Bg3WRb9YPmx3Wf1u7n43pl2d7LN8MBuffkZcUotgnPv8cw/p6p/qq8gw5oeXxCkfG8pRLjZ8AWKgWH1Z2DZyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+ABqzL03q5IJFHO8JGpUvjQacJcDqjFg8RF6X+swTOw=;
+ b=nWaTlSgAhUCzJ6/SHdq9js98WC+3vJ8y65KUeKbi7b5KHinxKK2iFFGS0+dlMm9ho/paw91glByWebSbK8WFgSAJL9hyps4+onW7ji0av7Wr/uYPvGofHkB/zbovGdtSUVUmJU3h0ZauVMDR6qYulRZUQgfXOT1fvxCQgikyOGs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by SN7PR12MB8819.namprd12.prod.outlook.com (2603:10b6:806:32a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.17; Mon, 13 Jan
+ 2025 15:59:24 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8335.017; Mon, 13 Jan 2025
+ 15:59:24 +0000
+Message-ID: <ed72f369-bc74-44d8-9cce-34aa125176fa@amd.com>
+Date: Mon, 13 Jan 2025 09:59:22 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ACPI: video: Fix random crashes due to bad kfree
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: Chris Bainbridge <chris.bainbridge@gmail.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+ amd-gfx@lists.freedesktop.org, alex.hung@amd.com,
+ regressions@lists.linux.dev, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+ Borislav Petkov <bp@alien8.de>
+References: <Z2yQvTyg_MWwrlj3@debian.local>
+ <b98f2fa5-fbe8-4958-bf20-fa5d28c5a38b@math.uni-bielefeld.de>
+ <Z2yw_eJwR5ih1Npr@debian.local>
+ <CAJZ5v0i=ap+w4QZ8f2DsaHY6D=XUEuSNjyQ-2_=DGOLfZjdn+w@mail.gmail.com>
+ <Z4K_oQL7eA9Owkbs@debian.local>
+ <c6e622b2-64e4-41cf-acfb-31ae493571d2@amd.com>
+Content-Language: en-US
+In-Reply-To: <c6e622b2-64e4-41cf-acfb-31ae493571d2@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA0PR11CA0090.namprd11.prod.outlook.com
+ (2603:10b6:806:d2::35) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SN7PR12MB8819:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6c35e29-4c76-4573-badb-08dd33eb3ffb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SFR6eFpQRFlySjdxcmRmZU9QTnVpNWJiWkh5SWRzKzNKY2FJQnJ6WGlkS1E3?=
+ =?utf-8?B?WDIvRkxadjhwSEJsbDF4QlMxR3hERzZrUU9hbXU1UVFRMHBtR3dabUU2Z2ZE?=
+ =?utf-8?B?K1R6OE1ONzl2WlNTbmJ6WExqYlkxTmRyWUhEbnBieGM3WUhwQ2ZoYkVaeHh0?=
+ =?utf-8?B?YkdiYkUwa3Fyb1hyN3o1aGxCeHFDbVBOcmppd3ozTE0vc1FnTTU3aVdIYTEw?=
+ =?utf-8?B?Z3h2cSs0MFhvbkVIYnd6TXF4RklyRFNYWmZobkRRQ1hpU2h5STM4alV6eFNa?=
+ =?utf-8?B?Tkc4eEp5SU9WYWQxS0QyU2ozcVZhQ0dLMUV3L1ZYd3dITUNsUGs3NVgySWxN?=
+ =?utf-8?B?bzl3OFV4QUN1NVV6d2o4K2t1UDJ1NjBuZkVQVlNoZUxmLzRMSFExUjdXV2V4?=
+ =?utf-8?B?Zkg4YzN4ZzkwTFRqYmw2cUVpdnprMkFRTFlaeWl2Sm9FQkZxODhVZnhIZjlr?=
+ =?utf-8?B?Yjl4MXR5eWtlcGFGaDhuZUp3bTVIQ21Ba3dxRkoxd3k5MDM5NmR1N0FXRGJP?=
+ =?utf-8?B?aHd6dGFVQTF2RXE3QzZiNFJvL0x1V1VIR1ZJbEtLTy9KTkZMRUt3UVhBaytB?=
+ =?utf-8?B?TFR0QzE3enRFeWhOdnZpWGpuYk5zRHhrUEtMWnd4RENhdXVVZHFVSWoydVo5?=
+ =?utf-8?B?d3N5bnJKL3IzNHMwRnEvTk4xSXplMWw0QlFtYmlHejh5eE5zWlYxeWVibEkw?=
+ =?utf-8?B?cldUMUZPTHAzR2theFdCUHRGRE1vVUYwS25wMk1reG13QWRvaVRFYzVMTktC?=
+ =?utf-8?B?R1JPMjgvTUlsa2NrblJvN0VHM01LV3k0TXVUM3ZTMlVWTUNNTnZxM2Z2MWlU?=
+ =?utf-8?B?RTRZK1YwSFhQWHhMUStXK0l1U2FOOHdRNTk3Uk9aRHM1Ym1UWXhIMzRydXNM?=
+ =?utf-8?B?cmFMNWNYTEpQcWlKNTQ3RFErVnFiTHJZWFNEdzR2NW9HclQyZG96VVhCc3NV?=
+ =?utf-8?B?UnhSTDRjbUIvb2huVEgrTlVBRXFQQm91enB0R2ZPT1ErY21XaG16TVIycENh?=
+ =?utf-8?B?WDhDdGVVeGZjQnZmY1I5dnZPN3ZFZndLTFhvSlE5NVVqRkt2eEoybDZsRVJs?=
+ =?utf-8?B?K2VTWm5mMDArdHBjS3plSjh6UitGWkVTdjVTVndBYzZ3RlRZbndYNXpWUEJJ?=
+ =?utf-8?B?SUNyME8rbVZZWkpFUGQ3dTNMTDBxUmI5b1lSdFNCSjZMS3hGSThxYVJtbWF1?=
+ =?utf-8?B?Z2tKMFZZV1FuL09JSEJrSVVvYWFTODBKM3ZJaUJyeUNmN2I5RjZoRG5CbCtr?=
+ =?utf-8?B?VnBkNEdwV2lnRHpJTEVwKzRERkFrOGNpSXZUUUlWVVI5Y3lCbXplbzhCaDQr?=
+ =?utf-8?B?MkJnaDNzRTJRQXA0ajlmUVJudmFiLzI3dkowVE80akoxNGYwWmpROGVPWm9T?=
+ =?utf-8?B?MVBJcDd2RU9PVUJ0RjQvY00ycXFaSDhYNVVSa2VCUkNjUVpIQ2hjK0ZKbFA0?=
+ =?utf-8?B?cTJRTzVUYTVBT1hIN2xSMG16ZFpBRkVNODVyZ3A1YURKZ3BrNGdpNUZUKytJ?=
+ =?utf-8?B?bXhUMk1ZRVNOaDdaNysvUXlTdXFQZUtpeFZibkI4Y1dXb0F1SG5kVjZwa2FR?=
+ =?utf-8?B?VU1DeDRDM1RuWkpzUVhqa3B2aTRJZVV6L1NScXJYc212ZFk3TDBucG9XdHo2?=
+ =?utf-8?B?NWN5MGJ6d2NobE5FbklJQXVpRDE4bzBVbm1qV1dpL0pMVmwvZ1BZb3ZIU0do?=
+ =?utf-8?B?aExEQkFvUkZQaTJTT1RrSVBlVFJkUEFvVXBUTGg2d3RodjhiRzhhQTdzM1ha?=
+ =?utf-8?B?NkNpYmN1cnNwWDd4Ykg0bVVGeEhvVCtLNjh2MEdJSHdzRWo2Z2w0OHFVRFVy?=
+ =?utf-8?B?VGIray90N3ZmOCtvbzJXUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjJ2YVNpN3VOTVZiU3VJTkhMdnBtM0t1Y1JnZmh6WCtVaVMzVmlrYit4RytN?=
+ =?utf-8?B?SmZ3LzhiS25uREEwSExhY1VsQ3RLUmNpcnNWUllsWGVRSnFuOGh2YXEzaWZq?=
+ =?utf-8?B?dHNhOFVqTmZ5bmtFd2F3cmNKeGJQUzVBbEZLY1pKMFdaVm1xaHN6eHZrMzky?=
+ =?utf-8?B?cTdNQlI3Z2JyaDhXNTVFRjdjTHlUdzV3ZXBOV09oUlo0YThZaXhFeUcwNk9K?=
+ =?utf-8?B?VytQOGZGNzYxUUtGTkNrdWhKK0Q5U2FUS0h0cDJabWNHbVhhMGtQTS9aU3Vq?=
+ =?utf-8?B?Rm1xOHJCcG1lQXJlVUEyUGRBbEZudFY4cC9sN1lWOEZrVCtES21US0FuVVps?=
+ =?utf-8?B?VW1sL29VaG1selRvd2RObENpUVhuL3h5MGlsdEp6eEUxS21zMFJDeU1RL0tY?=
+ =?utf-8?B?L3c2cFNHaGZpaktvS3dRZ2NqenlhaE41VFdPY3h6UERYTDNMKzJzS2toeEJO?=
+ =?utf-8?B?RStFVlJFRWFvc2NYdTFyUDJlelVXVVZWcllZcDBzL1ZSTyt0SkpBM2Z0cXFT?=
+ =?utf-8?B?K090K2RQT3VaRFVZMEsvME0wekhwaHZ6V3pVNitCSENmZnIrcDFlcWZQemhK?=
+ =?utf-8?B?M1ZHUldKNk8yL1JYWFBBVGlpTnVxOGJnemZSOTB6cDF5L2EzMGlPb1lzTE16?=
+ =?utf-8?B?d2VvZE1zTUZjdVZXY0txYWlsL0hRNmt1QW5aTUE0V0lQdEUzbVV3NVk2ZDZx?=
+ =?utf-8?B?bGpsV3JneHdXYWp2d1lDZG5wd3ExZGNVK3dxV3MwQXg1czJEcHE0YndWNmZj?=
+ =?utf-8?B?Tlh6REM0Z3R2U1RYVVFLSmRBS0twa3ZiSjd3NUkycFRFTGU5RmlpbUViQnM5?=
+ =?utf-8?B?bVAzOWxaMVdrWkdQRmNJdklIK3YwdVBwcFdodGF6Ty9Obk5ia2M5NnFmQThJ?=
+ =?utf-8?B?eFdrczRsd2tjcEV2ZnpWQ0FTNzRaWmk3VGYyZGNKc2pHRXhqZ3BUTzlDMGtn?=
+ =?utf-8?B?anRhZzNvUm9GdCsxajRRaTQ2eEdBU3RZQXA4Sjk4b01iUUxrVkQ2eGxqQ3hz?=
+ =?utf-8?B?bUw4SzNKMjFlbmVIR3ZTOWM4MWw2c0M3VlVyNDQ4LzRBandiNGlCdEJyK3k2?=
+ =?utf-8?B?bTIzNGdyOEtOdDVYOEFWNFZFUk9sMk9wMmtzTXU1WlhiQ002WkdmVVVVb0N0?=
+ =?utf-8?B?UlB6QWc3RmlNcVpxL0p3alBNb3RaUHB1ckRwT3Flb0tTTUlBM2Zvd3VKaERh?=
+ =?utf-8?B?SWhmWi82YVJHRE1RRkx1Q2FUbHdLUjVuOCtXM1FZaXJOdW5tZmZadUZqSFBx?=
+ =?utf-8?B?QTdsZUJUY1QyOVl6VWJ0UnU5amlPdUVNL2p5V1h4aTFpQ0c0VDdUZmNWY0FE?=
+ =?utf-8?B?bUFWa2RLajVxbGkwemlUTTB6bEs4WHIxKzNsUWUxQnh4V3dGamxvUjJMblVV?=
+ =?utf-8?B?Qzg0eGhOZ2l4bDRIejFVWHBnc2ZwZ2FUV3JGaGhiREttYlhkSjhha3h3WHph?=
+ =?utf-8?B?dUU1Qzdmc3BMUWNoV2xOSUEvMk1kSU5KYWdtbUVKTDBibHd1S2dRM3ArUDh5?=
+ =?utf-8?B?RWRZUWkrSmk2WXVmRlZWS0RhQjR2Vm05ckxKeFA4OEdZb0xLVWQ3Q01GeGxZ?=
+ =?utf-8?B?ZjFFa2dtOVcvWjBLREZMWmgzUUtjeVVweTB1cFBSSlh4cEJqWXpya1RLSHpx?=
+ =?utf-8?B?S0E0czB1cGRvRDg1YllpQTdpRXBRWk13Rkx6WHdvVDBZa3A0WEw5TUY1N21v?=
+ =?utf-8?B?UXI4aVVNcU9XSzRnaFdXTG9hRXY2aytKNERuWXovUnVSODN4Qjg4QTZiMk5v?=
+ =?utf-8?B?bVI4NmJXdkhOOUxLSDVUV09sem51WU83YzZwY0xmT2hDZTdlSHlYMkphZ05l?=
+ =?utf-8?B?N2w5RjdrVWR4R2xhSGU3VjVoblZ6NkRWWWJOdU1nQm9NZ0FveVRxa2RQUUdD?=
+ =?utf-8?B?VnhOZU1lSjBTQ094aGxOdnNpaGpOVjc3NEtRU2xVQW5TbEpRT2xMd1hwNG1K?=
+ =?utf-8?B?SkJKKzExakRjZVAyZERSVHkxRTFUUzNIVDBERkI0RTdNTEpkaStpVmpWb0tY?=
+ =?utf-8?B?RWd2RCtoRTJ5Uk9jTm5NQ2x4WTF6VHZGWHQyOHJleHc0eVQ4amhZM2NvQThq?=
+ =?utf-8?B?a0hUOGNOcGxJYmhPS3Z0d0dlVnJJV3pYOHNGeS8vSnB0Z3IrSEVKSWl4ZlVR?=
+ =?utf-8?Q?/Tvzx8bphES4feZhbyb3zTGt8?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6c35e29-4c76-4573-badb-08dd33eb3ffb
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 15:59:24.1765
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VxiufaHczsxeiJH9cQnuf0ul1qSs2tiWUhkqzDpdILKGSZ9aJWhALbJxinjQG8LvS2Gt+AForNMb0mmgnEhI1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8819
 
-Em Mon, 6 Jan 2025 12:09:58 +0000
-<shiju.jose@huawei.com> escreveu:
-
-> From: Shiju Jose <shiju.jose@huawei.com>
+On 1/13/2025 08:19, Mario Limonciello wrote:
+> On 1/11/2025 12:59, Chris Bainbridge wrote:
+>> Commit c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if
+>> available for eDP") added function dm_helpers_probe_acpi_edid, which
+>> fetches the EDID from the BIOS by calling acpi_video_get_edid.
+>> acpi_video_get_edid returns a pointer to the EDID, but this pointer does
+>> not originate from kmalloc - it is actually the internal "pointer" field
+>> from an acpi_buffer struct (which did come from kmalloc).
+>> dm_helpers_probe_acpi_edid then attempts to kfree the EDID pointer,
+>> resulting in memory corruption which leads to random, intermittent
+>> crashes (e.g. 4% of boots will fail with some Oops).
+>>
+>> Fix this by allocating a new array (which can be safely freed) for the
+>> EDID data, and correctly freeing the acpi_buffer pointer.
+>>
+>> The only other caller of acpi_video_get_edid is nouveau_acpi_edid:
+>> remove the extraneous kmemdup here as the EDID data is now copied in
+>> acpi_video_device_EDID.
+>>
+>> Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+>> Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if 
+>> available for eDP")
 > 
-> Add a generic EDAC scrub control to manage memory scrubbers in the system.
-> Devices with a scrub feature register with the EDAC device driver, which
-> retrieves the scrub descriptor from the EDAC scrub driver and exposes the
-> sysfs scrub control attributes for a scrub instance to userspace at
-> /sys/bus/edac/devices/<dev-name>/scrubX/.
+> Two minor documentation related comments to consider, otherwise I think 
+> the code change looks good.  Feel free to include:
 > 
-> The common sysfs scrub control interface abstracts the control of
-> arbitrary scrubbing functionality into a common set of functions. The
-> sysfs scrub attribute nodes are only present if the client driver has
-> implemented the corresponding attribute callback function and passed the
-> operations(ops) to the EDAC device driver during registration.
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+
+A few more tags to collate from another thread:
+
+Reported-by: Borislav Petkov (AMD) <bp@alien8.de>
+Closes: 
+https://lore.kernel.org/amd-gfx/20250110175252.GBZ4FedNKqmBRaY4T3@fat_crate.local/T/#m324a23eb4c4c32fa7e89e31f8ba96c781e496fb1
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+
 > 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  Documentation/ABI/testing/sysfs-edac-scrub |  74 +++++++
->  Documentation/edac/features.rst            |   5 +
->  Documentation/edac/index.rst               |   1 +
->  Documentation/edac/scrub.rst               | 244 +++++++++++++++++++++
->  drivers/edac/Makefile                      |   1 +
->  drivers/edac/edac_device.c                 |  41 +++-
->  drivers/edac/scrub.c                       | 209 ++++++++++++++++++
->  include/linux/edac.h                       |  34 +++
->  8 files changed, 605 insertions(+), 4 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-edac-scrub
->  create mode 100644 Documentation/edac/scrub.rst
->  create mode 100755 drivers/edac/scrub.c
+>> ---
+>> Changes in v2:
+>>     - check kmemdup() return value
+>>     - move buffer management into acpi_video_device_EDID()
+>>     - return actual length value of buffer
+>> ---
+>>   drivers/acpi/acpi_video.c              | 50 ++++++++++++++------------
+>>   drivers/gpu/drm/nouveau/nouveau_acpi.c |  2 +-
+>>   2 files changed, 29 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+>> index 8274a17872ed..3c627bdf2d1b 100644
+>> --- a/drivers/acpi/acpi_video.c
+>> +++ b/drivers/acpi/acpi_video.c
+>> @@ -610,16 +610,29 @@ acpi_video_device_lcd_get_level_current(struct 
+>> acpi_video_device *device,
+>>       return 0;
+>>   }
+>> +/*
+>> + *  Arg:
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-edac-scrub b/Documentation/ABI/testing/sysfs-edac-scrub
-> new file mode 100644
-> index 000000000000..af14a68ee5a9
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-edac-scrub
-> @@ -0,0 +1,74 @@
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		The sysfs EDAC bus devices /<dev-name>/scrubX subdirectory
-> +		belongs to an instance of memory scrub control feature,
-> +		where <dev-name> directory corresponds to a device/memory
-> +		region registered with the EDAC device driver for the
-> +		scrub control feature.
-> +		The sysfs scrub attr nodes are only present if the parent
-> +		driver has implemented the corresponding attr callback
-> +		function and provided the necessary operations to the EDAC
-> +		device driver during registration.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/addr
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The base address of the memory region to be scrubbed
-> +		for on-demand scrubbing. Setting address would start
-> +		scrubbing. The size must be set before that.
-> +		The readback addr value would be non-zero if the requested
-> +		on-demand scrubbing is in progress, zero otherwise.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/size
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The size of the memory region to be scrubbed
-> +		(on-demand scrubbing).
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/enable_background
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) Start/Stop background(patrol) scrubbing if supported.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/enable_on_demand
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) Start/Stop on-demand scrubbing the memory region
-> +		if supported.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/min_cycle_duration
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RO) Supported minimum scrub cycle duration in seconds
-> +		by the memory scrubber.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/max_cycle_duration
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RO) Supported maximum scrub cycle duration in seconds
-> +		by the memory scrubber.
-> +
-> +What:		/sys/bus/edac/devices/<dev-name>/scrubX/current_cycle_duration
-> +Date:		Jan 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-edac@vger.kernel.org
-> +Description:
-> +		(RW) The current scrub cycle duration in seconds and must be
-> +		within the supported range by the memory scrubber.
-> +		Scrub has an overhead when running and that may want to be
-> +		reduced by taking longer to do it.
-> diff --git a/Documentation/edac/features.rst b/Documentation/edac/features.rst
-> index f32f259ce04d..ba3ab993ee4f 100644
-> --- a/Documentation/edac/features.rst
-> +++ b/Documentation/edac/features.rst
-> @@ -92,3 +92,8 @@ the sysfs EDAC bus. For example, /sys/bus/edac/devices/<dev-name>/<feature>X/
->  3. RAS dynamic feature controller - Userspace sample modules in rasdaemon for
->  dynamic scrub/repair control to issue scrubbing/repair when excess number
->  of corrected memory errors are reported in a short span of time.
-> +
-> +RAS features
-> +------------
-> +1. Memory Scrub
-> +Memory scrub features are documented in `Documentation/edac/scrub.rst`.
-> diff --git a/Documentation/edac/index.rst b/Documentation/edac/index.rst
-> index b6c265a4cffb..dfb0c9fb9ab1 100644
-> --- a/Documentation/edac/index.rst
-> +++ b/Documentation/edac/index.rst
-> @@ -8,3 +8,4 @@ EDAC Subsystem
->     :maxdepth: 1
->  
->     features
-> +   scrub
-> diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
-> new file mode 100644
-> index 000000000000..5a5108b744a4
-> --- /dev/null
-> +++ b/Documentation/edac/scrub.rst
-> @@ -0,0 +1,244 @@
-> +.. SPDX-License-Identifier: GPL-2.0
+> As you've pretty much written kernel doc, us it better to just make this 
+> proper kerneldoc (IE use /**)?
+> 
+>> + *    device    : video output device (LCD, CRT, ..)
+>> + *    edid    : address for returned EDID pointer
+>> + *    length  : _DDC length to request (must be a multiple of 128)
+>> + *
+>> + *  Return Value:
+>> + *    Length of EDID (positive value) or error (negative value)
+>> + *
+>> + *  Get EDID from ACPI _DDC. On success, a pointer to the EDID data 
+>> is written
+>> + *  to the edid address, and the length of the EDID is returned. The 
+>> caller is
+> 
+> Since 'EDID' and 'edid' mean different things in the context of this 
+> description for the purpose of clarity I think it would be better to say 
+> "the edid pointer address".
+> 
+>> + *  responsible for freeing the edid pointer.
+>> + */
+>> +
+>>   static int
+>> -acpi_video_device_EDID(struct acpi_video_device *device,
+>> -               union acpi_object **edid, int length)
+>> +acpi_video_device_EDID(struct acpi_video_device *device, void **edid, 
+>> int length)
+>>   {
+>> -    int status;
+>> +    acpi_status status;
+>>       struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+>>       union acpi_object *obj;
+>>       union acpi_object arg0 = { ACPI_TYPE_INTEGER };
+>>       struct acpi_object_list args = { 1, &arg0 };
+>> -
+>> +    int ret;
+>>       *edid = NULL;
+>> @@ -636,16 +649,17 @@ acpi_video_device_EDID(struct acpi_video_device 
+>> *device,
+>>       obj = buffer.pointer;
+>> -    if (obj && obj->type == ACPI_TYPE_BUFFER)
+>> -        *edid = obj;
+>> -    else {
+>> +    if (obj && obj->type == ACPI_TYPE_BUFFER) {
+>> +        *edid = kmemdup(obj->buffer.pointer, obj->buffer.length, 
+>> GFP_KERNEL);
+>> +        ret = *edid ? obj->buffer.length : -ENOMEM;
+>> +    } else {
+>>           acpi_handle_debug(device->dev->handle,
+>>                    "Invalid _DDC data for length %d\n", length);
+>> -        status = -EFAULT;
+>> -        kfree(obj);
+>> +        ret = -EFAULT;
+>>       }
+>> -    return status;
+>> +    kfree(obj);
+>> +    return ret;
+>>   }
+>>   /* bus */
+>> @@ -1435,9 +1449,7 @@ int acpi_video_get_edid(struct acpi_device 
+>> *device, int type, int device_id,
+>>   {
+>>       struct acpi_video_bus *video;
+>>       struct acpi_video_device *video_device;
+>> -    union acpi_object *buffer = NULL;
+>> -    acpi_status status;
+>> -    int i, length;
+>> +    int i, length, ret;
+>>       if (!device || !acpi_driver_data(device))
+>>           return -EINVAL;
+>> @@ -1477,16 +1489,10 @@ int acpi_video_get_edid(struct acpi_device 
+>> *device, int type, int device_id,
+>>           }
+>>           for (length = 512; length > 0; length -= 128) {
+>> -            status = acpi_video_device_EDID(video_device, &buffer,
+>> -                            length);
+>> -            if (ACPI_SUCCESS(status))
+>> -                break;
+>> +            ret = acpi_video_device_EDID(video_device, edid, length);
+>> +            if (ret > 0)
+>> +                return ret;
+>>           }
+>> -        if (!length)
+>> -            continue;
+>> -
+>> -        *edid = buffer->buffer.pointer;
+>> -        return length;
+>>       }
+>>       return -ENODEV;
+>> diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/ 
+>> nouveau/nouveau_acpi.c
+>> index 8f0c69aad248..21b56cc7605c 100644
+>> --- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
+>> +++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+>> @@ -384,7 +384,7 @@ nouveau_acpi_edid(struct drm_device *dev, struct 
+>> drm_connector *connector)
+>>       if (ret < 0)
+>>           return NULL;
+>> -    return kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
+>> +    return edid;
+>>   }
+>>   bool nouveau_acpi_video_backlight_use_native(void)
+> 
 
-Same note of patch 1, e. g.:
-
-	.. SPDX-License-Identifier: GPL-2.0 OR GFDL-1.2-no-invariants-or-later
-
-
-> +
-> +===================
-> +EDAC Scrub Control
-> +===================
-> +
-> +Copyright (c) 2024 HiSilicon Limited.
-> +
-> +:Author:   Shiju Jose <shiju.jose@huawei.com>
-> +:License:  The GNU Free Documentation License, Version 1.2
-> +          (dual licensed under the GPL v2)
-
-See my notes on patch 1.
-
-I won't repeat those over the other patches in this series touching
-documentation
-
-> +:Original Reviewers:
-> +
-> +- Written for: 6.14
-> +
-> +Introduction
-> +------------
-> +Increasing DRAM size and cost have made memory subsystem reliability an
-> +important concern. These modules are used where potentially corrupted data
-> +could cause expensive or fatal issues. Memory errors are among the top
-> +hardware failures that cause server and workload crashes.
-> +
-> +Memory scrubbing is a feature where an ECC (Error-Correcting Code) engine
-> +reads data from each memory media location, corrects with an ECC if
-> +necessary and writes the corrected data back to the same memory media
-> +location.
-> +
-> +The memory DIMMs can be scrubbed at a configurable rate to detect
-> +uncorrected memory errors and attempt recovery from detected errors,
-> +providing the following benefits.
-> +
-> +* Proactively scrubbing memory DIMMs reduces the chance of a correctable error becoming uncorrectable.
-> +
-> +* When detected, uncorrected errors caught in unallocated memory pages are isolated and prevented from being allocated to an application or the OS.
-> +
-> +* This reduces the likelihood of software or hardware products encountering memory errors.
-> +
-> +There are 2 types of memory scrubbing:
-> +
-> +1. Background (patrol) scrubbing of the RAM while the RAM is otherwise
-> +idle.
-> +
-> +2. On-demand scrubbing for a specific address range or region of memory.
-> +
-> +Several types of interfaces to hardware memory scrubbers have been
-> +identified, such as CXL memory device patrol scrub, CXL DDR5 ECS, ACPI
-> +RAS2 memory scrubbing, and ACPI NVDIMM ARS (Address Range Scrub).
-> +
-> +The scrub control varies between different memory scrubbers. To allow
-> +for standard userspace tooling there is a need to present these controls
-> +with a standard ABI.
-> +
-> +The control mechanisms vary across different memory scrubbers. To enable
-> +standardized userspace tooling, there is a need to present these controls
-> +through a standardized ABI.
-> +
-> +Introduce a generic memory EDAC scrub control that allows users to manage
-> +underlying scrubbers in the system through a standardized sysfs scrub
-> +control interface. This common sysfs scrub control interface abstracts the
-> +management of various scrubbing functionalities into a unified set of
-> +functions.
-> +
-> +Use cases of common scrub control feature
-> +-----------------------------------------
-> +1. Several types of interfaces for hardware (HW) memory scrubbers have
-> +been identified, including the CXL memory device patrol scrub, CXL DDR5
-> +ECS, ACPI RAS2 memory scrubbing features, ACPI NVDIMM ARS (Address Range
-> +Scrub), and software-based memory scrubbers. Some of these scrubbers
-> +support control over patrol (background) scrubbing (e.g., ACPI RAS2, CXL)
-> +and/or on-demand scrubbing (e.g., ACPI RAS2, ACPI ARS). However, the scrub
-> +control interfaces vary between memory scrubbers, highlighting the need for
-> +a standardized, generic sysfs scrub control interface that is accessible to
-> +userspace for administration and use by scripts/tools.
-> +
-> +2. User-space scrub controls allow users to disable scrubbing if necessary,
-> +for example, to disable background patrol scrubbing or adjust the scrub
-> +rate for performance-aware operations where background activities need to
-> +be minimized or disabled.
-> +
-> +3. User-space tools enable on-demand scrubbing for specific address ranges,
-> +provided that the scrubber supports this functionality.
-> +
-> +4. User-space tools can also control memory DIMM scrubbing at a configurable
-> +scrub rate via sysfs scrub controls. This approach offers several benefits:
-> +
-> +* Detects uncorrectable memory errors early, before user access to affected memory, helping facilitate recovery.
-> +
-> +* Reduces the likelihood of correctable errors developing into uncorrectable errors.
-> +
-> +5. Policy control for hotplugged memory is necessary because there may not
-> +be a system-wide BIOS or similar control to manage scrub settings for a CXL
-> +device added after boot. Determining these settings is a policy decision,
-> +balancing reliability against performance, so userspace should control it.
-> +Therefore, a unified interface is recommended for handling this function in
-> +a way that aligns with other similar interfaces, rather than creating a
-> +separate one.
-> +
-> +Scrubbing features
-> +------------------
-> +Comparison of various scrubbing features::
-> +
-> + ................................................................
-> + .              .   ACPI    . CXL patrol.  CXL ECS  .  ARS      .
-> + .  Name        .   RAS2    . scrub     .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . On-demand    . Supported . No        . No        . Supported .
-> + . Scrubbing    .           .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Background   . Supported . Supported . Supported . No        .
-> + . scrubbing    .           .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Mode of      . Scrub ctrl. per device. per memory.  Unknown  .
-> + . scrubbing    . per NUMA  .           . media     .           .
-> + .              . domain.   .           .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Query scrub  . Supported . Supported . Supported . Supported .
-> + . capabilities .           .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Setting      . Supported . No        . No        . Supported .
-> + . address range.           .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Setting      . Supported . Supported . No        . No        .
-> + . scrub rate   .           .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Unit for     . Not       . in hours  . No        . No        .
-> + . scrub rate   . Defined   .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-> + .              . Supported .           .           .           .
-> + . Scrub        . on-demand . No        . No        . Supported .
-> + . status/      . scrubbing .           .           .           .
-> + . Completion   . only      .           .           .           .
-> + ................................................................
-> + . UC error     .           .CXL general.CXL general. ACPI UCE  .
-> + . reporting    . Exception .media/DRAM .media/DRAM . notify and.
-> + .              .           .event/media.event/media. query     .
-> + .              .           .scan?      .scan?      . ARS status.
-> + ................................................................
-> + .              .           .           .           .           .
-> + . Support for  . Supported . Supported . Supported . No        .
-> + . EDAC control .           .           .           .           .
-> + .              .           .           .           .           .
-> + ................................................................
-
-Please format this as a table, in ReST, e. g:
-
-Scrubbing features
-------------------
-Comparison of various scrubbing features:
-
-+--------------+-----------+-----------+-----------+-----------+
-|              |           |           |           |           |
-| Background   | Supported | Supported | Supported | No        |
-| scrubbing    |           |           |           |           |
-|              |           |           |           |           |
-+==============+===========+===========+===========+===========+
-|              |           |           |           |           |
-| Mode of      | Scrub ctrl| per device| per memory|  Unknown  |
-| scrubbing    | per NUMA  |           | media     |           |
-|              | domain    |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-|              |           |           |           |           |
-| Query scrub  | Supported | Supported | Supported | Supported |
-| capabilities |           |           |           |           |
-|              |           |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-|              |           |           |           |           |
-| Setting      | Supported | No        | No        | Supported |
-| address range|           |           |           |           |
-|              |           |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-|              |           |           |           |           |
-| Setting      | Supported | Supported | No        | No        |
-| scrub rate   |           |           |           |           |
-|              |           |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-|              |           |           |           |           |
-| Unit for     | Not       | in hours  | No        | No        |
-| scrub rate   | Defined   |           |           |           |
-|              |           |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-|              | Supported |           |           |           |
-| Scrub        | on-demand | No        | No        | Supported |
-| status/      | scrubbing |           |           |           |
-| Completion   | only      |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-| UC error     |           |CXL general|CXL general| ACPI UCE  |
-| reporting    | Exception |media/DRAM |media/DRAM | notify and|
-|              |           |event/media|event/media| query     |
-|              |           |scan?      |scan?      | ARS status|
-+--------------+-----------+-----------+-----------+-----------+
-|              |           |           |           |           |
-| Support for  | Supported | Supported | Supported | No        |
-| EDAC control |           |           |           |           |
-|              |           |           |           |           |
-+--------------+-----------+-----------+-----------+-----------+
-
-
-> +CXL Memory Scrubbing features
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +CXL spec r3.1 section 8.2.9.9.11.1 describes the memory device patrol scrub
-> +control feature. The device patrol scrub proactively locates and makes
-> +corrections to errors in regular cycle. The patrol scrub control allows the
-> +request to configure patrol scrubber's input configurations.
-> +
-> +The patrol scrub control allows the requester to specify the number of
-> +hours in which the patrol scrub cycles must be completed, provided that
-> +the requested number is not less than the minimum number of hours for the
-> +patrol scrub cycle that the device is capable of. In addition, the patrol
-> +scrub controls allow the host to disable and enable the feature in case
-> +disabling of the feature is needed for other purposes such as
-> +performance-aware operations which require the background operations to be
-> +turned off.
-> +
-> +Error Check Scrub (ECS)
-> +~~~~~~~~~~~~~~~~~~~~~~~
-> +CXL spec r3.1 section 8.2.9.9.11.2 describes the Error Check Scrub (ECS)
-> +is a feature defined in JEDEC DDR5 SDRAM Specification (JESD79-5) and
-> +allows the DRAM to internally read, correct single-bit errors, and write
-> +back corrected data bits to the DRAM array while providing transparency
-> +to error counts.
-
-Please add a reference for CXL spec, like:
-
-	CXL spec r3.1 [1]_ section 8.2.9.9.11.2 describes...
-
-.. [1] https://computeexpresslink.org/wp-content/uploads/2024/02/CXL-3.1-Specification.pdf
-
-Same for other specs mentioned at the docs. For more details, see:
-	https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#footnotes
-
-> +
-> +The DDR5 device contains number of memory media FRUs per device. The
-> +DDR5 ECS feature and thus the ECS control driver supports configuring
-> +the ECS parameters per FRU.
-> +
-> +ACPI RAS2 Hardware-based Memory Scrubbing
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +ACPI spec 6.5 section 5.2.21 ACPI RAS2 describes ACPI RAS2 table
-> +provides interfaces for platform RAS features and supports independent
-> +RAS controls and capabilities for a given RAS feature for multiple
-> +instances of the same component in a given system.
-> +Memory RAS features apply to RAS capabilities, controls and operations
-> +that are specific to memory. RAS2 PCC sub-spaces for memory-specific RAS
-> +features have a Feature Type of 0x00 (Memory).
-> +
-> +The platform can use the hardware-based memory scrubbing feature to expose
-> +controls and capabilities associated with hardware-based memory scrub
-> +engines. The RAS2 memory scrubbing feature supports following as per spec,
-> +
-> +* Independent memory scrubbing controls for each NUMA domain, identified using its proximity domain.
-> +
-> +* Provision for background (patrol) scrubbing of the entire memory system, as well as on-demand scrubbing for a specific region of memory.
-> +
-> +ACPI Address Range Scrubbing(ARS)
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +ACPI spec 6.5 section 9.19.7.2 describes Address Range Scrubbing(ARS).
-> +ARS allows the platform to communicate memory errors to system software.
-> +This capability allows system software to prevent accesses to addresses
-> +with uncorrectable errors in memory. ARS functions manage all NVDIMMs
-> +present in the system. Only one scrub can be in progress system wide
-> +at any given time.
-> +Following functions are supported as per the specification.
-> +
-> +1. Query ARS Capabilities for a given address range, indicates platform
-> +supports the ACPI NVDIMM Root Device Unconsumed Error Notification.
-> +
-> +2. Start ARS triggers an Address Range Scrub for the given memory range.
-> +Address scrubbing can be done for volatile memory, persistent memory, or both.
-> +
-> +3. Query ARS Status command allows software to get the status of ARS,
-> +including the progress of ARS and ARS error record.
-> +
-> +4. Clear Uncorrectable Error.
-> +
-> +5. Translate SPA
-> +
-> +6. ARS Error Inject etc.
-> +
-> +The kernel supports an existing control for ARS and ARS is currently not
-> +supported in EDAC.
-> +
-> +The File System
-> +---------------
-> +
-> +The control attributes of a registered scrubber instance could be
-> +accessed in the
-> +
-> +/sys/bus/edac/devices/<dev-name>/scrubX/
-> +
-> +sysfs
-> +-----
-> +
-> +Sysfs files are documented in
-> +
-> +`Documentation/ABI/testing/sysfs-edac-scrub`.
-
-Please remove the blank line, e. g.:
-
-	Sysfs files are documented in
-	`Documentation/ABI/testing/sysfs-edac-scrub`.
-
-> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
-> index f9cf19d8d13d..a162726cc6b9 100644
-> --- a/drivers/edac/Makefile
-> +++ b/drivers/edac/Makefile
-> @@ -10,6 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
->  
->  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
->  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
-> +edac_core-y	+= scrub.o
->  
->  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
->  
-> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
-> index 9fce46dd7405..60b20eae01e8 100644
-> --- a/drivers/edac/edac_device.c
-> +++ b/drivers/edac/edac_device.c
-> @@ -575,6 +575,7 @@ static void edac_dev_release(struct device *dev)
->  {
->  	struct edac_dev_feat_ctx *ctx = container_of(dev, struct edac_dev_feat_ctx, dev);
->  
-> +	kfree(ctx->scrub);
->  	kfree(ctx->dev.groups);
->  	kfree(ctx);
->  }
-> @@ -608,8 +609,10 @@ int edac_dev_register(struct device *parent, char *name,
->  		      const struct edac_dev_feature *ras_features)
->  {
->  	const struct attribute_group **ras_attr_groups;
-> +	struct edac_dev_data *dev_data;
->  	struct edac_dev_feat_ctx *ctx;
->  	int attr_gcnt = 0;
-> +	int scrub_cnt = 0;
->  	int ret, feat;
->  
->  	if (!parent || !name || !num_features || !ras_features)
-> @@ -618,7 +621,10 @@ int edac_dev_register(struct device *parent, char *name,
->  	/* Double parse to make space for attributes */
->  	for (feat = 0; feat < num_features; feat++) {
->  		switch (ras_features[feat].ft_type) {
-> -		/* Add feature specific code */
-> +		case RAS_FEAT_SCRUB:
-> +			attr_gcnt++;
-> +			scrub_cnt++;
-> +			break;
->  		default:
->  			return -EINVAL;
->  		}
-> @@ -634,13 +640,38 @@ int edac_dev_register(struct device *parent, char *name,
->  		goto ctx_free;
->  	}
->  
-> +	if (scrub_cnt) {
-> +		ctx->scrub = kcalloc(scrub_cnt, sizeof(*ctx->scrub), GFP_KERNEL);
-> +		if (!ctx->scrub) {
-> +			ret = -ENOMEM;
-> +			goto groups_free;
-> +		}
-> +	}
-> +
->  	attr_gcnt = 0;
-> +	scrub_cnt = 0;
->  	for (feat = 0; feat < num_features; feat++, ras_features++) {
->  		switch (ras_features->ft_type) {
-> -		/* Add feature specific code */
-> +		case RAS_FEAT_SCRUB:
-> +			if (!ras_features->scrub_ops ||
-> +			    scrub_cnt != ras_features->instance)
-> +				goto data_mem_free;
-> +
-> +			dev_data = &ctx->scrub[scrub_cnt];
-> +			dev_data->instance = scrub_cnt;
-> +			dev_data->scrub_ops = ras_features->scrub_ops;
-> +			dev_data->private = ras_features->ctx;
-> +			ret = edac_scrub_get_desc(parent, &ras_attr_groups[attr_gcnt],
-> +						  ras_features->instance);
-> +			if (ret)
-> +				goto data_mem_free;
-> +
-> +			scrub_cnt++;
-> +			attr_gcnt++;
-> +			break;
->  		default:
->  			ret = -EINVAL;
-> -			goto groups_free;
-> +			goto data_mem_free;
->  		}
->  	}
->  
-> @@ -653,7 +684,7 @@ int edac_dev_register(struct device *parent, char *name,
->  
->  	ret = dev_set_name(&ctx->dev, name);
->  	if (ret)
-> -		goto groups_free;
-> +		goto data_mem_free;
->  
->  	ret = device_register(&ctx->dev);
->  	if (ret) {
-> @@ -663,6 +694,8 @@ int edac_dev_register(struct device *parent, char *name,
->  
->  	return devm_add_action_or_reset(parent, edac_dev_unreg, &ctx->dev);
->  
-> +data_mem_free:
-> +	kfree(ctx->scrub);
->  groups_free:
->  	kfree(ras_attr_groups);
->  ctx_free:
-> diff --git a/drivers/edac/scrub.c b/drivers/edac/scrub.c
-> new file mode 100755
-> index 000000000000..3978201c4bfc
-> --- /dev/null
-> +++ b/drivers/edac/scrub.c
-> @@ -0,0 +1,209 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * The generic EDAC scrub driver controls the memory scrubbers in the
-> + * system. The common sysfs scrub interface abstracts the control of
-> + * various arbitrary scrubbing functionalities into a unified set of
-> + * functions.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + */
-> +
-> +#include <linux/edac.h>
-> +
-> +enum edac_scrub_attributes {
-> +	SCRUB_ADDRESS,
-> +	SCRUB_SIZE,
-> +	SCRUB_ENABLE_BACKGROUND,
-> +	SCRUB_MIN_CYCLE_DURATION,
-> +	SCRUB_MAX_CYCLE_DURATION,
-> +	SCRUB_CUR_CYCLE_DURATION,
-> +	SCRUB_MAX_ATTRS
-> +};
-> +
-> +struct edac_scrub_dev_attr {
-> +	struct device_attribute dev_attr;
-> +	u8 instance;
-> +};
-> +
-> +struct edac_scrub_context {
-> +	char name[EDAC_FEAT_NAME_LEN];
-
-Ok, here you're using EDAC_FEAT_NAME_LEN. Please move its definition from
-patch 1 to this patch.
-
-> +	struct edac_scrub_dev_attr scrub_dev_attr[SCRUB_MAX_ATTRS];
-> +	struct attribute *scrub_attrs[SCRUB_MAX_ATTRS + 1];
-> +	struct attribute_group group;
-> +};
-> +
-> +#define TO_SCRUB_DEV_ATTR(_dev_attr)      \
-> +		container_of(_dev_attr, struct edac_scrub_dev_attr, dev_attr)
-> +
-> +#define EDAC_SCRUB_ATTR_SHOW(attrib, cb, type, format)				\
-> +static ssize_t attrib##_show(struct device *ras_feat_dev,			\
-> +			     struct device_attribute *attr, char *buf)		\
-> +{										\
-> +	u8 inst = TO_SCRUB_DEV_ATTR(attr)->instance;				\
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);		\
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;		\
-> +	type data;								\
-> +	int ret;								\
-> +										\
-> +	ret = ops->cb(ras_feat_dev->parent, ctx->scrub[inst].private, &data);	\
-> +	if (ret)								\
-> +		return ret;							\
-> +										\
-> +	return sysfs_emit(buf, format, data);					\
-> +}
-> +
-> +EDAC_SCRUB_ATTR_SHOW(addr, read_addr, u64, "0x%llx\n")
-> +EDAC_SCRUB_ATTR_SHOW(size, read_size, u64, "0x%llx\n")
-> +EDAC_SCRUB_ATTR_SHOW(enable_background, get_enabled_bg, bool, "%u\n")
-> +EDAC_SCRUB_ATTR_SHOW(min_cycle_duration, get_min_cycle, u32, "%u\n")
-> +EDAC_SCRUB_ATTR_SHOW(max_cycle_duration, get_max_cycle, u32, "%u\n")
-> +EDAC_SCRUB_ATTR_SHOW(current_cycle_duration, get_cycle_duration, u32, "%u\n")
-> +
-> +#define EDAC_SCRUB_ATTR_STORE(attrib, cb, type, conv_func)			\
-> +static ssize_t attrib##_store(struct device *ras_feat_dev,			\
-> +			      struct device_attribute *attr,			\
-> +			      const char *buf, size_t len)			\
-> +{										\
-> +	u8 inst = TO_SCRUB_DEV_ATTR(attr)->instance;				\
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);		\
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;		\
-> +	type data;								\
-> +	int ret;								\
-> +										\
-> +	ret = conv_func(buf, 0, &data);						\
-> +	if (ret < 0)								\
-> +		return ret;							\
-> +										\
-> +	ret = ops->cb(ras_feat_dev->parent, ctx->scrub[inst].private, data);	\
-> +	if (ret)								\
-> +		return ret;							\
-> +										\
-> +	return len;								\
-> +}
-> +
-> +EDAC_SCRUB_ATTR_STORE(addr, write_addr, u64, kstrtou64)
-> +EDAC_SCRUB_ATTR_STORE(size, write_size, u64, kstrtou64)
-> +EDAC_SCRUB_ATTR_STORE(enable_background, set_enabled_bg, unsigned long, kstrtoul)
-> +EDAC_SCRUB_ATTR_STORE(current_cycle_duration, set_cycle_duration, unsigned long, kstrtoul)
-> +
-> +static umode_t scrub_attr_visible(struct kobject *kobj, struct attribute *a, int attr_id)
-> +{
-> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
-> +	struct device_attribute *dev_attr = container_of(a, struct device_attribute, attr);
-> +	u8 inst = TO_SCRUB_DEV_ATTR(dev_attr)->instance;
-> +	struct edac_dev_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
-> +	const struct edac_scrub_ops *ops = ctx->scrub[inst].scrub_ops;
-> +
-> +	switch (attr_id) {
-> +	case SCRUB_ADDRESS:
-> +		if (ops->read_addr) {
-> +			if (ops->write_addr)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	case SCRUB_SIZE:
-> +		if (ops->read_size) {
-> +			if (ops->write_size)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	case SCRUB_ENABLE_BACKGROUND:
-> +		if (ops->get_enabled_bg) {
-> +			if (ops->set_enabled_bg)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	case SCRUB_MIN_CYCLE_DURATION:
-> +		if (ops->get_min_cycle)
-> +			return a->mode;
-> +		break;
-> +	case SCRUB_MAX_CYCLE_DURATION:
-> +		if (ops->get_max_cycle)
-> +			return a->mode;
-> +		break;
-> +	case SCRUB_CUR_CYCLE_DURATION:
-> +		if (ops->get_cycle_duration) {
-> +			if (ops->set_cycle_duration)
-> +				return a->mode;
-> +			else
-> +				return 0444;
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +#define EDAC_SCRUB_ATTR_RO(_name, _instance)       \
-> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RO(_name), \
-> +					.instance = _instance })
-> +
-> +#define EDAC_SCRUB_ATTR_WO(_name, _instance)       \
-> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_WO(_name), \
-> +					.instance = _instance })
-> +
-> +#define EDAC_SCRUB_ATTR_RW(_name, _instance)       \
-> +	((struct edac_scrub_dev_attr) { .dev_attr = __ATTR_RW(_name), \
-> +					.instance = _instance })
-> +
-> +static int scrub_create_desc(struct device *scrub_dev,
-> +			     const struct attribute_group **attr_groups, u8 instance)
-> +{
-> +	struct edac_scrub_context *scrub_ctx;
-> +	struct attribute_group *group;
-> +	int i;
-> +	struct edac_scrub_dev_attr dev_attr[] = {
-> +		[SCRUB_ADDRESS] = EDAC_SCRUB_ATTR_RW(addr, instance),
-> +		[SCRUB_SIZE] = EDAC_SCRUB_ATTR_RW(size, instance),
-> +		[SCRUB_ENABLE_BACKGROUND] = EDAC_SCRUB_ATTR_RW(enable_background, instance),
-> +		[SCRUB_MIN_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(min_cycle_duration, instance),
-> +		[SCRUB_MAX_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(max_cycle_duration, instance),
-> +		[SCRUB_CUR_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RW(current_cycle_duration, instance)
-> +	};
-> +
-> +	scrub_ctx = devm_kzalloc(scrub_dev, sizeof(*scrub_ctx), GFP_KERNEL);
-> +	if (!scrub_ctx)
-> +		return -ENOMEM;
-> +
-> +	group = &scrub_ctx->group;
-> +	for (i = 0; i < SCRUB_MAX_ATTRS; i++) {
-> +		memcpy(&scrub_ctx->scrub_dev_attr[i], &dev_attr[i], sizeof(dev_attr[i]));
-> +		scrub_ctx->scrub_attrs[i] = &scrub_ctx->scrub_dev_attr[i].dev_attr.attr;
-> +	}
-> +	sprintf(scrub_ctx->name, "%s%d", "scrub", instance);
-> +	group->name = scrub_ctx->name;
-> +	group->attrs = scrub_ctx->scrub_attrs;
-> +	group->is_visible  = scrub_attr_visible;
-> +
-> +	attr_groups[0] = group;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * edac_scrub_get_desc - get EDAC scrub descriptors
-> + * @scrub_dev: client device, with scrub support
-> + * @attr_groups: pointer to attribute group container
-> + * @instance: device's scrub instance number.
-> + *
-> + * Return:
-> + *  * %0	- Success.
-> + *  * %-EINVAL	- Invalid parameters passed.
-> + *  * %-ENOMEM	- Dynamic memory allocation failed.
-> + */
-> +int edac_scrub_get_desc(struct device *scrub_dev,
-> +			const struct attribute_group **attr_groups, u8 instance)
-> +{
-> +	if (!scrub_dev || !attr_groups)
-> +		return -EINVAL;
-> +
-> +	return scrub_create_desc(scrub_dev, attr_groups, instance);
-> +}
-> diff --git a/include/linux/edac.h b/include/linux/edac.h
-> index 521b17113d4d..ace8b10bb028 100644
-> --- a/include/linux/edac.h
-> +++ b/include/linux/edac.h
-> @@ -666,11 +666,43 @@ static inline struct dimm_info *edac_get_dimm(struct mem_ctl_info *mci,
->  
->  /* RAS feature type */
->  enum edac_dev_feat {
-> +	RAS_FEAT_SCRUB,
->  	RAS_FEAT_MAX
->  };
->  
-> +/**
-> + * struct edac_scrub_ops - scrub device operations (all elements optional)
-> + * @read_addr: read base address of scrubbing range.
-> + * @read_size: read offset of scrubbing range.
-> + * @write_addr: set base address of the scrubbing range.
-> + * @write_size: set offset of the scrubbing range.
-> + * @get_enabled_bg: check if currently performing background scrub.
-> + * @set_enabled_bg: start or stop a bg-scrub.
-> + * @get_min_cycle: get minimum supported scrub cycle duration in seconds.
-> + * @get_max_cycle: get maximum supported scrub cycle duration in seconds.
-> + * @get_cycle_duration: get current scrub cycle duration in seconds.
-> + * @set_cycle_duration: set current scrub cycle duration in seconds.
-> + */
-> +struct edac_scrub_ops {
-> +	int (*read_addr)(struct device *dev, void *drv_data, u64 *base);
-> +	int (*read_size)(struct device *dev, void *drv_data, u64 *size);
-> +	int (*write_addr)(struct device *dev, void *drv_data, u64 base);
-> +	int (*write_size)(struct device *dev, void *drv_data, u64 size);
-> +	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable);
-> +	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable);
-> +	int (*get_min_cycle)(struct device *dev, void *drv_data,  u32 *min);
-> +	int (*get_max_cycle)(struct device *dev, void *drv_data,  u32 *max);
-> +	int (*get_cycle_duration)(struct device *dev, void *drv_data, u32 *cycle);
-> +	int (*set_cycle_duration)(struct device *dev, void *drv_data, u32 cycle);
-> +};
-> +
-> +int edac_scrub_get_desc(struct device *scrub_dev,
-> +			const struct attribute_group **attr_groups,
-> +			u8 instance);
-> +
->  /* EDAC device feature information structure */
->  struct edac_dev_data {
-> +	const struct edac_scrub_ops *scrub_ops;
->  	u8 instance;
->  	void *private;
->  };
-> @@ -678,11 +710,13 @@ struct edac_dev_data {
->  struct edac_dev_feat_ctx {
->  	struct device dev;
->  	void *private;
-> +	struct edac_dev_data *scrub;
->  };
->  
->  struct edac_dev_feature {
->  	enum edac_dev_feat ft_type;
->  	u8 instance;
-> +	const struct edac_scrub_ops *scrub_ops;
->  	void *ctx;
->  };
->  
-
-
-
-Thanks,
-Mauro
 
