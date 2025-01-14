@@ -1,565 +1,207 @@
-Return-Path: <linux-acpi+bounces-10621-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10622-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309B9A10B97
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:59:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FBEA10BC1
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18C5F188914C
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:59:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B60166122
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E8D172BA9;
-	Tue, 14 Jan 2025 15:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B2F192B70;
+	Tue, 14 Jan 2025 16:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fNUKyLGs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PteL88LU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2083.outbound.protection.outlook.com [40.107.244.83])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9245315746B;
-	Tue, 14 Jan 2025 15:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736870387; cv=fail; b=Ez8LLKdFgwXQ6/hIhtqvHF/UNP9B67VDtEof1NlJD45cP5njmpkA0ffamdmemzz7cainmBKB4ZtD/taIzyQ3OGYdSjaXDW6CkvVl5DUFNQNPn0YlLupQHwQp4x2Ke4NJMYNKrQcIi8g0+JD/ynvWhFg3gLOrFa+EcDegULi7BtU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736870387; c=relaxed/simple;
-	bh=HNsx5KyWia9NaVuHoG3tEO3FROfIkBdfuhm6NMjS2jA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GYkyYB+Zig4ZanRiFuyngCiLC6TphGUhQW5uA9ym1Yzfdn0RlhEmAxutKx0GujSTYNj0VzJcejCGOn5kJ6gNF3KO2iC0yHkBEkprfVgjK80+Wmswrd/ovOdPUE7sPMwHVQd4l1a16ID4BTscQRqYwJAGkPhhzB/ndD/i/NHr92E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fNUKyLGs; arc=fail smtp.client-ip=40.107.244.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BGhw381UHcseqkH1g7ZskpiupRukpSpuZSEPbLZRZlECjy6H0SnG+904ZXAZIpMYOF1QVrPZMfQk841AOuNx0I+sxs99iwLHlfGBrvnx9ZG1XNEnxxh4HzsMkDwUxJE+zeCLXsOnO+8Nx37PzJVJe5gKo3PjP0yiXFH4RCiHJG0OtNp25B1yo+hu5RdJqeb+JhubxT3pKnaWcvRorVtKc6GeLgyF+wwI8glmcm5QHgotd8lWJO8jM0kt0/iYzVnDdx8nokQp6m/FRiHYs5NNGId8UledlTvCNwY6ffZI+TwI34ekVeSu7XcElOMczAQXMqflRdDb9gkADp6zNDOHXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QvFSVEZjHA6ZZvQV7jIRrpN8BvSa1w8DHBqv/QomaIU=;
- b=QczmXaP0DGYpXf1mirNl8kaac4lNxxdyvswOxnWuWNwP1wtbyGVKo7fVeTFnHZUPWDAoLTRm8KtZaGkK1sdOh5fjkTcJDL3Jw+0Maf++5hoviLY/BWpLgbmBX1BT3LttGdJSVacA5qVFqN/BprRzxrGtEcL9++3lGTlYg+sDxC3JQnJSgHlTb8OMuaTN6ZnX/qM3o8Hicn6ZXP/3dbR/MbyjH/xhm0gNbhxc0VYMePXqsuWga23KM4il/O6u+ZnO8+EXfRtIlaQamrjGanTts/qsCGHR9WOKCKYOuDZ4+lzB/rMj5yxfiQ5BsTNvMH1yO1rpo1fnazXtBzIPo9q7CA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QvFSVEZjHA6ZZvQV7jIRrpN8BvSa1w8DHBqv/QomaIU=;
- b=fNUKyLGs5Oqju16R7j1mANGYSeOrPX1DipAavMkru2EGwqV/24XJ6kOC3oFTbieDNeKD+UkV325Hm8PUn61gUODCxIC+nHK3isG1ZMGo5F+8OlAX1mpoKu7ZAdIU+ac9po2KRvr9iTeVl/tWqPimZColzPZDQaSiZyOMjXdOREk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SJ0PR12MB6807.namprd12.prod.outlook.com (2603:10b6:a03:479::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
- 2025 15:59:42 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
- 15:59:42 +0000
-Message-ID: <ba4a9724-06e8-4d70-838f-992715ce8903@amd.com>
-Date: Tue, 14 Jan 2025 09:59:39 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/18] ACPI: platform_profile: Remove
- platform_profile_handler from callbacks
-To: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Armin Wolf <W_Armin@gmx.de>, Joshua Grisham <josh@joshuagrisham.com>,
- "Derek J. Clark" <derekjohn.clark@gmail.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Hans de Goede <hdegoede@redhat.com>, Maximilian Luz
- <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Corentin Chary <corentin.chary@gmail.com>, "Luke D. Jones"
- <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>,
- Ike Panhc <ike.pan@canonical.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- Alexis Belmonte <alexbelm48@gmail.com>, Ai Chao <aichao@kylinos.cn>,
- Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com,
- ibm-acpi-devel@lists.sourceforge.net
-References: <20250114153726.11802-1-kuurtb@gmail.com>
- <20250114153726.11802-4-kuurtb@gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20250114153726.11802-4-kuurtb@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7P222CA0006.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:124::19) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A601B1553A3
+	for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 16:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736870752; cv=none; b=AkOl2W6MYpdBdfHr77pFWpd4oSSkJnrtAjPkFzwrnI2YYGInCALikmCLIJUBPYctytbteHHDFfBCRFA0VTIoYALtmVamZUt7fFFHKcVQ7ShHeNHQ72BIIx22XRMMFDnjLfQXfsEL/O9MPPyKUEjs9oSal60+iVaCs3wR0zPAwIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736870752; c=relaxed/simple;
+	bh=hmBUv9k5F6YiPFvNJjqllp6DqB0AWaHj5SLIvSoxa3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VXmiHhG3AlFwcet/VkI+jlDHvgX8YSsPwe8kl2/TJbQawogM+MqoQFNN0s8zJ4UfJOOaxi021nJjsu3eZapSi3EL151qzfvDCeZK24mpiVHC8sno2QtCIzq2KIkWIItNX2p+iIjjIZp/a4lmn2nG7b/xJTHSiiSWMNOJskp+guc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PteL88LU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736870749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VMkCYOsyvm47TSe6Vd45OKr+yexY9Ah5sYc4Xs9in04=;
+	b=PteL88LUMWpSjWEjrOc24jCsRrZlk8BNdV0ex2uUxnFXwwjtRMSc1Y67zLdueoa9yqXdG8
+	zhF6H53F6HyPTOsIkPkHWfw7XvfWzxm3FH9Wui8I+4t8Wwg0ub36sUz1YVctGmeKoZfJNj
+	L3xiFsYOep9WlCacB+eRdJ/yxGHXxJA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-TcKLno4mPC6ALUOVa0Dzcw-1; Tue, 14 Jan 2025 11:05:48 -0500
+X-MC-Unique: TcKLno4mPC6ALUOVa0Dzcw-1
+X-Mimecast-MFC-AGG-ID: TcKLno4mPC6ALUOVa0Dzcw
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385dcadffebso2744958f8f.0
+        for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 08:05:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736870747; x=1737475547;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VMkCYOsyvm47TSe6Vd45OKr+yexY9Ah5sYc4Xs9in04=;
+        b=MGCpN30xJsPYXGaLkmUat8E1oWtJQ7vx5usRvNvHeNHYYrEWBcxG5/30rx4eOQ7ENT
+         8Ewyq9DIbtzyuRaXwy/Iz8mSEfhRDV5INQ0F8YD+WWOeaIlTIoDDBSyN/mX8wQmZBE1X
+         CnpbTsAx5LqqTXw5d0VDoc3J2/lACke2aq4Di8IxeNKFDP2yPjJyq5iQMEtqSK7YBAKL
+         x2xhRYnSvG3q+yElQz1L2IUHN0+aa64p7GtOS6ZYR6cCIA1gjJtFtGEyoenYLHWCUyOr
+         vaHLcvdHr5nHvSdmdzs6KbbKUyiLfFJqDlMGRZ9iast7KVIuh3kZId85YvAXy0WwPC5E
+         tVfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXt3sg9gaQZMoXHCEHYsKDTIBpXiYC3eQfCLGiIIZTLAUUgd6UYZdM8upIjc6sazg98zz+ItM0tImdb@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNxR0ICuvxO4ViMFHKkVmZwxrNagRwbEDFKj8A8eLAMwWRQXsR
+	00Qx6WhHd82xTpgUsq4bS//fqTwoIKJ7hG8N6ZxLZI+uZhO6g/+Dw3UhqEdST4OlJeH+x6DPexf
+	c6ixMPdyeIedckQhfzauI/SIgVCtVdVH4GvmPSt4Lg9/VPbzfFktOeP2bdnk=
+X-Gm-Gg: ASbGncv0spLSxe2LNGjJhLl2fXDfMEFCyXW2iPc4fluBY8+GHAwPHgrJQB53inHFAlZ
+	Bz6lgrFxZgSBQdXPcOQgYGGQ1j2atf4U8LIe7SiVQN8qrvixKM13VPyoQWKowRo1ZUKWo+ZijgT
+	U6YIF6CNuahOcOtmdv7fL7qRk733zi12GP7Hr5cbD2rvKw2qNiNXslgIqXa1QeVnOjWMG2Ddgz0
+	WlJdvwBqqc8LmNhWA9pVbDv9ENAZAI5wxuEiWdI4W1XmxEaFJNyCTeR8QdSWhrLTDti0zCp+3av
+	rWbwfHybQIE8nwFbo+1cLasEioKDMw+VVj0AzOPOijinJqScoPsnawCrx/oIW6RmPRLlQ8KDjx9
+	9qH/+2NUT
+X-Received: by 2002:a05:6000:1a8c:b0:385:f677:8594 with SMTP id ffacd0b85a97d-38a87336b29mr23628218f8f.43.1736870746800;
+        Tue, 14 Jan 2025 08:05:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGs9YS2msqw5L28+0H4IC2QOw/GUIfGbzadBCdsTOQu3IaDPwgnpqFU9VHHEOsiFIcxgS2ITA==
+X-Received: by 2002:a05:6000:1a8c:b0:385:f677:8594 with SMTP id ffacd0b85a97d-38a87336b29mr23628041f8f.43.1736870744788;
+        Tue, 14 Jan 2025 08:05:44 -0800 (PST)
+Received: from ?IPV6:2003:cb:c738:3100:8133:26cf:7877:94aa? (p200300cbc7383100813326cf787794aa.dip0.t-ipconnect.de. [2003:cb:c738:3100:8133:26cf:7877:94aa])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d090sm15089833f8f.2.2025.01.14.08.05.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 08:05:44 -0800 (PST)
+Message-ID: <7493daa0-b15c-43e8-9235-78a0a1a8c8a6@redhat.com>
+Date: Tue, 14 Jan 2025 17:05:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ0PR12MB6807:EE_
-X-MS-Office365-Filtering-Correlation-Id: e008a772-da5a-4e04-51aa-08dd34b4750b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SERnNzFkTFRGTWFGNzNwWWNleGJ1OXpqbTh6WjJWeUhQUzhSSVB4VjNiQjNw?=
- =?utf-8?B?OFBTNEJKMEU5MjI0UVlvVTFjaTBCZSs0dUFLc1FJUHpVMmpqM2R1TE96Lysx?=
- =?utf-8?B?OFJ6eVMrdVo5YTExZWdiY2Rob0Znd1B1dW4zVC9WOG80MFMxdTc4WWI3RS8x?=
- =?utf-8?B?bHdEc2tWa1dMZllFc0tHc3pZWU5aT2dMS1daYkNUVWR2c3JwMzBxVGZLYmd3?=
- =?utf-8?B?SWJKUHQzVnRHYzBuK2twSUxwVk45OHJPUEhWN1hsK1k5WGhZWEU3V3BlY3Y1?=
- =?utf-8?B?NVJxRWlYZHFsQUdBdXRoTDFtN0JCTjBaU3lNL3JKM0VQdkRnTHpiR2RDMnhx?=
- =?utf-8?B?bE5GeHVtdXhvVDFiaEQyUmcxSFR1RGM3YlNxREd2aGhqMzJHTDNSL3JCSGtL?=
- =?utf-8?B?eEdoVkN4cWpMSWN1M25nQmNhajRxR0g2OHJ2c2UyZlRDUzErN3NaWkNVcmtK?=
- =?utf-8?B?d1kvOEs1bW9aazM1MXlpcFp3bGxsQ0JGSEdvZU1jR1BqNzEvZjU0a1ZUc2lP?=
- =?utf-8?B?b1dTQ25LL1M5dFBuL1czUlJsMVFwMDFFRWVoREZFYUhzZ09qeTBvZVhZTGhI?=
- =?utf-8?B?MUlhRG05Q0tlOVVWbVJWQWE5YkJoM0w0QkVwVHQyeHphT1JOU21ZVTcwVjNQ?=
- =?utf-8?B?azdFVkIxYmtwM213cXl5RjNlektsYThBUGxnWDI5TGdYamh6TXdKYnI1cU9q?=
- =?utf-8?B?UEN3RTE4V3pyRjJRbWpCbTZvOFErNjM5NDdza0ZZbG5Jd2lQUkZrZnMzRW1P?=
- =?utf-8?B?TnpVZzBFY2FEN2JRTC9zRnhyVjBVTjNnUFZQUXZTcjVQMkVTR0sraWsyRHUy?=
- =?utf-8?B?dHJsMXRvUnoyVGFCYnppeklSTUxiK1JxNTNnT04zeHNqRlNMVGpjTm1EME93?=
- =?utf-8?B?QW9FYStIZmhKaXlQc3dad21EOERIcGRhYkZqcEhUbWtUWmVpRUhnNVVxc2Zw?=
- =?utf-8?B?eEZnV1U2alIyV1VGSmdMcXl1a0lMZDFuYVdQeUpkZlVycFBjVHdzSTdSVEM1?=
- =?utf-8?B?NEFUTE9mSURRY3hBQXl5ZnlvcXZwVnpvOGdOOVhwbmFwbVBTVXBLR1JlM1Bx?=
- =?utf-8?B?MnFzUEd2Q3JjK2VTa293eWFsbUdqdzdhWnIxRkRFbjY3M1p4QzJuK28wdzhK?=
- =?utf-8?B?c1gva25zdFpyeGRFd2FoVDM2Zld1YVVCVTVFZkJ1RFJIVGl0TklHajVGQ0sx?=
- =?utf-8?B?ejRLRVZMZEdKa01mUFBPZnZjL2R1dnAwaHFySDJNS3RDMnhXcWpFTWJqQ1Mz?=
- =?utf-8?B?NEFuSHdzYWtwcFhzTHRyZzJGRmdLZHFOSURkdERGVjlRdmo0bHRPVkhyY3ow?=
- =?utf-8?B?bDh2N0hucWNNSlkxbGx1UHR3ek1RM1BoVU84K1FUbXhnN200REF0UWk5ZGwv?=
- =?utf-8?B?RS9ZVzJYamJZYW5TeTFuaXp6NElKWDRseVJQOFBOTmRrQmV4NW9qVXBCZzVG?=
- =?utf-8?B?M0EwbmYxTkttZG42Q2RBdFhjemRmR3dYZGIvVGxUUlFWTEJHQjJVZkJPZFNO?=
- =?utf-8?B?cFhhd3d6ODJBbFF2N0RoQnA4cDdPM2F1a2E2Y3hHeFVSR041U2toK1VsMExJ?=
- =?utf-8?B?bWllcTRScEFER0tWbWpCNzZKQmlOS1BJQ0VlRXFjQUpyaW9DMWhTcEcyY2dh?=
- =?utf-8?B?NmVrVmcvTjl6VEZ0Y2RUM0pndWtDR1dzejdzNExZbHh1ZGl0UVBtdDZmM3Ju?=
- =?utf-8?B?NjlpOG1ybmFGSXI1NTN2d2hrL1RCMVljWml1dXl1bmtFM1g0ZldML0toQ3Iy?=
- =?utf-8?B?MjZUNDBzbWg0Umcxdjh4bUNkQ1VBS0NiNE9zNVRudyszNGVJU01pS010bnFz?=
- =?utf-8?B?aUJXcHhtLy8wQWVJRzJmeitneTdTQk9TOWw5dlFnVlFRV2dydW16ekdZbVl0?=
- =?utf-8?Q?y7OIHbAgRwQbZ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Nlg3aHJIRlM3ZXQySjIwWTBsd0hJNUtldDdLWlZwMWk3OUxqOXNUd3U5MWMr?=
- =?utf-8?B?a251amN0U04vNm90aUt3Y2VDY1FLTVlMNWlodFZzUXdPVXhHTzdzTkkyQ1NE?=
- =?utf-8?B?bWZCbGNqYVlWUUpiQm1zQmZJRmRtVkZ5WkZ6S1ROcHlsZnRxMXduSi8rTVhW?=
- =?utf-8?B?SjBud1hUcjNNZzVGTFpFVXNKNGpDYWJBdmxRQ01Gc1ZYcmNuSTVoOTJlV1ZY?=
- =?utf-8?B?Mzl5MFU1cFNwMmtMN01WSko3L0JqOHdXd2xMVS91K3I4TzdMTFprZVpQeTVq?=
- =?utf-8?B?MmNYREYxVUZkazdMOHRGVWJMdnNlTXJKR28zWmJ3SHc5czQrSllOTUFMVWFB?=
- =?utf-8?B?QURWY2oycUdrRDYraEdOSk9GVkhlL2RiRXRGTnJnbW9JWlFnYVFMSkNSZzIw?=
- =?utf-8?B?ZkdVK0NldlZiMFlpNXRqRGJyYjFzdnhZOEZBWFQ0d0tIZU12Y0ZTbW9GWDVs?=
- =?utf-8?B?Wk53alJ0Uldad1hBcVRtcGRRcmJXQVN0QXFOSnYxRU1XaHE4Y0wyZ0V1dDky?=
- =?utf-8?B?aE1Rbm43eXE5NTZBWFMwTjQ0NXFkQnI3NXdUWWdpK3NJYWVoQkgwamMxOWpn?=
- =?utf-8?B?OEZwNkZkVDArOU9Jd3QxaGFtSnpmaktlR3RGRDhNY2NMOFh3VjZZTEdBWG12?=
- =?utf-8?B?ZXFtM0llSzVSaWsydC9VdHhqTWdrWHcxSVRFMFBRVEVGbHA5VHRvWFNNbEFQ?=
- =?utf-8?B?bkdwbDlxWkE5c0xSYXFkOWhORE9jMEh0MElRSUwyOGhQV1krd0ZoSElVSFhN?=
- =?utf-8?B?Q2JQNlFvR1JnM1ZwTDJNcUlIWGVwdk50NE9wdVdhVzZGU0lBZVgvam4vZjhF?=
- =?utf-8?B?Q1VVa3Qyd0JkalRYSVVjZzVUSjg2eDdLNDMzd1lZcC9KSEZCalQ4WEZrcHdQ?=
- =?utf-8?B?WjNzY09nZnh4MTZYd1VjTTFPa0lnZGJJbGNtNklwWXYzUlY5RE5iaUJ0aDlv?=
- =?utf-8?B?R0NMQTRQeVdkcWhSV1lDU1ZTYnlvR2Z4bEhWdllqaStnczZkcmdFbmkxS0FM?=
- =?utf-8?B?WHhHNzlZZWNJaWthYkJHTzA0amRlTXdyYXUrcTROMW5hVUJTVGdEU2N1UkxY?=
- =?utf-8?B?L3k2a3U4UitNRFpleFJPM2l5L0EyK2NQREF5NGtsY2M1VEdxTFdMQldBUC9U?=
- =?utf-8?B?eXdSdFR2dEpQc1JWQ0tKNnJnSWh6Um4yMjNZOWNWUmtvelEwUUlEVXJtbHR1?=
- =?utf-8?B?eEx3Nm5rUkdJa1BvdkRUbmoralpPd2ZpYjk2aVZkTWU1Y3lsZHdaTkFCQ21Z?=
- =?utf-8?B?ZTVHeUdFWTNvR1p0WndtYjdaTVhIaUxCdGM5aExqdDRJQWRnNDh2Tnd0Q2hv?=
- =?utf-8?B?cW5nVlFLQVQ5YlozLzZNL0xEckZuN3N3L1A3WjErSHV2enBwQnFzTTArN3k1?=
- =?utf-8?B?K2NJSFdGL3I3UUU1YWhCU05yNjJ4MTdhK1YwOG01YSt0MXNhRnUxNVU1eFkz?=
- =?utf-8?B?b2owMHBxeGJQck53blJZRjN4bDZsTTZxZk5jb0sybHpzdXpmK1JCZnk0NUow?=
- =?utf-8?B?VlM0Y2JrcXJ1TE4xY09yU2NhN2dQSFpGWWFQUGxZTWJCN2RRdUErRDBtWmhD?=
- =?utf-8?B?UDUzQjZRZHVncWdNMDlrazBkRnhYTWtNT1dDc2xGNnI3TGN4M1FmbUx4UjlC?=
- =?utf-8?B?aW9OUEZkOWxqZmlYQlpyRHNNc3Rxc2N6Ti9QOXZ0YTkrcDZsbklBMlZNY0lU?=
- =?utf-8?B?SlVpMmdsN2ZaZTB1MnFkcGRqYWg1WFRrNmxsZmZ2eDlWbUNkTDRwUzZBdWlk?=
- =?utf-8?B?NFdtanBUWWdTK0orbnd1MlZyN29XTjBSVjlZb2gwVVYvZTVtTmdxNUNiWU56?=
- =?utf-8?B?cXBUWVdHYUkzMlJ4WU9BTkE2R3Z4WmpOaVkzcVFuWUxadGdvU0RjR3RsUlM1?=
- =?utf-8?B?VU9HMVVwbFJpS2hYbHBoZGFrd3RxRFFGd0ExU1pWaTU3ZThxK0VtbE1FejZY?=
- =?utf-8?B?ZlJra1RMUW92c0VmNnE3SkNCTFE2V21MSUV6eTZHVVdFRnJZNVNLRi9nSHAz?=
- =?utf-8?B?NnZoWXIxWGpZMittL25FVXdyNUxWSG9HaGhTZVU1YWF3ODB6Tkd2dElGMi8y?=
- =?utf-8?B?NUhlVG80dC9aT2QyTWhEU3ZUeGVIbE1WL3Zkd0dORnJDVk5laGZiR0FDZGEw?=
- =?utf-8?Q?WkMe0UUxxwIBdkrTRLVpat1of?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e008a772-da5a-4e04-51aa-08dd34b4750b
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 15:59:42.0883
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9JGZ+ww1olQrl9EToiwzEsAmwQ+7OUEx/HAtpwiTyLOr2TEpMXe2+GpDK0JYn02KCSp98eDMTaSGsTTT2D/hzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6807
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/fake-numa: allow later numa node hotplug
+To: Bruno Faccini <bfaccini@nvidia.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, rppt@kernel.org,
+ ziy@nvidia.com, jhubbard@nvidia.com, mrusiniak@nvidia.com,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org
+References: <20250106120659.359610-1-bfaccini@nvidia.com>
+ <20250106120659.359610-2-bfaccini@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250106120659.359610-2-bfaccini@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 1/14/2025 09:37, Kurt Borja wrote:
-> Devices can now set drvdata to the class device, thus passing the
-> platform_profile_handler to callbacks is unnecessary. Instead pass the
-> class device.
+On 06.01.25 13:06, Bruno Faccini wrote:
+> Current fake-numa implementation prevents new Numa
+> nodes to be later hot-plugged by drivers.
+> A common symptom of this limitation is the
+> "node <X> was absent from the node_possible_map"
+> message by associated warning in mm/memory_hotplug.c:
+> add_memory_resource().
+> This comes from the lack of remapping in both
+> pxm_to_node_map[] and node_to_pxm_map[] tables
+> to take fake-numa nodes into account and thus
+> triggers collisions with original and physical nodes
+> only-mapping that had been determined from BIOS tables.
+> This patch fixes this by doing the necessary node-ids
+> translation in both pxm_to_node_map[]/node_to_pxm_map[]
+> tables.
+> node_distance[] table has also been fixed accordingly.
+
+You're allowed to use up to 72 chars per line, and adding some empty 
+lines might make this easier to read.
+
+Did you forget to CC ACPI folks + mailing list?
+
 > 
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Bruno Faccini <bfaccini@nvidia.com>
 > ---
->   drivers/acpi/platform_profile.c                    |  4 ++--
->   .../platform/surface/surface_platform_profile.c    |  8 ++++----
->   drivers/platform/x86/acer-wmi.c                    |  4 ++--
->   drivers/platform/x86/amd/pmf/sps.c                 |  8 ++++----
->   drivers/platform/x86/asus-wmi.c                    |  8 ++++----
->   drivers/platform/x86/dell/alienware-wmi.c          |  4 ++--
->   drivers/platform/x86/dell/dell-pc.c                |  4 ++--
->   drivers/platform/x86/hp/hp-wmi.c                   | 14 +++++++-------
->   drivers/platform/x86/ideapad-laptop.c              |  8 ++++----
->   drivers/platform/x86/inspur_platform_profile.c     |  8 ++++----
->   drivers/platform/x86/thinkpad_acpi.c               |  4 ++--
->   include/linux/platform_profile.h                   |  6 ++----
->   12 files changed, 39 insertions(+), 41 deletions(-)
+>   drivers/acpi/numa/srat.c     | 86 ++++++++++++++++++++++++++++++++++++
+>   include/acpi/acpi_numa.h     |  5 +++
+>   include/linux/numa_memblks.h |  3 ++
+>   mm/numa_emulation.c          | 45 ++++++++++++++++---
+>   mm/numa_memblks.c            |  2 +-
+>   5 files changed, 133 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index f8741201deea..66170fe436f0 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -66,7 +66,7 @@ static int _store_class_profile(struct device *dev, void *data)
->   	if (!test_bit(*bit, handler->choices))
->   		return -EOPNOTSUPP;
->   
-> -	return handler->profile_set(handler, *bit);
-> +	return handler->profile_set(dev, *bit);
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index bec0dcd1f9c3..59fffe34c9d0 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -81,6 +81,92 @@ int acpi_map_pxm_to_node(int pxm)
 >   }
+>   EXPORT_SYMBOL(acpi_map_pxm_to_node);
 >   
->   /**
-> @@ -103,7 +103,7 @@ static int get_class_profile(struct device *dev,
->   
->   	lockdep_assert_held(&profile_lock);
->   	handler = to_pprof_handler(dev);
-> -	err = handler->profile_get(handler, &val);
-> +	err = handler->profile_get(dev, &val);
->   	if (err) {
->   		pr_err("Failed to get profile for handler %s\n", handler->name);
->   		return err;
-> diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
-> index edb9362003a4..26c1230e75df 100644
-> --- a/drivers/platform/surface/surface_platform_profile.c
-> +++ b/drivers/platform/surface/surface_platform_profile.c
-> @@ -154,14 +154,14 @@ static int convert_profile_to_ssam_fan(struct ssam_device *sdev, enum platform_p
->   	}
->   }
->   
-> -static int ssam_platform_profile_get(struct platform_profile_handler *pprof,
-> +static int ssam_platform_profile_get(struct device *dev,
->   				     enum platform_profile_option *profile)
->   {
->   	struct ssam_platform_profile_device *tpd;
->   	enum ssam_tmp_profile tp;
->   	int status;
->   
-> -	tpd = dev_get_drvdata(&pprof->class_dev);
-> +	tpd = dev_get_drvdata(dev);
->   
->   	status = ssam_tmp_profile_get(tpd->sdev, &tp);
->   	if (status)
-> @@ -175,13 +175,13 @@ static int ssam_platform_profile_get(struct platform_profile_handler *pprof,
->   	return 0;
->   }
->   
-> -static int ssam_platform_profile_set(struct platform_profile_handler *pprof,
-> +static int ssam_platform_profile_set(struct device *dev,
->   				     enum platform_profile_option profile)
->   {
->   	struct ssam_platform_profile_device *tpd;
->   	int tp;
->   
-> -	tpd = dev_get_drvdata(&pprof->class_dev);
-> +	tpd = dev_get_drvdata(dev);
->   
->   	tp = convert_profile_to_ssam_tmp(tpd->sdev, profile);
->   	if (tp < 0)
-> diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-> index 4594beb4b9d7..d609bd105db3 100644
-> --- a/drivers/platform/x86/acer-wmi.c
-> +++ b/drivers/platform/x86/acer-wmi.c
-> @@ -1843,7 +1843,7 @@ static int acer_toggle_turbo(void)
->   }
->   
->   static int
-> -acer_predator_v4_platform_profile_get(struct platform_profile_handler *pprof,
-> +acer_predator_v4_platform_profile_get(struct device *dev,
->   				      enum platform_profile_option *profile)
->   {
->   	u8 tp;
-> @@ -1878,7 +1878,7 @@ acer_predator_v4_platform_profile_get(struct platform_profile_handler *pprof,
->   }
->   
->   static int
-> -acer_predator_v4_platform_profile_set(struct platform_profile_handler *pprof,
-> +acer_predator_v4_platform_profile_set(struct device *dev,
->   				      enum platform_profile_option profile)
->   {
->   	int tp;
-> diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
-> index 259a598acd3e..cf2e51f67787 100644
-> --- a/drivers/platform/x86/amd/pmf/sps.c
-> +++ b/drivers/platform/x86/amd/pmf/sps.c
-> @@ -282,10 +282,10 @@ bool is_pprof_balanced(struct amd_pmf_dev *pmf)
->   	return (pmf->current_profile == PLATFORM_PROFILE_BALANCED) ? true : false;
->   }
->   
-> -static int amd_pmf_profile_get(struct platform_profile_handler *pprof,
-> +static int amd_pmf_profile_get(struct device *dev,
->   			       enum platform_profile_option *profile)
->   {
-> -	struct amd_pmf_dev *pmf = dev_get_drvdata(&pprof->class_dev);
-> +	struct amd_pmf_dev *pmf = dev_get_drvdata(dev);
->   
->   	*profile = pmf->current_profile;
->   	return 0;
-> @@ -363,10 +363,10 @@ int amd_pmf_power_slider_update_event(struct amd_pmf_dev *dev)
->   	return 0;
->   }
->   
-> -static int amd_pmf_profile_set(struct platform_profile_handler *pprof,
-> +static int amd_pmf_profile_set(struct device *dev,
->   			       enum platform_profile_option profile)
->   {
-> -	struct amd_pmf_dev *pmf = dev_get_drvdata(&pprof->class_dev);
-> +	struct amd_pmf_dev *pmf = dev_get_drvdata(dev);
->   	int ret = 0;
->   
->   	pmf->current_profile = profile;
-> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-> index 0c68635a0aa3..9bed170abb92 100644
-> --- a/drivers/platform/x86/asus-wmi.c
-> +++ b/drivers/platform/x86/asus-wmi.c
-> @@ -3800,13 +3800,13 @@ static ssize_t throttle_thermal_policy_store(struct device *dev,
->   static DEVICE_ATTR_RW(throttle_thermal_policy);
->   
->   /* Platform profile ***********************************************************/
-> -static int asus_wmi_platform_profile_get(struct platform_profile_handler *pprof,
-> +static int asus_wmi_platform_profile_get(struct device *dev,
->   					enum platform_profile_option *profile)
->   {
->   	struct asus_wmi *asus;
->   	int tp;
->   
-> -	asus = dev_get_drvdata(&pprof->class_dev);
-> +	asus = dev_get_drvdata(dev);
->   	tp = asus->throttle_thermal_policy_mode;
->   
->   	switch (tp) {
-> @@ -3826,13 +3826,13 @@ static int asus_wmi_platform_profile_get(struct platform_profile_handler *pprof,
->   	return 0;
->   }
->   
-> -static int asus_wmi_platform_profile_set(struct platform_profile_handler *pprof,
-> +static int asus_wmi_platform_profile_set(struct device *dev,
->   					enum platform_profile_option profile)
->   {
->   	struct asus_wmi *asus;
->   	int tp;
->   
-> -	asus = dev_get_drvdata(&pprof->class_dev);
-> +	asus = dev_get_drvdata(dev);
->   
->   	switch (profile) {
->   	case PLATFORM_PROFILE_PERFORMANCE:
-> diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
-> index 28c39e25228e..b8131b803368 100644
-> --- a/drivers/platform/x86/dell/alienware-wmi.c
-> +++ b/drivers/platform/x86/dell/alienware-wmi.c
-> @@ -1026,7 +1026,7 @@ static int wmax_game_shift_status(u8 operation, u32 *out_data)
->   	return 0;
->   }
->   
-> -static int thermal_profile_get(struct platform_profile_handler *pprof,
-> +static int thermal_profile_get(struct device *dev,
->   			       enum platform_profile_option *profile)
->   {
->   	u32 out_data;
-> @@ -1052,7 +1052,7 @@ static int thermal_profile_get(struct platform_profile_handler *pprof,
->   	return 0;
->   }
->   
-> -static int thermal_profile_set(struct platform_profile_handler *pprof,
-> +static int thermal_profile_set(struct device *dev,
->   			       enum platform_profile_option profile)
->   {
->   	if (quirks->gmode) {
-> diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/dell/dell-pc.c
-> index 1a0a721d706f..c86b05b5a1cb 100644
-> --- a/drivers/platform/x86/dell/dell-pc.c
-> +++ b/drivers/platform/x86/dell/dell-pc.c
-> @@ -185,7 +185,7 @@ static int thermal_set_mode(enum thermal_mode_bits state)
->   	return dell_send_request(&buffer, CLASS_INFO, SELECT_THERMAL_MANAGEMENT);
->   }
->   
-> -static int thermal_platform_profile_set(struct platform_profile_handler *pprof,
-> +static int thermal_platform_profile_set(struct device *dev,
->   					enum platform_profile_option profile)
->   {
->   	switch (profile) {
-> @@ -202,7 +202,7 @@ static int thermal_platform_profile_set(struct platform_profile_handler *pprof,
->   	}
->   }
->   
-> -static int thermal_platform_profile_get(struct platform_profile_handler *pprof,
-> +static int thermal_platform_profile_get(struct device *dev,
->   					enum platform_profile_option *profile)
->   {
->   	int ret;
-> diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-> index 8e5e1422e024..b8e62dc9cecd 100644
-> --- a/drivers/platform/x86/hp/hp-wmi.c
-> +++ b/drivers/platform/x86/hp/hp-wmi.c
-> @@ -1221,7 +1221,7 @@ static int platform_profile_omen_get_ec(enum platform_profile_option *profile)
->   	return 0;
->   }
->   
-> -static int platform_profile_omen_get(struct platform_profile_handler *pprof,
-> +static int platform_profile_omen_get(struct device *dev,
->   				     enum platform_profile_option *profile)
->   {
->   	/*
-> @@ -1318,7 +1318,7 @@ static int platform_profile_omen_set_ec(enum platform_profile_option profile)
->   	return 0;
->   }
->   
-> -static int platform_profile_omen_set(struct platform_profile_handler *pprof,
-> +static int platform_profile_omen_set(struct device *dev,
->   				     enum platform_profile_option profile)
->   {
->   	int err;
-> @@ -1345,7 +1345,7 @@ static int thermal_profile_set(int thermal_profile)
->   							   sizeof(thermal_profile), 0);
->   }
->   
-> -static int hp_wmi_platform_profile_get(struct platform_profile_handler *pprof,
-> +static int hp_wmi_platform_profile_get(struct device *dev,
->   					enum platform_profile_option *profile)
->   {
->   	int tp;
-> @@ -1374,7 +1374,7 @@ static int hp_wmi_platform_profile_get(struct platform_profile_handler *pprof,
->   	return 0;
->   }
->   
-> -static int hp_wmi_platform_profile_set(struct platform_profile_handler *pprof,
-> +static int hp_wmi_platform_profile_set(struct device *dev,
->   					enum platform_profile_option profile)
->   {
->   	int err, tp;
-> @@ -1440,11 +1440,11 @@ static int platform_profile_victus_get_ec(enum platform_profile_option *profile)
->   	return 0;
->   }
->   
-> -static int platform_profile_victus_get(struct platform_profile_handler *pprof,
-> +static int platform_profile_victus_get(struct device *dev,
->   				       enum platform_profile_option *profile)
->   {
->   	/* Same behaviour as platform_profile_omen_get */
-> -	return platform_profile_omen_get(pprof, profile);
-> +	return platform_profile_omen_get(dev, profile);
->   }
->   
->   static int platform_profile_victus_set_ec(enum platform_profile_option profile)
-> @@ -1472,7 +1472,7 @@ static int platform_profile_victus_set_ec(enum platform_profile_option profile)
->   	return 0;
->   }
->   
-> -static int platform_profile_victus_set(struct platform_profile_handler *pprof,
-> +static int platform_profile_victus_set(struct device *dev,
->   				       enum platform_profile_option profile)
->   {
->   	int err;
-> diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-> index ed0d880a07a9..fc317f42bb82 100644
-> --- a/drivers/platform/x86/ideapad-laptop.c
-> +++ b/drivers/platform/x86/ideapad-laptop.c
-> @@ -933,10 +933,10 @@ static int convert_profile_to_dytc(enum platform_profile_option profile, int *pe
->    * dytc_profile_get: Function to register with platform_profile
->    * handler. Returns current platform profile.
->    */
-> -static int dytc_profile_get(struct platform_profile_handler *pprof,
-> +static int dytc_profile_get(struct device *dev,
->   			    enum platform_profile_option *profile)
->   {
-> -	struct ideapad_dytc_priv *dytc = dev_get_drvdata(&pprof->class_dev);
-> +	struct ideapad_dytc_priv *dytc = dev_get_drvdata(dev);
->   
->   	*profile = dytc->current_profile;
->   	return 0;
-> @@ -986,10 +986,10 @@ static int dytc_cql_command(struct ideapad_private *priv, unsigned long cmd,
->    * dytc_profile_set: Function to register with platform_profile
->    * handler. Sets current platform profile.
->    */
-> -static int dytc_profile_set(struct platform_profile_handler *pprof,
-> +static int dytc_profile_set(struct device *dev,
->   			    enum platform_profile_option profile)
->   {
-> -	struct ideapad_dytc_priv *dytc = dev_get_drvdata(&pprof->class_dev);
-> +	struct ideapad_dytc_priv *dytc = dev_get_drvdata(dev);
->   	struct ideapad_private *priv = dytc->priv;
->   	unsigned long output;
->   	int err;
-> diff --git a/drivers/platform/x86/inspur_platform_profile.c b/drivers/platform/x86/inspur_platform_profile.c
-> index 471fca50d1c9..47d2dbbf3392 100644
-> --- a/drivers/platform/x86/inspur_platform_profile.c
-> +++ b/drivers/platform/x86/inspur_platform_profile.c
-> @@ -84,10 +84,10 @@ static int inspur_wmi_perform_query(struct wmi_device *wdev,
->    *         0x0: No Error
->    *         0x1: Error
->    */
-> -static int inspur_platform_profile_set(struct platform_profile_handler *pprof,
-> +static int inspur_platform_profile_set(struct device *dev,
->   				       enum platform_profile_option profile)
->   {
-> -	struct inspur_wmi_priv *priv = dev_get_drvdata(&pprof->class_dev);
-> +	struct inspur_wmi_priv *priv = dev_get_drvdata(dev);
->   	u8 ret_code[4] = {0, 0, 0, 0};
->   	int ret;
->   
-> @@ -131,10 +131,10 @@ static int inspur_platform_profile_set(struct platform_profile_handler *pprof,
->    *         0x1: Performance Mode
->    *         0x2: Power Saver Mode
->    */
-> -static int inspur_platform_profile_get(struct platform_profile_handler *pprof,
-> +static int inspur_platform_profile_get(struct device *dev,
->   				       enum platform_profile_option *profile)
->   {
-> -	struct inspur_wmi_priv *priv = dev_get_drvdata(&pprof->class_dev);
-> +	struct inspur_wmi_priv *priv = dev_get_drvdata(dev);
->   	u8 ret_code[4] = {0, 0, 0, 0};
->   	int ret;
->   
-> diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-> index fe37c26891d8..47f87bb213a9 100644
-> --- a/drivers/platform/x86/thinkpad_acpi.c
-> +++ b/drivers/platform/x86/thinkpad_acpi.c
-> @@ -10414,7 +10414,7 @@ static int convert_profile_to_dytc(enum platform_profile_option profile, int *pe
->    * dytc_profile_get: Function to register with platform_profile
->    * handler. Returns current platform profile.
->    */
-> -static int dytc_profile_get(struct platform_profile_handler *pprof,
-> +static int dytc_profile_get(struct device *dev,
->   			    enum platform_profile_option *profile)
->   {
->   	*profile = dytc_current_profile;
-> @@ -10489,7 +10489,7 @@ static int dytc_cql_command(int command, int *output)
->    * dytc_profile_set: Function to register with platform_profile
->    * handler. Sets current platform profile.
->    */
-> -static int dytc_profile_set(struct platform_profile_handler *pprof,
-> +static int dytc_profile_set(struct device *dev,
->   			    enum platform_profile_option profile)
->   {
->   	int perfmode;
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-> index 1c8fdda51eaa..5296d886c243 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -34,10 +34,8 @@ struct platform_profile_handler {
->   	struct device class_dev;
->   	int minor;
->   	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> -	int (*profile_get)(struct platform_profile_handler *pprof,
-> -				enum platform_profile_option *profile);
-> -	int (*profile_set)(struct platform_profile_handler *pprof,
-> -				enum platform_profile_option profile);
-> +	int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
-> +	int (*profile_set)(struct device *dev, enum platform_profile_option profile);
->   };
->   
->   int platform_profile_register(struct platform_profile_handler *pprof, void *drvdata);
+> +#ifdef CONFIG_NUMA_EMU
+> +/*
+> + * Take max_nid - 1 fake-numa nodes into account in both
+> + * pxm_to_node_map()/node_to_pxm_map[] tables.
+> + */
+
+Having the fake-numa stuff in here looks quite hacky; but I'm no expert, 
+so I'll let ACPI folks comment (on CC) on the details.
+
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
