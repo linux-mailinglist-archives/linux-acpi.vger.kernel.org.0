@@ -1,335 +1,204 @@
-Return-Path: <linux-acpi+bounces-10600-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10601-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963C5A10993
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:39:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0142FA10AFC
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EC0164BE7
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 14:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D61F168087
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E74B1494D4;
-	Tue, 14 Jan 2025 14:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6FE156885;
+	Tue, 14 Jan 2025 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mS+VSPBL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQ7b/jtf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBBF155725;
-	Tue, 14 Jan 2025 14:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365A1232422;
+	Tue, 14 Jan 2025 15:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736865596; cv=none; b=Z02W6lmSZcukwLLcqPfKGuxFoAB5MOcX/Si/qP/5ZiPr8GcRFTfNxUv6mE4Xsj+sn+mEGrRdNKBijpXONLwnfdQgmVuIuBXRGeXftr8+93PJcYfJ1qi2MfRkTCbuAPxRhgZFvj7dfL3qwTafGgAFHWvfnqAsAg4JdstWBsU8Sno=
+	t=1736869089; cv=none; b=Q9TBMsUu0h/H/dVfrJQETD1UlvBMmEaLiBbV0+p/AX2xnEQD44wC+l3EcuBtO1YpdMzFOssrXcE1OzQ3l0fkPa2ugin8gwcm0v12wyHds3qCzIonToulcgv64WZ2E/pxE5eEeOANIT/VKmbhhDOY8xy2JuVo9rj58raJWeHYfz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736865596; c=relaxed/simple;
-	bh=ExS2XTnmU7QoqvKEZZKQwlQZG7UBPVImqCL3EVuvJ1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pkqbRpn+F+GidSVrZdVvsPh+fI5GuoMrYSqWE5IrwhjI9n6/QosBFaQ8+XZksEIATXxSQMxWFunYM+9F2jfjWDIoe5rsx2mCLlV/bkxJtab9Io7+TJYuDgfbWPD1J7NInNbSIVntEDm9hf/d/KvYUNCMxJLDSpG68Bio7/wnXgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mS+VSPBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50007C4CEDD;
-	Tue, 14 Jan 2025 14:39:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736865595;
-	bh=ExS2XTnmU7QoqvKEZZKQwlQZG7UBPVImqCL3EVuvJ1s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mS+VSPBLnIh9ocmdfOtRPbEkZcAA4UuraLiRGI8hm4txbPh+o71mExyAniG9VUDps
-	 FwTB5Dr2YxS0UVSqkGlo7HDQTKqWa7tezWwUa0oAK3EiTJW63h1+n/gZJk4ECWe6qK
-	 WIthCuDPPlnAiRVcZGoelTqQ6KOcwgTwWamhAwXs8xZSWbHuroODvNdGcbokikTLYj
-	 5Yi3ezMpvQKpj54cWj9K44AwAgxylCFyUmnoUSYAcoVjRiBF+LExG8olwlOqojMauY
-	 4G4Zu5f5Ew5qhSalw5KjAS1Yy7A9HSJSxyfgZFRjprrk0houA1gihZhHxxH5Iys9ic
-	 boA/dgQXZ1Ajw==
-Date: Tue, 14 Jan 2025 15:39:44 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Borislav Petkov <bp@alien8.de>, Shiju Jose <shiju.jose@huawei.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "tony.luck@intel.com"
- <tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
- <mchehab@kernel.org>, "dan.j.williams@intel.com"
- <dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
- "dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
- <alison.schofield@intel.com>, "vishal.l.verma@intel.com"
- <vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
- <Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
- "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
- <rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
- "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
- <naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
- "jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
- <somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
- "pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
- <duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
- "wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
- "dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
- "wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
- "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
- <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
- <kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
- Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
-Message-ID: <20250114153944.7b525a04@foz.lan>
-In-Reply-To: <20250114130537.0000375b@huawei.com>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
-	<20250106121017.1620-5-shiju.jose@huawei.com>
-	<20250109091915.GAZ3-Uk3rkuh38cQyy@fat_crate.local>
-	<3b2d4275d1d24dbeacee0f192ac4d69b@huawei.com>
-	<20250109123222.GBZ3_B1g3Esgu1-MPi@fat_crate.local>
-	<20250109142433.00004ea7@huawei.com>
-	<20250114133817.20048aa4@foz.lan>
-	<20250114130537.0000375b@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1736869089; c=relaxed/simple;
+	bh=FKT7LpmC/KgLbkhhg563slhkYuuo+25wRKhGL6TGztM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sxhDiqOVBEc5GbtpZPPNNibxexjdBzgMvKJk3K4hJqmCaseILRootNgJ9GsMEyWTShWtwDiUfMoN3rTcECCBjnGvD7tEhBlScqo9Eccm4NE2OnTBE5QT9+JWEs4P3OqqfdFB/yeLpIhwF2dTX2mjxd4K0sPcZtlOVW4QhEFCDMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQ7b/jtf; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-51cd05384aaso216439e0c.0;
+        Tue, 14 Jan 2025 07:38:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736869086; x=1737473886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S6OcBLSiXj43UWw6kP+ylSaU+o5she7C6HdRdC/cjns=;
+        b=ZQ7b/jtf0W/9dZ6/bHjdRVfFwz2EQkZX9vFHxw4gvaEt/1krABJ9YZAbPiR1E7NfLa
+         WneB2f4uzlccloDuILjRAFjbsXObRFiizrUig1wZSpSoRqBncGC17AY8/YheiuyUlGUx
+         D+kJNPj+eqP1g6q3+KUSEGQh+/eiPnFc8VQnILu6hOvZWWPq9Lvt3XmgG1iVRBeWlE2j
+         DjOIRUXmYsHW6ZBPz9+8gPAcq4VBUmVFacW1W2CV4/HGigTiUMH/zv9sW6q4Bsv/O4uP
+         Qej+WQeK53GBZfAo7RVvX5KntyD3TY/f1vYwK2QKsXcWIvn09uvX9tzavaMBEIy4AvIS
+         ju8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736869086; x=1737473886;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S6OcBLSiXj43UWw6kP+ylSaU+o5she7C6HdRdC/cjns=;
+        b=tEzcFshGW3xxlu0lroGlIBNZGTtZBYeYo2Zo1QqQzx6de2o076b7ldEJFXLVvWQHb0
+         qbIqWnbkE/OrnW3pMMSntrP0bZ5sXjbpSBWScyBn3/a3/IPymJMmaKcEG/Pz0lX69wwy
+         boga5q0rfCyBrCb8hK6ZoUqM+wyIh9yo72QLWWQ6CrA4Y/NXgl3V4k/2MUPfWZjdIbLf
+         K+NIUjuON9HsDLvSJCaH5Upkni+1LPca2rXCL/UWgoqC4GYHLpyxjRJBGtyy0P3e/bSa
+         Nt9efsIWUoxMsaIVgxkJ2NhjTDJlZ/YxxSJEqWhqF722s7pi7asmOJpxefsyhsm29E9u
+         KlGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVa4y+LOAsdw4srt/bs8FkJSbYuQB6ZLieioHF2KuTi+UxgylKHnG2TcL1Q7mcFZgIZvvL53K1Mwz2WgcdL@vger.kernel.org, AJvYcCXyHNR/y2UgFCHKo2hRFNCjpizciEZezHfzgapq2eVwqIwMusjNA/rnxjGZSgV6EGf4CmDKPThwsvQg@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU+Y72ffRY6EI+yLnB8vlDZ91D4PrfUl7cL7xZdv0lnKRP5lUb
+	oftvzSm2Tp2dFUcrNLXRabxSe6fnKK9uttIXXuTxCP4FiwA182QfKIg6Ow==
+X-Gm-Gg: ASbGncvXcVZ2uqfcdCTxzPEmT6B5POxnHZiemN3JqbXT1Ni95FgEs7q90XSxQh0f+cq
+	op4EBbXPTNykqOKBObPXtdlVc6COyEMkfHoxAo3J2/ooXpMPd7q7OlcbUiSMnYZtiADltBJpaaI
+	nLgv31vlMEkZDB4tFkvoksdRtXzxjxjW+MHwYhSIggfwmEiq0+GuTRMQYwTm9ZnqyFwl3Feb40A
+	Ost2sO4f34rlRrwZDuFnZ7YScxcONApQZwtaTllXRIL6AmgURgjeb9c4UAf5waq
+X-Google-Smtp-Source: AGHT+IE8jHUpgvWGxondQBd2bR/hLYSS9v4Lm2B1k8zYGh7DUVExCKbtlPX9v9yTDrq0bu/Cbe1SZg==
+X-Received: by 2002:a05:6122:c94:b0:514:eeba:517 with SMTP id 71dfb90a1353d-51c6c532293mr19159278e0c.10.1736869085689;
+        Tue, 14 Jan 2025 07:38:05 -0800 (PST)
+Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51cd7c56d30sm277e0c.14.2025.01.14.07.38.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 07:38:04 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+To: platform-driver-x86@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Len Brown" <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Mario Limonciello" <mario.limonciello@amd.com>,
+	"Armin Wolf" <W_Armin@gmx.de>,
+	"Joshua Grisham" <josh@joshuagrisham.com>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Hans de Goede" <hdegoede@redhat.com>,
+	"Kurt Borja" <kuurtb@gmail.com>,
+	"Maximilian Luz" <luzmaximilian@gmail.com>,
+	"Lee, Chun-Yi" <jlee@suse.com>,
+	"Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
+	"Corentin Chary" <corentin.chary@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	"Lyndon Sanche" <lsanche@lyndeno.ca>,
+	"Ike Panhc" <ike.pan@canonical.com>,
+	"Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
+	"Mark Pearson" <mpearson-lenovo@squebb.ca>,
+	"Alexis Belmonte" <alexbelm48@gmail.com>,
+	"Ai Chao" <aichao@kylinos.cn>,
+	"Gergo Koteles" <soyer@irl.hu>,
+	Dell.Client.Kernel@dell.com,
+	ibm-acpi-devel@lists.sourceforge.net
+Subject: [PATCH v2 00/18] Hide platform_profile_handler from consumers
+Date: Tue, 14 Jan 2025 10:37:08 -0500
+Message-ID: <20250114153726.11802-1-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Em Tue, 14 Jan 2025 13:05:37 +0000
-Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
+Hello,
 
-> On Tue, 14 Jan 2025 13:38:31 +0100
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
->=20
-> > Em Thu, 9 Jan 2025 14:24:33 +0000
-> > Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
-> >  =20
-> > > On Thu, 9 Jan 2025 13:32:22 +0100
-> > > Borislav Petkov <bp@alien8.de> wrote:
-> > >=20
-> > > Hi Boris,
-> > >    =20
-> > > > On Thu, Jan 09, 2025 at 11:00:43AM +0000, Shiju Jose wrote:     =20
-> > > > > The min_ and max_ attributes of the control attributes are added =
- for your
-> > > > > feedback on V15 to expose supported ranges of these control attri=
-butes to the user,=20
-> > > > > in the following links.         =20
-> > > >=20
-> > > > Sure, but you can make that differently:
-> > > >=20
-> > > > cat /sys/bus/edac/devices/<dev-name>/mem_repairX/bank
-> > > > [x:y]
-> > > >=20
-> > > > which is the allowed range.     =20
-> > >=20
-> > > To my thinking that would fail the test of being an intuitive interfa=
-ce.
-> > > To issue a repair command requires that multiple attributes be config=
-ured
-> > > before triggering the actual repair.
-> > >=20
-> > > Think of it as setting the coordinates of the repair in a high dimens=
-ional
-> > > space.
-> > >=20
-> > > In the extreme case of fine grained repair (Cacheline), to identify t=
-he
-> > > relevant subunit of memory (obtained from the error record that we are
-> > > basing the decision to repair on) we need to specify all of:
-> > >=20
-> > > Channel, sub-channel, rank,  bank group, row, column and nibble mask.
-> > > For coarser granularity repair only specify a subset of these applies=
- and
-> > > only the relevant controls are exposed to userspace.
-> > >=20
-> > > They are broken out as specific attributes to enable each to be set b=
-efore
-> > > triggering the action with a write to the repair attribute.
-> > >=20
-> > > There are several possible alternatives:
-> > >=20
-> > > Option 1
-> > >=20
-> > > "A:B:C:D:E:F:G:H:I:J" opaque single write to trigger the repair where
-> > > each number is providing one of those coordinates and where a readback
-> > > let's us known what each number is.
-> > >=20
-> > > That single attribute interface is very hard to extend in an intuitiv=
-e way.
-> > >=20
-> > > History tell us more levels will be introduced in the middle, not just
-> > > at the finest granularity, making such an interface hard to extend in
-> > > a backwards compatible way.
-> > >=20
-> > > Another alternative of a key value list would make for a nasty sysfs
-> > > interface.
-> > >=20
-> > > Option 2=20
-> > > There are sysfs interfaces that use a selection type presentation.
-> > >=20
-> > > Write: "C", Read: "A, B, [C], D" but that only works well for discret=
-e sets
-> > > of options and is a pain to parse if read back is necessary.   =20
-> >=20
-> > Writing it as:
-> >=20
-> > 	a b [c] d
-> >=20
-> > or even:
-> > 	a, b, [c], d
-> >=20
-> > doesn't make it hard to be parse on userspace. Adding a comma makes
-> > Kernel code a little bigger, as it needs an extra check at the loop
-> > to check if the line is empty or not:
-> >=20
-> > 	if (*tmp !=3D '\0')
-> > 		*tmp +=3D snprintf(", ")
-> >=20
-> > Btwm we have an implementation like that on kernelspace/userspace for
-> > the RC API:
-> >=20
-> > - Kernelspace:
-> >   https://github.com/torvalds/linux/blob/master/drivers/media/rc/rc-mai=
-n.c#L1125
-> >   6 lines of code + a const table with names/values, if we use the same=
- example
-> >   for EDAC:
-> >=20
-> > 	const char *name[] =3D { "foo", "bar" };
-> >=20
-> > 	for (i =3D 0; i < ARRAY_SIZE(names); i++) {
-> > 		if (enabled & names[i].type)
-> > 			tmp +=3D sprintf(tmp, "[%s] ", names[i].name);
-> > 		else if (allowed & proto_names[i].type)
-> > 			tmp +=3D sprintf(tmp, "%s ", names[i].name);
-> > 	}
-> >=20
-> >=20
-> > - Userspace:
-> >   https://git.linuxtv.org/v4l-utils.git/tree/utils/keytable/keytable.c#=
-n197
-> >   5 lines of code + a const table, if we use the same example
-> >   for ras-daemon:
-> >=20
-> > 		const char *name[] =3D {=20
-> > 			[EDAC_FOO] =3D "[foo]",
-> > 			[EDAC_BAR] =3D "[bar]",
-> > 		};
-> >=20
-> > 		for (p =3D strtok(arg, " ,"); p; p =3D strtok(NULL, " ,"))
-> > 			for (i =3D 0; i < ARRAY_SIZE(name); i++)
-> > 				if (!strcasecmp(p, name[i])
-> > 					return i;
-> > 		return -1;
-> >=20
-> > 	(strtok handles both space and commas at the above example)
-> >=20
-> > IMO, this is a lot better, as the alternative would be to have separate
-> > sysfs nodes to describe what values are valid for a given edac devnode.
-> >=20
-> > See, userspace needs to know what values are valid for a given
-> > device and support for it may vary depending on the Kernel and
-> > device version. So, we need to have the information about what values
-> > are valid stored on some sysfs devnode, to allow backward compatibility=
-. =20
->=20
-> These aren't selectors from a discrete list so the question is more
-> whether a syntax of
-> <min> value <max>=20
-> is intuitive or not.  I'm not aware of precedence for this one.
+As suggested by Mario, I moved patch 15/18 to position 3/18. This indeed
+simplified all diffs. Full reordering bellow.
 
-=46rom my side, I prefer having 3 separate sysfs nodes, as this is a
-very common practice. Doing it on a different way sounds an API violation,
-but if someone insists on dropping min/max, this can be argued at
-https://lore.kernel.org/linux-api/.
+Series based on top of pdx86/for-next branch.
 
-On a very quick search:
+~ Kurt
+---
+v1 -> v2:
 
-	$ ./scripts/get_abi.pl search "\bmin.*max"
+01 -> 04
+02 -> 05
+03 -> 01
+04 -> 02
+05 -> 06
+06 -> 07
+07 -> 08
+08 -> 09
+09 -> 10
+10 -> 11
+11 -> 12
+12 -> 13
+13 -> 14
+14 -> 15
+15 -> 03
 
-I can't see any place using min and max at the same devnode.
+[1/18]
+  - Call put_device() if device_register() fails
 
-	$ ./scripts/get_abi.pl search "\b(min|max)"|grep /sys/ |wc -l
-	234
+[2/18]
+  - Set and use drvdata for every driver in these series, instead of
+    patches 6-14
 
-So, it sounds to me that merging those into a single devnode is an
-API violation.
+[4/18]
+  - Renamed the `choices` callback to `probe`
 
->=20
-> There was another branch of the thread where Boris mentioned this as an
-> option. It isn't bad to deal with and an easy change to the code,
-> but I have an open question on what choice we make for representing
-> unknown min / max.  For separate files the absence of the file
-> indicates we don't have any information.
->=20
->=20
-> >  =20
-> > >=20
-> > > So in conclusion, I think the proposed multiple sysfs attribute style
-> > > with them reading back the most recent value written is the least bad
-> > > solution to a complex control interface.
-> > >    =20
-> > > >=20
-> > > > echo ...=20
-> > > >=20
-> > > > then writes in the bank.
-> > > >      =20
-> > > > > ... so we would propose we do not add max_ and min_ for now and s=
-ee how the
-> > > > > use cases evolve.       =20
-> > > >=20
-> > > > Yes, you should apply that same methodology to the rest of the new =
-features
-> > > > you're adding: only add functionality for the stuff that is actuall=
-y being
-> > > > used now. You can always extend it later.
-> > > >=20
-> > > > Changing an already user-visible API is a whole different story and=
- a lot lot
-> > > > harder, even impossible.
-> > > >=20
-> > > > So I'd suggest you prune the EDAC patches from all the hypothetical=
- usage and
-> > > > then send only what remains so that I can try to queue them.     =20
-> > >=20
-> > > Sure. In this case the addition of min/max was perhaps a wrong respon=
-se to
-> > > your request for a way to those ranges rather than just rejecting a w=
-rite
-> > > of something out of range as earlier version did.
-> > >=20
-> > > We can revisit in future if range discovery becomes necessary.  Perso=
-nally
-> > > I don't think it is given we are only taking these actions in respons=
-e error
-> > > records that give us precisely what to write and hence are always in =
-range.   =20
-> >=20
-> > For RO devnodes, there's no need for ranges, but those are likely neede=
-d for
-> > RW, as otherwise userspace may try to write invalid requests and/or have
-> > backward-compatibility issues. =20
->=20
-> Given these parameters are only meaningfully written with values coming
-> ultimately from error records, userspace should never consider writing
-> something that is out of range except during testing.
->=20
-> I don't mind presenting the range where known (in CXL case it is not
-> discoverable for most of them) but I wouldn't expect tooling to ever
-> read it as known correct values to write come from the error records.
-> Checking those values against provided limits seems an unnecessary step
-> given an invalid parameter that slips through will be rejected by the
-> hardware anyway.
+[15/18]
+  - Improve error handling in amd/pmf
+  - Improve error handling in asus-wmi
 
-I'm fine starting without min/max if there's no current usecase, provided
-that:
+[18/18]
+  - Fix typo
+  - Added documentation to platform_profile_ops
 
-1. when needed, we add min/max as separate devnodes;
-2. there won't be any backward issues when min/max gets added.
+v1: https://lore.kernel.org/platform-driver-x86/20250109150731.110799-1-kuurtb@gmail.com/
 
-Regards,
-Mauro
+Kurt Borja (18):
+  ACPI: platform_profile: Replace *class_dev member with class_dev
+  ACPI: platform_profile: Let drivers set drvdata to the class device
+  ACPI: platform_profile: Remove platform_profile_handler from callbacks
+  ACPI: platform_profile: Add `ops` member to handlers
+  ACPI: platform_profile: Add `probe` to platform_profile_ops
+  platform/surface: surface_platform_profile: Use
+    devm_platform_profile_register()
+  platform/x86: acer-wmi: Use devm_platform_profile_register()
+  platform/x86: amd: pmf: sps: Use devm_platform_profile_register()
+  platform/x86: asus-wmi: Use devm_platform_profile_register()
+  platform/x86: dell-pc: Use devm_platform_profile_register()
+  platform/x86: ideapad-laptop: Use devm_platform_profile_register()
+  platform/x86: hp-wmi: Use devm_platform_profile_register()
+  platform/x86: inspur_platform_profile: Use
+    devm_platform_profile_register()
+  platform/x86: thinkpad_acpi: Use devm_platform_profile_register()
+  ACPI: platform_profile: Remove platform_profile_handler from exported
+    symbols
+  ACPI: platform_profile: Move platform_profile_handler
+  ACPI: platform_profile: Clean platform_profile_handler
+  ACPI: platform_profile: Add documentation
+
+ .../ABI/testing/sysfs-class-platform-profile  |  44 +++++
+ drivers/acpi/platform_profile.c               | 164 +++++++++++++-----
+ .../surface/surface_platform_profile.c        |  48 ++---
+ drivers/platform/x86/acer-wmi.c               |  58 +++----
+ drivers/platform/x86/amd/pmf/core.c           |   1 -
+ drivers/platform/x86/amd/pmf/pmf.h            |   3 +-
+ drivers/platform/x86/amd/pmf/sps.c            |  51 +++---
+ drivers/platform/x86/asus-wmi.c               |  55 +++---
+ drivers/platform/x86/dell/alienware-wmi.c     |  33 ++--
+ drivers/platform/x86/dell/dell-pc.c           |  60 ++++---
+ drivers/platform/x86/hp/hp-wmi.c              |  83 +++++----
+ drivers/platform/x86/ideapad-laptop.c         |  44 +++--
+ .../platform/x86/inspur_platform_profile.c    |  48 +++--
+ drivers/platform/x86/thinkpad_acpi.c          |  37 ++--
+ include/linux/platform_profile.h              |  51 ++++--
+ 15 files changed, 474 insertions(+), 306 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profile
+
+
+base-commit: 58126788aa7726c0e91de6b25e6e332fa06089ab
+-- 
+2.47.1
+
 
