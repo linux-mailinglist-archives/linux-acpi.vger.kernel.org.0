@@ -1,293 +1,112 @@
-Return-Path: <linux-acpi+bounces-10636-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10637-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EC0A10DB8
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 18:27:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CA3A10DC5
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 18:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C984D1886BAB
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:27:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD0353A2AF1
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8D71D47BB;
-	Tue, 14 Jan 2025 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318691D3576;
+	Tue, 14 Jan 2025 17:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JCqFYp99"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vOA1DEF6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F9714A609;
-	Tue, 14 Jan 2025 17:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0596714A609;
+	Tue, 14 Jan 2025 17:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736875654; cv=none; b=svWPXGKv3S+hp/iQqu3nC0a8/uQrNZjcEn7ZOV0naWRFD7ME5rUQjBbsRoaDfTftmnxXAUJCmWZjQ3Ls4DjIeCGOB9uKqPvIl5fakirLeLWXnYgoU5B6VTvhez/325c901rsiXYnnTDJMxa/Gg83Hzyf/IFIF3lFDOc5vEG/TYQ=
+	t=1736875767; cv=none; b=hj6sdXe+4xATwgu4L5aykMJhC03JjW6iem+Azzlx7IX0RroKADg3J8+5J5OiBC1w/q7RmREbxhYu/H/X6ZtfZ1+/CvMGmQsIJxa1TBs9NKnC/1kWX++QJL6pqdnLdTPiH98vGj1N+v+OrlLMwHTnYfM94mTrFCexb9DnlNGpB8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736875654; c=relaxed/simple;
-	bh=CnEbcuQM23cewAOxXRn0fBKrOtRkCHRleBdpOu2SFFo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jK0SWvftye3uHQuP2aW02j+1RIYLaejKJ3GPKrdNqXnFHPYKcHdklxSDAPCO3gDiVdEmTqrZ6qDZ+U1m3HkhBbiVGNRsUwN31/UpxwKiECGYonPmNU3vtV++55rSqWG9O7jNS+t5E6dexuO3felmwxoyRRXCFtDxBkA6w+IZaHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JCqFYp99; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4afe2f6cecdso3285200137.1;
-        Tue, 14 Jan 2025 09:27:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736875650; x=1737480450; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=X3goD0eRnq9bX+x6uQW0zjC9LaqDjotChcZ7UsbZxrg=;
-        b=JCqFYp99wxGivnfzLzB196lERGPQGEjh77nKzvb7Ooy3RNa9GODdJUakQYmL3Ts+TP
-         08cPIAH12Lp9LfN73lGUgyMRXfA72Gh7Upf0Y9LzRYS5Dl3PlIKNPgWMYgg5rKSIOD9V
-         cOoIoBvhHWCeYIHBeI/RgqeGTO6VpUKCj4Cm1Avul02v8yEj4H1npVYgdeUlwft+8x2f
-         k8QQMV5H/i9f/KwTZUIwWM+Abi7Pd/lhyp3cvkGhbyWxyqX1XvJusNIGSwgOb/JUUqji
-         7tlhyXYBJMQ9u/M5piRHyez9fdudeMOk0lhANXZiRwA4ERtQlIVO6uzcc8xIhRcEdrjW
-         i/6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736875650; x=1737480450;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X3goD0eRnq9bX+x6uQW0zjC9LaqDjotChcZ7UsbZxrg=;
-        b=JUGnhJEpSyMEBmUBFOdvM7ciCGpewLGpvzAjikzzT1RBVkmS9vKLjIVdD0sYGIkh58
-         rSwNPDy4p8TfaZ3Q+Qr6FB/iU3icLPD4DUwbuWXHkS/uppCOjpfaDSoeouQrIPQRrnxn
-         AhPFHr1Hw9R+RRg83PeJoS3sZ6ottCOBsPCBl9fdRmTH5gXgRy4sxpxU/daJbYDUqaSP
-         afM3JnzKmow1HBVV4J7akbGLk6Qe4xD7rhREy1PGdzFtLoa9ac0NuqVqED8Uc9GvYm91
-         Ih5yZFa0IXvGTohBMkXPsRS5RuOI1zn3vbkAwcUWL+jnbm5lbpaUg1/eSatKbSyAFoqq
-         aEZw==
-X-Forwarded-Encrypted: i=1; AJvYcCVt4aDxFGhZYljMJfBFqY/uXepH2cjhU2WYSLkEsu1FHH7XVlrRzlj3moQ0s3foaugFwtz1CI4QZFxBFcbJ@vger.kernel.org, AJvYcCXj+9a9Akg6ZNx4RNpYmIiYBB/I7IIC5FJoHm43bDOH3Mw8Pqkg83sJL9AMoYOA7vaf2p5FVBfJhrKp@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNkQzNfnfuiuRxd8YD8AaC+kd7sN9mKkQghvALoGe+v6+MQ4qR
-	/FB+f0s9rcCLbHz3OBcSfPAEMRFegwD+iF0/g6hbLwyuuN1Z+BgY
-X-Gm-Gg: ASbGncuk3a/jqyuKiluiitjVf1GEIedQ3lktv2DWVW9MeCK7O6xATwx7/w8C2HXXKJ1
-	+Jyr6rQEnpOKc58TDkJJv2YMvZJNYvTZ6bpKLhe1LrslwEbpmmMJjj/zJ37rrf6oR4jQ/YG3iU6
-	0dYca1s+U/W1t8V7cRjPGk6Mzv0AH1tT1TNV8c0kftlKVEsQOgoaZW8bhTqMWQFZ+Eu+yGuVDY8
-	q5CsZ9eRh66KA3uPjNqmhGtj/Lo91jwOAqVuKb57u59vzH4ULhLgQ==
-X-Google-Smtp-Source: AGHT+IGTlZ9ixw3vuDdV84ktQEMiQLOkkiJfcTwKVFzEgikBZGzAZc0BTtKSsskWn2pzCSr8xup2tA==
-X-Received: by 2002:a67:e451:0:b0:4b5:b20d:9613 with SMTP id ada2fe7eead31-4b5b20d96d5mr15962194137.7.1736875649524;
-        Tue, 14 Jan 2025 09:27:29 -0800 (PST)
-Received: from alphacentauri ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-86231362217sm5327657241.12.2025.01.14.09.27.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 09:27:29 -0800 (PST)
-Date: Tue, 14 Jan 2025 12:27:25 -0500
-From: Kurt Borja <kuurtb@gmail.com>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Armin Wolf <W_Armin@gmx.de>, Joshua Grisham <josh@joshuagrisham.com>, 
-	"Derek J. Clark" <derekjohn.clark@gmail.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Maximilian Luz <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>, 
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Corentin Chary <corentin.chary@gmail.com>, 
-	"Luke D. Jones" <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>, 
-	Ike Panhc <ike.pan@canonical.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, Alexis Belmonte <alexbelm48@gmail.com>, 
-	Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com, 
-	ibm-acpi-devel@lists.sourceforge.net
-Subject: Re: [PATCH v2 18/18] ACPI: platform_profile: Add documentation
-Message-ID: <rsuje6dgxr7kb2w3creu5vvn23xrhhfoczb3m3ug4hkxha3xxy@x5xot73enmwa>
-References: <20250114153726.11802-1-kuurtb@gmail.com>
- <20250114153726.11802-19-kuurtb@gmail.com>
- <0e10985e-2400-daee-00a9-3a6156214b3e@linux.intel.com>
+	s=arc-20240116; t=1736875767; c=relaxed/simple;
+	bh=TkFCMzhVxdhNr+Bis623+fc8S6ZZnrfPwokt//tZ3ag=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WgWys+GNltkRIPO1O3HKHdQZkj+j+sqWO9L/qdWaPt0Fei+zft50Pjc3J06ezPBou0wLpzfnSv6k/Ua6Qk/fDksf5uix0VjyhObvnbpZ58b6P/BVXZYuNIA3c9LcjZpa6T8akc+NNpXzYNRxb8q0Y/8Gu666ylVuvJNSza/dmJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vOA1DEF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A43DC4AF09;
+	Tue, 14 Jan 2025 17:29:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736875765;
+	bh=TkFCMzhVxdhNr+Bis623+fc8S6ZZnrfPwokt//tZ3ag=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vOA1DEF6VTG/fey2N8OSkxUIr3tvUM2l4xQUFQHme3c6LPpapUz2vzoGpt8tnLwL7
+	 I0+8IxlmHeP/HddFKFyOikXzmo4nXBFN4Y/be39fISKvGuQ1o4ypZTGdKdg3vytpLm
+	 qXjOr6uX0bDmfCTpAmVr6IdgnVgTkg1KD86xO2OieX6sGtE7yYq6PN67xpGoGAcKPq
+	 kqYGN03+96nk+GMrwnnRlFMWNty9jMfJ550AazGVLb0vYw6l0LBXBHYVjd49onvSCB
+	 2J4GlO9OsSi0ZyTj4GO7qyqDNeCv2PZnbYY9G70QmjAAsoT0Zfg4E+/mEyfvs48gw6
+	 9ledrV3brxmrQ==
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3eba50d6da7so1449093b6e.2;
+        Tue, 14 Jan 2025 09:29:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWMGtyVgPMDYotL7Tiid1EmV4dgm1+AyNF1cOLAETbiXBNNj9E/Wk1QD9lW/0IUTf0sGMGFoLOSAJI+@vger.kernel.org, AJvYcCXRMgXt6pJxsEEZgPWKWmM2Ll5gSG9yac9Tr2Q7XfVekHU9CoDWnDKA3an/zcDUZSi9BdcDMQ5XUdOfRQ0P@vger.kernel.org
+X-Gm-Message-State: AOJu0Yypg097J9D5tkOKb4Qujc60k5pow0JHpV9yRuLQtz9g006kZg+O
+	6MU9Owbh19NitCkf0gW5kERRugonEKAohU5w/qorG+S9+q4n+K682UdbU/b6VLsZnMGpLkPJE4O
+	7UcAQ5/d5k1Ojh/esCunKFSEC54I=
+X-Google-Smtp-Source: AGHT+IHmclVY58TGSrsBptcum+ae2vLUwPXyMQZcaKumleWgGEW64iLu+2kiDmvkU0gSQxxE0oUzobckGKu2eBUTjfQ=
+X-Received: by 2002:a05:6808:124a:b0:3eb:42d0:f3e with SMTP id
+ 5614622812f47-3ef2ebb90d0mr17969552b6e.7.1736875764797; Tue, 14 Jan 2025
+ 09:29:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e10985e-2400-daee-00a9-3a6156214b3e@linux.intel.com>
+References: <20241230121009.GDZ3KNoe0-hUwQDLG7@fat_crate.local>
+ <Z3KaSxr2sjCC8FpJ@U-2FWC9VHC-2323.local> <20241230132403.GEZ3Ke8zm7HxSv84pA@fat_crate.local>
+ <Z3OS4LCCxfVN32uH@U-2FWC9VHC-2323.local> <20241231092358.GAZ3O4LroNtlnztneC@fat_crate.local>
+ <Z3PEXxFTGXW2j2F3@U-2FWC9VHC-2323.local> <20241231111314.GDZ3PRyq_tiU002p5d@fat_crate.local>
+ <87ikqydja9.fsf@DESKTOP-5N7EMDA> <20250102083509.GAZ3ZPvcUhl9v6Kbp_@fat_crate.local>
+ <20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local> <678572b7c28b0_182bf92941f@iweiny-mobl.notmuch>
+In-Reply-To: <678572b7c28b0_182bf92941f@iweiny-mobl.notmuch>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 14 Jan 2025 18:29:13 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0irZKMEyxqh7Eekam91uoMcyEkMvZxmgqP4orRqg69nbQ@mail.gmail.com>
+X-Gm-Features: AbW1kvZYupCQUmQYCFCzRXQpFpmdkDgI1vWRAFUnf4oz_BV8Pxk_8t4dmdgAVq8
+Message-ID: <CAJZ5v0irZKMEyxqh7Eekam91uoMcyEkMvZxmgqP4orRqg69nbQ@mail.gmail.com>
+Subject: Re: [PATCH] APEI: GHES: Have GHES honor the panic= setting
+To: Ira Weiny <ira.weiny@intel.com>, Borislav Petkov <bp@alien8.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Huang, Ying" <ying.huang@linux.alibaba.com>, 
+	Feng Tang <feng.tang@linux.alibaba.com>, Len Brown <lenb@kernel.org>, 
+	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Andi Kleen <ak@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 14, 2025 at 06:57:11PM +0200, Ilpo Järvinen wrote:
-> On Tue, 14 Jan 2025, Kurt Borja wrote:
-> 
-> > Add kerneldoc and sysfs class documentation.
-> > 
-> > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> > ---
-> >  .../ABI/testing/sysfs-class-platform-profile  | 44 +++++++++++++++++++
-> >  drivers/acpi/platform_profile.c               | 33 ++++++++++++++
-> >  include/linux/platform_profile.h              | 24 ++++++++++
-> >  3 files changed, 101 insertions(+)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profile
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Documentation/ABI/testing/sysfs-class-platform-profile
-> > new file mode 100644
-> > index 000000000000..b5a3600080bc
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
-> > @@ -0,0 +1,44 @@
-> > +What:		/sys/class/platform-profile/platform-profile-X/name
-> > +Date:		January 2025
-> > +Description:	Name of the class device given by the driver.
-> > +
-> > +		RO
-> > +
-> > +What:		/sys/class/platform-profile/platform-profile-X/choices
-> > +Date:		January 2025
-> > +Description:	This file contains a space-separated list of profiles supported for this device.
-> > +
-> > +		Drivers must use the following standard profile-names:
-> > +
-> > +		====================	========================================
-> > +		low-power		Low power consumption
-> > +		cool			Cooler operation
-> > +		quiet			Quieter operation
-> > +		balanced		Balance between low power consumption
-> > +					and performance
-> > +		balanced-performance	Balance between performance and low
-> > +					power consumption with a slight bias
-> > +					towards performance
-> > +		performance		High performance operation
-> > +		custom			Driver defined custom profile
-> > +		====================	========================================
-> > +
-> > +		RO
-> > +
-> > +What:		/sys/class/platform-profile/platform-profile-X/profile
-> > +Date:		January 2025
-> > +Description:	Reading this file gives the current selected profile for this
-> > +		device. Writing this file with one of the strings from
-> > +		platform_profile_choices changes the profile to the new value.
-> > +
-> > +		This file can be monitored for changes by polling for POLLPRI,
-> > +		POLLPRI will be signaled on any changes, independent of those
-> > +		changes coming from a userspace write; or coming from another
-> > +		source such as e.g. a hotkey triggered profile change handled
-> > +		either directly by the embedded-controller or fully handled
-> > +		inside the kernel.
-> > +
-> > +		This file may also emit the string 'custom' to indicate
-> > +		that the driver is using a driver defined custom profile.
-> > +
-> > +		RW
-> > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> > index c44989801f8e..9caddac695b8 100644
-> > --- a/drivers/acpi/platform_profile.c
-> > +++ b/drivers/acpi/platform_profile.c
-> > @@ -426,6 +426,10 @@ static const struct attribute_group platform_profile_group = {
-> >  	.is_visible = profile_class_is_visible,
-> >  };
-> >  
-> > +/**
-> > + * platform_profile_notify - Notify class device and legacy sysfs interface
-> > + * @dev: The class device
-> > + */
-> >  void platform_profile_notify(struct device *dev)
-> >  {
-> >  	scoped_cond_guard(mutex_intr, return, &profile_lock) {
-> > @@ -435,6 +439,11 @@ void platform_profile_notify(struct device *dev)
-> >  }
-> >  EXPORT_SYMBOL_GPL(platform_profile_notify);
-> >  
-> > +/**
-> > + * platform_profile_cycle - Cycles profiles available on all registered class devices
-> > + *
-> > + * Return: 0 on success, -errno on failure
-> > + */
-> >  int platform_profile_cycle(void)
-> >  {
-> >  	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
-> > @@ -478,6 +487,15 @@ int platform_profile_cycle(void)
-> >  }
-> >  EXPORT_SYMBOL_GPL(platform_profile_cycle);
-> >  
-> > +/**
-> > + * platform_profile_register - Creates and registers a platform profile class device
-> > + * @dev: Parent device
-> > + * @name: Name of the class device
-> > + * @drvdata: Driver data that will be attached to the class device
-> > + * @ops: Platform profile's mandatory operations
-> > + *
-> > + * Return: pointer to the new class device on success, ERR_PTR on failure
-> > + */
-> >  struct device *platform_profile_register(struct device *dev, const char *name,
-> >  					 void *drvdata,
-> >  					 const struct platform_profile_ops *ops)
-> > @@ -544,6 +562,12 @@ struct device *platform_profile_register(struct device *dev, const char *name,
-> >  }
-> >  EXPORT_SYMBOL_GPL(platform_profile_register);
-> >  
-> > +/**
-> > + * platform_profile_remove - Unregisters a platform profile class device
-> > + * @dev: Class device
-> > + *
-> > + * Return: 0
-> > + */
-> >  int platform_profile_remove(struct device *dev)
-> >  {
-> >  	struct platform_profile_handler *pprof = to_pprof_handler(dev);
-> > @@ -569,6 +593,15 @@ static void devm_platform_profile_release(struct device *dev, void *res)
-> >  	platform_profile_remove(*ppdev);
-> >  }
-> >  
-> > +/**
-> > + * devm_platform_profile_register - Device managed version of platform_profile_register
-> > + * @dev: Parent device
-> > + * @name: Name of the class device
-> > + * @drvdata: Driver data that will be attached to the class device
-> > + * @ops: Platform profile's mandatory operations
-> > + *
-> > + * Return: pointer to the new class device on success, ERR_PTR on failure
-> > + */
-> >  struct device *devm_platform_profile_register(struct device *dev, const char *name,
-> >  					      void *drvdata,
-> >  					      const struct platform_profile_ops *ops)
-> > diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-> > index eea1daf85616..eb4dc85dc18c 100644
-> > --- a/include/linux/platform_profile.h
-> > +++ b/include/linux/platform_profile.h
-> > @@ -28,6 +28,30 @@ enum platform_profile_option {
-> >  	PLATFORM_PROFILE_LAST, /*must always be last */
-> >  };
-> >  
-> > +/**
-> > + * struct platform_profile_ops - platform profile operations
-> > + * @probe:	Callback to setup choices available to the new class device.
-> > + *		Parameters are:
-> > + *		@drvdata: drvdata pointer passed to platform_profile_register.
-> > + *		@choices: Empty choices bitmap which the driver has to manually
-> > + *			  setup, by using set_bit() in bits corresponding to
-> > + *			  platform_profile_option values. These values will only
-> > + *			  be enforced when a new profile is selected from
-> > + *			  user-space.
-> > + * @profile_get: Callback that will be called when showing the current platform
-> > + *		 profile.
-> > + *		 Parameters are:
-> > + *		 @dev: Class device.
-> > + *		 @profile: Pointer to the profile which will be read from
-> > + *			   user-space. Selected choices are not enforced when
-> > + *			   modifying this value.
-> > + * @profile_set: Callback that will be called when storing the new platform
-> > + *		 profile.
-> > + *		 Parameters are:
-> > + *		 @dev: Class device.
-> > + *		 @profile: New platform profile to be set. Guaranteed to be a
-> > + *			   value selected in the @probe callback.
-> 
-> Does kerneldoc render this sensibly?
+On Mon, Jan 13, 2025 at 9:08=E2=80=AFPM Ira Weiny <ira.weiny@intel.com> wro=
+te:
+>
+> Borislav Petkov wrote:
+> > The GHES driver overrides the panic=3D setting by force-rebooting the
+> > system after a fatal hw error has been reported. The intent being that
+> > such an error would be reported earlier.
+> >
+> > However, this is not optimal when a hard-to-debug issue requires long
+> > time to reproduce and when that happens, the box will get rebooted afte=
+r
+> > 30 seconds and thus destroy the whole hw context of when the error
+> > happened.
+> >
+> > So rip out the default GHES panic timeout and honor the global one.
+> >
+> > In the panic disabled (panic=3D0) case, the error will still be logged =
+to
+> > dmesg for later inspection and if panic after a hw error is really
+> > required, then that can be controlled the usual way - use panic=3D on t=
+he
+> > cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+> >
+> > Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
+> > Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> > Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
+>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-It does not!
-
-That's my bad, I copied the pattern from hwmon.h which also does not
-render correctly.
-
-I'll fix it.
-
-~ Kurt
-
-> 
-> > + */
-> >  struct platform_profile_ops {
-> >  	int (*probe)(void *drvdata, unsigned long *choices);
-> >  	int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
-> > 
-> 
-> -- 
->  i.
-> 
+Applied as 6.14 material, thanks!
 
