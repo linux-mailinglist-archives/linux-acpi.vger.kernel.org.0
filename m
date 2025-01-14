@@ -1,207 +1,708 @@
-Return-Path: <linux-acpi+bounces-10622-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10623-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FBEA10BC1
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:05:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF39A10C17
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B60166122
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:05:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E0037A06A8
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B2F192B70;
-	Tue, 14 Jan 2025 16:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A84155742;
+	Tue, 14 Jan 2025 16:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PteL88LU"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SGCcgVrR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2069.outbound.protection.outlook.com [40.107.100.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A601B1553A3
-	for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 16:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736870752; cv=none; b=AkOl2W6MYpdBdfHr77pFWpd4oSSkJnrtAjPkFzwrnI2YYGInCALikmCLIJUBPYctytbteHHDFfBCRFA0VTIoYALtmVamZUt7fFFHKcVQ7ShHeNHQ72BIIx22XRMMFDnjLfQXfsEL/O9MPPyKUEjs9oSal60+iVaCs3wR0zPAwIo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736870752; c=relaxed/simple;
-	bh=hmBUv9k5F6YiPFvNJjqllp6DqB0AWaHj5SLIvSoxa3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VXmiHhG3AlFwcet/VkI+jlDHvgX8YSsPwe8kl2/TJbQawogM+MqoQFNN0s8zJ4UfJOOaxi021nJjsu3eZapSi3EL151qzfvDCeZK24mpiVHC8sno2QtCIzq2KIkWIItNX2p+iIjjIZp/a4lmn2nG7b/xJTHSiiSWMNOJskp+guc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PteL88LU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736870749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VMkCYOsyvm47TSe6Vd45OKr+yexY9Ah5sYc4Xs9in04=;
-	b=PteL88LUMWpSjWEjrOc24jCsRrZlk8BNdV0ex2uUxnFXwwjtRMSc1Y67zLdueoa9yqXdG8
-	zhF6H53F6HyPTOsIkPkHWfw7XvfWzxm3FH9Wui8I+4t8Wwg0ub36sUz1YVctGmeKoZfJNj
-	L3xiFsYOep9WlCacB+eRdJ/yxGHXxJA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-198-TcKLno4mPC6ALUOVa0Dzcw-1; Tue, 14 Jan 2025 11:05:48 -0500
-X-MC-Unique: TcKLno4mPC6ALUOVa0Dzcw-1
-X-Mimecast-MFC-AGG-ID: TcKLno4mPC6ALUOVa0Dzcw
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385dcadffebso2744958f8f.0
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 08:05:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736870747; x=1737475547;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VMkCYOsyvm47TSe6Vd45OKr+yexY9Ah5sYc4Xs9in04=;
-        b=MGCpN30xJsPYXGaLkmUat8E1oWtJQ7vx5usRvNvHeNHYYrEWBcxG5/30rx4eOQ7ENT
-         8Ewyq9DIbtzyuRaXwy/Iz8mSEfhRDV5INQ0F8YD+WWOeaIlTIoDDBSyN/mX8wQmZBE1X
-         CnpbTsAx5LqqTXw5d0VDoc3J2/lACke2aq4Di8IxeNKFDP2yPjJyq5iQMEtqSK7YBAKL
-         x2xhRYnSvG3q+yElQz1L2IUHN0+aa64p7GtOS6ZYR6cCIA1gjJtFtGEyoenYLHWCUyOr
-         vaHLcvdHr5nHvSdmdzs6KbbKUyiLfFJqDlMGRZ9iast7KVIuh3kZId85YvAXy0WwPC5E
-         tVfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXt3sg9gaQZMoXHCEHYsKDTIBpXiYC3eQfCLGiIIZTLAUUgd6UYZdM8upIjc6sazg98zz+ItM0tImdb@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNxR0ICuvxO4ViMFHKkVmZwxrNagRwbEDFKj8A8eLAMwWRQXsR
-	00Qx6WhHd82xTpgUsq4bS//fqTwoIKJ7hG8N6ZxLZI+uZhO6g/+Dw3UhqEdST4OlJeH+x6DPexf
-	c6ixMPdyeIedckQhfzauI/SIgVCtVdVH4GvmPSt4Lg9/VPbzfFktOeP2bdnk=
-X-Gm-Gg: ASbGncv0spLSxe2LNGjJhLl2fXDfMEFCyXW2iPc4fluBY8+GHAwPHgrJQB53inHFAlZ
-	Bz6lgrFxZgSBQdXPcOQgYGGQ1j2atf4U8LIe7SiVQN8qrvixKM13VPyoQWKowRo1ZUKWo+ZijgT
-	U6YIF6CNuahOcOtmdv7fL7qRk733zi12GP7Hr5cbD2rvKw2qNiNXslgIqXa1QeVnOjWMG2Ddgz0
-	WlJdvwBqqc8LmNhWA9pVbDv9ENAZAI5wxuEiWdI4W1XmxEaFJNyCTeR8QdSWhrLTDti0zCp+3av
-	rWbwfHybQIE8nwFbo+1cLasEioKDMw+VVj0AzOPOijinJqScoPsnawCrx/oIW6RmPRLlQ8KDjx9
-	9qH/+2NUT
-X-Received: by 2002:a05:6000:1a8c:b0:385:f677:8594 with SMTP id ffacd0b85a97d-38a87336b29mr23628218f8f.43.1736870746800;
-        Tue, 14 Jan 2025 08:05:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGs9YS2msqw5L28+0H4IC2QOw/GUIfGbzadBCdsTOQu3IaDPwgnpqFU9VHHEOsiFIcxgS2ITA==
-X-Received: by 2002:a05:6000:1a8c:b0:385:f677:8594 with SMTP id ffacd0b85a97d-38a87336b29mr23628041f8f.43.1736870744788;
-        Tue, 14 Jan 2025 08:05:44 -0800 (PST)
-Received: from ?IPV6:2003:cb:c738:3100:8133:26cf:7877:94aa? (p200300cbc7383100813326cf787794aa.dip0.t-ipconnect.de. [2003:cb:c738:3100:8133:26cf:7877:94aa])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d090sm15089833f8f.2.2025.01.14.08.05.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 08:05:44 -0800 (PST)
-Message-ID: <7493daa0-b15c-43e8-9235-78a0a1a8c8a6@redhat.com>
-Date: Tue, 14 Jan 2025 17:05:41 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC812FB1B;
+	Tue, 14 Jan 2025 16:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736871626; cv=fail; b=uCyfGkFHuDc1A9v/QzX2rGAip0MkD68sdOpIT3GxwtpREyujwvbn9h3sozPTLeBRbMW7+yvQWIVBGfLRKGEI/lHEqKNr3ExbdRsD6EbLRflfQYbyGsSvc57P5yZYbf13bKe3SN3K3iEuznlO2AmMsWQEGA72HX5cf3bQYlCMlYQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736871626; c=relaxed/simple;
+	bh=2o6iAG2Ed6uw+LzA42Im03rtyM6j5/PrBa3WSWsJCs4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qvbMG/N61iqncErPbWK7h5KHoFwG1AVQkYypPG2yldlp860A0O5CQozzK+2FgwGmJl1yuaVOFXlcXemVBvPdBfrBXN5HKPBoM+FYHRtwh8+ONwLBhfgchs7VVr8b/mX1rJ9n8AgPxsiwmJ+pA+55Jf+pwTeDHosfRtKoGRtJHjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SGCcgVrR; arc=fail smtp.client-ip=40.107.100.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bAArBDrmGRXj1mYqQK1hrXGVthmlQMYvSXtEK/IWl9pbtfXzjTumIsGRtmRLH/vaJza2ej/gM8hF8k9oIQWV+ZqXXu1jgfpHEOmoQxillAnTTAb5kZ+6g/3cTBSo6HoXy36mvIAoh81JoQlYOj7DXseRe2qZL7riiHUGU7/QMUCcFrfJ1zpt8rQXZ3zrjHuOoFwiLID86EbocDoIEjjue8pcwVi49eOVonZ9a2Ty/lCsuF7fYePTkOqO1skZTlQNcMH9QDxqFhj9LJqUBm/86ToldfMhjPz4qrKj5J8IW7P4Ag9A4JZClcuPlI54CZVm7n530x1ZfQ+pTF5Z9GunwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7Ran7gxwkp9gzUP8zXsCFJnAseG2gM+XXRGXe37Rsw8=;
+ b=xji6/ILb1dOPk31TcZg9JIB5CkiRikpfdPvc13eqNfh2ibrUpotnuKj34UYxFVxoOYX+KYBicQyN6tfAsFoVwZSkBPHJb4g4XTLg86Lvk+TeuNdPs0zTsSTzSaReZnzgA4LB7jV9H+0NaPImEoQChkjrBiF2G2ZTUxhsTI6cbN5itT1V+IXlXi0iNEuHK4hNyhUgKTcj/56rHmI+iI1OcaMByqavsO1dwUoEytnKjmbgsWlvWxO7eMgr1/DVTsHUIq/+j2w5rN9akdGV67V4tH+awTIH9UayxxflKQFGQbCShMolK0mxsFvI3MBRKr10zjOFh/g5VI6uzFdi+ZwV6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Ran7gxwkp9gzUP8zXsCFJnAseG2gM+XXRGXe37Rsw8=;
+ b=SGCcgVrRVwINKKS40f53PyjOBn7slQPBSNOq02tvH0YRyxlNxe/AprC2cZDQwe7Z3DkwJf+1XfIjq6HlsSMOhaNcfjMr9vQKxDGelC4re2ujg0CwqPGxM1RK5H99EiVY08Jp1olZdN0shv2Iig5XxVNRIDSdkZstDR+miWa4rGA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by IA0PR12MB8350.namprd12.prod.outlook.com (2603:10b6:208:40d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
+ 2025 16:20:18 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
+ 16:20:18 +0000
+Message-ID: <a0a3fecf-6b03-48f8-a03d-a7076f31e2dc@amd.com>
+Date: Tue, 14 Jan 2025 10:20:15 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/18] ACPI: platform_profile: Add `probe` to
+ platform_profile_ops
+To: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Armin Wolf <W_Armin@gmx.de>, Joshua Grisham <josh@joshuagrisham.com>,
+ "Derek J. Clark" <derekjohn.clark@gmail.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Hans de Goede <hdegoede@redhat.com>, Maximilian Luz
+ <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Corentin Chary <corentin.chary@gmail.com>, "Luke D. Jones"
+ <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>,
+ Ike Panhc <ike.pan@canonical.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Alexis Belmonte <alexbelm48@gmail.com>, Ai Chao <aichao@kylinos.cn>,
+ Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com,
+ ibm-acpi-devel@lists.sourceforge.net
+References: <20250114153726.11802-1-kuurtb@gmail.com>
+ <20250114153726.11802-6-kuurtb@gmail.com>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20250114153726.11802-6-kuurtb@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0133.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c2::18) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/fake-numa: allow later numa node hotplug
-To: Bruno Faccini <bfaccini@nvidia.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, rppt@kernel.org,
- ziy@nvidia.com, jhubbard@nvidia.com, mrusiniak@nvidia.com,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org
-References: <20250106120659.359610-1-bfaccini@nvidia.com>
- <20250106120659.359610-2-bfaccini@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250106120659.359610-2-bfaccini@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA0PR12MB8350:EE_
+X-MS-Office365-Filtering-Correlation-Id: d76c54ed-aaa1-4688-2332-08dd34b755ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bXZ3V2ZDc3lDRUNtZU8rUk5RcXVHOVJidEhEZ2lFa0x3Wlc5MVNCeE15UmV2?=
+ =?utf-8?B?VDhYdjFmSEhoVGlSV0FVZEdIOUZNUDdtcnpnV2RFYmsrUDdDL3NTaE5JNDk0?=
+ =?utf-8?B?dU0yWmJRUDZKR2F5dlFsb2ZBc3ZlTGFDNGJZRk5Ic3BiL3VMa3FHK1Fnb0d0?=
+ =?utf-8?B?UFJVaXlhMXRZSklwNXFFS01lUytUSm5UemNlbGlwRCszUE9CKzVvajl0c3A2?=
+ =?utf-8?B?ZzRUR3ZLcmpkc2MwU1VxS0kyVVZ5T2p6Z0FYbllsZUpma2ZUdzJEckgrTDFp?=
+ =?utf-8?B?WG1pVXlWN0ppOG9ZR0Z0MncwaGNDUG9Ha3dFcmticWVmWk83MVlvVWwweGYz?=
+ =?utf-8?B?TiswU2Z3ZTMrU0RSdkJLVGd2V2k3QWdwR1V6MmZDdElEclhyV0RyWW1DQ0xO?=
+ =?utf-8?B?QUJ1eTFRTVh0ODQyK3JmYlpqOFcvb3RCaERKN3pEQXhKM1VNQnZQei9FVUhK?=
+ =?utf-8?B?aHBEZ3VMY0t4MmMrQ05abjlNWlRlcngvcEx6S240dnlTdk8rYUdHeXVKaDlz?=
+ =?utf-8?B?WjdBeExmL25aS3BBdUlzMWRWUXFhUjRnYmErRDVKWnpaeVZlSzZ1WUpyZjBQ?=
+ =?utf-8?B?eUFFeVNsUzJlMm9PT2pCNk1DbDlqRjFSN1o3TWRKY2k1aFVnM2RVOGZFRjNR?=
+ =?utf-8?B?akJMdC9WcDBnMEFRa0tXVUwrMmttRkhsVXRCb1RDcVd0Q0Z2WjhOR2VybjNa?=
+ =?utf-8?B?RzJRRytlaTNhQ2lJODNoOFd0c21VTXlvYnc3SHRvZmpOQXI4d3doUEFYc3d5?=
+ =?utf-8?B?bXBNNUJKK0ZTb3kvTEVabERWSUg5S2Z0UjY3YVdNWm9rNHJvTGtnTjFXYVZW?=
+ =?utf-8?B?eER6cDVVZlhTTjQvZmZIREU4TDB2dTBORUhNaDNUUEtDMnNCZGROK0V5aWE4?=
+ =?utf-8?B?MGthaEdDU3lTQnBRcEIrZXJqNW0vWnN4QmpPRTY1RHVQeWV4N3FGQ1E3UURl?=
+ =?utf-8?B?USs4TzZqQ241bTNiV2lpN2NhRzlrRmRTTEJNSkRscUMvUW5ILzVwZEZvUC9F?=
+ =?utf-8?B?VnZRQ3BPenlqY1JWeTdGK0VLbk5ZRGdNSXUweG9oRHBSaWpXYkRkeUN5cFNU?=
+ =?utf-8?B?RVR0enN4U25NSE5OYUkwSlVZNG5NTlA0bG1sbHlZNCtvMUVzTzVPeUV2VVFU?=
+ =?utf-8?B?Nmcza1R6U24veXYyK0U4NzdHR1lNMkhUTEVLM2NQbElSU3NFcjd1MFVFajJ2?=
+ =?utf-8?B?bjFmdTdmd2ZyTnVVMml0cVd2Z0V1SDdJYmdtcnlrYUE0OC93dlVSWGhFTzFS?=
+ =?utf-8?B?S0xtTXZkaGJCek5xWDluNDcwbzN4YlRudDlJQ3lUdngxdlZyZkZvT1lBZ0lh?=
+ =?utf-8?B?cktrQ3pUaW9jNEhsVWUxeG83SEsrSGFOeE9PeDUrd09nR2xmcHNQNnpFcnpW?=
+ =?utf-8?B?S1RFeCs0cURLcUc0NEhBOGRmclN1blFZK2JMaVNMbDVWNHQyTnFhb0VCY3Rv?=
+ =?utf-8?B?RkN2RWphWnljVmFYa1Rvd0hGazRiUm1WWTRaamx4TnlSUjRPd1hWc1Y3L250?=
+ =?utf-8?B?Y1ZzdUFwZ05RQlFVWmd5SElUSjF2Zm5hQm96RVJMYVlHZ08zRkk5cWlZMFNW?=
+ =?utf-8?B?N0p6Y2RWOUsybVhjNkFxNXBRNTdtc0p5RGR6L2lncUhoNEN0NzNydThnT2ZE?=
+ =?utf-8?B?ZGgwTTJpdVhISWtVSkk4YXkrNGZlWkwwc093em9zb2RZaXNIM25PcmxPSUxW?=
+ =?utf-8?B?OUlYbXFYZEtVVkRweFZRU1Zza2VKaUFOekYzQ3VjTVAxZzVYdWt0V0RLdElB?=
+ =?utf-8?B?aWprQXltSU1yQ2pVaFBPOXduSThLdjd5d2grVEg3Q0ZZSFcvMTgxUlNWenlv?=
+ =?utf-8?B?cWtxYU14d1JRNkRtQkpsQTA1WVk0QkZzV1F3Mk56K3RRcjdhRVIwOWZjc1dV?=
+ =?utf-8?Q?DEvM6EdNPW1l+?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bjFRUlI4RjZ2aUQramhzVmcyNkp0ODNiZi9rNUpMaWU3NWkyM0lydFpqRGRO?=
+ =?utf-8?B?eEw2bThEaytqbWtOZWlKZWk2eVNVOURCRlhYK2ZrM24zQzU5Q1VpQVpGUm5m?=
+ =?utf-8?B?MWVQZlBPUjVjUE8vWU51Z0hjems4dXNzM2RBcDBDUzRFQlZhQWZxRld5WWdo?=
+ =?utf-8?B?N2M5cHZXZUt0UFVNY2EzNkZDSkhFUGJXV3lRSVZzU3JjMHpmaXZ2N0V1ZlZQ?=
+ =?utf-8?B?RUtlNVdpdmdIdytBdk1TWGdwRlRVQVJleU1JUG5NemZUeWNzRHVIUk1xdHVX?=
+ =?utf-8?B?MHR6bVR6eHl4ODZUS01mdlkwYzQ4VDh6NVhWelNkZXA0cG44dittMllTemtr?=
+ =?utf-8?B?SS9DdzNiSm5Qajh2dlMwSnQ1MnM0eGtQSEt4aVlQTmVkVEQ1djVhLzI2Y21V?=
+ =?utf-8?B?Uml1bDgwN0d5RDZncDRFN3U2Sm41TmVUdVdJUkNBNmFhUUcvZ3RpYzdWWllN?=
+ =?utf-8?B?RzdOMXJmZkdiUnViczgybkp6TmtMU3RkMkNPVDJuSmpSUlE4ZjdVWWxhQklk?=
+ =?utf-8?B?TWlZQWFIV3dmU2paN2NFWVQwNVhtdlhsYzJnVDRSZ05tYzBwbTg5RUJIYVlz?=
+ =?utf-8?B?U1RjZE9nUmt6ejZhTUhpUHVRdDBzZWNrOHloOVY5NGFlUUUxb2dXTjgrNkNY?=
+ =?utf-8?B?SnNNS2EwTHQxV01EN29QRklRSGdPeUhCUUREdjgydVAzbzRQMW9LYXhwSWVx?=
+ =?utf-8?B?cHJ5b0E4L1BHNjZNOHNLVmJPbzkrQnh6QTdTdmtCSVZ1TkJhSHNIc01xS1Z1?=
+ =?utf-8?B?NmFtODY0QlYwUnp6ZDhiNTMrNnZwMlhXcG1LdUo0Y3kxbEhzVFRaSU9jL2or?=
+ =?utf-8?B?SGRnRjNYdkcxSXc3K0dXS1FETnJ5eEV3MVJsUzRGWnFZT25WckdKVXdwMTMv?=
+ =?utf-8?B?THhIdHZhZyt2RFNnV3M5SXQyOTNjRStKT0wrbUZ2endoaWQwUlBVdlJob2J0?=
+ =?utf-8?B?eHJMK1p4eFh2ZzFMQUZlZTdERDBRQ3VSWHhzTVRjbmQxTnZUVFMvMmVTU1VG?=
+ =?utf-8?B?NUswSGhVUHVFSDRrY3VjQUpsLytqZVMrTDR0dnE3K3NjZ0ZvTmhUYTRBN296?=
+ =?utf-8?B?WGxjckZFa0oza21SWk1GaThBOVoyQ0I2djJkTHNmVXV5R3NlbkRmTVpBMmtU?=
+ =?utf-8?B?NzhvQ0R1Z3gzZXltRHhZVytLQUM1M1daakwycTJUODkrNDJuUEVLUVZNSlhm?=
+ =?utf-8?B?b3FhZFVIZE9ta1dpNmpBR0VyRFFISC9ERDNHUnhkbHRQWXZESWtCKzhrT1lz?=
+ =?utf-8?B?cmZsaE05a0dydkFXNm8zNGMrZ0p3OWQ0QXlTZlZZNEtHaHRrRU9KWEFXWHh4?=
+ =?utf-8?B?LzFxcVYxOS9zbHFlMVhOanRtRXBxelZQTERZMW1ScUtUQXZjZXgyTEVGZ0hU?=
+ =?utf-8?B?ZFhaand6dGljaGhYdFErNGNsTGNqenBIbGRLaktSbjZkZDZPeXFFbXQ4SWpY?=
+ =?utf-8?B?Mm5QeGdyZkVrV2RuWEVMRXJuY0dmYlFNcWpCS0xHc2k3ZFFMSjhqVFdqLzNF?=
+ =?utf-8?B?bmtwTGJ1ZDl4YWV1dzFCWnVpWEJ5VEQrMmdrcDRRSitvdmdsOUNQbFJ3U0F5?=
+ =?utf-8?B?TW9xMklrTExEaitEN2tYUVp6VTZFenJZbjZiOW81NkZMVm5GZEd0RmR6cHFZ?=
+ =?utf-8?B?dGJ0LzRmN1JTWDlyVS9uVGtzd1FrV3h6d0psMXd3ZjJlek0wQllMVFVVaDJo?=
+ =?utf-8?B?TVV1WnVzVHJDOGt2djR5M1pONHlaaDBLSllFV0VMS0ZxeUJ6aDhKZ0VqNkJJ?=
+ =?utf-8?B?OFlBbGJhM0VqZ04yMmppQjYyVWM0c2FjaExuOUtzZkI4NktHL3pGY3NpS3VV?=
+ =?utf-8?B?MHpYNjZtMDVuaDdhWkVjb3JKMHUwckxUL2NST3JiVHU3REFLSyt5aUpvYlUr?=
+ =?utf-8?B?K3JNKytuZ2d5UHltRHluTTZGd0pYU1NISDZNMzNmMkhaVkNMbS9zU3JFWDcv?=
+ =?utf-8?B?aDdwdzlXRU9zekF3MnNTTHJvRjZDVjFXZjd6bmJwem03dmVJeDRIMHV0TG05?=
+ =?utf-8?B?eHdTT1ZtU3k0SDhSSjFjc2pFZVBWd1EvcTR1T2xhOFo5SEhucHFDV0dTWC9N?=
+ =?utf-8?B?T1JqQlRjWGdUQjUxRkpBTldaTVI0Qkg1Z2NXMTkvdnQrVTl5dXA2UTgrdVBl?=
+ =?utf-8?Q?jgFbD0zWhtLUVvz2tRtkQseG4?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d76c54ed-aaa1-4688-2332-08dd34b755ba
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 16:20:17.9911
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bxRBP/0TAKTdDfba8bJUXXoRhy9lN9NCApZxia5SYyGiXxaydyAX/JCz4kt7XMT4SdQWJMoH2Af0A6PkKKtg2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8350
 
-On 06.01.25 13:06, Bruno Faccini wrote:
-> Current fake-numa implementation prevents new Numa
-> nodes to be later hot-plugged by drivers.
-> A common symptom of this limitation is the
-> "node <X> was absent from the node_possible_map"
-> message by associated warning in mm/memory_hotplug.c:
-> add_memory_resource().
-> This comes from the lack of remapping in both
-> pxm_to_node_map[] and node_to_pxm_map[] tables
-> to take fake-numa nodes into account and thus
-> triggers collisions with original and physical nodes
-> only-mapping that had been determined from BIOS tables.
-> This patch fixes this by doing the necessary node-ids
-> translation in both pxm_to_node_map[]/node_to_pxm_map[]
-> tables.
-> node_distance[] table has also been fixed accordingly.
-
-You're allowed to use up to 72 chars per line, and adding some empty 
-lines might make this easier to read.
-
-Did you forget to CC ACPI folks + mailing list?
-
+On 1/14/2025 09:37, Kurt Borja wrote:
+> Add a `probe` callback to platform_profile_ops, which lets drivers
+> initialize the choices member manually.
 > 
-> Signed-off-by: Bruno Faccini <bfaccini@nvidia.com>
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 > ---
->   drivers/acpi/numa/srat.c     | 86 ++++++++++++++++++++++++++++++++++++
->   include/acpi/acpi_numa.h     |  5 +++
->   include/linux/numa_memblks.h |  3 ++
->   mm/numa_emulation.c          | 45 ++++++++++++++++---
->   mm/numa_memblks.c            |  2 +-
->   5 files changed, 133 insertions(+), 8 deletions(-)
+>   drivers/acpi/platform_profile.c               | 13 +++++++--
+>   .../surface/surface_platform_profile.c        | 16 ++++++----
+>   drivers/platform/x86/acer-wmi.c               | 24 ++++++++-------
+>   drivers/platform/x86/amd/pmf/sps.c            | 15 ++++++----
+>   drivers/platform/x86/asus-wmi.c               | 16 ++++++----
+>   drivers/platform/x86/dell/alienware-wmi.c     | 24 +++++++++------
+>   drivers/platform/x86/dell/dell-pc.c           | 26 ++++++++++-------
+>   drivers/platform/x86/hp/hp-wmi.c              | 29 +++++++++++++------
+>   drivers/platform/x86/ideapad-laptop.c         | 15 ++++++----
+>   .../platform/x86/inspur_platform_profile.c    | 14 ++++++---
+>   drivers/platform/x86/thinkpad_acpi.c          | 15 ++++++----
+>   include/linux/platform_profile.h              |  1 +
+>   12 files changed, 137 insertions(+), 71 deletions(-)
 > 
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index bec0dcd1f9c3..59fffe34c9d0 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -81,6 +81,92 @@ int acpi_map_pxm_to_node(int pxm)
->   }
->   EXPORT_SYMBOL(acpi_map_pxm_to_node);
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index 440654e21620..34e22b006ccc 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -466,12 +466,21 @@ int platform_profile_register(struct platform_profile_handler *pprof, void *drvd
+>   	int err;
 >   
-> +#ifdef CONFIG_NUMA_EMU
-> +/*
-> + * Take max_nid - 1 fake-numa nodes into account in both
-> + * pxm_to_node_map()/node_to_pxm_map[] tables.
-> + */
+>   	/* Sanity check the profile handler */
+> -	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
+> -	    !pprof->ops->profile_set || !pprof->ops->profile_get) {
+> +	if (!pprof || !pprof->ops->profile_set || !pprof->ops->profile_get ||
+> +	    !pprof->ops->probe) {
+>   		pr_err("platform_profile: handler is invalid\n");
+>   		return -EINVAL;
+>   	}
+>   
+> +	err = pprof->ops->probe(drvdata, pprof->choices);
+> +	if (err < 0)
 
-Having the fake-numa stuff in here looks quite hacky; but I'm no expert, 
-so I'll let ACPI folks comment (on CC) on the details.
+Any particular reason to specifically look for less than zero?  Did you 
+want to have the probe() return something positive in some circumstances?
 
+If not I think this should be fine:
 
--- 
-Cheers,
+if (err)
 
-David / dhildenb
+> +		return err;
+> +
+> +	if (bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST)) {
+> +		pr_err("platform_profile: no available profiles\n");
+
+Doesn't pr_fmt handle the prefix?
+
+> +		return -EINVAL;
+> +	}
+> +
+>   	guard(mutex)(&profile_lock);
+>   
+>   	/* create class interface for individual handler */
+> diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
+> index 76967bfeeef8..48cfe9cb89c8 100644
+> --- a/drivers/platform/surface/surface_platform_profile.c
+> +++ b/drivers/platform/surface/surface_platform_profile.c
+> @@ -201,7 +201,18 @@ static int ssam_platform_profile_set(struct device *dev,
+>   	return tp;
+>   }
+>   
+> +static int ssam_platform_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops ssam_platform_profile_ops = {
+> +	.probe = ssam_platform_profile_probe,
+>   	.profile_get = ssam_platform_profile_get,
+>   	.profile_set = ssam_platform_profile_set,
+>   };
+> @@ -223,11 +234,6 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
+>   
+>   	tpd->has_fan = device_property_read_bool(&sdev->dev, "has_fan");
+>   
+> -	set_bit(PLATFORM_PROFILE_LOW_POWER, tpd->handler.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED, tpd->handler.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, tpd->handler.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, tpd->handler.choices);
+> -
+>   	return platform_profile_register(&tpd->handler, tpd);
+>   }
+>   
+> diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+> index 91ae48adf6cf..6953e36dbfde 100644
+> --- a/drivers/platform/x86/acer-wmi.c
+> +++ b/drivers/platform/x86/acer-wmi.c
+> @@ -1916,7 +1916,20 @@ acer_predator_v4_platform_profile_set(struct device *dev,
+>   	return 0;
+>   }
+>   
+> +static int
+> +acer_predator_v4_platform_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_QUIET, choices);
+> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops acer_predator_v4_platform_profile_ops = {
+> +	.probe = acer_predator_v4_platform_profile_probe,
+>   	.profile_get = acer_predator_v4_platform_profile_get,
+>   	.profile_set = acer_predator_v4_platform_profile_set,
+>   };
+> @@ -1931,17 +1944,6 @@ static int acer_platform_profile_setup(struct platform_device *device)
+>   		platform_profile_handler.ops =
+>   			&acer_predator_v4_platform_profile_ops;
+>   
+> -		set_bit(PLATFORM_PROFILE_PERFORMANCE,
+> -			platform_profile_handler.choices);
+> -		set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE,
+> -			platform_profile_handler.choices);
+> -		set_bit(PLATFORM_PROFILE_BALANCED,
+> -			platform_profile_handler.choices);
+> -		set_bit(PLATFORM_PROFILE_QUIET,
+> -			platform_profile_handler.choices);
+> -		set_bit(PLATFORM_PROFILE_LOW_POWER,
+> -			platform_profile_handler.choices);
+> -
+>   		err = platform_profile_register(&platform_profile_handler, NULL);
+>   		if (err)
+>   			return err;
+> diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
+> index 6ae82ae86d22..e710405b581f 100644
+> --- a/drivers/platform/x86/amd/pmf/sps.c
+> +++ b/drivers/platform/x86/amd/pmf/sps.c
+> @@ -387,7 +387,17 @@ static int amd_pmf_profile_set(struct device *dev,
+>   	return 0;
+>   }
+>   
+> +static int amd_pmf_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops amd_pmf_profile_ops = {
+> +	.probe = amd_pmf_profile_probe,
+>   	.profile_get = amd_pmf_profile_get,
+>   	.profile_set = amd_pmf_profile_set,
+>   };
+> @@ -414,11 +424,6 @@ int amd_pmf_init_sps(struct amd_pmf_dev *dev)
+>   	dev->pprof.dev = dev->dev;
+>   	dev->pprof.ops = &amd_pmf_profile_ops;
+>   
+> -	/* Setup supported modes */
+> -	set_bit(PLATFORM_PROFILE_LOW_POWER, dev->pprof.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED, dev->pprof.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, dev->pprof.choices);
+> -
+>   	/* Create platform_profile structure and register */
+>   	err = platform_profile_register(&dev->pprof, dev);
+>   	if (err)
+> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+> index d88860dd028b..3d77f7454953 100644
+> --- a/drivers/platform/x86/asus-wmi.c
+> +++ b/drivers/platform/x86/asus-wmi.c
+> @@ -3852,7 +3852,17 @@ static int asus_wmi_platform_profile_set(struct device *dev,
+>   	return throttle_thermal_policy_write(asus);
+>   }
+>   
+> +static int asus_wmi_platform_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_QUIET, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops asus_wmi_platform_profile_ops = {
+> +	.probe = asus_wmi_platform_profile_probe,
+>   	.profile_get = asus_wmi_platform_profile_get,
+>   	.profile_set = asus_wmi_platform_profile_set,
+>   };
+> @@ -3885,12 +3895,6 @@ static int platform_profile_setup(struct asus_wmi *asus)
+>   	asus->platform_profile_handler.dev = dev;
+>   	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+>   
+> -	set_bit(PLATFORM_PROFILE_QUIET, asus->platform_profile_handler.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED,
+> -		asus->platform_profile_handler.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE,
+> -		asus->platform_profile_handler.choices);
+> -
+>   	err = platform_profile_register(&asus->platform_profile_handler, asus);
+>   	if (err == -EEXIST) {
+>   		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
+> diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
+> index f7a854d40575..0146d2f93be6 100644
+> --- a/drivers/platform/x86/dell/alienware-wmi.c
+> +++ b/drivers/platform/x86/dell/alienware-wmi.c
+> @@ -1078,12 +1078,7 @@ static int thermal_profile_set(struct device *dev,
+>   	return wmax_thermal_control(supported_thermal_profiles[profile]);
+>   }
+>   
+> -static const struct platform_profile_ops awcc_platform_profile_ops = {
+> -	.profile_get = thermal_profile_get,
+> -	.profile_set = thermal_profile_set,
+> -};
+> -
+> -static int create_thermal_profile(struct platform_device *platform_device)
+> +static int thermal_profile_probe(void *drvdata, unsigned long *choices)
+>   {
+>   	enum platform_profile_option profile;
+>   	enum wmax_thermal_mode mode;
+> @@ -1116,19 +1111,30 @@ static int create_thermal_profile(struct platform_device *platform_device)
+>   		profile = wmax_mode_to_platform_profile[mode];
+>   		supported_thermal_profiles[profile] = out_data;
+>   
+> -		set_bit(profile, pp_handler.choices);
+> +		set_bit(profile, choices);
+>   	}
+>   
+> -	if (bitmap_empty(pp_handler.choices, PLATFORM_PROFILE_LAST))
+> +	if (bitmap_empty(choices, PLATFORM_PROFILE_LAST))
+>   		return -ENODEV;
+>   
+>   	if (quirks->gmode) {
+>   		supported_thermal_profiles[PLATFORM_PROFILE_PERFORMANCE] =
+>   			WMAX_THERMAL_MODE_GMODE;
+>   
+> -		set_bit(PLATFORM_PROFILE_PERFORMANCE, pp_handler.choices);
+> +		set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+>   	}
+>   
+> +	return 0;
+> +}
+> +
+> +static const struct platform_profile_ops awcc_platform_profile_ops = {
+> +	.probe = thermal_profile_probe,
+> +	.profile_get = thermal_profile_get,
+> +	.profile_set = thermal_profile_set,
+> +};
+> +
+> +static int create_thermal_profile(struct platform_device *platform_device)
+> +{
+>   	pp_handler.name = "alienware-wmi";
+>   	pp_handler.dev = &platform_device->dev;
+>   	pp_handler.ops = &awcc_platform_profile_ops;
+> diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/dell/dell-pc.c
+> index 9010a231f209..32b3be0723f8 100644
+> --- a/drivers/platform/x86/dell/dell-pc.c
+> +++ b/drivers/platform/x86/dell/dell-pc.c
+> @@ -24,6 +24,7 @@
+>   #include "dell-smbios.h"
+>   
+>   static struct platform_device *platform_device;
+> +static int supported_modes;
+>   
+>   static const struct dmi_system_id dell_device_table[] __initconst = {
+>   	{
+> @@ -231,7 +232,22 @@ static int thermal_platform_profile_get(struct device *dev,
+>   	return 0;
+>   }
+>   
+> +static int thermal_platform_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	if (supported_modes & DELL_QUIET)
+> +		set_bit(PLATFORM_PROFILE_QUIET, choices);
+> +	if (supported_modes & DELL_COOL_BOTTOM)
+> +		set_bit(PLATFORM_PROFILE_COOL, choices);
+> +	if (supported_modes & DELL_BALANCED)
+> +		set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	if (supported_modes & DELL_PERFORMANCE)
+> +		set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops dell_pc_platform_profile_ops = {
+> +	.probe = thermal_platform_profile_probe,
+>   	.profile_get = thermal_platform_profile_get,
+>   	.profile_set = thermal_platform_profile_set,
+>   };
+> @@ -239,7 +255,6 @@ static const struct platform_profile_ops dell_pc_platform_profile_ops = {
+>   static int thermal_init(void)
+>   {
+>   	int ret;
+> -	int supported_modes;
+>   
+>   	/* If thermal commands are not supported, exit without error */
+>   	if (!dell_smbios_class_is_supported(CLASS_INFO))
+> @@ -265,15 +280,6 @@ static int thermal_init(void)
+>   	thermal_handler->dev = &platform_device->dev;
+>   	thermal_handler->ops = &dell_pc_platform_profile_ops;
+>   
+> -	if (supported_modes & DELL_QUIET)
+> -		set_bit(PLATFORM_PROFILE_QUIET, thermal_handler->choices);
+> -	if (supported_modes & DELL_COOL_BOTTOM)
+> -		set_bit(PLATFORM_PROFILE_COOL, thermal_handler->choices);
+> -	if (supported_modes & DELL_BALANCED)
+> -		set_bit(PLATFORM_PROFILE_BALANCED, thermal_handler->choices);
+> -	if (supported_modes & DELL_PERFORMANCE)
+> -		set_bit(PLATFORM_PROFILE_PERFORMANCE, thermal_handler->choices);
+> -
+>   	/* Clean up if failed */
+>   	ret = platform_profile_register(thermal_handler, NULL);
+>   	if (ret)
+> diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+> index 60328b35be74..75bcd8460e7c 100644
+> --- a/drivers/platform/x86/hp/hp-wmi.c
+> +++ b/drivers/platform/x86/hp/hp-wmi.c
+> @@ -1488,6 +1488,23 @@ static int platform_profile_victus_set(struct device *dev,
+>   	return 0;
+>   }
+>   
+> +static int hp_wmi_platform_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	if (is_omen_thermal_profile()) {
+> +		set_bit(PLATFORM_PROFILE_COOL, choices);
+> +	} else if (is_victus_thermal_profile()) {
+> +		set_bit(PLATFORM_PROFILE_QUIET, choices);
+> +	} else {
+> +		set_bit(PLATFORM_PROFILE_QUIET, choices);
+> +		set_bit(PLATFORM_PROFILE_COOL, choices);
+> +	}
+> +
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static int omen_powersource_event(struct notifier_block *nb,
+>   				  unsigned long value,
+>   				  void *data)
+> @@ -1566,16 +1583,19 @@ static inline void omen_unregister_powersource_event_handler(void)
+>   }
+>   
+>   static const struct platform_profile_ops platform_profile_omen_ops = {
+> +	.probe = hp_wmi_platform_profile_probe,
+>   	.profile_get = platform_profile_omen_get,
+>   	.profile_set = platform_profile_omen_set,
+>   };
+>   
+>   static const struct platform_profile_ops platform_profile_victus_ops = {
+> +	.probe = hp_wmi_platform_profile_probe,
+>   	.profile_get = platform_profile_victus_get,
+>   	.profile_set = platform_profile_victus_set,
+>   };
+>   
+>   static const struct platform_profile_ops hp_wmi_platform_profile_ops = {
+> +	.probe = hp_wmi_platform_profile_probe,
+>   	.profile_get = hp_wmi_platform_profile_get,
+>   	.profile_set = hp_wmi_platform_profile_set,
+>   };
+> @@ -1598,8 +1618,6 @@ static int thermal_profile_setup(struct platform_device *device)
+>   			return err;
+>   
+>   		platform_profile_handler.ops = &platform_profile_omen_ops;
+> -
+> -		set_bit(PLATFORM_PROFILE_COOL, platform_profile_handler.choices);
+>   	} else if (is_victus_thermal_profile()) {
+>   		err = platform_profile_victus_get_ec(&active_platform_profile);
+>   		if (err < 0)
+> @@ -1614,8 +1632,6 @@ static int thermal_profile_setup(struct platform_device *device)
+>   			return err;
+>   
+>   		platform_profile_handler.ops = &platform_profile_victus_ops;
+> -
+> -		set_bit(PLATFORM_PROFILE_QUIET, platform_profile_handler.choices);
+>   	} else {
+>   		tp = thermal_profile_get();
+>   
+> @@ -1631,15 +1647,10 @@ static int thermal_profile_setup(struct platform_device *device)
+>   			return err;
+>   
+>   		platform_profile_handler.ops = &hp_wmi_platform_profile_ops;
+> -
+> -		set_bit(PLATFORM_PROFILE_QUIET, platform_profile_handler.choices);
+> -		set_bit(PLATFORM_PROFILE_COOL, platform_profile_handler.choices);
+>   	}
+>   
+>   	platform_profile_handler.name = "hp-wmi";
+>   	platform_profile_handler.dev = &device->dev;
+> -	set_bit(PLATFORM_PROFILE_BALANCED, platform_profile_handler.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, platform_profile_handler.choices);
+>   
+>   	err = platform_profile_register(&platform_profile_handler, NULL);
+>   	if (err)
+> diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+> index 96e99513b0b5..050919a28d2b 100644
+> --- a/drivers/platform/x86/ideapad-laptop.c
+> +++ b/drivers/platform/x86/ideapad-laptop.c
+> @@ -1023,6 +1023,15 @@ static int dytc_profile_set(struct device *dev,
+>   	return -EINTR;
+>   }
+>   
+> +static int dytc_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static void dytc_profile_refresh(struct ideapad_private *priv)
+>   {
+>   	enum platform_profile_option profile;
+> @@ -1064,6 +1073,7 @@ static const struct dmi_system_id ideapad_dytc_v4_allow_table[] = {
+>   };
+>   
+>   static const struct platform_profile_ops dytc_profile_ops = {
+> +	.probe = dytc_profile_probe,
+>   	.profile_get = dytc_profile_get,
+>   	.profile_set = dytc_profile_set,
+>   };
+> @@ -1112,11 +1122,6 @@ static int ideapad_dytc_profile_init(struct ideapad_private *priv)
+>   	priv->dytc->priv = priv;
+>   	priv->dytc->pprof.ops = &dytc_profile_ops;
+>   
+> -	/* Setup supported modes */
+> -	set_bit(PLATFORM_PROFILE_LOW_POWER, priv->dytc->pprof.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED, priv->dytc->pprof.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, priv->dytc->pprof.choices);
+> -
+>   	/* Create platform_profile structure and register */
+>   	err = platform_profile_register(&priv->dytc->pprof, &priv->dytc);
+>   	if (err)
+> diff --git a/drivers/platform/x86/inspur_platform_profile.c b/drivers/platform/x86/inspur_platform_profile.c
+> index d0a8e4eebffa..06df3aae9a56 100644
+> --- a/drivers/platform/x86/inspur_platform_profile.c
+> +++ b/drivers/platform/x86/inspur_platform_profile.c
+> @@ -164,7 +164,17 @@ static int inspur_platform_profile_get(struct device *dev,
+>   	return 0;
+>   }
+>   
+> +static int inspur_platform_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops inspur_platform_profile_ops = {
+> +	.probe = inspur_platform_profile_probe,
+>   	.profile_get = inspur_platform_profile_get,
+>   	.profile_set = inspur_platform_profile_set,
+>   };
+> @@ -184,10 +194,6 @@ static int inspur_wmi_probe(struct wmi_device *wdev, const void *context)
+>   	priv->handler.dev = &wdev->dev;
+>   	priv->handler.ops = &inspur_platform_profile_ops;
+>   
+> -	set_bit(PLATFORM_PROFILE_LOW_POWER, priv->handler.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED, priv->handler.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, priv->handler.choices);
+> -
+>   	return platform_profile_register(&priv->handler, priv);
+>   }
+>   
+> diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+> index 9978fd36a3d1..5c250867678f 100644
+> --- a/drivers/platform/x86/thinkpad_acpi.c
+> +++ b/drivers/platform/x86/thinkpad_acpi.c
+> @@ -10538,7 +10538,17 @@ static int dytc_profile_set(struct device *dev,
+>   	return err;
+>   }
+>   
+> +static int dytc_profile_probe(void *drvdata, unsigned long *choices)
+> +{
+> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
+> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
+> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
+> +
+> +	return 0;
+> +}
+> +
+>   static const struct platform_profile_ops dytc_profile_ops = {
+> +	.probe = dytc_profile_probe,
+>   	.profile_get = dytc_profile_get,
+>   	.profile_set = dytc_profile_set,
+>   };
+> @@ -10584,11 +10594,6 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+>   {
+>   	int err, output;
+>   
+> -	/* Setup supported modes */
+> -	set_bit(PLATFORM_PROFILE_LOW_POWER, dytc_profile.choices);
+> -	set_bit(PLATFORM_PROFILE_BALANCED, dytc_profile.choices);
+> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, dytc_profile.choices);
+> -
+>   	err = dytc_command(DYTC_CMD_QUERY, &output);
+>   	if (err)
+>   		return err;
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+> index 6013c05d7b86..5ad1ab7b75e4 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -31,6 +31,7 @@ enum platform_profile_option {
+>   struct platform_profile_handler;
+>   
+>   struct platform_profile_ops {
+> +	int (*probe)(void *drvdata, unsigned long *choices);
+>   	int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
+>   	int (*profile_set)(struct device *dev, enum platform_profile_option profile);
+>   };
 
 
