@@ -1,66 +1,66 @@
-Return-Path: <linux-acpi+bounces-10623-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10624-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF39A10C17
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:20:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958FAA10C2B
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:22:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E0037A06A8
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:20:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90BCD16570B
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A84155742;
-	Tue, 14 Jan 2025 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C69F1D47AD;
+	Tue, 14 Jan 2025 16:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SGCcgVrR"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ThSYaJBR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2069.outbound.protection.outlook.com [40.107.100.69])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2085.outbound.protection.outlook.com [40.107.237.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC812FB1B;
-	Tue, 14 Jan 2025 16:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD2F1CAA9A;
+	Tue, 14 Jan 2025 16:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.85
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736871626; cv=fail; b=uCyfGkFHuDc1A9v/QzX2rGAip0MkD68sdOpIT3GxwtpREyujwvbn9h3sozPTLeBRbMW7+yvQWIVBGfLRKGEI/lHEqKNr3ExbdRsD6EbLRflfQYbyGsSvc57P5yZYbf13bKe3SN3K3iEuznlO2AmMsWQEGA72HX5cf3bQYlCMlYQ=
+	t=1736871747; cv=fail; b=Hi2H3QxrgoanYD84EvtpcvgjMnKKVltPbxmBagh9ytSXUO7kEl9VaGWMZhZyREjNWoCbmsvOBMJ1wK/45QNkyL8FzXXDkSSTtDozma3p38GKDhcbdaHkyZEshK+ldepttBdIhHRlK5+FpHBtfk5QpWaJR4fHigYXYSDU2YdwR2E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736871626; c=relaxed/simple;
-	bh=2o6iAG2Ed6uw+LzA42Im03rtyM6j5/PrBa3WSWsJCs4=;
+	s=arc-20240116; t=1736871747; c=relaxed/simple;
+	bh=OPIVhpqeKT/xExWMupzMEsgon5PHFID8hlY/pZVBOZQ=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qvbMG/N61iqncErPbWK7h5KHoFwG1AVQkYypPG2yldlp860A0O5CQozzK+2FgwGmJl1yuaVOFXlcXemVBvPdBfrBXN5HKPBoM+FYHRtwh8+ONwLBhfgchs7VVr8b/mX1rJ9n8AgPxsiwmJ+pA+55Jf+pwTeDHosfRtKoGRtJHjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SGCcgVrR; arc=fail smtp.client-ip=40.107.100.69
+	 Content-Type:MIME-Version; b=TUvOvoILVw2TSTcfFqbv/ckeizjjunjov4O69UtP2wQm4OeMcZ64H0GkgY8dJmiNGdQ5USDsqro3Qd4TKo77Qmxcde536v8aHqHSSlzX+FV4dbamsH4oWtcJ//3/zFeMLZa4JuUevS7p6StOWyxI2UyHXTOTXtavtIHj4L7aK9g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ThSYaJBR; arc=fail smtp.client-ip=40.107.237.85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bAArBDrmGRXj1mYqQK1hrXGVthmlQMYvSXtEK/IWl9pbtfXzjTumIsGRtmRLH/vaJza2ej/gM8hF8k9oIQWV+ZqXXu1jgfpHEOmoQxillAnTTAb5kZ+6g/3cTBSo6HoXy36mvIAoh81JoQlYOj7DXseRe2qZL7riiHUGU7/QMUCcFrfJ1zpt8rQXZ3zrjHuOoFwiLID86EbocDoIEjjue8pcwVi49eOVonZ9a2Ty/lCsuF7fYePTkOqO1skZTlQNcMH9QDxqFhj9LJqUBm/86ToldfMhjPz4qrKj5J8IW7P4Ag9A4JZClcuPlI54CZVm7n530x1ZfQ+pTF5Z9GunwA==
+ b=FECJnVUwtvBXs3ctEtDu55LFsitWZDFMdq2msKQdio2Xhh8MJlfFhB/Urpr8RTiyY8M43NRT/+QzfNXvhVmTootyyPKS4uLeyOTAqL4hnh1YFtwAPescD/JbA9JILHwzg62jhz0+zXmB+2Z39W/TXhq3zCdXet0l1QCsRm0/+WgscDHydpP7jUZMxygTFqVtRHWhPg+VkayoCn9kj15bnCT8kaaAudE+bo/YkPVW+5vq+6wA8QvEkNXio//UYhHmd/8Gdu19lhtBF0fyMmg8C7IGvUVMVQlpMNPoeti9APFWlxuO93ebIridUmx3w2OR9cDDy9IrDil8hpNsRrRLhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Ran7gxwkp9gzUP8zXsCFJnAseG2gM+XXRGXe37Rsw8=;
- b=xji6/ILb1dOPk31TcZg9JIB5CkiRikpfdPvc13eqNfh2ibrUpotnuKj34UYxFVxoOYX+KYBicQyN6tfAsFoVwZSkBPHJb4g4XTLg86Lvk+TeuNdPs0zTsSTzSaReZnzgA4LB7jV9H+0NaPImEoQChkjrBiF2G2ZTUxhsTI6cbN5itT1V+IXlXi0iNEuHK4hNyhUgKTcj/56rHmI+iI1OcaMByqavsO1dwUoEytnKjmbgsWlvWxO7eMgr1/DVTsHUIq/+j2w5rN9akdGV67V4tH+awTIH9UayxxflKQFGQbCShMolK0mxsFvI3MBRKr10zjOFh/g5VI6uzFdi+ZwV6w==
+ bh=qrs3ce4xGndV+REAN1y0CPpN15NOT5fU1LjPIJI1hnc=;
+ b=j3XIu9WP6lJ+cifHNQicWm0ko4Xy+yXp/55gmQZLKpkDFU9lUzHqm67Y8uHRQlFOBmtybpeGFpRRcAiWQQFsM3zzVz3ARs7Q8xa83asZpACDuxiDW37U0VMiC/62ETfc8eu/jh2sVcuDUMhg1gTy9WBkMBjKLjogluXzufgjipIP+eO6m2+GhEEJddsakIppOGQHVS9WEQSMlkJPLkCkbPjSp0s1xUk/soYlWkpVakVFwQ6Ntay2wfbmR2Dms1nstqaVSrNRqQNa4B9DS9e25REDiazw8hoX61JCTFUKwfzzl+AVRYYGvimUDxc24Sai41nt/scwzVxtkpVIrmxQwQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Ran7gxwkp9gzUP8zXsCFJnAseG2gM+XXRGXe37Rsw8=;
- b=SGCcgVrRVwINKKS40f53PyjOBn7slQPBSNOq02tvH0YRyxlNxe/AprC2cZDQwe7Z3DkwJf+1XfIjq6HlsSMOhaNcfjMr9vQKxDGelC4re2ujg0CwqPGxM1RK5H99EiVY08Jp1olZdN0shv2Iig5XxVNRIDSdkZstDR+miWa4rGA=
+ bh=qrs3ce4xGndV+REAN1y0CPpN15NOT5fU1LjPIJI1hnc=;
+ b=ThSYaJBRnN3FSF5qCUf7uZVhiNR5s+/AEFHaWuKb1AgnyOqRC2leCKRGuo6RtIknje81RchzW2Yg2hGUpyOTpCcqMSzzTuRXxtFH/bfv6lRfks+1mU3Sj5xaKhkI/5PR3DdLPbAD72nAA6Xp8yZT0Ix3T9l8Ynd880fZJmZljfE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA0PR12MB8350.namprd12.prod.outlook.com (2603:10b6:208:40d::14) with
+ by PH0PR12MB5645.namprd12.prod.outlook.com (2603:10b6:510:140::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
- 2025 16:20:18 +0000
+ 2025 16:22:21 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
- 16:20:18 +0000
-Message-ID: <a0a3fecf-6b03-48f8-a03d-a7076f31e2dc@amd.com>
-Date: Tue, 14 Jan 2025 10:20:15 -0600
+ 16:22:21 +0000
+Message-ID: <aa5e4451-58a7-4685-9934-abab99f86092@amd.com>
+Date: Tue, 14 Jan 2025 10:22:18 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/18] ACPI: platform_profile: Add `probe` to
- platform_profile_ops
+Subject: Re: [PATCH v2 15/18] ACPI: platform_profile: Remove
+ platform_profile_handler from exported symbols
 To: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -79,14 +79,14 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com,
  ibm-acpi-devel@lists.sourceforge.net
 References: <20250114153726.11802-1-kuurtb@gmail.com>
- <20250114153726.11802-6-kuurtb@gmail.com>
+ <20250114153726.11802-16-kuurtb@gmail.com>
 Content-Language: en-US
 From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20250114153726.11802-6-kuurtb@gmail.com>
+In-Reply-To: <20250114153726.11802-16-kuurtb@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0133.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c2::18) To MN0PR12MB6101.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA0PR11CA0208.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::33) To MN0PR12MB6101.namprd12.prod.outlook.com
  (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -95,614 +95,754 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA0PR12MB8350:EE_
-X-MS-Office365-Filtering-Correlation-Id: d76c54ed-aaa1-4688-2332-08dd34b755ba
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|PH0PR12MB5645:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a0463ec-e3bb-4358-503d-08dd34b79f5a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bXZ3V2ZDc3lDRUNtZU8rUk5RcXVHOVJidEhEZ2lFa0x3Wlc5MVNCeE15UmV2?=
- =?utf-8?B?VDhYdjFmSEhoVGlSV0FVZEdIOUZNUDdtcnpnV2RFYmsrUDdDL3NTaE5JNDk0?=
- =?utf-8?B?dU0yWmJRUDZKR2F5dlFsb2ZBc3ZlTGFDNGJZRk5Ic3BiL3VMa3FHK1Fnb0d0?=
- =?utf-8?B?UFJVaXlhMXRZSklwNXFFS01lUytUSm5UemNlbGlwRCszUE9CKzVvajl0c3A2?=
- =?utf-8?B?ZzRUR3ZLcmpkc2MwU1VxS0kyVVZ5T2p6Z0FYbllsZUpma2ZUdzJEckgrTDFp?=
- =?utf-8?B?WG1pVXlWN0ppOG9ZR0Z0MncwaGNDUG9Ha3dFcmticWVmWk83MVlvVWwweGYz?=
- =?utf-8?B?TiswU2Z3ZTMrU0RSdkJLVGd2V2k3QWdwR1V6MmZDdElEclhyV0RyWW1DQ0xO?=
- =?utf-8?B?QUJ1eTFRTVh0ODQyK3JmYlpqOFcvb3RCaERKN3pEQXhKM1VNQnZQei9FVUhK?=
- =?utf-8?B?aHBEZ3VMY0t4MmMrQ05abjlNWlRlcngvcEx6S240dnlTdk8rYUdHeXVKaDlz?=
- =?utf-8?B?WjdBeExmL25aS3BBdUlzMWRWUXFhUjRnYmErRDVKWnpaeVZlSzZ1WUpyZjBQ?=
- =?utf-8?B?eUFFeVNsUzJlMm9PT2pCNk1DbDlqRjFSN1o3TWRKY2k1aFVnM2RVOGZFRjNR?=
- =?utf-8?B?akJMdC9WcDBnMEFRa0tXVUwrMmttRkhsVXRCb1RDcVd0Q0Z2WjhOR2VybjNa?=
- =?utf-8?B?RzJRRytlaTNhQ2lJODNoOFd0c21VTXlvYnc3SHRvZmpOQXI4d3doUEFYc3d5?=
- =?utf-8?B?bXBNNUJKK0ZTb3kvTEVabERWSUg5S2Z0UjY3YVdNWm9rNHJvTGtnTjFXYVZW?=
- =?utf-8?B?eER6cDVVZlhTTjQvZmZIREU4TDB2dTBORUhNaDNUUEtDMnNCZGROK0V5aWE4?=
- =?utf-8?B?MGthaEdDU3lTQnBRcEIrZXJqNW0vWnN4QmpPRTY1RHVQeWV4N3FGQ1E3UURl?=
- =?utf-8?B?USs4TzZqQ241bTNiV2lpN2NhRzlrRmRTTEJNSkRscUMvUW5ILzVwZEZvUC9F?=
- =?utf-8?B?VnZRQ3BPenlqY1JWeTdGK0VLbk5ZRGdNSXUweG9oRHBSaWpXYkRkeUN5cFNU?=
- =?utf-8?B?RVR0enN4U25NSE5OYUkwSlVZNG5NTlA0bG1sbHlZNCtvMUVzTzVPeUV2VVFU?=
- =?utf-8?B?Nmcza1R6U24veXYyK0U4NzdHR1lNMkhUTEVLM2NQbElSU3NFcjd1MFVFajJ2?=
- =?utf-8?B?bjFmdTdmd2ZyTnVVMml0cVd2Z0V1SDdJYmdtcnlrYUE0OC93dlVSWGhFTzFS?=
- =?utf-8?B?S0xtTXZkaGJCek5xWDluNDcwbzN4YlRudDlJQ3lUdngxdlZyZkZvT1lBZ0lh?=
- =?utf-8?B?cktrQ3pUaW9jNEhsVWUxeG83SEsrSGFOeE9PeDUrd09nR2xmcHNQNnpFcnpW?=
- =?utf-8?B?S1RFeCs0cURLcUc0NEhBOGRmclN1blFZK2JMaVNMbDVWNHQyTnFhb0VCY3Rv?=
- =?utf-8?B?RkN2RWphWnljVmFYa1Rvd0hGazRiUm1WWTRaamx4TnlSUjRPd1hWc1Y3L250?=
- =?utf-8?B?Y1ZzdUFwZ05RQlFVWmd5SElUSjF2Zm5hQm96RVJMYVlHZ08zRkk5cWlZMFNW?=
- =?utf-8?B?N0p6Y2RWOUsybVhjNkFxNXBRNTdtc0p5RGR6L2lncUhoNEN0NzNydThnT2ZE?=
- =?utf-8?B?ZGgwTTJpdVhISWtVSkk4YXkrNGZlWkwwc093em9zb2RZaXNIM25PcmxPSUxW?=
- =?utf-8?B?OUlYbXFYZEtVVkRweFZRU1Zza2VKaUFOekYzQ3VjTVAxZzVYdWt0V0RLdElB?=
- =?utf-8?B?aWprQXltSU1yQ2pVaFBPOXduSThLdjd5d2grVEg3Q0ZZSFcvMTgxUlNWenlv?=
- =?utf-8?B?cWtxYU14d1JRNkRtQkpsQTA1WVk0QkZzV1F3Mk56K3RRcjdhRVIwOWZjc1dV?=
- =?utf-8?Q?DEvM6EdNPW1l+?=
+	=?utf-8?B?R09Odkdkc2NmdHRHWXRqTlo2QVBWczFvM1VPUWhHZUsyN296US84a284OEFl?=
+ =?utf-8?B?SkRCdFhaWllXSnNTWjhsM2RIWXJSaHNlakozT2U1ZzVEekFTbXBUcFFiTzV1?=
+ =?utf-8?B?ZmoxNXZnTVQyUUdJelN5WUhBQW8rTVpyN0taNEZ2bnNpb1g3RGN1T3NCaUtu?=
+ =?utf-8?B?RnM4QnI5UUFRbmZyMCt5QnliSG1td1d1d2RFelg0Q0VTL1g4SWZsWWZTdUpK?=
+ =?utf-8?B?U25UQnVhZGt5TmRhQS85VGR3Ly9hbjhycGE0WFBzTUQ2dDVZaVpNcDFqNVVS?=
+ =?utf-8?B?Uk9ub3Jkd1A3VGxGYzNibVVJVlpvYURQa2JJRU9STGhkb3YrWFR1K25sN2JM?=
+ =?utf-8?B?UllpaTc5TEtCTzVqSU5sWTNXM1FZbjQ0YmFuRGFJR1poWW1xM3dJOXY2cnRE?=
+ =?utf-8?B?WE9jaHpnYUFrRkVhS1YyRE5mclM1Q201aTI5ejNuMjVJNzRZRS9uQWY0QmlV?=
+ =?utf-8?B?ZUFlRi8zTTRUdm1PT3RicU1nTXVUTW9QTXdWK3pIQXNPQXpnRlJxdld0a2Jm?=
+ =?utf-8?B?empONlJvdW5Pbk1sYndtUzNzaGorN0VnOHdJVlNPZzhZa3FveVhnQVFmMnVs?=
+ =?utf-8?B?MkdvZC9GZll6Z2pPTDFRNGFXN1U1cE52bnVWeEUzbGJESTE0Ri9KNENBTUdm?=
+ =?utf-8?B?dUFzZ3VSWGt6TVUrNFdvcUJUN1Q0TEwwcS9OZzlEOXoycFI1amdNak5aeUhI?=
+ =?utf-8?B?SUFDaGtWV0p4TWk1dDVIdWlvT3dRNEQ5K0F0Q1hHVEdnRnExT1JIQ2dObDFY?=
+ =?utf-8?B?ajFaYUxDd3h4NVRzem5HQWFQOGxpdmt2S212NHBhcGlBQTVGb0g3WEEwTVpp?=
+ =?utf-8?B?cmtTQ0NSNWZ1akw1TU9MZTZNRnU5a2d2OUtKcDFnMmhIclZTSy8ra1pDczV6?=
+ =?utf-8?B?ZWJPSGE3RTFEeGFDbzNkMHM0TWp5bTlKVFd3YTRNWXY3WG44VCtKekY0SDNp?=
+ =?utf-8?B?bVgrNW9JTWd0S2x4c05rSkZjOVJxbi9QMDB5WFYzdXlLd0JUNnN3Uk03eGdt?=
+ =?utf-8?B?czFxTmphcFhYWldGSWxHQW9PRG5CS3I2cDhvUVJYczJRQUJ0NkxIeGI5OG9u?=
+ =?utf-8?B?WmhwVXFHZHpCaFNmandNbEQzQzBtSXB4TTJYYW51WlllTzJ5K1pKN2NFYVg2?=
+ =?utf-8?B?bFg1QmRmdUc5Z1JKS2UzMExnRHNUQWdUV2I5OVlVWTNka3IxcnlLcjdDQXVx?=
+ =?utf-8?B?VThaZjlyODAzZ3lqQ2lqMUFqRHFPUko3Mm43bjZyNk9zQW5TWUhpeHl6MzZ4?=
+ =?utf-8?B?WVM2cUFpVTgxRDRVMk1BMzFuckEyUXpXUXRLMUpUQWtlTnpwMWEyTloxcUt5?=
+ =?utf-8?B?Z0MrYTlSQnQ0dHQ4djdEVnA1eGhDME1BMHNzNmE5eWhtZDFwalNEOXB5NEVs?=
+ =?utf-8?B?YzM3ZVgrQnBBdWdvTE1XKzltOXVSNXlqMGNhQVZmbDVHOTMxSUVzZEpCdVNy?=
+ =?utf-8?B?VGtyZThHN3h5ZDdUaXR6Nk1lMUtGNm15d3RpK293a0s0QWNMVElSMFVZeTEv?=
+ =?utf-8?B?dENLZ3ZGT0VpUC9BbjNqYlJ6c1l5SDRyTm9wY28zS3VQL1lvNE53NmpIL3lH?=
+ =?utf-8?B?bkFPUTJyU1dUSEM2dlVWcGJmU1IwUUtRVkdSb3ZQVFZZYnVaRnlFemZpRXkz?=
+ =?utf-8?B?OXVwb3hsWjBUYy92TDVOTXI1NHVKaTVCRmVHOTdBUWo5TXhVeXplcWFQbVFl?=
+ =?utf-8?B?WGRsVnpiYVRwWUR4K2hLTmJFbUxEaGNTRkJqNWFqZjNLNnVqQWlKK2hNTTgw?=
+ =?utf-8?B?dEY0b01UWXYwZTNKbU80WkJWSUtiY1EzZHcxcGlZOHBsS0xETHgvRWh6NEtE?=
+ =?utf-8?B?TGVGdnFzTFR2OXlMVmNOcitnVWFTUmdKaUo4U3ZLOHdvbkRNRytWWWgybjRE?=
+ =?utf-8?Q?ehEVmLdDQmYWe?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bjFRUlI4RjZ2aUQramhzVmcyNkp0ODNiZi9rNUpMaWU3NWkyM0lydFpqRGRO?=
- =?utf-8?B?eEw2bThEaytqbWtOZWlKZWk2eVNVOURCRlhYK2ZrM24zQzU5Q1VpQVpGUm5m?=
- =?utf-8?B?MWVQZlBPUjVjUE8vWU51Z0hjems4dXNzM2RBcDBDUzRFQlZhQWZxRld5WWdo?=
- =?utf-8?B?N2M5cHZXZUt0UFVNY2EzNkZDSkhFUGJXV3lRSVZzU3JjMHpmaXZ2N0V1ZlZQ?=
- =?utf-8?B?RUtlNVdpdmdIdytBdk1TWGdwRlRVQVJleU1JUG5NemZUeWNzRHVIUk1xdHVX?=
- =?utf-8?B?MHR6bVR6eHl4ODZUS01mdlkwYzQ4VDh6NVhWelNkZXA0cG44dittMllTemtr?=
- =?utf-8?B?SS9DdzNiSm5Qajh2dlMwSnQ1MnM0eGtQSEt4aVlQTmVkVEQ1djVhLzI2Y21V?=
- =?utf-8?B?Uml1bDgwN0d5RDZncDRFN3U2Sm41TmVUdVdJUkNBNmFhUUcvZ3RpYzdWWllN?=
- =?utf-8?B?RzdOMXJmZkdiUnViczgybkp6TmtMU3RkMkNPVDJuSmpSUlE4ZjdVWWxhQklk?=
- =?utf-8?B?TWlZQWFIV3dmU2paN2NFWVQwNVhtdlhsYzJnVDRSZ05tYzBwbTg5RUJIYVlz?=
- =?utf-8?B?U1RjZE9nUmt6ejZhTUhpUHVRdDBzZWNrOHloOVY5NGFlUUUxb2dXTjgrNkNY?=
- =?utf-8?B?SnNNS2EwTHQxV01EN29QRklRSGdPeUhCUUREdjgydVAzbzRQMW9LYXhwSWVx?=
- =?utf-8?B?cHJ5b0E4L1BHNjZNOHNLVmJPbzkrQnh6QTdTdmtCSVZ1TkJhSHNIc01xS1Z1?=
- =?utf-8?B?NmFtODY0QlYwUnp6ZDhiNTMrNnZwMlhXcG1LdUo0Y3kxbEhzVFRaSU9jL2or?=
- =?utf-8?B?SGRnRjNYdkcxSXc3K0dXS1FETnJ5eEV3MVJsUzRGWnFZT25WckdKVXdwMTMv?=
- =?utf-8?B?THhIdHZhZyt2RFNnV3M5SXQyOTNjRStKT0wrbUZ2endoaWQwUlBVdlJob2J0?=
- =?utf-8?B?eHJMK1p4eFh2ZzFMQUZlZTdERDBRQ3VSWHhzTVRjbmQxTnZUVFMvMmVTU1VG?=
- =?utf-8?B?NUswSGhVUHVFSDRrY3VjQUpsLytqZVMrTDR0dnE3K3NjZ0ZvTmhUYTRBN296?=
- =?utf-8?B?WGxjckZFa0oza21SWk1GaThBOVoyQ0I2djJkTHNmVXV5R3NlbkRmTVpBMmtU?=
- =?utf-8?B?NzhvQ0R1Z3gzZXltRHhZVytLQUM1M1daakwycTJUODkrNDJuUEVLUVZNSlhm?=
- =?utf-8?B?b3FhZFVIZE9ta1dpNmpBR0VyRFFISC9ERDNHUnhkbHRQWXZESWtCKzhrT1lz?=
- =?utf-8?B?cmZsaE05a0dydkFXNm8zNGMrZ0p3OWQ0QXlTZlZZNEtHaHRrRU9KWEFXWHh4?=
- =?utf-8?B?LzFxcVYxOS9zbHFlMVhOanRtRXBxelZQTERZMW1ScUtUQXZjZXgyTEVGZ0hU?=
- =?utf-8?B?ZFhaand6dGljaGhYdFErNGNsTGNqenBIbGRLaktSbjZkZDZPeXFFbXQ4SWpY?=
- =?utf-8?B?Mm5QeGdyZkVrV2RuWEVMRXJuY0dmYlFNcWpCS0xHc2k3ZFFMSjhqVFdqLzNF?=
- =?utf-8?B?bmtwTGJ1ZDl4YWV1dzFCWnVpWEJ5VEQrMmdrcDRRSitvdmdsOUNQbFJ3U0F5?=
- =?utf-8?B?TW9xMklrTExEaitEN2tYUVp6VTZFenJZbjZiOW81NkZMVm5GZEd0RmR6cHFZ?=
- =?utf-8?B?dGJ0LzRmN1JTWDlyVS9uVGtzd1FrV3h6d0psMXd3ZjJlek0wQllMVFVVaDJo?=
- =?utf-8?B?TVV1WnVzVHJDOGt2djR5M1pONHlaaDBLSllFV0VMS0ZxeUJ6aDhKZ0VqNkJJ?=
- =?utf-8?B?OFlBbGJhM0VqZ04yMmppQjYyVWM0c2FjaExuOUtzZkI4NktHL3pGY3NpS3VV?=
- =?utf-8?B?MHpYNjZtMDVuaDdhWkVjb3JKMHUwckxUL2NST3JiVHU3REFLSyt5aUpvYlUr?=
- =?utf-8?B?K3JNKytuZ2d5UHltRHluTTZGd0pYU1NISDZNMzNmMkhaVkNMbS9zU3JFWDcv?=
- =?utf-8?B?aDdwdzlXRU9zekF3MnNTTHJvRjZDVjFXZjd6bmJwem03dmVJeDRIMHV0TG05?=
- =?utf-8?B?eHdTT1ZtU3k0SDhSSjFjc2pFZVBWd1EvcTR1T2xhOFo5SEhucHFDV0dTWC9N?=
- =?utf-8?B?T1JqQlRjWGdUQjUxRkpBTldaTVI0Qkg1Z2NXMTkvdnQrVTl5dXA2UTgrdVBl?=
- =?utf-8?Q?jgFbD0zWhtLUVvz2tRtkQseG4?=
+	=?utf-8?B?NzNjZE1melEycEdGaEVydWZXV2t4ZCtscW5aZkQ2UXZ0RFRMek5jcUlFNEg5?=
+ =?utf-8?B?MGpSdzFmOW1wOXp3TWE0TkRBcVZnaHJmUXpxMzRKUlVYV3ZiWmZ6Tmw1NzR4?=
+ =?utf-8?B?MVlyWnVlT3UrMjNCQzlwcExUTUljTnFXWnczRHU0MFUvb2FRQS9Sak01dWVD?=
+ =?utf-8?B?bzJCWGl2U2pPdWszZmNsbDI0NkUwSTNMTlUxYlFvRWpHaE9ZQzlYV0ZnTzdY?=
+ =?utf-8?B?ejR1WjExaEJCYmhNWDdQZVFNOVNIcFV0cXAzY3BoTTRyS0hUcGxpMEdyZjNF?=
+ =?utf-8?B?akpib0xNejRtbDB0ZmxhRHU5UjRqdmxuR3VzZlduTWh5STk5QSswSkY0aFFu?=
+ =?utf-8?B?MWRkRkJpd2YzeThuUTg4VXkxUnJnSU1VTTJLajhPTmVZakhCaWpnZ2s2bTRy?=
+ =?utf-8?B?dU1PcVl6OSs5bENnSUtpamxJLzI5M2M1SFA1c0dOYzEzNVFaTWdIdlhqbm90?=
+ =?utf-8?B?b2FwNTRmMVRkL3NjL2I0Tk1MeUg1VFMvWWs2UmkyZmRRbTV6ajJrR2Y0WFdp?=
+ =?utf-8?B?WFVwdzI0eDAwbVdJVXc3UXFjMFVuZXN1NUFzSFRLZ0ZDT0NWZXlUbjV5NXBG?=
+ =?utf-8?B?L0JJdWwvNWlvVm9wZnNsNzBvaTJ4OWtXZ2o5S25xQ2lCZ1MzRGRzYTVablE1?=
+ =?utf-8?B?Z3pnTThCcURiUDF4L1lIRWRLUW0xaUV4ajYxTEFaKzRXSlZwb1d1eE5wWFZZ?=
+ =?utf-8?B?WWkzeFI4RHMyKzNuRUxvbVFkemM5aGRIU1Mvd293a1UvWUovNjcvL3NpUkhU?=
+ =?utf-8?B?YlZYdEtjaWdFTXVvVWlSci9XNXRZTzUxTUljQy9vQW5yeDVSS2xSOEFka1Uy?=
+ =?utf-8?B?elBiQ0NWazlEVDB3V1lvUjFQRjRiOTgzRGxpbTdRaVE1R0Z0ZjF4c2lHenhT?=
+ =?utf-8?B?K3NjL09DMklzeEowSmNsNzFVcytuU2FoTzdWb0pHT0RUUFljODFVd29mM056?=
+ =?utf-8?B?Sk1LNmhsRHRkY0srd0NYV3dKVUc4ZVpWcHJtK204bFludWVIakFJMndUMlpw?=
+ =?utf-8?B?MVRqaTZvL0JQR2xsRGU2QlRhdUYzOXYxZWJTOENNQjBvQzNtNWdzRVNSQU5Q?=
+ =?utf-8?B?WkJZMUZzYWNZNjdaWmtUTEkxMjR4SWNzVmhDRGF2ODV5QXNQd1JpNVZuakdl?=
+ =?utf-8?B?RW1YZFJGMW5IdVFwSWxuT1lRSmJtekxCYVhBMGw3SW5KQjQ0OTFsZml3MFNK?=
+ =?utf-8?B?L3VMbXMzYjQwNWp3REJYN0RYRG1DQWZXSHdNb3dOVmc0cWlSUUhabU5va3FQ?=
+ =?utf-8?B?Z2JqdDNzOFVENThyVVNmM2NYR3VXWDBqcTVuTXNqb0ttUDVQOTV4Qjg0V1pB?=
+ =?utf-8?B?NE4yaFVzSU4wck9HRjJMOTdGaHR0dXJHT3RrUEVtbkJvWDdMUjZMdFpienly?=
+ =?utf-8?B?N3NIRWgxc0hnRnFoVExRbElrSHpBcmtteG1mZXgzODEyQU5yOXB2TGhXa1Yx?=
+ =?utf-8?B?TitySEpoMVNMM2NGYzc5blNaWkFaZFNtR0pVOVdmK0o1ODd3RHBJc3ZwN2cv?=
+ =?utf-8?B?MmFxc0JRSzFKLytoZXVhWTdtdnJnTVNHSGlMclVLQTFhclFobVZRODVYREla?=
+ =?utf-8?B?bWZvVitZSXluZHpVYXp5TlNSK25OTVRvallzNG9xSkhxbzJ6cHRTc2JMTU5s?=
+ =?utf-8?B?UURHZkFiblhDWE5walo4N3ByTjBaVnZ6d0ZpQ001aDNOWkF1VU9MbXRJUFhD?=
+ =?utf-8?B?L3JmQTI0R0hHWHFvdWJ4YUMvMXRlS2t4N0JlVjA0UWhpcC81NzJraGlLR2hy?=
+ =?utf-8?B?bjN0UTh3RUJZTTlqeDMraDhWSVdRTm9ObkpPY1dxeC91dVpOM1hPWTRWK25u?=
+ =?utf-8?B?U1lvcnMwTTFUenhaWGRxOFhHRlRwaUtVVDNqNGRuT1daWWpjdFlQMUpzUEdl?=
+ =?utf-8?B?c1QrSWM5QUI5U0VIc2FCcWdMUEtyVDdpRzVPcTBGbzBvKzU4WTFPUE9SVC9r?=
+ =?utf-8?B?S1B4Ymk0Njg0VDNjL3dIUGJkTFhxNG4zL3NvOXpTTnBWZDVDVWlLU3lGNEp4?=
+ =?utf-8?B?ZERrWnNqYy9GdHNGU1c3M0VDaEs5RGpyRFFqOVM2VU1zMTQ3SXNkZDA0alY4?=
+ =?utf-8?B?bnJWMTRmY1U0d2tPdTlqNk53ZGNZSW5qL0pEOUg2dTVnZnBrNjZaUWRGaWlo?=
+ =?utf-8?Q?mPVznts6NBg41Elj6OTcBPau1?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d76c54ed-aaa1-4688-2332-08dd34b755ba
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a0463ec-e3bb-4358-503d-08dd34b79f5a
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 16:20:17.9911
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 16:22:21.5459
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bxRBP/0TAKTdDfba8bJUXXoRhy9lN9NCApZxia5SYyGiXxaydyAX/JCz4kt7XMT4SdQWJMoH2Af0A6PkKKtg2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8350
+X-MS-Exchange-CrossTenant-UserPrincipalName: i1d6ai4LDwPc2LpX57vKWL2gQ58ghKiWkWSdllrxfBYuGMggDjGN+6ViF4Utmr0az/8DXYcSqIR/+dquLadzWw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5645
 
 On 1/14/2025 09:37, Kurt Borja wrote:
-> Add a `probe` callback to platform_profile_ops, which lets drivers
-> initialize the choices member manually.
+> In order to protect the platform_profile_handler from API consumers,
+> allocate it in platform_profile_register() and modify it's signature
+> accordingly.
+> 
+> Remove the platform_profile_handler from all consumer drivers and
+> replace them with a pointer to the class device, which is
+> now returned from platform_profile_register().
+> 
+> Replace *pprof with a pointer to the class device in the rest of
+> exported symbols.
 > 
 > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+
 > ---
->   drivers/acpi/platform_profile.c               | 13 +++++++--
->   .../surface/surface_platform_profile.c        | 16 ++++++----
->   drivers/platform/x86/acer-wmi.c               | 24 ++++++++-------
->   drivers/platform/x86/amd/pmf/sps.c            | 15 ++++++----
->   drivers/platform/x86/asus-wmi.c               | 16 ++++++----
->   drivers/platform/x86/dell/alienware-wmi.c     | 24 +++++++++------
->   drivers/platform/x86/dell/dell-pc.c           | 26 ++++++++++-------
->   drivers/platform/x86/hp/hp-wmi.c              | 29 +++++++++++++------
->   drivers/platform/x86/ideapad-laptop.c         | 15 ++++++----
->   .../platform/x86/inspur_platform_profile.c    | 14 ++++++---
->   drivers/platform/x86/thinkpad_acpi.c          | 15 ++++++----
->   include/linux/platform_profile.h              |  1 +
->   12 files changed, 137 insertions(+), 71 deletions(-)
+>   drivers/acpi/platform_profile.c               | 87 ++++++++++++-------
+>   .../surface/surface_platform_profile.c        | 11 ++-
+>   drivers/platform/x86/acer-wmi.c               | 18 ++--
+>   drivers/platform/x86/amd/pmf/pmf.h            |  2 +-
+>   drivers/platform/x86/amd/pmf/sps.c            | 17 ++--
+>   drivers/platform/x86/asus-wmi.c               | 20 ++---
+>   drivers/platform/x86/dell/alienware-wmi.c     |  9 +-
+>   drivers/platform/x86/dell/dell-pc.c           | 22 ++---
+>   drivers/platform/x86/hp/hp-wmi.c              | 19 ++--
+>   drivers/platform/x86/ideapad-laptop.c         | 14 +--
+>   .../platform/x86/inspur_platform_profile.c    |  9 +-
+>   drivers/platform/x86/thinkpad_acpi.c          | 14 ++-
+>   include/linux/platform_profile.h              | 12 ++-
+>   13 files changed, 125 insertions(+), 129 deletions(-)
 > 
 > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index 440654e21620..34e22b006ccc 100644
+> index 34e22b006ccc..2fae5e2fc962 100644
 > --- a/drivers/acpi/platform_profile.c
 > +++ b/drivers/acpi/platform_profile.c
-> @@ -466,12 +466,21 @@ int platform_profile_register(struct platform_profile_handler *pprof, void *drvd
+> @@ -4,6 +4,7 @@
+>   
+>   #include <linux/acpi.h>
+>   #include <linux/bits.h>
+> +#include <linux/cleanup.h>
+>   #include <linux/init.h>
+>   #include <linux/kdev_t.h>
+>   #include <linux/mutex.h>
+> @@ -213,9 +214,17 @@ static struct attribute *profile_attrs[] = {
+>   };
+>   ATTRIBUTE_GROUPS(profile);
+>   
+> +static void pprof_device_release(struct device *dev)
+> +{
+> +	struct platform_profile_handler *pprof = to_pprof_handler(dev);
+> +
+> +	kfree(pprof);
+> +}
+> +
+>   static const struct class platform_profile_class = {
+>   	.name = "platform-profile",
+>   	.dev_groups = profile_groups,
+> +	.dev_release = pprof_device_release,
+>   };
+>   
+>   /**
+> @@ -409,10 +418,10 @@ static const struct attribute_group platform_profile_group = {
+>   	.is_visible = profile_class_is_visible,
+>   };
+>   
+> -void platform_profile_notify(struct platform_profile_handler *pprof)
+> +void platform_profile_notify(struct device *dev)
+>   {
+>   	scoped_cond_guard(mutex_intr, return, &profile_lock) {
+> -		_notify_class_profile(&pprof->class_dev, NULL);
+> +		_notify_class_profile(dev, NULL);
+>   	}
+>   	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>   }
+> @@ -461,40 +470,51 @@ int platform_profile_cycle(void)
+>   }
+>   EXPORT_SYMBOL_GPL(platform_profile_cycle);
+>   
+> -int platform_profile_register(struct platform_profile_handler *pprof, void *drvdata)
+> +struct device *platform_profile_register(struct device *dev, const char *name,
+> +					 void *drvdata,
+> +					 const struct platform_profile_ops *ops)
+>   {
+> +	int minor;
 >   	int err;
 >   
->   	/* Sanity check the profile handler */
-> -	if (!pprof || bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST) ||
-> -	    !pprof->ops->profile_set || !pprof->ops->profile_get) {
-> +	if (!pprof || !pprof->ops->profile_set || !pprof->ops->profile_get ||
-> +	    !pprof->ops->probe) {
+> -	/* Sanity check the profile handler */
+> -	if (!pprof || !pprof->ops->profile_set || !pprof->ops->profile_get ||
+> -	    !pprof->ops->probe) {
+> +	/* Sanity check */
+> +	if (!dev || !name || !ops || !ops->profile_get ||
+> +	    !ops->profile_set || !ops->probe) {
 >   		pr_err("platform_profile: handler is invalid\n");
->   		return -EINVAL;
+> -		return -EINVAL;
+> +		return ERR_PTR(-EINVAL);
 >   	}
 >   
-> +	err = pprof->ops->probe(drvdata, pprof->choices);
-> +	if (err < 0)
-
-Any particular reason to specifically look for less than zero?  Did you 
-want to have the probe() return something positive in some circumstances?
-
-If not I think this should be fine:
-
-if (err)
-
-> +		return err;
+> -	err = pprof->ops->probe(drvdata, pprof->choices);
+> +	struct platform_profile_handler *pprof __free(kfree) = kzalloc(
+> +		sizeof(*pprof), GFP_KERNEL);
+> +	if (!pprof)
+> +		return ERR_PTR(-ENOMEM);
 > +
-> +	if (bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST)) {
-> +		pr_err("platform_profile: no available profiles\n");
-
-Doesn't pr_fmt handle the prefix?
-
-> +		return -EINVAL;
-> +	}
-> +
+> +	err = ops->probe(drvdata, pprof->choices);
+>   	if (err < 0)
+> -		return err;
+> +		return ERR_PTR(err);
+>   
+>   	if (bitmap_empty(pprof->choices, PLATFORM_PROFILE_LAST)) {
+>   		pr_err("platform_profile: no available profiles\n");
+> -		return -EINVAL;
+> +		return ERR_PTR(-EINVAL);
+>   	}
+>   
 >   	guard(mutex)(&profile_lock);
 >   
 >   	/* create class interface for individual handler */
+> -	pprof->minor = ida_alloc(&platform_profile_ida, GFP_KERNEL);
+> -	if (pprof->minor < 0)
+> -		return pprof->minor;
+> +	minor = ida_alloc(&platform_profile_ida, GFP_KERNEL);
+> +	if (minor < 0)
+> +		return ERR_PTR(minor);
+>   
+> +	pprof->name = name;
+> +	pprof->ops = ops;
+> +	pprof->minor = minor;
+>   	pprof->class_dev.class = &platform_profile_class;
+> -	pprof->class_dev.parent = pprof->dev;
+> +	pprof->class_dev.parent = dev;
+>   	dev_set_drvdata(&pprof->class_dev, drvdata);
+>   	dev_set_name(&pprof->class_dev, "platform-profile-%d", pprof->minor);
+>   	err = device_register(&pprof->class_dev);
+>   	if (err) {
+> -		put_device(&pprof->class_dev);
+> +		put_device(&no_free_ptr(pprof)->class_dev);
+>   		goto cleanup_ida;
+>   	}
+>   
+> @@ -504,20 +524,21 @@ int platform_profile_register(struct platform_profile_handler *pprof, void *drvd
+>   	if (err)
+>   		goto cleanup_cur;
+>   
+> -	return 0;
+> +	return &no_free_ptr(pprof)->class_dev;
+>   
+>   cleanup_cur:
+> -	device_unregister(&pprof->class_dev);
+> +	device_unregister(&no_free_ptr(pprof)->class_dev);
+>   
+>   cleanup_ida:
+> -	ida_free(&platform_profile_ida, pprof->minor);
+> +	ida_free(&platform_profile_ida, minor);
+>   
+> -	return err;
+> +	return ERR_PTR(err);
+>   }
+>   EXPORT_SYMBOL_GPL(platform_profile_register);
+>   
+> -int platform_profile_remove(struct platform_profile_handler *pprof)
+> +int platform_profile_remove(struct device *dev)
+>   {
+> +	struct platform_profile_handler *pprof = to_pprof_handler(dev);
+>   	int id;
+>   	guard(mutex)(&profile_lock);
+>   
+> @@ -535,30 +556,32 @@ EXPORT_SYMBOL_GPL(platform_profile_remove);
+>   
+>   static void devm_platform_profile_release(struct device *dev, void *res)
+>   {
+> -	struct platform_profile_handler **pprof = res;
+> +	struct device **ppdev = res;
+>   
+> -	platform_profile_remove(*pprof);
+> +	platform_profile_remove(*ppdev);
+>   }
+>   
+> -int devm_platform_profile_register(struct platform_profile_handler *pprof, void *drvdata)
+> +struct device *devm_platform_profile_register(struct device *dev, const char *name,
+> +					      void *drvdata,
+> +					      const struct platform_profile_ops *ops)
+>   {
+> -	struct platform_profile_handler **dr;
+> -	int ret;
+> +	struct device *ppdev;
+> +	struct device **dr;
+>   
+>   	dr = devres_alloc(devm_platform_profile_release, sizeof(*dr), GFP_KERNEL);
+>   	if (!dr)
+> -		return -ENOMEM;
+> +		return ERR_PTR(-ENOMEM);
+>   
+> -	ret = platform_profile_register(pprof, drvdata);
+> -	if (ret) {
+> +	ppdev = platform_profile_register(dev, name, drvdata, ops);
+> +	if (IS_ERR(dev)) {
+>   		devres_free(dr);
+> -		return ret;
+> +		return ppdev;
+>   	}
+>   
+> -	*dr = pprof;
+> -	devres_add(pprof->dev, dr);
+> +	*dr = ppdev;
+> +	devres_add(dev, dr);
+>   
+> -	return 0;
+> +	return ppdev;
+>   }
+>   EXPORT_SYMBOL_GPL(devm_platform_profile_register);
+>   
 > diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
-> index 76967bfeeef8..48cfe9cb89c8 100644
+> index bbdc873cb788..275269a6efc1 100644
 > --- a/drivers/platform/surface/surface_platform_profile.c
 > +++ b/drivers/platform/surface/surface_platform_profile.c
-> @@ -201,7 +201,18 @@ static int ssam_platform_profile_set(struct device *dev,
->   	return tp;
->   }
+> @@ -40,7 +40,7 @@ struct ssam_tmp_profile_info {
 >   
-> +static int ssam_platform_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops ssam_platform_profile_ops = {
-> +	.probe = ssam_platform_profile_probe,
->   	.profile_get = ssam_platform_profile_get,
->   	.profile_set = ssam_platform_profile_set,
+>   struct ssam_platform_profile_device {
+>   	struct ssam_device *sdev;
+> -	struct platform_profile_handler handler;
+> +	struct device *ppdev;
+>   	bool has_fan;
 >   };
-> @@ -223,11 +234,6 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
 >   
+> @@ -228,13 +228,12 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
+>   	tpd->sdev = sdev;
+>   	ssam_device_set_drvdata(sdev, tpd);
+>   
+> -	tpd->handler.name = "Surface Platform Profile";
+> -	tpd->handler.dev = &sdev->dev;
+> -	tpd->handler.ops = &ssam_platform_profile_ops;
+> -
 >   	tpd->has_fan = device_property_read_bool(&sdev->dev, "has_fan");
 >   
-> -	set_bit(PLATFORM_PROFILE_LOW_POWER, tpd->handler.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED, tpd->handler.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, tpd->handler.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, tpd->handler.choices);
-> -
->   	return platform_profile_register(&tpd->handler, tpd);
+> -	return devm_platform_profile_register(&tpd->handler, tpd);
+> +	tpd->ppdev =  devm_platform_profile_register(
+> +		&sdev->dev, "Surface Platform Profile", tpd, &ssam_platform_profile_ops);
+> +
+> +	return PTR_ERR_OR_ZERO(tpd->ppdev);
 >   }
 >   
+>   static const struct ssam_device_id ssam_platform_profile_match[] = {
 > diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-> index 91ae48adf6cf..6953e36dbfde 100644
+> index 39ec236b7cdb..3e39465b3783 100644
 > --- a/drivers/platform/x86/acer-wmi.c
 > +++ b/drivers/platform/x86/acer-wmi.c
-> @@ -1916,7 +1916,20 @@ acer_predator_v4_platform_profile_set(struct device *dev,
->   	return 0;
->   }
->   
-> +static int
-> +acer_predator_v4_platform_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_QUIET, choices);
-> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops acer_predator_v4_platform_profile_ops = {
-> +	.probe = acer_predator_v4_platform_profile_probe,
->   	.profile_get = acer_predator_v4_platform_profile_get,
->   	.profile_set = acer_predator_v4_platform_profile_set,
+> @@ -758,7 +758,7 @@ static const struct dmi_system_id non_acer_quirks[] __initconst = {
+>   	{}
 >   };
-> @@ -1931,17 +1944,6 @@ static int acer_platform_profile_setup(struct platform_device *device)
->   		platform_profile_handler.ops =
->   			&acer_predator_v4_platform_profile_ops;
 >   
-> -		set_bit(PLATFORM_PROFILE_PERFORMANCE,
-> -			platform_profile_handler.choices);
-> -		set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE,
-> -			platform_profile_handler.choices);
-> -		set_bit(PLATFORM_PROFILE_BALANCED,
-> -			platform_profile_handler.choices);
-> -		set_bit(PLATFORM_PROFILE_QUIET,
-> -			platform_profile_handler.choices);
-> -		set_bit(PLATFORM_PROFILE_LOW_POWER,
-> -			platform_profile_handler.choices);
+> -static struct platform_profile_handler platform_profile_handler;
+> +static struct device *platform_profile_device;
+>   static bool platform_profile_support;
+>   
+>   /*
+> @@ -1937,16 +1937,10 @@ static const struct platform_profile_ops acer_predator_v4_platform_profile_ops =
+>   static int acer_platform_profile_setup(struct platform_device *device)
+>   {
+>   	if (quirks->predator_v4) {
+> -		int err;
 > -
->   		err = platform_profile_register(&platform_profile_handler, NULL);
->   		if (err)
->   			return err;
+> -		platform_profile_handler.name = "acer-wmi";
+> -		platform_profile_handler.dev = &device->dev;
+> -		platform_profile_handler.ops =
+> -			&acer_predator_v4_platform_profile_ops;
+> -
+> -		err = devm_platform_profile_register(&platform_profile_handler, NULL);
+> -		if (err)
+> -			return err;
+> +		platform_profile_device = devm_platform_profile_register(
+> +			&device->dev, "acer-wmi", NULL, &acer_predator_v4_platform_profile_ops);
+> +		if (IS_ERR(platform_profile_device))
+> +			return PTR_ERR(platform_profile_device);
+>   
+>   		platform_profile_support = true;
+>   
+> @@ -2033,7 +2027,7 @@ static int acer_thermal_profile_change(void)
+>   		if (tp != ACER_PREDATOR_V4_THERMAL_PROFILE_TURBO_WMI)
+>   			last_non_turbo_profile = tp;
+>   
+> -		platform_profile_notify(&platform_profile_handler);
+> +		platform_profile_notify(platform_profile_device);
+>   	}
+>   
+>   	return 0;
+> diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
+> index d99b3556205b..41b2b91b8fdc 100644
+> --- a/drivers/platform/x86/amd/pmf/pmf.h
+> +++ b/drivers/platform/x86/amd/pmf/pmf.h
+> @@ -338,7 +338,7 @@ struct amd_pmf_dev {
+>   	struct mutex lock; /* protects the PMF interface */
+>   	u32 supported_func;
+>   	enum platform_profile_option current_profile;
+> -	struct platform_profile_handler pprof;
+> +	struct device *ppdev; /* platform profile class device */
+>   	struct dentry *dbgfs_dir;
+>   	int hb_interval; /* SBIOS heartbeat interval */
+>   	struct delayed_work heart_beat;
 > diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
-> index 6ae82ae86d22..e710405b581f 100644
+> index 7c7ed2b9de01..a96fc6887cf0 100644
 > --- a/drivers/platform/x86/amd/pmf/sps.c
 > +++ b/drivers/platform/x86/amd/pmf/sps.c
-> @@ -387,7 +387,17 @@ static int amd_pmf_profile_set(struct device *dev,
->   	return 0;
->   }
+> @@ -404,8 +404,6 @@ static const struct platform_profile_ops amd_pmf_profile_ops = {
 >   
-> +static int amd_pmf_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops amd_pmf_profile_ops = {
-> +	.probe = amd_pmf_profile_probe,
->   	.profile_get = amd_pmf_profile_get,
->   	.profile_set = amd_pmf_profile_set,
->   };
-> @@ -414,11 +424,6 @@ int amd_pmf_init_sps(struct amd_pmf_dev *dev)
->   	dev->pprof.dev = dev->dev;
->   	dev->pprof.ops = &amd_pmf_profile_ops;
+>   int amd_pmf_init_sps(struct amd_pmf_dev *dev)
+>   {
+> -	int err;
+> -
+>   	dev->current_profile = PLATFORM_PROFILE_BALANCED;
 >   
-> -	/* Setup supported modes */
-> -	set_bit(PLATFORM_PROFILE_LOW_POWER, dev->pprof.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED, dev->pprof.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, dev->pprof.choices);
+>   	if (is_apmf_func_supported(dev, APMF_FUNC_STATIC_SLIDER_GRANULAR)) {
+> @@ -420,15 +418,12 @@ int amd_pmf_init_sps(struct amd_pmf_dev *dev)
+>   		amd_pmf_set_sps_power_limits(dev);
+>   	}
+>   
+> -	dev->pprof.name = "amd-pmf";
+> -	dev->pprof.dev = dev->dev;
+> -	dev->pprof.ops = &amd_pmf_profile_ops;
 > -
 >   	/* Create platform_profile structure and register */
->   	err = platform_profile_register(&dev->pprof, dev);
->   	if (err)
+> -	err = devm_platform_profile_register(&dev->pprof, dev);
+> -	if (err)
+> -		dev_err(dev->dev, "Failed to register SPS support, this is most likely an SBIOS bug: %d\n",
+> -			err);
+> +	dev->ppdev = devm_platform_profile_register(
+> +		dev->dev, "amd-pmf", dev, &amd_pmf_profile_ops);
+> +	if (IS_ERR(dev->ppdev))
+> +		dev_err(dev->dev, "Failed to register SPS support, this is most likely an SBIOS bug: %ld\n",
+> +			PTR_ERR(dev->ppdev));
+>   
+> -	return err;
+> +	return PTR_ERR_OR_ZERO(dev->ppdev);
+>   }
 > diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-> index d88860dd028b..3d77f7454953 100644
+> index f8437cff66df..4ad99cf9df1a 100644
 > --- a/drivers/platform/x86/asus-wmi.c
 > +++ b/drivers/platform/x86/asus-wmi.c
-> @@ -3852,7 +3852,17 @@ static int asus_wmi_platform_profile_set(struct device *dev,
->   	return throttle_thermal_policy_write(asus);
+> @@ -313,7 +313,7 @@ struct asus_wmi {
+>   	bool mid_fan_curve_available;
+>   	struct fan_curve_data custom_fan_curves[3];
+>   
+> -	struct platform_profile_handler platform_profile_handler;
+> +	struct device *platform_profile_device;
+>   	bool platform_profile_support;
+>   
+>   	// The RSOC controls the maximum charging percentage.
+> @@ -3789,7 +3789,7 @@ static ssize_t throttle_thermal_policy_store(struct device *dev,
+>   	 * Ensure that platform_profile updates userspace with the change to ensure
+>   	 * that platform_profile and throttle_thermal_policy_mode are in sync.
+>   	 */
+> -	platform_profile_notify(&asus->platform_profile_handler);
+> +	platform_profile_notify(asus->platform_profile_device);
+>   
+>   	return count;
 >   }
+> @@ -3891,17 +3891,13 @@ static int platform_profile_setup(struct asus_wmi *asus)
 >   
-> +static int asus_wmi_platform_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_QUIET, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops asus_wmi_platform_profile_ops = {
-> +	.probe = asus_wmi_platform_profile_probe,
->   	.profile_get = asus_wmi_platform_profile_get,
->   	.profile_set = asus_wmi_platform_profile_set,
->   };
-> @@ -3885,12 +3895,6 @@ static int platform_profile_setup(struct asus_wmi *asus)
->   	asus->platform_profile_handler.dev = dev;
->   	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+>   	dev_info(dev, "Using throttle_thermal_policy for platform_profile support\n");
 >   
-> -	set_bit(PLATFORM_PROFILE_QUIET, asus->platform_profile_handler.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED,
-> -		asus->platform_profile_handler.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE,
-> -		asus->platform_profile_handler.choices);
-> -
->   	err = platform_profile_register(&asus->platform_profile_handler, asus);
->   	if (err == -EEXIST) {
->   		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
+> -	asus->platform_profile_handler.name = "asus-wmi";
+> -	asus->platform_profile_handler.dev = dev;
+> -	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+> +	asus->platform_profile_device = devm_platform_profile_register(
+> +		dev, "asus-wmi", asus, &asus_wmi_platform_profile_ops);
+> +	if (IS_ERR(asus->platform_profile_device)) {
+> +		pr_err("%s, failed at devm_platform_profile_register: %ld\n",
+> +		       __func__, PTR_ERR(asus->platform_profile_device));
+>   
+> -	err = devm_platform_profile_register(&asus->platform_profile_handler, asus);
+> -	if (err == -EEXIST) {
+> -		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
+> -		return 0;
+> -	} else if (err) {
+> -		pr_err("%s, failed at devm_platform_profile_register: %d\n", __func__, err);
+> -		return err;
+> +		return PTR_ERR(asus->platform_profile_device);
+>   	}
+>   
+>   	asus->platform_profile_support = true;
 > diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
-> index f7a854d40575..0146d2f93be6 100644
+> index 0146d2f93be6..99db93846a63 100644
 > --- a/drivers/platform/x86/dell/alienware-wmi.c
 > +++ b/drivers/platform/x86/dell/alienware-wmi.c
-> @@ -1078,12 +1078,7 @@ static int thermal_profile_set(struct device *dev,
->   	return wmax_thermal_control(supported_thermal_profiles[profile]);
+> @@ -1135,11 +1135,12 @@ static const struct platform_profile_ops awcc_platform_profile_ops = {
+>   
+>   static int create_thermal_profile(struct platform_device *platform_device)
+>   {
+> -	pp_handler.name = "alienware-wmi";
+> -	pp_handler.dev = &platform_device->dev;
+> -	pp_handler.ops = &awcc_platform_profile_ops;
+> +	struct device *ppdev;
+>   
+> -	return devm_platform_profile_register(&pp_handler, NULL);
+> +	ppdev = devm_platform_profile_register(
+> +		&platform_device->dev, "alienware-wmi", NULL, &awcc_platform_profile_ops);
+> +
+> +	return PTR_ERR_OR_ZERO(ppdev);
 >   }
 >   
-> -static const struct platform_profile_ops awcc_platform_profile_ops = {
-> -	.profile_get = thermal_profile_get,
-> -	.profile_set = thermal_profile_set,
-> -};
-> -
-> -static int create_thermal_profile(struct platform_device *platform_device)
-> +static int thermal_profile_probe(void *drvdata, unsigned long *choices)
->   {
->   	enum platform_profile_option profile;
->   	enum wmax_thermal_mode mode;
-> @@ -1116,19 +1111,30 @@ static int create_thermal_profile(struct platform_device *platform_device)
->   		profile = wmax_mode_to_platform_profile[mode];
->   		supported_thermal_profiles[profile] = out_data;
->   
-> -		set_bit(profile, pp_handler.choices);
-> +		set_bit(profile, choices);
->   	}
->   
-> -	if (bitmap_empty(pp_handler.choices, PLATFORM_PROFILE_LAST))
-> +	if (bitmap_empty(choices, PLATFORM_PROFILE_LAST))
->   		return -ENODEV;
->   
->   	if (quirks->gmode) {
->   		supported_thermal_profiles[PLATFORM_PROFILE_PERFORMANCE] =
->   			WMAX_THERMAL_MODE_GMODE;
->   
-> -		set_bit(PLATFORM_PROFILE_PERFORMANCE, pp_handler.choices);
-> +		set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
->   	}
->   
-> +	return 0;
-> +}
-> +
-> +static const struct platform_profile_ops awcc_platform_profile_ops = {
-> +	.probe = thermal_profile_probe,
-> +	.profile_get = thermal_profile_get,
-> +	.profile_set = thermal_profile_set,
-> +};
-> +
-> +static int create_thermal_profile(struct platform_device *platform_device)
-> +{
->   	pp_handler.name = "alienware-wmi";
->   	pp_handler.dev = &platform_device->dev;
->   	pp_handler.ops = &awcc_platform_profile_ops;
+>   /*
 > diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/dell/dell-pc.c
-> index 9010a231f209..32b3be0723f8 100644
+> index 2759bb608b1a..8d60e1b223de 100644
 > --- a/drivers/platform/x86/dell/dell-pc.c
 > +++ b/drivers/platform/x86/dell/dell-pc.c
-> @@ -24,6 +24,7 @@
->   #include "dell-smbios.h"
+> @@ -109,8 +109,6 @@ MODULE_DEVICE_TABLE(dmi, dell_device_table);
+>   #define DELL_ACC_SET_FIELD	GENMASK(11, 8)
+>   #define DELL_THERMAL_SUPPORTED	GENMASK(3, 0)
 >   
->   static struct platform_device *platform_device;
-> +static int supported_modes;
+> -static struct platform_profile_handler *thermal_handler;
+> -
+>   enum thermal_mode_bits {
+>   	DELL_BALANCED    = BIT(0),
+>   	DELL_COOL_BOTTOM = BIT(1),
+> @@ -254,6 +252,7 @@ static const struct platform_profile_ops dell_pc_platform_profile_ops = {
 >   
->   static const struct dmi_system_id dell_device_table[] __initconst = {
->   	{
-> @@ -231,7 +232,22 @@ static int thermal_platform_profile_get(struct device *dev,
->   	return 0;
->   }
->   
-> +static int thermal_platform_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	if (supported_modes & DELL_QUIET)
-> +		set_bit(PLATFORM_PROFILE_QUIET, choices);
-> +	if (supported_modes & DELL_COOL_BOTTOM)
-> +		set_bit(PLATFORM_PROFILE_COOL, choices);
-> +	if (supported_modes & DELL_BALANCED)
-> +		set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	if (supported_modes & DELL_PERFORMANCE)
-> +		set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops dell_pc_platform_profile_ops = {
-> +	.probe = thermal_platform_profile_probe,
->   	.profile_get = thermal_platform_profile_get,
->   	.profile_set = thermal_platform_profile_set,
->   };
-> @@ -239,7 +255,6 @@ static const struct platform_profile_ops dell_pc_platform_profile_ops = {
 >   static int thermal_init(void)
 >   {
+> +	struct device *ppdev;
 >   	int ret;
-> -	int supported_modes;
 >   
 >   	/* If thermal commands are not supported, exit without error */
->   	if (!dell_smbios_class_is_supported(CLASS_INFO))
-> @@ -265,15 +280,6 @@ static int thermal_init(void)
->   	thermal_handler->dev = &platform_device->dev;
->   	thermal_handler->ops = &dell_pc_platform_profile_ops;
+> @@ -271,26 +270,17 @@ static int thermal_init(void)
+>   	if (IS_ERR(platform_device))
+>   		return PTR_ERR(platform_device);
 >   
-> -	if (supported_modes & DELL_QUIET)
-> -		set_bit(PLATFORM_PROFILE_QUIET, thermal_handler->choices);
-> -	if (supported_modes & DELL_COOL_BOTTOM)
-> -		set_bit(PLATFORM_PROFILE_COOL, thermal_handler->choices);
-> -	if (supported_modes & DELL_BALANCED)
-> -		set_bit(PLATFORM_PROFILE_BALANCED, thermal_handler->choices);
-> -	if (supported_modes & DELL_PERFORMANCE)
-> -		set_bit(PLATFORM_PROFILE_PERFORMANCE, thermal_handler->choices);
+> -	thermal_handler = devm_kzalloc(&platform_device->dev, sizeof(*thermal_handler), GFP_KERNEL);
+> -	if (!thermal_handler) {
+> -		ret = -ENOMEM;
+> -		goto cleanup_platform_device;
+> -	}
+> -	thermal_handler->name = "dell-pc";
+> -	thermal_handler->dev = &platform_device->dev;
+> -	thermal_handler->ops = &dell_pc_platform_profile_ops;
 > -
 >   	/* Clean up if failed */
->   	ret = platform_profile_register(thermal_handler, NULL);
->   	if (ret)
+> -	ret = devm_platform_profile_register(thermal_handler, NULL);
+> -	if (ret)
+> +	ppdev = devm_platform_profile_register(
+> +		&platform_device->dev, "dell-pc", NULL, &dell_pc_platform_profile_ops);
+> +	if (IS_ERR(ppdev)) {
+> +		ret = PTR_ERR(ppdev);
+>   		goto cleanup_thermal_handler;
+> +	}
+>   
+>   	return 0;
+>   
+>   cleanup_thermal_handler:
+> -	thermal_handler = NULL;
+> -
+> -cleanup_platform_device:
+>   	platform_device_unregister(platform_device);
+>   
+>   	return ret;
 > diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-> index 60328b35be74..75bcd8460e7c 100644
+> index 1304dfc65aab..d1f9bd287986 100644
 > --- a/drivers/platform/x86/hp/hp-wmi.c
 > +++ b/drivers/platform/x86/hp/hp-wmi.c
-> @@ -1488,6 +1488,23 @@ static int platform_profile_victus_set(struct device *dev,
->   	return 0;
->   }
+> @@ -273,7 +273,7 @@ static DEFINE_MUTEX(active_platform_profile_lock);
+>   static struct input_dev *hp_wmi_input_dev;
+>   static struct input_dev *camera_shutter_input_dev;
+>   static struct platform_device *hp_wmi_platform_dev;
+> -static struct platform_profile_handler platform_profile_handler;
+> +static struct device *platform_profile_device;
+>   static struct notifier_block platform_power_source_nb;
+>   static enum platform_profile_option active_platform_profile;
+>   static bool platform_profile_support;
+> @@ -1602,6 +1602,7 @@ static const struct platform_profile_ops hp_wmi_platform_profile_ops = {
 >   
-> +static int hp_wmi_platform_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	if (is_omen_thermal_profile()) {
-> +		set_bit(PLATFORM_PROFILE_COOL, choices);
-> +	} else if (is_victus_thermal_profile()) {
-> +		set_bit(PLATFORM_PROFILE_QUIET, choices);
-> +	} else {
-> +		set_bit(PLATFORM_PROFILE_QUIET, choices);
-> +		set_bit(PLATFORM_PROFILE_COOL, choices);
-> +	}
-> +
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static int omen_powersource_event(struct notifier_block *nb,
->   				  unsigned long value,
->   				  void *data)
-> @@ -1566,16 +1583,19 @@ static inline void omen_unregister_powersource_event_handler(void)
->   }
+>   static int thermal_profile_setup(struct platform_device *device)
+>   {
+> +	const struct platform_profile_ops *ops;
+>   	int err, tp;
 >   
->   static const struct platform_profile_ops platform_profile_omen_ops = {
-> +	.probe = hp_wmi_platform_profile_probe,
->   	.profile_get = platform_profile_omen_get,
->   	.profile_set = platform_profile_omen_set,
->   };
->   
->   static const struct platform_profile_ops platform_profile_victus_ops = {
-> +	.probe = hp_wmi_platform_profile_probe,
->   	.profile_get = platform_profile_victus_get,
->   	.profile_set = platform_profile_victus_set,
->   };
->   
->   static const struct platform_profile_ops hp_wmi_platform_profile_ops = {
-> +	.probe = hp_wmi_platform_profile_probe,
->   	.profile_get = hp_wmi_platform_profile_get,
->   	.profile_set = hp_wmi_platform_profile_set,
->   };
-> @@ -1598,8 +1618,6 @@ static int thermal_profile_setup(struct platform_device *device)
+>   	if (is_omen_thermal_profile()) {
+> @@ -1617,7 +1618,7 @@ static int thermal_profile_setup(struct platform_device *device)
+>   		if (err < 0)
 >   			return err;
 >   
->   		platform_profile_handler.ops = &platform_profile_omen_ops;
-> -
-> -		set_bit(PLATFORM_PROFILE_COOL, platform_profile_handler.choices);
+> -		platform_profile_handler.ops = &platform_profile_omen_ops;
+> +		ops = &platform_profile_omen_ops;
 >   	} else if (is_victus_thermal_profile()) {
 >   		err = platform_profile_victus_get_ec(&active_platform_profile);
 >   		if (err < 0)
-> @@ -1614,8 +1632,6 @@ static int thermal_profile_setup(struct platform_device *device)
+> @@ -1631,7 +1632,7 @@ static int thermal_profile_setup(struct platform_device *device)
+>   		if (err < 0)
 >   			return err;
 >   
->   		platform_profile_handler.ops = &platform_profile_victus_ops;
-> -
-> -		set_bit(PLATFORM_PROFILE_QUIET, platform_profile_handler.choices);
+> -		platform_profile_handler.ops = &platform_profile_victus_ops;
+> +		ops = &platform_profile_victus_ops;
 >   	} else {
 >   		tp = thermal_profile_get();
 >   
-> @@ -1631,15 +1647,10 @@ static int thermal_profile_setup(struct platform_device *device)
+> @@ -1646,15 +1647,13 @@ static int thermal_profile_setup(struct platform_device *device)
+>   		if (err)
 >   			return err;
 >   
->   		platform_profile_handler.ops = &hp_wmi_platform_profile_ops;
-> -
-> -		set_bit(PLATFORM_PROFILE_QUIET, platform_profile_handler.choices);
-> -		set_bit(PLATFORM_PROFILE_COOL, platform_profile_handler.choices);
+> -		platform_profile_handler.ops = &hp_wmi_platform_profile_ops;
+> +		ops = &hp_wmi_platform_profile_ops;
 >   	}
 >   
->   	platform_profile_handler.name = "hp-wmi";
->   	platform_profile_handler.dev = &device->dev;
-> -	set_bit(PLATFORM_PROFILE_BALANCED, platform_profile_handler.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, platform_profile_handler.choices);
+> -	platform_profile_handler.name = "hp-wmi";
+> -	platform_profile_handler.dev = &device->dev;
+> -
+> -	err = devm_platform_profile_register(&platform_profile_handler, NULL);
+> -	if (err)
+> -		return err;
+> +	platform_profile_device = devm_platform_profile_register(
+> +		&device->dev, "hp-wmi", NULL, ops);
+> +	if (IS_ERR(platform_profile_device))
+> +		return PTR_ERR(platform_profile_device);
 >   
->   	err = platform_profile_register(&platform_profile_handler, NULL);
->   	if (err)
+>   	platform_profile_support = true;
+>   
 > diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-> index 96e99513b0b5..050919a28d2b 100644
+> index 87c1e087770a..6065a7421a02 100644
 > --- a/drivers/platform/x86/ideapad-laptop.c
 > +++ b/drivers/platform/x86/ideapad-laptop.c
-> @@ -1023,6 +1023,15 @@ static int dytc_profile_set(struct device *dev,
->   	return -EINTR;
+> @@ -142,7 +142,7 @@ enum {
+>   
+>   struct ideapad_dytc_priv {
+>   	enum platform_profile_option current_profile;
+> -	struct platform_profile_handler pprof;
+> +	struct device *ppdev; /* platform profile device */
+>   	struct mutex mutex; /* protects the DYTC interface */
+>   	struct ideapad_private *priv;
+>   };
+> @@ -1050,7 +1050,7 @@ static void dytc_profile_refresh(struct ideapad_private *priv)
+>   
+>   	if (profile != priv->dytc->current_profile) {
+>   		priv->dytc->current_profile = profile;
+> -		platform_profile_notify(&priv->dytc->pprof);
+> +		platform_profile_notify(priv->dytc->ppdev);
+>   	}
 >   }
 >   
-> +static int dytc_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static void dytc_profile_refresh(struct ideapad_private *priv)
->   {
->   	enum platform_profile_option profile;
-> @@ -1064,6 +1073,7 @@ static const struct dmi_system_id ideapad_dytc_v4_allow_table[] = {
->   };
+> @@ -1117,15 +1117,15 @@ static int ideapad_dytc_profile_init(struct ideapad_private *priv)
 >   
->   static const struct platform_profile_ops dytc_profile_ops = {
-> +	.probe = dytc_profile_probe,
->   	.profile_get = dytc_profile_get,
->   	.profile_set = dytc_profile_set,
->   };
-> @@ -1112,11 +1122,6 @@ static int ideapad_dytc_profile_init(struct ideapad_private *priv)
+>   	mutex_init(&priv->dytc->mutex);
+>   
+> -	priv->dytc->pprof.name = "ideapad-laptop";
+> -	priv->dytc->pprof.dev = &priv->platform_device->dev;
 >   	priv->dytc->priv = priv;
->   	priv->dytc->pprof.ops = &dytc_profile_ops;
+> -	priv->dytc->pprof.ops = &dytc_profile_ops;
 >   
-> -	/* Setup supported modes */
-> -	set_bit(PLATFORM_PROFILE_LOW_POWER, priv->dytc->pprof.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED, priv->dytc->pprof.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, priv->dytc->pprof.choices);
-> -
 >   	/* Create platform_profile structure and register */
->   	err = platform_profile_register(&priv->dytc->pprof, &priv->dytc);
->   	if (err)
+> -	err = devm_platform_profile_register(&priv->dytc->pprof, &priv->dytc);
+> -	if (err)
+> +	priv->dytc->ppdev = devm_platform_profile_register(
+> +		&priv->platform_device->dev, "ideapad-laptop", &priv->dytc, &dytc_profile_ops);
+> +	if (IS_ERR(priv->dytc->ppdev)) {
+> +		err = PTR_ERR(priv->dytc->ppdev);
+>   		goto pp_reg_failed;
+> +	}
+>   
+>   	/* Ensure initial values are correct */
+>   	dytc_profile_refresh(priv);
 > diff --git a/drivers/platform/x86/inspur_platform_profile.c b/drivers/platform/x86/inspur_platform_profile.c
-> index d0a8e4eebffa..06df3aae9a56 100644
+> index e1631de6ad86..8b71c4242939 100644
 > --- a/drivers/platform/x86/inspur_platform_profile.c
 > +++ b/drivers/platform/x86/inspur_platform_profile.c
-> @@ -164,7 +164,17 @@ static int inspur_platform_profile_get(struct device *dev,
->   	return 0;
->   }
+> @@ -32,7 +32,7 @@ enum inspur_tmp_profile {
 >   
-> +static int inspur_platform_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops inspur_platform_profile_ops = {
-> +	.probe = inspur_platform_profile_probe,
->   	.profile_get = inspur_platform_profile_get,
->   	.profile_set = inspur_platform_profile_set,
+>   struct inspur_wmi_priv {
+>   	struct wmi_device *wdev;
+> -	struct platform_profile_handler handler;
+> +	struct device *ppdev;
 >   };
-> @@ -184,10 +194,6 @@ static int inspur_wmi_probe(struct wmi_device *wdev, const void *context)
->   	priv->handler.dev = &wdev->dev;
->   	priv->handler.ops = &inspur_platform_profile_ops;
 >   
-> -	set_bit(PLATFORM_PROFILE_LOW_POWER, priv->handler.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED, priv->handler.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, priv->handler.choices);
-> -
->   	return platform_profile_register(&priv->handler, priv);
+>   static int inspur_wmi_perform_query(struct wmi_device *wdev,
+> @@ -190,11 +190,10 @@ static int inspur_wmi_probe(struct wmi_device *wdev, const void *context)
+>   	priv->wdev = wdev;
+>   	dev_set_drvdata(&wdev->dev, priv);
+>   
+> -	priv->handler.name = "inspur-wmi";
+> -	priv->handler.dev = &wdev->dev;
+> -	priv->handler.ops = &inspur_platform_profile_ops;
+> +	priv->ppdev = devm_platform_profile_register(
+> +		&wdev->dev, "inspur-wmi", priv, &inspur_platform_profile_ops);
+>   
+> -	return devm_platform_profile_register(&priv->handler, priv);
+> +	return PTR_ERR_OR_ZERO(priv->ppdev);
 >   }
 >   
+>   static const struct wmi_device_id inspur_wmi_id_table[] = {
 > diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-> index 9978fd36a3d1..5c250867678f 100644
+> index 54ff3e6b8b1a..2a3dd0d149a1 100644
 > --- a/drivers/platform/x86/thinkpad_acpi.c
 > +++ b/drivers/platform/x86/thinkpad_acpi.c
-> @@ -10538,7 +10538,17 @@ static int dytc_profile_set(struct device *dev,
->   	return err;
->   }
->   
-> +static int dytc_profile_probe(void *drvdata, unsigned long *choices)
-> +{
-> +	set_bit(PLATFORM_PROFILE_LOW_POWER, choices);
-> +	set_bit(PLATFORM_PROFILE_BALANCED, choices);
-> +	set_bit(PLATFORM_PROFILE_PERFORMANCE, choices);
-> +
-> +	return 0;
-> +}
-> +
->   static const struct platform_profile_ops dytc_profile_ops = {
-> +	.probe = dytc_profile_probe,
->   	.profile_get = dytc_profile_get,
+> @@ -962,6 +962,7 @@ static const struct proc_ops dispatch_proc_ops = {
+>   static struct platform_device *tpacpi_pdev;
+>   static struct platform_device *tpacpi_sensors_pdev;
+>   static struct device *tpacpi_hwmon;
+> +static struct device *tpacpi_pprof;
+>   static struct input_dev *tpacpi_inputdev;
+>   static struct mutex tpacpi_inputdev_send_mutex;
+>   static LIST_HEAD(tpacpi_all_drivers);
+> @@ -10553,11 +10554,6 @@ static const struct platform_profile_ops dytc_profile_ops = {
 >   	.profile_set = dytc_profile_set,
 >   };
-> @@ -10584,11 +10594,6 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
->   {
->   	int err, output;
 >   
-> -	/* Setup supported modes */
-> -	set_bit(PLATFORM_PROFILE_LOW_POWER, dytc_profile.choices);
-> -	set_bit(PLATFORM_PROFILE_BALANCED, dytc_profile.choices);
-> -	set_bit(PLATFORM_PROFILE_PERFORMANCE, dytc_profile.choices);
+> -static struct platform_profile_handler dytc_profile = {
+> -	.name = "thinkpad-acpi",
+> -	.ops = &dytc_profile_ops,
+> -};
 > -
->   	err = dytc_command(DYTC_CMD_QUERY, &output);
->   	if (err)
->   		return err;
+>   static void dytc_profile_refresh(void)
+>   {
+>   	enum platform_profile_option profile;
+> @@ -10586,7 +10582,7 @@ static void dytc_profile_refresh(void)
+>   	err = convert_dytc_to_profile(funcmode, perfmode, &profile);
+>   	if (!err && profile != dytc_current_profile) {
+>   		dytc_current_profile = profile;
+> -		platform_profile_notify(&dytc_profile);
+> +		platform_profile_notify(tpacpi_pprof);
+>   	}
+>   }
+>   
+> @@ -10647,14 +10643,14 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+>   	dbg_printk(TPACPI_DBG_INIT,
+>   			"DYTC version %d: thermal mode available\n", dytc_version);
+>   
+> -	dytc_profile.dev = &tpacpi_pdev->dev;
+>   	/* Create platform_profile structure and register */
+> -	err = devm_platform_profile_register(&dytc_profile, NULL);
+> +	tpacpi_pprof = devm_platform_profile_register(
+> +		&tpacpi_pdev->dev, "thinkpad-acpi", NULL, &dytc_profile_ops);
+>   	/*
+>   	 * If for some reason platform_profiles aren't enabled
+>   	 * don't quit terminally.
+>   	 */
+> -	if (err)
+> +	if (IS_ERR(tpacpi_pprof))
+>   		return -ENODEV;
+>   
+>   	/* Ensure initial values are correct */
 > diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-> index 6013c05d7b86..5ad1ab7b75e4 100644
+> index 5ad1ab7b75e4..778d4c661c3c 100644
 > --- a/include/linux/platform_profile.h
 > +++ b/include/linux/platform_profile.h
-> @@ -31,6 +31,7 @@ enum platform_profile_option {
->   struct platform_profile_handler;
->   
->   struct platform_profile_ops {
-> +	int (*probe)(void *drvdata, unsigned long *choices);
->   	int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
->   	int (*profile_set)(struct device *dev, enum platform_profile_option profile);
+> @@ -45,10 +45,14 @@ struct platform_profile_handler {
+>   	const struct platform_profile_ops *ops;
 >   };
+>   
+> -int platform_profile_register(struct platform_profile_handler *pprof, void *drvdata);
+> -int platform_profile_remove(struct platform_profile_handler *pprof);
+> -int devm_platform_profile_register(struct platform_profile_handler *pprof, void *drvdata);
+> +struct device *platform_profile_register(struct device *dev, const char *name,
+> +					 void *drvdata,
+> +					 const struct platform_profile_ops *ops);
+> +int platform_profile_remove(struct device *dev);
+> +struct device *devm_platform_profile_register(struct device *dev, const char *name,
+> +					      void *drvdata,
+> +					      const struct platform_profile_ops *ops);
+>   int platform_profile_cycle(void);
+> -void platform_profile_notify(struct platform_profile_handler *pprof);
+> +void platform_profile_notify(struct device *dev);
+>   
+>   #endif  /*_PLATFORM_PROFILE_H_*/
 
 
