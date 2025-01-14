@@ -1,189 +1,165 @@
-Return-Path: <linux-acpi+bounces-10632-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10633-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4A8A10D4A
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 18:16:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0200A10D83
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 18:22:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FC6D3A0579
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:16:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA3ED161626
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 17:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F18323245A;
-	Tue, 14 Jan 2025 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DDE1D47BB;
+	Tue, 14 Jan 2025 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3Cke8AF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHTdB8K7"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B331F9F60;
-	Tue, 14 Jan 2025 17:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31F723245A
+	for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736874969; cv=none; b=tonJwcWuMtFuctdJTL9TCiWBe5oLWhthHioqAP2QGc7WVgX+ESWHUMe+Oo6PINoVWcwJSx2k183vnlTgzlB/hXagqT2g8sGtMTR07mn6Gyk+H5dccuhjwq4PqJj5l07LIUQn6DU7X0nuJf3NxbTWs7O7WMaQtNowkYsi1KsB3JU=
+	t=1736875311; cv=none; b=Y3Eu92KJgi31qAi6WT92BSWaDxPeT4tLH73VWGYCgNW457HZh2nNzZTTShivfM6EzF9QLor/6MIvad1EjWY5/H8zyFf55AD511XPsaLjswsTfR9vMHQyGcxVYprXRBn+JWXrWVNmTfWdcWCkLiPx57tKZVxKLv3NJ1JSt3WGwjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736874969; c=relaxed/simple;
-	bh=48ICMic6ZGY3goYZwu+6B+5sfS14sVuJxRC03xYugCQ=;
+	s=arc-20240116; t=1736875311; c=relaxed/simple;
+	bh=XhskgGi1rH/3Nmw4+tnf2ZsudrWO18EGbuzHZfE0r5w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZkJoFFhHhUcdan+idhgJI2ShaVwXaYdfh91K7dO8icMiV8xSzp4toHqcH69jknFaqVMdc3EG4YpKUUEGO0pnF7pHWBm8pO4qDyGyohes2FhouPxp2ce/d9QwT59Vu4a8SuBZqCe22MJeTtU3kqCUbW1a0U5j/T7VVgWbD8vq5iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3Cke8AF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8FDC4CEF1;
-	Tue, 14 Jan 2025 17:16:07 +0000 (UTC)
+	 To:Cc:Content-Type; b=rZQ+vhKG4SrxqONjk1+gyBaIeg5GZBe9g/wF9qNSGBf7WMAtf1pmDlQ4hMPux4EnBp4pgAiTCs6mS2AShg3xPup0NTJsLMNf3zyi1c768HZcZ44e27HACvwzkce72ITPMzMUlHOQ/rAGbamzu1zOnM3QZ7X+LJxDKmivhlkXwPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHTdB8K7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B944C4CEDD
+	for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 17:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736874968;
-	bh=48ICMic6ZGY3goYZwu+6B+5sfS14sVuJxRC03xYugCQ=;
+	s=k20201202; t=1736875311;
+	bh=XhskgGi1rH/3Nmw4+tnf2ZsudrWO18EGbuzHZfE0r5w=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m3Cke8AFT47qcHpaUtC2bUsktu5VQ2/0+8jtk/NMwm9qOJqLbHt778XBt5TbSbmpj
-	 1wAvhCRh6eOVbkDV+VjngNZdCx0OTYoP8VfCzLASrq1u2YRc+AhNoOQGOII19fQ6GN
-	 GWGFZ2/DvxCoCrSPNTTCyNEdctsaOl3q/XbUOL26/8WDiw/vFyh9/DnVh1D+9Bs0Dw
-	 7ZE7yQRrFvEo1Lub8UaLDwJxTXfmcb/vqzC+rRjQm3p4javqR4YgbXGae9uSnzig4+
-	 GeK7AJoRu9tUGUz4X0GgQ/YbDDwwsgatgGYYZXYzh36lx1NYaMesBHLXyUjC2KE8ZA
-	 DJ2YdGFDE/XGw==
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3eb9ba53f90so1432802b6e.1;
-        Tue, 14 Jan 2025 09:16:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUB1QxWQAvIsDaoSmnmsBrQXDCbW4r0YKhdbUCbp2fxRi8OGJHrb6a0klZ3iRNePpLUqde1/MjRcUzVYQwD@vger.kernel.org, AJvYcCXgmjaAoeTGvS8JlyL2+ecLfwtcSFqdoN6yEn5OFtFBfFIK177HAcmSrSPZ38wK1SzY0zJW2bQZopOr@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzqa1ALcRH1410XyhrISl+r+f9DhjEt4lkH7ntn2j4xI6YeAURD
-	8tIiu3Kxeo3k1qhYFqMQ8KErPZwKf2YOpVlFXAryBtSlIvNN8a3eiVIQy23gHwQcD9QRM1RbWov
-	oH3aMqKlnHPjfNwgbg2NhiFBDSfU=
-X-Google-Smtp-Source: AGHT+IFQLMH4Rl39Gt5IdD2nAY7jzl9K8Sve31dV391tpB8Rt18vGtcQvfE1Pi22pkeQ3or4Z2ifnf+fuoJuMCVhexs=
-X-Received: by 2002:a05:6808:124a:b0:3eb:42d0:f3e with SMTP id
- 5614622812f47-3ef2ebb90d0mr17932558b6e.7.1736874967201; Tue, 14 Jan 2025
- 09:16:07 -0800 (PST)
+	b=kHTdB8K7esNT6Ey49LkefvB1Oq6Yx8CfNvSOLmyvQOiIe0ZR2asXt2E9vUypNN5+5
+	 WCxuidNimW3evazAjkut5+TxTqq+C1NhUrbO6AXGsGn2IIRyHPQSpr0ge+8g9FyL98
+	 OnVUDyMSHcHX42ai3NeRjnkO6zlnhV6GN4j16CzEg+RRaMUcR6OmMmXIMlvR8sVbbk
+	 rFrAu+DQUTeXvCwi7k/sbku5gLQwYm9+GM6Uh+dO2pOKjagAxRsWTQtU03arbxTf69
+	 acCRb7M8Up0WvVAUDhJ+W5+zGCvgN27VPvR8vS6XHe5K26sD99omctFCmWsWRPWhls
+	 HNieJUMmaaxaQ==
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3eb7edfa42dso2649833b6e.2
+        for <linux-acpi@vger.kernel.org>; Tue, 14 Jan 2025 09:21:51 -0800 (PST)
+X-Gm-Message-State: AOJu0YxH6r+6h67rMwwG05vDP8gkXR2bcZMH/lzmZCU0xn5r3H4nPXyQ
+	wZzuwN/yTs88K08MWQuA6WU4tIZK/BbnBXotkReRccD3l+v4VUhcOJr4uMxm9vRlW2XKKWQPnqf
+	pF27Jm/PMhtwXlHH6L/cNq0611v0=
+X-Google-Smtp-Source: AGHT+IHlt133ttNAmxsRJT6ZKJ5o5a1IwJbesiZ+61kfdXZvHIqS7jBn61lbCT1x5lPvV7UeuUy7U+tvvOVhkQvCQFQ=
+X-Received: by 2002:a05:6808:1c0e:b0:3eb:651a:6cec with SMTP id
+ 5614622812f47-3ef2eda1c33mr18892974b6e.31.1736875310576; Tue, 14 Jan 2025
+ 09:21:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250114153726.11802-1-kuurtb@gmail.com>
-In-Reply-To: <20250114153726.11802-1-kuurtb@gmail.com>
+References: <43d1d35b-d875-4e05-b0ff-a9bfde5ef34a@i2labs.ca> <23b9ca13-9899-4ab4-a0dd-a47da3f34120@i2labs.ca>
+In-Reply-To: <23b9ca13-9899-4ab4-a0dd-a47da3f34120@i2labs.ca>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 14 Jan 2025 18:15:56 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0h44oOKNgfBhufpqaqOeeOJjwZrZbiCv4AD1V30JSuCSA@mail.gmail.com>
-X-Gm-Features: AbW1kva1WPEduQNkdxKbrcDJicyDYI_muixIfDnk3juH-JJhyR75zh75bSZmVf8
-Message-ID: <CAJZ5v0h44oOKNgfBhufpqaqOeeOJjwZrZbiCv4AD1V30JSuCSA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/18] Hide platform_profile_handler from consumers
-To: Kurt Borja <kuurtb@gmail.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, Len Brown <lenb@kernel.org>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mario Limonciello <mario.limonciello@amd.com>, Armin Wolf <W_Armin@gmx.de>, 
-	Joshua Grisham <josh@joshuagrisham.com>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Maximilian Luz <luzmaximilian@gmail.com>, 
-	"Lee, Chun-Yi" <jlee@suse.com>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-	Corentin Chary <corentin.chary@gmail.com>, "Luke D. Jones" <luke@ljones.dev>, 
-	Lyndon Sanche <lsanche@lyndeno.ca>, Ike Panhc <ike.pan@canonical.com>, 
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	Alexis Belmonte <alexbelm48@gmail.com>, Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, 
-	Dell.Client.Kernel@dell.com, ibm-acpi-devel@lists.sourceforge.net
+Date: Tue, 14 Jan 2025 18:21:39 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0itm5MWQLJdmmgosBWj9XLVF0FFU7_M16xCr3yBckQbJg@mail.gmail.com>
+X-Gm-Features: AbW1kvbcIjp7P_JbVDcx4ktq-yPTK8B2XPdubUnoBC3Noq_RGaVpkLOrdSYVIJM
+Message-ID: <CAJZ5v0itm5MWQLJdmmgosBWj9XLVF0FFU7_M16xCr3yBckQbJg@mail.gmail.com>
+Subject: Re: [PATCH] acpi: Emit udev 'update' event after battery add hooks
+To: Nolan Woods <nolan@i2labs.ca>
+Cc: linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 14, 2025 at 4:38=E2=80=AFPM Kurt Borja <kuurtb@gmail.com> wrote=
+On Sat, Dec 28, 2024 at 1:55=E2=80=AFPM Nolan Woods <nolan@i2labs.ca> wrote=
 :
 >
-> Hello,
+> Correction: the event action string is 'change' and not 'update' (not
+> sure where
+> I got that from..).
 >
-> As suggested by Mario, I moved patch 15/18 to position 3/18. This indeed
-> simplified all diffs. Full reordering bellow.
->
-> Series based on top of pdx86/for-next branch.
->
-> ~ Kurt
+> Also, despite my IDEs repeated insistence the kobj member type is not a
+> pointer. Here is my updated patch, I would still like some input on the
+> items in my original message before finalizing the patch.
+
+It would help if you sent the current version of the patch afresh,
+with a proper changelog.
+
 > ---
-> v1 -> v2:
+>   drivers/acpi/battery.c | 1 +
+>   1 file changed, 1 insertion(+)
 >
-> 01 -> 04
-> 02 -> 05
-> 03 -> 01
-> 04 -> 02
-> 05 -> 06
-> 06 -> 07
-> 07 -> 08
-> 08 -> 09
-> 09 -> 10
-> 10 -> 11
-> 11 -> 12
-> 12 -> 13
-> 13 -> 14
-> 14 -> 15
-> 15 -> 03
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 3d5342f8d7b3..abe861946eb6 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -899,6 +899,7 @@ static int sysfs_add_battery(struct acpi_battery
+> *battery)
+>           return result;
+>       }
+>       battery_hook_add_battery(battery);
+> +    kobject_uevent(&battery->bat->dev.kobj, KOBJ_CHANGE);
+>       return 0;
+>   }
+>   --
 >
-> [1/18]
->   - Call put_device() if device_register() fails
+> On 12/27/24 8:35 PM, Nolan Woods wrote:
+> > A 'add' uevent is emitted after adding respective /sys/class/
+> > power_supply/BAT* devices via battery.c:sysfs_add_battery(...) ->
+> > power_supply_core.c:power_supply_register(...) ->
+> > core.c:device_add(...). Additional drivers (asus-wmi for example) can
+> > register hooks that are called after the sysfs attributes are added by
+> > power_supply_register. These hooks are normally used to add additional
+> > attributes to sysfs. These additional attributes are not available at
+> > the time that the 'add' uevent is emitted. udev rules are not able to
+> > interact with them as the hooks are called after the 'add' uevent is
+> > resolved. An additional 'update' uevent is needed to allow udev rules t=
+o
+> > trigger once all hooks have been processed.
+> >
+> > Signed-off-by: Nolan Woods <nolan@i2labs.ca>
+> > ---
+> >  drivers/acpi/battery.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> > index 3d5342f8d7b3..abe861946eb6 100644
+> > --- a/drivers/acpi/battery.c
+> > +++ b/drivers/acpi/battery.c
+> > @@ -899,6 +899,7 @@ static int sysfs_add_battery(struct acpi_battery
+> > *battery)
+> >          return result;
+> >      }
+> >      battery_hook_add_battery(battery);
+> > +    kobject_uevent(battery->bat->dev->kobj, KOBJ_CHANGE);
+> >      return 0;
+> >  }
+> >  --
+> >
+> >
+> > This is my first contribution to this repo. Please let me know if
+> > there are any formatting issues of this submission.
+> >
+> > I am looking for feedback on if kobject_uevent() should be called as
+> > described in this patch or if it should be at the end of the
+> > definition of battery_hook_add_battery.
+> >
+> > Also, does it make sense that the "update" (KOBJ_CHANGE) event is sent
+> > after the battery hooks make arbitrary changes? or is "update"
+> > strictly for hardware/device initiated changes and I need to find a
+> > different mechanism to trigger user space logic after the battery hooks=
+?
+> >
+> > An example udev rule that only works with this patch:
+> > ACTION=3D=3D"update", KERNEL=3D=3D"BAT0", RUN+=3D"/bin/chmod 666
+> > /sys/class/power_supply/BAT0/charge_control_end_threshold"
+> >
+> > The following does not work as
+> > /sys/class/power_supply/BAT0/charge_control_end_threshold does not
+> > exist when the event is resolved:
+> > ACTION=3D=3D"add", KERNEL=3D=3D"BAT0", RUN+=3D"/bin/chmod 666
+> > /sys/class/power_supply/BAT0/charge_control_end_threshold"
+> >
+> > charge_control_end_threshold is created at asus-wmi.c:1446.
+> >
+> > Thank you for your time.
 >
-> [2/18]
->   - Set and use drvdata for every driver in these series, instead of
->     patches 6-14
->
-> [4/18]
->   - Renamed the `choices` callback to `probe`
->
-> [15/18]
->   - Improve error handling in amd/pmf
->   - Improve error handling in asus-wmi
->
-> [18/18]
->   - Fix typo
->   - Added documentation to platform_profile_ops
->
-> v1: https://lore.kernel.org/platform-driver-x86/20250109150731.110799-1-k=
-uurtb@gmail.com/
->
-> Kurt Borja (18):
->   ACPI: platform_profile: Replace *class_dev member with class_dev
->   ACPI: platform_profile: Let drivers set drvdata to the class device
->   ACPI: platform_profile: Remove platform_profile_handler from callbacks
->   ACPI: platform_profile: Add `ops` member to handlers
->   ACPI: platform_profile: Add `probe` to platform_profile_ops
->   platform/surface: surface_platform_profile: Use
->     devm_platform_profile_register()
->   platform/x86: acer-wmi: Use devm_platform_profile_register()
->   platform/x86: amd: pmf: sps: Use devm_platform_profile_register()
->   platform/x86: asus-wmi: Use devm_platform_profile_register()
->   platform/x86: dell-pc: Use devm_platform_profile_register()
->   platform/x86: ideapad-laptop: Use devm_platform_profile_register()
->   platform/x86: hp-wmi: Use devm_platform_profile_register()
->   platform/x86: inspur_platform_profile: Use
->     devm_platform_profile_register()
->   platform/x86: thinkpad_acpi: Use devm_platform_profile_register()
->   ACPI: platform_profile: Remove platform_profile_handler from exported
->     symbols
->   ACPI: platform_profile: Move platform_profile_handler
->   ACPI: platform_profile: Clean platform_profile_handler
->   ACPI: platform_profile: Add documentation
->
->  .../ABI/testing/sysfs-class-platform-profile  |  44 +++++
->  drivers/acpi/platform_profile.c               | 164 +++++++++++++-----
->  .../surface/surface_platform_profile.c        |  48 ++---
->  drivers/platform/x86/acer-wmi.c               |  58 +++----
->  drivers/platform/x86/amd/pmf/core.c           |   1 -
->  drivers/platform/x86/amd/pmf/pmf.h            |   3 +-
->  drivers/platform/x86/amd/pmf/sps.c            |  51 +++---
->  drivers/platform/x86/asus-wmi.c               |  55 +++---
->  drivers/platform/x86/dell/alienware-wmi.c     |  33 ++--
->  drivers/platform/x86/dell/dell-pc.c           |  60 ++++---
->  drivers/platform/x86/hp/hp-wmi.c              |  83 +++++----
->  drivers/platform/x86/ideapad-laptop.c         |  44 +++--
->  .../platform/x86/inspur_platform_profile.c    |  48 +++--
->  drivers/platform/x86/thinkpad_acpi.c          |  37 ++--
->  include/linux/platform_profile.h              |  51 ++++--
->  15 files changed, 474 insertions(+), 306 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profil=
-e
->
->
-> base-commit: 58126788aa7726c0e91de6b25e6e332fa06089ab
-> --
-
-Ilpo,
-
-If you need any specific input from me on any patches in this series,
-please let me know.
-
-Otherwise, please feel free to route them all through platform/x86 when rea=
-dy.
-
-Thanks!
 
