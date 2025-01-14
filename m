@@ -1,157 +1,148 @@
-Return-Path: <linux-acpi+bounces-10594-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10595-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55F7A107E4
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 14:34:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E2CA1081B
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 14:47:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096621888382
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 13:34:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23E157A4621
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 13:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67141C4617;
-	Tue, 14 Jan 2025 13:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964C0232450;
+	Tue, 14 Jan 2025 13:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRl2cYRH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zq4YIFNx"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74947232454;
-	Tue, 14 Jan 2025 13:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645031A28D;
+	Tue, 14 Jan 2025 13:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736861667; cv=none; b=hP1jIaNJWON8pd33EDaRL/WMKMwM63F4QYAK7wlZ55kZ3lCu+BI7qkA0o+CLg9NJ2Csuu0UbO4hJbIMJowau5mayJbWa/jm+cEpG7Vu5pi8hbCrpUKn/TLPUfpiWQhpGTvULvydfdxvwONXXnXjqZKunz87Jh2VJCOZ7XbtTo4I=
+	t=1736862444; cv=none; b=CtmC6uBStyHWEiS9+KJXmR093efzy2bQ7Q7kZRuYG2RnI7KaawXzENDk4vDyRleGuYh0qiqjsPT2wrPTT9ckbEFVnvryxgk84dC2NuVfSokTwnwUuJAyz/9+KnihCkV57IDFYBrcm+1YvFo4sXG+TbyWcaYUQzPubzn7ITrZRPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736861667; c=relaxed/simple;
-	bh=J5V9fZ2Qn+yCZ+qs8e/IvcPf6BGL44QEH3wliGkvwAw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HjZV0PM0xH1sjH+85yM96gaYFIJCdSi3YK4xW8zy5OQ1zcZZR82Q7aEE7cPOKa519OvlNs+XaXtN0cCcRMxXYrE6VMNazH5IJL+jzQ7lvxmUSeeh4Wq0DO8Wqls7C3RJY17jRDpjHBSZ4jXQRpsH+kcQzxqi4Oaf8cLexqkpR+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRl2cYRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F5CC4CEDD;
-	Tue, 14 Jan 2025 13:34:26 +0000 (UTC)
+	s=arc-20240116; t=1736862444; c=relaxed/simple;
+	bh=e72fpHGjY3D9f7LxRjXJmd4LWGSCP8u/02wYpWhOXTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dk3/NFLnSy63r4bC10yYvwsbKSXT+pBEi41u9kVsqP2dtqosbCE/X6dyU+dRDjQLhQfhEUi8Mcg3Ih82M+XF8AQIFUAVjAe7M2HddGrCqkDShlXNu5Jn8zqMlxN9/x0xjRw4TGZU3+5eykcq47W4G9R2ucFmpvaPaeSo2FED5Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zq4YIFNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802D5C4CEDD;
+	Tue, 14 Jan 2025 13:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736861666;
-	bh=J5V9fZ2Qn+yCZ+qs8e/IvcPf6BGL44QEH3wliGkvwAw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GRl2cYRHszpAQCYwklwQWghidu33Woek/67fgBwdEbZ7PvJCDNNLpFQuoQeP6Tmh9
-	 3WSJVN/6nvIwpfsF+0zQ+PAUKFcKd3Pf/5lGJcACHvTR5zg7b5MDeZYOqNkS8y6gC3
-	 /RD7JK9mOx4WQkG048rM0FIoZJi1FpaHSwcPU4Z6v/l0eJSlp3C86ytgzkUQqNO9kh
-	 j1PxYN3EOo6VgKjqnrw+qhC5x1SX6H5tnA6P6gyOKYI51qqh3IHQaPEUQdCIBDlxJK
-	 rt//Cx+vxhKfxwoDN/XBU12PPMRYmtkr2gVnJBE3g1iNPzlfFfKWFZA94JLGA7B/yE
-	 QF7pEiQhF6w9g==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3eb7edfa42dso2532889b6e.2;
-        Tue, 14 Jan 2025 05:34:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWGVzICKSfST/HITSpjM2RY6WkMJP274A9JuAN4zxOViNEi7N8Qd3/0ojVbfENoaLRnqiBpXprRWNhR@vger.kernel.org, AJvYcCWc9kdOIM85Z38jAUs1KK3gZU30fj7TBdP/hwextKS7UXoSCvAlWbQcggIQh/gIs+0MHn6PROI8tYIwIj09@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG4k5VfbvmYvYxFLVQ6zWB5lX2PlnApCvUVVVW9WZ5yjr7BciK
-	O9o64Gc0g3xVhVdBRSZnj3qctVGlq047rWd3tOYVM+UcrgHzkBfeOmJxSKMYsKW6S7j+J85xBVw
-	gBI+qp1c5UrJ9p2/1JSgqfX17nCE=
-X-Google-Smtp-Source: AGHT+IGx6Hf8a5h39KKCDRvaV1ItYLUly0PY8AYW4exBkC+KwFfviVgphC9IC6aCX68K8TONq0Z8uQ4IDmk4y/hqrMc=
-X-Received: by 2002:a05:6808:3989:b0:3ea:f791:3caf with SMTP id
- 5614622812f47-3ef2ec56f60mr17665917b6e.17.1736861666104; Tue, 14 Jan 2025
- 05:34:26 -0800 (PST)
+	s=k20201202; t=1736862444;
+	bh=e72fpHGjY3D9f7LxRjXJmd4LWGSCP8u/02wYpWhOXTk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Zq4YIFNx3IvUdetyN3iQdwJWxkgJhfu/4+1GklYZR2AMfv0TNI1dtH8+lBmlhZZjO
+	 0b4aiOGO94wFWqdFE0KfuYCiSX4NR+lP5UrS/eqYuDzkFYZh1OEm0KwuZVLFX7rY5T
+	 /FIvKZ3/yKqu2GORgWMqbfk3Q/ZUfux0VPyuW33hdztF5ZzEOJWB/qSXOGtiWEOQpj
+	 s2iF+P1qnvaKXG5wzfAA0RT2UhzVp84fYo0HRf1tKf3H8nzuqhaRiNaqSiHUhKGfwU
+	 4YdIiN7k5LM4T9kJsqFJtZUUUemKDtCQ/bV+Mrxqvzn+Z0HmzX4u++RGR+KRWzeL2N
+	 fQlDiENdRbErQ==
+Date: Tue, 14 Jan 2025 14:47:12 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: <shiju.jose@huawei.com>
+Cc: <linux-edac@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <bp@alien8.de>, <tony.luck@intel.com>,
+ <rafael@kernel.org>, <lenb@kernel.org>, <mchehab@kernel.org>,
+ <dan.j.williams@intel.com>, <dave@stgolabs.net>,
+ <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+ <alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+ <ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
+ <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
+ <jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+ <naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+ <somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+ <duenwen@google.com>, <gthelen@google.com>,
+ <wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
+ <wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>,
+ <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+ <roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+ <wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250114144712.49cd98f2@foz.lan>
+In-Reply-To: <20250106121017.1620-5-shiju.jose@huawei.com>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+	<20250106121017.1620-5-shiju.jose@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241224140131.30362-2-kuurtb@gmail.com> <20241224140131.30362-4-kuurtb@gmail.com>
-In-Reply-To: <20241224140131.30362-4-kuurtb@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 14 Jan 2025 14:34:15 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jRkDx1E+mW0dhD2f9Ow8GxeT-8AvYjcZOvoYC2+J07jg@mail.gmail.com>
-X-Gm-Features: AbW1kvYdtcq_txu_kXtUGuhgkQp3-hQvhgWjXDbHDY_xCoM880TXBOD5LVwlwDc
-Message-ID: <CAJZ5v0jRkDx1E+mW0dhD2f9Ow8GxeT-8AvYjcZOvoYC2+J07jg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPI: platform_profile: Add devm_platform_profile_register()
-To: Kurt Borja <kuurtb@gmail.com>
-Cc: platform-driver-x86@vger.kernel.org, W_Armin@gmx.de, hdegoede@redhat.com, 
-	ilpo.jarvinen@linux.intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mario.limonciello@amd.com, 
-	mpearson-lenovo@squebb.ca, rafael@kernel.org, soyer@irl.hu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 24, 2024 at 3:02=E2=80=AFPM Kurt Borja <kuurtb@gmail.com> wrote=
-:
->
-> Platform profile's lifetime is usually tied to a device's lifetime,
-> therefore add a device managed version of platform_profile_register().
->
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Em Mon, 6 Jan 2025 12:10:00 +0000
+<shiju.jose@huawei.com> escreveu:
 
-This is fine by me, so
+> +What:		/sys/bus/edac/devices/<dev-name>/mem_repairX/repair_function
+> +Date:		Jan 2025
+> +KernelVersion:	6.14
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RO) Memory repair function type. For eg. post package repair,
+> +		memory sparing etc.
+> +		EDAC_SOFT_PPR - Soft post package repair
+> +		EDAC_HARD_PPR - Hard post package repair
+> +		EDAC_CACHELINE_MEM_SPARING - Cacheline memory sparing
+> +		EDAC_ROW_MEM_SPARING - Row memory sparing
+> +		EDAC_BANK_MEM_SPARING - Bank memory sparing
+> +		EDAC_RANK_MEM_SPARING - Rank memory sparing
+> +		All other values are reserved.
+> +
+> +What:		/sys/bus/edac/devices/<dev-name>/mem_repairX/persist_mode
+> +Date:		Jan 2025
+> +KernelVersion:	6.14
+> +Contact:	linux-edac@vger.kernel.org
+> +Description:
+> +		(RW) Read/Write the current persist repair mode set for a
+> +		repair function. Persist repair modes supported in the
+> +		device, based on the memory repair function is temporary
+> +		or permanent and is lost with a power cycle.
+> +		EDAC_MEM_REPAIR_SOFT - Soft repair function (temporary repair).
+> +		EDAC_MEM_REPAIR_HARD - Hard memory repair function (permanent repair).
+> +		All other values are reserved.
+> +
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+After re-reading some things, I suspect that the above can be simplified
+a little bit by folding soft/hard PPR into a single element at
+/repair_function, and letting it clearer that persist_mode is valid only
+for PPR (I think this is the case, right?), e.g. something like:
 
-and I think that it would be better to route it via platform/x86 along
-with the second patch.
+	What:		/sys/bus/edac/devices/<dev-name>/mem_repairX/repair_function
+	...
+	Description:
+			(RO) Memory repair function type. For e.g. post package repair,
+			memory sparing etc. Valid values are:
 
-> ---
->  drivers/acpi/platform_profile.c  | 29 +++++++++++++++++++++++++++++
->  include/linux/platform_profile.h |  1 +
->  2 files changed, 30 insertions(+)
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> index 75a1415190ac..4c4200a0b1a6 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -519,6 +519,35 @@ int platform_profile_remove(struct platform_profile_=
-handler *pprof)
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_remove);
->
-> +static void devm_platform_profile_release(struct device *dev, void *res)
-> +{
-> +       struct platform_profile_handler **pprof =3D res;
-> +
-> +       platform_profile_remove(*pprof);
-> +}
-> +
-> +int devm_platform_profile_register(struct platform_profile_handler *ppro=
-f)
-> +{
-> +       struct platform_profile_handler **dr;
-> +       int ret;
-> +
-> +       dr =3D devres_alloc(devm_platform_profile_release, sizeof(*dr), G=
-FP_KERNEL);
-> +       if (!dr)
-> +               return -ENOMEM;
-> +
-> +       ret =3D platform_profile_register(pprof);
-> +       if (ret) {
-> +               devres_free(dr);
-> +               return ret;
-> +       }
-> +
-> +       *dr =3D pprof;
-> +       devres_add(pprof->dev, dr);
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(devm_platform_profile_register);
-> +
->  static int __init platform_profile_init(void)
->  {
->         int err;
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_pr=
-ofile.h
-> index 0682bb4c57e5..f1cd4b65e351 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -41,6 +41,7 @@ struct platform_profile_handler {
->
->  int platform_profile_register(struct platform_profile_handler *pprof);
->  int platform_profile_remove(struct platform_profile_handler *pprof);
-> +int devm_platform_profile_register(struct platform_profile_handler *ppro=
-f);
->  int platform_profile_cycle(void);
->  void platform_profile_notify(struct platform_profile_handler *pprof);
->
-> --
-> 2.47.1
->
+			- ppr - post package repair.
+			  Please define its mode via
+			  /sys/bus/edac/devices/<dev-name>/mem_repairX/persist_mode
+			- cacheline-sparing - Cacheline memory sparing
+			- row-sparing - Row memory sparing
+			- bank-sparing - Bank memory sparing
+			- rank-sparing - Rank memory sparing
+			- All other values are reserved.
+
+and define persist_mode in a different way:
+
+	What:		/sys/bus/edac/devices/<dev-name>/mem_repairX/ppr_persist_mode
+	...
+	Description:
+		(RW) Read/Write the current persist repair (PPR) mode set for a
+		post package repair function. Persist repair modes supported 
+		in the device, based on the memory repair function is temporary
+		or permanent and is lost with a power cycle. Valid values are:
+
+		- repair-soft - Soft PPR function (temporary repair).
+		- repair-hard - Hard memory repair function (permanent repair).
+		- All other values are reserved.
+
+Thanks,
+Mauro
 
