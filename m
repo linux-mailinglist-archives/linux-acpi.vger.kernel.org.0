@@ -1,301 +1,184 @@
-Return-Path: <linux-acpi+bounces-10581-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10582-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D0BA0FDF7
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 02:22:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EC8A10369
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 10:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFF3E3A0445
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 01:22:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE78A16232A
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 09:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFEC224B0E;
-	Tue, 14 Jan 2025 01:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098EC284A63;
+	Tue, 14 Jan 2025 09:55:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA04EC5;
-	Tue, 14 Jan 2025 01:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5C624022A;
+	Tue, 14 Jan 2025 09:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736817727; cv=none; b=fzeyS64dnemyZJvWmHZZxYaglG72U4jocGcG6OUf2ov37THYiFXcgcxd+0ags+14jGAQ2aiH0gx2RenXfqxQSzZqYXE/NGW9q25S4z865bhzdt+L9gnuYSq6ow2JgMmCpKjoI+cMQ7SmjjKfA08Og/64OggHcPCn3RNuVhVgfqk=
+	t=1736848549; cv=none; b=npsR9s4TnBW2lHtTlvzPSZE8J5zKpKQufgfO0sWkRU/nQqD1Y2XVtXrebHGR0Z12Bv0PcINv11UflH1sNSqtYyTcRWvSXAQM6Yrwvtv9KBab8Y+8BjkVZ77NIYnINFiQjx8kEfEmUfMmXxScRvVeDZew9bV5D3yQ9ES/hDT4nus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736817727; c=relaxed/simple;
-	bh=+IH/Zbgj6AKu2Zb7+zutdU1a2fn8O2tNsNCrUp1e6W8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hFf4uWGn4ck0UvTTeCIUpwQyGRnbp0L/4Cet3/hKyytvxm06lM2TT6EHE5ej6nxL2sUNemStW//DZlLQU5OEWUe/WBp/yY1WUFGVL1eEtOAEbv6WbLsyJ6KIVSZzcZXIQYVYESXtBH2ITl4CWJvLyxkC79brNGH/25CU01mJ01U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joshuagrisham.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joshuagrisham.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53e389d8dc7so4816042e87.0;
-        Mon, 13 Jan 2025 17:22:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736817723; x=1737422523;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+STYqbut6K8qwUB/ttsKsOQ8S9frInfKcyWtIs5oRjI=;
-        b=ZkGfaikU0cTZg6E/dRl0faMeURxeQR8XSLQxHqnZjDUXdDjExDyWcOio4R3GfxNphS
-         dDe4VX0bvVoDp6eZGhCV75ALSPEKx/PCjgdaL1nOdl8neeK3zb9ne13kyYAsZEv4J8c6
-         bnFx/6Y6G53wecOHBggGRI60Rnh5mCODu0AarhMgVvzBh9xrM45mnAg/I72SFxIphkIt
-         wUjrIs/5DyAg+/k9Bx03KbaRwGXx+t4SvH5LglN1/b08CVlkMMhuE36qZfoHMN+pJPFH
-         AZAM+yCeWf3Ha4sOKYAbDL8DP7AY39TAiBrkAB3ZgzjPMuZc60c5HQ2K3cBUzjQ4NRpX
-         ZCSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW4J7PwKiTWGfxMm+IMUQFWZvhH2bj/X+V+tahm5CbHVLGIUf1rJX941QWla67buIf5vhQeBHnzuR5@vger.kernel.org, AJvYcCVjS81KWX1dkja+OU5VIdkrFiC9t3p4qx3auJjrgjZc47UG9kHNBUoTwZYdGmDIDXViERmBqzmhRkw0SUoN@vger.kernel.org
-X-Gm-Message-State: AOJu0YylF9yFSZf05DF50qeEUla/9A3stQc77LiNw12VjTROKL3kCsXr
-	eNR/s3wWqk8l2+azHZ4tmIGDGYu0WaXEKNitVEe1o3prGi8WBExV
-X-Gm-Gg: ASbGncvxrWpaxgm7YaGWxs3BQnj/XYetGLUUb2h2xnuduGLnEHxJFWN1kGtLX9p2Zic
-	YSNUIdLNaPdzbuJmPJIR6Trh7FYXS2qHm4zBEOuhjQKiLsuJ/Icp4PLbWoqGcWY2vDBBockp6UW
-	vFzlzDDdeOsxd+IJwdalq5szyuGMvX+Hh5duuubhopcNz65I+aNFWPqOWThevPllP3zwhexaKfA
-	H6rwCD3jej5whv4I4uC0YT4tECg7DuhnTu6Q5fD6Qu+wWdOM0tEVYB4OgglmmR9LND+9sHlt0+G
-	EGQYUe0tn+nvmPtbQ3BAwA==
-X-Google-Smtp-Source: AGHT+IF2l5PVy91vTFj66p5wYTQHxdupTViszX/+2Cqp8BtYZ8fdqLxQhcLUr5scam++YRq0kXz6Fw==
-X-Received: by 2002:a05:6512:3e17:b0:540:3550:b1dd with SMTP id 2adb3069b0e04-542845b188fmr8176393e87.3.1736817723193;
-        Mon, 13 Jan 2025 17:22:03 -0800 (PST)
-Received: from galaxybook.local (82-183-24-76.customers.ownit.se. [82.183.24.76])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428be54804sm1532169e87.92.2025.01.13.17.22.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 17:22:01 -0800 (PST)
-From: Joshua Grisham <josh@joshuagrisham.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	W_Armin@gmx.de,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Joshua Grisham <josh@joshuagrisham.com>
-Subject: [PATCH] ACPI: fan: Add fan speed reporting for fans with only _FST
-Date: Tue, 14 Jan 2025 02:21:50 +0100
-Message-ID: <20250114012150.156349-1-josh@joshuagrisham.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1736848549; c=relaxed/simple;
+	bh=dsLh30IhvkvphPhjqjdBvsc5bfCeMYtIGH3mBHUzOY0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OL47NjTPal6XVd89ucq3V9AdbPBnO+1CKUQR+3P8TtDX4Gzu+ctFnB2T7FPEO9QKe2cLADkZlAyc2hCBHgHRZ8shdTFf7k8BtjupFCQIlWXqklGOyf7trCrMpj97PIsoBktc3FZRfRRZ0fPc1bsy/v/d9mep5VZ2Us26Sx8R7P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YXPbY1PMRz6LDKg;
+	Tue, 14 Jan 2025 17:54:01 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9D0DE140B3C;
+	Tue, 14 Jan 2025 17:55:44 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 14 Jan
+ 2025 10:55:42 +0100
+Date: Tue, 14 Jan 2025 09:55:41 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: <shiju.jose@huawei.com>, <linux-edac@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <bp@alien8.de>,
+	<tony.luck@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<mchehab@kernel.org>, <dan.j.williams@intel.com>, <dave@stgolabs.net>,
+	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>, <david@redhat.com>,
+	<Vilas.Sridharan@amd.com>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 01/19] EDAC: Add support for EDAC device features
+ control
+Message-ID: <20250114095541.000000a1@huawei.com>
+In-Reply-To: <20250113160611.39bdf3b3@foz.lan>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+	<20250106121017.1620-2-shiju.jose@huawei.com>
+	<20250113160611.39bdf3b3@foz.lan>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Add support for ACPI fans with _FST to report their speed even if they do
-not support fan control.
 
-As suggested by Armin Wolf [1] and per the Windows Thermal Management
-Design Guide [2], Samsung Galaxy Book series devices (and possibly many
-more devices where the Windows guide was strictly followed) only implement
-the _FST method and do not support ACPI-based fan control.
+> > +int edac_dev_register(struct device *parent, char *name,
+> > +		      void *private, int num_features,
+> > +		      const struct edac_dev_feature *ras_features)
+> > +{
+> > +	const struct attribute_group **ras_attr_groups;
+> > +	struct edac_dev_feat_ctx *ctx;
+> > +	int attr_gcnt = 0;
+> > +	int ret, feat;
+> > +
+> > +	if (!parent || !name || !num_features || !ras_features)
+> > +		return -EINVAL;
+> > +
+> > +	/* Double parse to make space for attributes */
+> > +	for (feat = 0; feat < num_features; feat++) {
+> > +		switch (ras_features[feat].ft_type) {
+> > +		/* Add feature specific code */
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +	}
+> > +
+> > +	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+> > +	if (!ctx)
+> > +		return -ENOMEM;
+> > +
+> > +	ras_attr_groups = kcalloc(attr_gcnt + 1, sizeof(*ras_attr_groups), GFP_KERNEL);
+> > +	if (!ras_attr_groups) {
+> > +		ret = -ENOMEM;
+> > +		goto ctx_free;
+> > +	}
+> > +
+> > +	attr_gcnt = 0;
+> > +	for (feat = 0; feat < num_features; feat++, ras_features++) {
+> > +		switch (ras_features->ft_type) {
+> > +		/* Add feature specific code */
+> > +		default:
+> > +			ret = -EINVAL;
+> > +			goto groups_free;
+> > +		}
+> > +	}
+> > +
+> > +	ctx->dev.parent = parent;
+> > +	ctx->dev.bus = edac_get_sysfs_subsys();
+> > +	ctx->dev.type = &edac_dev_type;
+> > +	ctx->dev.groups = ras_attr_groups;
+> > +	ctx->private = private;
+> > +	dev_set_drvdata(&ctx->dev, ctx);
+> > +
+> > +	ret = dev_set_name(&ctx->dev, name);
+> > +	if (ret)
+> > +		goto groups_free;
+> > +
+> > +	ret = device_register(&ctx->dev);
+> > +	if (ret) {
+> > +		put_device(&ctx->dev);  
+> 
+> > +		return ret;  
+> 
+> As register failed, you need to change it to a goto groups_free,
+> as edac_dev_release() won't be called.
 
-Currently, these fans are not supported by the kernel driver but this patch
-will make some very small adjustments to allow them to be supported.
+Boris called this one out as well, so seems it is not that well understood.
+I've also tripped over this in the past and it's one of the most common
+things I catch in reviews of code calling this stuff.
 
-This patch is tested and working for me on a Samsung Galaxy Book2 Pro whose
-DSDT (and several other Samsung Galaxy Book series notebooks which
-currently have the same issue) can be found at [3].
+As discussed offline, it will be called. The device_register() docs
+make it clear that whether or not that call succeeds reference counting
+is enabled and put_device() is the correct way to free resources.
 
-[1]: https://lore.kernel.org/platform-driver-x86/53c5075b-1967-45d0-937f-463912dd966d@gmx.de
-[2]: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/design-guide
-[3]: https://github.com/joshuagrisham/samsung-galaxybook-extras/tree/8e3087a06b8bdcdfdd081367af4b744a56cc4ee9/dsdt
+The actual depends on the fact that device_register() is just a helper
+defined as
 
-Signed-off-by: Joshua Grisham <josh@joshuagrisham.com>
----
- drivers/acpi/fan.h       |  1 +
- drivers/acpi/fan_attr.c  | 37 ++++++++++++++++++++++---------------
- drivers/acpi/fan_core.c  | 24 ++++++++++++++++--------
- drivers/acpi/fan_hwmon.c |  6 ++++++
- 4 files changed, 45 insertions(+), 23 deletions(-)
+device_initialize();
+return device_add();
 
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index 488b51e2c..d0aad88a7 100644
---- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -49,6 +49,7 @@ struct acpi_fan_fst {
- 
- struct acpi_fan {
- 	bool acpi4;
-+	bool acpi4_only_fst;
- 	struct acpi_fan_fif fif;
- 	struct acpi_fan_fps *fps;
- 	int fps_count;
-diff --git a/drivers/acpi/fan_attr.c b/drivers/acpi/fan_attr.c
-index f4f6e2381..d83f88429 100644
---- a/drivers/acpi/fan_attr.c
-+++ b/drivers/acpi/fan_attr.c
-@@ -75,15 +75,6 @@ int acpi_fan_create_attributes(struct acpi_device *device)
- 	struct acpi_fan *fan = acpi_driver_data(device);
- 	int i, status;
- 
--	sysfs_attr_init(&fan->fine_grain_control.attr);
--	fan->fine_grain_control.show = show_fine_grain_control;
--	fan->fine_grain_control.store = NULL;
--	fan->fine_grain_control.attr.name = "fine_grain_control";
--	fan->fine_grain_control.attr.mode = 0444;
--	status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
--	if (status)
--		return status;
--
- 	/* _FST is present if we are here */
- 	sysfs_attr_init(&fan->fst_speed.attr);
- 	fan->fst_speed.show = show_fan_speed;
-@@ -92,7 +83,19 @@ int acpi_fan_create_attributes(struct acpi_device *device)
- 	fan->fst_speed.attr.mode = 0444;
- 	status = sysfs_create_file(&device->dev.kobj, &fan->fst_speed.attr);
- 	if (status)
--		goto rem_fine_grain_attr;
-+		return status;
-+
-+	if (fan->acpi4_only_fst)
-+		return 0;
-+
-+	sysfs_attr_init(&fan->fine_grain_control.attr);
-+	fan->fine_grain_control.show = show_fine_grain_control;
-+	fan->fine_grain_control.store = NULL;
-+	fan->fine_grain_control.attr.name = "fine_grain_control";
-+	fan->fine_grain_control.attr.mode = 0444;
-+	status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
-+	if (status)
-+		goto rem_fst_attr;
- 
- 	for (i = 0; i < fan->fps_count; ++i) {
- 		struct acpi_fan_fps *fps = &fan->fps[i];
-@@ -109,18 +112,18 @@ int acpi_fan_create_attributes(struct acpi_device *device)
- 
- 			for (j = 0; j < i; ++j)
- 				sysfs_remove_file(&device->dev.kobj, &fan->fps[j].dev_attr.attr);
--			goto rem_fst_attr;
-+			goto rem_fine_grain_attr;
- 		}
- 	}
- 
- 	return 0;
- 
--rem_fst_attr:
--	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
--
- rem_fine_grain_attr:
- 	sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
- 
-+rem_fst_attr:
-+	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
-+
- 	return status;
- }
- 
-@@ -129,9 +132,13 @@ void acpi_fan_delete_attributes(struct acpi_device *device)
- 	struct acpi_fan *fan = acpi_driver_data(device);
- 	int i;
- 
-+	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
-+
-+	if (fan->acpi4_only_fst)
-+		return;
-+
- 	for (i = 0; i < fan->fps_count; ++i)
- 		sysfs_remove_file(&device->dev.kobj, &fan->fps[i].dev_attr.attr);
- 
--	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
- 	sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
- }
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index 10016f52f..b51b1481c 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -211,6 +211,11 @@ static bool acpi_fan_is_acpi4(struct acpi_device *device)
- 	       acpi_has_method(device->handle, "_FST");
- }
- 
-+static bool acpi_fan_has_fst(struct acpi_device *device)
-+{
-+	return acpi_has_method(device->handle, "_FST");
-+}
-+
- static int acpi_fan_get_fif(struct acpi_device *device)
- {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-@@ -327,7 +332,12 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 	device->driver_data = fan;
- 	platform_set_drvdata(pdev, fan);
- 
--	if (acpi_fan_is_acpi4(device)) {
-+	if (acpi_fan_is_acpi4(device))
-+		fan->acpi4 = true;
-+	else if (acpi_fan_has_fst(device))
-+		fan->acpi4_only_fst = true;
-+
-+	if (fan->acpi4) {
- 		result = acpi_fan_get_fif(device);
- 		if (result)
- 			return result;
-@@ -335,7 +345,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 		result = acpi_fan_get_fps(device);
- 		if (result)
- 			return result;
--
-+	} else if (fan->acpi4 || fan->acpi4_only_fst) {
- 		result = devm_acpi_fan_create_hwmon(device);
- 		if (result)
- 			return result;
-@@ -343,8 +353,6 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 		result = acpi_fan_create_attributes(device);
- 		if (result)
- 			return result;
--
--		fan->acpi4 = true;
- 	} else {
- 		result = acpi_device_update_power(device, NULL);
- 		if (result) {
-@@ -391,7 +399,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
- err_unregister:
- 	thermal_cooling_device_unregister(cdev);
- err_end:
--	if (fan->acpi4)
-+	if (fan->acpi4 || fan->acpi4_only_fst)
- 		acpi_fan_delete_attributes(device);
- 
- 	return result;
-@@ -401,7 +409,7 @@ static void acpi_fan_remove(struct platform_device *pdev)
- {
- 	struct acpi_fan *fan = platform_get_drvdata(pdev);
- 
--	if (fan->acpi4) {
-+	if (fan->acpi4 || fan->acpi4_only_fst) {
- 		struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 
- 		acpi_fan_delete_attributes(device);
-@@ -415,7 +423,7 @@ static void acpi_fan_remove(struct platform_device *pdev)
- static int acpi_fan_suspend(struct device *dev)
- {
- 	struct acpi_fan *fan = dev_get_drvdata(dev);
--	if (fan->acpi4)
-+	if (fan->acpi4 || fan->acpi4_only_fst)
- 		return 0;
- 
- 	acpi_device_set_power(ACPI_COMPANION(dev), ACPI_STATE_D0);
-@@ -428,7 +436,7 @@ static int acpi_fan_resume(struct device *dev)
- 	int result;
- 	struct acpi_fan *fan = dev_get_drvdata(dev);
- 
--	if (fan->acpi4)
-+	if (fan->acpi4 || fan->acpi4_only_fst)
- 		return 0;
- 
- 	result = acpi_device_update_power(ACPI_COMPANION(dev), NULL);
-diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-index bd0d31a39..87bee018c 100644
---- a/drivers/acpi/fan_hwmon.c
-+++ b/drivers/acpi/fan_hwmon.c
-@@ -43,6 +43,12 @@ static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_
- 		case hwmon_fan_input:
- 			return 0444;
- 		case hwmon_fan_target:
-+			/*
-+			 * Fans with only _FST do not support fan control.
-+			 */
-+			if (fan->acpi4_only_fst)
-+				return 0;
-+
- 			/*
- 			 * When in fine grain control mode, not every fan control value
- 			 * has an associated fan performance state.
--- 
-2.45.2
+So for reasons lost to history (I guess there are cases where other cleanup
+needs to happen before the release) it does not handle side effects
+of device_initialize() on an error in device_add().  
+
+device_initialize() has called
+-> kobject_init(&dev->kobj, &device_type);
+ -> kref_init_internal(kobj) + sets ktype (which has the release callback)
+
+kref_init_internal() sets the reference counter to 1
+
+Hence when we do a device_put() in the error path, the reference counter drops
+to 0 and the release from the ktype is called.  Here that is edac_dev_release();
+
+If you want to verify replace device_register() with device_initialize() then
+call put_device().
+
+If we were going back in history, I'd suggest device_register() should be side
+effect free and call put_device() on error and any driver that needs to handle
+other stuff before the release should just not use it. I guess that ship
+long sailed and maybe there are other reasons I've not thought of.
+
+I took a quick look and seems to go back into at least the 2.5 era.
+
+Jonathan
+
+
 
 
