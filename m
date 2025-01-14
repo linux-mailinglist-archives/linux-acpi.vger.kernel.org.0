@@ -1,76 +1,76 @@
-Return-Path: <linux-acpi+bounces-10607-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10608-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B495CA10B12
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:39:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF23EA10B14
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3C613A9642
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF2F169CE5
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623E41CF2B7;
-	Tue, 14 Jan 2025 15:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395831D5AD4;
+	Tue, 14 Jan 2025 15:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gW+SK6l+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+ziSngX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01071A4AA1;
-	Tue, 14 Jan 2025 15:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3E51D516A;
+	Tue, 14 Jan 2025 15:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736869110; cv=none; b=Mz+WHBgijiebsd9rAjMQJ5GIgAxiwHLp/9IDPR/xBNIqyq/TQTr2lm3xqBIhSE1UUzSH9dV0y7GxkymCEtwZopjnH8xm4ES1vETwT+qnEGUicIc+vCeMJbYjhzsHgBpzO51vtAGWZJYJvIf/fXdA8NlEtAKV3ftCsakY0z++iZM=
+	t=1736869114; cv=none; b=qbbnX9Zc7U4JmKkexPlvDEa7E525oPVjd1peXtreYYwsbIRuqbHnodN16gSCQaw2pOXl5LcBrOPzWPxkbjijF53E0MrDIBL0LlZCue9SSuJS7GYD9Ubogbt7TvGTvQZ7ZiVKVoUmZdLgfNad5pTiFSNNbSBYNvjO5PZFPWRAKM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736869110; c=relaxed/simple;
-	bh=2+taimKyBEm1kRNAQ+szSIcVKCkO2CromD3iyu2qvtw=;
+	s=arc-20240116; t=1736869114; c=relaxed/simple;
+	bh=NaOj6JLG8xbse3Z94sPWjBTSVxlI9dvAjjS2f2cWDkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMxhpUemmqm/hBXd1HdFyV8Vc1VmZ5CRF+WE4HIPq+lEp6MHszY506Ix3sGHtzRU3bU0xxNuucJdoBgs8iEO9QmvoRVOgbI8TUI243XXuZBCnFfU98tbPWn9goczZukFH1ltjbiUpBO/BsSx6Poi7kk1iTn+ryLkUYydRw7Jpvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gW+SK6l+; arc=none smtp.client-ip=209.85.221.180
+	 MIME-Version; b=hlnnCm7YhlGXNSYC/J2tzN8/2zm/08muXMy89W5r6z6QFBKi+rhmZZ3ZsYCxoj3bSr9U69TM1ALxi57K+2gL8QKgSxO5CLPANFjPw62Dvk3hFtbm0XNAGQLJqDJjF6wTDlTvYXtVUrnuqUs+yxSCcUiYvQqFL8jK6cF+miYTNxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+ziSngX; arc=none smtp.client-ip=209.85.221.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5187aa2c97dso2017364e0c.2;
-        Tue, 14 Jan 2025 07:38:28 -0800 (PST)
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-5189a440a65so3345107e0c.1;
+        Tue, 14 Jan 2025 07:38:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736869107; x=1737473907; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736869111; x=1737473911; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sjq2L0uePHNEIwDJxvOdyrSdiJEUOj2ZGOc/6PuIBm0=;
-        b=gW+SK6l+DKi5PcLEdfO+yJHg1jkZtgf+vTDwmkbXB48Y1RoQqyI4wliKjiWu7wfKur
-         7NptoassUJGn7JC+BqXkvX2Zkh99bOggZ9ynLIOsQBZR3k+ykwPAFnFnUNX4DlC2m6zv
-         Nv1dFMxsEG+OBBOYWWR1xBTsbdLuYTpOXm1CuoowFPVLUanaLj5tjmeH/N+Nj5Kj9NFN
-         zDXAEK2HLGKpp+43/F/XwV+56m50GRvZWe9bHHjRvvfRX4atm/GpcHJXo/EbK+lPcnxX
-         n2uoQtv/PCyEcGOUCDtoIdGIPa9+yDpAz3l61y/F94rRJwggArkGY896BqKHX9/jTlqw
-         LIEQ==
+        bh=vXXOBPa9TmGwpH3xyz4lwnmEdjwxxKtQdouu9864DVY=;
+        b=c+ziSngXHqHdGNLLVlBUxt0Ole9VZDuIDvZltme41A4FPwjK8ce3PsVWyjoBtYcTxx
+         A+VEVrMcqVY8ksU1fDoSjVZKlWUpEvGvHUupTe7cli0eoTJ0losivTyyOKJN23mMWDxr
+         ddKBuTxc8HSeRtfdSwWD7tze11Qts4YXvkbWHWUAuxVeD5pKAf0JlBm35ZU2elyyUMvr
+         sKs9lZNkmNHzixQm4z8vNDp2vA1g58h80/cOcMsN2cUc9N8iTpFRCD3gdHWZRYXVB1EI
+         08K5SDiYR2DSqK9pFVnS25/tX378XGrSvLn0FzXwlMEUt2s/56ukp3efUG7rWrSwzfDe
+         +6ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736869107; x=1737473907;
+        d=1e100.net; s=20230601; t=1736869111; x=1737473911;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sjq2L0uePHNEIwDJxvOdyrSdiJEUOj2ZGOc/6PuIBm0=;
-        b=tR73oSBrAb9WOvv8aAGaG0qJNSEMTc7cQhQ0cL/Ib/8Di/tKufMvkNyTDS7PI/aP6m
-         3WzpVDsYPwgtkvk/eilhElSs+I1koAppbd0pCT8gRy0fgbs6eyB2JyzjfrAAqmiDyhiM
-         yEB4WCWAen7OegTniY1SYGS/B4UN7hQJJyZgDJW6N8xiJ2OBMQk6PI2/Xp7JRNrYM4wj
-         49px4lemEC+gP4KuflBGMO594scj1edQiwoQK49MuPFEoCIN3VYpF1RwYPsZhdWKs8Gw
-         hdeymlCAgycW2GvujZ7m68ktooNqrgS98/ueVh3AR8ZXjeKFi4C6We2VR+yaHByMOswc
-         JoJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuJgi3fQxyB87vZ5YZRqm21UM6/2WgKt3ANuqNNhRWND35KAsKT5qxR0IVMFvat4R3Xnh6tElKzDF7@vger.kernel.org, AJvYcCX373cr3Esm4p65Lm5kbIn6YVfsrAOXuUxovRloATJk/Hbhl4tEaev/3fy8AMtDeUVMfzhVzTalv24hdZTG@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyw5jvF7a1aR6tR6/rDDHJ5dgWLHzxXpEocnfE68Ji09M45qgDy
-	2J5Bg5ofwiAVY+vuO1Zz0SfZQrI3xbmjfjXYYGty9gENOBwhWpRc15xwVQ==
-X-Gm-Gg: ASbGncutRqntLPylsb6TnFlURL8h/DaEuFrXhIjXkjcf2zIxtBWyZSSDHGilNdU6hhY
-	ct0NYvsXCV0dI5Qwsz7VadJP0Q8W3euUHcVL56B9ImPtokHvjV9jf1V/IadOfXUEvxnkCLlvGrV
-	791Nq6UUJhiBAD5xXgDRHMfsdphyk5TqOhAo6LdXeOP67k1ObuS9yTp5DeF6go+yeuSLr2uk2BO
-	bUwhHqzZtinPD3J8V9JhS/0ccC5OO1FEmnc98lL4QKDdHUazkHjtocaCjf+HPVE
-X-Google-Smtp-Source: AGHT+IFmZFDY2y+/oTQyOlNMw68zLjvAGIijNhNMJI9bQH2N2Mohu0AAs5boNvYkOHpoxhVXoMBkBA==
-X-Received: by 2002:a05:6122:180d:b0:50d:5e21:ef39 with SMTP id 71dfb90a1353d-51c6c3570a4mr18788273e0c.1.1736869106904;
-        Tue, 14 Jan 2025 07:38:26 -0800 (PST)
+        bh=vXXOBPa9TmGwpH3xyz4lwnmEdjwxxKtQdouu9864DVY=;
+        b=u4SRv4JIhDEK9pdOXJPkJ5AVKEbqSjyMFVTwQ3P54qK8OpjeWrjaR0sv7sv2L5oNJR
+         8klll4bIJcNqCQAkiBVT0VfthTrBNygMzucNNgYAEUpIl3lZJPuSqytQ8NCz35TAFLDt
+         3gZy3Qhhk0w1BFPSZJvnHEIWdeiEsOFJQqo2a0Yw407yj8A+iINFoQbxdznoU5ZvrDfB
+         OUcR/HfI32x27j4zjFQAAL+t5KawNwUG2S5tNIzvD4EWULT+d7r80oVA3Oe6UZOQNyOz
+         rE92ezFFXtNSy1ER2vq7YgxCDK2WVse1XT1mVbSg8HI0Wbwys0UiOxMUWTvQwt7mTPNA
+         dYEw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8qo9VHJnw/DzwBsky9BRbw5ugjK41VmP7dLmVSK4NUuJxd9RLlmSOgCr3rdjzIhwfD4kqX9AiFs+negid@vger.kernel.org, AJvYcCXH0mAfsmJoDzNy+B7NZwNC2SyNnPqRmyb/G40xsto/peDWjtT2mCdopRMxNScyemTg8dr20WhMT0sQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaZV2DWtdhTB6WT9/YLbvJC/f0Ove1wysYgeo9knUVr/IWNI/R
+	1w6P5QRSVPPHCEmA1an+n0SF55Xn3haFbJ7a4aKicj8ZTmDkC1HJwXk9Tg==
+X-Gm-Gg: ASbGncsYCQZsQe3D+agJoG0That/1wZF/MsLpNJHNnd2xfmWWtU2aHl5l9vXYkHeoeI
+	RTgKHW/UFYZMmqa6HRVprRm02Pxm18vtBBPPktW0VDKuNosAj0pJPDfl1Yb22Hpug66HGuBVU74
+	G71oUzS+cHviMEZT8pH6vntP1mBw4F+gYN2DwBszyxmcGs05GAI1zbSqF2u8CEcMnmdeARcwkyF
+	MIH+k/TRvmIDly7PJ5YL8gY+FvTNU62+RkduW39bZBnxfMel0nnYE7Ts3d4pcXY
+X-Google-Smtp-Source: AGHT+IGymxghO7z8dVU7Eu/b9OLkWgPwGI3fjmUa4U3Fe6h9wktGurAjv35UpLGhpIbvu3eOGVWekg==
+X-Received: by 2002:a1f:e286:0:b0:51c:c663:a338 with SMTP id 71dfb90a1353d-51cc663a358mr3941855e0c.4.1736869110818;
+        Tue, 14 Jan 2025 07:38:30 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51cd7c56d30sm277e0c.14.2025.01.14.07.38.23
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51cd7c56d30sm277e0c.14.2025.01.14.07.38.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 07:38:26 -0800 (PST)
+        Tue, 14 Jan 2025 07:38:30 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -98,9 +98,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	"Gergo Koteles" <soyer@irl.hu>,
 	Dell.Client.Kernel@dell.com,
 	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH v2 06/18] platform/surface: surface_platform_profile: Use devm_platform_profile_register()
-Date: Tue, 14 Jan 2025 10:37:14 -0500
-Message-ID: <20250114153726.11802-7-kuurtb@gmail.com>
+Subject: [PATCH v2 07/18] platform/x86: acer-wmi: Use devm_platform_profile_register()
+Date: Tue, 14 Jan 2025 10:37:15 -0500
+Message-ID: <20250114153726.11802-8-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250114153726.11802-1-kuurtb@gmail.com>
 References: <20250114153726.11802-1-kuurtb@gmail.com>
@@ -117,38 +117,41 @@ Replace platform_profile_register() with it's device managed version.
 Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/platform/surface/surface_platform_profile.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/platform/x86/acer-wmi.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/platform/surface/surface_platform_profile.c b/drivers/platform/surface/surface_platform_profile.c
-index 48cfe9cb89c8..bbdc873cb788 100644
---- a/drivers/platform/surface/surface_platform_profile.c
-+++ b/drivers/platform/surface/surface_platform_profile.c
-@@ -234,15 +234,7 @@ static int surface_platform_profile_probe(struct ssam_device *sdev)
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 6953e36dbfde..39ec236b7cdb 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -1944,7 +1944,7 @@ static int acer_platform_profile_setup(struct platform_device *device)
+ 		platform_profile_handler.ops =
+ 			&acer_predator_v4_platform_profile_ops;
  
- 	tpd->has_fan = device_property_read_bool(&sdev->dev, "has_fan");
+-		err = platform_profile_register(&platform_profile_handler, NULL);
++		err = devm_platform_profile_register(&platform_profile_handler, NULL);
+ 		if (err)
+ 			return err;
  
--	return platform_profile_register(&tpd->handler, tpd);
--}
+@@ -2591,8 +2591,6 @@ static int acer_platform_probe(struct platform_device *device)
+ 	return 0;
+ 
+ error_hwmon:
+-	if (platform_profile_support)
+-		platform_profile_remove(&platform_profile_handler);
+ error_platform_profile:
+ 	acer_rfkill_exit();
+ error_rfkill:
+@@ -2613,9 +2611,6 @@ static void acer_platform_remove(struct platform_device *device)
+ 		acer_backlight_exit();
+ 
+ 	acer_rfkill_exit();
 -
--static void surface_platform_profile_remove(struct ssam_device *sdev)
--{
--	struct ssam_platform_profile_device *tpd;
--
--	tpd = ssam_device_get_drvdata(sdev);
--	platform_profile_remove(&tpd->handler);
-+	return devm_platform_profile_register(&tpd->handler, tpd);
+-	if (platform_profile_support)
+-		platform_profile_remove(&platform_profile_handler);
  }
  
- static const struct ssam_device_id ssam_platform_profile_match[] = {
-@@ -253,7 +245,6 @@ MODULE_DEVICE_TABLE(ssam, ssam_platform_profile_match);
- 
- static struct ssam_device_driver surface_platform_profile = {
- 	.probe = surface_platform_profile_probe,
--	.remove = surface_platform_profile_remove,
- 	.match_table = ssam_platform_profile_match,
- 	.driver = {
- 		.name = "surface_platform_profile",
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.47.1
 
