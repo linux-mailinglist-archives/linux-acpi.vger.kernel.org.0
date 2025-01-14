@@ -1,76 +1,76 @@
-Return-Path: <linux-acpi+bounces-10618-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10619-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F99A10B39
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DF8A10B3F
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 16:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA6B93AAA34
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD913A9C81
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1681922C0;
-	Tue, 14 Jan 2025 15:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CAC1FECA5;
+	Tue, 14 Jan 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JfC00FDQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nKAlP3Rg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EC91C5F0F;
-	Tue, 14 Jan 2025 15:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131551FC7DC;
+	Tue, 14 Jan 2025 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736869149; cv=none; b=uV8/ek9/colAsSFSeLO1Vcu2oIHnTOLXFKIw2LcvkjwiSL9MZcNanCFi/JaUpM00YiLzrniy3gl+IMq77rB7fvlh/OGvKRcA/K1N77M7fCPEUxp4H8f7pypvpntaU9EyV6UzWsR3wZql+FyDhzwKoRiNKA4Ell4HL0h5Ps/xoyg=
+	t=1736869153; cv=none; b=T8Thfu7MbHXTKERctofGWi6pqVajs2xPF6ir2vQs4bSCvtKzsNCM8KWxJxAAcuqcxMM7VBFy7LMmc9CqBk2CzoZgjjf186mHKjLUheIvhuK88OtfA6BTmeTgfbjKa2aIexDh6ymODDfKFcxjlcW5r3i1REp7VoQ1DGcnu+Ti1fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736869149; c=relaxed/simple;
-	bh=UNFLE3ouyw5oZJ+A8XYuo/S4UxIOzyEYBTcCMvSQJgc=;
+	s=arc-20240116; t=1736869153; c=relaxed/simple;
+	bh=LFD5HnUv6axyJM8IqskxceD+/1v3k1p/nSQV9BE4jMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aibuJGgyXcVS9jSGeFtfLampo1r4CZ5jCmJWPsdkS8N8lI7Rd016u/X+/Bd64K05tdJ0lWgpBSZ39Jec+P+S8l5aZfYR+o1I5MJB2RKqM050X0xQTyjR14Axv+/egai7pcN5NhqHA/5HRxlO3V1Ws8qpr9WoWUMqYa0ZGBioToE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JfC00FDQ; arc=none smtp.client-ip=209.85.221.172
+	 MIME-Version; b=MCQ278nu/T3WINJGwZ2PElimUIg5z9xDJsUtqeYbKfNGFaUuj/migAmT1y7rQ09LFhUiYGTkqzRnsZF5fQSZ7LSHturbwQHWvoYwc2XkiqBMtOkisIIhGlpXZC9QMJz4zxNY1ACDZ7ESiSBfo+6Fp6dcuf+rQxk0nf/ufZzewSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nKAlP3Rg; arc=none smtp.client-ip=209.85.221.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-518957b0533so1877497e0c.1;
-        Tue, 14 Jan 2025 07:39:07 -0800 (PST)
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-518954032b2so1876756e0c.0;
+        Tue, 14 Jan 2025 07:39:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736869146; x=1737473946; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736869149; x=1737473949; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VuGQ1ZVbISV1fd4ChxW9sFDp4MUhOEtSl7slykO1SWs=;
-        b=JfC00FDQhweQjFJ25Zb7uOU+yi3uCc//PUs7dtA/KncCvpZbi0LL4w4BAPQqNAr7zj
-         E49yRgq5ttHZ9oTtarzjwxhkZAPgMqNIRk8s+b0sZH2jDJRU+nJp9MBdJRBRgTNy2QKB
-         3jO3+ls3szaYICQapANw7r4gkFnyvcgJI3dAum8Ss4Wb0V4KJIc0433IwjEJXDo2j16H
-         JY0LxKYJsxTTPwjU+H/+wuuVj60H6B0cTzB46Jj5wglCDbHy2zblbwVjmAHf5FuYoKQp
-         YTuscqlyjhAFHh4n67aWbiSn0XKVptRFZz76oUeOOP2x2AL9M/Adsw2St4n8RbIbV24G
-         OnxA==
+        bh=GI1j7X1Kt0Lk/pNjI2Hh5cyHCwMeZVYB/YjyicpVYZc=;
+        b=nKAlP3RgqzYbbkalsNeskZE3ihzrnhgfwqJED3XdimA1Csmt1FcmKfpG9jGRnM8+qe
+         V8Q6OYNEzztde2NQlQynVQVgN5Z4cfZOvNcib1so2w2iTJA2oDd6ajEimq5XNTOqVyzd
+         vXVzGkPVOzFy0tckyS7ZdLx9yCwzAAHaryFqoCR5vS4rWpF1zzH54qT1fFBD7CrHBOc7
+         x6kHPIz+4U1HCiZS28f4Ey2Pu/gKMvdNdIjDCXLQw+MIOVcMXlO2DGDDj1cUh8xbRAi0
+         1CqDo9n/LeZOuSzYQO/A8rNsfDDaz72LAXjp8xVCv0BmEZLKbGgd7tukih0Km5Y5wIFU
+         Ds6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736869146; x=1737473946;
+        d=1e100.net; s=20230601; t=1736869149; x=1737473949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VuGQ1ZVbISV1fd4ChxW9sFDp4MUhOEtSl7slykO1SWs=;
-        b=oyzyByxVdT5ztP8PGhdaGIKi6fO2xc9tLZBn9XR4HQddvRmvfXhEqt8KMYHfhYOF/N
-         k8+VlvkjCOM1KpuwQ3bjC5QdDfYK6mAabxe/m/ApL2mB6OrqwUP7ntFGD4ymfewPeWVn
-         KINeHi8RsqjoYKkxrx06sg3+k4K3Xbe+DD6jme0qm7JmGomGj/E5WD8K4EPE/nrL5FjQ
-         LCdc6DKtwVIrWRR/jMCK60cH7muytApOjugm7OlmZD/6qx4/v7qGxtPOhwUIfZEgQnho
-         19qTFeLieyhn8FpgNk8onN25+/2ldLzdDls2SIslZvLjOcB5JrkO5uN6RQyyAI4qO3Q6
-         JZmw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWtRlSOgTFQZ5hLg4pltKBDllRYi8qyplXLaHjb7olgMk0YUDRGpMFd0JDLqBF3ijgw4fGzlcSIeYQ@vger.kernel.org, AJvYcCX9syRQcZDgro7Eb+HdAnD4z4v8ukU5ssmk2y7h7kiWFmUD7dl7C21QbUrG8YCYEMt732qv/ejMp1dh9oIb@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK5b8bhq39Q/Npae/wfzTXyhW2nWfLtjxqJOFDUMSJPQOnB+HL
-	HmXXjDLPewtNusKmpZCdn1fzpbMYKZQsg81i2JiKvuK8hAbzS6mBWeN2Iw==
-X-Gm-Gg: ASbGncuFFXliDdU2WWt3RsbZoILEJRBOBQuz40Gv52sk5102mEuWWOooxc8PYElExuE
-	PCip23JkUMP/OPe5Z86QbfBYEXWHSuIpi9ebrDwazsyj/O5MsCp/r7YWKSA8nx0nIKFedEFQOnO
-	uiTi0v8xyXzZc62TYqo94+bNvUdeCnvlhrmMWWSp5zF0W7s1Pb8i1q+fsNJVI2L3w0z/mSBiS32
-	eZRWou1rcnUgYgUmgDUtVwwePvwE15ayWQjd1T8EBZYVTy2fdLagdvhemuV8sa+
-X-Google-Smtp-Source: AGHT+IF1jONKmPd5fYjh66MnEgs9+FR9HZ24HY+drnFS2W/9CvLzo68uJU5k6hwSn2/YoX2DGu44kg==
-X-Received: by 2002:a05:6122:8f82:b0:51b:8949:c996 with SMTP id 71dfb90a1353d-51c6c48f340mr19515173e0c.9.1736869146001;
-        Tue, 14 Jan 2025 07:39:06 -0800 (PST)
+        bh=GI1j7X1Kt0Lk/pNjI2Hh5cyHCwMeZVYB/YjyicpVYZc=;
+        b=N0ykjdOYb/pbDEu3hDIcUJz9jwfFuCRcmX+E1fC2H+C0++fI/SC1zF99JGt4OxrBHn
+         LdqdFEDwunRFKxynZK2G+ZjVDxvPgmqeHacP0JQUd+u+tOstwLVdXehIXkMcI8n+70Yc
+         IdJc37OKeX14RvXIfwi6QeduMPX7hYhf8QJtKF/fDap4dNKdk8BDO9bUvQscVH+CJvWx
+         gem5I4cGfu9NjSVvatlw9cVaYAlnwjj2+v8i8MK15gOangxOHo0AaEDtngLLm90j5yBO
+         A9wl9ZY5czPkrBvPGZT39MBh0PfgUAFjlnF5bh6WfQsE8kgTDzP9bXBNUok/H05yhaWq
+         lt9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWXiFtVJcvU03WHI1kQjc2YPVp6y2sqenBs8VjUgLx0Os4feU5rT+AP9rUmEKWxJw99le1CH2KhRH2K@vger.kernel.org, AJvYcCXMMmnpxcK5JEG37fUsaJLCEHrPmpZwXs8J0dm98la2fYmschmstGHy9whxNbCEmDZY+OE5ZroRl4UPZLz6@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeuITCjoRrzLXgLLUJOfkN8xhSYqSQeQ8Awlayhben3+lnDQRV
+	twWwsW73joBU7j9LkU1OSotTZb3PV7gEIshNOLm+DlNH8BqyBXeo0RR/RA==
+X-Gm-Gg: ASbGncv/yNQ6qsw01UGpvKYaXPqoHaaitxCmEuAcgrdGbMsoGk+RJLWjW21P0i8cjda
+	aQL1HDLgFbwwW3kL1NKW6xfcX45OnvKgWaGWArc4+c8fa4Q+gTNc2UiSRK3AAsY96nFZ1TTvZpM
+	lRfmCOSEFtOo7CtBlQSw0Lh/5ZjbMaet7KkwiWKlW6h5GYWgmW5DZaEtRjV/w9ptOzFYOsgC6i/
+	NI4jdc3TO3nia93uB66iD8XDafAqfmBXMxMuzOyLHA8u4F8asgn5JQdK4lbWghy
+X-Google-Smtp-Source: AGHT+IGWjNg4O4IOHdix6orWFAznbRve1THMCUqMyQa/ychI5YFbMGSAl/AiMHif0ctQYondNL80+A==
+X-Received: by 2002:a05:6122:8f82:b0:51b:8949:c996 with SMTP id 71dfb90a1353d-51c6c48f340mr19515587e0c.9.1736869149474;
+        Tue, 14 Jan 2025 07:39:09 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51cd7c56d30sm277e0c.14.2025.01.14.07.39.02
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51cd7c56d30sm277e0c.14.2025.01.14.07.39.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 07:39:05 -0800 (PST)
+        Tue, 14 Jan 2025 07:39:08 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -98,9 +98,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	"Gergo Koteles" <soyer@irl.hu>,
 	Dell.Client.Kernel@dell.com,
 	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH v2 17/18] ACPI: platform_profile: Clean platform_profile_handler
-Date: Tue, 14 Jan 2025 10:37:25 -0500
-Message-ID: <20250114153726.11802-18-kuurtb@gmail.com>
+Subject: [PATCH v2 18/18] ACPI: platform_profile: Add documentation
+Date: Tue, 14 Jan 2025 10:37:26 -0500
+Message-ID: <20250114153726.11802-19-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250114153726.11802-1-kuurtb@gmail.com>
 References: <20250114153726.11802-1-kuurtb@gmail.com>
@@ -112,89 +112,173 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove parent device *dev from platform_profile_handler, as it's no
-longer accessed directly. Rename class_dev -> dev.
+Add kerneldoc and sysfs class documentation.
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/acpi/platform_profile.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ .../ABI/testing/sysfs-class-platform-profile  | 44 +++++++++++++++++++
+ drivers/acpi/platform_profile.c               | 33 ++++++++++++++
+ include/linux/platform_profile.h              | 24 ++++++++++
+ 3 files changed, 101 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profile
 
+diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Documentation/ABI/testing/sysfs-class-platform-profile
+new file mode 100644
+index 000000000000..b5a3600080bc
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-class-platform-profile
+@@ -0,0 +1,44 @@
++What:		/sys/class/platform-profile/platform-profile-X/name
++Date:		January 2025
++Description:	Name of the class device given by the driver.
++
++		RO
++
++What:		/sys/class/platform-profile/platform-profile-X/choices
++Date:		January 2025
++Description:	This file contains a space-separated list of profiles supported for this device.
++
++		Drivers must use the following standard profile-names:
++
++		====================	========================================
++		low-power		Low power consumption
++		cool			Cooler operation
++		quiet			Quieter operation
++		balanced		Balance between low power consumption
++					and performance
++		balanced-performance	Balance between performance and low
++					power consumption with a slight bias
++					towards performance
++		performance		High performance operation
++		custom			Driver defined custom profile
++		====================	========================================
++
++		RO
++
++What:		/sys/class/platform-profile/platform-profile-X/profile
++Date:		January 2025
++Description:	Reading this file gives the current selected profile for this
++		device. Writing this file with one of the strings from
++		platform_profile_choices changes the profile to the new value.
++
++		This file can be monitored for changes by polling for POLLPRI,
++		POLLPRI will be signaled on any changes, independent of those
++		changes coming from a userspace write; or coming from another
++		source such as e.g. a hotkey triggered profile change handled
++		either directly by the embedded-controller or fully handled
++		inside the kernel.
++
++		This file may also emit the string 'custom' to indicate
++		that the driver is using a driver defined custom profile.
++
++		RW
 diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index f1749eb7b21b..c44989801f8e 100644
+index c44989801f8e..9caddac695b8 100644
 --- a/drivers/acpi/platform_profile.c
 +++ b/drivers/acpi/platform_profile.c
-@@ -11,14 +11,13 @@
- #include <linux/platform_profile.h>
- #include <linux/sysfs.h>
+@@ -426,6 +426,10 @@ static const struct attribute_group platform_profile_group = {
+ 	.is_visible = profile_class_is_visible,
+ };
  
--#define to_pprof_handler(d)	(container_of(d, struct platform_profile_handler, class_dev))
-+#define to_pprof_handler(d)	(container_of(d, struct platform_profile_handler, dev))
- 
- static DEFINE_MUTEX(profile_lock);
- 
- struct platform_profile_handler {
- 	const char *name;
--	struct device *dev;
--	struct device class_dev;
-+	struct device dev;
- 	int minor;
- 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
- 	const struct platform_profile_ops *ops;
-@@ -91,8 +90,8 @@ static int _notify_class_profile(struct device *dev, void *data)
- 	struct platform_profile_handler *handler = to_pprof_handler(dev);
- 
- 	lockdep_assert_held(&profile_lock);
--	sysfs_notify(&handler->class_dev.kobj, NULL, "profile");
--	kobject_uevent(&handler->class_dev.kobj, KOBJ_CHANGE);
-+	sysfs_notify(&handler->dev.kobj, NULL, "profile");
-+	kobject_uevent(&handler->dev.kobj, KOBJ_CHANGE);
- 
- 	return 0;
++/**
++ * platform_profile_notify - Notify class device and legacy sysfs interface
++ * @dev: The class device
++ */
+ void platform_profile_notify(struct device *dev)
+ {
+ 	scoped_cond_guard(mutex_intr, return, &profile_lock) {
+@@ -435,6 +439,11 @@ void platform_profile_notify(struct device *dev)
  }
-@@ -517,13 +516,13 @@ struct device *platform_profile_register(struct device *dev, const char *name,
- 	pprof->name = name;
- 	pprof->ops = ops;
- 	pprof->minor = minor;
--	pprof->class_dev.class = &platform_profile_class;
--	pprof->class_dev.parent = dev;
--	dev_set_drvdata(&pprof->class_dev, drvdata);
--	dev_set_name(&pprof->class_dev, "platform-profile-%d", pprof->minor);
--	err = device_register(&pprof->class_dev);
-+	pprof->dev.class = &platform_profile_class;
-+	pprof->dev.parent = dev;
-+	dev_set_drvdata(&pprof->dev, drvdata);
-+	dev_set_name(&pprof->dev, "platform-profile-%d", pprof->minor);
-+	err = device_register(&pprof->dev);
- 	if (err) {
--		put_device(&no_free_ptr(pprof)->class_dev);
-+		put_device(&no_free_ptr(pprof)->dev);
- 		goto cleanup_ida;
- 	}
+ EXPORT_SYMBOL_GPL(platform_profile_notify);
  
-@@ -533,10 +532,10 @@ struct device *platform_profile_register(struct device *dev, const char *name,
- 	if (err)
- 		goto cleanup_cur;
++/**
++ * platform_profile_cycle - Cycles profiles available on all registered class devices
++ *
++ * Return: 0 on success, -errno on failure
++ */
+ int platform_profile_cycle(void)
+ {
+ 	enum platform_profile_option next = PLATFORM_PROFILE_LAST;
+@@ -478,6 +487,15 @@ int platform_profile_cycle(void)
+ }
+ EXPORT_SYMBOL_GPL(platform_profile_cycle);
  
--	return &no_free_ptr(pprof)->class_dev;
-+	return &no_free_ptr(pprof)->dev;
++/**
++ * platform_profile_register - Creates and registers a platform profile class device
++ * @dev: Parent device
++ * @name: Name of the class device
++ * @drvdata: Driver data that will be attached to the class device
++ * @ops: Platform profile's mandatory operations
++ *
++ * Return: pointer to the new class device on success, ERR_PTR on failure
++ */
+ struct device *platform_profile_register(struct device *dev, const char *name,
+ 					 void *drvdata,
+ 					 const struct platform_profile_ops *ops)
+@@ -544,6 +562,12 @@ struct device *platform_profile_register(struct device *dev, const char *name,
+ }
+ EXPORT_SYMBOL_GPL(platform_profile_register);
  
- cleanup_cur:
--	device_unregister(&no_free_ptr(pprof)->class_dev);
-+	device_unregister(&no_free_ptr(pprof)->dev);
++/**
++ * platform_profile_remove - Unregisters a platform profile class device
++ * @dev: Class device
++ *
++ * Return: 0
++ */
+ int platform_profile_remove(struct device *dev)
+ {
+ 	struct platform_profile_handler *pprof = to_pprof_handler(dev);
+@@ -569,6 +593,15 @@ static void devm_platform_profile_release(struct device *dev, void *res)
+ 	platform_profile_remove(*ppdev);
+ }
  
- cleanup_ida:
- 	ida_free(&platform_profile_ida, minor);
-@@ -552,7 +551,7 @@ int platform_profile_remove(struct device *dev)
- 	guard(mutex)(&profile_lock);
++/**
++ * devm_platform_profile_register - Device managed version of platform_profile_register
++ * @dev: Parent device
++ * @name: Name of the class device
++ * @drvdata: Driver data that will be attached to the class device
++ * @ops: Platform profile's mandatory operations
++ *
++ * Return: pointer to the new class device on success, ERR_PTR on failure
++ */
+ struct device *devm_platform_profile_register(struct device *dev, const char *name,
+ 					      void *drvdata,
+ 					      const struct platform_profile_ops *ops)
+diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+index eea1daf85616..eb4dc85dc18c 100644
+--- a/include/linux/platform_profile.h
++++ b/include/linux/platform_profile.h
+@@ -28,6 +28,30 @@ enum platform_profile_option {
+ 	PLATFORM_PROFILE_LAST, /*must always be last */
+ };
  
- 	id = pprof->minor;
--	device_unregister(&pprof->class_dev);
-+	device_unregister(&pprof->dev);
- 	ida_free(&platform_profile_ida, id);
- 
- 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
++/**
++ * struct platform_profile_ops - platform profile operations
++ * @probe:	Callback to setup choices available to the new class device.
++ *		Parameters are:
++ *		@drvdata: drvdata pointer passed to platform_profile_register.
++ *		@choices: Empty choices bitmap which the driver has to manually
++ *			  setup, by using set_bit() in bits corresponding to
++ *			  platform_profile_option values. These values will only
++ *			  be enforced when a new profile is selected from
++ *			  user-space.
++ * @profile_get: Callback that will be called when showing the current platform
++ *		 profile.
++ *		 Parameters are:
++ *		 @dev: Class device.
++ *		 @profile: Pointer to the profile which will be read from
++ *			   user-space. Selected choices are not enforced when
++ *			   modifying this value.
++ * @profile_set: Callback that will be called when storing the new platform
++ *		 profile.
++ *		 Parameters are:
++ *		 @dev: Class device.
++ *		 @profile: New platform profile to be set. Guaranteed to be a
++ *			   value selected in the @probe callback.
++ */
+ struct platform_profile_ops {
+ 	int (*probe)(void *drvdata, unsigned long *choices);
+ 	int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
 -- 
 2.47.1
 
