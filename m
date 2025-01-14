@@ -1,187 +1,335 @@
-Return-Path: <linux-acpi+bounces-10599-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10600-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F1DA10977
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:33:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 963C5A10993
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 15:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A4ED162643
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 14:33:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EC0164BE7
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 14:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53664147C71;
-	Tue, 14 Jan 2025 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E74B1494D4;
+	Tue, 14 Jan 2025 14:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LyZhaqu6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mS+VSPBL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA64232437;
-	Tue, 14 Jan 2025 14:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBBF155725;
+	Tue, 14 Jan 2025 14:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736865215; cv=none; b=UruQWNqtu3s78HesdMCoTlntpascSI6jQzqk8vpFtw1gQRaZMRGo+mnOJJOOnAudBQWTF7jsdt2sh+6SsDII407FiWoIfPPYEhc/bEEBeOfRxnEhIl6qpRoNaStD2QoBNvDvLobRRPg5he7eg8qUkBE3mDQ1J5giAQObLmwaAp8=
+	t=1736865596; cv=none; b=Z02W6lmSZcukwLLcqPfKGuxFoAB5MOcX/Si/qP/5ZiPr8GcRFTfNxUv6mE4Xsj+sn+mEGrRdNKBijpXONLwnfdQgmVuIuBXRGeXftr8+93PJcYfJ1qi2MfRkTCbuAPxRhgZFvj7dfL3qwTafGgAFHWvfnqAsAg4JdstWBsU8Sno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736865215; c=relaxed/simple;
-	bh=+p0a7Qpgx/8UNlXrlPhrD2NzEEQtfFTWpS0COnc0UbM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=R3DvnHWC3CkSqftB5+kUHRKSyjfPBU6lW8vrZ4G4XCzdTCDOj9niY7aCHJzqkGWSbtiJ724qJLGcGIUG5cDTZC0/bPUxdVZ+CnSTq0jyJWdv6iad0LQue7EWXBcauqXytqb+ztjHCvtKpkk23zPPD51ZITBpjtZ405depX5OH/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LyZhaqu6; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736865214; x=1768401214;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=+p0a7Qpgx/8UNlXrlPhrD2NzEEQtfFTWpS0COnc0UbM=;
-  b=LyZhaqu6r4gbr1p/6YbuRLbFO72rO+O+SB+qEE5H2RTL6DJOM1og8y19
-   RytnygWJ6zREg9+aTesyMtcfLqGJYnO28HsLP02FAQGWZSUsCmcB6ruW1
-   cQdRPgFdwoY/YO2Coad6t+EyWcZmFesefnFRLt55ukhgqU9L216PvB72S
-   swXxS45JkvmSxgZ2UOmyHkoLsv08tohVpq3LMZ8laIrTlC1EEFrTIbCWL
-   zFGg9SW+Vf3XJWAA3a6+yVm037mVrvZussebOt/oxILIfEry+8H1lGNUp
-   NOgSd5TWsALxbv/O33jc/iUHaGo0M422p56Zp6bZZWxIw8aQVxK8D2vvE
-   A==;
-X-CSE-ConnectionGUID: LqE7jjgCSWm1Nw7wxb4svw==
-X-CSE-MsgGUID: RSTYQj8UQOu7TxUe7Gzx3w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="48164634"
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
-   d="scan'208";a="48164634"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 06:33:33 -0800
-X-CSE-ConnectionGUID: e1670AI8THCLsvPMveL6cw==
-X-CSE-MsgGUID: 9rmFUu5DRvig9bjjBkaUvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="105311887"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.54])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 06:33:29 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 14 Jan 2025 16:33:25 +0200 (EET)
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-cc: Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org, 
-    W_Armin@gmx.de, Hans de Goede <hdegoede@redhat.com>, lenb@kernel.org, 
-    linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    mario.limonciello@amd.com, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    soyer@irl.hu
-Subject: Re: [PATCH v2 1/2] ACPI: platform_profile: Add
- devm_platform_profile_register()
-In-Reply-To: <CAJZ5v0jRkDx1E+mW0dhD2f9Ow8GxeT-8AvYjcZOvoYC2+J07jg@mail.gmail.com>
-Message-ID: <925e1bb3-f21a-553e-24ce-6ef09ef7b4e7@linux.intel.com>
-References: <20241224140131.30362-2-kuurtb@gmail.com> <20241224140131.30362-4-kuurtb@gmail.com> <CAJZ5v0jRkDx1E+mW0dhD2f9Ow8GxeT-8AvYjcZOvoYC2+J07jg@mail.gmail.com>
+	s=arc-20240116; t=1736865596; c=relaxed/simple;
+	bh=ExS2XTnmU7QoqvKEZZKQwlQZG7UBPVImqCL3EVuvJ1s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pkqbRpn+F+GidSVrZdVvsPh+fI5GuoMrYSqWE5IrwhjI9n6/QosBFaQ8+XZksEIATXxSQMxWFunYM+9F2jfjWDIoe5rsx2mCLlV/bkxJtab9Io7+TJYuDgfbWPD1J7NInNbSIVntEDm9hf/d/KvYUNCMxJLDSpG68Bio7/wnXgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mS+VSPBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50007C4CEDD;
+	Tue, 14 Jan 2025 14:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736865595;
+	bh=ExS2XTnmU7QoqvKEZZKQwlQZG7UBPVImqCL3EVuvJ1s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mS+VSPBLnIh9ocmdfOtRPbEkZcAA4UuraLiRGI8hm4txbPh+o71mExyAniG9VUDps
+	 FwTB5Dr2YxS0UVSqkGlo7HDQTKqWa7tezWwUa0oAK3EiTJW63h1+n/gZJk4ECWe6qK
+	 WIthCuDPPlnAiRVcZGoelTqQ6KOcwgTwWamhAwXs8xZSWbHuroODvNdGcbokikTLYj
+	 5Yi3ezMpvQKpj54cWj9K44AwAgxylCFyUmnoUSYAcoVjRiBF+LExG8olwlOqojMauY
+	 4G4Zu5f5Ew5qhSalw5KjAS1Yy7A9HSJSxyfgZFRjprrk0houA1gihZhHxxH5Iys9ic
+	 boA/dgQXZ1Ajw==
+Date: Tue, 14 Jan 2025 15:39:44 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Borislav Petkov <bp@alien8.de>, Shiju Jose <shiju.jose@huawei.com>,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "tony.luck@intel.com"
+ <tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+ "lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
+ <mchehab@kernel.org>, "dan.j.williams@intel.com"
+ <dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+ "dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
+ <alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+ <vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+ "david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+ <Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+ "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+ <rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+ "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+ <naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+ "jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+ <somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+ "pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+ <duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+ "wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+ "dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+ "wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+ "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+ <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+ <kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250114153944.7b525a04@foz.lan>
+In-Reply-To: <20250114130537.0000375b@huawei.com>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+	<20250106121017.1620-5-shiju.jose@huawei.com>
+	<20250109091915.GAZ3-Uk3rkuh38cQyy@fat_crate.local>
+	<3b2d4275d1d24dbeacee0f192ac4d69b@huawei.com>
+	<20250109123222.GBZ3_B1g3Esgu1-MPi@fat_crate.local>
+	<20250109142433.00004ea7@huawei.com>
+	<20250114133817.20048aa4@foz.lan>
+	<20250114130537.0000375b@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1032797698-1736864604=:1077"
-Content-ID: <e41dab97-0fc5-ed4d-e9bb-bcda59b38e41@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Em Tue, 14 Jan 2025 13:05:37 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
 
---8323328-1032797698-1736864604=:1077
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <fe274342-d328-b63c-2d26-ae89786d195c@linux.intel.com>
-
-On Tue, 14 Jan 2025, Rafael J. Wysocki wrote:
-
-> On Tue, Dec 24, 2024 at 3:02=E2=80=AFPM Kurt Borja <kuurtb@gmail.com> wro=
-te:
-> >
-> > Platform profile's lifetime is usually tied to a device's lifetime,
-> > therefore add a device managed version of platform_profile_register().
-> >
-> > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> On Tue, 14 Jan 2025 13:38:31 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 >=20
-> This is fine by me, so
+> > Em Thu, 9 Jan 2025 14:24:33 +0000
+> > Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
+> >  =20
+> > > On Thu, 9 Jan 2025 13:32:22 +0100
+> > > Borislav Petkov <bp@alien8.de> wrote:
+> > >=20
+> > > Hi Boris,
+> > >    =20
+> > > > On Thu, Jan 09, 2025 at 11:00:43AM +0000, Shiju Jose wrote:     =20
+> > > > > The min_ and max_ attributes of the control attributes are added =
+ for your
+> > > > > feedback on V15 to expose supported ranges of these control attri=
+butes to the user,=20
+> > > > > in the following links.         =20
+> > > >=20
+> > > > Sure, but you can make that differently:
+> > > >=20
+> > > > cat /sys/bus/edac/devices/<dev-name>/mem_repairX/bank
+> > > > [x:y]
+> > > >=20
+> > > > which is the allowed range.     =20
+> > >=20
+> > > To my thinking that would fail the test of being an intuitive interfa=
+ce.
+> > > To issue a repair command requires that multiple attributes be config=
+ured
+> > > before triggering the actual repair.
+> > >=20
+> > > Think of it as setting the coordinates of the repair in a high dimens=
+ional
+> > > space.
+> > >=20
+> > > In the extreme case of fine grained repair (Cacheline), to identify t=
+he
+> > > relevant subunit of memory (obtained from the error record that we are
+> > > basing the decision to repair on) we need to specify all of:
+> > >=20
+> > > Channel, sub-channel, rank,  bank group, row, column and nibble mask.
+> > > For coarser granularity repair only specify a subset of these applies=
+ and
+> > > only the relevant controls are exposed to userspace.
+> > >=20
+> > > They are broken out as specific attributes to enable each to be set b=
+efore
+> > > triggering the action with a write to the repair attribute.
+> > >=20
+> > > There are several possible alternatives:
+> > >=20
+> > > Option 1
+> > >=20
+> > > "A:B:C:D:E:F:G:H:I:J" opaque single write to trigger the repair where
+> > > each number is providing one of those coordinates and where a readback
+> > > let's us known what each number is.
+> > >=20
+> > > That single attribute interface is very hard to extend in an intuitiv=
+e way.
+> > >=20
+> > > History tell us more levels will be introduced in the middle, not just
+> > > at the finest granularity, making such an interface hard to extend in
+> > > a backwards compatible way.
+> > >=20
+> > > Another alternative of a key value list would make for a nasty sysfs
+> > > interface.
+> > >=20
+> > > Option 2=20
+> > > There are sysfs interfaces that use a selection type presentation.
+> > >=20
+> > > Write: "C", Read: "A, B, [C], D" but that only works well for discret=
+e sets
+> > > of options and is a pain to parse if read back is necessary.   =20
+> >=20
+> > Writing it as:
+> >=20
+> > 	a b [c] d
+> >=20
+> > or even:
+> > 	a, b, [c], d
+> >=20
+> > doesn't make it hard to be parse on userspace. Adding a comma makes
+> > Kernel code a little bigger, as it needs an extra check at the loop
+> > to check if the line is empty or not:
+> >=20
+> > 	if (*tmp !=3D '\0')
+> > 		*tmp +=3D snprintf(", ")
+> >=20
+> > Btwm we have an implementation like that on kernelspace/userspace for
+> > the RC API:
+> >=20
+> > - Kernelspace:
+> >   https://github.com/torvalds/linux/blob/master/drivers/media/rc/rc-mai=
+n.c#L1125
+> >   6 lines of code + a const table with names/values, if we use the same=
+ example
+> >   for EDAC:
+> >=20
+> > 	const char *name[] =3D { "foo", "bar" };
+> >=20
+> > 	for (i =3D 0; i < ARRAY_SIZE(names); i++) {
+> > 		if (enabled & names[i].type)
+> > 			tmp +=3D sprintf(tmp, "[%s] ", names[i].name);
+> > 		else if (allowed & proto_names[i].type)
+> > 			tmp +=3D sprintf(tmp, "%s ", names[i].name);
+> > 	}
+> >=20
+> >=20
+> > - Userspace:
+> >   https://git.linuxtv.org/v4l-utils.git/tree/utils/keytable/keytable.c#=
+n197
+> >   5 lines of code + a const table, if we use the same example
+> >   for ras-daemon:
+> >=20
+> > 		const char *name[] =3D {=20
+> > 			[EDAC_FOO] =3D "[foo]",
+> > 			[EDAC_BAR] =3D "[bar]",
+> > 		};
+> >=20
+> > 		for (p =3D strtok(arg, " ,"); p; p =3D strtok(NULL, " ,"))
+> > 			for (i =3D 0; i < ARRAY_SIZE(name); i++)
+> > 				if (!strcasecmp(p, name[i])
+> > 					return i;
+> > 		return -1;
+> >=20
+> > 	(strtok handles both space and commas at the above example)
+> >=20
+> > IMO, this is a lot better, as the alternative would be to have separate
+> > sysfs nodes to describe what values are valid for a given edac devnode.
+> >=20
+> > See, userspace needs to know what values are valid for a given
+> > device and support for it may vary depending on the Kernel and
+> > device version. So, we need to have the information about what values
+> > are valid stored on some sysfs devnode, to allow backward compatibility=
+. =20
 >=20
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> These aren't selectors from a discrete list so the question is more
+> whether a syntax of
+> <min> value <max>=20
+> is intuitive or not.  I'm not aware of precedence for this one.
+
+=46rom my side, I prefer having 3 separate sysfs nodes, as this is a
+very common practice. Doing it on a different way sounds an API violation,
+but if someone insists on dropping min/max, this can be argued at
+https://lore.kernel.org/linux-api/.
+
+On a very quick search:
+
+	$ ./scripts/get_abi.pl search "\bmin.*max"
+
+I can't see any place using min and max at the same devnode.
+
+	$ ./scripts/get_abi.pl search "\b(min|max)"|grep /sys/ |wc -l
+	234
+
+So, it sounds to me that merging those into a single devnode is an
+API violation.
+
 >=20
-> and I think that it would be better to route it via platform/x86 along
-> with the second patch.
-
-That's were it already is among the other platform profile changes.
-
-We still have one big platform profile series pending (though Kurt needs=20
-to do small tweaks still into it before it can be applied):
-
-https://lore.kernel.org/all/20250109150731.110799-1-kuurtb@gmail.com/
-
---=20
- i.
-
-> > ---
-> >  drivers/acpi/platform_profile.c  | 29 +++++++++++++++++++++++++++++
-> >  include/linux/platform_profile.h |  1 +
-> >  2 files changed, 30 insertions(+)
-> >
-> > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pr=
-ofile.c
-> > index 75a1415190ac..4c4200a0b1a6 100644
-> > --- a/drivers/acpi/platform_profile.c
-> > +++ b/drivers/acpi/platform_profile.c
-> > @@ -519,6 +519,35 @@ int platform_profile_remove(struct platform_profil=
-e_handler *pprof)
-> >  }
-> >  EXPORT_SYMBOL_GPL(platform_profile_remove);
-> >
-> > +static void devm_platform_profile_release(struct device *dev, void *re=
-s)
-> > +{
-> > +       struct platform_profile_handler **pprof =3D res;
-> > +
-> > +       platform_profile_remove(*pprof);
-> > +}
-> > +
-> > +int devm_platform_profile_register(struct platform_profile_handler *pp=
-rof)
-> > +{
-> > +       struct platform_profile_handler **dr;
-> > +       int ret;
-> > +
-> > +       dr =3D devres_alloc(devm_platform_profile_release, sizeof(*dr),=
- GFP_KERNEL);
-> > +       if (!dr)
-> > +               return -ENOMEM;
-> > +
-> > +       ret =3D platform_profile_register(pprof);
-> > +       if (ret) {
-> > +               devres_free(dr);
-> > +               return ret;
-> > +       }
-> > +
-> > +       *dr =3D pprof;
-> > +       devres_add(pprof->dev, dr);
-> > +
-> > +       return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(devm_platform_profile_register);
-> > +
-> >  static int __init platform_profile_init(void)
-> >  {
-> >         int err;
-> > diff --git a/include/linux/platform_profile.h b/include/linux/platform_=
-profile.h
-> > index 0682bb4c57e5..f1cd4b65e351 100644
-> > --- a/include/linux/platform_profile.h
-> > +++ b/include/linux/platform_profile.h
-> > @@ -41,6 +41,7 @@ struct platform_profile_handler {
-> >
-> >  int platform_profile_register(struct platform_profile_handler *pprof);
-> >  int platform_profile_remove(struct platform_profile_handler *pprof);
-> > +int devm_platform_profile_register(struct platform_profile_handler *pp=
-rof);
-> >  int platform_profile_cycle(void);
-> >  void platform_profile_notify(struct platform_profile_handler *pprof);
-> >
-> > --
-> > 2.47.1
-> >
+> There was another branch of the thread where Boris mentioned this as an
+> option. It isn't bad to deal with and an easy change to the code,
+> but I have an open question on what choice we make for representing
+> unknown min / max.  For separate files the absence of the file
+> indicates we don't have any information.
 >=20
---8323328-1032797698-1736864604=:1077--
+>=20
+> >  =20
+> > >=20
+> > > So in conclusion, I think the proposed multiple sysfs attribute style
+> > > with them reading back the most recent value written is the least bad
+> > > solution to a complex control interface.
+> > >    =20
+> > > >=20
+> > > > echo ...=20
+> > > >=20
+> > > > then writes in the bank.
+> > > >      =20
+> > > > > ... so we would propose we do not add max_ and min_ for now and s=
+ee how the
+> > > > > use cases evolve.       =20
+> > > >=20
+> > > > Yes, you should apply that same methodology to the rest of the new =
+features
+> > > > you're adding: only add functionality for the stuff that is actuall=
+y being
+> > > > used now. You can always extend it later.
+> > > >=20
+> > > > Changing an already user-visible API is a whole different story and=
+ a lot lot
+> > > > harder, even impossible.
+> > > >=20
+> > > > So I'd suggest you prune the EDAC patches from all the hypothetical=
+ usage and
+> > > > then send only what remains so that I can try to queue them.     =20
+> > >=20
+> > > Sure. In this case the addition of min/max was perhaps a wrong respon=
+se to
+> > > your request for a way to those ranges rather than just rejecting a w=
+rite
+> > > of something out of range as earlier version did.
+> > >=20
+> > > We can revisit in future if range discovery becomes necessary.  Perso=
+nally
+> > > I don't think it is given we are only taking these actions in respons=
+e error
+> > > records that give us precisely what to write and hence are always in =
+range.   =20
+> >=20
+> > For RO devnodes, there's no need for ranges, but those are likely neede=
+d for
+> > RW, as otherwise userspace may try to write invalid requests and/or have
+> > backward-compatibility issues. =20
+>=20
+> Given these parameters are only meaningfully written with values coming
+> ultimately from error records, userspace should never consider writing
+> something that is out of range except during testing.
+>=20
+> I don't mind presenting the range where known (in CXL case it is not
+> discoverable for most of them) but I wouldn't expect tooling to ever
+> read it as known correct values to write come from the error records.
+> Checking those values against provided limits seems an unnecessary step
+> given an invalid parameter that slips through will be rejected by the
+> hardware anyway.
+
+I'm fine starting without min/max if there's no current usecase, provided
+that:
+
+1. when needed, we add min/max as separate devnodes;
+2. there won't be any backward issues when min/max gets added.
+
+Regards,
+Mauro
 
