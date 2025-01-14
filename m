@@ -1,330 +1,301 @@
-Return-Path: <linux-acpi+bounces-10580-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10581-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2CDA0FD5B
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 01:27:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D0BA0FDF7
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 02:22:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1E82169AB6
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 00:27:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFF3E3A0445
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Jan 2025 01:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBDB5258;
-	Tue, 14 Jan 2025 00:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFEC224B0E;
+	Tue, 14 Jan 2025 01:22:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699B24A1D;
-	Tue, 14 Jan 2025 00:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA04EC5;
+	Tue, 14 Jan 2025 01:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736814439; cv=none; b=tHiKUt01WG6hKCO9Gy4DHts7/BDBgUN96nh0+m+aVrh1vTkWSa19sn2nN5UeMFH74i3TVU5V3gs5a0Noq6fSOpRn5ZRhdSSIkC7Q4rsxQy+e3788isAzzUhnI4mcGg5iD7TGRM9lTE866nTLldIGiEEBz+7z6cthQQpLmmfb0WY=
+	t=1736817727; cv=none; b=fzeyS64dnemyZJvWmHZZxYaglG72U4jocGcG6OUf2ov37THYiFXcgcxd+0ags+14jGAQ2aiH0gx2RenXfqxQSzZqYXE/NGW9q25S4z865bhzdt+L9gnuYSq6ow2JgMmCpKjoI+cMQ7SmjjKfA08Og/64OggHcPCn3RNuVhVgfqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736814439; c=relaxed/simple;
-	bh=NK4XWAUbCpUAc41KidmEaeovvstXtG1lWSoNfb1tcWg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FFwn+bW7M0qC0r0oJ4FA/Z8S/eS5xm0Oq7+OtD45fw6JSIUr0a5Cyv6Zzcq14ntoJSVMZyX3YgyYEcR+JO7KL1IIXAxJV3wCHwqfPGG12m3P3QweskFdZuoc36XPs8sDmQlNdY5WT0VruMEhwaooxwXF74IiXReLAcHT1kI2q6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1tXUlu-00000005dAb-1ltZ;
-	Tue, 14 Jan 2025 01:27:06 +0100
-Message-ID: <e2e76ae3-ba99-4975-b9b7-2946f593c800@maciej.szmigiero.name>
-Date: Tue, 14 Jan 2025 01:27:01 +0100
+	s=arc-20240116; t=1736817727; c=relaxed/simple;
+	bh=+IH/Zbgj6AKu2Zb7+zutdU1a2fn8O2tNsNCrUp1e6W8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hFf4uWGn4ck0UvTTeCIUpwQyGRnbp0L/4Cet3/hKyytvxm06lM2TT6EHE5ej6nxL2sUNemStW//DZlLQU5OEWUe/WBp/yY1WUFGVL1eEtOAEbv6WbLsyJ6KIVSZzcZXIQYVYESXtBH2ITl4CWJvLyxkC79brNGH/25CU01mJ01U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joshuagrisham.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joshuagrisham.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53e389d8dc7so4816042e87.0;
+        Mon, 13 Jan 2025 17:22:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736817723; x=1737422523;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+STYqbut6K8qwUB/ttsKsOQ8S9frInfKcyWtIs5oRjI=;
+        b=ZkGfaikU0cTZg6E/dRl0faMeURxeQR8XSLQxHqnZjDUXdDjExDyWcOio4R3GfxNphS
+         dDe4VX0bvVoDp6eZGhCV75ALSPEKx/PCjgdaL1nOdl8neeK3zb9ne13kyYAsZEv4J8c6
+         bnFx/6Y6G53wecOHBggGRI60Rnh5mCODu0AarhMgVvzBh9xrM45mnAg/I72SFxIphkIt
+         wUjrIs/5DyAg+/k9Bx03KbaRwGXx+t4SvH5LglN1/b08CVlkMMhuE36qZfoHMN+pJPFH
+         AZAM+yCeWf3Ha4sOKYAbDL8DP7AY39TAiBrkAB3ZgzjPMuZc60c5HQ2K3cBUzjQ4NRpX
+         ZCSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUW4J7PwKiTWGfxMm+IMUQFWZvhH2bj/X+V+tahm5CbHVLGIUf1rJX941QWla67buIf5vhQeBHnzuR5@vger.kernel.org, AJvYcCVjS81KWX1dkja+OU5VIdkrFiC9t3p4qx3auJjrgjZc47UG9kHNBUoTwZYdGmDIDXViERmBqzmhRkw0SUoN@vger.kernel.org
+X-Gm-Message-State: AOJu0YylF9yFSZf05DF50qeEUla/9A3stQc77LiNw12VjTROKL3kCsXr
+	eNR/s3wWqk8l2+azHZ4tmIGDGYu0WaXEKNitVEe1o3prGi8WBExV
+X-Gm-Gg: ASbGncvxrWpaxgm7YaGWxs3BQnj/XYetGLUUb2h2xnuduGLnEHxJFWN1kGtLX9p2Zic
+	YSNUIdLNaPdzbuJmPJIR6Trh7FYXS2qHm4zBEOuhjQKiLsuJ/Icp4PLbWoqGcWY2vDBBockp6UW
+	vFzlzDDdeOsxd+IJwdalq5szyuGMvX+Hh5duuubhopcNz65I+aNFWPqOWThevPllP3zwhexaKfA
+	H6rwCD3jej5whv4I4uC0YT4tECg7DuhnTu6Q5fD6Qu+wWdOM0tEVYB4OgglmmR9LND+9sHlt0+G
+	EGQYUe0tn+nvmPtbQ3BAwA==
+X-Google-Smtp-Source: AGHT+IF2l5PVy91vTFj66p5wYTQHxdupTViszX/+2Cqp8BtYZ8fdqLxQhcLUr5scam++YRq0kXz6Fw==
+X-Received: by 2002:a05:6512:3e17:b0:540:3550:b1dd with SMTP id 2adb3069b0e04-542845b188fmr8176393e87.3.1736817723193;
+        Mon, 13 Jan 2025 17:22:03 -0800 (PST)
+Received: from galaxybook.local (82-183-24-76.customers.ownit.se. [82.183.24.76])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428be54804sm1532169e87.92.2025.01.13.17.22.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 17:22:01 -0800 (PST)
+From: Joshua Grisham <josh@joshuagrisham.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	W_Armin@gmx.de,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Joshua Grisham <josh@joshuagrisham.com>
+Subject: [PATCH] ACPI: fan: Add fan speed reporting for fans with only _FST
+Date: Tue, 14 Jan 2025 02:21:50 +0100
+Message-ID: <20250114012150.156349-1-josh@joshuagrisham.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH] ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power
- resource quirk
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <fdf629284a00da61384eadea6ac0cd78c20e7e11.1735490662.git.mail@maciej.szmigiero.name>
- <CAJZ5v0j+gUjTGAVCxBQad3Bb5D0ai+dRa5kmNu_ohf5TCnpUhQ@mail.gmail.com>
-Content-Language: en-US, pl-PL
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-Disposition-Notification-To: "Maciej S. Szmigiero"
- <mail@maciej.szmigiero.name>
-In-Reply-To: <CAJZ5v0j+gUjTGAVCxBQad3Bb5D0ai+dRa5kmNu_ohf5TCnpUhQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Sender: mhej@vps-ovh.mhejs.net
+Content-Transfer-Encoding: 7bit
 
-On 7.01.2025 19:46, Rafael J. Wysocki wrote:
-> On Sun, Dec 29, 2024 at 5:45 PM Maciej S. Szmigiero
-> <mail@maciej.szmigiero.name> wrote:
->>
->> This laptop (and possibly similar models too) has power resource called
->> "GP12.PXP_" for its Intel XMM7360 WWAN modem.
->>
->> For this power resource to turn ON power for the modem it needs certain
->> internal flag called "ONEN" to be set:
->> Method (_ON, 0, NotSerialized) // _ON_: Power On
->> {
->>          If (^^^LPCB.EC0.ECRG)
->>          {
->>                  If ((ONEN == Zero))
->>                  {
->>                          Return (Zero)
->>                  }
->> (..)
->>          }
->> }
->>
->>
->> This flag only gets set from this power resource "_OFF" method, while the
->> actual modem power gets turned off during suspend by "GP12.PTS" method
->> called from the global "_PTS" (Prepare To Sleep) method.
->>
->> In fact, this power resource "_OFF" method implementation just sets the
->> aforementioned flag:
->> Method (_OFF, 0, NotSerialized) // _OFF: Power Off
->> {
->>          OFEN = Zero
->>          ONEN = One
->> }
->>
->> Upon hibernation finish we try to set this power resource back ON since its
->> "_STA" method returns 0 and the resource is still considered in use as it
->> is declared as required for D0 for both the modem ACPI device (GP12.PWAN)
->> and its parent PCIe port ACPI device (GP12).
->> But the "_ON" method won't do anything since that "ONEN" flag is not set.
->>
->> Overall, this means the modem is dead after hibernation finish until the
->> laptop is rebooted since the modem power has been cut by "_PTS" and its PCI
->> configuration was lost and not able to be restored.
->>
->> The easiest way to workaround this issue is to call this power resource
->> "_OFF" method before calling the "_ON" method to make sure the "ONEN"
->> flag gets properly set.
->>
->> This makes the modem alive once again after hibernation finish - with
->> properly restored PCI configuration space.
->>
->> Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-> 
-> Thanks for the patch, but I'd rather find a different way of
-> addressing the problem at hand because there are at least two
-> potential issues with this approach.
-> 
->> ---
->>   drivers/acpi/power.c | 75 ++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 75 insertions(+)
->>
->> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
->> index 25174c24d3d7..1db93cf8e4f6 100644
->> --- a/drivers/acpi/power.c
->> +++ b/drivers/acpi/power.c
->> @@ -23,6 +23,7 @@
->>
->>   #define pr_fmt(fmt) "ACPI: PM: " fmt
->>
->> +#include <linux/delay.h>
->>   #include <linux/dmi.h>
->>   #include <linux/kernel.h>
->>   #include <linux/module.h>
->> @@ -991,9 +992,57 @@ struct acpi_device *acpi_add_power_resource(acpi_handle handle)
->>   }
->>
->>   #ifdef CONFIG_ACPI_SLEEP
->> +static const struct dmi_system_id dmi_hp_elitebook_gp12pxp_quirk[] = {
->> +/*
->> + * This laptop (and possibly similar models too) has power resource called
->> + * "GP12.PXP_" for its WWAN modem.
->> + *
->> + * For this power resource to turn ON power for the modem it needs certain
->> + * internal flag called "ONEN" to be set.
->> + * This flag only gets set from this power resource "_OFF" method, while the
->> + * actual modem power gets turned off during suspend by "GP12.PTS" method
->> + * called from the global "_PTS" (Prepare To Sleep) method.
->> + * On the other hand, this power resource "_OFF" method implementation just
->> + * sets the aforementioned flag without actually doing anything else (it
->> + * doesn't contain any code to actually turn off power).
->> + *
->> + * The above means that when upon hibernation finish we try to set this
->> + * power resource back ON since its "_STA" method returns 0 (while the resource
->> + * is still considered in use) its "_ON" method won't do anything since
->> + * that "ONEN" flag is not set.
->> + * Overall, this means the modem is dead until laptop is rebooted since its
->> + * power has been cut by "_PTS" and its PCI configuration was lost and not able
->> + * to be restored.
->> + *
->> + * The easiest way to workaround the issue is to call this power resource
->> + * "_OFF" method before calling the "_ON" method to make sure the "ONEN"
->> + * flag gets properly set.
->> + */
->> +       {
->> +               .matches = {
->> +                       DMI_MATCH(DMI_SYS_VENDOR, "HP"),
->> +                       DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 855 G7 Notebook PC"),
->> +               },
->> +       },
->> +       {}
->> +};
->> +
->> +static bool resource_is_gp12pxp(acpi_handle handle)
->> +{
->> +       const char *path;
->> +       bool ret;
->> +
->> +       path = acpi_handle_path(handle);
->> +       ret = path && strcmp(path, "\\_SB_.PCI0.GP12.PXP_") == 0;
->> +       kfree(path);
->> +
->> +       return ret;
->> +}
->> +
->>   void acpi_resume_power_resources(void)
->>   {
->>          struct acpi_power_resource *resource;
->> +       bool hp_eb_gp12pxp_quirk = dmi_check_system(dmi_hp_elitebook_gp12pxp_quirk);
->>
->>          mutex_lock(&power_resource_list_lock);
->>
->> @@ -1012,8 +1061,34 @@ void acpi_resume_power_resources(void)
->>
->>                  if (state == ACPI_POWER_RESOURCE_STATE_OFF
->>                      && resource->ref_count) {
->> +                       bool eb_gp12pxp = hp_eb_gp12pxp_quirk &&
->> +                               resource_is_gp12pxp(resource->device.handle);
-> 
-> This is quite a bit of a useless overhead for all of the systems that
-> don't actually contain this defective power resource.
+Add support for ACPI fans with _FST to report their speed even if they do
+not support fan control.
 
-There's already an existing dmi_check_system() in similar
-acpi_turn_off_unused_power_resources() function.
+As suggested by Armin Wolf [1] and per the Windows Thermal Management
+Design Guide [2], Samsung Galaxy Book series devices (and possibly many
+more devices where the Windows guide was strictly followed) only implement
+the _FST method and do not support ACPI-based fan control.
 
-This function is called just once during system wake so it is
-hardly a hot path.
-In any case, that hp_eb_gp12pxp_quirk flag initialization part
-could be easily moved to some init function that's run just once
-during system boot.
+Currently, these fans are not supported by the kernel driver but this patch
+will make some very small adjustments to allow them to be supported.
 
-Then the whole overhead on other systems amounts to hp_eb_gp12pxp_quirk
-flag comparison as resource_is_gp12pxp() won't be called on them
-due to && operator short-circuit evaluation behavior.
+This patch is tested and working for me on a Samsung Galaxy Book2 Pro whose
+DSDT (and several other Samsung Galaxy Book series notebooks which
+currently have the same issue) can be found at [3].
 
-> Also, according to your description, the problem is
-> hibernation-specific and this function is also called on resume from
-> suspend-to-RAM.
+[1]: https://lore.kernel.org/platform-driver-x86/53c5075b-1967-45d0-937f-463912dd966d@gmx.de
+[2]: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/design-guide
+[3]: https://github.com/joshuagrisham/samsung-galaxybook-extras/tree/8e3087a06b8bdcdfdd081367af4b744a56cc4ee9/dsdt
 
-This platform supports just s2idle - no S3 support there, so that's
-not a problem.
+Signed-off-by: Joshua Grisham <josh@joshuagrisham.com>
+---
+ drivers/acpi/fan.h       |  1 +
+ drivers/acpi/fan_attr.c  | 37 ++++++++++++++++++++++---------------
+ drivers/acpi/fan_core.c  | 24 ++++++++++++++++--------
+ drivers/acpi/fan_hwmon.c |  6 ++++++
+ 4 files changed, 45 insertions(+), 23 deletions(-)
 
->> +
->> +                       if (eb_gp12pxp) {
->> +                               acpi_handle_notice(resource->device.handle,
->> +                                                  "HP EB quirk - turning OFF before ON\n");
->> +                               __acpi_power_off(resource);
->> +                       }
->> +
->>                          acpi_handle_debug(resource->device.handle, "Turning ON\n");
->>                          __acpi_power_on(resource);
->> +
->> +                       if (eb_gp12pxp) {
->> +                               /*
->> +                                * Use the same delay as DSDT uses in modem _RST
->> +                                * method.
->> +                                *
->> +                                * Otherwise we get "Unable to change power
->> +                                * state from unknown to D0, device
->> +                                * inaccessible" error for the modem PCI device
->> +                                * after thaw.
->> +                                *
->> +                                * This power resource is normally being enabled
->> +                                * only during thaw (once) so this wait is not
->> +                                * a performance issue.
->> +                                */
->> +                               msleep(200);
->> +                       }
->>                  }
->>
->>                  mutex_unlock(&resource->resource_lock);
-> 
-> It looks like the modem's driver is modular and not included into the
-> initrd image, so the restore kernel doesn't initialize it during
-> resume from hibernation.
-> 
-> Have you tried to build that driver into the kernel or add it to the initrd?
+diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+index 488b51e2c..d0aad88a7 100644
+--- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -49,6 +49,7 @@ struct acpi_fan_fst {
+ 
+ struct acpi_fan {
+ 	bool acpi4;
++	bool acpi4_only_fst;
+ 	struct acpi_fan_fif fif;
+ 	struct acpi_fan_fps *fps;
+ 	int fps_count;
+diff --git a/drivers/acpi/fan_attr.c b/drivers/acpi/fan_attr.c
+index f4f6e2381..d83f88429 100644
+--- a/drivers/acpi/fan_attr.c
++++ b/drivers/acpi/fan_attr.c
+@@ -75,15 +75,6 @@ int acpi_fan_create_attributes(struct acpi_device *device)
+ 	struct acpi_fan *fan = acpi_driver_data(device);
+ 	int i, status;
+ 
+-	sysfs_attr_init(&fan->fine_grain_control.attr);
+-	fan->fine_grain_control.show = show_fine_grain_control;
+-	fan->fine_grain_control.store = NULL;
+-	fan->fine_grain_control.attr.name = "fine_grain_control";
+-	fan->fine_grain_control.attr.mode = 0444;
+-	status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+-	if (status)
+-		return status;
+-
+ 	/* _FST is present if we are here */
+ 	sysfs_attr_init(&fan->fst_speed.attr);
+ 	fan->fst_speed.show = show_fan_speed;
+@@ -92,7 +83,19 @@ int acpi_fan_create_attributes(struct acpi_device *device)
+ 	fan->fst_speed.attr.mode = 0444;
+ 	status = sysfs_create_file(&device->dev.kobj, &fan->fst_speed.attr);
+ 	if (status)
+-		goto rem_fine_grain_attr;
++		return status;
++
++	if (fan->acpi4_only_fst)
++		return 0;
++
++	sysfs_attr_init(&fan->fine_grain_control.attr);
++	fan->fine_grain_control.show = show_fine_grain_control;
++	fan->fine_grain_control.store = NULL;
++	fan->fine_grain_control.attr.name = "fine_grain_control";
++	fan->fine_grain_control.attr.mode = 0444;
++	status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
++	if (status)
++		goto rem_fst_attr;
+ 
+ 	for (i = 0; i < fan->fps_count; ++i) {
+ 		struct acpi_fan_fps *fps = &fan->fps[i];
+@@ -109,18 +112,18 @@ int acpi_fan_create_attributes(struct acpi_device *device)
+ 
+ 			for (j = 0; j < i; ++j)
+ 				sysfs_remove_file(&device->dev.kobj, &fan->fps[j].dev_attr.attr);
+-			goto rem_fst_attr;
++			goto rem_fine_grain_attr;
+ 		}
+ 	}
+ 
+ 	return 0;
+ 
+-rem_fst_attr:
+-	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+-
+ rem_fine_grain_attr:
+ 	sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+ 
++rem_fst_attr:
++	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
++
+ 	return status;
+ }
+ 
+@@ -129,9 +132,13 @@ void acpi_fan_delete_attributes(struct acpi_device *device)
+ 	struct acpi_fan *fan = acpi_driver_data(device);
+ 	int i;
+ 
++	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
++
++	if (fan->acpi4_only_fst)
++		return;
++
+ 	for (i = 0; i < fan->fps_count; ++i)
+ 		sysfs_remove_file(&device->dev.kobj, &fan->fps[i].dev_attr.attr);
+ 
+-	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+ 	sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+ }
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 10016f52f..b51b1481c 100644
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -211,6 +211,11 @@ static bool acpi_fan_is_acpi4(struct acpi_device *device)
+ 	       acpi_has_method(device->handle, "_FST");
+ }
+ 
++static bool acpi_fan_has_fst(struct acpi_device *device)
++{
++	return acpi_has_method(device->handle, "_FST");
++}
++
+ static int acpi_fan_get_fif(struct acpi_device *device)
+ {
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+@@ -327,7 +332,12 @@ static int acpi_fan_probe(struct platform_device *pdev)
+ 	device->driver_data = fan;
+ 	platform_set_drvdata(pdev, fan);
+ 
+-	if (acpi_fan_is_acpi4(device)) {
++	if (acpi_fan_is_acpi4(device))
++		fan->acpi4 = true;
++	else if (acpi_fan_has_fst(device))
++		fan->acpi4_only_fst = true;
++
++	if (fan->acpi4) {
+ 		result = acpi_fan_get_fif(device);
+ 		if (result)
+ 			return result;
+@@ -335,7 +345,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
+ 		result = acpi_fan_get_fps(device);
+ 		if (result)
+ 			return result;
+-
++	} else if (fan->acpi4 || fan->acpi4_only_fst) {
+ 		result = devm_acpi_fan_create_hwmon(device);
+ 		if (result)
+ 			return result;
+@@ -343,8 +353,6 @@ static int acpi_fan_probe(struct platform_device *pdev)
+ 		result = acpi_fan_create_attributes(device);
+ 		if (result)
+ 			return result;
+-
+-		fan->acpi4 = true;
+ 	} else {
+ 		result = acpi_device_update_power(device, NULL);
+ 		if (result) {
+@@ -391,7 +399,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
+ err_unregister:
+ 	thermal_cooling_device_unregister(cdev);
+ err_end:
+-	if (fan->acpi4)
++	if (fan->acpi4 || fan->acpi4_only_fst)
+ 		acpi_fan_delete_attributes(device);
+ 
+ 	return result;
+@@ -401,7 +409,7 @@ static void acpi_fan_remove(struct platform_device *pdev)
+ {
+ 	struct acpi_fan *fan = platform_get_drvdata(pdev);
+ 
+-	if (fan->acpi4) {
++	if (fan->acpi4 || fan->acpi4_only_fst) {
+ 		struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+ 
+ 		acpi_fan_delete_attributes(device);
+@@ -415,7 +423,7 @@ static void acpi_fan_remove(struct platform_device *pdev)
+ static int acpi_fan_suspend(struct device *dev)
+ {
+ 	struct acpi_fan *fan = dev_get_drvdata(dev);
+-	if (fan->acpi4)
++	if (fan->acpi4 || fan->acpi4_only_fst)
+ 		return 0;
+ 
+ 	acpi_device_set_power(ACPI_COMPANION(dev), ACPI_STATE_D0);
+@@ -428,7 +436,7 @@ static int acpi_fan_resume(struct device *dev)
+ 	int result;
+ 	struct acpi_fan *fan = dev_get_drvdata(dev);
+ 
+-	if (fan->acpi4)
++	if (fan->acpi4 || fan->acpi4_only_fst)
+ 		return 0;
+ 
+ 	result = acpi_device_update_power(ACPI_COMPANION(dev), NULL);
+diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+index bd0d31a39..87bee018c 100644
+--- a/drivers/acpi/fan_hwmon.c
++++ b/drivers/acpi/fan_hwmon.c
+@@ -43,6 +43,12 @@ static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_
+ 		case hwmon_fan_input:
+ 			return 0444;
+ 		case hwmon_fan_target:
++			/*
++			 * Fans with only _FST do not support fan control.
++			 */
++			if (fan->acpi4_only_fst)
++				return 0;
++
+ 			/*
+ 			 * When in fine grain control mode, not every fan control value
+ 			 * has an associated fan performance state.
+-- 
+2.45.2
 
-I did a quick test with the WWAN modem driver that's built into the kernel
-and in the case of 100% successful hibernation the modem indeed works after
-resume.
-
-But in case of aborted (or failed) hibernation it is still broken
-(this scenario can be simulated easily by writing to /sys/power/pm_test).
-
-While a failed hibernation entry might sound like a corner case in practice
-it is far from it unfortunately - I start to experience it regularly after
-about 2 weeks of uptime when the machine RAM usage starts to exceed 50%
-(I start to get memory allocation failures during hibernation as that other
-50% of RAM gets used by AFAIK snapshot copy of the memory).
-
-Other things, like for example btrfs scrub running in background, or active
-wake event may also cause failed hibernation entry.
-
-What's worse, even successful hibernation and restore after that doesn't
-bring back the modem to the working state - a clean reboot of the machine
-is necessary for that.
-
-It's also worth noting that the root cause of the problem is firmware bug
-that reports this power resource as OFF via "_STA" but does not allow turning
-it ON via just "_ON" method call so that's what we probably should be fixing.
-
-I've updated that laptop BIOS to the latest version but sadly it does not
-seem to bring any DSDT changes with respect to the previous one.
-
-Thanks,
-Maciej
 
