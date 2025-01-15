@@ -1,44 +1,44 @@
-Return-Path: <linux-acpi+bounces-10673-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10674-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F36A11C44
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 09:43:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8447FA11C45
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 09:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 840207A35DE
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:43:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97CEF188ABCC
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A301E7C37;
-	Wed, 15 Jan 2025 08:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865311EEA32;
+	Wed, 15 Jan 2025 08:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="OPI96Ie5"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="mxg4qX8H"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE3D1E7C19;
-	Wed, 15 Jan 2025 08:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C031E7C34;
+	Wed, 15 Jan 2025 08:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736930569; cv=none; b=XYddjHvssfCrBTUockNp9audTTCPsjEgg/qo7NLazN+ytLPZ/g5ZwMUqeUUV3EsQSFMzRG8GNjNWc2F8JczoNc1Yxvbssf2puZCHsf1PydMNIi8CU1J9ZbLVdZdU37vIvfO1VfmElGrdKxyZH31i+7c1p7f7PWDjlxXR04tyuiE=
+	t=1736930572; cv=none; b=NMIw91VbhC7ZrkcGj3MF8fdPFwaTyOhJdbMhbaNlYyAhXn82dFLuh3u0JcYeyM3uCLqhCou0iWWgyWyHj0TwadJsbQZEK+OxMgBYPfkudOI55eDVjpY+deQCXvkIac9MUMlkI6N4Ge3C7xnJAtuZPMRo3Lj2nNTPNrxP8Umj+Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736930569; c=relaxed/simple;
-	bh=uz1Xe+f8JOpfT5e/4+oYMSV7jdmH+b6YsJWciAWGzss=;
+	s=arc-20240116; t=1736930572; c=relaxed/simple;
+	bh=J+bbjmFVuXtZlK/YngJ2JUOmX9HZtGpHQr2OjWeMi1I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DrHrVWSrD+m7Dz98y1f0UH6lIlIp0rw0HIhoyAn/XtXyLEI3zIMHLtNZNxDBFn80kP0Ak7ynCodLInQAtxWQVfyboNeUS5f8Um4WLvQmxLn4LG6znib1zgtgzjFdslFR5QCUJBKDZVtwK81EZnNYOg+05SW68Mp/FqpQbQNcOws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=OPI96Ie5; arc=none smtp.client-ip=115.124.30.110
+	 MIME-Version; b=IlscOlJC9q4W4ggnxW63V0pgqF+cab0vjfbBtup8Cs50QacyxdPkqCpAIRsPUQ9b9352EvJhGtQPeyMk2Xruoas1IhNLMB1LzMIaxq+nS8YATkT+awOl50RNp0Ev2QtmecqXmkWMDrr/5OW1m6nScvoClnV9lwCVPceFmeVcDgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=mxg4qX8H; arc=none smtp.client-ip=115.124.30.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1736930558; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=g1vToKAKNW4zdLS93Qdf0lRuFENalediCWpiCtcMczM=;
-	b=OPI96Ie5v6z1m+EjbQvUaKbXUxvl26yBwFztyk65v4plsWu4/CGhcX+/GnmykPdXt7uyd8fpvGQO+Sl9jzIi+xVJTlX+o9QYkL3KK2/h/6kSqGe/niOp7wwrop0Z3AkPmYFeMVbKMmabG/eV9+VuG3XclVPFApHh3Gm/FURkzzc=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WNhzd2L_1736930556 cluster:ay36)
+	t=1736930561; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=xjBRVnRNir2yorfiUax7O2/0CZ3MeEGVqbkYJk/5aoI=;
+	b=mxg4qX8HOg1JTgNOQofYutO2/GCTVIdtrqdScr3NAN6pDPnWUuO/0OFrJ//I5QT4+o4OAyWXtrSYB9KoKqHZADhOgWaI6jY2jvHlTNrRAUhXtXI+sTfHPSvcFDvSZs04iV6IKpUveGbRWee1KSB6W41kjvFtzOICUH9mL/bVuuc=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WNhzd43_1736930559 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 15 Jan 2025 16:42:38 +0800
+          Wed, 15 Jan 2025 16:42:40 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -56,9 +56,9 @@ To: catalin.marinas@arm.com,
 	bp@alien8.de,
 	yazen.ghannam@amd.com
 Cc: tianruidong@linux.alibaba.com
-Subject: [PATCH v3 2/5] RAS/AEST: Introduce AEST driver sysfs interface
-Date: Wed, 15 Jan 2025 16:42:25 +0800
-Message-Id: <20250115084228.107573-3-tianruidong@linux.alibaba.com>
+Subject: [PATCH v3 3/5] RAS/AEST: Introduce AEST inject interface to test AEST driver
+Date: Wed, 15 Jan 2025 16:42:26 +0800
+Message-Id: <20250115084228.107573-4-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20250115084228.107573-1-tianruidong@linux.alibaba.com>
 References: <20250115084228.107573-1-tianruidong@linux.alibaba.com>
@@ -70,258 +70,83 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Exposes certain AEST driver information to userspace.
+AEST injection interface can help to test how AEST driver process error
+record which raise error.
 
-Only ROOT can access these interface because it includes
-hardware-sensitive information.
+This interface just raise a SW simulate error rather than HW error.
 
-All AEST device will create one platform device, and for oncore device,
-like CPU error node, will create a directory named "ras" in each cpu
-device, and this directory include all records of this core:
+Example1:
 
-  ls /sys/kernel/debug/aest/
-  record0 record1 ...
+1. write RAS register value to err_* file:
+echo 0x... > <debugfs>/aest/<dev>/<node>/inject/err_fr
+echo 0x... > <debugfs>/aest/<dev>/<node>/inject/err_status
+echo 0x... > <debugfs>/aest/<dev>/<node>/inject/err_addr
+echo 0x... > <debugfs>/aest/<dev>/<node>/inject/err_*
 
-Interface in
+2. trigger the error:
+echo -1 > <debugfs>/aest/<dev>/<node>/inject/inject
 
-All details at:
-        Documentation/ABI/testing/sysfs-driver-aest
+AEST driver will process this error with error register value specified
+by user.
+
+Example2:
+
+1. just trigger the error:
+echo n(record_cpunt > n >=0 ) > <debugfs>/aest/<dev>/<node>/inject/inject
+
+AEST driver will process this error with error register values read
+from record<n> of this node.
 
 Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
- Documentation/ABI/testing/debugfs-aest |  98 +++++++++++
- MAINTAINERS                            |   1 +
- drivers/acpi/arm64/aest.c              |   3 +
+ Documentation/ABI/testing/debugfs-aest |  17 +++
  drivers/ras/aest/Makefile              |   1 +
- drivers/ras/aest/aest-core.c           |  35 ++++
- drivers/ras/aest/aest-sysfs.c          | 226 +++++++++++++++++++++++++
- drivers/ras/aest/aest.h                |  15 +-
- 7 files changed, 378 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/ABI/testing/debugfs-aest
- create mode 100644 drivers/ras/aest/aest-sysfs.c
+ drivers/ras/aest/aest-inject.c         | 151 +++++++++++++++++++++++++
+ drivers/ras/aest/aest-sysfs.c          |   8 +-
+ drivers/ras/aest/aest.h                |   2 +
+ 5 files changed, 177 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/ras/aest/aest-inject.c
 
 diff --git a/Documentation/ABI/testing/debugfs-aest b/Documentation/ABI/testing/debugfs-aest
-new file mode 100644
-index 000000000000..39d9c85843ef
---- /dev/null
+index 39d9c85843ef..4d3f4464cf98 100644
+--- a/Documentation/ABI/testing/debugfs-aest
 +++ b/Documentation/ABI/testing/debugfs-aest
-@@ -0,0 +1,98 @@
-+What:		/sys/kernel/debug/aest/<name>.<uid>/
+@@ -96,3 +96,20 @@ KernelVersion	6.10
+ Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
+ Description:
+ 		(RO) Outputs error statistics for all this records.
++
++What:		/sys/devices/platform/AEST.<UID>/<Nome_name>/inject/err_*
 +Date:		June 2024
 +KernelVersion	6.10
 +Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
 +Description:
-+		Directory represented a AEST device, <name> means device type,
-+		like:
++		(RW) Write any integer to this file to trigger the error
++		injection. Make sure you have specified all necessary error
++		parameters, i.e. this write should be the last step when
++		injecting errors.
 +
-+			processor
-+			memory
-+			smmu
-+			...
-+		<uid> is the unique ID for this device.
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/*
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		Attibute for aest node which belong this device, the format
-+		of node name is: <Node Type>-<Node Address>
-+
-+		See more at:
-+			https://developer.arm.com/documentation/den0085/latest/
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/type
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RO) Return number indicates aest node type:
-+
-+		0 : Processor
-+		1 : Memory Controller
-+		2 : SMMU
-+		3 : Vendor-defined
-+		4 : GIC
-+		5 : PCIe Root Complex
-+		6 : Proxy error
-+
-+		See more at:
-+			https://developer.arm.com/documentation/den0085/latest/
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/error_node_device
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RO) ACPI _UID field of the Arm error node device in DSDT
-+		that describes this error node
-+
-+		See more at:
-+			https://developer.arm.com/documentation/den0085/latest/
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/ce_threshold
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(WO) Write the ce threshold to all records of this node. Failed
-+		if input exceeded the maximum threshold
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/err_count
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RO) Outputs error statistics for all error records of this node.
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/record<index>/err_*
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RO) Read err_* register and return val.
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/record<index>/err_*
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RO) Read err_* register and return val.
-+
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/record<index>/ce_threshold
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RW) Read and write the ce threshold to this record. Failed
-+		if input exceeded the maximum threshold
-+
-+What:		/sys/kernel/debug/aest/<dev_name>/<node_name>/record<index>/err_count
-+Date:		June 2024
-+KernelVersion	6.10
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(RO) Outputs error statistics for all this records.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d757f9339627..fe9ae27fdbec 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -335,6 +335,7 @@ M:	Ruidong Tian <tianruidond@linux.alibaba.com>
- L:	linux-acpi@vger.kernel.org
- L:	linux-arm-kernel@lists.infradead.org
- S:	Supported
-+F:	Documentation/ABI/testing/debugfs-aest
- F:	arch/arm64/include/asm/ras.h
- F:	drivers/acpi/arm64/aest.c
- F:	drivers/ras/aest/
-diff --git a/drivers/acpi/arm64/aest.c b/drivers/acpi/arm64/aest.c
-index 6dba9c23e04e..312ddd5c15f5 100644
---- a/drivers/acpi/arm64/aest.c
-+++ b/drivers/acpi/arm64/aest.c
-@@ -318,6 +318,9 @@ void __init acpi_aest_init(void)
- 	}
- 
- 	aest_array = kzalloc(sizeof(struct xarray), GFP_KERNEL);
-+	if (!aest_array)
-+		return;
-+
- 	xa_init(aest_array);
- 
- 	ret = acpi_aest_init_nodes(aest_table);
++		Accepts values -  -1 or n ( 0 <= n < <record_count>).
++		-1 : If you write -1, make sure you specified all err_* file,
++		     driver will use these err_* value to proce AEST error.
++		n : Driver will read record<n> of this error node to collect
++		    error register value, and use these values to proce AEST
++		    error.
 diff --git a/drivers/ras/aest/Makefile b/drivers/ras/aest/Makefile
-index a6ba7e36fb43..75495413d2b6 100644
+index 75495413d2b6..5ee10fc8b2e9 100644
 --- a/drivers/ras/aest/Makefile
 +++ b/drivers/ras/aest/Makefile
-@@ -3,3 +3,4 @@
- obj-$(CONFIG_AEST) 	+= aest.o
+@@ -4,3 +4,4 @@ obj-$(CONFIG_AEST) 	+= aest.o
  
  aest-y		:= aest-core.o
-+aest-y		+= aest-sysfs.o
-diff --git a/drivers/ras/aest/aest-core.c b/drivers/ras/aest/aest-core.c
-index 060a1eedee0a..12d0a32ecda9 100644
---- a/drivers/ras/aest/aest-core.c
-+++ b/drivers/ras/aest/aest-core.c
-@@ -20,6 +20,9 @@ DEFINE_PER_CPU(struct aest_device, percpu_adev);
- #undef pr_fmt
- #define pr_fmt(fmt) "AEST: " fmt
- 
-+#ifdef CONFIG_DEBUG_FS
-+struct dentry *aest_debugfs;
-+#endif
- /*
-  * This memory pool is only to be used to save AEST node in AEST irq context.
-  * There can be 500 AEST node at most.
-@@ -165,6 +168,27 @@ aest_node_gen_pool_add(struct aest_device *adev, struct aest_record *record,
- 	init_aest_event(event, record, regs);
- 	llist_add(&event->llnode, &adev->event_list);
- 
-+	if (regs->err_status & ERR_STATUS_CE)
-+		record->count.ce++;
-+	if (regs->err_status & ERR_STATUS_DE)
-+		record->count.de++;
-+	if (regs->err_status & ERR_STATUS_UE) {
-+		switch (regs->err_status & ERR_STATUS_UET) {
-+		case ERR_STATUS_UET_UC:
-+			record->count.uc++;
-+			break;
-+		case ERR_STATUS_UET_UEU:
-+			record->count.ueu++;
-+			break;
-+		case ERR_STATUS_UET_UER:
-+			record->count.uer++;
-+			break;
-+		case ERR_STATUS_UET_UEO:
-+			record->count.ueo++;
-+			break;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -938,10 +962,13 @@ static int aest_device_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	aest_dev_init_debugfs(adev);
-+
- 	aest_dev_dbg(adev, "Node cnt: %x, uid: %x, irq: %d, %d\n",
- 			adev->node_cnt, adev->uid, adev->irq[0], adev->irq[1]);
- 
- 	return 0;
-+
- }
- 
- static const struct acpi_device_id acpi_aest_ids[] = {
-@@ -960,12 +987,20 @@ static struct platform_driver aest_driver = {
- 
- static int __init aest_init(void)
- {
-+#ifdef CONFIG_DEBUG_FS
-+	aest_debugfs = debugfs_create_dir("aest", NULL);
-+#endif
-+
- 	return platform_driver_register(&aest_driver);
- }
- module_init(aest_init);
- 
- static void __exit aest_exit(void)
- {
-+#ifdef CONFIG_DEBUG_FS
-+	debugfs_remove(aest_debugfs);
-+#endif
-+
- 	platform_driver_unregister(&aest_driver);
- }
- module_exit(aest_exit);
-diff --git a/drivers/ras/aest/aest-sysfs.c b/drivers/ras/aest/aest-sysfs.c
+ aest-y		+= aest-sysfs.o
++aest-y		+= aest-inject.o
+diff --git a/drivers/ras/aest/aest-inject.c b/drivers/ras/aest/aest-inject.c
 new file mode 100644
-index 000000000000..f19cd2b5edb2
+index 000000000000..2ca074aa021c
 --- /dev/null
-+++ b/drivers/ras/aest/aest-sysfs.c
-@@ -0,0 +1,226 @@
++++ b/drivers/ras/aest/aest-inject.c
+@@ -0,0 +1,151 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * ARM Error Source Table Support
@@ -331,274 +156,190 @@ index 000000000000..f19cd2b5edb2
 +
 +#include "aest.h"
 +
-+static void
-+aest_store_threshold(struct aest_record *record, void *data)
-+{
-+	u64 err_misc0, *threshold = data;
-+	struct ce_threshold *ce = &record->ce;
++static struct ras_ext_regs regs_inj;
++static u64 hard_inject_val;
 +
-+	if (*threshold > ce->info->max_count)
-+		return;
-+
-+	ce->threshold = *threshold;
-+	ce->count = ce->info->max_count - ce->threshold + 1;
-+
-+	err_misc0 = record_read(record, ERXMISC0);
-+	ce->reg_val = (err_misc0 & ~ce->info->mask) |
-+			(ce->count << ce->info->shift);
-+
-+	record_write(record, ERXMISC0, ce->reg_val);
-+}
-+
-+static void
-+aest_error_count(struct aest_record *record, void *data)
-+{
-+	struct record_count *count = data;
-+
-+	count->ce += record->count.ce;
-+	count->de += record->count.de;
-+	count->uc += record->count.uc;
-+	count->ueu += record->count.ueu;
-+	count->uer += record->count.uer;
-+	count->ueo += record->count.ueo;
-+}
-+
-+/*******************************************************************************
-+ *
-+ * Debugfs for AEST node
-+ *
-+ ******************************************************************************/
-+
-+static int aest_node_err_count_show(struct seq_file *m, void *data)
-+{
-+	struct aest_node *node = data;
-+	struct record_count count = { 0 };
-+	int i;
-+
-+	for (i = 0; i < node->record_count; i++)
-+		aest_error_count(&node->records[i], &count);
-+
-+	seq_printf(m, "CE: %llu\n"
-+				"DE: %llu\n"
-+				"UC: %llu\n"
-+				"UEU: %llu\n"
-+				"UEO: %llu\n"
-+				"UER: %llu\n",
-+				count.ce, count.de, count.uc, count.ueu,
-+				count.uer, count.ueo);
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(aest_node_err_count);
-+
-+/*******************************************************************************
-+ *
-+ * Attribute for AEST record
-+ *
-+ ******************************************************************************/
-+
-+#define DEFINE_AEST_DEBUGFS_ATTR(name, offset) \
-+static int name##_get(void *data, u64 *val) \
-+{ \
-+	struct aest_record *record = data; \
-+	*val = record_read(record, offset); \
-+	return 0; \
-+} \
-+static int name##_set(void *data, u64 val) \
-+{ \
-+	struct aest_record *record = data; \
-+	record_write(record, offset, val); \
-+	return 0; \
-+} \
-+DEFINE_DEBUGFS_ATTRIBUTE(name##_ops, name##_get, name##_set, "%#llx\n")
-+
-+DEFINE_AEST_DEBUGFS_ATTR(err_fr, ERXFR);
-+DEFINE_AEST_DEBUGFS_ATTR(err_ctrl, ERXCTLR);
-+DEFINE_AEST_DEBUGFS_ATTR(err_status, ERXSTATUS);
-+DEFINE_AEST_DEBUGFS_ATTR(err_addr, ERXADDR);
-+DEFINE_AEST_DEBUGFS_ATTR(err_misc0, ERXMISC0);
-+DEFINE_AEST_DEBUGFS_ATTR(err_misc1, ERXMISC1);
-+DEFINE_AEST_DEBUGFS_ATTR(err_misc2, ERXMISC2);
-+DEFINE_AEST_DEBUGFS_ATTR(err_misc3, ERXMISC3);
-+
-+static int record_ce_threshold_get(void *data, u64 *val)
-+{
-+	struct aest_record *record = data;
-+
-+	*val = record->ce.threshold;
-+	return 0;
-+}
-+
-+static int record_ce_threshold_set(void *data, u64 val)
-+{
-+	u64 threshold = val;
-+	struct aest_record *record = data;
-+
-+	aest_store_threshold(record, &threshold);
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(record_ce_threshold_ops, record_ce_threshold_get,
-+					record_ce_threshold_set, "%llu\n");
-+
-+static int aest_record_err_count_show(struct seq_file *m, void *data)
-+{
-+	struct aest_record *record = data;
-+	struct record_count count = { 0 };
-+
-+	aest_error_count(record, &count);
-+
-+	seq_printf(m, "CE: %llu\n"
-+				"DE: %llu\n"
-+				"UC: %llu\n"
-+				"UEU: %llu\n"
-+				"UEO: %llu\n"
-+				"UER: %llu\n",
-+				count.ce, count.de, count.uc, count.ueu,
-+				count.uer, count.ueo);
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(aest_record_err_count);
-+
-+static void aest_record_init_debugfs(struct aest_record *record)
-+{
-+	debugfs_create_file("err_fr", 0600, record->debugfs, record,
-+								&err_fr_ops);
-+	debugfs_create_file("err_ctrl", 0600, record->debugfs, record,
-+								&err_ctrl_ops);
-+	debugfs_create_file("err_status", 0600, record->debugfs, record,
-+								&err_status_ops);
-+	debugfs_create_file("err_addr", 0600, record->debugfs, record,
-+								&err_addr_ops);
-+	debugfs_create_file("err_misc0", 0600, record->debugfs, record,
-+								&err_misc0_ops);
-+	debugfs_create_file("err_misc1", 0600, record->debugfs, record,
-+								&err_misc1_ops);
-+	debugfs_create_file("err_misc2", 0600, record->debugfs, record,
-+								&err_misc2_ops);
-+	debugfs_create_file("err_misc3", 0600, record->debugfs, record,
-+								&err_misc3_ops);
-+	debugfs_create_file("err_count", 0400, record->debugfs, record,
-+						&aest_record_err_count_fops);
-+	debugfs_create_file("ce_threshold", 0400, record->debugfs, record,
-+						&record_ce_threshold_ops);
-+}
-+
-+static void
-+aest_node_init_debugfs(struct aest_node *node)
-+{
-+	int i;
-+	struct aest_record *record;
-+
-+	debugfs_create_u32("device_id", 0400, node->debugfs,
-+				&node->info->common->error_node_device);
-+	debugfs_create_file("err_count", 0400, node->debugfs, node,
-+					&aest_node_err_count_fops);
-+
-+	for (i = 0; i < node->record_count; i++) {
-+		record = &node->records[i];
-+		if (!record->name)
-+			continue;
-+		record->debugfs = debugfs_create_dir(record->name,
-+								node->debugfs);
-+		aest_record_init_debugfs(record);
-+	}
-+}
-+
-+static void
-+aest_oncore_dev_init_debugfs(struct aest_device *adev)
-+{
-+	int cpu, i;
-+	struct aest_node *node;
-+	struct aest_device *percpu_dev;
-+	char name[16];
-+
-+	for_each_possible_cpu(cpu) {
-+		percpu_dev = this_cpu_ptr(adev->adev_oncore);
-+
-+		snprintf(name, sizeof(name), "processor%u", cpu);
-+		percpu_dev->debugfs = debugfs_create_dir(name, aest_debugfs);
-+
-+		for (i = 0; i < adev->node_cnt; i++) {
-+			node = &adev->nodes[i];
-+
-+			node->debugfs = debugfs_create_dir(node->name,
-+							percpu_dev->debugfs);
-+			aest_node_init_debugfs(node);
-+		}
-+	}
-+}
-+
-+void aest_dev_init_debugfs(struct aest_device *adev)
-+{
-+	int i;
-+	struct aest_node *node;
-+
-+	adev->debugfs = debugfs_create_dir(dev_name(adev->dev), aest_debugfs);
-+	if (aest_dev_is_oncore(adev)) {
-+		aest_oncore_dev_init_debugfs(adev);
-+		return;
-+	}
-+
-+	for (i = 0; i < adev->node_cnt; i++) {
-+		node = &adev->nodes[i];
-+		if (!node->name)
-+			continue;
-+		node->debugfs = debugfs_create_dir(node->name, adev->debugfs);
-+		aest_node_init_debugfs(node);
-+	}
-+}
-diff --git a/drivers/ras/aest/aest.h b/drivers/ras/aest/aest.h
-index 04005aad3617..d9a52e39b1b9 100644
---- a/drivers/ras/aest/aest.h
-+++ b/drivers/ras/aest/aest.h
-@@ -7,6 +7,7 @@
- 
- #include <linux/acpi_aest.h>
- #include <asm/ras.h>
-+#include <linux/debugfs.h>
- 
- #define MAX_GSI_PER_NODE 2
- #define AEST_MAX_PPI 3
-@@ -53,7 +54,7 @@
- #define ERXGROUP		0xE00
- #define GIC_ERRDEVARCH		0xFFBC
- 
--extern struct xarray *aest_array;
-+extern struct dentry *aest_debugfs;
- 
- struct aest_event {
- 	struct llist_node llnode;
-@@ -104,6 +105,15 @@ struct ce_threshold {
- 	u64				reg_val;
- };
- 
-+struct record_count {
-+	u64				ce;
-+	u64				de;
-+	u64				uc;
-+	u64				uer;
-+	u64				ueo;
-+	u64				ueu;
++struct inj_attr {
++	struct attribute attr;
++	ssize_t (*show)(struct aest_node *n, struct inj_attr *a, char *b);
++	ssize_t (*store)(struct aest_node *n, struct inj_attr *a, const char *b,
++				size_t c);
 +};
 +
- struct aest_record {
- 	char				*name;
- 	int				index;
-@@ -125,6 +135,7 @@ struct aest_record {
- 	struct dentry			*debugfs;
- 	struct ce_threshold		ce;
- 	enum ras_ce_threshold		threshold_type;
-+	struct record_count		count;
- 	const struct aest_access	*access;
- 
- 	void				*vendor_data;
-@@ -321,3 +332,5 @@ aest_set_name(struct aest_device *adev, struct aest_hnode *ahnode)
- 
- 	return 0;
- }
++struct aest_inject {
++	struct aest_node *node;
++	struct kobject kobj;
++};
 +
-+void aest_dev_init_debugfs(struct aest_device *adev);
++#define to_inj(k)	container_of(k, struct aest_inject, kobj)
++#define to_inj_attr(a)	container_of(a, struct inj_attr, attr)
++
++static u64 aest_sysreg_read_inject(void *__unused, u32 offset)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	return p[offset/8];
++}
++
++static void aest_sysreg_write_inject(void *base, u32 offset, u64 val)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	p[offset/8] = val;
++}
++
++static u64 aest_iomem_read_inject(void *base, u32 offset)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	return p[offset/8];
++}
++
++static void aest_iomem_write_inject(void *base, u32 offset, u64 val)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	p[offset/8] = val;
++}
++
++static struct aest_access aest_access_inject[] = {
++	[ACPI_AEST_NODE_SYSTEM_REGISTER] = {
++		.read = aest_sysreg_read_inject,
++		.write = aest_sysreg_write_inject,
++	},
++
++	[ACPI_AEST_NODE_MEMORY_MAPPED] = {
++		.read = aest_iomem_read_inject,
++		.write = aest_iomem_write_inject,
++	},
++	[ACPI_AEST_NODE_SINGLE_RECORD_MEMORY_MAPPED] = {
++		.read = aest_iomem_read_inject,
++		.write = aest_iomem_write_inject,
++	},
++	{ }
++};
++
++static int inject_store(void *data, u64 val)
++{
++	int i = val, count = 0;
++	struct aest_record record_inj, *record;
++	struct aest_node node_inj, *node = data;
++
++	if (i > (int)node->info->interface_hdr->error_record_count)
++		return -EINVAL;
++
++	memcpy(&node_inj, node, sizeof(*node));
++	node_inj.name = "AEST-injection";
++
++	record_inj.access = &aest_access_inject[node->info->interface_hdr->type];
++	record_inj.node = &node_inj;
++	record_inj.index = i;
++	if (i >= 0) {
++		record = &node->records[i];
++		regs_inj.err_fr = record_read(record, ERXFR);
++		regs_inj.err_ctlr = record_read(record, ERXCTLR);
++		regs_inj.err_status = record_read(record, ERXSTATUS);
++		regs_inj.err_addr = record_read(record, ERXADDR);
++		regs_inj.err_misc[0] = record_read(record, ERXMISC0);
++		regs_inj.err_misc[1] = record_read(record, ERXMISC1);
++		regs_inj.err_misc[2] = record_read(record, ERXMISC2);
++		regs_inj.err_misc[3] = record_read(record, ERXMISC3);
++	}
++
++	regs_inj.err_status |= ERR_STATUS_V;
++
++	aest_proc_record(&record_inj, &count);
++
++	if (count != 1)
++		return -EIO;
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(inject_ops, NULL, inject_store, "%llu\n");
++
++static int hard_inject_store(void *data, u64 val)
++{
++	struct aest_node *node = data;
++
++	if (!node->inj)
++		return -EPERM;
++
++	if (val > node->record_count)
++		return -ENODEV;
++
++	if (node->type == ACPI_AEST_PROCESSOR_ERROR_NODE) {
++		aest_select_record(node, val);
++		write_sysreg_s(hard_inject_val, SYS_ERXPFGCTL_EL1);
++		write_sysreg_s(0x100, SYS_ERXPFGCDN_EL1);
++		aest_sync(node);
++	} else
++		writeq_relaxed(hard_inject_val, node->inj + val * 8);
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(hard_inject_ops, NULL, hard_inject_store, "%llu\n");
++
++void aest_inject_init_debugfs(struct aest_node *node)
++{
++	struct dentry *inj;
++
++	inj = debugfs_create_dir("inject", node->debugfs);
++
++	debugfs_create_u64("err_fr", 0400, inj, &regs_inj.err_fr);
++	debugfs_create_u64("err_ctrl", 0400, inj, &regs_inj.err_ctlr);
++	debugfs_create_u64("err_status", 0400, inj, &regs_inj.err_status);
++	debugfs_create_u64("err_addr", 0400, inj, &regs_inj.err_addr);
++	debugfs_create_u64("err_misc0", 0400, inj, &regs_inj.err_misc[0]);
++	debugfs_create_u64("err_misc1", 0400, inj, &regs_inj.err_misc[1]);
++	debugfs_create_u64("err_misc2", 0400, inj, &regs_inj.err_misc[2]);
++	debugfs_create_u64("err_misc3", 0400, inj, &regs_inj.err_misc[3]);
++	debugfs_create_file("inject", 0400, inj, node, &inject_ops);
++
++	debugfs_create_file("hard_inject", 0600, inj, node, &hard_inject_ops);
++	debugfs_create_u64("hard_inject_val", 0600, inj, &hard_inject_val);
++}
+diff --git a/drivers/ras/aest/aest-sysfs.c b/drivers/ras/aest/aest-sysfs.c
+index f19cd2b5edb2..ba913556fc03 100644
+--- a/drivers/ras/aest/aest-sysfs.c
++++ b/drivers/ras/aest/aest-sysfs.c
+@@ -192,8 +192,8 @@ aest_oncore_dev_init_debugfs(struct aest_device *adev)
+ 	for_each_possible_cpu(cpu) {
+ 		percpu_dev = this_cpu_ptr(adev->adev_oncore);
+ 
+-		snprintf(name, sizeof(name), "processor%u", cpu);
+-		percpu_dev->debugfs = debugfs_create_dir(name, aest_debugfs);
++		snprintf(name, sizeof(name), "CPU%u", cpu);
++		percpu_dev->debugfs = debugfs_create_dir(name, adev->debugfs);
+ 
+ 		for (i = 0; i < adev->node_cnt; i++) {
+ 			node = &adev->nodes[i];
+@@ -210,6 +210,9 @@ void aest_dev_init_debugfs(struct aest_device *adev)
+ 	int i;
+ 	struct aest_node *node;
+ 
++	if (!aest_debugfs)
++		dev_err(adev->dev, "debugfs not enabled\n");
++
+ 	adev->debugfs = debugfs_create_dir(dev_name(adev->dev), aest_debugfs);
+ 	if (aest_dev_is_oncore(adev)) {
+ 		aest_oncore_dev_init_debugfs(adev);
+@@ -222,5 +225,6 @@ void aest_dev_init_debugfs(struct aest_device *adev)
+ 			continue;
+ 		node->debugfs = debugfs_create_dir(node->name, adev->debugfs);
+ 		aest_node_init_debugfs(node);
++		aest_inject_init_debugfs(node);
+ 	}
+ }
+diff --git a/drivers/ras/aest/aest.h b/drivers/ras/aest/aest.h
+index d9a52e39b1b9..90a96e2666d3 100644
+--- a/drivers/ras/aest/aest.h
++++ b/drivers/ras/aest/aest.h
+@@ -334,3 +334,5 @@ aest_set_name(struct aest_device *adev, struct aest_hnode *ahnode)
+ }
+ 
+ void aest_dev_init_debugfs(struct aest_device *adev);
++void aest_inject_init_debugfs(struct aest_node *node);
++void aest_proc_record(struct aest_record *record, void *data);
 -- 
 2.33.1
 
