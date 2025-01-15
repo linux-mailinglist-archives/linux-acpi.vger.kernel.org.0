@@ -1,143 +1,156 @@
-Return-Path: <linux-acpi+bounces-10694-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10695-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F7A12C2F
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 21:02:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D250A12DA4
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 22:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 638481888169
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 20:02:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72712165362
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 21:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1648F1B0F3D;
-	Wed, 15 Jan 2025 20:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7481DA11B;
+	Wed, 15 Jan 2025 21:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZXsKAdJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mC1O4zFy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7646F24A7CC;
-	Wed, 15 Jan 2025 20:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006894D599;
+	Wed, 15 Jan 2025 21:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736971324; cv=none; b=WK02cE5Hbyr0809Jo2JeR2aSpa15fmzCz/BKUD0WKGTw6arOCCBq+Qy2jb29jDtTxcvfk7J38UFc7ILcyYjc3vUgA/R8DauRl6TxkKj7P0ZcYm4jrclO5jKmOn8XQqAO+P8BIKMLFHDWGh7WWUF2y6v0lcjfjfEOCnCi9nfHIEU=
+	t=1736976199; cv=none; b=PaiqhchN9LyBAMt/xudD12G+J9ElByN7sbTtJuwTvro7JLxyLBlD4YwO6shGesz+Go6qV/589VXsoquc5URdXKOgb7Tf7BupbWAXN1NjQw7u8FuyAJg5w05EUFhGvWlN9kFu+R0HfQwtXHFIzL3bwIjWbuvelgbNigHN1qf9pM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736971324; c=relaxed/simple;
-	bh=7Yi9wQXCf9Oa/YptQFNYrR2iLrZLm20usJHaoqVMUNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FVgiwqUbyxwRtIGpqf+9FD3JuWRpmInSbgp2o1ge8/74rBL9Kvx0wCcOKjniGg/8ufQ9HgIhVAbsWGrfmeO7dppKXcfcfuioju5VJghpyPjMKhvOHdFqyGGJ5PastfFVcf9x4u6SBm6AQC1iBX6Oyouj/ADa3ItPgChKCcVOnA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZXsKAdJ; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-467a37a2a53so2024501cf.2;
-        Wed, 15 Jan 2025 12:02:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736971321; x=1737576121; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EoSDSZwOF8a5VVtN8f70jSBvhuMPwgbv5dy0No8F5E0=;
-        b=MZXsKAdJUVMxCLlURQYJN/gyo74hMlES0rlfuM1AjEW1vifuhHOFAM/mVnI8BauKap
-         /tUiOsz0Y1Sskk9bq8PxczgHeLyF+bZGUcZl1Dzz4tkA53EKRYdtrQsGEoAFqSJyxSlu
-         xKuo8VWTKARiErSr9AJUPisi+kn/LgUsqnilrPHhRDhNnBVGgVmuzXafwkMNecppbH4g
-         fMH3iutOcuCcesRGqzIGKn/BSHIJ2El0dvYO0Lciz+s+1lPZ8Jcuw49od5guk3Ew4FCo
-         3Mfm98AP1ZAJ7+IAHOLIUidx715DK2rBY4wbL0m6lCQ4ZbSShBH5QtW+vqQFs13OpaX3
-         cWFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736971321; x=1737576121;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EoSDSZwOF8a5VVtN8f70jSBvhuMPwgbv5dy0No8F5E0=;
-        b=rZmBxLsCFGV8PjwkeBeyPzGasCu9n/q26U5BSShr9gv/8h5kS1vlyJ1VsDvDbem9gL
-         QpuADNb5ZrZDLOTZyaObADxlyQ1dUObNX5RSJNFu6+bDr5irlFHjeDdJYNXmN77vSJHL
-         cLWkkSXl6JIPtxM6oB2kfriJE9TwiTfIjfzDKGBYe6PcE8jwN1EFvHy1xloQHpMyRBb0
-         A/wjCL6qLutT75v7DLR3a1m6ZsA1H3HSCEARbYLrazsYx+5NQs/3olflm1z7qqEJcaye
-         LFCuB5E/1AQxpjGwNS00C2WNZ3yvfwWWuOOc4yWe1OKemLt+bUoFs3VXewuHzBSMJOX+
-         peCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJUuYT5+bW2tMQkpiOW4sBUJTGpI5wpqZdzvZ34IgQl+K8cZTSiZ0P3kOymltLgSy3J+JOmD5ZnedylfX0@vger.kernel.org, AJvYcCXCQlXqF5/Gx0MqqF9F+1kUIQoh6Qpt+LriqI0um9XHpXrDF6w6l37bYVQkPclCaBb8U3pcseCSdYWj@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLoJa6XWl9nhICIervpq4wEJZjBE7iWS1H9QvdJUbJ4CQOzjhJ
-	sn23dI3o4slE8TtuSz8i+Vb61j2Oa6uAoCavrpXreHbeYhpnZSUU
-X-Gm-Gg: ASbGncv9ltHDF2H2VQMq1IqbZL1033uPy+EBAdTHmAo9hHRryRst2Xm/VEVG6D7bsaj
-	Ryx67drr2BjjCC/cBNp6XIQOWZDJjibG2CCzZkXp0PrkMcciRc1bSK6/aFRgbFylvYt1N5ZDa1L
-	uWdpPBBhWEod/RisiAnMpe6teTmX+Ld0izCHXjb4RUQ2JoWCGWalynwUDXLrX9hc0gJ7Mn2l9yH
-	cq95jQerIjoGvVcCPL2ERsxnQ92N8DD/WG4XgjuqXGLwvy4JNOhA5lX
-X-Google-Smtp-Source: AGHT+IGMevjVBohoQpC5bCwsoBcn/4MAMRD39U6cz8jzxtQDjPU/Mq8XykjfEz4sT4E9SlXebMYDWQ==
-X-Received: by 2002:ac8:59ce:0:b0:467:5082:74bd with SMTP id d75a77b69052e-46c71083dcbmr504132481cf.34.1736971321122;
-        Wed, 15 Jan 2025 12:02:01 -0800 (PST)
-Received: from alphacentauri ([2800:bf0:179:113e:f067:4e25:4298:6451])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8623154b329sm5868111241.27.2025.01.15.12.01.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 12:02:00 -0800 (PST)
-Date: Wed, 15 Jan 2025 15:01:55 -0500
-From: Kurt Borja <kuurtb@gmail.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: platform-driver-x86@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Armin Wolf <W_Armin@gmx.de>, 
-	Joshua Grisham <josh@joshuagrisham.com>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Maximilian Luz <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>, 
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Corentin Chary <corentin.chary@gmail.com>, 
-	"Luke D. Jones" <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>, 
-	Ike Panhc <ike.pan@canonical.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, Alexis Belmonte <alexbelm48@gmail.com>, 
-	Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com, 
-	ibm-acpi-devel@lists.sourceforge.net
-Subject: Re: [PATCH v3 19/19] ACPI: platform_profile: Add a prefix to log
- messages
-Message-ID: <gwwl4a7o4drpejm7czcciradzv5jyp7hmpwev5jswqlkkb65rq@vbmamxucdmom>
-References: <20250115071022.4815-1-kuurtb@gmail.com>
- <20250115071022.4815-20-kuurtb@gmail.com>
- <d90eabb9-37c0-4763-b87e-696456da4e85@amd.com>
+	s=arc-20240116; t=1736976199; c=relaxed/simple;
+	bh=buQ6yhU4umw32VgNSvpomDQoppikaE+rCZLX3s5iooY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=B+yZMbXzwW+lM84bSq4S4tLXf546xfKLIPFXEb6W4lOqWn006nRGIvTOK1kJSAscoWCjoQNmpL6yumKYrpmuqW3z0bIM5/nDYMLvtf2hDbE6HlhC2N/K2rxw8vyFIuqbIjKml4pYmxG+qxhJvyLc70AsGVmuqA0ahXzpNClLy7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mC1O4zFy; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736976198; x=1768512198;
+  h=date:from:to:cc:subject:message-id;
+  bh=buQ6yhU4umw32VgNSvpomDQoppikaE+rCZLX3s5iooY=;
+  b=mC1O4zFysenZ2pNs76buN0TcMvV2Zt7l1yiGepobRYe1FKCB3fquRJwe
+   Ggp4R+zntCadwnfkhEXPuVBoAwrxrAIPfuXHdIb49cQIpmDjYAm6g1Vfq
+   rOofBrdFKevSOliEv9YhgsCnBH4izMw5B//tLoKfBVvJwIP+W1xuiTduL
+   QLMP03z56lBM73Ak9X4PUsyun/kj0BsOAihf5gzPFzXPuhEo3lZsjppsU
+   rnYsOY5LpqlZbObfj+zpETTI2O1D0k/huYcAcw2Rabpt39jsrv63CLYmS
+   QODtpTlmimirfpG+s62Gl6K27EuUCK7ugu+dp7inbI+dccVyhj4zOUZh4
+   Q==;
+X-CSE-ConnectionGUID: 8FMbcslQQWewf0Ys6DPFuw==
+X-CSE-MsgGUID: 6g++hlNkTQWKM/4Omm4ynw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="48726125"
+X-IronPort-AV: E=Sophos;i="6.13,207,1732608000"; 
+   d="scan'208";a="48726125"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 13:23:18 -0800
+X-CSE-ConnectionGUID: CqXOZdNYSYy38gi6Q7ZeIg==
+X-CSE-MsgGUID: mhTRMZ6aTne6NuQprt4tTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,207,1732608000"; 
+   d="scan'208";a="136110455"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 15 Jan 2025 13:23:16 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tYAr4-000QuV-0j;
+	Wed, 15 Jan 2025 21:23:14 +0000
+Date: Thu, 16 Jan 2025 05:22:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ bba4f2ac76f605f6f8b62c5dae11103ceb20ad60
+Message-ID: <202501160545.aaMR9yed-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d90eabb9-37c0-4763-b87e-696456da4e85@amd.com>
 
-On Wed, Jan 15, 2025 at 10:45:48AM -0600, Mario Limonciello wrote:
-> On 1/15/2025 01:10, Kurt Borja wrote:
-> > Declare a pr_fmt prefix.
-> > 
-> > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> 
-> I had to do a bit of a double take because you removed the prefix in patch
-> 15/19 of one of existing messages.  So this makes sense at this place in the
-> series, thanks!
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: bba4f2ac76f605f6f8b62c5dae11103ceb20ad60  Merge branch 'pm-sleep' into bleeding-edge
 
-Yes, I dropped the sanity check error message in favor of WARN_ON_ONCE
-because not passing that sanity check would just be a bug. Apart from
-that, there was only one more log message that needed the prefix and it
-didn't need to be modified.
+elapsed time: 1454m
 
-> 
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+configs tested: 62
+configs skipped: 0
 
-Thanks!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-~ Kurt
+tested configs:
+arc                  randconfig-001-20250115    gcc-13.2.0
+arc                  randconfig-002-20250115    gcc-13.2.0
+arm                  randconfig-001-20250115    clang-16
+arm                  randconfig-002-20250115    clang-20
+arm                  randconfig-003-20250115    clang-20
+arm                  randconfig-004-20250115    clang-20
+arm64                randconfig-001-20250115    clang-20
+arm64                randconfig-002-20250115    gcc-14.2.0
+arm64                randconfig-003-20250115    clang-18
+arm64                randconfig-004-20250115    gcc-14.2.0
+csky                 randconfig-001-20250115    gcc-14.2.0
+csky                 randconfig-002-20250115    gcc-14.2.0
+hexagon              randconfig-001-20250115    clang-20
+hexagon              randconfig-002-20250115    clang-19
+i386       buildonly-randconfig-001-20250115    clang-19
+i386       buildonly-randconfig-002-20250115    gcc-12
+i386       buildonly-randconfig-003-20250115    gcc-12
+i386       buildonly-randconfig-004-20250115    gcc-12
+i386       buildonly-randconfig-005-20250115    gcc-12
+i386       buildonly-randconfig-006-20250115    gcc-12
+loongarch            randconfig-001-20250115    gcc-14.2.0
+loongarch            randconfig-002-20250115    gcc-14.2.0
+nios2                randconfig-001-20250115    gcc-14.2.0
+nios2                randconfig-002-20250115    gcc-14.2.0
+openrisc                         allnoconfig    gcc-14.2.0
+parisc                           allnoconfig    gcc-14.2.0
+parisc               randconfig-001-20250115    gcc-14.2.0
+parisc               randconfig-002-20250115    gcc-14.2.0
+powerpc                          allnoconfig    gcc-14.2.0
+powerpc              randconfig-001-20250115    gcc-14.2.0
+powerpc              randconfig-002-20250115    gcc-14.2.0
+powerpc              randconfig-003-20250115    gcc-14.2.0
+powerpc64            randconfig-001-20250115    gcc-14.2.0
+powerpc64            randconfig-002-20250115    gcc-14.2.0
+powerpc64            randconfig-003-20250115    clang-18
+riscv                            allnoconfig    gcc-14.2.0
+riscv                randconfig-001-20250115    gcc-14.2.0
+riscv                randconfig-002-20250115    clang-16
+s390                            allmodconfig    clang-19
+s390                            allyesconfig    gcc-14.2.0
+s390                 randconfig-001-20250115    clang-20
+s390                 randconfig-002-20250115    clang-15
+sh                              allmodconfig    gcc-14.2.0
+sh                              allyesconfig    gcc-14.2.0
+sh                   randconfig-001-20250115    gcc-14.2.0
+sh                   randconfig-002-20250115    gcc-14.2.0
+sparc                           allmodconfig    gcc-14.2.0
+sparc                randconfig-001-20250115    gcc-14.2.0
+sparc                randconfig-002-20250115    gcc-14.2.0
+sparc64              randconfig-001-20250115    gcc-14.2.0
+sparc64              randconfig-002-20250115    gcc-14.2.0
+um                   randconfig-001-20250115    clang-18
+um                   randconfig-002-20250115    gcc-12
+x86_64                           allnoconfig    clang-19
+x86_64     buildonly-randconfig-001-20250115    gcc-12
+x86_64     buildonly-randconfig-002-20250115    gcc-12
+x86_64     buildonly-randconfig-003-20250115    clang-19
+x86_64     buildonly-randconfig-004-20250115    clang-19
+x86_64     buildonly-randconfig-005-20250115    gcc-12
+x86_64     buildonly-randconfig-006-20250115    clang-19
+xtensa               randconfig-001-20250115    gcc-14.2.0
+xtensa               randconfig-002-20250115    gcc-14.2.0
 
-> 
-> > ---
-> >   drivers/acpi/platform_profile.c | 2 ++
-> >   1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> > index 4895f37dd549..c9e46b6e27da 100644
-> > --- a/drivers/acpi/platform_profile.c
-> > +++ b/drivers/acpi/platform_profile.c
-> > @@ -2,6 +2,8 @@
-> >   /* Platform profile sysfs interface */
-> > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> > +
-> >   #include <linux/acpi.h>
-> >   #include <linux/bits.h>
-> >   #include <linux/cleanup.h>
-> 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
