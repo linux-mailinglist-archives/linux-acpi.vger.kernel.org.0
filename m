@@ -1,76 +1,76 @@
-Return-Path: <linux-acpi+bounces-10657-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10658-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D155A11A9B
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:13:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15F2A11A9D
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DB61889F2F
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 07:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01A4618879B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 07:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2015234D03;
-	Wed, 15 Jan 2025 07:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76100234CF9;
+	Wed, 15 Jan 2025 07:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gyr5I/lH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P0Ps1oi9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A32C231C8E;
-	Wed, 15 Jan 2025 07:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEAB234D0C;
+	Wed, 15 Jan 2025 07:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736925142; cv=none; b=Knvuy34FJ8mYZz4Xqoy0lw2itVReFoffcKMnffkkmNnJO4y146n0w4hy4NN6FQafhrL8Vd6vBVO/XkAUFgLdhnYpw4VquTP+FiE16vtGX+i7WFp1st3dXKIlK9uxRT8gDOyrNllGwmbv82rhs+L9GaPJ+Le1LEb6bloTZHPrOgA=
+	t=1736925150; cv=none; b=UpuilNuz58ZomHdVQtY5IMA/QhsJlIHhvvVxwoRnU3XfbFUOtSVEuAFmSwHS1qB5wRkdgZQItl5njPIndumi9+3o0N1VawTRjgFj3HgiDqd3ozQF7b2MLdmkT8/2alc1jyhOwwgfSXW3Z6ZtKSwCiI80/xU7ycPPRcmFuS1geLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736925142; c=relaxed/simple;
-	bh=B+PxdPDh048pQD/k3PgrUQCKOG60hGDd1vrFivW5ztE=;
+	s=arc-20240116; t=1736925150; c=relaxed/simple;
+	bh=si37KGSHX/ewSFMJ+nzgzSZQFSgJ2idpK6K/FB1yymg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMcQFz44pPV6Om25r5mnmpcuffEfP3cDHijEj3VyiuqwippgS1iVQ6y50hsB4NM3Mh4b3n9Ft2qmw38E2RPBu4br4z7i68wRydkJtruGDvD2y3Gg7ezSi1zT0qRXOhq7nwZdDfgDP7guooL24vqHKaWlwKp7zA8hhU8THl1ePDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gyr5I/lH; arc=none smtp.client-ip=209.85.217.52
+	 MIME-Version; b=TE1O7C+eoHpsDGrj9S6YiVrKIf1MhaJ6yLQg5JtIy4r4BldtGzX98CVqFa7tE0gE+X+0PARC52pdjNSMg3ZfCJ/euMqQgBaWcwIhHKr18xgOjtm9OuoNLS7IbkjgyMNuEFCmOwz/muxpDas1+uYYRceKDpxmwJKNXSHtC30+ZAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P0Ps1oi9; arc=none smtp.client-ip=209.85.217.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4afdf300d07so3692244137.3;
-        Tue, 14 Jan 2025 23:12:20 -0800 (PST)
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4aff78a39e1so2091156137.1;
+        Tue, 14 Jan 2025 23:12:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736925140; x=1737529940; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736925147; x=1737529947; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VXJtZ4DEJ2TVGLd1PBzRyZIRNg5LLQs9jY/0CznM+L0=;
-        b=gyr5I/lHT77ag4BV99wRAFzURWhq/IGuthcVVGw73WvJh4NEJnLJYUtNS3DjGiAoWe
-         /s47phvihOQmaLv5FB5huXFlaXJwZX+QSAgEGxY3lSTFEY6s/1OibCrXHzwtQYXVEzpo
-         wnk5AKV/59Ao47v2mOKz2nP8i6RQX+5o5pgYn/taMaIvurjpZQ0yf9R3Og7RNBtWa1NS
-         vxl1WIMI8e99qZGaDyscE2lPQ2q9fxf/qYC3OAJ59mkJLnNvLanYj2XcfeNR4gXW3ABa
-         gXq15WBRL026ZhAid/t9VVpRGN811EfOxdZNfiEtI6iR+zbhv9pGmzpjfjryITF3MevW
-         DRug==
+        bh=pXqMhXSFhpzzUaGn7Ji6wnQLUeEerxmcX7mppMJSFzk=;
+        b=P0Ps1oi9A3EFjb0NQHlfWPg6e/V5sea9d+7BTxhXadowEOb7OqADkaTcnRvTX1bbcg
+         ScxQJ7VsqodK/Ig/rwAIkq7W5cKG9Om3L4sudKSwl2DrAJR5L/r3qVW/3gsWZ4PQgZa1
+         GDtiHE+HDje+hAd0xVJDJAvgpdzRvtvmsz2HBVdcS1yU2vbOfKcmVfk0Boi9Qec9Gr93
+         xCvxWIQ5bRmtS1boHbVGjw1yLcpcI7oRdUIG+Py1oyaZTgUa3VtF1chSRiQnNM8FQ8Fz
+         qGy2Y9tu0Pa7NpBxpKTBbJMfT7/5XqhqPnpJ3mxj/T1qmDmqL9ZQQ61M2Kdqbbw7EH5E
+         x3PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736925140; x=1737529940;
+        d=1e100.net; s=20230601; t=1736925147; x=1737529947;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VXJtZ4DEJ2TVGLd1PBzRyZIRNg5LLQs9jY/0CznM+L0=;
-        b=qDtr5SPcuIibbI7zH0qxwfLu1EeXKHp+cDi7Fu7C4TPzxfNnIQDl9VeqajuDqKpO8d
-         r70lbAwnr06nFhSboM4/ne2j+xo1fnWDPHeRVRkhM+h54niiTPd5Tk+3wIHSVw56qxBo
-         TV2DRbNS6bf+7JxKopCO02G5Bapkw1lmBLmtgJSjaKSHsdugj7Dmz9AX3y4XTV+3IC9y
-         q8zMyKdqUajp7of3xiZvrhuwXL8kzAZJzrPfGC1dTXYBJbqE+Eczn70ACzqh/j22S0Xy
-         yVDGW9gUojBMOErBZM7tRxVWYdYB2bhCRQAv/uxKxZuIn8h8cDczVlOdPGGR7aB7y5KQ
-         xAwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW/677YP5yegfoE/fl3+dR8PFuMlLfuGOskxKODYYrAkfUmFTFCVbEBW1UTbYpvYjepgpLuQxJ7rvDl0Pgm@vger.kernel.org, AJvYcCWk/iau2lGVJ1OrYoKZLovXcDZL2lQHIc06UeOZ8BTlZVzObwZysjWj46OBfYnmOsDI2JNeMu2GTrRu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKagiY8HWYhIZEm0iNKH4TAGeZXwH4GQKin9RImXgq1NvQ7BtM
-	0j3N+vReo03TY+4Kiido5wEWBXe+O852iiVSHb8BKyAdVL0gFk0CylzQ6g==
-X-Gm-Gg: ASbGnctL4pYoCCgXfsoMVznsK+W1XkQw2Ff5KnR/DPtcdt01oT0cRFC1McEvy0ghLTj
-	7w5+5MJsXZj4zV+HEu0frtU9FJwXUJlpmtXwKnJHFeWMq9+WoqkJ6NPHN40nNYRf/xvvTkeNcoj
-	1Y7D99hMXlL6o3qv00PA1f0V7IjXk2zwiK0yX01PaoGNTao7UfgaSkqinQvN1P7fiB8yHY8rvd4
-	3C08EJHDlUfDTEDk/yRpcfvB24cMvbChY6zM301EZDlzynmMeKS0loJ+BXkRzAV
-X-Google-Smtp-Source: AGHT+IFX7hf91lbxOibrFIOrjzixs61Nl5Lhpyf5V3eGDskxCLoLgPym7EOm/71BWJs2UjUNJBcKFw==
-X-Received: by 2002:a05:6102:808b:b0:4b6:3e7e:ee48 with SMTP id ada2fe7eead31-4b63e7ef1c9mr12231487137.18.1736925139809;
-        Tue, 14 Jan 2025 23:12:19 -0800 (PST)
+        bh=pXqMhXSFhpzzUaGn7Ji6wnQLUeEerxmcX7mppMJSFzk=;
+        b=luB8Xm3FBeS27PeM4VSXkU6FLEKJGQAoRCT7Pl+p7IG+Z/vyDOdEAzv45+ivI7crss
+         Z9VVuqTB1xUT4fY07F4e0nlm70QIdw69lrLySkX+h8DeUVVMXuMFQl8E+Qlq4anVszes
+         Sr0fWukMcCcxCsIoDmGrxkjL0n/0oGJWG27WWE+fkC0nL62hQApUmYr61dYvS3nyAG9s
+         4u8/iDrfmCLq/xYyTlr/I1U9Xi3xlZKFjbLpSPKdoZUhJuolvyfYp5aTvGhhUQgiSkur
+         mOjKW5Vb8OetMFyyG1Ph7OT3/Iz/q6P1JI33LfhR1kQQuHRgXw1k97pEdRDDmbza8v1W
+         kXqg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7+rYxIibSPNK3CugYz3Isgs1nFFMwFCLtLAilRzEYYNEMgM5cTcrjn8oVPPPmgCp2/08VD7P1Ru7GUiNg@vger.kernel.org, AJvYcCXl8rLgm5Vh2qLgxNubgUSMnqnUp+ZIqVx6T9p6R+xasqVzdZHatsDdafRIPaCf5D0oXXxgKegMWvmM@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAK+EmEwaVjcd4ypO9zR2ANxWG5SGSOb07fkbaa81A2nyvUr+i
+	yiyGYiQWozKWX7u1J3Ro3v7a3ZQgph4ErzBQqXO1dOP6Ne6Q3e6Xk9NqzQ==
+X-Gm-Gg: ASbGncuSU8ni05eUU9JKjHSNoUZ9t1YfNB0e/Wfb0VrCTkY0Gqwrj18/UIZCy+kx3a0
+	1MKqUhy+kiYd75dWHCMJXnEXWzXI7nYsjjP+x64fwodLt460LKi3y7R45I73/hRg66HuM23uX+t
+	8Rkyn3Nc4Fo0F/YI10CxLNf5C0SZDoEXi+A7rwep0Re5PPPSssv5/+4Ba1d2z9n1gglBh5n6qUp
+	JfoTFRdniFk79otpLlG6n/3ODSWAZZyWdYxqZTV36FXbkk8pnMjnrQ+uXNsuwWG
+X-Google-Smtp-Source: AGHT+IE8cMN6763yvEseYS7F8mziXmnwL3gCNkh7QukZh3CWLkVXZlQrlkzMi/+c2+Nx0S8pkb6fiQ==
+X-Received: by 2002:a05:6102:80a2:b0:4b1:1caf:f61b with SMTP id ada2fe7eead31-4b3d104867bmr26190938137.18.1736925147245;
+        Tue, 14 Jan 2025 23:12:27 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f033ffsm5084366137.6.2025.01.14.23.12.12
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f033ffsm5084366137.6.2025.01.14.23.12.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 23:12:19 -0800 (PST)
+        Tue, 14 Jan 2025 23:12:26 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -98,9 +98,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	"Gergo Koteles" <soyer@irl.hu>,
 	Dell.Client.Kernel@dell.com,
 	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH v3 09/19] platform/x86: asus-wmi: Use devm_platform_profile_register()
-Date: Wed, 15 Jan 2025 02:10:12 -0500
-Message-ID: <20250115071022.4815-10-kuurtb@gmail.com>
+Subject: [PATCH v3 10/19] platform/x86: dell-pc: Use devm_platform_profile_register()
+Date: Wed, 15 Jan 2025 02:10:13 -0500
+Message-ID: <20250115071022.4815-11-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115071022.4815-1-kuurtb@gmail.com>
 References: <20250115071022.4815-1-kuurtb@gmail.com>
@@ -117,45 +117,29 @@ Replace platform_profile_register() with it's device managed version.
 Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/platform/x86/asus-wmi.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/platform/x86/dell/dell-pc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 3d77f7454953..f8437cff66df 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -3895,12 +3895,12 @@ static int platform_profile_setup(struct asus_wmi *asus)
- 	asus->platform_profile_handler.dev = dev;
- 	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+diff --git a/drivers/platform/x86/dell/dell-pc.c b/drivers/platform/x86/dell/dell-pc.c
+index 32b3be0723f8..2759bb608b1a 100644
+--- a/drivers/platform/x86/dell/dell-pc.c
++++ b/drivers/platform/x86/dell/dell-pc.c
+@@ -281,7 +281,7 @@ static int thermal_init(void)
+ 	thermal_handler->ops = &dell_pc_platform_profile_ops;
  
--	err = platform_profile_register(&asus->platform_profile_handler, asus);
-+	err = devm_platform_profile_register(&asus->platform_profile_handler, asus);
- 	if (err == -EEXIST) {
- 		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
- 		return 0;
- 	} else if (err) {
--		pr_err("%s, failed at platform_profile_register: %d\n", __func__, err);
-+		pr_err("%s, failed at devm_platform_profile_register: %d\n", __func__, err);
- 		return err;
- 	}
+ 	/* Clean up if failed */
+-	ret = platform_profile_register(thermal_handler, NULL);
++	ret = devm_platform_profile_register(thermal_handler, NULL);
+ 	if (ret)
+ 		goto cleanup_thermal_handler;
  
-@@ -4859,8 +4859,6 @@ static int asus_wmi_add(struct platform_device *pdev)
- fail_sysfs:
- fail_custom_fan_curve:
- fail_platform_profile_setup:
--	if (asus->platform_profile_support)
--		platform_profile_remove(&asus->platform_profile_handler);
- fail_fan_boost_mode:
- fail_platform:
- 	kfree(asus);
-@@ -4886,9 +4884,6 @@ static void asus_wmi_remove(struct platform_device *device)
- 	throttle_thermal_policy_set_default(asus);
- 	asus_wmi_battery_exit(asus);
+@@ -298,8 +298,6 @@ static int thermal_init(void)
  
--	if (asus->platform_profile_support)
--		platform_profile_remove(&asus->platform_profile_handler);
--
- 	kfree(asus);
+ static void thermal_cleanup(void)
+ {
+-	if (thermal_handler)
+-		platform_profile_remove(thermal_handler);
+ 	platform_device_unregister(platform_device);
  }
  
 -- 
