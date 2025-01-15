@@ -1,108 +1,124 @@
-Return-Path: <linux-acpi+bounces-10668-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10669-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27A0A11AD4
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:23:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C04EA11B50
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD346188842E
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 07:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42C903A326D
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 07:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CD41DB12B;
-	Wed, 15 Jan 2025 07:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cz3wv406"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5822C22F152;
+	Wed, 15 Jan 2025 07:52:14 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E816AA1;
-	Wed, 15 Jan 2025 07:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E332080E3;
+	Wed, 15 Jan 2025 07:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736925794; cv=none; b=Xcd/zQFaVueE61T8nx6h89i/01+2MYY2zkOPkerBkGBfubMDoyOBLGvAMp8r+Yo+tq/euZkW8qtjOrvGMIG5NtKHK5ivU84Iw7HLIXWDp6CnDA5jm7p4HPdabkswyQK4rMVTy+sc9EDTNapeHd8cjI2zQiR+ZmMOyUIbAws+iyU=
+	t=1736927534; cv=none; b=lOXVUXlHtcug88HGIKu7D9LTHxJZbcsogyceQFvF7zcpS7k+0ws900FF7iVzKiYxBkvW+10rU3eKXZ/K4W5Trcs1c0xjw+bSDiFziCnP3mENDdS32n6/+vb74dKMX5kb7HSW6ULTi480y0XYTD4n96vWY72gg4lfrWEEEutC3Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736925794; c=relaxed/simple;
-	bh=B4Ril12uBwyFI07ASKOTFLTaZFboKxElHYnBAkXG3wg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=edrAgZzqUAwVtGhHV6kp/uEgxIiiXXpmEPgfbWt4Z8mLv09j9BjimNsrVy114q4cKuN1Fr9N2dBj4mUT6OxRzSQeeakVkMpTNtT2NgDMYiW0dDNub8xJygiCLcw4i5rn+1ayfxTIqm6AfddxvkkjyVzrWf+3J80RRf6NZOsQAu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cz3wv406; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736925793; x=1768461793;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=B4Ril12uBwyFI07ASKOTFLTaZFboKxElHYnBAkXG3wg=;
-  b=cz3wv4060j77lotMho5tWpIvZn6SVQiYB5p+LVU7R3FcRZT0SPoEeiGf
-   QyqR8k+qHJlDthR4A3BhRDBegIAFHesKbFym96in892bgp91JOAfqPlRy
-   nHEcGRFrCDKcH0t7DKToylzlfNC3mmvoX735y3IoyCpKCQ3ysaOO/CN+5
-   k0tKOfmO6Sq/oKHYXg8fbeFst0zA/ZaC4yu5fnruGzbbRHRxXdvQS3OZU
-   cBK1ZplmHKHA5Gb94LjvsaDq/ST4y2kf0AQrWRBkDlsP1b12d3gC867/A
-   6wgZyPpZX4jJmVslf6xPLUlhjjywunxZyBoZuB6TZR2JTEHMrXif04OHl
-   A==;
-X-CSE-ConnectionGUID: yUW8/mUZSOCe+4XfKRzpNQ==
-X-CSE-MsgGUID: 7EDwdNzFS6uVrA42mvBYew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="41011429"
-X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
-   d="scan'208";a="41011429"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:23:12 -0800
-X-CSE-ConnectionGUID: AUyMUMZbSXulfnbuMXz7cA==
-X-CSE-MsgGUID: 0lTouJH/T5aP8LUU62H7YQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="105531792"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:23:09 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 3D23611F8B3;
-	Wed, 15 Jan 2025 09:23:06 +0200 (EET)
-Date: Wed, 15 Jan 2025 07:23:06 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] device property: Split property reading bool and
- presence test ops
-Message-ID: <Z4diWj--mEX6YsrI@kekkonen.localdomain>
-References: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
- <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
+	s=arc-20240116; t=1736927534; c=relaxed/simple;
+	bh=7gkfamUWxmOO3n7dI9pQM1/SuXoCMLQQCsK1t8MFF6o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Z2B0QaZ/anZ8aptmKCCZPiR6tVMIH6JGhXnPArPjl6cQD9d6ibBxCaXLvpRGRibcLoXEYnTkYzgOoClEvzROnPVd4PvaqDiWwHeAkkLImUmiDo9QFHjCidqu0yPhj9uo33dEBJjfHgJMW2UL4rCHlw7QAFZed0q1NaMPeFXaQfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4YXymm5GxQz1wn5t;
+	Wed, 15 Jan 2025 15:48:56 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 743AB140119;
+	Wed, 15 Jan 2025 15:52:07 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
+ (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 15 Jan
+ 2025 15:52:06 +0800
+Message-ID: <c021a12a-ce3c-4266-8bc1-dc8b20525b9a@huawei.com>
+Date: Wed, 15 Jan 2025 15:52:05 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/6] ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <robert.moore@intel.com>, <viresh.kumar@linaro.org>,
+	<mario.limonciello@amd.com>, <gautham.shenoy@amd.com>, <ray.huang@amd.com>,
+	<pierre.gondois@arm.com>, <acpica-devel@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
+	<lihuisong@huawei.com>, <hepeng68@huawei.com>, <fanghao11@huawei.com>
+References: <20250113122104.3870673-1-zhenglifeng1@huawei.com>
+ <20250113122104.3870673-2-zhenglifeng1@huawei.com>
+ <CAJZ5v0ja7AaJza0PeNgutebXRV3tsgxZRwZUBcFksD9thyKg1Q@mail.gmail.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <CAJZ5v0ja7AaJza0PeNgutebXRV3tsgxZRwZUBcFksD9thyKg1Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-On Thu, Jan 09, 2025 at 01:42:05PM -0600, Rob Herring (Arm) wrote:
-> The fwnode/device property API currently implement
-> (fwnode|device)_property_read_bool() with (fwnode|device)_property_present().
-> That does not allow having different behavior depending on the backend.
+On 2025/1/14 21:27, Rafael J. Wysocki wrote:
+
+> On Mon, Jan 13, 2025 at 1:21 PM Lifeng Zheng <zhenglifeng1@huawei.com> wrote:
+>>
+>> Add IS_OPTIONAL_CPC_REG macro to judge if a cpc_reg is an optional one.
 > 
-> Specifically, the usage of (fwnode|device)_property_read_bool() on
-> non-boolean properties is deprecated on DT. In order to add a warning
-> on this deprecated use, these 2 APIs need separate ops for the backend.
+> This requires a bit more explanation, especially what's the purpose of
+> it (ie. the "why").
+
+Will add more explanation. Thanks.
+
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+>> ---
+>>  drivers/acpi/cppc_acpi.c | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+>> index f193e713825a..6454b469338f 100644
+>> --- a/drivers/acpi/cppc_acpi.c
+>> +++ b/drivers/acpi/cppc_acpi.c
+>> @@ -129,6 +129,12 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
+>>  #define CPC_SUPPORTED(cpc) ((cpc)->type == ACPI_TYPE_INTEGER ?         \
+>>                                 !!(cpc)->cpc_entry.int_value :          \
+>>                                 !IS_NULL_REG(&(cpc)->cpc_entry.reg))
+>> +
+>> +/* These indicate optional of the per-cpu cpc_regs[]. */
+> 
+> Again, you need to say more here, like how this is supposed to work.
 
-Thanks!
+Will add it. Thanks.
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> 
+>> +#define REG_OPTIONAL (0b111111100011111010000)
+> 
+> A hex literal would work too AFAICS.
 
--- 
-Sakari Ailus
+Will change it. Thanks.
+
+> 
+>> +
+>> +#define IS_OPTIONAL_CPC_REG(reg_idx) (REG_OPTIONAL & (1U << (reg_idx)))
+> 
+> You need to explain what reg_idx is.
+
+Will add more annotations. Thanks.
+
+> 
+>> +
+>>  /*
+>>   * Arbitrary Retries in case the remote processor is slow to respond
+>>   * to PCC commands. Keeping it high enough to cover emulators where
+>> --
+
 
