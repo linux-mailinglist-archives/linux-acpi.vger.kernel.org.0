@@ -1,93 +1,161 @@
-Return-Path: <linux-acpi+bounces-10685-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10686-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B8FA12519
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 14:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EC8A1259C
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 15:09:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1337B3A9E6C
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 13:43:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC2BF3A56BD
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 14:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2BD24A7FF;
-	Wed, 15 Jan 2025 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D36624A7E4;
+	Wed, 15 Jan 2025 14:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="oRunAxFW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LuoP0cRg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pv50p00im-zteg10021301.me.com (pv50p00im-zteg10021301.me.com [17.58.6.46])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCA524A7F9
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Jan 2025 13:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5342143ACB;
+	Wed, 15 Jan 2025 14:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736948592; cv=none; b=JEokQyO/TgvkBMYjyy7feQ8iaAWAm9zyzzyRiIfAEWxhRETC1GsV0tPHf8cQBmInHShISJTfhHxazieM93jgE76guRHhw7GgUl7WOariOe2sk+FB5kmblsfwtghkp1J/YTSkWI0tjbZy7T165XQgCLYvkxaQkjHP537X19JI69g=
+	t=1736950182; cv=none; b=NHolMLyMRRZRStGxzHm1+vvU6CJ+0EQi6zpqWhn3U9A4E2R+JUkNT7oC3tUVl8kj4htDW+EIYF7WO+AIYRqev9/XshF7akUPUqN3pkygTd/xoD+oJpdpxFmSiUGS7fPglPMOhkm0UPdHANZAxUpedXSKw/i4HlXm/bOdG5JTf3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736948592; c=relaxed/simple;
-	bh=9bGsaCBn1UoeZkbY6qUHLvhH3L/aXhR8venmgMct7+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pC0eE0TziQjn3yGcDkqMlFFzHxkoRAo+Cu0u6/HIUjNyyHlpE5HVt0+7nb6HtRrmuZ/CFWy3iDx2FM6QP9YlgibraeCE73V26MCPqf4MqMiWj6L44vg8n4bwsJIIylqU3x792t+T5k17sCvXZdXLu7aLaa93/GI/C1fLUbBrjSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=oRunAxFW; arc=none smtp.client-ip=17.58.6.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1736948591;
-	bh=9bGsaCBn1UoeZkbY6qUHLvhH3L/aXhR8venmgMct7+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=oRunAxFWu7FwJAC70TnDhaj2vR/++Y0/OpX1AZYncDBQhwDONcLq9FK9h8Hhdhgja
-	 rTp/bE+ouzw5/DPHrvVuConobik8L/xBH8wjp5FvI71eOkP5159e4OPTm5WfSCTBA7
-	 ftY0W9Z0PzCoNq1oTkssM05lxiA8uZg/R9VE84ALngtalBHB9gVsH98RICn468JeHL
-	 U4PNmIiO91+PTldvriAZSzqf/h1UAiiCHRNWStg3y21UzLAQPKSlrIcOSI6MjDcBsd
-	 IMZJI5Jn+0AxPT9EmjJ9TaLRF/MZgxQwEC81ZdiKUDuwgCBzfUcEwb15sf97Y0PGXL
-	 Y0G4WO3Xir2FA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10021301.me.com (Postfix) with ESMTPSA id 547905000ED;
-	Wed, 15 Jan 2025 13:43:04 +0000 (UTC)
-Message-ID: <a4e1ddf3-5a7e-48e4-864e-4517a7939c19@icloud.com>
-Date: Wed, 15 Jan 2025 21:43:00 +0800
+	s=arc-20240116; t=1736950182; c=relaxed/simple;
+	bh=1kVg3kAMp3gOm/sjlivJT3RcbpuT/0yvUqoPb68XgEo=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=LVYd8Ku3sICAP6r7Q4r52Hj/lv7JVw/3FubTp4eBY3/b8whu7yYvyY00AxPfsVEXajBCOnmVHmPtduUI+YvN0QEc74apsIzUyDxr/a2juRV7Py/l7D7xeRJv6LnNwvD0KOU98ngUK6lOGrD+8ptA076sit+Gb8G0JKrMx4yBPr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LuoP0cRg; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736950180; x=1768486180;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=1kVg3kAMp3gOm/sjlivJT3RcbpuT/0yvUqoPb68XgEo=;
+  b=LuoP0cRgzx3uSwsViT1KYZ32OXhb/EDNjdGu1YDtTIJ7xXDgNcRu3rTs
+   a5FSZLo78UBPZ6TWLqyCRCgokDqJGGQpI56Sek/pN/1IlJ3MaE1t/wuxR
+   fTd0fQGe2euCpOv6dHwxJ+v1I3ah81BauZKuwpsbRvC2B2IsPFrf1dA+y
+   RtV6assG+zs27nTJJ+k0opKTtsfe5Ks1C13B9ArXdp3K//tB4ipm74cAg
+   KUcuWL63Jy4TPifZueulANecHlN75rGQHHQMEuDt9koO/evm3BWBsIAz4
+   vPa3qRD/duM4bEPGWn7b7+dHyhLbsW8o/Q0y6yed7tS8XvQ8VavWjfUbp
+   A==;
+X-CSE-ConnectionGUID: XT/y0UhMREWBfZRbZvikOg==
+X-CSE-MsgGUID: 2mD1KjofQfCWT6XxCGdg7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="40097077"
+X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; 
+   d="scan'208";a="40097077"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 06:08:47 -0800
+X-CSE-ConnectionGUID: KgwrCvFySLC2xuCBGMPiFA==
+X-CSE-MsgGUID: 5qI55X07Qhu3ZETM0UZjKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="105626698"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.214])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 06:08:38 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 15 Jan 2025 16:08:35 +0200 (EET)
+To: Kurt Borja <kuurtb@gmail.com>
+cc: platform-driver-x86@vger.kernel.org, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+    linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    Mario Limonciello <mario.limonciello@amd.com>, Armin Wolf <W_Armin@gmx.de>, 
+    Joshua Grisham <josh@joshuagrisham.com>, 
+    "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+    Hans de Goede <hdegoede@redhat.com>, 
+    Maximilian Luz <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>, 
+    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+    Corentin Chary <corentin.chary@gmail.com>, 
+    "Luke D. Jones" <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>, 
+    Ike Panhc <ike.pan@canonical.com>, 
+    Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+    Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    Alexis Belmonte <alexbelm48@gmail.com>, Ai Chao <aichao@kylinos.cn>, 
+    Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com, 
+    ibm-acpi-devel@lists.sourceforge.net
+Subject: Re: [PATCH v3 09/19] platform/x86: asus-wmi: Use
+ devm_platform_profile_register()
+In-Reply-To: <20250115071022.4815-10-kuurtb@gmail.com>
+Message-ID: <9a00d65e-01a8-007f-9918-44b21b194803@linux.intel.com>
+References: <20250115071022.4815-1-kuurtb@gmail.com> <20250115071022.4815-10-kuurtb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2] of: property: Fix potential firmware node
- reference's argument count got out of range
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Rob Herring (Arm)"
- <robh@kernel.org>, Len Brown <lenb@kernel.org>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-References: <20250114-fix_arg_count-v2-1-efa35ee6572b@quicinc.com>
- <Z4aYZtR3WcbpCRui@smile.fi.intel.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <Z4aYZtR3WcbpCRui@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: H3R1cWWeNSbFo9E1j3GkPfSyaQcZQhP5
-X-Proofpoint-ORIG-GUID: H3R1cWWeNSbFo9E1j3GkPfSyaQcZQhP5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-15_05,2025-01-15_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 clxscore=1015 bulkscore=0 adultscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2501150104
+Content-Type: text/plain; charset=US-ASCII
 
-On 2025/1/15 01:01, Andy Shevchenko wrote:
->> But of_fwnode_get_reference_args() directly assigns OF node
->> reference argument count @of_args.args_count to frimware
-> firmware
+On Wed, 15 Jan 2025, Kurt Borja wrote:
 
-Thank you Andy for comments.
-will correct this error when send next formal revision (^^).
+> Replace platform_profile_register() with it's device managed version.
+> 
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> ---
+>  drivers/platform/x86/asus-wmi.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+> index 3d77f7454953..f8437cff66df 100644
+> --- a/drivers/platform/x86/asus-wmi.c
+> +++ b/drivers/platform/x86/asus-wmi.c
+> @@ -3895,12 +3895,12 @@ static int platform_profile_setup(struct asus_wmi *asus)
+>  	asus->platform_profile_handler.dev = dev;
+>  	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+>  
+> -	err = platform_profile_register(&asus->platform_profile_handler, asus);
+> +	err = devm_platform_profile_register(&asus->platform_profile_handler, asus);
+>  	if (err == -EEXIST) {
+>  		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
+>  		return 0;
+>  	} else if (err) {
+> -		pr_err("%s, failed at platform_profile_register: %d\n", __func__, err);
+> +		pr_err("%s, failed at devm_platform_profile_register: %d\n", __func__, err);
 
+Hi,
 
+I'm sorry I didn't notice this while passing through the patches 
+yesterday.
+
+Could you please make this error message plain english instead of piling 
+even more kernel C specifics to it? Preferrably, an user seeing a kernel 
+error message should not be required to know/understand any C, so don't 
+print __func__ nor write function names into any error/warning/info level 
+messages.
+
+Also, it should use dev_err() I think (platform_profile_setup() seems to
+mix pr_*() & dev_*() prints with no good reason).
+
+-- 
+ i.
+
+>  		return err;
+>  	}
+>  
+> @@ -4859,8 +4859,6 @@ static int asus_wmi_add(struct platform_device *pdev)
+>  fail_sysfs:
+>  fail_custom_fan_curve:
+>  fail_platform_profile_setup:
+> -	if (asus->platform_profile_support)
+> -		platform_profile_remove(&asus->platform_profile_handler);
+>  fail_fan_boost_mode:
+>  fail_platform:
+>  	kfree(asus);
+> @@ -4886,9 +4884,6 @@ static void asus_wmi_remove(struct platform_device *device)
+>  	throttle_thermal_policy_set_default(asus);
+>  	asus_wmi_battery_exit(asus);
+>  
+> -	if (asus->platform_profile_support)
+> -		platform_profile_remove(&asus->platform_profile_handler);
+> -
+>  	kfree(asus);
+>  }
+>  
+> 
 
