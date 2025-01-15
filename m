@@ -1,138 +1,108 @@
-Return-Path: <linux-acpi+bounces-10667-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10668-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB59A11ABB
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:15:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27A0A11AD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3138A3A6085
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 07:15:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD346188842E
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 07:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC0123098F;
-	Wed, 15 Jan 2025 07:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CD41DB12B;
+	Wed, 15 Jan 2025 07:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iVk/YCv+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cz3wv406"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39C31DB14B;
-	Wed, 15 Jan 2025 07:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E816AA1;
+	Wed, 15 Jan 2025 07:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736925217; cv=none; b=AiF0Ce+KUvs/ZICaGwk9Qig/FstE+am4Z5qTlVg9BZuFF2rAuxhe9sQ5vd8DhC+Pu7DXgbAp/6wwPvvsGXTYHAWl0Uvs3SAIW5KHiWFoNGv6CgZ5528NMfQEkExbS9VuMzIGyGAvwXH4MZZVmo2Qjnaw2ePasLbzT1Er+BDyCVU=
+	t=1736925794; cv=none; b=Xcd/zQFaVueE61T8nx6h89i/01+2MYY2zkOPkerBkGBfubMDoyOBLGvAMp8r+Yo+tq/euZkW8qtjOrvGMIG5NtKHK5ivU84Iw7HLIXWDp6CnDA5jm7p4HPdabkswyQK4rMVTy+sc9EDTNapeHd8cjI2zQiR+ZmMOyUIbAws+iyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736925217; c=relaxed/simple;
-	bh=l1pUfPFG3Xb1+3APAS7P5Zi8aCJaa/Ok9u1y0Y5YRSo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIhBmoB0QG9R3Qv+c/F9hUwl6TBAfVk9g5XZXo+LItc5UqSJLOzGC78CW3laECjop+h9cvdqxWx/sT5ol9f5KuV6ZOpLZMREX9xc0duLDCoF8R/LysAQZ/VQOyDCZ2sroMNJJadweryppmJn9CFu7IN5UCS96V7dBdkjhq/lDTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iVk/YCv+; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-4b10dd44c8bso2014094137.3;
-        Tue, 14 Jan 2025 23:13:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736925214; x=1737530014; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wghjY7wf+gvPQnVgT5iXRWKzHWDJQc8xdIKtAAVEgQU=;
-        b=iVk/YCv+P9ZUYFul9sDDh2zPqd4MpyEPgUe4BiOs0wP56vzNPlDwnmQQnuF1zCxqZL
-         czrC5wGW6OdNQjZr6s9TTO7quQMEhkV/TIZWM/mn+Zt9d6klq5uyHB5LfAj+NxYewuPP
-         GcM2yUU64qQ3Lsj7q9g9AhpwP+7dclM8dkqBsEx18/BsfzXA7EgQSf2ZmLLohfSKyboV
-         I4z+2JUdVh0ialYVOnATuG77zbcpsJFvOVYCDNP3ha25aJF0g/6mKRF9y3eizuGVCvDl
-         JN+1fEAbNCUHoMir+vP5VvUBTeNmcIjkv4cnKnGYRw6RXEyFxZz83jvXTbAiqQNcZyMn
-         84IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736925214; x=1737530014;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wghjY7wf+gvPQnVgT5iXRWKzHWDJQc8xdIKtAAVEgQU=;
-        b=Ysz0BRCtrT080XYhOiHaEDYkRxYWAGI+07jHx9qZl3z8/lmOz+oLkzyB/NTpyBhCSs
-         Lz3KZCkVK0QSkG3zWj03TlnLiR+gK92o2lFSAqYcd2aEgLBV/9Q8Fc5fY+k+eOj4znTl
-         XC3b1daL2zjvsy7zGukVeE8TAkaY80HRU/kpC4pOjrsQ0TiFZCon+dZNpynmM1YlW+1y
-         dy6KVHBHnWuny32wDem1F9Ccs4SQ3FpWaGNRvrxy9lxmzcz6inbcMeCeKu+Zpkp6Sa3i
-         yc+w2M1km1oodOWcWROx124Hzb2WBmhnuZtOUXy7wlC5YAW8E5P4zNe6OU0C+oK5MZ5w
-         E7Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOBdpoIfE7AID9o6uN8vLrUO3Bpfn0ZJuRXSRWzlhuRfO5aHe9GskHZZD5ORs3XLbopdoStm3jgI9J@vger.kernel.org, AJvYcCWGddRGZGVvA1VWpG2GKfZ1fPO7F7j73y9bbGNHwOk+YTGH5O0pdnGhsubhxc2qjqVz1OUE8q2PgIWMRdV5@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHW06G6CcmVrirW9nDwupb2aBTBItBbQL+kSKCzWU9ReWqAw1O
-	YLY3hoz5no7hN40ZbeL7u7QcTaGruMUQg8Hxe/dIpz675sBgz5OtjaZ4cw==
-X-Gm-Gg: ASbGncsX/x0J/8gswY/FUbwRDASeSck+1jdR8Yn1bvMVbRJICtRcQx+7/bhqITCAYUs
-	2ifszOq64FNZkxT9jrtCHT4U28370j5OnqME+hnbKP6ITAYByelmQH8T+++fJtzSE3M4UU9Ldhc
-	tjY59vTlr3ekxc9SqR/vzIETjN/lU5Vd6ZosbjQJLa9L4ypDLd24EA+XzcbqTDT00t6BiLadzY9
-	Y4bGfg15cA0bMLgpMwq7aWFaFn4l/kG6cRXr8srLFjGdd5+AtSP3EFa7nQ9FOMF
-X-Google-Smtp-Source: AGHT+IFGQ+2O2ACrPoA7Ik2FtD+4pzlrvBqDu/TUpD4WCXQxjtHvfQQeqd/CwC1dH64Ww8rXSzdeNw==
-X-Received: by 2002:a05:6102:3e1e:b0:4b4:6988:b140 with SMTP id ada2fe7eead31-4b635e22704mr12594697137.23.1736925214076;
-        Tue, 14 Jan 2025 23:13:34 -0800 (PST)
-Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f033ffsm5084366137.6.2025.01.14.23.13.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 23:13:33 -0800 (PST)
-From: Kurt Borja <kuurtb@gmail.com>
-To: platform-driver-x86@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	"Len Brown" <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Mario Limonciello" <mario.limonciello@amd.com>,
-	"Armin Wolf" <W_Armin@gmx.de>,
-	"Joshua Grisham" <josh@joshuagrisham.com>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Hans de Goede" <hdegoede@redhat.com>,
-	"Kurt Borja" <kuurtb@gmail.com>,
-	"Maximilian Luz" <luzmaximilian@gmail.com>,
-	"Lee, Chun-Yi" <jlee@suse.com>,
-	"Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
-	"Corentin Chary" <corentin.chary@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	"Lyndon Sanche" <lsanche@lyndeno.ca>,
-	"Ike Panhc" <ike.pan@canonical.com>,
-	"Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
-	"Mark Pearson" <mpearson-lenovo@squebb.ca>,
-	"Alexis Belmonte" <alexbelm48@gmail.com>,
-	"Ai Chao" <aichao@kylinos.cn>,
-	"Gergo Koteles" <soyer@irl.hu>,
-	Dell.Client.Kernel@dell.com,
-	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH v3 19/19] ACPI: platform_profile: Add a prefix to log messages
-Date: Wed, 15 Jan 2025 02:10:22 -0500
-Message-ID: <20250115071022.4815-20-kuurtb@gmail.com>
-X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115071022.4815-1-kuurtb@gmail.com>
-References: <20250115071022.4815-1-kuurtb@gmail.com>
+	s=arc-20240116; t=1736925794; c=relaxed/simple;
+	bh=B4Ril12uBwyFI07ASKOTFLTaZFboKxElHYnBAkXG3wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=edrAgZzqUAwVtGhHV6kp/uEgxIiiXXpmEPgfbWt4Z8mLv09j9BjimNsrVy114q4cKuN1Fr9N2dBj4mUT6OxRzSQeeakVkMpTNtT2NgDMYiW0dDNub8xJygiCLcw4i5rn+1ayfxTIqm6AfddxvkkjyVzrWf+3J80RRf6NZOsQAu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cz3wv406; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736925793; x=1768461793;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B4Ril12uBwyFI07ASKOTFLTaZFboKxElHYnBAkXG3wg=;
+  b=cz3wv4060j77lotMho5tWpIvZn6SVQiYB5p+LVU7R3FcRZT0SPoEeiGf
+   QyqR8k+qHJlDthR4A3BhRDBegIAFHesKbFym96in892bgp91JOAfqPlRy
+   nHEcGRFrCDKcH0t7DKToylzlfNC3mmvoX735y3IoyCpKCQ3ysaOO/CN+5
+   k0tKOfmO6Sq/oKHYXg8fbeFst0zA/ZaC4yu5fnruGzbbRHRxXdvQS3OZU
+   cBK1ZplmHKHA5Gb94LjvsaDq/ST4y2kf0AQrWRBkDlsP1b12d3gC867/A
+   6wgZyPpZX4jJmVslf6xPLUlhjjywunxZyBoZuB6TZR2JTEHMrXif04OHl
+   A==;
+X-CSE-ConnectionGUID: yUW8/mUZSOCe+4XfKRzpNQ==
+X-CSE-MsgGUID: 7EDwdNzFS6uVrA42mvBYew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="41011429"
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
+   d="scan'208";a="41011429"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:23:12 -0800
+X-CSE-ConnectionGUID: AUyMUMZbSXulfnbuMXz7cA==
+X-CSE-MsgGUID: 0lTouJH/T5aP8LUU62H7YQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="105531792"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:23:09 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 3D23611F8B3;
+	Wed, 15 Jan 2025 09:23:06 +0200 (EET)
+Date: Wed, 15 Jan 2025 07:23:06 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] device property: Split property reading bool and
+ presence test ops
+Message-ID: <Z4diWj--mEX6YsrI@kekkonen.localdomain>
+References: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
+ <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109-dt-type-warnings-v1-1-0150e32e716c@kernel.org>
 
-Declare a pr_fmt prefix.
+On Thu, Jan 09, 2025 at 01:42:05PM -0600, Rob Herring (Arm) wrote:
+> The fwnode/device property API currently implement
+> (fwnode|device)_property_read_bool() with (fwnode|device)_property_present().
+> That does not allow having different behavior depending on the backend.
+> 
+> Specifically, the usage of (fwnode|device)_property_read_bool() on
+> non-boolean properties is deprecated on DT. In order to add a warning
+> on this deprecated use, these 2 APIs need separate ops for the backend.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
----
- drivers/acpi/platform_profile.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks!
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index 4895f37dd549..c9e46b6e27da 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -2,6 +2,8 @@
- 
- /* Platform profile sysfs interface */
- 
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
- #include <linux/acpi.h>
- #include <linux/bits.h>
- #include <linux/cleanup.h>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
 -- 
-2.48.0
-
+Sakari Ailus
 
