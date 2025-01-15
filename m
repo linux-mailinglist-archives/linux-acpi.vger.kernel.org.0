@@ -1,161 +1,187 @@
-Return-Path: <linux-acpi+bounces-10686-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10687-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EC8A1259C
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 15:09:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9FCA1264A
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 15:42:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC2BF3A56BD
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 14:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F8ED1887AA1
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 14:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D36624A7E4;
-	Wed, 15 Jan 2025 14:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01D678C9C;
+	Wed, 15 Jan 2025 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LuoP0cRg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MmbIOxnE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5342143ACB;
-	Wed, 15 Jan 2025 14:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F5624A7CC;
+	Wed, 15 Jan 2025 14:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736950182; cv=none; b=NHolMLyMRRZRStGxzHm1+vvU6CJ+0EQi6zpqWhn3U9A4E2R+JUkNT7oC3tUVl8kj4htDW+EIYF7WO+AIYRqev9/XshF7akUPUqN3pkygTd/xoD+oJpdpxFmSiUGS7fPglPMOhkm0UPdHANZAxUpedXSKw/i4HlXm/bOdG5JTf3k=
+	t=1736952117; cv=none; b=Y6SB7Jg+9A5KStfYyOOqS/t7uN3CiIuRbFmknGEweyDr7YgZSxxFIJfPGhkHf8y0aPNOMKRnaf8FPdZutxFNVhUXv67yKPwM6IAZspwCdJOlrhL67xU8eUJUK/ypJcq4vb9dur+OXzHuU19ZkmMrubZvJ4eCBbD/IASjDndsL7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736950182; c=relaxed/simple;
-	bh=1kVg3kAMp3gOm/sjlivJT3RcbpuT/0yvUqoPb68XgEo=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=LVYd8Ku3sICAP6r7Q4r52Hj/lv7JVw/3FubTp4eBY3/b8whu7yYvyY00AxPfsVEXajBCOnmVHmPtduUI+YvN0QEc74apsIzUyDxr/a2juRV7Py/l7D7xeRJv6LnNwvD0KOU98ngUK6lOGrD+8ptA076sit+Gb8G0JKrMx4yBPr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LuoP0cRg; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736950180; x=1768486180;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=1kVg3kAMp3gOm/sjlivJT3RcbpuT/0yvUqoPb68XgEo=;
-  b=LuoP0cRgzx3uSwsViT1KYZ32OXhb/EDNjdGu1YDtTIJ7xXDgNcRu3rTs
-   a5FSZLo78UBPZ6TWLqyCRCgokDqJGGQpI56Sek/pN/1IlJ3MaE1t/wuxR
-   fTd0fQGe2euCpOv6dHwxJ+v1I3ah81BauZKuwpsbRvC2B2IsPFrf1dA+y
-   RtV6assG+zs27nTJJ+k0opKTtsfe5Ks1C13B9ArXdp3K//tB4ipm74cAg
-   KUcuWL63Jy4TPifZueulANecHlN75rGQHHQMEuDt9koO/evm3BWBsIAz4
-   vPa3qRD/duM4bEPGWn7b7+dHyhLbsW8o/Q0y6yed7tS8XvQ8VavWjfUbp
-   A==;
-X-CSE-ConnectionGUID: XT/y0UhMREWBfZRbZvikOg==
-X-CSE-MsgGUID: 2mD1KjofQfCWT6XxCGdg7Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="40097077"
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; 
-   d="scan'208";a="40097077"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 06:08:47 -0800
-X-CSE-ConnectionGUID: KgwrCvFySLC2xuCBGMPiFA==
-X-CSE-MsgGUID: 5qI55X07Qhu3ZETM0UZjKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="105626698"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.214])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 06:08:38 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 15 Jan 2025 16:08:35 +0200 (EET)
-To: Kurt Borja <kuurtb@gmail.com>
-cc: platform-driver-x86@vger.kernel.org, 
-    "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    Mario Limonciello <mario.limonciello@amd.com>, Armin Wolf <W_Armin@gmx.de>, 
-    Joshua Grisham <josh@joshuagrisham.com>, 
-    "Derek J. Clark" <derekjohn.clark@gmail.com>, 
-    Hans de Goede <hdegoede@redhat.com>, 
-    Maximilian Luz <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>, 
-    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-    Corentin Chary <corentin.chary@gmail.com>, 
-    "Luke D. Jones" <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>, 
-    Ike Panhc <ike.pan@canonical.com>, 
-    Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-    Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    Alexis Belmonte <alexbelm48@gmail.com>, Ai Chao <aichao@kylinos.cn>, 
-    Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com, 
-    ibm-acpi-devel@lists.sourceforge.net
+	s=arc-20240116; t=1736952117; c=relaxed/simple;
+	bh=uf5q5nR7K3Imf5x3dYbMKzK+Aoh4Ju+D30UvqpqQ/kU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1JPO+RLZw5kSn9uF3HUXuT/ToxZPwM8PkFgJpF1QtoP44tqdmOT72MKy2Bzn+XB4WiiIpY4l0+xsP8KnNLzZ2VFEgFSt5OVbvB939WuYhf0EkwF83vEq06tSXDq4HtaoqNFHelqyIbNO0TeayD1UkTV5n18MVC1tYpxYyp3CUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MmbIOxnE; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e461015fbd4so9749769276.2;
+        Wed, 15 Jan 2025 06:41:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736952115; x=1737556915; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KxvIljh6afNT9xoNdKrI+27ipwmt2qwXhsTGdV3Ik+4=;
+        b=MmbIOxnE4T3XJYpZtZgP3ePhJ839MrQE0CN3O1QOBSWuAbPVPQT8OM6rRjKBylPK2g
+         N4b8LhvHhqDZCFH0CDbh3gMhwLrLpkvQFEwQLT5WfTCwow5xo9vCqSm5yq5uMM/PNb6l
+         WoU1jTmntk+HJr2wy9fJkZ3wFhaGEo/Xx2c9y/hmWjBEFTG9PIt5mh5RmGNRXGRy9GLS
+         9vk1E3LhqsPjW3Dx1uWccpThcrlEnk23BHdfV7A9YlqzCHt+IIAH6YY0G1GZvYnhUPEF
+         Js+76N6OhjNWANsUl48pCkKnQSgqKX8kWm11gAog4zcik0XqMQBDy/GU6p0gtHk0sLI8
+         +7dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736952115; x=1737556915;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KxvIljh6afNT9xoNdKrI+27ipwmt2qwXhsTGdV3Ik+4=;
+        b=bKbjvBgWv44Xo3CEhiZWjtz5djWB5w4ab6lDVviBwaYw61a2ATah7RYsyCKu32jzpX
+         RFUImbp5w5aUIRBjxc/PYUmrR2RV69ST8faWPuz31lfsoD/iC7F1b2aV6A3OJdf/gcOk
+         YVcLr+ADcxHJUe3+U0uaSAapDyf9MROF4DtCZWdkIyR8YZFt/MvSxSjTEpdUQwMKqFMQ
+         qjL3hiaLe0lmV2K5DQyY4yeGVbctCPDi7r4cflia7VLZmpKY0VAVaq1t8PaF18qBBUwc
+         M9JAGlcSgRcYjurMkiC1ACIuBVsrtpuTUrm7ii0BXORJZOo/bkbZUiTzBbSyxTpUpLCq
+         GBLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8sgL23/+ggv4Vo9gu84BDJuapYFYeSUokLtnIYEchN/Svc+R5OsPAWOSxbAyT61HZF3hCbckIKEp4@vger.kernel.org, AJvYcCXqEt1IE3gN3S6QZKHNRWbOjSKnP7o/Aw0DLgjqRoPCsfej6JwqTjYmFizLLaeBgqtgj20IpWaoenheTGJf@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/QcNjGXlyiOPZq+EZ3GAtb2Q/cx6r53HU2vqZ2DRIzSbBGHm0
+	FsC31Jbltd59zxGF+AcbmkP//qDDAHTsA3a1q4H6+iaNbObBQ9lv
+X-Gm-Gg: ASbGncty7JgmO2/C6QpfEvxQwD1tHg3nTRuy9BekpF+o86ZXP3PkGZ5aCr75VCQMoWE
+	3XdRvYHJOVTefOdWz05p7HBBdn59hQTRiQEi8Orqweqk3LGlZsy6TM8mbgPqF7drvPiZE9Qghba
+	PxLuvCs9rlNto+UjzPVSHATW2707Bg0sjvcUio/IJvejd2YsI14iYbgADrNg71NPC4rDrwKD6W5
+	7WoBLlX2L5Kyi7EzYmLAvmM6wpwJ3dsg+DE3LkXhavWY8x/dr4f6Q==
+X-Google-Smtp-Source: AGHT+IHhXPLvl4jmA8MfwgjX7fTyAqrVS0P5ljIIeeMJD5AyQnklj6yPtxgkjrB7DdcifBDQg7Ko7w==
+X-Received: by 2002:a05:690c:9b0c:b0:6ef:4a1f:36aa with SMTP id 00721157ae682-6f53125ed2cmr251666027b3.20.1736952115109;
+        Wed, 15 Jan 2025 06:41:55 -0800 (PST)
+Received: from alphacentauri ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f546dd70b5sm25125037b3.78.2025.01.15.06.41.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 06:41:54 -0800 (PST)
+Date: Wed, 15 Jan 2025 09:41:50 -0500
+From: Kurt Borja <kuurtb@gmail.com>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: platform-driver-x86@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Armin Wolf <W_Armin@gmx.de>, Joshua Grisham <josh@joshuagrisham.com>, 
+	"Derek J. Clark" <derekjohn.clark@gmail.com>, Hans de Goede <hdegoede@redhat.com>, 
+	Maximilian Luz <luzmaximilian@gmail.com>, "Lee, Chun-Yi" <jlee@suse.com>, 
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Corentin Chary <corentin.chary@gmail.com>, 
+	"Luke D. Jones" <luke@ljones.dev>, Lyndon Sanche <lsanche@lyndeno.ca>, 
+	Ike Panhc <ike.pan@canonical.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, Alexis Belmonte <alexbelm48@gmail.com>, 
+	Ai Chao <aichao@kylinos.cn>, Gergo Koteles <soyer@irl.hu>, Dell.Client.Kernel@dell.com, 
+	ibm-acpi-devel@lists.sourceforge.net
 Subject: Re: [PATCH v3 09/19] platform/x86: asus-wmi: Use
  devm_platform_profile_register()
-In-Reply-To: <20250115071022.4815-10-kuurtb@gmail.com>
-Message-ID: <9a00d65e-01a8-007f-9918-44b21b194803@linux.intel.com>
-References: <20250115071022.4815-1-kuurtb@gmail.com> <20250115071022.4815-10-kuurtb@gmail.com>
+Message-ID: <cknsfiukbw4uivdizha3orlgaee2haw2zdd4dpqikhmvspzdyt@riyt27f7lrtn>
+References: <20250115071022.4815-1-kuurtb@gmail.com>
+ <20250115071022.4815-10-kuurtb@gmail.com>
+ <9a00d65e-01a8-007f-9918-44b21b194803@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9a00d65e-01a8-007f-9918-44b21b194803@linux.intel.com>
 
-On Wed, 15 Jan 2025, Kurt Borja wrote:
-
-> Replace platform_profile_register() with it's device managed version.
+On Wed, Jan 15, 2025 at 04:08:35PM +0200, Ilpo Järvinen wrote:
+> On Wed, 15 Jan 2025, Kurt Borja wrote:
 > 
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> ---
->  drivers/platform/x86/asus-wmi.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+> > Replace platform_profile_register() with it's device managed version.
+> > 
+> > Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> > ---
+> >  drivers/platform/x86/asus-wmi.c | 9 ++-------
+> >  1 file changed, 2 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+> > index 3d77f7454953..f8437cff66df 100644
+> > --- a/drivers/platform/x86/asus-wmi.c
+> > +++ b/drivers/platform/x86/asus-wmi.c
+> > @@ -3895,12 +3895,12 @@ static int platform_profile_setup(struct asus_wmi *asus)
+> >  	asus->platform_profile_handler.dev = dev;
+> >  	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
+> >  
+> > -	err = platform_profile_register(&asus->platform_profile_handler, asus);
+> > +	err = devm_platform_profile_register(&asus->platform_profile_handler, asus);
+> >  	if (err == -EEXIST) {
+> >  		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
+> >  		return 0;
+> >  	} else if (err) {
+> > -		pr_err("%s, failed at platform_profile_register: %d\n", __func__, err);
+> > +		pr_err("%s, failed at devm_platform_profile_register: %d\n", __func__, err);
 > 
-> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-> index 3d77f7454953..f8437cff66df 100644
-> --- a/drivers/platform/x86/asus-wmi.c
-> +++ b/drivers/platform/x86/asus-wmi.c
-> @@ -3895,12 +3895,12 @@ static int platform_profile_setup(struct asus_wmi *asus)
->  	asus->platform_profile_handler.dev = dev;
->  	asus->platform_profile_handler.ops = &asus_wmi_platform_profile_ops;
->  
-> -	err = platform_profile_register(&asus->platform_profile_handler, asus);
-> +	err = devm_platform_profile_register(&asus->platform_profile_handler, asus);
->  	if (err == -EEXIST) {
->  		pr_warn("%s, a platform_profile handler is already registered\n", __func__);
->  		return 0;
->  	} else if (err) {
-> -		pr_err("%s, failed at platform_profile_register: %d\n", __func__, err);
-> +		pr_err("%s, failed at devm_platform_profile_register: %d\n", __func__, err);
+> Hi,
+> 
+> I'm sorry I didn't notice this while passing through the patches 
+> yesterday.
+> 
+> Could you please make this error message plain english instead of piling 
+> even more kernel C specifics to it? Preferrably, an user seeing a kernel 
+> error message should not be required to know/understand any C, so don't 
+> print __func__ nor write function names into any error/warning/info level 
+> messages.
 
 Hi,
 
-I'm sorry I didn't notice this while passing through the patches 
-yesterday.
+Sure!
 
-Could you please make this error message plain english instead of piling 
-even more kernel C specifics to it? Preferrably, an user seeing a kernel 
-error message should not be required to know/understand any C, so don't 
-print __func__ nor write function names into any error/warning/info level 
-messages.
-
-Also, it should use dev_err() I think (platform_profile_setup() seems to
-mix pr_*() & dev_*() prints with no good reason).
-
--- 
- i.
-
->  		return err;
->  	}
->  
-> @@ -4859,8 +4859,6 @@ static int asus_wmi_add(struct platform_device *pdev)
->  fail_sysfs:
->  fail_custom_fan_curve:
->  fail_platform_profile_setup:
-> -	if (asus->platform_profile_support)
-> -		platform_profile_remove(&asus->platform_profile_handler);
->  fail_fan_boost_mode:
->  fail_platform:
->  	kfree(asus);
-> @@ -4886,9 +4884,6 @@ static void asus_wmi_remove(struct platform_device *device)
->  	throttle_thermal_policy_set_default(asus);
->  	asus_wmi_battery_exit(asus);
->  
-> -	if (asus->platform_profile_support)
-> -		platform_profile_remove(&asus->platform_profile_handler);
-> -
->  	kfree(asus);
->  }
->  
 > 
+> Also, it should use dev_err() I think (platform_profile_setup() seems to
+> mix pr_*() & dev_*() prints with no good reason).
+
+I also think this should be dev_err, but I don't know this driver
+enough. Also I think driver specific platform_profile_register error
+messages are a bit redundant, as platform_profile_registers already logs
+most important failures with dev_err.
+
+~ Kurt
+
+> 
+> -- 
+>  i.
+> 
+> >  		return err;
+> >  	}
+> >  
+> > @@ -4859,8 +4859,6 @@ static int asus_wmi_add(struct platform_device *pdev)
+> >  fail_sysfs:
+> >  fail_custom_fan_curve:
+> >  fail_platform_profile_setup:
+> > -	if (asus->platform_profile_support)
+> > -		platform_profile_remove(&asus->platform_profile_handler);
+> >  fail_fan_boost_mode:
+> >  fail_platform:
+> >  	kfree(asus);
+> > @@ -4886,9 +4884,6 @@ static void asus_wmi_remove(struct platform_device *device)
+> >  	throttle_thermal_policy_set_default(asus);
+> >  	asus_wmi_battery_exit(asus);
+> >  
+> > -	if (asus->platform_profile_support)
+> > -		platform_profile_remove(&asus->platform_profile_handler);
+> > -
+> >  	kfree(asus);
+> >  }
+> >  
+> > 
 
