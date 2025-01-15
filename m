@@ -1,293 +1,227 @@
-Return-Path: <linux-acpi+bounces-10670-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10671-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB291A11B97
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 09:10:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40ACA11C40
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 09:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3F43A3C71
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E67547A1709
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Jan 2025 08:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A728236EB4;
-	Wed, 15 Jan 2025 08:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F081DB12F;
+	Wed, 15 Jan 2025 08:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="RSDmiNf1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDD4236A6E;
-	Wed, 15 Jan 2025 08:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E9E23F262;
+	Wed, 15 Jan 2025 08:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736928635; cv=none; b=SKx3JQezJoh81dHXY4RMiyBAPRBWSSxnvZ/0hJiheClZuL2Uw9F6iyNCkUECZFo523VT5dA4CumFsBRVHk0lVe2fsL0NrBUugprJjQxqVst/1vT/VWyzbx40iDLoSqxorgyr/EoIsTtcv7QIKXifg9fIwpAF/++H/o1mQmppQoQ=
+	t=1736930565; cv=none; b=DeqKeNPWQ5z5eCfRhtZUv2lpvAz4+BX8BL2vcfZYKItBboULkZ/UTVg9msqkFPVZGX53nvRkO4iqwkTVOB0WZARlgOBHWQf3KTVWHYbRQQHgRAAoiRJJmMALXeWRnKT+kaIkI2D6tJFRqmhAvNqfkrLqXc/Y8H/pVd9cO1954Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736928635; c=relaxed/simple;
-	bh=hI+RvpuYlgKt9ZThOVuHcl5qPRXYAYBwH1XGnFbHmw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=J+PI9XX33cNaXAcRmAXCaEucUqiP8HVn+1Gr26eH27h0wpYzN0YUhZMDdFtoEy95WEu7A0oZOADPuiPbvur+MrMqT/JgDLvmtPw2fCFI3lLpWraw59MonJjlx4MnCubUu4JNOUsN3N10ipPCUGiPzoH05v0fMz1/XbOOeM/DLTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4YXzDV1FtPz1xmfP;
-	Wed, 15 Jan 2025 16:09:30 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id DFB1D140119;
-	Wed, 15 Jan 2025 16:10:22 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
- (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 15 Jan
- 2025 16:10:21 +0800
-Message-ID: <82831405-4d81-4090-831c-92d841723b81@huawei.com>
-Date: Wed, 15 Jan 2025 16:10:21 +0800
+	s=arc-20240116; t=1736930565; c=relaxed/simple;
+	bh=tEgsshAbUBioHoQkOp09L8D6p68ZegkgFQ31uJGj4hg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=g+BAEJXItbTjlbbAopWR741YA0qlxkQiWLVV1QO1bLWcCJAl2MI9tmKczWFD2IJEedRF+uw0PID9B5Moix8Ga2BOv8fwQ91FOHAkmzQB+EXM8/4HwdJnfb/fFApSf3iSf7X5e4CYLzsu/qZSQ5031VQ8ajZIr+qxU1lWCEkVEHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=RSDmiNf1; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1736930552; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=fxwuU5+5VjORoJdAH0BmKUJFqT/pGkjGg93nT/pd0ao=;
+	b=RSDmiNf1FSam+9GmTBKkBVSupG+OKcXimfsEXVqsyeEkilsVbJkuUKNybcRVbCef6b7zaeDKgocmHFrjv9CzDgdSjR41ZeKYcZurXAZ9+hbu/XkT4TYKueGukCgZvsdX2LzguiEYnZ/p3VPzQj4j/rowAOTLhA1OJ4Q8N8fth/8=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WNi-.9S_1736930550 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Jan 2025 16:42:32 +0800
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	lpieralisi@kernel.org,
+	guohanjun@huawei.com,
+	sudeep.holla@arm.com,
+	xueshuai@linux.alibaba.com,
+	baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	tony.luck@intel.com,
+	bp@alien8.de,
+	yazen.ghannam@amd.com
+Cc: tianruidong@linux.alibaba.com
+Subject: [PATCH v3 0/5] ARM Error Source Table V2 Support
+Date: Wed, 15 Jan 2025 16:42:23 +0800
+Message-Id: <20250115084228.107573-1-tianruidong@linux.alibaba.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] ACPI: CPPC: Add cppc_get_reg_val and
- cppc_set_reg_val function
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <robert.moore@intel.com>, <viresh.kumar@linaro.org>,
-	<mario.limonciello@amd.com>, <gautham.shenoy@amd.com>, <ray.huang@amd.com>,
-	<pierre.gondois@arm.com>, <acpica-devel@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
-	<lihuisong@huawei.com>, <hepeng68@huawei.com>, <fanghao11@huawei.com>
-References: <20250113122104.3870673-1-zhenglifeng1@huawei.com>
- <20250113122104.3870673-3-zhenglifeng1@huawei.com>
- <CAJZ5v0g5vuO9jHD+vRUyCeNE7V6zaW6okAVep3V=TLRosk1NAQ@mail.gmail.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <CAJZ5v0g5vuO9jHD+vRUyCeNE7V6zaW6okAVep3V=TLRosk1NAQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemh100008.china.huawei.com (7.202.181.93)
 
-On 2025/1/15 1:41, Rafael J. Wysocki wrote:
+AEST provides a mechanism for hardware to directly notify Kernel to
+handle RAS errors through interrupts, which is also known as Kernel-first
+mode.
 
-> The word "function" at the end of the subject is redundant IMV.
+AEST's Advantage
+========================
 
-Yes, you are right. Will delete it. Thanks.
+1. AEST uses EL1 interrupts to report CE/DE, making it more lightweight
+   than GHES (the Firmware First solution on Arm).
+2. The lightweight AEST allows system to report each CE, enabling user
+    applications to utilize this information for memory error prediction.
 
-> 
-> On Mon, Jan 13, 2025 at 1:21 PM Lifeng Zheng <zhenglifeng1@huawei.com> wrote:
->>
->> Rename cppc_get_perf() to cppc_get_reg_val() as a generic function to read
->> cppc registers, with four changes:
->>
->> 1. Change the error kind to "no such device" when pcc_ss_id < 0, which
->> means that this cpu cannot get a valid pcc_ss_id.
->>
->> 2. Add a check to verify if the register is a mandatory or cpc supported
->> one before using it.
->>
->> 3. Extract the operations if register is in pcc out as
->> cppc_get_reg_val_in_pcc().
->>
->> 4. Return the result of cpc_read() instead of 0.
->>
->> Add cppc_set_reg_val() as a generic function for setting cppc registers
->> value, with this features:
->>
->> 1. Check register type. If a register is writeable, it must be a buffer.
->>
->> 2. Check if the register is a optional and null one right after getting the
->> register.  Because if so, the rest of the operations are meaningless.
->>
->> 3. Extract the operations if register is in pcc out as
->> cppc_set_reg_val_in_pcc().
->>
->> These functions can be used to reduce some existing code duplication.
-> 
-> This mixes functional changes with function renames and code
-> refactoring while it is better to do all of these things separately.
-> 
-> Why don't you split the patch into a few smaller patches doing each
-> one thing at a time?  Like rename the existing function and refactor
-> it in one patch (if this makes sense), make functional changes to it
-> in another patch, then add new functions in a third one?
-> 
-> This would help to review the changes and explain why each of them is made.
+AEST Driver Architecture
+========================
 
-It does make more sense. Will split it. Thanks.
+AEST Driver Device Mana
+The AEST driver consists of three components:
+  - AEST device: Handle interrupts and manage AEST nodes and records.
+  - AEST node: corresponding to RAS node in hardware[1],
+  - AEST record: RAS register sets.
 
-> 
->> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
->> ---
->>  drivers/acpi/cppc_acpi.c | 105 ++++++++++++++++++++++++++++++---------
->>  1 file changed, 82 insertions(+), 23 deletions(-)
->>
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index 6454b469338f..571f94855dce 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -1181,43 +1181,102 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
->>         return ret_val;
->>  }
->>
->> -static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->> +static int cppc_get_reg_val_in_pcc(int cpu, struct cpc_register_resource *reg, u64 *val)
->>  {
->> -       struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
->> +       int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
->> +       struct cppc_pcc_data *pcc_ss_data = NULL;
->> +       int ret;
->> +
->> +       if (pcc_ss_id < 0) {
->> +               pr_debug("Invalid pcc_ss_id\n");
->> +               return -ENODEV;
->> +       }
->> +
->> +       pcc_ss_data = pcc_data[pcc_ss_id];
->> +
->> +       down_write(&pcc_ss_data->pcc_lock);
->> +
->> +       if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
->> +               ret = cpc_read(cpu, reg, val);
->> +       else
->> +               ret = -EIO;
->> +
->> +       up_write(&pcc_ss_data->pcc_lock);
->> +
->> +       return ret;
->> +}
->> +
->> +static int cppc_get_reg_val(int cpu, enum cppc_regs reg_idx, u64 *val)
->> +{
->> +       struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
->>         struct cpc_register_resource *reg;
->>
->>         if (!cpc_desc) {
->> -               pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
->> +               pr_debug("No CPC descriptor for CPU:%d\n", cpu);
->>                 return -ENODEV;
->>         }
->>
->>         reg = &cpc_desc->cpc_regs[reg_idx];
->>
->> -       if (CPC_IN_PCC(reg)) {
->> -               int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
->> -               struct cppc_pcc_data *pcc_ss_data = NULL;
->> -               int ret = 0;
->> -
->> -               if (pcc_ss_id < 0)
->> -                       return -EIO;
->> +       if (IS_OPTIONAL_CPC_REG(reg_idx) && !CPC_SUPPORTED(reg)) {
->> +               pr_debug("CPC register (reg_idx=%d) is not supported\n", reg_idx);
->> +               return -EOPNOTSUPP;
->> +       }
->>
->> -               pcc_ss_data = pcc_data[pcc_ss_id];
->> +       if (CPC_IN_PCC(reg))
->> +               return cppc_get_reg_val_in_pcc(cpu, reg, val);
->>
->> -               down_write(&pcc_ss_data->pcc_lock);
->> +       return cpc_read(cpu, reg, val);
->> +}
->>
->> -               if (send_pcc_cmd(pcc_ss_id, CMD_READ) >= 0)
->> -                       cpc_read(cpunum, reg, perf);
->> -               else
->> -                       ret = -EIO;
->> +static int cppc_set_reg_val_in_pcc(int cpu, struct cpc_register_resource *reg, u64 val)
->> +{
->> +       int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
->> +       struct cppc_pcc_data *pcc_ss_data = NULL;
->> +       int ret;
->>
->> -               up_write(&pcc_ss_data->pcc_lock);
->> +       if (pcc_ss_id < 0) {
->> +               pr_debug("Invalid pcc_ss_id\n");
->> +               return -ENODEV;
->> +       }
->>
->> +       ret = cpc_write(cpu, reg, val);
->> +       if (ret)
->>                 return ret;
->> +
->> +       pcc_ss_data = pcc_data[pcc_ss_id];
->> +
->> +       down_write(&pcc_ss_data->pcc_lock);
->> +       /* after writing CPC, transfer the ownership of PCC to platform */
->> +       ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
->> +       up_write(&pcc_ss_data->pcc_lock);
->> +
->> +       return ret;
->> +}
->> +
->> +static int cppc_set_reg_val(int cpu, enum cppc_regs reg_idx, u64 val)
->> +{
->> +       struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
->> +       struct cpc_register_resource *reg;
->> +
->> +       if (!cpc_desc) {
->> +               pr_debug("No CPC descriptor for CPU:%d\n", cpu);
->> +               return -ENODEV;
->>         }
->>
->> -       cpc_read(cpunum, reg, perf);
->> +       reg = &cpc_desc->cpc_regs[reg_idx];
->>
->> -       return 0;
->> +       /* if a register is writeable, it must be a buffer */
->> +       if ((reg->type != ACPI_TYPE_BUFFER) ||
->> +           (IS_OPTIONAL_CPC_REG(reg_idx) && IS_NULL_REG(&reg->cpc_entry.reg))) {
->> +               pr_debug("CPC register (reg_idx=%d) is not supported\n", reg_idx);
->> +               return -EOPNOTSUPP;
->> +       }
->> +
->> +       if (CPC_IN_PCC(reg))
->> +               return cppc_set_reg_val_in_pcc(cpu, reg, val);
->> +
->> +       return cpc_write(cpu, reg, val);
->>  }
->>
->>  /**
->> @@ -1229,7 +1288,7 @@ static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
->>   */
->>  int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
->>  {
->> -       return cppc_get_perf(cpunum, DESIRED_PERF, desired_perf);
->> +       return cppc_get_reg_val(cpunum, DESIRED_PERF, desired_perf);
->>  }
->>  EXPORT_SYMBOL_GPL(cppc_get_desired_perf);
->>
->> @@ -1242,7 +1301,7 @@ EXPORT_SYMBOL_GPL(cppc_get_desired_perf);
->>   */
->>  int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
->>  {
->> -       return cppc_get_perf(cpunum, NOMINAL_PERF, nominal_perf);
->> +       return cppc_get_reg_val(cpunum, NOMINAL_PERF, nominal_perf);
->>  }
->>
->>  /**
->> @@ -1254,7 +1313,7 @@ int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
->>   */
->>  int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
->>  {
->> -       return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
->> +       return cppc_get_reg_val(cpunum, HIGHEST_PERF, highest_perf);
->>  }
->>  EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
->>
->> @@ -1267,7 +1326,7 @@ EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
->>   */
->>  int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
->>  {
->> -       return cppc_get_perf(cpunum, ENERGY_PERF, epp_perf);
->> +       return cppc_get_reg_val(cpunum, ENERGY_PERF, epp_perf);
->>  }
->>  EXPORT_SYMBOL_GPL(cppc_get_epp_perf);
->>
->> --
->> 2.33.0
->>
->>
-> 
+They are organized together as follows.
+
+ ┌──────────────────────────────────────────────────┐
+ │             AEST Driver Device Management        │
+ │┌─────────────┐    ┌──────────┐     ┌───────────┐ │
+ ││ AEST Device ├─┬─►│AEST Node ├──┬─►│AEST Record│ │
+ │└─────────────┘ │  └──────────┘  │  └───────────┘ │
+ │                │       .        │  ┌───────────┐ │
+ │                │       .        ├─►│AEST Record│ │
+ │                │       .        │  └───────────┘ │
+ │                │  ┌──────────┐  │        .       │
+ │                ├─►│AEST Node │  │        .       │
+ │                │  └──────────┘  │        .       │
+ │                │                │  ┌───────────┐ │
+ │                │  ┌──────────┐  └─►│AEST Record│ │
+ │                └─►│AEST Node │     └───────────┘ │
+ │                   └──────────┘                   │
+ └──────────────────────────────────────────────────┘
+
+
+AEST Interrupt Handle
+=====================
+
+Once AEST interrupt occur
+1. The AEST device traverses all AEST nodes to locate errored record.
+2. There are two types of records in each node：
+      - report record: node can locate errored record through bitmap in
+                       ERRGSR register.
+      - poll record: node need poll all record to check if it errored.
+3. process record:
+      - if error is corrected, reset ce threshold and print it
+      - if error is defered, dump register and call memory_fauilre
+      - if error is uncorrected, panic, in fact UE usually raise a
+        exception rather than interrupt.
+4. decode record: AEST driver notify other driver，like EDAC，to decode
+    RAS register.
+
+AEST Error Injection
+====================
+
+AEST driver provides error(Software simulation instead of real hardware errors)
+inject interface, details can be see in patch0003
+
+Address Translation
+===================
+
+AS describe in 2.2[0], error address reported by AEST record may be
+'''node-specific Logical Addresses''' rather than '''System Physical Address'''
+used by Kernel, driver need tracelate LA to SPA, these is similar to AMD ATL[2].
+So patch0004 introduce a common function both for AMD and ARM.
+
+I have tested this series on THead Yitian710 SOC.
+
+Future work:
+1. Add CE storm mitigation.
+2. Support AEST vendor node.
+
+This series is based on Tyler Baicar's patches [1], which do not have v2
+sended to mail list yet. Change from origin patch:
+1. Add a genpool to collect all AEST error, and log them in a workqueue
+other than in irq context.
+2. Just use the same one aest_proc function for system register interface
+and MMIO interface.
+3. Reconstruct some structures and functions to make it more clear.
+4. Accept all comments in Tyler Baicar's mail list.
+
+Change from V2:
+https://lore.kernel.org/all/20240321025317.114621-1-tianruidong@linux.alibaba.com/
+1. Tomohiro Misono
+    - dump register before panic
+2. Baolin Wang & Shuai Xue: accept all comment.
+3. Support AEST V2.
+
+Change from V1:
+https://lore.kernel.org/all/20240304111517.33001-1-tianruidong@linux.alibaba.com/
+1. Marc Zyngier
+  - Use readq/writeq_relaxed instead of readq/writeq for MMIO address.
+  - Add sync for system register operation.
+  - Use irq_is_percpu_devid() helper to identify a per-CPU interrupt.
+  - Other fix.
+2. Set RAS CE threshold in AEST driver.
+3. Enable RAS interrupt explicitly in driver.
+4. UER and UEO trigger memory_failure other than panic.
+
+[0]: https://developer.arm.com/documentation/den0085/0101/
+[1]: https://lore.kernel.org/all/20211124170708.3874-1-baicar@os.amperecomputing.com/
+[2]: https://lore.kernel.org/all/20240123041401.79812-2-yazen.ghannam@amd.com/
+
+Ruidong Tian (5):
+  ACPI/RAS/AEST: Initial AEST driver
+  RAS/AEST: Introduce AEST driver sysfs interface
+  RAS/AEST: Introduce AEST inject interface to test AEST driver
+  RAS/ATL: Unified ATL interface for ARM64 and AMD
+  trace, ras: add ARM RAS extension trace event
+
+ Documentation/ABI/testing/debugfs-aest |  115 +++
+ MAINTAINERS                            |   11 +
+ arch/arm64/include/asm/ras.h           |   95 +++
+ drivers/acpi/arm64/Kconfig             |   11 +
+ drivers/acpi/arm64/Makefile            |    1 +
+ drivers/acpi/arm64/aest.c              |  340 ++++++++
+ drivers/acpi/arm64/init.c              |    2 +
+ drivers/acpi/arm64/init.h              |    1 +
+ drivers/edac/amd64_edac.c              |    2 +-
+ drivers/ras/Kconfig                    |    1 +
+ drivers/ras/Makefile                   |    1 +
+ drivers/ras/aest/Kconfig               |   17 +
+ drivers/ras/aest/Makefile              |    7 +
+ drivers/ras/aest/aest-core.c           | 1017 ++++++++++++++++++++++++
+ drivers/ras/aest/aest-inject.c         |  151 ++++
+ drivers/ras/aest/aest-sysfs.c          |  230 ++++++
+ drivers/ras/aest/aest.h                |  338 ++++++++
+ drivers/ras/amd/atl/core.c             |    4 +-
+ drivers/ras/amd/atl/internal.h         |    2 +-
+ drivers/ras/amd/atl/umc.c              |    3 +-
+ drivers/ras/ras.c                      |   27 +-
+ include/linux/acpi_aest.h              |   68 ++
+ include/linux/cpuhotplug.h             |    1 +
+ include/linux/ras.h                    |   17 +-
+ include/ras/ras_event.h                |   71 ++
+ 25 files changed, 2510 insertions(+), 23 deletions(-)
+ create mode 100644 Documentation/ABI/testing/debugfs-aest
+ create mode 100644 arch/arm64/include/asm/ras.h
+ create mode 100644 drivers/acpi/arm64/aest.c
+ create mode 100644 drivers/ras/aest/Kconfig
+ create mode 100644 drivers/ras/aest/Makefile
+ create mode 100644 drivers/ras/aest/aest-core.c
+ create mode 100644 drivers/ras/aest/aest-inject.c
+ create mode 100644 drivers/ras/aest/aest-sysfs.c
+ create mode 100644 drivers/ras/aest/aest.h
+ create mode 100644 include/linux/acpi_aest.h
+
+-- 
+2.33.1
 
 
