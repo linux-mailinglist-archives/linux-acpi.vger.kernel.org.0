@@ -1,74 +1,76 @@
-Return-Path: <linux-acpi+bounces-10697-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10698-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94B1A12FB5
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 01:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF7DA12FB9
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 01:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AD343A5AA0
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 00:27:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B8D23A5AF3
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 00:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096AFA94A;
-	Thu, 16 Jan 2025 00:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D762125B9;
+	Thu, 16 Jan 2025 00:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4zQPTO5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PTgsE5hQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57092BA34;
-	Thu, 16 Jan 2025 00:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797D9134AC;
+	Thu, 16 Jan 2025 00:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736987263; cv=none; b=o9rfPWUkWt5Fd7eYUd7dMxWgiEZpDqwHgaROkDm1dPa+p7aUyumWf5lQcZFrKxIAV1FuvjYPtyzm1uHwH7rStuy0ErOzYRrmWAzAm2sLAd9wEDHAHxm3p632o+Xn91yqPVMCxBPADspG+rkQV44LMxa5Y3Ni38QcOoXNewvrtVc=
+	t=1736987267; cv=none; b=i2pGkms7FISqRyZHng78OyLM99+clMer+TSh+3sh7ukB/fTOiii6RpA7d+b9eQL5+olvU1tVxLkJHBnjLU9UriGzbox9vToUK46hb3F0eRVvdTv3Mwj55n3/RXIVom4Xcav0Lzw//bLrc7dJSDz77HNX2a1XxJHSlxvmfzZbOis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736987263; c=relaxed/simple;
-	bh=wsLq6qeiuTFQaaOi2TO6CTEMs4n7yGnX2RsVSSMFkis=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ap2jvmfBV6obsAYfeJU+vdqca6920D9qBd/2C12o5DCwbtG/UCffp0HjlwhktjE5Thkqxglf+gAv20x2BphKKFJB3cqe/KYMB4fqcALTCw5hFYZwViUiGhvN5vUXUcEmarhhCkDRkRFNyWM0U5y4uzPg6Z3Y0AntDBEtriMT3mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4zQPTO5; arc=none smtp.client-ip=209.85.219.174
+	s=arc-20240116; t=1736987267; c=relaxed/simple;
+	bh=DGLD0kmL73nmcq12KV8lTWtz0LccRaUYOUpBkwBP5tQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SFBwezHE2ljNN5lW/iyV3pOspYkYWs1pzVLYq/a/ORe8/GVZ0OmJzmyz6yNMG526XVU7K88MU0/TzEtHyYvl8L9jI8///yEUtdI5xD749TUJA+jLjcOPz6+IMpF2NAkCxacRK97uno5uYZdmV8mpCP8jXl92+mdQXwdZmLdGghM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PTgsE5hQ; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e573136107bso663475276.3;
-        Wed, 15 Jan 2025 16:27:42 -0800 (PST)
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e3c8ae3a3b2so556917276.0;
+        Wed, 15 Jan 2025 16:27:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736987261; x=1737592061; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i6ItIuPUER6hoSMg/joSU8e/Itcbzuq4aGsbnewvB1U=;
-        b=A4zQPTO5Yb5Ct4a5QaevNk7QOysVriBp+9k1riq9W4mP2fjvMY3gm8860P/YffjHdd
-         dyfORL6x9f6PaBAaFV5iRCyxAj8PbEMLs9z9nZRy+Lt3cMnR6zwg+nVtIyofasrCzzlV
-         o1skwMOnzgHJRm61KW2YboT3g+qISgIvMA4IMhGk7RFCbS9DVKI4ESWQcSQIFWcCCE5j
-         /UzlhRaysj3FnGHEM9GBSxBjiY7LiOMbMZnUrWb0dq0lwk6YUnea7n6SUI5+wwbMDwbI
-         zzz0IiX4cF4YzjzZkmDouHQP95t01UQVcoeCm1Gqntyu+mQze4jxXBnleZrY8qqm223t
-         pUQQ==
+        d=gmail.com; s=20230601; t=1736987264; x=1737592064; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VlFsdCufRBrILboyfB+KwlzmsEr01MCTNdW5OfiDX/8=;
+        b=PTgsE5hQJG+MEUTRHszyjf9UIK6gjYcPyK0qW5c8tPADrCXXblgmf2WWCj+tq1y82K
+         ICOMpd73s8Zg44fzVL80ej58LAtGyGCtzB35t+Z3403mDltBNgZg6k1TefLtuurQJB4i
+         KMaTuYOBVnjrmRbs4ilGu1E7DUmFJPJdttGBPD+ai7cMlmLHLcIS0IlEA0jCh86mQTIw
+         u3Kh9cdak9sn04TLkyRcBVfbN2olllM0EEHKihqTjnQOe2YgUGs6i2VdCEze3zzU7U1s
+         zFjk//40JvdzAiv3mWgTmxQI8staDc+KiUUqZH+VYtvXORsYTVCShQP+BSWFHCJvoRDi
+         P5qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736987261; x=1737592061;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i6ItIuPUER6hoSMg/joSU8e/Itcbzuq4aGsbnewvB1U=;
-        b=nIwrjPnC8E1J4qITbT8Q5xuHuhIlRizO7nXFTzamjTyDFBMsQPYJ6dujb41MtPr3VT
-         yYdLyAxdAmxGPSk2iRfgW8m4qAydFJx7CaeVbzi9WwzFRdxZ+s22LdwLTs2xIZdiX21w
-         HTqoBemnkeef8WGWRWmIaTfxooKtXH/lxvH2lJGgqGx+v4p/ID4TfIGtf4zltPiMqTG9
-         c521j2Tj+zLP76Q+S22S5wpVpwtOH65nsIIPTHRMTVrQwixyU2m3UIjafA/JkAWH4+c+
-         kh+LE4kmtEFJmyCygoUxY0Ted4uIK0ICpAsN/HI2lxnZ761tth4qJD1NXcO1SUdXqLVj
-         ypUg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/ExoTYjljb0faAJEw/c5mRXXC+wZG64+5hHv7Dn38woHm5waMhyqS7s7rICgi3Ev3X61wEgTCOj+pI1zH@vger.kernel.org, AJvYcCX7wvAv3COLdOWDpeZ2Mt3KqmzOfEosVNLPf5giFR7JBwNT1UxnX8rGvWkxgeTO6r96ZHDFj/kjtO1s@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwHDo5Sq0bqAY2E20sFkky8P6BB5trguWx+/VM8Ry25QiaFybM
-	MPDPD4TbB5laVLPL386WIgmByiLjg03ZhrwNTKCqEdjY9wZg+aKKOJzo7g==
-X-Gm-Gg: ASbGnctWA8sNft15jjMq+oI3ro9VMCcFybYvSV5Uu1BUA1DPt2m1xBHXnslKq5Lgahb
-	5OHAMeRw2Mavmyqv8BsQ7nr8iEKSsQ+MLiUupB8CTW39WiQra9PFIQslT52tQcHZxfpvh9RHlqb
-	D/YBzlNuyTJFBsRAvf0GcuQIl9a+ON5tTZP+aNxXlpcrM13Q6mzAa83HGB50CaR+I/aJWdaypw5
-	LpskEmLO8dMSiNZX5PuW8TX5dK6tXe4HZqNWfvxm9+EjrNKmWArvCqJDjw1jE1E
-X-Google-Smtp-Source: AGHT+IH2F2+6cCAJawNCqoQuFN3KdhLz4mQ44By4V+g88yGjUF9vfQODjLvaYrxwA16VECXKunieZg==
-X-Received: by 2002:a05:690c:f12:b0:6ef:698a:1f02 with SMTP id 00721157ae682-6f5312afc4dmr148550347b3.32.1736987260741;
-        Wed, 15 Jan 2025 16:27:40 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736987264; x=1737592064;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VlFsdCufRBrILboyfB+KwlzmsEr01MCTNdW5OfiDX/8=;
+        b=imJuNQvURHITuIMf3p/PvSCggXwOI400e0I/oEK7kXEcTCaVFxLIxkMFs25XLwYGUm
+         c+nkQKF0Qffq57UQ+cssE4+F1jISLhDks2VIUXU8D91Aj+u8uy+PgOwspXET54xrBnGn
+         EZEg5uX9xPcGvMP6gcpwxG365dHbD3e1WIGsrx582xcg3KKqGdSsSHCTxomsxiE4c475
+         B914kMgYvqbUD/gHvmdcXZMKiUmQL+sCHYhWaXvBPzpFFL0vLwrpC9d4on4qEjEY1zca
+         JXxt2lxyoD1selgOOsxGcAWDorFt95kkLrHf7DbATfKQ3DXMe7oxWziz/Xt8tHVGo96X
+         NZBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWA/b3YxKEOcrQtBox/nwfo0gESkhWHgoq0vaFg/ctPsH30SHpUn/RJMXNNIAtxwweXSNeE6NB9tcCE@vger.kernel.org, AJvYcCXnx+IoGGM/iSStmFrKg54XQujdS7bsmZ81p496hvzGrYkqk9UoH3c0kecOj26quPpwrnHNeNMrcPR/RXmR@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsodR6u7UMm0mT7rhyDERP7bKDpkEymFSQ+Y5JT6MdQzHvJ6ac
+	YmTHzOVYHiM3KoI6yWB0Icr+boQkwdZpZiwpY3ie2tyPD5nDYVuHWP6vSA==
+X-Gm-Gg: ASbGncuQoQdoPYlxKNdAdaLg8ecA7UYfRdB0e74k+F9yv759OT5beR5keh6CDspmwJE
+	/jJICRvl0V/g1U5DuMSdTX5pgkmYpdfJ5ukt4R+5FDl5hpjzQjHTHwJqU3tIVzEpA71NrIhhg64
+	+97uABThMJM8p2Bfm6UsV5AaULalcDXdPODatVfJNM9mt1NQ4+kxQD9MErMKmG5b8PXkMPDKqka
+	Z9kVLfn1+a0xYN5QqNrUE6MNvLBJmfyKeUStm1o3kYHaZMm5KORng3GEcKoM8Kz
+X-Google-Smtp-Source: AGHT+IEbgVKjVbVgHlavzUMdayVgdtOy6e2M9nlksJdMpmo0Ym+3AKwWsF0x15YYMN6xSHoSlc+Wog==
+X-Received: by 2002:a05:690c:4b92:b0:6f6:c8d0:c057 with SMTP id 00721157ae682-6f6c8d0c1b9mr62027047b3.35.1736987263980;
+        Wed, 15 Jan 2025 16:27:43 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:82:1159:1ea9:11b1:7af9:1277])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f546c46bdesm27229077b3.50.2025.01.15.16.27.37
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f546c46bdesm27229077b3.50.2025.01.15.16.27.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 16:27:40 -0800 (PST)
+        Wed, 15 Jan 2025 16:27:43 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: platform-driver-x86@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -96,10 +98,12 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	"Gergo Koteles" <soyer@irl.hu>,
 	Dell.Client.Kernel@dell.com,
 	ibm-acpi-devel@lists.sourceforge.net
-Subject: [PATCH v4 00/19] Hide platform_profile_handler from consumers
-Date: Wed, 15 Jan 2025 19:27:02 -0500
-Message-ID: <20250116002721.75592-1-kuurtb@gmail.com>
+Subject: [PATCH v4 01/19] ACPI: platform_profile: Replace *class_dev member with class_dev
+Date: Wed, 15 Jan 2025 19:27:03 -0500
+Message-ID: <20250116002721.75592-2-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250116002721.75592-1-kuurtb@gmail.com>
+References: <20250116002721.75592-1-kuurtb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -108,65 +112,163 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi :)
+Instead of holding a reference to the class device, embed it the
+platform_profile_handler. This involves manually creating and
+registering the device and replacing dev_get_drvdata() with the newly
+created to_pprof_handler() macro.
 
-The merge window is about to open, so I rebased this patchset on top of
-pdx86/review-ilpo-next to pick up acer-wmi latest commits, in case we
-manage to squeeze this into v6.14.
-
-~ Kurt
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
-v3 -> v4:
+ drivers/acpi/platform_profile.c  | 37 +++++++++++++++++---------------
+ include/linux/platform_profile.h |  3 ++-
+ 2 files changed, 22 insertions(+), 18 deletions(-)
 
-[09/19]
-  - Replace error message with a user-friendly one
-
-v3: https://lore.kernel.org/platform-driver-x86/20250115071022.4815-1-kuurtb@gmail.com/
-
-Kurt Borja (19):
-  ACPI: platform_profile: Replace *class_dev member with class_dev
-  ACPI: platform_profile: Let drivers set drvdata to the class device
-  ACPI: platform_profile: Remove platform_profile_handler from callbacks
-  ACPI: platform_profile: Add `ops` member to handlers
-  ACPI: platform_profile: Add `probe` to platform_profile_ops
-  platform/surface: surface_platform_profile: Use
-    devm_platform_profile_register()
-  platform/x86: acer-wmi: Use devm_platform_profile_register()
-  platform/x86: amd: pmf: sps: Use devm_platform_profile_register()
-  platform/x86: asus-wmi: Use devm_platform_profile_register()
-  platform/x86: dell-pc: Use devm_platform_profile_register()
-  platform/x86: ideapad-laptop: Use devm_platform_profile_register()
-  platform/x86: hp-wmi: Use devm_platform_profile_register()
-  platform/x86: inspur_platform_profile: Use
-    devm_platform_profile_register()
-  platform/x86: thinkpad_acpi: Use devm_platform_profile_register()
-  ACPI: platform_profile: Remove platform_profile_handler from exported
-    symbols
-  ACPI: platform_profile: Move platform_profile_handler
-  ACPI: platform_profile: Clean platform_profile_handler
-  ACPI: platform_profile: Add documentation
-  ACPI: platform_profile: Add a prefix to log messages
-
- .../ABI/testing/sysfs-class-platform-profile  |  44 +++++
- drivers/acpi/platform_profile.c               | 172 +++++++++++++-----
- .../surface/surface_platform_profile.c        |  48 ++---
- drivers/platform/x86/acer-wmi.c               | 114 ++++++------
- drivers/platform/x86/amd/pmf/core.c           |   1 -
- drivers/platform/x86/amd/pmf/pmf.h            |   3 +-
- drivers/platform/x86/amd/pmf/sps.c            |  51 +++---
- drivers/platform/x86/asus-wmi.c               |  55 +++---
- drivers/platform/x86/dell/alienware-wmi.c     |  34 ++--
- drivers/platform/x86/dell/dell-pc.c           |  60 +++---
- drivers/platform/x86/hp/hp-wmi.c              |  83 +++++----
- drivers/platform/x86/ideapad-laptop.c         |  45 +++--
- .../platform/x86/inspur_platform_profile.c    |  48 +++--
- drivers/platform/x86/thinkpad_acpi.c          |  37 ++--
- include/linux/platform_profile.h              |  37 ++--
- 15 files changed, 495 insertions(+), 337 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-class-platform-profile
-
-
-base-commit: d98bf6a6ed61a8047e199495b0887cce392f8e5b
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index 4c4200a0b1a6..15f24adc57d4 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -5,11 +5,12 @@
+ #include <linux/acpi.h>
+ #include <linux/bits.h>
+ #include <linux/init.h>
+-#include <linux/kdev_t.h>
+ #include <linux/mutex.h>
+ #include <linux/platform_profile.h>
+ #include <linux/sysfs.h>
+ 
++#define to_pprof_handler(d)	(container_of(d, struct platform_profile_handler, class_dev))
++
+ static DEFINE_MUTEX(profile_lock);
+ 
+ static const char * const profile_names[] = {
+@@ -60,7 +61,7 @@ static int _store_class_profile(struct device *dev, void *data)
+ 	int *bit = (int *)data;
+ 
+ 	lockdep_assert_held(&profile_lock);
+-	handler = dev_get_drvdata(dev);
++	handler = to_pprof_handler(dev);
+ 	if (!test_bit(*bit, handler->choices))
+ 		return -EOPNOTSUPP;
+ 
+@@ -76,11 +77,11 @@ static int _store_class_profile(struct device *dev, void *data)
+  */
+ static int _notify_class_profile(struct device *dev, void *data)
+ {
+-	struct platform_profile_handler *handler = dev_get_drvdata(dev);
++	struct platform_profile_handler *handler = to_pprof_handler(dev);
+ 
+ 	lockdep_assert_held(&profile_lock);
+-	sysfs_notify(&handler->class_dev->kobj, NULL, "profile");
+-	kobject_uevent(&handler->class_dev->kobj, KOBJ_CHANGE);
++	sysfs_notify(&handler->class_dev.kobj, NULL, "profile");
++	kobject_uevent(&handler->class_dev.kobj, KOBJ_CHANGE);
+ 
+ 	return 0;
+ }
+@@ -100,7 +101,7 @@ static int get_class_profile(struct device *dev,
+ 	int err;
+ 
+ 	lockdep_assert_held(&profile_lock);
+-	handler = dev_get_drvdata(dev);
++	handler = to_pprof_handler(dev);
+ 	err = handler->profile_get(handler, &val);
+ 	if (err) {
+ 		pr_err("Failed to get profile for handler %s\n", handler->name);
+@@ -124,7 +125,7 @@ static int get_class_profile(struct device *dev,
+  */
+ static ssize_t name_show(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+-	struct platform_profile_handler *handler = dev_get_drvdata(dev);
++	struct platform_profile_handler *handler = to_pprof_handler(dev);
+ 
+ 	return sysfs_emit(buf, "%s\n", handler->name);
+ }
+@@ -142,7 +143,7 @@ static ssize_t choices_show(struct device *dev,
+ 			    struct device_attribute *attr,
+ 			    char *buf)
+ {
+-	struct platform_profile_handler *handler = dev_get_drvdata(dev);
++	struct platform_profile_handler *handler = to_pprof_handler(dev);
+ 
+ 	return _commmon_choices_show(handler->choices, buf);
+ }
+@@ -229,7 +230,7 @@ static int _aggregate_choices(struct device *dev, void *data)
+ 	unsigned long *aggregate = data;
+ 
+ 	lockdep_assert_held(&profile_lock);
+-	handler = dev_get_drvdata(dev);
++	handler = to_pprof_handler(dev);
+ 	if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
+ 		bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
+ 	else
+@@ -410,7 +411,7 @@ static const struct attribute_group platform_profile_group = {
+ void platform_profile_notify(struct platform_profile_handler *pprof)
+ {
+ 	scoped_cond_guard(mutex_intr, return, &profile_lock) {
+-		_notify_class_profile(pprof->class_dev, NULL);
++		_notify_class_profile(&pprof->class_dev, NULL);
+ 	}
+ 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+ }
+@@ -476,11 +477,13 @@ int platform_profile_register(struct platform_profile_handler *pprof)
+ 	pprof->minor = ida_alloc(&platform_profile_ida, GFP_KERNEL);
+ 	if (pprof->minor < 0)
+ 		return pprof->minor;
+-	pprof->class_dev = device_create(&platform_profile_class, pprof->dev,
+-					 MKDEV(0, 0), pprof, "platform-profile-%d",
+-					 pprof->minor);
+-	if (IS_ERR(pprof->class_dev)) {
+-		err = PTR_ERR(pprof->class_dev);
++
++	pprof->class_dev.class = &platform_profile_class;
++	pprof->class_dev.parent = pprof->dev;
++	dev_set_name(&pprof->class_dev, "platform-profile-%d", pprof->minor);
++	err = device_register(&pprof->class_dev);
++	if (err) {
++		put_device(&pprof->class_dev);
+ 		goto cleanup_ida;
+ 	}
+ 
+@@ -493,7 +496,7 @@ int platform_profile_register(struct platform_profile_handler *pprof)
+ 	return 0;
+ 
+ cleanup_cur:
+-	device_unregister(pprof->class_dev);
++	device_unregister(&pprof->class_dev);
+ 
+ cleanup_ida:
+ 	ida_free(&platform_profile_ida, pprof->minor);
+@@ -508,7 +511,7 @@ int platform_profile_remove(struct platform_profile_handler *pprof)
+ 	guard(mutex)(&profile_lock);
+ 
+ 	id = pprof->minor;
+-	device_unregister(pprof->class_dev);
++	device_unregister(&pprof->class_dev);
+ 	ida_free(&platform_profile_ida, id);
+ 
+ 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+index f1cd4b65e351..8a9b8754f9ac 100644
+--- a/include/linux/platform_profile.h
++++ b/include/linux/platform_profile.h
+@@ -9,6 +9,7 @@
+ #ifndef _PLATFORM_PROFILE_H_
+ #define _PLATFORM_PROFILE_H_
+ 
++#include <linux/device.h>
+ #include <linux/bitops.h>
+ 
+ /*
+@@ -30,7 +31,7 @@ enum platform_profile_option {
+ struct platform_profile_handler {
+ 	const char *name;
+ 	struct device *dev;
+-	struct device *class_dev;
++	struct device class_dev;
+ 	int minor;
+ 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+ 	int (*profile_get)(struct platform_profile_handler *pprof,
 -- 
 2.48.1
 
