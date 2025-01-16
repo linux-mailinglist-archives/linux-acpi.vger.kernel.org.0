@@ -1,143 +1,104 @@
-Return-Path: <linux-acpi+bounces-10724-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10725-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC41FA13C68
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 15:37:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD6CA13C8D
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 15:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00229165A53
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 14:37:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86E673A77B1
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Jan 2025 14:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B041DE8AC;
-	Thu, 16 Jan 2025 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA0022B5B1;
+	Thu, 16 Jan 2025 14:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAjV77mP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A752022AE49;
-	Thu, 16 Jan 2025 14:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8465635968;
+	Thu, 16 Jan 2025 14:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737038218; cv=none; b=OUVOFCU9D7sfyyoUFbMwoRW55VKCzGKsJshSEqlEe6CB1EjopO96eg1CjwN0D4S4FAsZlZ7f4sEVKdg7M53yFPI1B5NmhnzsHAEOyoME31NS++TEYPu02fXqCjZmk22NIFdDVNDrSEPLoUMjugZ4e1b4amiggpv8na83InIFpnc=
+	t=1737038693; cv=none; b=aVqMWnkZkYNr8cm8ib8SXhRYwSBNa7RMHzLOUI97x6VoSiAbKw6vgmtukpjL+QOVtmScamLX6nOLHevCDaWMN72W0EapbYmR+MJua0ZNsr2pxJeh7U2lK25CkyWnlCvWfYUYX81A+Ts1VSpsKhinyL/3fz7KdtV3BFkXyKS/Kjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737038218; c=relaxed/simple;
-	bh=Ox9aS8jYvRZa+UKv9FrPv180KZtV06NED7LM9JbJMF4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Uw3hg2Q9KIbYJ2ofQVuV0c9QcR5P/Tr+Do1/JqeVtoLZZvW7KklXrWGTQeQ78TrILZVwnXpNGjtKJul3JxXxL8Zyw5bFa3f/FuA2/PII/9kwqd6SrC7+kpC/DxVXehFIRNiPkHFSS04np3T9WpxwkgPrUcbv+cIQU3thAjk5dK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4YYlhX4Wq5z1W3V0;
-	Thu, 16 Jan 2025 22:33:00 +0800 (CST)
-Received: from dggpemf200009.china.huawei.com (unknown [7.185.36.246])
-	by mail.maildlp.com (Postfix) with ESMTPS id F01E51401E9;
-	Thu, 16 Jan 2025 22:36:52 +0800 (CST)
-Received: from [10.67.121.188] (10.67.121.188) by
- dggpemf200009.china.huawei.com (7.185.36.246) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 16 Jan 2025 22:36:52 +0800
-Message-ID: <2f2e91d0-b4b4-8eb1-8d9c-0020654dedff@huawei.com>
-Date: Thu, 16 Jan 2025 22:36:52 +0800
+	s=arc-20240116; t=1737038693; c=relaxed/simple;
+	bh=npsApPA+hljWDarBnVadWNkA2hwrbtGy8vO5AcZrcGE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=A1KrGatxYfT/KYlbG/bR/e87OLjQLMugAl/4ugtOcz5DEw7QJWHjgt3S7X1AYymmCS13yFg53IxsnWSUUOfcIOZ/xlQMXwz4AQ5QtOeGZ2SVOrIGzPZJpmS1I+sR61m/4hz9hgBhctqQKOVQsXQ2X5cJvaU5Hhk4oL4VyYRT0wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAjV77mP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A67C4CEE2;
+	Thu, 16 Jan 2025 14:44:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737038693;
+	bh=npsApPA+hljWDarBnVadWNkA2hwrbtGy8vO5AcZrcGE=;
+	h=From:Date:Subject:To:Cc:From;
+	b=NAjV77mP0RQN/PPou/YlCkYAslFnvek15auAmiZFUhiHPJfPKCFE6xA8P71CMLpal
+	 KlNn8xzrhZGUNMcdbffX0CE8rfveIcxCH9JoFWDl1fKAdJVGXaqKa/ABLlwYb3BfDZ
+	 IXxt+zKSi3Gg8hZQFVPezm+A1nHvb2CMNKWNctadTwt7OYdmIzMjlgvLOrjFrEUCvY
+	 k19YcHD5i9m1Ri6kjXHWKGLUzUsw4oZV+b9k7YCE0GobmGPYuChV+HBS3vppMX5jLS
+	 ajExZDdmzwT++dQVmYsFGRS9oFHLyS4vxf/uo59ib6VrcfTUaO20fgIICDYs4JFRyl
+	 kaBmuC+BODjHg==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-29f87f1152cso544878fac.2;
+        Thu, 16 Jan 2025 06:44:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXGlZl5tGLompbN8Je17usafLy/ICilPaiAa9Uttbr1rutM5HQtQU21IFl61N/q+twwBeNs1MuuRkpBuIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySw42svr5P45cGXVg6J4xnKkq/P2mrre514r5Hmv4rfppAphVX
+	ncDiWkV8Oa8cA27LyziRaVSAZvzqEm2+Ig03PS8XNsc06cGjDFuwbrrjfpJrQUKXbvkwZGhQlnq
+	eEr5wPqa3zVSDUTT8z8sPHuivBK8=
+X-Google-Smtp-Source: AGHT+IHiEioe8tcJmluuNegziPgyxt9jEJ4pWYHKKW5JPwXCcbFIWBdQaNSiDrtDmZL7+jlhA35EAuJ9lODjrv6DYRw=
+X-Received: by 2002:a05:6871:a587:b0:29f:f4af:dc34 with SMTP id
+ 586e51a60fabf-2aa0654476dmr18543554fac.7.1737038692198; Thu, 16 Jan 2025
+ 06:44:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH v2] acpi: Fix HED module initialization order when it is
- built-in
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <jonathan.cameron@huawei.com>,
-	<mchehab+huawei@kernel.org>, <roberto.sassu@huawei.com>,
-	<shiju.jose@huawei.com>, <prime.zeng@hisilicon.com>, <linuxarm@huawei.com>
-References: <20250115123149.3324733-1-tanxiaofei@huawei.com>
- <CAJZ5v0gWPkmvpPGMO5fbXfrOcAgofML+WQE54cwiwDbaK6vfZw@mail.gmail.com>
-From: Xiaofei Tan <tanxiaofei@huawei.com>
-In-Reply-To: <CAJZ5v0gWPkmvpPGMO5fbXfrOcAgofML+WQE54cwiwDbaK6vfZw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200009.china.huawei.com (7.185.36.246)
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 16 Jan 2025 15:44:41 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j7Kf_zWjB0kv=b=V9DBKoodGap5_-QimbZzz=WZnpkpg@mail.gmail.com>
+X-Gm-Features: AbW1kvYXLvNPwV5CHojfvK8k0C5HHCJPD6R_9QTdF3e6ShV3qMVit-RzoA7jP8g
+Message-ID: <CAJZ5v0j7Kf_zWjB0kv=b=V9DBKoodGap5_-QimbZzz=WZnpkpg@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for final v6.13
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+
+Hi Linus,
+
+Please pull from the tag
+
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.13-rc8
+
+with top-most commit 14578923e8c251091d2bb8a2756cde3b662ac316
+
+ ACPI: video: Fix random crashes due to bad kfree()
+
+on top of commit 5bc55a333a2f7316b58edc7573e8e893f7acb532
+
+ Linux 6.13-rc7
+
+to receive an ACPI fix for final 6.13.
+
+This prevents acpi_video_device_EDID() from returning a pointer to a
+memory region that should not be passed to kfree() which causes one of
+its users to crash randomly on attempts to free it (Chris Bainbridge).
+
+Thanks!
 
 
-在 2025/1/15 23:51, Rafael J. Wysocki 写道:
-> On Wed, Jan 15, 2025 at 1:38 PM Xiaofei Tan <tanxiaofei@huawei.com> wrote:
->> When the module HED is built-in, the init order is determined by
->> Makefile order. That order violates expectations. Because the module
->> HED init is behind evged. RAS records can't be handled in the
->> special time window that evged has initialized while HED not.
->> If the number of such RAS records is more than the APEI HEST error
->> source number, the HEST resources could be occupied all, and then
->> could affect subsequent RAS error reporting.
->>
->> If build HED as a module, the problem remains. To solve this problem
->> completely, change the ACPI_HED from tristate to bool.
->>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
->> ---
->>   drivers/acpi/Kconfig  | 2 +-
->>   drivers/acpi/Makefile | 8 +++++++-
->>   2 files changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
->> index d81b55f5068c..7f10aa38269d 100644
->> --- a/drivers/acpi/Kconfig
->> +++ b/drivers/acpi/Kconfig
->> @@ -452,7 +452,7 @@ config ACPI_SBS
->>            the modules will be called sbs and sbshc.
->>
->>   config ACPI_HED
->> -       tristate "Hardware Error Device"
->> +       bool "Hardware Error Device"
->>          help
->>            This driver supports the Hardware Error Device (PNP0C33),
->>            which is used to report some hardware errors notified via
->> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
->> index 40208a0f5dfb..b50d1baeb71f 100644
->> --- a/drivers/acpi/Makefile
->> +++ b/drivers/acpi/Makefile
->> @@ -15,6 +15,13 @@ endif
->>
->>   obj-$(CONFIG_ACPI)             += tables.o
->>
->> +#
->> +# The hed.o needs to be in front of evged.o to avoid the problem that
->> +# RAS errors cannot be handled in the special time window of startup
->> +# phase that evged has initialized while hed not.
->> +#
->> +obj-$(CONFIG_ACPI_HED)         += hed.o
->> +
-> I'm not sure why you are insisting on this Makefile ordering change.
->
-> It would be much more robust to run the hed driver init at a different
-> initcall level than evged.
->
-> If there is a problem with this approach, it needs to be mentioned in
-> the changelog or in the comment above.
+---------------
 
-Hi Rafael，
+Chris Bainbridge (1):
+      ACPI: video: Fix random crashes due to bad kfree()
 
-The approach of changing the initcall level can work too.  Will send v3 patch later, thanks.
+---------------
 
-
->>   #
->>   # ACPI Core Subsystem (Interpreter)
->>   #
->> @@ -95,7 +102,6 @@ obj-$(CONFIG_ACPI_HOTPLUG_IOAPIC) += ioapic.o
->>   obj-$(CONFIG_ACPI_BATTERY)     += battery.o
->>   obj-$(CONFIG_ACPI_SBS)         += sbshc.o
->>   obj-$(CONFIG_ACPI_SBS)         += sbs.o
->> -obj-$(CONFIG_ACPI_HED)         += hed.o
->>   obj-$(CONFIG_ACPI_EC_DEBUGFS)  += ec_sys.o
->>   obj-$(CONFIG_ACPI_BGRT)                += bgrt.o
->>   obj-$(CONFIG_ACPI_CPPC_LIB)    += cppc_acpi.o
->> --
-> .
+ drivers/acpi/acpi_video.c              | 49 +++++++++++++++++++---------------
+ drivers/gpu/drm/nouveau/nouveau_acpi.c |  2 +-
+ 2 files changed, 28 insertions(+), 23 deletions(-)
 
