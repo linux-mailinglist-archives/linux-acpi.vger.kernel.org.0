@@ -1,190 +1,211 @@
-Return-Path: <linux-acpi+bounces-10734-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10735-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED01A149F8
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 08:08:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C79A14ABC
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 09:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 338CE188B93C
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 07:08:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0296F3A4DB4
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 08:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046FC1F78EF;
-	Fri, 17 Jan 2025 07:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421041F868A;
+	Fri, 17 Jan 2025 08:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BwP9QT76"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QweNCHrf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7E11F76D7;
-	Fri, 17 Jan 2025 07:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC521F6690;
+	Fri, 17 Jan 2025 08:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737097689; cv=none; b=nYDLlgCxX572FV7093HAWfS25jS4DqMmM3iA9B3RgHhwtB+m6iLmoenlPmTDR6ErOfie83PNTBqdD7noKncKIZrxj3KKmp0/O+dJ9IkznV7leUqpsd9B/QkzKxzGYZcXOaWRwXemi6UAjKUBpJUVtB67oVdq3hQmIc79UQQD1hY=
+	t=1737101612; cv=none; b=lySbhKubL575rP5JQA+b+OZnP0jKGszvv4/qe4bhbs6yK791FEBjLOQ6ltQkAU8XoW25bsaHJ1N1AOCvhM13flb1Woaa0v7LyUit8zTX9HmU9KNBlMC3nxh6IzUWkdZ7hkGq2hZMk7BIXXKwMMlNHLx2r1Luu+OiKy7W3IF3eow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737097689; c=relaxed/simple;
-	bh=A9YabGAz9F0I03ZVr6BHi8PnA+DJl2DrzQAK/6IyhOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OfDvQtZhmwmWmxsU2T2El2H8u62YCegcGixWyKCLzaSPeBP44Ued0GUFuzrqTjFTaIScySvpj97BIUDw5aUZZwGIOBojd9aJICRIJTArnGI/Vjl2E+ZSExRG7XmF7YiqpU9hQBA48wGpeyYiy3p6FFWtaaVRHS9jg/FsWmCpEbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BwP9QT76; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1737101612; c=relaxed/simple;
+	bh=tOwORoT+ekC5F0FtPYmVRhc9L3HyViUNWRKZMXnC5nM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0lV/FCW8MGWUHD8AJELM7K9knLRfcNJBPUDFZKSp8y2oGUge96OMDjuqqmfoOyiIQ88kdiBxZml6F10UrHgIjR4Mv6genbADNKvCEflcp0Ss2Wah7pMQOGBTC1oKZoP1SVk/u8yivyXCdVoI8lUyqm1Hd/CK3Dvv9W1n2bCOnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QweNCHrf; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737097688; x=1768633688;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A9YabGAz9F0I03ZVr6BHi8PnA+DJl2DrzQAK/6IyhOU=;
-  b=BwP9QT76Xs6CRbZVqP0E30b1JkHpI+4Qf7tItzCj/SrNBANnC+n6MkBo
-   Q16hB4gIlZK4FADH9xudEuzck3aRN0TfbtLdeFx+h6uo/VBsdaSgRgkd7
-   OQC3N+RDO2g/0XlJg0umQALnwSTRTCzn1OZl1feTrToYgDk+7aLOb01NJ
-   kbI3ovjCiWwnfFVUicB4wkHyEU/UKXfxlMTqzFyiKxgYPztccw0jqNb3c
-   y/vZu8oe6f9sF2eWlEfykUCebIti6E9PtMpAFXlEjeLuGeh5TmMnIE03T
-   Q57lWztza/e0BZTpLEWrKHzDusVKAgnOh/CFTAXVr45YihxRScar4tMqb
-   g==;
-X-CSE-ConnectionGUID: A5ybydPYR32rxy0P6dCJtg==
-X-CSE-MsgGUID: mJZs/EaJQTKiwb7WgBFRAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="48937464"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="48937464"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 23:08:07 -0800
-X-CSE-ConnectionGUID: vljCoSYjS7yxeDj8iRCbgg==
-X-CSE-MsgGUID: zlF27OjpQf6rVjKY1e3N5A==
+  t=1737101611; x=1768637611;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tOwORoT+ekC5F0FtPYmVRhc9L3HyViUNWRKZMXnC5nM=;
+  b=QweNCHrfyKzZbkxOz/ObxC35bEDtq+8+w28is5Zx17MY4jtwKFuIhDny
+   SePxlWD1EPTQSgW6SXn6hC/xqb0ckMMJF7nigYe+M2MFdsyvhgEp56ZwT
+   ZCZhjDmkPKHdCnWrv1Q4z1W3gqAuExuv24vmvxKcJ5O2C1iPzGwuWzBp/
+   cW2iERMBTrYPpszg0u9OO5P8JHJ2zmPHisWDtJGjmb5aV4MmneH+2woN7
+   xpFtbdhmgVxQP1aEdR+huP6ah9/fZpV9djAaB7ZLOLDUp5ABappRbRV92
+   Hlb208FgWG2F3VAk8B1pOhjpJkJu0kh42ZbKaV4bOMDARhMNPK8uceet/
+   w==;
+X-CSE-ConnectionGUID: 1nyQnfDtTneRIP/XeDzfog==
+X-CSE-MsgGUID: d+oT73vOTnSixwmtqBCR/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="37219975"
+X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
+   d="scan'208";a="37219975"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 00:13:30 -0800
+X-CSE-ConnectionGUID: eBfGnS5vQpWqvMSk8NkA/Q==
+X-CSE-MsgGUID: PG9Qdf8SSkaOp8nEeLP+nQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="136604791"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 16 Jan 2025 23:08:03 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tYgSW-000Stx-0B;
-	Fri, 17 Jan 2025 07:08:00 +0000
-Date: Fri, 17 Jan 2025 15:07:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
-	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
-	sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
-	baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com,
-	bp@alien8.de, yazen.ghannam@amd.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	tianruidong@linux.alibaba.com
-Subject: Re: [PATCH v3 3/5] RAS/AEST: Introduce AEST inject interface to test
- AEST driver
-Message-ID: <202501171406.o7oztilo-lkp@intel.com>
-References: <20250115084228.107573-4-tianruidong@linux.alibaba.com>
+   d="scan'208";a="105582964"
+Received: from rzhang1-mobl.sh.intel.com ([10.239.158.59])
+  by orviesa010.jf.intel.com with ESMTP; 17 Jan 2025 00:13:27 -0800
+From: Zhang Rui <rui.zhang@intel.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org
+Cc: rui.zhang@intel.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jmattson@google.com
+Subject: [PATCH V2] x86/acpi: Fix LAPIC/x2APIC parsing order
+Date: Fri, 17 Jan 2025 16:14:20 +0800
+Message-ID: <20250117081420.4046737-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115084228.107573-4-tianruidong@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Ruidong,
+On some systems, the same CPU (with the same APIC ID) is assigned a
+different logical CPU id after commit ec9aedb2aa1a ("x86/acpi: Ignore
+invalid x2APIC entries").
 
-kernel test robot noticed the following build errors:
+This means that Linux enumerates the CPUs in a different order, which
+violates ACPI specification[1] that states:
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge arm64/for-next/core ras/edac-for-next linus/master tip/smp/core v6.13-rc7 next-20250116]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+  "OSPM should initialize processors in the order that they appear in
+   the MADT"
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-RAS-AEST-Initial-AEST-driver/20250115-164601
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20250115084228.107573-4-tianruidong%40linux.alibaba.com
-patch subject: [PATCH v3 3/5] RAS/AEST: Introduce AEST inject interface to test AEST driver
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20250117/202501171406.o7oztilo-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250117/202501171406.o7oztilo-lkp@intel.com/reproduce)
+The problematic commit parses all LAPIC entries before any x2APIC
+entries, aiming to ignore x2APIC entries with APIC ID < 255 when valid
+LAPIC entries exist. However, it disrupts the CPU enumeration order on
+systems where x2APIC entries precede LAPIC entries in the MADT.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501171406.o7oztilo-lkp@intel.com/
+Fix this problem by:
+    1) Parsing LAPIC entries first without registering them in the
+       topology to evaluate whether valid LAPIC entries exist.
+    2) Restoring the MADT in order parser which invokes either the LAPIC
+       or the X2APIC parser function depending on the entry type.
 
-All errors (new ones prefixed by >>):
+The X2APIC parser still ignores entries < 0xff in case that #1 found
+valid LAPIC entries independent of their position in the MADT table.
 
->> drivers/ras/aest/aest-core.c:280:13: error: static declaration of 'aest_proc_record' follows non-static declaration
-     280 | static void aest_proc_record(struct aest_record *record, void *data)
-         |             ^
-   drivers/ras/aest/aest.h:338:6: note: previous declaration is here
-     338 | void aest_proc_record(struct aest_record *record, void *data);
-         |      ^
-   1 error generated.
+1. https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#madt-processor-local-apic-sapic-structure-entry-order
 
+Cc: stable@vger.kernel.org
+Reported-by: Jim Mattson <jmattson@google.com>
+Closes: https://lore.kernel.org/all/20241010213136.668672-1-jmattson@google.com/
+Fixes: ec9aedb2aa1a ("x86/acpi: Ignore invalid x2APIC entries")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Tested-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+---
+Changes in V2:
+ - Add Reviewed-by tag from Thomas
+ - Improve changelog based on Thomas' comment 
+---
+ arch/x86/kernel/acpi/boot.c | 50 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
 
-vim +/aest_proc_record +280 drivers/ras/aest/aest-core.c
-
-b6c745ae1213b2 Ruidong Tian 2025-01-15  279  
-b6c745ae1213b2 Ruidong Tian 2025-01-15 @280  static void aest_proc_record(struct aest_record *record, void *data)
-b6c745ae1213b2 Ruidong Tian 2025-01-15  281  {
-b6c745ae1213b2 Ruidong Tian 2025-01-15  282  	struct ras_ext_regs regs = {0};
-b6c745ae1213b2 Ruidong Tian 2025-01-15  283  	int *count = data;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  284  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  285  	regs.err_status = record_read(record, ERXSTATUS);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  286  	if (!(regs.err_status & ERR_STATUS_V))
-b6c745ae1213b2 Ruidong Tian 2025-01-15  287  		return;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  288  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  289  	(*count)++;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  290  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  291  	if (regs.err_status & ERR_STATUS_AV)
-b6c745ae1213b2 Ruidong Tian 2025-01-15  292  		regs.err_addr = record_read(record, ERXADDR);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  293  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  294  	regs.err_fr = record->fr;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  295  	regs.err_ctlr = record_read(record, ERXCTLR);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  296  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  297  	if (regs.err_status & ERR_STATUS_MV) {
-b6c745ae1213b2 Ruidong Tian 2025-01-15  298  		regs.err_misc[0] = record_read(record, ERXMISC0);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  299  		regs.err_misc[1] = record_read(record, ERXMISC1);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  300  		if (record->node->version >= ID_AA64PFR0_EL1_RAS_V1P1) {
-b6c745ae1213b2 Ruidong Tian 2025-01-15  301  			regs.err_misc[2] = record_read(record, ERXMISC2);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  302  			regs.err_misc[3] = record_read(record, ERXMISC3);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  303  		}
-b6c745ae1213b2 Ruidong Tian 2025-01-15  304  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  305  		if (record->node->info->interface_hdr->flags &
-b6c745ae1213b2 Ruidong Tian 2025-01-15  306  			AEST_XFACE_FLAG_CLEAR_MISC) {
-b6c745ae1213b2 Ruidong Tian 2025-01-15  307  			record_write(record, ERXMISC0, 0);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  308  			record_write(record, ERXMISC1, 0);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  309  			if (record->node->version >= ID_AA64PFR0_EL1_RAS_V1P1) {
-b6c745ae1213b2 Ruidong Tian 2025-01-15  310  				record_write(record, ERXMISC2, 0);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  311  				record_write(record, ERXMISC3, 0);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  312  			}
-b6c745ae1213b2 Ruidong Tian 2025-01-15  313  		/* ce count is 0 if record do not support ce */
-b6c745ae1213b2 Ruidong Tian 2025-01-15  314  		} else if (record->ce.count > 0)
-b6c745ae1213b2 Ruidong Tian 2025-01-15  315  			record_write(record, ERXMISC0, record->ce.reg_val);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  316  	}
-b6c745ae1213b2 Ruidong Tian 2025-01-15  317  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  318  	/* panic if unrecoverable and uncontainable error encountered */
-b6c745ae1213b2 Ruidong Tian 2025-01-15  319  	if ((regs.err_status & ERR_STATUS_UE) &&
-b6c745ae1213b2 Ruidong Tian 2025-01-15  320  		(regs.err_status & ERR_STATUS_UET) > ERR_STATUS_UET_UEU)
-b6c745ae1213b2 Ruidong Tian 2025-01-15  321  		aest_panic(record, &regs, "AEST: unrecoverable error encountered");
-b6c745ae1213b2 Ruidong Tian 2025-01-15  322  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  323  	aest_log(record, &regs);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  324  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  325  	/* Write-one-to-clear the bits we've seen */
-b6c745ae1213b2 Ruidong Tian 2025-01-15  326  	regs.err_status &= ERR_STATUS_W1TC;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  327  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  328  	/* Multi bit filed need to write all-ones to clear. */
-b6c745ae1213b2 Ruidong Tian 2025-01-15  329  	if (regs.err_status & ERR_STATUS_CE)
-b6c745ae1213b2 Ruidong Tian 2025-01-15  330  		regs.err_status |= ERR_STATUS_CE;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  331  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  332  	/* Multi bit filed need to write all-ones to clear. */
-b6c745ae1213b2 Ruidong Tian 2025-01-15  333  	if (regs.err_status & ERR_STATUS_UET)
-b6c745ae1213b2 Ruidong Tian 2025-01-15  334  		regs.err_status |= ERR_STATUS_UET;
-b6c745ae1213b2 Ruidong Tian 2025-01-15  335  
-b6c745ae1213b2 Ruidong Tian 2025-01-15  336  	record_write(record, ERXSTATUS, regs.err_status);
-b6c745ae1213b2 Ruidong Tian 2025-01-15  337  }
-b6c745ae1213b2 Ruidong Tian 2025-01-15  338  
-
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 3a44a9dc3fb7..18485170d51b 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -226,6 +226,28 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
+ 	return 0;
+ }
+ 
++static int __init
++acpi_check_lapic(union acpi_subtable_headers *header, const unsigned long end)
++{
++	struct acpi_madt_local_apic *processor = NULL;
++
++	processor = (struct acpi_madt_local_apic *)header;
++
++	if (BAD_MADT_ENTRY(processor, end))
++		return -EINVAL;
++
++	/* Ignore invalid ID */
++	if (processor->id == 0xff)
++		return 0;
++
++	/* Ignore processors that can not be onlined */
++	if (!acpi_is_processor_usable(processor->lapic_flags))
++		return 0;
++
++	has_lapic_cpus = true;
++	return 0;
++}
++
+ static int __init
+ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+ {
+@@ -257,7 +279,6 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+ 			       processor->processor_id, /* ACPI ID */
+ 			       processor->lapic_flags & ACPI_MADT_ENABLED);
+ 
+-	has_lapic_cpus = true;
+ 	return 0;
+ }
+ 
+@@ -1029,6 +1050,8 @@ static int __init early_acpi_parse_madt_lapic_addr_ovr(void)
+ static int __init acpi_parse_madt_lapic_entries(void)
+ {
+ 	int count, x2count = 0;
++	struct acpi_subtable_proc madt_proc[2];
++	int ret;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_APIC))
+ 		return -ENODEV;
+@@ -1037,10 +1060,27 @@ static int __init acpi_parse_madt_lapic_entries(void)
+ 				      acpi_parse_sapic, MAX_LOCAL_APIC);
+ 
+ 	if (!count) {
+-		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
+-					acpi_parse_lapic, MAX_LOCAL_APIC);
+-		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
+-					acpi_parse_x2apic, MAX_LOCAL_APIC);
++		/* Check if there are valid LAPIC entries */
++		acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC, acpi_check_lapic, MAX_LOCAL_APIC);
++
++		/*
++		 * Enumerate the APIC IDs in the order that they appear in the
++		 * MADT, no matter LAPIC entry or x2APIC entry is used.
++		 */
++		memset(madt_proc, 0, sizeof(madt_proc));
++		madt_proc[0].id = ACPI_MADT_TYPE_LOCAL_APIC;
++		madt_proc[0].handler = acpi_parse_lapic;
++		madt_proc[1].id = ACPI_MADT_TYPE_LOCAL_X2APIC;
++		madt_proc[1].handler = acpi_parse_x2apic;
++		ret = acpi_table_parse_entries_array(ACPI_SIG_MADT,
++				sizeof(struct acpi_table_madt),
++				madt_proc, ARRAY_SIZE(madt_proc), MAX_LOCAL_APIC);
++		if (ret < 0) {
++			pr_err("Error parsing LAPIC/X2APIC entries\n");
++			return ret;
++		}
++		count = madt_proc[0].count;
++		x2count = madt_proc[1].count;
+ 	}
+ 	if (!count && !x2count) {
+ 		pr_err("No LAPIC entries present\n");
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
