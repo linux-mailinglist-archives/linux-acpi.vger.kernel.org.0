@@ -1,193 +1,183 @@
-Return-Path: <linux-acpi+bounces-10732-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10733-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0CAA148D9
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 05:28:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C003A14993
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 07:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E24A216720D
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 04:28:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFABB188DBDF
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 06:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F35D1F63FC;
-	Fri, 17 Jan 2025 04:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FAF1F7596;
+	Fri, 17 Jan 2025 06:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i7zUANY9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E1IOyXw1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC068C11;
-	Fri, 17 Jan 2025 04:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5341F5602;
+	Fri, 17 Jan 2025 06:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737088086; cv=none; b=d88+3CnappYhlOc5sSGyeb2GnLg/R/6rC1FNSXXEe0JWMo45LCmttvDW2XM1lUBbUdNCDkSEIfosMfPXA25TCFDj4jA0fD0DtGE0wEjIOppJDB+P6xSR3EtlzqKwIycKmp4d3QZJopKZEvpuwkl/w1gqQgvRY0W+/WTZtmqLDoY=
+	t=1737094561; cv=none; b=hFEs25X3Z/e5Km36nyeCUunJjhzef256PFxReZPDmdhCpSZgUX4Nz1KYbGmuoyP6pV+NwR+w8uS9mx7VHGgvRnmhiaCgNLfePXhHOr1BPw2/C0/zxz22sOWyxlQX371uPsQE5MHkVfJ82mvi8ksr2Z3dJkpsr8RzITkPxj9TiRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737088086; c=relaxed/simple;
-	bh=zpvBOBIWNbcka/K1tkb9pFpfz2po0uC0iD567858Y7E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=We47Ynr55ekhW12EWjbbEgBgDMQrSwPyPOeXQQJ2qxPpRXRwyoqhCRCAsOL6of8Zx4iRWEyVCXywxPg5kXwuhsDGdmNDp3E4dZcntFLawvCnW39frUM+6HFj72+GBIy+x5rUWwIFi/DzB6UHcleQVUw3VJqQxSQ+E4Qwe1Cib9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i7zUANY9; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-51cccb020a9so903296e0c.0;
-        Thu, 16 Jan 2025 20:28:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737088083; x=1737692883; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+bG3f7y/u6GJFmQaddU0I8bnKf7GyHxvKs5bkvgDY7Y=;
-        b=i7zUANY9s0QvFENNFXQyeYMHPml0kdC+bbTkXulavCiVyiYe6Rvqpd7NA6tkpXuACK
-         ulFHWlMT/9heQUU67GZUWb54BXtahccFxjzR2WLqpUrKI4dq6y2BcYUWfcVrbncleAmo
-         qSN/Z+J+CmXMjEeW9ZIuDQCizaAAyRbu7d6AR+3edN0m7hYWjMTkXZj3oVpgLHG9Hu29
-         TDTUWTmu49g79ktGYmdzeypWIMAnQ/WOun5fpDi3MQZldgk6mE5JVLPpAtgW/8XfAnCU
-         vTFTJheRevgR9hs/rIc+NCK+6LyUDbLH5DTQRbqonUooENK/lo5BcsO0vl0IkwKQYuyS
-         +Kog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737088083; x=1737692883;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+bG3f7y/u6GJFmQaddU0I8bnKf7GyHxvKs5bkvgDY7Y=;
-        b=t8Ifnn9FN9ofOMXomP2CsVzKcClwgFA3E8yg0H6Jnrz9hdNUehozjB5dRuS8yyu3Dq
-         UpRwtn+mB+pdex2fFqgu7VBCUJ4l0CQH68iElybTsNVFzNuiPvJsn2FxIvesfpwPDDwL
-         cxYYTTA+VhLuIBHIpXmk/0Glg3C42McXK31yH+Z9BcdSpVncIymySFfLpWeGm7JojkOL
-         5mz/MmDiOCeexX3goyB0IH0+G2sY2nrxHPYJGXyGnsNYB98mBaBe79p0Exbq6N6/wObb
-         CFjTOL7T4qhS5+pRIfY/UVQYW7KUivdoWouzWwF55BMT+wjLsxB4NK+2QctqxCau3Gss
-         2E9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWLJglJOjv28CJvh883WzpweZCdEKH1XW8ZzUGzL5CZeaG8MvFHloVn8ct2e7IAvowAfEmwwFM/g4YQilbnoKCbEfiQPA==@vger.kernel.org, AJvYcCWz5uV0+tdQuKsOANHAqfjBi4i9239wvXq2ZmYAefF7JFcex3Uzh9WniHGtNS6KMVlNXS+/E54bIkEmXm2/@vger.kernel.org, AJvYcCXFANyqwgZyAhO8A6uMzwNBFAUba2B+MtjLCUMxnQIH+X9pWX6+7zSqxyBADLS+80B8CiqVyTqAdwDe@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrN1DR9tidWRaNGfPAGzwDrPg0OrH8i9k0/qDekK9i4MrNcXl4
-	5/iAynsTz3XV/r+pjIWP3FjWEE3pbQCjCf3ZpCMhyEczaUsBmKDC
-X-Gm-Gg: ASbGncvGZlD8GJwdCBHLcH4BpLXYmGzz/K0qj/09dsE5vshvh3Z1ktDOZzTvkBMx1bI
-	pO1E6IyRALIKVeiHzEfDGE1Fbv6i0ehahgBuTixWOAH3EuBXJDdL/RU4DoA5/lbg0gObfB0KMWc
-	wAQhQ2ppdXtxqveQ/6OsMqMAdjTOjkbTHI3nwtUKHf1LWHFdfsShlZPPVtXDTpAAmQSvS90+6Wn
-	jwHoerHZwUYtCM3ABI97YKYIRywilF4EiiY77TEwML6iSCe
-X-Google-Smtp-Source: AGHT+IF1ne2Umtga57CR8UgTI5gtz1QiB6L3qwZlW//xYwFTBFhqKIhRn2Ws+Ti9QVlDmevNrv2K7A==
-X-Received: by 2002:a05:6122:885:b0:515:f586:5298 with SMTP id 71dfb90a1353d-51d5b2cbc82mr976773e0c.7.1737088083506;
-        Thu, 16 Jan 2025 20:28:03 -0800 (PST)
-Received: from localhost ([2800:bf0:82:1159:c837:3446:190b:188d])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51cf559bbe2sm248324e0c.11.2025.01.16.20.27.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 20:28:02 -0800 (PST)
+	s=arc-20240116; t=1737094561; c=relaxed/simple;
+	bh=Kg16RHW8cdWnAcClUOzL818b1KoynA7ZhBOw7j4eORo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rox7zunK5Xcd/VlFeEd+jtdXiEF7tT3rAnPrVKZCFkQ0QdUMXcr1w+VOrxTU/hzD+7AEp54GSnCrAC944FCcwzDLzjw57y0J66p1zW5159grk+YrV9a+YIXNKu+MMKRZH5rQSbWPc9QFMsPMOx+QViNnOF1PqefHy1X2nHZRjjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E1IOyXw1; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737094560; x=1768630560;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Kg16RHW8cdWnAcClUOzL818b1KoynA7ZhBOw7j4eORo=;
+  b=E1IOyXw1mRtov0iK0AXxn9s6B9bC0RZ+1AG/o0iIFa1p7ltF6hOFVDOG
+   1e+HI7vuy/nLSEgUQloGlI71PpQOZgWGNzkP4eNs6yuEHCbjz7HUYHpoq
+   38yjPFTRpMr1PpcXoMf2notTzkueczHVqySdbygaHs6W6eV3adLabCR8/
+   1vzUYl/BYcHA/+MoYnexCoRwW0tx1EPRP0Yp08PC/L+WTntwYkEMV6MLq
+   DY/CEwuasRj3NMDBZLWEMO0cqG1a2GPxmqe0B29V/OhFi5vAgS6ilLLJW
+   B1eaetkA4DPoem3ofXIlD+tzVZcMZVKlhI4R23sVcdeFPcoCefDFo7Sdo
+   w==;
+X-CSE-ConnectionGUID: EMBHHnNlRqWXaquj/qnrLA==
+X-CSE-MsgGUID: AwbHp72ASt21cDj5DA9FOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="37676375"
+X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
+   d="scan'208";a="37676375"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 22:16:00 -0800
+X-CSE-ConnectionGUID: jrNO/XRtSoKH8B4qQnxQ2Q==
+X-CSE-MsgGUID: D1g2/gJ/TGeOVm4pgK7Jug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
+   d="scan'208";a="106302118"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Jan 2025 22:15:55 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tYfe5-000Sq7-1s;
+	Fri, 17 Jan 2025 06:15:53 +0000
+Date: Fri, 17 Jan 2025 14:14:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
+	sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
+	baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com,
+	bp@alien8.de, yazen.ghannam@amd.com
+Cc: oe-kbuild-all@lists.linux.dev, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v3 4/5] RAS/ATL: Unified ATL interface for ARM64 and AMD
+Message-ID: <202501171437.tCtg3x1c-lkp@intel.com>
+References: <20250115084228.107573-5-tianruidong@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Jan 2025 23:27:58 -0500
-Message-Id: <D742BYPBXGJB.KVIXKVELQAG0@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Limonciello, Mario"
- <mario.limonciello@amd.com>, "Armin Wolf" <W_Armin@gmx.de>, "Joshua
- Grisham" <josh@joshuagrisham.com>, "Derek J . Clark"
- <derekjohn.clark@gmail.com>, =?utf-8?q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>, "Hans de Goede" <hdegoede@redhat.com>,
- "Maximilian Luz" <luzmaximilian@gmail.com>, "Lee Chun-Yi" <jlee@suse.com>,
- "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>, "Corentin Chary"
- <corentin.chary@gmail.com>, "Luke D . Jones" <luke@ljones.dev>, "Lyndon
- Sanche" <lsanche@lyndeno.ca>, "Ike Panhc" <ike.pan@canonical.com>,
- "Henrique de Moraes Holschuh" <hmh@hmh.eng.br>, "Alexis Belmonte"
- <alexbelm48@gmail.com>, "Ai Chao" <aichao@kylinos.cn>, "Gergo Koteles"
- <soyer@irl.hu>, <Dell.Client.Kernel@dell.com>,
- <ibm-acpi-devel@lists.sourceforge.net>
-Subject: Re: [PATCH v4 00/19] Hide platform_profile_handler from consumers
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Mark Pearson" <mpearson-lenovo@squebb.ca>,
- "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20250116002721.75592-1-kuurtb@gmail.com>
- <1eb2720a-c9af-4e5c-8df2-c4ce3c017d5c@app.fastmail.com>
-In-Reply-To: <1eb2720a-c9af-4e5c-8df2-c4ce3c017d5c@app.fastmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250115084228.107573-5-tianruidong@linux.alibaba.com>
 
-On Thu Jan 16, 2025 at 5:20 PM -05, Mark Pearson wrote:
-> Hi
->
-> On Wed, Jan 15, 2025, at 7:27 PM, Kurt Borja wrote:
-> > Hi :)
-> >
-> > The merge window is about to open, so I rebased this patchset on top of
-> > pdx86/review-ilpo-next to pick up acer-wmi latest commits, in case we
-> > manage to squeeze this into v6.14.
-> >
-> > ~ Kurt
-> > ---
-> > v3 -> v4:
-> >
-> > [09/19]
-> >   - Replace error message with a user-friendly one
-> >
-> > v3:=20
-> > https://lore.kernel.org/platform-driver-x86/20250115071022.4815-1-kuurt=
-b@gmail.com/
-> >
-> > Kurt Borja (19):
-> >   ACPI: platform_profile: Replace *class_dev member with class_dev
-> >   ACPI: platform_profile: Let drivers set drvdata to the class device
-> >   ACPI: platform_profile: Remove platform_profile_handler from callback=
-s
-> >   ACPI: platform_profile: Add `ops` member to handlers
-> >   ACPI: platform_profile: Add `probe` to platform_profile_ops
-> >   platform/surface: surface_platform_profile: Use
-> >     devm_platform_profile_register()
-> >   platform/x86: acer-wmi: Use devm_platform_profile_register()
-> >   platform/x86: amd: pmf: sps: Use devm_platform_profile_register()
-> >   platform/x86: asus-wmi: Use devm_platform_profile_register()
-> >   platform/x86: dell-pc: Use devm_platform_profile_register()
-> >   platform/x86: ideapad-laptop: Use devm_platform_profile_register()
-> >   platform/x86: hp-wmi: Use devm_platform_profile_register()
-> >   platform/x86: inspur_platform_profile: Use
-> >     devm_platform_profile_register()
-> >   platform/x86: thinkpad_acpi: Use devm_platform_profile_register()
-> >   ACPI: platform_profile: Remove platform_profile_handler from exported
-> >     symbols
-> >   ACPI: platform_profile: Move platform_profile_handler
-> >   ACPI: platform_profile: Clean platform_profile_handler
-> >   ACPI: platform_profile: Add documentation
-> >   ACPI: platform_profile: Add a prefix to log messages
-> >
-> >  .../ABI/testing/sysfs-class-platform-profile  |  44 +++++
-> >  drivers/acpi/platform_profile.c               | 172 +++++++++++++-----
-> >  .../surface/surface_platform_profile.c        |  48 ++---
-> >  drivers/platform/x86/acer-wmi.c               | 114 ++++++------
-> >  drivers/platform/x86/amd/pmf/core.c           |   1 -
-> >  drivers/platform/x86/amd/pmf/pmf.h            |   3 +-
-> >  drivers/platform/x86/amd/pmf/sps.c            |  51 +++---
-> >  drivers/platform/x86/asus-wmi.c               |  55 +++---
-> >  drivers/platform/x86/dell/alienware-wmi.c     |  34 ++--
-> >  drivers/platform/x86/dell/dell-pc.c           |  60 +++---
-> >  drivers/platform/x86/hp/hp-wmi.c              |  83 +++++----
-> >  drivers/platform/x86/ideapad-laptop.c         |  45 +++--
-> >  .../platform/x86/inspur_platform_profile.c    |  48 +++--
-> >  drivers/platform/x86/thinkpad_acpi.c          |  37 ++--
-> >  include/linux/platform_profile.h              |  37 ++--
-> >  15 files changed, 495 insertions(+), 337 deletions(-)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-class-platform-prof=
-ile
-> >
-> >
-> > base-commit: d98bf6a6ed61a8047e199495b0887cce392f8e5b
-> > --=20
-> > 2.48.1
->
-> For the series up to v4 commit 15/19:
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Hi Ruidong,
 
-This covers the most important patches, thank you very much!
+kernel test robot noticed the following build errors:
 
-~ Kurt
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge arm64/for-next/core ras/edac-for-next linus/master tip/smp/core v6.13-rc7 next-20250116]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
-> I need to go over the last few commits just once more, as there a few pie=
-ces I need to get my head around - and I'm not going to get it done this ev=
-ening. Hope it's OK to add review for the bits that I have done.
->
-> Thanks
-> Mark
+url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-RAS-AEST-Initial-AEST-driver/20250115-164601
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20250115084228.107573-5-tianruidong%40linux.alibaba.com
+patch subject: [PATCH v3 4/5] RAS/ATL: Unified ATL interface for ARM64 and AMD
+config: x86_64-randconfig-074-20250117 (https://download.01.org/0day-ci/archive/20250117/202501171437.tCtg3x1c-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250117/202501171437.tCtg3x1c-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501171437.tCtg3x1c-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/ras/amd/fmpm.c: In function 'save_spa':
+>> drivers/ras/amd/fmpm.c:329:15: error: implicit declaration of function 'amd_convert_umc_mca_addr_to_sys_addr'; did you mean 'convert_umc_mca_addr_to_sys_addr'? [-Werror=implicit-function-declaration]
+     329 |         spa = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
+         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |               convert_umc_mca_addr_to_sys_addr
+   cc1: some warnings being treated as errors
+--
+   drivers/ras/amd/atl/umc.c: In function 'retire_row_mi300':
+>> drivers/ras/amd/atl/umc.c:333:24: error: implicit declaration of function 'amd_convert_umc_mca_addr_to_sys_addr'; did you mean 'convert_umc_mca_addr_to_sys_addr'? [-Werror=implicit-function-declaration]
+     333 |                 addr = amd_convert_umc_mca_addr_to_sys_addr(a_err);
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                        convert_umc_mca_addr_to_sys_addr
+   cc1: some warnings being treated as errors
+
+
+vim +329 drivers/ras/amd/fmpm.c
+
+6f15e617cc9932 Yazen Ghannam 2024-02-13  291  
+838850c50884cd Yazen Ghannam 2024-03-01  292  static void save_spa(struct fru_rec *rec, unsigned int entry,
+838850c50884cd Yazen Ghannam 2024-03-01  293  		     u64 addr, u64 id, unsigned int cpu)
+838850c50884cd Yazen Ghannam 2024-03-01  294  {
+838850c50884cd Yazen Ghannam 2024-03-01  295  	unsigned int i, fru_idx, spa_entry;
+838850c50884cd Yazen Ghannam 2024-03-01  296  	struct atl_err a_err;
+838850c50884cd Yazen Ghannam 2024-03-01  297  	unsigned long spa;
+838850c50884cd Yazen Ghannam 2024-03-01  298  
+838850c50884cd Yazen Ghannam 2024-03-01  299  	if (entry >= max_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  300  		pr_warn_once("FRU descriptor entry %d out-of-bounds (max: %d)\n",
+838850c50884cd Yazen Ghannam 2024-03-01  301  			     entry, max_nr_entries);
+838850c50884cd Yazen Ghannam 2024-03-01  302  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  303  	}
+838850c50884cd Yazen Ghannam 2024-03-01  304  
+838850c50884cd Yazen Ghannam 2024-03-01  305  	/* spa_nr_entries is always multiple of max_nr_entries */
+838850c50884cd Yazen Ghannam 2024-03-01  306  	for (i = 0; i < spa_nr_entries; i += max_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  307  		fru_idx = i / max_nr_entries;
+838850c50884cd Yazen Ghannam 2024-03-01  308  		if (fru_records[fru_idx] == rec)
+838850c50884cd Yazen Ghannam 2024-03-01  309  			break;
+838850c50884cd Yazen Ghannam 2024-03-01  310  	}
+838850c50884cd Yazen Ghannam 2024-03-01  311  
+838850c50884cd Yazen Ghannam 2024-03-01  312  	if (i >= spa_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  313  		pr_warn_once("FRU record %d not found\n", i);
+838850c50884cd Yazen Ghannam 2024-03-01  314  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  315  	}
+838850c50884cd Yazen Ghannam 2024-03-01  316  
+838850c50884cd Yazen Ghannam 2024-03-01  317  	spa_entry = i + entry;
+838850c50884cd Yazen Ghannam 2024-03-01  318  	if (spa_entry >= spa_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  319  		pr_warn_once("spa_entries[] index out-of-bounds\n");
+838850c50884cd Yazen Ghannam 2024-03-01  320  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  321  	}
+838850c50884cd Yazen Ghannam 2024-03-01  322  
+838850c50884cd Yazen Ghannam 2024-03-01  323  	memset(&a_err, 0, sizeof(struct atl_err));
+838850c50884cd Yazen Ghannam 2024-03-01  324  
+838850c50884cd Yazen Ghannam 2024-03-01  325  	a_err.addr = addr;
+838850c50884cd Yazen Ghannam 2024-03-01  326  	a_err.ipid = id;
+838850c50884cd Yazen Ghannam 2024-03-01  327  	a_err.cpu  = cpu;
+838850c50884cd Yazen Ghannam 2024-03-01  328  
+838850c50884cd Yazen Ghannam 2024-03-01 @329  	spa = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
+838850c50884cd Yazen Ghannam 2024-03-01  330  	if (IS_ERR_VALUE(spa)) {
+838850c50884cd Yazen Ghannam 2024-03-01  331  		pr_debug("Failed to get system address\n");
+838850c50884cd Yazen Ghannam 2024-03-01  332  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  333  	}
+838850c50884cd Yazen Ghannam 2024-03-01  334  
+838850c50884cd Yazen Ghannam 2024-03-01  335  	spa_entries[spa_entry] = spa;
+838850c50884cd Yazen Ghannam 2024-03-01  336  	pr_debug("fru_idx: %u, entry: %u, spa_entry: %u, spa: 0x%016llx\n",
+838850c50884cd Yazen Ghannam 2024-03-01  337  		 fru_idx, entry, spa_entry, spa_entries[spa_entry]);
+838850c50884cd Yazen Ghannam 2024-03-01  338  }
+838850c50884cd Yazen Ghannam 2024-03-01  339  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
