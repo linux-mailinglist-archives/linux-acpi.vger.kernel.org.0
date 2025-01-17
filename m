@@ -1,359 +1,259 @@
-Return-Path: <linux-acpi+bounces-10746-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10747-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED01A155C5
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 18:31:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D55A158B9
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 21:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8FF188D647
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 17:31:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB0677A05CA
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Jan 2025 20:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70648165F01;
-	Fri, 17 Jan 2025 17:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60541A9B52;
+	Fri, 17 Jan 2025 20:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="FaQ1C/na";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Lra2iHOm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5279719ADA4;
-	Fri, 17 Jan 2025 17:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3F11A2391;
+	Fri, 17 Jan 2025 20:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737135063; cv=none; b=elPL1JPJ1vwpHXxKBceIrxY+NR8LiGam+3vnKOXlMjImWsL9diYf05aeftwX+p2jhOwWHvP5G2ziomjib0tQmkbfGS3EKRpeYMk+UMoBbRKti1XakysUcLQG9+dhiFZxs7QxxpxrqnHNXJYJvDDRdYYJ9UCJbvelG4I9XoUpC38=
+	t=1737146759; cv=none; b=jAoaSBdx7e9qcvP43+r3LXHK+22JYzFukoZSI62jUMgDbBHiZt1GnZb8xOCBg0WhgUjhUGHv/lkWp9wE5xFQUkEKgQJ9juvz1OqSRTycwjm5/bo3cBIk7mKMWJDkvUZDrx7DbG4bfVn/R3rXvDVAlLMUkEo+aSR3jimLc+5xFu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737135063; c=relaxed/simple;
-	bh=6G8oL9vbGzWBSSqUimmHYa7O93kMjLiouJA1EaIvuMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8Q6D0l72cYN1Dyp7ecv0dcHxsVy85OcOYcohFDwUzjwhdhkxuN05xIroOeR7D/2a07KdMsWQeJ7PshSHE8OfL4J6Ywm1om5VFBx6C3eMY3GBMxmMn06SK6PRxArTm2UO4A2i7RHNnxiBEitUoeIal7wy6j5EoYgIV8Bh2Cn5Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67F1C4CEDD;
-	Fri, 17 Jan 2025 17:31:02 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: rafael@kernel.org,
-	bp@alien8.de,
-	dan.j.williams@intel.com,
-	tony.luck@intel.com,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	alison.schofield@intel.com,
-	ira.weiny@intel.com,
-	ming.li@zohomail.com,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 4/4] cxl: Add mce notifier to emit aliased address for extended linear cache
-Date: Fri, 17 Jan 2025 10:28:33 -0700
-Message-ID: <20250117173054.4147877-5-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250117173054.4147877-1-dave.jiang@intel.com>
-References: <20250117173054.4147877-1-dave.jiang@intel.com>
+	s=arc-20240116; t=1737146759; c=relaxed/simple;
+	bh=R3bxWaNPovaejlYe9BjfKkvP92mDWlZrDXDzSjZA3Aw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=dWtqL0CJCJLQugAzhe3S/PNCmskLFeKCyYOWYACw5//tab7Lou1aD19MRSwPKspW0RpVm8lbiHDbcC42lggBEnOSB1Ec6nXQDmeGaHQP8HcabDIXktPnSQow4C2rP6zQFhcOq+QQcXr+N22UNoIESQ811l7HA+xmtsolDdwrItQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=FaQ1C/na; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Lra2iHOm; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id B2E1613801F7;
+	Fri, 17 Jan 2025 15:45:56 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-02.internal (MEProxy); Fri, 17 Jan 2025 15:45:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1737146756;
+	 x=1737233156; bh=bm5w52HLJMVDLIxXBhpPYfOqcVvLk7HCvS+VcMPBAgM=; b=
+	FaQ1C/naLXYi4hXLVWijAXyxD0zTMStzPCcfZ0zxiSLpI6V96/+fzwcU8RtM1ROK
+	dsdnys2Yq34SABpYip/b0JWv77hjQIcB3bsrGxYBy2/UMSaDmoaB1pqxJATYCQOR
+	abliUK3nuPW7FShSzERnTjuSA8Qzg3dYiXfE+wS++lgnGLxKtdRWbqA82Bv1o6g3
+	40d6LbMcDBTcqjX8jff0uLjXqt1H0TEmvqIWZiqWb6PjVI75AVZhu6oflKSV9aDv
+	147srD2S/WsD6VtvpTxUg7pIV/ZEKhr3d2D0guJNXmH7r7LvIb2NN7rilsD0/S+w
+	pBb5i++cezCAGknGaFKIug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1737146756; x=
+	1737233156; bh=bm5w52HLJMVDLIxXBhpPYfOqcVvLk7HCvS+VcMPBAgM=; b=L
+	ra2iHOmzAfTcPD/XytYS3xsfai31edigy+315J/RPfIHU/5JA4cSxqmH6mH80wjF
+	lptNspmQcEJEYXYQ/g+4FWr3iZK4igTL5vJPQD8Fe5k+r1LuMqZJkKtCrYdHi7Dr
+	S3z+svXLEWHSNIVQmiJrEGHmjoC9uL/LNKNCNb78y1hMyRGTZwFkqiTb5LM7Uz72
+	icl8iE3CIAbcqMqeDY0e5t1dOfFi6mBCvn2fqa+Kzp9LzVmn8/54EQ2oXf4qy7s6
+	bLeU204+6/XC3KBuZX1LjiWokyWQLuNKTwOLpojU7+j1hFtPip0O+2/NauBMKeAo
+	+/a5bkm0qNqrw618nxMsw==
+X-ME-Sender: <xms:g8GKZ3KI0M55Hnofk89kyCPMJXjadTi95CvCSV0UKXOcpfwZyvdlwQ>
+    <xme:g8GKZ7KgblbKK5DSe9AlER0pBBi-pbPTbaLu6tdQbs9M4PCZb02cVooiHrW-SguKX
+    HZd0wOwQtMkBAGjrXQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeifedgudeflecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
+    jeenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhepgedvgeeufffhtdel
+    iefgjefhgffgiedvjeegleeujeeutdduteehjeduhedtiedtnecuffhomhgrihhnpehkvg
+    hrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
+    fhhrohhmpehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggrpdhnsggprh
+    gtphhtthhopedvhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhhhigrmhdq
+    shhunhgurghrrdhsqdhksegrmhgurdgtohhmpdhrtghpthhtohepmhgrrhhiohdrlhhimh
+    honhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehikhgvrdhprghnsegtrghn
+    ohhnihgtrghlrdgtohhmpdhrtghpthhtohepuggvlhhlrdgtlhhivghnthdrkhgvrhhnvg
+    hlseguvghllhdrtghomhdprhgtphhtthhopegrlhgvgigsvghlmhegkeesghhmrghilhdr
+    tghomhdprhgtphhtthhopegtohhrvghnthhinhdrtghhrghrhiesghhmrghilhdrtghomh
+    dprhgtphhtthhopeguvghrvghkjhhohhhnrdgtlhgrrhhksehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepkhhuuhhrthgssehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhuiihmrg
+    igihhmihhlihgrnhesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:g8GKZ_uv8qiN7wIPMqJFhMa3vk6pU0-UPRcMz2swN3lMmqtedTbnAQ>
+    <xmx:g8GKZwbctyOfsLQMHO11ukM3DxUWzQqvUsiv5RmQUH7tTbgzeEdRGg>
+    <xmx:g8GKZ-bWwarsM7rnNKK3GMDRXnn1JBOOa6RUyKmkgFIWwpqLo0eB6w>
+    <xmx:g8GKZ0DAieznYcPIIDvWM84Igxl1_tDRVbTOjKkDmURPCBgZn1AAJA>
+    <xmx:hMGKZ6IrUFnuabx6ZZ0II-b2HqvGb76HcyCH9-3uzDRu_LrYXJ3ilhaN>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 274CD3C0066; Fri, 17 Jan 2025 15:45:55 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Fri, 17 Jan 2025 15:45:34 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Kurt Borja" <kuurtb@gmail.com>
+Cc: 
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "Limonciello, Mario" <mario.limonciello@amd.com>,
+ "Armin Wolf" <W_Armin@gmx.de>, "Joshua Grisham" <josh@joshuagrisham.com>,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>,
+ "Hans de Goede" <hdegoede@redhat.com>,
+ "Maximilian Luz" <luzmaximilian@gmail.com>, "Lee Chun-Yi" <jlee@suse.com>,
+ "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
+ "Corentin Chary" <corentin.chary@gmail.com>,
+ "Luke D . Jones" <luke@ljones.dev>, "Lyndon Sanche" <lsanche@lyndeno.ca>,
+ "Ike Panhc" <ike.pan@canonical.com>,
+ "Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
+ "Alexis Belmonte" <alexbelm48@gmail.com>, "Ai Chao" <aichao@kylinos.cn>,
+ "Gergo Koteles" <soyer@irl.hu>, Dell.Client.Kernel@dell.com,
+ ibm-acpi-devel@lists.sourceforge.net
+Message-Id: <f4e08213-0f42-4f35-a150-a75bf91537bf@app.fastmail.com>
+In-Reply-To: <f8678f9c-56c2-b3a9-f24d-04c9433dba9f@linux.intel.com>
+References: <20250116002721.75592-1-kuurtb@gmail.com>
+ <1eb2720a-c9af-4e5c-8df2-c4ce3c017d5c@app.fastmail.com>
+ <3aab5072-f032-7458-56af-1d45e89a5d44@linux.intel.com>
+ <D74IM4AZ87C9.1R1S1KOA89PX7@gmail.com>
+ <f8678f9c-56c2-b3a9-f24d-04c9433dba9f@linux.intel.com>
+Subject: Re: [PATCH v4 00/19] Hide platform_profile_handler from consumers
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Below is a setup with extended linear cache configuration with an example
-layout of memory region shown below presented as a single memory region
-consists of 256G memory where there's 128G of DRAM and 128G of CXL memory.
-The kernel sees a region of total 256G of system memory.
+Hi,
 
-              128G DRAM                          128G CXL memory
-|-----------------------------------|-------------------------------------|
+On Fri, Jan 17, 2025, at 12:19 PM, Ilpo J=C3=A4rvinen wrote:
+> On Fri, 17 Jan 2025, Kurt Borja wrote:
+>
+>> On Fri Jan 17, 2025 at 11:42 AM -05, Ilpo J=C3=A4rvinen wrote:
+>> > On Thu, 16 Jan 2025, Mark Pearson wrote:
+>> >
+>> > > Hi
+>> > >=20
+>> > > On Wed, Jan 15, 2025, at 7:27 PM, Kurt Borja wrote:
+>> > > > Hi :)
+>> > > >
+>> > > > The merge window is about to open, so I rebased this patchset o=
+n top of
+>> > > > pdx86/review-ilpo-next to pick up acer-wmi latest commits, in c=
+ase we
+>> > > > manage to squeeze this into v6.14.
+>> > > >
+>> > > > ~ Kurt
+>> > > > ---
+>> > > > v3 -> v4:
+>> > > >
+>> > > > [09/19]
+>> > > >   - Replace error message with a user-friendly one
+>> > > >
+>> > > > v3:=20
+>> > > > https://lore.kernel.org/platform-driver-x86/20250115071022.4815=
+-1-kuurtb@gmail.com/
+>> > > >
+>> > > > Kurt Borja (19):
+>> > > >   ACPI: platform_profile: Replace *class_dev member with class_=
+dev
+>> > > >   ACPI: platform_profile: Let drivers set drvdata to the class =
+device
+>> > > >   ACPI: platform_profile: Remove platform_profile_handler from =
+callbacks
+>> > > >   ACPI: platform_profile: Add `ops` member to handlers
+>> > > >   ACPI: platform_profile: Add `probe` to platform_profile_ops
+>> > > >   platform/surface: surface_platform_profile: Use
+>> > > >     devm_platform_profile_register()
+>> > > >   platform/x86: acer-wmi: Use devm_platform_profile_register()
+>> > > >   platform/x86: amd: pmf: sps: Use devm_platform_profile_regist=
+er()
+>> > > >   platform/x86: asus-wmi: Use devm_platform_profile_register()
+>> > > >   platform/x86: dell-pc: Use devm_platform_profile_register()
+>> > > >   platform/x86: ideapad-laptop: Use devm_platform_profile_regis=
+ter()
+>> > > >   platform/x86: hp-wmi: Use devm_platform_profile_register()
+>> > > >   platform/x86: inspur_platform_profile: Use
+>> > > >     devm_platform_profile_register()
+>> > > >   platform/x86: thinkpad_acpi: Use devm_platform_profile_regist=
+er()
+>> > > >   ACPI: platform_profile: Remove platform_profile_handler from =
+exported
+>> > > >     symbols
+>> > > >   ACPI: platform_profile: Move platform_profile_handler
+>> > > >   ACPI: platform_profile: Clean platform_profile_handler
+>> > > >   ACPI: platform_profile: Add documentation
+>> > > >   ACPI: platform_profile: Add a prefix to log messages
+>> > > >
+>> > > >  .../ABI/testing/sysfs-class-platform-profile  |  44 +++++
+>> > > >  drivers/acpi/platform_profile.c               | 172 ++++++++++=
++++-----
+>> > > >  .../surface/surface_platform_profile.c        |  48 ++---
+>> > > >  drivers/platform/x86/acer-wmi.c               | 114 ++++++----=
+--
+>> > > >  drivers/platform/x86/amd/pmf/core.c           |   1 -
+>> > > >  drivers/platform/x86/amd/pmf/pmf.h            |   3 +-
+>> > > >  drivers/platform/x86/amd/pmf/sps.c            |  51 +++---
+>> > > >  drivers/platform/x86/asus-wmi.c               |  55 +++---
+>> > > >  drivers/platform/x86/dell/alienware-wmi.c     |  34 ++--
+>> > > >  drivers/platform/x86/dell/dell-pc.c           |  60 +++---
+>> > > >  drivers/platform/x86/hp/hp-wmi.c              |  83 +++++----
+>> > > >  drivers/platform/x86/ideapad-laptop.c         |  45 +++--
+>> > > >  .../platform/x86/inspur_platform_profile.c    |  48 +++--
+>> > > >  drivers/platform/x86/thinkpad_acpi.c          |  37 ++--
+>> > > >  include/linux/platform_profile.h              |  37 ++--
+>> > > >  15 files changed, 495 insertions(+), 337 deletions(-)
+>> > > >  create mode 100644 Documentation/ABI/testing/sysfs-class-platf=
+orm-profile
+>> > > >
+>> > > >
+>> > > > base-commit: d98bf6a6ed61a8047e199495b0887cce392f8e5b
+>> > > > --=20
+>> > > > 2.48.1
+>> > >=20
+>> > > For the series up to v4 commit 15/19:
+>> > > Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>> > >=20
+>> > > I need to go over the last few commits just once more, as there a=
+ few=20
+>> > > pieces I need to get my head around - and I'm not going to get it=
+ done=20
+>> > > this evening. Hope it's OK to add review for the bits that I have=
+ done.
+>> >
+>> > I, for the first time ever, tested filter-branch and after some ini=
+tial=20
+>> > hickups on how to specify the commit range, got your Reviewed-bys a=
+dded
+>> > with single command :-).
+>>=20
+>> Awesome! I believe commit 15/19
+>>=20
+>> a213108c01e0 ("ACPI: platform_profile: Remove platform_profile_handle=
+r from exported symbols")
+>>=20
+>> is still missing a rev-by by Mark, if there is still time.
+>
+> Thanks for noticing this. I just recalled the patch numbering wrong.
+>
+> It should be fixed now.
+>
+> --=20
+>  i.
 
-Data resides in either DRAM or far memory (FM) with no replication. Hot
-data is swapped into DRAM by the hardware behind the scenes. When error is
-detected in one location, it is possible that error also resides in the
-aliased location. Therefore when a memory location that is flagged by MCE
-is part of the special region, the aliased memory location needs to be
-offlined as well.
+I finished my review, and no concerns. For the series:
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-Add an mce notify callback to identify if the MCE address location is part
-of an extended linear cache region and handle accordingly.
+Note - I'm building and will give it a sniff test too, but that will tak=
+e a bit longer.
 
-Added symbol export to set_mce_nospec() in x86 code in order to call
-set_mce_nospec() from the CXL MCE notify callback.
+Thanks for your work on this Kurt
 
-Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
----
-v3:
-- Add endpoint pointer check. (Ming)
-- Add mce notifier removal. (Ming)
-- Return ~0ULL for no cache alias.
----
- arch/x86/mm/pat/set_memory.c |  1 +
- drivers/cxl/Kconfig          |  4 +++
- drivers/cxl/core/Makefile    |  1 +
- drivers/cxl/core/mbox.c      |  8 +++++
- drivers/cxl/core/mce.c       | 63 ++++++++++++++++++++++++++++++++++++
- drivers/cxl/core/mce.h       | 16 +++++++++
- drivers/cxl/core/region.c    | 28 ++++++++++++++++
- drivers/cxl/cxl.h            |  6 ++++
- drivers/cxl/cxlmem.h         |  2 ++
- tools/testing/cxl/Kbuild     |  1 +
- 10 files changed, 130 insertions(+)
- create mode 100644 drivers/cxl/core/mce.c
- create mode 100644 drivers/cxl/core/mce.h
-
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 95bc50a8541c..a0df698f46a2 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2083,6 +2083,7 @@ int set_mce_nospec(unsigned long pfn)
- 		pr_warn("Could not invalidate pfn=0x%lx from 1:1 map\n", pfn);
- 	return rc;
- }
-+EXPORT_SYMBOL_GPL(set_mce_nospec);
- 
- /* Restore full speculative operation to the pfn. */
- int clear_mce_nospec(unsigned long pfn)
-diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-index 876469e23f7a..d1c91dacae56 100644
---- a/drivers/cxl/Kconfig
-+++ b/drivers/cxl/Kconfig
-@@ -146,4 +146,8 @@ config CXL_REGION_INVALIDATION_TEST
- 	  If unsure, or if this kernel is meant for production environments,
- 	  say N.
- 
-+config CXL_MCE
-+	def_bool y
-+	depends on X86_MCE && MEMORY_FAILURE
-+
- endif
-diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
-index 1a0c9c6ca818..61c9332b3582 100644
---- a/drivers/cxl/core/Makefile
-+++ b/drivers/cxl/core/Makefile
-@@ -17,3 +17,4 @@ cxl_core-y += cdat.o
- cxl_core-y += acpi.o
- cxl_core-$(CONFIG_TRACING) += trace.o
- cxl_core-$(CONFIG_CXL_REGION) += region.o
-+cxl_core-$(CONFIG_CXL_MCE) += mce.o
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index f42c4c56dc43..ad11f49cb117 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -11,6 +11,7 @@
- 
- #include "core.h"
- #include "trace.h"
-+#include "mce.h"
- 
- static bool cxl_raw_allow_all;
- 
-@@ -1458,6 +1459,7 @@ EXPORT_SYMBOL_NS_GPL(cxl_mailbox_init, "CXL");
- struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
- {
- 	struct cxl_memdev_state *mds;
-+	int rc;
- 
- 	mds = devm_kzalloc(dev, sizeof(*mds), GFP_KERNEL);
- 	if (!mds) {
-@@ -1473,6 +1475,12 @@ struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
- 	mds->ram_perf.qos_class = CXL_QOS_CLASS_INVALID;
- 	mds->pmem_perf.qos_class = CXL_QOS_CLASS_INVALID;
- 
-+	cxl_register_mce_notifier(&mds->mce_notifier);
-+	rc = devm_add_action_or_reset(dev, cxl_unregister_mce_notifier,
-+				      &mds->mce_notifier);
-+	if (rc)
-+		return ERR_PTR(rc);
-+
- 	return mds;
- }
- EXPORT_SYMBOL_NS_GPL(cxl_memdev_state_create, "CXL");
-diff --git a/drivers/cxl/core/mce.c b/drivers/cxl/core/mce.c
-new file mode 100644
-index 000000000000..dab5acce249e
---- /dev/null
-+++ b/drivers/cxl/core/mce.c
-@@ -0,0 +1,63 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+#include <linux/mm.h>
-+#include <linux/notifier.h>
-+#include <linux/set_memory.h>
-+#include <asm/mce.h>
-+#include <cxlmem.h>
-+#include "mce.h"
-+
-+static int cxl_handle_mce(struct notifier_block *nb, unsigned long val,
-+			  void *data)
-+{
-+	struct cxl_memdev_state *mds = container_of(nb, struct cxl_memdev_state,
-+						    mce_notifier);
-+	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
-+	struct cxl_port *endpoint = cxlmd->endpoint;
-+	struct mce *mce = data;
-+	u64 spa, spa_alias;
-+	unsigned long pfn;
-+
-+	if (!mce || !mce_usable_address(mce))
-+		return NOTIFY_DONE;
-+
-+	if (!endpoint)
-+		return NOTIFY_DONE;
-+
-+	spa = mce->addr & MCI_ADDR_PHYSADDR;
-+
-+	pfn = spa >> PAGE_SHIFT;
-+	if (!pfn_valid(pfn))
-+		return NOTIFY_DONE;
-+
-+	spa_alias = cxl_port_get_spa_cache_alias(endpoint, spa);
-+	if (spa_alias == ~0ULL)
-+		return NOTIFY_DONE;
-+
-+	pfn = spa_alias >> PAGE_SHIFT;
-+
-+	/*
-+	 * Take down the aliased memory page. The original memory page flagged
-+	 * by the MCE will be taken cared of by the standard MCE handler.
-+	 */
-+	dev_emerg(mds->cxlds.dev, "Offlining aliased SPA address0: %#llx\n",
-+		  spa_alias);
-+	if (!memory_failure(pfn, 0))
-+		set_mce_nospec(pfn);
-+
-+	return NOTIFY_OK;
-+}
-+
-+void cxl_register_mce_notifier(struct notifier_block *mce_notifier)
-+{
-+	mce_notifier->notifier_call = cxl_handle_mce;
-+	mce_notifier->priority = MCE_PRIO_UC;
-+	mce_register_decode_chain(mce_notifier);
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_register_mce_notifier, "CXL");
-+
-+void cxl_unregister_mce_notifier(void *mce_notifier)
-+{
-+	mce_unregister_decode_chain(mce_notifier);
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_unregister_mce_notifier, "CXL");
-diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
-new file mode 100644
-index 000000000000..b92381f4c1e8
---- /dev/null
-+++ b/drivers/cxl/core/mce.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+#ifndef _CXL_CORE_MCE_H_
-+#define _CXL_CORE_MCE_H_
-+
-+#include <linux/notifier.h>
-+
-+#ifdef CONFIG_CXL_MCE
-+void cxl_register_mce_notifier(struct notifier_block *mce_notifer);
-+void cxl_unregister_mce_notifier(void *mce_notifer);
-+#else
-+static inline void cxl_register_mce_notifier(struct notifier_block *mce_notifier) {}
-+static inline void cxl_unregister_mce_notifier(void *mce_notifier) {}
-+#endif
-+
-+#endif
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 2d8699a86b24..7a9ea8394876 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -3437,6 +3437,34 @@ int cxl_add_to_region(struct cxl_port *root, struct cxl_endpoint_decoder *cxled)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_add_to_region, "CXL");
- 
-+u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa)
-+{
-+	struct cxl_region_ref *iter;
-+	unsigned long index;
-+
-+	if (!endpoint)
-+		return ~0ULL;
-+
-+	guard(rwsem_write)(&cxl_region_rwsem);
-+
-+	xa_for_each(&endpoint->regions, index, iter) {
-+		struct cxl_region_params *p = &iter->region->params;
-+
-+		if (p->res->start <= spa && spa <= p->res->end) {
-+			if (!p->cache_size)
-+				return ~0ULL;
-+
-+			if (spa > p->res->start + p->cache_size)
-+				return spa - p->cache_size;
-+
-+			return spa + p->cache_size;
-+		}
-+	}
-+
-+	return ~0ULL;
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_port_get_spa_cache_alias, "CXL");
-+
- static int is_system_ram(struct resource *res, void *arg)
- {
- 	struct cxl_region *cxlr = arg;
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 6a1fb784f74a..cff98e803722 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -876,6 +876,7 @@ struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev);
- int cxl_add_to_region(struct cxl_port *root,
- 		      struct cxl_endpoint_decoder *cxled);
- struct cxl_dax_region *to_cxl_dax_region(struct device *dev);
-+u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa);
- #else
- static inline bool is_cxl_pmem_region(struct device *dev)
- {
-@@ -894,6 +895,11 @@ static inline struct cxl_dax_region *to_cxl_dax_region(struct device *dev)
- {
- 	return NULL;
- }
-+static inline u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint,
-+					       u64 spa)
-+{
-+	return 0;
-+}
- #endif
- 
- void cxl_endpoint_parse_cdat(struct cxl_port *port);
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index 2a25d1957ddb..55752cbf408c 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -477,6 +477,7 @@ static inline struct cxl_dev_state *mbox_to_cxlds(struct cxl_mailbox *cxl_mbox)
-  * @poison: poison driver state info
-  * @security: security driver state info
-  * @fw: firmware upload / activation state
-+ * @mce_notifier: MCE notifier
-  *
-  * See CXL 3.0 8.2.9.8.2 Capacity Configuration and Label Storage for
-  * details on capacity parameters.
-@@ -503,6 +504,7 @@ struct cxl_memdev_state {
- 	struct cxl_poison_state poison;
- 	struct cxl_security_state security;
- 	struct cxl_fw_state fw;
-+	struct notifier_block mce_notifier;
- };
- 
- static inline struct cxl_memdev_state *
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index 1ae13987a8a2..f625eb2d2dc5 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -64,6 +64,7 @@ cxl_core-y += $(CXL_CORE_SRC)/cdat.o
- cxl_core-y += $(CXL_CORE_SRC)/acpi.o
- cxl_core-$(CONFIG_TRACING) += $(CXL_CORE_SRC)/trace.o
- cxl_core-$(CONFIG_CXL_REGION) += $(CXL_CORE_SRC)/region.o
-+cxl_core-$(CONFIG_CXL_MCE) += $(CXL_CORE_SRC)/mce.o
- cxl_core-y += config_check.o
- cxl_core-y += cxl_core_test.o
- cxl_core-y += cxl_core_exports.o
--- 
-2.47.1
-
+Mark
 
