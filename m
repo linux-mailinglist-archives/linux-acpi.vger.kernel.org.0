@@ -1,266 +1,122 @@
-Return-Path: <linux-acpi+bounces-10748-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10749-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AE5A15ADE
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Jan 2025 02:33:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB96A15B18
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Jan 2025 03:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43CF87A4129
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Jan 2025 01:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDB0167DDF
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Jan 2025 02:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E10A10A3E;
-	Sat, 18 Jan 2025 01:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1408140855;
+	Sat, 18 Jan 2025 02:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="4uwD3SzZ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IguSTfn2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GaxRbCsP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CEEBA38;
-	Sat, 18 Jan 2025 01:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64458F507;
+	Sat, 18 Jan 2025 02:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737164028; cv=none; b=VVNI3hfRL+oGEgkLu1j+dFhz1BOqeXHDnHU6BGAzXFn8qHuf2mFhg8SQlfJIpSKv44BtaCa/eJ2v+QnJ0S+j8nbELUcAzEaWF+90vwtuSDanjj2N1n71rkvtnKEaP6uZUvLtXGOihuNI7VILeBJmExxyf+ulCiOahl7l6w+8jEk=
+	t=1737167896; cv=none; b=NLm9OHCPRWD8xzmuHhHH1cq044Q/xYw6u4UHp7IlhNNLprmxu3M/EQQRMVf3T9X4QBgf5DG1AZDyFNhBE45sQm8lSTIFt30KTSKIrLzh4JYMrGGLYedO9SS7rP3bA0vU2Lwdmz5H3xssZieIxbkWLflF3OqXazoiH3XBJK24Zio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737164028; c=relaxed/simple;
-	bh=hPvVUg835rmwTDkl2AR2vlJSNuVBls8/LX00bGTuJYE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=jUVuhLG9oDIHUeIjs9tavoA/7DZOTstFcrAMreCIPyNEaraXQ+MLXmiHPByGZsJCTD/ZEO4nUEnpIhxcFAxdPhoRFP7kPl3SnxJeUtaDPbue6wwCW2UuZGQZs+++tiU2bGy2DG4bIZKR02O5AGN8Z2cQAe8XgXJ18Ju3jB4fFw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=4uwD3SzZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IguSTfn2; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 9F4E2114028A;
-	Fri, 17 Jan 2025 20:33:43 -0500 (EST)
-Received: from phl-imap-10 ([10.202.2.85])
-  by phl-compute-02.internal (MEProxy); Fri, 17 Jan 2025 20:33:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1737164023;
-	 x=1737250423; bh=qoddUFhq/lgON2Zrn1iVZyM28ggkXNmUyx7bGlTekec=; b=
-	4uwD3SzZFOTuBWvSX4NfJKGPzkVScMSn/np/K5qoL9qAi2H24Zx6FK2MOnemKvl3
-	wGqo4b0f7Ca2pYrlosPA4cnYQfmJ2na4OHf5CF0tZfUWX86JgZ7NEY26MrUhCXXI
-	ZJVw15KBeTpqvgmE9tYLgmYe2TwvVj2hkKvTI42pwa+DXU313xExlw5/sJ1/9HHt
-	nYU69filcsOhceAuYe9pEbBwnBuM2Pi6uursxrkiBqeWBwnn72uRghfEGJBCFCB2
-	0mKMV+yxAd3wYtOhTcFiej1GtbHO2GBKQubLMCI19i4JOTitYwbQg6Posr8SNv3I
-	trsjMvcARdvTTim87Z+d8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1737164023; x=
-	1737250423; bh=qoddUFhq/lgON2Zrn1iVZyM28ggkXNmUyx7bGlTekec=; b=I
-	guSTfn2nmOdymXi8nqs2kLuHO2iSnM6gCzlq9lg9XSSnluonPqp9JOm6/zmLumCm
-	0BeG+BK1D/cPik0hdy6xhmHXhFIXRQAaGu1gP9W8p4MBAuB+9a8sxTdt50DGjrCg
-	8db0lIQ/janm0L8Z/crwCTgwD8m8BlcQj48q77tovGrUDpHI6H+19lFbiBM6g5BE
-	DEAV409ia4y5HcMHVw+m3tcq2tleH47GgupV7IHayqWSo2o2ot2X9G3fZPA/JWxu
-	PdZLvn82WFoExupjoOpndYeKbBJYONf+hlzdSKFvcrHsktvJ2y3S2iJTm+0SLRHE
-	uDPjEilPkkyK4y9SRQGjQ==
-X-ME-Sender: <xms:9QSLZzJDfwK9z9lh4G5tbskSHbo_ZIVlAEPX6NByfe_oiQtIMlZecQ>
-    <xme:9QSLZ3KknPx7PNUSKWohxyKmcrWLcDtges34MA3KcwiS4tSjTDSRHiuSyHWNJafo2
-    062T79gjLYrj-du5uE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeigedgfeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
-    necuhfhrohhmpedfofgrrhhkucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnh
-    hovhhosehsqhhuvggssgdrtggrqeenucggtffrrghtthgvrhhnpeegvdegueffhfdtleei
-    gfejhffggfeivdejgeelueejuedtudetheejudehtdeitdenucffohhmrghinhepkhgvrh
-    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrgdpnhgspghrtg
-    hpthhtohepvdehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehshhihrghmqdhs
-    uhhnuggrrhdrshdqkhesrghmugdrtghomhdprhgtphhtthhopehmrghrihhordhlihhmoh
-    hntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohepihhkvgdrphgrnhestggrnhho
-    nhhitggrlhdrtghomhdprhgtphhtthhopeguvghllhdrtghlihgvnhhtrdhkvghrnhgvlh
-    esuggvlhhlrdgtohhmpdhrtghpthhtoheprghlvgigsggvlhhmgeeksehgmhgrihhlrdgt
-    ohhmpdhrtghpthhtoheptghorhgvnhhtihhnrdgthhgrrhihsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepuggvrhgvkhhjohhhnhdrtghlrghrkhesghhmrghilhdrtghomhdprhgt
-    phhtthhopehkuhhurhhtsgesghhmrghilhdrtghomhdprhgtphhtthhopehluhiimhgrgi
-    himhhilhhirghnsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:9QSLZ7vI6LaPZIGEBG3Wx6fICiX4NEEO50LWvbd5e2b5L8ReI_htQA>
-    <xmx:9QSLZ8blvIBfhB6vykIw_Zll7G0rGIhwZ572oDXZLjcn20Demo8ZYA>
-    <xmx:9QSLZ6Z9qUnHa6jMAaQG2-uWvX-BFtZmjg-3ipsp-3JO--PxgVGB3w>
-    <xmx:9QSLZwBA_O26KtWpSJ0bPzcPAgGNCCwYNOdLIQKDp4pqr0jyOorOOg>
-    <xmx:9wSLZ2KkAQYmdZpST6FqIHbHP9mqkxq-NgMyz_5EclO8zUVH0oYpwfEj>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id AAF203C0066; Fri, 17 Jan 2025 20:33:41 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1737167896; c=relaxed/simple;
+	bh=kodQxwwBcXy2fga1isLQuccPgQM8MH6REQC6XoX/EPw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XOx1BVzpzlwRlWiBXBbCIP1AbvsXwleV0bd8v6LGcpvOrvzPnE0kyODxQVsYBgHu3W8EBu0Own4AeEOfiKWmCUeY/WjwywLjqhyt1NFfHicEPvrp67KQOlRuhbQUqF43/2bGsaLfM75t0ZPQA+f2VIX1vGDLO7Qd9RxszFktiCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GaxRbCsP; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737167895; x=1768703895;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kodQxwwBcXy2fga1isLQuccPgQM8MH6REQC6XoX/EPw=;
+  b=GaxRbCsP5ajqvdkx8Qm6rsYj0HTAs03eOkqFW1VOZ8mj4lTgRZ+QtKkE
+   7owe9P5OoJv5QNqFC2NHeHLe0zNDMtkN0eI6x7vxhgu4wLCXz4ybv6YUr
+   FocXWkjPKPUUrJ28lywns2qF56pBpBtB6XKTFo3EyeGXhdBnRn2rmg4Pl
+   KLqjlb1HZuSimYT7Si6T28RqVriIezNMzWNtVC/gjETxJlHlYACMSXdnk
+   GRiE3a3Qg3MdJtf5zyNNoRXE7nS6EB+2tAjDBZAMZ5jORzckpU26aHxoF
+   3Aevit38oMbQeEOuyjS6RvsFsTmDGTCj2TTzWcRybwogjze07Z/8Dsmwt
+   g==;
+X-CSE-ConnectionGUID: bBdrJtUHQW6NujxhelOMHg==
+X-CSE-MsgGUID: EvrylrERTZGJL9Sgy4ZWBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="48284271"
+X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; 
+   d="scan'208";a="48284271"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 18:38:14 -0800
+X-CSE-ConnectionGUID: 1d+YHYsETxqJ+S+FuvUzjA==
+X-CSE-MsgGUID: S0PV8amMTvq5OriV29SPuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; 
+   d="scan'208";a="110962931"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 17 Jan 2025 18:38:09 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tYyit-000U11-1y;
+	Sat, 18 Jan 2025 02:38:07 +0000
+Date: Sat, 18 Jan 2025 10:37:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
+	sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
+	baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com,
+	bp@alien8.de, yazen.ghannam@amd.com
+Cc: oe-kbuild-all@lists.linux.dev, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v3 2/5] RAS/AEST: Introduce AEST driver sysfs interface
+Message-ID: <202501181043.Qi8ohhYk-lkp@intel.com>
+References: <20250115084228.107573-3-tianruidong@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 17 Jan 2025 20:33:21 -0500
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- "Kurt Borja" <kuurtb@gmail.com>
-Cc: 
- "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- "Limonciello, Mario" <mario.limonciello@amd.com>,
- "Armin Wolf" <W_Armin@gmx.de>, "Joshua Grisham" <josh@joshuagrisham.com>,
- "Derek J . Clark" <derekjohn.clark@gmail.com>,
- "Hans de Goede" <hdegoede@redhat.com>,
- "Maximilian Luz" <luzmaximilian@gmail.com>, "Lee Chun-Yi" <jlee@suse.com>,
- "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
- "Corentin Chary" <corentin.chary@gmail.com>,
- "Luke D . Jones" <luke@ljones.dev>, "Lyndon Sanche" <lsanche@lyndeno.ca>,
- "Ike Panhc" <ike.pan@canonical.com>,
- "Henrique de Moraes Holschuh" <hmh@hmh.eng.br>,
- "Alexis Belmonte" <alexbelm48@gmail.com>, "Ai Chao" <aichao@kylinos.cn>,
- "Gergo Koteles" <soyer@irl.hu>, Dell.Client.Kernel@dell.com,
- ibm-acpi-devel@lists.sourceforge.net
-Message-Id: <01d3c53e-666a-46d8-b629-ba8a089011ee@app.fastmail.com>
-In-Reply-To: <f4e08213-0f42-4f35-a150-a75bf91537bf@app.fastmail.com>
-References: <20250116002721.75592-1-kuurtb@gmail.com>
- <1eb2720a-c9af-4e5c-8df2-c4ce3c017d5c@app.fastmail.com>
- <3aab5072-f032-7458-56af-1d45e89a5d44@linux.intel.com>
- <D74IM4AZ87C9.1R1S1KOA89PX7@gmail.com>
- <f8678f9c-56c2-b3a9-f24d-04c9433dba9f@linux.intel.com>
- <f4e08213-0f42-4f35-a150-a75bf91537bf@app.fastmail.com>
-Subject: Re: [PATCH v4 00/19] Hide platform_profile_handler from consumers
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250115084228.107573-3-tianruidong@linux.alibaba.com>
 
+Hi Ruidong,
 
+kernel test robot noticed the following build warnings:
 
-On Fri, Jan 17, 2025, at 3:45 PM, Mark Pearson wrote:
-> Hi,
->
-> On Fri, Jan 17, 2025, at 12:19 PM, Ilpo J=C3=A4rvinen wrote:
->> On Fri, 17 Jan 2025, Kurt Borja wrote:
->>
->>> On Fri Jan 17, 2025 at 11:42 AM -05, Ilpo J=C3=A4rvinen wrote:
->>> > On Thu, 16 Jan 2025, Mark Pearson wrote:
->>> >
->>> > > Hi
->>> > >=20
->>> > > On Wed, Jan 15, 2025, at 7:27 PM, Kurt Borja wrote:
->>> > > > Hi :)
->>> > > >
->>> > > > The merge window is about to open, so I rebased this patchset =
-on top of
->>> > > > pdx86/review-ilpo-next to pick up acer-wmi latest commits, in =
-case we
->>> > > > manage to squeeze this into v6.14.
->>> > > >
->>> > > > ~ Kurt
->>> > > > ---
->>> > > > v3 -> v4:
->>> > > >
->>> > > > [09/19]
->>> > > >   - Replace error message with a user-friendly one
->>> > > >
->>> > > > v3:=20
->>> > > > https://lore.kernel.org/platform-driver-x86/20250115071022.481=
-5-1-kuurtb@gmail.com/
->>> > > >
->>> > > > Kurt Borja (19):
->>> > > >   ACPI: platform_profile: Replace *class_dev member with class=
-_dev
->>> > > >   ACPI: platform_profile: Let drivers set drvdata to the class=
- device
->>> > > >   ACPI: platform_profile: Remove platform_profile_handler from=
- callbacks
->>> > > >   ACPI: platform_profile: Add `ops` member to handlers
->>> > > >   ACPI: platform_profile: Add `probe` to platform_profile_ops
->>> > > >   platform/surface: surface_platform_profile: Use
->>> > > >     devm_platform_profile_register()
->>> > > >   platform/x86: acer-wmi: Use devm_platform_profile_register()
->>> > > >   platform/x86: amd: pmf: sps: Use devm_platform_profile_regis=
-ter()
->>> > > >   platform/x86: asus-wmi: Use devm_platform_profile_register()
->>> > > >   platform/x86: dell-pc: Use devm_platform_profile_register()
->>> > > >   platform/x86: ideapad-laptop: Use devm_platform_profile_regi=
-ster()
->>> > > >   platform/x86: hp-wmi: Use devm_platform_profile_register()
->>> > > >   platform/x86: inspur_platform_profile: Use
->>> > > >     devm_platform_profile_register()
->>> > > >   platform/x86: thinkpad_acpi: Use devm_platform_profile_regis=
-ter()
->>> > > >   ACPI: platform_profile: Remove platform_profile_handler from=
- exported
->>> > > >     symbols
->>> > > >   ACPI: platform_profile: Move platform_profile_handler
->>> > > >   ACPI: platform_profile: Clean platform_profile_handler
->>> > > >   ACPI: platform_profile: Add documentation
->>> > > >   ACPI: platform_profile: Add a prefix to log messages
->>> > > >
->>> > > >  .../ABI/testing/sysfs-class-platform-profile  |  44 +++++
->>> > > >  drivers/acpi/platform_profile.c               | 172 +++++++++=
-++++-----
->>> > > >  .../surface/surface_platform_profile.c        |  48 ++---
->>> > > >  drivers/platform/x86/acer-wmi.c               | 114 ++++++---=
----
->>> > > >  drivers/platform/x86/amd/pmf/core.c           |   1 -
->>> > > >  drivers/platform/x86/amd/pmf/pmf.h            |   3 +-
->>> > > >  drivers/platform/x86/amd/pmf/sps.c            |  51 +++---
->>> > > >  drivers/platform/x86/asus-wmi.c               |  55 +++---
->>> > > >  drivers/platform/x86/dell/alienware-wmi.c     |  34 ++--
->>> > > >  drivers/platform/x86/dell/dell-pc.c           |  60 +++---
->>> > > >  drivers/platform/x86/hp/hp-wmi.c              |  83 +++++----
->>> > > >  drivers/platform/x86/ideapad-laptop.c         |  45 +++--
->>> > > >  .../platform/x86/inspur_platform_profile.c    |  48 +++--
->>> > > >  drivers/platform/x86/thinkpad_acpi.c          |  37 ++--
->>> > > >  include/linux/platform_profile.h              |  37 ++--
->>> > > >  15 files changed, 495 insertions(+), 337 deletions(-)
->>> > > >  create mode 100644 Documentation/ABI/testing/sysfs-class-plat=
-form-profile
->>> > > >
->>> > > >
->>> > > > base-commit: d98bf6a6ed61a8047e199495b0887cce392f8e5b
->>> > > > --=20
->>> > > > 2.48.1
->>> > >=20
->>> > > For the series up to v4 commit 15/19:
->>> > > Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->>> > >=20
->>> > > I need to go over the last few commits just once more, as there =
-a few=20
->>> > > pieces I need to get my head around - and I'm not going to get i=
-t done=20
->>> > > this evening. Hope it's OK to add review for the bits that I hav=
-e done.
->>> >
->>> > I, for the first time ever, tested filter-branch and after some in=
-itial=20
->>> > hickups on how to specify the commit range, got your Reviewed-bys =
-added
->>> > with single command :-).
->>>=20
->>> Awesome! I believe commit 15/19
->>>=20
->>> a213108c01e0 ("ACPI: platform_profile: Remove platform_profile_handl=
-er from exported symbols")
->>>=20
->>> is still missing a rev-by by Mark, if there is still time.
->>
->> Thanks for noticing this. I just recalled the patch numbering wrong.
->>
->> It should be fixed now.
->>
->> --=20
->>  i.
->
-> I finished my review, and no concerns. For the series:
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->
-> Note - I'm building and will give it a sniff test too, but that will=20
-> take a bit longer.
->
-> Thanks for your work on this Kurt
->
-Ran the series on an X1 Carbon G12 and profiles working well. Was able t=
-o check the new class and didn't find any issues.
-For the series:
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge arm64/for-next/core ras/edac-for-next linus/master tip/smp/core v6.13-rc7 next-20250117]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-RAS-AEST-Initial-AEST-driver/20250115-164601
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20250115084228.107573-3-tianruidong%40linux.alibaba.com
+patch subject: [PATCH v3 2/5] RAS/AEST: Introduce AEST driver sysfs interface
+reproduce: (https://download.01.org/0day-ci/archive/20250118/202501181043.Qi8ohhYk-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501181043.Qi8ohhYk-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
+   Warning: Documentation/hwmon/isl28022.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/isl,isl28022.yaml
+   Warning: Documentation/translations/ja_JP/SubmittingPatches references a file that doesn't exist: linux-2.6.12-vanilla/Documentation/dontdiff
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+   Warning: lib/Kconfig.debug references a file that doesn't exist: Documentation/dev-tools/fault-injection/fault-injection.rst
+>> Warning: /sys/kernel/debug/aest/<dev_name>/<node_name>/record<index>/err_* is defined 2 times:  ./Documentation/ABI/testing/debugfs-aest:69  ./Documentation/ABI/testing/debugfs-aest:76
+   Using alabaster theme
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
