@@ -1,349 +1,393 @@
-Return-Path: <linux-acpi+bounces-10764-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10765-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E617A1722B
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 18:44:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830DEA173E6
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 22:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3F6C1887D37
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 17:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C31A3A86FE
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 21:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83F31E9B00;
-	Mon, 20 Jan 2025 17:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D65192D68;
+	Mon, 20 Jan 2025 21:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FgsUTQUU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+dKx/UZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2068.outbound.protection.outlook.com [40.107.101.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DF2182BC;
-	Mon, 20 Jan 2025 17:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737395076; cv=fail; b=loVNyT2IYlcGYQ8MU8d4P0V3divv1ZXqSfpc5hHxSXMeo/TRpDSouX97mipldGFxiJgOg0FPSxsavouFP4/znbzpEMBRWQfj9HmvX3UK26j1N5T4bCAMBvOLqACoCSPv2zJzXlbBYYTIjnFRZTtMfqLlp4q5aGSxkOdz6NSSiRw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737395076; c=relaxed/simple;
-	bh=/gJOvJmK6IcwpcDLpsjAfFlmZhzOi7i3FPsPlqXQCJA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DGYAb52iu5xNda5EtsjnCEz+TsF92e70NxRrBUZ7d7jE2XjfGOSvCVbLzpGwejPsS/elQaqTJuAt06swcU+5tvRhUnspYAetz6v+FQtn0PYZBNqlloXUdivY5gnRqnjXYZRiKNMSFZ7xoV1yyvngjR7Z1vbTSQZwgsYhSwfAAMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FgsUTQUU; arc=fail smtp.client-ip=40.107.101.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vH/jcc8OfSwAbgTQIqTH/GxwoGmEu6mcFi59ZTlpsZt+EBQaF0RInj0tYgihX9wvFwcFWADq6PTl7yaxyCN3YeZJVtAJjW+vn49AHQVVosfuHFrOdd+r3oATQHjyT9gRFJ0j2V38kBi16w6ZGf32s0vfqWr69O77huCaM0FgjM81UIT5TmLbSIU7ST1Z6KWVQtduXUNCA2n7bPjLOVclVd+G0ZCfP8CGhcwFmt2V8Rh0K5M9FmZJGQWnto+m/1FJZDGUAIwzvKTp+gUzU6nh8c3Ebji0tcXBVd785ugUEHFNpyBRhRlfqu4oineG3bi2dvzpyNeYj/zEHNxbAwKuuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IBzCoV+zMbaSZaVCzZvIX97wkulRV5/GTckpcpN+718=;
- b=vu7xLhOldSNaAeO6zgzwXKP2p82icdJlgDalQp70R/j/TNVcbn1R5wkf/ymsqz3uWCSqryVDKvvyGb6t0Adef1Ztx3PVeFbAaRiR2az5m/JjdNpQN0goSmBqHtOdp6Q4EaM+IGpTkBrUbh9+ztbi3uPDEPTMa88Hc2XkJ7YYSEg/dfXfrEey98DZHcJqNsntVWuDj2lgsGVGkSf8eo2nsB591ug1UF9QGGMcMJn1SxYz84Bz3HVdxIKQOqn48T9byvbwNKHG6EgI+yEoEJyFQi58iCGGUurbybm84Th4m5VeVzLaFZCbAuBptPMozAqGKeZlpB5xropX2VkLyQus2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IBzCoV+zMbaSZaVCzZvIX97wkulRV5/GTckpcpN+718=;
- b=FgsUTQUUTL0gE6nAXHceHVxDi+mNOzUMK7Cgqwzqbs6cRYFtwqGzroYYLUKiXlijHWy+UOUEOnIdm3W39LgVl2COARlwx0QC38gk62ZcxJgjnFb9Pr0nmwdl1mTaMIu3GfF3gM/xhQ8rEdDypVeqE8O5PzrgxoAUg/aZJ2ooPKk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SN7PR12MB6716.namprd12.prod.outlook.com (2603:10b6:806:270::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.20; Mon, 20 Jan
- 2025 17:44:32 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
- 17:44:31 +0000
-Message-ID: <32d084f3-f114-420e-affa-2f7ba107de0d@amd.com>
-Date: Mon, 20 Jan 2025 11:44:28 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] cpufreq: CPPC: Support for autonomous selection in
- cppc_cpufreq
-To: Pierre Gondois <pierre.gondois@arm.com>,
- "zhenglifeng (A)" <zhenglifeng1@huawei.com>,
- Russell Haley <yumpusamongus@gmail.com>, rafael@kernel.org, lenb@kernel.org,
- robert.moore@intel.com, viresh.kumar@linaro.org
-Cc: acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linuxarm@huawei.com,
- jonathan.cameron@huawei.com, gautham.shenoy@amd.com, ray.huang@amd.com,
- zhanjie9@hisilicon.com, lihuisong@huawei.com, hepeng68@huawei.com,
- fanghao11@huawei.com
-References: <20250113122104.3870673-1-zhenglifeng1@huawei.com>
- <20250113122104.3870673-7-zhenglifeng1@huawei.com>
- <21654032-a394-4da9-8ee9-d7cb9df8c855@gmail.com>
- <6909eef3-20aa-4341-9177-a42323a0d5c6@huawei.com>
- <270a1cce-8afe-497a-b30b-56157d75a863@amd.com>
- <0705775a-1040-4564-b97b-2ed397803723@huawei.com>
- <256a7620-2d21-4474-b64d-b1e8effbc975@arm.com>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <256a7620-2d21-4474-b64d-b1e8effbc975@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN7P222CA0025.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:124::35) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7B517B421;
+	Mon, 20 Jan 2025 21:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737407078; cv=none; b=W7OoQLce4E9qOvw4im0rCSbKtzynETma3LdLYHzYKi7BlsdcOaZXZaO4G6pUODR6cuLf8iRMifHsZbUh5n/pV7R2TZs2vM4OOzE1hlhN6HM3jFpba6bexb66fMVb+dRCdNz9lkRM6e2oMwn6mxrffLD9iYfcb05d5zKWdirn7Fs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737407078; c=relaxed/simple;
+	bh=MHGCyeIwJAga4JIEGvRvqiuQk8h+Yhs9gEQ7YyRG5kQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=FnVf7UoNp+SD+gkrAc01EvB4xaXxq6g2TJvSpNBajceuo6Jm2n/76bBjUhGAHA2VQYuGYM5/gBA8dKO99jfOC18toUXwaQPL5cu5laKn2H1rSpX5Oc6oDPhaOM+uEDHcxxrPEhQLBJAobIQV3rx+YCxsJ6eBqVFBL3GnO6oh5Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+dKx/UZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1991CC4CEE5;
+	Mon, 20 Jan 2025 21:04:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737407078;
+	bh=MHGCyeIwJAga4JIEGvRvqiuQk8h+Yhs9gEQ7YyRG5kQ=;
+	h=From:Date:Subject:To:Cc:From;
+	b=F+dKx/UZcPp8bxSQlmnlE12P8E5MZSylsoT1aaI3J4IV17CDRS5KygMTFg2tqFSLM
+	 FZJdCEoEhOwEV4Jre+TNQZTHt94B2mbDZHmijXAnRosiuJD1pqVljrwgfIOa4latFP
+	 xymM2ZsLNIA1t8t8jRsxGVVDtU6ZqQ8Gr7KuK0r28eJ0BzYFm9UGXNO6gewE/MsLKk
+	 DZPfDXQN+M5UgDpN9mVBObUZ7BCtq7lKeHIzey2AL64Gpfqghxc3pL3cyNuu9N9xfx
+	 Cr/pS/rkxACKEs9LdvNMEdDogb+NWDpuxmWG9+VczSN/g85Ghy8574gJN4Pzaq/w2l
+	 OGxpPpYVRRnOg==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7231e2ac9e4so1240939a34.0;
+        Mon, 20 Jan 2025 13:04:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUHQvA3U55HGw5two5F5dpeBPE63aBh0rdZSLMEPzTC50RUYp1whXDKkXY77MatRqdKzJiiJ4HLde7Ej0Ym@vger.kernel.org, AJvYcCXvdDStcKmu0RnfkB+Rd/UVWCZqoeSLRDYyCHI6M5mu8Cyxv317W+cd65uTzfACDQrnlBjTXQYNN4Fb@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmFrN1uldCKsuU/c9fk3S6FFSDySueamdOaY5IjvZqrkhcgN9x
+	xBRKA8WP1T5pkf7PSMTVfqlHcNhBZzxjL01eHeV0BarxuwoblIJ5RiW5TfKlXWLwz9jvEHtZity
+	jHe/AZde1sdCetSV3JYPOTVbWFww=
+X-Google-Smtp-Source: AGHT+IEg2/jkzglFqyp1d8rk2JiiD+Pz+t4sNwHp+UIQ6IOFRttZkiojjTeWgvybUnuNXbYDcbgHCd7nbZ/3vYSU+YQ=
+X-Received: by 2002:a05:6830:6989:b0:71d:f581:3c0 with SMTP id
+ 46e09a7af769-7249da8fa91mr9589819a34.16.1737407077227; Mon, 20 Jan 2025
+ 13:04:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SN7PR12MB6716:EE_
-X-MS-Office365-Filtering-Correlation-Id: a96df3cc-3fd7-4387-878f-08dd397a1891
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QTdxUnZncHgzYTZ0blRaTGYzQVhMRkxFRUwrNXB0cCtNOFpmVkFXclhLVmQ0?=
- =?utf-8?B?Z0RRZHZJd25VVEJtK1pBOW5iZ1lvZmpsNnh5S1E5a2tNV2NUcVRhSDZ5dCsx?=
- =?utf-8?B?SHRCeCtHQldtRDc3NGxmQWdRT3NXUmhUcHBPMzVGVzhTV1pDVGJkcjZXUXZV?=
- =?utf-8?B?c1cxTWRucm5QcFBScGNoNVI1UTlGQWo0Y3Zmd1NLY2o5VTRsZzRMbjJoTXBt?=
- =?utf-8?B?bXQzT1ZoWlBtUU9ya0tpVlhCWFQvTFhGL0xicmJUYk1JWVNqSTJTUEFyTThZ?=
- =?utf-8?B?YnQyQ21ZWDdLZHBjYjA1WWFoT1BKWCsvZjJOSUtwUkY5V2M1Y3Jqc0NWQ001?=
- =?utf-8?B?dHJKdnVyZkFaYWFoRjhtRFJDbE5OWXFDQTRYNTBwWmExTFY1MEh6TnVwNGxw?=
- =?utf-8?B?RHZ5VkN5UVFMS05pM0xqQStPTTcvbVRhWFZWY3lsb2I1TWhodEVRaWVOMUlK?=
- =?utf-8?B?anpxTTlsTVJ1VjB4NGo1T1htc3hlSWluamR6OG5SUE5JRmcvT1pva2FJcmpC?=
- =?utf-8?B?VW1SZEt2RmR5NzBwNjVrUSsyTW44OFBxQWNDWThkeWp5WFUyTThjWk4yaTJS?=
- =?utf-8?B?dGRtcFpjRHFDTS9nSEF2RXlFUG9xeE9vdnllaDJuQmdBV3NVbVBDVnc0ZWZY?=
- =?utf-8?B?YWRIUjZKbGJKazJGQ1RNdHFTNlRiSEtmd3JVdGF2Nk5zem95elNBSlFjTm53?=
- =?utf-8?B?LzVQTUQ4MmFJWkxWa0R1TWhDOXpxMXkvV3NYVWg5M2ZaaWdBWnhjdzBoSW1z?=
- =?utf-8?B?UDM3M2REajZncE5oc2JWcXRuVmIySkgxS3h3b3FLZmkwemM4V0crQzFJWE50?=
- =?utf-8?B?RW1QQ3NiSEVRK0hIajdNVVlnRE1hNkd1V2NybG96Q1VnNHZDK3N0ak5iMHNn?=
- =?utf-8?B?VU1DTWVZZEJOK0I2YXZLM3R6bUFPbnZMdUtQSDRNWHFONUZ4MDBQK2NKeXZN?=
- =?utf-8?B?NUc2bzJwMXp1aitKTmM3UXd3c0dYNlplT3FpRWJ2OXBoSmE2eHY1cmpYV3Y2?=
- =?utf-8?B?WnBSREZubGNhOFBJd21ORExocVo1MGJWWGxyQXB5L1JuNXB2b1VYeXM0UEpK?=
- =?utf-8?B?dGtNM0NkWTBtUEJMSE5HcE8waEgvNDVXUEFkWVl2cEJkOHpxRFFJUSszSE5O?=
- =?utf-8?B?M0QwRUpSb2twakl5TWdtQTZyVXpGUFUvS3RlQWxURlpxcHBkeVFLQ3Y4QlBI?=
- =?utf-8?B?dURKZTZCMll3QzBjUm4wd3hzL0s0M2pMUTV0Rjc5bGQvQVlpRE5xMGpjZHlG?=
- =?utf-8?B?cUZmQnUxRXhhZU5PRkx6OU5yMDVNOWhKU2R6THoweXlOb2w2TEs3Z3lQM3M0?=
- =?utf-8?B?VHl6WjA1ZEdLcVoxZXo5THNKMDl0a2p6TnIyaUlZN3RJbVpsRDBCNFR0VTJy?=
- =?utf-8?B?NGdKS25ya1ZLcFFlT3RieFdnbFk1T0NYdWVNLy9Zc3BlQnZYWk9uZW5XMVFD?=
- =?utf-8?B?NzgybFFQY0krUlJxSDNNbjNQSVhZYmZ1WVVuTjhET3JwVTYrUXFNc2lZLzFT?=
- =?utf-8?B?V0NWVGJxSXlwd0owZ1FVd0VYQ3lYby9oTFhsVS9WYWlDeVprUlY1SnEreU82?=
- =?utf-8?B?SFlYcEhzZ3dJamZCTGJqWnlnYS81OVNqS0JmR2ZIMXkxaU1rWkR6QjBKYzk2?=
- =?utf-8?B?b3FYOVdDeElVUmpzcU1hbS9oMk16OENaZmdra0pvdFMxb2NCSGhVNm1WYkxL?=
- =?utf-8?B?ZC90anBqcUpCdXl6dCswb09qNFN6Rm1qekY5QmFsdFNlaUt6VGowUnZOWFgv?=
- =?utf-8?B?SjdJUHIvUkg4Sk80dGkwQW9WUStLWFJMUTVXMGllRXd5ajF6bFF0OU0yZmZt?=
- =?utf-8?B?SHNuM2pIQVlVYytUVU9nV2pFWVBSY1gwKzhZTXRvU1ZXRlVNZTErNDZlOVJT?=
- =?utf-8?Q?sHrfCnXEXWdh7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZGFucjlmOXZ6K1hHU09nOWlWby9GcDBVanlBZGRNT212T3FPSituQVFubXVJ?=
- =?utf-8?B?ajhuNGorSFRoUlcyUnJQWkVJMFUzemZVS215VGlZNVlBMjgxcnIxR1RDYVAz?=
- =?utf-8?B?ODAvKzcxN2EydzBkS3Q0NjQ5cVFJVEhPMGQ5OHk4NE8vR1gyL29CWElERlpS?=
- =?utf-8?B?b3hwRHZ4TzRjSWpMV1ZVTTdvSUorV1dYSjZZVER1YmM3YnFZOUZtUHJhNXZu?=
- =?utf-8?B?VFhEc2NFazFmcWNMaXNyNEw4VlBFVE5Hd3dRVDNoeUJiYTIzSDloaFZKYjY1?=
- =?utf-8?B?UzBlNFhaWkdLcHY2REVYRmNHQnZpNGtCSS81K25WdmlIR0MrWG43cDgybzJl?=
- =?utf-8?B?Vk1XL0JWQ1BpTDZnaW9kS0kvMW45M05ldCtDTmdYekxkMTdnTHRGM2szajEz?=
- =?utf-8?B?KzdCaWZHRkRvUmp2MDY5ZHkwQjFscXRFNFBqT2lRYjg2UEhJNkkvc3dvQXF1?=
- =?utf-8?B?dWdTUTZhMnRzYlNDUmZldTBCMzdJT1lPM05PK1hGdXUyTFZpbnVJNE10Mjd5?=
- =?utf-8?B?UHl4ZW9LMWJrdW0yVUExZHY2bkVLaXg2L2E5L0Z2aldLNG1iaHFseHRyeUR5?=
- =?utf-8?B?UUJRQmtBUTR4ekgxb2ZuamMyRjlCdUw2S0hCc0lLVll4OUd5SU9aMGg4UktR?=
- =?utf-8?B?M1l6TU5Rc2NJUlA2Nk5yd0JBcDNZWGtNV1UrSGtWR1pIcGhjOGVuL3lQenJq?=
- =?utf-8?B?bkU2VllvMlJldnJ0NHpqVzlJeWZCb0xuVUdQK2lIZEtmdXlVSmVueHRyZlUx?=
- =?utf-8?B?M3EwMTVsTk1lUjF2Y1RsaTQ3Ri9yZkdrTmYvb1REbjVNSmEyWUNEVklNTmZk?=
- =?utf-8?B?aDh4UjN5MGxYMGtndmhqMldBZWYzR1gyaE5KTDIxWU1FYTBRaHhvUlFGTDVt?=
- =?utf-8?B?OHBQS2ZCa3ZrbmRMS1pvYzY2TEJuYnhDVlp0MVgyQkQ0ZEE1M2xTYXp0NUNW?=
- =?utf-8?B?RkN0NzNPTURkY2d0SnRVZnZEK0ZEN2hsR3JINmZWYkJPYThYRUxoeFlxamxD?=
- =?utf-8?B?WDZOS281dFl6SkkxVnB4d0NFZjNrcjFtcXhnSHJiejR2bkxVNTRrMkJpUSt6?=
- =?utf-8?B?Y1lKdDM4R2FXYm40aWorRVNQRHdHbllTTEJoK2xQbFpqNnhsYVhnQjdSOWd2?=
- =?utf-8?B?RE1ZdDVHdVdkVktleGdqbElnRGh0TWlzYVh2Y2ZoNEkra0dZTjlqYU83UGY1?=
- =?utf-8?B?SXFoNDd1OUlEQUw3b3VUbE1VK2U2Kzl5VDVOUFZ4NEFWMWxPVkdvNXVBZVYy?=
- =?utf-8?B?R2RQNEczQ0JsMVdOT3JJekJOQm5EaXRMZmMzdEo5cFE3bVM0TDVuRkQ0aXd5?=
- =?utf-8?B?WW80cG9rM0I4RzRyTkNqdk9qWkl4RTNnS1BLbW5JUGRwaDNTOGFKWGV4VHpX?=
- =?utf-8?B?TnZDalVDaExwNWkzNk9BTnJOb0JROFdQWVJEWFNXc0c2NHNjUmovVk5XbDhF?=
- =?utf-8?B?RCswV082OXB1ZEJ5RTVGTHpTS3kzdllNbGZSaHVld1lacGI4b2JVTkFjVGQ4?=
- =?utf-8?B?NXloSjQ4LzZVMk9QK1RZbkpaeVdjRTl5T1A1ekZIWG9lOG9Ba1p4VUR2TTIy?=
- =?utf-8?B?WkpzdExPMXdxNUpMMUZiRnc5TjlSVVFReHQ5WldvRWwyQlFCTDFlRVczbXNz?=
- =?utf-8?B?am9GaW1NeDhLbmxOM2RQdmJKRWZ1aXhWVm5qVG81V0Njek84THRhTHlMOTlh?=
- =?utf-8?B?M2JTMHgrUENXYmVvVEtMNUp2YngwcFNuMG81dVhOOU96elBpSldubi9idjVr?=
- =?utf-8?B?Z2FhU1JnSjE5c3BRRzZNaFMzb0hPd0NzZy9iRG01czdHYW5qc1Z6OWtEYzFh?=
- =?utf-8?B?aUExdk1aRkF1Y09ETlRrMFBqTElVRVNlUTNVYXNGaHZZSlQ5K3RhNUp3MHQz?=
- =?utf-8?B?WE8ySnIxNzBabzdUaGxPWjZUbVFEWk9JVmxWdWlDV1JnaHNDY1dwWGRBVGZq?=
- =?utf-8?B?b2M2SGl1eTM3MUp0U3NSRmNxYVdJYXN5VVdjS1pQOTVmenFlSzZvTkdhSlFK?=
- =?utf-8?B?WjI5TjJFTFJnSEZmZGlYM3A5ZnZ0bGFIRzBMc05qTEZNOWdOODJBTlorL0pn?=
- =?utf-8?B?eVQxVDd6WlcvbkVMMS9NMWFieUVRZEliRURlRjFaSTNLR3pwQ3pjSUV1N2ZO?=
- =?utf-8?Q?SJYgmt3r2HtVkuO3oswMbpqma?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a96df3cc-3fd7-4387-878f-08dd397a1891
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 17:44:31.8973
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bazp24TnCXvkvRQSYo+gAGB/tOssDmtOboVwoQE+VDVtduIgLqYHmGZV/7FxBcfVf496aVgqps9748tagi6fMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6716
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 20 Jan 2025 22:04:26 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0i4eh2z_8vDf6U+Ro0V+221wA8BL656kpREgvMWYR83SA@mail.gmail.com>
+X-Gm-Features: AbW1kvahU2SzyPJ0w8i1-EW3zMmqTW64wtZ0X0_fSn5PUTJJiQ8RcBmnWHucmEw
+Message-ID: <CAJZ5v0i4eh2z_8vDf6U+Ro0V+221wA8BL656kpREgvMWYR83SA@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v6.14-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Mario Limonciello <mario.limonciello@amd.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 1/20/2025 08:49, Pierre Gondois wrote:
-> 
-> 
-> On 1/20/25 04:15, zhenglifeng (A) wrote:
->> On 2025/1/17 22:30, Mario Limonciello wrote:
->>
->>> On 1/16/2025 21:11, zhenglifeng (A) wrote:
->>>> On 2025/1/16 19:39, Russell Haley wrote:
->>>>
->>>>> Hello,
->>>>>
->>>>> I noticed something here just as a user casually browsing the 
->>>>> mailing list.
->>>>>
->>>>> On 1/13/25 6:21 AM, Lifeng Zheng wrote:
->>>>>> Add sysfs interfaces for CPPC autonomous selection in the 
->>>>>> cppc_cpufreq
->>>>>> driver.
->>>>>>
->>>>>> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
->>>>>> ---
->>>>>>    .../ABI/testing/sysfs-devices-system-cpu      |  54 +++++++++
->>>>>>    drivers/cpufreq/cppc_cpufreq.c                | 109 +++++++++++ 
->>>>>> +++++++
->>>>>>    2 files changed, 163 insertions(+)
->>>>>>
->>>>>> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/ 
->>>>>> Documentation/ABI/testing/sysfs-devices-system-cpu
->>>>>> index 206079d3bd5b..3d87c3bb3fe2 100644
->>>>>> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
->>>>>> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
->>>>>> @@ -268,6 +268,60 @@ Description:    Discover CPUs in the same CPU 
->>>>>> frequency coordination domain
->>>>>>            This file is only present if the acpi-cpufreq or the 
->>>>>> cppc-cpufreq
->>>>>>            drivers are in use.
->>>>>
->>>>> [...snip...]
->>>>>
->>>>>> +What:        /sys/devices/system/cpu/cpuX/cpufreq/energy_perf
->>>>>> +Date:        October 2024
->>>>>> +Contact:    linux-pm@vger.kernel.org
->>>>>> +Description:    Energy performance preference
->>>>>> +
->>>>>> +        Read/write an 8-bit integer from/to this file. This file
->>>>>> +        represents a range of values from 0 (performance 
->>>>>> preference) to
->>>>>> +        0xFF (energy efficiency preference) that influences the 
->>>>>> rate of
->>>>>> +        performance increase/decrease and the result of the 
->>>>>> hardware's
->>>>>> +        energy efficiency and performance optimization policies.
->>>>>> +
->>>>>> +        Writing to this file only has meaning when Autonomous 
->>>>>> Selection is
->>>>>> +        enabled.
->>>>>> +
->>>>>> +        This file only presents if the cppc-cpufreq driver is in 
->>>>>> use.
->>>>>
->>>>> In intel_pstate driver, there is file with near-identical semantics:
->>>>>
->>>>> /sys/devices/system/cpu/cpuX/cpufreq/energy_performance_preference
->>>>>
->>>>> It also accepts a few string arguments and converts them to integers.
->>>>>
->>>>> Perhaps the same name should be used, and the semantics made exactly
->>>>> identical, and then it could be documented as present for either
->>>>> cppc_cpufreq OR intel_pstate?
->>>>>
->>>>> I think would be more elegant if userspace tooling could Just Work 
->>>>> with
->>>>> either driver.
->>>>>
->>>>> One might object that the frequency selection behavior that results 
->>>>> from
->>>>> any particular value of the register itself might be different, but 
->>>>> they
->>>>> are *already* different between Intel's P and E-cores in the same CPU
->>>>> package. (Ugh.)
->>>>
->>>> Yes, I should use the same name. Thanks.
->>>>
->>>> As for accepting string arguments and converting them to integers, I 
->>>> don't
->>>> think it is necessary. It'll be a litte confused if someone writes a 
->>>> raw
->>>> value and reads a string I think. I prefer to let users freely set this
->>>> value.
->>>>
->>>> In addition, there are many differences between the implementations of
->>>> energy_performance_preference in intel_pstate and cppc_cpufreq (and
->>>> amd-pstate...). It is really difficult to explain all this 
->>>> differences in
->>>> this document. So I'll leave it to be documented as present for
->>>> cppc_cpufreq only.
->>>
->>> At least the interface to userspace I think we should do the best we 
->>> can to be the same between all the drivers if possible.
->>>
->>> For example; I've got a patch that I may bring up in a future kernel 
->>> cycle that adds raw integer writes to amd-pstates 
->>> energy_performance_profile to behave the same way intel-pstate does.
->>
->> I agree that it's better to keep this interface consistent across 
->> different
->> drivers. But in my opinion, the implementation of intel_pstate
->> energy_performance_preference is not really nice. Someone may write a raw
->> value but read a string, or read strings for some values and read raw
->> values for some other values. It is inconsistent. It may be better to use
->> some other implementation, such as seperating the operations of r/w 
->> strings
->> and raw values into two files.
-> 
-> I agree it would be better to be sure of the type to expect when reading 
-> the
-> energy_performance_preference file. The epp values in the range 0-255 
-> with 0
-> being the performance value for all interfaces.
-> 
-> In the current epp strings, it seems there is a big gap between the 
-> PERFORMANCE
-> and the BALANCE_PERFORMANCE strings. Maybe it would be good to complete it:
-> EPP_PERFORMANCE        0x00
-> EPP_BALANCE_PERFORMANCE    0x40      // state value changed
-> EPP_BALANCE        0x80      // new state
-> EPP_BALANCE_POWERSAVE    0xC0
-> EPP_POWERSAVE        0xFF
-> 
-> NIT: The mapping seems to be slightly different for intel_pstate and 
-> amd-pstate
-> currently:
-> drivers/cpufreq/amd-pstate.c
-> #define AMD_CPPC_EPP_PERFORMANCE        0x00
-> #define AMD_CPPC_EPP_BALANCE_PERFORMANCE    0x80
-> #define AMD_CPPC_EPP_BALANCE_POWERSAVE        0xBF
-> #define AMD_CPPC_EPP_POWERSAVE            0xFF
-> 
-> arch/x86/include/asm/msr-index.h
-> #define HWP_EPP_PERFORMANCE        0x00
-> #define HWP_EPP_BALANCE_PERFORMANCE    0x80
-> #define HWP_EPP_BALANCE_POWERSAVE    0xC0   <------ Different from 
-> AMD_CPPC_EPP_BALANCE_POWERSAVE
-> #define HWP_EPP_POWERSAVE        0xFF
-> 
->>
->> I think it's better to consult Rafael and Viresh about how this should
->> evolve.
-> 
-> Yes indeed
+Hi Linus,
 
-Maybe it's best to discuss what the goal of raw EPP number writes is to 
-decide what to do with it.
+Please pull from the tag
 
-IE in intel-pstate is it for userspace to be able to actually utilize 
-something besides the strings all the time?  Or is it just for debugging 
-to find better values for strings in the future?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.14-rc1
 
-If the former maybe we're better off splitting to 
-'energy_performance_preference' and 'energy_performance_preference_int'.
+with top-most commit 1c91c99075db4e31fb5cf0838ce59e80ecd51eab
 
-If the latter maybe we're better off putting the integer writes and 
-reads into debugfs instead and making 'energy_performance_preference' 
-return -EINVAL while a non-predefined value is in use.
+ Merge branch 'pm-tools'
+
+on top of commit 3744b08449c27bfa085aa218c4830f3996a51626
+
+ Merge branch 'pm-cpufreq'
+
+to receive power management updates for 6.14-rc1.
+
+The majority of changes here are cpufreq updates which are dominated by
+amd-pstate driver changes, like in the previous cycle.  Moreover, changes
+related to amd-pstate are also the majority of cpupower utility updates.
+
+Included are some pieces of new hardware support, like the addition of
+Clearwater Forest processors support to intel_idle, new cpufreq driver
+for Airoha SoCs, and Apple cpufreq driver extensions to support more
+SoCs.  The intel_pstate driver is also extended to be able to support
+new platforms by using ACPI CPPC to compute scaling factors between HWP
+performance states and frequency.
+
+The rest is mostly fixes and cleanups in assorted pieces of power
+management code.
+
+Specifics:
+
+ - Use str_enable_disable()-like helpers in cpufreq (Krzysztof
+   Kozlowski).
+
+ - Extend the Apple cpufreq driver to support more SoCs (Hector Martin,
+   Nick Chan).
+
+ - Add new cpufreq driver for Airoha SoCs (Christian Marangi).
+
+ - Fix using cpufreq-dt as module (Andreas Kemnade).
+
+ - Minor fixes for Sparc, SCMI, and Qcom cpufreq drivers (Ethan Carter
+   Edwards, Sibi Sankar, Manivannan Sadhasivam).
+
+ - Fix the maximum supported frequency computation in the ACPI cpufreq
+   driver to avoid relying on unfounded assumptions (Gautham Shenoy).
+
+ - Fix an amd-pstate driver regression with preferred core rankings not
+   being used (Mario Limonciello).
+
+ - Fix a precision issue with frequency calculation in the amd-pstate
+   driver (Naresh Solanki).
+
+ - Add ftrace event to the amd-pstate driver for active mode (Mario
+   Limonciello).
+
+ - Set default EPP policy on Ryzen processors in amd-pstate (Mario
+   Limonciello).
+
+ - Clean up the amd-pstate cpufreq driver and optimize it to increase
+   code reuse (Mario Limonciello, Dhananjay Ugwekar).
+
+ - Use CPPC to get scaling factors between HWP performance levels and
+   frequency in the intel_pstate driver and make it stop using a built
+   -in scaling factor for Arrow Lake processors (Rafael Wysocki).
+
+ - Make intel_pstate initialize epp_policy to CPUFREQ_POLICY_UNKNOWN for
+   consistency with CPU offline (Christian Loehle).
+
+ - Fix superfluous updates caused by need_freq_update in the schedutil
+   cpufreq governor (Sultan Alsawaf).
+
+ - Allow configuring the system suspend-resume (DPM) watchdog to warn
+   earlier than panic (Douglas Anderson).
+
+ - Implement devm_device_init_wakeup() helper and introduce a device-
+   managed variant of dev_pm_set_wake_irq() (Joe Hattori, Peng Fan).
+
+ - Remove direct inclusions of 'pm_wakeup.h' which should be only
+   included via 'device.h' (Wolfram Sang).
+
+ - Clean up two comments in the core system-wide PM code (Rafael
+   Wysocki, Randy Dunlap).
+
+ - Add Clearwater Forest processor support to the intel_idle cpuidle
+   driver (Artem Bityutskiy).
+
+ - Clean up the Exynos devfreq driver and devfreq core (Markus Elfring,
+   Jeongjun Park).
+
+ - Minor cleanups and fixes for OPP (Dan Carpenter, Neil Armstrong, Joe
+   Hattori).
+
+ - Implement dev_pm_opp_get_bw() (Neil Armstrong).
+
+ - Expose OPP reference counting helpers for Rust (Viresh Kumar).
+
+ - Fix TSC MHz calculation in cpupower (He Rongguang).
+
+ - Add install and uninstall options to bindings Makefile and add header
+   changes for cpufreq.h to SWIG bindings in cpupower (John B. Wyatt IV).
+
+ - Add missing residency header changes in cpuidle.h to SWIG bindings in
+   cpupower (John B. Wyatt IV).
+
+ - Add output files to .gitignore and clean them up in "make clean" in
+   selftests/cpufreq (Li Zhijian).
+
+ - Fix cross-compilation in cpupower Makefile (Peng Fan).
+
+ - Revise the is_valid flag handling for idle_monitor in the cpupower
+   utility (wangfushuai).
+
+ - Extend and clean up AMD processors support in cpupower (Mario
+   Limonciello).
+
+Thanks!
+
+
+---------------
+
+Andreas Kemnade (1):
+      cpufreq: fix using cpufreq-dt as module
+
+Artem Bityutskiy (1):
+      intel_idle: add Clearwater Forest SoC support
+
+Christian Loehle (1):
+      cpufreq: intel_pstate: Use CPUFREQ_POLICY_UNKNOWN
+
+Christian Marangi (2):
+      dt-bindings: cpufreq: Document support for Airoha EN7581 CPUFreq
+      cpufreq: airoha: Add EN7581 CPUFreq SMCCC driver
+
+Dan Carpenter (1):
+      opp: core: Fix off by one in dev_pm_opp_get_bw()
+
+Dhananjay Ugwekar (5):
+      cpufreq/amd-pstate: Convert the amd_pstate_get/set_epp() to static calls
+      cpufreq/amd-pstate: Move the invocation of amd_pstate_update_perf()
+      cpufreq/amd-pstate: Refactor amd_pstate_epp_reenable() and
+amd_pstate_epp_offline()
+      cpufreq/amd-pstate: Remove the cppc_state check in
+offline/online functions
+      cpufreq/amd-pstate: Merge amd_pstate_epp_cpu_offline() and
+amd_pstate_epp_offline()
+
+Douglas Anderson (1):
+      PM: sleep: Allow configuring the DPM watchdog to warn earlier than panic
+
+Ethan Carter Edwards (1):
+      cpufreq: sparc: change kzalloc to kcalloc
+
+Gautham R. Shenoy (1):
+      cpufreq: ACPI: Fix max-frequency computation
+
+He Rongguang (1):
+      cpupower: fix TSC MHz calculation
+
+Hector Martin (1):
+      cpufreq: apple-soc: Drop setting the PS2 field on M2+
+
+Jeongjun Park (1):
+      PM / devfreq: exynos: remove unused function parameter
+
+Joe Hattori (2):
+      PM: wakeup: implement devm_device_init_wakeup() helper
+      OPP: OF: Fix an OF node leak in _opp_add_static_v2()
+
+John B. Wyatt IV (3):
+      pm: cpupower: Add install and uninstall options to bindings makefile
+      pm: cpupower: Add header changes for cpufreq.h to SWIG bindings
+      pm: cpupower: Add missing residency header changes in cpuidle.h to SWIG
+
+Krzysztof Kozlowski (1):
+      cpufreq: Use str_enable_disable()-like helpers
+
+Li Zhijian (1):
+      selftests/cpufreq: gitignore output files and clean them in make clean
+
+Manivannan Sadhasivam (2):
+      cpufreq: qcom: Fix qcom_cpufreq_hw_recalc_rate() to query LUT if
+LMh IRQ is not available
+      cpufreq: qcom: Implement clk_ops::determine_rate() for
+qcom_cpufreq* clocks
+
+Mario Limonciello (21):
+      cpufreq/amd-pstate: Add trace event for EPP perf updates
+      cpufreq/amd-pstate: convert mutex use to guard()
+      cpufreq/amd-pstate: Drop cached epp_policy variable
+      cpufreq/amd-pstate: Use FIELD_PREP and FIELD_GET macros
+      cpufreq/amd-pstate: Only update the cached value in
+msr_set_epp() on success
+      cpufreq/amd-pstate: store all values in cpudata struct in khz
+      cpufreq/amd-pstate: Change amd_pstate_update_perf() to return an int
+      cpufreq/amd-pstate: Move limit updating code
+      cpufreq/amd-pstate: Cache EPP value and use that everywhere
+      cpufreq/amd-pstate: Always write EPP value when updating perf
+      cpufreq/amd-pstate: Drop ret variable from
+amd_pstate_set_energy_pref_index()
+      cpufreq/amd-pstate: Set different default EPP policy for Epyc and Ryzen
+      cpufreq/amd-pstate: Drop boost_state variable
+      cpupower: Remove spurious return statement
+      cpupower: Add support for parsing 'enabled' or 'disabled'
+strings from table
+      cpupower: Add support for amd-pstate preferred core rankings
+      cpupower: Don't try to read frequency from hardware when kernel
+uses aperfmperf
+      cpupower: Add support for showing energy performance preference
+      cpupower: Don't fetch maximum latency when EPP is enabled
+      cpupower: Adjust whitespace for amd-pstate specific prints
+      cpufreq/amd-pstate: Fix prefcore rankings
+
+Markus Elfring (1):
+      PM / devfreq: event: Call of_node_put() only once in
+devfreq_event_get_edev_by_phandle()
+
+Naresh Solanki (1):
+      cpufreq/amd-pstate: Refactor max frequency calculation
+
+Neil Armstrong (3):
+      opp: core: implement dev_pm_opp_get_bw
+      OPP: add index check to assert to avoid buffer overflow in _read_freq()
+      OPP: fix dev_pm_opp_find_bw_*() when bandwidth table not initialized
+
+Nick Chan (6):
+      dt-bindings: cpufreq: apple,cluster-cpufreq: Add A7-A11, T2 compatibles
+      cpufreq: apple-soc: Allow per-SoC configuration of APPLE_DVFS_CMD_PS1
+      cpufreq: apple-soc: Use 32-bit read for status register
+      cpufreq: apple-soc: Increase cluster switch timeout to 400us
+      cpufreq: apple-soc: Set fallback transition latency to
+APPLE_DVFS_TRANSITION_TIMEOUT
+      cpufreq: apple-soc: Add Apple A7-A8X SoC cpufreq support
+
+Peng Fan (2):
+      pm: cpupower: Makefile: Fix cross compilation
+      PM: sleep: wakeirq: Introduce device-managed variant of
+dev_pm_set_wake_irq()
+
+Rafael J. Wysocki (4):
+      PM: sleep: Update stale comment in device_resume()
+      cpufreq: intel_pstate: Use CPPC to get scaling factors
+      cpufreq: intel_pstate: Drop Arrow Lake from "scaling factor" list
+      PM: EM: Move sched domains rebuild function from schedutil to EM
+
+Randy Dunlap (1):
+      PM: sleep: convert comment from kernel-doc to plain comment
+
+Sibi Sankar (1):
+      cpufreq: scmi: Register for limit change notifications
+
+Sultan Alsawaf (unemployed) (1):
+      cpufreq: schedutil: Fix superfluous updates caused by need_freq_update
+
+Viresh Kumar (1):
+      PM / OPP: Add reference counting helpers for Rust implementation
+
+Wolfram Sang (2):
+      PM: sleep: autosleep: don't include 'pm_wakeup.h' directly
+      PM: sleep: sysfs: don't include 'pm_wakeup.h' directly
+
+wangfushuai (1):
+      cpupower: revise is_valid flag handling for idle_monitor
+
+---------------
+
+ .../bindings/cpufreq/airoha,en7581-cpufreq.yaml    |  55 +++
+ .../bindings/cpufreq/apple,cluster-cpufreq.yaml    |  10 +-
+ drivers/base/power/main.c                          |  26 +-
+ drivers/base/power/sysfs.c                         |   1 -
+ drivers/base/power/wakeirq.c                       |  26 ++
+ drivers/cpufreq/Kconfig                            |   2 +-
+ drivers/cpufreq/Kconfig.arm                        |   8 +
+ drivers/cpufreq/Makefile                           |   1 +
+ drivers/cpufreq/acpi-cpufreq.c                     |  36 +-
+ drivers/cpufreq/airoha-cpufreq.c                   | 152 +++++++
+ drivers/cpufreq/amd-pstate-trace.h                 |  52 ++-
+ drivers/cpufreq/amd-pstate-ut.c                    |  12 +-
+ drivers/cpufreq/amd-pstate.c                       | 483 ++++++++++-----------
+ drivers/cpufreq/amd-pstate.h                       |   3 -
+ drivers/cpufreq/apple-soc-cpufreq.c                |  56 ++-
+ drivers/cpufreq/cpufreq-dt-platdev.c               |   4 +-
+ drivers/cpufreq/cpufreq.c                          |   9 +-
+ drivers/cpufreq/intel_pstate.c                     |  60 +--
+ drivers/cpufreq/powernv-cpufreq.c                  |   3 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c                  |  34 +-
+ drivers/cpufreq/scmi-cpufreq.c                     |  45 ++
+ drivers/cpufreq/sparc-us2e-cpufreq.c               |   2 +-
+ drivers/cpufreq/sparc-us3-cpufreq.c                |   2 +-
+ drivers/devfreq/devfreq-event.c                    |   8 +-
+ drivers/devfreq/exynos-bus.c                       |   5 +-
+ drivers/idle/intel_idle.c                          |   1 +
+ drivers/opp/core.c                                 |  99 ++++-
+ drivers/opp/of.c                                   |   4 +-
+ drivers/opp/opp.h                                  |   1 -
+ include/linux/energy_model.h                       |   2 +
+ include/linux/pm_opp.h                             |  13 +
+ include/linux/pm_wakeirq.h                         |   6 +
+ include/linux/pm_wakeup.h                          |  17 +
+ kernel/power/Kconfig                               |  21 +-
+ kernel/power/autosleep.c                           |   1 -
+ kernel/power/energy_model.c                        |  17 +
+ kernel/power/power.h                               |   2 +-
+ kernel/sched/cpufreq_schedutil.c                   |  37 +-
+ tools/power/cpupower/Makefile                      |   8 +
+ tools/power/cpupower/bindings/python/Makefile      |  10 +
+ tools/power/cpupower/bindings/python/README        |  25 ++
+ .../cpupower/bindings/python/raw_pylibcpupower.swg |   5 +
+ tools/power/cpupower/lib/cpufreq.c                 |  18 +
+ tools/power/cpupower/lib/cpufreq.h                 |   8 +
+ tools/power/cpupower/utils/cpufreq-info.c          |  36 +-
+ tools/power/cpupower/utils/helpers/amd.c           |  18 +-
+ .../cpupower/utils/idle_monitor/hsw_ext_idle.c     |   4 +-
+ .../cpupower/utils/idle_monitor/mperf_monitor.c    |  17 +-
+ tools/power/cpupower/utils/idle_monitor/nhm_idle.c |   2 +-
+ tools/power/cpupower/utils/idle_monitor/snb_idle.c |   4 +-
+ tools/testing/selftests/cpufreq/.gitignore         |   2 +
+ tools/testing/selftests/cpufreq/Makefile           |   1 +
+ 52 files changed, 1044 insertions(+), 430 deletions(-)
 
