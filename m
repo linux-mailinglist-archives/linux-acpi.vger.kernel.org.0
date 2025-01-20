@@ -1,55 +1,55 @@
-Return-Path: <linux-acpi+bounces-10766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10767-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DCBA173EC
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 22:06:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6998A173EE
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 22:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31DFB3A8775
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 21:06:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B913188AC43
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 21:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D86D19597F;
-	Mon, 20 Jan 2025 21:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AEA19597F;
+	Mon, 20 Jan 2025 21:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzcZ1r8L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtDPDQ2D"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F50117B421;
-	Mon, 20 Jan 2025 21:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F09195FE8;
+	Mon, 20 Jan 2025 21:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737407168; cv=none; b=FGNZTGOhzDIXvDMoKXbDLchdddMoPIVbCYcw/NyZ4/Uz28klaolFMwuSaQJ+yEkUKeran+9DdWsY0D507QBlZszMRENV2kug//DXzbkHj+P3eDFDtYf+nOBr3g8CLdj+vDbUbOfFURbqHrc4alfc06Jkm7tUc4PUE4goQ5nDaQ0=
+	t=1737407253; cv=none; b=qFYIPbRR5X42n2VgpVCvKT8or7roRNa9W9WnJZv/Tt/XWxbr3L3EeaDvC1HWM5p+iTOc0nlfyaDufU91L1PsOjEGuifmnLKQ1hXUJ+YdGwuVT+nnQg7s0IYfsA0GsV/IVjBWPp8TZQ4vMezccDey4KfOIHOKR8YjWQddlGGtWsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737407168; c=relaxed/simple;
-	bh=GBh5P626QsGdi7oUY3CRFRMAwxOEdjn13i2ooVTVDII=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=liizlm6omMtlnXi3wyKaI+5AJZmR5qYBZaPyAtoirtacZVO1KjNvOssrzAZuxSDwQw2t44VSMdbGxtqmpd47gPsxY5m90LJZE2GSfa9HhYEmKNY30ZqVUVBVUMOnSjJKNTjsY42C53Uu0jdyRXKb5pcLIIaP4UTGBQm5utO7L4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzcZ1r8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C434AC4CEDD;
-	Mon, 20 Jan 2025 21:06:07 +0000 (UTC)
+	s=arc-20240116; t=1737407253; c=relaxed/simple;
+	bh=tVMmI5ADh/mjExxx6RkciKW8c08gfs+hI2aVssBaQLs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Np6yRNMrSvMqjQ8w0h+rKKy05De2NdQm0ZxfBwzVWSB+hujc30gu7u4xVr4izo18UZiwFdNCScNaWKaJsblnANjlgMFHwyF9tYqJUszYrv7SFv0SF0RuKnf7haW+KDTFpYGYLVM+cmFAHPmGcSbR9MpZEWvr0PUB4r5D+wTB3DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtDPDQ2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D891C4CEE4;
+	Mon, 20 Jan 2025 21:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737407167;
-	bh=GBh5P626QsGdi7oUY3CRFRMAwxOEdjn13i2ooVTVDII=;
+	s=k20201202; t=1737407253;
+	bh=tVMmI5ADh/mjExxx6RkciKW8c08gfs+hI2aVssBaQLs=;
 	h=From:Date:Subject:To:Cc:From;
-	b=SzcZ1r8L9fWZAZnDsahSBNNgHC/opY6X8cULhjgNPN0/QhA9oaYK9yVBP8ZFTpVUt
-	 XmoFl+hHJaad5xxLHqilbumsGkrbI8WuDH7VVkB/3zhQKhI4tibgg/OigkNrhZiWT4
-	 DjV6O9T+uxgLw3kyv69pUE8TiJWlPLGgRarGCzLhamTyHLbl/wKQ0Pm9keWUCb51F1
-	 eETF7IgOx4NwugmNMA8fxpqbpRoJ8aJqjUKQqdjh3zz7gUDntnJlpeK+1mGi0Y8vPs
-	 lHgki/1lSoI0k5LOrdmLUbcsgx7PNT55r5aZjAn6ES1dO76wN01eiM+DLcfOmeBZuZ
-	 ep+ByTtqj83xw==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5fa22d0b88fso2627031eaf.1;
-        Mon, 20 Jan 2025 13:06:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUC8BD575wrlMdKZprwy+xJvTMVynySCbU/YH0cSIZ4+Rj2I0+vXTo0Xal+kSYtlnSImmagOZZNnOg=@vger.kernel.org, AJvYcCUchYvXhnH8FIuo7cpZmq1ymJU0iX8FoabsMQILavztBmGxMJ/LggqY/F3bKioCk7yS+v7hy8U7a91tPfs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEDb8DMq9r3PHVuF71bHBnh/j3x9qnjFFLzUWzsYHRg4jY4g2K
-	jo+aFS2309Jxx3D1kwNrGzWTZsErb9GIh89W/e53REICrucBrWqiaPc9knd78p4NyeU2trd7ALA
-	Rra4uXfdORVUt8lQyWxNOopi37Vk=
-X-Google-Smtp-Source: AGHT+IEEHSRA6U8aaZmHIbIgAXPkDGU5Qs9/u/CjOfi8Puaw/E4eHQVOQJLblx+xZTZULar302XjZuUslULpvr6Q52E=
-X-Received: by 2002:a05:6820:8c3:b0:5f6:5596:b98a with SMTP id
- 006d021491bc7-5fa388c0020mr9440233eaf.7.1737407167086; Mon, 20 Jan 2025
- 13:06:07 -0800 (PST)
+	b=YtDPDQ2DABHv8x7Vie6FuqfeiimvYT9ZVOHrRiGS43NMOxt7pkcjVndPmxlECtADZ
+	 5xqpUIUkZwtTYN/6aFj7BdRTbbh96psHu6PSQySdfgZp42JlwSCmcxOU3WGV/jAec3
+	 YTX1PpdwPDNLqOaenXFoU5+y6nRUQIrnpJVu6CRh6RywR0ptDO19Azfpba3Gi30ePb
+	 yy48S2mCG1USzD3AG6ELDYyA8JFErXOkUhl16jOVV3m1Hq6bHvpa9qlZQ6hNiEqRWn
+	 FJot5edk2q+vCq5YluEfec4pEyD0L7z9P/vAHq4muUvP2QgS2Z43jk3oa5HkHsmGa4
+	 Sv/t5A5ZbQ0fw==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3eba50d6da7so1134722b6e.2;
+        Mon, 20 Jan 2025 13:07:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVGATXrr9RVcrdZRmilW13w8EGaJeyfs/ezJGk3jNg/kChd4Vbsiyol1SBuAQoj6wPskyLxle//fCEG@vger.kernel.org, AJvYcCWmPsZY575OHfhtcLkHMtWvmLB90xRKxPsP0JaT43Vj4GQeb8ZKahKPHm0ag4paWVGb7YSX1XtKr8iCAkxl@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRq2En+u4DFvWgHgWMHFTwShTp0sr9axn6VqWeyLhcqqn7tevH
+	i0QKw3ggrz78LqNMRfrVSOZdKlpRHzcHmYoad8IlBaGmpFH1REqyvW4KK1I7rlo9vPun51MJn9E
+	iFWgpB4YCNwXoC6r7OimLRLXAEuo=
+X-Google-Smtp-Source: AGHT+IEPdnQrpFjfne2ZWgsrclawbDz3bkY/MxoHnL6HBYkc0ElO8wpR6LK42gKaVzyT4hAL0eGKZVpe4tbMLW60weU=
+X-Received: by 2002:a05:6808:399b:b0:3ea:5be6:a697 with SMTP id
+ 5614622812f47-3f19fc54cc6mr9957030b6e.13.1737407252302; Mon, 20 Jan 2025
+ 13:07:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,133 +57,87 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 20 Jan 2025 22:05:56 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i66dR+grMVZpVM9a1kB5kVHcdiVdDk-9KPxRy2PmTv+w@mail.gmail.com>
-X-Gm-Features: AbW1kvb4s47QSu3K7Jfs89iNzrqwYC20O7N1susDjqCMeFAUlfCjlrRji_7qBF0
-Message-ID: <CAJZ5v0i66dR+grMVZpVM9a1kB5kVHcdiVdDk-9KPxRy2PmTv+w@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v6.14-rc1
+Date: Mon, 20 Jan 2025 22:07:20 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gF8OwN3W5uLXf_DVtcKgPc0cTy4XWfyE1mcG2iSkRe=Q@mail.gmail.com>
+X-Gm-Features: AbW1kvbgUhTrU6yL2ONitM06shn8xRkfLy9fM_mHTMh-eRA7sabYQ8dhRhB1dVo
+Message-ID: <CAJZ5v0gF8OwN3W5uLXf_DVtcKgPc0cTy4XWfyE1mcG2iSkRe=Q@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v6.14-rc1
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
 Hi Linus,
 
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.14-rc1
+ thermal-6.14-rc1
 
-with top-most commit d1ddf94665c6805a63659ab0b09ef626ecc2b0b2
+with top-most commit 2dc748695568a02199e813d408a8f6f58919f4bd
 
- Merge branches 'acpi-battery', 'acpi-fan' and 'acpi-misc'
+ Merge branch 'thermal-intel'
 
-on top of commit 14578923e8c251091d2bb8a2756cde3b662ac316
+on top of commit 5bc55a333a2f7316b58edc7573e8e893f7acb532
 
- ACPI: video: Fix random crashes due to bad kfree()
+ Linux 6.13-rc7
 
-to receive ACPI updates for 6.14-rc1.
+to receive thermal control updates for 6.14-rc1.
 
-The most significant change here is replacing msleep() in acpi_os_sleep()
-with usleep_range() to reduce spurious sleep time due to timer inaccuracy
-which may spectacularly reduce the duration of system suspend and resume
-transitions on some systems.
+These add support for Intel Panther Lake processors in multiple places,
+modify Intel thermal drivers to stop selecting the user space thermal
+governor which is not necessary for them to work any more and clean
+up the thermal core somewhat:
 
-All of the other changes fall into the fixes and cleanups category this
-time.
+ - Add support for Panther Lake processors in multiple places (Zhang
+   Rui, Srinivas Pandruvada).
 
-Specifics:
+ - Remove explicit user_space governor selection from Intel thermal
+   drivers (Srinivas Pandruvada).
 
- - Use usleep_range() instead of msleep() in acpi_os_sleep() to reduce
-   excessive delays due to timer inaccuracy, mostly affecting system
-   suspend and resume (Rafael Wysocki).
-
- - Use str_enabled_disabled() string helpers in the ACPI tables parsing
-   code to make it easier to follow (Sunil V L).
-
- - Update device properties parsing on systems using ACPI so that
-   data firmware nodes resulting from _DSD evaluation are treated
-   as available in firmware nodes walks (Sakari Ailus).
-
- - Fix missing guid_t declaration in linux/prmt.h (Robert Richter).
-
- - Update the GHES handling code to follow the global panic=3D policy
-   instead of overriding it by force-rebooting the system after a
-   fatal HW error has been reported (Borislav Petkov).
-
- - Update messages printed by the ACPI battery driver to always
-   refer to driver extensions as "hooks" to avoid confusion with
-   similar functionality in the power supply subsystem in the
-   future (Thomas Wei=C3=9Fschuh).
-
- - Fix .probe() error path cleanup in the ACPI fan driver to avoid
-   memory leaks (Joe Hattori).
-
- - Constify 'struct bin_attribute' in some places in the ACPI subsystem
-   and mark it as __ro_after_init in one place to prevent binary blob
-   attributes from being updated (Thomas Wei=C3=9Fschuh)
-
- - Add empty stubs for several ACPI-related symbols so that they can be
-   used when CONFIG_ACPI is unset and use them for removing unnecessary
-   conditional compilation from the ipu-bridge driver (Ricardo Ribalda).
+ - Rename a few things and relocate a comment in the thermal
+   subsystem (Rafael Wysocki).
 
 Thanks!
 
 
 ---------------
 
-Borislav Petkov (1):
-      APEI: GHES: Have GHES honor the panic=3D setting
+Rafael J. Wysocki (3):
+      thermal: core: Rename callback functions in two governors
+      thermal: gov_bang_bang: Relocate regulation logic description
+      thermal: core: Rename function argument related to trip crossing
 
-Joe Hattori (1):
-      ACPI: fan: cleanup resources in the error path of .probe()
+Srinivas Pandruvada (4):
+      thermal: intel: Remove explicit user_space governor selection
+      thermal: intel: int340x: Panther Lake DLVR support
+      thermal: intel: int340x: Panther Lake power floor and workload
+hint support
+      thermal: intel: Fix compile issue when CONFIG_NET is not defined
 
-Rafael J. Wysocki (1):
-      ACPI: OSL: Use usleep_range() in acpi_os_sleep()
-
-Ricardo Ribalda (7):
-      ACPI: bus: change the prototype for acpi_get_physical_device_location
-      ACPI: bus: implement for_each_acpi_dev_match when !ACPI
-      ACPI: bus: implement acpi_get_physical_device_location when !ACPI
-      ACPI: header: implement acpi_device_handle when !ACPI
-      ACPI: bus: implement for_each_acpi_consumer_dev when !ACPI
-      ACPI: bus: implement acpi_device_hid when !ACPI
-      media: ipu-bridge: Remove unneeded conditional compilations
-
-Robert Richter (1):
-      ACPI: PRM: Fix missing guid_t declaration in linux/prmt.h
-
-Sakari Ailus (1):
-      ACPI: property: Consider data nodes as being available
-
-Sunil V L (1):
-      ACPI: tables: Use string choice helpers
-
-Thomas Wei=C3=9Fschuh (4):
-      ACPI: BGRT: Mark bin_attribute as __ro_after_init
-      ACPI: BGRT: Constify 'struct bin_attribute'
-      ACPI: sysfs: Constify 'struct bin_attribute'
-      ACPI: battery: Rename extensions to hook in messages
+Zhang Rui (3):
+      powercap: intel_rapl: Add support for Panther Lake platform
+      thermal: intel: int340x: processor: Enable MMIO RAPL for Panther Lake
+      ACPI: DPTF: Support Panther Lake
 
 ---------------
 
- drivers/acpi/apei/ghes.c             | 10 +++++-----
- drivers/acpi/battery.c               | 14 +++++++-------
- drivers/acpi/bgrt.c                  |  6 +++---
- drivers/acpi/fan_core.c              | 10 ++++++++--
- drivers/acpi/mipi-disco-img.c        |  3 +--
- drivers/acpi/osl.c                   | 22 +++++++++++++++++++++-
- drivers/acpi/property.c              |  2 +-
- drivers/acpi/scan.c                  |  4 +---
- drivers/acpi/sysfs.c                 |  8 ++++----
- drivers/acpi/tables.c                | 12 ++++++------
- drivers/acpi/utils.c                 |  7 +++----
- drivers/base/physical_location.c     |  4 +---
- drivers/media/pci/intel/ipu-bridge.c | 29 ++++-------------------------
- drivers/usb/core/usb-acpi.c          |  3 +--
- include/acpi/acpi_bus.h              | 23 ++++++++++++++++++++---
- include/linux/acpi.h                 |  5 +++++
- include/linux/prmt.h                 |  2 ++
- 17 files changed, 93 insertions(+), 71 deletions(-)
+ drivers/acpi/dptf/dptf_pch_fivr.c                  |  1 +
+ drivers/acpi/dptf/dptf_power.c                     |  2 +
+ drivers/acpi/dptf/int340x_thermal.c                |  6 +++
+ drivers/acpi/fan.h                                 |  1 +
+ drivers/powercap/intel_rapl_common.c               |  1 +
+ drivers/thermal/gov_bang_bang.c                    | 57 +++++++++++-----------
+ drivers/thermal/gov_user_space.c                   | 12 ++---
+ drivers/thermal/intel/Kconfig                      |  4 +-
+ drivers/thermal/intel/int340x_thermal/Kconfig      |  4 +-
+ .../intel/int340x_thermal/int3400_thermal.c        |  2 +-
+ .../intel/int340x_thermal/int3403_thermal.c        |  1 +
+ .../intel/int340x_thermal/int340x_thermal_zone.c   |  1 -
+ .../int340x_thermal/processor_thermal_device.h     |  1 +
+ .../int340x_thermal/processor_thermal_device_pci.c |  4 +-
+ drivers/thermal/thermal_core.c                     | 10 ++--
+ drivers/thermal/thermal_core.h                     |  2 +-
+ 16 files changed, 61 insertions(+), 48 deletions(-)
 
