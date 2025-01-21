@@ -1,143 +1,221 @@
-Return-Path: <linux-acpi+bounces-10767-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10768-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6998A173EE
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 22:07:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A52EA17528
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2025 01:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B913188AC43
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Jan 2025 21:07:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95CD1165AEB
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2025 00:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AEA19597F;
-	Mon, 20 Jan 2025 21:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56250A48;
+	Tue, 21 Jan 2025 00:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtDPDQ2D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S4Acz2Lg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F09195FE8;
-	Mon, 20 Jan 2025 21:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C15BA41;
+	Tue, 21 Jan 2025 00:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737407253; cv=none; b=qFYIPbRR5X42n2VgpVCvKT8or7roRNa9W9WnJZv/Tt/XWxbr3L3EeaDvC1HWM5p+iTOc0nlfyaDufU91L1PsOjEGuifmnLKQ1hXUJ+YdGwuVT+nnQg7s0IYfsA0GsV/IVjBWPp8TZQ4vMezccDey4KfOIHOKR8YjWQddlGGtWsA=
+	t=1737417843; cv=none; b=axv7IWrx2JN0cp4e2Dk+RiZC0wUuJ4lGR/S4gcth/vUoUEFPdSVEMhfuCyCpz8nW8Ag/lZDCMj+zfaFdRzUJbENxImmgjqSgpkOriVhlomSJSAcZW+aaXIX5cm0gjbGDvw7HlYQ6zDRzxFuQKEPPYDwxuAwVGhYslOlgkkSNKW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737407253; c=relaxed/simple;
-	bh=tVMmI5ADh/mjExxx6RkciKW8c08gfs+hI2aVssBaQLs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Np6yRNMrSvMqjQ8w0h+rKKy05De2NdQm0ZxfBwzVWSB+hujc30gu7u4xVr4izo18UZiwFdNCScNaWKaJsblnANjlgMFHwyF9tYqJUszYrv7SFv0SF0RuKnf7haW+KDTFpYGYLVM+cmFAHPmGcSbR9MpZEWvr0PUB4r5D+wTB3DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtDPDQ2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D891C4CEE4;
-	Mon, 20 Jan 2025 21:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737407253;
-	bh=tVMmI5ADh/mjExxx6RkciKW8c08gfs+hI2aVssBaQLs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=YtDPDQ2DABHv8x7Vie6FuqfeiimvYT9ZVOHrRiGS43NMOxt7pkcjVndPmxlECtADZ
-	 5xqpUIUkZwtTYN/6aFj7BdRTbbh96psHu6PSQySdfgZp42JlwSCmcxOU3WGV/jAec3
-	 YTX1PpdwPDNLqOaenXFoU5+y6nRUQIrnpJVu6CRh6RywR0ptDO19Azfpba3Gi30ePb
-	 yy48S2mCG1USzD3AG6ELDYyA8JFErXOkUhl16jOVV3m1Hq6bHvpa9qlZQ6hNiEqRWn
-	 FJot5edk2q+vCq5YluEfec4pEyD0L7z9P/vAHq4muUvP2QgS2Z43jk3oa5HkHsmGa4
-	 Sv/t5A5ZbQ0fw==
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3eba50d6da7so1134722b6e.2;
-        Mon, 20 Jan 2025 13:07:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVGATXrr9RVcrdZRmilW13w8EGaJeyfs/ezJGk3jNg/kChd4Vbsiyol1SBuAQoj6wPskyLxle//fCEG@vger.kernel.org, AJvYcCWmPsZY575OHfhtcLkHMtWvmLB90xRKxPsP0JaT43Vj4GQeb8ZKahKPHm0ag4paWVGb7YSX1XtKr8iCAkxl@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRq2En+u4DFvWgHgWMHFTwShTp0sr9axn6VqWeyLhcqqn7tevH
-	i0QKw3ggrz78LqNMRfrVSOZdKlpRHzcHmYoad8IlBaGmpFH1REqyvW4KK1I7rlo9vPun51MJn9E
-	iFWgpB4YCNwXoC6r7OimLRLXAEuo=
-X-Google-Smtp-Source: AGHT+IEPdnQrpFjfne2ZWgsrclawbDz3bkY/MxoHnL6HBYkc0ElO8wpR6LK42gKaVzyT4hAL0eGKZVpe4tbMLW60weU=
-X-Received: by 2002:a05:6808:399b:b0:3ea:5be6:a697 with SMTP id
- 5614622812f47-3f19fc54cc6mr9957030b6e.13.1737407252302; Mon, 20 Jan 2025
- 13:07:32 -0800 (PST)
+	s=arc-20240116; t=1737417843; c=relaxed/simple;
+	bh=KN50XJnGvs9FXSrxX5inYInJrlnydC5qCtoPkcYV+pY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=XJojkJLF+hn8FmwdCjBj/TZOWCKJb4AzkxGQk9NALx7i6sPISB61gnEdmMTVrqR9+H3uWihvPoMtRVk26edIdC/CxOH2pcn5jNBzTWtXYWxED0a5I9RkmEWbhfhhSs7c3tpq0OaSMP0ZpaUaHU28rq30KC9m5MKEgEwusaIiZuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S4Acz2Lg; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737417841; x=1768953841;
+  h=date:from:to:cc:subject:message-id;
+  bh=KN50XJnGvs9FXSrxX5inYInJrlnydC5qCtoPkcYV+pY=;
+  b=S4Acz2LgS4bqMv0SSI8NJ7DiS2A02lx6LRXnmLVQCh5HJqkHkEM10ADc
+   4l+UcekBLB9SNG1fQSNBzv+BvpS3nlh8/RcIgzLn6PJIZxdeRA63PkuIN
+   OrZ9HBbW65uSbU8/PQ/Pcc2iS3THchYIG9hzeCgj8Jcr6xCpRNZBRYSYm
+   s69Xktb1Om/kXg8pfCzzDT3C4MvzGeHMHi3mKbHulVZzjqPy53iKoKhig
+   JLQfn9F2d8skRefsX0tF9cWCyLid5Ca7Y4OKSSJZZPUhzlxOTTFhB+jst
+   qg3MvLSuqt5Fz8ThCSZ1Ac3X7s8r3Okl49irEbjvnckY73izvMbpQhttm
+   A==;
+X-CSE-ConnectionGUID: z27MlmkUSG20vNaWJiPO8g==
+X-CSE-MsgGUID: vmNHhscOR2KYwNi/Soga0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="25419335"
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; 
+   d="scan'208";a="25419335"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 16:04:00 -0800
+X-CSE-ConnectionGUID: ySuqPGd6RBeHIEb4OMjEMA==
+X-CSE-MsgGUID: aqJsDvHpRZuy4lTOMUuiEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; 
+   d="scan'208";a="106764396"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 20 Jan 2025 16:03:58 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ta1kK-000XNP-2p;
+	Tue, 21 Jan 2025 00:03:56 +0000
+Date: Tue, 21 Jan 2025 08:03:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 199c4e87f07258a25b3ef9ecb9f10a894b94d3ff
+Message-ID: <202501210856.Cud3pOxf-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 20 Jan 2025 22:07:20 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gF8OwN3W5uLXf_DVtcKgPc0cTy4XWfyE1mcG2iSkRe=Q@mail.gmail.com>
-X-Gm-Features: AbW1kvbgUhTrU6yL2ONitM06shn8xRkfLy9fM_mHTMh-eRA7sabYQ8dhRhB1dVo
-Message-ID: <CAJZ5v0gF8OwN3W5uLXf_DVtcKgPc0cTy4XWfyE1mcG2iSkRe=Q@mail.gmail.com>
-Subject: [GIT PULL] Thermal control updates for v6.14-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 199c4e87f07258a25b3ef9ecb9f10a894b94d3ff  Merge branch 'experimental/intel_pstate-testing' into bleeding-edge
 
-Please pull from the tag
+elapsed time: 724m
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.14-rc1
+configs tested: 127
+configs skipped: 6
 
-with top-most commit 2dc748695568a02199e813d408a8f6f58919f4bd
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
- Merge branch 'thermal-intel'
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                   randconfig-001-20250120    gcc-13.2.0
+arc                   randconfig-002-20250120    gcc-13.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                         axm55xx_defconfig    clang-17
+arm                            mmp2_defconfig    gcc-14.2.0
+arm                   randconfig-001-20250120    clang-20
+arm                   randconfig-002-20250120    clang-20
+arm                   randconfig-003-20250120    clang-20
+arm                   randconfig-004-20250120    clang-19
+arm                         wpcm450_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250120    gcc-14.2.0
+arm64                 randconfig-002-20250120    clang-20
+arm64                 randconfig-003-20250120    clang-19
+arm64                 randconfig-004-20250120    clang-20
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250120    gcc-14.2.0
+csky                  randconfig-002-20250120    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    clang-20
+hexagon                          allyesconfig    clang-18
+hexagon               randconfig-001-20250120    clang-20
+hexagon               randconfig-002-20250120    clang-20
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250120    gcc-11
+i386        buildonly-randconfig-002-20250120    clang-19
+i386        buildonly-randconfig-003-20250120    gcc-12
+i386        buildonly-randconfig-004-20250120    gcc-12
+i386        buildonly-randconfig-005-20250120    clang-19
+i386        buildonly-randconfig-006-20250120    clang-19
+i386                                defconfig    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250120    gcc-14.2.0
+loongarch             randconfig-002-20250120    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                           ip27_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250120    gcc-14.2.0
+nios2                 randconfig-002-20250120    gcc-14.2.0
+openrisc                         alldefconfig    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-14.2.0
+parisc                generic-64bit_defconfig    gcc-14.2.0
+parisc                randconfig-001-20250120    gcc-14.2.0
+parisc                randconfig-002-20250120    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-16
+powerpc                     ep8248e_defconfig    gcc-14.2.0
+powerpc                 mpc8313_rdb_defconfig    gcc-14.2.0
+powerpc                      pcm030_defconfig    clang-17
+powerpc               randconfig-001-20250120    clang-20
+powerpc               randconfig-002-20250120    clang-20
+powerpc               randconfig-003-20250120    clang-20
+powerpc64             randconfig-001-20250120    clang-19
+powerpc64             randconfig-002-20250120    clang-17
+powerpc64             randconfig-003-20250120    clang-20
+riscv                            allmodconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-20
+riscv                               defconfig    clang-19
+riscv                 randconfig-001-20250120    clang-20
+riscv                 randconfig-002-20250120    clang-20
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-15
+s390                  randconfig-001-20250120    gcc-14.2.0
+s390                  randconfig-002-20250120    clang-18
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-14.2.0
+sh                         ecovec24_defconfig    gcc-14.2.0
+sh                            migor_defconfig    gcc-14.2.0
+sh                    randconfig-001-20250120    gcc-14.2.0
+sh                    randconfig-002-20250120    gcc-14.2.0
+sh                           se7724_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250120    gcc-14.2.0
+sparc                 randconfig-002-20250120    gcc-14.2.0
+sparc64                             defconfig    gcc-14.2.0
+sparc64               randconfig-001-20250120    gcc-14.2.0
+sparc64               randconfig-002-20250120    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-18
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-20
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250120    clang-15
+um                    randconfig-002-20250120    gcc-12
+um                           x86_64_defconfig    clang-15
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250120    clang-19
+x86_64      buildonly-randconfig-002-20250120    clang-19
+x86_64      buildonly-randconfig-003-20250120    gcc-12
+x86_64      buildonly-randconfig-004-20250120    clang-19
+x86_64      buildonly-randconfig-005-20250120    clang-19
+x86_64      buildonly-randconfig-006-20250120    gcc-11
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250120    gcc-14.2.0
+xtensa                randconfig-002-20250120    gcc-14.2.0
 
-on top of commit 5bc55a333a2f7316b58edc7573e8e893f7acb532
-
- Linux 6.13-rc7
-
-to receive thermal control updates for 6.14-rc1.
-
-These add support for Intel Panther Lake processors in multiple places,
-modify Intel thermal drivers to stop selecting the user space thermal
-governor which is not necessary for them to work any more and clean
-up the thermal core somewhat:
-
- - Add support for Panther Lake processors in multiple places (Zhang
-   Rui, Srinivas Pandruvada).
-
- - Remove explicit user_space governor selection from Intel thermal
-   drivers (Srinivas Pandruvada).
-
- - Rename a few things and relocate a comment in the thermal
-   subsystem (Rafael Wysocki).
-
-Thanks!
-
-
----------------
-
-Rafael J. Wysocki (3):
-      thermal: core: Rename callback functions in two governors
-      thermal: gov_bang_bang: Relocate regulation logic description
-      thermal: core: Rename function argument related to trip crossing
-
-Srinivas Pandruvada (4):
-      thermal: intel: Remove explicit user_space governor selection
-      thermal: intel: int340x: Panther Lake DLVR support
-      thermal: intel: int340x: Panther Lake power floor and workload
-hint support
-      thermal: intel: Fix compile issue when CONFIG_NET is not defined
-
-Zhang Rui (3):
-      powercap: intel_rapl: Add support for Panther Lake platform
-      thermal: intel: int340x: processor: Enable MMIO RAPL for Panther Lake
-      ACPI: DPTF: Support Panther Lake
-
----------------
-
- drivers/acpi/dptf/dptf_pch_fivr.c                  |  1 +
- drivers/acpi/dptf/dptf_power.c                     |  2 +
- drivers/acpi/dptf/int340x_thermal.c                |  6 +++
- drivers/acpi/fan.h                                 |  1 +
- drivers/powercap/intel_rapl_common.c               |  1 +
- drivers/thermal/gov_bang_bang.c                    | 57 +++++++++++-----------
- drivers/thermal/gov_user_space.c                   | 12 ++---
- drivers/thermal/intel/Kconfig                      |  4 +-
- drivers/thermal/intel/int340x_thermal/Kconfig      |  4 +-
- .../intel/int340x_thermal/int3400_thermal.c        |  2 +-
- .../intel/int340x_thermal/int3403_thermal.c        |  1 +
- .../intel/int340x_thermal/int340x_thermal_zone.c   |  1 -
- .../int340x_thermal/processor_thermal_device.h     |  1 +
- .../int340x_thermal/processor_thermal_device_pci.c |  4 +-
- drivers/thermal/thermal_core.c                     | 10 ++--
- drivers/thermal/thermal_core.h                     |  2 +-
- 16 files changed, 61 insertions(+), 48 deletions(-)
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
