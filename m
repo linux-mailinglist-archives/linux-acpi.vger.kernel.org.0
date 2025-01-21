@@ -1,90 +1,93 @@
-Return-Path: <linux-acpi+bounces-10778-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10779-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47406A185DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2025 20:56:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC81AA185EB
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2025 21:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16F74188A356
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2025 19:56:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F55188B82C
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Jan 2025 20:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A891F667C;
-	Tue, 21 Jan 2025 19:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFA41F470D;
+	Tue, 21 Jan 2025 20:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="eWIMbBaJ"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="GHAsLbcR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3E41F4E50
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Jan 2025 19:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53F5129A78
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Jan 2025 20:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737489400; cv=none; b=uHOzo7NM7J8XrwH2ei0HaCqjyEKb96xf/JnGlHlCELmHriqqt4NUh+xiycOnSjewKNpjY8vd/cxWMeS1aSaYX4yhh1BxkFbg9+4M8cDhdEDXcxFKyY8NZvvK4hk+ybD6oXeR8fCREiQmBA7Lh920tJFrKYkwTMgEtWLhc4ytOAM=
+	t=1737489772; cv=none; b=i6iW6CHRhBN3sG0w+OFGhKoJEQWPsrucIheZIMw72UsyGq5q/40pC7xSzrJmvWu26zpLDHWxDTG7WMU41QIirx6erD/roqUvKCSr51DZxUH7/o99uxMeMeZNC+PD31WXqcUGGtJXF3v6tqey5g/MeoxSIP7QrXYhoRTfA3wSyq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737489400; c=relaxed/simple;
-	bh=xkGydKeHiXMg0lmcYrqAr1I+0Ezkf+S30iuzkAUM5uk=;
+	s=arc-20240116; t=1737489772; c=relaxed/simple;
+	bh=H/Q3YUsmUpkM546v/vTp4ocpzYmmNWq60MpD+F6eEFE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LjkHreS8zc1Odl4sjGDVOxxi7JqYT3aF74Ym/Hd8qGBdx465BWB/1YNbmyiqy9SmrEMuvfmphoGLENHgxxkbxGY0izAuqPCiwQcjqzHBWt20hWaEh7/FZ8U3pLYkYkFlMpsojimeYPBzDilTnHvtt/GaSS1cz6J03NOdRwp4NJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=eWIMbBaJ; arc=none smtp.client-ip=209.85.160.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=J+O2YuZt+MaV+lEtU67qKWiXW3GZJxheJgkOHW4YFfjavRFlWx8M4TcJiFLirF+mnaP/yKn5mgqZohdU4+QusdSXcqgrA3EqcuGNLnEc0TOu6/meD0DBkgNPtVEV/29cUD/aUwhKCtC+acjCkW4k1NNRZVn+jW23+k39jNmM6C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=GHAsLbcR; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-467838e75ffso77966101cf.3
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Jan 2025 11:56:38 -0800 (PST)
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b6edb82f85so803402985a.3
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Jan 2025 12:02:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1737489398; x=1738094198; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1737489769; x=1738094569; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WR0HzuP6V9ULwrxabg1I8UGOHmz7cdJQdGJq1+4Lkgc=;
-        b=eWIMbBaJG5qiP5RYSibht7A9JmR5LQOpm52UaSangcrnsph8Zjl5j+jQi1n+dHxNmj
-         FFckRmOEIp5jopBqZNvlTEuEj6Cd1sdKeGE9VzbpEVh67HQU5ZT3WQrTJkZjvdBaXgkQ
-         SE91/J/1ome90RJW1RDMI0ye9XGmPQmsFfCZPMC315u03SgS95XRYxOynq0jEwbHWw27
-         jghEbNOnVAT6pl3cIn/9nmnLpY8EKwqOyx5Xc74lbehrZ+9YwVULf7fTCNA82iJOduIg
-         +nYRleDJ6fLdf7HxDp1MgzW0TmRgfTZSbAIqchjSX4k1iju2fwRQKKO9lasfyDRbDpZE
-         xS2g==
+        bh=y3OIVWfkgtUAiX31YkBMTeL/DLtPiayo47VWYrPFfqg=;
+        b=GHAsLbcR/Yh/DQd1Uy18BuppRyO5tD+WJQRnnI+etUkYGCEyTGDayaV9lBTHySCaEf
+         lR1Gj3Jhdudbos4KJIzdh4LJ/uGFzj0/6e2Y0irzlxu8DgmNvrfa3igL2lg9JgOX2kY2
+         ++jOwqkec28amJXToqcay1A5tj394f0cEGGEMluxgZO8D+OlryMgbWIfSlPqnpbgosxo
+         fdS5eoFcCGNqX6waQKMYeO/C7Xu2fOCrNxVnevRpwrYot6So45iVsockdaLsYf9mQ7Ah
+         ALER85HZSwG6xZeU4dkqAB/hWJGRDwNwey0+kIuNfmsm/sRXXmuOvg09CO0bP+xeWamn
+         3dDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737489398; x=1738094198;
+        d=1e100.net; s=20230601; t=1737489769; x=1738094569;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WR0HzuP6V9ULwrxabg1I8UGOHmz7cdJQdGJq1+4Lkgc=;
-        b=GuCB15QoNio15b2iodW5ce1UOmshRfE32vrVZyzny2IX4tb67/griH0PTXXPbY/nfm
-         cElShippdsy1o4/t8QNbN8rq3F0uOZiCaj3npndvjsTJL4pfJglhM6yVeDT2zeJ5e32p
-         k+6Kttfv6ftYGYPP2/DNQ5YmIWxQOAj0OJj04GdNdGy92vif7yudbqCk9L5LW3ZOKdmg
-         GzVa9Df6l/Zn6XVyYDMuNO1BM8tGNeqWSXcQUmJjpaW3m7l0pNBnUBxxZ/pNmFMOFgKU
-         jI7ub1U4jciSsMv+3irGKaP7qtcqWZ4qDxhqwHfeKZ2gG5smYZZ7KZ6GavBRz++zDg39
-         uBVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWFNY4jB+D1oEJfR8dTscaCQynto5+xVZXAIf79xPMZfmcYyKNGpbo0TyE9/ug5udLmqKo7+Ur6JALl@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe/uGjm7VQastD5P2yjBNP+UBN7/lwJ+HEL9WEouMGe2JoUPjB
-	n59e5vysWHJuZLXkK0IgNyYuyfuzvUrMBWm89yQWdQxRfbkS5VgBhQqFyObEJA8=
-X-Gm-Gg: ASbGncup6by1nMdn489eu00hd3P4kO5HrfszIjqveQ7gC5F1O+GH6YsHd0zT29EKBXO
-	TXN6mC1ArPswGHtw3MAp7+/zQdXTswQKlw1gU5PMLHbBwek5navvrsUXN1MGq1F+aQmDdk8eLsX
-	yW/aIl4pZX68C0IOIIHIgYBaS1sPAJqUzRamsVE3N7d4fo0SEikPyBcMM+Aa12F7pk1N8cIOh6R
-	UQJ3g/rhyudUmH8LDIvpXSlUugqw/0ajAuwwQBq5n/vnnaV8V5YWIZfv5cJlgg8kfhfLm0BvsPM
-	xXlMYKksmbkgDlD5HtsgtK1nzFsg2lZkK2WTo5q21r9hjQp0L9Bj
-X-Google-Smtp-Source: AGHT+IEUBGtZeB0zPoK0184ForbdgGgUBRzk3gAp6IIGzLheJqxSlIo2Ba9hgZ9GxGBUK2gc5ulJcA==
-X-Received: by 2002:ac8:5794:0:b0:466:8cc1:6221 with SMTP id d75a77b69052e-46e12bc6108mr319448961cf.50.1737489397892;
-        Tue, 21 Jan 2025 11:56:37 -0800 (PST)
+        bh=y3OIVWfkgtUAiX31YkBMTeL/DLtPiayo47VWYrPFfqg=;
+        b=u3jwN8eFp9R3YUnZlNAPERkj04r3Q7i9RDlRE2B+BwvkdHZOwXSnrj9g2M2nG0gxEk
+         qQuyGbsKzl+OON26R7YPF53fxJLUYQLUAY7zZbMuasyj9TaN2gIEeZKNzmx4WChMjGEA
+         Rr8S01DETxLylaa1TgKCB/ErhX51jcaaLShHoMpS5Nciq/RFTmGomZrNoAGjM5tvuMwk
+         sQe68tnFkHO2r7+wXBq3tpCD33Qb+5F92qBO5JZ7R31H6NWHXvLQyVRhDRKxYvu/ufaJ
+         yHJPlxLBmHTJRm9Drk9QzuG3gdLpOsD+FiaRfQPiY3IGdW0+M3sOJxcHh6mdqLfwYQUQ
+         WDYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgKVhjCpnfFN6hBQ6y+OxBy8oW/xlgZl6ox29vv1ypIbPK9t+/C5fgi4Z7G+ueLp1xm9bEgb8vThnD@vger.kernel.org
+X-Gm-Message-State: AOJu0YykDQ3Z4mFLTGCWuJZDapU5fEXRAjFifnzj7mSRZWEXzXJeh7n2
+	Y0r22J6Um2x7ZaOznmiXqMMfjw827eaVCZC6BcSg/gfZaCF/9haE+LF/OaGpYMQ=
+X-Gm-Gg: ASbGncumBQkWJzORhJzdTF3cbytkcP47PNzQUg9rFK3xev5kgcU9TLr0zonvlf8G7om
+	26HkUbTSVjU+Mfmn1jPEyD/oA2AJjIojfzpYUrvnqespWr49ANHhJhMVAmKhcNrjkFvjOEUbNuW
+	zDLOmAKI02iswKU9Ita5RUbYvR5nYLeejpkh+RWLovcHko0SYT6Hw1G8xH+ope5zWRsEhcVPhhT
+	pkZJ7SgV81CxazzD9Kl05DxtzjY6u1qedMr8p4hkB5hwAFg7p1KxOi8jCGlbScfA9HivrIJsuK6
+	rH/+67bA1FXSGf/hoZJK1hyTs+bL+7U+BaeHxKnmOkC3wCDzQntl
+X-Google-Smtp-Source: AGHT+IHXwpvIHPv5sKnU+umZ7vn4igy4P4XDOftH8A6JMGTfJEfhQhF1hHFvJs4VCsRttlDk7ECwqA==
+X-Received: by 2002:a05:620a:2894:b0:7b6:e47a:8e14 with SMTP id af79cd13be357-7be6324fb5cmr2839107185a.35.1737489769284;
+        Tue, 21 Jan 2025 12:02:49 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e1afcd59d6sm53752286d6.87.2025.01.21.11.56.37
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7be61480996sm585370585a.41.2025.01.21.12.02.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 11:56:37 -0800 (PST)
-Date: Tue, 21 Jan 2025 14:56:35 -0500
+        Tue, 21 Jan 2025 12:02:48 -0800 (PST)
+Date: Tue, 21 Jan 2025 15:02:47 -0500
 From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, hyeonggon.yoo@sk.com,
-	rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, honggyu.kim@sk.com, rakie.kim@sk.com,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
+To: Honggyu Kim <honggyu.kim@sk.com>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, kernel_team@skhynix.com,
+	hyeonggon.yoo@sk.com, rafael@kernel.org, lenb@kernel.org,
+	gregkh@linuxfoundation.org, akpm@linux-foundation.org,
+	rakie.kim@sk.com, dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com, dave.jiang@intel.com,
+	horen.chuang@linux.dev, hannes@cmpxchg.org,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-mm@kvack.org, kernel-team@meta.com
 Subject: Re: [PATCH v3] Weighted interleave auto-tuning
-Message-ID: <Z4_782yoMKqIOfW5@gourry-fedora-PF4VCD3F>
+Message-ID: <Z4_9Z_TfVY3VOMHg@gourry-fedora-PF4VCD3F>
 References: <20250115185854.1991771-1-joshua.hahnjy@gmail.com>
  <87ikq8h0w4.fsf@DESKTOP-5N7EMDA>
+ <147aba6e-7e23-4ad1-9bd2-1ceac0f3d55b@sk.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -93,67 +96,49 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87ikq8h0w4.fsf@DESKTOP-5N7EMDA>
+In-Reply-To: <147aba6e-7e23-4ad1-9bd2-1ceac0f3d55b@sk.com>
 
-On Tue, Jan 21, 2025 at 07:17:15PM +0800, Huang, Ying wrote:
-... snip ...
+On Tue, Jan 21, 2025 at 08:27:17PM +0900, Honggyu Kim wrote:
+> Hi Ying and Joshua,
+> > IMHO, this interface is somewhat hard to be used.  Users need to know
+> > which value is legal.  So, this will become something like,
+> > 
+> > $ cat mode
+> > auto [manual]
+> > $ echo auto > mode
+> > $ cat mode
+> > [auto] manual
 > 
-> Unless it's possible we will add more modes in the future, this is kind
-> of overkill for me.  How about something simpler as below?
+> This is exactly I internally proposed to Hyeonggon, but couldn't share
+> the idea directly here.
 > 
-> $ cat auto
-> true
-> $ echo 0 > auto
-> $ cat auto
-> false
-
-We have discussed having a dynamic-mode where the weights might adjust
-on the fly based on system-state, but i think this ends up being
-controlled under mempolicy/dynamic_interleave or something.
-
-So this seems reasonable.
-
-> >  static u8 __rcu *iw_table;
-> >  static DEFINE_MUTEX(iw_table_lock);
-> > +static const int weightiness = 32;
-> > +static bool weighted_interleave_auto = true;
-> 
-> I still prefer to use 2 iw_table, one is for default, the other is for
-> manual.  The default one will be used if the manual one is NULL.  Both
-> are protected by RCU.  The default one can be updated upon hotplug
-> blindly.  This makes the whole model easier to be understood IMHO.
-> 
-> What do you think about that.
+> That also makes sense, but I feel like somewhat vague what "auto" false
+> means. The "auto" might be better to be "use_hmat" instead and this
+> makes "use_hmat" false more meaningful. "use_hmat_weight" or
+> "use_hmat_info" might be another candidates.
 > 
 
-only question is, lets say you have
+I don't think we want to encode hmat-ism into the uapi. In fact,
+mempolicy doesn't even know about hmat.  It just gets source information
+from *somewhere* and applies it accordingly.
 
-`cat auto node0 node1` -> `true 5 1`
-and you do
-echo 0 > auto
+I think what you might be asking for is
 
-what should a subsequent `cat auto node0 node1` output?
+auto -> [true, false]
 
-`false 5 1`
-or
-`false 1 1`
+if auto=true
+  mode -> [default,
+           read_bw, write_bw, combined_bw,
+           read_ltc, write_ltc, combined_ltc]
+if auto=false
+  mode -> [disabled]
 
-Then lets say we do
-echo 7 > node0
+Where default mode is the kernel selection of whatever combination of
+read/write bw/ltc data, and user could switch the attribute.
 
-what should
-echo true > auto
-result in?
-
-`true 5 1`
-or
-`true 7 1`
-
-The current code makes sure that when you switch modes from auto
-to manual, it inherits the current state - instead of there being
-some hidden state that suddenly takes precedence.
-
-So I prefer to just have one IW array and no hidden state.
+HOWEVER, such `mode` would require us to cache the attribute structure
+per-node, and maybe some thought on what's reasonable, so that I would
+prefer that to be a completely different feature / discussion.
 
 ~Gregory
 
