@@ -1,315 +1,164 @@
-Return-Path: <linux-acpi+bounces-10786-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10787-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE872A18B5C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 06:36:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EC1A19577
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 16:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A78603A792E
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 05:36:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F4AA1886123
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 15:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E1E170826;
-	Wed, 22 Jan 2025 05:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="EE8+LoUU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3342144DF;
+	Wed, 22 Jan 2025 15:39:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F72C653;
-	Wed, 22 Jan 2025 05:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D516938DC0;
+	Wed, 22 Jan 2025 15:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737524194; cv=none; b=IBVHrcYUOj1AMcvF2FHt5J+ecEakKlJneIwYG+i4loTxQRyX1VA7yLe7tQ4EFncRwlsWxLJ8LGOT/IaENCJqd55zrnqTn36s9IwJWcQA+k2G8MLgDD/JZId+cq3aslvY9cyDEGdr3Eaz43TL31oR9gzq4iJdZ8DezsKFwSSEXtk=
+	t=1737560346; cv=none; b=OMMxWRA2o8ia93PUjeJGMCs2kB48xIXUrX491yG4SLbobdB2vvYeGdz6O+legruQnzGfVsK/bNX67qJcl7FFR9Jxi0iRXXO3xz4mXY7W4jCH1PCa5Yg7qn6kcikxToR8+Lm8wPmTf33nI74pQtGtmFGFQ3GyzzU8GawtvX6sof4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737524194; c=relaxed/simple;
-	bh=PBUjuWmwrBq4cuIY8fBsyNR3a2jJGalG06AxCxOPZMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jduNd7xi5TQGkZmEtjvdiJgIqsiGnQGcFqX1KqgqXSjslJvjSaP4ZHpAwmeARWjqWdkYFXliWrwAikBo+vwRFBjQPSRAwkg1Uqn8hmbgWvGLahHkvc8CwILPWQqc39UGW7v9B9J7Rgmv0MwCHwUEfnBi3Wr4WFb/BfskQDhtrZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=EE8+LoUU; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1737524188; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=0UhUEFtQQOL13rouwu2v+xW9brqIm6jsVUtUdWb/LHk=;
-	b=EE8+LoUUqQVwGquCYFwbqisg6IOToiAWL0pyM6fxoNQPtN0sL7MNqeWoeOcYUG2Lv++s1zLcHhpJWFXfhSiZau9MWJQi0WXESE8tOUQPABPC4AXzUiUuI67/OqJQBuQ+HJRUGAZH0jwzKq3EmKWxXFB5gBcFT2RvnCDHZDemcZo=
-Received: from 30.246.161.230(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WO7MbT6_1737524184 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 22 Jan 2025 13:36:26 +0800
-Message-ID: <8775a7d1-b4c5-467b-942c-3041e2994735@linux.alibaba.com>
-Date: Wed, 22 Jan 2025 13:36:23 +0800
+	s=arc-20240116; t=1737560346; c=relaxed/simple;
+	bh=MIKSQ7UxY98Sl2FHgEy9YxBdCbAVhRndPN3dLppqu5A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fUd2hGfY3C/qYyndlYizxw7mcpFLf/XdPoz2gXHDOkiMLTapV5p/kG646yzs1hZBxj/syTO455HfCrxml2VYwSbz86P91OZT+VvN7xyGobO9JYjdAwq2Eb6LLn91wLG29yNKwNYDdSn2iWz29ExjAb3DkhUjgG5QBpRw8+H8gd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YdSqb5g1Wz67Ldy;
+	Wed, 22 Jan 2025 23:36:59 +0800 (CST)
+Received: from frapeml100005.china.huawei.com (unknown [7.182.85.132])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8CE621408F9;
+	Wed, 22 Jan 2025 23:38:55 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml100005.china.huawei.com (7.182.85.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 22 Jan 2025 16:38:55 +0100
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Wed, 22 Jan 2025 16:38:55 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Daniel Ferguson <danielf@os.amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: "bp@alien8.de" <bp@alien8.de>, "tony.luck@intel.com"
+	<tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
+	<mchehab@kernel.org>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
+	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
+	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
+	<gthelen@google.com>, "wschwartz@amperecomputing.com"
+	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
+	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v18 05/19] ACPI:RAS2: Add ACPI RAS2 driver
+Thread-Topic: [PATCH v18 05/19] ACPI:RAS2: Add ACPI RAS2 driver
+Thread-Index: AQHbYDQiZumDs/5vrkCWy+AxWVuSd7Mh34mAgAESWmA=
+Date: Wed, 22 Jan 2025 15:38:55 +0000
+Message-ID: <97de84c2ad194b10ae4c9948d9bda2c6@huawei.com>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+ <20250106121017.1620-6-shiju.jose@huawei.com>
+ <a562f557-0530-4e29-b0d0-78d4441e06e1@os.amperecomputing.com>
+In-Reply-To: <a562f557-0530-4e29-b0d0-78d4441e06e1@os.amperecomputing.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 0/3] ACPI: APEI: handle synchronous errors in task
- work
-To: yazen.ghannam@amd.com, mark.rutland@arm.com, catalin.marinas@arm.com,
- mingo@redhat.com, robin.murphy@arm.com, Jonathan.Cameron@Huawei.com,
- bp@alien8.de, rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@linux.alibaba.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20250107081735.16159-1-xueshuai@linux.alibaba.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20250107081735.16159-1-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hi, Rafael,
-
-Gentle ping.
-
-Thanks.
-
-Best Regards,
-Shuai
-
-在 2025/1/7 16:17, Shuai Xue 写道:
-> changes singce v17:
-> - rebase to Linux 6.13-rc7 with no functional changes
-> - add reviewed-by tag for patch 1-3 from Jane Chu
-> - add reviewed-by tag for patch 3 from Yazen
-> 
-> changes singce v16:
-> - add reviewed-by tag for patch 1 and patch 2 from Yazen
-> - rewrite warning message for force kill (per Yazen)
-> - warn with dev_err in ghes (per Jarkko)
-> - add return value -ENXIO in memory_failure comments  (per Yazen)
-> - Link: https://lore.kernel.org/lkml/20241104015430.98599-1-xueshuai@linux.alibaba.com/
-> 
-> changes singce v15:
-> - add HW_ERR and GHES_PFX prefix per Yazen
-> 
-> changes since v14:
-> - add reviewed-by tags from Jarkko and Jonathan
-> - remove local variable and use twcb->pfn
-> 
-> changes since v13:
-> - add reviewed-by tag from Jarkko
-> - rename task_work to ghes_task_work (per Jarkko)
-> 
-> changes since v12:
-> - tweak error message for force kill (per Jarkko)
-> - fix comments style (per Jarkko)
-> - fix commit log typo (per Jarko)
-> 
-> changes since v11:
-> - rebase to Linux 6.11-rc6
-> - fix grammer and typo in commit log (per Borislav)
-> - remove `sync_` perfix of `sync_task_work`  (per Borislav)
-> - comments flags and description of `task_work`  (per Borislav)
-> 
-> changes since v10:
-> - rebase to v6.8-rc2
-> 
-> changes since v9:
-> - split patch 2 to address exactly one issue in one patch (per Borislav)
-> - rewrite commit log according to template (per Borislav)
-> - pickup reviewed-by tag of patch 1 from James Morse
-> - alloc and free twcb through gen_pool_{alloc, free) (Per James)
-> - rewrite cover letter
-> 
-> changes since v8:
-> - remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
-> - remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
-> - rewrite the return value comments of memory_failure (per Naoya Horiguchi)
-> 
-> changes since v7:
-> - rebase to Linux v6.6-rc2 (no code changed)
-> - rewritten the cover letter to explain the motivation of this patchset
-> 
-> changes since v6:
-> - add more explicty error message suggested by Xiaofei
-> - pick up reviewed-by tag from Xiaofei
-> - pick up internal reviewed-by tag from Baolin
-> 
-> changes since v5 by addressing comments from Kefeng:
-> - document return value of memory_failure()
-> - drop redundant comments in call site of memory_failure()
-> - make ghes_do_proc void and handle abnormal case within it
-> - pick up reviewed-by tag from Kefeng Wang
-> 
-> changes since v4 by addressing comments from Xiaofei:
-> - do a force kill only for abnormal sync errors
-> 
-> changes since v3 by addressing comments from Xiaofei:
-> - do a force kill for abnormal memory failure error such as invalid PA,
-> unexpected severity, OOM, etc
-> - pcik up tested-by tag from Ma Wupeng
-> 
-> changes since v2 by addressing comments from Naoya:
-> - rename mce_task_work to sync_task_work
-> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
-> - add steps to reproduce this problem in cover letter
-> 
-> changes since v1:
-> - synchronous events by notify type
-> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
-> 
-> ## Cover Letter
-> 
-> There are two major types of uncorrected recoverable (UCR) errors :
-> 
-> - Synchronous error: The error is detected and raised at the point of the
->    consumption in the execution flow, e.g. when a CPU tries to access
->    a poisoned cache line. The CPU will take a synchronous error exception
->    such as Synchronous External Abort (SEA) on Arm64 and Machine Check
->    Exception (MCE) on X86. OS requires to take action (for example, offline
->    failure page/kill failure thread) to recover this uncorrectable error.
-> 
-> - Asynchronous error: The error is detected out of processor execution
->    context, e.g. when an error is detected by a background scrubber. Some data
->    in the memory are corrupted. But the data have not been consumed. OS is
->    optional to take action to recover this uncorrectable error.
-> 
-> Currently, both synchronous and asynchronous error use
-> memory_failure_queue() to schedule memory_failure() exectute in kworker
-> context. As a result, when a user-space process is accessing a poisoned
-> data, a data abort is taken and the memory_failure() is executed in the
-> kworker context:
-> 
->    - will send wrong si_code by SIGBUS signal in early_kill mode, and
->    - can not kill the user-space in some cases resulting a synchronous
->      error infinite loop
-> 
-> Issue 1: send wrong si_code in early_kill mode
-> 
-> Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
-> could be used to determine whether a synchronous exception occurs on
-> ARM64 platform.  When a synchronous exception is detected, the kernel is
-> expected to terminate the current process which has accessed poisoned
-> page. This is done by sending a SIGBUS signal with an error code
-> BUS_MCEERR_AR, indicating an action-required machine check error on
-> read.
-> 
-> However, when kill_proc() is called to terminate the processes who have
-> the poisoned page mapped, it sends the incorrect SIGBUS error code
-> BUS_MCEERR_AO because the context in which it operates is not the one
-> where the error was triggered.
-> 
-> To reproduce this problem:
-> 
->    # STEP1: enable early kill mode
->    #sysctl -w vm.memory_failure_early_kill=1
->    vm.memory_failure_early_kill = 1
-> 
->    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 5 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
-> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
-> error and it is not fact.
-> 
-> To fix it, queue memory_failure() as a task_work so that it runs in
-> the context of the process that is actually consuming the poisoned data.
-> 
-> After this patch set:
-> 
->    # STEP1: enable early kill mode
->    #sysctl -w vm.memory_failure_early_kill=1
->    vm.memory_failure_early_kill = 1
-> 
->    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 4 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
-> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
-> error as we expected.
-> 
-> Issue 2: a synchronous error infinite loop due to memory_failure() failed
-> 
-> If a user-space process, e.g. devmem, a poisoned page which has been set
-> HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
-> current processs with error info. Because the memory_failure() is
-> executed in the kworker contex, it will just do nothing but return
-> EFAULT. So, devmem will access the posioned page and trigger an
-> excepction again, resulting in a synchronous error infinite loop. Such
-> loop may cause platform firmware to exceed some threshold and reboot
-> when Linux could have recovered from this error.
-> 
-> To reproduce this problem:
-> 
->    # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
->    #einj_mem_uc single
->    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->    injecting ...
->    triggering ...
->    signal 7 code 4 addr 0xffffb0d75000
->    page not present
->    Test passed
-> 
->    # STEP 2: access the same page and it will trigger a synchronous error infinite loop
->    devmem 0x4092d55b400
-> 
-> To fix it, if memory_failure() failed, perform a force kill to current process.
-> 
-> Issue 3: a synchronous error infinite loop due to no memory_failure() queued
-> 
-> No memory_failure() work is queued unless all bellow preconditions check passed:
-> 
-> - `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
-> - `if (flags == -1)` in ghes_handle_memory_failure()
-> - `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
-> - `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
-> 
-> If the preconditions are not passed, the user-space process will trigger SEA again.
-> This loop can potentially exceed the platform firmware threshold or even
-> trigger a kernel hard lockup, leading to a system reboot.
-> 
-> To fix it, if no memory_failure() queued, perform a force kill to current process.
-> 
-> And the the memory errors triggered in kernel-mode[5], also relies on this
-> patchset to kill the failure thread.
-> 
-> Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
-> Acknowledge to discussion with them.
-> 
-> [1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
-> [2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
-> [3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
-> [4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
-> [5] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20240528085915.1955987-1-tongtiangen@huawei.com/
-> 
-> Shuai Xue (3):
->    ACPI: APEI: send SIGBUS to current task if synchronous memory error
->      not recovered
->    mm: memory-failure: move return value documentation to function
->      declaration
->    ACPI: APEI: handle synchronous exceptions in task work
-> 
->   arch/x86/kernel/cpu/mce/core.c |  7 ---
->   drivers/acpi/apei/ghes.c       | 90 +++++++++++++++++++++-------------
->   include/acpi/ghes.h            |  3 --
->   include/linux/mm.h             |  1 -
->   mm/memory-failure.c            | 23 +++------
->   5 files changed, 63 insertions(+), 61 deletions(-)
-> 
-
+DQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBEYW5pZWwgRmVyZ3Vzb24gPGRh
+bmllbGZAb3MuYW1wZXJlY29tcHV0aW5nLmNvbT4NCj5TZW50OiAyMSBKYW51YXJ5IDIwMjUgMjM6
+MDENCj5UbzogU2hpanUgSm9zZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPjsgbGludXgtZWRhY0B2
+Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPmN4bEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlA
+dmdlci5rZXJuZWwub3JnOyBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LQ0KPmtlcm5lbEB2Z2Vy
+Lmtlcm5lbC5vcmcNCj5DYzogYnBAYWxpZW44LmRlOyB0b255Lmx1Y2tAaW50ZWwuY29tOyByYWZh
+ZWxAa2VybmVsLm9yZzsgbGVuYkBrZXJuZWwub3JnOw0KPm1jaGVoYWJAa2VybmVsLm9yZzsgZGFu
+Lmoud2lsbGlhbXNAaW50ZWwuY29tOyBkYXZlQHN0Z29sYWJzLm5ldDsgSm9uYXRoYW4NCj5DYW1l
+cm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBkYXZlLmppYW5nQGludGVsLmNvbTsN
+Cj5hbGlzb24uc2Nob2ZpZWxkQGludGVsLmNvbTsgdmlzaGFsLmwudmVybWFAaW50ZWwuY29tOyBp
+cmEud2VpbnlAaW50ZWwuY29tOw0KPmRhdmlkQHJlZGhhdC5jb207IFZpbGFzLlNyaWRoYXJhbkBh
+bWQuY29tOyBsZW8uZHVyYW5AYW1kLmNvbTsNCj5ZYXplbi5HaGFubmFtQGFtZC5jb207IHJpZW50
+amVzQGdvb2dsZS5jb207IGppYXFpeWFuQGdvb2dsZS5jb207DQo+Sm9uLkdyaW1tQGFtZC5jb207
+IGRhdmUuaGFuc2VuQGxpbnV4LmludGVsLmNvbTsNCj5uYW95YS5ob3JpZ3VjaGlAbmVjLmNvbTsg
+amFtZXMubW9yc2VAYXJtLmNvbTsganRob3VnaHRvbkBnb29nbGUuY29tOw0KPnNvbWFzdW5kYXJh
+bS5hQGhwZS5jb207IGVyZGVtYWt0YXNAZ29vZ2xlLmNvbTsgcGdvbmRhQGdvb2dsZS5jb207DQo+
+ZHVlbndlbkBnb29nbGUuY29tOyBndGhlbGVuQGdvb2dsZS5jb207DQo+d3NjaHdhcnR6QGFtcGVy
+ZWNvbXB1dGluZy5jb207IGRmZXJndXNvbkBhbXBlcmVjb21wdXRpbmcuY29tOw0KPndic0Bvcy5h
+bXBlcmVjb21wdXRpbmcuY29tOyBuaWZhbi5jeGxAZ21haWwuY29tOyB0YW54aWFvZmVpDQo+PHRh
+bnhpYW9mZWlAaHVhd2VpLmNvbT47IFplbmd0YW8gKEIpIDxwcmltZS56ZW5nQGhpc2lsaWNvbi5j
+b20+OyBSb2JlcnRvDQo+U2Fzc3UgPHJvYmVydG8uc2Fzc3VAaHVhd2VpLmNvbT47IGthbmdrYW5n
+LnNoZW5AZnV0dXJld2VpLmNvbTsNCj53YW5naHVpcWlhbmcgPHdhbmdodWlxaWFuZ0BodWF3ZWku
+Y29tPjsgTGludXhhcm0NCj48bGludXhhcm1AaHVhd2VpLmNvbT4NCj5TdWJqZWN0OiBSZTogW1BB
+VENIIHYxOCAwNS8xOV0gQUNQSTpSQVMyOiBBZGQgQUNQSSBSQVMyIGRyaXZlcg0KPg0KPg0KPg0K
+Pk9uIDEvNi8yMDI1IDQ6MTAgQU0sIHNoaWp1Lmpvc2VAaHVhd2VpLmNvbSB3cm90ZToNCj4+ICtz
+dGF0aWMgaW50IHJhczJfcmVwb3J0X2NhcF9lcnJvcih1MzIgY2FwX3N0YXR1cykgew0KPj4gKwlz
+d2l0Y2ggKGNhcF9zdGF0dXMpIHsNCj4+ICsJY2FzZSBBQ1BJX1JBUzJfTk9UX1ZBTElEOg0KPj4g
+KwljYXNlIEFDUElfUkFTMl9OT1RfU1VQUE9SVEVEOg0KPj4gKwkJcmV0dXJuIC1FUEVSTTsNCj4+
+ICsJY2FzZSBBQ1BJX1JBUzJfQlVTWToNCj4+ICsJCXJldHVybiAtRUJVU1k7DQo+PiArCWNhc2Ug
+QUNQSV9SQVMyX0ZBSUxFRDoNCj4+ICsJY2FzZSBBQ1BJX1JBUzJfQUJPUlRFRDoNCj4+ICsJY2Fz
+ZSBBQ1BJX1JBUzJfSU5WQUxJRF9EQVRBOg0KPj4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+PiArCWRl
+ZmF1bHQ6IC8qIDAgb3Igb3RoZXIsIFN1Y2Nlc3MgKi8NCj4+ICsJCXJldHVybiAwOw0KPj4gKwl9
+DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyBpbnQgcmFzMl9jaGVja19wY2NfY2hhbihzdHJ1Y3Qg
+cmFzMl9wY2Nfc3Vic3BhY2UNCj4+ICsqcGNjX3N1YnNwYWNlKSB7DQo+PiArCXN0cnVjdCBhY3Bp
+X3JhczJfc2hhcmVkX21lbW9yeSBfX2lvbWVtICpnZW5lcmljX2NvbW1fYmFzZSA9DQo+cGNjX3N1
+YnNwYWNlLT5wY2NfY29tbV9hZGRyOw0KPj4gKwlrdGltZV90IG5leHRfZGVhZGxpbmUgPSBrdGlt
+ZV9hZGQoa3RpbWVfZ2V0KCksIHBjY19zdWJzcGFjZS0NCj4+ZGVhZGxpbmUpOw0KPj4gKwl1MzIg
+Y2FwX3N0YXR1czsNCj4+ICsJdTE2IHN0YXR1czsNCj4+ICsJdTMyIHJldDsNCj4+ICsNCj4+ICsJ
+d2hpbGUgKCFrdGltZV9hZnRlcihrdGltZV9nZXQoKSwgbmV4dF9kZWFkbGluZSkpIHsNCj4+ICsJ
+CS8qDQo+PiArCQkgKiBBcyBwZXIgQUNQSSBzcGVjLCB0aGUgUENDIHNwYWNlIHdpbGwgYmUgaW5p
+dGlhbGl6ZWQgYnkNCj4+ICsJCSAqIHBsYXRmb3JtIGFuZCBzaG91bGQgaGF2ZSBzZXQgdGhlIGNv
+bW1hbmQgY29tcGxldGlvbiBiaXQNCj53aGVuDQo+PiArCQkgKiBQQ0MgY2FuIGJlIHVzZWQgYnkg
+T1NQTQ0KPj4gKwkJICovDQo+PiArCQlzdGF0dXMgPSByZWFkd19yZWxheGVkKCZnZW5lcmljX2Nv
+bW1fYmFzZS0+c3RhdHVzKTsNCj4+ICsJCWlmIChzdGF0dXMgJiBSQVMyX1BDQ19DTURfRVJST1Ip
+IHsNCj4+ICsJCQljYXBfc3RhdHVzID0gcmVhZHdfcmVsYXhlZCgmZ2VuZXJpY19jb21tX2Jhc2Ut
+DQo+PnNldF9jYXBhYmlsaXRpZXNfc3RhdHVzKTsNCj4+ICsJCQlyZXQgPSByYXMyX3JlcG9ydF9j
+YXBfZXJyb3IoY2FwX3N0YXR1cyk7DQo+DQo+VGhlcmUgaXMgc29tZSBuZXcgaW5mb3JtYXRpb246
+DQo+DQo+VGhlIFNjcnViIHBhcmFtZXRlciBibG9jayBpbnRlbmRzIHRvIGdldCBpdHMgb3duIFN0
+YXR1cyBmaWVsZCwgYW5kIHRoZQ0KPnNldF9jYXBhYmlsaXRpZXNfc3RhdHVzIGZpZWxkIGlzIGJl
+aW5nIGRlcHJlY2F0ZWQuIFRoaXMgYWxzbyBjYXVzZXMgYSByZXZpc2lvbg0KPmJ1bXAgaW4gdGhl
+IHNwZWMuDQo+DQo+U2VlIFsxXQ0KPg0KPkFzc3VtaW5nIHRoaXMgY2hhbmdlIGlzIHJhdGlmaWVk
+IChub3QgZ3VhcmFudGVlZCwgc3RpbGwgcGVuZGluZyk6DQo+VGhpcyBjaGFuZ2UgaW1wbGllcyB0
+aGF0IHdlIGNhbm5vdCBjZW50cmFsbHkgZGVjb2RlIGVycm9ycywgYXMgaXMgZG9uZSBoZXJlIGFu
+ZA0KPm5vdy4gSW5zdGVhZCBlcnJvciBkZWNvZGluZyBtdXN0IGJlIGRvbmUgYWZ0ZXIgc29tZSBm
+ZWF0dXJlLXNwZWNpZmljIHJvdXRpbmUNCj5jYWxscyByYXMyX3NlbmRfcGNjX2NtZC4gSXQgc2hv
+dWxkIGJlIHRoZSBjYXNlIHRoYXQgZWFjaCBuZXcgZmVhdHVyZSwgbW92aW5nDQo+Zm9yd2FyZCwg
+d2lsbCBsaWtlbHkgaGF2ZSB0aGVpciBvd24gc3RhdHVzLg0KPg0KPlBsZWFzZSBzZWUgbXkgZm9s
+bG93IHVwIGNvbW1lbnQgb24gW1BBVENIIHYxOCAwNi8xOV0NCj4NCj4tLS0NCj5bMV0gaHR0cHM6
+Ly9naXRodWIuY29tL3RpYW5vY29yZS9lZGsyL2lzc3Vlcy8xMDU0MA0KDQpIaSBEYW5pZWwsDQoN
+ClRoYW5rcyBmb3IgdGhlIGluZm9ybWF0aW9uIGFuZCBzdWdnZXN0ZWQgbW9kaWZpY2F0aW9ucy4N
+Cg0KV2Ugd2lsbCB0cmFjayB0aGUgY2hhbmdlIGFuZCBhc3N1bWluZyBpdCBsYW5kcyBhcyBhbiBF
+Q04NCndpbGwgdHJ5IHRvIGFkZCBzdXBwb3J0IGluIGJhY2t3YXJkcyBjb21wYXRpYmxlIGZhc2hp
+b24uDQoNCj4tLS0NCj4NCj4+ICsNClsuLi5dDQo+DQpUaGFua3MsDQpTaGlqdQ0K
 
