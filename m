@@ -1,330 +1,205 @@
-Return-Path: <linux-acpi+bounces-10790-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10791-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB900A19914
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 20:16:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4012A1992A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 20:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB887A10C3
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 19:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801D11888076
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Jan 2025 19:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05812153C8;
-	Wed, 22 Jan 2025 19:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33091215F52;
+	Wed, 22 Jan 2025 19:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Scp14krE"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kpxRXRFh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2064.outbound.protection.outlook.com [40.107.236.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10875215182;
-	Wed, 22 Jan 2025 19:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737573368; cv=none; b=KwrFcrq/hKcH/JGKx5sTMsRyc03rH/s7F+rhKkOjDEI39u2Rvxtx+PO+jldg8mUTDPPTTRF0FUd5ComYhlJvfbc7dW1Dhr3T3ydPujXu1LqsDH41+gTBlnJmjwci5hZIqU5b0+HCMd07lUwJNBv0SOsYzuc7QWDKwUZ3rHpO6/c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737573368; c=relaxed/simple;
-	bh=v6YV9eIDsJMLS4oejIi8jAG2xTfl0sZ+XRNDM7u25to=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sALCZJpAviFsPTlvd0zjKG2YsQPPNKd9oxOnIbH7RgcRFgD4GtZ2/ClE++fg7fvtxoQZJBGctKH/1tuzDyI8BA2PzD3WafcQ6XojuvpSjNB6hb+SSW8zVhEwwCBz1LhDTqI8+ZB+NNOEk0L7iWvinC+xV+249J7M+n/DFcBw1AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Scp14krE; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2C9E040E0194;
-	Wed, 22 Jan 2025 19:10:12 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7gbpTtE4YNEk; Wed, 22 Jan 2025 19:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1737573007; bh=Tcb2Z6DGVFgByVLZsGDzi5H0qUPxCY9mavsd9VzPlvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Scp14krEEXpmv7pRF0EklohRi6aP0zbh/s92cJ440j7InvtCw0KkFgctx/FlD9gvY
-	 ASsaGlYI5lhfgarZFSME4UptgQVYyVGwg39T+OVXA9T9oi2Pcu7g5A36xnaBxpV3mU
-	 swk5OSaimu3YGKMetCAyA03blAN0B3qx+CiaiAT94ycERupkLgh6zghmFSnDlWMyNh
-	 dARMKMC9LuWhIIZW0rV96Gm+4i2jMahLwzEADxtZTIAR6owiN5aiWR6bEAU18bQRfC
-	 T3snd8Rh/r2uL5TpmXttWgZNy8Kwj/KEAeUyo9sQ9Emyd53bVo6EWPAkWRRGsDYYXk
-	 3KbP2vIncRcJX+L82yUpIN56G3j9IZWDz2t2tFP8RA3EP4qWPvCSmPiIKaOKiS5AQA
-	 SnNcLVEoYq4gIJuAFtFSM65VtjfdKrdEbn6Rz6vo694oHvgdonB6EsKpwMvtat2Hoj
-	 pRyiVOdKcZUh+sxwJp1iLtPmB+Kbm5JW9uRKvLbafbgAtDnyiPbAPH9zgY45Xns93W
-	 DL1vzGD3QDtvPt7R5MAL/SY6bvoC6yGfH79vMl7EA9nAADHraGFb1o1Zkg4TF5g/Pp
-	 jk7X1IhIQ1yh8yvnapK4oJEKRdGnzMSiTw6hOP8jR+McoWEDwBOD/U29KIr7X2zSRq
-	 G1wsyO4EhemY7RkmXtZbAUqs=
-Received: from zn.tnic (pd953008e.dip0.t-ipconnect.de [217.83.0.142])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 365FB40E01C5;
-	Wed, 22 Jan 2025 19:09:23 +0000 (UTC)
-Date: Wed, 22 Jan 2025 20:09:17 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Shiju Jose <shiju.jose@huawei.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>, Vandana Salve <vsalve@micron.com>
-Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
-Message-ID: <20250122190917.GDZ5FCXetp9--djyQ6@fat_crate.local>
-References: <20250109123222.GBZ3_B1g3Esgu1-MPi@fat_crate.local>
- <20250109142433.00004ea7@huawei.com>
- <20250109151854.GCZ3_o3rf6S24qUbtB@fat_crate.local>
- <20250109160159.00002add@huawei.com>
- <20250109161902.GDZ3_29rH-sQMV4n0N@fat_crate.local>
- <20250109183448.000059ec@huawei.com>
- <20250111171243.GCZ4Kmi5xMtY2ktCHm@fat_crate.local>
- <20250113110740.00003a7c@huawei.com>
- <20250121161653.GAZ4_IdYDQ9_-QoEvn@fat_crate.local>
- <20250121181632.0000637c@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6052153ED;
+	Wed, 22 Jan 2025 19:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737573989; cv=fail; b=ITyED2doQLeeScC0YdUIPB1uZFvUOkTtPmKnPBsW0gEkbkf1vJdAIpD3mf0XsgSsanSFmz8PxCzHOU8J10fSQPKxf8HZhkQedAxg6RcPIdG3rC7iWmWnRe87K2yAXEvVvZY/HEcJDqQS2yxRKnBpM3JF+DoBFDADx/WQfjv8Mcw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737573989; c=relaxed/simple;
+	bh=CMAeBwSAl+DmU8j0YJuekPxhExajpzQPqoxD0RWlS90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iFrvCbZN+3ORMUcnGnjf9kK6gi86sx4ieliNuxNqqn3CwnN4h0q5tbslSrINacNjjeIMhYyKBwUxPbHiFoRjmiy//hovC0pdzf0wVrD4dtFlNDibwo4h+dCagGduu0ajSKVXomU+8/L3cDb5GKq909IRR6qEDhszYYLpTS0q964=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kpxRXRFh; arc=fail smtp.client-ip=40.107.236.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UzFHXQBlgjjRkPIzT3j6KtX5RbG4+5M2h7ymenzyZ3rkn32T/tdVjz/K/PKryXTmntpUw/3/D6KXaS4RMs1dLnrf2A03PoWg97HpA2f1sy5SJuyTwEJZIzmk3yRjDYK/2/n82vUwFLiCcldlDnrRU2Sp/kk/e/LuxLFVM6ICrBccTLOxzv040kmQ/KD/k3SwcvDCPpXHuZcFcT1b6mJwyTs39hvTLW88n+AIYi/0mGzFvJmpc02Ez+/qppT7IQ22N107OiZeHKbJauwJdjtilKka/NB4/basZ34kM1BAbY0+6gHMvLoNox0/51ycKVSCfonmQfL/SGtERZwjEwRE5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5/QjlKd7INPe1HgojOhV/2stvDwogfZjlBdkvmc4y6I=;
+ b=LKcoyTFObNR94o/wx4IfQKlNeTUWGIIqUgzP1E3hxKJ0oUjV8aauV29dj9se//crsD4YpF+juzq2GYB4SDKAUPKJWy9iJXZ1fEitcGnIfySR1WLVN9ZnE+YMSKXTFLymeiQCegJkTDKrIumWc5dJbj8IME0OLcLj7+Sxj/dyPoX9HqMe/veuBT3XyE+WutjXgVjdEZt/64kHJ0IPA6XJS5m1hrYlgo1BVs0qnA3Y+TXxlDct43EukfV7t1FHKSFA8AqyRbOBFQUM6KkZrlC+dsL/bCLk0h+13WtEI00aFVHX5hhs3OL5aplO2e0xNgbySuCfanE94pJ6SAFXk8HbDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5/QjlKd7INPe1HgojOhV/2stvDwogfZjlBdkvmc4y6I=;
+ b=kpxRXRFhUnUs5VAYQ/VC5q5lnuqsz/WrkilJIskVaVW0S+CM/THwilzX/nmvROGM1vDb8a6c8lM3YfsVUkvEZqoE3urkjBfPEnlssTJmssvYOHlM2Zeg8e4ha65V4L8nW2URqz3T1ZWFy6iQFC7OUQDXNGmRwl3Zdqb9m8kMgzBtddgzPhaew51lRUxGDSUAUmZRCkgntPzxv6zj5l2QJ7ib64H96VLYvwriTcsHsLx9rUdlVbmQqv6qr64t1WnNUE5zprkbsoPoPcn4M+DT6M8/a9D+z3EZ51esbNHCb9LUFHjqCyquEzdhCP61uz9m/k1Qn1O3c63TAJQPGSKbnQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SA0PR12MB7462.namprd12.prod.outlook.com (2603:10b6:806:24b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Wed, 22 Jan
+ 2025 19:26:24 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8356.010; Wed, 22 Jan 2025
+ 19:26:24 +0000
+Date: Wed, 22 Jan 2025 15:26:22 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Zhangfei Gao <zhangfei.gao@linaro.org>, acpica-devel@lists.linux.dev,
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+Message-ID: <20250122192622.GA965540@nvidia.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241112182938.GA172989@nvidia.com>
+ <CABQgh9HOHzeRF7JfrXrRAcGB53o29HkW9rnVTf4JefeVWDvzyQ@mail.gmail.com>
+ <20241113012359.GB35230@nvidia.com>
+ <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
+ <20241113164316.GL35230@nvidia.com>
+ <6ed97a10-853f-429e-8506-94b218050ad3@linux.intel.com>
+ <20241115175522.GA35230@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115175522.GA35230@nvidia.com>
+X-ClientProxiedBy: MN0PR04CA0003.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::15) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250121181632.0000637c@huawei.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA0PR12MB7462:EE_
+X-MS-Office365-Filtering-Correlation-Id: eae9cc8b-a81e-4637-c49e-08dd3b1aa875
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QQTfrl+m6tuC7g/agspPGIgff88jFgaKLzOzZnjaSvdcp5jhTsg9hTT+Dq1O?=
+ =?us-ascii?Q?FiOIcdsm6rxU6B4GV8do6iPAb8HSrKcYOe2UMRq9Kd7P5IS28kE1mJ6eg19U?=
+ =?us-ascii?Q?SJ9qAHtY/C09nI4LgeeYgLWW4gRGNvKorLq7irKF993PbKwpBMe9QTche7tc?=
+ =?us-ascii?Q?JwzKJIHwUO1lfcwTZLoRbE9UJKaurhwDRI/WZtMOm+mjsNO0Jb5yI2v39rzV?=
+ =?us-ascii?Q?vQK8gMef5AoeW4AWdboQrWphbyIz15Dl4CPbW2rDLV6ztYAgqc7Y2iHFg9l2?=
+ =?us-ascii?Q?y/k4q9EjfGhF/7J1FQ12akM0zPG0enFjLU9z+eivQb2TOMMZo1pCuO86lP9a?=
+ =?us-ascii?Q?u2orgu4Ehv1/zmLAppAkjNFBW0cH+DhLa+1QShD7pkWtTwWyma1w2ZPFl2VS?=
+ =?us-ascii?Q?culxMnl75p/caegWyrDUK4s3S6yxX0LDtkhck47cNpksE0E5poSbt95YGXW4?=
+ =?us-ascii?Q?vy46ZntvOFU5VbcYX2dnpZSh+wbb0NZFPGbt+GsB5KDMiRhxn8OlFDhtvn5r?=
+ =?us-ascii?Q?gcFbEtl+tSsyacoyAnVd8bcorkI3AF0O8adclt0BCKs3jU4Q1iwlyujObTsL?=
+ =?us-ascii?Q?FErsfMga+9gsOv5dunR+0ZozJsgTEjzAQzQQif/0Pd4c0G8Vj2MSKlkHhGkH?=
+ =?us-ascii?Q?S13v7v4883VQQ9QM9v2skAQfXN6qiZaa8jm8wDdmQXi5m3YfPFOgji+MVb1L?=
+ =?us-ascii?Q?q5fYqDLsHopEQ5Ltdgu8SQcKLtAaqjT/wNeZw7S07tVUFL7vwmCHWSHY+/iy?=
+ =?us-ascii?Q?LUqWUigfF7lzpodjbVYk9abDWZgzvP8RHmyGjOnXT3iOwyQfuYZLCV5ObqOI?=
+ =?us-ascii?Q?HvFfo5FikV5+YzBLVcwtcwCRf/wDC2Zd4Ry5x3ukGLUo/IUgIgSf0d7V0qrN?=
+ =?us-ascii?Q?HqJbKJqLdzaC2ejg08YdtLnItO3oNrILdn+688xwy/xA/lwjb4xYZleFkx+z?=
+ =?us-ascii?Q?bYTUcVGyeIdBZCepKSkoEmbxCtt4bUiTlTxvN5eITEdCzZNekS6/pm94nWG+?=
+ =?us-ascii?Q?0/kLILQnmj1RPEMrqBpLLMVgo/aq4Yte6Yhm1HAiVDzI91r8pREA0QTZJD/S?=
+ =?us-ascii?Q?S8Qv9uH5pQOSVGzUwlmZhvqMi0Rctkpduw+Qhkrao7HJWB5h37ZvAsRVsRJX?=
+ =?us-ascii?Q?vV6ct7yHC9NpJCub51fJFNU5P0tN2c9IzS9w/uHo7iMFzedEI1F+9bfnhgBH?=
+ =?us-ascii?Q?/ktQj+ke5g3EUlzN3jeaFB9qKc8eFp6ch2FtldQmD3Psxx4dAbWCIFlZ3b6y?=
+ =?us-ascii?Q?LtSZHhcoux1wlDmR/KvslBBqzjV8PVdMae9qPan9mwAlWaVfdluETEMGN6J1?=
+ =?us-ascii?Q?F/QYqv6C5hGrBkjWXbpBPHvRiZBId1o3VZ1UOpEGa6eJjPlyoSweSLDV0xUU?=
+ =?us-ascii?Q?jegUL2uNvBZtA9VGKHCtLE3GuAOx?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?N/GHwMI84BCGdEOUu2o8vGQDksmhSnm79A1KejUbZsrbRSrFR0C7gtBJnhwc?=
+ =?us-ascii?Q?YySpMgJ9cHT2MG9P+2+wwf15EVv5EoeSW3frThCDt2+Eb+OXQUoPquOgRunV?=
+ =?us-ascii?Q?LrZnFQdj8i1r70OESGgYjVhZsMy58PaSfpoYQrElJvCFzxSroSJe6jvnaMOy?=
+ =?us-ascii?Q?/bA0XvDM05XLej9SigQQb9yhdNFuotScIRnP0GiJD92OBJmVXGKMjBAeJi+b?=
+ =?us-ascii?Q?PSy1r8cclCUdg4td1yoZWB4000qcCQbHFSrUU/gf2YgFzbYPmSBBIN4cyHNg?=
+ =?us-ascii?Q?SwYp0cu+pu+4xLZ0j+9j04uPEGtu/RNvDpp0+40R1XUoKtwAkpM3Uo4Tv7pG?=
+ =?us-ascii?Q?4h/9KiLfDKSkbbxLRtX1oRV5zKUemBJeMNJJbXcn+Gic9JLg0mJjLfkjo3yw?=
+ =?us-ascii?Q?zbB8I/m82FMdk2HgSAd5RNGy/MIXyYeG6kXTDMICuL3fsxYtFEty5gPijaW6?=
+ =?us-ascii?Q?t8oqK6ULKh0ct2H4qOAZ5+kgb2f77d87vuQp2zpvoj4zMYwmbb5Kr0ch2wQp?=
+ =?us-ascii?Q?547smwYh3nTNyUHk86BI3dCBXUk09LIQ6JP5i3v9rDG0Yt5tgXe9ZBp/Qk52?=
+ =?us-ascii?Q?5slLzyRn2XBKHOW6/XilLihAg/CvY0m9n1MO98ABd9ZGi/SqMQrzgPBwn4l9?=
+ =?us-ascii?Q?/F+Ll5NN5DLEEAqT/sElunkXqd9WlNckWeI6HPg4Smnk7eOfZGF0NO/RwyWj?=
+ =?us-ascii?Q?OnpBHmf27EBH3HXWFs8PGgvsvghxHcav2OQqoJR5o2SK5+mvTRerbSzGHT0t?=
+ =?us-ascii?Q?CsGLuFfAH2BReECNM9p5pw6DKlB0IrSuvXPx2MHP2e6/P2oatwgPBe4Cp90S?=
+ =?us-ascii?Q?g1BHRioGcR8KGqKyC5OyDyFtZjkfKPQITjwF954Sbt3QaTt+rVL84JEH+ZlY?=
+ =?us-ascii?Q?Loi7tabM8X+xFko8Vek7HxggE+ZpCaSzILT5iqvqKvbUlqDTSy/TwyC3WhoA?=
+ =?us-ascii?Q?V+bTHMCpWoVCZsMBO5tPAESud3Gjxf3vuDvZusbY4dqwofaSzMDco9USWCmf?=
+ =?us-ascii?Q?pGhTXbCikiYzEhYGNBjrGwHvYgIFwIMNdohJ4g3jUwsKvqshjDXdlEDKxBi9?=
+ =?us-ascii?Q?UfXy0XxLHuMfEsEwFNMTmneTvadBXu4uvp8LIeWsomTE6zB+LaBHKh7tVhR4?=
+ =?us-ascii?Q?fTIL8MjQARZKfYmiSb2EIxHAWSqJ3ODUOP7IN1xJMejkn4kVk0P65dZLHH8S?=
+ =?us-ascii?Q?IhKC3KZ9RRtX9KLpq5N3tyT1SRtPKhZvBW/xJUmWpDQ9qxCV1mvROpIH+SWG?=
+ =?us-ascii?Q?gephDl6E2ZXAlURBNpZWazmHLivpCCiPbCVWTPcgv/Z1J6T842as9PTXtJSg?=
+ =?us-ascii?Q?TGd5teGkGHtFIuLqdgQY58iM5oEfX7t8TegQMdS6A+dJALO4UMMjH8UgIyvW?=
+ =?us-ascii?Q?z9C4NwP7q34T9x5H7NbyJSqFW5Tg9eje3yIlc1TgJ+uoUTyLZ4iwUmHN/7J1?=
+ =?us-ascii?Q?5En3Buim7Ie1jOgg6owznAC0OhJouh1EYTISnuEvQOdRltddflaDgw1EAzF0?=
+ =?us-ascii?Q?L9HDcTRa8z1hCL7Lw7CORNH+i/LxBuMi9R1cu0MJEAo67u857QH4h/eT+PPC?=
+ =?us-ascii?Q?DSbCKhTsbHF+tm/tAoQnhzeZA4LTsIM7GBOQmzqq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eae9cc8b-a81e-4637-c49e-08dd3b1aa875
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2025 19:26:23.9606
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RInY1k8gqjTyJP79e7cS27haSDWAODeeWYu6PBmUXVuCs3L1jx1OLMElD8d60IMt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7462
 
-On Tue, Jan 21, 2025 at 06:16:32PM +0000, Jonathan Cameron wrote:
-> Clearly we need to provide more evidence of use cases: 'Show us your code'
-> seems to apply here.  We'll do that over the next few weeks.
-
-Thanks.
-
-> based on simple algorithms applied to the data RAS Daemon already has.
-> The interface for the reasons discussed in the long thread with Dan
-> is the minimum required to provide the information needed to allow
-> for two use cases.  We enumerated them explicitly in the discussion with
-> Dan because they possibly affected 'safety'.
+On Fri, Nov 15, 2024 at 01:55:22PM -0400, Jason Gunthorpe wrote:
+> > > I need your help to remove IOMMU_DEV_FEAT_IOPF from the intel
+> > > driver. I have a patch series that eliminates it from all the other
+> > > drivers, and I wrote a patch to remove FEAT_SVA from intel..
+> > 
+> > Yes, sure. Let's make this happen in the next cycle.
+> >
+> > FEAT_IOPF could be removed. IOPF manipulation can be handled in the
+> > domain attachment path. A per-device refcount can be implemented. This
+> > count increments with each iopf-capable domain attachment and decrements
+> > with each detachment. PCI PRI is enabled for the first iopf-capable
+> > domain and disabled when the last one is removed. Probably we can also
+> > solve the PF/VF sharing PRI issue.
 > 
-> 1) Power up, pre memory online, (typically non persistent) repair of
->    known bad memory.
-
-Lemme make sure I understand this: during boot you simply know from somewhere
-that a certain rank (let's use rank for simplicity's sake) is faulty. Before
-you online the memory, you simply replace that rank in the logic so that the
-system uses the spare rank while the faulty rank is disabled.
-
->    There are two interface options for this, inject the prior mapping from
->    device physical address space (host address is not necessarily relevant
->    here as no address decoders have been programmed yet in CXL - that
->    happens as part of the flow to bring the memory up), or use the
->    information that userspace already has (bank, rank etc) to select what
->    memory is to be replaced with spare capacity.
-
-Ok, so this is all CXL-specific because this use case relies on userspace
-being present. Which means you cannot really use this for DIMMs used during
-boot. So if DIMMs, those should be online-able later, when userspace is there.
-
->    Given the injection interface and the repair interface have to
->    convey the same data, the interface complexity is identical and
->    we might as well have a single step 'repair' rather than
->      1. Inject prior records then
-
-What exactly is this injecting? The faulty rank? Which then would cause the
-respective driver to go and do that repairing.
-
-Which then means that you can online that device after rasdaemon has loaded
-and has the required info to online it.
-
-Which then means, rasdaemon needs to be part of the device onlining process.
-
-I'm simply conjecturing here - I guess I'll see your detailed use case later.
-
->      2. Pass a physical address that is matched to one of those records.
-
-I don't know what that one does.
-
->    There are no security related concerns here as we always treat this
->    as new memory and zero it etc as part of onlining.
-
-Right, goes without saying.
-
-> 2) Online case.  Here the restriction Dan proposed was that we 'check'
->    that we have seen an error record on this boot that matches the full
->    description.  That is matching both the physical address and the
->    topology (as that mapping can change from boot to boot, but not whilst
->    the memory is in use). This doesn't prevent any use case we have
->    come up with yet because, if we are making a post initial onlining
->    decision to repair we can assume there is a new error record that
->    provided new information on which we are acting.  Hence the kernel
->    had the information to check.
+> Here is what I have so far, if you send me a patch for vt-d to move
+> FEAT_IOPF into attach as you describe above (see what I did to arm for
+> example), then I can send it next cycle
 > 
->    Whilst I wasn't convinced that we had a definite security
->    problem without this protection, it requires minimal changes and doesn't
->    block the flows we care about so we are fine with adding this check.
+> https://github.com/jgunthorpe/linux/commits/iommu_no_feat/
 
-I need more detail on that 2nd case - lemme read that other subthread.
+Hey Baolu, a reminder on this, lets try for it next cycle?
 
-> Ok. We'll put together an example script / RASdaemon code to show how
-> it is used. I think you may be surprised at how simple this is and hopefully
-> that will show that the interface is appropriate.
-
-That sounds good, thanks.
-
-> This we disagree on. For this persistent case in particular these are limited
-> resources. Once you have used them all you can't do it again.  Using them
-> carefully is key. An exception is mentioned below as a possible extension but
-> it relies on a specific subset of allowed device functionality and only
-> covers some use cases (so it's an extra, not a replacement for what this
-> set does).
-
-By "this persistent case" you mean collecting logs per error address,
-collating them and massaging them or hunting them through a neural network to
-recognize potential patterns and then act upon them?
-
-In any case, I don't mean that - I mean something simple like: "after X errors
-on address Y, offline page Z." Like we do with .../ras/cec.c. Ofc you can't
-put really complex handling in the kernel and why would you - it must be *the*
-best thing after sliced bread to impose that on everyone.
-
-All I'm saying is, simple logic like that can be in the kernel if it is useful
-in the general case. You don't *have* to carry all logic in some userspace
-daemon - the kernel can be smart too :-)
-
-> With the decision algorithms in userspace, we can design the userspace to kernel
-> interface because we don't care about the algorithm choice - only what it needs
-> to control which is well defined. Algorithms will start simple and then
-> we'll iterate but it won't need changes in this interface because none of it
-> is connected to how we use the data.
-
-Are you saying that this interface you have right now is the necessary and
-sufficient set of sysfs nodes which will be enough for most algorithms in
-userspace?
-
-And you won't have to change it because you realize down the road that it is
-not enough?
-
-> In general an ABI that is used is cast in stone. To my understanding there
-> is nothing special about debugfs.  If we introduce a regression in tooling
-> that uses that interface are we actually any better off than sysfs?
-> https://lwn.net/Articles/309298/ was a good article on this a while back.
-> 
-> Maybe there has been a change of opinion on this that I missed.
-
-I don't think so and I can see that article's point. So let's cut to the
-chase: what are we going to do when the sysfs or debugfs nodes you've added
-become insufficient and you or someone else needs to change them in the
-future, for their specific use case?
-
-The last paragraph of that article basically sums it up pretty nicely.
-
-> Absolutely though the performance impact of punching holes in memory over
-> time is getting some cloud folk pushing back because they can't get their
-> 1GIB pages to put under a VM.  Mind you that's not particularly relevant
-> to this thread.
-
-What is relevant to this thread is the fact that you can't simply reboot as
-a RAS recovery action. Not in all cases.
-
-> For this we'll do as we did for scrub control and send a patch set adding tooling
-> to RASdaemon and/or if more appropriate a script along side it.  My fault,
-> I falsely thought this one was more obvious and we could leave that until
-> this landed. Seems not!
-
-Sorry, I can't always guess the use case by looking solely at the sysfs nodes.
-
-> This I agree on. However, if CXL takes off (and there seems to be agreement
-> it will to some degree at least) then this interface is fully general for any spec
-> compliant device.
-
-Ok, sounds good.
-
-> Sure. We can definitely do that.  We have this split in v19 (just undergoing
-> some final docs tidy up etc, should be posted soon).
-
-Thx.
-
-You don't have to rush it - we have merge window anyway.
-
-> Early devices and the ones in a few years time may make different
-> decisions on this. All options are covered by this driver (autonomous
-> repair is covered for free as nothing to do!)
-
-Don't forget devices which deviate from the spec because they were implemented
-wrong. It happens and we have to support them because no one else cares but
-people have already paid for them and want to use them.
-
-> CXL is not vendor specific. Our other driver that I keep referring
-> to as 'coming soon' is though.  I'll see if I can get a few memory
-> device manufacturers to specifically stick their hands up that they
-> care about this. As an example we presented on this topic with
-> Micron at the LPC CXL uconf (+CC Vandana).  I don't have access
-> to Micron parts so this isn't just Huawei using Micron, we simply had two
-> proposals on the same topic so combined the sessions.  We have a CXL
-> open source sync call in an hour so I'll ask there.
-
-Having hw vendors agree on a single driver and Linux implementing it would be
-ofc optimal.
-
-> Maybe for the follow on topic of non persistent repair as a path to
-> avoid offlining memory detected as bad. Maybe that counts
-> as generalization (rather than extension).  But that's not covering
-> our usecase of restablishing the offline at boot, or the persistent
-> usecases.  So it's a value add feature for a follow up effort,
-> not a baseline one which is the intent of this patch set.
-
-Ok, I think this whole pile should simply be in two parts: generic, CXL-spec
-implementing, vendor-agnostic pieces and vendor-specific drivers which use
-that.
-
-It'll be lovely if vendors could agree on this interface you're proposing but
-I won't hold my breath...
-
-> Thanks for taking time to continue the discussion and I think we
-> are converging somewhat even if there is further to go.
-
-Yap, I think so. A lot of things got cleared up for me too, so thanks too.
-I'm sure you know what the important things are that we need to pay attention
-when it comes to designing this with a broader audience in mind.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Jason
 
