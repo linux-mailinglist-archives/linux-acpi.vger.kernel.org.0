@@ -1,181 +1,117 @@
-Return-Path: <linux-acpi+bounces-10797-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10798-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C74A19D4F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jan 2025 04:33:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA376A1A4CC
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jan 2025 14:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA7081882FE7
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jan 2025 03:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 956DC3AAAD7
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Jan 2025 13:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82F07DA95;
-	Thu, 23 Jan 2025 03:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E999920E6EE;
+	Thu, 23 Jan 2025 13:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sxw0siYC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UC4LIYam"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760541F5F6;
-	Thu, 23 Jan 2025 03:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABD61E493
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Jan 2025 13:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737603197; cv=none; b=Yy/lqoqOFQS7F9FNLxHdoMGVC6XrqUzTZc8DmFN/i+mPXL8rGB+5c4jeRs3XYJmXhMjnHhpWq+Exoo6bFi3jqfFnZHKiLp9sJ0nhIslm4+7hjyoa8/XoGQFme98umoMYsHygTzPu3EABzZQkYrviVzXlMsbiUM+x4YaO9gr4aug=
+	t=1737638532; cv=none; b=qpVjSjJOyJYIoCdYKT8nHMm297MM84I2ON6TgupJ9OZATs2TPKs8lSTokhXzyBZH/9Jo2Od56JqmuCmuKBsN1YTa1kmub09VmnwxYDSJRdlLy+kPnx2JX/107hYXFF+4C+76O0abX0gthDP1XlQAjlhsCn298eOewx6pIxayoLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737603197; c=relaxed/simple;
-	bh=r6SqBq7kJU7pHPYzzLWvW4EwfzJ/N2WxZvuVMLQWlqk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=C3oL0s8vAmH4jG8iQH1jyZOwJ9OZM6tjRfCoTQl6WqQ/ahjeXwndy3Q9NqCy2BL2cHcp4rgVQquYCGtdEM0g3fnpyGFFNxP/BPEldmaRPP+x1vvtyhG/c3y6pynw+bOYQJJuw4TK84nWaYO0Nt30sGx+2PVt6CuAfsSccAVpkyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sxw0siYC; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1737603190; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=2lsDPWvDtMfLfMIV7hWLp0tfTWnTTnVOPgkf/bqRyXk=;
-	b=sxw0siYCDy62cS8jCh02Z+8h5FxoplY8Fuk8X5L7ZOTnUpwJVHw9dDQecL0pkP31eWypX4RJQywYqHhdLRxY2TVlsy0LIsIzx9psv9Eggl+FOdT6YdVY9SaUs0uwWv0jzmymgml21GPE64Gh01eJZ4szdjJSFz1tAyfy6XqxwKU=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WOAEWoR_1737603157 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Jan 2025 11:33:08 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Gregory Price <gourry@gourry.net>,  hyeonggon.yoo@sk.com,
-  rafael@kernel.org,  lenb@kernel.org,  gregkh@linuxfoundation.org,
-  akpm@linux-foundation.org,  honggyu.kim@sk.com,  rakie.kim@sk.com,
-  dan.j.williams@intel.com,  Jonathan.Cameron@huawei.com,
-  dave.jiang@intel.com,  horen.chuang@linux.dev,  hannes@cmpxchg.org,
-  linux-kernel@vger.kernel.org,  linux-acpi@vger.kernel.org,
-  linux-mm@kvack.org,  kernel-team@meta.com
-Subject: Re: [PATCH v3] Weighted interleave auto-tuning
-In-Reply-To: <20250122155935.1282897-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Wed, 22 Jan 2025 07:59:34 -0800")
-References: <20250122155935.1282897-1-joshua.hahnjy@gmail.com>
-Date: Thu, 23 Jan 2025 11:32:37 +0800
-Message-ID: <8734hakxwq.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1737638532; c=relaxed/simple;
+	bh=3MoegCNOmpT0Qwh0/dTHVzxLkN4dZxrvaVTQ8pvkCfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QduARl57V6svoabpghojwfGYewRAhWVaF8eajRKovBzMOisnvRzynZN5oNlm0xM/5FjMMk81tGjBTeiTXjpifBKK7IGt5JEqqxCC1kBN1ZIwJtVzrKDDm38JGEBTQfd9P8cCw8ShkA7fDTik7YtNHxw1BMVqid2suBs3aXbdSc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UC4LIYam; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737638529;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=skrhwqElYadfZmEokudJOjgN6uzNO+XK0igkCNLj+D0=;
+	b=UC4LIYam8dVIWIq+QKKefOaE7TRwAA9+dashrsjmBFC5amGqpI93Atad6FI+p92D60fefJ
+	UW1St0p+bpeguS+2Y85MrUzhwDDwHAZQI4TOi0jLQhlTbnriNHIxjpVOg1qT+EkFUu0sWN
+	23jjQYBrmQFwTJlQ/vwQIKMjBX/ql8E=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-MVaFyAquPpKExWL0LRqS-w-1; Thu,
+ 23 Jan 2025 08:22:06 -0500
+X-MC-Unique: MVaFyAquPpKExWL0LRqS-w-1
+X-Mimecast-MFC-AGG-ID: MVaFyAquPpKExWL0LRqS-w
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 056751955DDA;
+	Thu, 23 Jan 2025 13:22:06 +0000 (UTC)
+Received: from x1.redhat.com (unknown [10.39.194.28])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 27331195605F;
+	Thu, 23 Jan 2025 13:22:03 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
+Date: Thu, 23 Jan 2025 14:22:02 +0100
+Message-ID: <20250123132202.18209-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-> On Wed, 22 Jan 2025 09:37:20 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
->
-> Hi Gregory and Ying, thank you both for your insights!
->
-> [...snip...]
->
->> >> I still prefer to use 2 iw_table, one is for default, the other is for
->> >> manual.  The default one will be used if the manual one is NULL.  Both
->> >> are protected by RCU.  The default one can be updated upon hotplug
->> >> blindly.  This makes the whole model easier to be understood IMHO.
->> > `cat auto node0 node1` -> `true 5 1`
->> > and you do
->> > echo 0 > auto
->
-> I think that when initially developing this patch, this was the intent
-> that I had as well (in the v1 of this RFC patch, there was an iw_table
-> and a separate default_iw_table). However, I think that the ideas of
-> having a "default" and "manual" table made less sense over time, given
-> that they behaved more like a "default" and "visible" table instead.
-> That is, the visible layer is directly manipulable by the user, but
-> does not necessarily only contain manually-set values; rather, most of
-> the time, it probably still has a lot of auto-generated weights.
->
-> I think that this analysis runs the risk of being a bit too semantically
-> nit-picky, but as I'll explain below, I think both the 1-layer approach
-> that I implemented in this RFC and the expected 2-layer behavior that
-> you outline below are essentially the same, functionally. In other
-> words, I think we agree on what the expected behavior should be : -)
-> We just have to agree on what presentation would make the most sense
-> for the user.
+Both ship with Android 4.4 as factory OS and have the usual broken DSDT
+issues for x86 Android tablets.
 
-This sounds good to me.
+Add a quirk to skip ACPI I2C client enumeration for the 5V version to
+complement the existing quirk for the 9V version.
 
-We still need to finalize the interface, 'mode' or 'auto'.  Personally,
-I prefer 'auto', because it's simpler.
-
->> > what should a subsequent `cat auto node0 node1` output?
->> >
->> > `false 5 1`
->> > or
->> > `false 1 1`
->> 
->> IMO, it should be
->> 
->> `false 5 1`
->> 
->> That is, we copy auto-generated weights to manual weights atomically and
->> use it.
->> 
->> > Then lets say we do
->> > echo 7 > node0
->> 
->> Now, `cat auto node0 node1` outputs,
->> 
->> `false 7 1`
->> 
->> That is, we delete manual weights and use the auto-generated ones.
->> 
->> > what should
->> > echo true > auto
->> > result in?
->> >
->> > `true 5 1`
->> > or
->> > `true 7 1`
->> 
->> It should be
->> 
->> `true 5 1`
->
-> I see, so I think we actually agree on what the behavior for this is.
-> Then there is no real "hidden state", it's either just using the
-> default weights, or turning that off and being able to edit the
-> states.
->  
->> > The current code makes sure that when you switch modes from auto
->> > to manual, it inherits the current state - instead of there being
->> > some hidden state that suddenly takes precedence.
->> 
->> I think that we can do that with two weight arrays.
->> 
->> > So I prefer to just have one IW array and no hidden state.
->> 
->> Then, when we switch from manual to auto mode, where to find
->> auto-generated weights?  Re-calculate them?
->
-> Even in manual mode, incoming bandwidth data is continuously stored.
-> This way, when a user does decide to switch back to auto mode later,
-> the system doesn't have to retrieve the bandwidth data all over again.
-> As for the auto-generated weights, they are re-calculated based solely
-> on the bandwidth data available. (I will note that re-calculating
-> the weights are very quick, see reduce_interleave_weights)
->
-> Based on your description of the expected behavior, everything you
-> listed out is actually what currently happens in the one-layer system.
-> Switching from auto --> manual inherits the auto-generated weights, and
-> switching from manual --> auto wipes all previous user-stored data.
->
-> At this point, I think that I am happy with either option. I wrote and
-> re-wrote this a bunch of times, and came to the conclusion that now
-> that we agree on the behavior of the interface, I have no strong
-> opinion on whether we have a "hidden" default layer or a phantom
-> default layer that is just generated every time a user needs it : -)
->
-> Please let me know if I missed anything as well! Thank you all for
-> your continued feedback and interest! Have a great day,
-
-I see.  You cache the nodes bandwidth instead of default weights.  That
-works.  I am fine with either way too.
-
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-Best Regards,
-Huang, Ying
+ drivers/acpi/x86/utils.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index cb45ef5240da..068c1612660b 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -407,6 +407,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++	},
+ 	{
+ 		/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+-- 
+2.47.1
+
 
