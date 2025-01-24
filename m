@@ -1,99 +1,90 @@
-Return-Path: <linux-acpi+bounces-10809-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10810-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80214A1B02B
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jan 2025 06:58:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F351A1B197
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jan 2025 09:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76851188D654
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jan 2025 05:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C7093AB59C
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Jan 2025 08:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9131C1D7E31;
-	Fri, 24 Jan 2025 05:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B303218ACA;
+	Fri, 24 Jan 2025 08:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eF8xY1e9"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i9jEOpSl";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pMQDqABw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3DF1D7E3E;
-	Fri, 24 Jan 2025 05:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1F614A0A3;
+	Fri, 24 Jan 2025 08:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737698306; cv=none; b=Aa33Z+1DXVqst/NDtpHQ7VA2gzRaBwHAoH70z3Q4H2nWWW2qZTEaOeeqnopEE0sAZETitUGGDLSQTEmBsepmebNBbE01q9mIgyNvgBlYEk3D1MfnsoNYuDiB8BI7Jj3MvSBKNniyW/lKaFYYacu37+iuyWvPyIdfbFYzYBh7s9I=
+	t=1737707016; cv=none; b=SnP0ajGALuiqO0WT+WG93uQkUQUfnCAvEDRmIJ1Y5VpcgkD1Mf+ys2J/BmcDDRyvoKiXYoTh2Orw9Xigin5K4TsMTSmE9DNGq2OzyIiXkJysnTBMA1O6K42i99pZ1XzyzU4RCgQIFvx3XUlbhUTjo5VBgTbYJItmnTzbMuja6nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737698306; c=relaxed/simple;
-	bh=+tTd/GT6GrfnQPTYWfKp2oZ1lvffZicnNE2av2idxnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SF7wmMqtRGTD0U+LiSlKe8zpoMHmH9ha5f/v/sRW8W/XdHsxczdQ0XUt0MI5IKeDXOfIGmO7ZcqNGgdFXU23MGEn5EQZpl862j7Il9tnrGCPqzU9dzQx+bG2l0c+FpBIPzp+uEs2P+6jbnB2J1uNM/bCcuXdQxbvj9BCivgzKk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eF8xY1e9; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wxNlNLDu+fIZSQcO3Iicv//qqn4spfDKGdfi3EWd53Q=; b=eF8xY1e9uuwkHz3VVz56Evp0qC
-	SIQoqiI1q46U5oh/ECKxBpzx4P//huxRF1BV1o06Wc0j3od0aGrYIvEEReWR8KH5EN+iwW/I/TpJu
-	rV6Yw5HgAhf9gqwfUake9tuk/VQtym3wSxxUbkC4hCNK4OIp3vJSnXAgASIwWVBYRyWRcicbTRRBR
-	4AberFy1PKbz992G/bQRyHtWpGO3s5IplPAwsfCc5Ff6+Z/jZcAhKxs4Go9q6cTr8deWOhvR7dL2E
-	YLvz3QNBTL4PN1R8ZwNKk8k6x2QMZ1RDWfSV0iOO7Bi62+aqklZbgiC+09NQsPSEhV6+hovSdwfvo
-	awNWBcAw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tbChl-0000000Di6h-1UWa;
-	Fri, 24 Jan 2025 05:58:09 +0000
-Date: Fri, 24 Jan 2025 05:58:09 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: gourry@gourry.net, hyeonggon.yoo@sk.com, ying.huang@linux.alibaba.com,
-	rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, honggyu.kim@sk.com, rakie.kim@sk.com,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] Weighted interleave auto-tuning
-Message-ID: <Z5Mr8WQGEZZjp9Uu@casper.infradead.org>
-References: <20250115185854.1991771-1-joshua.hahnjy@gmail.com>
+	s=arc-20240116; t=1737707016; c=relaxed/simple;
+	bh=u8jAzB9luBerrGnpeGITarnZaJCCRoOJb/od4Hjllpw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=g+mbdhZMSI9L4I87bhTo2jGv6i0dxIkUYYJYnOU6BbJTms+Bkm0EXf5esf64JGrGdrX/b8kqQu05kfvM18INsR63uhlDFTGeC0AQEVMQ3uzgL9JCUtFUbVnv2iswOglFzjur5g+gAjglE9chNQI60vFVGtSs17ZgOUYK5zfyhWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i9jEOpSl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pMQDqABw; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1737707006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8jAzB9luBerrGnpeGITarnZaJCCRoOJb/od4Hjllpw=;
+	b=i9jEOpSlMDa2M2CguNXrvcShhPwQvjlHcNjbhAxszqsE1ZLGPXP266X0JBDQz7pxLV4uAV
+	r1L9+pNn702PPlVAFuS276P7OuxUcXCxqOfBOszvygqCwlU908x7csK9kaSe5/y4vvCMN+
+	VDnzd02JIiXOcbVoY2VUXlL++RUj52KBwurmUfOZ0PmAwoFUPf+mr4+z6/2asXRV6Mo84F
+	txL+8/bPI4IAYFRb9F5Eyovj394vLtg+ayDFSCURmy1Xd26+Mrw530IQtM1YNjC97PKg7y
+	cTCZAht8wG1tMHbix6+6r/kT2duTdY0P3RYEQNbzCs8ozHcOpO0PS4zEm052BQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1737707006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8jAzB9luBerrGnpeGITarnZaJCCRoOJb/od4Hjllpw=;
+	b=pMQDqABwiuVQ1xLjoOG1BKQr79T6gUJst6Ow1ws4I0tdfzmF4P8vCd9YWK96ANqOf+S8XU
+	2joppHKcBeE8MhBg==
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui
+ <rui.zhang@intel.com>, dave.hansen@linux.intel.com, bp@alien8.de
+Cc: rafael@kernel.org, lenb@kernel.org, mingo@redhat.com,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ jmattson@google.com, x86@kernel.org
+Subject: Re: [PATCH V2] x86/acpi: Fix LAPIC/x2APIC parsing order
+In-Reply-To: <CAJZ5v0iy63VakygnMqV4b5yYR2rwGbJ4zM4PbPYX2oH-ry9Evw@mail.gmail.com>
+References: <20250117081420.4046737-1-rui.zhang@intel.com>
+ <CAJZ5v0iy63VakygnMqV4b5yYR2rwGbJ4zM4PbPYX2oH-ry9Evw@mail.gmail.com>
+Date: Fri, 24 Jan 2025 09:23:25 +0100
+Message-ID: <87v7u48vsy.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115185854.1991771-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain
 
-On Wed, Jan 15, 2025 at 10:58:54AM -0800, Joshua Hahn wrote:
-> On machines with multiple memory nodes, interleaving page allocations
-> across nodes allows for better utilization of each node's bandwidth.
-> Previous work by Gregory Price [1] introduced weighted interleave, which
-> allowed for pages to be allocated across NUMA nodes according to
-> user-set ratios.
+On Thu, Jan 23 2025 at 20:12, Rafael J. Wysocki wrote:
+>> 1. https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#madt-processor-local-apic-sapic-structure-entry-order
+>>
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Jim Mattson <jmattson@google.com>
+>> Closes: https://lore.kernel.org/all/20241010213136.668672-1-jmattson@google.com/
+>> Fixes: ec9aedb2aa1a ("x86/acpi: Ignore invalid x2APIC entries")
+>> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+>> Reviewed-by: Jim Mattson <jmattson@google.com>
+>> Tested-by: Jim Mattson <jmattson@google.com>
+>> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+>
+> x86 folks, should I apply this?
 
-I still don't get it.  You always want memory to be on the local node or
-the fabric gets horribly congested and slows you right down.  But you're
-not really talking about NUMA, are you?  You're talking about CXL.
+Sure.
 
-And CXL is terrible for bandwidth.  I just ran the numbers.
-
-On a current Intel top-end CPU, we're looking at 8x DDR5-4800 DIMMs,
-each with a bandwidth of 38.4GB/s for a total of 300GB/s.
-
-For each CXL lane, you take a lane of PCIe gen5 away.  So that's
-notionally 32Gbit/s, or 4GB/s per lane.  But CXL is crap, and you'll be
-lucky to get 3 cachelines per 256 byte packet, dropping you down to 3GB/s.
-You're not going to use all 80 lanes for CXL (presumably these CPUs are
-going to want to do I/O somehow), so maybe allocate 20 of them to CXL.
-That's 60GB/s, or a 20% improvement in bandwidth.  On top of that,
-it's slow, with a minimum of 10ns latency penalty just from the CXL
-encode/decode penalty.
-
-Putting page cache in the CXL seems like nonsense to me.  I can see it
-making sense to swap to CXL, or allocating anonymous memory for tasks
-with low priority on it.  But I just can't see the point of putting
-pagecache on CXL.
 
