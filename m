@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-10838-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10839-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AEFA1CC16
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jan 2025 17:01:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F7DA1CC17
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jan 2025 17:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B9833A9945
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jan 2025 15:52:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D2B3B04EC
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jan 2025 15:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD9A22DF8F;
-	Sun, 26 Jan 2025 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39A230269;
+	Sun, 26 Jan 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMpKWPbO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2O7u2yw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83B122DF8C;
-	Sun, 26 Jan 2025 15:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBA4230263;
+	Sun, 26 Jan 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903922; cv=none; b=o1hq7pZZUb+fqJ+ZbqpJoau4YtNPAxu/IFrvszdPv88HCGDBNa2GKPkqdy5Ty9ZhHhO0+p3hG7Cm82ZisgfA6gYNhbKQgcWP/b6RAbxRdRwXOXxuWq1/oSnYMqadmzmVYcg/27JIK1m6uYrwNsIhPPTA8hGPiqsxGF90Zyi0Nt4=
+	t=1737903942; cv=none; b=nOXt9NTyaQJE9oZIESupeDhE8emlOQ8hWXRzQCqVqOj/Ivg2CusjO6uOAUYv24ORtv5npc9BVGM8KWSAYUlfUl+p1aHgJbGbIcG+PcyHwLd3QgvPlWF1s1FGl08sSwqF8lBS5PtbhJlM29b2NHDApB6DK2IHQzGvbhGjOZ61RNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903922; c=relaxed/simple;
-	bh=uIEGC/NAmq0+V2kfEBz/VQAfjXTFILX2uZ7sTBL23t0=;
+	s=arc-20240116; t=1737903942; c=relaxed/simple;
+	bh=CNJQ+QICW40Pa+BDnOGMrVBfVz0a2+8S215DRjhfXqw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cyRRluNhb609BFxAbnK9gll9M/9N2tYXC73NSXktpJO/Q40tvET4ETtGpZGfZ2XN+i9PHgo0pAMq/tO7MvH/HDii0U/8Fw8KkrCHr7kxo6mMLShCaIAw+wmFAtPNaVcOxW8j/Svf1bn6aoPg/Vz8Sj8CMw+VHXjDTefnEQ5CBU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMpKWPbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36939C4CED3;
-	Sun, 26 Jan 2025 15:05:20 +0000 (UTC)
+	 MIME-Version; b=D/RQv2HTfHCwYadR4jVbFawP29d9PSVJKhW2zNlCsQV+Qk4a/pOv2GQJh86Xq4E6cOd68fqb8elj+gdOnrIgYIYgeJM4+jZ5VcheosKHR2c0vz2Ua/odYofQUyl0qENsijzAWl5sg8SxwNEU+hrmE5WZuH+YRJI+D5KVuPNffOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2O7u2yw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E467BC4CED3;
+	Sun, 26 Jan 2025 15:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903921;
-	bh=uIEGC/NAmq0+V2kfEBz/VQAfjXTFILX2uZ7sTBL23t0=;
+	s=k20201202; t=1737903942;
+	bh=CNJQ+QICW40Pa+BDnOGMrVBfVz0a2+8S215DRjhfXqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMpKWPbO1yii/9/ZLKm7hTqNIKtVkswBVVVK8K0YSoBGkKmPQgaVM2416X2ib0WUp
-	 QZSWdck+i1dlH03MN74Y4KRFz8am5mXzUKtYtpg4+3pQ/jRB3jHGkWZakbNTZCaoJG
-	 5b0LWCt/QApYnx2UCv1xZrXWxcUu9d/uBbmVbGQV79IbZ8fcKEbJOLWLusPsWE1fLa
-	 jMqWS7QAFtl8XFBWyP9t91oUceabYuO0mth1o+6teBQsvcdLW+U2QvVyUidw6OoVo3
-	 nLDaJUwvhtuHqPVTbh52UDKxbTwDuW3ZBW+ANuY+9EX3i+qMeevqJCbSo0snL2tiVV
-	 UmZzS3Q7lETWQ==
+	b=f2O7u2ywo48sw+y61HQK2JxTM0H5B1atFnXL2YKRVvw00vf+oXv4c4+Zc5QesYn7J
+	 TVE/nTUB9ejpmqSXuGfahlKG0mu3IkzGsdaxJKM4ezPxnTH1e4Z4m9ylTY13vra2v5
+	 DGagm6orBIhlIo20rKCEyG/FAQZmrM0qgSEKALydNFwDtmI1xrp8lnx+9WeYNxWtem
+	 2Bh+1/fjQLNYnOdPPGC8qz4g2oGDTGowXtCEhEofn0qCpC/XKmyd/wF4+JLfjpU/ri
+	 VpzWHEDc+PvMgPaAjV/8u5WO0QIquTE5WDnQBFDT7sSquKxnyRMMhkR76Les94nHVX
+	 TzKbydKmixO3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,17 +52,16 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	rafael@kernel.org,
 	dave.jiang@intel.com,
 	alison.schofield@intel.com,
-	Jonathan.Cameron@huawei.com,
 	u.kleine-koenig@baylibre.com,
-	dan.j.williams@intel.com,
 	peterz@infradead.org,
+	dan.j.williams@intel.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 09/12] APEI: GHES: Have GHES honor the panic= setting
-Date: Sun, 26 Jan 2025 10:04:57 -0500
-Message-Id: <20250126150500.959521-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 7/7] APEI: GHES: Have GHES honor the panic= setting
+Date: Sun, 26 Jan 2025 10:05:27 -0500
+Message-Id: <20250126150527.960265-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150500.959521-1-sashal@kernel.org>
-References: <20250126150500.959521-1-sashal@kernel.org>
+In-Reply-To: <20250126150527.960265-1-sashal@kernel.org>
+References: <20250126150527.960265-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -71,7 +70,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.233
+X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
 From: Borislav Petkov <bp@alien8.de>
@@ -106,10 +105,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 160606af8b4f5..a6c8514110736 100644
+index e0d82fab1f448..50bed5a708125 100644
 --- a/drivers/acpi/apei/ghes.c
 +++ b/drivers/acpi/apei/ghes.c
-@@ -155,8 +155,6 @@ static unsigned long ghes_estatus_pool_size_request;
+@@ -128,8 +128,6 @@ static unsigned long ghes_estatus_pool_size_request;
  static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
  static atomic_t ghes_estatus_cache_alloced;
  
@@ -118,7 +117,7 @@ index 160606af8b4f5..a6c8514110736 100644
  static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
  {
  	phys_addr_t paddr;
-@@ -858,14 +856,16 @@ static void __ghes_panic(struct ghes *ghes,
+@@ -707,14 +705,16 @@ static void __ghes_panic(struct ghes *ghes,
  			 struct acpi_hest_generic_status *estatus,
  			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
  {
