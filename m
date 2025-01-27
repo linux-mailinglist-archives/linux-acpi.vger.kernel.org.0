@@ -1,143 +1,120 @@
-Return-Path: <linux-acpi+bounces-10839-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10840-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F7DA1CC17
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jan 2025 17:01:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ECA9A1D3A6
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2025 10:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D2B3B04EC
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Jan 2025 15:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCFF161769
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2025 09:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39A230269;
-	Sun, 26 Jan 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AAD1FCFEC;
+	Mon, 27 Jan 2025 09:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2O7u2yw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b2HmUB8Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBA4230263;
-	Sun, 26 Jan 2025 15:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEC41FCFE6;
+	Mon, 27 Jan 2025 09:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903942; cv=none; b=nOXt9NTyaQJE9oZIESupeDhE8emlOQ8hWXRzQCqVqOj/Ivg2CusjO6uOAUYv24ORtv5npc9BVGM8KWSAYUlfUl+p1aHgJbGbIcG+PcyHwLd3QgvPlWF1s1FGl08sSwqF8lBS5PtbhJlM29b2NHDApB6DK2IHQzGvbhGjOZ61RNM=
+	t=1737970766; cv=none; b=QiAdB1RWPPPT2mWH4+ZGbdfgbwtpkRgIiBW5cFcGH53rQjgvtT4Qun4Md9Kx3E55yw1j8pu+OoQK53dVYhffHWTmRmjngIqQMLp5mINCrBPV3Gbl7PauCQJUDokN84yNtzdTXIej2QJyqx1mTTbxRl8o24reRZIlWuGQYEGUNO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903942; c=relaxed/simple;
-	bh=CNJQ+QICW40Pa+BDnOGMrVBfVz0a2+8S215DRjhfXqw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D/RQv2HTfHCwYadR4jVbFawP29d9PSVJKhW2zNlCsQV+Qk4a/pOv2GQJh86Xq4E6cOd68fqb8elj+gdOnrIgYIYgeJM4+jZ5VcheosKHR2c0vz2Ua/odYofQUyl0qENsijzAWl5sg8SxwNEU+hrmE5WZuH+YRJI+D5KVuPNffOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2O7u2yw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E467BC4CED3;
-	Sun, 26 Jan 2025 15:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903942;
-	bh=CNJQ+QICW40Pa+BDnOGMrVBfVz0a2+8S215DRjhfXqw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2O7u2ywo48sw+y61HQK2JxTM0H5B1atFnXL2YKRVvw00vf+oXv4c4+Zc5QesYn7J
-	 TVE/nTUB9ejpmqSXuGfahlKG0mu3IkzGsdaxJKM4ezPxnTH1e4Z4m9ylTY13vra2v5
-	 DGagm6orBIhlIo20rKCEyG/FAQZmrM0qgSEKALydNFwDtmI1xrp8lnx+9WeYNxWtem
-	 2Bh+1/fjQLNYnOdPPGC8qz4g2oGDTGowXtCEhEofn0qCpC/XKmyd/wF4+JLfjpU/ri
-	 VpzWHEDc+PvMgPaAjV/8u5WO0QIquTE5WDnQBFDT7sSquKxnyRMMhkR76Les94nHVX
-	 TzKbydKmixO3Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	u.kleine-koenig@baylibre.com,
-	peterz@infradead.org,
-	dan.j.williams@intel.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 7/7] APEI: GHES: Have GHES honor the panic= setting
-Date: Sun, 26 Jan 2025 10:05:27 -0500
-Message-Id: <20250126150527.960265-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150527.960265-1-sashal@kernel.org>
-References: <20250126150527.960265-1-sashal@kernel.org>
+	s=arc-20240116; t=1737970766; c=relaxed/simple;
+	bh=fAwoLnpoPz47PmBAunPSbxRMJUHOaZzW6Ywv2OukBbo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WIAMUJDH8R35SJgXwZNgTMf4TBz36SA9fAghA4JGk+xWXzHk0n3kj12B4OD6uWt/d739a6TwceIzsfB7dy8cdsrPDZ7mEQokn63s9m0LVaOI4BGk1HyuZjXg5O8NJC9AflSW5gecwe3DG2khmmnle3KsTK2dRvHiKcG7eQunq1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b2HmUB8Z; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2163dc5155fso71736465ad.0;
+        Mon, 27 Jan 2025 01:39:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737970764; x=1738575564; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BU/+ngc0rwkOA68GGUKrKhCFkJ1MEoDFNReGer82ENI=;
+        b=b2HmUB8ZDzykiRLu01CygR4mbrfHllWe/4LG7WbQrX8+IdToD8kKo1+qQa/fI79sMq
+         pBoMZDQ5gS1b8najn5r5XfZlsAEl619S30SVNmjFdh7fKAhaVRueN0ht6x7AE1/3ATcD
+         YXZ3AtYJmuOTMC3t75EXejcXyOBA9pD9IGwQ0+rcn6jsiuU4cK2EhMQCL5kGqY7VlXNB
+         LcMDxMGRRvUJnbJhXvyN+6F9RWp4pKBxAs/LYGOr4HtkREobVlIqkbXIwNNwF8s+dDGk
+         CgpRXjrmDoKQyU8yP9z+zLmdKH3eNstqQqWqTXohtNBCdTimbnEdSY696tz8HdLvvLgJ
+         5qKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737970764; x=1738575564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BU/+ngc0rwkOA68GGUKrKhCFkJ1MEoDFNReGer82ENI=;
+        b=DXe2yAENtczgIzcxW4auY1SCbg0HfcGMySSgYGpfku9Nt+ieMZ7wNHh5dWBU4LBVnw
+         lTFe7fB1QhF2QR1V7LJ8M/uuUYqfeKYOKofcEn0tsEGpbYiMbKpnWCP/mfQ8HgwJPK3j
+         RkaDqZpB9Kx920YdVsvLdYhFclFX4T1pcBKLUQ102+kxrXEsY+11lhfVDREWv8abWJcd
+         5NWphyksUUY/HxcgiywkVH39kAjI5PEqqytJ/I4E5f2WhDf3ER/bqabPTAcHkCW4+5G1
+         Umwvu3kv4N22Jsu1c3Q3CT+SXrrYhR7SPn/zlCf4rW3qWu/PkUUfgeT4hTMNGXbkKLr9
+         b8iw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5fGqXjGHZHWMiIUFkRjzCSjfDCy/jL/Z36Y9Z9nbUt7jGD+2o6FoUM/r5whgVJ2rM1D+Zr37gUuUqkUJR@vger.kernel.org, AJvYcCVBFGsrnwAf5DKNg+pbpuTZgkcSUejnJekO3X4sEey2mERc6cFBZkOXZGi2hwwDS4S+ZwNM+RZu13wa@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjI6dU/3gKUlzbrLJKmQCYtKYwisLOSedwm/bMdN1NGBasU46n
+	hZFWb9gGVtJwFuAWJAeHnw344I55CDD163oFl1Cs5bGQzz3fAMHr
+X-Gm-Gg: ASbGncva/iUQ9dL6Hc/P9NbydZUlTFHiVWoMzj85dOQi0g8aIisemAUVy8yN4ebA0aI
+	/sIBCYwbxC3aiPgxtc0ADtEgbEgBhsMg/OGWVdKKtsE0k75E8rL8RwhO0j8Fg8SXwt2wnK5rsBj
+	8fxw7grET0O6uu8TS9bWpqkKl+eG8DVmjH6FTxyET6pomxYVG73pTEBwo4yikIwFpUB43fOOXTV
+	d5JX5ucdwIcfAvnX+Z2MzRHrvDisqVnB1pkMuL7rpSQSiSZ9QA/ljaaSW/uDzYD3pdO5FTIiP9a
+	+s6sk5TSzheYUMvjnkkaQTI73F7Odt9lIU1xcF483kbKWpwCwSoUj+pfhA==
+X-Google-Smtp-Source: AGHT+IE85ened9sCDR9H7KedNAjHvfIVQPwWkWoRLk86Z6FbVIvSZFExd7ci6WpZfwwyvsuaVoiEIg==
+X-Received: by 2002:a17:902:f78e:b0:215:a05d:fb05 with SMTP id d9443c01a7336-21c355dcf9emr623095975ad.32.1737970763975;
+        Mon, 27 Jan 2025 01:39:23 -0800 (PST)
+Received: from localhost.localdomain (160-2-169-228.cpe.sparklight.net. [160.2.169.228])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da413f712sm58474175ad.142.2025.01.27.01.39.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 01:39:22 -0800 (PST)
+From: Gannon Kolding <gannon.kolding@gmail.com>
+To: rafael@kernel.org
+Cc: lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Gannon Kolding <gannon.kolding@gmail.com>
+Subject: [PATCH] ACPI: resource: IRQ override for Eluktronics MECH-17
+Date: Mon, 27 Jan 2025 02:39:02 -0700
+Message-ID: <20250127093902.328361-1-gannon.kolding@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
-From: Borislav Petkov <bp@alien8.de>
+The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
+keyboard to work. Adding a DMI_MATCH entry for this laptop model
+makes the internal keyboard function normally.
 
-[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
-
-The GHES driver overrides the panic= setting by force-rebooting the
-system after a fatal hw error has been reported. The intent being that
-such an error would be reported earlier.
-
-However, this is not optimal when a hard-to-debug issue requires long
-time to reproduce and when that happens, the box will get rebooted after
-30 seconds and thus destroy the whole hw context of when the error
-happened.
-
-So rip out the default GHES panic timeout and honor the global one.
-
-In the panic disabled (panic=0) case, the error will still be logged to
-dmesg for later inspection and if panic after a hw error is really
-required, then that can be controlled the usual way - use panic= on the
-cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
-
-Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
 ---
- drivers/acpi/apei/ghes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index e0d82fab1f448..50bed5a708125 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -128,8 +128,6 @@ static unsigned long ghes_estatus_pool_size_request;
- static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
- 
--static int ghes_panic_timeout __read_mostly = 30;
--
- static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
- {
- 	phys_addr_t paddr;
-@@ -707,14 +705,16 @@ static void __ghes_panic(struct ghes *ghes,
- 			 struct acpi_hest_generic_status *estatus,
- 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
- {
-+	const char *msg = GHES_PFX "Fatal hardware error";
-+
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
--	/* reboot to log the error! */
- 	if (!panic_timeout)
--		panic_timeout = ghes_panic_timeout;
--	panic("Fatal hardware error!");
-+		pr_emerg("%s but panic disabled\n", msg);
-+
-+	panic(msg);
- }
- 
- static int ghes_proc(struct ghes *ghes)
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 90aaec923889..b4cd14e7fa76 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -563,6 +563,12 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
++		},
++	},
+ 	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
 -- 
-2.39.5
+2.48.1
 
 
