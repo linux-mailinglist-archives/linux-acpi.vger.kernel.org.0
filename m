@@ -1,120 +1,286 @@
-Return-Path: <linux-acpi+bounces-10840-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10841-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECA9A1D3A6
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2025 10:40:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B51AA1D410
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2025 11:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCFF161769
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2025 09:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96EE3166A89
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Jan 2025 10:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AAD1FCFEC;
-	Mon, 27 Jan 2025 09:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b2HmUB8Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FCD1FDA7C;
+	Mon, 27 Jan 2025 10:06:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEC41FCFE6;
-	Mon, 27 Jan 2025 09:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A62F135A63;
+	Mon, 27 Jan 2025 10:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737970766; cv=none; b=QiAdB1RWPPPT2mWH4+ZGbdfgbwtpkRgIiBW5cFcGH53rQjgvtT4Qun4Md9Kx3E55yw1j8pu+OoQK53dVYhffHWTmRmjngIqQMLp5mINCrBPV3Gbl7PauCQJUDokN84yNtzdTXIej2QJyqx1mTTbxRl8o24reRZIlWuGQYEGUNO4=
+	t=1737972391; cv=none; b=WFMk+hdK6RuIH4M/38ogg/FXT9mvJWTGokf1Oe4ClMvQMNfXxI25EpmiiPgmbcCclFe8jfRoG5u07SpxfCr3i+gS7JmM/1QT6fxMy+MkOipbr3bTm22jSq3u+US6h6YcpB+M5i8u5eowqpJYyoD2Bcl289Z8hm0eERjm9BwbAXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737970766; c=relaxed/simple;
-	bh=fAwoLnpoPz47PmBAunPSbxRMJUHOaZzW6Ywv2OukBbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WIAMUJDH8R35SJgXwZNgTMf4TBz36SA9fAghA4JGk+xWXzHk0n3kj12B4OD6uWt/d739a6TwceIzsfB7dy8cdsrPDZ7mEQokn63s9m0LVaOI4BGk1HyuZjXg5O8NJC9AflSW5gecwe3DG2khmmnle3KsTK2dRvHiKcG7eQunq1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b2HmUB8Z; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2163dc5155fso71736465ad.0;
-        Mon, 27 Jan 2025 01:39:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737970764; x=1738575564; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BU/+ngc0rwkOA68GGUKrKhCFkJ1MEoDFNReGer82ENI=;
-        b=b2HmUB8ZDzykiRLu01CygR4mbrfHllWe/4LG7WbQrX8+IdToD8kKo1+qQa/fI79sMq
-         pBoMZDQ5gS1b8najn5r5XfZlsAEl619S30SVNmjFdh7fKAhaVRueN0ht6x7AE1/3ATcD
-         YXZ3AtYJmuOTMC3t75EXejcXyOBA9pD9IGwQ0+rcn6jsiuU4cK2EhMQCL5kGqY7VlXNB
-         LcMDxMGRRvUJnbJhXvyN+6F9RWp4pKBxAs/LYGOr4HtkREobVlIqkbXIwNNwF8s+dDGk
-         CgpRXjrmDoKQyU8yP9z+zLmdKH3eNstqQqWqTXohtNBCdTimbnEdSY696tz8HdLvvLgJ
-         5qKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737970764; x=1738575564;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BU/+ngc0rwkOA68GGUKrKhCFkJ1MEoDFNReGer82ENI=;
-        b=DXe2yAENtczgIzcxW4auY1SCbg0HfcGMySSgYGpfku9Nt+ieMZ7wNHh5dWBU4LBVnw
-         lTFe7fB1QhF2QR1V7LJ8M/uuUYqfeKYOKofcEn0tsEGpbYiMbKpnWCP/mfQ8HgwJPK3j
-         RkaDqZpB9Kx920YdVsvLdYhFclFX4T1pcBKLUQ102+kxrXEsY+11lhfVDREWv8abWJcd
-         5NWphyksUUY/HxcgiywkVH39kAjI5PEqqytJ/I4E5f2WhDf3ER/bqabPTAcHkCW4+5G1
-         Umwvu3kv4N22Jsu1c3Q3CT+SXrrYhR7SPn/zlCf4rW3qWu/PkUUfgeT4hTMNGXbkKLr9
-         b8iw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5fGqXjGHZHWMiIUFkRjzCSjfDCy/jL/Z36Y9Z9nbUt7jGD+2o6FoUM/r5whgVJ2rM1D+Zr37gUuUqkUJR@vger.kernel.org, AJvYcCVBFGsrnwAf5DKNg+pbpuTZgkcSUejnJekO3X4sEey2mERc6cFBZkOXZGi2hwwDS4S+ZwNM+RZu13wa@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjI6dU/3gKUlzbrLJKmQCYtKYwisLOSedwm/bMdN1NGBasU46n
-	hZFWb9gGVtJwFuAWJAeHnw344I55CDD163oFl1Cs5bGQzz3fAMHr
-X-Gm-Gg: ASbGncva/iUQ9dL6Hc/P9NbydZUlTFHiVWoMzj85dOQi0g8aIisemAUVy8yN4ebA0aI
-	/sIBCYwbxC3aiPgxtc0ADtEgbEgBhsMg/OGWVdKKtsE0k75E8rL8RwhO0j8Fg8SXwt2wnK5rsBj
-	8fxw7grET0O6uu8TS9bWpqkKl+eG8DVmjH6FTxyET6pomxYVG73pTEBwo4yikIwFpUB43fOOXTV
-	d5JX5ucdwIcfAvnX+Z2MzRHrvDisqVnB1pkMuL7rpSQSiSZ9QA/ljaaSW/uDzYD3pdO5FTIiP9a
-	+s6sk5TSzheYUMvjnkkaQTI73F7Odt9lIU1xcF483kbKWpwCwSoUj+pfhA==
-X-Google-Smtp-Source: AGHT+IE85ened9sCDR9H7KedNAjHvfIVQPwWkWoRLk86Z6FbVIvSZFExd7ci6WpZfwwyvsuaVoiEIg==
-X-Received: by 2002:a17:902:f78e:b0:215:a05d:fb05 with SMTP id d9443c01a7336-21c355dcf9emr623095975ad.32.1737970763975;
-        Mon, 27 Jan 2025 01:39:23 -0800 (PST)
-Received: from localhost.localdomain (160-2-169-228.cpe.sparklight.net. [160.2.169.228])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da413f712sm58474175ad.142.2025.01.27.01.39.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 01:39:22 -0800 (PST)
-From: Gannon Kolding <gannon.kolding@gmail.com>
-To: rafael@kernel.org
-Cc: lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Gannon Kolding <gannon.kolding@gmail.com>
-Subject: [PATCH] ACPI: resource: IRQ override for Eluktronics MECH-17
-Date: Mon, 27 Jan 2025 02:39:02 -0700
-Message-ID: <20250127093902.328361-1-gannon.kolding@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1737972391; c=relaxed/simple;
+	bh=HaJISOiWz7R1r1J6OtqNGdfHPZ+ielbWHGWQOkSlAY8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RWRcSoVyqFK4DlNHZ5isNM3gz/oULlc9mVFr+lWSTsJHBjoyU3C8jE1ns1tdpLKfSbAJ/FeTpoCquLKQjTawxK3wVAx9cONygjWGkOQmb7N9ZLEg6X21jKynir+IucPyMMgOynBwjUSYyxA8+v46l+IaAVltxMCAcULIqpiK2p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YhPCP5hTVz6M4Pk;
+	Mon, 27 Jan 2025 18:04:17 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1A78E1400D4;
+	Mon, 27 Jan 2025 18:06:20 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 27 Jan
+ 2025 11:06:18 +0100
+Date: Mon, 27 Jan 2025 10:06:17 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <shiju.jose@huawei.com>, <linux-edac@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <bp@alien8.de>,
+	<tony.luck@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<mchehab@kernel.org>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
+	<leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v18 15/19] cxl/memfeature: Add CXL memory device patrol
+ scrub control feature
+Message-ID: <20250127100617.00005e77@huawei.com>
+In-Reply-To: <6793fa5351fc7_20f3294d0@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+	<20250106121017.1620-16-shiju.jose@huawei.com>
+	<6793fa5351fc7_20f3294d0@dwillia2-xfh.jf.intel.com.notmuch>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
-keyboard to work. Adding a DMI_MATCH entry for this laptop model
-makes the internal keyboard function normally.
+On Fri, 24 Jan 2025 12:38:43 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
----
- drivers/acpi/resource.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> shiju.jose@ wrote:
+> > From: Shiju Jose <shiju.jose@huawei.com>
+> > 
+> > CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub control
+> > feature. The device patrol scrub proactively locates and makes corrections
+> > to errors in regular cycle.
+> > 
+> > Allow specifying the number of hours within which the patrol scrub must be
+> > completed, subject to minimum and maximum limits reported by the device.
+> > Also allow disabling scrub allowing trade-off error rates against
+> > performance.
+> > 
+> > Add support for patrol scrub control on CXL memory devices.
+> > Register with the EDAC device driver, which retrieves the scrub attribute
+> > descriptors from EDAC scrub and exposes the sysfs scrub control attributes
+> > to userspace. For example, scrub control for the CXL memory device
+> > "cxl_mem0" is exposed in /sys/bus/edac/devices/cxl_mem0/scrubX/.
+> > 
+> > Additionally, add support for region-based CXL memory patrol scrub control.
+> > CXL memory regions may be interleaved across one or more CXL memory
+> > devices. For example, region-based scrub control for "cxl_region1" is
+> > exposed in /sys/bus/edac/devices/cxl_region1/scrubX/.
+> > 
+> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+Hi Dan,
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 90aaec923889..b4cd14e7fa76 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -563,6 +563,12 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
-+		},
-+	},
- 	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
--- 
-2.48.1
+A few specific replies in line. I've left the detail stuff to Shiju
+to address.  Definitely a few things in there I'd missed!
+
+Thanks,
+
+Jonathan
+
+
+> > ---
+> >  Documentation/edac/scrub.rst  |  66 ++++++
+> >  drivers/cxl/Kconfig           |  17 ++
+> >  drivers/cxl/core/Makefile     |   1 +
+> >  drivers/cxl/core/memfeature.c | 392 ++++++++++++++++++++++++++++++++++
+> >  drivers/cxl/core/region.c     |   6 +
+> >  drivers/cxl/cxlmem.h          |   7 +
+> >  drivers/cxl/mem.c             |   5 +
+> >  include/cxl/features.h        |  16 ++
+> >  8 files changed, 510 insertions(+)
+> >  create mode 100644 drivers/cxl/core/memfeature.c
+> > diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
+> > index f86645c7f0af..80e986c57885 100644
+> > --- a/Documentation/edac/scrub.rst
+> > +++ b/Documentation/edac/scrub.rst
+> > @@ -325,3 +325,69 @@ root@localhost:~# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_d
+> >  10800
+> >  
+> >  root@localhost:~# echo 0 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
+> > +
+> > +2. CXL memory device patrol scrubber
+> > +
+> > +2.1 Device based scrubbing
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/scrub0/min_cycle_duration
+> > +
+> > +3600
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/scrub0/max_cycle_duration
+> > +
+> > +918000
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/scrub0/current_cycle_duration
+> > +
+> > +43200
+> > +
+> > +root@localhost:~# echo 54000 > /sys/bus/edac/devices/cxl_mem0/scrub0/current_cycle_duration
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/scrub0/current_cycle_duration
+> > +
+> > +54000
+> > +
+> > +root@localhost:~# echo 1 > /sys/bus/edac/devices/cxl_mem0/scrub0/enable_background
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/scrub0/enable_background
+> > +
+> > +1
+> > +
+> > +root@localhost:~# echo 0 > /sys/bus/edac/devices/cxl_mem0/scrub0/enable_background
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_mem0/scrub0/enable_background
+> > +
+> > +0
+> > +
+> > +2.2. Region based scrubbing
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub0/min_cycle_duration
+> > +
+> > +3600
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub0/max_cycle_duration
+> > +
+> > +918000
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub0/current_cycle_duration
+> > +
+> > +43200
+> > +
+> > +root@localhost:~# echo 54000 > /sys/bus/edac/devices/cxl_region0/scrub0/current_cycle_duration
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub0/current_cycle_duration
+> > +
+> > +54000
+> > +
+> > +root@localhost:~# echo 1 > /sys/bus/edac/devices/cxl_region0/scrub0/enable_background
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub0/enable_background
+> > +
+> > +1
+> > +
+> > +root@localhost:~# echo 0 > /sys/bus/edac/devices/cxl_region0/scrub0/enable_background
+> > +
+> > +root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub0/enable_background  
+> 
+> What is this content-free blob of cat and echo statements? Please write actual
+> documentation with theory of operation, clarification of assumptions,
+> rationale for defaults, guidance on changing defaults... 
+
+Note this is a continuation of existing documentation, but sure some inline comments
+talking more about it would be fine.  The rational and top level discussion is
+meant to be described in patch 2 as it is not CXL specific.
+
+Defaults are a device thing, there are no software driven defaults.
+
+So I'd suggest the above just adds a few comments along the lines of
+what the actions of each block does. 
+Something like:
+
+Check current parameters and program the scrubbing for a region to repeat
+every X seconds (% of day)
+
+
+> 
+> > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> > index 0bc6a2cb8474..6078f02e883b 100644
+> > --- a/drivers/cxl/Kconfig
+> > +++ b/drivers/cxl/Kconfig
+> > @@ -154,4 +154,21 @@ config CXL_FEATURES
+> >  
+> >  	  If unsure say 'y'.
+> >  
+> > +config CXL_RAS_FEATURES
+> > +	tristate "CXL: Memory RAS features"
+> > +	depends on CXL_PCI  
+> 
+> What is the build dependency on CXL_PCI? This enabling does not call back into
+> symbols provided by cxl_pci.ko does it?
+> 
+> > +	depends on CXL_MEM  
+> 
+> Similar comment, and this also goes away if all of this just moves into
+> the new cxl_features driver.
+
+I'm not sure moving to be a child of cxl_features makes sense. Can
+probably do it but it's making the spiders web of connections even harder
+to relate to the underlying hardware. In my mental model, this stuff
+takes services from 'features' and 'mailbox' parts of the CXL driver.
+
+Take repair.   Less than half of each of those drivers is feature related
+(a few 'what can I do' type aspects). The control plane goes via
+maintenance commands.
+
+Obviously we can get to those by adding additional infrastructure to the
+features driver, but that seems likely to be ugly and where do we stop?
+It won't scale to likely future cases where the feature part is a tiny
+tweak on some much larger chunk of infrastructure (which is mostly what
+spec defined features seem to be for). I don't think we want to support
+the complexity of device built-in test in the 3.2 spec necessarily
+(haven't really thought about it yet!) but it is an example of what would
+be an EDAC feature but has no dependence on features.
+
+We could register the patrol scrub stuff from features, and the rest
+separately but that seems even more confusing.
+
+So to me, nesting under features is an ugly solution but I'm not that
+attached to current approach.
+
+So in my view this stuff should be dependent on CXL_FEATURES but
+not a child of it.
+
+
+(lots skipped - I'll leave the detailed stuff to Shiju!)
+> > +	else
+> > +		snprintf(cxl_dev_name, sizeof(cxl_dev_name),
+> > +			 "%s_%s", "cxl", dev_name(&cxlmd->dev));  
+> 
+> Can a "cxl" directory be created so that the raw name can be used?
+
+I'd like feedback from Boris on that.  It is a mess to instantiate
+devices in subdirectories under a bus (that's kind of the big issue
+with the EDAC usage of the device model already).
+
+I'd say no it can't.
+
+> 
 
 
