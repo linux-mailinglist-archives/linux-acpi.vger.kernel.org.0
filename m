@@ -1,413 +1,218 @@
-Return-Path: <linux-acpi+bounces-10859-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10860-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4846A21D17
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2025 13:28:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B648A22753
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jan 2025 01:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3631D1666B7
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Jan 2025 12:28:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 369D23A565D
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Jan 2025 00:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837271D9329;
-	Wed, 29 Jan 2025 12:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F198BEC;
+	Thu, 30 Jan 2025 00:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b17FKbka"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B86855887;
-	Wed, 29 Jan 2025 12:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4534F28E8;
+	Thu, 30 Jan 2025 00:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738153698; cv=none; b=BHQwgG9ah8lOCRvi48nLdlyoodZnCw2DiP2UWq3RHrHoSPmXhJ95MxpCr7mOAT99wiLpVJAvW/14Pclrsg9vPm5ZQZ3/G39FvXxKC7kH/iseWuQ4N4zssXZqYH2d/qK7pvGqwCwRcK78eveo1PHzhbmYToe2KuXLvEXpkjgcook=
+	t=1738198214; cv=none; b=gwnX9EWfOgSd1Y0YuocMkB/K8gMVWwPgNneSa9nLadxKjQ6SvNYoqF4e7jK/aMes8cmfvxUarMikC0QhhGtYF0yPX7w7RAvAZuhUA8+bIXWwbEuuHIBTuh3GSM9H6UEPr7v22djmtCPs4YND6QMObtCRC6+7CysxB8lTdQdRoTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738153698; c=relaxed/simple;
-	bh=Gj+ibSeI7rkt/86HKoaTaKC0GPhl2/i0gFiRNXig2L8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PZ6oBtu4mG1EhAvqf7yVax6TUVN98TUMlgCCBT3HEIVhJYWofyFLmi8rhowMgLvS8cCD5iSSmMYtsOFsautsoO5uN9P87CabXndtf41oJ30TpiU/Dj8HDSCX8Zcvw/rxL8T1EKcOOSM9PCtZGfJXhvqiAUG7d3I0i5oHz9E4hso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YjhG56mK7z6M4V7;
-	Wed, 29 Jan 2025 20:26:05 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5329C140B30;
-	Wed, 29 Jan 2025 20:28:11 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 29 Jan 2025 13:28:11 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Wed, 29 Jan 2025 13:28:11 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: "bp@alien8.de" <bp@alien8.de>, "tony.luck@intel.com"
-	<tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
-	<mchehab@kernel.org>, "dave@stgolabs.net" <dave@stgolabs.net>, "Jonathan
- Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v18 15/19] cxl/memfeature: Add CXL memory device patrol
- scrub control feature
-Thread-Topic: [PATCH v18 15/19] cxl/memfeature: Add CXL memory device patrol
- scrub control feature
-Thread-Index: AQHbYDQzwb2+msEnKkOZzkWMDvDlzLMmbr6AgAQZmTCAAMm+AIACfVPQ
-Date: Wed, 29 Jan 2025 12:28:10 +0000
-Message-ID: <6b897863e04e4e588f1af318e4292739@huawei.com>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
- <20250106121017.1620-16-shiju.jose@huawei.com>
- <6793fa5351fc7_20f3294d0@dwillia2-xfh.jf.intel.com.notmuch>
- <637fa0190fe64594954ee4d9e012c39c@huawei.com>
- <679814068d4d1_2d1e294c4@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <679814068d4d1_2d1e294c4@dwillia2-xfh.jf.intel.com.notmuch>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1738198214; c=relaxed/simple;
+	bh=75zDwalyUL9Xy2WOefV40/p22DRndy1S2974PSV2H6g=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=tav9yX1URDfmyQuGyLfmabY2ORkOUQmJJiyJCaMUAj6O4j/Z2NRIBuLCBSvttKDrBRMkNLIJ9VbgukRXb6vp3PK8J24+X1QuKGnAFCId88588uB+uwWTDEsCorx9pdSYr0rwcxA5ACng1E5TAe8mZWfbFsWaMVJgIzq9MiICjHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b17FKbka; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738198212; x=1769734212;
+  h=date:from:to:cc:subject:message-id;
+  bh=75zDwalyUL9Xy2WOefV40/p22DRndy1S2974PSV2H6g=;
+  b=b17FKbkafxPMUZp2dDySlA6vugOLZmSdc/8v4AfsdiOlc/3yxJ4bl+z1
+   UnItdhcERsr3t9gdg0xPXSnwECqmSS1mzcqz9Me4oq84N3l54qTotKfmY
+   M8I3/bnIHWoy7od9I/9OI0/9x9uqBufRgWxaSCMiXGBWZEDg/z6wNBJ8h
+   S0pVuq1w9Uc0uJERxiGjz8E81Od+YhFLaov+bAE4bMbnvXvAQoYNZrH5j
+   VELgzb8V4fhQsnIFFwbBtNsWZ96vdz46Kp8PHKvtctSrhzlkZT39iMfX5
+   xihTew9wBgT+gSe+KeS/rRwk+kijpHp0gyem3FZKGynxW/eQdA1/rinqM
+   Q==;
+X-CSE-ConnectionGUID: DtfHKndESmCQJxIukuGGGQ==
+X-CSE-MsgGUID: T02UpxgYRH63FWsnxODaWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="64099631"
+X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; 
+   d="scan'208";a="64099631"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 16:50:11 -0800
+X-CSE-ConnectionGUID: 1OztK+OBR9CYOlfKnnSgFg==
+X-CSE-MsgGUID: a2/ambtARVKESwCI1kQ2rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; 
+   d="scan'208";a="109780844"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 29 Jan 2025 16:50:10 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tdIky-000jVz-14;
+	Thu, 30 Jan 2025 00:50:08 +0000
+Date: Thu, 30 Jan 2025 08:49:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 6bbc34fd9d99332e5d9f15263034f6f682bf4f61
+Message-ID: <202501300814.QDJE2hrX-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
->-----Original Message-----
->From: Dan Williams <dan.j.williams@intel.com>
->Sent: 27 January 2025 23:17
->To: Shiju Jose <shiju.jose@huawei.com>; Dan Williams
-><dan.j.williams@intel.com>; linux-edac@vger.kernel.org; linux-
->cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linux=
--
->kernel@vger.kernel.org
->Cc: bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; dave@stgolabs.net; Jonathan Cameron
-><jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: RE: [PATCH v18 15/19] cxl/memfeature: Add CXL memory device patro=
-l
->scrub control feature
->
->Shiju Jose wrote:
->> Hi Dan,
->>
->> Thanks for the comments.
->>
->> Please find reply inline.
->>
->> Thanks,
->> Shiju
->> >-----Original Message-----
->> >From: Dan Williams <dan.j.williams@intel.com>
->> >Sent: 24 January 2025 20:39
->> >To: Shiju Jose <shiju.jose@huawei.com>; linux-edac@vger.kernel.org;
->> >linux- cxl@vger.kernel.org; linux-acpi@vger.kernel.org;
->> >linux-mm@kvack.org; linux- kernel@vger.kernel.org
->> >Cc: bp@alien8.de; tony.luck@intel.com; rafael@kernel.org;
->> >lenb@kernel.org; mchehab@kernel.org; dan.j.williams@intel.com;
->> >dave@stgolabs.net; Jonathan Cameron <jonathan.cameron@huawei.com>;
->> >dave.jiang@intel.com; alison.schofield@intel.com;
->> >vishal.l.verma@intel.com; ira.weiny@intel.com; david@redhat.com;
->> >Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com;
->> >rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->> >dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->> >james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com;
->> >erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->> >gthelen@google.com; wschwartz@amperecomputing.com;
->> >dferguson@amperecomputing.com; wbs@os.amperecomputing.com;
->> >nifan.cxl@gmail.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
->> ><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
->> >kangkang.shen@futurewei.com; wanghuiqiang
-><wanghuiqiang@huawei.com>;
->> >Linuxarm <linuxarm@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
->> >Subject: Re: [PATCH v18 15/19] cxl/memfeature: Add CXL memory device
->> >patrol scrub control feature
->> >
->> >shiju.jose@ wrote:
->> >> From: Shiju Jose <shiju.jose@huawei.com>
->> >>
->> >> CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub
->> >> control feature. The device patrol scrub proactively locates and
->> >> makes corrections to errors in regular cycle.
->> >>
->> >> Allow specifying the number of hours within which the patrol scrub
->> >> must be completed, subject to minimum and maximum limits reported
->> >> by the
->> >device.
->> >> Also allow disabling scrub allowing trade-off error rates against
->> >> performance.
->> >>
->> >> Add support for patrol scrub control on CXL memory devices.
->> >> Register with the EDAC device driver, which retrieves the scrub
->> >> attribute descriptors from EDAC scrub and exposes the sysfs scrub
->> >> control attributes to userspace. For example, scrub control for the
->> >> CXL memory device "cxl_mem0" is exposed in
->> >/sys/bus/edac/devices/cxl_mem0/scrubX/.
->> >>
->> >> Additionally, add support for region-based CXL memory patrol scrub
->control.
->> >> CXL memory regions may be interleaved across one or more CXL memory
->> >> devices. For example, region-based scrub control for "cxl_region1"
->> >> is exposed in /sys/bus/edac/devices/cxl_region1/scrubX/.
->> >>
->> >> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
->> >> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> >> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> >> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> >> ---
->> >>  Documentation/edac/scrub.rst  |  66 ++++++
->> >>  drivers/cxl/Kconfig           |  17 ++
->> >>  drivers/cxl/core/Makefile     |   1 +
->> >>  drivers/cxl/core/memfeature.c | 392
->> >++++++++++++++++++++++++++++++++++
->> >>  drivers/cxl/core/region.c     |   6 +
->> >>  drivers/cxl/cxlmem.h          |   7 +
->> >>  drivers/cxl/mem.c             |   5 +
->> >>  include/cxl/features.h        |  16 ++
->> >>  8 files changed, 510 insertions(+)  create mode 100644
->> >> drivers/cxl/core/memfeature.c diff --git
->> >> a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst index
->> >> f86645c7f0af..80e986c57885 100644
->> >> --- a/Documentation/edac/scrub.rst
->> >> +++ b/Documentation/edac/scrub.rst
->[..]
->> >
->> >What is this content-free blob of cat and echo statements? Please
->> >write actual documentation with theory of operation, clarification of
->> >assumptions, rationale for defaults, guidance on changing defaults...
->>
->> Jonathan already replied.
->
->I disagree that any of that is useful to include without rationale, and if=
- the
->rationale is already somewhere else then delete the multiple lines of show=
-ing
->how 'cat' and 'echo' work with sysfs.
-I will discuss with Jonathan on this how to modify.=20
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 6bbc34fd9d99332e5d9f15263034f6f682bf4f61  Merge branch 'experimental/intel_pstate/eas-take1' into bleeding-edge
 
->
->[..]
->> >> +	depends on CXL_MEM
->> >
->> >Similar comment, and this also goes away if all of this just moves
->> >into the new cxl_features driver.
->>
->> Agree with  Jonathan told in reply. These are RAS specific features
->> for CXL memory devices and thus added in memfeature.c
->
->Apoligies for this comment, I had meant to delete it along with some other
->commentary along this theme after thinking it through.
->
->I am now advocating that Dave drop his cxl_features driver altogether and
->mirror your approach. I.e. EDAC is registered from existing CXL drivers, a=
-nd
->FWCTL can be registered against a cxl_memdev just like the fw_upload ABI.
->
->There was a concern that CXL needed a separate FWCTL driver in case
->distributions wanted to have a policy against FWCTL, but given CXL already=
- has
->CONFIG_CXL_MEM_RAW_COMMANDS at compile-time and a wide array of CXL
->bus devices, a cxl_features device is an awkward fit.
-Ok.=20
->
->[..]
->> >> +static int cxl_ps_get_attrs(struct cxl_patrol_scrub_context *cxl_ps_=
-ctx,
->> >> +			    struct cxl_memdev_ps_params *params) {
->> >> +	struct cxl_memdev *cxlmd;
->> >> +	u16 min_scrub_cycle =3D 0;
->> >> +	int i, ret;
->> >> +
->> >> +	if (cxl_ps_ctx->cxlr) {
->> >> +		struct cxl_region *cxlr =3D cxl_ps_ctx->cxlr;
->> >> +		struct cxl_region_params *p =3D &cxlr->params;
->> >> +
->> >> +		for (i =3D p->interleave_ways - 1; i >=3D 0; i--) {
->> >> +			struct cxl_endpoint_decoder *cxled =3D p->targets[i];
->> >
->> >It looks like this is called directly as a callback from EDAC. Where
->> >is the locking that keeps cxl_ps_ctx->cxlr valid, or p->targets content=
- stable?
->> Jonathan already replied.
->
->I could not find that comment? I *think* it's ok because when the region i=
-s in the
->probe state changes will not be made to this list, but it would be useful =
-to at
->least have commentary to that effect. Protect against someone copying this
->code in isolation and not consider the context.
-Sure. Will do.
->
->[..]
->> >> +
->> >> +int cxl_mem_ras_features_init(struct cxl_memdev *cxlmd, struct
->> >> +cxl_region *cxlr)
->> >
->> >Please separate this into a memdev helper and a region helper. It is
->> >silly to have two arguments to a function where one is expected to be
->> >NULL at all times, and then have an if else statement inside that to
->> >effectively turn it back into 2 code paths.
->> >
->> >If there is code to be shared amongst those, make *that* the shared hel=
-per.
->> I added single function cxl_mem_ras_features_init() for both memdev
->> and region based scrubbing to reduce code size as there were feedbacks t=
-ry
->reduce code size.
->
->"Succint" and "concise" does not necessarily mean less lines. I would grea=
-tly
->prefer a few more lines if it mines not outsourcing complexity to the call=
-ing
->context. Readable code means I do not need to wonder
->what:
->
->   cxl_mem_ras_features_init(NULL, cxlr)
->
->...means. I can just read devm_cxl_region_edac_register(cxlr), and know ex=
-actly
->what is happening without needing to lose my train of thought to go read w=
-hat
->semantics cxl_mem_ras_features_init() is implementing.
->
->Note that all the other _init() calls in drivers/cxl/ (outside of module_i=
-nit
->callbacks), are just purely init work, not object registration. Please kee=
-p that
->local style.
-Sure. Will add  separate functions for region based edac registration.
->
->> >> +{
->> >> +	struct edac_dev_feature ras_features[CXL_DEV_NUM_RAS_FEATURES];
->> >> +	char cxl_dev_name[CXL_DEV_NAME_LEN];
->> >> +	int num_ras_features =3D 0;
->> >> +	u8 scrub_inst =3D 0;
->> >> +	int rc;
->> >> +
->> >> +	rc =3D cxl_memdev_scrub_init(cxlmd, cxlr,
->> >&ras_features[num_ras_features],
->> >> +				   scrub_inst);
->> >> +	if (rc < 0)
->> >> +		return rc;
->> >> +
->> >> +	scrub_inst++;
->> >> +	num_ras_features++;
->> >> +
->> >> +	if (cxlr)
->> >> +		snprintf(cxl_dev_name, sizeof(cxl_dev_name),
->> >> +			 "cxl_region%d", cxlr->id);
->> >
->> >Why not pass dev_name(&cxlr->dev) directly?
->> Jonathan already replied.
->
->That was purely with the cxl_mem observation, cxlr can be passed directly.
-Will check.
->
->> >
->> >> +	else
->> >> +		snprintf(cxl_dev_name, sizeof(cxl_dev_name),
->> >> +			 "%s_%s", "cxl", dev_name(&cxlmd->dev));
->> >
->> >Can a "cxl" directory be created so that the raw name can be used?
->
->In fact we already do something similar for CONFIG_HMEM_REPORTING (i.e.
->an "access%d" device to create a nameed directory of attributes) so it is =
-a
->question for Boris if he wants to tolerate a parent "cxl" device to parent=
- all CXL
->objects in EDAC.
->
->> >
->> >> +
->> >> +	return edac_dev_register(&cxlmd->dev, cxl_dev_name, NULL,
->> >> +				 num_ras_features, ras_features);
->> >
->> >I'm so confused... a few lines down in this patch we have:
->> >
->> >    rc =3D cxl_mem_ras_features_init(NULL, cxlr);
->> >
->> >...so how can this call to edac_dev_register() unconditionally
->> >de-reference @cxlmd?
->> Thanks for spotting this. It is a bug, need to fix.
->
->
->[..]
->> >> +EXPORT_SYMBOL_NS_GPL(cxl_mem_ras_features_init, "CXL");
->> >> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
->> >> index b98b1ccffd1c..c2be70cd87f8 100644
->> >> --- a/drivers/cxl/core/region.c
->> >> +++ b/drivers/cxl/core/region.c
->> >> @@ -3449,6 +3449,12 @@ static int cxl_region_probe(struct device *dev=
-)
->> >>  					p->res->start, p->res->end, cxlr,
->> >>  					is_system_ram) > 0)
->> >>  			return 0;
->> >> +
->> >> +		rc =3D cxl_mem_ras_features_init(NULL, cxlr);
->> >> +		if (rc)
->> >> +			dev_warn(&cxlr->dev, "CXL RAS features init for
->> >region_id=3D%d failed\n",
->> >> +				 cxlr->id);
->> >
->> >There is more to RAS than EDAC memory scrub so this message is
->> >misleading. It is also unnecessary because the driver continues to
->> >load and the admin, if they care, will notice that the EDAC attributes =
-are
->missing.
->> This message was added for the debugging purpose in CXL driver. I will c=
-hange
->to  dev_dbg().
->
->...but also stop calling this functionality with the blanket term "RAS".
->It is "EDAC scrub and repair extensions to all the other RAS functionality=
- the CXL
->subsystem handles directly", name it accordingly.
-Sure. Will change.
+elapsed time: 783m
 
-Thanks,
-Shiju
+configs tested: 124
+configs skipped: 5
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                 nsimosci_hs_smp_defconfig    gcc-13.2.0
+arc                   randconfig-001-20250129    gcc-13.2.0
+arc                   randconfig-002-20250129    gcc-13.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                        multi_v7_defconfig    gcc-14.2.0
+arm                   randconfig-001-20250129    gcc-14.2.0
+arm                   randconfig-002-20250129    clang-20
+arm                   randconfig-003-20250129    gcc-14.2.0
+arm                   randconfig-004-20250129    gcc-14.2.0
+arm                           stm32_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250129    gcc-14.2.0
+arm64                 randconfig-002-20250129    gcc-14.2.0
+arm64                 randconfig-003-20250129    gcc-14.2.0
+arm64                 randconfig-004-20250129    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250129    gcc-14.2.0
+csky                  randconfig-002-20250129    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    clang-20
+hexagon                          allyesconfig    clang-18
+hexagon               randconfig-001-20250129    clang-19
+hexagon               randconfig-002-20250129    clang-20
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250129    clang-19
+i386        buildonly-randconfig-002-20250129    gcc-12
+i386        buildonly-randconfig-003-20250129    clang-19
+i386        buildonly-randconfig-004-20250129    clang-19
+i386        buildonly-randconfig-005-20250129    clang-19
+i386        buildonly-randconfig-006-20250129    gcc-12
+i386                                defconfig    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250129    gcc-14.2.0
+loongarch             randconfig-002-20250129    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                          hp300_defconfig    gcc-14.2.0
+m68k                        m5407c3_defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                     loongson1b_defconfig    clang-20
+mips                        omega2p_defconfig    clang-16
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250129    gcc-14.2.0
+nios2                 randconfig-002-20250129    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-14.2.0
+parisc                randconfig-001-20250129    gcc-14.2.0
+parisc                randconfig-002-20250129    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-16
+powerpc                 linkstation_defconfig    clang-20
+powerpc               randconfig-001-20250129    clang-20
+powerpc               randconfig-002-20250129    clang-20
+powerpc               randconfig-003-20250129    gcc-14.2.0
+powerpc                     tqm5200_defconfig    gcc-14.2.0
+powerpc                         wii_defconfig    gcc-14.2.0
+powerpc64             randconfig-001-20250129    clang-16
+powerpc64             randconfig-002-20250129    clang-18
+powerpc64             randconfig-003-20250129    clang-20
+riscv                            allmodconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-20
+riscv                               defconfig    clang-19
+riscv                 randconfig-001-20250129    gcc-14.2.0
+riscv                 randconfig-002-20250129    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-15
+s390                  randconfig-001-20250129    clang-20
+s390                  randconfig-002-20250129    clang-17
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-14.2.0
+sh                    randconfig-001-20250129    gcc-14.2.0
+sh                    randconfig-002-20250129    gcc-14.2.0
+sh                           se7722_defconfig    gcc-14.2.0
+sh                           sh2007_defconfig    gcc-14.2.0
+sh                        sh7757lcr_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250129    gcc-14.2.0
+sparc                 randconfig-002-20250129    gcc-14.2.0
+sparc64                             defconfig    gcc-14.2.0
+sparc64               randconfig-001-20250129    gcc-14.2.0
+sparc64               randconfig-002-20250129    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-18
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250129    gcc-12
+um                    randconfig-002-20250129    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250129    clang-19
+x86_64      buildonly-randconfig-002-20250129    gcc-12
+x86_64      buildonly-randconfig-003-20250129    gcc-12
+x86_64      buildonly-randconfig-004-20250129    gcc-12
+x86_64      buildonly-randconfig-005-20250129    gcc-12
+x86_64      buildonly-randconfig-006-20250129    clang-19
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250129    gcc-14.2.0
+xtensa                randconfig-002-20250129    gcc-14.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
