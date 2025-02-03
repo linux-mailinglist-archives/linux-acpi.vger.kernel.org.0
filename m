@@ -1,136 +1,159 @@
-Return-Path: <linux-acpi+bounces-10879-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10880-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F2EA2562B
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2025 10:44:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF34BA25A3E
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2025 13:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5039A165B64
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2025 09:44:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1CFD1624A2
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2025 12:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61121FFC73;
-	Mon,  3 Feb 2025 09:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEC7204C03;
+	Mon,  3 Feb 2025 12:59:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A271FFC4A;
-	Mon,  3 Feb 2025 09:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7C6204C11;
+	Mon,  3 Feb 2025 12:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738575835; cv=none; b=Y1/+efV9UQyi78HnwC/nOLS1IeFuRdnnN6efd57CyO58q8INGFR8ylHQlx30sBcw55m2ufi2CqpgKaMOlRNhMc0NWe/sgXGWUFCTKFyb/6g+1JdI6BHNSMo7EOp03I3e/jwZCQnySNheLWQ2MaQJDelFhI5hK3BcRDjSVu0+LEk=
+	t=1738587586; cv=none; b=OLCcaAYRBoj1FV1sm0H31huNmawph9ygjZjDZ7kKfQY7prvEOmdPpanQyhCmly+loEQo7o89SnV0nHiYuqY5NVuy/f5Ys/pI447hY2GB6KxZYVXzGH8RHBff5BXUa7A67Dg15Rq3jVw3ACblAUGa96DWcpfcwtayKOPYtcUmp6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738575835; c=relaxed/simple;
-	bh=u/TiDheBGQMUcfKMENR1ti8/63pZ28MNQGX44NFvsT8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aqZsM8Q+/QRDlrg7khNsmqav68ti2DM/LXUqaBYHe852N9mIP8hwpekWXTDEh7d6cayxwFxcajpzwXQObDnRWS34TAPjEp6dFoUJCdS103WWKDGo/OGvbQBHBjWJd4cpFEApb1YLDF7WlGHSODqttIDHY0D9w3ro4ZUzWcxQjxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ymgy16hQ4z6L4xM;
-	Mon,  3 Feb 2025 17:22:33 +0800 (CST)
-Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7160B14011B;
-	Mon,  3 Feb 2025 17:25:05 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Feb 2025 10:25:05 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Mon, 3 Feb 2025 10:25:05 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Daniel Ferguson <danielf@os.amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: "bp@alien8.de" <bp@alien8.de>, "tony.luck@intel.com"
-	<tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
-	<mchehab@kernel.org>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v18 00/19] EDAC: Scrub: introduce generic EDAC RAS control
- feature driver + CXL/ACPI-RAS2 drivers
-Thread-Topic: [PATCH v18 00/19] EDAC: Scrub: introduce generic EDAC RAS
- control feature driver + CXL/ACPI-RAS2 drivers
-Thread-Index: AQHbYDQZq6uipUr1qkCeE+MAaYkJNbMvxkMAgAWzXZA=
-Date: Mon, 3 Feb 2025 09:25:05 +0000
-Message-ID: <a00264d506064598b81c31a369408e74@huawei.com>
-References: <20250106121017.1620-1-shiju.jose@huawei.com>
- <a6af63e2-227a-4909-9b87-8eff96be088b@os.amperecomputing.com>
-In-Reply-To: <a6af63e2-227a-4909-9b87-8eff96be088b@os.amperecomputing.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1738587586; c=relaxed/simple;
+	bh=/y/y+yMPC+kxSkrXxO3Guy9FZRh/OM4w1hP6Ch7QS1Y=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=OUyX8aAf/02//BMdJmiiLrlM0xG2dggGhRRBT+Mtd1tNHJpwYvDjUNLF0rYx7dWlfUmsJNy8wk+l/TPXaeDrwYpSDhZKRP+Lxz/T7Uu1/fHSHVBLQBl9Q09q1Ir+p7rEFEu9nQ8dpZ/R8TOhti3Jj3RHLIS3RG5wWqJZ6lu09Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-3c9ff7000001d7ae-5c-67a0ba2e234c
+Message-ID: <a2b428ed-212a-4e39-bcf7-5ab67249132d@sk.com>
+Date: Mon, 3 Feb 2025 21:44:29 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: kernel_team@skhynix.com, Gregory Price <gourry@gourry.net>,
+ ying.huang@linux.alibaba.com, rafael@kernel.org, lenb@kernel.org,
+ gregkh@linuxfoundation.org, akpm@linux-foundation.org, rakie.kim@sk.com,
+ dan.j.williams@intel.com, Jonathan.Cameron@huawei.com, dave.jiang@intel.com,
+ horen.chuang@linux.dev, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
+ 42.hyeyoo@gmail.com, Honggyu Kim <honggyu.km@gmail.com>
+Subject: Re: [PATCH v4] Weighted Interleave Auto-tuning
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <20250202141247.2219681-1-joshua.hahnjy@gmail.com>
+Content-Language: ko
+From: Honggyu Kim <honggyu.kim@sk.com>
+In-Reply-To: <20250202141247.2219681-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFIsWRmVeSWpSXmKPExsXC9ZZnka7ergXpBmtWKVpM7DGwmLN+DZvF
+	9KkXGC1O3Gxks/h59zi7RfPi9WwWqzf5WszZeYfZ4nb/OVaLVQuvsVkc3zqP3WLfRaCGnQ/f
+	slks39fPaHF51xw2i3tr/rNazP0yldli9ZoMByGPw2/eM3vsnHWX3aO77TK7R8uRt6wei/e8
+	ZPLYtKqTzWPTp0nsHidm/Gbx2PnQ0mNhw1Rmj/1z17B7nLtY4fF5k1wAbxSXTUpqTmZZapG+
+	XQJXxue9uxgL/olUzL01gbGB8bZAFyMnh4SAiUTv4ndMMPabuTvYQGxeAUuJSysfsoPYLAIq
+	Er/ndLFDxAUlTs58wgJiiwrIS9y/NQMozsXBLPCaWeLV1HVADgeHsIC5xNflKiA1IgKaEida
+	JzGD2EICdhKHLjWD2cwCIhKzO9vAbDYBNYkrLyeB3cApYC/R3X+fHaLGTKJraxcjhC0vsf3t
+	HGaQXRIC59gl2tfsZYU4WlLi4IobLBMYBWchuW8Wkh2zkMyahWTWAkaWVYxCmXlluYmZOSZ6
+	GZV5mRV6yfm5mxiBMbys9k/0DsZPF4IPMQpwMCrx8J7YtiBdiDWxrLgy9xCjBAezkgjv6e1A
+	Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rxG38pThATSE0tSs1NTC1KLYLJMHJxSDYxh62/ofC3x
+	OhKu4eGjWhntvqL0Z+La+fsCPQ6++C8UsFrJMHdWhJfVqi83DNiLg6IrP1RpKa5Ys/KuNIuv
+	XvEzDWFuOW8fZ29LzveHNt5ynN1zSq5v6YL9mscljvKdvXLTb713zmyTaJ2NaxzyvNzKHp8+
+	9OLwn3hhyYqzsat2sL4MnyRn2qfEUpyRaKjFXFScCAAp8lm43QIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXCNUNLT1dv14J0g/YVQhYTewws5qxfw2Yx
+	feoFRosTNxvZLH7ePc5u0bx4PZvF6k2+FnN23mG2uN1/jtVi1cJrbBbHt85jt9h3Eajh8NyT
+	rBY7H75ls1i+r5/R4vKuOWwW99b8Z7WY+2Uqs8Wha89ZLVavyXAQ8Tj85j2zx85Zd9k9utsu
+	s3u0HHnL6rF4z0smj02rOtk8Nn2axO5xYsZvFo+dDy09FjZMZfbYP3cNu8e5ixUe3257eCx+
+	8YHJ4/MmuQD+KC6blNSczLLUIn27BK6Mz3t3MRb8E6mYe2sCYwPjbYEuRk4OCQETiTdzd7CB
+	2LwClhKXVj5kB7FZBFQkfs/pYoeIC0qcnPmEBcQWFZCXuH9rBlCci4NZ4DWzxKup64AcDg5h
+	AXOJr8tVQGpEBDQlTrROYgaxhQTsJA5dagazmQVEJGZ3toHZbAJqEldeTmICsTkF7CW6+++z
+	Q9SYSXRt7WKEsOUltr+dwzyBkW8WkjNmIRk1C0nLLCQtCxhZVjGKZOaV5SZm5pjqFWdnVOZl
+	Vugl5+duYgTG6LLaPxN3MH657H6IUYCDUYmH98S2BelCrIllxZW5hxglOJiVRHhPbwcK8aYk
+	VlalFuXHF5XmpBYfYpTmYFES5/UKT00QEkhPLEnNTk0tSC2CyTJxcEo1MK59pb/yn+q0J7H/
+	r2Rc6/uXkuC4a/nsnpxJRVyH/26SVo4sFeP8qrVotmCH7q8oz+uad+6o3154bKFSdmnNQjcL
+	zbLOgq/Bdz/xmKy3mj2Bj2OZYVznvVkLHkzy3Xz8V+aJ57nqR5bfrrjc5rq9LrdISPC/UZjT
+	b47pjC9PmvsZlh75rb/sxiQlluKMREMt5qLiRACl6TpzzQIAAA==
+X-CFilter-Loop: Reflected
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IERhbmllbCBGZXJndXNvbiA8
-ZGFuaWVsZkBvcy5hbXBlcmVjb21wdXRpbmcuY29tPg0KPlNlbnQ6IDMwIEphbnVhcnkgMjAyNSAx
-OToxOA0KPlRvOiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+OyBsaW51eC1lZGFj
-QHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+Y3hsQHZnZXIua2VybmVsLm9yZzsgbGludXgtYWNw
-aUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgtDQo+a2VybmVsQHZn
-ZXIua2VybmVsLm9yZw0KPkNjOiBicEBhbGllbjguZGU7IHRvbnkubHVja0BpbnRlbC5jb207IHJh
-ZmFlbEBrZXJuZWwub3JnOyBsZW5iQGtlcm5lbC5vcmc7DQo+bWNoZWhhYkBrZXJuZWwub3JnOyBk
-YW4uai53aWxsaWFtc0BpbnRlbC5jb207IGRhdmVAc3Rnb2xhYnMubmV0OyBKb25hdGhhbg0KPkNh
-bWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IGRhdmUuamlhbmdAaW50ZWwuY29t
-Ow0KPmFsaXNvbi5zY2hvZmllbGRAaW50ZWwuY29tOyB2aXNoYWwubC52ZXJtYUBpbnRlbC5jb207
-IGlyYS53ZWlueUBpbnRlbC5jb207DQo+ZGF2aWRAcmVkaGF0LmNvbTsgVmlsYXMuU3JpZGhhcmFu
-QGFtZC5jb207IGxlby5kdXJhbkBhbWQuY29tOw0KPllhemVuLkdoYW5uYW1AYW1kLmNvbTsgcmll
-bnRqZXNAZ29vZ2xlLmNvbTsgamlhcWl5YW5AZ29vZ2xlLmNvbTsNCj5Kb24uR3JpbW1AYW1kLmNv
-bTsgZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29tOw0KPm5hb3lhLmhvcmlndWNoaUBuZWMuY29t
-OyBqYW1lcy5tb3JzZUBhcm0uY29tOyBqdGhvdWdodG9uQGdvb2dsZS5jb207DQo+c29tYXN1bmRh
-cmFtLmFAaHBlLmNvbTsgZXJkZW1ha3Rhc0Bnb29nbGUuY29tOyBwZ29uZGFAZ29vZ2xlLmNvbTsN
-Cj5kdWVud2VuQGdvb2dsZS5jb207IGd0aGVsZW5AZ29vZ2xlLmNvbTsNCj53c2Nod2FydHpAYW1w
-ZXJlY29tcHV0aW5nLmNvbTsgZGZlcmd1c29uQGFtcGVyZWNvbXB1dGluZy5jb207DQo+d2JzQG9z
-LmFtcGVyZWNvbXB1dGluZy5jb207IG5pZmFuLmN4bEBnbWFpbC5jb207IHRhbnhpYW9mZWkNCj48
-dGFueGlhb2ZlaUBodWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdAaGlzaWxpY29u
-LmNvbT47IFJvYmVydG8NCj5TYXNzdSA8cm9iZXJ0by5zYXNzdUBodWF3ZWkuY29tPjsga2FuZ2th
-bmcuc2hlbkBmdXR1cmV3ZWkuY29tOw0KPndhbmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdl
-aS5jb20+OyBMaW51eGFybQ0KPjxsaW51eGFybUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBb
-UEFUQ0ggdjE4IDAwLzE5XSBFREFDOiBTY3J1YjogaW50cm9kdWNlIGdlbmVyaWMgRURBQyBSQVMN
-Cj5jb250cm9sIGZlYXR1cmUgZHJpdmVyICsgQ1hML0FDUEktUkFTMiBkcml2ZXJzDQo+DQo+SGkg
-U2hpanUsDQo+DQo+SSd2ZSB0ZXN0ZWQgdGhlIFNjcnViIHNwZWNpZmljIHBpZWNlcyBhbmQgdGhl
-IEVEQUMgaW5mcmFzdHJ1Y3R1cmUgcGllY2VzKGFzIGZhciBhcw0KPmhvdyBpdCByZWxhdGVzIHRv
-IHRoZSBTY3J1YiBwaWVjZXMpLiBJIGFtIHVzaW5nIGFuIEFSTTY0IHBsYXRmb3JtIGZvciB0aGlz
-DQo+dGVzdGluZy4gSSB3b3VsZCBsaWtlIHRvIG9mZmVyIG15IHRlc3RlZC1ieSB0byB0aG9zZSBw
-aWVjZXMgSSBoYXZlIHBlcnNvbmFsDQo+ZXhwZXJpZW5jZSB3aXRoLiBJIHdpbGwgc2VuZCB0aGVt
-IGFzIHJlcGxpZXMgdG8gdGhlaXIgcmVzcGVjdGl2ZSBwYXRjaGVzLg0KDQpIaSBEYW5pZWwsDQoN
-ClRoYW5rcyBmb3IgdGVzdGluZyB0aGUgRURBQyBpbmZyYXN0cnVjdHVyZSBmb3Igc2NydWJiaW5n
-IGZlYXR1cmUuDQpJIHdpbGwgYWRkICB0ZXN0ZWQtYnkgZm9yIHlvdS4gDQoNClRoYW5rcywNClNo
-aWp1DQo+DQo+VGhhbmsgeW91LA0KPn5EYW5pZWwNCg==
+Hi Joshua,
+
+On 2/2/2025 11:12 PM, Joshua Hahn wrote:
+> Hi Honggyu,
+> 
+> On Sun, 2 Feb 2025 22:51:34 +0900 Honggyu Kim <honggyu.km@gmail.com> wrote:
+> 
+>> On 2/2/25 01:53, Gregory Price wrote:
+>>> On Sat, Feb 01, 2025 at 11:49:31AM -0500, Gregory Price wrote:
+>>>>>     1. the auto mode set the weights as 10:5:1 for node{0-2}.
+>>>>>     2. node2 is offlined, then recalculation makes it as 2:1 for node{0,1}.
+>>>
+>>> Point of clarification here:  a hot-unplug event won't cause
+>>> recalculation.
+>>>
+>>> What actually causes re-weight is hot-plug reporting new capacity.
+>>
+>> So do you mean re-weight is done only when a new node is onlined while
+>> offline doesn't trigger re-weight?
+>>
+>> I see node_set_perf_attrs() does recalculation by calling
+>> mempolicy_set_node_perf(), then reduce_interleave_weights().
+>>
+>> But I'm not sure if the re-weight is done via node_set_perf_attrs() only
+>> when a new node is onlined.
+>>
+>> Could you please explain where I can find it?
+> 
+> Just chiming in to add some clarification:
+> Your analysis above is correct; reduce_interleave_weights() is only
+> called in 2 spots: once when the mode is switched from manual --> auto,
+> and the other when new bandwidth data is available, which calls
+> node_set_perf_attrs() and so on. In all other scenarios, iw_table is
+> preserved, and all values inside remain the same without manual changes.
+
+Yeah, this part is clear.
+
+> A node offlining (or even onlining with no new bandwidth information)
+> will just mean that the node inherits whatever value is stored in
+> iw_table at that moment, whether that contains the default values
+> created on init or the last values that it had taken.
+
+It looks the call sequence is as follows.
+
+   cxl_region_perf_attrs_callback()
+   -> cxl_region_update_coordinates()
+   -> node_set_perf_attrs()
+   -> mempolicy_set_node_perf()
+   -> reduce_interleave_weights()
+
+I haven't searched all the paths of cxl_region_perf_attrs_callback() via
+cxlr->memory_notifier.notifier_call callback pointer, but maybe this
+function is not called when a node is offlined, then I get node
+offlining doesn't trigger re-weight calculation.
+
+By the way, do you test it using CXL hardware or using qemu?
+
+> 
+>>> So in this scenario, the weight will remain the same for node2.
+>>
+>> If it's true, my scenario is wrong.
+>>
+>> Thanks,
+>> Honggyu
+>>
+>>>
+>>>>>     3. the auto sysfs interface is set to 0 to make it manual mode.
+> 
+> Please let me know if this makes sense. Thank you for your review
+> as always, and have a great day!
+> Joshua
+
+Thanks for your response.  Have a great day you too!
+
+Regards,
+Honggyu
 
