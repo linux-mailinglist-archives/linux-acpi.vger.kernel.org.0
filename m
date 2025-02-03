@@ -1,160 +1,136 @@
-Return-Path: <linux-acpi+bounces-10878-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10879-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4388AA24E84
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Feb 2025 15:12:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F2EA2562B
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2025 10:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5CF9161225
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Feb 2025 14:12:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5039A165B64
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Feb 2025 09:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963821F8679;
-	Sun,  2 Feb 2025 14:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="blxFU8kP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61121FFC73;
+	Mon,  3 Feb 2025 09:43:55 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BD9E574;
-	Sun,  2 Feb 2025 14:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A271FFC4A;
+	Mon,  3 Feb 2025 09:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738505573; cv=none; b=EPdVvk/b3zbHfuHMbHOEmM+93VfEwO2gHbvsODTYIvioiucjuq40wiWTl+L72kV8zKNlP9gUS0Za5ycfa+GcmrK1P21YR/Oy738GVU1y7y0nTmQRtGbf8Oq/xyhAAWzyqpjcnO8KSedSoucd2QXI8sTjxUZfOXou+RQp5IKwrRA=
+	t=1738575835; cv=none; b=Y1/+efV9UQyi78HnwC/nOLS1IeFuRdnnN6efd57CyO58q8INGFR8ylHQlx30sBcw55m2ufi2CqpgKaMOlRNhMc0NWe/sgXGWUFCTKFyb/6g+1JdI6BHNSMo7EOp03I3e/jwZCQnySNheLWQ2MaQJDelFhI5hK3BcRDjSVu0+LEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738505573; c=relaxed/simple;
-	bh=QZm1LtvGQKCijH7Ny3Z1lJ1iBrDQ8MzH8+nch80dCX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5uU+q5sMIh2euxXut5Ow0zGpBRmYYY9Cr2tqcCo6ONlQTND7pmOkHHhmoMOT45gGwmfz3GKDpZjM4o/fSByYmwJYtv8tXQwPsjGD+oMx6tcAXHJjiw71jSKzWZKPyPlF5amYrn+aPZaCzoyRzINrEw1eCXA4lbct2a6vt5X9Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=blxFU8kP; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6f6715734d9so20157387b3.3;
-        Sun, 02 Feb 2025 06:12:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738505571; x=1739110371; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OP/ULsuhS2l/WjnpV3aP5975AuU0qKrgS7YueBktGqU=;
-        b=blxFU8kPtZak4OPtl/vV3BSR96zDpWhjc3+Of9xOBUoXZRq6ryhWnHRBVlnEs/6qdM
-         sX2jkfnYG0aOUqLZAlhF2+u1ADDSxWM4kMS5t75AUWqyqC35HljN2fzleqWbgDbjnNiA
-         GR0JzN5miY2hm/tdfolHFMeKS55H5P6QmZndHiMFxJy+tf9VoZCoL4SlNm+rnm0EMzoE
-         xrm8zPl4hKfbC06siLWEoZ+Qa/4xoz93ETDrcaB7TpYQWJbZOpI+LX0ajV+wwPK5/whg
-         voFiPcS0OtU8zXiVORO0yWllfYvIpUg4/pI651ADe81a/deAg6uAA7c0nwDNYBDeWcrG
-         b9oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738505571; x=1739110371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OP/ULsuhS2l/WjnpV3aP5975AuU0qKrgS7YueBktGqU=;
-        b=ie6qFsVy7qFPyeUfiN84wKGmpduGmB+1g+GjcEo8xEIwzQf2LlWf0ErQdyEHJA5aeI
-         k0ylzgaEcc1Squv77BPJTDSG/yflqMOxd7WfbWWXIq4MAJqw4H6ov6sMC5jrCSYcv9El
-         x6DbcC0HNzrijv25SqmeZWsa6MEe+l68gWyebRZfUD/DEi1FShIKvTZxRVOydRGQVMGu
-         QadzbJlr8ewzgvxy8QDWwzCFF/MpIAGPmrt59/MJ2H5LZAN7+phUSKsxPefOjc7Bc65p
-         QSBZnGI2ThZxORfS+F3uusuXz/8RkRiX6+vLmwVK8/Xc6AUvYJxYhyaLX84ih6toYjvY
-         bqSA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+9Le4ZoYT01g/JuoiYkTiYgBtjW6NGwnyXdsvowxWHvfg6JOeg+EH8M4iMjfrBqYVhQG9m6UBNzFYRqCm@vger.kernel.org, AJvYcCXsMKDeeTAxWNmexHR4hQpBJ5NlmhWivAardBrUUVpf42aicPE0yC7uDLMyS/Z0ewy4mpXTkBhp3Rpa@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHI/zYbaiOYVn5TbB/1cVFndaOBJWXVEtfEUZlYodRqu0rekyy
-	I6vDzrG018Tp6Z9YZqCIeZNMjMnHv+37T54CVkKU/MaLiVzqFvo2
-X-Gm-Gg: ASbGncvj3cPRw+tAVOA0rAG97m/5KzEsB7Y+Y+Oryvj4c7iYwyOMilkskJyh9I/viil
-	F0IFC+8Marwph100JothFRoNwX5a2+SZLLXTn1IkvRLKKCj5zfmphS/Vd2lF21j6pnQ7hM5WE45
-	yGQURbDPVOu6fE7bEqgyOHVlRDXx5J/a1Otgg8ENc017XCT207Ek4dGWdKb4OOhhyvMB6ei4w4V
-	V5vxJSiKQWHEp4+AUucGQ6lXg2LNHa/fB6kVWendF+0SMXIktQp5bS4LfFp4EgAMzCp/U1Btaa9
-	uuPMq5PtFKlIFg==
-X-Google-Smtp-Source: AGHT+IFJs8bjsu60rsjFrfo0Bqk9SgH1Gw8S19VwGfxOIrB19mypYyxFGAIAa0MS1NyLIlbLgZr4Yw==
-X-Received: by 2002:a05:690c:610a:b0:6f9:4413:3db8 with SMTP id 00721157ae682-6f944133f86mr38193097b3.0.1738505570824;
-        Sun, 02 Feb 2025 06:12:50 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:1::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f8c46061fbsm17109507b3.17.2025.02.02.06.12.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Feb 2025 06:12:49 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Honggyu Kim <honggyu.km@gmail.com>
-Cc: Gregory Price <gourry@gourry.net>,
-	ying.huang@linux.alibaba.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org,
-	honggyu.kim@sk.com,
-	rakie.kim@sk.com,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	kernel_team@skhynix.com,
-	42.hyeyoo@gmail.com
-Subject: Re: [PATCH v4] Weighted Interleave Auto-tuning
-Date: Sun,  2 Feb 2025 06:12:45 -0800
-Message-ID: <20250202141247.2219681-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <9edfb12f-5e1d-4de0-b124-37053125a7e0@gmail.com>
-References: 
+	s=arc-20240116; t=1738575835; c=relaxed/simple;
+	bh=u/TiDheBGQMUcfKMENR1ti8/63pZ28MNQGX44NFvsT8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aqZsM8Q+/QRDlrg7khNsmqav68ti2DM/LXUqaBYHe852N9mIP8hwpekWXTDEh7d6cayxwFxcajpzwXQObDnRWS34TAPjEp6dFoUJCdS103WWKDGo/OGvbQBHBjWJd4cpFEApb1YLDF7WlGHSODqttIDHY0D9w3ro4ZUzWcxQjxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ymgy16hQ4z6L4xM;
+	Mon,  3 Feb 2025 17:22:33 +0800 (CST)
+Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7160B14011B;
+	Mon,  3 Feb 2025 17:25:05 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 3 Feb 2025 10:25:05 +0100
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Mon, 3 Feb 2025 10:25:05 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Daniel Ferguson <danielf@os.amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: "bp@alien8.de" <bp@alien8.de>, "tony.luck@intel.com"
+	<tony.luck@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "mchehab@kernel.org"
+	<mchehab@kernel.org>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
+	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
+	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
+	<gthelen@google.com>, "wschwartz@amperecomputing.com"
+	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
+	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v18 00/19] EDAC: Scrub: introduce generic EDAC RAS control
+ feature driver + CXL/ACPI-RAS2 drivers
+Thread-Topic: [PATCH v18 00/19] EDAC: Scrub: introduce generic EDAC RAS
+ control feature driver + CXL/ACPI-RAS2 drivers
+Thread-Index: AQHbYDQZq6uipUr1qkCeE+MAaYkJNbMvxkMAgAWzXZA=
+Date: Mon, 3 Feb 2025 09:25:05 +0000
+Message-ID: <a00264d506064598b81c31a369408e74@huawei.com>
+References: <20250106121017.1620-1-shiju.jose@huawei.com>
+ <a6af63e2-227a-4909-9b87-8eff96be088b@os.amperecomputing.com>
+In-Reply-To: <a6af63e2-227a-4909-9b87-8eff96be088b@os.amperecomputing.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Honggyu,
-
-On Sun, 2 Feb 2025 22:51:34 +0900 Honggyu Kim <honggyu.km@gmail.com> wrote:
-
-> On 2/2/25 01:53, Gregory Price wrote:
-> > On Sat, Feb 01, 2025 at 11:49:31AM -0500, Gregory Price wrote:
-> >>>    1. the auto mode set the weights as 10:5:1 for node{0-2}.
-> >>>    2. node2 is offlined, then recalculation makes it as 2:1 for node{0,1}.
-> > 
-> > Point of clarification here:  a hot-unplug event won't cause
-> > recalculation.
-> > 
-> > What actually causes re-weight is hot-plug reporting new capacity.
-> 
-> So do you mean re-weight is done only when a new node is onlined while
-> offline doesn't trigger re-weight?
-> 
-> I see node_set_perf_attrs() does recalculation by calling
-> mempolicy_set_node_perf(), then reduce_interleave_weights().
-> 
-> But I'm not sure if the re-weight is done via node_set_perf_attrs() only
-> when a new node is onlined.
-> 
-> Could you please explain where I can find it?
-
-Just chiming in to add some clarification:
-Your analysis above is correct; reduce_interleave_weights() is only
-called in 2 spots: once when the mode is switched from manual --> auto,
-and the other when new bandwidth data is available, which calls
-node_set_perf_attrs() and so on. In all other scenarios, iw_table is
-preserved, and all values inside remain the same without manual changes.
-
-A node offlining (or even onlining with no new bandwidth information)
-will just mean that the node inherits whatever value is stored in
-iw_table at that moment, whether that contains the default values
-created on init or the last values that it had taken. 
-
-> > So in this scenario, the weight will remain the same for node2.
-> 
-> If it's true, my scenario is wrong.
-> 
-> Thanks,
-> Honggyu
-> 
-> > 
-> >>>    3. the auto sysfs interface is set to 0 to make it manual mode.
-
-Please let me know if this makes sense. Thank you for your review
-as always, and have a great day!
-Joshua
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IERhbmllbCBGZXJndXNvbiA8
+ZGFuaWVsZkBvcy5hbXBlcmVjb21wdXRpbmcuY29tPg0KPlNlbnQ6IDMwIEphbnVhcnkgMjAyNSAx
+OToxOA0KPlRvOiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+OyBsaW51eC1lZGFj
+QHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+Y3hsQHZnZXIua2VybmVsLm9yZzsgbGludXgtYWNw
+aUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgtDQo+a2VybmVsQHZn
+ZXIua2VybmVsLm9yZw0KPkNjOiBicEBhbGllbjguZGU7IHRvbnkubHVja0BpbnRlbC5jb207IHJh
+ZmFlbEBrZXJuZWwub3JnOyBsZW5iQGtlcm5lbC5vcmc7DQo+bWNoZWhhYkBrZXJuZWwub3JnOyBk
+YW4uai53aWxsaWFtc0BpbnRlbC5jb207IGRhdmVAc3Rnb2xhYnMubmV0OyBKb25hdGhhbg0KPkNh
+bWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IGRhdmUuamlhbmdAaW50ZWwuY29t
+Ow0KPmFsaXNvbi5zY2hvZmllbGRAaW50ZWwuY29tOyB2aXNoYWwubC52ZXJtYUBpbnRlbC5jb207
+IGlyYS53ZWlueUBpbnRlbC5jb207DQo+ZGF2aWRAcmVkaGF0LmNvbTsgVmlsYXMuU3JpZGhhcmFu
+QGFtZC5jb207IGxlby5kdXJhbkBhbWQuY29tOw0KPllhemVuLkdoYW5uYW1AYW1kLmNvbTsgcmll
+bnRqZXNAZ29vZ2xlLmNvbTsgamlhcWl5YW5AZ29vZ2xlLmNvbTsNCj5Kb24uR3JpbW1AYW1kLmNv
+bTsgZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29tOw0KPm5hb3lhLmhvcmlndWNoaUBuZWMuY29t
+OyBqYW1lcy5tb3JzZUBhcm0uY29tOyBqdGhvdWdodG9uQGdvb2dsZS5jb207DQo+c29tYXN1bmRh
+cmFtLmFAaHBlLmNvbTsgZXJkZW1ha3Rhc0Bnb29nbGUuY29tOyBwZ29uZGFAZ29vZ2xlLmNvbTsN
+Cj5kdWVud2VuQGdvb2dsZS5jb207IGd0aGVsZW5AZ29vZ2xlLmNvbTsNCj53c2Nod2FydHpAYW1w
+ZXJlY29tcHV0aW5nLmNvbTsgZGZlcmd1c29uQGFtcGVyZWNvbXB1dGluZy5jb207DQo+d2JzQG9z
+LmFtcGVyZWNvbXB1dGluZy5jb207IG5pZmFuLmN4bEBnbWFpbC5jb207IHRhbnhpYW9mZWkNCj48
+dGFueGlhb2ZlaUBodWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdAaGlzaWxpY29u
+LmNvbT47IFJvYmVydG8NCj5TYXNzdSA8cm9iZXJ0by5zYXNzdUBodWF3ZWkuY29tPjsga2FuZ2th
+bmcuc2hlbkBmdXR1cmV3ZWkuY29tOw0KPndhbmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdl
+aS5jb20+OyBMaW51eGFybQ0KPjxsaW51eGFybUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBb
+UEFUQ0ggdjE4IDAwLzE5XSBFREFDOiBTY3J1YjogaW50cm9kdWNlIGdlbmVyaWMgRURBQyBSQVMN
+Cj5jb250cm9sIGZlYXR1cmUgZHJpdmVyICsgQ1hML0FDUEktUkFTMiBkcml2ZXJzDQo+DQo+SGkg
+U2hpanUsDQo+DQo+SSd2ZSB0ZXN0ZWQgdGhlIFNjcnViIHNwZWNpZmljIHBpZWNlcyBhbmQgdGhl
+IEVEQUMgaW5mcmFzdHJ1Y3R1cmUgcGllY2VzKGFzIGZhciBhcw0KPmhvdyBpdCByZWxhdGVzIHRv
+IHRoZSBTY3J1YiBwaWVjZXMpLiBJIGFtIHVzaW5nIGFuIEFSTTY0IHBsYXRmb3JtIGZvciB0aGlz
+DQo+dGVzdGluZy4gSSB3b3VsZCBsaWtlIHRvIG9mZmVyIG15IHRlc3RlZC1ieSB0byB0aG9zZSBw
+aWVjZXMgSSBoYXZlIHBlcnNvbmFsDQo+ZXhwZXJpZW5jZSB3aXRoLiBJIHdpbGwgc2VuZCB0aGVt
+IGFzIHJlcGxpZXMgdG8gdGhlaXIgcmVzcGVjdGl2ZSBwYXRjaGVzLg0KDQpIaSBEYW5pZWwsDQoN
+ClRoYW5rcyBmb3IgdGVzdGluZyB0aGUgRURBQyBpbmZyYXN0cnVjdHVyZSBmb3Igc2NydWJiaW5n
+IGZlYXR1cmUuDQpJIHdpbGwgYWRkICB0ZXN0ZWQtYnkgZm9yIHlvdS4gDQoNClRoYW5rcywNClNo
+aWp1DQo+DQo+VGhhbmsgeW91LA0KPn5EYW5pZWwNCg==
 
