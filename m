@@ -1,74 +1,72 @@
-Return-Path: <linux-acpi+bounces-10888-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10889-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827F3A27094
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 12:45:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C90A270A7
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 12:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D741656EA
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 11:45:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D386E7A23BA
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 11:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F2220C470;
-	Tue,  4 Feb 2025 11:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1E720B1EF;
+	Tue,  4 Feb 2025 11:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aUAbFiqM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gZFLOFK7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E995205E3B;
-	Tue,  4 Feb 2025 11:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C0207669;
+	Tue,  4 Feb 2025 11:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738669521; cv=none; b=lbcCIiHLHiFwZhKOXcBCszSC6xsBLaLuFf0lNJVeCKMcYyHo/I6WZz7M7Ov+wCMMFoyQa4LzCoGXrw5uZnmt7sAxeTn4NLrRiUuFHXzRht6O7JV410hGpnNVMKkX/NFYsYrKK4rKMX4/m6bDekdcT6EjHM/sz3rHQT8Id8vzTcc=
+	t=1738669961; cv=none; b=i3mY2w9FdOQidf7wpr116aXgqa6xfxOBGSATaKwXrV+DN8ct+vD2LUvteKCLZ1twfdOM5RYLfRBInQhY1YL3B0Mh9V5Rz9FgO6A7FCNt6wTvl9IJmrzv3uZ9cyEOhvqNTnBCjR/vLmeDIbtjjwXPNlfX1V4W0ZTINmPSXJNkHYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738669521; c=relaxed/simple;
-	bh=RGvjMtppj6z2gs5Z/P1+VmNjOS9nfP9lzJ5wIwtOn7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nvGX1KcWrU4SaPYOVJoJ0XPCtyqwKbzMf24TePPM+BQ/ibU90isp0Hb5twAllhslkPHvZngw0sdX2UerYrKVvOqsdmLltd2wOHxX9lLL4HatMxKZUDt2t35UijIxM7tYFMsWo2OO4f+Zgm3I8YGe+uadG2FRZ6hmd/aXYdzpTyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aUAbFiqM; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1738669961; c=relaxed/simple;
+	bh=CZk3NRt+awXkFf9oDiWGmy0neYsma28NTK8sAxUNCLs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nBmuBE+g8GGyTJosUFP/M1ax/SXPHmDhBbAam7SA2Z7UK37y/rciieR8X/jFmUf6EiMw8JnViX+MckH7IUVd6zQXv9HO2RX+ksmg28u6foZMIC/tpLAZzV3NOS+yzQ2/BtfLGIkm8U8wt2sKFvOhlyIhQ0wvVvg+9yzZA4qdm6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gZFLOFK7; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738669520; x=1770205520;
+  t=1738669960; x=1770205960;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=RGvjMtppj6z2gs5Z/P1+VmNjOS9nfP9lzJ5wIwtOn7U=;
-  b=aUAbFiqMZA76nqDH80wMEn0JQq4JY+hKHtUMnFBnSfs+zdhEadwLxOAZ
-   XV45v1DnD2+F94Q2GTrO1uHdVsnuvFCHPsgDDdRd3Kf0D36hEeUNaqINZ
-   xp3LxaYFfLpKkeOY3lD270hSEUAB4D8cZkArM+PYvlMLo+qqA46e/EquD
-   JC74Lh5XWE4BnMsbbus4jnt2YHcKGieJLI3OniFDHEVn4hgvvFFcKa8U8
-   8vd/BB99pYoaUqIyGnzw/viwPfkYJvTimVD6QGqL6DPzoaklXJ2nNwc0H
-   Pf2HM7q9DhRtCDm5XaIhkPPo+c2bCXA4um8yz77oj5ovrX46e2wWB4UFI
-   w==;
-X-CSE-ConnectionGUID: OHEVtsO0SY2oDkXUsgz9lg==
-X-CSE-MsgGUID: 7cJ1dRAETKqFOseOOGg/4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="56729167"
+  bh=CZk3NRt+awXkFf9oDiWGmy0neYsma28NTK8sAxUNCLs=;
+  b=gZFLOFK7jMseWksAwDppdxq8glyQ1ZR0B2Kye/5Y6AEgsLFSS2S4pspk
+   /ThTfPG1DL4AJ6mPbi3mEAup3pL1t9wwrrMM9LpprPZP8OxFBmw7hzV+i
+   YHVfKtm/TIu+o4QhKRd4QnhFtYurZ9ixRw04DaANgzbq/TgdlDKN6KDIw
+   N3LOcnOYZMnEWGMgVUJLYyxYjBrwFbkT/Cuj4yqeZHPdN0a4ydxRpBcpk
+   iU0whpBU3PjrFHPCwaQJHYYQUfu/NEBIPYOOydH7hEnMF9/QKZ2KTGVjZ
+   S2OOHagt9SsGebDzA0gk9RHfkbhKTlfa9tDuS6CA5Yj+0y4jy5wW5yVT+
+   Q==;
+X-CSE-ConnectionGUID: j8ReC7yWRJuvCbOnivbYog==
+X-CSE-MsgGUID: h1OAVIt/SpOouiBYjUua4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="43114377"
 X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; 
-   d="scan'208";a="56729167"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 03:45:19 -0800
-X-CSE-ConnectionGUID: I1FHtHwsS0y+mwqoUQy+8w==
-X-CSE-MsgGUID: 14rZOyTFR5+AFBUZFubQDQ==
+   d="scan'208";a="43114377"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 03:52:39 -0800
+X-CSE-ConnectionGUID: R7xWqavETYWrCBfW09v7eg==
+X-CSE-MsgGUID: 5wTh8YELQYWOT/BoSLYLsA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; 
-   d="scan'208";a="115573113"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="115760838"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 04 Feb 2025 03:45:17 -0800
+  by orviesa005.jf.intel.com with ESMTP; 04 Feb 2025 03:52:38 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 03DAB299; Tue, 04 Feb 2025 13:45:15 +0200 (EET)
+	id 87825299; Tue, 04 Feb 2025 13:52:36 +0200 (EET)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	linux-gpio@vger.kernel.org,
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH] MAINTAINERS: Use my kernel.org address for ACPI GPIO work
-Date: Tue,  4 Feb 2025 13:45:15 +0200
-Message-ID: <20250204114515.3971923-1-mika.westerberg@linux.intel.com>
+Subject: [PATCH] MAINTAINERS: Use my kernel.org address for I2C ACPI work
+Date: Tue,  4 Feb 2025 13:52:36 +0200
+Message-ID: <20250204115236.3973371-1-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -78,7 +76,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch to use my kernel.org address for ACPI GPIO work.
+Switch to use my kernel.org address for I2C ACPI work.
 
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
@@ -86,18 +84,18 @@ Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index d6283fad64df..26c8b7055531 100644
+index 26c8b7055531..1753e1a8b9d9 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -9878,7 +9878,7 @@ S:	Maintained
- F:	drivers/staging/gpib/
+@@ -10822,7 +10822,7 @@ S:	Odd Fixes
+ F:	drivers/tty/hvc/
  
- GPIO ACPI SUPPORT
+ I2C ACPI SUPPORT
 -M:	Mika Westerberg <mika.westerberg@linux.intel.com>
 +M:	Mika Westerberg <westeri@kernel.org>
- M:	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
- L:	linux-gpio@vger.kernel.org
+ L:	linux-i2c@vger.kernel.org
  L:	linux-acpi@vger.kernel.org
+ S:	Maintained
 -- 
 2.47.2
 
