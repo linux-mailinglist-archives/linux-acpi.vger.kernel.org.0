@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-10884-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10885-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35530A26970
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 02:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B12EA26980
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 02:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58C33A4DAA
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 01:19:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 008773A60FF
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 01:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74A71EEA4E;
-	Tue,  4 Feb 2025 01:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B845212D93;
+	Tue,  4 Feb 2025 01:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ad0V1omh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihAlvPwE"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7234204C20;
-	Tue,  4 Feb 2025 01:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA24212B32;
+	Tue,  4 Feb 2025 01:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631814; cv=none; b=NGR5TAsYBb7450fbsJ/IlKP2XEah+xL8aiTNz4hyUWCKfZYw5ahfrmdJtci4j1VE5rC78sylRfqs+7m5dCI7E45j98IghkMVh0xXziRr4RtzAB5TBW8e/qkuBOBFdTe4a7IClWORTz/gvKsfOnTdaVN2vZQa1ovgx7eI+DMYw9U=
+	t=1738631825; cv=none; b=q7Akf/8a2c6pxuLRz4IESjg6DDE/D4ykMDBTMR5duOKvbGXhXxNBYjlI4e52jPL0hjBqw3nc5sQDE0+0YOgWFk8Ur2EgGXtMA0orA6feeiiA6Aiwgeo9Xp+ru9OsGuNB8C+ErTF2E6XghAfZOKSBR5Oidc2tEAQEiAJrs3VhfYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631814; c=relaxed/simple;
-	bh=LMgaSDmx6EN1XI6CionK2vcw/4u08QZJ+v6t3LrXwAs=;
+	s=arc-20240116; t=1738631825; c=relaxed/simple;
+	bh=sd2+t52y6ShnV/RE6H7CCAIDKuomPgdP25R1A2pvZLs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jwYsfxi0SRNHO3J6o0GFvehN5/KqTIfpynxiO5r7EMvm3umVkmOhuQUBcB36CB26c6s9jz2ZvD6ud1e2Nz3VVs9JC8Zo+ZseHXi7I9KrQwB8iK2nVhffRpqSaiPxSD9FqnSZQ0cs8k4XeaJL8Tq4GMVIUSK7UFr/OexBtfgvZb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ad0V1omh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13489C4CEE0;
-	Tue,  4 Feb 2025 01:16:52 +0000 (UTC)
+	 MIME-Version; b=aQMHCBHiNkoScLHGcAyp9q5r9H2h19sp8SPtvtyCZHdOqkCmciSVTGBLWX3WCjEwtY7AAnqutBSv50t3lHh319tH2xk1sDOUVlWY/sJRV6w1W5hjwuqBNIOkMIvMa8MOw1HKfGZtCeNfQiAVnE5T9ySDVvPVLe+OsgwZCFJ26QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihAlvPwE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281F9C4CEE7;
+	Tue,  4 Feb 2025 01:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631814;
-	bh=LMgaSDmx6EN1XI6CionK2vcw/4u08QZJ+v6t3LrXwAs=;
+	s=k20201202; t=1738631825;
+	bh=sd2+t52y6ShnV/RE6H7CCAIDKuomPgdP25R1A2pvZLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ad0V1omhjFT0rJfHjodw2wuuAZEqw+pFIddvo7M1ruqefMuXrK1NZoRbfuzJtalrY
-	 sV56Nk/L1NhZK+Lfh/A5NVtCTMP7T7sfwdIUAAdg4DYY7maHw8EKfHfRuQbqH11bQF
-	 YZ9TIqhOfFCqecUMRiY0Npe4olNNkNduduIwqa+YRbde5eknzVp8s0EONKBVHCKO8Q
-	 3DLB+KVaaxfHJ248Tv90YW6vJ59kF4YKmtc0bkwfkWzrWZlIaei5icA37FL9Ok8PIv
-	 55Oma0XguEPkJXK8Sc13sLlyvAnNpRw6+qROg9SONsLdmKsCPoOof0pObQWHVJMsPO
-	 uc6s7RwteC59Q==
+	b=ihAlvPwEFHbBkJ5Ui/G8PXGymw6Onk+3+/QIQ1Uz+l6nhjjzfYm+ELN/qaw3+aJJz
+	 OV3BfhKYEXIIXxdMI8Z4/KRFBwZ+9vxMrF2ZEcO1WtobyvGTh62OpO7wMBE7OQovVF
+	 Ptyyg4gBaJxn+wK+w7em+AVx9NUFRgapBo5qmmVqAuf8NhMhQkSiPFSA2p+8HrsLaM
+	 z0ScqKFSb3r/QVXTpTTBMpAF1YHa4edF+9gIGztgh/pTGB6Hh9/BM+ffLPuBIstjA0
+	 a2J/5qMWmWV+I3OnBPCPcAXvudXO+9zHtFVnF/sB91pmmUVRAX1TSRqsWkRyBQ0ZkT
+	 XO1CnddJffNZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,15 +48,15 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	tony.luck@intel.com,
 	mario.limonciello@amd.com,
+	tony.luck@intel.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 4/4] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
-Date: Mon,  3 Feb 2025 20:16:42 -0500
-Message-Id: <20250204011643.2206417-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 3/3] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
+Date: Mon,  3 Feb 2025 20:16:54 -0500
+Message-Id: <20250204011654.2206481-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250204011643.2206417-1-sashal@kernel.org>
-References: <20250204011643.2206417-1-sashal@kernel.org>
+In-Reply-To: <20250204011654.2206481-1-sashal@kernel.org>
+References: <20250204011654.2206481-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.12
+X-stable-base: Linux 6.6.75
 Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+)
 
 diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index cb45ef5240dab..068c1612660bc 100644
+index fdfc88e09986e..e894fdf6d5531 100644
 --- a/drivers/acpi/x86/utils.c
 +++ b/drivers/acpi/x86/utils.c
-@@ -407,6 +407,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+@@ -400,6 +400,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
  		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
  					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
  	},
