@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-10883-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10884-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C268A26953
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 02:17:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35530A26970
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 02:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24BFD3A4582
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 01:17:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58C33A4DAA
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Feb 2025 01:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B96014F9FB;
-	Tue,  4 Feb 2025 01:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74A71EEA4E;
+	Tue,  4 Feb 2025 01:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZDW6PaZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ad0V1omh"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB8A13D8B1;
-	Tue,  4 Feb 2025 01:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7234204C20;
+	Tue,  4 Feb 2025 01:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631802; cv=none; b=HUyPQRe2jHR5OcfS3jE9L0AcDcQsQXYCx25tax5aePzQfSGYY20Y9EuHKQA3/p5UCDCBEXgtVFmqcBtX5Hf+7wEuP9+IFRoJIkC4DC7q8+d/PXJ6+ct7nAXbaxldagvD/di0DIpf3Qq5mXHJq+vzI5uS/0mjfvxdyxbKwdy0Ym4=
+	t=1738631814; cv=none; b=NGR5TAsYBb7450fbsJ/IlKP2XEah+xL8aiTNz4hyUWCKfZYw5ahfrmdJtci4j1VE5rC78sylRfqs+7m5dCI7E45j98IghkMVh0xXziRr4RtzAB5TBW8e/qkuBOBFdTe4a7IClWORTz/gvKsfOnTdaVN2vZQa1ovgx7eI+DMYw9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631802; c=relaxed/simple;
+	s=arc-20240116; t=1738631814; c=relaxed/simple;
 	bh=LMgaSDmx6EN1XI6CionK2vcw/4u08QZJ+v6t3LrXwAs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k4nbLTCB9AI38MMXyffVOTS0ULmeb1xtcssGknxJzWxLFzjfivhlBFRbUPkd8mcVGsYxDNTHC8Ddu22Jr48f1AyrJywtMP/LQHnhKwYixO3rPuUh9R0fNyhqVe9x6ZzD/Y5z9js01wKKzXHSyoDRvWI+/M6xRkgdaDqETEy6Lwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZDW6PaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102AAC4CEE5;
-	Tue,  4 Feb 2025 01:16:40 +0000 (UTC)
+	 MIME-Version; b=jwYsfxi0SRNHO3J6o0GFvehN5/KqTIfpynxiO5r7EMvm3umVkmOhuQUBcB36CB26c6s9jz2ZvD6ud1e2Nz3VVs9JC8Zo+ZseHXi7I9KrQwB8iK2nVhffRpqSaiPxSD9FqnSZQ0cs8k4XeaJL8Tq4GMVIUSK7UFr/OexBtfgvZb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ad0V1omh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13489C4CEE0;
+	Tue,  4 Feb 2025 01:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631802;
+	s=k20201202; t=1738631814;
 	bh=LMgaSDmx6EN1XI6CionK2vcw/4u08QZJ+v6t3LrXwAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZDW6PaZM/ud7nM5CrhfqDYp8wBHJ/g2zvm1jIwjxtegw4uITvHjRcHpp4krQjqbh
-	 LvbOv07QLRRW8yM1LfN+SMwQe0ied0Lup2GUTADxOHlrjwdkoh1GGqhN1DpxLvQZ5X
-	 pA5hiTWQpuF368bEq02avMZD3wNCuBp+0c63YztgP91W1ecF30Y++AKsRTnq2Aob9J
-	 x2wAKgVyRx8lGDT/f35MfQlDrl3/g3a4RPkfSFseK79kwj/WWjDcontqi9R2gS1OCZ
-	 liP75WSsihIXER95+miCcsaWFKOUksUsNqV3YPgviHTULbwCS2oYFPmS42gueyXSF9
-	 65VmsWQY4z/1Q==
+	b=ad0V1omhjFT0rJfHjodw2wuuAZEqw+pFIddvo7M1ruqefMuXrK1NZoRbfuzJtalrY
+	 sV56Nk/L1NhZK+Lfh/A5NVtCTMP7T7sfwdIUAAdg4DYY7maHw8EKfHfRuQbqH11bQF
+	 YZ9TIqhOfFCqecUMRiY0Npe4olNNkNduduIwqa+YRbde5eknzVp8s0EONKBVHCKO8Q
+	 3DLB+KVaaxfHJ248Tv90YW6vJ59kF4YKmtc0bkwfkWzrWZlIaei5icA37FL9Ok8PIv
+	 55Oma0XguEPkJXK8Sc13sLlyvAnNpRw6+qROg9SONsLdmKsCPoOof0pObQWHVJMsPO
+	 uc6s7RwteC59Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,15 +48,15 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	mario.limonciello@amd.com,
 	tony.luck@intel.com,
+	mario.limonciello@amd.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 5/5] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
-Date: Mon,  3 Feb 2025 20:16:27 -0500
-Message-Id: <20250204011627.2206261-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 4/4] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
+Date: Mon,  3 Feb 2025 20:16:42 -0500
+Message-Id: <20250204011643.2206417-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250204011627.2206261-1-sashal@kernel.org>
-References: <20250204011627.2206261-1-sashal@kernel.org>
+In-Reply-To: <20250204011643.2206417-1-sashal@kernel.org>
+References: <20250204011643.2206417-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.1
+X-stable-base: Linux 6.12.12
 Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
