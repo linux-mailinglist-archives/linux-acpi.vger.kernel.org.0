@@ -1,114 +1,130 @@
-Return-Path: <linux-acpi+bounces-10899-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10900-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C03FA28BF6
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 14:40:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF63A29AEC
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 21:13:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8757A188267D
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 13:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69E14160CF0
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 20:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32634148838;
-	Wed,  5 Feb 2025 13:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A521D58D;
+	Wed,  5 Feb 2025 20:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="RaxhFnAL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YbaX20jb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D8313B298
-	for <linux-acpi@vger.kernel.org>; Wed,  5 Feb 2025 13:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835B821C9F4;
+	Wed,  5 Feb 2025 20:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738762806; cv=none; b=cFBsDtpI7EO4CuujCzW0FRRM4808/7it9tLbPwPx6GUH5H/d6v41rhGqbsJf62jslK+S30x+v6aJcTGLnULkX+1L1RjYUtH9MACrdKosM9jtfHRRdhRs+BADLkRoe6bvIxCdgFE+1VKhKjJkXzGqVEGUyzkAKILl33CRfPTaYLQ=
+	t=1738786268; cv=none; b=jOoZHHqW2ggz74ZFR8+sHaD9q1cohUphJGhWo04xJ5v/xBcdTiSwBQcpDy5OT4Ab88JUt6MPOtjMMK1nkQx+sFkHqE0JlaNioPHX4M3sM50ihJ1M6/fG9Zx2arU+PUqByPjF7zG0aXESRSWvUFEQaq81pwust+XhaTdtLvzfiIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738762806; c=relaxed/simple;
-	bh=Ve93mwsrLnKqcrL4b+tMX3AMLTjOmyr9pkgOW1Gk9IE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2cZyS+9v3pDd/k8NbgiZD+0/XbCgseG4SgGw07rhIsggyN4oof20qrbHup+KosIVEFr6xGkcu0BZekEDbA0buzsCUK7fIGi7k1l/FSdkSw3uwmwRe7ssR/Z2JoM5RSOmQq2wDb8LBoRB6ZEHrkwmimEKN+/Gr2afGZ+xdFileQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=RaxhFnAL; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361815b96cso47272875e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Feb 2025 05:40:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1738762803; x=1739367603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c0I5UAPNb7leRiFQPea3Mwu4N+fMvAxuwxayNKEzT8o=;
-        b=RaxhFnALX3PPMurloh4Yy/tHpkdiPrvrZ7zhcQx4FEeQJWQTyfFduEq0YXhwb2wI25
-         crCFuBnDLMaKxhgvNWSJz7K94Q+si7zDCadlhWInYy59ibs5zjt+3uoHB2a857BConzV
-         uXyBUAt1qzTFo2RtcniUIPW+b3ScGaVFqGtHaFxRvltR19Bmo5YlRAKYrjh4UrrVj7nq
-         UobYr6Qogt4BGD4bOebfKfEZYhEB2L/D6O9H1tsHFDiPf+Ee5Ytj8w+2FQBVIH/oZ6/Y
-         CITsGQ2RGtDNtYazPHLwJusGehqjti1I15pkLiKUjJWgcwTCqwnO8LgO6JKfA9LwXzxH
-         nDXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738762803; x=1739367603;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c0I5UAPNb7leRiFQPea3Mwu4N+fMvAxuwxayNKEzT8o=;
-        b=LOJB6xrTnAVRa7kKhqSgtMUrMuX7tSAZ6j+CUBCZnjlBMjNeu71bVp0S7jehaIukKN
-         T66o0bTaKDKOPUYqNSnZlc6szzd3aTX7l/q3aR5B8qdJwNGqrA2qgmYbWD1NbQFBRKQO
-         fcEbAv3/ZGfWp3YgYzaX236vFv8Fy134y9vyYPypYqzqOWg0Z0Jis4h22rl94ASUK8UJ
-         BVZDMMm+lUJkkSTPZn+7slP/z+8OVYES8Jixum4ZRCJyaAHV31MvJvnET3Ja1wQFZ4Gw
-         lbBczziwbt1y7Rc9HkVoDW92DQJ0WP5WDs9rZayUyDyyu6k4VxcWsI7znM6mXHKCsfyo
-         PT9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUq1lhGd2mXoChj3kF679EcYeY4VSFccr3p0BwRXcaSjvm5575K33u8OWuMSl+ri2XHojG2+fRh4xth@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz46/NhXPVQ5f6DiloYcZbK8lj8gb2tj2AnGgTXoKYnSA9slET9
-	3ve4Opx/rBHSLOf9k+IlCsn2s7brbpzwsiFcrSI6b+FDT2I4dbcW1JgdN1Jj4Ks=
-X-Gm-Gg: ASbGnctwJS4YN2V/HfYMa9sn1YeE1+gAb/ONXsVW8wEge5jKcfR8KU369dTzGAHqaS4
-	LSB5/8S0QPNnsrp3LEHf+eXuJGZkK8JtfTV+lZY1nVST1FIhKNgyYBqxS4ct/Y4HFbKKpkP1MD9
-	yuORHSCJjue5/vH1En9hHbNx22x/P11090h7gRKskiB4rz7vHHwtSHpbp6jai9dVj8S9WZixSY1
-	9PrKzHoeswhoGsmswtOmHzmCuMkjsPI9XI8PSwKya4CKorFIQPeYUGE0Gq/A/CULf+jH7X94SZe
-	klgHZictYnYzOqM=
-X-Google-Smtp-Source: AGHT+IFIv1roL1rPhbpQ94pwMrGgfqFC2BuKj9zjxmrwhOwb5I8/JHDgxOSRNY8p9y2VWAoPPehu+w==
-X-Received: by 2002:a05:600c:46d0:b0:434:e9ee:c1e with SMTP id 5b1f17b1804b1-4390d57762amr23467005e9.31.1738762802750;
-        Wed, 05 Feb 2025 05:40:02 -0800 (PST)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:3239:b668:f15e:fed8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390d93369fsm21974185e9.3.2025.02.05.05.40.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 05:40:01 -0800 (PST)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: Use my kernel.org address for ACPI GPIO work
-Date: Wed,  5 Feb 2025 14:39:58 +0100
-Message-ID: <173876277709.18360.13170516746376335320.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250204114515.3971923-1-mika.westerberg@linux.intel.com>
-References: <20250204114515.3971923-1-mika.westerberg@linux.intel.com>
+	s=arc-20240116; t=1738786268; c=relaxed/simple;
+	bh=9a7UioTVaxHTaOU4ZCX1Thsww93p8RmrWV73B+lK1Kk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d7X/qkmObnZP365cFbpWY9QNWiP50QrZSRuPZvoidcrgT5ePJmNEyKyy2aZR1zAxXVe/wxmshcVkyugq6dXLRBUT1dG1l1N1MoET4R6U3nESuVhTVteoAs2tddyTStMP6pZSqyTfZBIWkABZmK5/82gIZGxIpc83i9eWzd7TIUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YbaX20jb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5B1C4CEE2;
+	Wed,  5 Feb 2025 20:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738786268;
+	bh=9a7UioTVaxHTaOU4ZCX1Thsww93p8RmrWV73B+lK1Kk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YbaX20jb69QW9712DGeaRktPyYTLbjGvUIeHEnQJjxvje2RXQYJQ7jmOfeEjyHR6s
+	 4ksGqB36ar0hkqXsZQhIWs5oZu43nJe9qNqeNZ+lxTQOmjlpBOPUV8Q4QTaavZSfIF
+	 yx8HvCtY/KN5KdM/Ke1G3obuPCQehan72WzNyQWjLG06siVQmbwwGrPLNp8zKyYXHT
+	 g+FZ2Yx3TPEzL0A4887/nJ8s8sE0xpaDz+HN/SQIiSwFMdsN5VBZrnyOZ0ycGHNana
+	 gX905bkuUcAiKBW+bPNrVzsrlhwk/thz8/86mNxkE0cgjK4mcy8O04zhQ+8BDsRo/R
+	 raa6q/H65C6mA==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3ebc678b5c9so108022b6e.3;
+        Wed, 05 Feb 2025 12:11:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXZhtDIq6LBaqmI9P/TS3P7PNq0AmlPwN9hFcI4vqO1pebW9R96P2OHBVbIb9Ln4UDOHFb7zfYahX2RM80=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymHeyz6qO47h78Db/3asuRel+O8vNlfolbBLeru2cmx8oGC9Rf
+	Jk7eSZKLzGJiaTBqb2jbWTwi0YH0TsOckGRS6/1E4LhiKnJI+0qnFQtKM5dwe2DSj24SkmNKdW8
+	5jqnDTMAft7lBsW8VyGrUTGSC+Zk=
+X-Google-Smtp-Source: AGHT+IH3wnWfxZRWb/zSgQ3nBGQosJZpmsv1OqAeGH25zYt8qfzjjEFNXvT27hs1V/QMRpSA5kjheYzCgtw9qY8vjDI=
+X-Received: by 2002:a05:6808:4495:b0:3ea:5413:1a24 with SMTP id
+ 5614622812f47-3f37c0c8dedmr3272201b6e.13.1738786267435; Wed, 05 Feb 2025
+ 12:11:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20250203194629.3731895-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20250203194629.3731895-1-andriy.shevchenko@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 5 Feb 2025 21:10:56 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hr0W+MPFw99-TEf1_Lw6cb2gv3ScL06Jd8rZh06phgow@mail.gmail.com>
+X-Gm-Features: AWEUYZnUzJzHOUSIHC56AjJNqA-mcuwnwChvyv-JqDxZTeMxXOQcYAjFO0P6Fnw
+Message-ID: <CAJZ5v0hr0W+MPFw99-TEf1_Lw6cb2gv3ScL06Jd8rZh06phgow@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] ACPI: property: Fix return value for nval == 0 in acpi_data_prop_read()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Mon, Feb 3, 2025 at 8:47=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> While analysing code for software and OF node for the corner case when
+> caller asks to read zero items in the supposed to be an array of values
+> I found that ACPI behaves differently to what OF does, i.e.
+>
+> 1. It returns -EINVAL when caller asks to read zero items from integer
+> array, while OF returns 0, if no other errors happened.
+>
+> 2. It returns -EINVAL when caller asks to read zero items from string
+> array, while OF returns -ENODATA, if no other errors happened.
+>
+> Amend ACPI implementation to follow what OF does.
+>
+> Fixes: b31384fa5de3 ("Driver core: Unified device properties interface fo=
+r platform firmware")
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/acpi/property.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 1144c2368d89..7d7f4974c5b1 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -1189,8 +1189,6 @@ static int acpi_data_prop_read(const struct acpi_de=
+vice_data *data,
+>                         return -EOVERFLOW;
+>                 break;
+>         }
+> -       if (nval =3D=3D 0)
+> -               return -EINVAL;
+>
+>         if (obj->type =3D=3D ACPI_TYPE_BUFFER) {
+>                 if (proptype !=3D DEV_PROP_U8)
+> @@ -1214,9 +1212,10 @@ static int acpi_data_prop_read(const struct acpi_d=
+evice_data *data,
+>                 ret =3D acpi_copy_property_array_uint(items, (u64 *)val, =
+nval);
+>                 break;
+>         case DEV_PROP_STRING:
+> -               ret =3D acpi_copy_property_array_string(
+> -                       items, (char **)val,
+> -                       min_t(u32, nval, obj->package.count));
+> +               nval =3D min_t(u32, nval, obj->package.count);
+> +               if (nval =3D=3D 0)
+> +                       return -ENODATA;
+> +               ret =3D acpi_copy_property_array_string(items, (char **)v=
+al, nval);
+>                 break;
+>         default:
+>                 ret =3D -EINVAL;
+> --
 
-
-On Tue, 04 Feb 2025 13:45:15 +0200, Mika Westerberg wrote:
-> Switch to use my kernel.org address for ACPI GPIO work.
-> 
-> 
-
-Applied, thanks!
-
-[1/1] MAINTAINERS: Use my kernel.org address for ACPI GPIO work
-      commit: 59ff2040f0a58923c787fdba5999100667338230
-
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Applied as 6.14-rc material, thanks!
 
