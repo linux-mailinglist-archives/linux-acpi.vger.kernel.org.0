@@ -1,65 +1,35 @@
-Return-Path: <linux-acpi+bounces-10895-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10896-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA199A282F3
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 04:45:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E26A283B4
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 06:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6144F1653C8
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 03:45:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98B8F3A634B
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 05:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F5E21324F;
-	Wed,  5 Feb 2025 03:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ks7Pitsw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F4920C494;
+	Wed,  5 Feb 2025 05:34:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DCE1EB3E;
-	Wed,  5 Feb 2025 03:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13352F46;
+	Wed,  5 Feb 2025 05:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738727128; cv=none; b=Set6nNJ46/gpH2ikDhZPp5pBc2fv1wq6lBGmF5YEWH7qG7nCGvY+ZoJrHhtX+GnWjsbLG8hHNxzC/mP8FXSZs2+ND2gLHNn9qn0bZ+rMjWTGFXFKT+PipFl1EhlGavuDGhi/h55VN/ZJQaj0XZ8G+MnTE5qRaCfddP6VxtNllGU=
+	t=1738733659; cv=none; b=EmV2BehETkBrEzgKvIm9ciuK0650Lfri9RgPXb5oQ4MUq/3mRkms11hF67fxnLGc8P5vx0ZxzX9PLCiVI+rb6dMCOabnE0fQT2UceHK2D+QJ+dcyds+JNhFUUxMRsoJ/ilzdOwDCQTsgH+ou5ViDMj0yIcwb+xSLJSj4hTemSWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738727128; c=relaxed/simple;
-	bh=MLaFTGCPEcg9NYXwrgf9SMfKqQ9G+0WJl/NqM7xYYn8=;
+	s=arc-20240116; t=1738733659; c=relaxed/simple;
+	bh=tVo6KyRYgklzOc5jF07ElkZiK+jTHyaGO/F2qJOCIwM=;
 	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=WMqNd43zSyZSAkYLZnh6w0hykn9hdxzacekF81BCezmQjrNMcZ2uDkb/ZkbcqBt3csp0LAPrnFAQNCzLcshk/1uQM0bFFkbdnDJrdvY/VACfYJtGItfaZkeujNVutnUQL+Tw4MtcbyJ2uDBanybxkUAbtky/RsMpZXU7+HXN0Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ks7Pitsw; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738727125; x=1770263125;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=MLaFTGCPEcg9NYXwrgf9SMfKqQ9G+0WJl/NqM7xYYn8=;
-  b=ks7Pitsw8DQYqLAPWG2p8sHcmQGGzieIkiMBtZsUAR3VCrhIY39PP/0e
-   9HbgWGg+LBZOzs+0/DWRJWjeNJQ2btNXfMjcdUy5e8wXUPyc4x/H53vQr
-   DypmzCHWAbs3bRTLNM48DRddBLaJ7dUmvab1nYkCp3RMBP1yuHD9Eqf3/
-   E4H77rBAEohkS+Ch/+LkL2evqK8usU3vKn2/pWcq24KH4Aa/DYy8kRvWn
-   1pPFiTOOkpYLWtJxSObD97tEyAbzzQPkfSSLkD8jdRyvglszAB/TnrH23
-   Tu4n6GMNZwdttR2H1lFt/3rxmYGaJsBAZMOcUp0xzg7d8NApQlL/HMips
-   g==;
-X-CSE-ConnectionGUID: EWUCJWFyQZyEWvDZSq+mUw==
-X-CSE-MsgGUID: +m3zM5n1RNOuFW+pTAp/gQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39165402"
-X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
-   d="scan'208";a="39165402"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 19:45:25 -0800
-X-CSE-ConnectionGUID: WpR9JSfURxSI/IIjqWagHg==
-X-CSE-MsgGUID: qbIxOqA5Tj+fNgVN36xa1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
-   d="scan'208";a="141642470"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.242.149]) ([10.124.242.149])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 19:45:18 -0800
-Message-ID: <284dd081-8d53-45ef-ae18-78b0388c98ca@linux.intel.com>
-Date: Wed, 5 Feb 2025 11:45:15 +0800
+	 In-Reply-To:Content-Type; b=R8u5sROmpXQE3ePWcCh7JrEx2wtAfzKDn4qJQHGN9+AWYwOK81pon/qUSwwOImk3YXbQnvGAvXp3kZwHe3sLJr4chK1Kns0N8SDANuTLKmZgsmaYlbRcYSUyYEKRGRLGpqK02z0auR/Ln5NTPhCBr57DmJhFbpsRLm16rdty0k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-3e1ff7000001d7ae-46-67a2f84f118f
+Message-ID: <92fb15d4-b8fe-4b73-ba2c-2ded3c9bd4ca@sk.com>
+Date: Wed, 5 Feb 2025 14:34:07 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,63 +37,142 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Zhangfei Gao <zhangfei.gao@linaro.org>,
- acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
- Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
- kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Hanjun Guo <guohanjun@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
- Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
- patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Mostafa Saleh <smostafa@google.com>
-Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
-To: Jason Gunthorpe <jgg@nvidia.com>
-References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
- <20241112182938.GA172989@nvidia.com>
- <CABQgh9HOHzeRF7JfrXrRAcGB53o29HkW9rnVTf4JefeVWDvzyQ@mail.gmail.com>
- <20241113012359.GB35230@nvidia.com>
- <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
- <20241113164316.GL35230@nvidia.com>
- <6ed97a10-853f-429e-8506-94b218050ad3@linux.intel.com>
- <20241115175522.GA35230@nvidia.com> <20250122192622.GA965540@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250122192622.GA965540@nvidia.com>
+Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ gourry@gourry.net, hyeonggon.yoo@sk.com, rafael@kernel.org, lenb@kernel.org,
+ gregkh@linuxfoundation.org, akpm@linux-foundation.org, rakie.kim@sk.com,
+ dan.j.williams@intel.com, Jonathan.Cameron@huawei.com, dave.jiang@intel.com,
+ horen.chuang@linux.dev, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
+Subject: Re: [PATCH v3] Weighted interleave auto-tuning
+Content-Language: ko
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+References: <20250115185854.1991771-1-joshua.hahnjy@gmail.com>
+ <87ikq8h0w4.fsf@DESKTOP-5N7EMDA>
+ <147aba6e-7e23-4ad1-9bd2-1ceac0f3d55b@sk.com>
+ <87a5bjiqtk.fsf@DESKTOP-5N7EMDA>
+From: Honggyu Kim <honggyu.kim@sk.com>
+In-Reply-To: <87a5bjiqtk.fsf@DESKTOP-5N7EMDA>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrMIsWRmVeSWpSXmKPExsXC9ZZnoa7/j0XpBsv3GFjMWb+GzWL61AuM
+	FiduNrJZ/Lx7nN2iefF6NovVm3wtbvefY7VYtfAam8XxrfPYLfZdBKrd+fAtm8Xyff2MFpd3
+	zWGzuLfmP6vF3C9TmS1Wr8lwEPA4/OY9s8fOWXfZPbrbLrN7tBx5y+qxeM9LJo9NqzrZPDZ9
+	msTucWLGbxaPnQ8tPRY2TGX22D93DbvHuYsVHp83yQXwRnHZpKTmZJalFunbJXBltK+Zz17Q
+	JVOxdfUq5gbGo2JdjJwcEgImEtc2HmKEsXdsmssEYvMKWEq83XmRBcRmEVCRWDblOVRcUOLk
+	zCdgcVEBeYn7t2awdzFycTAL7GeWuHZ/PVhCWMBcYuKMrawgNrOAiMTszjZmEFtEwEDi75XJ
+	LCANQgJbGCVW7DrJBpJgE1CTuPJyEtgGTgFdiXMzt7BANJtJdG3tYoSw5SW2v53DDNIsIXCK
+	XeLj7itMEGdLShxccYNlAqPgLCQXzkKyfBaSWbOQzFrAyLKKUSgzryw3MTPHRC+jMi+zQi85
+	P3cTIzBql9X+id7B+OlC8CFGAQ5GJR5eB8ZF6UKsiWXFlbmHGCU4mJVEeE9vX5AuxJuSWFmV
+	WpQfX1Sak1p8iFGag0VJnNfoW3mKkEB6YklqdmpqQWoRTJaJg1OqgXFdzj634zYtJzgdJ3o9
+	XXF38dX+TRMDLI569N957P84sP3em8NBsrv6kmZc7G1tnNK4zM4xf3VJtlbxuVfnz4XYm/5N
+	mjTPLb5g6szM8/EW4aeUM+9f+HVZSMLlyImF7mdbJGImMwR1bnHZ+cAqLF1rltCxsv64lSI/
+	Nl5oMl+28fXa0+8OhUUosRRnJBpqMRcVJwIAxdgo+dYCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOIsWRmVeSWpSXmKPExsXCNUNLT9f/x6J0g+/X5SzmrF/DZjF96gVG
+	ixM3G9ksft49zm7RvHg9m8XqTb4Wt/vPsVrMXJtksWrhNTaL41vnsVvsuwhUf3juSVaLnQ/f
+	slks39fPaHF51xw2i3tr/rNazP0yldni0LXnrBar12Q4CHscfvOe2WPnrLvsHt1tl9k9Wo68
+	ZfVYvOclk8emVZ1sHps+TWL3ODHjN4vHzoeWHgsbpjJ77J+7ht3j3MUKj2+3PTwWv/jA5PF5
+	k1wAfxSXTUpqTmZZapG+XQJXRvua+ewFXTIVW1evYm5gPCrWxcjJISFgIrFj01wmEJtXwFLi
+	7c6LLCA2i4CKxLIpz6HighInZz4Bi4sKyEvcvzWDvYuRi4NZYD+zxLX768ESwgLmEhNnbGUF
+	sZkFRCRmd7Yxg9giAgYSf69MZgFpEBLYwiixYtdJNpAEm4CaxJWXk8A2cAroSpybuYUFotlM
+	omtrFyOELS+x/e0c5gmMfLOQHDILyY5ZSFpmIWlZwMiyilEkM68sNzEzx1SvODujMi+zQi85
+	P3cTIzA6l9X+mbiD8ctl90OMAhyMSjy8DoyL0oVYE8uKK3MPMUpwMCuJ8J7eviBdiDclsbIq
+	tSg/vqg0J7X4EKM0B4uSOK9XeGqCkEB6YklqdmpqQWoRTJaJg1OqgZH19GbRRIsrLFw+LKff
+	792v3Su+TO/6pttftqtYu6dHxE5tzlBamrI567DU5ttpNkxMXnMvdPspbFO6XBP8yPk75yLx
+	NYL/G7+XivwrdL0p9CyzrsAiMpStyCLvfJjnsdobL8ptPkhO6Z2vdPIY++tzF1c+nrXvikXM
+	tX1/djDMcny8sIctr1eJpTgj0VCLuag4EQCBVzE/ygIAAA==
+X-CFilter-Loop: Reflected
 
-On 2025/1/23 3:26, Jason Gunthorpe wrote:
-> On Fri, Nov 15, 2024 at 01:55:22PM -0400, Jason Gunthorpe wrote:
->>>> I need your help to remove IOMMU_DEV_FEAT_IOPF from the intel
->>>> driver. I have a patch series that eliminates it from all the other
->>>> drivers, and I wrote a patch to remove FEAT_SVA from intel..
->>> Yes, sure. Let's make this happen in the next cycle.
->>>
->>> FEAT_IOPF could be removed. IOPF manipulation can be handled in the
->>> domain attachment path. A per-device refcount can be implemented. This
->>> count increments with each iopf-capable domain attachment and decrements
->>> with each detachment. PCI PRI is enabled for the first iopf-capable
->>> domain and disabled when the last one is removed. Probably we can also
->>> solve the PF/VF sharing PRI issue.
->> Here is what I have so far, if you send me a patch for vt-d to move
->> FEAT_IOPF into attach as you describe above (see what I did to arm for
->> example), then I can send it next cycle
+Hi Ying,
+
+On 1/22/2025 10:24 AM, Huang, Ying wrote:
+
+[snip]
+
+>>>> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
+>>>> index 0b7972de04e9..d30dc29c53ff 100644
+>>>> --- a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
+>>>> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
+>>>> @@ -20,6 +20,30 @@ Description:	Weight configuration interface for nodeN
+>>>>    		Minimum weight: 1
+>>>>    		Maximum weight: 255
+>>>>    -		Writing an empty string or `0` will reset the weight
+>>>> to the
+>>>> -		system default. The system default may be set by the kernel
+>>>> -		or drivers at boot or during hotplug events.
+>>>> +		Writing invalid values (i.e. any values not in [1,255],
+>>>> +		empty string, ...) will return -EINVAL.
+>>>> +
+>>>> +What:		/sys/kernel/mm/mempolicy/weighted_interleave/mode
+>>>> +Date:		January 2025
+>>>> +Contact:	Linux memory management mailing list <linux-mm@kvack.org>
+>>>> +Description:	Auto-weighting configuration interface
+>>>> +
+>>>> +		Configuration modes for weighted interleave. Can take one of
+>>>> +		two options: "manual" and "auto". Default is "auto".
+>>>> +
+>>>> +		In auto mode, all node weights are re-calculated and overwritten
+>>>> +		(visible via the nodeN interfaces) whenever new bandwidth data
+>>>> +		is made available either during boot or hotplug events.
+>>>> +
+>>>> +		In manual mode, node weights can only be updated by the user.
+>>>> +		If a node is hotplugged while the user is in manual mode,
+>>>> +		the node will have a default weight of 1.
+>>>> +
+>>>> +		Modes can be changed by writing either "auto" or "manual" to the
+>>>> +		interface. All other strings will be ignored, and -EINVAL will
+>>>> +		be returned. If "auto" is written to the interface but the
+>>>> +		recalculation / updates fail at any point (-ENOMEM or -ENODEV)
+>>>> +		then the mode will remain in manual mode.
+>>>> +
+>>>> +		Writing a new weight to a node directly via the nodeN interface
+>>>> +		will also automatically update the system to manual mode.
+>>> IMHO, this interface is somewhat hard to be used.  Users need to
+>>> know
+>>> which value is legal.  So, this will become something like,
+>>> $ cat mode
+>>> auto [manual]
+>>> $ echo auto > mode
+>>> $ cat mode
+>>> [auto] manual
 >>
->> https://github.com/jgunthorpe/linux/commits/iommu_no_feat/
-> Hey Baolu, a reminder on this, lets try for it next cycle?
+>> This is exactly I internally proposed to Hyeonggon, but couldn't share
+>> the idea directly here.
+>>
+>>> Unless it's possible we will add more modes in the future, this is
+>>> kind
+>>> of overkill for me.  How about something simpler as below?
+>>> $ cat auto
+>>> true
+>>> $ echo 0 > auto
+>>> $ cat auto
+>>> false
+>>
+>> That also makes sense, but I feel like somewhat vague what "auto" false
+>> means. The "auto" might be better to be "use_hmat" instead and this
+>> makes "use_hmat" false more meaningful. "use_hmat_weight" or
+>> "use_hmat_info" might be another candidates.
+> 
+> As Gregory pointed out in another email.  hmat isn't good because it's
+> platform dependent.  We may use something else to get default weights on
+> another platform.
 
-Oh, I forgot this. Thanks for the reminding. Sure, let's try to make it
-in the next cycle.
+Sorry for the late reply.  I prefered "mode" contains auto/manual and
+"hmat" names were my second thought, which may not be proper here as you
+mentioned.
 
----
-baolu
+> 
+> I'm open to other platform independent naming.  For example, use_default.
+
+I'm also fine to your another proposal "auto" with Y/N, which is used in
+v4.
+
+> 
+> [snip]
+> 
+> ---
+> Best Regards,
+> Huang, Ying
+
+Thanks,
+Honggyu
 
