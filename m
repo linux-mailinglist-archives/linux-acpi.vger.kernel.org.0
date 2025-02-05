@@ -1,35 +1,65 @@
-Return-Path: <linux-acpi+bounces-10894-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10895-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F66CA281C2
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 03:26:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA199A282F3
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 04:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCCBD3A28A3
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 02:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6144F1653C8
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 03:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC35212D63;
-	Wed,  5 Feb 2025 02:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F5E21324F;
+	Wed,  5 Feb 2025 03:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ks7Pitsw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C8878F4C;
-	Wed,  5 Feb 2025 02:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DCE1EB3E;
+	Wed,  5 Feb 2025 03:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738722381; cv=none; b=hEwdwVaC25R+uI10H2gZeGSqaEdzilkIBkS0xGXLwlT0NRB0LXzdenGAEZwPPS+Z/m1hLzs9PkFvwgSYIbs4kgU94/u47lJkmZEGgfhgq/MJYJwcT1sLPYPt1PsdA1KW/mGu6fWDQ8OC0Y3hNAsKqMeQEeo3pUmSxUdeptTMDUs=
+	t=1738727128; cv=none; b=Set6nNJ46/gpH2ikDhZPp5pBc2fv1wq6lBGmF5YEWH7qG7nCGvY+ZoJrHhtX+GnWjsbLG8hHNxzC/mP8FXSZs2+ND2gLHNn9qn0bZ+rMjWTGFXFKT+PipFl1EhlGavuDGhi/h55VN/ZJQaj0XZ8G+MnTE5qRaCfddP6VxtNllGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738722381; c=relaxed/simple;
-	bh=oXc3Z/KC1NQ+sl7reJD3khhtese/luU+Yn32+xn6Cio=;
+	s=arc-20240116; t=1738727128; c=relaxed/simple;
+	bh=MLaFTGCPEcg9NYXwrgf9SMfKqQ9G+0WJl/NqM7xYYn8=;
 	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=GrFOrBIIAxGFfsImjDQJRDfWPBm19g2rockXhU1qcVe1a0AvBKAWNnOZB2ABGIiKul72KhrU+c/5sSAzYaB5EsuMLI3CSISoRZfkIKlc6JEW1JlnQ1EPh7mggyNrQ6iT7bzicgGmDoeOB6YmfpPR8JYwKjoLEJhvjG7bbFieVSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-3c9ff7000001d7ae-4d-67a2cc3f7de9
-Message-ID: <5b9a3776-8661-423a-853f-87fa8b9a7633@sk.com>
-Date: Wed, 5 Feb 2025 11:26:06 +0900
+	 In-Reply-To:Content-Type; b=WMqNd43zSyZSAkYLZnh6w0hykn9hdxzacekF81BCezmQjrNMcZ2uDkb/ZkbcqBt3csp0LAPrnFAQNCzLcshk/1uQM0bFFkbdnDJrdvY/VACfYJtGItfaZkeujNVutnUQL+Tw4MtcbyJ2uDBanybxkUAbtky/RsMpZXU7+HXN0Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ks7Pitsw; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738727125; x=1770263125;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=MLaFTGCPEcg9NYXwrgf9SMfKqQ9G+0WJl/NqM7xYYn8=;
+  b=ks7Pitsw8DQYqLAPWG2p8sHcmQGGzieIkiMBtZsUAR3VCrhIY39PP/0e
+   9HbgWGg+LBZOzs+0/DWRJWjeNJQ2btNXfMjcdUy5e8wXUPyc4x/H53vQr
+   DypmzCHWAbs3bRTLNM48DRddBLaJ7dUmvab1nYkCp3RMBP1yuHD9Eqf3/
+   E4H77rBAEohkS+Ch/+LkL2evqK8usU3vKn2/pWcq24KH4Aa/DYy8kRvWn
+   1pPFiTOOkpYLWtJxSObD97tEyAbzzQPkfSSLkD8jdRyvglszAB/TnrH23
+   Tu4n6GMNZwdttR2H1lFt/3rxmYGaJsBAZMOcUp0xzg7d8NApQlL/HMips
+   g==;
+X-CSE-ConnectionGUID: EWUCJWFyQZyEWvDZSq+mUw==
+X-CSE-MsgGUID: +m3zM5n1RNOuFW+pTAp/gQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39165402"
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="39165402"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 19:45:25 -0800
+X-CSE-ConnectionGUID: WpR9JSfURxSI/IIjqWagHg==
+X-CSE-MsgGUID: qbIxOqA5Tj+fNgVN36xa1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="141642470"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.242.149]) ([10.124.242.149])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 19:45:18 -0800
+Message-ID: <284dd081-8d53-45ef-ae18-78b0388c98ca@linux.intel.com>
+Date: Wed, 5 Feb 2025 11:45:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -37,109 +67,63 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
- ying.huang@linux.alibaba.com, rafael@kernel.org, lenb@kernel.org,
- gregkh@linuxfoundation.org, akpm@linux-foundation.org, rakie.kim@sk.com,
- dan.j.williams@intel.com, Jonathan.Cameron@huawei.com, dave.jiang@intel.com,
- horen.chuang@linux.dev, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
- 42.hyeyoo@gmail.com, Honggyu Kim <honggyu.km@gmail.com>
-Subject: Re: [PATCH v4] Weighted Interleave Auto-tuning
-Content-Language: ko
-To: Gregory Price <gourry@gourry.net>
-References: <20250202141247.2219681-1-joshua.hahnjy@gmail.com>
- <a2b428ed-212a-4e39-bcf7-5ab67249132d@sk.com>
- <Z6Di3oLQg64W0hAM@gourry-fedora-PF4VCD3F>
-From: Honggyu Kim <honggyu.kim@sk.com>
-In-Reply-To: <Z6Di3oLQg64W0hAM@gourry-fedora-PF4VCD3F>
+Cc: baolu.lu@linux.intel.com, Zhangfei Gao <zhangfei.gao@linaro.org>,
+ acpica-devel@lists.linux.dev, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+ kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Hanjun Guo <guohanjun@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+To: Jason Gunthorpe <jgg@nvidia.com>
+References: <0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com>
+ <20241112182938.GA172989@nvidia.com>
+ <CABQgh9HOHzeRF7JfrXrRAcGB53o29HkW9rnVTf4JefeVWDvzyQ@mail.gmail.com>
+ <20241113012359.GB35230@nvidia.com>
+ <9df3dd17-375a-4327-b2a8-e9f7690d81b1@linux.intel.com>
+ <20241113164316.GL35230@nvidia.com>
+ <6ed97a10-853f-429e-8506-94b218050ad3@linux.intel.com>
+ <20241115175522.GA35230@nvidia.com> <20250122192622.GA965540@nvidia.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250122192622.GA965540@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrBIsWRmVeSWpSXmKPExsXC9ZZnoa79mUXpBgcfc1lM7DGwmLN+DZvF
-	9KkXGC1O3Gxks/h59zi7RfPi9WwWqzf5WszZeYfZ4nb/OVaLVQuvsVkc3zqP3WLfRaCGnQ/f
-	slks39fPaHF51xw2i3tr/rNazP0yldli9ZoMByGPw2/eM3vsnHWX3aO77TK7R8uRt6wei/e8
-	ZPLYtKqTzWPTp0nsHidm/Gbx2PnQ0mNhw1Rmj/1z17B7nLtY4fF5k1wAbxSXTUpqTmZZapG+
-	XQJXxp//7gXbBSq+7kxoYDzH08XIySEhYCLRO2cyI4x9a+ldNhCbV8BS4supVjCbRUBF4u36
-	7+wQcUGJkzOfsIDYogLyEvdvzQCKc3EwC7xnllj0/xZrFyMHh7CAucTX5SogNcwCIhKzO9uY
-	QcIiAqoSbVfcQcqFBGYxStxaMxFsJpuAmsSVl5OYQGxOATOJgyt62CB6zSS6tnYxQtjyEtvf
-	zmEGaZYQOMcucWF2EzPE0ZJADTdYJjAKzkJy3ywku2chmTULyawFjCyrGIUy88pyEzNzTPQy
-	KvMyK/SS83M3MQLjd1ntn+gdjJ8uBB9iFOBgVOLhdWBclC7EmlhWXJl7iFGCg1lJhPf09gXp
-	QrwpiZVVqUX58UWlOanFhxilOViUxHmNvpWnCAmkJ5akZqemFqQWwWSZODilGhiZtsy+wrp8
-	/5+791d+d/hwwVsp5Y7g1inhavIh3xM/tS7t5bbYdujVca0fMc/qPna7ZuyLaW7dU3Pjxv9P
-	j7p/XZ5aLJmsPvVC0/HVxxdcL/zYw7iQf//Mu+elT3LZbbXZnJF8drFzj5co/8ayAyePPftu
-	fCNgUoy1+e3+qEVZDwUlLzzePHuepxJLcUaioRZzUXEiAIl8UlzbAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBIsWRmVeSWpSXmKPExsXCNUNLT9fuzKJ0g/4b1hYTewws5qxfw2Yx
-	feoFRosTNxvZLH7ePc5u0bx4PZvF6k2+FnN23mG2uN1/jtVi1cJrbBbHt85jt9h3Eajh8NyT
-	rBY7H75ls1i+r5/R4vKuOWwW99b8Z7WY+2Uqs8Wha89ZLVavyXAQ8Tj85j2zx85Zd9k9utsu
-	s3u0HHnL6rF4z0smj02rOtk8Nn2axO5xYsZvFo+dDy09FjZMZfbYP3cNu8e5ixUe3257eCx+
-	8YHJ4/MmuQD+KC6blNSczLLUIn27BK6MP//dC7YLVHzdmdDAeI6ni5GTQ0LAROLW0rtsIDav
-	gKXEl1OtYDaLgIrE2/Xf2SHighInZz5hAbFFBeQl7t+aARTn4mAWeM8ssej/LdYuRg4OYQFz
-	ia/LVUBqmAVEJGZ3tjGDhEUEVCXarriDlAsJzGKUuLVmIthMNgE1iSsvJzGB2JwCZhIHV/Sw
-	QfSaSXRt7WKEsOUltr+dwzyBkW8WkjNmIVkxC0nLLCQtCxhZVjGKZOaV5SZm5pjqFWdnVOZl
-	Vugl5+duYgTG57LaPxN3MH657H6IUYCDUYmH14FxUboQa2JZcWXuIUYJDmYlEd7T2xekC/Gm
-	JFZWpRblxxeV5qQWH2KU5mBREuf1Ck9NEBJITyxJzU5NLUgtgskycXBKNTAefs74InNWj+iP
-	/QYdWpfdzH852DcYMEzdtefsxnMTFtybfE+uueBLW0JG8qSZAlbifzcHfJc+PSNuy5ILttc7
-	b3QyfbvNdTK4YnPCtkXyR7bFzVx3ae/y5wGra2OMl/w62Nld8U7iRfGtLW5m3Un76jU6DFfl
-	LuKaU27TtXmWnrAfo8v5ul+3lViKMxINtZiLihMB67xO2MsCAAA=
-X-CFilter-Loop: Reflected
 
-Hi Gregory,
-
-On 2/4/2025 12:38 AM, Gregory Price wrote:
-> On Mon, Feb 03, 2025 at 09:44:29PM +0900, Honggyu Kim wrote:
->> Hi Joshua,
+On 2025/1/23 3:26, Jason Gunthorpe wrote:
+> On Fri, Nov 15, 2024 at 01:55:22PM -0400, Jason Gunthorpe wrote:
+>>>> I need your help to remove IOMMU_DEV_FEAT_IOPF from the intel
+>>>> driver. I have a patch series that eliminates it from all the other
+>>>> drivers, and I wrote a patch to remove FEAT_SVA from intel..
+>>> Yes, sure. Let's make this happen in the next cycle.
+>>>
+>>> FEAT_IOPF could be removed. IOPF manipulation can be handled in the
+>>> domain attachment path. A per-device refcount can be implemented. This
+>>> count increments with each iopf-capable domain attachment and decrements
+>>> with each detachment. PCI PRI is enabled for the first iopf-capable
+>>> domain and disabled when the last one is removed. Probably we can also
+>>> solve the PF/VF sharing PRI issue.
+>> Here is what I have so far, if you send me a patch for vt-d to move
+>> FEAT_IOPF into attach as you describe above (see what I did to arm for
+>> example), then I can send it next cycle
 >>
->>> A node offlining (or even onlining with no new bandwidth information)
->>> will just mean that the node inherits whatever value is stored in
->>> iw_table at that moment, whether that contains the default values
->>> created on init or the last values that it had taken.
->>
->> It looks the call sequence is as follows.
->>
->>    cxl_region_perf_attrs_callback()
->>    -> cxl_region_update_coordinates()
->>    -> node_set_perf_attrs()
->>    -> mempolicy_set_node_perf()
->>    -> reduce_interleave_weights()
->>
->> I haven't searched all the paths of cxl_region_perf_attrs_callback() via
->> cxlr->memory_notifier.notifier_call callback pointer, but maybe this
->> function is not called when a node is offlined, then I get node
->> offlining doesn't trigger re-weight calculation.
-> 
-> This function is called any time a memory block status changes.
-> 
-> static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
->                                            unsigned long action, void *arg)
-> {
-> ...
->          if (nid == NUMA_NO_NODE || action != MEM_ONLINE)
->                  return NOTIFY_DONE;
-> ...
-> }
+>> https://github.com/jgunthorpe/linux/commits/iommu_no_feat/
+> Hey Baolu, a reminder on this, lets try for it next cycle?
 
-Ah, that's clear now.
+Oh, I forgot this. Thanks for the reminding. Sure, let's try to make it
+in the next cycle.
 
-> 
-> But it doesn't do anything if it's not a call to online a memory block,
-> so the cached performance data in mempolicy won't change when blocks
-> are taken offline.
-> 
-> So the time the scenario you are proposing can arrise is when the device
-> does not provide performance information (missing CDAT).
-> 
-> 
-> If a user sets manual mode - they're on the hook to manage everything.
-> 
-> This is system-wide setting - not a per-task setting.  We've yet to see
-> any strong use-case for individual task weights. If there is a use case
-> for a task not being subject to system-wide weight changes then it's a
-> use case for task-local weights.
-> 
-> ~Gregory
-
-Thanks for the explanation.  Then except for the nitpicks that I left,
-I'm fine with this.
-
-Thanks,
-Honggyu
+---
+baolu
 
