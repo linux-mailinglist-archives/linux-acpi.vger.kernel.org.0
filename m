@@ -1,128 +1,177 @@
-Return-Path: <linux-acpi+bounces-10903-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10904-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19488A29B82
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 21:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B648A29EEE
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Feb 2025 03:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23EDF3A5D8C
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Feb 2025 20:55:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCAD53A7D79
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Feb 2025 02:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2575321B1A3;
-	Wed,  5 Feb 2025 20:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tl80DqPP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DD713A244;
+	Thu,  6 Feb 2025 02:44:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469CB218AB3;
-	Wed,  5 Feb 2025 20:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763FD17BA6;
+	Thu,  6 Feb 2025 02:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738788892; cv=none; b=d1Q3M3m2Fd0rgKo2fg0NLxYPCkGzXOrnzitDI0MaUpBITnDeKSJ1RUOnyrv0pWmki2o+6tCc3yeSNAlRO8W6U3m6tG3F1UbmlrvJCGlsntfxPR2UA7C6jVrrxU/bI940YvT00ZHH6SRSuWMCGz3rePbOYHExd/MFVSkhBwxLFRY=
+	t=1738809865; cv=none; b=Rptjl0Cqg5XZjRcTzQPqH+/WMDzKwW0tCNuVqBkvYYijovu7lbr5yh26yGlTgsEo/Jwi8CJ6x1iC/WNERnvbcQk8aaHFpXCSxQs/COYyZC6CNdLHnmpeXWe4fUuQZ17gsanoy4HentddatzUZjhxnoFe3LkFuhNLnbmnIaA8hOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738788892; c=relaxed/simple;
-	bh=j2HLWk8/4qGzx0p3awb9Xa8DY1Gdod6WC52lNjRWyIQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hxxMqYN202sQt1tgMlbQw29WFtJxCDZD+RlGiiu5Ge9dI+oEVJtzHfElWmnWAvwj3DjKY11qPeIOGdoM9i/Td2ilgHRcaON3AndywF3i864WeTCPiRIhmsqPilZJok+aL7HkzbzqDmU9J2FXpAejmM+LePcG1JznGSV8ZqoC7BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tl80DqPP; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54025432becso209086e87.1;
-        Wed, 05 Feb 2025 12:54:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738788888; x=1739393688; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MnEC+VBLcJLG5Ji1NJMnDo7g4OTcnLl9A1TvXHUfoS4=;
-        b=Tl80DqPPTBd2+czjMEjTmWUzvO38IxfA2vLqXf3oGrcxjpavx8D8OJuiqym/w//QFC
-         RtF6c+JNim2+zbIm67AwxwaGvuNTiZbYvxxdwx5+dHxTqr3MmtXirFUa2FQ7RM0DuWKn
-         RltjOwuEjEHh0Km+Fb8hm54TS5i4yGYtYfsdI2JLcx60TCJ3ggUrX5YjJmAJG5vD1eFB
-         dT56kpO7yPasVNbVp14m+agfOYLRi7C5P24oM303D2ibu66AWQJ9XgUPwgf62RYu2TFl
-         7+wccbehSnsuwKgqGmbdK0+Emiy5ugfpI66f2Ni0oX0SHUYHOyLCL1vC2TJS+OXnfbBB
-         k9zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738788888; x=1739393688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MnEC+VBLcJLG5Ji1NJMnDo7g4OTcnLl9A1TvXHUfoS4=;
-        b=pWk8Q/et8Bkx3jnCb1Qo3ozqV9j1xFTcftFv96t4VSgROTtUnKQ6J4J+6mstaMtG+q
-         IUPa7c3ArGQOePUHKjWx5rk7yjYJoUlYXgS+Iv/sID2kKxhtF9txYOt3zcYu9J6/cK3J
-         LT2l1Qq5xywaZnaII6eCNwV9QUX1yjIA/U/ZYYI2zLRKzT2EuLr7C6le1pAcMgkVGOyt
-         WVZfOeaysc86ooYcg8o7iBkFk/2KuoUBAxr+F/pDAt4+7Vl+Pb/gpkmQFtXuwcUR60zO
-         bHnPJhG52b1251Yi8YCw6Y4hG7J1jm1ai3tl/nK9e2mVMqRvQnAwg1NWN5+mkRVBPX7w
-         YImw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcTVWjBbkg6rQODXQHM05KVjWoEeUUk1pql+De0aTW8zEeRbQtU7flJqsNW94ul0vyD/i/DduePFv1@vger.kernel.org, AJvYcCXT1siUv/6aQqfso3mwGIjhmd9dBvu3RGgddJidN8xwIOJIm3UO58sriV4xSPxQStVp8xAfl+Up8ZxeuIVJ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4eg31oERhdwGMQbvqeNYiSAPb2cQYSCcr5MQ4BJt+/EuXZ0qp
-	N5UXnrstQh0hWY0YIw6y8YWn7Iq8+6pEaACsFrmmf5ccukuaBXQHIjyDfijHyfrmC2AvOfSK+GK
-	OgSJKSB/rCBw+BvZR1Zqu3vBGMEJNDw==
-X-Gm-Gg: ASbGncvmUR0h/iNktgJ7rf2Q+gqTpbTY4Fl6OH65SWpesAM+KRthT3d8KpyZXsjbC9R
-	UyN1i6abSuP6e32EQEXKBdk1+/n+9GKjF9H1pv1uaW9xuiEcMJOoLLUKQF7svSOKzH2+vmOme
-X-Google-Smtp-Source: AGHT+IGmA44UxWHGW4HN8bUJdnGTHvoxayQdQYcQLBp9bLTN4mzyL8TKZGX5UTBJfHYQxCRSOz3Hc9cR/l11jSoPNL0=
-X-Received: by 2002:a05:6512:b90:b0:542:19ef:95c2 with SMTP id
- 2adb3069b0e04-54405a225f3mr1491886e87.23.1738788887984; Wed, 05 Feb 2025
- 12:54:47 -0800 (PST)
+	s=arc-20240116; t=1738809865; c=relaxed/simple;
+	bh=oVZ8ib5G/4muhNqkQsOSyC8bwAKVThl22FUciEeie+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TQHDrTkIRPoJNQ8WAxI3dcvjjueoI2yFyww6eHjwtlOhfPV1F0NPpdHeQL6otptKgZGZEdC00UdEC/Q5FEX5RdSEM8vUOygbkPhJBEYk3MNbewXqwlgx/BQoXn0unILTLr4mqnGjQfyx4xslgs2P4uV7xkcluWca/sEE+oQPk6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4YpLxY1qrwz1JJdL;
+	Thu,  6 Feb 2025 10:42:57 +0800 (CST)
+Received: from dggpemf200009.china.huawei.com (unknown [7.185.36.246])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8552A140118;
+	Thu,  6 Feb 2025 10:44:13 +0800 (CST)
+Received: from [10.67.121.188] (10.67.121.188) by
+ dggpemf200009.china.huawei.com (7.185.36.246) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 6 Feb 2025 10:44:13 +0800
+Message-ID: <07dd4187-6a62-0a32-d9b8-c2a6dacc9606@huawei.com>
+Date: Thu, 6 Feb 2025 10:44:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250127093902.328361-1-gannon.kolding@gmail.com> <CAJZ5v0gvSY+4Hdoedo0Hm6Rap_1kig1z0G0NuYcEKBsLPsMo8Q@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gvSY+4Hdoedo0Hm6Rap_1kig1z0G0NuYcEKBsLPsMo8Q@mail.gmail.com>
-From: Gannon Kolding <gannon.kolding@gmail.com>
-Date: Wed, 5 Feb 2025 13:54:11 -0700
-X-Gm-Features: AWEUYZnU-orluMl_8Zqp3TcQrwEKPriWuK5E7AisKI9xUBmuF44DmZoU9KDzVqc
-Message-ID: <CAKDWbw4-u7GuTueewnOCrWs7eR7xLPdQWRZbAOpcW_kjrxF_dw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: IRQ override for Eluktronics MECH-17
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH v3] acpi: Fix HED module initialization order when it is
+ built-in
+To: Nathan Chancellor <nathan@kernel.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<mchehab+huawei@kernel.org>, <roberto.sassu@huawei.com>,
+	<shiju.jose@huawei.com>, <prime.zeng@hisilicon.com>, <linuxarm@huawei.com>
+References: <20250117022957.25227-1-tanxiaofei@huawei.com>
+ <20250120110417.00000a57@huawei.com>
+ <58a450bb-55d1-5415-4b67-9d61603ce48e@huawei.com>
+ <CAJZ5v0ihVJBX0bLqrL-61=LKVoZJOg3RpJykp80uOMf_7YcG+A@mail.gmail.com>
+ <20250129043329.GA2344109@ax162>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
+In-Reply-To: <20250129043329.GA2344109@ax162>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf200009.china.huawei.com (7.185.36.246)
 
-Great, thanks Rafael!
+Hi Nathan,
 
-Gannon
-
-On Wed, Feb 5, 2025 at 1:14=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
-> wrote:
+在 2025/1/29 12:33, Nathan Chancellor 写道:
+> On Thu, Jan 23, 2025 at 08:35:51PM +0100, Rafael J. Wysocki wrote:
+>> On Tue, Jan 21, 2025 at 3:23 AM Xiaofei Tan <tanxiaofei@huawei.com> wrote:
+>>>
+>>> 在 2025/1/20 19:04, Jonathan Cameron 写道:
+>>>> On Fri, 17 Jan 2025 10:29:57 +0800
+>>>> Xiaofei Tan <tanxiaofei@huawei.com> wrote:
+>>>>
+>>>>> When the module HED is built-in, the module HED init is behind EVGED
+>>>>> as the driver are in the same initcall level, then the order is determined
+>>>>> by Makefile order. That order violates expectations. Because RAS records
+>>>>> can't be handled in the special time window that EVGED has initialized
+>>>>> while HED not.
+>>>>>
+>>>>> If the number of such RAS records is more than the APEI HEST error source
+>>>>> number, the HEST resources could be occupied all, and then could affect
+>>>>> subsequent RAS error reporting.
+>>>>>
+>>>>> Change the initcall level of HED to subsys_init to fix the issue. If build
+>>>>> HED as a module, the problem remains. To solve this problem completely,
+>>>>> change the ACPI_HED from tristate to bool.
+>>>>>
+>>>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>> Given the change in approach (even though I reviewed this internally)
+>>>> should probably have dropped my RB.   Anyhow, consider this me
+>>>> giving it again on list.
+>>> OK. thanks.
+>> Applied as 6.14-rc material with a rewritten changelog and under a new
+>> subject: "ACPI: HED: Always initialize before evged".
+>>
+>> Thanks!
+> For what it's worth, I just bisected a new error message that I see when
+> booting several x86_64 distribution configurations in QEMU to this
+> change in -next as commit 19badc4e57c6 ("ACPI: HED: Always initialize
+> before evged"):
 >
-> On Mon, Jan 27, 2025 at 10:39=E2=80=AFAM Gannon Kolding
-> <gannon.kolding@gmail.com> wrote:
-> >
-> > The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
-> > keyboard to work. Adding a DMI_MATCH entry for this laptop model
-> > makes the internal keyboard function normally.
-> >
-> > Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
-> > ---
-> >  drivers/acpi/resource.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> > index 90aaec923889..b4cd14e7fa76 100644
-> > --- a/drivers/acpi/resource.c
-> > +++ b/drivers/acpi/resource.c
-> > @@ -563,6 +563,12 @@ static const struct dmi_system_id irq1_edge_low_fo=
-rce_override[] =3D {
-> >                         DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
-> >                 },
-> >         },
-> > +       {
-> > +               .matches =3D {
-> > +                       DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-> > +                       DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
-> > +               },
-> > +       },
-> >         {
-> >                 /* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
-> >                 .matches =3D {
-> > --
+>    $ curl -LSso .config https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/raw/main/config
 >
-> Applied as 6.14-rc material, thanks!
+>    $ make -skj"$(nproc)" ARCH=x86_64 CROSS_COMPILE=x86_64-linux- olddefconfig bzImage
+>
+>    $ qemu-system-x86_64 \
+>          -display none \
+>          -nodefaults \
+>          -M q35 \
+>          -d unimp,guest_errors \
+>          -append 'console=ttyS0 earlycon=uart8250,io,0x3f8' \
+>          -kernel arch/x86/boot/bzImage \
+>          -initrd rootfs.cpio \
+>          -cpu host \
+>          -enable-kvm \
+>          -m 512m \
+>          -smp 8
+>          -serial mon:stdio
+>    ...
+>    [    0.535126] Error: Driver 'hardware_error_device' is already registered, aborting...
+
+It seems that the startup script of the test case loads some fixed ko, even when the bzImage changed.
+
+If so, we could update the rootfs.cpio. This may introduce some adaptation work, if you want to roll
+
+this patch to some distribution. I think we could do this when release new iso.
+
+
+>    ...
+>
+> If there is any additional information I can provide or patches I can
+> test, I am more than happy to do so. Apologies if this has already been
+> reported or resolved, I did a search on the mailing list and I did not
+> see anything.
+>
+> Cheers,
+> Nathan
+>
+> # bad: [9a87ce288fe30f268b3a598422fe76af9bb2c2d2] Add linux-next specific files for 20250128
+> # good: [805ba04cb7ccfc7d72e834ebd796e043142156ba] Merge tag 'mips_6.14' of git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux
+> git bisect start '9a87ce288fe30f268b3a598422fe76af9bb2c2d2' '805ba04cb7ccfc7d72e834ebd796e043142156ba'
+> # bad: [e317bfe93c72e10dc02caac8b8b4b064291c352e] Merge branch 'next' of git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+> git bisect bad e317bfe93c72e10dc02caac8b8b4b064291c352e
+> # good: [31d2d7cb6ca6c6159e22bf708c089b7af11f1585] Merge branch 'next' of git://git.kernel.org/pub/scm/linux/kernel/git/uml/linux.git
+> git bisect good 31d2d7cb6ca6c6159e22bf708c089b7af11f1585
+> # good: [bd19f1e807f92f27654e0bb2790fe31b6af58daf] Merge branch 'docs-next' of git://git.lwn.net/linux.git
+> git bisect good bd19f1e807f92f27654e0bb2790fe31b6af58daf
+> # bad: [1df2cdd95b5ca1e2d520e3df2b2b1a12bd31cb79] Merge branch 'for-next' of git://git.kernel.dk/linux-block.git
+> git bisect bad 1df2cdd95b5ca1e2d520e3df2b2b1a12bd31cb79
+> # bad: [f572a6cf38985ca5d4df4cae1e3e74464774d033] Merge branch 'drm-next' of https://gitlab.freedesktop.org/drm/kernel.git
+> git bisect bad f572a6cf38985ca5d4df4cae1e3e74464774d033
+> # bad: [e30de3809c23cc17c49c139e11e7180248381017] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git
+> git bisect bad e30de3809c23cc17c49c139e11e7180248381017
+> # good: [56ca981eec373ae4779e3114a3807cc15ad230f9] Merge branch 'pm-cpufreq' into linux-next
+> git bisect good 56ca981eec373ae4779e3114a3807cc15ad230f9
+> # bad: [ed752cc25bbd8ee26498a91ac7a63bcf50ea16f3] Merge branch 'cpufreq/arm/linux-next' of git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git
+> git bisect bad ed752cc25bbd8ee26498a91ac7a63bcf50ea16f3
+> # bad: [39b6b3b09b32c7b4ed6b0e8e87f359c588fe19d6] Merge branches 'acpi-x86' and 'acpi-apei' into linux-next
+> git bisect bad 39b6b3b09b32c7b4ed6b0e8e87f359c588fe19d6
+> # good: [c881e66eb84a4f944df317294eedf6b2b2882214] Merge branches 'pm-sleep' and 'pm-powercap' into linux-next
+> git bisect good c881e66eb84a4f944df317294eedf6b2b2882214
+> # good: [8f62ca9c338aae4f73e9ce0221c3d4668359ddd8] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
+> git bisect good 8f62ca9c338aae4f73e9ce0221c3d4668359ddd8
+> # bad: [19badc4e57c6a5b87d3ce6eb6ec24bed62ec57ac] ACPI: HED: Always initialize before evged
+> git bisect bad 19badc4e57c6a5b87d3ce6eb6ec24bed62ec57ac
+> # first bad commit: [19badc4e57c6a5b87d3ce6eb6ec24bed62ec57ac] ACPI: HED: Always initialize before evged
+>
+> .
 
