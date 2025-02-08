@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-10950-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10951-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEE9A2D73F
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Feb 2025 17:22:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D13D3A2D741
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Feb 2025 17:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECB8A18890EC
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Feb 2025 16:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D439A3A74E2
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Feb 2025 16:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9A61F30A0;
-	Sat,  8 Feb 2025 16:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D481F30AB;
+	Sat,  8 Feb 2025 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHrP2rH6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtOJOJxW"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FA01F17EF;
-	Sat,  8 Feb 2025 16:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9C51F30A7;
+	Sat,  8 Feb 2025 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739031743; cv=none; b=l9rBlwGrfPKzKzaqs9Zdwc/Y4NXiFodfWeG9hV9ZTECybLvN7nWTvFr6mack34WjyYhSwnSPT2njqA8HcoWaxtgNF9ZEtZCXltveIriiloPPJu4YrXXRLzgF66e5D2ub/nrIlL5g7lVxjp3ttc/VJHsDsmD34IbiteJORfg35Wk=
+	t=1739031744; cv=none; b=TRm00KOFv5L10D+W2l7zuM7dQ84PnXEmUuM4uiwWr8Hy82fANDkjaRRx0ivzJNjOegS7S/F2o7OBOWSBGwdYhksidTuDTWtDKjb2Tl3h7T/My1UZJPdxpwPryyJjOIH+MiybznFACPFlLLabGYcKKwI9cov/ETt6E26ymjbOYec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739031743; c=relaxed/simple;
-	bh=HMyexdvrSbhPi8L8f9PM8AX6KBSHh5CStz+s+JDgAIY=;
+	s=arc-20240116; t=1739031744; c=relaxed/simple;
+	bh=2muv5zYZh0Q7pJ4CtFm/oFMjCjpUR5zI+SSHfjKgps8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGQXudLoczqGseIO/pmjN7S6INHLlfcJzpny6lNd7Lxk4P37oNtlteVzFPUH4QYyNAgnInmeU/OcdJgLEZbL6jmXbSGUziHDdtY1CzwsV0gPn0e/ECzEUEzeVrW/87lnfV0ZQIvYItPl6AYqs3aDgvN13Ju8mPXH6RKcjYIoKKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHrP2rH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790C7C4CEE2;
-	Sat,  8 Feb 2025 16:22:22 +0000 (UTC)
+	 MIME-Version; b=YxAEAP/lJbrFpp5IWclsOB2p8f8V/ht03DloOqHTUfrtDohSCinEPlhay3JYKT/+tzqfiEY9vOZzs3/TCGZkXdGpuvR8nKgpAEWAM+T3sNTzTpE/XLk70XOOprDls1crUVb1HbZqI1i0Xqs5Fcv5q5WvjAHwW5j+XS7BfS0vcHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtOJOJxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6404DC4CEDF;
+	Sat,  8 Feb 2025 16:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739031743;
-	bh=HMyexdvrSbhPi8L8f9PM8AX6KBSHh5CStz+s+JDgAIY=;
+	s=k20201202; t=1739031744;
+	bh=2muv5zYZh0Q7pJ4CtFm/oFMjCjpUR5zI+SSHfjKgps8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHrP2rH6harAFsyYxcW4tN+JUIeDd54zlCMp9kmtjMXQD6XUuQS46u5aeEbuR5CD1
-	 Wk/YuV5IWXOjosmiXxLy/ZO26lB7nrHmUfQ14EB5MspNSAFxYdKnefSCWWdqgEGWPa
-	 Q1AmPZnZJIx1yPbhPYRPR743Jlj1lwRdgI4cwMOVn+/sVjRoWHP6JEhxBMlexYdLBy
-	 0Is5Za1RG9wVKtTb8+UTfx7IIAXcK04+zyAWeBCabJYS2ZPhkQKVvzMhsbf4BVyxMJ
-	 Tz1lEsEJqNFX5GK8llBfc2MRX5pWGyhrqHi3TKzL+cnyEf2NODjXnZD2DyY8lYbQAK
-	 xPW47qW3uFnJg==
+	b=mtOJOJxWWiYxmz5hPJMGzmHOJTBEfymdb/XRRJCz405p9xuQrtStRa2wEd8pyqiGt
+	 lNAqkQxhTFUOqhky6LhDIbDaFUf5+NdkC0i73QkThglGqTVawnURchxIT4BKgyzrc5
+	 dsCLzy023SGFETefQeL6u5xjRNL8LOhYb/VH3Ypq4ASKL3PTOT66GRdxC3hfLm4duk
+	 o3MOvCxi9JzvUDIYnKrIFiVChhooOdrpZbbNkEOwkmVvzJ22epO8gY9R7qjSzXL7rj
+	 Da6SSWcPqcC0MFXeeAEIHNg7gSQ+RtJbsVDy2eqht7rsJxhIsz6r09uC8Erv68BcqE
+	 IbshK2Rm4pZsw==
 From: Mario Limonciello <superm1@kernel.org>
 To: "Rafael J . Wysocki" <rafael@kernel.org>
 Cc: Len Brown <lenb@kernel.org>,
@@ -48,9 +48,9 @@ Cc: Len Brown <lenb@kernel.org>,
 	linux-acpi@vger.kernel.org (open list:ACPI),
 	linux-pm@vger.kernel.org (open list:HIBERNATION (aka Software Suspend, aka swsusp)),
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 2/4] ACPI: battery: Save and report battery capacity over suspend
-Date: Sat,  8 Feb 2025 10:22:08 -0600
-Message-ID: <20250208162210.3929473-3-superm1@kernel.org>
+Subject: [PATCH 3/4] ACPI: battery: Refactor wakeup reasons in acpi_battery_update()
+Date: Sat,  8 Feb 2025 10:22:09 -0600
+Message-ID: <20250208162210.3929473-4-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250208162210.3929473-1-superm1@kernel.org>
 References: <20250208162210.3929473-1-superm1@kernel.org>
@@ -64,88 +64,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-To find out if a device is malfunctioning over suspend it's often
-interesting to know how much battery was lost.
-
-At the start of the suspend cycle cache the amount of battery.
-During resume, read the battery level again and if the battery
-has decreased report the difference to the suspend stats using
-pm_report_sleep_energy()
+Another reason to wake is to be introduced, so refactor the code
+to make it easier to follow. Also introduce PM debug messages so
+that it's more obvious when these wake events have occurred.
 
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/acpi/battery.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ drivers/acpi/battery.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6760330a8af55..f21bfd02a26d1 100644
+index f21bfd02a26d1..72c8a509695e6 100644
 --- a/drivers/acpi/battery.c
 +++ b/drivers/acpi/battery.c
-@@ -124,6 +124,7 @@ struct acpi_battery {
- 	char oem_info[MAX_STRING_LENGTH];
- 	int state;
- 	int power_unit;
-+	int capacity_suspend;
- 	unsigned long flags;
- };
+@@ -999,6 +999,22 @@ static void acpi_battery_quirks(struct acpi_battery *battery)
+ 	}
+ }
  
-@@ -1011,9 +1012,6 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
++static inline bool acpi_battery_should_wake(struct acpi_battery *battery)
++{
++	if (battery->state & ACPI_BATTERY_STATE_CRITICAL) {
++		pm_pr_dbg("Waking due critical battery level");
++		return true;
++	}
++
++	if (test_bit(ACPI_BATTERY_ALARM_PRESENT, &battery->flags) &&
++	    battery->capacity_now <= battery->alarm) {
++		pm_pr_dbg("Waking due to battery alarm");
++		return true;
++	}
++
++	return false;
++}
++
+ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
+ {
+ 	int result = acpi_battery_get_status(battery);
+@@ -1038,13 +1054,7 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
  		return 0;
  	}
  
--	if (resume)
--		return 0;
--
- 	if (!battery->update_time) {
- 		result = acpi_battery_get_info(battery);
- 		if (result)
-@@ -1032,6 +1030,14 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 			return result;
- 	}
+-	/*
+-	 * Wakeup the system if battery is critical low
+-	 * or lower than the alarm level
+-	 */
+-	if ((battery->state & ACPI_BATTERY_STATE_CRITICAL) ||
+-	    (test_bit(ACPI_BATTERY_ALARM_PRESENT, &battery->flags) &&
+-	     (battery->capacity_now <= battery->alarm)))
++	if (acpi_battery_should_wake(battery))
+ 		acpi_pm_wakeup_event(&battery->device->dev);
  
-+	if (resume) {
-+		if (battery->capacity_suspend > battery->capacity_now)
-+			pm_report_sleep_energy(battery->capacity_suspend - battery->capacity_now);
-+		else
-+			pm_report_sleep_energy(0);
-+		return 0;
-+	}
-+
- 	/*
- 	 * Wakeup the system if battery is critical low
- 	 * or lower than the alarm level
-@@ -1285,6 +1291,22 @@ static void acpi_battery_remove(struct acpi_device *device)
- }
- 
- /* this is needed to learn about changes made in suspended state */
-+static int acpi_battery_suspend(struct device *dev)
-+{
-+	struct acpi_battery *battery;
-+
-+	if (!dev)
-+		return -EINVAL;
-+
-+	battery = acpi_driver_data(to_acpi_device(dev));
-+	if (!battery)
-+		return -EINVAL;
-+
-+	battery->capacity_suspend = battery->capacity_now;
-+
-+	return 0;
-+}
-+
- static int acpi_battery_resume(struct device *dev)
- {
- 	struct acpi_battery *battery;
-@@ -1301,7 +1323,7 @@ static int acpi_battery_resume(struct device *dev)
- 	return 0;
- }
- 
--static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, NULL, acpi_battery_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, acpi_battery_suspend, acpi_battery_resume);
- 
- static struct acpi_driver acpi_battery_driver = {
- 	.name = "battery",
+ 	return result;
 -- 
 2.43.0
 
