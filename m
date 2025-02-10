@@ -1,146 +1,184 @@
-Return-Path: <linux-acpi+bounces-10977-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10978-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE9FA2FB8A
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 22:13:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38313A2FBED
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 22:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3816D16329A
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 21:13:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 977F71884F73
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 21:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4BF24E4CB;
-	Mon, 10 Feb 2025 21:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7C11C07D9;
+	Mon, 10 Feb 2025 21:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BjzJZl1C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9l0mpnQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA2924CEE4;
-	Mon, 10 Feb 2025 21:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44021189B8C;
+	Mon, 10 Feb 2025 21:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739221957; cv=none; b=CU7U09IzjcolnktM2JZ/JJ6b8UBC2bUOMisRgjv17wpAQgzoIqFMK2JLlp4t+bGDpoDsf8+m1dzJnxqTtGOChTiQo8/VQ75ljSEhROpbMWsuON3aymhLUkaRqNLbB78icY/McICaPQmTBqmHOfDh92udOZu7Y+6y0M46L60VW70=
+	t=1739222684; cv=none; b=qdFmlZzujExMwxUvmqwQISyUG9lUxUI3uNqefZ1WBz7ng6kk/y66Ab9JhDX84aUkyo0Vxk4UlBdSHbEyCz49a8YIQ7kOKxJ12JKQTkaYXBMDIscvFVJgOf+jUG5xT8EmWdO/gYXP7OAtpVKL2LaD/PaoVt8omD0k04bcHRyWnk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739221957; c=relaxed/simple;
-	bh=bXXOUiASgqk4c+hIO4L437SLM+6D5Advsy/FQVu/yV4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFKqVkcGuo7o1yWFFPy+K8uOq98dBKnJFbNnbidunciG3/wgvvt2Hl2/bQGYKV2kRq9qVD7cTnaeZVNwBZQIwzsxfDVaduFBlIoXE5XtNVUiEwFKpO8fhW712Ud6x1uzUndQuNzJ8kG2fYl4lYe8anK9g2/riouoZ5whhc0u/7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BjzJZl1C; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739221956; x=1770757956;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bXXOUiASgqk4c+hIO4L437SLM+6D5Advsy/FQVu/yV4=;
-  b=BjzJZl1C1xiGBMUNgeWjOW+kmw56b9SYx8LQLxQHpXoKqHBYCT4ki3ce
-   Q+UT9vS9yS/BD/XmRIi9jy8S2OirsrRZZBlPQmwypEMI+PyRXh9AmUj2Y
-   ZGRPfzvS3ozwueS+RzjrOICQobPq4uCwEVbx8boWYrEygjIR+nOAu67tT
-   q86+PxHAmEHt7W6Vc9vo8Ls3g9YSglPDlEdlu+YLDpVve008b1Ha9noGZ
-   Onv/n48FAxp9liusQotv6Acgchk8QwpIDGxyJvulKAODuSXv14TyzhbV4
-   av5J7G9QtUt41RC6Czd/upUhyvau4E13VQjdzZfqBDhrwS5PEHEpjHAbK
-   Q==;
-X-CSE-ConnectionGUID: duBGsey5Qy+oMJRqhE7FTw==
-X-CSE-MsgGUID: 2s0p6oK4SPiJRrwdiKG4Fg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39969769"
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
-   d="scan'208";a="39969769"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:12:31 -0800
-X-CSE-ConnectionGUID: y9RTFk+DQ0yuxNEyycL5zQ==
-X-CSE-MsgGUID: K/qjkN4OTbibNI8BYQUVOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116393890"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.70])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:12:31 -0800
-From: Tony Luck <tony.luck@intel.com>
-To: Robert Moore <robert.moore@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 4/4] ACPI/MRRM: ABI documentation for /sys/devices/system/memory/rangeX
-Date: Mon, 10 Feb 2025 13:12:23 -0800
-Message-ID: <20250210211223.6139-5-tony.luck@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250210211223.6139-1-tony.luck@intel.com>
-References: <20250210211223.6139-1-tony.luck@intel.com>
+	s=arc-20240116; t=1739222684; c=relaxed/simple;
+	bh=IiZI6Y+jSHKNVuJcmPYi5fkyq5b2zOSr7oCwF4V/zF8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IG3vT2kCCu4z1taZQ9QsU3PUyKR4jgbHnYlqb+FesUtDRwlC6OQoZznKk+icAYPnblm5NWgxeHvnKsZLksi64X1Ki2CKzti2qDco/d4bKLp2Um0/UqCnItxf+1SvemDdgwIShK97+nvEURuFhIUpJ+x3lashU+nHrCDNO/XgS6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9l0mpnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131D0C4CED1;
+	Mon, 10 Feb 2025 21:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739222683;
+	bh=IiZI6Y+jSHKNVuJcmPYi5fkyq5b2zOSr7oCwF4V/zF8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=t9l0mpnQDIGjED4MiXFbdwmG6tEhvX5Jm6TUzQZ5rUg8c5JtM+25z/YPfVt7r/ASq
+	 wB8DyPexaTzgoCPG5xg8rNL2ltuPvVbAcFmoKl+JI/mYpSVUUnu2e4xh9GC9KF2SFI
+	 Qnc0vcHSPaQDbxc8bBTDzuEtJryBQQvsgIxGcqUkD1GdCPDyJvQtKaAl96KjSfstGD
+	 SzzhKfCwqeY/XYpq56Klpsb3Vbuitk2sblF4Y4ti0CEaLajv9OKY3QQMBIYu+eOK0b
+	 REExXNT8ItbKWsfCNUWy2KVmbBz6w73c3D5VZtz4Zqs3x5qEkYBcb689LTPSclUH9k
+	 Y0uX5hhO94tgg==
+Message-ID: <c8527274-fd84-4745-b996-d1c66694aba4@kernel.org>
+Date: Mon, 10 Feb 2025 15:24:42 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] ACPI: battery: Save and report battery capacity over
+ suspend
+To: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "open list:HIBERNATION (aka Software Suspend, aka swsusp)"
+ <linux-pm@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <20250208162210.3929473-1-superm1@kernel.org>
+ <20250208162210.3929473-3-superm1@kernel.org>
+ <bzltxadthnef5c4xaidfcjuq7tt2h23znn76povptoxbb2iax6@xvuzfqbtomzb>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <bzltxadthnef5c4xaidfcjuq7tt2h23znn76povptoxbb2iax6@xvuzfqbtomzb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-ABI providing users with a mapping between physical address ranges
-and "region id" used by perf for uncore memory events and the
-resctrl file system for per-region memory monitoring and control.
+On 2/10/2025 09:23, Sebastian Reichel wrote:
+> Hi,
+> 
+> On Sat, Feb 08, 2025 at 10:22:08AM -0600, Mario Limonciello wrote:
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> To find out if a device is malfunctioning over suspend it's often
+>> interesting to know how much battery was lost.
+>>
+>> At the start of the suspend cycle cache the amount of battery.
+>> During resume, read the battery level again and if the battery
+>> has decreased report the difference to the suspend stats using
+>> pm_report_sleep_energy()
+>>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+> 
+> This code assumes, that there is only a single battery, but there
+> can be more than one battery supplying the system. For example
+> Thinkpads used to have an internal battery and a user swappable
+> one.
+> 
+> Also it seems in almost all cases debugging this from userspace
+> by dropping a script in /usr/lib/systemd/system-sleep is good
+> enough, so I wonder if extending the kernel ABI makes sense at
+> all.
+> 
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
- .../ABI/testing/sysfs-devices-memory          | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
+Thanks for looking.  I think it could be extended to add all the 
+batteries up and collectively look at how much each went down.
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-memory b/Documentation/ABI/testing/sysfs-devices-memory
-index cec65827e602..fb01739e016e 100644
---- a/Documentation/ABI/testing/sysfs-devices-memory
-+++ b/Documentation/ABI/testing/sysfs-devices-memory
-@@ -118,3 +118,35 @@ Description:
- 		(RO) indicates whether or not the kernel updates relevant kexec
- 		segments on memory hot un/plug and/or on/offline events, avoiding the
- 		need to reload kdump kernel.
-+
-+What:           /sys/devices/system/memory/rangeX/base
-+Date:           January 2025
-+Contact:	Tony Luck <tony.luck@intel.com>
-+Description:
-+		On systems with the ACPI MRRM table reports the
-+		base system physical address of memory range X.
-+
-+What:           /sys/devices/system/memory/rangeX/length
-+Date:           January 2025
-+Contact:	Tony Luck <tony.luck@intel.com>
-+Description:
-+		On systems with the ACPI MRRM table reports the
-+		size of rangeX system physical memory.
-+
-+What:           /sys/devices/system/memory/rangeX/local_region_id
-+Date:           January 2025
-+Contact:	Tony Luck <tony.luck@intel.com>
-+Description:
-+		On systems with the ACPI MRRM table reports the
-+		the region id associated with memory access by
-+		agents local to this range of addresses. Reports
-+		0xff when no region id has been assigned.
-+
-+What:           /sys/devices/system/memory/rangeX/remote_region_id
-+Date:           January 2025
-+Contact:	Tony Luck <tony.luck@intel.com>
-+Description:
-+		On systems with the ACPI MRRM table reports the
-+		the region id associated with memory access by
-+		agents non-local to this range of addresses. Reports
-+		0xff when no region id has been assigned.
--- 
-2.48.1
+But that's a good point it's pretty easy to do the same thing from 
+userspace.
+
+> Greetings,
+> 
+> -- Sebastian
+> 
+>>   drivers/acpi/battery.c | 30 ++++++++++++++++++++++++++----
+>>   1 file changed, 26 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+>> index 6760330a8af55..f21bfd02a26d1 100644
+>> --- a/drivers/acpi/battery.c
+>> +++ b/drivers/acpi/battery.c
+>> @@ -124,6 +124,7 @@ struct acpi_battery {
+>>   	char oem_info[MAX_STRING_LENGTH];
+>>   	int state;
+>>   	int power_unit;
+>> +	int capacity_suspend;
+>>   	unsigned long flags;
+>>   };
+>>   
+>> @@ -1011,9 +1012,6 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
+>>   		return 0;
+>>   	}
+>>   
+>> -	if (resume)
+>> -		return 0;
+>> -
+>>   	if (!battery->update_time) {
+>>   		result = acpi_battery_get_info(battery);
+>>   		if (result)
+>> @@ -1032,6 +1030,14 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
+>>   			return result;
+>>   	}
+>>   
+>> +	if (resume) {
+>> +		if (battery->capacity_suspend > battery->capacity_now)
+>> +			pm_report_sleep_energy(battery->capacity_suspend - battery->capacity_now);
+>> +		else
+>> +			pm_report_sleep_energy(0);
+>> +		return 0;
+>> +	}
+>> +
+>>   	/*
+>>   	 * Wakeup the system if battery is critical low
+>>   	 * or lower than the alarm level
+>> @@ -1285,6 +1291,22 @@ static void acpi_battery_remove(struct acpi_device *device)
+>>   }
+>>   
+>>   /* this is needed to learn about changes made in suspended state */
+>> +static int acpi_battery_suspend(struct device *dev)
+>> +{
+>> +	struct acpi_battery *battery;
+>> +
+>> +	if (!dev)
+>> +		return -EINVAL;
+>> +
+>> +	battery = acpi_driver_data(to_acpi_device(dev));
+>> +	if (!battery)
+>> +		return -EINVAL;
+>> +
+>> +	battery->capacity_suspend = battery->capacity_now;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static int acpi_battery_resume(struct device *dev)
+>>   {
+>>   	struct acpi_battery *battery;
+>> @@ -1301,7 +1323,7 @@ static int acpi_battery_resume(struct device *dev)
+>>   	return 0;
+>>   }
+>>   
+>> -static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, NULL, acpi_battery_resume);
+>> +static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, acpi_battery_suspend, acpi_battery_resume);
+>>   
+>>   static struct acpi_driver acpi_battery_driver = {
+>>   	.name = "battery",
+>> -- 
+>> 2.43.0
+>>
+>>
 
 
