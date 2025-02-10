@@ -1,184 +1,100 @@
-Return-Path: <linux-acpi+bounces-10978-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10982-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38313A2FBED
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 22:24:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3439A2FE54
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 00:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 977F71884F73
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 21:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 708B83A606B
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 23:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7C11C07D9;
-	Mon, 10 Feb 2025 21:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9l0mpnQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED4426138E;
+	Mon, 10 Feb 2025 23:22:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44021189B8C;
-	Mon, 10 Feb 2025 21:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57865253F16;
+	Mon, 10 Feb 2025 23:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739222684; cv=none; b=qdFmlZzujExMwxUvmqwQISyUG9lUxUI3uNqefZ1WBz7ng6kk/y66Ab9JhDX84aUkyo0Vxk4UlBdSHbEyCz49a8YIQ7kOKxJ12JKQTkaYXBMDIscvFVJgOf+jUG5xT8EmWdO/gYXP7OAtpVKL2LaD/PaoVt8omD0k04bcHRyWnk4=
+	t=1739229763; cv=none; b=VzxuVamlro9QDJ596VRRcNPZ6NWC7ujh2zXuUxu35AehCoIkXH8jaoqdCJEaBlfZY8InPfV1CLzKWC+NbVWdBwkI5TDXE2q8qL1E54prIZzT62aaPL3jXlhn2rM9NPRc8V7YcuivB32K6E4JQkxbdtiR6oMJMQ+ejpjLS5Iyu68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739222684; c=relaxed/simple;
-	bh=IiZI6Y+jSHKNVuJcmPYi5fkyq5b2zOSr7oCwF4V/zF8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IG3vT2kCCu4z1taZQ9QsU3PUyKR4jgbHnYlqb+FesUtDRwlC6OQoZznKk+icAYPnblm5NWgxeHvnKsZLksi64X1Ki2CKzti2qDco/d4bKLp2Um0/UqCnItxf+1SvemDdgwIShK97+nvEURuFhIUpJ+x3lashU+nHrCDNO/XgS6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9l0mpnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131D0C4CED1;
-	Mon, 10 Feb 2025 21:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739222683;
-	bh=IiZI6Y+jSHKNVuJcmPYi5fkyq5b2zOSr7oCwF4V/zF8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t9l0mpnQDIGjED4MiXFbdwmG6tEhvX5Jm6TUzQZ5rUg8c5JtM+25z/YPfVt7r/ASq
-	 wB8DyPexaTzgoCPG5xg8rNL2ltuPvVbAcFmoKl+JI/mYpSVUUnu2e4xh9GC9KF2SFI
-	 Qnc0vcHSPaQDbxc8bBTDzuEtJryBQQvsgIxGcqUkD1GdCPDyJvQtKaAl96KjSfstGD
-	 SzzhKfCwqeY/XYpq56Klpsb3Vbuitk2sblF4Y4ti0CEaLajv9OKY3QQMBIYu+eOK0b
-	 REExXNT8ItbKWsfCNUWy2KVmbBz6w73c3D5VZtz4Zqs3x5qEkYBcb689LTPSclUH9k
-	 Y0uX5hhO94tgg==
-Message-ID: <c8527274-fd84-4745-b996-d1c66694aba4@kernel.org>
-Date: Mon, 10 Feb 2025 15:24:42 -0600
+	s=arc-20240116; t=1739229763; c=relaxed/simple;
+	bh=qS8cBMVZdMwBjCEPPy69jB7alNbKE0vfzadmD5By+ss=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F63KWMyO/WWHPPuYWsRv1/ZJb2jfFyeWBH2fsenWj1//d+alaCTSZjfCR4Wdrc3Ed5BNb/xGvXBbYTQbWSPxaO8b8d+RDo5yw/l1+hMlqvWhzI9Vw8oFRC+6QoZNv3NJDnoJqdU+9DFE3QxeE3HPi14VHhHgThlgl+8tG5K+ORI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BBA2D1477;
+	Mon, 10 Feb 2025 15:23:00 -0800 (PST)
+Received: from beelzebub.ast.arm.com (unknown [10.118.29.240])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CFBB63F6A8;
+	Mon, 10 Feb 2025 15:22:38 -0800 (PST)
+From: Stuart Yoder <stuart.yoder@arm.com>
+To: linux-integrity@vger.kernel.org,
+	jarkko@kernel.org,
+	peterhuewe@gmx.de,
+	jgg@ziepe.ca,
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] Add support for the TPM FF-A start method
+Date: Mon, 10 Feb 2025 17:22:23 -0600
+Message-Id: <20250210232227.97761-1-stuart.yoder@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] ACPI: battery: Save and report battery capacity over
- suspend
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, "open list:ACPI" <linux-acpi@vger.kernel.org>,
- "open list:HIBERNATION (aka Software Suspend, aka swsusp)"
- <linux-pm@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <20250208162210.3929473-1-superm1@kernel.org>
- <20250208162210.3929473-3-superm1@kernel.org>
- <bzltxadthnef5c4xaidfcjuq7tt2h23znn76povptoxbb2iax6@xvuzfqbtomzb>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <bzltxadthnef5c4xaidfcjuq7tt2h23znn76povptoxbb2iax6@xvuzfqbtomzb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2/10/2025 09:23, Sebastian Reichel wrote:
-> Hi,
-> 
-> On Sat, Feb 08, 2025 at 10:22:08AM -0600, Mario Limonciello wrote:
->> From: Mario Limonciello <mario.limonciello@amd.com>
->>
->> To find out if a device is malfunctioning over suspend it's often
->> interesting to know how much battery was lost.
->>
->> At the start of the suspend cycle cache the amount of battery.
->> During resume, read the battery level again and if the battery
->> has decreased report the difference to the suspend stats using
->> pm_report_sleep_energy()
->>
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> ---
-> 
-> This code assumes, that there is only a single battery, but there
-> can be more than one battery supplying the system. For example
-> Thinkpads used to have an internal battery and a user swappable
-> one.
-> 
-> Also it seems in almost all cases debugging this from userspace
-> by dropping a script in /usr/lib/systemd/system-sleep is good
-> enough, so I wonder if extending the kernel ABI makes sense at
-> all.
-> 
+These patches add support for the CRB FF-A start method defined
+in the TCG ACPI specification v1.4 and the FF-A ABI defined
+in the Arm TPM Service CRB over FF-A (DEN0138) specification. 
+(https://developer.arm.com/documentation/den0138/latest/)
 
-Thanks for looking.  I think it could be extended to add all the 
-batteries up and collectively look at how much each went down.
+FF-A is a messaging framework for Arm-based systems and in the
+context of the TPM driver is used to signal 'start' to a CRB-based
+TPM service which is hosted in an FF-A secure partition running in
+TrustZone.
 
-But that's a good point it's pretty easy to do the same thing from 
-userspace.
+The first patch adds an FF-A driver to handle the FF-A messaging when
+communicating with a CRB-based TPM secure partition built on FF-A.
+The driver is probed when the TPM secure partition is discovered by
+the Linux FF-A infrastructure.
 
-> Greetings,
-> 
-> -- Sebastian
-> 
->>   drivers/acpi/battery.c | 30 ++++++++++++++++++++++++++----
->>   1 file changed, 26 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
->> index 6760330a8af55..f21bfd02a26d1 100644
->> --- a/drivers/acpi/battery.c
->> +++ b/drivers/acpi/battery.c
->> @@ -124,6 +124,7 @@ struct acpi_battery {
->>   	char oem_info[MAX_STRING_LENGTH];
->>   	int state;
->>   	int power_unit;
->> +	int capacity_suspend;
->>   	unsigned long flags;
->>   };
->>   
->> @@ -1011,9 +1012,6 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
->>   		return 0;
->>   	}
->>   
->> -	if (resume)
->> -		return 0;
->> -
->>   	if (!battery->update_time) {
->>   		result = acpi_battery_get_info(battery);
->>   		if (result)
->> @@ -1032,6 +1030,14 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
->>   			return result;
->>   	}
->>   
->> +	if (resume) {
->> +		if (battery->capacity_suspend > battery->capacity_now)
->> +			pm_report_sleep_energy(battery->capacity_suspend - battery->capacity_now);
->> +		else
->> +			pm_report_sleep_energy(0);
->> +		return 0;
->> +	}
->> +
->>   	/*
->>   	 * Wakeup the system if battery is critical low
->>   	 * or lower than the alarm level
->> @@ -1285,6 +1291,22 @@ static void acpi_battery_remove(struct acpi_device *device)
->>   }
->>   
->>   /* this is needed to learn about changes made in suspended state */
->> +static int acpi_battery_suspend(struct device *dev)
->> +{
->> +	struct acpi_battery *battery;
->> +
->> +	if (!dev)
->> +		return -EINVAL;
->> +
->> +	battery = acpi_driver_data(to_acpi_device(dev));
->> +	if (!battery)
->> +		return -EINVAL;
->> +
->> +	battery->capacity_suspend = battery->capacity_now;
->> +
->> +	return 0;
->> +}
->> +
->>   static int acpi_battery_resume(struct device *dev)
->>   {
->>   	struct acpi_battery *battery;
->> @@ -1301,7 +1323,7 @@ static int acpi_battery_resume(struct device *dev)
->>   	return 0;
->>   }
->>   
->> -static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, NULL, acpi_battery_resume);
->> +static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, acpi_battery_suspend, acpi_battery_resume);
->>   
->>   static struct acpi_driver acpi_battery_driver = {
->>   	.name = "battery",
->> -- 
->> 2.43.0
->>
->>
+The second patch consolidates the check for idle support in the CRB
+driver to one place.
+
+The third patch defines the new ACPI start method enumeration for
+CRB over FF-A.
+
+The fourth patch adds support for the FF-A ACPI start method to
+the TPM crb driver.
+
+Stuart Yoder (4):
+  tpm_crb: implement driver compliant to CRB over FF-A
+  tpm_crb: refactor check for idle support into TPM into inline function
+  ACPICA: add start method for Arm FF-A
+  tpm_crb: add support for the Arm FF-A start method
+
+ drivers/char/tpm/Kconfig   |   9 ++
+ drivers/char/tpm/Makefile  |   1 +
+ drivers/char/tpm/ffa_crb.c | 310 +++++++++++++++++++++++++++++++++++++
+ drivers/char/tpm/ffa_crb.h |  30 ++++
+ drivers/char/tpm/tpm_crb.c |  81 +++++++++-
+ include/acpi/actbl3.h      |   1 +
+ 6 files changed, 426 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/char/tpm/ffa_crb.c
+ create mode 100644 drivers/char/tpm/ffa_crb.h
+
+-- 
+2.34.1
 
 
