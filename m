@@ -1,142 +1,224 @@
-Return-Path: <linux-acpi+bounces-10959-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10960-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F32FA2F0BC
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 16:03:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7E8A2F174
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 16:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5B83A1169
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 15:03:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A993A819C
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Feb 2025 15:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3856F22E412;
-	Mon, 10 Feb 2025 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862DC2309B4;
+	Mon, 10 Feb 2025 15:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="0Q7wIU3D"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="dKayQUse"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pv50p00im-ztdg10012101.me.com (pv50p00im-ztdg10012101.me.com [17.58.6.49])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C321C204876
-	for <linux-acpi@vger.kernel.org>; Mon, 10 Feb 2025 15:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199667; cv=none; b=aSTBa9Te5AEaNuNVxQBNEa4HAlE3WsOXyN7tKG+ut3nzVBtD14gMt7eI6Aj6OhNV+S3GfLG68L2NtHz2Rx2f1io7TXBKUR0/SN+ISapZKqGv9wMnaqo/nmzolCjDyOt9GkJjTrkUV9+Lk2GSCyPmDEovE758kkQyJRNUk1+DnBA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199667; c=relaxed/simple;
-	bh=fVQe7FtP+OpE2IuHgthL6tJfR3NJCdI4MJHX2aafst8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=es1fnhiI2ekO0i7mp52bM8DtU3HA+HHyDUp4mYVjALBuzopG5xCeasR/tBCt1f7aN49G2bIH5QwjKV4jJtCUZYhIbN79Tn8+M9ztgJE7xm5JQY3GvyL8hikZnNl4vgMJimfIR/04aX0aLmrlmRiWOS9NMTsPLAjdcPK4C4NJ5iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=0Q7wIU3D; arc=none smtp.client-ip=17.58.6.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=11DGxb4a1Y8n3ecmd9h71gvxW+k4Ylr1+01HbNn1NSU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme;
-	b=0Q7wIU3DeeVZRHYEVGUD9jXpN/Wsf1vL+mDSInUgDbA/xsw3VSmGLjt7HPkbpFZ9N
-	 hUom93oDKKsccv1uDOcSzGlriFD6P3HlvtgH8Hc6bAvF4PphO/rV2+KhfIptkWAYSu
-	 HLm7XqktBApg6gOKFXGCF4TbveckTfTZmNfVxJuLVLD6dWd5i/bvm8onXx4hsYYOPj
-	 Yv/UcfZraALmMTnmuQmtbgu2gaDFvcpjQkUOQO/Z2WMbBDYILmWO09DIDfWGYcFgMa
-	 2RYm/gEg+EHzNi8R/yrM7GbUxDNYpPVvzMLkSyIZUxQMeX7I+/0tUYnoj+O64l98ky
-	 zskagxtp9BQTA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10012101.me.com (Postfix) with ESMTPSA id 1F6337402CB;
-	Mon, 10 Feb 2025 15:00:54 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 10 Feb 2025 23:00:32 +0800
-Subject: [PATCH v3] of: property: Increase NR_FWNODE_REFERENCE_ARGS
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B49A23A572;
+	Mon, 10 Feb 2025 15:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739201050; cv=pass; b=ijHsYJseXHcNXZEvEYV8/4MaCW6gXQ0TSOl4d9Sl3Ev86KJw4FvHOByACveBVfSueMMdyXn6BSntPuODA9uwmg0Ko4VgRXdsf3pMWqELR61ZU2E1WT2MVN1XOPRezYdrRCPOlOLiabbp+sqim7dTE/T03QPRH1rCa0z7ieTNb7w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739201050; c=relaxed/simple;
+	bh=mAnTX1oV6+9cmQuzxoGQq/j6gj+4sI+StC2J/kkcuYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FcvgkS2p2mLYIcOd6SNTx4a+nowB1C30scePAKFPIGl4ppSerrnyXxgD9zVQeb9Q/JqueG+oycy8eRPuKciAR3UvHrXlC8Yv+WvOpl85Inf8odCuql6crYUt7irVVDq76JGxVFxr+gTGiANuxCAnwgr0EmK3Z05jZCj0gIQ96jk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=dKayQUse; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1739201037; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Usbg0N6HtrBHmHMGPG8OUjqFdBl6L8QynmRG8Rr5UJ6PdZn8X6j994JG4Pspc0qmTr43NYB2dw7PkiGtcWeWL6+me0uIhDifpZKVNShqIiP6b97dKdVr2tXmZT0AhOrzqPEXKn7kZX2TvWdcSXMqHiRFjVSFjBIwY/4mroKQ/FQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1739201037; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=sRwutcmLNiEbAA4LrUfqccfyltYi4XqJBCHDxz271Sg=; 
+	b=lS3Vo4MjmcgaOct5fxHKxX2c1QfXOR1D7LqtocZamH3XVHQ/dJBA3XmVkTrN64QWQqIlNFMNttoaH+yoU68Msn+o6/e75/uUaHy98OQeoJ/dl4YBuyrl94JdRvLZABASGV1TFRgvkrUgWJ2skC3NWNTmm5HmosWYtBxkXZJZkuU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739201037;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=sRwutcmLNiEbAA4LrUfqccfyltYi4XqJBCHDxz271Sg=;
+	b=dKayQUseIlycVkT4AFMY3fzY8t+MZSNl0syBxXa9havAefQj1LSeajaSWwoYV/Ic
+	GOLVW19awACXdcP1aQWugPWXx4+De7JvHa4Cqu6Sg+PqfIKtojtcCsJAtEVwNR0mW86
+	0Chb8KpxYXNbX59MgC7azK+Dj+d+wTXpCM/xM7vA=
+Received: by mx.zohomail.com with SMTPS id 1739201034012410.7883233381324;
+	Mon, 10 Feb 2025 07:23:54 -0800 (PST)
+Received: by venus (Postfix, from userid 1000)
+	id 05A911808D9; Mon, 10 Feb 2025 16:23:51 +0100 (CET)
+Date: Mon, 10 Feb 2025 16:23:50 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Pavel Machek <pavel@ucw.cz>, "open list:ACPI" <linux-acpi@vger.kernel.org>, 
+	"open list:HIBERNATION (aka Software Suspend, aka swsusp)" <linux-pm@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH 2/4] ACPI: battery: Save and report battery capacity over
+ suspend
+Message-ID: <bzltxadthnef5c4xaidfcjuq7tt2h23znn76povptoxbb2iax6@xvuzfqbtomzb>
+References: <20250208162210.3929473-1-superm1@kernel.org>
+ <20250208162210.3929473-3-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250210-fix_arg_count-v3-1-a084a5013008@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAI8UqmcC/2WOQQ6CMBREr2K69htaqIAr72EMKeUX/kKqLTQaw
- t0tyELjcibzXmZiHh2hZ6fdxBwG8mT7GNL9julO9S0CNTEzkQiZcJ6BoWelXFtpO/YD5KlBhWV
- itK5ZZO4O42D1Xa4xd+QH616rPvCl3UxJCdZEicMqAhAyyKGpC5WLjMu60OfHSJp6fdD2xhZTE
- F/0348ggAMalUrEo8xF/cvPn2sOY+tp2P7N8xsYcxcJ/wAAAA==
-X-Change-ID: 20250114-fix_arg_count-73feae90fccb
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- "Rob Herring (Arm)" <robh@kernel.org>, 
- Saravana Kannan <saravanak@google.com>, Len Brown <lenb@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-acpi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Zijun Hu <quic_zijuhu@quicinc.com>
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: Xwm3tEk53_pJi1cncIFOCcVY0X0gfQeT
-X-Proofpoint-ORIG-GUID: Xwm3tEk53_pJi1cncIFOCcVY0X0gfQeT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-10_08,2025-02-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 bulkscore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2502100125
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ns2ue64hv7lbwve7"
+Content-Disposition: inline
+In-Reply-To: <20250208162210.3929473-3-superm1@kernel.org>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.3.1/232.373.49
+X-ZohoMailClient: External
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-Currently, the following two macros have different values:
+--ns2ue64hv7lbwve7
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 2/4] ACPI: battery: Save and report battery capacity over
+ suspend
+MIME-Version: 1.0
 
-// The maximal argument count for firmware node reference
- #define NR_FWNODE_REFERENCE_ARGS	8
-// The maximal argument count for DT node reference
- #define MAX_PHANDLE_ARGS 16
+Hi,
 
-It may cause firmware node reference's argument count out of range if
-directly assign DT node reference's argument count to firmware's.
+On Sat, Feb 08, 2025 at 10:22:08AM -0600, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>=20
+> To find out if a device is malfunctioning over suspend it's often
+> interesting to know how much battery was lost.
+>=20
+> At the start of the suspend cycle cache the amount of battery.
+> During resume, read the battery level again and if the battery
+> has decreased report the difference to the suspend stats using
+> pm_report_sleep_energy()
+>=20
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
 
-drivers/of/property.c:of_fwnode_get_reference_args() is doing the direct
-assignment, so may cause firmware's argument count @args->nargs got out
-of range, namely, in [9, 16].
+This code assumes, that there is only a single battery, but there
+can be more than one battery supplying the system. For example
+Thinkpads used to have an internal battery and a user swappable
+one.
 
-Fix by increasing NR_FWNODE_REFERENCE_ARGS to 16 to meet DT requirement.
+Also it seems in almost all cases debugging this from userspace
+by dropping a script in /usr/lib/systemd/system-sleep is good
+enough, so I wonder if extending the kernel ABI makes sense at
+all.
 
-Fixes: 3e3119d3088f ("device property: Introduce fwnode_property_get_reference_args")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
-May remove MAX_PHANDLE_ARGS and use NR_FWNODE_REFERENCE_ARGS instead later.
----
-Changes in v3:
-- Remove RFC, correct title and commit message.
-- Link to v2: https://lore.kernel.org/r/20250114-fix_arg_count-v2-1-efa35ee6572b@quicinc.com
+Greetings,
 
-Changes in v2:
-- Increase macro @NR_FWNODE_REFERENCE_ARGS to align with @MAX_PHANDLE_ARGS.
-- Correct fix tag and send as RFC patch.
-- Link to v1: https://lore.kernel.org/r/20250109-of_core_fix-v4-7-db8a72415b8c@quicinc.com
----
- include/linux/fwnode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-- Sebastian
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0731994b9d7c832cae8a30063f3a64194e4f19aa..6fa0a268d53827a376d7f258c6194a2a088e4325 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -91,7 +91,7 @@ struct fwnode_endpoint {
- #define SWNODE_GRAPH_PORT_NAME_FMT		"port@%u"
- #define SWNODE_GRAPH_ENDPOINT_NAME_FMT		"endpoint@%u"
- 
--#define NR_FWNODE_REFERENCE_ARGS	8
-+#define NR_FWNODE_REFERENCE_ARGS	16
- 
- /**
-  * struct fwnode_reference_args - Fwnode reference with additional arguments
+>  drivers/acpi/battery.c | 30 ++++++++++++++++++++++++++----
+>  1 file changed, 26 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 6760330a8af55..f21bfd02a26d1 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -124,6 +124,7 @@ struct acpi_battery {
+>  	char oem_info[MAX_STRING_LENGTH];
+>  	int state;
+>  	int power_unit;
+> +	int capacity_suspend;
+>  	unsigned long flags;
+>  };
+> =20
+> @@ -1011,9 +1012,6 @@ static int acpi_battery_update(struct acpi_battery =
+*battery, bool resume)
+>  		return 0;
+>  	}
+> =20
+> -	if (resume)
+> -		return 0;
+> -
+>  	if (!battery->update_time) {
+>  		result =3D acpi_battery_get_info(battery);
+>  		if (result)
+> @@ -1032,6 +1030,14 @@ static int acpi_battery_update(struct acpi_battery=
+ *battery, bool resume)
+>  			return result;
+>  	}
+> =20
+> +	if (resume) {
+> +		if (battery->capacity_suspend > battery->capacity_now)
+> +			pm_report_sleep_energy(battery->capacity_suspend - battery->capacity_=
+now);
+> +		else
+> +			pm_report_sleep_energy(0);
+> +		return 0;
+> +	}
+> +
+>  	/*
+>  	 * Wakeup the system if battery is critical low
+>  	 * or lower than the alarm level
+> @@ -1285,6 +1291,22 @@ static void acpi_battery_remove(struct acpi_device=
+ *device)
+>  }
+> =20
+>  /* this is needed to learn about changes made in suspended state */
+> +static int acpi_battery_suspend(struct device *dev)
+> +{
+> +	struct acpi_battery *battery;
+> +
+> +	if (!dev)
+> +		return -EINVAL;
+> +
+> +	battery =3D acpi_driver_data(to_acpi_device(dev));
+> +	if (!battery)
+> +		return -EINVAL;
+> +
+> +	battery->capacity_suspend =3D battery->capacity_now;
+> +
+> +	return 0;
+> +}
+> +
+>  static int acpi_battery_resume(struct device *dev)
+>  {
+>  	struct acpi_battery *battery;
+> @@ -1301,7 +1323,7 @@ static int acpi_battery_resume(struct device *dev)
+>  	return 0;
+>  }
+> =20
+> -static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, NULL, acpi_battery_resu=
+me);
+> +static DEFINE_SIMPLE_DEV_PM_OPS(acpi_battery_pm, acpi_battery_suspend, a=
+cpi_battery_resume);
+> =20
+>  static struct acpi_driver acpi_battery_driver =3D {
+>  	.name =3D "battery",
+> --=20
+> 2.43.0
+>=20
+>=20
 
----
-base-commit: 40fc0083a9dbcf2e81b1506274cb541f84d022ed
-change-id: 20250114-fix_arg_count-73feae90fccb
+--ns2ue64hv7lbwve7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Best regards,
--- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmeqGfgACgkQ2O7X88g7
++poGmg//VR2z3IB6ktRbpIibDzPZzxXxyAG0COTvNBJ9q/WOlPBkWGMyP+6YIUk0
+DTfLQUyHQzkcEpUoMieDoCDLr5b89CaKTMmoGd60sZzIK17AT/Qkk3M44PDNrtve
+xdEkZ7MRdtQkTksonLPlDe7ZNXuGh9lgkb1c8D7vcRM6w1Q1B8X75Dw+4q/KYS5W
+WsdBiU8HTdnrWjG70ZFDr0oqC9qQTQzklO0T5IztNBrsqTs6qhJ/zspHgjvVlVsG
+RKk3PkuAxQIPAfHhIxRgnHLo6DYJpD9CpHZcYeW9/idHzdzcxotbTVZUDXLzdgE4
+UUcH5Yg+91JVbUiVu6fx8qUZnzdwYvsUy1gNrSHVZPJOuOHjbEvZrv9tJmqYHH1n
+B6pDmz8QzhIxBuhzJa2EjMkqsgOn7GerQ4xbtLTrLn90nlOUh8Maef8V2QC/FMLS
+x+D0gpJY2auq7bFJaPVNHckXx6bvBwi2uC98ev7GlOH8GLvFORvxiadLNIVjMPUK
+cSoXzVm0ai3nS5LBF+dNvl7xP8H8kpKaZO0K0JxQgVWq3nC+OCSm/o22bjz1Nq+/
+q4h+tQ9JZMXzvvq4SfLuwsu8iRudmjpACgHm4bqLd1h9uO6EpIVpyl6fUjbLS+u3
+1dErEuHDgoi6sb2Rtn4lNwz0xXXmkYqXdgdJ9QTEra5G6zazw4o=
+=NdRQ
+-----END PGP SIGNATURE-----
+
+--ns2ue64hv7lbwve7--
 
