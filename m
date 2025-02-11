@@ -1,141 +1,212 @@
-Return-Path: <linux-acpi+bounces-10993-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10994-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD62FA30157
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 03:15:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C40CA3017A
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 03:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F817165558
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 02:15:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69FA27A153A
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 02:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B571B4243;
-	Tue, 11 Feb 2025 02:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3E6433C0;
+	Tue, 11 Feb 2025 02:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="hOYdIsip"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKr82Q/c"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6311943AA1
-	for <linux-acpi@vger.kernel.org>; Tue, 11 Feb 2025 02:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9206979C0;
+	Tue, 11 Feb 2025 02:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739240106; cv=none; b=AdLQxy+ZIx+SVA94fziwye2wszaZEetwBw5/oO/ALBk4jFyqPuKBKwU91v5jzcVYC5ETQOo1bL7UcRyVgZUn8xmzxXmLTyB9lOSUpMACnIkHCAGTuhkBsr2qUVDGyK1W9HQT4Eu9JUTcDGtd4jGmaNjgdrm0n6G+5UnL7nvKDpk=
+	t=1739240913; cv=none; b=ih+22JbmXOC7ZfA+rXYd/udR9oqEtuVtf0XD8u+Hi+Q8FR3FxktiAvd1nVt9j1QIkeBIf+4CSSRyWWVkRULvT/Gy2Ej5RwRWRDTILD3XlhJgFSlGw+Hz+k2SoyPFix+HmroaD3pobykC4BpKM2IQjXFRASBw4cpWj7Ysu4r/Qrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739240106; c=relaxed/simple;
-	bh=POlFgsEsVb9+B8eu6oMuEZauFgviS1fEuhNz1SMWWUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YWK1O4HetJEZlp9m7hMaIjOiZ48vDkAcz/VOrIl+/POUH4HBET6RJ+vDkU6zI9XKUp6mG4QN/BiDOmcs4fDou3gy4K1amTxG/iPALEwMyrFviFtxDyO3zgXq3kLMXm107sTAQaxNqIkKMchNkpoJpBgWZIR0OT2snPaFFmjf9Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=hOYdIsip; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-46c7855df10so95452561cf.3
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Feb 2025 18:15:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1739240103; x=1739844903; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H2gxFs3tfFYKHyVYTpvL17LkDysO2OVKxxWn8KTpAXk=;
-        b=hOYdIsipqtV5wJIv8Mf37i1w/ppf88GwbmEU2YhkrzS3aQZhxKM6Olq0oV/betv49n
-         NJMkyo6EJTkeBMeLfo5rIE2cacc9me4DWk0SnqSiibsrNJJ7CWP+Ht+guwgkLYbcZbwK
-         OiPfs/MA2qAJUmJMLqNfsIxPvEfM5yM8/ycd/JUyEGSxKJnOZNwWo+D2NQLgQo+O0KCo
-         ZhMRqTX5Dn1aMuFl8w/fB71iqIHrpTcyarVcPElw+h3mlvY7QhZk7aHgE8UBC0tjTkBM
-         k086qvgtr6kPc6Yu8lUGi+WkM79cfEaXpMu+ZziRuQ8uIaLvf2OiAHcZmW9S9Hfq3uVc
-         6c8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739240103; x=1739844903;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H2gxFs3tfFYKHyVYTpvL17LkDysO2OVKxxWn8KTpAXk=;
-        b=iBVeOezrgbetKYWcXrbGqSU6PzjXs4MM7U6hb21G5P2CW2WWMlYFi8fn/NUt1MsRy5
-         K+quSZX2UGpphpQnRy/3iIMHgcCim5nYmriFA+PIzv/mBaLejm8XXzb1BiYmhpc+4TMF
-         VLit6mGCvwZNzUm0wEGTYqKryTJtcp4p4oXWP1CTN3fEdV2O9mXYwrbL5BUj9DGf9DHj
-         +4KN3oe3jTJV48PEpSjTtB19Pkshq3chXfIqH9/Ig+XMayUgz7CMbWqfXkV9LbUQpsPp
-         stRdp+LIr+J7B9psB2R6KM6xQUdJVhUa8PGDtvdFOZf5nwTG1rChJTbm7BsOhUd+NPKK
-         Zf9g==
-X-Forwarded-Encrypted: i=1; AJvYcCX9mTyVNHt5HKPUauZeO2Q14BXn1nT6qzdAT0TYL1ivTLXHViT3oZOwOyQ+e1W9LRzGrgiPlieslOWg@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTatQYvsiq0uVrrev1uTUQQ1lqmwRLEAjlfJtLMsM1uJr2F1MF
-	yaswt0pIvXODS7ytw45mNNmKF/Lq4FvuZ9CtBLNLVcGhf6sGM21/fZrNlMUYdiw=
-X-Gm-Gg: ASbGncsD9avc7QGsaYueUFoQsNVGtY3yjQGwPlVbLQE09BTAVFwqcw6G7YMgPryQJWB
-	QOpVTGbU8Uf0rAvPUEYKlZX4mjnTe8WQSIK2yBe/ZFcsMaIaUZI5xXuP2bsL5t+d6RLNeMqIWym
-	YrjXsLzJODG1RW+a8iEboO2QHuXcvrm4Q+njLWxnZmhVYfPkcXlMx2JaxoPt2cBy7rU5/mNAGiX
-	/8HX6oSSxnrL2Edxozn5BJfnbARsWR6cftUaPV2v8Y7LIOODX9KqUFRithl81ifoja09PVXghTC
-	GgJflTe2tHuhJhY5v9YbjEjcEFWKaKgELBC5rpxjc05pKuoMfavNd8kcZUH3cenO8hOOnCgZnw=
-	=
-X-Google-Smtp-Source: AGHT+IEfvXpY/tplh7KS1jPYCPst0iTC1lg9LCaiKWRQOE2BUPYfi4dAoAFQOz0a/z0irSMYiTy/QA==
-X-Received: by 2002:a05:622a:30b:b0:471:a083:f3e4 with SMTP id d75a77b69052e-471a083f4b5mr31004531cf.4.1739240103182;
-        Mon, 10 Feb 2025 18:15:03 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c041dec2e9sm604168685a.20.2025.02.10.18.15.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 18:15:02 -0800 (PST)
-Date: Mon, 10 Feb 2025 21:14:59 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, hyeonggon.yoo@sk.com,
-	ying.huang@linux.alibaba.com, honggyu.kim@sk.com, rafael@kernel.org,
-	lenb@kernel.org, gregkh@linuxfoundation.org, rakie.kim@sk.com,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
-	linux-kernel@vger.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v5] mm/mempolicy: Weighted Interleave Auto-tuning
-Message-ID: <Z6qyo5q5QMpEJrie@gourry-fedora-PF4VCD3F>
-References: <20250207201335.2105488-1-joshua.hahnjy@gmail.com>
- <20250207182009.7fc099c3074ad00338f25e0a@linux-foundation.org>
- <Z6mQUIAOTvHj3wSp@gourry-fedora-PF4VCD3F>
- <20250210163941.15da1e935ed47aacf810fdd0@linux-foundation.org>
+	s=arc-20240116; t=1739240913; c=relaxed/simple;
+	bh=iTjzNwKewvmLzaCQagxyKDVXUVMNYwcrtDjaQM3gppg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oadewpRKDv2+fJbqSz57KDRlYShFebx0/RFOCobinXTvZ9Y0oDEFCvaPn2NZkXC/Gkf2dLjNxhmoo1BGux5jRl3W6GtehK3JrniNklDp7tbJDu4mpkILicDmAxK5HZt7pEV+LksczzxFB6LJLDN46dPt7zfJjBJ3mKhm7hsQN9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKr82Q/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBF4C4CED1;
+	Tue, 11 Feb 2025 02:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739240913;
+	bh=iTjzNwKewvmLzaCQagxyKDVXUVMNYwcrtDjaQM3gppg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=VKr82Q/cLYkXPxs7/4SjA1T8sL4Ut5cgGO4Ap2nTh4Loc2/gy9nfuE6kgpOewbs4R
+	 Kg/OsoATbwL4RY4CDNS/jSygTBaRdFcJHnSJIymjmvfB/OtHDUwncs/m521Niaus0+
+	 +00oCrVbU6fiZeML4YhrrEHcdToCcNONbdjVtmM462N+Sl486sceXJjyv9AXg9/nxQ
+	 +pZvsz4a1Kp2MiuVBDjCm2TsvjBONKkn+PUpe83VWfF+dgmDF62dByBnn6YL/1Wuau
+	 c5PbEXhfCjSKPptvUrUXvzen3goP/Em5mZo025yU4hPFBKdXnZkfZPomX1Nyyefqmm
+	 CGuRsZdn5zozQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 10 Feb 2025 21:28:25 -0500
+Subject: [PATCH v3] ACPI: platform-profile: Fix CFI violation when
+ accessing sysfs files
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250210163941.15da1e935ed47aacf810fdd0@linux-foundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAMi1qmcC/5WNQQ6CMBBFr2K6dgwtBYor72GMQTqFiUibljQaw
+ t0tLEzc6fLN/Lw3s4CeMLDjbmYeIwWyY4J8v2Nt34wdAunETGRCZorX0LSOwA3NZKx/XJ23hgY
+ EQ09oDUEkm17JARpFpaoiv+nCsGRzHtNoK50viXsKk/WvLRz5ev2/ETlwkFWdl4VWUpnydEc/4
+ nCwvmNrJIqPmHOufheLJC6FMXUhVCY1fomXZXkDGloBgTgBAAA=
+X-Change-ID: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ Mario Limonciello <mario.limonciello@amd.com>, Kees Cook <kees@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, John Rowley <lkml@johnrowley.me>, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5348; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=iTjzNwKewvmLzaCQagxyKDVXUVMNYwcrtDjaQM3gppg=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOmrtp5blaIVvLV1SeXyV/Y8noURHTvfFfz83GHJ3nX74
+ qyHzyZM6ShlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQATmejKyNDoO7P1ok4wQ9Il
+ PQOPk0pqqxTUPZ5Z7D13q5GhcDOvqxHDP+s/fybdeKM8YxuTuMHFScKS5sdc5QycZjq8b18sV3N
+ JihkA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Mon, Feb 10, 2025 at 04:39:41PM -0800, Andrew Morton wrote:
-> On Mon, 10 Feb 2025 00:36:16 -0500 Gregory Price <gourry@gourry.net> wrote:
-> 
-> > On Fri, Feb 07, 2025 at 06:20:09PM -0800, Andrew Morton wrote:
-> > > On Fri,  7 Feb 2025 12:13:35 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > > 
-> > > Leading to... how do we know that this patch makes the kernel better?
-> > 
-> > Just focusing on this question:
-> > 
-> > The default behavior of weighted interleave without this patch is
-> > equivalent to normal interleave.  This provides a differentiation
-> > out-of-the box, and that's just a better experience.
-> > 
-> > We may find the default values / calculations need tweaking in the
-> > future, but this gives us a good starting point.  Anecdotally, I've
-> > seen an "optimal" distribution of 10:1 based on the numbers run
-> > sub-optimally compared to 7:1 or 13:1 (but better than default mempol).
-> 
-> How was this optimality measured/observed?
-> 
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be the same type as the callbacks in 'struct kobj_attribute'.
 
-TL;DR: We used MLC to observe highest sustained bandwidth.
+However, the platform_profile sysfs functions have the type of the
+->show() and ->store() callbacks in 'struct device_attribute', which
+results a CFI violation when accessing platform_profile or
+platform_profile_choices under /sys/firmware/acpi because the types do
+not match:
 
-Unfortunately I can't post exact numbers at this time.
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
 
-To simplify the results - HMAT reported bandwidth often drifted
-+/- 10% compared to real observed bandwidth. So the distributions
-produced by auto-configuration were mildly off - but not by enough
-to cause performance degredation, we still saw higher sustained
-bandwidth.
+There is no functional issue from the type mismatch because the layout
+of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+so the container_of() cast does not break anything aside from CFI.
 
-When testing the manual configurations I saw that changing from the
-auto-selected values to a few ticks in one direction or the other
-resulted in *slightly* better results. Not too surprising.
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to match,
+which resolves the CFI violation.
 
-So as long has hardware doesn't lie horrifically, which might be a
-tall ask, auto config has a good shot at giving a decent default.
+Cc: stable@vger.kernel.org
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+Changes in v3:
+- Rebase on 6.14-rc1, which includes updates to the driver to address
+  Greg's previous concerns but this change is still needed for the
+  legacy sysfs interface. v2 can be used for the stable backport.
+- Link to v2: https://lore.kernel.org/r/20241118-acpi-platform_profile-fix-cfi-violation-v2-1-62ff952804de@kernel.org
 
-~Gregory
+Changes in v2:
+- Rebase on linux-pm/acpi
+- Pick up Sami's reviewed-by tag
+- Adjust wording around why there is no functional issue from the
+  mismatched types
+- Link to v1: https://lore.kernel.org/r/20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org
+---
+ drivers/acpi/platform_profile.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index fc92e43d0fe9..1b6317f759f9 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -260,14 +260,14 @@ static int _aggregate_choices(struct device *dev, void *data)
+ 
+ /**
+  * platform_profile_choices_show - Show the available profile choices for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to write to
+  *
+  * Return: The number of bytes written
+  */
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					     struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					     struct kobj_attribute *attr,
+ 					     char *buf)
+ {
+ 	unsigned long aggregate[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -333,14 +333,14 @@ static int _store_and_notify(struct device *dev, void *data)
+ 
+ /**
+  * platform_profile_show - Show the current profile for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to write to
+  *
+  * Return: The number of bytes written
+  */
+-static ssize_t platform_profile_show(struct device *dev,
+-				     struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++				     struct kobj_attribute *attr,
+ 				     char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+@@ -362,15 +362,15 @@ static ssize_t platform_profile_show(struct device *dev,
+ 
+ /**
+  * platform_profile_store - Set the profile for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to read from
+  * @count: The number of bytes to read
+  *
+  * Return: The number of bytes read
+  */
+-static ssize_t platform_profile_store(struct device *dev,
+-				      struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++				      struct kobj_attribute *attr,
+ 				      const char *buf, size_t count)
+ {
+ 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -401,12 +401,12 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
+
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
