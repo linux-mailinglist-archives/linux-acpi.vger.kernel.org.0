@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-11057-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11058-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF6AA316E9
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:53:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2ECA316FD
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6814F3A1C20
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7855B1888C0A
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE5A261596;
-	Tue, 11 Feb 2025 20:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE312641D8;
+	Tue, 11 Feb 2025 20:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jSBZjkuG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YXScEY/A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224C1EE7DC;
-	Tue, 11 Feb 2025 20:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5482641CA;
+	Tue, 11 Feb 2025 20:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739307198; cv=none; b=CJrnQfuCDEkrFWupQ30Bnx/6ZSRVscDKd+CP33nZ8fJ0VIkMdIbLXYqC+/yUnqXi3QOAyAvk2sNiWoJ4drn10K/xqQ02odrTmuqXkPULYUlSe8x4FNBvXxo2wKIPfs5xikNfcvVmLP/nmYW7vzAsnVjuB2+vN66St99axRcpWEM=
+	t=1739307520; cv=none; b=MIW6Z/l7Aa8d1HHklQkYqmUdrsssPqP+NuIJCI1pcPODP1TAw3Y8y7RevW57YhjrrKz6a7MG6ornc/0M31hSvI5XsG9VCcRDGddR3Cya00+q6PMRCHJL57qwwrKJnjRXKIcKqEOVeZSmS0AzMD4KW1vSIe/ee1hYYHHmWG/cUh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739307198; c=relaxed/simple;
-	bh=8sphWtJykSdh/06Ktz9t9+80uXqBvCL0k4WcR3tRdhU=;
+	s=arc-20240116; t=1739307520; c=relaxed/simple;
+	bh=iVDOUegsrPPeQIbeSR30332CJpvTlzlkwaFztakxaK8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FIuk53F5Jh2ngFBeiiPQ+jHRS3r5xl2GdDymvcn/9x0/Y8aTuQMLw5rRVQif0PtaZpedXZK/2DuVjGZAXG62GgHtM/ZPwzxgWaTtBH/iM1I5BxWITr5kQkroT7tveUQ0ZYaUcOSWVSx/ZbtmndcJZlqPhkMywWofkv6/smerfco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jSBZjkuG; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=hu/uL6De0rlxi3pyVrkyrZcEHGeFPxtlWleXX9E4a4yTrHlfxGBZKe5UDzI2LLVxKDqF+aQre8QnS533Jncqc0sSCcreDOsmtu9YY5ozwtBYnPGOeTPrc4yniMgNY5JIBsVlLMgFKZ6FoLFfykD8rQpqNJv7x41u32lZdXZJalY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YXScEY/A; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739307197; x=1770843197;
+  t=1739307520; x=1770843520;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=8sphWtJykSdh/06Ktz9t9+80uXqBvCL0k4WcR3tRdhU=;
-  b=jSBZjkuGtL5JgsLJIQX4LgyF0UMXt5mLi21F8tqkyguSnXLLocgJiDqT
-   69kxqHl5ziR4Ks1MKhtmaLE9Cx0Gi3H74eljLUM1l9Y2Mw2tcF1DoAj4Z
-   rH7rz/5mDtntIii3Lqo0TRkSPtOY2AKyo+sLkjM5LQKHRGGq7yvBnKJe9
-   /kqyf48rqV4A2/le/SM3TPmHK1mFUAFY+yuflcJJ+SKr7SHRm7YbB4jYt
-   QAXrccOoHtIaaK0YOxm2rpBmNEMn2BFvVEXtG0hQobijA68fYsOgvtXmb
-   yDDOlo4EVOvUuo18V6TOo85Z1KkozZa9GRPBQ5g9sVKGD+SwuMnxyKDEh
-   w==;
-X-CSE-ConnectionGUID: mBM01KgKTu2Ty2rrqdLzQg==
-X-CSE-MsgGUID: i35HvJ3QQp2OKxIq+BApVw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39640210"
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39640210"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 12:53:17 -0800
-X-CSE-ConnectionGUID: LXCnERC9RhmWG1D/VhEbPw==
-X-CSE-MsgGUID: YSCEat7OSRelzneUWD7QDQ==
+  bh=iVDOUegsrPPeQIbeSR30332CJpvTlzlkwaFztakxaK8=;
+  b=YXScEY/At/Hp/cwAwNYXEdW+9deT6npYCzWwFLdTdMPC6G2gjBOKrewt
+   LrIwNAihwA2e8AElLeVyrZG+lV3AzONEnYCUCxrcxp5SusFU3Hgpsxp0e
+   OXmcIyPl30seWWNWwn6ZYFvjD4NxiEJOTkqXPolcQEUNlWVWRGb8EbIzB
+   CErosboJr6sDCxMe2mMbz/7r/tkspzQiB+tq71fP0loXUXiWAulmUzBIP
+   5IQf3djyPkW+v9tOYOITM8RsTZ5il23bzbeQqMWMNcLcMuS3HFYMYUGaW
+   9X8/UHKYC3al3xIXMB+pGwFCDUOslih0tAlAUVpQRxMvVV+FSkxc3nA0c
+   A==;
+X-CSE-ConnectionGUID: Hrhs5UhXSXOB1MN6/D4Adg==
+X-CSE-MsgGUID: DkI/cWLXRpm9jh19Io1xiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51376683"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="51376683"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 12:58:39 -0800
+X-CSE-ConnectionGUID: uljOGNSDRWm5oL+/YKGHOQ==
+X-CSE-MsgGUID: Cb0soQ0JRVWOKLMO6LGdzQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="149807404"
+   d="scan'208";a="117799541"
 Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.108.48]) ([10.125.108.48])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 12:53:16 -0800
-Message-ID: <b9c21518-54fc-4907-8fc3-d492a3f33bdf@intel.com>
-Date: Tue, 11 Feb 2025 12:53:15 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 12:58:37 -0800
+Message-ID: <23e24c79-96ca-45da-832b-83a9b6456208@intel.com>
+Date: Tue, 11 Feb 2025 12:58:37 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/17] x86/cpu/intel: Fix page copy performance for
+Subject: Re: [PATCH v2 07/17] hwmon: Fix Intel Family-model checks to include
  extended Families
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
@@ -89,7 +89,7 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
- <20250211194407.2577252-6-sohil.mehta@intel.com>
+ <20250211194407.2577252-8-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -135,32 +135,32 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250211194407.2577252-6-sohil.mehta@intel.com>
+In-Reply-To: <20250211194407.2577252-8-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/11/25 11:43, Sohil Mehta wrote:
 > +	/*
-> +	 * Modern CPUs are generally expected to have a sane fast string
-> +	 * implementation. However, the BIOS may disable it on certain CPUs
-> +	 * via the architectural FAST_STRING bit.
+> +	 * Return without adjustment if the Family isn't 6.
+> +	 * The rest of the function assumes Family 6.
 > +	 */
-> +	if (IS_ENABLED(CONFIG_X86_64) && (c->x86 == 6 || c->x86 > 15))
-> +		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
+> +	if (c->x86 != 6)
+> +		return tjmax;
 
-I'm not sure the BIOS comment is helpful here.
+Shouldn't we be converting this over to the vfm matches?
 
-Also, at this point, let's just make the check >=6 (or the >=PPRO
-equivalent).
+This is kinda icky:
 
-It will only matter if *all* of these are true:
-1. Someone has a 64-bit capable P4 that powers on
-2. They're running a 64-bit mainline kernel
-3. String copy is *actually* slower than the alternative
-4. They are performance sensitive enough to notice
+> +	return family > 15 ||
+> +	       (family == 6 &&
+> +		model > 0xe &&
+> +		model != 0x1c &&
+> +		model != 0x26 &&
+> +		model != 0x27 &&
+> +		model != 0x35 &&
+> +		model != 0x36);
+>  }
 
-We don't even know the answer to #3 for sure. Let's just say what we're
-doing in a comment:
+I'm not sure how this escaped so far. Probably because it's not in arch/x86.
 
-	/* Assume that any 64-bit CPU has a good implementation */
 
