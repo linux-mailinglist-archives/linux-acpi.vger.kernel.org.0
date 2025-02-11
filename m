@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-11040-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11041-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C62A315B8
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:48:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3B2A315BC
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 326E67A4189
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:47:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D34F7A15A0
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9483D265CCB;
-	Tue, 11 Feb 2025 19:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC71267B80;
+	Tue, 11 Feb 2025 19:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DbMS2vCG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PUDboT10"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE13264621;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD07D264F90;
 	Tue, 11 Feb 2025 19:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303197; cv=none; b=LMSGr/TSqlMkzOITTu1LO0IvIOkkivLSnM8VbfvDXLhgf152ml/kcFePBeMndKR1za3N83eC451bLtm2zfv5zzMcJC57yWYclLSHsLs8iZW7ZPzQI4HjTEcX07unYm0VezzU2zj+Ilso4UJ0Twy6UmkCmnYoYAtSnv7KpnlUAAo=
+	t=1739303198; cv=none; b=TYRbyvXchQjSEmndoTcjaZ53otW7OaR/irnL0VOKx1YBq0rWZrDax3+Cp2f7SCRlBrXdWV84Lh3T5viK26cs4oO16RFHJfJDFD4lMZiKV6EW8CXzRIDMdIwIfB+CSxwJ7Z9dSIYiheSZDJfgXzMuwsnj53NJwyWRyR+jrH6KtfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739303197; c=relaxed/simple;
-	bh=nzUCrs1+DTXuNre3max01ArGpANP9d9Vy4S2KxVyNPg=;
+	s=arc-20240116; t=1739303198; c=relaxed/simple;
+	bh=HUM3PYfPx4VfQRm4ZEm9gV4rFyyvrsXWK8SDOIE+/jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jg080a5sQtP0TEJiJclHAHmXWrMfQM2EY6DeGmrbPOI5Z4F6ruzj2KuDthwNFJNcM5CCKrO425i93uybYrI/paPkKrjBff02F/HxTdp9fpzzHEBMxAmSaDcMxUplrhDXHTdzSaRbjeomRVPgoQmjDrs8Rr/csKCoKp4R5OGhwwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DbMS2vCG; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=TdskGFJMvmVrqvT4dSZz3V23FBCJPKSr/jOVY1myZeyRSs3fr9VtOT9ZjbW4P0fS8E3CvpeNikPYh7902Bs8Bq6K1MWVdc+5q2o9Ub/tO8QGQ0JT5ydO34OoBDTJlSrljYkcFwyXEQbQsCJzL7HH//0sLzy1tlch5NojQkZ+hUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PUDboT10; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1739303196; x=1770839196;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nzUCrs1+DTXuNre3max01ArGpANP9d9Vy4S2KxVyNPg=;
-  b=DbMS2vCG7CApEu354OFasqhtdEx6ZZhWPmTx9BN3EktxV1ahDuzXoT74
-   uq6PJnapscu2rEGs+T0ovri4TtpVwl5eubOlu7LckNllHLBZ0/EjNJFbE
-   sKaQXbSbVMkk2zetqgkF3vXB/nl6mzbA/HwxZxzgfslY5OESMTFn9Lpxf
-   mIjlMdOPapG3QXxAasCTP3a8Z5P47VIGkDST1oqm6D/g+F0l5NZhlp1MD
-   RWS6kQfPFHImlruCjKnw5ZjcrUqpL6LgEXiQUrHP/rsL/yLdzwAQFtGQt
-   kHGl3+1WoeXSQ8Mxd8jJI2QPT7lQrQDSbpD1WgFSfCE6UAY/swINGWoS4
+  bh=HUM3PYfPx4VfQRm4ZEm9gV4rFyyvrsXWK8SDOIE+/jE=;
+  b=PUDboT10Nn2zg2wOjGOdoYFq9I71jY+LLapBdHLQh6/IzS0nnQnk5gCF
+   qw17rfKeZq7PArxwpEFY5bQ9rCXZLDp6x34MrFwZPvXFviZbvSP7KCNsM
+   T+g5r4xVCOXJvGasmUEmnTqJn6GdBfi0nWmR589lfCFAwocs6qS41qcEz
+   i2L/zbAiIPm/E27WOHTBBphrJrpTTcIi/ivIF1/4pkJWzoW8MVseFube9
+   J4ajJHmjsjwRWUY6yfQ6XuAsCnMFuyOMgsKJ6Gmx2cLbhzyj79pGN+pyK
+   KLpFomkvu7FTTFDVWFFbNfRuRTdlKpqpB9HYJA+aijZaQdGgm7yfA9jlX
    w==;
-X-CSE-ConnectionGUID: lw6r7UAPSRSUSEuSCZncIw==
-X-CSE-MsgGUID: NPr08YlPTqaT/zm+R4qJJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854913"
+X-CSE-ConnectionGUID: 2MqQ6GwZT/uQIJsg+8XRQg==
+X-CSE-MsgGUID: N3Etv/zMQzaYgiPHgOda3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854929"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39854913"
+   d="scan'208";a="39854929"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:33 -0800
-X-CSE-ConnectionGUID: fwJaGHBtQI6D7LhuuIK/xQ==
-X-CSE-MsgGUID: NPAaN3yLShqbZTeGCxww8g==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:34 -0800
+X-CSE-ConnectionGUID: nHwncgvrS9OxBg7CTp/gpg==
+X-CSE-MsgGUID: D3Os13sARbGptEQ6KLJwCw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="143519283"
+   d="scan'208";a="143519287"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by fmviesa001.fm.intel.com with ESMTP; 11 Feb 2025 11:46:33 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -91,9 +91,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 08/17] x86/microcode: Update the Intel processor flag scan check
-Date: Tue, 11 Feb 2025 19:43:58 +0000
-Message-ID: <20250211194407.2577252-9-sohil.mehta@intel.com>
+Subject: [PATCH v2 09/17] x86/mtrr: Modify a x86_model check to an Intel VFM check
+Date: Tue, 11 Feb 2025 19:43:59 +0000
+Message-ID: <20250211194407.2577252-10-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250211194407.2577252-1-sohil.mehta@intel.com>
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
@@ -105,70 +105,41 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Family model check to read the processor flag MSR is misleading and
-potentially incorrect. It doesn't consider Family while comparing the
-model number. The original check did have a Family number but it got
-lost/moved during refactoring.
-
-intel_collect_cpu_info() is called through multiple paths such as early
-initialization, CPU hotplug as well as IFS image load. Some of these
-flows would be error prone due to the ambiguous check.
-
-Correct the processor flag scan check to use a Family number and update
-it to a VFM based one to make it more readable.
+Simplify one of the last few Intel x86_model checks in arch/x86 by
+substituting it with a VFM one.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 
 ---
 
-v2: Use a VFM check instead of hardcoded numbers.
-
-I evaluted whether CPUID can be avoided in intel_collect_cpu_info(). But
-the answer seems a bit more complex than I expected.
-
-* On the BSP, intel_collect_cpu_info() can be called very early
-  via load_ucode_bsp() even before cpu_data[] has been populated.
-
-* In the hotplug path, based on section II.c. of
-  Documentation/power/suspend-and-cpuhotplug.rst rescanning of FMS
-  during ucode load might be intentional.
-
-Maybe this can be resolved by updating the Intel ucode load flows to
-pass the CPU information or the cpuid_eax information around. But it is
-beyond the scope of this series. Also, I am not sure whether the
-effort/risk would be worth saving a single cpuid() call in an uncommon
-path. If this is desired, I can work on it in a seperate patch.
+v2: No change.
 
 ---
- arch/x86/include/asm/intel-family.h   | 1 +
- arch/x86/kernel/cpu/microcode/intel.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mtrr/generic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 6d7b04ffc5fd..cccc932d761e 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -46,6 +46,7 @@
- #define INTEL_ANY			IFM(X86_FAMILY_ANY, X86_MODEL_ANY)
- 
- #define INTEL_PENTIUM_PRO		IFM(6, 0x01)
-+#define INTEL_PENTIUM_III_DESCHUTES	IFM(6, 0x05)
- 
- #define INTEL_CORE_YONAH		IFM(6, 0x0E)
- 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index f3d534807d91..819199bc0119 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -74,7 +74,7 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
- 	sig->pf = 0;
- 	sig->rev = intel_get_microcode_revision();
- 
--	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
-+	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >= INTEL_PENTIUM_III_DESCHUTES) {
- 		unsigned int val[2];
- 
- 		/* get processor flags from MSR 0x17 */
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index 2fdfda2b60e4..826b8cff33cf 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -12,6 +12,7 @@
+ #include <asm/processor-flags.h>
+ #include <asm/cacheinfo.h>
+ #include <asm/cpufeature.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/hypervisor.h>
+ #include <asm/mshyperv.h>
+ #include <asm/tlbflush.h>
+@@ -1025,8 +1026,7 @@ int generic_validate_add_page(unsigned long base, unsigned long size,
+ 	 * For Intel PPro stepping <= 7
+ 	 * must be 4 MiB aligned and not touch 0x70000000 -> 0x7003FFFF
+ 	 */
+-	if (mtrr_if == &generic_mtrr_ops && boot_cpu_data.x86 == 6 &&
+-	    boot_cpu_data.x86_model == 1 &&
++	if (mtrr_if == &generic_mtrr_ops && boot_cpu_data.x86_vfm == INTEL_PENTIUM_PRO &&
+ 	    boot_cpu_data.x86_stepping <= 7) {
+ 		if (base & ((1 << (22 - PAGE_SHIFT)) - 1)) {
+ 			pr_warn("mtrr: base(0x%lx000) is not 4 MiB aligned\n", base);
 -- 
 2.43.0
 
