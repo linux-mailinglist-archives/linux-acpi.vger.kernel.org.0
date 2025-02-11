@@ -1,96 +1,126 @@
-Return-Path: <linux-acpi+bounces-11009-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11010-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2213A30905
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 11:45:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549ABA30AFA
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 13:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55084161588
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 10:45:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 981607A07F5
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 12:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DFA1C3308;
-	Tue, 11 Feb 2025 10:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="frEap/S9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C72E1FA165;
+	Tue, 11 Feb 2025 12:01:21 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C02E194C6A
-	for <linux-acpi@vger.kernel.org>; Tue, 11 Feb 2025 10:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9941F0E2C;
+	Tue, 11 Feb 2025 12:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739270755; cv=none; b=JAlEcHD609zry5Slm/yppdzs4f9VpmsuDS05O4nE++dENAy2UIRzGIw9r1BHWkDFOod8N/5FaHAOrO9qKTk0ElKWw7FgU2RCcYe36R5ttYYOOkImXvTJwy9grsD21ZoxUlBwaD12cEBI0Sahw3V0/RAKzARVEnNC+4k8RznmOWI=
+	t=1739275281; cv=none; b=KAVFTMfatZlXY/BhRx19aIjXPqtw2KBycjC10HVz3EzZ/oLQU5J7x10HnTjm82poX1876IP7QhSyaV/Hwf8JXzvadLlLSnuM7clmxtLTTqFzXAQWR3qK43ptDS0tkvQrc4ZQD47sOGnqj7ab/WXpjnyaB7lkBFuhjax77btRveA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739270755; c=relaxed/simple;
-	bh=PKhgCI0Zy0bjDtG6fmMXd/y+VHyTFHTVxbURGIl+GJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N8jn5f783fuZMZNgzRInnYp6J2FXyxNuEQFNsQO8044CD6HcdoiWQ+4UlQPjTEqOSHR7/QZNOWcgiRX9zqvoJSpdR3ktkZQC5DtKCzpgXVuUCS826czHdtKNsiD7RscjIViUJmplfsewECmsOIXr5lKy8vUWvPsf5dLt9pRrGug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=frEap/S9; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739270751;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rjgh0NHIE24t3tM5YBjaxn3uiX5S8lp37xeGpZmhvUY=;
-	b=frEap/S9qKMVVv7cClslXsAh7Itfk/OND9x/ftHtv5rlIB5zt0R1hXYMD5aDcqaaEPS0WR
-	hIKw2E/9pAE7K/NzlAz/6s7DfpB8sZ9zc6hNbY4/7mPxb540Q4EpgZEJB8LSNb51EnjfBt
-	9vij7ycKiRvSnwyFSMe4X/+JYfxolu8=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH] ACPI: video: Use str_yes_no() helper in acpi_video_bus_add()
-Date: Tue, 11 Feb 2025 11:45:32 +0100
-Message-ID: <20250211104532.699124-1-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1739275281; c=relaxed/simple;
+	bh=coGhJ4FDslwaXOjbG0NX4DSiL83TYxGibJL0y0TxOxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VFUA0BVqdpB3gImojYGOlIJnuzE6iabvVBGakrFgT5z3PkyUJUokufKMNl/JHmw0QEQBb1hwCsworBSaSYs5shRll9t7yCHdj9NrA43A/RcmRuV4COCExQy5N8GoIMTH8XIHR0wlOP3eLuW+8xSs+axKA+C+nhMHO8kUmLMoaWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Ysg140gk8z1V6WM;
+	Tue, 11 Feb 2025 19:57:28 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 51EF71A0188;
+	Tue, 11 Feb 2025 20:01:13 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
+ (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 11 Feb
+ 2025 20:01:12 +0800
+Message-ID: <b45d0d81-e4f7-474e-a146-0075a6145cc2@huawei.com>
+Date: Tue, 11 Feb 2025 20:01:11 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch 0/5] Support Autonomous Selection mode in cppc_cpufreq
+To: Viresh Kumar <viresh.kumar@linaro.org>, Sumit Gupta <sumitg@nvidia.com>
+CC: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
+	<corbet@lwn.net>, <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<treding@nvidia.com>, <jonathanh@nvidia.com>, <sashal@nvidia.com>,
+	<vsethi@nvidia.com>, <ksitaraman@nvidia.com>, <sanjayc@nvidia.com>,
+	<bbasu@nvidia.com>
+References: <20250211103737.447704-1-sumitg@nvidia.com>
+ <20250211104428.dibsnxmkiluzixvz@vireshk-i7>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <20250211104428.dibsnxmkiluzixvz@vireshk-i7>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-Remove hard-coded strings by using the str_yes_no() helper function.
+On 2025/2/11 18:44, Viresh Kumar wrote:
+> On 11-02-25, 16:07, Sumit Gupta wrote:
+>> This patchset supports the Autonomous Performance Level Selection mode
+>> in the cppc_cpufreq driver. The feature is part of the existing CPPC
+>> specification and already present in Intel and AMD specific pstate
+>> cpufreq drivers. The patchset adds the support in generic acpi cppc
+>> cpufreq driver.
+> 
+> Is there an overlap with:
+> 
+> https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
+> 
+> ?
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/acpi/acpi_video.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Ha, it looks like we're doing something very similar.
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index a972831dbd66..efdadc74e3f4 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -27,6 +27,7 @@
- #include <linux/acpi.h>
- #include <acpi/video.h>
- #include <linux/uaccess.h>
-+#include <linux/string_choices.h>
- 
- #define ACPI_VIDEO_BUS_NAME		"Video Bus"
- #define ACPI_VIDEO_DEVICE_NAME		"Video Device"
-@@ -2039,9 +2040,9 @@ static int acpi_video_bus_add(struct acpi_device *device)
- 
- 	pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
- 	       ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
--	       video->flags.multihead ? "yes" : "no",
--	       video->flags.rom ? "yes" : "no",
--	       video->flags.post ? "yes" : "no");
-+	       str_yes_no(video->flags.multihead),
-+	       str_yes_no(video->flags.rom),
-+	       str_yes_no(video->flags.post));
- 	mutex_lock(&video_list_lock);
- 	list_add_tail(&video->entry, &video_bus_head);
- 	mutex_unlock(&video_list_lock);
--- 
-2.48.1
+> 
+>> It adds a new 'cppc_cpufreq_epp' instance of the 'cppc_cpufreq' driver
+>> for supporting the Autonomous Performance Level Selection and Energy
+>> Performance Preference (EPP).
+>> Autonomous selection will get enabled during boot if 'cppc_auto_sel'
+>> boot argument is passed or the 'Autonomous Selection Enable' register
+>> is already set before kernel boot. When enabled, the hardware is
+>> allowed to autonomously select the CPU frequency within the min and
+>> max perf boundaries using the Engergy Performance Preference hints.
+>> The EPP values range from '0x0'(performance preference) to '0xFF'
+>> (energy efficiency preference).
+>>
+>> It also exposes the acpi_cppc sysfs nodes to update the epp, auto_sel
+>> and {min|max_perf} registers for changing the hints to hardware for
+>> Autonomous selection.
+>>
+>> In a followup patch, plan to add support to dynamically switch the
+>> cpufreq driver instance from 'cppc_cpufreq_epp' to 'cppc_cpufreq' and
+>> vice-versa without reboot.
+>>
+>> The patches are divided into below groups:
+>> - Patch [1-2]: Improvements. Can be applied independently.
+>> - Patch [3-4]: sysfs store nodes for Auto mode. Depend on Patch [1-2].
+>> - Patch [5]: Support for 'cppc_cpufreq_epp'. Uses a macro from [3].
+>>
+>> Sumit Gupta (5):
+>>   ACPI: CPPC: add read perf ctrls api and rename few existing
+>>   ACPI: CPPC: expand macro to create store acpi_cppc sysfs node
+>>   ACPI: CPPC: support updating epp, auto_sel and {min|max_perf} from
+>>     sysfs
+>>   Documentation: ACPI: add autonomous mode ctrls info in cppc_sysfs.txt
+>>   cpufreq: CPPC: Add cppc_cpufreq_epp instance for Autonomous mode
+>>
+>>  Documentation/admin-guide/acpi/cppc_sysfs.rst |  28 ++
+>>  .../admin-guide/kernel-parameters.txt         |  11 +
+>>  drivers/acpi/cppc_acpi.c                      | 311 ++++++++++++++++--
+>>  drivers/cpufreq/cppc_cpufreq.c                | 260 ++++++++++++++-
+>>  include/acpi/cppc_acpi.h                      |  19 +-
+>>  5 files changed, 572 insertions(+), 57 deletions(-)
+> 
 
 
