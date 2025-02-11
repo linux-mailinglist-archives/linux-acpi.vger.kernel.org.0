@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-11034-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11035-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48844A315A1
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:46:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8E4A315A5
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC6781675B8
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A04E168D88
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C74B262D36;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B7A26389E;
 	Tue, 11 Feb 2025 19:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Te5r9zT5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E1Og/kLG"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D5A1E5B7F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19887261588;
 	Tue, 11 Feb 2025 19:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303193; cv=none; b=FcgmzW/1J737AWZoEk0PsbQeLG4ha09hLFf37OkkbPxdWzGPWrq+ecC2MaCffSA6VmdSbvASnbnbHM9lPdQQoTgTgwDqfy3WbogxqxPqIUQXKr6mTqLjmuVLBVsRzmZKP/sZYinqnAbR6AgaYkN2fkJO78oWyxThbI7mZI4eqbw=
+	t=1739303193; cv=none; b=nHk3jfk5qsOhqsXqF9Qdu58XPXhW/UCtCCGTV5u3J3lqM5LFyQm9TsUoJWN44zb+PFSbjfMxNDFYGy5ipmLlqP7vM3p0jRdw3SA2XzK3Gml4ICDwdjy6T4Qcqfp1HBDJYetH8a8oH50WyVUDp+b5Duf0nMuMbWSJKwRUkXIQdIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739303193; c=relaxed/simple;
-	bh=mdpfH17o5dkDM3WpmrEspA/mb9FHGuKgj/Hbbefju8Y=;
+	bh=nC7bhGMaf/cKm6gQcQiTLScmrM7KGmQ7WwLO4mYu2Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+Ntm5IIGnOHp21eeMbTMI0ArR66TtSzo0IaGHynvvQhRbj/NMflWIPUU/ge5+sEW8kEwnpiSWRRC0RABI6TCa5Jb/qmTwUN1ekucJxxQ3WYhwldLzU4SY1vuD2uTxXofrgYH2Oksb8CXk//DKyghSn9xuOYdHj9jMlKaU2LLBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Te5r9zT5; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=KOlg0MkFFEEDkzIntstbOLoQsqX7LCI2MuAXnSoqHDRkI409HsMQqmpsS/uOCrAZbstYZuFcpC8KaQD0Eroh2PaEOiylVqx5yaEw1J+9xd9Mp9GyteHTqEdThbKL+uamowdZQ4R1qEkOmVm+UJ4+wQcGVVi41rTrVqLlKBDUFQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E1Og/kLG; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1739303192; x=1770839192;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mdpfH17o5dkDM3WpmrEspA/mb9FHGuKgj/Hbbefju8Y=;
-  b=Te5r9zT5Bt7pSjYMzzYbWkcpGFiRxQiz7NPqqqDg3NMBgiNmzEb/BHtm
-   aqPiTUaQF/1imp+jGBEv+J6ytVYSKO5IJzmdcnfF7Pucb+GGIxZr461mL
-   TilMK7TNT1HysImtrPakIXvIAdYAovpvbF/KTV92pUndARHsTy9pKfBEt
-   QvvourrwWPFv6zX9sA9TOR0m1ArRlZMbfDkYt3EUeeZlx9MElRaiTp8oS
-   VGbpNzZky8eH5kpG/oT0ehHU82+pq0hgcppIXNZLp4MSOo7Win0x7xJKK
-   uNEqvzoZgH9xJVtaonjpmkhgbPNEhgaU9JTUNSE9Cfbp031sqkt6sKddi
-   w==;
-X-CSE-ConnectionGUID: GeyYWcLuSx6NptSe085pAQ==
-X-CSE-MsgGUID: qcI1d0HnTCCmNsDd4JYP8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854802"
+  bh=nC7bhGMaf/cKm6gQcQiTLScmrM7KGmQ7WwLO4mYu2Zk=;
+  b=E1Og/kLGJWu/1xpLXjyB9Gc3NWltoHbXAHFkB+hMAKNZSDBSizxWLLAU
+   SRb3nh7gXPfZQ2w6IVbWUCm6HmOPxo0md/fUiFbkjQmpi7NWM9+KeiROt
+   fMYcP/W9mfloSmDCe4A/gVsVwzO+Y1gw89oeUa8Z/9jx0b2uTroMA13Ow
+   rxmTXi8g2CxP8a7T0uTkrf+yXj7rDkPu0iG6gAnIppiOi9aJd6sSEzQMS
+   CZB6VSCd+RPLdzuLuxucyAR89g5lmCYg/X9Ga7qW/HalazdXOP6ofyr4B
+   8hZh2IQ5J91yHJgYZNbCXze/ty7YICuVk/QripOAKwZ926PGCJzKH7VcI
+   Q==;
+X-CSE-ConnectionGUID: t62t181eTP2nP46rSaONuQ==
+X-CSE-MsgGUID: Rv7cvOWLTGOAok+66DHj2w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854820"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39854802"
+   d="scan'208";a="39854820"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:29 -0800
-X-CSE-ConnectionGUID: z1UQie1tT/uhlJlaQkVHDg==
-X-CSE-MsgGUID: VYDIrfl/QTqUmE5+1I+tsg==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:30 -0800
+X-CSE-ConnectionGUID: ycPs8KnhRAmT/bNZJEyQ7g==
+X-CSE-MsgGUID: cXiz9gCNQWKtAsEe8dKYEw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="143519258"
+   d="scan'208";a="143519262"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by fmviesa001.fm.intel.com with ESMTP; 11 Feb 2025 11:46:29 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -91,9 +91,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 02/17] x86/smpboot: Fix INIT delay optimization for extended Intel Families
-Date: Tue, 11 Feb 2025 19:43:52 +0000
-Message-ID: <20250211194407.2577252-3-sohil.mehta@intel.com>
+Subject: [PATCH v2 03/17] x86/apic: Fix 32-bit APIC initialization for extended Intel Families
+Date: Tue, 11 Feb 2025 19:43:53 +0000
+Message-ID: <20250211194407.2577252-4-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250211194407.2577252-1-sohil.mehta@intel.com>
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
@@ -105,43 +105,37 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently only Family 6 is considered as modern and avoids the 10 msec
-INIT delay. The optimization doesn't extend to the upcoming Family 18/19
-models.
+APIC detection is currently limited to a few specific Families and will
+not match the upcoming Families >=18.
 
-Also, the omission of Family 15 (Pentium 4s) seems like an oversight and
-should probably be included in the modern check as well.
-
-Choose a simpler check and extend the optimization to all Intel
-processors Family 6 and beyond.
+Extend the check to include all Families 6 or greater. Also convert it
+to a VFM check to make it simpler.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
 
-v2: Make the changelog more precise
+v2: Update commit message to make it more precise
 
 ---
- arch/x86/kernel/smpboot.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/apic/apic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index eb91ed0f2a06..871c61df4edb 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -675,9 +675,9 @@ static void __init smp_set_init_udelay(void)
- 		return;
- 
- 	/* if modern processor, use no delay */
--	if (((boot_cpu_data.x86_vendor == X86_VENDOR_INTEL) && (boot_cpu_data.x86 == 6)) ||
--	    ((boot_cpu_data.x86_vendor == X86_VENDOR_HYGON) && (boot_cpu_data.x86 >= 0x18)) ||
--	    ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD) && (boot_cpu_data.x86 >= 0xF))) {
-+	if ((boot_cpu_data.x86_vendor == X86_VENDOR_INTEL && boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO) ||
-+	    (boot_cpu_data.x86_vendor == X86_VENDOR_HYGON && boot_cpu_data.x86 >= 0x18) ||
-+	    (boot_cpu_data.x86_vendor == X86_VENDOR_AMD && boot_cpu_data.x86 >= 0xF)) {
- 		init_udelay = 0;
- 		return;
- 	}
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index e893dc6f11c1..4d99bd65faf5 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2014,8 +2014,8 @@ static bool __init detect_init_APIC(void)
+ 	case X86_VENDOR_HYGON:
+ 		break;
+ 	case X86_VENDOR_INTEL:
+-		if (boot_cpu_data.x86 == 6 || boot_cpu_data.x86 == 15 ||
+-		    (boot_cpu_data.x86 == 5 && boot_cpu_has(X86_FEATURE_APIC)))
++		if ((boot_cpu_data.x86 == 5 && boot_cpu_has(X86_FEATURE_APIC)) ||
++		    boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO)
+ 			break;
+ 		goto no_apic;
+ 	default:
 -- 
 2.43.0
 
