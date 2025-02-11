@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-11039-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11040-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5B5A315B4
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C62A315B8
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:48:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 193E47A3E19
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:46:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 326E67A4189
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1203265CA4;
-	Tue, 11 Feb 2025 19:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9483D265CCB;
+	Tue, 11 Feb 2025 19:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hRT4O1pX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DbMS2vCG"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08592641DE;
-	Tue, 11 Feb 2025 19:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE13264621;
+	Tue, 11 Feb 2025 19:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303196; cv=none; b=PaRkkzpHZ6u9HuL7KIjR9M0bveXLN90OcJOjakhJYQOSr5aa5SrvX0/OYJl+aqQQYFZRzuT2g6ChZzXwjIsiVg7CM78XRIJNWMpuaKbJuV2fT7qr0xgXj8V8wTYgLifTAJvBTwQJFy6LHUWCSvpA/OMJZ8SsHcH0XM7WUDrpITA=
+	t=1739303197; cv=none; b=LMSGr/TSqlMkzOITTu1LO0IvIOkkivLSnM8VbfvDXLhgf152ml/kcFePBeMndKR1za3N83eC451bLtm2zfv5zzMcJC57yWYclLSHsLs8iZW7ZPzQI4HjTEcX07unYm0VezzU2zj+Ilso4UJ0Twy6UmkCmnYoYAtSnv7KpnlUAAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739303196; c=relaxed/simple;
-	bh=V/i/5q4uvOA1nS0YV+9rcuMl+w8d2TLzCBnwG4lRfCs=;
+	s=arc-20240116; t=1739303197; c=relaxed/simple;
+	bh=nzUCrs1+DTXuNre3max01ArGpANP9d9Vy4S2KxVyNPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdT3A8yquWDgVu7d6LlEfPcEN+yuJ36e8z+O0q1nU4TJK+Swfbxs2nkWoAUz+BldWkbV+VE7O/THKry8rr2sFWIBWL+5C283tsdsEfXENV0cuJU83U0zX9OZSk6IlwB+Cawc2ihIgq2DlHs5vLtbfxwyyJKmvEykcGph7g1ikQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hRT4O1pX; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=jg080a5sQtP0TEJiJclHAHmXWrMfQM2EY6DeGmrbPOI5Z4F6ruzj2KuDthwNFJNcM5CCKrO425i93uybYrI/paPkKrjBff02F/HxTdp9fpzzHEBMxAmSaDcMxUplrhDXHTdzSaRbjeomRVPgoQmjDrs8Rr/csKCoKp4R5OGhwwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DbMS2vCG; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739303195; x=1770839195;
+  t=1739303196; x=1770839196;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=V/i/5q4uvOA1nS0YV+9rcuMl+w8d2TLzCBnwG4lRfCs=;
-  b=hRT4O1pXDVJFrPueQK8kpQF/NtruYYJMoTEPXjMyb551riePds+rCCM8
-   gGORvxPlTsL8TcO57VTWqLHorylF9YWZk3lde1bQ6pAh4sHjUqetdCJI8
-   7fOZpmg587fqoW7p118CwX6HZYivZQ0jli9sX8+WSQb1c+1h0kPgZ9OLi
-   /2FvOLWPnfvbtXSDBx0/2fulqXN9NRlQGFdiuJ6/Og/RqGuOVe8ouZSAB
-   aBedi5XoJOoocuQyWNZdpEHOy/zij/HsrGQJPF94ZlA8TgIgpYIkjnjt+
-   s44rf8EbSX8MIxEcg/dGMFBqfN6rs8kbeW5CMHE7yPyYjBm4+A9EIdTqC
-   A==;
-X-CSE-ConnectionGUID: e0i8vvyPRLmwKLFuQaq/uw==
-X-CSE-MsgGUID: vQv8eLGRSkOE0SCtt+n2Mg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854896"
+  bh=nzUCrs1+DTXuNre3max01ArGpANP9d9Vy4S2KxVyNPg=;
+  b=DbMS2vCG7CApEu354OFasqhtdEx6ZZhWPmTx9BN3EktxV1ahDuzXoT74
+   uq6PJnapscu2rEGs+T0ovri4TtpVwl5eubOlu7LckNllHLBZ0/EjNJFbE
+   sKaQXbSbVMkk2zetqgkF3vXB/nl6mzbA/HwxZxzgfslY5OESMTFn9Lpxf
+   mIjlMdOPapG3QXxAasCTP3a8Z5P47VIGkDST1oqm6D/g+F0l5NZhlp1MD
+   RWS6kQfPFHImlruCjKnw5ZjcrUqpL6LgEXiQUrHP/rsL/yLdzwAQFtGQt
+   kHGl3+1WoeXSQ8Mxd8jJI2QPT7lQrQDSbpD1WgFSfCE6UAY/swINGWoS4
+   w==;
+X-CSE-ConnectionGUID: lw6r7UAPSRSUSEuSCZncIw==
+X-CSE-MsgGUID: NPr08YlPTqaT/zm+R4qJJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854913"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39854896"
+   d="scan'208";a="39854913"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:33 -0800
-X-CSE-ConnectionGUID: f0xe5dK8SN+qOP4K5rQcHQ==
-X-CSE-MsgGUID: bN7z4DTaTReETxmkzcihnQ==
+X-CSE-ConnectionGUID: fwJaGHBtQI6D7LhuuIK/xQ==
+X-CSE-MsgGUID: NPAaN3yLShqbZTeGCxww8g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="143519280"
+   d="scan'208";a="143519283"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa001.fm.intel.com with ESMTP; 11 Feb 2025 11:46:32 -0800
+  by fmviesa001.fm.intel.com with ESMTP; 11 Feb 2025 11:46:33 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -91,9 +91,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 07/17] hwmon: Fix Intel Family-model checks to include extended Families
-Date: Tue, 11 Feb 2025 19:43:57 +0000
-Message-ID: <20250211194407.2577252-8-sohil.mehta@intel.com>
+Subject: [PATCH v2 08/17] x86/microcode: Update the Intel processor flag scan check
+Date: Tue, 11 Feb 2025 19:43:58 +0000
+Message-ID: <20250211194407.2577252-9-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250211194407.2577252-1-sohil.mehta@intel.com>
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
@@ -105,84 +105,70 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The current Intel Family-model checks in the coretemp driver seem to
-implicitly assume Family 6. Extend the checks to include the extended
-Family numbers 18 and 19 as well.
+The Family model check to read the processor flag MSR is misleading and
+potentially incorrect. It doesn't consider Family while comparing the
+model number. The original check did have a Family number but it got
+lost/moved during refactoring.
 
-Also, add explicit checks for Family 6 in places where it is assumed
-implicitly.
+intel_collect_cpu_info() is called through multiple paths such as early
+initialization, CPU hotplug as well as IFS image load. Some of these
+flows would be error prone due to the ambiguous check.
+
+Correct the processor flag scan check to use a Family number and update
+it to a VFM based one to make it more readable.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
 
 ---
 
-v2: No change. Pickup Ack from Guenter Roeck.
+v2: Use a VFM check instead of hardcoded numbers.
+
+I evaluted whether CPUID can be avoided in intel_collect_cpu_info(). But
+the answer seems a bit more complex than I expected.
+
+* On the BSP, intel_collect_cpu_info() can be called very early
+  via load_ucode_bsp() even before cpu_data[] has been populated.
+
+* In the hotplug path, based on section II.c. of
+  Documentation/power/suspend-and-cpuhotplug.rst rescanning of FMS
+  during ucode load might be intentional.
+
+Maybe this can be resolved by updating the Intel ucode load flows to
+pass the CPU information or the cpuid_eax information around. But it is
+beyond the scope of this series. Also, I am not sure whether the
+effort/risk would be worth saving a single cpuid() call in an uncommon
+path. If this is desired, I can work on it in a seperate patch.
 
 ---
- drivers/hwmon/coretemp.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/intel-family.h   | 1 +
+ arch/x86/kernel/cpu/microcode/intel.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index 1b9203b20d70..1aa67a2b5f18 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -185,6 +185,13 @@ static int adjust_tjmax(struct cpuinfo_x86 *c, u32 id, struct device *dev)
- 			return tjmax_table[i].tjmax;
- 	}
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 6d7b04ffc5fd..cccc932d761e 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -46,6 +46,7 @@
+ #define INTEL_ANY			IFM(X86_FAMILY_ANY, X86_MODEL_ANY)
  
-+	/*
-+	 * Return without adjustment if the Family isn't 6.
-+	 * The rest of the function assumes Family 6.
-+	 */
-+	if (c->x86 != 6)
-+		return tjmax;
-+
- 	for (i = 0; i < ARRAY_SIZE(tjmax_model_table); i++) {
- 		const struct tjmax_model *tm = &tjmax_model_table[i];
- 		if (c->x86_model == tm->model &&
-@@ -260,14 +267,17 @@ static int adjust_tjmax(struct cpuinfo_x86 *c, u32 id, struct device *dev)
+ #define INTEL_PENTIUM_PRO		IFM(6, 0x01)
++#define INTEL_PENTIUM_III_DESCHUTES	IFM(6, 0x05)
  
- static bool cpu_has_tjmax(struct cpuinfo_x86 *c)
- {
-+	u8 family = c->x86;
- 	u8 model = c->x86_model;
+ #define INTEL_CORE_YONAH		IFM(6, 0x0E)
  
--	return model > 0xe &&
--	       model != 0x1c &&
--	       model != 0x26 &&
--	       model != 0x27 &&
--	       model != 0x35 &&
--	       model != 0x36;
-+	return family > 15 ||
-+	       (family == 6 &&
-+		model > 0xe &&
-+		model != 0x1c &&
-+		model != 0x26 &&
-+		model != 0x27 &&
-+		model != 0x35 &&
-+		model != 0x36);
- }
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index f3d534807d91..819199bc0119 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -74,7 +74,7 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
+ 	sig->pf = 0;
+ 	sig->rev = intel_get_microcode_revision();
  
- static int get_tjmax(struct temp_data *tdata, struct device *dev)
-@@ -460,7 +470,7 @@ static int chk_ucode_version(unsigned int cpu)
- 	 * Readings might stop update when processor visited too deep sleep,
- 	 * fixed for stepping D0 (6EC).
- 	 */
--	if (c->x86_model == 0xe && c->x86_stepping < 0xc && c->microcode < 0x39) {
-+	if (c->x86 == 6 && c->x86_model == 0xe && c->x86_stepping < 0xc && c->microcode < 0x39) {
- 		pr_err("Errata AE18 not fixed, update BIOS or microcode of the CPU!\n");
- 		return -ENODEV;
- 	}
-@@ -580,7 +590,7 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	 * MSR_IA32_TEMPERATURE_TARGET register. Atoms don't have the register
- 	 * at all.
- 	 */
--	if (c->x86_model > 0xe && c->x86_model != 0x1c)
-+	if (c->x86 > 15 || (c->x86 == 6 && c->x86_model > 0xe && c->x86_model != 0x1c))
- 		if (get_ttarget(tdata, &pdev->dev) >= 0)
- 			tdata->attr_size++;
+-	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
++	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >= INTEL_PENTIUM_III_DESCHUTES) {
+ 		unsigned int val[2];
  
+ 		/* get processor flags from MSR 0x17 */
 -- 
 2.43.0
 
