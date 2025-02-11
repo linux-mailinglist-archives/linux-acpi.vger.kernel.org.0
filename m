@@ -1,169 +1,166 @@
-Return-Path: <linux-acpi+bounces-11056-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11057-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD90A316D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:46:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF6AA316E9
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0D3188865F
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6814F3A1C20
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2611D61A3;
-	Tue, 11 Feb 2025 20:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE5A261596;
+	Tue, 11 Feb 2025 20:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jSBZjkuG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1B9265602;
-	Tue, 11 Feb 2025 20:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224C1EE7DC;
+	Tue, 11 Feb 2025 20:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739306780; cv=none; b=mLNFAATuTt8WS9207xnXzDHB7NMwEt6YrgBQiGpT0eLjP4d5QxzL/t6fKe6D5q40j36+pTkS7WWjmg09kpBSkaZkXV5XzbTD5oPyREkRgLSLcZd3/YR7W4GHbXLVlGr5n+zWXPi3Ab2/kfov4KSn17ixpKB3ZRQ+Y44fim+Utr8=
+	t=1739307198; cv=none; b=CJrnQfuCDEkrFWupQ30Bnx/6ZSRVscDKd+CP33nZ8fJ0VIkMdIbLXYqC+/yUnqXi3QOAyAvk2sNiWoJ4drn10K/xqQ02odrTmuqXkPULYUlSe8x4FNBvXxo2wKIPfs5xikNfcvVmLP/nmYW7vzAsnVjuB2+vN66St99axRcpWEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739306780; c=relaxed/simple;
-	bh=rtYJnuschOu9ZccExP0TzGZGyAr5e3wvA88oRm4xUUM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=b+p/NvC3OGafkO/mYgb2wUfNlWVn1ntlnEcnItH+/EkRjz+8prY52ReeXXPujppsZsU5OZWRqsibpiQFRSTAkfo1IulxqQFWfwnZsoU2qTiaQliX49rU3Etf+HLXSrGv2h9ZwylZ042+D3YjBLxSzBmKEc5x+FNdkLRDODIlQTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ystjn5SMhz6K9Hx;
-	Wed, 12 Feb 2025 04:45:01 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7E3C51401F1;
-	Wed, 12 Feb 2025 04:46:15 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 11 Feb 2025 21:46:15 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Tue, 11 Feb 2025 21:46:15 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"Roberto Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v19 07/15] cxl: Add helper function to retrieve a feature
- entry
-Thread-Topic: [PATCH v19 07/15] cxl: Add helper function to retrieve a feature
- entry
-Thread-Index: AQHbeW73p7HBQAni1USkV2PhrmlPmLNBWNGAgAE/cbA=
-Date: Tue, 11 Feb 2025 20:46:15 +0000
-Message-ID: <f99739cce216404680c60456504d7ed3@huawei.com>
-References: <20250207144445.1879-1-shiju.jose@huawei.com>
-	<20250207144445.1879-8-shiju.jose@huawei.com>
- <99a80c40-4c1d-4dc6-8b44-397f49460501@intel.com>
-In-Reply-To: <99a80c40-4c1d-4dc6-8b44-397f49460501@intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1739307198; c=relaxed/simple;
+	bh=8sphWtJykSdh/06Ktz9t9+80uXqBvCL0k4WcR3tRdhU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FIuk53F5Jh2ngFBeiiPQ+jHRS3r5xl2GdDymvcn/9x0/Y8aTuQMLw5rRVQif0PtaZpedXZK/2DuVjGZAXG62GgHtM/ZPwzxgWaTtBH/iM1I5BxWITr5kQkroT7tveUQ0ZYaUcOSWVSx/ZbtmndcJZlqPhkMywWofkv6/smerfco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jSBZjkuG; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739307197; x=1770843197;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=8sphWtJykSdh/06Ktz9t9+80uXqBvCL0k4WcR3tRdhU=;
+  b=jSBZjkuGtL5JgsLJIQX4LgyF0UMXt5mLi21F8tqkyguSnXLLocgJiDqT
+   69kxqHl5ziR4Ks1MKhtmaLE9Cx0Gi3H74eljLUM1l9Y2Mw2tcF1DoAj4Z
+   rH7rz/5mDtntIii3Lqo0TRkSPtOY2AKyo+sLkjM5LQKHRGGq7yvBnKJe9
+   /kqyf48rqV4A2/le/SM3TPmHK1mFUAFY+yuflcJJ+SKr7SHRm7YbB4jYt
+   QAXrccOoHtIaaK0YOxm2rpBmNEMn2BFvVEXtG0hQobijA68fYsOgvtXmb
+   yDDOlo4EVOvUuo18V6TOo85Z1KkozZa9GRPBQ5g9sVKGD+SwuMnxyKDEh
+   w==;
+X-CSE-ConnectionGUID: mBM01KgKTu2Ty2rrqdLzQg==
+X-CSE-MsgGUID: i35HvJ3QQp2OKxIq+BApVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39640210"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="39640210"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 12:53:17 -0800
+X-CSE-ConnectionGUID: LXCnERC9RhmWG1D/VhEbPw==
+X-CSE-MsgGUID: YSCEat7OSRelzneUWD7QDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="149807404"
+Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.108.48]) ([10.125.108.48])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 12:53:16 -0800
+Message-ID: <b9c21518-54fc-4907-8fc3-d492a3f33bdf@intel.com>
+Date: Tue, 11 Feb 2025 12:53:15 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/17] x86/cpu/intel: Fix page copy performance for
+ extended Families
+To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Fenghua Yu <fenghua.yu@intel.com>, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Zhang Rui <rui.zhang@intel.com>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-hwmon@vger.kernel.org
+References: <20250211194407.2577252-1-sohil.mehta@intel.com>
+ <20250211194407.2577252-6-sohil.mehta@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250211194407.2577252-6-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogRGF2ZSBKaWFuZyA8ZGF2ZS5qaWFu
-Z0BpbnRlbC5jb20+DQo+U2VudDogMTEgRmVicnVhcnkgMjAyNSAwMjo0MA0KPlRvOiBTaGlqdSBK
-b3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+OyBsaW51eC1lZGFjQHZnZXIua2VybmVsLm9yZzsg
-bGludXgtDQo+Y3hsQHZnZXIua2VybmVsLm9yZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7
-IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgtDQo+a2VybmVsQHZnZXIua2VybmVsLm9yZw0KPkNj
-OiBsaW51eC1kb2NAdmdlci5rZXJuZWwub3JnOyBicEBhbGllbjguZGU7IHRvbnkubHVja0BpbnRl
-bC5jb207DQo+cmFmYWVsQGtlcm5lbC5vcmc7IGxlbmJAa2VybmVsLm9yZzsgbWNoZWhhYkBrZXJu
-ZWwub3JnOw0KPmRhbi5qLndpbGxpYW1zQGludGVsLmNvbTsgZGF2ZUBzdGdvbGFicy5uZXQ7IEpv
-bmF0aGFuIENhbWVyb24NCj48am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgYWxpc29uLnNj
-aG9maWVsZEBpbnRlbC5jb207DQo+dmlzaGFsLmwudmVybWFAaW50ZWwuY29tOyBpcmEud2VpbnlA
-aW50ZWwuY29tOyBkYXZpZEByZWRoYXQuY29tOw0KPlZpbGFzLlNyaWRoYXJhbkBhbWQuY29tOyBs
-ZW8uZHVyYW5AYW1kLmNvbTsgWWF6ZW4uR2hhbm5hbUBhbWQuY29tOw0KPnJpZW50amVzQGdvb2ds
-ZS5jb207IGppYXFpeWFuQGdvb2dsZS5jb207IEpvbi5HcmltbUBhbWQuY29tOw0KPmRhdmUuaGFu
-c2VuQGxpbnV4LmludGVsLmNvbTsgbmFveWEuaG9yaWd1Y2hpQG5lYy5jb207DQo+amFtZXMubW9y
-c2VAYXJtLmNvbTsganRob3VnaHRvbkBnb29nbGUuY29tOyBzb21hc3VuZGFyYW0uYUBocGUuY29t
-Ow0KPmVyZGVtYWt0YXNAZ29vZ2xlLmNvbTsgcGdvbmRhQGdvb2dsZS5jb207IGR1ZW53ZW5AZ29v
-Z2xlLmNvbTsNCj5ndGhlbGVuQGdvb2dsZS5jb207IHdzY2h3YXJ0ekBhbXBlcmVjb21wdXRpbmcu
-Y29tOw0KPmRmZXJndXNvbkBhbXBlcmVjb21wdXRpbmcuY29tOyB3YnNAb3MuYW1wZXJlY29tcHV0
-aW5nLmNvbTsNCj5uaWZhbi5jeGxAZ21haWwuY29tOyB0YW54aWFvZmVpIDx0YW54aWFvZmVpQGh1
-YXdlaS5jb20+OyBaZW5ndGFvIChCKQ0KPjxwcmltZS56ZW5nQGhpc2lsaWNvbi5jb20+OyBSb2Jl
-cnRvIFNhc3N1IDxyb2JlcnRvLnNhc3N1QGh1YXdlaS5jb20+Ow0KPmthbmdrYW5nLnNoZW5AZnV0
-dXJld2VpLmNvbTsgd2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT47DQo+TGlu
-dXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+U3ViamVjdDogUmU6IFtQQVRDSCB2MTkgMDcv
-MTVdIGN4bDogQWRkIGhlbHBlciBmdW5jdGlvbiB0byByZXRyaWV2ZSBhIGZlYXR1cmUNCj5lbnRy
-eQ0KPg0KPg0KPg0KPk9uIDIvNy8yNSA3OjQ0IEFNLCBzaGlqdS5qb3NlQGh1YXdlaS5jb20gd3Jv
-dGU6DQo+PiBGcm9tOiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Pg0KPj4g
-QWRkIGhlbHBlciBmdW5jdGlvbiB0byByZXRyaWV2ZSBhIGZlYXR1cmUgZW50cnkgZnJvbSB0aGUg
-c3VwcG9ydGVkDQo+PiBmZWF0dXJlcyBsaXN0LCBpZiBzdXBwb3J0ZWQuDQo+Pg0KPj4gU2lnbmVk
-LW9mZi1ieTogU2hpanUgSm9zZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPj4gLS0tDQo+PiAg
-ZHJpdmVycy9jeGwvY29yZS9mZWF0dXJlcy5jIHwgMjEgKysrKysrKysrKysrKysrKysrKysrDQo+
-PiAgaW5jbHVkZS9jeGwvZmVhdHVyZXMuaCAgICAgIHwgIDIgKysNCj4+ICAyIGZpbGVzIGNoYW5n
-ZWQsIDIzIGluc2VydGlvbnMoKykNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9jeGwvY29y
-ZS9mZWF0dXJlcy5jIGIvZHJpdmVycy9jeGwvY29yZS9mZWF0dXJlcy5jDQo+PiBpbmRleCA1ZjY0
-MTg1YTVjN2EuLmJmMTc1ZTY5Y2RhMSAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvY3hsL2NvcmUv
-ZmVhdHVyZXMuYw0KPj4gKysrIGIvZHJpdmVycy9jeGwvY29yZS9mZWF0dXJlcy5jDQo+PiBAQCAt
-NDMsNiArNDMsMjcgQEAgYm9vbCBpc19jeGxfZmVhdHVyZV9leGNsdXNpdmUoc3RydWN0IGN4bF9m
-ZWF0X2VudHJ5DQo+PiAqZW50cnkpICB9ICBFWFBPUlRfU1lNQk9MX05TX0dQTChpc19jeGxfZmVh
-dHVyZV9leGNsdXNpdmUsICJDWEwiKTsNCj4+DQo+PiArc3RydWN0IGN4bF9mZWF0X2VudHJ5ICpj
-eGxfZ2V0X2ZlYXR1cmVfZW50cnkoc3RydWN0IGN4bF9tZW1kZXYgKmN4bG1kLA0KPj4gKwkJCQkJ
-ICAgICBjb25zdCB1dWlkX3QgKmZlYXRfdXVpZCkNCj4+ICt7DQo+PiArCXN0cnVjdCBjeGxfZmVh
-dHVyZXNfc3RhdGUgKmN4bGZzID0gY3hsbWQtPmN4bGZzOw0KPj4gKwlzdHJ1Y3QgY3hsX2ZlYXRf
-ZW50cnkgKmZlYXRfZW50cnk7DQo+PiArCWludCBjb3VudDsNCj4+ICsNCj4+ICsJLyoNCj4+ICsJ
-ICogUmV0cmlldmUgdGhlIGZlYXR1cmUgZW50cnkgZnJvbSB0aGUgc3VwcG9ydGVkIGZlYXR1cmVz
-IGxpc3QsDQo+PiArCSAqIGlmIHRoZSBmZWF0dXJlIGlzIHN1cHBvcnRlZC4NCj4+ICsJICovDQo+
-PiArCWZlYXRfZW50cnkgPSBjeGxmcy0+ZW50cmllczsNCj4+ICsJZm9yIChjb3VudCA9IDA7IGNv
-dW50IDwgY3hsZnMtPm51bV9mZWF0dXJlczsgY291bnQrKywgZmVhdF9lbnRyeSsrKSB7DQo+PiAr
-CQlpZiAodXVpZF9lcXVhbCgmZmVhdF9lbnRyeS0+dXVpZCwgZmVhdF91dWlkKSkNCj4+ICsJCQly
-ZXR1cm4gZmVhdF9lbnRyeTsNCj4+ICsJfQ0KPj4gKw0KPj4gKwlyZXR1cm4gRVJSX1BUUigtRU5P
-RU5UKTsNCj4+ICt9DQo+PiArRVhQT1JUX1NZTUJPTF9OU19HUEwoY3hsX2dldF9mZWF0dXJlX2Vu
-dHJ5LCAiQ1hMIik7DQo+DQo+WW91IHByb2JhYmx5IGRvbid0IG5lZWQgdGhpcyBpZiB0aGUgbWVt
-ZmVhdHVyZSBjb2RlIGFyZSBpbiBDWEwgY29yZS4NCg0KSGkgRGF2ZSwNCg0KWW91IGFyZSByaWdo
-dC4gQXQgcHJlc2VudCwgRVhQT1JUX1NZTUJPTF9OU19HUEwoY3hsX2dldF9mZWF0dXJlX2VudHJ5
-KSAgaXMgbm90IHJlcXVpcmVkLg0KDQo+DQo+REoNCj4NCj4+ICsNCj4+ICBzaXplX3QgY3hsX2dl
-dF9mZWF0dXJlKHN0cnVjdCBjeGxfbWFpbGJveCAqY3hsX21ib3gsIGNvbnN0IHV1aWRfdCAqZmVh
-dF91dWlkLA0KPj4gIAkJICAgICAgIGVudW0gY3hsX2dldF9mZWF0X3NlbGVjdGlvbiBzZWxlY3Rp
-b24sDQo+PiAgCQkgICAgICAgdm9pZCAqZmVhdF9vdXQsIHNpemVfdCBmZWF0X291dF9zaXplLCB1
-MTYgb2Zmc2V0LCBkaWZmIC0tZ2l0DQo+PiBhL2luY2x1ZGUvY3hsL2ZlYXR1cmVzLmggYi9pbmNs
-dWRlL2N4bC9mZWF0dXJlcy5oIGluZGV4DQo+PiBlNTJkMDU3M2Y1MDQuLjU2M2Q5NjZiZWVlNSAx
-MDA2NDQNCj4+IC0tLSBhL2luY2x1ZGUvY3hsL2ZlYXR1cmVzLmgNCj4+ICsrKyBiL2luY2x1ZGUv
-Y3hsL2ZlYXR1cmVzLmgNCj4+IEBAIC02OCw2ICs2OCw4IEBAIHN0cnVjdCBjeGxfZmVhdHVyZXNf
-c3RhdGUgeyAgfTsNCj4+DQo+PiAgc3RydWN0IGN4bF9tYWlsYm94Ow0KPj4gK3N0cnVjdCBjeGxf
-ZmVhdF9lbnRyeSAqY3hsX2dldF9mZWF0dXJlX2VudHJ5KHN0cnVjdCBjeGxfbWVtZGV2ICpjeGxt
-ZCwNCj4+ICsJCQkJCSAgICAgY29uc3QgdXVpZF90ICpmZWF0X3V1aWQpOw0KPj4gIHNpemVfdCBj
-eGxfZ2V0X2ZlYXR1cmUoc3RydWN0IGN4bF9tYWlsYm94ICpjeGxfbWJveCwgY29uc3QgdXVpZF90
-ICpmZWF0X3V1aWQsDQo+PiAgCQkgICAgICAgZW51bSBjeGxfZ2V0X2ZlYXRfc2VsZWN0aW9uIHNl
-bGVjdGlvbiwNCj4+ICAJCSAgICAgICB2b2lkICpmZWF0X291dCwgc2l6ZV90IGZlYXRfb3V0X3Np
-emUsIHUxNiBvZmZzZXQsDQo+DQo+DQoNClRoYW5rcywNClNoaWp1DQo=
+On 2/11/25 11:43, Sohil Mehta wrote:
+> +	/*
+> +	 * Modern CPUs are generally expected to have a sane fast string
+> +	 * implementation. However, the BIOS may disable it on certain CPUs
+> +	 * via the architectural FAST_STRING bit.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_X86_64) && (c->x86 == 6 || c->x86 > 15))
+> +		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
+
+I'm not sure the BIOS comment is helpful here.
+
+Also, at this point, let's just make the check >=6 (or the >=PPRO
+equivalent).
+
+It will only matter if *all* of these are true:
+1. Someone has a 64-bit capable P4 that powers on
+2. They're running a 64-bit mainline kernel
+3. String copy is *actually* slower than the alternative
+4. They are performance sensitive enough to notice
+
+We don't even know the answer to #3 for sure. Let's just say what we're
+doing in a comment:
+
+	/* Assume that any 64-bit CPU has a good implementation */
 
