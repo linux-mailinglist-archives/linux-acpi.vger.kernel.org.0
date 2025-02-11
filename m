@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-11059-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11060-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49383A31706
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 22:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CCAA3170A
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 22:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5407F7A3AF1
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:59:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 379E07A3AEF
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F582641CA;
-	Tue, 11 Feb 2025 21:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FFE2641ED;
+	Tue, 11 Feb 2025 21:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AcDJsijb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UPY8gUI9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1151D88BE;
-	Tue, 11 Feb 2025 21:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B580C26563F;
+	Tue, 11 Feb 2025 21:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739307626; cv=none; b=s8xPkA4oMFSNBO/ouSGvYE7aQ8YZC+ZZZG8zI9ky7A+FSsgVSFToX86U1xMaCYA4ZLJFSi8mnzMsfCVR/BUchdC8eMtswCaaVF+LOgKTJfS5BLtzkAsfE/ejNIOSOtUn7IzFu9H7zHMrcahC0D6KAm9yqhrMRPlTPntpzinKZRY=
+	t=1739307663; cv=none; b=CGFanLXc4/dxz/hn68kBtCWa71G+ds0g35OYw1yt/NMUBwIRirAoOXElIAYUqPQmW3gl1/HoBlX/j5CUrKShOhn81Hi/j2zkdeF4ZTicLpbpWmm4jKDWemAR5LQkfg+vadeuIlaf4XsBtK0SsH+Yqek8y6CvhjO8WRe+fQ+Fay8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739307626; c=relaxed/simple;
-	bh=9iI2j+kVwA5B437aMPrmUeS1VLRFrcvFId1tjDdx1Xw=;
+	s=arc-20240116; t=1739307663; c=relaxed/simple;
+	bh=RjQmjlKqTv6LwLQd3gwxLhAr78AqkMUY8fkfjOd54lc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K3pSQFn+mMGbcO9g0+1orjMy5W0oVC+O6B+tuBjFY1XYvLAKx4ckqNGGJYgNwC9o4fZysynTzyOiA4Dm7JQfov8l2UcEJYB7n6sqV5p4wkdBg3oLzIe1fWORb9NWWnE2QTdFe65lr+dIcb63fVUhpFU4mKSX9zzg/Gi9Xdl+aTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AcDJsijb; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=I2GUYgTGUCgZFN5kywZ7SKaCL6mZjZVyQJdxx56LN8LkulN/ILMufYxZLmQdr15WAFPJvkMazwvcFVEL0O5+g4zZ+ACn4GEbALLGAhubC+EuMgPm6B/NqkSfocELL3Iqls+kbmMzui+zUkvh8HyM2Yz3N1aTMQICWTJoyow8jQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UPY8gUI9; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739307625; x=1770843625;
+  t=1739307662; x=1770843662;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=9iI2j+kVwA5B437aMPrmUeS1VLRFrcvFId1tjDdx1Xw=;
-  b=AcDJsijbGx5iJqiZlFIks/Mld6Jlme1Sfiou/CoJxRBOob58V+wVxrLX
-   7ps1TM+4mc+7Y435CRZZ1/MlVm5O9cssDhI22LxzJcF9/P6wPYjAEgrug
-   ftiTzc4g/UmYIDWQpkx88/PQXcd/D/pRSz6g/cOUL4LsUGjUq5oBojHJB
-   t4kK8QMqozHF6FwWMTAVxJz3OYrjqn343jDjbRueVaU7tq0vXAVYYaiqD
-   WAOSL+lYkiAWCizSv5bBdNtY+xf7LYDD7LlG39n0sNBeZLOb58e2RqP7L
-   OkrbbqT/1H6OgiqwL6oXTLoT/ZCu27olalh8t4AeNUf6P82587oqEt/r7
+  bh=RjQmjlKqTv6LwLQd3gwxLhAr78AqkMUY8fkfjOd54lc=;
+  b=UPY8gUI9ywbGH4ErMsD/hLwdItPZm4Drcq6Cp9FvNOe95kjQV40rbp6B
+   O6zWonQFz0HkSnrvgdJO68S66K4fiIJaSeezStY7os4NnaaQkiqiDDPxa
+   pleIf/cHhHzRUVdbtiJ0Wo7L6oIm3ve9SkWlTw1RJizV6HIxjLK9mk07k
+   /U4WI0hW0DFNMra72z6Xy7wixJVj+R9J7rW8wemH5aRCDeqBRkTIJtED0
+   EmUy7/8zv6KulB+pSAZiIBpkKoJFk64Gc6tVjw64fpONBOJ7/BY8jv0XL
+   2QmV5KbtxNvm9APlXOexQUmZ5PsHg2SMiSUnexB9KU8uzA8XcLNyjHB9d
    g==;
-X-CSE-ConnectionGUID: prmLM78IQdCahunxZ0CG8w==
-X-CSE-MsgGUID: QFklcJ0fSJ+ZQ64iox2S/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51376899"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="51376899"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:00:24 -0800
-X-CSE-ConnectionGUID: mYEyC/DfS3ycC+tQHr6EOQ==
-X-CSE-MsgGUID: 8kTovaORR3eRl1v8hrythQ==
+X-CSE-ConnectionGUID: nqIKP8RkQnGDTiYQ/grSxw==
+X-CSE-MsgGUID: OBVqdnJXRi2sBdYwf1uUZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="65301659"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="65301659"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:01:01 -0800
+X-CSE-ConnectionGUID: r9vsfxAHTuSYuqavoo6KtQ==
+X-CSE-MsgGUID: OOw7sX69Rjqu40PF1GmQfQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="117799826"
+   d="scan'208";a="143534819"
 Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.108.48]) ([10.125.108.48])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:00:22 -0800
-Message-ID: <ded359df-e980-4435-aa44-341f1e18e1ea@intel.com>
-Date: Tue, 11 Feb 2025 13:00:22 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:00:59 -0800
+Message-ID: <7f5de627-e08a-4284-a464-dc3a73af3b0b@intel.com>
+Date: Tue, 11 Feb 2025 13:00:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/17] x86/microcode: Update the Intel processor flag
- scan check
+Subject: Re: [PATCH v2 09/17] x86/mtrr: Modify a x86_model check to an Intel
+ VFM check
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -89,7 +89,7 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
- <20250211194407.2577252-9-sohil.mehta@intel.com>
+ <20250211194407.2577252-10-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -135,22 +135,13 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250211194407.2577252-9-sohil.mehta@intel.com>
+In-Reply-To: <20250211194407.2577252-10-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/11/25 11:43, Sohil Mehta wrote:
-> The Family model check to read the processor flag MSR is misleading and
-> potentially incorrect. It doesn't consider Family while comparing the
-> model number. The original check did have a Family number but it got
-> lost/moved during refactoring.
-> 
-> intel_collect_cpu_info() is called through multiple paths such as early
-> initialization, CPU hotplug as well as IFS image load. Some of these
-> flows would be error prone due to the ambiguous check.
-> 
-> Correct the processor flag scan check to use a Family number and update
-> it to a VFM based one to make it more readable.
+> Simplify one of the last few Intel x86_model checks in arch/x86 by
+> substituting it with a VFM one.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
