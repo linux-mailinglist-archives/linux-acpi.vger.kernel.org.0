@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-11061-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11062-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B96A3171F
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 22:03:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC492A31726
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 22:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F1816009B
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:03:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93A64163D16
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 21:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936E2264F80;
-	Tue, 11 Feb 2025 21:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AF9264F98;
+	Tue, 11 Feb 2025 21:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gmtiCjX6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mfl8POSo"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A4726563F;
-	Tue, 11 Feb 2025 21:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D391D2641E8;
+	Tue, 11 Feb 2025 21:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739307815; cv=none; b=bndD0K+HujfNDi1Fc7hgzv3exWtFv4pSEBwJ6UEH3c1D1Wopn9tHhVyPkeZgAglVFOy/6QWmCy8o6GTE7fo7RlW9TEzCXJ1GxiQnNSd79Ev+7KZRpBsPMZTI6dUhXcELi6u5xYTXwKe0NtKX7nVdzp6OPTcANYXj1Bw0Ml5+NUc=
+	t=1739307842; cv=none; b=BLasUlRCrXO5rCPt7sY1WW1ziXPiOAzxPgUIyiVbTvaaTD82HpeF8zKuExDK7HLS3auJNcCtJMr535BKIFo7NkDCNgIXBQv3XUySecIQJdCuk97g5kTIvM4yS+5Ig7gQQ8eaBenPPcctIBFSrRrPehZmtK33BMlWneXLCPp/HPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739307815; c=relaxed/simple;
-	bh=lRO+q6hKqQOdryC0TTRH0fCYXGDttqFPmFQn7LU8qS4=;
+	s=arc-20240116; t=1739307842; c=relaxed/simple;
+	bh=nOPsFDny/WIUaQzrv5i+Dt5JkAIMBrAABHalo4mXwA4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QBefxxzJkZ4e3cPq0Yy/uso7r/JQp43KLfQS/WDkSNGx0MO693/mf4NtZtFOVogCZr1Vw6Icl2KCfwHlr+NPUTwZa6FueKtHBZI8s6sKemDLJHWTNt7R7hpNL3OSXfI08BvOmpyMNSh8e6BB3zrmdHmUBfGEHuCm7DQp+pElC2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gmtiCjX6; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=CJTym5ketxMNJEJl70ghxjrh3d168tqrErQMInH6Je2JYS8sBIsQDsLE8yGLHH1EO4nTUkFl32LBjJrAGrBaexlYEAOPrNMvlUFZDTjPhdiBfYv7PvFgIn4uwxIf6bxSdvzAq6y/DJXS9/rH48kaYjaLq7cmbmiBxA4QYkkXw2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mfl8POSo; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739307814; x=1770843814;
+  t=1739307841; x=1770843841;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=lRO+q6hKqQOdryC0TTRH0fCYXGDttqFPmFQn7LU8qS4=;
-  b=gmtiCjX61BAzTybr2gMwgC0cp0b3hjk55sVNOhZoUwwOJdJIQlzVi+vr
-   FLytKDDjdpQKWIEOKfDdCDD6gth7ltDyop8Q05GHDzgMm6Wa3EglEacwJ
-   BZE7oPx/ip+VIOznuTEOyGs6bciK9jn4h6u9jVw99it53jooZbdh0kyTS
-   fPPHsrEzzZei2tNsrspdIYb5AIJfuXQiVspkTODEUzWmKxPYbc/+4D5OT
-   SqbrEIf3X7ylhDr2hU4x/kOEvCMObmZLcWdL9J2RLYO/UiQ0OoOruB1G4
-   rRdYit+QbTPmrIPi25t7C/IeBOJ4R6Zr54tRVSW7FGFhgZ8QPOTHSmrW8
-   Q==;
-X-CSE-ConnectionGUID: B6NvvYkjTyGjLQJUyMscDw==
-X-CSE-MsgGUID: ol/1VGp2SvyhlmLFu1Al7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="51339318"
+  bh=nOPsFDny/WIUaQzrv5i+Dt5JkAIMBrAABHalo4mXwA4=;
+  b=Mfl8POSo47RVb2DqDP4AimHrL4O9FY/fRnj9T+gDx8LobbqU6ZhzKcJu
+   B+IStTcx92Xh9TYYt+xTZ7nxv7CpXisHmagLgik8OqWWNcZSa3M4nXLbD
+   T+QuLeAMPfrUqigUlGn2UfEyCNa/pe0bj4oCXwiHELB/443AGWErRU/wo
+   /gWie8FYdad6rtnN64AzJkZaSkbLV408TYZRECuG3TMTmwXdFfOFCI4d3
+   7vW3nRXkFAkZOFI2YrDJtD2lYjXZBFWRtzRtjSATQCmv+ozYMwq6YVsJs
+   zXGBk1UDwc28s87ZbCjPUS+ZlJq6G/I2eQ55uoQJfBa5aexrN6Fw/ZS0f
+   g==;
+X-CSE-ConnectionGUID: upMSaswWQPGKTCqtGsBkRA==
+X-CSE-MsgGUID: bEt50OSgQGGnBRnpnu9xLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="51339349"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="51339318"
+   d="scan'208";a="51339349"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:03:33 -0800
-X-CSE-ConnectionGUID: 7kEM4m4JRIelLZdsgPbrEg==
-X-CSE-MsgGUID: qTS900npTAKnfdA+M2tBFA==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:04:00 -0800
+X-CSE-ConnectionGUID: HWfP58q/SP6dlJd6i/cFIQ==
+X-CSE-MsgGUID: /UqW6zk9Rl2xWVlZuBSS1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116712621"
+   d="scan'208";a="116712734"
 Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.108.48]) ([10.125.108.48])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:03:31 -0800
-Message-ID: <c3f44f19-ae86-40c7-800f-b091c305bb9f@intel.com>
-Date: Tue, 11 Feb 2025 13:03:30 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:03:58 -0800
+Message-ID: <4859bba8-59a1-4cf6-ae74-e9ed7a9c4a2e@intel.com>
+Date: Tue, 11 Feb 2025 13:03:57 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/17] x86/cpu/intel: Replace early Family 6 checks
- with VFM ones
+Subject: Re: [PATCH v2 11/17] x86/cpu/intel: Replace Family 15 checks with VFM
+ ones
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -89,9 +89,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-hwmon@vger.kernel.org
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
- <20250211194407.2577252-11-sohil.mehta@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ <20250211194407.2577252-12-sohil.mehta@intel.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -135,21 +135,13 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250211194407.2577252-11-sohil.mehta@intel.com>
+In-Reply-To: <20250211194407.2577252-12-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/11/25 11:44, Sohil Mehta wrote:
-> Introduce names for some old pentium models and replace the x86_model
+> Introduce names for some old pentium 4 models and replace the x86_model
 > checks with VFM ones.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-
-and...
-
-> -	if ((c->x86<<8 | c->x86_model<<4 | c->x86_stepping) < 0x633)
-> +	if ((c->x86_vfm == INTEL_PENTIUM_II_KLAMATH && c->x86_stepping < 3) ||
-> +	    c->x86_vfm < INTEL_PENTIUM_II_KLAMATH)
->  		clear_cpu_cap(c, X86_FEATURE_SEP);
-Ewwwwww. Good riddance on that one. :)
 
