@@ -1,63 +1,49 @@
-Return-Path: <linux-acpi+bounces-10999-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11000-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063A6A303DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 07:52:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5A2A307CD
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 10:58:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7751C1888AF7
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 06:52:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD6D1640AA
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 09:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765861E9B17;
-	Tue, 11 Feb 2025 06:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzQtafYl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29B81F2B8F;
+	Tue, 11 Feb 2025 09:57:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0613E1E9B05;
-	Tue, 11 Feb 2025 06:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B706B1F191E;
+	Tue, 11 Feb 2025 09:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739256755; cv=none; b=ECUDRxWQjAq/ECAljgWTuzu4fBmeVVVQ2mZjUGVMlf5p7ab7dvKHUvoFmE7T84LDGxX+a1tXoxvcvWQPWtJ5gYFS1hMZhutoaespnxkzUGF5kMf9c/I4b2OcLIxsmS6eN+Wghv9zwm5nmVww7vkbRoPuPTP57QpBAL6tr3/lsgw=
+	t=1739267854; cv=none; b=el/X+sr34jv5Yze+Btqte8ZiGolJfIWBKE0zI3K1wnd4Wda5CvWHINeEkKonKq7mz1YB7k8cgFUOU2mbR1OS0gI0FE7G6uYYGcTwrc4PMK9dAB+A0cKJPoJOVF+EEgYDlGEpGrqY7FdmknO9989Bg/A/TI6p1rb2uoMja0eEvCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739256755; c=relaxed/simple;
-	bh=GiDwWjf5cGNnmpmDE4al1V0wscsdaD7v2C2004KRKQk=;
+	s=arc-20240116; t=1739267854; c=relaxed/simple;
+	bh=by8WG+w14XHwoJH21F6z58cPh7djLHUpG3TJkXmqTH4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hOmW1jujmUqHFBxSXgIdMzA+5DUJQcGAFTdMmbGGV8L3IzOb6wYmimk0UerjRWCh/JsSwktXDy5vXo3+AqyHt1GUXr246Ax3+9Nx7FC3q7AdDTN02pw6cNNGkON2f+bK/NYu686d94sbVOAL2xXQfYPBR1gtAmrbG8tUh0oF8nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzQtafYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E73C4CEDD;
-	Tue, 11 Feb 2025 06:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739256754;
-	bh=GiDwWjf5cGNnmpmDE4al1V0wscsdaD7v2C2004KRKQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uzQtafYl+CZXSR+mSvlr7Ps4jdheLjp51HyGx8GB4vIdyp8moQ0oPWLyxLH7Vsmk6
-	 CZtWUjYBeV62q9CJRvycFvhtw/D22EtwLAAmwBPFz70TxSm98aK0gwYoAhJOo4d98S
-	 8cOm4BasXBz0tO4Rgm3ilRQagZHjfd8774L+eLWk=
-Date: Tue, 11 Feb 2025 07:51:31 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Tony Luck <tony.luck@intel.com>
-Cc: Robert Moore <robert.moore@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] ACPI/MRRM: Add "node" symlink to
- /sys/devices/system/memory/rangeX
-Message-ID: <2025021111-deepen-landing-4252@gregkh>
-References: <20250210211223.6139-1-tony.luck@intel.com>
- <20250210211223.6139-4-tony.luck@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=M4k9PxDpi6coJT8IQdJaTt/qLqBC9xYQ7wQiOTahv/0tltv2Q6r8fWED6FOTmN8Wg9nkhvtuNxo85v9bfrp1+7RBOc0uNnJEub/lf3LusGuBNGuSHdtYlyWyTEG2mj1EIbEdZ1LZZD2tDOMVpq/rfTBr/wMXN4dOTGnnknP2ZNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E9691477;
+	Tue, 11 Feb 2025 01:57:53 -0800 (PST)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED2493F6A8;
+	Tue, 11 Feb 2025 01:57:29 -0800 (PST)
+Date: Tue, 11 Feb 2025 09:57:27 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Stuart Yoder <stuart.yoder@arm.com>
+Cc: <linux-integrity@vger.kernel.org>, <jarkko@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>, <peterhuewe@gmx.de>,
+	<jgg@ziepe.ca>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/4] ACPICA: add start method for Arm FF-A
+Message-ID: <Z6sfB-tvhNhTek-Y@bogus>
+References: <20250210232227.97761-1-stuart.yoder@arm.com>
+ <20250210232227.97761-4-stuart.yoder@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,56 +52,22 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250210211223.6139-4-tony.luck@intel.com>
+In-Reply-To: <20250210232227.97761-4-stuart.yoder@arm.com>
 
-On Mon, Feb 10, 2025 at 01:12:22PM -0800, Tony Luck wrote:
-> Users will likely want to know which node owns each memory range
-> and which CPUs are local to the range.
-> 
-> Add a symlink to the node directory to provide both pieces of information.
-> 
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> ---
->  drivers/acpi/acpi_mrrm.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
-> index 51ed9064e025..28b484943bbd 100644
-> --- a/drivers/acpi/acpi_mrrm.c
-> +++ b/drivers/acpi/acpi_mrrm.c
-> @@ -119,6 +119,31 @@ static struct attribute *memory_range_attrs[] = {
->  
->  ATTRIBUTE_GROUPS(memory_range);
->  
-> +static __init int add_node_link(struct mrrm_mem_range_entry *entry)
-> +{
-> +	struct node *node = NULL;
-> +	int ret = 0;
-> +	int nid;
-> +
-> +	for_each_online_node(nid) {
-> +		for (int z = 0; z < MAX_NR_ZONES; z++) {
-> +			struct zone *zone = NODE_DATA(nid)->node_zones + z;
-> +
-> +			if (!populated_zone(zone))
-> +				continue;
-> +			if (zone_intersects(zone, PHYS_PFN(entry->base), PHYS_PFN(entry->length))) {
-> +				node = node_devices[zone->node];
-> +				goto found;
-> +			}
-> +		}
-> +	}
-> +found:
-> +	if (node)
-> +		ret = sysfs_create_link(&entry->dev.kobj, &node->dev.kobj, "node");
+On Mon, Feb 10, 2025 at 05:22:26PM -0600, Stuart Yoder wrote:
+> Add TPM start method for Arm FF-A defined in the TCG ACPI
+> specification v1.4.
+>
 
-What is going to remove this symlink if the memory goes away?  Or do
-these never get removed?
+ACPICA changes require (at least) a pull request to be submitted to
+the upstream ACPICA project on GitHub from where the changes get pulled
+into the kernel along with other changes.
 
-symlinks in sysfs created like this always worry me.  What is going to
-use it?
+If such a pull request is already created, please resend the Linux patch
+with a link pointing to that pull request to inform the maintainer about
+the same so that it helps in the review of the patches here.
 
-thanks,
-
-greg k-h
+-- 
+Regards,
+Sudeep
 
