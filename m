@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-11046-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11048-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3981BA315D5
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:49:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1428FA315E0
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AA3F7A172A
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE00E3A91EB
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FD726B2AA;
-	Tue, 11 Feb 2025 19:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A565A26D5A5;
+	Tue, 11 Feb 2025 19:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eZ1TrJH8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9BKt5Mp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEFA269CF0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE6F269CEF;
 	Tue, 11 Feb 2025 19:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303203; cv=none; b=T1kIbi5cPrfLxTJS+DHTQ+gMfCseXWPC7rdJ1/Pv/izQythZXjaXsYtZE/RGInxmDPf32C5VKJTflHqgDSopiQZHmgOPk6TOh5N8nTjtrYvs3rT79ApqxHMiSz00jw3q4N2sUjCYD+hW3fy+qQ/+uFy502zO5TwkeHvtuIXuOks=
+	t=1739303204; cv=none; b=SAZf5LTdpEJVTjp047p4PWzXJqCDcnRBwH/imuk9MsuOx0p28FsUDYj2XMG8UrxLuhk34xKwNiEN/ykIlYr6+LpF2bYiflSpqWXeAtpud7u1+G4PcuiMjzhpqKnqoavyPu9gKWtGBRx/ZOtkrJgl7zDoQ6EZ5Xi+nYDPCH61XJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739303203; c=relaxed/simple;
-	bh=uqKiQ714BjJ7ANDmd0HiU941l2gzoRNEv9cXh1UGXTg=;
+	s=arc-20240116; t=1739303204; c=relaxed/simple;
+	bh=zc8rXlTX5Ht3PzLU/txMXtYoBxP3G1MDHe0W5dQiEsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4T+gmk+qj3YxkwhrLEcLi48WBX8Oe/eAWfLMrjtP4RHkISmUjJFGwFE0WsSTckE1MkQIAorHr0eX/vIckfoGSjLaVyx8o2jYbWs+MlqSqY7FwpYU+YUIoUI9Ma9/4J/hANAPyNr4YUp5Hl32gUSRtxAv2E55aVacbSSEWwI7gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eZ1TrJH8; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=sIWaurO3zonN8T7p5BLgOeU38vcgsnITxqKG5/kN4z66EoiHVIHc5Btse8rXSLIw3c6RSjd8yZDcB2NiRXTAGbxn1OmUi/5wNoCq95F8OP6DAsPawvl4JwWcKMNLhokW/C5nDn2Gibe7xpm29q2EkFKoKw0hFrAKov0AW/PtnJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9BKt5Mp; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1739303202; x=1770839202;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uqKiQ714BjJ7ANDmd0HiU941l2gzoRNEv9cXh1UGXTg=;
-  b=eZ1TrJH8TEg9dZOA+46W9UyZ2VVDx7f3IVLRn5u4S6y7n4mrX2U3Gi8e
-   F4x87u6W++5js1nG3ve6rfGKNtPt/H5qmTFbcDL98eT8dtjqca80mFig+
-   JLVMZ+d95OKVojM1xVHMBrGwGN8an7YJSuU+eksKbId8QzAVsFnDLk8/9
-   TNgxMHQNBzRLSwZ7VGkfxAHnm3KKOI6TZVYd1pyYn5YHorr7tVfcNOANn
-   yZVJKarmUpScRGf0nYTlmDE194EK85GRmAX77zRnQYNdl9glXfgjJGRH5
-   G+Zl6yd6o2Unm2rD9UM9mg2/1wax9v4TvaHV5+YGaVgc/meSUQwOb7Vkj
+  bh=zc8rXlTX5Ht3PzLU/txMXtYoBxP3G1MDHe0W5dQiEsg=;
+  b=f9BKt5Mp46RfFkyv2Lrywt259WKoyU3NDz7rxjgNeK2OP+swf7NHm9AK
+   5Fib8cAYImPbD1IMUScSEEvDxhSuErWUnrqkMSEMgA8MJ1YgqlCPQPoFa
+   G9ySfLW6bxa2YHHbdmcb8G/sXIcyIyRVd4DWWX3RUNwQ2hSvjcgdNXB/o
+   IOyp9MsBY2MsxujfnV/AmgrN3ZYz189u++1gJGWN3Ln1KSFq2rdHVUruY
+   2qSaKB8J4qorlNXUZnzQ8SqyDUHG7WXJZzKa0n60LA9hOBz9x0u/o8nCM
+   CWXHNVPvSYVUiyI953YhKOtF146ewD7ABAtycqHJltMFPKlUwKgIhRKb+
    Q==;
-X-CSE-ConnectionGUID: aliz9sLhR1+9gsuN6UvbuA==
-X-CSE-MsgGUID: WVXVMzaRRTKby/emdM+ZJg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39855015"
+X-CSE-ConnectionGUID: EV36C4P2Q1uzAXpK//Y2EA==
+X-CSE-MsgGUID: +5Iv4kQaSeSnK5z4iAzhFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39855029"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39855015"
+   d="scan'208";a="39855029"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:37 -0800
-X-CSE-ConnectionGUID: FA+WwvtKRBays9aeg2PjtA==
-X-CSE-MsgGUID: mjez5CfLQ+iOcRlUF7vkVQ==
+X-CSE-ConnectionGUID: CA9spOHLT1i+GCi+S+jTKg==
+X-CSE-MsgGUID: 0/OfcbVdQaa1ala7LvkDpA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="143519312"
+   d="scan'208";a="143519315"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by fmviesa001.fm.intel.com with ESMTP; 11 Feb 2025 11:46:36 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -91,9 +91,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 15/17] x86/cpu/intel: Bound the non-architectural constant_tsc model checks
-Date: Tue, 11 Feb 2025 19:44:05 +0000
-Message-ID: <20250211194407.2577252-16-sohil.mehta@intel.com>
+Subject: [PATCH v2 16/17] perf/x86: Simplify P6 PMU initialization
+Date: Tue, 11 Feb 2025 19:44:06 +0000
+Message-ID: <20250211194407.2577252-17-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250211194407.2577252-1-sohil.mehta@intel.com>
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
@@ -105,17 +105,14 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Constant TSC has been architectural on Intel CPUs for a while. Supported
-CPUs use the architectural Invariant TSC bit in CPUID.80000007. A
-Family-model check is not required for these CPUs.
+A switch case is unnecessary when only a single case matters. Also, the
+gaps in the case numbers are due to no CPU with those model numbers
+being released.
 
-Prevent unnecessary confusion but restricting the model specific checks
-to CPUs that need it and moving it closer to the architectural check.
+Avoid the switch case and combine the cases into simpler VFM checks.
+Also, this gets rid of one last few Intel x86_model comparisons.
 
-Invariant TSC was likely introduced around the Nehalam timeframe on the
-Xeon side and Saltwell timeframe on the Atom side.  Due to interspersed
-model numbers extend the non-architectural capability setting until
-Ivybridge to be safe.
+No functional change intended.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 
@@ -124,36 +121,63 @@ Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 v2: No change.
 
 ---
- arch/x86/kernel/cpu/intel.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/p6.c | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 1b01ef4dfda2..ab195dcea50b 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -210,10 +210,6 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+diff --git a/arch/x86/events/intel/p6.c b/arch/x86/events/intel/p6.c
+index a6cffb4f4ef5..37e3beb6d633 100644
+--- a/arch/x86/events/intel/p6.c
++++ b/arch/x86/events/intel/p6.c
+@@ -2,6 +2,8 @@
+ #include <linux/perf_event.h>
+ #include <linux/types.h>
+ 
++#include <asm/cpu_device_id.h>
++
+ #include "../perf_event.h"
+ 
+ /*
+@@ -244,35 +246,19 @@ static __init void p6_pmu_rdpmc_quirk(void)
+ 	}
+ }
+ 
++/* Only called for Family 6 CPUs without X86_FEATURE_ARCH_PERFMON */
+ __init int p6_pmu_init(void)
  {
- 	u64 misc_enable;
+ 	x86_pmu = p6_pmu;
  
--	if ((c->x86 == 0xf && c->x86_model >= 0x03) ||
--		(c->x86 == 0x6 && c->x86_model >= 0x0e))
--		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+-	switch (boot_cpu_data.x86_model) {
+-	case  1: /* Pentium Pro */
+-		x86_add_quirk(p6_pmu_rdpmc_quirk);
+-		break;
 -
- 	if (c->x86 >= 6 && !cpu_has(c, X86_FEATURE_IA64))
- 		c->microcode = intel_get_microcode_revision();
- 
-@@ -272,6 +268,11 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
+-	case  3: /* Pentium II - Klamath */
+-	case  5: /* Pentium II - Deschutes */
+-	case  6: /* Pentium II - Mendocino */
+-		break;
+-
+-	case  7: /* Pentium III - Katmai */
+-	case  8: /* Pentium III - Coppermine */
+-	case 10: /* Pentium III Xeon */
+-	case 11: /* Pentium III - Tualatin */
+-		break;
+-
+-	case  9: /* Pentium M - Banias */
+-	case 13: /* Pentium M - Dothan */
+-		break;
+-
+-	default:
++	if (boot_cpu_data.x86_vfm >= INTEL_CORE_YONAH) {
+ 		pr_cont("unsupported p6 CPU model %d ", boot_cpu_data.x86_model);
+ 		return -ENODEV;
  	}
  
-+	/* Some older CPUs have invariant TSC but may not report it architecturally via 8000_0007 */
-+	if ((c->x86_vfm >= INTEL_P4_PRESCOTT && c->x86_vfm <= INTEL_P4_WILLAMETTE) ||
-+	    (c->x86_vfm >= INTEL_CORE_YONAH && c->x86_vfm <= INTEL_IVYBRIDGE))
-+		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
++	if (boot_cpu_data.x86_vfm == INTEL_PENTIUM_PRO)
++		x86_add_quirk(p6_pmu_rdpmc_quirk);
 +
- 	/* Penwell and Cloverview have the TSC which doesn't sleep on S3 */
- 	switch (c->x86_vfm) {
- 	case INTEL_ATOM_SALTWELL_MID:
+ 	memcpy(hw_cache_event_ids, p6_hw_cache_event_ids,
+ 		sizeof(hw_cache_event_ids));
+ 
 -- 
 2.43.0
 
