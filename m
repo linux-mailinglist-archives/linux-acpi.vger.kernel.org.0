@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-11037-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11038-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71953A315AC
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:47:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38963A315B7
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 20:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0C501884F15
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:47:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13CE63A9B92
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 19:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979CF26461D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D729F264F8B;
 	Tue, 11 Feb 2025 19:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B+grnBHm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PRUuzCrv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99A9263880;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000CF2638AC;
 	Tue, 11 Feb 2025 19:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303195; cv=none; b=GhKdyAvA1JSnDEAHR1IL6NEi10yQl8Z2NqP8HxNfRoRNbZed9+jMwjW8iVH7IPvF3N5K3oaxJUNWyxaH9783CY9+5CFUK9eDDXWRdgZjT4a0xZ0CIicsDWSzfbrbXYKmp7lTwz9O8FKndCzfE7wdcNi+O1D4tNMelws8pwTBDGI=
+	t=1739303195; cv=none; b=q3iHAT8plM+ZT9ll6B6Ebw8Q2H6wSoRiN/22AV4xl58KbKeaNIcFNhbLXIOZjLE/7vZWaXpLliiz88UrOwb8kJRYYdUiLWQGk2Ie3eU3RqJuWODqX4P0Ix2zLJDO8faGoLmbmynzeH6fjHyoW44g9FE9Pic+cRgI6uJiYNCiEhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739303195; c=relaxed/simple;
-	bh=PTWFvN/AlaLI/WFK2WrvrVLqOWDpjLMalpJ7CzdW408=;
+	bh=UJAvG1jigca5lIA6pwMy0uKJY5UsaQ/LXhbyxsZnADc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K41MCalgrRhLvi/WIV0jZva/KGz2fesAhY7jCdZsijC8tDzjv8Q925B/flxG3USWLIxIHGuYR84cpDPswacbSKkCuSHJiSs1SYQ8nSO3LwMtBhumlw6UPc4xPGl9Lc9V0pdnt/zdge4aM8EnIN4GpBOBC+Cp8NNXKtmXLe0yljI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B+grnBHm; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=fMg4EvS6ng7DalcvYkhAQEiefXtxZIbE+nQE5wv/mTW7PdzjNEBX4h786dJtsJDwGmcdN8tX04UiJRXhuvsbcCO2tBo14GOcnk5ftma59NRks0DsY5BB1aw4f+urBFeGTsvQNF0ARaIXKiWGygszNcLjx/+Gkv+qk7Pzgux1YdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PRUuzCrv; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1739303194; x=1770839194;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PTWFvN/AlaLI/WFK2WrvrVLqOWDpjLMalpJ7CzdW408=;
-  b=B+grnBHmarmkUUcuiUPFdJv0Y52RsYpefXYfEG3f6Flgmi8/vGqDQIQL
-   E2JjHJRfW6qbnLqmvPP1vYJs1goFhMFkb6p/eiyGgkyFQne/UXN7Nu+XV
-   u+9vdp4ksBsEXlrY9GXU2IYAnKDuS9cDNc+UEWUsZQg0z3Es6YBV2eZt1
-   L21kMMxeWxx3JtpguM4zgcYIk/vMx78wOECTEuT+/fBUcdRlkfDUrt5yo
-   3vPMk825ZysvWF86Nwe+SasWEV4HUhuZ63EQd/nhF+/PGg6zt55aXRLKe
-   UUwgDVjBjHT0AB0y5QVRO1sBqFOQS86btEjXXbbcQTEGWFwR9mlCY9AOC
+  bh=UJAvG1jigca5lIA6pwMy0uKJY5UsaQ/LXhbyxsZnADc=;
+  b=PRUuzCrvqGA2glGK6EX68rnOfPY1Q0SLvU22trChBpzGL/wZ504ZmMnh
+   ziidvZmbQk/UeWz1Np5sU+U3FGBWdHJZBmnJeuRupy1EMynS8QXetKLoR
+   mbdW7qBY+xfLVCw9MAFOMcD4izOvzCwRw0PFRGmvPCQn0bRUGqhOkInPl
+   DIzf00A/QS1+6s7dqQzusHH13fYX2YxDowGMxGgHiyXvWMJOLACVzD4gU
+   9pAFJBvfn0PG0uuGDUzAPWyTiFW/a5RWwCpaq+5R3YEkm0UWTYTYTVVjt
+   KyHogWlN1j0vl2IlPidj29luret0i/Z2oBY/3eftC3thqlGQQ8LgBGq4R
    A==;
-X-CSE-ConnectionGUID: ORYNFRUaSM+lDu7ob/S8yg==
-X-CSE-MsgGUID: zW3zVuQcQG645sEuvLiCgw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854857"
+X-CSE-ConnectionGUID: GsNPeIyaSnW1UkaDbWegQg==
+X-CSE-MsgGUID: qoStRDC0RsydDUr6SHkrMg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39854880"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39854857"
+   d="scan'208";a="39854880"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:31 -0800
-X-CSE-ConnectionGUID: fNiW41TJQh2Mi0h/1SD10A==
-X-CSE-MsgGUID: oWRURfaFSPy9KAYXjwLl8Q==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 11:46:32 -0800
+X-CSE-ConnectionGUID: iJJLIjOWRQat8XwnT7y0zA==
+X-CSE-MsgGUID: Y5QTbKMKQUSKPWqutvaibg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="143519269"
+   d="scan'208";a="143519276"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by fmviesa001.fm.intel.com with ESMTP; 11 Feb 2025 11:46:31 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -91,9 +91,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 05/17] x86/cpu/intel: Fix page copy performance for extended Families
-Date: Tue, 11 Feb 2025 19:43:55 +0000
-Message-ID: <20250211194407.2577252-6-sohil.mehta@intel.com>
+Subject: [PATCH v2 06/17] cpufreq: Fix the efficient idle check for Intel extended Families
+Date: Tue, 11 Feb 2025 19:43:56 +0000
+Message-ID: <20250211194407.2577252-7-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250211194407.2577252-1-sohil.mehta@intel.com>
 References: <20250211194407.2577252-1-sohil.mehta@intel.com>
@@ -105,68 +105,67 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-X86_FEATURE_REP_GOOD is a linux defined feature flag to track whether
-fast string operations should be used for copy_page(). It is also used
-as a backup alternative for clear_page() if enhanced fast string
-operations (ERMS) are not available.
+IO time is considered as busy by default for modern Intel processors.
+However the check doesn't include the upcoming Family 18 and 19
+processors. Also, Arjan van de Ven says the current nature of the check
+was mainly due to lack of testing on old systems. He suggests
+considering all Intel processors as having efficient idle.
 
-Currently, the flag is only set for Family 6 processors. Extend the
-check to include upcoming processors in Family 18 and 19.
-
-It is uncertain whether X86_FEATURE_REP_GOOD should be set for Family 15
-(Pentium 4) as well. Commit 185f3b9da24c ("x86: make intel.c have 64-bit
-support code") that originally set the flag also set the
-x86_cache_alignment preference for Family 15 processors in the same
-commit. The omission of the Family 15 may have been intentional.
-
-Also, move the check before a related check in early_init_intel() to
-avoid resetting the flag.
+Extend the IO busy classification to all Intel processors starting with
+Family 6.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 
 ---
 
-v2: Separate out the REP_GOOD (copy page) specific change into a
-separate commit.
-
-From the archives, it wasn't exactly clear why the set_cpu_cap() and
-clear_cpu_cap() calls for X86_FEATURE_REP_GOOD are in distinct
-locations. Also, why there is a difference between 32-bit and 64-bit.
-Any insight there would be useful. For now, I have kept the change
-minimal based on my limited understanding.
+v2: Improve commit message and code comments.
 
 ---
- arch/x86/kernel/cpu/intel.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq_ondemand.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index e5f34a90963e..4f8b02cbe8c5 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -297,6 +297,14 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 	    c->x86_vfm <= INTEL_CORE_YONAH)
- 		clear_cpu_cap(c, X86_FEATURE_PAT);
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index a7c38b8b3e78..b13f197707f4 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
+@@ -15,6 +15,10 @@
+ #include <linux/tick.h>
+ #include <linux/sched/cpufreq.h>
  
-+	/*
-+	 * Modern CPUs are generally expected to have a sane fast string
-+	 * implementation. However, the BIOS may disable it on certain CPUs
-+	 * via the architectural FAST_STRING bit.
-+	 */
-+	if (IS_ENABLED(CONFIG_X86_64) && (c->x86 == 6 || c->x86 > 15))
-+		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
++#ifdef CONFIG_X86
++#include <asm/cpu_device_id.h>
++#endif
 +
+ #include "cpufreq_ondemand.h"
+ 
+ /* On-demand governor macros */
+@@ -32,21 +36,20 @@ static unsigned int default_powersave_bias;
+ /*
+  * Not all CPUs want IO time to be accounted as busy; this depends on how
+  * efficient idling at a higher frequency/voltage is.
+- * Pavel Machek says this is not so for various generations of AMD and old
+- * Intel systems.
++ * Pavel Machek says this is not so for various generations of AMD.
+  * Mike Chan (android.com) claims this is also not true for ARM.
+- * Because of this, whitelist specific known (series) of CPUs by default, and
++ * Because of this, select known series of CPUs by default, and
+  * leave all others up to the user.
+  */
+ static int should_io_be_busy(void)
+ {
+ #if defined(CONFIG_X86)
  	/*
- 	 * If fast string is not enabled in IA32_MISC_ENABLE for any reason,
- 	 * clear the fast string and enhanced fast string CPU capabilities.
-@@ -556,8 +564,6 @@ static void init_intel(struct cpuinfo_x86 *c)
- #ifdef CONFIG_X86_64
- 	if (c->x86 == 15)
- 		c->x86_cache_alignment = c->x86_clflush_size * 2;
--	if (c->x86 == 6)
--		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
- #else
- 	/*
- 	 * Names for the Pentium II/Celeron processors
+-	 * For Intel, Core 2 (model 15) and later have an efficient idle.
++	 * Starting with Family 6 consider all Intel CPUs to have an
++	 * efficient idle.
+ 	 */
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL &&
+-			boot_cpu_data.x86 == 6 &&
+-			boot_cpu_data.x86_model >= 15)
++	    boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO)
+ 		return 1;
+ #endif
+ 	return 0;
 -- 
 2.43.0
 
