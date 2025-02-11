@@ -1,93 +1,107 @@
-Return-Path: <linux-acpi+bounces-10985-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-10986-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2E4A2FF42
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 01:39:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8736A30047
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 02:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 287783A656B
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 00:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BBE3188554F
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Feb 2025 01:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D8B5D477;
-	Tue, 11 Feb 2025 00:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE751EBFE1;
+	Tue, 11 Feb 2025 01:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JzCRggp4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TkojelER"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC403EA98
-	for <linux-acpi@vger.kernel.org>; Tue, 11 Feb 2025 00:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627F21EBA14;
+	Tue, 11 Feb 2025 01:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739234382; cv=none; b=cgGNvVuyIv/ZDBQ0ib8IL5pBEgHr7y9W3UsxLtA+0g306q5yEHVHhpZjyHOjHapJMq8L0BTXABpzLJ0wXoZ2Alqvz9eqE+wWcTMZlpjpHfByk8AsVWV2O2bzvYZtuGtSY5pNsBiY8fMFXwn6UUuWHg0tSR0GClULWPVOca15gJk=
+	t=1739237436; cv=none; b=WkLTcKF2vMW4iS0fBjzlbf3OfB3nBdmtcGcoK3DI1J/xk3wrBzgZQBnaF4j2S6f2xZuVecBT61rLpTRrZSu7Y7DyWkfySACaXyLb3CGe7viCnhVMkfUAy0rzeBRC+uMQn/tHja64gdrktb91PO3N0C1yAJaoYmVIzMJVteH8A1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739234382; c=relaxed/simple;
-	bh=PqRnffFFb7mMFeS0wQRDk3n3tdxM/h7SLVOOWWza72Y=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Sn/bxjiwOx2Z0O4hJaMDeu4hYH8U9DxbmFxtFm4Vtiv9M7lOn3Go+zHFz4ARhVUEghzQW/97UCsKMnByhwAs3Su1FGHSC8v1I0EWupnWHUkdBwTSYTjmBX0HcLD9LkWaRg4cveidrfkrQ0g+ZUWJT0iLZOs5EZvhGQnYZHBQYnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JzCRggp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AC4C4CED1;
-	Tue, 11 Feb 2025 00:39:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1739234382;
-	bh=PqRnffFFb7mMFeS0wQRDk3n3tdxM/h7SLVOOWWza72Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JzCRggp4W0TtGGt058AdSYkUxteplcjAuD7YWfnxvkIg/OVvXLnIglxjfORx02ga+
-	 163pl7nAg3VZg495M6pMhKMVoSr3S2pQYAiKfZJQVaco+GUNrC3Kw5owAIxMDrpbXQ
-	 jHmgX6gRd9zCVHRtH8JCA1dLa+CJeFCAj5VryZCM=
-Date: Mon, 10 Feb 2025 16:39:41 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, hyeonggon.yoo@sk.com,
- ying.huang@linux.alibaba.com, honggyu.kim@sk.com, rafael@kernel.org,
- lenb@kernel.org, gregkh@linuxfoundation.org, rakie.kim@sk.com,
- dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
- dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
- linux-kernel@vger.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- kernel-team@meta.com
-Subject: Re: [PATCH v5] mm/mempolicy: Weighted Interleave Auto-tuning
-Message-Id: <20250210163941.15da1e935ed47aacf810fdd0@linux-foundation.org>
-In-Reply-To: <Z6mQUIAOTvHj3wSp@gourry-fedora-PF4VCD3F>
-References: <20250207201335.2105488-1-joshua.hahnjy@gmail.com>
-	<20250207182009.7fc099c3074ad00338f25e0a@linux-foundation.org>
-	<Z6mQUIAOTvHj3wSp@gourry-fedora-PF4VCD3F>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1739237436; c=relaxed/simple;
+	bh=ySLUvMMBTHzlJLmqpRqysEHyKgwvuX6j+Zt4vOn+2mU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Dv1gNxxxFr/3LNfhkzS18lPrC19y3Wf4y9XBScdE+ywaZzTW9ZC3xZPEVI3Q8TvFb9iuUs9NE/27wqSPgbQzOxTY+WbTfApWMObOsDZtJj1j/XrEE+muTbta5v3qZE8n1/ldmYR1yat0E0NxmXOjEeQ/tqYBQSD9DmQeq0ucRr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TkojelER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C82BC4CEE8;
+	Tue, 11 Feb 2025 01:30:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739237434;
+	bh=ySLUvMMBTHzlJLmqpRqysEHyKgwvuX6j+Zt4vOn+2mU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TkojelERE3v0qUXNhU8NCamODqmT/TCaUYb5zbgvNkcdjSlxdQ1RQ7QOIOFj40pfD
+	 ToK0MIPZjmvspmZ/hgHuPxnEfgl0o8PnWsSD72+pS/NVwFEqzFBxRCwGenqxNdeze7
+	 79ziU21Eqb4zKfUQ3W2mVa0lIRbZCL+SdUnXRbuwnlh++sDRvwU/BwR9qG56Bvj+jn
+	 PY2iZf+UNbQtsEzuuMfhJvL9f+HRQqLiEFKHq59qjBxUakAPHtR3OnEHvai5Ie6X2p
+	 GCYg4h/8qr/z1JmMuyiXZ3ZFQDAHSEBB24SNmxmbQZsAXjUyCWznubfu85//cwL3Q6
+	 G1oIrOAy3+D3g==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Gannon Kolding <gannon.kolding@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 17/21] ACPI: resource: IRQ override for Eluktronics MECH-17
+Date: Mon, 10 Feb 2025 20:29:50 -0500
+Message-Id: <20250211012954.4096433-17-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250211012954.4096433-1-sashal@kernel.org>
+References: <20250211012954.4096433-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.2
+Content-Transfer-Encoding: 8bit
 
-On Mon, 10 Feb 2025 00:36:16 -0500 Gregory Price <gourry@gourry.net> wrote:
+From: Gannon Kolding <gannon.kolding@gmail.com>
 
-> On Fri, Feb 07, 2025 at 06:20:09PM -0800, Andrew Morton wrote:
-> > On Fri,  7 Feb 2025 12:13:35 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > 
-> > Leading to... how do we know that this patch makes the kernel better?
-> 
-> Just focusing on this question:
-> 
-> The default behavior of weighted interleave without this patch is
-> equivalent to normal interleave.  This provides a differentiation
-> out-of-the box, and that's just a better experience.
-> 
-> We may find the default values / calculations need tweaking in the
-> future, but this gives us a good starting point.  Anecdotally, I've
-> seen an "optimal" distribution of 10:1 based on the numbers run
-> sub-optimally compared to 7:1 or 13:1 (but better than default mempol).
+[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
 
-How was this optimality measured/observed?
+The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
+keyboard to work.
 
-> So there will always be a "try it and see" component to this.
-> 
-> (Not to mention hardware/firmware lies regularly, and their reported
->  performance numbers rarely if ever match their tested numbers - so
->  *at best* this can be considered a best-effort feature)
+Adding a DMI_MATCH entry for this laptop model makes the internal
+keyboard function normally.
+
+Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
+Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 90aaec923889c..b4cd14e7fa76c 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -563,6 +563,12 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
++		},
++	},
+ 	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
+-- 
+2.39.5
 
 
