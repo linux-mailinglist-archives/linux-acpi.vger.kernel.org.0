@@ -1,121 +1,180 @@
-Return-Path: <linux-acpi+bounces-11128-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11129-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751F7A32D71
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 18:27:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02CDA32F2D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 20:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8AE3A390E
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 17:27:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FBAB7A3515
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 19:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A12821D5B8;
-	Wed, 12 Feb 2025 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFBA257AC7;
+	Wed, 12 Feb 2025 19:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="Un9xLCGe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KTV9kS5R"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA9C2135A1
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 17:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904C1FC0FD;
+	Wed, 12 Feb 2025 19:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739381250; cv=none; b=S1wY8mNyPlSPc74lloPg8fWYLnbI1jtWxBzMCKBluzQhI+WQ10xOSWJPel0fDad46fbVrqaUNDRDp83taEFNC2+2lNcJ7gC0zhDL73YkmAqIOdqWHo+LK7KznM4SLVTfwqwsbbeOgc2ExeZr8rOfiJP3nLqYTjANkN7StymmvDE=
+	t=1739387005; cv=none; b=ZMkJdv7vssrtCKVD+bj28/55NKvMhzbAxrvx59YVvZtF4fMBj0PTNSVU6KXIDOBuPcU+hDMxj5DTk7tA+zLGaSJcOcC3MYiUG0Zf4J703ESQUX+CPkcD9WbKgvQyRS/Tubq7fgAgvDZ2Qo4zHwryR4gTGZMPk/WkE5CLkJK0Ayw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739381250; c=relaxed/simple;
-	bh=WsXNicR6jaNblz/mUCSZP8cRv1n93+uq/dm06XHfv0A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LIZPX/12KOoHLzBGew/1t+M9aVLHeGT8NZWZPoJqsLRoM90MsEAIsYvsx4REsybyJ6cd4syGhxDrDhYcHo4/CFI9LfNdXkcp6FLXbgt7P7eWgIl7iwiqdqhK68f5tcxarj0gTfOyEXY3xiFjkHIuhlqKkqJAkw5dIj1w0HX0nXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=Un9xLCGe; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6d8e8445219so361426d6.0
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 09:27:28 -0800 (PST)
+	s=arc-20240116; t=1739387005; c=relaxed/simple;
+	bh=Q5WCinM78joO19bz4ipSZN2nHA4SwWHLZZzByfpdgQc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n2I9FxBrowEzjs1gWRuqbUwAMLCQdkc0EgsnvJWEVLNyGQuh9RK2JZAnnYseHHEClQfTyBgISwdTc3KstMISM92iZN1k2NFGwl9O6mlCh0m2k0egUGWUJG2HSAQIdmyXHccsphzm+jE9vq/VEMJJbYj8DJ6ns2QldGRrEY6EafQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KTV9kS5R; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6f9b1bc594dso993507b3.0;
+        Wed, 12 Feb 2025 11:03:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1739381247; x=1739986047; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Smy8Ep/libgaUjooQcIAevVXF9JphJMkMPuXMpEKUoA=;
-        b=Un9xLCGeGk4fjQ7rrIapXM7AwPTJlx0pWcUHKUkJVCXfvqDFSyiOUyir8IHkoqRyuc
-         RUz2hVurCwSvt7AdqCWuWseEnVG3wN0HyeuRXdxrrXJulbz+NFR14Qt8IvT2NORqykbn
-         WqGALU6YCKjasn+8J2m61XnRDKY+mGS9O89XNB3UqUVhnKizSXPPbYExfpylku7/qDj1
-         MBYmHyqawsk4G9iSL/ze9+kwmVFqz4e6caln+V2XgU6/eSQY5tqv/AD+6kATXro5RlWg
-         50iZbbmvOs0uz/j/QOebHMQy58X119ndFkVkJHcKsMSGENzRmRamXXNqy9Uk6aDYPHAH
-         ZMgg==
+        d=gmail.com; s=20230601; t=1739387003; x=1739991803; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Li3QvOn0MBSxnCwMnn2tzHDETkUA5jkI5FjmbsImGcQ=;
+        b=KTV9kS5R8OKlNHn2R1jC0iGD+eRoplLYj64luTaGCdehBT4oLY64tZJ3ugq/PXvDQp
+         fIrH4Vhr+WQma2OPaJBxDy6ug3rem9Fzh03jhHkaFLtwP5Mx/f7r4GACiX8KyoZQgSB7
+         3jI5RtUsirAoaGn2x8GXk0uN8klbBCy/deC5A13QRZVY+g8i10TkAKr+qut1i7EnqYUP
+         DLNqhmfKBJNwqpyVFDpO9PSZ5drBXAc/v0LqbHASBNbjc07BT33qUAJ0F8OcRBFKVcIc
+         o+8bPxOydcPnEx/qHUJw+D/jwWG1Jf2ljwGRQbqcqdOyFmt3eypZnAcaUthpQMX9G/NI
+         8L3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739381247; x=1739986047;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Smy8Ep/libgaUjooQcIAevVXF9JphJMkMPuXMpEKUoA=;
-        b=a5AhUWtqndx5H2k+tRL8/UkMBOOeN5Bn2+aPMJiK4juhqLKu0UEzidgbguH6lw81E+
-         dvzo6K2MhRlBFB34iz0xB8mUAwPJgA9M1UuEbUUJwhqm4WPusBVoDaH3xccMHAr1MsqV
-         9/zC/3WOTzCvvgx4Yrt17mkiygwiGoWySvo9PRKgDSeOommFDITwpu299uBayFZArPY5
-         YV/0CAqlvtToOHxu5zy7tCufp7CU2+Lbbbc0lTZsF74Scm82flrge7RQIwSfxJNj263B
-         a4HUDKOk+5dwHZMJl5hRzfPp8tBtWeL/iMPJXFi4d+DM9ZfEaGqeQj9rgvGP55vwxNuw
-         bX2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXaVJvLn6WjPvgzoO32jSSBRvMuth3C7j3JNewhw5kG1evfOy+TdLA5fK8Mb3apxnx51z/1ZwdMjsnu@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHMygcF/K3locWaZzPn6ssxLhC/aYBTfoWDrQUvNiJnoSotYwW
-	8s134N9Jc8CtWpLqYDtxPKUQcviTfyF8aPt8f1bGtGom4N3aLRCVUo4947jK6xA=
-X-Gm-Gg: ASbGncvK2onwPXhpkhj2B/I6zzWAGWlQli38J5xiKD/PxvrmLIOrmBmVSP+608Ys1v3
-	eBAbRnaAtFQdtwn1zBWqmqqZYhxmhrEcKJ+nHAUiGkBj/ZXXexGgiTUzlX1d8X0jVTWbScsqeje
-	KHNZ6k0cRneSpLeinNhlYTAePJitXyexA8JjD4eNI6ix6aNItQ8oxPSUdQBKOeghCmSuPhApcUZ
-	xX8EvvWP3xxphoxZ1a/jhVIDyMgGq6lK6j6500up4K82pHZpNeH3gNblUT9GWu9IuVjggVfP+Qw
-	ptSFBgj3exFu6g/8pD+SrAisGFHMlg7yuPPtzU54D7wunUVlGqYKp/iTzbXOWcDoWIW0uwnQPw=
-	=
-X-Google-Smtp-Source: AGHT+IFxLq/9chQgLM98IqnvfPjNIMr3SqvTbtBXTR+199INYC5w6TgCv988GbjKoOmNdHzhzqWKwA==
-X-Received: by 2002:ad4:4348:0:b0:6e6:5bda:a47b with SMTP id 6a1803df08f44-6e65bdaa4e8mr6261416d6.9.1739381247418;
-        Wed, 12 Feb 2025 09:27:27 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65b3df028sm2097176d6.117.2025.02.12.09.27.26
+        d=1e100.net; s=20230601; t=1739387003; x=1739991803;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Li3QvOn0MBSxnCwMnn2tzHDETkUA5jkI5FjmbsImGcQ=;
+        b=h56Q/7yKSDSEIJt9UoS9U2CzzqOi38VFkTV39Cg3+BgCu/7p7SnkBxiqSOIs734uiX
+         n/yJAAk4DEU8r9n/xBnuILpu6OA6SbE6vCH2Oh6IT7aAXugB9H1BEne2ToPqFkmmdl2h
+         o+5bgC2SmAvKlpX2E/MgpxoFmBuElXrSGAVCPlvL7gYmhw4iO7hFuvzz7XE0c7qhXbEY
+         K/uuhhVmYbhjLAWLwWQpFv2Rpzpq+pXY1rO37qMfO9qUGnmpzQT8tQ6LRcWI6JbEfVsi
+         VezCQS83sdy9hgM4IHPGQNL3ulgGygH+4bN3UJU5rbzUUMSzXOZeoPKYqjjtYK0FxrqL
+         KaSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfd4P8Cy+DaTTrnqQqkeWb2WRf/jqcR9siIqmofD7by3vn5uu8DZT+YlmRa0ZnJNKeFJkJw5OmTOiPPZo+djBIRj/C1g==@vger.kernel.org, AJvYcCUoS8iMw4WCBdOvmDKOONveVGkwQhf9axBZX3qV+RJoz2tKYLMVc/cUS9sDoteAC72A/Xpzp5jLJfZmtLBs@vger.kernel.org, AJvYcCWJ7ezWQMjdGISNEyQmN4X1ykXiaqZpKJsQxTceHxBseYUO/7HdJkrfEbmhf190Du6q2VTxI1QWiKxM@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVIZIn1VVSeFwzTCFd5yCsmdhEkCJsZyA8cNniEM5Sc/qejGaS
+	UjW/2yyI++cLTvT1Qxj2TAGlCexRwiYmRtX8NvHIJydX2U9hrwjC
+X-Gm-Gg: ASbGncv2XKTzl5uPPHMvNraFOSm1g8xE9+DwfbUXLX4zU4+qScMz7UpjadLfJ/eYvGA
+	X5tJ9gHFSc0i1rZUjbeJrH3TLyYfyjDazMofGUa+WoU0z0HqyAuC5mZ1273Owlgnn3Z0LNOcHLY
+	qYj65WsT/chP4o/kI6u08lDqCw9nk8u+5NlYqKrcVYJKAClhNKLUC+sKC6L4SywLZsB6qOAxBMG
+	7sUCwxXGq06HpGRpUCO/qRKki8/fVmLudGvcmc12HI5ne79Osv+t7i+qpJwhUnDr/6h9AmyUPGL
+	pAKFsIGpaOT5/Ra/gPvc0UORFw==
+X-Google-Smtp-Source: AGHT+IEMDcy30J1r8ZQyPcNj7CY5wjrIU4TXGEmAeo+IbTY5sT7ecfDSaE3/dnVTG5EvzP2vpW4mRA==
+X-Received: by 2002:a05:690c:6988:b0:6f6:cad6:6b5a with SMTP id 00721157ae682-6fb1f19ba28mr57684867b3.13.1739387002932;
+        Wed, 12 Feb 2025 11:03:22 -0800 (PST)
+Received: from localhost.localdomain ([2800:bf0:179:113e:f067:4e25:4298:6451])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f99fce16d1sm28059507b3.23.2025.02.12.11.03.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 09:27:26 -0800 (PST)
-Date: Wed, 12 Feb 2025 12:27:25 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, hyeonggon.yoo@sk.com,
-	ying.huang@linux.alibaba.com, rafael@kernel.org, lenb@kernel.org,
-	gregkh@linuxfoundation.org, akpm@linux-foundation.org,
-	honggyu.kim@sk.com, rakie.kim@sk.com, dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com, dave.jiang@intel.com,
-	horen.chuang@linux.dev, hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v4] Weighted Interleave Auto-tuning
-Message-ID: <Z6zZ_UqcY9MbyDL1@gourry-fedora-PF4VCD3F>
-References: <20250128222332.3835931-1-joshua.hahnjy@gmail.com>
- <Z6HGwq731v+VX1CP@localhost.localdomain>
- <Z6JAicm5VxE6HKnO@gourry-fedora-PF4VCD3F>
+        Wed, 12 Feb 2025 11:03:22 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Len Brown" <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Mario Limonciello" <mario.limonciello@amd.com>,
+	platform-driver-x86@vger.kernel.org,
+	"Kurt Borja" <kuurtb@gmail.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>
+Subject: [PATCH v2] ACPI: platform_profile: Improve platform_profile_unregister
+Date: Wed, 12 Feb 2025 14:03:08 -0500
+Message-ID: <20250212190308.21209-1-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6JAicm5VxE6HKnO@gourry-fedora-PF4VCD3F>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 04, 2025 at 11:30:01AM -0500, Gregory Price wrote:
-> > > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> > > index 80a3481c0470..cc94cba112dd 100644
-> > > --- a/drivers/acpi/numa/hmat.c
-> > > +++ b/drivers/acpi/numa/hmat.c
-> > > @@ -20,6 +20,7 @@
-> > >  #include <linux/list_sort.h>
-> > >  #include <linux/memregion.h>
-> > >  #include <linux/memory.h>
-> > > +#include <linux/mempolicy.h>
-> > 
-> > nit: is this #include directive necessary?
-> 
-> yes because hmat.c now calls
-> 	mempolicy_set_node_perf(nid, coord))
-> 
+Drivers usually call this method on error/exit paths and do not check
+for it's return value, which is always 0 anyway, so make it void. This
+is safe to do as currently all drivers use
+devm_platform_profile_register().
 
-apologies, i missed that there were two of these, we'll drop this.
+While at it improve the style and make the function safer by checking
+for IS_ERR_OR_NULL before dereferencing the device pointer.
 
-~Gregory
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Hi all,
+
+I made a little modification that I forgot in the last version.
+
+Rafael, please tell me if you prefer different commits for this. Also
+should we WARN_ON(IS_ERR_OR_NULL)?
+
+Based on the acpi branch of the linux-pm tree.
+
+~ Kurt
+
+Changes in v2:
+  - Get reference to pprof after checking for IS_ERR_OR_NULL(dev)
+  - CC Mark Pearson (sorry!)
+
+ drivers/acpi/platform_profile.c  | 19 +++++++++----------
+ include/linux/platform_profile.h |  2 +-
+ 2 files changed, 10 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index fc92e43d0fe9..ed9c0cc9ea9c 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -569,24 +569,23 @@ EXPORT_SYMBOL_GPL(platform_profile_register);
+ /**
+  * platform_profile_remove - Unregisters a platform profile class device
+  * @dev: Class device
+- *
+- * Return: 0
+  */
+-int platform_profile_remove(struct device *dev)
++void platform_profile_remove(struct device *dev)
+ {
+-	struct platform_profile_handler *pprof = to_pprof_handler(dev);
+-	int id;
++	struct platform_profile_handler *pprof;
++
++	if (IS_ERR_OR_NULL(dev))
++		return;
++
++	pprof = to_pprof_handler(dev);
++
+ 	guard(mutex)(&profile_lock);
+ 
+-	id = pprof->minor;
++	ida_free(&platform_profile_ida, pprof->minor);
+ 	device_unregister(&pprof->dev);
+-	ida_free(&platform_profile_ida, id);
+ 
+ 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+-
+ 	sysfs_update_group(acpi_kobj, &platform_profile_group);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(platform_profile_remove);
+ 
+diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+index 8ab5b0e8eb2c..d5499eca9e1d 100644
+--- a/include/linux/platform_profile.h
++++ b/include/linux/platform_profile.h
+@@ -47,7 +47,7 @@ struct platform_profile_ops {
+ struct device *platform_profile_register(struct device *dev, const char *name,
+ 					 void *drvdata,
+ 					 const struct platform_profile_ops *ops);
+-int platform_profile_remove(struct device *dev);
++void platform_profile_remove(struct device *dev);
+ struct device *devm_platform_profile_register(struct device *dev, const char *name,
+ 					      void *drvdata,
+ 					      const struct platform_profile_ops *ops);
+
+base-commit: 3e3e377dd1f300bbdd230533686ce9c9f4f8a90d
+-- 
+2.48.1
+
 
