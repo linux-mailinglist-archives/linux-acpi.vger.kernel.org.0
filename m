@@ -1,161 +1,129 @@
-Return-Path: <linux-acpi+bounces-11119-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11120-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB6EA329F5
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 16:28:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14CAA32BE3
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 17:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F282188D101
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 15:26:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68944169A76
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 16:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC2D21149C;
-	Wed, 12 Feb 2025 15:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FgSfllkG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E91257AC4;
+	Wed, 12 Feb 2025 16:36:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A812116ED
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 15:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848EA25743C;
+	Wed, 12 Feb 2025 16:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739373975; cv=none; b=fcaGvflpmAGSi0WvK9vbvtv5GPgzXI+LZ+GhqnQC+jejXyPJuSUOLmwVHpFDsOdJQ0X9wsdfyNAfzcKSxJ1KLH29Fb5BXfW93KxmbfsZEJ33nW3YXa0n/fVko70KCTh7teS5nO2t/J+iM79jbsozQ+Wr9y+CsbkQCMCZkZIbYQ0=
+	t=1739378163; cv=none; b=R4rAheX3Dwp6xf+uFWO3+0MWV4NtF2DKHEcdFC2fLnDLXR0MsCc4LLGyAuWOs22/5BWTSHGZnHHx8Zh6jP3U2iYObql5vHCK6Egwi9sU9gxF8SJrQo/mYc+84K22jwIxjA+c198QaPkLzHp++O/b75xNiE21y2rfRPWNSdMXbjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739373975; c=relaxed/simple;
-	bh=azNu5VMGZgVEyCVt5TIT2I+IDQCm2fTvNzRXKqwsbug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rlkpmv7pu6PQh39hyCzU05bKS0d4Fw5NwmhVGEWi41+sEy2naK56gK2WRQzVNLuSjN7dyoIirjzWkgkEopeQix3IU5P9jX/7qu3gViPRBdt/CeudX9dSW4A+4qVh1twn2QXs11NLD0u7mmR53CX7wF7XisQvXL7oAFm8JjTx3a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FgSfllkG; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e5b29779d74so6314748276.2
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 07:26:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739373972; x=1739978772; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wvjG9hNk6O6AhaG9ttlmUq7XexAhA5zfoCCpnbbsQD0=;
-        b=FgSfllkGM+omkoCqCjkQTbdd1d8sWgCeI5thvEKICNQuXwGaU68Qzz/rZbEdILyQXd
-         0c53XdwcRwFNkMwtJJofvlpmbj533G5GErKa02wW6mqKe5SnRLPO0Qh5ifz/CVab8mn7
-         QxwGS7E58rKLWwiohNDIFgDENX08AsL2f2NT1iVUuNGb8qHI2RHD3jc8C+JEHZiUtnpv
-         I8+O9M3uul5ZQElaBO2K2v1HUC+k+LfZGxpbts8AeGfEmLljbBb5O7G/le2J/6JI99/V
-         ZA4DeWqU2xtDKhXm3WDcFrS4wsSI6cvDzIkn3gdtYFBxfXbGcxQtLHp7GQrzhF3RtVDx
-         ogOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739373972; x=1739978772;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wvjG9hNk6O6AhaG9ttlmUq7XexAhA5zfoCCpnbbsQD0=;
-        b=hTPX/JIbgqn49gbw0vNigc9wzMMSartChd5hBTQUEcmbWBtZ1g3SwKVZek8GXONJMU
-         8Y1beVB5PN4ZVV4mw9ndGyUxJ348O1tRwhBjSmyLiEDe0irZkJ0YYtYy7zgHqMWqf1gP
-         WfvMkENt3DsqHFEdkqIpLAOuwLBeZxUdaEyv2zvqBzcWRdG33XjohlpLmXBrvJ4EwQrK
-         WREgeuFFaEYz80pAuhfInQIC1o3q9pp4E6eLrg3sLVNV/JEEEYQPpKBIgmXIbt8irvBf
-         7ZKgKwWfeNlsDh0tbSIA33HQj7Lc1px4Bv8c6RR3Rbz7ju24k/vzcbKPhCjC8I/zbMyV
-         3QSw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGfp9THBnk9vcHUjkWj3jxUn0T1i3k5peHI/tBDZgA227gjFCXqSeVJoqQdxNm8oHndcQJXZ03cqtW@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlDkiwiFBOTNmCMwcms/X0/4XxZ8ciAuHGM/FLPPmGDd255Z/z
-	uOAJ+lxh4hDeJ9l2wXipzR4GPXXssxqSbBUM/wrl3dbD8aDs8iRQ
-X-Gm-Gg: ASbGncsgIrUJIGp05eGHxkTTT9/G6DdtPs5SPLKQpWD1JSJe4acnNIyxFTaBt/Es2Aq
-	bqK7Wxx4Aa5erc5IsiOwX5cq6vsYhi341vx9+zqxLu+ITfoOrhKRY31OAOml5JG55Sj/3XvPOcx
-	Cf0LFedeBqVxyh4he4S9Fp2NZzqUGrXcYkd4tebJ7/ptad4NjB7po9o0tq40FDG/imSJhb8NSW6
-	E17tqTB0EUzsCrnHNYReffvwTMx+wRKKVJsdFn0KjWkkvpWoEI1eg0W5pT0InzcQD5r4l5eDlPW
-	h1DJL1YL9PNCQQ==
-X-Google-Smtp-Source: AGHT+IHcrBpEb0spczFBp80Mc2HWlGMAuQNCOiCGtDzNfF22bnhupf1B3PDC9GMyDn7GT8NwB6XU5Q==
-X-Received: by 2002:a05:6902:1442:b0:e5b:171c:35ee with SMTP id 3f1490d57ef6-e5d9f1862abmr3742646276.48.1739373972134;
-        Wed, 12 Feb 2025 07:26:12 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:d::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e5b3a207eecsm4097722276.24.2025.02.12.07.26.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 07:26:11 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: gourry@gourry.net,
-	hyeonggon.yoo@sk.com,
-	ying.huang@linux.alibaba.com,
-	honggyu.kim@sk.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Wed, 12 Feb 2025 07:26:08 -0800
-Message-ID: <20250212152610.570427-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250211161752.64dd397e66a2754097ab8c2a@linux-foundation.org>
-References: 
+	s=arc-20240116; t=1739378163; c=relaxed/simple;
+	bh=ZMAg6hrHch02TEW9KwhVyvGvyK/uaAv+0dyBhqCFIhY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H6/91/oZBWAIvkwgfQF2ALZW5awwxWrWnXk+p+e9cpdIPTpN0RMOKcpUSDu8cyJsXYN6DQ4/RvmfWPc6GAol75B3fiP7uENsZWGcMAGV0TA4j1HihTAirG87GJGKORRfm4mMSvo9nkzo8lC/sCdvlRKjF9dNSgE8NQnSOMxqDek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YtP57467Jz6H8Ct;
+	Thu, 13 Feb 2025 00:33:31 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 185C3140390;
+	Thu, 13 Feb 2025 00:35:57 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 12 Feb
+ 2025 17:35:56 +0100
+Date: Wed, 12 Feb 2025 16:35:55 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Zaid Alali <zaidal@os.amperecomputing.com>
+CC: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+	<tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
+	<dan.j.williams@intel.com>, <Benjamin.Cheatham@amd.com>,
+	<Avadhut.Naik@amd.com>, <viro@zeniv.linux.org.uk>, <arnd@arndb.de>,
+	<ira.weiny@intel.com>, <dave.jiang@intel.com>,
+	<sthanneeru.opensrc@micron.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <acpica-devel@lists.linux.dev>
+Subject: Re: [PATCH v3 3/9] ACPI: APEI: EINJ: Fix kernel test robot sparse
+ warning
+Message-ID: <20250212163555.000025ca@huawei.com>
+In-Reply-To: <20250210183705.1114624-4-zaidal@os.amperecomputing.com>
+References: <20250210183705.1114624-1-zaidal@os.amperecomputing.com>
+	<20250210183705.1114624-4-zaidal@os.amperecomputing.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, 11 Feb 2025 16:17:52 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Mon, 10 Feb 2025 10:36:59 -0800
+Zaid Alali <zaidal@os.amperecomputing.com> wrote:
 
-> On Fri,  7 Feb 2025 21:06:04 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> This patch fixes the kernel test robot warning reported here:
+> https://lore.kernel.org/all/202410241620.oApALow5-lkp@intel.com/
 > 
-> > On Fri, 7 Feb 2025 18:20:09 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
-> > 
-> > > On Fri,  7 Feb 2025 12:13:35 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > > 
-> > > > This patch introduces an auto-configuration mode for the interleave
-> > > > weights that aims to balance the two goals of setting node weights to be
-> > > > proportional to their bandwidths and keeping the weight values low.
-> > > > In order to perform the weight re-scaling, we use an internal
-> > > > "weightiness" value (fixed to 32) that defines interleave aggression.
-> > > 
-> > > Question please.  How does one determine whether a particular
-> > > configuration is working well?  To determine whether
-> > > manual-configuration-A is better than manual-configuration-B is better
-> > > than auto-configuration?
-> > > 
-> > > Leading to... how do we know that this patch makes the kernel better?
-> > 
-> > Hello Andrew,
-> > 
-> > Thank you for your interest in this patch!
-> > 
-> > To answer your 1st question: I think that users can do some
-> >
-> > ...
-> >
-> 
-> Interesting, thanks.
-> 
-> Have we adequately documented all these considerations for our users or
-> can we add some additional words in an appropriate place?
+> Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
 
-Hello Andrew,
+Hi Zaid,
 
-I have documented these thoughs on a private document, but I think that
-it will be beneficial for weighted interleave users to have this
-knowledge to reference in the future as well.
+Why in the read direction use structures on the stack, but in the
+write direction kmalloc them? I think they could all just be 
+stack variables as they are all pretty small.
 
-I can think of two places where this information will benefit users the
-most: I can elaborate further the motivations & decisions Gregory
-and I made for this patch within the patch commit message, and also
-in the ABI documentation. As Oscar suggested, appropriate details in
-the code should hopefully make the decisions clearer for future
-maintainers and developers as well.
+Jonathan
 
-Thank you again for your insight! I will have a v6 drafted up, and
-I think it makes sense to pull this patch out of mm-unstable for now.
-Have a great day!
+>  }
+> @@ -444,8 +453,10 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+>  		return rc;
+>  	apei_exec_ctx_set_input(&ctx, type);
+>  	if (acpi5) {
+> -		struct set_error_type_with_address *v5param = einj_param;
+> +		struct set_error_type_with_address *v5param;
+>  
+> +		v5param = kmalloc(sizeof(*v5param), GFP_KERNEL);
+As below. Not sure why you can't just use the stack for this.
+It's not very big.
 
-Joshua
+> +		memcpy_fromio(v5param, einj_param, sizeof(*v5param));
+>  		v5param->type = type;
+>  		if (type & ACPI5_VENDOR_BIT) {
+>  			switch (vendor_flags) {
+> @@ -490,15 +501,21 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+>  				break;
+>  			}
+>  		}
+> +		memcpy_toio(einj_param, v5param, sizeof(*v5param));
+> +		kfree(v5param);
+>  	} else {
+>  		rc = apei_exec_run(&ctx, ACPI_EINJ_SET_ERROR_TYPE);
+>  		if (rc)
+>  			return rc;
+>  		if (einj_param) {
+> -			struct einj_parameter *v4param = einj_param;
+> +			struct einj_parameter *v4param;
+
+Why kmalloc rather than on stack as you did for the reads?
+
+>  
+> +			v4param = kmalloc(sizeof(*v4param), GFP_KERNEL);
+> +			memcpy_fromio(v4param, einj_param, sizeof(*v4param));
+>  			v4param->param1 = param1;
+>  			v4param->param2 = param2;
+> +			memcpy_toio(einj_param, v4param, sizeof(*v4param));
+> +			kfree(v4param);
+>  		}
+>  	}
+>  	rc = apei_exec_run(&ctx, ACPI_EINJ_EXECUTE_OPERATION);
+
 
