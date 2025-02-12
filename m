@@ -1,84 +1,83 @@
-Return-Path: <linux-acpi+bounces-11118-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11119-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3F1A329C1
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 16:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB6EA329F5
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 16:28:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50CF1885B76
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 15:19:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F282188D101
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 15:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9AD20F07E;
-	Wed, 12 Feb 2025 15:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC2D21149C;
+	Wed, 12 Feb 2025 15:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SnV1QOob"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FgSfllkG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208F27183C
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 15:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A812116ED
+	for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 15:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739373538; cv=none; b=PwkkPgYinA5nZGRp7diqu9ZohvYAT0kAkeSwN+kpcqxie3iw+GzR4yeq9r2b7UVBWM7dpMEYV2PAxHxbWJPULgrmkKaHK8NmVcB+hDKRfBFodXPzhfoNfYqzOAxPi30fACeWz8m8CSgEReAXOVPkCyw6zxUtChty728fSx3iAcc=
+	t=1739373975; cv=none; b=fcaGvflpmAGSi0WvK9vbvtv5GPgzXI+LZ+GhqnQC+jejXyPJuSUOLmwVHpFDsOdJQ0X9wsdfyNAfzcKSxJ1KLH29Fb5BXfW93KxmbfsZEJ33nW3YXa0n/fVko70KCTh7teS5nO2t/J+iM79jbsozQ+Wr9y+CsbkQCMCZkZIbYQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739373538; c=relaxed/simple;
-	bh=OZYS+bw8dGR7sBHWnvXlqu58j2nZztUGaAzgn3apUOg=;
+	s=arc-20240116; t=1739373975; c=relaxed/simple;
+	bh=azNu5VMGZgVEyCVt5TIT2I+IDQCm2fTvNzRXKqwsbug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bV8fQvc1P8J/PRcqOb7FzUtjs3PvrYuAazi8SjM4PlsDppwrLtfiqQ8dp4peVLCgzB8c12/C/6Utno1AYfV2M7ny2xuzsTbtcOxtu1lIo+81dOIIRz6bmtFFz1W7gvuUnYdAQvETzmKHgg2bEKIQCrfVemOyXcz7/kZN9fKAdH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SnV1QOob; arc=none smtp.client-ip=209.85.219.175
+	 MIME-Version; b=Rlkpmv7pu6PQh39hyCzU05bKS0d4Fw5NwmhVGEWi41+sEy2naK56gK2WRQzVNLuSjN7dyoIirjzWkgkEopeQix3IU5P9jX/7qu3gViPRBdt/CeudX9dSW4A+4qVh1twn2QXs11NLD0u7mmR53CX7wF7XisQvXL7oAFm8JjTx3a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FgSfllkG; arc=none smtp.client-ip=209.85.219.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e4419a47887so5360219276.0
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 07:18:56 -0800 (PST)
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e5b29779d74so6314748276.2
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 07:26:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739373536; x=1739978336; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739373972; x=1739978772; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zp8cQDra8OkL311R2+pzj/CpnjokURMQ7dsZUkJXkWc=;
-        b=SnV1QOobnqdpaMNMrryMwV/brM8Yn2k0NibhWhLDxlxp5PK7RK+28sgrFOvCPts47A
-         9aOzRgiKJ7GamIvddkmv/5jLhsp1d75ep18YYD5Dxb0jfDbu2KGApivsQbmjyzn9praP
-         nffEupoQs2hfTUiGix5IvS+IJLDxiAtQ1RA605tsj+AnyN4qYl+0NMfFxt6nop97+MpS
-         pLlKTcNDjgztSeWplWyyDRsQeDSSGoijmQ6aW940wbFergOmstWz3d1/Y8a8bteoL7tL
-         bdbrfeV5DvUMq7blWuTWpFlAFUXleHGRJRV3SkgcQYe1vUGsVdZguKEud1pztjsccrS5
-         uY5A==
+        bh=wvjG9hNk6O6AhaG9ttlmUq7XexAhA5zfoCCpnbbsQD0=;
+        b=FgSfllkGM+omkoCqCjkQTbdd1d8sWgCeI5thvEKICNQuXwGaU68Qzz/rZbEdILyQXd
+         0c53XdwcRwFNkMwtJJofvlpmbj533G5GErKa02wW6mqKe5SnRLPO0Qh5ifz/CVab8mn7
+         QxwGS7E58rKLWwiohNDIFgDENX08AsL2f2NT1iVUuNGb8qHI2RHD3jc8C+JEHZiUtnpv
+         I8+O9M3uul5ZQElaBO2K2v1HUC+k+LfZGxpbts8AeGfEmLljbBb5O7G/le2J/6JI99/V
+         ZA4DeWqU2xtDKhXm3WDcFrS4wsSI6cvDzIkn3gdtYFBxfXbGcxQtLHp7GQrzhF3RtVDx
+         ogOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739373536; x=1739978336;
+        d=1e100.net; s=20230601; t=1739373972; x=1739978772;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Zp8cQDra8OkL311R2+pzj/CpnjokURMQ7dsZUkJXkWc=;
-        b=lX8pnqK9Nzwn/CU39nhsOALTmsKUWq/k8M0ZpJY+IfRJMSPpPCkuiBJlE5NSKxOkY/
-         HqJOtUxZ/5NqA6ZmpcyjAGtqOrD+fAUgBDtMq4THJSLCFMfS+arO53w0xvM1yS1amg+i
-         yfXXBoeffkL8boJDHaPKlZ4+RjlB0xcyp4k6xUstJJ+jDOaNk0R4PQS9QChIrpxZ1cz7
-         PWLgcA7QrQqSSq+P+JciNW6QlgdTTZ1OaDJA8ecabUQweuqzgWMAHeKAov+aUJe8+9DX
-         eMMsqjT26yrRlk0aDPwrP4jm12SZKidFAS6etkXyz1aviip4Vz3XDMkPwBP8busbEpWZ
-         OfRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWU8Y1A8GyoPL2mZFNNnt/zB21mvXRQe6Xfu+Hyo+x5F5nQuzd6ORpdghteZb5ZK70CD8hfXoO31DY6@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi+VIBmVBdU+YbYdyOGDLyr+zgociq7OKnRU34zXGdL+ot4Jy5
-	IhFz20U1SLxMzTNIDQN46Voue/W8GS2oKsh8p7deWCyVpOTogsnr
-X-Gm-Gg: ASbGncscPcbe35yUp95t1EODR/7OhbM9oNVbogrwCNB5/Z8KoDBFRsjBXpoo6VOGwkj
-	OI2IxpnFsEGBC0rVVBmR8QRTbdhzWi2rWkNhuJnAVGiw8P9vdCgakNpB0YuhvD8VVxUWZalfuh2
-	+8gRE8rZkj8wyFil280AWGRdIuikrO67xg3YHNSzLPQYt3Z+onk+bv6ftIUqu8/5WuVL4lfHgVS
-	QbO+DwXXGYZ7ttIYlN9pTnBqcLNFOt31rfvyvV+ZHj4ATk0Q1AYbJf3mTb+FGEqpUX+cSZMywNX
-	NaLwwdjkc80Krw==
-X-Google-Smtp-Source: AGHT+IGMwadjZHoGhSUXMKY5vAmet1Qy5D8eOpNPMmyRHPyHJVzSGMHqfW+0IQffQ9kqcx9zQKFODQ==
-X-Received: by 2002:a05:6902:1607:b0:e5a:e604:78df with SMTP id 3f1490d57ef6-e5d9f0faae2mr3681894276.17.1739373535939;
-        Wed, 12 Feb 2025 07:18:55 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:7::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e5da4522daesm271670276.0.2025.02.12.07.18.55
+        bh=wvjG9hNk6O6AhaG9ttlmUq7XexAhA5zfoCCpnbbsQD0=;
+        b=hTPX/JIbgqn49gbw0vNigc9wzMMSartChd5hBTQUEcmbWBtZ1g3SwKVZek8GXONJMU
+         8Y1beVB5PN4ZVV4mw9ndGyUxJ348O1tRwhBjSmyLiEDe0irZkJ0YYtYy7zgHqMWqf1gP
+         WfvMkENt3DsqHFEdkqIpLAOuwLBeZxUdaEyv2zvqBzcWRdG33XjohlpLmXBrvJ4EwQrK
+         WREgeuFFaEYz80pAuhfInQIC1o3q9pp4E6eLrg3sLVNV/JEEEYQPpKBIgmXIbt8irvBf
+         7ZKgKwWfeNlsDh0tbSIA33HQj7Lc1px4Bv8c6RR3Rbz7ju24k/vzcbKPhCjC8I/zbMyV
+         3QSw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGfp9THBnk9vcHUjkWj3jxUn0T1i3k5peHI/tBDZgA227gjFCXqSeVJoqQdxNm8oHndcQJXZ03cqtW@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlDkiwiFBOTNmCMwcms/X0/4XxZ8ciAuHGM/FLPPmGDd255Z/z
+	uOAJ+lxh4hDeJ9l2wXipzR4GPXXssxqSbBUM/wrl3dbD8aDs8iRQ
+X-Gm-Gg: ASbGncsgIrUJIGp05eGHxkTTT9/G6DdtPs5SPLKQpWD1JSJe4acnNIyxFTaBt/Es2Aq
+	bqK7Wxx4Aa5erc5IsiOwX5cq6vsYhi341vx9+zqxLu+ITfoOrhKRY31OAOml5JG55Sj/3XvPOcx
+	Cf0LFedeBqVxyh4he4S9Fp2NZzqUGrXcYkd4tebJ7/ptad4NjB7po9o0tq40FDG/imSJhb8NSW6
+	E17tqTB0EUzsCrnHNYReffvwTMx+wRKKVJsdFn0KjWkkvpWoEI1eg0W5pT0InzcQD5r4l5eDlPW
+	h1DJL1YL9PNCQQ==
+X-Google-Smtp-Source: AGHT+IHcrBpEb0spczFBp80Mc2HWlGMAuQNCOiCGtDzNfF22bnhupf1B3PDC9GMyDn7GT8NwB6XU5Q==
+X-Received: by 2002:a05:6902:1442:b0:e5b:171c:35ee with SMTP id 3f1490d57ef6-e5d9f1862abmr3742646276.48.1739373972134;
+        Wed, 12 Feb 2025 07:26:12 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:d::])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e5b3a207eecsm4097722276.24.2025.02.12.07.26.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 07:18:55 -0800 (PST)
+        Wed, 12 Feb 2025 07:26:11 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Oscar Salvador <osalvador@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: gourry@gourry.net,
 	hyeonggon.yoo@sk.com,
 	ying.huang@linux.alibaba.com,
 	honggyu.kim@sk.com,
-	akpm@linux-foundation.org,
 	rafael@kernel.org,
 	lenb@kernel.org,
 	gregkh@linuxfoundation.org,
@@ -93,10 +92,10 @@ Cc: gourry@gourry.net,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
 Subject: Re: [PATCH v5] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Wed, 12 Feb 2025 07:18:33 -0800
-Message-ID: <20250212151852.526233-1-joshua.hahnjy@gmail.com>
+Date: Wed, 12 Feb 2025 07:26:08 -0800
+Message-ID: <20250212152610.570427-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.43.5
-In-Reply-To: <Z6b--rdWJD3UQDI-@localhost.localdomain>
+In-Reply-To: <20250211161752.64dd397e66a2754097ab8c2a@linux-foundation.org>
 References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -106,113 +105,57 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sat, 8 Feb 2025 07:51:38 +0100 Oscar Salvador <osalvador@suse.de> wrote:
+On Tue, 11 Feb 2025 16:17:52 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On Fri, Feb 07, 2025 at 12:13:35PM -0800, Joshua Hahn wrote:
-
-[...snip...]
-
-> Hi Joshua
+> On Fri,  7 Feb 2025 21:06:04 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 > 
-> > diff --git a/drivers/base/node.c b/drivers/base/node.c
-> > index 0ea653fa3433..16e7a5a8ebe7 100644
-> > --- a/drivers/base/node.c
-> > +++ b/drivers/base/node.c
-> > @@ -7,6 +7,7 @@
-> >  #include <linux/init.h>
-> >  #include <linux/mm.h>
-> >  #include <linux/memory.h>
-> > +#include <linux/mempolicy.h>
-> >  #include <linux/vmstat.h>
-> >  #include <linux/notifier.h>
-> >  #include <linux/node.h>
-> > @@ -214,6 +215,12 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
-> >  			break;
-> >  		}
-> >  	}
-> > +
-> > +	/* When setting CPU access coordinates, update mempolicy */
-> > +	if (access == ACCESS_COORDINATE_CPU) {
-> > +		if (mempolicy_set_node_perf(nid, coord))
-> > +			pr_info("failed to set node%d mempolicy attrs\n", nid);
+> > On Fri, 7 Feb 2025 18:20:09 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+> > 
+> > > On Fri,  7 Feb 2025 12:13:35 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> > > 
+> > > > This patch introduces an auto-configuration mode for the interleave
+> > > > weights that aims to balance the two goals of setting node weights to be
+> > > > proportional to their bandwidths and keeping the weight values low.
+> > > > In order to perform the weight re-scaling, we use an internal
+> > > > "weightiness" value (fixed to 32) that defines interleave aggression.
+> > > 
+> > > Question please.  How does one determine whether a particular
+> > > configuration is working well?  To determine whether
+> > > manual-configuration-A is better than manual-configuration-B is better
+> > > than auto-configuration?
+> > > 
+> > > Leading to... how do we know that this patch makes the kernel better?
+> > 
+> > Hello Andrew,
+> > 
+> > Thank you for your interest in this patch!
+> > 
+> > To answer your 1st question: I think that users can do some
+> >
+> > ...
+> >
 > 
-> Not a big deal but I think you want to make that consistent with the error
-> pr_info? that is: "failed to set mempolicy attrs for node %d".
-
-Hi Oscar, thank you for reviewing my patch!
-That sounds good to me. Then that line can be replaced with
-pr_info("failed to set mempolicy attrs for node %d\n", nid);
-
-> Also, I guess we cannot reach here with a memoryless node, right?
-
-I think that they should not reach this line, but since memoryless
-nodes do not have any memory bandwidth / latency information, it should
-be fine. With that said, I think a check like the following would
-make this more explicit and possibly guard against any unexpected
-calls to mempolicy_set_node_perf:
-
-- if (access == ACCESS_COORDINATE_CPU) {
-+ if (access == ACCESS_COORDINATE_CPU && !node_state(nid, N_MEMORY)) {
-
-> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > index 04f35659717a..51edd3663667 100644
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -109,6 +109,7 @@
-> >  #include <linux/mmu_notifier.h>
-> >  #include <linux/printk.h>
-> >  #include <linux/swapops.h>
-> > +#include <linux/gcd.h>
-> >  
-> >  #include <asm/tlbflush.h>
-> >  #include <asm/tlb.h>
-> > @@ -138,16 +139,18 @@ static struct mempolicy default_policy = {
-> >  
-> >  static struct mempolicy preferred_node_policy[MAX_NUMNODES];
-> >  
-> > +static uint64_t *node_bw_table;
-> > +
-> >  /*
-> > - * iw_table is the sysfs-set interleave weight table, a value of 0 denotes
-> > - * system-default value should be used. A NULL iw_table also denotes that
-> > - * system-default values should be used. Until the system-default table
-> > - * is implemented, the system-default is always 1.
-> > - *
-> > + * iw_table is the interleave weight table.
-> > + * If bandwidth data is available and the user is in auto mode, the table
-> > + * is populated with default values in [1,255].
-> >   * iw_table is RCU protected
-> >   */
-> >  static u8 __rcu *iw_table;
-> >  static DEFINE_MUTEX(iw_table_lock);
-> > +static const int weightiness = 32;
+> Interesting, thanks.
 > 
-> You explain why you chose this value in the changelog, but I would either
-> drop a comment, probably in reduce_interleave_weights() elaborating a
-> little bit, otherwise someone who stumbles upon that when reading that
-> code will have to go through the changelog.
+> Have we adequately documented all these considerations for our users or
+> can we add some additional words in an appropriate place?
 
-I also think this feedback makes a lot of sense. Maybe something like:
-/*
- * 32 is selected as a constant that balances the two goals of:
- * (1) Keeping weight magnitude low, as to prevent too many consecutive
- *     pages from being allocated from the same node before other nodes
- *     get a chance
- * (2) Minimizing the error between bandwidth ratios and weight ratios
- */
+Hello Andrew,
 
-Andrew -- I will send over a new v6 for this patch, if that is alright with
-you. I will also probably wait a few days before sending it out, in case
-there are other changes that folks would like to see. Please let me know
-if this works for you / if there is something ele I can do to make this
-process smoother.
+I have documented these thoughs on a private document, but I think that
+it will be beneficial for weighted interleave users to have this
+knowledge to reference in the future as well.
 
-Thank you again! Have a nice day!
+I can think of two places where this information will benefit users the
+most: I can elaborate further the motivations & decisions Gregory
+and I made for this patch within the patch commit message, and also
+in the ABI documentation. As Oscar suggested, appropriate details in
+the code should hopefully make the decisions clearer for future
+maintainers and developers as well.
+
+Thank you again for your insight! I will have a v6 drafted up, and
+I think it makes sense to pull this patch out of mm-unstable for now.
+Have a great day!
+
 Joshua
-
-> 
-> -- 
-> Oscar Salvador
-> SUSE Labs
-
 
