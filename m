@@ -1,88 +1,89 @@
-Return-Path: <linux-acpi+bounces-11129-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11130-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02CDA32F2D
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 20:03:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5239A32FB2
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 20:31:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FBAB7A3515
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 19:02:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42254188B450
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 19:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFBA257AC7;
-	Wed, 12 Feb 2025 19:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E9D1E1A32;
+	Wed, 12 Feb 2025 19:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KTV9kS5R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iuP1EakZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904C1FC0FD;
-	Wed, 12 Feb 2025 19:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6E8271813;
+	Wed, 12 Feb 2025 19:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739387005; cv=none; b=ZMkJdv7vssrtCKVD+bj28/55NKvMhzbAxrvx59YVvZtF4fMBj0PTNSVU6KXIDOBuPcU+hDMxj5DTk7tA+zLGaSJcOcC3MYiUG0Zf4J703ESQUX+CPkcD9WbKgvQyRS/Tubq7fgAgvDZ2Qo4zHwryR4gTGZMPk/WkE5CLkJK0Ayw=
+	t=1739388678; cv=none; b=IINz6zE1RqfwQsmMk3QTHI8H/DYZ6bFTnVj63bXUk6d+lESKwSEUUik3w3VOwq70mgsi+KDzFd9Hs6PbwLZjjaVo9MkqUNjrIWWGKZDdS9QhMIT51EWFP/B6bNas5BxAmV9u0DfhusSBl8LINbyzLqS+/cho3Z0TduxZNA5J2Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739387005; c=relaxed/simple;
-	bh=Q5WCinM78joO19bz4ipSZN2nHA4SwWHLZZzByfpdgQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n2I9FxBrowEzjs1gWRuqbUwAMLCQdkc0EgsnvJWEVLNyGQuh9RK2JZAnnYseHHEClQfTyBgISwdTc3KstMISM92iZN1k2NFGwl9O6mlCh0m2k0egUGWUJG2HSAQIdmyXHccsphzm+jE9vq/VEMJJbYj8DJ6ns2QldGRrEY6EafQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KTV9kS5R; arc=none smtp.client-ip=209.85.128.173
+	s=arc-20240116; t=1739388678; c=relaxed/simple;
+	bh=GfZdTX/Oy7XJ8tKG6LUgqykp1o40xiaIANvWfqZKCJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ejFbGYOx74PvTr7R2yWtGFZLSsVY+qacMfM2iSl+r4AHZbAbKfOe63b6pzJtHCki5sOOfhn5LWxYYQ5CeAFE0HgU5nG7Y/PEwrfPTJGtHNlO6XFXJAXefc9n8dYIADI/fCT6pCAJTMed45NF7O7bytnqSVn8KwtFqyvh0TDhzz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iuP1EakZ; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6f9b1bc594dso993507b3.0;
-        Wed, 12 Feb 2025 11:03:23 -0800 (PST)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6efe4e3d698so1237957b3.0;
+        Wed, 12 Feb 2025 11:31:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739387003; x=1739991803; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739388676; x=1739993476; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Li3QvOn0MBSxnCwMnn2tzHDETkUA5jkI5FjmbsImGcQ=;
-        b=KTV9kS5R8OKlNHn2R1jC0iGD+eRoplLYj64luTaGCdehBT4oLY64tZJ3ugq/PXvDQp
-         fIrH4Vhr+WQma2OPaJBxDy6ug3rem9Fzh03jhHkaFLtwP5Mx/f7r4GACiX8KyoZQgSB7
-         3jI5RtUsirAoaGn2x8GXk0uN8klbBCy/deC5A13QRZVY+g8i10TkAKr+qut1i7EnqYUP
-         DLNqhmfKBJNwqpyVFDpO9PSZ5drBXAc/v0LqbHASBNbjc07BT33qUAJ0F8OcRBFKVcIc
-         o+8bPxOydcPnEx/qHUJw+D/jwWG1Jf2ljwGRQbqcqdOyFmt3eypZnAcaUthpQMX9G/NI
-         8L3w==
+        bh=jxerhnt8Y8id2USTwJkEjWouua1WjZ12bm3toHhyogY=;
+        b=iuP1EakZsIaBkFdEtP2V7okMjDa0Pzu7YuM2oEEFANOtZybhmovPlBx+SsEl5PegjV
+         HItXKrg3pI+rRui6D+kl6JToNJ9tvTC33HEeCz70vWXLqpdSk3j4ffSNeJ6TnaZMyrLT
+         Dp2M8MR9NnL4swhCJYxkV+Iu7sh8/aOCTNvanYdLZcY2YAqU28/byudeC1lkL5d6po8J
+         qEjujeuzgFJu39zSetZ6GWBCMYAuik7pxwJ/lZ+rv+CwVCxb1d6NFSmMyedsCsSZvxzF
+         p0R+2wOGwoJYwlb5r8quVFAiYjHDPZr6IPrcu3KHcA8IZeWtK3n2XfIULE2KVYsNx+h3
+         p1pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739387003; x=1739991803;
+        d=1e100.net; s=20230601; t=1739388676; x=1739993476;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Li3QvOn0MBSxnCwMnn2tzHDETkUA5jkI5FjmbsImGcQ=;
-        b=h56Q/7yKSDSEIJt9UoS9U2CzzqOi38VFkTV39Cg3+BgCu/7p7SnkBxiqSOIs734uiX
-         n/yJAAk4DEU8r9n/xBnuILpu6OA6SbE6vCH2Oh6IT7aAXugB9H1BEne2ToPqFkmmdl2h
-         o+5bgC2SmAvKlpX2E/MgpxoFmBuElXrSGAVCPlvL7gYmhw4iO7hFuvzz7XE0c7qhXbEY
-         K/uuhhVmYbhjLAWLwWQpFv2Rpzpq+pXY1rO37qMfO9qUGnmpzQT8tQ6LRcWI6JbEfVsi
-         VezCQS83sdy9hgM4IHPGQNL3ulgGygH+4bN3UJU5rbzUUMSzXOZeoPKYqjjtYK0FxrqL
-         KaSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfd4P8Cy+DaTTrnqQqkeWb2WRf/jqcR9siIqmofD7by3vn5uu8DZT+YlmRa0ZnJNKeFJkJw5OmTOiPPZo+djBIRj/C1g==@vger.kernel.org, AJvYcCUoS8iMw4WCBdOvmDKOONveVGkwQhf9axBZX3qV+RJoz2tKYLMVc/cUS9sDoteAC72A/Xpzp5jLJfZmtLBs@vger.kernel.org, AJvYcCWJ7ezWQMjdGISNEyQmN4X1ykXiaqZpKJsQxTceHxBseYUO/7HdJkrfEbmhf190Du6q2VTxI1QWiKxM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVIZIn1VVSeFwzTCFd5yCsmdhEkCJsZyA8cNniEM5Sc/qejGaS
-	UjW/2yyI++cLTvT1Qxj2TAGlCexRwiYmRtX8NvHIJydX2U9hrwjC
-X-Gm-Gg: ASbGncv2XKTzl5uPPHMvNraFOSm1g8xE9+DwfbUXLX4zU4+qScMz7UpjadLfJ/eYvGA
-	X5tJ9gHFSc0i1rZUjbeJrH3TLyYfyjDazMofGUa+WoU0z0HqyAuC5mZ1273Owlgnn3Z0LNOcHLY
-	qYj65WsT/chP4o/kI6u08lDqCw9nk8u+5NlYqKrcVYJKAClhNKLUC+sKC6L4SywLZsB6qOAxBMG
-	7sUCwxXGq06HpGRpUCO/qRKki8/fVmLudGvcmc12HI5ne79Osv+t7i+qpJwhUnDr/6h9AmyUPGL
-	pAKFsIGpaOT5/Ra/gPvc0UORFw==
-X-Google-Smtp-Source: AGHT+IEMDcy30J1r8ZQyPcNj7CY5wjrIU4TXGEmAeo+IbTY5sT7ecfDSaE3/dnVTG5EvzP2vpW4mRA==
-X-Received: by 2002:a05:690c:6988:b0:6f6:cad6:6b5a with SMTP id 00721157ae682-6fb1f19ba28mr57684867b3.13.1739387002932;
-        Wed, 12 Feb 2025 11:03:22 -0800 (PST)
+        bh=jxerhnt8Y8id2USTwJkEjWouua1WjZ12bm3toHhyogY=;
+        b=IB9D/4GfUeUjNay6uFSAiO8C59eLW64kkA5WFGxfTnLUc3fyn4Bb5FMTTUaGahfCpK
+         oRg4f4055kz1G3aQgCRN94j/4Pv4hPqB98Mdflz7TmaQtMh36Ist6zrx6j2PR5OX1jra
+         b/XuXtwY1LpyTSuQoIlFvN62sNLHI0gttnJei2SKYNOzE70sXjUVUPDZzmwyfBREX9rC
+         zqPgy7Ny/KOl+xXieMnCbpVq+ylb8tSz+pKiwW4ykRX/krswPdPySbBLzLqesACa8jEK
+         3anKMpW/7hpVUFHmeE0AHn9u+1HaueJRiBJN+Xa9jMW8hZ3h4FBojA+rIrR1j5/fMHAX
+         KMZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqy6buLbmDG/DjnSX5OPbgreYrdzijHZNvMlM1teyBdb0JNtsFZ4ItNffQFsN3Wx1jYnnAeO0bKwsc@vger.kernel.org, AJvYcCWmKuYfk4w9y3R7tMkvGbs70MywBq0xvEqrHer547P8UwlrG8+Ba+19Tja1OIawzZnn9rW59beVPu4x7x0U@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6jsecv8O13luTHx4NFkdzR60wnHUs32/wXk5DvmTjVxXewrt2
+	uCbOXC3Dbs39Gv42xBFJ/64Su9Cg4BubJB5CogkbUGRZrCInpSv9
+X-Gm-Gg: ASbGncuwBm0RTzZvUAjCqf/vAvwsZdiv2BufjAx5pFTPvGlBiXJ/93kD+9JE5s6So3W
+	dBpGiag+BAG5EthFTaGvFBOWCPJSDA1fmRSX7Oht9xQ5Lwr0SPvLpvspNE6uimBhpKKXU2y4JRr
+	BO3ffJH35iZobqwrPikHl0zsFykQ06nBlUjABq8krFCnGlvKNj0xHrrb7SIih6iVNQTlnvmSh8Q
+	3rN4m03z+QDhTLj0XDwWzS2O2AGBWzP6uRQErGQMnDGKOf5OPb79/DktgzM7foZYERcnn75d0vY
+	kcJDNoMkTO7ppJFkTj3ARh07fA==
+X-Google-Smtp-Source: AGHT+IHZTmVClcsZUB5sJHSCBll2LFC3eeHBfHQFpiL4RynRDnie9rUozkzvnBkA6YLecFLTVlH+zQ==
+X-Received: by 2002:a05:690c:350a:b0:6f6:c95c:85b5 with SMTP id 00721157ae682-6fb1f286679mr43317497b3.25.1739388676177;
+        Wed, 12 Feb 2025 11:31:16 -0800 (PST)
 Received: from localhost.localdomain ([2800:bf0:179:113e:f067:4e25:4298:6451])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f99fce16d1sm28059507b3.23.2025.02.12.11.03.21
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f99fd1fefbsm27889097b3.46.2025.02.12.11.31.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 11:03:22 -0800 (PST)
+        Wed, 12 Feb 2025 11:31:15 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Len Brown" <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+Cc: Len Brown <lenb@kernel.org>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Mario Limonciello" <mario.limonciello@amd.com>,
-	platform-driver-x86@vger.kernel.org,
-	"Kurt Borja" <kuurtb@gmail.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>
-Subject: [PATCH v2] ACPI: platform_profile: Improve platform_profile_unregister
-Date: Wed, 12 Feb 2025 14:03:08 -0500
-Message-ID: <20250212190308.21209-1-kuurtb@gmail.com>
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kurt Borja <kuurtb@gmail.com>,
+	Gergo Koteles <soyer@irl.hu>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: platform_profile: Fix memory leak in profile_class_is_visible()
+Date: Wed, 12 Feb 2025 14:30:58 -0500
+Message-ID: <20250212193058.32110-1-kuurtb@gmail.com>
 X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -92,86 +93,35 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Drivers usually call this method on error/exit paths and do not check
-for it's return value, which is always 0 anyway, so make it void. This
-is safe to do as currently all drivers use
-devm_platform_profile_register().
+If class_find_device() finds a device it's reference count is
+incremented. Call put_device() to drop this reference before returning.
 
-While at it improve the style and make the function safer by checking
-for IS_ERR_OR_NULL before dereferencing the device pointer.
-
+Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI platform profile")
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
-Hi all,
-
-I made a little modification that I forgot in the last version.
-
-Rafael, please tell me if you prefer different commits for this. Also
-should we WARN_ON(IS_ERR_OR_NULL)?
-
-Based on the acpi branch of the linux-pm tree.
-
-~ Kurt
-
-Changes in v2:
-  - Get reference to pprof after checking for IS_ERR_OR_NULL(dev)
-  - CC Mark Pearson (sorry!)
-
- drivers/acpi/platform_profile.c  | 19 +++++++++----------
- include/linux/platform_profile.h |  2 +-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/acpi/platform_profile.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index fc92e43d0fe9..ed9c0cc9ea9c 100644
+index fc92e43d0fe9..2ad53cc6aae5 100644
 --- a/drivers/acpi/platform_profile.c
 +++ b/drivers/acpi/platform_profile.c
-@@ -569,24 +569,23 @@ EXPORT_SYMBOL_GPL(platform_profile_register);
- /**
-  * platform_profile_remove - Unregisters a platform profile class device
-  * @dev: Class device
-- *
-- * Return: 0
-  */
--int platform_profile_remove(struct device *dev)
-+void platform_profile_remove(struct device *dev)
+@@ -417,8 +417,14 @@ static int profile_class_registered(struct device *dev, const void *data)
+ 
+ static umode_t profile_class_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
  {
--	struct platform_profile_handler *pprof = to_pprof_handler(dev);
--	int id;
-+	struct platform_profile_handler *pprof;
+-	if (!class_find_device(&platform_profile_class, NULL, NULL, profile_class_registered))
++	struct device *dev;
 +
-+	if (IS_ERR_OR_NULL(dev))
-+		return;
++	dev = class_find_device(&platform_profile_class, NULL, NULL, profile_class_registered);
++	if (!dev)
+ 		return 0;
 +
-+	pprof = to_pprof_handler(dev);
++	put_device(dev);
 +
- 	guard(mutex)(&profile_lock);
- 
--	id = pprof->minor;
-+	ida_free(&platform_profile_ida, pprof->minor);
- 	device_unregister(&pprof->dev);
--	ida_free(&platform_profile_ida, id);
- 
- 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
--
- 	sysfs_update_group(acpi_kobj, &platform_profile_group);
--
--	return 0;
+ 	return attr->mode;
  }
- EXPORT_SYMBOL_GPL(platform_profile_remove);
  
-diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-index 8ab5b0e8eb2c..d5499eca9e1d 100644
---- a/include/linux/platform_profile.h
-+++ b/include/linux/platform_profile.h
-@@ -47,7 +47,7 @@ struct platform_profile_ops {
- struct device *platform_profile_register(struct device *dev, const char *name,
- 					 void *drvdata,
- 					 const struct platform_profile_ops *ops);
--int platform_profile_remove(struct device *dev);
-+void platform_profile_remove(struct device *dev);
- struct device *devm_platform_profile_register(struct device *dev, const char *name,
- 					      void *drvdata,
- 					      const struct platform_profile_ops *ops);
 
 base-commit: 3e3e377dd1f300bbdd230533686ce9c9f4f8a90d
 -- 
