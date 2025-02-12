@@ -1,193 +1,211 @@
-Return-Path: <linux-acpi+bounces-11132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D67A3309F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 21:18:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDA1A330EA
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 21:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6D2188949E
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 20:18:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 074C13A88C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 20:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4982020101B;
-	Wed, 12 Feb 2025 20:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA005202C48;
+	Wed, 12 Feb 2025 20:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AJKxF253"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="Bhp3CiOD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gQFR/WS8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F61200B99;
-	Wed, 12 Feb 2025 20:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5A02010F6;
+	Wed, 12 Feb 2025 20:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739391523; cv=none; b=onKDSzus5AdPVPnIrMOnUZJSEpHEjwjLRwoHKis4avJ7ve/Yz4UN3i4p7Ensd5FRRIhct10i9eoUbxushMaGwG6aflSuEciEG/iOHCK8ZVQAKHnYwjgKX+qksbnxK/Oc9i92WutP+T6APNmlBxovaWFA7mj7TyPSFwHwYHA4nwc=
+	t=1739392928; cv=none; b=fbgSvJZ6A06cKhFAxTz6mVbSExr8nCLNDXNkiWlZNugMRLvQutGJCDHS1UNF/PXjjvyfBYRch1h1izlo6FjuRlu80lzRtGiGX6Ox3oGDLxRJIeMCHbIcpuLptbTw5t/gvcUlgwBQJ1qs9EZWRV2myslXHPdzXThoeaup0tqUWWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739391523; c=relaxed/simple;
-	bh=ZicH1sJqAqdWHQ/AtROSQxjl3xv81hd+byp3AVNO4eg=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=kWHi6yaIM77MaHX9O8HCnD81FOrqm1G9HZBQrksVzKZzEF9F4BX803iKj2g9nkcGxTwVZQI572VXVtKSwfN5EKjrrejk14RaWxiF/k+S08m9dljlkDn89/6qxWTxDSFsVwDR2PDWKlH+k+VO7NLt8rrlLmcKPKJpVvKNdrJpvms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AJKxF253; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739391521; x=1770927521;
-  h=date:from:to:cc:subject:message-id;
-  bh=ZicH1sJqAqdWHQ/AtROSQxjl3xv81hd+byp3AVNO4eg=;
-  b=AJKxF253Hwho8CS0pXSy5AaTfbO9m/tTBoQMhg4otfxuGl1sH20Aj2l4
-   bBkpYSm+3K8K/1NboBHYvDU96kKFcZ87eo51De2WoAzTiDVxFRqw9QfMz
-   i9LNKKGAI17+xUJpmTB9G8So2MOA7M5Ck6nPbuNnMSy2cWpQSc56xJbc4
-   AMnKL0URcDn9MSt+Wy5YvkGnmhAQAbVoZJ7S+IhB0nmUVgxPVBBBUS3ym
-   094fvIw1sLO/w6KCMZTCu389yd4O8Ndw5eP8FNrJPlwsem4B5tHIvQ/Mm
-   PbIMJoeC4hmLW5atmypQyirB2W3qZWqUR8K25lXODSAGTJiMskipBsdd1
-   g==;
-X-CSE-ConnectionGUID: IbYpru6bTE+T3nT6bvHvhQ==
-X-CSE-MsgGUID: w/vCKDQZSA2aEWC8rNmyJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="57602702"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; 
-   d="scan'208";a="57602702"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 12:18:41 -0800
-X-CSE-ConnectionGUID: mP1uR7Q3Rgm1XLx94zOwEA==
-X-CSE-MsgGUID: sNpJqGhzSkq4MJxc+Wxa9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="113416082"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 12 Feb 2025 12:18:39 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tiJBs-00165s-2Q;
-	Wed, 12 Feb 2025 20:18:36 +0000
-Date: Thu, 13 Feb 2025 04:17:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- 7c2191495f2c9ecdcb05b3e951cbc82a2918ee64
-Message-ID: <202502130443.UyzY3Iam-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1739392928; c=relaxed/simple;
+	bh=L08+Uf6L/sH1zcaIZyXOJL0XdQ1wrqlMWrFkZKArxk8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=VCSmeryc2nnF4gunUWiNuvzUbi5WMTHRbjqfRgw6Spt/htOCwIID5jpeuWjxHuvHBe9H4gC2wf7/Y9yBr3JSK5SWFB+lKqKJ2ZVi2WuDuH9E4R+JDuFtVlIM5vkmc34ivJb1FoipigkCS6FFq9EXEdHri/5cedLTljeG3DQhtxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=Bhp3CiOD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gQFR/WS8; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 265801140109;
+	Wed, 12 Feb 2025 15:42:05 -0500 (EST)
+Received: from phl-imap-13 ([10.202.2.103])
+  by phl-compute-04.internal (MEProxy); Wed, 12 Feb 2025 15:42:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1739392925;
+	 x=1739479325; bh=t51aP4WhW/zTiyDc+WImCazriP69izX0SMtc5AkJXnE=; b=
+	Bhp3CiODAqSWps0/NavyftDi/CfgS28mgXK2vJHTXOLQzvooR/a300VvZgq/FILt
+	cIJQbv2/0wro9zHBgmpcQAe111dx6QUlfLYctDXghBT4beWJnBZEEOywhGr0MrEo
+	yspE9EZGTIG+1nbt+5w5bPaeX5re9fgUkaFchJbyUbyNtaxeIYs57cbTr00Ayaqr
+	3QuH+pAJe/F9Uq/3UgyfiBezfYUVevjqSi81PldfzIW21ifDvHQ5Dd0EdShuDVHy
+	/zRE+PdpCRxxBxXgj23Kf/VE1qYGAV4Obme7IJQ7+nsG2FM7JZ4wcH1psbM6V42n
+	TdEXmOZ+UWUDx4ToBP859g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739392925; x=
+	1739479325; bh=t51aP4WhW/zTiyDc+WImCazriP69izX0SMtc5AkJXnE=; b=g
+	QFR/WS8myEjMV6mLar7koiLZPJ55BgZ/LIRLmwAgMUz3cyQ1oNNnE/xf/TRM+ZJJ
+	11x7dRGlQFoL9ghUOITUbOj5NyoXors1J+bJpsWljdHt4OY5EEh4XFcvUueSNiGP
+	84Wi9WxrIIrZ1k9kKN+CYq0YorDqBnDI8uKbtaI4K1tJ3TFvtaJyYwSRCLzFsNvl
+	zvch7J9kFt0oG/hueu/UeuvRovNFx4eHPv1hon3rFsgCnj5IZAVjUsVzVU5cEgpz
+	9b4+PhqZ+1PYppwsuco/3S2FXib77Ixv8djBxWRj/efMSeqCDGISrbrJtBFxMApx
+	+c2ugL4mLCJWy/k8/m9Vg==
+X-ME-Sender: <xms:nAetZzVqUlBbE1FjYozA3NTwgMhU9PXfPO4UQT2lIrVxLOU2_J3RNA>
+    <xme:nAetZ7nyVGX3fmk6dl1O1APDnbLyk8KkBwiFcotlDFX7ODTdsohvZpxG2tdMRjb6g
+    uuwWlhqk0UZyzkgglk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggeekjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhephfeuvdehteeghedt
+    hedtveehuddvjeejgffgieejvdegkefhfeelheekhedvffehnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhv
+    ohesshhquhgvsggsrdgtrgdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdp
+    rhgtphhtthhopehkuhhurhhtsgesghhmrghilhdrtghomhdprhgtphhtthhopehlvghnsg
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehilhhpohdrjhgrrhhvihhnvghnsehlihhnuhigrdhinhhtvghlrd
+    gtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepphhlrghtfhhorhhmqdgurhhivhgvrhdqgiekieesvhhgvghr
+    rdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:nAetZ_bmKZ91P33jEJK0OEmb8NxLZoEx1rt0ONvSON3pypJxuPVw-g>
+    <xmx:nAetZ-XGA-71dUvVzsoyg2JDlcWUofucEHnbw0KZdn0kPVJ2WooKFA>
+    <xmx:nAetZ9kxrek14dr5pGMzn81mtTdoKmLDQXZzvPykJzIgs9ZzhCFTqw>
+    <xmx:nAetZ7fLebwniLh5VlBejqAaWOpteg6VzKi5xhRtKLPWSEK7at6Bcw>
+    <xmx:nQetZzWdtLKaUsXWOhdzjihwD04ubRSMQQ-SCqPdu8HWX45cQ8lb6uYP>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 458371F00077; Wed, 12 Feb 2025 15:42:04 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Wed, 12 Feb 2025 15:41:44 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Kurt Borja" <kuurtb@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Len Brown" <lenb@kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Limonciello, Mario" <mario.limonciello@amd.com>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
+Message-Id: <bc0a60ef-bdf7-4f48-8215-891cb1efbdf5@app.fastmail.com>
+In-Reply-To: <20250212190308.21209-1-kuurtb@gmail.com>
+References: <20250212190308.21209-1-kuurtb@gmail.com>
+Subject: Re: [PATCH v2] ACPI: platform_profile: Improve platform_profile_unregister
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: 7c2191495f2c9ecdcb05b3e951cbc82a2918ee64  Merge branch 'thermal-core' into fixes
+Hi Kurt
 
-elapsed time: 1446m
+On Wed, Feb 12, 2025, at 2:03 PM, Kurt Borja wrote:
+> Drivers usually call this method on error/exit paths and do not check
+> for it's return value, which is always 0 anyway, so make it void. This
+> is safe to do as currently all drivers use
+> devm_platform_profile_register().
+>
+I was worried I had mucked that up with the revert done in thinkpad_acpi? But it's not checking the return there so I think it's fine
 
-configs tested: 99
-configs skipped: 2
+> While at it improve the style and make the function safer by checking
+> for IS_ERR_OR_NULL before dereferencing the device pointer.
+>
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> ---
+> Hi all,
+>
+> I made a little modification that I forgot in the last version.
+>
+> Rafael, please tell me if you prefer different commits for this. Also
+> should we WARN_ON(IS_ERR_OR_NULL)?
+>
+> Based on the acpi branch of the linux-pm tree.
+>
+> ~ Kurt
+>
+> Changes in v2:
+>   - Get reference to pprof after checking for IS_ERR_OR_NULL(dev)
+>   - CC Mark Pearson (sorry!)
+>
+>  drivers/acpi/platform_profile.c  | 19 +++++++++----------
+>  include/linux/platform_profile.h |  2 +-
+>  2 files changed, 10 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index fc92e43d0fe9..ed9c0cc9ea9c 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -569,24 +569,23 @@ EXPORT_SYMBOL_GPL(platform_profile_register);
+>  /**
+>   * platform_profile_remove - Unregisters a platform profile class device
+>   * @dev: Class device
+> - *
+> - * Return: 0
+>   */
+> -int platform_profile_remove(struct device *dev)
+> +void platform_profile_remove(struct device *dev)
+>  {
+> -	struct platform_profile_handler *pprof = to_pprof_handler(dev);
+> -	int id;
+> +	struct platform_profile_handler *pprof;
+> +
+> +	if (IS_ERR_OR_NULL(dev))
+> +		return;
+> +
+> +	pprof = to_pprof_handler(dev);
+> +
+>  	guard(mutex)(&profile_lock);
+> 
+> -	id = pprof->minor;
+> +	ida_free(&platform_profile_ida, pprof->minor);
+>  	device_unregister(&pprof->dev);
+> -	ida_free(&platform_profile_ida, id);
+> 
+>  	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> -
+>  	sysfs_update_group(acpi_kobj, &platform_profile_group);
+> -
+> -	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(platform_profile_remove);
+> 
+> diff --git a/include/linux/platform_profile.h 
+> b/include/linux/platform_profile.h
+> index 8ab5b0e8eb2c..d5499eca9e1d 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -47,7 +47,7 @@ struct platform_profile_ops {
+>  struct device *platform_profile_register(struct device *dev, const 
+> char *name,
+>  					 void *drvdata,
+>  					 const struct platform_profile_ops *ops);
+> -int platform_profile_remove(struct device *dev);
+> +void platform_profile_remove(struct device *dev);
+>  struct device *devm_platform_profile_register(struct device *dev, 
+> const char *name,
+>  					      void *drvdata,
+>  					      const struct platform_profile_ops *ops);
+>
+> base-commit: 3e3e377dd1f300bbdd230533686ce9c9f4f8a90d
+> -- 
+> 2.48.1
+Looks good to me
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250212    gcc-13.2.0
-arc                   randconfig-002-20250212    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                   randconfig-001-20250212    clang-18
-arm                   randconfig-002-20250212    clang-16
-arm                   randconfig-003-20250212    clang-21
-arm                   randconfig-004-20250212    clang-16
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250212    gcc-14.2.0
-arm64                 randconfig-002-20250212    gcc-14.2.0
-arm64                 randconfig-003-20250212    clang-16
-arm64                 randconfig-004-20250212    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250212    gcc-14.2.0
-csky                  randconfig-002-20250212    gcc-14.2.0
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250212    clang-21
-hexagon               randconfig-002-20250212    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250212    clang-19
-i386        buildonly-randconfig-002-20250212    gcc-12
-i386        buildonly-randconfig-003-20250212    gcc-12
-i386        buildonly-randconfig-004-20250212    gcc-12
-i386        buildonly-randconfig-005-20250212    gcc-12
-i386        buildonly-randconfig-006-20250212    gcc-12
-i386                                defconfig    clang-19
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250212    gcc-14.2.0
-loongarch             randconfig-002-20250212    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250212    gcc-14.2.0
-nios2                 randconfig-002-20250212    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                randconfig-001-20250212    gcc-14.2.0
-parisc                randconfig-002-20250212    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc               randconfig-001-20250212    gcc-14.2.0
-powerpc               randconfig-002-20250212    clang-16
-powerpc               randconfig-003-20250212    gcc-14.2.0
-powerpc64             randconfig-001-20250212    clang-16
-powerpc64             randconfig-002-20250212    gcc-14.2.0
-powerpc64             randconfig-003-20250212    gcc-14.2.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                 randconfig-001-20250212    clang-21
-riscv                 randconfig-002-20250212    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250212    clang-15
-s390                  randconfig-002-20250212    clang-17
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20250212    gcc-14.2.0
-sh                    randconfig-002-20250212    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250212    gcc-14.2.0
-sparc                 randconfig-002-20250212    gcc-14.2.0
-sparc64               randconfig-001-20250212    gcc-14.2.0
-sparc64               randconfig-002-20250212    gcc-14.2.0
-um                               allmodconfig    clang-21
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250212    clang-16
-um                    randconfig-002-20250212    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250212    gcc-11
-x86_64      buildonly-randconfig-002-20250212    clang-19
-x86_64      buildonly-randconfig-003-20250212    clang-19
-x86_64      buildonly-randconfig-004-20250212    clang-19
-x86_64      buildonly-randconfig-005-20250212    gcc-12
-x86_64      buildonly-randconfig-006-20250212    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250212    gcc-14.2.0
-xtensa                randconfig-002-20250212    gcc-14.2.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Mark
 
