@@ -1,123 +1,186 @@
-Return-Path: <linux-acpi+bounces-11088-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11089-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC81CA321C5
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 10:09:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A331EA3221F
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 10:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E14F3A5CBA
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 09:08:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FA507A3496
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Feb 2025 09:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CFC205ADE;
-	Wed, 12 Feb 2025 09:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3B42046A1;
+	Wed, 12 Feb 2025 09:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ztVFH6tg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IuL9uzUu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51803205AD9
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 09:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6279A205E24;
+	Wed, 12 Feb 2025 09:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739351341; cv=none; b=hQKhKzog2VhobtePSWpMlhpBXUoGebMiqMh21vw+11tOmrIWeU5LR2AvOH6Hu/S2iwWG66RitOFYu1f+tw4iy1YSDg4nK8pDdPzomubIKjcN9RPmiw32x4zbEi7RdN9dfA7mzab+aGgUnqc/IlqygWlnlTgSpOlQynTYxtDYriQ=
+	t=1739352519; cv=none; b=rzEhl388prYzY1vlobBnHF973RnC4P1ICx5/+NgfyS/J3rEGhE1brJRRo+v6Y5ubBUAoNOyqghWrPTmNzjbNykfJRifUcLVHdC8+iTYB6mmbRlkV7v20msAqtSViXnpNEKw0HMO5lHcBTltxDrMQYvHrUTSiDKzlBlABDQ0NdjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739351341; c=relaxed/simple;
-	bh=OvqYnpRvYG0LGpobj7IV6ZwhbVEj/AeD6iszKsbWduI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hWy9IKKugnqDKWu6n33+U/Ay9Y/K8Q8NYBNoYyQk0+yQQRUuknc4JAxRmSgDsWjyhoYWDOYsnWct3aAYCljdnr1cs8GQok48nfv1yiwPM314XRIuXcXB2E47URfjjocpmHgrLdz7l6Nvhcc2ww/nkwoxhIeP9XaGpLCq78pTlGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ztVFH6tg; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43948021a45so27813645e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Feb 2025 01:08:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1739351338; x=1739956138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AKD7ISvSvAMVM8VZFenVGXThc2qL1nsB/7rDLqi7zUI=;
-        b=ztVFH6tgcKFyITLyax9Uh/QI3oS/EEB/4M00x3Y+BsVbY3fflQLVgztASNjpJWWInW
-         wn9hUdzVn8OOuoBz1Wxtiuc5pDIMF8+Qs2Om6Y2OuTROhHLkvqx8H/kEf0ukRbdwIfgv
-         XnqvaFbBa3F1XlvXeL0nG41rdRDlW1wcF5NvJB+QBmdZUSWoCn8n8mLEdtRbVF+anfPQ
-         ES+yublnF2KG3bAnt8R1N5po76QbfnoWA3i8DH1LKDzJM8g3+Vpmar5sX6hVudwIb8Hf
-         1Un9mbe/KLAE2W/pd3UXU+7pDHsGDu8OtpqDI9soSXJB5w0wo5A99L0QgEyFZdrYr7VP
-         9K8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739351338; x=1739956138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AKD7ISvSvAMVM8VZFenVGXThc2qL1nsB/7rDLqi7zUI=;
-        b=xJ/+qzAEygLUOd3xIIG6xZYUb4ym17BYqZ+zoYzBmSXiRylzwYEResDuWe1xMIwoEW
-         dqJoO6uwmha7NgVhP1I44+KxKPXnl7VqvqcKp5rBsjN1LBJeu8hVl4BzcGvsf3yL+JNK
-         coBIi8qNijxcQbq4qEvTft1/fcCrSxTjaV93Rsr2vQSKmUhetFbk8IdeVf0pOKgx0ciS
-         B6eQL+iLJP/z/k1TR9n/7+KjLfCLMHejPDAkwfURE9vXuUUSLbtiCqZPrgG4gcIfBd0L
-         ZAgpHEmw9x+A4ToPH+M9WT5z3fp6KF3QCOlj5iAB20BoUv7LE11xn25Qm7V+EvaSUOiy
-         6zbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXyB839K7UqfNRfXfcDjUlPvzgneHRSlrTSh4r6d6BJaDisDRy6ChQuLe+yltILemxVel1ZPq8VgzG7@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxpLJWJVN+8egeyjtlPD7w3R7K0DtaTf9uJ+fXpMNSOlnZqdCf
-	NFsOgr7oQbZ3XthUymVeEMokXTt7KnwlU2Beoz/LxJx+5NDFlfQRMg1BbNiSQ2I=
-X-Gm-Gg: ASbGncvhve5zJ06gII+VOuOdzvbRqCcgwK7BmRhyZe9HVCinJ5xWqBPTOZaKo6h2T9I
-	ANTMABgvsG4dm96zS2tiBUXkYv/a+eM/l/AIAPSTcDNh0GKUquYtMjqvyQCTYVmU5kJNIr4Xfu8
-	QGRH6+zBLZI9DPphAVop33RCjEhwkZjw6h5Nnog7Cz38MPsL/1AulAxxBK0Dvy/w1fM1ybmv0ca
-	FeTRE5Ecj0PMAg0rdbPiHd9vy3lNMJTT1GebjhEc3hujMLxYLm0nx1JMiJHPUnm/+2WY6NZrfg7
-	pYJZX90XtMXSiYE=
-X-Google-Smtp-Source: AGHT+IFkWvd1ex79ASDD1erZLM9AfGHHCjVCSYDIPWJ+oZLpJ2fy77FdM8qDbkbqPp6eM3En7ZTtig==
-X-Received: by 2002:a5d:64c2:0:b0:38d:d666:5448 with SMTP id ffacd0b85a97d-38dea2d363dmr1957104f8f.40.1739351337520;
-        Wed, 12 Feb 2025 01:08:57 -0800 (PST)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:521c:13af:4882:344c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a078689sm13220325e9.37.2025.02.12.01.08.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 01:08:57 -0800 (PST)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: mario.limonciello@amd.com,
-	westeri@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	Mario Limonciello <superm1@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org,
-	Delgan <delgan.py@gmail.com>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
-Date: Wed, 12 Feb 2025 10:08:55 +0100
-Message-ID: <173935133349.8493.1997870240852943455.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250211203222.761206-1-superm1@kernel.org>
-References: <20250211203222.761206-1-superm1@kernel.org>
+	s=arc-20240116; t=1739352519; c=relaxed/simple;
+	bh=gJpIK2N1oWtH5ADm/MDAKA+A5d3VUR0XUHUg0+3+Iq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cm/maOLWhiUrT8Z5G8EESgTAu4bv5fU78zSE95LiURn7AJ2uwnBncBIHoGcXjn1fuujpDDlXREWzR2LDDqgdD3vb7z+AgzmQQPM1sBSF6Qbn5C0q1jiVADBhMm4b6zQFx0vuzKNeZYR1SnYf+ZznYQkMtbQcZ0ZN+qQfd9YfGF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IuL9uzUu; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739352517; x=1770888517;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gJpIK2N1oWtH5ADm/MDAKA+A5d3VUR0XUHUg0+3+Iq8=;
+  b=IuL9uzUuUH+8nCg77Sg+hb4u0zPJq0i75WfPFV7+3vTjA36JBLM6E2r7
+   COVfCO8AZAy/nBEW2BdZdQ2cANqf1xd0kyJ4L9SHb3b2fteeTL3z/kBuJ
+   ZDXsAo5JB2z9HTcXKedKREAJoqDZRODkxMGi658kJpuwIRZG0ssrzzMSh
+   NUFOmx0Zo6UJwm7Cm5ct7QEVauOWDYnlM0Kv4D/CI/gm9zvMo4pIR003L
+   zNISUcr3nZ2hFo5I0V4xwsAauVeySgJj8A0uFJkyHU1mCe/beLnxP5S+J
+   EJGYHw+uopBnByxvSQdYboJsh6TiN1/8C2vE/9Wo+1olxLO0EqyoqpETB
+   A==;
+X-CSE-ConnectionGUID: fTfQ6i8fRB+M9w9c4GvkYA==
+X-CSE-MsgGUID: 2zc2OsELS7Cz2/nAqIYjJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="43925758"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="43925758"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 01:28:36 -0800
+X-CSE-ConnectionGUID: uoFlp30lSuaGrdQz3fpcsg==
+X-CSE-MsgGUID: XLCudRqwS5uKdTV8jnwDsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="112526808"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 12 Feb 2025 01:28:32 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ti92j-0015R1-2F;
+	Wed, 12 Feb 2025 09:28:29 +0000
+Date: Wed, 12 Feb 2025 17:27:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sumit Gupta <sumitg@nvidia.com>, rafael@kernel.org,
+	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
+	corbet@lwn.net, linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-tegra@vger.kernel.org, treding@nvidia.com,
+	jonathanh@nvidia.com, sashal@nvidia.com, vsethi@nvidia.com,
+	ksitaraman@nvidia.com, sanjayc@nvidia.com, bbasu@nvidia.com,
+	sumitg@nvidia.com
+Subject: Re: [Patch 5/5] cpufreq: CPPC: Add cppc_cpufreq_epp instance for
+ Autonomous mode
+Message-ID: <202502121734.xMnvqs6o-lkp@intel.com>
+References: <20250211103737.447704-6-sumitg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250211103737.447704-6-sumitg@nvidia.com>
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Sumit,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on next-20250210]
+[cannot apply to rafael-pm/linux-next rafael-pm/bleeding-edge v6.14-rc2 v6.14-rc1 v6.13 linus/master v6.14-rc2]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Sumit-Gupta/ACPI-CPPC-add-read-perf-ctrls-api-and-rename-few-existing/20250211-184154
+base:   next-20250210
+patch link:    https://lore.kernel.org/r/20250211103737.447704-6-sumitg%40nvidia.com
+patch subject: [Patch 5/5] cpufreq: CPPC: Add cppc_cpufreq_epp instance for Autonomous mode
+config: riscv-randconfig-001-20250212 (https://download.01.org/0day-ci/archive/20250212/202502121734.xMnvqs6o-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project 6807164500e9920638e2ab0cdb4bf8321d24f8eb)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250212/202502121734.xMnvqs6o-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502121734.xMnvqs6o-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/cpufreq/cppc_cpufreq.c:780:68: warning: more '%' conversions than data arguments [-Wformat-insufficient-args]
+     780 |         pr_debug("cpu%d, curr epp:%u, new epp:%u, curr mode:%u, new mode:%u\n",
+         |                                                                          ~^
+   include/linux/printk.h:631:30: note: expanded from macro 'pr_debug'
+     631 |         no_printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
+         |                                     ^~~
+   drivers/cpufreq/cppc_cpufreq.c:11:37: note: expanded from macro 'pr_fmt'
+      11 | #define pr_fmt(fmt)     "CPPC Cpufreq:" fmt
+         |                                         ^~~
+   include/linux/printk.h:135:11: note: expanded from macro 'no_printk'
+     135 |                 _printk(fmt, ##__VA_ARGS__);            \
+         |                         ^~~
+>> drivers/cpufreq/cppc_cpufreq.c:799:23: warning: unused variable 'cpu_data' [-Wunused-variable]
+     799 |         struct cppc_cpudata *cpu_data = policy->driver_data;
+         |                              ^~~~~~~~
+   drivers/cpufreq/cppc_cpufreq.c:1018:23: warning: unused variable 'cpu_data' [-Wunused-variable]
+    1018 |         struct cppc_cpudata *cpu_data;
+         |                              ^~~~~~~~
+>> drivers/cpufreq/cppc_cpufreq.c:1019:11: warning: unused variable 'pref' [-Wunused-variable]
+    1019 |         int cpu, pref, ret = 0;
+         |                  ^~~~
+   4 warnings generated.
 
 
-On Tue, 11 Feb 2025 14:32:01 -0600, Mario Limonciello wrote:
-> Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
-> specified as an edge triggered input and also a wake source but this pin is
-> supposed to be an output pin for an LED, so it's effectively floating.
-> 
-> Block the interrupt from getting set up for this GPIO on this device.
-> 
-> 
-> [...]
+vim +780 drivers/cpufreq/cppc_cpufreq.c
 
-Applied, thanks!
+   773	
+   774	static int cppc_cpufreq_epp_update_auto_mode(struct cpufreq_policy *policy, int auto_sel, u32 epp)
+   775	{
+   776		struct cppc_cpudata *cpu_data = policy->driver_data;
+   777		int ret, curr_epp;
+   778	
+   779		curr_epp = cpu_data->perf_ctrls.energy_perf;
+ > 780		pr_debug("cpu%d, curr epp:%u, new epp:%u, curr mode:%u, new mode:%u\n",
+   781			 curr_epp, epp, cpu_data->perf_caps.auto_sel, auto_sel);
+   782	
+   783		/* set Performance preference as default */
+   784		cpu_data->perf_ctrls.energy_perf = epp;
+   785		ret = cppc_set_epp_perf(policy->cpu, &cpu_data->perf_ctrls, auto_sel);
+   786		if (ret < 0) {
+   787			pr_err("failed to set energy perf value (%d)\n", ret);
+   788			cpu_data->perf_ctrls.energy_perf = curr_epp;
+   789			return ret;
+   790		}
+   791		cpu_data->perf_caps.auto_sel = auto_sel;
+   792	
+   793		return ret;
+   794	}
+   795	
+   796	static int cppc_cpufreq_epp_update_perf(struct cpufreq_policy *policy, int auto_sel, u32 epp,
+   797						u32 highest_perf, u32 lowest_perf)
+   798	{
+ > 799		struct cppc_cpudata *cpu_data = policy->driver_data;
+   800		int ret;
+   801	
+   802		ret = cppc_cpufreq_epp_update_perf_ctrls(policy, highest_perf, lowest_perf);
+   803		if (ret)
+   804			return ret;
+   805	
+   806		ret = cppc_cpufreq_epp_update_auto_mode(policy, auto_sel, epp);
+   807		if (ret)
+   808			return ret;
+   809	
+   810		return ret;
+   811	}
+   812	
 
-[1/1] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
-      commit: 8743d66979e494c5378563e6b5a32e913380abd8
-
-Best regards,
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
