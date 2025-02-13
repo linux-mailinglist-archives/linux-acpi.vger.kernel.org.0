@@ -1,103 +1,145 @@
-Return-Path: <linux-acpi+bounces-11152-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11153-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EC5A34728
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 16:32:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5276DA34881
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 16:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE0613AF2FA
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 15:23:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14A9A18879AE
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 15:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E81166F32;
-	Thu, 13 Feb 2025 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B071A6F073;
+	Thu, 13 Feb 2025 15:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="b1XZKgCN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQRuXCVk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B2E156653
-	for <linux-acpi@vger.kernel.org>; Thu, 13 Feb 2025 15:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8733626B087;
+	Thu, 13 Feb 2025 15:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460176; cv=none; b=Tj+zbN2KOP90BpE2/1sB4/jJdGGKa06L4CFhEFsKTVJLy3nNTZj/TMXcBxpDMy3dIv9MwBijmp0YNtq1hyJ4uLYxg/pm3eFPIQkcPBPpkRPvoj+lMskmvsGCZc/1wqbDbs4L21nA6wD3W89Pirzr2GkPJwGWNLig+9TJiOpbWJ4=
+	t=1739461629; cv=none; b=aDftfEpbRX5xvV6gT6IZFUlpoHM5sg9AUFHDVWpA6MYYioRY1tSytd+IPs1XPeQmxzeVoULkrKYA+tpc/x2B7P0hFwaENEGRJd555+pwVCIlMlEUVulnsAz2S9sBYoJ1P1AXtLQXMuZWiSTTdRek38/4Smp2q2DJif6rZottZ18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460176; c=relaxed/simple;
-	bh=BPfo8p07AJkO2ocHSAKC/3O/4QvXuF5LwpiwIjb1tkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N6uGbronL0mY/0lEyjAByWqyLvbF9K3dOCO8LYr0/ItziG1D+PvTcpNoZDY1nuezTs10PUpmFV1nwlHqqsHd//6KvpnAUhGc6iXElRmFwN64USi/IQcSrqVu8gILp1kGNXyrtx85URkSmQrYU0FlGwgV/Dbt+kfgSt3rMDTvDew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=b1XZKgCN; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=BPfo
-	8p07AJkO2ocHSAKC/3O/4QvXuF5LwpiwIjb1tkw=; b=b1XZKgCNM4opx75YK4KO
-	IwRLymPfHFWA4qDZWW12C0Iu/WAahznM26iqVDBgrpXK3D1vxk/8//LaiiJvg58I
-	M6CHBByjtVc9bGhnO71PcW/GFJWJlErchHr0UrdqsNcAqiGqSawpcLhl0lfAcvvT
-	I8lIhcuLzqgLJ9D38gAV6NJAsRgCwiqB3nucQwHXQmUx7pto6tYQVHITspQoIizN
-	BKklgWss9NEltbyerbsAhNp2vMb0WIoY0yZ6nTrlv+8Gr8CS0CsK5H1mjXeccZxf
-	6CSOoqQQxBMVZzgFh3uBunCDUgal72k69lu6aVA+ZbZsEN/AFvMbyy+BXXOghhy+
-	5w==
-Received: (qmail 1923982 invoked from network); 13 Feb 2025 16:22:48 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 Feb 2025 16:22:48 +0100
-X-UD-Smtp-Session: l3s3148p1@e+hpoQcucpFehh99
-Date: Thu, 13 Feb 2025 16:22:47 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: Use my kernel.org address for I2C ACPI work
-Message-ID: <Z64ORw9U6jgFvN_N@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20250204115236.3973371-1-mika.westerberg@linux.intel.com>
+	s=arc-20240116; t=1739461629; c=relaxed/simple;
+	bh=E1GUjYdJqoBRJw9tQ+cO3lASHQVBixZzsUVVWG/US9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dpq7mKp6sBksUNIzOxPT5llIyH2Xh6C7M1SDOXCFDGbFvsJetEpbfQOD33NJ2YuUcxMEc75UflR1sE+jY/sd4e+GuF73vgGugGhtO5k/kU9rL8GifTsJ0yIQ4Q0qJcf2bXj0OvOBh8InQvLF802txodUVyxnEqBTW3g1TDs26cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQRuXCVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B11C4CEE7;
+	Thu, 13 Feb 2025 15:47:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739461629;
+	bh=E1GUjYdJqoBRJw9tQ+cO3lASHQVBixZzsUVVWG/US9E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RQRuXCVkRSWCBtQvf8cddg/93v7kQ+kuCtzjriKQugqc/0tlw0wQ+lIuQ+ZNvuUui
+	 p989xGxi/7Y76OximxiGTexZmIoEu0Qqh0mV1GJrL7YebEkeKO+ONuJC4BLSzj3zEt
+	 k7FQlW+OmTWLVP38lXqSwNRvy05DPdkEWCawW0RzmokqoJAzBa8qcKBHiBdS1hE7Yz
+	 j2NU9vHZr5dTlHD8NfJbR5hV+HdZYWNbYQboBTxSMDv8cU4979M+RoP5MzPeHCs1hf
+	 nFoem2hcaQUbq9+wKv/G1MrPqT5/cgzZBWODqdaqF62d9Cy7/GHRbrgqmJEQh5MJsB
+	 e37j2V26OErgw==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5439a6179a7so1049438e87.1;
+        Thu, 13 Feb 2025 07:47:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWCIJYYBa2uFuAZieZXncUfLyjT1IxROfSOzMkH9uyxErgboq9peoxk4c5RLda81dpfExd97VIxNJpvH8Fo@vger.kernel.org, AJvYcCXbbBbEFKyktRqPVDEBMQRcBL7NIN1L0RiIqJTBgLuHAl6VaQ+uOsUdU0ONawe3tdLKK86EnmWXIT+z@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza3XKMmPO71Y1/8IL6qJBFRws8Hr/3n05YSvYqHLSjR2KknT1F
+	pu0+/JnNSxH5GPtX54DSfbMAMvfkaPI2yff8TU/mftd6e1EkCRAXbN1LvOzTP9Hsz7RSXSIBWbS
+	lk0ZnnlWU0renUDv0Q+zguhSqgK0=
+X-Google-Smtp-Source: AGHT+IGv5cDKLfiKWM0AbqmdVhU4cj+YxJl2cKveWSLPMNHSkmFWQco2+fFaxe83V+KevVsWhgrCg8aeW9stFG6GeqA=
+X-Received: by 2002:a05:6512:10d2:b0:545:16ef:d5fa with SMTP id
+ 2adb3069b0e04-5451dfdbf37mr1109497e87.12.1739461627368; Thu, 13 Feb 2025
+ 07:47:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vOeomMHmjYfVQFl6"
-Content-Disposition: inline
-In-Reply-To: <20250204115236.3973371-1-mika.westerberg@linux.intel.com>
-
-
---vOeomMHmjYfVQFl6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250121214219.1455896-1-brahmajit.xyz@gmail.com>
+In-Reply-To: <20250121214219.1455896-1-brahmajit.xyz@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 13 Feb 2025 16:46:56 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGvgad183WbUHPGduXHEahfoWasued-LdJ+Tkhc=z-9GA@mail.gmail.com>
+X-Gm-Features: AWEUYZkFY2PYa8gfx6hGCdnL0CMJypnzzWYdPRULOd_DTaJ2LhpwBLnko3b9nkQ
+Message-ID: <CAMj1kXGvgad183WbUHPGduXHEahfoWasued-LdJ+Tkhc=z-9GA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ACPI: Fix building with GCC 15
+To: Brahmajit Das <brahmajit.xyz@gmail.com>
+Cc: rafael.j.wysocki@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 04, 2025 at 01:52:36PM +0200, Mika Westerberg wrote:
-> Switch to use my kernel.org address for I2C ACPI work.
->=20
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+On Tue, 21 Jan 2025 at 22:42, Brahmajit Das <brahmajit.xyz@gmail.com> wrote=
+:
+>
+> Building with GCC 15 results in the following build error:
+>
+> ...
+>   CC      drivers/acpi/tables.o
+> In file included from ./include/acpi/actbl.h:371,
+>                  from ./include/acpi/acpi.h:26,
+>                  from ./include/linux/acpi.h:26,
+>                  from drivers/acpi/tables.c:19:
+> ./include/acpi/actbl1.h:30:33: error: initializer-string for array of =E2=
+=80=98char=E2=80=99 is too long [-Werror=3Dunterminated-string-initializati=
+on]
+>    30 | #define ACPI_SIG_BERT           "BERT"  /* Boot Error Record Tabl=
+e */
+>       |                                 ^~~~~~
+> drivers/acpi/tables.c:400:9: note: in expansion of macro =E2=80=98ACPI_SI=
+G_BERT=E2=80=99
+>   400 |         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECD=
+T,
+>       |         ^~~~~~~~~~~~~
+> ./include/acpi/actbl1.h:31:33: error: initializer-string for array of =E2=
+=80=98char=E2=80=99 is too long [-Werror=3Dunterminated-string-initializati=
+on]
+>    31 | #define ACPI_SIG_BGRT           "BGRT"  /* Boot Graphics Resource=
+ Table */
+>       |                                 ^~~~~~
+> drivers/acpi/tables.c:400:24: note: in expansion of macro =E2=80=98ACPI_S=
+IG_BGRT=E2=80=99
+>   400 |         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECD=
+T,
+>       |                        ^~~~~~~~~~~~~
+> ./include/acpi/actbl1.h:34:33: error: initializer-string for array of =E2=
+=80=98char=E2=80=99 is too long [-Werror=3Dunterminated-string-initializati=
+on]
+>    34 | #define ACPI_SIG_CPEP           "CPEP"  /* Corrected Platform Err=
+or Polling table */
+> ...
+>
+> This is due to GCC having enabled
+> -Werror=3Dunterminated-string-initialization[0] by default. To work aroun=
+d
+> this build time error we're modifying the size of table_sigs from
+> table_sigs[][ACPI_NAMESEG_SIZE] to table_sigs[][ACPI_NAMESEG_SIZE + 1].
+> This ensures space for NUL, thus satisfying GCC.
+>
+> [0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-un=
+terminated-string-initialization
+>
+> Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+> ---
+>  drivers/acpi/tables.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index 9e1b01c35070..5a6524eb79d8 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -396,7 +396,7 @@ static u8 __init acpi_table_checksum(u8 *buffer, u32 =
+length)
+>  }
+>
+>  /* All but ACPI_SIG_RSDP and ACPI_SIG_FACS: */
+> -static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst =3D {
+> +static const char table_sigs[][ACPI_NAMESEG_SIZE + 1] __initconst =3D {
+>         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+>         ACPI_SIG_EINJ, ACPI_SIG_ERST, ACPI_SIG_HEST, ACPI_SIG_MADT,
+>         ACPI_SIG_MSCT, ACPI_SIG_SBST, ACPI_SIG_SLIT, ACPI_SIG_SRAT,
 
-Applied to for-current, thanks!
-
-
---vOeomMHmjYfVQFl6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmeuDkMACgkQFA3kzBSg
-KbbFPBAAnZiyQZTGVNHRyx8Ok9zfU5WjE0bA9yb5CEdh7FM8qiXU/0+9/Hx2bQQ0
-D/xEAnkCS64vUh6KI8xWyZ089u7Az19RUkLDgW1zl5IngDkdIrY9bMUK6KPPEgcI
-+bbzmr1q+he9mswcDbnzPfffWvFdSf7wHwR7H3DmhjxIiRltGai+M59Vnp4jqHF3
-vpaGeaFdO0o3jXncqLk3r3F1JK7zFWiV53QMahYtpQGkWZukHsNnhVgB261k94b8
-Yx+HZGXeiJVvoKjznkyef74o6DhbgZXOLZoVrfjwLkQ8yZ+liPbidqPZjMkqnuZN
-Xb430yXbnUbO5ynMwA18d2cGnRCPau14yWjrzLC9MOEkEYQ+00nEyEVxG8boYqqj
-MB2ou6gQFAt7qo5YS6RwtQtPqSgHmCbMUusBNc5ZaDqXcuuSOtpDdAYbk4ulbuQs
-Qb3h4dXCuQm3EYVQHBKYywJpkKtZPIH6GQVrALIqRRk9rKgc2O7/KcTCz0VjSYE9
-/JR/w72kM7sWZzPA2owhzZ1p4CeSKZhYgbZ+FxWhY8zC4Nq6K6Y/rxMPQbx+bus4
-IP0hcPZy6qazi4/EeA17HfgjQdB86NwgieiyHIXHOw9+M/7ALK6ttJSwjdc2JtPY
-8iX6Wbl9pi9srAnwsrPtqgDFuldwyekCKKrWJyY+dQ/q8ZiuFu4=
-=H+Ms
------END PGP SIGNATURE-----
-
---vOeomMHmjYfVQFl6--
+Please add the __nonstring attribute instead.
 
