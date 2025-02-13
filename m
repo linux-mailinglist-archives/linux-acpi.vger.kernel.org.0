@@ -1,96 +1,143 @@
-Return-Path: <linux-acpi+bounces-11150-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11151-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C35EA3413D
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 15:05:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10259A3467C
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 16:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDC93A4E63
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 14:02:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8523F16B6EC
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 15:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753EB24291C;
-	Thu, 13 Feb 2025 13:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAwhYkup"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0FF13D8A4;
+	Thu, 13 Feb 2025 15:20:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494F8242910;
-	Thu, 13 Feb 2025 13:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC88826B0BC;
+	Thu, 13 Feb 2025 15:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739455158; cv=none; b=QS8wjSNybbm1gCRjKRS/sqrgnMSEyYp9h07G6Bygb2DIdjVC+MQmxRpaHEd2lv4mrO/c8gTYvlqfEnui5EB4v6UwcYVQtsY9jjlEk8BsmC6niGlm9ozjBdV+ziu+LrgOgah0LO+MH39dnq4bj9vAbJTYH5fZG4gq3HmGXRFZ03Y=
+	t=1739460002; cv=none; b=NzT6E21eGc9e/b0YgVBX1EqdemFN33wW5l8LAcUHTgRikZAF3rzGPNL/Cdms36KGVnebx74n3ZeMM0i3FYaN+jGe6LqRfgE51M0rEONMBNS8pDrfiLVIyT8+qsXpU1dyXEBsKLR7SF2p/E5fcuipGAiddCVETsFo9aeoVyBM0XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739455158; c=relaxed/simple;
-	bh=+yOaOrU3SfpDJ08BIfLD5TlmYaKF+rtZSYB5MoqJ7iQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h0GQPcAuu4KQIaP5Us9Cx2nDtt+3hpqAUGbq9AEuXDn0iN1Ly90JTv+ifA58t40O/gowpatLm/B6jErG6EyziOrt15bL6puEaeXcuNVmkjax5Vc7UORp1XLsKul2JTXSUD7V40OQrCDE2FzB8DKtc4jQbIEJwXo82/cPpDIZalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAwhYkup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D265FC4CEE8;
-	Thu, 13 Feb 2025 13:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739455158;
-	bh=+yOaOrU3SfpDJ08BIfLD5TlmYaKF+rtZSYB5MoqJ7iQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAwhYkup5eKlG2Xz6cQXi9HNC/yphKU1h/lW3n9rqNux8T2iM8CXW4RCb5NOGjjbR
-	 PZWvmCdXQ+Jgt7079SBSvV/Fwf7aSoytMLIC88CBu2CAnOQvAJ1DuEZe155IBuJBew
-	 UQsmwW8Z3XJ+na7FaxgZXDy6TCqhby7tBdP5BcuaUde4rPps/sbWdGJWDP8ZMndljR
-	 iPwO3eBZG4l6wHuesirxe1+hhYj4dnYrUBDoel1Cttmg8ke0TFWhThvUtjUS0r9xpU
-	 Tuyi7RtzcdtaydK8ZvxBSvAQGzje7kw7gOMlfXLP3wZK06asvU10m+jqrs84NRZ07x
-	 ApWRLwUfiaa+A==
-From: Will Deacon <will@kernel.org>
-To: linux-acpi@vger.kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Zheng Zengkai <zhengzengkai@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers array count
-Date: Thu, 13 Feb 2025 13:59:04 +0000
-Message-Id: <173944516851.2607091.1871789456035802538.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250128001749.3132656-1-oliver.upton@linux.dev>
-References: <20250128001749.3132656-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1739460002; c=relaxed/simple;
+	bh=N2ef7JANwra75iIw3ldGvYambNz6khJkPVb6/xb2kYs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZD45HfnwPbwmfARFF+M4VkbjZxp/rgUgRrD5mTMdaqw71WZT2T4VPhFxlwMj623l+qwPr1c2vekkgGZZIvnDOE6tpru9ZMAfOXze1sRuKayQFUWaDclgHj5MD6ulxwOtvOrJOv+Ocj+mJiVGSaOEEjgDOLEvOhh+dNctWjGySFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC37E113E;
+	Thu, 13 Feb 2025 07:20:20 -0800 (PST)
+Received: from [172.20.10.14] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E5C33F58B;
+	Thu, 13 Feb 2025 07:19:59 -0800 (PST)
+Message-ID: <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
+Date: Thu, 13 Feb 2025 09:19:58 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] Add support for the TPM FF-A start method
+To: Sumit Garg <sumit.garg@linaro.org>
+Cc: linux-integrity@vger.kernel.org, jarkko@kernel.org, peterhuewe@gmx.de,
+ jgg@ziepe.ca, sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jens Wiklander <jens.wiklander@linaro.org>, Rob Herring <robh@kernel.org>
+References: <20250210232227.97761-1-stuart.yoder@arm.com>
+ <CAFA6WYM7K4_toy5_n1arW4po4SOX0R9624rCgO=_MvcMeySwUA@mail.gmail.com>
+ <4bb3cefa-b843-45ca-82c5-d96b13454baa@arm.com>
+ <CAFA6WYM3UA9+TE8L2U5Qd8FZfaGZnbba=QzWU7fEu3LKQVm-tw@mail.gmail.com>
+ <fdaa9a58-790f-4839-8db7-1b9a81eb8edf@arm.com>
+ <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
+Content-Language: en-US
+From: Stuart Yoder <stuart.yoder@arm.com>
+In-Reply-To: <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 28 Jan 2025 00:17:49 +0000, Oliver Upton wrote:
-> Perhaps unsurprisingly there are some platforms where the GTDT isn't
-> quite right and the Platforms Timer array overflows the length of the
-> overall table.
+
+
+On 2/12/25 11:31 PM, Sumit Garg wrote:
+> + Rob
 > 
-> While the recently-added sanity checking isn't wrong, it makes it
-> impossible to boot the kernel on offending platforms. Try to hobble
-> along and limit the Platform Timer count to the bounds of the table.
+> On Thu, 13 Feb 2025 at 03:25, Stuart Yoder <stuart.yoder@arm.com> wrote:
+>>
+>>
+>>
+>> On 2/12/25 1:39 AM, Sumit Garg wrote:
+>>> On Tue, 11 Feb 2025 at 21:39, Stuart Yoder <stuart.yoder@arm.com> wrote:
+>>>>
+>>>> Hi Sumit,
+>>>>
+>>>> On 2/11/25 12:45 AM, Sumit Garg wrote:
+>>>>> + Jens
+>>>>>
+>>>>> Hi Stuart,
+>>>>>
+>>>>> On Tue, 11 Feb 2025 at 04:52, Stuart Yoder <stuart.yoder@arm.com> wrote:
+>>>>>>
+>>>>>> These patches add support for the CRB FF-A start method defined
+>>>>>> in the TCG ACPI specification v1.4 and the FF-A ABI defined
+>>>>>> in the Arm TPM Service CRB over FF-A (DEN0138) specification.
+>>>>>> (https://developer.arm.com/documentation/den0138/latest/)
+>>>>>
+>>>>> Nice to have a specification standardizing interface to TPM
+>>>>> managed/implemented by the firmware. Care to add corresponding kernel
+>>>>> documentation under Documentation/security/tpm/.
+>>>>
+>>>> Yes, I can add some documentation there.
+>>>>
+>>>>> BTW, we already have drivers/char/tpm/tpm_ftpm_tee.c, so do you see
+>>>>> possibilities for an abstraction layer on top of communication channel
+>>>>> based on either FF-A or TEE or platform bus?
+>>>>
+>>>> I think the CRB and OP-TEE based messaging approaches for interacting
+>>>> with a TZ-based TPM are fundamentally different and I don't see how
+>>>> to harmonize them through some abstraction.
+>>>>
+>>>> The OP-TEE TPM protocol copies the TPM command into a temp shared memory
+>>>> buffer and sends a message to the TPM referencing that buffer.
+>>>>
+>>>> The CRB uses a permanently shared memory carve-out that in addition
+>>>> to the command/response data has other fields for locality control,
+>>>> command control, status, TPM idle, etc. The only 'message' needed is
+>>>> something to signal 'start'.  Any OS that is FF-A aware and has a
+>>>> CRB driver can simply add a new start method, which is what this
+>>>> patch series does.
+>>>
+>>> Okay, I see how the CRB driver is closely tied to the ACPI based
+>>> systems.
+>>
+>> The CRB driver is currently probed based on ACPI, but it fundamentally
+>> doesn't have to be.  If there was a DT binding for CRB-based
+>> TPMs the different start methods would be defined there and the
+>> CRB driver could support that.
+>>
 > 
-> [...]
+> Can't we rather enable the CRB driver itself probed based on FF-A bus
+> and rather dynamically discover the shared memory buffer via FF-A
+> instead? AFAIU, FF-A provides you with a discovery framework for
+> firmware bits.
 
-Applied to arm64 (for-next/fixes), thanks!
+Yes, you could do this. But, then the TPM CRB drivers in all the
+ACPI-based OSes (Linux, Windows) and hypervisors need to be
+taught this new method of discovery. Adding new start methods is
+reasonably straightforward, but changing the basic discovery
+mechanism is a much bigger change.
 
-[1/1] ACPI: GTDT: Relax sanity checking on Platform Timers array count
-      https://git.kernel.org/arm64/c/f818227a2f3d
+> But if we still want to overload ACPI or DT with the
+> discoverable firmware bits then it seems like an overkill here.
 
-Cheers,
--- 
-Will
+I think it would make sense to do ACPI based discovery or FF-A
+based discovery, but doing both I think would be overkill.  For
+ease of OS integration ACPI is the way to go.  And, potentially
+device tree in the future.
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Thanks,
+Stuart
 
