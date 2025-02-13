@@ -1,122 +1,125 @@
-Return-Path: <linux-acpi+bounces-11171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11172-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC24A35243
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 00:38:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94913A3524E
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 00:49:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0941888CA4
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 23:39:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55E3716C891
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Feb 2025 23:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3294B1C84BC;
-	Thu, 13 Feb 2025 23:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmvL+KPv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F481C84D8;
+	Thu, 13 Feb 2025 23:49:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EF02753F0;
-	Thu, 13 Feb 2025 23:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3878275419;
+	Thu, 13 Feb 2025 23:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739489930; cv=none; b=FVlO4BblfAq4iTG46ER4cJs41weMeiUcmaEom3gVRUjDzikm79tqCnIBHrpBlW3JtKhSdGHJ9+Cq/qkQ3nxQoByS0HlJzTgyOXMYuPW1N+uPcBb6cKSQoOetuuFJQdyN/5sNE/JLoaBba6iYxY3cPa9VrZ5e6ua435FpqDcy87g=
+	t=1739490560; cv=none; b=ju4+l3cpUkoIWUgBozNBsLibgcaxDXS9pM/bKCzQS2fCsehidGB7zfzH9D6BxZwGWBWRopDI4+LPnroG2mGj1c+Tuilnn095ucHutYrlls3U6WLmB+QP9Llj5SieuYYFA7y4yeDzC2d5gBCxMaKi093/Chpao/auJQwwOr4m/v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739489930; c=relaxed/simple;
-	bh=v6IHM/pxIvxj98+aTOVZqxpx5vGcbXDyQaxvorp5I7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hzEeYiAVZCR1a6iw8DXZzPfFNJBZRQAJEyrq1G0pASNGiaFWy1+r7SvWhl8czXa28Ld/1cnSpCJHkCxhZ+jT7JJOpoc1CWIYeGsrrgf18z8f70E/oRdBa+5Uv5UCZPoPiGq8hnVg3JFgrfiPI+eTRZvLC/rd9/gNOFArHrSVyqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmvL+KPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33FBC4CED1;
-	Thu, 13 Feb 2025 23:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739489929;
-	bh=v6IHM/pxIvxj98+aTOVZqxpx5vGcbXDyQaxvorp5I7Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VmvL+KPv4oNJUNysvNVXIBnEIyY8flT2991GHnnh9UPZBUqt6goLe27jyMT7dR9JZ
-	 uX5BZ3mH0B0HWyEdu5e8B+u3uxYkb3mfoGWbOfGJnKrVqxAoJlZFA3B9RJujRm9gJH
-	 0G8tsDF9kRFtLvShjhQMM7lOMSAi/MucIHlUIZgZrQwOmKk79gMI/DuqAqUIW5fTX/
-	 0E6O/kMwPWhoaFco68hRP7PdT2tmmAb5lHx2p034i/svSF1RbFnUj9szIWiMHptyXc
-	 GM50RpNkasNFmzwzMb9L0gVfcQ68AXDWdMRpLG1VsvjfCjO4I6rDbuw8/JTv6MVCgY
-	 9HWV77KaJLupQ==
-Date: Fri, 14 Feb 2025 01:38:44 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stuart Yoder <stuart.yoder@arm.com>
-Cc: linux-integrity@vger.kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca,
-	sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] Documentation: tpm: add documentation for the CRB
- FF-A interface
-Message-ID: <Z66ChI32MRi2q0xT@kernel.org>
-References: <20250212220548.400447-1-stuart.yoder@arm.com>
- <20250212220548.400447-6-stuart.yoder@arm.com>
- <Z65uKkt2f0WYxjHi@kernel.org>
- <b9a7d98a-2723-45e0-bb3b-19cd31473251@arm.com>
+	s=arc-20240116; t=1739490560; c=relaxed/simple;
+	bh=G937Fjrr8kTIvV25mecSAT2DDc5acNTz01lSZNZNB1M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NnjXNSAwvs8uhqu4ojeK5Fmyh6wwnycSBp0qLHHnc8wqPAZoIrNAHHwBRFwxXBKNhEJtMfHFlA7/VwOoLzC8M39m8rzQComgNzK85MVTm8yxp4+Nh5HQ9/Z0LCwgpjGijwtf7J4ipXpw9+pbQV8ZuHUhwnrgYRjRivSaKKJYOxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E1B0113E;
+	Thu, 13 Feb 2025 15:49:36 -0800 (PST)
+Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2282E3F5A1;
+	Thu, 13 Feb 2025 15:49:12 -0800 (PST)
+From: Robin Murphy <robin.murphy@arm.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Stuart Yoder <stuyoder@gmail.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Charan Teja Kalla <quic_charante@quicinc.com>
+Subject: [PATCH 0/2] iommu: Fix the longstanding probe issues
+Date: Thu, 13 Feb 2025 23:48:58 +0000
+Message-Id: <cover.1739486121.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b9a7d98a-2723-45e0-bb3b-19cd31473251@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 13, 2025 at 04:17:56PM -0600, Stuart Yoder wrote:
-> 
-> 
-> On 2/13/25 4:11 PM, Jarkko Sakkinen wrote:
-> > On Wed, Feb 12, 2025 at 04:05:48PM -0600, Stuart Yoder wrote:
-> > > Add documentation providing details of how the CRB driver interacts
-> > > with FF-A.
-> > > 
-> > > Signed-off-by: Stuart Yoder <stuart.yoder@arm.com>
-> > > ---
-> > >   Documentation/security/tpm/tpm_ffa_crb.rst | 65 ++++++++++++++++++++++
-> > >   1 file changed, 65 insertions(+)
-> > >   create mode 100644 Documentation/security/tpm/tpm_ffa_crb.rst
-> > > 
-> > > diff --git a/Documentation/security/tpm/tpm_ffa_crb.rst b/Documentation/security/tpm/tpm_ffa_crb.rst
-> > > new file mode 100644
-> > > index 000000000000..c70f8904a93d
-> > > --- /dev/null
-> > > +++ b/Documentation/security/tpm/tpm_ffa_crb.rst
-> > > @@ -0,0 +1,65 @@
-> > > +.. SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +========================
-> > > +TPM CRB over FF-A Driver
-> > > +========================
-> > > +
-> > > +The TPM Command Response Buffer (CRB) interface is a standard TPM interface
-> > > +defined in the TCG PC Client Platform TPM Profile (PTP) Specification [1]_.
-> > > +The CRB provides a structured set of control registers a client uses when
-> > > +interacting with a TPM as well as a data buffer for storing TPM commands and
-> > > +responses. A CRB interface can be implemented in:
-> > > +
-> > > +- hardware registers in a discrete TPM chip
-> > > +
-> > > +- in memory for a TPM running in isolated environment where shared memory
-> > > +  allows a client to interact with the TPM
-> > > +
-> > > +The Firmware Framework for Arm A-profile (FF-A) [2]_ is a specification
-> > > +that defines interfaces and protocols for the following purposes:
-> > > +
-> > > +- Compartmentalize firmware into software partitions that run in the Arm
-> > > +  Secure world environment (also know as TrustZone)
-> > 
-> > Does that also cover ARM CCA? Just a question (not a review question).
-> 
-> No, CCA is for confidential VMs which is a separate trusted execution
-> environment and FF-A is not used there.
+Hi all,
 
-OK, cool, just plain interested :-)
+Finally, it's that thing I've been mentioning on and off for the last 5
+years or so! After far too much thinking about "clean" ways to refactor
+everything towards an eventual goal of working properly, I finally gave
+up and decided to see how bad it would be to just get it working, then
+worry about cleaning up afterwards. Frankly I still can't quiet believe
+how small the patch turned out to be...
 
-> 
-> Thanks,
-> Stuart
+Patch #1 is a fix for what I think is the only "expected" race in the
+core API design - we knew we had that window where a default domain is
+NULL, but the potential consequences weren't clear until Charan figured
+it out the hard way. That should be good to go already, and it's not
+strictly a dependency for patch #2, but it seemed worth posting them
+together on the common theme.
 
-BR, Jarkko
+Patch #2 is then the first big bite out of the problem I feel compelled
+to fix because it's my name on d7b0558230e4 ("iommu/of: Prepare for
+deferred IOMMU configuration") which, in hindsight, started it. I hope
+this will be the only patch which has to touch absolutely everything all
+at once. I've not got very far with the follow-up patches yet, but I do
+foresee being able to tackle the driver core, firmware subsystems and
+bus drivers more independently. I don't expect anyone to love it, but I
+hope you can at least see where I'm going and give a bit of leeway for
+now :)
+
+I also do rather expect that WARN_ON to be hit, but the intent is that
+I'd like to get the attention of any of_dma_configure() abusers so they
+can help me figure out what the heck their code *should* be doing...
+
+Thanks,
+Robin.
+
+
+Robin Murphy (2):
+  iommu: Handle race with default domain setup
+  iommu: Get DT/ACPI parsing into the proper probe path
+
+ drivers/acpi/arm64/dma.c        |  5 ++++
+ drivers/acpi/scan.c             | 10 +++----
+ drivers/amba/bus.c              |  2 +-
+ drivers/base/platform.c         |  2 +-
+ drivers/bus/fsl-mc/fsl-mc-bus.c |  2 +-
+ drivers/cdx/cdx.c               |  2 +-
+ drivers/iommu/iommu.c           | 48 +++++++++++++++++++++++++--------
+ drivers/iommu/of_iommu.c        | 10 ++++++-
+ drivers/of/device.c             |  7 ++++-
+ drivers/pci/pci-driver.c        |  2 +-
+ 10 files changed, 65 insertions(+), 25 deletions(-)
+
+-- 
+2.39.2.101.g768bb238c484.dirty
+
 
