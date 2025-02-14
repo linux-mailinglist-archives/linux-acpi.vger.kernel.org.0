@@ -1,185 +1,194 @@
-Return-Path: <linux-acpi+bounces-11194-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11195-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15814A35E44
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 14:04:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A01A36227
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 16:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EFF21723B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 12:59:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7589B1703C7
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 15:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B43A263F4B;
-	Fri, 14 Feb 2025 12:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF698266F19;
+	Fri, 14 Feb 2025 15:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PVgUCeCE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejFSEz94"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D891263C77;
-	Fri, 14 Feb 2025 12:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4DD267385
+	for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 15:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739537880; cv=none; b=J5fwKjaeHV3Qnzz1X4UvboVjhW2bdTAdH/83E9VTOOm9S9C8BS8nPvpm1vKx2bvZeFjvmJnafFkSv9aIFEZ3hNQNR/4rKMfELubC6pmaD9jDWz8AohnuDiWu2ETUHUhmisUBKtPj8IvdJAQkdHI1l1ydNJ4Yy26YofaAeijuPIs=
+	t=1739547962; cv=none; b=udcG3RWMh5vosg+9zxmRbkyJ4DnGuCSd3qA+5SSv52ue1sEKGKMWTS9JSpyq2+D3GFBGrcAapEOAVJLMZxUF0RrIp7bF+VAwIvJgkTUsBJzziiXFkHLf16dq0bh7x44mDMGTXxlDDJ7DyEAvVQf1KE+yax6BPs7YqY4ETqkGT2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739537880; c=relaxed/simple;
-	bh=alONTJ5izPBs5NVNtGqcxXXw/F3dPnAoYUIDkZtfNoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=BqztOKEDT5pqFX+41gKyLw8QifQRplG0M+WdCj38dD5HeUnwaUpJwnnEYmsHZfkdJ4O1spJNgVzJrUewzv1tyyKnTMTNf9maNXXM4qfwdh839w13YE9JKOrpgJAH+hoM2lEUiJjawp40eMu3HWRDbnf+1X71ITgl9Lf6asPLy9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PVgUCeCE; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E7i2wV015968;
-	Fri, 14 Feb 2025 12:57:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Eeic6vXkmMzY8YnqF8B8+d/0s0ePlY9ZRC/bULfVz9M=; b=PVgUCeCE9F2rRhXX
-	GzjSWiCH6P5O+kLbZtt+AEZ00puhiZnlYoo/pAAzuLWkhBph/rjI4DZd31iJmfi+
-	w8+AAy73Zwm+JekXLLMZIvS6Ece5ErQBvOEiS3OtI8glWeY7G+9ldBueMK0Cgu8u
-	TbUH8HTI5gRptoBqobtu0Tl0aCekLv5NbM6DNccHsjO2N53bm4O7uEDQYBkZj1jR
-	rtsOVsh7C9fJ6ZGGqC559iqh2qMu4nciP3boqhzPVDa7Olvt5Nm6hIeQ9cN8WusZ
-	uS6VK7KmdOLPDBV/uMM9CUtT6PG2PoEptRYrFYV8arfJO4DbPSyQ5594X99aCh4C
-	wkBp+g==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44sde8btc2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 12:57:26 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51ECvPfS025861
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 12:57:25 GMT
-Received: from [10.219.56.14] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 14 Feb
- 2025 04:57:18 -0800
-Message-ID: <2a090f80-e145-410d-8d02-efdaf324c8c9@quicinc.com>
-Date: Fri, 14 Feb 2025 18:27:14 +0530
+	s=arc-20240116; t=1739547962; c=relaxed/simple;
+	bh=gtnOC9laOvVmIp+eh36F+/EweRzKrpcKx8mKxySFux4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U8iMTWVLprXHUQq+bCG+k9rNo4xLDsM1xSXIykJhTWeJxTPDIMfynvV0y1R8v3bh5Vs5uYLwBnBmTqv7gxyZXpAwgvLgdKEQfPajeaZcF/6usj6g+UqzKVoUzDq39V6xMvYS0LP9BD1316/7hxr48P95urLeXbxu1tg4HSGcdJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ejFSEz94; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e5dbdbdaeedso719519276.2
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 07:46:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739547960; x=1740152760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ycd2hQRX4+MoV0caObCZeDE/nlrKiGekQLF9H7HPZGc=;
+        b=ejFSEz94THW4NC/+QfIaH1M53hFxLjHVQQO5pyaOWVyXT2SCWpxV6Ngw8PkE37N1eq
+         7kVsrBYWz90Her9MGiIkUK0YGm7OuXdEXL+vMeLQmOAaE7uYoK1cIMeY6e9xgjfiu8oX
+         FZ6r2IPT2uITrh8NDGKvHjfDJq0/74VUtMBctMNsck+6bv6RoZIxNceb4vL3uYRLo/5d
+         00H64mwoN+q44qsI4Xwpi4W5hX0kpIUdV/MvKk1IGnbZr6d02snkfT1BmaffuLxXdsAC
+         SDRcH7O6v/1KLD9dSmjeHU6PRvHt2Z70gpNJeENwk9X4oCZkR/9PK6o5qLx9aM73cr3I
+         +wtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739547960; x=1740152760;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ycd2hQRX4+MoV0caObCZeDE/nlrKiGekQLF9H7HPZGc=;
+        b=WejAdGnrMiU9PFx9joxupr9a6a3DG4L5ncZ+40c+Ud005sRhGyUaSD9Ew43LTd8jqq
+         C5QIp+sswX5LiBdRZxt/DSoAYSrYJ+QInD2XaTGe9mZk5yh3iuWQNz1a7JhWTlArVp4Z
+         GOMMMEZMroticcIUBYvgI57DOn39E7kg8hckZdIjG1hKdNOhrGL4kADVoA0yaXpaYadg
+         jak2UVLwBvg6STP//L1xv/cwhnrfXxEja9gVR2Ma7lZZ32q6+KojbNyZeC+jtjRyFphQ
+         bGIvVi2qVytXMGVnJ8CHRooLKy55cnneLvb7t1YA8xDaHQPPjKgRuU8dmqIXsWps6mW4
+         ntqw==
+X-Forwarded-Encrypted: i=1; AJvYcCV22EenYOOygWRlKYjXsvEixT31Vq1YyrxODZGaoksGstO5tNIC4lvkcfcxzcQrEwgCqJ9FVF5oIqMa@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBpGwCQzQ05LJ+OxhbOVXfFAEV+mAf8I0TMPF4SXzsv+t0nldH
+	nmBgNdNeBa+tMQa84MCrDLm4bEDusRs40PCzPM8MclPIwDrV2qTo
+X-Gm-Gg: ASbGncsXqkghWkOdyMr/05hztoXVO6IzkupjOI91vWaqiVi4pEfeJH2WJTqYmK87YVz
+	O1dJqlwYzj+ZaXD+NIVc7zvptrg5zPuO1mBCEMuL/99mY1f+HELWszBc+piaxOqEWjyPUzNyXPo
+	R8rwRarWVreZZAefT8IabOJPj1oqVc6EwkTHyXtmE/WGZNtXNHyIiXk7iU+GafBinWRtIJ+eQNv
+	ZNusPrM9sBBnxYR197jX2D5iDBTLMBnI7flPDQSbVC5zmhtnCDEbK5K4Hm+zAw4rWjsVwjfXBcW
+	ZrS45BmXyKchlIA=
+X-Google-Smtp-Source: AGHT+IEbhVggH7lAbaMjzwEbOSlqEqdNkutZljo10EJI1cHWpmYtYE8XuonJl2V4uCPDhcB9pw/c2Q==
+X-Received: by 2002:a05:6902:f0e:b0:e5d:a785:464 with SMTP id 3f1490d57ef6-e5da7850564mr5151137276.18.1739547959974;
+        Fri, 14 Feb 2025 07:45:59 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:72::])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e5dadb6d819sm1085360276.0.2025.02.14.07.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 07:45:59 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: gourry@gourry.net,
+	hyeonggon.yoo@sk.com,
+	honggyu.kim@sk.com,
+	akpm@linux-foundation.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	gregkh@linuxfoundation.org,
+	rakie.kim@sk.com,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com,
+	horen.chuang@linux.dev,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.org,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5] mm/mempolicy: Weighted Interleave Auto-tuning
+Date: Fri, 14 Feb 2025 07:45:48 -0800
+Message-ID: <20250214154557.329912-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <87tt8y1vem.fsf@DESKTOP-5N7EMDA>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iommu: Handle race with default domain setup
-To: Robin Murphy <robin.murphy@arm.com>,
-        Lorenzo Pieralisi
-	<lpieralisi@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla
-	<sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Danilo Krummrich <dakr@kernel.org>, Stuart
- Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Nipun
- Gupta <nipun.gupta@amd.com>,
-        Nikhil Agarwal <nikhil.agarwal@amd.com>,
-        Joerg
- Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Rob Herring
-	<robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-        Bjorn Helgaas
-	<bhelgaas@google.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <iommu@lists.linux.dev>,
-        <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <cover.1739486121.git.robin.murphy@arm.com>
- <87bd187fa98a025c9665747fbfe757a8bf249c18.1739486121.git.robin.murphy@arm.com>
-Content-Language: en-US
-From: Charan Teja Kalla <quic_charante@quicinc.com>
-In-Reply-To: <87bd187fa98a025c9665747fbfe757a8bf249c18.1739486121.git.robin.murphy@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 8MPMEM59TFtEpOVHpTq1BK9dVBJIHPE2
-X-Proofpoint-ORIG-GUID: 8MPMEM59TFtEpOVHpTq1BK9dVBJIHPE2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_05,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 mlxlogscore=999 spamscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502140095
+Content-Transfer-Encoding: 8bit
 
-Thanks a lot for posting these patches, Robin.
+On Thu, 13 Feb 2025 09:32:49 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
 
-On 2/14/2025 5:18 AM, Robin Murphy wrote:
->  drivers/iommu/iommu.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 > 
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 870c3cdbd0f6..2486f6d6ef68 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -3097,6 +3097,11 @@ int iommu_device_use_default_domain(struct device *dev)
->  		return 0;
->  
->  	mutex_lock(&group->mutex);
-> +	/* We may race against bus_iommu_probe() finalising groups here */
-> +	if (!group->default_domain) {
-> +		ret = -EPROBE_DEFER;
-> +		goto unlock_out;
-> +	}
+> > On Wed, 12 Feb 2025 10:49:32 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
+> >
+> >> Hi, Joshua,
+> >> 
 
-We just hit the issue again even after picking up this patch, though
-very hard to reproduce, on 6.6 LTS.
+[...snip...]
 
-After code inspection, it seems the issue is that - default domain is
-setup in the bus_iommu_probe() before hitting of this replay.
+> >> > +		weighted_interleave_auto = false;
+> >> > +		return count;
+> >> > +	} else if (!sysfs_streq(buf, "Y") && !sysfs_streq(buf, "1")) {
+> >> > +		return -EINVAL;
+> >> > +	}
+> >> > +
+> >> > +	new_iw = kcalloc(nr_node_ids, sizeof(u8), GFP_KERNEL);
+> >> > +	if (!new_iw)
+> >> > +		return -ENOMEM;
+> >> > +
+> >> > +	mutex_lock(&iw_table_lock);
+> >> > +	bw = node_bw_table;
+> >> > +
+> >> > +	if (!bw) {
+> >> > +		mutex_unlock(&iw_table_lock);
+> >> > +		kfree(new_iw);
+> >> > +		return -ENODEV;
+> >> > +	}
+> >> > +
+> >> > +	old_iw = rcu_dereference_protected(iw_table,
+> >> > +					   lockdep_is_held(&iw_table_lock));
+> >> > +
+> >> > +	reduce_interleave_weights(bw, new_iw);
+> >> > +	rcu_assign_pointer(iw_table, new_iw);
+> >> > +	mutex_unlock(&iw_table_lock);
+> >> > +
+> >> > +	synchronize_rcu();
+> >> > +	kfree(old_iw);
+> >> > +
+> >> > +	weighted_interleave_auto = true;
+> >> 
+> >> Why assign weighted_interleave_auto after synchronize_rcu()?  To reduce
+> >> the race window, it's better to change weighted_interleave_auto and
+> >> iw_table together?  Is it better to put them into a data structure and
+> >> change them together always?
+> >> 
+> >>         struct weighted_interleave_state {
+> >>                 bool weighted_interleave_auto;
+> >>                 u8 iw_table[0]
+> >>         };
+> >
+> > I see, I think your explanation makes sense. For the first question,
+> > I think your point makes sense, so I will move the updating to be
+> > inside the rcu section.
+> >
+> > As for the combined data structure, I think that this makes sense,
+> > but I have a few thoughts. First, there are some times when we don't
+> > update both of them, like moving from auto --> manual, and whenever
+> > we just update iw_table, we don't need to update the weighted_interleave
+> > auto field. I also have a concern that this might make the code a bit
+> > harder to read, but that is just my humble opinion.
+> 
+> I think the overhead is relatively small.  With that, we can avoid the
+> inconsistency between weighted_interleave_auto and iw_table[].
+> struct_size() or struct_size_t() family helpers can be used to manage
+> the flexible array at the end of the struct.
 
-A:async client probe in platform_dma_configure(), B:bus_iommu_probe() :-
+That sounds good to me. I don't have any strong opinions about this
+change, so I am happy to combine them into a struct. I just want to
+make sure I am understanding your perspective correctly: what is the
+incosistency between weighted_interleave_auto and iw_table[]?
+If I move the weighted_interleave_auto = true statement inside the
+rcu section, will the inconsistency still be there?
 
-1) A: sets up iommu_fwspec under iommu_probe_device_lock.
+Just want to make sure so that I am not missing anything important!
 
-2) B: Sets the dev->iommu_group under iommu_probe_device_lock. Domain
-setup is deferred.
+Thank you again for your great feedback. I hope you have a happy Friday!
+Joshua
 
-3) A: Returns with out allocating the default domain, as
-dev->iommu_group is set, whose checks are also made under the same
-'iommu_probe_device_lock'. __This miss setting of the valid dev->dma_ops__.
+> ---
+> Best Regards,
+> Huang, Ying
 
-4) B: Sets up the group->default_domain under group->mutex.
+Sent using hkml (https://github.com/sjp38/hackermail)
 
-5) A: iommu_device_use_default_domain(): Relies on this
-group->default_domain, under the same mutex, to decide if need to go for
-replay, which is skipped. This is skipping the setting up of valid
-dma_ops and that's an issue.
-
-But I don't think that the same issue exists on 6.13 because of your
-patch, b67483b3c44e ("iommu/dma: Centralise iommu_setup_dma_ops()").
-bus_iommu_probe():
-     list_for_each_entry_safe(group, next, &group_list, entry) {
-		mutex_lock(&group->mutex);
-		for_each_group_device(group, gdev)
-			iommu_setup_dma_ops(gdev->dev);
-		mutex_unlock(&group->mutex);
-     }
-
-This makes the step4 above force to use the valid dma_iommu api, thus I
-see no issue when there is no probe deferral.
-
-So, I think we are good with this patch on 6.13.
-
-Now coming back to 6.6 LTS, any ideas you have here, please?
-
->  	if (group->owner_cnt) {
->  		if (group->domain != group->default_domain || group->owner ||
->  		    !xa_empty(&group->pasid_array)) {
-
-
-Thanks,
-Charan
 
