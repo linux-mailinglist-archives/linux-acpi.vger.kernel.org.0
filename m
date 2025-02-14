@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-11199-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11200-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B14A3665E
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 20:44:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD72FA366C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 21:15:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C40D1636FA
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 19:44:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6CED3AC8A9
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 20:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738E01C8620;
-	Fri, 14 Feb 2025 19:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459271DB127;
+	Fri, 14 Feb 2025 20:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="CBiZTzg5"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="lDdgc3y7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3F41C8618
-	for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 19:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD311DA63D
+	for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 20:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739562228; cv=none; b=mPnVlYrWyaoN3MhH0xZz5+07QVKsHZ+m5fZNaOWZ/rs7Fn2apCIfjxO2mWDVIlpyUspkYUOfQU2c+W5OFqjDByrFNlChrceG6NkBlE5vnKTGsWPA/dlYnJA3VoxlTGjUrYFvZBDMbsesBrFYwHO7T7yPuUlcgHpKFQ0YtA95HXU=
+	t=1739564080; cv=none; b=kHiWvd+8Mo0dLj1vKxg4S8EkgdkLpJHphfqsmjnd5e7YFF2Sn8Xrg6ZEVdISpizrJ0akSu4tXyxJxmfFM30XlLq0msZQP6ojS/Y+38yaEz3qUlsk/77yokqkCpVYMBNII9DnDH4kKEvW59b98C3F80Jrvi2XNvRztKtljsZkRY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739562228; c=relaxed/simple;
-	bh=mhtKeLm5igpgwc6h4fPK4Ajh2FAgScw0xgMCQuun79I=;
+	s=arc-20240116; t=1739564080; c=relaxed/simple;
+	bh=YNsBtJJ9+cy2UshunM7rNUNI3Qb2RchH6uhbFDj9n5E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k1K52MWWWt5Drf1b2kSrF8s7oatV81sWER0QC6FsFpKxlv5pmkRW4CDaoLv8SCSpWEcIUI10MUXFQSLcae46MqvRqKQOqXhtGu1Q95d2ltXkjQ16RJTUc4nqAOI/UoSIn7RzhxSboGJ1hYV0/dKQ8Cmv7/kKhoCIb617SOPNbQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=CBiZTzg5; arc=none smtp.client-ip=209.85.219.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=hb45u+bjhISUUG54sEDEyuH4nxE+4Sfszm5WDqjE0PaU6JB2v4Ya96q2HHXbCHYZ03cpGDYS5wHvs1Y0CN5iOIldBMek+x4fp3AjmEQctM5YrfSDhOduTUMnFXQwFv2eEfeb6qcRiB3O9zWotI5z57JkgcuFyKKJH8oiBph73rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=lDdgc3y7; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6e17d3e92d9so22532356d6.1
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 11:43:45 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c05c22d32aso424187985a.2
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 12:14:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1739562225; x=1740167025; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1739564077; x=1740168877; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=buGqXK8/ktUg8RW6l4BfFP62BuolnXWk213EnIe2HCM=;
-        b=CBiZTzg5GKUOw30Ap+23iwklRbL66ng3YJfyVAdbawwpmTWgdMIVLSVudrkXbT2t9V
-         AUNxZ6oaa6IzKAB5vUxlxm/7vEqHJWCy2Z0VrXyHmFjjVBkWpBzV+zWhACj1MpwPkXA3
-         82Iyu6YO6cYWOVlRR+wOTg2ANTejluywnZ6c6ly2SIxoC1iPmrOG33RXHNyC/5d4grN5
-         IZfJyLOLwWmbYIx3a+sbuUHeap0fvSkNFiobslWF3O4UqkWFEnu0h7WNB6bK73kwulxg
-         wVvuSIuoC/KoiQP2KbroP5G7Wn5huqOwGqIwc6BqTsKG/T7qDrB5+BIP04WmameauOUM
-         Lirw==
+        bh=aitcMe7WROI3inmWPb5j5yTibRGZT3eFja/8dsNPCSo=;
+        b=lDdgc3y71bo8L0V8hpCdEtVgcsYESprTduXIi+kFt0zRyUBJTudrWt7COhlV/BBLji
+         5ZkMyQmRRCnytLs+RviwSVnWQOUoM5cP3ErSy21ZoSWjTaurrbfAeOLlOz47ThtY1fmC
+         FUlgo2rNZt2vfHG+MFiY/pf6R6M/Ppt/VKABJ4J0S5yCZTzfNBiG/G8XHBO7ymhTkzq4
+         20ubMy9bEoplUkIsMCUNIc3rJPoNAuW8WmZphPHnp6uSlSve6YYVLYFopk6107RDJFBN
+         7obB/RiGZMO7NKpkJS8XE23hj8SP8OqV5dlORQbhZ8Cw+0rpdqFpPn+NC5hiIEfe8k0v
+         yuTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739562225; x=1740167025;
+        d=1e100.net; s=20230601; t=1739564077; x=1740168877;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=buGqXK8/ktUg8RW6l4BfFP62BuolnXWk213EnIe2HCM=;
-        b=ZG+rH2fSROZMp+dP0O9udaG8v3Qxi/xf2czvnDlBXK4erBCGC++fGVJFM/w1RD0hjI
-         fm19HYP9tCvc9h0bXU312Us/L8mjR9d1Ft/mNQkFtDaQvZmoSMDrHS3MNt/zRQq5k+Nz
-         3y9UdaUGm0e9kEhSAPVGBJyhN4QUHpzk3cKy78pTg1uaKsA5B1XQ2T5i6QGEtVyxIghx
-         C9uHQLzl5t3F8/DsOn2yWWycwaX/HTN+zHS0+Vi5W/fLCMhbiMQfwzihKq/PXBr+thw5
-         F+EahVxRXRufuIJx2aNbBaHG41VrwlNlkws1xpb50xHAuU9IYGWp3W21kpfJ048JyE98
-         8bGw==
-X-Forwarded-Encrypted: i=1; AJvYcCURTDJDT+RHVQMJY1A7snu/q8qXOPFjlyT/f+IANIb7WZ02EP0JZ/jFzc1IEYRfRhqXwNd6zUUdkw49@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwDPFpCDlyR/+4lgdaqxQdaj8Hq0GrqchXtrcTPPXZXPSg9zg0
-	/cGaZ/8Is9F1xvKvTsaFLMvmCyBei2tGufwI0JGszmAzUonwBUQQrctas3QFvpY=
-X-Gm-Gg: ASbGncvqAji070T2X16fXGLNo5noPWHe3Q+5153EALUI8skWhsQPq9nR3T48ztFFxoL
-	IjeNZMEkDnpd6e9LjNOuMFblpM8C26LldqLQyxWp3CQZaB+7l76v0dOSVLR2FcOQbSAu4YPHE5A
-	amVsjfxEh40yEhQed9Dxaoz/VK5kePUqwmU7MqEgtAwPgh9TeCNZI6t2emoLjbJsHN2lZnKbciC
-	Trr9PBzD0pD2CtTr2vjROacBN+pzIqIKcsyL5rE9dUUWvQbQ7IPNHgS10MSnjeuqLBqTkz9CRRh
-	DPWtEABkq9IQAWjmBv0gDBLw/6MB26FK9lT1oy3soZcBIQ5zSJGzAvAD9yZd+2ee
-X-Google-Smtp-Source: AGHT+IFaSyYcyF+Ryh1E4s3MGomseXTapLkA1HeMxX8nrM5eJsPF5uZrRKBhBqh/ftWJjIpaJugHyQ==
-X-Received: by 2002:ad4:5d6f:0:b0:6e4:4331:aae6 with SMTP id 6a1803df08f44-6e66cf38b4bmr7577546d6.39.1739562224840;
-        Fri, 14 Feb 2025 11:43:44 -0800 (PST)
+        bh=aitcMe7WROI3inmWPb5j5yTibRGZT3eFja/8dsNPCSo=;
+        b=qt8p83LHmHt14dL+2akX4zPMZXjWlobX+AGfmuNutJJTjyIRspQH7M+zwUZ0mllUIP
+         7Jn2M6yQTx0mB4SN/m/6e1331Gt7Et5V/Z/f9D3vH4g3nqLykTme3iRNZR2+Qdl+80Yc
+         zzsR90cUnVn2Oq1v3pS3EXufTzGFma+jTR/v/646Gl7UrO1F7tMkmgBffz4H5RHjkA0s
+         qD/G3aW+q57E/LSf1d3A68KDolkkKkWyRXBqnrfhcF0Wjn1yGac9XNZW1Y3Q0lwhZz7a
+         d8qIerOJ3gzqO0HAyEO+GHzXTg2g3k1kJ//c+yGa5ZIRKo1w0pEY5XWmKDh1x8m1j/dQ
+         LAew==
+X-Forwarded-Encrypted: i=1; AJvYcCVOFgIiEdlHCYpUNkLooN2QNWd96IH5i+03fjTvvqoS/KGvc6RuU3o7bgQRJ1BuOFwvlSE06xXsW4AF@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrbpFLsE+St2ZpJ4CGaMcTdnZG+A3ksyIixdScxGr1i6i8o+5p
+	6BYwbu1K0uMJmQLhLekKPxo3U0YAnfvalLXEI7q1/4nJI8gppkJa5bVSuZfFNdk=
+X-Gm-Gg: ASbGncvzVw5s0uocsxZo0flsC4ZIRj+J26pDOFW29Fwksq4iuHvHPcQHzGtO/MaZc/A
+	Zv2W9ZgyZ8RNUzhQxrwUn3HzG8SeXoYdy6R5SNwo9X2XLxvoU7NPxIDHr+p3w49MKokI6YMK8Jn
+	mP9NkgNmD/riv8k4cYFSQsFKnp1CiO6F6M/OPuf38CV2W7M7QbYNur2qZiDg7WeeRfiqqgA+x7c
+	ZYsFzeaKXlh3IVUp4IkPs/4BWUnEfOS+iIBwYq5oCD/RGeZVE80nbx00p1yNlgsbcfJvV3UyXsS
+	GlAEH/SmAIGhD5TII/39rzuX2c5mokT7oHfYZ41rcjlte9pw5Rujlxp8M6o15qVU
+X-Google-Smtp-Source: AGHT+IGnMpUVAQSaoCinCLx2FBIU+4N7ViIjMJqQfxMTZ4fEWvtSzvHCiXUgAsqSsNDrtdOvrjsIMg==
+X-Received: by 2002:ad4:4eed:0:b0:6d4:e0a:230e with SMTP id 6a1803df08f44-6e66ccc114cmr11243186d6.16.1739564077030;
+        Fri, 14 Feb 2025 12:14:37 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65d7a439esm24231236d6.67.2025.02.14.11.43.44
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65daffdbbsm24455776d6.99.2025.02.14.12.14.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Feb 2025 11:43:44 -0800 (PST)
+        Fri, 14 Feb 2025 12:14:36 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1tj1bD-0000000GmVK-3Ena;
-	Fri, 14 Feb 2025 15:43:43 -0400
-Date: Fri, 14 Feb 2025 15:43:43 -0400
+	id 1tj255-0000000GmgQ-3jtW;
+	Fri, 14 Feb 2025 16:14:35 -0400
+Date: Fri, 14 Feb 2025 16:14:35 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Robin Murphy <robin.murphy@arm.com>
 Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
@@ -97,10 +97,10 @@ Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	iommu@lists.linux.dev, devicetree@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH 1/2] iommu: Handle race with default domain setup
-Message-ID: <20250214194343.GE3696814@ziepe.ca>
+Subject: Re: [PATCH 2/2] iommu: Get DT/ACPI parsing into the proper probe path
+Message-ID: <20250214201435.GF3696814@ziepe.ca>
 References: <cover.1739486121.git.robin.murphy@arm.com>
- <87bd187fa98a025c9665747fbfe757a8bf249c18.1739486121.git.robin.murphy@arm.com>
+ <c2f0ae276fd5a18e1653bae8bb0c51670e35b283.1739486121.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -109,35 +109,121 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87bd187fa98a025c9665747fbfe757a8bf249c18.1739486121.git.robin.murphy@arm.com>
+In-Reply-To: <c2f0ae276fd5a18e1653bae8bb0c51670e35b283.1739486121.git.robin.murphy@arm.com>
 
-On Thu, Feb 13, 2025 at 11:48:59PM +0000, Robin Murphy wrote:
-> It turns out that deferred default domain creation leaves a subtle
-> race window during iommu_device_register() wherein a client driver may
-> asynchronously probe in parallel and get as far as performing DMA API
-> operations with dma-direct, only to be switched to iommu-dma underfoot
-> once the default domain attachment finally happens, with obviously
-> disastrous consequences. Even the wonky of_iommu_configure() path is at
-> risk, since iommu_fwspec_init() will no longer defer client probe as the
-> instance ops are (necessarily) already registered, and the "replay"
-> iommu_probe_device() call can see dev->iommu_group already set and so
-> think there's nothing to do either.
-> 
-> Fortunately we already have the right tool in the right place in the
-> form of iommu_device_use_default_domain(), which just needs to ensure
-> that said default domain is actually ready to *be* used. Deferring the
-> client probe shouldn't have too much impact, given that this only
-> happens while the IOMMU driver is probing, and thus due to kick the
-> deferred probe list again once it finishes.
-> 
-> Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/iommu/iommu.c | 5 +++++
->  1 file changed, 5 insertions(+)
+On Thu, Feb 13, 2025 at 11:49:00PM +0000, Robin Murphy wrote:
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> much just calling the same path twice. At client driver probe time,
+> dev->driver is obviously set; conversely at device_add(), or a
+> subsequent bus_iommu_probe(), any device waiting for an IOMMU really
+
+Could you put the dev->driver test into iommu_device_use_default_domain()?
+
+It looks like many of the cases are just guarding that call.
+
+> should *not* have a driver already, so we can use that as a condition to
+> disambiguate the two cases, and avoid recursing back into the IOMMU core
+> at the wrong times.
+
+Which sounds like this:
+
+> +		mutex_unlock(&iommu_probe_device_lock);
+> +		dev->bus->dma_configure(dev);
+> +		mutex_lock(&iommu_probe_device_lock);
+> +	}
+
+Shouldn't call iommu_device_use_default_domain() ?
+
+But... I couldn't guess what the problem with calling it is?
+
+In the not-probed case it will see dev->iommu_group is NULL and succeed.
+
+The probed case could be prevented by checking dev->iommu_group sooner
+in __iommu_probe_device()?
+
+Anyhow, the approach seems OK
+
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 9f4efa8f75a6..42b8f1833c3c 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1619,6 +1619,9 @@ static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
+>  {
+>  	int err;
+>  
+> +	if (device_iommu_mapped(dev))
+> +		return 0;
+
+This is unlocked and outside a driver context, it should have a
+comment explaining why races with probe can't happen?
+
+> +	/*
+> +	 * For FDT-based systems and ACPI IORT/VIOT, the common firmware parsing
+> +	 * is buried in the bus dma_configure path. Properly unpicking that is
+> +	 * still a fairly big job, so for now just invoke the whole thing. Our
+> +	 * bus_iommu_probe() walk may see devices with drivers already bound,
+> +	 * but that must mean they're already configured - either probed by
+> +	 * another IOMMU, or there was no IOMMU for iommu_fwspec_init() to wait
+> +	 * for - so either way we can safely skip this and avoid worrying about
+> +	 * those recursing back here thinking they need a replay call.
+> +	 */
+> +	if (!dev->driver && dev->bus->dma_configure) {
+> +		mutex_unlock(&iommu_probe_device_lock);
+> +		dev->bus->dma_configure(dev);
+> +		mutex_lock(&iommu_probe_device_lock);
+> +	}
+> +
+> +	/*
+> +	 * At this point, either valid devices now have a fwspec, or we can
+> +	 * assume that only one of Intel, AMD, s390, PAMU or legacy SMMUv2 can
+> +	 * be present, and that any of their registered instances has suitable
+> +	 * ops for probing, and thus cheekily co-opt the same mechanism.
+> +	 */
+> +	ops = iommu_fwspec_ops(dev_iommu_fwspec_get(dev));
+> +	if (!ops)
+> +		return -ENODEV;
+> +
+>  	/* Device is probed already if in a group */
+>  	if (dev->iommu_group)
+>  		return 0;
+
+This is the test I mean, if iommu_group is set then
+dev->iommu->iommu_dev->ops is supposed to be valid too. It seems like
+it should be done earlier..
+
+> +	/*
+> +	 * And if we do now see any replay calls, they would indicate someone
+> +	 * misusing the dma_configure path outside bus code.
+> +	 */
+> +	if (dev_iommu_fwspec_get(dev) && dev->driver)
+> +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
+
+WARN_ON_ONCE or dump_stack() to get the stack trace out?
+
+> @@ -121,6 +121,9 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+>  	if (!master_np)
+>  		return -ENODEV;
+>  
+> +	if (device_iommu_mapped(dev))
+> +		return 0;
+
+Same note
+
+> @@ -151,7 +154,12 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+>  		iommu_fwspec_free(dev);
+>  	mutex_unlock(&iommu_probe_device_lock);
+>  
+> -	if (!err && dev->bus)
+> +	/*
+> +	 * If we have reason to believe the IOMMU driver missed the initial
+> +	 * iommu_probe_device() call for dev, try to fix it up. This should
+> +	 * no longer happen unless of_dma_configure() is being misused.
+> +	 */
+> +	if (!err && dev->driver)
+>  		err = iommu_probe_device(dev);
+
+This is being conservative? After some time of nobody complaining
+it can be removed?
 
 Jason
 
