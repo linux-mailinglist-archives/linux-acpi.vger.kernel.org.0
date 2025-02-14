@@ -1,355 +1,501 @@
-Return-Path: <linux-acpi+bounces-11187-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E114FA357A7
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 08:10:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEB5A35821
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 08:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64705188B56F
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 07:09:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38E537A4AEA
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 07:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23742205519;
-	Fri, 14 Feb 2025 07:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5717216600;
+	Fri, 14 Feb 2025 07:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uIuLMi//"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pVfnyg83"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2068.outbound.protection.outlook.com [40.107.100.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150AB200132;
-	Fri, 14 Feb 2025 07:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739516946; cv=fail; b=YynuLGjPidZAU/4o9mvTSI1LgFaLNmStno9e3ZK0dwVfG0xzTHoZE/jFIDLnjND8Usxy2kifRFDsuwuqHbKLi7R8XOj6R7mBjprNHL8uIa52SJqBljpEYhXgtjpwKTUZSLwnJGc8afsic0zFctOxuc2Foy3CySOUHQxv+Ec+yvQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739516946; c=relaxed/simple;
-	bh=ez4nyWF7yrazVeR7YdBEu9tfUhBu3w9TA19Frme/w/g=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
-	 In-Reply-To:Content-Type; b=D8rkAbL+sEB+Q3fM3yxYKFcJnVPlohapVO4PE3b9e5sT4SEjVQStUFNNZ/LN7muC8Ysl89Bs1XStipYwklqCLEOjU9IIXEWyG9pI4kWR4aA9PXE+c04IlMVkeohCK5JsM1n/uhXkHmaiqRGmbSoTH5mlZ3wT23ZcqiIqqVtVSQI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uIuLMi//; arc=fail smtp.client-ip=40.107.100.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iCVNEPB/AWqaw6jMvz/agFG02+41BS+IHRWd1Ix7tpBU7PLaOMnJChWjmh/azlU6Y8Hcj29evSk9I1Ywl4JL1VwAiKgT5wKfSWkdiQfco62y7A3eQDMt/jSmczajYEidKLYvdLeJn6oSIXwuKwiDfExzc6avXmHc0lakj54BIYUI8ViDA/U9YBFAIP5ng2JSE+iVmDa3ZahWlRj9K1o5spc7RDSTTr+qZ6flR+vp0/zOuoFpKD1KiTesjqHjnoJCE/UaJfRzp0Ff2m1S62O53GqRM9p82z9pW3IAMUEI90K5AePmVXZulLurn4xRVhgTqyoR9phhhu0dwU55bzTFvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/lxXLZqc7pg97iDq76OnyJbFKMKG5zSjpdgOPpbTHyE=;
- b=U7ffLp0ujSKzmVeja3V63SQCLjxrLtSx9WOeqZAAHJCcDR/epMqTZmoCvFD/Kh49yCFLTyyTujswv1z4rnbCt5vU/bgaA9Q1+PblXsaPAwBx5yClBl48Agy+WNPR1Laa+CrQ8ztEl0YYjbx6j+sYHSPCt35UuK5JBhqkUh2EWuPQQ9t2KVI5by6wR3P+heXPTYTKm7FLq1Vk75kegeY3QJ3Ze0GO6dqvADFbKpi3cvrxvJtjet5gaB8s3cYjv5u+sZFHOMxBL5MN7ElMAuShC+eiWszMx7WoxSln8O2yrqtfB/vj3rUhnOjh64rboeoj79qYSCMx9oAmLX0m8Z6/dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/lxXLZqc7pg97iDq76OnyJbFKMKG5zSjpdgOPpbTHyE=;
- b=uIuLMi//SfcljkRf+bMsaPSawso10TqV2mGLVFeIM23bCE0RkWC+JWxT2RWS6jxwBlLsiH7gMCq4yudwqlur8Sj5EZdAU4WQKE2naIJ3Wr1O8gkM+hX+X2MqKI8wLH39ebxAyxUhlBKFQKa073D+krca6+u6bHVXxI7//2yb5tFkSwoj9XgoZ3Afne0Hr+WLv9kKfCByJH6AMKlmOU0QAHN750LX2zf4UTPbhE0yWL0BJ21oq1YoZik+bsnY/PFGNtUtqn/qUzf8CC6CeDUk6QHqpEKkZ3P1lGG/AeCgywzGgqIL4dAqMIveQcAGjdK5YhzlFjT9UICBZg1fUfcQZA==
-Received: from BN0PR08CA0011.namprd08.prod.outlook.com (2603:10b6:408:142::33)
- by DS7PR12MB6333.namprd12.prod.outlook.com (2603:10b6:8:96::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.11; Fri, 14 Feb
- 2025 07:08:58 +0000
-Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
- (2603:10b6:408:142:cafe::c9) by BN0PR08CA0011.outlook.office365.com
- (2603:10b6:408:142::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.16 via Frontend Transport; Fri,
- 14 Feb 2025 07:08:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8445.10 via Frontend Transport; Fri, 14 Feb 2025 07:08:57 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 13 Feb
- 2025 23:08:44 -0800
-Received: from [10.41.21.79] (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 13 Feb
- 2025 23:08:38 -0800
-Message-ID: <94bdab73-adc4-4b43-9037-5639f23e3d1e@nvidia.com>
-Date: Fri, 14 Feb 2025 12:38:35 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AE52165EC;
+	Fri, 14 Feb 2025 07:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739519045; cv=none; b=ZjZhyeHYRtGTj3Xu2KmEXpYBHHZgC4fxAoisXgG6C/X+Voo4OIdNFFlaMo19iTxwIgczwLfAlx4/6OAjwGeUF2AsXqfhxYYYXhwbl/VZnAvh9OMFu7Uy9JasSeiT24eWBIuakZmMzTSZwu/p4XtYCQEhCulaZALJNSdOB6W17rE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739519045; c=relaxed/simple;
+	bh=CQ04R7o32thyXn6bddZEdJWm+5pi7eHPG15u8q+Lfmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aXwr9HFwJD8rCRlKdkvPkVps9KpVgtJDw6xx6DGOzL99xEQQ210/BdwztrxuvuUzcwihqbx+67JDqlHnlOoxje1HWm305HiZl5Kbr4l1NqYRhsIpQ2LixlhS4v9F/UduyhNjZPf59Xeb0SdDmj77pVcjASj8sjD7qiCWaF0Dkhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pVfnyg83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A26BC4CEDF;
+	Fri, 14 Feb 2025 07:44:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739519045;
+	bh=CQ04R7o32thyXn6bddZEdJWm+5pi7eHPG15u8q+Lfmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pVfnyg83XbZu+JFwBxCWU6KBKPrNrH0fZbwl6INVwMeT8XxmPkmLuOOjldQ1nInXC
+	 X1CHVFKOSWfT1WYVKrfSBD5zzwGKREh0n5V3Bcd7fmEOn1nO27QUdtzKQaH7DDrnjr
+	 dH/cpTkv4+FF9piDluxFqdSLCkAVoof5Ke85tiAN0zl5WEQglp5/UUvydOlvway+FS
+	 z/y/f2cwvj+UJ/P9kELkHa4+5btrdXJ2dKl+KjarVBzlAoBWCEvp4qeutkJqZL0sZ0
+	 PrRxenClO40lMrqHaVmQV19in6mMMdbtHBaobqMf8+uDvrHrr3v8zohLmzE/UTKlXR
+	 HAt/qyYCCXLTA==
+Date: Fri, 14 Feb 2025 09:44:00 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stuart Yoder <stuart.yoder@arm.com>
+Cc: linux-integrity@vger.kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca,
+	sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] tpm_crb: implement driver compliant to CRB over
+ FF-A
+Message-ID: <Z670QLo_FefvuNb8@kernel.org>
+References: <20250214002745.878890-1-stuart.yoder@arm.com>
+ <20250214002745.878890-2-stuart.yoder@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Sumit Gupta <sumitg@nvidia.com>
-Subject: Re: [Patch 0/5] Support Autonomous Selection mode in cppc_cpufreq
-To: "zhenglifeng (A)" <zhenglifeng1@huawei.com>, Viresh Kumar
-	<viresh.kumar@linaro.org>
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<corbet@lwn.net>, <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-	<treding@nvidia.com>, <jonathanh@nvidia.com>, <sashal@nvidia.com>,
-	<vsethi@nvidia.com>, <ksitaraman@nvidia.com>, <sanjayc@nvidia.com>,
-	<bbasu@nvidia.com>, Sumit Gupta <sumitg@nvidia.com>
-References: <20250211103737.447704-1-sumitg@nvidia.com>
- <20250211104428.dibsnxmkiluzixvz@vireshk-i7>
- <b45d0d81-e4f7-474e-a146-0075a6145cc2@huawei.com>
- <868d4c2a-583a-4cbb-a572-d884090a7134@nvidia.com>
- <8d5e0035-d8fe-49ef-bda5-f5881ff96657@huawei.com>
-Content-Language: en-US
-In-Reply-To: <8d5e0035-d8fe-49ef-bda5-f5881ff96657@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|DS7PR12MB6333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bd1155f-268e-4fdc-96e2-08dd4cc67354
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|82310400026|1800799024|13003099007|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bm1nNzBENkkzZmpMS2tqeU12NGlQUHh0dElHNlZXSmpNWlI0MjNvRXdFUmhs?=
- =?utf-8?B?bW1zTWROMlFMVkZ3S2tRVDhNWHVDMWJOTWMxQTdNZ2ozYnQ4UUFDRXNvTGRN?=
- =?utf-8?B?TkMwTHRSZXpEMDl1cTMwdXQ5dDdYZzdiUWNPMVlKN09mZVFkcytBZFMwd1h4?=
- =?utf-8?B?QnRsczgvdkwxamhEcGY3VnlmNmNKSnVDOCs2YmN1TE9BZFRSNnp4Mjd1TGJj?=
- =?utf-8?B?WGFjdkxXcjBrMzBicjZvNFRlVlV5cmhHb2hZaU0wbEw1SGVBUysreTlhb2Np?=
- =?utf-8?B?RGlXdnh1c0Y2WHJ6Sy9LR0ZXNDVJUUZyaU90bVphZzArREh0QWc0d2RwMGZu?=
- =?utf-8?B?QmtxS09DUlZzQkgwaGZwVllBdVVnMENuMCttSjJrcVBCeU9lazJPNnZVeHAy?=
- =?utf-8?B?aW1GYzVwZmpoMWpjcmZFVGhwN3VPVGZaQUV0UVNvczlrK1dVYnk4S3Nnem5r?=
- =?utf-8?B?d2RFbTYrWDJSQzZuWm5YaDVhV3Zia2Jsazc2am9GVkZnNlg4aUh1UXRYMmFs?=
- =?utf-8?B?WVpteUNmTnY3YmdLc0gzT1U0a3JIOUNmblFrWFFGRHVJbGk0czIyd29qN0hB?=
- =?utf-8?B?RUhjd3FOSjJTajdteEZYcXR0QUxiS1JCK09yLzRxT2kzLzlPQTdQNGdvWjFW?=
- =?utf-8?B?MWhEOWJHS2s4emZaamFuQTFlNHN2N2RhNUxYUUc2YVVUc0lleUQ2bkxOU1I2?=
- =?utf-8?B?VTNRZDZmaTFDbDFlczRnZUNPNE9GWFJjbXU0SnJwU01yVTlFN0F1RFJlbjR1?=
- =?utf-8?B?VUFGR3NzK01pTDlHRkZZQ2dtTFFtbzgyVDEvQ084cjBwbTdHR2FkK01GZFpI?=
- =?utf-8?B?TDkvdEI5Q1V3UGlQN1RES25CMGYrNS9EZ0N4ajFWNEVJckVBYlNHcEJzM1pa?=
- =?utf-8?B?clpzaVIvMHhIN3h5N05SUGpqUTFOM1E4T0xGWkJCTVM2cDJ1MEpjeEo0enJk?=
- =?utf-8?B?Z1BrNjNtRm9ocmNuYldaRW1qbVpZb0RvckFTT0s3WGQrWnhrRjhuTXZxRUxG?=
- =?utf-8?B?aDRqZDRkUndDQ2JzRWczaTlnSGgwclpZWVRpOTVCM0pJNVBuY2ljeHVXZFZp?=
- =?utf-8?B?MmxzOGsrUEtEUEdsYWpteGM3Q3ltNDJPbWFKS0xuMnFkQTBjOUJLaGxTNXVC?=
- =?utf-8?B?dE04YTVnOHVQeGM0ZU83U0NXWlFrU2dzTExxSlBlZkVvVUtaV1plUHZXK04r?=
- =?utf-8?B?aFNhbmVOc3IxZlo5VU1nQVJaU3dVd1pMQjJxUjRhOEZxRm5wYnNKbmg2bk1Y?=
- =?utf-8?B?ZFNkUEhuUG1XbHlzemoyV2s3T3dWTjlteHhaKytEcEROWXVTMEVUVkpoWUZ3?=
- =?utf-8?B?eVpuajFqeUxFNHg5ZlZPbXpnUTFSUUZObnVyZjNWbDdxcHlKeWRsUzZHZXVr?=
- =?utf-8?B?MkZVWERmNGdoZDZ6cG9YZVZjVUorNHRRclZQYUs3elA1WDIxS0YzbDFuWmpK?=
- =?utf-8?B?VUcrN2Noa2tZNENZMXFqdkFnT05XRisvVGR1L1VVUDEzRnU5QWtXNW9ITWl1?=
- =?utf-8?B?UDFUM1hvN1dqRFFBS0RHZjZycURpSTBhVURiQWRwcU9VcUorSlRTK2xvdUNG?=
- =?utf-8?B?bFN6ZmZTU09Ic2lQMjhTd2JLSG8wcXRwcXdBNkNiYXNJN0hDd00yZFhVQ2xj?=
- =?utf-8?B?UDg3ZGp3WmRDc0duTm9UeVZLUnN4L09uRHF2N2cxRzdPT1owTkRLZ0pXS3dE?=
- =?utf-8?B?N3Z5YUNJWUpSdnZFeVNGcFEwNUE0QkhtVGEyTkIzbGVkSnE4MkZCdlRaUTdN?=
- =?utf-8?B?aXF5SjhzTWhvUTJWN2VEeGZrcVdHZ3BtQzZjMlRjQXRYcVI0NnlXVzhnQmQ4?=
- =?utf-8?B?YnFGcENMWlVEVWVkL1NwZWxlSkFIRVBuVkVCTEFvQTB4Z3ZZV0M4NiszN21w?=
- =?utf-8?B?SGtkYnNYbVZNTUM0TUdNakRLOWg3M1VuS2xPUk16cm1wSTJ6WUpYUCtQc1Jw?=
- =?utf-8?B?aUc0ZFpsVVlaTnBJSHZiUitPQmpMSEtJMzIrMnpsSi9UN2UyK1J0a1dtcUhB?=
- =?utf-8?Q?dT0ExiXwWAhxOI4o3jsxdMwzA65Myg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(82310400026)(1800799024)(13003099007)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 07:08:57.6762
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd1155f-268e-4fdc-96e2-08dd4cc67354
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB55.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6333
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250214002745.878890-2-stuart.yoder@arm.com>
 
+On Thu, Feb 13, 2025 at 06:27:41PM -0600, Stuart Yoder wrote:
+> The Arm specification TPM Service CRB over FF-A specification
+> defines the FF-A messages to interact with a CRB-based TPM
+> implemented as an FF-A secure partition.
+> 
+> Spec URL:
+> https://developer.arm.com/documentation/den0138/latest/
+> 
+> This driver is probed when a TPM Secure Partition is
+> discovered by the FF-A subsystem. It exposes APIs
+> used by the TPM CRB driver to send notifications to
+> the TPM.
+> 
+> Signed-off-by: Stuart Yoder <stuart.yoder@arm.com>
+> ---
+>  drivers/char/tpm/Kconfig       |   9 +
+>  drivers/char/tpm/Makefile      |   1 +
+>  drivers/char/tpm/tpm_crb_ffa.c | 310 +++++++++++++++++++++++++++++++++
+>  drivers/char/tpm/tpm_crb_ffa.h |  30 ++++
+>  4 files changed, 350 insertions(+)
+>  create mode 100644 drivers/char/tpm/tpm_crb_ffa.c
+>  create mode 100644 drivers/char/tpm/tpm_crb_ffa.h
+> 
+> diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> index 0fc9a510e059..4c85b8c00b12 100644
+> --- a/drivers/char/tpm/Kconfig
+> +++ b/drivers/char/tpm/Kconfig
+> @@ -210,6 +210,15 @@ config TCG_CRB
+>  	  from within Linux.  To compile this driver as a module, choose
+>  	  M here; the module will be called tpm_crb.
+>  
+> +config TCG_ARM_CRB_FFA
+> +	tristate "TPM CRB over Arm FF-A Transport"
+> +	depends on ARM_FFA_TRANSPORT
+> +	default y if (TCG_CRB && ARM_FFA_TRANSPORT)
+> +	help
+> +	  If the Arm FF-A transport is used to access the TPM say Yes.
+> +	  To compile this driver as a module, choose M here; the module
+> +	  will be called tpm_crb_ffa.
+> +
+>  config TCG_VTPM_PROXY
+>  	tristate "VTPM Proxy Interface"
+>  	depends on TCG_TPM
+> diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> index 9bb142c75243..2b004df8c04b 100644
+> --- a/drivers/char/tpm/Makefile
+> +++ b/drivers/char/tpm/Makefile
+> @@ -42,5 +42,6 @@ obj-$(CONFIG_TCG_IBMVTPM) += tpm_ibmvtpm.o
+>  obj-$(CONFIG_TCG_TIS_ST33ZP24) += st33zp24/
+>  obj-$(CONFIG_TCG_XEN) += xen-tpmfront.o
+>  obj-$(CONFIG_TCG_CRB) += tpm_crb.o
+> +obj-$(CONFIG_TCG_ARM_CRB_FFA) += tpm_crb_ffa.o
+>  obj-$(CONFIG_TCG_VTPM_PROXY) += tpm_vtpm_proxy.o
+>  obj-$(CONFIG_TCG_FTPM_TEE) += tpm_ftpm_tee.o
+> diff --git a/drivers/char/tpm/tpm_crb_ffa.c b/drivers/char/tpm/tpm_crb_ffa.c
+> new file mode 100644
+> index 000000000000..3bd9fd81ec21
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm_crb_ffa.c
+> @@ -0,0 +1,310 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2024 Arm Ltd.
+> + *
+> + * Maintained by: <tpmdd-devel@lists.sourceforge.net>
+> + *
+> + * This device driver implements the TPM CRB start method
+> + * as defined in the TPM Service Command Response Buffer
+> + * Interface Over FF-A (DEN0138).
+> + */
+> +
+> +#define pr_fmt(fmt) "CRB_FFA: " fmt
+> +
+> +#include <linux/arm_ffa.h>
+> +#include "tpm_crb_ffa.h"
+> +
+> +/* TPM service function status codes */
+> +#define CRB_FFA_OK			0x05000001
+> +#define CRB_FFA_OK_RESULTS_RETURNED	0x05000002
+> +#define CRB_FFA_NOFUNC			0x8e000001
+> +#define CRB_FFA_NOTSUP			0x8e000002
+> +#define CRB_FFA_INVARG			0x8e000005
+> +#define CRB_FFA_INV_CRB_CTRL_DATA	0x8e000006
+> +#define CRB_FFA_ALREADY			0x8e000009
+> +#define CRB_FFA_DENIED			0x8e00000a
+> +#define CRB_FFA_NOMEM			0x8e00000b
+> +
+> +#define CRB_FFA_VERSION_MAJOR	1
+> +#define CRB_FFA_VERSION_MINOR	0
+> +
+> +/* version encoding */
+> +#define CRB_FFA_MAJOR_VERSION_MASK  GENMASK(30, 16)
+> +#define CRB_FFA_MINOR_VERSION_MASK  GENMASK(15, 0)
+> +#define CRB_FFA_MAJOR_VERSION(x)    ((u16)(FIELD_GET(CRB_FFA_MAJOR_VERSION_MASK, (x))))
+> +#define CRB_FFA_MINOR_VERSION(x)    ((u16)(FIELD_GET(CRB_FFA_MINOR_VERSION_MASK, (x))))
+> +
+> +/*
+> + * Normal world sends requests with FFA_MSG_SEND_DIRECT_REQ and
+> + * responses are returned with FFA_MSG_SEND_DIRECT_RESP for normal
+> + * messages.
+> + *
+> + * All requests with FFA_MSG_SEND_DIRECT_REQ and FFA_MSG_SEND_DIRECT_RESP
+> + * are using the AArch32 SMC calling convention with register usage as
+> + * defined in FF-A specification:
+> + * w0:    Function ID (0x8400006F or 0x84000070)
+> + * w1:    Source/Destination IDs
+> + * w2:    Reserved (MBZ)
+> + * w3-w7: Implementation defined, free to be used below
+> + */
+> +
+> +/*
+> + * Returns the version of the interface that is available
+> + * Call register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function ID, CRB_FFA_GET_INTERFACE_VERSION
+> + * w5-w7: Reserved (MBZ)
+> + *
+> + * Return register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function status
+> + * w5:    TPM service interface version
+> + *        Bits[31:16]: major version
+> + *        Bits[15:0]: minor version
+> + * w6-w7: Reserved (MBZ)
+> + *
+> + * Possible function status codes in register w4:
+> + *     CRB_FFA_OK_RESULTS_RETURNED: The version of the interface has been
+> + *                                  returned.
+> + */
+> +#define CRB_FFA_GET_INTERFACE_VERSION 0x0f000001
+> +
+> +/*
+> + * Return information on a given feature of the TPM service
+> + * Call register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function ID, CRB_FFA_START
+> + * w5:    Start function qualifier
+> + *            Bits[31:8] (MBZ)
+> + *            Bits[7:0]
+> + *              0: Notifies TPM that a command is ready to be processed
+> + *              1: Notifies TPM that a locality request is ready to be processed
+> + * w6:    TPM locality, one of 0..4
+> + *            -If the start function qualifier is 0, identifies the locality
+> + *             from where the command originated.
+> + *            -If the start function qualifier is 1, identifies the locality
+> + *             of the locality request
+> + * w6-w7: Reserved (MBZ)
+> + *
+> + * Return register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function status
+> + * w5-w7: Reserved (MBZ)
+> + *
+> + * Possible function status codes in register w4:
+> + *     CRB_FFA_OK: the TPM service has been notified successfully
+> + *     CRB_FFA_INVARG: one or more arguments are not valid
+> + *     CRB_FFA_INV_CRB_CTRL_DATA: CRB control data or locality control
+> + *         data at the given TPM locality is not valid
+> + *     CRB_FFA_DENIED: the TPM has previously disabled locality requests and
+> + *         command processing at the given locality
+> + */
+> +#define CRB_FFA_START 0x0f000201
+> +
+> +struct tpm_crb_ffa {
+> +	struct ffa_device *ffa_dev;
+> +	u16 major_version;
+> +	u16 minor_version;
+> +	struct mutex msg_data_lock;
+> +	struct ffa_send_direct_data direct_msg_data;
+> +};
+> +
+> +static struct tpm_crb_ffa *tpm_crb_ffa;
+> +
+> +static int tpm_crb_ffa_to_linux_errno(int errno)
+> +{
+> +	int rc;
+> +
+> +	switch (errno) {
+> +	case CRB_FFA_OK:
+> +		rc = 0;
+> +		break;
+> +	case CRB_FFA_OK_RESULTS_RETURNED:
+> +		rc = 0;
+> +		break;
+> +	case CRB_FFA_NOFUNC:
+> +		rc = -ENOENT;
+> +		break;
+> +	case CRB_FFA_NOTSUP:
+> +		rc = -EPERM;
+> +		break;
+> +	case CRB_FFA_INVARG:
+> +		rc = -EINVAL;
+> +		break;
+> +	case CRB_FFA_INV_CRB_CTRL_DATA:
+> +		rc = -ENOEXEC;
+> +		break;
+> +	case CRB_FFA_ALREADY:
+> +		rc = -EEXIST;
+> +		break;
+> +	case CRB_FFA_DENIED:
+> +		rc = -EACCES;
+> +		break;
+> +	case CRB_FFA_NOMEM:
+> +		rc = -ENOMEM;
+> +		break;
+> +	default:
+> +		rc = -EINVAL;
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+> +int tpm_crb_ffa_init(void)
+> +{
+> +	if (tpm_crb_ffa == NULL)
+> +		return -ENOENT;
+> +
+> +	if (IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -ENODEV;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(tpm_crb_ffa_init);
 
+Should be documented given export [1].
 
-On 12/02/25 16:22, zhenglifeng (A) wrote:
-> External email: Use caution opening links or attachments
+> +
+> +static int __tpm_crb_ffa_send_recieve(unsigned long func_id,
+> +		unsigned long a0, unsigned long a1, unsigned long a2)
+> +{
+> +	int ret;
+> +	const struct ffa_msg_ops *msg_ops;
+
+Reverse tree-order would be easier for brain.
+
+> +
+> +	if (tpm_crb_ffa == NULL)
+
+You probably did not run checkpatch.pl with '--strict', did you? ;-)
+
+> +		return -ENOENT;
+> +
+> +	msg_ops = tpm_crb_ffa->ffa_dev->ops->msg_ops;
+> +
+> +	memset(&tpm_crb_ffa->direct_msg_data, 0x00,
+> +			sizeof(struct ffa_send_direct_data));
+> +
+> +	tpm_crb_ffa->direct_msg_data.data1 = func_id;
+> +	tpm_crb_ffa->direct_msg_data.data2 = a0;
+> +	tpm_crb_ffa->direct_msg_data.data3 = a1;
+> +	tpm_crb_ffa->direct_msg_data.data4 = a2;
+> +
+> +	ret = msg_ops->sync_send_receive(tpm_crb_ffa->ffa_dev,
+> +			&tpm_crb_ffa->direct_msg_data);
+> +	if (!ret)
+> +		ret = tpm_crb_ffa_to_linux_errno(tpm_crb_ffa->direct_msg_data.data1);
+> +
+> +	return ret;
+> +}
+> +
+> +int tpm_crb_ffa_get_interface_version(uint16_t *major, uint16_t *minor)
+> +{
+> +	int rc;
+> +
+> +	if (tpm_crb_ffa == NULL)
+> +		return -ENOENT;
+> +
+> +	if (IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -ENODEV;
+> +
+> +	if (major == NULL || minor == NULL)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&tpm_crb_ffa->msg_data_lock);
+> +
+> +	rc = __tpm_crb_ffa_send_recieve(CRB_FFA_GET_INTERFACE_VERSION, 0x00, 0x00, 0x00);
+> +	if (!rc) {
+> +		*major = CRB_FFA_MAJOR_VERSION(tpm_crb_ffa->direct_msg_data.data2);
+> +		*minor = CRB_FFA_MINOR_VERSION(tpm_crb_ffa->direct_msg_data.data2);
+> +	}
+> +
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(tpm_crb_ffa_get_interface_version);
+
+Ditto.
+
+> +
+> +int tpm_crb_ffa_start(int request_type, int locality)
+> +{
+> +	if (tpm_crb_ffa == NULL)
+> +		return -ENOENT;
+> +
+> +	if (IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -ENODEV;
+> +
+> +	guard(mutex)(&tpm_crb_ffa->msg_data_lock);
+> +
+> +	return __tpm_crb_ffa_send_recieve(CRB_FFA_START, request_type, locality, 0x00);
+> +}
+> +EXPORT_SYMBOL_GPL(tpm_crb_ffa_start);
+
+Ditto.
+
+> +
+> +static int tpm_crb_ffa_probe(struct ffa_device *ffa_dev)
+> +{
+> +	int rc;
+> +	struct tpm_crb_ffa *p;
+> +
+> +	/* only one instance of a TPM partition is supported */
+> +	if (tpm_crb_ffa && !IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -EEXIST;
+> +
+> +	tpm_crb_ffa = ERR_PTR(-ENODEV); // set tpm_crb_ffa so we can detect probe failure
+> +
+> +	if (!ffa_partition_supports_direct_recv(ffa_dev)) {
+> +		pr_err("TPM partition doesn't support direct message receive.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	p = kzalloc(sizeof(*tpm_crb_ffa), GFP_KERNEL);
+> +	if (!p)
+> +		return -ENOMEM;
+> +	tpm_crb_ffa = p;
+> +
+> +	mutex_init(&tpm_crb_ffa->msg_data_lock);
+> +	tpm_crb_ffa->ffa_dev = ffa_dev;
+> +	ffa_dev_set_drvdata(ffa_dev, tpm_crb_ffa);
+> +
+> +	/* if TPM is aarch32 use 32-bit SMCs */
+> +	if (!ffa_partition_check_property(ffa_dev, FFA_PARTITION_AARCH64_EXEC))
+> +		ffa_dev->ops->msg_ops->mode_32bit_set(ffa_dev);
+> +
+> +	/* verify compatibility of TPM service version number */
+> +	rc = tpm_crb_ffa_get_interface_version(&tpm_crb_ffa->major_version,
+> +			&tpm_crb_ffa->minor_version);
+> +	if (rc) {
+> +		pr_err("failed to get crb interface version. rc:%d", rc);
+> +		goto out;
+> +	}
+> +
+> +	pr_info("ABI version %u.%u", tpm_crb_ffa->major_version,
+> +		tpm_crb_ffa->minor_version);
+> +
+> +	if ((tpm_crb_ffa->major_version != CRB_FFA_VERSION_MAJOR) ||
+> +	    (tpm_crb_ffa->minor_version < CRB_FFA_VERSION_MINOR)) {
+> +		pr_err("Incompatible ABI version");
+> +		goto out;
+> +	}
+> +
+> +	return 0;
+> +
+> +out:
+> +	kfree(tpm_crb_ffa);
+> +	tpm_crb_ffa = ERR_PTR(-ENODEV);
+> +	return -EINVAL;
+> +}
+> +
+> +static void tpm_crb_ffa_remove(struct ffa_device *ffa_dev)
+> +{
+> +	kfree(tpm_crb_ffa);
+> +	tpm_crb_ffa = NULL;
+> +}
+> +
+> +static const struct ffa_device_id tpm_crb_ffa_device_id[] = {
+> +	/* 17b862a4-1806-4faf-86b3-089a58353861 */
+> +	{ UUID_INIT(0x17b862a4, 0x1806, 0x4faf,
+> +		    0x86, 0xb3, 0x08, 0x9a, 0x58, 0x35, 0x38, 0x61) },
+> +	{}
+> +};
+> +
+> +static struct ffa_driver tpm_crb_ffa_driver = {
+> +	.name = "ffa-crb",
+> +	.probe = tpm_crb_ffa_probe,
+> +	.remove = tpm_crb_ffa_remove,
+> +	.id_table = tpm_crb_ffa_device_id,
+> +};
+> +
+> +module_ffa_driver(tpm_crb_ffa_driver);
+> +
+> +MODULE_AUTHOR("Arm");
+> +MODULE_DESCRIPTION("FFA CRB driver");
+> +MODULE_VERSION("1.0");
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/char/tpm/tpm_crb_ffa.h b/drivers/char/tpm/tpm_crb_ffa.h
+> new file mode 100644
+> index 000000000000..da73c299c48c
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm_crb_ffa.h
+> @@ -0,0 +1,30 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2024 Arm Ltd.
+> + *
+> + * Authors:
+> + * Stuart Yoder <stuart.yoder@arm.com>
+> + *
+> + * Maintained by: <tpmdd-devel@lists.sourceforge.net>
+
+Please, rip off this authors and maintainers clutter:
+
+1. Git maintains authorship
+2. MAINTAINERS takes care of the rest.
+
+> 
+> + *
+> + * This device driver implements the TPM CRB start method
+> + * as defined in the TPM Service Command Response Buffer
+> + * Interface Over FF-A (DEN0138).
+> + */
+> +#ifndef _TPM_CRB_FFA_H
+> +#define _TPM_CRB_FFA_H
+> +
+> +#if IS_ENABLED(CONFIG_TCG_ARM_CRB_FFA)
+> +int tpm_crb_ffa_init(void);
+> +int tpm_crb_ffa_get_interface_version(uint16_t *major, uint16_t *minor);
+> +int tpm_crb_ffa_start(int request_type, int locality);
+> +#else
+> +static inline int tpm_crb_ffa_init(void) { return 0; }
+> +static inline int tpm_crb_ffa_get_interface_version(uint16_t *major, uint16_t *minor) { return 0; }
+> +static inline int tpm_crb_ffa_start(int request_type, int locality) { return 0; }
+> +#endif
+> +
+> +#define CRB_FFA_START_TYPE_COMMAND 0
+> +#define CRB_FFA_START_TYPE_LOCALITY_REQUEST 1
+> +
+> +#endif
+> -- 
+> 2.34.1
 > 
 > 
-> On 2025/2/11 22:08, Sumit Gupta wrote:
->>
->>
->>>
->>> On 2025/2/11 18:44, Viresh Kumar wrote:
->>>> On 11-02-25, 16:07, Sumit Gupta wrote:
->>>>> This patchset supports the Autonomous Performance Level Selection mode
->>>>> in the cppc_cpufreq driver. The feature is part of the existing CPPC
->>>>> specification and already present in Intel and AMD specific pstate
->>>>> cpufreq drivers. The patchset adds the support in generic acpi cppc
->>>>> cpufreq driver.
->>>>
->>>> Is there an overlap with:
->>>>
->>>> https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
->>>>
->>>> ?
->>>
->>> Ha, it looks like we're doing something very similar.
->>>
->>
->> Hi Viresh,
->>
->> Thank you for pointing to [1].
->>
->> There seems to be some common points about updating the 'energy_perf'
->> and 'auto_sel' registers for autonomous mode but the current patchset
->> has more comprehensive changes to support Autonomous mode with the
->> cppc_cpufreq driver.
->>
->> The patches in [1]:
->> 1) Make the cpc register read/write API’s generic and improves error
->>     handling for 'CPC_IN_PCC'.
->> 2) Expose sysfs under 'cppc_cpufreq_attr' to update 'auto_select',
->>     'auto_act_window' and 'epp' registers.
->>
->> The current patch series:
->> 1) Exposes sysfs under 'cppc_attrs' to keep CPC registers together.
->> 2) Updates existing API’s to use new registers and creates new API
->>     with similar semantics to get all perf_ctrls.
->> 3) Renames some existing API’s for clarity.
->> 4) Use these existing API’s from acpi_cppc sysfs to update the CPC
->>     registers used in Autonomous mode:
->>     'auto_select', 'epp', 'min_perf', 'max_perf' registers.
->> 5) Add separate 'cppc_cpufreq_epp' instance of the 'cppc_cpufreq'
->>     driver to apply different limit and policy for Autonomous mode.
->>     Having it separate will avoid confusion between SW and HW mode.
->>     Also, it will be easy to scale and add new features in future
->>     without interference. Similar approach is used in Intel and AMD
->>     pstate drivers.
->>
->> Please share inputs about the preferred approach.
->>
->> Best Regards,
->> Sumit Gupta
->>
->> [1] https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
->>
->>
-> 
-> Hi Sumit,
-> 
-> Thanks for upstreaming this.
-> 
-> I think the changes to cppc_acpi in this patchset is inappropriate.
-> 
-> 1) cppc_attrs are common sysfs for any system that supports CPPC. That
-> means, these interfaces would appear even if the cpufreq driver has already
-> managing it, e.g. amd-pstate and cppc_cpufreq. This would create multiple
-> interfaces to modify the same CPPC regs, which may probably introduce
-> concurrency and data consistency issues. Instead, exposing the interfaces
-> under cppc_cpufreq_attr decouples the write access to CPPC regs.
-> 
 
-Hi Lifeng,
+[1] https://www.kernel.org/doc/Documentation/kernel-doc-nano-HOWTO.txt
 
-I think its more appropriate to keep all the CPC registers together
-instead of splitting the read only registers to the acpi_cppc sysfs
-and read/write registers to the cpufreq sysfs.
-
-Only the EPP register is written from Intel and AMD.
-  $ grep cpufreq_freq_attr_rw drivers/cpufreq/* | grep -v scaling
-  drivers/cpufreq/acpi-cpufreq.c:cpufreq_freq_attr_rw(cpb);
- 
-drivers/cpufreq/amd-pstate.c:cpufreq_freq_attr_rw(energy_performance_preference);
- 
-drivers/cpufreq/intel_pstate.c:cpufreq_freq_attr_rw(energy_performance_preference);
-
-We are currently updating four registers and there can be more in
-future like 'auto_act_window' update attribute in [1].
-Changed to make this conditional with 'ifdef CONFIG_ACPI_CPPC_CPUFREQ'
-to not create attributes for Intel/AMD.
-
-  +++ b/drivers/acpi/cppc_acpi.c
-  @@ static struct attribute *cppc_attrs[] = {
-          &lowest_freq.attr,
-  +#ifdef CONFIG_ACPI_CPPC_CPUFREQ
-          &max_perf.attr,
-          &min_perf.attr,
-          &perf_limited.attr,
-          &auto_activity_window.attr,
-          &energy_perf.attr,
-  +#endif
-
-> 2) It's inappropriate to call cpufreq_cpu_get() in cppc_acpi. This file
-> currently provides interfaces for cpufreq drivers to use. It has no ABI
-> dependency on cpufreq at the moment.
-> 
-
-cpufreq_cpu_get() is already used by multiple non-cpufreq drivers.
-So, don't think its a problem.
-  $ grep -inr "= cpufreq_cpu_get(.*;" drivers/*| grep -v "cpufreq/"|wc -l
-  10
-
-> Apart from the changes to cppc_acpi, I think the whole patchset in [1] can
-> be independent to this patchset. In other words, adding the
-> cppc_cpufreq_epp_driver could be standalone to discuss. I think combining
-> the use of ->setpolicy() and setting EPP could be a use case? Could you
-> explain more on the motivation of adding a new cppc_cpufreq_epp_driver?
-> 
-
-With 'cppc_cpufreq_epp_driver', we provide an easy option to boot all
-CPU's in auto mode with right epp and policy min/max equivalent of
-{min|max}_perf. The mode can be found clearly with scaling_driver node. 
-Separating the HW and SW mode based on driver instance also
-makes it easy to scale later.
-Advanced users can program sysfs to switch individual CPU's in and out
-of the HW mode. We can update policy min/max values accordingly.
-In this case, there can be some CPU's in SW mode with epp driver 
-instance. But a separate instance will be more convenient for the
-users who want all CPU's either in HW mode or in SW mode than having
-to explicitly set all the values correctly.
-
-Regards,
-Sumit Gupta
-
-> [1] https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
-> 
-> Regards,
-> Lifeng
-> 
->>>>
->>>>> It adds a new 'cppc_cpufreq_epp' instance of the 'cppc_cpufreq' driver
->>>>> for supporting the Autonomous Performance Level Selection and Energy
->>>>> Performance Preference (EPP).
->>>>> Autonomous selection will get enabled during boot if 'cppc_auto_sel'
->>>>> boot argument is passed or the 'Autonomous Selection Enable' register
->>>>> is already set before kernel boot. When enabled, the hardware is
->>>>> allowed to autonomously select the CPU frequency within the min and
->>>>> max perf boundaries using the Engergy Performance Preference hints.
->>>>> The EPP values range from '0x0'(performance preference) to '0xFF'
->>>>> (energy efficiency preference).
->>>>>
->>>>> It also exposes the acpi_cppc sysfs nodes to update the epp, auto_sel
->>>>> and {min|max_perf} registers for changing the hints to hardware for
->>>>> Autonomous selection.
->>>>>
->>>>> In a followup patch, plan to add support to dynamically switch the
->>>>> cpufreq driver instance from 'cppc_cpufreq_epp' to 'cppc_cpufreq' and
->>>>> vice-versa without reboot.
->>>>>
->>>>> The patches are divided into below groups:
->>>>> - Patch [1-2]: Improvements. Can be applied independently.
->>>>> - Patch [3-4]: sysfs store nodes for Auto mode. Depend on Patch [1-2].
->>>>> - Patch [5]: Support for 'cppc_cpufreq_epp'. Uses a macro from [3].
->>>>>
->>>>> Sumit Gupta (5):
->>>>>     ACPI: CPPC: add read perf ctrls api and rename few existing
->>>>>     ACPI: CPPC: expand macro to create store acpi_cppc sysfs node
->>>>>     ACPI: CPPC: support updating epp, auto_sel and {min|max_perf} from
->>>>>       sysfs
->>>>>     Documentation: ACPI: add autonomous mode ctrls info in cppc_sysfs.txt
->>>>>     cpufreq: CPPC: Add cppc_cpufreq_epp instance for Autonomous mode
->>>>>
->>>>>    Documentation/admin-guide/acpi/cppc_sysfs.rst |  28 ++
->>>>>    .../admin-guide/kernel-parameters.txt         |  11 +
->>>>>    drivers/acpi/cppc_acpi.c                      | 311 ++++++++++++++++--
->>>>>    drivers/cpufreq/cppc_cpufreq.c                | 260 ++++++++++++++-
->>>>>    include/acpi/cppc_acpi.h                      |  19 +-
->>>>>    5 files changed, 572 insertions(+), 57 deletions(-)
->>>>
->>>
-> 
+BR, Jarkko
 
