@@ -1,194 +1,359 @@
-Return-Path: <linux-acpi+bounces-11195-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11196-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A01A36227
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 16:47:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6872FA3637B
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 17:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7589B1703C7
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 15:46:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F9F83A5D8F
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 16:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF698266F19;
-	Fri, 14 Feb 2025 15:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40439262816;
+	Fri, 14 Feb 2025 16:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejFSEz94"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="ZBJ4GsS/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4DD267385
-	for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 15:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875261519BF;
+	Fri, 14 Feb 2025 16:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739547962; cv=none; b=udcG3RWMh5vosg+9zxmRbkyJ4DnGuCSd3qA+5SSv52ue1sEKGKMWTS9JSpyq2+D3GFBGrcAapEOAVJLMZxUF0RrIp7bF+VAwIvJgkTUsBJzziiXFkHLf16dq0bh7x44mDMGTXxlDDJ7DyEAvVQf1KE+yax6BPs7YqY4ETqkGT2E=
+	t=1739551624; cv=none; b=sZRD9gYbDwYJ2EEaoVIrKuHkbECF5MsMl/dFwxBJ83tFvuYmBOt0N/qGdtrb7x/lL57encqWRnTcnSEKgnsrmRIRVP+1jDNjKvkMMDc24HuztOW+Ol78RcmEvFx79YvUoGdxJrEequbZiNxf69F8L3O20MmmdhMlK08TcXik2d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739547962; c=relaxed/simple;
-	bh=gtnOC9laOvVmIp+eh36F+/EweRzKrpcKx8mKxySFux4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8iMTWVLprXHUQq+bCG+k9rNo4xLDsM1xSXIykJhTWeJxTPDIMfynvV0y1R8v3bh5Vs5uYLwBnBmTqv7gxyZXpAwgvLgdKEQfPajeaZcF/6usj6g+UqzKVoUzDq39V6xMvYS0LP9BD1316/7hxr48P95urLeXbxu1tg4HSGcdJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ejFSEz94; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e5dbdbdaeedso719519276.2
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Feb 2025 07:46:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739547960; x=1740152760; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ycd2hQRX4+MoV0caObCZeDE/nlrKiGekQLF9H7HPZGc=;
-        b=ejFSEz94THW4NC/+QfIaH1M53hFxLjHVQQO5pyaOWVyXT2SCWpxV6Ngw8PkE37N1eq
-         7kVsrBYWz90Her9MGiIkUK0YGm7OuXdEXL+vMeLQmOAaE7uYoK1cIMeY6e9xgjfiu8oX
-         FZ6r2IPT2uITrh8NDGKvHjfDJq0/74VUtMBctMNsck+6bv6RoZIxNceb4vL3uYRLo/5d
-         00H64mwoN+q44qsI4Xwpi4W5hX0kpIUdV/MvKk1IGnbZr6d02snkfT1BmaffuLxXdsAC
-         SDRcH7O6v/1KLD9dSmjeHU6PRvHt2Z70gpNJeENwk9X4oCZkR/9PK6o5qLx9aM73cr3I
-         +wtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739547960; x=1740152760;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ycd2hQRX4+MoV0caObCZeDE/nlrKiGekQLF9H7HPZGc=;
-        b=WejAdGnrMiU9PFx9joxupr9a6a3DG4L5ncZ+40c+Ud005sRhGyUaSD9Ew43LTd8jqq
-         C5QIp+sswX5LiBdRZxt/DSoAYSrYJ+QInD2XaTGe9mZk5yh3iuWQNz1a7JhWTlArVp4Z
-         GOMMMEZMroticcIUBYvgI57DOn39E7kg8hckZdIjG1hKdNOhrGL4kADVoA0yaXpaYadg
-         jak2UVLwBvg6STP//L1xv/cwhnrfXxEja9gVR2Ma7lZZ32q6+KojbNyZeC+jtjRyFphQ
-         bGIvVi2qVytXMGVnJ8CHRooLKy55cnneLvb7t1YA8xDaHQPPjKgRuU8dmqIXsWps6mW4
-         ntqw==
-X-Forwarded-Encrypted: i=1; AJvYcCV22EenYOOygWRlKYjXsvEixT31Vq1YyrxODZGaoksGstO5tNIC4lvkcfcxzcQrEwgCqJ9FVF5oIqMa@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBpGwCQzQ05LJ+OxhbOVXfFAEV+mAf8I0TMPF4SXzsv+t0nldH
-	nmBgNdNeBa+tMQa84MCrDLm4bEDusRs40PCzPM8MclPIwDrV2qTo
-X-Gm-Gg: ASbGncsXqkghWkOdyMr/05hztoXVO6IzkupjOI91vWaqiVi4pEfeJH2WJTqYmK87YVz
-	O1dJqlwYzj+ZaXD+NIVc7zvptrg5zPuO1mBCEMuL/99mY1f+HELWszBc+piaxOqEWjyPUzNyXPo
-	R8rwRarWVreZZAefT8IabOJPj1oqVc6EwkTHyXtmE/WGZNtXNHyIiXk7iU+GafBinWRtIJ+eQNv
-	ZNusPrM9sBBnxYR197jX2D5iDBTLMBnI7flPDQSbVC5zmhtnCDEbK5K4Hm+zAw4rWjsVwjfXBcW
-	ZrS45BmXyKchlIA=
-X-Google-Smtp-Source: AGHT+IEbhVggH7lAbaMjzwEbOSlqEqdNkutZljo10EJI1cHWpmYtYE8XuonJl2V4uCPDhcB9pw/c2Q==
-X-Received: by 2002:a05:6902:f0e:b0:e5d:a785:464 with SMTP id 3f1490d57ef6-e5da7850564mr5151137276.18.1739547959974;
-        Fri, 14 Feb 2025 07:45:59 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:72::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e5dadb6d819sm1085360276.0.2025.02.14.07.45.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Feb 2025 07:45:59 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: gourry@gourry.net,
-	hyeonggon.yoo@sk.com,
-	honggyu.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Fri, 14 Feb 2025 07:45:48 -0800
-Message-ID: <20250214154557.329912-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <87tt8y1vem.fsf@DESKTOP-5N7EMDA>
-References: 
+	s=arc-20240116; t=1739551624; c=relaxed/simple;
+	bh=dcO+LnspWooawou45LkIT56ZhReuEcnq4wVqbmqn5wQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hlIBMuOYOGsqTnJEkMKwFzitw16Y73r/3m0vuF3JiI0AX31oB8coxtI7JjX6Pg5Y2vcWqWxCi1++3rFosca/nxNX+5G9HK5kRzWdV3OZhFLS2stNmNuJ3cIh7jd8VNkmW0kf0OEp0MGNmHiH5h0ocEoltV18vWgSpgwz4SAvLFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=ZBJ4GsS/; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1739551612; x=1740156412; i=w_armin@gmx.de;
+	bh=Tt9qSh1lGkulOcz4hTZCSW+O6b6j4iGiEVVg8EycV88=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=ZBJ4GsS/UyApJuRHajM8TBzWUMtIv055WJvZhRVGyroDBc0B/392kclsxFBMJsFs
+	 yR9ZUKn6lEHZVVvhxvjd1ohFnu5K0ztx9bhXr4/F0tqig91AW6A2Oy+dNZK0xKfV8
+	 +qQBb+NOK1JXY/zJ7iDOjA/g76jZjwgMlafnavei1c1/0ozTHSMlytGEwx8VTlnZN
+	 fT17g2Xx0SQOSBtrEwWq4FONIddgKhstAeCv2Q2Tuhd1wd7l0lg/aQfaMRnjYl/tS
+	 SYCgi0w3T4nwW1G5Sx4IDG5yWSi3Uz2K6k+J/1fv1hncjHpFiZs0nVXJHHkQavR84
+	 MIOv2fvuim+NOSD4EA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mo6v3-1t2Rw839uV-00m4pS; Fri, 14
+ Feb 2025 17:46:51 +0100
+Message-ID: <0053b236-79cc-496d-936b-5f8b12b39f10@gmx.de>
+Date: Fri, 14 Feb 2025 17:46:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] ACPI: fan: Add fan speed reporting for fans with only
+ _FST
+To: Joshua Grisham <josh@joshuagrisham.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250125100711.70977-1-josh@joshuagrisham.com>
+ <77eb01a6-2905-4776-96ce-eb936c04956b@gmx.de>
+ <CAMF+KeZrdkfwoab4zvBYJMuYaScCDFPbvijo9o6d-9CS96238g@mail.gmail.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <CAMF+KeZrdkfwoab4zvBYJMuYaScCDFPbvijo9o6d-9CS96238g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:n/PP5S+ZdZUq6qrfxCmzEc48W8gfIR2O0+QP+nmEzrYShzMm3Io
+ MmTexC3gg8GEgv0nCS40f9/h7uokKMN1SLohxyS4gM7vauTUwKylXmTPmPrCT37NDtIgBn8
+ w7+otjxuRI8zEPKPOTmg1B94X+pPSJNeaKJL+FNuzhjLmZcVaogqshpe+Sp59JP50MWkwhg
+ f0bu7RRaW7v3p9SK5nKwQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:FOIFagoj01M=;O11iVxGwMqdFV0ANPEhI/nmevBF
+ +cp5KanMT9Thk7W9j/5SSNvHF41pOsohxl4Uwd6npZZ/810bnDEu57jV3x5uyusAL1GQuA7m2
+ nP4KzVzHQn9Z7bCHNCW1m9lhRDZttAzt+OmK2LXpfo1+DKPGv6xlsyzX3Fv9znkNRJyctyC3U
+ 1ypsQafivTYvSLx4xHmADL1Zayqhs4RIK0xFY1X2oLhRgtgj2jAVhgZo2zRJ65295n4/GB3Nf
+ jwDFlCd2bCkyo+t6PtrFgYyfRUmnOM3wZmZQzwwMHSNDghnoS20iaDJaMv1UL1odlXxxMjJe5
+ CLgomKoOtETcy9m+CBU7SMnFHe+kXXb9oxjBVoOxRHnxx4L9q4xVfp8zmi1EWkh6jNLp7Lilt
+ d9PrjehbiagO4Dk46xVZnV2n7PQy67OUK967zwZpCOVogesijbVscIT4k7E+NgwtBqP3FRiYK
+ fudyK77NbO9BB4XSkHN5qcb56JzTPISlGHuULi0xggbweSdkNUiQrZr1P2eSpj7jnxqFQPwTK
+ 6sWCjX2x1qJuju6lpoROSAU0u7dTGVdZAVL3s/m31CCkM7tDFJy+qdf0yvhsJHoOaFDN8pfu6
+ 4Sit5vVFdVk+gY4/rfDsu7zOHBPyutJTENj/+9mjEZxRn3vMnPJd+baVrg+ThxUMmNAOrA5fQ
+ vTKm4HB7bh5r1QPwsjzkZFhjVjf+qb1kRHN07vedP9+5cXYb8s72zeJN6018ZdaYMkPQvCjdJ
+ 54G/Bh/uI7G4t9ccEhho0i3YC56he3mI+yoInZz9lTjtHRuCrVS9QJxdbAcxiD/w/xTqgGKjh
+ xpNQ9q38qkHyQPI2xpIqWvfdN/+zjtSA9A5iSq5/EWL9qnoC7wrUwnw3ADwpQwqEaxZ6pUAhb
+ 7Eor+PHxbKtvA3+aglGQ9+unrc8Sl47UacNmGner0FUnoElaREtEScsr/eeLN2aDuPaVZGVP+
+ cRmd+UuUXGjCyIjW96uV3YYY10VxQ4C45MHdqtxm75cAKZsm03uFeS1qZArU6VInKUHki8MZB
+ RihXmoHrmBCXKxycYSHiKHTmVlexis1sAvKTUdM3TJP68Zs24ztJHgUgOacfhh0jMJpaT+ohn
+ wB8VKteoOq8t7EKZTXvi0NTghg3HqpjRgAgv5SHQXmsxFd76to4NvhJhyP+oJe5qTGse7BMZF
+ 3vYSB71o+61/LqkgUUnXkyqYIWn2cpdyTRlmdek7oxmP+F6y7ec0MHU/cAkT2zuoKjphpZ4ZK
+ 1Jy6arblZztzvpwGv2cy3wFr25rXqnxBikTPwqo+I5+P3rklH8b/Vm0XpLzRC2Um0sqcEzA0y
+ K9Fv1AgM9o64EdxVCQ9lKCacPmH7uGSq5rEQHq+9BHs1D8ldXGD1kFpxOj60kOTzHExR0gzN8
+ EplvhR9dE0Eg2egm9DbDVNCr8SPO3nnKfbzSD2UMoQt5PPg0AxafH4g+p17ddbijCstyjHiUb
+ ygfod8DxQaH/vSntrxY/GbhQ42yk=
 
-On Thu, 13 Feb 2025 09:32:49 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
+Am 06.02.25 um 08:37 schrieb Joshua Grisham:
 
-> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
-> 
-> > On Wed, 12 Feb 2025 10:49:32 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
-> >
-> >> Hi, Joshua,
-> >> 
+> Den tors 6 feb. 2025 kl 06:05 skrev Armin Wolf <W_Armin@gmx.de>:
+>> Am 25.01.25 um 11:07 schrieb Joshua Grisham:
+>>
+>>> Add support for ACPI fans with _FST to report their speed even if they do
+>>> not support fan control.
+>>>
+>>> As suggested by Armin Wolf [1] and per the Windows Thermal Management
+>>> Design Guide [2], Samsung Galaxy Book series devices (and possibly many
+>>> more devices where the Windows guide was strictly followed) only implement
+>>> the _FST method and do not support ACPI-based fan control.
+>>>
+>>> Currently, these fans are not supported by the kernel driver but this patch
+>>> will make some very small adjustments to allow them to be supported.
+>>>
+>>> This patch is tested and working for me on a Samsung Galaxy Book2 Pro whose
+>>> DSDT (and several other Samsung Galaxy Book series notebooks which
+>>> currently have the same issue) can be found at [3].
+>> Any updates on this patch? For me it seems ready for mainline.
+>>
+>> Thanks,
+>> Armin Wolf
+>>
+> Hi Armin, thanks for checking in on this!
+>
+> For me I have no further updates that I planned or intended to send.
+> If it looks good to Rafael or anyone else who wants or needs to review
+> then I would be glad to see it applied.
+>
+> If needed then I can re-send with Armin's Reviewed-by tag inline in
+> the commit message but otherwise everything is as I would have wished
+> it to be, for what that is worth :)
+>
+> Thanks again!
+>
+> Best regards,
+> Joshua
 
-[...snip...]
+I was hoping to get Rafaels attention so that he can give your patch a closer look.
 
-> >> > +		weighted_interleave_auto = false;
-> >> > +		return count;
-> >> > +	} else if (!sysfs_streq(buf, "Y") && !sysfs_streq(buf, "1")) {
-> >> > +		return -EINVAL;
-> >> > +	}
-> >> > +
-> >> > +	new_iw = kcalloc(nr_node_ids, sizeof(u8), GFP_KERNEL);
-> >> > +	if (!new_iw)
-> >> > +		return -ENOMEM;
-> >> > +
-> >> > +	mutex_lock(&iw_table_lock);
-> >> > +	bw = node_bw_table;
-> >> > +
-> >> > +	if (!bw) {
-> >> > +		mutex_unlock(&iw_table_lock);
-> >> > +		kfree(new_iw);
-> >> > +		return -ENODEV;
-> >> > +	}
-> >> > +
-> >> > +	old_iw = rcu_dereference_protected(iw_table,
-> >> > +					   lockdep_is_held(&iw_table_lock));
-> >> > +
-> >> > +	reduce_interleave_weights(bw, new_iw);
-> >> > +	rcu_assign_pointer(iw_table, new_iw);
-> >> > +	mutex_unlock(&iw_table_lock);
-> >> > +
-> >> > +	synchronize_rcu();
-> >> > +	kfree(old_iw);
-> >> > +
-> >> > +	weighted_interleave_auto = true;
-> >> 
-> >> Why assign weighted_interleave_auto after synchronize_rcu()?  To reduce
-> >> the race window, it's better to change weighted_interleave_auto and
-> >> iw_table together?  Is it better to put them into a data structure and
-> >> change them together always?
-> >> 
-> >>         struct weighted_interleave_state {
-> >>                 bool weighted_interleave_auto;
-> >>                 u8 iw_table[0]
-> >>         };
-> >
-> > I see, I think your explanation makes sense. For the first question,
-> > I think your point makes sense, so I will move the updating to be
-> > inside the rcu section.
-> >
-> > As for the combined data structure, I think that this makes sense,
-> > but I have a few thoughts. First, there are some times when we don't
-> > update both of them, like moving from auto --> manual, and whenever
-> > we just update iw_table, we don't need to update the weighted_interleave
-> > auto field. I also have a concern that this might make the code a bit
-> > harder to read, but that is just my humble opinion.
-> 
-> I think the overhead is relatively small.  With that, we can avoid the
-> inconsistency between weighted_interleave_auto and iw_table[].
-> struct_size() or struct_size_t() family helpers can be used to manage
-> the flexible array at the end of the struct.
+Thanks,
+Armin Wolf
 
-That sounds good to me. I don't have any strong opinions about this
-change, so I am happy to combine them into a struct. I just want to
-make sure I am understanding your perspective correctly: what is the
-incosistency between weighted_interleave_auto and iw_table[]?
-If I move the weighted_interleave_auto = true statement inside the
-rcu section, will the inconsistency still be there?
-
-Just want to make sure so that I am not missing anything important!
-
-Thank you again for your great feedback. I hope you have a happy Friday!
-Joshua
-
-> ---
-> Best Regards,
-> Huang, Ying
-
-Sent using hkml (https://github.com/sjp38/hackermail)
-
+>>> [1]: https://lore.kernel.org/platform-driver-x86/53c5075b-1967-45d0-937f-463912dd966d@gmx.de
+>>> [2]: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/design-guide
+>>> [3]: https://github.com/joshuagrisham/samsung-galaxybook-extras/tree/8e3087a06b8bdcdfdd081367af4b744a56cc4ee9/dsdt
+>>>
+>>> Signed-off-by: Joshua Grisham <josh@joshuagrisham.com>
+>>> ---
+>>>
+>>> v1->v2:
+>>> - Still allow acpi4_only_fst fans to update power state on
+>>>     suspend/resume
+>>> - Fix if / else if logic error
+>>> - Also hide hwmon_power_input for acpi4_only_fst fans
+>>>
+>>> v2->v3:
+>>> - Still allow acpi4_only_fst fans to set initial power state on probe
+>>> ---
+>>>    drivers/acpi/fan.h       |  1 +
+>>>    drivers/acpi/fan_attr.c  | 37 ++++++++++++++++++++++---------------
+>>>    drivers/acpi/fan_core.c  | 22 +++++++++++++++++-----
+>>>    drivers/acpi/fan_hwmon.c | 12 ++++++++++++
+>>>    4 files changed, 52 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+>>> index 488b51e2c..d0aad88a7 100644
+>>> --- a/drivers/acpi/fan.h
+>>> +++ b/drivers/acpi/fan.h
+>>> @@ -49,6 +49,7 @@ struct acpi_fan_fst {
+>>>
+>>>    struct acpi_fan {
+>>>        bool acpi4;
+>>> +     bool acpi4_only_fst;
+>>>        struct acpi_fan_fif fif;
+>>>        struct acpi_fan_fps *fps;
+>>>        int fps_count;
+>>> diff --git a/drivers/acpi/fan_attr.c b/drivers/acpi/fan_attr.c
+>>> index f4f6e2381..d83f88429 100644
+>>> --- a/drivers/acpi/fan_attr.c
+>>> +++ b/drivers/acpi/fan_attr.c
+>>> @@ -75,15 +75,6 @@ int acpi_fan_create_attributes(struct acpi_device *device)
+>>>        struct acpi_fan *fan = acpi_driver_data(device);
+>>>        int i, status;
+>>>
+>>> -     sysfs_attr_init(&fan->fine_grain_control.attr);
+>>> -     fan->fine_grain_control.show = show_fine_grain_control;
+>>> -     fan->fine_grain_control.store = NULL;
+>>> -     fan->fine_grain_control.attr.name = "fine_grain_control";
+>>> -     fan->fine_grain_control.attr.mode = 0444;
+>>> -     status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+>>> -     if (status)
+>>> -             return status;
+>>> -
+>>>        /* _FST is present if we are here */
+>>>        sysfs_attr_init(&fan->fst_speed.attr);
+>>>        fan->fst_speed.show = show_fan_speed;
+>>> @@ -92,7 +83,19 @@ int acpi_fan_create_attributes(struct acpi_device *device)
+>>>        fan->fst_speed.attr.mode = 0444;
+>>>        status = sysfs_create_file(&device->dev.kobj, &fan->fst_speed.attr);
+>>>        if (status)
+>>> -             goto rem_fine_grain_attr;
+>>> +             return status;
+>>> +
+>>> +     if (fan->acpi4_only_fst)
+>>> +             return 0;
+>>> +
+>>> +     sysfs_attr_init(&fan->fine_grain_control.attr);
+>>> +     fan->fine_grain_control.show = show_fine_grain_control;
+>>> +     fan->fine_grain_control.store = NULL;
+>>> +     fan->fine_grain_control.attr.name = "fine_grain_control";
+>>> +     fan->fine_grain_control.attr.mode = 0444;
+>>> +     status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+>>> +     if (status)
+>>> +             goto rem_fst_attr;
+>>>
+>>>        for (i = 0; i < fan->fps_count; ++i) {
+>>>                struct acpi_fan_fps *fps = &fan->fps[i];
+>>> @@ -109,18 +112,18 @@ int acpi_fan_create_attributes(struct acpi_device *device)
+>>>
+>>>                        for (j = 0; j < i; ++j)
+>>>                                sysfs_remove_file(&device->dev.kobj, &fan->fps[j].dev_attr.attr);
+>>> -                     goto rem_fst_attr;
+>>> +                     goto rem_fine_grain_attr;
+>>>                }
+>>>        }
+>>>
+>>>        return 0;
+>>>
+>>> -rem_fst_attr:
+>>> -     sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+>>> -
+>>>    rem_fine_grain_attr:
+>>>        sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+>>>
+>>> +rem_fst_attr:
+>>> +     sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+>>> +
+>>>        return status;
+>>>    }
+>>>
+>>> @@ -129,9 +132,13 @@ void acpi_fan_delete_attributes(struct acpi_device *device)
+>>>        struct acpi_fan *fan = acpi_driver_data(device);
+>>>        int i;
+>>>
+>>> +     sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+>>> +
+>>> +     if (fan->acpi4_only_fst)
+>>> +             return;
+>>> +
+>>>        for (i = 0; i < fan->fps_count; ++i)
+>>>                sysfs_remove_file(&device->dev.kobj, &fan->fps[i].dev_attr.attr);
+>>>
+>>> -     sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+>>>        sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+>>>    }
+>>> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+>>> index 10016f52f..66aa1be64 100644
+>>> --- a/drivers/acpi/fan_core.c
+>>> +++ b/drivers/acpi/fan_core.c
+>>> @@ -211,6 +211,11 @@ static bool acpi_fan_is_acpi4(struct acpi_device *device)
+>>>               acpi_has_method(device->handle, "_FST");
+>>>    }
+>>>
+>>> +static bool acpi_fan_has_fst(struct acpi_device *device)
+>>> +{
+>>> +     return acpi_has_method(device->handle, "_FST");
+>>> +}
+>>> +
+>>>    static int acpi_fan_get_fif(struct acpi_device *device)
+>>>    {
+>>>        struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+>>> @@ -327,7 +332,12 @@ static int acpi_fan_probe(struct platform_device *pdev)
+>>>        device->driver_data = fan;
+>>>        platform_set_drvdata(pdev, fan);
+>>>
+>>> -     if (acpi_fan_is_acpi4(device)) {
+>>> +     if (acpi_fan_is_acpi4(device))
+>>> +             fan->acpi4 = true;
+>>> +     else if (acpi_fan_has_fst(device))
+>>> +             fan->acpi4_only_fst = true;
+>>> +
+>>> +     if (fan->acpi4) {
+>>>                result = acpi_fan_get_fif(device);
+>>>                if (result)
+>>>                        return result;
+>>> @@ -335,7 +345,9 @@ static int acpi_fan_probe(struct platform_device *pdev)
+>>>                result = acpi_fan_get_fps(device);
+>>>                if (result)
+>>>                        return result;
+>>> +     }
+>>>
+>>> +     if (fan->acpi4 || fan->acpi4_only_fst) {
+>>>                result = devm_acpi_fan_create_hwmon(device);
+>>>                if (result)
+>>>                        return result;
+>>> @@ -343,9 +355,9 @@ static int acpi_fan_probe(struct platform_device *pdev)
+>>>                result = acpi_fan_create_attributes(device);
+>>>                if (result)
+>>>                        return result;
+>>> +     }
+>>>
+>>> -             fan->acpi4 = true;
+>>> -     } else {
+>>> +     if (!fan->acpi4) {
+>>>                result = acpi_device_update_power(device, NULL);
+>>>                if (result) {
+>>>                        dev_err(&device->dev, "Failed to set initial power state\n");
+>>> @@ -391,7 +403,7 @@ static int acpi_fan_probe(struct platform_device *pdev)
+>>>    err_unregister:
+>>>        thermal_cooling_device_unregister(cdev);
+>>>    err_end:
+>>> -     if (fan->acpi4)
+>>> +     if (fan->acpi4 || fan->acpi4_only_fst)
+>>>                acpi_fan_delete_attributes(device);
+>>>
+>>>        return result;
+>>> @@ -401,7 +413,7 @@ static void acpi_fan_remove(struct platform_device *pdev)
+>>>    {
+>>>        struct acpi_fan *fan = platform_get_drvdata(pdev);
+>>>
+>>> -     if (fan->acpi4) {
+>>> +     if (fan->acpi4 || fan->acpi4_only_fst) {
+>>>                struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+>>>
+>>>                acpi_fan_delete_attributes(device);
+>>> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+>>> index bd0d31a39..d0668ecc2 100644
+>>> --- a/drivers/acpi/fan_hwmon.c
+>>> +++ b/drivers/acpi/fan_hwmon.c
+>>> @@ -43,6 +43,12 @@ static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_
+>>>                case hwmon_fan_input:
+>>>                        return 0444;
+>>>                case hwmon_fan_target:
+>>> +                     /*
+>>> +                      * Fans with only _FST do not support fan control.
+>>> +                      */
+>>> +                     if (fan->acpi4_only_fst)
+>>> +                             return 0;
+>>> +
+>>>                        /*
+>>>                         * When in fine grain control mode, not every fan control value
+>>>                         * has an associated fan performance state.
+>>> @@ -57,6 +63,12 @@ static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_
+>>>        case hwmon_power:
+>>>                switch (attr) {
+>>>                case hwmon_power_input:
+>>> +                     /*
+>>> +                      * Fans with only _FST do not support fan control.
+>>> +                      */
+>>> +                     if (fan->acpi4_only_fst)
+>>> +                             return 0;
+>>> +
+>>>                        /*
+>>>                         * When in fine grain control mode, not every fan control value
+>>>                         * has an associated fan performance state.
 
