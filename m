@@ -1,299 +1,161 @@
-Return-Path: <linux-acpi+bounces-11202-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11203-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107DAA36808
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 23:05:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9C0A36B68
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Feb 2025 03:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE5D172554
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Feb 2025 22:05:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9B937A4321
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Feb 2025 02:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B7D1FBEB0;
-	Fri, 14 Feb 2025 22:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1D9770FE;
+	Sat, 15 Feb 2025 02:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="doVrmrD1"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="BGWeaSuI";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Dt3EUNBN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EC61DE4EC;
-	Fri, 14 Feb 2025 22:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF84D531;
+	Sat, 15 Feb 2025 02:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739570699; cv=none; b=gvNUBiSJ9E8cYGFXZxKE1uK3BZpxlYSzInww90zjCiIs1mLjxM5zuSkUU0o4N0ggZ45Ip2a1Ga+md6Ns12JE/P/HdBnCRkwpgdym1rnZBcFESYqZ7RQhPpagvWxCrrfvKhvSJQHoKpO57ES53Sr0OtqgUVamdmYSdL9+BfDkxQA=
+	t=1739585916; cv=none; b=COnE3pQXfARWzvJ01FnbnWOjoc27jchW1ASAoq3z+RT3cGCC2s/WqP48ZImIDLueUAxrroMyo4TgOHM3N5G7sajOSZpyGjXwy88bralYThJxA69jarVLlfAtx+tfDxxiqtvZEVQV1jcvpBacl6cqxmzUoO2+WllDTpSglEEGQU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739570699; c=relaxed/simple;
-	bh=J/rKKMwC/kabnHJWcaexBk0k40NtKiKRhIuwg5IC68s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SYRGwHR4FJXVNP6AQGhu7OHc5IG1Ac5Fo5+bSYQFjuBllq/IUJjVobR8Ns4+9JhOS2jcVusAQqcvdF8UsOx8NMQk9+emFKum/P7oY/BQCCsgSZgbmGBaPAW2+T3HD7YZN3aXlNRgoNfMKZtNrq/+oE9CyDWwvQy41qc1+ENKg9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=doVrmrD1; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739570697; x=1771106697;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=J/rKKMwC/kabnHJWcaexBk0k40NtKiKRhIuwg5IC68s=;
-  b=doVrmrD1L7qlDqB8ral41x27MjdECNtnSk5CDWbNLdRCm60noMTMsX1E
-   KCgZZH2PxbKKjiR5y7Yb65OsN/6/xsKzSK76NTy3pMCy/hKtwm2/cM6WP
-   6ExcFjro3S8jIl4OTYQct5NCn6lcz+b6rg/kpqMDTmDHt1JvdyjnAZyNY
-   8BQKFsU0qpTT2YaPZP7rn9PFinKgOeG0SaCLkL/hlG/bedY9aRnx5hKCb
-   aP2JTQNchMG9Q9fWxK4akHDF/3mX7bNugJqVgZHchfJRdaQViPzfcGNPP
-   4RxUVMuDmr1Fa2WxrPm5cbqgOEI0yLpkzI0Pi5RIYnQzdW74576rhnDr0
-   w==;
-X-CSE-ConnectionGUID: EMvzS9WxRY+dZbPSL8hUyA==
-X-CSE-MsgGUID: uq1XfQnZTgum/SiIm6F2qA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="40204478"
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; 
-   d="scan'208";a="40204478"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 14:04:56 -0800
-X-CSE-ConnectionGUID: NcaBv5u4SNO3YHCvlMIpzA==
-X-CSE-MsgGUID: Til1bxf1QISv08HjLJWKAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="136794936"
-Received: from lstrano-mobl6.amr.corp.intel.com (HELO [10.125.109.34]) ([10.125.109.34])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 14:04:56 -0800
-Message-ID: <a66056cf-570c-4875-b5cf-c51e2bc488d9@intel.com>
-Date: Fri, 14 Feb 2025 15:04:52 -0700
+	s=arc-20240116; t=1739585916; c=relaxed/simple;
+	bh=4C1B8IsBhRqb49TH63Utggw8L3oBxRdkOnxFEleZItE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=kXUO3khmgEmVgYc4G1FRUi3NSX7VWRbeygysxOht57N5UwxLL88Qp4Vk6w7edR2w+iToS/mudanR6eEUlC+pTMz4PhmnSPgFhjAKgVMCZyLG3lIcjEIClq51FO2A9witKEZLA3zHdgmFs2G4k40D4qA8P1x5PCmhpUr02prbfMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=BGWeaSuI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Dt3EUNBN; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3E68E254010D;
+	Fri, 14 Feb 2025 21:18:32 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-04.internal (MEProxy); Fri, 14 Feb 2025 21:18:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1739585912;
+	 x=1739672312; bh=omhDKWPHUaEQkAzY0LeNukJciihkvBdoVj6M3o5CeGg=; b=
+	BGWeaSuIni8UcpgWiNlO4gEwIskI2QhiLWPJj3bUhgIU0rjdU1ASIDPAB7DTZq3D
+	zhIUD1ygvwc81j3fYXqnKVtgLHsTEZiwpuiiQdQCxEKMcOOKR6WhIoDWGSAtFE3Y
+	1ASOVMmBn+DY0ourg1Hzhi4qOe3EQMOjECYurIomMPIz4UxrdbtQ9D8T6UY9No6b
+	zjpHzweo9Bas3BvOpM0TjyK+dkcqKmBDtuQOB61ZSvOV7isqzfC1kMCZVH0hfSpq
+	e5dBPVnYSQGJCLT5GL1TwdhVfGpKCzzotX4Pk9fePtSo4vnxdTCMqzirLZpFq0Da
+	Jbh+xq56fsR3+U0pUtUkmw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739585912; x=
+	1739672312; bh=omhDKWPHUaEQkAzY0LeNukJciihkvBdoVj6M3o5CeGg=; b=D
+	t3EUNBN0n1ifg5zBsjiFS2516t/KN8QkOYogmVExQw94WxqUzHrbj5BxyTK4pBxi
+	aM1N5LZFMtRjgM04JUzZXaOstzHYCE+2j44CQt6WRMH3EZ+isx3mhB8AECWOHspZ
+	jA8tiYbi012S7ntTkSUh2cZij52m1DAnw3ziNNQPKR/5IFEGrElKujrcJt42eiAI
+	7aFlSJ+/3oe4KL5DmtReg/rtSlhLug9qQclgOH1j6SXlxfg5E384Yo4JaqP8Bdwf
+	fvPw9hDNVXGX6YdAHdsmGzSIqf4bDaQzLU1vugzc9o+6rRXLA7trKnIXvKgb3MZ4
+	o5kf1LCazWpQZk5kXSOhA==
+X-ME-Sender: <xms:d_mvZ5dLG-6NSjKr4bJBF44z3znNpjir56kWw2DeLSLLi_WVH2ZTBQ>
+    <xme:d_mvZ3P1stDRggKgGtxsYO7Z5hQfIYRACgeCj1JuoeSSzQD7sxVBbLWBe31ae88y_
+    tIyy2iZuRSK7_vB3tc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehudefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhephfeuvdehteeghedt
+    hedtveehuddvjeejgffgieejvdegkefhfeelheekhedvffehnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhv
+    ohesshhquhgvsggsrdgtrgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdp
+    rhgtphhtthhopehkuhhurhhtsgesghhmrghilhdrtghomhdprhgtphhtthhopeifpggrrh
+    hmihhnsehgmhigrdguvgdprhgtphhtthhopehsohihvghrsehirhhlrdhhuhdprhgtphht
+    thhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehilhhpohdrjhgrrhhvihhnvghnsehlihhnuhig
+    rdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdr
+    khgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:d_mvZygsHJwrDeNN_6CQ5oh5OtJYbJ3VzpbhYl4FkUj4PZNJqiC8BA>
+    <xmx:d_mvZy8pbnF3Rq-dxETbzvAL4RVf-lkTB3E3tl9-96YWxm19thJwSw>
+    <xmx:d_mvZ1uHfzr61kH7JfViQF6uQnrRRmLzaf_UI3O093RJHf489AKfpw>
+    <xmx:d_mvZxEAs64XzTTEqIyWrTm2C8O0iGtYwDtV8z2K2NNvarNIBOwSHQ>
+    <xmx:ePmvZ7BuThXFhSIEubQ4WgoXKgVj69Ud62Rg5Ik1xUlvC6ajW2rLcn2j>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E8FE33C0066; Fri, 14 Feb 2025 21:18:30 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2][next] UAPI: ndctl / acpi: intel: Avoid multiple
- -Wflex-array-member-not-at-end warnings
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Alison Schofield <alison.schofield@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <Z66T8tSKjVutr6of@kspp>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <Z66T8tSKjVutr6of@kspp>
-Content-Type: text/plain; charset=UTF-8
+Date: Fri, 14 Feb 2025 21:18:10 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Kurt Borja" <kuurtb@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Len Brown" <lenb@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Limonciello, Mario" <mario.limonciello@amd.com>,
+ "Armin Wolf" <W_Armin@gmx.de>, "Gergo Koteles" <soyer@irl.hu>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ linux-kernel@vger.kernel.org
+Message-Id: <9a8a5084-589d-4c45-a011-5bf4d0dfc8ba@app.fastmail.com>
+In-Reply-To: <20250212193058.32110-1-kuurtb@gmail.com>
+References: <20250212193058.32110-1-kuurtb@gmail.com>
+Subject: Re: [PATCH] ACPI: platform_profile: Fix memory leak in
+ profile_class_is_visible()
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
 
-
-On 2/13/25 5:53 PM, Gustavo A. R. Silva wrote:
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
-> 
-> So, in order to avoid ending up with flexible-array members in the
-> middle of other structs, we use the `__struct_group()` helper to
-> separate the flexible array from the rest of the members in the
-> flexible structure. We then use the newly created tagged `struct
-> nd_cmd_pkg_hdr` to replace the type of the objects causing trouble:
-> `pkg` in multiple structs.
-> 
-> Below is the before-and-after changes of the memory layout in `struct
-> nd_cmd_pkg`. This to illustrate that the use of `__struct_group()`
-> doesn't alter the layout, ensuring that user space remains unaffected.
-> 
-> Before changes:
-> struct nd_cmd_pkg {
-> 	__u64                      nd_family;            /*     0     8 */
-> 	__u64                      nd_command;           /*     8     8 */
-> 	__u32                      nd_size_in;           /*    16     4 */
-> 	__u32                      nd_size_out;          /*    20     4 */
-> 	__u32                      nd_reserved2[9];      /*    24    36 */
-> 	__u32                      nd_fw_size;           /*    60     4 */
-> 	/* --- cacheline 1 boundary (64 bytes) --- */
-> 	unsigned char              nd_payload[];         /*    64     0 */
-> 
-> 	/* size: 64, cachelines: 1, members: 7 */
-> };
-> 
-> After changes:
-> struct nd_cmd_pkg {
-> 	union {
-> 		struct {
-> 			__u64      nd_family;            /*     0     8 */
-> 			__u64      nd_command;           /*     8     8 */
-> 			__u32      nd_size_in;           /*    16     4 */
-> 			__u32      nd_size_out;          /*    20     4 */
-> 			__u32      nd_reserved2[9];      /*    24    36 */
-> 			__u32      nd_fw_size;           /*    60     4 */
-> 		};                                       /*     0    64 */
-> 		struct nd_cmd_pkg_hdr __hdr;             /*     0    64 */
-> 	};                                               /*     0    64 */
-> 	/* --- cacheline 1 boundary (64 bytes) --- */
-> 	unsigned char              nd_payload[];         /*    64     0 */
-> 
-> 	/* size: 64, cachelines: 1, members: 2 */
-> };
-> 
-> It's also worth mentioning that all members of the struct can still be
-> accessed directly, for example instance->nd_family, instance->nd_command,
-> and so on.
-> 
-> So, with these changes, fix 12 of the following warnings:
-> 
-> drivers/acpi/nfit/intel.c:692:35: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+On Wed, Feb 12, 2025, at 2:30 PM, Kurt Borja wrote:
+> If class_find_device() finds a device it's reference count is
+> incremented. Call put_device() to drop this reference before returning.
+>
+> Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI 
+> platform profile")
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 > ---
-> Changes in v2:
->  - Show changes in UAPI first. (Alison)
->  - Update changelog text --add more information about _struct_group()
->    changes. (Alison)
+>  drivers/acpi/platform_profile.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/platform_profile.c 
+> b/drivers/acpi/platform_profile.c
+> index fc92e43d0fe9..2ad53cc6aae5 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -417,8 +417,14 @@ static int profile_class_registered(struct device 
+> *dev, const void *data)
 > 
-> v1:
->  - Link: https://lore.kernel.org/linux-hardening/Z618ILbAR8YAvTkd@kspp/
+>  static umode_t profile_class_is_visible(struct kobject *kobj, struct 
+> attribute *attr, int idx)
+>  {
+> -	if (!class_find_device(&platform_profile_class, NULL, NULL, 
+> profile_class_registered))
+> +	struct device *dev;
+> +
+> +	dev = class_find_device(&platform_profile_class, NULL, NULL, 
+> profile_class_registered);
+> +	if (!dev)
+>  		return 0;
+> +
+> +	put_device(dev);
+> +
+>  	return attr->mode;
+>  }
 > 
->  include/uapi/linux/ndctl.h | 15 +++++++++------
->  drivers/acpi/nfit/intel.c  | 24 ++++++++++++------------
->  2 files changed, 21 insertions(+), 18 deletions(-)
-> 
-> diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
-> index 73516e263627..34c11644d5d7 100644
-> --- a/include/uapi/linux/ndctl.h
-> +++ b/include/uapi/linux/ndctl.h
-> @@ -227,12 +227,15 @@ enum ars_masks {
->   */
->  
->  struct nd_cmd_pkg {
-> -	__u64   nd_family;		/* family of commands */
-> -	__u64   nd_command;
-> -	__u32   nd_size_in;		/* INPUT: size of input args */
-> -	__u32   nd_size_out;		/* INPUT: size of payload */
-> -	__u32   nd_reserved2[9];	/* reserved must be zero */
-> -	__u32   nd_fw_size;		/* OUTPUT: size fw wants to return */
-> +	/* New members MUST be added within the __struct_group() macro below. */
-> +	__struct_group(nd_cmd_pkg_hdr, __hdr, /* no attrs */,
-> +		__u64   nd_family;		/* family of commands */
-> +		__u64   nd_command;
-> +		__u32   nd_size_in;		/* INPUT: size of input args */
-> +		__u32   nd_size_out;		/* INPUT: size of payload */
-> +		__u32   nd_reserved2[9];	/* reserved must be zero */
-> +		__u32   nd_fw_size;		/* OUTPUT: size fw wants to return */
-> +	);
->  	unsigned char nd_payload[];	/* Contents of call      */
->  };
->  
-> diff --git a/drivers/acpi/nfit/intel.c b/drivers/acpi/nfit/intel.c
-> index 3902759abcba..fe561ce0ddec 100644
-> --- a/drivers/acpi/nfit/intel.c
-> +++ b/drivers/acpi/nfit/intel.c
-> @@ -56,7 +56,7 @@ static unsigned long intel_security_flags(struct nvdimm *nvdimm,
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	unsigned long security_flags = 0;
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_get_security_state cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -121,7 +121,7 @@ static int intel_security_freeze(struct nvdimm *nvdimm)
->  {
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_freeze_lock cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -154,7 +154,7 @@ static int intel_security_change_key(struct nvdimm *nvdimm,
->  		NVDIMM_INTEL_SET_MASTER_PASSPHRASE :
->  		NVDIMM_INTEL_SET_PASSPHRASE;
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_set_passphrase cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -196,7 +196,7 @@ static int __maybe_unused intel_security_unlock(struct nvdimm *nvdimm,
->  {
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_unlock_unit cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -235,7 +235,7 @@ static int intel_security_disable(struct nvdimm *nvdimm,
->  	int rc;
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_disable_passphrase cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -278,7 +278,7 @@ static int __maybe_unused intel_security_erase(struct nvdimm *nvdimm,
->  	unsigned int cmd = ptype == NVDIMM_MASTER ?
->  		NVDIMM_INTEL_MASTER_SECURE_ERASE : NVDIMM_INTEL_SECURE_ERASE;
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_secure_erase cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -319,7 +319,7 @@ static int __maybe_unused intel_security_query_overwrite(struct nvdimm *nvdimm)
->  	int rc;
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_query_overwrite cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -355,7 +355,7 @@ static int __maybe_unused intel_security_overwrite(struct nvdimm *nvdimm,
->  	int rc;
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_overwrite cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -408,7 +408,7 @@ static int intel_bus_fwa_businfo(struct nvdimm_bus_descriptor *nd_desc,
->  		struct nd_intel_bus_fw_activate_businfo *info)
->  {
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_bus_fw_activate_businfo cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -519,7 +519,7 @@ static int intel_bus_fwa_activate(struct nvdimm_bus_descriptor *nd_desc)
->  {
->  	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_bus_fw_activate cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -583,7 +583,7 @@ static int intel_fwa_dimminfo(struct nvdimm *nvdimm,
->  		struct nd_intel_fw_activate_dimminfo *info)
->  {
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_fw_activate_dimminfo cmd;
->  	} nd_cmd = {
->  		.pkg = {
-> @@ -689,7 +689,7 @@ static int intel_fwa_arm(struct nvdimm *nvdimm, enum nvdimm_fwa_trigger arm)
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
->  	struct {
-> -		struct nd_cmd_pkg pkg;
-> +		struct nd_cmd_pkg_hdr pkg;
->  		struct nd_intel_fw_activate_arm cmd;
->  	} nd_cmd = {
->  		.pkg = {
+>
+> base-commit: 3e3e377dd1f300bbdd230533686ce9c9f4f8a90d
+> -- 
+> 2.48.1
+Good find. Looks good to me.
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 
+Mark
 
