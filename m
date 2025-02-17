@@ -1,169 +1,242 @@
-Return-Path: <linux-acpi+bounces-11207-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11208-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AAEA37AD2
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2025 06:17:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C057A3848D
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2025 14:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCB197A29EE
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2025 05:16:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C30916DA17
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2025 13:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA5C14A4DF;
-	Mon, 17 Feb 2025 05:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F9B21ADC9;
+	Mon, 17 Feb 2025 13:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhA4uC29"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="W5GpODPx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFBA33997;
-	Mon, 17 Feb 2025 05:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C9E21ADB7;
+	Mon, 17 Feb 2025 13:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739769461; cv=none; b=oITcc+ahJoo30kMn7quw9mhG+aIwaixxx53yJLi3O21j8TTOu9UUJL6hrFu+xzcW4adKOzeKcqDcKTzEZopC7kTlFoU/d7yGfxWkutb8oN+C61Q1exA0VciNo0+P+Zg0KwjEQw0HkzKMiBmKhjPfDqM8JJKDofXNveZT8rOdZkU=
+	t=1739798663; cv=none; b=oLPiMTVLlwaKn/oALXDmAZ6uHIHn1wPNr9CycoaOTElnrDQfT34JIJbib/rff9k62Wv0bWrws1F3mN3CJqnX3lWrVlcA/wRZk7Zwt6YDp5qN1x6eaFMm1aXpiXP1jzulGVSVyPIWPyVV7eoaCvmuThOYThh+bl3ud5xFDHlKeEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739769461; c=relaxed/simple;
-	bh=NxHshVEGtai8izhnlNmmjHiPQb35e6Sbsgg4tw41tWE=;
+	s=arc-20240116; t=1739798663; c=relaxed/simple;
+	bh=1OCrK3NUD2+CMsbtRbW9TgNSZqrLmm7B5bbYiixdAkQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f4Uhscj80jduh/HrQSGbQzuB3bLNFl9g8iZmK4hHmjR9y+O/rx2XCXwvMCwJ2O/rhuddbqwZtMTc/9g15cfuc65lehQs02KO1+ckRZu2Xd70x77YQaIKEmhQjfq+HXfC3uCr9NnZwHO1Q7cNBU/zg0+5wbkdRCnrGKqaQSNrVQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhA4uC29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF55C4CED1;
-	Mon, 17 Feb 2025 05:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739769461;
-	bh=NxHshVEGtai8izhnlNmmjHiPQb35e6Sbsgg4tw41tWE=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=SvW9EW6/oy6P0b3IKRCmvdbGXGqsWRMPCsrrRaFgAhXXjGei/UhDbgJZUgqK57UH5bL45tFaJUVhrycmlojnbpKoULj/WbzGim3CSCY1IGo1lpgn4Fe8IuEeobc39B5pZ7NuEax2bwvoLqVU17AWuSGEewwTtZ2lm5Ezx51k8FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=W5GpODPx; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B2C6140E0202;
+	Mon, 17 Feb 2025 13:24:17 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id lN4sRkwnqkdm; Mon, 17 Feb 2025 13:24:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1739798652; bh=2onwpgkhFDPCWv6IkvPW5ud97T/4ZgdkdGEXvd7PoMo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UhA4uC2991BXSMwh8z19VigmniGO2bbIQ+zZYKiksm65/U26bGd2+vADAFKYfHSu2
-	 pP7jOqSOfaNj3kL6Za1qT4BdYW0dBhZoVx0mmIdgZDt8T7FHMtEYYVzOOVm4XD5qBE
-	 J4Asfa5zE+G8UOWKvthfVBpJ05+MvENrctLmsHsoTRVxnYjkJ0AztILi/mUuTPfEUo
-	 R0FcjRKh2rCBewxxPCuy1h/myLI7WpKEThWV9sinMe8oDx+wgq8UXSBReXsjhjrHak
-	 ffeeGGVuhorRY4GRCLPJLSX3sbC2dK/7XRFeH5IuNKynkCsXi/itX7NIlyp8mpyvFr
-	 o8f5TUF75QN7w==
-Date: Mon, 17 Feb 2025 10:47:33 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Stuart Yoder <stuart.yoder@arm.com>
-Cc: Sumit Garg <sumit.garg@linaro.org>, linux-integrity@vger.kernel.org,
-	jarkko@kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca,
-	sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 0/4] Add support for the TPM FF-A start method
-Message-ID: <Z7LGbZsOh_w-HRY2@sumit-X1>
-References: <20250210232227.97761-1-stuart.yoder@arm.com>
- <CAFA6WYM7K4_toy5_n1arW4po4SOX0R9624rCgO=_MvcMeySwUA@mail.gmail.com>
- <4bb3cefa-b843-45ca-82c5-d96b13454baa@arm.com>
- <CAFA6WYM3UA9+TE8L2U5Qd8FZfaGZnbba=QzWU7fEu3LKQVm-tw@mail.gmail.com>
- <fdaa9a58-790f-4839-8db7-1b9a81eb8edf@arm.com>
- <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
- <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
+	b=W5GpODPxu+IPrJGOXGnZ1B5wGCKyMgZ+Mgc6kiVPzoOhvkKoL43D+fnagH6L3D6XF
+	 YyXcmSVFBjZh43qcK67uyF4rBOG8sp2OFeiKVINjS3yoD3HizoxrcO+X17FjO/I4PD
+	 Xajpqd7T+pGWlVuHox+hIxEaCNM0FGVFPxY8SXHrS0GRrJ1YHEYpzgGS8nDbESNwVA
+	 pIUHa3nxBuumd83oodh5wSMsqUho4qWzGG9UwdkiGgIwRdiO6EvA9AV2oXhBdg9fuZ
+	 UMolTUXcLw/457qUh5HlyYLoeKkjvaJlbSc54l3SgfoaOR/0+QK+v+vNCg1DZfNoHH
+	 aY5ebsyXqik6H/MatZNqD8YdIl1qgCAi+an4Ahq7D0cMnyaSamCQzZMKlSYj3gyUWC
+	 JFtS211IFEWiogAA+WqG3wQkX3u8OpqP49vipAWCSkrvvP4jkGpuqt/X4tjCEYNqTZ
+	 3CD3fj2gr/gF38dJGM74crPzpdJ9VNUOmHOBk96MxVdyhuj5CJBqN7hfnLygU4sjVB
+	 oo/YsBGKvhrr/j/R6yB5WJ6c+wR/csa0nQ1SH1Lydkmjxaei/3oxTyxcr0W8ynSux2
+	 ivPkA53NrV2SzUB0f9Jw1IPxzGnlH8wKhgNSl8Z95rKet4YraRinAXNMkh33XVqlDT
+	 ohdAZxfPfHbjZypFwZEqaN5I=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4217540E0176;
+	Mon, 17 Feb 2025 13:23:28 +0000 (UTC)
+Date: Mon, 17 Feb 2025 14:23:22 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>, Vandana Salve <vsalve@micron.com>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250217132322.GCZ7M4Somf2VYvbwHb@fat_crate.local>
+References: <20250109151854.GCZ3_o3rf6S24qUbtB@fat_crate.local>
+ <20250109160159.00002add@huawei.com>
+ <20250109161902.GDZ3_29rH-sQMV4n0N@fat_crate.local>
+ <20250109183448.000059ec@huawei.com>
+ <20250111171243.GCZ4Kmi5xMtY2ktCHm@fat_crate.local>
+ <20250113110740.00003a7c@huawei.com>
+ <20250121161653.GAZ4_IdYDQ9_-QoEvn@fat_crate.local>
+ <20250121181632.0000637c@huawei.com>
+ <20250122190917.GDZ5FCXetp9--djyQ6@fat_crate.local>
+ <20250206133949.00006dd6@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
+In-Reply-To: <20250206133949.00006dd6@huawei.com>
 
-On Thu, Feb 13, 2025 at 09:19:58AM -0600, Stuart Yoder wrote:
+On Thu, Feb 06, 2025 at 01:39:49PM +0000, Jonathan Cameron wrote:
+> Shiju is just finalizing a v19 + the userspace code.  So may make
+> sense to read this reply only after that is out!
+
+Saw them.
+
+So, from a cursory view, all that sysfs marshalling that happens in patch
+1 and 2 here:
+
+https://lore.kernel.org/r/20250207143028.1865-1-shiju.jose@huawei.com
+
+is not really needed, AFAICT.
+
+You can basically check CXL_EVENT_RECORD_FLAG_MAINT_NEEDED *in the kernel* and
+go and start the recovery action. rasdaemon is basically logging the error
+record and parroting it back into sysfs which is completely unnecessary - the
+kernel can simply do that.
+
+Patches 3 and 4 are probably more of a justification for the userspace
+interaction as the kernel driver is "not ready" to do recovery for <raisins>.
+
+But there I'm also questioning the presence of the sysfs interface - the 
+error record could simply be injected raw and the kernel can pick it apart.
+
+Or maybe there's a point for rasdaemon to ponder over all those different
+attributes and maybe involve some non-trivial massaging of error info in order
+to come at some conclusion and inject that as a recovery action.
+
+I guess I'm missing something and maybe there really is a valid use case to
+expose all those attributes through sysfs and use them. But I don't see
+a clear reason now...
+
+> For this comment I was referring letting the kernel do the
+> stats gathering etc. We would need to put back records from a previous boot.
+> That requires almost the same interface as just telling it to repair.
+> Note the address to physical memory mapping is not stable across boots
+> so we can't just provide a physical address, we need full description.
+
+Right.
+
+> Ah. No not that. I was just meaning the case where it is hard PPR. (hence
+> persistent for all time) Once you've done it you can't go back so after
+> N uses, any more errors mean you need a new device ASAP. That is as decision
+> with a very different threshold to soft PPR where it's a case of you
+> do it until you run out of spares, then you fall back to offlining
+> pages.  Next boot you get your spares back again and may use them
+> differently this time.
+
+Ok.
+
+> True enough. I'm not against doing things in kernel in some cases.  Even
+> then I want the controls to allow user space to do more complex things.
+> Even in the cases where the devices suggests repair, we may not want to for
+> reasons that device can't know about.
+
+Sure, as long as supporting such a use case is important enough to warrant
+supporting a user interface indefinitely.
+
+All I'm saying is, it better be worth the effort.
+
+> The interface provides all the data, and all the controls to match.
 > 
-> 
-> On 2/12/25 11:31 PM, Sumit Garg wrote:
-> > + Rob
-> > 
-> > On Thu, 13 Feb 2025 at 03:25, Stuart Yoder <stuart.yoder@arm.com> wrote:
-> > > 
-> > > 
-> > > 
-> > > On 2/12/25 1:39 AM, Sumit Garg wrote:
-> > > > On Tue, 11 Feb 2025 at 21:39, Stuart Yoder <stuart.yoder@arm.com> wrote:
-> > > > > 
-> > > > > Hi Sumit,
-> > > > > 
-> > > > > On 2/11/25 12:45 AM, Sumit Garg wrote:
-> > > > > > + Jens
-> > > > > > 
-> > > > > > Hi Stuart,
-> > > > > > 
-> > > > > > On Tue, 11 Feb 2025 at 04:52, Stuart Yoder <stuart.yoder@arm.com> wrote:
-> > > > > > > 
-> > > > > > > These patches add support for the CRB FF-A start method defined
-> > > > > > > in the TCG ACPI specification v1.4 and the FF-A ABI defined
-> > > > > > > in the Arm TPM Service CRB over FF-A (DEN0138) specification.
-> > > > > > > (https://developer.arm.com/documentation/den0138/latest/)
-> > > > > > 
-> > > > > > Nice to have a specification standardizing interface to TPM
-> > > > > > managed/implemented by the firmware. Care to add corresponding kernel
-> > > > > > documentation under Documentation/security/tpm/.
-> > > > > 
-> > > > > Yes, I can add some documentation there.
-> > > > > 
-> > > > > > BTW, we already have drivers/char/tpm/tpm_ftpm_tee.c, so do you see
-> > > > > > possibilities for an abstraction layer on top of communication channel
-> > > > > > based on either FF-A or TEE or platform bus?
-> > > > > 
-> > > > > I think the CRB and OP-TEE based messaging approaches for interacting
-> > > > > with a TZ-based TPM are fundamentally different and I don't see how
-> > > > > to harmonize them through some abstraction.
-> > > > > 
-> > > > > The OP-TEE TPM protocol copies the TPM command into a temp shared memory
-> > > > > buffer and sends a message to the TPM referencing that buffer.
-> > > > > 
-> > > > > The CRB uses a permanently shared memory carve-out that in addition
-> > > > > to the command/response data has other fields for locality control,
-> > > > > command control, status, TPM idle, etc. The only 'message' needed is
-> > > > > something to signal 'start'.  Any OS that is FF-A aware and has a
-> > > > > CRB driver can simply add a new start method, which is what this
-> > > > > patch series does.
-> > > > 
-> > > > Okay, I see how the CRB driver is closely tied to the ACPI based
-> > > > systems.
-> > > 
-> > > The CRB driver is currently probed based on ACPI, but it fundamentally
-> > > doesn't have to be.  If there was a DT binding for CRB-based
-> > > TPMs the different start methods would be defined there and the
-> > > CRB driver could support that.
-> > > 
-> > 
-> > Can't we rather enable the CRB driver itself probed based on FF-A bus
-> > and rather dynamically discover the shared memory buffer via FF-A
-> > instead? AFAIU, FF-A provides you with a discovery framework for
-> > firmware bits.
-> 
-> Yes, you could do this. But, then the TPM CRB drivers in all the
-> ACPI-based OSes (Linux, Windows) and hypervisors need to be
-> taught this new method of discovery. Adding new start methods is
-> reasonably straightforward, but changing the basic discovery
-> mechanism is a much bigger change.
+> Sure, something new might come along that needs additional controls (subchannel
+> for DDR5 showed up recently for instance and are in v19) but that extension
+> should be easy and fit within the ABI.  Those new 'features' will need
+> kernel changes and matching rasdaemon changes anyway as there is new data
+> in the error records so this sort of extension should be fine.
 
-We will be teaching every other OS or hypervisor about FF-A
-communication regardless. So it's rather about if we want to do it
-properly leveraging auto discovery mechanisms supported by FF-A or not.
+As long as you don't break existing usage, you're good. The moment you have to
+change how rasdaemon uses the interface with a new rasdaemon, then you need to
+support both.
+
+> Agreed. We need an interface we can support indefinitely - there is nothing
+> different between doing it sysfs or debugfs. That should be
+> extensible in a clean fashion to support new data and matching control.
+> 
+> We don't have to guarantee that interface supports something 'new' though
+> as our crystal balls aren't perfect, but we do want to make extending to
+> cover the new straight forward.
+
+Right.
+
+> If a vendor wants to do their own thing then good luck to them but don't expect
+> the standard software stack to work.  So far I have seen no sign of anyone
+> doing a non compliant memory expansion device and there are quite a
+> few spec compliant ones.
+
+Nowadays hw vendors use a lot of Linux to verify hw so catching an unsupported
+device early is good. But there's always a case...
 
 > 
-> > But if we still want to overload ACPI or DT with the
-> > discoverable firmware bits then it seems like an overkill here.
+> We will get weird memory devices with accelerators perhaps but then that
+> memory won't be treated as normal memory anyway and likely has a custom
+> RAS solution.  If they do use the spec defined commands, then this
+> support should work fine. Just needs a call from their drive to hook
+> it up.
 > 
-> I think it would make sense to do ACPI based discovery or FF-A
-> based discovery, but doing both I think would be overkill.  For
-> ease of OS integration ACPI is the way to go.  And, potentially
-> device tree in the future.
+> It might not be the best analogy, but I think of the CXL type 3 device
+> spec as being similar to NVME. There are lots of options, but most people
+> will run one standard driver.  There may be custom features but the
+> device better be compatible with the NVME driver if they advertise
+> the class code (there are compliance suites etc)
 
-Encoding firmware bits in ACPI/DT can be seen as an easy upstream path
-in the shorter run. But when the ACPI/DT becomes overloaded with
-information that has to be passed from firmware to the OS rather than
-purely describing hardware to the OS, it's ABI maintainability becomes
-complex. We are already dealing with DT ABI compatibility challenges
-especially the forward compatibility, so let's not make it even worse
-with firmware information that can be discovered automatically.
+Ack.
 
-The other benefit of auto discovery is that platform enablement becomes
-really smooth. Once the firmware starts supporting a particular feature
-like TPM over FF-A then the OS can discover and support it.
+Thx.
 
--Sumit
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
