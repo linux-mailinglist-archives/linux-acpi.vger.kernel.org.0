@@ -1,320 +1,362 @@
-Return-Path: <linux-acpi+bounces-11256-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11257-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B9CA3A1CE
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 16:55:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D233A3A327
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 17:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E230416EDEC
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 15:54:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67CCC167ED0
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 16:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C5B26B97D;
-	Tue, 18 Feb 2025 15:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5555A26E169;
+	Tue, 18 Feb 2025 16:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="cGMqdM0M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbF7bTxe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6925E26B2CE;
-	Tue, 18 Feb 2025 15:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739894084; cv=pass; b=Pnjgmy+h2CUi7XK7bxRgMUxe9Z7t5+SyXM18HJ+oOxKSAdcKgCvX7vzAzKBFxH5EKYJocLotHMWQ/666dcHVWuNr1DH8ESv97Z+dnMBVMREFyUTy7aKrZv1Xc08edFprdYyaXfYAzZ3kRx5b9fxuov+EPVxKqKMCoXy/EHj0odw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739894084; c=relaxed/simple;
-	bh=i8TVq23L/G8C0NS6wWJ+z2Rsn+AEhqXLbnC/4ma/k8g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IpC2xbt7ZxYD0ag4xrdFAYw5yPl5t5sVYWagtBXN+qS+Mgymrn0dN0nPy60LzBjUvkncFY6H0RjRCwJGwATGYiAmeNlSx8sdJgHwgS4AnnIVZFsDJYFWFcb16GtywV4r3L5dSQerFzE/91RWVLKQFhz188Fg3Zku+t2E6+rvU4M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=cGMqdM0M; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from localhost (83-245-197-208.elisa-laajakaista.fi [83.245.197.208])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sakkinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Yy3xW5FDtz49Pxd;
-	Tue, 18 Feb 2025 17:54:39 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1739894080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dostfF33edzIu5bbFnti7Iey1MHOViHz0E9G6QuKVtY=;
-	b=cGMqdM0Mouiyh1OwzvHufMUz7tk5U6uVdkRuz1ouRKzHNJHGzLpMaKOrry6vrU9XkHC1p7
-	1h0l22n5dInL2oND34kelcJgdtLf4Jp6r7iOw+Q46JkATYuz01Y6rKCNBI59Uqb8DnoQBs
-	z+824dWx2j27Uud32IMWHn9YooBweTlRBigawJ39QY2x6GBKQZmtj4MHXF3/yUZKcoDSaO
-	1f7V01KfYr4POHyOCVtHxeVYlEy4XKKXOwYlvk4PM49JMg5wVNozgXdNLMMfGStLZzof0j
-	fSW+rlL7Oex9utbR8+iD5+MPW6DfQep7jbKhIAdL17RiFPci7qC1KnmcWAMXUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1739894080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dostfF33edzIu5bbFnti7Iey1MHOViHz0E9G6QuKVtY=;
-	b=wL6qH6D33pak4CnJTUz+AYTEfYraSCsQEtVacWCZ+KqrRdXgZ/Fq2M2yyXVBX0p7gtJVgb
-	F45RdQby7GlHOh2aytmXAXdFjnyj9ltTpcSHEuYoODSXCIs4yqHkw2onv8Fi197iASo/Qd
-	TblAaeYiQftvXL8ByJ+8cISOl3XGJxxvvUTMyinti30sVESrlD4DMtoHX9w5LCRXXXw4vC
-	NR44S/v82u3wrGnkKFF/HaHEZ0prNJ5C8IDf8qLOYr1B4gT8boF+UeT0CHPmpWQknD/DyW
-	mea+QnHQlli75kd6AlqC1xgWrk3LsJ+3PRZXe0lJMQT3gJ41xdJmalPwVZh6eQ==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1739894080; a=rsa-sha256;
-	cv=none;
-	b=f7wG4CXxAZEsWc5vgHPQMiK1VHOTU8gYdVnmcsVQFXb0K+TRF7DZANMrKE/F5WjNpxv8w4
-	tehjEZwU9IHPHgpDdhtEXs+9sFx4gh+pYRcf0194Y3LowH1MEBOq3YLiChOazRvXVTPS3W
-	4sKEbEPPY27I6yDg3BZiPF/29SeBztnHtb0tqVazwuMAo8+XbPgRlmXnqbhjMp/5gGpUYb
-	GhqJ79thVsZFrqNM7Nc7XF6LfLoubv3WM7R6UXWRdYe7HKWGE5KobzfnVbq2Fpu6pP9nxq
-	1HFh59riqu6y/91B2DOXlszAGSZUDsjF7hd3vOk2iu6nFTjOa1ONXrNnl/CJzw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-Message-ID: <e854c672d0414b7deb348da86902a9de66f917b9.camel@iki.fi>
-Subject: Re: [PATCH v4 4/5] tpm_crb: add support for the Arm FF-A start
- method
-From: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
-To: Stuart Yoder <stuart.yoder@arm.com>, linux-integrity@vger.kernel.org, 
-	jarkko@kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca, sudeep.holla@arm.com, 
-	rafael@kernel.org, lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 18 Feb 2025 17:54:38 +0200
-In-Reply-To: <20250217224946.113951-5-stuart.yoder@arm.com>
-References: <20250217224946.113951-1-stuart.yoder@arm.com>
-	 <20250217224946.113951-5-stuart.yoder@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE07246348;
+	Tue, 18 Feb 2025 16:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739897344; cv=none; b=gQ1IHiTek8OEXBbCmHWEj6VjRO+qgXYkgytNw4m2hUx7hHJhKZ4tK6lONaJY+UdLVaqHrBj8avuE8IX6yxizw9ioc7juqMn8KdxMmqmp5G7EnUo5rsICtPfRiCBdcwCEd9MYj6tnpgbk/zpWYCoitwKQ3d7SXJWSDT5dwWHtp4g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739897344; c=relaxed/simple;
+	bh=70vk182ZryBKCdHzSaUze+kgPpHosvg75qd9B7Wp+P8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DMBiqVIbovnX/uIYRn5RBefrBxzqWE/odVwlIatLYhJwUD+1J77SKKumLRR1kCFy25w7wqevEKdvuACKqbk34MJDWkTO3lGsoEeZEay3kqKiUM9UGs8N+k8Gm26O+KnVptyC5kd1+lJDk/gg56/gWwK2fqGmFoyzXkq3tT07a14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DbF7bTxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB57C4CEE2;
+	Tue, 18 Feb 2025 16:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739897343;
+	bh=70vk182ZryBKCdHzSaUze+kgPpHosvg75qd9B7Wp+P8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DbF7bTxezRJgnYmAfYwTiYJEP+r+cGOHeOC0kRO+7P85S36S71QBqlZ39akcgYuif
+	 Dx2N+rvmNdG/Py4ubUx82GtqXZaEA468Gcbk75OJjhyYopxDQUuITkxgRhW/BjN2+i
+	 r4N4LvXRdtfgCjR0d9BasmDDz4pirYq5D2EUXYJxOVpvGihyVfLNPIpqr9/6h0skYu
+	 cUQ+hv6W2O7lvfBxPZEpl5EJ2HZpp0OnM+woJfXnemWbqZhdcbgCw7So+XOIB/jWhp
+	 jJM3UIBpHPOPFqWLBZFFuQ3E5YAbiMe6X8YuUUBLjqf1SpvIdvmRbIptU7K2qsKqNm
+	 RzGYHywd6563Q==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5fa9778fa2cso2941209eaf.0;
+        Tue, 18 Feb 2025 08:49:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUSMBc4i8qmPty4RAod8h0GL7Dqt7xHeP/nmV34BHCwgbmE4orMPbZZjGHAiJ2zs1lmx8eDFSaXQLJYkDxq@vger.kernel.org, AJvYcCVqCxZVqEl8cf17M3BtD60DQskVm5y8ZTUdDXw3G84SlY0pPxZoFvuAYKZjnkXIdXyGjDJcQbqCzVid@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVcCOuweCc3qkA7GenZP/bdjtkyZidlCCW7hk0I2mukZkiYhoZ
+	uLC7LbaPAXo4IqaPWrcO5+hbwmfPtSG1tIuxSSXLLRWK6QbVYme5h2olvDj0oruoRT/fQg+XlQ4
+	ojoMjETNTtBmQ505/V/XV8AT4TX4=
+X-Google-Smtp-Source: AGHT+IGhTrJxqZyzgUpjJ3g+B+eV2El3RfrCy8z3+YxMae1hFsgpIP0MmbzKooMojC/YY9QwF0P6VIYT10rqR5qIPwE=
+X-Received: by 2002:a05:6870:b623:b0:297:23cf:d3db with SMTP id
+ 586e51a60fabf-2bc99dcc23fmr9354558fac.37.1739897342870; Tue, 18 Feb 2025
+ 08:49:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250114012150.156349-1-josh@joshuagrisham.com>
+In-Reply-To: <20250114012150.156349-1-josh@joshuagrisham.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 18 Feb 2025 17:48:51 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jtL7jVOhtfvFgussKMH9iYPhQAM2sLopp_dMVa9umhUw@mail.gmail.com>
+X-Gm-Features: AWEUYZni0LuSVzAETxq4vOQ8o237nPN-NY5OeHLoltWrfzyiMcsQXdICzNPWAgk
+Message-ID: <CAJZ5v0jtL7jVOhtfvFgussKMH9iYPhQAM2sLopp_dMVa9umhUw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: fan: Add fan speed reporting for fans with only _FST
+To: Joshua Grisham <josh@joshuagrisham.com>
+Cc: rafael@kernel.org, lenb@kernel.org, W_Armin@gmx.de, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-02-17 at 16:49 -0600, Stuart Yoder wrote:
-> The TCG ACPI spec v1.4 defines a start method for the
-> TPMs implemented with the Arm CRB over FF-A ABI.
->=20
-> Add support for the FF-A start method, and use interfaces
-> provided by the ffa_crb driver to interact with the
-> FF-A based TPM.
->=20
-> Signed-off-by: Stuart Yoder <stuart.yoder@arm.com>
+On Tue, Jan 14, 2025 at 2:22=E2=80=AFAM Joshua Grisham <josh@joshuagrisham.=
+com> wrote:
+>
+> Add support for ACPI fans with _FST to report their speed even if they do
+> not support fan control.
+>
+> As suggested by Armin Wolf [1] and per the Windows Thermal Management
+> Design Guide [2], Samsung Galaxy Book series devices (and possibly many
+> more devices where the Windows guide was strictly followed) only implemen=
+t
+> the _FST method and do not support ACPI-based fan control.
+>
+> Currently, these fans are not supported by the kernel driver but this pat=
+ch
+> will make some very small adjustments to allow them to be supported.
+>
+> This patch is tested and working for me on a Samsung Galaxy Book2 Pro who=
+se
+> DSDT (and several other Samsung Galaxy Book series notebooks which
+> currently have the same issue) can be found at [3].
+>
+> [1]: https://lore.kernel.org/platform-driver-x86/53c5075b-1967-45d0-937f-=
+463912dd966d@gmx.de
+> [2]: https://learn.microsoft.com/en-us/windows-hardware/design/device-exp=
+eriences/design-guide
+> [3]: https://github.com/joshuagrisham/samsung-galaxybook-extras/tree/8e30=
+87a06b8bdcdfdd081367af4b744a56cc4ee9/dsdt
+>
+> Signed-off-by: Joshua Grisham <josh@joshuagrisham.com>
 > ---
-> =C2=A0drivers/char/tpm/tpm_crb.c | 71 +++++++++++++++++++++++++++++++++++=
--
+>  drivers/acpi/fan.h       |  1 +
+>  drivers/acpi/fan_attr.c  | 37 ++++++++++++++++++++++---------------
+>  drivers/acpi/fan_core.c  | 24 ++++++++++++++++--------
+>  drivers/acpi/fan_hwmon.c |  6 ++++++
+>  4 files changed, 45 insertions(+), 23 deletions(-)
+>
+> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+> index 488b51e2c..d0aad88a7 100644
+> --- a/drivers/acpi/fan.h
+> +++ b/drivers/acpi/fan.h
+> @@ -49,6 +49,7 @@ struct acpi_fan_fst {
+>
+>  struct acpi_fan {
+>         bool acpi4;
+> +       bool acpi4_only_fst;
+
+I would use has_fst instead of this, that is
+
++       bool has_fst;
+
+which would be true when acpi4 is true, but not necessarily the other
+way around.
+
+>         struct acpi_fan_fif fif;
+>         struct acpi_fan_fps *fps;
+>         int fps_count;
+> diff --git a/drivers/acpi/fan_attr.c b/drivers/acpi/fan_attr.c
+> index f4f6e2381..d83f88429 100644
+> --- a/drivers/acpi/fan_attr.c
+> +++ b/drivers/acpi/fan_attr.c
+> @@ -75,15 +75,6 @@ int acpi_fan_create_attributes(struct acpi_device *dev=
+ice)
+>         struct acpi_fan *fan =3D acpi_driver_data(device);
+>         int i, status;
+>
+> -       sysfs_attr_init(&fan->fine_grain_control.attr);
+> -       fan->fine_grain_control.show =3D show_fine_grain_control;
+> -       fan->fine_grain_control.store =3D NULL;
+> -       fan->fine_grain_control.attr.name =3D "fine_grain_control";
+> -       fan->fine_grain_control.attr.mode =3D 0444;
+> -       status =3D sysfs_create_file(&device->dev.kobj, &fan->fine_grain_=
+control.attr);
+> -       if (status)
+> -               return status;
+> -
+>         /* _FST is present if we are here */
+>         sysfs_attr_init(&fan->fst_speed.attr);
+>         fan->fst_speed.show =3D show_fan_speed;
+> @@ -92,7 +83,19 @@ int acpi_fan_create_attributes(struct acpi_device *dev=
+ice)
+>         fan->fst_speed.attr.mode =3D 0444;
+>         status =3D sysfs_create_file(&device->dev.kobj, &fan->fst_speed.a=
+ttr);
+>         if (status)
+> -               goto rem_fine_grain_attr;
+> +               return status;
+> +
+> +       if (fan->acpi4_only_fst)
+> +               return 0;
+
+So the above may become
+
+if (!fan->acpi4)
+    return 0;
+
+> +
+> +       sysfs_attr_init(&fan->fine_grain_control.attr);
+> +       fan->fine_grain_control.show =3D show_fine_grain_control;
+> +       fan->fine_grain_control.store =3D NULL;
+> +       fan->fine_grain_control.attr.name =3D "fine_grain_control";
+> +       fan->fine_grain_control.attr.mode =3D 0444;
+> +       status =3D sysfs_create_file(&device->dev.kobj, &fan->fine_grain_=
+control.attr);
+> +       if (status)
+> +               goto rem_fst_attr;
+>
+>         for (i =3D 0; i < fan->fps_count; ++i) {
+>                 struct acpi_fan_fps *fps =3D &fan->fps[i];
+> @@ -109,18 +112,18 @@ int acpi_fan_create_attributes(struct acpi_device *=
+device)
+>
+>                         for (j =3D 0; j < i; ++j)
+>                                 sysfs_remove_file(&device->dev.kobj, &fan=
+->fps[j].dev_attr.attr);
+> -                       goto rem_fst_attr;
+> +                       goto rem_fine_grain_attr;
+>                 }
+>         }
+>
+>         return 0;
+>
+> -rem_fst_attr:
+> -       sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+> -
+>  rem_fine_grain_attr:
+>         sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.att=
+r);
+>
+> +rem_fst_attr:
+> +       sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+> +
+>         return status;
+>  }
+>
+> @@ -129,9 +132,13 @@ void acpi_fan_delete_attributes(struct acpi_device *=
+device)
+>         struct acpi_fan *fan =3D acpi_driver_data(device);
+>         int i;
+>
+> +       sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+> +
+> +       if (fan->acpi4_only_fst)
+> +               return;
+> +
+>         for (i =3D 0; i < fan->fps_count; ++i)
+>                 sysfs_remove_file(&device->dev.kobj, &fan->fps[i].dev_att=
+r.attr);
+>
+> -       sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
+>         sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.att=
+r);
+>  }
+> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+> index 10016f52f..b51b1481c 100644
+> --- a/drivers/acpi/fan_core.c
+> +++ b/drivers/acpi/fan_core.c
+> @@ -211,6 +211,11 @@ static bool acpi_fan_is_acpi4(struct acpi_device *de=
+vice)
+>                acpi_has_method(device->handle, "_FST");
+>  }
+>
+> +static bool acpi_fan_has_fst(struct acpi_device *device)
+> +{
+> +       return acpi_has_method(device->handle, "_FST");
+> +}
+> +
+>  static int acpi_fan_get_fif(struct acpi_device *device)
+>  {
+>         struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };
+> @@ -327,7 +332,12 @@ static int acpi_fan_probe(struct platform_device *pd=
+ev)
+>         device->driver_data =3D fan;
+>         platform_set_drvdata(pdev, fan);
+>
+> -       if (acpi_fan_is_acpi4(device)) {
+> +       if (acpi_fan_is_acpi4(device))
+> +               fan->acpi4 =3D true;
+> +       else if (acpi_fan_has_fst(device))
+> +               fan->acpi4_only_fst =3D true;
+
+And here one could do
+
+    if (acpi_fan_has_fst(device)) {
+        fan->has_fst =3D true;
+        fan->acpi4 =3D acpi_fan_is_acpi4(device);
+    }
+
+and if I'm not mistaken, the check for _FST presence could be dropped
+from acpi_fan_is_acpi4().
+
+> +
+> +       if (fan->acpi4) {
+>                 result =3D acpi_fan_get_fif(device);
+>                 if (result)
+>                         return result;
+> @@ -335,7 +345,7 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+>                 result =3D acpi_fan_get_fps(device);
+>                 if (result)
+>                         return result;
+> -
+> +       } else if (fan->acpi4 || fan->acpi4_only_fst) {
+
+Then, all of the checks like the above could be replaced with
+fan->has_fst checks.
+
+>                 result =3D devm_acpi_fan_create_hwmon(device);
+>                 if (result)
+>                         return result;
+> @@ -343,8 +353,6 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+>                 result =3D acpi_fan_create_attributes(device);
+>                 if (result)
+>                         return result;
+> -
+> -               fan->acpi4 =3D true;
+>         } else {
+>                 result =3D acpi_device_update_power(device, NULL);
+>                 if (result) {
+> @@ -391,7 +399,7 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+>  err_unregister:
+>         thermal_cooling_device_unregister(cdev);
+>  err_end:
+> -       if (fan->acpi4)
+> +       if (fan->acpi4 || fan->acpi4_only_fst)
+>                 acpi_fan_delete_attributes(device);
+>
+>         return result;
+> @@ -401,7 +409,7 @@ static void acpi_fan_remove(struct platform_device *p=
+dev)
+>  {
+>         struct acpi_fan *fan =3D platform_get_drvdata(pdev);
+>
+> -       if (fan->acpi4) {
+> +       if (fan->acpi4 || fan->acpi4_only_fst) {
+>                 struct acpi_device *device =3D ACPI_COMPANION(&pdev->dev)=
+;
+>
+>                 acpi_fan_delete_attributes(device);
+> @@ -415,7 +423,7 @@ static void acpi_fan_remove(struct platform_device *p=
+dev)
+>  static int acpi_fan_suspend(struct device *dev)
+>  {
+>         struct acpi_fan *fan =3D dev_get_drvdata(dev);
+> -       if (fan->acpi4)
+> +       if (fan->acpi4 || fan->acpi4_only_fst)
+>                 return 0;
+>
+>         acpi_device_set_power(ACPI_COMPANION(dev), ACPI_STATE_D0);
+> @@ -428,7 +436,7 @@ static int acpi_fan_resume(struct device *dev)
+>         int result;
+>         struct acpi_fan *fan =3D dev_get_drvdata(dev);
+>
+> -       if (fan->acpi4)
+> +       if (fan->acpi4 || fan->acpi4_only_fst)
+>                 return 0;
+>
+>         result =3D acpi_device_update_power(ACPI_COMPANION(dev), NULL);
+> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+> index bd0d31a39..87bee018c 100644
+> --- a/drivers/acpi/fan_hwmon.c
+> +++ b/drivers/acpi/fan_hwmon.c
+> @@ -43,6 +43,12 @@ static umode_t acpi_fan_hwmon_is_visible(const void *d=
+rvdata, enum hwmon_sensor_
+>                 case hwmon_fan_input:
+>                         return 0444;
+>                 case hwmon_fan_target:
+> +                       /*
+> +                        * Fans with only _FST do not support fan control=
+.
+> +                        */
+
+Nit: One-line comment here, please.
+
+> +                       if (fan->acpi4_only_fst)
+
+And this would become
+
+   if (!fan->acpi4)
+
+> +                               return 0;
+> +
+>                         /*
+>                          * When in fine grain control mode, not every fan=
+ control value
+>                          * has an associated fan performance state.
 > --
-> =C2=A01 file changed, 66 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-> index 31db879f1324..2a57650ba9b4 100644
-> --- a/drivers/char/tpm/tpm_crb.c
-> +++ b/drivers/char/tpm/tpm_crb.c
-> @@ -19,6 +19,7 @@
-> =C2=A0#ifdef CONFIG_ARM64
-> =C2=A0#include <linux/arm-smccc.h>
-> =C2=A0#endif
-> +#include "tpm_crb_ffa.h"
-> =C2=A0#include "tpm.h"
-> =C2=A0
-> =C2=A0#define ACPI_SIG_TPM2 "TPM2"
-> @@ -100,6 +101,8 @@ struct crb_priv {
-> =C2=A0	u32 smc_func_id;
-> =C2=A0	u32 __iomem *pluton_start_addr;
-> =C2=A0	u32 __iomem *pluton_reply_addr;
-> +	u8 ffa_flags;
-> +	u8 ffa_attributes;
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct tpm2_crb_smc {
-> @@ -110,6 +113,14 @@ struct tpm2_crb_smc {
-> =C2=A0	u32 smc_func_id;
-> =C2=A0};
-> =C2=A0
-> +/* CRB over FFA start method parameters in TCG2 ACPI table */
-> +struct tpm2_crb_ffa {
-> +	u8 flags;
-> +	u8 attributes;
-> +	u16 partition_id;
-> +	u8 reserved[8];
-> +};
-> +
-> =C2=A0struct tpm2_crb_pluton {
-> =C2=A0	u64 start_addr;
-> =C2=A0	u64 reply_addr;
-> @@ -122,7 +133,8 @@ static inline bool tpm_crb_has_idle(u32
-> start_method)
-> =C2=A0{
-> =C2=A0	return start_method =3D=3D ACPI_TPM2_START_METHOD ||
-> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start_method =3D=3D
-> ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD ||
-> -	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start_method =3D=3D
-> ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC;
-> +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start_method =3D=3D ACPI_TPM2_COMM=
-AND_BUFFER_WITH_ARM_SMC
-> ||
-> +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start_method =3D=3D ACPI_TPM2_CRB_=
-WITH_ARM_FFA;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static bool crb_wait_for_reg_32(u32 __iomem *reg, u32 mask, u32
-> value,
-> @@ -261,13 +273,20 @@ static int crb_cmd_ready(struct tpm_chip *chip)
-> =C2=A0static int __crb_request_locality(struct device *dev,
-> =C2=A0				=C2=A0 struct crb_priv *priv, int loc)
-> =C2=A0{
-> -	u32 value =3D CRB_LOC_STATE_LOC_ASSIGNED |
-> -		=C2=A0=C2=A0=C2=A0 CRB_LOC_STATE_TPM_REG_VALID_STS;
-> +	u32 value =3D CRB_LOC_STATE_LOC_ASSIGNED |
-> CRB_LOC_STATE_TPM_REG_VALID_STS;
-> +	int rc;
-> =C2=A0
-> =C2=A0	if (!priv->regs_h)
-> =C2=A0		return 0;
-> =C2=A0
-> =C2=A0	iowrite32(CRB_LOC_CTRL_REQUEST_ACCESS, &priv->regs_h-
-> >loc_ctrl);
-> +
-> +	if (priv->sm =3D=3D ACPI_TPM2_CRB_WITH_ARM_FFA) {
-> +		rc =3D
-> tpm_crb_ffa_start(CRB_FFA_START_TYPE_LOCALITY_REQUEST, loc);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> =C2=A0	if (!crb_wait_for_reg_32(&priv->regs_h->loc_state, value,
-> value,
-> =C2=A0				 TPM2_TIMEOUT_C)) {
-> =C2=A0		dev_warn(dev, "TPM_LOC_STATE_x.requestAccess timed
-> out\n");
-> @@ -287,14 +306,21 @@ static int crb_request_locality(struct tpm_chip
-> *chip, int loc)
-> =C2=A0static int __crb_relinquish_locality(struct device *dev,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 struct crb_priv *priv, int loc)
-> =C2=A0{
-> -	u32 mask =3D CRB_LOC_STATE_LOC_ASSIGNED |
-> -		=C2=A0=C2=A0 CRB_LOC_STATE_TPM_REG_VALID_STS;
-> +	u32 mask =3D CRB_LOC_STATE_LOC_ASSIGNED |
-> CRB_LOC_STATE_TPM_REG_VALID_STS;
-> =C2=A0	u32 value =3D CRB_LOC_STATE_TPM_REG_VALID_STS;
-> +	int rc;
-> =C2=A0
-> =C2=A0	if (!priv->regs_h)
-> =C2=A0		return 0;
-> =C2=A0
-> =C2=A0	iowrite32(CRB_LOC_CTRL_RELINQUISH, &priv->regs_h->loc_ctrl);
-> +
-> +	if (priv->sm =3D=3D ACPI_TPM2_CRB_WITH_ARM_FFA) {
-> +		rc =3D
-> tpm_crb_ffa_start(CRB_FFA_START_TYPE_LOCALITY_REQUEST, loc);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> =C2=A0	if (!crb_wait_for_reg_32(&priv->regs_h->loc_state, mask,
-> value,
-> =C2=A0				 TPM2_TIMEOUT_C)) {
-> =C2=A0		dev_warn(dev, "TPM_LOC_STATE_x.Relinquish timed
-> out\n");
-> @@ -443,6 +469,11 @@ static int crb_send(struct tpm_chip *chip, u8
-> *buf, size_t len)
-> =C2=A0		rc =3D tpm_crb_smc_start(&chip->dev, priv-
-> >smc_func_id);
-> =C2=A0	}
-> =C2=A0
-> +	if (priv->sm =3D=3D ACPI_TPM2_CRB_WITH_ARM_FFA) {
-> +		iowrite32(CRB_START_INVOKE, &priv->regs_t-
-> >ctrl_start);
-> +		rc =3D tpm_crb_ffa_start(CRB_FFA_START_TYPE_COMMAND,
-> chip->locality);
-> +	}
-> +
-> =C2=A0	if (rc)
-> =C2=A0		return rc;
-> =C2=A0
-> @@ -452,6 +483,7 @@ static int crb_send(struct tpm_chip *chip, u8
-> *buf, size_t len)
-> =C2=A0static void crb_cancel(struct tpm_chip *chip)
-> =C2=A0{
-> =C2=A0	struct crb_priv *priv =3D dev_get_drvdata(&chip->dev);
-> +	int rc;
-> =C2=A0
-> =C2=A0	iowrite32(CRB_CANCEL_INVOKE, &priv->regs_t->ctrl_cancel);
-> =C2=A0
-> @@ -459,6 +491,12 @@ static void crb_cancel(struct tpm_chip *chip)
-> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER_=
-WITH_START_METHOD)
-> &&
-> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 crb_do_acpi_start(chip))
-> =C2=A0		dev_err(&chip->dev, "ACPI Start failed\n");
-> +
-> +	if (priv->sm =3D=3D ACPI_TPM2_CRB_WITH_ARM_FFA) {
-> +		rc =3D tpm_crb_ffa_start(CRB_FFA_START_TYPE_COMMAND,
-> chip->locality);
-> +		if (rc)
-> +			dev_err(&chip->dev, "FF-A Start failed\n");
-> +	}
-> =C2=A0}
-> =C2=A0
-> =C2=A0static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
-> @@ -616,6 +654,7 @@ static int crb_map_io(struct acpi_device *device,
-> struct crb_priv *priv,
-> =C2=A0	 * stuff that puts the control area outside the ACPI IO
-> region.
-> =C2=A0	 */
-> =C2=A0	if (priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER ||
-> +	=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D ACPI_TPM2_CRB_WITH_ARM_FFA ||
-> =C2=A0	=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D ACPI_TPM2_MEMORY_MAPPED) {
-> =C2=A0		if (iores &&
-> =C2=A0		=C2=A0=C2=A0=C2=A0 buf->control_address =3D=3D iores->start +
-> @@ -737,6 +776,7 @@ static int crb_acpi_add(struct acpi_device
-> *device)
-> =C2=A0	struct tpm_chip *chip;
-> =C2=A0	struct device *dev =3D &device->dev;
-> =C2=A0	struct tpm2_crb_smc *crb_smc;
-> +	struct tpm2_crb_ffa *crb_ffa;
-> =C2=A0	struct tpm2_crb_pluton *crb_pluton;
-> =C2=A0	acpi_status status;
-> =C2=A0	u32 sm;
-> @@ -775,6 +815,27 @@ static int crb_acpi_add(struct acpi_device
-> *device)
-> =C2=A0		priv->smc_func_id =3D crb_smc->smc_func_id;
-> =C2=A0	}
-> =C2=A0
-> +	if (sm =3D=3D ACPI_TPM2_CRB_WITH_ARM_FFA) {
-> +		if (buf->header.length < (sizeof(*buf) +
-> sizeof(*crb_ffa))) {
-> +			dev_err(dev,
-> +				FW_BUG "TPM2 ACPI table has wrong
-> size %u for start method type %d\n",
-> +				buf->header.length,
-> +				ACPI_TPM2_CRB_WITH_ARM_FFA);
-> +			rc =3D -EINVAL;
-> +			goto out;
-> +		}
-> +		crb_ffa =3D ACPI_ADD_PTR(struct tpm2_crb_ffa, buf,
-> sizeof(*buf));
-> +		priv->ffa_flags =3D crb_ffa->flags;
-> +		priv->ffa_attributes =3D crb_ffa->attributes;
-> +		rc =3D tpm_crb_ffa_init();
-> +		if (rc) {
-> +			if (rc =3D=3D -ENOENT) {=C2=A0 // FF-A driver is not
-> available yet
-> +				rc =3D -EPROBE_DEFER;
-> +			}
-> +			goto out;
-> +		}
-> +	}
-> +
-> =C2=A0	if (sm =3D=3D ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
-> =C2=A0		if (buf->header.length < (sizeof(*buf) +
-> sizeof(*crb_pluton))) {
-> =C2=A0			dev_err(dev,
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-BR, Jarkko
 
