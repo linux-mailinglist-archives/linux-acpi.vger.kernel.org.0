@@ -1,181 +1,173 @@
-Return-Path: <linux-acpi+bounces-11251-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11252-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FB2A39E4C
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 15:09:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DDFA3A062
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 15:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A7F16393A
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 14:09:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E6B3BC03D
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 14:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13BA269887;
-	Tue, 18 Feb 2025 14:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CDC26E16C;
+	Tue, 18 Feb 2025 14:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CV+RovXp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yzS9Jomi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F77243361;
-	Tue, 18 Feb 2025 14:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC80326E169
+	for <linux-acpi@vger.kernel.org>; Tue, 18 Feb 2025 14:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739887767; cv=none; b=N9PhUqFWlHLSHhN3lXiRWvLs/CSB01jMLCuqaCoS3X4qivcb0J+9G+nBeVOTtMXUUwZSs808WN0x+L5IwXojCZMlAh51lhdQbB+A2SjHw2fENuY3s3kqBE6h/XdxE2wzXi9teIUKaceYcUMMTCo2uTAtEFqkhIe1bO9fvVjoUOM=
+	t=1739889626; cv=none; b=btx34U8WR74yI4UPycPnzMhB/jaOgpryi6N6fAGgjoaOjwYfHDw3ghUehPDxLhBjcXMzpJKcUd/u/XIsKsWeIGCIftvHDUj1z0tbBNgDT81hiLnDu9+GSXQ0j4G6I+GnERAWGSL2kbrGLbiQdSgOQLF6kGRgO3qJUvMMhbmAe4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739887767; c=relaxed/simple;
-	bh=I/RdCQPPn1wHaFmlp+tuRpK9XsLvtlVCcv5TFMGTqPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pkDgHp/UYeGz4Ia1oAtvIswY4OqAgB3kfJaChDrYcL6rN6NIF2WnvsbXoSJp9vbNhPBrcIgH+tZx67uMvP9Duny4bH4Z4AflQhsbk9BY1aVyJj+bXzzVE8mOWRj4m3qzsRZX8oXqa50IUp3l6F6bO4sHKB2GPO0r5qXvodmCu1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CV+RovXp; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51IBML7J020389;
-	Tue, 18 Feb 2025 14:08:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=9AF1om8Lrm/xLDRHOLxFEifeKpnaLe
-	RhNPZT9gDLIQ0=; b=CV+RovXpmtr1HdW8oXhrmXR+yctXcF/BZ/igc+sObd4LmN
-	Q+YeZ1Zlb43eyfvWfHnVonpvcozFlMyS7RwWrXmeeapi/bJc0Xqnd/qGeGwkkqYx
-	zL1E7BNIE+kIXvk8qpAT60eq6qShVzwSUL2vNi2m4D6+XHL77xqXT+KRDpqxKNEw
-	VFv8m1cHcw3z3cUALoCO9xSlCFCDjwS7GjlwK3XN5pEwSMMC+4YXKqAp4mzE8/XH
-	/9saCZ8rgKGhg0d+fjm594PCQaoMsYHZqawndMZp+Wt2fIn9VzEBYa6q9a5OfePO
-	UhtAvSK5l82To9C9ygf3TkZ3thakqLmrVwcHailg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vg99u7j6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:08:28 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51IE7Lf0016617;
-	Tue, 18 Feb 2025 14:08:28 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vg99u7j0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:08:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51IBaUc3013259;
-	Tue, 18 Feb 2025 14:08:26 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u7fkk9wb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:08:26 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51IE8NZ59306562
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2025 14:08:23 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 430722004E;
-	Tue, 18 Feb 2025 14:08:23 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AAD4620043;
-	Tue, 18 Feb 2025 14:08:22 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.60])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 18 Feb 2025 14:08:22 +0000 (GMT)
-Date: Tue, 18 Feb 2025 15:08:21 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: joel granados <joel.granados@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Liang, Kan" <kan.liang@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 7/8] s390: mv s390 sysctls into their own file under
- arch/s390 dir
-Message-ID: <20250218140821.7740Ab5-hca@linux.ibm.com>
-References: <20250218-jag-mv_ctltables-v1-0-cd3698ab8d29@kernel.org>
- <20250218-jag-mv_ctltables-v1-7-cd3698ab8d29@kernel.org>
+	s=arc-20240116; t=1739889626; c=relaxed/simple;
+	bh=mr+2Jhhmfhv+3seL9n1mB+VOznYBvn3lX+NZfQylTqg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GAnKtMGkJXnKJN9dKVwknaV51N8cjakp4FdfpfX0tsP+y01jWbQ5XpItS7BtASYa8RxjXA1DE0JBJOHR0eTamr737arGvSumwn3rffGNYcbeztt8I70+QoiDZNtvajYkR8Rka91KHzxbJC+6DLaflvxmXEQMRVAU7WB/Fp2uESo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yzS9Jomi; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e5dbdbdaeedso3399302276.2
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Feb 2025 06:40:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739889624; x=1740494424; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2wkeEEWV1t+jTfGMDjVEd0UQWJSursxJ+qu65t0oVks=;
+        b=yzS9JomiL+1VCRq5xGA/LVJBda1hD0LHa+tIsrOwo+8YCI4bbA8FZadK/V/4waPQQH
+         9aFpqNh/ia1C10WgvRzuB5wF2U66/lYcRX0QP2L1I3eQBf6yiuSOHZmFx2d7MpQ/D7zY
+         U4ZFcDr7s9T1qxzTzHpwAigz1L8lTWxIO0rcZsWkoNBRq0D4NxcLBiCyVoniZJywJJ7s
+         xsWKhTGX/urMFShw+xctToQ4jo4bUdGFKRL2aGJPp513TUp5dN5+B1OYXD4C9f+yFbaw
+         RGlT0VlSjnEtn1qTEGgF0XzOGk/xU6ENK+5wByLpc0RPumM9RquuK4enTt/nGOnnii8s
+         FbRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739889624; x=1740494424;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2wkeEEWV1t+jTfGMDjVEd0UQWJSursxJ+qu65t0oVks=;
+        b=JUb01xJeAtOxnLWIUE9tYesmUVucxXhMYac6DXH6jqv9OnmiY1ZcB/rm3YqV3pxlLZ
+         4JCvdshHK8U0K9S0LxuJwNdLKXNQEKH/cGaYu/2W9CBZTLI1Ft/7W8njjKwtt4GJVCnP
+         5kpehzLsx750v7kw3HRqjundKwSfSZ4ezbY3X0ExLNn3ASYMx53Bs+eawz6FO4TlmhWa
+         jY344WBKnoeJQyprhBXJJ0DBIMEHD0/eCVDSxBrFtxRfA0u7tGJOBFb2EWSOrWpvhk/z
+         rK8Nzx74tEsZp5jBsc10RJO/BJAIuoHsu0j5Brjx1Mv7qMZMuDYDeci9bgyNONa3/oaR
+         6YWA==
+X-Forwarded-Encrypted: i=1; AJvYcCU08XSOvwToaLlTDjqiAl1Oh/DRw0d0hCT7PSU/H2RZP+7V3MLifr5D611pO9jAs8eVJqovD/Al6RBC@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEL0S/ilvC/tpip79EBi7aXtTimTzACZrIfjsEyuPbPjeT7Q52
+	8GFSTYoIZTK3EKDKGk0jyZPNktfrXT2vng0zvFGSD/1yOlV4k+8gL9B9Z3kIcJLps1qv2Q4MmkF
+	66PFBJmwfcP5HTIK65xoTabLcvMEaNqGqbkKCKg==
+X-Gm-Gg: ASbGncsPki3C4Qn8lQUqh+w+GboLntqePvRY+aaYnzoaxbTQKnki94qN4XofWWs/zm7
+	GIDvvwDTSMSyyVzpkRS9wwgWa0YxaSseKeFSKLCXdHo3nOqNqut/DA4juUvoeyfw20DX2z2YjdQ
+	==
+X-Google-Smtp-Source: AGHT+IGc7tsTon1APxRniRGgusdip7zanYIlI5kyK12K1ApVdClP0yClUsQd8ZYL07bK78dVmjWR+9yq+z6BP2esIog=
+X-Received: by 2002:a05:6902:15c4:b0:e20:25bb:7893 with SMTP id
+ 3f1490d57ef6-e5dc9305520mr9687881276.46.1739889623851; Tue, 18 Feb 2025
+ 06:40:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218-jag-mv_ctltables-v1-7-cd3698ab8d29@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: C1vwg1h0Wd1-AF41KNeLrehTep7PLEGd
-X-Proofpoint-ORIG-GUID: 6Qf1aZgnvDRrtDnExFplYp_kZP8KujkA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_06,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxscore=0 suspectscore=0 clxscore=1011 mlxlogscore=780
- priorityscore=1501 bulkscore=0 malwarescore=0 phishscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502180106
+References: <4966939.GXAFRqVoOG@rjwysocki.net> <2000822.PYKUYFuaPT@rjwysocki.net>
+ <CAPDyKFoB0fQCabahYpx=A_Ns7vJgWYdK=rxuHk+XHVv35cFvWQ@mail.gmail.com> <CAJZ5v0iHsOw4_UbEWGk_-jPpc3q2K3fUXBs4T3JCooPGV10CHQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iHsOw4_UbEWGk_-jPpc3q2K3fUXBs4T3JCooPGV10CHQ@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 18 Feb 2025 15:39:47 +0100
+X-Gm-Features: AWEUYZkUeOWjKpfEpylPzwUgMmhW5JCtP7D9lSJ8wjRrv-WgzsAF82ls-gYur34
+Message-ID: <CAPDyKFqshaVNzHPe0KL3HRTpiuzyKVJ-LuDsaAne5PawFLMJow@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] PM: sleep: Use DPM_FLAG_SMART_SUSPEND conditionally
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Alan Stern <stern@rowland.harvard.edu>, 
+	Bjorn Helgaas <helgaas@kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Johan Hovold <johan@kernel.org>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Jon Hunter <jonathanh@nvidia.com>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Saravana Kannan <saravanak@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 18, 2025 at 10:56:23AM +0100, joel granados wrote:
-> Move s390 sysctls (spin_retry and userprocess_debug) into their own
-> files under arch/s390. We create two new sysctl tables
-> (2390_{fault,spin}_sysctl_table) which will be initialized with
-> arch_initcall placing them after their original place in proc_root_init.
-> 
-> This is part of a greater effort to move ctl tables into their
-> respective subsystems which will reduce the merge conflicts in
-> kerenel/sysctl.c.
-  ^^^^^^^
-typo
+[...]
 
-> diff --git a/arch/s390/lib/spinlock.c b/arch/s390/lib/spinlock.c
-> index a81a01c44927..4483fdc9d472 100644
-> --- a/arch/s390/lib/spinlock.c
-> +++ b/arch/s390/lib/spinlock.c
-> @@ -17,6 +17,10 @@
->  #include <asm/alternative.h>
->  #include <asm/asm.h>
->  
-> +#if defined(CONFIG_SMP)
-> +#include <linux/sysctl.h>
-> +#endif
-> +
-...
-> +#if defined(CONFIG_SMP)
-> +static const struct ctl_table s390_spin_sysctl_table[] = {
-> +	{
-> +		.procname	= "spin_retry",
-> +		.data		= &spin_retry,
-> +		.maxlen		= sizeof(int),
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_dointvec,
-> +	},
-> +};
-> +
-> +static int __init init_s390_spin_sysctls(void)
-> +{
-> +	register_sysctl_init("kernel", s390_spin_sysctl_table);
-> +	return 0;
-> +}
-> +arch_initcall(init_s390_spin_sysctls);
-> +#endif
+> > >
+> > > +static void device_prepare_smart_suspend(struct device *dev)
+> > > +{
+> > > +       struct device_link *link;
+> > > +       int idx;
+> > > +
+> > > +       /*
+> > > +        * The "smart suspend" feature is enabled for devices whose drivers ask
+> > > +        * for it and for devices without PM callbacks unless runtime PM is
+> > > +        * disabled and enabling it is blocked for them.
+> > > +        *
+> > > +        * However, if "smart suspend" is not enabled for the device's parent
+> > > +        * or any of its suppliers that take runtime PM into account, it cannot
+> > > +        * be enabled for the device either.
+> > > +        */
+> > > +       dev->power.smart_suspend = (dev->power.no_pm_callbacks ||
+> > > +               dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND)) &&
+> > > +               !pm_runtime_blocked(dev);
+> > > +
+> > > +       if (!dev->power.smart_suspend)
+> > > +               return;
+> > > +
+> > > +       if (dev->parent && !pm_runtime_blocked(dev->parent) &&
+> > > +           !dev->parent->power.ignore_children && !dev->parent->power.smart_suspend) {
+> > > +               dev->power.smart_suspend = false;
+> > > +               return;
+> > > +       }
+> > > +
+> > > +       idx = device_links_read_lock();
+> > > +
+> > > +       list_for_each_entry_rcu_locked(link, &dev->links.suppliers, c_node) {
+> > > +               if (!(link->flags | DL_FLAG_PM_RUNTIME))
+> > > +                       continue;
+> > > +
+> > > +               if (!pm_runtime_blocked(link->supplier) &&
+> > > +                   !link->supplier->power.smart_suspend) {
+> >
+> > This requires device_prepare() for all suppliers to be run before its
+> > consumer. Is that always the case?
+>
+> Yes, it is by design.
 
-I see that you want to keep the existing CONFIG_SMP behaviour, but since a
-long time s390 enforces CONFIG_SMP=y (this was obviously never reflected in
-kernel/sysctl.c).
-Therefore the above ifdefs should be removed, and in addition the include
-statement should be added to the other linux includes at the top of the file.
+Okay! I was worried that fw_devlink could mess this up.
+
+>
+> > > +                       dev->power.smart_suspend = false;
+> > > +                       break;
+> > > +               }
+> > > +       }
+> > > +
+> > > +       device_links_read_unlock(idx);
+> >
+> > From an execution overhead point of view, did you check if the above
+> > code had some measurable impact on the latency for dpm_prepare()?
+>
+> It didn't on my systems.
+>
+> For the vast majority of devices the overhead is just checking
+> power.no_pm_callbacks and DPM_FLAG_SMART_SUSPEND.  For some,
+> pm_runtime_blocked() needs to be called which requires grabbing a
+> spinlock and there are only a few with power.smart_suspend set to
+> start with.
+>
+> I'm wondering why you didn't have this concern regarding other changes
+> that involved walking suppliers or consumers, though.
+
+Well, the concern is mostly generic from my side. When introducing
+code that potentially could impact latency during system
+suspend/resume, we should at least check it.
+
+That said, I think the approach makes sense, so no objections from my side!
+
+Feel free to add:
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Kind regards
+Uffe
 
