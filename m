@@ -1,143 +1,172 @@
-Return-Path: <linux-acpi+bounces-11233-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11234-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019A4A38F48
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2025 23:51:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3245CA397C0
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 10:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C2923ADC19
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Feb 2025 22:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80DA0188EAB8
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Feb 2025 09:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0CE1B4239;
-	Mon, 17 Feb 2025 22:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67467230D0A;
+	Tue, 18 Feb 2025 09:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMgR7bo0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2321B0411;
-	Mon, 17 Feb 2025 22:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFDA653;
+	Tue, 18 Feb 2025 09:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739832602; cv=none; b=VR45x0S1YflENRVaW9cgj5xwsIIWi44LK8TjRmdUhL3GvHMulQLH1X2XFJt+CHRsoOhyiwj1K8k6rOeb8FDWyN+AHbyz5evVFvSDXIUPZNYHDwrBocVGCDe87rOY084kUkaaVBuf9Qn2/857mRLR25EQT5A1Sif1tbAREVVowk8=
+	t=1739872606; cv=none; b=edKSVzXpWOqNkMVHDidxxUKIJgWx+XK24kVlArWSABePdaAj5pMdNiqKSJUUavoNbQJwet4rqN/KbL51Xr6dR5skoDnoch1mSwctJEhmMDB9uSkkgEbLpOfWP1ykpOYUmS1neugIEWRyvuFbQ1cECbf5nspuMwlS5CSEZfIBc9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739832602; c=relaxed/simple;
-	bh=jUSUz00ESf+S26jtK/k3pKofGf7cV8jQzbW7nQEsROM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qvM90/3CyGn8xK6EizZCy3jZ1DbRsGrxhdwiBlJmErAfA4FGuip51BVLO2svLoQgAob1rb4BZtsELU0B7fBFPnlSQ8wjJxknbaOMDWgUUJ58CKX5n83/AMbXCLVc/hRhH96WE1iZdVyEakxE+IN9vejj0bEpVucv+pU69NajWTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC6B72573;
-	Mon, 17 Feb 2025 14:50:17 -0800 (PST)
-Received: from beelzebub.ast.arm.com (unknown [10.118.29.240])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5A50F3F5A1;
-	Mon, 17 Feb 2025 14:49:58 -0800 (PST)
-From: Stuart Yoder <stuart.yoder@arm.com>
-To: linux-integrity@vger.kernel.org,
-	jarkko@kernel.org,
-	peterhuewe@gmx.de,
-	jgg@ziepe.ca,
-	sudeep.holla@arm.com,
-	rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 5/5] Documentation: tpm: add documentation for the CRB FF-A interface
-Date: Mon, 17 Feb 2025 16:49:46 -0600
-Message-Id: <20250217224946.113951-6-stuart.yoder@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250217224946.113951-1-stuart.yoder@arm.com>
-References: <20250217224946.113951-1-stuart.yoder@arm.com>
+	s=arc-20240116; t=1739872606; c=relaxed/simple;
+	bh=+Ro/oqfvGVYxj3TObN+RDoEaw0SsbEolN0PZuCXlz9k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uYHzTxCopfIqNlL9fZIsd9ZlkbjQlqqB0FSPAbU9raWkheXIwSPGzvzr6MI8lUaYF80gqWiJzyPq9FWk2NLovVsJs31n0itMeXkPd980MCTV06C8douf4oGBxzHw+g8x8yYHZv3XuC8qwTEtlz4g36N4JNOTPN+oY4zdSxbh29s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMgR7bo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 95764C4CEE6;
+	Tue, 18 Feb 2025 09:56:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739872605;
+	bh=+Ro/oqfvGVYxj3TObN+RDoEaw0SsbEolN0PZuCXlz9k=;
+	h=From:Subject:Date:To:Cc:From;
+	b=SMgR7bo0E+ouRwWv2YvMzhmzTV+dFvpmu7Lma8D7TUmyIH5hYiVeFzWzUlFZJoutb
+	 f05KVq+MZlenDC5MWPIgPrTgrnV6Sc7eKiMqi5nmr6P9WWQBxjFKynSnA5C4aBNNjq
+	 1JkCYGyaKn+TnGrQZFC+/Az9Nh2GMPHSRrBBPSboWsJl5iC9wOSC+B8PVl1G+tGiuI
+	 0FbjrPB0bq+A0aX+GoUtRNNTfj5Pt1IyW//rcGk6Qf+Etsn06zaLxC+6JQ8/jQGgWC
+	 yT0/o0fIMG9SAleyJunM3B9G5lj/+8c50gRHHCwjeL9maUtymw4TUE+tSzvSrC/wsP
+	 S6q37d2NUHiEw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82441C02198;
+	Tue, 18 Feb 2025 09:56:45 +0000 (UTC)
+From: Joel Granados <joel.granados@kernel.org>
+Subject: [PATCH 0/8] sysctl: Move sysctls from kern_table into their
+ respective subsystems
+Date: Tue, 18 Feb 2025 10:56:16 +0100
+Message-Id: <20250218-jag-mv_ctltables-v1-0-cd3698ab8d29@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEBZtGcC/x3MTQqAIBBA4avErBNMEqOrRITZZBP2g4oE4d2Tl
+ t/ivRcCesIAffWCx0SBrrOgqSswmz4tMlqKQXAhuWgU27VlR5pMdFHPDgMzq5LYKo68k1Cy2+N
+ Kz78cxpw/2JeJ2mIAAAA=
+X-Change-ID: 20250217-jag-mv_ctltables-cf75e470e085
+To: Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ "Liang, Kan" <kan.liang@linux.intel.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Len Brown <lenb@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, Joel Granados <joel.granados@kernel.org>
+X-Mailer: b4 0.15-dev-64da2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2573;
+ i=joel.granados@kernel.org; h=from:subject:message-id;
+ bh=+Ro/oqfvGVYxj3TObN+RDoEaw0SsbEolN0PZuCXlz9k=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGe0WVOoj6LvNDW0CL4P50y0ZMFe6cFQ86kia
+ kfkpVTXzGuYgYkBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJntFlTAAoJELqXzVK3
+ lkFPJpIL/2715yYj/GmvnxpGika5Ef5M6h06gykmNbmK/8jadbKLcQAe9tsLGnF3+Ojw7ChLrol
+ HlTolz82WQ2I/xVSm4XoRxfixCkZfY0coFA9OeuPhHMNzQ+Ut1JWZewtKtxIVAG4H8bqDVQRs/G
+ Aaoy15GXfo+rPVTu3r8Kd/VugKe9FQzDSRgXpTGLCBzWBv1sn/+QBdW9/9pbGXf6gfdq4Mn8aoO
+ S9nuRmKjQ1q+k3kfif/7TakTbtjGwuTxksRI1SlBbrkubYjAK2StDNNwqOyblX+rvIZIAdue5hJ
+ FbqZ17s9ye/NoC/0AxPYsf6C34UOU5GQIVEQzhHskYb8iVUc6nooUVtM1I/4/cpc8zJomftwpsf
+ KaNmZx6F1CuttQ/3bCA+xAxEQB3SkjpJ8nbvFEki/OFbxXTUwu2lnxX8EFVwsj0AmT9G7CanU+H
+ Fz2s1gjQFsVpWSQ9URUj1XmxuoZBETbem4y9lXwW0L5ar2wZN266UfFAX7nD2+01sHs6eY5WoB7
+ D8=
+X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
+ auth_id=239
 
-Add documentation providing details of how the CRB driver interacts
-with FF-A.
+This series relocates sysctl tables from kern_table to their respective
+subsystems. To keep the scope manageable, this patchset focuses on
+architecture-specific and core kernel sysctl tables. Further relocations
+will follow once this series progresses.
 
-Signed-off-by: Stuart Yoder <stuart.yoder@arm.com>
+By decentralizing sysctl registrations, subsystem maintainers regain
+control over their sysctl interfaces, improving maintainability and
+reducing the likelihood of merge conflicts. All this is made possible by
+the work done to reduce the ctl_table memory footprint in commit
+d7a76ec87195 ("sysctl: Remove check for sentinel element in ctl_table
+arrays").
+
+* Birds eye view of what has changed:
+    - Archs: sparc, s390 and x86
+        arch/s390/{lib/spinlock.c,mm/fault.c}
+        arch/sparc/kernel/{Makefile,setup.c}
+        arch/x86/include/asm/{setup.h,traps.h}
+    - Kernel core:
+        kernel/{panic.c,signal.c,trace/trace.c}
+        kernel/events/{core.c,callchain.c}
+
+* Testing was done by running sysctl selftests on x86_64 and 0-day.
+
+Comments are greatly appreciated
+
+Signed-off-by: Joel Granados <joel.granados@kernel.org>
 ---
- Documentation/security/tpm/tpm_ffa_crb.rst | 65 ++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
- create mode 100644 Documentation/security/tpm/tpm_ffa_crb.rst
+Joel Granados (7):
+      panic: Move panic ctl tables into panic.c
+      signal: Move signal ctl tables into signal.c
+      ftrace: Move trace sysctls into trace.c
+      stack_tracer: move sysctl registration to kernel/trace/trace.c
+      events: Move perf_event sysctls into kernel/events
+      sparc: mv sparc sysctls into their own file under arch/sparc/kernel
+      x86: Move sysctls into arch/x86
 
-diff --git a/Documentation/security/tpm/tpm_ffa_crb.rst b/Documentation/security/tpm/tpm_ffa_crb.rst
-new file mode 100644
-index 000000000000..0184193da3c7
---- /dev/null
-+++ b/Documentation/security/tpm/tpm_ffa_crb.rst
-@@ -0,0 +1,65 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+========================
-+TPM CRB over FF-A Driver
-+========================
-+
-+The TPM Command Response Buffer (CRB) interface is a standard TPM interface
-+defined in the TCG PC Client Platform TPM Profile (PTP) Specification [1]_.
-+The CRB provides a structured set of control registers a client uses when
-+interacting with a TPM as well as a data buffer for storing TPM commands and
-+responses. A CRB interface can be implemented in:
-+
-+- hardware registers in a discrete TPM chip
-+
-+- in memory for a TPM running in isolated environment where shared memory
-+  allows a client to interact with the TPM
-+
-+The Firmware Framework for Arm A-profile (FF-A) [2]_ is a specification
-+that defines interfaces and protocols for the following purposes:
-+
-+- Compartmentalize firmware into software partitions that run in the Arm
-+  Secure world environment (also know as TrustZone)
-+
-+- Provide a standard interface for software components in the Non-secure
-+  state, for example OS and Hypervisors, to communicate with this firmware.
-+
-+A TPM can be implemented as an FF-A secure service.  This could be a firmware
-+TPM or could potentially be a TPM service that acts as a proxy to a discrete
-+TPM chip. An FF-A based TPM abstracts hardware details (e.g. bus controller
-+and chip selects) away from the OS and can protect locality 4 from access
-+by an OS.  The TCG-defined CRB interface is used by clients to interact
-+with the TPM service.
-+
-+The Arm TPM Service Command Response Buffer Interface Over FF-A [3]_
-+specification defines FF-A messages that can be used by a client to signal
-+when updates have been made to the CRB.
-+
-+How the Linux CRB driver interacts with FF-A is summarized below:
-+
-+- The tpm_crb_ffa driver registers with the FF-A subsystem in the kernel
-+  with an architected TPM service UUID defined in the CRB over FF-A spec.
-+
-+- If a TPM service is discovered by FF-A, the probe() function in the
-+  tpm_crb_ffa driver runs, and the driver initializes.
-+
-+- The probing and initialization of the Linux CRB driver is triggered
-+  by the discovery of a TPM advertised via ACPI.  The CRB driver can
-+  detect the type of TPM through the ACPI 'start' method.  The start
-+  method for Arm FF-A was defined in TCG ACPI v1.4 [4]_.
-+
-+- When the CRB driver performs its normal functions such as signaling 'start'
-+  and locality request/relinquish it invokes the tpm_crb_ffa_start() funnction
-+  in the tpm_crb_ffa driver which handles the FF-A messaging to the TPM.
-+
-+References
-+==========
-+
-+.. [1] **TCG PC Client Platform TPM Profile (PTP) Specification**
-+   https://trustedcomputinggroup.org/resource/pc-client-platform-tpm-profile-ptp-specification/
-+.. [2] **Arm Firmware Framework for Arm A-profile (FF-A)**
-+   https://developer.arm.com/documentation/den0077/latest/
-+.. [3] **Arm TPM Service Command Response Buffer Interface Over FF-A**
-+   https://developer.arm.com/documentation/den0138/latest/
-+.. [4] **TCG ACPI Specification**
-+   https://trustedcomputinggroup.org/resource/tcg-acpi-specification/
+joel granados (1):
+      s390: mv s390 sysctls into their own file under arch/s390 dir
+
+ arch/s390/lib/spinlock.c     |  23 ++++
+ arch/s390/mm/fault.c         |  17 +++
+ arch/sparc/kernel/Makefile   |   1 +
+ arch/sparc/kernel/setup.c    |  46 ++++++++
+ arch/x86/include/asm/setup.h |   1 +
+ arch/x86/include/asm/traps.h |   2 -
+ arch/x86/kernel/setup.c      |  66 ++++++++++++
+ include/linux/acpi.h         |   1 -
+ include/linux/ftrace.h       |   7 --
+ include/linux/perf_event.h   |   9 --
+ kernel/events/callchain.c    |  38 +++++--
+ kernel/events/core.c         |  57 ++++++++--
+ kernel/panic.c               |  30 ++++++
+ kernel/signal.c              |  11 ++
+ kernel/sysctl.c              | 250 -------------------------------------------
+ kernel/trace/trace.c         |  45 +++++++-
+ 16 files changed, 322 insertions(+), 282 deletions(-)
+---
+base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
+change-id: 20250217-jag-mv_ctltables-cf75e470e085
+
+Best regards,
 -- 
-2.34.1
+Joel Granados <joel.granados@kernel.org>
+
 
 
