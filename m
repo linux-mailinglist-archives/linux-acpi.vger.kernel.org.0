@@ -1,136 +1,260 @@
-Return-Path: <linux-acpi+bounces-11333-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11334-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E12BA3CAAB
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 22:01:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BD8A3CBDC
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 22:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 413E816AD44
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 21:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B9E177517
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 21:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC20253351;
-	Wed, 19 Feb 2025 21:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310032580CE;
+	Wed, 19 Feb 2025 21:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EVaSHjwW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wPiPoa7p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588C32528E9;
-	Wed, 19 Feb 2025 21:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B4423ED5A
+	for <linux-acpi@vger.kernel.org>; Wed, 19 Feb 2025 21:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739998828; cv=none; b=Tis9ryQtz3bS5mkfZqvGAfyRdONiL4uVJH0lgtmIONKM6U6PrypydQGUapC134CfsAnKQ8+jGGGauvS/WYZsqkyR2FANyQV1CAMc9x6lAEevab5xN0gXeVwpVo2iccu+FrKKryHU2Sg5WdftYUbSTiTUWYrg+yIaYQwCNa1ExJw=
+	t=1740002045; cv=none; b=IFoLX7XVYVCvM0V+HEfjM0Pwmvm4tFmP+8rAAuPXAjGuK0xRv/QPRS7Jnb8qGysATH/kUTwcy+A6nxGLWrT0t0Nvd4yaBeFydMXsrarHYsiONFOlHCnR7wq0Hta4ooIDpR/SK6v3aNEi40G2XyzEGOEZ6f46wX2owSsK9/1wKZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739998828; c=relaxed/simple;
-	bh=aX+a5w8XmINtfH48IXldc+6paaSi1c9fznZYSx8wZBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hYTo5b+rbcbtmo2t1sQ0Z19ejc0vG4sAgxS9+emUQBagOxswKy+3Kprj1u5STp0HVnm4SwSl840SXmxIjld0eG5zUbnyuSKGgrn2V3jHSocwZNn2CI00NV5dlSLsfTGc9EjsmM7M9u7nQ2aGLLd2GP2EWVj22ZWp1/5DtK/SMDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=EVaSHjwW; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3034E40E01B2;
-	Wed, 19 Feb 2025 21:00:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id YHqz74H1AW0s; Wed, 19 Feb 2025 21:00:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1739998820; bh=rjW6me5aey9H48hEN1KtzxQxnDbPM7NZTegKHKqDCWs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EVaSHjwW22P+vF1AXfgkrBhlqKcMY6aPZjkYzyb3Unn8wSfHBuGpF82KiHzKcs4rD
-	 RDgZ5NMMlqYe7usuGitbOeZfiy0LnFMAG62t1TmjMOGJWLabXTN+fDd3EkQOMnIcgz
-	 2+WnZC0xl5sQyvk6K8DWKM+qaBoyDFlPc6qEDFXVI9XdvN2NWV7MvREVFd0fHJIy/Z
-	 WnCv00w94vrVDjP4gtCAiEaXTcxqs3DBPSti9J9SsjALQJnPFdT6DyTcSN59tm90vt
-	 E0HYdr/quNZQGlyGhtu+kD0yMY0//XgLYKJAqgzgV9EiTjZxcZkH6pk1P9lWsu4taV
-	 D4zie+Afwgyto4ZhBITYkFdUdv5NwKBu2K0VOj1nvFQNFBwopzE9quJJ9Tdji8iC5F
-	 tKidpAX1COfflmtwTh6rNfD0hcVR9CBeY9vVgMUlIYFbvkCJIJH/Ek5aXbPScoxGMj
-	 tE5fS4e8Gg2kRytdJLcZFsPFoEKk/D0bZPCwDX/Vj34PWrI36wjIpXw7ot5+dBEfu+
-	 Bluv0CdgiJ0SXPqLkhq7Rli/xZ5AILx+FCLEWT5cD9OKWJRFP99WeJrNUI54UhDnzq
-	 SVI0x2SXGK6iLvrWcvyuUel83sC5J7mNvJ5wXSOKu+PkzttmWsuZO9psynAwdch3Ja
-	 V6oZ+n7VGPb+FQCC2FcPNvIE=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6459040E015D;
-	Wed, 19 Feb 2025 21:00:05 +0000 (UTC)
-Date: Wed, 19 Feb 2025 22:00:04 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, lpieralisi@kernel.org,
-	guohanjun@huawei.com, sudeep.holla@arm.com,
-	xueshuai@linux.alibaba.com, baolin.wang@linux.alibaba.com,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	lenb@kernel.org, tony.luck@intel.com, yazen.ghannam@amd.com
-Subject: Re: [PATCH v3 4/5] RAS/ATL: Unified ATL interface for ARM64 and AMD
-Message-ID: <20250219210004.GTZ7ZGVHn9h5h88_fJ@fat_crate.local>
-References: <20250115084228.107573-1-tianruidong@linux.alibaba.com>
- <20250115084228.107573-5-tianruidong@linux.alibaba.com>
+	s=arc-20240116; t=1740002045; c=relaxed/simple;
+	bh=f2Evl1/Y2JRZTJBM8MgwzdslOMp6PcDTZCILmIIZjgI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TomddjW2q7+N08WpTFyhYP0WnjaftrfeMTxacUO31oOCCbJ+Gcv6hpN5lGTyCltRtnxfxgkJauuWrWDLveYAdVpG20jhsAAsPif/azUY868spktH2vAPi24SyBaeGkGq4HHsZDHiDMqVaX5OktnicdtHplFwU9Z3HlKnIqEAZCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wPiPoa7p; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so287572a12.3
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Feb 2025 13:54:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740002041; x=1740606841; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hly2+E/pWLYHFHzBEhpYiIK1H+/yy5Tlka93bMM+wKs=;
+        b=wPiPoa7pP09xjsSP70pkj/bvYFKd8x4lNN0emVrSQKf2EdGmTdHIwxYbfq/D5U/v7v
+         HNweq3GlDYEk4vlyOlA4AA3oA2ER6qqWPtPaq7KIrkmGz3S31FPtfYRFqXse1fmpDih+
+         js2cqwMLiire1+Wic3M1WykeFStfatbO17Fl6mYzgD5QjB5SIEwVKPIWt+Se/LmY246M
+         KvsxSviAtIozPXJu6NLqQ3eKjsuGjr4FcnEPNnHxDFrvgbdisJ5Us6VuZK8mqdEjtQqf
+         DDjgBwEAa1aNRhC6xfCj9QR9YWfoCEpi6xtk45cHLQjk+OlINjGznmuvSZCEeRB6Kk4w
+         REVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740002041; x=1740606841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hly2+E/pWLYHFHzBEhpYiIK1H+/yy5Tlka93bMM+wKs=;
+        b=tutBPJrBReflxOIardwThJmzmboqAHAVqI7m2/2C7nTPrvS//nmsKSkV1LHplxnanb
+         ywxZdcbjC5yrcZG5phR7P4+J2BULwpE3MtSgwn+rfZ4LPkO4+F8+DBgtmx8Crq5V1Txy
+         7kULiKeCDJ4OACa3TRR1pkxJDoT43CCdFIhLVBU2OkoOmCwvxb5zJOIkcS60gADf7IQs
+         o3utZbVjV4FseyATMLypdYMeKak29NIRZD43iVqlrQH7F0lKJJaRS8+WS3YMT15SSPul
+         KIXbVHlh00JOarRlOCoh4pgTojDVoE4qxEe4xumDK5lpj0qmiG01zllGqv4FYmy61XIt
+         VlEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNpu526GWt1RyAo5GDTbfbF5OaEK0ZeOOCaHgkRsEKNT0FQcAsZbEkbMwbTpf7rbzYDFpQyh/4jb5G@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyef5KqhjUKKP0jNtI9yeIqkTQNfE1i5Q8Z8WiYuN90SUXlvkHF
+	NurSDiyqltDsNOalrPnkORuKQl/QyPNG1v81spu8RYxi6vleqmemp4upyI11/jekPZlqcau8pfg
+	YjtSXRc6wGWdUTz1qpRZpCKSw5WIgWHxjcgwz
+X-Gm-Gg: ASbGncuBYbbELm3zAgQ6bcNUF/Y1L26EDgGolA1tVdAeeB02Arli/s1O2+xKnIbnpoL
+	NpqCuwee7JyVg3tozZgmfhLvsNNZWjag40ojjegoYS2gCOAsQiEExWJCkU27MFdIOefSCdi3X
+X-Google-Smtp-Source: AGHT+IE8hY7HZbQxDsGR2DbY0WjBS8/vjMy9cpF4Uk6YeOTrso2rzJyYUK3piSrXg5oFlVO1VY67vEoPtoW7JVgAxy4=
+X-Received: by 2002:a05:6402:35cb:b0:5dc:caab:9447 with SMTP id
+ 4fb4d7f45d1cf-5e036063e6amr49959261a12.18.1740002041121; Wed, 19 Feb 2025
+ 13:54:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250115084228.107573-5-tianruidong@linux.alibaba.com>
+References: <20241118193024.2695876-1-jperaza@google.com> <2024111818-molecule-pedicure-db1b@gregkh>
+In-Reply-To: <2024111818-molecule-pedicure-db1b@gregkh>
+From: Joshua Peraza <jperaza@google.com>
+Date: Wed, 19 Feb 2025 13:53:48 -0800
+X-Gm-Features: AWEUYZkO-tcQ2iOyT9akmDadkWwc5wTxIV3gUrRKPZqCyQfwcTlPQkMZ347whJ8
+Message-ID: <CAFRSFxLF-i9Yvcf653-5gThV6PS_USqM3C5C8AaWrXuFaj8EZg@mail.gmail.com>
+Subject: Re: [v8 PATCH 0/2] PCI/ACPI: Support Microsoft's "DmaProperty"
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: baolu.lu@linux.intel.com, bhelgaas@google.com, dtor@google.com, 
+	dwmw2@infradead.org, helgaas@kernel.org, iommu@lists.linux-foundation.org, 
+	jean-philippe@linaro.org, joro@8bytes.org, jsbarnes@google.com, 
+	lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com, oohall@gmail.com, 
+	pavel@denx.de, rafael.j.wysocki@intel.com, rafael@kernel.org, 
+	rajatja@google.com, rajatxjain@gmail.com, will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 04:42:27PM +0800, Ruidong Tian wrote:
-> Subject: Re: [PATCH v3 4/5] RAS/ATL: Unified ATL interface for ARM64 and AMD
+On Mon, Nov 18, 2024 at 11:43=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Mon, Nov 18, 2024 at 07:30:22PM +0000, Joshua Peraza wrote:
+> > This patchset rebases two previously posted patches supporting
+> > recognition of Microsoft's DmaProperty.
+> >
+> > v8: Joshua renames untrusted_dma to requires_dma_protection and updates
+> > some comments, reducing use of the word "trust" to refer to PCI devices
+> > and matching the word choice in Microsoft's documentation.
+>
+> So this is the "clarity"?  I'm not sold, sorry.  Again, did you look at
+> the previous discussions we had about this name?  We don't have to use
+> Microsoft's term here as it is used differently by Linux today, right?
+> If you really want to support the DmaProperty, why not just support that
+> with a new bit as that's something different here, right?
+>
+> Again, look at what this is supposed to be conveying.  They ability to
+> DMA to anywhere isn't really the root issue here, or is it?  What is the
+> threat model you are trying to mitigate?
+>
+> > v7: Rajat updates a comment with Robin's suggestion. Joshua re-sends an=
+d
+> > Greg requests clarity and documentation on why untrusted_dma is the
+> > right name.
+> >
+> > v6: Rajat renames pci_dev_has_dma_property and links to Microsoft's
+> > documentation in the commit message. Robin suggests clarifying a
+> > comment.
+> >
+> > v5: Rajat changes the name to untrusted_dma. Bjorn suggesting changing
+> > another function's name pci_acpi_check_for_dma_protection to
+> > pci_dev_has_dma_property and seeks clarified documentation.
+> >
+> > v4: Rajat changes the name to poses_dma_risk. Christoph suggests this
+> > name doesn't capture the intent as well as untrusted_dma and Rafael
+> > agrees.
+> >
+> > v1,v2,v3: Greg suggests that (un)trusted is the wrong word for referrin=
+g
+> > to PCI devices, recommending a name something like "platform wants to
+> > protect dma access for this device."
+>
+> Or is it?  I said this when?  Just how old is this patch series?
+>
+> confused,
+>
+> greg k-h
 
-The condensed patch description in the subject line should start with a
-uppercase letter and should be written in imperative tone.
+(sorry if you're getting this again; re-sending as plain text)
 
+Sorry for the confusion! What do you think about the following for a
+new cover letter?
 
-> Translate device normalize address in AMD, also named logical address,
-> to system physical address is a common interface in RAS. Provides common
-> interface both for AMD and ARM.
+Threat model: An overview of the security implications of strict vs
+non-strict IOMMU is presented at [1]. This change is motivated by
+=E2=80=9CCase 1=E2=80=9D where a DMA-capable device is processing untrusted=
+ inputs,
+e.g. network devices.
 
-This needs a lot more explanation.
+This patchset proposes using =E2=80=9CDMA protection=E2=80=9D to mitigate t=
+his risk.
+This has the following effects, currently controlled by the
+=E2=80=9Cpci_dev::untrusted=E2=80=9D flag.
 
-> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
-> ---
->  drivers/edac/amd64_edac.c      |  2 +-
->  drivers/ras/aest/aest-core.c   | 12 ++++++------
->  drivers/ras/amd/atl/core.c     |  4 ++--
->  drivers/ras/amd/atl/internal.h |  2 +-
->  drivers/ras/amd/atl/umc.c      |  3 ++-
->  drivers/ras/ras.c              | 24 +++++++++++-------------
->  include/linux/ras.h            |  9 ++++-----
->  7 files changed, 27 insertions(+), 29 deletions(-)
-> 
-> diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-> index ddfbdb66b794..1e9c96e4daa8 100644
-> --- a/drivers/edac/amd64_edac.c
-> +++ b/drivers/edac/amd64_edac.c
-> @@ -2832,7 +2832,7 @@ static void decode_umc_error(int node_id, struct mce *m)
->  	a_err.ipid = m->ipid;
->  	a_err.cpu  = m->extcpu;
->  
-> -	sys_addr = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
-> +	sys_addr = convert_ras_la_to_spa(&a_err);
+- Separate IOMMU DMA domains
+- Use of SWIOTLB if CONFIG_SWIOTLB
+- Disables =E2=80=9Cquirks=E2=80=9D in intel IOMMU
+- Disables Address Translation Services
 
-No, this is not how all this is done. You don't rename functions and make them
-generic - you *extract* generic functionality into generic functions and have
-other functions which use them, call them.
+The =E2=80=9Cuntrusted=E2=80=9D flag was introduced in 2018 in [2]. The mot=
+ivation for
+that change was to enable using IOMMU to protect against DMA attacks
+from externally facing devices such as thunderbolt ports. The patchset
+introduces the =E2=80=9Cuntrusted=E2=80=9D flag which =E2=80=9Cis supposed =
+to cover various
+PCIe devices that may be used to conduct DMA attacks.=E2=80=9D The patchset
+originally proposes naming the flag =E2=80=9Cis_external=E2=80=9D but is re=
+named to
+=E2=80=9Cis_untrusted=E2=80=9D and then =E2=80=9Cuntrusted=E2=80=9D supposi=
+ng that it could apply to
+more than just externally facing thunderbolt devices. The fact that
+=E2=80=9CExternalFacingPort=E2=80=9D is not part of any standard is called =
+out during
+review but also that Windows expecting firmware to identify external
+facing ports makes it =E2=80=9Cas good as a formal standard in the Windows
+world.=E2=80=9D
 
-And you do that when there are users, not before.
+This current patch series was first proposed in January 2022 [3]. It
+originally proposed a new property =E2=80=9CUntrustedDevice=E2=80=9D which =
+would cause
+the untrusted flag to be set. In V1 Greg questions whether the new
+property is part of the ACPI standard, asks who is making this policy
+decision, and states =E2=80=9CThis notion of =E2=80=98trust=E2=80=99 for PC=
+I devices is
+crazy=E2=80=A6.=E2=80=9D Mika links to Microsoft's documentation of =E2=80=
+=9CDmaProperty=E2=80=9D and
+suggests that property is adopted instead. Greg objects that Linux
+does not have =E2=80=9Cdma protection=E2=80=9D but Mika says that this is t=
+he IOMMU.
+The term =E2=80=9CDMA protection=E2=80=9D is also used in thunderbolt drive=
+r code for
+the same purpose and in an Intel white paper [4] describing the
+technique. Mika also observes that Linux has recognized several
+properties documented by Microsoft but not part of the ACPI standard.
+There is discussion between Mika, Rafael, and Rajat about seeking to
+align with Microsoft on the semantics of =E2=80=9CDmaProperty=E2=80=9D for
+compatibility with firmware produced for Windows.
 
-Ok, that should be enough feedback for now.
+V2 of this patch series [5] again proposed an =E2=80=9CUntrustedDevice=E2=
+=80=9D
+property which Greg objects to because it is not sufficiently
+descriptive, not sufficiently documented, and policies about trust
+don=E2=80=99t belong in the kernel. Rajat describes the =E2=80=9Cuntrusted=
+=E2=80=9D flag=E2=80=99s
+current use, controlling IOMMU and Greg suggests naming the flag
+=E2=80=9Cuse_iommu=E2=80=9D or =E2=80=9Cable to do DMA=E2=80=9D
 
-Thx.
+V3 of this patch series [6] proposes recognizing =E2=80=9CDmaProperty=E2=80=
+=9D with
+slightly altered semantics from Microsoft=E2=80=99s documentation. Greg
+suggests adhering to Microsoft=E2=80=99s semantics for =E2=80=9CDmaProperty=
+=E2=80=9D and to
+introduce a new property with new semantics instead. Greg again states
+that the flag being named =E2=80=9Cuntrusted=E2=80=9D (not changed in this =
+patch) is
+confusing.
 
--- 
-Regards/Gruss,
-    Boris.
+V4 renames =E2=80=9Cuntrusted=E2=80=9D to =E2=80=9Cposes_dma_risk=E2=80=9D.=
+ Christoph suggests
+=E2=80=9Cuntrusted_dma=E2=80=9D and Rafael agrees.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+V5 renames the flag to =E2=80=9Cuntrusted_dma=E2=80=9D. Bjorn asks for clar=
+ification
+about whether the semantics of this flag will match Microsoft=E2=80=99s
+documentation. Rajat responds that Microsoft has agreed to update
+their documentation to have aligned semantics, in particular =E2=80=9Cthe
+property is not restricted to identify =E2=80=98internal PCIe hierarchies=
+=E2=80=99
+(starting at root port), but to "any PCI device". As of today,
+Microsoft=E2=80=99s documentation does not appear to have been updated.
+
+In V6 Rajat updates a link to Microsoft=E2=80=99s documentation, renames a
+function to pci_dev_has_dma_property() and uses
+acpi_dev_get_property() to read =E2=80=9CDmaProperty=E2=80=9D.
+
+In V7-V8 Joshua re-sends and Greg requests a summary of the history of
+debate about the name for the =E2=80=9Cuntrusted=E2=80=9D flag as well as w=
+hat is the
+threat model, what does this property convey, and why we should use
+Microsoft=E2=80=99s DmaProperty and its semantics instead of inventing
+something new.
+
+Links:
+[1] https://lore.kernel.org/linux-arm-msm/20210624101557.v2.3.Icde6be7601a5=
+939960caf802056c88cd5132eb4e@changeid/
+[2] https://lore.kernel.org/lkml/20181129155153.35840-1-mika.westerberg@lin=
+ux.intel.com/
+[3] https://lore.kernel.org/all/20220120000409.2706549-1-rajatja@google.com=
+/
+[4] https://www.intel.com/content/dam/develop/external/us/en/documents/inte=
+l-whitepaper-using-iommu-for-dma-protection-in-uefi-820238.pdf
+[5] https://lore.kernel.org/all/20220202020103.2149130-1-rajatja@google.com=
+/
+[6] https://lore.kernel.org/all/20220216220541.1635665-1-rajatja@google.com=
+/
 
