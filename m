@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-11316-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11317-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E6AA3C8D1
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 20:34:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23ABBA3C8CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 20:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC6B43A2433
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 19:31:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FBC0189BD8B
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 19:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040FA2356B7;
-	Wed, 19 Feb 2025 19:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6268F23645F;
+	Wed, 19 Feb 2025 19:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YarBi1iG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BVCweETQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4102423314C;
-	Wed, 19 Feb 2025 19:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E34236431;
+	Wed, 19 Feb 2025 19:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739993393; cv=none; b=XZO954yts68sbKHbZ+aMK2sJ0njIqse9ecrS4D+2ri0yQVbT1gWtcuUUAd/FIuOqlqyzmiXjX3GLMVXjyrYYVZ0FtVKNEFIvoEzp+bQAoP8I7RGBBD3oj6SCQikOkKXfOgENhvCyfR8kQ0u1drQacYPh9cOQkB2vAUIzLrexzcM=
+	t=1739993397; cv=none; b=dQB1wIepVPdpfRjWzQbuTlM9GEp1VsNos5y/toShqS5aR7ifH8rVPDqMXJMfgmR4a47wIpdhDdBphA5UM5nE3F3i3TmGmSnIRmqHP+5oV9oNpNbZoCTRDlppoOs+2pwkCFU4y5CGrFrAMggCRo4zsU4th7pJTt1Ci1OXo+mb1FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739993393; c=relaxed/simple;
-	bh=GmXwBXf7o6X1iHu+tHqsXntz3Xo5SDeaPBJSRIAxMDU=;
+	s=arc-20240116; t=1739993397; c=relaxed/simple;
+	bh=8LoKO9cw3zNi1Qfr0RD+m3/lR+uSJtFclDYDi2rbLok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaURz0kkbhXromYMxsMIKvl+B8LgXoZ+Tn3e+ii6grGFlCLlOYDOKht1BE5MevP9tRvpvAbri6jRJcydwfpnVsY+tZI9HUduLYu9KrHNuAA8LhYsGAHIEMzbrU13nGO4c3vHj4dyhNY2Gsm4t24HUeeI+CanczDz5oNjaa9Lzs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YarBi1iG; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=pWoqrLoA4BOiRoV61e+PiN0E947WOfXxp/IFhimz7G4q0mL9r9DT6S5GZRY2DiGzk2SFsa/U1mQjmQDm1D7dNJ6UBms7Pz9ZoKVa14KWBdMQ9exTDQMoIONZL9nikGVIrR0i5l5FC2yLaHXWX7MQuC4gt6lKWu8i2Gg3ZKhHpz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BVCweETQ; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739993392; x=1771529392;
+  t=1739993396; x=1771529396;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GmXwBXf7o6X1iHu+tHqsXntz3Xo5SDeaPBJSRIAxMDU=;
-  b=YarBi1iGnEuQ05r/kIcFaygk1k29EAcYIW4IauUyMRt9YVZQWMDveCsB
-   GatyJxe80dfEMDfcmPZVVp/jLu1UWFf+ybXE7ce2+QlgIJR4ElPIC/MM7
-   t/O2hDHIh+BPWHTUdn0QZXqDqF/rpAJRECRagMqCzubVi+3My4HNEEgji
-   ebTo0cNh3GVBPRYzmm5q7/oggvu3WrQpjuJRBh2L6U+fPeN2ws/xW9R0n
-   O7/oepEFBDwlNzIn1uk/YmXuT6tqgm+I1xFkbv7dtoNH6no6s8aexaaeY
-   IyyimtbgwRg+OZuLxDPJl41vJIZrzHUdH6fJnVYZoczF1XadxkeOG/sZF
-   w==;
-X-CSE-ConnectionGUID: +IDdg6V8Sd2a/ARZrC4fmQ==
-X-CSE-MsgGUID: V5CmblIYQNq1wO8x0DXahw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52183067"
+  bh=8LoKO9cw3zNi1Qfr0RD+m3/lR+uSJtFclDYDi2rbLok=;
+  b=BVCweETQto34E0wHtgjA0LQ03LXkVO/DIDTpE8hpImd5VfBZ2UXpygff
+   fzitGAxXU2TBmkP7hXmmMQ/10Qst32zqcT1kNhU885ugqiS++PBve7R4V
+   3fKw5/Rs2yUbU7TUe+3yGgISADnfB8MxZRALm7siZQmhV1kjyG0z1dmpG
+   qbkaBi4O+VFb+tzgAwErb4tOGECkZrmU3KZlT2FHRn6jmvsAFObn1mrih
+   eJUynbmJfYK7wO8oJKc9I6MXvMmIOY6hoM03kJljdkC3fbKEhGp2NG9fu
+   szHAdcg1G8upQiuZzmmt51zGDn2/MwRybQPvNFTXl26TwaUBtN1oeftQO
+   g==;
+X-CSE-ConnectionGUID: LjrM5gDNRv6/1BvfC+NrHQ==
+X-CSE-MsgGUID: +qNyOP2DQVOwPo8XRtBDRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52183085"
 X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="52183067"
+   d="scan'208";a="52183085"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 11:29:51 -0800
-X-CSE-ConnectionGUID: 5TYVdDi5SWCIpXUNqA0fHw==
-X-CSE-MsgGUID: JKgeboEKRKisXI+7sHYqvA==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 11:29:54 -0800
+X-CSE-ConnectionGUID: AYq4ccKZSyibwbKEBZkWxg==
+X-CSE-MsgGUID: FyUU+0r1QaC800I/t8dmwA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="115344070"
+   d="scan'208";a="115344073"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Feb 2025 10:50:19 -0800
+  by fmviesa010.fm.intel.com with ESMTP; 19 Feb 2025 10:50:24 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -90,9 +90,9 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-pm@vger.kernel.org
-Subject: [PATCH v3 13/15] x86/cpu/intel: Bound the non-architectural constant_tsc model checks
-Date: Wed, 19 Feb 2025 18:41:31 +0000
-Message-ID: <20250219184133.816753-14-sohil.mehta@intel.com>
+Subject: [PATCH v3 14/15] perf/x86: Simplify Intel PMU initialization
+Date: Wed, 19 Feb 2025 18:41:32 +0000
+Message-ID: <20250219184133.816753-15-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250219184133.816753-1-sohil.mehta@intel.com>
 References: <20250219184133.816753-1-sohil.mehta@intel.com>
@@ -104,64 +104,120 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-X86_FEATURE_CONSTANT_TSC is a Linux-defined, synthesized feature flag.
-It is used across several vendors. Intel CPUs will set the feature when
-the architectural CPUID.80000007.EDX[1] bit is set. There are also some
-Intel CPUs that have the X86_FEATURE_CONSTANT_TSC behavior but don't
-enumerate it with the architectural bit.  Those currently have a model
-range check.
+Architectural Perfmon was introduced on the Family 6 "Core" processors
+starting with Yonah. Processors before Yonah need their own customized
+PMU initialization.
 
-Today, virtually all of the CPUs that have the CPUID bit *also* match
-the "model >= 0x0e" check. This is confusing. Instead of an open-ended
-check, pick some models (INTEL_IVYBRIDGE and P4_WILLAMETTE) as the end
-of goofy CPUs that should enumerate the bit but don't.  These models are
-relatively arbitrary but conservative pick for this.
+p6_pmu_init() is expected to provide that initialization for early
+Family 6 processors. But, due to the unrestricted call to p6_pmu_init(),
+it could get called for any Family 6 processor if the architectural
+perfmon feature is disabled on that processor.
 
-This makes it obvious that later CPUs (like Family 18+) no longer need
-to synthesize X86_FEATURE_CONSTANT_TSC.
+To simplify, restrict the call to p6_pmu_init() to early Family 6
+processors that do not have architectural perfmon support. As a result,
+the "unsupported" console print becomes practically unreachable because
+all the released P6 processors are covered by the switch cases.
+
+Move the console print to a common location where it can cover all
+modern processors that do not have architectural perfmon support.
+
+Also, use this opportunity to get rid of the unnecessary switch cases in
+p6_pmu_init().  Only the Pentium Pro processor needs a quirk, and the
+rest of the processors do not need any special handling. The gaps in the
+case numbers are only due to no processor with those model numbers being
+released.
+
+Converting to a VFM based check gets rid of one last few Intel x86_model
+comparisons.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
-v3: Make the non-architectural model checks more explicit.
-    Improve commit message.
+v3: Restrict calling p6_pmu_init() to only when needed.
+    Move the console print to a common location.
 
 v2: No change.
 ---
- arch/x86/kernel/cpu/intel.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/core.c | 16 +++++++++++-----
+ arch/x86/events/intel/p6.c   | 26 +++-----------------------
+ 2 files changed, 14 insertions(+), 28 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index fc68561d9f92..4fbc5465ca67 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -210,10 +210,6 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- {
- 	u64 misc_enable;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 7601196d1d18..c645d8c8ab87 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -6466,16 +6466,22 @@ __init int intel_pmu_init(void)
+ 	char *name;
+ 	struct x86_hybrid_pmu *pmu;
  
--	if ((c->x86 == 0xf && c->x86_model >= 0x03) ||
--		(c->x86 == 0x6 && c->x86_model >= 0x0e))
--		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
--
- 	if (c->x86 >= 6 && !cpu_has(c, X86_FEATURE_IA64))
- 		c->microcode = intel_get_microcode_revision();
- 
-@@ -266,10 +262,16 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 	 *
- 	 * It is also reliable across cores and sockets. (but not across
- 	 * cabinets - we turn it off in that case explicitly.)
-+	 *
-+	 * Use a model-specific check for some older CPUs that have invariant
-+	 * TSC but may not report it architecturally via 8000_0007.
- 	 */
- 	if (c->x86_power & (1 << 8)) {
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
- 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
-+	} else if ((c->x86_vfm >= INTEL_P4_PRESCOTT && c->x86_vfm <= INTEL_P4_WILLAMETTE) ||
-+		   (c->x86_vfm >= INTEL_CORE_YONAH  && c->x86_vfm <= INTEL_IVYBRIDGE)) {
-+		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
++	/* Architectural Perfmon was introduced starting with INTEL_CORE_YONAH */
+ 	if (!cpu_has(&boot_cpu_data, X86_FEATURE_ARCH_PERFMON)) {
+ 		switch (boot_cpu_data.x86) {
+-		case 0x6:
+-			return p6_pmu_init();
+-		case 0xb:
++		case 6:
++			if (boot_cpu_data.x86_vfm < INTEL_CORE_YONAH)
++				return p6_pmu_init();
++			break;
++		case 11:
+ 			return knc_pmu_init();
+-		case 0xf:
++		case 15:
+ 			return p4_pmu_init();
++		default:
++			pr_cont("unsupported CPU family %d model %d ",
++				boot_cpu_data.x86, boot_cpu_data.x86_model);
++			return -ENODEV;
+ 		}
+-		return -ENODEV;
  	}
  
- 	/* Penwell and Cloverview have the TSC which doesn't sleep on S3 */
+ 	/*
+diff --git a/arch/x86/events/intel/p6.c b/arch/x86/events/intel/p6.c
+index a6cffb4f4ef5..65b45e9d7016 100644
+--- a/arch/x86/events/intel/p6.c
++++ b/arch/x86/events/intel/p6.c
+@@ -2,6 +2,8 @@
+ #include <linux/perf_event.h>
+ #include <linux/types.h>
+ 
++#include <asm/cpu_device_id.h>
++
+ #include "../perf_event.h"
+ 
+ /*
+@@ -248,30 +250,8 @@ __init int p6_pmu_init(void)
+ {
+ 	x86_pmu = p6_pmu;
+ 
+-	switch (boot_cpu_data.x86_model) {
+-	case  1: /* Pentium Pro */
++	if (boot_cpu_data.x86_vfm == INTEL_PENTIUM_PRO)
+ 		x86_add_quirk(p6_pmu_rdpmc_quirk);
+-		break;
+-
+-	case  3: /* Pentium II - Klamath */
+-	case  5: /* Pentium II - Deschutes */
+-	case  6: /* Pentium II - Mendocino */
+-		break;
+-
+-	case  7: /* Pentium III - Katmai */
+-	case  8: /* Pentium III - Coppermine */
+-	case 10: /* Pentium III Xeon */
+-	case 11: /* Pentium III - Tualatin */
+-		break;
+-
+-	case  9: /* Pentium M - Banias */
+-	case 13: /* Pentium M - Dothan */
+-		break;
+-
+-	default:
+-		pr_cont("unsupported p6 CPU model %d ", boot_cpu_data.x86_model);
+-		return -ENODEV;
+-	}
+ 
+ 	memcpy(hw_cache_event_ids, p6_hw_cache_event_ids,
+ 		sizeof(hw_cache_event_ids));
 -- 
 2.43.0
 
