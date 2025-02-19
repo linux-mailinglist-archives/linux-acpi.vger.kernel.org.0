@@ -1,174 +1,226 @@
-Return-Path: <linux-acpi+bounces-11301-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11302-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4DFA3C7A9
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 19:34:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DADA3C7D3
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 19:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5233179D00
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 18:31:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFEDC1897BEF
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 18:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1A12163B0;
-	Wed, 19 Feb 2025 18:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2571F3FC8;
+	Wed, 19 Feb 2025 18:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="PmypkfxN"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cPd+ngRt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5389C214A83
-	for <linux-acpi@vger.kernel.org>; Wed, 19 Feb 2025 18:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EB61E4AB;
+	Wed, 19 Feb 2025 18:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739989775; cv=none; b=trMmMgIKlNAuIfo29x8/rd4W1mnAZQ6K6oiqRrmXiyccH7AWN9G7vLSe9H+FEq5DEl4khl29DLBTTrFs1uDIzkkVZnAfcZpABxsklr/U5ue9z83xn6uMiKZTBMDzqBCKXSxv4FHHV9G0PFa0zXKETzvdz3sxE5EZmDIFiF7wIDo=
+	t=1739990796; cv=none; b=cmONimr6HxvbOSlFGdTS6KL1QMV7vWrgwRLRxlFMM6fDYCQ51m84qN8GejOuNkJpQtvzHf4l5j5Ib6gQYMWL/e3xz6/5IGWWmy/DUCv1rhjpu4wX6qO1CfkxoEy5wwMMtTubZ4nuohI+KYnt6kimM0oLyJjHjcHF8VvfUIYDZb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739989775; c=relaxed/simple;
-	bh=hNvfVR0ZZ2UFjzAGnYJWeJC+N+Q90ykly/lra30oclk=;
+	s=arc-20240116; t=1739990796; c=relaxed/simple;
+	bh=KFAhhr4xy5oMN9P+b2/vDe/6EZSVQHCstfpynxzGvo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tdxK5+ml/2ACQpCCdn/3+CvWRnacHRQiTVae76lUxqepEokJM1YBWGFEIG6Ul+xPWQgQvUs1xNS2aN4E/Fuzjo2IMlf/rwp0ebllC5V1geRqT0GfWWDgOa0Tu6z/fSewkovM//SE1YJbuF/z1W4N4+8dbOz0iF4otVRZQSts4So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=PmypkfxN; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c0a1677aebso7681985a.0
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Feb 2025 10:29:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1739989772; x=1740594572; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tKMJ3X6Jzp+wNnNxZ3cTu3f1diCv42/eMEvkIcSBFc4=;
-        b=PmypkfxNzF+1Ps74JyQib0woINIH5uY8g24xF+LDigxh14LIjFyLE4tKpMD43Pz3GO
-         MCBNVELcQ9qeJ+GlKdR7zSCCGPr5akM/moSmVRLGvpsA3lIROeti2Jl9tXfBJjTItK2c
-         yYlpknRMhmSE3bcZl9cojpPBNKSOi05sL9qzJqVAxnCzwH/w6Eg81YPgtoHaXrEVyOLH
-         RjsUJ3bO6J01LTuSmO2En+JrIvAWh9IuI6FvwT+9z1E/9lMuv0FO08vAjWaH5cdSmKHX
-         SB4tUgyMVmlq2LuYol7f5Mo4ZcjHP+FdRq9UMqrZw9INshSXW5yUndjpcLxwQXQMMVhe
-         oV3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739989772; x=1740594572;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tKMJ3X6Jzp+wNnNxZ3cTu3f1diCv42/eMEvkIcSBFc4=;
-        b=ebtpBWWIOcZNXQx+zir+IdMm0seJeIyHlfkVL2RfJJorGrDFN/48ld+n0ZodQK+4c0
-         5aDbHQ7qQ5pOQJo0ZhlJjciqS9bK5nqLQGNydjUWbOUeGdZE835cv+HZjtWLNjRrmXYE
-         K/09ew4IQa+YzlalYT3m3wShTVBnMEgfptO87rlQsngxTKDCGhAA1Z7E3cextnXOd78u
-         oIKZ6DnTefGNVFP3M+1BsBSrwZeUiWC2hIJUHdzu/88hB/TaIK/GAWJi4IVUp+pCHSH8
-         GSQJE9vHCMi20WQPEOV3JKuWdNd1KLNoFKi7RIROzK2X9oRZyG+PK7p3mzHRA4rJyI/r
-         Wrhw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQSLlzSB0ywOq50Emmh6qI/Z0mV23d4+tQxuWEYReh7iGxDsY2EUSt155hFWDYhTl0mNX/qxi6hZWr@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVR9ww4qFvf9ni/ivZOIJkBsVCbyKdOGgK0qV5qMvD8A9/SUu9
-	rsMT4P0/WFgTXC23X4YETP1Lf3iT42IjZ9UcRm3E2Gus3vx8ou15O3DigM3A/BE=
-X-Gm-Gg: ASbGnctXslTKWt8TZPK7RLPXsoBx5lQ47squfGxlZW1WHIHSs7t0oQiannO9FflsB7Y
-	D7FDbzhN9AAAUPl8PCuS31Rh3bx1UUb1vajjh50QfOR5Oe++jenf1CjL44Agw9m8kXXgQ0pUOcq
-	Qzo400abLYZxOvQy+37ZQIguVW8bid/DdQfSAnnkw7lkRqDx21hyRVjy0LsNjEXBXrUy7IIIIvl
-	7e4tXFZGsUGxrL3lleOLjMHE8urLhYTgBrnOZooPrPNxtK2z5wG8uY1PDSRNeXBfAVMRpQKSG/z
-	S8Zjp75cSnXmyWGuZ1PlJbPHBrQqcVhz6PAP0cEasfIMphxGjlRCzkcu1bgkw1mx
-X-Google-Smtp-Source: AGHT+IG6vD9GMzJFRgKV5tkVvAkzSXjZzf3sKuYbia/+L+uYcxerEW/IEbYH+D0NjcMpo2cEEaQ1ow==
-X-Received: by 2002:a05:620a:1787:b0:7be:5bc1:9460 with SMTP id af79cd13be357-7c08aa9ab2dmr2845829285a.35.1739989765100;
-        Wed, 19 Feb 2025 10:29:25 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c0a609cb1bsm303023085a.111.2025.02.19.10.29.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 10:29:24 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tkop2-000000009V2-07PN;
-	Wed, 19 Feb 2025 14:29:24 -0400
-Date: Wed, 19 Feb 2025 14:29:24 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH 2/2] iommu: Get DT/ACPI parsing into the proper probe path
-Message-ID: <20250219182924.GN3696814@ziepe.ca>
-References: <cover.1739486121.git.robin.murphy@arm.com>
- <c2f0ae276fd5a18e1653bae8bb0c51670e35b283.1739486121.git.robin.murphy@arm.com>
- <20250214201435.GF3696814@ziepe.ca>
- <4a7823b2-2634-4148-8446-ad01a09b6880@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZKItkRl+r58K6QUUFtcZNNK1ECmy4mkJmRVXAvQPAeHD4Hf3HFPdcQWY5QqwXV/cwQydB/AJQSokT9Dzw/m/BXDMU/J6M5mtpYi//Ee5MDJ0vBTKFsKbdTdk5ovy5EWPv9e4qTl0SIqp/Z034bSGOBSL20ljR79tCFpDLqRhXpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cPd+ngRt; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8E10C40E0176;
+	Wed, 19 Feb 2025 18:46:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id z15dtccO68ao; Wed, 19 Feb 2025 18:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1739990786; bh=vgFdYNMT39E8eGj67uvR/82qw40Mmbyr9Z4EvKWNqPY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cPd+ngRtOjokmWFhMpHZLwUzUlKHAvYG8bszufBHMcN0PPdJMFf/RCGmK8x2Zw4MA
+	 5oTCrc4aHfXcrYrYvHJmy2MkGuopszfBHuIHl2ZZyiCQmWyYTFWcKqzS1Jlcs9yzl1
+	 f1AL69xikS7OBVc0n1mua16IV8AStAb12McccNjCUy2JaQbx5Q5GoJfnpkauZepxJE
+	 cvfb58aqFPCTGhzDaows5bOf99k3CATYZ3+ZW4p2VEK80hkLPNfBiD/HRcl7LcqizD
+	 vHkzq7EHabgyXkHf/BxCd5bBwPbC1jaIMJrhDcid8Y9sWR+/pXRoOTNnB+ABNW6c0Y
+	 wWYad2LQneyEntYR3fs1F5vp7i0l9zFcEybwTLYGbBRvpr7IY+iDSCJA4JHnja+226
+	 vCnUvz47JApOTYss0qfKLpwCqZOuyLfN3fhMnkivEQeg+h+Hyur2Bcxa5vHtRoCFkE
+	 o61n1Pk7f+xdjYlnwFJkRyBJNEM0ytz77Ik5WJlW1HF4wgz8N+Qmd+f8OWox4t420d
+	 MfbsJ6hV83SYxA5JGAjP2+AtQxCuK2ToJ2cEmj33SDYDG1x/dNoJplZ2Ruq5hJhVPy
+	 AIbtWv+YzQZ2MCA9cXE50rKgsBHNebZ6vTBGmBHjBYLWlbkl2+GyINsr4p63Vxg8RT
+	 d4y3gDw8sr/JyvvO8YDBCWaE=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A4A6740E015D;
+	Wed, 19 Feb 2025 18:45:40 +0000 (UTC)
+Date: Wed, 19 Feb 2025 19:45:33 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>, Vandana Salve <vsalve@micron.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250219184533.GCZ7YmzTDk5B4p-C7e@fat_crate.local>
+References: <20250109161902.GDZ3_29rH-sQMV4n0N@fat_crate.local>
+ <20250109183448.000059ec@huawei.com>
+ <20250111171243.GCZ4Kmi5xMtY2ktCHm@fat_crate.local>
+ <20250113110740.00003a7c@huawei.com>
+ <20250121161653.GAZ4_IdYDQ9_-QoEvn@fat_crate.local>
+ <20250121181632.0000637c@huawei.com>
+ <20250122190917.GDZ5FCXetp9--djyQ6@fat_crate.local>
+ <20250206133949.00006dd6@huawei.com>
+ <20250217132322.GCZ7M4Somf2VYvbwHb@fat_crate.local>
+ <20250218165125.00007065@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4a7823b2-2634-4148-8446-ad01a09b6880@arm.com>
+In-Reply-To: <20250218165125.00007065@huawei.com>
 
-On Mon, Feb 17, 2025 at 03:00:46PM +0000, Robin Murphy wrote:
-> On 14/02/2025 8:14 pm, Jason Gunthorpe wrote:
-> > On Thu, Feb 13, 2025 at 11:49:00PM +0000, Robin Murphy wrote:
-> > 
-> > > much just calling the same path twice. At client driver probe time,
-> > > dev->driver is obviously set; conversely at device_add(), or a
-> > > subsequent bus_iommu_probe(), any device waiting for an IOMMU really
-> > 
-> > Could you put the dev->driver test into iommu_device_use_default_domain()?
-> > 
-> > It looks like many of the cases are just guarding that call.
-> > 
-> > > should *not* have a driver already, so we can use that as a condition to
-> > > disambiguate the two cases, and avoid recursing back into the IOMMU core
-> > > at the wrong times.
-> > 
-> > Which sounds like this:
-> > 
-> > > +		mutex_unlock(&iommu_probe_device_lock);
-> > > +		dev->bus->dma_configure(dev);
-> > > +		mutex_lock(&iommu_probe_device_lock);
-> > > +	}
-> > 
-> > Shouldn't call iommu_device_use_default_domain() ?
+On Tue, Feb 18, 2025 at 04:51:25PM +0000, Jonathan Cameron wrote:
+> As a side note, if you are in the situation where the device can do
+> memory repair without any disruption of memory access then my
+> assumption is in the case where the device would set the maintenance
+> needed + where it is considering soft repair (so no long term cost
+> to a wrong decision) then the device would probably just do it
+> autonomously and at most we might get a notification.
+
+And this is basically what I'm trying to hint at: if you can do recovery
+action without userspace involvement, then please, by all means. There's no
+need to noodle information back'n'forth through user if the kernel or the
+device itself even, can handle it on its own.
+
+More involved stuff should obviously rely on userspace to do more involved
+"pondering."
+
+> So I think that if we see this there will be some disruption.
+> Latency spikes for soft repair or we are looking at hard repair.
+> In that case we'd need policy on whether to repair at all.
+> In general the rasdaemon handling in that series is intentionally
+> simplistic. Real solutions will take time to refine but they
+> don't need changes to the kernel interface, just when to poke it.
+
+I hope so.
+
+> The error record comes out as a trace point. Is there any precedence for
+> injecting those back into the kernel? 
+
+I'm just questioning the whole interface and its usability. Not saying it
+doesn't make sense - we're simply weighing all options here.
+
+> That policy question is a long term one but I can suggest 'possible' policies
+> that might help motivate the discussion
+>
+> 1. Repair may be very disruptive to memory latency. Delay until a maintenance
+>    window when latency spike is accepted by the customer until then rely on
+>    maintenance needed still representing a relatively low chance of failure.
+
+So during the maintenance window, the operator is supposed to do
+
+rasdaemon --start-expensive-repair-operations
+
+?
+
+> 2. Hard repair uses known limited resources - e.g. those are known to match up
+>    to a particular number of rows in each module. That is not discoverable under
+>    the CXL spec so would have to come from another source of metadata.
+>    Apply some sort of fall off function so that we repair only the very worst
+>    cases as we run out. Alternative is always soft offline the memory in the OS,
+>    aim is to reduce chance of having to do that a somewhat optimal fashion.
+>    I'm not sure on the appropriate stats, maybe assume a given granual failure
+>    rate follows a Poison distribution and attempt to estimate lambda?  Would
+>    need an expert in appropriate failure modes or a lot of data to define
+>    this!
+
+I have no clue what you're saying here. :-)
+
+> It is the simplest interface that we have come up with so far. I'm fully open
+> to alternatives that provide a clean way to get this data back into the
+> kernel and play well with existing logging tooling (e.g. rasdaemon)
 > 
-> Semantically it shouldn't really be called at this stage, but it won't be
-> anyway since "to_<x>_driver(NULL)->driver_managed_dma" is not false -
-> trouble is it's also not true ;)
+> Some things we could do,
+> * Store binary of trace event and reinject. As above + we would have to be
+>   very careful that any changes to the event are made with knowledge that
+>   we need to handle this path.  Little or now marshaling / formatting code
+>   in userspace, but new logging infrastructure needed + a chardev /ioctl
+>   to inject the data and a bit of userspace glue to talk to it.
+> * Reinject a binary representation we define, via an ioctl on some
+>   chardev we create for the purpose.  Userspace code has to take
+>   key value pairs and process them into this form.  So similar amount
+>   of marshaling code to what we have for sysfs.
+> * Or what we currently propose, write set of key value pairs to a simple
+>   (though multifile) sysfs interface. As you've noted marshaling is needed.
 
-That case in PCI I understood, but the other cases seemed like they
-would be OK, especially if group is NULL
+... and the advantage of having such a sysfs interface: it is human readable
+and usable vs having to use a tool to create a binary blob in a certain
+format...
 
-> > This is the test I mean, if iommu_group is set then
-> > dev->iommu->iommu_dev->ops is supposed to be valid too. It seems like
-> > it should be done earlier..
-> 
-> Yeah, looking at it now I'm really not sure why this ended up in this order
-> - I guess I was effectively adding the dma_configure() call to the front of
-> the existing iommu_fwspec_ops() check, and then I moved the lockdep_assert()
-> up to make more sense. But then the ops check probably should have been
-> after the group check to begin with, for much the same reasoning as above.
-> I'll sort that out for v2.
+Ok, then. Let's give that API a try... I guess I need to pick up the EDAC
+patches from here:
 
-I guess check it at the top and then check it again after re-locking.
+https://lore.kernel.org/r/20250212143654.1893-1-shiju.jose@huawei.com
 
-> > > +	 * And if we do now see any replay calls, they would indicate someone
-> > > +	 * misusing the dma_configure path outside bus code.
-> > > +	 */
-> > > +	if (dev_iommu_fwspec_get(dev) && dev->driver)
-> > > +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
-> > 
-> > WARN_ON_ONCE or dump_stack() to get the stack trace out?
-> 
-> Indeed, hence dev_WARN() (!= dev_warn())
+If so, there's an EDAC patch 14 which is not together with the first 4. And
+I was thinking of taking the first 4 or 5 and then giving other folks an
+immutable branch in the EDAC tree which they can use to base the CXL stuff on
+top.
 
-Oh, I've never seen that variation before!
+What's up?
 
-Jason
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
