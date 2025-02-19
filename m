@@ -1,101 +1,51 @@
-Return-Path: <linux-acpi+bounces-11318-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11319-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0381FA3C8CD
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 20:33:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA91FA3C94C
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 21:10:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8890E189D100
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 19:32:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA0A1177257
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 20:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AEE2397B0;
-	Wed, 19 Feb 2025 19:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HUMWxafv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F5822CBD2;
+	Wed, 19 Feb 2025 20:10:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4574423957F;
-	Wed, 19 Feb 2025 19:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4054F21B9E0;
+	Wed, 19 Feb 2025 20:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739993402; cv=none; b=aBlnOK0kVeGgmxcf11riE2VM/e+q3s4O57MHv37iU7AyCHgDwkl1ZoEbBP9XxLLoq4NraAZrmpCKjlzg8Ma62OgR+SLznYtNNditU8Ab/0NS/pHaOFCAtQLLW5/vkB+aEIPVpHlhjVHlEj6EAgKkcaW+ZqLLU2Utybr+iRVPa/w=
+	t=1739995828; cv=none; b=XBes+jaCn8W3yKg9svOo2xXaux22+HM/LUuK15XdeTcqkeUmW8CFBoCgza2V7/tQ4bzNcDAcv2yLdDEVECvlX4cNRE8hy8wxS59wsePfAkM1qDrHQ0p6klFz3qPZ3Dbm2pA0kQx4gLkY+OYSnfexlIuVuQJBztr+hwJIieQvIj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739993402; c=relaxed/simple;
-	bh=QLIMnNXCwjgKCC5aNgIRCQTRlUzz0+nUlS5cRZ36n7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIk0gJ5tdJ8nVVonoLNXyudfTDXfuIrV4SE7RW+yndlB+ZLyai6jc8MMhz66t3yAkR+/ZX4kYQrWNgxV8eM5GlA7arQotlLJrAm9bzN9/agf6+UZXkVdQlL+G92HBygyRstGMCcGck+m3SZxJyDGIbZuD+jTI885uXB+5quUu2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HUMWxafv; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739993400; x=1771529400;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QLIMnNXCwjgKCC5aNgIRCQTRlUzz0+nUlS5cRZ36n7M=;
-  b=HUMWxafvQUZ08vO46pAafrfGQeDYR/2mttDR881RDD001mDxetNnqwRQ
-   ALGn4rt9JeNU/iEfzXzTd8lRmMUKKO75wnXaXMg61LYP4j5sG776pMoc9
-   kz36Oa/M2foT8ZvJ/HlnxHYUFvZhvriZw89vyjv4JPpeKT5vRGqZd975N
-   kZJTeDQeewUr/MqKdV6PdkPq4rCiP6spe9/zmNGQHdreNS+45bUHa6ZHw
-   EIdilgKfH/ULEiner3qtF7aOAOdYsddMUC9bvm88+ixfkX9hkMr5B7RHo
-   i3AGh4XFzTFqBwbVG1j509fSjVFKvqWl57VtkOjclnXcfJzf2Bav7RiBR
-   g==;
-X-CSE-ConnectionGUID: L5CK+tJwRWqrfRFhvJX/pg==
-X-CSE-MsgGUID: Xk95ySiIScy67JUblkBj8Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52183103"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="52183103"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 11:29:58 -0800
-X-CSE-ConnectionGUID: pCzsR04cRdaYRECqVCeYJw==
-X-CSE-MsgGUID: nDUq0+YwTgG3+goNBDOSbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="115344084"
-Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Feb 2025 10:50:35 -0800
-From: Sohil Mehta <sohil.mehta@intel.com>
-To: x86@kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH v3 15/15] perf/x86/p4: Replace Pentium 4 model checks with VFM ones
-Date: Wed, 19 Feb 2025 18:41:33 +0000
-Message-ID: <20250219184133.816753-16-sohil.mehta@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250219184133.816753-1-sohil.mehta@intel.com>
-References: <20250219184133.816753-1-sohil.mehta@intel.com>
+	s=arc-20240116; t=1739995828; c=relaxed/simple;
+	bh=zDq3K0cRUJ0dtWhls7Hgc8PZm4L+F8WCGJO3BOMagfA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pvXUDvODdqCbIsI8V1cfYdvGMuwaH52CdnsoNnVSUGdX8NxEqIyrybUoJ22FpTBA3DHiqO4qsKeRG5V858sCSTddYiOkE3xKOyToqrGWPe6BAmBLS0yZcIh4MX7kO3mbXVks3Ma4nUQGuYuwZ8eA+xGwPWHykyY34wxulAVvVoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A8856152B;
+	Wed, 19 Feb 2025 12:10:43 -0800 (PST)
+Received: from beelzebub.ast.arm.com (unknown [10.118.29.240])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0303F3F59E;
+	Wed, 19 Feb 2025 12:10:24 -0800 (PST)
+From: Stuart Yoder <stuart.yoder@arm.com>
+To: linux-integrity@vger.kernel.org,
+	jarkko@kernel.org,
+	peterhuewe@gmx.de,
+	jgg@ziepe.ca,
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/5] Add support for the TPM FF-A start method
+Date: Wed, 19 Feb 2025 14:10:09 -0600
+Message-Id: <20250219201014.174344-1-stuart.yoder@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -104,56 +54,81 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce names for some old pentium 4 models and replace x86_model
-checks with VFM ones.
+Firmware Framework for Arm A-profile (FF-A) is a messaging framework
+for Arm-based systems, and in the context of the TPM CRB driver is used
+to signal 'start' to a CRB-based TPM service which is hosted in an
+FF-A secure partition running in TrustZone.
 
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
----
-v3: No change.
-v2: No change.
----
- arch/x86/events/intel/p4.c          | 7 ++++---
- arch/x86/include/asm/intel-family.h | 1 +
- 2 files changed, 5 insertions(+), 3 deletions(-)
+These patches add support for the CRB FF-A start method defined
+in the TCG ACPI specification v1.4 and the FF-A ABI defined
+in the Arm TPM Service CRB over FF-A (DEN0138) specification:
+https://developer.arm.com/documentation/den0138/latest/
 
-diff --git a/arch/x86/events/intel/p4.c b/arch/x86/events/intel/p4.c
-index 844bc4fc4724..fb726c6fc6e7 100644
---- a/arch/x86/events/intel/p4.c
-+++ b/arch/x86/events/intel/p4.c
-@@ -10,6 +10,7 @@
- #include <linux/perf_event.h>
- 
- #include <asm/perf_event_p4.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/hardirq.h>
- #include <asm/apic.h>
- 
-@@ -732,9 +733,9 @@ static bool p4_event_match_cpu_model(unsigned int event_idx)
- {
- 	/* INSTR_COMPLETED event only exist for model 3, 4, 6 (Prescott) */
- 	if (event_idx == P4_EVENT_INSTR_COMPLETED) {
--		if (boot_cpu_data.x86_model != 3 &&
--			boot_cpu_data.x86_model != 4 &&
--			boot_cpu_data.x86_model != 6)
-+		if (boot_cpu_data.x86_vfm != INTEL_P4_PRESCOTT &&
-+		    boot_cpu_data.x86_vfm != INTEL_P4_PRESCOTT_2M &&
-+		    boot_cpu_data.x86_vfm != INTEL_P4_CEDARMILL)
- 			return false;
- 	}
- 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 6621d796bb3d..89cb545d521b 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -193,6 +193,7 @@
- /* Family 15 - NetBurst */
- #define INTEL_P4_WILLAMETTE		IFM(15, 0x01) /* Also Xeon Foster */
- #define INTEL_P4_PRESCOTT		IFM(15, 0x03)
-+#define INTEL_P4_PRESCOTT_2M		IFM(15, 0x04)
- #define INTEL_P4_CEDARMILL		IFM(15, 0x06) /* Also Xeon Dempsey */
- 
- /* Family 19 */
+The first patch adds an FF-A driver to handle the FF-A messaging when
+communicating with a CRB-based TPM secure partition built on FF-A.
+The driver is probed when the TPM secure partition is discovered by
+the Linux FF-A infrastructure.
+
+The second patch consolidates the check for idle support in the CRB
+driver to one place.
+
+The third patch defines the new ACPI start method enumeration for
+CRB over FF-A.
+
+The fourth patch adds support for the FF-A ACPI start method to
+the TPM crb driver.
+
+The fifth patch adds documentation explaining how the CRB driver
+and FF-A relate.
+
+Version 5
+-tpm_ffa_crb patch: removed module version
+-tpm_ffa_crb patch: fixed module description
+-tpm_ffa_crb patch: updated comment on mutex declaration
+-reworded commit message for patch 2 as per Jarkko's 
+ suggestion
+-added Acked tag by Sudeep to patch 1 for FF-A changes 
+-added Reviewed-by tag to patches 3 and 4
+
+Version 4
+-fix warning from kernel test robot in patch 1
+-fix warnings from checkpatch.pl --strict
+-clean up unecessary parenthesis usage
+-update variable declaration to be reverse tree order
+-document exported functions in tpm_crb_ffa driver
+-remove unnecessary author and maintainer info in tpm_crb_ffa driver
+-fix declaration of variables to be in reverse tree order
+
+Version 3
+-changed prefixes used throughout patch series to tpm_crb_ffa*
+
+Version 2
+-updates to cover letter to define FF-A
+-added new patch with documentation
+-created pull request in ACPIA and added link to the patch
+ updating actbl3.h
+-added tpm_ prefix to the FF-A CRB driver
+
+Stuart Yoder (5):
+  tpm_crb: implement driver compliant to CRB over FF-A
+  tpm_crb: clean-up and refactor check for idle support
+  ACPICA: add start method for Arm FF-A
+  tpm_crb: add support for the Arm FF-A start method
+  Documentation: tpm: add documentation for the CRB FF-A interface
+
+ Documentation/security/tpm/tpm_ffa_crb.rst |  65 ++++
+ drivers/char/tpm/Kconfig                   |   9 +
+ drivers/char/tpm/Makefile                  |   1 +
+ drivers/char/tpm/tpm_crb.c                 | 105 +++++--
+ drivers/char/tpm/tpm_crb_ffa.c             | 348 +++++++++++++++++++++
+ drivers/char/tpm/tpm_crb_ffa.h             |  25 ++
+ include/acpi/actbl3.h                      |   1 +
+ 7 files changed, 535 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/security/tpm/tpm_ffa_crb.rst
+ create mode 100644 drivers/char/tpm/tpm_crb_ffa.c
+ create mode 100644 drivers/char/tpm/tpm_crb_ffa.h
+
 -- 
-2.43.0
+2.34.1
 
 
