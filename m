@@ -1,187 +1,232 @@
-Return-Path: <linux-acpi+bounces-11347-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11348-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969F8A3D927
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 12:49:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74513A3D9C0
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 13:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD5416C9FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 11:49:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C3A17F252
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 12:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46A1F3BB1;
-	Thu, 20 Feb 2025 11:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLwi2UjO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CA01F8676;
+	Thu, 20 Feb 2025 12:19:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2741F1510;
-	Thu, 20 Feb 2025 11:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F11C1F582A;
+	Thu, 20 Feb 2025 12:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740052153; cv=none; b=F33yGrOV43lc6wpZBvzrlym1OlGBYESHE/uvew7jWYEmf6gp6FNQiJdInBli9UTekogQAWaA8EAhv3rALk+kXcM+2jsJMzt8AUqmvUdr5m1zEowhb0U/geS7yVpE18eyZngcgubtCr0IBKU1yRZX9WnMnfs0hlxrKEB2miR6VsI=
+	t=1740053965; cv=none; b=GRlnWO+rr/rPjJ6RrYuQhvDbeDwPqb42Neb24FdrhvkfXcoL5+/g4Xrell3kuTqUpLH+SzLAKyoTUO8D+YzgiFJOtZtT20z8Bi/8kI9LFPIuYHtXiwADbSNZ+t6QwkooBSLA2EutkSiGCWNT5bosiW5sIm+hMKzjVUDO3xadKJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740052153; c=relaxed/simple;
-	bh=/wqrT11uk28gB2f6F7P7h24DAJ2UTfq0Tb/FDk+sJtw=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=g854alnbVmJFlgBohPw63pHJVM5Fyj6hNVciowFk2/RPO1C1iJKt7SBgwm4cvofgMguJcsjFZQAH82k97RGMGq3QeWboGLgj7p2OIlU9/FQV/42K0vHNdHWCqViki0Da2odwLo5e4xZ/FNGzxqxcdZJCvy3EzCUIcU787ERkJIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLwi2UjO; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740052153; x=1771588153;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/wqrT11uk28gB2f6F7P7h24DAJ2UTfq0Tb/FDk+sJtw=;
-  b=PLwi2UjOyH4L3sC1kaKjQPq0kOtzeINBYEvAYZ1AeflO3B51vIWFn/+a
-   5rdcv7NBhdHKQebSzM0nWOPSZ64UeT52LyE3oYYo2biaO59fFgMnlhmBW
-   S2H/t06J1GVr4XxD19CcqKppHjDFjNRgmjQczo9ZVTIGSfG6G46dDGuUD
-   4nhXfeFIgn0BEhPaStAERq/ORdAkJx7csN+tFuM6j6cRIMX+jJIuJjGes
-   iyEcOLc0DBoeQ1+QTJ7psu0P23HtIdVpN9SALv7w75NiLsxeV+8ah9DM9
-   NxQcPdj1Uh0KMPs9MiHgw61HTjjjZCfYUw789gpzwg+TlGHLMezZpnMIN
-   Q==;
-X-CSE-ConnectionGUID: AqtslgcmRJe1lFKZa/FkxA==
-X-CSE-MsgGUID: xCG4tfT6RfWu3FQjw7vsnA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40840582"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
-   d="scan'208";a="40840582"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:49:12 -0800
-X-CSE-ConnectionGUID: lBRoIMKBRlCv4wpxJyJpYQ==
-X-CSE-MsgGUID: e1CJ07BvRDSfCLalEtB1Ww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
-   d="scan'208";a="120000397"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.240.48]) ([10.124.240.48])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:49:04 -0800
-Message-ID: <c57977e2-d109-4a38-903e-8af6a7567a60@linux.intel.com>
-Date: Thu, 20 Feb 2025 19:49:01 +0800
+	s=arc-20240116; t=1740053965; c=relaxed/simple;
+	bh=DY0KP4iwrTYG2pXg4GoCemRkht2uRnkGK9mkmW+EEfg=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ErL8AbFIw/vktN+D+nqKB8Q07T6wNYbVOB4J1Ku9S7q1Es2E1AXMdgWW0HEsk5DeEKiWOhbk2u2d9jD9GyOvWeMd4ezJP38zaN59rKZkAj67vkcFRafOU9LRjPCd6wwMAV/9o/lAgiTgrGD4rZT846v1Aulxy3WTAuT+2tRK2ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YzC091d91z6H6w3;
+	Thu, 20 Feb 2025 20:15:53 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id BBB5C140B33;
+	Thu, 20 Feb 2025 20:19:18 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 20 Feb
+ 2025 13:19:17 +0100
+Date: Thu, 20 Feb 2025 12:19:15 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Shiju Jose <shiju.jose@huawei.com>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
+	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>, Vandana Salve <vsalve@micron.com>, "Steven
+ Rostedt" <rostedt@goodmis.org>
+Subject: Re: [PATCH v18 04/19] EDAC: Add memory repair control feature
+Message-ID: <20250220121915.00001391@huawei.com>
+In-Reply-To: <20250219184533.GCZ7YmzTDk5B4p-C7e@fat_crate.local>
+References: <20250109161902.GDZ3_29rH-sQMV4n0N@fat_crate.local>
+	<20250109183448.000059ec@huawei.com>
+	<20250111171243.GCZ4Kmi5xMtY2ktCHm@fat_crate.local>
+	<20250113110740.00003a7c@huawei.com>
+	<20250121161653.GAZ4_IdYDQ9_-QoEvn@fat_crate.local>
+	<20250121181632.0000637c@huawei.com>
+	<20250122190917.GDZ5FCXetp9--djyQ6@fat_crate.local>
+	<20250206133949.00006dd6@huawei.com>
+	<20250217132322.GCZ7M4Somf2VYvbwHb@fat_crate.local>
+	<20250218165125.00007065@huawei.com>
+	<20250219184533.GCZ7YmzTDk5B4p-C7e@fat_crate.local>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Zhangfei Gao <zhangfei.gao@linaro.org>,
- "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- Joerg Roedel <joro@8bytes.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Len Brown <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- "Moore, Robert" <robert.moore@intel.com>, Robin Murphy
- <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Will Deacon <will@kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
- Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Hanjun Guo <guohanjun@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
- Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
- "patches@lists.linux.dev" <patches@lists.linux.dev>,
- "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Mostafa Saleh <smostafa@google.com>
-Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
-To: "Tian, Kevin" <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
-References: <20241113164316.GL35230@nvidia.com>
- <6ed97a10-853f-429e-8506-94b218050ad3@linux.intel.com>
- <20241115175522.GA35230@nvidia.com> <20250122192622.GA965540@nvidia.com>
- <284dd081-8d53-45ef-ae18-78b0388c98ca@linux.intel.com>
- <f7b6c833-b6c1-4154-9b77-13553e501f2b@linux.intel.com>
- <20250213184317.GB3886819@nvidia.com>
- <bc9f4477-7976-4955-85dc-3e05ebe95ead@linux.intel.com>
- <20250214124150.GF3886819@nvidia.com>
- <58e7fbee-6688-4a49-8b7a-f0e81e6562db@linux.intel.com>
- <20250218130333.GA4099685@nvidia.com>
- <f7e30bd8-ae1f-42fe-a8a6-2b448a474044@linux.intel.com>
- <BN9PR11MB5276EAD07C3B32517D339DF28CC52@BN9PR11MB5276.namprd11.prod.outlook.com>
- <7027fb3a-dfb4-40ae-ac9c-5ea1dcd57746@linux.intel.com>
- <BN9PR11MB52764E131435DF44370653CD8CC42@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <BN9PR11MB52764E131435DF44370653CD8CC42@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 2025/2/20 14:51, Tian, Kevin wrote:
->> From: Baolu Lu<baolu.lu@linux.intel.com>
->> Sent: Thursday, February 20, 2025 10:11 AM
->>
->> On 2/19/25 16:34, Tian, Kevin wrote:
->>>> From: Baolu Lu<baolu.lu@linux.intel.com>
->>>> Sent: Wednesday, February 19, 2025 10:10 AM
->>>>
->>>> On 2/18/25 21:03, Jason Gunthorpe wrote:
->>>>> On Sat, Feb 15, 2025 at 05:53:13PM +0800, Baolu Lu wrote:
->>>>>> On 2/14/25 20:41, Jason Gunthorpe wrote:
->>>>>>> On Fri, Feb 14, 2025 at 01:39:52PM +0800, Baolu Lu wrote:
->>>>>>>
->>>>>>>> When the IOMMU is working in scalable mode, PASID and PRI are
->>>> supported.
->>>>>>>> ATS will always be enabled, even if the identity domain is attached to
->>>>>>>> the device, because the PASID might use PRI, which depends on ATS
->>>>>>>> functionality. This might not be the best choice, but it is the
->>>>>>>> simplest and functional.
->>>>>>> The arm driver keeps track of things and enables ATS when PASIDs are
->>>>>>> present
->>>>>> I am not aware of any VT-d hardware implementation that supports
->>>>>> scalable mode but not PASID. If there were one, it would be worthwhile
->>>>>> to add an optimization to avoid enabling ATS during probe if PASID is
->>>>>> not supported.
->>>>> I mean domains attached to PASIDs that need PRI/ATS/etc
->>>> Yeah, that's a better solution. The PCI PRI/ATS features are only
->>>> enabled when a domain that requires them is attached to it. I will
->>>> consider it in the Intel driver later.
->>>>
->>> I didn't get the connection here. ATS can run w/o PASID per PCIe
->>> spec. Why do we want to add a dependency on PASID here?
->> It's due to PRI, which depends on ATS. The original topic is: when an
->> identity domain is attached to the device and the device has no PASID
->> support, then ATS might be disabled because ATS isn't supposed to
->> provide much benefit in this case.
-> PRI depends on ATS but PASID is optional.
+On Wed, 19 Feb 2025 19:45:33 +0100
+Borislav Petkov <bp@alien8.de> wrote:
+
+> On Tue, Feb 18, 2025 at 04:51:25PM +0000, Jonathan Cameron wrote:
+> > As a side note, if you are in the situation where the device can do
+> > memory repair without any disruption of memory access then my
+> > assumption is in the case where the device would set the maintenance
+> > needed + where it is considering soft repair (so no long term cost
+> > to a wrong decision) then the device would probably just do it
+> > autonomously and at most we might get a notification.  
 > 
-> ATS has no benefit (or even more cost) with identity domain but again
-> it has nothing to do with PASID.
+> And this is basically what I'm trying to hint at: if you can do recovery
+> action without userspace involvement, then please, by all means. There's no
+> need to noodle information back'n'forth through user if the kernel or the
+> device itself even, can handle it on its own.
 > 
->> Otherwise, ATS should be enabled because:
->>
->> - It benefits performance when the domain is a paging domain.
->> - A domain attached to a PASID might use PRI, thus requiring ATS to be
->>     on.
-> Above talks about the domain type. Nothing specific to PASID.
+> More involved stuff should obviously rely on userspace to do more involved
+> "pondering."
+
+Lets explore this further as a follow up. A policy switch to let the kernel
+do the 'easy' stuff (assuming device didn't do it) makes sense if this
+particular combination is common.
+
 > 
->> The proposed solution is to use a reference count for ATS enablement,
->> similar to how we handle iopf in another series. ATS is enabled as long
->> as any domain requires it and disabled if no domain requires it.
->>
-> I'm fine with using reference count for ATS enablement based on
-> the domain type, but just didn't get the role of PASID in this discussion.
+> > So I think that if we see this there will be some disruption.
+> > Latency spikes for soft repair or we are looking at hard repair.
+> > In that case we'd need policy on whether to repair at all.
+> > In general the rasdaemon handling in that series is intentionally
+> > simplistic. Real solutions will take time to refine but they
+> > don't need changes to the kernel interface, just when to poke it.  
+> 
+> I hope so.
+> 
+> > The error record comes out as a trace point. Is there any precedence for
+> > injecting those back into the kernel?   
+> 
+> I'm just questioning the whole interface and its usability. Not saying it
+> doesn't make sense - we're simply weighing all options here.
+> 
+> > That policy question is a long term one but I can suggest 'possible' policies
+> > that might help motivate the discussion
+> >
+> > 1. Repair may be very disruptive to memory latency. Delay until a maintenance
+> >    window when latency spike is accepted by the customer until then rely on
+> >    maintenance needed still representing a relatively low chance of failure.  
+> 
+> So during the maintenance window, the operator is supposed to do
+> 
+> rasdaemon --start-expensive-repair-operations
 
-Sorry that I didn't make it clear. Let me try again.
+Yes, would be something along those lines.  Or a script very similar to the
+the boot one Shiju wrote.  Scan the DB and find what needs repairing + do so.
 
-PASID is mentioned in this discussion because it makes things different.
+> 
+> ?
+> 
+> > 2. Hard repair uses known limited resources - e.g. those are known to match up
+> >    to a particular number of rows in each module. That is not discoverable under
+> >    the CXL spec so would have to come from another source of metadata.
+> >    Apply some sort of fall off function so that we repair only the very worst
+> >    cases as we run out. Alternative is always soft offline the memory in the OS,
+> >    aim is to reduce chance of having to do that a somewhat optimal fashion.
+> >    I'm not sure on the appropriate stats, maybe assume a given granual failure
+> >    rate follows a Poison distribution and attempt to estimate lambda?  Would
+> >    need an expert in appropriate failure modes or a lot of data to define
+> >    this!  
+> 
+> I have no clue what you're saying here. :-)
 
-Without PASID support, only a single domain is attached to the device.
-ATS enablement can then be determined based on the domain type.
-Specifically:
+I'll write something up at some point as it's definitely a complex
+topic and I need to find a statistician + hardware folk with error models to
+help flesh it out. 
 
-- For an identity domain, ATS could be disabled.
-- For other domains, ATS is enabled.
+There is another topic to look at which is what to do with synchronous poison
+if we can repair the memory and bring it back into use.
+I can't find the thread, but last time I asked about recovering from that, the
+mm folk said they'd need to see the code + usecases (fair enough!).
 
-With PASID support, multiple domains can be attached to the device, and
-each domain may have different ATS requirements.  Therefore, we cannot
-simply determine the ATS status in the RID domain attach/detach paths. A
-better solution is to use the reference count, as mentioned above.
+> 
+> > It is the simplest interface that we have come up with so far. I'm fully open
+> > to alternatives that provide a clean way to get this data back into the
+> > kernel and play well with existing logging tooling (e.g. rasdaemon)
+> > 
+> > Some things we could do,
+> > * Store binary of trace event and reinject. As above + we would have to be
+> >   very careful that any changes to the event are made with knowledge that
+> >   we need to handle this path.  Little or now marshaling / formatting code
+> >   in userspace, but new logging infrastructure needed + a chardev /ioctl
+> >   to inject the data and a bit of userspace glue to talk to it.
+> > * Reinject a binary representation we define, via an ioctl on some
+> >   chardev we create for the purpose.  Userspace code has to take
+> >   key value pairs and process them into this form.  So similar amount
+> >   of marshaling code to what we have for sysfs.
+> > * Or what we currently propose, write set of key value pairs to a simple
+> >   (though multifile) sysfs interface. As you've noted marshaling is needed.  
+> 
+> ... and the advantage of having such a sysfs interface: it is human readable
+> and usable vs having to use a tool to create a binary blob in a certain
+> format...
+> 
+> Ok, then. Let's give that API a try... I guess I need to pick up the EDAC
+> patches from here:
+> 
+> https://lore.kernel.org/r/20250212143654.1893-1-shiju.jose@huawei.com
+> 
+> If so, there's an EDAC patch 14 which is not together with the first 4. And
+> I was thinking of taking the first 4 or 5 and then giving other folks an
+> immutable branch in the EDAC tree which they can use to base the CXL stuff on
+> top.
+> 
+> What's up?
 
-Thanks,
-baolu
+My fault. I asked Shiju to split the more complex ABI for sparing out
+to build the complexity up rather than having it all in one patch.
+
+Should be fine for you to take 1-4 and 14 which is all the EDAC parts.
+
+For 5 and 6 Rafael acked the ACPI part (5), and the ACPI ras2 scrub driver
+has no other dependencies so I think that should go through your
+tree as well, though no need to be in the immutable branch.
+
+Dave Jiang can work his magic on the CXL stuff on top of a merge of your
+immutable branch.
+
+Thanks!
+
+Jonathan
+> 
+
 
