@@ -1,47 +1,65 @@
-Return-Path: <linux-acpi+bounces-11336-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11337-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EF8A3CDDD
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 00:52:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD9EA3CF40
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 03:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFDAE1675E5
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Feb 2025 23:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDC823AC00E
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 02:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D861425EF87;
-	Wed, 19 Feb 2025 23:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268EF1C5D79;
+	Thu, 20 Feb 2025 02:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ktnrQxzh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j7R5I+S/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6D722ACD3;
-	Wed, 19 Feb 2025 23:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D42110FD;
+	Thu, 20 Feb 2025 02:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740009122; cv=none; b=C3TLqr81a49OB+xXnHo1dSHl/yE/vuhTpslg6jrYRQRRPvoIH8YltvtdHD82Jo5F/O6EYz6gzk7bNmzv07jvFVBT35AnwLiPCHLzUFCIdV8lDJnI19mxy+GOVY8MwzaMvJZTmgudyyOD/XKpacXbhN3M2RmjjDwKHFigfM5k9mw=
+	t=1740017629; cv=none; b=S3yN2e3VZ4w66cw1whuP9tq5A9HE5qAXu3EIZdR8KYNRgoyCmZOITR321e1kXK9VTGG5Kkrdno6ByN0Noj5U/Mb3IafUEMdJecQq+vycQ4ovGiTf/uR4zGbAsK49vwgpnjSBf8AMedpd7FSXI2fC3Elbizy/9eprwwdGIm11nxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740009122; c=relaxed/simple;
-	bh=RO7JdfFXhPm7FJVjjl/SPm5ADn0aCyjyX4nGYswilCQ=;
+	s=arc-20240116; t=1740017629; c=relaxed/simple;
+	bh=GBvD2bkSH/pQf3oXkciwQpaE+MUdAMS3a6Cb1EoRnIs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dz+Pe5wZgg4yaaKk0fHWeiMSfegp48lgHpQQik7CspR6KdKw9TT06DsYG5+3okypVW2D8KQ2FAyv/XkaJd4YhvNBKsPPYgUnByZijS+aR4Yr3TpJDnPWqnrV7w4GOv++7yRUrSEivjqKrWljP3fKnJZRdGSB7ygCTcu9jRslcTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ktnrQxzh; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 01FA32043DEB;
-	Wed, 19 Feb 2025 15:51:59 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 01FA32043DEB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740009120;
-	bh=AxsI5hx1U00SsNRDv901DQtcJhDoy9q2VCbcg6I8Ypc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ktnrQxzhg8EhdAYLRHWi59CTjsWdX+RZHt9AeHw4gX2wcmvSMV36JUDiq5apyQzps
-	 6sT7qtZaFzbfDnZh04pSaKBIoNSKDClg0OLz32kbUmBdY/90wSeu82XjEpHj7XUYtG
-	 SvfhXDK92ktiXTtrhL56mLp6jAldejO118ML+HFU=
-Message-ID: <5cd71475-b107-4269-829f-2c492f625aae@linux.microsoft.com>
-Date: Wed, 19 Feb 2025 15:51:59 -0800
+	 In-Reply-To:Content-Type; b=YkoDqDGJ7UzIqKteM5XpOilgFvtKvV7vYVaHdJ5szlfGBAVlU8EV3StNW+0sOXS2B2CxiiYPzE9eVviqdIPkXu6LgVD4usC/UxWE/NVJCtSCCQ/d9z7H/NqglV3vq15xf04rY9wPEQNQc2YvUmB8bCdhOP811MUuueoZmP40MiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j7R5I+S/; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740017627; x=1771553627;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GBvD2bkSH/pQf3oXkciwQpaE+MUdAMS3a6Cb1EoRnIs=;
+  b=j7R5I+S/FCKANzFmwYXxkvQXIAs/kdy5w2TrnzqkZfgIyGuKIn6H29ET
+   lnGWGoPfD90g1sZEBxJx+/O7JNmqdRy07Oows3EmdFi3jx+Abqyzux4bg
+   6SKz6oEWUDOa4KkEAwZ1Irj5b8WW3YvduXIiIXwTk3egE177YHWtX6pw+
+   AHvZeGNnZCz397/5SPvML0KnKKZ6gUNVwNGQVn8mg8iTunJCSeCmfxM4p
+   8Ro4b84g8qZi0A22XforNI1ItAASuEC1p08HrSMU1wAaJUVA13UstZb0o
+   tbSkDi0arRemMlT54Qtm4Xm1Mi/rIrqFehrCBru8GIaoWEczq9qDCJS2I
+   g==;
+X-CSE-ConnectionGUID: mcy2gzEHRGO4XYfTRmeN6Q==
+X-CSE-MsgGUID: /ywrsgDQQyOTa+vCXmEuhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="51424638"
+X-IronPort-AV: E=Sophos;i="6.13,300,1732608000"; 
+   d="scan'208";a="51424638"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 18:13:47 -0800
+X-CSE-ConnectionGUID: dxxRzlLRTLidTKr9odiFmQ==
+X-CSE-MsgGUID: 05003GDaRq+1FPxr5vBMHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,300,1732608000"; 
+   d="scan'208";a="119995677"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 18:13:41 -0800
+Message-ID: <7027fb3a-dfb4-40ae-ac9c-5ea1dcd57746@linux.intel.com>
+Date: Thu, 20 Feb 2025 10:10:36 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,246 +67,95 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hyperv-next v4 6/6] PCI: hv: Get vPCI MSI IRQ domain from
- DeviceTree
-To: Bjorn Helgaas <helgaas@kernel.org>, rafael@kernel.org, lenb@kernel.org,
- linux-acpi@vger.kernel.org
-Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
- catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com,
- decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
- krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com, lpieralisi@kernel.org,
- manivannan.sadhasivam@linaro.org, mingo@redhat.com, robh@kernel.org,
- ssengar@linux.microsoft.com, tglx@linutronix.de, wei.liu@kernel.org,
- will@kernel.org, devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
- benhill@microsoft.com, bperkins@microsoft.com, sunilmut@microsoft.com
-References: <20250212174203.GA81135@bhelgaas>
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+To: "Tian, Kevin" <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Zhangfei Gao <zhangfei.gao@linaro.org>,
+ "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ Joerg Roedel <joro@8bytes.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ Len Brown <lenb@kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Moore, Robert" <robert.moore@intel.com>, Robin Murphy
+ <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Will Deacon <will@kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
+ Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Hanjun Guo <guohanjun@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ "patches@lists.linux.dev" <patches@lists.linux.dev>,
+ "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+References: <20241113164316.GL35230@nvidia.com>
+ <6ed97a10-853f-429e-8506-94b218050ad3@linux.intel.com>
+ <20241115175522.GA35230@nvidia.com> <20250122192622.GA965540@nvidia.com>
+ <284dd081-8d53-45ef-ae18-78b0388c98ca@linux.intel.com>
+ <f7b6c833-b6c1-4154-9b77-13553e501f2b@linux.intel.com>
+ <20250213184317.GB3886819@nvidia.com>
+ <bc9f4477-7976-4955-85dc-3e05ebe95ead@linux.intel.com>
+ <20250214124150.GF3886819@nvidia.com>
+ <58e7fbee-6688-4a49-8b7a-f0e81e6562db@linux.intel.com>
+ <20250218130333.GA4099685@nvidia.com>
+ <f7e30bd8-ae1f-42fe-a8a6-2b448a474044@linux.intel.com>
+ <BN9PR11MB5276EAD07C3B32517D339DF28CC52@BN9PR11MB5276.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <20250212174203.GA81135@bhelgaas>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB5276EAD07C3B32517D339DF28CC52@BN9PR11MB5276.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 2/12/2025 9:42 AM, Bjorn Helgaas wrote:
-> On Tue, Feb 11, 2025 at 05:43:21PM -0800, Roman Kisel wrote:
-
-[...]
-
->>   	 */
->> -	hv_msi_gic_irq_domain = acpi_irq_create_hierarchy(0, HV_PCI_MSI_SPI_NR,
->> -							  fn, &hv_pci_domain_ops,
->> -							  chip_data);
->> +#ifdef CONFIG_ACPI
->> +	if (!acpi_disabled)
->> +		hv_msi_gic_irq_domain = acpi_irq_create_hierarchy(0, HV_PCI_MSI_SPI_NR,
->> +			fn, &hv_pci_domain_ops,
->> +			chip_data);
->> +#endif
->> +#if defined(CONFIG_OF)
->> +	if (!hv_msi_gic_irq_domain)
->> +		hv_msi_gic_irq_domain = irq_domain_create_hierarchy(
->> +			hv_pci_of_irq_domain_parent(), 0, HV_PCI_MSI_SPI_NR,
->> +			fn, &hv_pci_domain_ops,
->> +			chip_data);
->> +#endif
+On 2/19/25 16:34, Tian, Kevin wrote:
+>> From: Baolu Lu <baolu.lu@linux.intel.com>
+>> Sent: Wednesday, February 19, 2025 10:10 AM
+>>
+>> On 2/18/25 21:03, Jason Gunthorpe wrote:
+>>> On Sat, Feb 15, 2025 at 05:53:13PM +0800, Baolu Lu wrote:
+>>>> On 2/14/25 20:41, Jason Gunthorpe wrote:
+>>>>> On Fri, Feb 14, 2025 at 01:39:52PM +0800, Baolu Lu wrote:
+>>>>>
+>>>>>> When the IOMMU is working in scalable mode, PASID and PRI are
+>> supported.
+>>>>>> ATS will always be enabled, even if the identity domain is attached to
+>>>>>> the device, because the PASID might use PRI, which depends on ATS
+>>>>>> functionality. This might not be the best choice, but it is the
+>>>>>> simplest and functional.
+>>>>> The arm driver keeps track of things and enables ATS when PASIDs are
+>>>>> present
+>>>> I am not aware of any VT-d hardware implementation that supports
+>>>> scalable mode but not PASID. If there were one, it would be worthwhile
+>>>> to add an optimization to avoid enabling ATS during probe if PASID is
+>>>> not supported.
+>>> I mean domains attached to PASIDs that need PRI/ATS/etc
+>>
+>> Yeah, that's a better solution. The PCI PRI/ATS features are only
+>> enabled when a domain that requires them is attached to it. I will
+>> consider it in the Intel driver later.
+>>
 > 
-> I don't know if acpi_irq_create_hierarchy() is helping or hurting
-> here.  It obscures the fact that the only difference is the first
-> argument to irq_domain_create_hierarchy().  If we could open-code or
-> have a helper to figure out that irq_domain "parent" argument for the
-> ACPI case, then we'd only have one call of
-> irq_domain_create_hierarchy() here and it seems like it might be
-> simpler.
-> 
+> I didn't get the connection here. ATS can run w/o PASID per PCIe
+> spec. Why do we want to add a dependency on PASID here?
 
-Hey Bjorn, folks,
+It's due to PRI, which depends on ATS. The original topic is: when an
+identity domain is attached to the device and the device has no PASID
+support, then ATS might be disabled because ATS isn't supposed to
+provide much benefit in this case. Otherwise, ATS should be enabled
+because:
 
-I've added few ACPI maintainers and the ACPI list as we're discussing
-making a small change to the ACPI subsystem to make one static variable
-available to make the code above less messy.
+- It benefits performance when the domain is a paging domain.
+- A domain attached to a PASID might use PRI, thus requiring ATS to be
+   on.
 
-Change [1] makes the GSI dispatcher function available to
-the outside world. Would you suggest going in that direction or there
-is a better approach to converge the code above that deals with IRQ
-domains both in the ACPI and DT cases?
+The proposed solution is to use a reference count for ATS enablement,
+similar to how we handle iopf in another series. ATS is enabled as long
+as any domain requires it and disabled if no domain requires it.
 
-[1]
+Hope it explains.
 
- From c6fb8bda21d6c00a308b1febc201a3a7e704c5a9 Mon Sep 17 00:00:00 2001
-From: Roman Kisel <romank@linux.microsoft.com>
-Date: Wed, 19 Feb 2025 15:04:06 -0800
-Subject: [PATCH] Refactor the ACPI GIC case
-
----
-  drivers/acpi/irq.c                  | 14 ++++++-
-  drivers/pci/controller/pci-hyperv.c | 62 +++++++++++++++++------------
-  include/linux/acpi.h                |  5 ++-
-  3 files changed, 52 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index 1687483ff319..6243db610137 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -12,7 +12,7 @@
-
-  enum acpi_irq_model_id acpi_irq_model;
-
--static struct fwnode_handle *(*acpi_get_gsi_domain_id)(u32 gsi);
-+static acpi_gsi_domain_disp_fn acpi_get_gsi_domain_id;
-  static u32 (*acpi_gsi_to_irq_fallback)(u32 gsi);
-
-  /**
-@@ -307,12 +307,22 @@ EXPORT_SYMBOL_GPL(acpi_irq_get);
-   *	for a given GSI
-   */
-  void __init acpi_set_irq_model(enum acpi_irq_model_id model,
--			       struct fwnode_handle *(*fn)(u32))
-+	acpi_gsi_domain_disp_fn fn)
-  {
-  	acpi_irq_model = model;
-  	acpi_get_gsi_domain_id = fn;
-  }
-
-+/**
-+ * acpi_get_gsi_dispatcher - Returns dispatcher function that
-+ *                           computes the domain fwnode for a
-+ *                           given GSI.
-+ */
-+acpi_gsi_domain_disp_fn acpi_get_gsi_dispatcher(void)
-+{
-+	return acpi_get_gsi_domain_id;
-+}
-+
-  /**
-   * acpi_set_gsi_to_irq_fallback - Register a GSI transfer
-   * callback to fallback to arch specified implementation.
-diff --git a/drivers/pci/controller/pci-hyperv.c 
-b/drivers/pci/controller/pci-hyperv.c
-index 24725bea9ef1..59e670e1cb6e 100644
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -910,16 +910,29 @@ static struct irq_domain 
-*hv_pci_of_irq_domain_parent(void)
-  		of_node_put(parent);
-  	}
-
--	/*
--	 * `domain == NULL` shouldn't happen.
--	 *
--	 * If somehow the code does end up in that state, treat this as a 
-configuration
--	 * issue rather than a hard error, emit a warning, and let the code 
-proceed.
--	 * The NULL parent domain is an acceptable option for the 
-`irq_domain_create_hierarchy`
--	 * function called later.
--	 */
-+	return domain;
-+}
-+
-+#endif
-+
-+#ifdef CONFIG_ACPI
-+
-+static struct irq_domain *hv_pci_acpi_irq_domain_parent(void)
-+{
-+	struct irq_domain *domain;
-+	acpi_gsi_domain_disp_fn gsi_domain_disp_fn;
-+
-+	if (acpi_irq_model != ACPI_IRQ_MODEL_GIC)
-+		return NULL;
-+	gsi_domain_disp_fn = acpi_get_gsi_dispatcher();
-+	if (!gsi_domain_disp_fn)
-+		return NULL;
-+	domain = irq_find_matching_fwnode(gsi_domain_disp_fn(0),
-+				     DOMAIN_BUS_ANY);
-+
-  	if (!domain)
--		WARN_ONCE(1, "No interrupt-parent found, check the DeviceTree data.\n");
-+		return NULL;
-+
-  	return domain;
-  }
-
-@@ -929,6 +942,7 @@ static int hv_pci_irqchip_init(void)
-  {
-  	static struct hv_pci_chip_data *chip_data;
-  	struct fwnode_handle *fn = NULL;
-+	struct irq_domain *irq_domain_parent = NULL;
-  	int ret = -ENOMEM;
-
-  	chip_data = kzalloc(sizeof(*chip_data), GFP_KERNEL);
-@@ -944,29 +958,25 @@ static int hv_pci_irqchip_init(void)
-  	 * IRQ domain once enabled, should not be removed since there is no
-  	 * way to ensure that all the corresponding devices are also gone and
-  	 * no interrupts will be generated.
--	 *
--	 * In the ACPI case, the parent IRQ domain is supplied by the ACPI
--	 * subsystem, and it is the default GSI domain pointing to the GIC.
--	 * Neither is available outside of the ACPI subsystem, cannot avoid
--	 * the messy ifdef below.
--	 * There is apparently no such default in the OF subsystem, and
--	 * `hv_pci_of_irq_domain_parent` finds the parent IRQ domain that
--	 * points to the GIC as well.
--	 * None of these two cases reaches for the MSI parent domain.
-  	 */
-  #ifdef CONFIG_ACPI
-  	if (!acpi_disabled)
--		hv_msi_gic_irq_domain = acpi_irq_create_hierarchy(0, HV_PCI_MSI_SPI_NR,
--			fn, &hv_pci_domain_ops,
--			chip_data);
-+		irq_domain_parent = hv_pci_acpi_irq_domain_parent();
-  #endif
-  #if defined(CONFIG_OF)
--	if (!hv_msi_gic_irq_domain)
--		hv_msi_gic_irq_domain = irq_domain_create_hierarchy(
--			hv_pci_of_irq_domain_parent(), 0, HV_PCI_MSI_SPI_NR,
--			fn, &hv_pci_domain_ops,
--			chip_data);
-+	if (!irq_domain_parent)
-+		irq_domain_parent = hv_pci_of_irq_domain_parent();
-  #endif
-+	if (!irq_domain_parent) {
-+		WARN_ONCE(1, "Invalid firmware configuration for VMBus interrupts\n");
-+		ret = -EINVAL;
-+		goto free_chip;
-+	}
-+
-+	hv_msi_gic_irq_domain = irq_domain_create_hierarchy(
-+		irq_domain_parent, 0, HV_PCI_MSI_SPI_NR,
-+		fn, &hv_pci_domain_ops,
-+		chip_data);
-
-  	if (!hv_msi_gic_irq_domain) {
-  		pr_err("Failed to create Hyper-V arm64 vPCI MSI IRQ domain\n");
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 6adcd1b92b20..cd70a72c7073 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -336,8 +336,11 @@ int acpi_register_gsi (struct device *dev, u32 gsi, 
-int triggering, int polarity
-  int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
-  int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
-
-+typedef struct fwnode_handle *(*acpi_gsi_domain_disp_fn)(u32);
-+
-  void acpi_set_irq_model(enum acpi_irq_model_id model,
--			struct fwnode_handle *(*)(u32));
-+	acpi_gsi_domain_disp_fn fn);
-+acpi_gsi_domain_disp_fn acpi_get_gsi_dispatcher(void);
-  void acpi_set_gsi_to_irq_fallback(u32 (*)(u32));
-
-  struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
--- 
-2.43.0
-
-
-
--- 
-Thank you,
-Roman
-
+Thanks,
+baolu
 
