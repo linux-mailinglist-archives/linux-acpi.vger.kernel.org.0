@@ -1,117 +1,220 @@
-Return-Path: <linux-acpi+bounces-11354-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11355-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5D2A3E590
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 21:05:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FCEA3E6B7
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 22:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F45F7A4B0A
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 20:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3076417D7E8
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Feb 2025 21:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB1326388E;
-	Thu, 20 Feb 2025 20:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB03D2638B8;
+	Thu, 20 Feb 2025 21:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KRCLnbKx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WR4xawd4"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89101E5B6C
-	for <linux-acpi@vger.kernel.org>; Thu, 20 Feb 2025 20:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8AE19DF6A;
+	Thu, 20 Feb 2025 21:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740081942; cv=none; b=llA/lTKBP7LZdx2NDfQIFXGi2d1+nMXrDlT0WNGJWzd4F4PigRCfbo9xF+Qgl3kt12jro8gaYw2KGYwXIi0DgwW+SuCwhF0k1DUD9vQBbMaugfZ64JrlLkvKCRpgH/mggT9kkLtU2Jv9wewRdYx7/o0fPicCcIqhCNE3MLVdQME=
+	t=1740087311; cv=none; b=K0gPi865DbVYgLK8jkCxgV932Fq2LkhA1n7U+PYOK3RhtLUpHgjpLvhjLPFB9XjAKHcx11uS0YhIewwOs5vzLULITRyk5jUhSABWKQPDJirP8UAt3vWP+hkE7hf1J3ff/ofKgUNT5RoG5SS+jTAvQOww501tap9BuWACv53qFW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740081942; c=relaxed/simple;
-	bh=cneBczFqEZsY53Bp4FSMhW8m9ELOKjM8GthMgtabB3o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=btiHd6CndP4nejVsrlBtX9Cj76fYzQV1zJ3MNyexoC+WOIPntUcsWyQfHGR91aKaqkDXVYpxU3QwStX8rqkwT/DF7Ehp9WgyVs0Cwlqr9bqk7ZXZw9mwfOcYzt6UMJaq4EnI6nHpxyHujQeYBBPE4rTkBX6jf2CKXmYXcQubnrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KRCLnbKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F39C4CED1
-	for <linux-acpi@vger.kernel.org>; Thu, 20 Feb 2025 20:05:42 +0000 (UTC)
+	s=arc-20240116; t=1740087311; c=relaxed/simple;
+	bh=MhjbQXZHVOKqHLGQ5xLuusLGfFvPWfVaBl0Y5meaJyk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jlh6Sw1RD9MF2HTgq4iYOvBqcO3CeME+98UaPWuJvBrOCj3KAdOpTuHu5KB0w2y275lkyR8UoAPDGzj4nr9Y8WzNTpbg7L3M1+1qUMfcR2JyLpRFKoUFVsRPLusla/eQOKoRbzmOG1kGunL6aoZQirq8wFHXETkALEK1IHM0pr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WR4xawd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EFDC4CED1;
+	Thu, 20 Feb 2025 21:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740081942;
-	bh=cneBczFqEZsY53Bp4FSMhW8m9ELOKjM8GthMgtabB3o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KRCLnbKxHUB2igdo5CzeSihHvTU4gVUwv9YKzmVvo4f8vse7aZyNbXP8S3pwJuOFb
-	 udi77tE/MyaNwm8+nHEo7YPURG/DNpMPXL1GRvps36+6KLzVtaGxT06pYmRUYV6KeQ
-	 JAhw0YkyklepR+hgltUDjPG2122A+hhp//JkcBwa7senkwPzU2CIAILOfkdnRix3p5
-	 PtN8CAMOfcm91FbDTr9Ayw6M0X3oQiJ+4dLvDCFKAUvTH4ZoVxveso5AN0feiEu9Pk
-	 gDxqXdAX8qKmx0wYe4TFMMso0RC4W+TH4UTvYksvQ7r2APvqnf9YxxANfC8duX+Cor
-	 YXq6Snsol3p5A==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5fcd665af4eso346967eaf.2
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Feb 2025 12:05:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUb20tiYxVLpAnVRE4jNS1BdsDPqUWQbvwxvYK2Taei5dZtfcgCnl7wRnblXT71ZKGcnIMILSlcSIhz@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgnVj3q6b3Mpj+v6SfRqe5TEphD5yWlPMOo/Ud+t8Ic5eyWvCE
-	R0lG+xsR673CJOJYP68WLR6xfexkSxnmGmHSTw+GFBxKc+dD7630VkxU4TsG89XsmR8otWDNSuh
-	Mb4iJOuJCwK7y4bkn+x38t+95zi0=
-X-Google-Smtp-Source: AGHT+IFd3Di6J8FK0sjZTfII1XnRtDpXPhlwZemOGquVV4uXa20GEsW7Zf07ACnTbwJGwgkECPcJZ5zuXyqbdjI9ybM=
-X-Received: by 2002:a05:6820:1e09:b0:5fc:d180:5a73 with SMTP id
- 006d021491bc7-5fd1a9d54b4mr105142eaf.8.1740081941652; Thu, 20 Feb 2025
- 12:05:41 -0800 (PST)
+	s=k20201202; t=1740087311;
+	bh=MhjbQXZHVOKqHLGQ5xLuusLGfFvPWfVaBl0Y5meaJyk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=WR4xawd4Zl9KRCZa4NkJXihZxBC/kSWalxZMgm1gl8oGmVggAZ+QXMubnZRhbh/ft
+	 oceZtmds/xHBk2+sQ1/qeg5ozbtzyJSfzf1WTY/AMxoKLrv9N6MNqSRIYNw6YgF1jw
+	 vrqjuOnMQK+gAw/PoHQmyoZ8V/EsU/q6OK8mcTfHxpqZg8DwisWJmij4jQPu/n1V/s
+	 QPnty1pE+J6aun3y6Xyp6VfpWIL7rsZH8wGxlgUh8yZfC2CdH4/Wmifx76le9sp4I5
+	 +UP1OaLOdMAwDP6sYTjJpgtyu4ffW3drvDpVqWC/MxSbc25G7Up0i9xR2wyrFOglnN
+	 GEjYlDbx9urIw==
+Message-ID: <fdc24d5564b21cf554616afa94b008909ada27f0.camel@kernel.org>
+Subject: Re: [PATCH v5 2/5] tpm_crb: clean-up and refactor check for idle
+ support
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stuart Yoder <stuart.yoder@arm.com>
+Cc: linux-integrity@vger.kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca, 
+	sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 20 Feb 2025 23:35:06 +0200
+In-Reply-To: <7c913fc0-0f2c-4327-99ee-510bdff8a537@arm.com>
+References: <20250219201014.174344-1-stuart.yoder@arm.com>
+	 <20250219201014.174344-3-stuart.yoder@arm.com>
+	 <Z7b2BlllE6HVIZNN@kernel.org>
+	 <7c913fc0-0f2c-4327-99ee-510bdff8a537@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219145338.3306745-1-superm1@kernel.org> <20250219145338.3306745-2-superm1@kernel.org>
-In-Reply-To: <20250219145338.3306745-2-superm1@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 20 Feb 2025 21:05:28 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gWAfP=2fr-db=zSUu2iHUdbEdNHACFbqof5zFcaCX3eQ@mail.gmail.com>
-X-Gm-Features: AWEUYZl4y9xZiKcvl-Zdc7oUIBeF0ZSkQGXA0h1ddMlY8g12giffiinYheYOQ70
-Message-ID: <CAJZ5v0gWAfP=2fr-db=zSUu2iHUdbEdNHACFbqof5zFcaCX3eQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPI: Add missing prototype for non
- CONFIG_SUSPEND/CONFIG_X86 case
-To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, rafael@kernel.org, 
-	kernel test robot <lkp@intel.com>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 19, 2025 at 3:54=E2=80=AFPM Mario Limonciello <superm1@kernel.o=
-rg> wrote:
->
-> From: Mario Limonciello <mario.limonciello@amd.com>
->
-> acpi_register_lps0_dev() and acpi_unregister_lps0_dev() may be used
-> in drivers that don't require CONFIG_SUSPEND or compile on !X86.
->
-> Add prototypes for those cases.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202502191627.fRgoBwcZ-lkp@i=
-ntel.com/
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  include/linux/acpi.h | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 4e495b29c640f..8e16ca5046e45 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1130,6 +1130,13 @@ static inline int acpi_get_lps0_constraint(struct =
-device *dev)
->  {
->         return ACPI_STATE_UNKNOWN;
->  }
-> +static inline int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg=
-)
-> +{
-> +       return -ENODEV;
-> +}
-> +static inline void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *=
-arg)
-> +{
-> +}
->  #endif /* CONFIG_SUSPEND && CONFIG_X86 */
->  void arch_reserve_mem_area(acpi_physical_address addr, size_t size);
->  #else
-> --
+On Thu, 2025-02-20 at 13:04 -0600, Stuart Yoder wrote:
+>=20
+>=20
+> On 2/20/25 3:29 AM, Jarkko Sakkinen wrote:
+> > On Wed, Feb 19, 2025 at 02:10:11PM -0600, Stuart Yoder wrote:
+> > > Refactor TPM idle check to tpm_crb_has_idle(), and reduce
+> > > paraentheses
+> > > usage in start method checks
+> > >=20
+> > > Signed-off-by: Stuart Yoder <stuart.yoder@arm.com>
+> > > ---
+> > > =C2=A0 drivers/char/tpm/tpm_crb.c | 36 +++++++++++++++++++++---------=
+-
+> > > -----
+> > > =C2=A0 1 file changed, 21 insertions(+), 15 deletions(-)
+> > >=20
+> > > diff --git a/drivers/char/tpm/tpm_crb.c
+> > > b/drivers/char/tpm/tpm_crb.c
+> > > index ea085b14ab7c..31db879f1324 100644
+> > > --- a/drivers/char/tpm/tpm_crb.c
+> > > +++ b/drivers/char/tpm/tpm_crb.c
+> > > @@ -115,6 +115,16 @@ struct tpm2_crb_pluton {
+> > > =C2=A0=C2=A0	u64 reply_addr;
+> > > =C2=A0 };
+> > > =C2=A0=20
+> > > +/*
+> > > + * Returns true if the start method supports idle.
+> > > + */
+> > > +static inline bool tpm_crb_has_idle(u32 start_method)
+> > > +{
+> > > +	return start_method =3D=3D ACPI_TPM2_START_METHOD ||
+> > > +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start_method =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD ||
+> > > +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start_method =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC;
+> > > +}
+> > > +
+> > > =C2=A0 static bool crb_wait_for_reg_32(u32 __iomem *reg, u32 mask, u3=
+2
+> > > value,
+> > > =C2=A0=C2=A0				unsigned long timeout)
+> > > =C2=A0 {
+> > > @@ -173,9 +183,7 @@ static int __crb_go_idle(struct device *dev,
+> > > struct crb_priv *priv)
+> > > =C2=A0 {
+> > > =C2=A0=C2=A0	int rc;
+> > > =C2=A0=20
+> > > -	if ((priv->sm =3D=3D ACPI_TPM2_START_METHOD) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER_WITH_A=
+RM_SMC))
+> > > +	if (!tpm_crb_has_idle(priv->sm))
+> > > =C2=A0=C2=A0		return 0;
+> > > =C2=A0=20
+> > > =C2=A0=C2=A0	iowrite32(CRB_CTRL_REQ_GO_IDLE, &priv->regs_t-
+> > > >ctrl_req);
+> > > @@ -222,9 +230,7 @@ static int __crb_cmd_ready(struct device
+> > > *dev, struct crb_priv *priv)
+> > > =C2=A0 {
+> > > =C2=A0=C2=A0	int rc;
+> > > =C2=A0=20
+> > > -	if ((priv->sm =3D=3D ACPI_TPM2_START_METHOD) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER_WITH_A=
+RM_SMC))
+> > > +	if (!tpm_crb_has_idle(priv->sm))
+> > > =C2=A0=C2=A0		return 0;
+> > > =C2=A0=20
+> > > =C2=A0=C2=A0	iowrite32(CRB_CTRL_REQ_CMD_READY, &priv->regs_t-
+> > > >ctrl_req);
+> > > @@ -423,13 +429,13 @@ static int crb_send(struct tpm_chip *chip,
+> > > u8 *buf, size_t len)
+> > > =C2=A0=C2=A0	 * report only ACPI start but in practice seems to
+> > > require both
+> > > =C2=A0=C2=A0	 * CRB start, hence invoking CRB start method if hid =3D=
+=3D
+> > > MSFT0101.
+> > > =C2=A0=C2=A0	 */
+> > > -	if ((priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D ACPI_TPM2_MEMORY_MAPPED) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (!strcmp(priv->hid, "MSFT0101")))
+> > > +	if (priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER ||
+> > > +	=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D ACPI_TPM2_MEMORY_MAPPED ||
+> > > +	=C2=A0=C2=A0=C2=A0 !strcmp(priv->hid, "MSFT0101"))
+> > > =C2=A0=C2=A0		iowrite32(CRB_START_INVOKE, &priv->regs_t-
+> > > >ctrl_start);
+> > > =C2=A0=20
+> > > -	if ((priv->sm =3D=3D ACPI_TPM2_START_METHOD) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD))
+> > > +	if (priv->sm =3D=3D ACPI_TPM2_START_METHOD ||
+> > > +	=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD)
+> > > =C2=A0=C2=A0		rc =3D crb_do_acpi_start(chip);
+> > > =C2=A0=20
+> > > =C2=A0=C2=A0	if (priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SM=
+C) {
+> > > @@ -449,8 +455,8 @@ static void crb_cancel(struct tpm_chip *chip)
+> > > =C2=A0=20
+> > > =C2=A0=C2=A0	iowrite32(CRB_CANCEL_INVOKE, &priv->regs_t-
+> > > >ctrl_cancel);
+> > > =C2=A0=20
+> > > -	if (((priv->sm =3D=3D ACPI_TPM2_START_METHOD) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD)) &&
+> > > +	if ((priv->sm =3D=3D ACPI_TPM2_START_METHOD ||
+> > > +	=C2=A0=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D
+> > > ACPI_TPM2_COMMAND_BUFFER_WITH_START_METHOD) &&
+> > > =C2=A0=C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 crb_do_acpi_start(chip))
+> > > =C2=A0=C2=A0		dev_err(&chip->dev, "ACPI Start failed\n");
+> > > =C2=A0 }
+> > > @@ -609,8 +615,8 @@ static int crb_map_io(struct acpi_device
+> > > *device, struct crb_priv *priv,
+> > > =C2=A0=C2=A0	 * the control area, as one nice sane region except for
+> > > some older
+> > > =C2=A0=C2=A0	 * stuff that puts the control area outside the ACPI IO
+> > > region.
+> > > =C2=A0=C2=A0	 */
+> > > -	if ((priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER) ||
+> > > -	=C2=A0=C2=A0=C2=A0 (priv->sm =3D=3D ACPI_TPM2_MEMORY_MAPPED)) {
+> > > +	if (priv->sm =3D=3D ACPI_TPM2_COMMAND_BUFFER ||
+> > > +	=C2=A0=C2=A0=C2=A0 priv->sm =3D=3D ACPI_TPM2_MEMORY_MAPPED) {
+> > > =C2=A0=C2=A0		if (iores &&
+> > > =C2=A0=C2=A0		=C2=A0=C2=A0=C2=A0 buf->control_address =3D=3D iores->s=
+tart +
+> > > =C2=A0=C2=A0		=C2=A0=C2=A0=C2=A0 sizeof(*priv->regs_h))=20
+> > > --=20
+> > > 2.34.1
+> > >=20
+> >=20
+> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+>=20
+> Thanks for the review.=C2=A0 Do you want me to respin and send out
+> a v6 with your Reviewed-by tags on patches 2/5 and 5/5?
 
-Applied as 6.15 material, thanks!
+It's fine I can append them :-)
+
+You might have to hold up until to the first work week of
+March because I'm actually on holiday up until that but
+yeah no need for extra noise.
+
+Up until that tested-by's to this patch set version are
+obviously welcome but it's now definitely good enough
+as far as I'm concerned.
+
+>=20
+> Thanks,
+> Stuart
+
+BR, Jarkko
 
