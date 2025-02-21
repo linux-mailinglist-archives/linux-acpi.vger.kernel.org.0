@@ -1,363 +1,278 @@
-Return-Path: <linux-acpi+bounces-11359-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11360-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5435EA3E90C
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 01:11:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D774CA3EA09
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 02:31:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAB4D1897BB8
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 00:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2FEB1716C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 01:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516AF2AE8E;
-	Fri, 21 Feb 2025 00:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624DB7080D;
+	Fri, 21 Feb 2025 01:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3VVnl1Ck"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AJ9Az+Nz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192BAD27
-	for <linux-acpi@vger.kernel.org>; Fri, 21 Feb 2025 00:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C15156CA;
+	Fri, 21 Feb 2025 01:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740096598; cv=none; b=jVwapAFZaIzE+kNEyxHjdVFNOPQZ7eOylnXZOwzJlgncSIjuSxUv75MNKX/WXYIjrbokXQW66NfqebZk5LTxzMHvwsgme+2oT6sSb2bLyW4Y7v8gXUxztfapQqxcBx+tvJW2OBwiYfmXwk7ToGWV4S7vSgGmbqL0KsboRkAymww=
+	t=1740101415; cv=none; b=EOvzuqmznJlBSfOh/1QITOtMu3xSfr0TSiw+oiBbJxp1Boyj57J6xE2HnvZSTUUy26Imy0vVWiVuInXubxyQOo464gY1nTuT59KrCVl3dnfhir3YmgYKRWYjjpkXgPxK0TFl1EooCKoE3S66zwVBbT1UQv97Xl0Ggd49BCl8wDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740096598; c=relaxed/simple;
-	bh=H7CLOd9P+cV/oFgoj3tgRPPREFdkNw9G3hPEXFK/08U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=atxWz76o8aFuYuFX2Hp7UWtVaVlCoBiui/acqpXxvYwAmpfwKIapHpSpjSUNmM4rZBNtM2jXMdf9W8LyddCerzU0A8DWwsfGKjQqMscSquG0v3qDbvcgfyXGIidaW4ibRculg/0lk832w2MSe78zQmheUJYVecLZT3P0Ge7O3aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3VVnl1Ck; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jperaza.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2217b4a48a4so30457175ad.2
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Feb 2025 16:09:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740096595; x=1740701395; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6ojWXvAKQJT0srmKWjICWy4oxy7knsPFva3rdHV3YZs=;
-        b=3VVnl1Ckv/s43vk8r0nymFqPKwdgOVKTDaxE9hC1vEP4ECsh05jg46tV2okfx8YIR5
-         u7+JObf5vY0auIi8hJk25nDdVge3E9xbv8A/aodsJMpbDa7EQ7LLrwUBbXa5gHUBotpb
-         1AqarAwUa5Z2Icf1Y8OUB0Obc7u97v/TfGApLU3SbQLIN7whKrSSylbuGuBz2Ck3YeoE
-         kD1x5M4Un6E68SC/F736kWyQEW+tMMi57m5Ns7Uzds8FytY1nsiqUalh8L60jAMMnG5Q
-         YVNUwC5c1TO+S9sPMXwDILKTEMYGJGUFMX92lw9NQvT0ZXblFJcLBdYCM7o5l0J/7C5w
-         uuEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740096595; x=1740701395;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6ojWXvAKQJT0srmKWjICWy4oxy7knsPFva3rdHV3YZs=;
-        b=iqCE3kFndRaAO/SOxhb/ufK27fPa/x5jKkxhCiX3Tr/M3SbhONI3F7Q+qLb3IvhBfj
-         xOPMIasBof7jKDwjRDKSeEMjU3cJcgnhJxnZ0l9CX8bDLqlfByclGrQbAnDBfEkrgRtz
-         3Uo8hh9J46giQStqbGoL1drSxJN+JLT49bqAQN6rWLxiZYwl9J7pXxSfSih6/9IMNmos
-         NJEtRxJnKjNHLJ7oBPeS60ruLjQAlhOEvcFKYLSsppEn8H61XceiSa5v0i+9RNU1qXOc
-         3sjzAwLJAA7tw4/IaJvTMPd7bDSWufa3WRzftcNt7KxuC8wd/wjDD3TL/MY2TisrVg+q
-         U3dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2U2ry/0HtOLA5GrASTz17xwhVfkbdiTUZBVUtDcbvEnU8ypIGaF4I3HUV1DCmCfN/hvIsbx2g38Lm@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsZnLZuCSO+yQHE6TpspmFSoBkTsgrSNEQ84PVNYNA83NaG3U8
-	BLyhPW1nmtFah/Is+xQOuUePBFBxL4OI/+Tr47lMCndLNHY48DAg4MHzc1cJdAG8VHkqQQGtspU
-	+tOCsyw==
-X-Google-Smtp-Source: AGHT+IFsbK8JX5UC/bd9sWEP1iulp/l4yrsIlmlO1K6xo+gQF7gsx8ybGU6y0Y51naFRD6Cski0eRbH/AaWZ
-X-Received: from pjd13.prod.google.com ([2002:a17:90b:54cd:b0:2fc:d77:541])
- (user=jperaza job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d502:b0:220:f509:686a
- with SMTP id d9443c01a7336-221a10f1e97mr10895095ad.29.1740096595604; Thu, 20
- Feb 2025 16:09:55 -0800 (PST)
-Date: Fri, 21 Feb 2025 00:09:41 +0000
-In-Reply-To: <20250221000943.973221-1-jperaza@google.com>
+	s=arc-20240116; t=1740101415; c=relaxed/simple;
+	bh=TylAkjyZ/Mrio1T0XJzQhjNWcDz4osUS7nibUACN/24=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kqfhrX5cYfO85kzXZHpbhUR+rH40/BgbO6wdUzpFM4+B9ofpSPInIX2IueshpVZO1j9dZtBeeClP9GwbmAmp3YyfDhJvWBdeQmUMf5VZtxe9Mq9wjzQBJNjiU5LIv/vfAhFXIihh7ptmRi6zb1SIgHOgvxrTk3zHqipBxtYN7fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AJ9Az+Nz; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740101413; x=1771637413;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TylAkjyZ/Mrio1T0XJzQhjNWcDz4osUS7nibUACN/24=;
+  b=AJ9Az+NzYh2o4KGR+9x5TN7rUHQe/G/P0A1KKW7n6zThbXxsVGf2GGP+
+   75lpLqSWKfS1voK62xxNUHO/AReocz1ttW6lKU+dv+Y1TonLfCQx35BnI
+   2yDlwlqXora7OC3SV+snIn7pTWFdGR1cNztZQOFaxrFo+dhq6m6dh9gTa
+   71G+rTrhULopZOmF1W9KQNzebaHKBQVZ1kJQbgvATvubJ4guhN2Jomulo
+   4W/eHQVDeQn+Ybeovgnu7uRsGFluXMNkKddCKMIYMk8YZYCN06fhjkKbE
+   WJNCFnEe2yqvQWIk1jf/SHeK9OmUHFlkf3s7NbxhsCjC9CNwsabiaItpS
+   A==;
+X-CSE-ConnectionGUID: kyIC6N5yTcmQ/Lk2q5uEtQ==
+X-CSE-MsgGUID: pw7IR1fMRKywmTiC3dAVgw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40921023"
+X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; 
+   d="scan'208";a="40921023"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 17:30:12 -0800
+X-CSE-ConnectionGUID: iuT9FOiSQPGAQ9L8BWEE5g==
+X-CSE-MsgGUID: ydfAOs4oRWGwbrUJW3IeQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,303,1732608000"; 
+   d="scan'208";a="115875231"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.110.117])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 17:30:11 -0800
+Date: Thu, 20 Feb 2025 17:30:09 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
+	tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	ira.weiny@intel.com, ming.li@zohomail.com
+Subject: Re: [PATCH v3 3/4] cxl: Add extended linear cache address alias
+ emission for cxl events
+Message-ID: <Z7fXIQKTG9pCRtS7@aschofie-mobl2.lan>
+References: <20250117173054.4147877-1-dave.jiang@intel.com>
+ <20250117173054.4147877-4-dave.jiang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250221000943.973221-1-jperaza@google.com>
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250221000943.973221-3-jperaza@google.com>
-Subject: [v9 PATCH 2/2] PCI: Rename pci_dev->untrusted to pci_dev->requires_dma_protection
-From: Joshua Peraza <jperaza@google.com>
-To: gregkh@linuxfoundation.org
-Cc: baolu.lu@linux.intel.com, bhelgaas@google.com, dtor@google.com, 
-	dwmw2@infradead.org, helgaas@kernel.org, iommu@lists.linux-foundation.org, 
-	jean-philippe@linaro.org, joro@8bytes.org, jperaza@google.com, 
-	jsbarnes@google.com, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	mika.westerberg@linux.intel.com, oohall@gmail.com, pavel@denx.de, 
-	rafael.j.wysocki@intel.com, rafael@kernel.org, rajatja@google.com, 
-	rajatxjain@gmail.com, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117173054.4147877-4-dave.jiang@intel.com>
 
-From: Rajat Jain <rajatja@google.com>
+On Fri, Jan 17, 2025 at 10:28:32AM -0700, Dave Jiang wrote:
+> Add the aliased address of extended linear cache when emitting event
+> trace for DRAM and general media of CXL events.
+> 
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+> v3:
+> - Drop unused region to nid function
+> - Make sure hpa_alias defaults to ~0ULL. (Jonathan)
+> ---
+>  drivers/cxl/core/mbox.c  | 28 ++++++++++++++++++++++++----
+>  drivers/cxl/core/trace.h | 24 ++++++++++++++++--------
+>  2 files changed, 40 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> index 548564c770c0..f42c4c56dc43 100644
+> --- a/drivers/cxl/core/mbox.c
+> +++ b/drivers/cxl/core/mbox.c
+> @@ -856,6 +856,23 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
+>  
+> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
+> +{
+> +	struct cxl_region_params *p;
+> +
+> +	if (!cxlr)
+> +		return ~0ULL;
+> +
+> +	p = &cxlr->params;
+> +	if (!p->cache_size)
+> +		return ~0ULL;
+> +
+> +	if (hpa >= p->res->start + p->cache_size)
+> +		return hpa - p->cache_size;
+> +
+> +	return hpa + p->cache_size;
+> +}
+> +
+>  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>  			    enum cxl_event_log_type type,
+>  			    enum cxl_event_type event_type,
+> @@ -871,7 +888,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>  	}
+>  
+>  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
+> -		u64 dpa, hpa = ULLONG_MAX;
+> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias = ~0ULL;
 
-Rename the field to make it more clear, that the device can execute DMA
-attacks on the system, and thus the system may need protection from
-such attacks from this device.
+A bit odd to use 2 different notations for same thing.
+Prefer ULLONG_MAX here and in previous function.
 
-No functional change intended.
 
-Signed-off-by: Rajat Jain <rajatja@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Joshua Peraza <jperaza@google.com>
----
- drivers/iommu/amd/iommu.c   |  3 +--
- drivers/iommu/dma-iommu.c   | 16 ++++++++--------
- drivers/iommu/intel/iommu.c | 10 +++++-----
- drivers/iommu/iommu.c       |  5 ++---
- drivers/pci/ats.c           |  2 +-
- drivers/pci/pci-acpi.c      |  2 +-
- drivers/pci/pci.c           |  2 +-
- drivers/pci/probe.c         | 10 +++++-----
- drivers/pci/quirks.c        |  4 ++--
- include/linux/pci.h         |  7 ++++---
- 10 files changed, 30 insertions(+), 31 deletions(-)
+>  		struct cxl_region *cxlr;
+>  
+>  		/*
+> @@ -884,14 +901,17 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>  
+>  		dpa = le64_to_cpu(evt->media_hdr.phys_addr) & CXL_DPA_MASK;
+>  		cxlr = cxl_dpa_to_region(cxlmd, dpa);
+> -		if (cxlr)
+> +		if (cxlr) {
+>  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
+> +			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
+> +		}
+>  
+>  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
+>  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
+> -						&evt->gen_media);
+> +						hpa_alias, &evt->gen_media);
+>  		else if (event_type == CXL_CPER_EVENT_DRAM)
+> -			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
+> +			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
+> +				       &evt->dram);
+>  	}
+>  }
+>  EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, "CXL");
+> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+> index 8389a94adb1a..257f60f16e4c 100644
+> --- a/drivers/cxl/core/trace.h
+> +++ b/drivers/cxl/core/trace.h
+> @@ -316,9 +316,10 @@ TRACE_EVENT(cxl_generic_event,
+>  TRACE_EVENT(cxl_general_media,
+>  
+>  	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
+> -		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_gen_media *rec),
+> +		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
+> +		 struct cxl_event_gen_media *rec),
+>  
+> -	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
+> +	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
+>  
+>  	TP_STRUCT__entry(
+>  		CXL_EVT_TP_entry
+> @@ -332,6 +333,7 @@ TRACE_EVENT(cxl_general_media,
+>  		__array(u8, comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE)
+>  		/* Following are out of order to pack trace record */
+>  		__field(u64, hpa)
+> +		__field(u64, hpa_alias)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index b48a72bd7b23..5e71c436e283 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2952,8 +2952,7 @@ static int amd_iommu_def_domain_type(struct device *dev)
- 	if (!dev_data)
- 		return 0;
- 
--	/* Always use DMA domain for untrusted device */
--	if (dev_is_pci(dev) && to_pci_dev(dev)->untrusted)
-+	if (dev_is_pci(dev) && to_pci_dev(dev)->requires_dma_protection)
- 		return IOMMU_DOMAIN_DMA;
- 
- 	/*
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 2a9fa0c8cc00..1358f98691ab 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -598,16 +598,16 @@ static int iova_reserve_iommu_regions(struct device *dev,
- 	return ret;
- }
- 
--static bool dev_is_untrusted(struct device *dev)
-+static bool dev_requires_dma_protection(struct device *dev)
- {
--	return dev_is_pci(dev) && to_pci_dev(dev)->untrusted;
-+	return dev_is_pci(dev) && to_pci_dev(dev)->requires_dma_protection;
- }
- 
- static bool dev_use_swiotlb(struct device *dev, size_t size,
- 			    enum dma_data_direction dir)
- {
- 	return IS_ENABLED(CONFIG_SWIOTLB) &&
--		(dev_is_untrusted(dev) ||
-+		(dev_requires_dma_protection(dev) ||
- 		 dma_kmalloc_needs_bounce(dev, size, dir));
- }
- 
-@@ -620,7 +620,7 @@ static bool dev_use_sg_swiotlb(struct device *dev, struct scatterlist *sg,
- 	if (!IS_ENABLED(CONFIG_SWIOTLB))
- 		return false;
- 
--	if (dev_is_untrusted(dev))
-+	if (dev_requires_dma_protection(dev))
- 		return true;
- 
- 	/*
-@@ -1192,12 +1192,12 @@ dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
- 			return DMA_MAPPING_ERROR;
- 
- 		/*
--		 * Untrusted devices should not see padding areas with random
--		 * leftover kernel data, so zero the pre- and post-padding.
-+		 * Zero the pre- and post-padding to prevent exposing kernel data to devices
-+		 * requiring DMA protection.
- 		 * swiotlb_tbl_map_single() has initialized the bounce buffer
- 		 * proper to the contents of the original memory buffer.
- 		 */
--		if (dev_is_untrusted(dev)) {
-+		if (dev_requires_dma_protection(dev)) {
- 			size_t start, virt = (size_t)phys_to_virt(phys);
- 
- 			/* Pre-padding */
-@@ -1738,7 +1738,7 @@ size_t iommu_dma_opt_mapping_size(void)
- 
- size_t iommu_dma_max_mapping_size(struct device *dev)
- {
--	if (dev_is_untrusted(dev))
-+	if (dev_requires_dma_protection(dev))
- 		return swiotlb_max_mapping_size(dev);
- 
- 	return SIZE_MAX;
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index cc46098f875b..ca72216038f4 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2985,7 +2985,7 @@ static int __init platform_optin_force_iommu(void)
- 
- 	/*
- 	 * If Intel-IOMMU is disabled by default, we will apply identity
--	 * map for all devices except those marked as being untrusted.
-+	 * map for all devices except those marked as requiring DMA protection.
- 	 */
- 	if (dmar_disabled)
- 		iommu_set_default_passthrough(false);
-@@ -4036,13 +4036,13 @@ static bool intel_iommu_is_attach_deferred(struct device *dev)
- }
- 
- /*
-- * Check that the device does not live on an external facing PCI port that is
-- * marked as untrusted. Such devices should not be able to apply quirks and
-- * thus not be able to bypass the IOMMU restrictions.
-+ * Check that the device does not require DMA protection. Such devices should
-+ * not be able to apply quirks and thus not be able to bypass the IOMMU
-+ * restrictions.
-  */
- static bool risky_device(struct pci_dev *pdev)
- {
--	if (pdev->untrusted) {
-+	if (pdev->requires_dma_protection) {
- 		pci_info(pdev,
- 			 "Skipping IOMMU quirk for dev [%04X:%04X] on untrusted PCI link\n",
- 			 pdev->vendor, pdev->device);
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 60aed01e54f2..40c1f32ea4e5 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1793,10 +1793,9 @@ static int iommu_get_default_domain_type(struct iommu_group *group,
- 		driver_type = iommu_get_def_domain_type(group, gdev->dev,
- 							driver_type);
- 
--		if (dev_is_pci(gdev->dev) && to_pci_dev(gdev->dev)->untrusted) {
-+		if (dev_is_pci(gdev->dev) && to_pci_dev(gdev->dev)->requires_dma_protection) {
- 			/*
--			 * No ARM32 using systems will set untrusted, it cannot
--			 * work.
-+			 * ARM32 systems don't support DMA protection.
- 			 */
- 			if (WARN_ON(IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU)))
- 				return -1;
-diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
-index c6b266c772c8..e7e3a7e207df 100644
---- a/drivers/pci/ats.c
-+++ b/drivers/pci/ats.c
-@@ -43,7 +43,7 @@ bool pci_ats_supported(struct pci_dev *dev)
- 	if (!dev->ats_cap)
- 		return false;
- 
--	return (dev->untrusted == 0);
-+	return (dev->requires_dma_protection == 0);
- }
- EXPORT_SYMBOL_GPL(pci_ats_supported);
- 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index a457ae3e811a..1713e2856a88 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1465,7 +1465,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
- 
- 	pci_acpi_optimize_delay(pci_dev, adev->handle);
- 	pci_acpi_set_external_facing(pci_dev);
--	pci_dev->untrusted |= pci_dev_has_dma_property(pci_dev);
-+	pci_dev->requires_dma_protection |= pci_dev_has_dma_property(pci_dev);
- 	pci_acpi_add_edr_notifier(pci_dev);
- 
- 	pci_acpi_add_pm_notifier(adev, pci_dev);
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 869d204a70a3..a3415ad88720 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1055,7 +1055,7 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
- 	caps->ctrl |= (caps->cap & PCI_ACS_UF);
- 
- 	/* Enable Translation Blocking for external devices and noats */
--	if (pci_ats_disabled() || dev->external_facing || dev->untrusted)
-+	if (pci_ats_disabled() || dev->external_facing || dev->requires_dma_protection)
- 		caps->ctrl |= (caps->cap & PCI_ACS_TB);
- }
- 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 246744d8d268..6d0a7a5f8464 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1677,7 +1677,7 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
- 		dev->is_thunderbolt = 1;
- }
- 
--static void set_pcie_untrusted(struct pci_dev *dev)
-+static void pci_set_requires_dma_protection(struct pci_dev *dev)
- {
- 	struct pci_dev *parent = pci_upstream_bridge(dev);
- 
-@@ -1687,14 +1687,14 @@ static void set_pcie_untrusted(struct pci_dev *dev)
- 	 * If the upstream bridge is untrusted we treat this device as
- 	 * untrusted as well.
- 	 */
--	if (parent->untrusted) {
--		dev->untrusted = true;
-+	if (parent->requires_dma_protection) {
-+		dev->requires_dma_protection = true;
- 		return;
- 	}
- 
- 	if (arch_pci_dev_is_removable(dev)) {
- 		pci_dbg(dev, "marking as untrusted\n");
--		dev->untrusted = true;
-+		dev->requires_dma_protection = true;
- 	}
- }
- 
-@@ -2007,7 +2007,7 @@ int pci_setup_device(struct pci_dev *dev)
- 	/* Need to have dev->cfg_size ready */
- 	set_pcie_thunderbolt(dev);
- 
--	set_pcie_untrusted(dev);
-+	pci_set_requires_dma_protection(dev);
- 
- 	if (pci_is_pcie(dev))
- 		dev->supported_speeds = pcie_get_supported_speeds(dev);
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 82b21e34c545..99fcf141e8ae 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5299,7 +5299,7 @@ static void pci_quirk_enable_intel_rp_mpc_acs(struct pci_dev *dev)
-  * PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF
-  *
-  * TODO: This quirk also needs to do equivalent of PCI_ACS_TB,
-- * if dev->external_facing || dev->untrusted
-+ * if dev->external_facing || dev->requires_dma_protection
-  */
- static int pci_quirk_enable_intel_pch_acs(struct pci_dev *dev)
- {
-@@ -5340,7 +5340,7 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
- 	ctrl |= (cap & PCI_ACS_CR);
- 	ctrl |= (cap & PCI_ACS_UF);
- 
--	if (pci_ats_disabled() || dev->external_facing || dev->untrusted)
-+	if (pci_ats_disabled() || dev->external_facing || dev->requires_dma_protection)
- 		ctrl |= (cap & PCI_ACS_TB);
- 
- 	pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 47b31ad724fa..246ed29ab698 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -453,13 +453,14 @@ struct pci_dev {
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
--	 * Devices marked being untrusted are the ones that can potentially
--	 * execute DMA attacks and similar. They are typically connected
-+	 * Devices marked with requires_dma_protection are the ones that can
-+	 * potentially execute DMA attacks and similar. They are typically connected
- 	 * through external ports such as Thunderbolt but not limited to
- 	 * that. When an IOMMU is enabled they should be getting full
- 	 * mappings to make sure they cannot access arbitrary memory.
- 	 */
--	unsigned int	untrusted:1;
-+	unsigned int	requires_dma_protection:1;
-+
- 	/*
- 	 * Info from the platform, e.g., ACPI or device tree, may mark a
- 	 * device as "external-facing".  An external-facing device is
--- 
-2.48.1.601.g30ceb7b040-goog
+I saw Jonathan's ask for hpa_alias to be hpa_alias0 or something?
+That's done in the CXL_EVT_TP_printk output below. It needs to be
+used here in the field name to be picked up in the trace event.
+(same for cxl_dram event)
 
+But...what's the deal with hpa_alias0. If we anticipate an array
+of aliases, then maybe an array like is done for comp_id would
+work. Expect that's overkill at the moment.
+
+
+>  		__field_struct(uuid_t, region_uuid)
+>  		__field(u16, validity_flags)
+>  		__field(u8, rank)
+> @@ -358,6 +360,7 @@ TRACE_EVENT(cxl_general_media,
+>  			CXL_EVENT_GEN_MED_COMP_ID_SIZE);
+>  		__entry->validity_flags = get_unaligned_le16(&rec->media_hdr.validity_flags);
+>  		__entry->hpa = hpa;
+> +		__entry->hpa_alias = hpa_alias;
+>  		if (cxlr) {
+>  			__assign_str(region_name);
+>  			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
+> @@ -370,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
+>  	CXL_EVT_TP_printk("dpa=%llx dpa_flags='%s' " \
+>  		"descriptor='%s' type='%s' transaction_type='%s' channel=%u rank=%u " \
+>  		"device=%x comp_id=%s validity_flags='%s' " \
+> -		"hpa=%llx region=%s region_uuid=%pUb",
+> +		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
+>  		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
+>  		show_event_desc_flags(__entry->descriptor),
+>  		show_gmer_mem_event_type(__entry->type),
+> @@ -378,7 +381,8 @@ TRACE_EVENT(cxl_general_media,
+>  		__entry->channel, __entry->rank, __entry->device,
+>  		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
+>  		show_valid_flags(__entry->validity_flags),
+> -		__entry->hpa, __get_str(region_name), &__entry->region_uuid
+> +		__entry->hpa, __entry->hpa_alias, __get_str(region_name),
+> +		&__entry->region_uuid
+>  	)
+>  );
+>  
+> @@ -424,9 +428,10 @@ TRACE_EVENT(cxl_general_media,
+>  TRACE_EVENT(cxl_dram,
+>  
+>  	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
+> -		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_dram *rec),
+> +		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
+> +		 struct cxl_event_dram *rec),
+>  
+> -	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
+> +	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
+>  
+>  	TP_STRUCT__entry(
+>  		CXL_EVT_TP_entry
+> @@ -442,6 +447,7 @@ TRACE_EVENT(cxl_dram,
+>  		__field(u32, row)
+>  		__array(u8, cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE)
+>  		__field(u64, hpa)
+> +		__field(u64, hpa_alias)
+>  		__field_struct(uuid_t, region_uuid)
+>  		__field(u8, rank)	/* Out of order to pack trace record */
+>  		__field(u8, bank_group)	/* Out of order to pack trace record */
+> @@ -472,6 +478,7 @@ TRACE_EVENT(cxl_dram,
+>  		memcpy(__entry->cor_mask, &rec->correction_mask,
+>  			CXL_EVENT_DER_CORRECTION_MASK_SIZE);
+>  		__entry->hpa = hpa;
+> +		__entry->hpa_alias = hpa_alias;
+>  		if (cxlr) {
+>  			__assign_str(region_name);
+>  			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
+> @@ -485,7 +492,7 @@ TRACE_EVENT(cxl_dram,
+>  		"transaction_type='%s' channel=%u rank=%u nibble_mask=%x " \
+>  		"bank_group=%u bank=%u row=%u column=%u cor_mask=%s " \
+>  		"validity_flags='%s' " \
+> -		"hpa=%llx region=%s region_uuid=%pUb",
+> +		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
+>  		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
+>  		show_event_desc_flags(__entry->descriptor),
+>  		show_dram_mem_event_type(__entry->type),
+> @@ -495,7 +502,8 @@ TRACE_EVENT(cxl_dram,
+>  		__entry->row, __entry->column,
+>  		__print_hex(__entry->cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE),
+>  		show_dram_valid_flags(__entry->validity_flags),
+> -		__entry->hpa, __get_str(region_name), &__entry->region_uuid
+> +		__entry->hpa_alias, __entry->hpa, __get_str(region_name),
+
+Needs swapping -  hpa then hpa_alias
+
+
+> +		&__entry->region_uuid
+>  	)
+>  );
+>  
+> -- 
+> 2.47.1
+> 
 
