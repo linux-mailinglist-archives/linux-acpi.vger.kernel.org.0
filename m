@@ -1,138 +1,102 @@
-Return-Path: <linux-acpi+bounces-11368-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11369-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07B4A3EFC7
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 10:15:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9466A3F4AF
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 13:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9626D700AF9
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 09:13:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D69B189776C
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 12:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE14E202F68;
-	Fri, 21 Feb 2025 09:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67591E489;
+	Fri, 21 Feb 2025 12:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULDQ2ZjH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1N2zuu8"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6291FC11E;
-	Fri, 21 Feb 2025 09:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884F3C148;
+	Fri, 21 Feb 2025 12:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740129219; cv=none; b=Vog2NBZnEjv8DqQhUU3zC8QiRDz2GRdCQmriVEq8sgYMrrSGbvtWjylid/Y9FZK2KJCcviOJV8CY+rHTxgYGJEN0JijrhqjvroejpnvhnTRJ6qni17y8vSt77k2ujBx2TO2c4cPA9hDbKe0NEb5RryX2dri0x8DGEdDID7vTCQE=
+	t=1740141931; cv=none; b=hdMt4Mnd/naptOFW/2Q85yCi9ULoPcxhg7tShJH7UcLNGiHx5zgXoJ/M54263S2Z7hCj1FTfMoCz7LdCaiSAKIFs10mX21UWY4AhsSFlJeusLDPcOxP4nFQmh6AFSp0ZTd3BQk9TE7BfmSOujANR7GG4GEPFrPX6tsZxfIKHcMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740129219; c=relaxed/simple;
-	bh=rDEihz2SYq+qWRIswF8iAj6c1YlBHyFHD/d/IEGQKvg=;
+	s=arc-20240116; t=1740141931; c=relaxed/simple;
+	bh=RBXMEDSJ83N9frFVcMZIclEL2HZ8R+cTooDFwtl8fwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JBChZbL0JFpTNqklEgRFpcP2zePKyiZeUexAr2Kj0nh6tQ0JpPiFXbD43ohu47M6H+0MHOI+ilwKF12lj2RgGtJXiZ5snEUnFvKEGdYMacti00T1NqgPDtnMksV0FUHCfGdGWkYJTCwIrpKhcQaMsFkTwPZwFnGowd3m3pvBv9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULDQ2ZjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B57C4CED6;
-	Fri, 21 Feb 2025 09:13:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fymF63fsh/pBs2vMr7Tz9HHjGaLOvHS0djweYIELRlSDSQ+sZcs6n0N3ZTO28EvMyyXUGtgUaxU/LxSeTDcXROoo4rQLICw7JejGGwIIWjHZ9A/vVYbodFFXrPCaI7Rc0SksdiZVw+tGeDBgzFd+FemiHjlxc7SS3fdoy37f5iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1N2zuu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA89C4CED6;
+	Fri, 21 Feb 2025 12:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740129219;
-	bh=rDEihz2SYq+qWRIswF8iAj6c1YlBHyFHD/d/IEGQKvg=;
+	s=k20201202; t=1740141931;
+	bh=RBXMEDSJ83N9frFVcMZIclEL2HZ8R+cTooDFwtl8fwA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ULDQ2ZjH02Hj782GvcFfA82R6BeT8ck4xAGbF1R7G9A1V6rPQ+XUGRLwETaN5KaRH
-	 iJsup2Fu+bhvBseHfPDLh3UbOgoTzye12t+JfSzVVAu9tk5/Zviqzh8uSqjt0oFWPq
-	 k/Scy0aQAwbKtKeIDAaBF/6j6XRPGLqal+hgUbcwL2XIdtZj4a0GgEMYtREIFuEU0x
-	 Zv7bFWsLpR83Rwm/3dDdXlVa4jevjYdDmA080UR1FlIBH2uzTx+xNAYlKLNyUOLMLq
-	 nK4s2UecTMKwxGxVK2a+Z9MWB++Xg9c0Y7KjorfLW0oPTQBmSKyjeAwPWN93Xo2MXT
-	 IaQ0uqQjn2iIA==
-Date: Fri, 21 Feb 2025 08:59:54 +0100
-From: Joel Granados <joel.granados@kernel.org>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 7/8] s390: mv s390 sysctls into their own file under
- arch/s390 dir
-Message-ID: <yiuirrlckwb5ressit6gcoi6yljcy6ggtopaf5bsgpxb5jp4v4@azntrnnk7zdr>
-References: <20250218-jag-mv_ctltables-v1-0-cd3698ab8d29@kernel.org>
- <20250218-jag-mv_ctltables-v1-7-cd3698ab8d29@kernel.org>
- <20250218140821.7740Ab5-hca@linux.ibm.com>
+	b=E1N2zuu8V2cjuqY5N63qf7bv1F6BWEXKod4y6N8JzipHtSedAQGqejMo+B/GKPOsH
+	 1wDp666pN01+RhsYZYUIV1K2Eme+YP0qCnq4J5pz0QPTouwIApni6KB6/BrafJQK/w
+	 2exS1/vm0W0xDfhzuJ484f1t6n4AjKkCaeqU8TEi6WTFik9Jt3uKVdE+uMjpNlX+3O
+	 THbq/fZEL9ebSfDCYnkcuxdPrn89Adpxu0ax7wyp7Dnjzet7R0MQBTy/DbwmnKRKJQ
+	 ouApp8cJwf0Oz861rEKrlxzBHlLmW+No+fsQIfg4+IczRaUO/FWiaWHDVLBjPBxddu
+	 eeGYDJLZ0CTaw==
+Date: Fri, 21 Feb 2025 14:45:17 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: WangYuli <wangyuli@uniontech.com>
+Cc: chenhuacai@kernel.org, kernel@xen0n.name, rafael@kernel.org,
+	lenb@kernel.org, maobibo@loongson.cn, guanwentao@uniontech.com,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
+	alison.schofield@intel.com, rrichter@amd.com, bfaccini@nvidia.com,
+	dave.jiang@intel.com, haibo1.xu@intel.com,
+	linux-acpi@vger.kernel.org, zhanjun@uniontech.com,
+	niecheng1@uniontech.com, chenlinxuan@uniontech.com
+Subject: Re: [PATCH] ACPI: NUMA: Move get_numa_distances_cnt() helper to
+ needed location
+Message-ID: <Z7h1XWyjKIkyR2zJ@kernel.org>
+References: <D87315C93AF20D4E+20250220042037.942802-1-wangyuli@uniontech.com>
+ <Z7bHPVUH4lAezk0E@kernel.org>
+ <13526D98D27F6E36+705ff063-e7f6-49ff-a29a-0f5e5101c000@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250218140821.7740Ab5-hca@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <13526D98D27F6E36+705ff063-e7f6-49ff-a29a-0f5e5101c000@uniontech.com>
 
-On Tue, Feb 18, 2025 at 03:08:21PM +0100, Heiko Carstens wrote:
-> On Tue, Feb 18, 2025 at 10:56:23AM +0100, joel granados wrote:
-> > Move s390 sysctls (spin_retry and userprocess_debug) into their own
-> > files under arch/s390. We create two new sysctl tables
-> > (2390_{fault,spin}_sysctl_table) which will be initialized with
-> > arch_initcall placing them after their original place in proc_root_init.
-> > 
-> > This is part of a greater effort to move ctl tables into their
-> > respective subsystems which will reduce the merge conflicts in
-> > kerenel/sysctl.c.
->   ^^^^^^^
-> typo
-Fixed
+Hi,
 
+On Thu, Feb 20, 2025 at 02:25:33PM +0800, WangYuli wrote:
+> Hi Mike,
 > 
-> > diff --git a/arch/s390/lib/spinlock.c b/arch/s390/lib/spinlock.c
-> > index a81a01c44927..4483fdc9d472 100644
-> > --- a/arch/s390/lib/spinlock.c
-> > +++ b/arch/s390/lib/spinlock.c
-> > @@ -17,6 +17,10 @@
-> >  #include <asm/alternative.h>
-> >  #include <asm/asm.h>
-> >  
-> > +#if defined(CONFIG_SMP)
-> > +#include <linux/sysctl.h>
-> > +#endif
-> > +
-> ...
-> > +#if defined(CONFIG_SMP)
-> > +static const struct ctl_table s390_spin_sysctl_table[] = {
-> > +	{
-> > +		.procname	= "spin_retry",
-> > +		.data		= &spin_retry,
-> > +		.maxlen		= sizeof(int),
-> > +		.mode		= 0644,
-> > +		.proc_handler	= proc_dointvec,
-> > +	},
-> > +};
-> > +
-> > +static int __init init_s390_spin_sysctls(void)
-> > +{
-> > +	register_sysctl_init("kernel", s390_spin_sysctl_table);
-> > +	return 0;
-> > +}
-> > +arch_initcall(init_s390_spin_sysctls);
-> > +#endif
+> On 2025/2/20 14:10, Mike Rapoport wrote:
+> > There's no need for relocation, just drop the unused function.
 > 
-> I see that you want to keep the existing CONFIG_SMP behaviour, but since a
-> long time s390 enforces CONFIG_SMP=y (this was obviously never reflected in
-> kernel/sysctl.c).
-> Therefore the above ifdefs should be removed, and in addition the include
-> statement should be added to the other linux includes at the top of the file.
-I'll add these changes to my V2
+> Okay.
+> 
+> But  please take a look at line 295 of the original srat.c. Should the type
+> of variable 'd' there be changed to u64, as mentioned in the commit message?
 
-Thx for the review
+int is enough for more than 2 million nodes, I don't see a problem with it
+ 
+> If yes, I can quickly put up another commit just to tweak this one place.
+> 
+> Thanks,
+> 
+> -- 
+> WangYuli
+
+
+
+
+
 
 -- 
-
-Joel Granados
+Sincerely yours,
+Mike.
 
