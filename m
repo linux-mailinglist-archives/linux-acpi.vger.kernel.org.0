@@ -1,99 +1,101 @@
-Return-Path: <linux-acpi+bounces-11373-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11374-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83A3A3F6A9
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 15:02:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42361A3FBC4
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 17:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DFF176752
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 14:02:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A2A2867635
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 16:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049D21EB1B9;
-	Fri, 21 Feb 2025 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F1C1F3BBC;
+	Fri, 21 Feb 2025 16:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BeFnWvVY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9142F2D05E;
-	Fri, 21 Feb 2025 14:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F061F1506;
+	Fri, 21 Feb 2025 16:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740146545; cv=none; b=fswGjdPJjTvi0q4ExX4j1kXWKJqQ+7a/D+MXnX2jcpKfkh+wlJaiYgTKqXYGEjseTyuv2AjQlHRHJyCb9XuUmRtSoTdl/WKD/6Mo+/g9bj9DUmR5pDKjyt5aAbRPSWCDvXRQLszyLNxFjYPpjNqjcAvo4heWkdnKxppPsGD2xtA=
+	t=1740155449; cv=none; b=iPFLDU0kCILT4mrn6JsXMWJnmjgct6oIMQpXhKkYuGgKGo3tdgSIDCIG0pT1CHH6nN0eZJixEc3EPKtvvd7SqWMpAndXoO3d/faUqdTmC0bv00NrsaikOkuoBVzgZC3ZsLX+m/3vO14vK0Pjk56Hww/MuSsNvQZoz0aErsScJR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740146545; c=relaxed/simple;
-	bh=LllIJWlInIu28fom361MYi5lsTeITv3lVS0i1lQ+RKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=grLe+EJeZ4Svxkynu14Isr04A+fDHBsd7Q0pMvUZAa2paVLtEvh23uaoffeOH6FqJOZql0AxEdBxlFnlVCAqvDX5ewH0ZLhd+P8jJ7DgKt0OizlnATbHZHPbT9MZPRM9BcMGlIwBOLcQW3gIDzUy1f/kNptNyT0WPOBD3g+BT90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BB42168F;
-	Fri, 21 Feb 2025 06:02:40 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 58A9F3F5A1;
-	Fri, 21 Feb 2025 06:02:20 -0800 (PST)
-Date: Fri, 21 Feb 2025 14:02:17 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: Stuart Yoder <stuart.yoder@arm.com>, Sumit Garg <sumit.garg@linaro.org>,
-	linux-integrity@vger.kernel.org, jarkko@kernel.org,
-	peterhuewe@gmx.de, jgg@ziepe.ca, rafael@kernel.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 0/4] Add support for the TPM FF-A start method
-Message-ID: <Z7iHaWPyq3KDG7J2@bogus>
-References: <20250210232227.97761-1-stuart.yoder@arm.com>
- <CAFA6WYM7K4_toy5_n1arW4po4SOX0R9624rCgO=_MvcMeySwUA@mail.gmail.com>
- <4bb3cefa-b843-45ca-82c5-d96b13454baa@arm.com>
- <CAFA6WYM3UA9+TE8L2U5Qd8FZfaGZnbba=QzWU7fEu3LKQVm-tw@mail.gmail.com>
- <fdaa9a58-790f-4839-8db7-1b9a81eb8edf@arm.com>
- <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
- <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
- <Z7LGbZsOh_w-HRY2@sumit-X1>
- <5dae96fa-0e54-4274-bcc6-1c20fe846f60@arm.com>
- <Z7iDuwLDA2rFPZK6@sumit-X1>
+	s=arc-20240116; t=1740155449; c=relaxed/simple;
+	bh=739odh34bcM9h+m6IMaljlp2W8wK/OpxowHnUoF4iWY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=e1bfSReOxuV4O/+R/X6XeVsNs22ThoeAbr+hX0V7ZV9GSzOIxL0HC3p6vxtquaGjLoy+Gq0LpdgRbeYNDqpoP1s35tk4gydw/8MBYcG89m2dKCpjjcnmUFOft5rjKc/Je5gDqV/yh7pkVZnY/27VE2WXBzDvBj5lNua9BWo3JdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BeFnWvVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2016FC4CED6;
+	Fri, 21 Feb 2025 16:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740155449;
+	bh=739odh34bcM9h+m6IMaljlp2W8wK/OpxowHnUoF4iWY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=BeFnWvVYVofO9FFGCPKknG16r0ADEKUHWLvfDbSeFtBNML+mVBRp8WKxL6k5yeekJ
+	 ixzJmAxzFMTdwNE7cLOJSKvL65lIDNX0IcP58YcjH2f0zZaIdXAB7VmGvYadq+Hl3D
+	 RrgHv6w93u4jkBIQpNU5hYv06hkDQ6xVMYEqOv/ub5R/eoVTJjCT0/xOraT0kPaLmD
+	 n1GmegYZU8I0puol7pH2o0BI1Wkww71qJzqAvYx04iVgG6jBC8DvYOmLM61K2tlHeB
+	 ujFPILaGvoHUBYezqCOkYxMWViyjT6ejPXjgY2gXMOBwjA2e1X7laAybgfk3TsEqQl
+	 79WKzKX8/D3Ow==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5fce3e43159so1621295eaf.3;
+        Fri, 21 Feb 2025 08:30:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVVSMf/Li/X27zdx9yQ60MmWDI6qZJxOGyLJCK3CAeZmQus+DPjDZHKDPcUGLSKPeD5XcAEW1sqSpYjeOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI5ol38k8bNuSk+iQvqGXavNNPq9rdIFhcoKblHZnO0moeZaoT
+	Lm6HtWZKskcDOyTp9hNbhbjxAF7bbOCk4vqxN0r//fkYGdeZsAyRl90GgWBLgY+fh+OBvQgbQBU
+	eKZUt668PHIB2kKMSL0T0OizcyLU=
+X-Google-Smtp-Source: AGHT+IHjAIrw5KXvd/qt43GkWQrQtfQNkSdoUWXKFTXQTlaniatgJN3dsMgZRwBIathZtxDK9a9PxRgJMBhMUtXzLrA=
+X-Received: by 2002:a05:6820:1612:b0:5fd:50d:49e4 with SMTP id
+ 006d021491bc7-5fd19648f16mr2404402eaf.7.1740155448458; Fri, 21 Feb 2025
+ 08:30:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z7iDuwLDA2rFPZK6@sumit-X1>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 21 Feb 2025 17:30:37 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hzMUGnqx=GfLUkVZXsMMqqguMV4S7Bf0z9EoPt4AYFaA@mail.gmail.com>
+X-Gm-Features: AWEUYZkmAITJ6AyyT22nBx1Z9q6UGq-Qmb2sAVm9FBqQm0zlo3zo1jeICJ7HieE
+Message-ID: <CAJZ5v0hzMUGnqx=GfLUkVZXsMMqqguMV4S7Bf0z9EoPt4AYFaA@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for v6.14-rc4
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Sumit,
+Hi Linus,
 
-On Fri, Feb 21, 2025 at 07:16:35PM +0530, Sumit Garg wrote:
-> On Mon, Feb 17, 2025 at 10:56:58AM -0600, Stuart Yoder wrote:
-> >
-> > I don't see how changing TPM discovery to be via FF-A directly
-> > would improve maintainability.
->
-> You are considering ACPI at this point but when people want to use this
-> TPM over FF-A on a platform using DT then it will require corresponding
-> DT bindings. After that each platform has to enable TPM over FF-A in
-> their corresponding ACPI/DT. All that won't be needed with auto
-> discovery over FF-A.
+Please pull from the tag
 
-I hear you and completely agree. However, someone thought it was a good idea
-to align with other start methods and duplicate information in the TCG ACPI
-specification. This is definitely a bad idea, as it may contradict the
-firmware. All we needed was a simple flag to indicate whether FF-A is the
-start method.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.14-rc4
 
-It sounds like a classic case of misalignment between specification authors
-and practical implementation needs. Instead of a simple flag to indicate FF-A
-as the start method, duplicating information in the TCG ACPI specification
-seems unnecessary and potentially problematic—especially if it risks
-conflicting with firmware behavior.
+with top-most commit d403120cb9d4787b283ea202b2162f459d18fe9d
 
-Anyway, I can't comment on how we ended up here, but this seems to be the reality.
+ ACPI: platform_profile: Fix memory leak in profile_class_is_visible()
 
---
-Regards,
-Sudeep
+on top of commit 0ad2507d5d93f39619fc42372c347d6006b64319
+
+ Linux 6.14-rc3
+
+to receive an ACPI fix for 6.14-rc4.
+
+This fixes a memory leak in the ACPI platform_profile driver (Kurt Borja).
+
+Thanks!
+
+
+---------------
+
+Kurt Borja (1):
+      ACPI: platform_profile: Fix memory leak in profile_class_is_visible()
+
+---------------
+
+ drivers/acpi/platform_profile.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
