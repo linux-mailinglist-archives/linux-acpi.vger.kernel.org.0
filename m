@@ -1,214 +1,234 @@
-Return-Path: <linux-acpi+bounces-11371-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11372-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D06CA3F5B0
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 14:20:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FA1A3F648
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 14:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9048189D05B
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 13:16:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5413A18FE
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Feb 2025 13:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A2B20E318;
-	Fri, 21 Feb 2025 13:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D899757EA;
+	Fri, 21 Feb 2025 13:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s2OE14ap"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjSCM2Nq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2046.outbound.protection.outlook.com [40.107.237.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB921E87B;
-	Fri, 21 Feb 2025 13:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740143689; cv=fail; b=SwkYEHtnlhuJSfw3R6QvNEuXn5rndNt3PAOx8BKmzjq/YA2zudOpRXiSs0AweEvbOpmotJzXcXfF7k9oQ4T6NHo+AN+ndE8j43hO82z2UTxeMNLSJfyq5HxJmW5W2vFEgL0h0sLdOYljHBkZY7s+fPTYbyhQquPco1vM5dAeh/c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740143689; c=relaxed/simple;
-	bh=BkNmySyZ0vq2vc3/32hvXLVv5wLXERBOSZJhaPBo5FY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Y047wqWRNZpfFJyz/ar0nonlFIAaKjmn60sR8S9LwC4Zi878bWB2tU6Z9ZHuHljE+EOSTwpBrW6PQASj1zbCsCQMlnkEv5uIYXTht4AerbT+4q0X04Ft/UJ2k5KhRRcKTSnTP4nMNXhatcULORDJeN+aeiRqWxS6rrEzEFnbtQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s2OE14ap; arc=fail smtp.client-ip=40.107.237.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ibfj9wTBMrA45GVHbYSavzDktQpIpK9IZIZ+Culgkq/FHraFCTitr3uqsbXmV/lIDCFgKJolXoxj7jF5gZXYSUrqz8hassM1V5Zqfwg7asvl76gFSx9GfKXdsBBEaJzuO19cLp0nzmQCzDzXzBQtWxhpLhSxVkxicrMm+qoIi4jvoV3B1NkYAoo50AvIvL+U/2GiDzApp8tEuX8/ONvpa5i0oZ4jGY28uYOlAjWMx2ujbFhB/0O1Dke21QDfx7NUvQr/D/8MbMHpgi9loSAaDYVYLmmgkOVnjKPUEa2pAq8p99S38qNDxsTqfcay2c+Ivhb36M+Jau/b4TaX/vvPOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WaFukh8+tB9PxqkAkUSFbLsniGJgAwAxHNorMAf7OxQ=;
- b=VzSadEIlRzpz5IcIxdRFGSS1Dje/XglGyvk76U5kPw5jUgAZW7xG93Jch6yq8o7RdhItQUXTJp0hpbH2e+Xz/3N5SIgqSRENuCLhxHERyf0Sjb7fY3T/QX14SOAm7IG9nFaxEgvWk2rzOjiAN4BMPFEdmYvN8U0tEn6hDhS4N/GtIO2jFzknwUddfJDyt8U8LNTc801QigUj01LWHGfGxNT4UM4YHsJv1RPZlNPyCd8hZAOTV2wbH3wn5kzm06dRqp51z+VLxSRxKo2HjuxIUEz7OWjpjKidNw+5LdAtGMykhW11Hf1x36s4BpRxXrzqVQVbfNBRAN/De+rWUxQyew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WaFukh8+tB9PxqkAkUSFbLsniGJgAwAxHNorMAf7OxQ=;
- b=s2OE14aphAD4bSZ5yk49DZrmqTk2YZWtQwx0nrHoHaw5CNsfPL5WqS+naBtPeNE/KsexOodKm7pO+G9f/k1r8Q/QSCAUNWjQbTM3+dAiCVFRQ99A4k/1eSDCZ/mrKSEZv5xldtGzdIasXeIZNB/BHo9MquuceUHWzhE+/mNNpXFqL/D8tb1/08ecN5PIY7k9w6LPpEXwue5I5fvtq6TBz9IWeS5kEG659yrj5MIDK+FRydv1BHXp93kHpQNE9jTY8ZotqZYPkoHBbxjGaS7wpfscUHaOT0eusIDG+e0tFJ1J/s8ayv+xIJ1OE8ElhrFe/FrcipcO+jP/VApv1zmovw==
-Received: from MW4PR04CA0067.namprd04.prod.outlook.com (2603:10b6:303:6b::12)
- by DS0PR12MB8341.namprd12.prod.outlook.com (2603:10b6:8:f8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Fri, 21 Feb
- 2025 13:14:43 +0000
-Received: from CO1PEPF000066E9.namprd05.prod.outlook.com
- (2603:10b6:303:6b:cafe::5b) by MW4PR04CA0067.outlook.office365.com
- (2603:10b6:303:6b::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.15 via Frontend Transport; Fri,
- 21 Feb 2025 13:14:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000066E9.mail.protection.outlook.com (10.167.249.11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8466.11 via Frontend Transport; Fri, 21 Feb 2025 13:14:43 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 21 Feb
- 2025 05:14:22 -0800
-Received: from [10.41.21.79] (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 21 Feb
- 2025 05:14:17 -0800
-Message-ID: <e58a20f8-e8bf-409c-a878-af2bd3c7d243@nvidia.com>
-Date: Fri, 21 Feb 2025 18:44:14 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347261A270;
+	Fri, 21 Feb 2025 13:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740145603; cv=none; b=ZSRdEMaJr9tGFQvWB2aRwIRvhtbOv7Hn3RSxP9ZuazdFqhncAo71QShD+p8361I/HJB2rq4S9e4rxlvBRG4QXpy8MTo2BBQEaByY/UNFxreHfkR2pdHnvnb26FuWZNDYrzbQehTLeMLIPq9u5DYkiDJlGPZGudZePUrQ7ogl+KY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740145603; c=relaxed/simple;
+	bh=cNfhu284FHwhKxefe+UYFL9XiiQl2ogxac1UTYPKrqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eXwdUMM5c4gKFaQRx7o7JkHCKzi8sSxqR7BTLuBeD2e05ez6Wm0S2mXaxjG3LEhnvGYR03zni+kuQ+qvhoPslZIa77H0ioLFSf/TL59xJ3U2oldHuhilrNpXOiFW3zBWp7f1/Rlq06M9TefCpLIK8svQ5yQyLahPV5LXgcCeL2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjSCM2Nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF08C4CED6;
+	Fri, 21 Feb 2025 13:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740145602;
+	bh=cNfhu284FHwhKxefe+UYFL9XiiQl2ogxac1UTYPKrqc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LjSCM2Nq9LbssaI3I7+SmYBw1FlyH2d0P0spkkuOs8zOeAoft4NVV8IYNCTnGN7+Z
+	 uYuBpUUclU48eMhN4uKEOoWjqzD92zY63I4AF+tpny7KCqQAGLoaHB5lsN5meqlVvc
+	 kU0t0sD3pv+H5CNT17NP406q2z+mAEbaOSTxKllbowyB8Pw2kFebnSQHURabNuFpBp
+	 Nd/4Rzrb38Cs0SOweh7/cBv+z+ejoOlcUNRm2PGHpCCHtAgOiuZ2CjOUv+MDiS+Kxo
+	 gqGYV745oJtWDRRh/k7UNtKtrTUah3N5jJmLD9BmztLeR2YRDsE02ocUJaVzfSrG+h
+	 kHqFeLNwLnAqw==
+Date: Fri, 21 Feb 2025 19:16:35 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Stuart Yoder <stuart.yoder@arm.com>
+Cc: Sumit Garg <sumit.garg@linaro.org>, linux-integrity@vger.kernel.org,
+	jarkko@kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca,
+	sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 0/4] Add support for the TPM FF-A start method
+Message-ID: <Z7iDuwLDA2rFPZK6@sumit-X1>
+References: <20250210232227.97761-1-stuart.yoder@arm.com>
+ <CAFA6WYM7K4_toy5_n1arW4po4SOX0R9624rCgO=_MvcMeySwUA@mail.gmail.com>
+ <4bb3cefa-b843-45ca-82c5-d96b13454baa@arm.com>
+ <CAFA6WYM3UA9+TE8L2U5Qd8FZfaGZnbba=QzWU7fEu3LKQVm-tw@mail.gmail.com>
+ <fdaa9a58-790f-4839-8db7-1b9a81eb8edf@arm.com>
+ <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
+ <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
+ <Z7LGbZsOh_w-HRY2@sumit-X1>
+ <5dae96fa-0e54-4274-bcc6-1c20fe846f60@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch 0/5] Support Autonomous Selection mode in cppc_cpufreq
-To: "Rafael J. Wysocki" <rafael@kernel.org>, "zhenglifeng (A)"
-	<zhenglifeng1@huawei.com>
-CC: Viresh Kumar <viresh.kumar@linaro.org>, <lenb@kernel.org>,
-	<robert.moore@intel.com>, <corbet@lwn.net>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-tegra@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
-	<sashal@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
-	<sanjayc@nvidia.com>, <bbasu@nvidia.com>, Sumit Gupta <sumitg@nvidia.com>
-References: <20250211103737.447704-1-sumitg@nvidia.com>
- <20250211104428.dibsnxmkiluzixvz@vireshk-i7>
- <b45d0d81-e4f7-474e-a146-0075a6145cc2@huawei.com>
- <868d4c2a-583a-4cbb-a572-d884090a7134@nvidia.com>
- <8d5e0035-d8fe-49ef-bda5-f5881ff96657@huawei.com>
- <94bdab73-adc4-4b43-9037-5639f23e3d1e@nvidia.com>
- <CAJZ5v0iAg6HFROHctYQwW=V9XiV8p3XVYgeKUcX4qBgfwQK6Ow@mail.gmail.com>
-Content-Language: en-US
-From: Sumit Gupta <sumitg@nvidia.com>
-In-Reply-To: <CAJZ5v0iAg6HFROHctYQwW=V9XiV8p3XVYgeKUcX4qBgfwQK6Ow@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066E9:EE_|DS0PR12MB8341:EE_
-X-MS-Office365-Filtering-Correlation-Id: 370b9286-daa1-49bb-f4ba-08dd5279b492
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|7416014|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VW1iYURCTytZM25LbEs5SVNoeW1QZFgzWHRNTUIydjhtZzRQcGMwQStrZzdV?=
- =?utf-8?B?dk1abGhUQ1FwOHhTYXcxRVBGRS9uV0RrRkpkQWZWTktwQld6THVvdWZUSDI4?=
- =?utf-8?B?QXM4Q2twQ2d2U1dvbVY0VTN6THNYRGFHUVZnV3NJNmM4b0ZjTmIvQ3dEZDRZ?=
- =?utf-8?B?RkhIVzc0YXQ0RXBhYTJWMWFjdzdFUHJld1MzWWxsR0JXV0phVkRBTC9RL01S?=
- =?utf-8?B?K1R2TUt3bFV1L0FuTXEzMVlMVVNObVFrc0YyV1FXNDVuNWVQdVhwSXRVQUdO?=
- =?utf-8?B?OENTTURzNHMyTThaODVhQzZ6TGl1bXlxTFdXRUdoZENuL3hOaFEySitCWWNl?=
- =?utf-8?B?TlhPVU9yajFtTU10YzAxTnpXM3grVnd4ZUZwNVpPTGQwQnlQZkhKS1Jia0x5?=
- =?utf-8?B?dU1TK1BzeTVIN3hRaGVnM25NRTl3eUQ0cFFldSsxTWZKK0ZpMUh3RDg3K2VZ?=
- =?utf-8?B?ZUJZVjk3Y2szeGdqQjF0U0RlUDlMc2RYTmY2N1U2ZzNtbEJSaHJWa2ErbGlF?=
- =?utf-8?B?bGdVenluR3doVEYxTE9TS2QzZU5CYUVjZWZ6UlF6TExFL1U0NGpNZ2F0V2VW?=
- =?utf-8?B?bThnamt3Q29LVk9sSDRUMWZZbXV2Wmh2Z2pjeHlzczVqMkZnMjYzaDhKcFYw?=
- =?utf-8?B?N29xdExXQk9CRlFOVStDT0diV2U2aXp3SmZ0M2Mydm9BcTdadzIzbXBHWnU0?=
- =?utf-8?B?SFdrS1pqNVVnMDFwZkgxdEtCQzYvMW53SDNBbEc3aE1YYXBES2dyRjYwbXd6?=
- =?utf-8?B?VzhvNjA5NzR4RjduakQ4T1lucXRlVW1oY0J5YXBjYW9HQXpjSHFQdWJ6bWtL?=
- =?utf-8?B?M3ZhSGNyNElGOHl1QjRNZER2RGV6bGRseFJycUtXZE1xY00zTC9ubDd6ZGNK?=
- =?utf-8?B?UThMcnhPL01Ed1dJc2VOV1l6R1lySmdsUWlNVUpKQ3ZaVGFBNWRpTXZwYWVT?=
- =?utf-8?B?R0VUZktPVE1pSGlZV0tlY1hLVzJIaG11Q1U3TXR1Q0xGK0haNGlCMm1BT0Z6?=
- =?utf-8?B?emtKUGQzNGtPZkZ2WDFPbWR5T0luc1hyckxPZ2FyTXRsai9zWGxQaUxOK2pV?=
- =?utf-8?B?VkR1Y2JSbDEwM2JPL1BEaWZMVXFYdGFXbFYybWNmNDVNNEFZYmpmWjRvM1Ju?=
- =?utf-8?B?dldFZUtXL0JFZkpMWlhVa3Z6SVFtSlB3YnBKRW1CQTBoMCtIQnk1R0VxZzFz?=
- =?utf-8?B?TVNDaVAvYVdUV29VSGNLdTJYOVNJSUh4VUdJU0VXWThtdkRwR21iMkhxUTh4?=
- =?utf-8?B?UDY3WTRtd1pIdzkrYmFRV1VSNlFaU1FnWXpKWDRjekRxcVNNZE9DZTNQeHFU?=
- =?utf-8?B?ZVMyOWlFUStjSksvdlZibW1kdFNQL1MyQ2l5ZkxBR2ZPUlFnVVFJNjM5VmJU?=
- =?utf-8?B?eUFBY3FHZy9YcGlid1dQaDBQbjhCM3paMVB3VHQ2WHJkVmx2VFhtQ1YrOVZT?=
- =?utf-8?B?aS9tc0dQdENDQmdGMXYzMjZmTjBNMDhzU05xZVlRb0ttZWFBRm16OVI0Tlg0?=
- =?utf-8?B?djBOYUFIbjd3V3RuS1NWcHAralpVanBvSWdsMjlWdnUwR0ZYdFlpOXRwMjMv?=
- =?utf-8?B?OHJKME40eTRkZ3pBOVJVdUhlUFZmUUlINXc1WktaQ1dWVVZFcjZvbmMyZnQ3?=
- =?utf-8?B?cTRVSHo3VXZKWkMraTJWbmxiZEdmdU1oaDIrenZKZU1zaXg5SVdPRmJldDQ0?=
- =?utf-8?B?clgwUVVsVis0ejVsQlVUelhXc2hHUlJvVkVlYnFHOE8wcUlvckIyMjJKd3Fh?=
- =?utf-8?B?QXFnU2k0YitZVDNqVTR2Z1liL1NzZjY3SUdaVjZlbkh0YVlMSEc4cFdjSXFE?=
- =?utf-8?B?SmpDc3hHOU0vRTVQdmhIbmM5aVlPa2VwckZZOGNFamZqbkwzOHYveWNtbHZB?=
- =?utf-8?B?cEpTTGdKcVpSYkRIUEpCYW5IVVU2MWlXZTEyRnRENVJzM2Q4bzJWRUFVNmVH?=
- =?utf-8?B?dkV2dkVUWWlqMmtuSm5jUlVKSHFNa0p0N3JyQ0hJUjhTTGtJS3pKTEZHUXlG?=
- =?utf-8?Q?5QaIWCcnvayyEk8/Sl05UVQp4cYeXY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 13:14:43.0216
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 370b9286-daa1-49bb-f4ba-08dd5279b492
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066E9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8341
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dae96fa-0e54-4274-bcc6-1c20fe846f60@arm.com>
 
-
-
-On 19/02/25 00:53, Rafael J. Wysocki wrote:
+On Mon, Feb 17, 2025 at 10:56:58AM -0600, Stuart Yoder wrote:
 > 
-> There seems to be some quite fundamental disagreement on how this
-> should be done, so I'm afraid I cannot do much about it ATM.
 > 
-> Please agree on a common approach and come back to me when you are ready.
+> On 2/16/25 11:17 PM, Sumit Garg wrote:
+> > On Thu, Feb 13, 2025 at 09:19:58AM -0600, Stuart Yoder wrote:
+> > > 
+> > > 
+> > > On 2/12/25 11:31 PM, Sumit Garg wrote:
+> > > > + Rob
+> > > > 
+> > > > On Thu, 13 Feb 2025 at 03:25, Stuart Yoder <stuart.yoder@arm.com> wrote:
+> > > > > 
+> > > > > 
+> > > > > 
+> > > > > On 2/12/25 1:39 AM, Sumit Garg wrote:
+> > > > > > On Tue, 11 Feb 2025 at 21:39, Stuart Yoder <stuart.yoder@arm.com> wrote:
+> > > > > > > 
+> > > > > > > Hi Sumit,
+> > > > > > > 
+> > > > > > > On 2/11/25 12:45 AM, Sumit Garg wrote:
+> > > > > > > > + Jens
+> > > > > > > > 
+> > > > > > > > Hi Stuart,
+> > > > > > > > 
+> > > > > > > > On Tue, 11 Feb 2025 at 04:52, Stuart Yoder <stuart.yoder@arm.com> wrote:
+> > > > > > > > > 
+> > > > > > > > > These patches add support for the CRB FF-A start method defined
+> > > > > > > > > in the TCG ACPI specification v1.4 and the FF-A ABI defined
+> > > > > > > > > in the Arm TPM Service CRB over FF-A (DEN0138) specification.
+> > > > > > > > > (https://developer.arm.com/documentation/den0138/latest/)
+> > > > > > > > 
+> > > > > > > > Nice to have a specification standardizing interface to TPM
+> > > > > > > > managed/implemented by the firmware. Care to add corresponding kernel
+> > > > > > > > documentation under Documentation/security/tpm/.
+> > > > > > > 
+> > > > > > > Yes, I can add some documentation there.
+> > > > > > > 
+> > > > > > > > BTW, we already have drivers/char/tpm/tpm_ftpm_tee.c, so do you see
+> > > > > > > > possibilities for an abstraction layer on top of communication channel
+> > > > > > > > based on either FF-A or TEE or platform bus?
+> > > > > > > 
+> > > > > > > I think the CRB and OP-TEE based messaging approaches for interacting
+> > > > > > > with a TZ-based TPM are fundamentally different and I don't see how
+> > > > > > > to harmonize them through some abstraction.
+> > > > > > > 
+> > > > > > > The OP-TEE TPM protocol copies the TPM command into a temp shared memory
+> > > > > > > buffer and sends a message to the TPM referencing that buffer.
+> > > > > > > 
+> > > > > > > The CRB uses a permanently shared memory carve-out that in addition
+> > > > > > > to the command/response data has other fields for locality control,
+> > > > > > > command control, status, TPM idle, etc. The only 'message' needed is
+> > > > > > > something to signal 'start'.  Any OS that is FF-A aware and has a
+> > > > > > > CRB driver can simply add a new start method, which is what this
+> > > > > > > patch series does.
+> > > > > > 
+> > > > > > Okay, I see how the CRB driver is closely tied to the ACPI based
+> > > > > > systems.
+> > > > > 
+> > > > > The CRB driver is currently probed based on ACPI, but it fundamentally
+> > > > > doesn't have to be.  If there was a DT binding for CRB-based
+> > > > > TPMs the different start methods would be defined there and the
+> > > > > CRB driver could support that.
+> > > > > 
+> > > > 
+> > > > Can't we rather enable the CRB driver itself probed based on FF-A bus
+> > > > and rather dynamically discover the shared memory buffer via FF-A
+> > > > instead? AFAIU, FF-A provides you with a discovery framework for
+> > > > firmware bits.
+> > > 
+> > > Yes, you could do this. But, then the TPM CRB drivers in all the
+> > > ACPI-based OSes (Linux, Windows) and hypervisors need to be
+> > > taught this new method of discovery. Adding new start methods is
+> > > reasonably straightforward, but changing the basic discovery
+> > > mechanism is a much bigger change.
+> > 
+> > We will be teaching every other OS or hypervisor about FF-A
+> > communication regardless. So it's rather about if we want to do it
+> > properly leveraging auto discovery mechanisms supported by FF-A or not.
+> > 
+> > > 
+> > > > But if we still want to overload ACPI or DT with the
+> > > > discoverable firmware bits then it seems like an overkill here.
+> > > 
+> > > I think it would make sense to do ACPI based discovery or FF-A
+> > > based discovery, but doing both I think would be overkill.  For
+> > > ease of OS integration ACPI is the way to go.  And, potentially
+> > > device tree in the future.
+> > 
+> > Encoding firmware bits in ACPI/DT can be seen as an easy upstream path
+> > in the shorter run. But when the ACPI/DT becomes overloaded with
+> > information that has to be passed from firmware to the OS rather than
+> > purely describing hardware to the OS, it's ABI maintainability becomes
+> > complex. We are already dealing with DT ABI compatibility challenges
+> > especially the forward compatibility, so let's not make it even worse
+> > with firmware information that can be discovered automatically.
 > 
-> Sending two concurrent patchsets under confusingly similar names again
-> and again isn't particularly helpful.
+> The TCG defined ACPI table has the following:
+>    -Physical address of the TPM
+>    -Start method
+>    -Start method specific parameters
+>    -event log address
 > 
-> Thanks!
+> This has been in place 8+ years and this is what OSes expect.
+> The start method advertises the mechanism a driver uses to
+> signal the TPM that something has changed in the CRB, and
+> this allows different types of TPM implementations:
+>    -memory mapped
+>    -signal via ACPI
+>    -signal via ARM SMC (legacy)
+>    -signal via Pluton mailbox
+>    -signal via FF-A
+> 
+> I don't see this as overloading the ACPI table, it's just what
+> the OS needs to know.
+> 
+> The TPM does not know (and should not know) the address of
+> the event log. An FF-A based TPM has no way to know this.
 
-Hi Rafael,
+The TPM event log is rather something that the firmware should propogate
+to the OS rather than the TPM itself. The standard way for firmware to
+pass that on is via UEFI [1] but still for non-UEFI compatible platforms
+it gets propogated via ACPI/DT from the firmware. As UEFI gets adopted
+further in embedded space, the reliance on ACPI/DT will reduce.
 
-Thank you for looking into this.
+[1] Documentation/security/tpm/tpm_event_log.rst
 
-Hi Lifeng,
+> 
+> I don't see how changing TPM discovery to be via FF-A directly
+> would improve maintainability.
 
-As per the discussion, we can make the driver future extensible and
-also can optimize the register read/write access.
+You are considering ACPI at this point but when people want to use this
+TPM over FF-A on a platform using DT then it will require corresponding
+DT bindings. After that each platform has to enable TPM over FF-A in
+their corresponding ACPI/DT. All that won't be needed with auto
+discovery over FF-A.
 
-I gave some thought and below is my proposal.
+> 
+> > The other benefit of auto discovery is that platform enablement becomes
+> > really smooth. Once the firmware starts supporting a particular feature
+> > like TPM over FF-A then the OS can discover and support it.
+> 
+> If we added new CRB/FF-A ABIs to get the CRB physical address,
+> start method specific parameters, event log, it would mean that
+> all OSes and hypervisors need to re-architect their CRB drivers
+> or create new FF-A specific CRB drivers.  That will not smooth
+> enablement for TPMs.  And I don't see advantages for
+> maintainability.
 
-1) Pick 'Patch 1-7' from your patch series [1] which optimize API's
-    to read/write a cpc register.
+We don't need to pass event log over FF-A as UEFI interface is already
+there. And we are already adding support for start method over FF-A, so
+all I am asking is what significant effort do you see with discovering CRB
+pysical address over FF-A.
 
-2) Pick my patches in [2]:
-    - Patch 1-4: Keep all cpc registers together under acpi_cppc sysfs.
-                 Also, update existing API's to read/write regs in batch.
-    - Patch 5: Creates 'cppc_cpufreq_epp_driver' instance for booting
-      all CPU's in Auto mode and set registers with right values.
-      They can be updated after boot from sysfs to change hints to HW.
-      I can use the optimized API's from [1] where required in [2].
+-Sumit
 
-Let me know if you are okay with this proposal.
-I can also send an updated patch series with all the patches combined?
-
-[1] 
-https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
-[2] https://lore.kernel.org/lkml/20250211103737.447704-1-sumitg@nvidia.com/
-
-Regards,
-Sumit Gupta
-
+> 
+> Thanks,
+> Stuart
+> 
+> 
 
