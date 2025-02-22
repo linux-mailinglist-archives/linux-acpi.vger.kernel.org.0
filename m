@@ -1,135 +1,156 @@
-Return-Path: <linux-acpi+bounces-11385-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11386-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E92AA40988
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 16:39:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA11A40ACB
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 18:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94F5703D60
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 15:39:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08B8F7AC224
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 17:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F57119E83E;
-	Sat, 22 Feb 2025 15:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104AD1C84BE;
+	Sat, 22 Feb 2025 17:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mb6wrws5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F593224;
-	Sat, 22 Feb 2025 15:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE49F27453;
+	Sat, 22 Feb 2025 17:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740238781; cv=none; b=jU33IQb4vRRUsulngWPzGgWAnUp4nGtG0gISI8fSiLY3QA2tpxSTS2lgq+TKM9Mi/E1GoGPYbyPQCcNednPt+nQ8baJbsmIwUCAGHxei09JLm3V1fGQ2ppvuGqaJtfsyORsGJbjN2cX+9yyDFH2GT3lSH28vu8CpZWhZUMfOab8=
+	t=1740247013; cv=none; b=G3Uc3ci1ebBxjstZOoId80L7XvfrACQ0UbjTo5YO57sMXfpSlCbvtkKesu368gUM2wxgmzPEjECOwAW3Qojs68o0YpAkkIhq/0p9RGF7PAuAWxhLUWVo8C9++jsW37UlHe68BkGRrMKxJHXkbzVprixqFL52Rmx6WjxM8er4UXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740238781; c=relaxed/simple;
-	bh=7IKYFO/1To/SFLqEc4c9Ck4qc3cN4itGbMN5/EgAeaE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C/DP0OVnhZ/rT6IrJu8QwkwoAYgE0HGhSiCSKMoLs/YsHLl32idZ6kdvkBQ6HPt5bIs+KWAttkJxWWWvMxfZjFMmz6g7pqPud1Rncfgn0ZDl6UkYOaD2OdOxkLaKYdUN1HNauVhZXiNtYRsjdLisNDTy5c7BZod0F4YvpW2UhS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63D6A152B;
-	Sat, 22 Feb 2025 07:39:48 -0800 (PST)
-Received: from bogus (unknown [10.57.37.210])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07CC23F59E;
-	Sat, 22 Feb 2025 07:39:27 -0800 (PST)
-Date: Sat, 22 Feb 2025 15:39:24 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Stuart Yoder <stuart.yoder@arm.com>
-Cc: Sumit Garg <sumit.garg@kernel.org>, Sumit Garg <sumit.garg@linaro.org>,
-	linux-integrity@vger.kernel.org, jarkko@kernel.org,
-	peterhuewe@gmx.de, jgg@ziepe.ca, rafael@kernel.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Rob Herring <robh@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH 0/4] Add support for the TPM FF-A start method
-Message-ID: <20250222153924.wrjqmaowvcmdlojd@bogus>
-References: <4bb3cefa-b843-45ca-82c5-d96b13454baa@arm.com>
- <CAFA6WYM3UA9+TE8L2U5Qd8FZfaGZnbba=QzWU7fEu3LKQVm-tw@mail.gmail.com>
- <fdaa9a58-790f-4839-8db7-1b9a81eb8edf@arm.com>
- <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
- <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
- <Z7LGbZsOh_w-HRY2@sumit-X1>
- <5dae96fa-0e54-4274-bcc6-1c20fe846f60@arm.com>
- <Z7iDuwLDA2rFPZK6@sumit-X1>
- <Z7iHaWPyq3KDG7J2@bogus>
- <79dd35d4-147b-4b12-8ce8-1909428d75bd@arm.com>
+	s=arc-20240116; t=1740247013; c=relaxed/simple;
+	bh=uzpopPaovfV0FnA/YF3PcM/CYKFDq4orpbcVjIKflrw=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=e3I8h4Kqw3Kp9dyu4r9exR6/GZ7S49BI6Hb3HKmfRFCM4fwt8EhDYLtYvOE4MquyWG/jnyr0QP1rHXl0ayQynb/BEKIAU1RVnnhcP5iJUB0a9xmQ8v97LrO7LaLFm8jkC1pPMb9gcPKz1O1Ve12ne+Wjr2P0CbUdvuOxMA6C7d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mb6wrws5; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740247010; x=1771783010;
+  h=date:from:to:cc:subject:message-id;
+  bh=uzpopPaovfV0FnA/YF3PcM/CYKFDq4orpbcVjIKflrw=;
+  b=Mb6wrws5st6ahKtGcQ0fN+os+gxwoNHKsWssLd/Zw2lMHx/d6IoX1xfs
+   ra8j96ZKqZV485veT/7b2PsbTzKNm5mdYLhJidPUmHCUYEQ+XIfLoizB5
+   NYoQg8qMwyHs8iZmvYCojX8psHHz/caDgJ6WOOvne+5gQu1vOMkBCdGnA
+   g95wrZ1JzANrKBoiUlE4NlQa6FIG25n2RpUrzd12b9VBoxj2ps7jffrJi
+   RijprPvHXX69bNa9ZBZTrASTpf4PZeUT/RvGR/ACMp3XhYPgoEKY8Uej6
+   oA5qcTm+N47TpwSt0gd55q0E4Ku0hcnxXkQdh283qsibHNTw4/XBD79CY
+   g==;
+X-CSE-ConnectionGUID: 6qv/4f5SQIKKSmCTpiR4Qg==
+X-CSE-MsgGUID: jmu2uAFuTkeKuJH8HABmGQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11353"; a="51687070"
+X-IronPort-AV: E=Sophos;i="6.13,308,1732608000"; 
+   d="scan'208";a="51687070"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2025 09:56:50 -0800
+X-CSE-ConnectionGUID: 91+8AT46Sky5HcadDKovbA==
+X-CSE-MsgGUID: GEhY0JzmShy38TzfFvBfxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,308,1732608000"; 
+   d="scan'208";a="120755568"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 22 Feb 2025 09:56:48 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tltk6-0006n1-1Z;
+	Sat, 22 Feb 2025 17:56:46 +0000
+Date: Sun, 23 Feb 2025 01:56:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 1c719415e5838dd2c6704b97addb0476cbce90f7
+Message-ID: <202502230105.tYVOUMHn-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <79dd35d4-147b-4b12-8ce8-1909428d75bd@arm.com>
 
-On Fri, Feb 21, 2025 at 12:29:03PM -0600, Stuart Yoder wrote:
->
->
-> On 2/21/25 8:02 AM, Sudeep Holla wrote:
-> > Hi Sumit,
-> >
-> > On Fri, Feb 21, 2025 at 07:16:35PM +0530, Sumit Garg wrote:
-> > > On Mon, Feb 17, 2025 at 10:56:58AM -0600, Stuart Yoder wrote:
-> > > >
-> > > > I don't see how changing TPM discovery to be via FF-A directly
-> > > > would improve maintainability.
-> > >
-> > > You are considering ACPI at this point but when people want to use this
-> > > TPM over FF-A on a platform using DT then it will require corresponding
-> > > DT bindings. After that each platform has to enable TPM over FF-A in
-> > > their corresponding ACPI/DT. All that won't be needed with auto
-> > > discovery over FF-A.
->
-> Yes, we would need a new DT binding.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 1c719415e5838dd2c6704b97addb0476cbce90f7  Merge branch 'testing' into bleeding-edge
 
-Not sure how that would look like, so I will hold off my comments on this
-topic. But we really should strive towards auto-discovery as much as possible.
+elapsed time: 1442m
 
-> > I hear you and completely agree. However, someone thought it was a good idea
-> > to align with other start methods and duplicate information in the TCG ACPI
-> > specification. This is definitely a bad idea, as it may contradict the
-> > firmware. All we needed was a simple flag to indicate whether FF-A is the
-> > start method.
->
-> Do you mean a flag exposed via ACPI?  If you do FF-A based discovery you
-> don't even need that.  Everything could be determined via an FF-A
-> interface.
->
-> > It sounds like a classic case of misalignment between specification authors
-> > and practical implementation needs. Instead of a simple flag to indicate FF-A
-> > as the start method, duplicating information in the TCG ACPI specification
-> > seems unnecessary and potentially problematic—especially if it risks
-> > conflicting with firmware behavior.
->
-> There is a lot of history, but I think it was simply that ACPI
-> advertisement of an FF-A based TPM seemed like the approach
-> with the least friction. And Linux is not the only target OS.
->
+configs tested: 62
+configs skipped: 1
 
-I guess so. I understand sometimes we need to consider multiple target OS.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> > Anyway, I can't comment on how we ended up here, but this seems to be the reality.
->
-> I don't think we are locked into ACPI (or DT) only discovery.
-> It's possible that with a modest delta on top of this patch series
-> that the tpm_crb driver could also probe based on FF-A.
->
-> The CRB over FF-A spec (DEN0138) could be extended in a backwards
-> compatible way to expose additional info like the base address of the
-> CRB.
->
-
-Ideally, we should manage with dynamic buffers. But I do understand the
-reasons why we may need static curve outs. I prefer the ffa client driver
-take care of that without needing to build FF-A bindings just for that.
-
-I will wait and see how all these shape up (soon ?)
+tested configs:
+alpha                           allyesconfig    gcc-14.2.0
+arc                  randconfig-001-20250222    gcc-13.2.0
+arc                  randconfig-002-20250222    gcc-13.2.0
+arm                  randconfig-001-20250222    gcc-14.2.0
+arm                  randconfig-002-20250222    gcc-14.2.0
+arm                  randconfig-003-20250222    clang-16
+arm                  randconfig-004-20250222    gcc-14.2.0
+arm64                randconfig-001-20250222    gcc-14.2.0
+arm64                randconfig-002-20250222    clang-21
+arm64                randconfig-003-20250222    clang-18
+arm64                randconfig-004-20250222    clang-21
+csky                 randconfig-001-20250222    gcc-14.2.0
+csky                 randconfig-002-20250222    gcc-14.2.0
+hexagon                         allmodconfig    clang-21
+hexagon                         allyesconfig    clang-18
+hexagon              randconfig-001-20250222    clang-17
+hexagon              randconfig-002-20250222    clang-19
+i386       buildonly-randconfig-001-20250222    clang-19
+i386       buildonly-randconfig-002-20250222    gcc-12
+i386       buildonly-randconfig-003-20250222    gcc-12
+i386       buildonly-randconfig-004-20250222    clang-19
+i386       buildonly-randconfig-005-20250222    gcc-12
+i386       buildonly-randconfig-006-20250222    clang-19
+loongarch            randconfig-001-20250222    gcc-14.2.0
+loongarch            randconfig-002-20250222    gcc-14.2.0
+nios2                randconfig-001-20250222    gcc-14.2.0
+nios2                randconfig-002-20250222    gcc-14.2.0
+parisc               randconfig-001-20250222    gcc-14.2.0
+parisc               randconfig-002-20250222    gcc-14.2.0
+powerpc              randconfig-001-20250222    gcc-14.2.0
+powerpc              randconfig-002-20250222    gcc-14.2.0
+powerpc              randconfig-003-20250222    gcc-14.2.0
+powerpc64            randconfig-001-20250222    gcc-14.2.0
+powerpc64            randconfig-002-20250222    clang-16
+powerpc64            randconfig-003-20250222    clang-18
+riscv                randconfig-001-20250222    clang-21
+riscv                randconfig-002-20250222    gcc-14.2.0
+s390                            allmodconfig    clang-19
+s390                            allyesconfig    gcc-14.2.0
+s390                 randconfig-001-20250222    gcc-14.2.0
+s390                 randconfig-002-20250222    clang-15
+sh                              allmodconfig    gcc-14.2.0
+sh                              allyesconfig    gcc-14.2.0
+sh                   randconfig-001-20250222    gcc-14.2.0
+sh                   randconfig-002-20250222    gcc-14.2.0
+sparc                           allmodconfig    gcc-14.2.0
+sparc                randconfig-001-20250222    gcc-14.2.0
+sparc                randconfig-002-20250222    gcc-14.2.0
+sparc64              randconfig-001-20250222    gcc-14.2.0
+sparc64              randconfig-002-20250222    gcc-14.2.0
+um                              allmodconfig    clang-21
+um                              allyesconfig    gcc-12
+um                   randconfig-001-20250222    gcc-12
+um                   randconfig-002-20250222    gcc-12
+x86_64     buildonly-randconfig-001-20250222    clang-19
+x86_64     buildonly-randconfig-002-20250222    gcc-12
+x86_64     buildonly-randconfig-003-20250222    gcc-12
+x86_64     buildonly-randconfig-004-20250222    clang-19
+x86_64     buildonly-randconfig-005-20250222    clang-19
+x86_64     buildonly-randconfig-006-20250222    gcc-12
+xtensa               randconfig-001-20250222    gcc-14.2.0
+xtensa               randconfig-002-20250222    gcc-14.2.0
 
 --
-Regards,
-Sudeep
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
