@@ -1,171 +1,135 @@
-Return-Path: <linux-acpi+bounces-11384-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11385-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A05A40747
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 11:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E92AA40988
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 16:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 245773BB3AF
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 10:07:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94F5703D60
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Feb 2025 15:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC98207A33;
-	Sat, 22 Feb 2025 10:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F57119E83E;
+	Sat, 22 Feb 2025 15:39:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D8D205AD2;
-	Sat, 22 Feb 2025 10:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F593224;
+	Sat, 22 Feb 2025 15:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740218877; cv=none; b=fK1NlqNtLkIAS/XBYA6aUJwKxTeFLnHeDHkX4ua2ATHnIOQU0fM1EhzAIDM20tAmA5eIesQiIhNByL7QbRA0AlDS9gIAIwY5KQyllC7N46eO25P3nCE1lWz/0fGLzY570zMOqkKBbI2uq8nVJebqkOCngAIgUSELD0zHbvxwaow=
+	t=1740238781; cv=none; b=jU33IQb4vRRUsulngWPzGgWAnUp4nGtG0gISI8fSiLY3QA2tpxSTS2lgq+TKM9Mi/E1GoGPYbyPQCcNednPt+nQ8baJbsmIwUCAGHxei09JLm3V1fGQ2ppvuGqaJtfsyORsGJbjN2cX+9yyDFH2GT3lSH28vu8CpZWhZUMfOab8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740218877; c=relaxed/simple;
-	bh=h4o39zGp6HLTNh3hEvswpajKgUxVor2Rc9U8zJVy15U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f5n/8Fs9jGE9TeTJC5/2dD4CA7DVTeM2iJvy80ESQ/hGt/eDByMZQymxkwbtQd5NXhlKr25RD7LBTAlOH5Zq6BI7K31B7hqQVxWEhd/zvyNSagn/GokNjPF5ANWMQmRjSM1XXPNjN6Jm5twK7y3U1UoPCfdlnYFPqOOJTZ0pIhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Z0My16cJ1zdb8t;
-	Sat, 22 Feb 2025 18:03:05 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 18FD91802D2;
-	Sat, 22 Feb 2025 18:07:46 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
- (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 22 Feb
- 2025 18:07:45 +0800
-Message-ID: <ddbc0336-9083-4054-8930-c22bd8337488@huawei.com>
-Date: Sat, 22 Feb 2025 18:07:44 +0800
+	s=arc-20240116; t=1740238781; c=relaxed/simple;
+	bh=7IKYFO/1To/SFLqEc4c9Ck4qc3cN4itGbMN5/EgAeaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C/DP0OVnhZ/rT6IrJu8QwkwoAYgE0HGhSiCSKMoLs/YsHLl32idZ6kdvkBQ6HPt5bIs+KWAttkJxWWWvMxfZjFMmz6g7pqPud1Rncfgn0ZDl6UkYOaD2OdOxkLaKYdUN1HNauVhZXiNtYRsjdLisNDTy5c7BZod0F4YvpW2UhS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63D6A152B;
+	Sat, 22 Feb 2025 07:39:48 -0800 (PST)
+Received: from bogus (unknown [10.57.37.210])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07CC23F59E;
+	Sat, 22 Feb 2025 07:39:27 -0800 (PST)
+Date: Sat, 22 Feb 2025 15:39:24 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Stuart Yoder <stuart.yoder@arm.com>
+Cc: Sumit Garg <sumit.garg@kernel.org>, Sumit Garg <sumit.garg@linaro.org>,
+	linux-integrity@vger.kernel.org, jarkko@kernel.org,
+	peterhuewe@gmx.de, jgg@ziepe.ca, rafael@kernel.org, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rob Herring <robh@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH 0/4] Add support for the TPM FF-A start method
+Message-ID: <20250222153924.wrjqmaowvcmdlojd@bogus>
+References: <4bb3cefa-b843-45ca-82c5-d96b13454baa@arm.com>
+ <CAFA6WYM3UA9+TE8L2U5Qd8FZfaGZnbba=QzWU7fEu3LKQVm-tw@mail.gmail.com>
+ <fdaa9a58-790f-4839-8db7-1b9a81eb8edf@arm.com>
+ <CAFA6WYM0ANqc--ScYtJFRjOsCCjzO3NX46=F5V=rza_6Q-Q96g@mail.gmail.com>
+ <e142afd2-38ec-4640-b9be-cb414bccc807@arm.com>
+ <Z7LGbZsOh_w-HRY2@sumit-X1>
+ <5dae96fa-0e54-4274-bcc6-1c20fe846f60@arm.com>
+ <Z7iDuwLDA2rFPZK6@sumit-X1>
+ <Z7iHaWPyq3KDG7J2@bogus>
+ <79dd35d4-147b-4b12-8ce8-1909428d75bd@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] Support for autonomous selection in cppc_cpufreq
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <robert.moore@intel.com>, <viresh.kumar@linaro.org>,
-	<mario.limonciello@amd.com>, <gautham.shenoy@amd.com>, <ray.huang@amd.com>,
-	<pierre.gondois@arm.com>, <acpica-devel@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linuxarm@huawei.com>, <yumpusamongus@gmail.com>,
-	<srinivas.pandruvada@linux.intel.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <hepeng68@huawei.com>,
-	<fanghao11@huawei.com>
-References: <20250206131428.3261578-1-zhenglifeng1@huawei.com>
- <0097a9a3-fe61-4200-9a54-5a9c81d3219c@huawei.com>
- <CAJZ5v0hP9a8g8UR2oPyivP1C65=csR245PSHay+nOx3vkoKoaA@mail.gmail.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <CAJZ5v0hP9a8g8UR2oPyivP1C65=csR245PSHay+nOx3vkoKoaA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemh100008.china.huawei.com (7.202.181.93)
+In-Reply-To: <79dd35d4-147b-4b12-8ce8-1909428d75bd@arm.com>
 
-On 2025/2/19 3:17, Rafael J. Wysocki wrote:
-> On Thu, Feb 13, 2025 at 2:55 AM zhenglifeng (A) <zhenglifeng1@huawei.com> wrote:
->>
->> On 2025/2/6 21:14, Lifeng Zheng wrote:
->>> Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
->>> driver.
->>>
->>> The patch series is organized in two parts:
->>>
->>>  - patch 1-5 refactor out the general CPPC register get and set functions
->>>    in cppc_acpi.c
->>>
->>>  - patches 6-8 expose sysfs files for users to control CPPC autonomous
->>>    selection when supported
->>>
->>> Changelog:
->>>
->>> v5:
->>>
->>>  - add more explanation to the commit logs and comments
->>>  - change REG_OPTIONAL from bin to hex
->>>  - split patch 2 into 3 smaller patches
->>>  - remove CPPC_REG_VAL_READ() and CPPC_REG_VAL_WRITE() macros
->>>  - move the modification part in patch 5 into a separate patch
->>>  - rename the sysfs file from "energy_perf" to
->>>    energy_performance_preference_val
->>>
->>> v4:
->>>
->>>  - add REG_OPTIONAL and IS_OPTIONAL_CPC_REG to judge if a cpc register is
->>>    an optional one
->>>  - check whether the register is optional before CPC_SUPPORTED check in
->>>    cppc_get_reg_val() and cppc_set_reg_val()
->>>  - check the register's type in cppc_set_reg_val()
->>>  - add macros to generally implement registers getting and setting
->>>    functions
->>>  - move some logic codes from cppc_cpufreq.c to cppc_acpi.c
->>>  - replace cppc_get_auto_sel_caps() by cppc_get_auto_sel()
->>>
->>> v3:
->>>
->>>  - change cppc_get_reg() and cppc_set_reg() name to cppc_get_reg_val() and
->>>    cppc_set_reg_val()
->>>  - extract cppc_get_reg_val_in_pcc() and cppc_set_reg_val_in_pcc()
->>>  - return the result of cpc_read() in cppc_get_reg_val()
->>>  - add pr_debug() in cppc_get_reg_val_in_pcc() when pcc_ss_id < 0
->>>  - rename 'cpunum' to 'cpu' in cppc_get_reg_val()
->>>  - move some macros from drivers/cpufreq/cppc_cpufreq.c to
->>>    include/acpi/cppc_acpi.h with a CPPC_XXX prefix
->>>
->>> v2:
->>>
->>>  - fix some incorrect placeholder
->>>  - change kstrtoul to kstrtobool in store_auto_select
->>>
->>> Lifeng Zheng (8):
->>>   ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro to judge if a cpc_reg is
->>>     optional
->>>   ACPI: CPPC: Optimize cppc_get_perf()
->>>   ACPI: CPPC: Rename cppc_get_perf() to cppc_get_reg_val()
->>>   ACPI: CPPC: Add cppc_set_reg_val()
->>>   ACPI: CPPC: Refactor register value get and set ABIs
->>>   ACPI: CPPC: Modify cppc_get_auto_sel_caps() to cppc_get_auto_sel()
->>>   ACPI: CPPC: Add three functions related to autonomous selection
->>>   cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
->>>
->>>  .../ABI/testing/sysfs-devices-system-cpu      |  54 ++++
->>>  drivers/acpi/cppc_acpi.c                      | 303 +++++++++++-------
->>>  drivers/cpufreq/amd-pstate.c                  |   3 +-
->>>  drivers/cpufreq/cppc_cpufreq.c                | 109 +++++++
->>>  include/acpi/cppc_acpi.h                      |  30 +-
->>>  5 files changed, 372 insertions(+), 127 deletions(-)
->>>
->>
->> Gentle ping.
-> 
-> OK, so I'm wondering how this is related to the patch series at
-> 
-> https://lore.kernel.org/linux-acpi/20250211103737.447704-1-sumitg@nvidia.com/
+On Fri, Feb 21, 2025 at 12:29:03PM -0600, Stuart Yoder wrote:
+>
+>
+> On 2/21/25 8:02 AM, Sudeep Holla wrote:
+> > Hi Sumit,
+> >
+> > On Fri, Feb 21, 2025 at 07:16:35PM +0530, Sumit Garg wrote:
+> > > On Mon, Feb 17, 2025 at 10:56:58AM -0600, Stuart Yoder wrote:
+> > > >
+> > > > I don't see how changing TPM discovery to be via FF-A directly
+> > > > would improve maintainability.
+> > >
+> > > You are considering ACPI at this point but when people want to use this
+> > > TPM over FF-A on a platform using DT then it will require corresponding
+> > > DT bindings. After that each platform has to enable TPM over FF-A in
+> > > their corresponding ACPI/DT. All that won't be needed with auto
+> > > discovery over FF-A.
+>
+> Yes, we would need a new DT binding.
+>
 
-This series refactors some cppc_acpi ABIs and supports cppc autonomous
-selection with sysfs files in cpufreq policy.  Later, [1] proposed another
-design with different user interfaces.We will discuss and reach a consensus
-with regard to this.
+Not sure how that would look like, so I will hold off my comments on this
+topic. But we really should strive towards auto-discovery as much as possible.
 
-However, as mentioned in [1], patch 1-7 in this series (the cppc_acpi part)
-are not related to user interfaces, so can be reviewed and applied
-separately.  I can also send patch 1-7 as a new thread if preferred.
+> > I hear you and completely agree. However, someone thought it was a good idea
+> > to align with other start methods and duplicate information in the TCG ACPI
+> > specification. This is definitely a bad idea, as it may contradict the
+> > firmware. All we needed was a simple flag to indicate whether FF-A is the
+> > start method.
+>
+> Do you mean a flag exposed via ACPI?  If you do FF-A based discovery you
+> don't even need that.  Everything could be determined via an FF-A
+> interface.
+>
+> > It sounds like a classic case of misalignment between specification authors
+> > and practical implementation needs. Instead of a simple flag to indicate FF-A
+> > as the start method, duplicating information in the TCG ACPI specification
+> > seems unnecessary and potentially problematic—especially if it risks
+> > conflicting with firmware behavior.
+>
+> There is a lot of history, but I think it was simply that ACPI
+> advertisement of an FF-A based TPM seemed like the approach
+> with the least friction. And Linux is not the only target OS.
+>
 
-[1] https://lore.kernel.org/linux-acpi/20250211103737.447704-1-sumitg@nvidia.com/
+I guess so. I understand sometimes we need to consider multiple target OS.
 
-> 
->> Attach discussions of previous versions:
->> v1: https://lore.kernel.org/all/20241114084816.1128647-1-zhenglifeng1@huawei.com/
->> v2: https://lore.kernel.org/all/20241122062051.3658577-1-zhenglifeng1@huawei.com/
->> v3: https://lore.kernel.org/all/20241216091603.1247644-1-zhenglifeng1@huawei.com/
->> v4: https://lore.kernel.org/all/20250113122104.3870673-1-zhenglifeng1@huawei.com/
->>
-> 
+> > Anyway, I can't comment on how we ended up here, but this seems to be the reality.
+>
+> I don't think we are locked into ACPI (or DT) only discovery.
+> It's possible that with a modest delta on top of this patch series
+> that the tpm_crb driver could also probe based on FF-A.
+>
+> The CRB over FF-A spec (DEN0138) could be extended in a backwards
+> compatible way to expose additional info like the base address of the
+> CRB.
+>
 
+Ideally, we should manage with dynamic buffers. But I do understand the
+reasons why we may need static curve outs. I prefer the ffa client driver
+take care of that without needing to build FF-A bindings just for that.
+
+I will wait and see how all these shape up (soon ?)
+
+--
+Regards,
+Sudeep
 
