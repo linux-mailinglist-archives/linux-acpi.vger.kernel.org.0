@@ -1,180 +1,188 @@
-Return-Path: <linux-acpi+bounces-11390-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11391-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011DAA41B28
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 11:33:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21D9A41E22
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 13:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 598C51743F1
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 10:31:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F6547A698E
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 11:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186F5158558;
-	Mon, 24 Feb 2025 10:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E95524886E;
+	Mon, 24 Feb 2025 11:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="VH1JLX91"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80E281727;
-	Mon, 24 Feb 2025 10:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12B3248867;
+	Mon, 24 Feb 2025 11:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740393098; cv=none; b=VdA3Ce5JVY+HF3uv6Q3T4J10NnKTaEuGsmMAUZUUY3pEzaxOhvko4gPsg+ShX5b2zj4IXHwlmG2PztaLFsQQpigFYFNWMbJZqsMnYFfysYpqvrggmq+HQgENyT9y2A9EUfeAYtC2W7XAt/3GmlLbX9dy+qnEYDgis/MO+jbSDu8=
+	t=1740397589; cv=none; b=OfcBK71Im0rK0MMkg7CI/6XWUf4qTf/u0d1jeQNBqzX4NDgXS/MSX+azFOLFDn3BHhyJ0ypz+zwJlpJZMGcBP+ai4AS7g0R5cvV+WN5eSwzMFSiiM0qWhB8RhKn8FBueuijts0NKB2My+OEMQS5PW/9AV/67Lzb3q8kW2Uf4FFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740393098; c=relaxed/simple;
-	bh=dXRdm8n1r2jv7wtwFW8fNm4TeJQUiRjJq79tsZ/qQ+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oPQa307s3HYRUzCw0nta5pWV6/RJDzJEHSlQ5NtXAvv/L8v4TwLOYGIl3aUUIfH7pJf5ZUwtWxBF+DHraLDyCjeUEplsWav3VpBlIBYS3VVS3sanlHMT/3i0ImE8P964rEf9UjUys4kB1oqjMHIccXAyo3tp9Wme2XWSYQL4ES8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D449A1E7D;
-	Mon, 24 Feb 2025 02:31:51 -0800 (PST)
-Received: from [10.57.38.222] (unknown [10.57.38.222])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F5B33F673;
-	Mon, 24 Feb 2025 02:31:30 -0800 (PST)
-Message-ID: <828ab846-fe03-4830-a722-a86e57ba89c7@arm.com>
-Date: Mon, 24 Feb 2025 11:31:29 +0100
+	s=arc-20240116; t=1740397589; c=relaxed/simple;
+	bh=NlnoUZSFwuABwD0daHXZJr7GkVokqSLQ+bN2yG+cOGk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hSr1PklYOBUyy0HcsfZbBHIx894m1p+7UOl5IycRgv7673yYaGQLjCubp8CyFy6SmKpWCExc9N0z+f/oq8srG/d+85Ne+5WvAJ5hoa5rNYOX9GfpSTDQl21WDmYH+Ga/Imbob99Lf4LzvzVSMPotI3IdUlRhILuDrKk8zR9xqJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=VH1JLX91; arc=none smtp.client-ip=81.200.124.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
+Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
+	by ksmg02.maxima.ru (Postfix) with ESMTP id 51BAD1E000D;
+	Mon, 24 Feb 2025 14:36:56 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru 51BAD1E000D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1740397016; bh=DTItJCPFhbVedZdbaxnqWm55x4dSNHRqn77CJj9NmTU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=VH1JLX91L4V8hbBR8Ys8idEMJR4jPCxo+5YOsHQzRKlUEdHnBZsbL1tltsvQmg9eQ
+	 /k6SebhOXLdZmqKYQCR0BBvdznolAgBtl97Ep6KbJWL4MKyTT+o/oAkiEQ0DyhRSUC
+	 QR6KmdVgQsDt9Y0gZYWgieqa9WfhQ70r392ZI3h9pHZBR8B9o2SGh+U8I3mtwUsWwi
+	 1x0Cq3Nb1Fg5Rvm/BJzyApfrorucWsNK4OgGcLddGHW46X/6g6Yh36LJvZnI9xD1D5
+	 TGRLRwIjOYZZCjYmmG25yUAobhbgjIilun7Tva4iN6sUrngU8SIHc/tC31Y2+lq50E
+	 3eNKO1Jg189Bg==
+Received: from ksmg02.maxima.ru (mail.maxima.ru [81.200.124.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg02.maxima.ru (Postfix) with ESMTPS;
+	Mon, 24 Feb 2025 14:36:56 +0300 (MSK)
+Received: from GS-NOTE-190.mt.ru (10.0.246.182) by mmail-p-exch02.mt.ru
+ (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Mon, 24 Feb
+ 2025 14:36:53 +0300
+From: Murad Masimov <m.masimov@mt-integration.ru>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang
+	<dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, <nvdimm@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Murad Masimov <m.masimov@mt-integration.ru>,
+	<stable@vger.kernel.org>,
+	<syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
+Subject: [PATCH v2] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+Date: Mon, 24 Feb 2025 14:35:46 +0300
+Message-ID: <20250224113546.1441-1-m.masimov@mt-integration.ru>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] Support for autonomous selection in cppc_cpufreq
-To: "zhenglifeng (A)" <zhenglifeng1@huawei.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: lenb@kernel.org, robert.moore@intel.com, viresh.kumar@linaro.org,
- mario.limonciello@amd.com, gautham.shenoy@amd.com, ray.huang@amd.com,
- acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linuxarm@huawei.com,
- yumpusamongus@gmail.com, srinivas.pandruvada@linux.intel.com,
- jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, lihuisong@huawei.com,
- hepeng68@huawei.com, fanghao11@huawei.com
-References: <20250206131428.3261578-1-zhenglifeng1@huawei.com>
- <0097a9a3-fe61-4200-9a54-5a9c81d3219c@huawei.com>
- <CAJZ5v0hP9a8g8UR2oPyivP1C65=csR245PSHay+nOx3vkoKoaA@mail.gmail.com>
- <ddbc0336-9083-4054-8930-c22bd8337488@huawei.com>
-Content-Language: en-US
-From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <ddbc0336-9083-4054-8930-c22bd8337488@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
+ (81.200.124.62)
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/02/24 10:30:00
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {rep_avail}, {Tracking_one_url}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, ksmg02.maxima.ru:7.1.1;81.200.124.62:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;mt-integration.ru:7.1.1;syzkaller.appspot.com:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 81.200.124.62
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 191224 [Feb 24 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/02/24 06:47:00 #27427681
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/02/24 10:29:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
+Syzkaller has reported a warning in to_nfit_bus_uuid():
 
+==================================================================
+only secondary bus families can be translated
+WARNING: CPU: 0 PID: 15821 at drivers/acpi/nfit/core.c:80 to_nfit_bus_uuid+0x6f/0x90 drivers/acpi/nfit/core.c:79
+Modules linked in:
+CPU: 0 UID: 0 PID: 15821 Comm: syz-executor579 Not tainted 6.11.0-rc7-syzkaller-00020-g8d8d276ba2fb #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:to_nfit_bus_uuid+0x6f/0x90 drivers/acpi/nfit/core.c:79
+Call Trace:
+ <TASK>
+ acpi_nfit_ctl+0x8a9/0x24a0 drivers/acpi/nfit/core.c:489
+ __nd_ioctl drivers/nvdimm/bus.c:1186 [inline]
+ nd_ioctl+0x184d/0x1fe0 drivers/nvdimm/bus.c:1264
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+==================================================================
 
-On 2/22/25 11:07, zhenglifeng (A) wrote:
-> On 2025/2/19 3:17, Rafael J. Wysocki wrote:
->> On Thu, Feb 13, 2025 at 2:55 AM zhenglifeng (A) <zhenglifeng1@huawei.com> wrote:
->>>
->>> On 2025/2/6 21:14, Lifeng Zheng wrote:
->>>> Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
->>>> driver.
->>>>
->>>> The patch series is organized in two parts:
->>>>
->>>>   - patch 1-5 refactor out the general CPPC register get and set functions
->>>>     in cppc_acpi.c
->>>>
->>>>   - patches 6-8 expose sysfs files for users to control CPPC autonomous
->>>>     selection when supported
->>>>
->>>> Changelog:
->>>>
->>>> v5:
->>>>
->>>>   - add more explanation to the commit logs and comments
->>>>   - change REG_OPTIONAL from bin to hex
->>>>   - split patch 2 into 3 smaller patches
->>>>   - remove CPPC_REG_VAL_READ() and CPPC_REG_VAL_WRITE() macros
->>>>   - move the modification part in patch 5 into a separate patch
->>>>   - rename the sysfs file from "energy_perf" to
->>>>     energy_performance_preference_val
->>>>
->>>> v4:
->>>>
->>>>   - add REG_OPTIONAL and IS_OPTIONAL_CPC_REG to judge if a cpc register is
->>>>     an optional one
->>>>   - check whether the register is optional before CPC_SUPPORTED check in
->>>>     cppc_get_reg_val() and cppc_set_reg_val()
->>>>   - check the register's type in cppc_set_reg_val()
->>>>   - add macros to generally implement registers getting and setting
->>>>     functions
->>>>   - move some logic codes from cppc_cpufreq.c to cppc_acpi.c
->>>>   - replace cppc_get_auto_sel_caps() by cppc_get_auto_sel()
->>>>
->>>> v3:
->>>>
->>>>   - change cppc_get_reg() and cppc_set_reg() name to cppc_get_reg_val() and
->>>>     cppc_set_reg_val()
->>>>   - extract cppc_get_reg_val_in_pcc() and cppc_set_reg_val_in_pcc()
->>>>   - return the result of cpc_read() in cppc_get_reg_val()
->>>>   - add pr_debug() in cppc_get_reg_val_in_pcc() when pcc_ss_id < 0
->>>>   - rename 'cpunum' to 'cpu' in cppc_get_reg_val()
->>>>   - move some macros from drivers/cpufreq/cppc_cpufreq.c to
->>>>     include/acpi/cppc_acpi.h with a CPPC_XXX prefix
->>>>
->>>> v2:
->>>>
->>>>   - fix some incorrect placeholder
->>>>   - change kstrtoul to kstrtobool in store_auto_select
->>>>
->>>> Lifeng Zheng (8):
->>>>    ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro to judge if a cpc_reg is
->>>>      optional
->>>>    ACPI: CPPC: Optimize cppc_get_perf()
->>>>    ACPI: CPPC: Rename cppc_get_perf() to cppc_get_reg_val()
->>>>    ACPI: CPPC: Add cppc_set_reg_val()
->>>>    ACPI: CPPC: Refactor register value get and set ABIs
->>>>    ACPI: CPPC: Modify cppc_get_auto_sel_caps() to cppc_get_auto_sel()
->>>>    ACPI: CPPC: Add three functions related to autonomous selection
->>>>    cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
->>>>
->>>>   .../ABI/testing/sysfs-devices-system-cpu      |  54 ++++
->>>>   drivers/acpi/cppc_acpi.c                      | 303 +++++++++++-------
->>>>   drivers/cpufreq/amd-pstate.c                  |   3 +-
->>>>   drivers/cpufreq/cppc_cpufreq.c                | 109 +++++++
->>>>   include/acpi/cppc_acpi.h                      |  30 +-
->>>>   5 files changed, 372 insertions(+), 127 deletions(-)
->>>>
->>>
->>> Gentle ping.
->>
->> OK, so I'm wondering how this is related to the patch series at
->>
->> https://lore.kernel.org/linux-acpi/20250211103737.447704-1-sumitg@nvidia.com/
-> 
-> This series refactors some cppc_acpi ABIs and supports cppc autonomous
-> selection with sysfs files in cpufreq policy.  Later, [1] proposed another
-> design with different user interfaces.We will discuss and reach a consensus
-> with regard to this.
-> 
-> However, as mentioned in [1], patch 1-7 in this series (the cppc_acpi part)
-> are not related to user interfaces, so can be reviewed and applied
-> separately.  I can also send patch 1-7 as a new thread if preferred.
-> 
-> [1] https://lore.kernel.org/linux-acpi/20250211103737.447704-1-sumitg@nvidia.com/
+This warning is triggered if the argument passed in to_nfit_bus_uuid() is
+equal to 0. It is important that this function expects that the argument
+is between 1 and NVDIMM_BUS_FAMILY_MAX. Therefore, it must be checked
+beforehand. However, in acpi_nfit_ctl() validity checks made before
+calling to_nfit_bus_uuid() are erroneous.
 
-I tried the patchset on a platform which doesn't implement CPC and everything worked well.
-As Lifeng said,
-   PATCH v5 8/8] cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
-seems to be still in discussion, but for patches 1-7 FWIW:
+Function acpi_nfit_ctl() first verifies that a user-provided value
+call_pkg->nd_family of type u64 is not equal to 0. Then the value is
+converted to int (narrowing conversion), and only after that is compared
+to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid argument to
+acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while the lower 32
+bits are zero.
 
-Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
+Moreover, the same way zero can be passed in to_nfit_bus_uuid(),
+negative value also may occur. That wouldn't trigger the warning, but
+could lead to a wild-memory-access in test_bit(). This is achieved with
+a slightly modified version of the reproducer generated by Syzkaller.
+The crash report is as follows:
 
-Regards,
-Pierre
+==================================================================
+ BUG: KASAN: wild-memory-access in acpi_nfit_ctl (./arch/x86/include/asm/bitops.h:227 (discriminator 6) ./arch/x86/include/asm/bitops.h:239 (discriminator 6) ./include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 6) drivers/acpi/nfit/core.c:489 (discriminator 6))
+ Read of size 8 at addr 1fff888141379358 by task repro/681503
 
-> 
->>
->>> Attach discussions of previous versions:
->>> v1: https://lore.kernel.org/all/20241114084816.1128647-1-zhenglifeng1@huawei.com/
->>> v2: https://lore.kernel.org/all/20241122062051.3658577-1-zhenglifeng1@huawei.com/
->>> v3: https://lore.kernel.org/all/20241216091603.1247644-1-zhenglifeng1@huawei.com/
->>> v4: https://lore.kernel.org/all/20250113122104.3870673-1-zhenglifeng1@huawei.com/
->>>
->>
-> 
-> 
+ CPU: 0 UID: 0 PID: 681503 Comm: repro Not tainted 6.13.0-04858-g21266b8df522 #30
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+ Call Trace:
+ <TASK>
+ dump_stack_lvl (lib/dump_stack.c:123)
+ kasan_report (mm/kasan/report.c:604)
+ kasan_check_range (mm/kasan/generic.c:183 mm/kasan/generic.c:189)
+ acpi_nfit_ctl (./arch/x86/include/asm/bitops.h:227 (discriminator 6) ./arch/x86/include/asm/bitops.h:239 (discriminator 6) ./include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 6) drivers/acpi/nfit/core.c:489 (discriminator 6))
+ nd_ioctl (drivers/nvdimm/bus.c:1187 drivers/nvdimm/bus.c:1264)
+ __x64_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:906 fs/ioctl.c:892 fs/ioctl.c:892)
+ do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+==================================================================
+
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family. This approach is better suited for the stable
+branches and is much safer than replacing the type of the variable from
+int to u32 or u64 throughout the code, as this could potentially
+introduce new bugs.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+---
+v2: Add more details to the commit message.
+
+ drivers/acpi/nfit/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index a5d47819b3a4..ae035b93da08 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
+--
+2.39.2
+
 
