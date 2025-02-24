@@ -1,216 +1,168 @@
-Return-Path: <linux-acpi+bounces-11402-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11405-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A26A429FA
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 18:37:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8201A42B44
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 19:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8A2F3A17F0
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 17:33:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6289F189305C
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 18:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB81264FA9;
-	Mon, 24 Feb 2025 17:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGuPLexM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D27C265CCB;
+	Mon, 24 Feb 2025 18:22:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6740264A98;
-	Mon, 24 Feb 2025 17:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2207B263F2C;
+	Mon, 24 Feb 2025 18:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740418400; cv=none; b=e7Vv0cQ2WoldTylgy5MklGbXzRyaZSfK5Vxwkv/w0a4sSep+aS33ecci0KeL5u3Q+lupFB52boc7yyco9jbAuqh8vyy0tYXzGnTISmiwAEmxXEbMUL9DLk3HbvaKvi85ue6Ft3lE9mGautgS0i7UcRIoule1nPzP8MCCuwSCKdI=
+	t=1740421325; cv=none; b=i+nplHDs5/Jv3ZhHn5i7F8iNYn6ofwaOHsyW7XeZcoK0K6TsrSU9N3UPkSr0bCHnI78jpmHE8B2XuBSykt1BDfVYUzJcM4SkINF4O5ut6oKbmCKhflrZCp6rUHekFD55HuUbrhhwU+ZeuiNKqUx9NR4gkoFHkGQ22UpPubHpV+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740418400; c=relaxed/simple;
-	bh=xsa6CB+0p3j46klgNP8VObiplu83k0LJzmWbufYfbpw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=QDcouLrQYpdPnHs3uL/WJ0O0hJHSrg9h7keEpPhbF0dZSiNHXLf+Nac5TrOqhKnua2zMqMI0uiY75IjPmhEbquGq45b3x29EzFo0Ae5GiJTwWA4Wt0Y+BzJNXXbFeTCvZ2AP8o+ylW/fpIjjMlbseYGpBjacvMj+vmmTT5QP+MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGuPLexM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A825C4CED6;
-	Mon, 24 Feb 2025 17:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740418399;
-	bh=xsa6CB+0p3j46klgNP8VObiplu83k0LJzmWbufYfbpw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=iGuPLexMPJg7W5C91pminzicrpjldK7F/XuaOaWEQjACx7w4LiFfEVNbadaSdTNP3
-	 MzkI7wUKAFH3kk5+R4wo7Lqda653WxTs40KQKa4TwLWzN3taw7LBDaK2wonAoeJKHw
-	 U3KeGcf5nbTbsn50L+4flIvqSc52/hYjdRk6dnlXrSrrHhaClngSrD2hmMSutgRwYB
-	 8J4hjK+VHehMJRSWzbi0cP3GK7+m4oSe6exKMBwsGH9Ca8Ey1j6HEmSwP9/kQFHCv/
-	 c8s0NbxTN7Y1DThPQfJPsEvOpxKZf+eBZXk8E0YL8RvDTaWpkSZbwzofiK4LeV24vo
-	 zLuPyiTekCg6Q==
-Date: Mon, 24 Feb 2025 11:33:17 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Naveen Kumar P <naveenkumar.parna@gmail.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernelnewbies <kernelnewbies@kernelnewbies.org>,
+	s=arc-20240116; t=1740421325; c=relaxed/simple;
+	bh=aCJ+nbVASt0MwwpQocKYy83JEtAcckYJxweFWo7afRg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ObYeihVaN7xKwJg5GBGUYwK0zRZNw5oVnlhUwJ0JtF+wvR22alIqRBBDEM8q0b/4gkiXRaxdzqg2s432wtKL2KS6KNM0AhWJaw6c3jM3tBT8v2GTd3rK1Zu2OwkvJrQ5wp2PQXXAFNHAwL09sTeAdouqxdXBhPDpL33bKwtPxqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774D3C4CEDD;
+	Mon, 24 Feb 2025 18:22:04 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: Re: PCI: hotplug_event: PCIe PLDA Device BAR Reset
-Message-ID: <20250224173317.GA466030@bhelgaas>
+Cc: rafael@kernel.org,
+	bp@alien8.de,
+	dan.j.williams@intel.com,
+	tony.luck@intel.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	ira.weiny@intel.com,
+	ming.li@zohomail.com
+Subject: [PATCH v4 0/4] acpi/hmat / cxl: Add exclusive caching enumeration and RAS support
+Date: Mon, 24 Feb 2025 11:20:58 -0700
+Message-ID: <20250224182202.1683380-1-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMciSVXDS_n7-XzHevMmAOhb-qCNsCBbE1Pym-zWybnOyjZWmw@mail.gmail.com>
 
-On Mon, Feb 24, 2025 at 05:45:35PM +0530, Naveen Kumar P wrote:
-> On Wed, Feb 19, 2025 at 10:36 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Wed, Feb 19, 2025 at 05:52:47PM +0530, Naveen Kumar P wrote:
-> > > Hi all,
-> > >
-> > > I am writing to seek assistance with an issue we are experiencing with
-> > > a PCIe device (PLDA Device 5555) connected through PCI Express Root
-> > > Port 1 to the host bridge.
-> > >
-> > > We have observed that after booting the system, the Base Address
-> > > Register (BAR0) memory of this device gets reset to 0x0 after
-> > > approximately one hour or more (the timing is inconsistent). This was
-> > > verified using the lspci output and the setpci -s 01:00.0
-> > > BASE_ADDRESS_0 command.
-> > >
-> > > To diagnose the issue, we checked the dmesg log, but it did not
-> > > provide any relevant information. I then enabled dynamic debugging for
-> > > the PCI subsystem (drivers/pci/*) and noticed the following messages
-> > > related ACPI hotplug in the dmesg log:
-> > >
-> > > [    0.465144] pci 0000:01:00.0: reg 0x10: [mem 0xb0400000-0xb07fffff]
-> > > ...
-> > > [ 6710.000355] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
-> > > [ 7916.250868] perf: interrupt took too long (4072 > 3601), lowering
-> > > kernel.perf_event_max_sample_rate to 49000
-> > > [ 7984.719647] perf: interrupt took too long (5378 > 5090), lowering
-> > > kernel.perf_event_max_sample_rate to 37000
-> > > [11051.409115] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
-> > > [11755.388727] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
-> > > [12223.885715] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
-> > > [14303.465636] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
-> > > After these messages appear, reading the device BAR memory results in
-> > > 0x0 instead of the expected value.
-> > >
-> > > I would like to understand the following:
-> > >
-> > > 1. What could be causing these hotplug_event debug messages?
-> >
-> > This is an ACPI Notify event.  Basically the platform is telling us to
-> > re-enumerate the hierarchy below RP01 because a device might have been
-> > added or removed.
->
-> Thank you for your response regarding the PCI BAR reset issue we are
-> experiencing with the PLDA Device 5555. I have a few follow-up
-> questions and additional information to share.
-> 
-> 1. Clarification on "Platform":
-> 
-> Does the term "platform" refer to the BIOS/ACPI subsystem in this context?
+v3:
+- Drop region to nid function, deadcode.
+- Set hpa_alias default to ~0ULL to indicate no alias. (Jonathan)
+- Add endpoint check for mce handler. (Ming)
+- Add mce notifier unregister. (Ming)
 
-Yes, "platform" refers to the BIOS/ACPI subsystem.
+v2:
+- Fix 0-day issues
+- Fix checking of cache flag. (Ming)
+- Add comment about cache range vs CFMWS. (Ming)
+- Update EXPORT_SYMBOL_(). (Jonathan)
+- Fix various code comments. (Jonathan)
+- Emit hpa_alias0 instead of hpa_alias. (Jonathan)
+- Introduce CONFIG_CXL_MCE to address kernel build dep issues.
 
-> Can the platform signal to re-enumerate the hierarchy below RP01
-> without an actual device being removed or added? In our case, the PCI
-> PLDA device is neither physically removed nor connected to the bus on
-> the fly.
+v1:
+- Drop RFC prefix
+- Drop MMIO hole discovery. Will implement if there's real world implementation.
+- Drop MCE_PRI_CXL. Use MCE_PRI_UC. (Boris)
+- Minor refactors and grammar fixes. (Jonathan)
+- Rename 'mode' to 'address_mode'. (Jonathan)
 
-Yes, I think a Bus Check notification is just a request for the OS to
-re-enumerate starting at the point in the device tree where it is
-notified.  It's possible that no add or remove has occurred.  ACPI
-r6.5, sec 5.6.6, includes the example of hardware that can't detect
-device changes during a system sleep state, so it issues a Bus Check
-on wake.
+RFCv2:
+- Dropped 1/6 (ACPICA definition merged)
+- Change UNKNOWN to RESERVED for cache definition. (Jonathan)
+- Fix spelling errors (Jonathan)
+- Rename region_res_match_range() to region_res_match_cxl_range(). (Jonathan)
+- Add warning when cache is not 1:1 with backing region. (Jonathan)
+- Code and comments cleanup. (Jonathan)
+- Make MCE code access in CXL arch independent. (Jonathan)
+- Fixup 0-day reports.
 
-> 2. System Configuration:
-> 
-> We are currently using an x86_64 system with Ubuntu 20.04.6 LTS
-> (kernel version: 5.4.0-148-generic).
-> I have enabled dynamic debug logs for all files in the PCI and ACPI
-> subsystems and rebooted the system with the following parameters:
-> $ cat /proc/cmdline
-> BOOT_IMAGE=/vmlinuz-5.4.0-148-generic root=/dev/mapper/vg00-rootvol ro
-> quiet libata.force=noncq pci=nomsi pcie_aspm=off pcie_ports=on
-> "dyndbg=file drivers/pci/* +p; file drivers/acpi/* +p"
-> 
->
-> 3. Observations:
-> 
-> After rebooting with more debug logs, I noticed the issue after 1 day,
-> 11:48 hours.
-> A snippet of the dmesg log is mentioned below (complete dmesg log is
-> attached to this email):
-> 
-> [128845.248503] ACPI: GPE event 0x01
-> [128845.356866] ACPI: \_SB_.PCI0.RP01: ACPI_NOTIFY_BUS_CHECK event
-> [128845.357343] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in
-> hotplug_event()
+Certain systems provide an exclusive caching memory configurations where a
+1:1 layout of DRAM and far memory (FM) such as CXL memory is utilized. In
+this configuration, the memory region is provided as a single memory region
+to the OS. For example such as below:
 
-If you could add more debug in hotplug_event() and the things it
-calls, we might get more clues about what's happening.
+             128GB DRAM                         128GB CXL memory
+|------------------------------------|------------------------------------|
 
-> 4. BAR Reset Issue:
-> 
-> I filtered the lspci output to show the contents of the configuration
-> space starting at offset 0x10 for getting BASE_ADDRESS_0 by running
-> sudo lspci -xxx -s 01:00.0 | grep "10:".
-> Prior to the BAR reset issue, the lspci output was:
-> $ sudo lspci -xxx -s 01:00.0 | grep "10:"
-> 10: 00 00 40 b0 00 00 00 00 00 00 00 00 00 00 00 00
-> 
-> During the ACPI_NOTIFY_BUS_CHECK event, the lspci output initially
-> showed all FF's, and then the next run of the same command showed
-> BASE_ADDRESS_0 reset to zero:
-> $ sudo lspci -xxx -s 01:00.0 | grep "10:"
-> 10: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+The kernel sees the region as a 256G system memory region. Data can reside
+in either DRAM or FM with no replication. Hot data is swapped into DRAM by
+the hardware behind the scenes.
 
-Looks like the device isn't responding at all here.  Could happen if
-the device is reset or powered down.
+This kernel series introduces code to enumerate the side cache by the kernel
+when configured in a exclusive-cache configuration. It also adds RAS support
+to deal with the aliased memory addresses.
 
-What is this device?  What driver is bound to it?  I don't see
-anything in dmesg that identifies a driver.
+A new ECN [1] to ACPI HMAT table was introduced and was approved to describe
+the "extended-linear" addressing for direct-mapped memory-side caches. A
+reserved field in the Memory Side Cache Information Structure of HMAT is
+redefined as "Address Mode" where a value of 1 is defined as Extended-linear
+mode. This value is valid if the cache is direct mapped. "It indicates that
+the associated address range (SRAT.MemoryAffinityStructure.Length) is
+comprised of the backing store capacity extended by the cache capacity." By
+augmenting the HMAT and SRAT parsing code, this new information can be stored
+by the HMAT handling code.
 
-> $ sudo lspci -xxx -s 01:00.0 | grep "10:"
-> 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> 
-> I am not sure why lspci initially showed all FF's and then the next
-> run showed BAR0 reset.
-> Complete sudo lspci -xxx -s 01:00.0 output is captured in the attached
-> dmesg_log_pci_bar_reset.txt file.
-> 
-> /sys/firmware/acpi/interrupts/gpe01:       1  EN     enabled      unmasked
-> /sys/firmware/acpi/interrupts/gpe02:       1  EN     enabled      unmasked
-> 
-> 
-> 5. Debugging Steps:
-> 
-> Instrumenting acpiphp_check_bridge() will indicate whether we are
-> enabling or disabling a slot (enable_slot() or disable_slot()). Based
-> on the dmesg log, there is only one ACPI_NOTIFY_BUS_CHECK event, and
-> it is most likely for disable_slot(). However, does instrumenting
-> acpiphp_check_bridge() will explain why this is happening without
-> actually removing the PCI PLDA device?
+Current CXL region enumeration code is not enlightened with the side cache
+configuration and therefore only presents the region size as the size of the
+CXL region. Add support to allow CXL region enumeration code to query the HMAT 
+handling code and retrieve the information regarding the side cache and adjust
+the region size accordingly. This should allow the CXL CLI to display the
+full region size rather than just the CXL only region size.
 
-No, it won't explain that.  But if there was no add/remove event,
-re-enumeration should be harmless.  The objective of instrumentation
-would be to figure out why it isn't harmless in this case.
+There are 3 sources where the kernel may be notified that error is detected for
+memory.
+1. CXL DRAM event. This is a CXL event that is generated when an error is
+   detected by the CXL device patrol or demand scrubber. The trace_event is
+   augmented to display the aliased System Phyiscal Address (SPA) in addition
+   to the alerted address.  However, reporting of memory failure is TBD until
+   the discussion [2] of failure reporting is settled upstream.
+2. UCNA event from DRAM patrol or demand scrubber. This should eventually go
+   through the MCE callback chain.
+3. MCE from kernel consume poison.
 
-> 6. Reproduction and Additional Information:
-> 
-> We do not see any clear pattern or procedure to reproduce this issue.
-> Once the issue occurs, rebooting the machine resolves it, but it
-> reoccurs after an unpredictable time.
-> We have another identical hardware setup with an older kernel (Ubuntu
-> 16.04.4 LTS, kernel version: 4.4.0-66-generic), and this issue has not
-> been observed so far on that machine.
-> Any additional pointers or suggestions on how to proceed to the root
-> cause of this issue would be greatly appreciated.
+It is possible that all 3 sources may report at the same time and all report
+at the error.
 
-You're seeing the problem on v5.4 (Nov 2019), which is much newer than
-v4.4 (Jan 2016).  But v5.4 is still really too old to spend a lot of
-time on unless the problem still happens on a current kernel.
+For 2 and 3, a MCE notifier callback is registered by the CXL on a per device
+basis. The callback will determine if the reported address is in one of the
+special regions and offline the aliased address if that is the case.
 
-Bjorn
+[1]: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
+[2]: https://lore.kernel.org/linux-cxl/20240808151328.707869-2-ruansy.fnst@fujitsu.com/
+
+---
+
+Dave Jiang (4):
+      acpi: numa: Add support to enumerate and store extended linear address mode
+      acpi/hmat / cxl: Add extended linear cache support for CXL
+      cxl: Add extended linear cache address alias emission for cxl events
+      cxl: Add mce notifier to emit aliased address for extended linear cache
+
+ Documentation/ABI/stable/sysfs-devices-node |   6 +++
+ arch/x86/mm/pat/set_memory.c                |   1 +
+ drivers/acpi/numa/hmat.c                    |  44 ++++++++++++++++++++
+ drivers/base/node.c                         |   2 +
+ drivers/cxl/Kconfig                         |   4 ++
+ drivers/cxl/core/Makefile                   |   2 +
+ drivers/cxl/core/acpi.c                     |  11 +++++
+ drivers/cxl/core/core.h                     |   3 ++
+ drivers/cxl/core/mbox.c                     |  34 +++++++++++++--
+ drivers/cxl/core/mce.c                      |  65 +++++++++++++++++++++++++++++
+ drivers/cxl/core/mce.h                      |  20 +++++++++
+ drivers/cxl/core/region.c                   | 108 +++++++++++++++++++++++++++++++++++++++++++++---
+ drivers/cxl/core/trace.h                    |  22 ++++++----
+ drivers/cxl/cxl.h                           |   8 ++++
+ drivers/cxl/cxlmem.h                        |   2 +
+ include/linux/acpi.h                        |  11 +++++
+ include/linux/node.h                        |   7 ++++
+ tools/testing/cxl/Kbuild                    |   2 +
+ 18 files changed, 335 insertions(+), 17 deletions(-)
 
