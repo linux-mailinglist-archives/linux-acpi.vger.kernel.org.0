@@ -1,64 +1,64 @@
-Return-Path: <linux-acpi+bounces-11440-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11441-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5A0A43056
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 23:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45D0A4305B
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 23:58:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A0218936A9
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 22:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F418874A5
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 22:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4522E20A5FC;
-	Mon, 24 Feb 2025 22:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F2D20ADE6;
+	Mon, 24 Feb 2025 22:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="eOLqcQT5"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="ti7M8Z/R"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BD81FCD07;
-	Mon, 24 Feb 2025 22:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07C81632C8;
+	Mon, 24 Feb 2025 22:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740437761; cv=none; b=pYCtLIyMhKgodVJK6FZk9qKsDHsgPxGjzCuhfO2OAkJRhndsheYATiwx4qal1ezrSMQSRWGrBXCPxDVG1JRNmsUqtoc6IZbSVLmjiuzZGGNwtsKFiIcc/uL6KQDdb66u3lCmZxKV411MmV/bQktNK2a7ya6ZiZw2NKjic77lzA8=
+	t=1740437930; cv=none; b=O1961voE7MESPuA0Z3aSdSofTbHsst7AnAZf7obtEfz1Sjlg/YR6QGIQyhNq1mMz5fy6xiO8HnA5rsVicq8MUFXJELomVGvZSqKvKMVl/oR9C/cO81i4GSFp5Ha+VsPDfNKSRd1jpGPvWR6tsgHne5D1HqG7qcKM07+svYNq/AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740437761; c=relaxed/simple;
-	bh=BVRhx2AEcRGtDjeQiL1fFaOLkSfNxc7OuB9lZUu8L6k=;
+	s=arc-20240116; t=1740437930; c=relaxed/simple;
+	bh=TJEHHy3LCZiP5/62e4brrNFOnBc5vgm/HSV4XuoZGJ8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BXwrnxfDqQDChei3AjaiAY+vzMpVUIFnWVSWSpTpxqnewaTXroktlY84BLpNqlm+tmJbdQUlahRVTp2IvWfWgXA2NbwtN11NZpCGSZERMjau0iQz36VtTiMfGC1hNm2cFPyGceOtLc4KwbkJTJYHtetrcFXu8dUuVi+4fVS3y+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=eOLqcQT5; arc=none smtp.client-ip=185.138.42.100
+	 To:Cc:Content-Type; b=hP5R6putAIzXQMqxcLPhY2zX/xT/wFoLVTYQELTACdEYuC9xWciVdSRLrRyrLN1vojFQVvYYjh9FTTTONUeOvS+r2mVsHkr0FJpr1tNs6BWKAxThE8tCfnrDwMAs4d+8xQDlaCm3/gxpptO4bMBHE+Jk3o9vIIhhndJhGWJ4usQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=ti7M8Z/R; arc=none smtp.client-ip=185.138.42.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id 3A77B2E0968D;
-	Tue, 25 Feb 2025 00:55:55 +0200 (EET)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 5CC182E07CD9;
+	Tue, 25 Feb 2025 00:58:45 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740437756;
-	bh=BVRhx2AEcRGtDjeQiL1fFaOLkSfNxc7OuB9lZUu8L6k=;
+	s=default; t=1740437925;
+	bh=TJEHHy3LCZiP5/62e4brrNFOnBc5vgm/HSV4XuoZGJ8=;
 	h=Received:From:Subject:To;
-	b=eOLqcQT5ujt1p57HWil85/XOUWPGjkftC6Fqq/U3T1lUIrzXtx9lcDL/3kO3XcM9A
-	 PwverDk/ebx4fuitnzA2x73ARcgeXTEYS/0OiQZLfcVfUGa+x9/DLCA/sXfhQjjn0n
-	 O6cwMrDv8+Uo5eJtKXtOOm8aMjYKuM/FDFJPxkrA=
+	b=ti7M8Z/Rh4FC57+sAyKFK4rJ9EhreXuJEfy1K+4PBwUmI/h42bdOvIBRr12r/IEqq
+	 MH0Xyb/dR59zf5pMmbqvWxNoMEVh2cwhEdxT1rLjMbjnqCRvERU2YmKUuePgHkNsY+
+	 Ww95oJzrOyAV4FQjHCmsrGWElqCGnc7ynMKyzW3g=
 Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.167.53) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f53.google.com
+        spf=pass (sender IP is 209.85.208.172) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f172.google.com
 Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lf1-f53.google.com with SMTP id
- 2adb3069b0e04-546267ed92fso5754241e87.2;
-        Mon, 24 Feb 2025 14:55:55 -0800 (PST)
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-307bc125e2eso46549481fa.3;
+        Mon, 24 Feb 2025 14:58:45 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVlIqxtTCSBQcm0qSH2dwVUyQneoqd0a6rOUOH2Iko9O1kz+eodxM21n/vS1hPLSfiQAVa69vo1QcTim5zMVIjqPKHZUQ==@vger.kernel.org,
- AJvYcCWKzDmzlVj6+E/RBBtlo8ZOdV8+wgHjV6oHL4iJlvy3uANpxzSsChQ4ckh81VR7W3LY9A0dpYFHe0qX+c0V@vger.kernel.org,
- AJvYcCX21UeYQp27QfWtIOto+p0EUbt45f6mjnMcIlSREWcezIK6DGGU9u+q5UR6MJsXP6G8rAvY9HflXSOO@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUWaU/nRhTSC3i+Gc6BwnTkhvoFXL/Z/HAiNur8HJqL+AMS34P
-	AyZjSyTj/q+lt0Ai1hslZ2kxuq/SY2jp6HR5rI2LEnNPQ1udAhwsp5dyjLUNnZnk3t2PgRFxb/1
-	HLbGmwovnPa/2WVPVc3eoaeAjvbk=
+ AJvYcCUC/zWWe/1rHlsSfkOcyK4WtyOlyRC2HVJXkgW85tmEz43rD3C5Kmw53DftI6zuAGnoS7/l2XVg6Yhi@vger.kernel.org,
+ AJvYcCW9vbvGB4htch2WLsS3Fxdlnya15rAzGFIGo6CdDn9mK3ZkVQqSa02noTKK9GLXQMGQySD5zOMLWADRl/30@vger.kernel.org,
+ AJvYcCXqBq146RfqQXHHp49I++vTvJlEfeS2CfkvkW3zik0XQfdriWg7ykh/9h96b00kKj90PP77bY5pPfUYxS9X19KBXM3ZsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHRcM8xZvSPNr14GFLfzYP7liSk8uNvGp9YZlkeg29FKcjBSqv
+	LWvzmjYP9Og+1XpcdMySPimAroqDeELcX+bPOzGee6DAuB4f5oy7WIgsXQuyQn8pCO4AB5XybHb
+	H792svnvrwnzlZvpvLwqvcu4duqA=
 X-Google-Smtp-Source: 
- AGHT+IGNAVdmzuT5CJ9TkNb8hx56LaUBgxMsKPHThEtCbmDTdC/kGb7oJfr/nUkfyDjRrYkkRm57rNR5kQTV7+HI7Qw=
-X-Received: by 2002:a05:6512:1383:b0:545:60b:f384 with SMTP id
- 2adb3069b0e04-548510da89cmr260339e87.31.1740437754463; Mon, 24 Feb 2025
- 14:55:54 -0800 (PST)
+ AGHT+IFgS5Jf8cF5xK8CUiAknTWti5yQK5aihC/1WFVjWYomlVv8iGG0C4+a0qb4GOyJ1vJPthrR7RAup19lAy+6yIw=
+X-Received: by 2002:a2e:bea1:0:b0:308:f268:7803 with SMTP id
+ 38308e7fff4ca-30a80c0f196mr3153271fa.3.1740437924547; Mon, 24 Feb 2025
+ 14:58:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -70,14 +70,16 @@ References: <20250224195059.10185-1-lkml@antheas.dev>
  <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
  <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
  <9fa91732-3085-4e79-9a8f-b38263ee7d08@gmx.de>
-In-Reply-To: <9fa91732-3085-4e79-9a8f-b38263ee7d08@gmx.de>
+ <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
+In-Reply-To: 
+ <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
 From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Mon, 24 Feb 2025 23:55:43 +0100
+Date: Mon, 24 Feb 2025 23:58:32 +0100
 X-Gmail-Original-Message-ID: 
- <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
-X-Gm-Features: AWEUYZl39gcPyS8qmcDF3GbriBRZg5CcEiBf4ZklMyc0pbwTkgivbTQsueihJf0
+ <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
+X-Gm-Features: AWEUYZmaJTQ_l84O0BRgQfX82lNWJ577I0-sniUoCBiXhFLoHswQJUTSGh8FOQs
 Message-ID: 
- <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
+ <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
 Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
  multiple handlers
 To: Armin Wolf <W_Armin@gmx.de>
@@ -92,29 +94,17 @@ Cc: Luke Jones <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
  me@kylegospodneti.ch
 Content-Type: text/plain; charset="UTF-8"
 X-PPP-Message-ID: 
- <174043775574.26560.16251201602174306697@linux1587.grserver.gr>
+ <174043792568.5132.11835100726030697445@linux1587.grserver.gr>
 X-PPP-Vhost: antheas.dev
 X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
 X-Virus-Status: Clean
 
-> I see. Maybe extending userspace to support the new platform-profile class interface
-> could solve this issue without breaking already existing scripts.
->
-> However i do not know the amount of work which needs to be done to achieve this.
+Yes, making asus-wmi use low-power is indeed the easiest solution, but
+if I thought it was good enough, I would have done that already as a
+downstream consumer of the kernel.
 
-The patch series I proposed here restores the behavior of the legacy
-API 1-1 with 6.13, ensuring that there are no userspace breakages and
-allows for maintaining the legacy interface's usefulness in the
-future. Without it, once more power profile handlers are added, it
-will begin to regress even more. We are also not sure it is just Asus,
-it is very likely there will be other breakages.
-
-Currently, platform profile handlers are split in half between
-low-power and quiet, and another third has additional options.
-
-The legacy interface is still good for most cases, there is no need to
-start moving non-specialized power managers such as ppd to it just
-yet.
+I just want to be done with this once and for all, so I spent an extra
+hour today solving this in a cleaner way.
 
 Antheas
 
