@@ -1,188 +1,118 @@
-Return-Path: <linux-acpi+bounces-11391-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11392-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21D9A41E22
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 13:02:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761CBA41E56
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 13:06:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F6547A698E
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 11:55:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70B8544339A
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 12:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E95524886E;
-	Mon, 24 Feb 2025 11:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B369526158A;
+	Mon, 24 Feb 2025 11:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="VH1JLX91"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BgY5xZRZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12B3248867;
-	Mon, 24 Feb 2025 11:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A445EB666;
+	Mon, 24 Feb 2025 11:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740397589; cv=none; b=OfcBK71Im0rK0MMkg7CI/6XWUf4qTf/u0d1jeQNBqzX4NDgXS/MSX+azFOLFDn3BHhyJ0ypz+zwJlpJZMGcBP+ai4AS7g0R5cvV+WN5eSwzMFSiiM0qWhB8RhKn8FBueuijts0NKB2My+OEMQS5PW/9AV/67Lzb3q8kW2Uf4FFI=
+	t=1740397857; cv=none; b=AvfCh8eLgsxNtFItRsKSYmBgTE31EtD5I8rkn00741wJiasypnibwlnEqz2TyAmum5AzA2w7JDQxJmSB2c5s1s6hycrx3gWZx3FM0te9ExX0Ba+jK6RlDEjarzEI5BMNde1u7kza+NOc7lvim1y/FCaaKhdcpKjx36IyVgakNIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740397589; c=relaxed/simple;
-	bh=NlnoUZSFwuABwD0daHXZJr7GkVokqSLQ+bN2yG+cOGk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hSr1PklYOBUyy0HcsfZbBHIx894m1p+7UOl5IycRgv7673yYaGQLjCubp8CyFy6SmKpWCExc9N0z+f/oq8srG/d+85Ne+5WvAJ5hoa5rNYOX9GfpSTDQl21WDmYH+Ga/Imbob99Lf4LzvzVSMPotI3IdUlRhILuDrKk8zR9xqJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=VH1JLX91; arc=none smtp.client-ip=81.200.124.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
-Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
-	by ksmg02.maxima.ru (Postfix) with ESMTP id 51BAD1E000D;
-	Mon, 24 Feb 2025 14:36:56 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru 51BAD1E000D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
-	s=sl; t=1740397016; bh=DTItJCPFhbVedZdbaxnqWm55x4dSNHRqn77CJj9NmTU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=VH1JLX91L4V8hbBR8Ys8idEMJR4jPCxo+5YOsHQzRKlUEdHnBZsbL1tltsvQmg9eQ
-	 /k6SebhOXLdZmqKYQCR0BBvdznolAgBtl97Ep6KbJWL4MKyTT+o/oAkiEQ0DyhRSUC
-	 QR6KmdVgQsDt9Y0gZYWgieqa9WfhQ70r392ZI3h9pHZBR8B9o2SGh+U8I3mtwUsWwi
-	 1x0Cq3Nb1Fg5Rvm/BJzyApfrorucWsNK4OgGcLddGHW46X/6g6Yh36LJvZnI9xD1D5
-	 TGRLRwIjOYZZCjYmmG25yUAobhbgjIilun7Tva4iN6sUrngU8SIHc/tC31Y2+lq50E
-	 3eNKO1Jg189Bg==
-Received: from ksmg02.maxima.ru (mail.maxima.ru [81.200.124.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg02.maxima.ru (Postfix) with ESMTPS;
-	Mon, 24 Feb 2025 14:36:56 +0300 (MSK)
-Received: from GS-NOTE-190.mt.ru (10.0.246.182) by mmail-p-exch02.mt.ru
- (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Mon, 24 Feb
- 2025 14:36:53 +0300
-From: Murad Masimov <m.masimov@mt-integration.ru>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang
-	<dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Murad Masimov <m.masimov@mt-integration.ru>,
-	<stable@vger.kernel.org>,
-	<syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
-Subject: [PATCH v2] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
-Date: Mon, 24 Feb 2025 14:35:46 +0300
-Message-ID: <20250224113546.1441-1-m.masimov@mt-integration.ru>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1740397857; c=relaxed/simple;
+	bh=3pOmWWotVeFG7/aCwZCOGG1H2P+WnR8cfNlGlq4bbTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m6F9wmVrg2CzG285igD+CWJPJaTaapbqtWITYftWUyksn6cMcI/ADImoAhQPk4Gp2vVOvA/wHwkhHIq5aGNgnYjeRW2Y8w1/OGRwwG1Bf+tKBAL7is+aLhQC5rcg2NTV+JjUNA/NXRYVvhDHBO+TLXh7wRHLe47eDbxcngrClpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BgY5xZRZ; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D08E140E0184;
+	Mon, 24 Feb 2025 11:50:51 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ivEoj6-VbOC3; Mon, 24 Feb 2025 11:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1740397847; bh=M+1Oj8yUN4/F9fqehf8NtiUeOEnlB2Q9pV11IJcCOkY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BgY5xZRZyyHcbymG/jlbXrNXaFXfSDbO8i45nhWQ2V37YX1k/XgK7zh0PMKMkh/iP
+	 JYFV5SVHJhISD29fe8Yi2WfoH6Kzp3RyCBosloGJWp5RTwfexJRt3a3CnkJmHR18cB
+	 GhXk1q7dyeHrU/i23LderkJ+mDkqvku0svXVEsTEkY9JC18UDrqB/aQgX9ThzNRJPM
+	 QgyESfyhiO40lpHb8vxQeLATC+0od69Bzjp0SsobfmuAWUszuurHZOUshNXFkcIFov
+	 InE6AA/L6TfQGfFqn1lseK3ejIZcomiFw0Daw2HxjeUbBHaUp+3t0t66J8bVftxgAk
+	 V+f+tdNol9JQPvE4KuDd665W5Sop/JfoEpPE50eeS6LDsc9xd2UMOoFZ7nRNXFzwul
+	 txFEL0mb1/Xih0owGH9mSNLqLA1kOpj8p+ZK5Om9DUeyv5dSIhI/dIVmv/3VQbrF9T
+	 qRjYKNrrEPyD2jNI3oGF/yWLIpa+MBCts9F7kKiERC9+G3NRmogprmUACPJVbBnxDf
+	 9HR3MVeMz/UJZv9MPlgq9wDm4fFHjOlRKWeUAOG1CD9hhOySbA3BM0ZafgJBWAny+o
+	 k85O8qB1OeGz0AkxnS39MKSGpvtNYzaLjC9xHHnledxZC8ayNIBoA4yOuNkV1QKEN0
+	 KIq8H30qDwp/QIbq1jk+8ab0=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4B2F840E0176;
+	Mon, 24 Feb 2025 11:50:03 +0000 (UTC)
+Date: Mon, 24 Feb 2025 12:50:02 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	tony.luck@intel.com, rafael@kernel.org, lenb@kernel.org,
+	mchehab@kernel.org, dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH v20 00/15] EDAC: Scrub: introduce generic EDAC RAS
+ control feature driver + CXL/ACPI-RAS2 drivers
+Message-ID: <20250224115002.GCZ7xc6o3yA1Q2j85i@fat_crate.local>
+References: <20250212143654.1893-1-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
- (81.200.124.62)
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/02/24 10:30:00
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
-X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
-X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {rep_avail}, {Tracking_one_url}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, ksmg02.maxima.ru:7.1.1;81.200.124.62:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;mt-integration.ru:7.1.1;syzkaller.appspot.com:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 81.200.124.62
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 191224 [Feb 24 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.11
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/02/24 06:47:00 #27427681
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/02/24 10:29:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250212143654.1893-1-shiju.jose@huawei.com>
 
-Syzkaller has reported a warning in to_nfit_bus_uuid():
+On Wed, Feb 12, 2025 at 02:36:38PM +0000, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> The CXL patches of this series has dependency on Dave's CXL fwctl
+> series [1].
 
-==================================================================
-only secondary bus families can be translated
-WARNING: CPU: 0 PID: 15821 at drivers/acpi/nfit/core.c:80 to_nfit_bus_uuid+0x6f/0x90 drivers/acpi/nfit/core.c:79
-Modules linked in:
-CPU: 0 UID: 0 PID: 15821 Comm: syz-executor579 Not tainted 6.11.0-rc7-syzkaller-00020-g8d8d276ba2fb #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:to_nfit_bus_uuid+0x6f/0x90 drivers/acpi/nfit/core.c:79
-Call Trace:
- <TASK>
- acpi_nfit_ctl+0x8a9/0x24a0 drivers/acpi/nfit/core.c:489
- __nd_ioctl drivers/nvdimm/bus.c:1186 [inline]
- nd_ioctl+0x184d/0x1fe0 drivers/nvdimm/bus.c:1264
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-==================================================================
+First 5 patches massaged and queued here:
 
-This warning is triggered if the argument passed in to_nfit_bus_uuid() is
-equal to 0. It is important that this function expects that the argument
-is between 1 and NVDIMM_BUS_FAMILY_MAX. Therefore, it must be checked
-beforehand. However, in acpi_nfit_ctl() validity checks made before
-calling to_nfit_bus_uuid() are erroneous.
+https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=edac-cxl
 
-Function acpi_nfit_ctl() first verifies that a user-provided value
-call_pkg->nd_family of type u64 is not equal to 0. Then the value is
-converted to int (narrowing conversion), and only after that is compared
-to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid argument to
-acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while the lower 32
-bits are zero.
+Please run them with the rest of your test cases to make sure I haven't
+fat-fingered anything.
 
-Moreover, the same way zero can be passed in to_nfit_bus_uuid(),
-negative value also may occur. That wouldn't trigger the warning, but
-could lead to a wild-memory-access in test_bit(). This is achieved with
-a slightly modified version of the reproducer generated by Syzkaller.
-The crash report is as follows:
+Thx.
 
-==================================================================
- BUG: KASAN: wild-memory-access in acpi_nfit_ctl (./arch/x86/include/asm/bitops.h:227 (discriminator 6) ./arch/x86/include/asm/bitops.h:239 (discriminator 6) ./include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 6) drivers/acpi/nfit/core.c:489 (discriminator 6))
- Read of size 8 at addr 1fff888141379358 by task repro/681503
+-- 
+Regards/Gruss,
+    Boris.
 
- CPU: 0 UID: 0 PID: 681503 Comm: repro Not tainted 6.13.0-04858-g21266b8df522 #30
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- Call Trace:
- <TASK>
- dump_stack_lvl (lib/dump_stack.c:123)
- kasan_report (mm/kasan/report.c:604)
- kasan_check_range (mm/kasan/generic.c:183 mm/kasan/generic.c:189)
- acpi_nfit_ctl (./arch/x86/include/asm/bitops.h:227 (discriminator 6) ./arch/x86/include/asm/bitops.h:239 (discriminator 6) ./include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 6) drivers/acpi/nfit/core.c:489 (discriminator 6))
- nd_ioctl (drivers/nvdimm/bus.c:1187 drivers/nvdimm/bus.c:1264)
- __x64_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:906 fs/ioctl.c:892 fs/ioctl.c:892)
- do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-==================================================================
-
-All checks of the input value should be applied to the original variable
-call_pkg->nd_family. This approach is better suited for the stable
-branches and is much safer than replacing the type of the variable from
-int to u32 or u64 throughout the code, as this could potentially
-introduce new bugs.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
----
-v2: Add more details to the commit message.
-
- drivers/acpi/nfit/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index a5d47819b3a4..ae035b93da08 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 		cmd_mask = nd_desc->cmd_mask;
- 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
- 			family = call_pkg->nd_family;
--			if (family > NVDIMM_BUS_FAMILY_MAX ||
-+			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
- 			    !test_bit(family, &nd_desc->bus_family_mask))
- 				return -EINVAL;
- 			family = array_index_nospec(family,
---
-2.39.2
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
