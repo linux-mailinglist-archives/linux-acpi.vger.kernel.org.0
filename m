@@ -1,198 +1,118 @@
-Return-Path: <linux-acpi+bounces-11394-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11395-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA22A41FBE
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 13:57:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C348A42847
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 17:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3535442957
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 12:50:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CD7016DC17
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 16:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD1523A9B4;
-	Mon, 24 Feb 2025 12:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDAD262D2C;
+	Mon, 24 Feb 2025 16:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lUSvn+D3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EA8163;
-	Mon, 24 Feb 2025 12:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2909A2627F2;
+	Mon, 24 Feb 2025 16:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740401403; cv=none; b=Va9lmJzjNe0A2zx5q/MIX2ZmWEHzQ0A0qinkEOFXdLVSNMcIrtdh8YhAOSorL+VuPbRgXQS1MeP1CuNMFOF0w17vCvFv8XpKBX7DcoDQjgNLqCzbnJD0tVefqB8ROeUNWFkJRBp+XSfT1m07UrvZhBDq4BGUibzHz0YYMWejn/8=
+	t=1740415814; cv=none; b=L97hAJAlASW6yxgbBbguw3knDWh+Chl1Unq+GE/sB3k2zbXcT5VOSnJvdyQQg+o3QPHk7N41xRzNmqJ2w4fUc1ht7JZv+v6OtdYRMcAfmYiR3vfyV53b+Vel8dGXrHQp+As5koGD85ERCKRtynPfC5PfzESmPm9z+zMz/DxkEgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740401403; c=relaxed/simple;
-	bh=ZdBCdF5KOs1JctRObwGVJkOHnGlGXqRbiACo9SOfprU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g31zbF02UvgCZ6loq4RgN4NXehIFvuNUHXjc+bAsNVkQNrQRG/nWZM6jPcQQw7G6fdZDEAomgl6phlc1YIEHF0OlyPgDrGchIJWagrFMhcfkJ4srjuGFCgPR5u2Wtn9daU3QMiqdqEDRj8u+RJElyQgFa0urNqPS4T59wfbLp0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Z1gT108Dcz1ltby;
-	Mon, 24 Feb 2025 20:45:57 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1C17E180069;
-	Mon, 24 Feb 2025 20:49:58 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
- (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 24 Feb
- 2025 20:49:57 +0800
-Message-ID: <5162cd2c-e239-4fc6-b2da-2e2fe087cb1b@huawei.com>
-Date: Mon, 24 Feb 2025 20:49:56 +0800
+	s=arc-20240116; t=1740415814; c=relaxed/simple;
+	bh=PBOLO0GBx96JGT4qrXhptEiNiHxk8kr/C/IWh68LCnE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o+5MKRnkWZ3Okqp6svt8aUEA+mhHPugpznpdiZ3/DMGzDyb3Z39e8J54XRReHFXv1lB7/nayIA1HQwKusLgV5ieTs8kQmdt80wrk8YjyGj4W7oUC1zS+4Y7QR0K0vvCgdIns1ZUOSay97m8LRouWWs71sEKvqeWsa/NFBqpIk2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lUSvn+D3; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740415812; x=1771951812;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PBOLO0GBx96JGT4qrXhptEiNiHxk8kr/C/IWh68LCnE=;
+  b=lUSvn+D3rfs43hERl5i7agfziYy+Ffdal2sbWXM+4l6jP7OHTaP/CibC
+   MAr/15DIOlmEsDzGj4qNtV4ZI/BtEs4cXtkx4bVIRzuYMy/6T2DROzUkU
+   Ot4EF3f2MEXnDvk0OxTFCdl8xZdc4HuT5K7XE+LXxB10pHLm8abFXeU0v
+   FIQGCZDu5DLhO/g+/7ctkuINUsa9QPcP7t575/rgtewp1nOexCF4UbC9x
+   Pu/StVB+P7gk1DHoAezUqdIKhdY1g+SxdAK1vz6Gs+p9o3vGAW4t6R4B+
+   wlD9hoeh0oXwVTSwQk2+z8bHq1gY93feDPT2t9r5Dk6tHnMAlpd6MPUUh
+   A==;
+X-CSE-ConnectionGUID: Ocyn8sOZSp+eGxWrqTFZcA==
+X-CSE-MsgGUID: ieR3ORtKTqW1d1W5sCnL8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41063169"
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; 
+   d="scan'208";a="41063169"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 08:50:11 -0800
+X-CSE-ConnectionGUID: xVfYQ1ZXS96ynZ/alvZgww==
+X-CSE-MsgGUID: FHhZOsdXSW+BQ+FjHvPgNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; 
+   d="scan'208";a="121032312"
+Received: from anshuma1-desk.iind.intel.com ([10.190.239.112])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 08:50:08 -0800
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Cc: rafael@kernel.org,
+	lenb@kernel.org,
+	bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	badal.nilawar@intel.com,
+	kam.nasim@intel.com,
+	Anshuman Gupta <anshuman.gupta@intel.com>
+Subject: [RFC 0/6] VRAM Self Refresh
+Date: Mon, 24 Feb 2025 22:18:43 +0530
+Message-Id: <20250224164849.3746751-1-anshuman.gupta@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] Support for autonomous selection in cppc_cpufreq
-To: Pierre Gondois <pierre.gondois@arm.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, <lenb@kernel.org>,
-	<robert.moore@intel.com>, <viresh.kumar@linaro.org>,
-	<mario.limonciello@amd.com>, <gautham.shenoy@amd.com>, <ray.huang@amd.com>,
-	<acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<linuxarm@huawei.com>, <yumpusamongus@gmail.com>,
-	<srinivas.pandruvada@linux.intel.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>, <hepeng68@huawei.com>,
-	<fanghao11@huawei.com>
-References: <20250206131428.3261578-1-zhenglifeng1@huawei.com>
- <0097a9a3-fe61-4200-9a54-5a9c81d3219c@huawei.com>
- <CAJZ5v0hP9a8g8UR2oPyivP1C65=csR245PSHay+nOx3vkoKoaA@mail.gmail.com>
- <ddbc0336-9083-4054-8930-c22bd8337488@huawei.com>
- <828ab846-fe03-4830-a722-a86e57ba89c7@arm.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <828ab846-fe03-4830-a722-a86e57ba89c7@arm.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemh100008.china.huawei.com (7.202.181.93)
 
-On 2025/2/24 18:31, Pierre Gondois wrote:
-> 
-> 
-> On 2/22/25 11:07, zhenglifeng (A) wrote:
->> On 2025/2/19 3:17, Rafael J. Wysocki wrote:
->>> On Thu, Feb 13, 2025 at 2:55 AM zhenglifeng (A) <zhenglifeng1@huawei.com> wrote:
->>>>
->>>> On 2025/2/6 21:14, Lifeng Zheng wrote:
->>>>> Add sysfs interfaces for CPPC autonomous selection in the cppc_cpufreq
->>>>> driver.
->>>>>
->>>>> The patch series is organized in two parts:
->>>>>
->>>>>   - patch 1-5 refactor out the general CPPC register get and set functions
->>>>>     in cppc_acpi.c
->>>>>
->>>>>   - patches 6-8 expose sysfs files for users to control CPPC autonomous
->>>>>     selection when supported
->>>>>
->>>>> Changelog:
->>>>>
->>>>> v5:
->>>>>
->>>>>   - add more explanation to the commit logs and comments
->>>>>   - change REG_OPTIONAL from bin to hex
->>>>>   - split patch 2 into 3 smaller patches
->>>>>   - remove CPPC_REG_VAL_READ() and CPPC_REG_VAL_WRITE() macros
->>>>>   - move the modification part in patch 5 into a separate patch
->>>>>   - rename the sysfs file from "energy_perf" to
->>>>>     energy_performance_preference_val
->>>>>
->>>>> v4:
->>>>>
->>>>>   - add REG_OPTIONAL and IS_OPTIONAL_CPC_REG to judge if a cpc register is
->>>>>     an optional one
->>>>>   - check whether the register is optional before CPC_SUPPORTED check in
->>>>>     cppc_get_reg_val() and cppc_set_reg_val()
->>>>>   - check the register's type in cppc_set_reg_val()
->>>>>   - add macros to generally implement registers getting and setting
->>>>>     functions
->>>>>   - move some logic codes from cppc_cpufreq.c to cppc_acpi.c
->>>>>   - replace cppc_get_auto_sel_caps() by cppc_get_auto_sel()
->>>>>
->>>>> v3:
->>>>>
->>>>>   - change cppc_get_reg() and cppc_set_reg() name to cppc_get_reg_val() and
->>>>>     cppc_set_reg_val()
->>>>>   - extract cppc_get_reg_val_in_pcc() and cppc_set_reg_val_in_pcc()
->>>>>   - return the result of cpc_read() in cppc_get_reg_val()
->>>>>   - add pr_debug() in cppc_get_reg_val_in_pcc() when pcc_ss_id < 0
->>>>>   - rename 'cpunum' to 'cpu' in cppc_get_reg_val()
->>>>>   - move some macros from drivers/cpufreq/cppc_cpufreq.c to
->>>>>     include/acpi/cppc_acpi.h with a CPPC_XXX prefix
->>>>>
->>>>> v2:
->>>>>
->>>>>   - fix some incorrect placeholder
->>>>>   - change kstrtoul to kstrtobool in store_auto_select
->>>>>
->>>>> Lifeng Zheng (8):
->>>>>    ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro to judge if a cpc_reg is
->>>>>      optional
->>>>>    ACPI: CPPC: Optimize cppc_get_perf()
->>>>>    ACPI: CPPC: Rename cppc_get_perf() to cppc_get_reg_val()
->>>>>    ACPI: CPPC: Add cppc_set_reg_val()
->>>>>    ACPI: CPPC: Refactor register value get and set ABIs
->>>>>    ACPI: CPPC: Modify cppc_get_auto_sel_caps() to cppc_get_auto_sel()
->>>>>    ACPI: CPPC: Add three functions related to autonomous selection
->>>>>    cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
->>>>>
->>>>>   .../ABI/testing/sysfs-devices-system-cpu      |  54 ++++
->>>>>   drivers/acpi/cppc_acpi.c                      | 303 +++++++++++-------
->>>>>   drivers/cpufreq/amd-pstate.c                  |   3 +-
->>>>>   drivers/cpufreq/cppc_cpufreq.c                | 109 +++++++
->>>>>   include/acpi/cppc_acpi.h                      |  30 +-
->>>>>   5 files changed, 372 insertions(+), 127 deletions(-)
->>>>>
->>>>
->>>> Gentle ping.
->>>
->>> OK, so I'm wondering how this is related to the patch series at
->>>
->>> https://lore.kernel.org/linux-acpi/20250211103737.447704-1-sumitg@nvidia.com/
->>
->> This series refactors some cppc_acpi ABIs and supports cppc autonomous
->> selection with sysfs files in cpufreq policy.  Later, [1] proposed another
->> design with different user interfaces.We will discuss and reach a consensus
->> with regard to this.
->>
->> However, as mentioned in [1], patch 1-7 in this series (the cppc_acpi part)
->> are not related to user interfaces, so can be reviewed and applied
->> separately.  I can also send patch 1-7 as a new thread if preferred.
->>
->> [1] https://lore.kernel.org/linux-acpi/20250211103737.447704-1-sumitg@nvidia.com/
-> 
-> I tried the patchset on a platform which doesn't implement CPC and everything worked well.
-> As Lifeng said,
->   PATCH v5 8/8] cpufreq: CPPC: Support for autonomous selection in cppc_cpufreq
-> seems to be still in discussion, but for patches 1-7 FWIW:
-> 
-> Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
+Enabling VRAM Self Refresh on Intel BMG GPU.
+VRAM Self Refresh feature requires XeKMD
+to request for D3Cold Aux Power Limit and PERST
+Assertion Delay by calling _DSM 10 and _DSM 11 method.
 
-Thank you!
+Reference: PCI Firmware Specification
+Section {4.6.10, 4.6.11}.
 
-Regards,
-Lifeng
+Anshuman Gupta (5):
+  PCI/ACPI: Implement PCI FW _DSM method
+  drm/xe/vrsr: Detect vrsr capability
+  drm/xe/vrsr: Refactor d3cold.allowed to a enum
+  drm/xe/pm: D3Cold target state
+  drm/xe/vrsr: Enable VRSR
 
-> 
-> Regards,
-> Pierre
-> 
->>
->>>
->>>> Attach discussions of previous versions:
->>>> v1: https://lore.kernel.org/all/20241114084816.1128647-1-zhenglifeng1@huawei.com/
->>>> v2: https://lore.kernel.org/all/20241122062051.3658577-1-zhenglifeng1@huawei.com/
->>>> v3: https://lore.kernel.org/all/20241216091603.1247644-1-zhenglifeng1@huawei.com/
->>>> v4: https://lore.kernel.org/all/20250113122104.3870673-1-zhenglifeng1@huawei.com/
->>>>
->>>
->>
->>
-> 
+Badal Nilawar (1):
+  drm/xe/vrsr: Apis to init and enable VRSR feature
+
+ drivers/gpu/drm/xe/display/xe_display.c |  22 +++
+ drivers/gpu/drm/xe/display/xe_display.h |   1 +
+ drivers/gpu/drm/xe/regs/xe_regs.h       |   3 +
+ drivers/gpu/drm/xe/xe_device_types.h    |  10 +-
+ drivers/gpu/drm/xe/xe_pci.c             |   4 +-
+ drivers/gpu/drm/xe/xe_pcode_api.h       |   8 +
+ drivers/gpu/drm/xe/xe_pm.c              | 185 ++++++++++++++++++++++--
+ drivers/gpu/drm/xe/xe_pm.h              |   9 ++
+ drivers/pci/pci-acpi.c                  | 123 ++++++++++++++++
+ include/linux/pci-acpi.h                |  13 ++
+ 10 files changed, 358 insertions(+), 20 deletions(-)
+
+-- 
+2.34.1
 
 
