@@ -1,293 +1,216 @@
-Return-Path: <linux-acpi+bounces-11403-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11402-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF287A42A23
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 18:43:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A26A429FA
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 18:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB0533A7246
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 17:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8A2F3A17F0
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 17:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6931A704B;
-	Mon, 24 Feb 2025 17:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB81264FA9;
+	Mon, 24 Feb 2025 17:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lsfCwUOU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGuPLexM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D920170A13;
-	Mon, 24 Feb 2025 17:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6740264A98;
+	Mon, 24 Feb 2025 17:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740418982; cv=none; b=kLa6o/fj6x1g1APlefvvz3P1V/A3+tZoaaNPkvDdTyl3vIec7jxzvqhCl8klHHs9Fcg5tFAKLPaLN2xI1lZMaB8QPyIXqriQ0VAHWj+Ir2gTNrr21aUs19D4oUJ0KViahKP0M2ytqpUCPVVx8dlOS80fJvklqba+V/XrK9cEtK0=
+	t=1740418400; cv=none; b=e7Vv0cQ2WoldTylgy5MklGbXzRyaZSfK5Vxwkv/w0a4sSep+aS33ecci0KeL5u3Q+lupFB52boc7yyco9jbAuqh8vyy0tYXzGnTISmiwAEmxXEbMUL9DLk3HbvaKvi85ue6Ft3lE9mGautgS0i7UcRIoule1nPzP8MCCuwSCKdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740418982; c=relaxed/simple;
-	bh=/FUvw7XYwn0qNqcLkrfaYzsdpAoFB4FS51Xw/H2tBJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JeBu5BQrQZYGA57eMVBQxKF+Zq6Kf90rbhph/T19F8UQNBdoLDAEf98SPRAot/yt2j0zyBshZHXBpZbsjUBGyn4hMbw1PU7SeyGj1oxnOnRon3QqVHsWdWfYj77QQN37/TRI9TSkQx2mROjx6O4tBW4rERISOkt4oPRpNjMILB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lsfCwUOU; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740418980; x=1771954980;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/FUvw7XYwn0qNqcLkrfaYzsdpAoFB4FS51Xw/H2tBJk=;
-  b=lsfCwUOUcxYTU6I4Hqps3RgDGQtUE2AEWiWXgkO3a/rJ8gYTMuLJHXTc
-   C1gxR181hqV61cyFGGb3bY29Q/jQpNlNAHnrnzVxfSPFL1W7iQ5TYpa2Z
-   NF0nIcplibgSwDM4imn1jb7egvNI4Vo6NHzDnKNnycSV9RCFmNY3Ghq/a
-   mzMYUof17tHRvHgQuqtceGneWD5Qru5HsgoTHkykQhzHhdjt4bb/PF5Pm
-   QW1z9aUQ2R/e3mz0BNVInCU4cPCXksqSk486/oM7nKz6TIEygPz+LYGfY
-   fn1dG0z4qfIZQ6m6+4+JW4NwVzItgCjIUEYYxnBuhKS0l23Jng4CD2xHb
-   g==;
-X-CSE-ConnectionGUID: 8r0/JlvfQYmvNUpKjoqoIQ==
-X-CSE-MsgGUID: P8pvnb61RKGR0whQB1gAxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="66556656"
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; 
-   d="scan'208";a="66556656"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 09:32:46 -0800
-X-CSE-ConnectionGUID: 5vP1Awm+RCuzKtptHqGkhQ==
-X-CSE-MsgGUID: RNPeUYYLQNGIJlAfVA7p4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; 
-   d="scan'208";a="115876582"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.111.71]) ([10.125.111.71])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 09:32:45 -0800
-Message-ID: <e3ac044f-f3d2-439b-82c2-6044a3a7769c@intel.com>
-Date: Mon, 24 Feb 2025 10:32:44 -0700
+	s=arc-20240116; t=1740418400; c=relaxed/simple;
+	bh=xsa6CB+0p3j46klgNP8VObiplu83k0LJzmWbufYfbpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QDcouLrQYpdPnHs3uL/WJ0O0hJHSrg9h7keEpPhbF0dZSiNHXLf+Nac5TrOqhKnua2zMqMI0uiY75IjPmhEbquGq45b3x29EzFo0Ae5GiJTwWA4Wt0Y+BzJNXXbFeTCvZ2AP8o+ylW/fpIjjMlbseYGpBjacvMj+vmmTT5QP+MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGuPLexM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A825C4CED6;
+	Mon, 24 Feb 2025 17:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740418399;
+	bh=xsa6CB+0p3j46klgNP8VObiplu83k0LJzmWbufYfbpw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=iGuPLexMPJg7W5C91pminzicrpjldK7F/XuaOaWEQjACx7w4LiFfEVNbadaSdTNP3
+	 MzkI7wUKAFH3kk5+R4wo7Lqda653WxTs40KQKa4TwLWzN3taw7LBDaK2wonAoeJKHw
+	 U3KeGcf5nbTbsn50L+4flIvqSc52/hYjdRk6dnlXrSrrHhaClngSrD2hmMSutgRwYB
+	 8J4hjK+VHehMJRSWzbi0cP3GK7+m4oSe6exKMBwsGH9Ca8Ey1j6HEmSwP9/kQFHCv/
+	 c8s0NbxTN7Y1DThPQfJPsEvOpxKZf+eBZXk8E0YL8RvDTaWpkSZbwzofiK4LeV24vo
+	 zLuPyiTekCg6Q==
+Date: Mon, 24 Feb 2025 11:33:17 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Naveen Kumar P <naveenkumar.parna@gmail.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernelnewbies <kernelnewbies@kernelnewbies.org>,
+	linux-acpi@vger.kernel.org
+Subject: Re: PCI: hotplug_event: PCIe PLDA Device BAR Reset
+Message-ID: <20250224173317.GA466030@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] cxl: Add extended linear cache address alias
- emission for cxl events
-To: Alison Schofield <alison.schofield@intel.com>
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org,
- bp@alien8.de, dan.j.williams@intel.com, tony.luck@intel.com,
- dave@stgolabs.net, jonathan.cameron@huawei.com, ira.weiny@intel.com,
- ming.li@zohomail.com
-References: <20250117173054.4147877-1-dave.jiang@intel.com>
- <20250117173054.4147877-4-dave.jiang@intel.com>
- <Z7fXIQKTG9pCRtS7@aschofie-mobl2.lan>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <Z7fXIQKTG9pCRtS7@aschofie-mobl2.lan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMciSVXDS_n7-XzHevMmAOhb-qCNsCBbE1Pym-zWybnOyjZWmw@mail.gmail.com>
 
+On Mon, Feb 24, 2025 at 05:45:35PM +0530, Naveen Kumar P wrote:
+> On Wed, Feb 19, 2025 at 10:36 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > On Wed, Feb 19, 2025 at 05:52:47PM +0530, Naveen Kumar P wrote:
+> > > Hi all,
+> > >
+> > > I am writing to seek assistance with an issue we are experiencing with
+> > > a PCIe device (PLDA Device 5555) connected through PCI Express Root
+> > > Port 1 to the host bridge.
+> > >
+> > > We have observed that after booting the system, the Base Address
+> > > Register (BAR0) memory of this device gets reset to 0x0 after
+> > > approximately one hour or more (the timing is inconsistent). This was
+> > > verified using the lspci output and the setpci -s 01:00.0
+> > > BASE_ADDRESS_0 command.
+> > >
+> > > To diagnose the issue, we checked the dmesg log, but it did not
+> > > provide any relevant information. I then enabled dynamic debugging for
+> > > the PCI subsystem (drivers/pci/*) and noticed the following messages
+> > > related ACPI hotplug in the dmesg log:
+> > >
+> > > [    0.465144] pci 0000:01:00.0: reg 0x10: [mem 0xb0400000-0xb07fffff]
+> > > ...
+> > > [ 6710.000355] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
+> > > [ 7916.250868] perf: interrupt took too long (4072 > 3601), lowering
+> > > kernel.perf_event_max_sample_rate to 49000
+> > > [ 7984.719647] perf: interrupt took too long (5378 > 5090), lowering
+> > > kernel.perf_event_max_sample_rate to 37000
+> > > [11051.409115] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
+> > > [11755.388727] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
+> > > [12223.885715] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
+> > > [14303.465636] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_event()
+> > > After these messages appear, reading the device BAR memory results in
+> > > 0x0 instead of the expected value.
+> > >
+> > > I would like to understand the following:
+> > >
+> > > 1. What could be causing these hotplug_event debug messages?
+> >
+> > This is an ACPI Notify event.  Basically the platform is telling us to
+> > re-enumerate the hierarchy below RP01 because a device might have been
+> > added or removed.
+>
+> Thank you for your response regarding the PCI BAR reset issue we are
+> experiencing with the PLDA Device 5555. I have a few follow-up
+> questions and additional information to share.
+> 
+> 1. Clarification on "Platform":
+> 
+> Does the term "platform" refer to the BIOS/ACPI subsystem in this context?
 
+Yes, "platform" refers to the BIOS/ACPI subsystem.
 
-On 2/20/25 6:30 PM, Alison Schofield wrote:
-> On Fri, Jan 17, 2025 at 10:28:32AM -0700, Dave Jiang wrote:
->> Add the aliased address of extended linear cache when emitting event
->> trace for DRAM and general media of CXL events.
->>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->> v3:
->> - Drop unused region to nid function
->> - Make sure hpa_alias defaults to ~0ULL. (Jonathan)
->> ---
->>  drivers/cxl/core/mbox.c  | 28 ++++++++++++++++++++++++----
->>  drivers/cxl/core/trace.h | 24 ++++++++++++++++--------
->>  2 files changed, 40 insertions(+), 12 deletions(-)
->>
->> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
->> index 548564c770c0..f42c4c56dc43 100644
->> --- a/drivers/cxl/core/mbox.c
->> +++ b/drivers/cxl/core/mbox.c
->> @@ -856,6 +856,23 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
->>  }
->>  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
->>  
->> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
->> +{
->> +	struct cxl_region_params *p;
->> +
->> +	if (!cxlr)
->> +		return ~0ULL;
->> +
->> +	p = &cxlr->params;
->> +	if (!p->cache_size)
->> +		return ~0ULL;
->> +
->> +	if (hpa >= p->res->start + p->cache_size)
->> +		return hpa - p->cache_size;
->> +
->> +	return hpa + p->cache_size;
->> +}
->> +
->>  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->>  			    enum cxl_event_log_type type,
->>  			    enum cxl_event_type event_type,
->> @@ -871,7 +888,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->>  	}
->>  
->>  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
->> -		u64 dpa, hpa = ULLONG_MAX;
->> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias = ~0ULL;
-> 
-> A bit odd to use 2 different notations for same thing.
-> Prefer ULLONG_MAX here and in previous function.
+> Can the platform signal to re-enumerate the hierarchy below RP01
+> without an actual device being removed or added? In our case, the PCI
+> PLDA device is neither physically removed nor connected to the bus on
+> the fly.
 
-Will fix
+Yes, I think a Bus Check notification is just a request for the OS to
+re-enumerate starting at the point in the device tree where it is
+notified.  It's possible that no add or remove has occurred.  ACPI
+r6.5, sec 5.6.6, includes the example of hardware that can't detect
+device changes during a system sleep state, so it issues a Bus Check
+on wake.
 
+> 2. System Configuration:
 > 
+> We are currently using an x86_64 system with Ubuntu 20.04.6 LTS
+> (kernel version: 5.4.0-148-generic).
+> I have enabled dynamic debug logs for all files in the PCI and ACPI
+> subsystems and rebooted the system with the following parameters:
+> $ cat /proc/cmdline
+> BOOT_IMAGE=/vmlinuz-5.4.0-148-generic root=/dev/mapper/vg00-rootvol ro
+> quiet libata.force=noncq pci=nomsi pcie_aspm=off pcie_ports=on
+> "dyndbg=file drivers/pci/* +p; file drivers/acpi/* +p"
 > 
->>  		struct cxl_region *cxlr;
->>  
->>  		/*
->> @@ -884,14 +901,17 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->>  
->>  		dpa = le64_to_cpu(evt->media_hdr.phys_addr) & CXL_DPA_MASK;
->>  		cxlr = cxl_dpa_to_region(cxlmd, dpa);
->> -		if (cxlr)
->> +		if (cxlr) {
->>  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
->> +			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
->> +		}
->>  
->>  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
->>  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
->> -						&evt->gen_media);
->> +						hpa_alias, &evt->gen_media);
->>  		else if (event_type == CXL_CPER_EVENT_DRAM)
->> -			trace_cxl_dram(cxlmd, type, cxlr, hpa, &evt->dram);
->> +			trace_cxl_dram(cxlmd, type, cxlr, hpa, hpa_alias,
->> +				       &evt->dram);
->>  	}
->>  }
->>  EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, "CXL");
->> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
->> index 8389a94adb1a..257f60f16e4c 100644
->> --- a/drivers/cxl/core/trace.h
->> +++ b/drivers/cxl/core/trace.h
->> @@ -316,9 +316,10 @@ TRACE_EVENT(cxl_generic_event,
->>  TRACE_EVENT(cxl_general_media,
->>  
->>  	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
->> -		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_gen_media *rec),
->> +		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
->> +		 struct cxl_event_gen_media *rec),
->>  
->> -	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
->> +	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
->>  
->>  	TP_STRUCT__entry(
->>  		CXL_EVT_TP_entry
->> @@ -332,6 +333,7 @@ TRACE_EVENT(cxl_general_media,
->>  		__array(u8, comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE)
->>  		/* Following are out of order to pack trace record */
->>  		__field(u64, hpa)
->> +		__field(u64, hpa_alias)
+>
+> 3. Observations:
 > 
-> I saw Jonathan's ask for hpa_alias to be hpa_alias0 or something?
-> That's done in the CXL_EVT_TP_printk output below. It needs to be
-> used here in the field name to be picked up in the trace event.
-> (same for cxl_dram event)
+> After rebooting with more debug logs, I noticed the issue after 1 day,
+> 11:48 hours.
+> A snippet of the dmesg log is mentioned below (complete dmesg log is
+> attached to this email):
 > 
-> But...what's the deal with hpa_alias0. If we anticipate an array
-> of aliases, then maybe an array like is done for comp_id would
-> work. Expect that's overkill at the moment.
+> [128845.248503] ACPI: GPE event 0x01
+> [128845.356866] ACPI: \_SB_.PCI0.RP01: ACPI_NOTIFY_BUS_CHECK event
+> [128845.357343] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in
+> hotplug_event()
 
-So basically the spec language allows for multiple aliases, but the current implementation only has 1. So this is basically allowing for that happen in the future but not doing much more than that until actual implementation happens.
+If you could add more debug in hotplug_event() and the things it
+calls, we might get more clues about what's happening.
 
+> 4. BAR Reset Issue:
 > 
+> I filtered the lspci output to show the contents of the configuration
+> space starting at offset 0x10 for getting BASE_ADDRESS_0 by running
+> sudo lspci -xxx -s 01:00.0 | grep "10:".
+> Prior to the BAR reset issue, the lspci output was:
+> $ sudo lspci -xxx -s 01:00.0 | grep "10:"
+> 10: 00 00 40 b0 00 00 00 00 00 00 00 00 00 00 00 00
 > 
->>  		__field_struct(uuid_t, region_uuid)
->>  		__field(u16, validity_flags)
->>  		__field(u8, rank)
->> @@ -358,6 +360,7 @@ TRACE_EVENT(cxl_general_media,
->>  			CXL_EVENT_GEN_MED_COMP_ID_SIZE);
->>  		__entry->validity_flags = get_unaligned_le16(&rec->media_hdr.validity_flags);
->>  		__entry->hpa = hpa;
->> +		__entry->hpa_alias = hpa_alias;
->>  		if (cxlr) {
->>  			__assign_str(region_name);
->>  			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
->> @@ -370,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
->>  	CXL_EVT_TP_printk("dpa=%llx dpa_flags='%s' " \
->>  		"descriptor='%s' type='%s' transaction_type='%s' channel=%u rank=%u " \
->>  		"device=%x comp_id=%s validity_flags='%s' " \
->> -		"hpa=%llx region=%s region_uuid=%pUb",
->> +		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
->>  		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
->>  		show_event_desc_flags(__entry->descriptor),
->>  		show_gmer_mem_event_type(__entry->type),
->> @@ -378,7 +381,8 @@ TRACE_EVENT(cxl_general_media,
->>  		__entry->channel, __entry->rank, __entry->device,
->>  		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
->>  		show_valid_flags(__entry->validity_flags),
->> -		__entry->hpa, __get_str(region_name), &__entry->region_uuid
->> +		__entry->hpa, __entry->hpa_alias, __get_str(region_name),
->> +		&__entry->region_uuid
->>  	)
->>  );
->>  
->> @@ -424,9 +428,10 @@ TRACE_EVENT(cxl_general_media,
->>  TRACE_EVENT(cxl_dram,
->>  
->>  	TP_PROTO(const struct cxl_memdev *cxlmd, enum cxl_event_log_type log,
->> -		 struct cxl_region *cxlr, u64 hpa, struct cxl_event_dram *rec),
->> +		 struct cxl_region *cxlr, u64 hpa, u64 hpa_alias,
->> +		 struct cxl_event_dram *rec),
->>  
->> -	TP_ARGS(cxlmd, log, cxlr, hpa, rec),
->> +	TP_ARGS(cxlmd, log, cxlr, hpa, hpa_alias, rec),
->>  
->>  	TP_STRUCT__entry(
->>  		CXL_EVT_TP_entry
->> @@ -442,6 +447,7 @@ TRACE_EVENT(cxl_dram,
->>  		__field(u32, row)
->>  		__array(u8, cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE)
->>  		__field(u64, hpa)
->> +		__field(u64, hpa_alias)
->>  		__field_struct(uuid_t, region_uuid)
->>  		__field(u8, rank)	/* Out of order to pack trace record */
->>  		__field(u8, bank_group)	/* Out of order to pack trace record */
->> @@ -472,6 +478,7 @@ TRACE_EVENT(cxl_dram,
->>  		memcpy(__entry->cor_mask, &rec->correction_mask,
->>  			CXL_EVENT_DER_CORRECTION_MASK_SIZE);
->>  		__entry->hpa = hpa;
->> +		__entry->hpa_alias = hpa_alias;
->>  		if (cxlr) {
->>  			__assign_str(region_name);
->>  			uuid_copy(&__entry->region_uuid, &cxlr->params.uuid);
->> @@ -485,7 +492,7 @@ TRACE_EVENT(cxl_dram,
->>  		"transaction_type='%s' channel=%u rank=%u nibble_mask=%x " \
->>  		"bank_group=%u bank=%u row=%u column=%u cor_mask=%s " \
->>  		"validity_flags='%s' " \
->> -		"hpa=%llx region=%s region_uuid=%pUb",
->> +		"hpa=%llx hpa_alias0=%llx region=%s region_uuid=%pUb",
->>  		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
->>  		show_event_desc_flags(__entry->descriptor),
->>  		show_dram_mem_event_type(__entry->type),
->> @@ -495,7 +502,8 @@ TRACE_EVENT(cxl_dram,
->>  		__entry->row, __entry->column,
->>  		__print_hex(__entry->cor_mask, CXL_EVENT_DER_CORRECTION_MASK_SIZE),
->>  		show_dram_valid_flags(__entry->validity_flags),
->> -		__entry->hpa, __get_str(region_name), &__entry->region_uuid
->> +		__entry->hpa_alias, __entry->hpa, __get_str(region_name),
-> 
-> Needs swapping -  hpa then hpa_alias
+> During the ACPI_NOTIFY_BUS_CHECK event, the lspci output initially
+> showed all FF's, and then the next run of the same command showed
+> BASE_ADDRESS_0 reset to zero:
+> $ sudo lspci -xxx -s 01:00.0 | grep "10:"
+> 10: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 
-Will fix
-> 
-> 
->> +		&__entry->region_uuid
->>  	)
->>  );
->>  
->> -- 
->> 2.47.1
->>
+Looks like the device isn't responding at all here.  Could happen if
+the device is reset or powered down.
 
+What is this device?  What driver is bound to it?  I don't see
+anything in dmesg that identifies a driver.
+
+> $ sudo lspci -xxx -s 01:00.0 | grep "10:"
+> 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 
+> I am not sure why lspci initially showed all FF's and then the next
+> run showed BAR0 reset.
+> Complete sudo lspci -xxx -s 01:00.0 output is captured in the attached
+> dmesg_log_pci_bar_reset.txt file.
+> 
+> /sys/firmware/acpi/interrupts/gpe01:       1  EN     enabled      unmasked
+> /sys/firmware/acpi/interrupts/gpe02:       1  EN     enabled      unmasked
+> 
+> 
+> 5. Debugging Steps:
+> 
+> Instrumenting acpiphp_check_bridge() will indicate whether we are
+> enabling or disabling a slot (enable_slot() or disable_slot()). Based
+> on the dmesg log, there is only one ACPI_NOTIFY_BUS_CHECK event, and
+> it is most likely for disable_slot(). However, does instrumenting
+> acpiphp_check_bridge() will explain why this is happening without
+> actually removing the PCI PLDA device?
+
+No, it won't explain that.  But if there was no add/remove event,
+re-enumeration should be harmless.  The objective of instrumentation
+would be to figure out why it isn't harmless in this case.
+
+> 6. Reproduction and Additional Information:
+> 
+> We do not see any clear pattern or procedure to reproduce this issue.
+> Once the issue occurs, rebooting the machine resolves it, but it
+> reoccurs after an unpredictable time.
+> We have another identical hardware setup with an older kernel (Ubuntu
+> 16.04.4 LTS, kernel version: 4.4.0-66-generic), and this issue has not
+> been observed so far on that machine.
+> Any additional pointers or suggestions on how to proceed to the root
+> cause of this issue would be greatly appreciated.
+
+You're seeing the problem on v5.4 (Nov 2019), which is much newer than
+v4.4 (Jan 2016).  But v5.4 is still really too old to spend a lot of
+time on unless the problem still happens on a current kernel.
+
+Bjorn
 
