@@ -1,361 +1,140 @@
-Return-Path: <linux-acpi+bounces-11409-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11410-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520BDA42B28
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 19:24:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594C1A42B5C
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 19:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 950713B8737
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 18:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603F2188A6CE
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 18:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF372673A0;
-	Mon, 24 Feb 2025 18:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76831C84DE;
+	Mon, 24 Feb 2025 18:30:55 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1A26739C;
-	Mon, 24 Feb 2025 18:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2154438DEC;
+	Mon, 24 Feb 2025 18:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740421331; cv=none; b=BBQJ8lltNwMtJ50uRztaSi3BZqDI4X0ooo5xZnESVvzmz08bIVTpBMlyyyuFm3Tp3Uw/rRgq7FyZvO7WMZmuPRgnsy7TVWsQ5PbqG1zAlpX3CF/JYAYPOnFHJVyKGPNxPtaTsurMvzw9Z50bCpw+SASlymufDCwHpafnheZqKzE=
+	t=1740421855; cv=none; b=uTkJdB1gAO8M86LdUFh/9D9pmFYn8ca9oLVDoQjs+CjNmhaOf39L6pE+bfF0hD2vja11BFYVFpIqqvSVLNp5OwkaWxDSSunodIAAbTc7c49SozuoDU+OYPX1f07ljW/0Fvo3zySohjNDLykh/EK6qHpYpHDER9VAt/8au4itslU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740421331; c=relaxed/simple;
-	bh=onJ9LGeMhE9Q5ncotmPkiu1BiqksCnxQd0BfxeGoIDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzNU00AB4WGWkVE9a9Qac4UamayJx1yzcq0moZxwxQ5vmVsebJCh1t4ZM0HtBPOVbCzw9Co4JfYkdzouXWWN67jjEkBZzy7xFXrTxm4xe9wa5wDNXVU3XCFTXzbH//Jq5DdvSwRv4G1SDXA5RhqIpSsqOmX4a7aeRYcDmhz/xq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D18C4CEE7;
-	Mon, 24 Feb 2025 18:22:10 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: rafael@kernel.org,
-	bp@alien8.de,
-	dan.j.williams@intel.com,
-	tony.luck@intel.com,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	alison.schofield@intel.com,
-	ira.weiny@intel.com,
-	ming.li@zohomail.com,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 4/4] cxl: Add mce notifier to emit aliased address for extended linear cache
-Date: Mon, 24 Feb 2025 11:21:02 -0700
-Message-ID: <20250224182202.1683380-5-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224182202.1683380-1-dave.jiang@intel.com>
-References: <20250224182202.1683380-1-dave.jiang@intel.com>
+	s=arc-20240116; t=1740421855; c=relaxed/simple;
+	bh=tEtVvuwWHlDXcAj0n/08mNkgMs0+lM9v7CgaWRalZ9A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BW7tsmmZCEThH5zzrt79gRAOTvQLZJ5pp9j9LxXrCsMSI/qXVGZvLeu0AUndHLr0ofTxwx/g0CopyUvfdPENVJYNlV6L2FAgW+mQlmMCYn6gLu/Zb2wgKwSddOuV+QHu7xMt6N5cH8JnfuecZn/++G5DFdRPLP1VRjVyB8CZUB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z1q3m4wqkz6M4ny;
+	Tue, 25 Feb 2025 02:28:04 +0800 (CST)
+Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
+	by mail.maildlp.com (Postfix) with ESMTPS id B6424140B63;
+	Tue, 25 Feb 2025 02:30:48 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Feb 2025 19:30:48 +0100
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Mon, 24 Feb 2025 19:30:48 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
+	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v20 00/15] EDAC: Scrub: introduce generic EDAC RAS control
+ feature driver + CXL/ACPI-RAS2 drivers
+Thread-Topic: [PATCH v20 00/15] EDAC: Scrub: introduce generic EDAC RAS
+ control feature driver + CXL/ACPI-RAS2 drivers
+Thread-Index: AQHbfVuaekLsP7SN9UOZsd1dS/TdhbNWWP4AgAB+X0A=
+Date: Mon, 24 Feb 2025 18:30:48 +0000
+Message-ID: <71ad0c8c6a304b2d9a62f49983c3d787@huawei.com>
+References: <20250212143654.1893-1-shiju.jose@huawei.com>
+ <20250224115002.GCZ7xc6o3yA1Q2j85i@fat_crate.local>
+In-Reply-To: <20250224115002.GCZ7xc6o3yA1Q2j85i@fat_crate.local>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Below is a setup with extended linear cache configuration with an example
-layout of memory region shown below presented as a single memory region
-consists of 256G memory where there's 128G of DRAM and 128G of CXL memory.
-The kernel sees a region of total 256G of system memory.
-
-              128G DRAM                          128G CXL memory
-|-----------------------------------|-------------------------------------|
-
-Data resides in either DRAM or far memory (FM) with no replication. Hot
-data is swapped into DRAM by the hardware behind the scenes. When error is
-detected in one location, it is possible that error also resides in the
-aliased location. Therefore when a memory location that is flagged by MCE
-is part of the special region, the aliased memory location needs to be
-offlined as well.
-
-Add an mce notify callback to identify if the MCE address location is part
-of an extended linear cache region and handle accordingly.
-
-Added symbol export to set_mce_nospec() in x86 code in order to call
-set_mce_nospec() from the CXL MCE notify callback.
-
-Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
----
-v4:
-- Move devm_add_action_or_reset() to devm_cxl_add_mce_notifier() (Ming)
----
- arch/x86/mm/pat/set_memory.c |  1 +
- drivers/cxl/Kconfig          |  4 +++
- drivers/cxl/core/Makefile    |  1 +
- drivers/cxl/core/mbox.c      |  6 ++++
- drivers/cxl/core/mce.c       | 65 ++++++++++++++++++++++++++++++++++++
- drivers/cxl/core/mce.h       | 20 +++++++++++
- drivers/cxl/core/region.c    | 28 ++++++++++++++++
- drivers/cxl/cxl.h            |  6 ++++
- drivers/cxl/cxlmem.h         |  2 ++
- tools/testing/cxl/Kbuild     |  1 +
- 10 files changed, 134 insertions(+)
- create mode 100644 drivers/cxl/core/mce.c
- create mode 100644 drivers/cxl/core/mce.h
-
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index ef4514d64c05..255a3d176956 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2081,6 +2081,7 @@ int set_mce_nospec(unsigned long pfn)
- 		pr_warn("Could not invalidate pfn=0x%lx from 1:1 map\n", pfn);
- 	return rc;
- }
-+EXPORT_SYMBOL_GPL(set_mce_nospec);
- 
- /* Restore full speculative operation to the pfn. */
- int clear_mce_nospec(unsigned long pfn)
-diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-index 876469e23f7a..d1c91dacae56 100644
---- a/drivers/cxl/Kconfig
-+++ b/drivers/cxl/Kconfig
-@@ -146,4 +146,8 @@ config CXL_REGION_INVALIDATION_TEST
- 	  If unsure, or if this kernel is meant for production environments,
- 	  say N.
- 
-+config CXL_MCE
-+	def_bool y
-+	depends on X86_MCE && MEMORY_FAILURE
-+
- endif
-diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
-index 1a0c9c6ca818..61c9332b3582 100644
---- a/drivers/cxl/core/Makefile
-+++ b/drivers/cxl/core/Makefile
-@@ -17,3 +17,4 @@ cxl_core-y += cdat.o
- cxl_core-y += acpi.o
- cxl_core-$(CONFIG_TRACING) += trace.o
- cxl_core-$(CONFIG_CXL_REGION) += region.o
-+cxl_core-$(CONFIG_CXL_MCE) += mce.o
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index 808b6a3c577b..cdef2c8809eb 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -11,6 +11,7 @@
- 
- #include "core.h"
- #include "trace.h"
-+#include "mce.h"
- 
- static bool cxl_raw_allow_all;
- 
-@@ -1458,6 +1459,7 @@ EXPORT_SYMBOL_NS_GPL(cxl_mailbox_init, "CXL");
- struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
- {
- 	struct cxl_memdev_state *mds;
-+	int rc;
- 
- 	mds = devm_kzalloc(dev, sizeof(*mds), GFP_KERNEL);
- 	if (!mds) {
-@@ -1473,6 +1475,10 @@ struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
- 	mds->ram_perf.qos_class = CXL_QOS_CLASS_INVALID;
- 	mds->pmem_perf.qos_class = CXL_QOS_CLASS_INVALID;
- 
-+	rc = devm_cxl_register_mce_notifier(dev, &mds->mce_notifier);
-+	if (rc)
-+		return ERR_PTR(rc);
-+
- 	return mds;
- }
- EXPORT_SYMBOL_NS_GPL(cxl_memdev_state_create, "CXL");
-diff --git a/drivers/cxl/core/mce.c b/drivers/cxl/core/mce.c
-new file mode 100644
-index 000000000000..ff8d078c6ca1
---- /dev/null
-+++ b/drivers/cxl/core/mce.c
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+#include <linux/mm.h>
-+#include <linux/notifier.h>
-+#include <linux/set_memory.h>
-+#include <asm/mce.h>
-+#include <cxlmem.h>
-+#include "mce.h"
-+
-+static int cxl_handle_mce(struct notifier_block *nb, unsigned long val,
-+			  void *data)
-+{
-+	struct cxl_memdev_state *mds = container_of(nb, struct cxl_memdev_state,
-+						    mce_notifier);
-+	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
-+	struct cxl_port *endpoint = cxlmd->endpoint;
-+	struct mce *mce = data;
-+	u64 spa, spa_alias;
-+	unsigned long pfn;
-+
-+	if (!mce || !mce_usable_address(mce))
-+		return NOTIFY_DONE;
-+
-+	if (!endpoint)
-+		return NOTIFY_DONE;
-+
-+	spa = mce->addr & MCI_ADDR_PHYSADDR;
-+
-+	pfn = spa >> PAGE_SHIFT;
-+	if (!pfn_valid(pfn))
-+		return NOTIFY_DONE;
-+
-+	spa_alias = cxl_port_get_spa_cache_alias(endpoint, spa);
-+	if (spa_alias == ~0ULL)
-+		return NOTIFY_DONE;
-+
-+	pfn = spa_alias >> PAGE_SHIFT;
-+
-+	/*
-+	 * Take down the aliased memory page. The original memory page flagged
-+	 * by the MCE will be taken cared of by the standard MCE handler.
-+	 */
-+	dev_emerg(mds->cxlds.dev, "Offlining aliased SPA address0: %#llx\n",
-+		  spa_alias);
-+	if (!memory_failure(pfn, 0))
-+		set_mce_nospec(pfn);
-+
-+	return NOTIFY_OK;
-+}
-+
-+static void cxl_unregister_mce_notifier(void *mce_notifier)
-+{
-+	mce_unregister_decode_chain(mce_notifier);
-+}
-+
-+int devm_cxl_register_mce_notifier(struct device *dev,
-+				   struct notifier_block *mce_notifier)
-+{
-+	mce_notifier->notifier_call = cxl_handle_mce;
-+	mce_notifier->priority = MCE_PRIO_UC;
-+	mce_register_decode_chain(mce_notifier);
-+
-+	return devm_add_action_or_reset(dev, cxl_unregister_mce_notifier,
-+					mce_notifier);
-+}
-diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
-new file mode 100644
-index 000000000000..ace73424eeb6
---- /dev/null
-+++ b/drivers/cxl/core/mce.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+#ifndef _CXL_CORE_MCE_H_
-+#define _CXL_CORE_MCE_H_
-+
-+#include <linux/notifier.h>
-+
-+#ifdef CONFIG_CXL_MCE
-+int devm_cxl_register_mce_notifier(struct device *dev,
-+				   struct notifier_block *mce_notifer);
-+#else
-+static inline int
-+devm_cxl_register_mce_notifier(struct device *dev,
-+			       struct notifier_block *mce_notifier)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
-+
-+#endif
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index cd7b0c31ebf7..0023b38f9ba4 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -3445,6 +3445,34 @@ int cxl_add_to_region(struct cxl_port *root, struct cxl_endpoint_decoder *cxled)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_add_to_region, "CXL");
- 
-+u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa)
-+{
-+	struct cxl_region_ref *iter;
-+	unsigned long index;
-+
-+	if (!endpoint)
-+		return ~0ULL;
-+
-+	guard(rwsem_write)(&cxl_region_rwsem);
-+
-+	xa_for_each(&endpoint->regions, index, iter) {
-+		struct cxl_region_params *p = &iter->region->params;
-+
-+		if (p->res->start <= spa && spa <= p->res->end) {
-+			if (!p->cache_size)
-+				return ~0ULL;
-+
-+			if (spa > p->res->start + p->cache_size)
-+				return spa - p->cache_size;
-+
-+			return spa + p->cache_size;
-+		}
-+	}
-+
-+	return ~0ULL;
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_port_get_spa_cache_alias, "CXL");
-+
- static int is_system_ram(struct resource *res, void *arg)
- {
- 	struct cxl_region *cxlr = arg;
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 7ee96867ac73..4785cff5209f 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -877,6 +877,7 @@ struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev);
- int cxl_add_to_region(struct cxl_port *root,
- 		      struct cxl_endpoint_decoder *cxled);
- struct cxl_dax_region *to_cxl_dax_region(struct device *dev);
-+u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint, u64 spa);
- #else
- static inline bool is_cxl_pmem_region(struct device *dev)
- {
-@@ -895,6 +896,11 @@ static inline struct cxl_dax_region *to_cxl_dax_region(struct device *dev)
- {
- 	return NULL;
- }
-+static inline u64 cxl_port_get_spa_cache_alias(struct cxl_port *endpoint,
-+					       u64 spa)
-+{
-+	return 0;
-+}
- #endif
- 
- void cxl_endpoint_parse_cdat(struct cxl_port *port);
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index 2a25d1957ddb..55752cbf408c 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -477,6 +477,7 @@ static inline struct cxl_dev_state *mbox_to_cxlds(struct cxl_mailbox *cxl_mbox)
-  * @poison: poison driver state info
-  * @security: security driver state info
-  * @fw: firmware upload / activation state
-+ * @mce_notifier: MCE notifier
-  *
-  * See CXL 3.0 8.2.9.8.2 Capacity Configuration and Label Storage for
-  * details on capacity parameters.
-@@ -503,6 +504,7 @@ struct cxl_memdev_state {
- 	struct cxl_poison_state poison;
- 	struct cxl_security_state security;
- 	struct cxl_fw_state fw;
-+	struct notifier_block mce_notifier;
- };
- 
- static inline struct cxl_memdev_state *
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index 1ae13987a8a2..f625eb2d2dc5 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -64,6 +64,7 @@ cxl_core-y += $(CXL_CORE_SRC)/cdat.o
- cxl_core-y += $(CXL_CORE_SRC)/acpi.o
- cxl_core-$(CONFIG_TRACING) += $(CXL_CORE_SRC)/trace.o
- cxl_core-$(CONFIG_CXL_REGION) += $(CXL_CORE_SRC)/region.o
-+cxl_core-$(CONFIG_CXL_MCE) += $(CXL_CORE_SRC)/mce.o
- cxl_core-y += config_check.o
- cxl_core-y += cxl_core_test.o
- cxl_core-y += cxl_core_exports.o
--- 
-2.48.1
-
+Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
+bGllbjguZGU+DQo+U2VudDogMjQgRmVicnVhcnkgMjAyNSAxMTo1MA0KPlRvOiBTaGlqdSBKb3Nl
+IDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IGxpbnV4LWVkYWNAdmdlci5rZXJuZWwub3Jn
+OyBsaW51eC1jeGxAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5hY3BpQHZnZXIua2VybmVsLm9y
+ZzsgbGludXgtbW1Aa3ZhY2sub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0KPmxp
+bnV4LWRvY0B2Z2VyLmtlcm5lbC5vcmc7IHRvbnkubHVja0BpbnRlbC5jb207IHJhZmFlbEBrZXJu
+ZWwub3JnOw0KPmxlbmJAa2VybmVsLm9yZzsgbWNoZWhhYkBrZXJuZWwub3JnOyBkYW4uai53aWxs
+aWFtc0BpbnRlbC5jb207DQo+ZGF2ZUBzdGdvbGFicy5uZXQ7IEpvbmF0aGFuIENhbWVyb24gPGpv
+bmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47DQo+ZGF2ZS5qaWFuZ0BpbnRlbC5jb207IGFsaXNv
+bi5zY2hvZmllbGRAaW50ZWwuY29tOyB2aXNoYWwubC52ZXJtYUBpbnRlbC5jb207DQo+aXJhLndl
+aW55QGludGVsLmNvbTsgZGF2aWRAcmVkaGF0LmNvbTsgVmlsYXMuU3JpZGhhcmFuQGFtZC5jb207
+DQo+bGVvLmR1cmFuQGFtZC5jb207IFlhemVuLkdoYW5uYW1AYW1kLmNvbTsgcmllbnRqZXNAZ29v
+Z2xlLmNvbTsNCj5qaWFxaXlhbkBnb29nbGUuY29tOyBKb24uR3JpbW1AYW1kLmNvbTsgZGF2ZS5o
+YW5zZW5AbGludXguaW50ZWwuY29tOw0KPm5hb3lhLmhvcmlndWNoaUBuZWMuY29tOyBqYW1lcy5t
+b3JzZUBhcm0uY29tOyBqdGhvdWdodG9uQGdvb2dsZS5jb207DQo+c29tYXN1bmRhcmFtLmFAaHBl
+LmNvbTsgZXJkZW1ha3Rhc0Bnb29nbGUuY29tOyBwZ29uZGFAZ29vZ2xlLmNvbTsNCj5kdWVud2Vu
+QGdvb2dsZS5jb207IGd0aGVsZW5AZ29vZ2xlLmNvbTsNCj53c2Nod2FydHpAYW1wZXJlY29tcHV0
+aW5nLmNvbTsgZGZlcmd1c29uQGFtcGVyZWNvbXB1dGluZy5jb207DQo+d2JzQG9zLmFtcGVyZWNv
+bXB1dGluZy5jb207IG5pZmFuLmN4bEBnbWFpbC5jb207IHRhbnhpYW9mZWkNCj48dGFueGlhb2Zl
+aUBodWF3ZWkuY29tPjsgWmVuZ3RhbyAoQikgPHByaW1lLnplbmdAaGlzaWxpY29uLmNvbT47IFJv
+YmVydG8NCj5TYXNzdSA8cm9iZXJ0by5zYXNzdUBodWF3ZWkuY29tPjsga2FuZ2thbmcuc2hlbkBm
+dXR1cmV3ZWkuY29tOw0KPndhbmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+OyBM
+aW51eGFybQ0KPjxsaW51eGFybUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjIw
+IDAwLzE1XSBFREFDOiBTY3J1YjogaW50cm9kdWNlIGdlbmVyaWMgRURBQyBSQVMNCj5jb250cm9s
+IGZlYXR1cmUgZHJpdmVyICsgQ1hML0FDUEktUkFTMiBkcml2ZXJzDQo+DQo+T24gV2VkLCBGZWIg
+MTIsIDIwMjUgYXQgMDI6MzY6MzhQTSArMDAwMCwgc2hpanUuam9zZUBodWF3ZWkuY29tIHdyb3Rl
+Og0KPj4gRnJvbTogU2hpanUgSm9zZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPj4NCj4+IFRo
+ZSBDWEwgcGF0Y2hlcyBvZiB0aGlzIHNlcmllcyBoYXMgZGVwZW5kZW5jeSBvbiBEYXZlJ3MgQ1hM
+IGZ3Y3RsDQo+PiBzZXJpZXMgWzFdLg0KPg0KPkZpcnN0IDUgcGF0Y2hlcyBtYXNzYWdlZCBhbmQg
+cXVldWVkIGhlcmU6DQo+DQo+aHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tl
+cm5lbC9naXQvYnAvYnAuZ2l0L2xvZy8/aD1lZGFjLWN4bA0KPg0KPlBsZWFzZSBydW4gdGhlbSB3
+aXRoIHRoZSByZXN0IG9mIHlvdXIgdGVzdCBjYXNlcyB0byBtYWtlIHN1cmUgSSBoYXZlbid0IGZh
+dC0NCj5maW5nZXJlZCBhbnl0aGluZy4NCg0KSGkgQm9yaXMsDQoNClRoYW5rcyBmb3Igc2hhcmlu
+ZyB0aGUgdXBkYXRlZCBicmFuY2guDQoNClRlc3RpbmcgcmVzdCBvZiB0aGUgcGF0Y2hlcyBmb3Ig
+Q1hMIFJBUyBmZWF0dXJlcyBhbmQgQUNQSSBSQVMyIHNjcnViIGZlYXR1cmUNCmluIHRoaXMgYnJh
+bmNoIGFyZSB3b3JrZWQgZmluZS4NCg0KVGhhbmtzLA0KU2hpanUNCg0KPg0KPlRoeC4NCj4NCj4t
+LQ0KPlJlZ2FyZHMvR3J1c3MsDQo+ICAgIEJvcmlzLg0KPg0KPmh0dHBzOi8vcGVvcGxlLmtlcm5l
+bC5vcmcvdGdseC9ub3Rlcy1hYm91dC1uZXRpcXVldHRlDQo=
 
