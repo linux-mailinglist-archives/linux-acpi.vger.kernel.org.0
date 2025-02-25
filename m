@@ -1,120 +1,101 @@
-Return-Path: <linux-acpi+bounces-11472-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11473-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31397A44C10
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 21:11:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66940A44D72
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 21:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64F497A2030
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 20:10:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8B23B8476
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 20:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CF220E32B;
-	Tue, 25 Feb 2025 20:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51223210F58;
+	Tue, 25 Feb 2025 20:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e4xgsujB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jv+ZV9iP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE2B20DD79;
-	Tue, 25 Feb 2025 20:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2338020F070;
+	Tue, 25 Feb 2025 20:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740514273; cv=none; b=YtxRPbh11PiuAHLuzDMjJ3VYPQOPqYzI2E/lSXmP438AH2AfwkjdChEBbvCQt4yL90HLEUNnlvcOj2nGIflQMt6nhObJOWi8lGP8UCYVZF4dmCZu0qYnKNBxMi2c5VBG4AJF8gyxFja6VzJOw3/8J3DCia099QhkId43nFNjbR0=
+	t=1740514954; cv=none; b=A3vCBUytrr1x99pS/h900uvRSL3q313bnF42TVtuIo3tmhnw6mE4yNNjr4WfkI9rjJSYUa2kq4bxW3lN4+k/9tFKMs6ijnvsskMNf1LsAE3PoGlreknImMYPnyBfUpmpiDuepRMF5Jch+vyaG7NQWOKrum5Dj/UT9N3KW+F/xxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740514273; c=relaxed/simple;
-	bh=DdDqk2Z2Hrl4FOy6YQnAYyODnlggw7XDfQs4VFw/ZyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gtECf/Y4/mu1m+yr73+Tv3JHBMOFsjBCcKhcKk5QWa2K+T0p/1jdXrZTYSMh6cSPFn0GfjP/Dw+1z9wZHsZnEC2dQZpwipwZYTpWv4duWeCFQBeRy+RttAAdSt6x1j1KNH/E1Z5WtRnSpQGayr+HP9rCQ79PRN3qDEmt3el6JcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e4xgsujB; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740514272; x=1772050272;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DdDqk2Z2Hrl4FOy6YQnAYyODnlggw7XDfQs4VFw/ZyY=;
-  b=e4xgsujBDOHgy1u1+NZkPlqHks0QshmPTG7El9PZJQCam5YwHLeiEZDf
-   kwWqF2fI+siKpw4gwpt7cQINdTlZjnPkXkrhpc1y3zq/Zx5Ex+noZPSM8
-   wVjs6kYHeGF7h9y46MJMGnho7ODrlIhMTmDd9dTOxq4bfo8V4dlk0paKk
-   +fnvFZkUWjfIK1fShbppopVPy/UxvQwHjBt5KcR6VKckd1OeEkBQF6MNN
-   LVZ2LZQyC86ZBHtttOyfb9YVqYStQ8n+qP6el5aEW3KOHpE4bLk/jler3
-   LgJVSKY0huF/vQqSEDCitGPbuaXXbe46cuR3zbJTwkgpp52lC6es09JIC
-   w==;
-X-CSE-ConnectionGUID: 3grGumGjSoOaHcfb+tObvQ==
-X-CSE-MsgGUID: gzXGkVLPTvy5+W9Xk3JugQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="51977375"
-X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
-   d="scan'208";a="51977375"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 12:11:11 -0800
-X-CSE-ConnectionGUID: oTi7FKmqTHS6RNkcKn4SeA==
-X-CSE-MsgGUID: 5O33ic4hTDSdchjwE1AALw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
-   d="scan'208";a="121576450"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.175])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 12:11:11 -0800
-Date: Tue, 25 Feb 2025 12:11:09 -0800
-From: Alison Schofield <alison.schofield@intel.com>
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-	rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
-	tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
-	ira.weiny@intel.com, ming.li@zohomail.com
-Subject: Re: [PATCH v4 2/4] acpi/hmat / cxl: Add extended linear cache
- support for CXL
-Message-ID: <Z74j3U_60B2YEDQS@aschofie-mobl2.lan>
-References: <20250224182202.1683380-1-dave.jiang@intel.com>
- <20250224182202.1683380-3-dave.jiang@intel.com>
+	s=arc-20240116; t=1740514954; c=relaxed/simple;
+	bh=WHfM+Psf/mtwjlJQPvL0GLWft+nM62DyQmwu5zUQuMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CxKmiLOgvNwMt0l/Gx5BZ748adiIiCVcmKYteP7AXzVzYc1+bDr5mopQtMfL7/KQ9JBiFlRtbXYCDWUoyqzrE4/YNbyIhOU38r3LUfmFTR04flgUOsYhC6ETVoiGF15iCYExBNyWhN+0upULlqdRsmH9SvB5uDFR/nWVBzk0Yxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jv+ZV9iP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9109DC4CEE8;
+	Tue, 25 Feb 2025 20:22:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740514953;
+	bh=WHfM+Psf/mtwjlJQPvL0GLWft+nM62DyQmwu5zUQuMY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jv+ZV9iPAKCxHbgXWD3BukLzsnFzH3LewbyntxG70BCFMgULJUwAKO3ejErJQyzUy
+	 aW3ahUhmrKpn3HDC4YYZXnqehkBsgr4kkhXORF//3HrXqCfKZfOXhtJ4Wqe5wJCMyk
+	 rlp7KvKFSvCUrOIHM3YymT1LzKUWaOvsLkLqoDbHawF+KOU2NW4Jd0ebiAwSZC8Kiq
+	 ewkfGkEiEbXy2/5kyWcNWuuHS9y/O4qNb9OAtMfdA7OqUCNnVpbUpgtVUBjKpHKGkX
+	 g+BbZwWea9zu8ZZhligsGe7oV8OZMSuHE7HQKZkkP6wap4/FiCaGazY8aqyXrVyzKQ
+	 nNqMGIi4MWXLQ==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2a01bcd0143so5729910fac.2;
+        Tue, 25 Feb 2025 12:22:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVBrfEIPkS66MujmXIlKld6LE9T7GBMQssoRap7Yd5ztbaS05c/ojgYasoOvgcCfQwhhkb/Omo3CKJothy7Voj5GRsEFQ==@vger.kernel.org, AJvYcCW7VRgHygzLd9UfW53mayOajHfjpxDudybaZnNkqg82qMs5hLBPsT3fDErGSr5Pi8z4WYqzf3kFYG6F@vger.kernel.org, AJvYcCWVutxFTp6XYx+ip6Xt4pYNB0mDjpI7jXr9H+4WfGVtcgovaHot4XMr3lmEsNXi1/G/ZUtpzNDWL6ZxVivP@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqGi2NnKRZePDTlJbAGncbQX0Z1x+xB9mK/EeHuTNdDPmhzTP/
+	R5PW9JUA5jIydEf08Y5xlBKVpnEl9WEkzLOo+Tat3SB+WxwXdDO6wlKzb8Knsg3iEG/vKQzcIzj
+	UD0s2a2wE/52aY7TxgxzDzvuwZ2g=
+X-Google-Smtp-Source: AGHT+IGAcEUAeOYUp2MtnZVqIB1tg5m8S4OTzu4iYW8KzZSgSuLZ2jHkw/gSrKPp7pN5UAvMdYgnU7D3c1TreJ4nRUY=
+X-Received: by 2002:a05:6871:14e:b0:29e:32e7:5f17 with SMTP id
+ 586e51a60fabf-2c130725ea5mr530894fac.28.1740514952774; Tue, 25 Feb 2025
+ 12:22:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250224182202.1683380-3-dave.jiang@intel.com>
+References: <20250224195059.10185-1-lkml@antheas.dev> <1c0c988b-8fe6-4857-9556-6ac6880b76ff@app.fastmail.com>
+ <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
+ <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
+ <9fa91732-3085-4e79-9a8f-b38263ee7d08@gmx.de> <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
+ <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
+In-Reply-To: <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 25 Feb 2025 21:22:21 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jpSN_Tq6D3OrRj5KDuXwqVuzcwyNXwEuL90fr=juH48g@mail.gmail.com>
+X-Gm-Features: AWEUYZmzhNvwyLu_2c5CnTz2MjgKfjkbD3lP2MqZruAal3HH9xtt5BadD67fSQ4
+Message-ID: <CAJZ5v0jpSN_Tq6D3OrRj5KDuXwqVuzcwyNXwEuL90fr=juH48g@mail.gmail.com>
+Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
+ multiple handlers
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: Armin Wolf <W_Armin@gmx.de>, Luke Jones <luke@ljones.dev>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, 
+	"Limonciello, Mario" <mario.limonciello@amd.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Len Brown <lenb@kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	linux-kernel@vger.kernel.org, 
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>, me@kylegospodneti.ch
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 24, 2025 at 11:21:00AM -0700, Dave Jiang wrote:
+On Tue, Feb 25, 2025 at 7:07=E2=80=AFAM Antheas Kapenekakis <lkml@antheas.d=
+ev> wrote:
+>
+> Yes, making asus-wmi use low-power is indeed the easiest solution, but
+> if I thought it was good enough, I would have done that already as a
+> downstream consumer of the kernel.
+>
+> I just want to be done with this once and for all, so I spent an extra
+> hour today solving this in a cleaner way.
 
-snip to a dev_dbg message of interest -
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index e8d11a988fd9..cd7b0c31ebf7 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-
-snip
-> @@ -1951,7 +1965,7 @@ static int cxl_region_attach(struct cxl_region *cxlr,
->  		return -ENXIO;
->  	}
->  
-> -	if (resource_size(cxled->dpa_res) * p->interleave_ways !=
-> +	if (resource_size(cxled->dpa_res) * p->interleave_ways + p->cache_size !=
->  	    resource_size(p->res)) {
->  		dev_dbg(&cxlr->dev,
->  			"%s:%s: decoder-size-%#llx * ways-%d != region-size-%#llx\n",
-
-Add cache to this message since used in calculation above.
-Took the liberty of trimming 'decoder-size' to '-size' since the decoder name
-already precedes '-size'.
-
-
-
- 		dev_dbg(&cxlr->dev,
--			"%s:%s: decoder-size-%#llx * ways-%d != region-size-%#llx\n",
-+			"%s:%s-size-%#llx * ways-%d + cache-%#llx != region-size-%#llx\n",
- 			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
- 			(u64)resource_size(cxled->dpa_res), p->interleave_ways,
--			(u64)resource_size(p->res));
-+			(u64)p->cache_size, (u64)resource_size(p->res));
- 		return -EINVAL;
- 	}
- 
-
-snip
+What about adding "quiet" as a "hidden choice" to amd-pmf such that it
+would allow the test_bit(*bit, handler->choices) check in
+_store_class_profile() to pass, but it would not cause this "choice"
+to become visible in the new I/F (or when amd-pmf becomes the only
+platform-profile driver) and it would be aliased to "low-power"
+internally?
 
