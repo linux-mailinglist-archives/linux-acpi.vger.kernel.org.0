@@ -1,204 +1,188 @@
-Return-Path: <linux-acpi+bounces-11465-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11466-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A306A44605
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 17:28:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9820EA44926
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 18:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4543E1882A51
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 16:27:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D218D3A6DDA
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 17:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A3418E023;
-	Tue, 25 Feb 2025 16:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE62419993B;
+	Tue, 25 Feb 2025 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="tNP/9R0o"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bOarUqym"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3044183CB0;
-	Tue, 25 Feb 2025 16:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87BF14F9C4;
+	Tue, 25 Feb 2025 17:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740500856; cv=none; b=nuS33hCiEUi2e0+Ts2vMXJ5Mjbfq7ZbLpAlsipAkC7WMcX4IoOIHoknyMOaMWWfS4++c0tsDDAe9DqhiwMz7R1rVdAh5qzv2iidxVXZ1Q78AaM/6lLgIyAM5dCqPo8f9b/RvQ20taPOH4mH1G2ge2PiUdyym9VnC8iodXYUJYks=
+	t=1740505799; cv=none; b=B6HF0L077PkJmXge5iSE9YPFbGQVz5gqzm98iRPLa4MCJUu2klF5bbwqQlJY/5/5AVbyDkQxQJ+bFfOW6+NcpcqtbHNN6/S5vK0HVcwN2Gd3wQNd9ihaZcVdIV1PFaYDXpemWjp9WPkISvc6+kDaYG7oycAtO2MlwiVapZnyLBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740500856; c=relaxed/simple;
-	bh=BdJtZnTV2i07SNC32yy0QgGJM8y0+NMRw9EmWllffYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X7mkq2C5OvZduYvCm69P8SyeHT2Wj4sud4G/7oupN0hFy1u6J6rekSON5/E1zQsAgtiYnG5+ync5RD28ZR6Z97eu+Ei/0KbEKnWKH77C73Dm49NJ4nGMMgxea3NVK4iMpA77w1RxaOaddvQxmptz+/+3ktqUyT+Jvv69FbwfFxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=tNP/9R0o; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id 16C972E0904A;
-	Tue, 25 Feb 2025 18:27:24 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740500845;
-	bh=NnGd3+Erk9r9ZZ2TFe6MqU7NYineZtnKsCzncysHX0s=;
-	h=Received:From:Subject:To;
-	b=tNP/9R0oSfESPQvz6pGPWLQN7SYMjYF109sGAiCVnAcvKQyc4FJikUZ2y/kOXaczp
-	 scQ+s5tlnY9dzvRRR+gkXLwGBFF5iIL1AxIVUAx6tkugK26vIpUzcNF8waqK7CoVZu
-	 U/cpy3SJ7h9xl/Py+0j5oH6KwBMHv99F5CtCl0wQ=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.170) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f170.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f170.google.com with SMTP id
- 38308e7fff4ca-30613802a59so60210751fa.0;
-        Tue, 25 Feb 2025 08:27:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHM9XlKBIkKC8BYIbEM/4fXekR8ofFfQyRLhWDJTO4QAF20STNBBNzSK2htSVaPN0iUVxIFGE0Lvxe@vger.kernel.org,
- AJvYcCWOGnnRXvWVdPmnadjcvR12mJUELGay17EmXP0SQIzRsaaP3B2prXjuQG3sO5DsgFOGpwTXCbOHpa2vFqXg@vger.kernel.org,
- AJvYcCWSD8SRbWQT5MekTgn+zRF4HpB6dCY+l4Ty1+rg3HbJgmv8bgeq2y0wAxkvcglRadpbcVfDn+uJEtEGUUD1mxvnlxlBgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiJiO+7aC/kBN4tdlPJccXgGK4C+ejEopqgJYXCPx5IH3cKzh2
-	p8d9UEfdrfa1Y9NrALQNryBTUvKb+7bxobg7C3ou4e2uOjJye0Wkm/lFslZXxjPjkdnEXztdfdT
-	Nq6O8LLG0rfSj8f/wvK/CIW8nyAw=
-X-Google-Smtp-Source: 
- AGHT+IFsEd4oylDEyrfYtIXluntvlN8HJd7l3mUHfTBfJ4KDbootcyCrzrgRIjvvg0uN4xvbU3BUYWc5Q5DfEy0x9AI=
-X-Received: by 2002:a2e:9ecd:0:b0:308:fedf:8c12 with SMTP id
- 38308e7fff4ca-30b79133d87mr2041851fa.5.1740500843364; Tue, 25 Feb 2025
- 08:27:23 -0800 (PST)
+	s=arc-20240116; t=1740505799; c=relaxed/simple;
+	bh=yp8FvEbU2bkxdNPh8CTALxDMZZtdWdeBwJwKmOBjdRo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hc9C29Wa+dcMd1yDEA/DPTKPW3eY78CyUDZaXea62F97nRaUuub/XEuXUNixSAYXe95Xm7/fjoZZGAKleaeTmgnXIFx5vwN2kmYhzjEPsRu+MQrAKcn62eVHS9AgkGyM1ft5qkvgFZL5knThHj3YO7j9GxBL0CWFCWDSpqHkiBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bOarUqym; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740505798; x=1772041798;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=yp8FvEbU2bkxdNPh8CTALxDMZZtdWdeBwJwKmOBjdRo=;
+  b=bOarUqymiFclnIw7X/WQ1woWaTdxB75m/ZKjpGdZWwJobKxoIvnQ+Xej
+   +qJyVcs+c6NLlDpwmz/npJpekqBLUBghlp8wy/yY1+iJIOSMmnEs+Wp6n
+   WYLL9o+VeUGIs4O3WW7bPlqB3mI9TWvkNfb9GAm1rkmzXJiPehI681HDz
+   nWcWp58PiZtu1RmLWF/rx7nL1SWef2NdQbnjcmUFWulgrm47MIjL0JElD
+   vymyGYNAHzx9u89swWMf7cJlWK0P9djjFJQJ9HWNzWcWTtULl/LhkeXB9
+   8ZnBAF9ouwQqQwABxXxoI6rspAkypkEpqQcsZTqAr9lqUDFj9xNtCaIW5
+   A==;
+X-CSE-ConnectionGUID: A1gNqUnIRiufN0Wv1qZgNQ==
+X-CSE-MsgGUID: 3dwDGoJyS3+ZmO9yjBDzSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="58861521"
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
+   d="scan'208";a="58861521"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 09:49:57 -0800
+X-CSE-ConnectionGUID: pb8Zky/LTD68433e/PhUcw==
+X-CSE-MsgGUID: mkFDnFFuR0mMzQxEpPTMGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="121703245"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orviesa005.jf.intel.com with SMTP; 25 Feb 2025 09:49:52 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 25 Feb 2025 19:49:51 +0200
+Date: Tue, 25 Feb 2025 19:49:51 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+	bhelgaas@google.com, ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
+	badal.nilawar@intel.com, kam.nasim@intel.com
+Subject: Re: [RFC 5/6] drm/xe/pm: D3Cold target state
+Message-ID: <Z74Cv8EneHF1frww@intel.com>
+References: <20250224164849.3746751-1-anshuman.gupta@intel.com>
+ <20250224164849.3746751-6-anshuman.gupta@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250224195059.10185-1-lkml@antheas.dev>
- <1c0c988b-8fe6-4857-9556-6ac6880b76ff@app.fastmail.com>
- <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
- <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
- <f5d39d3c932a78a5021877230c212c620edc586e.camel@ljones.dev>
- <CAGwozwEWZxWzcTjPby4OeUz+CCXbvQAkvCExo-Qc7=r-0-6BCg@mail.gmail.com>
- <5cff4286-2800-4bc0-b243-5244d19a64b7@gmx.de>
-In-Reply-To: <5cff4286-2800-4bc0-b243-5244d19a64b7@gmx.de>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Tue, 25 Feb 2025 17:27:10 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwFS_D4k-Q-QUums8FMZ82p_5-RzBvZZJX1k7_YP2E1cfg@mail.gmail.com>
-X-Gm-Features: AQ5f1JpbOG7dozqD-mEqecwiGnoINaSfPy5IByhYBSLlH1eBPPJoAtDSCeMqdxM
-Message-ID: 
- <CAGwozwFS_D4k-Q-QUums8FMZ82p_5-RzBvZZJX1k7_YP2E1cfg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
- multiple handlers
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: Luke Jones <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>,
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Len Brown <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
- me@kylegospodneti.ch
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174050084442.5352.9862764441592976971@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250224164849.3746751-6-anshuman.gupta@intel.com>
+X-Patchwork-Hint: comment
 
-On Tue, 25 Feb 2025 at 16:56, Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 25.02.25 um 03:26 schrieb Antheas Kapenekakis:
->
-> >> If these "scripts" use `platform_profile_choices` to get their
-> >> selections and verify they are available then there should be zero
-> >> breakage. If they don't then they should be updated to be correct.
-> > Yeah, if any Asus users wrote scripts for their laptops to e.g., "echo
-> > quiet | sudo tee /sys/firmware/acpi/platform_profile" or used TLP let
-> > them spend a few days finding out why kernel 6.14 does not work. They
-> > should have written a 300 line bash script instead.
->
-> Hi,
->
-> using "echo quiet | sudo tee /sys/firmware/acpi/platform_profile" is quite
-> brittle, as some hardware will populate the available profiles dynamically.
->
-> Still breaking userspace is indeed not an option here, so we have to think
-> of something else.
+On Mon, Feb 24, 2025 at 10:18:48PM +0530, Anshuman Gupta wrote:
+> Trade-off D3Cold target state based upon current vram usages.
+> if vram usages is greater then vram_d3cold_threshold and GPU
+> has display connected 
 
-e.g., for example I had a tdp handler for the ally and had to
-transplant it to thermal_throttle_profile when the breakage with
-amd_pmf started happening.
+Why would anyone care about displays being connected or not?
 
-> snip
->
-> This whole driver was likely written by someone as a hobby, so you already
-> depend on a hobby here.
->
-> That being said, i agree that fixes have a priority over new features, and
-> i think everyone agrees on that.
+> then target D3Cold state is D3Cold-VRSR
+> otherwise target state is D3COLD-Off.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>  drivers/gpu/drm/xe/display/xe_display.c | 22 ++++++++++++++++++++++
+>  drivers/gpu/drm/xe/display/xe_display.h |  1 +
+>  drivers/gpu/drm/xe/xe_pm.c              | 12 ++++++++++++
+>  3 files changed, 35 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+> index 02a413a07382..140a43d6b1b6 100644
+> --- a/drivers/gpu/drm/xe/display/xe_display.c
+> +++ b/drivers/gpu/drm/xe/display/xe_display.c
+> @@ -548,3 +548,25 @@ int xe_display_probe(struct xe_device *xe)
+>  	unset_display_features(xe);
+>  	return 0;
+>  }
+> +
+> +bool xe_display_connected(struct xe_device *xe)
+> +{
+> +	struct drm_connector *list_connector;
+> +	struct drm_connector_list_iter iter;
+> +	bool ret = false;
+> +
+> +	mutex_lock(&xe->drm.mode_config.mutex);
+> +	drm_connector_list_iter_begin(&xe->drm, &iter);
+> +
+> +	drm_for_each_connector_iter(list_connector, &iter) {
+> +		if (list_connector->status == connector_status_connected) {
+> +			ret = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	drm_connector_list_iter_end(&iter);
+> +	mutex_unlock(&xe->drm.mode_config.mutex);
+> +
+> +	return ret;
+> +}
+> diff --git a/drivers/gpu/drm/xe/display/xe_display.h b/drivers/gpu/drm/xe/display/xe_display.h
+> index 685dc74402fb..c6bc54323084 100644
+> --- a/drivers/gpu/drm/xe/display/xe_display.h
+> +++ b/drivers/gpu/drm/xe/display/xe_display.h
+> @@ -40,6 +40,7 @@ void xe_display_pm_resume(struct xe_device *xe);
+>  void xe_display_pm_runtime_suspend(struct xe_device *xe);
+>  void xe_display_pm_runtime_suspend_late(struct xe_device *xe);
+>  void xe_display_pm_runtime_resume(struct xe_device *xe);
+> +bool xe_display_connected(struct xe_device *xe);
+>  
+>  #else
+>  
+> diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+> index 81e67b5693dc..6d28aedcb062 100644
+> --- a/drivers/gpu/drm/xe/xe_pm.c
+> +++ b/drivers/gpu/drm/xe/xe_pm.c
+> @@ -198,6 +198,14 @@ static void xe_rpm_lockmap_release(const struct xe_device *xe)
+>  			 &xe_pm_runtime_d3cold_map);
+>  }
+>  
+> +static void xe_pm_suspend_prepare(struct xe_device *xe)
+> +{
+> +	if (pm_suspend_target_state == PM_SUSPEND_TO_IDLE)
+> +		xe_pm_d3cold_allowed_toggle(xe);
+> +	else
+> +		xe->d3cold.allowed = XE_D3COLD_OFF;
+> +}
+> +
+>  /**
+>   * xe_pm_suspend - Helper for System suspend, i.e. S0->S3 / S0->S2idle
+>   * @xe: xe device instance
+> @@ -213,6 +221,8 @@ int xe_pm_suspend(struct xe_device *xe)
+>  	drm_dbg(&xe->drm, "Suspending device\n");
+>  	trace_xe_pm_suspend(xe, __builtin_return_address(0));
+>  
+> +	xe_pm_suspend_prepare(xe);
+> +
+>  	err = xe_pxp_pm_suspend(xe->pxp);
+>  	if (err)
+>  		goto err;
+> @@ -875,6 +885,8 @@ void xe_pm_d3cold_allowed_toggle(struct xe_device *xe)
+>  
+>  	if (total_vram_used_mb < xe->d3cold.vram_threshold)
+>  		xe->d3cold.allowed = XE_D3COLD_OFF;
+> +	else if (xe->d3cold.vrsr_capable && xe_display_connected(xe))
+> +		xe->d3cold.allowed = XE_D3COLD_VRSR;
+>  	else
+>  		xe->d3cold.allowed = XE_D3HOT;
+>  
+> -- 
+> 2.34.1
 
-Indeed.In which case, saying people should use your hobby code perhaps
-is a bit overreaching. Haha.
-
-> Maybe the current strategy of the legacy platform-profile interface can be extended
-> without introducing the "secondary handler" concept.
->
-> The current strategy only advertises platform profiles supported by all handlers, and
-> as you pointed out this causes problems for users on certain devices.
->
-> I was thinking that be can change this strategy to advertise all platform profiles supported
-> by at least one handler can then do something like this:
->
->   - handler 1: supports low_power, balanced and performance
->
->   - handler 2: supports quiet, balanced and balanced-performance
->
-> -> legacy interface advertises low_power, quiet, balanced, balanced-performance and performance
->
-> When setting low_power, the closes equivalent is picked for handlers which do not support low_power:
->
->   - handler 1: setting low_power
->
->   - handler 2: setting quiet
->
-> When setting quiet, the same happens:
->
->   - handler 1: setting balanced
->
->   - handler 2: setting quiet
->
-> Basically all profiles get treated like a range:
->
-> low_power <- lower end of the performance range
-> cool,
-> quiet,
-> balanced,
-> balanced-performance,
-> performance <- upper end of the performance range
->
-> The only problem will be that getting the current platform profile would be more difficult, as
-> the legacy handler has to determine the lowest currently selected platform profile.
->
-> Would this approach be OK?
->
-> Thanks,
-> Armin Wolf
->
-
-So the way this patch series is designed is that the new
-/sys/class/platform-profileX works exactly the same.
-
-Then, when asus-wmi is loaded, regardless of whether amd-pmf is
-loaded, you get quiet, balanced, and performance. Like it was before.
-Setting it to quiet makes amd-pmf use its low power setting. And it
-will work the same with all WMI drivers, regardless of whether they
-use cool, low-power, quiet, or balanced-power
-
-When asus-wmi is unloaded, you get low-power, balanced, and
-performance. As you would with amd-pmf on its own. 0 ABI changes.
-
-Series is small enough so that if you don't like it, it is easy to
-refactor out during the 6.15 merge window.
-
-$ cat /sys/firmware/acpi/platform_profile_choices
-quiet balanced performance
-$ sudo rmmod asus-nb-wmi
-$ cat /sys/firmware/acpi/platform_profile_choices
-low-power balanced performance
-
-Antheas
+-- 
+Ville Syrjälä
+Intel
 
