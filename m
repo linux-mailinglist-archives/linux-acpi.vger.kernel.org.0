@@ -1,63 +1,75 @@
-Return-Path: <linux-acpi+bounces-11475-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11476-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E0CA44DA7
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 21:37:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A57A44DBB
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 21:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5B23B7C9E
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 20:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 134D63B6575
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 20:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F020E019;
-	Tue, 25 Feb 2025 20:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA02214A62;
+	Tue, 25 Feb 2025 20:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iHf0cPdM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yg8Wadpe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9ECB20D4FF;
-	Tue, 25 Feb 2025 20:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD1B21019A;
+	Tue, 25 Feb 2025 20:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740515426; cv=none; b=OGqS+zYA8Rvx4rhJ/Ztj97raP7R2exFtjf5K2T3A4wi0dQMbh11r7IjgZZmKtMSTB182xLpUDQgjjccuav/z/H4xflSk0i6csU/GD9Jsdf8Fq+wLvZ5N2hzNwa30nJHe4aBW5CxjSrHQWsD7cavSQXYcHGiS9HhrM6jHxea8jJ0=
+	t=1740515648; cv=none; b=gLKnI65BvQ4wuFGH4aXtAMRevC5U1zABwSxNqnIVRi9h5n5FAI5C1PT12MxnumJe87ZxxjxqED0H1kd9ABENGl1qFGCYavNyyBPIUmUicI/vqnxCWj+21/rPf2q2LgNVMc/12QEBpF3I6Hx2Ej5CeNe1YmenPRvamLlYQFDjFCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740515426; c=relaxed/simple;
-	bh=rovhXK4tfCJIYykPC7TY04RQpYyM+0gQ2VvPGXE/Yuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KvzqcgbDfBG5vn3lYjPBabLcxRcdS/H4edFIhz9JeffDwlazlMUGRFUdxVQhnfkGnT1c00bsa1rn1PvPWcAc6ZHKm6uurIS4J8vNfv7nCqzBbwueVRHmraLH69TrcVT01N4EX0eENS1XuyBJm/S1VDe2rlw8Z2CgkbKpOAZ5DB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iHf0cPdM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2324C4CEDD;
-	Tue, 25 Feb 2025 20:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740515426;
-	bh=rovhXK4tfCJIYykPC7TY04RQpYyM+0gQ2VvPGXE/Yuk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=iHf0cPdMNyr+SfdTQ6MirU675NOHmGp9hQvw4v9c5KCbQi8bWOgY7K5VioqSQkCn6
-	 YPjReAOaSs66s3suFj25s4dVLkI4oThna0W5oIdOQX80PLiieLT56N/V/hkjnGy7UC
-	 vlHgD4LcQyvuapnKabZ7dqhJVXRH+Xo7S8Ywm/UJIaIi8KbITp8d5g6iFpHbDZwLaj
-	 c4FR09tBO7po8pcmcOsZne2DKCYshzVOyigxMIjibSYAAAVNleD3w5USJ/oIvZYSCv
-	 sZMaapDJOXvte1BJHIIpL5xPiDGtMr37t4K7rdfc72kN7wdMrIDZxSj2G5/J6oDcQ3
-	 jdFcnp6LkMuNg==
-Date: Tue, 25 Feb 2025 14:30:24 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Cc: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
-	"De Marchi, Lucas" <lucas.demarchi@intel.com>,
-	"Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-	"Nilawar, Badal" <badal.nilawar@intel.com>,
-	"Nasim, Kam" <kam.nasim@intel.com>,
-	"Gupta, Varun" <varun.gupta@intel.com>
-Subject: Re: [RFC 1/6] PCI/ACPI: Implement PCI FW _DSM method
-Message-ID: <20250225203024.GA516174@bhelgaas>
+	s=arc-20240116; t=1740515648; c=relaxed/simple;
+	bh=8dfBXFcm2KXc+38ebzZPgXW5cc2mMwtUf+GAA5/SQCs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YTorgEY9q8U9ltSZlMDhgFbxvA20u7fKNyRnssh7KpJYENLTKH9vaSBUAZKDl5srRM/Fk6rBDjekVqPbewyWBej+tRIXTW4zeFiTOtRLU+kBbhYGRxK+2Mv7vyZ3MuoTDOSXsLfSR0IypImsOn2crLlxGIXOcZHioqdICcnXxxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yg8Wadpe; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740515646; x=1772051646;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8dfBXFcm2KXc+38ebzZPgXW5cc2mMwtUf+GAA5/SQCs=;
+  b=Yg8WadpeMBDJRp6bNv1X/LhA9jVA+4ozO2kUyz6yzq1f5MZLnCg2afIj
+   QanK3NB7Bifyym8IbhMYkRdb7iWlTwyX39b0S4KAYg1/ArwGEpFf4zXmK
+   ISNZQSTJBRgl6I+fUQH1P0OLKVy9FbtjBbz17UwagwB5oH5URROJSz4Zj
+   x9Is6QQ4EfII3ICMTrQuzr00jjEYvQ7iHn5aAiln5atzsBIOSNDNFYUjk
+   Gzt+qoOrGVkq1EcNwQBWWGz4rrd56HRNGOgcayQoc4EEiY8uuOWzDbvbU
+   qzWl3GhxO/zyWjjuK7kiLCK2NWFSs93rQzUNB265SinmxG07g7D99Ki94
+   g==;
+X-CSE-ConnectionGUID: geG8jLD4S9mbfPeYDUPQgA==
+X-CSE-MsgGUID: KxLfY4EpTCay0EVx3hLRfA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="41470384"
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
+   d="scan'208";a="41470384"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 12:34:05 -0800
+X-CSE-ConnectionGUID: W3lKAR7/T8CiLK0rPVRKtQ==
+X-CSE-MsgGUID: hjM7KtZfROK2aRmC3f4wKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="116990410"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.175])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 12:34:06 -0800
+Date: Tue, 25 Feb 2025 12:34:03 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
+	tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	ira.weiny@intel.com, ming.li@zohomail.com
+Subject: Re: [PATCH v4 3/4] cxl: Add extended linear cache address alias
+ emission for cxl events
+Message-ID: <Z74pO6m10psBdJns@aschofie-mobl2.lan>
+References: <20250224182202.1683380-1-dave.jiang@intel.com>
+ <20250224182202.1683380-4-dave.jiang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,65 +78,105 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CY5PR11MB62113F649A1AF98D33ACE0AC95C32@CY5PR11MB6211.namprd11.prod.outlook.com>
+In-Reply-To: <20250224182202.1683380-4-dave.jiang@intel.com>
 
-On Tue, Feb 25, 2025 at 06:25:52PM +0000, Gupta, Anshuman wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> ... redundant headers snipped
+On Mon, Feb 24, 2025 at 11:21:01AM -0700, Dave Jiang wrote:
+> Add the aliased address of extended linear cache when emitting event
+> trace for DRAM and general media of CXL events.
 
-> > On Mon, Feb 24, 2025 at 10:18:44PM +0530, Anshuman Gupta wrote:
-> > > Implement _DSM method 10 and _DSM Method 11 as per PCI firmware
-> > specs
-> > > section 4.6.10 and 4.6.11.
-> > 
-> > Please split into two patches, one for each _DSM.  Include spec
-> > citations, e.g., PCI Firmware r3.3, sec 4.6.10.  Section numbers
-> > are not guaranteed to stay consistent across spec revisions, so we
-> > need both the revision and section number.
-> > 
-> > Include some descriptive words about the DSM in each subject line,
-> > e.g., "D3cold Aux Power Limit", "PERST# Assertion Delay".
-> > 
-> > > Current assumption is only one PCIe Endpoint driver (XeKMD for
-> > > Battlemage GPU) will request for Aux Power Limit under a given Root
-> > > Port but theoretically it is possible that other Non-Intel GPU or
-> > > Non-GPU PCIe Endpoint driver can also request for Aux Power Limit and
-> > > request to block the core power removal under same Root Port.
-> > > That will disrupt the Battlemage GPU VRAM Self Refresh.
-> > 
-> > I guess this is sort of an acknowledgement of the r3.3, sec 4.6.10 spec text
-> > about system software being responsible for tracking and aggregating
-> > requests when there are multiple functions below the Downstream Port?
+What about cxl_poison trace events?
 
-> AFAIU apart from multiple function below the Downstream Port (from
-> same PCIe Card), there can be possibility of another PCie card
-> connected via a switch to same root port like below topology.
+When cxl device poison lists are read, or poison is injected
+or cleared, an HPA is included in the trace event. Seems the
+hpa_alias0 belong there too. 
+
+
 > 
-> 			                 |-> PCIe PCIe Downstream Port -> End Point Device 	
-> Root Port -> PCIe Upstream Port   |-> PCIe PCIe Downstream Port -> End Point Device	
-> 			                 |-> PCIe PCIe Downstream Port -> PCIe Upstream Port ->  PCIe Downstream Port -> *EndPoint Device 	
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+> v4:
+> - Make error using ULLONG_MAX consistently. (Alison)
+> - Make hpa_alias0 naming consistent. (Alison)
+> - Swap incorrect position of hpa and hpa_alias0. (Alison)
+> ---
+>  drivers/cxl/core/mbox.c  | 28 ++++++++++++++++++++++++----
+>  drivers/cxl/core/trace.h | 22 ++++++++++++++--------
+>  2 files changed, 38 insertions(+), 12 deletions(-)
 > 
-> *Endpoint Device from different PCIe card can also request to block the core power removal under same Root Port ?
+> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> index 548564c770c0..808b6a3c577b 100644
+> --- a/drivers/cxl/core/mbox.c
+> +++ b/drivers/cxl/core/mbox.c
+> @@ -856,6 +856,23 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
+>  
+> +static u64 cxlr_hpa_cache_alias(struct cxl_region *cxlr, u64 hpa)
+> +{
+> +	struct cxl_region_params *p;
+> +
+> +	if (!cxlr)
+> +		return ULLONG_MAX;
 
-Of course.
+checked cxlr in caller
 
->  How to document such limitation ?
+> +
+> +	p = &cxlr->params;
+> +	if (!p->cache_size)
+> +		return ULLONG_MAX;
+> +
+> +	if (hpa >= p->res->start + p->cache_size)
+> +		return hpa - p->cache_size;
+> +
+> +	return hpa + p->cache_size;
 
-> > If so, remove the Battlemage-specific language and just say something about
-> > the fact that this implementation doesn't do any of that tracking and
-> > aggregation.
+Since a DPA can only be in the cxl resource half of the p->res, not in
+the extended cache, is alias always hpa - cache.
 
-^^ Here's a hint about how to document this.  My point is that this
-has nothing to do with Battlemage in particular, so the text about
-Battlemage-specific things is a distraction from the real point, which
-IIUC is this:
 
-  Note that this implementation assumes only a single device below the
-  Downstream Port because it does not track and aggregate requests
-  from all child devices below the Downstream Port as required by sec
-  4.6.10.
+>  void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>  			    enum cxl_event_log_type type,
+>  			    enum cxl_event_type event_type,
+> @@ -871,7 +888,7 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>  	}
+>  
+>  	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
+> -		u64 dpa, hpa = ULLONG_MAX;
+> +		u64 dpa, hpa = ULLONG_MAX, hpa_alias = ULLONG_MAX;
+>  		struct cxl_region *cxlr;
+>  
+>  		/*
+> @@ -884,14 +901,17 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>  
+>  		dpa = le64_to_cpu(evt->media_hdr.phys_addr) & CXL_DPA_MASK;
+>  		cxlr = cxl_dpa_to_region(cxlmd, dpa);
+> -		if (cxlr)
+> +		if (cxlr) {
+>  			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
+> +			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
+> +		}
+>  
 
-> > > One possible mitigation would be only allowing only first PCIe
-> > > Non-Bridge Endpoint Function 0 driver to call_DSM method 10.
+How about something like this to eliminate cxlr_hpa_cache_alias():
+ 
+ 	if (trace_cxl_general_media_enabled() || trace_cxl_dram_enabled()) {
+-		u64 dpa, hpa = ULLONG_MAX, hpa_alias = ULLONG_MAX;
++		u64 dpa, cache_size, hpa = ULLONG_MAX, hpa_alias = ULLONG_MAX;
+ 		struct cxl_region *cxlr;
+ 
+ 		/*
+@@ -904,7 +887,9 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+ 		cxlr = cxl_dpa_to_region(cxlmd, dpa);
+ 		if (cxlr) {
+ 			hpa = cxl_dpa_to_hpa(cxlr, cxlmd, dpa);
+-			hpa_alias = cxlr_hpa_cache_alias(cxlr, hpa);
++			cache_size = cxlr->params.cache_size;
++			if (cache_size)
++				hpa_alias = hpa - cache_size;
+ 		}
+
+
+snip
+
 
