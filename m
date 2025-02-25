@@ -1,105 +1,115 @@
-Return-Path: <linux-acpi+bounces-11462-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11463-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7FFA44225
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 15:15:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB31A4429C
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 15:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5DF177DB7
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 14:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B5951882D11
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 14:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3514268692;
-	Tue, 25 Feb 2025 14:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDB426B2C6;
+	Tue, 25 Feb 2025 14:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="fKodRmYR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ht7FGo4h"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-pp-o94.zoho.com (sender4-pp-o94.zoho.com [136.143.188.94])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC8026A1BD;
-	Tue, 25 Feb 2025 14:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740492739; cv=pass; b=AGrzLOmLuR76A0N2uLn1vHP3hBfjyo5mCvU/05o7EqSECw8ueGEooATXaoURpbHxNvSHXqNLOCcKGnhG7ddd4gcIxE53yHz/MoP8j7AV/3oI5dB/bH5AzTWY07onchz4EHbrLf+znQuKdaILHM23eEc/7ntTEwB+IxPJXBeyzew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740492739; c=relaxed/simple;
-	bh=RXETdaJQjGckWcQ+1o+Stl2ijbxP5K69YX/we00DGkU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HOMKioij4/nrZraDtHCFt3j2a9Dh6CA5+iOGS5Iu0JbzTDyEGIvIsNySdDLCI4BNaM7Z7Y1ovQhf0MR6E2gZP44mdSi72U3mPx/QH8omZMxGpQ6rsh2UAqyCoYdDfRezbOM1URS8vXFPBVFctEe1pNBYJWaCawIaEeFo2Kp3/eo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=fKodRmYR; arc=pass smtp.client-ip=136.143.188.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
-ARC-Seal: i=1; a=rsa-sha256; t=1740492713; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OZndYgqANuZNXF7T/VvyVfBujsjkZhUos3I3aNMnIYUz7Vgt4THWUGzb7ZudTFTXw+whuW/d8/YYt9Ejst6+RMOYyfTgUP8to9bWJSDkGoAZL2LU9zJjZXZCXLDO4EWiL006GM0Qmzm0UMlphRBMrbIw5rCUx1GTKYugQbqh/VI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740492713; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1XvaMRD+vkbBUUclMyHLmtvPUEgmRspiAu6Im4VAnGo=; 
-	b=HwKrT3Mfv9/vtAXUTm1XWkGx3cn9RskfWSbDHhuBb9P8JDx6uv3NYPJnVckKC7IqhRXi1GHYeryFF0rvYKTz2+hcMQdRx1Iwl3VwJuouoePQ1aToccUyyaMOK+oinO1wVX9fHv03mBdHng6PQXtONrGr/RzesNSxxIwiSRrrdSw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
-	dmarc=pass header.from=<ming.li@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740492713;
-	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
-	bh=1XvaMRD+vkbBUUclMyHLmtvPUEgmRspiAu6Im4VAnGo=;
-	b=fKodRmYR2GoD1iw7GI9RYwccKQu8u5a0HiX7nO+L9qH9j9vsjFIp5LSPrQ/o9IGW
-	bapa05YDEkV4Uy5Hmo+ld0d/IrpbJMIiVsbfcYeT3jtl1AACwqnux5DnKClLycz32b4
-	ysSLvk6hYaTBDFGqIWbePci9BiGSxRl7RxYZ9ec4=
-Received: by mx.zohomail.com with SMTPS id 1740492710136779.3645926287403;
-	Tue, 25 Feb 2025 06:11:50 -0800 (PST)
-Message-ID: <3bff8405-d970-4e2d-b630-e84ed702359b@zohomail.com>
-Date: Tue, 25 Feb 2025 22:11:44 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAB626B0B6;
+	Tue, 25 Feb 2025 14:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740493243; cv=none; b=VyAq6r01aAA3hHR0H2s+R/NQLfhIMwfSTEtczlNLMpTQ5yjdH9YuVQGQ07u2wsH7n11RNouRFOY8lLFcqH6djlACDc+AWOY2b4Jx9TJ5QIcIZfzrB+AsWKJoidFsHlcuwXhpSM7qk5ySgtmSv7/Vog0kdJzYvLLR3Q1EL5XEFCk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740493243; c=relaxed/simple;
+	bh=0nB8zD88/ETArJkz+n7GmRzMANgETAdoS3ICvt6uEn8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NOGh6sSsUW+pfnJdedywn2FpZtzT/xz1fsvI4ctDX83Mpij3f2J6ZDRFQ9qCSNVikeRV3ZeIuKPHG5PF+BJCNjP2OlLHsHK3gu54khnCHkgEMFGzB2gardHx0ERMzgR+XbfizM97lWZ8+59NCfCJNy6BWL/JkHoVOyJ9aE8Hcvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ht7FGo4h; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740493242; x=1772029242;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0nB8zD88/ETArJkz+n7GmRzMANgETAdoS3ICvt6uEn8=;
+  b=Ht7FGo4hUjYBW4OYicoXXIvEpIf44DuUxlX7jewgd/Nm341q1xamcPLY
+   soGKYibuPS5vQWvs3EVMm9DjhaHEQt0e/b6RBGCCpxM4cuuZZAXujDlsP
+   5WkTPO33IwcSDFeCWwmsWVecPpfWPV/3npXuHm1m87ggisNdZBjAa4uzn
+   1XClJB7qd8N9P1knAoAz3aU9Be7jqeYqtd6lJGMisgaXD3OmRGwFgDlNA
+   sY8fIq0ekVVxh4kuT/He9+Mi2FboQje9T3bmPyLY0hNZo85TrUIdpFJKz
+   JcXVtcDB6HuGK/5bUpKXTgu2s72iceplY9zw7IMbnVzEUGUmgacXKcqT2
+   A==;
+X-CSE-ConnectionGUID: BQICi72dQpKe6s7EJ/2vLg==
+X-CSE-MsgGUID: GFSbOynnQ1uYcLOy1AwneA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="41003327"
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
+   d="scan'208";a="41003327"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 06:20:41 -0800
+X-CSE-ConnectionGUID: mYOz7AmTQoGiMPFODo97HQ==
+X-CSE-MsgGUID: Ssj3M0sgSRSCOWvPV3AbRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
+   d="scan'208";a="116889296"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 06:20:37 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tmvnW-0000000F10y-1RF9;
+	Tue, 25 Feb 2025 16:20:34 +0200
+Date: Tue, 25 Feb 2025 16:20:34 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: Re: [PATCH v4 2/2] of: Align macro MAX_PHANDLE_ARGS with
+ NR_FWNODE_REFERENCE_ARGS
+Message-ID: <Z73RssDaLZ1NLpSZ@smile.fi.intel.com>
+References: <20250225-fix_arg_count-v4-0-13cdc519eb31@quicinc.com>
+ <20250225-fix_arg_count-v4-2-13cdc519eb31@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/4] cxl: Add mce notifier to emit aliased address for
- extended linear cache
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: rafael@kernel.org, bp@alien8.de, dan.j.williams@intel.com,
- tony.luck@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
- alison.schofield@intel.com, ira.weiny@intel.com, linux-cxl@vger.kernel.org,
- linux-acpi@vger.kernel.org
-References: <20250224182202.1683380-1-dave.jiang@intel.com>
- <20250224182202.1683380-5-dave.jiang@intel.com>
-From: Li Ming <ming.li@zohomail.com>
-In-Reply-To: <20250224182202.1683380-5-dave.jiang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Feedback-ID: rr080112275ff5750f318b3d3c2e788d950000123141e005eaff449cbb22841913dd2b41aa0af807b4821069:zu0801122771f162b56dfe2b2b3e0c8fe100008c3dfec84d01d18911d744c495d857ca5f40d3951bc33088f6:rf0801122da69ae5d3e46b87eb2855ac9200009941810445eb6814c1e3853d582e3504c03a8e28d4a56900627f60dcd44463:ZohoMail
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225-fix_arg_count-v4-2-13cdc519eb31@quicinc.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 2/25/2025 2:21 AM, Dave Jiang wrote:
-> Below is a setup with extended linear cache configuration with an example
-> layout of memory region shown below presented as a single memory region
-> consists of 256G memory where there's 128G of DRAM and 128G of CXL memory.
-> The kernel sees a region of total 256G of system memory.
->
->               128G DRAM                          128G CXL memory
-> |-----------------------------------|-------------------------------------|
->
-> Data resides in either DRAM or far memory (FM) with no replication. Hot
-> data is swapped into DRAM by the hardware behind the scenes. When error is
-> detected in one location, it is possible that error also resides in the
-> aliased location. Therefore when a memory location that is flagged by MCE
-> is part of the special region, the aliased memory location needs to be
-> offlined as well.
->
-> Add an mce notify callback to identify if the MCE address location is part
-> of an extended linear cache region and handle accordingly.
->
-> Added symbol export to set_mce_nospec() in x86 code in order to call
-> set_mce_nospec() from the CXL MCE notify callback.
->
-> Link: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Li Ming <ming.li@zohomail.com>
+On Tue, Feb 25, 2025 at 09:58:07PM +0800, Zijun Hu wrote:
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> Macro NR_FWNODE_REFERENCE_ARGS defines the maximal argument count
+> for firmware node reference, and MAX_PHANDLE_ARGS defines the maximal
+> argument count for DT node reference, both have the same value now.
+> 
+> To void argument count inconsistency between firmware and DT, simply
+> align both macros by '#define MAX_PHANDLE_ARGS NR_FWNODE_REFERENCE_ARGS'.
+
+I would add here that the of.h includes fwnode.h already, so it doesn't
+add any new compile time dependency.
+
+Both patches LGTM,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
