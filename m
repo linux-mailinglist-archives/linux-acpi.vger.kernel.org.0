@@ -1,128 +1,130 @@
-Return-Path: <linux-acpi+bounces-11474-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11475-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD558A44D63
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 21:31:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E0CA44DA7
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 21:37:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B437A189D33C
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 20:31:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5B23B7C9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 20:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852AF212F98;
-	Tue, 25 Feb 2025 20:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F020E019;
+	Tue, 25 Feb 2025 20:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="5cPPTy+A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iHf0cPdM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3371ACED7;
-	Tue, 25 Feb 2025 20:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9ECB20D4FF;
+	Tue, 25 Feb 2025 20:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740515078; cv=none; b=tQouXTe+mXd0Upl7XBh/f5AYiO3qgRZeIweutAREr2/JgEjku40B1otxs6Fp22cloCmM+GbbQS4UEXxO8Y12q5E466oKmvQdVTqs1kZZkXHmbSvNV/JvAVmkSPAbhBXk6c7vDBmFT9hWHzCV6gHpJv2ipMAV0XwjLOxS8lC0QLQ=
+	t=1740515426; cv=none; b=OGqS+zYA8Rvx4rhJ/Ztj97raP7R2exFtjf5K2T3A4wi0dQMbh11r7IjgZZmKtMSTB182xLpUDQgjjccuav/z/H4xflSk0i6csU/GD9Jsdf8Fq+wLvZ5N2hzNwa30nJHe4aBW5CxjSrHQWsD7cavSQXYcHGiS9HhrM6jHxea8jJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740515078; c=relaxed/simple;
-	bh=AcwTcKmfInQbAZOqb4dvorihzjJAczTme/Zg1EZMMRI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aNnTDfNMkIEWgZI8SijMfHvOgFxeMU+0xuZhG3m/y1EPmlwE97KQEYJxGEYgY1bUFOR43WGLzdIOiSKiQFQm48zaAC4PNW/eE1YLINaxnF2qfs8hsO1KOfDAwar9fAyjut0Pxqz+xyW1q1xwb55Q2kfU90vStMj6xK/ALn93FqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=5cPPTy+A; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id D0DAA2E07BC8;
-	Tue, 25 Feb 2025 22:24:30 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740515071;
-	bh=AcwTcKmfInQbAZOqb4dvorihzjJAczTme/Zg1EZMMRI=;
-	h=Received:From:Subject:To;
-	b=5cPPTy+A/x48DQvmCMvpBlhHmDgfk2VE+a1VsTMAy2hXOagQAg1lQW8RLTYxY8zcu
-	 SWhjv0/3XHKCjQNvIJ+TwRx/4vnBt/3D3FVxKZK+gBSds+FrOF1nXPmOkJba8w47xz
-	 YoZhw+f9FYd8I6dKmZyPkytEHTlYN9s2WOHzipm8=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.176) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f176.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f176.google.com with SMTP id
- 38308e7fff4ca-3092643f4aaso1761431fa.1;
-        Tue, 25 Feb 2025 12:24:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUAMJJ+NE6NZzzK4+3pacZ3z1iejTZCkj7TNm+viyz/MePeVBNnRUtX32REnvoffh58Kpf3y3MF2dQmcMvl@vger.kernel.org,
- AJvYcCW0KiaIIH+IN0Vdy0RYFIt4C0gu39NeVsvIhkcWGP1Nuv73BKxRyV9YhHsYTTJeyGqe+yJuYlc/Ckr3@vger.kernel.org,
- AJvYcCXkxVf9MPTqpcdrndeXyWJniQA6vZidnDa2STg4F0r0Oyg3oORd9XRtJZzlxuL2j7w/D6yIxa6YkfZw5wCo7WO4XpUX1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDszEcXT1j44L6di79Y0SEVMx48yG6eZudxxbjdFWGb2S1l3+6
-	uvbcDXKDOhpahGe9glmJNiS4uPAGEBdM6dFE+SAFXhlPWGOmQux7vBNW8NsXJ0qbEWj2GfwG9bJ
-	VmzHdB16XaUSREPdzHRWA2xv5zzE=
-X-Google-Smtp-Source: 
- AGHT+IFW1BzXd/SWdychJfJva4EEaTal6rwJbQZHyDydFnbFd5/UhiKgmrA/liDXhCS6EvXSmcqemGbqUMvSajr5J+Q=
-X-Received: by 2002:a2e:c49:0:b0:309:2696:c293 with SMTP id
- 38308e7fff4ca-30a505bbb9bmr93748571fa.4.1740515070102; Tue, 25 Feb 2025
- 12:24:30 -0800 (PST)
+	s=arc-20240116; t=1740515426; c=relaxed/simple;
+	bh=rovhXK4tfCJIYykPC7TY04RQpYyM+0gQ2VvPGXE/Yuk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=KvzqcgbDfBG5vn3lYjPBabLcxRcdS/H4edFIhz9JeffDwlazlMUGRFUdxVQhnfkGnT1c00bsa1rn1PvPWcAc6ZHKm6uurIS4J8vNfv7nCqzBbwueVRHmraLH69TrcVT01N4EX0eENS1XuyBJm/S1VDe2rlw8Z2CgkbKpOAZ5DB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iHf0cPdM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2324C4CEDD;
+	Tue, 25 Feb 2025 20:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740515426;
+	bh=rovhXK4tfCJIYykPC7TY04RQpYyM+0gQ2VvPGXE/Yuk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=iHf0cPdMNyr+SfdTQ6MirU675NOHmGp9hQvw4v9c5KCbQi8bWOgY7K5VioqSQkCn6
+	 YPjReAOaSs66s3suFj25s4dVLkI4oThna0W5oIdOQX80PLiieLT56N/V/hkjnGy7UC
+	 vlHgD4LcQyvuapnKabZ7dqhJVXRH+Xo7S8Ywm/UJIaIi8KbITp8d5g6iFpHbDZwLaj
+	 c4FR09tBO7po8pcmcOsZne2DKCYshzVOyigxMIjibSYAAAVNleD3w5USJ/oIvZYSCv
+	 sZMaapDJOXvte1BJHIIpL5xPiDGtMr37t4K7rdfc72kN7wdMrIDZxSj2G5/J6oDcQ3
+	 jdFcnp6LkMuNg==
+Date: Tue, 25 Feb 2025 14:30:24 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
+	"De Marchi, Lucas" <lucas.demarchi@intel.com>,
+	"Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+	"Nilawar, Badal" <badal.nilawar@intel.com>,
+	"Nasim, Kam" <kam.nasim@intel.com>,
+	"Gupta, Varun" <varun.gupta@intel.com>
+Subject: Re: [RFC 1/6] PCI/ACPI: Implement PCI FW _DSM method
+Message-ID: <20250225203024.GA516174@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250224195059.10185-1-lkml@antheas.dev>
- <1c0c988b-8fe6-4857-9556-6ac6880b76ff@app.fastmail.com>
- <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
- <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
- <9fa91732-3085-4e79-9a8f-b38263ee7d08@gmx.de>
- <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
- <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
- <CAJZ5v0jpSN_Tq6D3OrRj5KDuXwqVuzcwyNXwEuL90fr=juH48g@mail.gmail.com>
-In-Reply-To: 
- <CAJZ5v0jpSN_Tq6D3OrRj5KDuXwqVuzcwyNXwEuL90fr=juH48g@mail.gmail.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Tue, 25 Feb 2025 21:24:18 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwHAKbR4y9cW8H0nmESS7yv6RrXtgcZyEdz1Wy2e8tAdqQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jo-YXTQsk6kizRYpFDfvj0ZJrBEf8feP27iP90wsb9JW8GXNp7UBJhdpgk
-Message-ID: 
- <CAGwozwHAKbR4y9cW8H0nmESS7yv6RrXtgcZyEdz1Wy2e8tAdqQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
- multiple handlers
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Armin Wolf <W_Armin@gmx.de>, Luke Jones <luke@ljones.dev>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>,
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Len Brown <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
- Hans de Goede <hdegoede@redhat.com>,
-	me@kylegospodneti.ch
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-PPP-Message-ID: 
- <174051507137.19406.17156529916513827378@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY5PR11MB62113F649A1AF98D33ACE0AC95C32@CY5PR11MB6211.namprd11.prod.outlook.com>
 
-This is what this patch series essentially does. It makes amd-pmf
-accept all choices but only show its own in its own handler and when
-it is the only option
+On Tue, Feb 25, 2025 at 06:25:52PM +0000, Gupta, Anshuman wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> ... redundant headers snipped
 
-On Tue, 25 Feb 2025 at 21:22, Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Tue, Feb 25, 2025 at 7:07=E2=80=AFAM Antheas Kapenekakis <lkml@antheas=
-.dev> wrote:
-> >
-> > Yes, making asus-wmi use low-power is indeed the easiest solution, but
-> > if I thought it was good enough, I would have done that already as a
-> > downstream consumer of the kernel.
-> >
-> > I just want to be done with this once and for all, so I spent an extra
-> > hour today solving this in a cleaner way.
->
-> What about adding "quiet" as a "hidden choice" to amd-pmf such that it
-> would allow the test_bit(*bit, handler->choices) check in
-> _store_class_profile() to pass, but it would not cause this "choice"
-> to become visible in the new I/F (or when amd-pmf becomes the only
-> platform-profile driver) and it would be aliased to "low-power"
-> internally?
+> > On Mon, Feb 24, 2025 at 10:18:44PM +0530, Anshuman Gupta wrote:
+> > > Implement _DSM method 10 and _DSM Method 11 as per PCI firmware
+> > specs
+> > > section 4.6.10 and 4.6.11.
+> > 
+> > Please split into two patches, one for each _DSM.  Include spec
+> > citations, e.g., PCI Firmware r3.3, sec 4.6.10.  Section numbers
+> > are not guaranteed to stay consistent across spec revisions, so we
+> > need both the revision and section number.
+> > 
+> > Include some descriptive words about the DSM in each subject line,
+> > e.g., "D3cold Aux Power Limit", "PERST# Assertion Delay".
+> > 
+> > > Current assumption is only one PCIe Endpoint driver (XeKMD for
+> > > Battlemage GPU) will request for Aux Power Limit under a given Root
+> > > Port but theoretically it is possible that other Non-Intel GPU or
+> > > Non-GPU PCIe Endpoint driver can also request for Aux Power Limit and
+> > > request to block the core power removal under same Root Port.
+> > > That will disrupt the Battlemage GPU VRAM Self Refresh.
+> > 
+> > I guess this is sort of an acknowledgement of the r3.3, sec 4.6.10 spec text
+> > about system software being responsible for tracking and aggregating
+> > requests when there are multiple functions below the Downstream Port?
+
+> AFAIU apart from multiple function below the Downstream Port (from
+> same PCIe Card), there can be possibility of another PCie card
+> connected via a switch to same root port like below topology.
+> 
+> 			                 |-> PCIe PCIe Downstream Port -> End Point Device 	
+> Root Port -> PCIe Upstream Port   |-> PCIe PCIe Downstream Port -> End Point Device	
+> 			                 |-> PCIe PCIe Downstream Port -> PCIe Upstream Port ->  PCIe Downstream Port -> *EndPoint Device 	
+> 
+> *Endpoint Device from different PCIe card can also request to block the core power removal under same Root Port ?
+
+Of course.
+
+>  How to document such limitation ?
+
+> > If so, remove the Battlemage-specific language and just say something about
+> > the fact that this implementation doesn't do any of that tracking and
+> > aggregation.
+
+^^ Here's a hint about how to document this.  My point is that this
+has nothing to do with Battlemage in particular, so the text about
+Battlemage-specific things is a distraction from the real point, which
+IIUC is this:
+
+  Note that this implementation assumes only a single device below the
+  Downstream Port because it does not track and aggregate requests
+  from all child devices below the Downstream Port as required by sec
+  4.6.10.
+
+> > > One possible mitigation would be only allowing only first PCIe
+> > > Non-Bridge Endpoint Function 0 driver to call_DSM method 10.
 
