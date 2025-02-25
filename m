@@ -1,110 +1,173 @@
-Return-Path: <linux-acpi+bounces-11441-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11442-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45D0A4305B
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 23:58:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB6AA4327B
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 02:35:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F418874A5
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Feb 2025 22:59:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4A40189AB48
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Feb 2025 01:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F2D20ADE6;
-	Mon, 24 Feb 2025 22:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE7014F98;
+	Tue, 25 Feb 2025 01:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="ti7M8Z/R"
+	dkim=pass (2048-bit key) header.d=ljones.dev header.i=@ljones.dev header.b="Ib08FKJL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PrUwU66R"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07C81632C8;
-	Mon, 24 Feb 2025 22:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C0F199B8;
+	Tue, 25 Feb 2025 01:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740437930; cv=none; b=O1961voE7MESPuA0Z3aSdSofTbHsst7AnAZf7obtEfz1Sjlg/YR6QGIQyhNq1mMz5fy6xiO8HnA5rsVicq8MUFXJELomVGvZSqKvKMVl/oR9C/cO81i4GSFp5Ha+VsPDfNKSRd1jpGPvWR6tsgHne5D1HqG7qcKM07+svYNq/AM=
+	t=1740447305; cv=none; b=Nx0L67mILKUCDoD4PNXWz06yfjDHD2UHFooOM1JOHBiMQXp/98wVM9pEQUqnbiBzTY4HBhlwRAk5s6bQ4LdTBcjKXwLDyiW+63DPAyEbD9OXBcouMuEDu+rDdyWjr7oBrbvR1Pz9qzN7Q+nbKextRMVbxyIP97AmDSLDvZCRH0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740437930; c=relaxed/simple;
-	bh=TJEHHy3LCZiP5/62e4brrNFOnBc5vgm/HSV4XuoZGJ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hP5R6putAIzXQMqxcLPhY2zX/xT/wFoLVTYQELTACdEYuC9xWciVdSRLrRyrLN1vojFQVvYYjh9FTTTONUeOvS+r2mVsHkr0FJpr1tNs6BWKAxThE8tCfnrDwMAs4d+8xQDlaCm3/gxpptO4bMBHE+Jk3o9vIIhhndJhGWJ4usQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=ti7M8Z/R; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id 5CC182E07CD9;
-	Tue, 25 Feb 2025 00:58:45 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740437925;
-	bh=TJEHHy3LCZiP5/62e4brrNFOnBc5vgm/HSV4XuoZGJ8=;
-	h=Received:From:Subject:To;
-	b=ti7M8Z/Rh4FC57+sAyKFK4rJ9EhreXuJEfy1K+4PBwUmI/h42bdOvIBRr12r/IEqq
-	 MH0Xyb/dR59zf5pMmbqvWxNoMEVh2cwhEdxT1rLjMbjnqCRvERU2YmKUuePgHkNsY+
-	 Ww95oJzrOyAV4FQjHCmsrGWElqCGnc7ynMKyzW3g=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.172) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f172.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f172.google.com with SMTP id
- 38308e7fff4ca-307bc125e2eso46549481fa.3;
-        Mon, 24 Feb 2025 14:58:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUC/zWWe/1rHlsSfkOcyK4WtyOlyRC2HVJXkgW85tmEz43rD3C5Kmw53DftI6zuAGnoS7/l2XVg6Yhi@vger.kernel.org,
- AJvYcCW9vbvGB4htch2WLsS3Fxdlnya15rAzGFIGo6CdDn9mK3ZkVQqSa02noTKK9GLXQMGQySD5zOMLWADRl/30@vger.kernel.org,
- AJvYcCXqBq146RfqQXHHp49I++vTvJlEfeS2CfkvkW3zik0XQfdriWg7ykh/9h96b00kKj90PP77bY5pPfUYxS9X19KBXM3ZsQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHRcM8xZvSPNr14GFLfzYP7liSk8uNvGp9YZlkeg29FKcjBSqv
-	LWvzmjYP9Og+1XpcdMySPimAroqDeELcX+bPOzGee6DAuB4f5oy7WIgsXQuyQn8pCO4AB5XybHb
-	H792svnvrwnzlZvpvLwqvcu4duqA=
-X-Google-Smtp-Source: 
- AGHT+IFgS5Jf8cF5xK8CUiAknTWti5yQK5aihC/1WFVjWYomlVv8iGG0C4+a0qb4GOyJ1vJPthrR7RAup19lAy+6yIw=
-X-Received: by 2002:a2e:bea1:0:b0:308:f268:7803 with SMTP id
- 38308e7fff4ca-30a80c0f196mr3153271fa.3.1740437924547; Mon, 24 Feb 2025
- 14:58:44 -0800 (PST)
+	s=arc-20240116; t=1740447305; c=relaxed/simple;
+	bh=ZTPTSfcjuXwUSPi7TPKTnuMsbHr9Y/GRQ70RKFMlkAA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XmsgvosfxsutsIz8fhh6yRd6beQe+9Xz2B/4f/F9xDe6a3CuFaJcV6bAxAgmhP9YXuZMZsfPnxTmKU8riR7vS7WIQfi5YOTTToG2xJ8uggP7NLCDH2M22l+SEDc/J0fsQIf25zE/MPXlOfgt25AZarGUs/VNGThQDljFc/GXOPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ljones.dev; spf=none smtp.mailfrom=ljones.dev; dkim=pass (2048-bit key) header.d=ljones.dev header.i=@ljones.dev header.b=Ib08FKJL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PrUwU66R; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ljones.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ljones.dev
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 96FF7114011F;
+	Mon, 24 Feb 2025 20:35:02 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 24 Feb 2025 20:35:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1740447302;
+	 x=1740533702; bh=En7mhtzIGZYAtdlNeeUGm3RPq0wZ4XfvRF7cD+zY3tM=; b=
+	Ib08FKJLgdw4XGaRbXSEfYHYEoIvZDBGCdivuLO9W2IzAr3KxPjfWBujxNp3MNa1
+	zVJpdxkrYZ4J/Mryf1ER1P893EurUrE0fsBNn2xtyY4AODrybfubHK2XGvAxjtmE
+	y0/VQrnbWSiw59rsZypcGOJ/SssZLa5c5ZuDCLTSEaXvtMbgWAqdnpKj8C9SCD2/
+	ZInV57N13ogEvXtC6JAdDmTmTBNzVgOrj6rfQ4DzZqwTZD7p1z+guAyeMQpNf0zL
+	vmum+2GK4qgAnf6bPvfnoPk8wMhCLl3i4Wq42Mc3UYlW7Rv0Exa72ZeinkQyGdG1
+	Y6vJmnwmAL1QwT2wYNb0Rw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740447302; x=
+	1740533702; bh=En7mhtzIGZYAtdlNeeUGm3RPq0wZ4XfvRF7cD+zY3tM=; b=P
+	rUwU66R/zaPO+59QgroLQuCmjl3Z1QESgDk302Z/YwU7SiJlhQTyaAj7G3NQpvuO
+	CNlPDRszdCnWw/0ZdBUgcG3Y92meKjUfCQCGoUq6rsy+LwB1W31n/AAo/CmHiCmg
+	7X/F+xsf6ykPSBvMLojlG664iJekp2pICiy6cLrhgDAzFv9Q5bTAx79h2yj4ICSD
+	3fx4PPsbne1BtKoLJsxcIzesU91t5eIzPjxOyrZRpY7phhEUbzb3agfreOBjKRW2
+	Xjw8VCbksQlaq6yjqPa3n5KeSPXaX0OswEDYyhrGcl+mYXutgbHj4chl0egb1BKM
+	GYsEIH6aqU6HfqSqs8AZg==
+X-ME-Sender: <xms:RR69Z9R64EgaFXDNxFKBTRBS7qlh0NGhupvVATpI5smwnDEWm-v1qg>
+    <xme:RR69Z2zgVBFgmnOFSUHOgkRQc0xF-tvOnxhIzHfNYhmJWw-o6594rva8t5eGiD4tZ
+    lzv7bgv-To09SjCcaQ>
+X-ME-Received: <xmr:RR69Zy3utCV2S9WGCNQVlKyEqb99Rf3anKP5RpXBi-7hmkdGTt3M4VUZzr58kQZ61tJQaAqPJAfIUt38LA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdektdefiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredttder
+    jeenucfhrhhomhepnfhukhgvucflohhnvghsuceolhhukhgvsehljhhonhgvshdruggvvh
+    eqnecuggftrfgrthhtvghrnhepkeefffeujeevueejueegleelhedtgedvledukedttdff
+    hfeifeelvdduheefjeeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomheplhhukhgvsehljhhonhgvshdruggvvhdpnhgspghrtghpthhtohepuddu
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlkhhmlhesrghnthhhvggrshdrug
+    gvvhdprhgtphhtthhopehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggr
+    pdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprh
+    gtphhtthhopehilhhpohdrjhgrrhhvihhnvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
+    pdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
+    igqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
+    qdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehplhgrth
+    hfohhrmhdqughrihhvvghrqdigkeeisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:RR69Z1BDZXhGk_Q0yqomtIix7frgZ2mT1ITpi1E_BxrWMPvVQ5I2lg>
+    <xmx:RR69Z2hNm-fl_ks8dS4-gudWb7wMwKG3JL1cpXK2REFXzhDkmJlhNw>
+    <xmx:RR69Z5oBcjGBsXS19TDGEPZmoOI2xGiaJY498VqrtLmKcBA10ucyEA>
+    <xmx:RR69ZxickPM0w1BdQCO-GB_RP3WyP8YD3cxRZChAT1cPVRSl1LO6hA>
+    <xmx:Rh69Z7YJkKijuhCr5muBWzt5XBvd5UU6O-xfKmYJIT_2woTsG0ZoDxIM>
+Feedback-ID: i5ec1447f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Feb 2025 20:34:58 -0500 (EST)
+Message-ID: <f5d39d3c932a78a5021877230c212c620edc586e.camel@ljones.dev>
+Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
+ multiple handlers
+From: Luke Jones <luke@ljones.dev>
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: Mark Pearson <mpearson-lenovo@squebb.ca>, "Limonciello, Mario"	
+ <mario.limonciello@amd.com>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
+ <ilpo.jarvinen@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+ "linux-acpi@vger.kernel.org"	 <linux-acpi@vger.kernel.org>,
+ linux-kernel@vger.kernel.org,  "platform-driver-x86@vger.kernel.org"	
+ <platform-driver-x86@vger.kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>,  Hans de Goede <hdegoede@redhat.com>,
+ me@kylegospodneti.ch
+Date: Tue, 25 Feb 2025 14:34:54 +1300
+In-Reply-To: <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
+References: <20250224195059.10185-1-lkml@antheas.dev>
+	 <1c0c988b-8fe6-4857-9556-6ac6880b76ff@app.fastmail.com>
+	 <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
+	 <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250224195059.10185-1-lkml@antheas.dev>
- <1c0c988b-8fe6-4857-9556-6ac6880b76ff@app.fastmail.com>
- <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
- <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
- <9fa91732-3085-4e79-9a8f-b38263ee7d08@gmx.de>
- <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
-In-Reply-To: 
- <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Mon, 24 Feb 2025 23:58:32 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
-X-Gm-Features: AWEUYZmaJTQ_l84O0BRgQfX82lNWJ577I0-sniUoCBiXhFLoHswQJUTSGh8FOQs
-Message-ID: 
- <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
-Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
- multiple handlers
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: Luke Jones <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>,
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Len Brown <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
- me@kylegospodneti.ch
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174043792568.5132.11835100726030697445@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
 
-Yes, making asus-wmi use low-power is indeed the easiest solution, but
-if I thought it was good enough, I would have done that already as a
-downstream consumer of the kernel.
+On Mon, 2025-02-24 at 22:58 +0100, Antheas Kapenekakis wrote:
+> I will tell you that compared with other manufacturers, when asus
+> says
+> quiet, they mean quiet and not low power
+>=20
+> Z13's quiet mode is 40W, not very low-power if you ask me. Ally X
+> uses
+> 13w+boost, a source of many complaints. Other manufacturers use
+> around
+> 8W for low power modes.
+>=20
+> In any case, any rename might break user scripts and there are
+> actually 3 types of low power profiles:
+> PLATFORM_PROFILE_COOL
+> PLATFORM_PROFILE_QUIET
+> PLATFORM_PROFILE_LOW_POWER
+>=20
+> Then, there is also:
+> PLATFORM_PROFILE_BALANCED_PERFORMANCE
+>=20
+> Some ACER laptops implement many of those
+>=20
+> Obscuring any of those is not ideal.
+>=20
 
-I just want to be done with this once and for all, so I spent an extra
-hour today solving this in a cleaner way.
+In the context of their other modes it is low power. If there is
+confusion over what this is meant to mean for all vendors then it
+should be clarified in the relevant documentation.
 
-Antheas
+low-power		Low power consumption
+cool			Cooler operation
+quiet			Quieter operation
+balanced		Balance between low power consumption
+			and performance
+balanced-performance	Balance between performance and low
+			power consumption with a slight bias
+			towards performance
+performance		High performance operation
+custom			Driver defined custom profile
+
+
+"Low power consumption" compared to?
+
+If these "scripts" use `platform_profile_choices` to get their
+selections and verify they are available then there should be zero
+breakage. If they don't then they should be updated to be correct.
+
+In any case I am in the process of finalising an update to use the new
+platform_profile API including "custom". Please don't begin trying to
+break things just to be "first". My work has been ongoing for this in
+my spare time for months.
 
