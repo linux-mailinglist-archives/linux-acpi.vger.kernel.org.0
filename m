@@ -1,134 +1,154 @@
-Return-Path: <linux-acpi+bounces-11503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11504-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35317A46D8D
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 22:35:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7454A46E53
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 23:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDB36188A6ED
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 21:35:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ED0A188BA7D
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 22:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECC725A34D;
-	Wed, 26 Feb 2025 21:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5950725BAB1;
+	Wed, 26 Feb 2025 22:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZkhiXnv"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="2P7POLzv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A405220DD7A;
-	Wed, 26 Feb 2025 21:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F5525BAA0;
+	Wed, 26 Feb 2025 22:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740605724; cv=none; b=pZ3A9xm9AE9CXXTu1LJHAUTM4odBMZo1fZispVui4hV9pWsId0akGDbAeTgsdNz2Rp/Ff2fiXvMjWlj9YFGEp1lmhLnfwxYyBtJOEIkC/you2x0npQqlpRd+WH6Iz3XYKJttYn0UUJ5KB3sv3+4v9Ao1Vw+qumZBUPJlTIEfOk0=
+	t=1740608145; cv=none; b=gxFQY9wl26Ui1tg93tD3bzYao7AWaBdSnPogGCp3j/LhbFwIt/BI+kZohNK5j8raFwZKOil4oIVgcZQWWs8KN8jcxnQ10Pw+z0mCZKQbethrSs5OdT1ofX17yJjBMVwTIDx8qMl5sovTXiwStrhfcLAv/Do4ROFV8AxO/e1ZeD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740605724; c=relaxed/simple;
-	bh=eP+n2IkpX0AHc7Sui2TNCj9yDs/4+qfdiCG97wQbdzE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnJRwL8zXtKUGRCeKrk/F2gTyHhdvHmd5xsti8DNYXVCN+8kYlu/RBpJZ3IjWaht5u1WHDN7+/aAbu7qH4d/+XnjE4o1fo0ilHIxoTMQVtVCwzdIcXhy/7VPB3wO/gfkZuZ2KOrx2unScXOvuT+I4pU5NDrRUErSlqf0GaZ3UF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZkhiXnv; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6f7031ea11cso3027207b3.2;
-        Wed, 26 Feb 2025 13:35:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740605721; x=1741210521; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XVYI9kcUdIjH4cxP98YN5mlg2UhaCwMf2rCWTMU2nGY=;
-        b=YZkhiXnvGNPSjk5LnIfrnmuCAnkmqb6ac+qRhkob+IW4zDbOWRGmTNYmYbiBgX6/oi
-         HnibC9LV9NvTku+vC1HnijdgAqNXaef3wDnEi30DeG0rbu3YhDQkcg4mEZTW2KM/DcHW
-         w6os9dMwW+LPbbTB/SVUGianeYtlav4CrREhQpB0ZgjL4nOJPak8793aI9GMWhAUabnM
-         rHscGb8tzkqybiLyTFpzSJod0m0a3nqJwoDAodPtwluYvbKpJfaxl10rKtkc/Fx7LFBS
-         fR7pMpmEj6d2jedkiEWK1GfiMg74zQ8HajLKGPF9L1rt63ulwUoKpSi7TMNnev63UxlR
-         JgUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740605721; x=1741210521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XVYI9kcUdIjH4cxP98YN5mlg2UhaCwMf2rCWTMU2nGY=;
-        b=xP80cAdKkxeuOR5q2KnSghlwY275OnBh8DepCPRqkBtZ0+Bsom6RJN7o4TKWQdV3Yz
-         joX04KPV7T9VlTlHcoUAz/boY+sUgd1seQ8ycgApDVqJmLaYjrNfg9KSU8001f66axXM
-         8qWV+xtxjinWjjIFxGJ6fnejKUxWh0gU3QzNW+el0YzKN9O65HzpLcF2tDHizHW3EDhU
-         mtcR7Q7NilebWAMgdP5MzX493PoEuHvuhg9MmDxIsVS4PH8la3TAFGvScOT7PT1bDyPj
-         tRV0i6D8uSxjc5R8urg3RyH/wydGeTs+ZOIkBqZLlA879rDq8WhfKTQBHJkW7AtoXkfU
-         h3/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWI1/90OM+zDbxGQIGtcs6Lt1BDn83X+WaxTkNiKGqu2IRqmjkLvYq03PhQ6dQ7/DJmXtpgu4eMLBLBYuE4@vger.kernel.org, AJvYcCWnIWvCJB9WVaOD8+z25MJuyoOKIUf0PyTbxXZOOJxczFjJiijYRiNMXqLyxsMvN+n+3fLrq/9xavQc@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx86PXW9kTBx0eVoIwBQajpvEG612JnvZ39k+Iq9j4Lj0Ltv+Nx
-	5TlYFhrsDhuyJP9mumhuP7YVC6eDuIZAt5om4areP2g7DxhTtAMy
-X-Gm-Gg: ASbGncuECQY5kPGA5EFgRdbbKVaoAW1XUSCSnOqrhO0FDMCofueL7RmDfWDOh1S/28v
-	HchqanRBM2mtL2MzTVxtBBLmNusxdADm0YLQvX5CYg8dWvBDTsLzWWerogZvpjgcGdVXecpCS3O
-	7V0oAuVnosII0zMm/mvVeCHfonDsgSvxCe+jgLf0OICdHWCzOfxl/PmiAJMLv9ZcI7CYIXrfeQC
-	vl8E8BMKROxvwX+pmhVYtXuOD8uimO/7p10FcJsDPNMW5WmBVPr3ea5bogPB3tZCZk/mrRZUO6s
-	ZluiaICEvjAQTp5yxurzzekj
-X-Google-Smtp-Source: AGHT+IG1EvsPoz1Bd0r2fP5cpv7TzPk24gy2Kj+wLmrdUzEN3RWmK1nuptSk4y4e1hD44ksUTTWCBA==
-X-Received: by 2002:a05:690c:498b:b0:6f9:9891:7a7f with SMTP id 00721157ae682-6fd22084565mr44734717b3.25.1740605721598;
-        Wed, 26 Feb 2025 13:35:21 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:6::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6fd1185bd13sm11805607b3.96.2025.02.26.13.35.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 13:35:20 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: gourry@gourry.net,
-	harry.yoo@oracle.com,
-	ying.huang@linux.alibaba.com
-Cc: honggyu.kim@sk.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
-Date: Wed, 26 Feb 2025 13:35:18 -0800
-Message-ID: <20250226213518.767670-2-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
-References: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
+	s=arc-20240116; t=1740608145; c=relaxed/simple;
+	bh=nB+jmAHxPZ3soQmc5wLgDtK8Av2gzHEq4MFA/UQ0nAA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cxwLrXLNF1lX/lP00AIuIhdVrtGlNqPgf9hfmhhpeP1sO9a8n6Aabqoi2KzdWuQ+IpVIKf4/OiqvVDwqcz0+jkLYqvaT0xtSXKcBk2OW8/+G2+mOi8retCuXUU2ff2l24aq5PSjb/SwWZP0CJaHZ7oC+TwhKBV7hFI52NGsxx2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=2P7POLzv; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 49D992E08410;
+	Thu, 27 Feb 2025 00:15:31 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1740608131;
+	bh=VgIwtkMZ00hXOGNLHlqyEU83xt25hqz8jtzstHZ0Rbo=;
+	h=Received:From:Subject:To;
+	b=2P7POLzvQF3ldZmQNpUlDEFHdn0IgH8qKgCOmnUTM3OVCKMov+Y4ix8k1TuzJyKjF
+	 ejkfIwUpm63e0H48uLRXS7s1dQAeVlAq976pudNSQglUvw/Zg0cfvQQOkmus8pqsGi
+	 L2iqIYJ0imAwPkR4RlhEaJ4ytgCMtfQ6j6kdcBh4=
+Authentication-Results: linux1587.grserver.gr;
+        spf=pass (sender IP is 209.85.208.174) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f174.google.com
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+Received: by mail-lj1-f174.google.com with SMTP id
+ 38308e7fff4ca-30613802a6bso3677941fa.1;
+        Wed, 26 Feb 2025 14:15:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWC/VeId7UW2g0rq3aKHg0Dbwo8w+1i8hvXGSCgLaINgtUizuL7yCaoDcHWuU6ikhzWEQuBSJnIIUzqpU3vQ4l30NL0jw==@vger.kernel.org,
+ AJvYcCXFb1Z5hxbFf0PJNBvvHd4C7UUQIxBPrQ0faAF1f7vLMqAtDC7qcidA6ApVWl/BslS8b0ZIWUKIGmAS@vger.kernel.org,
+ AJvYcCXh1Ug0b9tAHmHAUuDmyXarW+ebGELeyH+S7D0Lp2JXOYLJE2KUMP865YBwBejckuwaBOUHi7BT7uSTPO+F@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqtzEVj4qHg4EZvAUrxz6WgGkrTa0IqzNlM8kFnrdnnvLA5ze7
+	NyzMj3S7ikiv1cPUlZW21vBw8McAoij+XklJxFhWeRXORcejmWA/Qio4X2rGB7TDKqw7YEaJu/U
+	xAcKJXzmfI7eq44RH37qwbABImUU=
+X-Google-Smtp-Source: 
+ AGHT+IFg4wyGK6VF2wjPjpIZ8OKnRzWWaJZk6o/Gjb7Is6KTQDwhUqgOfMyd55qPLWosSWcc5Up9ckS22GBNFVqu8cQ=
+X-Received: by 2002:a2e:968b:0:b0:304:68e5:eabd with SMTP id
+ 38308e7fff4ca-30a80c0f0admr41386401fa.3.1740608130090; Wed, 26 Feb 2025
+ 14:15:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250224195059.10185-1-lkml@antheas.dev>
+ <1c0c988b-8fe6-4857-9556-6ac6880b76ff@app.fastmail.com>
+ <633bbd2d5469db5595f66c9eb6ea3172ab7c56b7.camel@ljones.dev>
+ <CAGwozwGmDHMRbURuCvWsk8VTJEf-eFXTh+mamB1sKaHX5DO8WA@mail.gmail.com>
+ <9fa91732-3085-4e79-9a8f-b38263ee7d08@gmx.de>
+ <CAGwozwHZCLaVD8iRgRxvQNqw3v+T9J+omMF+JoNe1r=+S1-OsA@mail.gmail.com>
+ <CAGwozwEEbsLOJROm7rW-240Zoqh3K_JOtZE_NL8AnLy1eChR6A@mail.gmail.com>
+ <CAJZ5v0jpSN_Tq6D3OrRj5KDuXwqVuzcwyNXwEuL90fr=juH48g@mail.gmail.com>
+ <CAGwozwHAKbR4y9cW8H0nmESS7yv6RrXtgcZyEdz1Wy2e8tAdqQ@mail.gmail.com>
+ <CAJZ5v0ihavOHCzfqMc7nd7HUaxYta7-vBBTo6WoJ3gDduZ6iRA@mail.gmail.com>
+In-Reply-To: 
+ <CAJZ5v0ihavOHCzfqMc7nd7HUaxYta7-vBBTo6WoJ3gDduZ6iRA@mail.gmail.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Wed, 26 Feb 2025 23:15:16 +0100
+X-Gmail-Original-Message-ID: 
+ <CAGwozwEkGDfhUoCSM6eA-1QN3-pCixT-YVPBNY4bLUZYxvff8Q@mail.gmail.com>
+X-Gm-Features: AQ5f1JqPcnpjoEwypmX0Ot_L-bCpE2CHv_Ze7HXHX5i7ZuRYsRKVxaYGbPY5yHs
+Message-ID: 
+ <CAGwozwEkGDfhUoCSM6eA-1QN3-pCixT-YVPBNY4bLUZYxvff8Q@mail.gmail.com>
+Subject: Re: [PATCH 0/3] ACPI: platform_profile: fix legacy sysfs with
+ multiple handlers
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Armin Wolf <W_Armin@gmx.de>, Luke Jones <luke@ljones.dev>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Limonciello, Mario" <mario.limonciello@amd.com>,
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	linux-kernel@vger.kernel.org,
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>,
+	me@kylegospodneti.ch
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-PPP-Message-ID: 
+ <174060813166.13020.1806907721096684722@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
-We should never try to allocate memory from a memoryless node. Creating a
-sysfs knob to control its weighted interleave weight does not make sense,
-and can be unsafe.
+On Wed, 26 Feb 2025 at 21:04, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> Top-posting not welcome.
 
-Only create weighted interleave weight knobs for nodes with memory.
+?
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/mempolicy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Wed, Feb 26, 2025 at 8:52=E2=80=AFPM Antheas Kapenekakis <lkml@antheas=
+.dev> wrote:
+> > >
+> > > What about adding "quiet" as a "hidden choice" to amd-pmf such that i=
+t
+> > > would allow the test_bit(*bit, handler->choices) check in
+> > > _store_class_profile() to pass, but it would not cause this "choice"
+> > > to become visible in the new I/F (or when amd-pmf becomes the only
+> > > platform-profile driver) and it would be aliased to "low-power"
+> > > internally?
+> >
+> > This is what this patch series essentially does. It makes amd-pmf
+> > accept all choices but only show its own in its own handler and when
+> > it is the only option
+>
+> No, it does more than this.
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 4cc04ff8f12c..50cbb7c047fa 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -3721,7 +3721,7 @@ static int add_weighted_interleave_group(struct kobject *root_kobj)
- 		return err;
- 	}
- 
--	for_each_node_state(nid, N_POSSIBLE) {
-+	for_each_node_state(nid, N_MEMORY) {
- 		err = add_weight_node(nid, wi_kobj);
- 		if (err) {
- 			pr_err("failed to add sysfs [node%d]\n", nid);
--- 
-2.43.5
+I would say functionality-wise no. The patch could be minified further.
+
+>  For instance, it is not necessary to do
+> anything about PLATFORM_PROFILE_BALANCED_PERFORMANCE in it.
+
+I do not see a difference between QUIET and BALANCED_PERFORMANCE, any
+driver occluding either causes the same issue. Severity is debatably
+lower on BP though.
+
+> The structure of it is questionable either.  It really should be two
+> patches, one modifying the ACPI platform-profile driver and the other
+> changing amd-pmf on top of this.
+
+Ack. I can spin it up as 2 patches.
+
+> Moreover, I'm not entirely convinced that the "secondary" driver
+> concept is needed to address the problem at hand.
+
+Any suggestions on that front would be welcome. This is just the way I
+came up with doing it.
+
+Best,
+Antheas
 
