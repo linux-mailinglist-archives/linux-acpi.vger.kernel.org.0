@@ -1,185 +1,205 @@
-Return-Path: <linux-acpi+bounces-11491-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11492-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2691EA4620D
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 15:15:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2450A4668B
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 17:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E445189046E
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 14:15:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB3CE424A4E
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 16:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EF9221DB3;
-	Wed, 26 Feb 2025 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9714021CA0F;
+	Wed, 26 Feb 2025 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W8BUmLbT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EO3IEWiR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DF0221DBA;
-	Wed, 26 Feb 2025 14:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4903C218ACA
+	for <linux-acpi@vger.kernel.org>; Wed, 26 Feb 2025 16:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740579307; cv=none; b=jodeuf1MarLweVjAfYUjR+zrnA+unE6M8G+A/C4cVqBchiZYqB1BNP9g8NLBsIxz9YHG4DJ3l7jWkRBmp4dIregC33tW4+V4Vaz/0Z+P+MLY/d7n+EGHuG/5oew0JvL15nWEyT4unZ/5wgyS0BsY9p55xkADWQ7C2reLUO1/OJ8=
+	t=1740586211; cv=none; b=bzIO3BSFMQ+XizweXFRFGoQdydCBBL5WZGKVa8OsDaPvQJjPnEaLM0NlAMl9UMMzOsBVhkOBQMVzlIhj0Vo9UZdGBtSpcOfho2VMp9socsr80Xz3gekvVvH0gVvuzGUNg4aLoTdqBeYzCAdl3hfnryU6ny3d5D54O7a7JScQyPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740579307; c=relaxed/simple;
-	bh=DQfqoYcLRD2Zeo+43lklnMk6+hDgT7YZ/1xvKUYxQ1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z93+Nf3Vr4QkJmOaQ5n+CETovQBuox+Y2Cah2BJPF/VkjnpX+pfANWYfVXO1PlpFrvU5257xVqOSnJWeCcjEbkrQVkPx7NB8zENBCwl1ps1Rug2h7YasoKYfkHFqtLbWEk4e2Z/DZL4Ea7Bqt/Og+n5flpUdNxm6ml7L+MGa21A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W8BUmLbT; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740579306; x=1772115306;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DQfqoYcLRD2Zeo+43lklnMk6+hDgT7YZ/1xvKUYxQ1o=;
-  b=W8BUmLbTeydN+RUrOssfhUFEMxZ7Wmi62FDwyk0sCPtgZhQOONTFJrX4
-   lRwnAx+vTuPdax/XkUXrXVGmFcXI09HbF3DbNm+CJD5Zp5bLyvnojHL4P
-   5UeFkGUBTyFcahCdU44+oCDvZxyrPf/dts3+s5FO+gZjUZICmmp+DrZuE
-   8vs/otl/xS6dwY5ykjCQ0F8/zLH0IKzY7IZM/bLZlfgpA9myZChsxNiZa
-   yfe6+G18xYeujHdNTtQABuqTXBcBurfuoXnXnWqr+suH3dIcEEWK3R3X5
-   XB8qQlP3PQGaD4HQpmMuZ1o7BeV3uvVt/oxpxgffZy3+24sAsnpFHSVLn
-   A==;
-X-CSE-ConnectionGUID: B2KRgDT1QnaEH5Xi7eqCJQ==
-X-CSE-MsgGUID: mxZi/vjDRYmAfMkKd49sOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="52817162"
-X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
-   d="scan'208";a="52817162"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 06:11:23 -0800
-X-CSE-ConnectionGUID: SfzjqrcRQU6U9pWwkoyKjw==
-X-CSE-MsgGUID: DAtu5ZbIRzCICP2T7HfhTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="121960718"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 06:11:15 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tnI7y-0000000FLJp-1jew;
-	Wed, 26 Feb 2025 16:11:10 +0200
-Date: Wed, 26 Feb 2025 16:11:10 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v4 02/10] property: Add
- device_get_child_node_count_named()
-Message-ID: <Z78g_uiXumn4mvET@smile.fi.intel.com>
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
- <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
- <Z72QAOA9xXbP16K-@kuha.fi.intel.com>
- <Z72Zp8tpnvlFGdQ_@smile.fi.intel.com>
- <ad39b453-7e5b-49bd-a4fd-6a4988636130@gmail.com>
- <Z72d7TzZ21WITW3f@smile.fi.intel.com>
- <893a3c45-537e-47ad-afbd-1e5d3b9abe2c@gmail.com>
- <Z73M3Ua6u1FpgBEK@smile.fi.intel.com>
- <720f9c69-ca1f-45cb-9f6e-c8e4703c9aad@gmail.com>
+	s=arc-20240116; t=1740586211; c=relaxed/simple;
+	bh=x2om7tYp0gEmgSJpi6j4oAprnXjR/G/t+gh7S3DVTUo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ebp84/kiR0GkrNO74/ut7K3MaCdvkjkIDAkKFCEYdquNWFqX2pQJUwxiFbpDgbLk/H40PefGgZ0lhi4jQauaArx+ae47thMi9ONVvhEaUGLPWJWks1d+Zfq4NK6ndi6qz8mQeYBydVFWjqQxbFfqZHoA1i1sRjEqKg7mxPtMods=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EO3IEWiR; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5fd28093334so2550701eaf.3
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Feb 2025 08:10:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740586207; x=1741191007; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8B98WlgviCORS8xNE8tp9wUkQXa0yNmModNYUMBxdlg=;
+        b=EO3IEWiRfrpJQ5dOfNxzA/rlUDiykFRHM/3dpBJGc/958dPGVuPBezPy60gZrRwpws
+         QT3qm4VHzMXStwm04EzFsbmGwmWJZD9kN/JzqyYd1cIGx+OjM6k/S27javqv9w+S8X3g
+         g5B7vuvdkkpKq6BM6LMxBS3ZYJJmdjiNpoaqkSYxOfByHKShaD4iHiOD/rl3Fr5e0qXH
+         FT6ND6aNA6und98x1kPy8CyB2yO3PzC18bEnLqhTh3k+9rH/oBk2UxEQQ9JRk3Y07CTk
+         +1M1z8ngZudpwwISzlk/5flP/TTOFo3WUOeulQXHWCMIslP50mi1fLLm+lJAijeMNKX8
+         dRFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740586207; x=1741191007;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8B98WlgviCORS8xNE8tp9wUkQXa0yNmModNYUMBxdlg=;
+        b=VbAEQFoKgR1ajlYRPYfjl18S+sVk6Ra51GTxt8WEWzVl3ZycLJGIRJQSndxT5UgaF0
+         /OAKYQZlR43bxMQ1ac/nGwHjSHHqQTX4j3MvISDAO+0f5OkC7A7irORuYMjNk1LiVkRs
+         2dWFWp4BIUKkoDQICYXaNFr2ZzCXrHQml9du3nq3+cgK36WB4bmDovS91XYXS/DcvkV4
+         1QR98YeBlvDWdHVBR1TRbAmxn4pOln7ALx8vFxg7p2YgUvqo4bI36MBI5g7izT/MMWYh
+         NVE1fhf23Rn9jr5eqsiuJ0M6FM4EoKrst4vPwA0evvajBxG5xsXSvABtSCiRkMUbE1Vn
+         Nv/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWmxAz/9KwreBEVE5BLVHc2rwsWfpxmwAq/swNZYYG1ax/Yf98N5nwc2f1fUVS+0fy2AvM76bFOo6oj@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAN/mSqL+xKIorD4r85S73lvp8wMALBZpUMoU4Ym9uxQIDaFTA
+	kFKHdV6N/ltIzz8Dqe1jW7JiS/QpmTMJmG2s7MEZFOI79lg+yDlrYg/+WvnqguU=
+X-Gm-Gg: ASbGncuddC+oarHDMYqwPfRXqknUjjZHSDw82GxKtdL7RSM8dqUIq6WIYyHKrfJ4nS+
+	9qXK6I0SruQImfPHdUtfdew1Q1zlWE6+8eflgFNuJe+jdtf8CaAdJVGkXKIa8KNWPrfncUmuPEO
+	IdMWL2fXcnThIIRpohRpDlxvQ8QaSBCtt7dvUhx5YFNaHE8XP5vBKIuqnMvZCTnhJCO8dIYm/zs
+	ls3Yysf/SZh0fHBRkHsizS7Y7LRayAIqzv9Ps5LgoJDFBy1HBT2Hf5FmjTgp/D2sCukxMrYdY/j
+	KMzAEOZfQjHiOIUywiuBoZpR+eb2TyLMs6qJMsfn48G05hH5K7yFBdk9nT59Xy4=
+X-Google-Smtp-Source: AGHT+IEOYib871oGajJ0tAwCyUvFn0Ok9l/YPouvQLougV8cmfpAu3KKTSDRFWXcP1FZvlfxqquzJA==
+X-Received: by 2002:a05:6871:7c02:b0:29e:3c8d:61a0 with SMTP id 586e51a60fabf-2bd514ef349mr14836245fac.8.1740586207211;
+        Wed, 26 Feb 2025 08:10:07 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7289df559edsm745510a34.62.2025.02.26.08.10.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Feb 2025 08:10:06 -0800 (PST)
+Message-ID: <6f6e6550-5246-476f-9168-5e24151ab165@baylibre.com>
+Date: Wed, 26 Feb 2025 10:10:05 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <720f9c69-ca1f-45cb-9f6e-c8e4703c9aad@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/10] iio: adc: add helpers for parsing ADC nodes
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev
+References: <cover.1740421248.git.mazziesaccount@gmail.com>
+ <23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
+ <0de7b0ac-eca5-49ba-b1b3-f249655f3646@baylibre.com>
+ <1b308a10-9622-47f9-b489-bd969fbdfc34@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <1b308a10-9622-47f9-b489-bd969fbdfc34@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 26, 2025 at 04:04:02PM +0200, Matti Vaittinen wrote:
-> On 25/02/2025 15:59, Andy Shevchenko wrote:
-> > On Tue, Feb 25, 2025 at 03:29:17PM +0200, Matti Vaittinen wrote:
-> > > On 25/02/2025 12:39, Andy Shevchenko wrote:
-> > > > On Tue, Feb 25, 2025 at 12:29:31PM +0200, Matti Vaittinen wrote:
-> > > > > On 25/02/2025 12:21, Andy Shevchenko wrote:
-> > > > > > On Tue, Feb 25, 2025 at 11:40:16AM +0200, Heikki Krogerus wrote:
-
-...
-
-> > > > > > > 
-> > > > > > > I did not check how many users are you proposing for this, but if
-> > > > > > > there's only one, then IMO this should not be a global function yet.
-> > > > > > > It just feels to special case to me. But let's see what the others
-> > > > > > > think.
-> > > > > > 
-> > > > > > The problem is that if somebody hides it, we might potentially see
-> > > > > > a duplication in the future. So I _slightly_ prefer to publish and
-> > > > > > then drop that after a few cycles if no users appear.
-> > > > > 
-> > > > > After taking a very quick grep I spotted one other existing place where we
-> > > > > might be able to do direct conversion to use this function.
-> > > > > 
-> > > > > drivers/net/ethernet/freescale/gianfar.c
-> > > > > 
-> > > > > That'd be 2 users.
-> > > > 
-> > > > I haven't checked myself, I believe your judgement,
-> > > 
-> > > I took a better look and you obviously shouldn't believe :) The gianfar used
-> > > of_node instead of the fwnode. So, it'd be a single caller at starters.
-> > 
-> > ...which is the same as dev_of_node(), which means that you can use your
-> > function there.
+On 2/26/25 12:28 AM, Matti Vaittinen wrote:
+> Hi David,
 > 
-> I'm unsure what you mean. The proposed function
-> device_get_child_node_count_named() takes device pointer. I don't see how
-> dev_of_node() helps converting node to device?
-
-dev_of_node() takes the device pointer and dev_fwnode() takes that as well,
-it means that there is no difference which one to use OF-centric or fwnode
-API in this particular case. Just make sure that the function (and there
-is also a second loop AFAICS) takes struct device *dev instead of struct
-device_node *np as a parameter.
-
-> I think I could actually kill the whole gfar_of_group_count() function and
-> replace it with a direct call to the device_get_child_node_count_named() -
-> but I am not at all convinced that'd be worth including the property.h to a
-> file which is currently using only of_* -stuff. Well, I suppose it can be
-> asked from netdev peeps but I am not convinced they see it as a great idea.
+> Thanks for taking a look at this :)
 > 
-> If I misunderstood your meaning - please elaborate.
+> On 26/02/2025 02:26, David Lechner wrote:
+>> On 2/24/25 12:33 PM, Matti Vaittinen wrote:
+>>> There are ADC ICs which may have some of the AIN pins usable for other
+>>> functions. These ICs may have some of the AIN pins wired so that they
+>>> should not be used for ADC.
+>>>
+>>> (Preferred?) way for marking pins which can be used as ADC inputs is to
+>>> add corresponding channels@N nodes in the device tree as described in
+>>> the ADC binding yaml.
+>>
+>> I think "preferred?" is the key question here. Currently, it is assumed
+>> that basically all IIO bindings have channels implicitly even if the
+>> binding doesn't call them out. It just means that there is nothing
+>> special about the channel that needs to be documented, but the channel
+>> is still there.
+> 
+> I think this works well with the ADCs which have no other purpose for the pins but the ADC. The BD79124 (and some others) do allow muxing the ADC input pins for other purposes. There the DT bindings with nothing but the "reg" are relevant, and channels can't be trusted to just be there without those..
 
-The driver is quite old and has a lot of room to improve. Briefly looking it
-may be almost fully converted to fwnode, but it's not your call (only if you
-wish). Nevertheless, using agnostic APIs if they reduce code base is fine.
-We have drivers that do OF and fwnode mixed approach (for various reasons,
-one of which is the new API that is absent in OF realm.
+Makes sense.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> 
+>> Similarly, on several drivers we added recently that make use of adc.yaml
+>> (adi,ad7380, adi,ad4695) we wrote the bindings with the intention that
+>> if a channel was wired in the default configuration, then you would just
+>> omit the channel node for that input pin. Therefore, this helper couldn't
+>> be used by these drivers since we always have a fixed number of channels
+>> used in the driver regardless of if there are explicit channel nodes in
+>> the devicetree or not.
+> 
+> I think this works with the ICs where channels, indeed, always are there. But this is not the case with _all_ ICs. And in order to keep the consistency I'd actually required that if channels are listed in the DT, then _all_ the channels must be listed. Else it becomes less straightforward for people to understand how many channels there are based on the device tree. I believe this was also proposed by Jonathan during the v1 review:
+> 
+>> > Hmm. That'd mean the ADC channels _must_ be defined in DT in order to be
+>> > usable(?) Well, if this is the usual way, then it should be well known
+>> > by users. Thanks.
+>>
+>> Yes. We basically have two types of binding wrt to channels.
+>> 1) Always there - no explicit binding, but also no way to describe
+>>    anything specific about the channels.
+>> 2) Subnode per channel with stuff from adc.yaml and anything device
+>>    specific.  Only channels that that have a node are enabled.
+>>
 
+Hmm... does that mean we implemented it wrong on ad7380 and ad4695?
+
+>> There are a few drivers that for historical reasons support both
+>> options with 'no channels' meaning 'all channels'.
+> 
+> https://lore.kernel.org/all/20250201162631.2eab9a9a@jic23-huawei/
+> 
+>> In my experience, the only time we don't populate all available channels
+>> on an ADC, even if not used, is in cases like differential chips where
+>> any two inputs can be mixed and matched to form a channel. Some of these,
+>> like adi,ad7173-8 would have 100s or 1000s of channels if we tried to
+>> include all possible channels. In those cases, we make an exception and
+>> use a dynamic number of channels based on the devicetree. But for chips
+>> that have less than 20 total possible channels or so we've always
+>> provided all possible channels to userspace. It makes writing userspace
+>> software for a specific chip easier if we can always assume that chip
+>> has the same number of channels.
+> 
+> In any exception to this rule of describing all channels in DT should just avoid using these helpers and do things as they're done now. No one is forced to use them. But I am not really sure why would you not describe all the channels in the device-tree for ICs with less than 20 channels? I'd assume that if the channels are unconditionally usable in the hardware, then they should be in DT as well(?)
+
+I devicetree, I think the tendency is to be less verbose and only add
+properties/nodes when there is something that is not the usual case.
+Default values are chosen to be the most usual case so we don't have
+to write so much in the .dts.
+
+> 
+>>> Add couple of helper functions which can be used to retrieve the channel
+>>> information from the device node.
+>>>
+>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>>
+> 
+> Yours,
+>     -- Matti
 
 
