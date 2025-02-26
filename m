@@ -1,109 +1,180 @@
-Return-Path: <linux-acpi+bounces-11486-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11487-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E59EA45848
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 09:31:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 383A7A45BA2
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 11:22:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EBDA173314
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 08:31:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49D153A82E8
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 10:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC1F1E1E1C;
-	Wed, 26 Feb 2025 08:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AgxYcLK+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244FF226D0E;
+	Wed, 26 Feb 2025 10:22:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0001E1E19;
-	Wed, 26 Feb 2025 08:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6594421324D;
+	Wed, 26 Feb 2025 10:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740558634; cv=none; b=Dc06yHHdXgOEVFvy896xfTl0zDu+TlX6L8P3xq/dHUwlzLDH0Fn8v2bqRczIUWUBFAHxQry45yrQyqLWr0aw1FqnMcX4F5roUXcLBRkT8A6JXpTjEInuOc1XWJCXmGmwyBa8iNjfmuT5cwip6jfCl+YWTA4DkgJzQuYNhvAabt4=
+	t=1740565371; cv=none; b=juv3i0kk8vfZWStJ6oWTP0hdiDMvOKWlXyX2qP84Eb+ozIQfvldv70KA7A70QlHk6W85Vns8nQ2VULtm5ipm+EKw4ViYx7tbssElIjFiMC7WHnwAhrj3soL54S7C2GM+/8zi1b728rJrM6WceZK3tOWAR0FaXQKgjhR5D0Nf3Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740558634; c=relaxed/simple;
-	bh=q18//s8n8pY2gsTThR86DC4iH15g7zncNdFsfg5rVOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o/78sB/Yv4ANUudqbRXXLWU2q2WGzyfa+D9OrpdENaVd6xQD/9DlAxdVNNy7gBflyraHglKPAJgJHTw1yP9BoeGjwPFR1r+3GO3eA6DuTrX4bbku8wYtoUINpNoe+4+oivtA+FG7Qi7mIMS4fSC0YaFCpNwbf+Uv3BBhg0hm3nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AgxYcLK+; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740558633; x=1772094633;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=q18//s8n8pY2gsTThR86DC4iH15g7zncNdFsfg5rVOY=;
-  b=AgxYcLK+0pHsaVATMeM2yIoAEO4tyV8EOuIo41WoYQmfj2EpaKqWwC/D
-   HGAlxj456cW0I59PD4de9w7gpjW5xQpLM+MHN3eNGayThGuBZ4pp6Bwms
-   ASPhxg/HtpoJOMxktxCGXR6BumHrSIfp5icIFGsvqDaRQsXTRtWRypsZ1
-   N1SUwz33VjFKqxL+DcQd/IA5WrfqhHKFA8gt76Kh6pXt6uSPGjqp48NJe
-   s2m3MHZ0vltmmEdHSW5c7zB9PyedRhlX629g3Qw9Vv59WhMLGO3OEwgL3
-   P3mFLOEOkhwkIYVoCckfO0g2Dr5P3AIvAwNlHJlceQKn/TIWgZXXT38GP
-   A==;
-X-CSE-ConnectionGUID: 0dHe5HTBTCOhv7EIhIM3bw==
-X-CSE-MsgGUID: GI6edK7hToaujhlMD7M3Fg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="45176357"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
-   d="scan'208";a="45176357"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 00:30:32 -0800
-X-CSE-ConnectionGUID: 2TV7sHHxSPShoc3oxu3twg==
-X-CSE-MsgGUID: CnqJZI44QNizqN6m1bzo5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
-   d="scan'208";a="117123195"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 00:30:28 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 06D0511F944;
-	Wed, 26 Feb 2025 10:30:26 +0200 (EET)
-Date: Wed, 26 Feb 2025 08:30:26 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: Re: [PATCH v4 2/2] of: Align macro MAX_PHANDLE_ARGS with
- NR_FWNODE_REFERENCE_ARGS
-Message-ID: <Z77RIg-i-_ZgMgJW@kekkonen.localdomain>
-References: <20250225-fix_arg_count-v4-0-13cdc519eb31@quicinc.com>
- <20250225-fix_arg_count-v4-2-13cdc519eb31@quicinc.com>
+	s=arc-20240116; t=1740565371; c=relaxed/simple;
+	bh=S8bkmRF4hFy5oAR0L+B0tr5ao+COGAqRwbPx36g9o2k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=i/NhwyofFfeXYb1UjheaNcrhNvkja+LD08+KftXskFSLL1cql9ajO4+ENAzQFTtXGatidacmg3tu9c0JObfBY9HzzbW0/yLkOrP4ZNCg/Z08W5fdJTIXJpLMNGrW0sO0ElXGNS14+vxjpxLSBbLMARx1dsNCL0MW/gWNFKe+Dd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Z2r6B18P3z2CpfZ;
+	Wed, 26 Feb 2025 18:18:42 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id D33A4140109;
+	Wed, 26 Feb 2025 18:22:45 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
+ (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 26 Feb
+ 2025 18:22:45 +0800
+Message-ID: <73fbf483-7afa-4cd2-84d1-6ace36549c53@huawei.com>
+Date: Wed, 26 Feb 2025 18:22:44 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250225-fix_arg_count-v4-2-13cdc519eb31@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch 0/5] Support Autonomous Selection mode in cppc_cpufreq
+To: Sumit Gupta <sumitg@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Viresh Kumar <viresh.kumar@linaro.org>, <lenb@kernel.org>,
+	<robert.moore@intel.com>, <corbet@lwn.net>, <linux-pm@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
+	<sashal@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
+	<sanjayc@nvidia.com>, <bbasu@nvidia.com>
+References: <20250211103737.447704-1-sumitg@nvidia.com>
+ <20250211104428.dibsnxmkiluzixvz@vireshk-i7>
+ <b45d0d81-e4f7-474e-a146-0075a6145cc2@huawei.com>
+ <868d4c2a-583a-4cbb-a572-d884090a7134@nvidia.com>
+ <8d5e0035-d8fe-49ef-bda5-f5881ff96657@huawei.com>
+ <94bdab73-adc4-4b43-9037-5639f23e3d1e@nvidia.com>
+ <CAJZ5v0iAg6HFROHctYQwW=V9XiV8p3XVYgeKUcX4qBgfwQK6Ow@mail.gmail.com>
+ <e58a20f8-e8bf-409c-a878-af2bd3c7d243@nvidia.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <e58a20f8-e8bf-409c-a878-af2bd3c7d243@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-On Tue, Feb 25, 2025 at 09:58:07PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
+On 2025/2/21 21:14, Sumit Gupta wrote:
 > 
-> Macro NR_FWNODE_REFERENCE_ARGS defines the maximal argument count
-> for firmware node reference, and MAX_PHANDLE_ARGS defines the maximal
-> argument count for DT node reference, both have the same value now.
 > 
-> To void argument count inconsistency between firmware and DT, simply
-> align both macros by '#define MAX_PHANDLE_ARGS NR_FWNODE_REFERENCE_ARGS'.
+> On 19/02/25 00:53, Rafael J. Wysocki wrote:
+>>
+>> There seems to be some quite fundamental disagreement on how this
+>> should be done, so I'm afraid I cannot do much about it ATM.
+>>
+>> Please agree on a common approach and come back to me when you are ready.
+>>
+>> Sending two concurrent patchsets under confusingly similar names again
+>> and again isn't particularly helpful.
+>>
+>> Thanks!
 > 
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> Hi Rafael,
+> 
+> Thank you for looking into this.
+> 
+> Hi Lifeng,
+> 
+> As per the discussion, we can make the driver future extensible and
+> also can optimize the register read/write access.
+> 
+> I gave some thought and below is my proposal.
+> 
+> 1) Pick 'Patch 1-7' from your patch series [1] which optimize API's
+>    to read/write a cpc register.
+> 
+> 2) Pick my patches in [2]:
+>    - Patch 1-4: Keep all cpc registers together under acpi_cppc sysfs.
+>                 Also, update existing API's to read/write regs in batch.
+>    - Patch 5: Creates 'cppc_cpufreq_epp_driver' instance for booting
+>      all CPU's in Auto mode and set registers with right values.
+>      They can be updated after boot from sysfs to change hints to HW.
+>      I can use the optimized API's from [1] where required in [2].
+> 
+> Let me know if you are okay with this proposal.
+> I can also send an updated patch series with all the patches combined?
+> 
+> [1] https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
+> [2] https://lore.kernel.org/lkml/20250211103737.447704-1-sumitg@nvidia.com/
+> 
+> Regards,
+> Sumit Gupta
+> 
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Hi Sumit,
 
--- 
-Sakari Ailus
+Over the past few days, I've been thinking about your proposal and
+scenario.
+
+I think we both agree that PATCH 1-7 in [1] doesn't conflicts with [2], so
+the rest of the discussion focuses on the differences between [2] and the
+PATCH 8 in [1].
+
+We both tried to support autonomous selection mode in cppc_cpufreq but on
+different ways. I think the differences between these two approaches can be
+summarized into three questions:
+
+1. Which sysfs files to expose? I think this is not a problem, we can keep
+all of them.
+
+2. Where to expose these sysfs files? I understand your willing to keep all
+cpc registers together under acpi_cppc sysfs. But in my opinion, it is more
+suitable to expose them under cppc_cpufreq_attr, for these reasons:
+
+  1) It may probably introduce concurrency and data consistency issues, as 
+I mentioned before.
+
+  2) The store functions call cpufreq_cpu_get() to get policy and update
+the driver_data which is a cppc_cpudata. Only the driver_data in 
+cppc_cpufreq's policy is a cppc_cpudata! These operations are inappropriate
+in cppc_acpi. This file currently provides interfaces for cpufreq drivers
+to use. Reverse calls might mess up call relationships, break code
+structures, and cause problems that are hard to pinpoint the root cause!
+
+  3) Difficult to extend. Different cpufreq drivers may have different
+processing logic when reading from and writing to these CPC registers.
+Limiting all sysfs here makes it difficult for each cpufreq driver to
+extend. I think this is why there are only read-only interfaces under
+cppc_attrs before.
+
+Adding a 'ifdef' is not a good way to solve these problems. Defining this
+config does not necessarily mean that the cpufreq driver is cppc_cpufreq.
+
+3. Is it necessary to add a new driver instance? [1] exposed the sysfs
+files to support users dynamically change the auto selection mode of each
+policy. Each policy can be operated seperately. It seems to me that if you
+want to boot all CPUs in auto mode, it should be sufficient to set all
+relevant registers to the correct values at boot time. I can't see why the
+new instance is necessary unless you explain it further. Could you explain
+more about why you add a new instance starting from answer these questions:
+
+For a specific CPU, what is the difference between using the two instances
+when auto_sel is 1? And what is the difference when auto_sel is 0?
+
+If it turns out that the new instance is necessary, I think we can reach a
+common approach by adding this new cpufreq driver instance and place the
+attributes in 'cppc_cpufreq_epp_attr', like amd-pstate did.
+
+What do you think?
+
+Regards,
+Lifeng
 
