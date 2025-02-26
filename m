@@ -1,205 +1,184 @@
-Return-Path: <linux-acpi+bounces-11492-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11493-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2450A4668B
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 17:27:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 496DDA466AD
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 17:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB3CE424A4E
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 16:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB42427D3A
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 16:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9714021CA0F;
-	Wed, 26 Feb 2025 16:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EO3IEWiR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A8421D5BB;
+	Wed, 26 Feb 2025 16:22:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4903C218ACA
-	for <linux-acpi@vger.kernel.org>; Wed, 26 Feb 2025 16:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75B821D59E;
+	Wed, 26 Feb 2025 16:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740586211; cv=none; b=bzIO3BSFMQ+XizweXFRFGoQdydCBBL5WZGKVa8OsDaPvQJjPnEaLM0NlAMl9UMMzOsBVhkOBQMVzlIhj0Vo9UZdGBtSpcOfho2VMp9socsr80Xz3gekvVvH0gVvuzGUNg4aLoTdqBeYzCAdl3hfnryU6ny3d5D54O7a7JScQyPE=
+	t=1740586948; cv=none; b=kc484yRCI7ql1DUXuyYzP0YUfvqx9TaM5c8JaNf6IZ+Ikd/OuS6m1vL1NpkDQRiUmJPnN83oyqtojMnB4o0iLUdpwxTBMBOLmyFu0OS2nbWXmSwEk3/4fMyJFwLLnh9YnPugLJdv/B8l0N+zUfTZPL9GdFnPB3e2dXMiWmslB3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740586211; c=relaxed/simple;
-	bh=x2om7tYp0gEmgSJpi6j4oAprnXjR/G/t+gh7S3DVTUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ebp84/kiR0GkrNO74/ut7K3MaCdvkjkIDAkKFCEYdquNWFqX2pQJUwxiFbpDgbLk/H40PefGgZ0lhi4jQauaArx+ae47thMi9ONVvhEaUGLPWJWks1d+Zfq4NK6ndi6qz8mQeYBydVFWjqQxbFfqZHoA1i1sRjEqKg7mxPtMods=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EO3IEWiR; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5fd28093334so2550701eaf.3
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Feb 2025 08:10:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740586207; x=1741191007; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8B98WlgviCORS8xNE8tp9wUkQXa0yNmModNYUMBxdlg=;
-        b=EO3IEWiRfrpJQ5dOfNxzA/rlUDiykFRHM/3dpBJGc/958dPGVuPBezPy60gZrRwpws
-         QT3qm4VHzMXStwm04EzFsbmGwmWJZD9kN/JzqyYd1cIGx+OjM6k/S27javqv9w+S8X3g
-         g5B7vuvdkkpKq6BM6LMxBS3ZYJJmdjiNpoaqkSYxOfByHKShaD4iHiOD/rl3Fr5e0qXH
-         FT6ND6aNA6und98x1kPy8CyB2yO3PzC18bEnLqhTh3k+9rH/oBk2UxEQQ9JRk3Y07CTk
-         +1M1z8ngZudpwwISzlk/5flP/TTOFo3WUOeulQXHWCMIslP50mi1fLLm+lJAijeMNKX8
-         dRFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740586207; x=1741191007;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8B98WlgviCORS8xNE8tp9wUkQXa0yNmModNYUMBxdlg=;
-        b=VbAEQFoKgR1ajlYRPYfjl18S+sVk6Ra51GTxt8WEWzVl3ZycLJGIRJQSndxT5UgaF0
-         /OAKYQZlR43bxMQ1ac/nGwHjSHHqQTX4j3MvISDAO+0f5OkC7A7irORuYMjNk1LiVkRs
-         2dWFWp4BIUKkoDQICYXaNFr2ZzCXrHQml9du3nq3+cgK36WB4bmDovS91XYXS/DcvkV4
-         1QR98YeBlvDWdHVBR1TRbAmxn4pOln7ALx8vFxg7p2YgUvqo4bI36MBI5g7izT/MMWYh
-         NVE1fhf23Rn9jr5eqsiuJ0M6FM4EoKrst4vPwA0evvajBxG5xsXSvABtSCiRkMUbE1Vn
-         Nv/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWmxAz/9KwreBEVE5BLVHc2rwsWfpxmwAq/swNZYYG1ax/Yf98N5nwc2f1fUVS+0fy2AvM76bFOo6oj@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAN/mSqL+xKIorD4r85S73lvp8wMALBZpUMoU4Ym9uxQIDaFTA
-	kFKHdV6N/ltIzz8Dqe1jW7JiS/QpmTMJmG2s7MEZFOI79lg+yDlrYg/+WvnqguU=
-X-Gm-Gg: ASbGncuddC+oarHDMYqwPfRXqknUjjZHSDw82GxKtdL7RSM8dqUIq6WIYyHKrfJ4nS+
-	9qXK6I0SruQImfPHdUtfdew1Q1zlWE6+8eflgFNuJe+jdtf8CaAdJVGkXKIa8KNWPrfncUmuPEO
-	IdMWL2fXcnThIIRpohRpDlxvQ8QaSBCtt7dvUhx5YFNaHE8XP5vBKIuqnMvZCTnhJCO8dIYm/zs
-	ls3Yysf/SZh0fHBRkHsizS7Y7LRayAIqzv9Ps5LgoJDFBy1HBT2Hf5FmjTgp/D2sCukxMrYdY/j
-	KMzAEOZfQjHiOIUywiuBoZpR+eb2TyLMs6qJMsfn48G05hH5K7yFBdk9nT59Xy4=
-X-Google-Smtp-Source: AGHT+IEOYib871oGajJ0tAwCyUvFn0Ok9l/YPouvQLougV8cmfpAu3KKTSDRFWXcP1FZvlfxqquzJA==
-X-Received: by 2002:a05:6871:7c02:b0:29e:3c8d:61a0 with SMTP id 586e51a60fabf-2bd514ef349mr14836245fac.8.1740586207211;
-        Wed, 26 Feb 2025 08:10:07 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7289df559edsm745510a34.62.2025.02.26.08.10.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 08:10:06 -0800 (PST)
-Message-ID: <6f6e6550-5246-476f-9168-5e24151ab165@baylibre.com>
-Date: Wed, 26 Feb 2025 10:10:05 -0600
+	s=arc-20240116; t=1740586948; c=relaxed/simple;
+	bh=yOY126cFVea90482xwcZlmXVC3UTnVMMV16EDyGkwGU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VLTAeP92QUrIt7E9+HwuQ8YBpLbhiI5hku+PUqS5bh1/ZVS8R8UYvy2WWcfymrPTgGAqGYmBULs69ldxRBoeR3wiSw84RhXknO+YZTzhCoCZkDelJuhzpSeivPv5DSEdAmrOr13RcR+miN0mh24msm3e4dG4P4yUAO8gdxksJ2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBFBC4CED6;
+	Wed, 26 Feb 2025 16:22:28 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: rafael@kernel.org,
+	bp@alien8.de,
+	dan.j.williams@intel.com,
+	tony.luck@intel.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	ira.weiny@intel.com,
+	ming.li@zohomail.com
+Subject: [PATCH v5 0/4] acpi/hmat / cxl: Add exclusive caching enumeration and RAS support
+Date: Wed, 26 Feb 2025 09:21:17 -0700
+Message-ID: <20250226162224.3633792-1-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/10] iio: adc: add helpers for parsing ADC nodes
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
- <23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
- <0de7b0ac-eca5-49ba-b1b3-f249655f3646@baylibre.com>
- <1b308a10-9622-47f9-b489-bd969fbdfc34@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <1b308a10-9622-47f9-b489-bd969fbdfc34@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 2/26/25 12:28 AM, Matti Vaittinen wrote:
-> Hi David,
-> 
-> Thanks for taking a look at this :)
-> 
-> On 26/02/2025 02:26, David Lechner wrote:
->> On 2/24/25 12:33 PM, Matti Vaittinen wrote:
->>> There are ADC ICs which may have some of the AIN pins usable for other
->>> functions. These ICs may have some of the AIN pins wired so that they
->>> should not be used for ADC.
->>>
->>> (Preferred?) way for marking pins which can be used as ADC inputs is to
->>> add corresponding channels@N nodes in the device tree as described in
->>> the ADC binding yaml.
->>
->> I think "preferred?" is the key question here. Currently, it is assumed
->> that basically all IIO bindings have channels implicitly even if the
->> binding doesn't call them out. It just means that there is nothing
->> special about the channel that needs to be documented, but the channel
->> is still there.
-> 
-> I think this works well with the ADCs which have no other purpose for the pins but the ADC. The BD79124 (and some others) do allow muxing the ADC input pins for other purposes. There the DT bindings with nothing but the "reg" are relevant, and channels can't be trusted to just be there without those..
+v5:
+- Update couple dev_dbg() emits. (Alison)
+- Add hpa_alias emits for poison events. (Alison)
+- Drop cxlr_hpa_cache_alias() and opencode the one invocation. (Alison)
+- See individual patches for detailed changes.
 
-Makes sense.
+v4:
+- Add alias adjustment for cxl_dpa_to_hpa() (Alison)
+- Add check of adjusted region start against CFMWS (Alison)
+- Use ULLONG_MAX consistently. (Alison)
+- Use hpa_alias0 consistently. (Alison)
+- Move devm_add_action_or_reset() to devm_cxl_add_mce_notifier(). (Ming)
+- See individual patches for detailed changes.
 
-> 
->> Similarly, on several drivers we added recently that make use of adc.yaml
->> (adi,ad7380, adi,ad4695) we wrote the bindings with the intention that
->> if a channel was wired in the default configuration, then you would just
->> omit the channel node for that input pin. Therefore, this helper couldn't
->> be used by these drivers since we always have a fixed number of channels
->> used in the driver regardless of if there are explicit channel nodes in
->> the devicetree or not.
-> 
-> I think this works with the ICs where channels, indeed, always are there. But this is not the case with _all_ ICs. And in order to keep the consistency I'd actually required that if channels are listed in the DT, then _all_ the channels must be listed. Else it becomes less straightforward for people to understand how many channels there are based on the device tree. I believe this was also proposed by Jonathan during the v1 review:
-> 
->> > Hmm. That'd mean the ADC channels _must_ be defined in DT in order to be
->> > usable(?) Well, if this is the usual way, then it should be well known
->> > by users. Thanks.
->>
->> Yes. We basically have two types of binding wrt to channels.
->> 1) Always there - no explicit binding, but also no way to describe
->>    anything specific about the channels.
->> 2) Subnode per channel with stuff from adc.yaml and anything device
->>    specific.  Only channels that that have a node are enabled.
->>
+v3:
+- Drop region to nid function, deadcode.
+- Set hpa_alias default to ~0ULL to indicate no alias. (Jonathan)
+- Add endpoint check for mce handler. (Ming)
+- Add mce notifier unregister. (Ming)
 
-Hmm... does that mean we implemented it wrong on ad7380 and ad4695?
+v2:
+- Fix 0-day issues
+- Fix checking of cache flag. (Ming)
+- Add comment about cache range vs CFMWS. (Ming)
+- Update EXPORT_SYMBOL_(). (Jonathan)
+- Fix various code comments. (Jonathan)
+- Emit hpa_alias0 instead of hpa_alias. (Jonathan)
+- Introduce CONFIG_CXL_MCE to address kernel build dep issues.
 
->> There are a few drivers that for historical reasons support both
->> options with 'no channels' meaning 'all channels'.
-> 
-> https://lore.kernel.org/all/20250201162631.2eab9a9a@jic23-huawei/
-> 
->> In my experience, the only time we don't populate all available channels
->> on an ADC, even if not used, is in cases like differential chips where
->> any two inputs can be mixed and matched to form a channel. Some of these,
->> like adi,ad7173-8 would have 100s or 1000s of channels if we tried to
->> include all possible channels. In those cases, we make an exception and
->> use a dynamic number of channels based on the devicetree. But for chips
->> that have less than 20 total possible channels or so we've always
->> provided all possible channels to userspace. It makes writing userspace
->> software for a specific chip easier if we can always assume that chip
->> has the same number of channels.
-> 
-> In any exception to this rule of describing all channels in DT should just avoid using these helpers and do things as they're done now. No one is forced to use them. But I am not really sure why would you not describe all the channels in the device-tree for ICs with less than 20 channels? I'd assume that if the channels are unconditionally usable in the hardware, then they should be in DT as well(?)
+v1:
+- Drop RFC prefix
+- Drop MMIO hole discovery. Will implement if there's real world implementation.
+- Drop MCE_PRI_CXL. Use MCE_PRI_UC. (Boris)
+- Minor refactors and grammar fixes. (Jonathan)
+- Rename 'mode' to 'address_mode'. (Jonathan)
 
-I devicetree, I think the tendency is to be less verbose and only add
-properties/nodes when there is something that is not the usual case.
-Default values are chosen to be the most usual case so we don't have
-to write so much in the .dts.
+RFCv2:
+- Dropped 1/6 (ACPICA definition merged)
+- Change UNKNOWN to RESERVED for cache definition. (Jonathan)
+- Fix spelling errors (Jonathan)
+- Rename region_res_match_range() to region_res_match_cxl_range(). (Jonathan)
+- Add warning when cache is not 1:1 with backing region. (Jonathan)
+- Code and comments cleanup. (Jonathan)
+- Make MCE code access in CXL arch independent. (Jonathan)
+- Fixup 0-day reports.
 
-> 
->>> Add couple of helper functions which can be used to retrieve the channel
->>> information from the device node.
->>>
->>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>
-> 
-> Yours,
->     -- Matti
+Certain systems provide an exclusive caching memory configurations where a
+1:1 layout of DRAM and far memory (FM) such as CXL memory is utilized. In
+this configuration, the memory region is provided as a single memory region
+to the OS. For example such as below:
 
+             128GB DRAM                         128GB CXL memory
+|------------------------------------|------------------------------------|
+
+The kernel sees the region as a 256G system memory region. Data can reside
+in either DRAM or FM with no replication. Hot data is swapped into DRAM by
+the hardware behind the scenes.
+
+This kernel series introduces code to enumerate the side cache by the kernel
+when configured in a exclusive-cache configuration. It also adds RAS support
+to deal with the aliased memory addresses.
+
+A new ECN [1] to ACPI HMAT table was introduced and was approved to describe
+the "extended-linear" addressing for direct-mapped memory-side caches. A
+reserved field in the Memory Side Cache Information Structure of HMAT is
+redefined as "Address Mode" where a value of 1 is defined as Extended-linear
+mode. This value is valid if the cache is direct mapped. "It indicates that
+the associated address range (SRAT.MemoryAffinityStructure.Length) is
+comprised of the backing store capacity extended by the cache capacity." By
+augmenting the HMAT and SRAT parsing code, this new information can be stored
+by the HMAT handling code.
+
+Current CXL region enumeration code is not enlightened with the side cache
+configuration and therefore only presents the region size as the size of the
+CXL region. Add support to allow CXL region enumeration code to query the HMAT 
+handling code and retrieve the information regarding the side cache and adjust
+the region size accordingly. This should allow the CXL CLI to display the
+full region size rather than just the CXL only region size.
+
+There are 3 sources where the kernel may be notified that error is detected for
+memory.
+1. CXL DRAM event. This is a CXL event that is generated when an error is
+   detected by the CXL device patrol or demand scrubber. The trace_event is
+   augmented to display the aliased System Phyiscal Address (SPA) in addition
+   to the alerted address.  However, reporting of memory failure is TBD until
+   the discussion [2] of failure reporting is settled upstream.
+2. UCNA event from DRAM patrol or demand scrubber. This should eventually go
+   through the MCE callback chain.
+3. MCE from kernel consume poison.
+
+It is possible that all 3 sources may report at the same time and all report
+at the error.
+
+For 2 and 3, a MCE notifier callback is registered by the CXL on a per device
+basis. The callback will determine if the reported address is in one of the
+special regions and offline the aliased address if that is the case.
+
+[1]: https://lore.kernel.org/linux-cxl/668333b17e4b2_5639294fd@dwillia2-xfh.jf.intel.com.notmuch/
+[2]: https://lore.kernel.org/linux-cxl/20240808151328.707869-2-ruansy.fnst@fujitsu.com/
+
+---
+
+Dave Jiang (4):
+      acpi: numa: Add support to enumerate and store extended linear address mode
+      acpi/hmat / cxl: Add extended linear cache support for CXL
+      cxl: Add extended linear cache address alias emission for cxl events
+      cxl: Add mce notifier to emit aliased address for extended linear cache
+
+ Documentation/ABI/stable/sysfs-devices-node |   6 +++
+ arch/x86/mm/pat/set_memory.c                |   1 +
+ drivers/acpi/numa/hmat.c                    |  44 +++++++++++++++++++
+ drivers/base/node.c                         |   2 +
+ drivers/cxl/Kconfig                         |   4 ++
+ drivers/cxl/core/Makefile                   |   2 +
+ drivers/cxl/core/acpi.c                     |  11 +++++
+ drivers/cxl/core/core.h                     |   3 ++
+ drivers/cxl/core/mbox.c                     |  20 +++++++--
+ drivers/cxl/core/mce.c                      |  65 +++++++++++++++++++++++++++
+ drivers/cxl/core/mce.h                      |  20 +++++++++
+ drivers/cxl/core/region.c                   | 114 +++++++++++++++++++++++++++++++++++++++++++++---
+ drivers/cxl/core/trace.h                    |  31 ++++++++-----
+ drivers/cxl/cxl.h                           |   8 ++++
+ drivers/cxl/cxlmem.h                        |   2 +
+ include/linux/acpi.h                        |  11 +++++
+ include/linux/node.h                        |   7 +++
+ tools/testing/cxl/Kbuild                    |   2 +
+ 18 files changed, 332 insertions(+), 21 deletions(-)
+
+ base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
 
