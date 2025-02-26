@@ -1,250 +1,196 @@
-Return-Path: <linux-acpi+bounces-11528-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11505-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED01BA4707C
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 01:48:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241AAA46F04
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 00:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A22277A4B81
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 00:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2919B3AD43F
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Feb 2025 23:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E695918E1F;
-	Thu, 27 Feb 2025 00:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B6525BABB;
+	Wed, 26 Feb 2025 23:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UKMSUvEv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1649227004C
-	for <linux-acpi@vger.kernel.org>; Thu, 27 Feb 2025 00:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F401A19597F;
+	Wed, 26 Feb 2025 23:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740617310; cv=none; b=Wm5AQp79H9cUP7HSJpOJ8USmOz6dNUblqOu351oSa2AmIANJfInOyUGukACgUhXdrEKgQRbGRDADHOrdW6BFMinY9j5dmGevNNhVL6WCiiedju1kVS5euQegHU3aBtXS5dSNWm49IoBY179x1F1+x9wSHZ71IWMSS0d+t8/EToc=
+	t=1740611340; cv=none; b=l93cbCSuq1ak/Fs0fzvKmbscknQifohEccsigjauQL18s9RHaG4PScCWe27ZN/CSxbhfMHHaLmQIJBffpUMhda7OQ99ydGyiTFnbYW2J4cTeP3wc32TYxRMOFLxTydETf0/QxQ7br9582Xhhzsvvi+AUI2SK5/aBcQCElBieEjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740617310; c=relaxed/simple;
-	bh=TW2S73cCRvglYfDwmQGd9RWd8/DD6yZTh696UemLXhU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KdfL0p4qNu5B5MN4IS97f+yxCYE/P2GjLqFesbcXDkcj1q2TO04pOCNOFR4D75r60WeEx4w9C1oA8GxEJ1Mh9kXh76Ky40y9Cn0xc2N7sA026iYHj0eDm6yq/47SYf43cmTIHQD0mib9ttEO9gH+22at2jMZHMJ9tudKy160j5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1740616660-1eb14e7a0031330001-I98ny2
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id UYHoqvL7SyDRaaIW (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 27 Feb 2025 08:37:40 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXSHMBX2.zhaoxin.com (10.28.252.164) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 27 Feb
- 2025 08:37:40 +0800
-Received: from ZXSHMBX2.zhaoxin.com ([fe80::4dfc:4f6a:c0cf:4298]) by
- ZXSHMBX2.zhaoxin.com ([fe80::4dfc:4f6a:c0cf:4298%4]) with mapi id
- 15.01.2507.044; Thu, 27 Feb 2025 08:37:40 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 26 Feb
- 2025 20:19:04 +0800
-From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
-	<robert.moore@intel.com>, <yazen.ghannam@amd.com>, <avadhut.naik@amd.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-CC: <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
-	<leoliu@zhaoxin.com>, LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-Subject: [PATCH v5 4/4] PCI: ACPI: Add new pci_acpi_program_hest_aer_params()
-Date: Wed, 26 Feb 2025 20:18:38 +0800
-X-ASG-Orig-Subj: [PATCH v5 4/4] PCI: ACPI: Add new pci_acpi_program_hest_aer_params()
-Message-ID: <20250226121838.364533-5-LeoLiu-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250226121838.364533-1-LeoLiu-oc@zhaoxin.com>
-References: <20250226121838.364533-1-LeoLiu-oc@zhaoxin.com>
+	s=arc-20240116; t=1740611340; c=relaxed/simple;
+	bh=ZebPFwCxMEWBUraXVn7cAy7LhzzBqgUECRkpu1XPMkE=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=iJHywbTcr0MYTI4AA+YUqPu2zZWlwCRNGTg2Yz9PICign6nZEGfTDeQIwxd6V0fkewcT9b/wZoAsD3z+vkHl6XdDah0ZdwVqDxzUZ0IOrhylTFyoOIkSWiqVaty+/2f8+0yEcK5IaIz2FynIhVQP06PdiEdYvAP2WunN2dPocMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UKMSUvEv; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7463B210EAC2;
+	Wed, 26 Feb 2025 15:08:58 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7463B210EAC2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740611338;
+	bh=lWL9w60RgCFJvxxxcjzNA366fYz5ZKlmrqBqiOc+Q/g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UKMSUvEv3THtmb9g5aJiCCDyMciP7ngSYzLOlZsEfYIlPXKPGvB2TRsNtJmqddGYU
+	 tH11c73Be9Yhta0hqTigHkzGT2UnIsvlEVX3bbhRoIlC/pLu04nIm977y8hCo9IvUo
+	 Tw6a0qyunjQu8u67QPyY/bCTHgaRgpP2difIJaac=
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	mhklinux@outlook.com,
+	decui@microsoft.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	daniel.lezcano@linaro.org,
+	joro@8bytes.org,
+	robin.murphy@arm.com,
+	arnd@arndb.de,
+	jinankjain@linux.microsoft.com,
+	muminulrussell@gmail.com,
+	skinsburskii@linux.microsoft.com,
+	mrathor@linux.microsoft.com,
+	ssengar@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	Tianyu.Lan@microsoft.com,
+	stanislav.kinsburskiy@gmail.com,
+	gregkh@linuxfoundation.org,
+	vkuznets@redhat.com,
+	prapal@linux.microsoft.com,
+	muislam@microsoft.com,
+	anrayabh@linux.microsoft.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	corbet@lwn.net
+Subject: [PATCH v5 00/10] Introduce /dev/mshv root partition driver
+Date: Wed, 26 Feb 2025 15:07:54 -0800
+Message-Id: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Moderation-Data: 2/27/2025 8:37:39 AM
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1740616660
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5086
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.137756
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
 
-From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+This series introduces support for creating and running guest virtual
+machines while running on the Microsoft Hypervisor[0] as root partition.
+This is done via an IOCTL interface accessed through /dev/mshv, similar to
+/dev/kvm. Another series introducing this support was previously posted in
+2021[1], and v4 of this series was last posted in 2023[2].
 
-Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
-the purpose of this function is to extract register value from HEST PCIe
-AER structures and program them into AER Capabilities. This function
-applies to all hardware platforms that has a PCI Express AER structure
-in HEST.
+Patches 1-4 are small refactors and additions to Hyper-V code.
+Patches 5-6 just export some definitions needed by /dev/mshv.
+Patches 7-9 introduce some functionality and definitions in common code, that
+is needed by the driver.
+Patch 10 contains the driver code.
 
-Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
----
- drivers/pci/pci-acpi.c | 90 ++++++++++++++++++++++++++++++++++++++++++
- drivers/pci/pci.h      |  6 +++
- drivers/pci/probe.c    |  1 +
- 3 files changed, 97 insertions(+)
+-----------------
+[0] "Hyper-V" is more well-known, but it really refers to the whole stack
+    including the hypervisor and other components that run in Windows
+    kernel and userspace.
+[1] Previous /dev/mshv patch series (2021) and discussion:
+https://lore.kernel.org/linux-hyperv/1632853875-20261-1-git-send-email-nunodasneves@linux.microsoft.com/
+[2] v4 (2023):
+https://lore.kernel.org/linux-hyperv/1696010501-24584-1-git-send-email-nunodasneves@linux.microsoft.com/
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e583..2e9a50fc7433 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -19,6 +19,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <linux/rwsem.h>
-+#include <acpi/apei.h>
- #include "pci.h"
-=20
- /*
-@@ -806,6 +807,95 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
- 	return -ENODEV;
- }
-=20
-+#ifdef CONFIG_ACPI_APEI
-+/*
-+ * program_hest_aer_common() - configure AER common registers for Root Por=
-ts,
-+ * Endpoints and PCIe to PCI/PCI-X bridges
-+ */
-+static void program_hest_aer_common(struct acpi_hest_aer_common aer_common=
-, struct pci_dev *dev,
-+				    int pos)
-+{
-+	u32 uncor_mask =3D aer_common.uncorrectable_mask;
-+	u32 uncor_severity =3D aer_common.uncorrectable_severity;
-+	u32 cor_mask =3D aer_common.correctable_mask;
-+	u32 adv_cap =3D aer_common.advanced_capabilities;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
-+	pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
-+}
-+
-+static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root, str=
-uct pci_dev *dev, int pos)
-+{
-+	u32 root_err_cmd =3D aer_root->root_error_command;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
-+}
-+
-+static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_=
-bridge,
-+				    struct pci_dev *dev, int pos)
-+{
-+	u32 uncor_mask2 =3D hest_aer_bridge->uncorrectable_mask2;
-+	u32 uncor_severity2 =3D hest_aer_bridge->uncorrectable_severity2;
-+	u32 adv_cap2 =3D hest_aer_bridge->advanced_capabilities2;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
-+}
-+
-+static void program_hest_aer_params(struct hest_parse_aer_info info)
-+{
-+	struct pci_dev *dev;
-+	int port_type;
-+	int pos;
-+	struct acpi_hest_aer_root *hest_aer_root;
-+	struct acpi_hest_aer *hest_aer_endpoint;
-+	struct acpi_hest_aer_bridge *hest_aer_bridge;
-+
-+	dev =3D info.pci_dev;
-+	port_type =3D pci_pcie_type(dev);
-+	pos =3D pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
-+	if (!pos)
-+		return;
-+
-+	switch (port_type) {
-+	case PCI_EXP_TYPE_ROOT_PORT:
-+		hest_aer_root =3D (struct acpi_hest_aer_root *)info.data;
-+		program_hest_aer_common(hest_aer_root->aer, dev, pos);
-+		program_hest_aer_root(hest_aer_root, dev, pos);
-+		break;
-+	case PCI_EXP_TYPE_ENDPOINT:
-+		hest_aer_endpoint =3D (struct acpi_hest_aer *)info.data;
-+		program_hest_aer_common(hest_aer_endpoint->aer, dev, pos);
-+		break;
-+	case PCI_EXP_TYPE_PCI_BRIDGE:
-+		hest_aer_bridge =3D (struct acpi_hest_aer_bridge *)info.data;
-+		program_hest_aer_common(hest_aer_bridge->aer, dev, pos);
-+		program_hest_aer_bridge(hest_aer_bridge, dev, pos);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+void pci_acpi_program_hest_aer_params(struct pci_dev *dev)
-+{
-+	struct hest_parse_aer_info info =3D {
-+		.pci_dev =3D dev
-+	};
-+
-+	if (!pci_is_pcie(dev))
-+		return;
-+
-+	if (apei_hest_parse(hest_parse_pcie_aer, &info) > 0)
-+		program_hest_aer_params(info);
-+
-+	return;
-+}
-+#endif
-+
- /**
-  * pciehp_is_native - Check whether a hotplug port is handled by the OS
-  * @bridge: Hotplug port to check
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 01e51db8d285..6ce44a2a3a69 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -902,6 +902,12 @@ static inline void pci_save_aer_state(struct pci_dev *=
-dev) { }
- static inline void pci_restore_aer_state(struct pci_dev *dev) { }
- #endif
-=20
-+#ifdef CONFIG_ACPI_APEI
-+void pci_acpi_program_hest_aer_params(struct pci_dev *dev);
-+#else
-+static inline void pci_acpi_program_hest_aer_params(struct pci_dev *dev){ =
-}
-+#endif
-+
- #ifdef CONFIG_ACPI
- bool pci_acpi_preserve_config(struct pci_host_bridge *bridge);
- int pci_acpi_program_hp_params(struct pci_dev *dev);
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 246744d8d268..40ef918c049c 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2352,6 +2352,7 @@ static void pci_configure_device(struct pci_dev *dev)
- 	pci_configure_serr(dev);
-=20
- 	pci_acpi_program_hp_params(dev);
-+	pci_acpi_program_hest_aer_params(dev);
- }
-=20
- static void pci_release_capabilities(struct pci_dev *dev)
---=20
+-----------------
+Changes since v4:
+* Slim down the IOCTL interface significantly, via several means:
+  1. Use generic "passthrough" call MSHV_ROOT_HVCALL to replace many ioctls.
+  2. Use MSHV_* versions of some of the HV_* definitions.
+  3. Move hv headers out of uapi altogether, into include/hyperv/, see:
+https://lore.kernel.org/linux-hyperv/1732577084-2122-1-git-send-email-nunodasneves@linux.microsoft.com/
+* Remove mshv_vtl module altogther, it will be posted in followup series
+  * Also remove the parent "mshv" module which didn't serve much purpose
+* Update and refactor parts of the driver code for clarity, extensibility
+
+Changes since v3 (summarized):
+* Clean up the error and debug logging:
+  1. Add a set of macros vp_*() and partition_*() which call the equivalent
+     dev_*(), passing the device from the partition struct
+     * The new macros also print the partition and vp ids to aid debugging
+	   and reduce repeated code
+  2. Use dev_*() (mostly via the new macros) instead of pr_*() *almost*
+  everywhere - in interrupt context we can't always get the device struct
+  3. Remove pr_*() logging from hv_call.c and mshv_root_hv_call.c
+
+Changes since v2 (summarized):
+* Fix many checkpatch.pl --strict style issues
+* Initialize status in get/set registers hypercall helpers
+* Add missing return on error in get_vp_signaled_count
+
+Changes since v1 (summarized):
+* Clean up formatting, commit messages
+
+Nuno Das Neves (9):
+  hyperv: Convert Hyper-V status codes to strings
+  arm64/hyperv: Add some missing functions to arm64
+  hyperv: Introduce hv_recommend_using_aeoi()
+  acpi: numa: Export node_to_pxm()
+  Drivers/hv: Export some functions for use by root partition module
+  Drivers: hv: Introduce per-cpu event ring tail
+  x86: hyperv: Add mshv_handler irq handler and setup function
+  hyperv: Add definitions for root partition driver to hv headers
+  Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs
+
+Stanislav Kinsburskii (1):
+  x86/mshyperv: Add support for extended Hyper-V features
+
+ .../userspace-api/ioctl/ioctl-number.rst      |    2 +
+ arch/arm64/hyperv/hv_core.c                   |   17 +
+ arch/arm64/hyperv/mshyperv.c                  |    1 +
+ arch/arm64/include/asm/mshyperv.h             |   12 +
+ arch/x86/kernel/cpu/mshyperv.c                |   16 +-
+ drivers/acpi/numa/srat.c                      |    1 +
+ drivers/hv/Makefile                           |    5 +-
+ drivers/hv/hv.c                               |   12 +-
+ drivers/hv/hv_common.c                        |  105 +-
+ drivers/hv/hv_proc.c                          |   16 +-
+ drivers/hv/mshv.h                             |   30 +
+ drivers/hv/mshv_common.c                      |  161 ++
+ drivers/hv/mshv_eventfd.c                     |  833 ++++++
+ drivers/hv/mshv_eventfd.h                     |   71 +
+ drivers/hv/mshv_irq.c                         |  128 +
+ drivers/hv/mshv_portid_table.c                |   84 +
+ drivers/hv/mshv_root.h                        |  321 +++
+ drivers/hv/mshv_root_hv_call.c                |  876 +++++++
+ drivers/hv/mshv_root_main.c                   | 2329 +++++++++++++++++
+ drivers/hv/mshv_synic.c                       |  665 +++++
+ include/asm-generic/mshyperv.h                |   18 +
+ include/hyperv/hvgdk_mini.h                   |   64 +-
+ include/hyperv/hvhdk.h                        |  132 +-
+ include/hyperv/hvhdk_mini.h                   |   91 +
+ include/uapi/linux/mshv.h                     |  287 ++
+ 25 files changed, 6248 insertions(+), 29 deletions(-)
+ create mode 100644 drivers/hv/mshv.h
+ create mode 100644 drivers/hv/mshv_common.c
+ create mode 100644 drivers/hv/mshv_eventfd.c
+ create mode 100644 drivers/hv/mshv_eventfd.h
+ create mode 100644 drivers/hv/mshv_irq.c
+ create mode 100644 drivers/hv/mshv_portid_table.c
+ create mode 100644 drivers/hv/mshv_root.h
+ create mode 100644 drivers/hv/mshv_root_hv_call.c
+ create mode 100644 drivers/hv/mshv_root_main.c
+ create mode 100644 drivers/hv/mshv_synic.c
+ create mode 100644 include/uapi/linux/mshv.h
+
+-- 
 2.34.1
 
 
