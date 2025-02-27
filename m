@@ -1,172 +1,146 @@
-Return-Path: <linux-acpi+bounces-11537-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11538-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C109BA4759D
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 06:57:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0C0A476B0
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 08:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0F2116F4B0
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 05:57:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B4F47A1BE6
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 07:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB6D2153E9;
-	Thu, 27 Feb 2025 05:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="eQI4y+Ht"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3B821CFFB;
+	Thu, 27 Feb 2025 07:36:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498AB214A96;
-	Thu, 27 Feb 2025 05:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0921EB194;
+	Thu, 27 Feb 2025 07:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740635821; cv=none; b=PFDZtPux8wnMh1V1498x0YZmTO12UDF1kxEGu9aUEnZJ4n8XQLEsi6brDcSMdkW8fXFEKzkwvBIrzFN6PDsO+i0qAuWoybI0BRUor8RNQytRZhE4ZTYp1EpyvtfJaJb5YkdwDjzBddUzwyydr2vYMbTl214P1xXy5qwcOIf/kPs=
+	t=1740641779; cv=none; b=JxvRyT7rdjHnSwntGqlsvgxgz4HWmlmy4+LyUfpJTyUY8jdLn7S2AwDRi4UxMLsySoZ8iLUU1+TSfgCKTIZMaViakLU4J2XD9aJ3g7zzTWdXfPy5Ww/BM4/Jy6xlqEKjjnLbqwDA/CCFJCkxS/UgIKl3NwyUoxGK2iR1U7f5d7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740635821; c=relaxed/simple;
-	bh=n/7501i6uez9aq/kEbc0SV9ZotnO1lRKSkI807l1+yo=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KZcYNRn+fWGwRNEZ8VeeP1R6cB4nyYYFuCFGBsG1no4gY2FTtKG60WuMDKFW0TZWTd2oSTUDWOxicwzMo8JggxhI7QIETix0UiVZz9h0+puK5WHOQ2VPR+wokQy60qmo+u7TOMUsLf4Mrh0+UxPUbRHdVtNr4S1CUcXu47w1iE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=eQI4y+Ht; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.65.224.197] (unknown [20.236.11.29])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 91976210C33B;
-	Wed, 26 Feb 2025 21:56:58 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 91976210C33B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740635819;
-	bh=W/MkXUhHX7zH6oQ/rHTcpceutPj8HQjNkQ+KPUdG8HE=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=eQI4y+Ht6gcca5/C4U2sEvpTwt7K8Tzgnteh+WyGhNwCTshnKA0XUsTDM9eYfZeIh
-	 QjkJYSyHomtHB13FhD0M5CcZVt7UgmmGKqHH++pn/K4lVYxywy06xenvAsZSRgtPnE
-	 PIn+AldosomUdd9VeWpBXVnsKZVDKLcOS1bKbEns=
-Message-ID: <5f3d660d-fe2e-4ac1-94a7-66d6c8ffe579@linux.microsoft.com>
-Date: Wed, 26 Feb 2025 21:56:56 -0800
+	s=arc-20240116; t=1740641779; c=relaxed/simple;
+	bh=q6J1MD/XaTTNsDSjjbF3e3Wl8GO7LFMiz+NC6qOo/Z4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fuOVL3KA6W9TAz9AF47vy1xutwGfHEtME1+P8+9IVvJggJMJ7DJ8qIQFQK0kqs5OMFjOlFdCAgMqBptD2NceDk9RkpZYus/PybUMIAf6FJgLLC6jaRCe4MeVLs3ifpsZd3s+hYk8HNpyE2dNIb1FSvVV5oBWVDpQBBHK3mOCvXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Z3NNZ41BPz9w7m;
+	Thu, 27 Feb 2025 15:33:02 +0800 (CST)
+Received: from dggemv704-chm.china.huawei.com (unknown [10.3.19.47])
+	by mail.maildlp.com (Postfix) with ESMTPS id CABFB18010B;
+	Thu, 27 Feb 2025 15:36:07 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 27 Feb 2025 15:36:07 +0800
+Received: from localhost.localdomain (10.28.79.22) by
+ kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 27 Feb 2025 15:36:07 +0800
+From: Huisong Li <lihuisong@huawei.com>
+To: <sudeep.holla@arm.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<jassisinghbrar@gmail.com>, <liuyonglong@huawei.com>, <lihuisong@huawei.com>
+Subject: [PATCH] mailbox: pcc: Fix can't clear level interrupt of type3 in cornor case
+Date: Thu, 27 Feb 2025 15:23:41 +0800
+Message-ID: <20250227072341.28693-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.22.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org,
- eahariha@linux.microsoft.com, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, mhklinux@outlook.com, decui@microsoft.com,
- catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- daniel.lezcano@linaro.org, joro@8bytes.org, robin.murphy@arm.com,
- arnd@arndb.de, jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-Subject: Re: [PATCH v5 03/10] arm64/hyperv: Add some missing functions to
- arm64
-To: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-4-git-send-email-nunodasneves@linux.microsoft.com>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <1740611284-27506-4-git-send-email-nunodasneves@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On 2/26/2025 3:07 PM, Nuno Das Neves wrote:
-> These non-nested msr and fast hypercall functions are present in x86,
-> but they must be available in both architetures for the root partition
+The mbox_chan_received_data() will call Rx callback of mbox client driver
+using type3 to set the flag of command completion. Then driver can continue
+to do something like sending a new command. In this case, the rest of the
+interrupt handler function may be concurrent with pcc_send_data().
 
-nit: *architectures*
+The 'chan_in_use' flag of a channel is true after sending a command. And
+the flag of the new command may be cleared by the running interrupt handler
+in cornor case. As a result, the interrupt being level triggered can't be
+cleared in pcc_mbox_irq() and it will be disabled after the number of
+handled times exceeds the specified value. The error log is as follows:
 
+[519082.811553] kunpeng_hccs HISI04B2:00: PCC command executed timeout!
+[519082.828532] kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110.
+[519082.833438] irq 13: nobody cared (try booting with the "irqpoll" option)
+[519082.844622] CPU: 304 PID: 15206 Comm: systemd-journal Kdump: loaded Tainted: G           OE     5.10.0 #5
+[519082.854959] Hardware name: To be filled by O.E.M. To be filled by O.E.M./To be filled by O.E.M., BIOS Nezha B800 V3.1.0 01/02/2024
+[519082.867467] Call trace:
+[519082.870709]  dump_backtrace+0x0/0x210
+[519082.875145]  show_stack+0x1c/0x2c
+[519082.879240]  dump_stack+0xec/0x130
+[519082.883421]  __report_bad_irq+0x50/0x190
+[519082.888122]  note_interrupt+0x1e4/0x260
+[519082.892740]  handle_irq_event+0x144/0x17c
+[519082.897519]  handle_fasteoi_irq+0xd0/0x240
+[519082.902386]  __handle_domain_irq+0x80/0xf0
+[519082.907255]  gic_handle_irq+0x74/0x2d0
+[519082.911774]  el1_irq+0xbc/0x140
+[519082.915698]  mnt_clone_write+0x0/0x70
+[519082.920131]  file_update_time+0xcc/0x160
+[519082.924832]  fault_dirty_shared_page+0xe8/0x150
+[519082.930133]  do_shared_fault+0x80/0x1d0
+[519082.934737]  do_fault+0x118/0x1a4
+[519082.938821]  handle_pte_fault+0x154/0x230
+[519082.943600]  __handle_mm_fault+0x1ac/0x390
+[519082.948465]  handle_mm_fault+0xf0/0x250
+[519082.953075]  do_page_fault+0x184/0x454
+[519082.957595]  do_translation_fault+0xac/0xd4
+[519082.962555]  do_mem_abort+0x44/0xb4
+[519082.966817]  el0_da+0x40/0x74
+[519082.970554]  el0_sync_handler+0x60/0xb4
+[519082.975160]  el0_sync+0x168/0x180
+[519082.979243] handlers:
+[519082.982300] [<0000000039882697>] pcc_mbox_irq
+[519082.987433] Disabling IRQ #13
 
-> driver code.
-> 
-> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-> ---
->  arch/arm64/hyperv/hv_core.c       | 17 +++++++++++++++++
->  arch/arm64/include/asm/mshyperv.h | 12 ++++++++++++
->  include/asm-generic/mshyperv.h    |  2 ++
->  3 files changed, 31 insertions(+)
-> 
-> diff --git a/arch/arm64/hyperv/hv_core.c b/arch/arm64/hyperv/hv_core.c
-> index 69004f619c57..e33a9e3c366a 100644
-> --- a/arch/arm64/hyperv/hv_core.c
-> +++ b/arch/arm64/hyperv/hv_core.c
-> @@ -53,6 +53,23 @@ u64 hv_do_fast_hypercall8(u16 code, u64 input)
->  }
->  EXPORT_SYMBOL_GPL(hv_do_fast_hypercall8);
->  
-> +/*
-> + * hv_do_fast_hypercall16 -- Invoke the specified hypercall
-> + * with arguments in registers instead of physical memory.
-> + * Avoids the overhead of virt_to_phys for simple hypercalls.
-> + */
-> +u64 hv_do_fast_hypercall16(u16 code, u64 input1, u64 input2)
-> +{
-> +	struct arm_smccc_res	res;
-> +	u64			control;
-> +
-> +	control = (u64)code | HV_HYPERCALL_FAST_BIT;
-> +
-> +	arm_smccc_1_1_hvc(HV_FUNC_ID, control, input1, input2, &res);
-> +	return res.a0;
-> +}
-> +EXPORT_SYMBOL_GPL(hv_do_fast_hypercall16);
-> +
+To solve this issue, pcc_mbox_irq() clear 'chann_in_use' flag immediately
+after clearing interrupt ack register.
 
-I'd like this to have been in arch/arm64/include/asm/mshyperv.h like its x86
-counterpart, but that's just my personal liking of symmetry. I see why it's here
-with its slow and 8-byte brethren.
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+---
+ drivers/mailbox/pcc.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
->  /*
->   * Set a single VP register to a 64-bit value.
->   */
-> diff --git a/arch/arm64/include/asm/mshyperv.h b/arch/arm64/include/asm/mshyperv.h
-> index 2e2f83bafcfb..2a900ba00622 100644
-> --- a/arch/arm64/include/asm/mshyperv.h
-> +++ b/arch/arm64/include/asm/mshyperv.h
-> @@ -40,6 +40,18 @@ static inline u64 hv_get_msr(unsigned int reg)
->  	return hv_get_vpreg(reg);
->  }
->  
-> +/*
-> + * Nested is not supported on arm64
-> + */
-> +static inline void hv_set_non_nested_msr(unsigned int reg, u64 value)
-> +{
-> +	hv_set_msr(reg, value);
-> +}
-
-empty line preferred here, also reported by checkpatch
-
-> +static inline u64 hv_get_non_nested_msr(unsigned int reg)
-> +{
-> +	return hv_get_msr(reg);
-> +}
-> +
->  /* SMCCC hypercall parameters */
->  #define HV_SMCCC_FUNC_NUMBER	1
->  #define HV_FUNC_ID	ARM_SMCCC_CALL_VAL(			\
-> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
-> index c020d5d0ec2a..258034dfd829 100644
-> --- a/include/asm-generic/mshyperv.h
-> +++ b/include/asm-generic/mshyperv.h
-> @@ -72,6 +72,8 @@ extern void * __percpu *hyperv_pcpu_output_arg;
->  
->  extern u64 hv_do_hypercall(u64 control, void *inputaddr, void *outputaddr);
->  extern u64 hv_do_fast_hypercall8(u16 control, u64 input8);
-> +extern u64 hv_do_fast_hypercall16(u16 control, u64 input1, u64 input2);
-> +
-
-checkpatch warns against putting externs in header files, and FWIW, if hv_do_fast_hypercall16()
-for arm64 were in arch/arm64/include/asm/mshyperv.h like its x86 counterpart, you probably
-wouldn't need this?
-
->  bool hv_isolation_type_snp(void);
->  bool hv_isolation_type_tdx(void);
->  
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 82102a4c5d68..077ff98366cb 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -333,10 +333,20 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+ 		return IRQ_NONE;
+ 
++	/*
++	 * The mbox_chan_received_data() will call Rx callback of mbox
++	 * client driver using type3 to set the flag of command completion.
++	 * Then driver can continue to do something like sending a new
++	 * command. In this case, the rest of the interrupt handler
++	 * function may be concurrent with pcc_send_data().
++	 * To avoid the 'chan_in_use' flag of new command being cleared by
++	 * interrupt handler, clear this flag immediately after clearing
++	 * interrupt ack register.
++	 */
++	pchan->chan_in_use = false;
+ 	mbox_chan_received_data(chan, NULL);
+ 
+ 	check_and_ack(pchan, chan);
+-	pchan->chan_in_use = false;
+ 
+ 	return IRQ_HANDLED;
+ }
+-- 
+2.22.0
 
 
