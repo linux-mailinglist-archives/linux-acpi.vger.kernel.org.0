@@ -1,117 +1,126 @@
-Return-Path: <linux-acpi+bounces-11578-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11579-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18730A48831
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 19:50:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09A7A489F3
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 21:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21FB9168AAE
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 18:50:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E532D1653E3
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 20:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D7D1F5841;
-	Thu, 27 Feb 2025 18:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270E4222576;
+	Thu, 27 Feb 2025 20:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="FNbW9YBu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rx0mWpSS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782351DE3A4;
-	Thu, 27 Feb 2025 18:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4031419DF52
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Feb 2025 20:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740682232; cv=none; b=tYtu/78MqZeepEOoksvPR8jrliROE9N42smaAZZbg3L0ZynJK0Ip7TDvUx01N0Rog39Lhb249JkBM/6cOeXZkgDht0N5YpKylE4rzVgMM5+wzr92L+ElxpenovHsSklRbnUrseEFF4rzw2k/mVfJMNBu7iXOPZDhgacrsepT3vM=
+	t=1740688503; cv=none; b=uC2AnFdkAjeoavn2XIgUbCohfoNW+DNEvDWeZQHXuX3UMsIeRKBQrvvNZnV8kvfDY9zYVos2QVEeXy0ws/f5prIWQ9CJjTcP5+77ccxadxepqBhemj0OawKpnjz/Wu/vrixmvuSiSe5gXe80i2VQHjESOo5f5WL23sLkfT6/PPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740682232; c=relaxed/simple;
-	bh=F1lTmqgjHYJPjcmbtxE/n3iAXCq4SZkVmt5nqUeZPXY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UUAbgYd+WIY89QNALCaSsR9uBKRLzqDEcEVKRwFBqz1yAXKXFwNuyPrcMg2/EtvjN+qyyOmRCQeWDoUsIIJ/2YQKb2qi0uK56A4ybbuB+pWwKnIbT1zTkolVWhTfDRm77C5UBEAoI/6jPwMfVII+7dCL0dRsU9AWhkOsncMCeYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=FNbW9YBu; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 9B421210D0D8;
-	Thu, 27 Feb 2025 10:50:30 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9B421210D0D8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740682231;
-	bh=dHwZT1w8oWRsXa8H/+DiZfRcRSkOTyh9HqlMdGrYI/Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FNbW9YBuPokWfkhV8B0zMJtN5945pEMQP20InF/WOW6hK0iLB5iSFm7uJafeCDov9
-	 ygoVc1l10LfK0HlQbcUkAzGjyXWi8ArYK0CYgWh0b61j196eOqg//F7JMoJtHcRzGr
-	 /mlcu6UBD8g84zdCQtIgCvdToz5xVsg4gg8RkKH4=
-Message-ID: <f332b77a-940f-4007-a44a-de64878d5201@linux.microsoft.com>
-Date: Thu, 27 Feb 2025 10:50:30 -0800
+	s=arc-20240116; t=1740688503; c=relaxed/simple;
+	bh=bXxSEzAG/4iUWducMgDBSPmkjWssMBKyphle7BJUApI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z2gHusfaxFLUUter+f/DSGGjdL/cd73iOBuUytII73OXLq8QEVliuySLNHuBOV93n3jmC6X/MUzmoITNLkkQkp1gL1QeSOTj2O2TSf+0YfxSbYtsElIaHUZtLpxcWdp1n0veGUW3bGJaLcp+80hcvLOeFxJuN1w4Lx+k02gKgqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rx0mWpSS; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5461a485a72so1324814e87.0
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Feb 2025 12:35:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740688499; x=1741293299; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PeuqxAmt1Qh978bgMpTPOmbEBFg9vrDCcgbGN4kik24=;
+        b=rx0mWpSSCn/tf7BxgezhV8pgrg8Pku6GYqtxYofVYIP7CshX6/2xNv8k8aYL3rYKTW
+         4DKmZA6PWCfd63arNbuBtE4Upqfo2pBIfYo75IKdK7PW85bM2P3z84UxvCBiKfS2Sjlz
+         P/af4i12bBgctLOtcm0XXTHLTDgeoDANLhPKFqChhvlp/yVBtKEnoZ4pNLnbJ6XtgPy7
+         KDqxPVXtnjizLdAUxaZqVWAUw5B/dvSiFgtJ5YKCinJfIfmICrntgNUIQmr8XAMpKPet
+         hCmwO1WFbm9+N8PlSro6WbmVLsRdzSW+vb5w30HfmpXAutvrhqfRbJvtmzxyvf9w0fHS
+         KePA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740688499; x=1741293299;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PeuqxAmt1Qh978bgMpTPOmbEBFg9vrDCcgbGN4kik24=;
+        b=kc7WqyEzqS+hMeT/a3HqFX74R67mmb3hDiCX46UvKA5SJ9EnuNEtR0zTcM+zX6upFS
+         AxURUTLeTJ+JOSfN5auLEOFZYKFrU18K9R++eXAELh/1+afn7BjmozATEenktr5gGfUS
+         fXXbDq/uMRBTaqH5Y6WcX3DFF88xpJaSYeoAiC0+jFY7Wg7YpTokt6piHjHHYQz7giWH
+         QNOS0Q7/xnN8yCrQkvdd80ZpMDH+LNPRQ89Fiz18I/vAwueOw2BTWlOoi2kPs4vgJ0WZ
+         5FU6iShLTqoBE+HYMCKUOPZH2xyz/JiSno2EpzDLufbzUhhaiBLLy+HSFYUfWIOvb1gj
+         6ieA==
+X-Forwarded-Encrypted: i=1; AJvYcCVrTyTwwK8F8+WW+TxsjwA/6tzIjcxNZqiy2OEWsoraZ6cgIup7D3JSWHGTP5C9oqgR9Lr6ug4EO91g@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywkv+GossbV2KyeCdDGYveW2/ohw+jhGxVpn5AhGafVDhfVBWOK
+	C/FLgBBxwwIxHdaqF4K79uaVkFrYOP4sbJNQQqvzs4iMkuv36xVxLPtV0sKMITULZqyh/ydLz07
+	2TGTHYzroKZzKsLBwMNOBzhxU+JUeEcxzl1Bd7w==
+X-Gm-Gg: ASbGnctDB/gFdLLXbGP0IRuvZjXCLi4174GPEnh9zLEicm0M+r0JHhHB2vl+V3+zrpJ
+	eBIAYMpjcP+4iOBtCysXlHSy1V1njtnK7kj5ja2QLCCwUpgOBK9Y4lJ0cSwHu6rX26y86ORciAz
+	jqJE8t6nY=
+X-Google-Smtp-Source: AGHT+IGg4EqvzrAvnzj94K+52AOp6peQCUTUyjS5GdcexzC1jX0ldvgPrkj7A9gohmBANYoaKcLYCMjFpUrRRlAREJQ=
+X-Received: by 2002:a05:6512:1089:b0:545:27af:f2e4 with SMTP id
+ 2adb3069b0e04-5494c3207e0mr295413e87.18.1740688499410; Thu, 27 Feb 2025
+ 12:34:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
- expose /dev/mshv to VMMs
-To: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
- linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- mhklinux@outlook.com, decui@microsoft.com, catalin.marinas@arm.com,
- will@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
- joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
- jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250219145338.3306745-1-superm1@kernel.org> <20250219145338.3306745-3-superm1@kernel.org>
+In-Reply-To: <20250219145338.3306745-3-superm1@kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 27 Feb 2025 21:34:48 +0100
+X-Gm-Features: AQ5f1JqqOtUfQcK4ttKKJLnwL4MmovtUXV3akSvWi09-svI3CFHM7hoXCk9DBy4
+Message-ID: <CACRpkdaCUx5EW-CzHgNiKgQF6FxKbFP0_pHC3LnfgEKpksTJtw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] pinctrl: amd: Add an LPS0 check() callback
+To: Mario Limonciello <superm1@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Cc: mario.limonciello@amd.com, Basavaraj.Natikar@amd.com, 
+	Shyam-sundar.S-k@amd.com, linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Mario,
 
+thanks for your patch!
 
+On Wed, Feb 19, 2025 at 3:54=E2=80=AFPM Mario Limonciello <superm1@kernel.o=
+rg> wrote:
 
-On 2/26/2025 3:08 PM, Nuno Das Neves wrote:
-> Provide a set of IOCTLs for creating and managing child partitions when
-> running as root partition on Hyper-V. The new driver is enabled via
-> CONFIG_MSHV_ROOT.
-> 
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>
+> During suspend the pinctrl_amd driver disables the interrupts for
+> any GPIOs that are not marked as wake sources.
+>
+> This however does not prevent them from changing the wake status
+> bit during suspend, it just stops the system from waking.
+>
+> If the system wakes from hardware sleep for another reason (such
+> as plugging in the AC adapter) this wake bits might be active.
+>
+> This could potentially cause problems with going back to hardware
+> sleep.  Add an extra debugging message when PM debugging is enabled
+> to help identify if this is happening.
+>
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-[...]
+I don't understand the ACPI part of this patch, and I think I was
+not even CC:ed on 1/2 so I haven't seen it.
 
+Anyway:
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-As I understood, the changes fall into these buckets:
+if you want to apply it in the ACPI tree.
 
-1. Partition management (VPs and memory). Built of the top of fd's which
-    looks as the right approach. There is ref counting etc.
-2. Scheduling. Here, there is the mature KVM and Xen code to find
-    inspiration in. Xen being the Type 1 hypervisor should likely be
-    closer to MSHV in my understanding.
-3. IOCTL code allocation. Not sure how this is allocated yet given that
-    the patch series has been through a multi-year review, that must be
-    settled by now.
-4. IOCTLs themselves. The majority just marshals data to the
-    hypervisor.
-
-Despite the rather large size of the patch, I spot-checked the places
-where I have the chance to make an informed decision, and could not find
-anything that'd stand out as suspicious to me. Going to extrapolate that
-the patch itself should be good enough. Given that this code has been in
-development and validation for a few years, I'd vote to merge it. That
-will also enable upstreaming the rest of the VTL mode code that powers
-Azure Boost (https://github.com/microsoft/OHCL-Linux-Kernel)
-
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-
--- 
-Thank you,
-Roman
-
+Yours,
+Linus Walleij
 
