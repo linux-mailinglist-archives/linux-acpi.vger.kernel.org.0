@@ -1,213 +1,170 @@
-Return-Path: <linux-acpi+bounces-11540-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11541-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312E5A47744
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 09:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D49A47A98
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 11:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B65001891E27
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 08:04:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 043811888920
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 10:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB09227E9C;
-	Thu, 27 Feb 2025 08:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970B322A1ED;
+	Thu, 27 Feb 2025 10:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bH0IgmiF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HrWnfuFC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565492222B8;
-	Thu, 27 Feb 2025 08:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64810219304;
+	Thu, 27 Feb 2025 10:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740643317; cv=none; b=uhBd/wXhUGMrvPszQgCj4r4zH82JIKhGOCfsrXIRoijuBU67DjP8sN9St8qb3098eA/klCusyktUHr6Rk49HVkZAa8tuvy+kAX4txEJwzHxv9KWnbQPufX7p9eOzbcFst546TaPz5gmJL3nkbrszcFDJS022XaWO84amyszi9go=
+	t=1740653065; cv=none; b=OUj8ye5L2P4fiCeNPyx8DHnExS++lfCHvnycTEqvsBAvl2vHvfccShGzNM7E+gAnL5GCCPqcQuIIi5srKUVqF4zdDN/CHHD21l+O3i9c+3bmlJrMBhQFmvGIqeZWcmDGKycE9Mljz4unnws194f+PHr5t/jjhjmMK9Db8Ma43K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740643317; c=relaxed/simple;
-	bh=runjjTr95i43OiT1nxM0NLq9jU5kyxMdjAifU3Y72ZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CYzYpwW4t2rKaXewoZigSxvIvIFAswUHxKf1C4TAIu8rP5Djf5KDdNcv8nuBujDt0u4uPCak4AkMTgbbeKncZ8noo2WDYmDYX22Kb96jyCYKpCqyb0ovSTRgs8TLmO4D30xby7JnA4fHBE7+xOSgolOGj5nTy3OJzovoMmWR+EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bH0IgmiF; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54298ec925bso963233e87.3;
-        Thu, 27 Feb 2025 00:01:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740643313; x=1741248113; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nDtuSF+uNvwU/olXT0/1pp58GsxviGqVNXkV33zGjbs=;
-        b=bH0IgmiFcPevoY2hqONYARZZmNLCwMY0AfK9x7thqbgPf4J+Qn4hBAcN4pQrZdPGtn
-         McbOOwHbxpOO+7bjb8sRMU2W2Dg87h62N2jihV+zCmC/9jpDi9VNkXdeQe344sW+hzFI
-         YDzEyoax1yxUuIuAQsOdd9IYFRLSlQmjoFK3OamCegJstxIThmsNoRuwNZzN5frCOzVi
-         Qov1wO1hWKs4A5wQl3KU16hTjNjuCv9nzS1TTbFZz1nJ+om+OjRdQcEz1o+VwqT+3W/i
-         j6eYFHdEk/YpbRhOac6A9J1ZbfjZSY7OVIs/DAaFrjPfKkb2s4McUW5uV3eiBdTw4XIN
-         Hx5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740643313; x=1741248113;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nDtuSF+uNvwU/olXT0/1pp58GsxviGqVNXkV33zGjbs=;
-        b=R2oStxMYjyAK8xz7CelsV2cxglL9rGkJ384Awfzo+8IqjUR12N3Fgq9vLzApenM9zK
-         Ol5lk804Got6QYHLGT1edKka40463xxd4/E0iwPfUkPhFl3H+aPKiEilnxf6Bhb0x1Bx
-         h/3KE3rw5nUh/BZFAs7Z6/z6Ni0nxJ/F0/0Xqo5/1hbUi/MruijkYEg9rIcyLGlPMjDj
-         kXv+y/Nm6YI8TMvoJv4AayZHIVVA+ocM0Vu5i1yBj8eL6QAP5uP9RjfNOPYh4gqyTEtU
-         XS+pc5MMRhbmejwgh9xFRe7HF4OheYoR8RetDTAqHutJ8iOmgcSkA0Yp137PWsNILtms
-         FLvw==
-X-Forwarded-Encrypted: i=1; AJvYcCV9BRPb9UiMYR2nxIxAsiGeLQWlBPCV7B6VF06ZnM/iTjtXtt7S9ZXofMqMUVylaxZ89BvwciE3GvUfm4DD@vger.kernel.org, AJvYcCVv/EIZF+V5AntFDLd6F+ICMZ8qw6wVr4torMdM17P0K33j8UFPNt5yIdBTcD8JsZYHovgyjwCA7oLGrA==@vger.kernel.org, AJvYcCWYgdGo/urCe2P5C8zJ/PK9b2oJMLiLcyeWqoYat6gKQ8fhPwPQVD+LoFdCD4GXjiTquYliHZRdVkrF@vger.kernel.org, AJvYcCWhNLLCjC1tETtdbXjgZe6EhzMqFGOCX8BoXEjJbvMnWBoj3wZbWQ1GRzQtgsgMX6Rskz4crolJLCNUfl5L8FVqURw=@vger.kernel.org, AJvYcCWpyfxJfrazKeaaqoEmseP8EjcCE179XprKS0SXG2wfVeENEz0ueD2GfkVVTIrY3tuCnCP44dX1v1D+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0jwv8oyT5NQzkjDl4y8rJ2IvY9tCV0TdHvOZmzQDwZWSS/O62
-	QVvBkOzsr9VwozZBFTKFnStdhe/YoxnGiROtXI09TKKpx4BzK8kw
-X-Gm-Gg: ASbGncu9+YoOvt8Mw6OMO4OHwlEr9JKZAFwM0C0Q6Kf3STV0dt1o+alh2+iiuYSsDDI
-	YRhGl/PQFBDRuZ35rbHNaL/Xlfm7DLTjavgH7G6QwP96fJaJNVqbALTMkb8Z7HZxOiF3MJvQzqL
-	I0VrbpKVZCf8LrMqcxfH7m2TVAd+lkri9jXbnNYfmDaKNKGUVLRnaReKXioZ5hGJKolo2xbmcQb
-	8TpDKStd6XUUJdAMDQJ6VyycYE/aYkHIsoiCpB0T5hQf8pAZ96SYxTkCx5vBgwWY304afoIhxst
-	8cESDawJOummLbGNu4DsTM0Am3o0N500WWj58D9QINc5L8VquZM8iBl/p9P5TWWHcSIiGEykWCn
-	tYPZjwvU=
-X-Google-Smtp-Source: AGHT+IFjVjmK2qHUacoPpo4OU31ZwGA6d9bKKSSD59w0ISV0sOUUwTnyPiZ3gMGZR/v96mmqDXra0A==
-X-Received: by 2002:a19:8c09:0:b0:549:43f8:824 with SMTP id 2adb3069b0e04-54943f8098dmr558221e87.26.1740643313017;
-        Thu, 27 Feb 2025 00:01:53 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549443bebd5sm98564e87.209.2025.02.27.00.01.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Feb 2025 00:01:51 -0800 (PST)
-Message-ID: <d7982b76-3da7-47ff-b2b2-f964610af1f7@gmail.com>
-Date: Thu, 27 Feb 2025 10:01:49 +0200
+	s=arc-20240116; t=1740653065; c=relaxed/simple;
+	bh=5ST4DGO4sgEGA8CX2VyyqvnAiLYX3czLao19TJ9TBTU=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=qTrD5fDzlAyQYS20WGR6hnrkLRVf2mwVmz+vGY5N998IX1xsyZlE58NsNi0ZeeyNShKOkfZHnCUfYLe6F5Qd2qs68HzbhGd/hMEM7e50zLGuKSleiQ8zBkR2UXxDZO51eiwgxBRXfbkP829rUZKOA4Musjj8dPD+y5+v2ebar1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HrWnfuFC; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740653064; x=1772189064;
+  h=date:from:to:cc:subject:message-id;
+  bh=5ST4DGO4sgEGA8CX2VyyqvnAiLYX3czLao19TJ9TBTU=;
+  b=HrWnfuFCI6IgxcMF2RhR8bANAVse6swxZXMP5271D+0CVCW+STHjwnfQ
+   5VZ1n9QvE/VCuSBFjcw1uRl//v5N/bCPUIH6uQwrEwYrunZA1Nd/UnR6e
+   uRWsSWzyw3irdshJzh6amkJIonIT6Eta5cjbN6wlu2n8CfZVmpEFvZIVA
+   shV9A/3NLAroBj3qfahAh2/OGnqD1mHdpnn/5fqOR2pkwxRxWNJxB/tL1
+   uw90Bfsj6RoN+Mqtt11YI1EqxBhGtT4bt76lVmPYLGQBvEwJTL6hwPRf0
+   vT98w8Znfo4LM2KasT41U/y3+hTYRj/RCucwvHVPImXP+UYGgQRD8+Bim
+   A==;
+X-CSE-ConnectionGUID: VFD68WswSIOC7+Ht7KyZHA==
+X-CSE-MsgGUID: dDZDgAfRTjaU1WHBZ8XuEw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41734062"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="41734062"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 02:44:23 -0800
+X-CSE-ConnectionGUID: 4wnfITPETXa+o73NGwuXxQ==
+X-CSE-MsgGUID: hKe4nsXERmGxbcuuKgeT7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117903148"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 27 Feb 2025 02:44:20 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tnbNK-000DEU-15;
+	Thu, 27 Feb 2025 10:44:18 +0000
+Date: Thu, 27 Feb 2025 18:43:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:fixes] BUILD SUCCESS
+ 9e5a50c397fbcfa53516810575d744b555f39900
+Message-ID: <202502271822.bCm3SFLL-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/10] property: Add
- device_get_child_node_count_named()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
- <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
- <Z72QAOA9xXbP16K-@kuha.fi.intel.com> <Z72Zp8tpnvlFGdQ_@smile.fi.intel.com>
- <ad39b453-7e5b-49bd-a4fd-6a4988636130@gmail.com>
- <Z72d7TzZ21WITW3f@smile.fi.intel.com>
- <893a3c45-537e-47ad-afbd-1e5d3b9abe2c@gmail.com>
- <Z73M3Ua6u1FpgBEK@smile.fi.intel.com>
- <720f9c69-ca1f-45cb-9f6e-c8e4703c9aad@gmail.com>
- <Z78g_uiXumn4mvET@smile.fi.intel.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <Z78g_uiXumn4mvET@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 26/02/2025 16:11, Andy Shevchenko wrote:
-> On Wed, Feb 26, 2025 at 04:04:02PM +0200, Matti Vaittinen wrote:
->> On 25/02/2025 15:59, Andy Shevchenko wrote:
->>> On Tue, Feb 25, 2025 at 03:29:17PM +0200, Matti Vaittinen wrote:
->>>> On 25/02/2025 12:39, Andy Shevchenko wrote:
->>>>> On Tue, Feb 25, 2025 at 12:29:31PM +0200, Matti Vaittinen wrote:
->>>>>> On 25/02/2025 12:21, Andy Shevchenko wrote:
->>>>>>> On Tue, Feb 25, 2025 at 11:40:16AM +0200, Heikki Krogerus wrote:
-> 
-> ...
-> 
->>>>>>>>
->>>>>>>> I did not check how many users are you proposing for this, but if
->>>>>>>> there's only one, then IMO this should not be a global function yet.
->>>>>>>> It just feels to special case to me. But let's see what the others
->>>>>>>> think.
->>>>>>>
->>>>>>> The problem is that if somebody hides it, we might potentially see
->>>>>>> a duplication in the future. So I _slightly_ prefer to publish and
->>>>>>> then drop that after a few cycles if no users appear.
->>>>>>
->>>>>> After taking a very quick grep I spotted one other existing place where we
->>>>>> might be able to do direct conversion to use this function.
->>>>>>
->>>>>> drivers/net/ethernet/freescale/gianfar.c
->>>>>>
->>>>>> That'd be 2 users.
->>>>>
->>>>> I haven't checked myself, I believe your judgement,
->>>>
->>>> I took a better look and you obviously shouldn't believe :) The gianfar used
->>>> of_node instead of the fwnode. So, it'd be a single caller at starters.
->>>
->>> ...which is the same as dev_of_node(), which means that you can use your
->>> function there.
->>
->> I'm unsure what you mean. The proposed function
->> device_get_child_node_count_named() takes device pointer. I don't see how
->> dev_of_node() helps converting node to device?
-> 
-> dev_of_node() takes the device pointer and dev_fwnode() takes that as well,
-> it means that there is no difference which one to use OF-centric or fwnode
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
+branch HEAD: 9e5a50c397fbcfa53516810575d744b555f39900  Merge branch 'pm-cpuidle-fixes' into fixes
 
-The proposed device_get_child_node_count_named() takes a device pointer. 
-I don't see how dev_of_node() helps if there is just of_node and no 
-device pointer available in the calling code. (Well, as I wrote below, I 
-could alter the gianfar code by dropping the gfar_of_group_count(), so 
-that I have the device pointer in caller). Anyways, I don't see how 
-dev_of_node() should help unless you're proposing I add a 
-of_get_child_node_count_named() or somesuch - which I don't think makes 
-sense.
+elapsed time: 1450m
 
-> API in this particular case. Just make sure that the function (and there
-> is also a second loop AFAICS) takes struct device *dev instead of struct
-> device_node *np as a parameter.
+configs tested: 76
+configs skipped: 1
 
-I think I lost the track here :)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->> I think I could actually kill the whole gfar_of_group_count() function and
->> replace it with a direct call to the device_get_child_node_count_named() -
->> but I am not at all convinced that'd be worth including the property.h to a
->> file which is currently using only of_* -stuff. Well, I suppose it can be
->> asked from netdev peeps but I am not convinced they see it as a great idea.
->>
->> If I misunderstood your meaning - please elaborate.
-> 
-> The driver is quite old
+tested configs:
+alpha                           allyesconfig    gcc-14.2.0
+arc                             allmodconfig    gcc-13.2.0
+arc                             allyesconfig    gcc-13.2.0
+arc                  randconfig-001-20250226    gcc-13.2.0
+arc                  randconfig-002-20250226    gcc-13.2.0
+arm                             allmodconfig    gcc-14.2.0
+arm                             allyesconfig    gcc-14.2.0
+arm                  randconfig-001-20250226    gcc-14.2.0
+arm                  randconfig-002-20250226    clang-21
+arm                  randconfig-003-20250226    gcc-14.2.0
+arm                  randconfig-004-20250226    gcc-14.2.0
+arm64                           allmodconfig    clang-18
+arm64                randconfig-001-20250226    gcc-14.2.0
+arm64                randconfig-002-20250226    gcc-14.2.0
+arm64                randconfig-003-20250226    clang-21
+arm64                randconfig-004-20250226    gcc-14.2.0
+csky                 randconfig-001-20250226    gcc-14.2.0
+csky                 randconfig-002-20250226    gcc-14.2.0
+hexagon                         allmodconfig    clang-21
+hexagon                         allyesconfig    clang-18
+hexagon              randconfig-001-20250226    clang-21
+hexagon              randconfig-002-20250226    clang-21
+i386                            allmodconfig    gcc-12
+i386                             allnoconfig    gcc-12
+i386       buildonly-randconfig-001-20250226    gcc-12
+i386       buildonly-randconfig-002-20250226    gcc-12
+i386       buildonly-randconfig-003-20250226    gcc-12
+i386       buildonly-randconfig-004-20250226    clang-19
+i386       buildonly-randconfig-005-20250226    gcc-12
+i386       buildonly-randconfig-006-20250226    gcc-12
+i386                               defconfig    clang-19
+loongarch            randconfig-001-20250226    gcc-14.2.0
+loongarch            randconfig-002-20250226    gcc-14.2.0
+nios2                randconfig-001-20250226    gcc-14.2.0
+nios2                randconfig-002-20250226    gcc-14.2.0
+openrisc                        allyesconfig    gcc-14.2.0
+parisc                          allmodconfig    gcc-14.2.0
+parisc                          allyesconfig    gcc-14.2.0
+parisc               randconfig-001-20250226    gcc-14.2.0
+parisc               randconfig-002-20250226    gcc-14.2.0
+powerpc              randconfig-001-20250226    gcc-14.2.0
+powerpc              randconfig-002-20250226    clang-18
+powerpc              randconfig-003-20250226    clang-21
+powerpc64            randconfig-001-20250226    clang-18
+powerpc64            randconfig-002-20250226    gcc-14.2.0
+powerpc64            randconfig-003-20250226    gcc-14.2.0
+riscv                randconfig-001-20250226    clang-18
+riscv                randconfig-002-20250226    gcc-14.2.0
+s390                            allmodconfig    clang-19
+s390                            allyesconfig    gcc-14.2.0
+s390                 randconfig-001-20250226    gcc-14.2.0
+s390                 randconfig-002-20250226    clang-15
+sh                              allmodconfig    gcc-14.2.0
+sh                              allyesconfig    gcc-14.2.0
+sh                   randconfig-001-20250226    gcc-14.2.0
+sh                   randconfig-002-20250226    gcc-14.2.0
+sparc                           allmodconfig    gcc-14.2.0
+sparc                randconfig-001-20250226    gcc-14.2.0
+sparc                randconfig-002-20250226    gcc-14.2.0
+sparc64              randconfig-001-20250226    gcc-14.2.0
+sparc64              randconfig-002-20250226    gcc-14.2.0
+um                              allmodconfig    clang-21
+um                              allyesconfig    gcc-12
+um                   randconfig-001-20250226    clang-18
+um                   randconfig-002-20250226    gcc-12
+x86_64                           allnoconfig    clang-19
+x86_64                          allyesconfig    clang-19
+x86_64     buildonly-randconfig-001-20250226    clang-19
+x86_64     buildonly-randconfig-002-20250226    clang-19
+x86_64     buildonly-randconfig-003-20250226    gcc-12
+x86_64     buildonly-randconfig-004-20250226    clang-19
+x86_64     buildonly-randconfig-005-20250226    gcc-12
+x86_64     buildonly-randconfig-006-20250226    gcc-12
+x86_64                             defconfig    gcc-11
+xtensa               randconfig-001-20250226    gcc-14.2.0
+xtensa               randconfig-002-20250226    gcc-14.2.0
 
-I remember having to modify this driver somewhere around 2010 or so. :) 
-Time flies.
-
-> and has a lot of room to improve. Briefly looking it
-> may be almost fully converted to fwnode, but it's not your call (only if you
-> wish). Nevertheless, using agnostic APIs if they reduce code base is fine.
-> We have drivers that do OF and fwnode mixed approach (for various reasons,
-> one of which is the new API that is absent in OF realm.
-
-Well, we can propose this to netdev people but I wouldn't be surprized 
-if they requested full of_node => fwnode rewrite instead of removing 
-simple looking loop and bringing mixture of fwnode and of_node in driver.
-
-Yours,
-	-- Matti
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
