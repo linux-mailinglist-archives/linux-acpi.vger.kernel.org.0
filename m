@@ -1,167 +1,122 @@
-Return-Path: <linux-acpi+bounces-11596-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11597-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD21AA48C01
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 23:49:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9738BA48C0C
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 23:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AB2416D226
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 22:49:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB1116D462
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 22:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208E0271815;
-	Thu, 27 Feb 2025 22:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58669227EA4;
+	Thu, 27 Feb 2025 22:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KhhXveEp"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hWbxuV9P"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C7323E352;
-	Thu, 27 Feb 2025 22:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56F427781F;
+	Thu, 27 Feb 2025 22:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740696524; cv=none; b=eUPqpSLJnGLBKFuFaGbNkA+VSdHAxyHDCIGNYnVuvHnkhwRmhSdJ5UzIqZI5WR0t/rzHVC463EEfYoZvRwgx25MhpUq/Nn13xgMJ6vC0LerAfupySt5Ztxr5fdWgSFMi4VHD77RV77KGrnxaIcSKLkN38w5Dq7T52nCcrMVRsLU=
+	t=1740696873; cv=none; b=uCNiokyU5o1nh8cEgs/kcCEuiwcbF1aqYeHQ0o9XaX3d3yEH5kE2lhmDloKaeJq0C1v598KIXG61UKRZOyo3WXyNOdw+TYpdLJom6F5Bu6w6VfSzw2O0pCImLzpICPU+KY6oLd3jZI+xyBcxUJoDYbvCi9aOOKQYCofa+/CwhDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740696524; c=relaxed/simple;
-	bh=5dLuIAnj4GerB++3zMLGjP08kKlVE0y/APjV7HD4j0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwvJ2pJ/4QbTOj0sALOUfMzYtwrYv2O5xiUT/Gwpg9UWsNYKtxpa92CNnxAapV+rLNcpmHw/rCfuDk7f3GDZ514WTbvU6X18CHL4H1QbquLLgDKnF54mKCmlEPKnNIvyeCgy2JZN5nSqOYiQ8K7oKTCtBcYXYCSxq07E5bqoKn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KhhXveEp; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740696522; x=1772232522;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5dLuIAnj4GerB++3zMLGjP08kKlVE0y/APjV7HD4j0I=;
-  b=KhhXveEp0pES82fjIObBWHU+msFPgZR9eAsOJAEeB2Nod0yeFNeVncr1
-   Ccith8YE82XRscKHpEt3z4NE3v5kc2TjagxRqFMneBP0EHazuN29VjSoE
-   lFbTnpBCwBr/g5tfbf0SuO9Rh2PiJismp1JtSokB3hKaCxyxsIjBssmZk
-   UPFCvsyFgrowDuw3LY3/Y+RUerdMfEc1TJrEmU5aJjduUPIlBoxa491mC
-   XczTn6/pzF5WiUIojNv1meGThZj9IoK6T4tC5dqa3fMnJzul5kqv/2cEs
-   3DatW/BPx91HIZdnoQdAabHKNt72G5HeTH5KuZSTMpIKCJy8gowHzdv9l
-   g==;
-X-CSE-ConnectionGUID: TBWivM9LSdGRmtkkQmBj6A==
-X-CSE-MsgGUID: YxMj/IwkT32giSQ2IP8zQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="64077570"
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="64077570"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 14:48:40 -0800
-X-CSE-ConnectionGUID: R2pLDkmiRtKb9+XyaT7yvw==
-X-CSE-MsgGUID: a9f4NdGZTIWS7KICWckfQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="117187056"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.70])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 14:48:39 -0800
-From: Tony Luck <tony.luck@intel.com>
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH v2 4/4] acpi_mrrm: fake for testing, do not apply!
-Date: Thu, 27 Feb 2025 14:48:28 -0800
-Message-ID: <20250227224828.306537-5-tony.luck@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250227224828.306537-1-tony.luck@intel.com>
-References: <20250227224828.306537-1-tony.luck@intel.com>
+	s=arc-20240116; t=1740696873; c=relaxed/simple;
+	bh=RuA59ClwIqQKbbK7C7kTIuq0JiW34Kv6jLeLH44Uv24=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=oj8lWSsnoC2eSeSi/UeQ5AMo+ieRiB7uEwLtmMTYCeKv9QnieCXXZdOjZ8m0DUZtKx3+2bKHIhaguQ94F9q/kdVScna6UcbsYUAcz/EGwcGpNDZQQ731thW/SuCwrJprRM7K02yJ6viBzLVcfcaOdLI86F8wuQBe663IKl3JKeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=hWbxuV9P; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [192.168.35.166] (c-24-22-154-137.hsd1.wa.comcast.net [24.22.154.137])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 710C3210EAC0;
+	Thu, 27 Feb 2025 14:54:30 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 710C3210EAC0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740696871;
+	bh=N9e9a8/heH4xuMeTDXGwYikxUbMHl5ORfY3Jz5KULqs=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=hWbxuV9PupeHKuyO0Jlff9XgGej1tmlh9xoKKaLTJxZtVX5L3mKrFgoqXUYmhbxPD
+	 vPwYqUasVmrF46RL++TMuFhde996cZq4lthnz06yokTUCjvCx7MUfWWgxBWCg+pr2z
+	 vGdAotzlyZ6VMqEWaU+OwG9CiA1heCNEpHQ425NU=
+Message-ID: <8338dd00-3aa4-418f-a547-1c19623358cb@linux.microsoft.com>
+Date: Thu, 27 Feb 2025 14:54:29 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org,
+ eahariha@linux.microsoft.com, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, mhklinux@outlook.com, decui@microsoft.com,
+ catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+ daniel.lezcano@linaro.org, joro@8bytes.org, robin.murphy@arm.com,
+ arnd@arndb.de, jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
+ skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
+ ssengar@linux.microsoft.com, apais@linux.microsoft.com,
+ Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
+ gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
+ muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
+ lenb@kernel.org, corbet@lwn.net
+Subject: Re: [PATCH v5 01/10] hyperv: Convert Hyper-V status codes to strings
+To: Roman Kisel <romank@linux.microsoft.com>
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-2-git-send-email-nunodasneves@linux.microsoft.com>
+ <74af19c4-639f-4bcc-b667-b5f102bbb312@linux.microsoft.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Content-Language: en-US
+In-Reply-To: <74af19c4-639f-4bcc-b667-b5f102bbb312@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Dummy MRRM table for a 2 socket system with memory map:
+On 2/27/2025 9:02 AM, Roman Kisel wrote:
+> 
+> 
+> On 2/26/2025 3:07 PM, Nuno Das Neves wrote:
+> 
+> [...]
+> 
+>> +
+>> +const char *hv_result_to_string(u64 hv_status)
+>> +{
+>> +    switch (hv_result(hv_status)) {
+> 
+> [...]
+> 
+>> +        return "HV_STATUS_VTL_ALREADY_ENABLED";
+>> +    default:
+>> +        return "Unknown";
+>> +    };
+>> +    return "Unknown";
+>> +}
+>> +EXPORT_SYMBOL_GPL(hv_result_to_string);
+> 
+> Should we remove this and output the hexadecimal error code in ~3 places
+> this function is used?
+> 
+> The "Unknown" part would make debugging harder actually when something
+> fails. I presume that the mainstream scenarios all work, and it is the
+> edge cases that might fail, and these are likelier to produce "Unknown".
+> 
+> Folks who actually debug failed hypercalls rarely have issues with
+> looking up the error code, and printing "Unknown" to the log is worse
+> than a hexadecimal. Like even the people who wrote the code got nothing
+> to say about what is going on.
+> 
 
-						LocalAccess RemoteAccess
-0-3.5G		DDR on socket 0			0	    1
-2G-512G		More DDR on socket 0		0	    1
-512G-1T		DDR on socket 1			0	    1
-1T-2T		Reserved for CXL on socket 0	2	    3
-2T-3T		Reserved for CXL on socket 1	2	    3
+Sorry, I have to disagree with this, a recent commit of mine[1] closed a WSL
+issue that was open for over 2 years for, partly, the utter uselessness of
+the hex return code of the hypercall.
 
-This tags all local DDR access in region 0, remote DDR in region 1,
-local CXL in region 2, and remote CXL in region 3.
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d2138eab8cde61e0e6f62d0713e45202e8457d6d
 
-Presented to user like this:
-
-$ cd /sys/firmware/acpi
-$ grep ^ memory_ranges/*/*
-memory_ranges/range0/base:0x0
-memory_ranges/range0/length:0xe0000000
-memory_ranges/range0/local_region_id:0x0
-memory_ranges/range0/remote_region_id:0x1
-memory_ranges/range1/base:0x100000000
-memory_ranges/range1/length:0x7f00000000
-memory_ranges/range1/local_region_id:0x0
-memory_ranges/range1/remote_region_id:0x1
-memory_ranges/range2/base:0x8000000000
-memory_ranges/range2/length:0x8000000000
-memory_ranges/range2/local_region_id:0x0
-memory_ranges/range2/remote_region_id:0x1
-memory_ranges/range3/base:0x10000000000
-memory_ranges/range3/length:0x100000000000
-memory_ranges/range3/local_region_id:0x2
-memory_ranges/range3/remote_region_id:0x3
-memory_ranges/range4/base:0x200000000000
-memory_ranges/range4/length:0x100000000000
-memory_ranges/range4/local_region_id:0x2
-memory_ranges/range4/remote_region_id:0x3
-
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
- drivers/acpi/acpi_mrrm.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
-index 1f7d0381a628..16f0ca7072e0 100644
---- a/drivers/acpi/acpi_mrrm.c
-+++ b/drivers/acpi/acpi_mrrm.c
-@@ -147,11 +147,35 @@ static __init int add_boot_memory_ranges(void)
- 	return ret;
- }
- 
-+#define FAKE 1
-+#ifdef FAKE
-+static const u8 fake_mrrm[] = {
-+	0x4D,0x52,0x52,0x4D,0xE0,0x00,0x00,0x00,0x01,0x3A,0x49,0x4E,0x54,0x45,0x4C,0x00,
-+	0x49,0x4E,0x54,0x45,0x4C,0x20,0x49,0x44,0x02,0x00,0x00,0x00,0x49,0x4E,0x54,0x4C,
-+	0x12,0x12,0x24,0x20,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x00,0xE0,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x01,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x00,0x00,
-+	0x00,0x00,0x00,0x00,0x7F,0x00,0x00,0x00,0x03,0x00,0x00,0x01,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x80,0x00,0x00,0x00,
-+	0x00,0x00,0x00,0x00,0x80,0x00,0x00,0x00,0x03,0x00,0x00,0x01,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x00,
-+	0x00,0x00,0x00,0x00,0x00,0x10,0x00,0x00,0x03,0x00,0x02,0x03,0x00,0x00,0x00,0x00,
-+	0x00,0x00,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x20,0x00,0x00,
-+	0x00,0x00,0x00,0x00,0x00,0x10,0x00,0x00,0x03,0x00,0x02,0x03,0x00,0x00,0x00,0x00
-+};
-+#endif
-+
- static __init int mrrm_init(void)
- {
- 	int ret;
- 
-+#ifdef FAKE
-+	ret = acpi_parse_mrrm((struct acpi_table_header *)fake_mrrm);
-+#else
- 	ret = acpi_table_parse(ACPI_SIG_MRRM, acpi_parse_mrrm);
-+#endif
- 
- 	if (ret < 0)
- 		return ret;
--- 
-2.48.1
-
+Thanks,
+Easwar (he/him)
 
