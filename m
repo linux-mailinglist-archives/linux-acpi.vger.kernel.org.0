@@ -1,185 +1,153 @@
-Return-Path: <linux-acpi+bounces-11568-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11569-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32725A48693
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 18:28:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E09BA486F8
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 18:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDE6618861AA
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 17:28:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C4163A8E46
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 17:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F1F1DE2C3;
-	Thu, 27 Feb 2025 17:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488231E521C;
+	Thu, 27 Feb 2025 17:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="Aaf7w9pg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Up8hxUD2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F014BF8F;
-	Thu, 27 Feb 2025 17:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7A1D5CD3;
+	Thu, 27 Feb 2025 17:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740677305; cv=none; b=hdXBv6wcGXO2+CgyClGj+4fOnS79aP9RZHTDx+d4M6y0Fd+q0AyyOmG9TOQT0ChmWHmgxtoDYubrar7vJUjETcMUoNPKehqfPSGR+WervKISpgHcqLIPGfqalHjl0X9YDgZnXdRB7VQRiylN3wqf3ekBMOgK6pKbMVhAd0mUp6g=
+	t=1740678556; cv=none; b=AeZP92reg7dX6/u2fv8032wFxr77WvYBJLmfP3neLAhDC1MgrzRUrgd0m6aC9ra5Xqtb0mN30tgw9L0Uxu0zBlBsKIqyq0z/QQsensGLaH/g5MenCkmPHlruLe4WcjkGO5LTE8Exn99FYw2FqDAvZBWfE0jvLfby2244fyY8Qzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740677305; c=relaxed/simple;
-	bh=ikWj5+7SXGJyZUnbkxLELvI1YVvn2VIrtNvfHs/FeC8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pfHZaJSL+pAVf/S93bd3nqolQts/8GE00ZhpwaK9E562Cni341XHi1X7GlV4HQlfGNrbZX35YqD65vjdIMnUMS1xVEQSp6SHQ6743kr2wkBB2lPyHVWYgP3iIO8HbH3dFD9MEPv+JJrWFZ/yI5nbA1eDoUjYOtaQdfZJAVRT+fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=Aaf7w9pg; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id 5B2D42E09048;
-	Thu, 27 Feb 2025 19:28:19 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740677299;
-	bh=ByF8KDVTX2D/v89FI2SCLVExRI54mmWywXip2G9Ozm8=;
-	h=Received:From:Subject:To;
-	b=Aaf7w9pg++QXb94nonrF51mbU6pBVRodN46Io0MFRVlReMC9W6HZq7RwXCUFrb4a6
-	 MECmYMM/wILHuACd7y8Vyyysef2+LkPn0Dt5dnIFqA6GME1aTjQzXRl/4kpl+K5IrI
-	 oxyYZmsULwDHMB/wCo95qN7GpLx+Kbu35Uj7K+wE=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.167.51) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f51.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lf1-f51.google.com with SMTP id
- 2adb3069b0e04-5494bc4d741so170264e87.2;
-        Thu, 27 Feb 2025 09:28:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCV15bLyJCNS+qyLJjBfu3EstP4Lw92YYbVlREUzkT6mYtOcw3NjqogWqLl+T7g216M1Y+86aJTZE0cMiBFpdTOA+mzPJA==@vger.kernel.org,
- AJvYcCV6eOH/BepLkE94Z7KrwiA3HqTi3Ub4w5QVtaRdJybGcqVfProyY2WRJqGk70ugCi+cxFdamTZncEhYvKex@vger.kernel.org,
- AJvYcCX8awZXDLweIcvAfJfG5FATDG5gtgPrrnmwNh9xRtkpq32pySoBY6ezRR+q65k0uz/Cqc2VpmoCiqWF@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc+H1+Di6EFYHG1SEVfKH6YnYv6Qr/G1Ikq9OkCf4xgTzk3yRC
-	IFCTsLWPkAW5MGBiuzZM/f8NJrFKXhNC5zllYBz/o9kBdaOU9OsWc4jq10mtR/mPgMNA5TRfvr8
-	7y1oNo2YO0veCC7WrBHtnp3u6ZK8=
-X-Google-Smtp-Source: 
- AGHT+IG7UkmgUD97cjOzynCm+z0eL9rr30mWW5Hs435/iy6GpesJxUsye64CEJqei3gpXE2KvSk5Z/2W4rlzAaC1dPY=
-X-Received: by 2002:a05:6512:114b:b0:545:d72:95e5 with SMTP id
- 2adb3069b0e04-5494c107c7emr206581e87.7.1740677298628; Thu, 27 Feb 2025
- 09:28:18 -0800 (PST)
+	s=arc-20240116; t=1740678556; c=relaxed/simple;
+	bh=ez8brVd0JnnAlkQbw2j67F0woWc/khO90+OnRBROpyw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uZ6Gi9oXAFNUzPu+y7IzjBuOTC4p2OkxUcrveGl8cCJmSgEGE1BHyK2wzL6W6lkdMelAQDFqxEH9GZKc2FeUyaWskBfZTZdY2hiAJMV4e46jL7FQ+ty2q08Iu/tGyDZjPFCgc7Pppr39CE5Fb9HuN7MuLGgNAPgJuC3ckxWLfJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Up8hxUD2; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740678554; x=1772214554;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ez8brVd0JnnAlkQbw2j67F0woWc/khO90+OnRBROpyw=;
+  b=Up8hxUD2oWi8alur3SKKqZrmauPCZuEXmOqLPJS0uk9AHyoHmyCSc0Hv
+   jjjlWWwnjp9H1dGKPRyI5/C0ZVEcisHf2S4w+GBmXMqnSgrkMYK0/2Ufs
+   Lxnxdfb92cJSViKO6EbYdu+dAjJlM21BoDN1/SAcqhnsfhpMz+6kaJh0+
+   LwS8df+7UYa68J+6l5bUjpwZKuMDr8tjxhE2XLPYecpKpJPx/H3pd1IcW
+   lkym7QCiTBgxZROI8XNfhFOmCJoOGmv1S78dIASOd31K+d6I9G1EuKMHi
+   8sAvjmvBKYAqJsXgc0rc5kkFZGDCFzC7jUQyJ63rW/hFksCskj0L8Pr5z
+   w==;
+X-CSE-ConnectionGUID: EMBQ//g/TzO0zYFAUgvztQ==
+X-CSE-MsgGUID: 79nJrxn5RXC06bkNqmhpmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="45498987"
+X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
+   d="scan'208";a="45498987"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 09:49:13 -0800
+X-CSE-ConnectionGUID: b/1sFD2SSWqbRg1BOPQzhg==
+X-CSE-MsgGUID: hJH0vHKbTMuTqTWqf5o/Lw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
+   d="scan'208";a="117118264"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 27 Feb 2025 09:49:09 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tni0R-000DnF-0k;
+	Thu, 27 Feb 2025 17:49:07 +0000
+Date: Fri, 28 Feb 2025 01:48:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Antheas Kapenekakis <lkml@antheas.dev>, mario.limonciello@amd.com,
+	mpearson-lenovo@squebb.ca
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	ilpo.jarvinen@linux.intel.com, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org, rafael@kernel.org,
+	hdegoede@redhat.com, me@kylegospodneti.ch,
+	Antheas Kapenekakis <lkml@antheas.dev>
+Subject: Re: [PATCH 3/3] ACPI: platform_profile: Do not hide options missing
+ in secondary handlers
+Message-ID: <202502280150.DkqQsO8C-lkp@intel.com>
+References: <20250224195059.10185-4-lkml@antheas.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227153603.131046-1-lkml@antheas.dev>
- <20250227153603.131046-3-lkml@antheas.dev>
- <26c21df0-c885-4948-8902-685dcb7f13b8@amd.com>
- <CAGwozwG8wqGCmVxK_dxGxWmqMofUGaThjiG9SaBEKWZ-EokjVQ@mail.gmail.com>
- <1ba0c88f-e0dc-4b9b-9ea2-47a6295910ce@amd.com>
- <CAGwozwGNV0gccAH-TXCi4PCnuWFOA0v8KkiZJ8Z+fZ+_ft6UAA@mail.gmail.com>
- <1722456c-1c1d-4213-a7dd-926a650fd0c6@amd.com>
-In-Reply-To: <1722456c-1c1d-4213-a7dd-926a650fd0c6@amd.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Thu, 27 Feb 2025 18:28:04 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwEqVkDC_HvuJhGE=PUep-73RVFnuZNWh0E+8ucfko1F8g@mail.gmail.com>
-X-Gm-Features: AQ5f1JrWZnOZ_3gXRf7f-fGTYakbjzUXySofcvqILgBQ0zXDMBnQ3pw1wz6pIAI
-Message-ID: 
- <CAGwozwEqVkDC_HvuJhGE=PUep-73RVFnuZNWh0E+8ucfko1F8g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] ACPI: platform_profile: make amd-pmf a secondary
- handler
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: mpearson-lenovo@squebb.ca, ilpo.jarvinen@linux.intel.com, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, rafael@kernel.org, hdegoede@redhat.com,
-	me@kylegospodneti.ch, luke@ljones.dev
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174067729971.13119.14815397925895685673@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250224195059.10185-4-lkml@antheas.dev>
 
-On Thu, 27 Feb 2025 at 18:24, Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> On 2/27/2025 11:18, Antheas Kapenekakis wrote:
-> > On Thu, 27 Feb 2025 at 18:10, Mario Limonciello
-> > <mario.limonciello@amd.com> wrote:
-> >>
-> >> On 2/27/2025 11:04, Antheas Kapenekakis wrote:
-> >>> On Thu, 27 Feb 2025 at 17:46, Mario Limonciello
-> >>> <mario.limonciello@amd.com> wrote:
-> >>>>
-> >>>> On 2/27/2025 09:36, Antheas Kapenekakis wrote:
-> >>>>> Since amd-pmf is expected to run alongside other platform handlers, it
-> >>>>> should be able to accept all platform profiles. Therefore, mark it as
-> >>>>> secondary and in the case of a custom profile, make it NOOP without an
-> >>>>> error to allow primary handlers to receive a custom profile.
-> >>>>> The sysfs endpoint will still report custom, after all.
-> >>>>>
-> >>>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> >>>>> ---
-> >>>>>     drivers/platform/x86/amd/pmf/spc.c | 3 +++
-> >>>>>     drivers/platform/x86/amd/pmf/sps.c | 8 ++++++++
-> >>>>>     2 files changed, 11 insertions(+)
-> >>>>>
-> >>>>> diff --git a/drivers/platform/x86/amd/pmf/spc.c b/drivers/platform/x86/amd/pmf/spc.c
-> >>>>> index f34f3130c330..99c48378f943 100644
-> >>>>> --- a/drivers/platform/x86/amd/pmf/spc.c
-> >>>>> +++ b/drivers/platform/x86/amd/pmf/spc.c
-> >>>>> @@ -219,12 +219,15 @@ static int amd_pmf_get_slider_info(struct amd_pmf_dev *dev, struct ta_pmf_enact_
-> >>>>>
-> >>>>>         switch (dev->current_profile) {
-> >>>>>         case PLATFORM_PROFILE_PERFORMANCE:
-> >>>>> +     case PLATFORM_PROFILE_BALANCED_PERFORMANCE:
-> >>>>>                 val = TA_BEST_PERFORMANCE;
-> >>>>>                 break;
-> >>>>>         case PLATFORM_PROFILE_BALANCED:
-> >>>>>                 val = TA_BETTER_PERFORMANCE;
-> >>>>>                 break;
-> >>>>>         case PLATFORM_PROFILE_LOW_POWER:
-> >>>>> +     case PLATFORM_PROFILE_COOL:
-> >>>>> +     case PLATFORM_PROFILE_QUIET:
-> >>>>>                 val = TA_BEST_BATTERY;
-> >>>>
-> >>>> I would really prefer we do the absolute bare minimum to help this issue
-> >>>> on ASUS (just special case quiet) and leave adding compat for other
-> >>>> profiles for other development.
-> >>>
-> >>> I cannot risk other drivers having their options disabled. This can
-> >>> have carry-on effects in other drivers too.
-> >>>
-> >>> Including in the legion v3 driver, in which you will end up disabling
-> >>> balanced-performance. Since Derek posted the v3 for that today.
-> >>>
-> >>
-> >> Sure - but let's handle that separately from this bug fix.  That driver
-> >> will be targeted to 6.15 or later.
-> >>
-> >> We need to be cognizant about what can go into 6.14 needs to be bug
-> >> fixes for drivers in tree.
-> >
-> > For me to consider this problem resolved, I need a mitigation that
-> > matches the behavior of this patch series 1-1.
-> >
-> > If you have a better suggestion, I can implement it and test it real quick.
->
-> I think just covering the QUIET == LOW_POWER is the important one for now.
+Hi Antheas,
 
-Sure, how do we do that? You want to make amd-pmf accept both just for
-6.14? I would be ok with that.
+kernel test robot noticed the following build warnings:
 
-> >
-> > If this issue is not fully resolved, it will cause a lot of downstream
-> > issues that will result in the legacy interface becoming unusable.
-> >
-> > Acer and alienware implement balanced performance too. In the current tree.
->
-> But do Acer and Alienware have designs that amd-pmf will bind at the
-> same time?
->
-> I'm not so sure.
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.14-rc4 next-20250227]
+[cannot apply to rafael-pm/linux-next rafael-pm/bleeding-edge]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-From a quick google search, Acer Swift Edge 16 - 8840U. But we do not
-have a lot of acer users I'd say.
+url:    https://github.com/intel-lab-lkp/linux/commits/Antheas-Kapenekakis/ACPI-platform_profile-Add-support-for-secondary-handlers/20250225-035455
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20250224195059.10185-4-lkml%40antheas.dev
+patch subject: [PATCH 3/3] ACPI: platform_profile: Do not hide options missing in secondary handlers
+config: i386-buildonly-randconfig-003-20250227 (https://download.01.org/0day-ci/archive/20250228/202502280150.DkqQsO8C-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250228/202502280150.DkqQsO8C-lkp@intel.com/reproduce)
 
-> >
-> snip
-> >>
->
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502280150.DkqQsO8C-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/acpi/platform_profile.c:248: warning: Function parameter or struct member 'secondary' not described in '_aggregate_choices'
+
+
+vim +248 drivers/acpi/platform_profile.c
+
+77be5cacb2c2d8 Mario Limonciello   2024-12-05  239  
+06ec24388f1de6 Mario Limonciello   2024-12-05  240  /**
+06ec24388f1de6 Mario Limonciello   2024-12-05  241   * _aggregate_choices - Aggregate the available profile choices
+06ec24388f1de6 Mario Limonciello   2024-12-05  242   * @dev: The device
+06ec24388f1de6 Mario Limonciello   2024-12-05  243   * @data: The available profile choices
+06ec24388f1de6 Mario Limonciello   2024-12-05  244   *
+06ec24388f1de6 Mario Limonciello   2024-12-05  245   * Return: 0 on success, -errno on failure
+06ec24388f1de6 Mario Limonciello   2024-12-05  246   */
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  247  static int _aggregate_choices(struct device *dev, void *data, bool secondary)
+06ec24388f1de6 Mario Limonciello   2024-12-05 @248  {
+06ec24388f1de6 Mario Limonciello   2024-12-05  249  	struct platform_profile_handler *handler;
+06ec24388f1de6 Mario Limonciello   2024-12-05  250  	unsigned long *aggregate = data;
+06ec24388f1de6 Mario Limonciello   2024-12-05  251  
+06ec24388f1de6 Mario Limonciello   2024-12-05  252  	lockdep_assert_held(&profile_lock);
+d960f14800b581 Kurt Borja          2025-01-15  253  	handler = to_pprof_handler(dev);
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  254  
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  255  	if (handler->ops->secondary != secondary)
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  256  		return 0;
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  257  
+06ec24388f1de6 Mario Limonciello   2024-12-05  258  	if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
+06ec24388f1de6 Mario Limonciello   2024-12-05  259  		bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  260  	else if (handler->ops->secondary)
+724b0dfe3faddb Antheas Kapenekakis 2025-02-24  261  		bitmap_or(aggregate, handler->choices, aggregate, PLATFORM_PROFILE_LAST);
+06ec24388f1de6 Mario Limonciello   2024-12-05  262  	else
+06ec24388f1de6 Mario Limonciello   2024-12-05  263  		bitmap_and(aggregate, handler->choices, aggregate, PLATFORM_PROFILE_LAST);
+06ec24388f1de6 Mario Limonciello   2024-12-05  264  
+06ec24388f1de6 Mario Limonciello   2024-12-05  265  	return 0;
+06ec24388f1de6 Mario Limonciello   2024-12-05  266  }
+06ec24388f1de6 Mario Limonciello   2024-12-05  267  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
