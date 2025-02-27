@@ -1,96 +1,174 @@
-Return-Path: <linux-acpi+bounces-11576-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11577-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38ABA487A8
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 19:17:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FD9A487F6
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 19:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1D1C7A6146
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 18:16:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEA451888294
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Feb 2025 18:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C1B1EFF8A;
-	Thu, 27 Feb 2025 18:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDF81E833D;
+	Thu, 27 Feb 2025 18:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BXlm4RHI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/N4Oe7t"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1BF17D355;
-	Thu, 27 Feb 2025 18:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3D71E0E13;
+	Thu, 27 Feb 2025 18:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740680256; cv=none; b=I8DEyfEG8bTDgKHeg5H74YJwxUXGA1QMtv5P4NsRl8R3D+fqR/4/qEWjQ1IIF/6iTWiGcBjPBcyfFHrEGUM1Z5UL2c+dDRA6dA0GkrHc3jnyrqY0Z6q3Dmjs8Lm1lzOL0vHVPjsFPyZlaR/d/kdrArNEKCneg6egseYlvzxlxqU=
+	t=1740681655; cv=none; b=HpywpFzZ/k5VwB4WW0Ewz6XO033NQorogG/JwiT8MK+VZEefA2BOS7Ka953vs+kh9bdDloS7SMG7xF1+1g3x9RHZoa7rKjZJ0wRjC0X+jV0jidlD/PMfhs1kij55mx0h+vmXXvjSPJ1bS1MeJ6/XuHXLNAGF9QmuJ5vDNnjF/OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740680256; c=relaxed/simple;
-	bh=T35L5Jrzh9K3odoxbOl+2BaGbvc4Y27uKPOjd+b18mg=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AgOLFA6lCiOP29UCDfmU97znYu37aoZdSlluNIXrTivx817BX9HPX0wrGMcjMzyVWNJ/unb8YkXviIpY3st1JwYNaAsGSyMUx2Mo6LDvuPmlFYxx0pnwJ9pFuKcKqEHw0JbKuHPzgSdfb/TbHKmNARS6N7fSYG4zfHMs93HqIHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=BXlm4RHI; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [192.168.35.166] (c-24-22-154-137.hsd1.wa.comcast.net [24.22.154.137])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 871D4210D0D8;
-	Thu, 27 Feb 2025 10:17:33 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 871D4210D0D8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740680254;
-	bh=y/zseaxlPbdmYBiPxyHV4pdZdkvQhGA5Y7F0yihhtvc=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=BXlm4RHIbOTxRmYXWiBvRqo6B8cJXoL64mUHWbbRbFA9+DcFlxfIK4fFzrjzS/Jr3
-	 v/9FIsg5I4/jC3qnsDRJIFVC3revzKLeO+AxkA9GPzELPLGkBR/cIm4Cu8qbhISeXV
-	 JooH+NCga5XGo1c196E8EJDn8t4EXLIhONvZnJa8=
-Message-ID: <b08ebe97-fe27-4f7c-b7ff-989df4e91445@linux.microsoft.com>
-Date: Thu, 27 Feb 2025 10:17:32 -0800
+	s=arc-20240116; t=1740681655; c=relaxed/simple;
+	bh=vIiOrfEhLsagNIxyFmXo7VnTxM/KF0Q81OADteh7vHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=AQ82zcM1jmrdYjij4oj6oR3ogLvb8/DyhESkxwgvy4IPzU1kkBksXQqufdVX736UPPvmuwL6oYsNcFvg2k1aInpxDW+NZ1XnbNgI8ZtCXLV9sr/T3EMvE0+GC6m939QFdcOHM97URXoMWH4JnzefNblDUCJQGWchGyVSMz+f22A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/N4Oe7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB3DC4CEE4;
+	Thu, 27 Feb 2025 18:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740681654;
+	bh=vIiOrfEhLsagNIxyFmXo7VnTxM/KF0Q81OADteh7vHQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=g/N4Oe7theyxINQUAaSoVJbRB99oTPw8aKnUURXcvkJKcOTqZDisbu5T1lfFupipx
+	 ZcCz5t9bbOoWRrcim82hDpxCKZmJ7QE4Gde+4j0oH3ByU+h0X7eu6Kliu2EO9OgKX1
+	 GIIIroYjrmwE+BtS9AR2BLVx3/BMWw2k+AF+9RAeV8S7+U0hYevV7rxUUlBPImuRbV
+	 XbvbYmXmS+l+AYhd+hy5R4QzZD7dgVfVhe+Jdq2k0jU8Q5T8IxP8BV3ZeHQeShVYZe
+	 cOcCacIfhAelWFlt/2YTEYKYgOOyMXoJ1Y1Cjr1zMf9glmU3syBMLwtbMc+D4Nuevy
+	 7TAe6onKvQKLQ==
+Date: Thu, 27 Feb 2025 12:40:53 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Zhou Shengqing <zhoushengqing@ttyinfo.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4] PCI/ACPI: _DSM PRESERVE_BOOT_CONFIG function rev id
+ doesn't match with spec
+Message-ID: <20250227184053.GA609152@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org,
- eahariha@linux.microsoft.com, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, mhklinux@outlook.com, decui@microsoft.com,
- catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- daniel.lezcano@linaro.org, joro@8bytes.org, robin.murphy@arm.com,
- arnd@arndb.de, jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-Subject: Re: [PATCH v5 02/10] x86/mshyperv: Add support for extended Hyper-V
- features
-To: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-3-git-send-email-nunodasneves@linux.microsoft.com>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <1740611284-27506-3-git-send-email-nunodasneves@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241216052751.5460-1-zhoushengqing@ttyinfo.com>
 
-On 2/26/2025 3:07 PM, Nuno Das Neves wrote:
-> From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+On Mon, Dec 16, 2024 at 05:27:51AM +0000, Zhou Shengqing wrote:
+> Per PCI Firmware Specification Revision 3.3 Table 4-7 _DSM Definitions
+> for PCI. Preserve PCI Boot Configuration Initial Revision ID changed to 2.
+> But the code remains unchanged, still 1.
 > 
-> Extend the "ms_hyperv_info" structure to include a new field,
-> "ext_features", for capturing extended Hyper-V features.
-> Update the "ms_hyperv_init_platform" function to retrieve these features
-> using the cpuid instruction and include them in the informational output.
+> v4:Initialize *obj to NULL.
+> v3:try revision id 1 first, then try revision id 2.
+> v2:add Fixes tag.
+
+Thanks for working on this issue.
+
+  - Thanks for the revision history.  For future posts, put it below
+    the "---" line so it's in the email but not part of the commit log.
+
+  - I think there's a leak in pci_acpi_preserve_config() because it
+    doesn't free "obj" before it returns true.  If you agree, add a
+    preparatory patch to fix this.
+
+  - Add a preparatory patch to return false early in
+    pci_acpi_preserve_config() if !ACPI_HANDLE(&host_bridge->dev) so
+    the body of the function is unindented, similar to what
+    acpi_pci_add_bus() does.
+
+  - Add another preparatory patch that adds acpi_check_dsm() of the
+    desired function/rev ID for DSM_PCI_PRESERVE_BOOT_CONFIG,
+    DSM_PCI_POWER_ON_RESET_DELAY, DSM_PCI_DEVICE_READINESS_DURATIONS.
+    Move the "Evaluate PCI Boot Configuration" comment above the
+    acpi_check_dsm() since it applies to the whole function, not just
+    the rev 1 code in this patch.
+
+  - Rework this patch so it only adds acpi_check_dsm() and
+    acpi_evaluate_dsm_typed() for rev 2.
+
+  - Throughout, wrap code and comments to fit in 80 columns because
+    that's the convention for the rest of the file.
+
+  - You can use "BIT(DSM_PCI_PRESERVE_BOOT_CONFIG)" and similar
+    instead of "1ULL << DSM_PCI_PRESERVE_BOOT_CONFIG" when calling
+    acpi_check_dsm().
+
+  - Add a [0/n] cover letter when posting the series.  Each patch
+    should be a response to the cover letter.  "git format-patch" and
+    "git send-email" will do that for you automatically.
+
+> Fixes: 9d7d5db8e78e ("PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to pci_register_host_bridge()")
 > 
-> Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+> Signed-off-by: Zhou Shengqing <zhoushengqing@ttyinfo.com>
 > ---
->  arch/x86/kernel/cpu/mshyperv.c | 6 ++++--
->  include/asm-generic/mshyperv.h | 1 +
->  2 files changed, 5 insertions(+), 2 deletions(-)
-
-Looks good to me.
-
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+>  drivers/pci/pci-acpi.c | 42 ++++++++++++++++++++++++++++++++----------
+>  1 file changed, 32 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index af370628e583..f805cd134019 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -123,19 +123,41 @@ phys_addr_t acpi_pci_root_get_mcfg_addr(acpi_handle handle)
+>  bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
+>  {
+>  	if (ACPI_HANDLE(&host_bridge->dev)) {
+> -		union acpi_object *obj;
+> +		union acpi_object *obj = NULL;
+>  
+>  		/*
+> -		 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
+> -		 * exists and returns 0, we must preserve any PCI resource
+> -		 * assignments made by firmware for this host bridge.
+> +		 * Per PCI Firmware r3.2, released Jan 26, 2015,
+> +		 * DSM_PCI_PRESERVE_BOOT_CONFIG Revision ID is 1.
+> +		 * But PCI Firmware r3.3, released Jan 20, 2021,
+> +		 * changed sec 4.6.5 to say
+> +		 * "lowest valid Revision ID value: 2". So try revision 1
+> +		 * first for old platform, then try revision 2.
+>  		 */
+> -		obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge->dev),
+> -					      &pci_acpi_dsm_guid,
+> -					      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
+> -					      NULL, ACPI_TYPE_INTEGER);
+> -		if (obj && obj->integer.value == 0)
+> -			return true;
+> +		if (acpi_check_dsm(ACPI_HANDLE(&host_bridge->dev), &pci_acpi_dsm_guid, 1,
+> +				   1ULL << DSM_PCI_PRESERVE_BOOT_CONFIG)) {
+> +			/*
+> +			 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
+> +			 * exists and returns 0, we must preserve any PCI resource
+> +			 * assignments made by firmware for this host bridge.
+> +			 */
+> +			obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge->dev),
+> +						      &pci_acpi_dsm_guid,
+> +						      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
+> +						      NULL, ACPI_TYPE_INTEGER);
+> +			if (obj && obj->integer.value == 0)
+> +				return true;
+> +		}
+> +
+> +		if (acpi_check_dsm(ACPI_HANDLE(&host_bridge->dev), &pci_acpi_dsm_guid, 2,
+> +				   1ULL << DSM_PCI_PRESERVE_BOOT_CONFIG)) {
+> +			obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge->dev),
+> +						      &pci_acpi_dsm_guid,
+> +						      2, DSM_PCI_PRESERVE_BOOT_CONFIG,
+> +						      NULL, ACPI_TYPE_INTEGER);
+> +			if (obj && obj->integer.value == 0)
+> +				return true;
+> +		}
+> +
+>  		ACPI_FREE(obj);
+>  	}
+>  
+> -- 
+> 2.39.2
+> 
 
