@@ -1,168 +1,138 @@
-Return-Path: <linux-acpi+bounces-11641-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11642-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF2BA4A027
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 18:20:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F869A4A038
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 18:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC20D174E39
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 17:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84E65175604
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 17:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8873017B50F;
-	Fri, 28 Feb 2025 17:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A101F4C99;
+	Fri, 28 Feb 2025 17:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AYfrdmEM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qI4+5GWu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075F31F4CAC;
-	Fri, 28 Feb 2025 17:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C641F4C83;
+	Fri, 28 Feb 2025 17:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740763215; cv=none; b=a5oOToU7uVC0OcQOrnFlscLB3Q2GB3rz+n0YjhYNKiJnf/g7s9+HufDn4U0W7td6Dfd6HJW0f2kvU7QGN7hUGd4Dz2I6lYFbOhJYfxJI8I8/Xq626jJ+N78sn/II6DZQsYJlCszZmdZX3ZgH9tTy2n5zOdoRbOya2Edybll7XpQ=
+	t=1740763402; cv=none; b=ImJEFfZCVYPO/CKi+t7NzifHHToGjnDBaJm8y6uD/NMq+i1MYCub0BVKhWzCkRnnIt/0VCaNW1QAWuFMQ9JQEXG8MJoLyvHMlzFlwM7ll1YbNWB6+q7zDuvpbqxK55eoQC/Rn0cwaADhrmvdBlzSBewq7Y1VQ2TTeLfBLEtFEJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740763215; c=relaxed/simple;
-	bh=Kbz0qcBmY6xxZf75C6c3JWoWGAUbcPPuwvQtUVadDM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XckfONKO06WC9knDbDBXrIQYq0JugdyBpcUYqTTBusKHiGJkVROELmeEjn6Rcx4c0F1lKz1hq16XPI8DUK9avkBaLzNidAKe83ET1W+CEVbU7iCjugzvDK1qXx28P5n2IjZiSNl2bBkptuOIK9RJSuMYDphBar51baDkEdQl6sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AYfrdmEM; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 36672210D0D4;
-	Fri, 28 Feb 2025 09:20:13 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 36672210D0D4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740763213;
-	bh=bd0qQbfp5v3IPIVdEdHCrsovEB4c3GORz0HpWujPouQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AYfrdmEMnrTp3u4fGr+friZ/WQFHHHILDsPmPQ9MKwb3SGKmwjPpsl858UOYErvdP
-	 YwOdhGGSTJXSNvi9mux3U6NeUutiv/cDxsTzOKbmxtZvqdDs0RyzazXvkJbSqEueFJ
-	 br9SJsLdH0V7j1oNDbwlduqiNDshOQi/xfz8XkWI=
-Message-ID: <212cc582-845d-42b2-89f2-1e9579f752ec@linux.microsoft.com>
-Date: Fri, 28 Feb 2025 09:20:13 -0800
+	s=arc-20240116; t=1740763402; c=relaxed/simple;
+	bh=kpa5gUq601xY2LLqyDkp+ULt9YfNAfqA5DJnA1T2tiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E80ss6GaMNFGbP+2uTZ8cyaPQpS9WxkWRqgjlbmb3yj4ShhSkE9oOPEDD9XnnEX1U7z5QrYnkVFd6Gm/C82MptNPprb58yASthjesRrZqPvqp9Y/53LXeA48DW7sS52DXhJ8wJnynL/HiV/1uVT5TAsaPdgYLAB17Ap4l36q6Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qI4+5GWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0163C4CEE2;
+	Fri, 28 Feb 2025 17:23:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740763401;
+	bh=kpa5gUq601xY2LLqyDkp+ULt9YfNAfqA5DJnA1T2tiI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qI4+5GWu3Wl6VXYHL4b3Ve6TMGej7QVi3Gue5LFr1UrE0smNW9exm5xZmGc5P1H7M
+	 IcPoEhQ7oP2NiOIYjqTII48zvHmppdJY/JvBeWUglKBAWO+b7M5CeSa69+W9lMhP7y
+	 K88IrRDlpBjDiQkcdeMtk05EK4xijZ+Y30glFh82APDAw8MvBOoXTyBU6YZG3rJ843
+	 rxCFHfOZB36Sd1kCXxuZ7j7OWmIH+ZJuC319gGGcR0Ci0q64IDDEn9oRBI4eK0xSS1
+	 j40o6g1LKTK1yKF1xKCIMJccoPo1gHDp2vqkkD2GZjsy8sQRMIjaD7YJasRe9RTbDn
+	 g7X6bzxXphj2A==
+Date: Fri, 28 Feb 2025 22:53:17 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Muni Sekhar <munisekharrms@gmail.com>, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Sanyog Kale <sanyog.r.kale@intel.com>, linux-sound@vger.kernel.org
+Subject: Re: pci: acpi: Query on ACPI Device Tree Representation and
+ Enumeration for Xilinx FPGA PCIe Endpoint functions
+Message-ID: <Z8HxBQbLzgV5NDYA@vaman>
+References: <CAHhAz+j46nus_rGJ72rZ86UyzL+AM_HBCivjpZEx3T0thOxqAQ@mail.gmail.com>
+ <20250228163219.GA54330@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/10] hyperv: Convert Hyper-V status codes to strings
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
- linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com,
- decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
- joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
- jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-2-git-send-email-nunodasneves@linux.microsoft.com>
- <74af19c4-639f-4bcc-b667-b5f102bbb312@linux.microsoft.com>
- <8338dd00-3aa4-418f-a547-1c19623358cb@linux.microsoft.com>
- <49a69fe3-fca5-426d-999d-61ee0c8f60f3@linux.microsoft.com>
- <70b62e52-639a-4026-9a52-102d1de46ffd@linux.microsoft.com>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <70b62e52-639a-4026-9a52-102d1de46ffd@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250228163219.GA54330@bhelgaas>
 
-
-
-On 2/27/2025 3:25 PM, Easwar Hariharan wrote:
-> On 2/27/2025 3:08 PM, Roman Kisel wrote:
-
-[...]
-
->> Would be great to learn the details to understand how this function is
->> going to improve the situation:
->>
->> 1. How come the hex error code was useless, what is not matching
->>     anything in the Linux headers?
+On 28-02-25, 10:32, Bjorn Helgaas wrote:
+> [+cc SoundWire folks]
 > 
-> It doesn't match anything in the Linux headers, but it's an NTSTATUS, not HVSTATUS.
+> On Fri, Feb 28, 2025 at 08:19:44PM +0530, Muni Sekhar wrote:
+> > On Thu, Feb 27, 2025 at 9:34 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > On Thu, Feb 27, 2025 at 07:25:32PM +0530, Muni Sekhar wrote:
+> > > > I am currently working on a project involving a Xilinx FPGA connected
+> > > > to an x86 CPU via a PCIe root port. The Xilinx FPGA functions as a
+> > > > PCIe endpoint with single function capability and is programmed to
+> > > > emulate the Soundwire Master controller. It can be dynamically
+> > > > reprogrammed to emulate other interfaces as needed. Essentially, the
+> > > > FPGA emulates an interface and connects to the CPU via the PCIe bus.
+> > > >
+> > > > Given this setup, the BIOS does not have prior knowledge of the
+> > > > function implemented in the Xilinx FPGA PCIe endpoint. I have a couple
+> > > > of questions regarding this configuration:
+> > > >
+> > > > Is it possible to define an ACPI Device Tree representation for this
+> > > > type of hardware setup?
+> > > > Can we achieve ACPI-based device enumeration with this configuration?
+> > >
+> > > If the FPGA is programmed before BIOS enumerates PCI devices, the FPGA
+> > > would look just like any other PCI device, and BIOS would be able to
+> > > read the Vendor ID and Device ID and would be able to size and program
+> > > the BARs.
+> >
+> > Yes, the FPGA is programmed with this Soundwire IP before the BIOS
+> > enumerates PCI devices.
+> > We need to port the Soundwire driver
+> > (https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/soundwire/qcom.c)
+> >  to the x86 platform.
+> > 
+> > Since x86 platforms typically do not use device trees, and the
+> > Soundwire IP is implemented in the FPGA, how can we emulate device
+> > tree functionality or use a different mechanism to pass hardware
+> > configuration to the driver? Specifically, how can we handle the
+> > following API calls on an x86 platform?
+> > 
+> >    ret = of_property_read_u32(np, "qcom,din-ports", &val);
+> >    ret = of_property_read_u32(np, "qcom,dout-ports", &val);
+> >    ret = of_property_read_u8_array(np, "qcom,ports-offset1", off1, nports);
+> > 
+> > static const struct of_device_id qcom_swrm_of_match[] = {
+> > { .compatible = "qcom,soundwire-v1.3.0", .data = &swrm_v1_3_data },
+> > { .compatible = "qcom,soundwire-v1.5.1", .data = &swrm_v1_5_data },
+> > { .compatible = "qcom,soundwire-v1.6.0", .data = &swrm_v1_6_data },
+> > { .compatible = "qcom,soundwire-v1.7.0", .data = &swrm_v1_5_data },
+> > { .compatible = "qcom,soundwire-v2.0.0", .data = &swrm_v2_0_data },
+> > {/* sentinel */},
+> > };
+> > 
+> > Basically, how can we define ACPI tables for functions implemented in
+> > an FPGA that connects to the system via PCI?
 > 
-
-That is what it looks like from the code, I posted the details in the
-parallel thread.
-
-Here is a fix:
-https://lore.kernel.org/linux-hyperv/20250227233110.36596-1-romank@linux.microsoft.com/
-
-Also I think the commit description in your patch
-
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d2138eab8cde61e0e6f62d0713e45202e8457d6d
-
-conflates the hypervisor (ours runs bare-metal, Type 1) and the VMMs
-(Virtual Machine Monitors)+VSPs (Virtual Service Providers, e.g StorVSP
-that implements SCSI) running in the host/root/dom0 partition.
-
-> Coming from the PoV of a user, it would be a much more useful message to see:
+> Seems like a generic problem for PCI sound devices, and I don't know
+> how drivers deal with it.  It looks like all the SoundWire drivers
+> are platform drivers (not PCI drivers), so there's nothing there to
+> look at.
 > 
-> [  249.512760] hv_storvsc fd1d2cbd-ce7c-535c-966b-eb5f811c95f0: tag#683 cmd 0x28 status: scsi 0x2 srb 0x4 hv STATUS_UNSUCCESSFUL
-> 
-> than
-> 
-> [  249.512760] hv_storvsc fd1d2cbd-ce7c-535c-966b-eb5f811c95f0: tag#683 cmd 0x28 status: scsi 0x2 srb 0x4 hv 0xc0000001
-> 
+> Maybe the sound folks have ideas.
 
-It is likely that the PoV of a user that you've mentioned is actually
-a PoV of a (kernel) developer. It is hard to imagine that folks running
-web sites, DB servers, LoBs, LLMs, etc. in Hyper-V VMs care about the
-lowest software level of the virt stack in the form of the symbolic
-name or the hex code. They need their VMs to be reliable or suggest
-what the user may try if a configuration error is suspected.
+X86-Intel devices are PCI devices but then they are compound devices
+with DSP and SoundWire links. Please check the DisCo spec for SoundWire,
+that already defines the ACPI tables and properties which both Intel and
+AMD drivers already use
 
-To make the error log message useful to the user, the message should
-mention ways of remediation or at least hint what might've gotten
-wedged. Without that, that's only useful for the people who work with
-the kernel code proper or the kernel interface to the user land.
-
-So I'd think that the hex error codes from the hypervisor give the user
-exactly as much as the error symbolic names do to get the system to the
-desired state: nothing. Even less when the error reported "Unknown" :)
-
->> 2. How having "Unknown" in the log can possibly be better?
-> 
-> IMHO, seeing "Unknown" in an error report means that there's a new return value
-> that needs to be mapped to errno in hv_status_to_errno() and updated here as well.
-> 
-
-It means that to the developer. To the user, it means the developers
-messed something up and to make matters even worse they didn't leave any
-breadcrumbs (e.g. the hex code) to see what's wrong to help the user and
-themselves: there is just that "Unknown" thing in the log.
-
->> 3. Given that the select hv status codes and the proposed strings have
->>     1:1 correspondence, and there is the 1:N catch-all case for the
->>     "Unknown", how's that better?
->>
-> 
-> I didn't really follow this question, but I suppose the answer to Q2 answers this as
-> well. If not, please expand and I'll try to answer.
->
-
-Sorry about that chunk, hit "Send" without looking the e-mail over
-another time. Appreciate the discussion very much!
-
-
-> Thanks,
-> Easwar (he/him)
+That should be your start point...
 
 -- 
-Thank you,
-Roman
-
+~Vinod
 
