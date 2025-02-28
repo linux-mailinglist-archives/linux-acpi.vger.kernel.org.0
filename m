@@ -1,155 +1,207 @@
-Return-Path: <linux-acpi+bounces-11613-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11614-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D090A48E1F
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 02:46:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8702A4919F
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 07:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6E2D3B79B3
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 01:46:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98283189328A
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 06:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FB825757;
-	Fri, 28 Feb 2025 01:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="aUM/v2Vv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C893E1C07D8;
+	Fri, 28 Feb 2025 06:40:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495EAC2F2;
-	Fri, 28 Feb 2025 01:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BE423DE;
+	Fri, 28 Feb 2025 06:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740707207; cv=none; b=kUl8SvhP+TTdChbCWW1XxY4HodZ2mdZwKENRvKK11l4skVKrlyA2H/WwuYCxJOrA8gZRl8arL8jy53uhh6VPPDbNOyH2Yi0d4BQLfhUJLDdb11UT+FG8B2R1kJm4TOxtZa/dK5JJh3xGgQzjiBt7cT5G3h5tgM+k04K9eC0QBko=
+	t=1740724826; cv=none; b=jgq+4F5QavgogqLKlM0Niwkj11ZMXTrV14PpkEtiZKZ6/kxY+63Arecw+AgGgaNJixLcrI47uwTIihUvynYt4fCeWQXaQX0o0E0iW9GkDuDTCDqBJslUa2lqkShTiL/z8kMe2Ey4mYduy3BNUcW5TVbjozLoG5fIce89Rb6ASnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740707207; c=relaxed/simple;
-	bh=ZZHNCgut0dGMFXCWAAMpaymxZyfRxzSLiAKJxYuUhR8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=SeR70Lxu0lgBczZ42Ocy5LfNJWaEBtQfarN0D+uKqxq/gUocJnZBI74GUkvYa/C6wA4vxDBRyAWYAmdYBRq+XyBCwXf7olGZ36EGqS8qu95mW6gQ9clMGB0qyjCiLKcipChTOqwq99fajVUOztjte8E9Pf1uHWrJAyIuPBSyT08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aUM/v2Vv; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1740707196; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
-	bh=5r+5WkyUwaatx2CtpLzuZtA6tB6jLB9WVQM6cMSk/Qs=;
-	b=aUM/v2VvKf8dzM596SA5GV2hIgimrJrqAebseOLiKXRUhq5Ry+3e0I+d1ESoUaAaF1fwSV4Icafx7DQQRqrR1U8X3WDMeaaIIVNoRvL4eN5XreKk//R3RXgP01B0kaWxI9G/L0v/Xc8WePRD/0dw2ir64G/wTbz5fBss1NDwZsM=
-Received: from 30.246.161.128(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WQNqCdH_1740707191 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 28 Feb 2025 09:46:33 +0800
-Message-ID: <0c93542f-4521-41bc-a030-5b2d8621aa6a@linux.alibaba.com>
-Date: Fri, 28 Feb 2025 09:46:30 +0800
+	s=arc-20240116; t=1740724826; c=relaxed/simple;
+	bh=n8Glppsg8MB3vg/iXTQ+KTDq9sCkUhLw+3Ulp6LTrHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Hg+vQPW89tcRUxWm4LboR6mPigG9ztn/9zchUUahikHFkcAeqN1jbMMLkk5LpZuRHHuWF4FHrEHwpt5DJ8oo/p5kGxVK+r95XcUZqBj8Km78oMMip4l2qCA9z30NUU3P9PTGoicraK9DMI5Q5rJKqGtZ/AuQMP1Ya2wW08bHya0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-3c9ff7000001d7ae-39-67c15a52e4db
+From: Yunjeong Mun <yunjeong.mun@sk.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: honggyu.kim@sk.com,
+	gregkh@linuxfoundation.org,
+	rakie.kim@sk.com,
+	akpm@linux-foundation.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com,
+	horen.chuang@linux.dev,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	kernel_team@skhynix.com
+Subject: Re: [PATCH 1/2 v6] mm/mempolicy: Weighted Interleave Auto-tuning
+Date: Fri, 28 Feb 2025 15:39:55 +0900
+Message-ID: <20250228064016.1325-1-yunjeong.mun@sk.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+In-Reply-To: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: Re: [PATCH v18 2/3] mm: memory-failure: move return value
- documentation to function declaration
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: yazen.ghannam@amd.com, mark.rutland@arm.com, mingo@redhat.com,
- robin.murphy@arm.com, Jonathan.Cameron@huawei.com, bp@alien8.de,
- rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@linux.alibaba.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20250107081735.16159-1-xueshuai@linux.alibaba.com>
- <20250107081735.16159-3-xueshuai@linux.alibaba.com>
- <Z8BbFRupgknBTvH8@arm.com>
-In-Reply-To: <Z8BbFRupgknBTvH8@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHLMWRmVeSWpSXmKPExsXC9ZZnoW5Q1MF0g7e9shZz1q9hs5g+9QKj
+	xYmbjWwWzYvXs1ms3uRrcbv/HKvFqoXX2CyOb53HbrHvIlDZzodv2SyW7+tntLi8aw6bxb01
+	/1kt5n6ZyuzA53H4zXtmj52z7rJ7tBx5y+qxeM9LJo9NqzrZPDZ9msTucWLGbxaPhQ1TmT32
+	z13D7nHuYoXH501yAdxRXDYpqTmZZalF+nYJXBn3dzUyF+yWqXh/Nq6B8ZloFyMnh4SAiUTz
+	1ePsMPbOA8+YQGw2AQ2Jg4dOMoPYIgKaEidaJwHZXBzMAtOZJRofbGQFSQgLeEq0HVnJ2MXI
+	wcEioCqxcrUXSJhXwFzi7/KJLBAzNSUaLt0Dm8kpYCfx8MhhNhBbSIBH4tWG/YwQ9YISJ2c+
+	AatnFpCXaN46G2yXhEA7u8SxQ2ehjpOUOLjiBssERv5ZSHpmIelZwMi0ilEoM68sNzEzx0Qv
+	ozIvs0IvOT93EyMwVpbV/onewfjpQvAhRgEORiUe3hNRB9KFWBPLiitzDzFKcDArifDOigUK
+	8aYkVlalFuXHF5XmpBYfYpTmYFES5zX6Vp4iJJCeWJKanZpakFoEk2Xi4JRqYExw21175kX2
+	7dpVM9QM3whP97SuqJu2akrL8pXRATneVh2r7z4u7pr+uJvl04IP2mtj+1peXjzs1eI/4cDy
+	JS/mzBFarHL6prXcnri+3yoLj8We8C+MmX6GzTLj8L4TzqyqRox8K4/LLNR/IPLpWaCGUsH1
+	LMc5dUn15xOT7eyjv2UwrmdfuUOJpTgj0VCLuag4EQDWmk3IkQIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsXCNUNWRzco6mC6wc11vBZz1q9hs5g+9QKj
+	xYmbjWwWzYvXs1ms3uRr8fnZa2aL2/3nWC1WLbzGZnF86zx2i30XgWoPzz3JarHz4Vs2i+X7
+	+hktLu+aw2Zxb81/Vou5X6YyWxy69pzVQdDj8Jv3zB47Z91l92g58pbVY/Gel0wem1Z1snls
+	+jSJ3ePEjN8sHgsbpjJ77J+7ht3j3MUKj2+3PTwWv/jA5PF5k1wAbxSXTUpqTmZZapG+XQJX
+	xv1djcwFu2Uq3p+Na2B8JtrFyMkhIWAisfPAMyYQm01AQ+LgoZPMILaIgKbEidZJQDYXB7PA
+	dGaJxgcbWUESwgKeEm1HVjJ2MXJwsAioSqxc7QUS5hUwl/i7fCILxExNiYZL98BmcgrYSTw8
+	cpgNxBYS4JF4tWE/I0S9oMTJmU/A6pkF5CWat85mnsDIMwtJahaS1AJGplWMIpl5ZbmJmTmm
+	esXZGZV5mRV6yfm5mxiBUbGs9s/EHYxfLrsfYhTgYFTi4T0RdSBdiDWxrLgy9xCjBAezkgjv
+	rFigEG9KYmVValF+fFFpTmrxIUZpDhYlcV6v8NQEIYH0xJLU7NTUgtQimCwTB6dUA+PcPzz9
+	kT571rVcilWY+TbBKl3G7NpOLeZdLi0ndRq57Y+7n9v+7M8HyTVvd7VvU99qGhanNOFzz7fy
+	DndHp4y4xT3R5xqPTnU6cN4vXFt9AS8v+8tKvytO8YYeEVHqbWzmGuYlyy528oQ7bbPqamzw
+	UVh269Matc8SHJkqS1J/O64727L0ixJLcUaioRZzUXEiAGDzoLaGAgAA
+X-CFilter-Loop: Reflected
 
+Hi, Joshua. 
 
+First of all I accidentally sent the wrong email a few hours ago.
+Please disregard it. Sorry for the confusion.
 
-在 2025/2/27 20:31, Catalin Marinas 写道:
-> (going through patches in my inbox)
-> 
-> On Tue, Jan 07, 2025 at 04:17:34PM +0800, Shuai Xue wrote:
->> Part of return value comments for memory_failure() were originally
->> documented at the call site. Move those comments to the function
->> declaration to improve code readability and to provide developers with
-> 
-> s/declaration/definition/
+On Wed, 26 Feb 2025 13:35:17 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-Thanks, will fix.
+[...snip...]
+>  
+> +/*
+> + * Convert bandwidth values into weighted interleave weights.
+> + * Call with iw_table_lock.
+> + */
+> +static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
+> +{
+> +	u64 sum_bw = 0;
+> +	unsigned int cast_sum_bw, sum_iw = 0;
+> +	unsigned int scaling_factor = 1, iw_gcd = 1;
+> +	int nid;
+> +
+> +	/* Recalculate the bandwidth distribution given the new info */
+> +	for_each_node_state(nid, N_MEMORY)
+> +		sum_bw += bw[nid];
+> +
+> +	for (nid = 0; nid < nr_node_ids; nid++) {
+> +		/* Set memoryless nodes' weights to 1 to prevent div/0 later */
+> +		if (!node_state(nid, N_MEMORY)) {
+> +			new_iw[nid] = 1;
+> +			continue;
+> +		}
+> +
+> +		scaling_factor = 100 * bw[nid];
+> +
+> +		/*
+> +		 * Try not to perform 64-bit division.
+> +		 * If sum_bw < scaling_factor, then sum_bw < U32_MAX.
+> +		 * If sum_bw > scaling_factor, then bw[nid] is less than
+> +		 * 1% of the total bandwidth. Round up to 1%.
+> +		 */
+> +		if (bw[nid] && sum_bw < scaling_factor) {
+> +			cast_sum_bw = (unsigned int)sum_bw;
+> +			new_iw[nid] = scaling_factor / cast_sum_bw;
+> +		} else {
+> +			new_iw[nid] = 1;
+> +		}
+> +		sum_iw += new_iw[nid];
+> +	}
+> +
+> +	/*
+> +	 * Scale each node's share of the total bandwidth from percentages
+> +	 * to whole numbers in the range [1, weightiness]
+> +	 */
+> +	for_each_node_state(nid, N_MEMORY) {
+> +		scaling_factor = weightiness * new_iw[nid];
+> +		new_iw[nid] = max(scaling_factor / sum_iw, 1);
+> +		if (nid == 0)
+> +			iw_gcd = new_iw[0];
+> +		iw_gcd = gcd(iw_gcd, new_iw[nid]);
+> +	}
+> +
+> +	/* 1:2 is strictly better than 16:32. Reduce by the weights' GCD. */
+> +	for_each_node_state(nid, N_MEMORY)
+> +		new_iw[nid] /= iw_gcd;
+> +}
 
-> 
->> immediate access to function usage and return information.
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
->> Reviewed-by: Jane Chu <jane.chu@oracle.com>
->> ---
->>   arch/x86/kernel/cpu/mce/core.c |  7 -------
->>   mm/memory-failure.c            | 10 +++++++---
->>   2 files changed, 7 insertions(+), 10 deletions(-)
->>
->> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
->> index 7fb5556a0b53..d1dd7f892514 100644
->> --- a/arch/x86/kernel/cpu/mce/core.c
->> +++ b/arch/x86/kernel/cpu/mce/core.c
->> @@ -1398,13 +1398,6 @@ static void kill_me_maybe(struct callback_head *cb)
->>   		return;
->>   	}
->>   
->> -	/*
->> -	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
->> -	 * to the current process with the proper error info,
->> -	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
->> -	 *
->> -	 * In both cases, no further processing is required.
->> -	 */
->>   	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
->>   		return;
->>   
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index a7b8ccd29b6f..14c316d7d38d 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -2211,9 +2211,13 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
->>    * Must run in process context (e.g. a work queue) with interrupts
->>    * enabled and no spinlocks held.
->>    *
->> - * Return: 0 for successfully handled the memory error,
->> - *         -EOPNOTSUPP for hwpoison_filter() filtered the error event,
->> - *         < 0(except -EOPNOTSUPP) on failure.
->> + * Return:
->> + *   0             - success,
->> + *   -ENXIO        - memory not managed by the kernel
->> + *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event,
->> + *   -EHWPOISON    - the page was already poisoned, potentially
->> + *                   kill process,
->> + *   other negative values - failure.
->>    */
->>   int memory_failure(unsigned long pfn, int flags)
->>   {
-> 
-> Why not keep the comment in both places? One is about the x86 decisions,
-> the other is about what memory_failure() can return.
-> 
+In my understanding, new_iw[nid] values are scaled twice, first to 100 and then to a 
+weightines value of 32. I think this scaling can be done just once, directly 
+to weightness value as follows:
 
-Ok, will keep x86 path.
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 50cbb7c047fa..65a7e2baf161 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -176,47 +176,22 @@ static u8 get_il_weight(int node)
+ static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
+ {
+	u64 sum_bw = 0;
+-	unsigned int cast_sum_bw, sum_iw = 0;
+-	unsigned int scaling_factor = 1, iw_gcd = 1;
++	unsigned int scaling_factor = 1, iw_gcd = 0;
+	int nid;
 
-By the way, could arm maintainers help to ack patch 1 and 3 if there
-is no objection?
+	/* Recalculate the bandwidth distribution given the new info */
+	for_each_node_state(nid, N_MEMORY)
+		sum_bw += bw[nid];
 
-Thanks.
-Shuai
+-       for (nid = 0; nid < nr_node_ids; nid++) {
+ 			[...snip...]
+-		/*
+-		 * Try not to perform 64-bit division.
+-		 * If sum_bw < scaling_factor, then sum_bw < U32_MAX.
+-		 * If sum_bw > scaling_factor, then bw[nid] is less than
+-		 * 1% of the total bandwidth. Round up to 1%.
+-		 */
+ 			[...snip...]
+-		sum_iw += new_iw[nid];
+-	}
+-
+     
+	/*
+	 * Scale each node's share of the total bandwidth from percentages
+	 * to whole numbers in the range [1, weightiness]
+	 */
+	for_each_node_state(nid, N_MEMORY) {
+-		scaling_factor = weightiness * new_iw[nid];
+-		new_iw[nid] = max(scaling_factor / sum_iw, 1);
+-		if (nid == 0)
+-			iw_gcd = new_iw[0];
++		scaling_factor = weightiness * bw[nid];
++		new_iw[nid] = max(scaling_factor / sum_bw, 1);
++		if (!iw_gcd)
++			iw_gcd = new_iw[nid];
+		iw_gcd = gcd(iw_gcd, new_iw[nid]);
+	}
 
+Please let me know how you think about this.
+
+Best regards,
+Yunjeong
 
