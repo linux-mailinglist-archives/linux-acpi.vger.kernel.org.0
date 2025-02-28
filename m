@@ -1,103 +1,154 @@
-Return-Path: <linux-acpi+bounces-11630-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11631-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DDFA49EED
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 17:35:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D98A49F15
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 17:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD113B5A8C
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 16:33:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE9307A3D18
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 16:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0A275606;
-	Fri, 28 Feb 2025 16:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB2B27424C;
+	Fri, 28 Feb 2025 16:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qvq7hX3v"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA0227560B;
-	Fri, 28 Feb 2025 16:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8172500CD;
+	Fri, 28 Feb 2025 16:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740760354; cv=none; b=Z9POYK7PQN2KKrofVFEwiFL66roXDLp0lbDYoWFg68LmNUrpVlyOgO/OwcZ3PA6NUM4Vwi6UgD+8LpPWLc6OIIxW8S2xghEQGk52gXMZWlOZUEqYQTRuFhKO0p0GWI54IyQ874w5Tm3ifWhaR+x8SKwyW3d8gOe+2iWyZ8wKIRo=
+	t=1740760812; cv=none; b=eo9Nsb4uXIUTbA4HAk6S2aoRldV61ZBK3Yn2DJ8CHowsFgWb87VQkWQic9mOqGfdCWz+fWn/2zH+II0hXlOeXuI64e/NE9IxiDf89/LOHX3MVtmkPuKk6P5NiorO3qkvwoCJaNAAhOs338QKOCbZAym6VIzd4ZmWvP47IAXHCxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740760354; c=relaxed/simple;
-	bh=eq+NnALod3436I9Ed+BoXmb+oSMC7kn0v44DWs+5M9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWrpcUEZStxA6tCgTvNedIbzwwA0sE2w58rK6emW6lj2Ppam1wThbUVG39bQjA1W4SvdClQYFOLoSoc1RyVs9G2lTsFaVH+EudHWB2yBQYkXHm14mnwYSZAVVhrutg3iso19OFiwg6LaTzEjIsHSSYmsd7SqtVcaLQuUcYMK1dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D657D150C;
-	Fri, 28 Feb 2025 08:32:47 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B0A8E3F5A1;
-	Fri, 28 Feb 2025 08:32:31 -0800 (PST)
-Date: Fri, 28 Feb 2025 16:32:28 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Huisong Li <lihuisong@huawei.com>
-Cc: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<jassisinghbrar@gmail.com>, <liuyonglong@huawei.com>
-Subject: Re: [PATCH] mailbox: pcc: Fix can't clear level interrupt of type3
- in cornor case
-Message-ID: <Z8HlHDAUWqQOjrCH@bogus>
-References: <20250227072341.28693-1-lihuisong@huawei.com>
+	s=arc-20240116; t=1740760812; c=relaxed/simple;
+	bh=2Pm0dsopJGfUVusd2Go+NzpJtGsYWBd+yH4fEzbLNOI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bq71U46/Gu+RsacEs3Uk7creZXO8TC9iiiBun8JCy9LoNW3ydxhuHCx4iTgsNCgxKyYQhm51MmkkmFCkmNVBKsCCrzieW0UNqZfldO6sCAfzVktIZ/ZaDbyVbOeBAIrvsngp+LSo/HE/1B6IcpKc/IF8JW16klSBMdqFc7/3MXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qvq7hX3v; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 75B44210D0D5;
+	Fri, 28 Feb 2025 08:40:10 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 75B44210D0D5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740760810;
+	bh=t6vW4NSGnOxnDi0VQotxMy3KX/u7aGrTt7sLX+40uF4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qvq7hX3vmgvcAlM2s3ZD+rHzoKNsk7bPCxEHqpcjf3cIsKuDm49RePAi0xKglijjY
+	 4yPi1ZUTnJAYR5Bclt2Frb7Vy2NW8C/oUhQQHc3TJZWwo+QqvmmLDE6vq7lKzVaO6J
+	 MqXsFeBLG2Fs7Wz+dXsOtvPLCGOPdZvt9kJeTHC4=
+Message-ID: <69c868f9-8bac-4bbe-ba56-832ab6a21660@linux.microsoft.com>
+Date: Fri, 28 Feb 2025 08:40:10 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227072341.28693-1-lihuisong@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/10] hyperv: Convert Hyper-V status codes to strings
+To: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ mhklinux@outlook.com, decui@microsoft.com, catalin.marinas@arm.com,
+ will@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
+ joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
+ jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
+ skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
+ ssengar@linux.microsoft.com, apais@linux.microsoft.com,
+ Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
+ gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
+ muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
+ lenb@kernel.org, corbet@lwn.net
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-2-git-send-email-nunodasneves@linux.microsoft.com>
+ <74af19c4-639f-4bcc-b667-b5f102bbb312@linux.microsoft.com>
+ <7ea741fb-9935-42f2-a4f0-99df8df563eb@linux.microsoft.com>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <7ea741fb-9935-42f2-a4f0-99df8df563eb@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 27, 2025 at 03:23:41PM +0800, Huisong Li wrote:
-> The mbox_chan_received_data() will call Rx callback of mbox client driver
-> using type3 to set the flag of command completion. Then driver can continue
-> to do something like sending a new command. In this case, the rest of the
-> interrupt handler function may be concurrent with pcc_send_data().
->
 
-Understood and valid issue/bug.
 
-> The 'chan_in_use' flag of a channel is true after sending a command. And
-> the flag of the new command may be cleared by the running interrupt handler
-> in cornor case. As a result, the interrupt being level triggered can't be
-> cleared in pcc_mbox_irq() and it will be disabled after the number of
-> handled times exceeds the specified value. The error log is as follows:
->
-> [519082.811553] kunpeng_hccs HISI04B2:00: PCC command executed timeout!
-   ^^^^
-These timestamps are useless, needs to be dropped.
-
-> [519082.828532] kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110.
-> [519082.833438] irq 13: nobody cared (try booting with the "irqpoll" option)
-> [519082.844622] CPU: 304 PID: 15206 Comm: systemd-journal Kdump: loaded Tainted: G           OE     5.10.0 #5
-> [519082.854959] Hardware name: To be filled by O.E.M. To be filled by O.E.M./To be filled by O.E.M., BIOS Nezha B800 V3.1.0 01/02/2024
-
-"To be filled by O.E.M." interesting. Either as silicon vendor, some prefer
-to leave it this way to ensure the O.E.M fill them correctly or the firmware
-engineers are not bothered to get these right as nothing breaks without
-these.
-
-Anyways, good example of what not to have in the products, as it is completely
-useless.
+On 2/27/2025 4:15 PM, Nuno Das Neves wrote:
+> On 2/27/2025 9:02 AM, Roman Kisel wrote:
 
 [...]
 
->
-> To solve this issue, pcc_mbox_irq() clear 'chann_in_use' flag immediately
-> after clearing interrupt ack register.
->
+> I guess you're implying it's not worth adding such a function for only a
+> few places in the code? That is a good point, and a bit of an oversight
+> on my part while editing this series. Originally all the hypercall helper
+> functions in the driver code (10+ places) used this function as well, but
+> I removed those printks_()s as a temporary solution to limit the use of
+> printk in the driver code (as opposed to dev_printk() which is preferred).
+> 
+> I didn't think to remove *this* patch as a result of that change!
+> I do want to figure out a good way to add that logging back to the hypercall
+> helpers, so I do want to try and get some form of this patch in to aid
+> debugging hypercalls - it has been very very useful over time.
+> 
 
-This may be correct way of fixing the issue here, but I am questioning the
-existence of this flag now. I have some rework on this file. I will pick
-this up if I think this is needed as it may conflict with my changes or
-we will drop the flag completely. Give a week or so, will post the changes
-and we can take it from there.
+Right, I thought that the function looked more as a bring-up aid rather
+than a full fledged solution to some problem.
 
---
-Regards,
-Sudeep
+>> The "Unknown" part would make debugging harder actually when something
+>> fails. I presume that the mainstream scenarios all work, and it is the
+>> edge cases that might fail, and these are likelier to produce "Unknown".
+>>
+> That is a very good point. Ideally, we could log "Unknown" along with
+> the hex code instead of replacing it.
+> 
+> What do you think about keeping this function, but instead of using it
+> directly, introduce a "standard" way for logging hypercall errors which
+> can hopefully be used everywhere in the kernel?
+> e.g. a simple macro:
+> #define hv_hvcall_err(control, status)
+> do {
+> 	u64 ___status = (status);
+> 	pr_err("Hypercall: %#x err: %#x : %s", (control) & 0xFFFF, hv_result(___status), hv_result_to_string(___status));
+> } while (0)
+> 
+> I feel like this is the best of both worlds, and actually makes it even
+> easier to do this logging everywhere it is wanted (for me, that includes
+> all the /dev/mshv-related hypercalls).
+> We could add strings for the HVCALL_ values too, and/or include __func__
+> in the macro to aid in finding the context it was used in.
+> 
+
+That doesn’t seem to be common in the kernel from what I’ve seen in 
+dmesg, although there is certainly a lot of appeal in that approach. 
+However, we will have to remember to update the function each time when 
+another status code is added not to leave things half-cooked.
+
+Also it is a bit surprising the *kernel* should report that rather than 
+the VMM from the user mode. E.g. the kernel does not report all errors 
+on file open, file seek, etc. As I understand, the hv status codes are
+later mapped to errno in a lossy manner, and errno is what the user mode
+receives?
+
+As long as the hex code is logged, I am fine with the change.
+
+>> Folks who actually debug failed hypercalls rarely have issues with
+>> looking up the error code, and printing "Unknown" to the log is worse
+>> than a hexadecimal. Like even the people who wrote the code got nothing
+>> to say about what is going on.
+>>
+> Yep, totally agree having the hex code available can be valuable in
+> unexpected situations.
+> 
+
+Appreciate giving my concerns a thorough consideration!
+
+-- 
+Thank you,
+Roman
+
 
