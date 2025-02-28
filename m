@@ -1,169 +1,138 @@
-Return-Path: <linux-acpi+bounces-11644-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11645-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACF5A4A1CE
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 19:40:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7DCA4A225
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 19:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B39A175A62
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 18:40:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03E51899405
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 18:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825B627CCD8;
-	Fri, 28 Feb 2025 18:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7042027701C;
+	Fri, 28 Feb 2025 18:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PlQQ6lq4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVRfau7c"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE88E27CCD1
-	for <linux-acpi@vger.kernel.org>; Fri, 28 Feb 2025 18:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CE5277010;
+	Fri, 28 Feb 2025 18:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740768002; cv=none; b=RkLvH9NeTNnTcjiDU8ZOyzYX1zUV/lFb/6y7Ek50rW30dRLV/QSkYTsCaDbL8DKAck/Ijz+EeQCHJPckV0nVO5RAFAN8uIA4mxpS15jLclUBgcc6U1WqXR0rhQftJFbL3eLjbMaizTfyrKIVuEXlF6lgh6AYkIquFZV67dW1yzA=
+	t=1740768700; cv=none; b=BiT+jY6iqleS9SklVtZRZ0aMCxuN3axJ/mj0eExwXPbY9HE8c83IHKWMxP5QPoAHGyXZCACxSVdYZ99FWPRj5YorsOAYTWGmgNjEs53nxX+18nTOsKQ8isFwToGZj3ljr/gcuSXLUYxB4eIl/7rY6j9paqLWb+QvD91eeRYECOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740768002; c=relaxed/simple;
-	bh=qcwdZtGVQ0KgGKyuKhrX6OsMVbA16XsY4lfZ9C5DJmI=;
+	s=arc-20240116; t=1740768700; c=relaxed/simple;
+	bh=pkwgeMwCKf80SIaXk8KhThxONMPc4p/Xo+BvX6bjIBg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lh+Weiij94KPgqQVWSefAhc/bWasVFc7KcAByCUQS0pg7OW/sHbMPJsrIqTNe6vYVgUCdqZtBjaI9CEF8kzJ47REkhdgxBpXbIDtmP2ljG5ZhfetzKVkIjX0GPMQd5OWVdectcd39+Ys33TllqebqMu8MrXrPnYq+41qjdaX0Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PlQQ6lq4; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22382657540so396255ad.2
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Feb 2025 10:40:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1740768000; x=1741372800; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1MgXcypmlC80hGAB4x9hOpR3eZk+5FpjuFNPIV11Z1M=;
-        b=PlQQ6lq4phST4QUyGPlqjtFWY5lKF9f9EnpeZbwp/wtNSYbN2jovyGsurb/bvP4WJh
-         NkKHOPvfPtFvcprWaEhZ0OMebi1PxPiIgyYviGp2ciLKWt1/DlS5CD8H2YOeSZVze12H
-         DiouLZVYpZBukUQ9P0OqkUyhMurEZFGiJ+lG4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740768000; x=1741372800;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1MgXcypmlC80hGAB4x9hOpR3eZk+5FpjuFNPIV11Z1M=;
-        b=wb04YMiqu8O9QHoW8GB89isj8Ls8U/buY325pLrWFbQ7miBdqPicmcwzv9RBSJWKNT
-         NvfzFi+uZsfRt0usuXa963c+GWzA9wUxM+qoSGWyi/YSnookHKZbsUYH6GahI6LVZSB1
-         9LR2OD7T+EZsa+WlCxViN0M9GYEWL2+jvdP4AqKLwxmYbkKpeJpU0TR7LIT4q6e79KDN
-         A6ieEZ+zY6UsOr51CLD1tTwEDGj6FMnowRTZJ69kpFEGBsjVTMIXlLX8irTtGqon+rky
-         DnlXUzOsUlvX56S4VM34e5Bj4hQ82hLCsbuaiIQ+gBctm3bJFz6a9s5UONV0sOoCZFsJ
-         9KNA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkNwtl7UCedKDpKzwQn/0al/G7Sj/Uz2mNXfRJiFLqbECdgRExa0KdUeXj8Zhds4y1LApAAuE8olJx@vger.kernel.org
-X-Gm-Message-State: AOJu0YzORDuVvXO7VX1BeY5G/XAo90TfdtIg0BRsPm0OzQ/9+U36qunJ
-	3L8rKK5KPRw+z+Gx5KMzU6qQage6+hsK7SD7Jr0mj6JgvzRHpJTICnVTKdItWg==
-X-Gm-Gg: ASbGncsDV67GUXLNdafXNv23p827XJdkjWY1kyq6gmZgGtAgLZcd8Bh/tWxZGsepNOf
-	QOePtw8zwhKOBz8eHyVwcq3Ki8/+9MY6iyfzA9nC02LBppiYgxX3zA9WO/fkW9Ade0VPPuBOnfu
-	FaMX6tzpmjyPLRwXaoZjofaIVLVUqC6aK8s85CPmJ7MleDhK3pJbyKHTcxXRU4NEwxpSRAdnqoN
-	RHrrEH7EP5AqYJixF5zY1abKTKAP2GOPZAlZCCL0yS7Fpi9LFx/3MRnnnbXeCemVJZQpXlHLjUv
-	IYoRpaE/kLiDWUm4CWPImg6le1UqoIRYywtC63IAibVBlh98QqjOLf6E1UZhdbq+
-X-Google-Smtp-Source: AGHT+IEGJtn6vN/4w0fDLkqBf4MJwKKbPjoLNVSL+iAUMScyBl+Eyxc6RicCXt2Q7IaYZNqA3fSDyA==
-X-Received: by 2002:a17:902:d4cb:b0:21f:b6f:3f34 with SMTP id d9443c01a7336-22368f9d88fmr66301635ad.15.1740768000116;
-        Fri, 28 Feb 2025 10:40:00 -0800 (PST)
-Received: from localhost ([2a00:79e0:2e14:7:fd9b:307f:4caf:4649])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2235050fca1sm36748085ad.211.2025.02.28.10.39.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Feb 2025 10:39:59 -0800 (PST)
-Date: Fri, 28 Feb 2025 10:39:57 -0800
-From: Brian Norris <briannorris@chromium.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=feISJWPoyCbBIPUhU8D6NaD6Xfr7OE4veQQBljvmyrx/3j0KrUi/J+glwQF4EIuAgZ7JUzIDGtPPAToTnTNhA3GhxLQ5RR6SsmlUIO+Z1M63+FAlzxC2TYN0gZeQnA5AZN6zt0NyEq8XFHr2YenyVRayNdvrjEoDq45sPxlwFEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVRfau7c; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740768699; x=1772304699;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pkwgeMwCKf80SIaXk8KhThxONMPc4p/Xo+BvX6bjIBg=;
+  b=MVRfau7coZVJR5o8DyvDzVGPHXN/N+xfDl3t2BBaV8KzOF9F9yjqMffB
+   JYfFasHXdS3W6ttYubPug5S/RJ+DcvoMwUtI4BuK8j/nXmTMgFUa9HwLr
+   5RrZnGacsZhsuyxb6+ajbehED78dxEQ3eEFLzQcYhfVXezN4KKjvWcuge
+   ctnTbjBcsaiJt8qWxqIUwP6FL905GsmvrgGK4RqoEEgyqJ0cuiRzJXnue
+   YaYDvK/o/jqTlAslV+wI3pH1qnyITskGnuSl2dV0rs8gEfKWBEi9ioABn
+   89i0phpgMQt8hP6iu4KOKtnoXywCjP149W6hjKH9dcgCqCQY28G5eIBid
+   w==;
+X-CSE-ConnectionGUID: UuNc/GEjQyWLkGsdDTt+hA==
+X-CSE-MsgGUID: 0/Koq0/CRuiTaLlquxFtkg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="67083622"
+X-IronPort-AV: E=Sophos;i="6.13,323,1732608000"; 
+   d="scan'208";a="67083622"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 10:51:38 -0800
+X-CSE-ConnectionGUID: aSyNmCmeRwqkQi0uhisfRA==
+X-CSE-MsgGUID: IBifUjH4SWmgzTlo7TfT5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,323,1732608000"; 
+   d="scan'208";a="117206022"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 10:51:31 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1to5SJ-0000000G3mv-0yeh;
+	Fri, 28 Feb 2025 20:51:27 +0200
+Date: Fri, 28 Feb 2025 20:51:27 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Hsin-Yi Wang <hsinyi@chromium.org>,
-	linux-kernel@vger.kernel.org, mika.westerberg@linux.intel.com,
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-	lukas@wunner.de,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v5] PCI: Allow PCI bridges to go to D3Hot on all
- Devicetree based platforms
-Message-ID: <Z8IC_WDmix3YjOkv@google.com>
-References: <20241126151711.v5.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid>
- <20250228174509.GA58365@bhelgaas>
+	Danilo Krummrich <dakr@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v4 02/10] property: Add
+ device_get_child_node_count_named()
+Message-ID: <Z8IFr6LxK8m0kaDF@smile.fi.intel.com>
+References: <cover.1740421248.git.mazziesaccount@gmail.com>
+ <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
+ <CAL_Jsq+av-fptMQqBeVieKwA9c7+uUCaqZMLGu-RVJzWZ_7+Vg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250228174509.GA58365@bhelgaas>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_Jsq+av-fptMQqBeVieKwA9c7+uUCaqZMLGu-RVJzWZ_7+Vg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Bjorn,
+On Fri, Feb 28, 2025 at 11:07:24AM -0600, Rob Herring wrote:
+> On Mon, Feb 24, 2025 at 12:33 PM Matti Vaittinen
+> <mazziesaccount@gmail.com> wrote:
 
-On Fri, Feb 28, 2025 at 11:45:09AM -0600, Bjorn Helgaas wrote:
-> On Tue, Nov 26, 2024 at 03:17:11PM -0800, Brian Norris wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > 
-> > Unlike ACPI based platforms, there are no known issues with D3Hot for
-> > the PCI bridges in Device Tree based platforms. 
+...
+
+> > +unsigned int device_get_child_node_count_named(const struct device *dev,
+> > +                                              const char *name)
 > 
-> Can we elaborate on this a little bit?  Referring to "known issues
-> with ACPI-based platforms" depends on a lot of domain-specific history
-> that most readers (including me) don't know.
+> I think this should be implemented as
+> fwnode_get_child_node_count_named() with the device variant being just
+> a wrapper.
 
-Well, to me, the background here is simply the surrounding code context,
-and the past discussions that I linked:
+Good catch! That's also added to our misunderstanding with Matti who didn't get
+the role of dev_of_node() vs. dev_fwnode() in the first place.
 
-https://lore.kernel.org/linux-pci/20240227225442.GA249898@bhelgaas/
+-- 
+With Best Regards,
+Andy Shevchenko
 
-The whole reason we need this patch is that:
-(a) there's some vaguely specified reason this function (which prevents
-    standard-specified behavior) exists; and
-(b) that function includes a condition that allows all systems with a
-    DMI/BIOS newer than year 2015 to use this feature.
 
-Digging a bit further, it seems like maybe the only reason this feature
-is prevented on DT systems is from commit ("9d26d3a8f1b0 PCI: Put PCIe
-ports into D3 during suspend"), where the subtext is that it was written
-by and for Intel in 2016, with an arbitrary time-based cutoff ("year
-this was being developed") that only works for DMI systems. DT systems
-do not tend to support DMI.
-
-If any of this is what you're looking for, I can try to
-copy/paste/summarize a few more of those bits, if it helps.
-
-> I don't think "ACPI-based" or "devicetree-based" are good
-> justifications for changing the behavior because they don't identify
-> any specific reasons.  It's like saying "we can enable this feature
-> because the platform spec is written in French."
-
-AIUI, It's involved because of the general strategy of this function
-(per its comments, "recent enough PCIe ports"). So far, it sounds like
-that reason (presumably, old BIOS with poor power management code)
-doesn't really apply to a system based on device tree, where the power
-management code is mostly/entirely in the OS.
-
-But really, the original commit doesn't actually state reasons, so maybe
-the "known issues" phrasing could be weakened a bit, to avoid implying
-there were any stated reasons.
-
-> > Past discussions (Link [1]) determined the restrictions around D3
-> > should be relaxed for all Device Tree systems. 
-> 
-> This is far too generic a statement for me to sign up to, especially
-> since "all Device Tree systems" doesn't say anything at all about how
-> any particular hardware works or what behavior we're relying on.
-> 
-> We need to say something about what D3hot means (i.e., only message
-> and type 0 config requests accepted) and that we know anything below
-> the bridge is inaccessible in D3hot and why that's OK.  E.g., maybe we
-> only care about wakeup requests and we know those still work with the
-> bridge in D3hot because XYZ.
-
-The context of this function is that it applies to situations where we
-are considering runtime all of the PCI hierarchy beneath the port. So
-yes, it applies in situations where we will wake device(s) by PMCSR, or
-they will request wakeup via PME, WAKE#, etc.
-
-Beyond that ... I don't really know what to say. This is how the spec
-says things should work, and AFAICT, the only reason we don't do that is
-because the feature writer was being conservative and happened to assume
-DMI is always present.
-
-Brian
 
