@@ -1,207 +1,86 @@
-Return-Path: <linux-acpi+bounces-11614-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11615-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8702A4919F
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 07:40:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1486CA49852
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 12:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98283189328A
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 06:40:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 359BB7A9DCF
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 11:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C893E1C07D8;
-	Fri, 28 Feb 2025 06:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7D52620C6;
+	Fri, 28 Feb 2025 11:29:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BE423DE;
-	Fri, 28 Feb 2025 06:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D349849C;
+	Fri, 28 Feb 2025 11:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740724826; cv=none; b=jgq+4F5QavgogqLKlM0Niwkj11ZMXTrV14PpkEtiZKZ6/kxY+63Arecw+AgGgaNJixLcrI47uwTIihUvynYt4fCeWQXaQX0o0E0iW9GkDuDTCDqBJslUa2lqkShTiL/z8kMe2Ey4mYduy3BNUcW5TVbjozLoG5fIce89Rb6ASnE=
+	t=1740742159; cv=none; b=BZ1HhiavlT7RxIYxxeZv2ghBN5mZgUs+37Qbb9ycovZzi45s5H1P3P98jIWfmox36Nl7xTNUV3QsQXALiQYi4Z4RLrEr6NHxCNmnEjSm/sjlcHE4dV+Y1Fhr9X6Xt1FaYOO1C2RsW/Cz3inUz5vNYUerwPEk/K4VegJidmNYGkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740724826; c=relaxed/simple;
-	bh=n8Glppsg8MB3vg/iXTQ+KTDq9sCkUhLw+3Ulp6LTrHQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hg+vQPW89tcRUxWm4LboR6mPigG9ztn/9zchUUahikHFkcAeqN1jbMMLkk5LpZuRHHuWF4FHrEHwpt5DJ8oo/p5kGxVK+r95XcUZqBj8Km78oMMip4l2qCA9z30NUU3P9PTGoicraK9DMI5Q5rJKqGtZ/AuQMP1Ya2wW08bHya0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-3c9ff7000001d7ae-39-67c15a52e4db
-From: Yunjeong Mun <yunjeong.mun@sk.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: honggyu.kim@sk.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	kernel_team@skhynix.com
-Subject: Re: [PATCH 1/2 v6] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Fri, 28 Feb 2025 15:39:55 +0900
-Message-ID: <20250228064016.1325-1-yunjeong.mun@sk.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
-References: 
+	s=arc-20240116; t=1740742159; c=relaxed/simple;
+	bh=t2rsTXukOG1wdsDx/CDpSDoU0C2ghthM/Wky2Fb/gdQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DvFX7LgtIWuoaI062oLJ+dOFUdSYy7Tnh50oJDhDIeHfs6O2ckdycNMei8+r0E7WyrJY7rLl/oddrYJGQVKLktGJ4dqyJceqPMdM78oHh3m9WrYRdGFYAmDlmdTvws96W3t+/ccE4ZjBcMbtKcbOj28j/hZ+FxnmbDQMQDOr9xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B84C4CED6;
+	Fri, 28 Feb 2025 11:29:11 +0000 (UTC)
+Date: Fri, 28 Feb 2025 11:29:08 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: yazen.ghannam@amd.com, mark.rutland@arm.com, mingo@redhat.com,
+	robin.murphy@arm.com, Jonathan.Cameron@huawei.com, bp@alien8.de,
+	rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
+	wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com,
+	tongtiangen@huawei.com, gregkh@linuxfoundation.org, will@kernel.org,
+	jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+	ardb@kernel.org, ying.huang@linux.alibaba.com, ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com, tglx@linutronix.de,
+	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com, lpieralisi@kernel.org,
+	guohanjun@huawei.com, sudeep.holla@arm.com
+Subject: Re: [PATCH v18 2/3] mm: memory-failure: move return value
+ documentation to function declaration
+Message-ID: <Z8GeBJ9tTayTm9s9@arm.com>
+References: <20250107081735.16159-1-xueshuai@linux.alibaba.com>
+ <20250107081735.16159-3-xueshuai@linux.alibaba.com>
+ <Z8BbFRupgknBTvH8@arm.com>
+ <0c93542f-4521-41bc-a030-5b2d8621aa6a@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHLMWRmVeSWpSXmKPExsXC9ZZnoW5Q1MF0g7e9shZz1q9hs5g+9QKj
-	xYmbjWwWzYvXs1ms3uRrcbv/HKvFqoXX2CyOb53HbrHvIlDZzodv2SyW7+tntLi8aw6bxb01
-	/1kt5n6ZyuzA53H4zXtmj52z7rJ7tBx5y+qxeM9LJo9NqzrZPDZ9msTucWLGbxaPhQ1TmT32
-	z13D7nHuYoXH501yAdxRXDYpqTmZZalF+nYJXBn3dzUyF+yWqXh/Nq6B8ZloFyMnh4SAiUTz
-	1ePsMPbOA8+YQGw2AQ2Jg4dOMoPYIgKaEidaJwHZXBzMAtOZJRofbGQFSQgLeEq0HVnJ2MXI
-	wcEioCqxcrUXSJhXwFzi7/KJLBAzNSUaLt0Dm8kpYCfx8MhhNhBbSIBH4tWG/YwQ9YISJ2c+
-	AatnFpCXaN46G2yXhEA7u8SxQ2ehjpOUOLjiBssERv5ZSHpmIelZwMi0ilEoM68sNzEzx0Qv
-	ozIvs0IvOT93EyMwVpbV/onewfjpQvAhRgEORiUe3hNRB9KFWBPLiitzDzFKcDArifDOigUK
-	8aYkVlalFuXHF5XmpBYfYpTmYFES5zX6Vp4iJJCeWJKanZpakFoEk2Xi4JRqYExw21175kX2
-	7dpVM9QM3whP97SuqJu2akrL8pXRATneVh2r7z4u7pr+uJvl04IP2mtj+1peXjzs1eI/4cDy
-	JS/mzBFarHL6prXcnri+3yoLj8We8C+MmX6GzTLj8L4TzqyqRox8K4/LLNR/IPLpWaCGUsH1
-	LMc5dUn15xOT7eyjv2UwrmdfuUOJpTgj0VCLuag4EQDWmk3IkQIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsXCNUNWRzco6mC6wc11vBZz1q9hs5g+9QKj
-	xYmbjWwWzYvXs1ms3uRr8fnZa2aL2/3nWC1WLbzGZnF86zx2i30XgWoPzz3JarHz4Vs2i+X7
-	+hktLu+aw2Zxb81/Vou5X6YyWxy69pzVQdDj8Jv3zB47Z91l92g58pbVY/Gel0wem1Z1snls
-	+jSJ3ePEjN8sHgsbpjJ77J+7ht3j3MUKj2+3PTwWv/jA5PF5k1wAbxSXTUpqTmZZapG+XQJX
-	xv1djcwFu2Uq3p+Na2B8JtrFyMkhIWAisfPAMyYQm01AQ+LgoZPMILaIgKbEidZJQDYXB7PA
-	dGaJxgcbWUESwgKeEm1HVjJ2MXJwsAioSqxc7QUS5hUwl/i7fCILxExNiYZL98BmcgrYSTw8
-	cpgNxBYS4JF4tWE/I0S9oMTJmU/A6pkF5CWat85mnsDIMwtJahaS1AJGplWMIpl5ZbmJmTmm
-	esXZGZV5mRV6yfm5mxiBUbGs9s/EHYxfLrsfYhTgYFTi4T0RdSBdiDWxrLgy9xCjBAezkgjv
-	rFigEG9KYmVValF+fFFpTmrxIUZpDhYlcV6v8NQEIYH0xJLU7NTUgtQimCwTB6dUA+PcPzz9
-	kT571rVcilWY+TbBKl3G7NpOLeZdLi0ndRq57Y+7n9v+7M8HyTVvd7VvU99qGhanNOFzz7fy
-	DndHp4y4xT3R5xqPTnU6cN4vXFt9AS8v+8tKvytO8YYeEVHqbWzmGuYlyy528oQ7bbPqamzw
-	UVh269Matc8SHJkqS1J/O64727L0ixJLcUaioRZzUXEiAGDzoLaGAgAA
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0c93542f-4521-41bc-a030-5b2d8621aa6a@linux.alibaba.com>
 
-Hi, Joshua. 
+On Fri, Feb 28, 2025 at 09:46:30AM +0800, Shuai Xue wrote:
+[...]
+> > On Tue, Jan 07, 2025 at 04:17:34PM +0800, Shuai Xue wrote:
+> > > Part of return value comments for memory_failure() were originally
+> > > documented at the call site. Move those comments to the function
+> > > declaration to improve code readability and to provide developers with
+[...]
+> By the way, could arm maintainers help to ack patch 1 and 3 if there
+> is no objection?
 
-First of all I accidentally sent the wrong email a few hours ago.
-Please disregard it. Sorry for the confusion.
+James Morse is listed as reviewer of the ACPI APEI code but he's busy
+with resctrl/MPAM. Adding Lorenzo, Sudeep and Hanjun as arm64 ACPI
+maintainers, hopefully they can help. Here's the full series:
 
-On Wed, 26 Feb 2025 13:35:17 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+https://lore.kernel.org/r/20250107081735.16159-1-xueshuai@linux.alibaba.com/
 
-[...snip...]
->  
-> +/*
-> + * Convert bandwidth values into weighted interleave weights.
-> + * Call with iw_table_lock.
-> + */
-> +static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
-> +{
-> +	u64 sum_bw = 0;
-> +	unsigned int cast_sum_bw, sum_iw = 0;
-> +	unsigned int scaling_factor = 1, iw_gcd = 1;
-> +	int nid;
-> +
-> +	/* Recalculate the bandwidth distribution given the new info */
-> +	for_each_node_state(nid, N_MEMORY)
-> +		sum_bw += bw[nid];
-> +
-> +	for (nid = 0; nid < nr_node_ids; nid++) {
-> +		/* Set memoryless nodes' weights to 1 to prevent div/0 later */
-> +		if (!node_state(nid, N_MEMORY)) {
-> +			new_iw[nid] = 1;
-> +			continue;
-> +		}
-> +
-> +		scaling_factor = 100 * bw[nid];
-> +
-> +		/*
-> +		 * Try not to perform 64-bit division.
-> +		 * If sum_bw < scaling_factor, then sum_bw < U32_MAX.
-> +		 * If sum_bw > scaling_factor, then bw[nid] is less than
-> +		 * 1% of the total bandwidth. Round up to 1%.
-> +		 */
-> +		if (bw[nid] && sum_bw < scaling_factor) {
-> +			cast_sum_bw = (unsigned int)sum_bw;
-> +			new_iw[nid] = scaling_factor / cast_sum_bw;
-> +		} else {
-> +			new_iw[nid] = 1;
-> +		}
-> +		sum_iw += new_iw[nid];
-> +	}
-> +
-> +	/*
-> +	 * Scale each node's share of the total bandwidth from percentages
-> +	 * to whole numbers in the range [1, weightiness]
-> +	 */
-> +	for_each_node_state(nid, N_MEMORY) {
-> +		scaling_factor = weightiness * new_iw[nid];
-> +		new_iw[nid] = max(scaling_factor / sum_iw, 1);
-> +		if (nid == 0)
-> +			iw_gcd = new_iw[0];
-> +		iw_gcd = gcd(iw_gcd, new_iw[nid]);
-> +	}
-> +
-> +	/* 1:2 is strictly better than 16:32. Reduce by the weights' GCD. */
-> +	for_each_node_state(nid, N_MEMORY)
-> +		new_iw[nid] /= iw_gcd;
-> +}
-
-In my understanding, new_iw[nid] values are scaled twice, first to 100 and then to a 
-weightines value of 32. I think this scaling can be done just once, directly 
-to weightness value as follows:
-
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 50cbb7c047fa..65a7e2baf161 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -176,47 +176,22 @@ static u8 get_il_weight(int node)
- static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
- {
-	u64 sum_bw = 0;
--	unsigned int cast_sum_bw, sum_iw = 0;
--	unsigned int scaling_factor = 1, iw_gcd = 1;
-+	unsigned int scaling_factor = 1, iw_gcd = 0;
-	int nid;
-
-	/* Recalculate the bandwidth distribution given the new info */
-	for_each_node_state(nid, N_MEMORY)
-		sum_bw += bw[nid];
-
--       for (nid = 0; nid < nr_node_ids; nid++) {
- 			[...snip...]
--		/*
--		 * Try not to perform 64-bit division.
--		 * If sum_bw < scaling_factor, then sum_bw < U32_MAX.
--		 * If sum_bw > scaling_factor, then bw[nid] is less than
--		 * 1% of the total bandwidth. Round up to 1%.
--		 */
- 			[...snip...]
--		sum_iw += new_iw[nid];
--	}
--
-     
-	/*
-	 * Scale each node's share of the total bandwidth from percentages
-	 * to whole numbers in the range [1, weightiness]
-	 */
-	for_each_node_state(nid, N_MEMORY) {
--		scaling_factor = weightiness * new_iw[nid];
--		new_iw[nid] = max(scaling_factor / sum_iw, 1);
--		if (nid == 0)
--			iw_gcd = new_iw[0];
-+		scaling_factor = weightiness * bw[nid];
-+		new_iw[nid] = max(scaling_factor / sum_bw, 1);
-+		if (!iw_gcd)
-+			iw_gcd = new_iw[nid];
-		iw_gcd = gcd(iw_gcd, new_iw[nid]);
-	}
-
-Please let me know how you think about this.
-
-Best regards,
-Yunjeong
+-- 
+Catalin
 
