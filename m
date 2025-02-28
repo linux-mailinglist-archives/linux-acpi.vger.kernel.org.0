@@ -1,199 +1,174 @@
-Return-Path: <linux-acpi+bounces-11651-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11652-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D20A4A433
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 21:25:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854CDA4A453
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 21:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893F5172BDF
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 20:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC4593B5753
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 20:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C06323F389;
-	Fri, 28 Feb 2025 20:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF4B14B092;
+	Fri, 28 Feb 2025 20:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AHwXlfxC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mYxLngYQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DCC23F372;
-	Fri, 28 Feb 2025 20:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3CF23F388;
+	Fri, 28 Feb 2025 20:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740774127; cv=none; b=BEOY/ULgCUl5tVok3ayVxJhiivvgN48Ng+j8LNBiek/OfiQwmwg3Bd3LMRz1OsRelJ5klWuqOjvEG9rc7ffyD30O/Lzos9waJau3nsguC3lmy5dL0xYhNtIr+QLgbAJiLV/jmgBT7u2KZZyWGPoh2vDeoFdCrNhQF+ht/+4bOBM=
+	t=1740775110; cv=none; b=e/6tjKDwXRv0QDLaTxPjP+oOUsHFwBJZL2b6QmSWEwudf9UUAM7LkdDNQUDvu2oNmtFsT8RFupkdb3DIL143lGGemAFNmK1lZPrxOgAWCmh3dlSS7F00jFBJ1McznLZhCXNyfji6PiHMF8oMa1cw9ypY+T3P99V2BtvS4VhERsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740774127; c=relaxed/simple;
-	bh=Y/3SElz8iaYCwSjvitdnGgLgPxggp/GvYFsotcJQ/cE=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=c8oMfEheqiPv+qt8rWCxfjt+9xPsoqY1ROljywGwjdvBMORJmoHwPVip3bLnm8QPNUJ1wUNcA+tHXGcnKv+ERTD/134iETi1tBxwA/zDgoZwvOQGga8BeeeEtUBLB6OVhz/0Lnoa6n91bM1KaN1CvE4qhp9fKnJBRptA2cvKDPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AHwXlfxC; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [192.168.35.166] (c-24-22-154-137.hsd1.wa.comcast.net [24.22.154.137])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C698A210D0EA;
-	Fri, 28 Feb 2025 12:22:04 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C698A210D0EA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740774125;
-	bh=1+ex/PI1EKCfFK1H+WPecE98rrnjNmYMX0MiAFRCvj8=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=AHwXlfxC/UwT2KDJZxxxubZgc0m3IVcGilsc4NKNEzIU5QifQ07agHrbNmiy942b/
-	 rGO0voh/5Ip81GdgnjtJf1upTMe1spMlPxdqIAknZzNZF4SIv/ruxvWbY+bmOnnn9V
-	 AkU2wGDVWiIRjauUiCOlel9XnD8iCjZ/Xdt+LH3g=
-Message-ID: <9254eaa1-8ff0-4dd6-a443-5f127049bdaa@linux.microsoft.com>
-Date: Fri, 28 Feb 2025 12:22:04 -0800
+	s=arc-20240116; t=1740775110; c=relaxed/simple;
+	bh=EwFVnCQd6HinaOBLRVd+9/xUTRIjhFRsaMXEDl9fxDA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ciRhYu8HKtDv6fvwBXlzFvQh8Biw/1034kBQhdzZNPMoTdTty8CszvmDlD6JIuQXhAp35Kieawnb/obD3SbQQjKs5TtO12kRV+8Oa+GaWhPP31vmg8XoTmm+iRrJPC+qP+rtYWUqL4Xt5iDGz1DQxY+dA2ZuB9qLT+BPjsFhnHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYxLngYQ; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-46fcbb96ba9so31443321cf.0;
+        Fri, 28 Feb 2025 12:38:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740775107; x=1741379907; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zQtnGxj9EqjKJY0q4XFl30n9aa5bS88PcFq7XjOAFU4=;
+        b=mYxLngYQmmqSfjoJzw59o77LfnbueE+xFKG5H0JResxTQF/PFKWWRqMpkORa2E3ylf
+         sSLKcxso4sWXSiBq966BFJaISTop5oGc3MuMMC1xwlIUVg9PwpBPkNFMkW5Zm2S1TvEW
+         IILaXE41BC7/mWkl4G3QzlnRZmtz+dgq1F8B22FSSPSwtL4FJQtNb7jdjuxS1jvbwpz0
+         driqw+0gCenClA13PwkQTPnMU/ghUzVYWthdkuJuETWsDDIGHhPKBML+0KUXoJnJaaWh
+         DAB2leDhznacNlvHceaveYXA4i9QMdZEU2ZU8/KTGvbV8zujBVl7pEdoMRhNqsXe9kVE
+         Jr1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740775107; x=1741379907;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zQtnGxj9EqjKJY0q4XFl30n9aa5bS88PcFq7XjOAFU4=;
+        b=qz7FlhGsNH9e+LVLOCL/GmIHUuECD7/g1qmgINhG12IYpPC18z2AX+ZZwQE8tqcUQA
+         Tw8Pei+mVrDpIKdTAJP5luPgL8lwHrx91WYEEQuXvOgkkS+56ryDgtBTBAg/EbMUe47P
+         cidE6MTUj8QZAlmu2g3COdDJ2h7PC1YigLcgPK5ex732I2UX3QkybgUAdTj85zTsuEeW
+         mv3tjE4rc5Jt3MLx5lLJcc5v4opi0C9zn7iWaTXN3hOieDRk2E5C2xot9f+nl+4N0y2f
+         U/bdXdYKv2Timqm1BkiY8QbyeqrV5HXN6y5Ucqj5Z7hwwjpFWDod4pDQMyNb9L3HzQdV
+         Gllw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLq4PlslyNZSnKDyuM10L6Y8dnmxOb/1UlcCInklWn0FaJ1GiTSmZEwn5PkytUu5qS4Zxx6nh8srRAaN4z@vger.kernel.org, AJvYcCVknYRNOhUtKTqC8pFRPhnt48lGU5J34DwRrX/S7o3uSiUmVnSQs1qsYZ3PMDE54qdlA8UJrLImEc9W@vger.kernel.org, AJvYcCVucZ35/azJLAGf+E3YFldQ8hUTR68raqTL6cDb+JmUpFjgAEq2wdOduSzX7J4PgwnAk//3PWlWSRm8zrg2F6QejjyVSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/xXvNcONYCMw2bugKTCZxUDA+j/PEmTrw1RKwNIdDwr6GuE/a
+	8PluZDBD61gxo+B0XCA3iqdqQ8nRXO0ArBLW3OoRgEmPX52Te/RrFOvGB2vYRM4pUExdPh3///R
+	U//a7RfMrSu+1trlJr3hoUVUW62U=
+X-Gm-Gg: ASbGncs8OoE9yaY99EkT6zzW6WWE7DXll6FdxPvg2n6owcpfYM1zq6/axRAsiWGlFMP
+	MJoKB9xvEeazJpw5gCts8sLVbI1ue6+g6IgHJOhabQ5BnP3XTyJO4ONZOxKwfo2m5aO8OqX+xYP
+	DPz0kKpbA2qi4jxqpGzE56YPcHLpM=
+X-Google-Smtp-Source: AGHT+IEwxnMnsI1dGRYfaUNIGoNCheiqoTjMdjaY9C+voUgNVf4dIq2zzfq/+sshxFmZa32Dj0+elYtwkLDTEeak4cg=
+X-Received: by 2002:ad4:5f0a:0:b0:6e4:4331:aadf with SMTP id
+ 6a1803df08f44-6e8a0d05614mr78554026d6.23.1740775107310; Fri, 28 Feb 2025
+ 12:38:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: eahariha@linux.microsoft.com,
- Nuno Das Neves <nunodasneves@linux.microsoft.com>,
- linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com,
- decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
- joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
- jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-Subject: Re: [PATCH v5 01/10] hyperv: Convert Hyper-V status codes to strings
-To: Roman Kisel <romank@linux.microsoft.com>
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-2-git-send-email-nunodasneves@linux.microsoft.com>
- <74af19c4-639f-4bcc-b667-b5f102bbb312@linux.microsoft.com>
- <8338dd00-3aa4-418f-a547-1c19623358cb@linux.microsoft.com>
- <49a69fe3-fca5-426d-999d-61ee0c8f60f3@linux.microsoft.com>
- <70b62e52-639a-4026-9a52-102d1de46ffd@linux.microsoft.com>
- <212cc582-845d-42b2-89f2-1e9579f752ec@linux.microsoft.com>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <212cc582-845d-42b2-89f2-1e9579f752ec@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250228170155.2623386-1-superm1@kernel.org>
+In-Reply-To: <20250228170155.2623386-1-superm1@kernel.org>
+From: Derek John Clark <derekjohn.clark@gmail.com>
+Date: Fri, 28 Feb 2025 12:38:16 -0800
+X-Gm-Features: AQ5f1JrcbmmOjX6pqOEaG08stYfdXyf_n3rLygue2VU1W-R76oeG0lTCtBN3peg
+Message-ID: <CAFqHKTkCnSxUMoR76vibC394wkgdU1hQLrt0TAAyya95QOxJWQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Add support for hidden choices to platform_profile
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Hans de Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, Antheas Kapenekakis <lkml@antheas.dev>, me@kylegospodneti.ch, 
+	Denis Benato <benato.denis96@gmail.com>, Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/28/2025 9:20 AM, Roman Kisel wrote:
-> 
-> 
-> On 2/27/2025 3:25 PM, Easwar Hariharan wrote:
->> On 2/27/2025 3:08 PM, Roman Kisel wrote:
-> 
-> [...]
-> 
->>> Would be great to learn the details to understand how this function is
->>> going to improve the situation:
->>>
->>> 1. How come the hex error code was useless, what is not matching
->>>     anything in the Linux headers?
->>
->> It doesn't match anything in the Linux headers, but it's an NTSTATUS, not HVSTATUS.
->>
-> 
-> That is what it looks like from the code, I posted the details in the
-> parallel thread.
-> 
-> Here is a fix:
-> https://lore.kernel.org/linux-hyperv/20250227233110.36596-1-romank@linux.microsoft.com/
-> 
-> Also I think the commit description in your patch
-> 
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d2138eab8cde61e0e6f62d0713e45202e8457d6d
-> 
-> conflates the hypervisor (ours runs bare-metal, Type 1) and the VMMs
-> (Virtual Machine Monitors)+VSPs (Virtual Service Providers, e.g StorVSP
-> that implements SCSI) running in the host/root/dom0 partition.
+On Fri, Feb 28, 2025 at 9:02=E2=80=AFAM Mario Limonciello <superm1@kernel.o=
+rg> wrote:
+>
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>
+> When two drivers provide platform profile handlers but use different
+> strings to mean (essentially) the same thing the legacy interface won't
+> export them because it only shows profiles common to multiple drivers.
+>
+> This causes an unexpected behavior to people who have upgraded from an
+> earlier kernel because if multiple drivers have bound platform profile
+> handlers they might not be able to access profiles they were expecting.
+>
+> Introduce a concept of a "hidden choice" that drivers can register and
+> the platform profile handler code will utilize when using the legacy
+> interface.
+>
+> There have been some other attempts at solving this issue in other ways.
+> This serves as an alternative to those attempts.
+>
+> Link: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-9257=
+-5b8fc6c24ac9@gmx.de/T/#t
+> Link: https://lore.kernel.org/platform-driver-x86/CAGwozwF-WVEgiAbWbRCiUa=
+Xf=3DBVa3KqmMJfs06trdMQHpTGmjQ@mail.gmail.com/T/#m2f3929e2d4f73cc0eedd14738=
+170dad45232fd18
+> Cc: Antheas Kapenekakis <lkml@antheas.dev>
+> Cc: "Luke D. Jones" <luke@ljones.dev>
+>
+> Mario Limonciello (3):
+>   ACPI: platform_profile: Add support for hidden choices
+>   platform/x86/amd: pmf: Add 'quiet' to hidden choices
+>   platform/x86/amd: pmf: Add balanced-performance to hidden choices
+>
+>  drivers/acpi/platform_profile.c    | 94 +++++++++++++++++++++++-------
+>  drivers/platform/x86/amd/pmf/sps.c | 11 ++++
+>  include/linux/platform_profile.h   |  3 +
+>  3 files changed, 87 insertions(+), 21 deletions(-)
+>
+> --
+> 2.43.0
+>
 
-Agreed, that was what I was led to believe, your patch would help with that
-miscommunication, though not in its current form. See my review comment in that
-thread.
+Everything seems to be working as intended. I applied these patches on
+top of my lenovo-wmi series modified to always show
+balanced-performance and with quiet as the lowest profile. Testing was
+done on the Legion Go.
+Results:
 
-> 
->> Coming from the PoV of a user, it would be a much more useful message to see:
->>
->> [  249.512760] hv_storvsc fd1d2cbd-ce7c-535c-966b-eb5f811c95f0: tag#683 cmd 0x28 status: scsi 0x2 srb 0x4 hv STATUS_UNSUCCESSFUL
->>
->> than
->>
->> [  249.512760] hv_storvsc fd1d2cbd-ce7c-535c-966b-eb5f811c95f0: tag#683 cmd 0x28 status: scsi 0x2 srb 0x4 hv 0xc0000001
->>
-> 
-> It is likely that the PoV of a user that you've mentioned is actually
-> a PoV of a (kernel) developer.
+$ cat /sys/firmware/acpi/platform_profile_choices
+quiet balanced balanced-performance performance
+$ for f in *; do cat $f/name; cat $f/choices; done;
+lenovo-wmi-gamezone
+quiet balanced balanced-performance performance custom
+amd-pmf
+low-power balanced performance
+$ echo quiet | sudo tee /sys/firmware/acpi/platform_profile
+quiet
+$ for f in *; do cat $f/name; cat $f/profile; done;
+lenovo-wmi-gamezone
+quiet
+amd-pmf
+quiet
+$ echo balanced-performance | sudo tee /sys/firmware/acpi/platform_profile
+balanced-performance
+$ for f in *; do cat $f/name; cat $f/profile; done;
+lenovo-wmi-gamezone
+balanced-performance
+amd-pmf
+balanced-performance
+$ echo low-power | sudo tee /sys/firmware/acpi/platform_profile
+low-power
+tee: /sys/firmware/acpi/platform_profile: Operation not supported
+$ for f in *; do cat $f/name; cat $f/profile; done;
+lenovo-wmi-gamezone
+balanced-performance
+amd-pmf
+balanced-performance
 
-Actually, no, it's PoV of the WSL users that are having the discussion in
-the linked github issue. FWIW, that issue also occurred in Azure with multiple
-incidents coming into our queue because of the unusable flood of error messages.
-
-> It is hard to imagine that folks running
-> web sites, DB servers, LoBs, LLMs, etc. in Hyper-V VMs care about the
-> lowest software level of the virt stack in the form of the symbolic
-> name or the hex code. They need their VMs to be reliable or suggest
-> what the user may try if a configuration error is suspected.
-> 
-> To make the error log message useful to the user, the message should
-> mention ways of remediation or at least hint what might've gotten
-> wedged. Without that, that's only useful for the people who work with
-> the kernel code proper or the kernel interface to the user land.
-
-There's a step between seeing the issue and fixing it that you're missing,
-i.e. the reporting.
-
-An issue that says "flood of hv_storvsc errors reporting status
-unsuccessful" is better than the same without that status information:
-https://github.com/microsoft/WSL/issues/9173
-
-> 
-> So I'd think that the hex error codes from the hypervisor give the user
-> exactly as much as the error symbolic names do to get the system to the
-> desired state: nothing. 
-I continue to disagree, seeing HV_STATUS_NO_RESOURCES is better than 0x1D,
-because the user may think to look at `top` or `free -h` or similar to see
-what could be killed to improve the situation.
-
-> Even less when the error reported "Unknown" :)
-
-I agree on the uselessness of "Unknown" to the user, except as already mentioned
-below, as a prompt for the code to be updated.
-
-> 
->>> 2. How having "Unknown" in the log can possibly be better?
->>
->> IMHO, seeing "Unknown" in an error report means that there's a new return value
->> that needs to be mapped to errno in hv_status_to_errno() and updated here as well.
->>
-> 
-> It means that to the developer. To the user, it means the developers
-> messed something up and to make matters even worse they didn't leave any
-> breadcrumbs (e.g. the hex code) to see what's wrong to help the user and
-> themselves: there is just that "Unknown" thing in the log.
-
-I think Nuno's compromise addresses this very well, to also print the hex code.
-
-> 
->>> 3. Given that the select hv status codes and the proposed strings have
->>>     1:1 correspondence, and there is the 1:N catch-all case for the
->>>     "Unknown", how's that better?
->>>
->>
->> I didn't really follow this question, but I suppose the answer to Q2 answers this as
->> well. If not, please expand and I'll try to answer.
->>
-> 
-> Sorry about that chunk, hit "Send" without looking the e-mail over
-> another time. Appreciate the discussion very much!
-> 
-> 
->> Thanks,
->> Easwar (he/him)
-> 
-
+Tested-by: Derek J. Clark <derekjohn.clark@gmail.com>
 
