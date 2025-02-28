@@ -1,608 +1,276 @@
-Return-Path: <linux-acpi+bounces-11619-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11617-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F84A49941
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 13:28:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DD1A4993B
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 13:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AE431897141
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 12:28:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 584CA17348A
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 12:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD026B960;
-	Fri, 28 Feb 2025 12:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6423F2356D1;
+	Fri, 28 Feb 2025 12:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsExxEsu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6702D26AABA;
-	Fri, 28 Feb 2025 12:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389DE26AABA;
+	Fri, 28 Feb 2025 12:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740745706; cv=none; b=W6nAewBnfU+PhS52zoLqJSLJZhLC8iSD5rEoc5ckpPOszucoDHVXUzqhZ50maoIILc3OnoLiq0+lX4MggUHN8Mi5puODANryFdPoShCykPWaWUviuqNSaOkVhjlnCeOmleQhQlGs6NQqmJm1IfOO5ZRWxYZOjSz1RDLKbifdum8=
+	t=1740745695; cv=none; b=n1hQH+g0c5DJGkJpgPoBaNtFE8GqI8jB/PcxZ7lhwpa8KC1N2Nsg8H8bw2jK8Z0HsMT/6jOORZY+vyuVTub8Q6VnUqsVqV1FgcwC7epnJuaBfofvQumeN/JTOcDb558PPwsSsw/6rDGPpE34hRTWlBedp0wzJ1Jvsvi5ko3lHqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740745706; c=relaxed/simple;
-	bh=vX45Y2B32zlGumOrzzlWzyDwI9HfmjX5xRiuAQHPQYE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CLv1iPTcDIrgq9DPbC0JvZOWN+M4d5vAR4DxGWQ19GDgHWCaVrLdvNmwxMITOdF/28nJDlTmBJzoHYIjO0feWaoG9hCMpgOFAJVQvxqbaB2eteb9Vq7j1IELYwUUpS62Fajd9mTMRuJKbAfoOZJ8amQdAZCWghJCJ7JOoluo9Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z46pQ4xCqz6L5QX;
-	Fri, 28 Feb 2025 20:24:30 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8F998140A35;
-	Fri, 28 Feb 2025 20:28:21 +0800 (CST)
-Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.152.77) by
- frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 28 Feb 2025 13:28:19 +0100
-From: <shiju.jose@huawei.com>
-To: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<rafael@kernel.org>, <bp@alien8.de>, <tony.luck@intel.com>,
-	<lenb@kernel.org>, <mchehab@kernel.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <j.williams@intel.com>, <dave@stgolabs.net>,
-	<jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
-	<leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
-	<nifan.cxl@gmail.com>, <yazen.ghannam@amd.com>, <tanxiaofei@huawei.com>,
-	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [PATCH linux-next 2/2] ras: mem: Add memory ACPI RAS2 driver
-Date: Fri, 28 Feb 2025 12:27:50 +0000
-Message-ID: <20250228122752.2062-3-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.43.0.windows.1
-In-Reply-To: <20250228122752.2062-1-shiju.jose@huawei.com>
-References: <20250228122752.2062-1-shiju.jose@huawei.com>
+	s=arc-20240116; t=1740745695; c=relaxed/simple;
+	bh=fyWO759wbCtQ9b973FjnYmJ4dfQHgCnzYCc3lnyU2as=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FN7fwlRnyiVCJSyhi36G1fXb3FkN4slC0UN1a9h1l34v7lkX6cNOGQjCx2epKqY7qaOnE/dl6DO36cpzEh+NDnDYYxWeEaa3l2V6EqAhuClYyGrSEVVYAx1k5nEh8UNhtJ+kqZu3RX2lHctNnqMPStBr24yh8OHHoQwDthgqXKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsExxEsu; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-54954fa61c9so459143e87.1;
+        Fri, 28 Feb 2025 04:28:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740745691; x=1741350491; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vRsEJJq+lHbfCru1cPu244+Pyfj0ydxDTZwyy2ELrY4=;
+        b=WsExxEsulvEyiBqKNHg78fnaA+IDlEdT6toc/0VmTaUodqClrGYnpjZgQFDCTp4pIT
+         TuMqyJOk2mc7jQtEmuInWeIS6YmijXFD9gkbdIZDeLSjjAsnPWDMG+yl8e8pbgDFSWCJ
+         RWf1eBneVMyLZVDnF6SWWohuSLdGgWhJRWcCQUY5uU+LYc/lSVRdQ5WDDAsQlQWtlkOj
+         KjSNwidwafbnLomkPiA1tBVZMneVrRP/daaloZMdvUST4LW+jiT7fjTlLfBVEEqxPPNf
+         HA0YUvqp934WSH8ldDE8LRMHfYxrtYg1ILPMFnQBH6rc17aCsj4V8H1A5jf6g6lDRP6K
+         sU3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740745691; x=1741350491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vRsEJJq+lHbfCru1cPu244+Pyfj0ydxDTZwyy2ELrY4=;
+        b=opA7JAsEArW4czbIHUrhYsGSgmRHB23GsBpf+gCl5jbRl7v49q8rks0R9SvdCJ94hE
+         DkiQPSEj1fxy3xueSrmqhPEc6q/b4KVq8mypvf3sRt5RUK+GgHrAnxTXB1ehYXYWbcdF
+         qPtcL3K5NZTId2i/adhyofacpWHfENLXptfNMPN5M4qkKuCv1F/yYtGPnNnYtTJta3mT
+         +l0ifXlRbg1jHUEuH7z6OMLDLF3cW5fPwgsK4k5xETqpkeU6jAig7i7cNH8oPIE0V0Wu
+         ZYlkP7DHqHdQ32mKMsgmritsleuuxtrqSJavP9EY2rX2icJz01PK35kXNBeFa5vHYQvA
+         Z5fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpw+Sgd84+tsCkjQqXXpEcVO2NJps0b1bKdhvZsDZqHXM3pZU9E1szxXPT94vnDpWtv0Rrgzph2XUE@vger.kernel.org, AJvYcCWl0WRxP0B32t4UkscDO4aflYmBuLl8JKV8Ln8Ia0s0hKlqJTrgckUIB73xnUmJ9LED2GJMSm4u4D+/M+Ay@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHLspB/Ro3TsNflpaK/r47kRqPKVFgELTrd7YS5chDUHPQjtEo
+	KEf8FWWQuhOw9tV1P5nNbr70vp3YfyUdfbdj5gYaAQ2MLoD//KwM7swxEVYrN4afncIZwBE0zZV
+	fb4FOS9iyCdRexQDMpPrmPLpAANhUN9o=
+X-Gm-Gg: ASbGncu2IcoysgA++lx6giKR8Qx9b/qjEpoG67VuS9O1ykIULLZnvfcmjA2CJ04CpUL
+	Zele87+2D2F5l/90n+MsDxFX6vsJi5RZLOJDcJyu0hateM5IEi2G31M6IUGm2QTLnsYnOGZBuOC
+	zA/jdEQShw
+X-Google-Smtp-Source: AGHT+IEOOp9hXlgVIgRg9mtyni5JG8O+61LT+FB3hGbI+Ejcr9pwZViSLTt/ouCy9mCfPDd7Kx75YZ/40onA3k6D0GM=
+X-Received: by 2002:a05:6512:3b11:b0:545:8c5:44cb with SMTP id
+ 2adb3069b0e04-5494c320a53mr1387834e87.31.1740745690754; Fri, 28 Feb 2025
+ 04:28:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- frapeml500007.china.huawei.com (7.182.85.172)
+References: <CAMciSVX3X=DxLU0tfj4rG5WPaS5BCUDcMp2MYWBitT0ecEH+ig@mail.gmail.com>
+ <20250225203818.GA516645@bhelgaas> <CAMciSVUFpkuxt-8MzvsRnM9B8F0UQGjfUxBJufGVK1=m2DooNw@mail.gmail.com>
+In-Reply-To: <CAMciSVUFpkuxt-8MzvsRnM9B8F0UQGjfUxBJufGVK1=m2DooNw@mail.gmail.com>
+From: Naveen Kumar P <naveenkumar.parna@gmail.com>
+Date: Fri, 28 Feb 2025 17:57:58 +0530
+X-Gm-Features: AQ5f1Jr6SUgifiawbhkwr0F_oKKd_s8EhUUgPgWC4I3G1Ie7aZjJdpTXHN5pZbc
+Message-ID: <CAMciSVUgioFq=N9bDLvKPQtvuPCYCOrMNjGtvxm7rnsCy_wcsA@mail.gmail.com>
+Subject: Re: PCI: hotplug_event: PCIe PLDA Device BAR Reset
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernelnewbies <kernelnewbies@kernelnewbies.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Shiju Jose <shiju.jose@huawei.com>
+On Wed, Feb 26, 2025 at 6:28=E2=80=AFPM Naveen Kumar P
+<naveenkumar.parna@gmail.com> wrote:
+>
+> On Wed, Feb 26, 2025 at 2:08=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org=
+> wrote:
+> >
+> > On Tue, Feb 25, 2025 at 06:46:02PM +0530, Naveen Kumar P wrote:
+> > > On Tue, Feb 25, 2025 at 1:24=E2=80=AFAM Bjorn Helgaas <helgaas@kernel=
+.org> wrote:
+> > > > On Tue, Feb 25, 2025 at 12:29:00AM +0530, Naveen Kumar P wrote:
+> > > > > On Mon, Feb 24, 2025 at 11:03=E2=80=AFPM Bjorn Helgaas <helgaas@k=
+ernel.org> wrote:
+> > > > > > On Mon, Feb 24, 2025 at 05:45:35PM +0530, Naveen Kumar P wrote:
+> > > > > > > On Wed, Feb 19, 2025 at 10:36=E2=80=AFPM Bjorn Helgaas <helga=
+as@kernel.org> wrote:
+> > > > > > > > On Wed, Feb 19, 2025 at 05:52:47PM +0530, Naveen Kumar P wr=
+ote:
+> > > > > > > > > Hi all,
+> > > > > > > > >
+> > > > > > > > > I am writing to seek assistance with an issue we are expe=
+riencing with
+> > > > > > > > > a PCIe device (PLDA Device 5555) connected through PCI Ex=
+press Root
+> > > > > > > > > Port 1 to the host bridge.
+> > > > > > > > >
+> > > > > > > > > We have observed that after booting the system, the Base =
+Address
+> > > > > > > > > Register (BAR0) memory of this device gets reset to 0x0 a=
+fter
+> > > > > > > > > approximately one hour or more (the timing is inconsisten=
+t). This was
+> > > > > > > > > verified using the lspci output and the setpci -s 01:00.0
+> > > > > > > > > BASE_ADDRESS_0 command.
+> > > >
+> > > > > ...
+> > > > > I booted with the pcie_aspm=3Doff kernel parameter, which means t=
+hat
+> > > > > PCIe Active State Power Management (ASPM) is disabled. Given this
+> > > > > context, should I consider removing this setting to see if it aff=
+ects
+> > > > > the occurrence of the Bus Check notifications and the BAR0 reset
+> > > > > issue?
+> > > >
+> > > > Doesn't seem likely to be related.  Once configured, ASPM operates
+> > > > without any software intervention.  But note that "pcie_aspm=3Doff"
+> > > > means the kernel doesn't touch ASPM configuration at all, and any
+> > > > configuration done by firmware remains in effect.
+> > > >
+> > > > You can tell whether ASPM has been enabled by firmware with "sudo
+> > > > lspci -vv" before the problem occurs.
+> > > >
+> > > > > > > During the ACPI_NOTIFY_BUS_CHECK event, the lspci output init=
+ially
+> > > > > > > showed all FF's, and then the next run of the same command sh=
+owed
+> > > > > > > BASE_ADDRESS_0 reset to zero:
+> > > > > > > $ sudo lspci -xxx -s 01:00.0 | grep "10:"
+> > > > > > > 10: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> > > > > >
+> > > > > > Looks like the device isn't responding at all here.  Could happ=
+en if
+> > > > > > the device is reset or powered down.
+> > > > >
+> > > > > From the kernel driver or user space tools, is it possible to
+> > > > > determine whether the device has been reset or powered down?  Are
+> > > > > there any power management settings or configurations that could =
+be
+> > > > > causing the device to reset or power down unexpectedly?
+> > > >
+> > > > Not really.  By "powered down", I meant D3cold, where the main powe=
+r
+> > > > is removed.  Config space is readable in all other power states.
+> > > >
+> > > > > > What is this device?  What driver is bound to it?  I don't see
+> > > > > > anything in dmesg that identifies a driver.
+> > > > >
+> > > > > The PCIe device in question is a Xilinx FPGA endpoint, which is
+> > > > > flashed with RTL code to expose several host interfaces to the sy=
+stem
+> > > > > via the PCIe link.
+> > > > >
+> > > > > We have an out-of-tree driver for this device, but to eliminate t=
+he
+> > > > > driver's role in this issue, I renamed the driver to prevent it f=
+rom
+> > > > > loading automatically after rebooting the machine. Despite not us=
+ing
+> > > > > the driver, the issue still occurred.
+> > > >
+> > > > Oh, right, I forgot that you mentioned this before.
+> > > >
+> > > > > > You're seeing the problem on v5.4 (Nov 2019), which is much new=
+er than
+> > > > > > v4.4 (Jan 2016).  But v5.4 is still really too old to spend a l=
+ot of
+> > > > > > time on unless the problem still happens on a current kernel.
+> > > >
+> > > > This part is important.  We don't want to spend a lot of time
+> > > > debugging an issue that may have already been fixed upstream.
+> > >
+> > > Sure, I started building the 6.13 kernel and will post more
+> > > information if I notice the issue on the 6.13 kernel.
+> I have downloaded the 6.13 kernel source and added additional debug
+> logs in hotplug_event(), then built the kernel. After that rebooted
+> with the new kernel using the following parameters:
+> BOOT_IMAGE=3D/vmlinuz-6.13.0+ root=3D/dev/mapper/vg00-rootvol ro quiet
+> libata.force=3Dnoncq pci=3Dnomsi pcie_aspm=3Doff pcie_ports=3Don "dyndbg=
+=3Dfile
+> drivers/pci/* +p; file drivers/acpi/* +p"
+>
+> After some time post-boot, I ran the following commands without
+> initially checking the dmesg log:
+> $sudo lspci -xxx -s 01:00.0 | grep "10:"
+> 10: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>
+> $sudo lspci -xxx -s 01:00.0 | grep "10:"
+> 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>
+> The first run of lspci showed all FF's, and the next run showed
+> BASE_ADDRESS_0 reset to zero. After observing this, I checked the
+> dmesg log and found the following information:
+>
+> [ 2434.267810] ACPI: GPE event 0x01
+> [ 2434.374249] ACPI: \_SB_.PCI0.RP01: ACPI: ACPI_NOTIFY_BUS_CHECK event
+> [ 2434.374375] ACPI: \_SB_.PCI0.RP01: ACPI: OSL: Scheduling hotplug
+> event 0 for deferred handling
+> [ 2434.376001] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bridge acquired in
+> hotplug_event()
+> [ 2434.376125] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Bus check in hotplug_=
+event()
+> [ 2434.376268] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Checking bridge in
+> hotplug_event()
+> [ 2434.376615] ACPI: \_SB_.PCI0.RP01.PXSX: ACPI: utils: Evaluate
+> [_STA]: AE_NOT_FOUND
+> [ 2434.377652] ACPI: \_SB_.PCI0.RP01.PXSX._ADR: ACPI: No context!
+> [ 2434.379715] ACPI: \_SB_.PCI0.RP01.PXSX._PRW: ACPI: No context!
+> [ 2434.383699] ACPI: \_SB_.PCI0.RP01.PXSX: ACPI: utils: Evaluate
+> [_STA]: AE_NOT_FOUND
+> [ 2434.383723] ACPI: Device [PXSX] status [0000000f]
+> [ 2434.386059] ACPI: \_SB_.PCI0.RP01.D015._ADR: ACPI: No context!
+> [ 2434.388332] ACPI: \_SB_.PCI0.RP01.D015: ACPI: utils: Evaluate
+> [_STA]: AE_NOT_FOUND
+> [ 2434.388354] ACPI: Device [D015] status [0000000f]
+> [ 2434.388857] ACPI: \_SB_.PCI0.RP01: acpiphp_glue: Releasing bridge
+> in hotplug_event()
+> [ 2434.592773] ACPI: \_SB_.PCI0.SBRG.ADP1: ACPI: utils: Return value [1]
+> [ 2450.241979] ACPI: \_SB_.PCI0.SBRG.ADP1: ACPI: utils: Return value [1]
+> [ 2451.897846] ACPI: \_SB_.PCI0.SBRG.ADP1: ACPI: utils: Return value [1]
+>
+> Prior to this and afterwards, the dmesg log was flooded with "ACPI:
+> _SB_.PCI0.SBRG.ADP1: ACPI: utils: Return value [1]" statements.
+>
+> Complete dmesg log and the patch(to get additional debug information)
+> are attached to this email.
+I would greatly appreciate any guidance or next steps you could
+provide to help debug this issue.
 
-Memory ACPI RAS2 auxiliary driver binds to the auxiliary device
-add by the ACPI RAS2 table parser.
-
-Driver uses a PCC subspace for communicating with the ACPI compliant
-platform.
-
-Device with ACPI RAS2 scrub feature registers with EDAC device driver,
-which retrieves the scrub descriptor from EDAC scrub and exposes
-the scrub control attributes for RAS2 scrub instance to userspace in
-/sys/bus/edac/devices/acpi_ras_mem0/scrubX/.
-
-Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- Documentation/edac/scrub.rst |  73 +++++++
- drivers/ras/Kconfig          |  11 +
- drivers/ras/Makefile         |   1 +
- drivers/ras/acpi_ras2.c      | 383 +++++++++++++++++++++++++++++++++++
- 4 files changed, 468 insertions(+)
- create mode 100644 drivers/ras/acpi_ras2.c
-
-diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
-index daab929cdba1..7978aa653aa0 100644
---- a/Documentation/edac/scrub.rst
-+++ b/Documentation/edac/scrub.rst
-@@ -264,3 +264,76 @@ Sysfs files are documented in
- `Documentation/ABI/testing/sysfs-edac-scrub`
- 
- `Documentation/ABI/testing/sysfs-edac-ecs`
-+
-+Examples
-+--------
-+
-+The usage takes the form shown in these examples:
-+
-+1. ACPI RAS2
-+
-+1.1 On demand scrubbing for a specific memory region.
-+
-+1.1.1. Query what is device default/current scrub cycle setting.
-+
-+       Applicable to both on-demand and background scrubbing.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+36000
-+
-+1.1.2 Query the range of device supported scrub cycle for a memory region.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/min_cycle_duration
-+
-+3600
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/max_cycle_duration
-+
-+86400
-+
-+1.1.3. Program scrubbing for the memory region in RAS2 device to repeat every 43200 seconds (half a day).
-+
-+# echo 43200 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+1.1.4. Program address and size of the memory region to scrub
-+
-+Readback 'addr', non-zero - demand scrub is in progress, zero - scrub is finished.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/addr
-+
-+0
-+
-+Write 'size' of the memory region to scrub.
-+
-+# echo 0x300000 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/size
-+
-+Write 'addr' starts demand scrubbing, please make sure other attributes are set prior to that.
-+
-+# echo 0x200000 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/addr
-+
-+Readback 'addr', non-zero - demand scrub is in progress, zero - scrub is finished.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/addr
-+
-+0x200000
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/addr
-+
-+0
-+
-+1.2 Background scrubbing the entire memory
-+
-+1.2.3 Query the status of background scrubbing.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-+
-+0
-+
-+1.2.4. Program background scrubbing for RAS2 device to repeat in every 21600 seconds (quarter of a day).
-+
-+# echo 21600 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+1.2.5. Start 'background scrubbing'.
-+
-+# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
-index fc4f4bb94a4c..a88002f1f462 100644
---- a/drivers/ras/Kconfig
-+++ b/drivers/ras/Kconfig
-@@ -46,4 +46,15 @@ config RAS_FMPM
- 	  Memory will be retired during boot time and run time depending on
- 	  platform-specific policies.
- 
-+config MEM_ACPI_RAS2
-+	tristate "Memory ACPI RAS2 driver"
-+	depends on ACPI_RAS2
-+	depends on EDAC
-+	depends on EDAC_SCRUB
-+	help
-+	  The driver binds to the platform device added by the ACPI RAS2
-+	  table parser. Use a PCC channel subspace for communicating with
-+	  the ACPI compliant platform to provide control of memory scrub
-+	  parameters to the user via the EDAC scrub.
-+
- endif
-diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
-index 11f95d59d397..a0e6e903d6b0 100644
---- a/drivers/ras/Makefile
-+++ b/drivers/ras/Makefile
-@@ -2,6 +2,7 @@
- obj-$(CONFIG_RAS)	+= ras.o
- obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
- obj-$(CONFIG_RAS_CEC)	+= cec.o
-+obj-$(CONFIG_MEM_ACPI_RAS2)	+= acpi_ras2.o
- 
- obj-$(CONFIG_RAS_FMPM)	+= amd/fmpm.o
- obj-y			+= amd/atl/
-diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
-new file mode 100644
-index 000000000000..99cbe5f74b9d
---- /dev/null
-+++ b/drivers/ras/acpi_ras2.c
-@@ -0,0 +1,383 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * ACPI RAS2 memory driver
-+ *
-+ * Copyright (c) 2024-2025 HiSilicon Limited.
-+ *
-+ */
-+
-+#define pr_fmt(fmt)	"MEMORY ACPI RAS2: " fmt
-+
-+#include <linux/bitfield.h>
-+#include <linux/edac.h>
-+#include <linux/platform_device.h>
-+#include <acpi/ras2_acpi.h>
-+
-+#define RAS2_DEV_NUM_RAS_FEATURES	1
-+
-+#define RAS2_SUPPORT_HW_PARTOL_SCRUB	BIT(0)
-+#define RAS2_TYPE_PATROL_SCRUB	0x0000
-+
-+#define RAS2_GET_PATROL_PARAMETERS	0x01
-+#define RAS2_START_PATROL_SCRUBBER	0x02
-+#define RAS2_STOP_PATROL_SCRUBBER	0x03
-+
-+#define RAS2_PATROL_SCRUB_SCHRS_IN_MASK	GENMASK(15, 8)
-+#define RAS2_PATROL_SCRUB_EN_BACKGROUND	BIT(0)
-+#define RAS2_PATROL_SCRUB_SCHRS_OUT_MASK	GENMASK(7, 0)
-+#define RAS2_PATROL_SCRUB_MIN_SCHRS_OUT_MASK	GENMASK(15, 8)
-+#define RAS2_PATROL_SCRUB_MAX_SCHRS_OUT_MASK	GENMASK(23, 16)
-+#define RAS2_PATROL_SCRUB_FLAG_SCRUBBER_RUNNING	BIT(0)
-+
-+#define RAS2_SCRUB_NAME_LEN      128
-+#define RAS2_HOUR_IN_SECS    3600
-+
-+struct acpi_ras2_ps_shared_mem {
-+	struct acpi_ras2_shared_memory common;
-+	struct acpi_ras2_patrol_scrub_parameter params;
-+};
-+
-+static int ras2_is_patrol_scrub_support(struct ras2_mem_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_shared_memory __iomem *common =
-+		(void *)ras2_ctx->pcc_comm_addr;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	common->set_capabilities[0] = 0;
-+
-+	return common->features[0] & RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+}
-+
-+static int ras2_update_patrol_scrub_params_cache(struct ras2_mem_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		(void *)ras2_ctx->pcc_comm_addr;
-+	int ret;
-+
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.patrol_scrub_command = RAS2_GET_PATROL_PARAMETERS;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to read parameters\n");
-+		return ret;
-+	}
-+
-+	ras2_ctx->min_scrub_cycle = FIELD_GET(RAS2_PATROL_SCRUB_MIN_SCHRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	ras2_ctx->max_scrub_cycle = FIELD_GET(RAS2_PATROL_SCRUB_MAX_SCHRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	if (!ras2_ctx->bg) {
-+		ras2_ctx->base = ps_sm->params.actual_address_range[0];
-+		ras2_ctx->size = ps_sm->params.actual_address_range[1];
-+	}
-+	ras2_ctx->scrub_cycle_hrs = FIELD_GET(RAS2_PATROL_SCRUB_SCHRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+
-+	return 0;
-+}
-+
-+/* Context - lock must be held */
-+static int ras2_get_patrol_scrub_running(struct ras2_mem_ctx *ras2_ctx,
-+					 bool *running)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		(void *)ras2_ctx->pcc_comm_addr;
-+	int ret;
-+
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.patrol_scrub_command = RAS2_GET_PATROL_PARAMETERS;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to read parameters\n");
-+		return ret;
-+	}
-+
-+	*running = ps_sm->params.flags & RAS2_PATROL_SCRUB_FLAG_SCRUBBER_RUNNING;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_min_scrub_cycle(struct device *dev, void *drv_data,
-+					      u32 *min)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*min = ras2_ctx->min_scrub_cycle * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_max_scrub_cycle(struct device *dev, void *drv_data,
-+					      u32 *max)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*max = ras2_ctx->max_scrub_cycle * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_cycle_read(struct device *dev, void *drv_data,
-+				    u32 *scrub_cycle_secs)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*scrub_cycle_secs = ras2_ctx->scrub_cycle_hrs * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_cycle_write(struct device *dev, void *drv_data,
-+				     u32 scrub_cycle_secs)
-+{
-+	u8 scrub_cycle_hrs = scrub_cycle_secs / RAS2_HOUR_IN_SECS;
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	if (scrub_cycle_hrs < ras2_ctx->min_scrub_cycle ||
-+	    scrub_cycle_hrs > ras2_ctx->max_scrub_cycle)
-+		return -EINVAL;
-+
-+	ras2_ctx->scrub_cycle_hrs = scrub_cycle_hrs;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_addr(struct device *dev, void *drv_data, u64 *base)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	int ret;
-+
-+	/*
-+	 * When BG scrubbing is enabled the actual address range is not valid.
-+	 * Return -EBUSY now unless find out a method to retrieve actual full PA range.
-+	 */
-+	if (ras2_ctx->bg)
-+		return -EBUSY;
-+
-+	/*
-+	 * When demand scrubbing is finished firmware must reset actual
-+	 * address range to 0. Otherwise userspace assumes demand scrubbing
-+	 * is in progress.
-+	 */
-+	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	if (ret)
-+		return ret;
-+	*base = ras2_ctx->base;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_size(struct device *dev, void *drv_data, u64 *size)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	int ret;
-+
-+	if (ras2_ctx->bg)
-+		return -EBUSY;
-+
-+	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	if (ret)
-+		return ret;
-+	*size = ras2_ctx->size;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_write_addr(struct device *dev, void *drv_data, u64 base)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		(void *)ras2_ctx->pcc_comm_addr;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	if (ras2_ctx->bg)
-+		return -EBUSY;
-+
-+	if (!base || !ras2_ctx->size) {
-+		dev_warn(ras2_ctx->dev,
-+			 "%s: Invalid address range, base=0x%llx "
-+			 "size=0x%llx\n", __func__,
-+			 base, ras2_ctx->size);
-+		return -ERANGE;
-+	}
-+
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_SCHRS_IN_MASK;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_SCHRS_IN_MASK,
-+						    ras2_ctx->scrub_cycle_hrs);
-+	ps_sm->params.requested_address_range[0] = base;
-+	ps_sm->params.requested_address_range[1] = ras2_ctx->size;
-+	ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_EN_BACKGROUND;
-+	ps_sm->params.patrol_scrub_command = RAS2_START_PATROL_SCRUBBER;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "Failed to start demand scrubbing\n");
-+		return ret;
-+	}
-+
-+	return ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+}
-+
-+static int ras2_hw_scrub_write_size(struct device *dev, void *drv_data, u64 size)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	if (!size) {
-+		dev_warn(dev, "%s: Invalid address range size=0x%llx\n",
-+			 __func__, size);
-+		return -EINVAL;
-+	}
-+
-+	ras2_ctx->size = size;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		(void *)ras2_ctx->pcc_comm_addr;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+	if (enable) {
-+		if (ras2_ctx->bg || running)
-+			return -EBUSY;
-+		ps_sm->params.requested_address_range[0] = 0;
-+		ps_sm->params.requested_address_range[1] = 0;
-+		ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_SCHRS_IN_MASK;
-+		ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_SCHRS_IN_MASK,
-+							    ras2_ctx->scrub_cycle_hrs);
-+		ps_sm->params.patrol_scrub_command = RAS2_START_PATROL_SCRUBBER;
-+	} else {
-+		if (!ras2_ctx->bg)
-+			return -EPERM;
-+		ps_sm->params.patrol_scrub_command = RAS2_STOP_PATROL_SCRUBBER;
-+	}
-+	ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_EN_BACKGROUND;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_EN_BACKGROUND,
-+						    enable);
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "Failed to %s background scrubbing\n",
-+			str_enable_disable(enable));
-+		return ret;
-+	}
-+	if (enable) {
-+		ras2_ctx->bg = true;
-+		/* Update the cache to account for rounding of supplied parameters and similar */
-+		ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	} else {
-+		ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+		ras2_ctx->bg = false;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ras2_hw_scrub_get_enabled_bg(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*enabled = ras2_ctx->bg;
-+
-+	return 0;
-+}
-+
-+static const struct edac_scrub_ops ras2_scrub_ops = {
-+	.read_addr = ras2_hw_scrub_read_addr,
-+	.read_size = ras2_hw_scrub_read_size,
-+	.write_addr = ras2_hw_scrub_write_addr,
-+	.write_size = ras2_hw_scrub_write_size,
-+	.get_enabled_bg = ras2_hw_scrub_get_enabled_bg,
-+	.set_enabled_bg = ras2_hw_scrub_set_enabled_bg,
-+	.get_min_cycle = ras2_hw_scrub_read_min_scrub_cycle,
-+	.get_max_cycle = ras2_hw_scrub_read_max_scrub_cycle,
-+	.get_cycle_duration = ras2_hw_scrub_cycle_read,
-+	.set_cycle_duration = ras2_hw_scrub_cycle_write,
-+};
-+
-+static int ras2_probe(struct auxiliary_device *auxdev,
-+		      const struct auxiliary_device_id *id)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = container_of(auxdev, struct ras2_mem_ctx, adev);
-+	struct edac_dev_feature ras_features[RAS2_DEV_NUM_RAS_FEATURES];
-+	char scrub_name[RAS2_SCRUB_NAME_LEN];
-+	int num_ras_features = 0;
-+	int ret;
-+
-+	if (!ras2_is_patrol_scrub_support(ras2_ctx))
-+		return -EOPNOTSUPP;
-+
-+	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	if (ret)
-+		return ret;
-+
-+	snprintf(scrub_name, sizeof(scrub_name), "acpi_ras_mem%d",
-+		 ras2_ctx->id);
-+
-+	ras_features[num_ras_features].ft_type = RAS_FEAT_SCRUB;
-+	ras_features[num_ras_features].instance = ras2_ctx->instance;
-+	ras_features[num_ras_features].scrub_ops = &ras2_scrub_ops;
-+	ras_features[num_ras_features].ctx = ras2_ctx;
-+	num_ras_features++;
-+
-+	return edac_dev_register(&auxdev->dev, scrub_name, NULL,
-+				 num_ras_features, ras_features);
-+}
-+
-+static const struct auxiliary_device_id ras2_mem_dev_id_table[] = {
-+	{ .name = RAS2_AUX_DEV_NAME "." RAS2_MEM_DEV_ID_NAME, },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(auxiliary, ras2_mem_dev_id_table);
-+
-+static struct auxiliary_driver ras2_mem_driver = {
-+	.name = RAS2_MEM_DEV_ID_NAME,
-+	.probe = ras2_probe,
-+	.id_table = ras2_mem_dev_id_table,
-+};
-+module_auxiliary_driver(ras2_mem_driver);
-+
-+MODULE_IMPORT_NS("ACPI_RAS2");
-+MODULE_DESCRIPTION("ACPI RAS2 memory driver");
-+MODULE_LICENSE("GPL");
--- 
-2.43.0
-
+>
+> Any further guidance on these observations?
+>
+> Additionally, I noticed that the initial bootup logs with the
+> "0.000000" timestamp are missing in the dmesg log with this new
+> kernel. I'm unsure what might be causing this issue.
+>
+> > >
+> > > Regarding the CommClk- (Common Clock Configuration) bit, it indicates
+> > > whether the common clock configuration is enabled or disabled. When i=
+t
+> > > is set to CommClk-, it means that the common clock configuration is
+> > > disabled.
+> > >
+> > > LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk-
+> > >         ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+> > >
+> > > For my device, I noticed that the common clock configuration is
+> > > disabled. Could this be causing the BAR reset issue?
+> >
+> > Not to my knowledge.
+> >
+> > > How is the CommClk bit determined(to set or clear)? and is it okay to
+> > > enable this bit after booting the kernel?
+> >
+> > It is somewhere in drivers/pci/pcie/aspm.c, i.e.,
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/drivers/pci/pcie/aspm.c?id=3Dv6.13#n383
 
