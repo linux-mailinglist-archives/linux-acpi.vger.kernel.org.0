@@ -1,348 +1,336 @@
-Return-Path: <linux-acpi+bounces-11639-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11640-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC64A4A012
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 18:16:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565E8A4A011
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 18:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D8D93AA8D6
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 17:15:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00E091703DC
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 17:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC3A1F0993;
-	Fri, 28 Feb 2025 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFB1EF366;
+	Fri, 28 Feb 2025 17:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="y98c23vX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="buujXPhZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3ED1F4C89;
-	Fri, 28 Feb 2025 17:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFF21AA1C9;
+	Fri, 28 Feb 2025 17:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740762949; cv=none; b=uZ2KF9zc76KpeRK8aDO6iLH6pANnrwIPyf6f4E0P07bHqx39+4xGcGkrtKrtAMJISjROoybomxqwH/K57goHDJh/dwjhqWE6ET59LlIag9PcWM8JyjAfyS+vYjMmyQt5axnw2RNgPJp7CIMb1bhOBXAkdsT1Q12svatTGcFeDH8=
+	t=1740762963; cv=none; b=Sdnd3XmzsR6HEGL6IMemc4LIwT638JwqeM7wqvasuuX9xl+VOWIpizNXaVSVgiVUqhXtrPMoG6PZ1ZyQ7S6X5lZhSfr4Z57zi9gO1ypxA3RasCrVtamwsvPQPxB7M3vVM6CJjOiWMyIDfEx98XW5JJJP9evnqlpf/3U+Sg1oLko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740762949; c=relaxed/simple;
-	bh=ZiztYP8bsTpFB8X72N5P0bW3ZsOX8ZuVEgP4olNm6nI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=taC7IVh4hFSKdrrEMAiw3Xg9t6nkbTRBe415WXNmwmrTjaJb0nkQd8EoP5C9lppAUi3cVJ9+230/FI6Za8V062tzSxAj7C7g612oVTWNJSoPWQMhs34oK7PlUqetjW8VCv18iSuGMBzLvBseyHmFwaBpZBMPta7MvrOS7Lgz9oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=y98c23vX; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id 83F912E08E57;
-	Fri, 28 Feb 2025 19:15:34 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740762935;
-	bh=2b2EqF3JcoemetZAF/Ymx2Rl5XMFwIx+GyHRh+KG1hc=;
-	h=Received:From:Subject:To;
-	b=y98c23vXuK3aAP/S7c9V00c3glmWJv/v6W0aPHV9KqcM6LwX5U5cSxh3weez6SVhD
-	 PhPu5iaJlw9A4U7Zhfls1nUCD3qGTaFje4OVobcPh41vH7fCj78Yoh0dSnu/slBUKp
-	 OYLL3Sh11VE04urUnSGees5D2XXYpzDGmEVR3eps=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.179) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f179.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f179.google.com with SMTP id
- 38308e7fff4ca-307325f2436so25246131fa.0;
-        Fri, 28 Feb 2025 09:15:34 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUdQhSBf/qh8xF9WZrKoc4NVrWg9CYD9LucUdP0/rUy1a5t7AyOgor19y/p1mlGyWPt755PBUk4Vd04@vger.kernel.org,
- AJvYcCVERVw7ltvjz8wtwHEUHDc5/fmpPj+xTq5DZKmmV7+xRKzYOfb6Cb1DTL9DVrlaIEI/BIdntwakyrtcUGw7@vger.kernel.org,
- AJvYcCWgl/Dloj10ezAWY034z+VWHTOa6g8QDH/XntAg42BHzQMe0OkcP6XlZa/SNgUJvFrs6jFUuVWps4vhsHJx9/s1Jzqndg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlFyYSIvYIaja8afJmeDMuSV16rqg4OdpfX0zPQ73kGjbtHJde
-	RgnJqJ9GHb6IrpMECiVCDYDMHzwc9tu4jycRM8zALhaHPeprF2lEWaf3Zkh6r4T3EJ500HeWLC0
-	/ReVW06PEgXbk7Qxq2nr9QjqjBj0=
-X-Google-Smtp-Source: 
- AGHT+IG319y4sJ0Wf4snos6bgIsBLMeDKrQDMygneAgNjZ48an8kOVa8nKwcDnvL9Uy73icOnrSOVv4ASkswCmRCY38=
-X-Received: by 2002:a2e:bc09:0:b0:300:1de5:59e3 with SMTP id
- 38308e7fff4ca-30b93216728mr14248621fa.2.1740762933693; Fri, 28 Feb 2025
- 09:15:33 -0800 (PST)
+	s=arc-20240116; t=1740762963; c=relaxed/simple;
+	bh=0Q9H58yp3XWSWHdgM52K+7/QB9btyyN4SYA4AmNzFOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hOj3IJombCyzigh8dIM7IaUvQYjKkCDuJc/bB8teb0JEbkZxHa1EJ55hSb37nbu5F8nQ5BENz/TsswKVfIzrW98Bh6OyXcQOr85C8d1hGIblmzYAq8Aio2Jx44ROAGdlWSVkrgVeqcPnBAgCuu+RIrubtOCFuMWBFMAnkhtGddg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=buujXPhZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC47C4CED6;
+	Fri, 28 Feb 2025 17:16:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740762962;
+	bh=0Q9H58yp3XWSWHdgM52K+7/QB9btyyN4SYA4AmNzFOY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=buujXPhZoz6fXqKLhfghswDJYlXPsZmyNqxwZck8vE6PnKC4OOphLcxjToTZWssFI
+	 oRUOuq/KEIhW7URPjVEbdeWMjalaS4GUDlEiaojnEbS1gWTWi/jERXfedFwS0f2nyt
+	 svreQQvX6JP/dTGWOhDjA+AMFJsFeaTDMPWPt2c5+KpmvEgDmo6ZzAa0ttR22UD7pn
+	 XL7iHmv3WPr3kZ56oyGK6HUAPEoGBh38Sig9lG13U7nN96tpsduFWtgLOTmFtn4jOj
+	 PuEVrxzzWOcOjiNElxJ2J69OUvpLm3PQDxSj27K2bpRKVlX8zb8SBLrrc4SgbWtNwv
+	 2ynBKKM3m6xnA==
+Date: Fri, 28 Feb 2025 11:16:01 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Weiwen Hu <huweiwen@linux.alibaba.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH] ACPI/PCI: deduplicate concurrent eject notify
+Message-ID: <20250228171601.GA23123@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250228170155.2623386-1-superm1@kernel.org>
- <20250228170155.2623386-2-superm1@kernel.org>
-In-Reply-To: <20250228170155.2623386-2-superm1@kernel.org>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Fri, 28 Feb 2025 18:15:21 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwHtCOm0tmnzkQOHY6doPzenXsg+LnO5MH4Q5DJPQRfB3w@mail.gmail.com>
-X-Gm-Features: AQ5f1JpdnaYXZ4tAvf9SuQhfvgSgc4SZm-7887dotZrRn8oOMZp8qOmjL99koK8
-Message-ID: 
- <CAGwozwHtCOm0tmnzkQOHY6doPzenXsg+LnO5MH4Q5DJPQRfB3w@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: platform_profile: Add support for hidden
- choices
-To: Mario Limonciello <superm1@kernel.org>
-Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
- "Derek J . Clark" <derekjohn.clark@gmail.com>,
-	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174076293491.3947.16851476048369669821@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250224070036.65573-1-huweiwen@linux.alibaba.com>
 
-LGTM. Although patch is a bit more complicated.
+On Mon, Feb 24, 2025 at 03:00:34PM +0800, Weiwen Hu wrote:
+> Ignore the eject notification when the previous ejection is still in
+> progress to prevent multiple _EJ0 invocations when the ejection completes.
+> 
+> The first _EJ0 informs the platform to actually eject the device and frees
+> the slot for other devices. So the subsequent _EJ0 may accidentally eject
+> the new device that is just plugged into this slot. We need to avoid this.
+> 
+> For each acpi_device, this patch introduces a new field `ejecting`, which
+> is set before enqueuing the `kacpi_hotplug_wq` and reset before invoking
+> _EJ0.  Every notifications we received before invoking _EJ0 is targeted to
+> the old device. This ensures we don't miss any notifications for newly
+> plugged device.  And a new flag `should_dedup_eject` allows each driver to
+> implement this feature gradually. A driver should set this flag on
+> initialization if it will reset `ejecting`.
 
-I do not have time to test this today. I can try tomorrow.
+Which drivers do you have in mind when you say "each driver can
+implement this feature gradually"?  You set should_dedup_eject in
+acpiphp, so I guess you mean other ACPI hotplug drivers?  I see
+acpi_hotplug_context mentioned in libata-acpi.c, surface3-wmi.c; maybe
+those are the only other current ones?
 
-On Fri, 28 Feb 2025 at 18:02, Mario Limonciello <superm1@kernel.org> wrote:
->
-> From: Mario Limonciello <mario.limonciello@amd.com>
->
-> When two drivers don't support all the same profiles the legacy interface
-> only exports the common profiles.
->
-> This causes problems for cases where one driver uses low-power but another
-> uses quiet because the result is that neither is exported to sysfs.
->
-> To allow two drivers to disagree, add support for "hidden choices".
-> Hidden choices are platform profiles that a driver supports to be
-> compatible with the platform profile of another driver.
->
-> Fixes: 688834743d67 ("ACPI: platform_profile: Allow multiple handlers")
-> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Closes: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-9257-5b8fc6c24ac9@gmx.de/T/#mc068042dd29df36c16c8af92664860fc4763974b
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> This fix is not perfect. If we receive an eject notification just after
+> resetting `ejecting` but before _EJ0, we will still invoke _EJ0 twice.
+> However this seems to be the best solution available, and it strictly
+> improves the current situation.
+> 
+> Another potential fix is to add an `ejected` flag to each device and not
+> invoke _EJ0 for already ejected devices. However, this approach risks
+> losing synchronization with the platform if something else goes wrong,
+> potentially preventing the device from being ejected permanently.  And we
+> need to check with bus driver to make sure the device is really ejected
+> successfully. But this check is still racy. So we cannot ensure no extra
+> _EJ0 invocations either.
+
+I see the problem.  Thanks for the detailed explanation and details
+about reproducing it and the trace.
+
+I'm not sure whether the platform should reissue the Bus Check
+notification based on the fact that the OS hasn't invoked _EJ0 in some
+arbitrary time.  That seems a little bit presumptuous because, for
+example, the platform can't know how long it will take to write out
+the dirty page cache.  The racyness of the workaround seems
+troublesome to me.
+
+But this is all really an ACPI issue, not a PCI issue, so I'd like to
+defer to the ACPI experts here.
+
+> Signed-off-by: Weiwen Hu <huweiwen@linux.alibaba.com>
 > ---
-> Cc: "Luke D. Jones" <luke@ljones.dev>
->  drivers/acpi/platform_profile.c  | 94 +++++++++++++++++++++++++-------
->  include/linux/platform_profile.h |  3 +
->  2 files changed, 76 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index 2ad53cc6aae53..ef9444482db19 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -21,9 +21,15 @@ struct platform_profile_handler {
->         struct device dev;
->         int minor;
->         unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> +       unsigned long hidden_choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
->         const struct platform_profile_ops *ops;
->  };
->
-> +struct aggregate_choices_data {
-> +       unsigned long aggregate[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> +       int count;
-> +};
-> +
->  static const char * const profile_names[] = {
->         [PLATFORM_PROFILE_LOW_POWER] = "low-power",
->         [PLATFORM_PROFILE_COOL] = "cool",
-> @@ -73,7 +79,7 @@ static int _store_class_profile(struct device *dev, void *data)
->
->         lockdep_assert_held(&profile_lock);
->         handler = to_pprof_handler(dev);
-> -       if (!test_bit(*bit, handler->choices))
-> +       if (!test_bit(*bit, handler->choices) && !test_bit(*bit, handler->hidden_choices))
->                 return -EOPNOTSUPP;
->
->         return handler->ops->profile_set(dev, *bit);
-> @@ -239,21 +245,44 @@ static const struct class platform_profile_class = {
->  /**
->   * _aggregate_choices - Aggregate the available profile choices
->   * @dev: The device
-> - * @data: The available profile choices
-> + * @arg: struct aggregate_choices_data
->   *
->   * Return: 0 on success, -errno on failure
->   */
-> -static int _aggregate_choices(struct device *dev, void *data)
-> +static int _aggregate_choices(struct device *dev, void *arg)
+>  drivers/acpi/osl.c                 |  6 ++++++
+>  drivers/pci/hotplug/acpiphp_glue.c | 15 +++++++++++----
+>  include/acpi/acpi_bus.h            |  4 +++-
+>  3 files changed, 20 insertions(+), 5 deletions(-)
+> 
+> We observed that umount can take extremely long time if there is a lot of
+> dirty page cache.  umount will take the s_umount semaphore, which will
+> block the ejecting process:
+> 
+> 	__schedule+0x1e0/0x630
+> 	? kernfs_put.part.0+0xd4/0x1a0
+> 	schedule+0x46/0xb0
+> 	rwsem_down_read_slowpath+0x16b/0x490
+> 	__get_super.part.0+0xc1/0xe0
+> 	fsync_bdev+0x11/0x60
+> 	invalidate_partition+0x5c/0xa0
+> 	del_gendisk+0x103/0x2e0
+> 	virtblk_remove+0x27/0xa0
+> 	virtio_dev_remove+0x36/0x90
+> 	__device_release_driver+0x172/0x260
+> 	device_release_driver+0x24/0x30
+> 	bus_remove_device+0xf6/0x170
+> 	device_del+0x19b/0x450
+> 	device_unregister+0x16/0x60
+> 	unregister_virtio_device+0x11/0x20
+> 	virtio_pci_remove+0x31/0x60
+> 	pci_device_remove+0x38/0xa0
+> 	__device_release_driver+0x172/0x260
+> 	device_release_driver+0x24/0x30
+> 	pci_stop_bus_device+0x6c/0x90
+> 	pci_stop_and_remove_bus_device+0xe/0x20
+> 	disable_slot+0x49/0x90
+> 	acpiphp_disable_and_eject_slot+0x15/0x90
+> 
+> While OS is not invoking _EJ0 timely, the user (or hypervisor) may retry by
+> issuing another notification, which will be queued in kacpi_hotplug_wq.
+> After the umount is finally done, the _EJ0 will be invoked.  Then, if there
+> are devices pending attach, the hypervisor may choose to attach it
+> immediately to the same slot.  The new device can be ejected by the queued
+> ejecting process unintentionally.
+> 
+> On Alibaba Cloud, we re-issue the notification around every 10s if the OS
+> does not respond.  (BTW, do you think platform is allowed to re-issue
+> the notification on timeout?)
+> We can easily reproduce this issue on Alibaba Cloud ECS:
+> 
+> 	WRITE_SIZE=2300M  # tune this value so that the umount takes 20s
+> 	# replace these disk serial numbers
+> 	DISK_DETACH=bp142xxxxxxxxxxxxxxx  # pre-formatted
+> 	DISK_ATTACH=bp109xxxxxxxxxxxxxxx  # any
+> 	# start from these two disks detached
+> 
+> 	INSTANCE_ID=$(curl -sS http://100.100.100.200/latest/meta-data/instance-id)
+> 	echo "instance id: $INSTANCE_ID"
+> 	DISK_PATH=/dev/disk/by-id/nvme-Alibaba_Cloud_Elastic_Block_Storage_
+> 
+> 	echo "attaching disk d-$DISK_DETACH"
+> 	aliyun ecs AttachDisk --DiskId "d-$DISK_DETACH" --InstanceId "$INSTANCE_ID"
+> 
+> 	sleep 2
+> 	mkdir -p /mnt/slow
+> 	mount "$DISK_PATH$DISK_DETACH" /mnt/slow
+> 	echo "mounted d-$DISK_DETACH to /mnt/slow"
+> 
+> 	rm -f /mnt/slow/zero
+> 	echo "populating dirty cache"
+> 	head -c $WRITE_SIZE /dev/zero > /mnt/slow/zero;
+> 
+> 	echo umounting
+> 	(
+> 		umount /mnt/slow
+> 		echo umounted
+> 	)&
+> 
+> 	sleep 2
+> 	echo "detaching disk d-$DISK_DETACH"
+> 	aliyun ecs DetachDisk --DiskId "d-$DISK_DETACH" --InstanceId "$INSTANCE_ID"
+> 
+> 	sleep 10
+> 	echo "attaching disk d-$DISK_ATTACH"
+> 	aliyun ecs AttachDisk --DiskId "d-$DISK_ATTACH" --InstanceId "$INSTANCE_ID"
+> 
+> 	sleep 7
+> 	wait
+> 	for _ in {1..10}; do
+> 		sleep 1
+> 		if [ -e "$DISK_PATH$DISK_ATTACH" ]; then
+> 			echo "disk d-$DISK_ATTACH attached, issue not reproduced"
+> 			exit 0
+> 		fi
+> 		echo "disk d-$DISK_ATTACH not found yet"
+> 	done
+> 
+> 	echo "issue reproduced"
+> 	exit 1
+> 
+> And here is the trace we got from `perf trace` while running the above script on an unpatched kernel:
+> 
+> 	[starting detach]
+> 	 48202.244 kworker/0:0-ev/5 probe:acpi_ev_queue_notify_request(__probe_ip: -1452149680, notify_value: 3)
+> 	 48202.314 kworker/0:0-ev/5 probe:acpi_hotplug_schedule(__probe_ip: -1452297040, src: 3)
+> 	 48203.690 kworker/u8:0-e/1946 probe:acpi_device_hotplug(__probe_ip: -1452251424, src: 3)
+> 	[blocked, retrying detach]
+> 	 58023.813 kworker/0:0-ev/5 probe:acpi_ev_queue_notify_request(__probe_ip: -1452149680, notify_value: 3)
+> 	 58023.881 kworker/0:0-ev/5 probe:acpi_hotplug_schedule(__probe_ip: -1452297040, src: 3)
+> 	[detach done]
+> 	 62834.048 kworker/u8:0-e/1946 probe:acpi_evaluate_ej0(__probe_ip: -1452291632)
+> 	[another device attaching]
+> 	 62954.686 kworker/0:0-ev/5 probe:acpi_ev_queue_notify_request(__probe_ip: -1452149680, notify_value: 1)
+> 	 62954.828 kworker/0:0-ev/5 probe:acpi_hotplug_schedule(__probe_ip: -1452297040, src: 1)
+> 	 63042.506 kworker/u8:0-e/1946 probe:acpi_device_hotplug(__probe_ip: -1452251424, src: 3)
+> 	[the new device is ejected unintentionally]
+> 	 63042.520 kworker/u8:0-e/1946 probe:acpi_evaluate_ej0(__probe_ip: -1452291632)
+> 	[the actual attach task, scanned the bus but got nothing]
+> 	 63266.555 kworker/u8:0-e/1946 probe:acpi_device_hotplug(__probe_ip: -1452251424, src: 1)
+> 
+> With this patch, the acpi_hotplug_schedule at 58023.881 will be skipped to
+> suppress the acpi_evaluate_ej0 at 63042.520.
+> 
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 5ff343096ece..f041c4db10f7 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -1193,6 +1193,12 @@ acpi_status acpi_hotplug_schedule(struct acpi_device *adev, u32 src)
 >  {
-> +       unsigned long tmp[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> +       struct aggregate_choices_data *data = arg;
->         struct platform_profile_handler *handler;
-> -       unsigned long *aggregate = data;
->
->         lockdep_assert_held(&profile_lock);
->         handler = to_pprof_handler(dev);
-> -       if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
-> -               bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
-> +       bitmap_or(tmp, handler->choices, handler->hidden_choices, PLATFORM_PROFILE_LAST);
-> +       if (test_bit(PLATFORM_PROFILE_LAST, data->aggregate))
-> +               bitmap_copy(data->aggregate, tmp, PLATFORM_PROFILE_LAST);
->         else
-> -               bitmap_and(aggregate, handler->choices, aggregate, PLATFORM_PROFILE_LAST);
-> +               bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LAST);
-> +       data->count++;
+>  	struct acpi_hp_work *hpw;
+>  
+> +	if (src == ACPI_NOTIFY_EJECT_REQUEST && adev->flags.should_dedup_eject
+> +			&& atomic_xchg(&adev->hp->ejecting, 1)) {
+> +		put_device(&adev->dev);
+> +		return AE_OK;
+> +	}
 > +
-> +       return 0;
-> +}
-> +
-> +/**
-> + * _remove_hidden_choices - Remove hidden choices from aggregate data
-> + * @dev: The device
-> + * @arg: struct aggregate_choices_data
-> + *
-> + * Return: 0 on success, -errno on failure
-> + */
-> +static int _remove_hidden_choices(struct device *dev, void *arg)
-> +{
-> +       struct aggregate_choices_data *data = arg;
-> +       struct platform_profile_handler *handler;
-> +
-> +       lockdep_assert_held(&profile_lock);
-> +       handler = to_pprof_handler(dev);
-> +       bitmap_andnot(data->aggregate, handler->choices,
-> +                     handler->hidden_choices, PLATFORM_PROFILE_LAST);
->
->         return 0;
+>  	acpi_handle_debug(adev->handle,
+>  			  "Scheduling hotplug event %u for deferred handling\n",
+>  			   src);
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> index 5b1f271c6034..3c50f2af1584 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -68,6 +68,7 @@ static struct acpiphp_context *acpiphp_init_context(struct acpi_device *adev)
+>  	context->hp.notify = acpiphp_hotplug_notify;
+>  	context->hp.fixup = acpiphp_post_dock_fixup;
+>  	acpi_set_hp_context(adev, &context->hp);
+> +	adev->flags.should_dedup_eject = true;
+>  	return context;
 >  }
-> @@ -270,22 +299,31 @@ static ssize_t platform_profile_choices_show(struct device *dev,
->                                              struct device_attribute *attr,
->                                              char *buf)
->  {
-> -       unsigned long aggregate[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> +       struct aggregate_choices_data data = {
-> +               .aggregate = { [0 ... BITS_TO_LONGS(PLATFORM_PROFILE_LAST) - 1] = ~0UL },
-> +               .count = 0,
-> +       };
->         int err;
->
-> -       set_bit(PLATFORM_PROFILE_LAST, aggregate);
-> +       set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
->         scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
->                 err = class_for_each_device(&platform_profile_class, NULL,
-> -                                           aggregate, _aggregate_choices);
-> +                                           &data, _aggregate_choices);
->                 if (err)
->                         return err;
-> +               if (data.count == 1) {
-> +                       err = class_for_each_device(&platform_profile_class, NULL,
-> +                                                   &data, _remove_hidden_choices);
-> +                       if (err)
-> +                               return err;
-> +               }
->         }
->
->         /* no profile handler registered any more */
-> -       if (bitmap_empty(aggregate, PLATFORM_PROFILE_LAST))
-> +       if (bitmap_empty(data.aggregate, PLATFORM_PROFILE_LAST))
->                 return -EINVAL;
->
-> -       return _commmon_choices_show(aggregate, buf);
-> +       return _commmon_choices_show(data.aggregate, buf);
+>  
+> @@ -778,7 +779,8 @@ void acpiphp_check_host_bridge(struct acpi_device *adev)
+>  	}
 >  }
->
+>  
+> -static int acpiphp_disable_and_eject_slot(struct acpiphp_slot *slot);
+> +static int
+> +acpiphp_disable_and_eject_slot(struct acpi_hotplug_context *hp, struct acpiphp_slot *slot);
+>  
+>  static void hotplug_event(u32 type, struct acpiphp_context *context)
+>  {
+> @@ -825,7 +827,7 @@ static void hotplug_event(u32 type, struct acpiphp_context *context)
+>  	case ACPI_NOTIFY_EJECT_REQUEST:
+>  		/* request device eject */
+>  		acpi_handle_debug(handle, "Eject request in %s()\n", __func__);
+> -		acpiphp_disable_and_eject_slot(slot);
+> +		acpiphp_disable_and_eject_slot(&context->hp, slot);
+>  		break;
+>  	}
+>  
+> @@ -999,9 +1001,11 @@ int acpiphp_enable_slot(struct acpiphp_slot *slot)
+>  
 >  /**
-> @@ -373,7 +411,10 @@ static ssize_t platform_profile_store(struct device *dev,
->                                       struct device_attribute *attr,
->                                       const char *buf, size_t count)
->  {
-> -       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
-> +       struct aggregate_choices_data data = {
-> +               .aggregate = { [0 ... BITS_TO_LONGS(PLATFORM_PROFILE_LAST) - 1] = ~0UL },
-> +               .count = 0,
-> +       };
->         int ret;
->         int i;
->
-> @@ -381,13 +422,13 @@ static ssize_t platform_profile_store(struct device *dev,
->         i = sysfs_match_string(profile_names, buf);
->         if (i < 0 || i == PLATFORM_PROFILE_CUSTOM)
->                 return -EINVAL;
-> -       set_bit(PLATFORM_PROFILE_LAST, choices);
-> +       set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
->         scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
->                 ret = class_for_each_device(&platform_profile_class, NULL,
-> -                                           choices, _aggregate_choices);
-> +                                           &data, _aggregate_choices);
->                 if (ret)
->                         return ret;
-> -               if (!test_bit(i, choices))
-> +               if (!test_bit(i, data.aggregate))
->                         return -EOPNOTSUPP;
->
->                 ret = class_for_each_device(&platform_profile_class, NULL, &i,
-> @@ -453,12 +494,15 @@ EXPORT_SYMBOL_GPL(platform_profile_notify);
+>   * acpiphp_disable_and_eject_slot - power off and eject slot
+> + * @hp: the context that received eject notification, can be NULL
+>   * @slot: ACPI PHP slot
 >   */
->  int platform_profile_cycle(void)
+> -static int acpiphp_disable_and_eject_slot(struct acpiphp_slot *slot)
+> +static int
+> +acpiphp_disable_and_eject_slot(struct acpi_hotplug_context *hp, struct acpiphp_slot *slot)
 >  {
-> +       struct aggregate_choices_data data = {
-> +               .aggregate = { [0 ... BITS_TO_LONGS(PLATFORM_PROFILE_LAST) - 1] = ~0UL },
-> +               .count = 0,
-> +       };
->         enum platform_profile_option next = PLATFORM_PROFILE_LAST;
->         enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
-> -       unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
->         int err;
->
-> -       set_bit(PLATFORM_PROFILE_LAST, choices);
-> +       set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
->         scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
->                 err = class_for_each_device(&platform_profile_class, NULL,
->                                             &profile, _aggregate_profiles);
-> @@ -470,14 +514,14 @@ int platform_profile_cycle(void)
->                         return -EINVAL;
->
->                 err = class_for_each_device(&platform_profile_class, NULL,
-> -                                           choices, _aggregate_choices);
-> +                                           &data, _aggregate_choices);
->                 if (err)
->                         return err;
->
->                 /* never iterate into a custom if all drivers supported it */
-> -               clear_bit(PLATFORM_PROFILE_CUSTOM, choices);
-> +               clear_bit(PLATFORM_PROFILE_CUSTOM, data.aggregate);
->
-> -               next = find_next_bit_wrap(choices,
-> +               next = find_next_bit_wrap(data.aggregate,
->                                           PLATFORM_PROFILE_LAST,
->                                           profile + 1);
->
-> @@ -532,6 +576,14 @@ struct device *platform_profile_register(struct device *dev, const char *name,
->                 return ERR_PTR(-EINVAL);
->         }
->
-> +       if (ops->hidden_choices) {
-> +               err = ops->hidden_choices(drvdata, pprof->hidden_choices);
-> +               if (err) {
-> +                       dev_err(dev, "platform_profile hidden_choices failed\n");
-> +                       return ERR_PTR(err);
-> +               }
-> +       }
+>  	struct acpiphp_func *func;
+>  
+> @@ -1011,6 +1015,9 @@ static int acpiphp_disable_and_eject_slot(struct acpiphp_slot *slot)
+>  	/* unconfigure all functions */
+>  	disable_slot(slot);
+>  
+> +	if (hp)
+> +		atomic_set(&hp->ejecting, 0);
 > +
->         guard(mutex)(&profile_lock);
->
->         /* create class interface for individual handler */
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-> index 8ab5b0e8eb2c1..8c9df7dadd5d3 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -33,6 +33,8 @@ enum platform_profile_option {
->   * @probe: Callback to setup choices available to the new class device. These
->   *        choices will only be enforced when setting a new profile, not when
->   *        getting the current one.
-> + * @hidden_choices: Callback to setup choices that are not visible to the user
-> + *                 but can be set by the driver.
->   * @profile_get: Callback that will be called when showing the current platform
->   *              profile in sysfs.
->   * @profile_set: Callback that will be called when storing a new platform
-> @@ -40,6 +42,7 @@ enum platform_profile_option {
->   */
->  struct platform_profile_ops {
->         int (*probe)(void *drvdata, unsigned long *choices);
-> +       int (*hidden_choices)(void *drvdata, unsigned long *choices);
->         int (*profile_get)(struct device *dev, enum platform_profile_option *profile);
->         int (*profile_set)(struct device *dev, enum platform_profile_option profile);
+>  	list_for_each_entry(func, &slot->funcs, sibling)
+>  		if (func->flags & FUNC_HAS_EJ0) {
+>  			acpi_handle handle = func_to_handle(func);
+> @@ -1034,7 +1041,7 @@ int acpiphp_disable_slot(struct acpiphp_slot *slot)
+>  	 */
+>  	acpi_scan_lock_acquire();
+>  	pci_lock_rescan_remove();
+> -	ret = acpiphp_disable_and_eject_slot(slot);
+> +	ret = acpiphp_disable_and_eject_slot(NULL, slot);
+>  	pci_unlock_rescan_remove();
+>  	acpi_scan_lock_release();
+>  	return ret;
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index aad1a95e6863..870c1ffe47c9 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -151,6 +151,7 @@ typedef void (*acpi_hp_fixup) (struct acpi_device *);
+>  
+>  struct acpi_hotplug_context {
+>  	struct acpi_device *self;
+> +	atomic_t ejecting;
+>  	acpi_hp_notify notify;
+>  	acpi_hp_uevent uevent;
+>  	acpi_hp_fixup fixup;
+> @@ -215,7 +216,8 @@ struct acpi_device_flags {
+>  	u32 cca_seen:1;
+>  	u32 enumeration_by_parent:1;
+>  	u32 honor_deps:1;
+> -	u32 reserved:18;
+> +	u32 should_dedup_eject:1;
+> +	u32 reserved:17;
 >  };
-> --
-> 2.43.0
->
+>  
+>  /* File System */
+> -- 
+> 2.48.1
+> 
 
