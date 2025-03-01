@@ -1,193 +1,282 @@
-Return-Path: <linux-acpi+bounces-11671-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11673-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B11A4ACC1
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Mar 2025 17:15:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04098A4AE15
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Mar 2025 23:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0DC916FF68
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Mar 2025 16:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF5F3B4FA8
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Mar 2025 22:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD421D90B3;
-	Sat,  1 Mar 2025 16:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958561E5B67;
+	Sat,  1 Mar 2025 22:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="Qy7I7jum"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OPrhR91t"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD4A2CA8;
-	Sat,  1 Mar 2025 16:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658981C5D7A;
+	Sat,  1 Mar 2025 22:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740845738; cv=none; b=pYaDuupjqzdQEkIfEWLl/AN6w2qZ5YHC7tTghAqlfuEH3J1vsGLDVltf1HCjV2/fxe3Q1UM1Zf/9Su8rdAtXvTzcCbUK4COfGyTRCS0syCJjbfmBnhgjggvN1NwppB3ySwUSUXWiB1OktGymkAkAFQnCaU5Qxvx/c76MhAadx/I=
+	t=1740866599; cv=none; b=qu/Zhejs7PFehddK67cnKFrol4ByRB5J5/jhoCdT2RJaUhhLmO/P/+054PX0rUhz6vbro2pxqmM19sfJlUTx3xAEKqhSMjOSF3IT3rv2T1hbL/WBvTnjVF3Vct9uZX+iqG4xH/Hs8CX1HEY2O/VQqBB/RyUK/54Zn2CoAoj0uAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740845738; c=relaxed/simple;
-	bh=rO1haNxXJjWBYp2kLi6/7nyMr/AhMrO1WGMIJIAY850=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LIp0ARQjbt5mZCWsggs6E45x0I3UX0z8iwEVVLQ4r8MBoRYmeQwuTzvrbuL7ByGi+qjWwna/rzLV0TTxLUNBrktHq2j+IGikPCtNvaSKYQ4xHMV7CIy/mQCN7h005s3xtrfr8ViB/4TdJ3LK1FceUMittNGILfgb6HWXK21t9Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=Qy7I7jum; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id 55EE82E09033;
-	Sat,  1 Mar 2025 18:15:32 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1740845733;
-	bh=3/AcPH/u9ITuQ7NTcxKxHIGPzA5C4yDHZ1oG//9xL9A=;
-	h=Received:From:Subject:To;
-	b=Qy7I7jumfuV1+6qe11a+LHkimOGE+WVlADM1JE4cUX8STdtvrpceFwnCt5saoU90J
-	 kUCbM+TYMu6C1QNHJg6e83QQ0O5EJy74bK9SOAReaBrvQpSXhRVIiTr6bJUwb9qBbX
-	 Cx7CaoJR/tou9VSDtl4Pr1cg/z3xkGHO5pogA1fc=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.167.54) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f54.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lf1-f54.google.com with SMTP id
- 2adb3069b0e04-54959d1a856so572140e87.1;
-        Sat, 01 Mar 2025 08:15:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhKevkT218i8u9HZkseIOlEsFmb3k3uEfaExWWzNDqB5jv3U13j2oCMFdTLxAyw9CZ5sqBfyrhGWFe@vger.kernel.org,
- AJvYcCVNl6FsqFfZ+krCj8oISJVCqiu4XBrAubs/3n6CJ4ss8PecvjYGRSAuaAi8j7ybqv1T1YjAzTVMZOtBw4e/gmFhDW4Xdg==@vger.kernel.org,
- AJvYcCXSMKZfTAu9mt4smJ1hX4FcQuX6q8qAmkFK3cfwkn4mm8PmvytGCo6P+i8Wcy1z4tSa72gmRDl4KQiL+ixF@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRcqpHjgqRDH0026J8YeJevPn4ToVCf+aR38RB2X2FdxrF4WOn
-	YIlMD+yOtjx3PwFGS7+ZfMJdl4zdUbslRT9YBKXsTYN+YOMtW+7fLscYOmVIqkOm4qsHLNC3tDC
-	adgTCAPn9WccBbYwoDJwjVbQXba4=
-X-Google-Smtp-Source: 
- AGHT+IHbExRxjvJB9s6yCP7YhEA0jsc9zdBDbT7Z0uVUbMlGSC9o/vHqoa+g+ZdfS5ZlUnTKYhTY7lpQoxNLucKzu4Q=
-X-Received: by 2002:ac2:4f03:0:b0:546:1ea9:6230 with SMTP id
- 2adb3069b0e04-549432ccb0dmr4259256e87.1.1740845731596; Sat, 01 Mar 2025
- 08:15:31 -0800 (PST)
+	s=arc-20240116; t=1740866599; c=relaxed/simple;
+	bh=TppWbKqOVqiRxa6lrGLDVWZ8gGfktSqdLsZlaC/1L4E=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=sKoibr/fnGrog0ifnlxE2xd2k92Q8k2fF+ReMZxCLZL6Y28rd8pzjfgcz7CrUIeQjVSSlJ5mBLsC89T2sdBtF1VliAhQ0ENxbLAF1XRO6AvVMvU6hEr9IBfkh1doObcecqKqnYO0QudBQAeWiWFQkm6MCyML2mTZrgqkA6IU+xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OPrhR91t; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740866597; x=1772402597;
+  h=date:from:to:cc:subject:message-id;
+  bh=TppWbKqOVqiRxa6lrGLDVWZ8gGfktSqdLsZlaC/1L4E=;
+  b=OPrhR91tNICmcKZa3ysyvVQayn3Se0+6qaySdj/rpHt6noyQuPjpWlAa
+   /zj5/MPueR0L31Ar8iSa4u6Bn2V4ZA7XpykYChwLUAQ9LNB+VomIxevEK
+   1KJzfbDeFEVqMxo/hT2GQln+sglW2/yXMl1T/vbJm4Hfc5cKxhggkaJUz
+   Eh6f8wzTdBQNlIPlH/yTVTpHWHFyFlOu9yWVdXUBYcPZcJYvwReq1lluB
+   pWIX8aixGIviTujQPzsFVXfXRIYGS93Mw+VJEw6EvWMxLRmeBxYBG/sWR
+   0SK2OhCyRjR2NSU8PdiGSZ8duMWwUsk58zvhIL3ePI8H/HWsFnH9JFZoy
+   A==;
+X-CSE-ConnectionGUID: ef0eT2yYQbqPC8DJZoYlUQ==
+X-CSE-MsgGUID: nkKvee4TSyCknHjs2p4zkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="45692627"
+X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
+   d="scan'208";a="45692627"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 14:03:15 -0800
+X-CSE-ConnectionGUID: BjS+FM0SSbyg9NTggQvyYQ==
+X-CSE-MsgGUID: hgHL0n/+QhemCBNwV+R+kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
+   d="scan'208";a="117668804"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 01 Mar 2025 14:03:14 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1toUvP-000Gkj-1A;
+	Sat, 01 Mar 2025 22:03:11 +0000
+Date: Sun, 02 Mar 2025 06:02:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ b25eff369f3c53e701af98c1381cfe370eac4416
+Message-ID: <202503020614.X0r47ATq-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250228170155.2623386-1-superm1@kernel.org>
- <20250228170155.2623386-2-superm1@kernel.org>
- <D84F6QF8EU3D.3RUI1PKXP2DZ3@gmail.com>
- <6f56571a-3090-4323-a29d-008b916abf39@kernel.org>
- <CAGwozwGFLQxGEQ-nb+d9yrikz=fx+u48mpTYUyUtvgFD-9ypQg@mail.gmail.com>
- <09674d15-d639-4cb3-837a-9575f0028a76@kernel.org>
- <CAGwozwFm1HeLNtJNGOdQCe_poWeNNeOB=3EzizFx_p2rB-RXbQ@mail.gmail.com>
- <59634335-9365-454b-8f07-1b8f564e5f29@kernel.org>
-In-Reply-To: <59634335-9365-454b-8f07-1b8f564e5f29@kernel.org>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Sat, 1 Mar 2025 17:15:20 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwEVDkArYZLg+pvZrh02TtGM4+6EH5GCRpjxEAwMH4xZ+A@mail.gmail.com>
-X-Gm-Features: AQ5f1JpmW8KqGpSi_TpKYo-21bQ3yyMuN7mTCy2oKRPXp15Soz8cMWKb2QL5Mvs
-Message-ID: 
- <CAGwozwEVDkArYZLg+pvZrh02TtGM4+6EH5GCRpjxEAwMH4xZ+A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: platform_profile: Add support for hidden
- choices
-To: Mario Limonciello <superm1@kernel.org>
-Cc: Kurt Borja <kuurtb@gmail.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
- Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
- "Derek J . Clark" <derekjohn.clark@gmail.com>,
-	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>, Armin Wolf <W_Armin@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174084573283.17645.2878387510956579562@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
 
-On Sat, 1 Mar 2025 at 17:04, Mario Limonciello <superm1@kernel.org> wrote:
->
->
->
-> On 3/1/25 08:06, Antheas Kapenekakis wrote:
-> > On Sat, 1 Mar 2025 at 14:52, Mario Limonciello <superm1@kernel.org> wrote:
-> >>
-> >>>>> Let me know what you think!
-> >>>>
-> >>>> I don't really like that profiles can get out of sync, this is asking
-> >>>> for a non-deterministic behavior that can be difficult to diagnose
-> >>>> issues and also difficult for userspace to work with.
-> >>>
-> >>> I agree with Mario here. Imagine two drivers, one with low-power and
-> >>> one with quiet. They both begin at performance.
-> >>>
-> >>> Then, userspace software gets confused (incl. ppd) and sets firmware
-> >>> profile to low-power. The latter gets left in performance, causing
-> >>> excess drain.
-> >>>
-> >>> I do not believe the legacy interface should be deprecated. Right now,
-> >>> amd-pmf is a NOOP in most devices
-> >>
-> >> "Most" devices is not accurate.  There are a lot of devices that it does
-> >> enable.  In the gaming space right now it's often behaving as a no-op.
-> >
-> > That would be a fair description. Can you give some examples of
-> > devices that use the interface? Devices with and without vendor
-> > software.
->
-> Off hand the Framework 13 and 16 AMD both use PMF exclusively.  So do a
-> bunch of HP commercial laptops.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: b25eff369f3c53e701af98c1381cfe370eac4416  Merge branch 'thermal-misc' into linux-next
 
-I will ask Kyle to check it out.
+elapsed time: 1447m
 
-> Mark can keep me honest, but I want to say the Strix Thinkpad laptops
-> have both PMF and vendor interface (thinkpad-acpi).
+configs tested: 188
+configs skipped: 11
 
-Hm, yeah that would be interesting to hear about
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->   >>
-> >> "Power mode" is a concept, it doesn't just apply to configuring sPPT and
-> >> fPPT.  I envisage that a vendor that actively uses PMF and their own
-> >> interface would be changing different things by the different interfaces.
-> >>
-> >> For "example" PMF may reconfigure sPPT, fPPT, STT and STAPM but their
-> >> driver may notify their EC to change a fan curve.
-> >
-> > No. If PMF changes these values it also needs to change the fan curve
-> > itself via the BIOS notification. Doing otherwise would lead to
-> > situations where users do not install the vendor driver and cook their
-> > device.
->
-> Fan curves are just that; curves.  They just control how quickly fans
-> ramp up not whether or not they "work".
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    clang-21
+alpha                            allyesconfig    gcc-14.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                   randconfig-001-20250301    gcc-13.2.0
+arc                   randconfig-001-20250302    gcc-14.2.0
+arc                   randconfig-002-20250301    gcc-13.2.0
+arc                   randconfig-002-20250302    gcc-14.2.0
+arm                               allnoconfig    gcc-14.2.0
+arm                       aspeed_g4_defconfig    gcc-14.2.0
+arm                         lpc18xx_defconfig    gcc-14.2.0
+arm                   milbeaut_m10v_defconfig    gcc-14.2.0
+arm                            mps2_defconfig    clang-15
+arm                        mvebu_v7_defconfig    clang-15
+arm                            qcom_defconfig    clang-15
+arm                   randconfig-001-20250301    gcc-14.2.0
+arm                   randconfig-001-20250302    gcc-14.2.0
+arm                   randconfig-002-20250301    gcc-14.2.0
+arm                   randconfig-002-20250302    gcc-14.2.0
+arm                   randconfig-003-20250301    clang-21
+arm                   randconfig-003-20250302    gcc-14.2.0
+arm                   randconfig-004-20250301    clang-21
+arm                   randconfig-004-20250302    gcc-14.2.0
+arm                         vf610m4_defconfig    gcc-14.2.0
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250301    gcc-14.2.0
+arm64                 randconfig-001-20250302    gcc-14.2.0
+arm64                 randconfig-002-20250301    clang-21
+arm64                 randconfig-002-20250302    gcc-14.2.0
+arm64                 randconfig-003-20250301    clang-15
+arm64                 randconfig-003-20250302    gcc-14.2.0
+arm64                 randconfig-004-20250301    clang-17
+arm64                 randconfig-004-20250302    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+csky                  randconfig-001-20250301    gcc-14.2.0
+csky                  randconfig-001-20250302    gcc-14.2.0
+csky                  randconfig-002-20250301    gcc-14.2.0
+csky                  randconfig-002-20250302    gcc-14.2.0
+hexagon                          allmodconfig    clang-21
+hexagon                           allnoconfig    gcc-14.2.0
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250301    clang-21
+hexagon               randconfig-001-20250302    gcc-14.2.0
+hexagon               randconfig-002-20250301    clang-21
+hexagon               randconfig-002-20250302    gcc-14.2.0
+i386                             allmodconfig    clang-19
+i386                              allnoconfig    clang-19
+i386                             allyesconfig    clang-19
+i386        buildonly-randconfig-001-20250301    clang-19
+i386        buildonly-randconfig-001-20250302    gcc-12
+i386        buildonly-randconfig-002-20250301    clang-19
+i386        buildonly-randconfig-002-20250302    gcc-12
+i386        buildonly-randconfig-003-20250301    clang-19
+i386        buildonly-randconfig-003-20250302    gcc-12
+i386        buildonly-randconfig-004-20250301    clang-19
+i386        buildonly-randconfig-004-20250302    gcc-12
+i386        buildonly-randconfig-005-20250301    gcc-12
+i386        buildonly-randconfig-005-20250302    gcc-12
+i386        buildonly-randconfig-006-20250301    clang-19
+i386        buildonly-randconfig-006-20250302    gcc-12
+i386                                defconfig    clang-19
+i386                  randconfig-001-20250302    gcc-12
+i386                  randconfig-002-20250302    gcc-12
+i386                  randconfig-003-20250302    gcc-12
+i386                  randconfig-004-20250302    gcc-12
+i386                  randconfig-005-20250302    gcc-12
+i386                  randconfig-006-20250302    gcc-12
+i386                  randconfig-007-20250302    gcc-12
+i386                  randconfig-011-20250302    gcc-11
+i386                  randconfig-012-20250302    gcc-11
+i386                  randconfig-013-20250302    gcc-11
+i386                  randconfig-014-20250302    gcc-11
+i386                  randconfig-015-20250302    gcc-11
+i386                  randconfig-016-20250302    gcc-11
+i386                  randconfig-017-20250302    gcc-11
+loongarch                        alldefconfig    clang-15
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250301    gcc-14.2.0
+loongarch             randconfig-001-20250302    gcc-14.2.0
+loongarch             randconfig-002-20250301    gcc-14.2.0
+loongarch             randconfig-002-20250302    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                          multi_defconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250301    gcc-14.2.0
+nios2                 randconfig-001-20250302    gcc-14.2.0
+nios2                 randconfig-002-20250301    gcc-14.2.0
+nios2                 randconfig-002-20250302    gcc-14.2.0
+openrisc                          allnoconfig    clang-15
+openrisc                            defconfig    gcc-12
+openrisc                    or1ksim_defconfig    gcc-14.2.0
+parisc                            allnoconfig    clang-15
+parisc                              defconfig    gcc-12
+parisc                generic-32bit_defconfig    clang-15
+parisc                randconfig-001-20250301    gcc-14.2.0
+parisc                randconfig-001-20250302    gcc-14.2.0
+parisc                randconfig-002-20250301    gcc-14.2.0
+parisc                randconfig-002-20250302    gcc-14.2.0
+powerpc                           allnoconfig    clang-15
+powerpc                 mpc832x_rdb_defconfig    clang-15
+powerpc               randconfig-001-20250301    clang-17
+powerpc               randconfig-001-20250302    gcc-14.2.0
+powerpc               randconfig-002-20250301    clang-19
+powerpc               randconfig-002-20250302    gcc-14.2.0
+powerpc               randconfig-003-20250301    clang-21
+powerpc               randconfig-003-20250302    gcc-14.2.0
+powerpc64             randconfig-001-20250301    gcc-14.2.0
+powerpc64             randconfig-001-20250302    gcc-14.2.0
+powerpc64             randconfig-002-20250301    clang-21
+powerpc64             randconfig-003-20250301    gcc-14.2.0
+powerpc64             randconfig-003-20250302    gcc-14.2.0
+riscv                             allnoconfig    clang-15
+riscv                               defconfig    gcc-12
+riscv                 randconfig-001-20250301    gcc-14.2.0
+riscv                 randconfig-001-20250302    gcc-14.2.0
+riscv                 randconfig-002-20250301    gcc-14.2.0
+riscv                 randconfig-002-20250302    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-15
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    gcc-12
+s390                  randconfig-001-20250301    clang-15
+s390                  randconfig-001-20250302    gcc-14.2.0
+s390                  randconfig-002-20250301    gcc-14.2.0
+s390                  randconfig-002-20250302    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-12
+sh                    randconfig-001-20250301    gcc-14.2.0
+sh                    randconfig-001-20250302    gcc-14.2.0
+sh                    randconfig-002-20250301    gcc-14.2.0
+sh                    randconfig-002-20250302    gcc-14.2.0
+sh                             sh03_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250301    gcc-14.2.0
+sparc                 randconfig-001-20250302    gcc-14.2.0
+sparc                 randconfig-002-20250301    gcc-14.2.0
+sparc                 randconfig-002-20250302    gcc-14.2.0
+sparc64                             defconfig    gcc-12
+sparc64               randconfig-001-20250301    gcc-14.2.0
+sparc64               randconfig-001-20250302    gcc-14.2.0
+sparc64               randconfig-002-20250301    gcc-14.2.0
+sparc64               randconfig-002-20250302    gcc-14.2.0
+um                               allmodconfig    clang-21
+um                                allnoconfig    clang-15
+um                               allyesconfig    clang-21
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250301    gcc-12
+um                    randconfig-001-20250302    gcc-14.2.0
+um                    randconfig-002-20250301    gcc-12
+um                    randconfig-002-20250302    gcc-14.2.0
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250302    gcc-12
+x86_64      buildonly-randconfig-002-20250302    gcc-12
+x86_64      buildonly-randconfig-003-20250302    gcc-12
+x86_64      buildonly-randconfig-004-20250302    gcc-12
+x86_64      buildonly-randconfig-005-20250302    gcc-12
+x86_64      buildonly-randconfig-006-20250302    gcc-12
+x86_64                              defconfig    clang-19
+x86_64                                  kexec    clang-19
+x86_64                randconfig-001-20250302    clang-19
+x86_64                randconfig-002-20250302    clang-19
+x86_64                randconfig-003-20250302    clang-19
+x86_64                randconfig-004-20250302    clang-19
+x86_64                randconfig-005-20250302    clang-19
+x86_64                randconfig-006-20250302    clang-19
+x86_64                randconfig-007-20250302    clang-19
+x86_64                randconfig-008-20250302    clang-19
+x86_64                               rhel-9.4    clang-19
+x86_64                           rhel-9.4-bpf    clang-18
+x86_64                          rhel-9.4-func    clang-19
+x86_64                         rhel-9.4-kunit    clang-18
+x86_64                           rhel-9.4-ltp    clang-18
+x86_64                          rhel-9.4-rust    clang-18
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250301    gcc-14.2.0
+xtensa                randconfig-001-20250302    gcc-14.2.0
+xtensa                randconfig-002-20250301    gcc-14.2.0
+xtensa                randconfig-002-20250302    gcc-14.2.0
 
-The APU reaches a similar temperature (Tctl) across a wide TDP range,
-so temperature cannot be used on its own to determine fan speed.
-Manufacturers that provide different fan curves depending on the TDP
-mode usually cap the maximum fan speed on low TDPs. So you can get
-funny situations where the device is set to 30W, but the fan runs as
-if its using 10W leading to thermal soaking. So it is very important
-for those to be inline.
-
-> But in any case; that's a firmware issue not a platform profile design
-> issue.
-
-It would be a hypothetical scenario. I do not expect such a device to exist.
-
-> > So I expect that when PMF controls things it controls
-> > everything. I would expect if vendors fallback to the pmf firmware
-> > notifications while also providing vendor software there would be some
-> > synergy between them, such as changing which fan preset is selected by
-> > the PMF interface.
-> >
->
-> I can't control what vendors do; it's their decision how to manage their
-> systems.  All I can do is provide infrastructure to help.
-
-This was more of my intuition of how I would expect amd-pmf
-integration to be done in Windows where one of the drivers might be
-missing.
-
-Since only thinkpads are expected to do both, perhaps Mark can check
-out how they work. I have a thinkpad that is 11th gen intel.
-
-Antheas
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
