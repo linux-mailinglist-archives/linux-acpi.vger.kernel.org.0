@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-11656-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11657-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D4CA4A5E3
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 23:27:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD14A4A717
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Mar 2025 01:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE70E3B7A45
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Feb 2025 22:27:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A15097A62B4
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Mar 2025 00:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA801DE4E6;
-	Fri, 28 Feb 2025 22:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8413134BD;
+	Sat,  1 Mar 2025 00:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="iPaqpljp"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="duIgKnzi"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8331DE2C4;
-	Fri, 28 Feb 2025 22:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E8DD2FB;
+	Sat,  1 Mar 2025 00:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740781619; cv=none; b=AW93kx5JNKA1JclU6GlnRXY4ejn8cP+4sPcgGVlJbcpZ+oPnjG/sKHxn1quLvFZzwbXeuslgNphNRQVZsL4zbo9QyTfedPpZ9Iva55l5ufugVxd120OQ+fpnrlz1abQpQD/9q28+qWxdodTN6trmU54iu90tnhrVKQlITS0J7BQ=
+	t=1740789504; cv=none; b=Tt9HlsbIYDItXnvaD+iozmdgdKbS90JgFMD3qq1mPPD7urweoMEZbC4RBQCdneeX0IHzaCJ7CgEVzBYOPAOVF3tvFpKroIw+n8y9ETuWn32awY0KzUaOmle3APD4BXh0n8Z/4xpnb1vBL84wMCCbpX+59gAAiQA9t/QsX49lL8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740781619; c=relaxed/simple;
-	bh=EroVIw18pxTxZJ5SU7P+p+0Qd9h+XB1JAMjk4ODpyp8=;
+	s=arc-20240116; t=1740789504; c=relaxed/simple;
+	bh=n6zaxksd6Q1NUg/ohWVJeoMwMSB2pFa01Kpp7ynuDkA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GcdbEu88fPtqepCZhBI5E1yKtpz5dePJoq7u+fLYJ6zdvjVnje4oPQ3IJahSy/GXP6m9L7UIhgHe6cWtuXIvoBES3E5g6hukuebd5DmH2GTqDcbhO9m61UVpOl2j89QZ6nhz5cpXUe8+pH2CSaOXFtaz+Yr1u/012Js/t/w2wrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=iPaqpljp; arc=none smtp.client-ip=13.77.154.182
+	 In-Reply-To:Content-Type; b=bVG4WkUaxc93p30oX/JhJ26KJnRlOTBsVTmQVm9bgRWU2bjbe/uN2LKkd77M5kM0eqKNZh3tdBuomOcE/m0zCA9+wpxBH1VzOHKjIcbg3UI6a+vYIOxKskLP7ua2zjQlj6SJ9sCgvEPWf2LKceu82KOuE1ftFqiPIl6U5I/AnI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=duIgKnzi; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id BB67A210D0EB;
-	Fri, 28 Feb 2025 14:26:57 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BB67A210D0EB
+Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 297612038A22;
+	Fri, 28 Feb 2025 16:38:22 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 297612038A22
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740781618;
-	bh=1A0wwVr+M5YdleD5WdQbyvCNYbPCnowwpdIat8Rx3jU=;
+	s=default; t=1740789502;
+	bh=KckT26d6nP7QZ+/ykn1bui1INDXn2fKcmCtw1s0XLcA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iPaqpljp0SPsYOEXK7VBrtInRVWgckeDIadHTBLILkbz6lm3ZiSAC5yniZwL98w9Q
-	 F7FNXGkQStzvgrEgW0HShsyY3FA7178mzv+tFFHskRkkW3SP/1XHSFHHr1amJtB1+D
-	 9HGrCNlzv6+oPzIhOR72qkgcAaskPXKU8ovhxizY=
-Message-ID: <65e3bf97-8d3c-4a53-a3ad-42a16c0456d1@linux.microsoft.com>
-Date: Fri, 28 Feb 2025 14:26:57 -0800
+	b=duIgKnzi0YqTq8nTW9lxdfwU+lhdDZ68Vr54Cm+FjinsQ//tXQ7RD7UbvDDOFpnVx
+	 sYy/xwGAy3qPvhtmpRTpd5Dfusaj2uSOkBm0IIB6rTEsHLeoFoJdheCAczw3nq9Pta
+	 L5r2XPnSPzFfbwnylYl8fKpNlQQ9xS/sED3vuer0=
+Message-ID: <7de9b06d-9a32-48b5-beda-2e19b36ae9c9@linux.microsoft.com>
+Date: Fri, 28 Feb 2025 16:38:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/10] hyperv: Convert Hyper-V status codes to strings
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
- linux-hyperv@vger.kernel.org, x86@kernel.org,
+Subject: Re: [PATCH v5 08/10] x86: hyperv: Add mshv_handler irq handler and
+ setup function
+To: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
  haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com,
@@ -61,66 +61,110 @@ Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
  dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
  joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
  jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
+ mrathor@linux.microsoft.com, ssengar@linux.microsoft.com,
+ apais@linux.microsoft.com, Tianyu.Lan@microsoft.com,
+ stanislav.kinsburskiy@gmail.com, gregkh@linuxfoundation.org,
+ vkuznets@redhat.com, prapal@linux.microsoft.com, muislam@microsoft.com,
+ anrayabh@linux.microsoft.com, rafael@kernel.org, lenb@kernel.org,
+ corbet@lwn.net
 References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-2-git-send-email-nunodasneves@linux.microsoft.com>
- <74af19c4-639f-4bcc-b667-b5f102bbb312@linux.microsoft.com>
- <8338dd00-3aa4-418f-a547-1c19623358cb@linux.microsoft.com>
- <49a69fe3-fca5-426d-999d-61ee0c8f60f3@linux.microsoft.com>
- <70b62e52-639a-4026-9a52-102d1de46ffd@linux.microsoft.com>
- <212cc582-845d-42b2-89f2-1e9579f752ec@linux.microsoft.com>
- <9254eaa1-8ff0-4dd6-a443-5f127049bdaa@linux.microsoft.com>
+ <1740611284-27506-9-git-send-email-nunodasneves@linux.microsoft.com>
+ <Z7-nDUe41XHyZ8RJ@skinsburskii.>
 Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <9254eaa1-8ff0-4dd6-a443-5f127049bdaa@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+In-Reply-To: <Z7-nDUe41XHyZ8RJ@skinsburskii.>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-
-On 2/28/2025 12:22 PM, Easwar Hariharan wrote:
-> On 2/28/2025 9:20 AM, Roman Kisel wrote:
+On 2/26/2025 3:43 PM, Stanislav Kinsburskii wrote:
+> On Wed, Feb 26, 2025 at 03:08:02PM -0800, Nuno Das Neves wrote:
+>> This will handle SYNIC interrupts such as intercepts, doorbells, and
+>> scheduling messages intended for the mshv driver.
 >>
-
-[...]
-
+>> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+>> Reviewed-by: Wei Liu <wei.liu@kernel.org>
+>> Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+>> ---
+>>  arch/x86/kernel/cpu/mshyperv.c | 9 +++++++++
+>>  drivers/hv/hv_common.c         | 5 +++++
+>>  include/asm-generic/mshyperv.h | 1 +
+>>  3 files changed, 15 insertions(+)
 >>
->> So I'd think that the hex error codes from the hypervisor give the user
->> exactly as much as the error symbolic names do to get the system to the
->> desired state: nothing.
-> I continue to disagree, seeing HV_STATUS_NO_RESOURCES is better than 0x1D,
-> because the user may think to look at `top` or `free -h` or similar to see
-> what could be killed to improve the situation.
+>> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+>> index 0116d0e96ef9..616e9a5d77b4 100644
+>> --- a/arch/x86/kernel/cpu/mshyperv.c
+>> +++ b/arch/x86/kernel/cpu/mshyperv.c
+>> @@ -107,6 +107,7 @@ void hv_set_msr(unsigned int reg, u64 value)
+>>  }
+>>  EXPORT_SYMBOL_GPL(hv_set_msr);
+>>  
+>> +static void (*mshv_handler)(void);
+>>  static void (*vmbus_handler)(void);
+>>  static void (*hv_stimer0_handler)(void);
+>>  static void (*hv_kexec_handler)(void);
+>> @@ -117,6 +118,9 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
+>>  	struct pt_regs *old_regs = set_irq_regs(regs);
+>>  
+>>  	inc_irq_stat(irq_hv_callback_count);
+>> +	if (mshv_handler)
+>> +		mshv_handler();
 > 
-
-I agree that the symbolic name might save the step of looking up the
-error code in the headers. Now, the next step depends on how much the
-user is into virt technologies (if at all). That is
-to illustrate the point that a hint in the logs (or in the
-Documentation) is crucial of what to do next.
-
-The symbolic name might mislead; a hex code maybe with an addition of
-"please look up what may fix this at <URL> or report the problem here
-<URL>" would look better to _my imaginary_ customer :) That would be
-as much friendly as possible, if the kernel needs to print any of that
-at all. Likely the VMM in the user land if it gets that code as-is.
-
-Thank you for the fair critique and the time!
-
-[...]
-
->>> Thanks,
->>> Easwar (he/him)
->>
+> Can mshv_handler be defined as a weak symbol doing nothing instead
+> of defining it a null pointer?
+> This should allow to simplify this code and get rid of
+> hv_setup_mshv_handler, which looks redundant.
 > 
+Interesting, I tested this and it does seems to work! It seems like
+a good change, thanks.
 
--- 
-Thank you,
-Roman
+> Reviewed-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+> 
+>> +
+>>  	if (vmbus_handler)
+>>  		vmbus_handler();
+>>  
+>> @@ -126,6 +130,11 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
+>>  	set_irq_regs(old_regs);
+>>  }
+>>  
+>> +void hv_setup_mshv_handler(void (*handler)(void))
+>> +{
+>> +	mshv_handler = handler;
+>> +}
+>> +
+>>  void hv_setup_vmbus_handler(void (*handler)(void))
+>>  {
+>>  	vmbus_handler = handler;
+>> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+>> index 2763cb6d3678..f5a07fd9a03b 100644
+>> --- a/drivers/hv/hv_common.c
+>> +++ b/drivers/hv/hv_common.c
+>> @@ -677,6 +677,11 @@ void __weak hv_remove_vmbus_handler(void)
+>>  }
+>>  EXPORT_SYMBOL_GPL(hv_remove_vmbus_handler);
+>>  
+>> +void __weak hv_setup_mshv_handler(void (*handler)(void))
+>> +{
+>> +}
+>> +EXPORT_SYMBOL_GPL(hv_setup_mshv_handler);
+>> +
+>>  void __weak hv_setup_kexec_handler(void (*handler)(void))
+>>  {
+>>  }
+>> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+>> index 1f46d19a16aa..a05f12e63ccd 100644
+>> --- a/include/asm-generic/mshyperv.h
+>> +++ b/include/asm-generic/mshyperv.h
+>> @@ -208,6 +208,7 @@ void hv_setup_kexec_handler(void (*handler)(void));
+>>  void hv_remove_kexec_handler(void);
+>>  void hv_setup_crash_handler(void (*handler)(struct pt_regs *regs));
+>>  void hv_remove_crash_handler(void);
+>> +void hv_setup_mshv_handler(void (*handler)(void));
+>>  
+>>  extern int vmbus_interrupt;
+>>  extern int vmbus_irq;
+>> -- 
+>> 2.34.1
+>>
 
 
