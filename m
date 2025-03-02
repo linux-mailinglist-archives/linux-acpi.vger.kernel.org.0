@@ -1,293 +1,228 @@
-Return-Path: <linux-acpi+bounces-11675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CACA4AF0B
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 04:21:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44608A4AF0E
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 04:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F123B0E83
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 03:21:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4A2C3B24DE
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 03:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D5F8635F;
-	Sun,  2 Mar 2025 03:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3D82C859;
+	Sun,  2 Mar 2025 03:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncDCdnwR"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="mFjvI+9Z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tC10bKHw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7CA23F383;
-	Sun,  2 Mar 2025 03:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149981C695;
+	Sun,  2 Mar 2025 03:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740885677; cv=none; b=svsvCs+MgE8/DLCgoRj3YlR2sZyPlpKvqLNl2Sxjz/a72lXjw6YdDQHXq4/iOyYE0vOGq18G43fq/AC4ubqp1Mo7V6mX82isdH+NW0asmnFLJrR2Z54McdlkIlAomD/GZLxcqDKImhyI6t3q5myCcmZt1SBQEt/mpRC/qEFKqgA=
+	t=1740885814; cv=none; b=NlK/Zn/FdvShzR6a4m06IXf2ki+3Ps3YWQ+419Z+yl0DeYzCJLOcwyDmohjXclM7LnpzlTvJgtyQLluk4T+KkYConVEzCvsIuzqZdCSWAAWQbedwsRCtcfZq+LHouLfEJnN1NL4AiyDompvXTBFAyQNi4AhRv6EU8gLgvHxjuqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740885677; c=relaxed/simple;
-	bh=O/MA92hB3AkjNrf7z/VXmgx/ltMRoX0rGgcUffwbu9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=djELSwm/4jimIydtGGeKxFBKeLoA3CINinK0XicypcpRCw18/pK7dHWEVQSkZ29LlhaXXQMEU6PyoJIdEArd8ZgdhOdneQsCrML+m4X/7QT7NlxViKZxSN35cHI6cxzz9IDTZ1/4QAXmbSeAPTSHBV3u/6XlPGtZgd/xpfr2ezA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncDCdnwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AB1C4CEE2;
-	Sun,  2 Mar 2025 03:21:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740885677;
-	bh=O/MA92hB3AkjNrf7z/VXmgx/ltMRoX0rGgcUffwbu9g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ncDCdnwRP5zOoDVILCciSwRQ/NSzgjHe27I7RjLy7tc5fZcfBKv8Ywn00WK3+9j4L
-	 A0zD0DXY+mB8HLZHFzIX7EYJ0hk+vFxDvMu7kRJ4/U6B9iIzalpTDSJhHFc6oYM3Je
-	 sq5FyrzZtBi8FZzJxgibZCmcDLgs5Kidhk1tKF4A0JksvqLe5AyVCvY1XdE6imIPrJ
-	 y08Teu/YAMhRIG0C2fR8xei8nl5sEPNmivs7U2N+KXxmyGIp7RNNgdtf0kBQTEjb1h
-	 +ZqQV/992sV7KnJ8QupGmjA+vHzYfrqBuM18zz/KSraEa6Fuffn2CE3SeQgzHur7NK
-	 uQOY4iTFo0Lkg==
-Date: Sun, 2 Mar 2025 03:20:54 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
- <nuno.sa@analog.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli
- <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>, AngeloGioacchino Del
- Regno <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v4 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250302032054.1fb8a011@jic23-huawei>
-In-Reply-To: <9180ff11-888b-453d-9617-4b3a0fb38d91@gmail.com>
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
-	<23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
-	<0de7b0ac-eca5-49ba-b1b3-f249655f3646@baylibre.com>
-	<1b308a10-9622-47f9-b489-bd969fbdfc34@gmail.com>
-	<6f6e6550-5246-476f-9168-5e24151ab165@baylibre.com>
-	<9180ff11-888b-453d-9617-4b3a0fb38d91@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740885814; c=relaxed/simple;
+	bh=WPf+KF2WIzKDClC0rl7S2pBiWMZDE5SaCG/7d4ehSZM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=tt06+6RFGq3mRhyIa+4Tz1QUpJYezcO+yoSZis5Vh60RPwR/VRyDWS45A2DBOFHrjwG1dn1W1VcFAZ7+J212c7bhKrPmZ0EXjwanVZ5NJ/D7tM6YjOucDThTWT6Zh8NzGqv2w1T4AYV1zuQ2HCjRPJ4KmhwZ6wpd/CJ2wlEV6F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=mFjvI+9Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tC10bKHw; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id D2C3F1380EF8;
+	Sat,  1 Mar 2025 22:23:30 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-06.internal (MEProxy); Sat, 01 Mar 2025 22:23:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1740885810;
+	 x=1740972210; bh=EXRTfR75mciVRw9h+kwh8V3AdBDrsScfn1nZm7ynIwE=; b=
+	mFjvI+9ZCIccdQRgeTPptT6mGMP6fJlsFLO2YXF30av7M8rQ4607+2PWau2QmL3g
+	2vVzkKIEa/CfmJDP4grDSValCiC06H5096nxvB4snJZlBWKRVs1oYFrJdPDQRzoM
+	bOOPRcGvUIUVswMUEDRfHBEzLxZyXzr18i0BjykYo3HQFcBIBvB6CV1Ub7JsZpTL
+	i1fxRNgnesrwfWsiqBeugCpEISRVSZjtqIOM3YfVkErXSemop7jzLjek+KRSdlpn
+	xUw/DA9Siq2s46wAHeDRYuK3NpUwqE8bQTG49OXrrx+xDj+2lGjYcbEbTU8gsqlK
+	WHOZwxFeoYgMfwg82p+1nA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1740885810; x=
+	1740972210; bh=EXRTfR75mciVRw9h+kwh8V3AdBDrsScfn1nZm7ynIwE=; b=t
+	C10bKHwRA9SSuttTEQ5i8DMhI6eD5LBZqNe+OPDKsdfkByAvh+mJDzVi/FtpTxUg
+	ncL1jFT117LdloGuTZAxzyx4jBvJxBtJjuC9SKWp6j0YRDBI7R7NgrmGqkHn94om
+	9DKdU6iWIyVvRYCljIBubRn/jtaJLTrftzk9sGMV9dgjUHWColVP4dMTfhPLDC4S
+	h7CIS9IjIhjSToyS+9A2QjQGZB6PMHY2Pd8vMIQFjb7EneljeLLxMc+C+FrvN+MK
+	3M3bSzeovPHYRiaA0F9VtWAxKStPHJGwN7vIN4GNMrcwG4knFa6CikW0UBTFa8vO
+	Eqcj8oD01iiQcAms9KaLg==
+X-ME-Sender: <xms:Mc_DZ8eAiEn6lMIMZRxqOmjnFuSNx-6tjyJs5TS6wpPPopqstsMgoA>
+    <xme:Mc_DZ-O6O4TWUrys-LicX_D61IFOgnInetd-cXlF8oBwIqx5EhdWsSWGrkbCnEpwR
+    GDBpfRxYFMKHEBVN5M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelheduvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhephfeuvdehteeghedt
+    hedtveehuddvjeejgffgieejvdegkefhfeelheekhedvffehnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhv
+    ohesshhquhgvsggsrdgtrgdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpoh
+    huthdprhgtphhtthhopehshhihrghmqdhsuhhnuggrrhdrshdqkhesrghmugdrtghomhdp
+    rhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtg
+    hpthhtoheplhhkmhhlsegrnhhthhgvrghsrdguvghvpdhrtghpthhtohepsggvnhgrthho
+    rdguvghnihhsleeisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvrhgvkhhjohhhnh
+    drtghlrghrkhesghhmrghilhdrtghomhdprhgtphhtthhopehkuhhurhhtsgesghhmrghi
+    lhdrtghomhdprhgtphhtthhopeifpggrrhhmihhnsehgmhigrdguvgdprhgtphhtthhope
+    hrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhuphgvrhhmudeskhgv
+    rhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Mc_DZ9jc-hHUDaNysPljslLlAiq_lB9WM610a9leVQXbIO5B_lST0A>
+    <xmx:Mc_DZx-EPTYawQQ4H6Xgqsx1fOezXl811108F8pWa-LbGzBOQAWieQ>
+    <xmx:Mc_DZ4vfvEcP5lGH5LDMGjKbrZp7BE8x1xMsPQ_OssygLRVaSmLcgQ>
+    <xmx:Mc_DZ4GsTFv1IHporuaPaw1QUjme83th2U5rZfaopuKEbD3RKkUznQ>
+    <xmx:Ms_DZ8PMXtWZtHEPhiGecT1QBcN-VgGqkCvNCIvIYAaF7JsMFOJ0_rkS>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id CECCA3C0066; Sat,  1 Mar 2025 22:23:29 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 27 Feb 2025 09:46:06 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-
-> On 26/02/2025 18:10, David Lechner wrote:
-> > On 2/26/25 12:28 AM, Matti Vaittinen wrote: =20
-> >> Hi David,
-> >>
-> >> Thanks for taking a look at this :)
-> >>
-> >> On 26/02/2025 02:26, David Lechner wrote: =20
-> >>> On 2/24/25 12:33 PM, Matti Vaittinen wrote: =20
->=20
-> ...
->=20
-> >> =20
-> >>> Similarly, on several drivers we added recently that make use of adc.=
-yaml
-> >>> (adi,ad7380, adi,ad4695) we wrote the bindings with the intention that
-> >>> if a channel was wired in the default configuration, then you would j=
-ust
-> >>> omit the channel node for that input pin. Therefore, this helper coul=
-dn't
-> >>> be used by these drivers since we always have a fixed number of chann=
-els
-> >>> used in the driver regardless of if there are explicit channel nodes =
-in
-> >>> the devicetree or not. =20
-> >>
-> >> I think this works with the ICs where channels, indeed, always are the=
-re. But this is not the case with _all_ ICs. And in order to keep the consi=
-stency I'd actually required that if channels are listed in the DT, then _a=
-ll_ the channels must be listed. Else it becomes less straightforward for p=
-eople to understand how many channels there are based on the device tree. I=
- believe this was also proposed by Jonathan during the v1 review:
-> >> =20
-> >>>> Hmm. That'd mean the ADC channels _must_ be defined in DT in order t=
-o be
-> >>>> usable(?) Well, if this is the usual way, then it should be well kno=
-wn
-> >>>> by users. Thanks. =20
-
-So there is some history here that complicates things.
-
-1) Originally we always provided all channels.  Easy case :)
-2) Along came SoC ADC users who were unhappy with this not so much because
-   of the case Matti hit where the channel can be something else but more
-   because it's not unusual to either not wire up some pins on an SoC
-   or there are multiple packages that we don't otherwise distinguish
-   (as no software differences really) in which some internal pins never
-   reach the ones on the package.   Various solutions initially existed
-   for this (you can find things like xxx,channels properties in some bindi=
-ngs.)
-3) Then along came devices where we wanted per channel config.
-   There were some 'interesting' bindings for that as well for a while but
-   eventually we decided on channel nodes when needed.  Those always allowed
-   drivers to supply extra channels that didn't have nodes though (that's
-   a driver /binding choice and motivated somewhat by whether the unwired
-   pin thing matters - there are ADC package variants where this happens
-   but it is rare unlike for SoCs where it seems to be common).
-   From this discussion it occurs to me that we maybe want to make sure
-   that binding docs state what is expected here clearly.  If there is
-   a concept of a 'default' for missing channel nodes then we need to say
-   what it is.  Property defaults will give us most of that but don't cover
-   everything.
-4) Now we had channel nodes we can also use them for (2).  In those cases
-   on a device specific case we allow for channels that don't have nodes
-   to be hidden.   There is often a fallback for this which is more about
-   how bindings evolved (sure they shouldn't evolve but they do unfortunate=
-ly).
-   In those cases, no channel nodes =3D=3D all channel nodes with default s=
-ettings.
+Date: Sat, 01 Mar 2025 22:23:09 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Antheas Kapenekakis" <lkml@antheas.dev>,
+ "Mario Limonciello" <superm1@kernel.org>
+Cc: "Kurt Borja" <kuurtb@gmail.com>,
+ "Shyam Sundar S K" <Shyam-sundar.S-k@amd.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Hans de Goede" <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Luke D . Jones" <luke@ljones.dev>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+ "open list" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>, me@kylegospodneti.ch,
+ "Denis Benato" <benato.denis96@gmail.com>,
+ "Limonciello, Mario" <mario.limonciello@amd.com>,
+ "Armin Wolf" <W_Armin@gmx.de>
+Message-Id: <299cc6b8-a43b-4bc0-a7dd-ce3bde5f1a48@app.fastmail.com>
+In-Reply-To: 
+ <CAGwozwEVDkArYZLg+pvZrh02TtGM4+6EH5GCRpjxEAwMH4xZ+A@mail.gmail.com>
+References: <20250228170155.2623386-1-superm1@kernel.org>
+ <20250228170155.2623386-2-superm1@kernel.org>
+ <D84F6QF8EU3D.3RUI1PKXP2DZ3@gmail.com>
+ <6f56571a-3090-4323-a29d-008b916abf39@kernel.org>
+ <CAGwozwGFLQxGEQ-nb+d9yrikz=fx+u48mpTYUyUtvgFD-9ypQg@mail.gmail.com>
+ <09674d15-d639-4cb3-837a-9575f0028a76@kernel.org>
+ <CAGwozwFm1HeLNtJNGOdQCe_poWeNNeOB=3EzizFx_p2rB-RXbQ@mail.gmail.com>
+ <59634335-9365-454b-8f07-1b8f564e5f29@kernel.org>
+ <CAGwozwEVDkArYZLg+pvZrh02TtGM4+6EH5GCRpjxEAwMH4xZ+A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ACPI: platform_profile: Add support for hidden choices
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
-> >>>
-> >>> Yes. We basically have two types of binding wrt to channels.
-> >>> 1) Always there - no explicit binding, but also no way to describe
-> >>>  =C2=A0=C2=A0=C2=A0 anything specific about the channels.
-> >>> 2) Subnode per channel with stuff from adc.yaml and anything device
-> >>>  =C2=A0=C2=A0=C2=A0 specific.=C2=A0 Only channels that that have a no=
-de are enabled.
-> >>> =20
-> >=20
-> > Hmm... does that mean we implemented it wrong on ad7380 and ad4695? =20
->=20
-> I believe this is a question to Jonathan. With my ADC-driver experience=20
-> I am not the person to answer this :)
->=20
-> _If_ I commented something to this, I would say that: "I believe, this=20
-> question is a good example of why providing helpers is so powerful. In=20
-> my experience, when we provide helpers, then there will be a 'de facto'=20
-> way of doing things, which improves consistency". But as I feel I'm on=20
-> the verge of stepping on someones toes (and I am really the novice on=20
-> this area), I won't say that comment out loud.
 
-Problem is always 'history'.  We already have a bunch of drivers
-doing what the parts David called out do.  The bindings are clear and
-ultimately it is a bit device specific to whether missing nodes logically
-should default to default parameters or be hidden. In some cases there are
-natural defaults, in others not even close as we have fully flexible
-MUXes in front of differential ADCs and can in theory configure far more
-combinations than we even have pins for.
+On Sat, Mar 1, 2025, at 11:15 AM, Antheas Kapenekakis wrote:
+> On Sat, 1 Mar 2025 at 17:04, Mario Limonciello <superm1@kernel.org> wrote:
+>>
+>>
+>>
+>> On 3/1/25 08:06, Antheas Kapenekakis wrote:
+>> > On Sat, 1 Mar 2025 at 14:52, Mario Limonciello <superm1@kernel.org> wrote:
+>> >>
+>> >>>>> Let me know what you think!
+>> >>>>
+>> >>>> I don't really like that profiles can get out of sync, this is asking
+>> >>>> for a non-deterministic behavior that can be difficult to diagnose
+>> >>>> issues and also difficult for userspace to work with.
+>> >>>
+>> >>> I agree with Mario here. Imagine two drivers, one with low-power and
+>> >>> one with quiet. They both begin at performance.
+>> >>>
+>> >>> Then, userspace software gets confused (incl. ppd) and sets firmware
+>> >>> profile to low-power. The latter gets left in performance, causing
+>> >>> excess drain.
+>> >>>
+>> >>> I do not believe the legacy interface should be deprecated. Right now,
+>> >>> amd-pmf is a NOOP in most devices
+>> >>
+>> >> "Most" devices is not accurate.  There are a lot of devices that it does
+>> >> enable.  In the gaming space right now it's often behaving as a no-op.
+>> >
+>> > That would be a fair description. Can you give some examples of
+>> > devices that use the interface? Devices with and without vendor
+>> > software.
+>>
+>> Off hand the Framework 13 and 16 AMD both use PMF exclusively.  So do a
+>> bunch of HP commercial laptops.
+>
+> I will ask Kyle to check it out.
+>
+>> Mark can keep me honest, but I want to say the Strix Thinkpad laptops
+>> have both PMF and vendor interface (thinkpad-acpi).
+>
+> Hm, yeah that would be interesting to hear about
+>
 
-So today the situation is we have all the options in tree and we aren't
-really in a position to drop any of them:
+Yep, support both.
 
-a) custom bindings to configure channels - lots of these :(
-b) everything on if no channel nodes.  Maybe everything on always.
-c) channel nodes necessary for a channel to exist.
+>>   >>
+>> >> "Power mode" is a concept, it doesn't just apply to configuring sPPT and
+>> >> fPPT.  I envisage that a vendor that actively uses PMF and their own
+>> >> interface would be changing different things by the different interfaces.
+>> >>
+>> >> For "example" PMF may reconfigure sPPT, fPPT, STT and STAPM but their
+>> >> driver may notify their EC to change a fan curve.
+>> >
+>> > No. If PMF changes these values it also needs to change the fan curve
+>> > itself via the BIOS notification. Doing otherwise would lead to
+>> > situations where users do not install the vendor driver and cook their
+>> > device.
+>>
+>> Fan curves are just that; curves.  They just control how quickly fans
+>> ramp up not whether or not they "work".
+>
+> The APU reaches a similar temperature (Tctl) across a wide TDP range,
+> so temperature cannot be used on its own to determine fan speed.
+> Manufacturers that provide different fan curves depending on the TDP
+> mode usually cap the maximum fan speed on low TDPs. So you can get
+> funny situations where the device is set to 30W, but the fan runs as
+> if its using 10W leading to thermal soaking. So it is very important
+> for those to be inline.
+>
+>> But in any case; that's a firmware issue not a platform profile design
+>> issue.
+>
+> It would be a hypothetical scenario. I do not expect such a device to exist.
+>
+>> > So I expect that when PMF controls things it controls
+>> > everything. I would expect if vendors fallback to the pmf firmware
+>> > notifications while also providing vendor software there would be some
+>> > synergy between them, such as changing which fan preset is selected by
+>> > the PMF interface.
+>> >
+>>
+>> I can't control what vendors do; it's their decision how to manage their
+>> systems.  All I can do is provide infrastructure to help.
+>
+> This was more of my intuition of how I would expect amd-pmf
+> integration to be done in Windows where one of the drivers might be
+> missing.
+>
+> Since only thinkpads are expected to do both, perhaps Mark can check
+> out how they work. I have a thinkpad that is 11th gen intel.
+>
 
-If I were starting all this again we'd probably reduce the options but
-too late now :(
+I'll do some checking next week (away this weekend). Mario will ping you offline for best testing to do.
 
-Only thing I'd request is if a binding uses channel nodes at all.
-It should be possible to provide all nodes - whether or not some are
-just the defaults.  That way we can advise writers of bindings to
-provide all the channels they want to use.  The other cases then
-become a case of whether they get more channels than expected, but
-never that some they want aren't there!  A binding that didn't do
-this wouldn't be wrong, it would just mean the writer read the binding
-doc more carefully and knows what is expected for this device rather
-than more generally.
-
-There are some 'interesting' is it broken ABI backwards compatibility
-questions when we retrofit channel nodes into a binding.  In those cases
-we can't hide non specified nodes as it would mean channels disappear that
-in an earlier kernel were present.  In theory that should never be a
-problem but not all userspace code is going to be sufficient careful
-to not be disrupted by channel number changes.  Even this I think we
-broke once or twice because of cases like the one Matti has where they
-are multipurpose pins on some chip variant we didn't know about when
-the driver was written.
-
-Jonathan
-
->=20
-> >>> There are a few drivers that for historical reasons support both
-> >>> options with 'no channels' meaning 'all channels'. =20
-> >>
-> >> https://lore.kernel.org/all/20250201162631.2eab9a9a@jic23-huawei/
-> >> =20
-> >>> In my experience, the only time we don't populate all available chann=
-els
-> >>> on an ADC, even if not used, is in cases like differential chips where
-> >>> any two inputs can be mixed and matched to form a channel. Some of th=
-ese,
-> >>> like adi,ad7173-8 would have 100s or 1000s of channels if we tried to
-> >>> include all possible channels. In those cases, we make an exception a=
-nd
-> >>> use a dynamic number of channels based on the devicetree. But for chi=
-ps
-> >>> that have less than 20 total possible channels or so we've always
-> >>> provided all possible channels to userspace. It makes writing userspa=
-ce
-> >>> software for a specific chip easier if we can always assume that chip
-> >>> has the same number of channels. =20
-> >>
-> >> In any exception to this rule of describing all channels in DT should =
-just avoid using these helpers and do things as they're done now. No one is=
- forced to use them. But I am not really sure why would you not describe al=
-l the channels in the device-tree for ICs with less than 20 channels? I'd a=
-ssume that if the channels are unconditionally usable in the hardware, then=
- they should be in DT as well(?) =20
-> >=20
-> > I devicetree, I think the tendency is to be less verbose and only add
-> > properties/nodes when there is something that is not the usual case.
-> > Default values are chosen to be the most usual case so we don't have
-> > to write so much in the .dts. =20
->=20
-> On the other hand, I've received comments from the DTS people to expose=20
-> all HW blocks in the bindings. AFAIR, for example, marking=20
-> power-supplies as 'optional' in bindings is frowned upon, because they=20
-> are in the HW whether the SW needs to control them or not. Hence I think=
-=20
-> marking either all or no channels in dt should be the way to go - but my=
-=20
-> thinking is not done based on the years of experience on ADCs!
-
-Even for power supplies there is a difference between the binding doc
-saying they are there and what we do if they aren't (which is assume
-a stub regulator representing an non controllable / unknowable power supply
-is sufficient).    Also for power supplies there isn't really a 'default'
-to use so it doesn't really work as a comparison.
-
-Hindsight is a wonderful thing.  I'm not sure on what policy we should have
-gone for, but now we are kind of stuck with this slightly messy situation.
-
-Helper wise if it expands usefulness we may want a bool parameter to say
-if we skip the missing or not + make sure a max expected channel is provided
-(might already be - I didn't check!)
-
-Jonathan
-
->=20
-> >>>> Add couple of helper functions which can be used to retrieve the cha=
-nnel
-> >>>> information from the device node.
-> >>>>
-> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >>>> =20
-> >>
-> >> Yours,
-> >>  =C2=A0=C2=A0=C2=A0=C2=A0-- Matti =20
-> >  =20
->=20
-
+Mark
 
