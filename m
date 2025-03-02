@@ -1,131 +1,159 @@
-Return-Path: <linux-acpi+bounces-11685-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11686-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE31EA4B04C
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 08:30:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC841A4B183
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 13:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70C57168EE0
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 07:30:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F5B188241E
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 12:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6A11CD215;
-	Sun,  2 Mar 2025 07:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE71C1E2853;
+	Sun,  2 Mar 2025 12:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IRnSCYk9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E151C1420DD;
-	Sun,  2 Mar 2025 07:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397832594;
+	Sun,  2 Mar 2025 12:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740900614; cv=none; b=JREa/mGNqaT1oinP08N3t4hL+2xPHnYrGq8j1BGTanCtNZfoD+N7jCTtWHZscQhOYw2HMOq8Kv90VJssWHuv44Pp6uWvVZMxS2w1F0yoGE8n6xJ442yyzImGbX9N16s1Qbl0246apRVyNumczMnl1DR+OPC4WoLJkl1baLXuIgk=
+	t=1740918087; cv=none; b=OFo3DsymrQ8+/Jrm0TZJKe+rPzm8RC0VC9MVejBjZCGMj8s18S7LSG8aJ8Ccutw3crVgELW4K7gZgG0iXr6zJ8w91NWuz0m2/nDL1y2N+6BeNFfsmdpQFo/OEV80R18pospkhbvuot+y+Na0xUhjOVZpqqLl/QobfU3FaH4vnmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740900614; c=relaxed/simple;
-	bh=d7NlhC7hvLuzq9JoF9qYrayoB11kqa8d/MrYlOXyNz8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=c2mQip92PjGjyGoANMv99HKHxMv1LMYVxLp9Awf0f12BBwovDv54NFJbxSDFCcH0slnViAi+HyqkJLeyytW5cKieCrSKGBcO1KU3Za6pZOjEtZFT5vJ9keo6SQVrdWDWxEEKUB7ezVCYdG1oepXc2WD2lpXZkAmY5WcR+B+O4MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Z5D691jQ6z21p0m;
-	Sun,  2 Mar 2025 15:26:57 +0800 (CST)
-Received: from dggemv711-chm.china.huawei.com (unknown [10.1.198.66])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8E8AB1A0188;
-	Sun,  2 Mar 2025 15:30:03 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sun, 2 Mar 2025 15:30:03 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sun, 2 Mar
- 2025 15:30:02 +0800
-Message-ID: <05e7a220-7886-77ad-af58-7847c679579a@huawei.com>
-Date: Sun, 2 Mar 2025 15:30:01 +0800
+	s=arc-20240116; t=1740918087; c=relaxed/simple;
+	bh=VXo9YiQuucOHzzLu2O9MNDIOz3v9HB4UDsRrEQnruDw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fIAPzhA4VKHGBdE4bvtmUi+yEcLuz51+tlFhdr+eGODdlZiXRMsu94irGnJA73gsgYs9GQ2kg80BGVUZW3pOD4nucwg1J1oK8ne2NSc5zAa6XFj4XZlb2MuotqN5gBPW2b2FLcOhInQWM+4aiBdJFLkia1TPwmVcFgscUXPOENg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IRnSCYk9; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-54954fa61c8so2046276e87.1;
+        Sun, 02 Mar 2025 04:21:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740918084; x=1741522884; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Qtblm0i8462d3luljoT5Tnt+0dpoW1Tx169HXsD42sU=;
+        b=IRnSCYk9ZvP+GWZEMVEIYgOaVh1f7VGQ0xmQ3Vak7qfUfVvAV+R3PQ0SoGbjTI9xk9
+         bMTqb0exgC6MFsGmxyIfQ4ZfOn1ENyyWzGISyfI1Uj0oHNnPsvzfFJo2tG1dFlpbb09y
+         1GnyLm/w98rfHssXZYWVpQ05XCI31f4FABlpgcL03yHXFbtefcIdDzgBDndmELw/nT4H
+         4jIo6qIPks5WztdrW+KjcUltJw04RganFVsb7LVckW0TovcoD+xjc+IwtlejDQw1aq/H
+         IUNPq4OTd8+L0o9sxhhqE3Q+nQ5dGDcbP8eMnNdnEtYFBjhdR6fyLv+svDObC6ZOldgZ
+         lhmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740918084; x=1741522884;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qtblm0i8462d3luljoT5Tnt+0dpoW1Tx169HXsD42sU=;
+        b=UE8eJ3B9CMt51Fkrx5fqnME3E4h2jWTDR38Hw+EIyPrOATn7gnMpNJZLlBy7HFv3bf
+         KNkja39kVlOHV9N4JwI+OiSM25IDw2Xpkvn0DKzo9GlNIqmy22CKhQHepqPPWM2bvnUa
+         7YKSMu+y0Ptm4oOlxi7IKjTAyoNmLlQT83y3A8xbqgUzSwFoz9gGfdi+k4HGotV4axGW
+         55Vm12IANkpjQra5fjhbtwN9zZcbFxXQ35MRgoMrcSSm2Cg5rUH9itGO/q2GXlHVhnl2
+         Qy8ZgLqUqXxYCi9rwlcCSvb1j/C8DgXSNKQjFh5ylYu3COhVzYaWTKL4LUGXxXOq5IPF
+         u1KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/hqz+0WsrRmy59WoalRL/5hiJwgzVF/Kxs7UgorMxe/CJ06j5pdT6Kv/KNaSTCKXjwFm2KXrOAtxM@vger.kernel.org, AJvYcCVJqTGJo6SyPrBBum0c2A12tFtkvpxhB+Rk/k6tAf46ugWvCBx9esgBzYm1nLWvLJY8cK4zGJqY8HwN4tue@vger.kernel.org, AJvYcCXF2mhPoXTl3YLkTMu3VDi89k2VI86fqB1x5gDjrPCFz3AB2TXiANEcFC6ESArFQGYnIJieAvKgGaJZH7NvTz00Fh4=@vger.kernel.org, AJvYcCXIg6o6ebypHF9Pxg7ltsWuT3X3TVSA30gKyImdA9VuVXS3O0vilJ9gN8GQ5mYQcwOpEOP9OklQ4GTd@vger.kernel.org, AJvYcCXwcyLGLVADEIRl9ha8WRiPzlcvkQJahXPmqX0EOApeHugN68vFqYn4yRKHCkZGw95O9FG7D86XS9V2WA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmT7EGQWoSrNtWD7+E4M6cSGYELqAAZTAX6Tj3dzT6bYjQ9AyU
+	Vrqf3tAr48JPQwLJytaFF+MIaHbNfyWfQdDccPZ68zfJxPeGoSHT
+X-Gm-Gg: ASbGnctLuay6ta0mY4BmjrVuBc46AxSs2PUUFCjP8pytR8dXZuml04X9bmP4DtXZJUQ
+	qTga6STlBLLsJUzdELxLuMb5XoaY/5PTSSAdMsk0htCNiZTcXKiqiVXyoTQN8DcrqFcoO85wcRr
+	BY9pPRomL+pXZBiuGS1sXL5Obsps5XBCvfsU3aLds8RaqbJ5d2BAbCUd9gXB81dACEDHQRtiQnL
+	6WbwRBtgXYgXL84QmoQpOyybwQVNq0ueS+dGRAf620ZbeluA5fuFXTIMTXMaHJelbdGjnB8GgX7
+	EegsPs9kAHvTNAys0F6qaCCYxrhnMzbvb4E5WbiiyplyIA2bOuj7jCouzCwBi9JwUiB9Bnaci54
+	PQdrSpUg/Kv7X9PI2s9NrgCVl4g==
+X-Google-Smtp-Source: AGHT+IFo9Y9R+GJf/hvtgnPwl3vpc/B4svOJilmVq9Mn0xTVT2iqrfrmQOieXp0GoaVbPJJmjudwkw==
+X-Received: by 2002:a05:6512:3042:b0:545:fad:a757 with SMTP id 2adb3069b0e04-5494c335f2emr3260926e87.29.1740918083926;
+        Sun, 02 Mar 2025 04:21:23 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5495dcba076sm272177e87.119.2025.03.02.04.21.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Mar 2025 04:21:23 -0800 (PST)
+Message-ID: <863ce320-c5cd-47f6-a66b-c43fac98a4b0@gmail.com>
+Date: Sun, 2 Mar 2025 14:21:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] mailbox: pcc: Fix can't clear level interrupt of type3 in
- cornor case
-To: Sudeep Holla <sudeep.holla@arm.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<jassisinghbrar@gmail.com>, <liuyonglong@huawei.com>
-References: <20250227072341.28693-1-lihuisong@huawei.com>
- <Z8HlHDAUWqQOjrCH@bogus>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <Z8HlHDAUWqQOjrCH@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/10] property: Add
+ device_get_child_node_count_named()
+To: Rob Herring <robh@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev
+References: <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
+ <Z72QAOA9xXbP16K-@kuha.fi.intel.com> <Z72Zp8tpnvlFGdQ_@smile.fi.intel.com>
+ <ad39b453-7e5b-49bd-a4fd-6a4988636130@gmail.com>
+ <Z72d7TzZ21WITW3f@smile.fi.intel.com>
+ <893a3c45-537e-47ad-afbd-1e5d3b9abe2c@gmail.com>
+ <Z73M3Ua6u1FpgBEK@smile.fi.intel.com>
+ <720f9c69-ca1f-45cb-9f6e-c8e4703c9aad@gmail.com>
+ <Z78g_uiXumn4mvET@smile.fi.intel.com>
+ <d7982b76-3da7-47ff-b2b2-f964610af1f7@gmail.com>
+ <Z8B7h4_IWz43gFhO@smile.fi.intel.com>
+ <c9424f3e-1ff0-4c01-823a-19801cc3e7a7@gmail.com>
+ <CAL_Jsq+tkXAAVK2D_AtENuXJZOF2eK=sUnjv3=7PM8nAyAB7Xw@mail.gmail.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <CAL_Jsq+tkXAAVK2D_AtENuXJZOF2eK=sUnjv3=7PM8nAyAB7Xw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemn100009.china.huawei.com (7.202.194.112)
 
-
-在 2025/3/1 0:32, Sudeep Holla 写道:
-> On Thu, Feb 27, 2025 at 03:23:41PM +0800, Huisong Li wrote:
->> The mbox_chan_received_data() will call Rx callback of mbox client driver
->> using type3 to set the flag of command completion. Then driver can continue
->> to do something like sending a new command. In this case, the rest of the
->> interrupt handler function may be concurrent with pcc_send_data().
+On 28/02/2025 18:59, Rob Herring wrote:
+> On Thu, Feb 27, 2025 at 9:06 AM Matti Vaittinen
+> <mazziesaccount@gmail.com> wrote:
 >>
-> Understood and valid issue/bug.
->
->> The 'chan_in_use' flag of a channel is true after sending a command. And
->> the flag of the new command may be cleared by the running interrupt handler
->> in cornor case. As a result, the interrupt being level triggered can't be
->> cleared in pcc_mbox_irq() and it will be disabled after the number of
->> handled times exceeds the specified value. The error log is as follows:
->>
->> [519082.811553] kunpeng_hccs HISI04B2:00: PCC command executed timeout!
->     ^^^^
-> These timestamps are useless, needs to be dropped.
-Got it. Thanks.
->
->> [519082.828532] kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110.
->> [519082.833438] irq 13: nobody cared (try booting with the "irqpoll" option)
->> [519082.844622] CPU: 304 PID: 15206 Comm: systemd-journal Kdump: loaded Tainted: G           OE     5.10.0 #5
->> [519082.854959] Hardware name: To be filled by O.E.M. To be filled by O.E.M./To be filled by O.E.M., BIOS Nezha B800 V3.1.0 01/02/2024
-> "To be filled by O.E.M." interesting. Either as silicon vendor, some prefer
-> to leave it this way to ensure the O.E.M fill them correctly or the firmware
-> engineers are not bothered to get these right as nothing breaks without
-> these.
->
-> Anyways, good example of what not to have in the products, as it is completely
-> useless.
->
-> [...]
-Thanks for pointing it out.
-Please ignore this. will drop the line.
->
->> To solve this issue, pcc_mbox_irq() clear 'chann_in_use' flag immediately
->> after clearing interrupt ack register.
->>
-> This may be correct way of fixing the issue here, but I am questioning the
-> existence of this flag now. I have some rework on this file. I will pick
-This flag is for shared interrupt case on type3. please see:
-3db174e478cb ("mailbox: pcc: Support shared interrupt for multiple 
-subspaces")
+>>>
+> Sigh. This is not that hard.
+> 
+> - unsigned int num_grps = gfar_of_group_count(np);
+> + unsigned int num_grps =
+> device_get_child_node_count_named(&ofdev->dev, "queue-groups");
+> 
+> And remove gfar_of_group_count() of course.
 
-We may need to fix it first before your refactoring this file. After 
-all, it's an issue.
-A little modification is more easily to backport and merge.
-If it's ok for you, I'll update this commit log.
-> this up if I think this is needed as it may conflict with my changes or
-> we will drop the flag completely. Give a week or so, will post the changes
-> and we can take it from there.
->
-Looking forward to your rework.
+Thanks Rob. That's what I (already twice) wrote I'll do:
 
+ >>>> alter the gianfar code by dropping the gfar_of_group_count(),
 
-/Huisong
+and
 
->
-> .
+ >>  I prefer killing whole
+ >> gfar_of_group_count().
+
+I just wanted to understand what Andy suggested.
+
+Yours,
+	-- Matti
 
