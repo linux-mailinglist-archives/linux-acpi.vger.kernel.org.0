@@ -1,183 +1,293 @@
-Return-Path: <linux-acpi+bounces-11674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C49CA4AEC0
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 03:30:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0CACA4AF0B
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 04:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0679D1893AA4
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 02:30:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F123B0E83
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 03:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37F3381A3;
-	Sun,  2 Mar 2025 02:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D5F8635F;
+	Sun,  2 Mar 2025 03:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKilS3zZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncDCdnwR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15A217996
-	for <linux-acpi@vger.kernel.org>; Sun,  2 Mar 2025 02:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7CA23F383;
+	Sun,  2 Mar 2025 03:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740882625; cv=none; b=hbeGsbWQPyM46VO5yQ3suzWMHnYFV65J8yIh4LMto8aTlSm+yCZe5KYhRGKV08MiKQ1tEliTEmH54GKXOmKEAv/wmzxhwsUjTzVCM4O3rXj0V+BrTMVNOGMfaeXMhi7l1PTYKHPZqbGOLAbXpXp4uPWIDmk7Hkhb30vDlGdNSOo=
+	t=1740885677; cv=none; b=svsvCs+MgE8/DLCgoRj3YlR2sZyPlpKvqLNl2Sxjz/a72lXjw6YdDQHXq4/iOyYE0vOGq18G43fq/AC4ubqp1Mo7V6mX82isdH+NW0asmnFLJrR2Z54McdlkIlAomD/GZLxcqDKImhyI6t3q5myCcmZt1SBQEt/mpRC/qEFKqgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740882625; c=relaxed/simple;
-	bh=Upvi7tvymOtThpgw3ldPIJo3yPhrccCw8zgMugRRq74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mTB1mewcM0+Hs03hEcNYLLv018qrUXkE04npwsCe4AHg0UFjB3PlCZmhPHvPq6CU/7LLPnga+dxbasAA8esaf7R1SlYK/SDjoIo7ubYYC5y/5d4Eaq0HSpLmNnnMPFH1WoTWrcO70mE/TktehKa6WDsa3TPe8tM1gsWazofuOD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKilS3zZ; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740882624; x=1772418624;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Upvi7tvymOtThpgw3ldPIJo3yPhrccCw8zgMugRRq74=;
-  b=AKilS3zZFDNOn11iYwzi24ARdtQTfbjRZjdbH0KEAxRO7jfk0A9aSEUv
-   71YuO66OBy9fehbfxGEE2b7m/NKrmWvf8a1bXk9HdYDZfHgue2Hfpp/Pa
-   uDST2BjsO1R6l0g1AWxzwLsyN2R2nh6DhMiE2RAejE1Kzoa8Psls5l0e4
-   vPLclG5vUl6AeYm9Jp8OeoqemcP3irLBgf4HesjyWpHmBpb/shuArujQM
-   uQw7PdM/5eWnSvpLu3K+lvg2akO3KD5F29uWnfB3Sy5pfgXW86vcTh/HF
-   ata4B3kkEKsImHKKrRPcAIhvbimg/L/VPOsHhs4U9jMGMYievzSd0QHgE
-   Q==;
-X-CSE-ConnectionGUID: gvL7Es2hTIKM/VAQjN9FHA==
-X-CSE-MsgGUID: I5zSG10RRMy2DhU7weGBYQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="41806587"
-X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
-   d="scan'208";a="41806587"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 18:30:23 -0800
-X-CSE-ConnectionGUID: 3EGWKjm7RCut+PtAEbTDrA==
-X-CSE-MsgGUID: kZ+DFB4cRxy0N8X66r9xwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
-   d="scan'208";a="148484747"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 01 Mar 2025 18:30:22 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1toZ5v-000Gy2-1m;
-	Sun, 02 Mar 2025 02:30:19 +0000
-Date: Sun, 2 Mar 2025 10:30:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: mpagano@gentoo.org, linux-acpi@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	robert.moore@intel.com, rafael.j.wysocki@intel.com,
-	Mike Pagano <mpagano@gentoo.org>
-Subject: Re: [PATCH] ACPICA: fix build with GCC 15 due to
- -Werror=unterminated-string-initialization
-Message-ID: <202503021047.izEzFVqg-lkp@intel.com>
-References: <20250228210834.811164-1-mpagano@gentoo.org>
+	s=arc-20240116; t=1740885677; c=relaxed/simple;
+	bh=O/MA92hB3AkjNrf7z/VXmgx/ltMRoX0rGgcUffwbu9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=djELSwm/4jimIydtGGeKxFBKeLoA3CINinK0XicypcpRCw18/pK7dHWEVQSkZ29LlhaXXQMEU6PyoJIdEArd8ZgdhOdneQsCrML+m4X/7QT7NlxViKZxSN35cHI6cxzz9IDTZ1/4QAXmbSeAPTSHBV3u/6XlPGtZgd/xpfr2ezA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncDCdnwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AB1C4CEE2;
+	Sun,  2 Mar 2025 03:21:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740885677;
+	bh=O/MA92hB3AkjNrf7z/VXmgx/ltMRoX0rGgcUffwbu9g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ncDCdnwRP5zOoDVILCciSwRQ/NSzgjHe27I7RjLy7tc5fZcfBKv8Ywn00WK3+9j4L
+	 A0zD0DXY+mB8HLZHFzIX7EYJ0hk+vFxDvMu7kRJ4/U6B9iIzalpTDSJhHFc6oYM3Je
+	 sq5FyrzZtBi8FZzJxgibZCmcDLgs5Kidhk1tKF4A0JksvqLe5AyVCvY1XdE6imIPrJ
+	 y08Teu/YAMhRIG0C2fR8xei8nl5sEPNmivs7U2N+KXxmyGIp7RNNgdtf0kBQTEjb1h
+	 +ZqQV/992sV7KnJ8QupGmjA+vHzYfrqBuM18zz/KSraEa6Fuffn2CE3SeQgzHur7NK
+	 uQOY4iTFo0Lkg==
+Date: Sun, 2 Mar 2025 03:20:54 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
+ <nuno.sa@analog.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>, AngeloGioacchino Del
+ Regno <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v4 03/10] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <20250302032054.1fb8a011@jic23-huawei>
+In-Reply-To: <9180ff11-888b-453d-9617-4b3a0fb38d91@gmail.com>
+References: <cover.1740421248.git.mazziesaccount@gmail.com>
+	<23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
+	<0de7b0ac-eca5-49ba-b1b3-f249655f3646@baylibre.com>
+	<1b308a10-9622-47f9-b489-bd969fbdfc34@gmail.com>
+	<6f6e6550-5246-476f-9168-5e24151ab165@baylibre.com>
+	<9180ff11-888b-453d-9617-4b3a0fb38d91@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250228210834.811164-1-mpagano@gentoo.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, 27 Feb 2025 09:46:06 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-kernel test robot noticed the following build errors:
+> On 26/02/2025 18:10, David Lechner wrote:
+> > On 2/26/25 12:28 AM, Matti Vaittinen wrote: =20
+> >> Hi David,
+> >>
+> >> Thanks for taking a look at this :)
+> >>
+> >> On 26/02/2025 02:26, David Lechner wrote: =20
+> >>> On 2/24/25 12:33 PM, Matti Vaittinen wrote: =20
+>=20
+> ...
+>=20
+> >> =20
+> >>> Similarly, on several drivers we added recently that make use of adc.=
+yaml
+> >>> (adi,ad7380, adi,ad4695) we wrote the bindings with the intention that
+> >>> if a channel was wired in the default configuration, then you would j=
+ust
+> >>> omit the channel node for that input pin. Therefore, this helper coul=
+dn't
+> >>> be used by these drivers since we always have a fixed number of chann=
+els
+> >>> used in the driver regardless of if there are explicit channel nodes =
+in
+> >>> the devicetree or not. =20
+> >>
+> >> I think this works with the ICs where channels, indeed, always are the=
+re. But this is not the case with _all_ ICs. And in order to keep the consi=
+stency I'd actually required that if channels are listed in the DT, then _a=
+ll_ the channels must be listed. Else it becomes less straightforward for p=
+eople to understand how many channels there are based on the device tree. I=
+ believe this was also proposed by Jonathan during the v1 review:
+> >> =20
+> >>>> Hmm. That'd mean the ADC channels _must_ be defined in DT in order t=
+o be
+> >>>> usable(?) Well, if this is the usual way, then it should be well kno=
+wn
+> >>>> by users. Thanks. =20
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.14-rc4 next-20250228]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+So there is some history here that complicates things.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mpagano-gentoo-org/ACPICA-fix-build-with-GCC-15-due-to-Werror-unterminated-string-initialization/20250301-051004
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20250228210834.811164-1-mpagano%40gentoo.org
-patch subject: [PATCH] ACPICA: fix build with GCC 15 due to -Werror=unterminated-string-initialization
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20250302/202503021047.izEzFVqg-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503021047.izEzFVqg-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503021047.izEzFVqg-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/nfit/core.c:3489:2: error: call to '__compiletime_assert_953' declared with 'error' attribute: BUILD_BUG_ON failed: sizeof(struct acpi_table_nfit) != 40
-    3489 |         BUILD_BUG_ON(sizeof(struct acpi_table_nfit) != 40);
-         |         ^
-   include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
-      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |         ^
-   include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^
-   include/linux/compiler_types.h:542:2: note: expanded from macro 'compiletime_assert'
-     542 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^
-   include/linux/compiler_types.h:530:2: note: expanded from macro '_compiletime_assert'
-     530 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |         ^
-   include/linux/compiler_types.h:523:4: note: expanded from macro '__compiletime_assert'
-     523 |                         prefix ## suffix();                             \
-         |                         ^
-   <scratch space>:114:1: note: expanded from here
-     114 | __compiletime_assert_953
-         | ^
-   1 error generated.
+1) Originally we always provided all channels.  Easy case :)
+2) Along came SoC ADC users who were unhappy with this not so much because
+   of the case Matti hit where the channel can be something else but more
+   because it's not unusual to either not wire up some pins on an SoC
+   or there are multiple packages that we don't otherwise distinguish
+   (as no software differences really) in which some internal pins never
+   reach the ones on the package.   Various solutions initially existed
+   for this (you can find things like xxx,channels properties in some bindi=
+ngs.)
+3) Then along came devices where we wanted per channel config.
+   There were some 'interesting' bindings for that as well for a while but
+   eventually we decided on channel nodes when needed.  Those always allowed
+   drivers to supply extra channels that didn't have nodes though (that's
+   a driver /binding choice and motivated somewhat by whether the unwired
+   pin thing matters - there are ADC package variants where this happens
+   but it is rare unlike for SoCs where it seems to be common).
+   From this discussion it occurs to me that we maybe want to make sure
+   that binding docs state what is expected here clearly.  If there is
+   a concept of a 'default' for missing channel nodes then we need to say
+   what it is.  Property defaults will give us most of that but don't cover
+   everything.
+4) Now we had channel nodes we can also use them for (2).  In those cases
+   on a device specific case we allow for channels that don't have nodes
+   to be hidden.   There is often a fallback for this which is more about
+   how bindings evolved (sure they shouldn't evolve but they do unfortunate=
+ly).
+   In those cases, no channel nodes =3D=3D all channel nodes with default s=
+ettings.
 
 
-vim +3489 drivers/acpi/nfit/core.c
+> >>>
+> >>> Yes. We basically have two types of binding wrt to channels.
+> >>> 1) Always there - no explicit binding, but also no way to describe
+> >>>  =C2=A0=C2=A0=C2=A0 anything specific about the channels.
+> >>> 2) Subnode per channel with stuff from adc.yaml and anything device
+> >>>  =C2=A0=C2=A0=C2=A0 specific.=C2=A0 Only channels that that have a no=
+de are enabled.
+> >>> =20
+> >=20
+> > Hmm... does that mean we implemented it wrong on ad7380 and ad4695? =20
+>=20
+> I believe this is a question to Jonathan. With my ADC-driver experience=20
+> I am not the person to answer this :)
+>=20
+> _If_ I commented something to this, I would say that: "I believe, this=20
+> question is a good example of why providing helpers is so powerful. In=20
+> my experience, when we provide helpers, then there will be a 'de facto'=20
+> way of doing things, which improves consistency". But as I feel I'm on=20
+> the verge of stepping on someones toes (and I am really the novice on=20
+> this area), I won't say that comment out loud.
 
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3484  
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3485  static __init int nfit_init(void)
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3486  {
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3487  	int ret;
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3488  
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19 @3489  	BUILD_BUG_ON(sizeof(struct acpi_table_nfit) != 40);
-cf16b05c607bd7 drivers/acpi/nfit/core.c Bob Moore       2021-04-06  3490  	BUILD_BUG_ON(sizeof(struct acpi_nfit_system_address) != 64);
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3491  	BUILD_BUG_ON(sizeof(struct acpi_nfit_memory_map) != 48);
-2a5ab99847bd41 drivers/acpi/nfit/core.c Kees Cook       2023-04-05  3492  	BUILD_BUG_ON(sizeof(struct acpi_nfit_interleave) != 16);
-74522fea27f8a0 drivers/acpi/nfit/core.c Kees Cook       2023-04-05  3493  	BUILD_BUG_ON(sizeof(struct acpi_nfit_smbios) != 8);
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3494  	BUILD_BUG_ON(sizeof(struct acpi_nfit_control_region) != 80);
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3495  	BUILD_BUG_ON(sizeof(struct acpi_nfit_data_region) != 40);
-06e8ccdab15f46 drivers/acpi/nfit/core.c Dave Jiang      2018-01-31  3496  	BUILD_BUG_ON(sizeof(struct acpi_nfit_capabilities) != 16);
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3497  
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3498  	guid_parse(UUID_VOLATILE_MEMORY, &nfit_uuid[NFIT_SPA_VOLATILE]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3499  	guid_parse(UUID_PERSISTENT_MEMORY, &nfit_uuid[NFIT_SPA_PM]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3500  	guid_parse(UUID_CONTROL_REGION, &nfit_uuid[NFIT_SPA_DCR]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3501  	guid_parse(UUID_DATA_REGION, &nfit_uuid[NFIT_SPA_BDW]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3502  	guid_parse(UUID_VOLATILE_VIRTUAL_DISK, &nfit_uuid[NFIT_SPA_VDISK]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3503  	guid_parse(UUID_VOLATILE_VIRTUAL_CD, &nfit_uuid[NFIT_SPA_VCD]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3504  	guid_parse(UUID_PERSISTENT_VIRTUAL_DISK, &nfit_uuid[NFIT_SPA_PDISK]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3505  	guid_parse(UUID_PERSISTENT_VIRTUAL_CD, &nfit_uuid[NFIT_SPA_PCD]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3506  	guid_parse(UUID_NFIT_BUS, &nfit_uuid[NFIT_DEV_BUS]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3507  	guid_parse(UUID_NFIT_DIMM, &nfit_uuid[NFIT_DEV_DIMM]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3508  	guid_parse(UUID_NFIT_DIMM_N_HPE1, &nfit_uuid[NFIT_DEV_DIMM_N_HPE1]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3509  	guid_parse(UUID_NFIT_DIMM_N_HPE2, &nfit_uuid[NFIT_DEV_DIMM_N_HPE2]);
-41c8bdb3ab10c1 drivers/acpi/nfit/core.c Andy Shevchenko 2017-06-05  3510  	guid_parse(UUID_NFIT_DIMM_N_MSFT, &nfit_uuid[NFIT_DEV_DIMM_N_MSFT]);
-1194c4133195df drivers/acpi/nfit/core.c Dexuan Cui      2019-01-29  3511  	guid_parse(UUID_NFIT_DIMM_N_HYPERV, &nfit_uuid[NFIT_DEV_DIMM_N_HYPERV]);
-6450ddbd5d8e83 drivers/acpi/nfit/core.c Dan Williams    2020-07-20  3512  	guid_parse(UUID_INTEL_BUS, &nfit_uuid[NFIT_BUS_INTEL]);
-b94d5230d06eb9 drivers/acpi/nfit.c      Dan Williams    2015-05-19  3513  
-7ae0fa439faff0 drivers/acpi/nfit.c      Dan Williams    2016-02-19  3514  	nfit_wq = create_singlethread_workqueue("nfit");
-7ae0fa439faff0 drivers/acpi/nfit.c      Dan Williams    2016-02-19  3515  	if (!nfit_wq)
-7ae0fa439faff0 drivers/acpi/nfit.c      Dan Williams    2016-02-19  3516  		return -ENOMEM;
-7ae0fa439faff0 drivers/acpi/nfit.c      Dan Williams    2016-02-19  3517  
-6839a6d96f4ea0 drivers/acpi/nfit/core.c Vishal Verma    2016-07-23  3518  	nfit_mce_register();
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3519  	ret = acpi_bus_register_driver(&acpi_nfit_driver);
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3520  	if (ret) {
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3521  		nfit_mce_unregister();
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3522  		destroy_workqueue(nfit_wq);
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3523  	}
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3524  
-7e700d2c59e585 drivers/acpi/nfit/core.c Prarit Bhargava 2017-05-31  3525  	return ret;
-6839a6d96f4ea0 drivers/acpi/nfit/core.c Vishal Verma    2016-07-23  3526  
+Problem is always 'history'.  We already have a bunch of drivers
+doing what the parts David called out do.  The bindings are clear and
+ultimately it is a bit device specific to whether missing nodes logically
+should default to default parameters or be hidden. In some cases there are
+natural defaults, in others not even close as we have fully flexible
+MUXes in front of differential ADCs and can in theory configure far more
+combinations than we even have pins for.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+So today the situation is we have all the options in tree and we aren't
+really in a position to drop any of them:
+
+a) custom bindings to configure channels - lots of these :(
+b) everything on if no channel nodes.  Maybe everything on always.
+c) channel nodes necessary for a channel to exist.
+
+If I were starting all this again we'd probably reduce the options but
+too late now :(
+
+Only thing I'd request is if a binding uses channel nodes at all.
+It should be possible to provide all nodes - whether or not some are
+just the defaults.  That way we can advise writers of bindings to
+provide all the channels they want to use.  The other cases then
+become a case of whether they get more channels than expected, but
+never that some they want aren't there!  A binding that didn't do
+this wouldn't be wrong, it would just mean the writer read the binding
+doc more carefully and knows what is expected for this device rather
+than more generally.
+
+There are some 'interesting' is it broken ABI backwards compatibility
+questions when we retrofit channel nodes into a binding.  In those cases
+we can't hide non specified nodes as it would mean channels disappear that
+in an earlier kernel were present.  In theory that should never be a
+problem but not all userspace code is going to be sufficient careful
+to not be disrupted by channel number changes.  Even this I think we
+broke once or twice because of cases like the one Matti has where they
+are multipurpose pins on some chip variant we didn't know about when
+the driver was written.
+
+Jonathan
+
+>=20
+> >>> There are a few drivers that for historical reasons support both
+> >>> options with 'no channels' meaning 'all channels'. =20
+> >>
+> >> https://lore.kernel.org/all/20250201162631.2eab9a9a@jic23-huawei/
+> >> =20
+> >>> In my experience, the only time we don't populate all available chann=
+els
+> >>> on an ADC, even if not used, is in cases like differential chips where
+> >>> any two inputs can be mixed and matched to form a channel. Some of th=
+ese,
+> >>> like adi,ad7173-8 would have 100s or 1000s of channels if we tried to
+> >>> include all possible channels. In those cases, we make an exception a=
+nd
+> >>> use a dynamic number of channels based on the devicetree. But for chi=
+ps
+> >>> that have less than 20 total possible channels or so we've always
+> >>> provided all possible channels to userspace. It makes writing userspa=
+ce
+> >>> software for a specific chip easier if we can always assume that chip
+> >>> has the same number of channels. =20
+> >>
+> >> In any exception to this rule of describing all channels in DT should =
+just avoid using these helpers and do things as they're done now. No one is=
+ forced to use them. But I am not really sure why would you not describe al=
+l the channels in the device-tree for ICs with less than 20 channels? I'd a=
+ssume that if the channels are unconditionally usable in the hardware, then=
+ they should be in DT as well(?) =20
+> >=20
+> > I devicetree, I think the tendency is to be less verbose and only add
+> > properties/nodes when there is something that is not the usual case.
+> > Default values are chosen to be the most usual case so we don't have
+> > to write so much in the .dts. =20
+>=20
+> On the other hand, I've received comments from the DTS people to expose=20
+> all HW blocks in the bindings. AFAIR, for example, marking=20
+> power-supplies as 'optional' in bindings is frowned upon, because they=20
+> are in the HW whether the SW needs to control them or not. Hence I think=
+=20
+> marking either all or no channels in dt should be the way to go - but my=
+=20
+> thinking is not done based on the years of experience on ADCs!
+
+Even for power supplies there is a difference between the binding doc
+saying they are there and what we do if they aren't (which is assume
+a stub regulator representing an non controllable / unknowable power supply
+is sufficient).    Also for power supplies there isn't really a 'default'
+to use so it doesn't really work as a comparison.
+
+Hindsight is a wonderful thing.  I'm not sure on what policy we should have
+gone for, but now we are kind of stuck with this slightly messy situation.
+
+Helper wise if it expands usefulness we may want a bool parameter to say
+if we skip the missing or not + make sure a max expected channel is provided
+(might already be - I didn't check!)
+
+Jonathan
+
+>=20
+> >>>> Add couple of helper functions which can be used to retrieve the cha=
+nnel
+> >>>> information from the device node.
+> >>>>
+> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>>> =20
+> >>
+> >> Yours,
+> >>  =C2=A0=C2=A0=C2=A0=C2=A0-- Matti =20
+> >  =20
+>=20
+
 
