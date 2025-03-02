@@ -1,326 +1,153 @@
-Return-Path: <linux-acpi+bounces-11683-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11684-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32B3A4AF38
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 05:11:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 105B4A4AF42
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 05:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88B4F16ECD1
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 04:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42B50188DF92
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Mar 2025 04:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4909F192B86;
-	Sun,  2 Mar 2025 04:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D6F1BD9E3;
+	Sun,  2 Mar 2025 04:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRAQ/Bpr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BGC/cJGi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3298632E;
-	Sun,  2 Mar 2025 04:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462CB17C9F1
+	for <linux-acpi@vger.kernel.org>; Sun,  2 Mar 2025 04:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740888671; cv=none; b=MfuSaHB1j0BCBT+W14vfbdXh+3htUDFEAO7afvHX4PnRA2QIFRnn1TMqkkvZCf1GeQ6WGDFapDIBaXHF3WZeeVArvyaCQH9y72NE8wF7mIgfjVol55tr2hjgjnjlJbJ+v4SvOQA2pTozPlxHWpqtp3Tdpn+vcR9+48pFr9xvKXM=
+	t=1740890360; cv=none; b=KtgVaWyvMwMhvQrJQmtQzevqFL/GWcEfBbWRe8UJuwwpr7ECqZHH2Fuit5G5tuPkjjp0Ieyznd8dUxIg/LmLnYpsrOnEla2joYIHthMxvZeMZS7YmTJ4TlI4M0vScAiSY9ocGOiUGWxtBqcY1/7MjvSovSZTf8PdW3qkxh7eW4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740888671; c=relaxed/simple;
-	bh=mhZ4GEcprVucdPj/c25y003/+abJiOOGAR1e9Cvo/NY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m6eoQPPkN8Q6+TPi8lubXjoJA0yDK8DSsqnn/OOijCaB6Rb8gIuPyQ3ScD0Sv+X+h67mCZt2JAQAsW1BLd78AA6MKcWnp1vo6QMBx3FQRERDHrk/PPHKTOry1PXDDTc6UxsRgPQ76V7sA187loklDcoAV6Q+2ooeaCdOpS4w9Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRAQ/Bpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D712C4CED6;
-	Sun,  2 Mar 2025 04:10:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740888670;
-	bh=mhZ4GEcprVucdPj/c25y003/+abJiOOGAR1e9Cvo/NY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uRAQ/BprkT/fcETMQ/nvto5l6d/mJi22o7WvOY6UsRwn/nB2zaUFub9c4e4HutEhR
-	 FxSc2yd6nJX6ms2tv+vIeelPkGLRoo997BrggpXhZINTGueJF4UWmioOzWaawkqEB2
-	 pTkMX3nkEoGq8HGmAaqik5NYczg2WLPMmBOgR9o6jw4SdLBzJRFCFUGq7yuxo4HtZn
-	 sf2e9Miao8Q7EQkyrF8dkhDWkuN5/64M/VSrdAfByWm15HcEcKb77ZsQsl96Xg2LTV
-	 wvcCxNrLi9itzebjiUPrMZKaWvF1pi8/VqyLlkyZKbM70Q8ddZou8wJ54NLQpP8xPv
-	 dje10SlihUoLg==
-Date: Sun, 2 Mar 2025 04:10:46 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>, Guillaume Stols
- <gstols@baylibre.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Dumitru
- Ceclan <mitrutzceclan@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>, Alisa-Dariana Roman
- <alisadariana@gmail.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, Linus
- Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v4 08/10] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <20250302041046.7fde3c68@jic23-huawei>
-In-Reply-To: <4d1bf5df8f3b0f760422b6b67fcc8245ebf520e0.1740421249.git.mazziesaccount@gmail.com>
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
-	<4d1bf5df8f3b0f760422b6b67fcc8245ebf520e0.1740421249.git.mazziesaccount@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740890360; c=relaxed/simple;
+	bh=9PhrIp9yv02RWqI/rCYrohMCSsLmzPYpYHEMpgzUTzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tq+pceq9YntezwIBty0HMLrYLLDiiPJM1LLgyYyJcO+T0j70YIl8klG2hMWN5ge1Qp8HO1wyPbPLEZfP5UBOCo4e1wv8oT5k4caTf83qs1lTvjRrfjBhVWmQvUuTIVy7ypAeAkfrUTlzPCkllIDYRsxXwAvgrLsPquwSVEsS1ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BGC/cJGi; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740890359; x=1772426359;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9PhrIp9yv02RWqI/rCYrohMCSsLmzPYpYHEMpgzUTzg=;
+  b=BGC/cJGiVyccz2FAEjDThLDl/JeICcYfMdv0rr8Xt5s3bIGitxU/+VE2
+   q7f4GZHUVNATd1ycpDkeLdxEyS0aYlUbqjpOhavLMvuPY49+grX5VBKYE
+   qbM3S1awIkZ+XdGW6NKeyCsYiLltje6CSQAMMMg0dtmn/ckZmGg9vxE6k
+   yB9/uPZKnB0qqXZEzgqBBBi3E1Jrg5GuptkdaiT7BTIuY+LKHQlu+CNYf
+   DKrB1gDd9w56ORdyE6rha6UuzpYE1Ohv+9vuibhu5EY1kuN3685BL8rGC
+   faqzbNTZZ+4gu1RK6RFZfQ8eP8aa3gwsc0rzITJrGXr4YUYse2HdkXCzu
+   Q==;
+X-CSE-ConnectionGUID: +dpdz0LDS+uo6gj48Lk4eA==
+X-CSE-MsgGUID: cFoVv2GFSG+hA3wqFvBBUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41972370"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="41972370"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 20:39:18 -0800
+X-CSE-ConnectionGUID: rIHpzWWYSsGmjxlQ73kKAw==
+X-CSE-MsgGUID: SWt4Nsu8T2igf8jTX7YjWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
+   d="scan'208";a="140922587"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 01 Mar 2025 20:39:16 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tob6f-000H3m-2t;
+	Sun, 02 Mar 2025 04:39:13 +0000
+Date: Sun, 2 Mar 2025 12:38:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: mpagano@gentoo.org, linux-acpi@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, robert.moore@intel.com,
+	rafael.j.wysocki@intel.com, Mike Pagano <mpagano@gentoo.org>
+Subject: Re: [PATCH] ACPICA: fix build with GCC 15 due to
+ -Werror=unterminated-string-initialization
+Message-ID: <202503021209.06wcSVPg-lkp@intel.com>
+References: <20250228210834.811164-1-mpagano@gentoo.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228210834.811164-1-mpagano@gentoo.org>
 
-On Mon, 24 Feb 2025 20:34:30 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+Hi,
 
-> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-> an automatic measurement mode, with an alarm interrupt for out-of-window
-> measurements. The window is configurable for each channel.
-> 
-> The I2C protocol for manual start of the measurement and data reading is
-> somewhat peculiar. It requires the master to do clock stretching after
-> sending the I2C slave-address until the slave has captured the data.
-> Needless to say this is not well suopported by the I2C controllers.
-> 
-> Thus the driver does not support the BD79124's manual measurement mode
-> but implements the measurements using automatic measurement mode relying
-> on the BD79124's ability of storing latest measurements into register.
-> 
-> The driver does also support configuring the threshold events for
-> detecting the out-of-window events.
-> 
-> The BD79124 keeps asserting IRQ for as long as the measured voltage is
-> out of the configured window. Thus the driver masks the received event
-> for a fixed duration (1 second) when an event is handled. This prevents
-> the user-space from choking on the events
-> 
-> The ADC input pins can be also configured as general purpose outputs.
-> Those pins which don't have corresponding ADC channel node in the
-> device-tree will be controllable as GPO.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Some minor stuff inline.
+kernel test robot noticed the following build errors:
 
-Thanks,
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.14-rc4 next-20250228]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Jonathan
+url:    https://github.com/intel-lab-lkp/linux/commits/mpagano-gentoo-org/ACPICA-fix-build-with-GCC-15-due-to-Werror-unterminated-string-initialization/20250301-051004
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20250228210834.811164-1-mpagano%40gentoo.org
+patch subject: [PATCH] ACPICA: fix build with GCC 15 due to -Werror=unterminated-string-initialization
+config: x86_64-randconfig-001-20250302 (https://download.01.org/0day-ci/archive/20250302/202503021209.06wcSVPg-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503021209.06wcSVPg-lkp@intel.com/reproduce)
 
-> +
-> +#define BD79124_REG_SYSTEM_STATUS	0x0
-> +#define BD79124_REG_GEN_CFG		0x01
-> +#define BD79124_REG_OPMODE_CFG		0x04
-> +#define BD79124_REG_PINCFG		0x05
-> +#define BD79124_REG_GPO_VAL		0x0B
-> +#define BD79124_REG_SEQUENCE_CFG	0x10
-> +#define BD79124_REG_MANUAL_CHANNELS	0x11
-> +#define BD79124_REG_AUTO_CHANNELS	0x12
-> +#define BD79124_REG_ALERT_CH_SEL	0x14
-> +#define BD79124_REG_EVENT_FLAG		0x18
-> +#define BD79124_REG_EVENT_FLAG_HI	0x1a
-> +#define BD79124_REG_EVENT_FLAG_LO	0x1c
-> +#define BD79124_REG_HYSTERESIS_CH0	0x20
-> +#define BD79124_REG_EVENTCOUNT_CH0	0x22
-> +#define BD79124_REG_RECENT_CH0_LSB	0xa0
-> +#define BD79124_REG_RECENT_CH7_MSB	0xaf
-> +
-> +#define BD79124_ADC_BITS 12
-> +#define BD79124_MASK_CONV_MODE GENMASK(6, 5)
-> +#define BD79124_MASK_AUTO_INTERVAL GENMASK(1, 0)
-> +#define BD79124_CONV_MODE_MANSEQ 0
-> +#define BD79124_CONV_MODE_AUTO 1
-> +#define BD79124_INTERVAL_075 0
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503021209.06wcSVPg-lkp@intel.com/
 
-Can we make these units in these explicit?
-#define BD79124_INTERVAL_MS_0_75 
-maybe?  Nice to avoid need for comments on what the units are where
-you use these.
+All errors (new ones prefixed by >>):
 
-> +#define BD79124_INTERVAL_150 1
-> +#define BD79124_INTERVAL_300 2
-> +#define BD79124_INTERVAL_600 3
-
-> +
-> +static int bd79124_enable_event(struct bd79124_data *data,
-> +		enum iio_event_direction dir, unsigned int channel)
-> +{
-> +	int dir_bit = BIT(dir);
-> +	int reg;
-> +	u16 *limit;
-> +	int ret;
-> +
-> +	guard(mutex)(&data->mutex);
-> +	/* Set channel to be measured */
-> +	ret = bd79124_start_measurement(data, channel);
-> +	if (ret)
-> +		return ret;
-> +
-> +	data->alarm_monitored[channel] |= dir_bit;
-> +
-> +	/* Add the channel to the list of monitored channels */
-> +	ret = regmap_set_bits(data->map, BD79124_REG_ALERT_CH_SEL,
-> +			      BIT(channel));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (dir == IIO_EV_DIR_RISING) {
-> +		limit = &data->alarm_f_limit[channel];
-> +		reg = BD79124_GET_HIGH_LIMIT_REG(channel);
-> +	} else {
-> +		limit = &data->alarm_f_limit[channel];
-> +		reg = BD79124_GET_LOW_LIMIT_REG(channel);
-> +	}
-> +	/* Don't write the new limit to the hardware if we are in the
-> +	 * rate-limit period. The timer which re-enables the event will set
-> +	 * the limit.
-> +	 */
-/*
- * Don't
-
-Check for other cases of this...
+   In file included from <command-line>:
+   drivers/acpi/nfit/core.c: In function 'nfit_init':
+>> include/linux/compiler_types.h:542:45: error: call to '__compiletime_assert_1081' declared with attribute error: BUILD_BUG_ON failed: sizeof(struct acpi_table_nfit) != 40
+     542 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:523:25: note: in definition of macro '__compiletime_assert'
+     523 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:542:9: note: in expansion of macro '_compiletime_assert'
+     542 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |         ^~~~~~~~~~~~~~~~
+   drivers/acpi/nfit/core.c:3489:9: note: in expansion of macro 'BUILD_BUG_ON'
+    3489 |         BUILD_BUG_ON(sizeof(struct acpi_table_nfit) != 40);
+         |         ^~~~~~~~~~~~
 
 
-> +static void bd79124_re_enable_hi(struct bd79124_data *data, unsigned int channel)
-> +{
-> +	int ret, evbit = BIT(IIO_EV_DIR_RISING);
-> +
-> +	if (!(data->alarm_suppressed[channel] & evbit))
-> +		return;
-> +
-> +	data->alarm_suppressed[channel] &= (~evbit);
+vim +/__compiletime_assert_1081 +542 include/linux/compiler_types.h
 
-No brackets around the ~evbit.
-Check for other cases of this.
-Otherwise we'll get some script written 'cleanup'.
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  528  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  529  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  530  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  531  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  532  /**
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  533   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  534   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  535   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  536   *
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  537   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  538   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  539   * compiler has support to do so.
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  540   */
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  541  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21 @542  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  543  
 
-
-> +
-> +	if (!(data->alarm_monitored[channel] & evbit))
-> +		return;
-> +
-> +	ret = bd79124_write_int_to_reg(data, BD79124_GET_HIGH_LIMIT_REG(channel),
-> +				       data->alarm_r_limit[channel]);
-> +	if (ret)
-> +		dev_warn(data->dev, "High limit enabling failed for channel%d\n",
-> +			 channel);
-> +}
-> +
-> +static void bd79124_alm_enable_worker(struct work_struct *work)
-> +{
-> +	int i;
-> +	struct bd79124_data *data = container_of(work, struct bd79124_data,
-> +						 alm_enable_work.work);
-> +
-> +	guard(mutex)(&data->mutex);
-> +	/*
-> +	 * We should not re-enable the event if user has disabled it while
-> +	 * rate-limiting was enabled.
-> +	 */
-
-Is this comment suggesting something that isn't done or referring to specific
-code?  I think it wants to be in the function above where the decision is made.
-
-> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
-> +		bd79124_re_enable_hi(data, i);
-> +		bd79124_re_enable_lo(data, i);
-> +	}
-> +}
-> +
-
-> +
-
-> +static irqreturn_t bd79124_event_handler(int irq, void *priv)
-> +{
-> +	int ret, i_hi, i_lo, i;
-> +	struct iio_dev *iio_dev = priv;
-> +	struct bd79124_data *data = iio_priv(iio_dev);
-> +
-> +	/*
-> +	 * Return IRQ_NONE if bailing-out without acking. This allows the IRQ
-> +	 * subsystem to disable the offending IRQ line if we get a hardware
-> +	 * problem. This behaviour has saved my poor bottom a few times in the
-> +	 * past as, instead of getting unusably unresponsive, the system has
-> +	 * spilled out the magic words "...nobody cared".
-> +	 */
-> +	ret = regmap_read(data->map, BD79124_REG_EVENT_FLAG_HI, &i_hi);
-> +	if (ret)
-> +		return IRQ_NONE;
-> +
-> +	ret = regmap_read(data->map, BD79124_REG_EVENT_FLAG_LO, &i_lo);
-> +	if (ret)
-> +		return IRQ_NONE;
-> +
-> +	if (!i_lo && !i_hi)
-> +		return IRQ_NONE;
-> +
-> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
-> +		u64 ecode;
-> +
-> +		if (BIT(i) & i_hi) {
-> +			ecode = IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
-
-> +					IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING);
-Align this to less tabs as per discussion on previous version.
-
-> +
-> +
-> +struct bd79124_reg_init {
-> +	int reg;
-> +	int val;
-> +};
-
-Not used any more.
-
-> +
-> +static int bd79124_chan_init(struct bd79124_data *data, int channel)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_write(data->map, BD79124_GET_HIGH_LIMIT_REG(channel), 4095);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return regmap_write(data->map, BD79124_GET_LOW_LIMIT_REG(channel), 0);
-> +}
-
-> +
-> +static int bd79124_init_mux(struct bd79124_data *data, int gpio_pins)
-> +{
-> +	return regmap_write(data->map, BD79124_REG_PINCFG, gpio_pins);
-
-Maybe squash this inline.  Doesn't seem to add a lot to have the helper.
-
-> +}
-> +
-> +static int bd79124_hw_init(struct bd79124_data *data, int gpio_pins)
-> +{
-...
-
-> +
-> +	/* Set the measurement interval to 0.75 mS */
-
-This lead me to comment on defines.  I'd rather code was fully self
-documenting and remove the comment if we can.  Makes for less chance of it
-becoming out of sync over time.
-
-> +	regval = FIELD_PREP(BD79124_MASK_AUTO_INTERVAL, BD79124_INTERVAL_075);
-> +	ret = regmap_update_bits(data->map, BD79124_REG_OPMODE_CFG,
-> +				 BD79124_MASK_AUTO_INTERVAL, regval);
-> +	if (ret)
-> +		return ret;
-
-
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
