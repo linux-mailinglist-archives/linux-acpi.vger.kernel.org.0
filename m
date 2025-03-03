@@ -1,236 +1,232 @@
-Return-Path: <linux-acpi+bounces-11797-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11805-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D88A4E708
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 17:55:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940AAA4EA13
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 18:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77A5E420F35
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D5A63BDC87
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 17:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B72529AAFD;
-	Tue,  4 Mar 2025 16:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F050aL2e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F02D24EA85;
+	Tue,  4 Mar 2025 17:09:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAB6BA2E;
-	Tue,  4 Mar 2025 16:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBAC24C077
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 17:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741108145; cv=pass; b=sgPSnWg1bIWNm+7x5HVCL/fsoOSI7lO5NqtUQt9mGmc6fnsEENx4dxqw93hnstFNr3OI3AqwggaKnZwwNEBmbbTEciagCgQmnTwyktqly4opjf2chi53zBruUCNcaf3y3XTo7xZ8/TQOpqMyDTUycXqPIHidLAtT6FcPZn3Q5ik=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741108145; c=relaxed/simple;
+	bh=MfSTY+8Javma4iMKIMRIP5AOm3S32ksYO4b7JbopmcE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VwOFh3o9LvebzD0wcRIlPvhpS0XFYNyM15ebq7HtWWyOSgcAtV12HFAjdGpBYT0bDqOfP2reaDhugtLysOLzCh3cURNmXBAWuB44+qVcRirY5fl3feBrLdYqWW/3ocDHn3CzFhyobT72Y1EfCugZGYgxyf6jJIo+dCavVmak44M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=217.140.110.172; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=pass smtp.client-ip=160.75.25.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
+Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id C018340D977C
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 20:09:01 +0300 (+03)
+X-Envelope-From: <root@cc.itu.edu.tr>
+Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6hQx33ZvzG4D7
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 19:46:33 +0300 (+03)
+Received: by le1 (Postfix, from userid 0)
+	id 026E642735; Tue,  4 Mar 2025 19:46:29 +0300 (+03)
+X-Envelope-From: <linux-kernel+bounces-541452-bozkiru=itu.edu.tr@vger.kernel.org>
+Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
+	by le2 (Postfix) with ESMTP id F12BF41B28
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:57:32 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw2.itu.edu.tr (Postfix) with SMTP id A59C52DCDE
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:57:32 +0300 (+03)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB2C1731C1
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:57:01 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA5B1F942D;
+	Mon,  3 Mar 2025 10:53:43 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346E01F875B;
+	Mon,  3 Mar 2025 10:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741105445; cv=none; b=TP+8kXMnPbLmZC5OgfYCd78tURNwUcL18PCwrAUB/loNBBYhgXMWRX9kd0rPvUOtQClziBZ25hphQ4ynrCRBkl+v2NcRp1UCwcJbdu+jPSr2gdhGuCVlAr450CIcgmdW/8iIRa0jpFk5HVycv8z12M9iyoZx6+nxiCHk3H/YrP8=
+	t=1740999221; cv=none; b=nJ0DldH+Er4DnwywR1QZQFQg3NeFcT2ust0M2aSiHXAGEkYPUIGZY111AuKePvW9NTEztoGYwsvRBJm/rGjT7mscDAYqo7IT9ToCtdm9lPhNxGU81VYdOlT5vr7reUJYHJ/uHDprOSPlWVBy+EkuUMvinQ9u/FND92hwvgGQVLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741105445; c=relaxed/simple;
-	bh=1g/E3QxFi8+f57T291+uHeqUByWPis4PZu0PV68aBXI=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=pVSdsu/horJgvyzrjbHTuiq3uszp6WZ7arKSG8Z4VXVMXFFLNusc5wBxteITvmVVjn5Vxug2+j/JGZOURYSkx75PwL2rPUYSzjiRJg3jSaP8ntlOD9WNeNTUJUpIVrWLAzNKaRVsPUEkSY3qOhFt3A/DycDmmsU1lRKyw6/KpxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F050aL2e; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741105444; x=1772641444;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=1g/E3QxFi8+f57T291+uHeqUByWPis4PZu0PV68aBXI=;
-  b=F050aL2eIGP4yCYMgMl8e5ZxXRtVUZQzY99r70+JmJSxZ2UgN4PgP4mL
-   rTS1/YdmsIX5JaFRI5PPEll++P1S4Z3WgktPxxyTA69R8d+wZp2pBpdEC
-   bMgDrNP4htz4TKJEg2h9Zn2Li2GRrU/SNIGLZ6KgMQKk7HccUJA61etuG
-   wS090I7aMENF2Hxj5tlZVsZEvKkyTIOKN7sH4jfxKUHwiBqfsEESjjzAj
-   riNa8BZhZqw5/+HPLGcxEvbu+CmEyeREJhBgl1CEZnQcJ0yUDRyOvwGTl
-   pi9JE80uAsMFguw0D3BOsBSg7lg2eFtCR79F9R3M60pTb7DCwf2wCRwED
-   w==;
-X-CSE-ConnectionGUID: 3nAd31OWTw2c0oSlse1gZg==
-X-CSE-MsgGUID: 53lKW6uPRzGY4euLjlBigg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="59445033"
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
-   d="scan'208";a="59445033"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 08:24:03 -0800
-X-CSE-ConnectionGUID: qmAMMgOIRCiEcONdfDlsoQ==
-X-CSE-MsgGUID: pPUNwViDTFGOFN0AyWOFnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="118937744"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.220])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 08:23:59 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 4 Mar 2025 18:23:54 +0200 (EET)
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-cc: Mario Limonciello <superm1@kernel.org>, 
-    Antheas Kapenekakis <lkml@antheas.dev>, Kurt Borja <kuurtb@gmail.com>, 
-    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-    Hans de Goede <hdegoede@redhat.com>, "Luke D . Jones" <luke@ljones.dev>, 
-    Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    "open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
-    open list <linux-kernel@vger.kernel.org>, 
-    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
-    "Derek J . Clark" <derekjohn.clark@gmail.com>, me@kylegospodneti.ch, 
-    Denis Benato <benato.denis96@gmail.com>, 
-    Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v2 1/1] ACPI: platform_profile: Treat quiet and low power
- the same
-In-Reply-To: <CAJZ5v0hNHFLtBwTTuPc7mNZhCKkmFJgFwgw88_BR_7nQ+rc6Cw@mail.gmail.com>
-Message-ID: <ccea4f8c-6ffe-a322-4d84-71377909dca1@linux.intel.com>
-References: <20250304064745.1073770-1-superm1@kernel.org> <20250304064745.1073770-2-superm1@kernel.org> <CAGwozwHniWGQ7qK6FYD_WK5zNjkro7-Q1nTcFPAuWDt9UQ+noA@mail.gmail.com> <23d6c735-e94f-4d43-87b0-ff119941fcac@kernel.org>
- <CAJZ5v0geaYYRQm0Hs2M4ak_8AZoWLJS-v0jqyrsaVjmXk267rA@mail.gmail.com> <71b14dc3-77e1-4fd7-b576-821e3a41ba19@kernel.org> <CAJZ5v0hNHFLtBwTTuPc7mNZhCKkmFJgFwgw88_BR_7nQ+rc6Cw@mail.gmail.com>
+	s=arc-20240116; t=1740999221; c=relaxed/simple;
+	bh=MfSTY+8Javma4iMKIMRIP5AOm3S32ksYO4b7JbopmcE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Nj31qmXKISMpI7migibu2U0Ct3Wf5XKbreLzDRDw0v4RI6MWCyCiexUmya0LItvac2zLovhDMMmUKL1thynFe3Ty8pXHd13jt9q9jlnDBClLDSDp4NBqr64pjvB9lRWeGHXXsGbF0bmwK/Pvf5+D/5aGY43OD10xva92htvNMGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F20D62008;
+	Mon,  3 Mar 2025 02:53:53 -0800 (PST)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8ECEC3F673;
+	Mon,  3 Mar 2025 02:53:38 -0800 (PST)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Date: Mon, 03 Mar 2025 10:51:46 +0000
+Subject: [PATCH 11/14] i2c: xgene-slimpro: Simplify PCC shared memory
+ region handling
+Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-2083532595-1741105319=:931"
-Content-ID: <2aa3ead2-130a-9dd0-aed8-c4cb1d958aaa@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250303-pcc_fixes_updates-v1-11-3b44f3d134b1@arm.com>
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+In-Reply-To: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>, 
+ Adam Young <admiyo@os.amperecomputing.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3735; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=MfSTY+8Javma4iMKIMRIP5AOm3S32ksYO4b7JbopmcE=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBnxYoi2nHgqkxUHTt758cixVVE8QA/rlgDBWi/d
+ T7INXNU0HuJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ8WKIgAKCRAAQbq8MX7i
+ mB+GEAC3iW/TRhSK3y8Krc/xktnm/Hfa1Tc/bl2PMFdgfLqbDRKR6bXC0V7m3HMXalYHqOsa0qT
+ rMvYPKrdrUxTCeJyO0WIlrpRSsGLZ/GKgNWtWni1zVNoY1jrh6LjofUFMcmDYTVOPSdIA+Ykv3j
+ Hkb/3MFb2TM+IuKjy8bcZBqJ0ER6a7K/so90OFPwZL7ju65vVLA0uAdA/2eioym+K/jG0B3fxaJ
+ SO+f7mFRQSI9ys7zJo66abPTWDJ+F/ZEncQBzOs00asQdJWLNSAuMPJp292BnCxF5R0uWygi7DH
+ 2YBo+7y9tBFPr20XN0l4w9nrgS9YrekrB15Aws82VWGexu2DP5UhBItQTM16hRpDd1+v69vjgZ+
+ n4l19dI9fGiIvGZ2/vXvrIU1/2jvoI4JR40Pd7JhcTEjmJTCbJD5lz2eBs/UKulnpOALUk/2f+u
+ kXRkaIm2BvKMioRRzmd+j60OEyTekpt6TsuowOGZ4bxjxvNFo/0eLkIoiHqdlbbRA+Sy6dsBUhd
+ vsGEXBf7vFJSCOhGFFazsJQlAkiIdRMMrnlZnF6vBz4x7X2pW8Dp34kQjduCQ/Mw05T0UoQWeTJ
+ jvpVOV87Rk9KlAMlSzQW51wTUkSeuJngr9PSyhaOzkHlGFtC3RgcpsO6Rj0eDTBAslWJlAhMeaj
+ NWURpMEQxip2LSg==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
+X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
+X-ITU-Libra-ESVA-ID: 4Z6hQx33ZvzG4D7
+X-ITU-Libra-ESVA: No virus found
+X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
+X-ITU-Libra-ESVA-Watermark: 1741712835.46184@gPVmMYqDkoWZd1LFkc5fAQ
+X-ITU-MailScanner-SpamCheck: not spam
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The PCC driver now handles mapping and unmapping of shared memory
+areas as part of pcc_mbox_{request,free}_channel(). Without these before,
+this xgene-slimpro I2C driver did handling of those mappings like several
+other PCC mailbox client drivers.
 
---8323328-2083532595-1741105319=:931
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <f17d2118-68e9-267f-44c9-8ec2bbc031e5@linux.intel.com>
+There were redundant operations, leading to unnecessary code. Maintaining
+the consistency across these driver was harder due to scattered handling
+of shmem.
 
-On Tue, 4 Mar 2025, Rafael J. Wysocki wrote:
+Just use the mapped shmem and remove all redundant operations from this
+driver.
 
-> On Tue, Mar 4, 2025 at 3:52=E2=80=AFPM Mario Limonciello <superm1@kernel.=
-org> wrote:
-> >
-> > On 3/4/2025 08:08, Rafael J. Wysocki wrote:
-> > > On Tue, Mar 4, 2025 at 1:49=E2=80=AFPM Mario Limonciello <superm1@ker=
-nel.org> wrote:
-> > >>
-> > >> On 3/4/25 02:38, Antheas Kapenekakis wrote:
-> > >>> On Tue, 4 Mar 2025 at 07:48, Mario Limonciello <superm1@kernel.org>=
- wrote:
-> > >>>>
-> > >>>> From: Mario Limonciello <mario.limonciello@amd.com>
-> > >>>>
-> > >>>> When two drivers don't support all the same profiles the legacy in=
-terface
-> > >>>> only exports the common profiles.
-> > >>>>
-> > >>>> This causes problems for cases where one driver uses low-power but=
- another
-> > >>>> uses quiet because the result is that neither is exported to sysfs=
-=2E
-> > >>>>
-> > >>>> If one platform profile handler supports quiet and the other
-> > >>>> supports low power treat them as the same for the purpose of
-> > >>>> the sysfs interface.
-> > >>>>
-> > >>>> Fixes: 688834743d67 ("ACPI: platform_profile: Allow multiple handl=
-ers")
-> > >>>> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-> > >>>> Closes: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-=
-42ad-9257-5b8fc6c24ac9@gmx.de/T/#mc068042dd29df36c16c8af92664860fc4763974b
-> > >>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > >>>> ---
-> > >>>>    drivers/acpi/platform_profile.c | 38 ++++++++++++++++++++++++++=
-++++---
-> > >>>>    1 file changed, 35 insertions(+), 3 deletions(-)
-> > >>>>
-> > >>>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platfo=
-rm_profile.c
-> > >>>> index 2ad53cc6aae53..d9a7cc5891734 100644
-> > >>>> --- a/drivers/acpi/platform_profile.c
-> > >>>> +++ b/drivers/acpi/platform_profile.c
-> > >>>> @@ -73,8 +73,20 @@ static int _store_class_profile(struct device *=
-dev, void *data)
-> > >>>>
-> > >>>>           lockdep_assert_held(&profile_lock);
-> > >>>>           handler =3D to_pprof_handler(dev);
-> > >>>> -       if (!test_bit(*bit, handler->choices))
-> > >>>> -               return -EOPNOTSUPP;
-> > >>>> +       if (!test_bit(*bit, handler->choices)) {
-> > >>>> +               switch (*bit) {
-> > >>>> +               case PLATFORM_PROFILE_QUIET:
-> > >>>> +                       *bit =3D PLATFORM_PROFILE_LOW_POWER;
-> > >>>> +                       break;
-> > >>>> +               case PLATFORM_PROFILE_LOW_POWER:
-> > >>>> +                       *bit =3D PLATFORM_PROFILE_QUIET;
-> > >>>> +                       break;
-> > >>>> +               default:
-> > >>>> +                       return -EOPNOTSUPP;
-> > >>>> +               }
-> > >>>> +               if (!test_bit(*bit, handler->choices))
-> > >>>> +                       return -EOPNOTSUPP;
-> > >>>> +       }
-> > >>>>
-> > >>>>           return handler->ops->profile_set(dev, *bit);
-> > >>>>    }
-> > >>>> @@ -252,8 +264,16 @@ static int _aggregate_choices(struct device *=
-dev, void *data)
-> > >>>>           handler =3D to_pprof_handler(dev);
-> > >>>>           if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
-> > >>>>                   bitmap_copy(aggregate, handler->choices, PLATFOR=
-M_PROFILE_LAST);
-> > >>>> -       else
-> > >>>> +       else {
-> > >>>> +               /* treat quiet and low power the same for aggregat=
-ion purposes */
-> > >>>> +               if (test_bit(PLATFORM_PROFILE_QUIET, handler->choi=
-ces) &&
-> > >>>> +                   test_bit(PLATFORM_PROFILE_LOW_POWER, aggregate=
-))
-> > >>>> +                       set_bit(PLATFORM_PROFILE_QUIET, aggregate)=
-;
-> > >>>> +               else if (test_bit(PLATFORM_PROFILE_LOW_POWER, hand=
-ler->choices) &&
-> > >>>> +                        test_bit(PLATFORM_PROFILE_QUIET, aggregat=
-e))
-> > >>>> +                       set_bit(PLATFORM_PROFILE_LOW_POWER, aggreg=
-ate);
-> > >>>>                   bitmap_and(aggregate, handler->choices, aggregat=
-e, PLATFORM_PROFILE_LAST);
-> > >>>> +       }
-> > >>>
-> > >>> So you end up showing both? If that's the case, isn't it equivalent=
- to
-> > >>> just make amd-pmf show both quiet and low-power?
-> > >>>
-> > >>> I guess it is not ideal for framework devices. But if asus devices =
-end
-> > >>> up showing both, then it should be ok for framework devices to show
-> > >>> both.
-> > >>>
-> > >>> I like the behavior of the V1 personally.
-> > >>
-> > >> No; this doesn't cause it to show both.  It only causes one to show =
-up.
-> > >
-> > > Which may not be the one that was shown before IIUC and that's not go=
-od.
-> > >
-> > > What actually is the problem with the previous version?
-> >
-> > Functionally?  Nothing.  This was to demonstrate the other way to do it
-> > that I preferred and get feedback on it as an alternative.
-> >
-> > If you and Ilpo are happy with v1 that's totally fine and we can go wit=
-h
-> > that.
->=20
-> I'd prefer to go for the v1 at this point because it fixes a
-> regression affecting user space that needs to be addressed before the
-> 6.14 release (and there is not too much time left) and it has been
-> checked on the affected systems.
->=20
-> Ilpo, do you agree?
->=20
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+ drivers/i2c/busses/i2c-xgene-slimpro.c | 39 ++++------------------------------
+ 1 file changed, 4 insertions(+), 35 deletions(-)
 
-Yes, I'm fine with that.
+diff --git a/drivers/i2c/busses/i2c-xgene-slimpro.c b/drivers/i2c/busses/i2c-xgene-slimpro.c
+index 663fe5604dd64b80e57f906e1f7430dcf6d5e95b..a0880f4a056d2b8abbac9f58416215a7fc9b130e 100644
+--- a/drivers/i2c/busses/i2c-xgene-slimpro.c
++++ b/drivers/i2c/busses/i2c-xgene-slimpro.c
+@@ -101,8 +101,6 @@ struct slimpro_i2c_dev {
+ 	struct completion rd_complete;
+ 	u8 dma_buffer[I2C_SMBUS_BLOCK_MAX + 1]; /* dma_buffer[0] is used for length */
+ 	u32 *resp_msg;
+-	phys_addr_t comm_base_addr;
+-	void *pcc_comm_addr;
+ };
+ 
+ #define to_slimpro_i2c_dev(cl)	\
+@@ -148,7 +146,8 @@ static void slimpro_i2c_rx_cb(struct mbox_client *cl, void *mssg)
+ static void slimpro_i2c_pcc_rx_cb(struct mbox_client *cl, void *msg)
+ {
+ 	struct slimpro_i2c_dev *ctx = to_slimpro_i2c_dev(cl);
+-	struct acpi_pcct_shared_memory *generic_comm_base = ctx->pcc_comm_addr;
++	struct acpi_pcct_shared_memory __iomem *generic_comm_base =
++							ctx->pcc_chan->shmem;
+ 
+ 	/* Check if platform sends interrupt */
+ 	if (!xgene_word_tst_and_clr(&generic_comm_base->status,
+@@ -169,7 +168,8 @@ static void slimpro_i2c_pcc_rx_cb(struct mbox_client *cl, void *msg)
+ 
+ static void slimpro_i2c_pcc_tx_prepare(struct slimpro_i2c_dev *ctx, u32 *msg)
+ {
+-	struct acpi_pcct_shared_memory *generic_comm_base = ctx->pcc_comm_addr;
++	struct acpi_pcct_shared_memory __iomem *generic_comm_base =
++							ctx->pcc_chan->shmem;
+ 	u32 *ptr = (void *)(generic_comm_base + 1);
+ 	u16 status;
+ 	int i;
+@@ -464,15 +464,12 @@ static int xgene_slimpro_i2c_probe(struct platform_device *pdev)
+ 	} else {
+ 		struct pcc_mbox_chan *pcc_chan;
+ 		const struct acpi_device_id *acpi_id;
+-		int version = XGENE_SLIMPRO_I2C_V1;
+ 
+ 		acpi_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
+ 					    &pdev->dev);
+ 		if (!acpi_id)
+ 			return -EINVAL;
+ 
+-		version = (int)acpi_id->driver_data;
+-
+ 		if (device_property_read_u32(&pdev->dev, "pcc-channel",
+ 					     &ctx->mbox_idx))
+ 			ctx->mbox_idx = MAILBOX_I2C_INDEX;
+@@ -494,34 +491,6 @@ static int xgene_slimpro_i2c_probe(struct platform_device *pdev)
+ 			goto mbox_err;
+ 		}
+ 
+-		/*
+-		 * This is the shared communication region
+-		 * for the OS and Platform to communicate over.
+-		 */
+-		ctx->comm_base_addr = pcc_chan->shmem_base_addr;
+-		if (ctx->comm_base_addr) {
+-			if (version == XGENE_SLIMPRO_I2C_V2)
+-				ctx->pcc_comm_addr = memremap(
+-							ctx->comm_base_addr,
+-							pcc_chan->shmem_size,
+-							MEMREMAP_WT);
+-			else
+-				ctx->pcc_comm_addr = memremap(
+-							ctx->comm_base_addr,
+-							pcc_chan->shmem_size,
+-							MEMREMAP_WB);
+-		} else {
+-			dev_err(&pdev->dev, "Failed to get PCC comm region\n");
+-			rc = -ENOENT;
+-			goto mbox_err;
+-		}
+-
+-		if (!ctx->pcc_comm_addr) {
+-			dev_err(&pdev->dev,
+-				"Failed to ioremap PCC comm region\n");
+-			rc = -ENOMEM;
+-			goto mbox_err;
+-		}
+ 	}
+ 	rc = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+ 	if (rc)
 
-I would have acked those patches earlier but noticed they'd managed to in=
-=20
-the meantime come up yet another version of the fix so I waited some more.
-I've added my ack there now.
+-- 
+2.34.1
 
---=20
- i.
---8323328-2083532595-1741105319=:931--
+
 
