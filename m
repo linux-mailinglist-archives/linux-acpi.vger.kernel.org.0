@@ -1,205 +1,184 @@
-Return-Path: <linux-acpi+bounces-11742-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11743-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3878FA4CDBE
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 22:56:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8E8A4CE02
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 23:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55090172650
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 21:56:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D62067A9011
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 22:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E8722FDF3;
-	Mon,  3 Mar 2025 21:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5A82356B7;
+	Mon,  3 Mar 2025 22:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MiKBgU4v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNlpbk/b"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEC71F0E49;
-	Mon,  3 Mar 2025 21:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B50215782;
+	Mon,  3 Mar 2025 22:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741039003; cv=none; b=POAlfk2fUQss/bp1sG9dwL0Xmr7nGt1wq/Fu4AibhGD3KW/JkFa58hzDeF1QKBGwNViNDYjTG5Dr8pYfDgPMeqlIZSNAPJxowkGxul/KphLL06oLPPBiuiKZtI2PVq122V5lv/kNkhDVPS/1uiyj/cMbeENFTubZ3Cjs4ZNGb18=
+	t=1741040104; cv=none; b=k5dHMC8zgTZilUmJMpMh61frK1Va1tlO5+6+O8Z8XEVSiXWvrrhj+StjWhXNDwurxT3aHdbySOiMovLFfNNfa1+CeErUredXMHdWAOUPQZ/CiqH723FaCOtLVikk6zD33J2WfbCHtkOl6PeiLyKQ5e5rrdQKVNPjGRY+5kprop8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741039003; c=relaxed/simple;
-	bh=lEaVgkWLDsAoo7SCtrvHeS2rrk7e+4rhOrGqQw8hgx0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GElZVDZ3/cmipwhiDtuyuThxD7MoFqBig74/BO/TzZLs5+3M3LwIZXHGlzDaZxgHQ85lhx9rs+vCXaVwAhjLYjvzfX0lhYch9hs7KthGotxrV+kGU4SvXSdGZ0h39xTHHXb3L6PlO+FtNzJ54YQfZ9JafChA3oSwCGNVxLR4XbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MiKBgU4v; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e3c8ae3a3b2so3674362276.0;
-        Mon, 03 Mar 2025 13:56:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741039000; x=1741643800; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MNbwSIfUeSXXPmyUg0Xj+MaylekMn1nHxUkSWUyl25E=;
-        b=MiKBgU4v2bMJxeVC89sYOfaX04ZbMqdTZcET0he37eDT2WSl/B+1u1CiCdpVl7/m8P
-         lMiGynT0qCD5s+ZB6vB8+XhRpi0KGu4lQ2GvlDtDr3qo1GJq+aj0oOEnXiK0nBm/CBl0
-         2D1bTz7eOpGolHpdWMZtZIuQy4N+ZgWy/S3l+5B6wn+/oGBhnXF3cFiAaZxsiZS4wFmf
-         Pn4ANVi0Zywv06tMKLDYESMZsrAK77hNS5vIMlxZGIWMCDxeP/cYm1qGuK9IB/Uh0WO9
-         2i3sNVyy2K21Ng8ZrQrYZMAhaLHJq17nCDrep87T5LmNl9UyJ1ulIAPpoxrpIbTCbRb6
-         PiDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741039000; x=1741643800;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MNbwSIfUeSXXPmyUg0Xj+MaylekMn1nHxUkSWUyl25E=;
-        b=l7nG87cD5lGc2n8cDUKekLFaNBBVc4uIZRryV68cDWEOKMvkZSbGo+LQO0GYqdO9XY
-         kWuIpR6c2JkSYe2qsW3CjJrWsc6++ftGSR5gqsHU8ODk4UBWBsXJV03rTx2eGW2c6hJU
-         H5SuHeZGRmzCtXTXYNt2zHu3VZQQWk5+eupm0eDEpF6EDzzRRspsr4+SbQJitgODn4Dq
-         l7na9smOFOWZLO65kSCj0EfSa1/vHNxXxRAagvbwV1u2WST6c+xYeYpN/V7Ib1STB7Go
-         RMyr4GPceNWg+9vjvQyw/vPbm5+BwqYpd/aZmZgtqjCuwJNw+QhUZisz7z5opT+3I/lI
-         zR1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV1V8hfyaMbUXl/+7tPvG0/B8Nyr5jPEQvq1veOjFy6cd+HgaLVsdJ00XiFPgIcVcevpAwcCG7Y8lfw@vger.kernel.org, AJvYcCWw2Z5qROstoZzgil5T+anoe+0kjVbGOt5eDBk78GpVok/Elq6STw1tQL75CIrQPHB8xdro2iTS0FtpjpnR@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFA9X/pmzv+wsBdSLbTsNXa1kzPyubM4LWFPYY6azxpySfVONF
-	nHzk4p5K1u6bjBo6sHN3hIAAT6mie2T22IV8DTKrs/HzgkmubN1w
-X-Gm-Gg: ASbGncsEHW6bcjZ6fYEBbT8G5TttZ/it1W4J/5MwNywZWRa9VOnUGzJUgxxAv/fJEzD
-	P3eTEaT0+VzK6+2PZ2RiduyMuId3/8VdUsbs5ehJFY4O3z942Q0n1vVer82hucZOd3rYuQ4Gwkw
-	407XLYCgc0S35xsNzZBYrgF6koOj6RNqAD41LAAUdRiobls1aUqfiZQu6KO3wFo2wxTxvXxBEv9
-	q1bKzLqO5CHMRojrx5rQGJEdLqw+IHr78rauKk4DEtW5WEqErfycfXn8L+6dhU5tccCS3H5g52h
-	rYWPV+r7+U0yC1aYL3PKSoy6hERWf6ZXzjNq6/P2Twc=
-X-Google-Smtp-Source: AGHT+IEA8yLhpHzDWjatXgDyinVX0Lpz5abZAJlFq+1cN7NEeFsiJwzy35+xYSdJC0T1I1JTUbAr+Q==
-X-Received: by 2002:a05:6902:1682:b0:e5a:ca6b:4531 with SMTP id 3f1490d57ef6-e60b2e9a4d2mr20720874276.12.1741039000158;
-        Mon, 03 Mar 2025 13:56:40 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:5::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e60a3a42594sm3315506276.31.2025.03.03.13.56.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 13:56:39 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Honggyu Kim <honggyu.kim@sk.com>
-Cc: gourry@gourry.net,
-	harry.yoo@oracle.com,
-	ying.huang@linux.alibaba.com,
-	kernel_team@skhynix.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	yunjeong.mun@sk.com
-Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
-Date: Mon,  3 Mar 2025 13:56:36 -0800
-Message-ID: <20250303215638.317539-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <c43c64f4-e697-468e-80af-87bd02a95ba2@sk.com>
-References: 
+	s=arc-20240116; t=1741040104; c=relaxed/simple;
+	bh=zpPxLelE9Ybujo8zHlA6Bkn57MYTewjeu9jGuzQ7Jtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZAIy/7gW7ig9wrkTPzcNI1AQoAlEIgKHfNVZ+s5eoEYJdpfqRlQBEvcspgdsFCv2w/lJbFtrx5b9VJM6fLFHCHsKvUrq3iKKk3IKTiIO7irs4OJt/27ZZPerbv+NURfRCuL3Z85jY9POj8n7PxlUQCBElVd67D+KKy3S4InM0Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNlpbk/b; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741040103; x=1772576103;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zpPxLelE9Ybujo8zHlA6Bkn57MYTewjeu9jGuzQ7Jtw=;
+  b=nNlpbk/bIxQ/SHA5m21NCB9LMpjYCPNLt1v5nuV8bXsqI1+bmGsZ39JO
+   wePVIHpSBVJjsvl8GTWPQqocEjk+Fq8rCSbDMUEzHwxFxfSA8m1/MZT+T
+   BmbNIJSNEcP5+NxhfmayGTpDHJoPh7SaQhB5JB3DUa4PyxCaukVEgu4ea
+   S/vLUmNFC4qO7GRv6ASp05kG7Q7ed8ZFvaLFB9MnnO2ysj7kQaV2DN8Zc
+   0dAbV90+soXnMbkuznE33pvJ1tcmCW+lmNetjiqLPLqVRXncE5I73fSJf
+   QsbHDu5xy/dOSERGr5iya4O6bjCg54mzCJHd00ORwq3pqgfjtH/MCeIiw
+   A==;
+X-CSE-ConnectionGUID: QjHes+I2ToeNUFLu5kpitg==
+X-CSE-MsgGUID: 4QzwpZm8RUe4dB3xDWcFtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52914242"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="52914242"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 14:15:02 -0800
+X-CSE-ConnectionGUID: 7OFb8wluTW6tVcy0CNgGPA==
+X-CSE-MsgGUID: xb8BCAlYSYq5R7HwB9qaIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="117909222"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 14:15:01 -0800
+Date: Mon, 3 Mar 2025 14:21:02 -0800
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+	wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
+	lenb@kernel.org, kirill.shutemov@linux.intel.com,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+	ricardo.neri@intel.com, ravi.v.shankar@intel.com
+Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
+ mailbox
+Message-ID: <20250303222102.GA16733@ranerica-svr.sc.intel.com>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
+ <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
+ <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
+ <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
+ <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
+ <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
+ <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Thu, 27 Feb 2025 12:20:03 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
+On Fri, Sep 20, 2024 at 01:15:41PM +0200, Krzysztof Kozlowski wrote:
 
-Hi Honggyu, thank you for taking time to review my patch, as always!
-I thought I had sent this, but it seems like it was left in my draft
-without being sent. 
-
-I will follow Gregory's advice and we will drop the patch from this series,
-and send the first patch only (with Yunjeong's changes). Thanks again!
-
+[...]
+ 
+> enable-method is part of CPUs, so you probably should match the CPUs...
+> I am not sure, I don't have the big picture here.
 > 
-> On 2/27/2025 11:32 AM, Honggyu Kim wrote:
-> > Hi Joshua,
-> > 
-> > On 2/27/2025 6:35 AM, Joshua Hahn wrote:
-> >> We should never try to allocate memory from a memoryless node. Creating a
-> >> sysfs knob to control its weighted interleave weight does not make sense,
-> >> and can be unsafe.
-> >>
-> >> Only create weighted interleave weight knobs for nodes with memory.
-> >>
-> >> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> >> ---
-> >>   mm/mempolicy.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> >> index 4cc04ff8f12c..50cbb7c047fa 100644
-> >> --- a/mm/mempolicy.c
-> >> +++ b/mm/mempolicy.c
-> >> @@ -3721,7 +3721,7 @@ static int add_weighted_interleave_group(struct 
-> >> kobject *root_kobj)
-> >>           return err;
-> >>       }
-> >> -    for_each_node_state(nid, N_POSSIBLE) {
-> > 
-> > Actually, we're aware of this issue and currently trying to fix this.
-> > In our system, we've attached 4ch of CXL memory for each socket as
-> > follows.
-> > 
-> >          node0             node1
-> >        +-------+   UPI   +-------+
-> >        | CPU 0 |-+-----+-| CPU 1 |
-> >        +-------+         +-------+
-> >        | DRAM0 |         | DRAM1 |
-> >        +---+---+         +---+---+
-> >            |                 |
-> >        +---+---+         +---+---+
-> >        | CXL 0 |         | CXL 4 |
-> >        +---+---+         +---+---+
-> >        | CXL 1 |         | CXL 5 |
-> >        +---+---+         +---+---+
-> >        | CXL 2 |         | CXL 6 |
-> >        +---+---+         +---+---+
-> >        | CXL 3 |         | CXL 7 |
-> >        +---+---+         +---+---+
-> >          node2             node3
-> > 
-> > The 4ch of CXL memory are detected as a single NUMA node in each socket,
-> > but it shows as follows with the current N_POSSIBLE loop.
-> > 
-> > $ ls /sys/kernel/mm/mempolicy/weighted_interleave/
-> > node0 node1 node2 node3 node4 node5
-> > node6 node7 node8 node9 node10 node11
+> Maybe if companies want to push more of bindings for purely virtual
+> systems, then they should first get involved more, instead of relying on
+> us. Provide reviews for your virtual stuff, provide guidance. There is
+> resistance in accepting bindings for such cases for a reason - I don't
+> even know what exactly is this and judging/reviewing based on my
+> practices will no be accurate.
 
-I see. For my education, would you mind explaining how the numbering works
-here? I am not very familiar with this setup, and not sure how you would
-figure out what node is which, just by looking at the numbering.
+Hi Krzysztof,
 
-> >> +    for_each_node_state(nid, N_MEMORY) {
-> 
-> Thinking it again, we can leave it as a separate patch but add our patch 
-> on top of it.
+I am taking over this work from Yunhong.
 
-That sounds good to me. 
+First of all, I apologize for the late reply. I will make sure
+communications are timely in the future.
 
-> The only concern I have is having only N_MEMORY patch hides weight
-> setting knobs for CXL memory and it makes there is no way to set weight 
-> values to CXL memory in my system.
+Our goal is to describe in the device tree a mechanism or artifact to boot
+secondary CPUs.
 
-You can use weighted interleave auto-tuning : -)
-In all seriousness, this makes sense. It seems pretty problematic that
-the knobs aren't created for the CXL channels, and I'm not sure that hiding
-it is the correct approach here (it was not my intent, either).
+In our setup, the firmware puts secondary CPUs to monitor a memory location
+(i.e., the wakeup mailbox) while spinning. From the boot CPU, the OS writes
+in the mailbox the wakeup vector and the ID of the secondary CPU it wants
+to boot. When a secondary CPU sees its own ID it will jump to the wakeup
+vector.
 
-> IMHO, this and our patch is better to be submitted together.
+This is similar to the spin-table described in the Device Tree
+specification. The key difference is that with the spin-table CPUs spin
+until a non-zero value is written in `cpu-release-addr`. The wakeup mailbox
+uses CPU IDs.
 
-That sounds good. We can hold off on this patch then, and just consider
-the first patch of this series. Thank you for letting me know!
+You raised the issue of the lack of a `compatible` property, and the fact
+that we are not describing an actual device.
 
-Thank you for always reviewing my patches. Have a great day!
-Joshua
+I took your suggestion of matching by node and I came up with the binding
+below. I see these advantages in this approach:
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+  * I define a new node with a `compatible` property.
+  * There is precedent: the psci node. In the `cpus` node, each cpu@n has
+    an `enable-method` property that specify `psci`.
+  * The mailbox is a device as it is located in a reserved memory region.
+    This true regardless of the device tree describing bare-metal or
+    virtualized machines.
 
+Thanks in advance for your feedback!
+
+Best,
+Ricardo
+
+(only the relevant sections of the binding are shown for brevity)
+
+properties:
+  $nodename:
+    const: wakeup-mailbox
+
+  compatible:
+    const: x86,wakeup-mailbox
+
+  mailbox-addr:
+    $ref: /schemas/types.yaml#/definitions/uint64
+
+required:
+  - compatible
+  - mailbox-addr
+
+additionalProperties: false
+
+examples:
+  - |
+    wakeup-mailbox {
+      compatible = "x86,wakeup-mailbox";
+      mailbox-addr = <0 0x1c000500>;
+    };
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        cpu@0 {
+            device_type = "cpu";
+            reg = <0x00>;
+            enable-method = "wakeup-mailbox";
+        };
+    };
+...
 
