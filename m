@@ -1,159 +1,112 @@
-Return-Path: <linux-acpi+bounces-11731-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11732-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F3EA4C56B
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 16:41:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A14A4C639
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 17:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5955188745F
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 15:42:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 530E81752E0
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 16:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4672B1F0E47;
-	Mon,  3 Mar 2025 15:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FF0234962;
+	Mon,  3 Mar 2025 16:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="cFgkZnKI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X7yzthA7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E948723F36F;
-	Mon,  3 Mar 2025 15:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108A3233D9E;
+	Mon,  3 Mar 2025 16:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741016515; cv=none; b=cSEdH2r3gRAs/28kfsRdVGEKF2qQTZL2hmYitwVTANKPAQrJCMoAxzRZj2w1Jw1S7XVMafj3FZgEWDwVnsZ3qoRNiH2mBjgfrDFQOce0pkVb4EhuLUZkVQ0R5+1jl8LAIMz+hcGMGGrF9BrSiO3z3PRsuNlKt/86iCh8Z7Y9/AQ=
+	t=1741017829; cv=none; b=jn4PzJO2swNYLiLlnJDO+1k1v55mWpBiCYMINOyL/olaADUvBneckDhZFP2kW44tHAGJ2bzJ86iSO8/TkDpnOKWMpgrOrO813Bg+fVQgU5iXpmVZ9n6WJpaqCg1mdV3EE2JMRGS5hpCeb4VNukpeafUgsLZBxM1JWnD+KOYUiyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741016515; c=relaxed/simple;
-	bh=m25FjPrgYwk7MjQZxfJGTGjcn2SPVYgupnmoKPBo3ug=;
-	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=LgRkwj4zJS9V28slU9SGVzkirA/QBJBKNIEg+BsHhXcAWdw1K/QIjTBMz71ApSyh3JpeV0bPAWmH9WQwJwz7tR2PJeNDD6r/Bmzla9b1k78WPtm5UxCeseQQAk71027j6CeHUIk1QS/z8iw0Flhhu2AW2Dwk7suz0ZSPGw9uAT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=cFgkZnKI; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=C/mjUrCDUh8TvGQ0TNP99UWlQJSkPZIBxxqCtz4GkI0=; b=cFgkZnKIv0/ZHT36d/Zwl7IRW1
-	fW9cvHeQLM8AeK7zGY/zPOWZy9w7wMXgJkCSy5z05SlMk8da27MCzCKt29/I0lhlBw2CscACezTh4
-	2mG4q/f/ES1WSSFlTCdeu0TFqSsnFwe8mN+Gu37FBSbil4W7sh78YpEv424PPHAysC1w=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:56514 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1tp7EM-0000V2-1t; Mon, 03 Mar 2025 09:57:18 -0500
-Date: Mon, 3 Mar 2025 09:57:17 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Guillaume Stols <gstols@baylibre.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>, Dumitru Ceclan
- <mitrutzceclan@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>, Matteo
- Martelli <matteomartelli3@gmail.com>, Alisa-Dariana Roman
- <alisadariana@gmail.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Message-Id: <20250303095717.56ef5ac016b99911fc34e198@hugovil.com>
-In-Reply-To: <7c79ce3a-0dc4-4aa4-941a-e05be9a34fb8@gmail.com>
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
-	<20dd0e4ea72fe39b90b611f9c08dbd4bc1d5217f.1740421248.git.mazziesaccount@gmail.com>
-	<f0d0f114-3953-46b5-b9f6-9b35537e6f8e@baylibre.com>
-	<d391b012-0a8e-40ca-af56-ca73b3fd853b@gmail.com>
-	<20250302032713.1c834448@jic23-huawei>
-	<7c79ce3a-0dc4-4aa4-941a-e05be9a34fb8@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741017829; c=relaxed/simple;
+	bh=VfUfBazaoqubUxlgLIIUGrH2Uw82Bzpw0S3vE1d9/58=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0SqlCfEHLhTZ49SJktg/oPOa9T6Y80XE4Pn3c+MIucQZj1wpJ+TcNOhAVqHnOkNK/VQMWF5HIe/B3Ln5VhxTvwb89GZ4c+T76z3v2xbtgHhCUQhyTlfIuFDbsCWCVOAkN3HpPW5+Mrqy3/QTwYKM8fcFfzx9K2QWBWnMM6tovs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X7yzthA7; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741017828; x=1772553828;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VfUfBazaoqubUxlgLIIUGrH2Uw82Bzpw0S3vE1d9/58=;
+  b=X7yzthA7twSoQodegi4cse3gSEuc+xH1P8lnV4XQIxr6UfsJ8dSUFfOm
+   iVjlpFzvKtEsUX6tjvrbhXKZEAueyzvXx4CEszQH+Xj3PLMg52QMY3TFH
+   xxqz7n9OyOIiLl+zAxEngwRKAukK/wTF5qoMn3xZH2YK4jB1xVSgPUlK4
+   /9DtocxgFYjIcAvtZgMTEquXKHtweTouQKfEzQ2i7xQ+ip9ZnpvPANEFS
+   Th7R7keYUi4Q14alv9lGRuhwvPWq+Iy5Wnmtx9sh0Tb7HWbT/t+DjaRfN
+   ORtaXkj6gUYl0YFVKOEYaCVX+wFB9O+uZwXF447kvkbIzD9o1919LOUGg
+   g==;
+X-CSE-ConnectionGUID: bMChJzXjTci89QZpq6Vkrg==
+X-CSE-MsgGUID: r41q44H8RjiEoKDYak2nDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41606682"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="41606682"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 08:03:47 -0800
+X-CSE-ConnectionGUID: t/LpSJxFRNyMlPvJPvX7uA==
+X-CSE-MsgGUID: JKDWSQQlSg2/pNjtfrw5Eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="141285578"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa002.fm.intel.com with ESMTP; 03 Mar 2025 08:03:44 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id E39FB156; Mon, 03 Mar 2025 18:03:42 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: [PATCH v1 0/3] gpiolib: Reduce 'gpio' namespace when operate over GPIOd
+Date: Mon,  3 Mar 2025 18:00:31 +0200
+Message-ID: <20250303160341.1322640-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -2.6 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH v4 07/10] iio: adc: ti-ads7924: Respect device tree
- config
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun, 2 Mar 2025 15:10:12 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+In order to reduce the 'gpio' namespace when operate over GPIO descriptor
+rename a couple of functions.
 
-> On 02/03/2025 05:27, Jonathan Cameron wrote:
-> > On Wed, 26 Feb 2025 08:39:11 +0200
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> > 
-> >> On 26/02/2025 02:09, David Lechner wrote:
-> >>> On 2/24/25 12:34 PM, Matti Vaittinen wrote:
-> >>>> The ti-ads7924 driver ignores the device-tree ADC channel specification
-> >>>> and always exposes all 4 channels to users whether they are present in
-> >>>> the device-tree or not. Additionally, the "reg" values in the channel
-> >>>> nodes are ignored, although an error is printed if they are out of range.
-> >>>>
-> >>>> Register only the channels described in the device-tree, and use the reg
-> >>>> property as a channel ID.
-> >>>>
-> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >>>>
-> >>>> ---
-> >>>> Revision history:
-> >>>> v3 => v4:
-> >>>>    - Adapt to 'drop diff-channel support' changes to ADC-helpers
-> >>>>    - select ADC helpers in the Kconfig
-> >>>> v2 => v3: New patch
-> >>>>
-> >>>> Please note that this is potentially breaking existing users if they
-> >>>> have wrong values in the device-tree. I believe the device-tree should
-> >>>> ideally be respected, and if it says device X has only one channel, then
-> >>>> we should believe it and not register 4. Well, we don't live in the
-> >>>> ideal world, so even though I believe this is TheRightThingToDo - it may
-> >>>> cause havoc because correct device-tree has not been required from the
-> >>>> day 1. So, please review and test and apply at your own risk :)
-> >>>
-> >>> The DT bindings on this one are a little weird. Usually, if we don't
-> >>> use any extra properties from adc.yaml, we leave out the channels. In
-> >>> this case it does seem kind of like the original intention was to work
-> >>> like you are suggesting, but hard to say since the driver wasn't actually
-> >>> implemented that way. I would be more inclined to actually not make the
-> >>> breaking change here and instead relax the bindings to make channel nodes
-> >>> optional and just have the driver ignore the channel nodes by dropping
-> >>> the ads7924_get_channels_config() function completely. This would make
-> >>> the driver simpler instead of more complex like this patch does.
-> >>
-> >> I have no strong opinion on this. I see this driver says 'Supported' in
-> >> MAINTAINERS. Maybe Hugo is able to provide some insight?
-> >>
-> > This seems to be ABI breakage.  Never something we can take if there is
-> > a significant chance of anyone noticing.  Here it looks like risk
-> > is too high.
-> 
-> Ok. I'll just drop this patch then. Thanks David & Jonathan :)
+The choice of the name in patch 2 is inspired by the existing
+gpio_do_set_config() versus gpiod_set_config(). The patch 3
+also fixes it to be gpiod_do_set_config(), so we establish
+two namespaces here:
+- gpiod_do_foo() for the internal APIs
+- gpiod_foo() for the external APIs
+for whatever foo that makes sense.
 
-Hi Matti,
-I haven't really been able to follow all discussions, but as an
-historic note I developped this driver for a prototype that never
-materialized. So any changes would not have an impact, as far as I am
-concerned.
+While at it, the ad-hoc amendment to the FLAG_* definitions to increase
+readability. No functional changes intended nor made.
 
-Hugo.
+Andy Shevchenko (3):
+  gpiolib: Align FLAG_* definitions in the struct gpio_desc
+  gpiolib: Rename gpio_set_debounce_timeout() to gpiod_do_set_debounce()
+  gpiolib: Rename gpio_do_set_config() --> gpiod_do_set_config()
+
+ drivers/gpio/gpiolib-acpi.c |  4 ++--
+ drivers/gpio/gpiolib-cdev.c |  2 +-
+ drivers/gpio/gpiolib.c      | 10 +++++-----
+ drivers/gpio/gpiolib.h      | 40 ++++++++++++++++++-------------------
+ 4 files changed, 28 insertions(+), 28 deletions(-)
+
+-- 
+2.47.2
+
 
