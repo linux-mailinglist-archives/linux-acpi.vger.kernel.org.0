@@ -1,133 +1,181 @@
-Return-Path: <linux-acpi+bounces-11700-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11701-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1895A4BC84
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 11:38:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A08A4BCEB
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 11:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 848B63AD116
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 10:36:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C43C73A688F
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 10:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5F41F12EC;
-	Mon,  3 Mar 2025 10:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CIeizD2K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DF51F30B3;
+	Mon,  3 Mar 2025 10:53:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547DA23F383;
-	Mon,  3 Mar 2025 10:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D881C1E376C;
+	Mon,  3 Mar 2025 10:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740998189; cv=none; b=IhiOdTUStJHhVOW9/yf8BjdUXxKVgZpJYQoG17cY/JV5Myo6AjmmaGSuNIie94s23ld4KYAd0BcDuChqz7hO8xk4Sa+5otou2d57Vy8nPpA937TQZgyPx8R0EsVL2UlqHIEoVowDbPkpElqTmTt8jLVbP0VWcdmrREkq9cP60lQ=
+	t=1740999208; cv=none; b=Ze9KpNMH1UFMijwxrKgIwprIJIwhs1cqzzPPWk0uGOVMvaw2Or0cIuCk/JF61E8Fu6mAYcfja0K5NdQsyOXWtsDeZV3zzNiPcYY90t3EGsNmjw4lJcFpremTzQPUtRgt4emq2X8S9JoXci/LQTqSYNVoYG4Gh/zWR6nZDMafPHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740998189; c=relaxed/simple;
-	bh=N3sPKcpbk+N345Z6QfXw1a68D9uC0IXP2GiFiY2vjV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j8B+cx1QCludubWhoJ5eKe+mVfzOY6WGyR1tzRy3RFULimmx48v2WXc+3C9BY/fTpirJkv1SyAcDF0vng0CwoH5IOQcRFxYulqv0HMh80JkHjBEf5OlayxftQ8FKMIWarvFCdBMXPBlo+eGoO1ioARRdP7Mly4u5oFd7V9LcVn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CIeizD2K; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AE1BE40E0202;
-	Mon,  3 Mar 2025 10:36:23 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bd2HeietVv99; Mon,  3 Mar 2025 10:36:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1740998178; bh=XNI3SnVJolAxVhmPjt2JrEwot6jN/8zHjxYEktMG+4Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CIeizD2KFeTbtYEKdnNDnpUDBbCjZpqwAkO17eGwBzpecuIzivjikXY8+BLNqxtL2
-	 TfnD+4lmhvBtg1RPiedflnah3OqDiwlBEBTHScYraeZze7/vUBJVWbqOtLh/XIEfjf
-	 vn/H+X1OHwlS2JlD8EBWQMFyYz/AgvkAOLcqLSgOtfU4Szlas4X45SSXuDPsVsV4Do
-	 Q7ZFUIHAXlbqcNetihj/DrGOUoaMkmc9qwyrh5qv72T88BBIbMpkWzY1kvcEiCVVWH
-	 F+vMqJ1sz3KLAeG2gLiG+Q+iwVsztkq8WEwP8NTNzwMyDJSXxV3GowCo7DzwWVSuyS
-	 rTwrDZtqJWLGIi3sq8VTlwCqmYP1JEhwzQMkNt+zboA+0kjJp/ufc0cVIsN9uWI5rT
-	 KADNathwh6qa4OElEeBSQ+KHdgd5GosTf/1l4FXVgdfjUUW0j2W5RIklyg3XpjXNn9
-	 8UoqEkzjBKx7RzqCx7/fG+/iIAANKeTrCYJv5O0dqlv8dcqZXFbR/QHjgYSuPpvGTV
-	 zqweiOFcXs/A/sbIvjqzKFK/yw9U/5dTi1XPNk4jyk8uMBmgV8ICdpd0kzMELYqAmK
-	 JdJnxk878YZy4HeTp+fgj+qZ/OFOXuPRXHUaXQS3+x4U6yPqmh0o+MOSmbIAM1magZ
-	 KbUuiDvnDuZkQIiP7vXiu4eo=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CAC8940E01D1;
-	Mon,  3 Mar 2025 10:35:34 +0000 (UTC)
-Date: Mon, 3 Mar 2025 11:35:29 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: shiju.jose@huawei.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, rafael@kernel.org, tony.luck@intel.com,
-	lenb@kernel.org, mchehab@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	j.williams@intel.com, dave@stgolabs.net, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com, linuxarm@huawei.com
-Subject: Re: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 feature
- table
-Message-ID: <20250303103529.GBZ8WF8flezRahE-1h@fat_crate.local>
-References: <20250228122752.2062-1-shiju.jose@huawei.com>
- <20250303173538.000007cd@huawei.com>
+	s=arc-20240116; t=1740999208; c=relaxed/simple;
+	bh=gfjnQ4Y3OsTjJW/K9LXumQ2C8l5MFRSzRCUnKB+BolQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GzUGBKvKlcgqlqEtIZwX13q471qs4s0pZ0Gy0T/SAfKnAThfQjB8w3GSt5cpo0JvCWqcXcpgYND79LsESlgb+M3f/4cciePcF/Eu9UMK1X1MR6la1tu7NghaA7ijPVnJo3WPAB/RYWR9xoJUGGOsscAov0gqdUsAq1eliK2JNKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E391113E;
+	Mon,  3 Mar 2025 02:53:39 -0800 (PST)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE4B43F673;
+	Mon,  3 Mar 2025 02:53:22 -0800 (PST)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 00/14] mailbox: pcc: Fixes and cleanup/refactoring
+Date: Mon, 03 Mar 2025 10:51:35 +0000
+Message-Id: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250303173538.000007cd@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALyJxWcC/x3LQQqAIBBA0avErBPUsKKrRIjoVLMxcSqC8O5Jy
+ wf/v8CYCRmm5oWMNzEdsUK1DfjdxQ0FhWrQUhvZyU4k7+1KD7K9UnAnsjDGqWENesShh/qljH9
+ Qt3kp5QO9XWGqYwAAAA==
+X-Change-ID: 20250303-pcc_fixes_updates-55a17fd28e76
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>, 
+ Adam Young <admiyo@os.amperecomputing.com>, 
+ Robbie King <robbiek@xsightlabs.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ linux-i2c@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4107; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=gfjnQ4Y3OsTjJW/K9LXumQ2C8l5MFRSzRCUnKB+BolQ=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBnxYohLE3vb49QWcVVkz/BOuBSKE5Vf7zsOnv1E
+ lieR6TXTxGJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ8WKIQAKCRAAQbq8MX7i
+ mHGuEACQyafLUfaiaca7ixAlv2/kFQRQYOm8lUeY/nNj0nn7BgOfDjoPghGm6HMklqrOv4PW15C
+ kbfGkDddaJtao6LdjkE1VQBltAeZjK2TPYkon0YmdG68/8KxvNInMNOd3l5EpLb/a5p0s8nouF6
+ Uq3b8Z8N+NgcBZ0w0PaJOe5U4UrUzYwQ+UGtwk0x5g+/z6uMrDRYRPRfvz5iCQ39xPXCBofV/1M
+ KZCYw6o5Jz0kMA0ThjOWoN2lcTAZ3rLl+9WqpKXVHMhlajSbuBTwRJ1jhk0QnlLWJCcvJn7H/n1
+ RgL8JaEdYpbXq26IQR61u7hXLrs8bmqs9MdFCahdmnQ/a+5l2jjCebceYF+PwOgRpt7Z31S9PCe
+ u0YuApuH5iisafQ9xXtYsvfPqeg7J4/L3+jAcRJEB2qkf6Xp8/LWkzZ+rkFE4ouFeO50ISlYsXN
+ l2K4/PyMzKkHbjlMrfbOGxpM02sdWxA57VW3PDrAXnnkhp5itc4PGd69EnP6cu5EmfKqHfE3Rpj
+ 1lYEQXFy47IotfyAsn2dTxbEp0zFKqB38k9aqxBhJV8yFtugABWqfuawhYyRlGIYSEDUsBg8w20
+ wHt10+c+0dEkvFkhU4LV8dkdoTOKZmtsV80zX9Reup9s3xn1eXXyire9EgDf8ekvxDDvwNIyHr3
+ KBMoBQZEavAB+Cw==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 
-On Mon, Mar 03, 2025 at 05:35:38PM +0800, Jonathan Cameron wrote:
-> Borislav via ras.git, or Rafael via acpi.git?  I don't really
-> have any preference other than making sure it doesn't fall down
-> the cracks!
+Here is a summary of the changes in this patch series:
 
-It's probably easier if I take it.
+1. Fix for race condition in updating of the chan_in_use flag
 
-However, just from a cursory look, it would need some scrubbing. There's stuff
-like:
+   Ensures correct updating of the chan_in_use flag to avoid potential race
+   conditions.
 
-+               ps_sm->params.requested_address_range[0] = 0;
-+               ps_sm->params.requested_address_range[1] = 0;
-+               ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_SCHRS_IN_MASK;
-+               ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_SCHRS_IN_MASK,
-+                                                           ras2_ctx->scrub_cycle_hrs);
-+               ps_sm->params.patrol_scrub_command = RAS2_START_PATROL_SCRUBBER;
+2. Interrupt handling fix
 
+   Ensures platform acknowledgment interrupts are always cleared to avoid
+   leaving the interrupt asserted forever.
 
-which definitely needs shortening. There's no need for a wholly written out
-"requested_address_range". I know variables should have meaningfull names but
-writing fiction shouldn't be either.
+3. Endian conversion cleanup
 
-+static int ras2_acpi_parse_table(struct acpi_table_header *pAcpiTable)
+   Removes unnecessary endianness conversion in the PCC mailbox driver.
 
-Yuck, CamelCase?!
+4. Memory mapping improvements
 
-And I'm pretty sure if I start looking more, I'll find more funky stuff.
+   Uses acpi_os_ioremap() instead of direct mapping methods for better ACPI
+   compatibility.
 
-HTH.
+5. Return early if the command complete register is absent
 
+   Ensures that if no GAS (Generic Address Structure) register is available,
+   the function exits early.
+
+6. Refactor IRQ handler and move error handling to a separate function
+
+   Improves readability of error handling in the PCC mailbox driver’s
+   interrupt handler.
+
+7. Code restructuring to avoid unnecessary forward declaration
+
+   Moves pcc_mbox_ioremap() function to a more appropriate location with
+   no functional impact.
+
+8. Shared memory mapping refactoring/enhancements
+
+   Ensures the shared memory is always mapped and unmapped in the PCC
+   mailbox driver when the PCC channel is requested and release.
+
+9. Refactored check_and_ack() Function
+
+   Simplifies and improves the logic for handling type4 platform notification
+   acknowledgments.
+
+10-14. Shared memory handling simplifications across multiple drivers
+
+    Simplifies shared memory handling in:
+        Kunpeng HCCS driver (soc: hisilicon)
+        Apm X-Gene Slimpro I2C driver
+        X-Gene hardware monitoring driver (hwmon)
+        ACPI PCC driver
+        ACPI CPPC driver
+
+The X-gene related changes now change the mapping attributes to align
+with ACPI specification. There are possibilities for more cleanups on
+top of these changes around how the shmem is accessed within these
+driver. Also, we can just target 10-14 for following merge window
+after 1-9 is merged.
+
+Overall, the patch series focuses on improving correctness, efficiency, and
+maintainability of the PCC mailbox driver and related components by fixing
+race conditions, optimizing memory handling, simplifying shared memory
+interactions, and refactoring code for clarity.
+
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+Huisong Li (1):
+      mailbox: pcc: Fix the possible race in updation of chan_in_use flag
+
+Sudeep Holla (13):
+      mailbox: pcc: Always clear the platform ack interrupt first
+      mailbox: pcc: Drop unnecessary endianness conversion of pcc_hdr.flags
+      mailbox: pcc: Return early if no GAS register from pcc_mbox_cmd_complete_check
+      mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
+      mailbox: pcc: Refactor error handling in irq handler into separate function
+      mailbox: pcc: Move pcc_mbox_ioremap() before pcc_mbox_request_channel()
+      mailbox: pcc: Always map the shared memory communication address
+      mailbox: pcc: Refactor and simplify check_and_ack()
+      soc: hisilicon: kunpeng_hccs: Simplify PCC shared memory region handling
+      i2c: xgene-slimpro: Simplify PCC shared memory region handling
+      hwmon: (xgene-hwmon) Simplify PCC shared memory region handling
+      ACPI: PCC: Simplify PCC shared memory region handling
+      ACPI: CPPC: Simplify PCC shared memory region handling
+
+ drivers/acpi/acpi_pcc.c                |  13 +---
+ drivers/acpi/cppc_acpi.c               |  16 +----
+ drivers/hwmon/xgene-hwmon.c            |  40 ++---------
+ drivers/i2c/busses/i2c-xgene-slimpro.c |  39 ++--------
+ drivers/mailbox/pcc.c                  | 128 ++++++++++++++++++---------------
+ drivers/soc/hisilicon/kunpeng_hccs.c   |  38 ++++------
+ drivers/soc/hisilicon/kunpeng_hccs.h   |   2 -
+ include/acpi/pcc.h                     |   5 --
+ 8 files changed, 97 insertions(+), 184 deletions(-)
+---
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+change-id: 20250303-pcc_fixes_updates-55a17fd28e76
+
+Best regards,
 -- 
-Regards/Gruss,
-    Boris.
+Regards,
+Sudeep
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
