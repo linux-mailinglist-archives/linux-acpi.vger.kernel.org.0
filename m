@@ -1,204 +1,212 @@
-Return-Path: <linux-acpi+bounces-11720-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11721-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B91A4BECF
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 12:35:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E53A4BEE1
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 12:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A4FA1881DD4
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 11:35:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E1B2162E3F
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 11:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F841FBE9F;
-	Mon,  3 Mar 2025 11:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FC01FECC0;
+	Mon,  3 Mar 2025 11:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jl/6/xcx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xg1//Uj7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758741F181F;
-	Mon,  3 Mar 2025 11:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA701FECBB
+	for <linux-acpi@vger.kernel.org>; Mon,  3 Mar 2025 11:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741001700; cv=none; b=QxGlS44W88z7IX2Lj38P+/1ixKVU2P4LWYtf42srMOQ75l4e8HoluKLRJPTdpb4MGzAGqwUoLm2gzCN5MSiZIsCST8Dexi42xUT4fsYNKVVIfAXgUnc+iEFTuLNbwP3bnxm3eT213AiwzXLXXOkHvO0GhxrjU4FG7gykJMjsLlA=
+	t=1741001793; cv=none; b=QLBo8jYU5fsx4IZBPqCdBy5kWLQSxVE7Q1rur2iCzTx4eJ/r4H9NxGTkdPf8Jn1FEfsl6uHttO7KL46GkXDnTv/YtHMQxPXRs8VVcPEH1Cnjr+wZDyFsjHZZPPoU8gdc6D6kD0Q6MxqIcc8nI1SGDi+Ysf3vYyhYdF/tU2OV5Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741001700; c=relaxed/simple;
-	bh=jx3146JYbYlH5pk+ZQ9COOYht6moRMzBNf0ugU+7LZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iUE/eYtDm7429E95ZV/up8JlbiNcul7Vn9mKFXbyC7ARj4eFmHBdzduIa4J7mUlMjWu7ujoSARiI8v1zn3egCrfRQZe9Po9C8SUASrDidLGQ0an0glOcYsHSMywft26YmDy23ZVwGKtN9m1U1rfgWkSFSgGPWqwRqScog0mn0SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jl/6/xcx; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54954fa61c8so2919182e87.1;
-        Mon, 03 Mar 2025 03:34:58 -0800 (PST)
+	s=arc-20240116; t=1741001793; c=relaxed/simple;
+	bh=XaHolFBWoRAOTJGYNJcQzbTPSNUzRjVdWfk1b9YZ3Uc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NN75e7HMHWFWJM2aPhACe6T7v5jocF0xjq05hAPiDg6U+amJYQeAg9Mz5zE2q5nTdEtRzSh9cvjd7QcZ03+nKJCz+5i93ql1yPdC6xT5WLABJNQtZhtmIvMn/yVGY6y62Yq+B50xmkM5T2+RT1ma1AEfMOnyxcetiST/ziGX0aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xg1//Uj7; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6fd66f404fbso11251997b3.3
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Mar 2025 03:36:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741001697; x=1741606497; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vqQZzxtB3T8t2wF4cCO8ECh4fmEl1bhgAvi7y44b40I=;
-        b=Jl/6/xcxheC6u90pwHY1kyuNzjN1Bh4ZJSOS2TFaVUUbnxgMFxmq+sK3PLB/W/tm6G
-         mTzYlvOU9/QTPq5V4m2jXzuICpvORmvnr3xyg2qfG05JOTkDHdEwBItPAB1auk1ADDuX
-         i3FTu/Yj4T7U7DnjCnYO5vdybWHg/sWd3dEgJnyURikKmKMsN+6Gufjot+gDqxdb6aZu
-         d7sf1rXfinZFHeRmfNkgou3YF0F37uUVdK3gUyc6deY3tbrsrtfVswLrm+L6J/RjeEGZ
-         be7wryxb8DANbc4JErQI1/+DLLlonDla97FqZfglgJZIPhbCUO2k/EDNffKaV8WT7T1c
-         cIQA==
+        d=linaro.org; s=google; t=1741001789; x=1741606589; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UBUkHt3avEz8ZOzjIAytFNHnXfMupzHA8HDEzBBxn/4=;
+        b=Xg1//Uj7niWr7J30SfeUTn0faxZBXOcJH35+NQ4ZSM6z04EfayImx9T7OMSzXfYw7v
+         DaC8ZVl8OIUgs7dbXjCZocb1ppGapdFKgVaxnaljsaHE0OYePG959HtrUkh8sgvFcO7O
+         C3tfin8XRPibVUgisjdeYl7R3S19mi+nK8Ns9T4dVqgFKvJDSE6VdgW1Z/r+IzAzIj/Y
+         LVbaR6oEixJoJtKID+rr9YmFlO/EauWvWHWLQlkV4AqPUnUQCMGQ+5bSLsWwPBIZcxym
+         gN1DZTYm+x11k+qJWsaHyydxC/HSUYeHwb75STuP/IEYqYep8CBUTSSGckXs3TYKauVW
+         /jLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741001697; x=1741606497;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vqQZzxtB3T8t2wF4cCO8ECh4fmEl1bhgAvi7y44b40I=;
-        b=Hp1wk6gCWcg3BYEInUc+22OG4gaFgNedi/8E39Q2lLB1p0dzb14sq0E0KYlVmTI43h
-         0geBp1wDg/+cxDjNFAZylzS8mWu2pBkX5Ub5ISn4grbyU9EwLpRSj8MwOr3Tykye4Z2C
-         tmoTmYNqt2stGsNS1Imi6kyRDH/3tV6pkzZhr/ugl547z4hbSM6Kp32TVQ5Pf9tEUDri
-         KL7NHuL0qkWtZu/vxrGzmGBWUAM86XiLwm9MLEOd9uS5VZvCDBBTEYFrFfrywpAjKEyk
-         M65589M2+rRX/tEBab5B9msLwNsWD8Nm5JxF2i3QD9uPtGXGgrYcIcOtn+XDU6EjDhs5
-         LJ8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXKw4DAWGSJHw4LKXAsf16u7+8rmGtOqipeESFG8mOly78VG8Z/Rvkj4MOWAtOPEjHpjdTaAWt41+ii@vger.kernel.org, AJvYcCXhhwmj306LpnGVpGEhaPVs0Hd8XLPLHD1or0gLx3pC0lv4ltqcKvLWs9jD78a1dyy3ub68aqd2@vger.kernel.org, AJvYcCXroOFiRmRjD3JieFBtiU2zVqWj1XoaramuGQdQbNoCFTto7egZc5EWpTcKU0KEOlz6xFOHev12HIg8/8dQ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxcgsce0Y50ZDyzHci5QZv/9RYYJxtqUAllQ2rBBX3lDt4mQIdE
-	z/WU5YTmbNRSQMi64g3P4JJ0maQszLNLPB4TV1Uk0mt1nxtd/oOp
-X-Gm-Gg: ASbGnctcdQmyC/6jxXIJrxWvsvZqPD/T/QdaDH91Vn/fKlnkQnLXW1vQwDbqaE1PMVJ
-	rK3WTBpiSKIvy/BciLc2utptpe3lzntnXU8LG+PsVR6X4p/uognAlPLI7t78cBNe3XrTXPABdAR
-	R4CNif+i3lV8wjr5DYJUpelcMho1OgH+1L6lh93WoODHsJMjO9E3V1f9weWfqXdOGxvM8GOgPqm
-	e9z1r7THLuAO9/wX02A5vOh1qo8J26OLIo5R1LK9dcvpjiat7cCk8uHZyVR813t1te2i8GYaaDO
-	4qjEf5Z+SmyaInmbNSGVfKm7AmV+ZPNyGH8SNWGLEuijXKYp85RuO21coxr9ouc0xa9/WKS/yRW
-	dMrBbXz4PNYs=
-X-Google-Smtp-Source: AGHT+IFCXZVt+ZbxzY+RXtoZv0pBDmQxbMpqj21hJ/Pem8fsX9mZWJAC03XuPdYjwoEkBgMl3G0XcA==
-X-Received: by 2002:a05:6512:31c1:b0:545:22fe:616f with SMTP id 2adb3069b0e04-5494c3319e0mr6024804e87.24.1741001696480;
-        Mon, 03 Mar 2025 03:34:56 -0800 (PST)
-Received: from mva-rohm (mobile-access-2e8451-125.dhcp.inet.fi. [46.132.81.125])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54962196361sm438159e87.214.2025.03.03.03.34.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 03:34:55 -0800 (PST)
-Date: Mon, 3 Mar 2025 13:34:49 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH RFC net-next v5 10/10] net: gianfar: Use
- device_get_child_node_count_named()
-Message-ID: <685cd1affabe50af45b767eeed9b9002d006b0fd.1740993491.git.mazziesaccount@gmail.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
+        d=1e100.net; s=20230601; t=1741001789; x=1741606589;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UBUkHt3avEz8ZOzjIAytFNHnXfMupzHA8HDEzBBxn/4=;
+        b=NNuqGm36gBdv8QWUt/mXGzR5RkurjV4NYMooRLDZeysDz2AibNFna5arzK47YvMbZm
+         bPfNeDtiekUT47m6iZpyf2YVHKb2Oafx5ydWzl+oHMiqkiDfpaQoCs+oSXQLd9rUcOun
+         s7VF188krtGKVA9kKPEYmeBCoUH5cI/frAeW1pAt6kieDlFywQa04qSGd8+N5GsmuUA4
+         f9YyG9HezYehSFjEfRKQafb2QeqTG7kL+pDGCk5cbAZsqXgDSPU+cGnfn6OZg259Rzxz
+         a20R1BIp2BTW5KK4Lx0aRio3kR3fT9Rqii/ogcAs+qwTNkzgVKjTq/0DBvzWo05vxRlL
+         ArGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVokCRzKztG0HHTn+MvodkTrr+4U/20r2dJKHlrmZcKbEJ3CeNps8CJYgNlKRdh+HXCJ4RgZmcXCg2Z@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwecFB+cpDrmSMITiaXCWTh8Jai8pDNail6V6+Rzc8Z/vFLtpP
+	r2fVWczvIDMCtcsZd0tMU6cHR62vNsAqo06NHHQws/tGmfv5EAR4yg/PZBlCS4+r2GJVjyz1Hkb
+	cBqloJzSyp0XFQKmclIBkwahPjHWlX/afwEFUWA==
+X-Gm-Gg: ASbGncvHtJmLDAhrvaC++bDKbpQvULaq0Fn1CwfXoOZXIiWnIoyKpyhNWh9X0bDhdjf
+	V8vEqpOI0NcI+MY7Wqj7KJhfQvxwvnRHcMRvetcpGcAQ4MgiUdmZBoDn7hRpCzgUdDDQRXk3WMQ
+	D59tGw48tvF1eopQE72YiRCDZukn4=
+X-Google-Smtp-Source: AGHT+IGbmdK13gwcTIYs/RwA8drBpUi9FLIvtkuILBcCZ+xDfdj9K62od7OaWkHcxdZCUCSfkQyJevgrhbgYFW/YreU=
+X-Received: by 2002:a05:690c:688e:b0:6ef:7036:3b57 with SMTP id
+ 00721157ae682-6fd4a141ce2mr148855737b3.28.1741001789654; Mon, 03 Mar 2025
+ 03:36:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hgWGIdg2nB92PWQb"
-Content-Disposition: inline
-In-Reply-To: <cover.1740993491.git.mazziesaccount@gmail.com>
+References: <12612706.O9o76ZdvQC@rjwysocki.net> <2978873.e9J7NaK4W3@rjwysocki.net>
+In-Reply-To: <2978873.e9J7NaK4W3@rjwysocki.net>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 3 Mar 2025 12:35:53 +0100
+X-Gm-Features: AQ5f1JrNehs-WHA4X5zdeXjF_NISUdLgzpPPWrjP6G-GK3iY6EpyJABxLIHp-1U
+Message-ID: <CAPDyKFpCcQGKoKB3ZNj+=aiftEduiUVKcWLfYZqGY3=MCCMcQw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] PM: sleep: Avoid unnecessary checks in device_prepare_smart_suspend()
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Bjorn Helgaas <helgaas@kernel.org>, 
+	Linux PCI <linux-pci@vger.kernel.org>, Johan Hovold <johan@kernel.org>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Jon Hunter <jonathanh@nvidia.com>, 
+	Linux ACPI <linux-acpi@vger.kernel.org>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
+On Tue, 18 Feb 2025 at 21:20, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Add an optimization (on top of previous changes) to avoid calling
+> pm_runtime_blocked(), which involves acquiring the device's PM spinlock,
+> for devices with no PM callbacks and runtime PM "blocked".
+>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
---hgWGIdg2nB92PWQb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-We can avoid open-coding the loop construct which counts firmware child
-nodes with a specific name by using the newly added
-device_get_child_node_count_named().
+Kind regards
+Uffe
 
-The gianfar driver has such open-coded loop. Replace it with the
-device_get_child_node_count_named().
-
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-It's fair to tell the pros and cons of this patch.
-The simplification is there, but it's not a big one. It comes with a cost
-of getting the property.h included in this driver which currently uses
-exclusively the of_* APIs.
-
-NOTE: This patch depends on the patch:
-[2/10] "property: Add functions to count named child nodes"
-
-Compile-tested only!
----
- drivers/net/ethernet/freescale/gianfar.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/etherne=
-t/freescale/gianfar.c
-index 435138f4699d..dfe012a5bc0a 100644
---- a/drivers/net/ethernet/freescale/gianfar.c
-+++ b/drivers/net/ethernet/freescale/gianfar.c
-@@ -97,6 +97,7 @@
- #include <linux/phy_fixed.h>
- #include <linux/of.h>
- #include <linux/of_net.h>
-+#include <linux/property.h>
-=20
- #include "gianfar.h"
-=20
-@@ -571,18 +572,6 @@ static int gfar_parse_group(struct device_node *np,
- 	return 0;
- }
-=20
--static int gfar_of_group_count(struct device_node *np)
--{
--	struct device_node *child;
--	int num =3D 0;
--
--	for_each_available_child_of_node(np, child)
--		if (of_node_name_eq(child, "queue-group"))
--			num++;
--
--	return num;
--}
--
- /* Reads the controller's registers to determine what interface
-  * connects it to the PHY.
-  */
-@@ -654,8 +643,10 @@ static int gfar_of_init(struct platform_device *ofdev,=
- struct net_device **pdev)
- 		num_rx_qs =3D 1;
- 	} else { /* MQ_MG_MODE */
- 		/* get the actual number of supported groups */
--		unsigned int num_grps =3D gfar_of_group_count(np);
-+		unsigned int num_grps;
-=20
-+		num_grps =3D device_get_child_node_count_named(&ofdev->dev,
-+							     "queue-group");
- 		if (num_grps =3D=3D 0 || num_grps > MAXGROUPS) {
- 			dev_err(&ofdev->dev, "Invalid # of int groups(%d)\n",
- 				num_grps);
---=20
-2.48.1
-
-
---hgWGIdg2nB92PWQb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfFk9kACgkQeFA3/03a
-ocUnAwf/e1WiKUHI7IJokmxjEd69tjRodEfHXip6VUhjqG9jQnkg1VF0j7ViCQLk
-O97jTcDDlEjA8XgIo1/gIWDiLWe2uBRlE5FRwfQhcTnollLbXXYOx/f3T7avRU+a
-E0kddnqufnDdJjktO1q7Bq7heVGcqAh7QP/0GP30PKbt236wSC0lGjo7iH1a1nt8
-EgOl7L+qqppWvqxzL1qoY0zYERemWmzHcS5rOjSRweCOqDF8uNoIbHVGp7LgMvq2
-ElyJ0SBwUDdMQAu8Neu/c6vB21MjarrLFaQKasbv+ZFzfjaxjlMkKL1KbixHAz2O
-LXMh5s/s+fqIyssfgy+mWitmDNyNWg==
-=nCxe
------END PGP SIGNATURE-----
-
---hgWGIdg2nB92PWQb--
+> ---
+>  drivers/base/power/main.c    |   16 +++++++++-------
+>  drivers/base/power/runtime.c |    9 +++++++--
+>  include/linux/pm_runtime.h   |    4 ++--
+>  3 files changed, 18 insertions(+), 11 deletions(-)
+>
+> --- a/drivers/base/power/main.c
+> +++ b/drivers/base/power/main.c
+> @@ -1796,16 +1796,14 @@
+>
+>         /*
+>          * The "smart suspend" feature is enabled for devices whose drivers ask
+> -        * for it and for devices without PM callbacks unless runtime PM is
+> -        * disabled and enabling it is blocked for them.
+> +        * for it and for devices without PM callbacks.
+>          *
+>          * However, if "smart suspend" is not enabled for the device's parent
+>          * or any of its suppliers that take runtime PM into account, it cannot
+>          * be enabled for the device either.
+>          */
+> -       dev->power.smart_suspend = (dev->power.no_pm_callbacks ||
+> -               dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND)) &&
+> -               !pm_runtime_blocked(dev);
+> +       dev->power.smart_suspend = dev->power.no_pm_callbacks ||
+> +               dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND);
+>
+>         if (!dev_pm_smart_suspend(dev))
+>                 return;
+> @@ -1843,6 +1841,7 @@
+>  static int device_prepare(struct device *dev, pm_message_t state)
+>  {
+>         int (*callback)(struct device *) = NULL;
+> +       bool no_runtime_pm;
+>         int ret = 0;
+>
+>         /*
+> @@ -1858,7 +1857,7 @@
+>          * suspend-resume cycle is complete, so prepare to trigger a warning on
+>          * subsequent attempts to enable it.
+>          */
+> -       pm_runtime_block_if_disabled(dev);
+> +       no_runtime_pm = pm_runtime_block_if_disabled(dev);
+>
+>         if (dev->power.syscore)
+>                 return 0;
+> @@ -1893,7 +1892,10 @@
+>                 pm_runtime_put(dev);
+>                 return ret;
+>         }
+> -       device_prepare_smart_suspend(dev);
+> +       /* Do not enable "smart suspend" for devices without runtime PM. */
+> +       if (!no_runtime_pm)
+> +               device_prepare_smart_suspend(dev);
+> +
+>         /*
+>          * A positive return value from ->prepare() means "this device appears
+>          * to be runtime-suspended and its state is fine, so if it really is
+> --- a/drivers/base/power/runtime.c
+> +++ b/drivers/base/power/runtime.c
+> @@ -1460,14 +1460,19 @@
+>  }
+>  EXPORT_SYMBOL_GPL(pm_runtime_barrier);
+>
+> -void pm_runtime_block_if_disabled(struct device *dev)
+> +bool pm_runtime_block_if_disabled(struct device *dev)
+>  {
+> +       bool ret;
+> +
+>         spin_lock_irq(&dev->power.lock);
+>
+> -       if (dev->power.disable_depth && dev->power.last_status == RPM_INVALID)
+> +       ret = dev->power.disable_depth && dev->power.last_status == RPM_INVALID;
+> +       if (ret)
+>                 dev->power.last_status = RPM_BLOCKED;
+>
+>         spin_unlock_irq(&dev->power.lock);
+> +
+> +       return ret;
+>  }
+>
+>  void pm_runtime_unblock(struct device *dev)
+> --- a/include/linux/pm_runtime.h
+> +++ b/include/linux/pm_runtime.h
+> @@ -77,7 +77,7 @@
+>  extern int pm_schedule_suspend(struct device *dev, unsigned int delay);
+>  extern int __pm_runtime_set_status(struct device *dev, unsigned int status);
+>  extern int pm_runtime_barrier(struct device *dev);
+> -extern void pm_runtime_block_if_disabled(struct device *dev);
+> +extern bool pm_runtime_block_if_disabled(struct device *dev);
+>  extern void pm_runtime_unblock(struct device *dev);
+>  extern void pm_runtime_enable(struct device *dev);
+>  extern void __pm_runtime_disable(struct device *dev, bool check_resume);
+> @@ -274,7 +274,7 @@
+>  static inline int __pm_runtime_set_status(struct device *dev,
+>                                             unsigned int status) { return 0; }
+>  static inline int pm_runtime_barrier(struct device *dev) { return 0; }
+> -static inline void pm_runtime_block_if_disabled(struct device *dev) {}
+> +static inline bool pm_runtime_block_if_disabled(struct device *dev) { return true; }
+>  static inline void pm_runtime_unblock(struct device *dev) {}
+>  static inline void pm_runtime_enable(struct device *dev) {}
+>  static inline void __pm_runtime_disable(struct device *dev, bool c) {}
+>
+>
+>
 
