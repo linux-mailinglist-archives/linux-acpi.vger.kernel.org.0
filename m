@@ -1,137 +1,225 @@
-Return-Path: <linux-acpi+bounces-11766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11777-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92431A4DE99
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 14:03:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045F7A4E0E0
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 15:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00AB1767E1
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 13:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDBE217A13C
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 14:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9E72010E3;
-	Tue,  4 Mar 2025 13:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A25209681;
+	Tue,  4 Mar 2025 14:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fp6Gy2cF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7F9442C;
-	Tue,  4 Mar 2025 13:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11935207A25
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 14:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741098298; cv=pass; b=pXATBXwVX2KaXtJVahuhYshIGFSRHNtrr2/Ee/ZhXzZs/cGvMyhtNpupgY9/cRF2ZIf4b3FgCEhBCjBXFbfw+RdyXo8gjDq86hNnUOVKPgPX4JR0LRABr9j4uVfgHz/SQnzS3B32+VUF3yGW0HBaz0y4DP/jkaW/ELr/1EFtLPs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741098298; c=relaxed/simple;
+	bh=5p1AURD+UTpH0MuSs+nx8i5sv3QPuK1m1t4ImSSfX9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZNtoefsoVwqOK+Iu7Oa7bjBj98Nr3Xd1sVK2XLLED8+CBQ7wmrUDT1GNrIdBokMk1ELXXKszanT42H5ySj5Orm48jNp0gcmpHSWVyCMUYDiGleCckeD+0hGb1n7WTQNLIpA1D7lkVGz31fbOHcurS0bubGiBWcmE9fzMckh7ots=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fp6Gy2cF; arc=none smtp.client-ip=192.198.163.11; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; arc=pass smtp.client-ip=160.75.25.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
+Received: from lesvatest1.cc.itu.edu.tr (unknown [10.146.128.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id 5620740CF119
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 17:24:55 +0300 (+03)
+X-Envelope-From: <root@cc.itu.edu.tr>
+Authentication-Results: lesvatest1.cc.itu.edu.tr;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fp6Gy2cF
+Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6d9v4tZLzFw6G
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 17:20:03 +0300 (+03)
+Received: by le1 (Postfix, from userid 0)
+	id 92C254272A; Tue,  4 Mar 2025 17:19:43 +0300 (+03)
+Authentication-Results: lesva1.cc.itu.edu.tr;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fp6Gy2cF
+X-Envelope-From: <linux-kernel+bounces-541657-bozkiru=itu.edu.tr@vger.kernel.org>
+Authentication-Results: lesva2.cc.itu.edu.tr;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fp6Gy2cF
+Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
+	by le2 (Postfix) with ESMTP id 0751842607
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:00:07 +0300 (+03)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by fgw2.itu.edu.tr (Postfix) with SMTP id D226F2DCDE
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:00:07 +0300 (+03)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33755188556A
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:59:43 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D12F20E009;
+	Mon,  3 Mar 2025 11:59:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1017120CCDF;
+	Mon,  3 Mar 2025 11:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741093411; cv=none; b=D8Qrh1vyj/P6ao/lpV7OETlcACm3Jb8NsighsaV/1/hFFIdhrJIU+TnoxpzdVig2779A64EPxLNeHT8nYkXUa6GzH9RNIkYvTTkg0YS6qSFtIUAOsIIVY+9mNvkyb2C7nRjVVM9GF9eQM0fyrFH+mtWrpiWZ5xuWNER5wZRTsIk=
+	t=1741003155; cv=none; b=BU4bdCH6015rS6bDPDuN6K7I3xOaV4pZU/w4xa/ox5WxGXoKXPafrX5yBh+9jbE9JPqz1b4eoJVYq9xMOm8Er0tVC9t2mfrZChEfmmlY4JqQuCZJcJu9nBxAIu8g0oqJ8A0uCgk0xuPcAf14QxvsJJ3ZWuuJKdhGkf0Q+JdGZ6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741093411; c=relaxed/simple;
-	bh=jGFfWBKXukbqHaXl3amXekS7y7SRP7mA+YmsLXI+alM=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=mOqxx0ocuDIBd+C+1kUJ3h8lTynbwtS9WDMg5ecT3362vLtG6o3xlvl7s0g9ZEFy5jfUg0+BQ9bZ3kYmsLb7833TkqYJ+3eb0XCoHB2VOhG/2siUXuXPLT3IZCFeDqMoqUm3LxETZc2RMC+tD4oGnMrpD1sfQRNqGAYv5URguo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-3e1ff7000001d7ae-c9-67c6fa1bc9a6
-Message-ID: <95541985-8d40-4ded-a83e-46203c441640@sk.com>
-Date: Tue, 4 Mar 2025 22:03:22 +0900
+	s=arc-20240116; t=1741003155; c=relaxed/simple;
+	bh=5p1AURD+UTpH0MuSs+nx8i5sv3QPuK1m1t4ImSSfX9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KPwOECRE/dqJjgAnEaOOBJDvG2JC4fuKO4USLmJUOLmJ8fMx4OmuuAwXgCBL50MimKThvPo/ufp6YnMb79V4ZuO1qIy+6WnUX2qzrdqnmkvixVu60OeKw4mxb+6U9PZULmk3zGChFrB42UuxtqdqcSzJOeDdh1LOO/PkXo/B+I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fp6Gy2cF; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741003154; x=1772539154;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5p1AURD+UTpH0MuSs+nx8i5sv3QPuK1m1t4ImSSfX9o=;
+  b=fp6Gy2cF+ftPMmUDX7SOW/Mgbf1UeLHgGdDQ1cqYfrBZUSu8dD/PRYaR
+   qEATzMNcXWBoPB9jXz6A8+349jdaANpeAiKee0BLmgHycMMBbJhO47FbF
+   rZokKBD9SSNw7YHlF+Za3NQICGV11I91Vm9I1vjCDrvLRqouj6IjCY01u
+   CvqrvuX7/wtcYbp2T96KkYPyuxJm7D1G5pwyL5JzWi9RGpa2YuffLWlGP
+   t0qGl3Mr2hDtJmc5YjKDcRNH1kWgUq3nCYSxyXIZfaNI0lq3kzWmZPHhy
+   eYIgDUYPDMtc8hGen+EBduIB8HJcLvKZslwtRBzoF6q2CT2CQbBNNEWo2
+   w==;
+X-CSE-ConnectionGUID: gYUSQYgaRTeXtUlmMdBIQw==
+X-CSE-MsgGUID: 7060SEbgQVOnzp3/4hrIJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11361"; a="52517867"
+X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
+   d="scan'208";a="52517867"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 03:59:13 -0800
+X-CSE-ConnectionGUID: W4pEz0p8RfekLboXWPyH1g==
+X-CSE-MsgGUID: WJ9zNmVDTK2jXZzOepEyhw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
+   d="scan'208";a="117735957"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 03:59:08 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tp4Rs-0000000GnyE-0bOy;
+	Mon, 03 Mar 2025 13:59:04 +0200
+Date: Mon, 3 Mar 2025 13:59:03 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v5 02/10] property: Add functions to count named child
+ nodes
+Message-ID: <Z8WZh5EzFqxvU5rb@smile.fi.intel.com>
+References: <cover.1740993491.git.mazziesaccount@gmail.com>
+ <5e35f44db2b4ed43f75c4c53fd0576df9ad24ab2.1740993491.git.mazziesaccount@gmail.com>
+Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
- harry.yoo@oracle.com, ying.huang@linux.alibaba.com,
- gregkh@linuxfoundation.org, rakie.kim@sk.com, akpm@linux-foundation.org,
- rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
- Jonathan.Cameron@huawei.com, dave.jiang@intel.com, horen.chuang@linux.dev,
- hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
- yunjeong.mun@sk.com
-Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
- memoryless nodes
-Content-Language: ko
-To: Gregory Price <gourry@gourry.net>
-References: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
- <20250226213518.767670-2-joshua.hahnjy@gmail.com>
- <b8ac8654-92bd-4c08-a3fc-e28a7be5e0e6@sk.com>
- <Z8XWqQdPC7245FA2@gourry-fedora-PF4VCD3F>
-From: Honggyu Kim <honggyu.kim@sk.com>
-In-Reply-To: <Z8XWqQdPC7245FA2@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFIsWRmVeSWpSXmKPExsXC9ZZnka70r2PpBvP+81jMWb+GzWL61AuM
-	FiduNrJZ/Lx7nN2iefF6NovVm3wt7i97xmJxu/8cq8WqhdfYLI5vncduse8iUMPOh2/ZLJbv
-	62e0uLxrDpvFvTX/WS3mfpnKbLF6TYaDoMfhN++ZPXbOusvu0d12md2j5chbVo/Fe14yeWxa
-	1cnmsenTJHaPEzN+s3jsfGjpsbBhKrPH/rlr2D3OXazw+Pj0FovH501yAXxRXDYpqTmZZalF
-	+nYJXBk7V31gLtjMXzH74EWmBsZOni5GDg4JAROJFS1MXYycEOa+fywgYV4BS4mzl4NAwiwC
-	KhKL7raygNi8AoISJ2c+AbNFBeQl7t+awd7FyMXBLPCYWeLTnS5mkISwQJTEzld/wWYyC4hI
-	zO5sYwaZKSKgKtF2xR2kXkjgLKPE23f7GUFq2ATUJK68nARWzylgJjF93112iF4zia6tXYwQ
-	trzE9rdzmEGaJQTusUtM33OUDeJoSYmDK26wTGAUnIXkwFlIds9CMmsWklkLGFlWMQpl5pXl
-	JmbmmOhlVOZlVugl5+duYgTG8LLaP9E7GD9dCD7EKMDBqMTDG/DzWLoQa2JZcWXuIUYJDmYl
-	EV7Tz0Ah3pTEyqrUovz4otKc1OJDjNIcLErivEbfylOEBNITS1KzU1MLUotgskwcnFINjJMZ
-	P27X9TPoK6+X/Pf/+uJX/S09Wz9pZugKaWd594W1TGy996ik6OcDxi55K5knM/M496neKFty
-	MlSaXd1+mczuiTK6h5f1s1dxLv9w48nTcpc1qbdfXo7jmftuV+Y9X5m94SrKqg+UJbmvv6hs
-	2jplZ77Z4Uy9N81Ktg85+LTm1dlejSqSVmIpzkg01GIuKk4EADZxK+HdAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrAIsWRmVeSWpSXmKPExsXCNUNLT1f617F0g5NrmC3mrF/DZjF96gVG
-	ixM3G9ksft49zm7RvHg9m8XqTb4W95c9Y7G43X+O1WLVwmtsFse3zmO32HcRqOHw3JOsFjsf
-	vmWzWL6vn9Hi8q45bBb31vxntZj7ZSqzxaFrz1ktVq/JsPi9bQWbg4jH4TfvmT12zrrL7tHd
-	dpndo+XIW1aPxXteMnlsWtXJ5rHp0yR2jxMzfrN47Hxo6bGwYSqzx/65a9g9zl2s8Pj49BaL
-	x7fbHh6LX3xg8vi8SS5AIIrLJiU1J7MstUjfLoErY+eqD8wFm/krZh+8yNTA2MnTxcjJISFg
-	IrFi3z+WLkYODl4BS4mzl4NAwiwCKhKL7raygNi8AoISJ2c+AbNFBeQl7t+awd7FyMXBLPCY
-	WeLTnS5mkISwQJTEzld/mUBsZgERidmdbcwgM0UEVCXarriD1AsJnGWUePtuPyNIDZuAmsSV
-	l5PA6jkFzCSm77vLDtFrJtG1tYsRwpaX2P52DvMERr5ZSO6YhWTFLCQts5C0LGBkWcUokplX
-	lpuYmWOqV5ydUZmXWaGXnJ+7iREYr8tq/0zcwfjlsvshRgEORiUe3oCfx9KFWBPLiitzDzFK
-	cDArifCafgYK8aYkVlalFuXHF5XmpBYfYpTmYFES5/UKT00QEkhPLEnNTk0tSC2CyTJxcEo1
-	MHod1NCetdD1nQDDxL85Grl7EgxOVm7wfN2lz7Xy9I513jbbpidXzxW7lnl+4dPNJSctTp8O
-	augW9zK3maCc9Zc/3jrm571zW/U2/Tfe2dGbJrYsfl9AyaVLe+vC7ZXtDm6z1lwwa4rehSsr
-	+Ms7izefy9gsNvW9c8hDq1PnrfMXpmwx77i4+K8SS3FGoqEWc1FxIgD06bnY0wIAAA==
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5e35f44db2b4ed43f75c4c53fd0576df9ad24ab2.1740993491.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
+X-ITU-Libra-ESVA-ID: 4Z6d9v4tZLzFw6G
+X-ITU-Libra-ESVA: No virus found
+X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
+X-ITU-Libra-ESVA-Watermark: 1741703031.54569@54V5u7vQFYOWc3Gyg8uqPw
+X-ITU-MailScanner-SpamCheck: not spam
 
-Hi Gregory,
+On Mon, Mar 03, 2025 at 01:31:45PM +0200, Matti Vaittinen wrote:
+> There are some use-cases where child nodes with a specific name need to
+> be parsed. In a few cases the data from the found nodes is added to an
+> array which is allocated based on the number of found nodes. One example
+> of such use is the IIO subsystem's ADC channel nodes, where the relevant
+> nodes are named as channel[@N].
+> 
+> Add a helpers for counting device's sub-nodes with certain name instead
+> of open-coding this in every user.
 
-On 3/4/2025 1:19 AM, Gregory Price wrote:
-> On Thu, Feb 27, 2025 at 11:32:26AM +0900, Honggyu Kim wrote:
->>
->> But using N_MEMORY doesn't fix this problem and it hides the entire CXL
->> memory nodes in our system because the CXL memory isn't detected at this
->> point of creating node*.  Maybe there is some difference when multiple
->> CXL memory is detected as a single node.
->>
-> 
-> Hm, well, the node is "created" during early boot when ACPI tables are
-> read and the CFMW are discovered - but they aren't necessarily "online"
-> at the time they're created.
-> 
-> There is no true concept of a "Hotplug NUMA Node" - as the node must be
-> created at boot time. (tl;dr: N_POSSIBLE will never change).
-> 
-> This patch may have been a bit overzealous of us, I forgot to ask
-> whether N_MEMORY is set for nodes created but not onlined at boot. So
-> this is a good observation.
+...
 
-I didn't want to make more noise but we found many issues again after
-getting a new machine and started using it with multiple CXL memory.
+> +unsigned int fwnode_get_child_node_count_named(const struct fwnode_handle *fwnode,
+> +					       const char *name)
+> +{
+> +	struct fwnode_handle *child;
+> +	unsigned int count = 0;
 
-> 
-> It also doesn't help that this may introduce a subtle race condition.
-> 
-> If a node exists (N_POSSIBLE) but hasn't been onlined (!N_MEMORY) and
-> bandwidth information is reported - then we store the bandwidth info
-> but don't include the node in the reduction.  Then if the node comes
-> online later, we don't re-trigger reduction.
-> 
-> Joshua we should just drop this patch for now and work with Honggyu and
-> friends separately on this issue.  In the meantime we can stick with
-> N_POSSIBLE.
-> 
-> There are more problems in this space - namely how to handle a system
-> whereby 8 CXL nodes are "possible" but the user only configures 2 (as
-> described by Hyonggye here).  We will probably need to introduce
-> hotplug/node on/offline callbacks to re-configure weights.
-> 
-> ~Gregory
+> +	fwnode_for_each_child_node(fwnode, child)
+> +		if (fwnode_name_eq(child, name))
 
-This work won't take a long time so I think we can submit a patch within 
-a few days.
+I would expect this to be a separate macro
 
-Thanks,
-Honggyu
+	fwnode_for_each_named_child_node()
+
+(and its device variant) that gives us more consistent approach.
+
+> +			count++;
+
+And the above looks like missing {}, which won't be needed with the other
+suggestion in place.
+
+> +	return count;
+> +}
+
+> +	if (!fwnode)
+> +		return -EINVAL;
+> +
+> +	if (IS_ERR(fwnode))
+> +		return PTR_ERR(fwnode);
+
+I expect that this will return 0 or number of nodes. Why do we need an error code?
+If it's really required, it should be in the fwnode API above.
+
+Also do we care about secondary fwnodes?
+
+> +	return fwnode_get_child_node_count_named(fwnode, name);
+> +}
+
+...
+
+> +unsigned int fwnode_get_child_node_count_named(const struct fwnode_handle *fwnode,
+> +					       const char *name);
+
+To me the following name sounds better: fwnode_get_named_child_node_count().
+
+> +unsigned int device_get_child_node_count_named(const struct device *dev,
+> +					       const char *name);
+
+In the similar way.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
+
 
