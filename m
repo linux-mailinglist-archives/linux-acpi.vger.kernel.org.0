@@ -1,73 +1,75 @@
-Return-Path: <linux-acpi+bounces-11722-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11723-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3873DA4BF48
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 12:50:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280ABA4BF58
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 12:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F24F166429
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 11:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339C7166614
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 11:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03EC920B81D;
-	Mon,  3 Mar 2025 11:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CBA20C03C;
+	Mon,  3 Mar 2025 11:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GiLNK/ya"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c+O8bjEl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0251F4297;
-	Mon,  3 Mar 2025 11:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3859204F6B;
+	Mon,  3 Mar 2025 11:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741002622; cv=none; b=HM6GO9yyN6fgoU2gwSzEncAEU9edKnjtBESu4JpL0sLn7mlEVYGy2GPq6/D7D5b60XJUULzn6qch157RHdtGUSWNJrSQbCNocp+VdN0FiUz1jZWL2KHWAKGpM4AKng7Df/nXUle/PIdOTDkdtuJbnTg9t0EJwBk15AR3hr3yyhc=
+	t=1741002676; cv=none; b=uPm7dUoOsTh0gV0Rvd2N8deaMCrnz9qLXJsUC3//yudLfhuMIBWpbVw81lZnNWT0P7MKpBZAWT56B9+/jCE1zKvTwhRlmondxL+k+1Q7Xj4PXqtFzd4Gl1YMDkBAbI6EAYeahM6fyxCuLqJQoCd/YM1BM4NL40IuuA2bXnAo/gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741002622; c=relaxed/simple;
-	bh=snj0IOsRFkl6P2f5roV9E+UId9WY9PXHz7NyOEcIJm8=;
+	s=arc-20240116; t=1741002676; c=relaxed/simple;
+	bh=WqIKezHZkO7ZmKx+327v0on4OgffbWwg65hwUsgf0aA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plURwxP/JBE3MsB2hgHondCJTP8UC9T71ShNAsl9ZKqz5DdpoKhaYpSrzQhtWHNhhHoeGvcv+C+vxoxHdQdM6nYpIv9gMCRu3zAl0B0hEcSJ6KTElMKl1Cqfy3GRQvfJSPI7Lowglm09E42UzrTmIwr+YuEQodQAbzxy1gFFoJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GiLNK/ya; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5Msm04zowrOeZDtvkpYV1tqVnzAWaaz4ilrPr8zH7IwKlIuo79NEwsF/JSMq+5H7H3IxSY8WMpzlIMOS83O1A7SXhnQa+CGCNcO9WN2rBdB/WhDALP9RrIcge5XTJyP+FlkV7kcpiaKlCc/C1QCzc6emm1nEPpLheYMEFzRCn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c+O8bjEl; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741002621; x=1772538621;
+  t=1741002675; x=1772538675;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=snj0IOsRFkl6P2f5roV9E+UId9WY9PXHz7NyOEcIJm8=;
-  b=GiLNK/ya25sSmGsW7RkiiFy20I0QltE88PtRaWzfNmPh5vPEZaWpO0mQ
-   /Q5xqIi4tRvQlr0vz0abHoT2i2qm/sJiHh6h8t9wfqiGjwSwwDr6bMGPl
-   R+oPZ/TCCJqfC5PeAq+YdgV8PWI5M0XvQOst6pXaNKr4APJ+Ba9wtoA+S
-   LUgEp+ClJ15I18djtUaaqRKM9y63DCHjQjSytlKMhJXw2uyFBbiGzH9Jd
-   qXstFMLqb67CwU2ZJ4YpsnXvMGzgfL6XJ9J7zp0h395INi+VnjkSAknQP
-   FqmvR9aG6D0X7ZHXsjZNdx576imZCbwgaePJOXMKGltqwNh0parOHQPLp
-   A==;
-X-CSE-ConnectionGUID: C3QvsQ6+QsSGl6qWhaN5Jg==
-X-CSE-MsgGUID: p32QVHxSRwiD/nqrppi1Kw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11361"; a="41995021"
+  bh=WqIKezHZkO7ZmKx+327v0on4OgffbWwg65hwUsgf0aA=;
+  b=c+O8bjElb4Tb7fB3QkYCNX72101N28LUT/v0nuwnbsBBRhIHfTDd5zr1
+   VEwaEwN16IKd2UlFenQfG1EIBwgMc1ACNAIO+iNacmQeEuCuInk7LSAai
+   v2JJOBKLaf1uwmiPd0IsOXoVJM/1uJTDBuiO1gzpvUsZjk8e/mSx03qVa
+   pp54hguPOYYbJLQA8R4Hd8RIxmoxhdKfNvmOSLAvIZ6x7cYL5EiSSZJoQ
+   4Gv5fIZRF4biPONCXX0lKKHb0Mk48OW93XETrh3AdsphHq3UygXiFz0V2
+   d9thTqOLbOeWJNDcQXbLA3qCg/l36oXSkloD1mIu33lhXCTwarN3pty4c
+   Q==;
+X-CSE-ConnectionGUID: QQo5mCAKSEiw4E8sZ5yw3w==
+X-CSE-MsgGUID: FXHbyWANTyKqHybRDutf3Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11361"; a="42127243"
 X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
-   d="scan'208";a="41995021"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 03:50:20 -0800
-X-CSE-ConnectionGUID: xZT7KB1/S8CgofptislTcQ==
-X-CSE-MsgGUID: TuVZKZz5SNSmQzv5bSvYOQ==
+   d="scan'208";a="42127243"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 03:51:15 -0800
+X-CSE-ConnectionGUID: 3bwOHvTFSnOvwh1JtWxJ8g==
+X-CSE-MsgGUID: EXDMC/eNTIm1xNQT/GlyKA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
-   d="scan'208";a="123126795"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa004.fm.intel.com with SMTP; 03 Mar 2025 03:50:14 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 03 Mar 2025 13:50:13 +0200
-Date: Mon, 3 Mar 2025 13:50:13 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+   d="scan'208";a="118021008"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 03:51:10 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tp4KA-0000000Gnqn-1q5u;
+	Mon, 03 Mar 2025 13:51:06 +0200
+Date: Mon, 3 Mar 2025 13:51:06 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -77,14 +79,13 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH v5 02/10] property: Add functions to count named child
- nodes
-Message-ID: <Z8WXdf8lnivYKiks@kuha.fi.intel.com>
+Subject: Re: [PATCH RFC net-next v5 10/10] net: gianfar: Use
+ device_get_child_node_count_named()
+Message-ID: <Z8WXqgxgFQC8b8vC@smile.fi.intel.com>
 References: <cover.1740993491.git.mazziesaccount@gmail.com>
- <5e35f44db2b4ed43f75c4c53fd0576df9ad24ab2.1740993491.git.mazziesaccount@gmail.com>
+ <685cd1affabe50af45b767eeed9b9002d006b0fd.1740993491.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -93,79 +94,36 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5e35f44db2b4ed43f75c4c53fd0576df9ad24ab2.1740993491.git.mazziesaccount@gmail.com>
+In-Reply-To: <685cd1affabe50af45b767eeed9b9002d006b0fd.1740993491.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi,
+On Mon, Mar 03, 2025 at 01:34:49PM +0200, Matti Vaittinen wrote:
+> We can avoid open-coding the loop construct which counts firmware child
+> nodes with a specific name by using the newly added
+> device_get_child_node_count_named().
+> 
+> The gianfar driver has such open-coded loop. Replace it with the
+> device_get_child_node_count_named().
 
-> +/**
-> + * fwnode_get_child_node_count_named - number of child nodes with given name
-> + * @fwnode: Node which child nodes are counted.
-> + * @name: String to match child node name against.
-> + *
-> + * Scan child nodes and count all the nodes with a specific name. Return the
-> + * number of found nodes. Potential '@number' -ending for scanned names is
-> + * ignored. Eg,
-> + * device_get_child_node_count(dev, "channel");
-> + * would match all the nodes:
-> + * channel { }, channel@0 {}, channel@0xabba {}...
-> + *
-> + * Return: the number of child nodes with a matching name for a given device.
-> + */
-> +unsigned int fwnode_get_child_node_count_named(const struct fwnode_handle *fwnode,
-> +					       const char *name)
-> +{
-> +	struct fwnode_handle *child;
-> +	unsigned int count = 0;
-> +
-> +	fwnode_for_each_child_node(fwnode, child)
-> +		if (fwnode_name_eq(child, name))
-> +			count++;
-> +
-> +	return count;
-> +}
-> +EXPORT_SYMBOL_GPL(fwnode_get_child_node_count_named);
-> +
-> +/**
-> + * device_get_child_node_count_named - number of child nodes with given name
-> + * @dev: Device to count the child nodes for.
-> + * @name: String to match child node name against.
-> + *
-> + * Scan device's child nodes and find all the nodes with a specific name and
-> + * return the number of found nodes. Potential '@number' -ending for scanned
-> + * names is ignored. Eg,
-> + * device_get_child_node_count(dev, "channel");
-> + * would match all the nodes:
-> + * channel { }, channel@0 {}, channel@0xabba {}...
-> + *
-> + * Return: the number of child nodes with a matching name for a given device.
-> + */
-> +unsigned int device_get_child_node_count_named(const struct device *dev,
-> +					       const char *name)
-> +{
-> +	const struct fwnode_handle *fwnode = dev_fwnode(dev);
-> +
-> +	if (!fwnode)
-> +		return -EINVAL;
-> +
-> +	if (IS_ERR(fwnode))
-> +		return PTR_ERR(fwnode);
-> +
-> +	return fwnode_get_child_node_count_named(fwnode, name);
-> +}
-> +EXPORT_SYMBOL_GPL(device_get_child_node_count_named);
+...
 
-Sorry if I missed something in the v4 thread, but why not do all the
-checks in fwnode_get_child_node_count_named(), and make this an inline
-function?
+> It's fair to tell the pros and cons of this patch.
+> The simplification is there, but it's not a big one. It comes with a cost
+> of getting the property.h included in this driver which currently uses
+> exclusively the of_* APIs.
 
-        static inline unsigned int
-        device_get_child_node_count_named(const struct device *dev, const char *name)
-        {
-                return fwnode_get_child_node_count_named(dev_fwnode(fwnode), name);
-        }
+I think it's a good step to the right direction. We might convert the rest
+(at least I don't see much impediments while briefly looking into the code).
 
-thanks,
+...
+
+What about the second loop (in gfar_of_init)?
+I mean perhaps we want to have fwnode_for_each_named_child_node()
+and its device variant that may be also reused in the IIO code and here.
 
 -- 
-heikki
+With Best Regards,
+Andy Shevchenko
+
+
 
