@@ -1,153 +1,129 @@
-Return-Path: <linux-acpi+bounces-11795-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11786-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF33A4E6C7
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 17:50:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C3BA4E29B
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60AF4189C5FE
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BDE317E0A8
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 15:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6D228D065;
-	Tue,  4 Mar 2025 16:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5A825FA36;
+	Tue,  4 Mar 2025 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SH8zje2s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l+uBhUrR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
+Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CA2281501
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 16:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC7525D53E
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 15:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741105269; cv=pass; b=uAvVTUI1oA7JKEBtWWM+zZvOchsCTmMQnK/gHTQMKK+gkbMg2S7O7XTGdKrjQWRuYUlQwWbUGswYYIUIrMDaA+/y+Xg63xSnR05+k1rRT7h7F7zeDLykMq29M4Qlm+9d4LnDxOkx7nl3Q2J5mzgBElYrximr+IBuASjDf2Z/HGc=
+	t=1741100604; cv=pass; b=SPL78GQ1ADZSE9xTAb02HvFaGmbwq+xj7UBZk20RBcB18vkCOMhNacgdtA+Iq2c4eJBLcEHTC3/w/QWU0XY4NWwmPgb3G0jjwfF6gsXjl/Fk8URLUEKm2vqcPKZiv9hakKr2mSsWcnZri0rNOzxUJunwKrD+AORLrRKANvkVPpI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741105269; c=relaxed/simple;
-	bh=K4tBMQnaHMfsnGq5yH+1iVycU2fZaA/iBWkZbbp1u4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uys0aEtyGvRpejrz84rZxr3b6M0BlEvaPfBCTl2HendQk4v8a5vpUuw8Z411xvXNiiCf9N61aTOP8qxHnm0jXfyK2Eq4PxJR6AUpsacLk/FkDxNjWcOE2FYuHt05pXBW1chS+ID7m8t44WLzaP5qL5ELFmUgtChWfVc8FRDOZYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SH8zje2s; arc=none smtp.client-ip=209.85.208.175; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; arc=pass smtp.client-ip=160.75.25.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1741100604; c=relaxed/simple;
+	bh=MCTeDFzPFsuhhTnj3i86r61OhjjPyU6f8ybt9FJfxJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LL4OZ/l2x3VMUoN4IEw+ND5scqYeubyW4HqSMN3aAzctBVjdBvP0OHIPVD9fs5ZUPhKvmb0fuhGl/egsu0aT3OAbsWChDkSW09hKRh65Wrl+nme33fYqjkVPn16nEwfGz0+9zwCtb0gBbp0i/rQL5xuCI4ZT1x+66T8x3nnUK5A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR; arc=none smtp.client-ip=209.85.216.53; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; arc=pass smtp.client-ip=160.75.25.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
-Received: from lesvatest1.cc.itu.edu.tr (unknown [10.146.128.1])
+Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id 7E50140CF4C2
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 19:21:05 +0300 (+03)
+	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id 0FE8140D570D
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 18:03:21 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gqy1kLLzG2ts
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 19:19:42 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6dz24rK5zFy0Y
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 17:55:42 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id C826441898; Tue,  4 Mar 2025 19:19:28 +0300 (+03)
+	id 2913D42727; Tue,  4 Mar 2025 17:55:28 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SH8zje2s
-X-Envelope-From: <linux-kernel+bounces-541587-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR
+X-Envelope-From: <linux-kernel+bounces-541859-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SH8zje2s
-Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
-	by le2 (Postfix) with ESMTP id C7AAF42731
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:34:30 +0300 (+03)
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by fgw2.itu.edu.tr (Postfix) with SMTP id 5C6482DCE1
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:34:30 +0300 (+03)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR
+Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
+	by le2 (Postfix) with ESMTP id 3FF8741D24
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:56:23 +0300 (+03)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 84B4B305F789
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:56:22 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE89B16895B
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:32:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A34D7A91AB
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4E41FC0FE;
-	Mon,  3 Mar 2025 11:32:27 +0000 (UTC)
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2340213244;
+	Mon,  3 Mar 2025 13:56:06 +0000 (UTC)
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DFB1FBCB2;
-	Mon,  3 Mar 2025 11:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31457211A28;
+	Mon,  3 Mar 2025 13:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741001543; cv=none; b=j4/X57bx+BBzCgr4hvEydixhSZf1F+kVxxViQnSaFB5lKcpewuSfDyDaJOxCHRbWP4iw2tR6liYrslzqooYFVZpSHQxW3LP8QyhPtTC9sS9E9fKeXVtDQVxipCQKMqcN+fLO/lJKdoxzvTR8fcyWLhHBvunMfNHThFtfhN7z4kU=
+	t=1741010163; cv=none; b=q8WJXbhQIBrpsiUyCt0STiCL5Q+uB/WWC3WVlVqgWkCqpv/OTI4FdiQyFRAFSktoNkzbinD4TK+8aJ8FVa28hmTgushOtdQ9UK7uTtREkAq5n38He/HzJkSQnedeErp9gn/whD3RTzyLC8JmxnIWuQ2puUbnw3UmVlV29Y/80Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741001543; c=relaxed/simple;
-	bh=K4tBMQnaHMfsnGq5yH+1iVycU2fZaA/iBWkZbbp1u4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gNrPAYAgE/5uG2YLCN0bkM2G1bmIYnT+NkzhU0gH5bRBCpH+S+3j2ToAM7vgOQUovlTq8KefApgSGDioIAsB/Z4hFS/zKZwkWZPGJHXEWkBI4eRJQspAjMhuQkdrvGuKuK87I6wqfYPx3iT0ZaNG+XVRcdDmtR4WoEGDcpAuiaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SH8zje2s; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1741010163; c=relaxed/simple;
+	bh=MCTeDFzPFsuhhTnj3i86r61OhjjPyU6f8ybt9FJfxJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HiTFCxPDLRQzf3QpDtGI3v/d7MS0P3MXaFSEg5wTz4CotGSd9DR15+I9YO9yx1W0Z+MNVbHJxKv1RVG8Ow82h00Tpyr72G0vvJKtkVusd9xpz1mU3UWdZELlZVUPeieLgYHY1Tl7+OXx0CAkXOpjI0vN7JaSh1QFfxT2yYrRhO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30761be8fcfso46194801fa.0;
-        Mon, 03 Mar 2025 03:32:21 -0800 (PST)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2feb91a25bdso5424496a91.1;
+        Mon, 03 Mar 2025 05:56:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741001540; x=1741606340; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jtBChGL3VlgSfzXhFjLcRU34BzOSwfeij0YOo0Xrd7Y=;
-        b=SH8zje2sTlfqKLeUR/1haXzh8LK1kzFNkOpjPniIdqHzpuJe+0xR+erbcVUaQdi4s4
-         V5Jrv1u9jpu7IzWVuuKbnUvPNJGs5MK6nLea9bd/kMEYnuTccGR4proioD8YWXonFvRt
-         DRShMlKWDLa8LwsYl4q2q1MgdCo3iBsnftdql9L11TmcIpSEouoRAeVeJ+5jLyUSG6Re
-         L71hp/pu88uUD8a29YSfQ9yD8lzfbt7O4pESKkJevFVIewBMfKQXdi08FaEE+qsSe5Jy
-         qCdikF4pR5U0MSZxu9LG2JCy8qVoHt6TwLal1NLz6Xev7SEI7KP6P4XFgaMW2p5swQii
-         RS3g==
+        d=gmail.com; s=20230601; t=1741010160; x=1741614960; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=tBTP2SsN8b8d1tj08ma/P1grGEnHl37Fv9ksqNgBmtw=;
+        b=l+uBhUrRIt2vae8rNSALiaqNZPNbVIzSp/nkZCM2yqW0+eMAnY4qh8PSJBPlXDE0au
+         a4lvHLkLukKeC75wIbJY/6HbDSvFtfsqgu4/Pdch6CG66njFzHXuL07gw/PSBXy3AFWb
+         A7jqVE5dAMzcMI+6T4M65MPZF40mYTz2IvC9HSj3y0Q9KdNX7QSZQw85RTf9XNYi2HnG
+         tj4vNORgYmiV+8oLmcboNsaRUeqHAyEtf6wlRx7zyauoesvGImeyv1a35gCBUU5T2hAP
+         GV574/kaRk0gv09s/hps+Ta12AMb2RJ5o4DgS10z981rC+5uTq34A1zIg1HZU9oskiE8
+         gJjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741001540; x=1741606340;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1741010160; x=1741614960;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jtBChGL3VlgSfzXhFjLcRU34BzOSwfeij0YOo0Xrd7Y=;
-        b=TlEcVMMBb1iJ24zCZ/Z/0dmOdyT+Iyt6I7MPqc002Uu7+esAVxsUYgei5IR7oGcsur
-         oLO51cy95O+nkVvQhO6DvZWOYcrKFTly1xP9ucn602RHI1RVmFLjOszE8w/pWF/6Etrj
-         t9zEXSg4TUoU8yUVx1FH98sSidloOSsACiI4i2soWEHSWFhP4cXJBdRGZJ5fA0UJGxWS
-         I4KvHn1l6Yz0Ebp6FXdAUrgRGuQ1W98vtkzoM8+oyO/CqcYN1klLwqUL12SP9OQb3Su4
-         FAV3hwK+72/pLFBgw5VYrqCG0et/LAlhsGjEC9zADyGBN3WKC7dyMSc1APEjLJpgiERg
-         fnjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgXzEFw3ICs3q/tCu3/OD68ncdkBfir4JBJwTcOnWlXYEUN/1kojIFaErHZwSmr7+a7GdSYrY2wIJK@vger.kernel.org, AJvYcCUz+QrAha8q9uKmxkAqJU4jOSQsYnhHTaLk3MTjGJNyW0jieHxpVfRn6mr1DZOcqWGwqtrjITnRZVB4@vger.kernel.org, AJvYcCVGpW/yzvssNlqacbvS3yGrtROFrj/HlQgMqxU5GElKS2zlO2FjPoCKmhbsMNYXV7Eb1xb5nJ77Yf5vGq0u6ABcWlc=@vger.kernel.org, AJvYcCVbA+/j8Z3nm4TcvAsROD68zSmfgd30butLZj7f2Uaq6kaHZxJ+YLbMZo5wqItm74gBtC5s/jXP+GVi1Q==@vger.kernel.org, AJvYcCXTpa8b8qc5OpVGxjzeoIt7un2FSyRIKaVgtljOHMmuOyqAE+tKRgz1u1RDGIrL/LQRQ9kXMeND1hMObQux@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIpLtYmBO5OurFOUm1fzkfiXiAvR/yUcMBdVg7z3K08iAFS0X0
-	BjxurpBh3WIx9VSP2dKcndCjsv4P3T4oKoDNFDaTWkzGBihlDZee
-X-Gm-Gg: ASbGncs3uwBZDtD6fR6dKPFy8I+mGrAc8DramoIJVOF9Ghso9hMCaWPdhJCpIhOH+s9
-	XRKUMsVeamuwIr8r+YS+1Fknxw2sVyIu9SsB3QkXjHehIhmn+tIhlFdiRSn7H+NK8CZGXuGOFue
-	VVlQVte4o4qhgsD7R/q6AA7AYKu8snS+vSsJozX6TSFB9XimDML5vbKkPLIibXz2561y9+Vz0hf
-	ftMAGZs8YQODsIGn3EG8FPu/j1IGUUzaGEqKZ4+5AFfvJfdMHoQ7BUQqiNCsNChg2t+pqxiFWO6
-	vSRsYZb+fauiD7GxSJu51lDig6MT9MmyubSWjqxWOowPT/ov2gqmWBjBi0Z9bih3bIs+1xI2iDe
-	HG/KDvIsFc6Q=
-X-Google-Smtp-Source: AGHT+IFLEDrP5BMqyi/QYjEYMZ1pICg9oq6il8b+Tt5IsjAulwVVVhkiZFRC9rVJrJAglId4UhYVLA==
-X-Received: by 2002:a2e:bc23:0:b0:30b:bf18:91b2 with SMTP id 38308e7fff4ca-30bbf18952cmr9389191fa.3.1741001539821;
-        Mon, 03 Mar 2025 03:32:19 -0800 (PST)
-Received: from mva-rohm (mobile-access-2e8451-125.dhcp.inet.fi. [46.132.81.125])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30bbb7f2b69sm3425911fa.29.2025.03.03.03.32.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 03:32:18 -0800 (PST)
-Date: Mon, 3 Mar 2025 13:32:12 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: [PATCH v5 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <e71c63c2f61135f9a8c7884525aab2c48f1e84c2.1740993491.git.mazziesaccount@gmail.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
+        bh=tBTP2SsN8b8d1tj08ma/P1grGEnHl37Fv9ksqNgBmtw=;
+        b=K16xm9EOevXY29t71la8+2kU1Cp0ysFdBH+JaYYDgvMeUYnLbTF3iqvbV5OGjVKerM
+         pQL5ictwJYhXiWZTnKFj+Znv64IKmM1lg9uDe+9Ove9Vmyjkwi+WDAw3Civc//Bi123Y
+         6+EQbYeDHLI4pQGJBwYoBxL+zeyJGN4O/Q1jkAzOa269mLILMWUqYTx0T/J5MPvrY2xu
+         AvARCd+gPc7U+OV0YIjfk7j7/xxcvBx51F6Bt7T5d+QdonGXRCk+iIXNhoAOVsbgAyzl
+         FI/G1SEOvvTfJespqG8LeQlMUvKAWfYxXFoF7bZwsquDn4xDynUOjFH1N8Q16Qmf/uk/
+         v8UA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwakdTganp/P5UWBLWIKpw68yESsQdXbZleuoEEEcMuN0Uvdp7sRIAcdh/6eCR3GTskkdRvVR9Ny1C@vger.kernel.org, AJvYcCW2Dcor1FeZw/siSHfXJqp9FiBiEKtpiI3pkIvLfIK7BxPY7Djn8hOHB/HGHikDXr4TT2EIB9HkbPcY86JI@vger.kernel.org, AJvYcCXayjDoJcpZqoL1DbSOWishoeg3ku45PAOMfKBOBo05DjmutNtzL+rE6Qghz3IlPhjxL6Y0Po6ruFVxdi8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyyjyQb2uZCXwPmKt3ETjgswWCr8cBnrV4t6JG2S48hxu4FEVx
+	EnXHlUzpuAVyWc7O73GVeSITcR7qs4k01DUlcSn9FxE783GfXsp4
+X-Gm-Gg: ASbGncsvGa1PxmEuKBnTi2GMJXG1qYPih1vHWdUKn39btsUUj+1dixGwkTkwFFzW9JD
+	P/eN+b8nxegXZhEsIx3z+xFK69EFDrDgH2fb6sJI1e1fp6ywd+lXKRqZeY2AtowJif0SvsLmhnU
+	gnQ7j+i+Iw2ha7EgWd/q1BF5Ip39jncbsek/gNas+0x3umjr1Io7XBzZ0DHsrvXyUwl/7N0CvG8
+	KKOkb4PGgZhJkdZ+rz0po5fDbw5q9WjuisPhGfQR36L4nrO3Pgq2xWzt+bjFmrpxSv5ohz6UPSw
+	+HSiFOsmAE7+vJ8bdJAGNIGaGtYR0yCbwi5AIVUpXGxQ9noX/8b1G0BCjotmxBFXAV7iBzavXQt
+	0yQlfOayYlmsBT2H/aA==
+X-Google-Smtp-Source: AGHT+IGTn6ar+i21IthOT0JS9e6dJdyXIRsagA4YhnhB00hq/ZrlppOYJSELP4R84rv2YxZxVFKujQ==
+X-Received: by 2002:a17:90b:4b41:b0:2fe:8217:2da6 with SMTP id 98e67ed59e1d1-2febabc804cmr16947066a91.22.1741010160288;
+        Mon, 03 Mar 2025 05:56:00 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fea696e3f0sm8957394a91.37.2025.03.03.05.55.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Mar 2025 05:55:59 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <afb9a22f-7d21-42a2-a8dc-87537caad027@roeck-us.net>
+Date: Mon, 3 Mar 2025 05:55:57 -0800
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -155,242 +131,128 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Xqvnd4i6gfW+Zz1G"
-Content-Disposition: inline
-In-Reply-To: <cover.1740993491.git.mazziesaccount@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/14] hwmon: (xgene-hwmon) Simplify PCC shared memory
+ region handling
+To: Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>,
+ Adam Young <admiyo@os.amperecomputing.com>, Jean Delvare
+ <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+ <20250303-pcc_fixes_updates-v1-12-3b44f3d134b1@arm.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
+ nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
+ hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
+ c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
+ 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
+ GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
+ sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
+ Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
+ HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
+ BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
+ l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
+ J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
+ cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
+ wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
+ hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
+ nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
+ QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
+ trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
+ WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
+ HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250303-pcc_fixes_updates-v1-12-3b44f3d134b1@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6gqy1kLLzG2ts
+X-ITU-Libra-ESVA-ID: 4Z6dz24rK5zFy0Y
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741709998.74043@sAK9iCzQMHqAFBmkRjL0uw
+X-ITU-Libra-ESVA-Watermark: 1741704974.09187@NOqRvgnKu286yfih73AEXw
 X-ITU-MailScanner-SpamCheck: not spam
 
+On 3/3/25 02:51, Sudeep Holla wrote:
+> The PCC driver now handles mapping and unmapping of shared memory
+> areas as part of pcc_mbox_{request,free}_channel(). Without these before,
+> this xgene hwmon driver did handling of those mappings like several
+> other PCC mailbox client drivers.
+> 
+> There were redundant operations, leading to unnecessary code. Maintaining
+> the consistency across these driver was harder due to scattered handling
+> of shmem.
+> 
+> Just use the mapped shmem and remove all redundant operations from this
+> driver.
+> 
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-hwmon@vger.kernel.org
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 
---Xqvnd4i6gfW+Zz1G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-There are ADC ICs which may have some of the AIN pins usable for other
-functions. These ICs may have some of the AIN pins wired so that they
-should not be used for ADC.
+Note that I'll apply a fix this week which will cause a context conflict.
+See below.
 
-(Preferred?) way for marking pins which can be used as ADC inputs is to
-add corresponding channels@N nodes in the device tree as described in
-the ADC binding yaml.
+> ---
+>   drivers/hwmon/xgene-hwmon.c | 40 ++++------------------------------------
+...
+> @@ -685,34 +681,6 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+>   			goto out;
+>   		}
+>   
+> -		/*
+> -		 * This is the shared communication region
+> -		 * for the OS and Platform to communicate over.
+> -		 */
+> -		ctx->comm_base_addr = pcc_chan->shmem_base_addr;
+> -		if (ctx->comm_base_addr) {
+> -			if (version == XGENE_HWMON_V2)
+> -				ctx->pcc_comm_addr = (void __force *)devm_ioremap(&pdev->dev,
+> -								  ctx->comm_base_addr,
+> -								  pcc_chan->shmem_size);
+> -			else
+> -				ctx->pcc_comm_addr = devm_memremap(&pdev->dev,
+> -								   ctx->comm_base_addr,
+> -								   pcc_chan->shmem_size,
+> -								   MEMREMAP_WB);
+> -		} else {
+> -			dev_err(&pdev->dev, "Failed to get PCC comm region\n");
+> -			rc = -ENODEV;
+> -			goto out;
+> -		}
+> -
+> -		if (!ctx->pcc_comm_addr) {
 
-Add couple of helper functions which can be used to retrieve the channel
-information from the device node.
+This needed to be IS_ERR_OR_NULL() since devm_memremap() returns an ERR_PTR.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Thanks,
+Guenter
 
----
-Revision history:
-v4 =3D> v5:
-- Inline iio_adc_device_num_channels()
-- Fix Indenting function parameters
-- Combine the max channel ID checks.
-v3 =3D> v4:
- - Drop diff-channel support
- - Drop iio_adc_device_channels_by_property()
- - Add IIO_DEVICE namespace
- - Move industrialio-adc.o to top of the Makefile
- - Some styling as suggested by Andy
- - Re-consider included headers
-v2 =3D> v3: Mostly based on review comments by Jonathan
- - Support differential and single-ended channels
- - Rename iio_adc_device_get_channels() as
-   iio_adc_device_channels_by_property()
- - Improve spelling
- - Drop support for cases where DT comes from parent device's node
- - Decrease loop indent by reverting node name check conditions
- - Don't set 'chan->indexed' by number of channels to keep the
-   interface consistent no matter how many channels are connected.
- - Fix ID range check and related comment
-RFC v1 =3D> v2:
- - New patch
----
- drivers/iio/adc/Kconfig            |  3 ++
- drivers/iio/adc/Makefile           |  2 +
- drivers/iio/adc/industrialio-adc.c | 82 ++++++++++++++++++++++++++++++
- include/linux/iio/adc-helpers.h    | 27 ++++++++++
- 4 files changed, 114 insertions(+)
- create mode 100644 drivers/iio/adc/industrialio-adc.c
- create mode 100644 include/linux/iio/adc-helpers.h
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 849c90203071..37b70a65da6f 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -6,6 +6,9 @@
-=20
- menu "Analog to digital converters"
-=20
-+config IIO_ADC_HELPER
-+	tristate
-+
- config AB8500_GPADC
- 	bool "ST-Ericsson AB8500 GPADC driver"
- 	depends on AB8500_CORE && REGULATOR_AB8500
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index ee19afba62b7..1c410f483029 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -3,6 +3,8 @@
- # Makefile for IIO ADC drivers
- #
-=20
-+obj-$(CONFIG_IIO_ADC_HELPER) +=3D industrialio-adc.o
-+
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_AB8500_GPADC) +=3D ab8500-gpadc.o
- obj-$(CONFIG_AD_SIGMA_DELTA) +=3D ad_sigma_delta.o
-diff --git a/drivers/iio/adc/industrialio-adc.c b/drivers/iio/adc/industria=
-lio-adc.c
-new file mode 100644
-index 000000000000..7bdae5330224
---- /dev/null
-+++ b/drivers/iio/adc/industrialio-adc.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Helpers for parsing common ADC information from a firmware node.
-+ *
-+ * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/export.h>
-+#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/types.h>
-+
-+#include <linux/iio/adc-helpers.h>
-+#include <linux/iio/iio.h>
-+
-+/**
-+ * devm_iio_adc_device_alloc_chaninfo_se - allocate and fill iio_chan_spec=
- for ADC
-+ *
-+ * Scan the device node for single-ended ADC channel information. Channel =
-ID is
-+ * expected to be found from the "reg" property. Allocate and populate the
-+ * iio_chan_spec structure corresponding to channels that are found. The m=
-emory
-+ * for iio_chan_spec structure will be freed upon device detach.
-+ *
-+ * @dev:		Pointer to the ADC device.
-+ * @template:		Template iio_chan_spec from which the fields of all
-+ *			found and allocated channels are initialized.
-+ * @max_chan_id:	Maximum value of a channel ID. Use -1 if no checking
-+ *			is required.
-+ * @cs:			Location where pointer to allocated iio_chan_spec
-+ *			should be stored.
-+ *
-+ * Return:	Number of found channels on succes. Negative value to indicate
-+ *		failure.
-+ */
-+int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
-+					  const struct iio_chan_spec *template,
-+					  int max_chan_id,
-+					  struct iio_chan_spec **cs)
-+{
-+	struct iio_chan_spec *chan_array, *chan;
-+	int num_chan =3D 0, ret;
-+
-+	num_chan =3D iio_adc_device_num_channels(dev);
-+	if (num_chan < 1)
-+		return num_chan;
-+
-+	chan_array =3D devm_kcalloc(dev, num_chan, sizeof(*chan_array),
-+				  GFP_KERNEL);
-+	if (!chan_array)
-+		return -ENOMEM;
-+
-+	chan =3D &chan_array[0];
-+
-+	device_for_each_child_node_scoped(dev, child) {
-+		u32 ch;
-+
-+		if (!fwnode_name_eq(child, "channel"))
-+			continue;
-+
-+		ret =3D fwnode_property_read_u32(child, "reg", &ch);
-+		if (ret)
-+			return ret;
-+
-+		if (max_chan_id !=3D -1 && ch > max_chan_id)
-+			return -ERANGE;
-+
-+		*chan =3D *template;
-+		chan->channel =3D ch;
-+		chan++;
-+	}
-+
-+	*cs =3D chan_array;
-+
-+	return num_chan;
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DRIVER");
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
-+MODULE_DESCRIPTION("IIO ADC fwnode parsing helpers");
-diff --git a/include/linux/iio/adc-helpers.h b/include/linux/iio/adc-helper=
-s.h
-new file mode 100644
-index 000000000000..403a70b109ec
---- /dev/null
-+++ b/include/linux/iio/adc-helpers.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+/*
-+ * The industrial I/O ADC firmware property parsing helpers
-+ *
-+ * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
-+ */
-+
-+#ifndef _INDUSTRIAL_IO_ADC_HELPERS_H_
-+#define _INDUSTRIAL_IO_ADC_HELPERS_H_
-+
-+#include <linux/property.h>
-+
-+struct device;
-+struct iio_chan_spec;
-+
-+static inline int iio_adc_device_num_channels(struct device *dev)
-+{
-+	return device_get_child_node_count_named(dev, "channel");
-+}
-+
-+int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
-+					  const struct iio_chan_spec *template,
-+					  int max_chan_id,
-+					  struct iio_chan_spec **cs);
-+
-+#endif /* _INDUSTRIAL_IO_ADC_HELPERS_H_ */
---=20
-2.48.1
-
-
---Xqvnd4i6gfW+Zz1G
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfFkzwACgkQeFA3/03a
-ocXuBwgAuRQ/tlZSOf6SLet+xxTrkc8Ao08JwLFpdY3kORBcf8Syd5R2/3ALMsmM
-jcpwo1ZbsawPz+ypEbE1c9M7x+L49rdIE9F2DYUEGzqcemWfaeyDatgytn3VKbz6
-x/Wq961wfy5ntkyxrdNlcV5WNSwIFNNt6qH5O3SwGM63yVjjyPlthmXvEVZYRS0e
-ujDFFqBGcReOBDTNpG3TV0ozv0xFZQpmBPDIyBE6XWQK6JS85fy4zQ4HltAX8gfL
-bfXcPg7WnKHLvy1bQLVtF8JqyckD8QiqcT1fUznqWpxfJ7EkFhvWULWXLB6eKQYR
-fmvISMGCkMrTFeC6oaojYKHIbwlA+Q==
-=FJAk
------END PGP SIGNATURE-----
-
---Xqvnd4i6gfW+Zz1G--
 
 
