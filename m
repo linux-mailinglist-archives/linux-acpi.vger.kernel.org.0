@@ -1,94 +1,92 @@
-Return-Path: <linux-acpi+bounces-11738-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11739-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C23A4C700
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 17:28:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03F0A4C8F8
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 18:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 020101775DB
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 16:24:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF32E7A7FF9
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Mar 2025 17:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04085229B35;
-	Mon,  3 Mar 2025 16:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE49266182;
+	Mon,  3 Mar 2025 16:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="SDIXkAym"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="OJOIaP0V"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D81215789
-	for <linux-acpi@vger.kernel.org>; Mon,  3 Mar 2025 16:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD66526561E
+	for <linux-acpi@vger.kernel.org>; Mon,  3 Mar 2025 16:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741018798; cv=none; b=D1wch8/JjfmHy3t7bwNR0YO323XQeRhNAgwhpYJAWUOQ1yTsoT18IKQlBBlvDborMaczo0B/PQbmCTgtXSpWKoGIWICvkowQ7xCEnDw1AuuA6r/4w5hsKTZzgrJHl4q92u79c1tNyNbAK7tX616CRQZ4O2RemuRnCJmR10IRCtk=
+	t=1741020939; cv=none; b=TllexIeeZBmveXY+ou3O2sRGW9NXeaY8T5V6qOCOK6bDi4LkLYteoO7aQ0rl7l/LINUIG/QmyuCqnN264+Zam9PsJwGuUY+UZCqWInMR+RMMZYSBP0pUg7cht4cSNK2N/NYc5VGzHN6/SklY9fCgaqz5Kkza9fvwiEt0ua7iUxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741018798; c=relaxed/simple;
-	bh=KaGmUQu6vX9CGkW4/xHWmqzfNUCeiOrjklvyH7jHB5c=;
+	s=arc-20240116; t=1741020939; c=relaxed/simple;
+	bh=UH4NlzYBkkWgbKnndkALjc2/BnPKdAhK1NZQa5X3WkU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ga5mJpuH1VATuX4qhJ1RNv+EYN9CgaJc13rxQwju3+efeEeC3FZCuELT5d8xyqoTfP9K1dl10R/ZMHs+E8ic3eWo30hNqy2EzOrstT2IInri0gnpHLQUZBnZTcmRwG8bsBWWn8GEIEKuSy7FC+KNvxkGexaDhZSX35WuX7PLBRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=SDIXkAym; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6e89ccbbaa9so31849306d6.2
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Mar 2025 08:19:57 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=k2qLxsJdbVzug1p9a7JR1zXrUGZc2W2gs6kp1quzAjOzenmsquZt5S57xbdphQn+LbV/MgCy6iXkDs4byGmOo6gJtaOzLIStrSMSf3Dw3tZLyALNtjays6pGqkZU0HjrRVn9u/axYLB7qCfeDSp44z4eOua8SdXTKCS1KeUT0ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=OJOIaP0V; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-474fba180cfso72561cf.3
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Mar 2025 08:55:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1741018796; x=1741623596; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1741020937; x=1741625737; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=npU4Q2NKzI8EHqsYS1IQDm8fptT5XAkaolwjBVod8c4=;
-        b=SDIXkAym6QpvZf/ycYItY0gcvJ2Luwu0rESmvOBnp9L0IiAeeSIiqJo9LLXMytzrqY
-         0o7mwgOzQgpovHsxfS4k6qgWya1xhKzN5xUXD9qrE9mIULvuzfbWkHpSPqrjrAyHh3c4
-         vpPedX2t2QblzbEEXUNLQlNj/dqCEGdK0SuTQsR3CUW0ONRAehtsruj3Y3rPu+9CiCgM
-         9J1hEqHR3T6/moJESIaxrzZap1Culj9UjTZQy5XnxxBDHBMoYy8k3TPeXY1kr+HUFu/F
-         1bszyMRAFFG9WVT4jCnVZwC5anw7GMdc4Kj253fIplivOnch3FRaXDWevLEjGpk2seY1
-         B4xA==
+        bh=YJqDa+ZdsMQ9ydSfsBA3qoRWbBlsc9jKdUugmc9+LO4=;
+        b=OJOIaP0Vxe+u3W1PRLYO3rpVYvJuxpJB+ajjqUENSzTHaKhQY/79ZSK60XQ/Ym5Iwr
+         uv7jQ5EtJNoQM8qIX+d4ctGDZgF6DUdlSpIHqtuuYF9sdOEMOaDwNuoDtF6zlK4UNOQb
+         onhd3/UeANnsLKxfjXp9PHUuv1T+0O8VVSxbDlX1w1Xqv/OY3UgDYNTnuhmdu9tZta8K
+         bB1oyhYeOafYttdLjsKm6bO1rTDMSSWtfdGb6hTTc5dp4RJ72sbU6K5AMZ6rlH04iXQy
+         hOVdcGkZGNecpwVkPDSV439RqyEmbuQzMmHKZ6W/JvkiPeCYDiHAbdXSRLtG1Uh/6tYk
+         VOQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741018796; x=1741623596;
+        d=1e100.net; s=20230601; t=1741020937; x=1741625737;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=npU4Q2NKzI8EHqsYS1IQDm8fptT5XAkaolwjBVod8c4=;
-        b=TWniDD7XutXt7ApXXJynY6nH2gOYESfXbiANI5JO0izBhtTKD62/2vHWCwTQmfDART
-         /cPgiftvXOQdJczDJhX3F+Og7R96u4bOWvPOGngOp5GwzLedxM+AEOwiGEWhzHs4FBWq
-         PfOtnZU6F2yl6lqwUD2J+6mpMUtUdG3Wr7Fk4sFbfYoTcWRqduHyiu/aT2ch9KaF4qgd
-         MUDmEzqjSg2lKFttbmJ1UpSIEIZcpE5kLoy4nYl6dSK+X6cXQrP4YD3FtilVAWCoh3N3
-         Vs42yqUXjm7IFtPkZUZ67GXFTtZPQBa3U/Up2PHtl0EpKs/IP3pZF4JEWm1Hgmh9fQrX
-         qXzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlk02mTE8bHrZewuMLUW3xDNOXywrz/G7fMNkie5+PKXOYvV0w05jspzJJv3clbyOR0UVYeMHbUxO5@vger.kernel.org
-X-Gm-Message-State: AOJu0YygypyqfGcMMKC1qtZI6Oj4bHmjU+y7ZJhf3MlrdWSPECIPJCQT
-	rzJOHbE5DLPm7Xbw/jEi8PBDUh/gxH7jt8Dlzp4sPUs204/wuSgIYpT//HjcuaA=
-X-Gm-Gg: ASbGncv/7dWKNkHSynXWURroe80RPPyR6Ox2Be2BlcpGsnCD+Soe3zNEGUtPwYs0hdM
-	LQO6FvtC4f4G8/C8pYOWc6/wWuB4eWt9++9xwQ9Igs0PB96Lc7a4Sv5wCXBJgh5DPveO6Z2M42m
-	ulApNL9q60A9ays+S9Vss+zR1MKKXn7cdYspZYT6NQCyUPKOAmEIO6HrT7GY+UTSd0MtnNpAbqK
-	qUOUjK5sVW0eSrUCXAN66mtLEMWNFOiXlMvkd26Eu2rpsTHznWak2AFfWl8nuGeo4EuKe4+Jlr4
-	5TM5ewCSeuei8vpBc8VioCIYa0pivj/uwFEkpA5HMYmke0hkzNdbVAxqfU0IP5ZaFwancNRMH8R
-	YCxXPaghKvVOBl8ZTK0jJFjF7rIs=
-X-Google-Smtp-Source: AGHT+IFrkNQWQ1CiJuDWkCSRKag4xlr1szBO39O50NkgwvocW88WS9f8hGcizY9NgWfP7fb3nWp2Qw==
-X-Received: by 2002:a0c:c387:0:b0:6e8:adee:2e6a with SMTP id 6a1803df08f44-6e8adee2f29mr134420576d6.36.1741018796194;
-        Mon, 03 Mar 2025 08:19:56 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8976ec0f8sm54776936d6.120.2025.03.03.08.19.55
+        bh=YJqDa+ZdsMQ9ydSfsBA3qoRWbBlsc9jKdUugmc9+LO4=;
+        b=md3y0URhjFgqMXMYtHVA2NvH/FpyrFsG+zFUnSYhHilfM0X/In7UGA2a9qsNQWE0c1
+         hCX24x3xf8fHwexbkKa7KVZP77mg7hIA/IMboVIAomLR9gLilYhxW1N7yVB0jmPXQw7B
+         kwaiZQ7kXLhACK3NFFQ+KD2TwQXC4gvd2irWGNe6WCtjZCLpyk026gECkV+3yRVxHhkK
+         osMIcGnAQTNVqtfnKHj5z/f3b8poa3CGDOXal8s5sdsxGFbSSLcC7ho/spluwtpogC2X
+         S8JONQ5OVxXq4TN3DddHb6ml6wya3+nre/oJRflPlq9csmui4yDQO3L8rfFrR65O81ip
+         xRZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdxS27fdrMaGt0kcmT6Fg6zDqagvWCYLid/SDSi8+H8oc9LIEB7rWjGra5sd7SbEHPjQUyqSgH6UBx@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXSPm3VVqR/fXR4w0hDteSqucVB8xLo8Nju2hL9Ibpnrq71uXS
+	h+ZS3Cm8SNaFFUZOMo18nnc63HQLRA7pE3RpYMFI2ZwpZ+Mn09F1uvXj1eTbKto=
+X-Gm-Gg: ASbGncv0sa7SKxKYAXaOqXeX8EJLF3evuEjpiptqMgaoOeKpfzs/XMsf975W22Tsedn
+	aBfvxwfsClrjAfnZGNe6S/As5dbSl/0GTsR+0dy+mRa17CWZZbMBOixm9WOtO0yMVPyuNO85RuB
+	vC+K7Ly/OSrt8SJZPqs66DEMcYHI/2siDcUbtDGIjiVvftuMbXCmaaVcFkyoAjXcrP8Jd8PjrMC
+	qEqmvxj+c5vLfVE+J6dBndrIZOFKhAbDkXYyUzpZkt+ayckBOY65zBV1Raxc7zNqfTwcy2c6/uW
+	DeTbKPmxKV37YPYTOGBA7Ar3Ge2CtJNFpABlz0Pxkx7l4+gmb763vdkVLSHbOLv0NI2RgUqhg/M
+	DvquyJQRJizfAauUxGg==
+X-Google-Smtp-Source: AGHT+IG3i30Vik/hq07e5CV5t54ZLHhq9hBAl2BnifWRWrXSNf/6v99OiWRFpkGkprdx8XpLFqILeA==
+X-Received: by 2002:a05:622a:22a4:b0:474:d12f:2f3f with SMTP id d75a77b69052e-474d12f3287mr114169491cf.51.1741020936660;
+        Mon, 03 Mar 2025 08:55:36 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-474dc59d291sm20118051cf.40.2025.03.03.08.55.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 08:19:55 -0800 (PST)
-Date: Mon, 3 Mar 2025 11:19:53 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Honggyu Kim <honggyu.kim@sk.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, harry.yoo@oracle.com,
-	ying.huang@linux.alibaba.com, kernel_team@skhynix.com,
-	gregkh@linuxfoundation.org, rakie.kim@sk.com,
-	akpm@linux-foundation.org, rafael@kernel.org, lenb@kernel.org,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com, yunjeong.mun@sk.com
-Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
- memoryless nodes
-Message-ID: <Z8XWqQdPC7245FA2@gourry-fedora-PF4VCD3F>
-References: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
- <20250226213518.767670-2-joshua.hahnjy@gmail.com>
- <b8ac8654-92bd-4c08-a3fc-e28a7be5e0e6@sk.com>
+        Mon, 03 Mar 2025 08:55:36 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tp94p-00000000olC-0YQE;
+	Mon, 03 Mar 2025 12:55:35 -0400
+Date: Mon, 3 Mar 2025 12:55:35 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Stuart Yoder <stuart.yoder@arm.com>, linux-integrity@vger.kernel.org,
+	peterhuewe@gmx.de, sudeep.holla@arm.com, rafael@kernel.org,
+	lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/5] Add support for the TPM FF-A start method
+Message-ID: <20250303165535.GT5011@ziepe.ca>
+References: <20250217224946.113951-1-stuart.yoder@arm.com>
+ <Z8SypwnbJR4g8Bho@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -97,42 +95,15 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b8ac8654-92bd-4c08-a3fc-e28a7be5e0e6@sk.com>
+In-Reply-To: <Z8SypwnbJR4g8Bho@kernel.org>
 
-On Thu, Feb 27, 2025 at 11:32:26AM +0900, Honggyu Kim wrote:
-> 
-> But using N_MEMORY doesn't fix this problem and it hides the entire CXL
-> memory nodes in our system because the CXL memory isn't detected at this
-> point of creating node*.  Maybe there is some difference when multiple
-> CXL memory is detected as a single node.
-> 
+On Sun, Mar 02, 2025 at 09:33:59PM +0200, Jarkko Sakkinen wrote:
+> WARNING: line length of 102 exceeds 100 columns
+> #764: FILE: drivers/char/tpm/tpm_crb.c:821:
+> +                               FW_BUG "TPM2 ACPI table has wrong size %u for start method type %d\n",
 
-Hm, well, the node is "created" during early boot when ACPI tables are
-read and the CFMW are discovered - but they aren't necessarily "online"
-at the time they're created.
+Just ignore that, it is an error in checkpatch. Strings are required to
+be long. I suspect FW_BUG confused it.
 
-There is no true concept of a "Hotplug NUMA Node" - as the node must be
-created at boot time. (tl;dr: N_POSSIBLE will never change).
-
-This patch may have been a bit overzealous of us, I forgot to ask
-whether N_MEMORY is set for nodes created but not onlined at boot. So
-this is a good observation.
-
-It also doesn't help that this may introduce a subtle race condition.
-
-If a node exists (N_POSSIBLE) but hasn't been onlined (!N_MEMORY) and
-bandwidth information is reported - then we store the bandwidth info
-but don't include the node in the reduction.  Then if the node comes
-online later, we don't re-trigger reduction.
-
-Joshua we should just drop this patch for now and work with Honggyu and
-friends separately on this issue.  In the meantime we can stick with
-N_POSSIBLE.
-
-There are more problems in this space - namely how to handle a system
-whereby 8 CXL nodes are "possible" but the user only configures 2 (as
-described by Hyonggye here).  We will probably need to introduce
-hotplug/node on/offline callbacks to re-configure weights.
-
-~Gregory
+Jason
 
