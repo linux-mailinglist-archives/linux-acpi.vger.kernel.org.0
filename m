@@ -1,139 +1,85 @@
-Return-Path: <linux-acpi+bounces-11788-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11790-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9AAA4E412
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:47:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BFEA4E5A5
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 17:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 965BD8A1D1D
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 15:21:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01473880ED3
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CDC25D210;
-	Tue,  4 Mar 2025 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDFC2C2CC6;
+	Tue,  4 Mar 2025 15:50:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
+Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121DE25D551
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 15:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=160.75.25.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7E02C2CBC
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 15:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.116
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741101353; cv=fail; b=gOqA77NX8kMdkTT3N0rTL2wpLO3IuEqHiu17Si7BrMX0SzhKN3QqQpaCVnXq7YEQ5gBx55x2F+4A65uFjVBAIRH/oiQhvH6yW3G1FTCNqoXwJ5620ORrG8ifAV0rSqyDlhUhP5R/774+m7t8j8PiFNhKAUWqA694HSWAgNPH8uk=
+	t=1741103415; cv=pass; b=gzwdB3zYoLZw7IPtuLXoaH08pPrEKwPQ0uZu7ci5ZPhTV4zW9dDRKVEzzWF6UdgPdlq/wb1RPB0YkjjH7dt0DLlTC48EnmC8bKJcl3CeQuZ8HTGkmzfBfaiHyKzgUOLCTCt0t3Y1YlGkuJh3oVPQ7+f3opjBU1VAt3CcWtSZrx4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741101353; c=relaxed/simple;
-	bh=Q140J512fl+FeFdkGEjwsUDtH0BF9JSpJtTf4QOgqro=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KoekYSzCu/WjzfJyTg0iqHmUq+TfXgPcbpWgGboqhdrCTyP4ZbK6eVIHOXQ33HJkcmxBQxG2oixEGnrTpe1nk4+n74wOP5LktD90O7EyLYHRYwHt7+X/JyZS/hkW3M7get8wpLY4TyxxMJKohzkyeEuF0B9REMki2YewNS+5lZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=185.176.79.56; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=fail smtp.client-ip=160.75.25.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+	s=arc-20240116; t=1741103415; c=relaxed/simple;
+	bh=UbmacZHuc0rkrUhM8NEGGe2sjhxY+p2kFyDwy7F6O9g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lMikM0mIB297aglcFpUmkF4BzsRYa/PiXhoKcMRocz1BM0pM2uwGfzsabHA6OPtrLRYrZKI18ezjOj8t1ECU51wIKMjebJIU06ASxC4YOhI+K1s3eppH80F0ROE4J7jaX7wNUVj+4dZIW7aTyR/S4Rg4PxFPDT2bmBoxtI9ap0o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=217.140.110.172; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=pass smtp.client-ip=160.75.25.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id 4320E40D5721
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 18:15:50 +0300 (+03)
+	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 57681408B656
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 18:50:12 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6fMq2hzTzFydp
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 18:13:43 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6g8j45r6zG1YB
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 18:49:09 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id C80E742722; Tue,  4 Mar 2025 18:13:33 +0300 (+03)
-X-Envelope-From: <linux-kernel+bounces-541356-bozkiru=itu.edu.tr@vger.kernel.org>
-Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
-	by le2 (Postfix) with ESMTP id 5D07142F1B
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:21:54 +0300 (+03)
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by fgw2.itu.edu.tr (Postfix) with SMTP id 347A72DCEB
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:21:54 +0300 (+03)
+	id DA6224272B; Tue,  4 Mar 2025 18:48:56 +0300 (+03)
+X-Envelope-From: <linux-kernel+bounces-541445-bozkiru=itu.edu.tr@vger.kernel.org>
+Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
+	by le2 (Postfix) with ESMTP id 95E1941A7B
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:55:38 +0300 (+03)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id DC73C3063EFC
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:55:37 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A8D1891482
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:22:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DD177AA657
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39E51F236E;
-	Mon,  3 Mar 2025 10:21:38 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB531EDA04;
-	Mon,  3 Mar 2025 10:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B291F5849;
+	Mon,  3 Mar 2025 10:53:35 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A971F4635;
+	Mon,  3 Mar 2025 10:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740997297; cv=none; b=tdR5lQNGrdVWS5SAWs5gQ4Z2b2aHEQL5QS/uLFmAdbQsRpPbJU+667KIzEz2mAEmA31HywegkJ1LfIMUKNi3SNnbFOnGEE1e/Q3xKCpPw+Rp8YFo+jCDY4NVBXP3p9dKF5IFNh5Fi8mX/u5YF2yvRq+OKlmx0mok/PnDt6Y4ruA=
+	t=1740999213; cv=none; b=M0vFo8qR70DfOR3BY1DwU/z+LFQ6iztcSj7OoYL9FsEDetOXVHpCO317u1JzkqQB15nr+ywZt780Z4MD5WmseK1Fb0BYGNQLRHWt4ZPmVPnc/wxZ61K7HcLQ+WhaeCKPUWT/t6P4amqVnaWAbQoyh/mcvfl2rXCdEvOguCav2TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740997297; c=relaxed/simple;
-	bh=a2xSJ3T1g8IXcDpYxc901qp4tAn/pEbOH9ZKAL1qU7U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z447CwWm+yrqV3ZWc6vrIR8ru6Fb3td3ZKi0NGqXFJ+BIdXk4j8scitc9HTAZUhjU8UvSBMiCYKgLYyKTttgDxahUQoNz0PAh9z+IvwaNo2JgJGCx1VNb9OYMdj1mzbI/+H7e2Jha/R8+TiWx/nGZk7RSKZJkhKpUKrIdJGidH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z5vtd4j18z6K9SC;
-	Mon,  3 Mar 2025 18:19:21 +0800 (CST)
-Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
-	by mail.maildlp.com (Postfix) with ESMTPS id 01139140A70;
-	Mon,  3 Mar 2025 18:21:31 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 3 Mar 2025 11:21:30 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Mon, 3 Mar 2025 11:21:30 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"rafael@kernel.org" <rafael@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "lenb@kernel.org"
-	<lenb@kernel.org>, "mchehab@kernel.org" <mchehab@kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "j.williams@intel.com" <j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 feature
- table
-Thread-Topic: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 feature
- table
-Thread-Index: AQHbidw989DsJKt5skazfuISb8i7/7NhGsIAgAAbu7A=
-Date: Mon, 3 Mar 2025 10:21:30 +0000
-Message-ID: <ed550760111d4061869949c90598ff5b@huawei.com>
-References: <20250228122752.2062-1-shiju.jose@huawei.com>
- <20250303173538.000007cd@huawei.com>
-In-Reply-To: <20250303173538.000007cd@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1740999213; c=relaxed/simple;
+	bh=UbmacZHuc0rkrUhM8NEGGe2sjhxY+p2kFyDwy7F6O9g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SilJqwpSOgytkAkuKO8hXoJmvwC0PwFHuz8S/D4JXUx2x5E9WeaZ3lfI07etQGzHDjpfTqzMOhCsgvV4/24NN9j7MEd8ggpm2MZQ7JxB6EYNpbQk82/G9mZGb2k8Mh7vGqz043GCHUz74Xbr74ExnDfKCRYgsnZ+SEh9k1sM37w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C16C31FC7;
+	Mon,  3 Mar 2025 02:53:45 -0800 (PST)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A57CF3F673;
+	Mon,  3 Mar 2025 02:53:30 -0800 (PST)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Date: Mon, 03 Mar 2025 10:51:40 +0000
+Subject: [PATCH 05/14] mailbox: pcc: Use acpi_os_ioremap() instead of
+ ioremap()
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -141,45 +87,74 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250303-pcc_fixes_updates-v1-5-3b44f3d134b1@arm.com>
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+In-Reply-To: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>, 
+ Adam Young <admiyo@os.amperecomputing.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1277; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=UbmacZHuc0rkrUhM8NEGGe2sjhxY+p2kFyDwy7F6O9g=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBnxYohDnfLle7CFfvs0cbGHG+605WgQHE8GV+YO
+ iXyfhUuk1+JAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ8WKIQAKCRAAQbq8MX7i
+ mCJTD/9tHPMsmYiCLgOELz0+VsOIsbtVXK06UOdVm5UAe+fTPWEd0bNLOlxhr2w6NdQ+bbuM3QW
+ UE7/33ijae/yOzWqWRFTi2MIKj0BOtOg+Msox9oGXEkPz7o6P3WVs/s+PHWiKFaJ/O85kqnKtAX
+ puwQeVseE+8P0h0J4h/4i8QlSi+Gi+Za7z7UhMwZPsGmWqoTu6jg42wvPCVyMmU+PSOlAeA+9Uo
+ Lad0W1JTpz33WArz/7ZtnTkr4XdgqgyMJkIB1lZHNEnMDiqWF/6o5BcFdRS2c+ysBAF/rxRYIdr
+ E0/vAzokYXFxB6cHYhgB3bqB1R6P0E/fUuIFwqg7vOHUuVX21AyO/STjH+kJ7ilvVnL28mr4yMQ
+ A4iNv+XhT0x68wYCZteEVJiaz/CT1AlqbguP8RuhPVFUu+v8arjs/nKf0YzTX2sWVQv9YTjGIPz
+ oSV+YtbVoHgO5Mm34oO6Lm95SLIuEB8JcUlAyyPrB+qwqHTb5Q5WG8lfe7q5nJuGFbn91lE6M+X
+ 1Pf3ermNqu6zTi6TKvKb+gRM22CkScIHt/5kYUo/OKeND2zdDRlzUTZFfpd9hX+y9/mJMy8gvuR
+ bDdh8u7b8wzj9P92LEq9j4eyWgnNexvj4i89DUepJgsMM3EX/6ah71HHNaVfme2b1YSsANyx2JQ
+ fioy0b8vkC72yaQ==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6fMq2hzTzFydp
+X-ITU-Libra-ESVA-ID: 4Z6g8j45r6zG1YB
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741706049.6852@Bt01RGLQ0GAMkpv6ZaY+RA
+X-ITU-Libra-ESVA-Watermark: 1741708150.61581@tkhR7cRzEva8rvsHbsdmag
 X-ITU-MailScanner-SpamCheck: not spam
 
->-----Original Message-----
->From: Jonathan Cameron <jonathan.cameron@huawei.com>
->Sent: 03 March 2025 09:36
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-edac@vger.kernel.org; linux-acpi@vger.kernel.org; rafael@kernel.=
-org;
->bp@alien8.de; tony.luck@intel.com; lenb@kernel.org; mchehab@kernel.org;
->linux-mm@kvack.org; linux-kernel@vger.kernel.org; linux-cxl@vger.kernel.or=
-g;
->j.williams@intel.com; dave@stgolabs.net; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: Re: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 featur=
-e
->table
->
->On Fri, 28 Feb 2025 12:27:48 +0000
-><shiju.jose@huawei.com> wrote:
->
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add support for ACPI RAS2 feature table (RAS2) defined in the ACPI 6.5
->> specification, section 5.2.21 and RAS2 HW based memory scrubbing feature=
+The Platform Communication Channel (PCC) mailbox driver currently uses
+ioremap() to map channel shared memory regions. However it is preferred
+to use acpi_os_ioremap(), which is mapping function specific to EFI/ACPI
+defined memory regions. It ensures that the correct memory attributes
+are applied when mapping ACPI-provided regions.
+
+While at it, also add checks for handling any errors with the mapping.
+
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+ drivers/mailbox/pcc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 98c99f0e24c4a654a8f4835063f5a479a433c9a0..a0fdafc3ef71d20c73ff58ef065201e6dc911396 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -418,8 +418,12 @@ int pcc_mbox_ioremap(struct mbox_chan *chan)
+ 		return -1;
+ 	pchan_info = chan->con_priv;
+ 	pcc_mbox_chan = &pchan_info->chan;
+-	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
+-				       pcc_mbox_chan->shmem_size);
++
++	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
++					       pcc_mbox_chan->shmem_size);
++	if (!pcc_mbox_chan->shmem)
++		return -ENXIO;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
+
+-- 
+2.34.1
+
+
 
