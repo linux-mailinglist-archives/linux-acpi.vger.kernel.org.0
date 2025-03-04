@@ -1,129 +1,149 @@
-Return-Path: <linux-acpi+bounces-11810-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11811-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A477A4EE3D
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 21:20:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306A9A4EE60
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 21:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85FA2174D71
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 20:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48DBC1891FD2
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 20:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4291F8BBF;
-	Tue,  4 Mar 2025 20:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520E01FBE9E;
+	Tue,  4 Mar 2025 20:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBq7QAEN"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cTl4B5dA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7508B2E3377
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 20:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB81C8633F;
+	Tue,  4 Mar 2025 20:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741119648; cv=none; b=M3bm7xWNWjHP5iHzZhDNCiMyK7/QQndY8FGdvW4eeZQ7af1OrV7sz2q1iOrSQGmkm76g7rkwEg2ldr+7aTEeah9i/VhReusBeDug6c+HMFjJdRtNDMY07tNwsG0T/6h35kAouLzt3Z8FvPeO5avrMrLHQTjabqhJNHgJT6VA0HY=
+	t=1741120286; cv=none; b=G0/01cU3MvsLX4y0TPYa3sLS8qpp69L7Rdx62daRMlOa3Oy4DTYDeWyxZ9Z5qriuQv02bMMTaTP6EdZrwLDdBdHhHmflz0h/+ZvG89OVosfUDYP9hwyR112q9MDMn+r4F/o+dPRz2XE+/naQpGK/uyJRx0XpqmrEH2BncFW8u3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741119648; c=relaxed/simple;
-	bh=7F6+kPqAM2RHixOz2p9ZDtoRhIYQG9CexTeaFAtDvbk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mazUE8vTfD0e3ohn3g+XbF2cRMURNC6Nbl26X+LnjgBxnv1jv7FcTyGv+5HqgjIh+1IuMZ9/upSF39IcyWwED/ubZyR25pERKhZJDvil7sWjeGAOf1Sad8zD5Q7iI1t0jje5E25tZGxK/BleMs68PRtaG33IjQmYH6OfKOG2Z/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBq7QAEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BE0C4CEE5
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 20:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741119648;
-	bh=7F6+kPqAM2RHixOz2p9ZDtoRhIYQG9CexTeaFAtDvbk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IBq7QAENYWLPoE7EmbwSPFhYPG48b0P5l+rO3mX3nEZY9hySMTHolMuq9O1RYkWHI
-	 hVr8/h57TzIHuABWavJ5CouBDsPyFh5JOrB2LpvMxOmUJOmNq388NTJ/SPszfZuhSz
-	 DslfT40IMNNuKFbb3YqSsUDvsJaiuYx/2PTqgh9ONLC/WDMeGgXfiyX4hZuYndig74
-	 BAnYd8klJEa+9Gd3aql0qmdN/LjR9dsZGAXjFY94kiqsxV+qsa7oIF4A08aK8a8xC/
-	 B2a7sih/nz586QbdN+pVsCoX8Ivag+egWsDX9mwD2YZ32a5TP181eNbbYgFP9keDYH
-	 SAZEFnOlIzwGw==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5fe9c1c14baso3609133eaf.0
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Mar 2025 12:20:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWENZlTnvCY24gHm3V9KehdpeJVoLh9XJGg0J32sNSldQ5yRR+aGm9QDVKhEe6ZF2p/jLNH8sFXGcBP@vger.kernel.org
-X-Gm-Message-State: AOJu0YxX/oWwhFYl0InFRnUY5RRkMs+r1d3mYXXFbAH3o/LbUmalGVaj
-	3O2X2V3xm3O4NFDB9Znfoo7GRE+rotm5velF/NdFuD4cVjkY21iAKdZEn1kyMGluF7BaPv/+K3Q
-	YOOJa7+0VFFbhA8XQQB8weOl9SZQ=
-X-Google-Smtp-Source: AGHT+IFssR0tUEzh+6yY8aX0nP10xMknm+3iRA+aq53pCPuHQKlEBy0XR3x4bV+G32AbZkH8OZSoiQts/DF+xKjzucU=
-X-Received: by 2002:a05:6820:1b1a:b0:5fc:b7f4:c013 with SMTP id
- 006d021491bc7-6003358e57dmr231607eaf.5.1741119647577; Tue, 04 Mar 2025
- 12:20:47 -0800 (PST)
+	s=arc-20240116; t=1741120286; c=relaxed/simple;
+	bh=JKKNW+RwGoZHZtO5aV5J7jh7Za+xK7f1V74u2fYud9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ruhs+BZRlQ63PJ6MZSZGmm2cv3Hh0ZJwXjBoekXxsrGx+RkIGaOigblUjtpJYGb1sSVVIURMshFeq4YGw2ogRe5rn3DKKeDDs5u99HGKPedVXrK4MBzfBA8bWmdn877Ac0CDic+WP0OccE5D/YN6H6JcsXOnoECjfKO7GV6UD2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cTl4B5dA; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5F51540E015E;
+	Tue,  4 Mar 2025 20:31:19 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id m5qk8LclUbkO; Tue,  4 Mar 2025 20:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1741120274; bh=QjUL2XTBMPOMONfEVC9hR8GGbNvASEYjnpKzPJNLH3U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cTl4B5dAlChiXp50cOSMXm9Ac6TNweXDosPAU2wVWtPz2QDDVTYPemlIGIPLlObVt
+	 yLm4FNKxlexqfosdFx0fKrd/rnVR6fAEMaqhTlxH+MEwTHGIQV3EQDNjihTnCOrIU2
+	 b20qDDlAuWX5LBlNU6wZR5oI6k5s8BuDoEc+s/QZb5QpjJyp6J5LkOGYc30rzZkwOP
+	 uTb06lw3oaMCP3oBqti2fdgHjULhGuv6KiCmXTNX+AsuCULOTt/WykpoONYGTmhatm
+	 oBH9D1lgRgYMlheOJSICQBkWXDJ6ftFLRH84J56D+eRMmF0PiTHBgr3UyK7zcZsyTw
+	 0GjyeKRjfUcygnqhpDPqGzzi7KcQy43n8c7k3JhBhZWAFfHqhUG2SsR+fqlB/9RHdV
+	 TSFk2G8fFb0xkiFLd/vaUZ4AqZgjkX4YsOIHNztP7tyWy/0L+TiUlDpPaDunSXFUjc
+	 rSZkaSgucGn2/w9iuTBiRlr2m72h9qMQK2yQXTEZZyExuuOiz+LCYUi3F/E3Q/htcj
+	 PKQzHPIxzL1Dj66MqTLpQGuYRiy4S47CfcxMu9NbxQj0QAgPppWN5oZjo/FiQ+FlS3
+	 7/vvQl5OtAkdnv3TbbqZ32CtJD1ZV1d5GgE58jkeCiyGUK2mfFqYIDdgvEdzAEc0j/
+	 PmoVkzlatGwxwy67lghP6cHU=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4F4FE40E0176;
+	Tue,  4 Mar 2025 20:30:32 +0000 (UTC)
+Date: Tue, 4 Mar 2025 21:30:25 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 feature
+ table
+Message-ID: <20250304203025.GDZ8di4fTxb0QUo8h5@fat_crate.local>
+References: <20250228122752.2062-1-shiju.jose@huawei.com>
+ <20250303173538.000007cd@huawei.com>
+ <20250303103529.GBZ8WF8flezRahE-1h@fat_crate.local>
+ <977a011b1ede4093a8e49d9cbcf49d19@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250303212719.4153485-1-superm1@kernel.org> <BY5PR19MB3922B4FC2D390A15CBE389C89AC82@BY5PR19MB3922.namprd19.prod.outlook.com>
-In-Reply-To: <BY5PR19MB3922B4FC2D390A15CBE389C89AC82@BY5PR19MB3922.namprd19.prod.outlook.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 4 Mar 2025 21:20:36 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g16-kz1_PfPG+YC3DpUSuZVa4_cBZfCPy39PRR+31LEQ@mail.gmail.com>
-X-Gm-Features: AQ5f1JrJdhFjgC3aarzzZNidLg5uttozau2HKtPFLuQnnnzCyY5l20hxkggYcaQ
-Message-ID: <CAJZ5v0g16-kz1_PfPG+YC3DpUSuZVa4_cBZfCPy39PRR+31LEQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: button: Install notifier for system events as well
-To: "Shen, Yijun" <Yijun.Shen@dell.com>, Mario Limonciello <superm1@kernel.org>
-Cc: "Limonciello, Mario" <mario.limonciello@amd.com>, "Richard.Gong" <Richard.Gong@amd.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <977a011b1ede4093a8e49d9cbcf49d19@huawei.com>
 
-On Tue, Mar 4, 2025 at 3:45=E2=80=AFPM Shen, Yijun <Yijun.Shen@dell.com> wr=
-ote:
->
->
-> Internal Use - Confidential
-> > -----Original Message-----
-> > From: Mario Limonciello <superm1@kernel.org>
-> > Sent: Tuesday, March 4, 2025 5:27 AM
-> > To: Limonciello, Mario <mario.limonciello@amd.com>; rafael@kernel.org
-> > Cc: Shen, Yijun <Yijun_Shen@Dell.com>; Richard.Gong
-> > <Richard.Gong@amd.com>; linux-acpi@vger.kernel.org
-> > Subject: [PATCH] ACPI: button: Install notifier for system events as we=
-ll
-> >
-> >
-> > [EXTERNAL EMAIL]
-> >
-> > From: Mario Limonciello <mario.limonciello@amd.com>
-> >
-> > On some systems when the system is put to sleep pressing the ACPI power
-> > button will cause the EC SCI to try to wake the system by a Notify(DEV,=
- 0x2)
-> > with an intention to wake the system up from suspend.
-> >
-> > This behavior matches the ACPI specification in ACPI 6.4 section
-> > 4.8.3.1.1.2 which describes that the AML handler would generate a Notif=
-y()
-> > with a code of 0x2 to indicate it was responsible for waking the system=
-.
-> >
-> > This currently doesn't work because acpi_button_add() only configured
-> > `ACPI_DEVICE_NOTIFY` which means that device handler notifications
-> > 0x80 through 0xFF are handled.
-> >
-> > To fix the wakeups on such systems, adjust the ACPI button handler to u=
-se
-> > `ACPI_ALL_NOTIFY` which will handle all events 0x00 through 0x7F.
-> >
-> > Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-> > Tested-by: Richard Gong <Richard.Gong@amd.com>
-> > Link:
-> > https://urldefense.com/v3/__https://uefi.org/htmlspecs/ACPI_Spec_6_4_ht=
-ml
-> > /04_ACPI_Hardware_Specification/ACPI_Hardware_Specification.html?highli=
-g
-> > ht=3D0x2*control-method-power-button__;Iw!!LpKI!m8bmT5JUyck9Q0BMUA-
-> > LmC5MXTEXFeJ1nmcNGIhJ4AWCQ7XMUR_UqxaxBor674mhMk53MkwkXqT1a
-> > cTF$ [uefi[.]org]
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->
-> Verified the patch on the issued system, the issue is gone.
->
-> Tested-by: Yijun Shen <Yijun_Shen@Dell.com>
+On Tue, Mar 04, 2025 at 06:19:58PM +0000, Shiju Jose wrote:
+> Some of these variables, for e.g. requested_address_range are not defined 
+> in this patch, but in the 'include/acpi/actbl2.h'.
+> My understanding is that those changes required to upstream first via
+> https://github.com/acpica/acpica ?
 
-Applied as 6.15 material, thanks!
+Are you sure?
+
+...
+ * Additional ACPI Tables (2)
+ *
+ * These tables are not consumed directly by the ACPICA subsystem, but are
+ * included here to support device drivers and the AML disassembler.
+ ...
+
+In any case, if this goes through me, I will have to review it first as it
+looks funky.
+
+Your call guys.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
