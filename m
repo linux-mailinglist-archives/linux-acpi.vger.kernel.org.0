@@ -1,290 +1,185 @@
-Return-Path: <linux-acpi+bounces-11769-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11770-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81F4A4DF54
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 14:33:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B9DA4DF69
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 14:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96B13189C119
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 13:33:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D6F17858B
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 13:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7C32036F5;
-	Tue,  4 Mar 2025 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12182040A7;
+	Tue,  4 Mar 2025 13:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="gLJy1ejd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S1jV40Hy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A910F20468B;
-	Tue,  4 Mar 2025 13:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0912202F88;
+	Tue,  4 Mar 2025 13:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741095189; cv=none; b=Y3hP4UNMlOqxpUvB8yGNCzq/J/eijoEFFNpvMQyXTESwOcc9htYquaEtuNJpxQtuwi8Eq5tNxYcT7aLjMhQ3rZ7lmzQJ4fPSD9amyuq4X9TEQl3E5BeXyAByDGsK03d1lw1VdoWlkusuyNEbnRYqZ3sB1wXqcgfKIKxpKTUWAVw=
+	t=1741095499; cv=none; b=SEVMoVY7cqfS74rnztdmxQDnStTOhSB+JJvRFIgG2NpM+FSTh81hyTqoTIrS4yWLK22JiqT4A86NSvobkjTqGXq9058NZRqM+2+ZLWmVf6FbZ5A77FRY/7lAcu/fFvtaecmMtlzYvoy2WPiivE09cVkm+0WoycfK8taMCLewkwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741095189; c=relaxed/simple;
-	bh=YnYgnuFiJcvRbglnW4qeuD/xeoyxKWA7Hj2cyb/Cg9Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=epyXgn0IE75ukF9wDTad/fUNNH4rGNiQ+BtTNW/wawnz0JZQHoFAtcyk1XFCPvVypSduT/6WnnEq9HwvBEaVFeZnk5GY5jWaKdj2DxrwhaC0Ifrbk/3L3/4VHXpe+fPYfC3cegnUuVUgKWqUl1kZNp2USg4ioWRV70gHPyeR3bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=gLJy1ejd; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id B6BA82E09309;
-	Tue,  4 Mar 2025 15:33:03 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1741095184;
-	bh=vyn6r8Ef5vwPxEzywYuIAc025PJ3qE8Ywi5S8YGq4RE=;
-	h=Received:From:Subject:To;
-	b=gLJy1ejdaY1clY68Fgk6HPDRW2ntElMYUt/Iq1GvZ6F4adRY3EaHbjfOrIDT4Y270
-	 sElTRwG1boz8PStE1tYuITUJHUkjCJ7oS7DtagelcW87XkMfRc7xbvD+FnOyj5JNIG
-	 fGkpZXJ6LeHdYvg4gQIrEyZMLTVb6ysQCmHE+Ue4=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.178) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f178.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f178.google.com with SMTP id
- 38308e7fff4ca-30ba563a6d1so32433391fa.1;
-        Tue, 04 Mar 2025 05:33:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUMW1be/N4V2007DqECPRzgN3pX2budbTV05wE8sKaRNlvHjiWt8zQD86iS2Ujwq54nGEwEvVqZ66Ev3VmsWeDkTlpbZw==@vger.kernel.org,
- AJvYcCUZxHd2O7GkoIUmF8zX+t06H31MgbyyFXCZFllIPE3Yo23zvPwgP8AYvyEF9zgqzBWvy8HCiDbdL6xY@vger.kernel.org,
- AJvYcCVPCHqI2Kfm+fGHtwluMLkSvTTce27VHBv1YUT8pnVSpOIbCtAc69Y0Fy2iXku1BNRfRoo7rsER1rozin5I@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIZhNXXZ/oeFAqr1Y/76n4V0NNDM/9nmJ64it9NGpQcDoBuJbI
-	lUusjvPI2iCCg9vUt8SYpJ3N3ZTt0HDSwkWdmhSj3Uee9NPoD9y6fSWqHe6h84OXNHit9y5bwv4
-	fJV+zcAeQK0M9qiUxQ0j6UvTODJc=
-X-Google-Smtp-Source: 
- AGHT+IFkn/kikKUraD/5XiwZdb9pte4mvhxOULdf+gv+yG4qtQxMxYIjAFaOExSFAsChnCEML1/gDU1f2N/qLKEG+qQ=
-X-Received: by 2002:a05:651c:1504:b0:302:3356:35d7 with SMTP id
- 38308e7fff4ca-30bcaa4414bmr10516361fa.18.1741095183050; Tue, 04 Mar 2025
- 05:33:03 -0800 (PST)
+	s=arc-20240116; t=1741095499; c=relaxed/simple;
+	bh=+DTY6DJPeBY2cYYm2BcQt9dHF5t6h2jZTPAP1p+s0Bc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SCz7A4/GmBSiu7SkuyW3Vu2g+DAfiQODZl+ABavAzeINM3PDKxiTMHY6UVlTDwWwFKnDByVJx1yRsRk/iSrY1k8lEIRU+PuR5lId7H97Wios4R8rhK0oSdB/ajIOxeqv0BU1Dq6uGht0PUahf7cBx1TSTm2fCwHJyK0i+HmiIpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S1jV40Hy; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741095498; x=1772631498;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=+DTY6DJPeBY2cYYm2BcQt9dHF5t6h2jZTPAP1p+s0Bc=;
+  b=S1jV40HyNj22u6JtutLqv8lPKsCxZ9u0TePu5E80E3eefEgw57Hl+DHK
+   pFnVzCZPEFT1rxI2TwZH5DJkSpHUTrCfYUbD/7bXqiC3bINxlfm76+d+5
+   TwhYuVCH2Fs+hMpJ3M/bg4/ZL5g8QtSNUmE44Jx07HsHp3Fp3WhbwdNp1
+   sjM3kco2W1IOOu+pDkB5WaCJikUXylRLbzGz/CcTx/9eQ/QtvlDHo37v/
+   45To/6OH6VulIKFjC7/5/Ts7j2KI4QyE036T0PBnEGSR372hLzgZj2wCf
+   MiaVYICZR+/cUMqCjUD6uOsgfcmBcVUnm5jey5jXCVrJ8cqZeay8l3A94
+   w==;
+X-CSE-ConnectionGUID: 8D362pveSFmB44ZAcJ3epQ==
+X-CSE-MsgGUID: bCSvsf50QQGcyuPuk8N6hw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="59561438"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
+   d="scan'208";a="59561438"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 05:38:14 -0800
+X-CSE-ConnectionGUID: +0tDC8ZmS7m9gn+FHVrUVg==
+X-CSE-MsgGUID: tarYCqqGRMW47O6wShOFdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="155565630"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 05:38:12 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tpSTJ-0000000H8VU-0sXs;
+	Tue, 04 Mar 2025 15:38:09 +0200
+Date: Tue, 4 Mar 2025 15:38:08 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: Re: [PATCH v1 2/3] gpiolib: Rename gpio_set_debounce_timeout() to
+ gpiod_do_set_debounce()
+Message-ID: <Z8cCQPWBmJXFgKAe@smile.fi.intel.com>
+References: <20250303160341.1322640-1-andriy.shevchenko@linux.intel.com>
+ <20250303160341.1322640-3-andriy.shevchenko@linux.intel.com>
+ <20250304091804.GG3713119@black.fi.intel.com>
+ <Z8bdDQGg_xcamZv2@smile.fi.intel.com>
+ <20250304111157.GJ3713119@black.fi.intel.com>
+ <Z8bhJq3kn_uw3iYE@smile.fi.intel.com>
+ <20250304113135.GK3713119@black.fi.intel.com>
+ <Z8brYjfL1yj_BvpN@smile.fi.intel.com>
+ <CAMRc=MfsKc+r=uhDZVbd_BW=Gs1BpaidPC1tfF6TGqcq9bgP6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250304064745.1073770-1-superm1@kernel.org>
- <20250304064745.1073770-2-superm1@kernel.org>
- <CAGwozwHniWGQ7qK6FYD_WK5zNjkro7-Q1nTcFPAuWDt9UQ+noA@mail.gmail.com>
- <23d6c735-e94f-4d43-87b0-ff119941fcac@kernel.org>
- <D87ILMWSRUPG.3FHTWG38N2IFJ@gmail.com>
-In-Reply-To: <D87ILMWSRUPG.3FHTWG38N2IFJ@gmail.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Tue, 4 Mar 2025 14:32:50 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwHXd6frhGCOrm8_tg2=M4sHCu_JBmqodWdKUF+AuL2TNw@mail.gmail.com>
-X-Gm-Features: AQ5f1JpKJ7cFMC3eaKL3idZCgdX7APstwLjl1Xk3sn_JA_FflegyLduPwFaORrY
-Message-ID: 
- <CAGwozwHXd6frhGCOrm8_tg2=M4sHCu_JBmqodWdKUF+AuL2TNw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ACPI: platform_profile: Treat quiet and low power
- the same
-To: Kurt Borja <kuurtb@gmail.com>
-Cc: Mario Limonciello <superm1@kernel.org>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
- Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
- "Derek J . Clark" <derekjohn.clark@gmail.com>,
-	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174109518423.29827.8781867911203852704@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MfsKc+r=uhDZVbd_BW=Gs1BpaidPC1tfF6TGqcq9bgP6Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 4 Mar 2025 at 14:28, Kurt Borja <kuurtb@gmail.com> wrote:
->
-> Hi all,
->
-> On Tue Mar 4, 2025 at 7:49 AM -05, Mario Limonciello wrote:
+On Tue, Mar 04, 2025 at 01:15:02PM +0100, Bartosz Golaszewski wrote:
+> On Tue, Mar 4, 2025 at 1:00 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Tue, Mar 04, 2025 at 01:31:35PM +0200, Mika Westerberg wrote:
+> > > On Tue, Mar 04, 2025 at 01:16:54PM +0200, Andy Shevchenko wrote:
+> > > > On Tue, Mar 04, 2025 at 01:11:57PM +0200, Mika Westerberg wrote:
+> > > > > On Tue, Mar 04, 2025 at 12:59:25PM +0200, Andy Shevchenko wrote:
+> > > > > > On Tue, Mar 04, 2025 at 11:18:04AM +0200, Mika Westerberg wrote:
+> > > > > > > On Mon, Mar 03, 2025 at 06:00:33PM +0200, Andy Shevchenko wrote:
+> > > > > > > > In order to reduce the 'gpio' namespace when operate over GPIO descriptor
+> > > > > > > > rename gpio_set_debounce_timeout() to gpiod_do_set_debounce().
+> > > > > > >
+> > > > > > > To me anything that has '_do_' in their name sounds like an internal static
+> > > > > > > function that gets wrapped by the actual API function(s).
+> > > > > > >
+> > > > > > > For instance it could be
+> > > > > > >
+> > > > > > >   int gpio_set_debounce_timeout()
+> > > > > > >   {
+> > > > > > >       ...
+> > > > > > >       gpiod_do_set_debounce()
+> > > > > > >       ...
+> > > > > > >
+> > > > > > > However, gpiod_set_debounce_timeout() or gpiod_set_debounce() sounds good
+> > > > > > > to me.
+> > > > > >
+> > > > > > Then please propose the second name for gpiod_set_config_XXX to follow
+> > > > > > the same pattern. The series unifies naming and reduces the current
+> > > > > > inconsistency.
+> > > >
+> > > > > gpiod_set_config()?
+> > > >
+> > > > The problem is that
+> > > >
+> > > > gpiod_set_debounce() and gpiod_set_config() are _existing_ public APIs.
+> > > > That's why I considered "_do_" fitting the purpose.
+> > >
+> > > I see.
+> > >
+> > > Hmm, we have:
+> > >
+> > > int gpiod_set_debounce(struct gpio_desc *desc, unsigned int debounce)
+> > > {
+> > >         unsigned long config;
+> > >
+> > >         config = pinconf_to_config_packed(PIN_CONFIG_INPUT_DEBOUNCE, debounce);
+> > >         return gpiod_set_config(desc, config);
+> > > }
+> > >
+> > > and
+> > >
+> > > int gpio_set_debounce_timeout(struct gpio_desc *desc, unsigned int debounce)
+> > > {
+> > >       int ret;
+> > >
+> > >       ret = gpio_set_config_with_argument_optional(desc,
+> > >                                                    PIN_CONFIG_INPUT_DEBOUNCE,
+> > >                                                    debounce);
+> > >       if (!ret)
+> > >               gpiod_line_state_notify(desc, GPIO_V2_LINE_CHANGED_CONFIG);
+> > >
+> > >       return ret;
+> > > }
+> > >
+> > > I wonder if there is an opportunity to consolidate? ;-)
 > >
+> > Send a patch! I would be glad to see less functions and internal APIs in
+> > GPIOLIB.
 > >
-> > On 3/4/25 02:38, Antheas Kapenekakis wrote:
-> >> On Tue, 4 Mar 2025 at 07:48, Mario Limonciello <superm1@kernel.org> wrote:
-> >>>
-> >>> From: Mario Limonciello <mario.limonciello@amd.com>
-> >>>
-> >>> When two drivers don't support all the same profiles the legacy interface
-> >>> only exports the common profiles.
-> >>>
-> >>> This causes problems for cases where one driver uses low-power but another
-> >>> uses quiet because the result is that neither is exported to sysfs.
-> >>>
-> >>> If one platform profile handler supports quiet and the other
-> >>> supports low power treat them as the same for the purpose of
-> >>> the sysfs interface.
-> >>>
-> >>> Fixes: 688834743d67 ("ACPI: platform_profile: Allow multiple handlers")
-> >>> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-> >>> Closes: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-9257-5b8fc6c24ac9@gmx.de/T/#mc068042dd29df36c16c8af92664860fc4763974b
-> >>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> >>> ---
-> >>>   drivers/acpi/platform_profile.c | 38 ++++++++++++++++++++++++++++++---
-> >>>   1 file changed, 35 insertions(+), 3 deletions(-)
-> >>>
-> >>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> >>> index 2ad53cc6aae53..d9a7cc5891734 100644
-> >>> --- a/drivers/acpi/platform_profile.c
-> >>> +++ b/drivers/acpi/platform_profile.c
-> >>> @@ -73,8 +73,20 @@ static int _store_class_profile(struct device *dev, void *data)
-> >>>
-> >>>          lockdep_assert_held(&profile_lock);
-> >>>          handler = to_pprof_handler(dev);
-> >>> -       if (!test_bit(*bit, handler->choices))
-> >>> -               return -EOPNOTSUPP;
-> >>> +       if (!test_bit(*bit, handler->choices)) {
-> >>> +               switch (*bit) {
-> >>> +               case PLATFORM_PROFILE_QUIET:
-> >>> +                       *bit = PLATFORM_PROFILE_LOW_POWER;
-> >>> +                       break;
-> >>> +               case PLATFORM_PROFILE_LOW_POWER:
-> >>> +                       *bit = PLATFORM_PROFILE_QUIET;
-> >>> +                       break;
-> >>> +               default:
-> >>> +                       return -EOPNOTSUPP;
-> >>> +               }
-> >>> +               if (!test_bit(*bit, handler->choices))
-> >>> +                       return -EOPNOTSUPP;
-> >>> +       }
-> >>>
-> >>>          return handler->ops->profile_set(dev, *bit);
-> >>>   }
-> >>> @@ -252,8 +264,16 @@ static int _aggregate_choices(struct device *dev, void *data)
-> >>>          handler = to_pprof_handler(dev);
-> >>>          if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
-> >>>                  bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
-> >>> -       else
-> >>> +       else {
-> >>> +               /* treat quiet and low power the same for aggregation purposes */
-> >>> +               if (test_bit(PLATFORM_PROFILE_QUIET, handler->choices) &&
-> >>> +                   test_bit(PLATFORM_PROFILE_LOW_POWER, aggregate))
-> >>> +                       set_bit(PLATFORM_PROFILE_QUIET, aggregate);
-> >>> +               else if (test_bit(PLATFORM_PROFILE_LOW_POWER, handler->choices) &&
-> >>> +                        test_bit(PLATFORM_PROFILE_QUIET, aggregate))
-> >>> +                       set_bit(PLATFORM_PROFILE_LOW_POWER, aggregate);
-> >>>                  bitmap_and(aggregate, handler->choices, aggregate, PLATFORM_PROFILE_LAST);
-> >>> +       }
-> >>
-> >> So you end up showing both? If that's the case, isn't it equivalent to
-> >> just make amd-pmf show both quiet and low-power?
-> >>
-> >> I guess it is not ideal for framework devices. But if asus devices end
-> >> up showing both, then it should be ok for framework devices to show
-> >> both.
-> >>
-> >> I like the behavior of the V1 personally.
-> >
-> > No; this doesn't cause it to show both.  It only causes one to show up.
-> > I confirmed it with a contrived situation on my laptop that forced
-> > multiple profile handlers that supported a mix.
-> >
-> >
-> > # cat /sys/firmware/acpi/platform_profile*
-> > low-power
-> > low-power balanced performance
-> >
-> > # cat /sys/class/platform-profile/platform-profile-*/profile
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > quiet
-> > low-power
-> >
-> >>
-> >>>          return 0;
-> >>>   }
-> >>> @@ -305,6 +325,13 @@ static int _aggregate_profiles(struct device *dev, void *data)
-> >>>          if (err)
-> >>>                  return err;
-> >>>
-> >>> +       /* treat low-power and quiet as the same */
-> >>> +       if ((*profile == PLATFORM_PROFILE_LOW_POWER &&
-> >>> +            val == PLATFORM_PROFILE_QUIET) ||
-> >>> +           (*profile == PLATFORM_PROFILE_QUIET &&
-> >>> +            val == PLATFORM_PROFILE_LOW_POWER))
-> >>> +               *profile = val;
-> >>> +
-> >>>          if (*profile != PLATFORM_PROFILE_LAST && *profile != val)
-> >>>                  *profile = PLATFORM_PROFILE_CUSTOM;
-> >>>          else
-> >>> @@ -531,6 +558,11 @@ struct device *platform_profile_register(struct device *dev, const char *name,
-> >>>                  dev_err(dev, "Failed to register platform_profile class device with empty choices\n");
-> >>>                  return ERR_PTR(-EINVAL);
-> >>>          }
-> >>> +       if (test_bit(PLATFORM_PROFILE_QUIET, pprof->choices) &&
-> >>> +           test_bit(PLATFORM_PROFILE_LOW_POWER, pprof->choices)) {
-> >>> +               dev_err(dev, "Failed to register platform_profile class device with both quiet and low-power\n");
-> >>> +               return ERR_PTR(-EINVAL);
-> >>> +       }
-> >>
-> >> Can you avoid failing here? It caused a lot of issues in the past (the
-> >> WMI driver bails). a dev_err should be enough. Since you do not fail
-> >> maybe it can be increased to dev_crit.
-> >>
-> >> There is at least one driver that implements both currently, and a fix
-> >> would have to precede this patch.
-> >
-> > Oh, acer-wmi?  Kurt; can you please comment?  Are both simultaneous?
->
-> There are a few laptops supported by alienware-wmi that definitely have
-> both (including mine). The acer-wmi and the samsung-galaxybook drivers
-> also probe for available choices dynamically, so some of those devices
-> may be affected by this too.
->
-> So yes, we shouldn't fail registration here.
->
-> Anyway, I like this approach more than v1. What do you think about
-> constraining this fix to the legacy interface?
+> 
+> I'm definitely in favor of consolidation instead of renaming to
+> gpiod_go_set_debounce(). If anything a better name would be:
+> gpiod_set_debounce_nocheck() to indicate the actual functionality.
+> 
+> How about first extending gpio_set_config_with_argument() to take a
+> boolean "optional" argument and removing
+> gpio_set_config_with_argument_optional() altogether? Both are internal
+> to drivers/gpio/ so it would have no effect on consumers.
 
-AFAIK new interface is ok and should not be modified. None of the
-previous solutions touched it (well, changing quiet to low-power did).
-But I still expect the legacy interface to work the same way on 6.14.
+Consider this series as a report then, I am not going to spend time on it.
+Thank you for the review.
 
-What happens if there is one handler that does low-power and one that
-does quiet? Is one choice preferred? And then are writes accepted in
-both?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I cannot have the same device requiring low-power and quiet depending
-on kernel version or boot. I do tdp controls per manufacturer.
 
-> --
->  ~ Kurt
->
-> >
-> >>
-> >>>
-> >>>          guard(mutex)(&profile_lock);
-> >>>
-> >>> --
-> >>> 2.43.0
-> >>>
->
 
