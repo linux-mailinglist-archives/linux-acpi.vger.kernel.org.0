@@ -1,150 +1,127 @@
-Return-Path: <linux-acpi+bounces-11807-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11809-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A4DA4EBA5
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 19:31:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC53A4EDFA
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 20:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 621767A8A58
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 18:27:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15712188CEAA
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 20:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467A224C09A;
-	Tue,  4 Mar 2025 18:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E709252915;
+	Tue,  4 Mar 2025 19:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gS9wCbsM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156C827CB25;
-	Tue,  4 Mar 2025 18:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CC7202974;
+	Tue,  4 Mar 2025 19:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741112404; cv=none; b=I/T+Z4j2KDM+wbxS22lP1ZA9VxXqdFOgdKoKzZESgRhEY6hLbL+ENlI3YMjDO1zITdKSOk56lsbImPZtP131jIOPTb7PwRfEqJ0uFQNzsi/Pju7N63eHbMEXpT5eC5/my4KQpRc3GXpUQYEPzEJ+AzePRuMHh0YKv08uN5sKnBg=
+	t=1741118393; cv=none; b=qblkVSSlaQ/Ph3Xe8hLfXkjohyINAz1xiV8Db9vWVBC1Cx21hysreN7etIcdmwM2Vx/bjBdkmkkCbVn7i92DdRAiA1Tb/a987UCi6d59kPwg+2+Dth9xjgzDSUhZGty3F7z7g9vkvP5NSQM0HjB+ATExqxPQDIChWaHSjT0TJts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741112404; c=relaxed/simple;
-	bh=/iUAAOt679TeIoxp6g2heJgXYc2AHhUqUX4EiIEiMWM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ex3hKURPWf2ZcxE3xYFuKMfJURouJM30g7rSzR5HjSP6AwVWi/RNtFT6g85ttSSVMm3vRI7GHDp4IkWMP8CoPWpqhOyH6fIJvDmttQqv4yEZI7bGO4EOmgaErd6AFAig7udnjXyXlRe51mXySkg5LTHbyj0G0sb0DEp1qqv2Pfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z6kRL2lxYz6M4J6;
-	Wed,  5 Mar 2025 02:17:02 +0800 (CST)
-Received: from frapeml100008.china.huawei.com (unknown [7.182.85.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6C2D61400D7;
-	Wed,  5 Mar 2025 02:19:58 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100008.china.huawei.com (7.182.85.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 4 Mar 2025 19:19:58 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Tue, 4 Mar 2025 19:19:58 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Borislav Petkov <bp@alien8.de>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"rafael@kernel.org" <rafael@kernel.org>, "tony.luck@intel.com"
-	<tony.luck@intel.com>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 feature
- table
-Thread-Topic: [PATCH linux-next 0/2] ACPI: Add support for ACPI RAS2 feature
- table
-Thread-Index: AQHbidw989DsJKt5skazfuISb8i7/7NhGsIAgAAQuYCAAh5NIA==
-Date: Tue, 4 Mar 2025 18:19:58 +0000
-Message-ID: <977a011b1ede4093a8e49d9cbcf49d19@huawei.com>
-References: <20250228122752.2062-1-shiju.jose@huawei.com>
- <20250303173538.000007cd@huawei.com>
- <20250303103529.GBZ8WF8flezRahE-1h@fat_crate.local>
-In-Reply-To: <20250303103529.GBZ8WF8flezRahE-1h@fat_crate.local>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1741118393; c=relaxed/simple;
+	bh=HCVRt543L+DnrBTrvidSR29yVIC0OEMhbbDb767AuSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NEcauJ+ZUdIOrxNisPEtOLorRAocyMS5At7lBkcABNRblWpXsO3gxKhL9GNXgWmCdqJbQFK1emvJtC5uKLAR940+0RXaXvi9hp1xW9t2yx7EnSoLSXcz+Qf/rm+jzn5XAJREV88bFsA4X/plIAzHDjC6r8BdumyGdfAI1UpJsL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gS9wCbsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5238AC4CEED;
+	Tue,  4 Mar 2025 19:59:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741118392;
+	bh=HCVRt543L+DnrBTrvidSR29yVIC0OEMhbbDb767AuSU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gS9wCbsMb5Tho0A1fKrUcdGMHSXNo1+R03JPBcmA3FF2B0sBDc0bVRCqicPKejHW4
+	 7KX5aEmmYDbiVzQHEfGOwDQ6h+69l0qsVkjIq9lNP1U0ifulDkj36d7f+i3OycgH0s
+	 F5yY99SEpDWFwXYwHzTzHizo2NSPfK6z/tC6qGnP2XL4n7c6OTXjDKzkOvkJ8iD/6x
+	 3Tg6WJI91PgcOnClMxpqmKCJWDxbDVclsGseu586xCsQxv+s9A5ikyOVFIGTOivhHe
+	 pAXNoRLXbP4akySzqB9DqlhKmyqjYG4Wf3BR4pBoZMUilzg87L8MHkd0DGSuIoqwer
+	 Puyy7IMHvza6g==
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-72a17886ac5so269995a34.2;
+        Tue, 04 Mar 2025 11:59:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVZKCnh2rvtp/dYQEo/KlRHFIoQykqjZdN2Vwh4frP80bNhhZiFdOsOBHyqG6nSxBg141komQscfTdXDpXr@vger.kernel.org, AJvYcCWl2kXCtrvZWNGL1ouoghRsgRwwMkQ0gw48wHXMXc2rrDY/rOLIpqZrn3wG/JfWRxY4/tCa38eXWGdF@vger.kernel.org, AJvYcCXRlBMQe8DDyqBxA1HwNtdgJ3+sitGoutpaycFaw2WkgxOR4fJFXJ99qosvdbR/p+h3V/TuNS/JfqB11oy5As0LP+6ztw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxyv4vsW35l+0P8Z1Onf42jOG1NEiCxgErh1kqVulHYC2ghdIYU
+	y66OIbsDyn4/0+keK56T0dieLbi0zWrhOcixYuydzyXj/xngfIVhluCHOijNxOK3bKApTtobkIe
+	9tg0QpAn1s+zq85PyyXmTnNQsm0E=
+X-Google-Smtp-Source: AGHT+IGrpWir63TtRFU/TuZgtv3qgV7FgjoHtEHUHiDP101iyhdgw7ntMrVf16/5lbaFA2xVtbVUr+4GQ3MY+PlN49Y=
+X-Received: by 2002:a05:6830:3785:b0:727:24c6:87e8 with SMTP id
+ 46e09a7af769-72a1fc822e0mr151368a34.19.1741118391592; Tue, 04 Mar 2025
+ 11:59:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250228170155.2623386-1-superm1@kernel.org> <bda43bf4-1d45-d1bf-8d5c-f27727ebc80e@linux.intel.com>
+In-Reply-To: <bda43bf4-1d45-d1bf-8d5c-f27727ebc80e@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 4 Mar 2025 20:59:40 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jvvfWCoCZxZzGRM01QLLgmL8Xmz8pQa8jHde1Sr1BqRQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JqBgC5sjj5BTk2bGhzNeC-ApBBAHKveJHreZ1Mf15uuHsfBuhgNJMA8_CQ
+Message-ID: <CAJZ5v0jvvfWCoCZxZzGRM01QLLgmL8Xmz8pQa8jHde1Sr1BqRQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Add support for hidden choices to platform_profile
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Mario Limonciello <superm1@kernel.org>
+Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Hans de Goede <hdegoede@redhat.com>, "Luke D . Jones" <luke@ljones.dev>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, 
+	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, "Derek J . Clark" <derekjohn.clark@gmail.com>, 
+	Antheas Kapenekakis <lkml@antheas.dev>, me@kylegospodneti.ch, 
+	Denis Benato <benato.denis96@gmail.com>, Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
-bGllbjguZGU+DQo+U2VudDogMDMgTWFyY2ggMjAyNSAxMDozNQ0KPlRvOiBKb25hdGhhbiBDYW1l
-cm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+DQo+Q2M6IFNoaWp1IEpvc2UgPHNoaWp1
-Lmpvc2VAaHVhd2VpLmNvbT47IGxpbnV4LWVkYWNAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5h
-Y3BpQHZnZXIua2VybmVsLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7IHRvbnkubHVja0BpbnRlbC5j
-b207DQo+bGVuYkBrZXJuZWwub3JnOyBtY2hlaGFiQGtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNr
-Lm9yZzsgbGludXgtDQo+a2VybmVsQHZnZXIua2VybmVsLm9yZzsgbGludXgtY3hsQHZnZXIua2Vy
-bmVsLm9yZzsgai53aWxsaWFtc0BpbnRlbC5jb207DQo+ZGF2ZUBzdGdvbGFicy5uZXQ7IGRhdmUu
-amlhbmdAaW50ZWwuY29tOyBhbGlzb24uc2Nob2ZpZWxkQGludGVsLmNvbTsNCj52aXNoYWwubC52
-ZXJtYUBpbnRlbC5jb207IGlyYS53ZWlueUBpbnRlbC5jb207IGRhdmlkQHJlZGhhdC5jb207DQo+
-VmlsYXMuU3JpZGhhcmFuQGFtZC5jb207IGxlby5kdXJhbkBhbWQuY29tOyBZYXplbi5HaGFubmFt
-QGFtZC5jb207DQo+cmllbnRqZXNAZ29vZ2xlLmNvbTsgamlhcWl5YW5AZ29vZ2xlLmNvbTsgSm9u
-LkdyaW1tQGFtZC5jb207DQo+ZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29tOyBuYW95YS5ob3Jp
-Z3VjaGlAbmVjLmNvbTsNCj5qYW1lcy5tb3JzZUBhcm0uY29tOyBqdGhvdWdodG9uQGdvb2dsZS5j
-b207IHNvbWFzdW5kYXJhbS5hQGhwZS5jb207DQo+ZXJkZW1ha3Rhc0Bnb29nbGUuY29tOyBwZ29u
-ZGFAZ29vZ2xlLmNvbTsgZHVlbndlbkBnb29nbGUuY29tOw0KPmd0aGVsZW5AZ29vZ2xlLmNvbTsg
-d3NjaHdhcnR6QGFtcGVyZWNvbXB1dGluZy5jb207DQo+ZGZlcmd1c29uQGFtcGVyZWNvbXB1dGlu
-Zy5jb207IHdic0Bvcy5hbXBlcmVjb21wdXRpbmcuY29tOw0KPm5pZmFuLmN4bEBnbWFpbC5jb207
-IHRhbnhpYW9mZWkgPHRhbnhpYW9mZWlAaHVhd2VpLmNvbT47IFplbmd0YW8gKEIpDQo+PHByaW1l
-LnplbmdAaGlzaWxpY29uLmNvbT47IFJvYmVydG8gU2Fzc3UgPHJvYmVydG8uc2Fzc3VAaHVhd2Vp
-LmNvbT47DQo+a2FuZ2thbmcuc2hlbkBmdXR1cmV3ZWkuY29tOyB3YW5naHVpcWlhbmcgPHdhbmdo
-dWlxaWFuZ0BodWF3ZWkuY29tPjsNCj5MaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT4NCj5T
-dWJqZWN0OiBSZTogW1BBVENIIGxpbnV4LW5leHQgMC8yXSBBQ1BJOiBBZGQgc3VwcG9ydCBmb3Ig
-QUNQSSBSQVMyIGZlYXR1cmUNCj50YWJsZQ0KPg0KWy4uLl0NCj4NCj5Ib3dldmVyLCBqdXN0IGZy
-b20gYSBjdXJzb3J5IGxvb2ssIGl0IHdvdWxkIG5lZWQgc29tZSBzY3J1YmJpbmcuIFRoZXJlJ3Mg
-c3R1ZmYNCj5saWtlOg0KPg0KPisgICAgICAgICAgICAgICBwc19zbS0+cGFyYW1zLnJlcXVlc3Rl
-ZF9hZGRyZXNzX3JhbmdlWzBdID0gMDsNCj4rICAgICAgICAgICAgICAgcHNfc20tPnBhcmFtcy5y
-ZXF1ZXN0ZWRfYWRkcmVzc19yYW5nZVsxXSA9IDA7DQo+KyAgICAgICAgICAgICAgIHBzX3NtLT5w
-YXJhbXMuc2NydWJfcGFyYW1zX2luICY9DQo+flJBUzJfUEFUUk9MX1NDUlVCX1NDSFJTX0lOX01B
-U0s7DQo+KyAgICAgICAgICAgICAgIHBzX3NtLT5wYXJhbXMuc2NydWJfcGFyYW1zX2luIHw9DQo+
-RklFTERfUFJFUChSQVMyX1BBVFJPTF9TQ1JVQl9TQ0hSU19JTl9NQVNLLA0KPisgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJhczJfY3R4
-LT5zY3J1Yl9jeWNsZV9ocnMpOw0KPisgICAgICAgICAgICAgICBwc19zbS0+cGFyYW1zLnBhdHJv
-bF9zY3J1Yl9jb21tYW5kID0NCj4rIFJBUzJfU1RBUlRfUEFUUk9MX1NDUlVCQkVSOw0KPg0KPg0K
-PndoaWNoIGRlZmluaXRlbHkgbmVlZHMgc2hvcnRlbmluZy4gVGhlcmUncyBubyBuZWVkIGZvciBh
-IHdob2xseSB3cml0dGVuIG91dA0KPiJyZXF1ZXN0ZWRfYWRkcmVzc19yYW5nZSIuIEkga25vdyB2
-YXJpYWJsZXMgc2hvdWxkIGhhdmUgbWVhbmluZ2Z1bGwgbmFtZXMNCj5idXQgd3JpdGluZyBmaWN0
-aW9uIHNob3VsZG4ndCBiZSBlaXRoZXIuDQoNCkhpIEJvcmlzbGF2LA0KDQpTb21lIG9mIHRoZXNl
-IHZhcmlhYmxlcywgZm9yIGUuZy4gcmVxdWVzdGVkX2FkZHJlc3NfcmFuZ2UgYXJlIG5vdCBkZWZp
-bmVkIA0KaW4gdGhpcyBwYXRjaCwgYnV0IGluIHRoZSAnaW5jbHVkZS9hY3BpL2FjdGJsMi5oJy4N
-Ck15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCB0aG9zZSBjaGFuZ2VzIHJlcXVpcmVkIHRvIHVwc3Ry
-ZWFtIGZpcnN0IHZpYQ0KaHR0cHM6Ly9naXRodWIuY29tL2FjcGljYS9hY3BpY2EgPw0KPg0KPitz
-dGF0aWMgaW50IHJhczJfYWNwaV9wYXJzZV90YWJsZShzdHJ1Y3QgYWNwaV90YWJsZV9oZWFkZXIg
-KnBBY3BpVGFibGUpDQo+DQo+WXVjaywgQ2FtZWxDYXNlPyENCkZpeGVkLg0KDQo+DQo+QW5kIEkn
-bSBwcmV0dHkgc3VyZSBpZiBJIHN0YXJ0IGxvb2tpbmcgbW9yZSwgSSdsbCBmaW5kIG1vcmUgZnVu
-a3kgc3R1ZmYuDQpXaWxsIGNoZWNrIGFuZCBmaXguDQo+DQo+SFRILg0KPg0KPi0tDQo+UmVnYXJk
-cy9HcnVzcywNCj4gICAgQm9yaXMuDQo+DQo+aHR0cHM6Ly9wZW9wbGUua2VybmVsLm9yZy90Z2x4
-L25vdGVzLWFib3V0LW5ldGlxdWV0dGUNCg0KVGhhbmtzLA0KU2hpanUNCg==
+On Tue, Mar 4, 2025 at 5:22=E2=80=AFPM Ilpo J=C3=A4rvinen
+<ilpo.jarvinen@linux.intel.com> wrote:
+>
+> On Fri, 28 Feb 2025, Mario Limonciello wrote:
+>
+> > From: Mario Limonciello <mario.limonciello@amd.com>
+> >
+> > When two drivers provide platform profile handlers but use different
+> > strings to mean (essentially) the same thing the legacy interface won't
+> > export them because it only shows profiles common to multiple drivers.
+> >
+> > This causes an unexpected behavior to people who have upgraded from an
+> > earlier kernel because if multiple drivers have bound platform profile
+> > handlers they might not be able to access profiles they were expecting.
+> >
+> > Introduce a concept of a "hidden choice" that drivers can register and
+> > the platform profile handler code will utilize when using the legacy
+> > interface.
+> >
+> > There have been some other attempts at solving this issue in other ways=
+.
+> > This serves as an alternative to those attempts.
+> >
+> > Link: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-92=
+57-5b8fc6c24ac9@gmx.de/T/#t
+> > Link: https://lore.kernel.org/platform-driver-x86/CAGwozwF-WVEgiAbWbRCi=
+UaXf=3DBVa3KqmMJfs06trdMQHpTGmjQ@mail.gmail.com/T/#m2f3929e2d4f73cc0eedd147=
+38170dad45232fd18
+> > Cc: Antheas Kapenekakis <lkml@antheas.dev>
+> > Cc: "Luke D. Jones" <luke@ljones.dev>
+> >
+> > Mario Limonciello (3):
+> >   ACPI: platform_profile: Add support for hidden choices
+> >   platform/x86/amd: pmf: Add 'quiet' to hidden choices
+> >   platform/x86/amd: pmf: Add balanced-performance to hidden choices
+> >
+> >  drivers/acpi/platform_profile.c    | 94 +++++++++++++++++++++++-------
+> >  drivers/platform/x86/amd/pmf/sps.c | 11 ++++
+> >  include/linux/platform_profile.h   |  3 +
+> >  3 files changed, 87 insertions(+), 21 deletions(-)
+> >
+> >
+>
+> Acked-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+
+All 3 patches applied as 6.14-rc6 material, thanks!
 
