@@ -1,137 +1,189 @@
-Return-Path: <linux-acpi+bounces-11762-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11763-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9824AA4DD81
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 13:08:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF33BA4DD9F
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 13:15:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEF0A172D42
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 12:08:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69A127A5803
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 12:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB91020102D;
-	Tue,  4 Mar 2025 12:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC80F1FF5EC;
+	Tue,  4 Mar 2025 12:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OjFDoHtE"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="J1ruolJ8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB02A1FF61E;
-	Tue,  4 Mar 2025 12:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E721F63F9
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 12:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741090074; cv=none; b=Sm1AjrbIpSDowmvV3eQ9LyYuJWTMKMa+3iMjgttr9icUWC2BnApd6O1XRBoPzKjMM+zQi84gNyrNySXgiaIVTs14vfyN+GWf1gAdcflMuluHL3KxXOHKJWHfSFDlaPxuspy8gz0kKRq4PVytArX5kTixl/eqH8+MUy3uGAbgX/s=
+	t=1741090517; cv=none; b=E6RoFCcfdN4xxurSIbbsNL36n5SMEG9UjEvmbd1nL7A9PWn6VjW/kTXReGFpffpBPTEHjgYKfOWsvNj+2zVXYs3PcmT+lo5v520LTMzI+afonsnXKjKvPIDxQKMOitK2EQicuST6jzrL7MCtScLvJ6jSdrTLVSliHbxbjrNJn3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741090074; c=relaxed/simple;
-	bh=MZy0VWiaiUcAOLUZr1EitCj53YlBljkRvHR7tDzANe4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SZ91nflJ6+O0DuCx4XStF74lpKu/eS2FuFeJUPQR6BEa8yj7Ro3R/eWKGZ+U/f2qpOzQpk9t1PWBNNs760LgJEc8kEPaaP/U9xOpjAQK+QQbr+dPbK82bFISvMOdqpKw6gwo53lndi7ERUyirKxdJOsLV2tN56W3vfJpo24OIak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OjFDoHtE; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741090073; x=1772626073;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=MZy0VWiaiUcAOLUZr1EitCj53YlBljkRvHR7tDzANe4=;
-  b=OjFDoHtEB8j+hYmH5eI5uYxefcf3gD3to6tJdRfi+6LB3IB4C+JNQMUf
-   zVD9O8qDmuFFhnZn3wvFyoQnkwe0Zv6rMd6de2tQ/fCYHyOnEjXNTedCd
-   7PzzLdhA+3MrdJzRZurKr0HwGnANjDAYFffSMXMXT5ea4K+QEuEQ7fpgt
-   aLIwemjZAXYL4sAgrce77s8fqaFHwLk3cTptT+iHKNhVu+pTw83xsnGDN
-   zTrzZNLXtkhlhi1uS/Wxl8pNE+NewiST3Df05uYQu3aw6wO6xaUvSmtzl
-   UHF0kbE4hlf7X9zkG9S0GaUDsQpmfgL1TA9XeVyFdRIYooICvqKKQ10X6
-   A==;
-X-CSE-ConnectionGUID: v0K3UTOQRPymv5kbKNuyoQ==
-X-CSE-MsgGUID: yv8O43eeTDydbsGhE5ahpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="45930048"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="45930048"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 04:07:52 -0800
-X-CSE-ConnectionGUID: LzJzP827Tnuswzqwqylwxg==
-X-CSE-MsgGUID: 40ygOT6kTlyfDKAMKfgDBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="118352213"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 04:07:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tpR3n-0000000H7I7-1M7c;
-	Tue, 04 Mar 2025 14:07:43 +0200
-Date: Tue, 4 Mar 2025 14:07:43 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v5 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <Z8btDzggD29xtaAo@smile.fi.intel.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
- <e71c63c2f61135f9a8c7884525aab2c48f1e84c2.1740993491.git.mazziesaccount@gmail.com>
- <CAMknhBGQaqFZJsPAoauZL4S5MYtN05EOQ-BO2vw5gH+Z2RLOhw@mail.gmail.com>
+	s=arc-20240116; t=1741090517; c=relaxed/simple;
+	bh=Qow8xds9CZA9GIvGQvdDqUg80Y9c5uovg0RsurwB2cA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NxofHZw6tKoDhkfN5+Eyst3mmJXyCH/SmiEWhbwfvruco/cDJdGJcTn7wRSPxZ53H1yGD8cU21yJslsuTYmE6oxxvXhRHQopMa021wgOwQ95/YSXJqO3Qf9BuBKLd6vcF5hkgem43eu9XFg4brefamu2A1KjIarg2rZ6nnLD1pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=J1ruolJ8; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54954fa61c9so4736954e87.1
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Mar 2025 04:15:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1741090514; x=1741695314; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=26QQ4C9f8ZtK5Z3yV57qMJ+4CyZ13YCNpHk5Sha+078=;
+        b=J1ruolJ8jBuW+2/InV3WVjqJx0VzeQJQyPd8/ZG1z/TbQ8KQrAw6B1YmBo4ufmw4Kc
+         +ceznU1mMd+xpCHeqjHa1OEh/UYi0OBnTouupfMJ+pWq75DblTjyMSwTOEJocr/qPYX2
+         eyiy/NI69Tw8OYfYqkUwn2nGdPI/8mfWF08wJr0MuNjz7WiMRpyLsG5MZYb2sz1rvqer
+         ooCPJxVu6U0nOWfY2cU7rz3n0l8e0BqD96sr+QpSBxhE9oviu6XpE8UERNmsi5j9L9Ik
+         efofBQ3/Y0+NoIhp2cszGOgDhGvwdOaDsCSXTxHmxkggAlQE71RlOGejGaZWaAU7vAIr
+         q1fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741090514; x=1741695314;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=26QQ4C9f8ZtK5Z3yV57qMJ+4CyZ13YCNpHk5Sha+078=;
+        b=lGdX/7PaXAWADIZbPjczLVY9AR5MZ2S7ZeXBhoQTOCtSwhX2oBT4tzEQlTKsaURYAp
+         wd64fmsjTMpy3bQPdUF0dtZSe1K96Ys/8uXj7c8Y5aficBNxPkxM7zNj74xScB9FZqFD
+         uPhvb5o9EoChzSzG5QzgMdGYmkDrQnITZ5Kq9fltIiYk7x+vx5zCC2+D4/KrYfA+hrYV
+         EqDZ5i7HROd0IFGvYWtvGxUSzs+nJE46g/oGLoXzwfKVB/KSECc8Sxt38p/PVqM1cclP
+         dpE1CA3FtPRBVibBZFjwIrZ3Ucm7KSI6E89PupMWPEd6oQg12ak0HCA1KpUny4nDkhxK
+         PgQw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3z2lOFG4VrSErqviwdkwlisVsCEnR1YTj5ztXZ2tGwth+OUolel6UnHal5AHFxLK4lrOFmZYp/W7r@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAJOVRlnId5OpRGhkMwAvApnwDUciQTA4Fm0Tunq2TJI2auF4+
+	cn/am7e//GTqi3+ACXViPN0NMVwJt54E+rEg7+JucDpgCbUDU74vaRV+uzPnJFacaKWWNLI3ZCs
+	De49xzFF0x7jKS4C/PUmk6XPCwfB6gDsq9MO7dg==
+X-Gm-Gg: ASbGncsjMmm/xBXQ5hKywnLqe8jFJBiB14vC06yzqod4JG0lfowlLMVKbF/okHf+KZh
+	bvWMn6EA90ZuvT+fNM/nxAE3WoNNn2uae3GdlZ+jutAxPmA1upE4MPw3S4skIbPzI/Fq7rUcdF7
+	MaqbqH6K1tdG33NCng0vubuYxF9UMj10iUE23EwyVK8Ft4s/B3i9baXIPIUQ==
+X-Google-Smtp-Source: AGHT+IH6aA1cSv/VX/CTXkwBECWnxt+ctn3sBHz6xIrxMKUb7MlaznRYT0wkyZbB0sMu1JegypYNOD60U7dDxS1giJY=
+X-Received: by 2002:a05:6512:693:b0:545:4d1:64c0 with SMTP id
+ 2adb3069b0e04-5494c3173d4mr8227858e87.27.1741090513979; Tue, 04 Mar 2025
+ 04:15:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMknhBGQaqFZJsPAoauZL4S5MYtN05EOQ-BO2vw5gH+Z2RLOhw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250303160341.1322640-1-andriy.shevchenko@linux.intel.com>
+ <20250303160341.1322640-3-andriy.shevchenko@linux.intel.com>
+ <20250304091804.GG3713119@black.fi.intel.com> <Z8bdDQGg_xcamZv2@smile.fi.intel.com>
+ <20250304111157.GJ3713119@black.fi.intel.com> <Z8bhJq3kn_uw3iYE@smile.fi.intel.com>
+ <20250304113135.GK3713119@black.fi.intel.com> <Z8brYjfL1yj_BvpN@smile.fi.intel.com>
+In-Reply-To: <Z8brYjfL1yj_BvpN@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 4 Mar 2025 13:15:02 +0100
+X-Gm-Features: AQ5f1JpKog-kPN4LvJWddwDWsb99i4_YBPgcK-rxvgJerwFu569NcpOLQvA21c0
+Message-ID: <CAMRc=MfsKc+r=uhDZVbd_BW=Gs1BpaidPC1tfF6TGqcq9bgP6Q@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] gpiolib: Rename gpio_set_debounce_timeout() to gpiod_do_set_debounce()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mika Westerberg <westeri@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Kent Gibson <warthog618@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 04, 2025 at 10:25:03AM +0100, David Lechner wrote:
-> On Mon, Mar 3, 2025 at 12:32 PM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
+On Tue, Mar 4, 2025 at 1:00=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Tue, Mar 04, 2025 at 01:31:35PM +0200, Mika Westerberg wrote:
+> > On Tue, Mar 04, 2025 at 01:16:54PM +0200, Andy Shevchenko wrote:
+> > > On Tue, Mar 04, 2025 at 01:11:57PM +0200, Mika Westerberg wrote:
+> > > > On Tue, Mar 04, 2025 at 12:59:25PM +0200, Andy Shevchenko wrote:
+> > > > > On Tue, Mar 04, 2025 at 11:18:04AM +0200, Mika Westerberg wrote:
+> > > > > > On Mon, Mar 03, 2025 at 06:00:33PM +0200, Andy Shevchenko wrote=
+:
+> > > > > > > In order to reduce the 'gpio' namespace when operate over GPI=
+O descriptor
+> > > > > > > rename gpio_set_debounce_timeout() to gpiod_do_set_debounce()=
+.
+> > > > > >
+> > > > > > To me anything that has '_do_' in their name sounds like an int=
+ernal static
+> > > > > > function that gets wrapped by the actual API function(s).
+> > > > > >
+> > > > > > For instance it could be
+> > > > > >
+> > > > > >   int gpio_set_debounce_timeout()
+> > > > > >   {
+> > > > > >       ...
+> > > > > >       gpiod_do_set_debounce()
+> > > > > >       ...
+> > > > > >
+> > > > > > However, gpiod_set_debounce_timeout() or gpiod_set_debounce() s=
+ounds good
+> > > > > > to me.
+> > > > >
+> > > > > Then please propose the second name for gpiod_set_config_XXX to f=
+ollow
+> > > > > the same pattern. The series unifies naming and reduces the curre=
+nt
+> > > > > inconsistency.
+> > >
+> > > > gpiod_set_config()?
+> > >
+> > > The problem is that
+> > >
+> > > gpiod_set_debounce() and gpiod_set_config() are _existing_ public API=
+s.
+> > > That's why I considered "_do_" fitting the purpose.
+> >
+> > I see.
+> >
+> > Hmm, we have:
+> >
+> > int gpiod_set_debounce(struct gpio_desc *desc, unsigned int debounce)
+> > {
+> >         unsigned long config;
+> >
+> >         config =3D pinconf_to_config_packed(PIN_CONFIG_INPUT_DEBOUNCE, =
+debounce);
+> >         return gpiod_set_config(desc, config);
+> > }
+> >
+> > and
+> >
+> > int gpio_set_debounce_timeout(struct gpio_desc *desc, unsigned int debo=
+unce)
+> > {
+> >       int ret;
+> >
+> >       ret =3D gpio_set_config_with_argument_optional(desc,
+> >                                                    PIN_CONFIG_INPUT_DEB=
+OUNCE,
+> >                                                    debounce);
+> >       if (!ret)
+> >               gpiod_line_state_notify(desc, GPIO_V2_LINE_CHANGED_CONFIG=
+);
+> >
+> >       return ret;
+> > }
+> >
+> > I wonder if there is an opportunity to consolidate? ;-)
+>
+> Send a patch! I would be glad to see less functions and internal APIs in
+> GPIOLIB.
+>
 
-...
+I'm definitely in favor of consolidation instead of renaming to
+gpiod_go_set_debounce(). If anything a better name would be:
+gpiod_set_debounce_nocheck() to indicate the actual functionality.
 
-> There are some different opinions on this, but on the last patch I did
-> introducing a new namespace,
+How about first extending gpio_set_config_with_argument() to take a
+boolean "optional" argument and removing
+gpio_set_config_with_argument_optional() altogether? Both are internal
+to drivers/gpio/ so it would have no effect on consumers.
 
-> the consensus
-
-Hmm... I may not call that "the consensus"...
-
-> seems to be that putting
-> the MODULE_IMPORT_NS() in the header file was convenient so that users
-> of the API don't have to remember to both include the header and add
-> the import macro.
-
-Which I am against because it will diminish the point of prevention of
-the APIs abuse along with a potential to have the stale headers in
-the file when the code is moved somewhere else..
-
-So, please do not do that. We have only two abusers currently:
-the PWM and SPI OFFLOAD.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bart
 
