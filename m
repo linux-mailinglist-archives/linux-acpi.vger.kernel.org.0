@@ -1,191 +1,270 @@
-Return-Path: <linux-acpi+bounces-11778-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11767-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA51CA4E114
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 15:36:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFB0A4DEAD
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 14:07:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BDE3AE3E6
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 14:28:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1258D7ABBA8
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 13:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019ED2417F2;
-	Tue,  4 Mar 2025 14:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7054202C5D;
+	Tue,  4 Mar 2025 13:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n5m6E1fg"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="sblV3Ovx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216CB23DE80
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 14:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741098386; cv=pass; b=ajYJWlRS1HVHvq9aRBx/5C9zeVWOjdT0xVdaGzWqOGdlq/YfExgSj9EuxTdph0apE1W2XBOqU1Ye33mQCm9awbw6wZbtqZknbArTg/KuTkkJRQEqGS6Prx2WfYtkS0iTYehOFqv3fcXkip4KBkBtC4YF637Qve4wT09DGkbqZYM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741098386; c=relaxed/simple;
-	bh=j1ghf+0O9QJ9puRHnNXhg9N1r2ibOt2kzP+sia3x+c0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dhLf/SEOtzdbwirhzQshfhgfPRZH2Jf33XAbXh7e2AaB9srqzYIk8mopTE3pgd18Jp51XocHIBTvqTxH7UimnIoS8kxdEsNaJwIAyNC27sxaBX7CUTf3/1R3AhSJF/nkxOM7nuGBdGV1W3LBV9iLXtbw5KWIY7TEibdVdp+jeeo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n5m6E1fg; arc=none smtp.client-ip=198.175.65.9; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; arc=pass smtp.client-ip=160.75.25.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
-Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id 5572C40D050F
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 17:26:23 +0300 (+03)
-X-Envelope-From: <root@cc.itu.edu.tr>
-Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n5m6E1fg
-Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6dHW1XDZzFwcD
-	for <linux-acpi@vger.kernel.org>; Tue,  4 Mar 2025 17:24:55 +0300 (+03)
-Received: by le1 (Postfix, from userid 0)
-	id 214AC41898; Tue,  4 Mar 2025 17:24:47 +0300 (+03)
-Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n5m6E1fg
-X-Envelope-From: <linux-kernel+bounces-541699-bozkiru=itu.edu.tr@vger.kernel.org>
-Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n5m6E1fg
-Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
-	by le2 (Postfix) with ESMTP id 0F81A41A6D
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:26:33 +0300 (+03)
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by fgw2.itu.edu.tr (Postfix) with SMTP id 4DDC52DCE0
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:26:31 +0300 (+03)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8DCF7A8B4E
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 12:24:06 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B3D2101AF;
-	Mon,  3 Mar 2025 12:24:48 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087CD1F0E2C;
-	Mon,  3 Mar 2025 12:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C40442C;
+	Tue,  4 Mar 2025 13:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741004685; cv=none; b=WCDRcFTg6zHs8ZEOEE4E0Aq+d/rgSoygZpCJ+mEBpTRi2f9pQlkvEEKihMYCRBviXzDls5rWGbO0klrfsvYgwU+4bDiBrS08X1SR7YiNpKWZ6tUPXiBAzTTb4TnDeRH1MXqZpU9bEb183aLqbRGcq++wPuQoogsFAyyMxh7YlSA=
+	t=1741093604; cv=none; b=lfPoVC4KbgPcmF8xq5ge/czp1W7+q8jpi9eK2YUhG5JPKjj9C0UsMxSRssS1Zlutvu/FkaU2OUWxzncuyI+DBMcxbOHbu3HjBoHI3R5UMyPPQgr/aG8dmmr1ueN57pP2vX90pXJee8nWbt32/zg3nwzt3sdkL3zhvJoWlwWxN3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741004685; c=relaxed/simple;
-	bh=j1ghf+0O9QJ9puRHnNXhg9N1r2ibOt2kzP+sia3x+c0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNwVUbrKUzrAQv69uAzilwVi+e6fH5ue3uevu8Cw3Qb15rFkvLE1N9Hfu8u6k/+anJcgfUpMi/ZduPXa62TWjWaSs2iJnOxqlMVgGAhUGPlJGaTRqD1LN23he3RolkhvWhZZ0A/PfJdAaepKogDgOPoGmGc4ejPUY61I5i52aSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n5m6E1fg; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741004684; x=1772540684;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=j1ghf+0O9QJ9puRHnNXhg9N1r2ibOt2kzP+sia3x+c0=;
-  b=n5m6E1fgYJt+8ruOl8Eyr6HGGKlOQXFxUX74N1/PSoPH32uLwauZ9hvK
-   NN9rDVakAaWGSIfir2Wl9LEaSqw3c3/RJFK4+fUAmSvPUzXTjUwGYYbWS
-   x3itDJVCdOZfbuST95bVR6TDTFWkAr8DG+Yv9g4W+SoNiFY+VjiVC7L04
-   tvXUL2Cxn65cYm+X5+Fc3ZC4UZrehzKO7QUWfl1B3g9ChduaS2L7Vi8kh
-   8hnzH3ydKxbctsNK9DYUGXLTPgj38GkNFGHZdCeL/OI8PvntZnXenlFfq
-   QtCgVFE7Y+hTDEJ4mZc7mCqZDtu5AKZZ4DfmTGomMAwGTNkLUTWXWyDR+
-   g==;
-X-CSE-ConnectionGUID: 9TOR9/80SJuFyH4xaMIgZw==
-X-CSE-MsgGUID: 03Ko57+NRFGwB2TRgvKiVw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="64320548"
-X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
-   d="scan'208";a="64320548"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 04:24:43 -0800
-X-CSE-ConnectionGUID: bQufeDxFQFWMqaTx9aSf+Q==
-X-CSE-MsgGUID: in9DvPjwRr+WBjh68L1d5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
-   d="scan'208";a="123136809"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 04:24:39 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tp4qZ-0000000GoLr-2PU1;
-	Mon, 03 Mar 2025 14:24:35 +0200
-Date: Mon, 3 Mar 2025 14:24:35 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH RFC net-next v5 10/10] net: gianfar: Use
- device_get_child_node_count_named()
-Message-ID: <Z8Wfgx2NjB-_AyR_@smile.fi.intel.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
- <685cd1affabe50af45b767eeed9b9002d006b0fd.1740993491.git.mazziesaccount@gmail.com>
- <Z8WXqgxgFQC8b8vC@smile.fi.intel.com>
- <aacffceb-e9e8-412a-a624-568e6b10d586@gmail.com>
-Precedence: bulk
+	s=arc-20240116; t=1741093604; c=relaxed/simple;
+	bh=2qFKPgKeSpXTxp5Z7iZJSjbB0aua6k7j3YFcJG4fNvc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FQXZaTP0lgUhpRLJHSyqcR4bonqyLD7o2IxpWmZ5WzEzNgWUJrYMKr7frzorrRDGUjW3nIeqXDnrRcsdpFPXgRtBMRdU5jVAPjIEaooaHbP2+e23JW7+Pp5ITiUUy2pLY/sqGCF2LXW3/ED7AkorR6lH4o6+N0GsnkMNLFFvFIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=sblV3Ovx; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 602E12E09248;
+	Tue,  4 Mar 2025 15:06:33 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1741093597;
+	bh=XyB/DGaQkImLkGe99KO54A695D+1O0zvTZx7KK1o7qc=;
+	h=Received:From:Subject:To;
+	b=sblV3OvxcufcZeJwjUtftOq7C+F+2uY3VHKmUARnHm0cFo1jAzriIHTeL7krwhs43
+	 HE4vnLvcOj16PFGkpA8ba98+BqAbSA0UGr1tChhoYAQoEcP3PpHsUW2HN1vTTrxgc5
+	 h90uNi+sTVLmBPQpgQB6X9nEUmY/xY7x6alhysnw=
+Authentication-Results: linux1587.grserver.gr;
+        spf=pass (sender IP is 209.85.167.42) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f42.google.com
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+Received: by mail-lf1-f42.google.com with SMTP id
+ 2adb3069b0e04-547bcef2f96so6340823e87.1;
+        Tue, 04 Mar 2025 05:06:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVyVqUzGOszSzqD1klHi8pMc1fbUEwBvni9U6KpmiJlUU5E94kzqvH2AtFfUqxV73+TywHL61rPzoBIpnma2P/lVzMRgA==@vger.kernel.org,
+ AJvYcCWrHwy59lJBi0hqGoTJ8FWP7q2DVCsy4FQGd4gF5tQJXnsQDGR9Xuvkc1iwpvE1NWJgAqTl3j8g9nL9SFRQ@vger.kernel.org,
+ AJvYcCX419kcpZAvLLy6LNsfJHnfoHbQQ0u3GYaOcYyvK0fKYiOiJ+84bwOdhI46n/MstDd4vqNOL9NEvmrH@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnKs3qsBZof7xMtt53oBHS+B9HmpDO+ehxpSGRWT7J+9zaopok
+	OGLSuVOXhxwdKuKJ3nIoKju6LMCSHnkUUma3xjr2GGYeP5nq52+lQoaMw+bSo2fuvVEpXOwgG3e
+	oHsGeMwrfcVuk+zstoCLFDt4Ri8c=
+X-Google-Smtp-Source: 
+ AGHT+IFJsSNNyRwEAefYPtBzSpVROivz24nz3zetzkFWa1k9sdlp2Tv3EG40u6Jg9A2pWi68fJtr3aIhUNxR4yK51pI=
+X-Received: by 2002:a05:6512:1103:b0:545:d54:2ebe with SMTP id
+ 2adb3069b0e04-5494c36c16dmr6539057e87.43.1741093592629; Tue, 04 Mar 2025
+ 05:06:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aacffceb-e9e8-412a-a624-568e6b10d586@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6dHW1XDZzFwcD
-X-ITU-Libra-ESVA: No virus found
-X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741703102.25134@siEJtzlW5guNAMIeGcoqVA
-X-ITU-MailScanner-SpamCheck: not spam
+References: <20250304064745.1073770-1-superm1@kernel.org>
+ <20250304064745.1073770-2-superm1@kernel.org>
+ <CAGwozwHniWGQ7qK6FYD_WK5zNjkro7-Q1nTcFPAuWDt9UQ+noA@mail.gmail.com>
+ <23d6c735-e94f-4d43-87b0-ff119941fcac@kernel.org>
+In-Reply-To: <23d6c735-e94f-4d43-87b0-ff119941fcac@kernel.org>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Tue, 4 Mar 2025 14:06:21 +0100
+X-Gmail-Original-Message-ID: 
+ <CAGwozwE0qn_vypYHpfJY8muo=e6XuLRJ6d9Fy_LSAa5VG=sEgg@mail.gmail.com>
+X-Gm-Features: AQ5f1Jq8Nt82M34pyIU1pZ1pM_EAc5ddAiY26i3J3wjOWWxvYJzHwrbkXyW9qw8
+Message-ID: 
+ <CAGwozwE0qn_vypYHpfJY8muo=e6XuLRJ6d9Fy_LSAa5VG=sEgg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ACPI: platform_profile: Treat quiet and low power
+ the same
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Kurt Borja <kuurtb@gmail.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>,
+	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+X-PPP-Message-ID: 
+ <174109359388.10457.17049499079140763422@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
-On Mon, Mar 03, 2025 at 02:13:30PM +0200, Matti Vaittinen wrote:
-> On 03/03/2025 13:51, Andy Shevchenko wrote:
-> > On Mon, Mar 03, 2025 at 01:34:49PM +0200, Matti Vaittinen wrote:
-> 
-> > What about the second loop (in gfar_of_init)?
-> > I mean perhaps we want to have fwnode_for_each_named_child_node()
-> > and its device variant that may be also reused in the IIO code and here.
-> 
-> I agree the fwnode_for_each_named_child_node() would be useful. I think I
-> said that already during the previous review rounds. There is plenty of code
-> which could be converted to use it.
+On Tue, 4 Mar 2025 at 13:49, Mario Limonciello <superm1@kernel.org> wrote:
+>
+>
+>
+> On 3/4/25 02:38, Antheas Kapenekakis wrote:
+> > On Tue, 4 Mar 2025 at 07:48, Mario Limonciello <superm1@kernel.org> wrote:
+> >>
+> >> From: Mario Limonciello <mario.limonciello@amd.com>
+> >>
+> >> When two drivers don't support all the same profiles the legacy interface
+> >> only exports the common profiles.
+> >>
+> >> This causes problems for cases where one driver uses low-power but another
+> >> uses quiet because the result is that neither is exported to sysfs.
+> >>
+> >> If one platform profile handler supports quiet and the other
+> >> supports low power treat them as the same for the purpose of
+> >> the sysfs interface.
+> >>
+> >> Fixes: 688834743d67 ("ACPI: platform_profile: Allow multiple handlers")
+> >> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+> >> Closes: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-9257-5b8fc6c24ac9@gmx.de/T/#mc068042dd29df36c16c8af92664860fc4763974b
+> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >> ---
+> >>   drivers/acpi/platform_profile.c | 38 ++++++++++++++++++++++++++++++---
+> >>   1 file changed, 35 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> >> index 2ad53cc6aae53..d9a7cc5891734 100644
+> >> --- a/drivers/acpi/platform_profile.c
+> >> +++ b/drivers/acpi/platform_profile.c
+> >> @@ -73,8 +73,20 @@ static int _store_class_profile(struct device *dev, void *data)
+> >>
+> >>          lockdep_assert_held(&profile_lock);
+> >>          handler = to_pprof_handler(dev);
+> >> -       if (!test_bit(*bit, handler->choices))
+> >> -               return -EOPNOTSUPP;
+> >> +       if (!test_bit(*bit, handler->choices)) {
+> >> +               switch (*bit) {
+> >> +               case PLATFORM_PROFILE_QUIET:
+> >> +                       *bit = PLATFORM_PROFILE_LOW_POWER;
+> >> +                       break;
+> >> +               case PLATFORM_PROFILE_LOW_POWER:
+> >> +                       *bit = PLATFORM_PROFILE_QUIET;
+> >> +                       break;
+> >> +               default:
+> >> +                       return -EOPNOTSUPP;
+> >> +               }
+> >> +               if (!test_bit(*bit, handler->choices))
+> >> +                       return -EOPNOTSUPP;
+> >> +       }
+> >>
+> >>          return handler->ops->profile_set(dev, *bit);
+> >>   }
+> >> @@ -252,8 +264,16 @@ static int _aggregate_choices(struct device *dev, void *data)
+> >>          handler = to_pprof_handler(dev);
+> >>          if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
+> >>                  bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
+> >> -       else
+> >> +       else {
+> >> +               /* treat quiet and low power the same for aggregation purposes */
+> >> +               if (test_bit(PLATFORM_PROFILE_QUIET, handler->choices) &&
+> >> +                   test_bit(PLATFORM_PROFILE_LOW_POWER, aggregate))
+> >> +                       set_bit(PLATFORM_PROFILE_QUIET, aggregate);
+> >> +               else if (test_bit(PLATFORM_PROFILE_LOW_POWER, handler->choices) &&
+> >> +                        test_bit(PLATFORM_PROFILE_QUIET, aggregate))
+> >> +                       set_bit(PLATFORM_PROFILE_LOW_POWER, aggregate);
+> >>                  bitmap_and(aggregate, handler->choices, aggregate, PLATFORM_PROFILE_LAST);
+> >> +       }
+> >
+> > So you end up showing both? If that's the case, isn't it equivalent to
+> > just make amd-pmf show both quiet and low-power?
+> >
+> > I guess it is not ideal for framework devices. But if asus devices end
+> > up showing both, then it should be ok for framework devices to show
+> > both.
+> >
+> > I like the behavior of the V1 personally.
+>
+> No; this doesn't cause it to show both.  It only causes one to show up.
+> I confirmed it with a contrived situation on my laptop that forced
+> multiple profile handlers that supported a mix.
 
+If you can somehow force it to show the same option every time with a
+tie breaker against amd-pmf it should be good enough. Still does not
+solve balanced-power so unlike V1 it is not a permanent fix. Hidden
+options was a nice tiebreaker imo.
 
-> This, however, is far more than I am willing to do in the context of a
-> simple IIO driver addition. The "BD79124 ADC suupport" is already now 10
-> patches, 2 of which are directly related to it.
+>
+> # cat /sys/firmware/acpi/platform_profile*
+> low-power
+> low-power balanced performance
+>
+> # cat /sys/class/platform-profile/platform-profile-*/profile
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> quiet
+> low-power
+>
+> >
+> >>          return 0;
+> >>   }
+> >> @@ -305,6 +325,13 @@ static int _aggregate_profiles(struct device *dev, void *data)
+> >>          if (err)
+> >>                  return err;
+> >>
+> >> +       /* treat low-power and quiet as the same */
+> >> +       if ((*profile == PLATFORM_PROFILE_LOW_POWER &&
+> >> +            val == PLATFORM_PROFILE_QUIET) ||
+> >> +           (*profile == PLATFORM_PROFILE_QUIET &&
+> >> +            val == PLATFORM_PROFILE_LOW_POWER))
+> >> +               *profile = val;
+> >> +
+> >>          if (*profile != PLATFORM_PROFILE_LAST && *profile != val)
+> >>                  *profile = PLATFORM_PROFILE_CUSTOM;
+> >>          else
+> >> @@ -531,6 +558,11 @@ struct device *platform_profile_register(struct device *dev, const char *name,
+> >>                  dev_err(dev, "Failed to register platform_profile class device with empty choices\n");
+> >>                  return ERR_PTR(-EINVAL);
+> >>          }
+> >> +       if (test_bit(PLATFORM_PROFILE_QUIET, pprof->choices) &&
+> >> +           test_bit(PLATFORM_PROFILE_LOW_POWER, pprof->choices)) {
+> >> +               dev_err(dev, "Failed to register platform_profile class device with both quiet and low-power\n");
+> >> +               return ERR_PTR(-EINVAL);
+> >> +       }
+> >
+> > Can you avoid failing here? It caused a lot of issues in the past (the
+> > WMI driver bails). a dev_err should be enough. Since you do not fail
+> > maybe it can be increased to dev_crit.
+> >
+> > There is at least one driver that implements both currently, and a fix
+> > would have to precede this patch.
+>
+> Oh, acer-wmi?  Kurt; can you please comment?  Are both simultaneous?
 
-But you already will have at least one user (IIO code) and second as in RFC.
-I do not ask you to _add_ patches.
+I do not have access to my kernel tree but when looking at it I
+remember an if block that did a set_bit on both for certain laptops in
+one of the drivers. Unsure if it was acer. But it was not ambiguous.
 
-> I propose adding the for_each_named_child_node() as a separate series with
-> bunch of users appended. That's be plenty of beans to count for those who
-> like following the statistics :)
-
-It would sound like an unneeded churn as we first introduce something that we
-already know needs a refactoring.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
-
+> >
+> >>
+> >>          guard(mutex)(&profile_lock);
+> >>
+> >> --
+> >> 2.43.0
+> >>
+>
 
