@@ -1,213 +1,204 @@
-Return-Path: <linux-acpi+bounces-11784-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11785-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9382A4E278
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:10:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D5CA4E283
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 16:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F397D886F01
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 15:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506B7178334
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 15:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D1E27E1BA;
-	Tue,  4 Mar 2025 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A35F2620DE;
+	Tue,  4 Mar 2025 14:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FM8nsG3O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRJTmVKU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4B425F7A2;
-	Tue,  4 Mar 2025 14:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA3126036C;
+	Tue,  4 Mar 2025 14:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741100346; cv=none; b=RXWqO8iK3Nuh/c6rPf8DsjS02k14eTL8q8+neftfDvP/nNODVD+IWDH3IFfZjizIAzYSy3eJ+Cs3Q9YRmyRS3qtM95n46+Kmdz45l1dp9BX9Ic1uyUtbOgHyQZsZabCYrnHbwGQ/iQ4sY2zKM62rQK7kTWdaikxulBR7kj7lefI=
+	t=1741100348; cv=none; b=bdsAmrD1fp2S03KujFAuDmWl4icvDVgeq4RVSkuKkbZT5UNreIHfzp9/n+mxzOLRKLkdFW83LF1prJMeB93XPhkgcHCwH8Bgmss/ZyCNatfnWb/oQ44tWJhWUL8i+mvqbHkjsXdYuglSj4YD3bt48blSPTjNZhs5EaWxSK3r2Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741100346; c=relaxed/simple;
-	bh=hyOnGbKq7QVmR++Di2lrMss/bl5pkWGnnhzFD1HXfQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=svOmXZ9oV49ahZXRKrp8iazodBc+B3ErvIVYzZqTte4J0AE7O/PsdGGW5eG3WQE2dSPZ5HIn6PaDhL2JF+VHyvIZ6vcHFErMlF+yBQnQIAZS750Z1+D5cCx5p0UyOU1Yc9coTlLHnZgL5tH6rmUn3BGMCXTwDzOdC9xYqzeJzxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FM8nsG3O; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741100343; x=1772636343;
-  h=date:from:to:cc:subject:message-id;
-  bh=hyOnGbKq7QVmR++Di2lrMss/bl5pkWGnnhzFD1HXfQ4=;
-  b=FM8nsG3Oa+4ccS2nZzPjWoVNWCE7tRu6h2zza+VeccbaGxl+DbjSb44B
-   PBsBYUoT9XPX4lBoXsiddXMbLSoMuTkuav4t9Yusbj/WGILT3KNKn3arY
-   SPPmJdlkZFA71ATMPq4Qc14lBu+ac2OFeI0j77lvt4Z1PYyy6UWRrKVkB
-   djc1eAwx3nLttNh79sztddp/7my0jLtuLcMsOyA8FEw2VBSn07uc+oPw3
-   N+wfbR/n2Db0aw7QQdygS255keIpDptWD8ZxFvkq1zLOsKeZe/cb1/7gt
-   hVvVFWTBGe9FVIZHr1Uz4yi4/reGWYzUqTQI3+oTQpihqQAA52wzPGfDI
-   w==;
-X-CSE-ConnectionGUID: 3wnsGFMbQ1OjJ/5HwiSXgA==
-X-CSE-MsgGUID: J4DspvpVSLyvYrMLtxC1IQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41268365"
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
-   d="scan'208";a="41268365"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 06:59:03 -0800
-X-CSE-ConnectionGUID: +ohDWmmhQn+uasl4fTv+FA==
-X-CSE-MsgGUID: 2gQ0un2AQpyfuv/Ird40hA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
-   d="scan'208";a="123004051"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 04 Mar 2025 06:59:01 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tpTjX-000Jv2-1s;
-	Tue, 04 Mar 2025 14:58:59 +0000
-Date: Tue, 04 Mar 2025 22:58:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 6d3fcaf8c783f7be7585efcf71d22b9f06fe60a9
-Message-ID: <202503042203.okDI6LB4-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1741100348; c=relaxed/simple;
+	bh=BJioHZs7npMxT1EZrWhLh92wotTsWQ13abN3EvOE9RE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CFyXReRaLD8BsiorlGK04XTIS5KS8q/vo67wYxP19gsHQHEaRNtVaXE5G3J/PD6ZJpE0hLJjZC5jY+0zebDWEi3kd9+rn32mEURr0vpJc4k+aR88QnhNy3q69EOd0NrucwBrz1Mj1s+4I+LY1SdpeQMp4FEbbkhgvp+pwGvKWfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRJTmVKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52421C4CEF2;
+	Tue,  4 Mar 2025 14:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741100347;
+	bh=BJioHZs7npMxT1EZrWhLh92wotTsWQ13abN3EvOE9RE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uRJTmVKUDQ70Nt7Z+2CFBjqCqUXW2AXR7ZZFQpBN6LtvhUk9WUxZNmGl3qEGdgVA8
+	 34ppa/Sm9DaMEcoD0ZhTIfBaYBZNiG08JQdqB7hQis1Inn05liKHh6JjPUnya1/DnM
+	 mVmwlOBLT+d6641L1lQkRtuRrenX0H0kCkgjzjIwBQzWja5eLAFMJln9CYS5Rk7Yjj
+	 /8qGYpuJGF+kzDKymQ4r5yqOUt2WmPZ76zV5u0ykeJEoQCrBLzJ/Vythn9FzMp7N18
+	 9VIOnrrOb7NFreHZpzuhIEY9oKPpAqSG8Xg4zu1O+WqUminhYQ9GzjBYF7wjVP5Drk
+	 GLdoqmOE4gQ8Q==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5fcc45803easo1330120eaf.3;
+        Tue, 04 Mar 2025 06:59:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUmpQlLAh8nYuZuoIEaZ+ikq7a7vaBa3NJCHmwGTgYFHbPNV1BfGd5zYgwLN8K+sj+FckJWN2RQxQ98TnGyAzu3TLgR9g==@vger.kernel.org, AJvYcCWKUUk0GWVG5D5mFeH2PJGVJyAV7MCGvbYeUVrf0iclQl3FYmAmaa4jlUwzn38bHPGx9zmgbAyEK7mM@vger.kernel.org, AJvYcCXaQKGe0uJ+SrLDlY0dUKea3+Fq/oGZ9TULZ6tI+HtfV+5+NkmbI4IfC5hlc0JIm0B3m5OpOz5rrJikl7Al@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQQElC5qAFaRfudnnidDAjz6bTPAWN4je3wS4eTcJGHbEy6u3Y
+	JLaITwSrYM69sjpKrmcmaH4zMcSh+XsRHB5lK5QCzZBn1Zz53fxtrVDrGGXfzTti250pzzk3ZyA
+	F/QPd1r2OqQYgv6I1Zj5oUmtEBRM=
+X-Google-Smtp-Source: AGHT+IHV4OYxfCU/t1WTUxkTaNo8H8GNLQAFxAAet6Nu+4CwM7JxdLruJtd4pXXPuDqTQMQDQdHOE7tLLv9Xo98895g=
+X-Received: by 2002:a05:6820:1629:b0:5fd:b85:9b47 with SMTP id
+ 006d021491bc7-5feb349ece4mr9806448eaf.1.1741100346518; Tue, 04 Mar 2025
+ 06:59:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250304064745.1073770-1-superm1@kernel.org> <20250304064745.1073770-2-superm1@kernel.org>
+ <CAGwozwHniWGQ7qK6FYD_WK5zNjkro7-Q1nTcFPAuWDt9UQ+noA@mail.gmail.com>
+ <23d6c735-e94f-4d43-87b0-ff119941fcac@kernel.org> <CAJZ5v0geaYYRQm0Hs2M4ak_8AZoWLJS-v0jqyrsaVjmXk267rA@mail.gmail.com>
+ <71b14dc3-77e1-4fd7-b576-821e3a41ba19@kernel.org>
+In-Reply-To: <71b14dc3-77e1-4fd7-b576-821e3a41ba19@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 4 Mar 2025 15:58:55 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hNHFLtBwTTuPc7mNZhCKkmFJgFwgw88_BR_7nQ+rc6Cw@mail.gmail.com>
+X-Gm-Features: AQ5f1JqiU1riY6PdY3kp9Y6wKkJOdtqDzvJA_a9LeLoMMba-AYmBjxoxf4Tpjjg
+Message-ID: <CAJZ5v0hNHFLtBwTTuPc7mNZhCKkmFJgFwgw88_BR_7nQ+rc6Cw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ACPI: platform_profile: Treat quiet and low power
+ the same
+To: Mario Limonciello <superm1@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Antheas Kapenekakis <lkml@antheas.dev>, Kurt Borja <kuurtb@gmail.com>, 
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Hans de Goede <hdegoede@redhat.com>, 
+	"Luke D . Jones" <luke@ljones.dev>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+	"open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, "Derek J . Clark" <derekjohn.clark@gmail.com>, 
+	me@kylegospodneti.ch, Denis Benato <benato.denis96@gmail.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 6d3fcaf8c783f7be7585efcf71d22b9f06fe60a9  Merge branch 'pm-runtime' into bleeding-edge
+On Tue, Mar 4, 2025 at 3:52=E2=80=AFPM Mario Limonciello <superm1@kernel.or=
+g> wrote:
+>
+> On 3/4/2025 08:08, Rafael J. Wysocki wrote:
+> > On Tue, Mar 4, 2025 at 1:49=E2=80=AFPM Mario Limonciello <superm1@kerne=
+l.org> wrote:
+> >>
+> >> On 3/4/25 02:38, Antheas Kapenekakis wrote:
+> >>> On Tue, 4 Mar 2025 at 07:48, Mario Limonciello <superm1@kernel.org> w=
+rote:
+> >>>>
+> >>>> From: Mario Limonciello <mario.limonciello@amd.com>
+> >>>>
+> >>>> When two drivers don't support all the same profiles the legacy inte=
+rface
+> >>>> only exports the common profiles.
+> >>>>
+> >>>> This causes problems for cases where one driver uses low-power but a=
+nother
+> >>>> uses quiet because the result is that neither is exported to sysfs.
+> >>>>
+> >>>> If one platform profile handler supports quiet and the other
+> >>>> supports low power treat them as the same for the purpose of
+> >>>> the sysfs interface.
+> >>>>
+> >>>> Fixes: 688834743d67 ("ACPI: platform_profile: Allow multiple handler=
+s")
+> >>>> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+> >>>> Closes: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42=
+ad-9257-5b8fc6c24ac9@gmx.de/T/#mc068042dd29df36c16c8af92664860fc4763974b
+> >>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >>>> ---
+> >>>>    drivers/acpi/platform_profile.c | 38 ++++++++++++++++++++++++++++=
+++---
+> >>>>    1 file changed, 35 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform=
+_profile.c
+> >>>> index 2ad53cc6aae53..d9a7cc5891734 100644
+> >>>> --- a/drivers/acpi/platform_profile.c
+> >>>> +++ b/drivers/acpi/platform_profile.c
+> >>>> @@ -73,8 +73,20 @@ static int _store_class_profile(struct device *de=
+v, void *data)
+> >>>>
+> >>>>           lockdep_assert_held(&profile_lock);
+> >>>>           handler =3D to_pprof_handler(dev);
+> >>>> -       if (!test_bit(*bit, handler->choices))
+> >>>> -               return -EOPNOTSUPP;
+> >>>> +       if (!test_bit(*bit, handler->choices)) {
+> >>>> +               switch (*bit) {
+> >>>> +               case PLATFORM_PROFILE_QUIET:
+> >>>> +                       *bit =3D PLATFORM_PROFILE_LOW_POWER;
+> >>>> +                       break;
+> >>>> +               case PLATFORM_PROFILE_LOW_POWER:
+> >>>> +                       *bit =3D PLATFORM_PROFILE_QUIET;
+> >>>> +                       break;
+> >>>> +               default:
+> >>>> +                       return -EOPNOTSUPP;
+> >>>> +               }
+> >>>> +               if (!test_bit(*bit, handler->choices))
+> >>>> +                       return -EOPNOTSUPP;
+> >>>> +       }
+> >>>>
+> >>>>           return handler->ops->profile_set(dev, *bit);
+> >>>>    }
+> >>>> @@ -252,8 +264,16 @@ static int _aggregate_choices(struct device *de=
+v, void *data)
+> >>>>           handler =3D to_pprof_handler(dev);
+> >>>>           if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
+> >>>>                   bitmap_copy(aggregate, handler->choices, PLATFORM_=
+PROFILE_LAST);
+> >>>> -       else
+> >>>> +       else {
+> >>>> +               /* treat quiet and low power the same for aggregatio=
+n purposes */
+> >>>> +               if (test_bit(PLATFORM_PROFILE_QUIET, handler->choice=
+s) &&
+> >>>> +                   test_bit(PLATFORM_PROFILE_LOW_POWER, aggregate))
+> >>>> +                       set_bit(PLATFORM_PROFILE_QUIET, aggregate);
+> >>>> +               else if (test_bit(PLATFORM_PROFILE_LOW_POWER, handle=
+r->choices) &&
+> >>>> +                        test_bit(PLATFORM_PROFILE_QUIET, aggregate)=
+)
+> >>>> +                       set_bit(PLATFORM_PROFILE_LOW_POWER, aggregat=
+e);
+> >>>>                   bitmap_and(aggregate, handler->choices, aggregate,=
+ PLATFORM_PROFILE_LAST);
+> >>>> +       }
+> >>>
+> >>> So you end up showing both? If that's the case, isn't it equivalent t=
+o
+> >>> just make amd-pmf show both quiet and low-power?
+> >>>
+> >>> I guess it is not ideal for framework devices. But if asus devices en=
+d
+> >>> up showing both, then it should be ok for framework devices to show
+> >>> both.
+> >>>
+> >>> I like the behavior of the V1 personally.
+> >>
+> >> No; this doesn't cause it to show both.  It only causes one to show up=
+.
+> >
+> > Which may not be the one that was shown before IIUC and that's not good=
+.
+> >
+> > What actually is the problem with the previous version?
+>
+> Functionally?  Nothing.  This was to demonstrate the other way to do it
+> that I preferred and get feedback on it as an alternative.
+>
+> If you and Ilpo are happy with v1 that's totally fine and we can go with
+> that.
 
-elapsed time: 1445m
+I'd prefer to go for the v1 at this point because it fixes a
+regression affecting user space that needs to be addressed before the
+6.14 release (and there is not too much time left) and it has been
+checked on the affected systems.
 
-configs tested: 119
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250304    gcc-13.2.0
-arc                   randconfig-002-20250304    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                          ixp4xx_defconfig    gcc-14.2.0
-arm                   milbeaut_m10v_defconfig    clang-21
-arm                   randconfig-001-20250304    clang-21
-arm                   randconfig-002-20250304    gcc-14.2.0
-arm                   randconfig-003-20250304    clang-21
-arm                   randconfig-004-20250304    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250304    clang-21
-arm64                 randconfig-002-20250304    gcc-14.2.0
-arm64                 randconfig-003-20250304    gcc-14.2.0
-arm64                 randconfig-004-20250304    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250304    gcc-14.2.0
-csky                  randconfig-002-20250304    gcc-14.2.0
-hexagon                          allmodconfig    clang-21
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250304    clang-21
-hexagon               randconfig-002-20250304    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250304    clang-19
-i386        buildonly-randconfig-002-20250304    clang-19
-i386        buildonly-randconfig-003-20250304    gcc-12
-i386        buildonly-randconfig-004-20250304    gcc-11
-i386        buildonly-randconfig-005-20250304    gcc-11
-i386        buildonly-randconfig-006-20250304    gcc-12
-i386                                defconfig    clang-19
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250304    gcc-14.2.0
-loongarch             randconfig-002-20250304    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                          hp300_defconfig    gcc-14.2.0
-m68k                       m5208evb_defconfig    gcc-14.2.0
-m68k                        m5307c3_defconfig    gcc-14.2.0
-m68k                       m5475evb_defconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250304    gcc-14.2.0
-nios2                 randconfig-002-20250304    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                randconfig-001-20250304    gcc-14.2.0
-parisc                randconfig-002-20250304    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                   currituck_defconfig    clang-17
-powerpc                   lite5200b_defconfig    clang-21
-powerpc                 mpc837x_rdb_defconfig    gcc-14.2.0
-powerpc                    mvme5100_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20250304    gcc-14.2.0
-powerpc               randconfig-002-20250304    gcc-14.2.0
-powerpc               randconfig-003-20250304    clang-21
-powerpc64             randconfig-001-20250304    gcc-14.2.0
-powerpc64             randconfig-002-20250304    gcc-14.2.0
-powerpc64             randconfig-003-20250304    clang-21
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-21
-riscv                 randconfig-001-20250304    gcc-14.2.0
-riscv                 randconfig-002-20250304    gcc-14.2.0
-s390                             alldefconfig    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-15
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250304    clang-15
-s390                  randconfig-002-20250304    clang-15
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                             espt_defconfig    gcc-14.2.0
-sh                    randconfig-001-20250304    gcc-14.2.0
-sh                    randconfig-002-20250304    gcc-14.2.0
-sh                           se7619_defconfig    gcc-14.2.0
-sh                           sh2007_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250304    gcc-14.2.0
-sparc                 randconfig-002-20250304    gcc-14.2.0
-sparc64               randconfig-001-20250304    gcc-14.2.0
-sparc64               randconfig-002-20250304    gcc-14.2.0
-um                               allmodconfig    clang-21
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250304    gcc-12
-um                    randconfig-002-20250304    gcc-12
-um                           x86_64_defconfig    clang-15
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250304    clang-19
-x86_64      buildonly-randconfig-002-20250304    gcc-12
-x86_64      buildonly-randconfig-003-20250304    gcc-12
-x86_64      buildonly-randconfig-004-20250304    gcc-12
-x86_64      buildonly-randconfig-005-20250304    gcc-12
-x86_64      buildonly-randconfig-006-20250304    gcc-12
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250304    gcc-14.2.0
-xtensa                randconfig-002-20250304    gcc-14.2.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ilpo, do you agree?
 
