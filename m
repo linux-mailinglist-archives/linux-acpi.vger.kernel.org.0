@@ -1,45 +1,46 @@
-Return-Path: <linux-acpi+bounces-11748-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11749-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687B5A4D40A
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 07:48:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51144A4D410
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 07:48:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE13D3ADA47
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 06:47:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09C0E1627FC
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Mar 2025 06:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5421CAA7B;
-	Tue,  4 Mar 2025 06:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9781F5617;
+	Tue,  4 Mar 2025 06:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIv3NefG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rLVoTRfX"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF1C13C67C;
-	Tue,  4 Mar 2025 06:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFC91F5608;
+	Tue,  4 Mar 2025 06:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741070882; cv=none; b=dH0EcYLhKOHhDNFlpYnxkdCFWYLED7VpVRJQIWL+Vf1wfJE/poBuTUutrHjNzUDnJSTCgUUjoa9DHqlO9fHey9QXu5W9PQ2fV3xzu4W65whViop820VIeiGlNwyEjdBaEwP7TfLepDP8pv9otFBSoxpwhXo30XG7SqRijQkbYt4=
+	t=1741070884; cv=none; b=F9l40kwj80RNWBZsvjf1LXWYPdQAuKGpVTVkcL6+03WBUkz/YKKDydeKY2JE6+7RIhrwNOmtX63w85J4zSh+EkmfQNFjP4Wpm1DyvAqPtspSHhe5TBPGb+V+dcfAwGff3WG7uq1DxovOPQH86GRscQLGOoo8QDeo7sq2aL4bEaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741070882; c=relaxed/simple;
-	bh=2evXEWK0mr645FbMREGaH3Ahgwgh/0pXncUK/iaq3kE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=su5h+yGz7yMVq8P32cz/FLHkIyo3mppwc5dcVrisVdsTsSN/067N5TvaFL4hhbbHNiD1e1WIy38MFSu+rs8c4dBjM4LET4ccqhO+f0PsAzup8FaUI6q0nnuGoIgzJgq8nauN+m+hZTMe5vDYYJEsl/6VwNU9X0XBzjxz6H0fCgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIv3NefG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D41C4CEE5;
-	Tue,  4 Mar 2025 06:48:00 +0000 (UTC)
+	s=arc-20240116; t=1741070884; c=relaxed/simple;
+	bh=FFsgRhnvi+o6UYvVxaej1RWPU5KX/3pcA/SeTUYAZX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OuGzDyd9nnCkSPFY8/8s3bTLBcNr4aq4gfnL3V7xohMe4N68BjdmXxCBGKjYa7RSMJoGfZF1ptaDBE5WQtTVPWdlmfsjWOJBGn92AiCnYLr8UjD6EYGLQUACAPumCg5Bi9FG7fZJm2W3WrPyUPMJLhK/Q/qmE1aQeFs7AoTR+pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rLVoTRfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57294C4CEE8;
+	Tue,  4 Mar 2025 06:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741070882;
-	bh=2evXEWK0mr645FbMREGaH3Ahgwgh/0pXncUK/iaq3kE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NIv3NefGz6ynuC6Zp7VgLIqrdaNX7RqUIuCuE19nH/4WtkR1jdtwKntA59Z6AYBdL
-	 hIMa5fI9TltRsXS4pRrlBe8ho/mHfX2CTBeK+rJ391fZoWGePcLspK5gRalovV8FGc
-	 zvNv4weSYfNXmc5jRQN1bDqggq6WK7aLUIOcg+PzH7oZVD4kRfpT892xCct/ILiya0
-	 jLkQoNA/uL7LqmvBw3AVoRzuvlK75BjHul/GtatdLnwh9oY4RFahTS2g1X1DgVYloA
-	 WKsLQDuuv27JN9+DW1argOg7e8aaGB/ZAr9v+8FetF5HxaSxWnt0y6Ik19QMlgf8Tr
-	 NEN9c97EF6FHA==
+	s=k20201202; t=1741070883;
+	bh=FFsgRhnvi+o6UYvVxaej1RWPU5KX/3pcA/SeTUYAZX0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rLVoTRfXEX9nbqrhPCV2RC5thZzne7rSOjreff/mIjCHdG3ScZJKDQJhbSIh8YvrH
+	 +/79HI0RT77WtxBvwaIOKESk1Xb0FTeRDBOflOEsNaOPelBmNjCRWWPn0cXMcRCXWN
+	 AiQURDuz4dUFv+Zo4phjpLKtn4JlacIN2W+TKa/EBGj5otuqjVMmprsHBuHtUfQaNa
+	 tHpaQ9grvRUHy/8RB1s5etIapisMWyF6gYj/bNuY7gwJ8vzN+JGNAafwqEcKTSJd28
+	 POAWP1Qp+B7pifTzYcYu/2diCk73huSOVhXUsz7IMi6t5lltg9huVS3/Crp1uPcgTU
+	 0n4XE2dU2jUMg==
 From: Mario Limonciello <superm1@kernel.org>
 To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -55,10 +56,12 @@ Cc: platform-driver-x86@vger.kernel.org (open list:AMD PMF DRIVER),
 	me@kylegospodneti.ch,
 	Denis Benato <benato.denis96@gmail.com>,
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2 0/1] Add quiet/low power compat code
-Date: Tue,  4 Mar 2025 00:47:44 -0600
-Message-ID: <20250304064745.1073770-1-superm1@kernel.org>
+Subject: [PATCH v2 1/1] ACPI: platform_profile: Treat quiet and low power the same
+Date: Tue,  4 Mar 2025 00:47:45 -0600
+Message-ID: <20250304064745.1073770-2-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250304064745.1073770-1-superm1@kernel.org>
+References: <20250304064745.1073770-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -69,37 +72,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-When two drivers provide platform profile handlers but use different
-strings to mean (essentially) the same thing the legacy interface won't
-export them because it only shows profiles common to multiple drivers.
+When two drivers don't support all the same profiles the legacy interface
+only exports the common profiles.
 
-This causes an unexpected behavior to people who have upgraded from an
-earlier kernel because if multiple drivers have bound platform profile
-handlers they might not be able to access profiles they were expecting.
+This causes problems for cases where one driver uses low-power but another
+uses quiet because the result is that neither is exported to sysfs.
 
-Introduce a compatibility mode to the core that when one driver supports
-quiet and the other supports low power that allows both to enter the
-appropriate mode.
+If one platform profile handler supports quiet and the other
+supports low power treat them as the same for the purpose of
+the sysfs interface.
 
-There have been some other attempts at solving this issue in other ways.
-This serves as an alternative to those attempts.
+Fixes: 688834743d67 ("ACPI: platform_profile: Allow multiple handlers")
+Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+Closes: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-9257-5b8fc6c24ac9@gmx.de/T/#mc068042dd29df36c16c8af92664860fc4763974b
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/acpi/platform_profile.c | 38 ++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-v1 -> v2:
- * Drop hidden choices.
- * Just add compatibility to the core for low power and quiet modes 
-
-Link: https://lore.kernel.org/platform-driver-x86/e64b771e-3255-42ad-9257-5b8fc6c24ac9@gmx.de/T/#t
-Link: https://lore.kernel.org/platform-driver-x86/CAGwozwF-WVEgiAbWbRCiUaXf=BVa3KqmMJfs06trdMQHpTGmjQ@mail.gmail.com/T/#m2f3929e2d4f73cc0eedd14738170dad45232fd18
-Link: https://lore.kernel.org/platform-driver-x86/20250228170155.2623386-1-superm1@kernel.org/
-Cc: Antheas Kapenekakis <lkml@antheas.dev>
-Cc: "Luke D. Jones" <luke@ljones.dev>
-
-Mario Limonciello (1):
-  ACPI: platform_profile: Treat quiet and low power the same
-
- drivers/acpi/platform_profile.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index 2ad53cc6aae53..d9a7cc5891734 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -73,8 +73,20 @@ static int _store_class_profile(struct device *dev, void *data)
+ 
+ 	lockdep_assert_held(&profile_lock);
+ 	handler = to_pprof_handler(dev);
+-	if (!test_bit(*bit, handler->choices))
+-		return -EOPNOTSUPP;
++	if (!test_bit(*bit, handler->choices)) {
++		switch (*bit) {
++		case PLATFORM_PROFILE_QUIET:
++			*bit = PLATFORM_PROFILE_LOW_POWER;
++			break;
++		case PLATFORM_PROFILE_LOW_POWER:
++			*bit = PLATFORM_PROFILE_QUIET;
++			break;
++		default:
++			return -EOPNOTSUPP;
++		}
++		if (!test_bit(*bit, handler->choices))
++			return -EOPNOTSUPP;
++	}
+ 
+ 	return handler->ops->profile_set(dev, *bit);
+ }
+@@ -252,8 +264,16 @@ static int _aggregate_choices(struct device *dev, void *data)
+ 	handler = to_pprof_handler(dev);
+ 	if (test_bit(PLATFORM_PROFILE_LAST, aggregate))
+ 		bitmap_copy(aggregate, handler->choices, PLATFORM_PROFILE_LAST);
+-	else
++	else {
++		/* treat quiet and low power the same for aggregation purposes */
++		if (test_bit(PLATFORM_PROFILE_QUIET, handler->choices) &&
++		    test_bit(PLATFORM_PROFILE_LOW_POWER, aggregate))
++			set_bit(PLATFORM_PROFILE_QUIET, aggregate);
++		else if (test_bit(PLATFORM_PROFILE_LOW_POWER, handler->choices) &&
++			 test_bit(PLATFORM_PROFILE_QUIET, aggregate))
++			set_bit(PLATFORM_PROFILE_LOW_POWER, aggregate);
+ 		bitmap_and(aggregate, handler->choices, aggregate, PLATFORM_PROFILE_LAST);
++	}
+ 
+ 	return 0;
+ }
+@@ -305,6 +325,13 @@ static int _aggregate_profiles(struct device *dev, void *data)
+ 	if (err)
+ 		return err;
+ 
++	/* treat low-power and quiet as the same */
++	if ((*profile == PLATFORM_PROFILE_LOW_POWER &&
++	     val == PLATFORM_PROFILE_QUIET) ||
++	    (*profile == PLATFORM_PROFILE_QUIET &&
++	     val == PLATFORM_PROFILE_LOW_POWER))
++		*profile = val;
++
+ 	if (*profile != PLATFORM_PROFILE_LAST && *profile != val)
+ 		*profile = PLATFORM_PROFILE_CUSTOM;
+ 	else
+@@ -531,6 +558,11 @@ struct device *platform_profile_register(struct device *dev, const char *name,
+ 		dev_err(dev, "Failed to register platform_profile class device with empty choices\n");
+ 		return ERR_PTR(-EINVAL);
+ 	}
++	if (test_bit(PLATFORM_PROFILE_QUIET, pprof->choices) &&
++	    test_bit(PLATFORM_PROFILE_LOW_POWER, pprof->choices)) {
++		dev_err(dev, "Failed to register platform_profile class device with both quiet and low-power\n");
++		return ERR_PTR(-EINVAL);
++	}
+ 
+ 	guard(mutex)(&profile_lock);
+ 
 -- 
 2.43.0
 
