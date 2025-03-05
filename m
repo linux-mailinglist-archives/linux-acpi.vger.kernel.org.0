@@ -1,177 +1,108 @@
-Return-Path: <linux-acpi+bounces-11827-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11828-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F33A4FA94
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 10:49:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E95A4FC5E
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 11:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E343A6639
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 09:49:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3956C3B0A8A
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 10:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB28F204873;
-	Wed,  5 Mar 2025 09:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE11A20ADCF;
+	Wed,  5 Mar 2025 10:34:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818F21FDA89;
-	Wed,  5 Mar 2025 09:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CBD207A23;
+	Wed,  5 Mar 2025 10:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741168169; cv=none; b=d1+DilOfpqb/e64oyDr14WIND4N/h37CZpKiGbHgFamTIIRMLXO+Da/vM2NvJXL3buupxrKj10a6ezu6rPgD/WpxRsDbJ9QSvQX+uP03ZqGetDgkhwpxXZ3NtUAbCOqxCOuL0xBmGLw78OIUbpmLPsbNWveIYiGvcp1EoyybduM=
+	t=1741170881; cv=none; b=YFDcggEcKTJiUmxe2smNDBh73/m0CVJGJpLVh6oSjY0/bMF+3VNWySf31g7uoE9EbR5jaBVoxmU35yp9gAkvL7TL/Kk4at8azZFy4SgU9+W8kBYTUqbmq+zeKpmqp7RrCtEUPjfpLby/LNNg+OuWL4DucuAhy3bvdi3hNKMzdkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741168169; c=relaxed/simple;
-	bh=Ymdcw4KQcFPIRedKH+oPy1rkKOVqH6QgEneB1FD+r9E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijCt3gIuwsChOrS8TLoQMXQHU5OB73S/hoST3QW0+9J4A0HIyVqD4kgGcC71HmhgqSv8Oxeub2YsC+WgwxZMSNmdUSdNBM0xZhGkGtP2SZCyp41qv0vlAbrVZ+G6XqE68fGjY/6XPJ+KpfE7zo8XESkBQ30zlLIumJUQAyVOBq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-3c9ff7000001d7ae-66-67c81e2012fe
-From: Yunjeong Mun <yunjeong.mun@sk.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: honggyu.kim@sk.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	kernel_team@skhynix.com
-Subject: Re: [PATCH 1/2 v6] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Wed,  5 Mar 2025 18:49:11 +0900
-Message-ID: <20250305094918.968-1-yunjeong.mun@sk.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <20250304222252.3805581-1-joshua.hahnjy@gmail.com>
-References: 
+	s=arc-20240116; t=1741170881; c=relaxed/simple;
+	bh=Q5R8aeHwPAXVXsXv1i1SqxENOrR8VBTs6sXUnEeVorE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MhPnwG6nVBv/gX4hF3tL/ridkxiYEgtvfCN3XxjOOpxWrxJFPumsSLyAvn3RemzCMejsHqSysTrxOomDznjHqeveYxAokVPlZw+m/obIkNgbfB7X8pMBlTNE1E4EVvA7JZ5shzJpsh+o7VtFt6jRomHqpVfZ7c2K24kaM7Ormz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC340FEC;
+	Wed,  5 Mar 2025 02:34:52 -0800 (PST)
+Received: from bogus (unknown [10.57.37.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A3DE3F673;
+	Wed,  5 Mar 2025 02:34:38 -0800 (PST)
+Date: Wed, 5 Mar 2025 10:34:35 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Adam Young <admiyo@os.amperecomputing.com>
+Subject: Re: [PATCH 03/14] mailbox: pcc: Drop unnecessary endianness
+ conversion of pcc_hdr.flags
+Message-ID: <20250305103435.nl5q2uvyqftal7en@bogus>
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+ <20250303-pcc_fixes_updates-v1-3-3b44f3d134b1@arm.com>
+ <5093286f-1db6-bab2-920d-71fe274ad251@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHLMWRmVeSWpSXmKPExsXC9ZZnoa6C3Il0g79L1C3mrF/DZjF96gVG
-	ixM3G9ksmhevZ7NYvcnX4nb/OVaLVQuvsVkc3zqP3WLfRaCynQ/fslks39fPaHF51xw2i3tr
-	/rNazP0yldmBz+Pwm/fMHjtn3WX3aDnyltVj8Z6XTB6bVnWyeWz6NInd48SM3yweCxumMnvs
-	n7uG3ePcxQqPz5vkArijuGxSUnMyy1KL9O0SuDJ27HrKUnBPumLf3uesDYwLRbsYOTkkBEwk
-	NkyewtrFyAFm33/BCBJmE9CQOHjoJDOILSKgKXGidRKQzcXBLDCdWaLxwUZWkISwgKdE25GV
-	jCC9LAKqEkfuiYCEeQXMJJ437GaFGK8p0XDpHhOIzSlgL7H+zAQWEFtIgEfi1Yb9jBD1ghIn
-	Zz4BizMLyEs0b50NtktCoJ9dYvfFHcwQgyQlDq64wTKBkX8Wkp5ZSHoWMDKtYhTKzCvLTczM
-	MdHLqMzLrNBLzs/dxAiMlWW1f6J3MH66EHyIUYCDUYmHN+DnsXQh1sSy4srcQ4wSHMxKIryv
-	Tx1PF+JNSaysSi3Kjy8qzUktPsQozcGiJM5r9K08RUggPbEkNTs1tSC1CCbLxMEp1cDY6phT
-	d/XtLL6TNYvfF+o05vYtvetlKasS1Hc6IUP1+ptTMomemlbF/H+Z11YlBx5rzelOv7u4ZEPT
-	A5EdazjYp381v3HwRtPNhs2Vd2tezTF/UB33o0jMLGaXx7azRkdF7a6e8BVZeWvh1OKl31O1
-	d08/+N9c86HlRKtg4wAWf3GnnXvSlJcosRRnJBpqMRcVJwIAREFuWJECAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsXCNUNWR1dB7kS6wc1ecYs569ewWUyfeoHR
-	4sTNRjaL5sXr2SxWb/K1+PzsNbPF7f5zrBarFl5jszi+dR67xb6LQLWH555ktdj58C2bxfJ9
-	/YwWl3fNYbO4t+Y/q8XcL1OZLQ5de87qIOhx+M17Zo+ds+6ye7QcecvqsXjPSyaPTas62Tw2
-	fZrE7nFixm8Wj4UNU5k99s9dw+5x7mKFx7fbHh6LX3xg8vi8SS6AN4rLJiU1J7MstUjfLoEr
-	Y8eupywF96Qr9u19ztrAuFC0i5GDQ0LAROL+C8YuRk4ONgENiYOHTjKD2CICmhInWicB2Vwc
-	zALTmSUaH2xkBUkIC3hKtB1ZyQjSyyKgKnHknghImFfATOJ5w26wEgmg3oZL95hAbE4Be4n1
-	ZyawgNhCAjwSrzbsZ4SoF5Q4OfMJWJxZQF6ieets5gmMPLOQpGYhSS1gZFrFKJKZV5abmJlj
-	qlecnVGZl1mhl5yfu4kRGBXLav9M3MH45bL7IUYBDkYlHt6An8fShVgTy4orcw8xSnAwK4nw
-	vj51PF2INyWxsiq1KD++qDQntfgQozQHi5I4r1d4aoKQQHpiSWp2ampBahFMlomDU6qBUfzh
-	3hmsOsqHfncsvrRAYP6JH5PXebVP32S8orPM953JGvmNlevTHsbcq8u72rO85+H+W4k6p+T/
-	TPgy4Xjjy8x5Om91pky+slbw1z2hhdd1F/WeytwSvl4v1HFleG/8P0FLMa+CjIfvDtpYmF3m
-	SFz4QP5OtMqHkEvZkVNqtykvDHDL+GT2+qoSS3FGoqEWc1FxIgCS39kfhgIAAA==
-X-CFilter-Loop: Reflected
+In-Reply-To: <5093286f-1db6-bab2-920d-71fe274ad251@huawei.com>
 
-Hi Joshua, thanks for reviewing my patch and for your kind explanation.
-
-On Tue,  4 Mar 2025 14:22:51 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> Hi Yunjeong, sorry for the noise, but I have discovered another potential
-> concern that your patch introduces, which I have explained below. 
+On Wed, Mar 05, 2025 at 12:02:13PM +0800, lihuisong (C) wrote:
 > 
-> On Tue,  4 Mar 2025 13:56:11 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> > On Fri, 28 Feb 2025 15:39:55 +0900 Yunjeong Mun <yunjeong.mun@sk.com> wrote:
+> 在 2025/3/3 18:51, Sudeep Holla 写道:
+> > The Sparse static checker flags a type mismatch warning related to
+> > endianness conversion:
 > > 
-> > Hi Yunjeong,
+> >    |  warning: incorrect type in argument 1 (different base types)
+> >    |     expected restricted __le32 const [usertype] *p
+> >    |     got unsigned int *
 > > 
-> > While applying your patch, I realized that it re-introduces a build error
-> > that was fixed in v6, which I am noting below. 
+> > This is because an explicit endianness conversion (le32_to_cpu()) was
+> > applied unnecessarily to a pcc_hdr.flags field that is already in
+> > little-endian format.
 > > 
-> > > Hi, Joshua. 
+> > The PCC driver is only enabled on little-endian kernels due to its
+> > dependency on ACPI and EFI, making the explicit conversion unnecessary.
+> How to confirm ACPI works only on little-endian?
 > > 
-> > [...snip...]
-> >  
-> > > In my understanding, new_iw[nid] values are scaled twice, first to 100 and then to a 
-> > > weightines value of 32. I think this scaling can be done just once, directly 
-> > > to weightness value as follows:
-> > > 
-> > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > > index 50cbb7c047fa..65a7e2baf161 100644
-> > > --- a/mm/mempolicy.c
-> > > +++ b/mm/mempolicy.c
-> > > @@ -176,47 +176,22 @@ static u8 get_il_weight(int node)
-> > >  static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
-> > >  {
-> > > 	u64 sum_bw = 0;
-> > > -	unsigned int cast_sum_bw, sum_iw = 0;
-> > > -	unsigned int scaling_factor = 1, iw_gcd = 1;
-> > > +	unsigned int scaling_factor = 1, iw_gcd = 0;
-> > > 	int nid;
-> > > 
-> > > 	/* Recalculate the bandwidth distribution given the new info */
-> > > 	for_each_node_state(nid, N_MEMORY)
-> > > 		sum_bw += bw[nid];
-> > > 
-> > > -       for (nid = 0; nid < nr_node_ids; nid++) {
-> > >  			[...snip...]
-> 			^^^^^^^^^^^^
-> When I was originally writing the response, I missed reviewing the contents
-> inside this snipped section, which looks like this:
-> 		if (!node_state(nid, N_MEMORY)) {
-> 			new_iw[nid] = 1;
-> 			continue;
-> 		}
-> I introduced this check in v6 because without this, we end up with the
-> possibility of memoryless nodes having a 0 in the table, which can lead to some
-> problems down the line (e.g. div by 0 in alloc_pages_bulk_weighted_interleave).
-
-To prevent division by 0 errors, how about setting new_iw to 1 when it is first 
-created, instead of setting it in the reduce function?
-
-> 
-> Respectfully, I would prefer to write my own version that takes your
-> suggestion, as opposed to applying this patch directly on top of mine so that
-> we do not introduce the build error or the potential div0. However, v7 will
-> include your suggestion, so it will go through only one loop as opposed to two.
-
-Thanks for considering my suggestion. I look forward to the v7.
-
-Best regards,
-Yunjeong
-> 
-> Thank you for your feedback again. I hope you have a great day!
-> Joshua
-> 
-> > > -		/*
-> > > -		 * Try not to perform 64-bit division.
-> > > -		 * If sum_bw < scaling_factor, then sum_bw < U32_MAX.
-> > > -		 * If sum_bw > scaling_factor, then bw[nid] is less than
-> > > -		 * 1% of the total bandwidth. Round up to 1%.
-> > > -		 */
-> > >  			[...snip...]
+> > The redundant conversion occurs in pcc_chan_check_and_ack() for the
+> > pcc_hdr.flags field. Drop this unnecessary endianness conversion of
+> > pcc_hdr.flags.
 > > 
-> > We cannot remove this part here, since this is what allows us to divide
-> > in the next for loop below. sum_bw is a u64, so performing division
-> > by this value will create a build error for 32-bit machines. I've gone and
-> > re-added this comment and parts to the bottom part; the logic should not
-> > change at all from the patch that you proposed (except for the build error).
-> 
-> [...snip...]
-> 
-> Sent using hkml (https://github.com/sjp38/hackermail)
-> 
-> 
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > ---
+> >   drivers/mailbox/pcc.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> > index 4c582fa2b8bf4c9a9368dba8220f567555dba963..c87a5b7fa6eaf7bcabe0d55f844961c499376938 100644
+> > --- a/drivers/mailbox/pcc.c
+> > +++ b/drivers/mailbox/pcc.c
+> > @@ -292,7 +292,7 @@ static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
+> >   	 *
+> >   	 * The PCC master subspace channel clears chan_in_use to free channel.
+> >   	 */
+> > -	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
+> > +	if (pcc_hdr.flags & PCC_ACK_FLAG_MASK)
+> It's recommanded to delete PCC_ACK_FLAG_MASK and use
+> PCC_CMD_COMPLETION_NOTIFY.
+> They are from the same place, namely, 'Initiator Responder Communications
+> Channel Flags'.
+
+Good point, I will use PCC_CMD_COMPLETION_NOTIFY and drop even the definition
+of PCC_ACK_FLAG_MASK as it got added for no good reason.
+
+--
+Regards,
+Sudeep
 
