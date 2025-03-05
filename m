@@ -1,155 +1,143 @@
-Return-Path: <linux-acpi+bounces-11823-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11824-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25A8A4F71C
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 07:29:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE927A4F775
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 07:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D3F216D029
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 06:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E301890462
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 06:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B826A1DE3A0;
-	Wed,  5 Mar 2025 06:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNBiiREh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3F51E9917;
+	Wed,  5 Mar 2025 06:48:21 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870251DDC00;
-	Wed,  5 Mar 2025 06:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896B11E0DB3;
+	Wed,  5 Mar 2025 06:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741156158; cv=none; b=ANWcwQi/9o595PHFDh6iJ1T5d/7wOtxyEG/vmUsd8XqBDkrnHINXXRP60Gz2qusCav1B64F2+ho75dne4usje80txGVPhUzHL9iLm7uS/FCMDUFVKp3kCPBa50PW9iX9KW6gEPPb2ULh3LjpC4IgTL5BKjVnaDwKdYs91V1ulyc=
+	t=1741157301; cv=none; b=OtBWJiUWVj3OYMrx54jSwVM2co8GEMq+h/NAjW3mZ6FUB7CWzFYWkV6tBe8rScjL9g5G6bsKHAYHcL7HR/Z5Fmw0UhZTGS7Enxd1GPK/QaC8dvE0CuHBqMeAYgqraaKywf0mO+M6NVDlIQCJZFnxLWEhH6sHktbLg5DhMP646QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741156158; c=relaxed/simple;
-	bh=QnNsAxAAPRtrdLLoNQzs0U4+euvNYFWn1D6cbxJcTc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlzoKutA+ShZHK1aymx/wfI0mHb7SzGCFCu1a5ogvKVajKtwmmIuj5rylwtgW+DlyMOJ7bOqPOwCAY929xm6gIruumlnuDdstc+zolBvHFWhQPSkikC9/pIxgU4cW7Xm1CYfF4JLfO7rkmNtLsOQbBZy6Uxs8FpZIEtOUgFI3Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNBiiREh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F3EC4CEEA;
-	Wed,  5 Mar 2025 06:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741156157;
-	bh=QnNsAxAAPRtrdLLoNQzs0U4+euvNYFWn1D6cbxJcTc8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FNBiiREhKnNfvq/1JKt9X0ADJWCS5DyxtjUYE86KMC44qQ0xw2dIrYa/mU1ZrMdCb
-	 detzbFtqM6wvD3l2oSHZ3CMi5Xm2SF3AGsjNME/wzSLw3XO/ZT+j44WiTS7b5gzaRx
-	 tsVBEGR2+6jNdsiNeoOYmbz5Sgi6j7aeAPVQ7JLgqRWB5158HTXhIOQFKPO7NquJ8T
-	 47F92xlT3pzLVtHs6SOizZpzUJBvEEzEXubjBsE6SDOBmmD4nzPSfpohiqg0OnJu+m
-	 OTV+oaTuQ6O7NwsIarbgI6lv519V8cI2fxqiQQUN/lbCYoUNLX7uuIwtU64hVyBant
-	 5CP8ErPQeASNg==
-Date: Wed, 5 Mar 2025 11:59:10 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Hsin-Yi Wang <hsinyi@chromium.org>,
-	linux-kernel@vger.kernel.org, mika.westerberg@linux.intel.com,
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-	lukas@wunner.de,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v5] PCI: Allow PCI bridges to go to D3Hot on all
- Devicetree based platforms
-Message-ID: <20250305062910.egasvrhhfqhgtkhn@thinkpad>
-References: <20241126151711.v5.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid>
- <20250228174509.GA58365@bhelgaas>
- <Z8IC_WDmix3YjOkv@google.com>
+	s=arc-20240116; t=1741157301; c=relaxed/simple;
+	bh=vUMkbdgNDewqNNntuY+ZVtniT88cSX2GO7xcfQ2QhwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=nQ8IFVmJYeVODIrMPa6HFArgDDoYg5YI+/VE1nmsouW3wZ9fLRMEfHSio0cPP8QWaysoTzjRHBS9qCA8cTkCtNmqmd4eSta4+1Jke9O+6pB/hy0L7am/KHV2noPY3xVUDJawtADJXHPiH5bQffMD3wY/pH/6N0F589iW9YisdaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Z73252f4CzCs6y;
+	Wed,  5 Mar 2025 14:44:45 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 114901800C9;
+	Wed,  5 Mar 2025 14:48:15 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 5 Mar 2025 14:48:14 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Mar
+ 2025 14:48:14 +0800
+Message-ID: <5738e05f-fa1c-0aa7-78f3-3d38f9f0ae3c@huawei.com>
+Date: Wed, 5 Mar 2025 14:48:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 07/14] mailbox: pcc: Move pcc_mbox_ioremap() before
+ pcc_mbox_request_channel()
+To: Sudeep Holla <sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Jassi Brar <jassisinghbrar@gmail.com>, Adam Young
+	<admiyo@os.amperecomputing.com>
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+ <20250303-pcc_fixes_updates-v1-7-3b44f3d134b1@arm.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20250303-pcc_fixes_updates-v1-7-3b44f3d134b1@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z8IC_WDmix3YjOkv@google.com>
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Fri, Feb 28, 2025 at 10:39:57AM -0800, Brian Norris wrote:
-> Hi Bjorn,
-> 
-> On Fri, Feb 28, 2025 at 11:45:09AM -0600, Bjorn Helgaas wrote:
-> > On Tue, Nov 26, 2024 at 03:17:11PM -0800, Brian Norris wrote:
-> > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > 
-> > > Unlike ACPI based platforms, there are no known issues with D3Hot for
-> > > the PCI bridges in Device Tree based platforms. 
-> > 
-> > Can we elaborate on this a little bit?  Referring to "known issues
-> > with ACPI-based platforms" depends on a lot of domain-specific history
-> > that most readers (including me) don't know.
-> 
-> Well, to me, the background here is simply the surrounding code context,
-> and the past discussions that I linked:
-> 
-> https://lore.kernel.org/linux-pci/20240227225442.GA249898@bhelgaas/
-> 
-> The whole reason we need this patch is that:
-> (a) there's some vaguely specified reason this function (which prevents
->     standard-specified behavior) exists; and
-> (b) that function includes a condition that allows all systems with a
->     DMI/BIOS newer than year 2015 to use this feature.
-> 
-> Digging a bit further, it seems like maybe the only reason this feature
-> is prevented on DT systems is from commit ("9d26d3a8f1b0 PCI: Put PCIe
-> ports into D3 during suspend"), where the subtext is that it was written
-> by and for Intel in 2016, with an arbitrary time-based cutoff ("year
-> this was being developed") that only works for DMI systems. DT systems
-> do not tend to support DMI.
-> 
 
-I would say 'Majority of the DT systems' since there are exceptions like Qcom
-compute platforms where developers put devicetree in an ACPI based laptop with a
-BIOS/DMI (for a reason).
-
-> If any of this is what you're looking for, I can try to
-> copy/paste/summarize a few more of those bits, if it helps.
-> 
-> > I don't think "ACPI-based" or "devicetree-based" are good
-> > justifications for changing the behavior because they don't identify
-> > any specific reasons.  It's like saying "we can enable this feature
-> > because the platform spec is written in French."
-> 
-> AIUI, It's involved because of the general strategy of this function
-> (per its comments, "recent enough PCIe ports"). So far, it sounds like
-> that reason (presumably, old BIOS with poor power management code)
-> doesn't really apply to a system based on device tree, where the power
-> management code is mostly/entirely in the OS.
-> 
-> But really, the original commit doesn't actually state reasons, so maybe
-> the "known issues" phrasing could be weakened a bit, to avoid implying
-> there were any stated reasons.
-> 
-
-Right. I guess the commit tried to be less invasive so the author decided to
-limit it to DMI based systems. I couldn't think of any other reasons.
-
-> > > Past discussions (Link [1]) determined the restrictions around D3
-> > > should be relaxed for all Device Tree systems. 
-> > 
-> > This is far too generic a statement for me to sign up to, especially
-> > since "all Device Tree systems" doesn't say anything at all about how
-> > any particular hardware works or what behavior we're relying on.
-> > 
-> > We need to say something about what D3hot means (i.e., only message
-> > and type 0 config requests accepted) and that we know anything below
-> > the bridge is inaccessible in D3hot and why that's OK.  E.g., maybe we
-> > only care about wakeup requests and we know those still work with the
-> > bridge in D3hot because XYZ.
-> 
-
-This patch's main motive is to enable D3hot for bridges that was disabled for no
-good reasons, other than the one mentioned above. Maybe adding a bit more about
-bridge D3hot handling could be of help, but your comment sounds like you are
-questioning why allowing D3hot is OK? But we already enable it for newer DMI
-based systems. I think the question should be asked is, why PCI core decided to
-not allow D3hot for DT based platforms without any user reported issues.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+在 2025/3/3 18:51, Sudeep Holla 写道:
+> In order to add support of mapping the generic communication shared
+> memory region in the PCC mailbox driver when the PCC channel is requested,
+> we need to move pcc_mbox_ioremap() before pcc_mbox_request_channel().
+This patch is supposed to merge into patch 8/14 because it depend on 
+this moving.
+>
+> No functional change.
+>
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>   drivers/mailbox/pcc.c | 38 +++++++++++++++++++-------------------
+>   1 file changed, 19 insertions(+), 19 deletions(-)
+>
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index e693675ce1fbd8d01d0640b3053a5c1882bdbce7..f230e512c29b79fc03e429145180ff049a250d2d 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -357,6 +357,25 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>   	return IRQ_HANDLED;
+>   }
+>   
+> +int pcc_mbox_ioremap(struct mbox_chan *chan)
+> +{
+> +	struct pcc_chan_info *pchan_info;
+> +	struct pcc_mbox_chan *pcc_mbox_chan;
+> +
+> +	if (!chan || !chan->cl)
+> +		return -1;
+> +	pchan_info = chan->con_priv;
+> +	pcc_mbox_chan = &pchan_info->chan;
+> +
+> +	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
+> +					       pcc_mbox_chan->shmem_size);
+> +	if (!pcc_mbox_chan->shmem)
+> +		return -ENXIO;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
+> +
+>   /**
+>    * pcc_mbox_request_channel - PCC clients call this function to
+>    *		request a pointer to their PCC subspace, from which they
+> @@ -419,25 +438,6 @@ void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
+>   }
+>   EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+>   
+> -int pcc_mbox_ioremap(struct mbox_chan *chan)
+> -{
+> -	struct pcc_chan_info *pchan_info;
+> -	struct pcc_mbox_chan *pcc_mbox_chan;
+> -
+> -	if (!chan || !chan->cl)
+> -		return -1;
+> -	pchan_info = chan->con_priv;
+> -	pcc_mbox_chan = &pchan_info->chan;
+> -
+> -	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
+> -					       pcc_mbox_chan->shmem_size);
+> -	if (!pcc_mbox_chan->shmem)
+> -		return -ENXIO;
+> -
+> -	return 0;
+> -}
+> -EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
+> -
+>   /**
+>    * pcc_send_data - Called from Mailbox Controller code. Used
+>    *		here only to ring the channel doorbell. The PCC client
+>
 
