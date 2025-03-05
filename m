@@ -1,181 +1,198 @@
-Return-Path: <linux-acpi+bounces-11839-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11840-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E7CA504F6
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 17:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDE8A5053D
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 17:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C549F189986F
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 16:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68EC41671BF
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 16:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8859324E013;
-	Wed,  5 Mar 2025 16:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bEuqVQwS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D975198A38;
+	Wed,  5 Mar 2025 16:39:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE60018CBE8;
-	Wed,  5 Mar 2025 16:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2222DFC0A;
+	Wed,  5 Mar 2025 16:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741192117; cv=none; b=NlnHtDhHM095/9ZkGFDOi5LgpMTsO2JfpxAFRoszsaY5rHqhDctA/nwePc2vE/Lyf/EQb7vp+4IOT738Tp69tKoxPA17oNgZ6dMvTRKJpLVICcgcpIGpDGkft2O78cFeYELe9NgLt9czHfoIVS50g2BtBR3fd28i4s8KHlO86jk=
+	t=1741192740; cv=none; b=uuiedmNcdX8BiCVZ8liUGqSnuqDlX0iAaoVkgVgwWRoESHbXJ2wvZvOuSw3sfteVHY/Zijie0O/xUiHowsULul7RRp3YWFwz108r6UmJMWIHUd1coD8RgjAtMeh4jzlNoCG6ytkWw72cbsgfkStpkdm8cLoFpNtAiqdrKEAicgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741192117; c=relaxed/simple;
-	bh=wMKn+PYDV6Ww/wN9tNFxfpwWpPdNOTDLOCM4D4iq2Xw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bZWIdQjZHNPzGuercnmxabPTx9kzDDqq9LfLSi/9UCFwAIPuCUa0DRHDzpNWKxpDeiu8sAvH0H7bBKuqa/NViZW3zuf0C3/sDcn4+QuCvrF+VIuOEEY+XUilqZTp+Fj0G2YIOlRNyZGp7LWbrMSDK5A++u+YzU9lwO29mxG2+Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bEuqVQwS; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e8efefec89so4196166d6.3;
-        Wed, 05 Mar 2025 08:28:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741192113; x=1741796913; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3kXO6L+kuZ25c+P5TosdrwsFHxjeYxKmuRYQ7Ze4zvU=;
-        b=bEuqVQwSocZRhMIx2ScSjbgdch9EMJblAt0CbKZCtYNp7FTn0t8UVZbsbQv3nhHUMT
-         YKzqSVRpYwS1mPaCDB1F/Tcg1kIzTAYAQqG34TEgfnDxe/crHo0QQjKMoI349P0Dtu3I
-         tHkAJFFtqotrrNcGpoR696HLBlJtR7nbMk21IhFZBc2rPM81nFZKDdakpUUHBuVevLLI
-         hPpTh78kl7MIv90qxvjwf/xoX1zfjyvpcB0OMkJ2qd+BCekgJVNr+rmzmMzy5yALdVO9
-         JuekG5ueyLPQeKUCN69kbv+L515xH5ATmn747T2PoA2rkIWjhOzdvwarD3JH/vn73TdW
-         3vDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741192113; x=1741796913;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3kXO6L+kuZ25c+P5TosdrwsFHxjeYxKmuRYQ7Ze4zvU=;
-        b=qMbbuvJ/Ct8Blg67KouALLvMfQV+OK1pEbgd1OgLFtQAYX4A9Yt/MACDb6M8T7/tk4
-         lB8P9EkXie8J/ahmCyA1etvbZwZK2yfVPItSQdrZtCc8q6BD1yIt4qS/EOXL3aoX/Tf/
-         vuAAXinrv2r1m1PX0SFAYL0Q62XtB4n/OkVrARidORjn6RvCb0lWclIb6J4uXTet7+24
-         2mdlsq8mBDNiZDMMD802jZ6qRYBy1UUCpk7u2ZIa98Ie+4OjCcPRvTzNqFOjdWmpXMMj
-         QXDe3oiAr4mLjktcnM5s3a5qqBuZvOVq7oSUnxYpgzW00xdLEjD4HTciWVkXW2N1kaYP
-         R12w==
-X-Forwarded-Encrypted: i=1; AJvYcCVT8pt9DM1nVthOUUbTdav15bx/WrP2mZcu2pNKsPiZO0Gx/95LjMoroRaqGf6Elsmv1kZvIyCcBzl9@vger.kernel.org, AJvYcCWunMHzj3wIm2zyf7Ro8mem40ZTemGrxwTP8Vpm9xkLsRwp24tgRUPklhP1lBzBhXzBN0WbVyoJass/nOzo@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8HcDN65jjmbMyOGA451vo3pyVGR1UB8s1S5+1X5H9NnOvaxQv
-	SezWrGX00LM9qzd7KT0gadpT9j1hvDbcOsK2nSHqqkpq5DkDNi/D
-X-Gm-Gg: ASbGnctM5r2SmmlhXyvTNw57QA8LKcxQ6TyugfhcEDus1NbIzBJ0SW3mXuzJp2ISamp
-	+cN6Zdz2YBINNM7yRrQxc8N9UgeYTVxHkUAY1E/qf9BFP/9YFAbCVifnR6O+cgU2DQ72HEmaIQV
-	+tLKaSAJfHMoBUZv+r7YhmuFXpR+Db4Ay4K7/wSlc8L0Z3eVofBcHbP/Dy3F1TUk6zorOjEX0iP
-	E5Sycvc0NB2HKFWUz2e8/oSvj0kVSMszHE68nSWsXYxyuGZI7/4dgd8e6uBtyFpwk6WzMFzwHFN
-	5n33x6OHeE4cbkS9kMDxPFRRCG09Pey+/KSTt388Tj7Nd5KUjiMzRkPpIT+4I+yqBqS9M14Kquz
-	/+w==
-X-Google-Smtp-Source: AGHT+IGITUNzs6gnChE+1sYvZx5Pu2AD6l1jML7iarWBxHik8iHbPlfbOGKzFOMTbsg6z5D70bG5tg==
-X-Received: by 2002:a05:6214:e87:b0:6d8:ada3:26c9 with SMTP id 6a1803df08f44-6e8e6ccf943mr61318836d6.10.1741192113561;
-        Wed, 05 Mar 2025 08:28:33 -0800 (PST)
-Received: from joshuahahn-mbp.thefacebook.com ([2620:10d:c091:500::7:2424])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-474febab252sm24470141cf.3.2025.03.05.08.28.31
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 05 Mar 2025 08:28:32 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Yunjeong Mun <yunjeong.mun@sk.com>
-Cc: honggyu.kim@sk.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	kernel_team@skhynix.com
-Subject: Re: [PATCH 1/2 v6] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Wed,  5 Mar 2025 11:28:29 -0500
-Message-Id: <20250305162829.86650-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250305094918.968-1-yunjeong.mun@sk.com>
-References: 
+	s=arc-20240116; t=1741192740; c=relaxed/simple;
+	bh=pFobQpAxYA6OYuJ31r3lBwSpVuYRp+E1fZOB5VysmwI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gP2G1oxZVX3bGANQkLHLSQoFIAU6NBfHSTx5tS3klux11ZDLhYm1zn1oMyq3JL0l9B4vq69KcOhfr7MrO6vsWqA3KDNJvyGx96tumZKnIWEQiUC58jSrLmPFm6DvOA9Hw8dKJAZEKxKH38ywnyIEraU9a5ycz5/VV7r2BREZv+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A998BFEC;
+	Wed,  5 Mar 2025 08:39:11 -0800 (PST)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D1513F5A1;
+	Wed,  5 Mar 2025 08:38:56 -0800 (PST)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH v2 00/13] mailbox: pcc: Fixes and cleanup/refactoring
+Date: Wed, 05 Mar 2025 16:38:04 +0000
+Message-Id: <20250305-pcc_fixes_updates-v2-0-1b1822bc8746@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPF9yGcC/32NTQ7CIBSEr9K8tRh+rXHlPUzTUHhYFi0EKtE03
+ F3sAVx+k/lmdsiYPGa4dTskLD77sDbgpw7MrNcnEm8bA6dcUUEFicaMzr8xj69o9YaZKKVZ7yy
+ /Yn+B5sWER6Fpj6Hx7PMW0ue4KOyX/lsrjFAiJimdsEzIid11Ws4mLDDUWr/Ei/aasAAAAA==
+X-Change-ID: 20250303-pcc_fixes_updates-55a17fd28e76
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>, 
+ Adam Young <admiyo@os.amperecomputing.com>, 
+ Robbie King <robbiek@xsightlabs.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ linux-i2c@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4759; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=pFobQpAxYA6OYuJ31r3lBwSpVuYRp+E1fZOB5VysmwI=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBnyH4epM6U6yB38UMkoCa0DjxZ+SZPn1Gtk0lDm
+ FrndaJvebqJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ8h+HgAKCRAAQbq8MX7i
+ mGUYD/4nZlRivM7RYRaLGcNUCxpBiEIGjRPN1xtnq3prfiUvUkcIbg6wjrX6J36svRetpMFXeKA
+ ugBoDenhnbJw7UnEaY0sZbRF+09aE0pwqilS+rK0jz4r5+tjj6vLX/i4Wjb0c7htDEFwbbxYZXq
+ +ZYYU7V1u71SG/HxHaQpdf5pf9bxipXOkNPApw2/vdElVVvS3DjGKsNDvR5wSTE4msYuTgoY903
+ MmRStdzxJL9JtUEKOHiuQZ6MtY9pA9XDMf1JsoTht09SiiDzIge6jYJMpW7S/QOVI4u570V0kiN
+ 8ZyeoUa48RFrbIDDZcdoOHij/+lkSnbWz/M5sP+iDjhYhXa+hPndd9nUVMN+d+sUYo+bJf5E5Zr
+ F2KMNhKZ2WO8smG2TvHJbphEimeR+OA4qhB1w9c1s+hqHvlOQzzVa/wjgvtKBdc9ByitfvY3BzI
+ BQOBwndD5f5csJcCR09b+Wh1FbIPdosqeNKYVvezmGrpTIMUr2W6woaL4EuXRUyo1L0UYIb8xWw
+ dy7KanjjYw+JxFRASy/zfpIlLW23kdohM2gTJtKV+3MvVAkT5yVDpodIjnXX0PKQGjaNKs5+evt
+ JFwChvniSL/5lsVL0BlKClg+hIb1yoGx/LnlPco2k4k671pOTtTg1NvdH77AXo8CoJOyU8nPSnx
+ Fgym3iXp7vUyCIg==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 
-Hi Yunjeong,
+Here is a summary of the changes in this patch series:
 
-On Wed,  5 Mar 2025 18:49:11 +0900 Yunjeong Mun <yunjeong.mun@sk.com> wrote:
+1. Fix for race condition in updating of the chan_in_use flag
 
-> Hi Joshua, thanks for reviewing my patch and for your kind explanation.
+   Ensures correct updating of the chan_in_use flag to avoid potential race
+   conditions.
 
-[...snip...]
+2. Interrupt handling fix
 
-> > > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > > > index 50cbb7c047fa..65a7e2baf161 100644
-> > > > --- a/mm/mempolicy.c
-> > > > +++ b/mm/mempolicy.c
-> > > > @@ -176,47 +176,22 @@ static u8 get_il_weight(int node)
-> > > >  static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
-> > > >  {
-> > > > 	u64 sum_bw = 0;
-> > > > -	unsigned int cast_sum_bw, sum_iw = 0;
-> > > > -	unsigned int scaling_factor = 1, iw_gcd = 1;
-> > > > +	unsigned int scaling_factor = 1, iw_gcd = 0;
-> > > > 	int nid;
-> > > > 
-> > > > 	/* Recalculate the bandwidth distribution given the new info */
-> > > > 	for_each_node_state(nid, N_MEMORY)
-> > > > 		sum_bw += bw[nid];
-> > > > 
-> > > > -       for (nid = 0; nid < nr_node_ids; nid++) {
-> > > >  			[...snip...]
-> > 			^^^^^^^^^^^^
-> > When I was originally writing the response, I missed reviewing the contents
-> > inside this snipped section, which looks like this:
-> > 		if (!node_state(nid, N_MEMORY)) {
-> > 			new_iw[nid] = 1;
-> > 			continue;
-> > 		}
-> > I introduced this check in v6 because without this, we end up with the
-> > possibility of memoryless nodes having a 0 in the table, which can lead to some
-> > problems down the line (e.g. div by 0 in alloc_pages_bulk_weighted_interleave).
-> 
-> To prevent division by 0 errors, how about setting new_iw to 1 when it is first 
-> created, instead of setting it in the reduce function?
+   Ensures platform acknowledgment interrupts are always cleared to avoid
+   leaving the interrupt asserted forever.
 
-I think this makes sense. The original motivation for including it in
-reduce_interleave_weights is because this function is usually called on newly
-allocated tables, so I thought I would just combine the functionality of
-initializing the table and reducing weights into one function. Howver, I now
-see that there are actually a few spots when either a table is initialized
-but this function isn't called, or when an already-initialized table is
-given to this function.
+3. Endian conversion cleanup
 
-The other rationale was that it seems a bit silly to go through and set all
-weights to 1, and then immediately overwrite them with the reduced interleave
-weights. With that said, none of this code is in any critical section, I'm
-sure that going through one more iteration and setting the weights to 1 is
-not unreasonable. 
+   Removes unnecessary endianness conversion in the PCC mailbox driver.
 
-[...snip...]
+4. Memory mapping improvements
 
-> > 
-> > Respectfully, I would prefer to write my own version that takes your
-> > suggestion, as opposed to applying this patch directly on top of mine so that
-> > we do not introduce the build error or the potential div0. However, v7 will
-> > include your suggestion, so it will go through only one loop as opposed to two.
-> 
-> Thanks for considering my suggestion. I look forward to the v7.
-> 
-> Best regards,
-> Yunjeong
+   Uses acpi_os_ioremap() instead of direct mapping methods for better ACPI
+   compatibility.
 
-Thank you again for your suggestions, Yunjeong! I'll re-write the code
-to incorporate them in v7. I hope you have a great day!
-Joshua
+5. Return early if the command complete register is absent
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+   Ensures that if no GAS (Generic Address Structure) register is available,
+   the function exits early.
+
+6. Refactor IRQ handler and move error handling to a separate function
+
+   Improves readability of error handling in the PCC mailbox driver’s
+   interrupt handler.
+
+7. Code restructuring to avoid unnecessary forward declaration
+
+   Moves pcc_mbox_ioremap() function to a more appropriate location with
+   no functional impact.
+
+8. Shared memory mapping refactoring/enhancements
+
+   Ensures the shared memory is always mapped and unmapped in the PCC
+   mailbox driver when the PCC channel is requested and release.
+
+9. Refactored check_and_ack() Function
+
+   Simplifies and improves the logic for handling type4 platform notification
+   acknowledgments.
+
+10-14. Shared memory handling simplifications across multiple drivers
+
+    Simplifies shared memory handling in:
+        Kunpeng HCCS driver (soc: hisilicon)
+        Apm X-Gene Slimpro I2C driver
+        X-Gene hardware monitoring driver (hwmon)
+        ACPI PCC driver
+        ACPI CPPC driver
+
+The X-gene related changes now change the mapping attributes to align
+with ACPI specification. There are possibilities for more cleanups on
+top of these changes around how the shmem is accessed within these
+driver.
+
+Also, my main aim is to get 1-8 merged first and target 9-13 for
+following merge window through respective tree.
+
+Overall, the patch series focuses on improving correctness, efficiency, and
+maintainability of the PCC mailbox driver and related components by fixing
+race conditions, optimizing memory handling, simplifying shared memory
+interactions, and refactoring code for clarity.
+
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+Adam, Robbie, Huisong,
+
+Please test this in your setup as you are the ones reporting/fixing the
+issues or last modified the code that I am changing here.
+
+Changes in v2:
+- Improved time vs flow graph for the platform ack interrupt
+  acknowledgment issue in patch 2
+- Replaced PCC_ACK_FLAG_MASK with PCC_CMD_COMPLETION_NOTIFY in patch 3
+- Fixed return value check from pcc_mbox_error_check_and_clear() in patch 6
+- Dropped the change moving the function pcc_mbox_ioremap()
+- Adjusted error message in kunpeng_hccs driver after the change
+- Added the received ack/review tags
+- Link to v1: https://lore.kernel.org/r/20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com
+
+---
+Huisong Li (1):
+      mailbox: pcc: Fix the possible race in updation of chan_in_use flag
+
+Sudeep Holla (12):
+      mailbox: pcc: Always clear the platform ack interrupt first
+      mailbox: pcc: Drop unnecessary endianness conversion of pcc_hdr.flags
+      mailbox: pcc: Return early if no GAS register from pcc_mbox_cmd_complete_check
+      mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
+      mailbox: pcc: Refactor error handling in irq handler into separate function
+      mailbox: pcc: Always map the shared memory communication address
+      mailbox: pcc: Refactor and simplify check_and_ack()
+      soc: hisilicon: kunpeng_hccs: Simplify PCC shared memory region handling
+      i2c: xgene-slimpro: Simplify PCC shared memory region handling
+      hwmon: (xgene-hwmon) Simplify PCC shared memory region handling
+      ACPI: PCC: Simplify PCC shared memory region handling
+      ACPI: CPPC: Simplify PCC shared memory region handling
+
+ drivers/acpi/acpi_pcc.c                |  13 +---
+ drivers/acpi/cppc_acpi.c               |  16 +----
+ drivers/hwmon/xgene-hwmon.c            |  40 ++----------
+ drivers/i2c/busses/i2c-xgene-slimpro.c |  39 ++----------
+ drivers/mailbox/pcc.c                  | 112 ++++++++++++++++-----------------
+ drivers/soc/hisilicon/kunpeng_hccs.c   |  42 +++++--------
+ drivers/soc/hisilicon/kunpeng_hccs.h   |   2 -
+ include/acpi/pcc.h                     |   6 --
+ 8 files changed, 83 insertions(+), 187 deletions(-)
+---
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+change-id: 20250303-pcc_fixes_updates-55a17fd28e76
+
+Best regards,
+-- 
+Regards,
+Sudeep
+
 
