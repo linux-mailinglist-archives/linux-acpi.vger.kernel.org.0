@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-11872-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11873-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03289A50E44
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 23:02:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2882A50E47
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 23:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C406188B389
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 22:02:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCECD169B73
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 22:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C9A266562;
-	Wed,  5 Mar 2025 22:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA534266596;
+	Wed,  5 Mar 2025 22:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhg7u9C6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6niMgHW"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8AD2661B5;
-	Wed,  5 Mar 2025 22:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F21F26658D;
+	Wed,  5 Mar 2025 22:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741212117; cv=none; b=s3hvrNLT6JUtSnGZGqbKw6IQUR3ry0CFUqHItVG5jzWLTC3QDXztqAA9RTUQnD417hAKyix0rXR+zshyRrnjhWQ9vgtwZs2uyo9t2j+eBF+i2uAWgwp3xzMkS8WZ7DBqZNZN25l8QkQUJePOb4f5Zn7M7njFpFiBZ9MXbWa0jbM=
+	t=1741212118; cv=none; b=R1iIx8JSaQ2E7EOojR5bf5Am5VAaGQ3Rj+DaCs+wUZV0+4az7xKiBHzdvv01YLouNUXAkBNL/VpYIkETAXzCL2qXnZF8k5h5LUiqWHdj+Vp3G0x84eFOVS3HE3Se7DPwXCprRgwbfQWa0d/DsBDwT5d2b3A5iB6J4B2oFjlaFXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741212117; c=relaxed/simple;
-	bh=qgrZ1xKbDxYULuMqytvj/KJ/YtRdjGY1V+Wsh3hcqS0=;
+	s=arc-20240116; t=1741212118; c=relaxed/simple;
+	bh=FJi+gWQ0Qfes3r9kYf5ehvZnEEXi/93JmDdcFqoAk3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZWJBQHKg0rPed0L6PrBI09CJ8c6+lEvWF6/8PPfiGV7OvJQZF6lmC7n3aRpTxq9IuUREZJ1PU13ToBH+fRY8fKZboyxzbAW7WjKkYnMnFP2GFjf76jrwDluTMwVayAVWuwpvp1dOtQgmcBvL6PIh+sw6V1ypMRDlKChnElrMm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhg7u9C6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14514C4CEE7;
-	Wed,  5 Mar 2025 22:01:55 +0000 (UTC)
+	 MIME-Version; b=XZUA4/0uLnhojVfTf8R8kXuJNJI4GIbJoVC5fZr6bYf3XOprCdhBj66s7Z/KnLJZFkU427c8uxT6p/vUryZl7UkXcQ9Rk+J4WMWH/C9nrnLuNO5Xsf96f8NRpP2iaB4Jvg2u5c9D7bo/I6vvOo5eCTwgFofN8hek4d/sJBR1LxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6niMgHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C374C4CED1;
+	Wed,  5 Mar 2025 22:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741212117;
-	bh=qgrZ1xKbDxYULuMqytvj/KJ/YtRdjGY1V+Wsh3hcqS0=;
+	s=k20201202; t=1741212118;
+	bh=FJi+gWQ0Qfes3r9kYf5ehvZnEEXi/93JmDdcFqoAk3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhg7u9C6jkqOJRMy1U/KCTHuULVXdiXUg+enBU04SzcY4tXOphD4+SOI5u0Cn0uek
-	 z2qXpdjjMO32glSFYL92UydtX/ic7w2uV3Q1K0M2c+UrIP2g2Qe2ee0/LA3MXa7TWH
-	 20IfR8bqtl20v1Js1tvVpnQNx3wAPb1UIEO37oLRAa9uxyqs/bkDrtqHsPxZLxVYxk
-	 NdSLMNfB4Z7GhDeZtxi5IwZz9LK5xGHLwwUHI6uT2rg2FwS316jWrjQ6Cy9sWe6U4m
-	 rB/2xMgHyGrpwOmD+s566j9WpBmcI14P2VGs9xue8BDHRxOYPJAQe/C9tBMOxfjazj
-	 CXNcoNwAO6VpQ==
+	b=m6niMgHW0HCcXgv3n3l45rgrnWqNyNPy24UrRulyLbl9suCMcyXK9cKAZNJfmW3UT
+	 aG3VBDTvwImVDIfzsNLWMfWeiX+IvQLMn5vmEX7v40oFWQwN+RiJdQOwvbo3cdAcgC
+	 mDEFP3mlhoUl6LuBlA/yU7xPEYvE4gKAQECoJeBDLnZwAoixf1nqN0dvwI8co7yUop
+	 SI0S+R1qnT6fwSaeKODb+jQEdovhhEx07sFqzqRPJSxK9pPiKzOtYpH9pwWT9NZs6Q
+	 3ed9HFPjSk+9i1MUkxLjsMZvdiYd5xCZmbfcxaahe+0VyONQErROCvMnHN2iQxW3sA
+	 UR3UNYv2AvdIw==
 From: Mario Limonciello <superm1@kernel.org>
 To: "Rafael J . Wysocki" <rjw@rjwysocki.net>
 Cc: Linus Walleij <linus.walleij@linaro.org>,
@@ -49,11 +49,10 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	linux-acpi@vger.kernel.org,
 	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
 	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v3 RESEND 1/2] ACPI: Add missing prototype for non CONFIG_SUSPEND/CONFIG_X86 case
-Date: Wed,  5 Mar 2025 16:01:45 -0600
-Message-ID: <20250305220146.3932955-2-superm1@kernel.org>
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v3 RESEND 2/2] pinctrl: amd: Add an LPS0 check() callback
+Date: Wed,  5 Mar 2025 16:01:46 -0600
+Message-ID: <20250305220146.3932955-3-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250305220146.3932955-1-superm1@kernel.org>
 References: <20250305220146.3932955-1-superm1@kernel.org>
@@ -67,54 +66,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-acpi_register_lps0_dev() and acpi_unregister_lps0_dev() may be used
-in drivers that don't require CONFIG_SUSPEND or compile on !X86.
+During suspend the pinctrl_amd driver disables the interrupts for
+any GPIOs that are not marked as wake sources.
 
-Add prototypes for those cases.
+This however does not prevent them from changing the wake status
+bit during suspend, it just stops the system from waking.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502191627.fRgoBwcZ-lkp@intel.com/
+If the system wakes from hardware sleep for another reason (such
+as plugging in the AC adapter) this wake bits might be active.
+
+This could potentially cause problems with going back to hardware
+sleep.  Add an extra debugging message when PM debugging is enabled
+to help identify if this is happening.
+
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
 v3:
- * Add struct acpi_s2idle_dev_ops outside defines too
+ * Add tag
 ---
- include/linux/acpi.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-amd.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 4e495b29c640f..8d2abe5dede93 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1115,13 +1115,13 @@ void acpi_os_set_prepare_extended_sleep(int (*func)(u8 sleep_state,
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 1d7fdcdec4c85..fdda8d1c4f344 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -37,6 +37,8 @@
+ #include "pinctrl-utils.h"
+ #include "pinctrl-amd.h"
  
- acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state,
- 					   u32 val_a, u32 val_b);
--#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
- struct acpi_s2idle_dev_ops {
- 	struct list_head list_node;
- 	void (*prepare)(void);
- 	void (*check)(void);
- 	void (*restore)(void);
- };
-+#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
- int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
- void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg);
- int acpi_get_lps0_constraint(struct acpi_device *adev);
-@@ -1130,6 +1130,13 @@ static inline int acpi_get_lps0_constraint(struct device *dev)
++static struct amd_gpio *pinctrl_dev;
++
+ static int amd_gpio_get_direction(struct gpio_chip *gc, unsigned offset)
  {
- 	return ACPI_STATE_UNKNOWN;
+ 	unsigned long flags;
+@@ -909,6 +911,29 @@ static bool amd_gpio_should_save(struct amd_gpio *gpio_dev, unsigned int pin)
+ 	return false;
  }
-+static inline int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg)
+ 
++static void amd_gpio_check_pending(void)
 +{
-+	return -ENODEV;
++	struct amd_gpio *gpio_dev = pinctrl_dev;
++	struct pinctrl_desc *desc = gpio_dev->pctrl->desc;
++	int i;
++
++	if (!pm_debug_messages_on)
++		return;
++
++	for (i = 0; i < desc->npins; i++) {
++		int pin = desc->pins[i].number;
++		u32 tmp;
++
++		tmp = readl(gpio_dev->base + pin * 4);
++		if (tmp & PIN_IRQ_PENDING)
++			pm_pr_dbg("%s: GPIO %d is active: 0x%x.\n", __func__, pin, tmp);
++	}
 +}
-+static inline void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg)
-+{
-+}
- #endif /* CONFIG_SUSPEND && CONFIG_X86 */
- void arch_reserve_mem_area(acpi_physical_address addr, size_t size);
- #else
++
++static struct acpi_s2idle_dev_ops pinctrl_amd_s2idle_dev_ops = {
++	.check = amd_gpio_check_pending,
++};
++
+ static int amd_gpio_suspend_hibernate_common(struct device *dev, bool is_suspend)
+ {
+ 	struct amd_gpio *gpio_dev = dev_get_drvdata(dev);
+@@ -942,6 +967,7 @@ static int amd_gpio_suspend_hibernate_common(struct device *dev, bool is_suspend
+ 
+ static int amd_gpio_suspend(struct device *dev)
+ {
++	pinctrl_dev = dev_get_drvdata(dev);
+ 	return amd_gpio_suspend_hibernate_common(dev, true);
+ }
+ 
+@@ -1181,6 +1207,7 @@ static int amd_gpio_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, gpio_dev);
+ 	acpi_register_wakeup_handler(gpio_dev->irq, amd_gpio_check_wake, gpio_dev);
++	acpi_register_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+ 
+ 	dev_dbg(&pdev->dev, "amd gpio driver loaded\n");
+ 	return ret;
+@@ -1199,6 +1226,7 @@ static void amd_gpio_remove(struct platform_device *pdev)
+ 
+ 	gpiochip_remove(&gpio_dev->gc);
+ 	acpi_unregister_wakeup_handler(amd_gpio_check_wake, gpio_dev);
++	acpi_unregister_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+ }
+ 
+ #ifdef CONFIG_ACPI
 -- 
 2.43.0
 
