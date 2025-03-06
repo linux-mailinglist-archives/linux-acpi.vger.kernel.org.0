@@ -1,209 +1,125 @@
-Return-Path: <linux-acpi+bounces-11887-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11888-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DA0A54664
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 10:32:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38F5A54781
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 11:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28ACC3ACA5A
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 09:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07DBC171EB6
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 10:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5721DA634;
-	Thu,  6 Mar 2025 09:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7D919DF49;
+	Thu,  6 Mar 2025 10:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAwOtLHa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609E56FC3;
-	Thu,  6 Mar 2025 09:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839C717B50B;
+	Thu,  6 Mar 2025 10:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741253561; cv=none; b=p4Ya0s4JTkJg3nn074gc3Xlo5HyvFBH6V2IYBnIwhj03wF/J8e7BDsfUHWLiGZJ0XliaxtI4Ih8AQtpC+XC+Xk4L6gnSZ13sEkal2IFpnG1GjDvbN7TWwVZy9M8XmmTu0pae9wvtF/Q5XzlyddK4Gr5gCUuXtkQijkBRCuk8cvw=
+	t=1741256159; cv=none; b=f9qyFQSJFGv6EMAVMFUt9anvh/boqo2b9nehgchV817+E2i4dDD7ZSmU1TDzT768YRAaE8TPNy9yKDZ2b7f3k4r+eHngog1qdFDrY+SbN6i2t27dGsVLXQR9ju8Fz81H/unmYXr1+sncu+JaSVGWNbOJsfNVIDMKB285/tT3zu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741253561; c=relaxed/simple;
-	bh=iuqF/E5A0tvcLhqTvZPeLcJknYpnsMybrIO8ZXwglBc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YXGd0w5OJgoFB0Pf3jCRcbFVEa6PIe37Wida3lTKXkHOBocJ1OIWDwEPXF4E5o1/L76FFLbra4EARsdBQnEq+MxA/7l8nbwrSM/kBs9bDhWX5s1cFTu0O3I3sal8imcwmRCD9dEBB/ZohgQfXwlfWolXt+j179YrUPYrONjEOXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z7kcN4T2yz67QRR;
-	Thu,  6 Mar 2025 17:28:20 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id A431C140A70;
-	Thu,  6 Mar 2025 17:32:29 +0800 (CST)
-Received: from localhost (10.96.237.92) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Mar
- 2025 10:32:18 +0100
-Date: Thu, 6 Mar 2025 17:32:14 +0800
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <shiju.jose@huawei.com>
-CC: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<bp@alien8.de>, <tony.luck@intel.com>, <rafael@kernel.org>,
-	<lenb@kernel.org>, <mchehab@kernel.org>, <leo.duran@amd.com>,
-	<Yazen.Ghannam@amd.com>, <linux-cxl@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
-	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
-	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v2 3/3] ras: mem: Add memory ACPI RAS2 driver
-Message-ID: <20250306173214.0000204e@huawei.com>
-In-Reply-To: <20250305180225.1226-4-shiju.jose@huawei.com>
-References: <20250305180225.1226-1-shiju.jose@huawei.com>
-	<20250305180225.1226-4-shiju.jose@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1741256159; c=relaxed/simple;
+	bh=GyD5rv2egr2dMdLAzHO0FeBEFkCMJ1OAl97tzWJuVcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AALKbeI6voHNJtWx/Ps7MWW06ssQXuoy0PBWPLXxSv09MlbfCV6xr8mj+glcxnmP3C6IJBSda7r0UMwwzNrCDKIfnDZMfBEFhOLZUGDybq2fMr3tlouLFFyRf7Gi3uPr/keakXcbag2j4KQv8OGbVNEvioACD5VXUteUaZPEiL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAwOtLHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FC0C4CEE0;
+	Thu,  6 Mar 2025 10:15:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741256159;
+	bh=GyD5rv2egr2dMdLAzHO0FeBEFkCMJ1OAl97tzWJuVcE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QAwOtLHaszWKb2z40qTZfmkWj0elqbFbgDTWAWlnnJmPwsE83GHvKS39FnQV7SPYR
+	 T2zNPUk/TXzzSyelENHgIPOHOtQJlwZ0sfnqoDPq0EHzH0t8BmfHfDntuhK5UxsiaF
+	 amwC8JcF/NU+7jisf7pDtdeqOHlGmP/YTZk+h+qQYwxAzi3WJgkOxdr5rNGjUc7OfO
+	 eGcciFwbQDCh8fAlo5Jja8gYTso8yrFqO4UPHA+SP8rhSoml84JkH3JbJS/DBYnzFg
+	 1uEeH+9418DNDOK+0O0gSvKi+G10D6q6Q0cSDfQ/aaUIg9eNn4z6rWdB1vaBKl27FZ
+	 annRwzXDVmOLA==
+Date: Thu, 6 Mar 2025 11:15:38 +0100
+From: Joel Granados <joel.granados@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Kees Cook <kees@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 3/8] ftrace: Move trace sysctls into trace.c
+Message-ID: <dekaemtglzq5el2omrusxyqntdqbzyllcalzor4jrindici25g@x2bdsiblw6iw>
+References: <20250218-jag-mv_ctltables-v1-0-cd3698ab8d29@kernel.org>
+ <20250218-jag-mv_ctltables-v1-3-cd3698ab8d29@kernel.org>
+ <20250303204455.69723c20@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250303204455.69723c20@gandalf.local.home>
 
-On Wed, 5 Mar 2025 18:02:24 +0000
-<shiju.jose@huawei.com> wrote:
-
-> From: Shiju Jose <shiju.jose@huawei.com>
+On Mon, Mar 03, 2025 at 08:44:55PM -0500, Steven Rostedt wrote:
+> On Tue, 18 Feb 2025 10:56:19 +0100
+> Joel Granados <joel.granados@kernel.org> wrote:
 > 
-> Memory ACPI RAS2 auxiliary driver binds to the auxiliary device
-> add by the ACPI RAS2 table parser.
+> Nit, change the subject to:
 > 
-> Driver uses a PCC subspace for communicating with the ACPI compliant
-> platform.
+>   tracing: Move trace sysctls into trace.c
+Done. Thx for the feedback 
+
+Best
 > 
-> Device with ACPI RAS2 scrub feature registers with EDAC device driver,
-> which retrieves the scrub descriptor from EDAC scrub and exposes
-> the scrub control attributes for RAS2 scrub instance to userspace in
-> /sys/bus/edac/devices/acpi_ras_mem0/scrubX/.
+> as I try to only have the "ftrace:" label for modifications that affect
+> attaching to functions, and "tracing:" for everything else.
 > 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-
-
-
-> diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
-> index daab929cdba1..fc8dcbd13f91 100644
-> --- a/Documentation/edac/scrub.rst
-> +++ b/Documentation/edac/scrub.rst
-> @@ -264,3 +264,76 @@ Sysfs files are documented in
-
+> Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> 
+> -- Steve
+> 
+> 
+> > Move trace ctl tables into their own const array in
+> > kernel/trace/trace.c. The sysctl table register is called with
+> > subsys_initcall placing if after its original place in proc_root_init.
+> > This is part of a greater effort to move ctl tables into their
+> > respective subsystems which will reduce the merge conflicts in
+> > kerenel/sysctl.c.
+> > 
+> > Signed-off-by: Joel Granados <joel.granados@kernel.org>
+> > ---
 ...
+> > +	},
+> > +};
+> > +
+> > +static int __init init_trace_sysctls(void)
+> > +{
+> > +	register_sysctl_init("kernel", trace_sysctl_table);
+> > +	return 0;
+> > +}
+> > +subsys_initcall(init_trace_sysctls);
+> >  
+> >  #ifdef CONFIG_TRACE_EVAL_MAP_FILE
+> >  /* Map of enums to their values, for "eval_map" file */
+> > 
+> 
 
-> +1.2.4. Program background scrubbing for RAS2 device to repeat in every 21600 seconds (quarter of a day).
+-- 
 
-wrap to 80 chars.  I think that is fine for titles in sphinx.
-
-> +
-> +# echo 21600 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-> +
-> +1.2.5. Start 'background scrubbing'.
-> +
-> +# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-
-
-
-> diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
-> new file mode 100644
-> index 000000000000..2f9317aa7b81
-> --- /dev/null
-> +++ b/drivers/ras/acpi_ras2.c
-> @@ -0,0 +1,391 @@
-
-
-> +struct acpi_ras2_ps_shared_mem {
-> +	struct acpi_ras2_shmem common;
-> +	struct acpi_ras2_patrol_scrub_param params;
-> +};
-
-...
-
-> +static int ras2_update_patrol_scrub_params_cache(struct ras2_mem_ctx *ras2_ctx)
-> +{
-> +	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-> +		(void *)ras2_ctx->comm_addr;
-
-Would a container_of() be better here given the type cast is doing
-that with the assumption of it being first element of ps_shared_mem.
-Same in other places, so maybe a macro.
-
-> +	int ret;
-> +
-> +	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-> +	ps_sm->params.cmd = RAS2_GET_PATROL_PARAMETERS;
-...
-
-
-> +
-> +static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable)
-> +{
-> +	struct ras2_mem_ctx *ras2_ctx = drv_data;
-> +	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-> +		(void *)ras2_ctx->comm_addr;
-
-As above, maybe container_of appropriate as we have
-a definition of what we are casting it to that has the thing
-we are casting from as first element.
-
-> +	bool running;
-> +	int ret;
-> +
-
-...
-
-> +
-> +static int ras2_probe(struct auxiliary_device *auxdev,
-> +		      const struct auxiliary_device_id *id)
-> +{
-> +	struct ras2_mem_ctx *ras2_ctx = container_of(auxdev, struct ras2_mem_ctx, adev);
-> +	struct edac_dev_feature ras_features[RAS2_DEV_NUM_RAS_FEATURES];
-Given we only have 1 RAS2 feature I'd be tempted to leave
-making this flexible for some future series that adds a second one.
-So maybe just have a single feature rather than array of 1.
-> +	char scrub_name[RAS2_SCRUB_NAME_LEN];
-> +	int num_ras_features = 0;
-
-With change below this isn't needed.
-
-> +	int ret;
-> +
-> +	if (!ras2_is_patrol_scrub_support(ras2_ctx))
-> +		return -EOPNOTSUPP;
-> +
-> +	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-> +	if (ret)
-> +		return ret;
-> +
-> +	snprintf(scrub_name, sizeof(scrub_name), "acpi_ras_mem%d",
-> +		 ras2_ctx->id);
-> +
-> +	ras_features[num_ras_features].ft_type = RAS_FEAT_SCRUB;
-> +	ras_features[num_ras_features].instance = ras2_ctx->instance;
-> +	ras_features[num_ras_features].scrub_ops = &ras2_scrub_ops;
-> +	ras_features[num_ras_features].ctx = ras2_ctx;
-> +	num_ras_features++;
-As above, can also just assume this is 1 becasue it always is.
-> +
-> +	return edac_dev_register(&auxdev->dev, scrub_name, NULL,
-> +				 num_ras_features, ras_features);
-here pass in &ras_feature after making it not be an array.
-
-> +}
-
+Joel Granados
 
