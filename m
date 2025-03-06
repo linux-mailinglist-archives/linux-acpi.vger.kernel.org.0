@@ -1,137 +1,200 @@
-Return-Path: <linux-acpi+bounces-11883-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11884-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99525A541A4
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 05:26:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E19A5428A
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 07:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE46B3ACA28
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 04:25:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68A016D847
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 06:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE94619B5B1;
-	Thu,  6 Mar 2025 04:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DMIJKo/Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDDF19E804;
+	Thu,  6 Mar 2025 06:06:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1059B19B5B4;
-	Thu,  6 Mar 2025 04:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BE336D;
+	Thu,  6 Mar 2025 06:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741235158; cv=none; b=pSLkZW7UIDL2+oksUsT4DyCQfy9dXLrCkhdNYsroKYEBXyYKKxYr6Ja1KfgGL/1JjnI8c7semx/q5dZLcbwg5PdxBquqK4Gg+pQW4pgsArRdlWgE26187xpjnBIi6/lo/MQxlt07daoCMO2t+OA2sngmK+tXL7g52bLT6rXoUU4=
+	t=1741241171; cv=none; b=BLLH29zDNAZURltm1MkQbYkuRHxl15xvanIFHX8xxTv5gZMQpeBIz5szaC8JpvtxTnMGjJyAh2GUK0Y7YLdeio0FQDmV1jbrws7o7Rr8s41FV5el5QfhrXQozUltDEivyKd1OuD9p2x6q7EhxNXDlkjYQUMkr2SZUoJ3wbLGhkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741235158; c=relaxed/simple;
-	bh=ZQRetbtMH9PmPOowjjiV/1ueBKUgEylsKtX9cQioFAM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=aXaSDOmAPOUIYQ2ZiewN2SRobu7yse72rJWMtZPSyyXIs2aFaLz6D0r45WMFkHBwDJ6t+5hsWaNIt9OnymvTB4gbdjjSs/WA8Msn03UOjWVQFvi+M9xC3M9CgFOfi5sjSV7M0uo+jd0Eqnig59cw70VNwqh7QMMIAY/WvPbwJ5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DMIJKo/Z; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741235157; x=1772771157;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=ZQRetbtMH9PmPOowjjiV/1ueBKUgEylsKtX9cQioFAM=;
-  b=DMIJKo/Zqhzv4lMEBuhRagTjkP6u35b05ncmcdW6wD+WV9GPgcb2B0n0
-   +lp0mqHxfBCmQvEXcuaNxkpge63a5e8Ie7lBP2bbg+tad8SQLkHPEwPWr
-   9M8ie3M8M1G/GVOAJ60SOlMt/C63Ad3B614iD6kgMiiCueH2Lu2Zj+Cj5
-   ip0H+2OfX4AL5H62EPsfN+cv9MbWT+hyngveC4iZD8MyMqivIjDdQ+TUt
-   /4vEfN4znVmudZeFIjCSYkWFWUA47yNftVv0a3qlGCp36MusmZFL20t1N
-   gs0jGYr18Fjr+qcUzXy5EZlsrr+RedzMmwCxTSy65q9wkZhMCOVepjqHQ
-   Q==;
-X-CSE-ConnectionGUID: qo5cNz1/TA6tqG6aoHEhqQ==
-X-CSE-MsgGUID: xK3w0/AbSEGbTX3nNVvpQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41404192"
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="41404192"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 20:25:55 -0800
-X-CSE-ConnectionGUID: NxSvLMRfR22d2lnayIh4Ng==
-X-CSE-MsgGUID: zB/b7RMpQeu8txIbLtduVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,225,1736841600"; 
-   d="scan'208";a="119404636"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 05 Mar 2025 20:25:53 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tq2nu-000MWk-1U;
-	Thu, 06 Mar 2025 04:25:50 +0000
-Date: Thu, 6 Mar 2025 12:24:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jeson Gao <jeson.gao@unisoc.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Lukasz Luba <lukasz.luba@arm.com>
-Subject: [rafael-pm:bleeding-edge 103/108] drivers/powercap/dtpm_cpu.c:83:29:
- error: implicit declaration of function 'sched_cpu_util'
-Message-ID: <202503061203.vRnwilWZ-lkp@intel.com>
+	s=arc-20240116; t=1741241171; c=relaxed/simple;
+	bh=0QBriMyrr0S+pdFueoHFAgKI7U8TnsRyaMmjpWja/LY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ul/g4cuPg0SxT81dtZVIVBC6fqUSLoqt2Hhta+SK55E+I0MhHzxv6zRY/kAzjTOwV2yi2ewZzoYOBvYHBL/RzjSrT8kCub6yYBC/+BU0nLqjM2QxA5Lp+WRECSGuo+5Q1RISD73Ou0BdmZ5nZBMW01Zp0JqbdWWmxvrRr8HIuCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z7f4N3mY6z6K61Y;
+	Thu,  6 Mar 2025 14:03:48 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id D0AF5140CB1;
+	Thu,  6 Mar 2025 14:06:05 +0800 (CST)
+Received: from localhost (10.96.237.92) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Mar
+ 2025 07:05:55 +0100
+Date: Thu, 6 Mar 2025 14:05:50 +0800
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <shiju.jose@huawei.com>
+CC: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<bp@alien8.de>, <tony.luck@intel.com>, <rafael@kernel.org>,
+	<lenb@kernel.org>, <mchehab@kernel.org>, <leo.duran@amd.com>,
+	<Yazen.Ghannam@amd.com>, <linux-cxl@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 1/3] ACPI: ACPI 6.5: RAS2: Shorten RAS2 table
+ structure and variable names
+Message-ID: <20250306140550.00001016@huawei.com>
+In-Reply-To: <20250305180225.1226-2-shiju.jose@huawei.com>
+References: <20250305180225.1226-1-shiju.jose@huawei.com>
+	<20250305180225.1226-2-shiju.jose@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi Jeson,
+On Wed, 5 Mar 2025 18:02:22 +0000
+<shiju.jose@huawei.com> wrote:
 
-First bad commit (maybe != root cause):
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Shorten RAS2 table structure and variable names.
+> 
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+Hi Shiju,
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   96791086aa226b85fe090573b9e3668ac53d5364
-commit: 9144584c375e73a4fef6bde3ce399ad43e011b37 [103/108] PM: EM: Rework the depends on for CONFIG_ENERGY_MODEL
-config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20250306/202503061203.vRnwilWZ-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250306/202503061203.vRnwilWZ-lkp@intel.com/reproduce)
+Generally looks reasonable to me, but I'm not sure what your
+decision process was for which to shorten and which to leave alone.
+Perhaps it is worth mentioning that in the patch description?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503061203.vRnwilWZ-lkp@intel.com/
+> ---
+>  include/acpi/actbl2.h | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> index 2e917a8f8bca..5cfc65ba6e9e 100644
+> --- a/include/acpi/actbl2.h
+> +++ b/include/acpi/actbl2.h
+> @@ -2802,20 +2802,20 @@ struct acpi_ras2_pcc_desc {
+>  
+>  /* RAS2 Platform Communication Channel Shared Memory Region */
+>  
+> -struct acpi_ras2_shared_memory {
+> +struct acpi_ras2_shmem {
+>  	u32 signature;
+> -	u16 command;
+> +	u16 cmd;
+>  	u16 status;
+>  	u16 version;
+>  	u8 features[16];
+> -	u8 set_capabilities[16];
+> -	u16 num_parameter_blocks;
+> -	u32 set_capabilities_status;
+> +	u8 set_caps[16];
+> +	u16 num_param_blks;
+> +	u32 set_caps_status;
 
-All errors (new ones prefixed by >>):
+I assume focus was on fields that were leading to long line lengths? 
+If it was just generally shortening things to common form
+sig, sts, ver, feats etc would also seem reasonable to me
+(all subject to Tony's question on whether we can touch this at all.)
 
-   drivers/powercap/dtpm_cpu.c: In function 'scale_pd_power_uw':
->> drivers/powercap/dtpm_cpu.c:83:29: error: implicit declaration of function 'sched_cpu_util' [-Wimplicit-function-declaration]
-      83 |                 sum_util += sched_cpu_util(cpu);
-         |                             ^~~~~~~~~~~~~~
+>  };
+>  
+>  /* RAS2 Parameter Block Structure for PATROL_SCRUB */
+>  
+> -struct acpi_ras2_parameter_block {
+> +struct acpi_ras2_param_blk {
+>  	u16 type;
+>  	u16 version;
+>  	u16 length;
+> @@ -2823,11 +2823,11 @@ struct acpi_ras2_parameter_block {
+>  
+>  /* RAS2 Parameter Block Structure for PATROL_SCRUB */
+>  
+> -struct acpi_ras2_patrol_scrub_parameter {
+> -	struct acpi_ras2_parameter_block header;
+> -	u16 patrol_scrub_command;
+> -	u64 requested_address_range[2];
+> -	u64 actual_address_range[2];
+> +struct acpi_ras2_patrol_scrub_param {
+> +	struct acpi_ras2_param_blk header;
+> +	u16 cmd;
+> +	u64 req_addr_range[2];
+> +	u64 actl_addr_range[2];
+>  	u32 flags;
+>  	u32 scrub_params_out;
+>  	u32 scrub_params_in;
+> @@ -2839,12 +2839,12 @@ struct acpi_ras2_patrol_scrub_parameter {
+>  
+>  /* RAS2 Parameter Block Structure for LA2PA_TRANSLATION */
+>  
+> -struct acpi_ras2_la2pa_translation_parameter {
+> -	struct acpi_ras2_parameter_block header;
+> -	u16 addr_translation_command;
+> +struct acpi_ras2_la2pa_transln_param {
+> +	struct acpi_ras2_param_blk header;
+> +	u16 cmd;
+>  	u64 sub_inst_id;
+> -	u64 logical_address;
+> -	u64 physical_address;
+> +	u64 logical_addr;
+> +	u64 phy_addr;
+>  	u32 status;
+>  };
+>  
+> @@ -2863,7 +2863,7 @@ enum acpi_ras2_features {
+>  
+>  /* RAS2 Patrol Scrub Commands */
+>  
+> -enum acpi_ras2_patrol_scrub_commands {
+> +enum acpi_ras2_patrol_scrub_cmds {
+>  	ACPI_RAS2_GET_PATROL_PARAMETERS = 1,
+>  	ACPI_RAS2_START_PATROL_SCRUBBER = 2,
+>  	ACPI_RAS2_STOP_PATROL_SCRUBBER = 3
+> @@ -2871,13 +2871,13 @@ enum acpi_ras2_patrol_scrub_commands {
+>  
+>  /* RAS2 LA2PA Translation Commands */
+>  
+> -enum acpi_ras2_la2_pa_translation_commands {
+> +enum acpi_ras2_la2_pa_transln_cmds {
+>  	ACPI_RAS2_GET_LA2PA_TRANSLATION = 1,
+>  };
+>  
+>  /* RAS2 LA2PA Translation Status values */
+>  
+> -enum acpi_ras2_la2_pa_translation_status {
+> +enum acpi_ras2_la2_pa_transln_status {
 
+Do we touch this in the main code?  If not I'd be tempted
+to leave decision to shorten this or not to whowever
+writes code that uses it.
 
-vim +/sched_cpu_util +83 drivers/powercap/dtpm_cpu.c
+>  	ACPI_RAS2_LA2PA_TRANSLATION_SUCCESS = 0,
+>  	ACPI_RAS2_LA2PA_TRANSLATION_FAIL = 1,
+>  };
 
-0e8f68d7f04856 Daniel Lezcano   2020-12-08  70  
-eb82bace893169 Daniel Lezcano   2021-03-12  71  static u64 scale_pd_power_uw(struct cpumask *pd_mask, u64 power)
-eb82bace893169 Daniel Lezcano   2021-03-12  72  {
-bb4479994945e9 Dietmar Eggemann 2022-06-21  73  	unsigned long max, sum_util = 0;
-eb82bace893169 Daniel Lezcano   2021-03-12  74  	int cpu;
-eb82bace893169 Daniel Lezcano   2021-03-12  75  
-eb82bace893169 Daniel Lezcano   2021-03-12  76  	/*
-eb82bace893169 Daniel Lezcano   2021-03-12  77  	 * The capacity is the same for all CPUs belonging to
-bb4479994945e9 Dietmar Eggemann 2022-06-21  78  	 * the same perf domain.
-eb82bace893169 Daniel Lezcano   2021-03-12  79  	 */
-bb4479994945e9 Dietmar Eggemann 2022-06-21  80  	max = arch_scale_cpu_capacity(cpumask_first(pd_mask));
-eb82bace893169 Daniel Lezcano   2021-03-12  81  
-bb4479994945e9 Dietmar Eggemann 2022-06-21  82  	for_each_cpu_and(cpu, pd_mask, cpu_online_mask)
-bb4479994945e9 Dietmar Eggemann 2022-06-21 @83  		sum_util += sched_cpu_util(cpu);
-bb4479994945e9 Dietmar Eggemann 2022-06-21  84  
-bb4479994945e9 Dietmar Eggemann 2022-06-21  85  	return (power * ((sum_util << 10) / max)) >> 10;
-eb82bace893169 Daniel Lezcano   2021-03-12  86  }
-eb82bace893169 Daniel Lezcano   2021-03-12  87  
-
-:::::: The code at line 83 was first introduced by commit
-:::::: bb4479994945e9170534389a7762eb56149320ac sched, drivers: Remove max param from effective_cpu_util()/sched_cpu_util()
-
-:::::: TO: Dietmar Eggemann <dietmar.eggemann@arm.com>
-:::::: CC: Peter Zijlstra <peterz@infradead.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
