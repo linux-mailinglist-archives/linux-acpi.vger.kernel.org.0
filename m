@@ -1,77 +1,57 @@
-Return-Path: <linux-acpi+bounces-11906-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11907-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4751A556D2
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 20:34:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3B4A55A04
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 23:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E30627A373E
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 19:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A8C3AE814
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 22:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2F826B0A9;
-	Thu,  6 Mar 2025 19:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16ED427CB10;
+	Thu,  6 Mar 2025 22:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dWV9wZLt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YASowkY9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E351A0BC9;
-	Thu,  6 Mar 2025 19:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E335E1F4185;
+	Thu,  6 Mar 2025 22:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741289692; cv=none; b=lHO2YA6AZ2fuPqQsA7Lmmsh7h/6NwhbaunvMS3NE960TH2aE7SraV+liZ0bMBiq6AranHXYL52R81vN0NEqrMZDc+5tO5k8J4rh1DD1IHq+pfyy9lNkbcwdp+fVBGu2Z3K63M4QECnq65TJNZC07/KvpORK+YqqOCNwNpUk+D5g=
+	t=1741301029; cv=none; b=jqhcyyxepznSOCIv4FBiuetRVPpOxouQoSd05UkkZGm73bcRtA5k4DZJ8LCAulhSRcP3qsyeID2QfLVNy9bCZ3661eU/IiMMgi+Vei8wM3Sr5o8fkbgoCqqzwTxtrroyNcLSMeHt4ScLvd/gyCEDkTm93sMr93k76Btqu2o/No0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741289692; c=relaxed/simple;
-	bh=rGTjAwzPN3h7icAYCnpUh+MwWG/3h6W2BXTv9Gg40XY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=aBgA4k2k2Y1toKB17UZ9joieKtzmfb1+YBTuhCK5bTvzTcHe0i7/jYRngTMZZtscw3HwIqoKklC3s7BhaS7vDPapzYe+BqwBLFOT+3MtFacDAtaWVDf/ZyfBeJdQ8NBII31Eb5OPiaa0d4OHjn2Jq8Ikw8fq9DuBTjiZIAP4XTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dWV9wZLt; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741289691; x=1772825691;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=rGTjAwzPN3h7icAYCnpUh+MwWG/3h6W2BXTv9Gg40XY=;
-  b=dWV9wZLt20rHOBszRTeW6998tyBowZEUhQ+3kAV93smT0RhPh9o1CYUX
-   aMc2S04rATBoCVhY5eGk4rH9HLSgSvcjxc7pXyMaPqBS6zx3rmsLqZumb
-   spiDcQa/D7Gtkmtnzq5w10e7FWU+wVOQUxMugNA7tAlNw/79pMZ2soSqu
-   FwAW+8F6zLUs+nl7TCW0bPpHdqcxipzNVJvYrvddS+JCNN732ca4LAI+5
-   4cb9fY60uMcHBZWzPuyoOIXu9VmW/phZRDCynq1K3gdnu2/VHUFIdU3cn
-   BqXrA0lylzyosblWcchZlI4gPlZI+HyVrsiQHBhCdvlXzD1w4XgvUR7Sq
-   Q==;
-X-CSE-ConnectionGUID: hfy9yfWaQdGjbnoOxjt5IA==
-X-CSE-MsgGUID: 3eI1rcXYQSSRM6UkgNsVew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="42179371"
-X-IronPort-AV: E=Sophos;i="6.14,227,1736841600"; 
-   d="scan'208";a="42179371"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 11:34:51 -0800
-X-CSE-ConnectionGUID: dk5nOdDySbKxeQQCm6MIFw==
-X-CSE-MsgGUID: Kt6sRJWCTUiQ1VAM6ZUdqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119629615"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 06 Mar 2025 11:34:49 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tqGzV-000NWW-2K;
-	Thu, 06 Mar 2025 19:34:45 +0000
-Date: Fri, 7 Mar 2025 03:34:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jeson Gao <jeson.gao@unisoc.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, devel@acpica.org,
-	linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Lukasz Luba <lukasz.luba@arm.com>
-Subject: [rafael-pm:bleeding-edge 103/108] drivers/powercap/dtpm_cpu.c:83:15:
- error: call to undeclared function 'sched_cpu_util'; ISO C99 and later do
- not support implicit function declarations
-Message-ID: <202503070326.9hEUez42-lkp@intel.com>
+	s=arc-20240116; t=1741301029; c=relaxed/simple;
+	bh=+fsJCGmB25CthNa6i+BGnF8p2dGET+mpdPq0XEGUpLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gf3K1S9qHaEV1UURgqLb9iGN4jPa81nf46X/wp+rSSVtNBFZhyrTAQOayMnxG54ioBIKeteo8t+ulJ+xRix+ONIj+Ff8aCwb+nOSofpxrFGBOI5LKz8z50yDZhYDwWcxNNE0SCo1I3el5Kx9ko8q3uB6TBNgsg3zJnBUpnL4jOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YASowkY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C2C4CEE0;
+	Thu,  6 Mar 2025 22:43:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741301028;
+	bh=+fsJCGmB25CthNa6i+BGnF8p2dGET+mpdPq0XEGUpLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YASowkY91D5FSzLU5sI85s7QZi7a6Jd8rl5LvsN8Rhsde8w8y61fao8NMcAsedTPE
+	 j05sdXwbIc/rmFpr9j1lEglqtFBx/7VSY7zmBcy/qkL+1e5Pbi2JzFkDrAZAdAfIpu
+	 29pIHA7eU3/87CZic7HLZooRVXLBGt6vHdgdWV5H4P3OsaNVjuShM9sUqkklsJuR/c
+	 V9wA5ScIW40/0whDUhV37YgqyVZxh8Q5vfVHaHdUaHc47KqFGuFVVeHmZ55cfcC/xI
+	 onLDpZF71JQJ1GXpam8Yz7vLZhZPY7sdeO1fNNMeNclCGfCZR38fKU+4Ng9qAX31pY
+	 hdh+r7qxC4Sgg==
+Date: Fri, 7 Mar 2025 00:43:43 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stuart Yoder <stuart.yoder@arm.com>
+Cc: linux-integrity@vger.kernel.org, peterhuewe@gmx.de, jgg@ziepe.ca,
+	sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] tpm_crb: implement driver compliant to CRB over
+ FF-A
+Message-ID: <Z8olH1GeBspfsijO@kernel.org>
+References: <20250305173611.74548-1-stuart.yoder@arm.com>
+ <20250305173611.74548-2-stuart.yoder@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -80,59 +60,454 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250305173611.74548-2-stuart.yoder@arm.com>
 
-Hi Jeson,
+On Wed, Mar 05, 2025 at 11:36:07AM -0600, Stuart Yoder wrote:
+> The Arm specification TPM Service CRB over FF-A specification
+> defines the FF-A messages to interact with a CRB-based TPM
+> implemented as an FF-A secure partition.
+> 
+> Spec URL:
+> https://developer.arm.com/documentation/den0138/latest/
+> 
+> This driver is probed when a TPM Secure Partition is
+> discovered by the FF-A subsystem. It exposes APIs
+> used by the TPM CRB driver to send notifications to
+> the TPM.
+> 
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Stuart Yoder <stuart.yoder@arm.com>
+> ---
+>  drivers/char/tpm/Kconfig       |   9 +
+>  drivers/char/tpm/Makefile      |   1 +
+>  drivers/char/tpm/tpm_crb_ffa.c | 348 +++++++++++++++++++++++++++++++++
+>  drivers/char/tpm/tpm_crb_ffa.h |  25 +++
+>  4 files changed, 383 insertions(+)
+>  create mode 100644 drivers/char/tpm/tpm_crb_ffa.c
+>  create mode 100644 drivers/char/tpm/tpm_crb_ffa.h
+> 
+> diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> index 0fc9a510e059..4c85b8c00b12 100644
+> --- a/drivers/char/tpm/Kconfig
+> +++ b/drivers/char/tpm/Kconfig
+> @@ -210,6 +210,15 @@ config TCG_CRB
+>  	  from within Linux.  To compile this driver as a module, choose
+>  	  M here; the module will be called tpm_crb.
+>  
+> +config TCG_ARM_CRB_FFA
+> +	tristate "TPM CRB over Arm FF-A Transport"
+> +	depends on ARM_FFA_TRANSPORT
+> +	default y if (TCG_CRB && ARM_FFA_TRANSPORT)
+> +	help
+> +	  If the Arm FF-A transport is used to access the TPM say Yes.
+> +	  To compile this driver as a module, choose M here; the module
+> +	  will be called tpm_crb_ffa.
+> +
+>  config TCG_VTPM_PROXY
+>  	tristate "VTPM Proxy Interface"
+>  	depends on TCG_TPM
+> diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> index 9bb142c75243..2b004df8c04b 100644
+> --- a/drivers/char/tpm/Makefile
+> +++ b/drivers/char/tpm/Makefile
+> @@ -42,5 +42,6 @@ obj-$(CONFIG_TCG_IBMVTPM) += tpm_ibmvtpm.o
+>  obj-$(CONFIG_TCG_TIS_ST33ZP24) += st33zp24/
+>  obj-$(CONFIG_TCG_XEN) += xen-tpmfront.o
+>  obj-$(CONFIG_TCG_CRB) += tpm_crb.o
+> +obj-$(CONFIG_TCG_ARM_CRB_FFA) += tpm_crb_ffa.o
+>  obj-$(CONFIG_TCG_VTPM_PROXY) += tpm_vtpm_proxy.o
+>  obj-$(CONFIG_TCG_FTPM_TEE) += tpm_ftpm_tee.o
+> diff --git a/drivers/char/tpm/tpm_crb_ffa.c b/drivers/char/tpm/tpm_crb_ffa.c
+> new file mode 100644
+> index 000000000000..3169a87a56b6
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm_crb_ffa.c
+> @@ -0,0 +1,348 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2024 Arm Ltd.
+> + *
+> + * This device driver implements the TPM CRB start method
+> + * as defined in the TPM Service Command Response Buffer
+> + * Interface Over FF-A (DEN0138).
+> + */
+> +
+> +#define pr_fmt(fmt) "CRB_FFA: " fmt
+> +
+> +#include <linux/arm_ffa.h>
+> +#include "tpm_crb_ffa.h"
+> +
+> +/* TPM service function status codes */
+> +#define CRB_FFA_OK			0x05000001
+> +#define CRB_FFA_OK_RESULTS_RETURNED	0x05000002
+> +#define CRB_FFA_NOFUNC			0x8e000001
+> +#define CRB_FFA_NOTSUP			0x8e000002
+> +#define CRB_FFA_INVARG			0x8e000005
+> +#define CRB_FFA_INV_CRB_CTRL_DATA	0x8e000006
+> +#define CRB_FFA_ALREADY			0x8e000009
+> +#define CRB_FFA_DENIED			0x8e00000a
+> +#define CRB_FFA_NOMEM			0x8e00000b
+> +
+> +#define CRB_FFA_VERSION_MAJOR	1
+> +#define CRB_FFA_VERSION_MINOR	0
+> +
+> +/* version encoding */
+> +#define CRB_FFA_MAJOR_VERSION_MASK  GENMASK(30, 16)
+> +#define CRB_FFA_MINOR_VERSION_MASK  GENMASK(15, 0)
+> +#define CRB_FFA_MAJOR_VERSION(x)    ((u16)(FIELD_GET(CRB_FFA_MAJOR_VERSION_MASK, (x))))
+> +#define CRB_FFA_MINOR_VERSION(x)    ((u16)(FIELD_GET(CRB_FFA_MINOR_VERSION_MASK, (x))))
+> +
+> +/*
+> + * Normal world sends requests with FFA_MSG_SEND_DIRECT_REQ and
+> + * responses are returned with FFA_MSG_SEND_DIRECT_RESP for normal
+> + * messages.
+> + *
+> + * All requests with FFA_MSG_SEND_DIRECT_REQ and FFA_MSG_SEND_DIRECT_RESP
+> + * are using the AArch32 SMC calling convention with register usage as
+> + * defined in FF-A specification:
+> + * w0:    Function ID (0x8400006F or 0x84000070)
+> + * w1:    Source/Destination IDs
+> + * w2:    Reserved (MBZ)
+> + * w3-w7: Implementation defined, free to be used below
+> + */
+> +
+> +/*
+> + * Returns the version of the interface that is available
+> + * Call register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function ID, CRB_FFA_GET_INTERFACE_VERSION
+> + * w5-w7: Reserved (MBZ)
+> + *
+> + * Return register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function status
+> + * w5:    TPM service interface version
+> + *        Bits[31:16]: major version
+> + *        Bits[15:0]: minor version
+> + * w6-w7: Reserved (MBZ)
+> + *
+> + * Possible function status codes in register w4:
+> + *     CRB_FFA_OK_RESULTS_RETURNED: The version of the interface has been
+> + *                                  returned.
+> + */
+> +#define CRB_FFA_GET_INTERFACE_VERSION 0x0f000001
+> +
+> +/*
+> + * Return information on a given feature of the TPM service
+> + * Call register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function ID, CRB_FFA_START
+> + * w5:    Start function qualifier
+> + *            Bits[31:8] (MBZ)
+> + *            Bits[7:0]
+> + *              0: Notifies TPM that a command is ready to be processed
+> + *              1: Notifies TPM that a locality request is ready to be processed
+> + * w6:    TPM locality, one of 0..4
+> + *            -If the start function qualifier is 0, identifies the locality
+> + *             from where the command originated.
+> + *            -If the start function qualifier is 1, identifies the locality
+> + *             of the locality request
+> + * w6-w7: Reserved (MBZ)
+> + *
+> + * Return register usage:
+> + * w3:    Not used (MBZ)
+> + * w4:    TPM service function status
+> + * w5-w7: Reserved (MBZ)
+> + *
+> + * Possible function status codes in register w4:
+> + *     CRB_FFA_OK: the TPM service has been notified successfully
+> + *     CRB_FFA_INVARG: one or more arguments are not valid
+> + *     CRB_FFA_INV_CRB_CTRL_DATA: CRB control data or locality control
+> + *         data at the given TPM locality is not valid
+> + *     CRB_FFA_DENIED: the TPM has previously disabled locality requests and
+> + *         command processing at the given locality
+> + */
+> +#define CRB_FFA_START 0x0f000201
+> +
+> +struct tpm_crb_ffa {
+> +	struct ffa_device *ffa_dev;
+> +	u16 major_version;
+> +	u16 minor_version;
+> +	/* lock to protect sending of FF-A messages: */
+> +	struct mutex msg_data_lock;
+> +	struct ffa_send_direct_data direct_msg_data;
+> +};
+> +
+> +static struct tpm_crb_ffa *tpm_crb_ffa;
+> +
+> +static int tpm_crb_ffa_to_linux_errno(int errno)
+> +{
+> +	int rc;
+> +
+> +	switch (errno) {
+> +	case CRB_FFA_OK:
+> +		rc = 0;
+> +		break;
+> +	case CRB_FFA_OK_RESULTS_RETURNED:
+> +		rc = 0;
+> +		break;
+> +	case CRB_FFA_NOFUNC:
+> +		rc = -ENOENT;
+> +		break;
+> +	case CRB_FFA_NOTSUP:
+> +		rc = -EPERM;
+> +		break;
+> +	case CRB_FFA_INVARG:
+> +		rc = -EINVAL;
+> +		break;
+> +	case CRB_FFA_INV_CRB_CTRL_DATA:
+> +		rc = -ENOEXEC;
+> +		break;
+> +	case CRB_FFA_ALREADY:
+> +		rc = -EEXIST;
+> +		break;
+> +	case CRB_FFA_DENIED:
+> +		rc = -EACCES;
+> +		break;
+> +	case CRB_FFA_NOMEM:
+> +		rc = -ENOMEM;
+> +		break;
+> +	default:
+> +		rc = -EINVAL;
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+> +/**
+> + * tpm_crb_ffa_init - called by the CRB driver to do any needed initialization
+> + *
+> + * This function is called by the tpm_crb driver during the tpm_crb
+> + * driver's initialization. If the tpm_crb_ffa has not been probed
+> + * yet, returns -ENOENT in order to force a retry.  If th ffa_crb
+> + * driver had been probed  but failed with an error, returns -ENODEV
+> + * in order to prevent further retries.
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int tpm_crb_ffa_init(void)
+> +{
+> +	if (!tpm_crb_ffa)
+> +		return -ENOENT;
+> +
+> +	if (IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -ENODEV;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(tpm_crb_ffa_init);
+> +
+> +static int __tpm_crb_ffa_send_recieve(unsigned long func_id,
+> +				      unsigned long a0,
+> +				      unsigned long a1,
+> +				      unsigned long a2)
+> +{
+> +	const struct ffa_msg_ops *msg_ops;
+> +	int ret;
+> +
+> +	if (!tpm_crb_ffa)
+> +		return -ENOENT;
+> +
+> +	msg_ops = tpm_crb_ffa->ffa_dev->ops->msg_ops;
+> +
+> +	memset(&tpm_crb_ffa->direct_msg_data, 0x00,
+> +	       sizeof(struct ffa_send_direct_data));
+> +
+> +	tpm_crb_ffa->direct_msg_data.data1 = func_id;
+> +	tpm_crb_ffa->direct_msg_data.data2 = a0;
+> +	tpm_crb_ffa->direct_msg_data.data3 = a1;
+> +	tpm_crb_ffa->direct_msg_data.data4 = a2;
+> +
+> +	ret = msg_ops->sync_send_receive(tpm_crb_ffa->ffa_dev,
+> +			&tpm_crb_ffa->direct_msg_data);
+> +	if (!ret)
+> +		ret = tpm_crb_ffa_to_linux_errno(tpm_crb_ffa->direct_msg_data.data1);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * tpm_crb_ffa_get_interface_version() - gets the ABI version of the TPM service
+> + * @major: Pointer to caller-allocated buffer to hold the major version
+> + *         number the ABI
+> + * @minor: Pointer to caller-allocated buffer to hold the minor version
+> + *         number the ABI
+> + *
+> + * Returns the major and minor version of the ABI of the FF-A based TPM.
+> + * Allows the caller to evaluate its compatibility with the version of
+> + * the ABI.
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int tpm_crb_ffa_get_interface_version(u16 *major, u16 *minor)
+> +{
+> +	int rc;
+> +
+> +	if (!tpm_crb_ffa)
+> +		return -ENOENT;
+> +
+> +	if (IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -ENODEV;
+> +
+> +	if (!major || !minor)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&tpm_crb_ffa->msg_data_lock);
+> +
+> +	rc = __tpm_crb_ffa_send_recieve(CRB_FFA_GET_INTERFACE_VERSION, 0x00, 0x00, 0x00);
+> +	if (!rc) {
+> +		*major = CRB_FFA_MAJOR_VERSION(tpm_crb_ffa->direct_msg_data.data2);
+> +		*minor = CRB_FFA_MINOR_VERSION(tpm_crb_ffa->direct_msg_data.data2);
+> +	}
+> +
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(tpm_crb_ffa_get_interface_version);
+> +
+> +/**
+> + * tpm_crb_ffa_start() - signals the TPM that a field has changed in the CRB
+> + * @request_type: Identifies whether the change to the CRB is in the command
+> + *                fields or locality fields.
+> + * @locality: Specifies the locality number.
+> + *
+> + * Used by the CRB driver
+> + * that might be useful to those using or modifying it.  Begins with
+> + * empty comment line, and may include additional embedded empty
+> + * comment lines.
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int tpm_crb_ffa_start(int request_type, int locality)
+> +{
+> +	if (!tpm_crb_ffa)
+> +		return -ENOENT;
+> +
+> +	if (IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -ENODEV;
+> +
+> +	guard(mutex)(&tpm_crb_ffa->msg_data_lock);
+> +
+> +	return __tpm_crb_ffa_send_recieve(CRB_FFA_START, request_type, locality, 0x00);
+> +}
+> +EXPORT_SYMBOL_GPL(tpm_crb_ffa_start);
+> +
+> +static int tpm_crb_ffa_probe(struct ffa_device *ffa_dev)
+> +{
+> +	struct tpm_crb_ffa *p;
+> +	int rc;
+> +
+> +	/* only one instance of a TPM partition is supported */
+> +	if (tpm_crb_ffa && !IS_ERR_VALUE(tpm_crb_ffa))
+> +		return -EEXIST;
+> +
+> +	tpm_crb_ffa = ERR_PTR(-ENODEV); // set tpm_crb_ffa so we can detect probe failure
+> +
+> +	if (!ffa_partition_supports_direct_recv(ffa_dev)) {
+> +		pr_err("TPM partition doesn't support direct message receive.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	p = kzalloc(sizeof(*tpm_crb_ffa), GFP_KERNEL);
+> +	if (!p)
+> +		return -ENOMEM;
+> +	tpm_crb_ffa = p;
+> +
+> +	mutex_init(&tpm_crb_ffa->msg_data_lock);
+> +	tpm_crb_ffa->ffa_dev = ffa_dev;
+> +	ffa_dev_set_drvdata(ffa_dev, tpm_crb_ffa);
+> +
+> +	/* if TPM is aarch32 use 32-bit SMCs */
+> +	if (!ffa_partition_check_property(ffa_dev, FFA_PARTITION_AARCH64_EXEC))
+> +		ffa_dev->ops->msg_ops->mode_32bit_set(ffa_dev);
+> +
+> +	/* verify compatibility of TPM service version number */
+> +	rc = tpm_crb_ffa_get_interface_version(&tpm_crb_ffa->major_version,
+> +					       &tpm_crb_ffa->minor_version);
+> +	if (rc) {
+> +		pr_err("failed to get crb interface version. rc:%d", rc);
+> +		goto out;
+> +	}
+> +
+> +	pr_info("ABI version %u.%u", tpm_crb_ffa->major_version,
+> +		tpm_crb_ffa->minor_version);
+> +
+> +	if (tpm_crb_ffa->major_version != CRB_FFA_VERSION_MAJOR ||
+> +	    (tpm_crb_ffa->minor_version > 0 &&
+> +	    tpm_crb_ffa->minor_version < CRB_FFA_VERSION_MINOR)) {
+> +		pr_err("Incompatible ABI version");
+> +		goto out;
+> +	}
+> +
+> +	return 0;
+> +
+> +out:
+> +	kfree(tpm_crb_ffa);
+> +	tpm_crb_ffa = ERR_PTR(-ENODEV);
+> +	return -EINVAL;
+> +}
+> +
+> +static void tpm_crb_ffa_remove(struct ffa_device *ffa_dev)
+> +{
+> +	kfree(tpm_crb_ffa);
+> +	tpm_crb_ffa = NULL;
+> +}
+> +
+> +static const struct ffa_device_id tpm_crb_ffa_device_id[] = {
+> +	/* 17b862a4-1806-4faf-86b3-089a58353861 */
+> +	{ UUID_INIT(0x17b862a4, 0x1806, 0x4faf,
+> +		    0x86, 0xb3, 0x08, 0x9a, 0x58, 0x35, 0x38, 0x61) },
+> +	{}
+> +};
+> +
+> +static struct ffa_driver tpm_crb_ffa_driver = {
+> +	.name = "ffa-crb",
+> +	.probe = tpm_crb_ffa_probe,
+> +	.remove = tpm_crb_ffa_remove,
+> +	.id_table = tpm_crb_ffa_device_id,
+> +};
+> +
+> +module_ffa_driver(tpm_crb_ffa_driver);
+> +
+> +MODULE_AUTHOR("Arm");
+> +MODULE_DESCRIPTION("TPM CRB FFA driver");
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/char/tpm/tpm_crb_ffa.h b/drivers/char/tpm/tpm_crb_ffa.h
+> new file mode 100644
+> index 000000000000..23a9b93287a1
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm_crb_ffa.h
+> @@ -0,0 +1,25 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2024 Arm Ltd.
+> + *
+> + * This device driver implements the TPM CRB start method
+> + * as defined in the TPM Service Command Response Buffer
+> + * Interface Over FF-A (DEN0138).
+> + */
+> +#ifndef _TPM_CRB_FFA_H
+> +#define _TPM_CRB_FFA_H
+> +
+> +#if IS_ENABLED(CONFIG_TCG_ARM_CRB_FFA)
+> +int tpm_crb_ffa_init(void);
+> +int tpm_crb_ffa_get_interface_version(u16 *major, u16 *minor);
+> +int tpm_crb_ffa_start(int request_type, int locality);
+> +#else
+> +static inline int tpm_crb_ffa_init(void) { return 0; }
+> +static inline int tpm_crb_ffa_get_interface_version(u16 *major, u16 *minor) { return 0; }
+> +static inline int tpm_crb_ffa_start(int request_type, int locality) { return 0; }
+> +#endif
+> +
+> +#define CRB_FFA_START_TYPE_COMMAND 0
+> +#define CRB_FFA_START_TYPE_LOCALITY_REQUEST 1
+> +
+> +#endif
+> -- 
+> 2.34.1
+> 
+> 
 
-First bad commit (maybe != root cause):
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   96791086aa226b85fe090573b9e3668ac53d5364
-commit: 9144584c375e73a4fef6bde3ce399ad43e011b37 [103/108] PM: EM: Rework the depends on for CONFIG_ENERGY_MODEL
-config: um-allmodconfig (https://download.01.org/0day-ci/archive/20250307/202503070326.9hEUez42-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project 14170b16028c087ca154878f5ed93d3089a965c6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250307/202503070326.9hEUez42-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503070326.9hEUez42-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/powercap/dtpm_cpu.c:83:15: error: call to undeclared function 'sched_cpu_util'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      83 |                 sum_util += sched_cpu_util(cpu);
-         |                             ^
-   1 error generated.
-
-
-vim +/sched_cpu_util +83 drivers/powercap/dtpm_cpu.c
-
-0e8f68d7f04856 Daniel Lezcano   2020-12-08  70  
-eb82bace893169 Daniel Lezcano   2021-03-12  71  static u64 scale_pd_power_uw(struct cpumask *pd_mask, u64 power)
-eb82bace893169 Daniel Lezcano   2021-03-12  72  {
-bb4479994945e9 Dietmar Eggemann 2022-06-21  73  	unsigned long max, sum_util = 0;
-eb82bace893169 Daniel Lezcano   2021-03-12  74  	int cpu;
-eb82bace893169 Daniel Lezcano   2021-03-12  75  
-eb82bace893169 Daniel Lezcano   2021-03-12  76  	/*
-eb82bace893169 Daniel Lezcano   2021-03-12  77  	 * The capacity is the same for all CPUs belonging to
-bb4479994945e9 Dietmar Eggemann 2022-06-21  78  	 * the same perf domain.
-eb82bace893169 Daniel Lezcano   2021-03-12  79  	 */
-bb4479994945e9 Dietmar Eggemann 2022-06-21  80  	max = arch_scale_cpu_capacity(cpumask_first(pd_mask));
-eb82bace893169 Daniel Lezcano   2021-03-12  81  
-bb4479994945e9 Dietmar Eggemann 2022-06-21  82  	for_each_cpu_and(cpu, pd_mask, cpu_online_mask)
-bb4479994945e9 Dietmar Eggemann 2022-06-21 @83  		sum_util += sched_cpu_util(cpu);
-bb4479994945e9 Dietmar Eggemann 2022-06-21  84  
-bb4479994945e9 Dietmar Eggemann 2022-06-21  85  	return (power * ((sum_util << 10) / max)) >> 10;
-eb82bace893169 Daniel Lezcano   2021-03-12  86  }
-eb82bace893169 Daniel Lezcano   2021-03-12  87  
-
-:::::: The code at line 83 was first introduced by commit
-:::::: bb4479994945e9170534389a7762eb56149320ac sched, drivers: Remove max param from effective_cpu_util()/sched_cpu_util()
-
-:::::: TO: Dietmar Eggemann <dietmar.eggemann@arm.com>
-:::::: CC: Peter Zijlstra <peterz@infradead.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+BR, Jarkko
 
