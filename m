@@ -1,105 +1,123 @@
-Return-Path: <linux-acpi+bounces-11874-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11875-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667FFA53E88
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 00:34:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA25A5403C
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 03:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3BFF7A01C1
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Mar 2025 23:33:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F33188CF48
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 02:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83DF2063D6;
-	Wed,  5 Mar 2025 23:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKu5JW2e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B6B18C930;
+	Thu,  6 Mar 2025 02:04:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745D71E7C20;
-	Wed,  5 Mar 2025 23:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F9029CE1;
+	Thu,  6 Mar 2025 02:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741217645; cv=none; b=Iey+vUJLFAaHfvWb7cgmlz9PgyPkYj6/szy4+6a0dSI8Rsj+GtBLsYnZ5XdptVq1/Fb/2W26Ydq7vshCA+3Ck7RPnZ0PKtPvjYSk65VnCVuGGAx5BFsyyKkRnDW5UuFTyJyBM53se/my616lmy2VEAHr1e+UvpE1plyXrY+vDFQ=
+	t=1741226652; cv=none; b=iGsV0o/pzyNAIzarlci7fQ2d+FUfOf/+98ba8yf4zt7FtO9jE44OaUXPULnlFBFO5C8cyEyGvdGsAySFS3tzFboo5fCj1sGtEbL8pjD2xbVd8zz6kx1GaAu0a5lpbhwReqdw+7Y4O+2MGds9/JBsBBsyIeYwQdD78rmYxFQZx0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741217645; c=relaxed/simple;
-	bh=DiKVcqBbLlw3mubl16bRt1UkW+LqGANXthkKmwrrGrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=oWLRQDV6rZGkIB7MN+sEm+B1ZVhxrRzvffRACkv023C/d3RKYQe0uUjQPKwvMrA9p8gFcCDWr8rmFwUpQEXjfGrUWq37FVb57bk2OfotQdJ4dNi7ndYQGSZJDOveXFuXNZF6mEfMdJ2NHFO/WuDKLQ1i4c4aeBHXdqO1Y7vc+y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKu5JW2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73D3C4CED1;
-	Wed,  5 Mar 2025 23:34:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741217644;
-	bh=DiKVcqBbLlw3mubl16bRt1UkW+LqGANXthkKmwrrGrs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=VKu5JW2eIjpYHmRqAOvlCUGemsBEfqnhgrE9VoXNJAOuyv29rO29Ghe9WsLESvgUv
-	 LltXa0uu13f2JDDAp+pZhUmGtzIV4rrIvxilZlpET9q7aar2Ba7m25m3/3BTHYfrw1
-	 nVX+WFTPWRRUvBaPmWJu9jbyKKWkRTvOWcdMMfQFNOUQHF8r+4CnIVYCRRzxa1tpUG
-	 6Sby+OzFIK81bXhAXeMGNsjqmELv7p73AibCVSO+nQYTGaO65eIUTLcIVTHrwt39HE
-	 P6YJNXu60xoLlTZ6quUuIvpJ0YcNI09BnEQV4/29G3/XHoDZAMSKSlArHIFGbCDeec
-	 an+UW+lSljGsw==
-Date: Wed, 5 Mar 2025 17:34:03 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-	tony.luck@intel.com, bp@alien8.de, bhelgaas@google.com,
-	robert.moore@intel.com, yazen.ghannam@amd.com, avadhut.naik@amd.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
-	CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com,
-	leoliu@zhaoxin.com
-Subject: Re: [PATCH v5 1/4] ACPI: APEI: Move apei_hest_parse() to apei.h
-Message-ID: <20250305233403.GA322933@bhelgaas>
+	s=arc-20240116; t=1741226652; c=relaxed/simple;
+	bh=rzbu8rtSAZpB33a90IoRrnVMFYxmkb1XMg20yDSrOPc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nudgYUkIyI7IDv0jfR4FQS8OwOApnS88avg0WEShyAj2z1BdrwYe07MFaGc9VN8H7hYIyIE9rKH+niTsbNYAc6+J5WptfNZXx4Gf+G6zpp6xMqTMnfA6mR5lj3Fy9cuDAMZDy3Y4ccueaguLVyXHfwZUQLPCCDcQcGNMEYap6W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z7Xj95yfRz6K5rg;
+	Thu,  6 Mar 2025 10:01:49 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id B5CC6140CB1;
+	Thu,  6 Mar 2025 10:04:06 +0800 (CST)
+Received: from localhost (10.96.237.92) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Mar
+ 2025 03:03:56 +0100
+Date: Thu, 6 Mar 2025 10:03:51 +0800
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: "Luck, Tony" <tony.luck@intel.com>
+CC: "shiju.jose@huawei.com" <shiju.jose@huawei.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+	<lenb@kernel.org>, "mchehab@kernel.org" <mchehab@kernel.org>,
+	"leo.duran@amd.com" <leo.duran@amd.com>, "Yazen.Ghannam@amd.com"
+	<Yazen.Ghannam@amd.com>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>, "Jiang, Dave"
+	<dave.jiang@intel.com>, "Schofield, Alison" <alison.schofield@intel.com>,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>, "Weiny, Ira"
+	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, Somasundaram A
+	<somasundaram.a@hpe.com>, "Aktas, Erdem" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, "tanxiaofei@huawei.com"
+	<tanxiaofei@huawei.com>, "prime.zeng@hisilicon.com"
+	<prime.zeng@hisilicon.com>, "roberto.sassu@huawei.com"
+	<roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, "wanghuiqiang@huawei.com"
+	<wanghuiqiang@huawei.com>, "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 1/3] ACPI: ACPI 6.5: RAS2: Shorten RAS2 table
+ structure and variable names
+Message-ID: <20250306100351.00006035@huawei.com>
+In-Reply-To: <SJ1PR11MB6083959730C8EBC504C05ACEFCCB2@SJ1PR11MB6083.namprd11.prod.outlook.com>
+References: <20250305180225.1226-1-shiju.jose@huawei.com>
+	<20250305180225.1226-2-shiju.jose@huawei.com>
+	<SJ1PR11MB6083959730C8EBC504C05ACEFCCB2@SJ1PR11MB6083.namprd11.prod.outlook.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250226121838.364533-2-LeoLiu-oc@zhaoxin.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, Feb 26, 2025 at 08:18:35PM +0800, LeoLiu-oc wrote:
-> From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+On Wed, 5 Mar 2025 18:51:57 +0000
+"Luck, Tony" <tony.luck@intel.com> wrote:
+
+> [+Rafael]
+
+Now he gets two copies :)
+
 > 
-> Remove static from apei_hest_parse() so that it can be called in another
-> file.
+> > include/acpi/actbl2.h | 38 +++++++++++++++++++-------------------
+> >  1 file changed, 19 insertions(+), 19 deletions(-)  
+> 
+> This file is (somewhat) automatically generated from the ACPICA github repository.
+> 
+> https://github.com/acpica/acpica
+> 
+> I'm not sure how much divergence from the original is allowed.
 
-> +++ b/drivers/acpi/apei/hest.c
-> @@ -134,7 +134,7 @@ static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
->  
->  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
->  
-> -static int apei_hest_parse(apei_hest_func_t func, void *data)
-> +int apei_hest_parse(apei_hest_func_t func, void *data)
->  {
->  	struct acpi_hest_header *hest_hdr;
->  	int i, rc, len;
-> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-> index dc60f7db5524..b79976daa4bb 100644
-> --- a/include/acpi/apei.h
-> +++ b/include/acpi/apei.h
-> @@ -33,6 +33,8 @@ void __init acpi_ghes_init(void);
->  static inline void acpi_ghes_init(void) { }
->  #endif
->  
-> +int apei_hest_parse(apei_hest_func_t func, void *data);
+Yup, this was basically fishing for Rafael to tell us what we can
+get away with or not.
 
-Series doesn't build after this patch because we lack the
-apei_hest_func_t typedef:
+Thanks
 
-  $ make drivers/acpi/apei/
-    CC      drivers/acpi/apei/apei-base.o
-  In file included from drivers/acpi/apei/apei-base.c:30:
-  ./include/acpi/apei.h:36:21: error: unknown type name ‘apei_hest_func_t’
-     36 | int apei_hest_parse(apei_hest_func_t func, void *data);
-	|                     ^~~~~~~~~~~~~~~~
+Jonathan
+> 
+> -Tony
+> 
 
-The kernel must build and function correctly after each and every
-patch in the series.
 
