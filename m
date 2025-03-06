@@ -1,408 +1,215 @@
-Return-Path: <linux-acpi+bounces-11890-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11891-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25666A5492A
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 12:23:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2ADA54AF0
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 13:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 683537A45EF
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 11:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F393F16DA51
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 12:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EC02040AB;
-	Thu,  6 Mar 2025 11:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28A420B1E4;
+	Thu,  6 Mar 2025 12:39:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4BC2054E6;
-	Thu,  6 Mar 2025 11:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B991FC0E5;
+	Thu,  6 Mar 2025 12:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741260118; cv=none; b=oqCvZHr26U+Ths71r9iWZ6SQZSlMoaAMyx95nkcEyR5xUuAAVJGZrsKL8yMDUtIT4Ps92CbvS4DloB1DhcL5ObMkhENrtxNgRrGO5pOJmqis+rEQFQB+NLoLpuF2GL0nWgnkkf8h7exMvX51UxIheyVqVlHLPKKCuhWoJ4lRH2c=
+	t=1741264780; cv=none; b=SL8Ur9wCDIAUNYJtVbLwdcYtqLPrkbQTUIDwTUYgEdwm9UtQt8ZI9CiiXRNIolPQoKCkA3o70x/KVDtFjd0Bbcxohh8vMbN4spgiGDfQrsel132MBb6A9rSzeYCAnJlHdK0KFQ0PZlFoBVfnfPZF5/2QOzFRQgT+dU1WooBsYiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741260118; c=relaxed/simple;
-	bh=F1gT/Y0PtPKhMaUsbc7IMab+4kGCUja253A9grKICHc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=huR0FCSHDaVmrNVDQWUW91UH3xYOmc0tIptnVLNPFLXgF6BZyZeHsJbI6vOcUnQQpmMejdg2rurNKigrXnkhssVTK0hauxF9AymzdErq3NXjyCh0iK1zP5bzFjojJphdI/fUhDaTLaSTBKItbJJPpV6i4rdS9jBwSP/WiraMNC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z7n2Z3c3mz6L5Qc;
-	Thu,  6 Mar 2025 19:17:42 +0800 (CST)
-Received: from frapeml100008.china.huawei.com (unknown [7.182.85.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id C1C11140593;
-	Thu,  6 Mar 2025 19:21:51 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100008.china.huawei.com (7.182.85.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 6 Mar 2025 12:21:51 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Thu, 6 Mar 2025 12:21:51 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
-	<dave@stgolabs.net>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>, "Jon.Grimm@amd.com"
-	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v2 2/3] ACPI:RAS2: Add ACPI RAS2 driver
-Thread-Topic: [PATCH v2 2/3] ACPI:RAS2: Add ACPI RAS2 driver
-Thread-Index: AQHbjfjU3SdB6rbarkWzBYMyJX3PgbNlxP+AgAAg7jA=
-Date: Thu, 6 Mar 2025 11:21:51 +0000
-Message-ID: <a0b319b4f42c4286a120fbb88a88adeb@huawei.com>
-References: <20250305180225.1226-1-shiju.jose@huawei.com>
-	<20250305180225.1226-3-shiju.jose@huawei.com>
- <20250306171925.00002721@huawei.com>
-In-Reply-To: <20250306171925.00002721@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741264780; c=relaxed/simple;
+	bh=JJ0Q91q0isqR2yrIt+oeh7eBi8iOTsMa2VAjIHpmSgU=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nUplEDukIqHjKbUAHOnwH0NqPXUVBxB39p+dl44UkDbHz1OuhAQAiNjsfxCInJjBkZJU45KX1dFXBxZBF+i/z2LiXBcnL7Wn8U0vcfhJQYfcZ8OpULn1ARDB2Y6QXvxSIVcFE8uL148feY/BNY+A1kjpjr61k/ItuzU02a9sWog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-3c9ff7000001d7ae-ed-67c9977f06ad
+Message-ID: <f64819e2-8dc6-4907-b8bf-faec66eecd0e@sk.com>
+Date: Thu, 6 Mar 2025 21:39:26 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ harry.yoo@oracle.com, ying.huang@linux.alibaba.com,
+ gregkh@linuxfoundation.org, rakie.kim@sk.com, akpm@linux-foundation.org,
+ rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+ Jonathan.Cameron@huawei.com, dave.jiang@intel.com, horen.chuang@linux.dev,
+ hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
+ yunjeong.mun@sk.com
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
+ memoryless nodes
+To: Gregory Price <gourry@gourry.net>
+References: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
+ <20250226213518.767670-2-joshua.hahnjy@gmail.com>
+ <b8ac8654-92bd-4c08-a3fc-e28a7be5e0e6@sk.com>
+ <Z8cqe3BCdobsV4-2@gourry-fedora-PF4VCD3F>
+Content-Language: ko
+From: Honggyu Kim <honggyu.kim@sk.com>
+In-Reply-To: <Z8cqe3BCdobsV4-2@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDIsWRmVeSWpSXmKPExsXC9ZZnoW799JPpBtd/iVvMWb+GzWL61AuM
+	FiduNrJZ/Lx7nN2iefF6NovVm3wt7i97xmJxu/8cq8WqhdfYLI5vncduse8iUMPOh2/ZLJbv
+	62e0uLxrDpvFvTX/WS3mfpnKbLF6TYaDoMfhN++ZPXbOusvu0d12md2j5chbVo/Fe14yeWxa
+	1cnmsenTJHaPEzN+s3jsfGjpsbBhKrPH/rlr2D3OXazw+Pj0FovH501yAXxRXDYpqTmZZalF
+	+nYJXBn7D5xiLrilVtF04j9zA+N36S5GTg4JAROJOV1XmWHsr+evs4LYvAKWEvMX7QezWQRU
+	JK6eWMkMEReUODnzCQuILSogL3H/1gz2LkYuDmaBx8wSn+50gRUJC0RJ7Hz1l6mLkYNDREBV
+	ou2KO0iNkMBZRokV6x6ygdQwC4hIzO5sA6tnE1CTuPJyEhOIzSlgJtHyu58FosZMomtrFyOE
+	LS+x/e0cZpBBEgK32CVOzFkMdbWkxMEVN1gmMArOQnLgLCQ7ZiGZNQvJrAWMLKsYhTLzynIT
+	M3NM9DIq8zIr9JLzczcxAuN4We2f6B2Mny4EH2IU4GBU4uH1mHoyXYg1say4MvcQowQHs5II
+	70U/oBBvSmJlVWpRfnxRaU5q8SFGaQ4WJXFeo2/lKUIC6YklqdmpqQWpRTBZJg5OqQZGr3LJ
+	bytXnZXT+eGyQq/zY/bNXVMPWviZBYTH/lV06bqlkaYlcNVdc5+Pa0LPX9Ga5rMtD7bWfC4+
+	lN2Ve/NhqNWzrV/k8mffSZT626T+Vb+gUqHqqbHDvQBG76PHfuy0Xty/6z6T0ikFVrEGsfC9
+	kcUyssydq24bdBuv7JnCcUDlXKt14UklluKMREMt5qLiRADfqXmK3wIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrIIsWRmVeSWpSXmKPExsXCNUNLT7d++sl0gwdrOSzmrF/DZjF96gVG
+	ixM3G9ksft49zm7RvHg9m8XqTb4W95c9Y7G43X+O1WLVwmtsFse3zmO32HcRqOHw3JOsFjsf
+	vmWzWL6vn9Hi8q45bBb31vxntZj7ZSqzxaFrz1ktVq/JsPi9bQWbg4jH4TfvmT12zrrL7tHd
+	dpndo+XIW1aPxXteMnlsWtXJ5rHp0yR2jxMzfrN47Hxo6bGwYSqzx/65a9g9zl2s8Pj49BaL
+	x7fbHh6LX3xg8vi8SS5AIIrLJiU1J7MstUjfLoErY/+BU8wFt9Qqmk78Z25g/C7dxcjJISFg
+	IvH1/HVWEJtXwFJi/qL9YDaLgIrE1RMrmSHighInZz5hAbFFBeQl7t+awd7FyMXBLPCYWeLT
+	nS6wImGBKImdr/4ydTFycIgIqEq0XXEHqRESOMsosWLdQzaQGmYBEYnZnW1g9WwCahJXXk5i
+	ArE5BcwkWn73s0DUmEl0be1ihLDlJba/ncM8gZFvFpI7ZiEZNQtJyywkLQsYWVYximTmleUm
+	ZuaY6hVnZ1TmZVboJefnbmIERuyy2j8TdzB+uex+iFGAg1GJh9dj6sl0IdbEsuLK3EOMEhzM
+	SiK8F/2AQrwpiZVVqUX58UWlOanFhxilOViUxHm9wlMThATSE0tSs1NTC1KLYLJMHJxSDYws
+	06O6S+W7VjFM/FHQZ7jlC+fl62feX1foMfdWPzAjOOmWgvICFfbmILEEduYjAfPeXllx/OPi
+	U8m5u3SVxd9d7mEp9Jhk/rThAqfxlwXWx64k72LJ3nhkd0d8+rzYkgQjh+0ro+smrnb68VNQ
+	+twbNvWZ3QzvvL4v7Z9W8132oXXfwSr+y/1KLMUZiYZazEXFiQDNibwU1AIAAA==
+X-CFilter-Loop: Reflected
 
->-----Original Message-----
->From: Jonathan Cameron <jonathan.cameron@huawei.com>
->Sent: 06 March 2025 09:19
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-edac@vger.kernel.org; linux-acpi@vger.kernel.org; bp@alien8.de;
->tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; leo.duran@amd.com; Yazen.Ghannam@amd.com; linux-
->cxl@vger.kernel.org; dan.j.williams@intel.com; dave@stgolabs.net;
->dave.jiang@intel.com; alison.schofield@intel.com; vishal.l.verma@intel.com=
-;
->ira.weiny@intel.com; david@redhat.com; Vilas.Sridharan@amd.com; linux-
->mm@kvack.org; linux-kernel@vger.kernel.org; rientjes@google.com;
->jiaqiyan@google.com; Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: Re: [PATCH v2 2/3] ACPI:RAS2: Add ACPI RAS2 driver
->
->On Wed, 5 Mar 2025 18:02:23 +0000
-><shiju.jose@huawei.com> wrote:
->
->> From: Shiju Jose <shiju.jose@huawei.com>
+Hi Gregory,
+
+On 3/5/2025 1:29 AM, Gregory Price wrote:
+> On Thu, Feb 27, 2025 at 11:32:26AM +0900, Honggyu Kim wrote:
+>> Actually, we're aware of this issue and currently trying to fix this.
+>> In our system, we've attached 4ch of CXL memory for each socket as
+>> follows.
 >>
->> Add support for ACPI RAS2 feature table (RAS2) defined in the ACPI 6.5
->> Specification, section 5.2.21.
->> Driver defines RAS2 Init, which extracts the RAS2 table and driver
->> adds auxiliary device for each memory feature which binds to the
->> RAS2 memory driver.
+>>          node0             node1
+>>        +-------+   UPI   +-------+
+>>        | CPU 0 |-+-----+-| CPU 1 |
+>>        +-------+         +-------+
+>>        | DRAM0 |         | DRAM1 |
+>>        +---+---+         +---+---+
+>>            |                 |
+>>        +---+---+         +---+---+
+>>        | CXL 0 |         | CXL 4 |
+>>        +---+---+         +---+---+
+>>        | CXL 1 |         | CXL 5 |
+>>        +---+---+         +---+---+
+>>        | CXL 2 |         | CXL 6 |
+>>        +---+---+         +---+---+
+>>        | CXL 3 |         | CXL 7 |
+>>        +---+---+         +---+---+
+>>          node2             node3
 >>
->> Driver uses PCC mailbox to communicate with the ACPI HW and the driver
->> adds OSPM interfaces to send RAS2 commands.
+>> The 4ch of CXL memory are detected as a single NUMA node in each socket,
+>> but it shows as follows with the current N_POSSIBLE loop.
 >>
->> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
->> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
->> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->
->Hi Shiju,
->
->I took another look through as it's been a while and I've pretty much forg=
-otten
->this code :(
->
->Anyhow, a few minor comments inline.
+>> $ ls /sys/kernel/mm/mempolicy/weighted_interleave/
+>> node0 node1 node2 node3 node4 node5
+>> node6 node7 node8 node9 node10 node11
+> 
+> This is insufficient information for me to assess the correctness of the
+> configuration. Can you please show the contents of your CEDT/CFMWS and
+> SRAT/Memory Affinity structures?
+> 
+> mkdir acpi_data && cd acpi_data
+> acpidump -b
+> iasl -d *
+> cat cedt.dsl  <- find all CFMWS entries
+> cat srat.dsl  <- find all Memory Affinity entries
 
-Hi Jonathan,
+I'm not able to provide all the details as srat.dsl has too much info.
 
-Thanks for the feedbacks.
+   $ wc -l srat.dsl
+   25229 srat.dsl
 
-Please find reply inline.
+Instead, I can show you that there are 4 diffferent proximity domains
+with "Enabled : 1" with the following filtered output from srat.dsl.
+
+   $ grep -E "Proximity Domain :|Enabled : " srat.dsl | cut -c 31- | sed 
+'N;s/\n//' | sort | uniq
+          Enabled : 0       Enabled : 0
+   Proximity Domain : 00000000       Enabled : 0
+   Proximity Domain : 00000000       Enabled : 1
+   Proximity Domain : 00000001       Enabled : 1
+   Proximity Domain : 00000006       Enabled : 1
+   Proximity Domain : 00000007       Enabled : 1
+
+We don't actually have to use those complicated commands to check this
+as dmesg clearly prints the SRAT and node numbers as follows.
+
+   [    0.009915] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x7fffffff]
+   [    0.009917] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0x207fffffff]
+   [    0.009919] ACPI: SRAT: Node 1 PXM 1 [mem 
+0x60f80000000-0x64f7fffffff]
+   [    0.009924] ACPI: SRAT: Node 2 PXM 6 [mem 
+0x2080000000-0x807fffffff] hotplug
+   [    0.009925] ACPI: SRAT: Node 3 PXM 7 [mem 
+0x64f80000000-0x6cf7fffffff] hotplug
+
+The memoryless nodes are printed as follows after those ACPI, SRAT,
+Node N PXM M messages.
+
+   [    0.010927] Initmem setup node 0 [mem 
+0x0000000000001000-0x000000207effffff]
+   [    0.010930] Initmem setup node 1 [mem 
+0x0000060f80000000-0x0000064f7fffffff]
+   [    0.010992] Initmem setup node 2 as memoryless
+   [    0.011055] Initmem setup node 3 as memoryless
+   [    0.011115] Initmem setup node 4 as memoryless
+   [    0.011177] Initmem setup node 5 as memoryless
+   [    0.011238] Initmem setup node 6 as memoryless
+   [    0.011299] Initmem setup node 7 as memoryless
+   [    0.011361] Initmem setup node 8 as memoryless
+   [    0.011422] Initmem setup node 9 as memoryless
+   [    0.011484] Initmem setup node 10 as memoryless
+   [    0.011544] Initmem setup node 11 as memoryless
+
+This is related why the 12 nodes at sysfs knobs are provided with the
+current N_POSSIBLE loop.
+
+> 
+> Basically I need to know:
+> 1) Is each CXL device on a dedicated Host Bridge?
+> 2) Is inter-host-bridge interleaving configured?
+> 3) Is intra-host-bridge interleaving configured?
+> 4) Do SRAT entries exist for all nodes?
+
+Are there some simple commands that I can get those info?
+
+> 5) Why are there 12 nodes but only 10 sources? Are there additional
+>     devices left out of your diagram? Are there 2 CFMWS but and 8 Memory
+>     Affinity records - resulting in 10 nodes? This is strange.
+
+My blind guess is that there could be a logic node that combines 4ch of
+CXL memory so there are 5 nodes per each socket.  Adding 2 nodes for
+local CPU/DRAM makes 12 nodes in total.
+
+> 
+> By default, Linux creates a node for each proximity domain ("PXM")
+> detected in the SRAT Memory Affinity tables. If SRAT entries for a
+> memory region described in a CFMWS is absent, it will also create an
+> node for that CFMWS.
+> 
+> Your reported configuration and results lead me to believe you have
+> a combination of CFMWS/SRAT configurations that are unexpected.
+> 
+> ~Gregory
+
+Not sure about this part but our approach with hotplug_memory_notifier()
+resolves this problem.  Rakie will submit an initial working patchset 
+soonish.
 
 Thanks,
-Shiju
->
->Thanks,
->
->Jonathan
->
->> diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c new file mode
->> 100755 index 000000000000..8831a2bd5fab
->> --- /dev/null
->> +++ b/drivers/acpi/ras2.c
->
->
->
->
->> +static int ras2_register_pcc_channel(struct ras2_mem_ctx *ras2_ctx, int
->pcc_id)
->> +{
->> +	struct ras2_pcc_subspace *pcc_subspace;
->> +	struct pcc_mbox_chan *pcc_chan;
->> +	struct mbox_client *mbox_cl;
->> +
->> +	if (pcc_id < 0)
->> +		return -EINVAL;
->> +
->> +	mutex_lock(&ras2_pcc_lock);
->> +	list_for_each_entry(pcc_subspace, &ras2_pcc_subspaces, elem) {
->> +		if (pcc_subspace->pcc_id !=3D pcc_id)
->> +			continue;
->> +		ras2_ctx->pcc_subspace =3D pcc_subspace;
->> +		pcc_subspace->ref_count++;
->> +		mutex_unlock(&ras2_pcc_lock);
->> +		return 0;
->> +	}
->> +	mutex_unlock(&ras2_pcc_lock);
->> +
->> +	pcc_subspace =3D kcalloc(1, sizeof(*pcc_subspace), GFP_KERNEL);
->
->if allocating a count of 1, why not kzalloc?
-
-Will use kzalloc.
->
->> +	if (!pcc_subspace)
->> +		return -ENOMEM;
->
->
->
->
->> +static int acpi_ras2_parse(void)
->> +{
->> +	struct acpi_ras2_pcc_desc *pcc_desc_list;
->> +	int pcc_id;
->> +	u8 count =3D 0;
->> +	int rc, i;
->> +
->> +	if (ras2_tab->header.length  < sizeof(struct acpi_table_ras2)) {
->
->extra space before <
-
-Will fix.=20
->
->Maybe sizeof(*ras2_tab) is cleaner.
-Sure.
->
->> +		pr_warn(FW_WARN "ACPI RAS2 table present but broken (too
->short #1)\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	if (!ras2_tab->num_pcc_descs) {
->> +		pr_warn(FW_WARN "No PCC descs in ACPI RAS2 table\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	pcc_desc_list =3D (struct acpi_ras2_pcc_desc *)(ras2_tab + 1);
->> +	/* Double scan for the case of only one actual controller */
->> +	pcc_id =3D -1;
->> +	count =3D 0;
->
->Already set above, so no need to do it again.  I'd do it just here.  Can
->put it in the loop init though.
-Will change.
->
->> +	for (i =3D 0; i < ras2_tab->num_pcc_descs; i++, pcc_desc_list++) {
->> +		if (pcc_desc_list->feature_type !=3D RAS2_FEAT_TYPE_MEMORY)
->> +			continue;
->> +		if (pcc_id =3D=3D -1) {
->> +			pcc_id =3D pcc_desc_list->channel_id;
->> +			count++;
->> +		}
->> +		if (pcc_desc_list->channel_id !=3D pcc_id)
->> +			count++;
->> +	}
->> +
->> +	/*
->> +	 * Workaround for the client platform with multiple scrub devices
->> +	 * but uses single PCC subspace for communication.
->> +	 */
->> +	if (count =3D=3D 1) {
->> +		/* Add auxiliary device and bind ACPI RAS2 memory driver */
->> +		rc =3D ras2_add_aux_device(RAS2_MEM_DEV_ID_NAME, pcc_id);
->> +		if (rc)
->> +			return rc;
->> +
->> +		return 0;
->> +	}
->> +
->> +	pcc_desc_list =3D (struct acpi_ras2_pcc_desc *)(ras2_tab + 1);
->> +	count =3D 0;
->
->Maybe set in loop init.
-Sure.
->
->> +	for (i =3D 0; i < ras2_tab->num_pcc_descs; i++, pcc_desc_list++) {
->> +		if (pcc_desc_list->feature_type !=3D RAS2_FEAT_TYPE_MEMORY)
->> +			continue;
->> +		pcc_id =3D pcc_desc_list->channel_id;
->> +		/* Add auxiliary device and bind ACPI RAS2 memory driver */
->obvious enough to drop the comment I think.
-Will do.
->
->> +		rc =3D ras2_add_aux_device(RAS2_MEM_DEV_ID_NAME, pcc_id);
->					 pcc_desc_list->channel_id);
->and no local variable.
-Ok.
->
->> +		if (rc)
->> +			return rc;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +void __init acpi_ras2_init(void)
->> +{
->> +	acpi_status status;
->> +	int rc;
->> +
->> +	status =3D acpi_get_table(ACPI_SIG_RAS2, 0,
->> +				(struct acpi_table_header **)&ras2_tab);
->> +	if (ACPI_FAILURE(status) || !ras2_tab) {
->> +		const char *msg =3D acpi_format_exception(status);
->> +
->> +		pr_err("Failed to get table, %s\n", msg);
->
->If only going to use it here maybe
->		pr_err("Failed to get table, %s\n",
->		       acpi_format_exception(status));
->and save on the local variable.
-Will change.
->
->> +		return;
->> +	}
->> +
->> +	rc =3D acpi_ras2_parse();
->> +	if (rc) {
->> +		acpi_put_table((struct acpi_table_header *)ras2_tab);
->> +		pr_err("Failed to parse RAS2 table\n");
->> +	}
->> +}
->> diff --git a/include/acpi/ras2.h b/include/acpi/ras2.h
->> new file mode 100644
->> index 000000000000..5b27c1f30096
->> --- /dev/null
->> +++ b/include/acpi/ras2.h
->> @@ -0,0 +1,48 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * ACPI RAS2 driver header file
->> + *
->> + * Copyright (c) 2024-2025 HiSilicon Limited
->> + */
->> +
->> +#ifndef _ACPI_RAS2_H
->> +#define _ACPI_RAS2_H
->> +
->> +#include <linux/acpi.h>
->> +#include <linux/auxiliary_bus.h>
->> +#include <linux/mailbox_client.h>
->> +#include <linux/mutex.h>
->> +#include <linux/types.h>
->> +
->> +#define RAS2_PCC_CMD_COMPLETE	BIT(0)
->> +#define RAS2_PCC_CMD_ERROR	BIT(2)
->> +
->I think these bits are from table 14.11 and
->generic to all PCC status registers? Should these
->have more generic names rather than ras2 specific ones?
-Yes.
-Instead will use PCC_STATUS_CMD_ COMPLETE and  PCC_STATUS_ ERROR
-from include/acpi/pcc.h.=20
-
->
->> +/* RAS2 specific PCC commands */
->> +#define RAS2_PCC_CMD_EXEC 0x01
->Are we mixing commands and field definitions both
->with prefix RAS2_PCC_CMD_ ?  That is somewhat
->confusing.
-Will add Table 5.82: .. here in the comment and=20
-Is rename to PCC_CMD_ EXEC_RAS2  better?
->
->> +
->> +#define RAS2_AUX_DEV_NAME "ras2"
->> +#define RAS2_MEM_DEV_ID_NAME "acpi_ras2_mem"
->> +
->I would add a forwards def
->struct device;
-Sure.
->
->whilst it is really unlikely that headers would ever be reorganized
->such that auxiliary_bus.h would not include device.h given the embedded
->device we shouldn't rely on that here.
->
->> +/* Data structure RAS2 table */
->> +struct ras2_mem_ctx {
->> +	struct auxiliary_device adev;
->> +	/* Lock to provide mutually exclusive access to PCC channel */
->> +	struct mutex lock;
->> +	struct device *dev;
->> +	struct acpi_ras2_shmem __iomem *comm_addr;
->> +	void *pcc_subspace;
->> +	int id;
->> +};
->> +
->> +#ifdef CONFIG_ACPI_RAS2
->> +void __init acpi_ras2_init(void);
->> +int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd);
->> +#else
->> +static inline void acpi_ras2_init(void) { }
->> +
->> +static inline int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16
->cmd)
->
->Is this stub ever needed?  To me it seems unlikely
->we would have a user that is built without a dependency
->on CONFIG_ACPI_RAS2.  This is different from acpi_ras2_init()
->which makes much more sense to me.
-Ok will remove.
->
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +#endif
->> +#endif /* _ACPI_RAS2_H */
-
-Thanks,
-Shiju
-
+Honggyu
 
