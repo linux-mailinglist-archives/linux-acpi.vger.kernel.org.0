@@ -1,110 +1,165 @@
-Return-Path: <linux-acpi+bounces-11878-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11879-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D74A54150
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 04:44:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93757A54159
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 04:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0823AA01E
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 03:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE750165519
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 03:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C03D1991B6;
-	Thu,  6 Mar 2025 03:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlxwznnS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D44198A37;
+	Thu,  6 Mar 2025 03:45:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEDA156225;
-	Thu,  6 Mar 2025 03:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD183B192;
+	Thu,  6 Mar 2025 03:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741232659; cv=none; b=rLxv6UCd3l4pKB7d1D4VWX2pV8g8/Qp3MNuZ+gJTX+fm9Kp7UveC/V9OT43hF9EE8NhBe2HeKC/i8DxbBKcp3moi+7DYfEFUTmsOMgKa1PlD2ozsm+bbv6YbNrrJeW1S0YaX56pYW6HSJOb2fJ5A73PBl607wlgsqcIwZN2WlLw=
+	t=1741232719; cv=none; b=dcMuCDHtOB67d8jq6YtCrY3263PeSl2zVO1KSX0M0S8VcgvOiVn/TtFxdtZLdaCDCPwcTya6m8ZEkwskk0svmSgkuND87GZ3pN1mRTw+oBbncj6t6rKNJacVRILnuxAckEqVH5vuBjyLoYYDy7dmwf0ftAgcTNPW1oo7EH/ayt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741232659; c=relaxed/simple;
-	bh=zbuxOIdgJUxZ4n8mVot+kiQOUkVyHXs87OyG172qmlk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JKtyltKiHPm9Q3ruyOiOYPP+eQb1VSebTGqXqQNARkbsRFAoxGfdJYtyqCwOutGsOz6EFh+72AOxYabr5f1Rk8Mi14diQIkbmFFXaCV0awGAkICXaT7tY3Fv8hjEjxChhG8WQvhZZhMiIXzn6JlX5a2D7y6JYI8edmIkj2t/Hbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlxwznnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386D0C4CEE4;
-	Thu,  6 Mar 2025 03:44:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741232654;
-	bh=zbuxOIdgJUxZ4n8mVot+kiQOUkVyHXs87OyG172qmlk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RlxwznnSVd2HmpCdVhZNgE6a9GKYx0jLMHE0x0VqxVVV6QRAdvF8L6tbE9GL421nH
-	 7cA64wpmnv4rwWrm0jEW7Jld4heyq9LB9c5SVcTxwQITg41JjSS0BrwGxrLmJd668p
-	 yhcuTaiFWIRlqvKZygv6c1TRmgo0FKBfqLJMZGl0e0/xIrxFSZwBJQ8MRUdaaAMNIi
-	 1TKJ1KU8Hf+f1GvllMW4KVxwObyTU+4rjzrQub2Bwd21+WT6gTSPMz5L27joxJzgtp
-	 NAd9ptyWZ57454ja9cvV8HKWccbh2FI8cTXZu7RZEeseR6m1/Our8n+bwnG85eACcL
-	 V8hUVUtl+tZZg==
-From: Mario Limonciello <superm1@kernel.org>
-To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Luke D . Jones" <luke@ljones.dev>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: platform-driver-x86@vger.kernel.org (open list:AMD PMF DRIVER),
-	linux-kernel@vger.kernel.org (open list),
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	me@kylegospodneti.ch,
-	Denis Benato <benato.denis96@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Yijun Shen <Yijun.Shen@dell.com>
-Subject: [PATCH] platform/x86/amd: pmf: Fix missing hidden options for Smart PC
-Date: Wed,  5 Mar 2025 21:44:02 -0600
-Message-ID: <20250306034402.50478-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1741232719; c=relaxed/simple;
+	bh=QoWgWcRJAnq489uxfdsGr04fuBwQ5eiqsqCp7mEVcG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=i4PWFyeyEYh/lHIZco12QdpQywgwTmucGSxrx7QYEUSblt9pkb1ZepTBsa3Yk5D1erjX6g4a6W5jLkd5jYL0uJocKIqU/lBbOwBRW81ZyCyN+PkhmXHuTlxU+KnjiBa8EPG5JEnS9mbLc9FwUZsuW0WwljSbiX904mq6pvW+zrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Z7ZyR3JwPz1R6D7;
+	Thu,  6 Mar 2025 11:43:27 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id CF4BC1402C1;
+	Thu,  6 Mar 2025 11:45:05 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 6 Mar 2025 11:45:05 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 6 Mar
+ 2025 11:45:05 +0800
+Message-ID: <a0b0cbfb-6a43-db68-3c0c-c5b1c498c3f4@huawei.com>
+Date: Thu, 6 Mar 2025 11:44:56 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 02/14] mailbox: pcc: Always clear the platform ack
+ interrupt first
+To: Sudeep Holla <sudeep.holla@arm.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Jassi Brar
+	<jassisinghbrar@gmail.com>, Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+ <20250303-pcc_fixes_updates-v1-2-3b44f3d134b1@arm.com>
+ <397910e0-38eb-553a-2bd2-c338d8c3a49c@huawei.com>
+ <20250305142945.kzs4hfljbktkndbe@bogus>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20250305142945.kzs4hfljbktkndbe@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-From: Mario Limonciello <mario.limonciello@amd.com>
 
-amd_pmf_get_slider_info() checks the current profile to report correct
-value to the TA inputs.  If hidden options are in use then the wrong
-values will be reported to TA.
-
-Add the two compat options PLATFORM_PROFILE_BALANCED_PERFORMANCE and
-PLATFORM_PROFILE_QUIET for this use.
-
-Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-Fixes: 9a43102daf64d ("platform/x86/amd: pmf: Add balanced-performance to hidden choices")
-Fixes: 44e94fece5170 ("platform/x86/amd: pmf: Add 'quiet' to hidden choices")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/platform/x86/amd/pmf/spc.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/platform/x86/amd/pmf/spc.c b/drivers/platform/x86/amd/pmf/spc.c
-index f34f3130c3307..1d90f9382024b 100644
---- a/drivers/platform/x86/amd/pmf/spc.c
-+++ b/drivers/platform/x86/amd/pmf/spc.c
-@@ -219,12 +219,14 @@ static int amd_pmf_get_slider_info(struct amd_pmf_dev *dev, struct ta_pmf_enact_
- 
- 	switch (dev->current_profile) {
- 	case PLATFORM_PROFILE_PERFORMANCE:
-+	case PLATFORM_PROFILE_BALANCED_PERFORMANCE:
- 		val = TA_BEST_PERFORMANCE;
- 		break;
- 	case PLATFORM_PROFILE_BALANCED:
- 		val = TA_BETTER_PERFORMANCE;
- 		break;
- 	case PLATFORM_PROFILE_LOW_POWER:
-+	case PLATFORM_PROFILE_QUIET:
- 		val = TA_BEST_BATTERY;
- 		break;
- 	default:
--- 
-2.43.0
-
+在 2025/3/5 22:29, Sudeep Holla 写道:
+> On Wed, Mar 05, 2025 at 11:45:35AM +0800, lihuisong (C) wrote:
+>> 在 2025/3/3 18:51, Sudeep Holla 写道:
+>>> The PCC mailbox interrupt handler (pcc_mbox_irq()) currently checks
+>>> for command completion flags and any error status before clearing the
+>>> interrupt.
+>>>
+>>> The below sequence highlights an issue in the handling of PCC mailbox
+>>> interrupts, specifically when dealing with doorbell notifications and
+>>> acknowledgment between the OSPM and the platform where type3 and type4
+>>> channels are sharing the interrupt.
+>>>
+>>>           Platform Firmware              OSPM/Linux PCC driver
+>>> ------------------------------------------------------------------------
+>>>                                        build message in shmem
+>>>                                        ring type3 channel doorbell
+>>> receives the doorbell interrupt
+>>>     process the message from OSPM
+>>>     build response for the message
+>>> ring the platform ack interrupt to OSPM
+>>> 				--->
+>>> build notification in type4 channel
+>>>                                        start processing in pcc_mbox_irq()
+>>>                                         enter pcc handler for type4 chan
+>>>                                            command complete cleared
+>>> 			        	 read the notification
+>>>                                   <---     clear platform ack irq
+>>>     		* no effect from above as platform ack irq *
+>>> 		* not yet triggered on this channel *
+>>> ring the platform ack irq on type4 channel
+>>> 				--->
+>>>                                         leave pcc handler for type4 chan
+>>>                                         enter pcc handler for type3 chan
+>>>                                            command complete set
+>>> 					 read the response
+>>>                                   <---     clear platform ack irq
+>>>                                         leave pcc handler for type3 chan
+>>>                                        leave pcc_mbox_irq() handler
+>>>                                        start processing in pcc_mbox_irq()
+>>>                                         enter pcc handler for type4 chan
+>>>                                         leave pcc handler for type4 chan
+>>>                                         enter pcc handler for type3 chan
+>>>                                         leave pcc handler for type3 chan
+>>>                                        leave pcc_mbox_irq() handler
+>> This is not easy to understand to me.
+>> The issue as below described is already very clear to me.
+>> So suggest remove above flow graph.
+> I understood it with the graph similar to the one above, though I simplified
+> it in terms of PCC rather than specific IP reference.
+>
+>>> The key issue occurs when OSPM tries to acknowledge platform ack
+>>> interrupt for a notification which is ready to be read and processed
+>>> but the interrupt itself is not yet triggered by the platform.
+>>>
+>>> This ineffective acknowledgment leads to an issue later in time where
+>>> the interrupt remains pending as we exit the interrupt handler without
+>>> clearing the platform ack interrupt as there is no pending response or
+>>> notification. The interrupt acknowledgment order is incorrect.
+>>>
+>> Has this issue been confired? It's more better if has the log.😁
+>> But it seems a valid issue.
+> Yes Robbie reported this. He is away and can't test or respond until next
+> week. The log just says there was loads of spurious interrupts and nobody
+> cared log as you got in the first patch of yours fixing similar race.
+Yeah
+>
+>>> To resolve this issue, the platform acknowledgment interrupt should
+>>> always be cleared before processing the interrupt for any notifications
+>>> or response.
+>>>
+>> AFAIC，always clearing the platform ack interrupt first which is also the
+>> communication flow as ACPI spec described.
+> Indeed, not sure how we missed it so far.
+>
+>> I am not sure if it is ok when triggering interrupt and clearing interrupt
+>> occur concurrently.
+> Should be OK as we start clearing all the channels that share, if the
+> handler doesn't clear any source, the interrupt must remain asserted.
+ok, thank you for clarifying to me.
+>
+>> But this scenario is always possible. I think It doesn't matter with this
+>> patch. It's just my confusion.
+> Indeed, it can happen any time as you mentioned. No worries better to ask
+> and clarify than assume. Thanks for your time and review.
+>
+> --
+> Regards,
+> Sudeep
+>
+>
+> .
 
