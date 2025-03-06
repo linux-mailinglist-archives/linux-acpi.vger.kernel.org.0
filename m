@@ -1,184 +1,143 @@
-Return-Path: <linux-acpi+bounces-11893-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11894-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE92A54F61
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 16:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5F7A5531F
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 18:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C0B169DA9
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 15:42:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D99F175209
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Mar 2025 17:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BB020E337;
-	Thu,  6 Mar 2025 15:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622DC23DE85;
+	Thu,  6 Mar 2025 17:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LnU8vas2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6+jMDYe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2E1148FF5;
-	Thu,  6 Mar 2025 15:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334C319D8B7;
+	Thu,  6 Mar 2025 17:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741275725; cv=none; b=INTHvbE4aB7yFlGkVK/yE5MWwOoVK2xJidd9crL98bqSK3Z/2LfB8hfaJSuv8jNZJhbObgoex//PPXxflFUVxh3CcUMy3Xd5Z5rygrvXDb8hY/TDN5KddFddqNhPMSXLQ42rQosqXNYg1OtDHN6rRMVooEmhYKhExiVL4T3GYAM=
+	t=1741282329; cv=none; b=CvPqiQEVZBdAqOf1ODZw53G7VTsaQrUQDCxVltvxxSGb3KUnQjm+mYXsca6hm6pf/3AB1KSUKwyoR9tHF3z/U8QC1nD8mwVVY4cwZS2HHFWvZrnAb5fHUSRbpe7V869lFIkx8YkCrrcttP1c9BsO0yCmIQOkdzMnD1snR4U1Ojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741275725; c=relaxed/simple;
-	bh=P0tUfjIjCs87Zlh7lJS0itIdMdK/i5HsXGug2oQc29E=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=EbvwNCXZOsi+yZzmIL2AWDYGoKE1R6RBwYAvfEHq/TGaOq1eXnqqE1NIZDwisduOVOYGg9s9mLoJZt5r5eSFC/FfwaZFj++UhaTfGWWUPwoMwf0hr/NLzy/90tk0Kr2NG0B5zs+FznMCaVFVJQv5Jp5C2f76+2vLNbxJLuS3eaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LnU8vas2; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741275723; x=1772811723;
-  h=date:from:to:cc:subject:message-id;
-  bh=P0tUfjIjCs87Zlh7lJS0itIdMdK/i5HsXGug2oQc29E=;
-  b=LnU8vas2QrgbPUWPwZgtf/GJzpbchH9qrRzVbtyBYDE7R2qcnhWTNVAQ
-   LKsTZIOUkFLeRqzlsIkv4/2dxG1z//cu2MtmHgfM3WBWBc/J9EhjSDkVo
-   7KD1qqvYvgRohzn6ZqK3GAonMkzoNWULgjatAFUtPdB3x/CbzxTxL8N3W
-   jo1o8N1Znl24kaZwzSUfppDBCEdMeW25nof2Vq2cXQjFaJGVTB/f1xSDh
-   x2toqBhXRyHrDPeToIPRD239KKXPcFXnbNxpPviX7uu0DxKUuYhgGeEOt
-   gCI+OrrAhg9uv1wuz1o1YO7oykoIroazZ+BMyc1fjcogqYv3wTg+lKgQI
-   w==;
-X-CSE-ConnectionGUID: ba5gU+H8Q8+veLIKYhMQWQ==
-X-CSE-MsgGUID: y3Y+JpOKR/WmG0FbQQuT9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="42532278"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="42532278"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 07:42:02 -0800
-X-CSE-ConnectionGUID: 2/Q5DHQvTLOOoapCKc6YYA==
-X-CSE-MsgGUID: JM9d/jVWTlma2fitr3nWLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="149987876"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 06 Mar 2025 07:42:01 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tqDMF-000NEH-0M;
-	Thu, 06 Mar 2025 15:41:59 +0000
-Date: Thu, 06 Mar 2025 23:41:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
- 96791086aa226b85fe090573b9e3668ac53d5364
-Message-ID: <202503062338.c04KgICA-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1741282329; c=relaxed/simple;
+	bh=Pk2ue5j/pk+6zhxGTLAOxyRNOC5jmc+8Ec9aVHb3TOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QNBu6ZKxIkxcnWqpxuGOpjXnBxlq1qOAbl4UvwI0XpzA+oWTxzPdhaHPwvO8DdKxt0MP1C5VNs/QO5UQlqfCQRB7cEQ3jyrUniQaA7ueCc1WN/3f4ro+3rIQAT7lFL9o3lOJ39exE/fQ1RlXKWGAZ3cN7ZX0rIjjiV3vfyq2BhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6+jMDYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254D6C4CEE0;
+	Thu,  6 Mar 2025 17:32:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741282328;
+	bh=Pk2ue5j/pk+6zhxGTLAOxyRNOC5jmc+8Ec9aVHb3TOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C6+jMDYe1JuTTkwoB6+8AIctO24faWlduIkpVx8m0Q/YtQ2oW6RkY8pSkT3gQpqhj
+	 hsuJqphwB/otmYETcTSRVrcSYLDLMjeVWRkVBYS9gmu/d6e95ue4XA8Tt5EAppu+ch
+	 ooORaobj/7p9zQlknngSLmJgAyi/CrtRfN4obZR/RNuNGVGpV1vh4IqeOH8pWy4Ace
+	 eUYXHWK1Zbd/TgrgiU2BxA1m308egnrUbcnkZAcfUHYZxc7Pe2vnzAWfBI4YoWDyq+
+	 AQ+4LfmsOvPcgY9RaRWnOjX4RCzabvvXyphlZv6onjJDTYyWK/2rv+QRFeukJVvWZB
+	 hJ9ZvwIHb2wpw==
+Date: Thu, 6 Mar 2025 17:32:06 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org,
+	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	mhklinux@outlook.com, decui@microsoft.com, catalin.marinas@arm.com,
+	will@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, hpa@zytor.com,
+	daniel.lezcano@linaro.org, joro@8bytes.org, robin.murphy@arm.com,
+	arnd@arndb.de, jinankjain@linux.microsoft.com,
+	muminulrussell@gmail.com, skinsburskii@linux.microsoft.com,
+	mrathor@linux.microsoft.com, ssengar@linux.microsoft.com,
+	apais@linux.microsoft.com, Tianyu.Lan@microsoft.com,
+	stanislav.kinsburskiy@gmail.com, gregkh@linuxfoundation.org,
+	vkuznets@redhat.com, prapal@linux.microsoft.com,
+	muislam@microsoft.com, anrayabh@linux.microsoft.com,
+	rafael@kernel.org, lenb@kernel.org, corbet@lwn.net
+Subject: Re: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
+ expose /dev/mshv to VMMs
+Message-ID: <Z8ncFkwzxi9qJFD3@liuwe-devbox-debian-v2>
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
+ <f332b77a-940f-4007-a44a-de64878d5201@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f332b77a-940f-4007-a44a-de64878d5201@linux.microsoft.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 96791086aa226b85fe090573b9e3668ac53d5364  Merge branch 'pm-sleep-testing' into bleeding-edge
+On Thu, Feb 27, 2025 at 10:50:30AM -0800, Roman Kisel wrote:
+> 
+> 
+> 
+> On 2/26/2025 3:08 PM, Nuno Das Neves wrote:
+> > Provide a set of IOCTLs for creating and managing child partitions when
+> > running as root partition on Hyper-V. The new driver is enabled via
+> > CONFIG_MSHV_ROOT.
+> > 
+> 
+> [...]
+> 
+> 
+> As I understood, the changes fall into these buckets:
+> 
+> 1. Partition management (VPs and memory). Built of the top of fd's which
+>    looks as the right approach. There is ref counting etc.
+> 2. Scheduling. Here, there is the mature KVM and Xen code to find
+>    inspiration in. Xen being the Type 1 hypervisor should likely be
+>    closer to MSHV in my understanding.
 
-Error/Warning (recently discovered and may have been fixed):
+Yes and no.
 
-    https://lore.kernel.org/oe-kbuild-all/202503061203.vRnwilWZ-lkp@intel.com
+When a hypervisor-based scheduler (either classic or core) is used, the
+scheduling model is the same as Xen. In this model, the hypervisor makes
+the scheduling decisions.
 
-    drivers/powercap/dtpm_cpu.c:83:29: error: implicit declaration of function 'sched_cpu_util' [-Wimplicit-function-declaration]
+There is a second scheduler model. In that model, the hypervisor
+delegates scheduling to the Linux kernel. The Linux scheduler makes the
+scheduling decisions. It is similar to KVM.
 
-Error/Warning ids grouped by kconfigs:
+We support both. Which model to use largely depends on the workload and
+the desired behaviors of the system.
 
-recent_errors
-|-- sh-allyesconfig
-|   `-- drivers-powercap-dtpm_cpu.c:error:implicit-declaration-of-function-sched_cpu_util
-`-- um-allyesconfig
-    `-- drivers-powercap-dtpm_cpu.c:error:implicit-declaration-of-function-sched_cpu_util
+This is purely informational in case people wonder why the run vp
+function branches off to two different code paths.
 
-elapsed time: 1446m
+> 3. IOCTL code allocation. Not sure how this is allocated yet given that
+>    the patch series has been through a multi-year review, that must be
+>    settled by now.
+> 4. IOCTLs themselves. The majority just marshals data to the
+>    hypervisor.
+> 
+> Despite the rather large size of the patch, I spot-checked the places
+> where I have the chance to make an informed decision, and could not find
+> anything that'd stand out as suspicious to me. Going to extrapolate that
+> the patch itself should be good enough. Given that this code has been in
+> development and validation for a few years, I'd vote to merge it. That
+> will also enable upstreaming the rest of the VTL mode code that powers
+> Azure Boost (https://github.com/microsoft/OHCL-Linux-Kernel)
+> 
+> Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+> 
 
-configs tested: 79
-configs skipped: 1
+Thank you for the review.
 
-tested configs:
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250306    gcc-13.2.0
-arc                   randconfig-002-20250306    gcc-13.2.0
-arm                              allyesconfig    gcc-14.2.0
-arm                   randconfig-001-20250306    gcc-14.2.0
-arm                   randconfig-002-20250306    gcc-14.2.0
-arm                   randconfig-003-20250306    gcc-14.2.0
-arm                   randconfig-004-20250306    clang-18
-arm64                            allmodconfig    clang-18
-arm64                 randconfig-001-20250306    gcc-14.2.0
-arm64                 randconfig-002-20250306    gcc-14.2.0
-arm64                 randconfig-003-20250306    gcc-14.2.0
-arm64                 randconfig-004-20250306    gcc-14.2.0
-csky                  randconfig-001-20250306    gcc-14.2.0
-csky                  randconfig-002-20250306    gcc-14.2.0
-hexagon                          allmodconfig    clang-21
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250306    clang-21
-hexagon               randconfig-002-20250306    clang-19
-i386        buildonly-randconfig-001-20250306    clang-19
-i386        buildonly-randconfig-002-20250306    clang-19
-i386        buildonly-randconfig-003-20250306    clang-19
-i386        buildonly-randconfig-004-20250306    gcc-12
-i386        buildonly-randconfig-005-20250306    gcc-12
-i386        buildonly-randconfig-006-20250306    clang-19
-loongarch             randconfig-001-20250306    gcc-14.2.0
-loongarch             randconfig-002-20250306    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250306    gcc-14.2.0
-nios2                 randconfig-002-20250306    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                randconfig-001-20250306    gcc-14.2.0
-parisc                randconfig-002-20250306    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc               randconfig-001-20250306    clang-21
-powerpc               randconfig-002-20250306    clang-18
-powerpc               randconfig-003-20250306    gcc-14.2.0
-powerpc64             randconfig-001-20250306    clang-18
-powerpc64             randconfig-002-20250306    clang-21
-powerpc64             randconfig-003-20250306    clang-18
-riscv                             allnoconfig    gcc-14.2.0
-riscv                 randconfig-001-20250306    clang-18
-riscv                 randconfig-002-20250306    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-15
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250306    gcc-14.2.0
-s390                  randconfig-002-20250306    clang-19
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20250306    gcc-14.2.0
-sh                    randconfig-002-20250306    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250306    gcc-14.2.0
-sparc                 randconfig-002-20250306    gcc-14.2.0
-sparc64               randconfig-001-20250306    gcc-14.2.0
-sparc64               randconfig-002-20250306    gcc-14.2.0
-um                               allmodconfig    clang-21
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250306    gcc-12
-um                    randconfig-002-20250306    clang-16
-x86_64      buildonly-randconfig-001-20250306    gcc-11
-x86_64      buildonly-randconfig-002-20250306    clang-19
-x86_64      buildonly-randconfig-003-20250306    clang-19
-x86_64      buildonly-randconfig-004-20250306    clang-19
-x86_64      buildonly-randconfig-005-20250306    clang-19
-x86_64      buildonly-randconfig-006-20250306    gcc-12
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250306    gcc-14.2.0
-xtensa                randconfig-002-20250306    gcc-14.2.0
+Thanks,
+Wei.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> -- 
+> Thank you,
+> Roman
+> 
 
