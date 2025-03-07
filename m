@@ -1,269 +1,157 @@
-Return-Path: <linux-acpi+bounces-11933-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11934-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8E4A56F75
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 18:45:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A119A56F9F
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 18:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700E8164EE2
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 17:45:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1FA4189ACBC
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 17:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EBB23E35E;
-	Fri,  7 Mar 2025 17:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E6924110F;
+	Fri,  7 Mar 2025 17:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="UOOFFYBG"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="sTMNuu3y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12olkn2044.outbound.protection.outlook.com [40.92.22.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB2E21ADD1;
-	Fri,  7 Mar 2025 17:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.22.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741369496; cv=fail; b=uRslT4tJSWdRQ51rq1Zb59Fs3X0RD/ABfASnM3cu6zGKegLm3MdMtzSU0YadBTEtAmu5Ad0N9mcg9Iz1m+FthVH+XOjD2gCnjBH6jA6AXu9BfKM9DNoNOCGegTxsYWOVS21a9oCe4pCbDL7xdy0elX2AgTCMiSiOxIxGyG/J+iY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741369496; c=relaxed/simple;
-	bh=YjdBO6n1h84M5Z4f9a9kE+NtOolu8wQQ2N4pV+0+GsA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cwjMcwoagJPjiyPVD1GGJGDZkadidphgE11bg3QLBQlETLWLLjlvc54/GrDmg/FANe5hxL0VUn+HHzbFXg0b6LTuEiuYxVrPVGGrZI3LuOJropeqnMWkvddtxAH0soS2XOtdyHmz0xz60KHdZxj0m18JGrQ2JOaNO+rzUIkf8rE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=UOOFFYBG; arc=fail smtp.client-ip=40.92.22.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xTLApNqDNCW/n9lhmNMaqeTR5LcRQw0DarZQmlt8As2Q1AL2WT7ouYzPGyMQiMPyD2SVOmnRm0vMsd05IkqRcrHjODdw19dw7oaQNSSTpGQ16FdGhHXCCw0WpoHCMLIR7JeAwbPfE3G7liCicn7Rl2Ixq6i1pGvS+lOA1pSEsaFmW785Bk3/UK2f+N7XzqSfvDJCbivPhhr5O+NHS6c0GedgY5cBvLX4L7SFYR4+7MVUFWvh9DLVSi0M/3Oc3aqwCMau8sGgOw9+OnvbkNnpK47hTXZCUiW/0I4UydJbhYmlzbMUGWSbKn+iO/u6+an/9DWSt8g/1kxwTrGOPJWWIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zxaRTV+2u2c565c4AuFhOsryXHN0KWdm59m1dKiohYc=;
- b=oLyIaat2uZBieIzqYkINJsq1KiadhSRK/daqYf/k0QmLl8/iJPRFDKHFresw5eVUEDrbqSIwa/oEmpDX4sc0DP83lAFUzhGqTydymTy6VBt8OPzl1ZdEvud1TIgSIa6bLGCP64pikjK9zssX/G2gh29tB5qrl8ek1uW/0OebnL0PzNELYLBkhHQ0SQ1KcSsj1kvnTk4VBpdIqcG0wbCiF4kMf6H3OFp12kfqcXi8mGk0VjTqreEIMVcXP5jExWrfs+b/jnKrhH5J16/nLuWTuU1YCMc95ILaeqPl+JJIkJqb6hrf0LcKFq6iIf3VRqJimbco+ddM71GBqET+FgLz7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zxaRTV+2u2c565c4AuFhOsryXHN0KWdm59m1dKiohYc=;
- b=UOOFFYBG7kjnZIKSPYSAFhKY24YYN12OGyaQHhqVURH1rVixOroSOCfnibZ0Z5y5XY98usbJiLoU1lHwr2Di2B4u6Qajmr4Q1U3IipOaj5UUcRphRkhAd5l1F00ySPsr3q5tfzggXPeVimVVNI0I3hyim91QAaTZkHg/HjiBAY88d9RTKTgmEnsf7feUOsn/EGfX6rXjzrKvS3rS7Fhc9aNrb+jjzP8bzOMyvX4quOnn7imLr8KIFkfTxmIwwPJ35WsHXc0PNgaS1vyOdApTRh99hgFPY/S7MBFW/5N4X7KmJuj9IxQZUClKi1us3sk2/Dmuc15DAyDTXZ2mVwbfVQ==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by BL3PR02MB7970.namprd02.prod.outlook.com (2603:10b6:208:355::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.22; Fri, 7 Mar
- 2025 17:44:50 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
- 17:44:50 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arch@vger.kernel.org"
-	<linux-arch@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>
-CC: "kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
-	<haiyangz@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"decui@microsoft.com" <decui@microsoft.com>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-	"joro@8bytes.org" <joro@8bytes.org>, "robin.murphy@arm.com"
-	<robin.murphy@arm.com>, "arnd@arndb.de" <arnd@arndb.de>,
-	"jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
-	"muminulrussell@gmail.com" <muminulrussell@gmail.com>,
-	"skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
-	"mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
-	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-	"apais@linux.microsoft.com" <apais@linux.microsoft.com>,
-	"Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
-	"stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>, "prapal@linux.microsoft.com"
-	<prapal@linux.microsoft.com>, "muislam@microsoft.com"
-	<muislam@microsoft.com>, "anrayabh@linux.microsoft.com"
-	<anrayabh@linux.microsoft.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
-Subject: RE: [PATCH v5 08/10] x86: hyperv: Add mshv_handler irq handler and
- setup function
-Thread-Topic: [PATCH v5 08/10] x86: hyperv: Add mshv_handler irq handler and
- setup function
-Thread-Index: AQHbiKNt6Dmf5ml0nkycDSKgcIRUw7Nn/hsg
-Date: Fri, 7 Mar 2025 17:44:50 +0000
-Message-ID:
- <SN6PR02MB415730AA9A9BFFBB9A62F195D4D52@SN6PR02MB4157.namprd02.prod.outlook.com>
-References:
- <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-9-git-send-email-nunodasneves@linux.microsoft.com>
-In-Reply-To:
- <1740611284-27506-9-git-send-email-nunodasneves@linux.microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|BL3PR02MB7970:EE_
-x-ms-office365-filtering-correlation-id: 600fd99e-7ad6-4356-19f3-08dd5d9fc2c1
-x-microsoft-antispam:
- BCL:0;ARA:14566002|19110799003|15080799006|8060799006|8062599003|461199028|102099032|440099028|3412199025;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?kz6jOW7e5OUAOq6DABWsud/pzw+EsIOnIucx25Vx9LkGFcKcR45NXL8pAnXO?=
- =?us-ascii?Q?nGFJg/bNJp9CTTJBbWig4/I9u6Ups1kX0ihB8Gnr13SWOKna2In/XVYhOryk?=
- =?us-ascii?Q?NPtsRL2iYaQZjrqHVPc05Eh/WRYnJtZa9TXbONN0qW+2glL+O2UJT3hSnPB0?=
- =?us-ascii?Q?o4J1+cwTUidPHZz8ENkepJt4d5N7HZE98CKUjA9dAwbZmut2NYeB7zO+csmE?=
- =?us-ascii?Q?bZ6ScIseVte2wo8WdEkafqssAjSpkMwgsXqF5uI5uBr6agQbehbeCfNUNrdv?=
- =?us-ascii?Q?11Ab5WfR9QwnspqqDGApdrCiBuyfY1GCHLkDD+a7XSFpJLLiBEOmPrIYkebL?=
- =?us-ascii?Q?A6iRypknumQ5HUL/oD2GoXNJr+B43WAcfIxuEvYi1oBfV0cFkhGHbYDrFb21?=
- =?us-ascii?Q?iQmAppGA9jnGQVg5JVtxXbzCI7aijvyInvnjXlgCFbnC5q0gZvWUfXz2QKrV?=
- =?us-ascii?Q?D2C+47O6IIBNJHtxySzB9bSHed+44zH+jJEZWKLxRatuI+THInwhL/Pp9RKd?=
- =?us-ascii?Q?hoeJDmVoQExTDVKhGAIkm4H5ksZFOphLOfoNZzanWNolaVn7seWvJ/8MCcO0?=
- =?us-ascii?Q?GR/Em530BdxyaELa57bbXJXAj8f4TArZYBXGRU8dNVD5hW45i8Pay7OpGTlU?=
- =?us-ascii?Q?1pfz/kSPUbk8FpQCzKj2tgYT2SKvNt0fJiCd2WXiWnYXdfvVb57xAbqe5sCN?=
- =?us-ascii?Q?gug6pBgf+FaETHftKsKmw7yomNTNqt2AtUKbJdU3QgpyFp2L27kN8+KhYriq?=
- =?us-ascii?Q?Qdd9NRiuvqLVvtVda6zcg/0ZjooIy6a6AINpiielgLFfoJercGnNyWr5MFEB?=
- =?us-ascii?Q?1fjdy2FCnGw792E+saYDOYrHmiq8lxojllHUcSrBubc0f1ljWZK8fNA9BYjU?=
- =?us-ascii?Q?yvF6gz9Qo8n29kgpWzXHTT4y4OMZ6OVfae0aXgb/kWAUeSbJXSls+lEKb9Rj?=
- =?us-ascii?Q?WtQMtFLnuNCJJDufhskUP7x8Mx+6WJw2bR5WZmZdQbx8tQStkzbI01sGMTud?=
- =?us-ascii?Q?TMz7Na0MhAzgewdtOTFy+L+pSMKePTwCAOtqPICUSOQq0As=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?DcV42RIjh4FDcwHEL89pKM0xrqrVrmzRNXrmdgTZtzQu83CgFItojQjgfT97?=
- =?us-ascii?Q?DR6cgr0CkusWgOjsMPramFUI9cL+IMRKrZGn8lbEkJXXJEZ1z8wTMF2nTOM/?=
- =?us-ascii?Q?tBeaiphNt4nZ1l/eeVtTKnKKxBqYltYCldeWlZHABDrA4NZ+KW0ggQ0aRBLe?=
- =?us-ascii?Q?NkGLNlNFc6lQz7Ai5ba5/OKH8KwejECVd/XxQAWdnsXg2Rh87KKsYXe8N5rq?=
- =?us-ascii?Q?n/0UrQjB4YTioNoolgrNG07Z35uz62iT036qAa024W75HwbMuIi25ZE0sQUP?=
- =?us-ascii?Q?3llBKNh3VEF7CCFjVH/0rg3C0eArsOv/bbJKueXaAzViC+J+WZjwql5WcMs5?=
- =?us-ascii?Q?8x1erBExR+HaLNTvWzVTGTwyUPTRB6v6N5Mvnw3EWJ3QYmXC6re7HNvPTfGx?=
- =?us-ascii?Q?RQPnNJzXLx6sI/Y+jw/H9zRjymhwOvBzOHPje9UtMbLBDMGu5glk0DGQ/64x?=
- =?us-ascii?Q?SndS1SqMHi0hmqwzB5zqOwiaMM2hMOj/IfJ7voMWlSD1Bw2G+MtgecpNqH7o?=
- =?us-ascii?Q?rsUebBn8sXlGeV92LcTHerKmasoCHBFF+L2XUP9L/4Re+LIie3iVizLmv4QB?=
- =?us-ascii?Q?9vUh8wa+7mCYAmJyz7xDsLdBtjfufYay8SK9u411WBuov4ioqOtPaGu75+oj?=
- =?us-ascii?Q?r73h9vmPV2Em4mTKlIONGk1BEHfpWviMPcEe3DDmJu3lp2Mtrb6j1irGtuw3?=
- =?us-ascii?Q?9uFk/uVfI7HQbZcpqdTjJr0LyfBVxbBgVvOXZMOg/ruRCgM625tY4gsXXotw?=
- =?us-ascii?Q?EN4crVqhRMk9xw7N8cZuIJJEo2JQVa2uqF/MpIoYXdCAcq5KNK72M5y5Sq29?=
- =?us-ascii?Q?2FhaCe308ga3O4R9BRovgPYVokUhG3o6T4kLhTqasvKNKiE0Vx/EUsIf/w93?=
- =?us-ascii?Q?DwpWZ91cDnUUm88Fu9WGmCVb7j6NqGJJ8/myI2mDWbu4gqo8SMathJZwmuBd?=
- =?us-ascii?Q?nzP2TATD2OoaqEiK9Js/Y5XTzmekFM5g3A245JTDKzAzmVNek4aw1nSTARZH?=
- =?us-ascii?Q?uF78qtxMeVeb4sbZJq85TgMOhTV1Smp4uEBpXaNKV8Hyd9GUqNZqtj4QPLy/?=
- =?us-ascii?Q?eKBlVZUfQHiq4l1gcMEuOBzd6LUSlahtOcRyIz2GmWZaqii++DbLGFYyL2dj?=
- =?us-ascii?Q?XoSDSPSRvaE7qFcOdVV8mwJ774xKEHDPv0Z5a7lAIHZ3p1Zph3gKdz2pY02+?=
- =?us-ascii?Q?rDssaWcJeO5bkjMZYkN5z9pdYFQneTd+LWwMEXvKz+Z68j6LaI/AA3FNTp4?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078C423F413
+	for <linux-acpi@vger.kernel.org>; Fri,  7 Mar 2025 17:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741369880; cv=none; b=Ye+ZOQw+wXhZMSD6Tyx8wSztb5PcAlr4D/2qPMvkjHxKff9lv2PMx9XwqHWLfkAWumzv2zrVM75TBU25zmCNs/FiQin3TAMEEOkD/k09v4kb2jXXoEaeharu0EzTfG4CDovQuBbt6in4nyF5JEJ/2+lHeEMdzq4g1L3nCuAp/tg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741369880; c=relaxed/simple;
+	bh=4eYoVXz9byhRWXUVeCRZzyjBpS2VnJ3o4+kQ06tRzgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YjmAebt5tF7rLIk5M7ZJf5DEZgVpiOadhm1uZnwlA2yesCuDVyIYdOF1SGyDWS4e+pCg7AoJ3HNbza4dvHgcw8K6SSbCYwL/CFIbT2UDP6DrYTlVQYY+7kzouyW+rOeNck0+8fXiiKYV9bQOTUTtrcdSofQcMTy5s3JPbAqhBDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=sTMNuu3y; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c3be0d212fso312479585a.2
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Mar 2025 09:51:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1741369878; x=1741974678; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=10uJGrqMsFBItujH17O3D7mXz4AwXzBXZFwQYXseYww=;
+        b=sTMNuu3yRDp4vKTkPNX3jWOUOrlYb1O48y1b7VGIR83XwcVGkI7TOyg8L2YslPhdfH
+         QEylZq7Wru5jNpe+1/Zsk34iLky04gKdKF0H31Qu6GgYk+zbPMVIE68JBWcofpItYnlh
+         28su6lh0uIZ2xKdxEDwaFr+16jLxyq9KlYm0UaK6lexN69dw8D2HPsbF2N4aimjcFb5f
+         6Op3l9a13EfslWyKhMJpagzFt+p375xD8+jppwPS16CqZwpHZnpVETd2SDiFK9C19HVg
+         /Zk5gI32yT+7DuxRSd7jdwKoby1Msm2e1l6QDPmfcICHO1gGyTaww0Frmw7C9PHzG2GC
+         whlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741369878; x=1741974678;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=10uJGrqMsFBItujH17O3D7mXz4AwXzBXZFwQYXseYww=;
+        b=qLD3K0YPRmsEAb3d+XbS/L1J1rY8rWnUOf3c5OsH519FhsYU2FhPX5ZYZxKnIVj1D6
+         JpWMxfst4okTAZE2BAXUZvrmwJMhIQmkEx6dUPSbx3BSg9TIcBFksa4/8rhveNfA1x30
+         q7tB1awD9Z41+J4vx669b8sf9DyT9NMCtHNGcpFmnO4JyWN08y47bMpfQhpN1Rmi7KGY
+         CIAvBeHoJAdkAoTbVYFAzogrjVvgvgnnuHN+oLiFLEpyHTF5rXpIoCGvEfEWJ1XfNF2W
+         qnysu7q236kGiIw8W4yQCs4qliy29xI1ZZB8pP4N85lzyqfNBg24OQ9DZUcDdz7iOBRp
+         7wuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXN1X1KO+bVEMKrpO0dN8fk6TW9Bw4GkVKTqBWoeXo1IUeuwV5BLVxqZ9z1bx0HrwsQCAx6LtreZvIP@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWN95XHMAZfgkP8aoNcGoFenOkwOfMrvLQYJhOJLNziO0Brcf+
+	55ldaKkMNb56d7sNdJNgxwcYRYBH+fPzZLTvJMkkH63dx+aBPsifadXlRusORGI=
+X-Gm-Gg: ASbGncvB571jvcb4BLwy+s4CrZLJyZJqWpVrZUQRwAZ9aO/C4/7+6kHk6YOupKQDfQD
+	FHRMSw3baKLuB8zW1Q4NIz/tyGvpcbOfTZZhBv6EWwkct2MzthSUC0HF6fduY4iRJLECupysNmk
+	86Y0tYs3mNK4MXBY04F6LzFbNL8wm6lOYu1WtM5RgqlzRBaFtK/QrFsauQmISe8DUsxz2YEBdSn
+	REEI5rxeMs7o38B19m4G8G/3Rh9m/BRPORsyPtM4kS0HNRRXT8karzrfdXK+H13yqiGBjfAstte
+	uX8uDqVwrMLsmuhCTeNbA0ep/96EOT6CL7ZFI76ypvOGVkInAphjKQLw08REbjoGgn/Ch4RNOHn
+	G0/9JRM4+zOyFP42PxJmQEC4enjM=
+X-Google-Smtp-Source: AGHT+IERTGeaFD6Oo8MeSWNHRrnPOT/UcHdFepnkS2d57xd8PUhjt0HaOYtF9qIzkGsUGgvoWm3nJg==
+X-Received: by 2002:a05:620a:8905:b0:7c0:b0eb:4fa9 with SMTP id af79cd13be357-7c4e16781f3mr735549585a.5.1741369877806;
+        Fri, 07 Mar 2025 09:51:17 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e5511c63sm267058185a.113.2025.03.07.09.51.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 09:51:17 -0800 (PST)
+Date: Fri, 7 Mar 2025 12:51:15 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Honggyu Kim <honggyu.kim@sk.com>
+Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com, ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org, rakie.kim@sk.com,
+	akpm@linux-foundation.org, rafael@kernel.org, lenb@kernel.org,
+	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, kernel-team@meta.com, yunjeong.mun@sk.com
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
+ memoryless nodes
+Message-ID: <Z8syE7l5H35pk9T5@gourry-fedora-PF4VCD3F>
+References: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
+ <20250226213518.767670-2-joshua.hahnjy@gmail.com>
+ <b8ac8654-92bd-4c08-a3fc-e28a7be5e0e6@sk.com>
+ <Z8cqe3BCdobsV4-2@gourry-fedora-PF4VCD3F>
+ <f64819e2-8dc6-4907-b8bf-faec66eecd0e@sk.com>
+ <Z8ncOp2H54WE4C5s@gourry-fedora-PF4VCD3F>
+ <9c0d8aa8-cac7-4679-aece-af88e8129345@sk.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 600fd99e-7ad6-4356-19f3-08dd5d9fc2c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2025 17:44:50.4952
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR02MB7970
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c0d8aa8-cac7-4679-aece-af88e8129345@sk.com>
 
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Wednesday, Fe=
-bruary 26, 2025 3:08 PM
+On Fri, Mar 07, 2025 at 08:46:46PM +0900, Honggyu Kim wrote:
+> You can see more info below.
+> 
+>   $ cd /sys/devices/system/node
+> 
+>   $ ls -d node*
+>   node0  node1  node2  node3
+> 
+>   $ cat possible
+>   0-11
 
->=20
-> This will handle SYNIC interrupts such as intercepts, doorbells, and
-> scheduling messages intended for the mshv driver.
+We're split across two threads now, but i'll add this context
 
-Could you provide a bit more detailed commit message? How does
-the mshv_handler() relate to the vmbus_handler()? From the code
-mshv_handler() goes first, and I'm assuming it processes what it
-knows about (intercepts, doorbells, scheduling messages?) and
-then hands off control to the vmbus_handler() to handle the usual
-VMbus-related message and channel interrupts. But it would be
-nice to have the commit message or code comments describe the
-overall intent and any obscure aspects of the relationship.
+I'm basically asking whether there should be 12 nodes possible. It seems
+like there should only be 4 nodes possible - 2 for sockets, 2 for host
+bridges.
 
-And avoid references to "This" or "This patch". :-)
+Unless I'm misunderstanding, it should be the case that a given physical
+address can only be hosted by 1 numa node (proximity domain).
 
->=20
-> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-> Reviewed-by: Wei Liu <wei.liu@kernel.org>
-> Reviewed-by: Tianyu Lan <tiala@microsoft.com>
-> ---
->  arch/x86/kernel/cpu/mshyperv.c | 9 +++++++++
->  drivers/hv/hv_common.c         | 5 +++++
->  include/asm-generic/mshyperv.h | 1 +
->  3 files changed, 15 insertions(+)
->=20
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyper=
-v.c
-> index 0116d0e96ef9..616e9a5d77b4 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -107,6 +107,7 @@ void hv_set_msr(unsigned int reg, u64 value)
->  }
->  EXPORT_SYMBOL_GPL(hv_set_msr);
->=20
-> +static void (*mshv_handler)(void);
->  static void (*vmbus_handler)(void);
->  static void (*hv_stimer0_handler)(void);
->  static void (*hv_kexec_handler)(void);
-> @@ -117,6 +118,9 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
->  	struct pt_regs *old_regs =3D set_irq_regs(regs);
->=20
->  	inc_irq_stat(irq_hv_callback_count);
-> +	if (mshv_handler)
-> +		mshv_handler();
-> +
->  	if (vmbus_handler)
->  		vmbus_handler();
->=20
-> @@ -126,6 +130,11 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
->  	set_irq_regs(old_regs);
->  }
->=20
-> +void hv_setup_mshv_handler(void (*handler)(void))
-> +{
-> +	mshv_handler =3D handler;
-> +}
-> +
->  void hv_setup_vmbus_handler(void (*handler)(void))
->  {
->  	vmbus_handler =3D handler;
-> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-> index 2763cb6d3678..f5a07fd9a03b 100644
-> --- a/drivers/hv/hv_common.c
-> +++ b/drivers/hv/hv_common.c
-> @@ -677,6 +677,11 @@ void __weak hv_remove_vmbus_handler(void)
->  }
->  EXPORT_SYMBOL_GPL(hv_remove_vmbus_handler);
->=20
-> +void __weak hv_setup_mshv_handler(void (*handler)(void))
-> +{
-> +}
-> +EXPORT_SYMBOL_GPL(hv_setup_mshv_handler);
-> +
->  void __weak hv_setup_kexec_handler(void (*handler)(void))
->  {
->  }
-> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyper=
-v.h
-> index 1f46d19a16aa..a05f12e63ccd 100644
-> --- a/include/asm-generic/mshyperv.h
-> +++ b/include/asm-generic/mshyperv.h
-> @@ -208,6 +208,7 @@ void hv_setup_kexec_handler(void (*handler)(void));
->  void hv_remove_kexec_handler(void);
->  void hv_setup_crash_handler(void (*handler)(struct pt_regs *regs));
->  void hv_remove_crash_handler(void);
-> +void hv_setup_mshv_handler(void (*handler)(void));
->=20
->  extern int vmbus_interrupt;
->  extern int vmbus_irq;
-> --
-> 2.34.1
+So it *should* be the case that you either have 4 nodes possible or 10
+nodes possible, not 12.  But I could be missing a piece of context.
 
+> Which command do we need for this info specifically?  My output doesn't
+> provide some useful info for that.
+> 
+>   $ acpidump -b
+>   $ iasl -d *
+>   $ cat cedt.dsl
+>       ...
+>   **** Unknown ACPI table signature [CEDT]
+>
+
+You probably have an old version of acpidump here, you might need to get
+a newer version that knows about the CEDT.
+
+You'll also want to get all the Memory Affinity entries from srat.dsl
+
+> Not sure about it.  This must be fixed ASAP because current kernel is
+> broken on this issue and the fix should go into hotfix tree first.
+>
+
+I agree something is broken, I'm not convinced what is broken.
+
+> If you can think this is just a bandaid, but leaving it bleeding as is
+> not the right approach.
+>
+
+This affects userland, we shouldn't thrash on this. Lets get it right.
+
+~Gregory
 
