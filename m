@@ -1,112 +1,240 @@
-Return-Path: <linux-acpi+bounces-11940-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11941-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5ECA5731C
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 21:52:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2237BA573AE
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 22:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9293B3B284C
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 20:52:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05F473B055D
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 21:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255BD2571DD;
-	Fri,  7 Mar 2025 20:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123E11F91F3;
+	Fri,  7 Mar 2025 21:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jSoOhW6m"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ri9FeBsd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EA023E23D;
-	Fri,  7 Mar 2025 20:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D921AA1D9;
+	Fri,  7 Mar 2025 21:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741380750; cv=none; b=o3s+9HZm2A2M3Vr0LoSGeemJk8/XoNNqt8frsjCWCeO34TOuIQccvL94P9J7GWqigkvh7qdjLP9zym9SFxyOBNO0nmFt+WK3aKGZDyCyNATk1zuP/0KlE/+Tr6ze+sKgjcNA/Q8IW20AwgW365/z377L37z1ZeKPKWONQ/vc6cg=
+	t=1741383429; cv=none; b=QpctzgZzQnUat0i9rMNnTkIbkAGUbmqxI1C/Lt1AaqBBnf30Pq8QfvuFcvgN3i+pC5aQ3i2NkuvnA95aT1NRgEGBFz3K8wA7ldFLXTt3VkHjVle0KuqERqVy1v8E4vWnMgvX1TlOhEmqKxAcMZc9fRB+XfZtf1iL5ucoxEfOyUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741380750; c=relaxed/simple;
-	bh=epIESvwJQ4A800m0OQuNtY9wYZR7fyWidu1Wwrp0+MI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=LUyog2ExMs8A4bGKxP1LDE+0OWW9H4w+1aWqCsn2eDCdAknVH0y1ccffh20jkwUX5o5o66fLaSMPR9CLbGahkYcgLccwSSdqkm3GJlzBQiAnWipru+L0De9oY0hukBXYO+VSZkVgTVgZW/xaC0bzHf8uuI6TjhmIA18xO4x/MZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jSoOhW6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7E1C4CED1;
-	Fri,  7 Mar 2025 20:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741380749;
-	bh=epIESvwJQ4A800m0OQuNtY9wYZR7fyWidu1Wwrp0+MI=;
-	h=From:Date:Subject:To:Cc:From;
-	b=jSoOhW6m8KcOBhWinGWXVdJzZV987iMoCwwx0Or8XupMN2i6YSMIa81RvvcwoYMQq
-	 OmzN04w+BqqtAw2G92GQz1f5WO6x4Slzqd28Vd5xEaJu0w6MoXga4aB29nph8k8ht0
-	 g/frb7JAHPX/2LyrCn1qszuCZ/7GRbEv5V1HbbOP2C3dVfIVjPP6bf8Bn0HxP5Amgr
-	 F1pZVUNLnsMbEK4DfrVJkiLKwoV2XS3LDVU+/D3UFGDVXKUjpKMtvPhzmgSXH/EK8T
-	 /pvtTex6OSqhCIOJh4+SRoBaa7r+q2EQSISMJpQVKfPhZwAU5z2e55TseNLxI5bT5w
-	 XjahZTEo/LBTA==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-600250a14f4so1748800eaf.1;
-        Fri, 07 Mar 2025 12:52:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWGR4DuLbsPrsoY5Sd6qREBFFy5I0swsBHGZhVqzzQ+s4YwJtTmeLksLngPdg6xIbDy0kOsAXA2AbWWZBQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHHwqmKL47G6KAm6iCiv+pLPYJrIuPdU1Ma2t95oxRsr7nXo55
-	VggX/wZVK+r495okehaSptwOS+W/xokDN9lhrHX2GKF2NVmxoUBozsYZ39PU6pPCYwh+1HiRJRz
-	ESLwlbmBuUnlcfBZDao9tB/MohIU=
-X-Google-Smtp-Source: AGHT+IGJyazw4kTZ1p2w16Mu1ZD/qhBMjysOjGezvcsEH/kYyi+Jc0C4Epq9u2wZKkcMRpPo9Btbya+7HsCqEVSnohs=
-X-Received: by 2002:a05:6870:f719:b0:2c2:37db:dad with SMTP id
- 586e51a60fabf-2c281e514f7mr500774fac.1.1741380748756; Fri, 07 Mar 2025
- 12:52:28 -0800 (PST)
+	s=arc-20240116; t=1741383429; c=relaxed/simple;
+	bh=6+fPZruWoV00X+dzjwJA3wJmJj0K4I2p13a8yFKwAWI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nVdBYkZRlRP3gdE5FhyJBuj99gdwJDTGmo/Q5JYl6tvHXh/kzrtryvWClNsvUgJovjhhMqzKEcwMDFz2lS2wBq0of6nR4CKts8W30PcIgmK06XnktfIpEvtQJZ1fgNtkkgAMbte5MSQGJ8g3G7CDxGwmaGpXDxBUZazmJjyJxXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ri9FeBsd; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0A4072038F3B;
+	Fri,  7 Mar 2025 13:37:06 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0A4072038F3B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741383426;
+	bh=AQn5ANn8sPdQThZDb40ZlQuiCV58eIp0gfyjJ434Q7Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ri9FeBsdG2ROc74ZZVyndfL8/sgWlsUjKGFmQR0ft2q7cEBE5djWuwF6Ww5NkMOaa
+	 O8OXBrORBWvVyXpqCzrNeWmckkZbq8mL9EZ0fXEJd47nUue5TWp9E35X5SwB6miF2f
+	 CGgKsRXHGQy2tjtOS98IBThSjmzM1p9VmGwbcf0U=
+Message-ID: <7f689725-f676-4465-974d-ca2477d445f7@linux.microsoft.com>
+Date: Fri, 7 Mar 2025 13:36:48 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 7 Mar 2025 21:52:17 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g8fE1TvUNyN5PXiRexycuWn63inwdKon5aR=BM7cBHYg@mail.gmail.com>
-X-Gm-Features: AQ5f1JrGMZDwJeo9jEaE6ckyVlQ71kxPsuGRLBKIfbLqKmEF_MOKd_oXBLPuLdo
-Message-ID: <CAJZ5v0g8fE1TvUNyN5PXiRexycuWn63inwdKon5aR=BM7cBHYg@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v6.14-rc6
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 03/10] arm64/hyperv: Add some missing functions to
+ arm64
+To: Michael Kelley <mhklinux@outlook.com>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "decui@microsoft.com" <decui@microsoft.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
+ <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "hpa@zytor.com" <hpa@zytor.com>,
+ "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+ "joro@8bytes.org" <joro@8bytes.org>,
+ "robin.murphy@arm.com" <robin.murphy@arm.com>, "arnd@arndb.de"
+ <arnd@arndb.de>,
+ "jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
+ "muminulrussell@gmail.com" <muminulrussell@gmail.com>,
+ "skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
+ "mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
+ "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+ "apais@linux.microsoft.com" <apais@linux.microsoft.com>,
+ "Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
+ "stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>,
+ "prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
+ "muislam@microsoft.com" <muislam@microsoft.com>,
+ "anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
+ "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+ <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-4-git-send-email-nunodasneves@linux.microsoft.com>
+ <5f3d660d-fe2e-4ac1-94a7-66d6c8ffe579@linux.microsoft.com>
+ <2fee888a-4f81-40aa-9545-617a49a7fb30@linux.microsoft.com>
+ <SN6PR02MB41579F4147561B96A2C1C057D4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB41579F4147561B96A2C1C057D4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Linus,
+On 3/6/2025 11:05 AM, Michael Kelley wrote:
+> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Thursday, February 27, 2025 4:21 PM
+>>
+>> On 2/26/2025 9:56 PM, Easwar Hariharan wrote:
+>>> On 2/26/2025 3:07 PM, Nuno Das Neves wrote:
+>>>> These non-nested msr and fast hypercall functions are present in x86,
+>>>> but they must be available in both architetures for the root partition
+>>>
+>>> nit: *architectures*
+>>>
+>>>
+>> Thanks!
+>>
+>>>> driver code.
+>>>>
+>>>> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+>>>> ---
+>>>>  arch/arm64/hyperv/hv_core.c       | 17 +++++++++++++++++
+>>>>  arch/arm64/include/asm/mshyperv.h | 12 ++++++++++++
+>>>>  include/asm-generic/mshyperv.h    |  2 ++
+>>>>  3 files changed, 31 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/hyperv/hv_core.c b/arch/arm64/hyperv/hv_core.c
+>>>> index 69004f619c57..e33a9e3c366a 100644
+>>>> --- a/arch/arm64/hyperv/hv_core.c
+>>>> +++ b/arch/arm64/hyperv/hv_core.c
+>>>> @@ -53,6 +53,23 @@ u64 hv_do_fast_hypercall8(u16 code, u64 input)
+>>>>  }
+>>>>  EXPORT_SYMBOL_GPL(hv_do_fast_hypercall8);
+>>>>
+>>>> +/*
+>>>> + * hv_do_fast_hypercall16 -- Invoke the specified hypercall
+>>>> + * with arguments in registers instead of physical memory.
+>>>> + * Avoids the overhead of virt_to_phys for simple hypercalls.
+>>>> + */
+>>>> +u64 hv_do_fast_hypercall16(u16 code, u64 input1, u64 input2)
+>>>> +{
+>>>> +	struct arm_smccc_res	res;
+>>>> +	u64			control;
+>>>> +
+>>>> +	control = (u64)code | HV_HYPERCALL_FAST_BIT;
+>>>> +
+>>>> +	arm_smccc_1_1_hvc(HV_FUNC_ID, control, input1, input2, &res);
+>>>> +	return res.a0;
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(hv_do_fast_hypercall16);
+>>>> +
+>>>
+>>> I'd like this to have been in arch/arm64/include/asm/mshyperv.h like its x86
+>>> counterpart, but that's just my personal liking of symmetry. I see why it's here
+>>> with its slow and 8-byte brethren.
+>>>
+>> Good point, I don't see a good reason this can't be in the header.
+> 
+> I was trying to remember if there was some reason I originally put
+> hv_do_hypercall() and hv_do_fast_hypercall8() in the .c file instead of
+> the header like on x86. But I don't remember a reason. During
+> development, the code changed several times, and there might have
+> been a reason that didn't persistent in the version that was finally
+> accepted upstream.
+> 
+> My only comment is that hv_do_hypercall() and the 8 and 16 "fast"
+> versions should probably stay together one place on the arm64 side,
+> even if it doesn't match x86.
+> 
 
-Please pull from the tag
+I think I'll just keep them together here for now then. They
+could be moved to the header in future if it seems worth doing.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.14-rc6
+>>
+>>>>  /*
+>>>>   * Set a single VP register to a 64-bit value.
+>>>>   */
+>>>> diff --git a/arch/arm64/include/asm/mshyperv.h
+>> b/arch/arm64/include/asm/mshyperv.h
+>>>> index 2e2f83bafcfb..2a900ba00622 100644
+>>>> --- a/arch/arm64/include/asm/mshyperv.h
+>>>> +++ b/arch/arm64/include/asm/mshyperv.h
+>>>> @@ -40,6 +40,18 @@ static inline u64 hv_get_msr(unsigned int reg)
+>>>>  	return hv_get_vpreg(reg);
+>>>>  }
+>>>>
+>>>> +/*
+>>>> + * Nested is not supported on arm64
+>>>> + */
+>>>> +static inline void hv_set_non_nested_msr(unsigned int reg, u64 value)
+>>>> +{
+>>>> +	hv_set_msr(reg, value);
+>>>> +}
+>>>
+>>> empty line preferred here, also reported by checkpatch
+>>>
+>> Good point, missed that one...
+>>
+>>>> +static inline u64 hv_get_non_nested_msr(unsigned int reg)
+>>>> +{
+>>>> +	return hv_get_msr(reg);
+>>>> +}
+>>>> +
+>>>>  /* SMCCC hypercall parameters */
+>>>>  #define HV_SMCCC_FUNC_NUMBER	1
+>>>>  #define HV_FUNC_ID	ARM_SMCCC_CALL_VAL(			\
+>>>> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+>>>> index c020d5d0ec2a..258034dfd829 100644
+>>>> --- a/include/asm-generic/mshyperv.h
+>>>> +++ b/include/asm-generic/mshyperv.h
+>>>> @@ -72,6 +72,8 @@ extern void * __percpu *hyperv_pcpu_output_arg;
+>>>>
+>>>>  extern u64 hv_do_hypercall(u64 control, void *inputaddr, void *outputaddr);
+>>>>  extern u64 hv_do_fast_hypercall8(u16 control, u64 input8);
+>>>> +extern u64 hv_do_fast_hypercall16(u16 control, u64 input1, u64 input2);
+>>>> +
+>>>
+>>> checkpatch warns against putting externs in header files, and FWIW, if
+>> hv_do_fast_hypercall16()
+>>> for arm64 were in arch/arm64/include/asm/mshyperv.h like its x86 counterpart, you
+>> probably
+>>> wouldn't need this?
+>>>
+>> Yes I wondered about that warning. That's true, if I just put it in the arm64 header
+>> then this won't be needed at all, so I might just do that!
+> 
+> I always thought the checkpatch warning was simply that "extern" on a function
+> declaration is superfluous. You can omit "extern" and nothing changes. Of
+> course, the same is not true for data items.
+> Good point, I think I'll clean up these "extern"s in the next version.
 
-with top-most commit 9a43102daf64dd0d172d8b39836dbc1dba4da1ea
+Nuno
 
- platform/x86/amd: pmf: Add balanced-performance to hidden choices
+> Michael
+> 
+>>
+>>>>  bool hv_isolation_type_snp(void);
+>>>>  bool hv_isolation_type_tdx(void);
+>>>>
+> 
 
-on top of commit 7eb172143d5508b4da468ed59ee857c6e5e01da6
-
- Linux 6.14-rc5
-
-to receive an ACPI fix for 6.14-rc6.
-
-This restores the previous behavior of the ACPI platform_profile sysfs
-interface that has been changed recently in a way incompatible with the
-existing user space (Mario Limonciello).
-
-The tag above has been signed with a new subkey recently added to my
-key, so if there's any problem with verifying it, please kindly let me
-know.
-
-Thanks!
-
-
----------------
-
-Mario Limonciello (3):
-      ACPI: platform_profile: Add support for hidden choices
-      platform/x86/amd: pmf: Add 'quiet' to hidden choices
-      platform/x86/amd: pmf: Add balanced-performance to hidden choices
-
----------------
-
- drivers/acpi/platform_profile.c    | 94 +++++++++++++++++++++++++++++---------
- drivers/platform/x86/amd/pmf/sps.c | 11 +++++
- include/linux/platform_profile.h   |  3 ++
- 3 files changed, 87 insertions(+), 21 deletions(-)
 
