@@ -1,121 +1,165 @@
-Return-Path: <linux-acpi+bounces-11935-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11936-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C44A57032
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 19:12:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 626B2A5717B
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 20:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C38189873D
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 18:12:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CA6A163473
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 19:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019F323F29C;
-	Fri,  7 Mar 2025 18:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3882505AC;
+	Fri,  7 Mar 2025 19:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kfOgPVr5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YXNuixpY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A5A1A7AF7;
-	Fri,  7 Mar 2025 18:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB80824FC03;
+	Fri,  7 Mar 2025 19:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741371160; cv=none; b=Q+hyPWexkKMzytD613ZOeLiM/TsgzBFvwvPEXPGwPtcz3/TeLmgQyHCJMA76jKou1C1q1HW3ZCZG4NYb/c19egrSlJ0lP6FcQhytpNp+Pt5hpamhhvs3DY0UPEFxPgelPDvaCli4Kf2bAO0sz7bfCpwWoRdOrpOYnAOf67MKF3s=
+	t=1741375189; cv=none; b=bBPu1Xk/8n44iJ1CwPfGerO+sd4ci46p0KFOAiQr2iALgHWXe9jjeG2GB2euWf7p1scjLs8x6cwLmjlp0+/lVzi/AZgkgRkTWbL+L14ln1FvZ2hhbDkSkHv5FpiwCQw9qP4Yn5DUAoGDLPyLpVhvczjLfwgy61/7ClQijLua8n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741371160; c=relaxed/simple;
-	bh=NAWLZyERU1mrVLoBZ/xNqI1pIF9+w43e2HDxORnVkHQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GHWx48ErSDcDh+QXusIk/0lXAoO7XwueP1iVCsNgsrAJp/DL/VXWqCDwpsvzBqKLgMMn9s+Vs5a0z98qxUBz7HX6LLp1RFXZbqOJDO8jUlNgBsqksSfkpkH4xLctbOxalketQ59WxkmQyBTuJ2urAhHS5jQhlv6MS6XphLwzHe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kfOgPVr5; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CAD852038F37;
-	Fri,  7 Mar 2025 10:06:47 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CAD852038F37
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741370808;
-	bh=fkpzWS7kKQxS7iHBM5+/9vLioYcucl4kL46RR98FB2o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kfOgPVr5LJFN2ld3861YnCyoXBzp+thWEeMvJ+YweMjJBiArD9U7tYwudHEyeNoat
-	 igt1898SeJwvGyscPq6VaPbrQalQZt8Xwoxkv4MYmortZR1uJCXtyOKomZaHk/Sq4b
-	 ZHHPwTwLAQWLTYwV6XCRICP5BGc3MKiHJftH/nzw=
-Message-ID: <efb43459-4136-43cd-adac-2179d9985e9d@linux.microsoft.com>
-Date: Fri, 7 Mar 2025 10:06:47 -0800
+	s=arc-20240116; t=1741375189; c=relaxed/simple;
+	bh=lWohW1lK5/1oJ/E8ckkRCgfaedm9zAHAHPnzlFJse9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mBNIAadjlyGdXorS7iye14a1xu4n0S2RRNLJ9XaNEbHJXccOb80/owrlfnDZFNm8eaoUPLpfzil7ORwNJ88JpSOauT/Bs7XrtLcWzPyRgn1ozasGzDaOIlxj2rVTzcKk8qjjQtjcIcpbrgLVBjXM0ZkBMaBENgUgzDqEVtbF4BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YXNuixpY; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741375187; x=1772911187;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lWohW1lK5/1oJ/E8ckkRCgfaedm9zAHAHPnzlFJse9c=;
+  b=YXNuixpYDKlmanDTBmjWP2bRVI3W7+suQ01y6CcBiN0eeggig9r8dxWg
+   7RfXyjVLduEji/xArpC+BynyRCDDewvdwgptmK3MRGMw3pDFcbGeINLZF
+   eCxBV0Lf99knCSOr3AAjTzZ9lh/hTQti8285sqshVKeAx90BhqusrMq4J
+   WKz8Dmf69iC4fxpAhYJWiYIbvXX5MqVc8+0a2IdZYFOJG8961Xt7rfd4p
+   DnTiOFAgiKu+P2WsHE4CXG9TvNNj5io+tvgeTwD+OhJHF9dW9MGNu66DQ
+   wvj83BOo01dHtdlKrgIYzgaNB8aT2idVvBaJ0+yWxSETGTPzC0c9nCGUY
+   Q==;
+X-CSE-ConnectionGUID: ve7o6fAIQCaSUttKnRyKNg==
+X-CSE-MsgGUID: XhRJyq1gQbWwlMNTUYBz3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="42315416"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="42315416"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 11:19:46 -0800
+X-CSE-ConnectionGUID: CfyhsuotQIeGhCi5YnLAaA==
+X-CSE-MsgGUID: ze8qhkRFRD+Y3Nyxiz0cpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="156621322"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.110.159])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 11:19:44 -0800
+Date: Fri, 7 Mar 2025 11:19:43 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: shiju.jose@huawei.com
+Cc: linux-cxl@vger.kernel.org, dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
+	Vilas.Sridharan@amd.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH 1/8] cxl: Add helper function to retrieve a feature entry
+Message-ID: <Z8tGz33l9vDzuJLy@aschofie-mobl2.lan>
+References: <20250227223816.2036-1-shiju.jose@huawei.com>
+ <20250227223816.2036-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
- expose /dev/mshv to VMMs
-To: Wei Liu <wei.liu@kernel.org>
-Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
- linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
- haiyangz@microsoft.com, mhklinux@outlook.com, decui@microsoft.com,
- catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- daniel.lezcano@linaro.org, joro@8bytes.org, robin.murphy@arm.com,
- arnd@arndb.de, jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
- <f332b77a-940f-4007-a44a-de64878d5201@linux.microsoft.com>
- <Z8ncFkwzxi9qJFD3@liuwe-devbox-debian-v2>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <Z8ncFkwzxi9qJFD3@liuwe-devbox-debian-v2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227223816.2036-2-shiju.jose@huawei.com>
 
-
-
-On 3/6/2025 9:32 AM, Wei Liu wrote:
-> On Thu, Feb 27, 2025 at 10:50:30AM -0800, Roman Kisel wrote:
-
-[...]
-
->> 2. Scheduling. Here, there is the mature KVM and Xen code to find
->>     inspiration in. Xen being the Type 1 hypervisor should likely be
->>     closer to MSHV in my understanding.
+On Thu, Feb 27, 2025 at 10:38:08PM +0000, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-> Yes and no.
+> Add helper function to retrieve a feature entry from the supported
+> features list, if supported.
 > 
-> When a hypervisor-based scheduler (either classic or core) is used, the
-> scheduling model is the same as Xen. In this model, the hypervisor makes
-> the scheduling decisions.
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/cxl/core/core.h     |  2 ++
+>  drivers/cxl/core/features.c | 20 ++++++++++++++++++++
+>  2 files changed, 22 insertions(+)
 > 
-> There is a second scheduler model. In that model, the hypervisor
-> delegates scheduling to the Linux kernel. The Linux scheduler makes the
-> scheduling decisions. It is similar to KVM.
+> diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+> index 3d3b00835446..6c83f6f18122 100644
+> --- a/drivers/cxl/core/core.h
+> +++ b/drivers/cxl/core/core.h
+> @@ -120,6 +120,8 @@ int cxl_port_get_switch_dport_bandwidth(struct cxl_port *port,
+>  int cxl_gpf_port_setup(struct device *dport_dev, struct cxl_port *port);
+>  
+>  #ifdef CONFIG_CXL_FEATURES
+> +struct cxl_feat_entry *cxl_get_feature_entry(struct cxl_dev_state *cxlds,
+> +					     const uuid_t *feat_uuid);
+>  size_t cxl_get_feature(struct cxl_mailbox *cxl_mbox, const uuid_t *feat_uuid,
+>  		       enum cxl_get_feat_selection selection,
+>  		       void *feat_out, size_t feat_out_size, u16 offset,
+> diff --git a/drivers/cxl/core/features.c b/drivers/cxl/core/features.c
+> index 048ba4fc3538..c822fb4a8c33 100644
+> --- a/drivers/cxl/core/features.c
+> +++ b/drivers/cxl/core/features.c
+> @@ -203,6 +203,26 @@ int devm_cxl_setup_features(struct cxl_dev_state *cxlds)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(devm_cxl_setup_features, "CXL");
+>  
+> +struct cxl_feat_entry *cxl_get_feature_entry(struct cxl_dev_state *cxlds,
+> +					     const uuid_t *feat_uuid)
+> +{
+> +	struct cxl_features_state *cxlfs = to_cxlfs(cxlds);
+> +	struct cxl_feat_entry *feat_entry;
+> +	int count;
+> +
+> +	/*
+> +	 * Retrieve the feature entry from the supported features list,
+> +	 * if the feature is supported.
+> +	 */
+> +	feat_entry = cxlfs->entries->ent;
+
+Do we need some NULL checking here on cxlfs, entries
+
+
+> +	for (count = 0; count < cxlfs->entries->num_features; count++, feat_entry++) {
+
+Was num_features previously validated? 
+
+> +		if (uuid_equal(&feat_entry->uuid, feat_uuid))
+> +			return feat_entry;
+> +	}
+> +
+> +	return ERR_PTR(-ENOENT);
+
+Why not just return NULL?
+
+
+> +}
+> +
+>  size_t cxl_get_feature(struct cxl_mailbox *cxl_mbox, const uuid_t *feat_uuid,
+>  		       enum cxl_get_feat_selection selection,
+>  		       void *feat_out, size_t feat_out_size, u16 offset,
+> -- 
+> 2.43.0
 > 
-> We support both. Which model to use largely depends on the workload and
-> the desired behaviors of the system.
-> 
-> This is purely informational in case people wonder why the run vp
-> function branches off to two different code paths.
-> 
-
-Thanks, now I understand that better :)
-
-[...]
-
->> -- 
->> Thank you,
->> Roman
->>
-
--- 
-Thank you,
-Roman
-
 
