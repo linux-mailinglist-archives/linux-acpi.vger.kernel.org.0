@@ -1,157 +1,121 @@
-Return-Path: <linux-acpi+bounces-11934-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11935-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A119A56F9F
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 18:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C44A57032
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 19:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1FA4189ACBC
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 17:51:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C38189873D
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 18:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E6924110F;
-	Fri,  7 Mar 2025 17:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019F323F29C;
+	Fri,  7 Mar 2025 18:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="sTMNuu3y"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kfOgPVr5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078C423F413
-	for <linux-acpi@vger.kernel.org>; Fri,  7 Mar 2025 17:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A5A1A7AF7;
+	Fri,  7 Mar 2025 18:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741369880; cv=none; b=Ye+ZOQw+wXhZMSD6Tyx8wSztb5PcAlr4D/2qPMvkjHxKff9lv2PMx9XwqHWLfkAWumzv2zrVM75TBU25zmCNs/FiQin3TAMEEOkD/k09v4kb2jXXoEaeharu0EzTfG4CDovQuBbt6in4nyF5JEJ/2+lHeEMdzq4g1L3nCuAp/tg=
+	t=1741371160; cv=none; b=Q+hyPWexkKMzytD613ZOeLiM/TsgzBFvwvPEXPGwPtcz3/TeLmgQyHCJMA76jKou1C1q1HW3ZCZG4NYb/c19egrSlJ0lP6FcQhytpNp+Pt5hpamhhvs3DY0UPEFxPgelPDvaCli4Kf2bAO0sz7bfCpwWoRdOrpOYnAOf67MKF3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741369880; c=relaxed/simple;
-	bh=4eYoVXz9byhRWXUVeCRZzyjBpS2VnJ3o4+kQ06tRzgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YjmAebt5tF7rLIk5M7ZJf5DEZgVpiOadhm1uZnwlA2yesCuDVyIYdOF1SGyDWS4e+pCg7AoJ3HNbza4dvHgcw8K6SSbCYwL/CFIbT2UDP6DrYTlVQYY+7kzouyW+rOeNck0+8fXiiKYV9bQOTUTtrcdSofQcMTy5s3JPbAqhBDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=sTMNuu3y; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c3be0d212fso312479585a.2
-        for <linux-acpi@vger.kernel.org>; Fri, 07 Mar 2025 09:51:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1741369878; x=1741974678; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=10uJGrqMsFBItujH17O3D7mXz4AwXzBXZFwQYXseYww=;
-        b=sTMNuu3yRDp4vKTkPNX3jWOUOrlYb1O48y1b7VGIR83XwcVGkI7TOyg8L2YslPhdfH
-         QEylZq7Wru5jNpe+1/Zsk34iLky04gKdKF0H31Qu6GgYk+zbPMVIE68JBWcofpItYnlh
-         28su6lh0uIZ2xKdxEDwaFr+16jLxyq9KlYm0UaK6lexN69dw8D2HPsbF2N4aimjcFb5f
-         6Op3l9a13EfslWyKhMJpagzFt+p375xD8+jppwPS16CqZwpHZnpVETd2SDiFK9C19HVg
-         /Zk5gI32yT+7DuxRSd7jdwKoby1Msm2e1l6QDPmfcICHO1gGyTaww0Frmw7C9PHzG2GC
-         whlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741369878; x=1741974678;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=10uJGrqMsFBItujH17O3D7mXz4AwXzBXZFwQYXseYww=;
-        b=qLD3K0YPRmsEAb3d+XbS/L1J1rY8rWnUOf3c5OsH519FhsYU2FhPX5ZYZxKnIVj1D6
-         JpWMxfst4okTAZE2BAXUZvrmwJMhIQmkEx6dUPSbx3BSg9TIcBFksa4/8rhveNfA1x30
-         q7tB1awD9Z41+J4vx669b8sf9DyT9NMCtHNGcpFmnO4JyWN08y47bMpfQhpN1Rmi7KGY
-         CIAvBeHoJAdkAoTbVYFAzogrjVvgvgnnuHN+oLiFLEpyHTF5rXpIoCGvEfEWJ1XfNF2W
-         qnysu7q236kGiIw8W4yQCs4qliy29xI1ZZB8pP4N85lzyqfNBg24OQ9DZUcDdz7iOBRp
-         7wuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXN1X1KO+bVEMKrpO0dN8fk6TW9Bw4GkVKTqBWoeXo1IUeuwV5BLVxqZ9z1bx0HrwsQCAx6LtreZvIP@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWN95XHMAZfgkP8aoNcGoFenOkwOfMrvLQYJhOJLNziO0Brcf+
-	55ldaKkMNb56d7sNdJNgxwcYRYBH+fPzZLTvJMkkH63dx+aBPsifadXlRusORGI=
-X-Gm-Gg: ASbGncvB571jvcb4BLwy+s4CrZLJyZJqWpVrZUQRwAZ9aO/C4/7+6kHk6YOupKQDfQD
-	FHRMSw3baKLuB8zW1Q4NIz/tyGvpcbOfTZZhBv6EWwkct2MzthSUC0HF6fduY4iRJLECupysNmk
-	86Y0tYs3mNK4MXBY04F6LzFbNL8wm6lOYu1WtM5RgqlzRBaFtK/QrFsauQmISe8DUsxz2YEBdSn
-	REEI5rxeMs7o38B19m4G8G/3Rh9m/BRPORsyPtM4kS0HNRRXT8karzrfdXK+H13yqiGBjfAstte
-	uX8uDqVwrMLsmuhCTeNbA0ep/96EOT6CL7ZFI76ypvOGVkInAphjKQLw08REbjoGgn/Ch4RNOHn
-	G0/9JRM4+zOyFP42PxJmQEC4enjM=
-X-Google-Smtp-Source: AGHT+IERTGeaFD6Oo8MeSWNHRrnPOT/UcHdFepnkS2d57xd8PUhjt0HaOYtF9qIzkGsUGgvoWm3nJg==
-X-Received: by 2002:a05:620a:8905:b0:7c0:b0eb:4fa9 with SMTP id af79cd13be357-7c4e16781f3mr735549585a.5.1741369877806;
-        Fri, 07 Mar 2025 09:51:17 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e5511c63sm267058185a.113.2025.03.07.09.51.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 09:51:17 -0800 (PST)
-Date: Fri, 7 Mar 2025 12:51:15 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Honggyu Kim <honggyu.kim@sk.com>
-Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
-	harry.yoo@oracle.com, ying.huang@linux.alibaba.com,
-	gregkh@linuxfoundation.org, rakie.kim@sk.com,
-	akpm@linux-foundation.org, rafael@kernel.org, lenb@kernel.org,
-	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com, yunjeong.mun@sk.com
-Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
- memoryless nodes
-Message-ID: <Z8syE7l5H35pk9T5@gourry-fedora-PF4VCD3F>
-References: <20250226213518.767670-1-joshua.hahnjy@gmail.com>
- <20250226213518.767670-2-joshua.hahnjy@gmail.com>
- <b8ac8654-92bd-4c08-a3fc-e28a7be5e0e6@sk.com>
- <Z8cqe3BCdobsV4-2@gourry-fedora-PF4VCD3F>
- <f64819e2-8dc6-4907-b8bf-faec66eecd0e@sk.com>
- <Z8ncOp2H54WE4C5s@gourry-fedora-PF4VCD3F>
- <9c0d8aa8-cac7-4679-aece-af88e8129345@sk.com>
+	s=arc-20240116; t=1741371160; c=relaxed/simple;
+	bh=NAWLZyERU1mrVLoBZ/xNqI1pIF9+w43e2HDxORnVkHQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GHWx48ErSDcDh+QXusIk/0lXAoO7XwueP1iVCsNgsrAJp/DL/VXWqCDwpsvzBqKLgMMn9s+Vs5a0z98qxUBz7HX6LLp1RFXZbqOJDO8jUlNgBsqksSfkpkH4xLctbOxalketQ59WxkmQyBTuJ2urAhHS5jQhlv6MS6XphLwzHe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kfOgPVr5; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id CAD852038F37;
+	Fri,  7 Mar 2025 10:06:47 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CAD852038F37
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741370808;
+	bh=fkpzWS7kKQxS7iHBM5+/9vLioYcucl4kL46RR98FB2o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kfOgPVr5LJFN2ld3861YnCyoXBzp+thWEeMvJ+YweMjJBiArD9U7tYwudHEyeNoat
+	 igt1898SeJwvGyscPq6VaPbrQalQZt8Xwoxkv4MYmortZR1uJCXtyOKomZaHk/Sq4b
+	 ZHHPwTwLAQWLTYwV6XCRICP5BGc3MKiHJftH/nzw=
+Message-ID: <efb43459-4136-43cd-adac-2179d9985e9d@linux.microsoft.com>
+Date: Fri, 7 Mar 2025 10:06:47 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9c0d8aa8-cac7-4679-aece-af88e8129345@sk.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
+ expose /dev/mshv to VMMs
+To: Wei Liu <wei.liu@kernel.org>
+Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
+ haiyangz@microsoft.com, mhklinux@outlook.com, decui@microsoft.com,
+ catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+ daniel.lezcano@linaro.org, joro@8bytes.org, robin.murphy@arm.com,
+ arnd@arndb.de, jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
+ skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
+ ssengar@linux.microsoft.com, apais@linux.microsoft.com,
+ Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
+ gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
+ muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
+ lenb@kernel.org, corbet@lwn.net
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
+ <f332b77a-940f-4007-a44a-de64878d5201@linux.microsoft.com>
+ <Z8ncFkwzxi9qJFD3@liuwe-devbox-debian-v2>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <Z8ncFkwzxi9qJFD3@liuwe-devbox-debian-v2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 07, 2025 at 08:46:46PM +0900, Honggyu Kim wrote:
-> You can see more info below.
+
+
+On 3/6/2025 9:32 AM, Wei Liu wrote:
+> On Thu, Feb 27, 2025 at 10:50:30AM -0800, Roman Kisel wrote:
+
+[...]
+
+>> 2. Scheduling. Here, there is the mature KVM and Xen code to find
+>>     inspiration in. Xen being the Type 1 hypervisor should likely be
+>>     closer to MSHV in my understanding.
 > 
->   $ cd /sys/devices/system/node
+> Yes and no.
 > 
->   $ ls -d node*
->   node0  node1  node2  node3
+> When a hypervisor-based scheduler (either classic or core) is used, the
+> scheduling model is the same as Xen. In this model, the hypervisor makes
+> the scheduling decisions.
 > 
->   $ cat possible
->   0-11
-
-We're split across two threads now, but i'll add this context
-
-I'm basically asking whether there should be 12 nodes possible. It seems
-like there should only be 4 nodes possible - 2 for sockets, 2 for host
-bridges.
-
-Unless I'm misunderstanding, it should be the case that a given physical
-address can only be hosted by 1 numa node (proximity domain).
-
-So it *should* be the case that you either have 4 nodes possible or 10
-nodes possible, not 12.  But I could be missing a piece of context.
-
-> Which command do we need for this info specifically?  My output doesn't
-> provide some useful info for that.
+> There is a second scheduler model. In that model, the hypervisor
+> delegates scheduling to the Linux kernel. The Linux scheduler makes the
+> scheduling decisions. It is similar to KVM.
 > 
->   $ acpidump -b
->   $ iasl -d *
->   $ cat cedt.dsl
->       ...
->   **** Unknown ACPI table signature [CEDT]
->
+> We support both. Which model to use largely depends on the workload and
+> the desired behaviors of the system.
+> 
+> This is purely informational in case people wonder why the run vp
+> function branches off to two different code paths.
+> 
 
-You probably have an old version of acpidump here, you might need to get
-a newer version that knows about the CEDT.
+Thanks, now I understand that better :)
 
-You'll also want to get all the Memory Affinity entries from srat.dsl
+[...]
 
-> Not sure about it.  This must be fixed ASAP because current kernel is
-> broken on this issue and the fix should go into hotfix tree first.
->
+>> -- 
+>> Thank you,
+>> Roman
+>>
 
-I agree something is broken, I'm not convinced what is broken.
+-- 
+Thank you,
+Roman
 
-> If you can think this is just a bandaid, but leaving it bleeding as is
-> not the right approach.
->
-
-This affects userland, we shouldn't thrash on this. Lets get it right.
-
-~Gregory
 
