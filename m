@@ -1,272 +1,156 @@
-Return-Path: <linux-acpi+bounces-11937-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11938-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFA8A57230
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 20:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C09A5728A
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 20:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9BC617A27B
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 19:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D5D179A7E
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Mar 2025 19:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8358258CD8;
-	Fri,  7 Mar 2025 19:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2292459F2;
+	Fri,  7 Mar 2025 19:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BTDTKS9b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N+TaZrMh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB666253330;
-	Fri,  7 Mar 2025 19:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6461A4F3C;
+	Fri,  7 Mar 2025 19:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741376323; cv=none; b=kiSExtiDnznj2/pHxs6c7Vh5PLmzx3YGxvnd4IqdZMHzlEcCTrlSVkYvBu9SDjtytZjtoV4KvXD2ngDapwXMwZ/HtABwsz9iObtHYXSU5IvI/iVwDSRj9fmalVU0OXvI1Djy0set1OQOBfSltAPjxpCOcaPlZYyIoEfA1sQr9KA=
+	t=1741377204; cv=none; b=noU3pF+q6Ax2vnIqyf2dTJ6zOF9e/ozZTqCkROHx8Dgncx8YjAAs+wM6OWVqPN2cZw7S7/ZkgR4VNw3BjxQAUKdk31XIBYnkCzHamCOp75o1E+sjROeBtMDe3VzlTgHEAy8JD4cxa1Q7uzr9U33fc0L6ZD9s68qwAcL/gphezpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741376323; c=relaxed/simple;
-	bh=QuFzfrTLjaA9gbKPhKqDwe1HwpIE7XSFyTa8qkL7MzY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S+bfh8yIYE65XuZgoqXEs+eATqXhVWh+/BZcUkgAjLUlynBfp0FMyclmqgEiGBGJxyRjaBx9p0Qiw0TgtaDeCimaJlwLefLVm4+4hxwDwFhv5fkBjxCyDf0p75E1ZZHy2np6U+rGvKh58+4oT8Uc6LWY48q3zm/o3vraYCUoO/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=BTDTKS9b; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C22922038F3B;
-	Fri,  7 Mar 2025 11:38:40 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C22922038F3B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741376321;
-	bh=yVVvfg7nNo75btMVnqf79WPRKj+LH+AfDz2DKRVLCf4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BTDTKS9b7goSERxxHafXuM4rtLTN1S9srcjUKYI2KO4wvxfJNrRXqMNLjhTs4BUxT
-	 1wkanwhE182uhLKSj5Fo7D22ohMjpjUdJ7ptOqgKb7A3EK/BfSXB0nsu3AYXj1HRJL
-	 6xQDFhHf2YEXSmlpnMpEyIQBFjGqfV9TNaUrEYjs=
-Message-ID: <44f2032c-557d-4b11-aab8-1dd93646b05f@linux.microsoft.com>
-Date: Fri, 7 Mar 2025 11:38:23 -0800
+	s=arc-20240116; t=1741377204; c=relaxed/simple;
+	bh=jW13cb5LfXx1elX2HCWSeQ4XXS/LTqhw13X2BO7S/yM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jnh0ecQrvKjheGtosCXZqKTrLNB8lZ8oC8wSk0SGwNw5MomIHK8uzhCvnHzjK0cMtgOetyHNF/hkY4xBcTFwiz9Ec75eBqpB4SPVnvg2u+2LyI80x0ca45TyWG473vZkwl4SupWtV5E7PGasbwg5UsQW8a9xaxIFzG7ESWEe184=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N+TaZrMh; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741377203; x=1772913203;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jW13cb5LfXx1elX2HCWSeQ4XXS/LTqhw13X2BO7S/yM=;
+  b=N+TaZrMhFn/uJ51M/UAPMDzC/Zul7pAp7yBy1ikQcJUkycQeIjPEfUWd
+   8K0YtDzdxo4ESXLlfasyLS687EGLQewSmGRiHjt98lXNPYTKRc0h8oK98
+   lnC34WYQeiiv9rtN/KtqIx5o369J7l4ODvKl+kPTO+z1oRVy9JFplgNN0
+   zSndKBwuWIeGRmJ8q1Gh9lUIrqtW07rJlGPxn58QuSCoL+CbuKtowRiok
+   3VVYYR26l38aHXXK2/LaS1JIWwhpVUmmv5xjWTrSm58Jkvz77oLawMDNC
+   8RfdtlsyXvMJCn3yUXI956RVCR81Ojs4U6r/jSUYjC0Vnpg6W6swopcwD
+   Q==;
+X-CSE-ConnectionGUID: hRdI6WlESoWa7MnNxKOgFg==
+X-CSE-MsgGUID: 5hwMx20RRcCkfKtreUVApQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="46362199"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="46362199"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 11:53:22 -0800
+X-CSE-ConnectionGUID: 2GvcInyMSbeO20ibsiAMuA==
+X-CSE-MsgGUID: fLxSYKcnScOnnm+4wTrZrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="124430688"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.110.159])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 11:53:21 -0800
+Date: Fri, 7 Mar 2025 11:53:18 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: shiju.jose@huawei.com
+Cc: linux-cxl@vger.kernel.org, dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, david@redhat.com,
+	Vilas.Sridharan@amd.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH 2/8] cxl/memfeature: Add CXL memory device patrol scrub
+ control feature
+Message-ID: <Z8tOrqOnkv-ZUsEy@aschofie-mobl2.lan>
+References: <20250227223816.2036-1-shiju.jose@huawei.com>
+ <20250227223816.2036-3-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/10] hyperv: Convert Hyper-V status codes to strings
-To: Michael Kelley <mhklinux@outlook.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Cc: "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "decui@microsoft.com" <decui@microsoft.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
- "joro@8bytes.org" <joro@8bytes.org>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>, "arnd@arndb.de"
- <arnd@arndb.de>,
- "jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
- "muminulrussell@gmail.com" <muminulrussell@gmail.com>,
- "skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
- "mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
- "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
- "apais@linux.microsoft.com" <apais@linux.microsoft.com>,
- "Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
- "stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
- "muislam@microsoft.com" <muislam@microsoft.com>,
- "anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-2-git-send-email-nunodasneves@linux.microsoft.com>
- <SN6PR02MB41577560030C55503D1BAFDCD4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Language: en-US
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB41577560030C55503D1BAFDCD4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227223816.2036-3-shiju.jose@huawei.com>
 
-On 3/6/2025 9:57 AM, Michael Kelley wrote:
-> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Wednesday, February 26, 2025 3:08 PM
->>
->> Introduce hv_result_to_string() for this purpose. This allows
->> hypercall failures to be debugged more easily with dmesg.
->>
->> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
->> ---
->>  drivers/hv/hv_common.c         | 65 ++++++++++++++++++++++++++++++++++
->>  drivers/hv/hv_proc.c           | 13 ++++---
->>  include/asm-generic/mshyperv.h |  1 +
->>  3 files changed, 74 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
->> index 9804adb4cc56..ce20818688fe 100644
->> --- a/drivers/hv/hv_common.c
->> +++ b/drivers/hv/hv_common.c
->> @@ -740,3 +740,68 @@ void hv_identify_partition_type(void)
->>  			pr_crit("Hyper-V: CONFIG_MSHV_ROOT not enabled!\n");
->>  	}
->>  }
->> +
->> +const char *hv_result_to_string(u64 hv_status)
->> +{
->> +	switch (hv_result(hv_status)) {
->> +	case HV_STATUS_SUCCESS:
->> +		return "HV_STATUS_SUCCESS";
->> +	case HV_STATUS_INVALID_HYPERCALL_CODE:
->> +		return "HV_STATUS_INVALID_HYPERCALL_CODE";
->> +	case HV_STATUS_INVALID_HYPERCALL_INPUT:
->> +		return "HV_STATUS_INVALID_HYPERCALL_INPUT";
->> +	case HV_STATUS_INVALID_ALIGNMENT:
->> +		return "HV_STATUS_INVALID_ALIGNMENT";
->> +	case HV_STATUS_INVALID_PARAMETER:
->> +		return "HV_STATUS_INVALID_PARAMETER";
->> +	case HV_STATUS_ACCESS_DENIED:
->> +		return "HV_STATUS_ACCESS_DENIED";
->> +	case HV_STATUS_INVALID_PARTITION_STATE:
->> +		return "HV_STATUS_INVALID_PARTITION_STATE";
->> +	case HV_STATUS_OPERATION_DENIED:
->> +		return "HV_STATUS_OPERATION_DENIED";
->> +	case HV_STATUS_UNKNOWN_PROPERTY:
->> +		return "HV_STATUS_UNKNOWN_PROPERTY";
->> +	case HV_STATUS_PROPERTY_VALUE_OUT_OF_RANGE:
->> +		return "HV_STATUS_PROPERTY_VALUE_OUT_OF_RANGE";
->> +	case HV_STATUS_INSUFFICIENT_MEMORY:
->> +		return "HV_STATUS_INSUFFICIENT_MEMORY";
->> +	case HV_STATUS_INVALID_PARTITION_ID:
->> +		return "HV_STATUS_INVALID_PARTITION_ID";
->> +	case HV_STATUS_INVALID_VP_INDEX:
->> +		return "HV_STATUS_INVALID_VP_INDEX";
->> +	case HV_STATUS_NOT_FOUND:
->> +		return "HV_STATUS_NOT_FOUND";
->> +	case HV_STATUS_INVALID_PORT_ID:
->> +		return "HV_STATUS_INVALID_PORT_ID";
->> +	case HV_STATUS_INVALID_CONNECTION_ID:
->> +		return "HV_STATUS_INVALID_CONNECTION_ID";
->> +	case HV_STATUS_INSUFFICIENT_BUFFERS:
->> +		return "HV_STATUS_INSUFFICIENT_BUFFERS";
->> +	case HV_STATUS_NOT_ACKNOWLEDGED:
->> +		return "HV_STATUS_NOT_ACKNOWLEDGED";
->> +	case HV_STATUS_INVALID_VP_STATE:
->> +		return "HV_STATUS_INVALID_VP_STATE";
->> +	case HV_STATUS_NO_RESOURCES:
->> +		return "HV_STATUS_NO_RESOURCES";
->> +	case HV_STATUS_PROCESSOR_FEATURE_NOT_SUPPORTED:
->> +		return "HV_STATUS_PROCESSOR_FEATURE_NOT_SUPPORTED";
->> +	case HV_STATUS_INVALID_LP_INDEX:
->> +		return "HV_STATUS_INVALID_LP_INDEX";
->> +	case HV_STATUS_INVALID_REGISTER_VALUE:
->> +		return "HV_STATUS_INVALID_REGISTER_VALUE";
->> +	case HV_STATUS_OPERATION_FAILED:
->> +		return "HV_STATUS_OPERATION_FAILED";
->> +	case HV_STATUS_TIME_OUT:
->> +		return "HV_STATUS_TIME_OUT";
->> +	case HV_STATUS_CALL_PENDING:
->> +		return "HV_STATUS_CALL_PENDING";
->> +	case HV_STATUS_VTL_ALREADY_ENABLED:
->> +		return "HV_STATUS_VTL_ALREADY_ENABLED";
->> +	default:
->> +		return "Unknown";
->> +	};
->> +	return "Unknown";
->> +}
->> +EXPORT_SYMBOL_GPL(hv_result_to_string);
->> +
->> diff --git a/drivers/hv/hv_proc.c b/drivers/hv/hv_proc.c
->> index 2fae18e4f7d2..8fc30f509fa7 100644
->> --- a/drivers/hv/hv_proc.c
->> +++ b/drivers/hv/hv_proc.c
->> @@ -87,7 +87,8 @@ int hv_call_deposit_pages(int node, u64 partition_id, u32
->> num_pages)
->>  				     page_count, 0, input_page, NULL);
->>  	local_irq_restore(flags);
->>  	if (!hv_result_success(status)) {
->> -		pr_err("Failed to deposit pages: %lld\n", status);
->> +		pr_err("%s: Failed to deposit pages: %s\n", __func__,
->> +		       hv_result_to_string(status));
->>  		ret = hv_result_to_errno(status);
->>  		goto err_free_allocations;
->>  	}
->> @@ -137,8 +138,9 @@ int hv_call_add_logical_proc(int node, u32 lp_index, u32 apic_id)
->>
->>  		if (hv_result(status) != HV_STATUS_INSUFFICIENT_MEMORY) {
->>  			if (!hv_result_success(status)) {
->> -				pr_err("%s: cpu %u apic ID %u, %lld\n", __func__,
->> -				       lp_index, apic_id, status);
->> +				pr_err("%s: cpu %u apic ID %u, %s\n",
->> +				       __func__, lp_index, apic_id,
->> +				       hv_result_to_string(status));
->>  				ret = hv_result_to_errno(status);
->>  			}
->>  			break;
->> @@ -179,8 +181,9 @@ int hv_call_create_vp(int node, u64 partition_id, u32 vp_index,
->> u32 flags)
->>
->>  		if (hv_result(status) != HV_STATUS_INSUFFICIENT_MEMORY) {
->>  			if (!hv_result_success(status)) {
->> -				pr_err("%s: vcpu %u, lp %u, %lld\n", __func__,
->> -				       vp_index, flags, status);
->> +				pr_err("%s: vcpu %u, lp %u, %s\n",
->> +				       __func__, vp_index, flags,
->> +				       hv_result_to_string(status));
->>  				ret = hv_result_to_errno(status);
->>  			}
->>  			break;
->> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
->> index b13b0cda4ac8..dc4729dba9ef 100644
->> --- a/include/asm-generic/mshyperv.h
->> +++ b/include/asm-generic/mshyperv.h
->> @@ -298,6 +298,7 @@ static inline int cpumask_to_vpset_skip(struct hv_vpset *vpset,
->>  	return __cpumask_to_vpset(vpset, cpus, func);
->>  }
->>
->> +const char *hv_result_to_string(u64 hv_status);
->>  int hv_result_to_errno(u64 status);
->>  void hyperv_report_panic(struct pt_regs *regs, long err, bool in_die);
->>  bool hv_is_hyperv_initialized(void);
->> --
->> 2.34.1
-> 
-> I've read through the other comments on this patch. I definitely vote
-> for outputting both the hex code along with a string translation, which
-> could be empty if the hex code is unrecognized by the translation code.
-> 
-> I can see providing something like hv_hvcall_err() as Nuno proposed, since
-> that standardizes the text output. But I wonder if it would be too limiting.
-> For example, in the changes above, both hv_call_add_logical_proc() and
-> hv_call_create_vp() output additional debugging values, which we probably
-> don't want to give up.
-> 
+On Thu, Feb 27, 2025 at 10:38:09PM +0000, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 
-Good point - that is easy though, I'll add a __VA_ARGS__ to the macro so any
-custom message can be printed alongside the other info.
-
-> Lastly, from an implementation standpoint, rather than using a big
-> switch statement, build a static array of entries that each have the
-> hex code and string equivalent. Then hv_result_to_string() loops through
-> the array looking for a match. This won't be any slower than the big switch
-> statement. I've seen other places in the kernel where string names are
-> output, and looking up the strings in a static array is the typical approach.
-> You'll have to work through the details and see if avoids being too clumsy,
-> but I think it will be OK.
-
-I'll try it out, agree the perf difference probably won't be significant or
-even matter much.
-
-Thanks
-Nuno
+snip
 
 > 
-> Michael
+> +static int cxl_ps_get_attrs(struct cxl_patrol_scrub_context *cxl_ps_ctx,
+> +			    struct cxl_memdev_ps_params *params)
+> +{
+> +	struct cxl_mailbox *cxl_mbox;
+> +	struct cxl_memdev *cxlmd;
+> +	u16 min_scrub_cycle = 0;
+> +	int i, ret;
+> +
+> +	if (cxl_ps_ctx->cxlr) {
+> +		struct cxl_region *cxlr = cxl_ps_ctx->cxlr;
+> +		struct cxl_region_params *p = &cxlr->params;
+> +
+> +		ret = cxl_hold_region_and_dpa();
+> +		if (ret)
+> +			return ret;
+> +		for (i = p->interleave_ways - 1; i >= 0; i--) {
+> +			struct cxl_endpoint_decoder *cxled = p->targets[i];
+> +
 
+Hi Shiju,
+
+Although not functionally wrong, the above for loop caught my eye.
+
+p->nr_targets is a better loop initializer when walking p->targets[]
+(at this point nr_targets better equal interleave ways but lets use
+the count intended for the array being walked)
+
+Is there a reason to walk in reverse? This seems clearer:
+for (i = 0; i < p->nr_targets; i++)
+
+The same for loop header repeats below in:
+cxl_ps_set_attrs()
+cxl_region_scrub_init()
+If you change for one, change for all.
+
+snip
+
+> +static int cxl_memdev_scrub_init(struct cxl_memdev *cxlmd,
+> +				 struct edac_dev_feature *ras_feature, u8 scrub_inst)
+> +{
+> +	struct cxl_patrol_scrub_context *cxl_ps_ctx;
+> +	struct cxl_feat_entry *feat_entry;
+> +
+> +	feat_entry = cxl_get_feature_entry(cxlmd->cxlds, &CXL_FEAT_PATROL_SCRUB_UUID);
+> +	if (IS_ERR(feat_entry))
+> +		return -EOPNOTSUPP;
+> +
+
+Along w patch 1 comment, perhaps just check for (!feat_entry) here 
+and in a couple of other places below.
+
+snip
+
+> 
 
