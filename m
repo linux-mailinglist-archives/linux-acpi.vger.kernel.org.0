@@ -1,159 +1,251 @@
-Return-Path: <linux-acpi+bounces-11973-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11974-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EC2A57BA0
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 16:39:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFEFA57BEE
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 17:29:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 793213B175F
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 15:39:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F99816D2F6
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 16:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F451E25F7;
-	Sat,  8 Mar 2025 15:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913D91E5215;
+	Sat,  8 Mar 2025 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RTnIlCFb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSzp+BIy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317021DE3C1;
-	Sat,  8 Mar 2025 15:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F341B21B4;
+	Sat,  8 Mar 2025 16:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741448378; cv=none; b=rxSaxEq7bctjnR98LnEtp8O66pnMrTlqqA2VizgUPRK25LJ/P8li/doMjvpC1/DCRwp1dxwgmq5jGlXxI76grOqdl0Dfd0S873fsPThy0Hnr09/SQqEJ/0ZhF7LXfZ8jEnFFM3UJ73cvrhKoo1MdWhMxyt6WckE9ojFjNIciJLo=
+	t=1741451383; cv=none; b=V7gBPrPlqbd9o1xODD8IBPzwIVWnvhyEt/1BSaPrgPcynFloeVrSL6IIageP+YgKKHwQbJeyNfj/h2UL6aqq6fyZiXMDKfMf2lL8w7cf2QpGDMrnVreoLvLLMkfT04bG6LyC0NxjwJeY79m1ziJsn2WV+gwmJBoFzISh2EEo00M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741448378; c=relaxed/simple;
-	bh=NnLYHq2JqfXgkjMxar4JX+h2rE0kYUMKg8BAJhaoZow=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=s7S9yaLx6t/3vS9h/aaxZTlOYOE3T6EaQl/0EF3ggmt9Q4kF6RoSM7gLpxHCnR+NJmnzVbk5M2a629oscfzQqOEHwZObZ910JT8ylG1cl2f7PpSePnLJ74T3RWx6HqnjBPjcl+R8UBXF/TdoS894B9FFtJZP/OTSVPvBqt+bH0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RTnIlCFb; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741448377; x=1772984377;
-  h=date:from:to:cc:subject:message-id;
-  bh=NnLYHq2JqfXgkjMxar4JX+h2rE0kYUMKg8BAJhaoZow=;
-  b=RTnIlCFbDlADS5elU4I1GNi3SAYSF4YyTmWYGZMnm76+lx11xieOS48M
-   Oc1oMUdqTbITgpPDVi5+LtWyl3HWr7Wbl2kT8/046DGBPpDK9Ef1XM+gS
-   OP9Qv7KWQ2Ilfx5/ToPStKG9+9Crm1k24bC0nvWps7Pd0mKhQFyY0/Fzo
-   YNdeHADR4V8yylhXH5ns3A7t+LiX6s9oVmM4NuaNs+jB52vQz8VjkXO95
-   LS0lkrNBAGftwRynqyPwxAt7eaexP/uqb2uYNjjKxMlsUkCqxDOGovyiT
-   oMFAKpelXNzbtmBMf96C9h5xucEHDnDGRiXHkXhFXT8eI/xQhoVnyjIFe
-   Q==;
-X-CSE-ConnectionGUID: tnurJ9h7TFytIgbOq7ov6A==
-X-CSE-MsgGUID: 9kXRA0pRSAqeaWbVdoP9Ug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11367"; a="41646909"
-X-IronPort-AV: E=Sophos;i="6.14,232,1736841600"; 
-   d="scan'208";a="41646909"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2025 07:39:35 -0800
-X-CSE-ConnectionGUID: EZrm0kukRdigxAmvHGXS/Q==
-X-CSE-MsgGUID: h5qHw7kDRw++uzYiNnME0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="150527448"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Mar 2025 07:39:34 -0800
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tqwGx-00020O-2k;
-	Sat, 08 Mar 2025 15:39:31 +0000
-Date: Sat, 08 Mar 2025 23:38:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 28b62127a1a108a1c841d16855ed1ed9b556439a
-Message-ID: <202503082320.JJWguJjS-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1741451383; c=relaxed/simple;
+	bh=SdeY4HUDR25gSwHntex8TgQMRjhWp1R3x/osJlwkf2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u57RRz4rlN//oeRQ7AQh3oZLQW7+rt92lc/5jwSlfUoX3x//v0IAry+0APgVtpKV5yPVTqBb4jvB9i4bLTWsH2XqvlWO3Kw2ozkEt4HVAju6GwU2rVrjQ3pT9TLYuFpC5l5q2g7vrdr6fuWYgR+gWcPvBwNMt672dBA+u/MGyBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSzp+BIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0032C4CEE0;
+	Sat,  8 Mar 2025 16:29:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741451383;
+	bh=SdeY4HUDR25gSwHntex8TgQMRjhWp1R3x/osJlwkf2A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NSzp+BIy+RyYAh5eXPfpEeXytNRO+Yn6QDm61AqJR8JPEZz8lPYUdH5rwAtQ05Xgi
+	 nJ52JT45pfwi6qQmjNAQl3PQm42j3TaIFdCd9qBeOGwEiLP5I4ChuxG/eiUIvHz+gf
+	 vFNeOPjjYakfsWHf3baQaOKsl1voaEzszbfYyZf3MV94dErx1nbWai2CFl3Azkw15j
+	 rPpzaDB7MAis2oreAPGOwD994ClDh/BRvfWkNboiV69CTNipPu/XspI5zRPgzAWTgR
+	 owYLqgaQkKxX174yazNjuFoEFyme0FYmA2oF6DDFWudPFsQy0VFIbtdTW9FkcU73tW
+	 wdzVAijHUAy0A==
+Date: Sat, 8 Mar 2025 16:29:28 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
+ <nuno.sa@analog.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>, Matteo
+ Martelli <matteomartelli3@gmail.com>, Alisa-Dariana Roman
+ <alisadariana@gmail.com>, Ramona Alexandra Nechita
+ <ramona.nechita@analog.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v5 03/10] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <20250308162928.72bd1d1b@jic23-huawei>
+In-Reply-To: <54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
+References: <cover.1740993491.git.mazziesaccount@gmail.com>
+	<e71c63c2f61135f9a8c7884525aab2c48f1e84c2.1740993491.git.mazziesaccount@gmail.com>
+	<CAMknhBGQaqFZJsPAoauZL4S5MYtN05EOQ-BO2vw5gH+Z2RLOhw@mail.gmail.com>
+	<54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 28b62127a1a108a1c841d16855ed1ed9b556439a  Merge branch 'acpi-pm' into bleeding-edge
+On Wed, 5 Mar 2025 12:54:33 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-elapsed time: 1451m
+> Thanks for the review David.
+>=20
+> On 04/03/2025 11:25, David Lechner wrote:
+> > On Mon, Mar 3, 2025 at 12:32=E2=80=AFPM Matti Vaittinen
+> > <mazziesaccount@gmail.com> wrote: =20
+> >>
+> >> There are ADC ICs which may have some of the AIN pins usable for other
+> >> functions. These ICs may have some of the AIN pins wired so that they
+> >> should not be used for ADC.
+> >>
+> >> (Preferred?) way for marking pins which can be used as ADC inputs is to
+> >> add corresponding channels@N nodes in the device tree as described in
+> >> the ADC binding yaml.
+> >>
+> >> Add couple of helper functions which can be used to retrieve the chann=
+el
+> >> information from the device node.
+> >>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>
+> >> --- =20
+>=20
+> >> + *
+> >> + * Return:     Number of found channels on succes. Negative value to =
+indicate =20
+> >=20
+> > s/succes/success/ =20
+>=20
+> Thanks!
+>=20
+> >> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> >> +                                         const struct iio_chan_spec *=
+template,
+> >> +                                         int max_chan_id,
+> >> +                                         struct iio_chan_spec **cs)
+> >> +{
+> >> +       struct iio_chan_spec *chan_array, *chan;
+> >> +       int num_chan =3D 0, ret;
+> >> +
+> >> +       num_chan =3D iio_adc_device_num_channels(dev);
+> >> +       if (num_chan < 1)
+> >> +               return num_chan;
+> >> +
+> >> +       chan_array =3D devm_kcalloc(dev, num_chan, sizeof(*chan_array),
+> >> +                                 GFP_KERNEL);
+> >> +       if (!chan_array)
+> >> +               return -ENOMEM;
+> >> +
+> >> +       chan =3D &chan_array[0];
+> >> +
+> >> +       device_for_each_child_node_scoped(dev, child) {
+> >> +               u32 ch;
+> >> +
+> >> +               if (!fwnode_name_eq(child, "channel"))
+> >> +                       continue;
+> >> +
+> >> +               ret =3D fwnode_property_read_u32(child, "reg", &ch);
+> >> +               if (ret)
+> >> +                       return ret;
+> >> +
+> >> +               if (max_chan_id !=3D -1 && ch > max_chan_id)
+> >> +                       return -ERANGE;
+> >> + =20
+> >=20
+> > Should we use return dev_err_probe() on these to help with debugging a =
+bad dtb?
+> >  =20
+>=20
+> I am not fan of using dev_err_probe() in a 'library code'. This is=20
+> because we never know if there'll be some odd use-case where this is not=
+=20
+> called from the probe.
+>=20
+> All in all, I'd leave adding most of the debugs to the callers -=20
+> especially because we do not expect to have bad device-trees after the=20
+> initial 'development stage' of a board. The board 'development stage'=20
+> should really reveal bugs which prevent the channels from being=20
+> registered - and after the DT is correct, these debug prints become=20
+> unnecessary (albeit minor) binary bloat.
+>=20
+> >> +               *chan =3D *template;
+> >> +               chan->channel =3D ch;
+> >> +               chan++;
+> >> +       }
+> >> +
+> >> +       *cs =3D chan_array;
+> >> +
+> >> +       return num_chan;
+> >> +}
+> >> +EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DRIV=
+ER"); =20
+> >=20
+> > We can make this less verbose by setting #define
+> > DEFAULT_SYMBOL_NAMESPACE at the start of the file. Then we can just do
+> > EXPORT_SYMBOL_GPL() throughout the rest of the file. =20
+>=20
+> I am not sure what to think of this. I use the good old 'ctrl + ]' in my=
+=20
+> editor when I need to check how a function was supposed to be used. That=
+=20
+> jumps to the spot of code where the function is. I'd like to see the=20
+> namespace mentioned there in order to not accidentally miss the fact the=
+=20
+> function belongs to one.
+>=20
+> OTOH, I do like simplifications. Yet, the added simplification might not=
+=20
+> warrant the namespace not being visible in the function definition.
+>=20
+> > Also, I would prefer if the namespace matched config name (IIO_ADC_HELP=
+ER). =20
+>=20
+> I had some lengthy discussion about this with Andy and Jonathan during=20
+> earlier review versions. In short, I don't like the idea of very=20
+> fragmented namespaces in IIO, which will just complicate the drivers=20
+> without providing any obvious benefit.
+>=20
+> https://lore.kernel.org/all/20250222174842.57c091c5@jic23-huawei/
+>=20
+> >> +
+> >> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> >> +                                         const struct iio_chan_spec *=
+template,
+> >> +                                         int max_chan_id,
+> >> +                                         struct iio_chan_spec **cs);
+> >> + =20
+> >=20
+> > There are some different opinions on this, but on the last patch I did
+> > introducing a new namespace, the consensus seems to be that putting
+> > the MODULE_IMPORT_NS() in the header file was convenient so that users
+> > of the API don't have to remember to both include the header and add
+> > the import macro.
+> >  =20
+>=20
+> I do like this suggestion, and I believe this would be the balance=20
+> between getting the benefit of hiding part of the symbols - while not=20
+> unnecessarily complicating the callers. I know some people are opposing=20
+> it though. My personal opinion is that having the MODULE_IMPORT_NS() in=20
+> a header would be neatly simplifying the calling code with very little=20
+> harm, especially here where including the header hardly has use-cases=20
+> outside the IIO ADC.
+>=20
+> Unfortunately, the "safety" seems to often be a synonym for just "making=
+=20
+> it intentionally hard". As Finnish people say: "K=C3=A4rsi, k=C3=A4rsi,=20
+> kirkkaamman kruunun saat". :)
+> (Roughly translated as "Suffer, suffer, you will get a brighter crown").
+>=20
+> Let's hear what Jonathan thinks of your suggestion.
 
-configs tested: 65
-configs skipped: 2
+For this particular case my intent was that all the IIO exports that
+are suitable for use in simple IIO drives will be in this namespace,
+we just haven't started that conversion yet.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+As such, having it defined from a header for this helper isn't a good
+thing to do.  Generally I prefer to see in driver code what namespaces
+are involved but do understand the other viewpoint. In this case I
+definitely don't think it is appropriate unless we go for a specific namesp=
+ace
+for just this helper.
 
-tested configs:
-alpha                           allyesconfig    gcc-14.2.0
-arc                  randconfig-001-20250308    gcc-13.2.0
-arc                  randconfig-002-20250308    gcc-13.2.0
-arm                  randconfig-001-20250308    gcc-14.2.0
-arm                  randconfig-002-20250308    gcc-14.2.0
-arm                  randconfig-003-20250308    gcc-14.2.0
-arm                  randconfig-004-20250308    gcc-14.2.0
-arm64                randconfig-001-20250308    gcc-14.2.0
-arm64                randconfig-002-20250308    gcc-14.2.0
-arm64                randconfig-003-20250308    clang-16
-arm64                randconfig-004-20250308    gcc-14.2.0
-csky                 randconfig-001-20250308    gcc-14.2.0
-csky                 randconfig-002-20250308    gcc-14.2.0
-hexagon                         allmodconfig    clang-21
-hexagon                         allyesconfig    clang-18
-hexagon              randconfig-001-20250308    clang-19
-hexagon              randconfig-002-20250308    clang-21
-i386       buildonly-randconfig-001-20250308    gcc-12
-i386       buildonly-randconfig-002-20250308    gcc-11
-i386       buildonly-randconfig-003-20250308    clang-19
-i386       buildonly-randconfig-004-20250308    clang-19
-i386       buildonly-randconfig-005-20250308    clang-19
-i386       buildonly-randconfig-006-20250308    gcc-12
-loongarch            randconfig-001-20250308    gcc-14.2.0
-loongarch            randconfig-002-20250308    gcc-14.2.0
-nios2                randconfig-001-20250308    gcc-14.2.0
-nios2                randconfig-002-20250308    gcc-14.2.0
-openrisc                         allnoconfig    gcc-14.2.0
-parisc                           allnoconfig    gcc-14.2.0
-parisc               randconfig-001-20250308    gcc-14.2.0
-parisc               randconfig-002-20250308    gcc-14.2.0
-powerpc                          allnoconfig    gcc-14.2.0
-powerpc              randconfig-001-20250308    clang-18
-powerpc              randconfig-002-20250308    gcc-14.2.0
-powerpc              randconfig-003-20250308    gcc-14.2.0
-powerpc64            randconfig-001-20250308    gcc-14.2.0
-powerpc64            randconfig-003-20250308    clang-21
-riscv                            allnoconfig    gcc-14.2.0
-riscv                randconfig-001-20250308    clang-21
-riscv                randconfig-002-20250308    gcc-14.2.0
-s390                            allmodconfig    clang-19
-s390                             allnoconfig    clang-15
-s390                            allyesconfig    gcc-14.2.0
-s390                 randconfig-001-20250308    clang-19
-s390                 randconfig-002-20250308    clang-17
-sh                              allmodconfig    gcc-14.2.0
-sh                              allyesconfig    gcc-14.2.0
-sh                   randconfig-001-20250308    gcc-14.2.0
-sh                   randconfig-002-20250308    gcc-14.2.0
-sparc                           allmodconfig    gcc-14.2.0
-sparc                randconfig-001-20250308    gcc-14.2.0
-sparc                randconfig-002-20250308    gcc-14.2.0
-sparc64              randconfig-001-20250308    gcc-14.2.0
-sparc64              randconfig-002-20250308    gcc-14.2.0
-um                               allnoconfig    clang-18
-um                   randconfig-001-20250308    gcc-12
-um                   randconfig-002-20250308    gcc-12
-x86_64     buildonly-randconfig-001-20250308    gcc-12
-x86_64     buildonly-randconfig-002-20250308    clang-19
-x86_64     buildonly-randconfig-003-20250308    gcc-12
-x86_64     buildonly-randconfig-004-20250308    clang-19
-x86_64     buildonly-randconfig-005-20250308    clang-19
-x86_64     buildonly-randconfig-006-20250308    clang-19
-xtensa               randconfig-001-20250308    gcc-14.2.0
-xtensa               randconfig-002-20250308    gcc-14.2.0
+Jonathan
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>=20
+> Thanks!
+> 	-- Matti
+>=20
+
 
