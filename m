@@ -1,251 +1,172 @@
-Return-Path: <linux-acpi+bounces-11974-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11975-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFEFA57BEE
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 17:29:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3311A57E4F
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 22:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F99816D2F6
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 16:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68547188D83E
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 21:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913D91E5215;
-	Sat,  8 Mar 2025 16:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AD21A5B8C;
+	Sat,  8 Mar 2025 21:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSzp+BIy"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="PbjaYFSX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="2k09chLW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F341B21B4;
-	Sat,  8 Mar 2025 16:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C23919597F;
+	Sat,  8 Mar 2025 21:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741451383; cv=none; b=V7gBPrPlqbd9o1xODD8IBPzwIVWnvhyEt/1BSaPrgPcynFloeVrSL6IIageP+YgKKHwQbJeyNfj/h2UL6aqq6fyZiXMDKfMf2lL8w7cf2QpGDMrnVreoLvLLMkfT04bG6LyC0NxjwJeY79m1ziJsn2WV+gwmJBoFzISh2EEo00M=
+	t=1741467951; cv=none; b=YZAPlbS9Bcpo6hzh+BlGJsUwoWw3VsXbfyPu32YvVI13tnRmWPEVLmtTGU9JJW4WMUc88MYVZDZJzb+L9pNdhzuyO/ag524pKMb91GdBeynegkyecJllRVeIz0lQORbion+/Sh/rDvJ9N+Bb4pi3SnckW+FVU29Ez3QnHVFHg48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741451383; c=relaxed/simple;
-	bh=SdeY4HUDR25gSwHntex8TgQMRjhWp1R3x/osJlwkf2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u57RRz4rlN//oeRQ7AQh3oZLQW7+rt92lc/5jwSlfUoX3x//v0IAry+0APgVtpKV5yPVTqBb4jvB9i4bLTWsH2XqvlWO3Kw2ozkEt4HVAju6GwU2rVrjQ3pT9TLYuFpC5l5q2g7vrdr6fuWYgR+gWcPvBwNMt672dBA+u/MGyBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSzp+BIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0032C4CEE0;
-	Sat,  8 Mar 2025 16:29:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741451383;
-	bh=SdeY4HUDR25gSwHntex8TgQMRjhWp1R3x/osJlwkf2A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NSzp+BIy+RyYAh5eXPfpEeXytNRO+Yn6QDm61AqJR8JPEZz8lPYUdH5rwAtQ05Xgi
-	 nJ52JT45pfwi6qQmjNAQl3PQm42j3TaIFdCd9qBeOGwEiLP5I4ChuxG/eiUIvHz+gf
-	 vFNeOPjjYakfsWHf3baQaOKsl1voaEzszbfYyZf3MV94dErx1nbWai2CFl3Azkw15j
-	 rPpzaDB7MAis2oreAPGOwD994ClDh/BRvfWkNboiV69CTNipPu/XspI5zRPgzAWTgR
-	 owYLqgaQkKxX174yazNjuFoEFyme0FYmA2oF6DDFWudPFsQy0VFIbtdTW9FkcU73tW
-	 wdzVAijHUAy0A==
-Date: Sat, 8 Mar 2025 16:29:28 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
- <nuno.sa@analog.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>, Dumitru Ceclan
- <mitrutzceclan@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>, Matteo
- Martelli <matteomartelli3@gmail.com>, Alisa-Dariana Roman
- <alisadariana@gmail.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v5 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250308162928.72bd1d1b@jic23-huawei>
-In-Reply-To: <54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
-	<e71c63c2f61135f9a8c7884525aab2c48f1e84c2.1740993491.git.mazziesaccount@gmail.com>
-	<CAMknhBGQaqFZJsPAoauZL4S5MYtN05EOQ-BO2vw5gH+Z2RLOhw@mail.gmail.com>
-	<54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741467951; c=relaxed/simple;
+	bh=soAQYnXR+lBcoAqzICQ9dhN2P4GRiTJuBPmQemVV+zk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=LYMtKMWOdR2DJEMF4H5CDhTz3uF3ltjYPyoik5SD664abP3b2cxuB0V4qLCc99By6EzN+EuPU2+SXDXBd5SqlEynHrBRO9sEJ4mPSq6qz7QhZdobXV5FNu7P++Hn62NheYsBlk0C7k7zwPsOnu8SxAzxdbteftpFUbwcnpDOmok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=PbjaYFSX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=2k09chLW; arc=none smtp.client-ip=103.168.172.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailflow.phl.internal (Postfix) with ESMTP id DE8FE2017E6;
+	Sat,  8 Mar 2025 16:05:46 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-07.internal (MEProxy); Sat, 08 Mar 2025 16:05:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1741467946;
+	 x=1741475146; bh=W4poDmOA64pY4uvHZcOCt8hPoavx9e3hXSZvtxdXHKk=; b=
+	PbjaYFSX9IBx2Zrs40HbC9+xW+mfnGRXkjrLnF/lmBTxXHH5vogiHSSOspqIeun1
+	NHfBh6H00r3dQfPeg/5Np/6Z9XnSuH0FKD+DR2HubpiuMGQ/cIlXZj4R8B8ROhDL
+	goKIgFL/GsoFSOene+PO+8yhXJyNpaw+RIaTc2mAtJJGV6CjknGC9TlrbTxPTF9X
+	pWcsaTZU3KhhEbiIyNbOPqhcecuUGjnfGnDJ2dWkoU+YL+V5DIIga1Rn2j0Bl5qL
+	u59YI9TE/OHE24iRU+89XEMwS2VxZLS7RtbtY5u5kVRUVTePTpxwefPCm6nJdU9/
+	et5ORwsXOuqEk213wxjyfw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1741467946; x=
+	1741475146; bh=W4poDmOA64pY4uvHZcOCt8hPoavx9e3hXSZvtxdXHKk=; b=2
+	k09chLWM/lSt9ok/EPaPM1tR7eBje/kIsmlJQe/3mXR56QFqC9W69F7BHwDF0fGM
+	kODKlY76T3e9H8oa0C+vm3AnKrYBg4EHOFO+NeDTv9i2LVhrbDe+4On1enx+SXkf
+	jCuY+jGWCb7dq6bVKRic6ilsWWRffPxqNl3G4H3ZyFTFR5vG3CC93kYg0GtIJREx
+	i7ppS1ZpZObOXtg1acJC8U8r4gnYj7l+dkuLnVJPKp/LgM21hZnVKFd/s3wHJv+C
+	oYUKaTLoubtPOBBZsxqlbvftF3FJJh5RQfjk0WIAx3lkCwrtVye9WojKDgsaWm8w
+	eqXtQNTKoXuDuJ4eq/jTA==
+X-ME-Sender: <xms:KrHMZwqQWf1vmDRRZmKYix9_AvEX71hk9A5-PUg-mMHoqyGuX43GTw>
+    <xme:KrHMZ2psuRMKaam0ybx-JZLEC1a7vUGqphSu1hLVSUR3YOE3xwz-daI2PPjxwEq4X
+    bngyXPelqUm1rvI9Vg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudegheekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    gedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+    dprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghp
+    thhtohepjhhovgihrdhgohhulhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrd
+    hruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtohepshhuuggvvghprdhhohhllhgr
+    segrrhhmrdgtohhmpdhrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrd
+    gtohhmpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphht
+    thhopeihuhiivghnghhhuhhisehhuhgrfigvihdrtghomhdprhgtphhtthhopegtohhnoh
+    hrodgutheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:KrHMZ1O9ctL676w5AHUIxE0SC1uXzVCBMq5d4oaLxLgUSw773mfxVg>
+    <xmx:KrHMZ36aWng3VojtFfg9JWrEIO2NAAnLf-1dP-OHoquiOYe6lO0u_Q>
+    <xmx:KrHMZ_6_zJEf_V0pq87wzL4JG8U2CRExCG9veX074cbH5tYyr-yvvg>
+    <xmx:KrHMZ3iPusvaeexA7SSSlwDrRNP8bOUuPa3aybP_Ilx1k2AiNrnRHA>
+    <xmx:KrHMZxAOYkkYPw5ZnbYA_W8w8hNAHsxDFHKJb1ECP7qxkoZka0El8mlf>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E676A2220072; Sat,  8 Mar 2025 16:05:45 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Date: Sat, 08 Mar 2025 22:05:24 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Roman Kisel" <romank@linux.microsoft.com>, bhelgaas@google.com,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Dexuan Cui" <decui@microsoft.com>,
+ "Haiyang Zhang" <haiyangz@microsoft.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Joey Gouly" <joey.gouly@arm.com>,
+ krzk+dt@kernel.org, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, "Len Brown" <lenb@kernel.org>,
+ "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
+ "Manivannan Sadhasivam" <manivannan.sadhasivam@linaro.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Marc Zyngier" <maz@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Oliver Upton" <oliver.upton@linux.dev>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Rob Herring" <robh@kernel.org>, ssengar@linux.microsoft.com,
+ "Sudeep Holla" <sudeep.holla@arm.com>,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Wei Liu" <wei.liu@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Zenghui Yu" <yuzenghui@huawei.com>,
+ devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-acpi@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org
+Cc: apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
+ sunilmut@microsoft.com
+Message-Id: <e0f81049-688e-4f53-a002-5d246281bf8d@app.fastmail.com>
+In-Reply-To: <20250307220304.247725-4-romank@linux.microsoft.com>
+References: <20250307220304.247725-1-romank@linux.microsoft.com>
+ <20250307220304.247725-4-romank@linux.microsoft.com>
+Subject: Re: [PATCH hyperv-next v5 03/11] Drivers: hv: Enable VTL mode for arm64
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Wed, 5 Mar 2025 12:54:33 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Fri, Mar 7, 2025, at 23:02, Roman Kisel wrote:
+> @@ -5,18 +5,20 @@ menu "Microsoft Hyper-V guest support"
+>  config HYPERV
+>  	tristate "Microsoft Hyper-V client drivers"
+>  	depends on (X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
+> -		|| (ACPI && ARM64 && !CPU_BIG_ENDIAN)
+> +		|| (ARM64 && !CPU_BIG_ENDIAN)
+> +	depends on (ACPI || HYPERV_VTL_MODE)
+>  	select PARAVIRT
+>  	select X86_HV_CALLBACK_VECTOR if X86
+> -	select OF_EARLY_FLATTREE if OF
+>  	help
+>  	  Select this option to run Linux as a Hyper-V client operating
+>  	  system.
+> 
+>  config HYPERV_VTL_MODE
+>  	bool "Enable Linux to boot in VTL context"
+> -	depends on X86_64 && HYPERV
+> +	depends on (X86_64 || ARM64)
+>  	depends on SMP
+> +	select OF_EARLY_FLATTREE
+> +	select OF
+>  	default n
+>  	help
 
-> Thanks for the review David.
->=20
-> On 04/03/2025 11:25, David Lechner wrote:
-> > On Mon, Mar 3, 2025 at 12:32=E2=80=AFPM Matti Vaittinen
-> > <mazziesaccount@gmail.com> wrote: =20
-> >>
-> >> There are ADC ICs which may have some of the AIN pins usable for other
-> >> functions. These ICs may have some of the AIN pins wired so that they
-> >> should not be used for ADC.
-> >>
-> >> (Preferred?) way for marking pins which can be used as ADC inputs is to
-> >> add corresponding channels@N nodes in the device tree as described in
-> >> the ADC binding yaml.
-> >>
-> >> Add couple of helper functions which can be used to retrieve the chann=
-el
-> >> information from the device node.
-> >>
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >>
-> >> --- =20
->=20
-> >> + *
-> >> + * Return:     Number of found channels on succes. Negative value to =
-indicate =20
-> >=20
-> > s/succes/success/ =20
->=20
-> Thanks!
->=20
-> >> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
-> >> +                                         const struct iio_chan_spec *=
-template,
-> >> +                                         int max_chan_id,
-> >> +                                         struct iio_chan_spec **cs)
-> >> +{
-> >> +       struct iio_chan_spec *chan_array, *chan;
-> >> +       int num_chan =3D 0, ret;
-> >> +
-> >> +       num_chan =3D iio_adc_device_num_channels(dev);
-> >> +       if (num_chan < 1)
-> >> +               return num_chan;
-> >> +
-> >> +       chan_array =3D devm_kcalloc(dev, num_chan, sizeof(*chan_array),
-> >> +                                 GFP_KERNEL);
-> >> +       if (!chan_array)
-> >> +               return -ENOMEM;
-> >> +
-> >> +       chan =3D &chan_array[0];
-> >> +
-> >> +       device_for_each_child_node_scoped(dev, child) {
-> >> +               u32 ch;
-> >> +
-> >> +               if (!fwnode_name_eq(child, "channel"))
-> >> +                       continue;
-> >> +
-> >> +               ret =3D fwnode_property_read_u32(child, "reg", &ch);
-> >> +               if (ret)
-> >> +                       return ret;
-> >> +
-> >> +               if (max_chan_id !=3D -1 && ch > max_chan_id)
-> >> +                       return -ERANGE;
-> >> + =20
-> >=20
-> > Should we use return dev_err_probe() on these to help with debugging a =
-bad dtb?
-> >  =20
->=20
-> I am not fan of using dev_err_probe() in a 'library code'. This is=20
-> because we never know if there'll be some odd use-case where this is not=
-=20
-> called from the probe.
->=20
-> All in all, I'd leave adding most of the debugs to the callers -=20
-> especially because we do not expect to have bad device-trees after the=20
-> initial 'development stage' of a board. The board 'development stage'=20
-> should really reveal bugs which prevent the channels from being=20
-> registered - and after the DT is correct, these debug prints become=20
-> unnecessary (albeit minor) binary bloat.
->=20
-> >> +               *chan =3D *template;
-> >> +               chan->channel =3D ch;
-> >> +               chan++;
-> >> +       }
-> >> +
-> >> +       *cs =3D chan_array;
-> >> +
-> >> +       return num_chan;
-> >> +}
-> >> +EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DRIV=
-ER"); =20
-> >=20
-> > We can make this less verbose by setting #define
-> > DEFAULT_SYMBOL_NAMESPACE at the start of the file. Then we can just do
-> > EXPORT_SYMBOL_GPL() throughout the rest of the file. =20
->=20
-> I am not sure what to think of this. I use the good old 'ctrl + ]' in my=
-=20
-> editor when I need to check how a function was supposed to be used. That=
-=20
-> jumps to the spot of code where the function is. I'd like to see the=20
-> namespace mentioned there in order to not accidentally miss the fact the=
-=20
-> function belongs to one.
->=20
-> OTOH, I do like simplifications. Yet, the added simplification might not=
-=20
-> warrant the namespace not being visible in the function definition.
->=20
-> > Also, I would prefer if the namespace matched config name (IIO_ADC_HELP=
-ER). =20
->=20
-> I had some lengthy discussion about this with Andy and Jonathan during=20
-> earlier review versions. In short, I don't like the idea of very=20
-> fragmented namespaces in IIO, which will just complicate the drivers=20
-> without providing any obvious benefit.
->=20
-> https://lore.kernel.org/all/20250222174842.57c091c5@jic23-huawei/
->=20
-> >> +
-> >> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
-> >> +                                         const struct iio_chan_spec *=
-template,
-> >> +                                         int max_chan_id,
-> >> +                                         struct iio_chan_spec **cs);
-> >> + =20
-> >=20
-> > There are some different opinions on this, but on the last patch I did
-> > introducing a new namespace, the consensus seems to be that putting
-> > the MODULE_IMPORT_NS() in the header file was convenient so that users
-> > of the API don't have to remember to both include the header and add
-> > the import macro.
-> >  =20
->=20
-> I do like this suggestion, and I believe this would be the balance=20
-> between getting the benefit of hiding part of the symbols - while not=20
-> unnecessarily complicating the callers. I know some people are opposing=20
-> it though. My personal opinion is that having the MODULE_IMPORT_NS() in=20
-> a header would be neatly simplifying the calling code with very little=20
-> harm, especially here where including the header hardly has use-cases=20
-> outside the IIO ADC.
->=20
-> Unfortunately, the "safety" seems to often be a synonym for just "making=
-=20
-> it intentionally hard". As Finnish people say: "K=C3=A4rsi, k=C3=A4rsi,=20
-> kirkkaamman kruunun saat". :)
-> (Roughly translated as "Suffer, suffer, you will get a brighter crown").
->=20
-> Let's hear what Jonathan thinks of your suggestion.
+Having the dependency below the top-level Kconfig entry feels a little
+counterintuitive. You could flip that back as it was before by doing
 
-For this particular case my intent was that all the IIO exports that
-are suitable for use in simple IIO drives will be in this namespace,
-we just haven't started that conversion yet.
+      select HYPERV_VTL_MODE if !ACPI
+      depends on ACPI || SMP
 
-As such, having it defined from a header for this helper isn't a good
-thing to do.  Generally I prefer to see in driver code what namespaces
-are involved but do understand the other viewpoint. In this case I
-definitely don't think it is appropriate unless we go for a specific namesp=
-ace
-for just this helper.
+in the HYPERV option, leaving the dependency on HYPERV in
+HYPERV_VTL_MODE.
 
-Jonathan
+Is OF_EARLY_FLATTREE actually needed on x86?
 
->=20
-> Thanks!
-> 	-- Matti
->=20
-
+      Arnd
 
