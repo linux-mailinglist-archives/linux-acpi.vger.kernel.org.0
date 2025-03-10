@@ -1,107 +1,203 @@
-Return-Path: <linux-acpi+bounces-12047-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12048-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778AEA5A66B
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 22:49:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4BAA5A672
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 22:51:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267C8188BEFE
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:49:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F004D17277C
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4811DF258;
-	Mon, 10 Mar 2025 21:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155EE1E47D9;
+	Mon, 10 Mar 2025 21:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lW0Hvhq1"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TT+lO1Qk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6A21D514E;
-	Mon, 10 Mar 2025 21:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834601DE4E9;
+	Mon, 10 Mar 2025 21:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741643337; cv=none; b=r4+UYg36WyGbL+COPstzd3u1as3x9ndQc0abgEPcs0YZM4pXV0t+wfwqbF+4suaNUoq/SXkp77ClaClvK7B8YTkBy61TcROLIglEjoRX90DaOy2rxFe0myJRQEq5M5NyBiyMwYeghAIM4rpFA41mfipNuvT6CghthYuWNWuz3wQ=
+	t=1741643477; cv=none; b=OakSiyAwEeel+xjMFD1p/CZtZmBmkncq8qT3FjWBS91lYMF3jxsyEJopzdskQYKx8Dk5aq8zmZXjeqeeDdsXBNeUX6UYcohRHG6Fmk+xW+d+xK6WqStJeBl1px4okLVO3uQNzNk7PMpeQxXlJJT9g/V5lEuD1JNLxUOLJ8I/bac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741643337; c=relaxed/simple;
-	bh=lGP4O8/b8RrW4V398IUyX8VSSi2eJzmwutyPzwQF06I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fgsUmNI6MExRI7S2zz9Xt3q44iQSCcWFSRulB2I6jka2BeePqvTTwSYunHhIBFaUlVnLL1omuEyMFA7RFF6l1T7D0ZJ9r3lTAPs7udpKNPoZ7JZvuAicB3GdNUI7ZjeloUr/co/7LV0O79oNcgJDqJObClsnQuMxbStuHX6Wf5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lW0Hvhq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6A8C4CEEA;
-	Mon, 10 Mar 2025 21:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741643335;
-	bh=lGP4O8/b8RrW4V398IUyX8VSSi2eJzmwutyPzwQF06I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lW0Hvhq1DrTExJ1YyluCwie6TV2rCph8uTSl3SAlzizZ5YhzWlhR63zjiGbdv4IHB
-	 zc0KdEh4bALUK0g/JV7ZSyxgoMGfTCyokGFwJ2ZeoM2azYBDcsgc8cMfizRu7ZMod6
-	 u5W3nRfA2t9f+j91lAQDOIXGgaQ5bE1sjCUx94KyvdWHoDcAKMrL2ITsvAqUgPiv1P
-	 uZ0gf138yJHWoaB00C6pVWUOPvBgaXsK1OKqqKpRuKtyTyoGFj4qgUasfKZoc/7L+7
-	 zHGLLNEyxsR5Qx5n77s3AfsTCCJ+ssQhxgDgQ0DKkvicAzjqWK3AvHkmT7oVKC1Cw5
-	 1XgYGDgvSU4bg==
-Date: Mon, 10 Mar 2025 14:48:51 -0700
-From: Kees Cook <kees@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Hao Luo <haoluo@google.com>, Masahiro Yamada <masahiroy@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Johannes Weiner <hannes@cmpxchg.org>, linux-acpi@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>,
-	Yoann Congal <yoann.congal@smile.fr>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>, Chen Ridong <chenridong@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>, Jann Horn <jannh@google.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] compiler_types: Introduce __nonstring_array
-Message-ID: <202503101448.1A6978F79E@keescook>
-References: <20250310214244.work.194-kees@kernel.org>
+	s=arc-20240116; t=1741643477; c=relaxed/simple;
+	bh=hXCrW9pe+dUqg8wNg0kcSMi2VRWhmX6+kqEVPaFJuYA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=URrpO7x+iRv6Jgvo1+m/RqrYa70yGFxy4Ke9gX2MhH3vYYE3ELJGtiA9WFkoPdGoPe4V66IW9YNhZ6FdJYxSE10mNMgoMqAv+mf/xbcg3ctYUDYsGh/W19nskh+WWyL2jrm1PwMPZl56P7MrhzWO3YQBgS8T80IPvd2J1LaUEaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TT+lO1Qk; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 98773205492D;
+	Mon, 10 Mar 2025 14:51:14 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 98773205492D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741643475;
+	bh=CxBan6eozJpDLKwZggyW95t2iKrqkZanUVsz1ehRWhU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TT+lO1Qkb57TcjEIhxY4F+l2wYJmYHzFaj7ayZ9g7xvAQsdDrmYcQK9Ej2gn0RaSs
+	 xhnnqQMavD31GklMUF3oaiAJoINYrEA7cZYEESQf87FouU3UCvSVlls+bERu+2cXrO
+	 2OmBWEwso8ixhFEUfoeG8ZgkHC0vwFQ9cME0HxIs=
+Message-ID: <2eb4e538-d131-4adf-b61a-998d56128183@linux.microsoft.com>
+Date: Mon, 10 Mar 2025 14:51:14 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250310214244.work.194-kees@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next v5 07/11] dt-bindings: microsoft,vmbus: Add
+ interrupts and DMA coherence
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+ catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com,
+ decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
+ joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
+ lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org,
+ mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com,
+ oliver.upton@linux.dev, rafael@kernel.org, robh@kernel.org,
+ ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com,
+ tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org,
+ yuzenghui@huawei.com, devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
+ apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
+ sunilmut@microsoft.com
+References: <20250307220304.247725-1-romank@linux.microsoft.com>
+ <20250307220304.247725-8-romank@linux.microsoft.com>
+ <20250310-demonic-ferret-of-judgment-5dbdbf@krzk-bin>
+ <c7f9d861-f617-4064-8c98-2ace06e9c25e@linux.microsoft.com>
+ <09d4966a-5804-40a4-9c5f-356a954a7704@kernel.org>
+ <ba6b906d-04a2-423d-a527-9ef7ab1dccf2@linux.microsoft.com>
+ <ff3739bb-a223-401e-9b70-a5201839b72c@kernel.org>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <ff3739bb-a223-401e-9b70-a5201839b72c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 10, 2025 at 02:42:48PM -0700, Kees Cook wrote:
-> In file included from ../include/acpi/actbl.h:371,                                                                   from ../include/acpi/acpi.h:26,                                                                     from ../include/linux/acpi.h:26,
->                  from ../drivers/acpi/tables.c:19:
 
-Ugh, this whole paste went poorly. I've fixed it locally. It should be:
 
-In file included from ../include/acpi/actbl.h:371,
-                 from ../include/acpi/acpi.h:26,
-                 from ../include/linux/acpi.h:26,
-                 from ../drivers/acpi/tables.c:19:
-../include/acpi/actbl1.h:30:33: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (5 chars into 4 available) [-Wunterminated-string-initialization]
-   30 | #define ACPI_SIG_BERT           "BERT"  /* Boot Error Record Table */
-      |                                 ^~~~~~
-../drivers/acpi/tables.c:400:9: note: in expansion of macro 'ACPI_SIG_BERT'
-  400 |         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
-      |         ^~~~~~~~~~~~~
-../include/acpi/actbl1.h:31:33: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (5 chars into 4 available) [-Wunterminated-string-initialization]
-   31 | #define ACPI_SIG_BGRT           "BGRT"  /* Boot Graphics Resource Table */
-      |                                 ^~~~~~
+On 3/10/2025 2:17 PM, Krzysztof Kozlowski wrote:
+> On 10/03/2025 19:07, Roman Kisel wrote:
+>>
+>> It is modeled as a bus in the kernel:
+>> https://www.kernel.org/doc/html/latest/virt/hyperv/vmbus.html
+>>
+>>> Please upstream bindings for the bus devices and extend the example here
+>>> with these devices.
+>>
+>> The set of synthetic devices that reside on the bus isn't fixed, and
+>> they don't require description neither in ACPI nor in DT as
+>> the devices negotiate their MMIO regions through the hyperv driver.
+>>
+>> Perhaps, it is not as much bus as expected by the YAML files.
+> 
+> OK, then this is not really a bus from the bindings point of view. It is
+> a device schema which should end with additionalProperties: false.
+> 
+> If you have report about that pinctrl-0, it means you have undocumented
+> properties in your DTS. Maybe that's the dma-coherence you mentioned in
+> the commit msg.
+> 
+
+Much appreciated! I started reviewing the learning materials you
+mentioned, and I think I already see where my understanding went
+sideways: I perceived the example as the central part of the bindings
+whereas it seems to be just what the name suggests: an example. Yet,
+the example shall conform to the *schema* iiuc, and that is what the
+tooling validates.
+
+Hopefully, I am starting to be getting what this is all about :)
+Thanks for your help again!
+
+I've worked out what makes (more) sense (to me at least):
+
+ From 475fb74b49dc4987ca8b9117186941d848f0aacd Mon Sep 17 00:00:00 2001
+From: Roman Kisel <romank@linux.microsoft.com>
+Date: Mon, 10 Mar 2025 14:39:41 -0700
+Subject: [PATCH] dt-bindings: microsoft,vmbus: Add interrupt and DMA
+   coherence properties
+
+To boot in the VTL mode, VMBus on arm64 needs interrupt description
+which the binding documentation lacks. The transactions on the bus are
+DMA coherent which is not mentioned as well.
+
+Add the interrupt property and the DMA coherence property to the VMBus
+binding. Update the example to match that. Fix typos.
+
+Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+---
+  .../bindings/bus/microsoft,vmbus.yaml           | 17 +++++++++++++++--
+  1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml 
+b/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
+index a8d40c766dcd..b175ad01f219 100644
+--- a/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
++++ b/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
+@@ -10,8 +10,8 @@ maintainers:
+    - Saurabh Sengar <ssengar@linux.microsoft.com>
+
+  description:
+-  VMBus is a software bus that implement the protocols for communication
+-  between the root or host OS and guest OSs (virtual machines).
++  VMBus is a software bus that implements the protocols for communication
++  between the root or host OS and guest OS'es (virtual machines).
+
+  properties:
+    compatible:
+@@ -25,9 +25,17 @@ properties:
+    '#size-cells':
+      const: 1
+
++  dma-coherent: true
++
++  interrupts:
++    maxItems: 1
++    description: |
++      This interrupt signals a message from the host.
++
+  required:
+    - compatible
+    - ranges
++  - interrupts
+    - '#address-cells'
+    - '#size-cells'
+
+@@ -35,6 +43,8 @@ additionalProperties: false
+
+  examples:
+    - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
+      soc {
+          #address-cells = <2>;
+          #size-cells = <1>;
+@@ -49,6 +59,9 @@ examples:
+                  #address-cells = <2>;
+                  #size-cells = <1>;
+                  ranges = <0x0f 0xf0000000 0x0f 0xf0000000 0x10000000>;
++                dma-coherent;
++                interrupt-parent = <&gic>;
++                interrupts = <GIC_PPI 2 IRQ_TYPE_EDGE_RISING>;
+              };
+          };
+      };
+-- 
+2.43.0
+
+
+> 
+> Best regards,
+> Krzysztof
 
 -- 
-Kees Cook
+Thank you,
+Roman
+
 
