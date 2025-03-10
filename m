@@ -1,228 +1,178 @@
-Return-Path: <linux-acpi+bounces-12001-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12002-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB889A59587
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 14:02:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86EEA595E4
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 14:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 031303A3502
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 13:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A0EB188F321
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 13:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2F221714;
-	Mon, 10 Mar 2025 13:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AebViPUq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A77F227E90;
+	Mon, 10 Mar 2025 13:16:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009C2206A3;
-	Mon, 10 Mar 2025 13:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F53374EA;
+	Mon, 10 Mar 2025 13:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741611745; cv=none; b=qEmpm290tZizm7DIz9yqJQeyDgUlqnx4GK/AKR96hkzW5krY1Iu5S6yu32W0Uhp+mwPHSCqG0gpdmiM5RtlhQUc1PbaNVe0NmSvjUULWLZrVLXoWvaN1xXKZHD88GzcDWMcouJzdpnW7ea4wxGoWTm25q9BBpJZ7S1drNig7TcM=
+	t=1741612576; cv=none; b=gZz1+R7SyBcQlYC1J2+ErDXO2HOP/rg6BYgTX/9YldEyJ1GQPci6S6LOMeXmrKD8KbaccvXzFNQl40vqVIKErGapaRMMgcYuecmyOX3e3kvJK0x8DNNO0q56xyuf89NRytYbFRxctAmGMYDkcguTfIj9HUArog/vdxxFLZFnNhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741611745; c=relaxed/simple;
-	bh=9/MF3XwBaT1mcfL5fB1uFCtt3JgTm87/jrTxjrGckLY=;
+	s=arc-20240116; t=1741612576; c=relaxed/simple;
+	bh=+pe8nMgc4fByYrl/J+ifCMz86M7Dbvi7gJXrq56sYKw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KKqlZCAduLMaCsK/kFlVjVJMpGG7OzUBgKRSu8MnNVjLdOBCY6Z0kV88ecaG+4Ev15N4DbaeuXixerBjDfuNygy775fncokonC3S981RKK+jnsH6Oxyblawyki/1yWRPBE5b70aHU4bdZf/vpcQxFlRI3khIroQLLESObWM5mMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AebViPUq; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=ohoWH1wvDHKIrlSdrwgbg4osXR1N9hiKkYBV+mSTcySi+VZVYj4VOVI2JfjKQGyaZCSM0EZJNg9Oa2Cra0/7pI1P1xBug6HHHP4A0GwWzItW4cEYKNF5zO7AYxVZ9i0L8YhiSE1GY88Ij80C4EMUBX2yi78Zg1Y271aNPELMNRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3914bc3e01aso452450f8f.2;
-        Mon, 10 Mar 2025 06:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741611742; x=1742216542; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LJsBCZAbkaqGsMqWjDYIUsmWMaDSGMkISy1d3AfV0dM=;
-        b=AebViPUqs5QZp+3p60eYU2Rsy8oBE8LeXgioAAQgZVo2cQ/pexTGIjjBTjbmHJqyQm
-         3uBHKJyhgD9km+2iD2eJ97LhJ7TLjE6jgATXV86SVot+/knqJSZP3/a6YmfyjXAwKqes
-         w4oHaoOBJTBGzIYwPfgjychlci3NkgOkXLTyUxWc+6DCRva/dkd/u0GrUDTDprYKqo7K
-         XfQP3vN053atwvtViADAf2YZ/p/H2LGUoGK/++G6kvcqF8aVePK+xu29oOaXXrN85U+E
-         +/xIVt3xZK3cGwMJRg9iN3rlLHCNQauhlY+Is5iq40YyUFhjSdEO5JOLXzINHQLNQP/s
-         7auw==
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-86b68e51af4so1571739241.1;
+        Mon, 10 Mar 2025 06:16:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741611742; x=1742216542;
+        d=1e100.net; s=20230601; t=1741612572; x=1742217372;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LJsBCZAbkaqGsMqWjDYIUsmWMaDSGMkISy1d3AfV0dM=;
-        b=abB+dfwnaFR3A5d4PjXK9GG27dgJk7yNijp91Oo/ecNcWKu6b0yir/SXCYynQR2LuO
-         0+KPUGVyjg4LfappZbjzRXg0s79djJJ1QTl+09jnA4lBk979GSga/3FJgxkPZUQon6el
-         /k80mDh4HlGYI8G8nGqUT7nOjl6a19nyPRYimvl6ba/flu073/GwLYdQ5Ko8PpD03JH3
-         IeEcDrtGnWCXk5iaaxQG9OS8a6uyBpEpN4cuBjeEKX5K+/dOYhGqDeved13Sir6XX/za
-         aJiJh0H2WSar+uBstwXoFMGvh1TdmBPPi0ZNSZNnxMsZE7deqzaiLmj9+KXHKPvyNbME
-         oxqw==
-X-Forwarded-Encrypted: i=1; AJvYcCVER1ZUdYrTlNjidZyUiJ8UCT0Z/KRz4AUMSyEA/R4IH84d4QcgAOI+pTGI9NbmO7KcXqTqTtU0VOSrirlk@vger.kernel.org, AJvYcCVemK4prfmhU0Eag0lim0NS/LQI8pEEoSJ4wSsUIVXxy9ffPSsWgbBQRcTqTyZR4wzcAoTvOP2FgOnS@vger.kernel.org, AJvYcCW33WL0G1G9aLDDQkceKx2c7EjEe6R8W5+BO+TErLo3C536hncHXeKsHFxLznwZ8hSc6yNCbFsJJfY20g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrYeli+guZlaB0mGXmpyyNcrPvNiKXlo8Fc5V7EgkrbAjI3maV
-	i7xRgfZZxEKyS8GI7RSDRVplMHsUWRmO/+1OjkIAGQSde46FtxsCannDOvu+4jiP3uRmDAJzByi
-	OeEfOa2aAwUH6eJvy2DNnPcfsNR4=
-X-Gm-Gg: ASbGnctcrn+m6tcBSaUk2WrR3UFJrFwiefR3ctIGNrDUerCuAmjUrA+NzURwtVseEih
-	1lJxaNr9rpUzQ+epihZgimy0ZOMSI6wa2+sbuwSDIuUpnFEOMDOFm2CS5K9wOMbd8yEyBsj26w5
-	tyoEANkGVQPgiyDmZF+DQOJcyPnTB6uqPjBPu03cnkj61j
-X-Google-Smtp-Source: AGHT+IGaxbWiEzsbhn8u7OT4l7aLcqESH5XxF4YWsiFb1XdbKvnztHuQze3R8m7aqPgVjjpK0+JYaE4xvj1QZAkWR9c=
-X-Received: by 2002:a05:6000:1f8f:b0:391:304f:34e7 with SMTP id
- ffacd0b85a97d-39132d985f6mr9687116f8f.44.1741611742101; Mon, 10 Mar 2025
- 06:02:22 -0700 (PDT)
+        bh=3bwMEAH7Tb2p80rG5YQFDISiH+2UdxhzZVsTz2rTT24=;
+        b=t7j3P1PB0LMPauR2TSwADqFHF9kh9wqf0O/5vcm8YwCCZVhPYYIZB0Jtyg3sIJdf2p
+         9e+R7ZSz+LiTDryi37ZJUQ5QyCNUMMA5+PCv4pWcbb1TH73i2CbyZPfddKLUWekJ9t5V
+         v5cwmaCPuynNkXFJnYFS9lva0/tj5XvxRn5NEUFvsETGugrNEjs/P30E9sE5s41ZU43p
+         AO1LGmXuSiMYLQZ07WpSG9v2Qxdkf8CLs9uJPVkNdZKNsjzDzqwUF5+MwkzXny5CJqXb
+         UN1403kQAFCTp5HYe/KyT4o5wlRwx2K9z65CUm0xgc/y9lRrFJxVZcty5y6VxRIppSnn
+         C9Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCULVEHMV3HQRdKtqoTXhnGRgMra/mieCmSS15UgAR9muZae4NDcSq3+PS0/Czjiy2GeGvPVdCFQVsPkSw==@vger.kernel.org, AJvYcCW3iqEwe7AonyEAwR1kdMfa2UwTRXPaViYdnPiB4q3DuB5LgQoXKHROl0fo9/QyqMJOCFrnWipqvVfx@vger.kernel.org, AJvYcCWBjew7Qg5f6ogFrgSqhc5wmOG549CZnvGJD4o6dycVGDqylq90b80CwZiw4SLcHyewyt1LXa4V0vrS9eiyXMBp5SU=@vger.kernel.org, AJvYcCXKKES9M/K57Cy43q03UUatKTJvB5cA1Llar/NBtdQDjqJnfhVqujtFRVLUpO4jrQ9kdGhWmhuNa1G58Hcf@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHrhOCrPM9KepIGIUuIkslSKiof/Kd2YUn4ENNfxikrg/GU0jF
+	uNcaAxVaJCcSPL96Oz6IWnhqFEHkZ/fS17UL8QlMLg+5D2tDbC7td2bYcge10sA=
+X-Gm-Gg: ASbGnct+F+ohhZFG9dMs666/wzZII150jggJ/0ugx73GzoTm8UAfAtmRZ00h8MuDNnO
+	rbmI1Sa6M3sy5fsJNg393FzohleJRI7g4bIWTNEtZHZ+OTte5DRS4UTpd2W0qrQQapZ7NMBFDzz
+	0aLpmMQQY4AiuhqqLXehqZHUXxEwVJLTOXraL7TmbprlkH1dbGMNZRJOFleDHCpqMaydx74uMVz
+	wDSSzwKCWf3gV+3uss4T7xklP1zj5JMd2+CCtAfE+v14Kziv0/J0fwmv7w3orrJP9Ps+F6OGODH
+	qban99AsFUmO8a1swglXzju6DgNMZ1ZEmZBSVeMA3wbmDy8HaYmUQRr8uqH/i6fsArZC2pWrAOR
+	GvizaZuc=
+X-Google-Smtp-Source: AGHT+IGWrgaTcuRoRn5yEgZmzyybev0b5x8Pgfkri+MWcuiq9g+56xaQ0aMAe/Ds6Y7so3QX7LZ2mA==
+X-Received: by 2002:a05:6102:a54:b0:4c1:b001:b53 with SMTP id ada2fe7eead31-4c30a65e00bmr7130200137.18.1741612572572;
+        Mon, 10 Mar 2025 06:16:12 -0700 (PDT)
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4c2fbca4f0dsm1953416137.21.2025.03.10.06.16.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 06:16:12 -0700 (PDT)
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-86718c2c3b9so1617846241.2;
+        Mon, 10 Mar 2025 06:16:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7bS4SNYBFIDCLQzyaCt9+rVecXwAtEP3CFAQXCYj672PkPZSKFT4Ak0TcmEDrRMHHM+QtamChMj1wxpxS@vger.kernel.org, AJvYcCUyfVV02FlPf1N7Cu31Jvh4mXvAWJY7Egi4nDxOpicFaJzB92g1tFhuxal6T7wQjsdyXH62kBoFa5dF8aGZbcly920=@vger.kernel.org, AJvYcCWMAklpG8RKLlce+oKS/RE/hZ5nVZzsj6pwdA4cYb8V0VbKmYjdEHr3bh+hP+p4AKgRB5iGKA0fysiD@vger.kernel.org, AJvYcCXYULFZRpvku56HBjE350JYXjrdIBn5v9H5n3SmTh6OVjuf9GAR5hxyLo+sJX52hBBiQPAzHlcgeCCmPg==@vger.kernel.org
+X-Received: by 2002:a05:6102:3583:b0:4c3:6c4:e174 with SMTP id
+ ada2fe7eead31-4c30a65d92emr7228931137.16.1741612572135; Mon, 10 Mar 2025
+ 06:16:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-8-git-send-email-nunodasneves@linux.microsoft.com>
-In-Reply-To: <1740611284-27506-8-git-send-email-nunodasneves@linux.microsoft.com>
-From: Tianyu Lan <ltykernel@gmail.com>
-Date: Mon, 10 Mar 2025 21:01:45 +0800
-X-Gm-Features: AQ5f1Jq0GptIRLQ74YOF7jUY6vVGVBckkuZztDE6uDxvc_UbKBeBzzaPI8HiFPA
-Message-ID: <CAMvTesAW-9Mo0oY6UUh2anp6DQCSsVCUhBiV2-bKp2VD_N0DYw@mail.gmail.com>
-Subject: Re: [PATCH v5 07/10] Drivers: hv: Introduce per-cpu event ring tail
-To: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com, 
-	haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com, 
-	decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org, 
-	joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de, 
-	jinankjain@linux.microsoft.com, muminulrussell@gmail.com, 
-	skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com, 
-	ssengar@linux.microsoft.com, apais@linux.microsoft.com, 
-	Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com, 
-	gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com, 
-	muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org, 
-	lenb@kernel.org, corbet@lwn.net
+References: <20250109-dt-type-warnings-v1-0-0150e32e716c@kernel.org>
+ <20250109-dt-type-warnings-v1-2-0150e32e716c@kernel.org> <CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com>
+ <CAL_JsqJNgxLgvB502Bk=5aMeP2rY6KVL_FykeSyN1tsDRXi9cA@mail.gmail.com> <CAMuHMdWZsQ9UbwVub=36P_2DCPEN0aORz9FxCbivKkOyeWkuww@mail.gmail.com>
+In-Reply-To: <CAMuHMdWZsQ9UbwVub=36P_2DCPEN0aORz9FxCbivKkOyeWkuww@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 10 Mar 2025 14:15:58 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUHsTYjamDkyoe_CwJhXbf7LpAPk+Dazd4wChEmfcuYPQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JraxfzSSZiwFZoSk4-gLUnOHP6AW4upV-5J6BIK6IbQAuD0VMWwpRICbuw
+Message-ID: <CAMuHMdUHsTYjamDkyoe_CwJhXbf7LpAPk+Dazd4wChEmfcuYPQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] of: Warn when of_property_read_bool() is used on
+ non-boolean properties
+To: Rob Herring <robh@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	Linux-Renesas <linux-renesas-soc@vger.kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 27, 2025 at 7:09=E2=80=AFAM Nuno Das Neves
-<nunodasneves@linux.microsoft.com> wrote:
+On Wed, 15 Jan 2025 at 12:20, Geert Uytterhoeven <geert@linux-m68k.org> wro=
+te:
+> On Tue, Jan 14, 2025 at 8:19=E2=80=AFPM Rob Herring <robh@kernel.org> wro=
+te:
+> > On Tue, Jan 14, 2025 at 12:35=E2=80=AFPM Geert Uytterhoeven
+> > <geert@linux-m68k.org> wrote:
+> > > On Thu, Jan 9, 2025 at 8:42=E2=80=AFPM Rob Herring (Arm) <robh@kernel=
+.org> wrote:
+> > > > The use of of_property_read_bool() for non-boolean properties is
+> > > > deprecated. The primary use of it was to test property presence, bu=
+t
+> > > > that has been replaced in favor of of_property_present(). With thos=
+e
+> > > > uses now fixed, add a warning to discourage new ones.
+> > > >
+> > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > >
+> > > Thanks for your patch, which is now commit c141ecc3cecd7647 ("of:
+> > > Warn when of_property_read_bool() is used on non-boolean properties")
+> > > in dt-rh/for-next.
+> > >
+> > > I have bisected a failure in secondary CPU bring-up on R-Car H1 (quad
+> > > Cortex-A9 MPCore) to this commit:
+> > >
+> > >      Detected Renesas R-Car Gen1 r8a7779 ES1.0
+> > >      smp: Bringing up secondary CPUs ...
+> > >     -CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
+> > >     -CPU1: Spectre v2: using BPIALL workaround
+> > >     -CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
+> > >     -CPU2: Spectre v2: using BPIALL workaround
+> > >     -CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+> > >     -CPU3: Spectre v2: using BPIALL workaround
+> > >     -smp: Brought up 1 node, 4 CPUs
+> > >     -SMP: Total of 4 processors activated (2000.00 BogoMIPS).
+> > >     +CPU1: failed to come online
+> > >     +CPU2: failed to come online
+> > >     +CPU3: failed to come online
+> > >     +smp: Brought up 1 node, 1 CPU
+> > >     +SMP: Total of 1 processors activated (500.00 BogoMIPS).
+> > >      CPU: All CPU(s) started in SVC mode.
+> > >
+> > > Reverting this commit on top of my work tree fixes the issue, too.
+> > > However, I do not see how this commit could impact CPU bring-up?
+> >
+> > Strange. Perhaps the of_property_read_bool was inlined into some
+> > special section before?
 >
-> Add a pointer hv_synic_eventring_tail to track the tail pointer for the
-> SynIC event ring buffer for each SINT.
+> I re-added the old inline of_property_read_bool(), but with a different
+> name.  CPU bringup starts working again if I replace at least one call
+> to of_property_read_bool() in arch/arm/mm/cache-l2x0.c:aurora_of_parse()
+> by a call to the inline variant, or even if I just add
 >
-> This will be used by the mshv driver, but must be tracked independently
-> since the driver module could be removed and re-inserted.
+>     pr_info("xf_property_read_bool(np, \"wt-override\") =3D %d\n",
+> xf_property_read_bool(np, "wt-override"));
 >
-> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-> Reviewed-by: Wei Liu <wei.liu@kernel.org>
+> to that function. Note that that function is not called at all on my plat=
+form.
+>
+> This small change causes quite some reordering in arch/arm/mm/cache-l2x0.=
+s,
+> so it looks like a layout issue. More analysis will follow...
 
-It's better to expose a function to check the tail instead of exposing
-hv_synic_eventring_tail directly.
+The assembler SMP bring-up code for Renesas SoCs lacked an alignment
+directive.  I have posted a fix:
+https://lore.kernel.org/r/CAMuHMdU=3DQR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-=
+OjqA@mail.gmail.com
 
-BTW, how does mshv driver use hv_synic_eventring_tail? Which patch
-uses it in this series?
+Gr{oetje,eeting}s,
 
-Thanks.
-
-
-> ---
->  drivers/hv/hv_common.c | 34 ++++++++++++++++++++++++++++++++--
->  1 file changed, 32 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-> index 252fd66ad4db..2763cb6d3678 100644
-> --- a/drivers/hv/hv_common.c
-> +++ b/drivers/hv/hv_common.c
-> @@ -68,6 +68,16 @@ static void hv_kmsg_dump_unregister(void);
->
->  static struct ctl_table_header *hv_ctl_table_hdr;
->
-> +/*
-> + * Per-cpu array holding the tail pointer for the SynIC event ring buffe=
-r
-> + * for each SINT.
-> + *
-> + * We cannot maintain this in mshv driver because the tail pointer shoul=
-d
-> + * persist even if the mshv driver is unloaded.
-> + */
-> +u8 __percpu **hv_synic_eventring_tail;
-> +EXPORT_SYMBOL_GPL(hv_synic_eventring_tail);
-> +
->  /*
->   * Hyper-V specific initialization and shutdown code that is
->   * common across all architectures.  Called from architecture
-> @@ -90,6 +100,9 @@ void __init hv_common_free(void)
->
->         free_percpu(hyperv_pcpu_input_arg);
->         hyperv_pcpu_input_arg =3D NULL;
-> +
-> +       free_percpu(hv_synic_eventring_tail);
-> +       hv_synic_eventring_tail =3D NULL;
->  }
->
->  /*
-> @@ -372,6 +385,11 @@ int __init hv_common_init(void)
->                 BUG_ON(!hyperv_pcpu_output_arg);
->         }
->
-> +       if (hv_root_partition()) {
-> +               hv_synic_eventring_tail =3D alloc_percpu(u8 *);
-> +               BUG_ON(hv_synic_eventring_tail =3D=3D NULL);
-> +       }
-> +
->         hv_vp_index =3D kmalloc_array(nr_cpu_ids, sizeof(*hv_vp_index),
->                                     GFP_KERNEL);
->         if (!hv_vp_index) {
-> @@ -460,6 +478,7 @@ void __init ms_hyperv_late_init(void)
->  int hv_common_cpu_init(unsigned int cpu)
->  {
->         void **inputarg, **outputarg;
-> +       u8 **synic_eventring_tail;
->         u64 msr_vp_index;
->         gfp_t flags;
->         const int pgcount =3D hv_output_page_exists() ? 2 : 1;
-> @@ -472,8 +491,8 @@ int hv_common_cpu_init(unsigned int cpu)
->         inputarg =3D (void **)this_cpu_ptr(hyperv_pcpu_input_arg);
->
->         /*
-> -        * hyperv_pcpu_input_arg and hyperv_pcpu_output_arg memory is alr=
-eady
-> -        * allocated if this CPU was previously online and then taken off=
-line
-> +        * The per-cpu memory is already allocated if this CPU was previo=
-usly
-> +        * online and then taken offline
->          */
->         if (!*inputarg) {
->                 mem =3D kmalloc(pgcount * HV_HYP_PAGE_SIZE, flags);
-> @@ -485,6 +504,17 @@ int hv_common_cpu_init(unsigned int cpu)
->                         *outputarg =3D (char *)mem + HV_HYP_PAGE_SIZE;
->                 }
->
-> +               if (hv_root_partition()) {
-> +                       synic_eventring_tail =3D (u8 **)this_cpu_ptr(hv_s=
-ynic_eventring_tail);
-> +                       *synic_eventring_tail =3D kcalloc(HV_SYNIC_SINT_C=
-OUNT,
-> +                                                       sizeof(u8), flags=
-);
-> +
-> +                       if (unlikely(!*synic_eventring_tail)) {
-> +                               kfree(mem);
-> +                               return -ENOMEM;
-> +                       }
-> +               }
-> +
->                 if (!ms_hyperv.paravisor_present &&
->                     (hv_isolation_type_snp() || hv_isolation_type_tdx()))=
- {
->                         ret =3D set_memory_decrypted((unsigned long)mem, =
-pgcount);
-> --
-> 2.34.1
->
->
-
+                        Geert
 
 --=20
-Thanks
-Tianyu Lan
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
