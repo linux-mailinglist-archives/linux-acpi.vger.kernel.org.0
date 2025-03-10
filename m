@@ -1,159 +1,278 @@
-Return-Path: <linux-acpi+bounces-12034-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12035-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61EBBA5A20B
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:16:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB4CA5A3BB
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 20:25:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A8B43AE857
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:16:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97EC91891AA2
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDE2235BFB;
-	Mon, 10 Mar 2025 18:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF398235371;
+	Mon, 10 Mar 2025 19:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TI1r+x0F"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A752356D7;
-	Mon, 10 Mar 2025 18:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8186829D0B;
+	Mon, 10 Mar 2025 19:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630546; cv=none; b=nJESQSJXeKjCTYegYKyMMqSigsZEfGFQpSgxpFd3to/3mvAbedcMOlRsfEHycPpR2uAH9Rs8jzDa2euO3fA/8UXkTMe0Cd7Brjoy0buAXkoqCKpFzfqUYEaFpppT5D2K62L2AoVX/dKHngFETy86DRqhnipwht19FAFN228ag6M=
+	t=1741634720; cv=none; b=ogBcwZ+a4qxIcQCVkQUh78Ea8OWsXwMAivbOSQzIQd+VNVAmJ3EqspSDvMdRtS/kCl6a7KvxMEk88/IIC/Cq0jKbLfEAiSu2oq6H7yZem81Y0+YJ+QeP9Fdw+glm/gDynwXmutW48gF4u01tXnUWH6fU2/LyFoO4p4pWYMuZ17U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630546; c=relaxed/simple;
-	bh=59rUqAulkS2g+6oKWOZ5aw7kxcsBl9xKhZXPMH5FCaQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jY15WEEBwm6zH86hhWuoukJ4gLrnPrPMtnDnFo6O7rexBnRslEorFvKSaWOSmppFxnHt986d0dl9vYDEBNzTwkXEFRtK5pwL68L9BS3LtkKqj7TZrDRsz9rzt0F+OZyy2v8U4h4zlY+mbTk9jU+SWMIokPDXK65eRwkEqG+hOo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZBQ4532s9z6K94c;
-	Tue, 11 Mar 2025 02:13:09 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
-	by mail.maildlp.com (Postfix) with ESMTPS id A0AF914011F;
-	Tue, 11 Mar 2025 02:15:39 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 10 Mar 2025 19:15:39 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Mon, 10 Mar 2025 19:15:39 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Alison Schofield <alison.schofield@intel.com>
-CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
-	<dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH 1/8] cxl: Add helper function to retrieve a feature entry
-Thread-Topic: [PATCH 1/8] cxl: Add helper function to retrieve a feature entry
-Thread-Index: AQHbiWhwo9sEMJAQkEWXFE66V5STnbNoCC6AgASyHwA=
-Date: Mon, 10 Mar 2025 18:15:38 +0000
-Message-ID: <e8e33d46aa1b478db601de29e047cb5f@huawei.com>
-References: <20250227223816.2036-1-shiju.jose@huawei.com>
-	<20250227223816.2036-2-shiju.jose@huawei.com>
- <Z8tGz33l9vDzuJLy@aschofie-mobl2.lan>
-In-Reply-To: <Z8tGz33l9vDzuJLy@aschofie-mobl2.lan>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741634720; c=relaxed/simple;
+	bh=HiJOVJUbPj9Y5EXs3EtkfouEzE6hMa/6Du8rJbM/8EI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AfSdfkA5QsqXcPF37CzDMZqUl4iUTMX3gBAUn7RMUgogHIuwnDCaDB8cZAehXalC7lHWVV16GSNeB10oqqEAxtZtbYwZEBRZo4iuQylEw4ei6vEklSRuOmIXn6ocoAOd6JAkZzk3c1sauaxOt6Tx/MnrlwsahryDvyRNQ6NdM6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TI1r+x0F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9842BC4CEE5;
+	Mon, 10 Mar 2025 19:25:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741634718;
+	bh=HiJOVJUbPj9Y5EXs3EtkfouEzE6hMa/6Du8rJbM/8EI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TI1r+x0FIda8jW33SCD3Gv5Oz3Fcych+C9ZVqYndpSHwUYvX+I/aAlBs9Owiifmmx
+	 /Iu63dqXpopc8YBmK80269Dcs104vl1hmZnDLqLwFPyAT+Pj8e5ehGrIowBBd1vjN/
+	 SIKvbM/nqcvQSOfWE9ST4IKanpPHDFxX04whzNpCFzYwzEHSsakIbsLURs5bEeOCzC
+	 hqaF0mW6r1COEkHffTA1PKjcWH5qcytkZMeXqh8M5lVAy7JZ/xMXucG87Md231yowD
+	 cyJydDRql0PGCKRZ7wSsNyxGL+sJl+Hyq8apZ3+e7qNkXEZNux636deiwmQhu4caRP
+	 yHp++Me/nGUWg==
+Date: Mon, 10 Mar 2025 19:25:03 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
+ <nuno.sa@analog.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>, Matteo
+ Martelli <matteomartelli3@gmail.com>, Alisa-Dariana Roman
+ <alisadariana@gmail.com>, Ramona Alexandra Nechita
+ <ramona.nechita@analog.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v5 03/10] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <20250310192503.71671275@jic23-huawei>
+In-Reply-To: <4d5212b3-3801-408c-9a5d-c6111189793c@gmail.com>
+References: <cover.1740993491.git.mazziesaccount@gmail.com>
+	<e71c63c2f61135f9a8c7884525aab2c48f1e84c2.1740993491.git.mazziesaccount@gmail.com>
+	<CAMknhBGQaqFZJsPAoauZL4S5MYtN05EOQ-BO2vw5gH+Z2RLOhw@mail.gmail.com>
+	<54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
+	<20250308162928.72bd1d1b@jic23-huawei>
+	<4d5212b3-3801-408c-9a5d-c6111189793c@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
->-----Original Message-----
->From: Alison Schofield <alison.schofield@intel.com>
->Sent: 07 March 2025 19:20
->To: Shiju Jose <shiju.jose@huawei.com>
-[...]
->> +struct cxl_feat_entry *cxl_get_feature_entry(struct cxl_dev_state *cxld=
-s,
->> +					     const uuid_t *feat_uuid)
->> +{
->> +	struct cxl_features_state *cxlfs =3D to_cxlfs(cxlds);
->> +	struct cxl_feat_entry *feat_entry;
->> +	int count;
->> +
->> +	/*
->> +	 * Retrieve the feature entry from the supported features list,
->> +	 * if the feature is supported.
->> +	 */
->> +	feat_entry =3D cxlfs->entries->ent;
->
->Do we need some NULL checking here on cxlfs, entries
+On Mon, 10 Mar 2025 09:41:00 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Hi Alison,
+> On 08/03/2025 18:29, Jonathan Cameron wrote:
+> > On Wed, 5 Mar 2025 12:54:33 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >  =20
+> >> Thanks for the review David.
+> >>
+> >> On 04/03/2025 11:25, David Lechner wrote: =20
+> >>> On Mon, Mar 3, 2025 at 12:32=E2=80=AFPM Matti Vaittinen
+> >>> <mazziesaccount@gmail.com> wrote: =20
+> >>>>
+> >>>> There are ADC ICs which may have some of the AIN pins usable for oth=
+er
+> >>>> functions. These ICs may have some of the AIN pins wired so that they
+> >>>> should not be used for ADC.
+> >>>>
+> >>>> (Preferred?) way for marking pins which can be used as ADC inputs is=
+ to
+> >>>> add corresponding channels@N nodes in the device tree as described in
+> >>>> the ADC binding yaml.
+> >>>>
+> >>>> Add couple of helper functions which can be used to retrieve the cha=
+nnel
+> >>>> information from the device node.
+> >>>>
+> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>>>
+> >>>> --- =20
+> >> =20
+> >>>> + *
+> >>>> + * Return:     Number of found channels on succes. Negative value t=
+o indicate =20
+> >>>
+> >>> s/succes/success/ =20
+> >>
+> >> Thanks!
+> >> =20
+> >>>> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> >>>> +                                         const struct iio_chan_spec=
+ *template,
+> >>>> +                                         int max_chan_id,
+> >>>> +                                         struct iio_chan_spec **cs)
+> >>>> +{
+> >>>> +       struct iio_chan_spec *chan_array, *chan;
+> >>>> +       int num_chan =3D 0, ret;
+> >>>> +
+> >>>> +       num_chan =3D iio_adc_device_num_channels(dev);
+> >>>> +       if (num_chan < 1)
+> >>>> +               return num_chan;
+> >>>> +
+> >>>> +       chan_array =3D devm_kcalloc(dev, num_chan, sizeof(*chan_arra=
+y),
+> >>>> +                                 GFP_KERNEL);
+> >>>> +       if (!chan_array)
+> >>>> +               return -ENOMEM;
+> >>>> +
+> >>>> +       chan =3D &chan_array[0];
+> >>>> +
+> >>>> +       device_for_each_child_node_scoped(dev, child) {
+> >>>> +               u32 ch;
+> >>>> +
+> >>>> +               if (!fwnode_name_eq(child, "channel"))
+> >>>> +                       continue;
+> >>>> +
+> >>>> +               ret =3D fwnode_property_read_u32(child, "reg", &ch);
+> >>>> +               if (ret)
+> >>>> +                       return ret;
+> >>>> +
+> >>>> +               if (max_chan_id !=3D -1 && ch > max_chan_id)
+> >>>> +                       return -ERANGE;
+> >>>> + =20
+> >>>
+> >>> Should we use return dev_err_probe() on these to help with debugging =
+a bad dtb?
+> >>>     =20
+> >>
+> >> I am not fan of using dev_err_probe() in a 'library code'. This is
+> >> because we never know if there'll be some odd use-case where this is n=
+ot
+> >> called from the probe.
+> >>
+> >> All in all, I'd leave adding most of the debugs to the callers -
+> >> especially because we do not expect to have bad device-trees after the
+> >> initial 'development stage' of a board. The board 'development stage'
+> >> should really reveal bugs which prevent the channels from being
+> >> registered - and after the DT is correct, these debug prints become
+> >> unnecessary (albeit minor) binary bloat.
+> >> =20
+> >>>> +               *chan =3D *template;
+> >>>> +               chan->channel =3D ch;
+> >>>> +               chan++;
+> >>>> +       }
+> >>>> +
+> >>>> +       *cs =3D chan_array;
+> >>>> +
+> >>>> +       return num_chan;
+> >>>> +}
+> >>>> +EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DR=
+IVER"); =20
+> >>>
+> >>> We can make this less verbose by setting #define
+> >>> DEFAULT_SYMBOL_NAMESPACE at the start of the file. Then we can just do
+> >>> EXPORT_SYMBOL_GPL() throughout the rest of the file. =20
+> >>
+> >> I am not sure what to think of this. I use the good old 'ctrl + ]' in =
+my
+> >> editor when I need to check how a function was supposed to be used. Th=
+at
+> >> jumps to the spot of code where the function is. I'd like to see the
+> >> namespace mentioned there in order to not accidentally miss the fact t=
+he
+> >> function belongs to one.
+> >>
+> >> OTOH, I do like simplifications. Yet, the added simplification might n=
+ot
+> >> warrant the namespace not being visible in the function definition.
+> >> =20
+> >>> Also, I would prefer if the namespace matched config name (IIO_ADC_HE=
+LPER). =20
+> >>
+> >> I had some lengthy discussion about this with Andy and Jonathan during
+> >> earlier review versions. In short, I don't like the idea of very
+> >> fragmented namespaces in IIO, which will just complicate the drivers
+> >> without providing any obvious benefit.
+> >>
+> >> https://lore.kernel.org/all/20250222174842.57c091c5@jic23-huawei/
+> >> =20
+> >>>> +
+> >>>> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> >>>> +                                         const struct iio_chan_spec=
+ *template,
+> >>>> +                                         int max_chan_id,
+> >>>> +                                         struct iio_chan_spec **cs);
+> >>>> + =20
+> >>>
+> >>> There are some different opinions on this, but on the last patch I did
+> >>> introducing a new namespace, the consensus seems to be that putting
+> >>> the MODULE_IMPORT_NS() in the header file was convenient so that users
+> >>> of the API don't have to remember to both include the header and add
+> >>> the import macro.
+> >>>     =20
+> >>
+> >> I do like this suggestion, and I believe this would be the balance
+> >> between getting the benefit of hiding part of the symbols - while not
+> >> unnecessarily complicating the callers. I know some people are opposing
+> >> it though. My personal opinion is that having the MODULE_IMPORT_NS() in
+> >> a header would be neatly simplifying the calling code with very little
+> >> harm, especially here where including the header hardly has use-cases
+> >> outside the IIO ADC.
+> >>
+> >> Unfortunately, the "safety" seems to often be a synonym for just "maki=
+ng
+> >> it intentionally hard". As Finnish people say: "K=C3=A4rsi, k=C3=A4rsi,
+> >> kirkkaamman kruunun saat". :)
+> >> (Roughly translated as "Suffer, suffer, you will get a brighter crown"=
+).
+> >>
+> >> Let's hear what Jonathan thinks of your suggestion. =20
+> >=20
+> > For this particular case my intent was that all the IIO exports that
+> > are suitable for use in simple IIO drives will be in this namespace,
+> > we just haven't started that conversion yet.
+> >=20
+> > As such, having it defined from a header for this helper isn't a good
+> > thing to do. =20
+>=20
+> Hmm. I agree.
+>=20
+> >  Generally I prefer to see in driver code what namespaces
+> > are involved but do understand the other viewpoint. In this case I
+> > definitely don't think it is appropriate unless we go for a specific na=
+mespace
+> > for just this helper. =20
+>=20
+> I suppose having the MODULE_IMPORT_NS() in the header would actually=20
+> make the more fine-grained namespaces (like IIO_ADC_HELPERS, IIO_GTS,=20
+> ...) much more usable. That'd relieved the drivers from explicitly=20
+> listing multiple namespaces while nicely limiting the visibility.
+>=20
+> If IIO was my territory, I might want to ask people to go with that=20
+> approach - but I am quite happy being a freeloade.. errm, I mean,=20
+> bystander ;)
+>=20
+It relieves the burden but I'd still prefer explicit opt in to namespaces
+unless there is general agreement on the approach of doing it in headers
+which there has not been so far.
 
-Thanks for the feedbacks.
-We had check on cxlfs before
-https://lore.kernel.org/all/20250122235159.2716036-5-dave.jiang@intel.com/
-but removed because of the following comment.
-https://lore.kernel.org/all/20250124150150.GZ5556@nvidia.com/
->
->
->> +	for (count =3D 0; count < cxlfs->entries->num_features; count++,
->> +feat_entry++) {
->
->Was num_features previously validated?
-Not in the caller. Had check for num_features here before in cxl_get_featur=
-e_entry()
-as seen in the above link.
->
->> +		if (uuid_equal(&feat_entry->uuid, feat_uuid))
->> +			return feat_entry;
->> +	}
->> +
->> +	return ERR_PTR(-ENOENT);
->
->Why not just return NULL?
-Will do.
->
->
->> +}
->> +
->>  size_t cxl_get_feature(struct cxl_mailbox *cxl_mbox, const uuid_t *feat=
-_uuid,
->>  		       enum cxl_get_feat_selection selection,
->>  		       void *feat_out, size_t feat_out_size, u16 offset,
->> --
->> 2.43.0
->>
+Jonathan
 
-Thanks,
-Shiju
+> Thanks!
+>=20
+> Yours,
+> 	-- Matti
+
 
