@@ -1,115 +1,115 @@
-Return-Path: <linux-acpi+bounces-11984-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11985-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C316FA58E29
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 09:29:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3F2A58FA0
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 10:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA9B6188BA2C
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 08:29:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619AD3A5F88
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 09:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3E6223335;
-	Mon, 10 Mar 2025 08:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A922253E1;
+	Mon, 10 Mar 2025 09:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="pLvQJdim"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="moRUW5ZQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562FF22330F;
-	Mon, 10 Mar 2025 08:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741595357; cv=none; b=sZTcqN5QlKXqU4y8qIpw3ON9Zy9vMXF51GmnC7zNOo+UWysjYX35C+uyo1gOgkg04X2ANFknapRlI9xGQ/6PaMr/AvTuo/sTNBnmmMarz0dLyqFMvVgydstv/VUv0SZcj2PTN+TDKme0tPbAl5c/YBDV70bXPGBrP3CBLsHaE/M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741595357; c=relaxed/simple;
-	bh=frX4G4i69BdoHfaR05B7WfBtiGFjU59BqKAKCBlX6vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QZ0oklARkZ+OlLgPGFXjzBHs44wcQzH/4ONOsKD3xsj/x1JkPff8hdTHWQmSCNs3gG7gahKIk/HwAv4SWwQzG12T/F7JOvJOOyRbMmoTToJrE2IO+omg0t0dS5h9ToHjhs4KBv3Zj/zIi9cw+RH6A6SbCs0gHriWAID/KRyxZco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=pLvQJdim; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 1364A45229;
-	Mon, 10 Mar 2025 09:29:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1741595354;
-	bh=frX4G4i69BdoHfaR05B7WfBtiGFjU59BqKAKCBlX6vc=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F82253A7;
+	Mon, 10 Mar 2025 09:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741598929; cv=none; b=jT9sAHGBtI88I7itggDIKZ6dh/DqlW21K/ebQk1hQKQ+SwSripX9ia6xOgpXgkJNq9FH0qR/zfn1/2ikNdLhumkQt1E9NrOnZGxv76V4RoVlR8PLMvfFVam8yZUpRlsLj7u/6pm/tk/RUa4uo12jKRC1yMBeqZ8kOI0Sdl8sg+k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741598929; c=relaxed/simple;
+	bh=5mwoTd08jCfdUhN4DoQ/o5bTO+/4KPbpIou7ZLK5CwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nzRqZHjxEwhj8LswIctDdtLWV4r6ogvy2p60FQ08raHR6xqCCSpi2RDJbu6nOMrSBBxufMCO6MhhbzJ9Cr8iU5qn3yAhB3K+/Ddzjl76JU96TqmV9kSBG0RtJXWro40nuc9a1esClJaV7BJ8NO83pGEtnBJiblgmcfK6EJ37jPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=moRUW5ZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3263C4CEE5;
+	Mon, 10 Mar 2025 09:28:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741598928;
+	bh=5mwoTd08jCfdUhN4DoQ/o5bTO+/4KPbpIou7ZLK5CwE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pLvQJdim6IyNh9OflrLb5oh+e8PpvuLCM7gou4Gbs0/mv/l0Y/CTYc5KJYczw60zh
-	 tyB81d0pFn7H4QWWzddDp47l9aIy2fBqzokWlz0g3XJfyBzaHLj7Cw/XF+dOnvcUgx
-	 ltV0QEF5YEldt6xlVgABrLyQ8mNC66Vlbe9G+8u9THehDW1Rde0MdBuqOWbjX1VyNw
-	 rqWATAisQ6IvQiG29+Xa3szaWqDZjlEB62Nqd/BeNV2EBXhGcEyXVkAdSJvBAaYkOy
-	 u8HEDFkVKAkbbvlEbGh0YDF5gu1Oor0qHpQjrXpS2vPEDIswU1Ee60j+y7dGCO00PP
-	 lG20mHqj4VUaA==
-Date: Mon, 10 Mar 2025 09:29:12 +0100
-From: Joerg Roedel <joro@8bytes.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH v2 0/4] iommu: Fix the longstanding probe issues
-Message-ID: <Z86i2BHhmAINErv_@8bytes.org>
-References: <cover.1740753261.git.robin.murphy@arm.com>
+	b=moRUW5ZQ40mb3/aIpiaUN9HkU77pvem3k8eDxlSM/9lZUaUKukj4CqhZvUe9L77zC
+	 MN+2vbTMTU3+BLE/2ld0UBhKQS5/ba81SV2HVw+ZA3Yz3md1rj9n1oi/rIFpS0ceFQ
+	 /omVZU4PqA9TWL9LfJuqg6P7RCJQ6/BrSt2q3h2CoPNyi/He613YCzZB27Pff6NEjc
+	 YXtecGZz5NtbHWv7fAKwgV9RUZ+ou62yHAHyS6MQV1nL5vhT4TzAPYYIv5ECh/jAne
+	 /yZ6tNsiGfzxvB4H1/ph9rTQtybZmAJtNlXrF3KTZChZqotBBafZrkqj9bmZ4otaFP
+	 DxO9pUqVWT11A==
+Date: Mon, 10 Mar 2025 10:28:44 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de, 
+	catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com, 
+	decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com, joey.gouly@arm.com, 
+	krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com, lenb@kernel.org, 
+	lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org, mark.rutland@arm.com, 
+	maz@kernel.org, mingo@redhat.com, oliver.upton@linux.dev, rafael@kernel.org, 
+	robh@kernel.org, ssengar@linux.microsoft.com, sudeep.holla@arm.com, 
+	suzuki.poulose@arm.com, tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org, 
+	yuzenghui@huawei.com, devicetree@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	x86@kernel.org, apais@microsoft.com, benhill@microsoft.com, 
+	bperkins@microsoft.com, sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v5 07/11] dt-bindings: microsoft,vmbus: Add
+ interrupts and DMA coherence
+Message-ID: <20250310-demonic-ferret-of-judgment-5dbdbf@krzk-bin>
+References: <20250307220304.247725-1-romank@linux.microsoft.com>
+ <20250307220304.247725-8-romank@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1740753261.git.robin.murphy@arm.com>
+In-Reply-To: <20250307220304.247725-8-romank@linux.microsoft.com>
 
-On Fri, Feb 28, 2025 at 03:46:29PM +0000, Robin Murphy wrote:
-> This spin irons out a couple of issues which v1 had. Firstly there
-> should now be no change in behaviour for the weird of_dma_configure()
-> calls, other than possibly getting the warning if they deserve it.
-> Secondly I think there was still a possibility for probe to run via
-> the replay path while its "real" probe was waiting to reacquire the
-> lock; this is now solved by making dev->iommu a reliable indicator of
-> the probe lifecycle, with a couple more prep patches.
+On Fri, Mar 07, 2025 at 02:02:59PM -0800, Roman Kisel wrote:
+> To boot on ARM64, VMBus requires configuring interrupts. Missing
+> DMA coherence property is sub-optimal as the VMBus transations are
+> cache-coherent.
 > 
-> Thanks,
-> Robin.
-> 
-> 
-> Robin Murphy (4):
->   iommu: Handle race with default domain setup
->   iommu: Resolve ops in iommu_init_device()
->   iommu: Keep dev->iommu state consistent
->   iommu: Get DT/ACPI parsing into the proper probe path
-> 
->  drivers/acpi/arm64/dma.c        |  5 +++
->  drivers/acpi/scan.c             |  7 -----
->  drivers/amba/bus.c              |  3 +-
->  drivers/base/platform.c         |  3 +-
->  drivers/bus/fsl-mc/fsl-mc-bus.c |  3 +-
->  drivers/cdx/cdx.c               |  3 +-
->  drivers/iommu/iommu-priv.h      |  2 ++
->  drivers/iommu/iommu.c           | 55 ++++++++++++++++++++++++---------
->  drivers/iommu/of_iommu.c        | 13 ++++++--
->  drivers/of/device.c             |  7 ++++-
->  drivers/pci/pci-driver.c        |  3 +-
->  11 files changed, 74 insertions(+), 30 deletions(-)
+> Add interrupts to be able to boot on ARM64. Add DMA coherence to
+> avoid doing extra work on maintaining caches on ARM64.
 
-Applied, thanks Robin.
+How do you add it?
+
+> 
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> ---
+>  .../devicetree/bindings/bus/microsoft,vmbus.yaml          | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml b/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
+> index a8d40c766dcd..3ab7d0116626 100644
+> --- a/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
+> +++ b/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
+> @@ -28,13 +28,16 @@ properties:
+>  required:
+>    - compatible
+>    - ranges
+> +  - interrupts
+>    - '#address-cells'
+>    - '#size-cells'
+>  
+> -additionalProperties: false
+> +additionalProperties: true
+
+This is neither explained in commit msg nor correct.
+
+Drop the change. You cannot have device bindings ending with 'true'
+here - see talks, example-bindings, writing-schema and whatever resource
+is there.
+
+Best regards,
+Krzysztof
+
 
