@@ -1,166 +1,146 @@
-Return-Path: <linux-acpi+bounces-12022-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12023-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 203AFA59CEC
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:16:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAEFA59D58
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44D123A5822
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 17:15:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA3073A5106
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 17:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4BA230D3A;
-	Mon, 10 Mar 2025 17:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C92A230BC8;
+	Mon, 10 Mar 2025 17:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="izQvo7Lt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WudoEEmA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910CC22FACA;
-	Mon, 10 Mar 2025 17:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685C618DB24;
+	Mon, 10 Mar 2025 17:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741626915; cv=none; b=Z1NFjbDJKobfe8QCTeIa7UvUFOVJaGcVdlCX2H5/4nQHovwW9A6sVGhKYJ4gCTNRBnap05v/24zcS3EFX1SmWl41/67AoA/swHTHNtsVF66KEAqnA9PG+f6tAgDj4qcyi8o6Fnj0wI7SBG/taAi76KApjGPvOkeAN+z+IVbgwT0=
+	t=1741627176; cv=none; b=mw0/j3Wm/FufYjcQRC9nY41vx4FUOjMtNjggsFndeZFpnWMEawupDzGf4l1gj1C+OLK1jXgj7qagRaYKxTu4zxOXGauX8Yhs19UwSVX9kt6WByEasbcafPAUomNpzgtwM3+v1pglDAuDc7iOhJJMet6VYPXc9SPGS1FmA6TAbMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741626915; c=relaxed/simple;
-	bh=bWqJ4FD0rh4Jv7wGJ1mKbUp1hDMD5nvjAYgteY/Eo4U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J/7QbO8GnHje7q1Y7SlMMFPHc2fvlb0VnuoC2Zrq4kp/eM+/a2jaCAGLYL+mPiOLpUIHuLBgXdRuh0fh1/YXDd7wGQeQpPkOVu4ARSZOr7t3m2cMVlE9InNsX6IUpVBECv3i+8xN9X3J/PRcqqdEorGgefqukTd3QyojLrF/iyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=izQvo7Lt; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id BFF802038F32;
-	Mon, 10 Mar 2025 10:15:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BFF802038F32
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741626913;
-	bh=eME4gRmjVE3w6nzuhE7xqtEmYJ+fLHcjVchsKhgalL8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=izQvo7LtPEn8QdsyQJfUA53eTxUOuoeOz82pbmQ0wQaG1gObJiMFAQaBdi4A4iWNR
-	 uP46JGVDaO3cRF/G9lVcXt9kOcQnz5el35Sjj0jweE8RV1fyt3eecjS3tkMovWnNwm
-	 xH3wS8Mi9wqAyRiK3OyMT3uXWKNOYhhn5jgty0K8=
-Message-ID: <319aac20-229e-4a81-b2c5-e870453634bb@linux.microsoft.com>
-Date: Mon, 10 Mar 2025 10:15:12 -0700
+	s=arc-20240116; t=1741627176; c=relaxed/simple;
+	bh=1+Q8YC08zubE/6BRvuVB6y5VTJRChZzHOcbWbQ7rDjM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=BXMEJ54DpyIZjVNFKX+3ha+Q6t2V//z+GZlpLYHsO0KpUfjiCnbNS6vtDXxdN0giX/vgxi6ZDb3FHhxmtYMU6sikcnaetMciRTZWPALLwR92cwSntaaipH0bMBwtFb3btQiFDUpO+3fA+GcSFs4PH3oOqdZkeOF8LQfjcZ1yS+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WudoEEmA; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741627175; x=1773163175;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=1+Q8YC08zubE/6BRvuVB6y5VTJRChZzHOcbWbQ7rDjM=;
+  b=WudoEEmAWyDfwW4Upr2LeyIRJceMlnqahbcg1MeRHYqOT+m6LK424QNP
+   3S9xRoqiIthmrNsf1YpMRQExovLfW0epTmMmV9vIcaMWZl7mdFn2wzUnQ
+   hkuL3fuKpytO9ybGlT2wPWEzkUmEECH5C4kBgOcvFsI8k2tEw75tSt/lk
+   qLNaATlCKwe5ekL1bJ28Z6wEt1mvQBmaEAm7Bo6Qx+iT6UCnvqWQgeXkL
+   EE+XlM3SMAVpfyRONpFS3TCoByP8cXKL1MSm2yVdpfTwUrUbzgW6YWj1M
+   i1VF5nPbIgOMTI6yALD6Xc3FKGxF2EyPkseJRdSRTz2dCfn9/uVowElZV
+   g==;
+X-CSE-ConnectionGUID: iPLTIwgMQnKbZVO0zmDdGw==
+X-CSE-MsgGUID: cWJKFY7kRO62N3B3PgLpqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42485881"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="42485881"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:19:34 -0700
+X-CSE-ConnectionGUID: KL2SRA7gSWqj4R1lhSlYzw==
+X-CSE-MsgGUID: Shp/u2yAQ0+R6aQ0rwAumA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="120945827"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.59])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:19:29 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 10 Mar 2025 19:19:25 +0200 (EET)
+To: Mario Limonciello <superm1@kernel.org>
+cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, 
+    Hans de Goede <hdegoede@redhat.com>, "Luke D . Jones" <luke@ljones.dev>, 
+    Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    "open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
+    open list <linux-kernel@vger.kernel.org>, 
+    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
+    "Derek J . Clark" <derekjohn.clark@gmail.com>, 
+    Antheas Kapenekakis <lkml@antheas.dev>, me@kylegospodneti.ch, 
+    Denis Benato <benato.denis96@gmail.com>, 
+    Mario Limonciello <mario.limonciello@amd.com>, 
+    Yijun Shen <Yijun.Shen@dell.com>
+Subject: Re: [PATCH] platform/x86/amd: pmf: Fix missing hidden options for
+ Smart PC
+In-Reply-To: <20250306034402.50478-1-superm1@kernel.org>
+Message-ID: <50adcc9d-241d-19b6-7b03-2e91ef7d017b@linux.intel.com>
+References: <20250306034402.50478-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hyperv-next v5 11/11] PCI: hv: Get vPCI MSI IRQ domain
- from DeviceTree
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
- catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com,
- decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
- joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
- lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org,
- mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com,
- oliver.upton@linux.dev, rafael@kernel.org, robh@kernel.org,
- ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com,
- tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org,
- yuzenghui@huawei.com, devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
- apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
- sunilmut@microsoft.com
-References: <20250310164122.GA551965@bhelgaas>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <20250310164122.GA551965@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
+On Wed, 5 Mar 2025, Mario Limonciello wrote:
 
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> amd_pmf_get_slider_info() checks the current profile to report correct
+> value to the TA inputs.  If hidden options are in use then the wrong
+> values will be reported to TA.
+> 
+> Add the two compat options PLATFORM_PROFILE_BALANCED_PERFORMANCE and
+> PLATFORM_PROFILE_QUIET for this use.
+> 
+> Reported-by: Yijun Shen <Yijun.Shen@dell.com>
+> Fixes: 9a43102daf64d ("platform/x86/amd: pmf: Add balanced-performance to hidden choices")
+> Fixes: 44e94fece5170 ("platform/x86/amd: pmf: Add 'quiet' to hidden choices")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/platform/x86/amd/pmf/spc.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/amd/pmf/spc.c b/drivers/platform/x86/amd/pmf/spc.c
+> index f34f3130c3307..1d90f9382024b 100644
+> --- a/drivers/platform/x86/amd/pmf/spc.c
+> +++ b/drivers/platform/x86/amd/pmf/spc.c
+> @@ -219,12 +219,14 @@ static int amd_pmf_get_slider_info(struct amd_pmf_dev *dev, struct ta_pmf_enact_
+>  
+>  	switch (dev->current_profile) {
+>  	case PLATFORM_PROFILE_PERFORMANCE:
+> +	case PLATFORM_PROFILE_BALANCED_PERFORMANCE:
+>  		val = TA_BEST_PERFORMANCE;
+>  		break;
+>  	case PLATFORM_PROFILE_BALANCED:
+>  		val = TA_BETTER_PERFORMANCE;
+>  		break;
+>  	case PLATFORM_PROFILE_LOW_POWER:
+> +	case PLATFORM_PROFILE_QUIET:
+>  		val = TA_BEST_BATTERY;
+>  		break;
+>  	default:
 
-On 3/10/2025 9:41 AM, Bjorn Helgaas wrote:
-> On Fri, Mar 07, 2025 at 02:03:03PM -0800, Roman Kisel wrote:
->> The hyperv-pci driver uses ACPI for MSI IRQ domain configuration on
->> arm64. It won't be able to do that in the VTL mode where only DeviceTree
->> can be used.
->>
->> Update the hyperv-pci driver to get vPCI MSI IRQ domain in the DeviceTree
->> case, too.
->>
->> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-> 
-> A couple minor comments below, but I don't have any objection to this,
-> so if it's OK with the pci-hyperv.c folks, it's OK with me.
-> 
+Hi Mario,
 
-Bjorn, thanks a lot for your help and guidance! I'll be most happy to
-incorporate your suggestions into the next version of the series :)
+Just for me to be sure what I'm supposed to do with all these patches 
+related to this platform profile legacy handling... :-)
 
->> +#ifdef CONFIG_OF
->> +
->> +static struct irq_domain *hv_pci_of_irq_domain_parent(void)
->> +{
->> +	struct device_node *parent;
->> +	struct irq_domain *domain;
->> +
->> +	parent = of_irq_find_parent(hv_get_vmbus_root_device()->of_node);
->> +	domain = NULL;
->> +	if (parent) {
->> +		domain = irq_find_host(parent);
->> +		of_node_put(parent);
->> +	}
->> +
->> +	return domain;
-> 
-> I think this would be a little simpler as:
-> 
->    parent = of_irq_find_parent(hv_get_vmbus_root_device()->of_node);
->    if (!parent)
->      return NULL;
-> 
->    domain = irq_find_host(parent);
->    of_node_put(parent);
->    return domain;
-> 
->> +}
->> +
->> +#endif
->> +
->> +#ifdef CONFIG_ACPI
->> +
->> +static struct irq_domain *hv_pci_acpi_irq_domain_parent(void)
->> +{
->> +	struct irq_domain *domain;
->> +	acpi_gsi_domain_disp_fn gsi_domain_disp_fn;
->> +
->> +	if (acpi_irq_model != ACPI_IRQ_MODEL_GIC)
->> +		return NULL;
->> +	gsi_domain_disp_fn = acpi_get_gsi_dispatcher();
->> +	if (!gsi_domain_disp_fn)
->> +		return NULL;
->> +	domain = irq_find_matching_fwnode(gsi_domain_disp_fn(0),
->> +				     DOMAIN_BUS_ANY);
->> +
->> +	if (!domain)
->> +		return NULL;
->> +
->> +	return domain;
-> 
->    if (!domain)
->      return NULL;
-> 
->    return domain;
-> 
-> is the same as:
-> 
->    return domain;
-> 
-> or even just:
-> 
->    return irq_find_matching_fwnode(gsi_domain_disp_fn(0), DOMAIN_BUS_ANY);
-> 
->> +}
+So this fix is necessary in addition to the 3 patches that got already 
+merged through Rafaels tree?
+
+What about this patch from Luke:
+
+https://patchwork.kernel.org/project/platform-driver-x86/patch/20250224223551.16918-1-luke@ljones.dev/
+
+Is that also needed?
+
+Thanks in advance.
 
 -- 
-Thank you,
-Roman
-
+ i.
 
