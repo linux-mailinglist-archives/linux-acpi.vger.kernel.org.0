@@ -1,117 +1,200 @@
-Return-Path: <linux-acpi+bounces-12038-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12039-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AC2A5A4EF
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:28:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25999A5A4F5
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E45E18911E7
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 20:28:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9B318915EE
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 20:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CCB1DE4FB;
-	Mon, 10 Mar 2025 20:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEB11DE4F9;
+	Mon, 10 Mar 2025 20:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxTlFGHF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gJ1fYbVK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44768EC5;
-	Mon, 10 Mar 2025 20:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21CEC5;
+	Mon, 10 Mar 2025 20:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741638482; cv=none; b=TX81Ejq29t7HeyYcfaF/KImx88XHcW2RpCa4Ior3DdCrHGrdOemdM30J0mCL2iPCXctWaxpUDfN2olBNPMgt5815SuXzgyQEmm4AITF5Dyf1vO8D9k8kMTbtGoKgXOhEJNyo+jkGlbtOXjkd7m9cPqK7Mqfk13rka1JO+uU7lqY=
+	t=1741638519; cv=none; b=kssGcObmDWt3uEWBRhH2lbiGsy8VRCCCFM7IEF6ZqLx9oym9EZ3vQgoKZiYh641dywnbXru4DBdQqpdAwQz29FsbWlpI+7ovliZiI+GH5RtUuuqrgFew6f7dE1Mae7esrEA9yueLTZk0kSkntgEtN76dWdhHrgxGyKkyzfI9HOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741638482; c=relaxed/simple;
-	bh=jrIUTRkOVwF4DrP6Op5FQkTYRiWzZRjfoY/yn1onSOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BVOoL/aPZNYvZ2XGhkC7ruZTaqr3RTvs0Jzxj6eK/p6Bz2seLAX6TLXMkvh/PGPBOW25tsnsp73IqrX9BJiPtaRz7P6O5JVEisJvHlCZVqYcXC+ms8G11JoKNKEy8d9NEW6BhUmRUkP5zMzZJjwR1r8draONWjWNIo3O/mvAGqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxTlFGHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E9CC4CEE5;
-	Mon, 10 Mar 2025 20:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741638481;
-	bh=jrIUTRkOVwF4DrP6Op5FQkTYRiWzZRjfoY/yn1onSOU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BxTlFGHFoOW0phWUqgQyWBIzCHGcDhnWX71cIrTi/V6o/OiL21j07oJLCGyw+KM9b
-	 3ReRfXP2z6sHkLW/fYS14usJ4jMUA8tFPVNPUAhN+ZxdAfy1XPr0YAmsmYh3s+qBui
-	 l2Wg09MH9ZYmq/RERxrvpEx04dsu66PALYPHHmAaXl1yEKkjMIGzESQeeRoKto5vB9
-	 uudFqXko3mnxN3db9MwQRFSZksb8SB6QtcJFypy/s9kCh1WO+iV5BSZT1OZ5cpY3tx
-	 6Lr2DFTSxmYrDwDKk7SRg7EUIcKe4UbqK4DBQxh9+NErcIzOCq2Ql/DTx8UkrUkQ8x
-	 2uGVdAQ1eUAzg==
-Date: Mon, 10 Mar 2025 20:27:38 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, linux-arm-kernel@lists.infradead.org,
- Samuel Holland <samuel@sholland.org>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, netdev@vger.kernel.org, Rob Herring
- <robh@kernel.org>, Herve Codina <herve.codina@bootlin.com>, Thomas
- Bonnefille <thomas.bonnefille@bootlin.com>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Nuno Sa <nuno.sa@analog.com>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, linux-media@vger.kernel.org, Claudiu
- Manoil <claudiu.manoil@nxp.com>, devicetree@vger.kernel.org, Marcelo
- Schmitt <marcelo.schmitt@analog.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-acpi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-sunxi@lists.linux.dev, Eric Dumazet <edumazet@google.com>, Conor
- Dooley <conor+dt@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Olivier
- Moysan <olivier.moysan@foss.st.com>, Trevor Gamblin
- <tgamblin@baylibre.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, Paul Elder <paul.elder@ideasonboard.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Matteo Martelli
- <matteomartelli3@gmail.com>, Guillaume Stols <gstols@baylibre.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, David Lechner <dlechner@baylibre.com>, Chen-Yu
- Tsai <wens@csie.org>, Daniel Scally <djrscally@gmail.com>
-Subject: Re: [PATCH v6 00/10] Support ROHM BD79124 ADC
-Message-ID: <20250310202738.13301548@jic23-huawei>
-In-Reply-To: <cover.1741610847.git.mazziesaccount@gmail.com>
-References: <cover.1741610847.git.mazziesaccount@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741638519; c=relaxed/simple;
+	bh=HSsMnI4cC6mW97nelx12+H+5tkQ+KC89ClBZc2VpfjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFXT/Xo/V0gr+UFNAjBg+8TYWLVsKvcyOuALKUJEAlpdTBl7aq0fWDrg3eOZCQeU2iPxgY9mQ3iZrnWVVL8qy9H7GWFgsrUp6AxZlb4j7pH2ML1YKJX3FS1i2R12o+oprCtMQvJPKYd80atGNXgVXt2Fnx3q0wD/Y8Dy3Wim5s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gJ1fYbVK; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741638518; x=1773174518;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HSsMnI4cC6mW97nelx12+H+5tkQ+KC89ClBZc2VpfjA=;
+  b=gJ1fYbVKWx7lk0+nRyTGH7QX6MRmLfgh05FgPvlU5RupZrpwIlGgRlnC
+   crlG1rozB1Wq0W1rKnV4DLA1YgxlQNIGVBnHXqvV8LSMUJeQxUQC/jQZb
+   YMVa4OhSGw+WBh6k+DmwoM0ulkOV0gN4bSoWOcLYP61uJfwejdIqrRMvv
+   JA7iDSiNkyHIcFGoCYZBypZ0aL4VeOLF0bDKYjP6dZVGmwD6z58NZn8vm
+   j/e3X4DdrfB6ocYeFhGlg3wRGnGOvzqK6ah19x0d4ZnYzzD2RgnYU1qIZ
+   PVbujRyN8mW1K6e4u7A3iqYS4rs2uc/6ibREyQg0bH0NU6FbTBrNgnAxL
+   g==;
+X-CSE-ConnectionGUID: wtHPDtytSxWeDYHRw3tXcw==
+X-CSE-MsgGUID: jE2CWlK9RVKwojzh7Kdujg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="53281775"
+X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; 
+   d="scan'208";a="53281775"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 13:28:36 -0700
+X-CSE-ConnectionGUID: Io1LQZW1SMCWx8jlCrJC6w==
+X-CSE-MsgGUID: TkRSYNbZTDiqa6hIOx+iIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; 
+   d="scan'208";a="157305575"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.66])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 13:28:35 -0700
+Date: Mon, 10 Mar 2025 13:28:33 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH 1/8] cxl: Add helper function to retrieve a feature entry
+Message-ID: <Z89LcUIWO9m8Vtru@aschofie-mobl2.lan>
+References: <20250227223816.2036-1-shiju.jose@huawei.com>
+ <20250227223816.2036-2-shiju.jose@huawei.com>
+ <Z8tGz33l9vDzuJLy@aschofie-mobl2.lan>
+ <e8e33d46aa1b478db601de29e047cb5f@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e8e33d46aa1b478db601de29e047cb5f@huawei.com>
 
-On Mon, 10 Mar 2025 14:53:50 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, Mar 10, 2025 at 06:15:38PM +0000, Shiju Jose wrote:
+> >-----Original Message-----
+> >From: Alison Schofield <alison.schofield@intel.com>
+> >Sent: 07 March 2025 19:20
+> >To: Shiju Jose <shiju.jose@huawei.com>
+> [...]
+> >> +struct cxl_feat_entry *cxl_get_feature_entry(struct cxl_dev_state *cxlds,
+> >> +					     const uuid_t *feat_uuid)
+> >> +{
+> >> +	struct cxl_features_state *cxlfs = to_cxlfs(cxlds);
+> >> +	struct cxl_feat_entry *feat_entry;
+> >> +	int count;
+> >> +
+> >> +	/*
+> >> +	 * Retrieve the feature entry from the supported features list,
+> >> +	 * if the feature is supported.
+> >> +	 */
+> >> +	feat_entry = cxlfs->entries->ent;
+> >
+> >Do we need some NULL checking here on cxlfs, entries
+> 
+> Hi Alison,
+> 
+> Thanks for the feedbacks.
+> We had check on cxlfs before
+> https://lore.kernel.org/all/20250122235159.2716036-5-dave.jiang@intel.com/
+> but removed because of the following comment.
+> https://lore.kernel.org/all/20250124150150.GZ5556@nvidia.com/
 
-> Support ROHM BD79124 ADC.
-> 
-> This series adds also couple of IIO ADC helper functions for parsing the
-> channel information from the device tree. There are also new helpers
-> included for iterating and counting firmware child nodes with a specific
-> name.
-> 
-> Series does also convert couple of drivers to use these helpers. The
-> rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
-> 
-> The gianfar driver under net and the thp7312 under media/i2c are added as
-> first users of the newly added "named child node" -helpers.
-> 
-> There has been some discussion about how useful these ADC helpers are,
-> and whether they should support also differential and single ended channel
-> configurations. This version does not include support for those - with the
-> benefit of reduced complexity and easier to use API.
-> 
-> NOTE: Patches 4,5,9 and 10 are untested as I lack of relevant HW.
-> They have been compile tested only.
-This probably wants an update.  Also, 00/10? There are only 8 that I can see.
+Hi Shiju,
 
-Jonathan
+I have not followed all along, so yeah my questions may be a bit pesky
+at this point. I did see the comment linked above about how the driver
+must be bound at this point. I think my question is a bit different.
+
+Are each of these guaranteed not to be NULL here:
+
+to_cxlfs(cxlds)
+cxlfs->entries
+cxlfs->entries->ent
+
+If these cannot be NULL, then all good.
+
+--Alison
+
+
+
+> >
+> >
+> >> +	for (count = 0; count < cxlfs->entries->num_features; count++,
+> >> +feat_entry++) {
+> >
+> >Was num_features previously validated?
+> Not in the caller. Had check for num_features here before in cxl_get_feature_entry()
+> as seen in the above link.
+> >
+> >> +		if (uuid_equal(&feat_entry->uuid, feat_uuid))
+> >> +			return feat_entry;
+> >> +	}
+> >> +
+> >> +	return ERR_PTR(-ENOENT);
+> >
+> >Why not just return NULL?
+> Will do.
+> >
+> >
+> >> +}
+> >> +
+> >>  size_t cxl_get_feature(struct cxl_mailbox *cxl_mbox, const uuid_t *feat_uuid,
+> >>  		       enum cxl_get_feat_selection selection,
+> >>  		       void *feat_out, size_t feat_out_size, u16 offset,
+> >> --
+> >> 2.43.0
+> >>
+> 
+> Thanks,
+> Shiju
+> 
 
