@@ -1,146 +1,124 @@
-Return-Path: <linux-acpi+bounces-12023-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12024-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAEFA59D58
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:20:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAFAA59D66
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA3073A5106
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 17:19:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C4E63A745F
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 17:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C92A230BC8;
-	Mon, 10 Mar 2025 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2A7230BF5;
+	Mon, 10 Mar 2025 17:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WudoEEmA"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="DCvJlH7l"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685C618DB24;
-	Mon, 10 Mar 2025 17:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0A322154C;
+	Mon, 10 Mar 2025 17:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627176; cv=none; b=mw0/j3Wm/FufYjcQRC9nY41vx4FUOjMtNjggsFndeZFpnWMEawupDzGf4l1gj1C+OLK1jXgj7qagRaYKxTu4zxOXGauX8Yhs19UwSVX9kt6WByEasbcafPAUomNpzgtwM3+v1pglDAuDc7iOhJJMet6VYPXc9SPGS1FmA6TAbMY=
+	t=1741627204; cv=none; b=SNE2bwHJE2otYWjO1Of1vShFea+2mnR9HZxPsOzrbP7D33CSE6cLjUgKScNjjnSlzEfQLiw+JQeXh+aASWt99YJLGznnqLiJHF93nNtr/qJVAEQIgMe5eFNwXbGKFveWh/rRF0z+cBoGbBQCBCcLA+1y136AXSfH8lQSfp/BPDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627176; c=relaxed/simple;
-	bh=1+Q8YC08zubE/6BRvuVB6y5VTJRChZzHOcbWbQ7rDjM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=BXMEJ54DpyIZjVNFKX+3ha+Q6t2V//z+GZlpLYHsO0KpUfjiCnbNS6vtDXxdN0giX/vgxi6ZDb3FHhxmtYMU6sikcnaetMciRTZWPALLwR92cwSntaaipH0bMBwtFb3btQiFDUpO+3fA+GcSFs4PH3oOqdZkeOF8LQfjcZ1yS+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WudoEEmA; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741627175; x=1773163175;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=1+Q8YC08zubE/6BRvuVB6y5VTJRChZzHOcbWbQ7rDjM=;
-  b=WudoEEmAWyDfwW4Upr2LeyIRJceMlnqahbcg1MeRHYqOT+m6LK424QNP
-   3S9xRoqiIthmrNsf1YpMRQExovLfW0epTmMmV9vIcaMWZl7mdFn2wzUnQ
-   hkuL3fuKpytO9ybGlT2wPWEzkUmEECH5C4kBgOcvFsI8k2tEw75tSt/lk
-   qLNaATlCKwe5ekL1bJ28Z6wEt1mvQBmaEAm7Bo6Qx+iT6UCnvqWQgeXkL
-   EE+XlM3SMAVpfyRONpFS3TCoByP8cXKL1MSm2yVdpfTwUrUbzgW6YWj1M
-   i1VF5nPbIgOMTI6yALD6Xc3FKGxF2EyPkseJRdSRTz2dCfn9/uVowElZV
-   g==;
-X-CSE-ConnectionGUID: iPLTIwgMQnKbZVO0zmDdGw==
-X-CSE-MsgGUID: cWJKFY7kRO62N3B3PgLpqw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42485881"
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="42485881"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:19:34 -0700
-X-CSE-ConnectionGUID: KL2SRA7gSWqj4R1lhSlYzw==
-X-CSE-MsgGUID: Shp/u2yAQ0+R6aQ0rwAumA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="120945827"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.59])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 10:19:29 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 10 Mar 2025 19:19:25 +0200 (EET)
-To: Mario Limonciello <superm1@kernel.org>
-cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, 
-    Hans de Goede <hdegoede@redhat.com>, "Luke D . Jones" <luke@ljones.dev>, 
-    Mark Pearson <mpearson-lenovo@squebb.ca>, 
-    "open list:AMD PMF DRIVER" <platform-driver-x86@vger.kernel.org>, 
-    open list <linux-kernel@vger.kernel.org>, 
-    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
-    "Derek J . Clark" <derekjohn.clark@gmail.com>, 
-    Antheas Kapenekakis <lkml@antheas.dev>, me@kylegospodneti.ch, 
-    Denis Benato <benato.denis96@gmail.com>, 
-    Mario Limonciello <mario.limonciello@amd.com>, 
-    Yijun Shen <Yijun.Shen@dell.com>
-Subject: Re: [PATCH] platform/x86/amd: pmf: Fix missing hidden options for
- Smart PC
-In-Reply-To: <20250306034402.50478-1-superm1@kernel.org>
-Message-ID: <50adcc9d-241d-19b6-7b03-2e91ef7d017b@linux.intel.com>
-References: <20250306034402.50478-1-superm1@kernel.org>
+	s=arc-20240116; t=1741627204; c=relaxed/simple;
+	bh=/YXMvkcQ/GzyTRwquiLmoSYe6UojhZjW60zM2YXCe5k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PvDBn/Fij6uVx+u58AxCK//hhMYM8sfehjjDl1jtCziFLs6cugJubajaQ8lec7IqHea6CxDTPAshFI20krUI0QBXhV96kM9YAF+uelpAHuBuKBvBHzY3qoNSpYnasNUc656UbSv/ZY5b4bBPqMspEBZ6gBc8f5YM3q3BfPxZu7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=DCvJlH7l; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id B693E2038F31;
+	Mon, 10 Mar 2025 10:20:02 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B693E2038F31
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741627203;
+	bh=13DS2/TB/IXIH8xoTGEcQtgWmxhNupVcmk4y3r8tsVk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DCvJlH7lbXZNt/E1m1ad8ZjehpHPz1EJUOHWNCbySluNx0imTgB0IvFntVbtpwLYj
+	 5U4GwnENiBtd6A89KwSCOFeva6PjIT8utJ1CXa7p1OlsNSKqDuXfP2bHCkSiQ444ZW
+	 JquC4aUWaAMFvwW2v15oYkJg5ul0DQ4IvSj6xERw=
+Message-ID: <ce6f5bb0-545f-4d9f-a792-29a2f1520ba8@linux.microsoft.com>
+Date: Mon, 10 Mar 2025 10:20:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next v5 06/11] arm64, x86: hyperv: Report the VTL
+ the system boots in
+To: Wei Liu <wei.liu@kernel.org>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+ catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com,
+ decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
+ joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
+ lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org,
+ mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com,
+ oliver.upton@linux.dev, rafael@kernel.org, robh@kernel.org,
+ ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com,
+ tglx@linutronix.de, will@kernel.org, yuzenghui@huawei.com,
+ devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
+ apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
+ sunilmut@microsoft.com
+References: <20250307220304.247725-1-romank@linux.microsoft.com>
+ <20250307220304.247725-7-romank@linux.microsoft.com>
+ <Z84yyAqkqJ2ZyAd-@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
+ <2342dda1-2976-4506-ab68-640739a1bd5b@linux.microsoft.com>
+ <Z88Y-R7BnXa4Xi3I@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <Z88Y-R7BnXa4Xi3I@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 5 Mar 2025, Mario Limonciello wrote:
 
-> From: Mario Limonciello <mario.limonciello@amd.com>
+
+On 3/10/2025 9:53 AM, Wei Liu wrote:
+> On Mon, Mar 10, 2025 at 09:42:15AM -0700, Roman Kisel wrote:
+
+[...]
+
+>>
+>>> Please be consistent across different architectures.
+>>>
+>>
+>> In the earlier versions of the patch series, I had that piece
+>> from the above mirrored in the arm64, and there was advice on
+>> removing the function as it contained just one statement.
+>> I'll revisit the approach, thanks for your help!
 > 
-> amd_pmf_get_slider_info() checks the current profile to report correct
-> value to the TA inputs.  If hidden options are in use then the wrong
-> values will be reported to TA.
+> As long as the output is consistent across different architectures, I'm
+> good.
+
+I should add a comment most likely to save people some time grepping
+the code as the line does look like should always print that. IOW
+not printing for VTL0 is obscured by the preprocessor/#define cruft.
+
 > 
-> Add the two compat options PLATFORM_PROFILE_BALANCED_PERFORMANCE and
-> PLATFORM_PROFILE_QUIET for this use.
+> Wei.
 > 
-> Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-> Fixes: 9a43102daf64d ("platform/x86/amd: pmf: Add balanced-performance to hidden choices")
-> Fixes: 44e94fece5170 ("platform/x86/amd: pmf: Add 'quiet' to hidden choices")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/platform/x86/amd/pmf/spc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/platform/x86/amd/pmf/spc.c b/drivers/platform/x86/amd/pmf/spc.c
-> index f34f3130c3307..1d90f9382024b 100644
-> --- a/drivers/platform/x86/amd/pmf/spc.c
-> +++ b/drivers/platform/x86/amd/pmf/spc.c
-> @@ -219,12 +219,14 @@ static int amd_pmf_get_slider_info(struct amd_pmf_dev *dev, struct ta_pmf_enact_
->  
->  	switch (dev->current_profile) {
->  	case PLATFORM_PROFILE_PERFORMANCE:
-> +	case PLATFORM_PROFILE_BALANCED_PERFORMANCE:
->  		val = TA_BEST_PERFORMANCE;
->  		break;
->  	case PLATFORM_PROFILE_BALANCED:
->  		val = TA_BETTER_PERFORMANCE;
->  		break;
->  	case PLATFORM_PROFILE_LOW_POWER:
-> +	case PLATFORM_PROFILE_QUIET:
->  		val = TA_BEST_BATTERY;
->  		break;
->  	default:
-
-Hi Mario,
-
-Just for me to be sure what I'm supposed to do with all these patches 
-related to this platform profile legacy handling... :-)
-
-So this fix is necessary in addition to the 3 patches that got already 
-merged through Rafaels tree?
-
-What about this patch from Luke:
-
-https://patchwork.kernel.org/project/platform-driver-x86/patch/20250224223551.16918-1-luke@ljones.dev/
-
-Is that also needed?
-
-Thanks in advance.
+>>
+>>>>    	x86_platform.realmode_reserve = x86_init_noop;
+>>>>    	x86_platform.realmode_init = x86_init_noop;
+>>>> -- 
+>>>> 2.43.0
+>>>>
+>>>>
+>>
+>> -- 
+>> Thank you,
+>> Roman
+>>
 
 -- 
- i.
+Thank you,
+Roman
+
 
