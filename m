@@ -1,203 +1,228 @@
-Return-Path: <linux-acpi+bounces-12000-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12001-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5C5A59567
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 13:58:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB889A59587
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 14:02:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60A85163AE8
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 12:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 031303A3502
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 13:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DF4229B1D;
-	Mon, 10 Mar 2025 12:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2F221714;
+	Mon, 10 Mar 2025 13:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQJyaen2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AebViPUq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703D62288F7;
-	Mon, 10 Mar 2025 12:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009C2206A3;
+	Mon, 10 Mar 2025 13:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741611454; cv=none; b=KAh4PDYuidlH5Up2NJ/GqZ65/8EupeD9TWT25bbbE/sJLP+NtxEEvnqO8jkfy1rvpfFXFhZWzunF1OKAe7/+EqZfB+lVoRB4rEtd2tgTy8Lrj0N8lVvC2W9ztvTtUogpbO27yJ82tkjJruDc66C5/vAYu3ke6H+39SMeNdceT3Y=
+	t=1741611745; cv=none; b=qEmpm290tZizm7DIz9yqJQeyDgUlqnx4GK/AKR96hkzW5krY1Iu5S6yu32W0Uhp+mwPHSCqG0gpdmiM5RtlhQUc1PbaNVe0NmSvjUULWLZrVLXoWvaN1xXKZHD88GzcDWMcouJzdpnW7ea4wxGoWTm25q9BBpJZ7S1drNig7TcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741611454; c=relaxed/simple;
-	bh=XusGCXjnLrO4NIpb4V870oB4yFDARgNHjuBdPCvCho4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+rzD9/xcMSOyM9Vlj2tBMIjdmiahR/Pzvhc69d9r4tuQczkRlacWyxRQ6epomgYM1tV++9c2zj96O3fUSFor7/pnatmWvZh1nlUcFjfshn6aH7AGTFzCSkNESm4h4dtt5CBNj5Lpvl0N8Zf7HEs5MxBBrlyDHFUSTFDELmrgT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQJyaen2; arc=none smtp.client-ip=209.85.208.170
+	s=arc-20240116; t=1741611745; c=relaxed/simple;
+	bh=9/MF3XwBaT1mcfL5fB1uFCtt3JgTm87/jrTxjrGckLY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KKqlZCAduLMaCsK/kFlVjVJMpGG7OzUBgKRSu8MnNVjLdOBCY6Z0kV88ecaG+4Ev15N4DbaeuXixerBjDfuNygy775fncokonC3S981RKK+jnsH6Oxyblawyki/1yWRPBE5b70aHU4bdZf/vpcQxFlRI3khIroQLLESObWM5mMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AebViPUq; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30bae572157so41846021fa.3;
-        Mon, 10 Mar 2025 05:57:32 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3914bc3e01aso452450f8f.2;
+        Mon, 10 Mar 2025 06:02:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741611450; x=1742216250; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fpwBD3x8iSJEU67vP+98+iDTZb39NqeaJlJjG/XKE/4=;
-        b=mQJyaen2Zc8q9CW4NkbTp/UCFB4Rl36rrp92iocTn2fdUhA+hns0i+xwEzYFkMEFf+
-         5+SoxbdTJfVHqgHQAAct/fijfQT4tB+NNPhDa14L5p6UWd9jOdHqCyh+khbgOZpdDZHk
-         eUYQclPy++PgxQCLGFp+XTGjnzRz5PrgW0q3XyN3TpXvNDOpHKGdGdzJnwzYXiyZas21
-         GthUDdpISM0YXdjYnDsd2RHSzbQGDGqDMwcgWzqx515RLBBEr7+8y/zhbGe+Cfx5YOz6
-         G4U4acn56BXBHkRJzltjO6YPIpELklRi0ki8cZEOczeyg3aCyZGXzc59ORgk/hmWz0gq
-         eByg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741611450; x=1742216250;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741611742; x=1742216542; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fpwBD3x8iSJEU67vP+98+iDTZb39NqeaJlJjG/XKE/4=;
-        b=U51Jz5ade3x3gNPfuMbOhKxjR53ed+TUfTyw05cKgceVjZrCcC/4B4VP51AadPQHFk
-         5yf4vjz/YgHaWXYQLze25WhdM9gIiEwpUf7wBJohi8wWgHHAr5rGJz8IRizWKs2dO7BK
-         tIh4UKZtOgDj+zKc7wmNtW708djdkvzPmBRtThgHsTJfK1mPcQer700eo4B4PVlpG21h
-         yzRAkpwy+Vx1xw7wK2UA0DJWKmtRQhakyOn+jlTQJBgbKWF4QmN89B4HYr4d6H+DeNWC
-         p2DeJI/5qUbbfQlwBsOe3qVgx7Ik6IxJxviRVBeEFtOhTgivFSrDmiANh0MmMnP6RJms
-         Qsjg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjOexvvCFodMPZMT3y6GbM1glh6Xv/gxVA9fUqXXd/yQzPl/H3dOOJnrfHqGZ5O4J1v/dsqENwDBnY@vger.kernel.org, AJvYcCWZzZ7HNdXG87wZ2fEciydGS5A2eG3ZBjWR4IEqZxkFPZUfehJHeM+dqNldICG553QIeNKBEjVE@vger.kernel.org, AJvYcCWoF7dfpzss8gQDJTFWlhtlVn52wHGK6xYTAyPRL5Xo7C7QLOU2DGSeNktZ3B56G/FJD0oktHrw3ZL58Tfu@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvITheEUjXhgCBWj+97TA0JSq+1oD0mFKLCqKy0NEBpi+nagmw
-	mIb9rZ1Oyivqm2ZTEHeP1WuZw5SEw0elqL4qD+ZfXkOj+mELj9Y+
-X-Gm-Gg: ASbGncu/gjHZyWrfZp6gxwyjDbprAvLc5xVGSGmhJy8L1uGBGY1S4AG47xiwRzEZ1u3
-	4cTrzIk38fHVcCPTEpTOz9qYxC303HsEzU4zt7h7mjkj6MY2XY3f4gLTrOwz8ADR717pAghk+fZ
-	J/AN8ISChB5zHOS75RZ0fZjnGsR3Njki20QcQ+8wRvYUemvzQWWrAPrbqojU1MTjaItsK0MpKJU
-	H8hvGwqm4m4cjhWuZT15yMhQTq8vM4lZnB7Z9wlRtGkAU1POeaCCzO+NBR8t5/OCij4dcjB7JeZ
-	t9TCgAcoHSBNp9J87nsSCe47y29bmFa+yvLEjdqUP15Fv1AuFH4fitejSe1Urw==
-X-Google-Smtp-Source: AGHT+IGI+4SKzYIDDI/CqOFuISbqcvk/INtbWwZopqKeLbrpPLP1v3bcrvM01tlRht/FIloSf5xc7A==
-X-Received: by 2002:a05:6512:3d15:b0:549:5b54:2c68 with SMTP id 2adb3069b0e04-54990e5daccmr4642748e87.22.1741611450194;
-        Mon, 10 Mar 2025 05:57:30 -0700 (PDT)
-Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498b0bcf98sm1451461e87.128.2025.03.10.05.57.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 05:57:29 -0700 (PDT)
-Date: Mon, 10 Mar 2025 14:57:26 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v6 09/10] net: gianfar: Use
-  device_get_child_node_count_named()
-Message-ID: <1c4b9b4ceb1995bce76a0ddef0e04ad0d1d81190.1741610847.git.mazziesaccount@gmail.com>
-References: <cover.1741610847.git.mazziesaccount@gmail.com>
+        bh=LJsBCZAbkaqGsMqWjDYIUsmWMaDSGMkISy1d3AfV0dM=;
+        b=AebViPUqs5QZp+3p60eYU2Rsy8oBE8LeXgioAAQgZVo2cQ/pexTGIjjBTjbmHJqyQm
+         3uBHKJyhgD9km+2iD2eJ97LhJ7TLjE6jgATXV86SVot+/knqJSZP3/a6YmfyjXAwKqes
+         w4oHaoOBJTBGzIYwPfgjychlci3NkgOkXLTyUxWc+6DCRva/dkd/u0GrUDTDprYKqo7K
+         XfQP3vN053atwvtViADAf2YZ/p/H2LGUoGK/++G6kvcqF8aVePK+xu29oOaXXrN85U+E
+         +/xIVt3xZK3cGwMJRg9iN3rlLHCNQauhlY+Is5iq40YyUFhjSdEO5JOLXzINHQLNQP/s
+         7auw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741611742; x=1742216542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LJsBCZAbkaqGsMqWjDYIUsmWMaDSGMkISy1d3AfV0dM=;
+        b=abB+dfwnaFR3A5d4PjXK9GG27dgJk7yNijp91Oo/ecNcWKu6b0yir/SXCYynQR2LuO
+         0+KPUGVyjg4LfappZbjzRXg0s79djJJ1QTl+09jnA4lBk979GSga/3FJgxkPZUQon6el
+         /k80mDh4HlGYI8G8nGqUT7nOjl6a19nyPRYimvl6ba/flu073/GwLYdQ5Ko8PpD03JH3
+         IeEcDrtGnWCXk5iaaxQG9OS8a6uyBpEpN4cuBjeEKX5K+/dOYhGqDeved13Sir6XX/za
+         aJiJh0H2WSar+uBstwXoFMGvh1TdmBPPi0ZNSZNnxMsZE7deqzaiLmj9+KXHKPvyNbME
+         oxqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVER1ZUdYrTlNjidZyUiJ8UCT0Z/KRz4AUMSyEA/R4IH84d4QcgAOI+pTGI9NbmO7KcXqTqTtU0VOSrirlk@vger.kernel.org, AJvYcCVemK4prfmhU0Eag0lim0NS/LQI8pEEoSJ4wSsUIVXxy9ffPSsWgbBQRcTqTyZR4wzcAoTvOP2FgOnS@vger.kernel.org, AJvYcCW33WL0G1G9aLDDQkceKx2c7EjEe6R8W5+BO+TErLo3C536hncHXeKsHFxLznwZ8hSc6yNCbFsJJfY20g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrYeli+guZlaB0mGXmpyyNcrPvNiKXlo8Fc5V7EgkrbAjI3maV
+	i7xRgfZZxEKyS8GI7RSDRVplMHsUWRmO/+1OjkIAGQSde46FtxsCannDOvu+4jiP3uRmDAJzByi
+	OeEfOa2aAwUH6eJvy2DNnPcfsNR4=
+X-Gm-Gg: ASbGnctcrn+m6tcBSaUk2WrR3UFJrFwiefR3ctIGNrDUerCuAmjUrA+NzURwtVseEih
+	1lJxaNr9rpUzQ+epihZgimy0ZOMSI6wa2+sbuwSDIuUpnFEOMDOFm2CS5K9wOMbd8yEyBsj26w5
+	tyoEANkGVQPgiyDmZF+DQOJcyPnTB6uqPjBPu03cnkj61j
+X-Google-Smtp-Source: AGHT+IGaxbWiEzsbhn8u7OT4l7aLcqESH5XxF4YWsiFb1XdbKvnztHuQze3R8m7aqPgVjjpK0+JYaE4xvj1QZAkWR9c=
+X-Received: by 2002:a05:6000:1f8f:b0:391:304f:34e7 with SMTP id
+ ffacd0b85a97d-39132d985f6mr9687116f8f.44.1741611742101; Mon, 10 Mar 2025
+ 06:02:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="uEr4BMf2amfewQlJ"
-Content-Disposition: inline
-In-Reply-To: <cover.1741610847.git.mazziesaccount@gmail.com>
-
-
---uEr4BMf2amfewQlJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-8-git-send-email-nunodasneves@linux.microsoft.com>
+In-Reply-To: <1740611284-27506-8-git-send-email-nunodasneves@linux.microsoft.com>
+From: Tianyu Lan <ltykernel@gmail.com>
+Date: Mon, 10 Mar 2025 21:01:45 +0800
+X-Gm-Features: AQ5f1Jq0GptIRLQ74YOF7jUY6vVGVBckkuZztDE6uDxvc_UbKBeBzzaPI8HiFPA
+Message-ID: <CAMvTesAW-9Mo0oY6UUh2anp6DQCSsVCUhBiV2-bKp2VD_N0DYw@mail.gmail.com>
+Subject: Re: [PATCH v5 07/10] Drivers: hv: Introduce per-cpu event ring tail
+To: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com, 
+	haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com, 
+	decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org, 
+	joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de, 
+	jinankjain@linux.microsoft.com, muminulrussell@gmail.com, 
+	skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com, 
+	ssengar@linux.microsoft.com, apais@linux.microsoft.com, 
+	Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com, 
+	gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com, 
+	muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org, 
+	lenb@kernel.org, corbet@lwn.net
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-We can avoid open-coding the loop construct which counts firmware child
-nodes with a specific name by using the newly added
-device_get_child_node_count_named().
+On Thu, Feb 27, 2025 at 7:09=E2=80=AFAM Nuno Das Neves
+<nunodasneves@linux.microsoft.com> wrote:
+>
+> Add a pointer hv_synic_eventring_tail to track the tail pointer for the
+> SynIC event ring buffer for each SINT.
+>
+> This will be used by the mshv driver, but must be tracked independently
+> since the driver module could be removed and re-inserted.
+>
+> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+> Reviewed-by: Wei Liu <wei.liu@kernel.org>
 
-The gianfar driver has such open-coded loop. Replace it with the
-device_get_child_node_count_named().
+It's better to expose a function to check the tail instead of exposing
+hv_synic_eventring_tail directly.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-It's fair to tell the pros and cons of this patch.
-The simplification is there, but it's not a big one. It comes with a cost
-of getting the property.h included in this driver which currently uses
-exclusively the of_* APIs.
+BTW, how does mshv driver use hv_synic_eventring_tail? Which patch
+uses it in this series?
 
-NOTE: This patch depends on the patch:
-[2/10] "property: Add functions to iterate named child"
+Thanks.
 
-Compile-tested only!
----
- drivers/net/ethernet/freescale/gianfar.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/etherne=
-t/freescale/gianfar.c
-index 435138f4699d..d4ee0fc843be 100644
---- a/drivers/net/ethernet/freescale/gianfar.c
-+++ b/drivers/net/ethernet/freescale/gianfar.c
-@@ -97,6 +97,7 @@
- #include <linux/phy_fixed.h>
- #include <linux/of.h>
- #include <linux/of_net.h>
-+#include <linux/property.h>
-=20
- #include "gianfar.h"
-=20
-@@ -571,18 +572,6 @@ static int gfar_parse_group(struct device_node *np,
- 	return 0;
- }
-=20
--static int gfar_of_group_count(struct device_node *np)
--{
--	struct device_node *child;
--	int num =3D 0;
--
--	for_each_available_child_of_node(np, child)
--		if (of_node_name_eq(child, "queue-group"))
--			num++;
--
--	return num;
--}
--
- /* Reads the controller's registers to determine what interface
-  * connects it to the PHY.
-  */
-@@ -654,8 +643,10 @@ static int gfar_of_init(struct platform_device *ofdev,=
- struct net_device **pdev)
- 		num_rx_qs =3D 1;
- 	} else { /* MQ_MG_MODE */
- 		/* get the actual number of supported groups */
--		unsigned int num_grps =3D gfar_of_group_count(np);
-+		unsigned int num_grps;
-=20
-+		num_grps =3D device_get_named_child_node_count(&ofdev->dev,
-+							     "queue-group");
- 		if (num_grps =3D=3D 0 || num_grps > MAXGROUPS) {
- 			dev_err(&ofdev->dev, "Invalid # of int groups(%d)\n",
- 				num_grps);
+> ---
+>  drivers/hv/hv_common.c | 34 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 32 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+> index 252fd66ad4db..2763cb6d3678 100644
+> --- a/drivers/hv/hv_common.c
+> +++ b/drivers/hv/hv_common.c
+> @@ -68,6 +68,16 @@ static void hv_kmsg_dump_unregister(void);
+>
+>  static struct ctl_table_header *hv_ctl_table_hdr;
+>
+> +/*
+> + * Per-cpu array holding the tail pointer for the SynIC event ring buffe=
+r
+> + * for each SINT.
+> + *
+> + * We cannot maintain this in mshv driver because the tail pointer shoul=
+d
+> + * persist even if the mshv driver is unloaded.
+> + */
+> +u8 __percpu **hv_synic_eventring_tail;
+> +EXPORT_SYMBOL_GPL(hv_synic_eventring_tail);
+> +
+>  /*
+>   * Hyper-V specific initialization and shutdown code that is
+>   * common across all architectures.  Called from architecture
+> @@ -90,6 +100,9 @@ void __init hv_common_free(void)
+>
+>         free_percpu(hyperv_pcpu_input_arg);
+>         hyperv_pcpu_input_arg =3D NULL;
+> +
+> +       free_percpu(hv_synic_eventring_tail);
+> +       hv_synic_eventring_tail =3D NULL;
+>  }
+>
+>  /*
+> @@ -372,6 +385,11 @@ int __init hv_common_init(void)
+>                 BUG_ON(!hyperv_pcpu_output_arg);
+>         }
+>
+> +       if (hv_root_partition()) {
+> +               hv_synic_eventring_tail =3D alloc_percpu(u8 *);
+> +               BUG_ON(hv_synic_eventring_tail =3D=3D NULL);
+> +       }
+> +
+>         hv_vp_index =3D kmalloc_array(nr_cpu_ids, sizeof(*hv_vp_index),
+>                                     GFP_KERNEL);
+>         if (!hv_vp_index) {
+> @@ -460,6 +478,7 @@ void __init ms_hyperv_late_init(void)
+>  int hv_common_cpu_init(unsigned int cpu)
+>  {
+>         void **inputarg, **outputarg;
+> +       u8 **synic_eventring_tail;
+>         u64 msr_vp_index;
+>         gfp_t flags;
+>         const int pgcount =3D hv_output_page_exists() ? 2 : 1;
+> @@ -472,8 +491,8 @@ int hv_common_cpu_init(unsigned int cpu)
+>         inputarg =3D (void **)this_cpu_ptr(hyperv_pcpu_input_arg);
+>
+>         /*
+> -        * hyperv_pcpu_input_arg and hyperv_pcpu_output_arg memory is alr=
+eady
+> -        * allocated if this CPU was previously online and then taken off=
+line
+> +        * The per-cpu memory is already allocated if this CPU was previo=
+usly
+> +        * online and then taken offline
+>          */
+>         if (!*inputarg) {
+>                 mem =3D kmalloc(pgcount * HV_HYP_PAGE_SIZE, flags);
+> @@ -485,6 +504,17 @@ int hv_common_cpu_init(unsigned int cpu)
+>                         *outputarg =3D (char *)mem + HV_HYP_PAGE_SIZE;
+>                 }
+>
+> +               if (hv_root_partition()) {
+> +                       synic_eventring_tail =3D (u8 **)this_cpu_ptr(hv_s=
+ynic_eventring_tail);
+> +                       *synic_eventring_tail =3D kcalloc(HV_SYNIC_SINT_C=
+OUNT,
+> +                                                       sizeof(u8), flags=
+);
+> +
+> +                       if (unlikely(!*synic_eventring_tail)) {
+> +                               kfree(mem);
+> +                               return -ENOMEM;
+> +                       }
+> +               }
+> +
+>                 if (!ms_hyperv.paravisor_present &&
+>                     (hv_isolation_type_snp() || hv_isolation_type_tdx()))=
+ {
+>                         ret =3D set_memory_decrypted((unsigned long)mem, =
+pgcount);
+> --
+> 2.34.1
+>
+>
+
+
 --=20
-2.48.1
-
-
---uEr4BMf2amfewQlJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfO4bYACgkQeFA3/03a
-ocURZgf/YbQQKWUSJXQpAgQKTcEKSgAD9+XsUFtJSYEsmId2FVEx1a+TAwB6sis2
-MuasJQ0Viv4XGR2JGAI195m/vrM7LrBC3RDcPi+lVUBRS/Hd1Bihgb1GB2yHua1B
-RhAGCB7ykW48AdsrdmDzrsyM5G95Q4LYR/1JFxsz67CD/gjEoxXTqVYz7Kh6Bm1p
-tKUrm7haOBT/0kUrAzzcsteqQUZ28DmHn+2e4M8FNtC1Lb7b5CJJ4plECo3j2AG2
-Sk6VByw/WmkYeeoG3ft8an0iUJwuya8WZ+OtpTBoCFi3iFwas3uYTNspfd+c0cUE
-12C4htU0Lt/iXOHQn7ZL3j+LFZRPmw==
-=QxV8
------END PGP SIGNATURE-----
-
---uEr4BMf2amfewQlJ--
+Thanks
+Tianyu Lan
 
