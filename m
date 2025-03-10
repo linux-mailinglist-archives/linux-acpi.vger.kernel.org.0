@@ -1,188 +1,113 @@
-Return-Path: <linux-acpi+bounces-12031-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12032-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7253AA5A1A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:07:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D169A5A1C0
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 267A23AE819
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:07:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08CD07A37E9
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27185233736;
-	Mon, 10 Mar 2025 18:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D46D2356CD;
+	Mon, 10 Mar 2025 18:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="lkfc7WqT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQkr1HSc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFB7226D17;
-	Mon, 10 Mar 2025 18:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F562356CC;
+	Mon, 10 Mar 2025 18:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630031; cv=none; b=iP0mHF20f0PBmh4Cpqe8jsilntUMXpKI9VZE4g7+K/zrTZSdPLlnTdDADgwIbhAt565N6iYGYP+vaTfIEoDr7P8fBv/BZ+E/y9KKG1fsFiDIpwX6L56Ia4E76XfkALEfiJkDYQl+NnO1MWQiAy2TRnnuhCX60nfrYAI8/JB1koQ=
+	t=1741630355; cv=none; b=U9KVoHbnaqs9EPoYgLesvIUvX0jnGku4udNBnfx1sOEk6D2JGyS3I7SpIf+AQUnuKmJDDWZ42/q/1c4ZJOn7szrwQqYe0YYwO7E1tavjktGbGELYCMQGTQUHAu1Z8Yhiec6U3HR9BawzyPIGpWnOeN9cUZOk312avIhParh1nRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630031; c=relaxed/simple;
-	bh=CA9EMsdy0ESHhNUh8YAZSmW8LOgcKOF7hv3RuqiayFY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VlvvO4KvSwuNI7wmFqDPJu5PoTsb1MlA7Ieqip+74ReoRp72wv4/xmqbCeQExzUtW5reFkNr9wEVWE3bPSJ5pW5GTqWZbdCTCIoUcrE2P/52IOghPZYfV0FhBGbeiDLx5nqRcqCaNwqYh9l409dNH7X+9oiDed+HAVwNLGopZiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=lkfc7WqT; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AEB1B2038F50;
-	Mon, 10 Mar 2025 11:07:08 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AEB1B2038F50
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741630029;
-	bh=E13Z4tIU2QebiQ+fHYjb3GAytcpWMD9ZkrlSMteHVzY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lkfc7WqTTy9o/NtCmsNne2YvNu14qrm7uDsjvvXkQk5sfBSt0aW2JUGCLGbi53VQm
-	 x7EtA7dAZvpUOAdKpa+WyJR+DDJq7wyFqIlErDY/ZzM4lWwuea+zOldXaRC8xhF7xm
-	 s2kAl+3x2CXQIATrHNeR52YStsliYwkkKncXNNUo=
-Message-ID: <ba6b906d-04a2-423d-a527-9ef7ab1dccf2@linux.microsoft.com>
-Date: Mon, 10 Mar 2025 11:07:08 -0700
+	s=arc-20240116; t=1741630355; c=relaxed/simple;
+	bh=xutUtI8ncSnysxzMFMlH3TgBkjEFcJ6ylYOCCdQt5sY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TLQhCfjN1Nq9A/yjDCQzog4oDPGSsNapzc28nTDU5gEzp2cBdBWZX3l/Cu3Q3nYmsazCQaBcoXh1v+G9/YwQzWAUkfVryZPiAKP8G+yqDMBgHy7ePW49/PMwBzBlBmRFX03H2XzKggnKGkbwWU+uQtkf0qaJVsLw6eyjFXlYz50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQkr1HSc; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741630354; x=1773166354;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xutUtI8ncSnysxzMFMlH3TgBkjEFcJ6ylYOCCdQt5sY=;
+  b=FQkr1HScr8iBA6xrY2HK29ZJkkmZ6d9ztleZhLQlrUl6IBwrX5IpZcrV
+   opCHADnP3V0nFNg5MYKGDB6oYxCLuVvoBd4gU5HsdwRGwNOqHRfKk5iwR
+   Lu+bMDs1x957FWqZxAgxmGV/IuboTgapqxCXTjQc4tHBfy+NidiZOCpp8
+   uTQopKT0NOpJH03Kdul/AQobOjZdZFBDpB/mvelICgTq82oQhpJjDNlS1
+   FC1clurpE5Y5x3ZRNA2HHM4hHlEzHwFZhsppRogjeW0pNYjtMnRHbgP2v
+   2bl1m2Qwt6Gj9Bv42nFupKYaLC0NCfCNImURa4G6puwkaZmY3LS041jZ5
+   g==;
+X-CSE-ConnectionGUID: GgVKTgTVTAqPCT/Fik9T6Q==
+X-CSE-MsgGUID: B98toNZ5TEmsUSr2aGnzyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="45433458"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="45433458"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:12:32 -0700
+X-CSE-ConnectionGUID: XTWVcWlLSdaQ6N8oMqzVWQ==
+X-CSE-MsgGUID: D3Ts7d9eSaqsvtxwU60bpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="120552572"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:12:27 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id A1BEB11F7E5;
+	Mon, 10 Mar 2025 20:12:24 +0200 (EET)
+Date: Mon, 10 Mar 2025 18:12:24 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
+Message-ID: <Z88riPwuTvnAy-cj@kekkonen.localdomain>
+References: <cover.1741610847.git.mazziesaccount@gmail.com>
+ <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hyperv-next v5 07/11] dt-bindings: microsoft,vmbus: Add
- interrupts and DMA coherence
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
- catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com,
- decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
- joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
- lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org,
- mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com,
- oliver.upton@linux.dev, rafael@kernel.org, robh@kernel.org,
- ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com,
- tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org,
- yuzenghui@huawei.com, devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
- apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
- sunilmut@microsoft.com
-References: <20250307220304.247725-1-romank@linux.microsoft.com>
- <20250307220304.247725-8-romank@linux.microsoft.com>
- <20250310-demonic-ferret-of-judgment-5dbdbf@krzk-bin>
- <c7f9d861-f617-4064-8c98-2ace06e9c25e@linux.microsoft.com>
- <09d4966a-5804-40a4-9c5f-356a954a7704@kernel.org>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <09d4966a-5804-40a4-9c5f-356a954a7704@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
 
+Moi,
 
+On Mon, Mar 10, 2025 at 02:55:53PM +0200, Matti Vaittinen wrote:
+> Please note, the checkpatch.pl was not happy about the for_each...()
+> macros. I tried to make them to follow the existing convention. I am
+> open to suggestions how to improve.
 
-On 3/10/2025 10:40 AM, Krzysztof Kozlowski wrote:
-> On 10/03/2025 18:05, Roman Kisel wrote:
->>
->>
->> On 3/10/2025 2:28 AM, Krzysztof Kozlowski wrote:
->>> On Fri, Mar 07, 2025 at 02:02:59PM -0800, Roman Kisel wrote:
->>>> To boot on ARM64, VMBus requires configuring interrupts. Missing
->>>> DMA coherence property is sub-optimal as the VMBus transations are
->>>> cache-coherent.
->>>>
->>>> Add interrupts to be able to boot on ARM64. Add DMA coherence to
->>>> avoid doing extra work on maintaining caches on ARM64.
->>>
->>> How do you add it?
->>>
->>
->> I added properties to the node. Should I fix the description, or I am
->> misunderstanding the question?
-> 
-> I saw interrupts in the schema, but I did not see dma-coherence. I also
-> did not see any DTS patches here, so I don't understand what node you
-> are referring to.
-> 
-
-I will refer to talks, example-bindings, writing-schema you've suggested
-to waste your time less. It appears there is some fundamental flaw in my
-understanding of how these YAML files work so much so that I cannot even
-write a commit description that can be understood, for the 5th time in
-the row, sorry about that.
-
->>
->>>>
->>>> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
->>>> ---
->>>>    .../devicetree/bindings/bus/microsoft,vmbus.yaml          | 8 +++++++-
->>>>    1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml b/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
->>>> index a8d40c766dcd..3ab7d0116626 100644
->>>> --- a/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
->>>> +++ b/Documentation/devicetree/bindings/bus/microsoft,vmbus.yaml
->>>> @@ -28,13 +28,16 @@ properties:
->>>>    required:
->>>>      - compatible
->>>>      - ranges
->>>> +  - interrupts
->>>>      - '#address-cells'
->>>>      - '#size-cells'
->>>>    
->>>> -additionalProperties: false
->>>> +additionalProperties: true
->>>
->>> This is neither explained in commit msg nor correct.
->>>
->>
->> Not explained, as there is no good explanation as described below.
->>
->>> Drop the change. You cannot have device bindings ending with 'true'
->>> here - see talks, example-bindings, writing-schema and whatever resource
->>> is there.
->>>
->>
->> Thanks, I'll put more effort into bringing this into a better form!
->> If you have time, could you comment on the below?
->>
->> The Documentation says
->>
->>     * additionalProperties: true
->>       Rare case, used for schemas implementing common set of properties.
->> Such schemas are supposed to be referenced by other schemas, which then
->> use 'unevaluatedProperties: false'.  Typically bus or common-part schemas.
->>
->> This is a bus so I added that line to the YAML, and I saw it in many
-> 
-> If this is a bus, then where is schema using it for
-> bus-attached-devices? You cannot have bus without devices.
-> 
-> You *must* fulfill that part:
-> "Such schemas are supposed to be referenced by other schemas, which then"
-> 
-> instead of calling it bus...
-> 
-
-It is modeled as a bus in the kernel:
-https://www.kernel.org/doc/html/latest/virt/hyperv/vmbus.html
-
-> Please upstream bindings for the bus devices and extend the example here
-> with these devices.
-
-The set of synthetic devices that reside on the bus isn't fixed, and
-they don't require description neither in ACPI nor in DT as
-the devices negotiate their MMIO regions through the hyperv driver.
-
-Perhaps, it is not as much bus as expected by the YAML files.
-
-> 
-> Or this is not bus (calling something vmpony does not make it a pony).
-> 
- > > Best regards,
-> Krzysztof
+checkpatch.pl isn't always handling macros as well as it might. (It's just
+hard to parse C using regular expressions and in practice some
+simplifications end up being made.)
 
 -- 
-Thank you,
-Roman
-
+Sakari Ailus
 
