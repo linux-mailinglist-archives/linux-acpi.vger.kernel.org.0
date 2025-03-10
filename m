@@ -1,180 +1,222 @@
-Return-Path: <linux-acpi+bounces-12045-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12046-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC2EA5A659
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 22:42:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412C9A5A667
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 22:47:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84B45171F0E
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:42:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A671C7A4308
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295981E3787;
-	Mon, 10 Mar 2025 21:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294221D514E;
+	Mon, 10 Mar 2025 21:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wk22D0YR"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PLevEC7A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8D41581F9;
-	Mon, 10 Mar 2025 21:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0ED4437C;
+	Mon, 10 Mar 2025 21:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741642974; cv=none; b=Qz3ZWC59Hb+W5DebG5J4fGzB3S977K5Nxpc6NIJJoFKOcMFzA2ZtXiOAw86+MH8ahPnSz010vnrPR2VPxZVLVil1w7wDGkj8KuFen3EAlpaQXhxen8yQokhKGkHW+s77InbeCDYKT/jV6wtiqImAq+r3ipf8/wN4NU83Xkw0nHs=
+	t=1741643223; cv=none; b=g+uD3gwFGTmnM0L5blIJVi4CV7iMN7VCMHStmtZdbho9kVjDyNwRscjJzUbw9uCiVxIgDHDY8riMxa1bwlLEo3YtXMOKD361mJ3817zApsIMcl0I7YzkAw8nPYr6TlE3z+08r0Z5pEeCnvWhZLBs3sauLGq7tt1ck1lFcINdCcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741642974; c=relaxed/simple;
-	bh=Hgfqycyk5WAvowUEhLw7wDnMIf6XtuNalb//mZR8AGY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WHbKGBbokUAvF+jBKCvHATJWu+0Vyrq7oUcOX6GKrhE91bAho4sEJVbZ9JkmdRtwHC7cHqBSM880vAgpWpJrIS7wHet9V+1hmay6u5YlwdOqardabvX2LbTPehHyQWUKyLs6HHbEuGsZjyUKVIRDr/yaTiK1rQs0xWRaC98UThI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wk22D0YR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFACC4CEE5;
-	Mon, 10 Mar 2025 21:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741642973;
-	bh=Hgfqycyk5WAvowUEhLw7wDnMIf6XtuNalb//mZR8AGY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Wk22D0YR3b17pAiC+UtyGJTkNn4f/SCu58jZlCG8EtJEsYJE0ZTS7FDv7FGYZgvo3
-	 Zw8aIH8Jp1FwXbXAKz+bXKMERwjfFMFrUhJ0bUcw9ic883MXTGjJpiXBmpnrELzxZu
-	 Mr58Hq9+71qorcYrzyL+gee8iYn8JNfHk+Q7POStc5sVPiu5Le65C7DRvQIfu/QqHc
-	 Q59Vnn81tapAcI+efnO87N5WZNvAhSAit/vSYI+8ZgxhWImDr35+sZnF9RQ+XRNZAw
-	 JmkXhvO5xve9PBgSf/UKOUo/1PYDM7dqDlsGK0bSJwkKR2cA3JYZeD9eBe9rwNQ4Sl
-	 4C8cAPiiEkUmg==
-From: Kees Cook <kees@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Hao Luo <haoluo@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-acpi@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Yoann Congal <yoann.congal@smile.fr>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	Chen Ridong <chenridong@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Jann Horn <jannh@google.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] compiler_types: Introduce __nonstring_array
-Date: Mon, 10 Mar 2025 14:42:48 -0700
-Message-Id: <20250310214244.work.194-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741643223; c=relaxed/simple;
+	bh=dA9v5nwjHnH2LSju91UgbojSTyOeExYFFM/iFQ3lW6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rCZL9DLsNzJgqDDqNk57A/A7MTkkRwZsG7Wa6pnhwHq5+BEi0+r1wAfJp5/O0Y8MdcjEZ0WhCMTWjoBUuEDj5QHv95A9Z7XumwBAjqWM4Gjgq+3yJpfg8jKlQ2xWFNP/mGaxA9M6EK4eD8hOoCWBKEFLHAeYuegcQWVVV+7hMUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PLevEC7A; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 1AE9D205492E;
+	Mon, 10 Mar 2025 14:47:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1AE9D205492E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741643220;
+	bh=35SjqWqIW52cDDYKL7wXrX16ndmpcJ/RLK/QVZatMbA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PLevEC7AXcMPAd0pY7CAOea160MnPpKdr7WEv6MrZnGBCpYlCuBzpuETS4KkkO8Au
+	 6Zo8yUuLL7tvFiZAF75VRwZafL0dNuQnj85+7jrnaez8s17wb79rOwVkQjeGVgCUP8
+	 uxdylMSk9Px+9pgIVZ/eniOqvEy2BT6hlmgmmr7w=
+Message-ID: <71a95f7d-d38b-4f4f-b384-9ad4095bd272@linux.microsoft.com>
+Date: Mon, 10 Mar 2025 14:46:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4227; i=kees@kernel.org; h=from:subject:message-id; bh=Hgfqycyk5WAvowUEhLw7wDnMIf6XtuNalb//mZR8AGY=; b=owGbwMvMwCVmps19z/KJym7G02pJDOnnY250lb4+9jb5eIJS+5/U8MWXp+Qst9x3Yqqd93nNg MnXEhwndJSyMIhxMciKKbIE2bnHuXi8bQ93n6sIM4eVCWQIAxenAEwk/CzDf9eb1ZL5xsK7Ox6a dWptfW1umrQ/PPH6fWmtGbVi7n5aNgz/NH09gypDt73QUtNrmx0wYxWr98x/dmGb97hmvX0jPWc GJwA=
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/10] x86: hyperv: Add mshv_handler irq handler and
+ setup function
+To: Michael Kelley <mhklinux@outlook.com>,
+ Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "decui@microsoft.com" <decui@microsoft.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
+ <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "hpa@zytor.com" <hpa@zytor.com>,
+ "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+ "joro@8bytes.org" <joro@8bytes.org>,
+ "robin.murphy@arm.com" <robin.murphy@arm.com>, "arnd@arndb.de"
+ <arnd@arndb.de>,
+ "jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
+ "muminulrussell@gmail.com" <muminulrussell@gmail.com>,
+ "mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
+ "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+ "apais@linux.microsoft.com" <apais@linux.microsoft.com>,
+ "Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
+ "stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>,
+ "prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
+ "muislam@microsoft.com" <muislam@microsoft.com>,
+ "anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
+ "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+ <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-9-git-send-email-nunodasneves@linux.microsoft.com>
+ <Z7-nDUe41XHyZ8RJ@skinsburskii.>
+ <7de9b06d-9a32-48b5-beda-2e19b36ae9c9@linux.microsoft.com>
+ <SN6PR02MB41573673D5F786E6C47FC08ED4D52@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB41573673D5F786E6C47FC08ED4D52@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-GCC has expanded support of the "nonstring" attribute so that it can be
-applied to arrays of character arrays[1], which is needed to identify
-correct static initialization of those kinds of objects. Since this was
-not supported prior to GCC 15, we need to distinguish the usage of Linux's
-existing __nonstring macro for the attribute for non-multi-dimensional
-char arrays. Until GCC 15 is the minimum version, use __nonstring_array to
-mark arrays of non-string character arrays. (Regular non-string character
-arrays can continue to use __nonstring.)
+On 3/7/2025 9:38 AM, Michael Kelley wrote:
+> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Friday, February 28, 2025 4:38 PM
+>>
+>> On 2/26/2025 3:43 PM, Stanislav Kinsburskii wrote:
+>>> On Wed, Feb 26, 2025 at 03:08:02PM -0800, Nuno Das Neves wrote:
+>>>> This will handle SYNIC interrupts such as intercepts, doorbells, and
+>>>> scheduling messages intended for the mshv driver.
+>>>>
+>>>> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+>>>> Reviewed-by: Wei Liu <wei.liu@kernel.org>
+>>>> Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+>>>> ---
+>>>>  arch/x86/kernel/cpu/mshyperv.c | 9 +++++++++
+>>>>  drivers/hv/hv_common.c         | 5 +++++
+>>>>  include/asm-generic/mshyperv.h | 1 +
+>>>>  3 files changed, 15 insertions(+)
+>>>>
+>>>> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+>>>> index 0116d0e96ef9..616e9a5d77b4 100644
+>>>> --- a/arch/x86/kernel/cpu/mshyperv.c
+>>>> +++ b/arch/x86/kernel/cpu/mshyperv.c
+>>>> @@ -107,6 +107,7 @@ void hv_set_msr(unsigned int reg, u64 value)
+>>>>  }
+>>>>  EXPORT_SYMBOL_GPL(hv_set_msr);
+>>>>
+>>>> +static void (*mshv_handler)(void);
+>>>>  static void (*vmbus_handler)(void);
+>>>>  static void (*hv_stimer0_handler)(void);
+>>>>  static void (*hv_kexec_handler)(void);
+>>>> @@ -117,6 +118,9 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
+>>>>  	struct pt_regs *old_regs = set_irq_regs(regs);
+>>>>
+>>>>  	inc_irq_stat(irq_hv_callback_count);
+>>>> +	if (mshv_handler)
+>>>> +		mshv_handler();
+>>>
+>>> Can mshv_handler be defined as a weak symbol doing nothing instead
+>>> of defining it a null pointer?
+>>> This should allow to simplify this code and get rid of
+>>> hv_setup_mshv_handler, which looks redundant.
+>>>
+>> Interesting, I tested this and it does seems to work! It seems like
+>> a good change, thanks.
+> 
+> Just be a bit careful. When CONFIG_HYPERV=n, mshyperv.c still gets
+> built even through none of the other Hyper-V related files do.  There
+> are #ifdef CONFIG_HYPERV in mshyperv.c to eliminate references to
+> Hyper-V files that wouldn't be built. I'd suggest doing a test build with
+> that configuration to make sure it's all clean.
+> 
+Thanks Michael - I don't think it would be an issue since the __weak version
+would be defined in mshyperv.c itself, replacing the function pointer.
 
-This allows for changes like this:
+However, I went and tested this __weak version again with CONFIG_MSHV_ROOT=m
+and it does not actually work. Everything seems ok at first (it compiles,
+can insert the module), but upon starting a guest, the interrupts don't get
+delivered to the root (or rather, they don't get handled by mshv_hander()).
 
--static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
-+static const char table_sigs[][ACPI_NAMESEG_SIZE] __nonstring_array __initconst = {
-        ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+This seems to match with what the ld docs say - There's an option
+LD_DYNAMIC_LINK to allow __weak symbols to be overridden by the dynamic
+linker, but this is not enabled in the kernel.
 
-Which will silence the coming -Wunterminated-string-initialization
-warnings in GCC 15:
+So I will stick with the current implementation.
 
-In file included from ../include/acpi/actbl.h:371,                                                                   from ../include/acpi/acpi.h:26,                                                                     from ../include/linux/acpi.h:26,
-                 from ../drivers/acpi/tables.c:19:
-../include/acpi/actbl1.h:30:33: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (5 chars into 4 available) [-Wunterminated-string-initialization]
-   30 | #define ACPI_SIG_BERT           "BERT"  /* Boot Error Record Table */
-      |                                 ^~~~~~                                                      ../drivers/acpi/tables.c:400:9: note: in expansion of macro 'ACPI_SIG_BERT'                           400 |         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
-      |         ^~~~~~~~~~~~~                                                                       ../include/acpi/actbl1.h:31:33: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (5 chars into 4 available) [-Wunterminated-string-initialization]
-   31 | #define ACPI_SIG_BGRT           "BGRT"  /* Boot Graphics Resource Table */
-      |                                 ^~~~~~
+Nuno
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
----
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Hao Luo <haoluo@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: linux-acpi@vger.kernel.org
----
- include/linux/compiler_types.h | 12 ++++++++++++
- init/Kconfig                   |  3 +++
- 2 files changed, 15 insertions(+)
-
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 981cc3d7e3aa..7ccea700b46d 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -348,6 +348,18 @@ struct ftrace_likely_data {
- # define __counted_by(member)
- #endif
- 
-+/*
-+ * Optional: only supported since gcc >= 15
-+ * Optional: not supported by Clang
-+ *
-+ * gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178
-+ */
-+#ifdef CONFIG_CC_HAS_MULTIDIMENSIONAL_NONSTRING
-+# define __nonstring_array		__attribute__((__nonstring__))
-+#else
-+# define __nonstring_array
-+#endif
-+
- /*
-  * Apply __counted_by() when the Endianness matches to increase test coverage.
-  */
-diff --git a/init/Kconfig b/init/Kconfig
-index d0d021b3fa3b..723dc69507d6 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -129,6 +129,9 @@ config CC_HAS_COUNTED_BY
- 	# https://github.com/llvm/llvm-project/pull/112636
- 	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
- 
-+config CC_HAS_MULTIDIMENSIONAL_NONSTRING
-+	def_bool $(success,echo 'char tag[][4] __attribute__((__nonstring__)) = { };' | $(CC) $(CLANG_FLAGS) -x c - -c -o /dev/null -Werror)
-+
- config RUSTC_HAS_COERCE_POINTEE
- 	def_bool RUSTC_VERSION >= 108400
- 
--- 
-2.34.1
+> Michael
+> 
+>>
+>>> Reviewed-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+>>>
+>>>> +
+>>>>  	if (vmbus_handler)
+>>>>  		vmbus_handler();
+>>>>
+>>>> @@ -126,6 +130,11 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
+>>>>  	set_irq_regs(old_regs);
+>>>>  }
+>>>>
+>>>> +void hv_setup_mshv_handler(void (*handler)(void))
+>>>> +{
+>>>> +	mshv_handler = handler;
+>>>> +}
+>>>> +
+>>>>  void hv_setup_vmbus_handler(void (*handler)(void))
+>>>>  {
+>>>>  	vmbus_handler = handler;
+>>>> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+>>>> index 2763cb6d3678..f5a07fd9a03b 100644
+>>>> --- a/drivers/hv/hv_common.c
+>>>> +++ b/drivers/hv/hv_common.c
+>>>> @@ -677,6 +677,11 @@ void __weak hv_remove_vmbus_handler(void)
+>>>>  }
+>>>>  EXPORT_SYMBOL_GPL(hv_remove_vmbus_handler);
+>>>>
+>>>> +void __weak hv_setup_mshv_handler(void (*handler)(void))
+>>>> +{
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(hv_setup_mshv_handler);
+>>>> +
+>>>>  void __weak hv_setup_kexec_handler(void (*handler)(void))
+>>>>  {
+>>>>  }
+>>>> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+>>>> index 1f46d19a16aa..a05f12e63ccd 100644
+>>>> --- a/include/asm-generic/mshyperv.h
+>>>> +++ b/include/asm-generic/mshyperv.h
+>>>> @@ -208,6 +208,7 @@ void hv_setup_kexec_handler(void (*handler)(void));
+>>>>  void hv_remove_kexec_handler(void);
+>>>>  void hv_setup_crash_handler(void (*handler)(struct pt_regs *regs));
+>>>>  void hv_remove_crash_handler(void);
+>>>> +void hv_setup_mshv_handler(void (*handler)(void));
+>>>>
+>>>>  extern int vmbus_interrupt;
+>>>>  extern int vmbus_irq;
+>>>> --
+>>>> 2.34.1
+>>>>
+> 
 
 
