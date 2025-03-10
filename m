@@ -1,189 +1,154 @@
-Return-Path: <linux-acpi+bounces-12015-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12016-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C79A599B0
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 16:19:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E411CA59B71
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 17:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 898E57A5F8D
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 15:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EFB1889974
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 16:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59A722A7F9;
-	Mon, 10 Mar 2025 15:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C572459CF;
+	Mon, 10 Mar 2025 16:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyxqHbUG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21271A7264;
-	Mon, 10 Mar 2025 15:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BB02459C3;
+	Mon, 10 Mar 2025 16:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741619929; cv=none; b=mlXJpvmyQbqNJMB87t3JVEy1O1G6U0LafsuxHVuEEQpqmM0cEQDZo2hiQ+d7FZ7LDnJg08FrKDjEbEK5dD+2CdLmoe5LN4a1YXpeGh5qElFoqiF/c9mAkNXSAb2x4ySL4Yg5YX6p4D/Aq5TPuQZiQDxxtCrNMhQhPEyJksj0SK4=
+	t=1741624884; cv=none; b=Uq88rh7NliFi3c3/dwsPKkj3N0r0mHHK2oAW5Se9mPUihcsUz94LsUrfHO7gcQQpvNCrYq9+MUdKEGWFQnkL86p0HUXXHL4EkKG06BEfnUMo1YTq3AmOBgG57pShE0f4jW3OQgFQwD+ySlmZwu4fLNhvLyOMHgrGaNIy9qjfuPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741619929; c=relaxed/simple;
-	bh=bMPG0/W1J04vKv1BQV+5mjcFZMI4P3R3bE0XPo4Keck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XveAhej3H301xuOkl6N5tU/rnZLUSEJ5G2CZcc+kdqBYKFM8yRTcfZZfFBL1HWN7+tSh7uCC8apbb9GfmdYQXSQtbQYt3xcE3K8iN8A+WC03YIMjsQHNSxag2+poj7NzfMl070dfWBNzSP/jZrdt3QXuHIAAyQRVVPna3gY6soA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.2] (ip5f5af04a.dynamic.kabel-deutschland.de [95.90.240.74])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8402761E647BC;
-	Mon, 10 Mar 2025 16:17:52 +0100 (CET)
-Message-ID: <73da51ef-a7cc-4c38-8289-09c9cbd0c65d@molgen.mpg.de>
-Date: Mon, 10 Mar 2025 16:17:51 +0100
+	s=arc-20240116; t=1741624884; c=relaxed/simple;
+	bh=5Zuw8hUznANvPIatpdN56MqZ7+mKjrGRf7vCtpf94D0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=WDC2SkrHx2Ed/ZJdZbSPpszf48SdqnV5L7nAyqcS2LSyczP7Ciwy1oUZp8lZ/QN8lFqhlrFt637tkFm6OQX/HJCqo4PYiFN+ozD726NQbMzE5Oc65OWSAob2Jbb2zhNVWLRapXR5bAXf7CXBCc/rH4+HeFH0xFnxXNcELzUMNpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyxqHbUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3255C4CEF0;
+	Mon, 10 Mar 2025 16:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741624883;
+	bh=5Zuw8hUznANvPIatpdN56MqZ7+mKjrGRf7vCtpf94D0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=CyxqHbUGsjYvKn3FVeZW/HuHfKPBRCxzzMTwqiKjtFiHxte4Vl4VInowvl3wTArrR
+	 KjsnWZEtuvQbglKKZvNcoKFaIHuNgmgJYhS9Ph1M5IqCLQekQz2MvMokEkOMw7yI4x
+	 U3M8RkVwlPfEyTLSdIXuzi2aAGNoryqqYAsha8k6NC8RCKm1qsVPonTRNPoDaqVEwl
+	 cHU+8bafTy3sVee3mmZ8P6TDGY0xHFkich12lMdI5zeUF1LZuwel7kFhCcCOMv0fyy
+	 keIiZ83UKBImR3PyAuTistfB30rkUl1VlgBzBr/GvKYEr1maJBd8mYEFv91an5Bu4Q
+	 ABY+QXm8lP0kA==
+Date: Mon, 10 Mar 2025 11:41:22 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+	catalin.marinas@arm.com, conor+dt@kernel.org,
+	dave.hansen@linux.intel.com, decui@microsoft.com,
+	haiyangz@microsoft.com, hpa@zytor.com, joey.gouly@arm.com,
+	krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
+	lenb@kernel.org, lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org, mark.rutland@arm.com,
+	maz@kernel.org, mingo@redhat.com, oliver.upton@linux.dev,
+	rafael@kernel.org, robh@kernel.org, ssengar@linux.microsoft.com,
+	sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de,
+	wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com,
+	devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	x86@kernel.org, apais@microsoft.com, benhill@microsoft.com,
+	bperkins@microsoft.com, sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v5 11/11] PCI: hv: Get vPCI MSI IRQ domain
+ from DeviceTree
+Message-ID: <20250310164122.GA551965@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Warnings `Could not retrieve perf counters (-19)` and
- `amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled` (Dell
- PowerEdge R7625, AMD EPYC 9174F)
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Gautham Ranjal Shenoy <gautham.shenoy@amd.com>,
- Ray Huang <Ray.Huang@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, it+linux-dell@molgen.mpg.de
-References: <2b811df7-5278-4cfc-b8a0-7d6d72d3358d@molgen.mpg.de>
- <5dff1719-c4e9-4ebf-ae0b-73b9de98df05@amd.com>
- <DS7PR12MB82528A694056F1FBA20CE01E96EF2@DS7PR12MB8252.namprd12.prod.outlook.com>
- <d09f52d8-e084-4875-9608-5b3db2554f3d@molgen.mpg.de>
- <e26bc00f-1675-4aac-bd02-60774ff5901a@molgen.mpg.de>
- <3ded4075-e2f9-4231-9c3f-49a14fbbde1e@molgen.mpg.de>
- <1ba47782-0035-43c3-9ecd-887f1f60340a@amd.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <1ba47782-0035-43c3-9ecd-887f1f60340a@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307220304.247725-12-romank@linux.microsoft.com>
 
-Dear Mario,
-
-
-Am 11.02.25 um 17:18 schrieb Mario Limonciello:
-> On 2/11/2025 10:12, Paul Menzel wrote:
-
->> Am 28.01.25 um 16:08 schrieb Paul Menzel:
->>> [Cc: +x86 maintainers and ACPI list]
->>
->>> Am 28.01.25 um 11:49 schrieb Paul Menzel:
->>>
->>>> Thank you for your quick replies. Gautham, messages with HTML are 
->>>> rejected by Linux kernel lists.
->>>>
->>>>
->>>> Am 28.01.25 um 04:51 schrieb Shenoy, Gautham Ranjal:
->>>>
->>>>> As Mario mentioned, you need to enable the CPPC option. Looking for 
->>>>> some of the Dell PowerEdge documentation, there is an option called 
->>>>> "Collaborative CPU Performance Control" (https://www.dell.com/ 
->>>>> support/manuals/en-in/poweredge-r730/r730_ompublication/system- 
->>>>> profile-settings-details?guid=guid-2e9b46a1-71e3-4072-9d86- 
->>>>> db648757f0e6&lang=en-us).
->>>>>
->>>>> [cid:fe57df8f-3d99-4ea0-8f6e-b0daae49bb0e]
->>>>> Can you please try enabling it ?
->>>>
->>>> You quoted the Dell PowerEdge R730. I couldn’t find it in the *Dell 
->>>> PowerEdge R7625 Installation and Service Manual* [1], and also it’s 
->>>> not listed in the iDRAC9 Web site (attached with added `.txt` 
->>>> extension to trick the Linux list).
->>>
->>> The amd_pstate warning seems to be related to the perf counters 
->>> warning Linux prints earlier:
->>>
->>>      $ dmesg --level alert,crit,err,warn
->>>      [    2.666393] Spectre V2 : WARNING: Unprivileged eBPF is enabled with eIBRS on, data leaks possible via Spectre v2 BHB attacks!
->>>      [    8.109446] Could not retrieve perf counters (-19)
->>>      [    9.386551] scsi 0:0:4:0: set ignore_delay_remove for  handle(0x0012)
->>>      [    9.487804] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
->>>      [   14.726193] wmi_bus wmi_bus-PNP0C14:00: [Firmware Bug]: WQBC data block query control method not found
->>>
->>> x86 maintainers, the original report with the Linux logs attached is 
->>> in the archive [3].
->>>
->>> It looks like, there is something missing in the Dell firmware to 
->>> enable the feature.
->>>
->>> The perf counters warning is from `amd_set_max_freq_ratio()` in 
->>> `arch/ x86/kernel/acpi/cppc.c`:
->>>
->>> ```
->>> static void amd_set_max_freq_ratio(void)
->>> {
->>>          struct cppc_perf_caps perf_caps;
->>>          u64 numerator, nominal_perf;
->>>          u64 perf_ratio;
->>>          int rc;
->>>
->>>          rc = cppc_get_perf_caps(0, &perf_caps);
->>>          if (rc) {
->>>                  pr_warn("Could not retrieve perf counters (%d)\n", rc);
->>>                  return;
->>>          }
->>>          […]
->>> }
->>> ```
->>>
->>> With
->>>
->>>      include/uapi/asm-generic/errno-base.h:#define    ENODEV 19    /* No such device */
->>>
->>> this is returned by in `drivers/acpi/cppc_acpi.c`:
->>>
->>> ```
->>> /**
->>>   * cppc_get_perf_caps - Get a CPU's performance capabilities.
->>>   * @cpunum: CPU from which to get capabilities info.
->>>   * @perf_caps: ptr to cppc_perf_caps. See cppc_acpi.h
->>>   *
->>>   * Return: 0 for success with perf_caps populated else -ERRNO.
->>>   */
->>> int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
->>> {
->>>          struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
->>>          […]
->>>          if (!cpc_desc) {
->>>                  pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
->>>                  return -ENODEV;
->>>          }
->>>          […]
->>> }
->>> ```
->>
->> @AMD folks, just for clarity. Did Dell something with their firmware? 
->> If so, are you going to work with Dell on a solution, or do I need to 
->> report the issue to them?
+On Fri, Mar 07, 2025 at 02:03:03PM -0800, Roman Kisel wrote:
+> The hyperv-pci driver uses ACPI for MSI IRQ domain configuration on
+> arm64. It won't be able to do that in the VTL mode where only DeviceTree
+> can be used.
 > 
-> I feel if there is a BIOS bug in hardware you purchased, you should 
-> report a bug to the hardware creator for them to fix.
+> Update the hyperv-pci driver to get vPCI MSI IRQ domain in the DeviceTree
+> case, too.
+> 
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
 
-I made the service request 205423744 on February 12th, 2025, and after 
-collecting the details until February 14th, 2025, Dell replied on March 
-4th, 2025, that there L3 support and engineering team was able to 
-reproduce the issue, and they are going to provide a firmware update, 
-currently estimated for June.
+A couple minor comments below, but I don't have any objection to this,
+so if it's OK with the pci-hyperv.c folks, it's OK with me.
 
-I am still surprised, that Dell’s QA overlooked this. Does AMD provide 
-them test suites (does FWTS check for this). `dmesg --level=warning` is 
-unfortunately not empty, so maybe they ignore it.
+> +#ifdef CONFIG_OF
+> +
+> +static struct irq_domain *hv_pci_of_irq_domain_parent(void)
+> +{
+> +	struct device_node *parent;
+> +	struct irq_domain *domain;
+> +
+> +	parent = of_irq_find_parent(hv_get_vmbus_root_device()->of_node);
+> +	domain = NULL;
+> +	if (parent) {
+> +		domain = irq_find_host(parent);
+> +		of_node_put(parent);
+> +	}
+> +
+> +	return domain;
 
-Would it make sense to make the warning an error, so it’s less likely 
-overlooked?
+I think this would be a little simpler as:
 
+  parent = of_irq_find_parent(hv_get_vmbus_root_device()->of_node);
+  if (!parent)
+    return NULL;
 
-Kind regards,
+  domain = irq_find_host(parent);
+  of_node_put(parent);
+  return domain;
 
-Paul
+> +}
+> +
+> +#endif
+> +
+> +#ifdef CONFIG_ACPI
+> +
+> +static struct irq_domain *hv_pci_acpi_irq_domain_parent(void)
+> +{
+> +	struct irq_domain *domain;
+> +	acpi_gsi_domain_disp_fn gsi_domain_disp_fn;
+> +
+> +	if (acpi_irq_model != ACPI_IRQ_MODEL_GIC)
+> +		return NULL;
+> +	gsi_domain_disp_fn = acpi_get_gsi_dispatcher();
+> +	if (!gsi_domain_disp_fn)
+> +		return NULL;
+> +	domain = irq_find_matching_fwnode(gsi_domain_disp_fn(0),
+> +				     DOMAIN_BUS_ANY);
+> +
+> +	if (!domain)
+> +		return NULL;
+> +
+> +	return domain;
+
+  if (!domain)
+    return NULL;
+
+  return domain;
+
+is the same as:
+
+  return domain;
+
+or even just:
+
+  return irq_find_matching_fwnode(gsi_domain_disp_fn(0), DOMAIN_BUS_ANY);
+
+> +}
 
