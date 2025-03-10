@@ -1,158 +1,129 @@
-Return-Path: <linux-acpi+bounces-11977-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11978-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30E4A57E6D
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 22:12:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBBEA589A9
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 01:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B04AA3ACA6F
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Mar 2025 21:11:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78ADA188CFF3
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 00:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00531EB5F9;
-	Sat,  8 Mar 2025 21:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FB61CD15;
+	Mon, 10 Mar 2025 00:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="LMSLDj/6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jVdHKRZu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eneyuQA7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE151A3177;
-	Sat,  8 Mar 2025 21:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7345A632;
+	Mon, 10 Mar 2025 00:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741468316; cv=none; b=RslGpYclB+b7Z3QYehVlEpVFZlazhQnl0Cyg/qKPQmBM1oNGiENfk/pZBMkJqmADUCaHC7P0mJJuTIqWodE7s0TTgRo+WkCBB0Oecg1R2U9AtLN83Wee3V3wceGoyo81YJ2VzrMnbI8pZXbnhfnKN8tnDMTpxmQiAOQVX4QrBj8=
+	t=1741566666; cv=none; b=EcKsYhqweNz3jBxfLSC2TzGc4rNev7cPBJmWVUqnayKeiOeyBbRFl3o0OtQOgdlHJOjZ11yPcWAMysOX7qtJjXdVB4F7+Uu8bge7+no8C5bJdw0Yw7CfCCZSq6oR4Kz4Z95MO0nA63SZabFrQy7dgIE1NtYkBvPt78sa/nmBJK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741468316; c=relaxed/simple;
-	bh=/7+C4C4iku3+3KLHxP+lyMp2LEAUxLeZEbSA4EWH9TM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=WIJ8a39kN88PkaijEBh/RI40ikDAYkYKJdsIiMjS2C/lc3Oq4iuBjAbefc2scdWrk7M/ptz8Bsy0vNA5+7dP0mAs/KGm5YFhMnI1uDKoHyvqJPd7798hX912OIQGRIS344vdDrjMM8TPLb7zBBJXylngfuTGWPry5GqDhOosH1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=LMSLDj/6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jVdHKRZu; arc=none smtp.client-ip=103.168.172.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailflow.phl.internal (Postfix) with ESMTP id 5993620160A;
-	Sat,  8 Mar 2025 16:11:54 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-07.internal (MEProxy); Sat, 08 Mar 2025 16:11:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1741468314;
-	 x=1741475514; bh=C6cJwbVoDRAeuF6ka+Poa5zkvDE5zFIAQzAGXRQkSJc=; b=
-	LMSLDj/6zCFJ3UvyQ1/MypoE1FqzZAjNGpopT2+pL1QmJaKkUV1WihocrQswxNKX
-	zDJO8+UYV/7e2VYvlPckk22mlFoRrOfywd3NTpdgmgp3yf5ilBeS7s21bqLOD9N3
-	z8mnx/ufAe1MCtibKBNzXU3AvqsAgQFWLNZOEyWEKCdS8fcvfXBLhNptNCOZTbiy
-	wlD0hctNLDfawhtRater4q3VUgxv0ROg4aw1mQIUJrjR/XgolGWLcyVCVFPKETNo
-	DBkEnpDwJ7oG9Oa/gHEzeVI5d8k6EO3M8oMj9UxIlH/8REhmUxj8hk2EAJpPZp5l
-	RhhPUesHZshdO/EYMV8EWw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1741468314; x=
-	1741475514; bh=C6cJwbVoDRAeuF6ka+Poa5zkvDE5zFIAQzAGXRQkSJc=; b=j
-	VdHKRZuf3U4fb9uunzGPvL6CNmqhjPYTe3rsKqtNKhaY/pZrp2IINPNJY2JWuXZd
-	RY33BATElzY53tfeQxSBqLuTqbpJLnWv5wbK4rVeRDL2HUp6G+xE/MnoH24Q4she
-	Zw0xya7sNy+jy6xa23YkFrJIsewKyZBbM3oBg/sVYzVbSE7jucsBibWRVn8HVC9B
-	6ncXJ7c/BSSn5NFlw7sn4dwhZ2KZKrDp5xBFbLvYp9676I8hKrUapubErrnML8Eu
-	MHXEkU/mAZ+wflm9hMCWuppvIcWS53HsHXjuw99qvf2QyEr8Tbk2JmNRd6xt1Nj+
-	hp2dFCv/g0gkhZrCq7VHA==
-X-ME-Sender: <xms:mbLMZ596wPb40_JXIyPtfloWsKkqrCL8QDEm8QgWDvunyGq4pGVH9w>
-    <xme:mbLMZ9srqTK0BZFWCgSX-KfGSfBS4jByBYE1PxpJSKF8z3zNBeVNfOE6Li8LAWsyN
-    mt5f5VASQmltaFYOjE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudegheelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgepudenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    gedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
-    dprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghp
-    thhtohepjhhovgihrdhgohhulhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrd
-    hruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtohepshhuuggvvghprdhhohhllhgr
-    segrrhhmrdgtohhmpdhrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrd
-    gtohhmpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphht
-    thhopeihuhiivghnghhhuhhisehhuhgrfigvihdrtghomhdprhgtphhtthhopegtohhnoh
-    hrodgutheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:mbLMZ3DGst5K0ncB2CMgLSb0fFckv9GtAIwLMQFO9xM_fVSk6CPhoQ>
-    <xmx:mbLMZ9eJisR2lNOiGIPKNcjrOHGDl2yZroJ90LxetiT4_8C6ww40aA>
-    <xmx:mbLMZ-OeS-fHGEYgpwJpark3S_3tUdUzYdgXahPvkpqbMH8mPMmfbA>
-    <xmx:mbLMZ_k0HUBm-OqkJPuCwRYt895o1R20ovOBLNSpi-Sk8TXTbjUGww>
-    <xmx:mrLMZ2VW74UQPiuOOyAuXJ1EzqtujuTLZeYILoa5kZL7Oq9jb1T0XPOr>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id EE4422220072; Sat,  8 Mar 2025 16:11:52 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1741566666; c=relaxed/simple;
+	bh=127U7j9Ed6A/U+MTwMIn2yifTZmeLRlUzJiRx4bf5Qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2OeRBwqIShIwGgie66OoX3Ywi7XacK2QVIo0phYbVAM/KKw5L4EQB4rjvshqZKrYqPwlBCF1JnQMrUADlpVCM0Bkeo4jofTBtFt0HDscfbxTUURILzqkS864Q+LCLOsOZ4qmoD9k9klged1Pa3E81e7Wi7aJVkwNWUiViNBO3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eneyuQA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF5BC4CEE3;
+	Mon, 10 Mar 2025 00:31:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741566665;
+	bh=127U7j9Ed6A/U+MTwMIn2yifTZmeLRlUzJiRx4bf5Qg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eneyuQA7ykopq6S8UEKfLVTAcoh47yfGIyP+jGj+MeeDBzaNFNhxvkIPnaRvDW4GR
+	 3ElSa1Rcld7O5AzJkk8twIU5lFCgWiBf5vNLPutmhvohsLYdekOvuQxlcATOOmNSOL
+	 oy+78DKZe/m1Q8ZxkYJJvGoPrVwC1BrNfuxgULZNHz65IH/M/37K/rifMBJJpuVcom
+	 N+TobUAr9cPgkoULGmReb1NG5sZjys6iojuvRBPAwPXGsncjJKQ2ONRM5aUK0ykDOe
+	 yCd+V0vOGqXO+XPoZw9/6/ZJu0a+v7uQNA+ckeDwo4Su72E7JnlkAVup+KFU6O2u9D
+	 /UkG5nAGdv14g==
+Date: Mon, 10 Mar 2025 00:31:04 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+	catalin.marinas@arm.com, conor+dt@kernel.org,
+	dave.hansen@linux.intel.com, decui@microsoft.com,
+	haiyangz@microsoft.com, hpa@zytor.com, joey.gouly@arm.com,
+	krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
+	lenb@kernel.org, lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org, mark.rutland@arm.com,
+	maz@kernel.org, mingo@redhat.com, oliver.upton@linux.dev,
+	rafael@kernel.org, robh@kernel.org, ssengar@linux.microsoft.com,
+	sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de,
+	wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com,
+	devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	x86@kernel.org, apais@microsoft.com, benhill@microsoft.com,
+	bperkins@microsoft.com, sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v5 06/11] arm64, x86: hyperv: Report the VTL
+ the system boots in
+Message-ID: <Z84yyAqkqJ2ZyAd-@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
+References: <20250307220304.247725-1-romank@linux.microsoft.com>
+ <20250307220304.247725-7-romank@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 08 Mar 2025 22:11:32 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Roman Kisel" <romank@linux.microsoft.com>, bhelgaas@google.com,
- "Borislav Petkov" <bp@alien8.de>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Dexuan Cui" <decui@microsoft.com>,
- "Haiyang Zhang" <haiyangz@microsoft.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "Joey Gouly" <joey.gouly@arm.com>,
- krzk+dt@kernel.org, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, "Len Brown" <lenb@kernel.org>,
- "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
- "Manivannan Sadhasivam" <manivannan.sadhasivam@linaro.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Marc Zyngier" <maz@kernel.org>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Oliver Upton" <oliver.upton@linux.dev>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Rob Herring" <robh@kernel.org>, ssengar@linux.microsoft.com,
- "Sudeep Holla" <sudeep.holla@arm.com>,
- "Suzuki K Poulose" <suzuki.poulose@arm.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Wei Liu" <wei.liu@kernel.org>,
- "Will Deacon" <will@kernel.org>, "Zenghui Yu" <yuzenghui@huawei.com>,
- devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
- linux-acpi@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org
-Cc: apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
- sunilmut@microsoft.com
-Message-Id: <29bb5b7a-b31f-4b32-92c6-e2588a0f965a@app.fastmail.com>
-In-Reply-To: <20250307220304.247725-9-romank@linux.microsoft.com>
-References: <20250307220304.247725-1-romank@linux.microsoft.com>
- <20250307220304.247725-9-romank@linux.microsoft.com>
-Subject: Re: [PATCH hyperv-next v5 08/11] Drivers: hv: vmbus: Get the IRQ number from
- DeviceTree
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307220304.247725-7-romank@linux.microsoft.com>
 
-On Fri, Mar 7, 2025, at 23:03, Roman Kisel wrote:
+On Fri, Mar 07, 2025 at 02:02:58PM -0800, Roman Kisel wrote:
+> The hyperv guest code might run in various Virtual Trust Levels.
 > 
-> +static int __maybe_unused vmbus_set_irq(struct platform_device *pdev)
-
-Instead of the __maybe_unused annotation here
-
+> Report the level when the kernel boots in the non-default (0)
+> one.
 > 
-> +#ifndef HYPERVISOR_CALLBACK_VECTOR
-> +	ret = vmbus_set_irq(pdev);
-> +	if (ret)
-> +		return ret;
-> +#endif
-> +
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> ---
+>  arch/arm64/hyperv/mshyperv.c | 2 ++
+>  arch/x86/hyperv/hv_vtl.c     | 2 +-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/hyperv/mshyperv.c b/arch/arm64/hyperv/mshyperv.c
+> index a7db03f5413d..3bc16dbee758 100644
+> --- a/arch/arm64/hyperv/mshyperv.c
+> +++ b/arch/arm64/hyperv/mshyperv.c
+> @@ -108,6 +108,8 @@ static int __init hyperv_init(void)
+>  	if (ms_hyperv.priv_high & HV_ACCESS_PARTITION_ID)
+>  		hv_get_partition_id();
+>  	ms_hyperv.vtl = get_vtl();
+> +	if (ms_hyperv.vtl > 0) /* non default VTL */
 
-you can use 
+"non-default".
 
-       if (!__is_defined(HYPERVISOR_CALLBACK_VECTOR))
-                  ret = vmbus_set_irq(pdev);
+> +		pr_info("Linux runs in Hyper-V Virtual Trust Level %d\n", ms_hyperv.vtl);
+>  
+>  	ms_hyperv_late_init();
+>  
+> diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+> index 4e1b1e3b5658..c21bee7e8ff3 100644
+> --- a/arch/x86/hyperv/hv_vtl.c
+> +++ b/arch/x86/hyperv/hv_vtl.c
+> @@ -24,7 +24,7 @@ static bool __init hv_vtl_msi_ext_dest_id(void)
+>  
+>  void __init hv_vtl_init_platform(void)
+>  {
+> -	pr_info("Linux runs in Hyper-V Virtual Trust Level\n");
+> +	pr_info("Linux runs in Hyper-V Virtual Trust Level %d\n", ms_hyperv.vtl);
 
-and make it a little more readable.
+Where isn't there a check for ms_hyperv.vtl > 0 here?
 
-    Arnd
+Please be consistent across different architectures.
+
+>  
+>  	x86_platform.realmode_reserve = x86_init_noop;
+>  	x86_platform.realmode_init = x86_init_noop;
+> -- 
+> 2.43.0
+> 
+> 
 
