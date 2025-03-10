@@ -1,125 +1,99 @@
-Return-Path: <linux-acpi+bounces-12036-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12037-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3B7A5A3FA
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 20:46:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD230A5A4CF
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F4B23AD51C
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:45:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1850D174DF5
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 20:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FF41DE2A4;
-	Mon, 10 Mar 2025 19:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5F51E1C3A;
+	Mon, 10 Mar 2025 20:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZ5fxrU7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drS22X/D"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D11DDC1D;
-	Mon, 10 Mar 2025 19:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5911E0E15;
+	Mon, 10 Mar 2025 20:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741635945; cv=none; b=WW1rdUmPOYJ/2qJOtWbcTCAXLE76GA/cTk4P4/Ps1mkSD5I02Qf/JphApVjGIoGNfzwXB2xV1VBeKf3WYfKB1ypN9HTeFmcf9BBUOxW990GH1C2zWipZjxwC5Y6ozp/usfSp2yh0dU0KPJQUJ00sVv+enFrGXwd/NpEqvRrgS8k=
+	t=1741638013; cv=none; b=GZ1wUwivqcAPCtWkKEKXfTt+913J4UH0F+5GiJvfexuTI/6tez3/UCuC8fQAY1fSAq1AHQv0gI8888cWyi982rqCbPT9aekGo5TWrzR4qnaqDxfudBPfWHmKB+Oov8y5HBV0feNdTcQfcfccfpMD3C4EMQEbyC4tmZ8y56eNkiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741635945; c=relaxed/simple;
-	bh=TxvOlHkzSUtLhp0SC2wxUj4g9B1ax/MHJBU7K9Vv988=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UdRlEp8mlpakgVTT4UnVZrdiubsAUO5J7VD1JSmubwlcmv/vQyGqO7LxbnU8VPUvDae6sg782DglomQTBP/QfPDcnoez9x2gbmqDS/tINp4q1yjsAPVCKngXpTwgC/eWG3DyMTkEgcPy6Cd1yD+/f4lXWbCnmFDsdpyclKPsSLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZ5fxrU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BD2C4CEEC;
-	Mon, 10 Mar 2025 19:45:40 +0000 (UTC)
+	s=arc-20240116; t=1741638013; c=relaxed/simple;
+	bh=oiEDLHboG9k635mQYmv0sZ1NLB6XV+uB6u93veYOWYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VAv3Bp6zNScH3n1Jzh6YKE/EwwpVbWHi6AqG2goGY+gEyrHCxeJt0n2n/nfNTZw44waEku7NR+2psozfkpKArVpFMx0+UXq72S9thP+R3nYzaOGPhDza1aGf+7dGk9dqiYk6XEUKrscwxnh/Wkz/wQl8xO1cOjkeawF1UxxgrWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drS22X/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39574C4CEE5;
+	Mon, 10 Mar 2025 20:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741635944;
-	bh=TxvOlHkzSUtLhp0SC2wxUj4g9B1ax/MHJBU7K9Vv988=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CZ5fxrU7iDWSu33xD4ohuQdXHoIGbutYoC+CmImigBoMf6F4Lyl7Wh/RC6q4A3TD3
-	 iKrp2FzwTpa+l0btny9W6MjyGMcX8mEVH29dG2XMMBFPXgTw8eR3BEkOlq+fc8J4QS
-	 LZHXf60gPWOTPWnqgf+5zLn4o8kALR6V9elm/OrGYQcJ3t2wQ/+i3o81hL6ijC5XAv
-	 GKZcU7HSZt7fXcyc2r8bJnrthYfaflORyMoom7GshynKsZgD95MXAWq/GQG391ZPid
-	 ZrYKnSIQLgPjU0en2FcRdnx+cesz5bvLRjseiFHCuyFe6dLLixHMHI860WCbI3vdj2
-	 tqb+MO1VX3t+w==
-Date: Mon, 10 Mar 2025 20:45:37 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Baoquan He <bhe@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: [PATCHv4, REBASED 0/4] x86: Reduce code duplication on page
- table initialization
-Message-ID: <Z89BYeK3diXVDJxx@gmail.com>
-References: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
+	s=k20201202; t=1741638012;
+	bh=oiEDLHboG9k635mQYmv0sZ1NLB6XV+uB6u93veYOWYE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=drS22X/DU2o4gwHxWv8swD6uzt8Rv2KL+qVhojMrOAIjTnOlTaMJoMJDbPypfm5Ct
+	 thXU0VWdopO/P87hoVr6Rnc9DcO4GemvFktUBpF+Cwecq+mUb4pbZvZEmQ59E/4Ssy
+	 izSA9FTPrSSe2Lq4AsAOhgQNi1rruiVY0f4oHGu/iw3CGz9Hdg2qcp9J+BxLFcJIzi
+	 2YonFBSAECntGQdSG8fToTqLa0KzOg5viGhOBPVfhtwUWgSiIPBf0X6ZRmcFibaFts
+	 k17dwgbPrvowiKrCQV9OPiaeMwFAcnKKmXbHj/NR5aGvnbf/DkHv5DqG3YluC2CZ8E
+	 1Dx5XD5nHXsRg==
+Date: Mon, 10 Mar 2025 20:19:59 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Claudiu Manoil
+ <claudiu.manoil@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
+Message-ID: <20250310201959.39bad5e1@jic23-huawei>
+In-Reply-To: <Z872bHMRtSglB8pf@smile.fi.intel.com>
+References: <cover.1741610847.git.mazziesaccount@gmail.com>
+	<ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
+	<Z872bHMRtSglB8pf@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016111458.846228-1-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
 
-* Kirill A. Shutemov <kirill.shutemov@linux.intel.com> wrote:
-
-> Use kernel_ident_mapping_init() to initialize kernel page tables where
-> possible, replacing manual initialization, reducing code duplication.
 > 
-> v4:
->  - Reviewed-bys from Kai;
->  - Fix comment in acpi_mp_setup_reset() (Rafael);
-> v3:
->  - Reviewed-bys from Tom;
->  - Improve commit messages;
-> v2:
->  - A separate patch to change what PA is mapped at relocate_kernel() VA.
->  - Improve commit messages;
->  - Add Reveiwed-by from Kai;
+> > +			if (!fwnode_name_eq(child, name)) { } else  
 > 
-> Kirill A. Shutemov (4):
->   x86/mm/ident_map: Fix virtual address wrap to zero
->   x86/acpi: Replace manual page table initialization with kernel_ident_mapping_init()
->   x86/64/kexec: Map original relocate_kernel() in init_transition_pgtable()
->   x86/64/kexec: Rewrite init_transition_pgtable() with kernel_ident_mapping_init()
+> Ditto.
 > 
->  arch/x86/include/asm/kexec.h       |  5 +-
->  arch/x86/kernel/acpi/madt_wakeup.c | 73 +++++-------------------
->  arch/x86/kernel/machine_kexec_64.c | 89 +++++++++++-------------------
->  arch/x86/mm/ident_map.c            | 14 +----
->  4 files changed, 50 insertions(+), 131 deletions(-)
+> Note, I believe this won't get v6.15-rc1, so there will be for_each_if()
+> available and these will become
 
-So looks like this series feel between the cracks during the holiday 
-season.
+Unless this cycle goes long (i.e. an rc8) very unlikely I'll sneak
+the series in now due to lack of time to soak in next.
 
-To help move them along, I've fixed up the first patch with the review 
-feedback clarification requests, and applied patch #1 and #2 to 
-tip:x86/mm:
+> 
+> #define fwnode_for_each_named_child_node(fwnode, child, name)	\
+> 	fwnode_for_each_child_node(fwnode, child)		\
+> 		for_each_if(fwnode_name_eq(child, name))
+> 
+> and so on...
 
-  4f10ec03fe1e ("x86/mm/ident_map: Fix theoretical virtual address overflow to zero")
-  376daf20eda4 ("x86/acpi: Replace manual page table initialization with kernel_ident_mapping_init()")
+Nice - first time I've seen this :)
 
-Patches #3 and #4 don't apply anymore, due to interference by other 
-work with commits like:
-
-  4b5bc2ec9a23 ("x86/kexec: Allocate PGD for x86_64 transition page tables separately")
-
-If the remaining patches are still relevant, mind porting them to 
-latest -tip?
-
-Thanks,
-
-	Ingo
+Jonathan
 
