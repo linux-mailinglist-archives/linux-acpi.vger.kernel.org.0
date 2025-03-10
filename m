@@ -1,92 +1,75 @@
-Return-Path: <linux-acpi+bounces-12032-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12033-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D169A5A1C0
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:13:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CAAA5A1CB
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 19:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08CD07A37E9
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:12:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D600B7A618A
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 18:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D46D2356CD;
-	Mon, 10 Mar 2025 18:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D627A233735;
+	Mon, 10 Mar 2025 18:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQkr1HSc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QoAgzEgV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F562356CC;
-	Mon, 10 Mar 2025 18:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E57230BF9;
+	Mon, 10 Mar 2025 18:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630355; cv=none; b=U9KVoHbnaqs9EPoYgLesvIUvX0jnGku4udNBnfx1sOEk6D2JGyS3I7SpIf+AQUnuKmJDDWZ42/q/1c4ZJOn7szrwQqYe0YYwO7E1tavjktGbGELYCMQGTQUHAu1Z8Yhiec6U3HR9BawzyPIGpWnOeN9cUZOk312avIhParh1nRg=
+	t=1741630417; cv=none; b=Wm2y0f5avb0/B0l9axvvpEOVJj5FfjnRtRv5lAopdXHPqYusjspA6YPe34rtwUVXu+Pny4vn/sLuNuTr7lvZIgDiJ6D4gCKwZzyjIOttUf4tG8n+mocg9hkEPXNlaE2Dv2gCtH/ljHOYAa1pJ/Tx7R4T+pteTn+NHxVeazctNd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630355; c=relaxed/simple;
-	bh=xutUtI8ncSnysxzMFMlH3TgBkjEFcJ6ylYOCCdQt5sY=;
+	s=arc-20240116; t=1741630417; c=relaxed/simple;
+	bh=pkpqewpbgxEh7ma1+ZejMEFp24f6ykqtKcqE2J2ebB8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLQhCfjN1Nq9A/yjDCQzog4oDPGSsNapzc28nTDU5gEzp2cBdBWZX3l/Cu3Q3nYmsazCQaBcoXh1v+G9/YwQzWAUkfVryZPiAKP8G+yqDMBgHy7ePW49/PMwBzBlBmRFX03H2XzKggnKGkbwWU+uQtkf0qaJVsLw6eyjFXlYz50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQkr1HSc; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=k8z6boHdl0tgs0Q70AR4d0prAShYwixr3IoNDtBkzVQdybReDrBkliKu8e0lid7UuSWZ69nzPYQaawAIv54OJOZQiXjnNXxeBdxT5jdNPBx3yLQFfE6xJJAnrIS2RwDK1be1aAHTzpoFJl5nE/pMdi3ZhCquryiRfKAEjicAXi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QoAgzEgV; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741630354; x=1773166354;
+  t=1741630415; x=1773166415;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=xutUtI8ncSnysxzMFMlH3TgBkjEFcJ6ylYOCCdQt5sY=;
-  b=FQkr1HScr8iBA6xrY2HK29ZJkkmZ6d9ztleZhLQlrUl6IBwrX5IpZcrV
-   opCHADnP3V0nFNg5MYKGDB6oYxCLuVvoBd4gU5HsdwRGwNOqHRfKk5iwR
-   Lu+bMDs1x957FWqZxAgxmGV/IuboTgapqxCXTjQc4tHBfy+NidiZOCpp8
-   uTQopKT0NOpJH03Kdul/AQobOjZdZFBDpB/mvelICgTq82oQhpJjDNlS1
-   FC1clurpE5Y5x3ZRNA2HHM4hHlEzHwFZhsppRogjeW0pNYjtMnRHbgP2v
-   2bl1m2Qwt6Gj9Bv42nFupKYaLC0NCfCNImURa4G6puwkaZmY3LS041jZ5
-   g==;
-X-CSE-ConnectionGUID: GgVKTgTVTAqPCT/Fik9T6Q==
-X-CSE-MsgGUID: B98toNZ5TEmsUSr2aGnzyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="45433458"
+  bh=pkpqewpbgxEh7ma1+ZejMEFp24f6ykqtKcqE2J2ebB8=;
+  b=QoAgzEgVrvc6fZAKwM/BNI+9BcMFlLRO0b7q/TiqQCyTAufdY6YvN3N2
+   WdHU/PjIUCOi1zr4uaUBNedCY/I+cNqBBMZcIkIZNex1lCSkHc+fLyx7R
+   l4U7f+H47x2m1tbvVWpBu2X1/jz3R/rLWRLqwxV0IEKd+0rDXzpa9i6Fe
+   C+kL3EvoWJhIVNFA/3cAOovDP9psxQpl1WgzrbNhHANEIeMa5TFQSbIZR
+   C6K5nAX4PnvSVpiTvmsyjWR0vhDdXPyIjIMauRYj+W1hVrdoDxTCcE6fy
+   FYdRN0edZVjjr+IBuAGpqQ8HbAlo2kZS1aN6A5PqWmUvZqengRgwxV6XU
+   w==;
+X-CSE-ConnectionGUID: LFUih3/rTBGc5YT10APZWg==
+X-CSE-MsgGUID: vXgFkblaTguyBUiXD2qRkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="46425212"
 X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="45433458"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:12:32 -0700
-X-CSE-ConnectionGUID: XTWVcWlLSdaQ6N8oMqzVWQ==
-X-CSE-MsgGUID: D3Ts7d9eSaqsvtxwU60bpg==
+   d="scan'208";a="46425212"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:13:34 -0700
+X-CSE-ConnectionGUID: DKAOwpsiSKyJIe7vibJd5w==
+X-CSE-MsgGUID: GyCPBIdNTE2zQ9gTGDxp0Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="120552572"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:12:27 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id A1BEB11F7E5;
-	Mon, 10 Mar 2025 20:12:24 +0200 (EET)
-Date: Mon, 10 Mar 2025 18:12:24 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
-Message-ID: <Z88riPwuTvnAy-cj@kekkonen.localdomain>
-References: <cover.1741610847.git.mazziesaccount@gmail.com>
- <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
+   d="scan'208";a="119999632"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.66])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:13:35 -0700
+Date: Mon, 10 Mar 2025 11:13:32 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Cc: rafael@kernel.org, lenb@kernel.org, Jonathan.Cameron@huawei.com,
+	dan.j.williams@intel.com, rrichter@amd.com, bfaccini@nvidia.com,
+	haibo1.xu@intel.com, dave.jiang@intel.com, rppt@kernel.org,
+	gourry@gourry.net, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	chenbaozi@phytium.com.cn
+Subject: Re: [PATCH] ACPI: NUMA: debug invalid unused PXM value for CFMWs
+Message-ID: <Z88rzKHrqlCXQOTb@aschofie-mobl2.lan>
+References: <20250310093910.1752126-1-wangyuquan1236@phytium.com.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -95,19 +78,49 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
+In-Reply-To: <20250310093910.1752126-1-wangyuquan1236@phytium.com.cn>
 
-Moi,
+On Mon, Mar 10, 2025 at 05:39:10PM +0800, Yuquan Wang wrote:
+> The absence of SRAT would cause the fake_pxm to be -1 and increment
+> to 0, then send to acpi_parse_cfmws(). If there exists CXL memory
+> ranges that are defined in the CFMWS and not already defined in the
+> SRAT, the new node (node0) for the CXL memory would be invalid, as
+> node0 is already in "used".
 
-On Mon, Mar 10, 2025 at 02:55:53PM +0200, Matti Vaittinen wrote:
-> Please note, the checkpatch.pl was not happy about the for_each...()
-> macros. I tried to make them to follow the existing convention. I am
-> open to suggestions how to improve.
 
-checkpatch.pl isn't always handling macros as well as it might. (It's just
-hard to parse C using regular expressions and in practice some
-simplifications end up being made.)
+If no SRAT or bad SRAT, then all memory is at node:0, and first fake
+node for CFMWs should start at 1. Right?
 
--- 
-Sakari Ailus
+If so, might it be safest to always start the the CFMWS fake nodes at
+at a minimum of node[1]. Maybe srat_disabled() can be used to decide.
+
+> 
+> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+> ---
+>  drivers/acpi/numa/srat.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 00ac0d7bb8c9..eb8628e217fa 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -646,6 +646,9 @@ int __init acpi_numa_init(void)
+>  		if (node_to_pxm_map[i] > fake_pxm)
+>  			fake_pxm = node_to_pxm_map[i];
+>  	}
+> +	if (fake_pxm == PXM_INVAL)
+> +		pr_warn("Failed to find the next unused PXM value for CFMWs\n");
+> +
+
+How come it is sufficient to just warn?
+As per my comment above, can we adjust?
+
+
+
+>  	last_real_pxm = fake_pxm;
+>  	fake_pxm++;
+>  	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
+> -- 
+> 2.34.1
+> 
 
