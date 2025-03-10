@@ -1,191 +1,180 @@
-Return-Path: <linux-acpi+bounces-12044-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12045-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3C6A5A613
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 22:21:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC2EA5A659
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 22:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8888C189400F
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:21:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84B45171F0E
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 21:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AD91DEFC5;
-	Mon, 10 Mar 2025 21:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295981E3787;
+	Mon, 10 Mar 2025 21:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="C1hTxUvP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iyQRqWqS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wk22D0YR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40FD1DD525;
-	Mon, 10 Mar 2025 21:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8D41581F9;
+	Mon, 10 Mar 2025 21:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741641670; cv=none; b=Ca8pQYcM3Rcy9U27Gs19Xz7c2Vgff/ACtWj3QI/RUsBDyTRquUNSTtXVsFh+MKeWl/iJHTOe5qTDQjLXuSeAnDcGgtROOre3WS8pehgO2/ZEvt4iBaspsvJ17RRRqO2PfBSRtTseRmdh5+Fl0VLYo8K28RKO5C9NcvEe4ZcwwDI=
+	t=1741642974; cv=none; b=Qz3ZWC59Hb+W5DebG5J4fGzB3S977K5Nxpc6NIJJoFKOcMFzA2ZtXiOAw86+MH8ahPnSz010vnrPR2VPxZVLVil1w7wDGkj8KuFen3EAlpaQXhxen8yQokhKGkHW+s77InbeCDYKT/jV6wtiqImAq+r3ipf8/wN4NU83Xkw0nHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741641670; c=relaxed/simple;
-	bh=b+pL5tPz/STvzduyR8tAJGIpWCTLY7xMzNfVgLy+oho=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=CXaIAdATkW+xCnbdn6sfgOJg+EBk6pZuCGK0Zm3oaVPKcejZs5FnfP4ySvDQghtfeef7yOhwG+ei9VDX5eyS8PNfRRV8U0jH2dD45m5pw2LBeNZkEaKOvVV/+ZR4qUqbFbnWk8PYRLp+FHLjdlwlPPLW22DRJdj1N/7JhUVQG/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=C1hTxUvP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iyQRqWqS; arc=none smtp.client-ip=202.12.124.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailflow.stl.internal (Postfix) with ESMTP id 939871D41B86;
-	Mon, 10 Mar 2025 17:21:06 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-07.internal (MEProxy); Mon, 10 Mar 2025 17:21:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1741641666;
-	 x=1741648866; bh=E4HKlxVjhIt2MzhfvIo5qMqiVK9k8HOzhVxjjAVbOk0=; b=
-	C1hTxUvPA3Fb5iBKVyaB9S0GfSvuHye+iANMUYbqz2WEwKh+PjF2Ig9bEJQVXL8W
-	kdPPlIgBhaXBR9cfmZ0PE2Am21WLFpDOSC8cX4CRdGVkwDQwLrkIeM5p0hpYbe13
-	dTxmdFfOvUlpJHQMFzsNCj740xYgX3HO88YG9+874W9W3ONJKWU3JnOvcNKUU/4u
-	knNl6Vi+hohsFjz5X2QG4iDQUTaDl2o6gl+/SgTvwh+IxFXmzMQL8wdboNLh14A/
-	aarOTRDHRANpQ7jaacfHOdK2NKw4xhhoPCgcdkDHdrFJ9fRJG33i70Yr/2EzUjdG
-	KxdDzQVgaqrYOM7VHlF73A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1741641666; x=
-	1741648866; bh=E4HKlxVjhIt2MzhfvIo5qMqiVK9k8HOzhVxjjAVbOk0=; b=i
-	yQRqWqSGI6Kt3YUKxrmI/FlE9b26ffQwpxP94u4VFt4R8vOueVcX3AoCZMSsXlsf
-	XL00t5hz0HKoZQiWWgBfXmCi3KczhguDU8kRNtshw4wzTjqLWf4R4c8bJijn8DFl
-	5yAnjsGkIz+NVAjzqe0v8OCUxD15L05INUOiZ6x/J4ac0ZBqVNbvzgRHbmj5t9Ba
-	3j6HgC/97L/dQ3YDHejXKY/xvQz/hLUQihBs2DCB1G8au5Q5PvHhOBLiHxE0gHPx
-	sXxfmR9U/Us8LYPKZcy0PiBDAB8ri/wnT4GnQ5IYNOMthafCCbqTTLAJKEw4GxLS
-	2eWJA70Uin2M61IfU8uCQ==
-X-ME-Sender: <xms:wVfPZ2JStQfl-VXaWTJ_QuMzQ3ObrIeeleBzBmQxfF4Du39ikrBCLg>
-    <xme:wVfPZ-I7hmahTLPWORKx4-GCw39p0HhoYbrARohYV_QOvY1Fl0dBQ8OowZ2_vQTBT
-    5KFklbFDw_9R3vrcUA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvddtgeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    geefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
-    dprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghp
-    thhtohepjhhovgihrdhgohhulhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrd
-    hruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtohepshhuuggvvghprdhhohhllhgr
-    segrrhhmrdgtohhmpdhrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrd
-    gtohhmpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphht
-    thhopeihuhiivghnghhhuhhisehhuhgrfigvihdrtghomhdprhgtphhtthhopegtohhnoh
-    hrodgutheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:wVfPZ2vjrGidv7HfBCACY-yGDYl3EfwXvQhqp8jKyTCtNAEsgJj2fQ>
-    <xmx:wVfPZ7ZidpufvcbZMZOogXc8KetgC1YVnS_aBECkUMRpwdLI0iDxwg>
-    <xmx:wVfPZ9ZPI552vps1YoMhGOloTLMV3PrxFhTqMlOyR0s_NrkTI0YDFg>
-    <xmx:wVfPZ3De8byh2Bv17Og3Rg_scmCx5lM1v133qfZGoZiEq96RKyOTzg>
-    <xmx:wlfPZ-pxMLQep5aMAHOoE69Tz3LFoYiwRsd_W-SJ689j4Q6-j_dfe3KI>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2BEF92220072; Mon, 10 Mar 2025 17:21:05 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1741642974; c=relaxed/simple;
+	bh=Hgfqycyk5WAvowUEhLw7wDnMIf6XtuNalb//mZR8AGY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WHbKGBbokUAvF+jBKCvHATJWu+0Vyrq7oUcOX6GKrhE91bAho4sEJVbZ9JkmdRtwHC7cHqBSM880vAgpWpJrIS7wHet9V+1hmay6u5YlwdOqardabvX2LbTPehHyQWUKyLs6HHbEuGsZjyUKVIRDr/yaTiK1rQs0xWRaC98UThI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wk22D0YR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFACC4CEE5;
+	Mon, 10 Mar 2025 21:42:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741642973;
+	bh=Hgfqycyk5WAvowUEhLw7wDnMIf6XtuNalb//mZR8AGY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wk22D0YR3b17pAiC+UtyGJTkNn4f/SCu58jZlCG8EtJEsYJE0ZTS7FDv7FGYZgvo3
+	 Zw8aIH8Jp1FwXbXAKz+bXKMERwjfFMFrUhJ0bUcw9ic883MXTGjJpiXBmpnrELzxZu
+	 Mr58Hq9+71qorcYrzyL+gee8iYn8JNfHk+Q7POStc5sVPiu5Le65C7DRvQIfu/QqHc
+	 Q59Vnn81tapAcI+efnO87N5WZNvAhSAit/vSYI+8ZgxhWImDr35+sZnF9RQ+XRNZAw
+	 JmkXhvO5xve9PBgSf/UKOUo/1PYDM7dqDlsGK0bSJwkKR2cA3JYZeD9eBe9rwNQ4Sl
+	 4C8cAPiiEkUmg==
+From: Kees Cook <kees@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Hao Luo <haoluo@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-acpi@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Yoann Congal <yoann.congal@smile.fr>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Chen Ridong <chenridong@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jann Horn <jannh@google.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] compiler_types: Introduce __nonstring_array
+Date: Mon, 10 Mar 2025 14:42:48 -0700
+Message-Id: <20250310214244.work.194-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 10 Mar 2025 22:20:41 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Michael Kelley" <mhklinux@outlook.com>,
- "Roman Kisel" <romank@linux.microsoft.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Dexuan Cui" <decui@microsoft.com>,
- "Haiyang Zhang" <haiyangz@microsoft.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "Joey Gouly" <joey.gouly@arm.com>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, "Len Brown" <lenb@kernel.org>,
- "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
- "Manivannan Sadhasivam" <manivannan.sadhasivam@linaro.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Marc Zyngier" <maz@kernel.org>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Oliver Upton" <oliver.upton@linux.dev>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Rob Herring" <robh@kernel.org>,
- "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
- "Sudeep Holla" <sudeep.holla@arm.com>,
- "Suzuki K Poulose" <suzuki.poulose@arm.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Wei Liu" <wei.liu@kernel.org>,
- "Will Deacon" <will@kernel.org>, "Zenghui Yu" <yuzenghui@huawei.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- Linux-Arch <linux-arch@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>
-Cc: "apais@microsoft.com" <apais@microsoft.com>,
- "benhill@microsoft.com" <benhill@microsoft.com>,
- "bperkins@microsoft.com" <bperkins@microsoft.com>,
- "sunilmut@microsoft.com" <sunilmut@microsoft.com>
-Message-Id: <119cfb59-d68b-4718-b7cb-90cba67827e8@app.fastmail.com>
-In-Reply-To: 
- <BN7PR02MB41488C06B7E42830C700318DD4D62@BN7PR02MB4148.namprd02.prod.outlook.com>
-References: <20250307220304.247725-1-romank@linux.microsoft.com>
- <20250307220304.247725-4-romank@linux.microsoft.com>
- <e0f81049-688e-4f53-a002-5d246281bf8d@app.fastmail.com>
- <BN7PR02MB41488C06B7E42830C700318DD4D62@BN7PR02MB4148.namprd02.prod.outlook.com>
-Subject: Re: [PATCH hyperv-next v5 03/11] Drivers: hv: Enable VTL mode for arm64
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4227; i=kees@kernel.org; h=from:subject:message-id; bh=Hgfqycyk5WAvowUEhLw7wDnMIf6XtuNalb//mZR8AGY=; b=owGbwMvMwCVmps19z/KJym7G02pJDOnnY250lb4+9jb5eIJS+5/U8MWXp+Qst9x3Yqqd93nNg MnXEhwndJSyMIhxMciKKbIE2bnHuXi8bQ93n6sIM4eVCWQIAxenAEwk/CzDf9eb1ZL5xsK7Ox6a dWptfW1umrQ/PPH6fWmtGbVi7n5aNgz/NH09gypDt73QUtNrmx0wYxWr98x/dmGb97hmvX0jPWc GJwA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025, at 22:01, Michael Kelley wrote:
-> From: Arnd Bergmann <arnd@arndb.de> Sent: Saturday, March 8, 2025 1:05 PM
->> >  config HYPERV_VTL_MODE
->> >  	bool "Enable Linux to boot in VTL context"
->> > -	depends on X86_64 && HYPERV
->> > +	depends on (X86_64 || ARM64)
->> >  	depends on SMP
->> > +	select OF_EARLY_FLATTREE
->> > +	select OF
->> >  	default n
->> >  	help
->> 
->> Having the dependency below the top-level Kconfig entry feels a little
->> counterintuitive. You could flip that back as it was before by doing
->> 
->>       select HYPERV_VTL_MODE if !ACPI
->>       depends on ACPI || SMP
->> 
->> in the HYPERV option, leaving the dependency on HYPERV in
->> HYPERV_VTL_MODE.
->
-> I would argue that we don't ever want to implicitly select
-> HYPERV_VTL_MODE because of some other config setting or
-> lack thereof.  VTL mode is enough of a special case that it should
-> only be explicitly selected. If someone omits ACPI, then HYPERV
-> should not be selectable unless HYPERV_VTL_MODE is explicitly
-> selected.
->
-> The last line of the comment for HYPERV_VTL_MODE says
-> "A kernel built with this option must run at VTL2, and will not run
-> as a normal guest."  In other words, don't choose this unless you
-> 100% know that VTL2 is what you want.
+GCC has expanded support of the "nonstring" attribute so that it can be
+applied to arrays of character arrays[1], which is needed to identify
+correct static initialization of those kinds of objects. Since this was
+not supported prior to GCC 15, we need to distinguish the usage of Linux's
+existing __nonstring macro for the attribute for non-multi-dimensional
+char arrays. Until GCC 15 is the minimum version, use __nonstring_array to
+mark arrays of non-string character arrays. (Regular non-string character
+arrays can continue to use __nonstring.)
 
-It sounds like the latter is the real problem: enabling a feature
-should never prevent something else from working. Can you describe
-what VTL context is and why it requires an exception to a rather
-fundamental rule here? If you build a kernel that runs on every
-single piece of arm64 hardware and every hypervisor, why can't
-you add HYPERV_VTL_MODE to that as an option?
+This allows for changes like this:
 
-      Arnd
+-static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
++static const char table_sigs[][ACPI_NAMESEG_SIZE] __nonstring_array __initconst = {
+        ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+
+Which will silence the coming -Wunterminated-string-initialization
+warnings in GCC 15:
+
+In file included from ../include/acpi/actbl.h:371,                                                                   from ../include/acpi/acpi.h:26,                                                                     from ../include/linux/acpi.h:26,
+                 from ../drivers/acpi/tables.c:19:
+../include/acpi/actbl1.h:30:33: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (5 chars into 4 available) [-Wunterminated-string-initialization]
+   30 | #define ACPI_SIG_BERT           "BERT"  /* Boot Error Record Table */
+      |                                 ^~~~~~                                                      ../drivers/acpi/tables.c:400:9: note: in expansion of macro 'ACPI_SIG_BERT'                           400 |         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+      |         ^~~~~~~~~~~~~                                                                       ../include/acpi/actbl1.h:31:33: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (5 chars into 4 available) [-Wunterminated-string-initialization]
+   31 | #define ACPI_SIG_BGRT           "BGRT"  /* Boot Graphics Resource Table */
+      |                                 ^~~~~~
+
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: linux-acpi@vger.kernel.org
+---
+ include/linux/compiler_types.h | 12 ++++++++++++
+ init/Kconfig                   |  3 +++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 981cc3d7e3aa..7ccea700b46d 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -348,6 +348,18 @@ struct ftrace_likely_data {
+ # define __counted_by(member)
+ #endif
+ 
++/*
++ * Optional: only supported since gcc >= 15
++ * Optional: not supported by Clang
++ *
++ * gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178
++ */
++#ifdef CONFIG_CC_HAS_MULTIDIMENSIONAL_NONSTRING
++# define __nonstring_array		__attribute__((__nonstring__))
++#else
++# define __nonstring_array
++#endif
++
+ /*
+  * Apply __counted_by() when the Endianness matches to increase test coverage.
+  */
+diff --git a/init/Kconfig b/init/Kconfig
+index d0d021b3fa3b..723dc69507d6 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -129,6 +129,9 @@ config CC_HAS_COUNTED_BY
+ 	# https://github.com/llvm/llvm-project/pull/112636
+ 	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
+ 
++config CC_HAS_MULTIDIMENSIONAL_NONSTRING
++	def_bool $(success,echo 'char tag[][4] __attribute__((__nonstring__)) = { };' | $(CC) $(CLANG_FLAGS) -x c - -c -o /dev/null -Werror)
++
+ config RUSTC_HAS_COERCE_POINTEE
+ 	def_bool RUSTC_VERSION >= 108400
+ 
+-- 
+2.34.1
+
 
