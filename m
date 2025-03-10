@@ -1,125 +1,124 @@
-Return-Path: <linux-acpi+bounces-11992-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11993-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF7FA594EA
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 13:44:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1590A594F8
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 13:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96AA53AACE2
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 12:43:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492DD16DD15
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 12:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E96D227567;
-	Mon, 10 Mar 2025 12:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYEfG9IY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4992322A1CA;
+	Mon, 10 Mar 2025 12:44:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C7D226D11;
-	Mon, 10 Mar 2025 12:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18CC2253E6;
+	Mon, 10 Mar 2025 12:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741610486; cv=none; b=t4dS3mdcDc2PO04npzaMWscWumHLjc4P35yEr9wwV9HQx+ZpzSvOZ7iXPzo48fPM2kEvyn8d2d4KGVeJfEqC2Ud/FJ3lPaQi7I+CL5uycWVqtI3W3NVy1o2lTUBGC1HhTjqvTmmZDywvtxcldaNidkFX1qj6Xq0uCaZ0gNt+auM=
+	t=1741610665; cv=none; b=dBDjrdQTyO1t1+ZWQ5W3A4U7NoY082ZzNEeoF1BevlMBUzGcKsRG159qX20x2PKx+taZQYv4OKhs9NDIz9vhQ0nJJp4Oved0cVeP6/iPaUFyfqEnB+ETNmTVqqW96a7hWkv/LXAhM8T/9GZ/zPJB8eV/PJbK59iJfbsYBEbFSMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741610486; c=relaxed/simple;
-	bh=u2hb92Bf5/2pZjEymGfvJqesYHZmbFv63xQHrBpvJ/A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lbp7gUFDsoUtxomN4uOXuPPD/gK+CA8N3ej7BAhbyq3QnmX+Eu1F5p/kVPf9N4sABK/Gq7cso+nVRqGN01Hs/H84gH9TE+Sulbl11yBLjtnUkgMIODUkVlGcYN46iyGrpdwzQYP64RQAn/vxOiH6Rn2J61iP45fe5O4lzkCS0AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYEfG9IY; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e614da8615so3781033a12.1;
-        Mon, 10 Mar 2025 05:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741610483; x=1742215283; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u2hb92Bf5/2pZjEymGfvJqesYHZmbFv63xQHrBpvJ/A=;
-        b=NYEfG9IYonEalasQ9ZEuO9Sm6iR1UT+qGCc6vybQZKwRGbQ1MJeRmLgH2JV2Ho1pTB
-         gfF3b/ZK1jK7o8nJjwTMMKeCSHn7BOqQVH4oBU/6BIo8+5OqHSHTWmwln/uF595P+bph
-         E+n27ZhXj9qpGjQZj2/i3Z1lYAXVdscbHMJIVHqWXxHBB+5XtSjRGCJthsDH0s0TRaE6
-         KqeVVOasS52fLs2HVKBPnArnZmKkXxPkXXYoNrZceBN3ba9jJ6Xw2II+avaSFt+1Vd5h
-         qbTsd9uENAJTEBim6FXsfwqDMm7ASQEaCOwoVKtmv+u2017XP7vfJvh1sCW7/v72bSZD
-         JEdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741610483; x=1742215283;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u2hb92Bf5/2pZjEymGfvJqesYHZmbFv63xQHrBpvJ/A=;
-        b=AsMZJbT9oyos9i1MSG3qMA8TSd9SakqD4MH8G1zoqunBupIm2PjxHzTvbRmJ7R1e4W
-         0HXC73ZUXO+AJEyffb+WqHE6X9LMRYPjIaZDC1QdVGv5KQW6bz+542OGpnCXPiS/7Eu6
-         sfZSW8nQ+xYrt8RTj5DsDBR7fhlvbSL/huPuB/i9l87CCVAxmsrRwaYi/lCWkK1GSn1q
-         1LdLbhbiOxMRAz3d66ELBtTK+1VYcg7OkWP7C/xsSxTlyoCVU1iFC+zgyhzeW82Iw5l7
-         kLxJWn5HK/ofuzvYRayI6KoP+5kfotUDoGCQz9o5A4zC7Fz7KeG5iv9zS7wuvfpo5Wk3
-         yjfg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7ds+QJIc8pkRmdApUBh9PSLvEGcKtXCqNAZ5m2zj6OWm1GKlIVsgTRwJEylfE9rSl/9J/aqS2oxNkWw==@vger.kernel.org, AJvYcCUW6m28mYCnQ220RRVpfxis23crw/MTJEQHYR6ribD4UaZMXaoUOWIoL5oy3uHdu5GFyXfeLKfmgqG1@vger.kernel.org, AJvYcCUWllh4a99yJ6AGbK+D1zoEMZ3rYfBiJ/B59BUidQZNx4nV2BIoW95J8VYekYjMK+/ZcjDD1z5foAUxtIRu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKteSMDaVH2yVFoc9cMzSFM3FtyC+MbrMM0rkobGSaUw2D3QcE
-	3w7f5DOIUXWMMhaV8wLYo66BIalAsr8Hj7iykPrrJyaHANl6UGHxUvOfnV9BSqJkFJ2rbVry5Bw
-	4vFfCOAQskVU8+WAePERF2yJslSY=
-X-Gm-Gg: ASbGncuNIgcJl3M6kB+MeETJUQvPqTyVsZymsLSrqfc6WCqPzfo4eA+UhVDZy/PahVL
-	XnS3Kuu9skNZYZLi4NLfvQEuL5NJDKH2MjPeJNua8rGWISeSibGTCJqndoXzUNSeeqJ8ppuCaoE
-	rsNfxui+iZW1dZICF+1L9TzBSCRxzZcmFZiSZjUKdtgrwR
-X-Google-Smtp-Source: AGHT+IGbhuSl05kaEcLr4vaNaYcnvbu8eAnHPI3X7260iUe/HNnjduw+l6Z5dyOdVihAIIZ0GFIAt8i2L6PXQgKu7P0=
-X-Received: by 2002:a05:6402:34d6:b0:5e0:8a34:3b5c with SMTP id
- 4fb4d7f45d1cf-5e614d92d51mr11025464a12.0.1741610482533; Mon, 10 Mar 2025
- 05:41:22 -0700 (PDT)
+	s=arc-20240116; t=1741610665; c=relaxed/simple;
+	bh=uH+sZDT/+u9Xsuiowtq09BO7Ga7yEOnPdwZTgyvS4HQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aAN/+i6ZEb5aNpx0LIPepTE1bvKNRIbyidltl/yrtIYCnHg6ceuz+Wht7P8nVFxxwgyUNeywwQgZtgHFVKd1xPsk1/njYBLrTYorxe6CCE4yNYPQzVpVQWuNotl8HsOEt/VVkPctbr+uP7a8Uqc3l2y13C4H9gQExA79jxscI9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZBGj534jzz67Ldy;
+	Mon, 10 Mar 2025 20:41:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id AC6691405E3;
+	Mon, 10 Mar 2025 20:44:18 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 10 Mar
+ 2025 13:44:17 +0100
+Date: Mon, 10 Mar 2025 12:44:15 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Shiju Jose <shiju.jose@huawei.com>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>
+CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
+	<dave@stgolabs.net>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, Roberto
+ Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 2/3] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20250310124415.0000710a@huawei.com>
+In-Reply-To: <a0b319b4f42c4286a120fbb88a88adeb@huawei.com>
+References: <20250305180225.1226-1-shiju.jose@huawei.com>
+	<20250305180225.1226-3-shiju.jose@huawei.com>
+	<20250306171925.00002721@huawei.com>
+	<a0b319b4f42c4286a120fbb88a88adeb@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-10-git-send-email-nunodasneves@linux.microsoft.com>
-In-Reply-To: <1740611284-27506-10-git-send-email-nunodasneves@linux.microsoft.com>
-From: Tianyu Lan <ltykernel@gmail.com>
-Date: Mon, 10 Mar 2025 20:40:46 +0800
-X-Gm-Features: AQ5f1JpetGYU9QId_nDle89d5pd0l8CdMTUEIA_r5WaM_0vYFhAkX03EaOPPaVA
-Message-ID: <CAMvTesB5dCD5Cx+CE8oPQ35OHC+C=tyXbHQ0BNxSABEFVK53Tg@mail.gmail.com>
-Subject: Re: [PATCH v5 09/10] hyperv: Add definitions for root partition
- driver to hv headers
-To: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com, 
-	haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com, 
-	decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org, 
-	joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de, 
-	jinankjain@linux.microsoft.com, muminulrussell@gmail.com, 
-	skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com, 
-	ssengar@linux.microsoft.com, apais@linux.microsoft.com, 
-	Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com, 
-	gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com, 
-	muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org, 
-	lenb@kernel.org, corbet@lwn.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, Feb 27, 2025 at 7:11=E2=80=AFAM Nuno Das Neves
-<nunodasneves@linux.microsoft.com> wrote:
->
-> A few additional definitions are required for the mshv driver code
-> (to follow). Introduce those here and clean up a little bit while
-> at it.
->
-> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-> ---
+> >> +#define RAS2_PCC_CMD_COMPLETE	BIT(0)
+> >> +#define RAS2_PCC_CMD_ERROR	BIT(2)
+> >> +  
+> >I think these bits are from table 14.11 and
+> >generic to all PCC status registers? Should these
+> >have more generic names rather than ras2 specific ones?  
+> Yes.
+> Instead will use PCC_STATUS_CMD_ COMPLETE and  PCC_STATUS_ ERROR
+> from include/acpi/pcc.h. 
+> 
+> >  
+> >> +/* RAS2 specific PCC commands */
+> >> +#define RAS2_PCC_CMD_EXEC 0x01  
+> >Are we mixing commands and field definitions both
+> >with prefix RAS2_PCC_CMD_ ?  That is somewhat
+> >confusing.  
+> Will add Table 5.82: .. here in the comment and 
+> Is rename to PCC_CMD_ EXEC_RAS2  better?
 
-It may be better to unify data type u8, u16, u32, u64 or __u8, __u16,
-__u32, __u64 in the hvhdk.h.
+That seems OK to me.
 
-Others like good.
 
-Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+For things you agree with feel free to just crop out that bit
+of the email so it is easier to spot the remaining questions.
 
---=20
-Thanks
-Tianyu Lan
+Thanks,
+
+Jonathan
+
 
