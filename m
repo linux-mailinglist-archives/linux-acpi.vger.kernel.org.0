@@ -1,335 +1,176 @@
-Return-Path: <linux-acpi+bounces-12058-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12059-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C139A5AEA4
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 00:42:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE17AA5B67F
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 03:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91081892F3F
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Mar 2025 23:42:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB333AD8D8
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 02:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C77221DBC;
-	Mon, 10 Mar 2025 23:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ZOh5hLIz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FC41E3787;
+	Tue, 11 Mar 2025 02:08:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazolkn19012052.outbound.protection.outlook.com [52.103.2.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08921DE3D2;
-	Mon, 10 Mar 2025 23:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.2.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741650127; cv=fail; b=iIC4sIbydIgn3rgSOEVGb2OHXAKcUg0I0YN6mKRyF5iZ+Wsx2YvLSfOjW4XQfvA9fFFUMYU5/X98uzDkqJAi6JiDIq0P5hZWlcgwgnWybv6y+72LmmQEK5x0fUSzdzIvVHnuJLMmDMchQN6Hj+af5ic4jQTNs1WBGPvFUn6gucQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741650127; c=relaxed/simple;
-	bh=1fGTfAogzp5qeVqBpzVCoFrnxNxppYxD5aDsHsFp3eU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=j14ZI6kRCGcmVoIC0O+ZF6p+KNORCdhaJ2nN3GN1rNpTTJP2YfBmyb7ndSiWpklLD7N+S9WEKqU6Fn8rMXKet2AA2Bysjc3etoD+Mh4YF19fwvfaxEcCv/uhImOo3sHqHbPNAzfG20Br6eKtEFIX0DACqC2o/aU3OX+CqMbR6Ds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ZOh5hLIz; arc=fail smtp.client-ip=52.103.2.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NAi5ILOiBrXogn1VbGqh7XZylrLXTSTSTmXYuEnrZ//BwJpk5IlbMplTDEPztu4V/p120ydAkcUyisY1u+5HTRAFlduK/cIseyLG14beFbwiO6+hj9IuGA6O33rhH2s0qtnzATFM5fIjWfj3iEY8HKr2lAoZlcxJ6z4XQwOGqStnLSqrgSlsAiqb5+uwBefpkIupzpFn+GVup2R5PoednVVkoOYVRYjYDiEGi7/Iso4iQ6z1JuHHVO96IxKl80K0uZImjHrzu7lwci9IziKibV8HYzC0nz+tZLiNsV/+5Y5F9+m7WOzbFQwKq+OcxMb12CgVkFcQtXOKaeU74ORfRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xi6BMJ2S1d8wCSOgoXMUuMKz9nEwODTNYCL65GwQ8Lw=;
- b=seo4QtWAQeelPKHAm1K98IS4ftHRqvI2paI668bpXpassa0NGN2pdsfM835v8thAIUhX4aVBT3D1Gxm5fmuHfftfXB/f1W9q0SLo2LSAsSffGrE40kz/LZk91qjLj6enuBAF/jVZbbGSy6sg09JIzMbnYwXe9p2QBIDg0zLCImsbdDVGZSas4ZqIsdy4zIMQ30ohp5dKLRL14F5AKJgFcFHLDDVfvZ6NGNZHxp9jIK0szw3N4K+kITTsYjU8xzB5nvb2ZJI91o6NubYBcq74oatLA8tm01SIYg47SmdTbjd7wX9amv+UEiUj3qSqi22reuAftA9MV6jb3d1Avis5+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xi6BMJ2S1d8wCSOgoXMUuMKz9nEwODTNYCL65GwQ8Lw=;
- b=ZOh5hLIz5oB4NDdA06QsF3wCG5xRDrkeszXd0OruW55jr+tdo31AkGY/InIRZIKBvfRFBPAr+9ZE+yBpXJ/VRSlRYVyCAhZ0Ak5d4mDlyg4r8DMTUJ5RInhel6nyerxhHyxI65U0EhIyhUEl1rdVHfb/lO/OalbDK8j0cFS3aADB1UqC4xfpeFlTgegtklJuLgKp9dV+Gi5bK7Qt7qlxLiOiCj+ChpTVICqA3hd3oQA46V+vsgzLHTnBzQLLVeaLqPGxPcW/6KbxLqxmvle9p4DDRPkJpzWos+48BtYY3Vv2mHoCYgZZH/R300YnzGnPjO/GzP6LmksiUi5ZpYzOag==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by SJ0PR02MB7439.namprd02.prod.outlook.com (2603:10b6:a03:295::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Mon, 10 Mar
- 2025 23:42:02 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8511.026; Mon, 10 Mar 2025
- 23:42:02 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Roman Kisel <romank@linux.microsoft.com>, "arnd@arndb.de" <arnd@arndb.de>,
-	"bhelgaas@google.com" <bhelgaas@google.com>, "bp@alien8.de" <bp@alien8.de>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "decui@microsoft.com" <decui@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "kw@linux.com" <kw@linux.com>,
-	"kys@microsoft.com" <kys@microsoft.com>, "lenb@kernel.org" <lenb@kernel.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"mark.rutland@arm.com" <mark.rutland@arm.com>, "maz@kernel.org"
-	<maz@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "rafael@kernel.org"
-	<rafael@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
-	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, "suzuki.poulose@arm.com"
-	<suzuki.poulose@arm.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>, "will@kernel.org"
-	<will@kernel.org>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
-CC: "apais@microsoft.com" <apais@microsoft.com>, "benhill@microsoft.com"
-	<benhill@microsoft.com>, "bperkins@microsoft.com" <bperkins@microsoft.com>,
-	"sunilmut@microsoft.com" <sunilmut@microsoft.com>
-Subject: RE: [PATCH hyperv-next v5 11/11] PCI: hv: Get vPCI MSI IRQ domain
- from DeviceTree
-Thread-Topic: [PATCH hyperv-next v5 11/11] PCI: hv: Get vPCI MSI IRQ domain
- from DeviceTree
-Thread-Index: AQHbj60+s6/ZI2Ez5UqL6yl7lUAhFrNtCWbw
-Date: Mon, 10 Mar 2025 23:42:02 +0000
-Message-ID:
- <SN6PR02MB4157FB49E2120B206294D439D4D62@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20250307220304.247725-1-romank@linux.microsoft.com>
- <20250307220304.247725-12-romank@linux.microsoft.com>
-In-Reply-To: <20250307220304.247725-12-romank@linux.microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|SJ0PR02MB7439:EE_
-x-ms-office365-filtering-correlation-id: c2f3ac24-f2a7-4cd2-68be-08dd602d286e
-x-microsoft-antispam:
- BCL:0;ARA:14566002|19110799003|15080799006|461199028|8062599003|8060799006|12091999003|41001999003|440099028|102099032|3412199025;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?wVG905riZSPBtfocoeP3UGgYLzt51VgD1ZUneetgWC5vh9rYVOImrUO1UJIH?=
- =?us-ascii?Q?hOYqc//BT5GJaN5+/z/Tsz4PIpYfDHdwfst/iMHmp8PCUEwQla91UMPHBY5x?=
- =?us-ascii?Q?djNzNPVTyzbjn4arxniDbuk/31yFzQ5zHKJYP7+dAnaH38DQ8jHjHO3RrL1z?=
- =?us-ascii?Q?d3pBoCRu1ETAMK9VLv5//dqTxyZR0ZdvKyA5cBm9NynM3h9fmdbqBKKw2DYt?=
- =?us-ascii?Q?gIFP3lbBWf8Z2rPHg2hH8IV15QrejIYaAWPhQMMvMwi5iAKiJCtgAXPWQ47g?=
- =?us-ascii?Q?Wt946Hh6jXwO9OTDGk4Pg5HELgDb53IVGQGc/cEfHUUxaEGJiI9QTBzYCUfd?=
- =?us-ascii?Q?2B+eQG5OTIx1iLmFqAeQ4xRWYYCfjErhk5NQBe7mi5tP6jkL+Q//MLaRQnes?=
- =?us-ascii?Q?EunQCv95CAWW+YRh77CGnraB98529LxSq52F4rLyaqXgyDt324fwFEziRd9V?=
- =?us-ascii?Q?EhokZv2oMJS+UwTF/WTJZQ6ZTg6A0vHnaL5YHqXZc0aNw75sabe5osQ/GEjx?=
- =?us-ascii?Q?URK7Ps9/taWiQ5HA3Y7UkWOS05pS3hJR5DjGQs1Ny4clpEGPdBNVHTRkFOro?=
- =?us-ascii?Q?qdfuxft3EuGsC62/I1/uORmrxZQjcyA7JZNM+x1qaIJ0lRVs/XhrakW3ZV5Y?=
- =?us-ascii?Q?OR6bBp8th80ii8MwlZukImCw858wNVJkLAOs7xeTCzT1TVPWnYnQ4911dqeJ?=
- =?us-ascii?Q?uzmgqy0NOBu2nIdMmM7QVYWIIrDQrO+0QmB35WQBPu/+hzWJ9xEYF5a7uq4J?=
- =?us-ascii?Q?5dT0DlRT/Gsd85v/GhAu1IAM7jap0wWfONE6tUlHxAwo2JLNERYx8kj+kl0B?=
- =?us-ascii?Q?VE9vDKi2pL0frmvCQH1qph7Dwladz2P/uRJvOEVPMCD5m5VCFA3A3LJm85D3?=
- =?us-ascii?Q?3Avx76zhwPbKPoQfPJmptkC2ISJ/X2k9kB8yh7FMi7fwDYcq7MUBcUz/Yh9c?=
- =?us-ascii?Q?fV4IkMiBn5amLZElvrRH9MCdusqvrV1mjXyJO87L+aSjppmUErJdUSfMsm9l?=
- =?us-ascii?Q?Odqq6xd0ut9Wa9RcMq4Gx5gb1CLJ5ECkRfuqId/x9Sc8uA5EIpsK+BpkgVc6?=
- =?us-ascii?Q?FjAtA6nq3OGVG3XF83kp50LxxmCFk/3mXJfs8UH9IzLx4sIuwtk=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?p+c7bCf0nHYQYSokrhIkt2vaeMuvHc6BbYv0pR+RbOqChvYgBZcDhIseGAux?=
- =?us-ascii?Q?/FqW5T46I5K9CX5gnNIghik4b/XfQzpi8BLetCnIAXoodHl8iBaeB2akRjp8?=
- =?us-ascii?Q?zZuxvIyZFazMP7YCneFDAueKYkEQBAfbIemcfkuLjEHNCEilRB6F5JOu/gkE?=
- =?us-ascii?Q?Z4o25jiMl3ptkzcJQVxEFVTiC5kjgfPzozuMZLeWK9oA+sSL1CVc7KyeI6ht?=
- =?us-ascii?Q?5A/C+8QICoBaERy5LPpNRmXvMcYiRPB2sqv5VtUyzKb7CIDWLhlXZT/ib4Yn?=
- =?us-ascii?Q?pyb0Pdc478ZMlDhJNDkF9nNRUuXp6619eu+v049oKVrFTTShFedBLo24UsfY?=
- =?us-ascii?Q?Gf4/UBEkBpgbjLoEj+O2E1LdS4nzKnw8TguFFOE1pCGqaxF8VZe3cvIbjcG3?=
- =?us-ascii?Q?4n1q27ITJg72qtgi6LdlkFbSaMSb9y7IaZVXJBd8NYEeXYzUjhJ7M5Wd4xmJ?=
- =?us-ascii?Q?+RmtoBGPSpWDS95FTFjtr0STOwofp9qcJh2j70PF5D9+lceVRhUYqAAeXdlW?=
- =?us-ascii?Q?3R7HXijJqFQBuP2CMPXDWLzG4dtpDB7n8wVY8V96dEoL1mSvOkWVUQP7RA5/?=
- =?us-ascii?Q?6J2sDKT65fl28mAd/DUxi74LyTFWKxqCClRCa1GTH2IQ4qzCtX9KYKS0I51z?=
- =?us-ascii?Q?MPR1Z90B1sF+uXAA8pGM2vicrRwk6TxlWqKLN6zdfI3gHruf2Z8CNWIO97wy?=
- =?us-ascii?Q?Q3lQH3TGP7mmUf9j9IDNSA6dwDKvH/uLOqjWjFYj6DI+5xpawtH+HifDPZox?=
- =?us-ascii?Q?s+uli79yTUWf6/EwRIUWl1vdZBI0m0cIii7ORQlKgN6wgWJ8rl2Nmx06Jz4J?=
- =?us-ascii?Q?s9bY1/hIyP2/EYdtqRdbKMxqXI3TF1CP/1ey9r9Zxz9UqTSA1asMgTnIHBOE?=
- =?us-ascii?Q?zBmyvmsQ7zbFvyBSYrOWILc/XlCcsmlMTUbXLLdoHwbAxl4H4shEf03DVLCW?=
- =?us-ascii?Q?x2+akkENcU3edmAQKZBvfIW2REj+bGxXVQpmxQ4ugbsBtpnAxlaLqwACGIsH?=
- =?us-ascii?Q?PGvbPycIahb7zY6oJUdW3RREGFUV06aIcCVbUkjEkUWDT0F78HMUCI/EHFQh?=
- =?us-ascii?Q?5ZBe/yRrbg4eAB97L52oRhCpnVMUazdX/wAAh09hQq8v3gDf0vtMNE8F95O0?=
- =?us-ascii?Q?qlsYhsU1G3GXBC/a2hyT4npFzbVPPnOAP3gSjtxsD2dLzFjPTwHsmCYsB+kW?=
- =?us-ascii?Q?IFeQ4XAU/Vp91FgnEMw1c6ECO7o8Mv2iApZM8hElHroOFzXZ7+VbEbDZyvQ?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B01D1DED47;
+	Tue, 11 Mar 2025 02:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741658897; cv=none; b=btA11lOhbP5ZXW1hVVkwTCZQK0Ghd9GhWQLLGD5blzy7PdfwvQSdLZVYfK+l1jKSn/TJdsghma60kyjOfSI172p4x4Okla/NQ55xYcYZCQoR+tJ2+tQY1TvU6p/nufjCwcE9kj0x4oXM4W9pusA/joYGoPtC0joilqBQL7HhfMU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741658897; c=relaxed/simple;
+	bh=t21Hu0yZSui3qCsc26ScFh7fpk31lFTXL6atqclg6DA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WuVdwgEJJWDW6TdDEZoisRfN5IOtU7TyO7Ksd21KGmxp0sNtY4U0RalujmDEasYqEnRf5ICzVg0heE4FEi87CIZvILA/nd3zmGCP7zndvHK54i3yppN1DxlD/zj+7kPwkpe7PXV81SvrgBygV/+kHeHMHjuuLq5UMX6so+/Myqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-3e1ff7000001d7ae-e9-67cf9b085d26
+From: Yunjeong Mun <yunjeong.mun@sk.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: kernel_team@skhynix.com,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com,
+	ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org,
+	rakie.kim@sk.com,
+	akpm@linux-foundation.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com,
+	horen.chuang@linux.dev,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	yunjeong.mun@sk.com,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
+Date: Tue, 11 Mar 2025 11:07:27 +0900
+Message-ID: <20250311020806.404-1-yunjeong.mun@sk.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+In-Reply-To: <Z871k085e-Th-jTz@gourry-fedora-PF4VCD3F>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2f3ac24-f2a7-4cd2-68be-08dd602d286e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2025 23:42:02.4498
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7439
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBIsWRmVeSWpSXmKPExsXC9ZZnkS7H7PPpBl+ey1vMWb+GzWL61AuM
+	FiduNrJZ/Lx7nN2iefF6NovVm3wt7i97xmJxu/8cq8WqhdfYLI5vncduse8iUMPOh2/ZLJbv
+	62e0uLxrDpvFvTX/WS3mfpnKbLF6TYaDoMfhN++ZPXbOusvu0d12md2j5chbVo/Fe14yeWxa
+	1cnmsenTJHaPEzN+s3jsfGjpsbBhKrPH/rlr2D3OXazw+Pj0FovH501yAXxRXDYpqTmZZalF
+	+nYJXBkXb5xmLlgmW9G65gtzA+N9kS5GTg4JAROJmTsuMcPYF3fvZQSx2QQ0JA4eOgkU5+AQ
+	EVCVaLvi3sXIxcEsMJdF4tyuhWwgNcICERLnHp1mAalhAap5tUEDJMwrYCbR0XiKFWKkpkTD
+	pXtMICWcQPFLx2NBwkICPEDV+xkhygUlTs58wgJiMwvISzRvnQ11zS52idnTayFsSYmDK26w
+	TGDkn4WkZRaSlgWMTKsYhTLzynITM3NM9DIq8zIr9JLzczcxAuNrWe2f6B2Mny4EH2IU4GBU
+	4uENeHQuXYg1say4MvcQowQHs5II78ErQCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE
+	0hNLUrNTUwtSi2CyTBycUg2MM2uzbnV8/uC3UNw76J2pBfPZAm7TfYymWsfYCtuj3rguFjX/
+	uNeXPaZN6F52pP2fzgm/r67hmSsxIb2k6J4MW8d2nsq3095a9UVds89Zwt797dIur4Dm7wcf
+	1pj8CpvQor9dm1943xymRs7XceoSx4oTF+n98pyqK7f/rNx/+Zlf5jR/W1inxFKckWioxVxU
+	nAgA1eYo9KsCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMIsWRmVeSWpSXmKPExsXCNUNWR5dj9vl0gyPfhS3mrF/DZjF96gVG
+	ixM3G9ksft49zm7RvHg9m8XqTb4W95c9Y7H4/Ow1s8Xt/nOsFqsWXmOzOL51HrvFvotAXYfn
+	nmS12PnwLZvF8n39jBaXd81hs7i35j+rxdwvU5ktDl17zmqxek2Gxe9tK9gcRD0Ov3nP7LFz
+	1l12j+62y+weLUfesnos3vOSyWPTqk42j02fJrF7nJjxm8Vj50NLj4UNU5k99s9dw+5x7mKF
+	x8ent1g8vt328Fj84gOTx+dNcgECUVw2Kak5mWWpRfp2CVwZF2+cZi5YJlvRuuYLcwPjfZEu
+	Rk4OCQETiYu79zKC2GwCGhIHD51k7mLk4BARUJVou+LexcjFwSwwl0Xi3K6FbCA1wgIREuce
+	nWYBqWEBqnm1QQMkzCtgJtHReIoVYqSmRMOle0wgJZxA8UvHY0HCQgI8QNX7GSHKBSVOznzC
+	AmIzC8hLNG+dzTyBkWcWktQsJKkFjEyrGEUy88pyEzNzTPWKszMq8zIr9JLzczcxAqNqWe2f
+	iTsYv1x2P8QowMGoxMMb8OhcuhBrYllxZe4hRgkOZiUR3oNXgEK8KYmVValF+fFFpTmpxYcY
+	pTlYlMR5vcJTE4QE0hNLUrNTUwtSi2CyTBycUg2MFrM9nJw+XJBXWJkXuMF4l/WKC3l3ihdo
+	HXjU3lCW8uWZQ+Q7z12mC5JNQiKFFB9vvvpV6YfWFe3Fm0+EWzPdrD12/1PNbvG0vxPWneK+
+	dmHNiejyq8oT5OXlrj56dNdqFmur5v+L7yzuHOc4NetSfI5V1GSnzNn617meSq3+eMfd4n2d
+	aSeTmhJLcUaioRZzUXEiAAEEaYmmAgAA
+X-CFilter-Loop: Reflected
 
-From: Roman Kisel <romank@linux.microsoft.com> Sent: Friday, March 7, 2025 =
-2:03 PM
->=20
-> The hyperv-pci driver uses ACPI for MSI IRQ domain configuration on
-> arm64. It won't be able to do that in the VTL mode where only DeviceTree
-> can be used.
->=20
-> Update the hyperv-pci driver to get vPCI MSI IRQ domain in the DeviceTree
-> case, too.
->=20
-> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-> ---
->  drivers/pci/controller/pci-hyperv.c | 79 ++++++++++++++++++++++++++---
->  1 file changed, 73 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller=
-/pci-hyperv.c
-> index 6084b38bdda1..9740006a8c73 100644
-> --- a/drivers/pci/controller/pci-hyperv.c
-> +++ b/drivers/pci/controller/pci-hyperv.c
-> @@ -50,6 +50,7 @@
->  #include <linux/irqdomain.h>
->  #include <linux/acpi.h>
->  #include <linux/sizes.h>
-> +#include <linux/of_irq.h>
->  #include <asm/mshyperv.h>
->=20
->  /*
-> @@ -817,9 +818,17 @@ static int hv_pci_vec_irq_gic_domain_alloc(struct ir=
-q_domain *domain,
->  	int ret;
->=20
->  	fwspec.fwnode =3D domain->parent->fwnode;
-> -	fwspec.param_count =3D 2;
-> -	fwspec.param[0] =3D hwirq;
-> -	fwspec.param[1] =3D IRQ_TYPE_EDGE_RISING;
-> +	if (is_of_node(fwspec.fwnode)) {
-> +		/* SPI lines for OF translations start at offset 32 */
-> +		fwspec.param_count =3D 3;
-> +		fwspec.param[0] =3D 0;
-> +		fwspec.param[1] =3D hwirq - 32;
-> +		fwspec.param[2] =3D IRQ_TYPE_EDGE_RISING;
-> +	} else {
-> +		fwspec.param_count =3D 2;
-> +		fwspec.param[0] =3D hwirq;
-> +		fwspec.param[1] =3D IRQ_TYPE_EDGE_RISING;
-> +	}
->=20
->  	ret =3D irq_domain_alloc_irqs_parent(domain, virq, 1, &fwspec);
->  	if (ret)
-> @@ -887,10 +896,53 @@ static const struct irq_domain_ops hv_pci_domain_op=
-s =3D {
->  	.activate =3D hv_pci_vec_irq_domain_activate,
->  };
->=20
-> +#ifdef CONFIG_OF
-> +
-> +static struct irq_domain *hv_pci_of_irq_domain_parent(void)
-> +{
-> +	struct device_node *parent;
-> +	struct irq_domain *domain;
-> +
-> +	parent =3D of_irq_find_parent(hv_get_vmbus_root_device()->of_node);
-> +	domain =3D NULL;
-> +	if (parent) {
-> +		domain =3D irq_find_host(parent);
-> +		of_node_put(parent);
-> +	}
-> +
-> +	return domain;
-> +}
+Hi Gregory,
 
-You could insert the following and avoid the #ifdef's in hv_pci_irqchip_ini=
-t():
+On Mon, 10 Mar 2025 10:22:11 -0400 Gregory Price <gourry@gourry.net> wrote:
+> On Mon, Mar 10, 2025 at 09:26:48PM +0900, Honggyu Kim wrote:
+> > Yeah, the proximity domain detects the node correctly as follows in dmesg.
+> > 
+> >  [  0.009915] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x7fffffff]
+> >  [  0.009917] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0x207fffffff]
+> >  [  0.009919] ACPI: SRAT: Node 1 PXM 1 [mem 0x60f80000000-0x64f7fffffff]
+> >  [  0.009924] ACPI: SRAT: Node 2 PXM 6 [mem 0x2080000000-0x807fffffff] hotplug
+> >  [  0.009925] ACPI: SRAT: Node 3 PXM 7 [mem 0x64f80000000-0x6cf7fffffff] hotplug
+> > 
+> > It is printed even before CXL detection.
+> > 
+> 
+> I wrote a some documentation on some example configurations last friday
+> 
+> https://lore.kernel.org/linux-mm/Z226PG9t-Ih7fJDL@gourry-fedora-PF4VCD3F/T/#m2780e47df7f0962a79182502afc99843bb046205
+> 
 
-#else
-static struct irq_domain *hv_pci_of_irq_domain_parent(void) {return NULL;}
+I've checked our CFMWS configurations using the information from this link and 
+wrote them below.
 
-> +
-> +#endif
-> +
-> +#ifdef CONFIG_ACPI
-> +
-> +static struct irq_domain *hv_pci_acpi_irq_domain_parent(void)
-> +{
-> +	struct irq_domain *domain;
-> +	acpi_gsi_domain_disp_fn gsi_domain_disp_fn;
-> +
-> +	if (acpi_irq_model !=3D ACPI_IRQ_MODEL_GIC)
-> +		return NULL;
-> +	gsi_domain_disp_fn =3D acpi_get_gsi_dispatcher();
-> +	if (!gsi_domain_disp_fn)
-> +		return NULL;
-> +	domain =3D irq_find_matching_fwnode(gsi_domain_disp_fn(0),
-> +				     DOMAIN_BUS_ANY);
-> +
-> +	if (!domain)
-> +		return NULL;
-> +
-> +	return domain;
-> +}
+> This isn't exhaustive, but as I said with Rakie, I think your
+> configuration is probably ok - if slightly confusing.
+> 
 
-Same here:
+I wonder if the below data is sufficient for your review in Rakies's
+email [1]. Please let me know.
 
-#else
-static struct irq_domain *hv_pci_acpi_irq_domain_parent(void) {return NULL;=
-}
+> What I'm going to guess is happening is you have 1 CFMWS per device that
+> do not have matching SRAT entries, and then the CFMWS covering these:
+> 
+> >  [  0.009924] ACPI: SRAT: Node 2 PXM 6 [mem 0x2080000000-0x807fffffff] hotplug
+> >  [  0.009925] ACPI: SRAT: Node 3 PXM 7 [mem 0x64f80000000-0x6cf7fffffff] hotplug
+> 
+> have interleave set up
+> 
 
-I don't know if it's better or not. Just a suggestion -- keep what you have=
- if
-you prefer.
+In my understanding, both SRAT and CFMWS have the above device and interleave setup.
 
-> +
-> +#endif
-> +
->  static int hv_pci_irqchip_init(void)
->  {
->  	static struct hv_pci_chip_data *chip_data;
->  	struct fwnode_handle *fn =3D NULL;
-> +	struct irq_domain *irq_domain_parent =3D NULL;
->  	int ret =3D -ENOMEM;
->=20
->  	chip_data =3D kzalloc(sizeof(*chip_data), GFP_KERNEL);
-> @@ -907,9 +959,24 @@ static int hv_pci_irqchip_init(void)
->  	 * way to ensure that all the corresponding devices are also gone and
->  	 * no interrupts will be generated.
->  	 */
-> -	hv_msi_gic_irq_domain =3D acpi_irq_create_hierarchy(0, HV_PCI_MSI_SPI_N=
-R,
-> -							  fn, &hv_pci_domain_ops,
-> -							  chip_data);
-> +#ifdef CONFIG_ACPI
-> +	if (!acpi_disabled)
-> +		irq_domain_parent =3D hv_pci_acpi_irq_domain_parent();
-> +#endif
-> +#if defined(CONFIG_OF)
-> +	if (!irq_domain_parent)
-> +		irq_domain_parent =3D hv_pci_of_irq_domain_parent();
-> +#endif
-> +	if (!irq_domain_parent) {
-> +		WARN_ONCE(1, "Invalid firmware configuration for VMBus interrupts\n");
-> +		ret =3D -EINVAL;
-> +		goto free_chip;
-> +	}
-> +
-> +	hv_msi_gic_irq_domain =3D irq_domain_create_hierarchy(
-> +		irq_domain_parent, 0, HV_PCI_MSI_SPI_NR,
-> +		fn, &hv_pci_domain_ops,
-> +		chip_data);
->=20
->  	if (!hv_msi_gic_irq_domain) {
->  		pr_err("Failed to create Hyper-V arm64 vPCI MSI IRQ domain\n");
-> --
-> 2.43.0
->=20
+Below are the SRAT entries (with some unnecessary lines removed) :
 
-Overall, I think the code looks right, though I'm not an expert in this are=
-a. I'll
-give my Reviewed-by: once Bjorn's coding suggestions are incorporated.
+[A128h 41256 001h]               Subtable Type : 01 [Memory Affinity]  
+[A12Ah 41258 004h]            Proximity Domain : 00000006  
+[A130h 41264 008h]                Base Address : 0000002080000000
+[A138h 41272 008h]              Address Length : 0000006000000000  
+                                     Enabled : 1  
+                               Hot Pluggable : 1  
+...
+  
+[A150h 41296 001h]               Subtable Type : 01 [Memory Affinity]  
+[A152h 41298 004h]            Proximity Domain : 00000007  
+[A158h 41304 008h]                Base Address : 0000064F80000000
+[A160h 41312 008h]              Address Length : 0000008000000000  
+                                     Enabled : 1  
+                               Hot Pluggable : 1  
 
-Michael
+and below are the CFMWS configurations (with some unnecessary lines removed):
+
+[0A4h 0164 001h]               Subtable Type : 01 [CXL Fixed Memory Window Structure]
+[0ACh 0172 008h]         Window base address : 0000002080000000 <- Memory region
+[0B4h 0180 008h]                 Window size : 0000032780000000
+[0BCh 0188 001h]          Interleave Members : 01           <-- 2-way interleave
+[0BDh 0189 001h]       Interleave Arithmetic : 01
+[0C8h 0200 004h]                First Target : 00000043     <-- host bridge id  
+[0CCh 0204 004h]                 Next Target : 00000053     <-- host bridge id 
+
+...
+
+[170h 0368 001h]               Subtable Type : 01 [CXL Fixed Memory Window Structure]
+[178h 0376 008h]         Window base address : 0000064F80000000
+[180h 0384 008h]                 Window size : 0000033000000000
+[188h 0392 001h]          Interleave Members : 01          <-- 2-way interleave
+[189h 0393 001h]       Interleave Arithmetic : 01
+[194h 0404 004h]                First Target : 00000143    <-- host bridge id
+[198h 0408 004h]                 Next Target : 00000153    <-- host bridge id
+
+[1] https://lore.kernel.org/linux-mm/Z87zpg3TLRReikgu@gourry-fedora-PF4VCD3F/
+
+Best regards,
+Yunjeong
 
