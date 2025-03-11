@@ -1,65 +1,51 @@
-Return-Path: <linux-acpi+bounces-12084-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12085-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED5DA5C099
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 13:20:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5ABA5C085
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 13:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC0D6189A583
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 12:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322D93B63A7
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 12:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE38125A2C9;
-	Tue, 11 Mar 2025 12:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh2YWVF/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D68C256C73;
+	Tue, 11 Mar 2025 12:08:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804E42566DA;
-	Tue, 11 Mar 2025 12:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A13256C6D;
+	Tue, 11 Mar 2025 12:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741694758; cv=none; b=c+OyHVJ0e1RqHE4GUcdftwLa2oYHzmfMeOeQpJbe3nFaeDGU+Edqbs2wUmWZgwoGQbPq3geylhab8ytcaE2m7w4if7eYAWyRd4jKxN7OIjwqHR7BE08leRrtUoLuj2F92EJcvqZ3+EGxbdpSepGV4qANNkMLPeDTKp33q2hvWqg=
+	t=1741694904; cv=none; b=i6B/cXyuJOPB6ZCEz6xoEQCnAry2fkTxmuKIvKyCmouM3MdHFEZQNGAMHUmPpW2gNjMKZuJu7wnIODzdIPguT62VNWj5JuyMdYmDYN1aiyveg18bKpQmguNC8odYpV3obiMhA3Ml9JyQDRTJlo0KGcsphH6fSY91DsCA1byyjvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741694758; c=relaxed/simple;
-	bh=0cWb21nqnB2z8EJJlmAU3Y6DZrRZsqCDg8wtqbR+R74=;
+	s=arc-20240116; t=1741694904; c=relaxed/simple;
+	bh=azxGg4L7apOOz1PTr017NZZrbSpCOqvvTzNDvGn4wO8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WpzgfX/HMLbEsEEM88vtxzcEi5F2/mJrX2/d3gdGQ5b0RQ9cpWe3fWN0u2J92rjN/lRQOmiCYjj6XTPY9fWafTb9T8+EnkrvXwYygjelR1CnkrBKZM3fKc9vSnGKR0vN+LLgVYbgV1CXnP5XgrKhh4pihykkGGFQGKRjHo1WGfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh2YWVF/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC1AC4CEE9;
-	Tue, 11 Mar 2025 12:05:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741694758;
-	bh=0cWb21nqnB2z8EJJlmAU3Y6DZrRZsqCDg8wtqbR+R74=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Eh2YWVF/LRUQN9pp79HQAyBs/+OdziLshIcq5UGoEN4qDij1LMwlLrR1dSaz4Pywv
-	 nlfJZ6GjiUge8nTzmukbaUS097jz3/5Uy8OajQ+YGQ517Q1M2Vk62TrEqm2pCDznux
-	 9sWIc3Va5HwLqeQCWqzOz6smPCdtP5c2cPexbdl8=
-Date: Tue, 11 Mar 2025 13:05:55 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Jakob Riepler <jakob+lkml@paranoidlabs.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rob Herring <robh@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Pavel Machek <pavel@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH 1/4] device property: Split fwnode_get_child_node_count()
-Message-ID: <2025031151-camcorder-sandstone-bd1c@gregkh>
-References: <20250310150835.3139322-1-andriy.shevchenko@linux.intel.com>
- <20250310150835.3139322-2-andriy.shevchenko@linux.intel.com>
- <bf26ba74-ff44-4642-864e-2c54d49ead74@web.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pmYjNQlVo9Bvahfqii55GIf0TbJKByzPczCvPQ0LTmVru4QPllu3L6NVaxUxqArz1rwgNrh+LM2R6QRt6CLVyppUegpPGX77q0bdumAkI96AVm+t5/olP0rPe2zbhm62Z8Vg9j/zyU4nRnyv1aZ97ch5pxVGW4r9GTrAWE+I7/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF0A8152B;
+	Tue, 11 Mar 2025 05:08:32 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A01F3F673;
+	Tue, 11 Mar 2025 05:08:20 -0700 (PDT)
+Date: Tue, 11 Mar 2025 12:08:17 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>
+Subject: Re: [PATCH v2 08/13] mailbox: pcc: Refactor and simplify
+ check_and_ack()
+Message-ID: <Z9AnsaoxypL6qult@bogus>
+References: <20250305-pcc_fixes_updates-v2-0-1b1822bc8746@arm.com>
+ <20250305-pcc_fixes_updates-v2-8-1b1822bc8746@arm.com>
+ <34bdfee2-4780-f45b-7891-e845b13fdd2f@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -69,37 +55,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bf26ba74-ff44-4642-864e-2c54d49ead74@web.de>
+In-Reply-To: <34bdfee2-4780-f45b-7891-e845b13fdd2f@huawei.com>
 
-On Tue, Mar 11, 2025 at 01:00:16PM +0100, Markus Elfring wrote:
-> > The new helper is introduced to allow counting the child firmware nodes
-> > of their parent without requiring a device to be passed. …
-> 
-> See also:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.14-rc6#n94
-> 
-> Regards,
-> Markus
-> 
+On Tue, Mar 11, 2025 at 07:47:39PM +0800, lihuisong (C) wrote:
+>
+> 在 2025/3/6 0:38, Sudeep Holla 写道:
+> > The existing check_and_ack() function had unnecessary complexity. The
+> > logic could be streamlined to improve code readability and maintainability.
+> >
+> > The command update register needs to be updated in order to acknowledge
+> > the platform notification through type 4 channel. So it can be done
+> > unconditionally. Currently it is complicated just to make use of
+> > pcc_send_data() which also executes the same updation.
+> >
+> > In order to simplify, let us just ring the doorbell directly from
+> > check_and_ack() instead of calling into pcc_send_data(). While at it,
+> > rename it into pcc_chan_check_and_ack() to maintain consistency in the
+> > driver.
+> LGTM except for some trivial,
+> Acked-by: Huisong Li <lihuisong@huawei.com>
+> >
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > ---
+> >   drivers/mailbox/pcc.c | 37 +++++++++++++------------------------
+> >   1 file changed, 13 insertions(+), 24 deletions(-)
+> >
+> > diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> > index b3d133170aac7f8acfd1999564c69b7fe4f6d582..90d6f5e24df7e796f8c29705808eb6df2806c1f2 100644
+> > --- a/drivers/mailbox/pcc.c
+> > +++ b/drivers/mailbox/pcc.c
+> > @@ -117,8 +117,6 @@ struct pcc_chan_info {
+> >   static struct pcc_chan_info *chan_info;
+> >   static int pcc_chan_count;
+> > -static int pcc_send_data(struct mbox_chan *chan, void *data);
+> > -
+> >   /*
+> >    * PCC can be used with perf critical drivers such as CPPC
+> >    * So it makes sense to locally cache the virtual address and
+> > @@ -288,33 +286,24 @@ static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
+> >   	return 0;
+> >   }
+> > -static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
+> > +static void pcc_chan_check_and_ack(struct pcc_chan_info *pchan)
+> How about use pcc_chan_ack?
+> >   {
+> > -	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
+> > +	struct acpi_pcct_ext_pcc_shared_memory __iomem *pcc_hdr;
+> >   	if (pchan->type != ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
+> >   		return;
+> > -	/* If the memory region has not been mapped, we cannot
+> > -	 * determine if we need to send the message, but we still
+> > -	 * need to set the cmd_update flag before returning.
+> > -	 */
+> > -	if (pchan->chan.shmem == NULL) {
+> > -		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
+> > -		return;
+> > -	}
+> > -	memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
+> > -		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
+> > +
+> > +	pcc_chan_reg_read_modify_write(&pchan->cmd_update);
+> > +
+> > +	pcc_hdr = pchan->chan.shmem;
+>
+> Should use the original code?
+>
+> memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
+> 		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
+>
 
-Hi,
+ioread32(&pcc_hdr->flags) just reads 4 byte flag instead of copying entire
+header for no reason. It should be same as memcpy_fromio(.., .., 4)
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
-
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
-
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
-
-thanks,
-
-greg k-h's patch email bot
+--
+Regards,
+Sudeep
 
