@@ -1,176 +1,134 @@
-Return-Path: <linux-acpi+bounces-12059-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12060-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE17AA5B67F
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 03:08:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8B2A5B6E1
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 03:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB333AD8D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 02:08:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D771706A5
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 02:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FC41E3787;
-	Tue, 11 Mar 2025 02:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF4B1E7C01;
+	Tue, 11 Mar 2025 02:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="CG4ikMwu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B01D1DED47;
-	Tue, 11 Mar 2025 02:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFCF1DE3B1
+	for <linux-acpi@vger.kernel.org>; Tue, 11 Mar 2025 02:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741658897; cv=none; b=btA11lOhbP5ZXW1hVVkwTCZQK0Ghd9GhWQLLGD5blzy7PdfwvQSdLZVYfK+l1jKSn/TJdsghma60kyjOfSI172p4x4Okla/NQ55xYcYZCQoR+tJ2+tQY1TvU6p/nufjCwcE9kj0x4oXM4W9pusA/joYGoPtC0joilqBQL7HhfMU=
+	t=1741660978; cv=none; b=gUmO8ALEc7g/gEOybZH9gp7agVACgYHvndlstAGNFCwjKv54g6gmIZZX9bRG0YgyLvVMonZC/H7D3vPs10hysE9Hjk43WVPiWtEK/n+JJLaYLXvv/PMnILwBHktRlWfqaWyj+xVatr8NjGVPxEvtYwlzhx6aMWbh10HFco2ohro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741658897; c=relaxed/simple;
-	bh=t21Hu0yZSui3qCsc26ScFh7fpk31lFTXL6atqclg6DA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuVdwgEJJWDW6TdDEZoisRfN5IOtU7TyO7Ksd21KGmxp0sNtY4U0RalujmDEasYqEnRf5ICzVg0heE4FEi87CIZvILA/nd3zmGCP7zndvHK54i3yppN1DxlD/zj+7kPwkpe7PXV81SvrgBygV/+kHeHMHjuuLq5UMX6so+/Myqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-3e1ff7000001d7ae-e9-67cf9b085d26
-From: Yunjeong Mun <yunjeong.mun@sk.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: kernel_team@skhynix.com,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	harry.yoo@oracle.com,
-	ying.huang@linux.alibaba.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	akpm@linux-foundation.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	yunjeong.mun@sk.com,
+	s=arc-20240116; t=1741660978; c=relaxed/simple;
+	bh=ayQn7cmaD8ZHN9iSLJD53bXwzVAe2nRg8K/OGfo4ezo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qb4AkW2Ku3TWyULxOhNCPTdo/cAvlczhPRcA0g824GDdBh1CRey1MZ9kZXVxh6NUIMjMMNXGiLZ9LXJBuL4EmYUGxxD9EzzG6rx4aqpJ9/pA258IuIQXwhZt7bDWqdm8BdSrSgEIfOF97PcTgMV73+b8eq9xfz6OHX6el3ndq/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=CG4ikMwu; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6e1b11859a7so20299446d6.1
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Mar 2025 19:42:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1741660975; x=1742265775; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fLhmxVekInszSwRuSq/Qrb92RROhWIHehhP9/GN0v/o=;
+        b=CG4ikMwu2iEPORK+r0N/+WPG41vfWr93SdVgh9etRT3XMExYcmyVlJIvUYzpGeg4Yg
+         uYZrYwKx2twSbZAp7jSmjazqOcxcrsLsDPbuXpIw2PFRcpwqSXG3rwfAhk6Nx3kDcOVE
+         mPsTnYobH2rsEO/HR8n+o8IGobgxFwO6/aNTrbzFffDUHFXwTO2A/ZG4jsnRJpsyGa5u
+         00sv7+JTY1H7nGqun6gB5fXZEIUFK05huskVaG1K2drbroTyvsshoG62i7ueBJkoxuVt
+         ZjRAeOaE82WQBw5H8NTFPFXY6rg5ScYDPOIPxplZr9ubz+/zB2oOzpmreWLibxu3qnPL
+         tJOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741660975; x=1742265775;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fLhmxVekInszSwRuSq/Qrb92RROhWIHehhP9/GN0v/o=;
+        b=LUCzlUloGhIlfG7n9wNCX+q8Tn/3t5OhUj7XHnk/TCdxnI+CMZcLljcTDfNyNxh9kJ
+         uxXoTkFFRGSIvQhnG0VyPaPpIZQHDli0oc45IjWaKqL0dJsmH9Je99gRjm+hnd53gk5x
+         a3BzRo/Lf04EpjxQ3DlousFLUSk1MClMf3wIfhhadMrhwZPiRbtHwvpzLArVbb96uYYP
+         2e9sJlArT16Ffk0pP1lyJjXpTVoMVAUDMFs2N+cC6z3tGP2sadKQOXlsfAHFhll26GFs
+         I/EzqNINVLg+vmstQYaleAijmt+Uhl+Nzbcqso3LXbWiT3PQIZcG6uBPbmeYGFSI9Bqs
+         aNMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWmQ5ylFUJUw1ahV9mybCHP7+Vy1g4bt4UEZwEZAx/ak9p/AWPWIxqumdG8hL2rzl+asJHGi20b2Rty@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa19SwC2zYBoH+PlvXaOyFxIDoDPksCt+qkTHDYlvrX4ibXyDG
+	phxn+HS/oBSsKqHvMAwvup4WLq+rFFSvBTUWmV4Dlvv8TRv9thX+OhsI5+0Izc8=
+X-Gm-Gg: ASbGncsbpd4buyoBNNfdB9p++U755FKKEsUeEFAwO0Ew/Zh5ni9CDTadeH52odEpsa0
+	OhwIb2XxnY/aA3T104K4UgX45glQPqNI6jlvRB5Ata2mQgJIUkaA9FeZHmWN8WpsSoxL8u9ORH3
+	XJZ9zJfVHwHHaCG8T5xTfHqHeaOiYpGHKVjZ2S1BvGkGIfutdYa6Upx3yyV5JjHd+TfYqP+9Adc
+	PeMLKYsqIjIwJHU2t7HHcEBI/yJdgLr0v9NCSwNUh74fP6ZGFsM32QA64qMHszcouF1/amkU74T
+	3IDEdkEcNCKhANDiRHrdOVmt3TMZmXdgp7q6FtdfpNw7BO9ixcoS69/bXNg8KxQ7MV/okpce19r
+	fNyJlzAVAt9w15Rlz4VXyWAe4owDM0GHZmjpuCw==
+X-Google-Smtp-Source: AGHT+IHlLnx/8yc1KdPJ5zdTyNSTraZ5mmTbBV9D2H2GKIWW4SnnOdBFw0C3+8mYsLbkz/bwItoSuQ==
+X-Received: by 2002:ad4:5d49:0:b0:6e8:f4f6:9311 with SMTP id 6a1803df08f44-6e9006019c7mr233583136d6.1.1741660975278;
+        Mon, 10 Mar 2025 19:42:55 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f7090cf8sm65776146d6.34.2025.03.10.19.42.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 19:42:54 -0700 (PDT)
+Date: Mon, 10 Mar 2025 22:42:52 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yunjeong Mun <yunjeong.mun@sk.com>
+Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com, ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org, rakie.kim@sk.com,
+	akpm@linux-foundation.org, rafael@kernel.org, lenb@kernel.org,
+	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, kernel-team@meta.com,
 	Honggyu Kim <honggyu.kim@sk.com>
-Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
-Date: Tue, 11 Mar 2025 11:07:27 +0900
-Message-ID: <20250311020806.404-1-yunjeong.mun@sk.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <Z871k085e-Th-jTz@gourry-fedora-PF4VCD3F>
-References: 
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
+ memoryless nodes
+Message-ID: <Z8-jLIugrb86KBSZ@gourry-fedora-PF4VCD3F>
+References: <Z871k085e-Th-jTz@gourry-fedora-PF4VCD3F>
+ <20250311020806.404-1-yunjeong.mun@sk.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBIsWRmVeSWpSXmKPExsXC9ZZnkS7H7PPpBl+ey1vMWb+GzWL61AuM
-	FiduNrJZ/Lx7nN2iefF6NovVm3wt7i97xmJxu/8cq8WqhdfYLI5vncduse8iUMPOh2/ZLJbv
-	62e0uLxrDpvFvTX/WS3mfpnKbLF6TYaDoMfhN++ZPXbOusvu0d12md2j5chbVo/Fe14yeWxa
-	1cnmsenTJHaPEzN+s3jsfGjpsbBhKrPH/rlr2D3OXazw+Pj0FovH501yAXxRXDYpqTmZZalF
-	+nYJXBkXb5xmLlgmW9G65gtzA+N9kS5GTg4JAROJmTsuMcPYF3fvZQSx2QQ0JA4eOgkU5+AQ
-	EVCVaLvi3sXIxcEsMJdF4tyuhWwgNcICERLnHp1mAalhAap5tUEDJMwrYCbR0XiKFWKkpkTD
-	pXtMICWcQPFLx2NBwkICPEDV+xkhygUlTs58wgJiMwvISzRvnQ11zS52idnTayFsSYmDK26w
-	TGDkn4WkZRaSlgWMTKsYhTLzynITM3NM9DIq8zIr9JLzczcxAuNrWe2f6B2Mny4EH2IU4GBU
-	4uENeHQuXYg1say4MvcQowQHs5II78ErQCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE
-	0hNLUrNTUwtSi2CyTBycUg2MM2uzbnV8/uC3UNw76J2pBfPZAm7TfYymWsfYCtuj3rguFjX/
-	uNeXPaZN6F52pP2fzgm/r67hmSsxIb2k6J4MW8d2nsq3095a9UVds89Zwt797dIur4Dm7wcf
-	1pj8CpvQor9dm1943xymRs7XceoSx4oTF+n98pyqK7f/rNx/+Zlf5jR/W1inxFKckWioxVxU
-	nAgA1eYo9KsCAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMIsWRmVeSWpSXmKPExsXCNUNWR5dj9vl0gyPfhS3mrF/DZjF96gVG
-	ixM3G9ksft49zm7RvHg9m8XqTb4W95c9Y7H4/Ow1s8Xt/nOsFqsWXmOzOL51HrvFvotAXYfn
-	nmS12PnwLZvF8n39jBaXd81hs7i35j+rxdwvU5ktDl17zmqxek2Gxe9tK9gcRD0Ov3nP7LFz
-	1l12j+62y+weLUfesnos3vOSyWPTqk42j02fJrF7nJjxm8Vj50NLj4UNU5k99s9dw+5x7mKF
-	x8ent1g8vt328Fj84gOTx+dNcgECUVw2Kak5mWWpRfp2CVwZF2+cZi5YJlvRuuYLcwPjfZEu
-	Rk4OCQETiYu79zKC2GwCGhIHD51k7mLk4BARUJVou+LexcjFwSwwl0Xi3K6FbCA1wgIREuce
-	nWYBqWEBqnm1QQMkzCtgJtHReIoVYqSmRMOle0wgJZxA8UvHY0HCQgI8QNX7GSHKBSVOznzC
-	AmIzC8hLNG+dzTyBkWcWktQsJKkFjEyrGEUy88pyEzNzTPWKszMq8zIr9JLzczcxAqNqWe2f
-	iTsYv1x2P8QowMGoxMMb8OhcuhBrYllxZe4hRgkOZiUR3oNXgEK8KYmVValF+fFFpTmpxYcY
-	pTlYlMR5vcJTE4QE0hNLUrNTUwtSi2CyTBycUg2MFrM9nJw+XJBXWJkXuMF4l/WKC3l3ihdo
-	HXjU3lCW8uWZQ+Q7z12mC5JNQiKFFB9vvvpV6YfWFe3Fm0+EWzPdrD12/1PNbvG0vxPWneK+
-	dmHNiejyq8oT5OXlrj56dNdqFmur5v+L7yzuHOc4NetSfI5V1GSnzNn617meSq3+eMfd4n2d
-	aSeTmhJLcUaioRZzUXEiAAEEaYmmAgAA
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250311020806.404-1-yunjeong.mun@sk.com>
 
-Hi Gregory,
-
-On Mon, 10 Mar 2025 10:22:11 -0400 Gregory Price <gourry@gourry.net> wrote:
-> On Mon, Mar 10, 2025 at 09:26:48PM +0900, Honggyu Kim wrote:
-> > Yeah, the proximity domain detects the node correctly as follows in dmesg.
-> > 
-> >  [  0.009915] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x7fffffff]
-> >  [  0.009917] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0x207fffffff]
-> >  [  0.009919] ACPI: SRAT: Node 1 PXM 1 [mem 0x60f80000000-0x64f7fffffff]
-> >  [  0.009924] ACPI: SRAT: Node 2 PXM 6 [mem 0x2080000000-0x807fffffff] hotplug
-> >  [  0.009925] ACPI: SRAT: Node 3 PXM 7 [mem 0x64f80000000-0x6cf7fffffff] hotplug
-> > 
-> > It is printed even before CXL detection.
-> > 
+On Tue, Mar 11, 2025 at 11:07:27AM +0900, Yunjeong Mun wrote:
+> Hi Gregory,
 > 
-> I wrote a some documentation on some example configurations last friday
+> In my understanding, both SRAT and CFMWS have the above device and interleave setup.
 > 
-> https://lore.kernel.org/linux-mm/Z226PG9t-Ih7fJDL@gourry-fedora-PF4VCD3F/T/#m2780e47df7f0962a79182502afc99843bb046205
+> and below are the CFMWS configurations (with some unnecessary lines removed):
 > 
-
-I've checked our CFMWS configurations using the information from this link and 
-wrote them below.
-
-> This isn't exhaustive, but as I said with Rakie, I think your
-> configuration is probably ok - if slightly confusing.
+> [0A4h 0164 001h]               Subtable Type : 01 [CXL Fixed Memory Window Structure]
+> [0ACh 0172 008h]         Window base address : 0000002080000000 <- Memory region
+> [0B4h 0180 008h]                 Window size : 0000032780000000
+> [0BCh 0188 001h]          Interleave Members : 01           <-- 2-way interleave
+> [0BDh 0189 001h]       Interleave Arithmetic : 01
+> [0C8h 0200 004h]                First Target : 00000043     <-- host bridge id  
+> [0CCh 0204 004h]                 Next Target : 00000053     <-- host bridge id 
 > 
-
-I wonder if the below data is sufficient for your review in Rakies's
-email [1]. Please let me know.
-
-> What I'm going to guess is happening is you have 1 CFMWS per device that
-> do not have matching SRAT entries, and then the CFMWS covering these:
+> ...
 > 
-> >  [  0.009924] ACPI: SRAT: Node 2 PXM 6 [mem 0x2080000000-0x807fffffff] hotplug
-> >  [  0.009925] ACPI: SRAT: Node 3 PXM 7 [mem 0x64f80000000-0x6cf7fffffff] hotplug
-> 
-> have interleave set up
-> 
+> [170h 0368 001h]               Subtable Type : 01 [CXL Fixed Memory Window Structure]
+> [178h 0376 008h]         Window base address : 0000064F80000000
+> [180h 0384 008h]                 Window size : 0000033000000000
+> [188h 0392 001h]          Interleave Members : 01          <-- 2-way interleave
+> [189h 0393 001h]       Interleave Arithmetic : 01
+> [194h 0404 004h]                First Target : 00000143    <-- host bridge id
+> [198h 0408 004h]                 Next Target : 00000153    <-- host bridge id
+>
 
-In my understanding, both SRAT and CFMWS have the above device and interleave setup.
+Are you able to share all CXL Fixed Memory Window Structures in the
+CEDT?  Just want to confirm some suspicions here about why we're seeing
+12 NUMA nodes.  This explains 2 and suggests there's at least 4 host
+bridges - but not the other 8.
 
-Below are the SRAT entries (with some unnecessary lines removed) :
-
-[A128h 41256 001h]               Subtable Type : 01 [Memory Affinity]  
-[A12Ah 41258 004h]            Proximity Domain : 00000006  
-[A130h 41264 008h]                Base Address : 0000002080000000
-[A138h 41272 008h]              Address Length : 0000006000000000  
-                                     Enabled : 1  
-                               Hot Pluggable : 1  
-...
-  
-[A150h 41296 001h]               Subtable Type : 01 [Memory Affinity]  
-[A152h 41298 004h]            Proximity Domain : 00000007  
-[A158h 41304 008h]                Base Address : 0000064F80000000
-[A160h 41312 008h]              Address Length : 0000008000000000  
-                                     Enabled : 1  
-                               Hot Pluggable : 1  
-
-and below are the CFMWS configurations (with some unnecessary lines removed):
-
-[0A4h 0164 001h]               Subtable Type : 01 [CXL Fixed Memory Window Structure]
-[0ACh 0172 008h]         Window base address : 0000002080000000 <- Memory region
-[0B4h 0180 008h]                 Window size : 0000032780000000
-[0BCh 0188 001h]          Interleave Members : 01           <-- 2-way interleave
-[0BDh 0189 001h]       Interleave Arithmetic : 01
-[0C8h 0200 004h]                First Target : 00000043     <-- host bridge id  
-[0CCh 0204 004h]                 Next Target : 00000053     <-- host bridge id 
-
-...
-
-[170h 0368 001h]               Subtable Type : 01 [CXL Fixed Memory Window Structure]
-[178h 0376 008h]         Window base address : 0000064F80000000
-[180h 0384 008h]                 Window size : 0000033000000000
-[188h 0392 001h]          Interleave Members : 01          <-- 2-way interleave
-[189h 0393 001h]       Interleave Arithmetic : 01
-[194h 0404 004h]                First Target : 00000143    <-- host bridge id
-[198h 0408 004h]                 Next Target : 00000153    <-- host bridge id
-
-[1] https://lore.kernel.org/linux-mm/Z87zpg3TLRReikgu@gourry-fedora-PF4VCD3F/
-
-Best regards,
-Yunjeong
+~Gregory
 
