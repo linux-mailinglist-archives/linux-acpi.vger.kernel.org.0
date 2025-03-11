@@ -1,48 +1,94 @@
-Return-Path: <linux-acpi+bounces-12095-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12096-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30841A5C6CE
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 16:28:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFEEA5C8E0
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 16:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1F787A5D12
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 15:27:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCEB83B0CC3
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 15:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6304925DD06;
-	Tue, 11 Mar 2025 15:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E5425EF88;
+	Tue, 11 Mar 2025 15:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="VYO/eUhe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C516715820C;
-	Tue, 11 Mar 2025 15:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26492232792
+	for <linux-acpi@vger.kernel.org>; Tue, 11 Mar 2025 15:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706912; cv=none; b=rcb458GFQnYGCBvQBfRCbrT2fCQ6llfzyGiIK6NcT1f+oGnKNqC6McI++jTrGcIz8IT3YSeKcNGnN9vbayNqH0C978/ywvY69KT001Yb+Pneeu8KjZ+VOeBAwsUMVqxbuKlB6TkMjrvuEKMsjNuZI8yPT2An+zx8rZEhQrFqIgQ=
+	t=1741708354; cv=none; b=JhgNlqojErKEk0yxp2AKag9TtHoZ+sW8wZHO+zaIwV2GdVTUflu91ugHZIuiYUrZEWU6XShRcy48IQPOp9IJQO6ln8TLT3F6/SXgatZudN8ZcUEKVltP4XqNGxn/MdosO/lXH2eFFRXKEcQLSkkcu7Kf+lGrtSHo0nKZXuxw+D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706912; c=relaxed/simple;
-	bh=2FS3l7u8g+AHWYik8SjVKDbEhzWBEA1CV/erV0Oargo=;
+	s=arc-20240116; t=1741708354; c=relaxed/simple;
+	bh=FPduvMRu5TYi1K1LKfXtYoKzijOfY8eIT+viX2Nh0JY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DsLjeJNT++cDMtNK04WgaeWSP6JENuLggw4AsY8pCyCFYWUfVOeErxQohzXeiEHb4+6WuYZRBqLD69HRbVtF4OxB07h5s0HsfDnaQhYbHnAs+WLBJ/M23JNnjfOxMtg7DZ6pdXLjHno46v3n0FNt8/89MucZ/tvXBImflUG7YJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 294E2152B;
-	Tue, 11 Mar 2025 08:28:41 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78CDF3F694;
-	Tue, 11 Mar 2025 08:28:28 -0700 (PDT)
-Date: Tue, 11 Mar 2025 15:28:25 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Stuart Yoder <stuart.yoder@arm.com>, linux-integrity@vger.kernel.org,
-	peterhuewe@gmx.de, jgg@ziepe.ca, rafael@kernel.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] Add support for the TPM FF-A start method
-Message-ID: <Z9BWmf_bM9JJ9ajl@bogus>
-References: <20250305173611.74548-1-stuart.yoder@arm.com>
- <Z87KyTbL0Xi89jEr@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q9gSM1gD7tGJKM+Bsfk1D1gMC7Mh9yrdTfgOFwHmokyofmvslXg1TPe40qrDVFjRp+525Dv7XUhCJibigq8CBflE49F/xCvyrmJ5pm0dp9EuxV0o0AtlVf9WNJo/tGy06FrU3W3S9eav6twLQZvSCbBuZp6JzHaBOqFSYdwvd8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=VYO/eUhe; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6e8fb83e137so37109146d6.0
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Mar 2025 08:52:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1741708352; x=1742313152; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y8HoYccd3vc0eOkLLFXVggkEWQ1YBV0cGpC5R0hATac=;
+        b=VYO/eUheJsCvCUAvZArWp6VW/zqfAEFWGmlArwbpUVVb368y/JwkcJFUa58RWQx3BV
+         M05mTgh8+nZZ0Mnu4H9OMTraI86PTj99oD8f9VAH2caj/czIUHFPYW56ApughzLLR5Yd
+         slIh6cUn+Xq2UbP6/49k846I8gF6CjhugggBBy83ZzJs06b4LCpyvoM0VJ05lrqjYWS8
+         8/1SIcuoEvRA6kk6xsjhHLSvhtVk9HR7uEeEpR0AViJi8fke8tmttYBYrTlQ1auHgUHj
+         Y9ks5Pqn2H/1rJNDyabgvRaiHLaek7Tpvj3JJBtZZc7m9ufhTKpXBMhIQcHi1gPYET6U
+         62ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741708352; x=1742313152;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y8HoYccd3vc0eOkLLFXVggkEWQ1YBV0cGpC5R0hATac=;
+        b=avEG2da7mzJQyGIvolBqAb+/njppsOhM9sgHjn2VwSElrWWONPLN2aAYVuU8Ss1rRE
+         YOKQX9NXPcOJAaD3aOh3/XYr6n0uRbZFZ48qZwV5y2VQtByyvcVpnsuwIRLpwFzPi7aN
+         dcqED8ZhdVD5MyptPGZmBZyWGOQYpmMjgfEraCEVBO+Ne36eNE3yslhjn3J/PcgxjwjJ
+         oU2PAUYvnnz+tu8EEE7YM81UdxxuYSSsuwi0l5ItMujsUoU0+oRzxBbvNWaPdIwZ0OKN
+         qoJqCTo//fumvXzDRpOHxr6p1jHqSKz6boq/KYFJP+YOJ7JLoGtk+cStPZIszVgCYgmV
+         BMXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGSV8KqM3owAgsFQOKPVxEaxkkhilS7pspW2hZbU1umx14V8eUkPaAHXfWyDKYbYY7W2dC7+5ZvEZq@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+cIvNMHZmB1aimycSok/3IwzSwslPsJcIzZV1f5VjAqxq8SXX
+	JL+edU8QN8vtHS4jio1XWTdZh7e5ehWrDRmrYazbAqnF+KVLDxL0+ZDPQD+fwNI=
+X-Gm-Gg: ASbGncsyRf4U167ARj3HSbHCQaF5vVfVFRdBIAZdRV24pEAVzMjXF2VdL2A+u+9zhr9
+	4ldl9+bG3V6bRK/Ab1owPxpvC74OmjdAVDIWcTbh08m62e9gs9BhvLSQR6sz9QPyfXpbrjHDG0s
+	L5j2BAMRrZdPduMDCrxtBIoZzTL5eEPieyaHJF3ifvgDreUyUzUTENQcz7l/HuK/08c3DOJ2r6j
+	rbYGD0eLKgXwnVff7XpBMU/aTYiiN33438myyK/a7pBzCLOQSjYO6lSAO1TB6TidaE1WKyHvKtn
+	4KjISz0t22AZBTBxH114uG1SpSnFTGDUBaykZnLvIkFgIqU5B+8a1l3WBILsOQfG8/4Zy7wRaAq
+	vBmaIHIupFajykyQl//2Z/anLhXA=
+X-Google-Smtp-Source: AGHT+IFrTWYRzseDaLv+236WYx8xCV47HPkX/s3N848H/OkBnKxJZ7H9j4+WCaUF4DJ0EqjSGXHc+w==
+X-Received: by 2002:ad4:5cae:0:b0:6e6:5bd5:f3a8 with SMTP id 6a1803df08f44-6e90066bb55mr239519506d6.29.1741708351943;
+        Tue, 11 Mar 2025 08:52:31 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f707c5dcsm73466146d6.3.2025.03.11.08.52.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 08:52:30 -0700 (PDT)
+Date: Tue, 11 Mar 2025 11:52:27 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yunjeong Mun <yunjeong.mun@sk.com>
+Cc: kernel_team@skhynix.com, Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com, ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org, rakie.kim@sk.com,
+	akpm@linux-foundation.org, rafael@kernel.org, lenb@kernel.org,
+	dan.j.williams@intel.com, Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com, horen.chuang@linux.dev, hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, kernel-team@meta.com,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
+ memoryless nodes
+Message-ID: <Z9BcO-CEDHqegZvD@gourry-fedora-PF4VCD3F>
+References: <Z8-_SXm0JGjXTegL@gourry-fedora-PF4VCD3F>
+ <20250311095151.446-1-yunjeong.mun@sk.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -51,105 +97,24 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z87KyTbL0Xi89jEr@kernel.org>
+In-Reply-To: <20250311095151.446-1-yunjeong.mun@sk.com>
 
-On Mon, Mar 10, 2025 at 01:19:37PM +0200, Jarkko Sakkinen wrote:
-> On Wed, Mar 05, 2025 at 11:36:06AM -0600, Stuart Yoder wrote:
-> > Firmware Framework for Arm A-profile (FF-A) is a messaging framework
-> > for Arm-based systems, and in the context of the TPM CRB driver is used
-> > to signal 'start' to a CRB-based TPM service which is hosted in an
-> > FF-A secure partition running in TrustZone.
-> > 
-> > These patches add support for the CRB FF-A start method defined
-> > in the TCG ACPI specification v1.4 and the FF-A ABI defined
-> > in the Arm TPM Service CRB over FF-A (DEN0138) specification:
-> > https://developer.arm.com/documentation/den0138/latest/
-> > 
-> > The first patch adds an FF-A driver to handle the FF-A messaging when
-> > communicating with a CRB-based TPM secure partition built on FF-A.
-> > The driver is probed when the TPM secure partition is discovered by
-> > the Linux FF-A infrastructure.
-> > 
-> > The second patch consolidates the check for idle support in the CRB
-> > driver to one place.
-> > 
-> > The third patch defines the new ACPI start method enumeration for
-> > CRB over FF-A.
-> > 
-> > The fourth patch adds support for the FF-A ACPI start method to
-> > the TPM crb driver.
-> > 
-> > The fifth patch adds documentation explaining how the CRB driver
-> > and FF-A relate.
-> > 
-> > Version 6
-> > -in tpm_crb removed unnecessary brackets from if statement and
-> >  fixed comment style
-> > -noticed and fixed bug in patch 2, polarity of return value
-> >  from tpm_crb_has_idle() was wrong and wasn't caught in past
-> >  testing
-> > -added Reviewed-by tag to patches 2 and 5
-> > 
-> > Version 5
-> > -tpm_ffa_crb patch: removed module version
-> > -tpm_ffa_crb patch: fixed module description
-> > -tpm_ffa_crb patch: updated comment on mutex declaration
-> > -reworded commit message for patch 2 as per Jarkko's 
-> >  suggestion
-> > -added Acked tag by Sudeep to patch 1 for FF-A changes 
-> > -added Reviewed-by tag to patches 3 and 4
-> > 
-> > Version 4
-> > -fix warning from kernel test robot in patch 1
-> > -fix warnings from checkpatch.pl --strict
-> > -clean up unnecessary parenthesis usage
-> > -update variable declaration to be reverse tree order
-> > -document exported functions in tpm_crb_ffa driver
-> > -remove unnecessary author and maintainer info in tpm_crb_ffa driver
-> > -fix declaration of variables to be in reverse tree order
-> > 
-> > Version 3
-> > -changed prefixes used throughout patch series to tpm_crb_ffa*
-> > 
-> > Version 2
-> > -updates to cover letter to define FF-A
-> > -added new patch with documentation
-> > -created pull request in ACPIA and added link to the patch
-> >  updating actbl3.h
-> > -added tpm_ prefix to the FF-A CRB driver
-> > 
-> > Stuart Yoder (5):
-> >   tpm_crb: implement driver compliant to CRB over FF-A
-> >   tpm_crb: clean-up and refactor check for idle support
-> >   ACPICA: add start method for Arm FF-A
-> >   tpm_crb: add support for the Arm FF-A start method
-> >   Documentation: tpm: add documentation for the CRB FF-A interface
-> > 
-> >  Documentation/security/tpm/tpm_ffa_crb.rst |  65 ++++
-> >  drivers/char/tpm/Kconfig                   |   9 +
-> >  drivers/char/tpm/Makefile                  |   1 +
-> >  drivers/char/tpm/tpm_crb.c                 | 105 +++++--
-> >  drivers/char/tpm/tpm_crb_ffa.c             | 348 +++++++++++++++++++++
-> >  drivers/char/tpm/tpm_crb_ffa.h             |  25 ++
-> >  include/acpi/actbl3.h                      |   1 +
-> >  7 files changed, 535 insertions(+), 19 deletions(-)
-> >  create mode 100644 Documentation/security/tpm/tpm_ffa_crb.rst
-> >  create mode 100644 drivers/char/tpm/tpm_crb_ffa.c
-> >  create mode 100644 drivers/char/tpm/tpm_crb_ffa.h
-> > 
-> > -- 
-> > 2.34.1
-> > 
+On Tue, Mar 11, 2025 at 06:51:45PM +0900, Yunjeong Mun wrote:
+> Hi Gregory, thanks for kind explanation.
 > 
-> Check this out:
-> 
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/
+> We believe our propsed hot plug patch should be added as a hot-fix to v6.14, 
+> because it can be addressed independently of auto-configuring feature.
+> Rakie will send v2 patch soon.
 > 
 
-It is good to get a nod for ACPICA from Rafael as this is not the usual
-pattern. It deviates from normal procedure for ACPICA changes.
+I think having the answer to at least the following question documented
+is needed.  I'll wait for v2 to do another review.
 
--- 
-Regards,
-Sudeep
+> > 2) We need to clearly define what the weight of a node will be when
+> >    in manual mode and a node goes (memory -> no memory -> memory)
+> >    a) does it retain it's old, manually set weight?
+> >    b) does it revert to 1?
+> > 
+
+~Gregory
 
