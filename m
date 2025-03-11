@@ -1,348 +1,131 @@
-Return-Path: <linux-acpi+bounces-12099-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12100-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11674A5CB1D
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 17:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8D0A5CB28
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 17:51:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A303B3B4586
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 16:49:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B68E3B4C34
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 16:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D3826039F;
-	Tue, 11 Mar 2025 16:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9A825FA3B;
+	Tue, 11 Mar 2025 16:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b="QVssYB2S"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="lK3gtzta"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9BE19E975
-	for <linux-acpi@vger.kernel.org>; Tue, 11 Mar 2025 16:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D619E975;
+	Tue, 11 Mar 2025 16:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741711762; cv=none; b=LZXflfZj6KmuUVRH92R/zYd9KRDloT7YJDOxSP9Odk4bFBOpiwq+Jmp6BPmbYNSpKKOh49/+xACRNg0UkYVtjxYzOED4YV20VDFdbAW+RaSXsJ4C05Pa+MEoqjL9eQGkyOre6YM7D6ZbgOnI52VqsXEirhppYq61OmRy7Y7Go30=
+	t=1741711883; cv=none; b=gkxum7A98gdCWmwGfXjQDSTA7+JgcSAYG3eWLQJ2ay3nM8x4mnqXFFrqztHbxMEtmwLZ1KyzkGQFZaNd0dS2NgPSkPtXOVVCqpoayTCb5dSsAjC6YJxu4FwZniUgG733YwBCz9DU/VqkJtWxqE0uOt7rlXsCH33z11iYG6qL69k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741711762; c=relaxed/simple;
-	bh=u+F//cZ1UgpTvl9mhVb92LvKNIukphzxazwTjPnXvv8=;
+	s=arc-20240116; t=1741711883; c=relaxed/simple;
+	bh=fq59zz6wDG9CQixwJQSB8H5qJX58n9RdjXB4YC6O5GU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oMWQ+2k+9k4/h8kZBG/w+faIlZNvBnIHNEE1Dyo7d/CAZ2pEwJx03YJnzD8LdHLSBL4GYtY2jBfA9w84T/50KVM1k4213XcjYnJyc9MUpEikgJ9jJuACUd0Hzas5RIrRYFM4hzHxU2benjlUJQyJ+sMroiKJO0ZXDW3N9V6CyqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b=QVssYB2S; arc=none smtp.client-ip=185.136.65.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 202503111649159ba1e10fc71e759db4
-        for <linux-acpi@vger.kernel.org>;
-        Tue, 11 Mar 2025 17:49:15 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=diogo.ivo@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=LO4Oi66aFoDRbKkoCWm/iGhfrvYWXFfo0k1ZnUAyzgQ=;
- b=QVssYB2Sx1SAXJ8tyYd4ASblVv+4gfHWNnqfZyOp5W6G8ggM/1h7zbYy8iMXKkB0YMyIn4
- Tt8wKFS5iVFfjVDuyGggIs+VuHNi4q+y5Hz6RUskNcB/+JannMR1wpJBMQqN5hHd2S2hbMIm
- Vuxs+WrkQ8/i/iNt+lf3dXB9qd/y2fAuRYbTR3kuu9sChWRcLgWkZ6jOu6rcljE/3F1LEFgC
- tLPDcPsvLwng1n1rWsBpfmSK5CsilVEucadGz3xa708JOnOiYeKppHqonpS4Yv8ekYwpfQRi
- L3bOinjYshe9/Lnn8PjaFehV45CRt5zx0xBxnN9IZzDnA4MSi/uGR6Yg==;
-Message-ID: <f6aa7dd8-6ca7-4c79-b915-65ff7869d28c@siemens.com>
-Date: Tue, 11 Mar 2025 16:49:14 +0000
+	 In-Reply-To:Content-Type; b=ch2h1gm0Y6PpB8FBDyvRl3RzslvtGIi2+P0V46zzg8gT0+ntqHEN3Mpx6gS0EJXn/rcreQhSFVzWaSOiVU9TxJcEzuCgOhkkRw5W4XxBQWtC06UzmXGLttgeZnuc1DI1LJ4+8YxkTx0XWlmWmsCvy+OUyvbkT7r0LFauX2YofrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=lK3gtzta; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=fq59zz6wDG9CQixwJQSB8H5qJX58n9RdjXB4YC6O5GU=; t=1741711882;
+	x=1742143882; b=lK3gtztavzr+9d7qotR2pE4dpFSEOEd4pgpdTVc4Gnrd3uMYxNUAJGQqSGDmq
+	mLUU0gVxdwEzsX9V1yI9kH6FjuVGZ7vCovxu4R/0Xgj8oinMxTMoN4kwF8U+GLTAHkLRA5Lbl0UDS
+	OW5XomtBR+MUuO4WkGFIzKFBxg4AwGX2W696jjp5HPawnD7oVXkZz5p2BMrr98m/loozWwZAOx5jC
+	beRBFK+FuNSU0Jwh/uzhGycVc+mtDYYnTwpbL8CcWLqW/NI+mlIhJHmlwLWRzf+eqYO7IZAfWiskR
+	PM5VaX4UsC/394VcGwnJ2vjbXbPXSFmdDfccyKdV6iniP1do2w==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1ts2p4-004OkG-1p;
+	Tue, 11 Mar 2025 17:51:18 +0100
+Message-ID: <77fb9077-f598-4308-8862-6d09b23688bb@leemhuis.info>
+Date: Tue, 11 Mar 2025 17:51:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] watchdog: Add driver for Intel OC WDT
-To: Guenter Roeck <linux@roeck-us.net>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Wim Van Sebroeck <wim@linux-watchdog.org>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com,
- benedikt.niedermayr@siemens.com
-References: <20250311-ivo-intel_oc_wdt-v1-1-fd470460d9f5@siemens.com>
- <fea41656-ca80-491f-b84b-d118b35b5f72@roeck-us.net>
- <bc354400-52bf-46ee-8619-479c3fe9b28e@siemens.com>
- <8bdf9a4d-5d25-4b53-947b-0644c00cc999@roeck-us.net>
-Content-Language: en-US
-From: Diogo Ivo <diogo.ivo@siemens.com>
-In-Reply-To: <8bdf9a4d-5d25-4b53-947b-0644c00cc999@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: Build error on -next due to tpm_crb.c changes?
+To: Stuart Yoder <stuart.yoder@arm.com>, jarkko@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lenb@kernel.org, rafael@kernel.org, jgg@ziepe.ca, peterhuewe@gmx.de,
+ sudeep.holla@arm.com, linux-integrity@vger.kernel.org,
+ Linux Next Mailing List <linux-next@vger.kernel.org>
+References: <20250305173611.74548-1-stuart.yoder@arm.com>
+ <0ad035ff-400e-4b15-8b8f-40b69152ec46@leemhuis.info>
+ <92bc0a65-608f-4307-bb1c-16d8836d42e5@arm.com>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <92bc0a65-608f-4307-bb1c-16d8836d42e5@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1328357:519-21489:flowmailer
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1741711882;61944844;
+X-HE-SMSGID: 1ts2p4-004OkG-1p
 
-On 3/11/25 4:06 PM, Guenter Roeck wrote:
-> On 3/11/25 07:59, Diogo Ivo wrote:
->> On 3/11/25 2:10 PM, Guenter Roeck wrote:
->>> On 3/11/25 06:18, Diogo Ivo wrote:
->>>> Add a driver for the Intel Over-Clocking Watchdog found in Intel
->>>> Platform Controller (PCH) chipsets. This watchdog is controlled
->>>> via a simple single-register interface and would otherwise be
->>>> standard except for the presence of a LOCK bit that can only be
->>>> set once per power cycle, needing extra handling around it.
->>>>
->>>> Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
->>>> ---
->>>>   drivers/acpi/acpi_pnp.c         |   2 +
->>>>   drivers/watchdog/Kconfig        |  11 ++
->>>>   drivers/watchdog/Makefile       |   1 +
->>>>   drivers/watchdog/intel_oc_wdt.c | 235 ++++++++++++++++++++++++++++ 
->>>> ++ ++++++++++
->>>>   4 files changed, 249 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
->>>> index 
->>>> 01abf26764b00c86f938dea2ed138424f041f880..3f5a1840f573303c71f5d579e32963a5b29d2587 100644
->>>> --- a/drivers/acpi/acpi_pnp.c
->>>> +++ b/drivers/acpi/acpi_pnp.c
->>>> @@ -355,8 +355,10 @@ static bool acpi_pnp_match(const char *idstr, 
->>>> const struct acpi_device_id **matc
->>>>    * device represented by it.
->>>>    */
->>>>   static const struct acpi_device_id acpi_nonpnp_device_ids[] = {
->>>> +    {"INT3F0D"},
->>>>       {"INTC1080"},
->>>>       {"INTC1081"},
->>>> +    {"INTC1099"},
->>>>       {""},
->>>>   };
->>>
->>> This needs to be a separate patch.
->>
->> I will split it for v2.
->>
->>>> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
->>>> index 
->>>> f81705f8539aa0b12d156a86aae521aa40b4527d..16e6df441bb344c0f91b40bd76b6322ad3016e72 100644
->>>> --- a/drivers/watchdog/Kconfig
->>>> +++ b/drivers/watchdog/Kconfig
->>>> @@ -1350,6 +1350,17 @@ config INTEL_MID_WATCHDOG
->>>>         To compile this driver as a module, choose M here.
->>>> +config INTEL_OC_WATCHDOG
->>>> +    tristate "Intel OC Watchdog"
->>>> +    depends on X86 && ACPI
->>>> +    select WATCHDOG_CORE
->>>> +    help
->>>> +      Hardware driver for Intel Over-Clocking watchdog present in
->>>> +      Platform Controller Hub (PCH) chipsets.
->>>> +
->>>> +      To compile this driver as a module, choose M here: the
->>>> +      module will be called intel_oc_wdt.
->>>> +
->>>>   config ITCO_WDT
->>>>       tristate "Intel TCO Timer/Watchdog"
->>>>       depends on X86 && PCI
->>>> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
->>>> index 
->>>> 8411626fa162268e8ccd06349f7193b15a9d281a..3a13f3e80a0f460b99b4f1592fcf17cc6428876b 100644
->>>> --- a/drivers/watchdog/Makefile
->>>> +++ b/drivers/watchdog/Makefile
->>>> @@ -149,6 +149,7 @@ obj-$(CONFIG_W83977F_WDT) += w83977f_wdt.o
->>>>   obj-$(CONFIG_MACHZ_WDT) += machzwd.o
->>>>   obj-$(CONFIG_SBC_EPX_C3_WATCHDOG) += sbc_epx_c3.o
->>>>   obj-$(CONFIG_INTEL_MID_WATCHDOG) += intel-mid_wdt.o
->>>> +obj-$(CONFIG_INTEL_OC_WATCHDOG) += intel_oc_wdt.o
->>>>   obj-$(CONFIG_INTEL_MEI_WDT) += mei_wdt.o
->>>>   obj-$(CONFIG_NI903X_WDT) += ni903x_wdt.o
->>>>   obj-$(CONFIG_NIC7018_WDT) += nic7018_wdt.o
->>>> diff --git a/drivers/watchdog/intel_oc_wdt.c b/drivers/watchdog/ 
->>>> intel_oc_wdt.c
->>>> new file mode 100644
->>>> index 
->>>> 0000000000000000000000000000000000000000..0a2df3440024090f7e342fe7da895a7930ac09b2
->>>> --- /dev/null
->>>> +++ b/drivers/watchdog/intel_oc_wdt.c
->>>> @@ -0,0 +1,235 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +/*
->>>> + * Intel OC Watchdog driver
->>>> + *
->>>> + * Copyright (C) 2025, Siemens SA
->>>> + * Author: Diogo Ivo <diogo.ivo@siemens.com>
->>>> + */
->>>> +
->>>> +#define DRV_NAME    "intel_oc_wdt"
->>>> +
->>>> +#include <linux/acpi.h>
->>>> +#include <linux/bits.h>
->>>> +#include <linux/io.h>
->>>> +#include <linux/module.h>
->>>> +#include <linux/moduleparam.h>
->>>> +#include <linux/platform_device.h>
->>>> +#include <linux/watchdog.h>
->>>> +
->>>> +#define INTEL_OC_WDT_TOV        GENMASK(9, 0)
->>>> +#define INTEL_OC_WDT_MIN_TOV        1
->>>> +#define INTEL_OC_WDT_MAX_TOV        1024
->>>> +
->>>> +/*
->>>> + * One-time writable lock bit. If set forbids
->>>> + * modification of itself, _TOV and _EN until
->>>> + * next reboot.
->>>> + */
->>>> +#define INTEL_OC_WDT_CTL_LCK        BIT(12)
->>>> +
->>>> +#define INTEL_OC_WDT_EN            BIT(14)
->>>> +#define INTEL_OC_WDT_NO_ICCSURV_STS    BIT(24)
->>>> +#define INTEL_OC_WDT_ICCSURV_STS    BIT(25)
->>>> +#define INTEL_OC_WDT_RLD        BIT(31)
->>>> +
->>>> +#define INTEL_OC_WDT_STS_BITS (INTEL_OC_WDT_NO_ICCSURV_STS | \
->>>> +                   INTEL_OC_WDT_ICCSURV_STS)
->>>> +
->>>> +#define INTEL_OC_WDT_CTRL_REG(wdt)    ((wdt)->ctrl_res->start)
->>>> +
->>>> +struct intel_oc_wdt {
->>>> +    struct watchdog_device wdd;
->>>> +    struct resource *ctrl_res;
->>>> +    bool locked;
->>>> +};
->>>> +
->>>> +#define WDT_HEARTBEAT            60
->>>> +static int heartbeat = WDT_HEARTBEAT;
->>>
->>> Normally this is set to 0 and the default timeout is initialized 
->>> together
->>> with min_timeout and max_timeout. This lets the watchdog core 
->>> override it
->>> with devicetree data (if that is available).
->>
->> Ok, thank you for the insight. I will address this for v2.
->> It is unlikely that this driver will have devicetree data but it's
->> better to follow best practice.
->>
-> 
-> I just submitted a patch to have the watchdog core also look into 
-> firmware data,
-> which would include data provided by ACPI.
+On 11.03.25 16:53, Stuart Yoder wrote:
+> On 3/11/25 10:21 AM, Thorsten Leemhuis wrote:
+>> On 05.03.25 18:36, Stuart Yoder wrote:
+> [...]
+> So, it should not be possible on one had have
+> CONFIG_TCG_ARM_CRB_FFA being true when building tpm_crb.c
+> and false resulting in the tpm_crb_ffa.o not being
+> picked up in the build.
 
-Great to know, and all the more reason to apply your suggested change.
-
->>>> +module_param(heartbeat, uint, 0);
->>>> +MODULE_PARM_DESC(heartbeat, "Watchdog heartbeats in seconds. 
->>>> (default="
->>>> +         __MODULE_STRING(WDT_HEARTBEAT) ")");
->>>> +
->>>> +static bool nowayout = WATCHDOG_NOWAYOUT;
->>>> +module_param(nowayout, bool, 0);
->>>> +MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started 
->>>> (default="
->>>> +         __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
->>>> +
->>>> +static int intel_oc_wdt_start(struct watchdog_device *wdd)
->>>> +{
->>>> +    struct intel_oc_wdt *oc_wdt = watchdog_get_drvdata(wdd);
->>>> +
->>>> +    if (oc_wdt->locked)
->>>> +        return 0;
->>>> +
->>>> +    outl(inl(INTEL_OC_WDT_CTRL_REG(oc_wdt)) | INTEL_OC_WDT_EN,
->>>> +         INTEL_OC_WDT_CTRL_REG(oc_wdt));
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +static int intel_oc_wdt_stop(struct watchdog_device *wdd)
->>>> +{
->>>> +    struct intel_oc_wdt *oc_wdt = watchdog_get_drvdata(wdd);
->>>> +
->>>> +    outl(inl(INTEL_OC_WDT_CTRL_REG(oc_wdt)) & ~INTEL_OC_WDT_EN,
->>>> +         INTEL_OC_WDT_CTRL_REG(oc_wdt));
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +static int intel_oc_wdt_ping(struct watchdog_device *wdd)
->>>> +{
->>>> +    struct intel_oc_wdt *oc_wdt = watchdog_get_drvdata(wdd);
->>>> +
->>>> +    outl(inl(INTEL_OC_WDT_CTRL_REG(oc_wdt)) | INTEL_OC_WDT_RLD,
->>>> +         INTEL_OC_WDT_CTRL_REG(oc_wdt));
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +static int intel_oc_wdt_set_timeout(struct watchdog_device *wdd,
->>>> +                    unsigned int t)
->>>> +{
->>>> +    struct intel_oc_wdt *oc_wdt = watchdog_get_drvdata(wdd);
->>>> +
->>>> +    outl((inl(INTEL_OC_WDT_CTRL_REG(oc_wdt)) & ~INTEL_OC_WDT_TOV) | 
->>>> (t - 1),
->>>> +         INTEL_OC_WDT_CTRL_REG(oc_wdt));
->>>> +
->>>> +    wdd->timeout = t;
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +static const struct watchdog_info intel_oc_wdt_info = {
->>>> +    .options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | 
->>>> WDIOF_KEEPALIVEPING,
->>>> +    .identity = DRV_NAME,
->>>> +};
->>>> +
->>>> +static const struct watchdog_ops intel_oc_wdt_ops = {
->>>> +    .owner = THIS_MODULE,
->>>> +    .start = intel_oc_wdt_start,
->>>> +    .stop = intel_oc_wdt_stop,
->>>> +    .ping = intel_oc_wdt_ping,
->>>> +    .set_timeout = intel_oc_wdt_set_timeout,
->>>> +};
->>>> +
->>>> +static int intel_oc_wdt_setup(struct intel_oc_wdt *oc_wdt)
->>>> +{
->>>> +    struct watchdog_info *info;
->>>> +    unsigned long val;
->>>> +
->>>> +    val = inl(INTEL_OC_WDT_CTRL_REG(oc_wdt));
->>>> +
->>>> +    if (val & INTEL_OC_WDT_STS_BITS)
->>>> +        oc_wdt->wdd.bootstatus |= WDIOF_CARDRESET;
->>>> +
->>>> +    oc_wdt->locked = !!(val & INTEL_OC_WDT_CTL_LCK);
->>>> +
->>>> +    if (val & INTEL_OC_WDT_EN) {
->>>> +        /*
->>>> +         * No need to issue a ping here to "commit" the new timeout
->>>> +         * value to hardware as the watchdog core schedules one
->>>> +         * immediately when registering the watchdog.
->>>> +         */
->>>> +        set_bit(WDOG_HW_RUNNING, &oc_wdt->wdd.status);
->>>> +
->>>> +        if (oc_wdt->locked) {
->>>> +            info = (struct watchdog_info *)&intel_oc_wdt_info;
->>>> +            /*
->>>> +             * Set nowayout unconditionally as we cannot stop
->>>> +             * the watchdog and read the current timeout.
->>>> +             */
->>>
->>> But the timeout is read below ? Do you mean "change the current 
->>> timeout" ?
->>
->> In this case where the BIOS both enabled the watchdog and set the LOCK
->> bit we cannot change the timeout anymore, meaning that we have to read
->> the value currently in the register and pass it to the watchdog core,
->> which is what is done below.
->>
-> Yes, but the comment says " we cannot stop the watchdog and _read_ the
-> current timeout" (emphasis added), suggesting that the current timeout
-> can not be _read_ if locked is true.
-> 
->>>> +            nowayout = true;
->>>> +
->>>> +            oc_wdt->wdd.timeout = (val & INTEL_OC_WDT_TOV) + 1;
-> 
-> However, this code does read the timeout even if locked is set. That
-> suggests that it is not possible to _change_ the timeout if locked is set,
-> but that it is possible to read the current timeout.
-
-Sorry for the confusing wording. Yes, according to the documentation [1]
-this is exactly the case, we cannot change the timeout but it is possible
-to read it. I will word this better in v2 to avoid confusion.
-
-Best regards,
-Diogo
-
-[1]: 
-https://edc.intel.com/content/www/us/en/design/publications/14th-generation-core-processors-ioe-p-registers/over-clocking-wdt-control-oc-wdt-ctl-offset-54/
+Many thx for the answer. Maybe Fedora's way to prepare the .config files
+(which my package builds use to be close to Fedora's official packages)
+is doing something odd/wrong. Will take a closer look and report back.
+Ciao, Thorsten
 
