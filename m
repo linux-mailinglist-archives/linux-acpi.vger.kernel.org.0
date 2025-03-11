@@ -1,117 +1,152 @@
-Return-Path: <linux-acpi+bounces-12082-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12083-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75FEA5BFE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 13:01:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 732FEA5BFF0
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 13:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069E27A3A63
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 12:00:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6147174259
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 12:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5469F221F0F;
-	Tue, 11 Mar 2025 12:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="DFYWG/si"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8519221DBC;
+	Tue, 11 Mar 2025 12:02:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3073597C;
-	Tue, 11 Mar 2025 12:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6671CDA0B;
+	Tue, 11 Mar 2025 12:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741694462; cv=none; b=ASGBK845XRmsI91DvfOsMw6ZgvsQiPKecTUQu8zPsbnYP+mV540gVl75VA76/1eGsXuvTrZfJ/NAGR0vSIa9V67wb2pe8hvojeBBCdvuB6C+6eeDYxEsNScsTyXesgqhjVnJtsNAubBJT+d9JJdAjO7UVKXCqiRnxJ5A0kaPLlk=
+	t=1741694543; cv=none; b=OqmA2BQIqHXVh6KNwky8N/til2U6PpOXGPiopKCngzj4l1KTSvYVGL2/lPz0z5R98zWct4/tXKrdi0iAO18axpnuOjMQUz7FMwCTjABREOoDh9tH9RhNgEvMRG7UEUtGIDPOLr0qLoy302st2ju5fM7fTrmNu0hH070wY/AwqEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741694462; c=relaxed/simple;
-	bh=1po9kPpQ5NSe95BZBG3yLS0Kw6JEa7dbgysMQJ2FGYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C05xlg0lRYTNdYa96GGzt2rASu3dS8HDAaZf5rmwhwxC48apN1FCZWta3I83BPM6u/Srr+sw79rCT5LKM/+J7oz+5T4p6dDsHK77gl2gjxnu1gMNNy/PTjV++9IUGcjw7QxjoBu8RMnxMpZrhahXOWI0jbJ2zrdiDfTpDO6jbcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=DFYWG/si; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1741694421; x=1742299221; i=markus.elfring@web.de;
-	bh=1po9kPpQ5NSe95BZBG3yLS0Kw6JEa7dbgysMQJ2FGYA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=DFYWG/siRh0Mh/2be3tAPCHYrqeeu0/+cHC14EWXnBOem63oJzDXMoohArMYAT0P
-	 utdEpb3PlH/NH4mHcvvApNBhWZyEMXqUx66l8VnTqDt+9zkMgHlZ2Svmh5LslMC9H
-	 CsAst5VWlRAYT/3McvxAmqzg9G3Z3XUfEix1etePWq3elzVe6U34HhS/iqRb/Zrwg
-	 pUu9tyoyiM9n0QTYUnEV9vq+nWLo81HkG6caRbHxeE0oxIFrQ0X2y0mXWBB+b52vc
-	 aduFyui07XuG+hVWr0vOpUhp0ijBP3VBkt2TDCK2oTqmD84qSxArWhWQj8ZgFUrCG
-	 mfa5++zL1WOlYlXcAQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.40]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MP3CC-1tZMWv1jqO-00VlJ9; Tue, 11
- Mar 2025 13:00:21 +0100
-Message-ID: <bf26ba74-ff44-4642-864e-2c54d49ead74@web.de>
-Date: Tue, 11 Mar 2025 13:00:16 +0100
+	s=arc-20240116; t=1741694543; c=relaxed/simple;
+	bh=Bmb2tzliIGNBiIX24m2PDco4gc9/BfA6OUhbq+dpSK8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LTAma+qrh6XZl4MzEQj889iEiVTzp60svKnmgthXq4mKKN1K4ICGHURW1QD+qffQbvJWL2Iss4v1q2sSjcSztHqXoDfshgNO3kHipxlW7nBz+N3DxGlqqNkeqFt7lgDW/BsQSSAkqRFx/15YwhBzoLS5b8mCodCkwbRw8KJEMEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 05937152B;
+	Tue, 11 Mar 2025 05:02:32 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B40943F673;
+	Tue, 11 Mar 2025 05:02:19 -0700 (PDT)
+Date: Tue, 11 Mar 2025 12:02:16 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>
+Subject: Re: [PATCH v2 01/13] mailbox: pcc: Fix the possible race in updation
+ of chan_in_use flag
+Message-ID: <Z9AmSEBL_UcZ2Hoo@bogus>
+References: <20250305-pcc_fixes_updates-v2-0-1b1822bc8746@arm.com>
+ <20250305-pcc_fixes_updates-v2-1-1b1822bc8746@arm.com>
+ <4ecf3a7a-7a68-fd56-ed93-fbae82e2b0e3@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] device property: Split fwnode_get_child_node_count()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-acpi@vger.kernel.org, linux-leds@vger.kernel.org,
- linux-usb@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Jakob Riepler <jakob+lkml@paranoidlabs.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rob Herring <robh@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Daniel Scally <djrscally@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lee Jones <lee@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- Pavel Machek <pavel@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-References: <20250310150835.3139322-1-andriy.shevchenko@linux.intel.com>
- <20250310150835.3139322-2-andriy.shevchenko@linux.intel.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250310150835.3139322-2-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Q/a3GCeWD3iUFv6+3kpvObqx+Bs4+4nh6EgTLERJ3lTZ1L52yrg
- Q2VwG9XADV/Ol9rBvkHE9v7/VSYnZeBq+K12f5MpvIUNTVqFeExkLvdolfJKEN1vU5XPP1I
- oeEf8/hlStMfKsV6QZRn7ejw42fIEuDEbzUmonLDw+2E03UJ7UkHaBHIt6wvvfOazNW4Wem
- q3vahFzBH9NvO9iYRb5CA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:M0Vtme7G86E=;Z4oV0SEqDKd1dI2BbPj5sTxr7dv
- 9kx9rhCJNbUFO7cYtCYt12hgM20h1d5bcYz9n/9Z5XW0shX9AJZ78iKFb4wcH9Ir2rdUcTVVo
- PRz2SysCb/frPHYUA/TNQoPI91FJzflnEvtLj3DvX3v+ULH1qtgUzcLroRWOGm7GdFFjL2lYT
- s2aqDca1l4mGYB9J4MyxdmPykJtpFtnZRzSnlu+w6KdvgZX+k8jA4sYX2Ad0Ba3NHWlrZqB4x
- IjZMOnqNJBEiSN8lbfYPsUL0C3M5UEQwIZlBX4iVc5qcX/K42ChZudsL7JlC19sNIESmCMcLv
- wZn9AXGROECKN9JtDnuLJtXTl3Imkos7T6pROa7YaJo1JfcWS11dTeR20ovhHXquLkZz35YJV
- vVKnxittJ6rv4xfYcoey1sFk0yVPGa09OzzkyLniYoOo6hBfmRkjEn3PQ/0BPzpI/tNs+4kHb
- YC9a9gIaIGVYBsJEEzXltXqOhlH2kAm5Ai+uD74LTatv+rX5URneTV9jddiXggcSmoBa56SvT
- 60yRlhwWsA5gWRnDPsWDHYTimTqTz24ARvRgWmJ6f05QGdtrC9YYxs4uFz/Twga1h1XSov7VO
- 4otoTQDBh2KWhX64CsC7/bq3HSrHAeAOELyPGm2CA+xXnNnSPem735RzBgMqTdvCt/Mtf4/e+
- JVy8K7QJkUEAInDt66QZUrSYpZVH9WecY9TLD6QAai7D9mAqUDGcMEb+PKATbua/zpzMCy3w/
- TixFfrOJNpQvTpsrSREN+hzn1XVuISafELT5B4xUkQFYVXGS8P7SQhLaR7QUKd2APX81fqD1A
- J56oET7hkOFagf2Jo7kx4NBy/bd1gKzh8R5n1A1A8k0hKwaHmGZOXa7hoTiWiWCVVBfVnOuo/
- 8dxm5R+2nS5MO0nU5CHrfNACy55eSUCNcZEvEYPwJd1V7Pv5V9/QqCosA6D4hU2/z/HUjAf4M
- b/x2EQJyJVWuS8h38RNPrDSqwLOhMOTE/MFIQ0mmKcZJ2i1SNM3vdTDN7qGLdTCpopG5/J6j+
- FNQlw4NjtoS9eMo1rrD5q7Loe1QhXleQ34VdP1iXs5x87i4AzjYWoc7PmbEitItF64UAgKfP3
- TpGUCz+4Nju6sKJsVBs6TbitlVQNmQ18xXGnXMnD4AAATq5BH4nyhEL9zxirrufwRJEdeyQA3
- is2CXBAERevsmiSGxF0MhTrHvX2QJC8OfoKi17zo4sXSZ3g5c0D4LY875A8rJkcF0X/qjrHJa
- CTFA7kD4NueAwZodu9RxIJmrm3jr2xOCNXlKE6O7E1e7R0m3qJ+H+kiNkQUE4cB2vSQ9SG9Ko
- Jiq3qZCOlWVD6om6KyH/jM8TbpOkHDnMHmbbfHYnFNr6NWJ22L8SlfqLdhX0JikbxQgTNVrr0
- RDE4B3D8TgHKlT0sT8AfeB9zyU7HeSmjRZp9tSNKMFSpGs2RITDORU5oNSmCta+LN6WcdWJS9
- 8xaNWEg==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4ecf3a7a-7a68-fd56-ed93-fbae82e2b0e3@huawei.com>
 
-> The new helper is introduced to allow counting the child firmware nodes
-> of their parent without requiring a device to be passed. =E2=80=A6
+On Tue, Mar 11, 2025 at 07:40:53PM +0800, lihuisong (C) wrote:
+> 
+> 在 2025/3/6 0:38, Sudeep Holla 写道:
+> > From: Huisong Li <lihuisong@huawei.com>
+> > 
+> > The function mbox_chan_received_data() calls the Rx callback of the
+> > mailbox client driver. The callback might set chan_in_use flag from
+> > pcc_send_data(). This flag's status determines whether the PCC channel
+> > is in use.
+> > 
+> > However, there is a potential race condition where chan_in_use is
+> > updated incorrectly due to concurrency between the interrupt handler
+> > (pcc_mbox_irq()) and the command sender(pcc_send_data()).
+> > 
+> > The 'chan_in_use' flag of a channel is set to true after sending a
+> > command. And the flag of the new command may be cleared erroneous by
+> > the interrupt handler afer mbox_chan_received_data() returns,
+> > 
+> > As a result, the interrupt being level triggered can't be cleared in
+> > pcc_mbox_irq() and it will be disabled after the number of handled times
+> > exceeds the specified value. The error log is as follows:
+> > 
+> >    |  kunpeng_hccs HISI04B2:00: PCC command executed timeout!
+> >    |  kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110
+> >    |  irq 13: nobody cared (try booting with the "irqpoll" option)
+> >    |  Call trace:
+> >    |   dump_backtrace+0x0/0x210
+> >    |   show_stack+0x1c/0x2c
+> >    |   dump_stack+0xec/0x130
+> >    |   __report_bad_irq+0x50/0x190
+> >    |   note_interrupt+0x1e4/0x260
+> >    |   handle_irq_event+0x144/0x17c
+> >    |   handle_fasteoi_irq+0xd0/0x240
+> >    |   __handle_domain_irq+0x80/0xf0
+> >    |   gic_handle_irq+0x74/0x2d0
+> >    |   el1_irq+0xbc/0x140
+> >    |   mnt_clone_write+0x0/0x70
+> >    |   file_update_time+0xcc/0x160
+> >    |   fault_dirty_shared_page+0xe8/0x150
+> >    |   do_shared_fault+0x80/0x1d0
+> >    |   do_fault+0x118/0x1a4
+> >    |   handle_pte_fault+0x154/0x230
+> >    |   __handle_mm_fault+0x1ac/0x390
+> >    |   handle_mm_fault+0xf0/0x250
+> >    |   do_page_fault+0x184/0x454
+> >    |   do_translation_fault+0xac/0xd4
+> >    |   do_mem_abort+0x44/0xb4
+> >    |   el0_da+0x40/0x74
+> >    |   el0_sync_handler+0x60/0xb4
+> >    |   el0_sync+0x168/0x180
+> >    |  handlers:
+> >    |   pcc_mbox_irq
+> >    |  Disabling IRQ #13
+> > 
+> > To solve this issue, pcc_mbox_irq() must clear 'chan_in_use' flag before
+> > the call to mbox_chan_received_data().
+> > 
+> > Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> > (sudeep.holla: Minor updates to the subject and commit message)
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > ---
+> >   drivers/mailbox/pcc.c | 7 ++++++-
+> >   1 file changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> > index 82102a4c5d68839170238540a6fed61afa5185a0..f2e4087281c70eeb5b9b33371596613a371dff4f 100644
+> > --- a/drivers/mailbox/pcc.c
+> > +++ b/drivers/mailbox/pcc.c
+> > @@ -333,10 +333,15 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+> >   	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+> >   		return IRQ_NONE;
+> > +	/*
+> > +	 * Clear this flag immediately after updating interrupt ack register
+> > +	 * to avoid possible race in updatation of the flag from
+> > +	 * pcc_send_data() that could execute from mbox_chan_received_data()
+> This comment may be inappropriate becuase of the moving of clearing
+> interrupt ack register in patch 2/13.
+> I suggested that fix it in this patch or patch 2/13.
 
-See also:
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/Documentation/process/submitting-patches.rst?h=3Dv6.14-rc6#n94
+Right, I did think of updating or did update and missed to commit.
+I wanted to update something like:
+"
+Clear this flag after updating interrupt ack register and just before
+mbox_chan_received_data() which might call pcc_send_data() where the
+flag is set again to start new transfer
+"
 
+Hope that is more apt to the current situation.
+
+-- 
 Regards,
-Markus
+Sudeep
 
