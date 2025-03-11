@@ -1,188 +1,215 @@
-Return-Path: <linux-acpi+bounces-12065-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12067-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70392A5BCBA
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 10:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA68A5BCC5
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 10:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D10F167EAB
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 09:51:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC80A16F130
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Mar 2025 09:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B1421D59F;
-	Tue, 11 Mar 2025 09:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DDE230997;
+	Tue, 11 Mar 2025 09:52:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261B11DE4CC;
-	Tue, 11 Mar 2025 09:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5571DE4CC;
+	Tue, 11 Mar 2025 09:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741686700; cv=none; b=XuBGs+iz2UIvNrvmIKUZbAHH0ZZihTi6qg/dDhUgPf5LMnabSHgeu/rZQVCMVkIbOEVjm4Jt6CjpFo5OmPTp6HcrQx7IE5VzAYLST0LD+PBtDqmGRQLOP9MkdVhpwpAiCqgGeeJ8YvaVLOt+BtPpXQxt5kPkUseUL0cslvOXjaw=
+	t=1741686727; cv=none; b=bfQrSYjKOKEM86qXngJlGpoz2SJX2xjQTsoZmiucZ9S22y2Ic2Ip0s18cJOyN22WfUFMuYz9QqCGL7pBrQRdkgjvNubBy8rn+xGXDdVmKmKRS0yV0qVIGYjMPo+bHF+QvGAXAe5dT2h/sSPx181XTQinRM78Mj9kbkbNcEuDv08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741686700; c=relaxed/simple;
-	bh=A/ZMzq5lRkJdNzhIJNDhVGV+dXchg6pzREW1g6BrqKI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BTCDP9/hgNkok7PLtpHLrvIF8RLeAi3mNZqMBGlnKudpQcpKvWEtqQi1Ic50BiLyra+h0nTkU6PhBochN+JGqxyTY6uBMeXewg+AlKTprmnlu349Z+hrG6k8L6/HOOV8CnwDQFhLi3WkMiWlNfJAzMCIbVq8TiR0JZd59hNRnvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZBpqJ0FnGz6H8Y6;
-	Tue, 11 Mar 2025 17:48:28 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id 985221404FC;
-	Tue, 11 Mar 2025 17:51:34 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500005.china.huawei.com (7.182.85.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 11 Mar 2025 10:51:34 +0100
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Tue, 11 Mar 2025 10:51:34 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Alison Schofield <alison.schofield@intel.com>
-CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
-	<dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH 1/8] cxl: Add helper function to retrieve a feature entry
-Thread-Topic: [PATCH 1/8] cxl: Add helper function to retrieve a feature entry
-Thread-Index: AQHbiWhwo9sEMJAQkEWXFE66V5STnbNoCC6AgASyHwCAABgagIAA7UaA
-Date: Tue, 11 Mar 2025 09:51:34 +0000
-Message-ID: <00c0910dab404d8ab72db1e8a6e1b190@huawei.com>
-References: <20250227223816.2036-1-shiju.jose@huawei.com>
- <20250227223816.2036-2-shiju.jose@huawei.com>
- <Z8tGz33l9vDzuJLy@aschofie-mobl2.lan>
- <e8e33d46aa1b478db601de29e047cb5f@huawei.com>
- <Z89LcUIWO9m8Vtru@aschofie-mobl2.lan>
-In-Reply-To: <Z89LcUIWO9m8Vtru@aschofie-mobl2.lan>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741686727; c=relaxed/simple;
+	bh=o341G45nOxRikhySnJbABEgZ/+2uLLTiz19NN7pxkyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j4zgLzx/nbC+baK+4YmtTo6MzHPtXkDyo1e/ML7i/I68GOAeLPUT6KQprqhqkIBz1IkkBjZagQ0lRfswj8QoOFYB8FckZM8U31fHcH6wuQAbh4v+0IjaMe286ezu6iAqtVRXkRBhZ1SjLopK+ErWnZDaplhTfpBe1dfdSJPhS6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-8c-67d007b9adfb
+From: Yunjeong Mun <yunjeong.mun@sk.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: kernel_team@skhynix.com,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com,
+	ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org,
+	rakie.kim@sk.com,
+	akpm@linux-foundation.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com,
+	horen.chuang@linux.dev,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
+Date: Tue, 11 Mar 2025 18:51:45 +0900
+Message-ID: <20250311095151.446-1-yunjeong.mun@sk.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+In-Reply-To: <Z8-_SXm0JGjXTegL@gourry-fedora-PF4VCD3F>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprFIsWRmVeSWpSXmKPExsXC9ZZnke5O9gvpBitatC3mrF/DZjF96gVG
+	ixM3G9ksft49zm7RvHg9m8XqTb4W95c9Y7G43X+O1WLVwmtsFse3zmO32HcRqGHnw7dsFsv3
+	9TNaXN41h83i3pr/rBZzv0xltli9JsNB0OPwm/fMHjtn3WX36G67zO7RcuQtq8fiPS+ZPDat
+	6mTz2PRpErvHiRm/WTx2PrT0WNgwldlj/9w17B7nLlZ4fHx6i8Xj8ya5AL4oLpuU1JzMstQi
+	fbsErowH+5wKZqtXzJvbxNLAeFCui5GTQ0LAROLKpqtsMPaG///ZQWw2AQ2Jg4dOMncxcnCI
+	CKhKtF1x72Lk4mAWaGORuPlqMSNIjbBAhMS5R6dZQGwWoJrDa7tZQWxeATOJT11bGSFmako0
+	XLrHBGJzAsWnHbkNNl9IgEfi1Yb9jBD1ghInZz4Bm8MsIC/RvHU2M8gyCYFN7BJbj19ngRgk
+	KXFwxQ2WCYz8s5D0zELSs4CRaRWjUGZeWW5iZo6JXkZlXmaFXnJ+7iZGYIwtq/0TvYPx04Xg
+	Q4wCHIxKPLwBj86lC7EmlhVX5h5ilOBgVhLhPXgFKMSbklhZlVqUH19UmpNafIhRmoNFSZzX
+	6Ft5ipBAemJJanZqakFqEUyWiYNTqoExlJVdqY07b/08O6f+I2erXL/dmnjl6aRzG2uV18YG
+	Xbp3X/bHoWCj1Ie5LYsD7xtFW55kaP2jsFjvDxN/vWnA309lF3bvmKT5c9oidbbtm4rse3/l
+	cR/fEf5jZU0ow/dskRlsmnN3XfidlbG84HXD9NcLT6Q0bbZefU3fYVd26+681S/ncW32UmIp
+	zkg01GIuKk4EAMS5iz+tAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnkeLIzCtJLcpLzFFi42LhmiGro7uT/UK6wcbJ8hZz1q9hs5g+9QKj
+	xYmbjWwWP+8eZ7doXryezWL1Jl+L+8uesVh8fvaa2eJ2/zlWi1ULr7FZHN86j91i30WgrsNz
+	T7Ja7Hz4ls1i+b5+RovLu+awWdxb85/VYu6XqcwWh649Z7VYvSbDQcTj8Jv3zB47Z91l9+hu
+	u8zu0XLkLavH4j0vmTw2repk89j0aRK7x4kZv1k8dj609FjYMJXZY//cNewe5y5WeHx8eovF
+	49ttD4/FLz4weXzeJBcgEMVlk5Kak1mWWqRvl8CV8WCfU8Fs9Yp5c5tYGhgPynUxcnJICJhI
+	bPj/nx3EZhPQkDh46CRzFyMHh4iAqkTbFfcuRi4OZoE2FombrxYzgtQIC0RInHt0mgXEZgGq
+	Oby2mxXE5hUwk/jUtZURYqamRMOle0wgNidQfNqR22DzhQR4JF5t2M8IUS8ocXLmE7A5zALy
+	Es1bZzNPYOSZhSQ1C0lqASPTKkaRzLyy3MTMHFO94uyMyrzMCr3k/NxNjMBoWlb7Z+IOxi+X
+	3Q8xCnAwKvHwBjw6ly7EmlhWXJl7iFGCg1lJhPfgFaAQb0piZVVqUX58UWlOavEhRmkOFiVx
+	Xq/w1AQhgfTEktTs1NSC1CKYLBMHp1QDo/HZsIu3j+86ujsq3YevIZWtd4lyze5JTmrGu0IO
+	XSk3OfQ79s/BRwXKS7m1ubbzTbYTy351wfBm5hdHm50fJPmY93gIiKVXNM7Q58/zrPQ+JrGe
+	8dI1wbmhHhV6lUzKHr3yi+zn1XrVlloLWp7Iaykx3OMawfw9sotVYeuauoelLxv3LI1VYinO
+	SDTUYi4qTgQAUPZYdqICAAA=
+X-CFilter-Loop: Reflected
 
->-----Original Message-----
->From: Alison Schofield <alison.schofield@intel.com>
->Sent: 10 March 2025 20:29
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-cxl@vger.kernel.org; dan.j.williams@intel.com; dave@stgolabs.net=
-;
->Jonathan Cameron <jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->vishal.l.verma@intel.com; ira.weiny@intel.com; david@redhat.com;
->Vilas.Sridharan@amd.com; linux-edac@vger.kernel.org; linux-
->acpi@vger.kernel.org; linux-mm@kvack.org; linux-kernel@vger.kernel.org;
->bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; leo.duran@amd.com; Yazen.Ghannam@amd.com;
->rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
->erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->gthelen@google.com; wschwartz@amperecomputing.com;
->dferguson@amperecomputing.com; wbs@os.amperecomputing.com;
->nifan.cxl@gmail.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
-><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
->kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->Linuxarm <linuxarm@huawei.com>
->Subject: Re: [PATCH 1/8] cxl: Add helper function to retrieve a feature en=
-try
->
->On Mon, Mar 10, 2025 at 06:15:38PM +0000, Shiju Jose wrote:
->> >-----Original Message-----
->> >From: Alison Schofield <alison.schofield@intel.com>
->> >Sent: 07 March 2025 19:20
->> >To: Shiju Jose <shiju.jose@huawei.com>
->> [...]
->> >> +struct cxl_feat_entry *cxl_get_feature_entry(struct cxl_dev_state *c=
-xlds,
->> >> +					     const uuid_t *feat_uuid) {
->> >> +	struct cxl_features_state *cxlfs =3D to_cxlfs(cxlds);
->> >> +	struct cxl_feat_entry *feat_entry;
->> >> +	int count;
->> >> +
->> >> +	/*
->> >> +	 * Retrieve the feature entry from the supported features list,
->> >> +	 * if the feature is supported.
->> >> +	 */
->> >> +	feat_entry =3D cxlfs->entries->ent;
->> >
->> >Do we need some NULL checking here on cxlfs, entries
->>
->> Hi Alison,
->>
->> Thanks for the feedbacks.
->> We had check on cxlfs before
->> https://lore.kernel.org/all/20250122235159.2716036-5-dave.jiang@intel.
->> com/ but removed because of the following comment.
->> https://lore.kernel.org/all/20250124150150.GZ5556@nvidia.com/
->
->Hi Shiju,
+Hi Gregory, thanks for kind explanation.
 
-Hi Alison,
->
->I have not followed all along, so yeah my questions may be a bit pesky at =
-this
->point. I did see the comment linked above about how the driver must be bou=
-nd
->at this point. I think my question is a bit different.
+On Tue, 11 Mar 2025 00:42:49 -0400 Gregory Price <gourry@gourry.net> wrote:
+> On Tue, Mar 11, 2025 at 01:02:07PM +0900, Yunjeong Mun wrote:
+> 
+> forenote - Hi Andrew, please hold off on the auto-configuration patch
+> for now, the sk group has identified a hotplug issue we need to work out
+> and we'll likely need to merge these two patch set together.  I really
+> appreciate your patience with this feature.
+> 
+> > Hi Gregory,
+> >
+> > In my understanding, the reason we are seeing 12 NUMA node is because
+> > it loops through node_states[N_POSSIBLE] and its value is 4095 (twelves ones)
+> > in the code [1]  below:
+> > 
+> ... snip ...
+> 
+> Appreciated, so yes this confirms what i thought was going on.  There's
+> 4 host bridges, 2 devices on each host bridge, and an extra CFMWS per
+> socket that is intended to interleave across the host bridges.
+> 
+> As you mention below, the code in acpi/numa/srat.c will create 1 NUMA
+> node per SRAT Memory Affinity Entry - and then also 1 NUMA node per
+> CFMWS that doesn't have a matching SRAT entry (with a known corner case
+> for a missing SRAT which doesn't apply here).
+> 
+> So essentialy what the system is doing is marking that it's absolutely
+> possible to create 1 region per device and also 1 region that
+> interleaves across host each pair of host bridges (I presume this is a
+> dual socket system?).
 
-The feedback was added to remove defensive checks present in this function.
->
->Are each of these guaranteed not to be NULL here:
->
->to_cxlfs(cxlds)
+Correct, it is a dual socket system. Thank you for the detailed explanation.
+It has been helpful for analyzing the code.
+> 
+> So, tl;dr: All these nodes are valid and this configuration is correct.
+> 
+> Weighted interleave presently works fine as intended, but with the
+> inclusion of the auto-configuration, there will be issues for your
+> system configuration. This means we probably need to consider
+> merging these as a group.
+> 
 
-to_cxlfs(cxlds) cannot be NULL if cxl_get_feature_entry() is called after
-devm_cxl_setup_features(),  otherwise will be NULL.
-=20
->cxlfs->entries
->cxlfs->entries->ent
-Both fields will be NULL if the firmware does not support any features.
->
->If these cannot be NULL, then all good.
->
->--Alison
->
-[...]
->>
+We believe our propsed hot plug patch should be added as a hot-fix to v6.14, 
+because it can be addressed independently of auto-configuring feature.
+Rakie will send v2 patch soon.
 
-Thanks,
-Shiju
-
+> During boot, the following will occur
+> 
+> 1) drivers/acpi/numa/srat.c marks 12 nodes as possible
+>    0-1) Socket nodes
+>    2-3) Cross-host-bridge interleave nodes
+>    4-11) single region nodes
+> 
+> 2) drivers/cxl/* will probe the various devices and create
+>    a root decoder for each CXL Fixed Memory Window
+>    decoder0.0 - decoder11.0  (or maybe decoder0.0 - decoder0.11)
+> 
+> 3) during probe auto-configuration of wieghted interleave occurs as a
+>    result of this code being called with hmat or cdat data:
+> 
+> void node_set_perf_attrs() {
+> ...
+> 	/* When setting CPU access coordinates, update mempolicy */
+> 	if (access == ACCESS_COORDINATE_CPU) {
+> 		if (mempolicy_set_node_perf(nid, coord)) {
+> 			pr_info("failed to set mempolicy attrs for node %d\n",
+> 				nid);
+> 		}
+> 	}
+> ...
+> }
+> 
+> under the current system, since we calculate with N_POSSIBLE, all nodes
+> will be assigned weights (assuming HMAT or CDAT data is available for
+> all of them).
+> 
+> We actually have a few issues here
+> 
+> 1) If all nodes are included in the weighting reduction, we're actually
+>    over-representing a particular set of hardware.  The interleave node
+>    and the individual device nodes would actually over-represent the
+>    bandwidth available (comparative to the CPU nodes).
+> 
+> 2) As stated on this patch line, just switching to N_MEMORY causes
+>    issues with hotplug - where the bandwidth can be reported, but if
+>    memory hasn't been added yet then we'll end up with wrong weights
+>    because it wasn't included in the calculation.
+> 
+> 3) However, not exposing the nodes because N_MEMORY isn't set yet
+>    a) prevents pre-configuration before memory is onlined, and
+>    b) hides the implications of hotplugging memory into a node from the
+>       user (adding memory causes a re-weight and may affect an
+>       interleave-all configuration).
+> 
+> but - i think it's reasonable that anyone using weighted-interleave is
+> *probably* not going to have nodes come and go.  It just seems like a
+> corner case that isn't reasonable to spend time supporting.
+> 
+> So coming back around to the hotplug patch line, I do think it's
+> reasonable hide nodes marked !N_MEMORY, but consider two issues:
+> 
+> 1) In auto mode, we need to re-weight on hotplug to only include
+>    onlined nodes.  This is because the reduction may be sensitive
+>    to the available bandwidth changes.
+> 
+>    This behavior needs to be clearly documented.
+> 
+> 2) We need to clearly define what the weight of a node will be when
+>    in manual mode and a node goes (memory -> no memory -> memory)
+>    a) does it retain it's old, manually set weight?
+>    b) does it revert to 1?
+> 
+> Sorry for the long email, just working through all the implications.
+> 
+> I think the proposed hotplug patch is a requirement for the
+> auto-configuration patch set.
+> 
+> ~Gregory
+> 
+Best regards,
+Yunjeong
 
