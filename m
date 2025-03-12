@@ -1,88 +1,59 @@
-Return-Path: <linux-acpi+bounces-12108-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12109-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02980A5D5AE
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 06:45:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB92A5D5D2
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 07:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 958E8189C4BF
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 05:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EE4F3B7A40
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 06:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC4B1DB366;
-	Wed, 12 Mar 2025 05:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B3018858A;
+	Wed, 12 Mar 2025 06:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rx1kirUi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tUdG+1Uu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DC733F6;
-	Wed, 12 Mar 2025 05:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBDB2F43;
+	Wed, 12 Mar 2025 06:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741758328; cv=none; b=lS/l9X8G2jq4jdRKCEtDJ8ByZla4B1GyfK1y62UkHO4G1ysZLdHlxG4Z933uhB4hMcYEemKDC2sWes/8y0ODOnx/wxPvhkvNm3GQ1w+RiLQoguP6wEyJnaulajxfFp6spQRH+aNxHXob8lzwPw40wyoA4vkODAQm0PPa/VH2ccU=
+	t=1741759260; cv=none; b=PJYGT3vgcW+oBCEHZIWR9CCA3HVh5iM/Cu/hDxoJEirj/NpKUzARVjJiUSCdI0YoMdNMvWAj6PA4ASQJir9vLuG3ONKSTRsDtfY1yDWzhnsr6C0xN5JzBtqyVSeu3d2lqZP3UN5Q5VdTzzox/tm0CHzoAaBHFV46FhkxLG/g8Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741758328; c=relaxed/simple;
-	bh=2lNkWU7neUbJh5KmbEw6o4WwEOl2tG4Taxsira8ZcTU=;
+	s=arc-20240116; t=1741759260; c=relaxed/simple;
+	bh=9pAA/yH6P+xsx2MApZdeJOVyxbVik21j2UMqV/OdY/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N3GZWG0EktLcv5J0tEBcO5eH1ogwJEx+HxtrV/E9NADRPMA9+rX5PdWq/j+UoMcsKFuNAShXKPy5wn802Oh6JZPpOPB8EHaU0U/PY1vrmXcmNcdeqdUKHbgH+Hlw/M7/8oUnudBgva98TW56reWN3v9El67P7cZPyeLkYQ2EdHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rx1kirUi; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741758326; x=1773294326;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2lNkWU7neUbJh5KmbEw6o4WwEOl2tG4Taxsira8ZcTU=;
-  b=Rx1kirUi44u7M/TXPs+/y25z8mFv+6DEO/EJu/DgjUSPJt8LI0s8Ze3A
-   z22qqjSFXjckyga3jpg1fEq4zfFyXhuvFbspzpfuaH44WqlT4TENE67gc
-   8+BOGKNIBfrOdCEZm9RCN3SdrJG+M6mmhzfDPBq6q2UAtI3CkbO7sDbVo
-   A44cXAMFMZytKj2Erfmi+qLC6Wt1KsIQrD8Z7/dSZSnGgImk1RU0RYWQu
-   HsqrYuVAUDy8sfqk3Hlbb+WMC4J7XPRsuHCBosYStwtfCmZ/0092/RBz7
-   PtZLrO/ksyW4PnHcv6TZnBoUquWw7F4McJSXEMpG/ZQ0WacsSD2vdMMh0
-   g==;
-X-CSE-ConnectionGUID: VqP7gBv3QkW5Eqqww8jwgQ==
-X-CSE-MsgGUID: 93YgMprTRG+fGuoN4NERHA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="43002644"
-X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
-   d="scan'208";a="43002644"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 22:45:24 -0700
-X-CSE-ConnectionGUID: v7DTkxGPSDK1/jw399Duwg==
-X-CSE-MsgGUID: f+/ufX8JRXGIlRtlydF+gA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
-   d="scan'208";a="125593952"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 22:45:24 -0700
-Date: Tue, 11 Mar 2025 22:51:18 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
-	lenb@kernel.org, kirill.shutemov@linux.intel.com,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
-	ricardo.neri@intel.com, ravi.v.shankar@intel.com
-Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
- mailbox
-Message-ID: <20250312055118.GA29492@ranerica-svr.sc.intel.com>
-References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
- <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
- <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
- <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
- <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
- <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
- <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
- <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
- <20250303222102.GA16733@ranerica-svr.sc.intel.com>
- <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hGRZkiwtgLrdqTbqfbg73P9khiALH1FyMQzMIjVIOU76FfwJXcuxgrFkkGd6fv4Z2cT4EfulB2NPgeUS2zWaiBS1ccbXx2X2cMHBS2DUwfjm9sknihtS+2ZY44WdKOW7/PW28ZBDkszepQYAZZkpZ3dXRWbToI0sdVGuJISc5mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tUdG+1Uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A32AC4CEE3;
+	Wed, 12 Mar 2025 06:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741759259;
+	bh=9pAA/yH6P+xsx2MApZdeJOVyxbVik21j2UMqV/OdY/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tUdG+1UusDMvYlqU6TDDAoy5MK2TbaR/9OXJT5bGwAgbwO+np3TbS0SCLDvlC4sJJ
+	 bJYd3K7HkbZ0oGYDk/qSNZaO89Ir3ii8DUOYZn1EfytuQVIVvSTvAHgo+KKdMj7RAo
+	 Xard+klOkiBnpHBq6xo4X68YrI0XHgi4UTLBk2rZR8Dv3wUhMvoQpCPtWI1kxvC3rj
+	 4fnpJCuJGVuQiH+UKUpZqtQl880xhF8oirGJf4pCxaDx//7GOEguGKyBmb6CeKnQAF
+	 iYrIGxeXf40rFlsEa9e5Wttf54ehlq66a1rJDMUY4iqt1b6LvC6YceyxW3tDiKK9bg
+	 NMK9+2BCWfP4g==
+Date: Wed, 12 Mar 2025 08:00:55 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Stuart Yoder <stuart.yoder@arm.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lenb@kernel.org, rafael@kernel.org,
+	jgg@ziepe.ca, peterhuewe@gmx.de, sudeep.holla@arm.com,
+	linux-integrity@vger.kernel.org,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: Build error on -next due to tpm_crb.c changes? (was: Re: [PATCH
+ v6 0/5] Add support for the TPM FF-A start method)
+Message-ID: <Z9EjF-pybmZlnTws@kernel.org>
+References: <20250305173611.74548-1-stuart.yoder@arm.com>
+ <0ad035ff-400e-4b15-8b8f-40b69152ec46@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -91,159 +62,68 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <0ad035ff-400e-4b15-8b8f-40b69152ec46@leemhuis.info>
 
-On Tue, Mar 11, 2025 at 11:01:28AM +0100, Krzysztof Kozlowski wrote:
-> On 03/03/2025 23:21, Ricardo Neri wrote:
-> > On Fri, Sep 20, 2024 at 01:15:41PM +0200, Krzysztof Kozlowski wrote:
+On Tue, Mar 11, 2025 at 04:21:38PM +0100, Thorsten Leemhuis wrote:
+> On 05.03.25 18:36, Stuart Yoder wrote:
+> > Firmware Framework for Arm A-profile (FF-A) is a messaging framework
+> > for Arm-based systems, and in the context of the TPM CRB driver is used
+> > to signal 'start' to a CRB-based TPM service which is hosted in an
+> > FF-A secure partition running in TrustZone.
 > > 
+> > These patches add support for the CRB FF-A start method defined
+> > in the TCG ACPI specification v1.4 and the FF-A ABI defined
+> > in the Arm TPM Service CRB over FF-A (DEN0138) specification:
+> > https://developer.arm.com/documentation/den0138/latest/
 > > [...]
-> >  
-> >> enable-method is part of CPUs, so you probably should match the CPUs...
-> >> I am not sure, I don't have the big picture here.
-> >>
-> >> Maybe if companies want to push more of bindings for purely virtual
-> >> systems, then they should first get involved more, instead of relying on
-> >> us. Provide reviews for your virtual stuff, provide guidance. There is
-> >> resistance in accepting bindings for such cases for a reason - I don't
-> >> even know what exactly is this and judging/reviewing based on my
-> >> practices will no be accurate.
+> > Stuart Yoder (5):
+> >   tpm_crb: implement driver compliant to CRB over FF-A
+> >   tpm_crb: clean-up and refactor check for idle support
+> >   ACPICA: add start method for Arm FF-A
+> >   tpm_crb: add support for the Arm FF-A start method
+> >   Documentation: tpm: add documentation for the CRB FF-A interface
 > > 
-> > Hi Krzysztof,
-> > 
-> > I am taking over this work from Yunhong.
-> > 
-> > First of all, I apologize for the late reply. I will make sure
-> > communications are timely in the future.
-> > 
-> > Our goal is to describe in the device tree a mechanism or artifact to boot
-> > secondary CPUs.
-> > 
-> > In our setup, the firmware puts secondary CPUs to monitor a memory location
-> > (i.e., the wakeup mailbox) while spinning. From the boot CPU, the OS writes
-> > in the mailbox the wakeup vector and the ID of the secondary CPU it wants
-> > to boot. When a secondary CPU sees its own ID it will jump to the wakeup
-> > vector.
-> > 
-> > This is similar to the spin-table described in the Device Tree
-> > specification. The key difference is that with the spin-table CPUs spin
-> > until a non-zero value is written in `cpu-release-addr`. The wakeup mailbox
-> > uses CPU IDs.
-> > 
-> > You raised the issue of the lack of a `compatible` property, and the fact
-> > that we are not describing an actual device.
-> > 
-> > I took your suggestion of matching by node and I came up with the binding
-> > below. I see these advantages in this approach:
-> > 
-> >   * I define a new node with a `compatible` property.
-> >   * There is precedent: the psci node. In the `cpus` node, each cpu@n has
+> >  Documentation/security/tpm/tpm_ffa_crb.rst |  65 ++++
+> >  drivers/char/tpm/Kconfig                   |   9 +
+> >  drivers/char/tpm/Makefile                  |   1 +
+> >  drivers/char/tpm/tpm_crb.c                 | 105 +++++--
+> >  drivers/char/tpm/tpm_crb_ffa.c             | 348 +++++++++++++++++++++
+> >  drivers/char/tpm/tpm_crb_ffa.h             |  25 ++
+> >  include/acpi/actbl3.h                      |   1 +
+> > [...]
 > 
-
-Thanks for your feedback!
-
-> psci is a standard. If you are documenting here a standard, clearly
-> express it and provide reference to the specification.
-
-It is not really a standard, but this mailbox behaves indentically to the
-wakeup mailbox described in the ACPI spec [1]. I am happy reference the
-spec in the documentation of the binding... or describe in full the
-mechanism of mailbox without referring to ACPI. You had indicated you don't
-care about what ACPI does [2].
-
-In a nutshell, the wakeup mailbox is similar to the spin table used in ARM
-boards: it is reserved memory region that secondary CPUs monitor while
-spinning.
-
+> My daily linux-next builds for Fedora failed building on ARM64 today. I did
+> not bisect, but from the error message I suspect it's du to  patches in this
+> series touching drivers/char/tpm/tpm_crb.c :
 > 
+> ld: Unexpected GOT/PLT entries detected!
+> ld: Unexpected run-time procedure linkages detected!
+> ld: drivers/char/tpm/tpm_crb.o: in function `crb_cancel':
+> /builddir/foo//drivers/char/tpm/tpm_crb.c:496:(.text+0x2c0): undefined reference to `tpm_crb_ffa_start'
+> ld: drivers/char/tpm/tpm_crb.o: in function `__crb_request_locality':
+> /builddir/foo/drivers/char/tpm/tpm_crb.c:285:(.text+0x768): undefined reference to `tpm_crb_ffa_start'
+> ld: drivers/char/tpm/tpm_crb.o: in function `__crb_relinquish_locality':
+> /builddir/foo/drivers/char/tpm/tpm_crb.c:319:(.text+0x81c): undefined reference to `tpm_crb_ffa_start'
+> ld: drivers/char/tpm/tpm_crb.o: in function `__crb_request_locality':
+> /builddir/foo/drivers/char/tpm/tpm_crb.c:285:(.text+0x8bc): undefined reference to `tpm_crb_ffa_start'
+> ld: drivers/char/tpm/tpm_crb.o: in function `__crb_relinquish_locality':
+> /builddir/foo/drivers/char/tpm/tpm_crb.c:319:(.text+0x958): undefined reference to `tpm_crb_ffa_start'
+> ld: drivers/char/tpm/tpm_crb.o:/builddir/foo/drivers/char/tpm/tpm_crb.c:474: more undefined references to `tpm_crb_ffa_start' follow
+> ld: drivers/char/tpm/tpm_crb.o: in function `crb_acpi_add':
+> /builddir/foo/drivers/char/tpm/tpm_crb.c:830:(.text+0x1518): undefined reference to `tpm_crb_ffa_init'
+> make[2]: *** [scripts/Makefile.vmlinux:77: vmlinux] Error 1
+> make[1]: *** [/builddir/foo/Makefile:1242: vmlinux] Error 2
+> make: *** [Makefile:259: __sub-make] Error 2
 > 
-> >     an `enable-method` property that specify `psci`.
-> >   * The mailbox is a device as it is located in a reserved memory region.
-> >     This true regardless of the device tree describing bare-metal or
-> >     virtualized machines.
-> > 
-> > Thanks in advance for your feedback!
-> > 
-> > Best,
-> > Ricardo
-> > 
-> > (only the relevant sections of the binding are shown for brevity)
-> > 
-> > properties:
-> >   $nodename:
-> >     const: wakeup-mailbox
-> > 
-> >   compatible:
-> >     const: x86,wakeup-mailbox
+> Full log:
+> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-41-aarch64/08750241-next-next-all/builder-live.log.gz
 > 
-> You need vendor prefix for this particular device. If I pointed out lack
-> of device and specific compatible, then adding random compatible does
-> not solve it. I understand it solves for you, but not from the bindings
-> point of view.
+> Same problem on Fedora 40, 42 and 43. 
 
-I see. Platform firmware will implement the mailbox. It would not be any
-specific hardware from Intel. Perhaps `intel,wakeup-mailbox`?
+I dropped these commit, requested for fixes from the author, and a
+couple of additional nitpicks:
 
-> 
-> > 
-> >   mailbox-addr:
-> >     $ref: /schemas/types.yaml#/definitions/uint64
-> 
-> So is this some sort of reserved memory?
+https://lore.kernel.org/all/Z9EiRDuWfPOkcjXN@kernel.org/
 
-Yes, the mailbox is located in reserved memory.
-
-> Mailbox needs mbox-cells, so
-> maybe that's not mailbox.
-
-Your comment got me to look under Documentation/devicetree/bindings/mailbox.
-Maybe I am ovethinking this and I can describe the mailbox as others
-vendors do (see below).
-
-Thanks and BR,
-Ricardo
-
-[1]. https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#multiprocessor-wakeup-structure
-if that is OK.
-[2]. https://lore.kernel.org/lkml/624e1985-7dd2-4abe-a918-78cb43556967@kernel.oirg
-
-description: |
-  [Removed for brevity]
-
-properties:
-  compatible:
-    const: intel,wakeup-mailbox
-
-  reg:
-    maxItems: 1
-
-  '#mbox-cells':
-    const: 1
-
-required:
-  - compatible
-  - reg
-
-additionalProperties: false
-
-examples:
-  - |
-    wakeupmailbox: mailbox@1c000500 {
-      compatible = "intel,wakeup-mailbox";
-      reg = <0x1c000500 0x100>;
-      #mbox-cells = <1>;
-    };
-
-    cpus {
-        #address-cells = <1>;
-        #size-cells = <0>;
-
-        cpu@0 {
-            device_type = "cpu";
-            reg = <0x00>;
-            enable-method = "wakeup-mailbox";
-        };
-    };
-...
+BR, Jarkko
 
