@@ -1,207 +1,234 @@
-Return-Path: <linux-acpi+bounces-12135-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12136-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A667A5E4B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:45:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76722A5E4D6
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF17E17AC6D
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:45:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DC23BDD8C
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A33259C83;
-	Wed, 12 Mar 2025 19:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDCE1F0E4A;
+	Wed, 12 Mar 2025 19:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KY6veRW/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rhy+nLOc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05C1258CF5;
-	Wed, 12 Mar 2025 19:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF9B1E8823;
+	Wed, 12 Mar 2025 19:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741808706; cv=none; b=D+QObN6Ii+OlqB6qSr8ajSH4IoyijZbjmBKsb0Zu7YMqjnqKiBnwGNz4XIDVAVvKo6ep3h6b6lsv/MeUwDHXXgj8j2U1+e50RRnSz1rBPvc/0Isy7R8O1BqmYVjsfxjqvOgUqMTdaOvAnwmYcHOS/Ci+OdtZJoODQAvAZlyCK3U=
+	t=1741809288; cv=none; b=jrYAVWYQN6qtUPbGY2LFWZeTUyb+1d42BQznEue2ylvEtcMfNV2GSHRAjIwA3XtaYX96LX2UCNPnAmk5w64bmoFfSWn18mTmWMZToY0YESJkl4nUwoCZzWrE9Y3sBDH59a5ZnYjTNSFre4tfa4thmze+JQH2pdYjMNH4j8rzYqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741808706; c=relaxed/simple;
-	bh=hNYjTn6zdVR9mjDQJg9s/8yzeDoJWMMYD7pocvfTf7U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c+xjceRXjtw3tRzHmh/p7N/zNbC2VH7gYvZpcTV/ffskeIRSFUrmTEE7dBGjnbccIYwtys62WWg7KQJ4JZGjGGtfO032aXDflFqncB5J6/mhXoWbsIh8vqeovNtJn9QB6exfd++D7Glx5Kuw9nQCS/gSLrM81LCyrEqgcS6zNZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KY6veRW/; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 54861210B155;
-	Wed, 12 Mar 2025 12:45:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 54861210B155
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741808704;
-	bh=VPZyhneTbQ5N9T3+s+eAs9kmLhZ3O/aRW/7FQa9FcNM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KY6veRW/TYvXYRqlrieko87RB02NPbqemVQu9wxZBtiO6QjiU/jl4VJVIXKn+Qbmp
-	 KpAwxXbEdKbtO9dv8eLqZC9Td03MtvGs74WCxdYf1T7Bp+epAKWMipnCA5JUxKkrav
-	 rtBkKkfD6I461kYIQ4heEXnpybyaQIEDWL4XSiiY=
-Message-ID: <5e3e8c30-912c-4fe3-bfac-1ae21242473b@linux.microsoft.com>
-Date: Wed, 12 Mar 2025 12:44:38 -0700
+	s=arc-20240116; t=1741809288; c=relaxed/simple;
+	bh=lKt4v6B/Hv/DuheeaArB6L02/tBeX5Mg5/cRp3lVdsU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWUiEHNO53szKVINZMODhWOtE7qlKNQchxx9veo42uciW/hI7vmATaskiVZVL+dEJaTD5DJTG1k4i0UDRdoCleXLBuc2ZVsrkPES++1xoNHl1606XkKh+rHLNC1z6UMB+ca1E8b4BOcI9bSCSUCDFjcYpHLLnfyxdTTgbr+nao4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rhy+nLOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21510C4CEEF;
+	Wed, 12 Mar 2025 19:54:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741809288;
+	bh=lKt4v6B/Hv/DuheeaArB6L02/tBeX5Mg5/cRp3lVdsU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rhy+nLOcuegG9GRsRnZfn4eUz+8IK92sp+r2Lnz20uoBfcf3B5PRZQuHld87R32Uy
+	 7sWWdbWS6T1lIznmf34VIwwYxOXN8UHInoQ+5qmVzKMK61xvvrpv+CoGCG6Iev9M18
+	 fmgtKmpE7yzAlAhA18cL0e/up9roNS/bW2tof5O/PFYf+dVMLrac3QZJXV78KTDbhs
+	 gXl+V3CFiF7dQ6LxA+sPAZBNKDoeDifu7/G9VU69XxDj6Oz1gLDIWtD73m2Jg7M/Zn
+	 EO1uMeC7kD//PfXKzVum72KWEBZw5oTs1FQv6r31Lg22J23zPxipMu7Y8yDNq98dJh
+	 FakOuJ+EyyW1Q==
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7275bc6638bso61952a34.2;
+        Wed, 12 Mar 2025 12:54:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUClm2WZ7don+6qvgQUjzrhTOl7xzse8r1W4hQFoNuRyW4rjcN0DMBVLcRETIYXdzlMcIEapc9B1vcW@vger.kernel.org, AJvYcCUPIYbzK5VWJSBX+Oh3/CxpldpBbhSKYjVKH3qeDy0qhWDs3Mpxs6qAf8oybBJvIZiRvMJYTszkbpHs8H/7@vger.kernel.org, AJvYcCXVaHipkrVdVdZPO/Q07Boiq8Pc2JVHjWCnIrAgi/owdT7o4RYwqgS0/cmNv1sci6AtOAq1GDUY4EA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYt3diDWdi5LUBcR3FS86os9Sgfn6qLWL+4bRasNr2XE/R/Bg3
+	4jMhvpH3ikqAp5WT1pPfmnHS9FSWNr49iv7J1eI2Cv/uEbxSrPkulcHsRTDsZLVdG0Fokj1/l6G
+	VBTDv0QYI81TOPdTjARKKJJyP1Dw=
+X-Google-Smtp-Source: AGHT+IFWQ+68T4cDYbzYqN7yYRPuiErjeJlW/C3PqbsPHji5gMhp9e3GkwZlyvDgbgSTRVqkboScmEK2ysD6txHZ8lU=
+X-Received: by 2002:a05:6830:314b:b0:72a:4804:77ff with SMTP id
+ 46e09a7af769-72a48047df7mr9950313a34.25.1741809287316; Wed, 12 Mar 2025
+ 12:54:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/10] Drivers: hv: Introduce per-cpu event ring tail
-To: Tianyu Lan <ltykernel@gmail.com>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com,
- decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
- joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
- jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
- skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
- ssengar@linux.microsoft.com, apais@linux.microsoft.com,
- Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
- gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
- muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
- lenb@kernel.org, corbet@lwn.net
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-8-git-send-email-nunodasneves@linux.microsoft.com>
- <CAMvTesAW-9Mo0oY6UUh2anp6DQCSsVCUhBiV2-bKp2VD_N0DYw@mail.gmail.com>
-Content-Language: en-US
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-In-Reply-To: <CAMvTesAW-9Mo0oY6UUh2anp6DQCSsVCUhBiV2-bKp2VD_N0DYw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250206131428.3261578-1-zhenglifeng1@huawei.com> <20250206131428.3261578-4-zhenglifeng1@huawei.com>
+In-Reply-To: <20250206131428.3261578-4-zhenglifeng1@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 12 Mar 2025 20:54:36 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iNzNROkPD4+b=Au8DwdF9unajKivdRQMBFfwzjFxHLcg@mail.gmail.com>
+X-Gm-Features: AQ5f1JoSmulRpnfW_hUqrLihklxgXLKWq2sUIv3vB-S-zZVKKZq8CTuYE0thOsU
+Message-ID: <CAJZ5v0iNzNROkPD4+b=Au8DwdF9unajKivdRQMBFfwzjFxHLcg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/8] ACPI: CPPC: Rename cppc_get_perf() to cppc_get_reg_val()
+To: Lifeng Zheng <zhenglifeng1@huawei.com>
+Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
+	viresh.kumar@linaro.org, mario.limonciello@amd.com, gautham.shenoy@amd.com, 
+	ray.huang@amd.com, pierre.gondois@arm.com, acpica-devel@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linuxarm@huawei.com, yumpusamongus@gmail.com, 
+	srinivas.pandruvada@linux.intel.com, jonathan.cameron@huawei.com, 
+	zhanjie9@hisilicon.com, lihuisong@huawei.com, hepeng68@huawei.com, 
+	fanghao11@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/10/2025 6:01 AM, Tianyu Lan wrote:
-> On Thu, Feb 27, 2025 at 7:09 AM Nuno Das Neves
-> <nunodasneves@linux.microsoft.com> wrote:
->>
->> Add a pointer hv_synic_eventring_tail to track the tail pointer for the
->> SynIC event ring buffer for each SINT.
->>
->> This will be used by the mshv driver, but must be tracked independently
->> since the driver module could be removed and re-inserted.
->>
->> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
->> Reviewed-by: Wei Liu <wei.liu@kernel.org>
-> 
-> It's better to expose a function to check the tail instead of exposing
-> hv_synic_eventring_tail directly.
-> 
-What is the advantage of using a function for this? We need to both set
-and get the tail.
-
-> BTW, how does mshv driver use hv_synic_eventring_tail? Which patch
-> uses it in this series?
+On Thu, Feb 6, 2025 at 2:14=E2=80=AFPM Lifeng Zheng <zhenglifeng1@huawei.co=
+m> wrote:
 >
-This variable stores indices into the synic eventring page (one for each
-SINT, and per-cpu). Each SINT has a ringbuffer of u32 messages. The tail
-index points to the latest one.
+> Rename cppc_get_perf() to cppc_get_reg_val() as a generic function to rea=
+d
+> cppc registers. And extract the operations if register is in pcc out as
+> cppc_get_reg_val_in_pcc(). Without functional change.
 
-This is only used for doorbell messages today. The message in this case is
-a port number which is used to lookup and invoke a callback, which signals
-ioeventfd(s), to notify the VMM of a guest MMIO write.
+This should be split into two patches IMV.
 
-It is used in patch 10.
+> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+> ---
+>  drivers/acpi/cppc_acpi.c | 66 +++++++++++++++++++++-------------------
+>  1 file changed, 35 insertions(+), 31 deletions(-)
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index db22f8f107db..3c9c4ce2a0b0 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1189,48 +1189,52 @@ static int cpc_write(int cpu, struct cpc_register=
+_resource *reg_res, u64 val)
+>         return ret_val;
+>  }
+>
+> -static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *perf)
+> +static int cppc_get_reg_val_in_pcc(int cpu, struct cpc_register_resource=
+ *reg, u64 *val)
+>  {
+> -       struct cpc_desc *cpc_desc =3D per_cpu(cpc_desc_ptr, cpunum);
+> -       struct cpc_register_resource *reg;
+> +       int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
+> +       struct cppc_pcc_data *pcc_ss_data =3D NULL;
+> +       int ret;
+>
+> -       if (!cpc_desc) {
+> -               pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
+> +       if (pcc_ss_id < 0) {
+> +               pr_debug("Invalid pcc_ss_id\n");
+>                 return -ENODEV;
+>         }
+>
+> -       reg =3D &cpc_desc->cpc_regs[reg_idx];
+> +       pcc_ss_data =3D pcc_data[pcc_ss_id];
+>
+> -       if (IS_OPTIONAL_CPC_REG(reg_idx) && !CPC_SUPPORTED(reg)) {
+> -               pr_debug("CPC register (reg_idx=3D%d) is not supported\n"=
+, reg_idx);
+> -               return -EOPNOTSUPP;
+> -       }
 
-Thanks
-Nuno
- 
-> Thanks.
-> 
-> 
->> ---
->>  drivers/hv/hv_common.c | 34 ++++++++++++++++++++++++++++++++--
->>  1 file changed, 32 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
->> index 252fd66ad4db..2763cb6d3678 100644
->> --- a/drivers/hv/hv_common.c
->> +++ b/drivers/hv/hv_common.c
->> @@ -68,6 +68,16 @@ static void hv_kmsg_dump_unregister(void);
->>
->>  static struct ctl_table_header *hv_ctl_table_hdr;
->>
->> +/*
->> + * Per-cpu array holding the tail pointer for the SynIC event ring buffer
->> + * for each SINT.
->> + *
->> + * We cannot maintain this in mshv driver because the tail pointer should
->> + * persist even if the mshv driver is unloaded.
->> + */
->> +u8 __percpu **hv_synic_eventring_tail;
->> +EXPORT_SYMBOL_GPL(hv_synic_eventring_tail);
->> +
->>  /*
->>   * Hyper-V specific initialization and shutdown code that is
->>   * common across all architectures.  Called from architecture
->> @@ -90,6 +100,9 @@ void __init hv_common_free(void)
->>
->>         free_percpu(hyperv_pcpu_input_arg);
->>         hyperv_pcpu_input_arg = NULL;
->> +
->> +       free_percpu(hv_synic_eventring_tail);
->> +       hv_synic_eventring_tail = NULL;
->>  }
->>
->>  /*
->> @@ -372,6 +385,11 @@ int __init hv_common_init(void)
->>                 BUG_ON(!hyperv_pcpu_output_arg);
->>         }
->>
->> +       if (hv_root_partition()) {
->> +               hv_synic_eventring_tail = alloc_percpu(u8 *);
->> +               BUG_ON(hv_synic_eventring_tail == NULL);
->> +       }
->> +
->>         hv_vp_index = kmalloc_array(nr_cpu_ids, sizeof(*hv_vp_index),
->>                                     GFP_KERNEL);
->>         if (!hv_vp_index) {
->> @@ -460,6 +478,7 @@ void __init ms_hyperv_late_init(void)
->>  int hv_common_cpu_init(unsigned int cpu)
->>  {
->>         void **inputarg, **outputarg;
->> +       u8 **synic_eventring_tail;
->>         u64 msr_vp_index;
->>         gfp_t flags;
->>         const int pgcount = hv_output_page_exists() ? 2 : 1;
->> @@ -472,8 +491,8 @@ int hv_common_cpu_init(unsigned int cpu)
->>         inputarg = (void **)this_cpu_ptr(hyperv_pcpu_input_arg);
->>
->>         /*
->> -        * hyperv_pcpu_input_arg and hyperv_pcpu_output_arg memory is already
->> -        * allocated if this CPU was previously online and then taken offline
->> +        * The per-cpu memory is already allocated if this CPU was previously
->> +        * online and then taken offline
->>          */
->>         if (!*inputarg) {
->>                 mem = kmalloc(pgcount * HV_HYP_PAGE_SIZE, flags);
->> @@ -485,6 +504,17 @@ int hv_common_cpu_init(unsigned int cpu)
->>                         *outputarg = (char *)mem + HV_HYP_PAGE_SIZE;
->>                 }
->>
->> +               if (hv_root_partition()) {
->> +                       synic_eventring_tail = (u8 **)this_cpu_ptr(hv_synic_eventring_tail);
->> +                       *synic_eventring_tail = kcalloc(HV_SYNIC_SINT_COUNT,
->> +                                                       sizeof(u8), flags);
->> +
->> +                       if (unlikely(!*synic_eventring_tail)) {
->> +                               kfree(mem);
->> +                               return -ENOMEM;
->> +                       }
->> +               }
->> +
->>                 if (!ms_hyperv.paravisor_present &&
->>                     (hv_isolation_type_snp() || hv_isolation_type_tdx())) {
->>                         ret = set_memory_decrypted((unsigned long)mem, pgcount);
->> --
->> 2.34.1
->>
->>
-> 
-> 
+I'm not a big fan of the IS_OPTIONAL_CPC_REG() macro.  I'm not
+convinced at all that it adds any value above (and in the next patch
+for that matter) and the message printing the register index is just
+plain unuseful to anyone who doesn't know how to decode it.
 
+If CPC_SUPPORTED(reg) is not true, the register cannot be used AFAICS
+regardless of what IS_OPTIONAL_CPC_REG() has to say about it.
+
+> +       down_write(&pcc_ss_data->pcc_lock);
+>
+> -       if (CPC_IN_PCC(reg)) {
+> -               int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpunum);
+> -               struct cppc_pcc_data *pcc_ss_data =3D NULL;
+> -               int ret;
+> +       if (send_pcc_cmd(pcc_ss_id, CMD_READ) >=3D 0)
+> +               ret =3D cpc_read(cpu, reg, val);
+> +       else
+> +               ret =3D -EIO;
+>
+> -               if (pcc_ss_id < 0) {
+> -                       pr_debug("Invalid pcc_ss_id\n");
+> -                       return -ENODEV;
+> -               }
+> +       up_write(&pcc_ss_data->pcc_lock);
+>
+> -               pcc_ss_data =3D pcc_data[pcc_ss_id];
+> +       return ret;
+> +}
+>
+> -               down_write(&pcc_ss_data->pcc_lock);
+> +static int cppc_get_reg_val(int cpu, enum cppc_regs reg_idx, u64 *val)
+> +{
+> +       struct cpc_desc *cpc_desc =3D per_cpu(cpc_desc_ptr, cpu);
+> +       struct cpc_register_resource *reg;
+>
+> -               if (send_pcc_cmd(pcc_ss_id, CMD_READ) >=3D 0)
+> -                       ret =3D cpc_read(cpunum, reg, perf);
+> -               else
+> -                       ret =3D -EIO;
+> +       if (!cpc_desc) {
+> +               pr_debug("No CPC descriptor for CPU:%d\n", cpu);
+> +               return -ENODEV;
+> +       }
+>
+> -               up_write(&pcc_ss_data->pcc_lock);
+> +       reg =3D &cpc_desc->cpc_regs[reg_idx];
+>
+> -               return ret;
+> +       if (IS_OPTIONAL_CPC_REG(reg_idx) && !CPC_SUPPORTED(reg)) {
+> +               pr_debug("CPC register (reg_idx=3D%d) is not supported\n"=
+, reg_idx);
+> +               return -EOPNOTSUPP;
+>         }
+>
+> -       return cpc_read(cpunum, reg, perf);
+> +       if (CPC_IN_PCC(reg))
+> +               return cppc_get_reg_val_in_pcc(cpu, reg, val);
+> +
+> +       return cpc_read(cpu, reg, val);
+>  }
+>
+>  /**
+> @@ -1242,7 +1246,7 @@ static int cppc_get_perf(int cpunum, enum cppc_regs=
+ reg_idx, u64 *perf)
+>   */
+>  int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
+>  {
+> -       return cppc_get_perf(cpunum, DESIRED_PERF, desired_perf);
+> +       return cppc_get_reg_val(cpunum, DESIRED_PERF, desired_perf);
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_get_desired_perf);
+>
+> @@ -1255,7 +1259,7 @@ EXPORT_SYMBOL_GPL(cppc_get_desired_perf);
+>   */
+>  int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
+>  {
+> -       return cppc_get_perf(cpunum, NOMINAL_PERF, nominal_perf);
+> +       return cppc_get_reg_val(cpunum, NOMINAL_PERF, nominal_perf);
+>  }
+>
+>  /**
+> @@ -1267,7 +1271,7 @@ int cppc_get_nominal_perf(int cpunum, u64 *nominal_=
+perf)
+>   */
+>  int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+>  {
+> -       return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
+> +       return cppc_get_reg_val(cpunum, HIGHEST_PERF, highest_perf);
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
+>
+> @@ -1280,7 +1284,7 @@ EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
+>   */
+>  int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
+>  {
+> -       return cppc_get_perf(cpunum, ENERGY_PERF, epp_perf);
+> +       return cppc_get_reg_val(cpunum, ENERGY_PERF, epp_perf);
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_get_epp_perf);
+>
+> --
+> 2.33.0
+>
+>
 
