@@ -1,40 +1,47 @@
-Return-Path: <linux-acpi+bounces-12142-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12143-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6241FA5E598
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 21:47:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7EEA5E667
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 22:21:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33DF6188EEDF
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB8F818979E5
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 21:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B0D1C1F0C;
-	Wed, 12 Mar 2025 20:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57851EF091;
+	Wed, 12 Mar 2025 21:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="pm3SSAYs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537E6258A;
-	Wed, 12 Mar 2025 20:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D161EC00C;
+	Wed, 12 Mar 2025 21:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741812434; cv=none; b=MVG1jIR8uRJ9O1qlNDwd59MLRsRVjG7w4+nachT/H+8PJOxpU/gDBxC0gUZErDHWTbGD7oNw8DQiodOtRVG57nZG+IJ1/iRfsC+Qwei3qAitCz+ccrv1aH9p//EfVe4Bww4epBSCAIWkw87rH2oh5Wa0AtRiDCI5f6nYmpV3F84=
+	t=1741814470; cv=none; b=mqNg+Ibf1+Tw3x9kU9X6EXE7PhVy2hn4GXi9IFZuUwAXdqm3qyiRqr89A9p9kSwp91epwOBMXGME1LKBQBWIx1A89Tfug0hXrKENEqoN05SdRkM1VVYfN2rnBq/u3/hDPao8xTzdVr0CXodWq2XLtb3l+KYVQMxubdyf00fqPGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741812434; c=relaxed/simple;
-	bh=oHoaylZ0+e02kulPIew6Nn6BhlI26LCAOEVuoJmwZY4=;
+	s=arc-20240116; t=1741814470; c=relaxed/simple;
+	bh=8lk79mDnF9WAaI75FvC+bpLneGj3wkxAcWyHOCuXSjo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qapxFJ8kRCzPJZczyJuxV2Hm5LqJ3A9gtjk4vejrWOEEw9LVQctoWcBoX3LipnKW42A+mqjjlU6e6+qQrn2Kz2uY2GJe2t9Yh5DO+zDyHJSciv9hWg3uJ62iUAcfegv1yjgGCPebkqiU+ZmfKRMzoMYERdEdoap2lcxo8yrBH/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E338015A1;
-	Wed, 12 Mar 2025 13:47:21 -0700 (PDT)
-Received: from [10.118.111.35] (G9L3377F54.austin.arm.com [10.118.111.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E4ABA3F673;
-	Wed, 12 Mar 2025 13:47:10 -0700 (PDT)
-Message-ID: <25269252-e45f-4692-a519-a0703b6800a1@arm.com>
-Date: Wed, 12 Mar 2025 15:47:10 -0500
+	 In-Reply-To:Content-Type; b=DVexfv4tTndPAZeOpRyvfKJTmGbo2EqBK3lP7F3WSKSWvSzquPlKXny7A1HpPXFC3zK62UFvYJb01AwZamTXmRP6+fMVcQTTShkF7IpVdOF6mHrLKL5dgWPDZk4dcn8WULL0KS7oaROtMuRQcOPNqtmGrWBOqkkgfKpBJag0a2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=pm3SSAYs; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 86B37210B157;
+	Wed, 12 Mar 2025 14:21:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 86B37210B157
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741814467;
+	bh=MgNM2rD8/EOf05M0lP85WV+gCmyNEYHLXXzpOfe5KVE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pm3SSAYshDZ0/J9DAnDCCWIg7IAiMKcF9WebEeevzy98VYIaLbtZxz8W0R4oz5bs3
+	 bx8W1PNJ4LBZ4FkX6cjdoD9OOn1KNZkGtH27nqPcPfkJxVFnXRqfUmYBYdXIJxg7dQ
+	 dkyAwa4NZs8ZWgWM4ZixgLD18JrAFkhBHsI7/1wQ=
+Message-ID: <996deaab-e1d1-4f04-ba31-c0dcab2d5e1d@linux.microsoft.com>
+Date: Wed, 12 Mar 2025 14:21:07 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,103 +49,75 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Build error on -next due to tpm_crb.c changes?
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, jarkko@kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, lenb@kernel.org,
- rafael@kernel.org, jgg@ziepe.ca, peterhuewe@gmx.de,
- linux-integrity@vger.kernel.org,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20250305173611.74548-1-stuart.yoder@arm.com>
- <0ad035ff-400e-4b15-8b8f-40b69152ec46@leemhuis.info>
- <92bc0a65-608f-4307-bb1c-16d8836d42e5@arm.com>
- <77fb9077-f598-4308-8862-6d09b23688bb@leemhuis.info>
- <23c77291-7c6e-45ea-b1ad-952c01882579@arm.com>
- <20250311211700.bwizwecxyxorrwql@bogus>
+Subject: Re: [PATCH hyperv-next v5 03/11] Drivers: hv: Enable VTL mode for
+ arm64
+To: Arnd Bergmann <arnd@arndb.de>, Michael Kelley <mhklinux@outlook.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>, Borislav Petkov <bp@alien8.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Conor Dooley
+ <conor+dt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Dexuan Cui <decui@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Joey Gouly <joey.gouly@arm.com>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Oliver Upton <oliver.upton@linux.dev>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>
+Cc: "apais@microsoft.com" <apais@microsoft.com>,
+ "benhill@microsoft.com" <benhill@microsoft.com>,
+ "bperkins@microsoft.com" <bperkins@microsoft.com>,
+ "sunilmut@microsoft.com" <sunilmut@microsoft.com>
+References: <20250307220304.247725-1-romank@linux.microsoft.com>
+ <20250307220304.247725-4-romank@linux.microsoft.com>
+ <e0f81049-688e-4f53-a002-5d246281bf8d@app.fastmail.com>
+ <BN7PR02MB41488C06B7E42830C700318DD4D62@BN7PR02MB4148.namprd02.prod.outlook.com>
+ <119cfb59-d68b-4718-b7cb-90cba67827e8@app.fastmail.com>
+ <BN7PR02MB4148FC15ADF0E49327262B92D4D62@BN7PR02MB4148.namprd02.prod.outlook.com>
+ <caa0d793-3f05-4d7c-88d0-224ec0503cfb@linux.microsoft.com>
+ <45171fb1-7533-449f-83d4-066d038c839f@app.fastmail.com>
 Content-Language: en-US
-From: Stuart Yoder <stuart.yoder@arm.com>
-In-Reply-To: <20250311211700.bwizwecxyxorrwql@bogus>
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <45171fb1-7533-449f-83d4-066d038c839f@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 3/11/25 4:17 PM, Sudeep Holla wrote:
-> On Tue, Mar 11, 2025 at 01:25:50PM -0500, Stuart Yoder wrote:
+On 3/12/2025 1:25 PM, Arnd Bergmann wrote:
+> On Wed, Mar 12, 2025, at 19:33, Roman Kisel wrote:
+>> On 3/10/2025 3:18 PM, Michael Kelley wrote:
 >>
->>
->> On 3/11/25 11:51 AM, Thorsten Leemhuis wrote:
->>> On 11.03.25 16:53, Stuart Yoder wrote:
->>>> On 3/11/25 10:21 AM, Thorsten Leemhuis wrote:
->>>>> On 05.03.25 18:36, Stuart Yoder wrote:
->>>> [...]
->>>> So, it should not be possible on one had have
->>>> CONFIG_TCG_ARM_CRB_FFA being true when building tpm_crb.c
->>>> and false resulting in the tpm_crb_ffa.o not being
->>>> picked up in the build.
->>>
->>> Many thx for the answer. Maybe Fedora's way to prepare the .config files
->>> (which my package builds use to be close to Fedora's official packages)
->>> is doing something odd/wrong. Will take a closer look and report back.
->>
->> I've been experimenting with some different build config combinations
->> and have reproduced what must be the issue.
->>
->> This works fine:
->> <*>   TPM 2.0 CRB Interface                                         < >
->> TPM CRB over Arm FF-A Transport
->>
->> This works fine:
->> < >   TPM 2.0 CRB Interface                                         <*>
->> TPM CRB over Arm FF-A Transport
->>
->> This works fine:
->> <*>   TPM 2.0 CRB Interface                                         <*>
->> TPM CRB over Arm FF-A Transport
->>
->> This works fine:
->> <M>   TPM 2.0 CRB Interface                                         <M>
->> TPM CRB over Arm FF-A Transport
->>
->> This fails:
->> <*>   TPM 2.0 CRB Interface                                         <M>
->> TPM CRB over Arm FF-A Transport
->>
->> The 2 drivers are coupled, so we can't have one built as a module
->> and the other built-in.
->>
->> I'm not a Kconfig expert, and need to do some fiddling to see
->> if I can find a Kconfig syntax that prevents that failure scenario.
+>> That's a minimal extension, its surprise factor is very low. It has not
+>> been seen to cause issues. If no one has strong opinions against that,
+>> I'd send that in V6.
 >>
 > 
-> 	default y if (TCG_CRB && ARM_FFA_TRANSPORT)
+> Works for me. Thanks for your detailed explanations.
 > 
-> is the issue here. You can select it as built-in if either or one of the
-> TCG_CRB and ARM_FFA_TRANSPORT is a module, but that is exactly what happens.
-> Not sure if default value is a must for you. But just depends on each of
-> these should be good enough and enable it in defconfig if needed. Or
-> you can have multiple default at least 4 combinations I can see. Both
-> are =y and either and both are =m
 
-I would like a default, because if someone enables both
-ARM_FFA_TRANSPORT and TPM_CRB I don't want them to forget to
-turn on TCG_ARM_CRB_FFA.
+Thank you for your review very much!
 
-I've experimented with a few ways of doing this and I think
-this is simplest and gives the behavior we want:
+>         Arnd
 
-config TCG_ARM_CRB_FFA
-         tristate "TPM CRB over Arm FF-A Transport"
-         depends on ARM_FFA_TRANSPORT && TCG_CRB
-         default TCG_CRB
-
-The TCG_ARM_CRB_FFA option only appears if both FFA and
-TPM_CRB are enabled. And the default tracks the value
-of TPM_CRB.
-
-Thanks,
-Stuart
-
-
+-- 
+Thank you,
+Roman
 
 
