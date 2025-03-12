@@ -1,128 +1,171 @@
-Return-Path: <linux-acpi+bounces-12126-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12128-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A316A5E221
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 17:59:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B41BA5E36A
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50FF6189E060
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 16:59:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD14A17BC84
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 18:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654D324BC09;
-	Wed, 12 Mar 2025 16:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04952257426;
+	Wed, 12 Mar 2025 18:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2wnzQv1"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jYKT7aaV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D441B87F3;
-	Wed, 12 Mar 2025 16:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7357C256C9E;
+	Wed, 12 Mar 2025 18:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741798777; cv=none; b=deKG/llKAGIzK5ZEDCg4YV6pzZH6rRFbcLmX2uYg6VLtS8h21BpaPk/ym3NAg/GgIdDG0uetvU1ymHEixS9AS1xMCl3bRqfHs45MCT4Po0jSb89jLjup5mkOcEGm/OgEdvbcNzraXGpUvnZ07vhOwn/uyLISyH2YTGJCrnyfgcs=
+	t=1741802704; cv=none; b=s6PazNnIEa54gWJi0sH5QWweHMuWx+E29brjn4k/kp4PspGCnMKdQRkyKW4/TxHcbNEB3o0NXB/buJvNZkqLdCQCrzb7KsBsn73PKbYihpHMgK4sDTI4qV5sDCwip4/wEhl6yD6aBVBg8oXg+fxZwx0TRAVJpuypR09J2lkNshs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741798777; c=relaxed/simple;
-	bh=OXSXt8JRe88bc9jaXTJlcjEd0ik8aTsjuG+zs9/eZaI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z7zds31/IE8zAjKuVXMt0xa+GpQJ9pBmxV+8FlzuQf7WmYuGIyiNMRK9kAo9q886EyQiZUsVlO6UFRgF7v5YsDxY9ncE7zuOCuQoakDIVR9GD7RZjwYv/Rph5uCEqBjSezRGoJ1Wz3tRmmxOS0U9tVEnNoXjeNR3R/AnTDr8tvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2wnzQv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B538C4CEDD;
-	Wed, 12 Mar 2025 16:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741798776;
-	bh=OXSXt8JRe88bc9jaXTJlcjEd0ik8aTsjuG+zs9/eZaI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=E2wnzQv1viG1OqsjF5pEOKKwikOm93zMtTKoqGTq/QJtFrwPzEetbWoGBMrrem2nO
-	 NQySivLpTB+Og+UmDkwJnhILHKzOBixJXNufqWGaxaMLb6YBfJ5zUCvK1Kw1+RhN8W
-	 UW7YzURoE/2NhWK+ZGJ6lZ8QJ1RN7gc9P8O67Lj18gae/Wfv1F2cn6ErsjOjuqtLCe
-	 9/lIuC6VpFlAs/IqscPnDv0mp73xUWadrF6j1xvi9tpDMdquZV1JWVZsF5sk3OkJnS
-	 rPxZQ0sVOmQ1q5M9CJjWYVIMTvM7bNi28RxjHMbEcypQ8lQuK6lxOQSrEMQeocm2O+
-	 bw9JazyP3CG7Q==
-From: Kees Cook <kees@kernel.org>
-To: Robert Moore <robert.moore@intel.com>
-Cc: Kees Cook <kees@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] ACPICA: Add __nonstring annotations for unterminated strings
-Date: Wed, 12 Mar 2025 09:59:26 -0700
-Message-Id: <20250312165922.work.963-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741802704; c=relaxed/simple;
+	bh=YRkqEDAnEJO9uif9D8gYv3G3QiocUg9KYSfoxRMiepo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dX1QvFhfCwvnePpZDqCpbRNUj7skYFkHrAT5EboN8FIQda7LwZ0mHNamJsJ/p1XOgvPvfTsLKYKc7XSmM+7sN7dJkbOtQNZEVlwrkEEtv3veHiz4xBRl+iCVsPNVJrl09EaxBzJEDWRCeCaS0cMctrzQB2h0DfVXDcRMfDnc9U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jYKT7aaV; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 1B63C210B155;
+	Wed, 12 Mar 2025 11:05:02 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1B63C210B155
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741802702;
+	bh=3LuHCHpuveXkpSQUcYt/4aNBi7uFbOG/3oEGn8E8LXY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jYKT7aaV5gspSop8H5hJDvSoYzQZSeYlg64Ifr722u0Nb9Lg5Imcrfh9r7PIfD5lT
+	 6Gx7WdXYzK5Qkk74C6o++r7isZrfq5nwtn1HQ8mbeg+mlVaPIh0Da7Nxn0zjSmQ6i1
+	 ISWSMrdAV6mX4SniwmTsX/jUZuFL1ANTVkqQw/UY=
+Message-ID: <8520ef42-6cb4-4e14-9700-de7ae8a99ae8@linux.microsoft.com>
+Date: Wed, 12 Mar 2025 11:04:37 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2399; i=kees@kernel.org; h=from:subject:message-id; bh=OXSXt8JRe88bc9jaXTJlcjEd0ik8aTsjuG+zs9/eZaI=; b=owGbwMvMwCVmps19z/KJym7G02pJDOkX9+ZazYmIiOUK2eQpuJCbX615XdMqtcIDryftZFbbq e+yx/JLRykLgxgXg6yYIkuQnXuci8fb9nD3uYowc1iZQIYwcHEKwEROxzP8d93WHr1d+sieVc8d lE8k7dmZ6/XpqLWV5+t/vxW4HTYtu8HIsPMS+xUe0UUMtc7rE7/G++TmJ6lMXN4d5PzX/2p2Qso 9fgA=
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/10] x86/mshyperv: Add support for extended Hyper-V
+ features
+To: Michael Kelley <mhklinux@outlook.com>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Cc: "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "decui@microsoft.com" <decui@microsoft.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
+ <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "hpa@zytor.com" <hpa@zytor.com>,
+ "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+ "joro@8bytes.org" <joro@8bytes.org>,
+ "robin.murphy@arm.com" <robin.murphy@arm.com>, "arnd@arndb.de"
+ <arnd@arndb.de>,
+ "jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
+ "muminulrussell@gmail.com" <muminulrussell@gmail.com>,
+ "skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
+ "mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
+ "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+ "apais@linux.microsoft.com" <apais@linux.microsoft.com>,
+ "Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
+ "stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>,
+ "prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
+ "muislam@microsoft.com" <muislam@microsoft.com>,
+ "anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
+ "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+ <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-3-git-send-email-nunodasneves@linux.microsoft.com>
+ <SN6PR02MB4157CBBC2D186E1944E6773AD4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB4157CBBC2D186E1944E6773AD4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When a character array without a terminating NUL character has a static
-initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+On 3/6/2025 10:30 AM, Michael Kelley wrote:
+> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Wednesday, February 26, 2025 3:08 PM
+>>
+>> From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+>>
+>> Extend the "ms_hyperv_info" structure to include a new field,
+>> "ext_features", for capturing extended Hyper-V features.
+>> Update the "ms_hyperv_init_platform" function to retrieve these features
+>> using the cpuid instruction and include them in the informational output.
+>>
+>> Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+>> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+>> ---
+>>  arch/x86/kernel/cpu/mshyperv.c | 6 ++++--
+>>  include/asm-generic/mshyperv.h | 1 +
+>>  2 files changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+>> index 4f01f424ea5b..2c29dfd6de19 100644
+>> --- a/arch/x86/kernel/cpu/mshyperv.c
+>> +++ b/arch/x86/kernel/cpu/mshyperv.c
+>> @@ -434,13 +434,15 @@ static void __init ms_hyperv_init_platform(void)
+>>  	 */
+>>  	ms_hyperv.features = cpuid_eax(HYPERV_CPUID_FEATURES);
+>>  	ms_hyperv.priv_high = cpuid_ebx(HYPERV_CPUID_FEATURES);
+>> +	ms_hyperv.ext_features = cpuid_ecx(HYPERV_CPUID_FEATURES);
+>>  	ms_hyperv.misc_features = cpuid_edx(HYPERV_CPUID_FEATURES);
+>>  	ms_hyperv.hints    = cpuid_eax(HYPERV_CPUID_ENLIGHTMENT_INFO);
+>>
+>>  	hv_max_functions_eax = cpuid_eax(HYPERV_CPUID_VENDOR_AND_MAX_FUNCTIONS);
+>>
+>> -	pr_info("Hyper-V: privilege flags low 0x%x, high 0x%x, hints 0x%x, misc 0x%x\n",
+>> -		ms_hyperv.features, ms_hyperv.priv_high, ms_hyperv.hints,
+>> +	pr_info("Hyper-V: privilege flags low 0x%x, high 0x%x, ext 0x%x, hints 0x%x, misc 0x%x\n",
+>> +		ms_hyperv.features, ms_hyperv.priv_high,
+>> +		ms_hyperv.ext_features, ms_hyperv.hints,
+>>  		ms_hyperv.misc_features);
+>>
+>>  	ms_hyperv.max_vp_index = cpuid_eax(HYPERV_CPUID_IMPLEMENT_LIMITS);
+>> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+>> index dc4729dba9ef..c020d5d0ec2a 100644
+>> --- a/include/asm-generic/mshyperv.h
+>> +++ b/include/asm-generic/mshyperv.h
+>> @@ -36,6 +36,7 @@ enum hv_partition_type {
+>>  struct ms_hyperv_info {
+>>  	u32 features;
+>>  	u32 priv_high;
+>> +	u32 ext_features;
+>>  	u32 misc_features;
+>>  	u32 hints;
+>>  	u32 nested_features;
+>> --
+>> 2.34.1
+> 
+> Are any of the extended features available on arm64? This code is obviously x86 specific,
+> so ms_hyperv.ext_features will be zero on arm64. From what I can see, ext_features is
+> referenced only in Patch 10 of this series, and in code that is under #ifdef CONFIG_X86_64,
+> so that should be OK.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
----
-I wanted to send this as the fix from the "Linux perspective", but
-I know ACPICA is separate upstream, and likely the fixes will come
-from there. To that end, I've proposed these changes uptream as well:
-https://github.com/acpica/acpica/pull/1006
+Just checked - yes ARM64 has features in ECX, but they are different to the x86_64 ones.
+We can add the ARM64 ones when needed.
 
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: acpica-devel@lists.linux.dev
----
- drivers/acpi/acpica/aclocal.h   | 4 ++--
- drivers/acpi/acpica/nsrepair2.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Thanks
+Nuno
 
-diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-index 6f4fe47c955b..6481c48c22bb 100644
---- a/drivers/acpi/acpica/aclocal.h
-+++ b/drivers/acpi/acpica/aclocal.h
-@@ -293,7 +293,7 @@ acpi_status (*acpi_internal_method) (struct acpi_walk_state * walk_state);
-  * expected_return_btypes - Allowed type(s) for the return value
-  */
- struct acpi_name_info {
--	char name[ACPI_NAMESEG_SIZE];
-+	char name[ACPI_NAMESEG_SIZE] __nonstring;
- 	u16 argument_list;
- 	u8 expected_btypes;
- };
-@@ -370,7 +370,7 @@ typedef acpi_status (*acpi_object_converter) (struct acpi_namespace_node *
- 					      converted_object);
- 
- struct acpi_simple_repair_info {
--	char name[ACPI_NAMESEG_SIZE];
-+	char name[ACPI_NAMESEG_SIZE] __nonstring;
- 	u32 unexpected_btypes;
- 	u32 package_index;
- 	acpi_object_converter object_converter;
-diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-index 1bb7b71f07f1..330b5e4711da 100644
---- a/drivers/acpi/acpica/nsrepair2.c
-+++ b/drivers/acpi/acpica/nsrepair2.c
-@@ -25,7 +25,7 @@ acpi_status (*acpi_repair_function) (struct acpi_evaluate_info * info,
- 				     return_object_ptr);
- 
- typedef struct acpi_repair_info {
--	char name[ACPI_NAMESEG_SIZE];
-+	char name[ACPI_NAMESEG_SIZE] __nonstring;
- 	acpi_repair_function repair_function;
- 
- } acpi_repair_info;
--- 
-2.34.1
+> 
+> The pr_info() line will now be slightly different on x86 and arm64 since arm64 won't have
+> the "ext" field, but I think that's OK too.
+> 
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
 
 
