@@ -1,135 +1,121 @@
-Return-Path: <linux-acpi+bounces-12119-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12120-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D4AA5DBAF
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 12:36:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191D1A5DF0D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 15:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8F3189CA39
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 11:37:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91C503B2CF4
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 14:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE4923E335;
-	Wed, 12 Mar 2025 11:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753E9242927;
+	Wed, 12 Mar 2025 14:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NTKDesOH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vr1wJXj2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB2B125B9;
-	Wed, 12 Mar 2025 11:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD1D159596;
+	Wed, 12 Mar 2025 14:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741779414; cv=none; b=BTANKzYkG3RrI0uhQxQ9vEf6G0q3Q/mZdK/XUv4+kWt7fiJFz/O9+PKWJ9nt0j8X3kjDbxLbOCA5ZhqDsRIjOs9ENptQsThVX/OyBGqYxfEotIN46dsTL84J8V0DgnM/72FJcfOGu1GktwHX79I9WQmGMpyneQrlzfK6nAFuhI8=
+	t=1741790095; cv=none; b=HUON+/dlxGvonDOSGiO2aGCXpzTJ5M5upQgs0ztmT/1DMBMbh0lQbf2HHL8i/pszVVAlcwa2yu6Jg0C8k980lOn5l9kjgRLD/ISzWpPqbbeSpYqLScTIwoiBA9r08VdVpFVQMK8/ZXyZUzZ6Sn/8SWkqNkQPgpJVom4qePYDDUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741779414; c=relaxed/simple;
-	bh=FroqwxIZyxWRy8NxvaPvPbyYXAPIL2q9WyJPpH0RPSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fA25mca34MXTKZ21bvPcZoi18V/FRMlXU557NzQDoRIOHQAR7FkAxjkx+Vnayr/BZDdu0JUxo+MRxzEfl5gj5iITzTzeTtP3tnT9JdGU2RQcz/v8Y0rd3UpgUMX09W93jk7yjE8cLGn9na7vl1zNXwGi21cyjBceteZ+FX4Rgoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NTKDesOH; arc=none smtp.client-ip=192.198.163.16
+	s=arc-20240116; t=1741790095; c=relaxed/simple;
+	bh=ebScttk5wf21qkysq9N90DUvetPC+A0oagMmOoMp+8c=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JZm5ks5Q/cg62+yr2HUaATr8tj6dzrV5dBYJvFrhBt9HCXwRfkW7CE3gVyQFPrclHFMSAI7LeHlGf8ZqXHDQ80bgeUDtHl4P7j2ia7t9OrTYD1FmXKGlvIBssTfauSRBo+WxDY01TRk+4SkOsQMOb8qPkCqjtCg0DNNgr9qyIZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vr1wJXj2; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741779412; x=1773315412;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FroqwxIZyxWRy8NxvaPvPbyYXAPIL2q9WyJPpH0RPSg=;
-  b=NTKDesOHtbZwDpTgRd4Q0t053owpfPIhIaGmFb6OD9mc0wTtmi1sEWIv
-   HwEnf4zQEMRuxGcEMMrDrwx2CTfqYznJ3WpPpUrTystEOSezqdo29lzlH
-   Wna1Cqqt29OUWPTdivLOaqnlPz3tns/kI1+DOdfntkmW6UIWpmLbnNqMK
-   uCssiWMME2OnMXemlW1g52fkWyM4SaIJSQfxq6TAUeMoOzLY5Xk0kooIA
-   v47rfh8c2DXpCRu816jjVIf5GZZnINKQW5UEt+AVI57QnqpM8qCWo4dXb
-   OIBNDKIoBrrPomomvN/ILQ1PxzD3UDtUeIc2BPiyjrey6LyTuow7j74Oo
-   Q==;
-X-CSE-ConnectionGUID: bGJizVzWQ+OKLs+IrFuQ9g==
-X-CSE-MsgGUID: +yLE7NjjTvOiF0GyFsGZlw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="30435652"
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
-   d="scan'208";a="30435652"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 04:36:51 -0700
-X-CSE-ConnectionGUID: fGXdclrDSciibe9q+Rtoxw==
-X-CSE-MsgGUID: sx2y6Q16R1eOzj0C7o4Ymw==
+  t=1741790094; x=1773326094;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ebScttk5wf21qkysq9N90DUvetPC+A0oagMmOoMp+8c=;
+  b=Vr1wJXj2pLbXLnwyTPla68Pn05j5QJixXtBlrxRmSP7Ygd7O9h7qqGRa
+   xF97pnaMIhpk6TYA8cO0f0WH0J5bFKyzBj9bdDI/cnaokVeZbuo/5l5AL
+   kOsGebPsIVeBp5f3d3HYLkig+s0Tmz5OLDUZoHdeHm4TWQCXxbMFgKhSs
+   EUuhi/UYhDOZzk9bLD1iYv07zfejOu9FDexsPMzXcybAYjP8+ipQ6uzSM
+   EDEW0zFNn/mVJinxEPLJWm2/bW/Vlvu/SUAcyyvSuqiCh3A3URCkBCb6U
+   fJXRSb4JKkHegDikxgpA6ObV1mwlMt40b9KNS1FMQfOiLW1qKitxWrHhr
+   w==;
+X-CSE-ConnectionGUID: hrZc3Em2SYqWetGINSP81g==
+X-CSE-MsgGUID: XjReuxvpRJah+Q4VvOdFEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="43052915"
+X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
+   d="scan'208";a="43052915"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 07:34:54 -0700
+X-CSE-ConnectionGUID: sFBG6gFDTvCWxZkjv8+Hiw==
+X-CSE-MsgGUID: 5A+2JwY4R8eOUGbmazHX+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
-   d="scan'208";a="120635886"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa007.fm.intel.com with SMTP; 12 Mar 2025 04:36:45 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 12 Mar 2025 13:36:44 +0200
-Date: Wed, 12 Mar 2025 13:36:44 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jakob Riepler <jakob+lkml@paranoidlabs.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-usb@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1 4/4] usb: typec: tcpm: Use
- fwnode_get_child_node_count()
-Message-ID: <Z9FxzECvo5o7zaVH@kuha.fi.intel.com>
-References: <20250310150835.3139322-1-andriy.shevchenko@linux.intel.com>
- <20250310150835.3139322-5-andriy.shevchenko@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
+   d="scan'208";a="157828188"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.240.153]) ([10.124.240.153])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 07:34:47 -0700
+Message-ID: <f30eabf8-86dc-48f3-9f6c-0c1600527cac@linux.intel.com>
+Date: Wed, 12 Mar 2025 22:34:44 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250310150835.3139322-5-andriy.shevchenko@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Stuart Yoder <stuyoder@gmail.com>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun Gupta
+ <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ Charan Teja Kalla <quic_charante@quicinc.com>
+Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
+ path
+To: Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>
+References: <cover.1740753261.git.robin.murphy@arm.com>
+ <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
+ <Z9CEIlXoQJ-A0t-d@8bytes.org> <d55240a4-fe4a-48ea-b3a8-9a997bb7267c@arm.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <d55240a4-fe4a-48ea-b3a8-9a997bb7267c@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025 at 04:54:54PM +0200, Andy Shevchenko wrote:
-> Since fwnode_get_child_node_count() was split from its device property
-> counterpart, we may utilise it in the driver and drop custom implementation.
+On 2025/3/12 18:10, Robin Murphy wrote:
+> On 2025-03-11 6:42 pm, Joerg Roedel wrote:
+>> Hi Robin,
+>>
+>> On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
+>>> +    /*
+>>> +     * And if we do now see any replay calls, they would indicate 
+>>> someone
+>>> +     * misusing the dma_configure path outside bus code.
+>>> +     */
+>>> +    if (dev->driver)
+>>> +        dev_WARN(dev, "late IOMMU probe at driver bind, something 
+>>> fishy here!\n");
+>>
+>> This warning triggers on my workstation (with an AMD IOMMU), any ideas?
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Argh! When I moved the dma_configure call into iommu_init_device() for
+> v2 I moved the warning with it, but of course that needs to stay where
+> it was, *after* the point that ops->probe_device has had a chance to
+> filter out irrelevant devices. Does this make it behave?
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Yes. It works on my end.
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 9c455f073233..8ca2e26752fb 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -7166,7 +7166,7 @@ static void tcpm_fw_get_timings(struct tcpm_port *port, struct fwnode_handle *fw
->  
->  static int tcpm_fw_get_caps(struct tcpm_port *port, struct fwnode_handle *fwnode)
->  {
-> -	struct fwnode_handle *capabilities, *child, *caps = NULL;
-> +	struct fwnode_handle *capabilities, *caps = NULL;
->  	unsigned int nr_src_pdo, nr_snk_pdo;
->  	const char *opmode_str;
->  	u32 *src_pdo, *snk_pdo;
-> @@ -7232,9 +7232,7 @@ static int tcpm_fw_get_caps(struct tcpm_port *port, struct fwnode_handle *fwnode
->  	if (!capabilities) {
->  		port->pd_count = 1;
->  	} else {
-> -		fwnode_for_each_child_node(capabilities, child)
-> -			port->pd_count++;
-> -
-> +		port->pd_count = fwnode_get_child_node_count(capabilities);
->  		if (!port->pd_count) {
->  			ret = -ENODATA;
->  			goto put_capabilities;
-> -- 
-> 2.47.2
-
--- 
-heikki
+Thanks,
+baolu
 
