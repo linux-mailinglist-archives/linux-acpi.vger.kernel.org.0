@@ -1,194 +1,231 @@
-Return-Path: <linux-acpi+bounces-12132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E578EA5E484
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D35B7A5E499
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:39:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 632743AA06C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:34:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C663A7FEB
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A706F2571A5;
-	Wed, 12 Mar 2025 19:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A68253B73;
+	Wed, 12 Mar 2025 19:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Af+8PQS6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3PMhgLi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71E41E5B7D
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Mar 2025 19:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865D51E8353;
+	Wed, 12 Mar 2025 19:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741808050; cv=none; b=iE4aIXfdr7BG1iPcNkRqIMkzIT8jWongedqGR85ClT275D25920i/W5d5qHHDHgXcR4Uc/3NzojFWLgRzBCjro2jAh9u/3KHYMSLMJRc1KxzbVGvHzAXybnq8rlCUjs3ZU6iU3CWOBhyep9Dg/ia9xTx1Pa+4sjK4IoSrfoezv4=
+	t=1741808365; cv=none; b=k5r8+y8GNiszPFOJSadntRm99PyQMlQWLtr3oF4KDppcDMhe8FvT2Ct691KfkW4ecOgyoMde+uNR54EN0Hx4dF1tHDYCZDCZfabCXaP7OPFW4Nnra6eHhxS+bb4Hbd9fxi4O0sGXADnsuHfI5OHazUA4DaX1Gy6ECjWv09axRiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741808050; c=relaxed/simple;
-	bh=Ep5/iwIKtz83wbr+l1tXH/EaFMFIpc/0ZBreY41zrOs=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=U96K7aQhroOYVoXG8I5Qei5ipV+nYtT/8s/P4o+QPLdETLkAOuNf7BxijfpAmiaf05KAFqi8MaTQZL5WCAsNLWm/+wMw+Pj6mg38BTfsplA6sjuVWx7iquj1fGBqSnyj5H+UOlRemOT2ub6ILZKxPqpd5pE4omT0DfL76NcSUfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Af+8PQS6; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43d0359b1fcso1802255e9.0
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Mar 2025 12:34:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741808047; x=1742412847; darn=vger.kernel.org;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rTgrJR7s4L4KINuRwMZAFzbNYQLSAhE3kZkfVn2zcvY=;
-        b=Af+8PQS6DtInc6w7hKMxKsXs+Vx8aRezzzd8SWQyd/5ltXVRO1EIAPhhAI/6nuiRIq
-         t9o7IyJvdvgFLyBK0RQmEY4bWjCoVi4PpqoViZq6HPy8sMynF0a9H9GfcGR1NL4BhdDy
-         nEyXJYZiK+KeM5f2SaYCKHMusoAkySX69HJLBxlK12gQk19d0uKFrtUWsBtuUBZN3kAT
-         aeV4Y0SAIaOB7PRzyFgTHQRwCV+Zg1D8vxvfaskl1wclmjBiaDJS5KVkC5YRoAJLMW0H
-         RpdLhSCpFWGfWhoxnNKhi1aQ3d2T2q0Rhadw+ek49xFsIUZAB59TuUK8wBK9ZdDjAwty
-         bynA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741808047; x=1742412847;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rTgrJR7s4L4KINuRwMZAFzbNYQLSAhE3kZkfVn2zcvY=;
-        b=rLYSpDj3iiOfYmEdwBPuuO4npHbUpjCytGuryLBx1MQ71Aa5Dx86R3uKriL9guIId6
-         tPWZ9AbhvuEWOEu4ow39qqV0EkOuI2PYpkOsdIAKBLRi18Jz+LNqMB0f+Z9Z7e46inUt
-         2/CFfUe2NpXiBZYcJJhbs61eISFJCuH85rYU5blsTtFQB29UUkN9cJiVFNsjAYIAwy8o
-         rx/IGxKlsF0JxUV/qLp6o/bsxXwmlOYmQhDoBjNyVHHq+j1h2cvMnOtkBa+ijHENHzBb
-         KlOASwElMY76olqiGZZvkaf09/LsFTRhhzTy3IqehV5WVEYrszcE3VAHxGVxFP76KEmo
-         BC5Q==
-X-Gm-Message-State: AOJu0YwngWCgpp+IvBSllo9REqwoMNA3+Jl1Y3C6WWm88G+i9slhbsbj
-	jdlfstGFVOOdGvSvS9pXwLw9+4dZv0gey7FUmD6DNCXJ0+ddevz04qV5pcuc
-X-Gm-Gg: ASbGnctoFWMmVlMWA+nUa4VBAlu0yRA86Djwtdi3zqRBzxK2lrGCNqlbqvHK0T7Nh0X
-	pn/iYJ9ReEc9mqrCzeqtpbRVNmWl/tN7tbwSpryqrGrMa5AhGN6bKoy4neVMZa9VUH1UDWYV/Cx
-	hvonYP+TZvAXM1nA9GNDjuKulQJ6OqZOVb+C9qt2gvMdUpaYzuOJHLelR4SIuBGieU4SN2YYHeo
-	DgcalwWx1SugVD2HxSG040LHI4lei3mMa850p8xQEP7+LhvEAo/ZDM+OAsrGwbnd/q/2PxGBRWJ
-	igrhHuNm2bREy2ZkGWi5DurYtMjbHIbm6NJD/XCFFGgQV/76aoDvmiedh8ax1XynhLFnjBVk5qQ
-	Ntew+K7qdgm7vxQ8QX/HberTCpF+HUHzXi0cbDXmrTZVCWEv3OVeWoDDZBG2RC5X8kqV8Bklc7K
-	nMvV3wpIGco2KdyPWxOx/HU2XxneV/aVi8nkJ0
-X-Google-Smtp-Source: AGHT+IH/qyTbHk8CA+Ny/Co69+nnbQh9rmNffjJe2Y2GyTKO0EtiXN5+XtyWghkg62cAjWIz4hF+GQ==
-X-Received: by 2002:a05:600c:444c:b0:439:5f04:4f8d with SMTP id 5b1f17b1804b1-43d161bb744mr5479385e9.12.1741808046787;
-        Wed, 12 Mar 2025 12:34:06 -0700 (PDT)
-Received: from ?IPV6:2a02:3100:a4d2:5c00:ad7a:ba59:161c:c724? (dynamic-2a02-3100-a4d2-5c00-ad7a-ba59-161c-c724.310.pool.telefonica.de. [2a02:3100:a4d2:5c00:ad7a:ba59:161c:c724])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43d0a73127esm31013925e9.8.2025.03.12.12.34.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Mar 2025 12:34:06 -0700 (PDT)
-Message-ID: <3046c6a2-72a0-412e-a865-48dc129be0df@gmail.com>
-Date: Wed, 12 Mar 2025 20:34:12 +0100
+	s=arc-20240116; t=1741808365; c=relaxed/simple;
+	bh=CKbvTcQjktbb/fkm2xvKUFHJAUWPFJnyE/7YkFwSoUY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WsCRdfu79734wALfUgj8QkKgTyFd6DamdnXhw4qg9kciivTPMGReX+RB44phLM8A4Fn653WfOKQLAb/iuviibYwz3ou0vqRdBeudZBHbQr3uVIpdpJbm0OIdlQvwkKtBnEgYhM5hYYWYqcITCZaEwBYGFjAZoFyqA4YqPhmhwws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3PMhgLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131A6C4AF09;
+	Wed, 12 Mar 2025 19:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741808365;
+	bh=CKbvTcQjktbb/fkm2xvKUFHJAUWPFJnyE/7YkFwSoUY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=T3PMhgLiC+1jN2fQn/s868b7rQ4xuI6jCK7ojznJRarsOayJt/9kF0gFd7jd/iYyb
+	 G772gtE9y/TQyqnd9lvi1gqvGrC76fLi4Ho7YBpioi5+QOfOpdUVeB4tHZ8G+dT0qs
+	 pXpBBd51/rP23Iat5xyDHYzcjbs3mCNTIXvUAY8uWMoGtMf9ry+M/3Fub9OANd+Ry3
+	 It5R0yQ6ghT3QEK9dddsbb8H47+sTDAEqIgwH7y1lvcR3Fg+Rbm04NWqlMhC+y9Ufy
+	 l7XzMgJTtri6ZJd7TM2lhWjb1vloMFH5u1kvvJF9NA/4ssGRtn7F7lAXm2OqgpJoEL
+	 +zgDzc5GzdnFQ==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2a88c7fabdeso188642fac.1;
+        Wed, 12 Mar 2025 12:39:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW04ZQ8dvw3SP+7fagWU7Ka80vWviUZDZuQb+EqObe+PxOpqdfAg+Uj285lRsZW1Wfbo2le6FOOBYfN9viw@vger.kernel.org, AJvYcCWT+IPffjgs1d0PS478Yd5fj9tA17I1hrdp7aKBDobYm3TZ2cpq9U58lRgnzyTlpxgbgW2x6I0GZM0T@vger.kernel.org, AJvYcCXr+s3PbhlisGmXUj926eQKI9GFlUaaN1ucrQxM06z34PepHUP+Sqe88owQJu+mYOaR41IZfEUjDlET@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiK5ig4xQT5zD9Zs3Yf559ZjGWIuJVnWyhHpBI27MhEvKOEbI9
+	nt8kaPb3SrSfb4nzpoqtxrnGBG5nyz21J6EuPvo/3wEMdBFpvvi3nW6EihfGw7hc0SqblOPAbNH
+	FWDKvMm7jU0ePz2yi/u0jJw7/QUQ=
+X-Google-Smtp-Source: AGHT+IHuNDHlZF9Ucfxr2gTlbfeWhfR5MVXJQ/d0SqzrupN1QuL8KSZ2cjTwH8+Q2igiU3qP86o6sWS8Qs+oYXJUACA=
+X-Received: by 2002:a05:6871:8a8:b0:2c2:50a5:1248 with SMTP id
+ 586e51a60fabf-2c2614d4a3cmr11747453fac.38.1741808364302; Wed, 12 Mar 2025
+ 12:39:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <jroedel@suse.de>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-acpi@vger.kernel.org, iommu@lists.linux.dev
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: New "something fishy here" warning fires
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250307214936.74504-1-linux@treblig.org>
+In-Reply-To: <20250307214936.74504-1-linux@treblig.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 12 Mar 2025 20:39:13 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j+=WYm+j340Z+1fs3aZ4PtTaF4XAFeSgm9s7NA=BR0=g@mail.gmail.com>
+X-Gm-Features: AQ5f1JrtyjGeDehvAPKabOsddC766J_8Cjm-oJ9-AbMlE98bvzAsdgHk-YLJY9E
+Message-ID: <CAJZ5v0j+=WYm+j340Z+1fs3aZ4PtTaF4XAFeSgm9s7NA=BR0=g@mail.gmail.com>
+Subject: Re: [PATCH] PNP: Remove prehistoric deadcode
+To: linux@treblig.org
+Cc: rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, corbet@lwn.net, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since "iommu: Get DT/ACPI parsing into the proper probe path" I get the following
-on a N100-based mini pc. The warning pops up 4 times, for:
+On Fri, Mar 7, 2025 at 10:49=E2=80=AFPM <linux@treblig.org> wrote:
+>
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+>
+> pnp_remove_card() is currently unused, it has been since it was
+> added in 2003's BKrev: 3e6d3f19XSmESWEZnNEReEJOJW5SOw
+>
+> pnp_unregister_protocol() is currently unused,  it has been since
+> it was added in 2002's BKrev: 3df0cf6d4FVUKndhbfxjL7pksw5PGA
+>
+> Remove them, and pnp_remove_card_device() and __pnp_remove_device()
+> which are now no longer used.
+>
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> ---
+>  Documentation/admin-guide/pnp.rst |  3 ---
+>  drivers/pnp/base.h                |  4 ----
+>  drivers/pnp/card.c                | 32 -------------------------------
+>  drivers/pnp/core.c                | 16 ----------------
+>  4 files changed, 55 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/pnp.rst b/Documentation/admin-guid=
+e/pnp.rst
+> index 3eda08191d13..24d80e3eb309 100644
+> --- a/Documentation/admin-guide/pnp.rst
+> +++ b/Documentation/admin-guide/pnp.rst
+> @@ -129,9 +129,6 @@ pnp_put_protocol
+>  pnp_register_protocol
+>    use this to register a new PnP protocol
+>
+> -pnp_unregister_protocol
+> -  use this function to remove a PnP protocol from the Plug and Play Laye=
+r
+> -
+>  pnp_register_driver
+>    adds a PnP driver to the Plug and Play Layer
+>
+> diff --git a/drivers/pnp/base.h b/drivers/pnp/base.h
+> index 4e80273dfb1e..b342570d0236 100644
+> --- a/drivers/pnp/base.h
+> +++ b/drivers/pnp/base.h
+> @@ -9,7 +9,6 @@ extern const struct attribute_group *pnp_dev_groups[];
+>  extern const struct bus_type pnp_bus_type;
+>
+>  int pnp_register_protocol(struct pnp_protocol *protocol);
+> -void pnp_unregister_protocol(struct pnp_protocol *protocol);
+>
+>  #define PNP_EISA_ID_MASK 0x7fffffff
+>  void pnp_eisa_id_to_string(u32 id, char *str);
+> @@ -21,9 +20,7 @@ int pnp_add_device(struct pnp_dev *dev);
+>  struct pnp_id *pnp_add_id(struct pnp_dev *dev, const char *id);
+>
+>  int pnp_add_card(struct pnp_card *card);
+> -void pnp_remove_card(struct pnp_card *card);
+>  int pnp_add_card_device(struct pnp_card *card, struct pnp_dev *dev);
+> -void pnp_remove_card_device(struct pnp_dev *dev);
+>
+>  struct pnp_port {
+>         resource_size_t min;    /* min base number */
+> @@ -138,7 +135,6 @@ void pnp_init_resources(struct pnp_dev *dev);
+>  void pnp_fixup_device(struct pnp_dev *dev);
+>  void pnp_free_options(struct pnp_dev *dev);
+>  int __pnp_add_device(struct pnp_dev *dev);
+> -void __pnp_remove_device(struct pnp_dev *dev);
+>
+>  int pnp_check_port(struct pnp_dev *dev, struct resource *res);
+>  int pnp_check_mem(struct pnp_dev *dev, struct resource *res);
+> diff --git a/drivers/pnp/card.c b/drivers/pnp/card.c
+> index 9610a9f08ff4..c7596dc24fbd 100644
+> --- a/drivers/pnp/card.c
+> +++ b/drivers/pnp/card.c
+> @@ -269,25 +269,6 @@ int pnp_add_card(struct pnp_card *card)
+>         return 0;
+>  }
+>
+> -/**
+> - * pnp_remove_card - removes a PnP card from the PnP Layer
+> - * @card: pointer to the card to remove
+> - */
+> -void pnp_remove_card(struct pnp_card *card)
+> -{
+> -       struct list_head *pos, *temp;
+> -
+> -       device_unregister(&card->dev);
+> -       mutex_lock(&pnp_lock);
+> -       list_del(&card->global_list);
+> -       list_del(&card->protocol_list);
+> -       mutex_unlock(&pnp_lock);
+> -       list_for_each_safe(pos, temp, &card->devices) {
+> -               struct pnp_dev *dev =3D card_to_pnp_dev(pos);
+> -               pnp_remove_card_device(dev);
+> -       }
+> -}
+> -
+>  /**
+>   * pnp_add_card_device - adds a device to the specified card
+>   * @card: pointer to the card to add to
+> @@ -306,19 +287,6 @@ int pnp_add_card_device(struct pnp_card *card, struc=
+t pnp_dev *dev)
+>         return 0;
+>  }
+>
+> -/**
+> - * pnp_remove_card_device- removes a device from the specified card
+> - * @dev: pointer to the device to remove
+> - */
+> -void pnp_remove_card_device(struct pnp_dev *dev)
+> -{
+> -       mutex_lock(&pnp_lock);
+> -       dev->card =3D NULL;
+> -       list_del(&dev->card_list);
+> -       mutex_unlock(&pnp_lock);
+> -       __pnp_remove_device(dev);
+> -}
+> -
+>  /**
+>   * pnp_request_card_device - Searches for a PnP device under the specifi=
+ed card
+>   * @clink: pointer to the card link, cannot be NULL
+> diff --git a/drivers/pnp/core.c b/drivers/pnp/core.c
+> index 6a60c5d83383..ac48db6dcfe3 100644
+> --- a/drivers/pnp/core.c
+> +++ b/drivers/pnp/core.c
+> @@ -78,16 +78,6 @@ int pnp_register_protocol(struct pnp_protocol *protoco=
+l)
+>         return ret;
+>  }
+>
+> -/**
+> - * pnp_unregister_protocol - removes a pnp protocol from the pnp layer
+> - * @protocol: pointer to the corresponding pnp_protocol structure
+> - */
+> -void pnp_unregister_protocol(struct pnp_protocol *protocol)
+> -{
+> -       pnp_remove_protocol(protocol);
+> -       device_unregister(&protocol->dev);
+> -}
+> -
+>  static void pnp_free_ids(struct pnp_dev *dev)
+>  {
+>         struct pnp_id *id;
+> @@ -220,12 +210,6 @@ int pnp_add_device(struct pnp_dev *dev)
+>         return 0;
+>  }
+>
+> -void __pnp_remove_device(struct pnp_dev *dev)
+> -{
+> -       pnp_delist_device(dev);
+> -       device_unregister(&dev->dev);
+> -}
+> -
+>  static int __init pnp_init(void)
+>  {
+>         return bus_register(&pnp_bus_type);
+> --
 
-PNP0C14:00
-PNP0C14:01
-PNP0C14:00
-PNP0C14:01
-
-Any other info you'd be interested in?
-
-[  +0.000139] Unpacking initramfs...
-[  +0.000690] ------------[ cut here ]------------
-[  +0.000028] acpi-wmi PNP0C14:00: late IOMMU probe at driver bind, something fishy here!
-[  +0.000041] WARNING: CPU: 1 PID: 1 at drivers/iommu/iommu.c:449 __iommu_probe_device+0x12b/0x530
-[  +0.000034] Modules linked in:
-[  +0.000024] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc6-next-20250312+ #2
-[  +0.000029] Hardware name: Default string Default string/Default string, BIOS ADLN.M6.SODIMM.ZB.CY.015 08/08/2023
-[  +0.000032] RIP: 0010:__iommu_probe_device+0x12b/0x530
-[  +0.000019] Code: 68 00 74 28 4c 8b 73 50 4d 85 f6 75 03 4c 8b 33 48 89 df e8 d7 ec 00 00 4c 89 f2 48 c7 c7 b8 91 7b 9e 48 89 c6 e8 f5 3e 96 ff >
-[  +0.000055] RSP: 0000:ffffb031c006fc98 EFLAGS: 00010282
-[  +0.000021] RAX: 0000000000000000 RBX: ffff9469416c5010 RCX: 0000000000000000
-[  +0.000023] RDX: 0000000000000002 RSI: 0000000000000003 RDI: 00000000ffffffff
-[  +0.000023] RBP: ffffb031c006fcd8 R08: 0000000000000000 R09: ffffb031c006fae8
-[  +0.000023] R10: ffffffff9eb1ea68 R11: 0000000000000003 R12: ffffffff9e485280
-[  +0.000023] R13: ffffb031c006fd70 R14: ffff946940bb8ec0 R15: 0000000000000000
-[  +0.000023] FS:  0000000000000000(0000) GS:ffff946b18bec000(0000) knlGS:0000000000000000
-[  +0.000037] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  +0.000020] CR2: 0000000000000000 CR3: 000000016c650001 CR4: 0000000000770ef0
-[  +0.000023] PKRU: 55555554
-[  +0.000012] Call Trace:
-[  +0.000010]  <TASK>
-[  +0.000011]  ? show_regs.part.0+0x1d/0x30
-[  +0.000019]  ? show_regs.cold+0x8/0xd
-[  +0.000016]  ? __iommu_probe_device+0x12b/0x530
-[  +0.000017]  ? __warn.cold+0xc2/0x15e
-[  +0.000018]  ? __iommu_probe_device+0x12b/0x530
-[  +0.000017]  ? report_bug+0xe3/0x170
-[  +0.000016]  ? console_unlock+0x7d/0x110
-[  +0.000018]  ? __iommu_probe_device+0x12b/0x530
-[  +0.000016]  ? __iommu_probe_device+0x12d/0x530
-[  +0.000017]  ? handle_bug+0x116/0x170
-[  +0.000018]  ? exc_invalid_op+0x18/0x70
-[  +0.000017]  ? asm_exc_invalid_op+0x1b/0x20
-[  +0.000022]  ? __iommu_probe_device+0x12b/0x530
-[  +0.000018]  ? __iommu_probe_device+0x12b/0x530
-[  +0.000019]  ? __pfx_probe_iommu_group+0x10/0x10
-[  +0.000017]  probe_iommu_group+0x26/0x50
-[  +0.000016]  bus_for_each_dev+0x79/0xd0
-[  +0.000020]  iommu_device_register+0xbe/0x230
-[  +0.000021]  intel_iommu_init+0xd76/0xf40
-[  +0.000016]  ? _raw_spin_unlock_irqrestore+0x55/0x80
-[  +0.000022]  ? __this_cpu_preempt_check+0x13/0x20
-[  +0.000018]  ? lockdep_hardirqs_on+0x7d/0x110
-[  +0.000018]  ? trace_hardirqs_on+0x5b/0xd0
-[  +0.000017]  ? _raw_spin_unlock_irqrestore+0x3c/0x80
-[  +0.000020]  ? __pfx_pci_iommu_init+0x10/0x10
-[  +0.000021]  pci_iommu_init+0xd/0x40
+Applied as 6.15 material, thanks!
 
