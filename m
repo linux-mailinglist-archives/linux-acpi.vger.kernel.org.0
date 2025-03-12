@@ -1,127 +1,121 @@
-Return-Path: <linux-acpi+bounces-12122-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12123-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F2CA5E099
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 16:39:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78F2A5E0D6
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 16:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD4267AD64F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 15:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C462188A306
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 15:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83285253341;
-	Wed, 12 Mar 2025 15:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541DF252907;
+	Wed, 12 Mar 2025 15:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b="AdZLtUYY"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b="TmfXhxUl"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67232475DD
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Mar 2025 15:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2174200CB
+	for <linux-acpi@vger.kernel.org>; Wed, 12 Mar 2025 15:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741793950; cv=none; b=bmgFmR5i2zJqS/fkl9t6UxretAnoizxyy7fssJVWIx5zJbybb6pk+UkTfJ40r1ZmjHJ9/AebajKZPW/0EdQZd3f8eXcTZcVe15nKzyJrb1fUvUwYvkOTAPkfeTa8V5A+J9NwrHbrkOCkSwGWAFjNvRetOVk5xBjWCySQSzotQuM=
+	t=1741794371; cv=none; b=hXQlon1YwG2jakaUy6k999TmwoJsO5/a2obUYMk+tVSYR5zZtNAazyOosqxAKtGIjtCu+yIt6F8pKKrfTnlHJUiq56IFG/7FVVY7IwTzugkoxZggFS3WrnGq09a0vVLOhoZ4rr//8FZCwblp3gYjUYpqd/v7ufi+ZSVdQm9f9mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741793950; c=relaxed/simple;
-	bh=eSXthJ9gBFUjOBPDiwOsndhzo+g/mmYY7/XUp4vG9cE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DdhZCplozDMT/mC9OMjNSAUyCirxxYWvuq8/gSiDBl8G40om00tYIOwZ/k7xEq88kDPUKNWNFYUKXrymAJ8B7WP3rxytQFDTDbghQuU5WhiNiVlgFzR6PwJQ8rLAIniv08PyvFIP3CGrJFDPd+XnQFIbjDKVXSE3FyAS/Wbkv1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b=AdZLtUYY; arc=none smtp.client-ip=185.136.64.226
+	s=arc-20240116; t=1741794371; c=relaxed/simple;
+	bh=/tUeJxexUe7TBjTwiMUFAxVHNQcz9K5ss0oO62XNxrU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MN+aq3oeDTlaz2dSQ/jHG6SqhitARBZZC2AgKAMXmQHM9GRby51zJNQda7BOvYoM8f6HGhvVsw54FPn50zKTiMOKV331aP8L7OAagfwX+pwCgvplfOUkHxJzslLyr481BAkl8uMHujq4bWMVxAwJ3oGv+Gyk8p8j8plKjPu9ppI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b=TmfXhxUl; arc=none smtp.client-ip=185.136.64.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 20250312153857d87ac28484ce0bccef
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 20250312154605faca1e93f4ba30d6b9
         for <linux-acpi@vger.kernel.org>;
-        Wed, 12 Mar 2025 16:38:57 +0100
+        Wed, 12 Mar 2025 16:46:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
  d=siemens.com; i=diogo.ivo@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=9fug/AyD5MGpJaI7QeEK4OFdBV5tMRDjJLZy5ng3g5Y=;
- b=AdZLtUYYdFWI1geDDdo4UNxBp/f11z90w549zOJxi7+RpFmgVW7VBxAKYvonUsCEHUmizR
- gCCo9R4T7//++bPUmfD26cCeetSUHKuvXS/NgPVT2qvTQaQuncgWix8Zn3UnHcxSEx4QD/Vf
- RMfrEp9AaJkr6yPYoQ3ueumLn5fAeq1Kg9qyjA2fsjMEPbbv12kwF6lMt+08PWZmvmd8+ECF
- UT+51IfIdPQzWlkYoW35j0oID/ZUe04Ox+Kop1Z60mxJisK5AYE19lq6T6yqAyRQHVNDltI6
- PxB37/+QE8xkKmSNrQPMr1GT7mt/Ut8SwzGR5CcNDpHUVKoi90qq0GkQ==;
-Message-ID: <7bf7b708-9075-4914-82da-f0a510d914a7@siemens.com>
-Date: Wed, 12 Mar 2025 15:38:56 +0000
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=rFXi/EOvlI1q63UTtN3+2lWAAJojD4xng4L7RXQth+s=;
+ b=TmfXhxUlb5zlX/dhogvn+w+uyGg11Igc3cdTjsIYm41TmFHuAVOsLPoYu2dzPWCQ1hnfs5
+ +0L7QFOlT9aTIBIeI8UBliPigCpQxGPHDSOJOgSG5vElYzqj6IxucRvrITgi4KXe3ybvWh2/
+ aOlTBD5hzWTvOAiTVIw3BrLz2R4xWLqVCDSYa6crwk6Y/CGk/4RzJQ7oJkU8EbOHveR6J1IZ
+ +imxC/YnCqa1zQty4KBnOTXqZ1tfEOXtHCgtFCZUtU+a/tlFp4CEa4b1jYXpcJAsVsLtfDjR
+ gpzQ8mORHQReFMmDjTd+M3Ny68OOH/4WUIYJNHiUj5T3iBqAB3zzHc4Q==;
+From: Diogo Ivo <diogo.ivo@siemens.com>
+Subject: [PATCH v2 0/2] Add driver for Intel Over-Clocking Watchdog
+Date: Wed, 12 Mar 2025 15:46:00 +0000
+Message-Id: <20250312-ivo-intel_oc_wdt-v2-0-52d09738cd0b@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] watchdog: Add driver for Intel OC WDT
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com,
- benedikt.niedermayr@siemens.com
-References: <20250311-ivo-intel_oc_wdt-v1-1-fd470460d9f5@siemens.com>
- <bd411390-25bd-417e-9caa-aa4a45ad9161@kernel.org>
-Content-Language: en-US
-From: Diogo Ivo <diogo.ivo@siemens.com>
-In-Reply-To: <bd411390-25bd-417e-9caa-aa4a45ad9161@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADis0WcC/2WNwQ7CIBAFf6XZsxigtFVP/odpGgKL3cRCAw1qm
+ v67WI8eZ5I3b4WEkTDBpVohYqZEwReQhwrMqP0dGdnCILlsuJQdoxwY+QUfQzDD0y6s0+pUa2V
+ bzRWU2RzR0WtP3vrCI6UlxPf+kMXX/mK1EP+xLJhgzqqOq5bbs2uuiXBCn44mTNBv2/YB0wf+v
+ rIAAAA=
+X-Change-ID: 20250227-ivo-intel_oc_wdt-7a483a4d6a04
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+ linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com, 
+ benedikt.niedermayr@siemens.com, Diogo Ivo <diogo.ivo@siemens.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741794365; l=1801;
+ i=diogo.ivo@siemens.com; s=20240529; h=from:subject:message-id;
+ bh=/tUeJxexUe7TBjTwiMUFAxVHNQcz9K5ss0oO62XNxrU=;
+ b=jjgZeYqbuCnZ8jjOQM3TswX/VHg6IR2spnqrZYd/n1yvUzhlZYhQKegcofEklo5mqLrNlVZVd
+ Fba/SDF0avkCz7sY9Ovixq9Y9TF/BpheaOButsaFuMsR7muPkVct59q
+X-Developer-Key: i=diogo.ivo@siemens.com; a=ed25519;
+ pk=BRGXhMh1q5KDlZ9y2B8SodFFY8FGupal+NMtJPwRpUQ=
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-1328357:519-21489:flowmailer
 
-Hi Krzysztof, thanks for the review.
+This series adds a driver for the Intel Over-Clocking Watchdog found in
+the Intel Platform Controller Hub (PCH).
 
-On 3/12/25 8:50 AM, Krzysztof Kozlowski wrote:
-> On 11/03/2025 14:18, Diogo Ivo wrote:
->> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
->> index f81705f8539aa0b12d156a86aae521aa40b4527d..16e6df441bb344c0f91b40bd76b6322ad3016e72 100644
->> --- a/drivers/watchdog/Kconfig
->> +++ b/drivers/watchdog/Kconfig
->> @@ -1350,6 +1350,17 @@ config INTEL_MID_WATCHDOG
->>   
->>   	  To compile this driver as a module, choose M here.
->>   
->> +config INTEL_OC_WATCHDOG
->> +	tristate "Intel OC Watchdog"
->> +	depends on X86 && ACPI
-> 
-> Why can't this be compile tested?
+This watchdog is controlled via a simple single-register interface and
+would otherwise be standard except for the presence of a LOCK bit that
+can only be set once per power cycle, needing extra handling around it.
 
-I'll add it in v2 as well as HAS_IOPORT.
+Due to the way these devices are described in ACPI tables with both the
+generic PNP0C02 CID and a more detailed ACPI HID we also need to add
+their HIDs to the list of known non-PNP devices. As there are several HIDs
+for what seems to be essentially the same hardware but I don't know all
+the possible HIDs this series does not include an exhaustive list of all
+such HIDs, only those that I could personally test.
 
->> +static const struct acpi_device_id intel_oc_wdt_match[] = {
->> +	{ "INT3F0D" },
->> +	{ "INTC1099" },
->> +	{ },
->> +};
->> +MODULE_DEVICE_TABLE(acpi, intel_oc_wdt_match);
->> +
->> +static struct platform_driver intel_oc_wdt_platform_driver = {
->> +	.driver = {
->> +		.name = DRV_NAME,
->> +		.acpi_match_table = ACPI_PTR(intel_oc_wdt_match),
-> 
-> Drop ACPI_PTR, causes warnigns and is not really beneficial.
+Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
+---
+Changes in v2:
+- Split v1 into two patches, adding the ACPI IDs in a separate patch
+- Initialize hearbeat module parameter to zero
+- Clarify wording around lock handling
+- Properly print resource with %pR when failing to obtain it
+- Enable compile testing and add dependency on HAS_IOPORT
+- Drop unneeded ACPI_PTR() and MODULE_ALIAS()
+- Link to v1: https://lore.kernel.org/r/20250311-ivo-intel_oc_wdt-v1-1-fd470460d9f5@siemens.com
 
-I'll drop it in v2.
+---
+Diogo Ivo (2):
+      watchdog: Add driver for Intel OC WDT
+      ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP device list
 
->> +	},
->> +	.probe = intel_oc_wdt_probe,
->> +};
->> +
->> +module_platform_driver(intel_oc_wdt_platform_driver);
->> +
->> +MODULE_AUTHOR("Diogo Ivo <diogo.ivo@siemens.com>");
->> +MODULE_LICENSE("GPL");
->> +MODULE_DESCRIPTION("Intel OC Watchdog driver");
->> +MODULE_ALIAS("platform:" DRV_NAME);
-> 
-> Drop alias, you have match table.
-
-I'll drop it in v2.
-
-> Best regards,
-> Krzysztof
+ drivers/acpi/acpi_pnp.c         |   2 +
+ drivers/watchdog/Kconfig        |  11 ++
+ drivers/watchdog/Makefile       |   1 +
+ drivers/watchdog/intel_oc_wdt.c | 233 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 247 insertions(+)
+---
+base-commit: 4d872d51bc9d7b899c1f61534e3dbde72613f627
+change-id: 20250227-ivo-intel_oc_wdt-7a483a4d6a04
 
 Best regards,
-Diogo
+-- 
+Diogo Ivo <diogo.ivo@siemens.com>
+
 
