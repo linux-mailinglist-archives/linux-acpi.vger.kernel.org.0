@@ -1,124 +1,137 @@
-Return-Path: <linux-acpi+bounces-12116-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12117-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEADA5DA34
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 11:10:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BA0A5DAF3
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 11:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EF973B96E7
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 10:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B117178187
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 10:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA1B23E227;
-	Wed, 12 Mar 2025 10:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF25623E33A;
+	Wed, 12 Mar 2025 10:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hmobr1gl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB0423C8C3;
-	Wed, 12 Mar 2025 10:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B99523BD19;
+	Wed, 12 Mar 2025 10:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741774213; cv=none; b=AdSG37TZ3y2HIDqv1RK0jjQVriEiiAZdC/9XBXLj6HLsWOv+Lr5kMN04u3/jVu5nhpWsMVOScKQUY5UArZGIG6xTsP/3MNfUQc56q5Ln3d3q8yzcR/gZHCSEn3qLHphU/HozfOobyqfNgB+Wt32QiN3C0IULZaKhr5h4Nh71nIU=
+	t=1741777038; cv=none; b=qk4jHWok2EHDhxD9DXb3F08Tz85MYrO64UKErTr0Wk9H8QRabdV3AH3nyLQHisDPM0U5AMRsu2JWxkRD69M6/MS0ShfLO3voh+v10wB+4p2rS4iRQnPdDlmBhwvZ3ZxH4/3Yt40Q1n+dC2hrhvE7YvQFqepGrFe/fZzmw3bUKbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741774213; c=relaxed/simple;
-	bh=/8ncitlyunX6JU7zE0YnHRfHzTzK/FruopaJkPi/R/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BxnSIh7pau6QGwDKZ4SyVK2ybB8sq2MS5Hj3BU8qF7MlSagnrrPmn3Bj1+qQTPyYQVYJpEUnhOQhsmy3yhoXGGa/sYfTUTVb1f9cprXFH9h2LHe34CjnRb5v4EVbSVnib8KuMhIy4eB0FuetiifU0n2GPh4g+GwQWdSB9AKuuRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18CE0152B;
-	Wed, 12 Mar 2025 03:10:22 -0700 (PDT)
-Received: from [10.57.38.75] (unknown [10.57.38.75])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 734303F5A1;
-	Wed, 12 Mar 2025 03:10:06 -0700 (PDT)
-Message-ID: <d55240a4-fe4a-48ea-b3a8-9a997bb7267c@arm.com>
-Date: Wed, 12 Mar 2025 10:10:04 +0000
+	s=arc-20240116; t=1741777038; c=relaxed/simple;
+	bh=TT244cdGMl7t7RbsnB78w7lxYAjNAtm0K9Um1dx/Muw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nrpufv7YSceKnqCPhtUn4BYNXeEKMFRCHnS3Ja4ymFz9gtB4dEUK8ilufUBA+HyFOnj/bANBQIVt8S787eZyBroItK0RZDeaYAPXJ7Edb2zSeyAhTD73CYJo0oq58nZFDraAyD+KTzS47RdO+1TyUoCnUNIBvl+KnvChIzuAh4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hmobr1gl; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741777038; x=1773313038;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TT244cdGMl7t7RbsnB78w7lxYAjNAtm0K9Um1dx/Muw=;
+  b=Hmobr1gly+Aidb0c+UEFnQnK9bp0LSaTT+KWbGz3puhjmxHw6glXkDwl
+   zvrQCYeHcjO+BQeHlu89h3d89w6omsg2JBgXRFrA+bQpc4SjmooWcE8Mo
+   GO2PWvlVXIdIgmPjTtuuIIT2fnIE9N9itkhI4I0U9+y8tTO4eEo5JavtZ
+   XrCFPnUrTtqxj8CEab5XQ5IYQSvGLZig7UQLP9i8RX9/Ws6bo7+R8c29I
+   VcEneinAXZarm+sHTN9uYHf7E3FBnFoNuv75K2yq7LEmwbxzFWostESsq
+   9e9NalxU9MciLpxItyAQpnE3vIaI0YVcroOlropT6dQvFLCo0OekSc3JK
+   Q==;
+X-CSE-ConnectionGUID: QWTvyQ8ySaSvlwl8NKVJMg==
+X-CSE-MsgGUID: zqhJS/ktRL2Om2/RinF3YA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="65309588"
+X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
+   d="scan'208";a="65309588"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 03:57:17 -0700
+X-CSE-ConnectionGUID: uxCzlLVHRoqHcodrqqLGeA==
+X-CSE-MsgGUID: B1YJx9mwR/Kyv4Sv3+iKjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
+   d="scan'208";a="120551858"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 03:57:12 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tsJlt-00000001q0A-0dsv;
+	Wed, 12 Mar 2025 12:57:09 +0200
+Date: Wed, 12 Mar 2025 12:57:08 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Jakob Riepler <jakob+lkml@paranoidlabs.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-usb@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v1 3/4] leds: ncp5623: Use fwnode_get_child_node_count()
+Message-ID: <Z9FohBe0U0c_VVRt@smile.fi.intel.com>
+References: <20250310150835.3139322-1-andriy.shevchenko@linux.intel.com>
+ <20250310150835.3139322-4-andriy.shevchenko@linux.intel.com>
+ <20250311095402.00002845@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-To: Joerg Roedel <joro@8bytes.org>, Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Stuart Yoder <stuyoder@gmail.com>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun Gupta
- <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
- Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- Charan Teja Kalla <quic_charante@quicinc.com>
-References: <cover.1740753261.git.robin.murphy@arm.com>
- <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
- <Z9CEIlXoQJ-A0t-d@8bytes.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <Z9CEIlXoQJ-A0t-d@8bytes.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250311095402.00002845@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 2025-03-11 6:42 pm, Joerg Roedel wrote:
-> Hi Robin,
-> 
-> On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
->> +	/*
->> +	 * And if we do now see any replay calls, they would indicate someone
->> +	 * misusing the dma_configure path outside bus code.
->> +	 */
->> +	if (dev->driver)
->> +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
-> 
-> This warning triggers on my workstation (with an AMD IOMMU), any ideas?
+On Tue, Mar 11, 2025 at 09:54:02AM +0000, Jonathan Cameron wrote:
+> On Mon, 10 Mar 2025 16:54:53 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Argh! When I moved the dma_configure call into iommu_init_device() for
-v2 I moved the warning with it, but of course that needs to stay where
-it was, *after* the point that ops->probe_device has had a chance to
-filter out irrelevant devices. Does this make it behave?
+...
 
-Thanks,
-Robin.
+> > static int ncp5623_probe(struct i2c_client *client)
 
------>8-----
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 09798ddbce9d..1da6c55a0d02 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -437,12 +437,6 @@ static int iommu_init_device(struct device *dev)
-  		ret = -ENODEV;
-  		goto err_free;
-  	}
--	/*
--	 * And if we do now see any replay calls, they would indicate someone
--	 * misusing the dma_configure path outside bus code.
--	 */
--	if (dev->driver)
--		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
-  
-  	if (!try_module_get(ops->owner)) {
-  		ret = -EINVAL;
-@@ -565,6 +559,12 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
-  	ret = iommu_init_device(dev);
-  	if (ret)
-  		return ret;
-+	/*
-+	 * And if we do now see any replay calls, they would indicate someone
-+	 * misusing the dma_configure path outside bus code.
-+	 */
-+	if (dev->driver)
-+		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
-  
-  	group = dev->iommu_group;
-  	gdev = iommu_group_alloc_device(group, dev);
+> >  	struct device *dev = &client->dev;
+> >  	struct fwnode_handle *mc_node, *led_node;
+> >  	struct led_init_data init_data = { };
+> > -	int num_subleds = 0;
+> >  	struct ncp5623 *ncp;
+> >  	struct mc_subled *subled_info;
+> > +	unsigned int num_subleds;
+> I have no idea what the scheme is for ordering here. My gut
+> feeling would have been to leave it in original location but it's
+> not something I feel strongly about.
+
+I guess I tried to follow multiple approaches here while moving it:
+1) it follows "longer line first";
+2) it follows "group the variables of the same type".
+
+I also dunno what was behind the original code, but I think my approach has
+a benefit as pointed out above.
+
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Thank you!
+
+> >  	u32 color_index;
+> >  	u32 reg;
+> >  	int ret;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
