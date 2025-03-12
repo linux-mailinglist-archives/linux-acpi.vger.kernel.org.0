@@ -1,107 +1,207 @@
-Return-Path: <linux-acpi+bounces-12134-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12135-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8A4A5E4A6
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A667A5E4B1
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80E4717B64A
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:42:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF17E17AC6D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55D42586FE;
-	Wed, 12 Mar 2025 19:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A33259C83;
+	Wed, 12 Mar 2025 19:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8ejfFs7"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KY6veRW/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881111DE894;
-	Wed, 12 Mar 2025 19:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05C1258CF5;
+	Wed, 12 Mar 2025 19:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741808547; cv=none; b=MMyJFyTSIZD0fCIP19NpD8CxMX3WoXfUVCKU0AgoY8k5CHeiRD6Uo5KhSFyTK1uExr+Cpm6G1d5NfaHPUPdYG1759FtjaCHtGx4/Y5laHUsNY1fqjl9sxY6SQCYf6OKrgjoyxSD5D3X9S6EVz7B14LsKP/OO8Su7ecr9K2sFTNk=
+	t=1741808706; cv=none; b=D+QObN6Ii+OlqB6qSr8ajSH4IoyijZbjmBKsb0Zu7YMqjnqKiBnwGNz4XIDVAVvKo6ep3h6b6lsv/MeUwDHXXgj8j2U1+e50RRnSz1rBPvc/0Isy7R8O1BqmYVjsfxjqvOgUqMTdaOvAnwmYcHOS/Ci+OdtZJoODQAvAZlyCK3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741808547; c=relaxed/simple;
-	bh=rR9sGvDvTNBxumgD3sshwMYc//HMbHud/yj/n6J26f4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kAJiAm79QaR0C0yqPuiFhp82p7DA/ufra3H7Zetp5aPzvzLHTazBJMBQONk/IPm91wH3lpeBmG8Qjx5xn45J2tIk1+hDl6yqEmSDIXs1dxzmJRDW1cjwHTYhF7dWj5aQWvJ5UC95tYOQh7qbddQ8k+4w9Lw+n4viSxD6Omq7t64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8ejfFs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609C6C4CEDD;
-	Wed, 12 Mar 2025 19:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741808547;
-	bh=rR9sGvDvTNBxumgD3sshwMYc//HMbHud/yj/n6J26f4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m8ejfFs7S7gvZAjwVFi7iiCr0PeRC/do7aIRRdyflsY7hQ8wteiVaAfizLGdCb8of
-	 8hEs/BUFpGALpTIwTD4aFwUGInbMnWWuSZyvjDGLD50Navj1UGHKtusrOgWqJoAnS5
-	 v9P1nervb54P1AqJWOfaZaa9hy0dKGytAsyR8yn3U0MrpvsFHFF8YDgU8DY+h16plr
-	 ZfDmIOyxSzxKJYTItaxHYQHPLVW5W1CDcine9ImoqJ0KGkPRvIMFUI2EXSsBL6vSOC
-	 TwAFO8CelBfshKFdvxrGDnBAGQLeAb/zoksqCxUzSGI8MhlgWoLMMWmLivDkjszrHe
-	 1zND03UUP4sXQ==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-72736498817so111364a34.1;
-        Wed, 12 Mar 2025 12:42:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVMFQb3TqFdlYKjb7ylNZTcgeYm4omf1uwZXgnWNFncwwNI1OxMIXL2f0D2O68Tl+CQ34Vd+urcSJl5@vger.kernel.org, AJvYcCWdS89/69Z2vkf0YGnRLt/YR9+FMrGjE391biEU6CODYtJd/Xso1OcH9S+VcpuXik9bLafT4bIxV0CIOjT3@vger.kernel.org, AJvYcCWzCkEs1ZVM8KN2WDok85Or526Qjv5H/cvouKqi/CsDq/NYa48nUMmj03C+S29ogl6l5gigTtarfoHEtkIfymW7@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAP9cS+P8RNphSIhgAdovbYJY5q9cM7llbVLyQwZ2bZnVS4dfx
-	Zhvt5jS3vxxxwp19KLVvgR27+bqTkQwFPyoSoKx41FxEuSiBpIg7sC2SLtAQHLZ4CBBR7WTRYuy
-	ohdLpdMv+cx6IlM6/mZgQ4NlNJiU=
-X-Google-Smtp-Source: AGHT+IEB3NZFvCSX7ReDxQhwwLXfmo6c+PjIOwot7ArsH4J6MB0jCwvgW7uZczVb3k8WyB22HuX8jDYDSbid/yESwJo=
-X-Received: by 2002:a05:6830:2641:b0:72b:9506:8db6 with SMTP id
- 46e09a7af769-72b95069043mr6591433a34.6.1741808546719; Wed, 12 Mar 2025
- 12:42:26 -0700 (PDT)
+	s=arc-20240116; t=1741808706; c=relaxed/simple;
+	bh=hNYjTn6zdVR9mjDQJg9s/8yzeDoJWMMYD7pocvfTf7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c+xjceRXjtw3tRzHmh/p7N/zNbC2VH7gYvZpcTV/ffskeIRSFUrmTEE7dBGjnbccIYwtys62WWg7KQJ4JZGjGGtfO032aXDflFqncB5J6/mhXoWbsIh8vqeovNtJn9QB6exfd++D7Glx5Kuw9nQCS/gSLrM81LCyrEqgcS6zNZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KY6veRW/; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 54861210B155;
+	Wed, 12 Mar 2025 12:45:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 54861210B155
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1741808704;
+	bh=VPZyhneTbQ5N9T3+s+eAs9kmLhZ3O/aRW/7FQa9FcNM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KY6veRW/TYvXYRqlrieko87RB02NPbqemVQu9wxZBtiO6QjiU/jl4VJVIXKn+Qbmp
+	 KpAwxXbEdKbtO9dv8eLqZC9Td03MtvGs74WCxdYf1T7Bp+epAKWMipnCA5JUxKkrav
+	 rtBkKkfD6I461kYIQ4heEXnpybyaQIEDWL4XSiiY=
+Message-ID: <5e3e8c30-912c-4fe3-bfac-1ae21242473b@linux.microsoft.com>
+Date: Wed, 12 Mar 2025 12:44:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250310222432.work.826-kees@kernel.org>
-In-Reply-To: <20250310222432.work.826-kees@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 12 Mar 2025 20:42:15 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hxrj-DW7a=3iXmsCFm-K4rJvsrG=f5YLJreVmaZ207Lw@mail.gmail.com>
-X-Gm-Features: AQ5f1Jq1Db5q6FqcKbKLJbTnKn0KewEQfAgm5Ujmcc0Zz0yAQlA2Oc6PZgy3cPE
-Message-ID: <CAJZ5v0hxrj-DW7a=3iXmsCFm-K4rJvsrG=f5YLJreVmaZ207Lw@mail.gmail.com>
-Subject: Re: [PATCH] PNP: Expand length of fixup id string
-To: Kees Cook <kees@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 07/10] Drivers: hv: Introduce per-cpu event ring tail
+To: Tianyu Lan <ltykernel@gmail.com>
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-acpi@vger.kernel.org, kys@microsoft.com,
+ haiyangz@microsoft.com, wei.liu@kernel.org, mhklinux@outlook.com,
+ decui@microsoft.com, catalin.marinas@arm.com, will@kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, daniel.lezcano@linaro.org,
+ joro@8bytes.org, robin.murphy@arm.com, arnd@arndb.de,
+ jinankjain@linux.microsoft.com, muminulrussell@gmail.com,
+ skinsburskii@linux.microsoft.com, mrathor@linux.microsoft.com,
+ ssengar@linux.microsoft.com, apais@linux.microsoft.com,
+ Tianyu.Lan@microsoft.com, stanislav.kinsburskiy@gmail.com,
+ gregkh@linuxfoundation.org, vkuznets@redhat.com, prapal@linux.microsoft.com,
+ muislam@microsoft.com, anrayabh@linux.microsoft.com, rafael@kernel.org,
+ lenb@kernel.org, corbet@lwn.net
+References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-8-git-send-email-nunodasneves@linux.microsoft.com>
+ <CAMvTesAW-9Mo0oY6UUh2anp6DQCSsVCUhBiV2-bKp2VD_N0DYw@mail.gmail.com>
+Content-Language: en-US
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+In-Reply-To: <CAMvTesAW-9Mo0oY6UUh2anp6DQCSsVCUhBiV2-bKp2VD_N0DYw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025 at 11:24=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
->
-> GCC 15's -Wunterminated-string-initialization saw that "id" was not
-> including the required trailing NUL character. Instead of marking "id"
-> with __nonstring[1], expand the length of the string as it is used in
-> (debugging) format strings that expect a properly formed C string.
->
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D117178 [1]
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
->  include/linux/pnp.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-> index b7a7158aaf65..23fe3eaf242d 100644
-> --- a/include/linux/pnp.h
-> +++ b/include/linux/pnp.h
-> @@ -290,7 +290,7 @@ static inline void pnp_set_drvdata(struct pnp_dev *pd=
-ev, void *data)
->  }
->
->  struct pnp_fixup {
-> -       char id[7];
-> +       char id[8];
->         void (*quirk_function) (struct pnp_dev *dev);   /* fixup function=
- */
->  };
->
-> --
+On 3/10/2025 6:01 AM, Tianyu Lan wrote:
+> On Thu, Feb 27, 2025 at 7:09 AM Nuno Das Neves
+> <nunodasneves@linux.microsoft.com> wrote:
+>>
+>> Add a pointer hv_synic_eventring_tail to track the tail pointer for the
+>> SynIC event ring buffer for each SINT.
+>>
+>> This will be used by the mshv driver, but must be tracked independently
+>> since the driver module could be removed and re-inserted.
+>>
+>> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+>> Reviewed-by: Wei Liu <wei.liu@kernel.org>
+> 
+> It's better to expose a function to check the tail instead of exposing
+> hv_synic_eventring_tail directly.
+> 
+What is the advantage of using a function for this? We need to both set
+and get the tail.
 
-Applied as 6.15 material, thanks!
+> BTW, how does mshv driver use hv_synic_eventring_tail? Which patch
+> uses it in this series?
+>
+This variable stores indices into the synic eventring page (one for each
+SINT, and per-cpu). Each SINT has a ringbuffer of u32 messages. The tail
+index points to the latest one.
+
+This is only used for doorbell messages today. The message in this case is
+a port number which is used to lookup and invoke a callback, which signals
+ioeventfd(s), to notify the VMM of a guest MMIO write.
+
+It is used in patch 10.
+
+Thanks
+Nuno
+ 
+> Thanks.
+> 
+> 
+>> ---
+>>  drivers/hv/hv_common.c | 34 ++++++++++++++++++++++++++++++++--
+>>  1 file changed, 32 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+>> index 252fd66ad4db..2763cb6d3678 100644
+>> --- a/drivers/hv/hv_common.c
+>> +++ b/drivers/hv/hv_common.c
+>> @@ -68,6 +68,16 @@ static void hv_kmsg_dump_unregister(void);
+>>
+>>  static struct ctl_table_header *hv_ctl_table_hdr;
+>>
+>> +/*
+>> + * Per-cpu array holding the tail pointer for the SynIC event ring buffer
+>> + * for each SINT.
+>> + *
+>> + * We cannot maintain this in mshv driver because the tail pointer should
+>> + * persist even if the mshv driver is unloaded.
+>> + */
+>> +u8 __percpu **hv_synic_eventring_tail;
+>> +EXPORT_SYMBOL_GPL(hv_synic_eventring_tail);
+>> +
+>>  /*
+>>   * Hyper-V specific initialization and shutdown code that is
+>>   * common across all architectures.  Called from architecture
+>> @@ -90,6 +100,9 @@ void __init hv_common_free(void)
+>>
+>>         free_percpu(hyperv_pcpu_input_arg);
+>>         hyperv_pcpu_input_arg = NULL;
+>> +
+>> +       free_percpu(hv_synic_eventring_tail);
+>> +       hv_synic_eventring_tail = NULL;
+>>  }
+>>
+>>  /*
+>> @@ -372,6 +385,11 @@ int __init hv_common_init(void)
+>>                 BUG_ON(!hyperv_pcpu_output_arg);
+>>         }
+>>
+>> +       if (hv_root_partition()) {
+>> +               hv_synic_eventring_tail = alloc_percpu(u8 *);
+>> +               BUG_ON(hv_synic_eventring_tail == NULL);
+>> +       }
+>> +
+>>         hv_vp_index = kmalloc_array(nr_cpu_ids, sizeof(*hv_vp_index),
+>>                                     GFP_KERNEL);
+>>         if (!hv_vp_index) {
+>> @@ -460,6 +478,7 @@ void __init ms_hyperv_late_init(void)
+>>  int hv_common_cpu_init(unsigned int cpu)
+>>  {
+>>         void **inputarg, **outputarg;
+>> +       u8 **synic_eventring_tail;
+>>         u64 msr_vp_index;
+>>         gfp_t flags;
+>>         const int pgcount = hv_output_page_exists() ? 2 : 1;
+>> @@ -472,8 +491,8 @@ int hv_common_cpu_init(unsigned int cpu)
+>>         inputarg = (void **)this_cpu_ptr(hyperv_pcpu_input_arg);
+>>
+>>         /*
+>> -        * hyperv_pcpu_input_arg and hyperv_pcpu_output_arg memory is already
+>> -        * allocated if this CPU was previously online and then taken offline
+>> +        * The per-cpu memory is already allocated if this CPU was previously
+>> +        * online and then taken offline
+>>          */
+>>         if (!*inputarg) {
+>>                 mem = kmalloc(pgcount * HV_HYP_PAGE_SIZE, flags);
+>> @@ -485,6 +504,17 @@ int hv_common_cpu_init(unsigned int cpu)
+>>                         *outputarg = (char *)mem + HV_HYP_PAGE_SIZE;
+>>                 }
+>>
+>> +               if (hv_root_partition()) {
+>> +                       synic_eventring_tail = (u8 **)this_cpu_ptr(hv_synic_eventring_tail);
+>> +                       *synic_eventring_tail = kcalloc(HV_SYNIC_SINT_COUNT,
+>> +                                                       sizeof(u8), flags);
+>> +
+>> +                       if (unlikely(!*synic_eventring_tail)) {
+>> +                               kfree(mem);
+>> +                               return -ENOMEM;
+>> +                       }
+>> +               }
+>> +
+>>                 if (!ms_hyperv.paravisor_present &&
+>>                     (hv_isolation_type_snp() || hv_isolation_type_tdx())) {
+>>                         ret = set_memory_decrypted((unsigned long)mem, pgcount);
+>> --
+>> 2.34.1
+>>
+>>
+> 
+> 
+
 
