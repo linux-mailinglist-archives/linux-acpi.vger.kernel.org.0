@@ -1,113 +1,111 @@
-Return-Path: <linux-acpi+bounces-12130-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12131-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4741A5E44F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:23:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7E8A5E46D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 20:31:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B3A3B70AA
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:23:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11E873ACEE1
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E272571DE;
-	Wed, 12 Mar 2025 19:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062171E5B66;
+	Wed, 12 Mar 2025 19:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZxxX5jk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5SC42jS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D9B1CF96;
-	Wed, 12 Mar 2025 19:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF2C1CF96;
+	Wed, 12 Mar 2025 19:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741807424; cv=none; b=lZ+hsEcjbyVSiw+boSHfQ6IHeunjrswXnTzXO3rVz8QuIu7/di2hPjG2N2wOCQcEIKbH1hyjFFUMng5oJqaEUnvL6cRij5fmQc9GqzSfK2mDvJDz1o9sgwRKHQTq62VBaoQiV2mzSqo1cSUg4uAVp35Nf7AsBzVtYHgcf0mmozw=
+	t=1741807895; cv=none; b=mQ4EIj21VX7x9yOfk98BfYd9/a2t3rD02/gPb8R0dSZeE64dVRPvZFKsiWn+YMyq7RFW7gNhrfaSu1hRkRtFTDEIifesX740enaZQmdoWgNYTyCuKGodIrwjnsuvP7v6GJMKWR6+Mqf9OCEXq+BfWMrbZHHu6n7vfZJi6jBAGE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741807424; c=relaxed/simple;
-	bh=qk+sYtAMNjTS8ab4Su+xjDH77o6/bEg0NUz5rCc1fxU=;
+	s=arc-20240116; t=1741807895; c=relaxed/simple;
+	bh=CaW1UxJeoHSqP4IvGnDB6JVA17m5sPB3095Cb0mMJ14=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mnfDZCAxPutg+gBv3jRv27lBfrqAyFt8hJZ+kKEJdtY2aSjdowEo6YtXkEd71cj7sRXGp3hvDiXmqV0I52NRBBXYFaqc6kcIAzoGhhZ0iIxXsKqLT4qXVCYyTX0qlCIDcuriv54/3LLeC83w5l05eU4oU4te7D2PzSOZmhK3eBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZxxX5jk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AF8C4AF09;
-	Wed, 12 Mar 2025 19:23:43 +0000 (UTC)
+	 To:Cc:Content-Type; b=MVvyf69FPaKeuGtiPiZQzVktk30gXZ6MMJ763KEET6nE5SX0onFp0YWGN1h09CfbnR8wVKXFCTuaZ/ghKIunExl/hhTvd0AfMTTfUhKKFGLSca4kehUA1XpDOAsn4UFqsjcYeS3PSFnUtmZMoxyrR3cDbMZ6vnzGITuZ5Gd3Xak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5SC42jS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48034C4CEEC;
+	Wed, 12 Mar 2025 19:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741807423;
-	bh=qk+sYtAMNjTS8ab4Su+xjDH77o6/bEg0NUz5rCc1fxU=;
+	s=k20201202; t=1741807894;
+	bh=CaW1UxJeoHSqP4IvGnDB6JVA17m5sPB3095Cb0mMJ14=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bZxxX5jkYKR4OcWAOnzFnD2w6bIg8MkwTtyDBEW9ouNRejSJavZdjhXY3HnG1MNlF
-	 4chb1d4U53NTDcwV1nDi7w0dY6i9i6RD2hOufrb38rYPFpaue4dWLi4lvSWKNPNtmZ
-	 vGDl4yzaTpbkcppWfc0yAH1RGpBCEhR4/asO99BoTy5T+hHuTSO5+jnSo9JZmRFBi/
-	 WCfWAfVlrMN7dp3PZs0dbbrW3JcK+SH1EokS3uDL571FgJyRga8SvM8rc04MP+mzNX
-	 IpJBeRrWMM0HTXSxiyfS8VG5QqtSwVZINNdukEut1HulIzEQMRvk0TG+MMutOZyf0M
-	 AU12S2OSLGGtA==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2b2b6019a74so139181fac.0;
-        Wed, 12 Mar 2025 12:23:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV/kBwEhu89uY2QkfBlCBYli9avO3AdY1Z5B5mulITOkI2/GzUyQNKhP6GILSXbRVmyyUeklZ3He/dPZjsT@vger.kernel.org, AJvYcCWzKRSVw8v00rpJFF5y+eME3fDaYkRfIoU9MtSasrp2qQ6ie+1FWlYbs+Gcp4JXlZew150uvbevOmUW@vger.kernel.org, AJvYcCXxWTfKVzkWMwb+s6GtjAnDXu2NfnakdrTnU26gmSY1PvYHYIVVIKBenk0G02ugY+97mRYEAJJcNkIy9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/rlxT3BScs3l5/2T9ldgbnpT7JeuIcpzDwdszpPPV24PGtK/l
-	8JQNe0qvJc60Jv9HYVJo/qOOhE6hHL0AtencGnqP/pXP52NUQ5Spx30xIa6H2GV/vZbYeJYplW1
-	faF2+TDbJg2ZaaPswI/p2YInrxSA=
-X-Google-Smtp-Source: AGHT+IExKgixAomysE1WTCv5vmvxjoRBLCX7DMiIhR9d1Y81QNdc/yHsmgNJLtvKlgnFJXlDKYUVhGUN8K8l76IvkUQ=
-X-Received: by 2002:a05:6871:109:b0:289:2126:6826 with SMTP id
- 586e51a60fabf-2c261304b27mr13457476fac.30.1741807423019; Wed, 12 Mar 2025
- 12:23:43 -0700 (PDT)
+	b=T5SC42jSwOSUQOOJtN733Gaad9jXxutkSjOf6jR4w20P0D0w5LVX7+8h5ZlaPOF3g
+	 uAhdu4mtMOXb31o1nAVVVmhtPDjC6ZQNGn+VIwjASuJ5B/ri8ul+Q7cvuqoIRxrML6
+	 ytOqmt00NUHEwubcFLHyidQ/2HjON/pIG/zz/0b+FmkE4VY9RAQXoboEg3eTzUdBUM
+	 SAbH1LgNI0luEHfKC9hGSUDgxKrqGL0fSk007iCOSq8n292wEnlK/jZsJAgTjCB9Wa
+	 BbrWGZPuU2mz+tRENNeDiGoUc0S2qebDyKLfVleRb3KmgeGzqlSJDdFyXuKh+/GB9E
+	 V8XRDrosSDCOw==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5fcd61e9bcdso76738eaf.0;
+        Wed, 12 Mar 2025 12:31:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU1Wu/Mi1PdcI9cm0CIRTEsDQfjurkbI5DOng1oyRdKbRkPZJiSFUywm5K6Udt1Jz76bIixsRUJjJ5Jt3V1@vger.kernel.org, AJvYcCWd/VKOVspRWvkbOLCGCmOx42oo54wC3N8kjxYXqiMb852wkAl2d3tNQabWBMukauYpHjKmwF9wKaYaUGtW+KU=@vger.kernel.org, AJvYcCWlro4KU4bJH99Pk40YlaJvNz+wCaNYpaV8yDjL7w6yAnHOLo6fpbU79rjwu+Vun6cS11YGn6OU/fOx@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZx/vrVafQsQHPiMeUCWSYv727vsbct4zuoLAQRwWtcftKG4CT
+	fc0sXNmT3CnKdzcBaUFcgaFujkS3gbXHcnsbN9eFuLqK47T8AuhGUhPG1qC6FmE2mX6V/BBChov
+	QwMwO+qHVwDIb4obl3uTLUIWWcLg=
+X-Google-Smtp-Source: AGHT+IF0pW0O/4HHSdM+DXVucPScSwmpd7T5iO006EAES0raj7w7pX7ZxaICM4YXWVZK3dXMFGCE8m1/YDhpPgHYbWo=
+X-Received: by 2002:a05:6871:8a8:b0:2c2:50a5:1248 with SMTP id
+ 586e51a60fabf-2c2614d4a3cmr11732507fac.38.1741807893527; Wed, 12 Mar 2025
+ 12:31:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250305220146.3932955-1-superm1@kernel.org>
-In-Reply-To: <20250305220146.3932955-1-superm1@kernel.org>
+References: <20250312-ivo-intel_oc_wdt-v2-0-52d09738cd0b@siemens.com> <20250312-ivo-intel_oc_wdt-v2-2-52d09738cd0b@siemens.com>
+In-Reply-To: <20250312-ivo-intel_oc_wdt-v2-2-52d09738cd0b@siemens.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 12 Mar 2025 20:23:31 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gowcNwmLc_q508DcqgtGAP3z9bNoFB-0jdtLBZZ1TNzQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jr013KghzqSJ9xWt3J1PWumwVjVKxjebppmHBRt5pH4Ho1Xwd8wne-zQd8
-Message-ID: <CAJZ5v0gowcNwmLc_q508DcqgtGAP3z9bNoFB-0jdtLBZZ1TNzQ@mail.gmail.com>
-Subject: Re: [PATCH v3 RESEND 0/2] Add LPS0 check() for pinctrl-amd
-To: Mario Limonciello <superm1@kernel.org>
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>, Linus Walleij <linus.walleij@linaro.org>, 
-	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	linux-acpi@vger.kernel.org, Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Mario Limonciello <mario.limonciello@amd.com>
+Date: Wed, 12 Mar 2025 20:31:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iBcxGcqp88kHN64WddvmC-y6F1XaFeSNHFYuQnayg7dQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jr44D1Wr5VQ4K2HGOBGF9RVoswaW7uPrnG--zzPI5KGQJHviiTHGkiNH5U
+Message-ID: <CAJZ5v0iBcxGcqp88kHN64WddvmC-y6F1XaFeSNHFYuQnayg7dQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP
+ device list
+To: Diogo Ivo <diogo.ivo@siemens.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com, 
+	benedikt.niedermayr@siemens.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 5, 2025 at 11:01=E2=80=AFPM Mario Limonciello <superm1@kernel.o=
-rg> wrote:
+On Wed, Mar 12, 2025 at 4:46=E2=80=AFPM Diogo Ivo <diogo.ivo@siemens.com> w=
+rote:
 >
-> From: Mario Limonciello <mario.limonciello@amd.com>
+> With the kernel having an ACPI driver for these watchdog devices add
+> their IDs to the known non-PNP device list. Note that this commit is
+> not a complete list of all the possible watchdog IDs.
 >
-> During suspend the pinctrl_amd driver disables the interrupts for
-> any GPIOs that are not marked as wake sources.
->
-> This however does not prevent them from changing the wake status
-> bit during suspend, it just stops the system from waking.
->
-> If the system wakes from hardware sleep for another reason (such
-> as plugging in the AC adapter) this wake bits might be active.
->
-> This could potentially cause problems with going back to hardware
-> sleep.  Add an extra debugging message when PM debugging is enabled
-> to help identify if this is happening.
->
+> Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
 > ---
-> I'm resending this because kw seemed to have split the patches on
-> separate mailing lists and the lkp robot didn't know and reported
-> failures.
-> No changes from v3 -> v3 RESEND
+>  drivers/acpi/acpi_pnp.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> Mario Limonciello (2):
->   ACPI: Add missing prototype for non CONFIG_SUSPEND/CONFIG_X86 case
->   pinctrl: amd: Add an LPS0 check() callback
+> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
+> index 01abf26764b00c86f938dea2ed138424f041f880..3f5a1840f573303c71f5d579e=
+32963a5b29d2587 100644
+> --- a/drivers/acpi/acpi_pnp.c
+> +++ b/drivers/acpi/acpi_pnp.c
+> @@ -355,8 +355,10 @@ static bool acpi_pnp_match(const char *idstr, const =
+struct acpi_device_id **matc
+>   * device represented by it.
+>   */
+>  static const struct acpi_device_id acpi_nonpnp_device_ids[] =3D {
+> +       {"INT3F0D"},
+>         {"INTC1080"},
+>         {"INTC1081"},
+> +       {"INTC1099"},
+>         {""},
+>  };
 >
->  drivers/pinctrl/pinctrl-amd.c | 28 ++++++++++++++++++++++++++++
->  include/linux/acpi.h          |  9 ++++++++-
->  2 files changed, 36 insertions(+), 1 deletion(-)
 >
 > --
 
-I've dropped this because of a build issue in linux-next introduced by it:
-
-https://lore.kernel.org/lkml/20250312235829.2ac0c991@canb.auug.org.au/
+Is there a particular reason for this patch?
 
