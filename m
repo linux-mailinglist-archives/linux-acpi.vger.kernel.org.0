@@ -1,171 +1,209 @@
-Return-Path: <linux-acpi+bounces-12128-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12127-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B41BA5E36A
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:05:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF96A5E364
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 19:05:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD14A17BC84
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 18:05:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBF5C17C2E7
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 18:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04952257426;
-	Wed, 12 Mar 2025 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EC0254AF8;
+	Wed, 12 Mar 2025 18:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jYKT7aaV"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="jx2wtSiQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7357C256C9E;
-	Wed, 12 Mar 2025 18:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741802704; cv=none; b=s6PazNnIEa54gWJi0sH5QWweHMuWx+E29brjn4k/kp4PspGCnMKdQRkyKW4/TxHcbNEB3o0NXB/buJvNZkqLdCQCrzb7KsBsn73PKbYihpHMgK4sDTI4qV5sDCwip4/wEhl6yD6aBVBg8oXg+fxZwx0TRAVJpuypR09J2lkNshs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741802704; c=relaxed/simple;
-	bh=YRkqEDAnEJO9uif9D8gYv3G3QiocUg9KYSfoxRMiepo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dX1QvFhfCwvnePpZDqCpbRNUj7skYFkHrAT5EboN8FIQda7LwZ0mHNamJsJ/p1XOgvPvfTsLKYKc7XSmM+7sN7dJkbOtQNZEVlwrkEEtv3veHiz4xBRl+iCVsPNVJrl09EaxBzJEDWRCeCaS0cMctrzQB2h0DfVXDcRMfDnc9U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jYKT7aaV; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 1B63C210B155;
-	Wed, 12 Mar 2025 11:05:02 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1B63C210B155
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741802702;
-	bh=3LuHCHpuveXkpSQUcYt/4aNBi7uFbOG/3oEGn8E8LXY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jYKT7aaV5gspSop8H5hJDvSoYzQZSeYlg64Ifr722u0Nb9Lg5Imcrfh9r7PIfD5lT
-	 6Gx7WdXYzK5Qkk74C6o++r7isZrfq5nwtn1HQ8mbeg+mlVaPIh0Da7Nxn0zjSmQ6i1
-	 ISWSMrdAV6mX4SniwmTsX/jUZuFL1ANTVkqQw/UY=
-Message-ID: <8520ef42-6cb4-4e14-9700-de7ae8a99ae8@linux.microsoft.com>
-Date: Wed, 12 Mar 2025 11:04:37 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2135.outbound.protection.outlook.com [40.107.220.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1510A22DF8F;
+	Wed, 12 Mar 2025 18:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.135
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741802700; cv=fail; b=a8OG6pOEY9ypC0wqGi7sT0bmIQQc7Kco+UcZtfPMxlVl5oHC3wsw9WSHVG81xi77QvlJsE8uFsVzvRmHc4n++T1UluHHZho/fFbG4NdVpQ6We9RTHg7/1OYMOw2T3cAYmnYrEbURLae4/PtLwqE7Qadw/KSDn2N1JbqF/vw1cKA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741802700; c=relaxed/simple;
+	bh=Qet7NoN+bJ1WGoDWAvfWnleWpu3C2K+nXWQ4UoxqkI0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kYBuKUMx2cu0dBkfB2YcUcUeRrdIAqIPJOnO45omT9vs2buPTdjPU9FWSPPNyY1sbIkYCyqCxD1f5sYgrX6si9+j15fXytobJuR8kirkzIxnf+nWnpec2eXHRLmh45iNecJrS9Nt4rNTf/9daLE7H8Nviqv9XE8cUqhiJk6Qa2Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=jx2wtSiQ reason="key not found in DNS"; arc=fail smtp.client-ip=40.107.220.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UD1AaxU5rB0WafUDctq/12fX1kNdQOipoFtjHHsg6VDtCT1pKoDjbCxujG6w8WJxN0cnYzlM/p72kyzHiosLyMqdoc5AE6WXCVUEH7SQkWHWJ+u0lqA3qNLq7RIJZeMbdoy7TP9UbFgCiiBHPTtD19iIRmnCGtMwKhXlNnMszo9P1vAmL275PvUVYAiqLEvUoAgxzHaR7j6qQEAjwfmJrtiLNXn8MBIHQy/qKSgXbsZg8YtmwRPDesMM/5LVdQIJE4yE2kBToXtl5wgaXWG5UkwQBoOI0FRFVaC39wKMFK2E6u4xP3tsA8IIpiRqs7gkp0uTi5InHoRoOinp8iw2UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K61FGefTE92xnrrRDxEs741RivV0Y0eICWxaajPT/B4=;
+ b=kvnO8HdGazI5Uc9auKmXkcvxAxhVbI2h+UwBICcY6jkQd4jKS7f+Ww+zpqeQ9MUnkFHir63DBAHndl12NH/9ZxvOiQqbDOWtIr3HZkK/Jvkt8/4mA2H6wm1NfXAtzXFz85s+oHoTx5Lv2OkDVbyB4s1ZW0frLvD5GM7Z8pMdbc25TluYzMo+2ydRAop8/cFSlj79HwXCQeJSI65spy5H++AWp3lZYMQ1vs0hwwvmlhHHMQiVsV1er9I23HQawOeMCd4RZ91WBo+vu1Gc5a7/RRm5/WYISI7vmTUj1t4R3iZKX54+pQAV/gJMpJu3A6276Ee6k2eYS1jpagVDRtjlSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=amperemail.onmicrosoft.com; dkim=pass
+ header.d=amperemail.onmicrosoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K61FGefTE92xnrrRDxEs741RivV0Y0eICWxaajPT/B4=;
+ b=jx2wtSiQG6xb3ocFx7SSD0hxpPfQOtFBFY8t9BrWO8R6qFuzdhzzrRyvTc/wrsZ510rwEg0DpNxZLm8s/XawoAzqu2AiU+8ElV4tDe7FQlpbkZXlw+SXOyspVAUNUtr9KL9A6VhHr1CImWC3wVZUAsYxXzDTV+wreBVmJ6VH1hs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
+Received: from SA0PR01MB6171.prod.exchangelabs.com (2603:10b6:806:e5::16) by
+ BN5PR01MB9154.prod.exchangelabs.com (2603:10b6:408:2aa::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8511.28; Wed, 12 Mar 2025 18:04:55 +0000
+Received: from SA0PR01MB6171.prod.exchangelabs.com
+ ([fe80::b0e5:c494:81a3:5e1d]) by SA0PR01MB6171.prod.exchangelabs.com
+ ([fe80::b0e5:c494:81a3:5e1d%4]) with mapi id 15.20.8511.026; Wed, 12 Mar 2025
+ 18:04:55 +0000
+Message-ID: <17a7ca5a-31f5-47fc-ab67-348df20b31ec@amperemail.onmicrosoft.com>
+Date: Wed, 12 Mar 2025 14:04:51 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/13] mailbox: pcc: Fixes and cleanup/refactoring
+To: Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Adam Young <admiyo@os.amperecomputing.com>,
+ Huisong Li <lihuisong@huawei.com>, Robbie King <robbiek@xsightlabs.com>
+Cc: Jassi Brar <jassisinghbrar@gmail.com>, Andi Shyti
+ <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org,
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-hwmon@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20250305-pcc_fixes_updates-v2-0-1b1822bc8746@arm.com>
+ <Z9AoOg-cx6xVW_Cu@bogus>
+Content-Language: en-US
+From: Adam Young <admiyo@amperemail.onmicrosoft.com>
+In-Reply-To: <Z9AoOg-cx6xVW_Cu@bogus>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR13CA0172.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::27) To SA0PR01MB6171.prod.exchangelabs.com
+ (2603:10b6:806:e5::16)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/10] x86/mshyperv: Add support for extended Hyper-V
- features
-To: Michael Kelley <mhklinux@outlook.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Cc: "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "decui@microsoft.com" <decui@microsoft.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
- "joro@8bytes.org" <joro@8bytes.org>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>, "arnd@arndb.de"
- <arnd@arndb.de>,
- "jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
- "muminulrussell@gmail.com" <muminulrussell@gmail.com>,
- "skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
- "mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
- "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
- "apais@linux.microsoft.com" <apais@linux.microsoft.com>,
- "Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
- "stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
- "muislam@microsoft.com" <muislam@microsoft.com>,
- "anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-3-git-send-email-nunodasneves@linux.microsoft.com>
- <SN6PR02MB4157CBBC2D186E1944E6773AD4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Language: en-US
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB4157CBBC2D186E1944E6773AD4CA2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR01MB6171:EE_|BN5PR01MB9154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4988e42e-2f41-4c8b-b976-08dd61906518
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|10070799003|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?c2k3cU0ybGo4bGZuRzJyVW5JbUw5eG13SG90Z1JqQ3ZFbGh5WWlPRThjSE9t?=
+ =?utf-8?B?YklYVUNFb0owbFhzcFpuL1VFdkxXcE4rbm56OG9uUXk3S0xDajRnMjFzRHJ1?=
+ =?utf-8?B?eU44dk5OM2hFMERlTDVBL01vaThjZ1o2NXFXNWxwbEI1Ui9mYkp5dWNIc0pX?=
+ =?utf-8?B?bXJWZS9sMi9qQ2NPQVhlT056L3R5MUROczNrV0wxZUN0S281SHRnWXVVL0dD?=
+ =?utf-8?B?eEpKU21Dd2Qxa3BudWx1dWxMYjJNTC9KVHhZUFVwY3pnUitaSUp3SGtOdnh0?=
+ =?utf-8?B?NGRIcU5kVkZZYzVYV3VuUVNVWTcrL29vcm5qTFpBSFVXdG8xdU9Hb2ZrSzN6?=
+ =?utf-8?B?MlptcFJYcG1tNnEvdklVYnRLWEFUZHA1NW5yZlA4NzdvYkpEZ3JwTUUxWGk3?=
+ =?utf-8?B?ZHRRRFVtZnBNRzZtRHJya2huR1BCSzlMU3Y4SWZJYUU2ajR2Qjl1QlVTaFZa?=
+ =?utf-8?B?SE50ZjY0Z2xDdEFnNHNicGJqQWxVL2JWWDhlVVVKVjRYTDdMOGdWYkN3WC93?=
+ =?utf-8?B?NTJzWDMxUGxMcXdaNDIzYklueHZrY20zMUc3QmxSN0tlay94a1ZWU2g1MjB5?=
+ =?utf-8?B?NHY1K1BXRjBTVWRHaXJRNXh3NjFQMFB4MHh6bzk1NlFnRmdCVUNOUU04Wnhk?=
+ =?utf-8?B?Rk5mNVZxSkNCMnAzV0x4aWZJTUN1cmI3bDNMbUN0MEdGNXdoaWRrVkZlbUdC?=
+ =?utf-8?B?OE1kS1pqcTU5OTArN1BOdGxKNnM0N0RTL3Q0c3VNc29TKzJuUm5XVVM2NVJw?=
+ =?utf-8?B?SGJFaXVmYVU5M0VFWGErOUtyVEtiNnlpTUxmREZNbS9BR0lLMlpHZElGSWpZ?=
+ =?utf-8?B?ZnhOY1hYMTMwTTFsUzB5bzdPVXI2M1l3bFZwL3VLOXRIckpCN1MvRWxwbCts?=
+ =?utf-8?B?NnNvcGt2cUgxZWk0Vk1hamhVOWNZN2cwV2pRb2NNeGZEUW9kK3RINWZrbE9S?=
+ =?utf-8?B?OTNwTk1aMEpjZ29sNCszdU1xZHkyVjNzWnBRajZMOHk1VGZwWUZYWkx4cXI5?=
+ =?utf-8?B?UGV3bUhWRnh3djdEaHR5UU82cnA1TnArNHYyZ3M5aGhKdHhpWUlzWmNSTXJo?=
+ =?utf-8?B?ZzBEbnhOUHJ2NUlDRHRFeXF1Qnk5UGltZk15UkphVndtckFUR1E3emRGNFZ0?=
+ =?utf-8?B?eWE2cmdBb2hOaEFwZHpkNlpoby9FYzhuTmJpZE43bVZTTTdvUHNLRlJoM29q?=
+ =?utf-8?B?VGs4OGlCdzlkV2pCY2ZWRUpwVktTdGk5eGwyUHljU0FoRk1EeHMwZU5WQ0xa?=
+ =?utf-8?B?RWN2TXYzSVNnbEdDalFVWXR6TEJWcG8vTGJsSUFFZW9TRGFkelFaN3dMdWp3?=
+ =?utf-8?B?YnhLWXVseWtnS3IwcGRMTENHaU1wcXdFdnpQZ2IzN1RkbzJOVFpyZ3FtQW5s?=
+ =?utf-8?B?UTVqbERaZGFMcHhVWHd3Mm0vNWhSL1d0RFkvUkZHRDRqSjdpQ0JOcjZxWElv?=
+ =?utf-8?B?YnpUc0tiOTcxOXU1N1BxN21yUUhpQ2dyS2xqcWhpdThEQjIrenFpYmpRWTV2?=
+ =?utf-8?B?SU9ST1FGR3AyTmIwQ1pFdldkOGNmdjkrVm82L1NvNE15dTN3UEtQQytZSkJw?=
+ =?utf-8?B?bGFzODdPUDROYjZVckhGSHcxRXBhM2xPeEhlVEdEdmo1bnp0OFJoWktaRGV6?=
+ =?utf-8?B?bGdhM0FGVDNEcklqWHdicGlmSnJReUVKL0NmQXdEMEV4N05HVHRjUkhTYXQ5?=
+ =?utf-8?B?blZpVmdpRzRiUVNLZTRxSlNKa3RiVFZFSktWMjdoNTVjQmQvMktUb05FdmY4?=
+ =?utf-8?B?cW5DMUtpUHIxWEpqWWNnSFcybnMwMDhLdStENlo2Si8vUnZ0N1JtTW04cGpk?=
+ =?utf-8?B?Q3Bub2N4UEs1Mk9vVUhLS3ZEaFZCOHhMb1ZzVVNPSHBhbkt1M0hZZGQvR0dX?=
+ =?utf-8?Q?FMiDa+w8oqwcE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR01MB6171.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(10070799003)(366016)(7416014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mzh1TkoxdzBFMUtpY3JqbjBQd2RiTVVrV2Flanh1TFlPSkZTZmp6dVl2WkU0?=
+ =?utf-8?B?bmtnMndPT0E0Y3hBbTBmZzkvVXhHZWE0RjVHZmJobXN6L0xZckwzWXpNbFFo?=
+ =?utf-8?B?RnhBeHM1cnUvQzF3UFBpdDVzaFVjcXhJNG4wZUJKeHdrVG1vTFQ0T3VkUzZp?=
+ =?utf-8?B?NmYwcmU2cGZDdUpNSjdWUmpjcnpTMC9BajA2M2gvS0VmWjVrL2hOenhFaUkx?=
+ =?utf-8?B?ek9qRGpkL05FV0s5QkJwU2F2RDhzSEh4endPRjNhbFpBaFh1MnpyRGRUcjBE?=
+ =?utf-8?B?dFNvaU5YcG5yNHNNdlcxd1JCV2l5SXpRbGQ4c2xObVJWdS9xTXZCK0tBdHE3?=
+ =?utf-8?B?T3RFbnBsTHlyVFRzVEJCMzdnNFpicUJuY0ltVHhpc2NGMVdTRUhmUlJDbXJh?=
+ =?utf-8?B?bExqSkx5WFFORDBJaTZwN1VXdW9lZlJjUDQzdkQ3MnF0Y2I4YkpQL0lad3Iw?=
+ =?utf-8?B?WUNZb0ttNUlHTEJmZlEzVkZIVktibGxLTEpkQXJsRzlQM2tIY0JINXdHMG5M?=
+ =?utf-8?B?QkdSNW5KcmtZVmJLTHlUYlVQajJzVERmS0xHY2VXazhEbTVwVGVKdllZMnNG?=
+ =?utf-8?B?c3YwQWR1a0l0STF2WFJ5MHp6YTEwQUdDem4xd3hYZVlqb3F6S0xyVm5qck5N?=
+ =?utf-8?B?KysrWFo4bFlDaUNYNTI1K3FqVGtSYXBVSmVxY3VQRmhoNUwvZld3Q21PNUlG?=
+ =?utf-8?B?WVVqTVcvK1VGZmZ2akRVRHNsUm11TXVSMlNwVTlGb3ByYTlxZjFNSzdaS2RU?=
+ =?utf-8?B?THBTTTdKU1o2aWxEOUx1K2JldjZTZFMxMmtEaTN5S3h6R3dvbUNzc21HOENq?=
+ =?utf-8?B?ODBuUERRdkJpR1h3RGRiazZtYzBrdkR3eVNGeHdmSmxDTi80YUdxcjZ5ZFo1?=
+ =?utf-8?B?L2tYcUJGUis0cTI3YVhFcmpRODRtaUIxUjFUSU5JT0cvaDFIUmR4OEJRNUdO?=
+ =?utf-8?B?OEhQSk9qajZyL0g1QlVxbFlQNzRHZGo1cmM3TFpPQ0dJeUFqWmJkQ3YvS1A1?=
+ =?utf-8?B?dk9DWFhXZERxanJvWHNKL3pIWWVwUktDZCtPL3k4cGdYYlR2N2wxd1FkU2l5?=
+ =?utf-8?B?N0M3RENVbmJueUI2dDVGUWVJT25NWkhQaHk4cUFBY3M0VHc5cCthNFp1QjBU?=
+ =?utf-8?B?NEQvaUNkR3dDWWNXcmlGc3hnUzAwdHd4aFJhOThlRmsrUUFxakh0OEdpby9G?=
+ =?utf-8?B?aGNnWEVaaXIxaUlEMTFDb3lndGxrVFRqOVlrS0dMZHVGaWJaMkZqMW4xdGFJ?=
+ =?utf-8?B?aFdjS3dydXhzN29ZWnZVcEtTcjkvRTBqZzBTbjhqOE1Bb0k1MU14VDM3SGto?=
+ =?utf-8?B?Q29vZ2NUNkxlNWEwWkdjNWN2SENVb01CakdKQkhNWmNFTG5WQkJaa2ZMdFE5?=
+ =?utf-8?B?VlFuY3Mwd2Z6S1liWEVIT094V2g1d1lNZjEzRkFQS3dvZGdkNTJuZkR4a1Zq?=
+ =?utf-8?B?VlhBZGhxM3hmUkYzVHlGODFNYmgwMkx0L3VhWktYcHhUSllkV25WQnRLK2Ns?=
+ =?utf-8?B?MStRWmhZWU5NUEZZVXFaZDFWelVreUtKMUpkaTI5bFJuRTZSV29UVzdLVm9K?=
+ =?utf-8?B?M09EdVhTNkpYMngxUjVHbytBUTI1eitSa2FJVGI3YWhrekdlSVJEN3k5Uzd3?=
+ =?utf-8?B?V05wZndKKzRlOUFQL3l5N3d0dmdSZjJ1Rlg0NDhCVWRLSnZSQnFNVnJqNW5B?=
+ =?utf-8?B?SG5ycTJrckF1Z0plSUY0Rkd3cjRWeUJmeXF5ZHV6WGVtM1ZUaU5ocDBhWG9i?=
+ =?utf-8?B?QllJRENDQzZ6UVpJdzl0elQwWGU0eFg4ZDBDTHdlK2hlcXc3UXZzemxpN1No?=
+ =?utf-8?B?MUFmUlkvOFZJSXdUYjBGVUFMOU1XSlgzUHg0eE1qZGYyRStkeHVOaCtqS3BZ?=
+ =?utf-8?B?anpEZ2l4cWZJMXExcEFKSUFCV2dLU1NWMWRySlNVSnBmTXhKbHlqTW1tU1VQ?=
+ =?utf-8?B?TnU1bEhvSDM4MXJXWmp3T1Uvb0V6QWVzYmJRY2dsaE55eWFFRjdmWEU2Qytu?=
+ =?utf-8?B?a3oxRFFqZjFFVjJrVGZBTGV0dmRpbG9ySE9BQ1YyRXh2dGRHdmQ4WWYxTC9o?=
+ =?utf-8?B?UURUK2gvK2hqbFcwVm9FazBWWnd5LzBzcDFhODdjeGpJZEthd1AwQW4yNnRB?=
+ =?utf-8?B?emlGVStXZ1oySnp3cmpOenlCQkJKRzc2QXNWRkcwWDRvWE5XSVkxbWkrRzhk?=
+ =?utf-8?B?OEVWbmxLRW1WdEhMQnJVREsyOVVSSGV2OVdBS0ZNcDhmWmRiUkVWMlhKeFhJ?=
+ =?utf-8?Q?KH6jOlbDQ5jLSgqbgRyX6/a2BL7IHvXqxfPYKpZ+mo=3D?=
+X-OriginatorOrg: amperemail.onmicrosoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4988e42e-2f41-4c8b-b976-08dd61906518
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR01MB6171.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2025 18:04:55.7521
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: En4rvBR1UGZiGFHF9NFls/dqfaQcc5BAO6FpFiIis6S1RCRs4ns6L8GDf0YTYQO7XXjjkKoy65KjpCUiVCevNniKqjAQNuCbUDHUMcnlw4f6mN1vPwzXXaxBNoqROJJQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR01MB9154
 
-On 3/6/2025 10:30 AM, Michael Kelley wrote:
-> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Wednesday, February 26, 2025 3:08 PM
->>
->> From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
->>
->> Extend the "ms_hyperv_info" structure to include a new field,
->> "ext_features", for capturing extended Hyper-V features.
->> Update the "ms_hyperv_init_platform" function to retrieve these features
->> using the cpuid instruction and include them in the informational output.
->>
->> Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
->> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
->> ---
->>  arch/x86/kernel/cpu/mshyperv.c | 6 ++++--
->>  include/asm-generic/mshyperv.h | 1 +
->>  2 files changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
->> index 4f01f424ea5b..2c29dfd6de19 100644
->> --- a/arch/x86/kernel/cpu/mshyperv.c
->> +++ b/arch/x86/kernel/cpu/mshyperv.c
->> @@ -434,13 +434,15 @@ static void __init ms_hyperv_init_platform(void)
->>  	 */
->>  	ms_hyperv.features = cpuid_eax(HYPERV_CPUID_FEATURES);
->>  	ms_hyperv.priv_high = cpuid_ebx(HYPERV_CPUID_FEATURES);
->> +	ms_hyperv.ext_features = cpuid_ecx(HYPERV_CPUID_FEATURES);
->>  	ms_hyperv.misc_features = cpuid_edx(HYPERV_CPUID_FEATURES);
->>  	ms_hyperv.hints    = cpuid_eax(HYPERV_CPUID_ENLIGHTMENT_INFO);
->>
->>  	hv_max_functions_eax = cpuid_eax(HYPERV_CPUID_VENDOR_AND_MAX_FUNCTIONS);
->>
->> -	pr_info("Hyper-V: privilege flags low 0x%x, high 0x%x, hints 0x%x, misc 0x%x\n",
->> -		ms_hyperv.features, ms_hyperv.priv_high, ms_hyperv.hints,
->> +	pr_info("Hyper-V: privilege flags low 0x%x, high 0x%x, ext 0x%x, hints 0x%x, misc 0x%x\n",
->> +		ms_hyperv.features, ms_hyperv.priv_high,
->> +		ms_hyperv.ext_features, ms_hyperv.hints,
->>  		ms_hyperv.misc_features);
->>
->>  	ms_hyperv.max_vp_index = cpuid_eax(HYPERV_CPUID_IMPLEMENT_LIMITS);
->> diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
->> index dc4729dba9ef..c020d5d0ec2a 100644
->> --- a/include/asm-generic/mshyperv.h
->> +++ b/include/asm-generic/mshyperv.h
->> @@ -36,6 +36,7 @@ enum hv_partition_type {
->>  struct ms_hyperv_info {
->>  	u32 features;
->>  	u32 priv_high;
->> +	u32 ext_features;
->>  	u32 misc_features;
->>  	u32 hints;
->>  	u32 nested_features;
->> --
->> 2.34.1
-> 
-> Are any of the extended features available on arm64? This code is obviously x86 specific,
-> so ms_hyperv.ext_features will be zero on arm64. From what I can see, ext_features is
-> referenced only in Patch 10 of this series, and in code that is under #ifdef CONFIG_X86_64,
-> so that should be OK.
+The XGene patch did not apply on top of Linus's current tree. The other 
+patches applied OK.
 
-Just checked - yes ARM64 has features in ECX, but they are different to the x86_64 ones.
-We can add the ARM64 ones when needed.
 
-Thanks
-Nuno
+I only had to make one modification to my patch to remove the call to 
+‘pcc_mbox_ioremap’,  as it is performed in the pcc_mbox_request_channel 
+call instead. With that change, my driver continues to work. I will 
+submit another version here shortly.
 
-> 
-> The pr_info() line will now be slightly different on x86 and arm64 since arm64 won't have
-> the "ext" field, but I think that's OK too.
-> 
-> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+I like the direction that this change is pushing, making the mailbox 
+layer the owner for other drivers.
 
+
+On 3/11/25 08:10, Sudeep Holla wrote:
+> On Wed, Mar 05, 2025 at 04:38:04PM +0000, Sudeep Holla wrote:
+>> Adam, Robbie, Huisong,
+>>
+>> Please test this in your setup as you are the ones reporting/fixing the
+>> issues or last modified the code that I am changing here.
+>>
+> Huisong,
+>
+> Thanks a lot for all the testing and review.
+>
+> Adam, Robbie,
+>
+> Can you please help me with the testing on your platforms ?
+>
 
