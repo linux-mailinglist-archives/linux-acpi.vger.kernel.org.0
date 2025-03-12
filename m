@@ -1,43 +1,43 @@
-Return-Path: <linux-acpi+bounces-12152-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12153-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C13A5E75C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 23:26:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BE1A5E763
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 23:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ED6C7A45B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 22:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6DA43B3B34
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 22:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603FC1EFFB5;
-	Wed, 12 Mar 2025 22:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1241F03C8;
+	Wed, 12 Mar 2025 22:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="1u2Qk5B4"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="twogMkXA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from SJ2PR03CU002.outbound.protection.outlook.com (mail-westusazon11023129.outbound.protection.outlook.com [52.101.44.129])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11022087.outbound.protection.outlook.com [52.101.43.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995781EFFAD;
-	Wed, 12 Mar 2025 22:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.44.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3581E9B32;
+	Wed, 12 Mar 2025 22:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.87
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741818363; cv=fail; b=YDMEzORWkHG8kJs52CXydiHtrjf0mklq4BWBVIQgkdkSn11AWGsbYx48e9cbqS9eKAkPiR+mNgs0vbNzs+QUUaCmHmynseZlvMGETLExqKZNnFrM3BdnVYI1KGSsxY0TxZxTqBJgm25jOHm3OobXwdkqUQNdvTNVB9D1v8+Etko=
+	t=1741818412; cv=fail; b=kM61etPK8dh0jbktCfkU9jzjRwMxRqDazOoSHzq2bCm8cNtGhELqypMC44/3bG54HcTqVXQkwpXhZkuGLaSvgtIvdg3+Eo1O5gJ/dEcmpxU+ju7F3475zPw6uljCqMtmb7t3Uqb2eaLqpp8VK/BpOBokrX0T56A/pfdPGuUgokw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741818363; c=relaxed/simple;
-	bh=wvdrKI/zodBaz4bTUHozr4wWyLfFYs0+aSvMGWbk5SY=;
+	s=arc-20240116; t=1741818412; c=relaxed/simple;
+	bh=b3GGlLTmiNVv260rTi61CVKoMNZjdLcampzUFccy3Yg=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GdrxRskUFHzDNTnXXX/WD4rengmb0swVI2LdGscYGzTHSF15NViec5WPbQzHsKkZk6zVa7t7dKW+A+PFPgzDRoEWMLk0xchx1CTUcgIaUz2Lu9Yt+Lfr440tqz7p9nyp5/kwtcOju8KOWqfq4LSaQJiQZbT/i/17BL4bglEaDgw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=1u2Qk5B4 reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.44.129
+	 Content-Type:MIME-Version; b=rgjg1yGwvLZN44dEcyp3AsM1WyKsYe3ZtI6u5yLGmNtA5H3DNULgKAKKSF1UASHXAt1URK3ZdgibBIBOfWhGRSbsHmdjNKWKXHxWzeeDTIV6TSBcLdFcX5OvVFPyicDaugMQxR7Z58hVZ4o9BfTb8GG8VTdR7QH7ke5AuqvJDeg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=twogMkXA reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.43.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TVbxAiZJ44lx6a3Yi8iVQDhThGbXwiW1iu6KBcLF3XmK1C7R2Hp2WJ29VltkzPVfTv41QdQtzqubvKQOaHCyIqxc6UlqQGtDVLJ+TQYzlfE7Y4aWw0UTjn8SGpqIvjFNZ6aM7L6oN6E4I3+We0oDnNA5TDdb250IeES/cLEkp+2f32REZOZLsI1532HTvr11w4acEtQGrJd9KackrbbeY06NaAVOKBYm6yVYDNUIoF3OJ1PpHI7TAVC3tWRtcjQ/Gg18aKHUKC9EXMkhaLLG9F7+XYhS0Iymb8dREeXClu0XyIIO2rRpiOXFF1Tur8cAWDyhv8iBVlaGTgky9fHYPA==
+ b=c5Y0Ds0mCa/GSmD5R0FXfU8SPBsjvmmYhWZES7Aa9JtlDymX3h/2VFQEt2W/zlyw4ZnRRrJ09C1gOk62j2pLB5QMtJRWxiJg87YebtqBkVKnPHtkf+fdgAYDAMovj9yP1uBMphsfOsJmaRj5MIiP/Em7DNf6rCb92b80/ywYhZO1I9lbZ1JToancJjv89eLjLeyxQ3DeoAw2Qdpqfo0P0IsronRcmUwVPO9asnOPminXwDsDszwGb21ksC8RjiKAmc3MdrM3rcXyPnJiIoXY+wNYKuZkLVJ2IeHC7kQRWfB5Ux1jqzIeY7LLgHsYM93Np9Mcbuh05n/EdR65Z1K1JQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v7wON2/92qFO8tGl/yZx0/l+qTcpgnHanIymKXYl9Yw=;
- b=SyWKbIJsC0noT1ukgu4fdc+xR6F8XGI9c1/x8lUu5D/6iCJ/ryHD8fg0XNN8INZjpOgbaIVzerRDVQG/bKgAASrBZMA06xofqNpyKtW5dDlXbD+pI+ATm5yEyZakqYfXWUMNgVF6PTysBOtiJbjHrQ1qFsuIO5tEmffVMLSDaKRjhkMbj3fI30B2UCX6A4WK+n3oTKZKfc8q2I+pdEEt1xwTrGCYnIN32X/3oyn2X82lBpRiQ2Ifjlp1MSaofCue6ficA+wodBp1mu//3SJGchHxUf1V2wsFCyeAxcpOqLCddwVrI811tvFb1o9UKUbu/Y5XR6UvfATfJNj2s6ZNhg==
+ bh=kFv9RQ/lBbpx41BZZ6hDyZw4zU5Qmjoq7YIiHCegJz4=;
+ b=eSH7Xi+sBqsBzt36lkCU1m4ZL/7Mob4bkcN2C54eevdiqg36CIOHz47ZCuBD3ii71qytmMHsUwfZ02bDoyPr39k3tmCg263hgm+wPzC8KSXvPZDBohQAwuZfGDs76tbq37RlzubPTQgACCcxAr9vp0XRSn/H81LOqCtOeCsLDOugQrYr25wMGa24Tzh75i8679wwyHNb2XFlWsPiKnDcrcPngeM0RctT5v1/Wv4mVYIXd45WkPf2S6ZyWBwVnL85Rgb6bNRVH48XRsiEO7B8bufym3VLsO9TN4DrxUSRKf96Z3eUnxljrVRzcStKsoQW5+JLu3FdgCS38uFiYiBIUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=amperemail.onmicrosoft.com; dkim=pass
@@ -45,37 +45,37 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v7wON2/92qFO8tGl/yZx0/l+qTcpgnHanIymKXYl9Yw=;
- b=1u2Qk5B4NQZ0Rsqm52tjkwLKmiy8TNFdqsw/ZX1SJubPlBq3da/pv95mBcPZkBPjdDHHJU9PxWPUHpXrnnMLsRVUcJDYmKulV9Lf7WoUg88ofyXxlTGOvjrVrkfZ2IbEU7nAWG+haM28MB+K5E6W56hZpqBEyCsFr2Jm1CPGZb4=
+ bh=kFv9RQ/lBbpx41BZZ6hDyZw4zU5Qmjoq7YIiHCegJz4=;
+ b=twogMkXAt+O5hKzfH+yE/mBra9mOmRxl1btlohW+CZ7o5IqXCoDQC+loP0Vwl51KF31s3qU0ZVjAjjLg6p7TaUUtLtuRB7lE7gy75ENyeaf+igMzJewKgBpEOh+6gnDKzlVNTJs/k9u172wBOnfMyeQypL651RhZTvaK3wN+FHg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
 Received: from SA0PR01MB6171.prod.exchangelabs.com (2603:10b6:806:e5::16) by
  BY3PR01MB6788.prod.exchangelabs.com (2603:10b6:a03:360::12) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8511.27; Wed, 12 Mar 2025 22:25:59 +0000
+ 15.20.8511.27; Wed, 12 Mar 2025 22:26:48 +0000
 Received: from SA0PR01MB6171.prod.exchangelabs.com
  ([fe80::b0e5:c494:81a3:5e1d]) by SA0PR01MB6171.prod.exchangelabs.com
  ([fe80::b0e5:c494:81a3:5e1d%4]) with mapi id 15.20.8511.026; Wed, 12 Mar 2025
- 22:25:59 +0000
-Message-ID: <fc5472ee-cc78-4531-b4df-dc7b621fd222@amperemail.onmicrosoft.com>
-Date: Wed, 12 Mar 2025 18:25:56 -0400
+ 22:26:48 +0000
+Message-ID: <824848aa-8d75-4ce5-9db1-f484a5554c58@amperemail.onmicrosoft.com>
+Date: Wed, 12 Mar 2025 18:26:45 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/13] mailbox: pcc: Always clear the platform ack
- interrupt first
+Subject: Re: [PATCH v2 03/13] mailbox: pcc: Drop unnecessary endianness
+ conversion of pcc_hdr.flags
 To: Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Cc: Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>,
  Adam Young <admiyo@os.amperecomputing.com>,
  Robbie King <robbiek@xsightlabs.com>
 References: <20250305-pcc_fixes_updates-v2-0-1b1822bc8746@arm.com>
- <20250305-pcc_fixes_updates-v2-2-1b1822bc8746@arm.com>
+ <20250305-pcc_fixes_updates-v2-3-1b1822bc8746@arm.com>
 Content-Language: en-US
 From: Adam Young <admiyo@amperemail.onmicrosoft.com>
-In-Reply-To: <20250305-pcc_fixes_updates-v2-2-1b1822bc8746@arm.com>
+In-Reply-To: <20250305-pcc_fixes_updates-v2-3-1b1822bc8746@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR04CA0013.namprd04.prod.outlook.com
- (2603:10b6:a03:217::18) To SA0PR01MB6171.prod.exchangelabs.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY3PR04CA0008.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::13) To SA0PR01MB6171.prod.exchangelabs.com
  (2603:10b6:806:e5::16)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -85,189 +85,155 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA0PR01MB6171:EE_|BY3PR01MB6788:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ff8bc4d-402e-420d-e3dd-08dd61b4dd94
+X-MS-Office365-Filtering-Correlation-Id: 8eeaf8ba-400d-4a45-9307-08dd61b4fab1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|10070799003|376014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZWJGNFVUZTNLUHdzTzhGQ0ZPUFJ3NG9oRTdLUmhxOVc1VFBsaUdSUkZmYW1H?=
- =?utf-8?B?NlFTUkE4cU9NRER5dTN3SUJNVnQ0MGJOY2R5UDlDRU93ZkZkQkxXeFFQbjE0?=
- =?utf-8?B?L0FBV1lqemVncHJnY1lXTkJKekd1OWFzMmZRUE42Qi9jbEN3NEZMQzFhR00r?=
- =?utf-8?B?OEVSYWZteWZXdkNBem53dTBZQ2pwbWFJNHduSERMbzVZa3dGQVRhaTY1b3Rr?=
- =?utf-8?B?WGZrWTUvbk45YjVwOW1PVjFJOXh6UlJvSHNrcXQvbTNhTU85Q3pEaE5RVGlW?=
- =?utf-8?B?akRvWk9iQjNrNk1JSURHWU5ubVZiSXBxbzVVOURhUUFXTTRROVBHdWo2dlhL?=
- =?utf-8?B?SWRzU1NpMVE5Mi9ldDhYKzVCZ2RMTUFtZkhCdDdEWHkvQTVzUU55TTBCZXJy?=
- =?utf-8?B?YjgxSVlFYys5Z3ZkUkxCUVZRbWljelBVbFcrWXc1SGRVQW4xZmdoTHkwOHNG?=
- =?utf-8?B?Ym1CQVFkMCtJT1R0Ti92MHJHSjZVeUJGb293MHpFYzBXeUFVdTcrVERZdjNU?=
- =?utf-8?B?WCsxcDRIbmNlelNRdEorVG5KcExoSTl0NGpVd0Y2cjRPWTVkQVhlc3hCQjhR?=
- =?utf-8?B?YW0wYXVTaWhqL2lCRVhpaWFIWmwwMkpEbmhsKzE5djRZRzR5NVlRUGx0OHRS?=
- =?utf-8?B?UFpHN1huOFNDUzBjZEU0eFVaZGg4MmVWdTdjd24rN2R2MkN2QUpod21Xam5j?=
- =?utf-8?B?ayt0SHJkaUhJeTE1TUxxS1lySEhJQnlkc3oxMXdsTlJFR0pCYTBSYmI4blU4?=
- =?utf-8?B?NmFuSWJvWDliTHJiYjZrQTRhTG0zRGtQK2h0amYvR0xkcFpGRk52WWh3TTU4?=
- =?utf-8?B?RXlxNE1TcnJuY3Ruc29BcjYxeU96c0s2a0JUZThibUJYNEkrWUVzN3dDVlJl?=
- =?utf-8?B?clpibzNoVEZINUpHd0Q1amczSHhUUTd5OUg4S0M3aUNpVk16RjhvQ203Wm5L?=
- =?utf-8?B?R25SZ0dnVDlId2FFSkowSEttekpoRHFCa3R5SGJGcThoMENwS2xEVDNwZjdw?=
- =?utf-8?B?RENNbXhyRFllSG13UXNXeWNybzhlN2Jhd0k2Y0VZZENjSU82WnhPdC8xQWEy?=
- =?utf-8?B?LzBxMUZicWo4RGRwSEZ0Z1hGQWQ2R21VRkdTSlFWcHl2ZElrbzhCWEhVSjFH?=
- =?utf-8?B?bS93RVBWRlBDSW4rRUpxdzNLQ3l1eFFjMGMyZlFPMWY2aWtIUTRsUS9ySk92?=
- =?utf-8?B?VUI2TVB2VzhPbWlMQ3huY0pQRm52R2IrL3pkZ1NvYkNTckpEd0ltNmFvK0F4?=
- =?utf-8?B?Nkx2bDNBL2I5WHAxc2crMXF1aTgzTVBSUlNrWTFOZW9xT3BvRkVhd3E5czR4?=
- =?utf-8?B?ODF0OFFVSG5sVUlva2pNM3R1OGFEdjBYcHhwa1ZjdjJtVkFwS3Q1TUlBTW9j?=
- =?utf-8?B?RmppOVR5NEYxblJ0bk93Q00vUTNzSXFSSDlkRS9lM1J4SGxSTVlPTUY0S3Qx?=
- =?utf-8?B?QVQ4cXVZYXBEWmZXL2RIbEo3ak5oZEh6VWxKcW12TnJNa1hyaFpoajlTcHpR?=
- =?utf-8?B?VHAyTWpHb2JEN3VHR0ZlWGpNTXpQekQ5ellsRUNnYitoZlFUQllkNDRkMWNW?=
- =?utf-8?B?UnpYTGtpa2M2UTJrdWx2UnI5SndFTWNOT2ZvTExHTTNWcVFvcGxmZmpnTjNT?=
- =?utf-8?B?dEpET0o5bERkdm81MjJxSFpYdFdzeWhZRUxReTBqRDQrYXBMT0dlc0dEek9Z?=
- =?utf-8?B?S3FoU3JQcnRZY1VwYWhmRWQrN1ZTcnZDZnp5NzFvQ0ExZ080TXlPd0JvSVpE?=
- =?utf-8?B?SDlQa3RmTTVuNzhXOEN4eDBzc0d4N3ZsbTlrSEFVTk1vV3FpbWdHSEljOWpE?=
- =?utf-8?B?cDFMY05LWHZndFhaLzl5aHhRZXlpNEFRNkJYUklDVnlxQjYvbVo3R2Y0ank1?=
- =?utf-8?Q?MmIXiQUrj1vzx?=
+	=?utf-8?B?Y0h4QVJ5SjE1eWx3UjIvZDA2Y0tWR3o5UVNTOG55VDk4ai9HL3JDOCtGenJj?=
+ =?utf-8?B?TUtTWFlPZ3hTSnc1RXl1SFVvRldlbHBHWXUrbGlPVm44d3FZODJBdWtTUm1i?=
+ =?utf-8?B?MW51YnN5UlFtKzR3K2FBZGtlSlBoeUNwaVZnN1Vnb2hDbUI4MVoyb2ZrTGdl?=
+ =?utf-8?B?NjFXZ3N5RVBwNUlnTTJDUG9NM0N4ZXk1SWVoQWxXNlpibzdtT2tDRk9zSHRN?=
+ =?utf-8?B?aGhTNmVFcGkrMjZnTTAzYThvTFpab3k1VjIxSlJtVllHY1BmMWplaU5xTVVp?=
+ =?utf-8?B?ZHU1Q0p0QXJTQzJZTXkrOWpucjRuUS96ZGRMUGREcTh1M0U1UTVOODQrbzdy?=
+ =?utf-8?B?V2p4REpTd1VVd2ZjL2hnOERQU0JyWjRNNm1iNGh5QmtyeDRNZjg4NzgxS3Jl?=
+ =?utf-8?B?d3pzY0VwakdnVTErdTdRd1ZPbFRyZnZlcHNxNGczUE5XSGNzZlFBMGxNYm90?=
+ =?utf-8?B?Qjl0RHF6dXFuZlA2RzVFWjU5K3gvQ2sydWxJeHNKNmRjQ3Z0REowUVNmY28r?=
+ =?utf-8?B?aktGTm9ocm1idlB5dnNzLzBpVTlsWWcramN5N3lNTUJ2U2FBTUt4Q0pyUnZa?=
+ =?utf-8?B?czcraTlOU1h1dkpGUXVwcUtYQndlakoyQksycmFHRFhFSXhyZ29MelpYaWcr?=
+ =?utf-8?B?eHczWHVUV2c4TEVocU8wdXNtRDByQmk0Qy96Mmx6Q0RJNWlrdmdQMlNqRmVU?=
+ =?utf-8?B?MzV1aE1FL2dhYXJYbGwzOVdsdEo2QWRPcW91SkJtWHFQWXJrZUtidHREWUd0?=
+ =?utf-8?B?ZTdSc0dUeGVvcmFESUlqbWlVOW5RV0V5eFlyVGdRM01KempkVmRRNHpaMTh2?=
+ =?utf-8?B?V0E3YmZZekpEdW1rdzNKWnlYTXdBamxaMDVxK0FCbCs0TTZrVGx0QmpobGtY?=
+ =?utf-8?B?YjRkd0VZUE1uOG82TThxMGIreEs5aXJ6TnczamY2YVM5dURzZ0N6Wk5VWkpx?=
+ =?utf-8?B?MGpWMDg5aXdDYkxYTG1iNFc0aFF1bXphby9sR3F4QkxqbXpzR1RSWjlPdlM1?=
+ =?utf-8?B?WjJWRmpTNHc2M0FGTU1EOUlyc0puVU1FWHZyV0src0tOQ0p4QkJicll6YlpO?=
+ =?utf-8?B?dGgrOGM4dklyVTRPRE0ya1Q4K1QyUHRRZzNMNWhmVERhclV6ZXo5T2J6dlJN?=
+ =?utf-8?B?RU9aU2c4OGRXY0xobDhjQlp3ME4yMmFPbWkwR1NPU1dGS3ZreHpWSXhZOXUv?=
+ =?utf-8?B?dHlCenhabUtZN2VHcHlodS91WTlHN0FCbnFDaEFRMHBFaXZVYWljRGJhRnUr?=
+ =?utf-8?B?NFIrTjBLYmphUFFHVUl4RVFiTGNSZ1R3a3h5b0RFRlA5VUhyQ0E5cThSSHZ4?=
+ =?utf-8?B?OGFCSFp0bVd2endpZkN5NWp0Mk9xZVlrdHIvWXNIYXdyRlpRT3VPT0V2dTlp?=
+ =?utf-8?B?MGQyVXdlYzdqOGVZek1KTEc1L2xkbWlxSThUczNicVBpS1hScTZzVTBPOXFE?=
+ =?utf-8?B?MW1tVHlyVjRBak1MNWtPQkFGMHVOREx3NWt2Ry9NQTBSdlc1T3B2WjRROWJS?=
+ =?utf-8?B?eW5FbjBwblJNclNwZHFkcGdDbGNlUnBYajFSZmc3VFNuSTdUUk1iMDloeHFh?=
+ =?utf-8?B?OXJtckVFUGFTVUovNm84SHp0TUd6T01iNVY1eGI3dDVHNmgzbUJrSGlPTXEw?=
+ =?utf-8?B?WWdNc3N3a0hHTFJsZ0FFZmlkQ1BoMzRjUkVEN1FxdWJOSmtUaitzWGhIZGk4?=
+ =?utf-8?B?TVI2MFZkMUNLWnRUc3NUS3J2alF6TlZGWXBUYWs5aytSN2U4YTZzZEQwZU9O?=
+ =?utf-8?B?U0NMODJxSW1PTGFTQnlMbzZMSVJ6cXNvQzhjc0NkMmZoNmZWbHB4U3BWUGlx?=
+ =?utf-8?B?Q3l2eEFrZE5IbTllcEFOTXRnS3RVT2d2U0M4U0dYem5uWW1Ebm16Y0JDOGFU?=
+ =?utf-8?Q?uQw1Q03S9mK/z?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR01MB6171.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR01MB6171.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZnFGT05jd0g5dW5ySGMyS1Aydy8wa0xUZjd4K3RiV2dWSEtsOEtkR1NhblFF?=
- =?utf-8?B?TmhxVXg3U2pHSzNZN1RZQ1MzY1krT000eGtBSUFHQ0lnMSswMDBYcVoyakt1?=
- =?utf-8?B?MzIvejhPSTJOVzdnWGFrN0FMZEhIdzhhN0liejB0Y0xlaTlodi90L2pQOTZJ?=
- =?utf-8?B?U1N1QlJ1dnNyOUJzSmFndzdjNEZLdlFvekp3SE5VYTNVbk1RUDBXRTlTTG54?=
- =?utf-8?B?aklMSDJCangvTktYMkdna1AzT3F3SUIyVlRYSTJiaVZBakpBcXRsRzlnY0R6?=
- =?utf-8?B?eTFEY2xZL0FHU1VTQ05XYTZCS0MrekRpaDY4Y1BMTUg4YTJJczlyTDBxZGRs?=
- =?utf-8?B?ZVdTYnJkMGRyRkxlWkxUUGVicSs3Y3RXQXdiWnV0ZnZZSEVxZS8vN0xkSFgx?=
- =?utf-8?B?UlNuTkVobXRmdUJVc09oY1FXRmUrM3dWWXIzMkxBT2Ric1Bta2grTUd0MTEw?=
- =?utf-8?B?UHhsR0wrVUw5MFROZEg1ZUVJTnJBclovY3h6UDdxeTdrRFlsMnRwR2RKZTI1?=
- =?utf-8?B?clNydTdiQnUvWFBHeDExZ29ITyttV3FHR2EzWkpFdS95N3NFZ1lhckUvYkc1?=
- =?utf-8?B?WjVlK3lNNmJ5MTE3U1JVcFNLN1Y2TlBtQmJiaEpmanhsdStpVnRJQnNaVjB1?=
- =?utf-8?B?YldWQUtEVkpBSjRMNDRCWVBkQXpVUGhhL3E1L1JjNnZKcGQxVjhQcXZuSE5J?=
- =?utf-8?B?SkthMTVyZEo2cDVYTjZXcGdtcWN6dXJ1R1dTdk40cXRwNWRoK2MrM3psN2FR?=
- =?utf-8?B?NjRYVElCdnhRSnlNdDdhcWljL1BwcGpJRzZqZTBQNUVhSGVVNjZMdVJDSW1Y?=
- =?utf-8?B?WHVHeVowUDRkRTN4MTJZRGFPdTRuUTVJZnhXNGhqUUxyT0x1SnR6S3JHY2tU?=
- =?utf-8?B?a1dUcU1zNFBRRklqYWxPU3NLT1lZVTdIMUJDT1pCK2lBbDhxVThaYXQ5b05o?=
- =?utf-8?B?cmQyTlJZMXA4NlV4ak5VOGZaWU0ybzZObmd3REpVYllRNjZzSU1mM3Fzc3Rk?=
- =?utf-8?B?dnhwcFJHZ2g2SjNqcW9PMVFsZ0o2Qyt3K2xhTGtiRXRibDlNSEEwM2pwSFNM?=
- =?utf-8?B?eHR6dFhSS0NDRFZ2RDFJalFvei8xcGk4aXB6d0JxcXZLMjBiMk5QYk9QYmtp?=
- =?utf-8?B?bVdqZlhCOUMvaUNqc3k0UCtWQytsUkZzSHdickhxdFhPMktOcS9FZnNRek42?=
- =?utf-8?B?RHBxc3B6TDBURDQ5OHpCZTlieTVKRmJydWxZaENyNVdFUmRXSEVsYmFndmhF?=
- =?utf-8?B?R0dtRWhBQmtsU2xmQktLcjNUK2U5UGg1NG9qbkRzSC8zbzRVbU53cnVVczVL?=
- =?utf-8?B?dFhJVXRvL2dyb2ZSVVNvVVhGV0FDd0plSjhzVVMwa2hDM25FSW5Vcy9tUEVo?=
- =?utf-8?B?SUhaT1JNZDJPcXJxVGZkUGx6QkRFekxQUFZLSkhxK3praHAwaGd1VEhaSDh2?=
- =?utf-8?B?QWtSSzNrRktJdU0wL0kydmNpTUpONWpudy9NSHRXQk52R3phWU0yRnI0bTJ3?=
- =?utf-8?B?T3pLaTRXSmlic09LYUFsdXAwMHJwbEtpWk5Bb1RHRlJaeThnOW8xN0JicVRi?=
- =?utf-8?B?MnIzS0p3MisvUnRqLzRxZFJXTWtsRUtrYUVFUFNSQ3o1OWVYTG5iZEk5b04w?=
- =?utf-8?B?TmZ4VXRpSXhtRk10UjVXS2VaUWlSenRwYi9ZVnhrd25QcDJOZVFzMVV3Y3RW?=
- =?utf-8?B?MnBzK3hiN2hSOUl3a0RDNGlhWmlLYjkxWi9MMGZmdngxZThHWWphMnQxUVZN?=
- =?utf-8?B?TjBnWFJJdkZvMEZWM3NkRWZiMXFmbXl4YVpEU0IvNXF3T3dmRzNNaTVuR3d0?=
- =?utf-8?B?ZGtZeEdsN0JXNjJsdXdCeFFIWXJHZ0pTN2xCc0IvUWRZZjVUN1VvV2Q5K3p3?=
- =?utf-8?B?WEcxYkhoL1ZjUGxMU3FJN2dPUTBNWm5mZTh5M2o1NWdSTG1pZmFnS1ZCZEdX?=
- =?utf-8?B?NloxOFpKd0NsY0FDVTFEcnhwemwzNTFPM21pNk4yK0pRYnpia000dzd1Y2pl?=
- =?utf-8?B?QlorSHZFcEFnTjg0ZTFvQWh1M002dXFZMUFISUxrRk90YW9ydFlFNEQ0bFo1?=
- =?utf-8?B?YWxLbFJDYXN6RE91eE9RcHZucVN4ZU80M1lydFhKWkVMSy9TRVZpMHc5N2d2?=
- =?utf-8?B?aDJMZ25zWHJHdUt0Z2NkeVpKRk1vNHE5bkhaTXZTc1BEcEFJa01qVmtGaUVl?=
- =?utf-8?B?Y203TWo3MGJ5Mzl5dFNuOGVrMmRHdmtKYWxVamg3cDQwSldaZi8vTjZNNFpF?=
- =?utf-8?Q?Ccfi5UFzhz+Yd4L1Ahyx2W80AkU+GM/ECZ5Jh+aMPA=3D?=
+	=?utf-8?B?dGdGS1o5UGQzOXBhYUlVRTF1QXkyTlBGb3J4eEh0enJjZnl5djh1U091a0Vj?=
+ =?utf-8?B?NVEwa0k5RFV5WUVtUTdadTQ4SythR2pzdVQzUlVMYkxvazE3bjRGSzBMcUlH?=
+ =?utf-8?B?c3NlcEd0QUd3S3NUV2h1YTBCVms1L1orR0ZYWTROR004M2ZhdDZ5bEt3Q2tD?=
+ =?utf-8?B?SlhlNktzV1ZqdG43TGYxRU5qNHhsWGxXRjJGeWNHMjhsUE42UnU2NlZ0UTdt?=
+ =?utf-8?B?RGJaVVZTS2p2N2VrVnoreWczRi9PeW52Y1pheXU2aEFrb01ra3NRR1Y2OGpB?=
+ =?utf-8?B?WncwWnRyQjZxU3B1dW05eFF5QXBZRXpsVDBiSTFaeGZNM1h4Tm1abmhBSHJu?=
+ =?utf-8?B?QkxkNWRja3Vmc1JFYmJQOHQ2ODd3RjBSS1JaRm16VTd4bzI3OFM2bnNpL09r?=
+ =?utf-8?B?NEZOYk1TMVFuN01WNlowelhKN243bmhMYWxNU2RzY2syS0RRV1Z2eXRna3lu?=
+ =?utf-8?B?bGt3UnhlWThubVZpOTRSc2gvSXFqeGtBNWZ4TmgvTlBlamQ5T3d3a21BOEQx?=
+ =?utf-8?B?VFNoT1lnd2dMaURXbXl5NHRwbEVzcUVidkYzWkZocW5YVGxaMlIwMDlBWFh6?=
+ =?utf-8?B?bjFSOVZ6eDdqR1p1WWkrNThSY1djbmdDZUVwSWFTZUJiTUpSeG5qcEdkRmU0?=
+ =?utf-8?B?YjBITWZxcXBoRmd5UFFDMnlPS2JLaFR5c1BuNkc5MUVmVSsrVVp6ejBaYjN5?=
+ =?utf-8?B?eStINFJwdDVXU2Y2S0ZBbjdXaGNTbTBOOVBhYVptWitqUWluTUl3Q0JYSjN2?=
+ =?utf-8?B?RUJuNVcySDdFWCtEa2Z4NHAxKzJmY3RYbis3UXo1elBCeUh3SzRhUlpoZVVu?=
+ =?utf-8?B?UEpHdUduRXh4SEpEdmhaM0gzTVVRNWFBemsxWFM1TUMzdmVGL1BVcGU3dzND?=
+ =?utf-8?B?Yk1SUko4QVpETkFYTlg5bnl3Qkc3dTZ4TkVKeUs2OXlTbkZBYWc4akRUOFh5?=
+ =?utf-8?B?a0pRRHRjTGZKbWY1bUhOMkpDUk5XclJtZlR3QUJzMkFCY3h1ZXRHOXM0SmxP?=
+ =?utf-8?B?ZHVlRFUrLzdCTkEvTWRPZTBrUWZMT0ZsYmt4K3NTcDdQQytqSjgzU3ExTWxY?=
+ =?utf-8?B?bDJhRzJUT2J1U3Jwbno1RmNnRWJXek5xSHA0Y0JjMFBzMnVnQk9UZGpIMTFB?=
+ =?utf-8?B?Z0NGUHJLVUV2aFRCbzg0czQ1ZHZiRG5EalMvakkwWnBGNTZCejBsNUVEQUhL?=
+ =?utf-8?B?Z2c5c3pPcXRPUzB6QTNvR094M1UvNnVXRVIrVzhGbEsxL29GT1hvOHpRaTNU?=
+ =?utf-8?B?eEo4bWFlaE9XNk1CZmZZdWhHRkJaOFdvL0xEa3pvQlJjWCs1K3Rwa0NBUEZQ?=
+ =?utf-8?B?d1hQNzArb1V4WjdVT3o5dXo1aEo2aWZ5Lyt0cEhkVWJ1cnhVTjhscVhmY3RT?=
+ =?utf-8?B?dU51R2ZoYkZUZDhmbHpUTS9DK0NOR2M5d1FzODFyQkZodDFQQU14a1lHWUor?=
+ =?utf-8?B?OXdGZGdmN1pNWTNzS2I1Z0huNlVhbHM4SEF3T0h2VXBBYVh2clpTaHhpNlEw?=
+ =?utf-8?B?aHdJaXpocDZXYTNYZStkM1U3RFRpSjIyS0wxNFJ6V2JmYUhYZk9nMitlMVI2?=
+ =?utf-8?B?M09DS21Mb0FTTHV3Njlhd1pOeDFob3RPZ01QWXFZZ2tweU8xWmZ2eEMxaU93?=
+ =?utf-8?B?eWhCa0I2OVIwdnlzQmVTRlRlSnJxZXJHRTBlV2dKUjk3RFZGY0MyUmk2OHAw?=
+ =?utf-8?B?WVRIdG9EeVJyTk1KSlR3RGxlckRaOWUraFRTTXFZd2VoOEtveTd5RlVZWCsv?=
+ =?utf-8?B?SmE1NFoxY0w4SXlheDNNK292b0Z5enlybWx2NGxCc3FvUC9ya0piRVhpUUxt?=
+ =?utf-8?B?MEY2c0FvOE15ajkzV0lJOWRiV3JTWXF0ZElhcGo1WjFZcVNveE9pTkVaKzcz?=
+ =?utf-8?B?R2toRk1kWW5NbjcyanFWZDVDajRRVldtSW82SEdwSnVkOEFEc25nSEx5eDJX?=
+ =?utf-8?B?ZVpvN0toUHNMVkQ1SFZocnVKbUJrNXBtN2ZUb3hBeWsrZmNVelF5RmpHYlhM?=
+ =?utf-8?B?eGM2LzVhdm5UMklITTBoYVBIRFhIU0Z3cnI3T0FvSThuUEhTWEhnUnV5R3Ar?=
+ =?utf-8?B?QkhFWjdLa0lwNE5JdlZjL0plcTJ2b0lKQ0hEU0ZhbmYzUDBVdE9IM3BSWlJK?=
+ =?utf-8?B?bmZMU1pGcTlyalI3a2dwaVlqWHZDNWkrYVQ0ZXZ2ckRSem9Kd1EzVkcrMm04?=
+ =?utf-8?B?bGVhbG0xUk5sQURPMTRhNmxjYjZ0MnNCdHIzc055MXZlZCt5dXFEdUhBQmFF?=
+ =?utf-8?Q?JcDkfvqyR7RQ16oWq5d9yjkbvJkgUwk1l33EGXIEUs=3D?=
 X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ff8bc4d-402e-420d-e3dd-08dd61b4dd94
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8eeaf8ba-400d-4a45-9307-08dd61b4fab1
 X-MS-Exchange-CrossTenant-AuthSource: SA0PR01MB6171.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2025 22:25:59.6744
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2025 22:26:48.5236
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: msK6aRixGBVU1Co3RyRvsMQEkuBMRgYL/tzGAl+R03RtoOLxALf4aVooZWvnMOq8QkMM7DYdbskYT24ceJ9R/diiz6BWpWf6pYMDv/sDx1F9Q5Eif8fYdPdX86JMpthb
+X-MS-Exchange-CrossTenant-UserPrincipalName: kSqhPzBLtB0MPjCXJNVfVdMYmtUPhXaRp6G2DQBOmC/W2wNpZDCNAQuc+V5ZTMtt0zUtgw7bvXEZUQJB99i7i9StJle6jFH/KIEi1WNpnxIIFR+xNFq5fGRZkvU6z2AD
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR01MB6788
 
 
 On 3/5/25 11:38, Sudeep Holla wrote:
-> The PCC mailbox interrupt handler (pcc_mbox_irq()) currently checks
-> for command completion flags and any error status before clearing the
-> interrupt.
+> The Sparse static checker flags a type mismatch warning related to
+> endianness conversion:
 >
-> The below sequence highlights an issue in the handling of PCC mailbox
-> interrupts, specifically when dealing with doorbell notifications and
-> acknowledgment between the OSPM and the platform where type3 and type4
-> channels are sharing the interrupt.
+>    |  warning: incorrect type in argument 1 (different base types)
+>    |     expected restricted __le32 const [usertype] *p
+>    |     got unsigned int *
 >
-> -------------------------------------------------------------------------
-> | T |       Platform Firmware         |    OSPM/Linux PCC driver        |
-> |---|---------------------------------|---------------------------------|
-> | 1 |                                 | Build message in shmem          |
-> | 2 |                                 | Ring Type3 chan doorbell        |
-> | 3 | Receives the doorbell interrupt |                                 |
-> | 4 | Process the message from OSPM   |                                 |
-> | 5 | Build response for the message  |                                 |
-> | 6 | Ring Platform ACK interrupt on  |                                 |
-> |   |  Type3 chan to OSPM             | Received the interrupt          |
-> | 7 | Build Notification in Type4 Chan|                                 |
-> | 8 |                                 | Start processing interrupt in   |
-> |   |                                 |  pcc_mbox_irq() handler         |
-> | 9 |                                 | Enter PCC handler for Type4 chan|
-> |10 |                                 | Check command complete cleared  |
-> |11 |                                 | Read the notification           |
-> |12 |                                 | Clear Platform ACK interrupt    |
-> |   | No effect from the previous step yet as the Platform ACK          |
-> |   |  interrupt has not yet been triggered for this channel            |
-> |13 | Ring Platform ACK interrupt on  |                                 |
-> |   | Type4 chan to OSPM              |                                 |
-> |14 |                                 | Enter PCC handler for Type3 chan|
-> |15 |                                 | Command complete is set.        |
-> |16 |                                 | Read the response.              |
-> |17 |                                 | Clear Platform ACK interrupt    |
-> |18 |                                 | Leave PCC handler for Type3     |
-> |19 |                                 | Leave pcc_mbox_irq() handler    |
-> |20 |                                 | Re-enter pcc_mbox_irq() handler |
-> |21 |                                 | Enter PCC handler for Type4 chan|
-> |22 |                                 | Leave PCC handler for Type4 chan|
-> |23 |                                 | Enter PCC handler for Type3 chan|
-> |24 |                                 | Leave PCC handler for Type3 chan|
-> |25 |                                 | Leave pcc_mbox_irq() handler    |
-> -------------------------------------------------------------------------
+> This is because an explicit endianness conversion (le32_to_cpu()) was
+> applied unnecessarily to a pcc_hdr.flags field that is already in
+> little-endian format.
 >
-> The key issue occurs when OSPM tries to acknowledge platform ack
-> interrupt for a notification which is ready to be read and processed
-> but the interrupt itself is not yet triggered by the platform.
+> The PCC driver is only enabled on little-endian kernels due to its
+> dependency on ACPI and EFI, making the explicit conversion unnecessary.
 >
-> This ineffective acknowledgment leads to an issue later in time where
-> the interrupt remains pending as we exit the interrupt handler without
-> clearing the platform ack interrupt as there is no pending response or
-> notification. The interrupt acknowledgment order is incorrect.
+> The redundant conversion occurs in pcc_chan_check_and_ack() for the
+> pcc_hdr.flags field. Drop this unnecessary endianness conversion of
+> pcc_hdr.flags.
 >
-> To resolve this issue, the platform acknowledgment interrupt should
-> always be cleared before processing the interrupt for any notifications
-> or response.
+> Also drop the redundant PCC_ACK_FLAG_MASK definition and use the
+> more appropriate and already defined PCC_CMD_COMPLETION_NOTIFY.
 >
-> Reported-by: Robbie King <robbiek@xsightlabs.com>
-> Reviewed-by: Huisong Li <lihuisong@huawei.com>
 > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 > ---
->   drivers/mailbox/pcc.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
+>   drivers/mailbox/pcc.c | 2 +-
+>   include/acpi/pcc.h    | 1 -
+>   2 files changed, 1 insertion(+), 2 deletions(-)
 >
 > diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index f2e4087281c70eeb5b9b33371596613a371dff4f..4c582fa2b8bf4c9a9368dba8220f567555dba963 100644
+> index 4c582fa2b8bf4c9a9368dba8220f567555dba963..42dd405482e407cf90e66917a46fb8e350e0eeaf 100644
 > --- a/drivers/mailbox/pcc.c
 > +++ b/drivers/mailbox/pcc.c
-> @@ -313,6 +313,10 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->   	int ret;
+> @@ -292,7 +292,7 @@ static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
+>   	 *
+>   	 * The PCC master subspace channel clears chan_in_use to free channel.
+>   	 */
+> -	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
+> +	if (pcc_hdr.flags & PCC_CMD_COMPLETION_NOTIFY)
+>   		pcc_send_data(chan, NULL);
+>   	else
+>   		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
+> diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
+> index 699c1a37b8e7846362bae35477eb5736be15d79e..d1e506f041c5a80857d4a025fa3c1803746ba4b9 100644
+> --- a/include/acpi/pcc.h
+> +++ b/include/acpi/pcc.h
+> @@ -32,7 +32,6 @@ struct pcc_mbox_chan {
+>   #define PCC_CMD_COMPLETION_NOTIFY	BIT(0)
 >   
->   	pchan = chan->con_priv;
-> +
-> +	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-> +		return IRQ_NONE;
-> +
->   	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
->   	    !pchan->chan_in_use)
->   		return IRQ_NONE;
-> @@ -330,9 +334,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->   		return IRQ_NONE;
->   	}
+>   #define MAX_PCC_SUBSPACES	256
+> -#define PCC_ACK_FLAG_MASK	0x1
 >   
-> -	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-> -		return IRQ_NONE;
-> -
->   	/*
->   	 * Clear this flag immediately after updating interrupt ack register
->   	 * to avoid possible race in updatation of the flag from
+>   #ifdef CONFIG_PCC
+>   extern struct pcc_mbox_chan *
 >
+Make sense.  The endianess was due to this coming from a network driver 
+and should not be here.
 
 tested-by: admiyo@os.amperecomputing.com
 
