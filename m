@@ -1,145 +1,249 @@
-Return-Path: <linux-acpi+bounces-12107-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12108-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDF2A5D4BB
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 04:30:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02980A5D5AE
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 06:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D87DC189A93C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 03:30:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 958E8189C4BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Mar 2025 05:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC38E1ADC86;
-	Wed, 12 Mar 2025 03:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC4B1DB366;
+	Wed, 12 Mar 2025 05:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SCdnctzN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rx1kirUi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEE81ADC98
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Mar 2025 03:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DC733F6;
+	Wed, 12 Mar 2025 05:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741750205; cv=none; b=WQObBBUlgChV8AmzBOrY+GXyFKwRPK8yBpMz2WxiS4WHSxDiMbOcLLQuDhlyFwWldRsg94kyQcUkc25i7qRlGqsl7ebwJeKo/S0Lg73ulpCNIeXd4xERgSUMYdlGpyGMzHAl8NMwG1JCrC4bnMooZ+n4hrsbvyg+FeoSS4I31wM=
+	t=1741758328; cv=none; b=lS/l9X8G2jq4jdRKCEtDJ8ByZla4B1GyfK1y62UkHO4G1ysZLdHlxG4Z933uhB4hMcYEemKDC2sWes/8y0ODOnx/wxPvhkvNm3GQ1w+RiLQoguP6wEyJnaulajxfFp6spQRH+aNxHXob8lzwPw40wyoA4vkODAQm0PPa/VH2ccU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741750205; c=relaxed/simple;
-	bh=8lKtlD878CpQP9xdYqFaFtx3UJlB12BxxXmMp7FSGqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZYclgDj+cewShO4L9tGWcSNvQT4hPBm0xn9Rq1M3bDH8aV4aYHdK/6GXBEHm/kMfiynlEA0ygoWNJGSEqk6AnQGsFRJC0z2MvkMwHXm+R/ZuN2fwT8QWmAcicWJkI0f3734LBw96NuplRGK0xoGZYQwwryGXhU1GU4D5BF/A2c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SCdnctzN; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-549a2997973so2823e87.1
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Mar 2025 20:30:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741750202; x=1742355002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RTC6q0jJyCwm0Ms6LHn8x6WPWhr3FL+RLBtkQPmtIBA=;
-        b=SCdnctzNnSQ6OV94jeyRzz30MMnwKbd/5DR3O/n9/ZAEWRmHwSq23ZieiscVfXd2k3
-         XfDPJcXyI2Uh8RWOWMcINcUSEi3w8miJif/NMwqoe0UtaeFSnZGhiQ354mOz47F0p31l
-         W/QEpUcu2lHpBvpzhHyADnj9J6nnw1xqCBquRj064VT3P57hjd3UZmuXiDkXsbpwD7WY
-         RUn73/+1gs0JdvtLneFsbO9XZ0+m1/oufcO8FxdUIRlgsi7kVvX0rPj31/zpSqbZc961
-         VGFQdIm0flEBAuAqgblCOp6SXqv1qj5NrFd7mdUO61wO01BqhrPl1mCk/6501yb6wtHB
-         sorA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741750202; x=1742355002;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RTC6q0jJyCwm0Ms6LHn8x6WPWhr3FL+RLBtkQPmtIBA=;
-        b=cmikKi9coeAE/GP1LM/wjjvSGLDUzWlY1eQrV+IsQXRntJpsksuv5mTBW/G2XJoGyM
-         3Mxk5oaqT5a6Fvq7GhI8B0bUZmanpJ9SZ2LX0ryFcmWKidxHlUOtizEky2SiHaue04oB
-         fkq97OqayKkaRABTWMyTzhNTF7o1X/3VYAEVNfQJq3LTH+RQ02P6yyfjLYJBDQ3qwQ51
-         PjEBqUe1RkDLogIsPmbnDywssGi/fxWHHEZV/p1fOSVWEXrn55lNKV3dj0B+Bck881aL
-         dT9EGycKeZjkL4oC7wnnSz2tJEWjmmgXG1DhSIt/d5FEofxaWxhAOma1AxJrYJxMVSx8
-         rd/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWAIbF4JEPFNtOsxT/R2L+uVNBZXRISl7bX7SEs0qbw1NJZuLm+MC8UbfM9DNS9HW9yIG5n9kQSDPLQ@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywizv+gSOv5iVB0byr0dXTB4W79Vmc8qu8ajE8A9vzVrLlMJNEd
-	udGk7yGeOhRJ0Ja8WBH7ZNXkVr0EH+eSK6p6WmghZQ2LB8KjCCajFIMiRsXuJslwof48M/slenC
-	0O2TQYg6KqkvpV5xwKvGlTWemeL8yBfDxv6r7
-X-Gm-Gg: ASbGncsZ2scgENsbbihlbDnteKxWstqp8QDPhSjBhcOGPcmCqIEVlNXkIBowwuXn/aF
-	BFia6gzftEzPt48zk0ZH6Hk7pEkn07wohLFa5qa7dO/2Xa7MkkmGcfiWjCYtuYIE8PyupubuUYT
-	XqJduJ6o/CG0LHmLW64aW9iZSr0JgsKEZE6fHx1NS1cA6MSv6Uv8r0spX9
-X-Google-Smtp-Source: AGHT+IGP1YVSO5G5A7NPOF9hu8UMZmUxtP+Fj7fvYTNYvV5zNSe928DhT3IQzPqsLEwOPja96dJF23KWfgwjHorjZPM=
-X-Received: by 2002:a05:6512:3c96:b0:545:1dea:7b2e with SMTP id
- 2adb3069b0e04-549b1c370camr195846e87.6.1741750201654; Tue, 11 Mar 2025
- 20:30:01 -0700 (PDT)
+	s=arc-20240116; t=1741758328; c=relaxed/simple;
+	bh=2lNkWU7neUbJh5KmbEw6o4WwEOl2tG4Taxsira8ZcTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N3GZWG0EktLcv5J0tEBcO5eH1ogwJEx+HxtrV/E9NADRPMA9+rX5PdWq/j+UoMcsKFuNAShXKPy5wn802Oh6JZPpOPB8EHaU0U/PY1vrmXcmNcdeqdUKHbgH+Hlw/M7/8oUnudBgva98TW56reWN3v9El67P7cZPyeLkYQ2EdHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rx1kirUi; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741758326; x=1773294326;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2lNkWU7neUbJh5KmbEw6o4WwEOl2tG4Taxsira8ZcTU=;
+  b=Rx1kirUi44u7M/TXPs+/y25z8mFv+6DEO/EJu/DgjUSPJt8LI0s8Ze3A
+   z22qqjSFXjckyga3jpg1fEq4zfFyXhuvFbspzpfuaH44WqlT4TENE67gc
+   8+BOGKNIBfrOdCEZm9RCN3SdrJG+M6mmhzfDPBq6q2UAtI3CkbO7sDbVo
+   A44cXAMFMZytKj2Erfmi+qLC6Wt1KsIQrD8Z7/dSZSnGgImk1RU0RYWQu
+   HsqrYuVAUDy8sfqk3Hlbb+WMC4J7XPRsuHCBosYStwtfCmZ/0092/RBz7
+   PtZLrO/ksyW4PnHcv6TZnBoUquWw7F4McJSXEMpG/ZQ0WacsSD2vdMMh0
+   g==;
+X-CSE-ConnectionGUID: VqP7gBv3QkW5Eqqww8jwgQ==
+X-CSE-MsgGUID: 93YgMprTRG+fGuoN4NERHA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="43002644"
+X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
+   d="scan'208";a="43002644"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 22:45:24 -0700
+X-CSE-ConnectionGUID: v7DTkxGPSDK1/jw399Duwg==
+X-CSE-MsgGUID: f+/ufX8JRXGIlRtlydF+gA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
+   d="scan'208";a="125593952"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 22:45:24 -0700
+Date: Tue, 11 Mar 2025 22:51:18 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+	wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
+	lenb@kernel.org, kirill.shutemov@linux.intel.com,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+	ricardo.neri@intel.com, ravi.v.shankar@intel.com
+Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
+ mailbox
+Message-ID: <20250312055118.GA29492@ranerica-svr.sc.intel.com>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
+ <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
+ <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
+ <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
+ <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
+ <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
+ <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
+ <20250303222102.GA16733@ranerica-svr.sc.intel.com>
+ <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250310150835.3139322-1-andriy.shevchenko@linux.intel.com> <20250310150835.3139322-5-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20250310150835.3139322-5-andriy.shevchenko@linux.intel.com>
-From: Kyle Tso <kyletso@google.com>
-Date: Wed, 12 Mar 2025 11:29:45 +0800
-X-Gm-Features: AQ5f1JqezutAuLR9RCiDwHugv6YDAlJdEYt9fLJCmtrMads3aQIZSAKhgQtQ5Ys
-Message-ID: <CAGZ6i=0GuBvEU41Offobn1MzMuFumn9F6JLHXsKppPidkjCLVw@mail.gmail.com>
-Subject: Re: [PATCH v1 4/4] usb: typec: tcpm: Use fwnode_get_child_node_count()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rob Herring (Arm)" <robh@kernel.org>, 
-	Markus Elfring <elfring@users.sourceforge.net>, Jakob Riepler <jakob+lkml@paranoidlabs.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-usb@vger.kernel.org, Daniel Scally <djrscally@gmail.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Matti Vaittinen <mazziesaccount@gmail.com>, Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Mon, Mar 10, 2025 at 11:09=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> Since fwnode_get_child_node_count() was split from its device property
-> counterpart, we may utilise it in the driver and drop custom implementati=
-on.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Tue, Mar 11, 2025 at 11:01:28AM +0100, Krzysztof Kozlowski wrote:
+> On 03/03/2025 23:21, Ricardo Neri wrote:
+> > On Fri, Sep 20, 2024 at 01:15:41PM +0200, Krzysztof Kozlowski wrote:
+> > 
+> > [...]
+> >  
+> >> enable-method is part of CPUs, so you probably should match the CPUs...
+> >> I am not sure, I don't have the big picture here.
+> >>
+> >> Maybe if companies want to push more of bindings for purely virtual
+> >> systems, then they should first get involved more, instead of relying on
+> >> us. Provide reviews for your virtual stuff, provide guidance. There is
+> >> resistance in accepting bindings for such cases for a reason - I don't
+> >> even know what exactly is this and judging/reviewing based on my
+> >> practices will no be accurate.
+> > 
+> > Hi Krzysztof,
+> > 
+> > I am taking over this work from Yunhong.
+> > 
+> > First of all, I apologize for the late reply. I will make sure
+> > communications are timely in the future.
+> > 
+> > Our goal is to describe in the device tree a mechanism or artifact to boot
+> > secondary CPUs.
+> > 
+> > In our setup, the firmware puts secondary CPUs to monitor a memory location
+> > (i.e., the wakeup mailbox) while spinning. From the boot CPU, the OS writes
+> > in the mailbox the wakeup vector and the ID of the secondary CPU it wants
+> > to boot. When a secondary CPU sees its own ID it will jump to the wakeup
+> > vector.
+> > 
+> > This is similar to the spin-table described in the Device Tree
+> > specification. The key difference is that with the spin-table CPUs spin
+> > until a non-zero value is written in `cpu-release-addr`. The wakeup mailbox
+> > uses CPU IDs.
+> > 
+> > You raised the issue of the lack of a `compatible` property, and the fact
+> > that we are not describing an actual device.
+> > 
+> > I took your suggestion of matching by node and I came up with the binding
+> > below. I see these advantages in this approach:
+> > 
+> >   * I define a new node with a `compatible` property.
+> >   * There is precedent: the psci node. In the `cpus` node, each cpu@n has
+> 
 
-Acked-by: Kyle Tso <kyletso@google.com>
+Thanks for your feedback!
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.=
-c
-> index 9c455f073233..8ca2e26752fb 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -7166,7 +7166,7 @@ static void tcpm_fw_get_timings(struct tcpm_port *p=
-ort, struct fwnode_handle *fw
->
->  static int tcpm_fw_get_caps(struct tcpm_port *port, struct fwnode_handle=
- *fwnode)
->  {
-> -       struct fwnode_handle *capabilities, *child, *caps =3D NULL;
-> +       struct fwnode_handle *capabilities, *caps =3D NULL;
->         unsigned int nr_src_pdo, nr_snk_pdo;
->         const char *opmode_str;
->         u32 *src_pdo, *snk_pdo;
-> @@ -7232,9 +7232,7 @@ static int tcpm_fw_get_caps(struct tcpm_port *port,=
- struct fwnode_handle *fwnode
->         if (!capabilities) {
->                 port->pd_count =3D 1;
->         } else {
-> -               fwnode_for_each_child_node(capabilities, child)
-> -                       port->pd_count++;
-> -
-> +               port->pd_count =3D fwnode_get_child_node_count(capabiliti=
-es);
->                 if (!port->pd_count) {
->                         ret =3D -ENODATA;
->                         goto put_capabilities;
-> --
-> 2.47.2
->
->
+> psci is a standard. If you are documenting here a standard, clearly
+> express it and provide reference to the specification.
+
+It is not really a standard, but this mailbox behaves indentically to the
+wakeup mailbox described in the ACPI spec [1]. I am happy reference the
+spec in the documentation of the binding... or describe in full the
+mechanism of mailbox without referring to ACPI. You had indicated you don't
+care about what ACPI does [2].
+
+In a nutshell, the wakeup mailbox is similar to the spin table used in ARM
+boards: it is reserved memory region that secondary CPUs monitor while
+spinning.
+
+> 
+> 
+> >     an `enable-method` property that specify `psci`.
+> >   * The mailbox is a device as it is located in a reserved memory region.
+> >     This true regardless of the device tree describing bare-metal or
+> >     virtualized machines.
+> > 
+> > Thanks in advance for your feedback!
+> > 
+> > Best,
+> > Ricardo
+> > 
+> > (only the relevant sections of the binding are shown for brevity)
+> > 
+> > properties:
+> >   $nodename:
+> >     const: wakeup-mailbox
+> > 
+> >   compatible:
+> >     const: x86,wakeup-mailbox
+> 
+> You need vendor prefix for this particular device. If I pointed out lack
+> of device and specific compatible, then adding random compatible does
+> not solve it. I understand it solves for you, but not from the bindings
+> point of view.
+
+I see. Platform firmware will implement the mailbox. It would not be any
+specific hardware from Intel. Perhaps `intel,wakeup-mailbox`?
+
+> 
+> > 
+> >   mailbox-addr:
+> >     $ref: /schemas/types.yaml#/definitions/uint64
+> 
+> So is this some sort of reserved memory?
+
+Yes, the mailbox is located in reserved memory.
+
+> Mailbox needs mbox-cells, so
+> maybe that's not mailbox.
+
+Your comment got me to look under Documentation/devicetree/bindings/mailbox.
+Maybe I am ovethinking this and I can describe the mailbox as others
+vendors do (see below).
+
+Thanks and BR,
+Ricardo
+
+[1]. https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#multiprocessor-wakeup-structure
+if that is OK.
+[2]. https://lore.kernel.org/lkml/624e1985-7dd2-4abe-a918-78cb43556967@kernel.oirg
+
+description: |
+  [Removed for brevity]
+
+properties:
+  compatible:
+    const: intel,wakeup-mailbox
+
+  reg:
+    maxItems: 1
+
+  '#mbox-cells':
+    const: 1
+
+required:
+  - compatible
+  - reg
+
+additionalProperties: false
+
+examples:
+  - |
+    wakeupmailbox: mailbox@1c000500 {
+      compatible = "intel,wakeup-mailbox";
+      reg = <0x1c000500 0x100>;
+      #mbox-cells = <1>;
+    };
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        cpu@0 {
+            device_type = "cpu";
+            reg = <0x00>;
+            enable-method = "wakeup-mailbox";
+        };
+    };
+...
 
