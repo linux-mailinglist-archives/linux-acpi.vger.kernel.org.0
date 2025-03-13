@@ -1,111 +1,128 @@
-Return-Path: <linux-acpi+bounces-12221-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12222-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D54A5FFE2
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 19:47:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0548A601BA
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 21:00:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 370D217FEFB
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 18:47:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 246598802BC
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 19:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1DD1F03E0;
-	Thu, 13 Mar 2025 18:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAE11F418E;
+	Thu, 13 Mar 2025 20:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="c029q20h"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b="VpQH5icP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C968D1DDC23;
-	Thu, 13 Mar 2025 18:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBD81F3D52
+	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 20:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741891621; cv=none; b=oMmTayKdTDJdHloUjobSKFk7h5cVSUhTHL8K6fAWrL6vcJZfWSRJLS9xxXLHeKeQb2EXIBKh7VbhVMdGiRxzZlzurmIlH33KK81zh5u7AMRq09pCQgV7abrnbl/wZsLtoOdyLz39xdyIOAcIobZm0lDeOng3FJWrC5GcERh5SDE=
+	t=1741896006; cv=none; b=n9fEzJ3ClPtiuWAvahAYXiQ/7k4jqrJuzTVDAmrHOXLEU++KgPumatItP1Uau5HZFSvVnDn52bQsdz60Xr+9T7NPm+ZV5rk60YeQ3T+DqBC//t26iw236DcN6VCpNxG2JwZLlfu7TDFBqV0VJx1GY5DKN6zAveIUyTCMH65rcoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741891621; c=relaxed/simple;
-	bh=0pcwQ9vLas23Kk5/y+wVBp5txvPs/bUozChqyYxLVOY=;
+	s=arc-20240116; t=1741896006; c=relaxed/simple;
+	bh=8FPGb/YadvHr8SNwanMMuST8IvaIB2I6i5+G0qB8Vwk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q6pReY6t3Bp8Rctmf6xFrD2hI9Xniki3bTvcYbb9Oj1c0ztKzzfI+6l2wol+nCJCIlbkBQ2aEcik1sQFwt75DhDG5wbqwtSizM2ue0Ht680MNevAMip+Z5jiSZ8w0XpGPtx9NmdWFxFCoVeyzdxmILTftCcka4Kgq8JtSweWrQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=c029q20h; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id EE024203342A;
-	Thu, 13 Mar 2025 11:46:58 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EE024203342A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1741891619;
-	bh=nt8jkVfaRzuUqauG7agUplFqSQ7P9hL/iQtfhXt7daM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c029q20hO7p9pMytBoFbb4lvO9ZDTqP8ojMLWrK9hbwLYNc57V4N0Aa6gWzzJFcHr
-	 esb6o3L0vE8YHyp+7RG+sJdxsuqky6Zy4qUPq4udmjKBOq899yOQu3eWe+Mhi7Jmax
-	 CS5/4KC7mWI6F/acsg68bV6b8QdxWShafCvHoxSA=
-Message-ID: <81612b52-a47b-4d9c-9d50-c74ad66286d9@linux.microsoft.com>
-Date: Thu, 13 Mar 2025 11:46:58 -0700
+	 In-Reply-To:Content-Type; b=sZ7dQJPIDI61Fi9E8STSh1bq+6+/H9s1SlItORt5HCXm2EWb3XjsDE28tSZg/hvme8CIhRVnAb+MpiwsSl5ZGxRztnjjgq4rrHXVPxHZD96bk8tyQK56z/BqEOeGwU1W8YPLMThDWmlQL9Qz7ijwP2bSrCtFgXnLda4s4/PJiRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b=VpQH5icP; arc=none smtp.client-ip=185.136.65.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 2025031319595552b8879e4dc28a34b3
+        for <linux-acpi@vger.kernel.org>;
+        Thu, 13 Mar 2025 20:59:56 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=diogo.ivo@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=NDfjYY/U1OQvpRpujwRTPoXFd7EYoHPyoCvKTvmLJiU=;
+ b=VpQH5icPDynYf8fghHSeGSrUCiPCMjOiAxrCgKIAwXq25nqoSQXEcQQo3DeNLJmYLvITDX
+ Msh+7cSmLHIz9IRbl57ffJcXVAiAUKTjuKtb5kkhP7fzybZqBhb4ZxaBAubk+T0rIbroJVRv
+ zWqcPCHJ31Qi87s6KzYw2xvrOEz0FJoxsiXa9JJx1w5L/C4awSTGfjknonfuVIrNbKuGLgRH
+ 0u4HpxkCBZdh1jvMfMqwDTzYGtuBx92AogEhgvaZSnxP1ZuIPbTAWnXldGUSDOL63NcVqNT7
+ /8ngKNORoY4xRIsfCKMiZMt6OmsxH4aFx/QXFpDufPyk2TEVi7xhKh9Q==;
+Message-ID: <b842cfe5-f4ee-435b-acbd-6bc24069bcc1@siemens.com>
+Date: Thu, 13 Mar 2025 19:59:52 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hyperv-next v5 08/11] Drivers: hv: vmbus: Get the IRQ
- number from DeviceTree
-To: Rob Herring <robh@kernel.org>
-Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
- catalin.marinas@arm.com, conor+dt@kernel.org, dave.hansen@linux.intel.com,
- decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
- joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
- lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org,
- mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com,
- oliver.upton@linux.dev, rafael@kernel.org, ssengar@linux.microsoft.com,
- sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de,
- wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com,
- devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
- apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
- sunilmut@microsoft.com
-References: <20250307220304.247725-1-romank@linux.microsoft.com>
- <20250307220304.247725-9-romank@linux.microsoft.com>
- <CAL_JsqLmS4EEoPkOmaH6F_0XtQu5wkM-WEfxFvjLA=bJroEUVw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP
+ device list
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Wim Van Sebroeck <wim@linux-watchdog.org>,
+ Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+ jan.kiszka@siemens.com, benedikt.niedermayr@siemens.com
+References: <20250312-ivo-intel_oc_wdt-v2-0-52d09738cd0b@siemens.com>
+ <20250312-ivo-intel_oc_wdt-v2-2-52d09738cd0b@siemens.com>
+ <CAJZ5v0iBcxGcqp88kHN64WddvmC-y6F1XaFeSNHFYuQnayg7dQ@mail.gmail.com>
+ <63e69331-bb8f-45f6-adb8-872f594fa02e@siemens.com>
+ <CAJZ5v0ij0UyLr+tBBia-M4Y7grs+w3fhxnuvRCh67YXPe3h=ig@mail.gmail.com>
 Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <CAL_JsqLmS4EEoPkOmaH6F_0XtQu5wkM-WEfxFvjLA=bJroEUVw@mail.gmail.com>
+From: Diogo Ivo <diogo.ivo@siemens.com>
+In-Reply-To: <CAJZ5v0ij0UyLr+tBBia-M4Y7grs+w3fhxnuvRCh67YXPe3h=ig@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1328357:519-21489:flowmailer
 
-
-
-On 3/13/2025 11:44 AM, Rob Herring wrote:
-> On Fri, Mar 7, 2025 at 4:03 PM Roman Kisel <romank@linux.microsoft.com> wrote:
-
-[...]
-
->> +       irq = platform_get_irq(pdev, 0);
->> +       if (irq == 0) {
->> +               pr_err("VMBus interrupt mapping failure\n");
->> +               return -EINVAL;
->> +       }
->> +       if (irq < 0) {
->> +               pr_err("VMBus interrupt data can't be read from DeviceTree, error %d\n", irq);
->> +               return irq;
->> +       }
+On 3/13/25 3:29 PM, Rafael J. Wysocki wrote:
+> Hi,
 > 
-> I don't think why you couldn't get the interrupt is important. Just
-> check for (irq <= 0) and be done with it. I'm not even sure if
-> returning 0 is possible now. There's a long history to that and
-> NO_IRQ.
+> On Thu, Mar 13, 2025 at 11:28 AM Diogo Ivo <diogo.ivo@siemens.com> wrote:
+>>
+>> Hi Rafael,
+>>
+>> On 3/12/25 7:31 PM, Rafael J. Wysocki wrote:
+>>> On Wed, Mar 12, 2025 at 4:46 PM Diogo Ivo <diogo.ivo@siemens.com> wrote:
+>>>>
+>>>> With the kernel having an ACPI driver for these watchdog devices add
+>>>> their IDs to the known non-PNP device list. Note that this commit is
+>>>> not a complete list of all the possible watchdog IDs.
+>>>>
+>>>> Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
+>>>> ---
+>>>>    drivers/acpi/acpi_pnp.c | 2 ++
+>>>>    1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
+>>>> index 01abf26764b00c86f938dea2ed138424f041f880..3f5a1840f573303c71f5d579e32963a5b29d2587 100644
+>>>> --- a/drivers/acpi/acpi_pnp.c
+>>>> +++ b/drivers/acpi/acpi_pnp.c
+>>>> @@ -355,8 +355,10 @@ static bool acpi_pnp_match(const char *idstr, const struct acpi_device_id **matc
+>>>>     * device represented by it.
+>>>>     */
+>>>>    static const struct acpi_device_id acpi_nonpnp_device_ids[] = {
+>>>> +       {"INT3F0D"},
+>>>>           {"INTC1080"},
+>>>>           {"INTC1081"},
+>>>> +       {"INTC1099"},
+>>>>           {""},
+>>>>    };
+>>>>
+>>>>
+>>>> --
+>>>
+>>> Is there a particular reason for this patch?
+>>
+>> Yes, since the ACPI tables for these watchdogs have both a PNP0C02 CID and
+>> and then an HID (such as INT3F0D or INTC1099) without this patch the driver
+>> in patch 01 will not bind to the device because PNP will bind to it first.
+>> My understanding is that this table was added to solve exactly this problem
+>> so I added these HIDs here, but if this is wrong and I misunderstood
+>> please let me know.
 > 
+> You are right, but the above information is missing from the
+> changelog.  Please add it there.
 
-That will certainly make the code look much better!
-Thank you very much for the idea!
+I'll add it and send v3 after receiving feedback on the other patch in
+the series.
 
-> Rob
-
--- 
-Thank you,
-Roman
-
+Best regards,
+Diogo
 
