@@ -1,248 +1,180 @@
-Return-Path: <linux-acpi+bounces-12187-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16874A5F436
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 13:23:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C15A5F48A
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 13:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 156933B15E3
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 12:23:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9211899AFA
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 12:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC4D266F00;
-	Thu, 13 Mar 2025 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF8E26771F;
+	Thu, 13 Mar 2025 12:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ncVqIfMA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hgzDi35J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3965F265CC1
-	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 12:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C1321423A;
+	Thu, 13 Mar 2025 12:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741868592; cv=none; b=iIPT+vJupvfTkQdSP7VJujUbOSLExUaO0U8ESXyBcExQPM9KuX3s2cYUFP/vBOrJJ/yrvpMwxDubuhxYMxvloiVTXT//mEG8Q9LUk3cCrOJioBBEnZ830WtPTIROT6Run3+jJO213WKuI20Dh5hKYvttKS7uDomq5pIMuvyLx8I=
+	t=1741869090; cv=none; b=WXWxQiTDr0E5JZU8zF9FlYals5pmRZFj+DI0MwLnpqoUekmbX8Cl7nyGloQBozFC6dtGNid2cIgs2ZSP4WzPzFqJA9NLwEw3IdWX1BTwRKKDJtsX5MMXAijNZ5XtKDuiDLR079NRfZICpO6Wz/baF3viBkptH+bRuK3FnF33le0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741868592; c=relaxed/simple;
-	bh=mcPJXBSTtSrp14iFEKn4WCHM0U1Sm8bBMOiy1wa4/tY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=t6IFLy6aSvqvZMCfeKNfznyg19g01A33ok163l5jI4KH//1Vb7gc3bY2ziHGR5VtNfXNdg5OSBr7uEOqwfXKGBIBpffzbU3qAKJcdxSbO2LRk6EgoCe9FQQ6FNnkVxyCGRPBe7pIs55udtBfRHTp4NKLBciTpdSBRNPbSYeFPZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ncVqIfMA; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250313122307euoutp01672bc9310dde621d6c3ceef71294a359~sXEBg96hu2922529225euoutp01T
-	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 12:23:07 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250313122307euoutp01672bc9310dde621d6c3ceef71294a359~sXEBg96hu2922529225euoutp01T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1741868587;
-	bh=qIrd9kTdaGksR+OaXikozpxmp9lFlYZnRIjjmUZsYSY=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=ncVqIfMAINE+TA71Brea12OaCm6nBglZPAc5NalanEPQutFUq3WVO3zvC0fdamruE
-	 wc45FVJbyYwI2nQx5qwAzw/3UPddym1UVpzEaJ6FCPPq34I7+Xp+shB4zVu2jj+QOX
-	 YOOtgI+L+qbOktQdqzcl8z9L+JCdYJV3wmVg9/Ps=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20250313122306eucas1p2f9144caaeaff5f66d77c8defde5a0afe~sXEBBFb0-2324023240eucas1p2L;
-	Thu, 13 Mar 2025 12:23:06 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges1new.samsung.com (EUCPMTA) with SMTP id 91.5C.20821.A2EC2D76; Thu, 13
-	Mar 2025 12:23:06 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250313122306eucas1p10f67da8328fdf9bfc4590d972e794b8f~sXEAoAej12870728707eucas1p1K;
-	Thu, 13 Mar 2025 12:23:06 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250313122306eusmtrp26de00c6b81f1b8d1f7a2f1d1f844ed06~sXEAnDFFy2795227952eusmtrp2O;
-	Thu, 13 Mar 2025 12:23:06 +0000 (GMT)
-X-AuditID: cbfec7f2-b09c370000005155-9a-67d2ce2ae064
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id 8D.88.19654.A2EC2D76; Thu, 13
-	Mar 2025 12:23:06 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250313122303eusmtip208566caf51a9af37bcc7d3ec7315a939~sXD92k4wN2925829258eusmtip2E;
-	Thu, 13 Mar 2025 12:23:03 +0000 (GMT)
-Message-ID: <bf2adf5d-1432-4bb7-846c-e1bcfa84858b@samsung.com>
-Date: Thu, 13 Mar 2025 13:23:02 +0100
+	s=arc-20240116; t=1741869090; c=relaxed/simple;
+	bh=SaIYexesddvO0UWpmRz0MzTzyVkL/mdX/8rqZt/hSb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h+iVaCgqNkMABbgeCcY0KkPuHMJscZ8Kz8ofCo+wpGSXweRsEXcOKcYchNY78TMCIV+r+S5IzdiOyPq04zryFD3aLvpqZmtLtmGnd4aEwnQtTtXbU5ReluuH1hkMtmTLCbJ35JFAtxUpX+2fmeO1RN3PUBg2hTmg8Frt4rVZqkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hgzDi35J; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741869088; x=1773405088;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SaIYexesddvO0UWpmRz0MzTzyVkL/mdX/8rqZt/hSb4=;
+  b=hgzDi35JTJqmywopeUpr27IGiRGw+iv7PXHfmbkxZ046+ozsxLa3p/Cq
+   EA2qdB0CNqz6vjEXghAGAOXpWWWt/KxsbnZ62vlrwNZevf8EUtDyjEwA8
+   Xi8EOmEzMAsC7htI+X+1FrgKNgw+WPl4E0ePSZjsfH2x4zglyPgMmnSH+
+   eaaZZkPiSd6GmyJOXniR8pMhjbmceq7iOOFvBNis8LpWekPI3Qs1seoy7
+   H+YbDAQ0Cg50lNavFiqUOQZNTVdD7VC5MXeL4G4dWkPooqhES31Y+MNNr
+   H4AUHGfn/INIhEM4x+NKWHAnSN4Ww8bxz4j5NvIneQRtbGaUwpqP1FgTa
+   w==;
+X-CSE-ConnectionGUID: hcG73BDfTHy3C8i7AnXEAQ==
+X-CSE-MsgGUID: JJemP9z0S9iepOLkuY1qrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="30571962"
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="30571962"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:31:27 -0700
+X-CSE-ConnectionGUID: jQelpd4eTZ2rpBfxbdM9hA==
+X-CSE-MsgGUID: JO4NOY5VRgq94b7DdOX/ZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="121441131"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:31:22 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tshiY-00000002Aba-2whI;
+	Thu, 13 Mar 2025 14:31:18 +0200
+Date: Thu, 13 Mar 2025 14:31:18 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v7 03/10] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <Z9LQFqSweiV-zT3b@smile.fi.intel.com>
+References: <cover.1741849323.git.mazziesaccount@gmail.com>
+ <c8899e8c535a1d93cd7588b7c160eb0fae5d26d2.1741849323.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-To: Robin Murphy <robin.murphy@arm.com>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Russell King <linux@armlinux.org.uk>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, Stuart
-	Yoder <stuyoder@gmail.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun
-	Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, Joerg
-	Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Rob Herring
-	<robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Bjorn Helgaas
-	<bhelgaas@google.com>
-Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org, Charan Teja Kalla
-	<quic_charante@quicinc.com>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <417d6f59-0d78-4e81-ad0b-e06846f786b0@arm.com>
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SfVCTdRzvt+fZs7G7weOA2y+DvFuvyoGSUr8LIy2y57iyLrrLg7tyxcPm
-	tQ1uYxlcEfEa84ChjrbhYIecEJKwGTREQHbg1AEqxIsT5CBsCQHSJh4okttjxX+fz+f7+b7e
-	l4sJqojN3EOKDFqpEMtEBA9vvbhyNXLbwKBkx3DvTlSbK0VzFXcJVN0zwEZ5J5sI1N1m4KBV
-	L0LFlc0c5NU6cdQ2NU+gus4ygKy/j7DR0LkTBOqvchDIrusAKP9hPo70tih0704Fjpqq5cjk
-	1WFo/byNg7rvzrCRxr72uKzFhaG6KzYc5Y/H7HmamumuYlEFg2sE1VjVCKihkesY1Wac4FBm
-	q5rK75lnU9aGYoLqMjVyqLO131F/njUAyrJgY1Hl57Mpj/XZDwOTeLtTaNmhr2jl9riDPOml
-	rkI83Rr+ddHPa0QOOAI1gMuF5C5YYnhTA3hcAVkPoKe0kmCIF0DHyB+AIR4AF2/cwzQgwJ+x
-	XNuL+7CArAPwVFkyY1oCsL/iAvAF+GQctLpy/SacfAHq1idZjL4JXjbM+PVQcgucdOk5PhxM
-	JsIFzbS/WwhpZcPRgj62j2DkbQCbh8cInwsjhdA1U+2vRJDRUDOv8esBZCxsmHWzGM8WmNdS
-	ifmSIWniwdPTcwQzdzxcbC1nMzgYzjp+4TA4DK63+Yr6EooAND+YfEK0AOa4XYBxxcLxgVXC
-	dzOM3Aqbzm1n5L1Q49FhzCkD4dj8JmaIQHi09ccnMh/+UChg3C9Co+PMf227rw1iWiAybjiM
-	ccOaxg3rGP/vawZ4AxDSapVcQquiFfThKJVYrlIrJFFfpMmt4PELOx85/rYB0+xSlB2wuMAO
-	IBcThfBPv3FNIuCniDOzaGXaZ0q1jFbZwTNcXCTk13QVSASkRJxBf0nT6bTy3yiLG7A5h5Vg
-	M33rLBze95Ez1b03oLzjWHDJ0aCPD56U9WKcmuekR3oXImI+0PPYi2FTnT9hv65e+e1U8rtl
-	nx7fd2L3yxkT0bdSZ5sSX7rero18GJpaqH6f58qxGA7sNwOZ0Ph6qc37dm6K8EZE9mvT9a/0
-	HD4evDTEip+6sPL8OyVy/S7N1viim3EtjpWx+wn1n+clJLenZYJPbBcn7DX39+gsQRng1YTL
-	XfqY9KCR0czSA5yQO7fyUCS2fxn3mJJCvx/qV4Q1r7oXDTsot/uSJSKLmLsa/sAVv3N8NDzx
-	PadANxpZQP21/Faft73C9FS2gLytjf0mNPvmI7O0pbGzL6ujuCTpTKsIV0nF0dswpUr8D68a
-	GnExBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrEKsWRmVeSWpSXmKPExsVy+t/xe7pa5y6lG3RfEbVY0pRh8XraBzaL
-	+UfOsVo0L17PZnFw50x2i19fLCw6Z29gt/gy4TSLxc6Hb9kslu/rZ7TY9Pgaq8XlXXPYLM7O
-	O85mcWjqXkaLlj8tLBYzduhZfH05jcVi/fxci7lfpjJb/N+zg93i4IcnrBZdh/4Cjd14i9li
-	+akdLBYtd0wdJD2eHJzH5NF66S+bx5p5axg9Ll+7yOyxc9Zddo8Fm0o9Wo68ZfXYtKqTzWP/
-	3DXsHpuX1Hu82DyT0WPjux1MHhP31Hl83iQXwBelZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdk
-	YqlnaGwea2VkqqRvZ5OSmpNZllqkb5egl3FifxtLwSbZiva1f9kaGLsluhg5OSQETCS+LTnK
-	0sXIxSEksJRRom3eajaIhIzEyWkNrBC2sMSfa11sEEXvGSV2Tv7BDpLgFbCT2HSriQXEZhFQ
-	lZj6/z4TRFxQ4uTMJ2BxUQF5ifu3ZoDVCwsES7zresQIMkhEYBurxLV5O5lBHGaBp4wSX84/
-	Y4VYcYhJYu2aRrB2ZgFxiVtP5oONZRMwlOh62wV2H6eAtcSqV8+ZIGrMJLq2djFC2PISzVtn
-	M09gFJqF5JJZSEbNQtIyC0nLAkaWVYwiqaXFuem5xUZ6xYm5xaV56XrJ+bmbGIGJZ9uxn1t2
-	MK589VHvECMTB+MhRgkOZiUR3tW2F9KFeFMSK6tSi/Lji0pzUosPMZoCg2Mis5Rocj4w9eWV
-	xBuaGZgamphZGphamhkrifOyXTmfJiSQnliSmp2aWpBaBNPHxMEp1cDEsmTxo4tLa+xFF6yS
-	+Ky5eu6iMwodN9/+mMvCxqJwvcPdPna7TNPz4/4HDZzz6iXPzr//y5WrQOBWmLu9jVJIR9Sq
-	Vw+TtRrP9/tfLi+qjzIwiueSuSVwjD1H3m6jTX8345re46v7y0V1XUMkRS/s4pz73P7Pj6d3
-	aieHvWoL+BVRttxnspjSF9HLF2c1fuZUN3mgnn7pjZPXsU2OR48bWlcuODTDpyt2SZDBwklf
-	PjwxaNitH8B14uNnnUdv17wSrnWd2fr54STFOIs/OxhCHSI5fBhu9dTpC7eyG5gt0H8Rsrdp
-	6fJdk5a/4AtldGlmPqg4WWlO6o/HQsU5b/98k7GXcV++6V7u/h6reVJKLMUZiYZazEXFiQCr
-	NHxfxQMAAA==
-X-CMS-MailID: 20250313122306eucas1p10f67da8328fdf9bfc4590d972e794b8f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd
-References: <cover.1740753261.git.robin.murphy@arm.com>
-	<e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
-	<CGME20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd@eucas1p2.samsung.com>
-	<9b358d68-332e-404e-9a75-740297f7b28d@samsung.com>
-	<417d6f59-0d78-4e81-ad0b-e06846f786b0@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c8899e8c535a1d93cd7588b7c160eb0fae5d26d2.1741849323.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 13.03.2025 12:01, Robin Murphy wrote:
-> On 2025-03-13 9:56 am, Marek Szyprowski wrote:
-> [...]
->> This patch landed in yesterday's linux-next as commit bcb81ac6ae3c
->> ("iommu: Get DT/ACPI parsing into the proper probe path"). In my tests I
->> found it breaks booting of ARM64 RK3568-based Odroid-M1 board
->> (arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts). Here is the
->> relevant kernel log:
->
-> ...and the bug-flushing-out begins!
->
->> Unable to handle kernel NULL pointer dereference at virtual address
->> 00000000000003e8
->> Mem abort info:
->>     ESR = 0x0000000096000004
->>     EC = 0x25: DABT (current EL), IL = 32 bits
->>     SET = 0, FnV = 0
->>     EA = 0, S1PTW = 0
->>     FSC = 0x04: level 0 translation fault
->> Data abort info:
->>     ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
->>     CM = 0, WnR = 0, TnD = 0, TagAccess = 0
->>     GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
->> [00000000000003e8] user address but active_mm is swapper
->> Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
->> Modules linked in:
->> CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc3+ #15533
->> Hardware name: Hardkernel ODROID-M1 (DT)
->> pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->> pc : devm_kmalloc+0x2c/0x114
->> lr : rk_iommu_of_xlate+0x30/0x90
->> ...
->> Call trace:
->>    devm_kmalloc+0x2c/0x114 (P)
->>    rk_iommu_of_xlate+0x30/0x90
->
-> Yeah, looks like this is doing something a bit questionable which can't
-> work properly. TBH the whole dma_dev thing could probably be cleaned up
-> now that we have proper instances, but for now does this work?
+On Thu, Mar 13, 2025 at 09:18:18AM +0200, Matti Vaittinen wrote:
+> There are ADC ICs which may have some of the AIN pins usable for other
+> functions. These ICs may have some of the AIN pins wired so that they
+> should not be used for ADC.
+> 
+> (Preferred?) way for marking pins which can be used as ADC inputs is to
+> add corresponding channels@N nodes in the device tree as described in
+> the ADC binding yaml.
+> 
+> Add couple of helper functions which can be used to retrieve the channel
+> information from the device node.
 
-Yes, this patch fixes the problem I've observed.
+...
 
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> +					  const struct iio_chan_spec *template,
+> +					  int max_chan_id,
+> +					  struct iio_chan_spec **cs)
+> +{
+> +	struct iio_chan_spec *chan_array, *chan;
+> +	int num_chan = 0, ret;
 
-BTW, this dma_dev idea has been borrowed from my exynos_iommu driver and 
-I doubt it can be cleaned up.
+Unneeded assignment.
 
+> +	num_chan = iio_adc_device_num_channels(dev);
+> +	if (num_chan < 1)
+> +		return num_chan;
 
->
-> (annoyingly none of my Rockchip boards are set up for testing right 
-> now, but I might have time to dig one out later)
->
-> Thanks,
-> Robin.
->
-> ----->8-----
->
-> Subject: [PATCH] iommu/rockchip: Allocate per-device data sensibly
->
-> Now that DT-based probing is finally happening in the right order again,
-> it reveals an issue in Rockchip's of_xlate, which can now be called
-> during registration, but is using the global dma_dev which is only
-> assigned later. However, this makes little sense when we're already
-> looking up the correct IOMMU device, who should logically be the owner
-> of the devm allocation anyway.
->
-> Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe 
-> path")
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/iommu/rockchip-iommu.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/iommu/rockchip-iommu.c 
-> b/drivers/iommu/rockchip-iommu.c
-> index 323cc665c357..48826d1ccfd8 100644
-> --- a/drivers/iommu/rockchip-iommu.c
-> +++ b/drivers/iommu/rockchip-iommu.c
-> @@ -1148,12 +1148,12 @@ static int rk_iommu_of_xlate(struct device *dev,
->      struct platform_device *iommu_dev;
->      struct rk_iommudata *data;
->
-> -    data = devm_kzalloc(dma_dev, sizeof(*data), GFP_KERNEL);
-> +    iommu_dev = of_find_device_by_node(args->np);
+This is really interesting code. So, if the above returns negative error code,
+we return it, if it returns 0, we return success (but 0 channels)?
+
+Shouldn't we do *cs = NULL; at the case of 0 channels if it's a success?
+(Under success I assume that returned values are okay to go with, and cs in
+your case will be left uninitialised or contain something we don't control.
+
+> +	chan_array = devm_kcalloc(dev, num_chan, sizeof(*chan_array),
+> +				  GFP_KERNEL);
+> +	if (!chan_array)
+> +		return -ENOMEM;
 > +
-> +    data = devm_kzalloc(&iommu_dev->dev, sizeof(*data), GFP_KERNEL);
->      if (!data)
->          return -ENOMEM;
->
-> -    iommu_dev = of_find_device_by_node(args->np);
-> -
->      data->iommu = platform_get_drvdata(iommu_dev);
->      data->iommu->domain = &rk_identity_domain;
->      dev_iommu_priv_set(dev, data);
+> +	chan = &chan_array[0];
+> +
+> +	device_for_each_named_child_node_scoped(dev, child, "channel") {
+> +		u32 ch;
+> +
+> +		ret = fwnode_property_read_u32(child, "reg", &ch);
+> +		if (ret)
+> +			return ret;
 
-Best regards
+> +		if (max_chan_id != -1 && ch > max_chan_id)
+> +			return -ERANGE;
+
+Hmm... What if max_chan_id is equal to an error code?
+Or in other words, why -1 is special and not all negative numbers?
+
+Also note, you used unsigned type and compare it to int which,
+in case of being negative will give promotion. The ch will not be
+big enough in most cases (unless it's great than (INT_MAX + 1).
+
+TL;DR: you have a potential integer overflow here.
+
+> +		*chan = *template;
+> +		chan->channel = ch;
+> +		chan++;
+> +	}
+> +
+> +	*cs = chan_array;
+> +
+> +	return num_chan;
+> +}
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+With Best Regards,
+Andy Shevchenko
+
 
 
