@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-12208-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12209-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637F2A5F9E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 16:31:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A65A5F9EE
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 16:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1AB13BEBC3
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 15:31:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54DEE42159C
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 15:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE5426A0C6;
-	Thu, 13 Mar 2025 15:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969BD26A0F7;
+	Thu, 13 Mar 2025 15:29:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E043A26A098;
-	Thu, 13 Mar 2025 15:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFD626A0C7;
+	Thu, 13 Mar 2025 15:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741879766; cv=none; b=hE4rAO5QnHHW9KzFpYDumYAtADefoucWaQmVHsUn3o+EHyzwO5vdleCvHZ+U8iCDObzF6iwG466FMIY9HPMNeDawANwqfp6qrYpLzq1Y1WaSNRHX9IjQGXQj3tjXKMwPesSOBjoqgS+k8JJK4QFFofkai7rIru9cxsYYtBHf2kQ=
+	t=1741879768; cv=none; b=JuoJ/t2tVgfAJYs8wDDjYY5NXS2pN0vjpK86MB2b0R25bFB9T7eb9lXHLp3fIUSqKZjOx8i3oFDCZa9UtB8UyBHjYqUuF3mSaJxKXpZdbn2aBnz0P6yf+n4H8vf1Hf6GoZSR6+yr52FRMKQxE/baNOSErTRF5JTEQKffz6K9XRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741879766; c=relaxed/simple;
-	bh=9UGEN/buW+rB+SNY16YtJWZHD/wQwocyB/zk8N1p+qs=;
+	s=arc-20240116; t=1741879768; c=relaxed/simple;
+	bh=MfSTY+8Javma4iMKIMRIP5AOm3S32ksYO4b7JbopmcE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ipHFCi4rtMTuY3zCtc3C3fw8BgPDWsOIPxYvP7LAxqac4cw+Nklm74VFWJShZq78qBOYT+u5x/SP7skw0/UM9ztKg7C7kyjnzj2Q14AgvZfgEV6LJVgbbPG5uCVjT5maKFZTcvd+INWG1ULcZ1w1+kBcXFTaiKMaYwq+oYz+r8c=
+	 In-Reply-To:To:Cc; b=gryJjGWJOgyefA9oF3uzbr6imU3Q7+Sj8EHSIjQt+HEuKYrcgjfyMdQsEUAgHsDnpeeCg1t3Ch96uzmXMm89qvKlg7p9Q9LPj9DtdwmsoJtdThulWMLnW0TcqU+/JKPNThZY5E78xnPKUvYFhqtYT0dzTQX5EYaiwvleT/ozFpQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F98C1516;
-	Thu, 13 Mar 2025 08:29:35 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C9E8D1F91;
+	Thu, 13 Mar 2025 08:29:36 -0700 (PDT)
 Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E0C43F694;
-	Thu, 13 Mar 2025 08:29:23 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0CCFA3F694;
+	Thu, 13 Mar 2025 08:29:24 -0700 (PDT)
 From: Sudeep Holla <sudeep.holla@arm.com>
-Date: Thu, 13 Mar 2025 15:28:55 +0000
-Subject: [PATCH v3 09/13] soc: hisilicon: kunpeng_hccs: Simplify PCC shared
- memory region handling
+Date: Thu, 13 Mar 2025 15:28:56 +0000
+Subject: [PATCH v3 10/13] i2c: xgene-slimpro: Simplify PCC shared memory
+ region handling
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -45,35 +45,36 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-pcc_fixes_updates-v3-9-019a4aa74d0f@arm.com>
+Message-Id: <20250313-pcc_fixes_updates-v3-10-019a4aa74d0f@arm.com>
 References: <20250313-pcc_fixes_updates-v3-0-019a4aa74d0f@arm.com>
 In-Reply-To: <20250313-pcc_fixes_updates-v3-0-019a4aa74d0f@arm.com>
 To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: Sudeep Holla <sudeep.holla@arm.com>, 
  Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>, 
  Adam Young <admiyo@os.amperecomputing.com>, 
- Robbie King <robbiek@xsightlabs.com>
+ Robbie King <robbiek@xsightlabs.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ linux-i2c@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6401; i=sudeep.holla@arm.com;
- h=from:subject:message-id; bh=9UGEN/buW+rB+SNY16YtJWZHD/wQwocyB/zk8N1p+qs=;
- b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBn0vnEjLDGeiFtUHX3lp2qdYi1z87RhsWIcM0zw
- me3g/9VTDOJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ9L5xAAKCRAAQbq8MX7i
- mO9QEACymV4HwlcVu+PhEDoXx0TflXryjg4RqwngE0k66IS3MdT0MfLxwN9+H8q57SCK7j+TDTe
- Tbavp9n1iBHNDcshv/M6zp39UPSaWUBLono4shZ7L+Lvs4eD52k2VtLcvhQMTbboUxGQqiRTTbC
- lATaI3PB7wrL5qw/s9NDWVl0/9+zpX5irHqFKztMPZRrm6dwzZ77Go7F7u6BrkY7wC/KIS45C4g
- sjGMfxCGKijW4hEagPY6FiwThoGwt9muHVfMsXQ/XHe6WRuREO33KrT39oHJuHcGM8lS2DuA65x
- 2YsiAT59leFAS3//5J89+VOM1Sg4DDNS6IBBUCSBzi516BTzq9wEkazZfoF53OmAdau1gH205DH
- H3aUay5YWWXOo26ZyLSop0jhZXqCGLMl4xLjzQ+ltR4jc8jl/sad6UyyIu0oYqulabZpyaOU7Xd
- bETa2kXnatexFKlYERNA/JR+Cf0KJYc4DxaqZ4IP5MQd4oVu6tBZA+J32gwtD8oVjBiRbSEdSq4
- GaQIrISiMbgBpz+ZEOgYxG2/YRyLUrcelaxCue4/DX6Tyfv6oQV/T1d/fMCRAaKRaIufmyfdFw4
- jmSghBIw3+d8kLRgov74tmwtx6GnrlkraYZrDYD67KrhQq9FHC7ltMr6+cU7/3spOnQB/w6i/Xr
- B7hyFqQo1jRpZ5g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3735; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=MfSTY+8Javma4iMKIMRIP5AOm3S32ksYO4b7JbopmcE=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBn0vnECAkFm0g4ggECz10cy8pN/4x3dJjvyoS7c
+ BFd5gCqqs2JAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ9L5xAAKCRAAQbq8MX7i
+ mFhoEADJhHjPfVYHP9j+YNYHDWqa0U5K8kY635HEcqa4mvxMeAnBw/ydgkzg4z1Cwva4cXyzzBM
+ 23yiRRTCageAHMmCDBkSv+x9zkhWf8+nh4uO/CqLvSgZ3tBIu2b2IdxwB8vTHrzmF3T+VgE4l0g
+ cM34CUpZIdfl0pzLa11fA3OYNraMLmBJbXjm60NMLdt72pXElQXNGAedPvwWw5hldDkJKDwVq8u
+ 8RRZc9s+KIryyFp3D8oP4IB3u7I2xTltQarhynLNwrbGEPQarP86KXE4esmWCSS9m3ARATTfce1
+ 45pjxzX3O8cQH7SKi5PUNW76kQPlrJkdqxE0ywwDPaW0zVW3i4NAZbOKgXIA/DLzyo0UDcbcltH
+ OvprmFjfF+UGCauYnkdhU4oOp1WnDwwEsrLX596CS5Y5umOIWPaLZkVGOxX9uVSL/7HLaHeO+hg
+ e/fOQA8eXJXaSAHEyABHOesdontefLkjeCUscxgjfuXSnmn1uV7HtjW7ZmManoDvEssZSNMDQjY
+ MG21LXdkYS2anzppHcwYedtZeHOhX+kQb2FQ7mrytqVZWPFRrFFi5n+BCV/APUl9KzgAR6BLt/b
+ sGv91/0T1XR1QCmvDm9MqD8nNe4os7TurEMF7sWjq0RiP22G+yCmhTz9Erzt5viMdFbpE1K4rSh
+ pJJCQl/GV38e1Kg==
 X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
  fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 
 The PCC driver now handles mapping and unmapping of shared memory
 areas as part of pcc_mbox_{request,free}_channel(). Without these before,
-this Kunpeng HCCS driver did handling of those mappings like several
+this xgene-slimpro I2C driver did handling of those mappings like several
 other PCC mailbox client drivers.
 
 There were redundant operations, leading to unnecessary code. Maintaining
@@ -83,164 +84,97 @@ of shmem.
 Just use the mapped shmem and remove all redundant operations from this
 driver.
 
-Cc: Huisong Li <lihuisong@huawei.com>
-Reviewed-by: Huisong Li <lihuisong@huawei.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- drivers/soc/hisilicon/kunpeng_hccs.c | 42 +++++++++++++-----------------------
- drivers/soc/hisilicon/kunpeng_hccs.h |  2 --
- 2 files changed, 15 insertions(+), 29 deletions(-)
+ drivers/i2c/busses/i2c-xgene-slimpro.c | 39 ++++------------------------------
+ 1 file changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
-index 8aa8dec14911cdcdc2a2d11606bf6159144e9489..02b2e5ce40b313c8c3cf462c5c2f1d0c53f612f6 100644
---- a/drivers/soc/hisilicon/kunpeng_hccs.c
-+++ b/drivers/soc/hisilicon/kunpeng_hccs.c
-@@ -167,10 +167,6 @@ static void hccs_pcc_rx_callback(struct mbox_client *cl, void *mssg)
- 
- static void hccs_unregister_pcc_channel(struct hccs_dev *hdev)
- {
--	struct hccs_mbox_client_info *cl_info = &hdev->cl_info;
--
--	if (cl_info->pcc_comm_addr)
--		iounmap(cl_info->pcc_comm_addr);
- 	pcc_mbox_free_channel(hdev->cl_info.pcc_chan);
- }
- 
-@@ -179,6 +175,7 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
- 	struct hccs_mbox_client_info *cl_info = &hdev->cl_info;
- 	struct mbox_client *cl = &cl_info->client;
- 	struct pcc_mbox_chan *pcc_chan;
-+	struct mbox_chan *mbox_chan;
- 	struct device *dev = hdev->dev;
- 	int rc;
- 
-@@ -196,7 +193,7 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
- 		goto out;
- 	}
- 	cl_info->pcc_chan = pcc_chan;
--	cl_info->mbox_chan = pcc_chan->mchan;
-+	mbox_chan = pcc_chan->mchan;
- 
- 	/*
- 	 * pcc_chan->latency is just a nominal value. In reality the remote
-@@ -206,34 +203,24 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
- 	cl_info->deadline_us =
- 			HCCS_PCC_CMD_WAIT_RETRIES_NUM * pcc_chan->latency;
- 	if (!hdev->verspec_data->has_txdone_irq &&
--	    cl_info->mbox_chan->mbox->txdone_irq) {
-+	    mbox_chan->mbox->txdone_irq) {
- 		dev_err(dev, "PCC IRQ in PCCT is enabled.\n");
- 		rc = -EINVAL;
- 		goto err_mbx_channel_free;
- 	} else if (hdev->verspec_data->has_txdone_irq &&
--		   !cl_info->mbox_chan->mbox->txdone_irq) {
-+		   !mbox_chan->mbox->txdone_irq) {
- 		dev_err(dev, "PCC IRQ in PCCT isn't supported.\n");
- 		rc = -EINVAL;
- 		goto err_mbx_channel_free;
- 	}
- 
--	if (!pcc_chan->shmem_base_addr ||
--	    pcc_chan->shmem_size != HCCS_PCC_SHARE_MEM_BYTES) {
--		dev_err(dev, "The base address or size (%llu) of PCC communication region is invalid.\n",
--			pcc_chan->shmem_size);
-+	if (pcc_chan->shmem_size != HCCS_PCC_SHARE_MEM_BYTES) {
-+		dev_err(dev, "Base size (%llu) of PCC communication region must be %d bytes.\n",
-+			pcc_chan->shmem_size, HCCS_PCC_SHARE_MEM_BYTES);
- 		rc = -EINVAL;
- 		goto err_mbx_channel_free;
- 	}
- 
--	cl_info->pcc_comm_addr = ioremap(pcc_chan->shmem_base_addr,
--					 pcc_chan->shmem_size);
--	if (!cl_info->pcc_comm_addr) {
--		dev_err(dev, "Failed to ioremap PCC communication region for channel-%u.\n",
--			hdev->chan_id);
--		rc = -ENOMEM;
--		goto err_mbx_channel_free;
--	}
--
- 	return 0;
- 
- err_mbx_channel_free:
-@@ -246,7 +233,7 @@ static int hccs_wait_cmd_complete_by_poll(struct hccs_dev *hdev)
- {
- 	struct hccs_mbox_client_info *cl_info = &hdev->cl_info;
- 	struct acpi_pcct_shared_memory __iomem *comm_base =
--							cl_info->pcc_comm_addr;
-+							cl_info->pcc_chan->shmem;
- 	u16 status;
- 	int ret;
- 
-@@ -289,7 +276,7 @@ static inline void hccs_fill_pcc_shared_mem_region(struct hccs_dev *hdev,
- 		.status = 0,
- 	};
- 
--	memcpy_toio(hdev->cl_info.pcc_comm_addr, (void *)&tmp,
-+	memcpy_toio(hdev->cl_info.pcc_chan->shmem, (void *)&tmp,
- 		    sizeof(struct acpi_pcct_shared_memory));
- 
- 	/* Copy the message to the PCC comm space */
-@@ -309,7 +296,7 @@ static inline void hccs_fill_ext_pcc_shared_mem_region(struct hccs_dev *hdev,
- 		.command = cmd,
- 	};
- 
--	memcpy_toio(hdev->cl_info.pcc_comm_addr, (void *)&tmp,
-+	memcpy_toio(hdev->cl_info.pcc_chan->shmem, (void *)&tmp,
- 		    sizeof(struct acpi_pcct_ext_pcc_shared_memory));
- 
- 	/* Copy the message to the PCC comm space */
-@@ -321,12 +308,13 @@ static int hccs_pcc_cmd_send(struct hccs_dev *hdev, u8 cmd,
- {
- 	const struct hccs_verspecific_data *verspec_data = hdev->verspec_data;
- 	struct hccs_mbox_client_info *cl_info = &hdev->cl_info;
-+	struct mbox_chan *mbox_chan = cl_info->pcc_chan->mchan;
- 	struct hccs_fw_inner_head *fw_inner_head;
- 	void __iomem *comm_space;
- 	u16 space_size;
- 	int ret;
- 
--	comm_space = cl_info->pcc_comm_addr + verspec_data->shared_mem_size;
-+	comm_space = cl_info->pcc_chan->shmem + verspec_data->shared_mem_size;
- 	space_size = HCCS_PCC_SHARE_MEM_BYTES - verspec_data->shared_mem_size;
- 	verspec_data->fill_pcc_shared_mem(hdev, cmd, desc,
- 					  comm_space, space_size);
-@@ -334,7 +322,7 @@ static int hccs_pcc_cmd_send(struct hccs_dev *hdev, u8 cmd,
- 		reinit_completion(&cl_info->done);
- 
- 	/* Ring doorbell */
--	ret = mbox_send_message(cl_info->mbox_chan, &cmd);
-+	ret = mbox_send_message(mbox_chan, &cmd);
- 	if (ret < 0) {
- 		dev_err(hdev->dev, "Send PCC mbox message failed, ret = %d.\n",
- 			ret);
-@@ -356,9 +344,9 @@ static int hccs_pcc_cmd_send(struct hccs_dev *hdev, u8 cmd,
- 
- end:
- 	if (verspec_data->has_txdone_irq)
--		mbox_chan_txdone(cl_info->mbox_chan, ret);
-+		mbox_chan_txdone(mbox_chan, ret);
- 	else
--		mbox_client_txdone(cl_info->mbox_chan, ret);
-+		mbox_client_txdone(mbox_chan, ret);
- 	return ret;
- }
- 
-diff --git a/drivers/soc/hisilicon/kunpeng_hccs.h b/drivers/soc/hisilicon/kunpeng_hccs.h
-index dc267136919b7bf3ecc0deb8cf7291267dd91789..f0a9a5618d9735e959633059192449b10d5bbf16 100644
---- a/drivers/soc/hisilicon/kunpeng_hccs.h
-+++ b/drivers/soc/hisilicon/kunpeng_hccs.h
-@@ -60,10 +60,8 @@ struct hccs_chip_info {
- 
- struct hccs_mbox_client_info {
- 	struct mbox_client client;
--	struct mbox_chan *mbox_chan;
- 	struct pcc_mbox_chan *pcc_chan;
- 	u64 deadline_us;
--	void __iomem *pcc_comm_addr;
- 	struct completion done;
+diff --git a/drivers/i2c/busses/i2c-xgene-slimpro.c b/drivers/i2c/busses/i2c-xgene-slimpro.c
+index 663fe5604dd64b80e57f906e1f7430dcf6d5e95b..a0880f4a056d2b8abbac9f58416215a7fc9b130e 100644
+--- a/drivers/i2c/busses/i2c-xgene-slimpro.c
++++ b/drivers/i2c/busses/i2c-xgene-slimpro.c
+@@ -101,8 +101,6 @@ struct slimpro_i2c_dev {
+ 	struct completion rd_complete;
+ 	u8 dma_buffer[I2C_SMBUS_BLOCK_MAX + 1]; /* dma_buffer[0] is used for length */
+ 	u32 *resp_msg;
+-	phys_addr_t comm_base_addr;
+-	void *pcc_comm_addr;
  };
  
+ #define to_slimpro_i2c_dev(cl)	\
+@@ -148,7 +146,8 @@ static void slimpro_i2c_rx_cb(struct mbox_client *cl, void *mssg)
+ static void slimpro_i2c_pcc_rx_cb(struct mbox_client *cl, void *msg)
+ {
+ 	struct slimpro_i2c_dev *ctx = to_slimpro_i2c_dev(cl);
+-	struct acpi_pcct_shared_memory *generic_comm_base = ctx->pcc_comm_addr;
++	struct acpi_pcct_shared_memory __iomem *generic_comm_base =
++							ctx->pcc_chan->shmem;
+ 
+ 	/* Check if platform sends interrupt */
+ 	if (!xgene_word_tst_and_clr(&generic_comm_base->status,
+@@ -169,7 +168,8 @@ static void slimpro_i2c_pcc_rx_cb(struct mbox_client *cl, void *msg)
+ 
+ static void slimpro_i2c_pcc_tx_prepare(struct slimpro_i2c_dev *ctx, u32 *msg)
+ {
+-	struct acpi_pcct_shared_memory *generic_comm_base = ctx->pcc_comm_addr;
++	struct acpi_pcct_shared_memory __iomem *generic_comm_base =
++							ctx->pcc_chan->shmem;
+ 	u32 *ptr = (void *)(generic_comm_base + 1);
+ 	u16 status;
+ 	int i;
+@@ -464,15 +464,12 @@ static int xgene_slimpro_i2c_probe(struct platform_device *pdev)
+ 	} else {
+ 		struct pcc_mbox_chan *pcc_chan;
+ 		const struct acpi_device_id *acpi_id;
+-		int version = XGENE_SLIMPRO_I2C_V1;
+ 
+ 		acpi_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
+ 					    &pdev->dev);
+ 		if (!acpi_id)
+ 			return -EINVAL;
+ 
+-		version = (int)acpi_id->driver_data;
+-
+ 		if (device_property_read_u32(&pdev->dev, "pcc-channel",
+ 					     &ctx->mbox_idx))
+ 			ctx->mbox_idx = MAILBOX_I2C_INDEX;
+@@ -494,34 +491,6 @@ static int xgene_slimpro_i2c_probe(struct platform_device *pdev)
+ 			goto mbox_err;
+ 		}
+ 
+-		/*
+-		 * This is the shared communication region
+-		 * for the OS and Platform to communicate over.
+-		 */
+-		ctx->comm_base_addr = pcc_chan->shmem_base_addr;
+-		if (ctx->comm_base_addr) {
+-			if (version == XGENE_SLIMPRO_I2C_V2)
+-				ctx->pcc_comm_addr = memremap(
+-							ctx->comm_base_addr,
+-							pcc_chan->shmem_size,
+-							MEMREMAP_WT);
+-			else
+-				ctx->pcc_comm_addr = memremap(
+-							ctx->comm_base_addr,
+-							pcc_chan->shmem_size,
+-							MEMREMAP_WB);
+-		} else {
+-			dev_err(&pdev->dev, "Failed to get PCC comm region\n");
+-			rc = -ENOENT;
+-			goto mbox_err;
+-		}
+-
+-		if (!ctx->pcc_comm_addr) {
+-			dev_err(&pdev->dev,
+-				"Failed to ioremap PCC comm region\n");
+-			rc = -ENOMEM;
+-			goto mbox_err;
+-		}
+ 	}
+ 	rc = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+ 	if (rc)
 
 -- 
 2.34.1
