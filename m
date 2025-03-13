@@ -1,145 +1,113 @@
-Return-Path: <linux-acpi+bounces-12194-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12195-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15733A5F75B
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 15:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834CAA5F92E
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 16:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58E62167AC0
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 14:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2662E17C393
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 15:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1271267B69;
-	Thu, 13 Mar 2025 14:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B070C268C75;
+	Thu, 13 Mar 2025 15:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="SmhlXohl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB881266EFF;
-	Thu, 13 Mar 2025 14:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E02268C5B
+	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 15:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741875134; cv=none; b=qMpog+JtX3nsM7nkTalET23Yx9gL8EnzhGYOzN1xUJY3ohA+EkXrfleFHYfWx3y0ZKQb9k9tqWiz0Osx/E/YFnDelymELEA1Q6rwGs3k3FanqvVB9SMEXSYudAV07CcMDx2EkizJ5PkplKXgWN7gYxZ7ZYtUXFoC/pdPV3KVWzQ=
+	t=1741878164; cv=none; b=AxwYdp034Y2ddS2FFWipZJ53PubLjuZxxbyvLRVv+th0xUQ/js8jR5fkswKVxJNRGY3p3uAIl/aKURIvCMK2AtWmtqK8NC1zk5MohAiGViAAfXuZgzVfkw2Uf/YHjlRMYTjVOTV//kysH7RybyBiA5ej/7kgTFsmPjHI7MEI5LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741875134; c=relaxed/simple;
-	bh=5xjCj3Uau/X756VnrbDbtV6ePBK/IMHky7tHSrV01Rc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cMMoL+MQ4lnElpSWTEYbaE9KosexpVtncyeDXeMjhupVKBh03nxlcqvnE/SREEPJECslWG/dj+A0+FZjKuw5nMYuySnJUvenQBa5YgoOuBVzLhNJRRHHhwZWJrNGUX6PEWmTbIlOnhD9cSyXDqgx+eNKh17cjQf3iJCMGVbJN3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 745B3150C;
-	Thu, 13 Mar 2025 07:12:22 -0700 (PDT)
-Received: from [10.57.40.246] (unknown [10.57.40.246])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A7F23F694;
-	Thu, 13 Mar 2025 07:12:07 -0700 (PDT)
-Message-ID: <b63ff6b4-9dc3-42ea-8b87-d4fdead8d0eb@arm.com>
-Date: Thu, 13 Mar 2025 14:12:06 +0000
+	s=arc-20240116; t=1741878164; c=relaxed/simple;
+	bh=7zDs/4jK42T9rjEWm6oQy/xsWRIMK8LilWON+YAA9gg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RRtnAGIhToDsA9AHRkvm9QmzBWoayWMxNAzncXub7m0bBmFbGD8V/zXWnK5cBjYjXt+b5I74b/m8/rhmGJ2VNfp1XpMEs3jkD2fMciq44JMf7HJ1za/nDBM9kQPxe3FokFxIxRGpWp2/20AysRK9j87dbYP2h+8+Ouapverhx+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=SmhlXohl; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-476964b2c1dso17573421cf.3
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 08:02:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1741878162; x=1742482962; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZHY1pG2tvmLOjvUIEAkagny8teglkhED6Z4pC45W9lk=;
+        b=SmhlXohlhOkw1inTkuCmudxJb2FtoXioVgM0AuPDIpjTaw4nhQDVMH33mTYf0ayYh3
+         NlVUxUQpMSsWyvFZ4d6wJwbdCxwDNqNuoIXnLomTJgKbBJsxXtDDtwqZlyxtUYtZYp7T
+         XUDnY2u2/GQdNS4oVr2MB5MGrsbEwlmBW7yiVBqcu7O1dEhmzbTio+MZD7FBpd+dbNN9
+         GW+Tgn+xricC2tjHWeXkWOvChI6dSx7hera8rrWEkFlXxZYh9mgK29Ue/hHDNaNBzZOt
+         d4SCQKtNU82r0c0NXdkmMNJFuIokn2w4a+8KaJc+WUSbPtqMP729pE4a0arqDEF4glJu
+         ubmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741878162; x=1742482962;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZHY1pG2tvmLOjvUIEAkagny8teglkhED6Z4pC45W9lk=;
+        b=cpokSGBrISbIyOnEO9Z3AE4/xAtRKagHpfSqZ+FD5AwjtEAnKtCyR7k5fceYzhSQ82
+         G019VRrk0R+es17iCPZu0jYnJC27vn58nLLPxTYkN1Nzy59/rcL5uIRrv3YhbPzZcIiI
+         NiQicYpkZXcBBDDIV5unYXCBb7xg3ckazCNscIikmyn+omQBin+0+oXoskgB0S0elchz
+         4zmgem1/88HZQD7prV8VRFDwiZzK8c0XGiPWUDvGBNAEtoa9bziG+Jp26c3/ZnZFAwLY
+         tR6uGxbW9WXTbl4xDf4SPGuLW3iRd/1gGfj3gFbbYlQaw4+yPVr9OXsgxYEPowiZTFVo
+         3rRg==
+X-Forwarded-Encrypted: i=1; AJvYcCULCw+NNysqnaq0v1dEkQViGXnEIpkkbbDzLpQPc2TAFB3r4BRu8IzWbWsP98S4trezlTgFTeI7k7QZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws7qXRrLbcEMPhiW7HD9dnZ2wpk4FWiBrdkIhKmK5Z7eTp+qSj
+	ZTD2ucg6pq0h5UTMYV+hff28hHS1jV6ksh5kIK1IHKE5wfkrttOVfBmKOT4b+lQ=
+X-Gm-Gg: ASbGnctH4njHrPjsRlG21ZzMdsrUv5PvqQLya3uB/OR1IaKF7d/htTUDBlhJxNBM5aH
+	Ty+7Vhmshj7tFK/NvoTqZ5SEhCHxjaD5JZfQOUjlHXzgPZaFCJ32/GL7okfU7qJMU82X0eZUkQG
+	Ko6V96LkXv1ZWiyMv8i4CqileRyFt97fGKWfpVXL7OZlAlhUdh346p0IujCxF7maqM4c1ZHMczB
+	tehT05wObDb+4mfhJyuqLsbwXcPCxqPq0uDxIsMN2wKNWIt7dyhbkLT7SC/OyWnxPM0yJt0K8zP
+	RRgWAucUfu28AoOJ7f5r1halRVCzNqNIiVOn7szbQlm173nm0KyfM1S1yUMbSNZxyW7YFZJw2zg
+	nXk4RVpwGxN7aGXI9iBhDkmfevEIZetUufcc0jw==
+X-Google-Smtp-Source: AGHT+IFAMWILyZ8bMRGv7bdKKe5rM96j+5H6aHjq4gkCifNGEy5AffkMBaHGkUHELx5174kUe35U8A==
+X-Received: by 2002:a05:6214:518f:b0:6d4:1680:612d with SMTP id 6a1803df08f44-6eae78613admr673006d6.0.1741878161817;
+        Thu, 13 Mar 2025 08:02:41 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade24d025sm10481686d6.51.2025.03.13.08.02.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Mar 2025 08:02:41 -0700 (PDT)
+Date: Thu, 13 Mar 2025 11:02:37 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Cc: rafael@kernel.org, lenb@kernel.org, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, dan.j.williams@intel.com, rrichter@amd.com,
+	bfaccini@nvidia.com, rppt@kernel.org, haibo1.xu@intel.com,
+	chenbaozi@phytium.com.cn, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: NUMA: debug invalid unused PXM value for CFMWs
+Message-ID: <Z9LzjQCKFfsdE2yJ@gourry-fedora-PF4VCD3F>
+References: <20250313060907.2381416-1-wangyuquan1236@phytium.com.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-From: Robin Murphy <robin.murphy@arm.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Stuart Yoder <stuyoder@gmail.com>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun Gupta
- <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
- Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- Charan Teja Kalla <quic_charante@quicinc.com>
-References: <cover.1740753261.git.robin.murphy@arm.com>
- <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
- <CGME20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd@eucas1p2.samsung.com>
- <9b358d68-332e-404e-9a75-740297f7b28d@samsung.com>
- <417d6f59-0d78-4e81-ad0b-e06846f786b0@arm.com>
- <bf2adf5d-1432-4bb7-846c-e1bcfa84858b@samsung.com>
- <016bb7ca-f0d3-464e-ac74-46e6f78e90d7@arm.com>
-Content-Language: en-GB
-In-Reply-To: <016bb7ca-f0d3-464e-ac74-46e6f78e90d7@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250313060907.2381416-1-wangyuquan1236@phytium.com.cn>
 
-On 2025-03-13 1:06 pm, Robin Murphy wrote:
-> On 2025-03-13 12:23 pm, Marek Szyprowski wrote:
->> On 13.03.2025 12:01, Robin Murphy wrote:
->>> On 2025-03-13 9:56 am, Marek Szyprowski wrote:
->>> [...]
->>>> This patch landed in yesterday's linux-next as commit bcb81ac6ae3c
->>>> ("iommu: Get DT/ACPI parsing into the proper probe path"). In my 
->>>> tests I
->>>> found it breaks booting of ARM64 RK3568-based Odroid-M1 board
->>>> (arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts). Here is the
->>>> relevant kernel log:
->>>
->>> ...and the bug-flushing-out begins!
->>>
->>>> Unable to handle kernel NULL pointer dereference at virtual address
->>>> 00000000000003e8
->>>> Mem abort info:
->>>>      ESR = 0x0000000096000004
->>>>      EC = 0x25: DABT (current EL), IL = 32 bits
->>>>      SET = 0, FnV = 0
->>>>      EA = 0, S1PTW = 0
->>>>      FSC = 0x04: level 0 translation fault
->>>> Data abort info:
->>>>      ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
->>>>      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
->>>>      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
->>>> [00000000000003e8] user address but active_mm is swapper
->>>> Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
->>>> Modules linked in:
->>>> CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc3+ #15533
->>>> Hardware name: Hardkernel ODROID-M1 (DT)
->>>> pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>> pc : devm_kmalloc+0x2c/0x114
->>>> lr : rk_iommu_of_xlate+0x30/0x90
->>>> ...
->>>> Call trace:
->>>>     devm_kmalloc+0x2c/0x114 (P)
->>>>     rk_iommu_of_xlate+0x30/0x90
->>>
->>> Yeah, looks like this is doing something a bit questionable which can't
->>> work properly. TBH the whole dma_dev thing could probably be cleaned up
->>> now that we have proper instances, but for now does this work?
->>
->> Yes, this patch fixes the problem I've observed.
->>
->> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>
->> BTW, this dma_dev idea has been borrowed from my exynos_iommu driver and
->> I doubt it can be cleaned up.
-> 
-> On the contrary I suspect they both can - it all dates back to when we 
-> had the single global platform bus iommu_ops and the SoC drivers were 
-> forced to bodge their own notion of multiple instances, but with the 
-> modern core code, ops are always called via a valid IOMMU instance or 
-> domain, so in principle it should always be possible to get at an 
-> appropriate IOMMU device now. IIRC it was mostly about allocating and 
-> DMA-mapping the pagetables in domain_alloc, where the private notion of 
-> instances didn't have enough information, but domain_alloc_paging solves 
-> that.
+On Thu, Mar 13, 2025 at 02:09:07PM +0800, Yuquan Wang wrote:
+> @@ -441,6 +441,11 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+>  	start = cfmws->base_hpa;
+>  	end = cfmws->base_hpa + cfmws->window_size;
+>  
+> +	if (srat_disabled()) {
+> +		pr_err("SRAT is missing or bad while processing CFMWS.\n");
+> +		return -EINVAL;
+> +	}
+> +
 
-Bah, in fact I think I am going to have to do that now, since although 
-it doesn't crash, rk_domain_alloc_paging() will also be failing for the 
-same reason. Time to find a PSU for the RK3399 board, I guess...
+I thought the srat was optional regardless of the presence of a CFMWS.
+Is this not the case?
 
-(Or maybe just move the dma_dev assignment earlier to match Exynos?)
-
-Thanks,
-Robin.
+~Gregory
 
