@@ -1,165 +1,129 @@
-Return-Path: <linux-acpi+bounces-12185-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12186-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A53A5F37A
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 12:55:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C00A5F409
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 13:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750D23B7D7E
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 11:52:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122C2189F5AD
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 12:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8EB266B4B;
-	Thu, 13 Mar 2025 11:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E0826739F;
+	Thu, 13 Mar 2025 12:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jQy7T0Aq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pYqsEwNo";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jQy7T0Aq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pYqsEwNo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BGKGsC+a"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90964266B67
-	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 11:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5CC1EE7A8;
+	Thu, 13 Mar 2025 12:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741866577; cv=none; b=p3sht4K+cDwHx54zWwPJnBuTOrxiEd3tZ5d5xWkFVlwMgq0If+/VZW9D8llRbjRyh0F4pOAGqAUkksc/CDwYYrYqy8h5iEe2S907P+rNsXLxSv/cJ8M0RprWm32irhnhy+KORRsYXEfb/4pt2wZsLv1keheqQXkwYFhoceRdk78=
+	t=1741868160; cv=none; b=e4j4w08C/KP7SJUR9Y5M/ngK+7DhxfO4aOCIM00UvxEkjH4PP6xC9MayT9mb7sRfDBwdxl+vncE+y+uWSzusKXWeU0x6S1nHjn1L+ZEufXV4Abhj+l7p/fMwYsjzkZWK2mgy8ep8oe1mreiEwnCLrp49ssKyN5e64YdfehGoJkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741866577; c=relaxed/simple;
-	bh=ymVbr09/+0eQx25LnG7+hQQo99jgTHBhAsaViFfXSQg=;
+	s=arc-20240116; t=1741868160; c=relaxed/simple;
+	bh=kaAou0aCgzlU0oUfOlYrlysp520v5XX91y8STuDaS4w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f11e1okcw9tkXU8ZxFq8Dy6AJCifE6XgLvIJJXnmsoEp+X1/cAPf8JrJvBO+CzE6rWkpONsXtjxtx9E7LQ4bOdaqpuUyUq2vBqhB7+zsjND/+fKmTVAf9rY+yt9n/cUoucYrxkvb/Zoz+0XL04ilU7ZrwXqvGjt1OxL+glNeD4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jQy7T0Aq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pYqsEwNo; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jQy7T0Aq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pYqsEwNo; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 76ECD21162;
-	Thu, 13 Mar 2025 11:49:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741866573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
-	b=jQy7T0AqJzHjE/IrWInaqE/w92Sr5WcizvSyZ2neuI9vLuC/oXxOP6QlVvZ8I2wSuSjZVV
-	thRebrTjHwiafOYzdmoARVGdhNwRbcS7x2Hl5pgOMSwX/JMSI65sOpwqBZt8vyI4SZfCeM
-	BklrEOw7R+GmxQkiF18GBLTwUDLjq3k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741866573;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
-	b=pYqsEwNoQHU5tf/T7W6HxNI5BKSc1bp6tnZnczPGaecOi8p+sMx0zETbUdPeLSc4RhOQAT
-	6TExC6t0uAMkcyBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741866573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
-	b=jQy7T0AqJzHjE/IrWInaqE/w92Sr5WcizvSyZ2neuI9vLuC/oXxOP6QlVvZ8I2wSuSjZVV
-	thRebrTjHwiafOYzdmoARVGdhNwRbcS7x2Hl5pgOMSwX/JMSI65sOpwqBZt8vyI4SZfCeM
-	BklrEOw7R+GmxQkiF18GBLTwUDLjq3k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741866573;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
-	b=pYqsEwNoQHU5tf/T7W6HxNI5BKSc1bp6tnZnczPGaecOi8p+sMx0zETbUdPeLSc4RhOQAT
-	6TExC6t0uAMkcyBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3D31B137BA;
-	Thu, 13 Mar 2025 11:49:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2UFpDU3G0mfcXgAAD6G6ig
-	(envelope-from <jroedel@suse.de>); Thu, 13 Mar 2025 11:49:33 +0000
-Date: Thu, 13 Mar 2025 12:49:23 +0100
-From: Joerg Roedel <jroedel@suse.de>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev
-Subject: Re: New "something fishy here" warning fires
-Message-ID: <Z9LGQ8h-I8c4igfr@suse.de>
-References: <3046c6a2-72a0-412e-a865-48dc129be0df@gmail.com>
- <09bc17bd-4d25-4afd-8f6c-56707ea9bc92@linux.intel.com>
- <73e4c6fc-bc41-452b-8af5-9653436d8ba7@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sO7RDuTMre2vKkuLmHiUM0djQ+qHw16K3l7vDPqodzKxgJugD3LPTvcgxDIUg9xWx+GzYq1LflsRYZQHV5NPyzBsKH54YOJgNfqv6tPNg70ppb4UllTmXA3cjNdnT5rLEaM4v6f0G7w6hxfpelCMZnNMv90mjH7gmfd3I0nc2vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BGKGsC+a; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741868158; x=1773404158;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kaAou0aCgzlU0oUfOlYrlysp520v5XX91y8STuDaS4w=;
+  b=BGKGsC+aTNDz8s3H7Uatw7AzNydq7Q/eBHRKMXyFcag8Kv7lvJL8bNbd
+   7Jfl2CAh7e+ZSyT/cnJx3zaKIeUTXilVjFQDy4QPD8HayPlv1TwQ77qeu
+   8CHLZHIBQpSzxOQAox0A/enhzEcvRLZebT63wIhySPzw6phyoIf7Y0R9z
+   zAj23/JIrq1DymzpbqgKoYAsXtutYiI0LKcETbYMxZjAYvEpVzo04/dHU
+   7Rrd3eMhu86qowhmSUAYjXt2hc9DUVtYsylh5d8y+wNLxQ86Ij+roqdbh
+   uTOzAGGTeAo5i+khJAAbxjQrchISVOe1RwRaCwZaXohg7WuqpHPnQyfo1
+   Q==;
+X-CSE-ConnectionGUID: ICs70ZJwTE6V10V5OJ6tzQ==
+X-CSE-MsgGUID: OJEVOFguS0mjzVWjK6j0mQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="43181045"
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="43181045"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:15:57 -0700
+X-CSE-ConnectionGUID: RNQkYJ4BQiWZX4u2f7QQFA==
+X-CSE-MsgGUID: MbZIX0BrROucfQ4ERBpTHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="120655368"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:15:52 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tshTY-00000002AQF-3GON;
+	Thu, 13 Mar 2025 14:15:48 +0200
+Date: Thu, 13 Mar 2025 14:15:48 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v7 02/10] property: Add functions to iterate named child
+Message-ID: <Z9LMdDKNLT57RdIL@smile.fi.intel.com>
+References: <cover.1741849323.git.mazziesaccount@gmail.com>
+ <f613b5f120a4dde63d28b0a2e0186dcb8dbf57ae.1741849323.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <73e4c6fc-bc41-452b-8af5-9653436d8ba7@arm.com>
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,gmail.com,google.com,kernel.org,nvidia.com,vger.kernel.org,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,suse.com:url]
-X-Spam-Flag: NO
-X-Spam-Level: 
+In-Reply-To: <f613b5f120a4dde63d28b0a2e0186dcb8dbf57ae.1741849323.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Mar 13, 2025 at 11:09:37AM +0000, Robin Murphy wrote:
-> > The fix is here.
-> > 
-> > https://lore.kernel.org/linux- iommu/72a4853e7ef36e7c1c4ca171ed4ed8e1a463a61a.1741791691.git.robin.murphy@arm.com/
+On Thu, Mar 13, 2025 at 09:18:00AM +0200, Matti Vaittinen wrote:
+> There are a few use-cases where child nodes with a specific name need to
+> be parsed. Code like:
 > 
-> Indeed, and I see Joerg has updated the iommu/next branch already, so
-> hopefully today's -next will be OK again. Sorry for the false positives!
+> fwnode_for_each_child_node()
+> 	if (fwnode_name_eq())
+> 		...
+> 
+> can be found from a various drivers/subsystems. Adding a macro for this
+> can simplify things a bit.
+> 
+> In a few cases the data from the found nodes is later added to an array,
+> which is allocated based on the number of found nodes. One example of
+> such use is the IIO subsystem's ADC channel nodes, where the relevant
+> nodes are named as channel[@N].
+> 
+> Add helpers for iterating and counting device's sub-nodes with certain
+> name instead of open-coding this in every user.
 
-Yes, the fix is part of iommu/next as of this (european) morning.
-
-Regards,
+LGTM,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+I haven't checked the rendered kernel-doc, though.
 
 -- 
-Jörg Rödel
-jroedel@suse.de
+With Best Regards,
+Andy Shevchenko
 
-SUSE Software Solutions Germany GmbH
-Frankenstraße 146
-90461 Nürnberg
-Germany
-https://www.suse.com/
 
-Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
-(HRB 36809, AG Nürnberg)
 
