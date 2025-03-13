@@ -1,144 +1,165 @@
-Return-Path: <linux-acpi+bounces-12184-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12185-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6A6A5F209
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 12:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A53A5F37A
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 12:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE683A595C
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 11:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750D23B7D7E
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 11:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9B1265CD2;
-	Thu, 13 Mar 2025 11:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8EB266B4B;
+	Thu, 13 Mar 2025 11:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jQy7T0Aq";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pYqsEwNo";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jQy7T0Aq";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pYqsEwNo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F0F265CCA
-	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 11:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90964266B67
+	for <linux-acpi@vger.kernel.org>; Thu, 13 Mar 2025 11:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741864183; cv=none; b=pq/W5Q/DFLXsd+Exb3/iQ9D+XfAKpLrOTN/Kby3bjslE7kfjAQLm9kYslZ0OHO86cW6EsFGtymXuz5gJCWJR3zsQPfB9BWcW1ro3Ekmj65VOm/YY5oVh3EC/1hWlrdPTGG7brJVWjuHiKwv3LUFgvbNarvkvYzW7Q1Se3gJd7w4=
+	t=1741866577; cv=none; b=p3sht4K+cDwHx54zWwPJnBuTOrxiEd3tZ5d5xWkFVlwMgq0If+/VZW9D8llRbjRyh0F4pOAGqAUkksc/CDwYYrYqy8h5iEe2S907P+rNsXLxSv/cJ8M0RprWm32irhnhy+KORRsYXEfb/4pt2wZsLv1keheqQXkwYFhoceRdk78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741864183; c=relaxed/simple;
-	bh=f4fz3Nm5tn0/pWMG6A0J0GUka5+BD9q8elvMNaTG+TQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uPNdYDQjihr6+CCKfrH8h8FWaFBfBYkqMuicI3y+92aGNFmL7eycQsEn8fdNNQ13E1BeJr2nF640JSqBVJpSEKu9J6yvl/ybtm7M9D9KmBQzlpZ0zr7M7cBMIwge13Y+ND3ZOTJaae6zYsBAb8KSrHRi68LqnfGb9j5vpN8R1ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9AF5D1516;
-	Thu, 13 Mar 2025 04:09:51 -0700 (PDT)
-Received: from [10.57.40.246] (unknown [10.57.40.246])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C2503F673;
-	Thu, 13 Mar 2025 04:09:39 -0700 (PDT)
-Message-ID: <73e4c6fc-bc41-452b-8af5-9653436d8ba7@arm.com>
-Date: Thu, 13 Mar 2025 11:09:37 +0000
+	s=arc-20240116; t=1741866577; c=relaxed/simple;
+	bh=ymVbr09/+0eQx25LnG7+hQQo99jgTHBhAsaViFfXSQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f11e1okcw9tkXU8ZxFq8Dy6AJCifE6XgLvIJJXnmsoEp+X1/cAPf8JrJvBO+CzE6rWkpONsXtjxtx9E7LQ4bOdaqpuUyUq2vBqhB7+zsjND/+fKmTVAf9rY+yt9n/cUoucYrxkvb/Zoz+0XL04ilU7ZrwXqvGjt1OxL+glNeD4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jQy7T0Aq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pYqsEwNo; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jQy7T0Aq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pYqsEwNo; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 76ECD21162;
+	Thu, 13 Mar 2025 11:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741866573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
+	b=jQy7T0AqJzHjE/IrWInaqE/w92Sr5WcizvSyZ2neuI9vLuC/oXxOP6QlVvZ8I2wSuSjZVV
+	thRebrTjHwiafOYzdmoARVGdhNwRbcS7x2Hl5pgOMSwX/JMSI65sOpwqBZt8vyI4SZfCeM
+	BklrEOw7R+GmxQkiF18GBLTwUDLjq3k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741866573;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
+	b=pYqsEwNoQHU5tf/T7W6HxNI5BKSc1bp6tnZnczPGaecOi8p+sMx0zETbUdPeLSc4RhOQAT
+	6TExC6t0uAMkcyBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741866573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
+	b=jQy7T0AqJzHjE/IrWInaqE/w92Sr5WcizvSyZ2neuI9vLuC/oXxOP6QlVvZ8I2wSuSjZVV
+	thRebrTjHwiafOYzdmoARVGdhNwRbcS7x2Hl5pgOMSwX/JMSI65sOpwqBZt8vyI4SZfCeM
+	BklrEOw7R+GmxQkiF18GBLTwUDLjq3k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741866573;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yd8mYvTj9OAsmQlhNdKxRmv6VZmC7TaYNFRo1sXHwS4=;
+	b=pYqsEwNoQHU5tf/T7W6HxNI5BKSc1bp6tnZnczPGaecOi8p+sMx0zETbUdPeLSc4RhOQAT
+	6TExC6t0uAMkcyBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3D31B137BA;
+	Thu, 13 Mar 2025 11:49:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2UFpDU3G0mfcXgAAD6G6ig
+	(envelope-from <jroedel@suse.de>); Thu, 13 Mar 2025 11:49:33 +0000
+Date: Thu, 13 Mar 2025 12:49:23 +0100
+From: Joerg Roedel <jroedel@suse.de>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, linux-acpi@vger.kernel.org,
+	iommu@lists.linux.dev
+Subject: Re: New "something fishy here" warning fires
+Message-ID: <Z9LGQ8h-I8c4igfr@suse.de>
+References: <3046c6a2-72a0-412e-a865-48dc129be0df@gmail.com>
+ <09bc17bd-4d25-4afd-8f6c-56707ea9bc92@linux.intel.com>
+ <73e4c6fc-bc41-452b-8af5-9653436d8ba7@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: New "something fishy here" warning fires
-To: Baolu Lu <baolu.lu@linux.intel.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Joerg Roedel <jroedel@suse.de>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-acpi@vger.kernel.org, iommu@lists.linux.dev
-References: <3046c6a2-72a0-412e-a865-48dc129be0df@gmail.com>
- <09bc17bd-4d25-4afd-8f6c-56707ea9bc92@linux.intel.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <09bc17bd-4d25-4afd-8f6c-56707ea9bc92@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <73e4c6fc-bc41-452b-8af5-9653436d8ba7@arm.com>
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,gmail.com,google.com,kernel.org,nvidia.com,vger.kernel.org,lists.linux.dev];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,suse.com:url]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On 2025-03-13 4:38 am, Baolu Lu wrote:
-> On 3/13/25 03:34, Heiner Kallweit wrote:
->> Since "iommu: Get DT/ACPI parsing into the proper probe path" I get 
->> the following
->> on a N100-based mini pc. The warning pops up 4 times, for:
->>
->> PNP0C14:00
->> PNP0C14:01
->> PNP0C14:00
->> PNP0C14:01
->>
->> Any other info you'd be interested in?
->>
->> [  +0.000139] Unpacking initramfs...
->> [  +0.000690] ------------[ cut here ]------------
->> [  +0.000028] acpi-wmi PNP0C14:00: late IOMMU probe at driver bind, 
->> something fishy here!
->> [  +0.000041] WARNING: CPU: 1 PID: 1 at drivers/iommu/iommu.c:449 
->> __iommu_probe_device+0x12b/0x530
->> [  +0.000034] Modules linked in:
->> [  +0.000024] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0- 
->> rc6-next-20250312+ #2
->> [  +0.000029] Hardware name: Default string Default string/Default 
->> string, BIOS ADLN.M6.SODIMM.ZB.CY.015 08/08/2023
->> [  +0.000032] RIP: 0010:__iommu_probe_device+0x12b/0x530
->> [  +0.000019] Code: 68 00 74 28 4c 8b 73 50 4d 85 f6 75 03 4c 8b 33 48 
->> 89 df e8 d7 ec 00 00 4c 89 f2 48 c7 c7 b8 91 7b 9e 48 89 c6 e8 f5 3e 
->> 96 ff >
->> [  +0.000055] RSP: 0000:ffffb031c006fc98 EFLAGS: 00010282
->> [  +0.000021] RAX: 0000000000000000 RBX: ffff9469416c5010 RCX: 
->> 0000000000000000
->> [  +0.000023] RDX: 0000000000000002 RSI: 0000000000000003 RDI: 
->> 00000000ffffffff
->> [  +0.000023] RBP: ffffb031c006fcd8 R08: 0000000000000000 R09: 
->> ffffb031c006fae8
->> [  +0.000023] R10: ffffffff9eb1ea68 R11: 0000000000000003 R12: 
->> ffffffff9e485280
->> [  +0.000023] R13: ffffb031c006fd70 R14: ffff946940bb8ec0 R15: 
->> 0000000000000000
->> [  +0.000023] FS:  0000000000000000(0000) GS:ffff946b18bec000(0000) 
->> knlGS:0000000000000000
->> [  +0.000037] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [  +0.000020] CR2: 0000000000000000 CR3: 000000016c650001 CR4: 
->> 0000000000770ef0
->> [  +0.000023] PKRU: 55555554
->> [  +0.000012] Call Trace:
->> [  +0.000010]  <TASK>
->> [  +0.000011]  ? show_regs.part.0+0x1d/0x30
->> [  +0.000019]  ? show_regs.cold+0x8/0xd
->> [  +0.000016]  ? __iommu_probe_device+0x12b/0x530
->> [  +0.000017]  ? __warn.cold+0xc2/0x15e
->> [  +0.000018]  ? __iommu_probe_device+0x12b/0x530
->> [  +0.000017]  ? report_bug+0xe3/0x170
->> [  +0.000016]  ? console_unlock+0x7d/0x110
->> [  +0.000018]  ? __iommu_probe_device+0x12b/0x530
->> [  +0.000016]  ? __iommu_probe_device+0x12d/0x530
->> [  +0.000017]  ? handle_bug+0x116/0x170
->> [  +0.000018]  ? exc_invalid_op+0x18/0x70
->> [  +0.000017]  ? asm_exc_invalid_op+0x1b/0x20
->> [  +0.000022]  ? __iommu_probe_device+0x12b/0x530
->> [  +0.000018]  ? __iommu_probe_device+0x12b/0x530
->> [  +0.000019]  ? __pfx_probe_iommu_group+0x10/0x10
->> [  +0.000017]  probe_iommu_group+0x26/0x50
->> [  +0.000016]  bus_for_each_dev+0x79/0xd0
->> [  +0.000020]  iommu_device_register+0xbe/0x230
->> [  +0.000021]  intel_iommu_init+0xd76/0xf40
->> [  +0.000016]  ? _raw_spin_unlock_irqrestore+0x55/0x80
->> [  +0.000022]  ? __this_cpu_preempt_check+0x13/0x20
->> [  +0.000018]  ? lockdep_hardirqs_on+0x7d/0x110
->> [  +0.000018]  ? trace_hardirqs_on+0x5b/0xd0
->> [  +0.000017]  ? _raw_spin_unlock_irqrestore+0x3c/0x80
->> [  +0.000020]  ? __pfx_pci_iommu_init+0x10/0x10
->> [  +0.000021]  pci_iommu_init+0xd/0x40
->>
+On Thu, Mar 13, 2025 at 11:09:37AM +0000, Robin Murphy wrote:
+> > The fix is here.
+> > 
+> > https://lore.kernel.org/linux- iommu/72a4853e7ef36e7c1c4ca171ed4ed8e1a463a61a.1741791691.git.robin.murphy@arm.com/
 > 
-> The fix is here.
-> 
-> https://lore.kernel.org/linux- 
-> iommu/72a4853e7ef36e7c1c4ca171ed4ed8e1a463a61a.1741791691.git.robin.murphy@arm.com/
+> Indeed, and I see Joerg has updated the iommu/next branch already, so
+> hopefully today's -next will be OK again. Sorry for the false positives!
 
-Indeed, and I see Joerg has updated the iommu/next branch already, so 
-hopefully today's -next will be OK again. Sorry for the false positives!
+Yes, the fix is part of iommu/next as of this (european) morning.
 
-Thanks,
-Robin.
+Regards,
+
+-- 
+J�rg R�del
+jroedel@suse.de
+
+SUSE Software Solutions Germany GmbH
+Frankenstra�e 146
+90461 N�rnberg
+Germany
+https://www.suse.com/
+
+Gesch�ftsf�hrer: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG N�rnberg)
 
