@@ -1,141 +1,140 @@
-Return-Path: <linux-acpi+bounces-12163-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12164-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DFCA5EB88
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 07:10:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAE7A5EBD3
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 07:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F6C170B87
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 06:10:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09F5A175505
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Mar 2025 06:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9F21F9F72;
-	Thu, 13 Mar 2025 06:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771A31FAC53;
+	Thu, 13 Mar 2025 06:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cItZmtyw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081BA1FAC5A;
-	Thu, 13 Mar 2025 06:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCBF1E86E;
+	Thu, 13 Mar 2025 06:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741846213; cv=none; b=VygJYVyUofo1x/XcgAdBFLO9tlssUPA9PCk7k0ZZ62niTPuDii5YRZxJSco1K4/a/xgZHQeIoacg0A6pxH3ibTkoVhsYi8oefAlIFNVz9ELUEmuadOdL4D1+4US78lKvpMz2GnbIBzm8BRdA9W9xRrlp7+Srmw/SSbvMKOC9JJA=
+	t=1741848146; cv=none; b=hoi6+OcCkaQwbebUt8Y5+Ey1M6O1G6uGRLb3I2L7hiLgiHeQnP92/TavaHkzbShhJpJL+TAINQwoZiJiQuR9yoITW7t/s7Gxv/ZI153kRod0mKsrVAAwDEW6z8MVw5yiA/PxZiuqSgEgjWCGwZEiBx2orp8u2qUoi/MZqDYXJIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741846213; c=relaxed/simple;
-	bh=haDKOhb9ripu8pCRPsDyANNnE4vbQebVtFppu+s+GgE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PWreuOWsJbN7R9BDgp28jkWDsnPuOHeq/3ZhC+Ridavy5b+PHwrEK7v9sOtaizRBQegPRsAC6xJXlzJOxhOf/xKYZm7WASWddd9VzhB0fWtQ4TP+3XWE+Vio5ZkOcDMKN8kDKanyLw2oQ33O2FceX73MpZukTR/3P1b4z5WOMIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAXHw+zdtJn3HhxCQ--.12654S2;
-	Thu, 13 Mar 2025 14:09:55 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
-	by mail (Coremail) with SMTP id AQAAfwBHSYWxdtJnHJFGAA--.19030S3;
-	Thu, 13 Mar 2025 14:09:54 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	rrichter@amd.com,
-	bfaccini@nvidia.com,
-	rppt@kernel.org,
-	haibo1.xu@intel.com
-Cc: chenbaozi@phytium.com.cn,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH v2] ACPI: NUMA: debug invalid unused PXM value for CFMWs
-Date: Thu, 13 Mar 2025 14:09:07 +0800
-Message-Id: <20250313060907.2381416-1-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741848146; c=relaxed/simple;
+	bh=L1dW+WkJK2qErjeOxZivl2sTcN5KUbykHuN0wgmt3zw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jwDFQzhJQmegrCzJ+aeDjLpd/vyNOAIFTQqk2GOaYpdFklLRERB3/k/mDgwdiXEmzIZ9apfTXo90tGA01Fh2bZ4nkgpGx6wKG8K30mzZKHie9zVFnVnyBPXquFMcir1XhKl0ACq2afxhSXhlij6gVQOH6QY/c2YwaCimfP6/7Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cItZmtyw; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30bf251025aso5579761fa.1;
+        Wed, 12 Mar 2025 23:42:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741848143; x=1742452943; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1Bb/WvokO3a+F9ijuFm3j+AhkORbeEOG67zAt8VEtuw=;
+        b=cItZmtywcOMjr1LjgI2bBjVkOMmTmYPcAgkVeK0ohaqrTpaEMTsULRgC5UgqSd9nSq
+         X0SeC1JmonU5nwZE5VG3Zb3Iegbm+CM7hUnRI6XTR4Nn3pMIac2/aoSYSaqws9/h/nkO
+         lXgUSuCT3KQKt9W1/TwhOJSgqACh+LI2dv0nApjvulqPWkgqZauYvhI9/mslF3f0ZexL
+         S3ogd90s8mWa0wXo0HqhmFN8IByvSrvOC1fQuiScTZflGVCiulL32UsPDKI9l5LEv0tr
+         s6uq5pXzQaz2uiC9NWKTKhsLGsiuEA+FuRRIlh8nkz/hlt51fW2p9gawfUt4XQiqNhz6
+         kXzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741848143; x=1742452943;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Bb/WvokO3a+F9ijuFm3j+AhkORbeEOG67zAt8VEtuw=;
+        b=IA9hoXYEXlMBCFzeT/67WpN9Ou06MDEm1wxwzN7NjL2u+9vOtplFSQgh78c0q0xiWx
+         WwJnCya85YNEuWVNeH/CGSN1fSrcFNV7/GB+rE2ScY2qhaVsQRRH/TsLKkFFd29k2w+e
+         ZaDVVCUwSWcIgGRXtmmeZQi1c40OTOF4Xnzh2vFOieDlzhdPRCvmNsd24jUTjzvw59Hs
+         0t5wjbri05q8lHGdC2QkTuHbb1lQxwoMqn1Q32T0qqGyfXQrae+SGyEOPzJ5BNmrZSGb
+         mxsjpANTovgZW6XIApegFKujiz3tAfCUN+zHt+1+eU1BteZwQfNfcxpF6skAqBxJZFOG
+         c2SA==
+X-Forwarded-Encrypted: i=1; AJvYcCW57c9b0St9kFc8oOiXVJr0Xbugz8m3LV2XfIA9hhRssgLQVtnQdlRuyhjLQvG09C+LdiVP6FjFFSHO@vger.kernel.org, AJvYcCWjdttCpvWCSUx3z0LlW8sdgpQ0Wtdm3tvtxT6IFdTOXfh9KTOqLhkVDf8KEygCXWj0dIgeDhtI04yMVw==@vger.kernel.org, AJvYcCX8kfNZ0/FAN4p1LuuYFTq2k0wkwcf59OhNDMuawmKpiujIeV40lu56A7NBpsCQpwCefV+b1+9n@vger.kernel.org, AJvYcCXSLm1SaqMtFgZ4APJA8L4PjHvm5SnsxzpEv8kG/AwfRQWmJyKP5+HM9OskrbIedVN8wNbLezt14mxl@vger.kernel.org, AJvYcCXSoVfNcZPw3xuW1QYEelAwb7QoZjc52ZSUUhlUK/5QrRlbdMbRrSSe78nAK3N3Am1bNEgu4ll47Q1z3Ey+@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu3K1799Z1VB7QgZc/HQUWGyrluTCd//YtbaLNE0XaBItq5qA2
+	GSHqanxjJEGF320OyUS21e3e+wtK7sx5WOIEswL4jvUuSaIh/FxWSHiM0g==
+X-Gm-Gg: ASbGncvPIxxbBScLMTQxcg7H3qI5TJApV4w12Rr22a58tyw1WNksc7xfjVNYp7+xLAL
+	cGqJBD027mZxDBNm5Zkef2mJX/GZx/dKk8g1zbfoe6fbs7u4I8Eh6GxXPzebQhJwqzHmo4WJ4VS
+	6/jnURsv+Kb+TlEueSgn8/50MAIwzmHcH8WYWo5YOSCq38f6Yf7Rqv8uNuFYCyUg8V6/J8Shhr3
+	QXFHxGLH1/j7GeqhXDXV9K//Av19hOeuq0H7Q2kDcFtNDb+oVcgDImaowSrx1TH729c+B/qxt84
+	Xwxv+4orRuof++3MTtxt0l+/ojvdw5q4bs/mQEtvpKbuygATPxOVE5twXKeNcCknSjudrKEGO7N
+	AOLTOL6KkN86Qy043GzcI66SB2A==
+X-Google-Smtp-Source: AGHT+IE+OmPAgLJI5hoG5MVo05FbMb3W5ebh03ZGiu8M6k6II9S3GFcUBywTrp6tUWknS9ZS93l0Uw==
+X-Received: by 2002:a05:651c:221e:b0:30b:f469:47ef with SMTP id 38308e7fff4ca-30bf4694fa1mr94365151fa.23.1741848142350;
+        Wed, 12 Mar 2025 23:42:22 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c3f100c39sm1094501fa.48.2025.03.12.23.42.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Mar 2025 23:42:21 -0700 (PDT)
+Message-ID: <2cb99c3d-6ea5-4c47-9e6c-d1a3966ad7ff@gmail.com>
+Date: Thu, 13 Mar 2025 08:42:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwBHSYWxdtJnHJFGAA--.19030S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAIAWfR6CADUgAAsn
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
-	1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7Kry7JrWxWr18Kw1xuw13twb_yoW8Zw45pF
-	Z7AFyFyry7XFWI9F4Dtw17WFyrC3WjkFWxKF9ru3sxZanxGryDArs3KFyjvFyDJry8Cw4f
-	tFs5t3W5WFy8uF7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, netdev@vger.kernel.org
+References: <cover.1741610847.git.mazziesaccount@gmail.com>
+ <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
+ <Z872bHMRtSglB8pf@smile.fi.intel.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <Z872bHMRtSglB8pf@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The absence of SRAT would cause the fake_pxm to be -1 and increment
-to 0, then send to acpi_parse_cfmws(). If there exists CXL memory
-ranges that are defined in the CFMWS and not already defined in the
-SRAT, the new node (node0) for the CXL memory would be invalid, as
-node0 is already in "used".
+Hi Andy,
 
-This utilizes disable_srat() & srat_disabled() to fail CXL init.
+Thanks for the review.
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
+On 10/03/2025 16:25, Andy Shevchenko wrote:
+> On Mon, Mar 10, 2025 at 02:55:53PM +0200, Matti Vaittinen wrote:
 
-Changes in v2:
-- Add disable_srat() when fake_pxm is invalid
-- Add srat_disabled() check in cxl_acpi_probe() and acpi_parse_cfmws()
+...
 
+>> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
+>> +		fwnode_for_each_child_node(fwnode, child)		\
+> 
+> One TAB too much.
+> 
+>> +			if (!fwnode_name_eq(child, name)) { } else
+> 
+> Ditto.
+> 
+> Note, I believe this won't get v6.15-rc1, so there will be for_each_if()
+> available and these will become
 
- drivers/acpi/numa/srat.c | 10 ++++++++++
- drivers/cxl/acpi.c       |  4 ++++
- 2 files changed, 14 insertions(+)
+I'll use for_each_if() if I'll have to rebase this to the v6.15-rc1.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 00ac0d7bb8c9..2dac25c9258a 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -441,6 +441,11 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 	start = cfmws->base_hpa;
- 	end = cfmws->base_hpa + cfmws->window_size;
- 
-+	if (srat_disabled()) {
-+		pr_err("SRAT is missing or bad while processing CFMWS.\n");
-+		return -EINVAL;
-+	}
-+
- 	/*
- 	 * The SRAT may have already described NUMA details for all,
- 	 * or a portion of, this CFMWS HPA range. Extend the memblks
-@@ -646,6 +651,11 @@ int __init acpi_numa_init(void)
- 		if (node_to_pxm_map[i] > fake_pxm)
- 			fake_pxm = node_to_pxm_map[i];
- 	}
-+
-+	/* Make sure CFMWs fake nodes start at node[1] */
-+	if (fake_pxm < 0)
-+		disable_srat();
-+
- 	last_real_pxm = fake_pxm;
- 	fake_pxm++;
- 	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index cb14829bb9be..e75a8ead99f6 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -829,6 +829,10 @@ static int cxl_acpi_probe(struct platform_device *pdev)
- 	if (rc)
- 		return rc;
- 
-+	/* CXL must be in a NUMA system */
-+	if (srat_disabled())
-+		return -EINVAL;
-+
- 	cxl_res = devm_kzalloc(host, sizeof(*cxl_res), GFP_KERNEL);
- 	if (!cxl_res)
- 		return -ENOMEM;
--- 
-2.34.1
+> But see above the proposed additional patch that you may include in your next
+> version.
 
+Seems like you sent it as it's own series. I believe it's better that way.
+
+Yours,
+	-- Matti
 
