@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-12239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12240-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA6DA61196
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 13:40:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A00A6119E
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 13:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6FC3882ABF
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 12:38:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B6B83B8672
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 12:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46B61FF1DB;
-	Fri, 14 Mar 2025 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15D21FECC1;
+	Fri, 14 Mar 2025 12:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UXdFeT/U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOSSlmn7"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5ADB1FF1D7;
-	Fri, 14 Mar 2025 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FEC1CBE8C;
+	Fri, 14 Mar 2025 12:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741955924; cv=none; b=mdc77gIpigRACTNtvPhvfx1ea5hM3x83d7EEmRUrLzf89nQMw9Bc2Q29K+I/E/9AKEi7EjQcxW3dgPUoED77UzsXQu068g4L2EmnFaG1Z0yuxNTgPUIJz774mpE0cXyzR4FodN0kvgRsL7kU9D8GewSbKY5JWU6xwrXzhfxRlGk=
+	t=1741955982; cv=none; b=kIm6wroZuERzjLjJqEUeFwbIAnCw3a28mzEA56uhV7I8qkfXl6KI5uF3t4NxrTxJHhTNa9MeDrTvcVzjZRU+G+0y3bLihFdBhx9QL3l3/FRq6LtHSPoe2NEBbPISuJJyvTzjAKCdfTiuEyw8TVZv9ghCpwUh42BdOvr0w9zKNOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741955924; c=relaxed/simple;
-	bh=DJufqgG1qpP+BO+nmANaDfx563WohqASVbzA0uYrDAo=;
+	s=arc-20240116; t=1741955982; c=relaxed/simple;
+	bh=BBoR7Cvr0quUh1pJlkxJOFVg6IyHFlY/4eyXtRxd0Mw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BcAaEnDkDsJYpF9BZQi97cMAu7NuJ6/YQ0FNv4Xkd4SbOiJ1fY4ztkhbg2J4vt5A5nULl5COyBEI4u3wxDs+P6dmVqAKCsYEdvQO1feDLLqAyXeXrNrU9RACbHcAwnAE/x6Xe0klEZnk8SUbgsiOFaV3vYNRTdx85hI+FQSc3wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UXdFeT/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBD2C4CEF0;
-	Fri, 14 Mar 2025 12:38:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DYuxRqa0oIpKXTrdFc0MYYIQBEktGGRJyiQVHiWYJAfeoMISGD4aWMKENNEzBcajg55D9FtMMAlcNqa+WcivlS+LXf0vhEzOuZsxvSoJBFbUb+wC0PxD1kQ94IrYBn088QZ722yAz9HFA8g534WTWjexAjZPC3S7A7mEPcYdrE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOSSlmn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA1AC4CEE3;
+	Fri, 14 Mar 2025 12:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741955924;
-	bh=DJufqgG1qpP+BO+nmANaDfx563WohqASVbzA0uYrDAo=;
+	s=k20201202; t=1741955982;
+	bh=BBoR7Cvr0quUh1pJlkxJOFVg6IyHFlY/4eyXtRxd0Mw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UXdFeT/UMJut3kEQPKrGWf9dZUlrk5GrB61hyJQUZHH6CGRIA1qYeOLkF62QOiI8s
-	 2DEHcqHSBlHiUp6QJGjVmw3zOkvHdY8GTAOjEnDq5LWazyRFpD9aSq2i7Xok4thlhx
-	 dTk90YNyANpW3EtO6uq06caZux8hGc3Zxgb/LQ/h0FfwsSJbn7O9tn9WhjWvjx62dI
-	 pc2QvUKo5J00p3SfoKAhcosrE/qyJWU8OKqJGqmdWs0AzPD9UgAHSQIme+ymiQm5UM
-	 GoOtEAwxZaNvwbCLzOesc+TdlygDMed5wKMibTOfh+61K/yHe85pivYPJdNF01xMdJ
-	 AJSjkQ4CgeWiQ==
-Date: Fri, 14 Mar 2025 12:38:38 +0000
+	b=kOSSlmn7OWF/K0NuxmYNLNLXcwhFapishtiK6ZSTfHgvm5//v7pH1ce7y8zVY0UuF
+	 tR1NZRjrIAQhmFX88h2IY5L5PKzUx6IajrJ0/299XFDbjuTHSdmhO7DqtOBfudw06M
+	 x3kh/iSP2H0+zI5912kOUMbF+RObwOqCuX1NHdDHIsDoorPq/uR3c2SLsdBbPS60cX
+	 NS9+iw2DURwPbiZna+8fE+IgdwSt+4DeCCwJKJzSB0Ey5+WbKRNNcoGpsUOfTYBmxp
+	 G+br+L4DiCfwoe7lUh2vuQVK9WyENCYU2ki6Dv8Ddg9xUqb695kgwixlm7c7d/5jlB
+	 o4Ow/EtjeElVA==
+Date: Fri, 14 Mar 2025 12:39:36 +0000
 From: Lee Jones <lee@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -60,7 +60,7 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonathan Cameron <jic23@kernel.org>
 Subject: Re: [PATCH v1 0/4] leds: Introduce and use
  fwnode_get_child_node_count()
-Message-ID: <20250314123838.GN3890718@google.com>
+Message-ID: <20250314123936.GO3890718@google.com>
 References: <20250310150835.3139322-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -82,23 +82,10 @@ On Mon, 10 Mar 2025, Andy Shevchenko wrote:
 > be routed via that tree and immutable branch/tag shared with others, e.g.,
 > IIO which Matti's series is targeting and might be dependent on. The USB
 > patch can be applied later separately, up to the respective maintainers.
-> 
-> Link: https://lore.kernel.org/r/cover.1741610847.git.mazziesaccount@gmail.com> [1]
-> 
-> Andy Shevchenko (4):
->   device property: Split fwnode_get_child_node_count()
->   leds: pwm-multicolor: Use fwnode_get_child_node_count()
->   leds: ncp5623: Use fwnode_get_child_node_count()
->   usb: typec: tcpm: Use fwnode_get_child_node_count()
-> 
->  drivers/base/property.c                | 12 ++++++------
->  drivers/leds/rgb/leds-ncp5623.c        |  5 ++---
->  drivers/leds/rgb/leds-pwm-multicolor.c |  7 +++----
->  drivers/usb/typec/tcpm/tcpm.c          |  6 ++----
->  include/linux/property.h               |  7 ++++++-
->  5 files changed, 19 insertions(+), 18 deletions(-)
 
-What's the proposed merge strategy here Andy?
+Ah, just seen this.
+
+I'm okay with that, but need Acks for the other patches.
 
 -- 
 Lee Jones [李琼斯]
