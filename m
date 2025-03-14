@@ -1,178 +1,123 @@
-Return-Path: <linux-acpi+bounces-12237-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12238-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C48AA60F00
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 11:34:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA295A60F32
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 11:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2392A7ACB59
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 10:33:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9481189FC0F
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 10:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2638A1F543F;
-	Fri, 14 Mar 2025 10:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD8A1FA166;
+	Fri, 14 Mar 2025 10:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3+19/Bi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Su4qZL8q"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0781F4CAD;
-	Fri, 14 Mar 2025 10:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047F61F8EF7
+	for <linux-acpi@vger.kernel.org>; Fri, 14 Mar 2025 10:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741948339; cv=none; b=WqtQ7Mz8HW1HYzb6f1axtuyS9loi7nOkONksiLYjFX287sF11HQRPtMD1RchqdkOGwBeCd33HXVi8X/Sgf2ZatDu8knQaaWzfcE8t/EG8YX3wN6qRf/31Ofgd8WZUdaozSBMSry9VZA48X8HY1c/nghS9/z3SMK5Wt8xj/ey0HA=
+	t=1741948836; cv=none; b=rMYiRGRBJ/RQXfUtPWhLVvOGVKdIJJsZWwcWlR8pGJWxb4KOZn+lxA/44IS5nR8TzecEerCyVZbokxcoN0Bbbw3+klyFOUVFs3e8UFDUu3kx5gnNiobhJaeUJ+IL+Fs5UtXN41HB73hRNvs5R69M6IZskz5O87FfARbLj3cP6EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741948339; c=relaxed/simple;
-	bh=bIVEOosLbXV7zBjslXZjI9/mMTUHcG4P15ca5rWDDm0=;
+	s=arc-20240116; t=1741948836; c=relaxed/simple;
+	bh=xch7e8LPim/yqidNWA6H8YE/y5EjKG5Qvztbk60pA2Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EuAPJGY/3JQczJhCo1YhSN8ZirczNnAklNh0FfM2D1LpBfxwvxPjq/SXle8ryotrQ1sAWxiAVEX9VbGrkxTdKWlHAI092aPBDFP7gUS161d/0qCJjz5ZrNhwxK0tWvoRaPaai27+VoD3CNtu89ktxBMhbEcU+WjfMW2pfcfEkUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3+19/Bi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735C0C4CEF4;
-	Fri, 14 Mar 2025 10:32:18 +0000 (UTC)
+	 To:Cc:Content-Type; b=LuQ5X8c7thpwOQ06nYj58HASa5QUT6gJL/LcLagyi5TUm3ABccGmlG1s81Js0KONVzLR1ci/QvsH6Q3Sg3s8uuO7/oUnVHv/39amdPbBH4Hn2Xmv8Oy69i+5LA/+2vQe2F6kR0f9E206nYSf7b6FtVfQ7ucZ0uHYTkgLnRQWF5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Su4qZL8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC5CC4CEE3
+	for <linux-acpi@vger.kernel.org>; Fri, 14 Mar 2025 10:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741948338;
-	bh=bIVEOosLbXV7zBjslXZjI9/mMTUHcG4P15ca5rWDDm0=;
+	s=k20201202; t=1741948835;
+	bh=xch7e8LPim/yqidNWA6H8YE/y5EjKG5Qvztbk60pA2Y=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=j3+19/BiN6v+pKli7W3LfZ4dOW/TqRiIxjSoUqF9o+jkG4SSng7zRIqEKXKKBsH4C
-	 xkZ11M7AcGfz/2r4brm4/Xx4UhzihYkcsZDkpM8yn02ikkw3QTpvp5VKBsj26525oi
-	 5K0yrlqBThCiaSvkU1bzENme1lXVpV644FHoeWZ/u0yhkz8Mqm7ShqeWu4VjQ3VZrs
-	 M6jxYoyZTzIQY3Yy9ACoJLNz/1MPJo91jmWcq5GH1xosg1hhFuBUG+TFhibP2gQMCQ
-	 W8wpYHTeCVg1ZMErre5+7Ri//vKGuvhIjYvFEt2kjnee7bwYxbOsWAa1scEc2gWCLp
-	 fejBWC9+Re/zg==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2c1c4e364c8so864348fac.1;
-        Fri, 14 Mar 2025 03:32:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVZjn0UIaNMmKJudSk9qSWkK9TtYp8OChmevBXg76ysmXXaCZoVCLCvs1ctju9rktUSyVt4aFx5FHXc@vger.kernel.org, AJvYcCW0fdv/uP3FOs16J2Q+d7UdVeVfU74fnmTr7ga92nagBkyCAfP0bj1PqRxbjwLPEqbzGw8LjBSQDfn02k/r@vger.kernel.org, AJvYcCW3KoxyXYr0O/DLLfuwOtVjdAybD53xpYZ350fhtYDmpJcNnLHggIfDGbANv0jPjYc/nWSBYmWVG5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCyeC7OM2QYfn1QHBkyLCJ5jrgsSRoFy72vCNGehDhZFJ7vb8p
-	9mY2bi1S5+WJ/fe8DQ/b+hodbG6tOFXHYkhAWFE7puj6PS4OUzIsGqiW46iR3T0zqvCvePXzJJ8
-	549LATPFzF/bGaoSoT+GgenyYQOY=
-X-Google-Smtp-Source: AGHT+IHMIhcxmJiI89lHkmcp10N9Gc8dwaHNOvydy7F0N4rYcB6pfEg4Jewk4sgyfM2HYz8d8QVhijGhPoQRMSCLG6M=
-X-Received: by 2002:a05:6871:8907:b0:2c3:13f7:2b3d with SMTP id
- 586e51a60fabf-2c66faa0ad9mr3253949fac.13.1741948337647; Fri, 14 Mar 2025
- 03:32:17 -0700 (PDT)
+	b=Su4qZL8qhKJFLWJxtffTh8W0fNoa7J5IKjXDxF3TbPBEWq11tsyYb15zzxSwt5vpr
+	 v8SJjzPFG//u0C9uRqw9FES7P6Sc/qHIKKSpJubRZDrE3CinObp+dvX71+Q1ZfGfLn
+	 Z57kpidFgkDzty/MVkVfmFYi74Ikvp9TtXYwupXE8bD6Ck3FVlKGRCliZ4HbsvjukK
+	 djFoQptedLnrhMmQCXvAbKxjIShxLENkDaQK31kydunFhtQRXWBrEE4VEMcL0eSk/6
+	 A+uQXr8HWTsK9CyeEfTlxNk+7x2IzmbQj1I6JB5053c1tV6R8+ppmm1SFqKVMkEi6U
+	 f1P6kxOdC+QEw==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2a88c7fabdeso1465519fac.1
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Mar 2025 03:40:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWqf7u6JyMOFtL8gAFwVPrcgnANDaTprOPlIjte9b1uKXwHsiDD10guGka0KWUccnC78ANnPS9GKYBA@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7auJKF8HyaJWTtsONtyIwPR4E7qN4Yoo3bQ/LXFwmjXo2oMVM
+	HrHIeoQyJDc5/wRgbbkaNzPQKeh4v1y/wxLxwkSYMzF3P3n+o6x75oWVAXBRawvAi4/UNYaNsLz
+	B3Fujdxdpgpe/xzncGTmFQZjA8DI=
+X-Google-Smtp-Source: AGHT+IG4NEpHNQGZ9oR/1ppGV/ZINmbIETR7/eDgOXyKEZUsgEYHkFx4aZBoEFh24UeygrpOVDluDVwzRlXn0ZUs7A4=
+X-Received: by 2002:a05:6870:f725:b0:297:24ad:402f with SMTP id
+ 586e51a60fabf-2c690f4f362mr924182fac.12.1741948834668; Fri, 14 Mar 2025
+ 03:40:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206131428.3261578-1-zhenglifeng1@huawei.com>
- <20250206131428.3261578-4-zhenglifeng1@huawei.com> <CAJZ5v0iNzNROkPD4+b=Au8DwdF9unajKivdRQMBFfwzjFxHLcg@mail.gmail.com>
- <4fc77a58-8c77-463c-a50d-06ad19685bfb@huawei.com>
-In-Reply-To: <4fc77a58-8c77-463c-a50d-06ad19685bfb@huawei.com>
+References: <90e6da7b-a2b2-4ff3-bb04-f39b1f6c5e70@app.fastmail.com>
+ <CAJZ5v0jH99jkZrsE-Ne---FwPcaOSThL+TEL0BP_w+QXaKng0g@mail.gmail.com> <9fb371c9-420d-4d45-9b6d-d213f87064d6@app.fastmail.com>
+In-Reply-To: <9fb371c9-420d-4d45-9b6d-d213f87064d6@app.fastmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 14 Mar 2025 11:32:05 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gmGx-9QsTTdbKi6EMQm2tePfhBdYMry_88gbybLUY6WA@mail.gmail.com>
-X-Gm-Features: AQ5f1JoupU6GpOA9Iyps8s1JuMZY-IPPw-xEHtHAfwnoaE6pdAQsbzMgFba8YeA
-Message-ID: <CAJZ5v0gmGx-9QsTTdbKi6EMQm2tePfhBdYMry_88gbybLUY6WA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/8] ACPI: CPPC: Rename cppc_get_perf() to cppc_get_reg_val()
-To: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, robert.moore@intel.com, 
-	viresh.kumar@linaro.org, mario.limonciello@amd.com, gautham.shenoy@amd.com, 
-	ray.huang@amd.com, pierre.gondois@arm.com, acpica-devel@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linuxarm@huawei.com, yumpusamongus@gmail.com, 
-	srinivas.pandruvada@linux.intel.com, jonathan.cameron@huawei.com, 
-	zhanjie9@hisilicon.com, lihuisong@huawei.com, hepeng68@huawei.com, 
-	fanghao11@huawei.com
+Date: Fri, 14 Mar 2025 11:40:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hZ6MoOqE-8LsZvABsA3d+DoL5Akis+w+GMNo3VOw+xmw@mail.gmail.com>
+X-Gm-Features: AQ5f1JoAsWHgHx9AbowkSm8nahsaFVGfucK5TxTsY_YItWd600FqWv8ji_Gqh0A
+Message-ID: <CAJZ5v0hZ6MoOqE-8LsZvABsA3d+DoL5Akis+w+GMNo3VOw+xmw@mail.gmail.com>
+Subject: Re: 6.14.0-rc debug kernel is slow, kacpi_notify high cpu usage
+To: Chris Murphy <chris@colorremedies.com>
+Cc: Rafael Wysocki <rafael@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 14, 2025 at 10:25=E2=80=AFAM zhenglifeng (A)
-<zhenglifeng1@huawei.com> wrote:
+On Fri, Mar 14, 2025 at 4:50=E2=80=AFAM Chris Murphy <chris@colorremedies.c=
+om> wrote:
 >
-> On 2025/3/13 3:54, Rafael J. Wysocki wrote:
 >
-> > On Thu, Feb 6, 2025 at 2:14=E2=80=AFPM Lifeng Zheng <zhenglifeng1@huawe=
-i.com> wrote:
+>
+> On Thu, Mar 13, 2025, at 9:35 AM, Rafael J. Wysocki wrote:
+> > On Thu, Mar 13, 2025 at 5:12=E2=80=AFAM Chris Murphy <chris@colorremedi=
+es.com> wrote:
 > >>
-> >> Rename cppc_get_perf() to cppc_get_reg_val() as a generic function to =
-read
-> >> cppc registers. And extract the operations if register is in pcc out a=
-s
-> >> cppc_get_reg_val_in_pcc(). Without functional change.
+> >> Four kacpi_notify kernel threads are continuously using CPU, makes the=
+ laptop warm,
+> >> fans run continuosly. This is a Fedora debug kernel, it's not intended=
+ for production.
+> >> But I'm wondering if this performance hit is expected and if it's wort=
+h it (for kernel developers).
 > >
-> > This should be split into two patches IMV.
+> > No and no.
 >
-> Yes. That makes sense. Thanks.
+> Is it a firmware or kernel bug? Any other info I should provide?
+
+It may not be a bug.
+
+Additional computational overhead related to debug options may
+increase power and temperature which would increase the rate at which
+events are generated which would increase the overhead and so on.
+
+> I updated the firmware to the latest firmware, but the behavior is unchan=
+ged. I'm not sure what
+> kernel config might be responsible for this, so I'm not sure what to sugg=
+est to the kernel team
+> to make the performance hit go away.
+
+It's hard to say, something that would add overhead to the processing
+of firmware events.
+
+> > kacpi_notify is only used for Notify() processing which only happens
+> > when there are events signaled by the platform firmware.  Like battery
+> > or thermal events, for example.
 >
-> >
-> >> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-> >> ---
-> >>  drivers/acpi/cppc_acpi.c | 66 +++++++++++++++++++++------------------=
--
-> >>  1 file changed, 35 insertions(+), 31 deletions(-)
-> >>
-> >> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> >> index db22f8f107db..3c9c4ce2a0b0 100644
-> >> --- a/drivers/acpi/cppc_acpi.c
-> >> +++ b/drivers/acpi/cppc_acpi.c
-> >> @@ -1189,48 +1189,52 @@ static int cpc_write(int cpu, struct cpc_regis=
-ter_resource *reg_res, u64 val)
-> >>         return ret_val;
-> >>  }
-> >>
-> >> -static int cppc_get_perf(int cpunum, enum cppc_regs reg_idx, u64 *per=
-f)
-> >> +static int cppc_get_reg_val_in_pcc(int cpu, struct cpc_register_resou=
-rce *reg, u64 *val)
-> >>  {
-> >> -       struct cpc_desc *cpc_desc =3D per_cpu(cpc_desc_ptr, cpunum);
-> >> -       struct cpc_register_resource *reg;
-> >> +       int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
-> >> +       struct cppc_pcc_data *pcc_ss_data =3D NULL;
-> >> +       int ret;
-> >>
-> >> -       if (!cpc_desc) {
-> >> -               pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
-> >> +       if (pcc_ss_id < 0) {
-> >> +               pr_debug("Invalid pcc_ss_id\n");
-> >>                 return -ENODEV;
-> >>         }
-> >>
-> >> -       reg =3D &cpc_desc->cpc_regs[reg_idx];
-> >> +       pcc_ss_data =3D pcc_data[pcc_ss_id];
-> >>
-> >> -       if (IS_OPTIONAL_CPC_REG(reg_idx) && !CPC_SUPPORTED(reg)) {
-> >> -               pr_debug("CPC register (reg_idx=3D%d) is not supported=
-\n", reg_idx);
-> >> -               return -EOPNOTSUPP;
-> >> -       }
-> >
-> > I'm not a big fan of the IS_OPTIONAL_CPC_REG() macro.  I'm not
-> > convinced at all that it adds any value above (and in the next patch
-> > for that matter) and the message printing the register index is just
-> > plain unuseful to anyone who doesn't know how to decode it.
->
-> With this index, it is easier to locate problems. This is what a "pr_debu=
-g"
-> for, isn't it?
+> It seems to happen more often than not, happens with AC power connected o=
+r not.
 
-For those who know how to decode it, yes.  For others, not really.
+I would look at the counters in /sys/firmware/acpi/interrupts and
+compare the debug case with the non-debug one.  If the counters
+generally grow faster in the debug case, more events are signaled and
+that would be the reason for the increased load.
 
-> >
-> > If CPC_SUPPORTED(reg) is not true, the register cannot be used AFAICS
-> > regardless of what IS_OPTIONAL_CPC_REG() has to say about it.
->
-> The name "CPC_SUPPORTED" may be a little confused. Actually, in ACPI 6.5,
-> only optional _CPC package fields that are not supported by the platform
-> should be encoded as 0 intergers or NULL registers. A mandatory field as =
-a
-> 0 interger is valid. So If I wanted to make this function as a generic on=
-e
-> to read cppc registers, it would have been more reasonable to do this
-> IS_OPTIONAL_CPC_REG() check before CPC_SUPPORTED().
-
-I see, so you need to explain this in the changelog.
-
-And IMV the code logic should be:
-
-(1) If this is a NULL register, don't use it.
-(2) If it is integer 0, check if it is optional.
-    (a) If it is optional, don't use it.
-    (b) Otherwise, use 0 as the value.
-
-Of course, there is a problem for platforms that may want to pass 0 as
-an optional field value, but this is a spec issue.
+Then you can try to figure out which events are involved in this (but
+ACPI tables inspection would be necessary I think).
 
