@@ -1,158 +1,119 @@
-Return-Path: <linux-acpi+bounces-12232-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12233-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F357EA60D3B
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 10:27:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A6DA60D6A
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 10:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43A85460B11
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 09:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50248880AEC
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Mar 2025 09:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033361E633C;
-	Fri, 14 Mar 2025 09:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAF21EE7C0;
+	Fri, 14 Mar 2025 09:36:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99AE1C861D;
-	Fri, 14 Mar 2025 09:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBD51EB187;
+	Fri, 14 Mar 2025 09:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741944430; cv=none; b=dIhz7GSeoJ9fWJPYCXSzAS9eEB6xZuDBhClLag+YhqYQ0hDZBqwk0N9moUgD2PIZEzFNZj1gEq9c7LScZUQ598vM7DXPuhcXUJsIrU9a9uHSbtmHuwyGgTcXc1dZA4ZbHtpEw1n98Wig8CqzbRn4bKTH5g2EUmtlF+TIMCW+7QM=
+	t=1741944972; cv=none; b=SgEmki7rAOgcx+YRUN+cpnPixKI7/knwJVE4qD1d5WHPQGgIEjjcxKLETq7fGGZeCNlSWHlJNzdmzlUnKEPQt1I077nSQJ2VtnFGxZ7HCCWBTG2RqHCq8KSntnAL/i75QxpDLr3psex7nbCmwHnARUgJkHdZH41wHZq6skA8cHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741944430; c=relaxed/simple;
-	bh=PqUbDXVDaiUum+Dew0MC5ziN5yYPu9hhy423HzIFiWY=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CpH3ng9OjSGhIUyBVPk4RrPwi3/dFN01eRzl/X9FisMb/vlhrgz2yeiewhcoQuveBQkqN1qzZnf/MQ1oPdkmuojTWlPRR03KqiwvBRP7W5daBdCsfbW2cH0AlpjkiVIWMkfoTz5tZk4vEezlz1LQ5foFCh37hTHBsLvfnqoNZpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZDf7b3c1Yz6J7qr;
-	Fri, 14 Mar 2025 17:23:55 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7F87C1400CD;
-	Fri, 14 Mar 2025 17:27:06 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 14 Mar
- 2025 10:27:05 +0100
-Date: Fri, 14 Mar 2025 09:27:04 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Zaid Alali <zaidal@os.amperecomputing.com>
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
-	<dan.j.williams@intel.com>, <Benjamin.Cheatham@amd.com>,
-	<Avadhut.Naik@amd.com>, <viro@zeniv.linux.org.uk>, <arnd@arndb.de>,
-	<ira.weiny@intel.com>, <dave.jiang@intel.com>,
-	<sthanneeru.opensrc@micron.com>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-Subject: Re: [PATCH v4 6/9] ACPI: APEI: EINJ: Add einjv2 extension struct
-Message-ID: <20250314092704.00006ffe@huawei.com>
-In-Reply-To: <Z9M6ryapTGlBWA3Q@zaid-VirtualBox>
-References: <20250306234810.75511-1-zaidal@os.amperecomputing.com>
-	<20250306234810.75511-7-zaidal@os.amperecomputing.com>
-	<20250313094230.00004696@huawei.com>
-	<Z9M6ryapTGlBWA3Q@zaid-VirtualBox>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1741944972; c=relaxed/simple;
+	bh=vHSUy96CZBRi+d90hGbb74zU2U2xUzR8ZmsASxXtejU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B4hBpvziQ4vCO5Mf+b9AvHxyFUTfUK53fSRme+v7lOMnR/kl64ODYHQwuzknyYPZkcdCPasVbYpBHnpcBUTGGxgYmDJunm+bJwj02MbjUZtTWv0fJmFvJ268mm6aVHJiC3ulSBQyTRZ8U7Zu2d0izMD3yiUNjlLIlUFU1ILw5oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B6F7113E;
+	Fri, 14 Mar 2025 02:36:18 -0700 (PDT)
+Received: from [10.57.39.196] (unknown [10.57.39.196])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F8663F673;
+	Fri, 14 Mar 2025 02:36:06 -0700 (PDT)
+Message-ID: <f2e3c123-6d58-4560-be4f-b9171c0d9c73@arm.com>
+Date: Fri, 14 Mar 2025 09:36:03 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression on linux-next (next-20250312)
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+ "Kurmi, Suresh Kumar" <suresh.kumar.kurmi@intel.com>,
+ "Saarinen, Jani" <jani.saarinen@intel.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+References: <SJ1PR11MB61295DE21A1184AEE0786E25B9D22@SJ1PR11MB6129.namprd11.prod.outlook.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <SJ1PR11MB61295DE21A1184AEE0786E25B9D22@SJ1PR11MB6129.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 13 Mar 2025 13:06:07 -0700
-Zaid Alali <zaidal@os.amperecomputing.com> wrote:
-
-> On Thu, Mar 13, 2025 at 09:42:30AM +0000, Jonathan Cameron wrote:
-> > On Thu,  6 Mar 2025 15:48:07 -0800
-> > Zaid Alali <zaidal@os.amperecomputing.com> wrote:
-> >   
-> > > Add einjv2 extension struct and EINJv2 error types to prepare
-> > > the driver for EINJv2 support. ACPI specifications(1) enables
-> > > EINJv2 by extending set_error_type_with_address struct.
-> > > 
-> > > (1) https://bugzilla.tianocore.org/show_bug.cgi?id=4615  
-> > Still seems to be down.
-> > Also, we have tag for this.  
-> > > 
-> > > Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>  
-> > 
-> > Link: https://bugzilla.tianocore.org/show_bug.cgi?id=4615 # [1]
-> > 
-> > 
-> > One additional request inline.
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> > > ---
-> > >  drivers/acpi/apei/einj-core.c | 23 +++++++++++++++++++++++
-> > >  1 file changed, 23 insertions(+)
-> > > 
-> > > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-> > > index aee9a7b17313..32b8d102f399 100644
-> > > --- a/drivers/acpi/apei/einj-core.c
-> > > +++ b/drivers/acpi/apei/einj-core.c
-> > > @@ -50,6 +50,28 @@
-> > >   */
-> > >  static int acpi5;
-> > >  
-> > > +struct syndrome_array {
-> > > +	union {
-> > > +		u32	acpi_id;
-> > > +		u32	device_id;
-> > > +		u32	pcie_sbdf;
-> > > +		u8	vendor_id[16];
-> > > +	} comp_id;
-> > > +	union {
-> > > +		u32	proc_synd;
-> > > +		u32	mem_synd;
-> > > +		u32	pcie_synd;
-> > > +		u8	vendor_synd[16];
-> > > +	} comp_synd;
-> > > +};
-> > > +
-> > > +struct einjv2_extension_struct {
-> > > +	u32 length;
-> > > +	u16 revision;
-> > > +	u16 component_arr_count;
-> > > +	struct syndrome_array component_arr[];  
-> > 
-> > __counted_by(component_arr_count);
-> > should be fine and marking these is always good to do in
-> > new code (and old code if you have time!)  
+On 2025-03-14 9:17 am, Borah, Chaitanya Kumar wrote:
+> Hello Robin,
 > 
-> I am not sure if __counted_by is appropriate here. Please note that component_arr_count
-> is set by the user and does NOT represent the size of the component_arr[].
+> Hope you are doing well. I am Chaitanya from the linux graphics team in Intel.
+> 
+> This mail is regarding a regression we are seeing in our CI runs[1] on linux-next repository.
+> 
+> Since the version next-20250312 [2], we are seeing the following regression
+> 
+> `````````````````````````````````````````````````````````````````````````````````
+> <4>[    6.246790] reg-dummy reg-dummy: late IOMMU probe at driver bind, something fishy here!
+> <4>[    6.246812] WARNING: CPU: 0 PID: 1 at drivers/iommu/iommu.c:449 __iommu_probe_device+0x140/0x570
+> <4>[    6.246822] Modules linked in:
+> <4>[    6.246830] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc6-next-20250312-next-20250312-g9fbcd7b32bf7+ #1
+> <4>[    6.246838] Hardware name: Intel Corporation Arrow Lake Client Platform/MTL-S UDIMM 2DPC EVCRB, BIOS MTLSFWI1.R00.4400.D85.2410100007 10/10/2024
+> <4>[    6.246847] RIP: 0010:__iommu_probe_device+0x140/0x570
+> `````````````````````````````````````````````````````````````````````````````````
+> Details log can be found in [3].
+> 
+> After bisecting the tree, the following patch [4] seems to be the first "bad" commit
+> 
+> `````````````````````````````````````````````````````````````````````````````````````````````````````````
+> commit bcb81ac6ae3c2ef95b44e7b54c3c9522364a245c
+> Author: Robin Murphy mailto:robin.murphy@arm.com
+> Date:   Fri Feb 28 15:46:33 2025 +0000
+> 
+>      iommu: Get DT/ACPI parsing into the proper probe path
+> 
+> `````````````````````````````````````````````````````````````````````````````````````````````````````````
+> 
+> We also verified that if we revert the patch the issue is not seen.
+> 
+> Could you please check why the patch causes this regression and provide a fix if necessary?
 
-Does it represent the length that should ever be accessed (which is what
-the __counted_by() stuff will help us find bugs around).
+Yes, the warnings are false positives, and the fix is already in today's 
+-next, see 73d2f10957f5 ("iommu: Don't warn prematurely about dodgy 
+probes"). Sorry for the disruption.
 
-If not that wins an award for misleading naming :)
+Thanks,
+Robin.
 
-Jonathan
-
-
-> > 
-> >   
-> > > +};
-> > > +
-> > >  struct set_error_type_with_address {
-> > >  	u32	type;
-> > >  	u32	vendor_extension;
-> > > @@ -58,6 +80,7 @@ struct set_error_type_with_address {
-> > >  	u64	memory_address;
-> > >  	u64	memory_address_range;
-> > >  	u32	pcie_sbdf;
-> > > +	struct	einjv2_extension_struct einjv2_struct;
-> > >  };
-> > >  enum {
-> > >  	SETWA_FLAGS_APICID = 1,  
-> >   
+> 
+> Thank you.
+> 
+> Regards
+> 
+> Chaitanya
+> 
+> [1] https://intel-gfx-ci.01.org/tree/linux-next/combined-alt.html?
+> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20250312
+> [3] https://intel-gfx-ci.01.org/tree/linux-next/next-20250312/bat-arls-6/boot0.txt
+> [4] https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20250312&id=bcb81ac6ae3c2ef95b44e7b54c3c9522364a245c
+> 
 
 
