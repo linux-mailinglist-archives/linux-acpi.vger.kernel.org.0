@@ -1,142 +1,211 @@
-Return-Path: <linux-acpi+bounces-12277-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12278-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA953A63184
-	for <lists+linux-acpi@lfdr.de>; Sat, 15 Mar 2025 19:28:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C57A631E3
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Mar 2025 19:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF39D1895749
-	for <lists+linux-acpi@lfdr.de>; Sat, 15 Mar 2025 18:28:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAE6D7A9706
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Mar 2025 18:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02E220551A;
-	Sat, 15 Mar 2025 18:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B7F195FEC;
+	Sat, 15 Mar 2025 18:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="snXASOq1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SC2mtGbh"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4AE1FECAD;
-	Sat, 15 Mar 2025 18:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468F0189916;
+	Sat, 15 Mar 2025 18:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742063309; cv=none; b=LY7WwhbgVQtHx4DvtiOkOzSjkVwFEuOqxNRl9jtsQJJAKTdFmzDn5jOJnz6kNGiSTR4Cp8s6ZWRQwvV0wbqO2CoW/+ZN+t09pf2j+3wO+tsEuwgm6ZCjSpoqzA7cmHiz4AiTt9+I7kVVr+Bw5uX0ovhdh58RsZxk4yNVyy9ZpsY=
+	t=1742064546; cv=none; b=on/vNjQsMBtG3fbaWYmRFU1YNGW99tJruuOmfkMTwOs8nL/fBEOZao2TQIhMCR15PFUKvUgPxfZ7pMh3gxtv+dJd0HN+rhzDYrsgEm988tEoWQq+1AqSOqAh2hDRM82LrBdXa4fjO2mqqwEPsSkWd2kUZ5IvFpjdmM48nraBI6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742063309; c=relaxed/simple;
-	bh=sMKrjH62WoD/khslIsrraD1DRdosmW6hiDuN4h1CExc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CUf8smIi0xU5ENXm8xVRmddyY6gIYsa9PbLPlX1M8A7bHJes2t3xDmfIYxS+AEqXc5D7THT6PwkeeENeNXjvRnncYrIYwCSFxp81NYhN5C0tiAHTh2jxzj4wg3as4SMXd3Er4xqv54ZpUN216UrzMM6NXnBgZjAAWudhuiNrisI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=snXASOq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9C5C4CEE5;
-	Sat, 15 Mar 2025 18:28:12 +0000 (UTC)
+	s=arc-20240116; t=1742064546; c=relaxed/simple;
+	bh=OnKnsixMsIfR9PWM2GKcKb1NM2Qu2lps2DgKe5a/iVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=r1BfnLxOBNdRXT3chfqL7LhFiiZsERPdKkpa0tcmdgaXGr2DLnzB6EaLXd0FKAG7Tpk8IE7Nqzpw+dJxld53r6uO4G9kpEQNW63w+sDnetIp9pr3FtIEme38BaSFP/Ex3QQaPiNFGQExwPWC6EhZjqIiWm9EFFihhaxcp/t+i2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SC2mtGbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D6FC4CEE5;
+	Sat, 15 Mar 2025 18:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742063309;
-	bh=sMKrjH62WoD/khslIsrraD1DRdosmW6hiDuN4h1CExc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=snXASOq1cllJq1YTzDr4qDVX4xo/lxUHFZy5n9suL0QxsZkZAUZM1i5zZk7uoKn7T
-	 eignihiclaj4hs8EJ/v/qppGcHX1leERoUdOm5BnAe9COVUk4TU1nIOxfVikm3jJXU
-	 cI3Z65HXbPpPiiO0hOr6iK+tqdnelXHSD+UtsANAzhNECjS0JeNnMsw01WeDCX6G88
-	 swbZ/gbJerFL1k7OXCVQT4mB/8nD5xZ+19cgx4+r2Ml+M8WU5KmcOB49pBvjQheG5s
-	 vB9stQQLN3SggAUGmT3zLZ+Gu5LpJpFodH/523FaWEeSGqSa3yDhi4aOGRr5Eiv6As
-	 DDxjAIvVTxcbw==
-Date: Sat, 15 Mar 2025 18:28:06 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, linux-arm-kernel@lists.infradead.org,
- Samuel Holland <samuel@sholland.org>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, netdev@vger.kernel.org, Rob Herring
- <robh@kernel.org>, Herve Codina <herve.codina@bootlin.com>, Thomas
- Bonnefille <thomas.bonnefille@bootlin.com>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Nuno Sa <nuno.sa@analog.com>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, linux-media@vger.kernel.org, Claudiu
- Manoil <claudiu.manoil@nxp.com>, devicetree@vger.kernel.org, Marcelo
- Schmitt <marcelo.schmitt@analog.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-acpi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-sunxi@lists.linux.dev, Eric Dumazet <edumazet@google.com>, Conor
- Dooley <conor+dt@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Olivier
- Moysan <olivier.moysan@foss.st.com>, Trevor Gamblin
- <tgamblin@baylibre.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, Paul Elder <paul.elder@ideasonboard.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Matteo Martelli
- <matteomartelli3@gmail.com>, Guillaume Stols <gstols@baylibre.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, David Lechner <dlechner@baylibre.com>, Chen-Yu
- Tsai <wens@csie.org>, Daniel Scally <djrscally@gmail.com>
-Subject: Re: [PATCH v6 00/10] Support ROHM BD79124 ADC
-Message-ID: <20250315182806.653bd71c@jic23-huawei>
-In-Reply-To: <e685d31c-8cdc-4732-b3a8-8e70a6f82578@gmail.com>
-References: <cover.1741610847.git.mazziesaccount@gmail.com>
-	<20250310202738.13301548@jic23-huawei>
-	<e685d31c-8cdc-4732-b3a8-8e70a6f82578@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1742064544;
+	bh=OnKnsixMsIfR9PWM2GKcKb1NM2Qu2lps2DgKe5a/iVM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=SC2mtGbhf3T7iUSmBYdVeklwCEwI13OQ6a3CqVJG9hdTduV8tMC8viwCK5PQ5svgt
+	 yEFwpbQLSaMovvNo1DNNefn270I4Y9SmAYepdWmGF1MrsZeUpF0i3fAo4inK54pOG0
+	 L1gMGSoCR0of0daaOOodYfCP662k/xMF040MMUZ9NsYjiQXym4MYKxKO7qDvid3sTo
+	 WkOrWCyoYBuXRICkq5ZpEQyirDW90mN0J2qI74H3xxsjoI9IxeZATbGITayZiz9pZQ
+	 AIQvWwR+kA/Me6BczXJbR4gkhcjMt2l5z0GTgKpd4AhA2hUQVs02M2A1EHulV0TXJU
+	 dR2CF94O0F6cw==
+Date: Sat, 15 Mar 2025 13:49:03 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+	catalin.marinas@arm.com, conor+dt@kernel.org,
+	dan.carpenter@linaro.org, dave.hansen@linux.intel.com,
+	decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
+	joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com,
+	kys@microsoft.com, lenb@kernel.org, lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org, mark.rutland@arm.com,
+	maz@kernel.org, mingo@redhat.com, oliver.upton@linux.dev,
+	rafael@kernel.org, robh@kernel.org, ssengar@linux.microsoft.com,
+	sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de,
+	wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com,
+	devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	x86@kernel.org, apais@microsoft.com, benhill@microsoft.com,
+	bperkins@microsoft.com, sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v6 11/11] PCI: hv: Get vPCI MSI IRQ domain
+ from DeviceTree
+Message-ID: <20250315184903.GA848938@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250315001931.631210-12-romank@linux.microsoft.com>
 
-On Tue, 11 Mar 2025 07:49:35 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-
-> On 10/03/2025 22:27, Jonathan Cameron wrote:
-> > On Mon, 10 Mar 2025 14:53:50 +0200
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >   
-> >> Support ROHM BD79124 ADC.
-> >>
-> >> This series adds also couple of IIO ADC helper functions for parsing the
-> >> channel information from the device tree. There are also new helpers
-> >> included for iterating and counting firmware child nodes with a specific
-> >> name.
-> >>
-> >> Series does also convert couple of drivers to use these helpers. The
-> >> rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
-> >>
-> >> The gianfar driver under net and the thp7312 under media/i2c are added as
-> >> first users of the newly added "named child node" -helpers.
-> >>
-> >> There has been some discussion about how useful these ADC helpers are,
-> >> and whether they should support also differential and single ended channel
-> >> configurations. This version does not include support for those - with the
-> >> benefit of reduced complexity and easier to use API.
-> >>
-> >> NOTE: Patches 4,5,9 and 10 are untested as I lack of relevant HW.
-> >> They have been compile tested only.  
-> > This probably wants an update.  Also, 00/10? There are only 8 that I can see.  
+On Fri, Mar 14, 2025 at 05:19:31PM -0700, Roman Kisel wrote:
+> The hyperv-pci driver uses ACPI for MSI IRQ domain configuration on
+> arm64. It won't be able to do that in the VTL mode where only DeviceTree
+> can be used.
 > 
-> That's odd.
-> There should be 10 in total. And the 4, 5, 9 and 10 was updated.
+> Update the hyperv-pci driver to get vPCI MSI IRQ domain in the DeviceTree
+> case, too.
 > 
-> 9/10:
-> https://lore.kernel.org/all/1c4b9b4ceb1995bce76a0ddef0e04ad0d1d81190.1741610847.git.mazziesaccount@gmail.com/
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+Looks good to me; trivial whitespace comment below.
+
+> ---
+>  drivers/pci/controller/pci-hyperv.c | 73 ++++++++++++++++++++++++++---
+>  1 file changed, 67 insertions(+), 6 deletions(-)
 > 
-> 10/10:
-> https://lore.kernel.org/all/ab79cf4415d21ff2854fee4f4189fac555c30b7a.1741610847.git.mazziesaccount@gmail.com/
+> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+> index 6084b38bdda1..cbff19e8a07c 100644
+> --- a/drivers/pci/controller/pci-hyperv.c
+> +++ b/drivers/pci/controller/pci-hyperv.c
+> @@ -50,6 +50,7 @@
+>  #include <linux/irqdomain.h>
+>  #include <linux/acpi.h>
+>  #include <linux/sizes.h>
+> +#include <linux/of_irq.h>
+>  #include <asm/mshyperv.h>
+>  
+>  /*
+> @@ -817,9 +818,17 @@ static int hv_pci_vec_irq_gic_domain_alloc(struct irq_domain *domain,
+>  	int ret;
+>  
+>  	fwspec.fwnode = domain->parent->fwnode;
+> -	fwspec.param_count = 2;
+> -	fwspec.param[0] = hwirq;
+> -	fwspec.param[1] = IRQ_TYPE_EDGE_RISING;
+> +	if (is_of_node(fwspec.fwnode)) {
+> +		/* SPI lines for OF translations start at offset 32 */
+> +		fwspec.param_count = 3;
+> +		fwspec.param[0] = 0;
+> +		fwspec.param[1] = hwirq - 32;
+> +		fwspec.param[2] = IRQ_TYPE_EDGE_RISING;
+> +	} else {
+> +		fwspec.param_count = 2;
+> +		fwspec.param[0] = hwirq;
+> +		fwspec.param[1] = IRQ_TYPE_EDGE_RISING;
+> +	}
+>  
+>  	ret = irq_domain_alloc_irqs_parent(domain, virq, 1, &fwspec);
+>  	if (ret)
+> @@ -887,10 +896,47 @@ static const struct irq_domain_ops hv_pci_domain_ops = {
+>  	.activate = hv_pci_vec_irq_domain_activate,
+>  };
+>  
+> +#ifdef CONFIG_OF
+> +
+> +static struct irq_domain *hv_pci_of_irq_domain_parent(void)
+> +{
+> +	struct device_node *parent;
+> +	struct irq_domain *domain;
+> +
+> +	parent = of_irq_find_parent(hv_get_vmbus_root_device()->of_node);
+> +	if (!parent)
+> +		return NULL;
+> +	domain = irq_find_host(parent);
+> +	of_node_put(parent);
+> +
+> +	return domain;
+> +}
+> +
+> +#endif
+> +
+> +#ifdef CONFIG_ACPI
+> +
+> +static struct irq_domain *hv_pci_acpi_irq_domain_parent(void)
+> +{
+> +	struct irq_domain *domain;
+> +	acpi_gsi_domain_disp_fn gsi_domain_disp_fn;
+> +
+> +	if (acpi_irq_model != ACPI_IRQ_MODEL_GIC)
+> +		return NULL;
+> +	gsi_domain_disp_fn = acpi_get_gsi_dispatcher();
+> +	if (!gsi_domain_disp_fn)
+> +		return NULL;
+> +	return irq_find_matching_fwnode(gsi_domain_disp_fn(0),
+> +				     DOMAIN_BUS_ANY);
+> +}
+> +
+> +#endif
+> +
+>  static int hv_pci_irqchip_init(void)
+>  {
+>  	static struct hv_pci_chip_data *chip_data;
+>  	struct fwnode_handle *fn = NULL;
+> +	struct irq_domain *irq_domain_parent = NULL;
+>  	int ret = -ENOMEM;
+>  
+>  	chip_data = kzalloc(sizeof(*chip_data), GFP_KERNEL);
+> @@ -907,9 +953,24 @@ static int hv_pci_irqchip_init(void)
+>  	 * way to ensure that all the corresponding devices are also gone and
+>  	 * no interrupts will be generated.
+>  	 */
+> -	hv_msi_gic_irq_domain = acpi_irq_create_hierarchy(0, HV_PCI_MSI_SPI_NR,
+> -							  fn, &hv_pci_domain_ops,
+> -							  chip_data);
+> +#ifdef CONFIG_ACPI
+> +	if (!acpi_disabled)
+> +		irq_domain_parent = hv_pci_acpi_irq_domain_parent();
+> +#endif
+> +#if defined(CONFIG_OF)
+> +	if (!irq_domain_parent)
+> +		irq_domain_parent = hv_pci_of_irq_domain_parent();
+> +#endif
+> +	if (!irq_domain_parent) {
+> +		WARN_ONCE(1, "Invalid firmware configuration for VMBus interrupts\n");
+> +		ret = -EINVAL;
+> +		goto free_chip;
+> +	}
+> +
+> +	hv_msi_gic_irq_domain = irq_domain_create_hierarchy(
+> +		irq_domain_parent, 0, HV_PCI_MSI_SPI_NR,
+> +		fn, &hv_pci_domain_ops,
+> +		chip_data);
+
+This is a different style of indenting the parameters than other
+similar cases in this file, which line up parameters on subsequent
+lines under the open parenthesis.
+
+>  	if (!hv_msi_gic_irq_domain) {
+>  		pr_err("Failed to create Hyper-V arm64 vPCI MSI IRQ domain\n");
+> -- 
+> 2.43.0
 > 
-> Perhaps it's because of the "net-next" in subject?
-> 
-Nope. My filters broke the series up into different directories.
-
-Thanks,
-
-Jonathan
-
-> Yours,
-> 	-- Matti
-
 
