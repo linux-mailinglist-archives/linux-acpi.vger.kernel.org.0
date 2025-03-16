@@ -1,95 +1,101 @@
-Return-Path: <linux-acpi+bounces-12279-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12280-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CF9A634CD
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Mar 2025 10:38:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82027A636D0
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Mar 2025 18:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8AA93AF46A
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Mar 2025 09:38:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D031616CBF8
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Mar 2025 17:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329C819D07A;
-	Sun, 16 Mar 2025 09:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF7F1D8DE0;
+	Sun, 16 Mar 2025 17:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kbEwkAIE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5JfoeYj"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9652133987;
-	Sun, 16 Mar 2025 09:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6F11AA1D9;
+	Sun, 16 Mar 2025 17:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742117908; cv=none; b=n89zCYnHF77w9/XgOdZN1S5/2UoCT2ZNaMlc0f1aI4LEXfBYgWF7kEWVzCjXliIFCikHOg1/01Ro5UbU5Zz4jMjqv+N3VS4rqQvCrIwKYTyJbA8EGXc+YXKwncjm2Ld1rP8JNWlpSmgirDMo5WWmwRL7UBA25TukVmCd7MQZMyA=
+	t=1742146618; cv=none; b=oUf4uxszi6xTsMr93KgZTt+MmEnAgfWTrFNGMOTftoyn3OW/OT6qyPEMTGFpkEk6aBNUgPwSI7vATGvv2fTwCb7xovUF1qrlPhHkCwC41p4UQ3zOt0zD3+SP9HoDgxlDJj8qXvWhsGDvT2PdFPZ1sTfvsPY3jf5XIXSLJp0ifsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742117908; c=relaxed/simple;
-	bh=IfQEydlLkB/SwiGc+oQAak2koasoTaF6BMIlt7gzGgs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L7KJ63o3UApjPTPnrBRSzyhTPEEV0vZ3F8L8svxtvPI2K2q6UXh0CVlDVqrEksUwb4PiUJ1fSwfHA7YKTPOm2xLvcrLAffqZtK/YPPFPnVkFVy7iaXl16oRztKOhB/99QrKJ9DDMioUHdGfIPR/2ARHy26FXoe4NMJmWwb9HRhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kbEwkAIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F122C4CEDD;
-	Sun, 16 Mar 2025 09:38:18 +0000 (UTC)
+	s=arc-20240116; t=1742146618; c=relaxed/simple;
+	bh=SykknbCWIe+4iAlW2oyUTP1j/isvxfybnvUnqUuCmXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lREwdNauZxto3qzOfqPctA/g9IaUZntthP1PHirouTNeOAmP6gTORY+PZkAQOq/fqrrL5VZJ+BZ5pZMwjhMqYhRRwkSAVQZYUCOukjHxoRcZzPCJCSgRqbsU7FRH1c7Db9j74TO6LFfDOamZt10NsfV5SJP/eZGARb1daVduMOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5JfoeYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754B0C4CEDD;
+	Sun, 16 Mar 2025 17:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742117907;
-	bh=IfQEydlLkB/SwiGc+oQAak2koasoTaF6BMIlt7gzGgs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kbEwkAIESdXZMWtrTIoTAH6bpMFDi0sreEWPRFDN//Vt4pQTw7EVzyyTmktQmC7fz
-	 VHJNELiNsPGlujkXGKfiZfOojPiNz6Clu+Fih36MVubORIJP9FPGhC2VzgGxkeDrF3
-	 +h8dxf0jDeLK9mFWI51D5w8ssRihSjiUmsdPCcKO82u3g9Hadp/O4h2b+fdL4Sz1JP
-	 8ZQtR/aiD9EkxwoH4AgZGiCzIENJdvPzP5BJjqY/UeFbw1r0GFlY3BZC9QVU6NsYT3
-	 7WSNY3ELng4JXyZzlfmKK5mXwhgkW5PkVQJv+pyMCdz9d+vo2ODEFIx41lkkSotpjb
-	 iFjkj6I3SB/XA==
-Date: Sun, 16 Mar 2025 09:38:12 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lad
- Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai
- <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>, Guillaume Stols
- <gstols@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, Trevor
- Gamblin <tgamblin@baylibre.com>, Matteo Martelli
- <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>, AngeloGioacchino Del
- Regno <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v7 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250316093752.0eacaa16@jic23-huawei>
-In-Reply-To: <c8899e8c535a1d93cd7588b7c160eb0fae5d26d2.1741849323.git.mazziesaccount@gmail.com>
-References: <cover.1741849323.git.mazziesaccount@gmail.com>
-	<c8899e8c535a1d93cd7588b7c160eb0fae5d26d2.1741849323.git.mazziesaccount@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1742146617;
+	bh=SykknbCWIe+4iAlW2oyUTP1j/isvxfybnvUnqUuCmXQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u5JfoeYjXVe72cOJuVO+ZB67RBdb/EnWyoZtxffEL9ivnl+kBKYj2cgGoxJCG0TRb
+	 tZ4xQo1xjYoDIgSiNWmDhxXRAp4PelD2A8D2XXTKnpbRfh9BauM4FPwhYbvrmM9Rls
+	 2sbNaBgDqAf/U4QtCVq20wW9YbRcpT48TALGHWRW/c5muHrjvxmxYonLSX7f5Db5FT
+	 sN1Ggo+/TRsMPZiQH41KpcbQEkRYHDExUCImkK/ok19rHkZ+zi0kagauLhx4CAdTny
+	 Fmn+g8PWEAy1stUZSOeuHdqAwRc9IjUAWwpiO4WI0WWR86yJ50Z3UMjQe7R01UExSQ
+	 wG6u3d7Egwvlw==
+Date: Sun, 16 Mar 2025 18:36:53 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de, 
+	catalin.marinas@arm.com, conor+dt@kernel.org, dan.carpenter@linaro.org, 
+	dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com, 
+	joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com, 
+	lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org, 
+	mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com, oliver.upton@linux.dev, 
+	rafael@kernel.org, robh@kernel.org, ssengar@linux.microsoft.com, 
+	sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de, wei.liu@kernel.org, 
+	will@kernel.org, yuzenghui@huawei.com, devicetree@vger.kernel.org, 
+	kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, x86@kernel.org, apais@microsoft.com, benhill@microsoft.com, 
+	bperkins@microsoft.com, sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v6 07/11] dt-bindings: microsoft,vmbus: Add
+ interrupt and DMA coherence properties
+Message-ID: <20250316-versed-trogon-of-serendipity-bf7ea7@krzk-bin>
+References: <20250315001931.631210-1-romank@linux.microsoft.com>
+ <20250315001931.631210-8-romank@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250315001931.631210-8-romank@linux.microsoft.com>
 
-On Thu, 13 Mar 2025 09:18:18 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Fri, Mar 14, 2025 at 05:19:27PM -0700, Roman Kisel wrote:
+>  
+> +  dma-coherent: true
+> +
+> +  interrupts:
 
-> There are ADC ICs which may have some of the AIN pins usable for other
-> functions. These ICs may have some of the AIN pins wired so that they
-> should not be used for ADC.
-> 
-> (Preferred?) way for marking pins which can be used as ADC inputs is to
-> add corresponding channels@N nodes in the device tree as described in
-> the ADC binding yaml.
-> 
-> Add couple of helper functions which can be used to retrieve the channel
-> information from the device node.
-I suspect we'll need the addition of an optional trailing timestamp
-channel at somepoint. But we can add that when we need it as only
-matters for drivers doing iio_push_to_buffers_with_timestamp()
+> +    maxItems: 1
+> +    description: |
+> +      This interrupt is used to report a message from the host.
 
-Otherwise no additional comments from me.
+These could be just two lines:
+
+items:
+  - description: Interrupt used to report a message from the host.
+
+(and note that just like we do not use "This" in commit msg, there is
+really no benefit of using it in hardware descruption for simple
+statements)
+
+Regardless:
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
 
