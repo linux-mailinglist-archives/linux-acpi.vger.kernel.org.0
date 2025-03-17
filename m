@@ -1,143 +1,131 @@
-Return-Path: <linux-acpi+bounces-12285-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12286-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6834A64529
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 09:22:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A2AA64916
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 11:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C05983B1F37
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 08:22:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4606116CAFA
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 10:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C370921CC7D;
-	Mon, 17 Mar 2025 08:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KbkBjope"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F752231C9F;
+	Mon, 17 Mar 2025 10:13:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDD821C9F1;
-	Mon, 17 Mar 2025 08:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24C322257F;
+	Mon, 17 Mar 2025 10:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742199738; cv=none; b=ifAdW0YXqlb+Tnrz+ajfpn70rAPhZyV4lKXZ4dRbQv+ZlGh/pgCLSc4r1wKKaTJyrRTKRV+YMOTEC01faBR2Fth7UGVvnfQS7ey8yOcihCdiKbLK3uOpq16JN5eSX6mkukunY3mAFm+5lsCYGl1DbboTzyd9hlvCdlfAo1cmQSA=
+	t=1742206434; cv=none; b=sVqPf1uq/1G2DjJ+WAiI5W+Hha/aHzDlzUIX6W7E9doOGNPYn2gE1gZR9+gxM3HbQ1yMdHJ1uBfMJibLs/lqe4fuflvfdenKIDmltnxpeLrNrQkOc2IUfd9juQoQ5ucra3iB+nDuXiH3DBvYWwM2wQRSWamOHd/OtqMi6GJSJR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742199738; c=relaxed/simple;
-	bh=5YRSK7/kMdbdHj+6rcKNANI5ccwGPToBCiTHQMNwgiY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IqBoKcTjGsHtS7RyA2kzTySyr6uStb3CQaYMP5DHtPcunaPoDC6tPWs0iTJAVwbKwDcgveevC5e9VsSJC2FJJaNloYKopsCXw14/xWAGeRpXRw+DZTySaiBH+18zRXtxL1mq3fwNewkTZzFWGDFseLgbSQGL2DchqnJU9IAguUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KbkBjope; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30bf1d48843so39420771fa.2;
-        Mon, 17 Mar 2025 01:22:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742199734; x=1742804534; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/8FRI6cy9CCt8b2M5LhQNzurCwCuZ436s4fIsfr2+0s=;
-        b=KbkBjoper1YlosN1XEUA/zyyPXp057aySLx3GWcsfk2MX43VmMw6vylweyV81stj8r
-         5dT/M+kDrpHatxtvoV3prjBfZ4L/rq9VD/bamkgrR0dOvW4071n9JbrFgXAmk95EklCv
-         ySQH7Xns0YvivxGAFaFOTAbMmng05I8Xuz0q8ZyaF9ghcHekSjaqRq9p7qu8vm4Ay9WB
-         qO157A3iV3ttZtttESLo4YgwYZABVneE3mqqXScRHzCW/gf23JMGzBjbrC/sSDo0h7V/
-         pdIaCughE2KNdzrTng4kDP2h4W+9Ji0BOnSmCmaZtDNdFsk8QI5Gy4G7sSST6teqJmmq
-         B2mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742199734; x=1742804534;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/8FRI6cy9CCt8b2M5LhQNzurCwCuZ436s4fIsfr2+0s=;
-        b=AjdPPdp5LndyIXjsOh3Mjh2PCNloM3GFD9MVLbEtD/8HVlUDzS5MP7KCpmPK7O1dy1
-         YwDRjMjN51GMSOmu6HUxyLYz1ZYbCjWBxkmEG+RtOKJ5qBxHTYh/7qwaML1kKxBKXVIh
-         CIjfte6AYw+GH4j2eaBgcBkoAftsno8rtrjt6iUH29XG6CLvq0/WNb/A3kKpHQR079g3
-         NumPwlvDz1ixvuFEkTnzvVNwgtHphHf3Biaj1t7tiTYK2ROfItMsBaK3W7X4S1EnS4Kg
-         mUtwPhiMYg+Xu9K4CBPotGbo1QA1mWh1L0+L+5GXzXODtvIZiuo/pFzDz5gzVhco5SPA
-         EPKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMRLt3QDFx4oo7Lv1eFsRmEvHgGKQvcUZLyxpAjvyyr9tAkSe/hm41hhEt8Tr+qnIZVZdDxrMtVm5gDA==@vger.kernel.org, AJvYcCUiBWECvoGQabUFV+ZbffOODESlRymoVMZyzjC657Nw/lIKNenujUIoGri1QRNQjtI15QReuF1/qI3i32nN@vger.kernel.org, AJvYcCV1SZ0Uznavogk+oGzAb8APKCSjY6bTbn4DgRpG5rEQQQ56WIzNpJPC5gLEkaEdAcqSjOgl/xrSUoAX@vger.kernel.org, AJvYcCVn/tVl2cfXS2Vk1zJayfOrbZ3Nnc6dRNZUPjeUiXxcQ+wfcolS942Gmg5MVTRSyFvQOE03snr/4weV3mCZ6cQoJc4=@vger.kernel.org, AJvYcCW2zTe9yDaDojhaB+xfSQNnLepsm2Io6CgG5KtHUJJWayW1KuhpnUrOEWnsOFQCodQe2o6CC0MrwWFv@vger.kernel.org
-X-Gm-Message-State: AOJu0YznyyIiJZLW5K261wA9sWwTVzdWdmLeijXY22DHIRyTRbWA5+8i
-	jpHw0TuYHwm1E+gaHeHPpQ5aEQ40WZNYVwWlqIwmsN8mcSE+v30g
-X-Gm-Gg: ASbGncsU2vsZqhCY2jXQ2oloHKzo49SN2kk+Pm4Q/yWekBaCIm9HtYdM6HMH/b3WHBE
-	XCibrxLSU3ZviZrvJrnpoGKTq+DT7hatZC5D9UvYtTkwcDAntyjw5MVq4bc9cUx3wLJi/ai1jCd
-	KG3c6252ku8Ki0PWv25wXIhCzn37ttaz0DvG8lQXUYEbseOcdthI31xV/RQxOy0fhgN3YD7cAMP
-	czeaaiEstfio+R/fxSILkZdfSBjOYCzCqFUFjX6LFL4jtaYQ6bFvxCU2OUFpn7tsJDpEFw068Fj
-	EMv0pcFjl5O3cmLKuSz9nh4jLEDSR+1+zwBxgHQsNY16SL6jS9o78tjIHuKC2Si1C/Ykuy6svu8
-	a/FCcMLv7izSDonbza2JcyGuMWg==
-X-Google-Smtp-Source: AGHT+IHBKGlUlP46i1muxXD2BoUJCo9oeQCMBPNLoYtEWkTjbhR1aqc3+f20CvsiTwirEb5eGG/pEA==
-X-Received: by 2002:a2e:be06:0:b0:30c:1fc4:418e with SMTP id 38308e7fff4ca-30c4a8d225bmr66527681fa.26.1742199733797;
-        Mon, 17 Mar 2025 01:22:13 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c3f1c2233sm15370161fa.69.2025.03.17.01.22.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Mar 2025 01:22:13 -0700 (PDT)
-Message-ID: <66a93de8-f5a2-4ffd-9c97-c646934cc90d@gmail.com>
-Date: Mon, 17 Mar 2025 10:22:11 +0200
+	s=arc-20240116; t=1742206434; c=relaxed/simple;
+	bh=/Q8Aa9fYv9wbyrx2wObs4CMSJP+hTNYqKzlwyrJhFsM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YN9l0KVFSyecyFL1B7mn2mSxeHeYsdL4XmU6fNVw+mPMuJ9yisgVUGw9yhOg2QXbOZryB/AFq8d1x0POIy9Bw6uk1TEW1L1I4GiHbKMTglIDfGL588XAaIDPqjYkUitMiqHnXCZBuDQafn3RA8RO+FH+naSqTiTUHp37qxmPyfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3E2813D5;
+	Mon, 17 Mar 2025 03:14:00 -0700 (PDT)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B7D03F673;
+	Mon, 17 Mar 2025 03:13:47 -0700 (PDT)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 0/9] drivers: Transition to the faux device interface
+Date: Mon, 17 Mar 2025 10:13:12 +0000
+Message-Id: <20250317-plat2faux_dev-v1-0-5fe67c085ad5@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 03/10] iio: adc: add helpers for parsing ADC nodes
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1741849323.git.mazziesaccount@gmail.com>
- <c8899e8c535a1d93cd7588b7c160eb0fae5d26d2.1741849323.git.mazziesaccount@gmail.com>
- <20250316093752.0eacaa16@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250316093752.0eacaa16@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALv112cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDY0NT3YKcxBKjtMTSiviU1DJdi2QjiyRj06RUS7NEJaCegqLUtMwKsHn
+ RsbW1AJ+HYAdfAAAA
+X-Change-ID: 20250315-plat2faux_dev-8c28b35be96a
+To: linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
+ Andre Przywara <andre.przywara@arm.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-crypto@vger.kernel.org, 
+ Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ linux-rtc@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
+ Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+ netdev@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
+ linux-acpi@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2229; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=/Q8Aa9fYv9wbyrx2wObs4CMSJP+hTNYqKzlwyrJhFsM=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBn1/XaXg/cczfp9LKToTU0Xvg1jjtICG+G14QuE
+ jF8HdVkidyJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ9f12gAKCRAAQbq8MX7i
+ mL+sEACUOKVk2OIBxRBYI5oleTH4ttn1o568PHz46upYDllAy68d3qhxx0E4xnIdB60mEjQBzDu
+ pZD62v90A+KDS4L4tmUprsU7NWILTGj7z8ga03muX133xHYBl3IBUvax/9o/+bum82neHCv1Pba
+ d8H+us51UfUHU9RNZlv0RBm5VVa/c8Uw1HgXOr5pKwbjSb8e3qQCqNIHDnZlch9Nieifbsr/76z
+ gG6mbYz1uW4/b7QLjmoUjKSeUxVj+2GPLep8+YRtNuA1S4RPJK5HAWWzuehomacfsXjmB58nG+q
+ RnT2Myy8yJNRXSJ2M4hQ4q0xSovkDs1Fs3BsAWVhnk34koAzgflqjj2nSvvviGN1NfHBDbkbsIn
+ ICmtLUmPDj6wh+Iuh95Z7TR2a2bxv4ZcvOdEjiSE3ePYG3mtX71NIGCtGLT/U+heYKLFl80Q288
+ NDDOuKCfChTKQnT1TO4A3iHJBUcm2GH5eQfKisbIr0fGMwWJmzfkkbw/JRUDDgsPLZf+gg4zpbg
+ YuDDMuht91nrSsN6M3frGjU78FZxQBTizKPNnlYBi9rEhb+sN0amzbmmQHOiOLtx/CWe71UQuQu
+ xZRpzua8GypLhrf83niYHYJRoY3H6cihvbNg4Yh/mS87pjun48IYIRWWPRW8PyPsuDd+Zfow2uU
+ 2BgXIq8hNqRm+cw==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 
-On 16/03/2025 11:38, Jonathan Cameron wrote:
-> On Thu, 13 Mar 2025 09:18:18 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> There are ADC ICs which may have some of the AIN pins usable for other
->> functions. These ICs may have some of the AIN pins wired so that they
->> should not be used for ADC.
->>
->> (Preferred?) way for marking pins which can be used as ADC inputs is to
->> add corresponding channels@N nodes in the device tree as described in
->> the ADC binding yaml.
->>
->> Add couple of helper functions which can be used to retrieve the channel
->> information from the device node.
-> I suspect we'll need the addition of an optional trailing timestamp
-> channel at somepoint. But we can add that when we need it as only
-> matters for drivers doing iio_push_to_buffers_with_timestamp()
+Recently when debugging why one of the scmi platform device was not
+showing up under /sys/devices/platform/firmware:scmi instead was
+appearing directly under /sys/devices/platform, I noticed the new
+faux interface /sys/devices/faux.
 
-This is true. That'll enable using this for devices with buffers - which 
-is not possible right now as most buffer users do timestamps. I'll leave 
-adding the parameter to first buffered user though, but I think it's 
-good to say out loud this is doable :) Thanks!
+Looking through the discussion and the background, I got excited and
+took the opportunity to clear all the platform devices under
+/sys/devices/platform on the Arm Juno/FVP platforms that are really
+faux devices. Only the platform devices created for the device nodes
+from the DT remain under /sys/devices/platform after these changes.
 
-> Otherwise no additional comments from me.
+All the patches are independent of each other.
 
-Yours,
-	-- Matti
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+Greg Kroah-Hartman (1):
+      regulator: dummy: convert to use the faux device interface
+
+Sudeep Holla (8):
+      cpuidle: psci: Transition to the faux device interface
+      hwrng: arm-smccc-trng - transition to the faux device interface
+      efi: Remove redundant creation of the "efivars" platform device
+      rtc: efi: Transition to the faux device interface
+      virt: efi_secret: Transition to the faux device interface
+      ASoC: soc-utils: Transition to the faux device interface
+      net: phy: fixed_phy: transition to the faux device interface
+      ACPI: APEI: EINJ: Transition to the faux device interface
+
+ drivers/acpi/apei/einj-core.c             | 32 +++++++++---------------
+ drivers/char/hw_random/arm_smccc_trng.c   | 40 +++++++++++++++++++++---------
+ drivers/cpuidle/cpuidle-psci.c            | 26 +++++++-------------
+ drivers/firmware/efi/efi.c                | 10 --------
+ drivers/firmware/smccc/smccc.c            | 21 ----------------
+ drivers/net/phy/fixed_phy.c               | 16 ++++++------
+ drivers/regulator/dummy.c                 | 37 +++++++---------------------
+ drivers/rtc/rtc-efi.c                     | 31 ++++++++++++++++-------
+ drivers/virt/coco/efi_secret/efi_secret.c | 41 ++++++++++++++++++-------------
+ sound/soc/soc-utils.c                     | 34 +++++++++----------------
+ 10 files changed, 124 insertions(+), 164 deletions(-)
+---
+base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
+change-id: 20250315-plat2faux_dev-8c28b35be96a
+-- 
+Regards,
+Sudeep
+
 
