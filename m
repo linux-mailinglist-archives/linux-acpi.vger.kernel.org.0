@@ -1,41 +1,42 @@
-Return-Path: <linux-acpi+bounces-12286-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12287-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A2AA64916
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 11:13:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0220A64934
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 11:16:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4606116CAFA
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 10:13:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1C2188ED72
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Mar 2025 10:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F752231C9F;
-	Mon, 17 Mar 2025 10:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE7523909E;
+	Mon, 17 Mar 2025 10:14:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24C322257F;
-	Mon, 17 Mar 2025 10:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C308023645D;
+	Mon, 17 Mar 2025 10:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742206434; cv=none; b=sVqPf1uq/1G2DjJ+WAiI5W+Hha/aHzDlzUIX6W7E9doOGNPYn2gE1gZR9+gxM3HbQ1yMdHJ1uBfMJibLs/lqe4fuflvfdenKIDmltnxpeLrNrQkOc2IUfd9juQoQ5ucra3iB+nDuXiH3DBvYWwM2wQRSWamOHd/OtqMi6GJSJR4=
+	t=1742206444; cv=none; b=VwtZsrif7XxfJB8npXMybk11/b5kiTC/4wFH+9vUTrZKYlkvXCW388LrDxqP37U3lRwxhWiID9BeJ8hkFhn6tAPArKpO4Uc5e4tbzjUCK5AhhkAx1RAMLGaA3Dbo72ffVzgILQGBDVCUrAEeeoOtNGoR6lNas/ArALrHgltCDlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742206434; c=relaxed/simple;
-	bh=/Q8Aa9fYv9wbyrx2wObs4CMSJP+hTNYqKzlwyrJhFsM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YN9l0KVFSyecyFL1B7mn2mSxeHeYsdL4XmU6fNVw+mPMuJ9yisgVUGw9yhOg2QXbOZryB/AFq8d1x0POIy9Bw6uk1TEW1L1I4GiHbKMTglIDfGL588XAaIDPqjYkUitMiqHnXCZBuDQafn3RA8RO+FH+naSqTiTUHp37qxmPyfk=
+	s=arc-20240116; t=1742206444; c=relaxed/simple;
+	bh=ywFI/S2i8yTE8gFcovtkn//B6t4qpEs2iVleL9VM4zs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jdUZGv6p0mL1Cp5Ri8ltFEMYb8N2pi9OqAQmMnTTpgyRxtGH89HQvXUXAM8tlVlHwJzuqZWiEipledErZ4v1af2lkJoEePijOt0LUDjaWh5DGotAtz+M3ieN8zxQlwatNvCQeEn7l9vKKBQBVedXbgTM7KTiGAsKyP8rIZPW19Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3E2813D5;
-	Mon, 17 Mar 2025 03:14:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 797142573;
+	Mon, 17 Mar 2025 03:14:11 -0700 (PDT)
 Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B7D03F673;
-	Mon, 17 Mar 2025 03:13:47 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 638563F7B4;
+	Mon, 17 Mar 2025 03:14:01 -0700 (PDT)
 From: Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 0/9] drivers: Transition to the faux device interface
-Date: Mon, 17 Mar 2025 10:13:12 +0000
-Message-Id: <20250317-plat2faux_dev-v1-0-5fe67c085ad5@arm.com>
+Date: Mon, 17 Mar 2025 10:13:20 +0000
+Subject: [PATCH 8/9] ACPI: APEI: EINJ: Transition to the faux device
+ interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -44,88 +45,136 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALv112cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDY0NT3YKcxBKjtMTSiviU1DJdi2QjiyRj06RUS7NEJaCegqLUtMwKsHn
- RsbW1AJ+HYAdfAAAA
-X-Change-ID: 20250315-plat2faux_dev-8c28b35be96a
+Message-Id: <20250317-plat2faux_dev-v1-8-5fe67c085ad5@arm.com>
+References: <20250317-plat2faux_dev-v1-0-5fe67c085ad5@arm.com>
+In-Reply-To: <20250317-plat2faux_dev-v1-0-5fe67c085ad5@arm.com>
 To: linux-kernel@vger.kernel.org
 Cc: Sudeep Holla <sudeep.holla@arm.com>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
- Andre Przywara <andre.przywara@arm.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-crypto@vger.kernel.org, 
- Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- linux-rtc@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
- Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
- Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
- netdev@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
- linux-acpi@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ "Rafael J. Wysocki" <rafael@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+ linux-acpi@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2229; i=sudeep.holla@arm.com;
- h=from:subject:message-id; bh=/Q8Aa9fYv9wbyrx2wObs4CMSJP+hTNYqKzlwyrJhFsM=;
- b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBn1/XaXg/cczfp9LKToTU0Xvg1jjtICG+G14QuE
- jF8HdVkidyJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ9f12gAKCRAAQbq8MX7i
- mL+sEACUOKVk2OIBxRBYI5oleTH4ttn1o568PHz46upYDllAy68d3qhxx0E4xnIdB60mEjQBzDu
- pZD62v90A+KDS4L4tmUprsU7NWILTGj7z8ga03muX133xHYBl3IBUvax/9o/+bum82neHCv1Pba
- d8H+us51UfUHU9RNZlv0RBm5VVa/c8Uw1HgXOr5pKwbjSb8e3qQCqNIHDnZlch9Nieifbsr/76z
- gG6mbYz1uW4/b7QLjmoUjKSeUxVj+2GPLep8+YRtNuA1S4RPJK5HAWWzuehomacfsXjmB58nG+q
- RnT2Myy8yJNRXSJ2M4hQ4q0xSovkDs1Fs3BsAWVhnk34koAzgflqjj2nSvvviGN1NfHBDbkbsIn
- ICmtLUmPDj6wh+Iuh95Z7TR2a2bxv4ZcvOdEjiSE3ePYG3mtX71NIGCtGLT/U+heYKLFl80Q288
- NDDOuKCfChTKQnT1TO4A3iHJBUcm2GH5eQfKisbIr0fGMwWJmzfkkbw/JRUDDgsPLZf+gg4zpbg
- YuDDMuht91nrSsN6M3frGjU78FZxQBTizKPNnlYBi9rEhb+sN0amzbmmQHOiOLtx/CWe71UQuQu
- xZRpzua8GypLhrf83niYHYJRoY3H6cihvbNg4Yh/mS87pjun48IYIRWWPRW8PyPsuDd+Zfow2uU
- 2BgXIq8hNqRm+cw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3336; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=ywFI/S2i8yTE8gFcovtkn//B6t4qpEs2iVleL9VM4zs=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBn1/XbxK02iKuh6vcw6iAjehSa3S6UMiG+96MsM
+ zJXFbdf1/qJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ9f12wAKCRAAQbq8MX7i
+ mB37D/4ovEInkPK8eY+oQASeTRDXRzeQzFPmc3cvH2vvGwTUh6fkSHbcNhowbmb+kePLcPvoLvO
+ za89HLvSPZ+m/BklTEmqUBaTPtPcW6uNYuOHzH8jr/7ewAFnszg9UNhZnnug1gZVByE1O7cWOXy
+ SumTbvEeSlKFRhT2RbcvSxpSmZLg1xwIvBT2i8YhCbd8xQhcR8d7/YVveToZxTT9PvkGWcSEx7x
+ jwaN1N2uAvnftBcSBBTYnoP11p9o7lQJCdIahs+LErslMC4c+pW0e8c/Aw434Em0c+Ii3nHYvn3
+ vGY0aEvpdyYur+RC113iuutTbE90ooZaVwFvp7Lu5JE0DFqRSynNbchnB46R1mz12n6jq2eecLE
+ WZbPu1u1anOGpYJC5lcwh7ZF7do061cx1FBrHHyBiT0Ee9iq5lxijmDRllLp1mKYQ1L/ttaAQCS
+ VG8Rjn7vd15DuaOQ3zWCTZX/ANnF19nb1bjMCdosB0osj/f6Un31v4Ou9V+mVN64DzywR+6bPu0
+ jNv9rAyjMDrNEQIMZIlffF8GPYN1EEXmYpcAIS6ids37wsYGpCeGOsu0/O/OZ478Dpaye10Wqqw
+ mSZGwkURhSCiUoJGU3RGRGBtq+PVQS2vW53wsbvQolxO4w2uZ9dnm6pCHI3lkr4FchNX6Azv5W7
+ tCzC6UZeeGPtTzw==
 X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
  fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 
-Recently when debugging why one of the scmi platform device was not
-showing up under /sys/devices/platform/firmware:scmi instead was
-appearing directly under /sys/devices/platform, I noticed the new
-faux interface /sys/devices/faux.
+The APEI error injection driver does not require the creation of a
+platform device. Originally, this approach was chosen for simplicity
+when the driver was first implemented.
 
-Looking through the discussion and the background, I got excited and
-took the opportunity to clear all the platform devices under
-/sys/devices/platform on the Arm Juno/FVP platforms that are really
-faux devices. Only the platform devices created for the device nodes
-from the DT remain under /sys/devices/platform after these changes.
+With the introduction of the lightweight faux device interface, we now
+have a more appropriate alternative. Migrate the driver to utilize the
+faux bus, given that the platform device it previously created was not
+a real one anyway. This will simplify the code, reducing its footprint
+while maintaining functionality.
 
-All the patches are independent of each other.
-
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: linux-acpi@vger.kernel.org
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
-Greg Kroah-Hartman (1):
-      regulator: dummy: convert to use the faux device interface
+ drivers/acpi/apei/einj-core.c | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
-Sudeep Holla (8):
-      cpuidle: psci: Transition to the faux device interface
-      hwrng: arm-smccc-trng - transition to the faux device interface
-      efi: Remove redundant creation of the "efivars" platform device
-      rtc: efi: Transition to the faux device interface
-      virt: efi_secret: Transition to the faux device interface
-      ASoC: soc-utils: Transition to the faux device interface
-      net: phy: fixed_phy: transition to the faux device interface
-      ACPI: APEI: EINJ: Transition to the faux device interface
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index 04731a5b01faaba534bad853d0acc4c8a873a53b..7ff334422899e757de918107202507dd171d61da 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -21,7 +21,7 @@
+ #include <linux/nmi.h>
+ #include <linux/delay.h>
+ #include <linux/mm.h>
+-#include <linux/platform_device.h>
++#include <linux/device/faux.h>
+ #include <linux/unaligned.h>
+ 
+ #include "apei-internal.h"
+@@ -749,7 +749,7 @@ static int einj_check_table(struct acpi_table_einj *einj_tab)
+ 	return 0;
+ }
+ 
+-static int __init einj_probe(struct platform_device *pdev)
++static int __init einj_probe(struct faux_device *fdev)
+ {
+ 	int rc;
+ 	acpi_status status;
+@@ -851,7 +851,7 @@ static int __init einj_probe(struct platform_device *pdev)
+ 	return rc;
+ }
+ 
+-static void __exit einj_remove(struct platform_device *pdev)
++static void __exit einj_remove(struct faux_device *fdev)
+ {
+ 	struct apei_exec_context ctx;
+ 
+@@ -872,34 +872,25 @@ static void __exit einj_remove(struct platform_device *pdev)
+ 	acpi_put_table((struct acpi_table_header *)einj_tab);
+ }
+ 
+-static struct platform_device *einj_dev;
++static struct faux_device *einj_dev;
+ /*
+  * einj_remove() lives in .exit.text. For drivers registered via
+  * platform_driver_probe() this is ok because they cannot get unbound at
+  * runtime. So mark the driver struct with __refdata to prevent modpost
+  * triggering a section mismatch warning.
+  */
+-static struct platform_driver einj_driver __refdata = {
++static struct faux_device_ops einj_device_ops __refdata = {
++	.probe = einj_probe,
+ 	.remove = __exit_p(einj_remove),
+-	.driver = {
+-		.name = "acpi-einj",
+-	},
+ };
+ 
+ static int __init einj_init(void)
+ {
+-	struct platform_device_info einj_dev_info = {
+-		.name = "acpi-einj",
+-		.id = -1,
+-	};
+-	int rc;
+-
+-	einj_dev = platform_device_register_full(&einj_dev_info);
+-	if (IS_ERR(einj_dev))
+-		return PTR_ERR(einj_dev);
++	einj_dev = faux_device_create("acpi-einj", NULL, &einj_device_ops);
++	if (!einj_dev)
++		return -ENODEV;
+ 
+-	rc = platform_driver_probe(&einj_driver, einj_probe);
+-	einj_initialized = rc == 0;
++	einj_initialized = true;
+ 
+ 	return 0;
+ }
+@@ -907,9 +898,8 @@ static int __init einj_init(void)
+ static void __exit einj_exit(void)
+ {
+ 	if (einj_initialized)
+-		platform_driver_unregister(&einj_driver);
++		faux_device_destroy(einj_dev);
+ 
+-	platform_device_unregister(einj_dev);
+ }
+ 
+ module_init(einj_init);
 
- drivers/acpi/apei/einj-core.c             | 32 +++++++++---------------
- drivers/char/hw_random/arm_smccc_trng.c   | 40 +++++++++++++++++++++---------
- drivers/cpuidle/cpuidle-psci.c            | 26 +++++++-------------
- drivers/firmware/efi/efi.c                | 10 --------
- drivers/firmware/smccc/smccc.c            | 21 ----------------
- drivers/net/phy/fixed_phy.c               | 16 ++++++------
- drivers/regulator/dummy.c                 | 37 +++++++---------------------
- drivers/rtc/rtc-efi.c                     | 31 ++++++++++++++++-------
- drivers/virt/coco/efi_secret/efi_secret.c | 41 ++++++++++++++++++-------------
- sound/soc/soc-utils.c                     | 34 +++++++++----------------
- 10 files changed, 124 insertions(+), 164 deletions(-)
----
-base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
-change-id: 20250315-plat2faux_dev-8c28b35be96a
 -- 
-Regards,
-Sudeep
+2.34.1
 
 
