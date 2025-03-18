@@ -1,158 +1,133 @@
-Return-Path: <linux-acpi+bounces-12329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B55A67AC8
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 18:25:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C5BA67AEC
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 18:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 688E27AB7FA
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 17:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61ED03B6D21
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 17:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F460212FB8;
-	Tue, 18 Mar 2025 17:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPR+akmk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B4121171D;
+	Tue, 18 Mar 2025 17:24:58 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF90212FA2;
-	Tue, 18 Mar 2025 17:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1554A2116F7;
+	Tue, 18 Mar 2025 17:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742318687; cv=none; b=XS8fhZyv742RqaUD4v6eZld2j00mNfa9Vwy0G0H0QINcSR+Kt4LpWxzKDdlDPwnHokjom/APl2iim56rofr3vyo/00LHq9pgBffEgIc3BoGH/VJiEit/nbEOHOsrwFeyay+XekUpIf7U++bxXHMRSD44m2oFnhNh3AR88qIDigY=
+	t=1742318698; cv=none; b=m44P6SBFQJKLsZUsz57rDZaF6syAc57i3W9OWqLUJcDxtoi8pxzuuWWAd7nEoinuVuu1WG82KPutqPYMafvxTXoZxWBNc3wIKOHtqmgn1C/ix26w6pPnDquHBjXeRqGFPNVNa7X+CH3StuZY/cg9cLc2fQb9WKpvXFdu1+mi8hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742318687; c=relaxed/simple;
-	bh=hAfc3CbbDwRvHKrCd7OuWigsJ3MYwZKHBkgn7FHypEc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZAsoYGoD/QMZfzHift/RVJeNtgvbV4ywTdVoqzwryRzQxhuudnhHUw5UFEaIqiUv3mT50FEnKMi7nZstQILew8gozzb+rFuXVPzDHAjGQFVx1FomO0FF9wP00RIOLHOjFiVWgnd1KSODqFyjYgfJKHGQVFo2TvLuhHv5DtxsuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPR+akmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422B9C4CEE3;
-	Tue, 18 Mar 2025 17:24:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742318685;
-	bh=hAfc3CbbDwRvHKrCd7OuWigsJ3MYwZKHBkgn7FHypEc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WPR+akmk9jwF9CPNO3dML5on0woeUsOjt9vsbGZYoaTdLEpTev/VWp5rIfUehnH/R
-	 MPoZvsNcGJvDnlNBvbILCwCv6TgO95qbILJtXlpQj3zWW/RABviZ9AumcN74HuGt3t
-	 w6Mg+MXdVHTNwZ8ImKFV68ZQuipY9EA9KX4lyJ9ltK0fSAM3oJX4ri3e85R5q7igR9
-	 ySA+E+8LVpT9770jKKgt6GJHfrE9NRb/9P1vK0+E65pHMFQofj8fmRXoeKR6zbfwnV
-	 bLotyTt+KSOgT4advCwVqVXUMhC8YPfEWO8V3yYjBDiZBskJwZmsvlzifkrLsV4vVM
-	 08ahh5+S3/+Kg==
-Date: Tue, 18 Mar 2025 17:24:44 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"decui@microsoft.com" <decui@microsoft.com>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-	"joro@8bytes.org" <joro@8bytes.org>,
-	"robin.murphy@arm.com" <robin.murphy@arm.com>,
-	"arnd@arndb.de" <arnd@arndb.de>,
-	"jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
-	"muminulrussell@gmail.com" <muminulrussell@gmail.com>,
-	"skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
-	"mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
-	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-	"apais@linux.microsoft.com" <apais@linux.microsoft.com>,
-	"Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
-	"stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
-	"muislam@microsoft.com" <muislam@microsoft.com>,
-	"anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>
-Subject: Re: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
- expose /dev/mshv to VMMs
-Message-ID: <Z9msXAClr-vGn3GR@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
-References: <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
- <SN6PR02MB4157BE8AF5A1CDD39CF31124D4DF2@SN6PR02MB4157.namprd02.prod.outlook.com>
+	s=arc-20240116; t=1742318698; c=relaxed/simple;
+	bh=ucssZ3UhhMj+KmH04MIyEZkp3eejH8AJj6Bc+qwhZ14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KfSWnmcPpuRf0aty/+HUIOSaPOtbh5n+Vf++2ICVYol1dDqkWBaSFSNHTVE+4vOMcZZSUVPL11iPDCCHr46J8FtMWlIigX9w63eea3DAv62FgwyK1v/K96Uf2B4KYJIzhj0F2unv70RSYgBwhAW+f3/zj9iPlZ6Db+QULpUufjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC10B113E;
+	Tue, 18 Mar 2025 10:25:04 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 971943F673;
+	Tue, 18 Mar 2025 10:24:52 -0700 (PDT)
+Message-ID: <25bd5477-a388-405f-a976-6b1a59860ef8@arm.com>
+Date: Tue, 18 Mar 2025 17:24:51 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB4157BE8AF5A1CDD39CF31124D4DF2@SN6PR02MB4157.namprd02.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
+ path
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Stuart Yoder <stuyoder@gmail.com>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun Gupta
+ <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>,
+ Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+References: <cover.1740753261.git.robin.murphy@arm.com>
+ <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
+ <CAMuHMdWPFnHTFeeWL2-BU8tKOL-E5K2ROOz=LLBLTJJLCK9NgA@mail.gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CAMuHMdWPFnHTFeeWL2-BU8tKOL-E5K2ROOz=LLBLTJJLCK9NgA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 17, 2025 at 11:51:52PM +0000, Michael Kelley wrote:
-> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Wednesday, February 26, 2025 3:08 PM
+Hi Geert,
+
+On 18/03/2025 4:37 pm, Geert Uytterhoeven wrote:
 [...]
-> > +static long
-> > +mshv_vp_ioctl_get_set_state(struct mshv_vp *vp,
-> > +			    struct mshv_get_set_vp_state __user *user_args,
-> > +			    bool is_set)
-> > +{
-> > +	struct mshv_get_set_vp_state args;
-> > +	long ret = 0;
-> > +	union hv_output_get_vp_state vp_state;
-> > +	u32 data_sz;
-> > +	struct hv_vp_state_data state_data = {};
-> > +
-> > +	if (copy_from_user(&args, user_args, sizeof(args)))
-> > +		return -EFAULT;
-> > +
-> > +	if (args.type >= MSHV_VP_STATE_COUNT || mshv_field_nonzero(args, rsvd) ||
-> > +	    !args.buf_sz || !PAGE_ALIGNED(args.buf_sz) ||
-> > +	    !PAGE_ALIGNED(args.buf_ptr))
-> > +		return -EINVAL;
-> > +
-> > +	if (!access_ok((void __user *)args.buf_ptr, args.buf_sz))
-> > +		return -EFAULT;
-> > +
-> > +	switch (args.type) {
-> > +	case MSHV_VP_STATE_LAPIC:
-> > +		state_data.type = HV_GET_SET_VP_STATE_LAPIC_STATE;
-> > +		data_sz = HV_HYP_PAGE_SIZE;
-> > +		break;
-> > +	case MSHV_VP_STATE_XSAVE:
+> Thanks for your patch, which is now commit bcb81ac6ae3c2ef9 ("iommu:
+> Get DT/ACPI parsing into the proper probe path") in iommu/next.
 > 
-> Just FYI, you can put a semicolon after the colon on the above line, which
-> adds a null statement, and then the C compiler will accept the definition
-> of local variable data_sz_64 without needing the odd-looking braces. 
+> This patch triggers two issues on R-Car Gen3 platforms:
 > 
-> See https://stackoverflow.com/questions/92396/why-cant-variables-be-declared-in-a-switch-statement/19830820
-> 
+> 1. I am seeing a warning on Renesas Salvator-XS with R-Car M3N
+> (but not on the similar board with R-Car H3), and only for SATA[1].
+> Unfortunately commit 73d2f10957f517e5 ("iommu: Don't warn prematurely
+> about dodgy probes") does not help:
+[...]
+>      Call trace:
+>       __iommu_probe_device+0x208/0x38c (P)
+>       iommu_probe_device+0x34/0x74
+>       of_iommu_configure+0x128/0x200
+>       of_dma_configure_id+0xdc/0x1d4
+>       platform_dma_configure+0x48/0x6c
+>       really_probe+0xf0/0x260
+>       __driver_probe_device+0xec/0x104
+>       driver_probe_device+0x3c/0xc0
 
-This is a rarely seen pattern in the kernel, so I would prefer to keep
-the braces for clarity.
+Hurrah, this is the warning doing the correct job - something *is* off
+if we're now getting here without the IOMMU configuration being done
+already (for a normal device with no other funny business going on).
 
- $ git grep -A5 -P 'case\s+\w+:;$'
+> 2. The IOMMU driver's iommu_ops.of_xlate() callback is called about
+> three times as much as before:
 
-This shows a few places are using this pattern. But they are not
-declaring variables afterwards.
-
-> I learn something new every day! :-)
-> 
-
-Yep, me too.
-
-Thanks for reviewing the code. Nuno will address the comments. I can fix
-them up.
+That would suggest that the fwspec gets set up OK, then something later
+in the __iommu_probe_device() path fails and tears it down again, so the
+next attempt starts from scratch. Do you see the "Cannot attach to
+IPMMU" message firing? And similarly to the Rockchip case, does the
+below help?
 
 Thanks,
-Wei.
+Robin.
+
+----->8-----
+diff --git a/drivers/iommu/ipmmu-vmsa.c b/drivers/iommu/ipmmu-vmsa.c
+index 074daf1aac4e..5d416262ae5f 100644
+--- a/drivers/iommu/ipmmu-vmsa.c
++++ b/drivers/iommu/ipmmu-vmsa.c
+@@ -1081,6 +1081,7 @@ static int ipmmu_probe(struct platform_device *pdev)
+  		}
+  	}
+  
++	platform_set_drvdata(pdev, mmu);
+  	/*
+  	 * Register the IPMMU to the IOMMU subsystem in the following cases:
+  	 * - R-Car Gen2 IPMMU (all devices registered)
+@@ -1103,7 +1104,6 @@ static int ipmmu_probe(struct platform_device *pdev)
+  	 * ipmmu_init() after the probe function returns.
+  	 */
+  
+-	platform_set_drvdata(pdev, mmu);
+  
+  	return 0;
+  }
 
