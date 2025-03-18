@@ -1,168 +1,262 @@
-Return-Path: <linux-acpi+bounces-12322-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12323-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF688A67780
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 16:17:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D121A677B3
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 16:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84EA19A602F
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 15:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59C9B3B9E44
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 15:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E1D20E71F;
-	Tue, 18 Mar 2025 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5279C20FAB7;
+	Tue, 18 Mar 2025 15:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="qoVWqPUF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cHmBZ1RF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73D31586C8
-	for <linux-acpi@vger.kernel.org>; Tue, 18 Mar 2025 15:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB2042AA1;
+	Tue, 18 Mar 2025 15:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742310803; cv=none; b=FbJ+AEtaNTjL5CJbF4JfSU8g9D+AwdpzvWNLB3WFaphw72/fxBGk4wN7sB6DRDlCr8ZgTTgX7yIMdiI9+VewCtv8kdlCzQl5mumgxzYeCA31PTb+HStqQsbCfI3JSqqKylHCFVz2iaMWu41LqKkzNRoJ0fuezuaQA17BLRrSjOc=
+	t=1742311499; cv=none; b=mWCXR/TcZsu8dOB6xLUENmYitvspsR0ZJ2vZFWgVQ92WvPV8RqJ/7PJvdxSINvBoThZIoe4IKfzWdQaCH3GDdH5E3aHSitG4ifotfb9cnYFOoV8eIXnWtzlCg3d2W1zz5TDTb7IGjBOXjrtYAOKzs4mJwYGo8WQl6x9Ukl/IOjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742310803; c=relaxed/simple;
-	bh=EeDs3BIQGtKIFiUdLNLAGZaKA1a2dW7BiHIddDYGJGk=;
+	s=arc-20240116; t=1742311499; c=relaxed/simple;
+	bh=/Vxtk/M/zsYmwadz5SgxJ5mP+fz1qKWq85EWjMZiyDo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ka6tHX226NsXSxoVwzOYE+HkgTyhJYYhDGH5KQSO+iPXpaR2KZ5kN3pXsmDn1WgGrR/vFxXvWPjVL00Pp6Iz1Du+Le6q+ImyuJMYZDmg2JDZAf5aKCTRuSn4F7Gl/16yIpsUMWN8Mjwrqip7T1GLAyzovXGUBOIa0iHTulQEY3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=qoVWqPUF; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c559b3eb0bso327836785a.1
-        for <linux-acpi@vger.kernel.org>; Tue, 18 Mar 2025 08:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1742310796; x=1742915596; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Fq4YIdfyvH3D38tBVB9O/pfTAXZmUQ3xOYQLXZJY38E=;
-        b=qoVWqPUFSe0dKI7mmBZxT/BTFvujfxisrax8gVMpOiwFP4ySflNeaHLWBKhLb9dcDr
-         CLKczP+qnQqoQsmKhHvDpQGI6JrgWSEWkFzCJ6N38r/s1EiyT7uQ2jgWEOGZPJQLlvjb
-         gEkST1y0DEoW7samWJJ1fSLRC5FeGrWIIT+vDXD8RM1jvu3xX4cVty6/eCiDCuEo2oNr
-         NV55+/kzoybd3GN0LQ9qyO7Oq8+aVLZdQc8QcXbJrMhrN4NG+2JaudEt+0ZXFpOWyyQE
-         ZhkKGZkQwaETIKnWsnEfTZ1HYBHPavANqUQhvnataKw7Aw0BT1K839TMD2eOQ1rmLgoL
-         TeDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742310796; x=1742915596;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fq4YIdfyvH3D38tBVB9O/pfTAXZmUQ3xOYQLXZJY38E=;
-        b=r0JPTDQn+ZISj7aqjbKpJFU8s1qDn02nqdrfZM8H4ny3mz5QsLy/rQLjd/O0dh6sdD
-         O2xJRVXbfshlZ9vKZdnxE4LQaHJn/po56t/SrcqVjlT+K4yb61yIipxvADEvkLeaY7pn
-         87v2D85J7l5w6oSG/gglnuz7Cb7bouECX4UVgO5e5a1UTcFLvKgVrLe76XWh0jH/nUh5
-         P7e2CdXLr3UXcmrqpAWszQ2KAQ1Tns/c/YQ2FcHrtMUWMVJHByHDBPVW9E0ovrqsOdOu
-         HtHkRUhTIlmCW+5kGcO49vte4zBM2HrX7FHbUt+mobc7moU/mabji4KWKA/1uxKofAhT
-         3lpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBI5yjVzSSYx8J2t0NHIAI3rgs4yGuRI7QH+d1bJjeg2/C/nUVdW/0L9tBq6TvBsx/yHgD0/eEUfJm@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbTsgWHDbpiD/FgTOxyrHqPMIkVMMoaw0+SSWI2fOT8n86baVf
-	bYvto9mj9iUMLMxjGWaSsVtdLgwHwB0YlB00rEGUe+5GRGHJf5XB6P2ATOWPgYM=
-X-Gm-Gg: ASbGnctDBfNXTUIWih35uC3Vrn1d6nSdpD09/nh1L2/aBFSgvweJH1hxlFEgtH5Wz/w
-	BLJGzrxNHGBh4pPxeECEkahuXz/lZhYAYIUnEz4/DK1IIMWyVOMte6hbLA1WxTuynRaTeAzhqpi
-	OWqnB4gQNQfdUuhFerDxMG9v9lWV7bWU6p/KthGk3ZIZ+tmOT9+thJKmAhHlnJToyFFp6zvzz00
-	bDKUbwTlnv5Od5O9XLVkXGpLOwRLZuYRXQESkjQI7yZNAzei5M/STeDF+f9P8P1XXuWnAKOA4jn
-	QCDTJnqqLEbzUY+a0U70ci8389ZqrbM4cyWIPykWNSUKTXQJVSt0WZh/FPmOedI3BOvKiRX5Pco
-	dGzV40+YElKm5x2ptwehxVb3AHaQ=
-X-Google-Smtp-Source: AGHT+IHeMQ4TK7mWZ8ZCPZ0HfjaVy2CNDBY+DoggANGCjpN0TVfqxk3IlMuRg8yeq+gDT6U2kTi9hA==
-X-Received: by 2002:a05:620a:470f:b0:7c5:5008:436a with SMTP id af79cd13be357-7c57c73da02mr2385055785a.1.1742310796559;
-        Tue, 18 Mar 2025 08:13:16 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573d8aecfsm730776785a.100.2025.03.18.08.13.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 08:13:15 -0700 (PDT)
-Date: Tue, 18 Mar 2025 11:13:13 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Honggyu Kim <honggyu.kim@sk.com>
-Cc: Yunjeong Mun <yunjeong.mun@sk.com>, kernel_team@skhynix.com,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, harry.yoo@oracle.com,
-	ying.huang@linux.alibaba.com, gregkh@linuxfoundation.org,
-	rakie.kim@sk.com, akpm@linux-foundation.org, rafael@kernel.org,
-	lenb@kernel.org, dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com, dave.jiang@intel.com,
-	horen.chuang@linux.dev, hannes@cmpxchg.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/U8Cak+/BKD0HvHAyeouGd4MJt3LlLRjx6f+PaBLom5Bj5paXyoLge7Uph/36woz+eziAcVPRO7s12ZIMoQ97XsHqG4+IdKCk/21HUgK7Sqs1u4az8dEDkD6/BkdR+nfkJVrs1SrI88Bne1aaHGa4CI0dS3ScgCU95V9Q7Engs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cHmBZ1RF; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742311493; x=1773847493;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/Vxtk/M/zsYmwadz5SgxJ5mP+fz1qKWq85EWjMZiyDo=;
+  b=cHmBZ1RFSRqe4FUE5X+nAlMFWrBarJHKUUCo1ZnXcv5rKPZwXYxFcIDc
+   OyeMFEMjPOQNtt5gXueGH47KywBKLYIHn/VcsyghrNCdJWp/ZLhIJ7X6j
+   9SA6GAcSQVCnK7hssZZqzAq4aTt8FBEuJ5Zs2fMPJdQbNi/w20Ule638h
+   WUG6LkBphcdeHv7myEgcUehy0Wi1B9Bi4RpwJcMhdXywfZE5593xeYhc1
+   wPH1fEjnBFzRXANhMsGuOfQu2Z3pQyWiZWZ72JDEXF7mdZ65fpsfKeCD/
+   QXnJwQcTWTUQ2cWb4KoSyleC49n0kF7KiAOGCwCGECbv1HqJqGGzBjHhO
+   A==;
+X-CSE-ConnectionGUID: 9w61opJDRF+XTadj9AwZGQ==
+X-CSE-MsgGUID: +64MRf30QU6k6pS7L84zkg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54135685"
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
+   d="scan'208";a="54135685"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 08:24:52 -0700
+X-CSE-ConnectionGUID: kMdL4c7YRZKiJ3gE8xKbMw==
+X-CSE-MsgGUID: fO2F/3zYQOS+T4NonmXKdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
+   d="scan'208";a="122233599"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 08:24:48 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 95F1711F9BD;
+	Tue, 18 Mar 2025 17:24:44 +0200 (EET)
+Date: Tue, 18 Mar 2025 15:24:44 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for
- memoryless nodes
-Message-ID: <Z9mNiWm1pNIxiu0t@gourry-fedora-PF4VCD3F>
-References: <20250318080246.1058-1-yunjeong.mun@sk.com>
- <ed0004ea-c8d6-4ba9-ba40-0c9a97d98db6@sk.com>
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v8 02/10] property: Add functions to iterate named child
+Message-ID: <Z9mQPJwnKAkPHriT@kekkonen.localdomain>
+References: <cover.1742225817.git.mazziesaccount@gmail.com>
+ <9c3880f74476436f39d796b5c10c540ae50b722c.1742225817.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed0004ea-c8d6-4ba9-ba40-0c9a97d98db6@sk.com>
+In-Reply-To: <9c3880f74476436f39d796b5c10c540ae50b722c.1742225817.git.mazziesaccount@gmail.com>
 
-On Tue, Mar 18, 2025 at 08:02:46PM +0900, Honggyu Kim wrote:
+Moi,
+
+On Mon, Mar 17, 2025 at 05:50:38PM +0200, Matti Vaittinen wrote:
+> There are a few use-cases where child nodes with a specific name need to
+> be parsed. Code like:
 > 
+> fwnode_for_each_child_node()
+> 	if (fwnode_name_eq())
+> 		...
 > 
-> On 3/18/2025 5:02 PM, Yunjeong Mun wrote:
+> can be found from a various drivers/subsystems. Adding a macro for this
+> can simplify things a bit.
 > 
-> Some simple corrections here.  host-bridge{0-3} above aren't detected from CEDT.
-> The corrected structure is as follows.
+> In a few cases the data from the found nodes is later added to an array,
+> which is allocated based on the number of found nodes. One example of
+> such use is the IIO subsystem's ADC channel nodes, where the relevant
+> nodes are named as channel[@N].
 > 
-> rootport/
-> ├── socket0
-> │   ├── cross-host-bridge0 -> SRAT && CEDT (interleave on) --> NODE 2
-> │   │   ├── host-bridge0
-> │   │   │   ├── cxl0 -> CEDT
-                          node 4
-> │   │   │   └── cxl1-> CEDT
-                          node 5
-> │   │   └── host-bridge1
-> │   │       ├── cxl2 -> CEDT
-                          node 6
-> │   │       └── cxl3 -> CEDT
-                          node 7
-> │   └── dram0 -> SRAT ---------------------------------------> NODE 0
-> └── socket1
->      ├── cross-host-bridge1 -> SRAT && CEDT (interleave on)---> NODE 3
->      │   ├── host-bridge2
->      │   │   ├── cxl4 -> CEDT
-                           node 8
->      │   │   └── cxl5 -> CEDT
-                           node 9
->      │   └── host-bridge3
->      │       ├── cxl6 -> CEDT
-                           node 10
->      │       └── cxl7 -> CEDT
-                           node 11
->      └── dram1 -> SRAT ---------------------------------------> NODE 1
+> Add helpers for iterating and counting device's sub-nodes with certain
+> name instead of open-coding this in every user.
 > 
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> ---
+> Revision history:
+> v7 => v8:
+>  - Fix the example in fwnode_get_named_child_node_count() documentation
+>    to use the fwnode_get_named_child_node_count() and not the
+>    device_get_named_child_node_count()
+>  - Fix the rest of the new macro's indentiations
+> v6 => v7:
+>  - Improve kerneldoc
+>  - Inline device_get_named_child_node_count() and change it to call
+>    fwnode_get_named_child_node_count() inside
+>  - Fix indentiation of the new macros
+> v5 => v6:
+>  - Add helpers to also iterate through the nodes.
+> v4 => v5:
+>  - Use given name instead of string 'channel' when counting the nodes
+>  - Add also fwnode_get_child_node_count_named() as suggested by Rob.
+> v3 => v4:
+>  - New patch as suggested by Jonathan, see discussion in:
+> https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
+> ---
+>  drivers/base/property.c  | 27 +++++++++++++++++++++++++++
+>  include/linux/property.h | 24 ++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index c1392743df9c..f42f32ff45fc 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct device *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(device_get_child_node_count);
+>  
+> +/**
+> + * fwnode_get_named_child_node_count - number of child nodes with given name
+> + * @fwnode: Node which child nodes are counted.
+> + * @name: String to match child node name against.
+> + *
+> + * Scan child nodes and count all the nodes with a specific name. Potential
+> + * 'number' -ending after the 'at sign' for scanned names is ignored.
+> + * E.g.::
+> + *   fwnode_get_named_child_node_count(fwnode, "channel");
+> + * would match all the nodes::
+> + *   channel { }, channel@0 {}, channel@0xabba {}...
+> + *
+> + * Return: the number of child nodes with a matching name for a given device.
+> + */
+> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
+> +					       const char *name)
+> +{
+> +	struct fwnode_handle *child;
+> +	unsigned int count = 0;
+> +
+> +	fwnode_for_each_named_child_node(fwnode, child, name)
+> +		count++;
+> +
+> +	return count;
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
+> +
+>  bool device_dma_supported(const struct device *dev)
+>  {
+>  	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index e214ecd241eb..a1856e6b714c 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -167,10 +167,18 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
+>  	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
+>  	     child = fwnode_get_next_child_node(fwnode, child))
+>  
+> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
+> +	fwnode_for_each_child_node(fwnode, child)			\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
+>  #define fwnode_for_each_available_child_node(fwnode, child)		       \
+>  	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
+>  	     child = fwnode_get_next_available_child_node(fwnode, child))
+>  
+> +#define fwnode_for_each_available_named_child_node(fwnode, child, name)	\
+> +	fwnode_for_each_available_child_node(fwnode, child)		\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
 
-This is correct and expected.
+OF only enumerates available nodes via the fwnode API, software nodes don't
+have the concept but on ACPI I guess you could have a difference in nodes
+where you have device sub-nodes that aren't available. Still, these ACPI
+device nodes don't have meaningful names in this context (they're
+4-character object names) so you wouldn't use them like this anyway.
 
-All of these nodes are "possible" depending on how the user decides to
-program the CXL decoders and expose memory to the page allocator.
+So my question is: is it useful to provide this besides
+fwnode_for_each_named_child_node(), given that both are effectively the
+same?
 
-In your /sys/bus/cxl/devices/ you should have something like
+>  struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+>  						 struct fwnode_handle *child);
+>  
+> @@ -178,11 +186,19 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+>  	for (child = device_get_next_child_node(dev, NULL); child;	\
+>  	     child = device_get_next_child_node(dev, child))
+>  
+> +#define device_for_each_named_child_node(dev, child, name)		\
+> +	device_for_each_child_node(dev, child)				\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
+>  #define device_for_each_child_node_scoped(dev, child)			\
+>  	for (struct fwnode_handle *child __free(fwnode_handle) =	\
+>  		device_get_next_child_node(dev, NULL);			\
+>  	     child; child = device_get_next_child_node(dev, child))
+>  
+> +#define device_for_each_named_child_node_scoped(dev, child, name)	\
+> +	device_for_each_child_node_scoped(dev, child)			\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
+>  struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+>  						  const char *childname);
+>  struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+> @@ -210,6 +226,14 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+>  
+>  unsigned int device_get_child_node_count(const struct device *dev);
+>  
+> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
+> +					       const char *name);
+> +static inline unsigned int device_get_named_child_node_count(const struct device *dev,
+> +							     const char *name)
+> +{
+> +	return fwnode_get_named_child_node_count(dev_fwnode(dev), name);
+> +}
+> +
+>  static inline int device_property_read_u8(const struct device *dev,
+>  					  const char *propname, u8 *val)
+>  {
 
-  decoder0.0  decoder0.1  decoder0.2   decoder0.3
-  decoder0.4  decoder0.5  decoder0.6   decoder0.7
-  decoder0.8  decoder0.9
+-- 
+Terveisin,
 
-These are the root decoders that should map up directly with each CEDT
-CFMWS entry.
-
-2 of them should have interleave settings.
-
-If you were to then program the endpoint and hostbridge decoders with
-the matching non-interleave address values from the other CEDT entries,
-you could bring each individual device online in its own NUMA node.
-
-Or, you can do what you're doing now, and program the endpoints to map
-to the 2 cross-host bridge interleave root decoders.
-
-So your platform is giving you the option of how to online your devices,
-and as such it needs to mark nodes as "possible" even if they're unused.
-
-~Gregory
+Sakari Ailus
 
