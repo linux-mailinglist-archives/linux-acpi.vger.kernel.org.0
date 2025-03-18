@@ -1,215 +1,237 @@
-Return-Path: <linux-acpi+bounces-12317-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12318-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B9DA66501
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 02:30:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77730A66D4F
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 09:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C03B17A333
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 01:30:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE8A13B4AE0
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Mar 2025 08:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691F814B08C;
-	Tue, 18 Mar 2025 01:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WQmKyFmU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C381C84B1;
+	Tue, 18 Mar 2025 08:02:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2052.outbound.protection.outlook.com [40.107.92.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936A1C2C8;
-	Tue, 18 Mar 2025 01:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742261399; cv=fail; b=fSyz7Xb+XFC3PBzgTo5RaTEqWaVuySNS0dSvEl5FSGoV/BDk3jmgemfBqUHGqOvrAMNFaF9ejtvvj2pcjVBroT5akOK+N0gRlFwgeqJSbFscq7HCCAOb5Fv53WT729dMKEpwRBg+mPkzpah+sNTY4rJheP7V8F/ZSXCtZJzMu9g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742261399; c=relaxed/simple;
-	bh=yT28NzlpmjPSlhyr5v7YWlolYA5tsbTXeI8p+IgNxC8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=B/i2AGCGsBrZUqDPzZy7di46VsOIxnHzeLcm2/iQl4Tc7Rbs23ftlPw1FNkjQi35k72dK/ncQFMEdJrknqCEPgrYOj/epu1PVjCmOoZqKmiyeh/s6t5Y5H18dBgiRbhEiakKZ9Av8B5U5Kujo8nEwgPtLH9j02rCydIBKo4tzy8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WQmKyFmU; arc=fail smtp.client-ip=40.107.92.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YeFwAZ++gLnfldynJJZ0ZPtG+TerS8aR+9WVWnOfN5Hfd3632GQiWDp2+VQNn4ajQTycfOSw4vHFbs4/+s6RZD8ixBcyhxqOqGcHhxJdbjR1gfTYGIKfPvIo/QOIrwTGw3P5Lt9Vl99KCwbiL1mWrxjayI0KZKLHyEPNfA3iJ60sX/byOFTH2EbpE/5Cfsn5dqopfsM0PQodOvSRXSObxIrIEBphxxHKyJXMJFNdtB1OnsLqaXpoel/it5kRNZZT0+GMLG6QVCODVaAv4bh78LZxhMN8FASgt7iOhUAjXmSCh2l/vJpRidxIl18zInvBoL6CJDFB4Ur1UK3EgWXHGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MJRfF/HxQ0SijIbO35McZr3JEC2sNrDSxwRoikRdkIw=;
- b=y2O1Q0aHNzShYJoVEb0cL+raFo/w0OYHXkOGaExlMEja8eQ7TOco8ZPmrhZY6pYHaEw04O2+rZnEwOmvXtpHm8pqGJDdeTFqks2Bp5glBozN8mbDpjXA/X/3iVXeiHVYyqizrnnSeFhrhMfhQM4BLzbGN5E9CAi9nlSKFxuCklxtXacBjaEawE9WvD3kpiokH9T+Y8BoUvGCKYtYZybga6TYbVuYtLH2NWTfK3JF9rbc4V15QdjPBPq7p3x759tVcqAiE1dRou0KhEkWajWkz2M3sbESawG8s4K7mBhcUXCqjPPlpDakY+hdDLF04ce543QWcpQM9RC49Qk+0DobUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MJRfF/HxQ0SijIbO35McZr3JEC2sNrDSxwRoikRdkIw=;
- b=WQmKyFmUp6Unit4CLaQDLa1+VWlFoE0CyVHqlIbImDsUiaMjuJ/aApDR3mv4gGNy/jvfSscS/tF1Gk2RB0fDz9KFfVxTIUp+HmCb6kF5++ed+ilSswHV2x/djHGXFw7XdjQOJndsXB7M9QcKxOg5zxsgRMXChB48hXMO2Hw07bg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
- 2025 01:29:53 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
- 01:29:53 +0000
-Message-ID: <35c99e60-c44d-433f-8988-62aa94dd924f@amd.com>
-Date: Mon, 17 Mar 2025 20:29:50 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: Warnings `Could not retrieve perf counters (-19)` and
- `amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled` (Dell
- PowerEdge R7625, AMD EPYC 9174F)
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Gautham Ranjal Shenoy <gautham.shenoy@amd.com>,
- Ray Huang <Ray.Huang@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, it+linux-dell@molgen.mpg.de
-References: <2b811df7-5278-4cfc-b8a0-7d6d72d3358d@molgen.mpg.de>
- <5dff1719-c4e9-4ebf-ae0b-73b9de98df05@amd.com>
- <DS7PR12MB82528A694056F1FBA20CE01E96EF2@DS7PR12MB8252.namprd12.prod.outlook.com>
- <d09f52d8-e084-4875-9608-5b3db2554f3d@molgen.mpg.de>
- <e26bc00f-1675-4aac-bd02-60774ff5901a@molgen.mpg.de>
- <3ded4075-e2f9-4231-9c3f-49a14fbbde1e@molgen.mpg.de>
- <1ba47782-0035-43c3-9ecd-887f1f60340a@amd.com>
- <73da51ef-a7cc-4c38-8289-09c9cbd0c65d@molgen.mpg.de>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <73da51ef-a7cc-4c38-8289-09c9cbd0c65d@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1PR02CA0002.namprd02.prod.outlook.com
- (2603:10b6:806:2cf::6) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32381AA791;
+	Tue, 18 Mar 2025 08:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742284976; cv=none; b=VJa+11eyyQeU7y4f6YYVjAGtszn37AdOB3f2SJsrQ7VUxnl8u3wAKDFW0ahXS9pqUvQ9/ozzDDPZJH/Od/69A3775mWmT0phAp4sLSgurIJ3DKFPz95yCH6B+HaZm3uTvcz7r713Ya/PBFwI4Hox4JkhntThtSkZW8SMGdLyePQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742284976; c=relaxed/simple;
+	bh=6tmfjSUaa+b8uAjt/O5vSHnSI8u+YZ48edARkdy8ZzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JZNmKWTdjj2smR3lJiCS7OWJCEyelJpzT2sk4LwLnQuXU+Kc+caJ8zk6Pdch83gpdB9RDge/03OT3cnB72Z+v/CvoNJ9HtoL/SV7OgMWszTUf9jh/mJav3RWXDzZ995qUnh9af/h8+KybuaE9I8/I+6tMkmt+dfEhnVb7jFlNfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-681ff7000002311f-09-67d928a8ae53
+From: Yunjeong Mun <yunjeong.mun@sk.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: kernel_team@skhynix.com,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com,
+	ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org,
+	rakie.kim@sk.com,
+	akpm@linux-foundation.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com,
+	horen.chuang@linux.dev,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
+Date: Tue, 18 Mar 2025 17:02:38 +0900
+Message-ID: <20250318080246.1058-1-yunjeong.mun@sk.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+In-Reply-To: <Z8-_SXm0JGjXTegL@gourry-fedora-PF4VCD3F>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA1PR12MB7199:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0de9b34-8d95-4e32-46ed-08dd65bc623a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ejNEY0lIcXN2VEpmTVduMVRMVDU0b0pqUFR2NEFMS1ZRRmJFMytNck9yU3Mr?=
- =?utf-8?B?RUpaVzZ5ZFVkeHhUaWdKQlZ3RERPZFV3L2VYQkY5VW9VOS9GNUpIK2p1Ykcv?=
- =?utf-8?B?K2c3aTA5cFNYTTd1cWs0Q0h3bzdNdVpWa3ZoQmUzYVZxZGlZQ3BoL0hqZGVX?=
- =?utf-8?B?TURmNGdLWlFrWHo4YjMrN05rL2xYN2RJNXFNVmo0NWkzbTFrVVpxMzZDTis2?=
- =?utf-8?B?dmkvc01RbHUzSTlobkNjZ3lxd1pSdXozZkxEU2x3WWV2ckNTUk4xQlBaOTBR?=
- =?utf-8?B?eGNQY1Q4ZTNyWitLdWVpakJ3cGQySWVMV0c5TXdXZTIvRmk4MHdFMENOYWVK?=
- =?utf-8?B?eWhFV3FFdkpENTczYTIweDVYNVJGcEVjckNSbzJHY2ZsdzBPL1RCYlpvQTFN?=
- =?utf-8?B?QWNWOHc0NHBubEhJWitoSTVtdktUVWh1R1ZmOEt1VGttV1dmYlNLV0x1UXhs?=
- =?utf-8?B?NzVHUDhqT3lZbWlKVXpjbjFNNmx5T2FoK0tnTVROTnQ2Z3B5cG1TRzNVenhi?=
- =?utf-8?B?R0doMGtKZDl3MnhZaFVXMGI2b1RqZ1hpZWlCbkE2VnhWTWdqQ3hqZ3BNOFFP?=
- =?utf-8?B?TllCYk5GbzdJSGpjWnM0NlVQbnozaTBnNDg5MTEvQTg1YVZMSURFNm1yZW02?=
- =?utf-8?B?OW11UzhjSHpQd294SXc4dFZIa1ZxRFR3REROM2JNTXdaL2thcFRaaDFGNnVJ?=
- =?utf-8?B?VUlBeC8weXVBYXZ4eFdwSGYwZGM0cEpQWGF2cFhoVFhEOHllNFFLTENoWE9C?=
- =?utf-8?B?SXNUVDJ3Witad0J6MUFubncxQzVRSFNzV3prQVZDUkhwakJQeFVHd3lEZ3Mv?=
- =?utf-8?B?RVdKcE9iek5BVFZvMUorZFVoWnJua3ZpdkRVd3BkYVNIRUVWaVhxMFNrRnNi?=
- =?utf-8?B?cE04Rys1WEQrMzl3bEdMdkdKait1by96dEx5NDM0b3cxOXZhODVIbUVhZnhr?=
- =?utf-8?B?cDVRZ3NkWVFwMkNtVzlFdmRCSnArTGJsU3h3L04xR0dUZ1FZdjZDRTlZU0tu?=
- =?utf-8?B?SUpoc0pYcXB1TUtLNkozaDA3ZnFrbFRqeUx6bCtvWVlEdEVLNlA1QWdTWjha?=
- =?utf-8?B?bVdUZmhMenhaWm5yNmdkdXN2ZXI0SGdYV1Q1M2s1QSsreWtBRnY1SjNTaEVG?=
- =?utf-8?B?TUdtb2U2N2ZFWUZZT1FYeWxtTklFb3RHUXRxb2twYVhhVlZ3dGdxV3c0V3Ix?=
- =?utf-8?B?Y1lsdVNDNXRZOXg4K2VEak54RHJQVHpLTUFnMkhLaEdZeTRyVzF4d2ZCZEk2?=
- =?utf-8?B?YndEUWVpY2FEUnlTN0Fxa3hBM3dWTlQwODhTUXZ0N1lxQ213c0pzcGV1aGRI?=
- =?utf-8?B?aXcvdGU1dm5makd6VG1zVU9ZaEtnWi9ZSVd2cEkxcG9OZ3F4QVU3R2liZFdZ?=
- =?utf-8?B?eGE0R3AxbGRocnZKV3hrSnhxNExHRkJValI2ZDVwWnhDVjZON2ZYZklFaUVr?=
- =?utf-8?B?MG1VL1RVWnV6U2JnU0dMMkNvL1BjUVVKS2lwQ2xwT0I1TEFEQVo4SzFUeWE1?=
- =?utf-8?B?WXVCQmtxNHFxVEJFU3hPS2tIUUxxdVR5RHNNVjNhU1VqU1NkcWk3b29VV2FP?=
- =?utf-8?B?Q2NqbDI3dUxGaDk1b2RTaTR5cmZkbEJJOUxPRDFBTXJranNHUWpCQmluZElP?=
- =?utf-8?B?VzZEdDRhZEcyK3l6T3NkYW12cWkreUNVOUtUMTJQbkttQ3BWcVh6aDljbU1D?=
- =?utf-8?B?SThrdEtsNm1GWU1JY3VlRFl6VDVCTGdDa2loNWpqTzM0QUZKNXcyenBVNUxs?=
- =?utf-8?B?MU91aDlNck1DTTlzT29QZ2pheHcyblY1aTl2bjBKS0p2NlpRSXlVejRISG0z?=
- =?utf-8?B?ZnliTzRnVUVVZjc0WkIwdz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGg1Wjl6RGUzSnhFM2E5NTl6djVVQXFka1d4SXRiTmNKb3ZzT05aaWJpY3hz?=
- =?utf-8?B?emdLN3Bia0g5a25zR0RGTlBKckltdDN4UXhzN1gvQVlpTmhTK3lvWkxPNzdU?=
- =?utf-8?B?Q2F5THFnaCtoWEduZU5Bd202OUw4ZTZlU2pDUWtIV0h6Yks3R0t0Z1ZrQ1dq?=
- =?utf-8?B?cisrV0UwenhYdythVmkyR1NvOGtBa2VxeE12S0JNanBlSHpPaVR4M2tZZFJ6?=
- =?utf-8?B?cHczUllseUpGbGRaSThrMGw5OFozaGZUblFWSnEvcWlzWCtueXo5ZTFaQ0ty?=
- =?utf-8?B?ODY4dTZ2NysrTzNHK0IrNm9IVmpiN3o1T1kvQTNQV2FNTlAxbmlIRXlPazll?=
- =?utf-8?B?VFBZR1dxNzlwVkY4QTdaNVNKaEtYTVlhajd4MGRBNFFWb1UxWDJUaHZSQk5X?=
- =?utf-8?B?c3JMbFpVQVkvSTI1ZjYxNWIvVk41cTBNVlRLemd2ZTV3V3VTZHIxcHFCUWo0?=
- =?utf-8?B?RTBUd3UxUWdaUWs3cFhSVDN2UlBlZGdMNTg1WXNKSmJRQjVlQm9oRlB5WFBI?=
- =?utf-8?B?bXJUS3B2bysyS1l5RURZckxzVE05dWVDMm1xNE5Ya1RJU3hPTUk1ZFNTc3lE?=
- =?utf-8?B?YUJMbTRZNEdPMWxkQnRZMjUrVFVwU0o5cDJibW5EK3c4c2ZLbXFUajd6bnRK?=
- =?utf-8?B?MHRnMVVCdG9WeEt6YmVoalpBMlh5SUxrcUFOWGpGbkxOM3paczhtUnhvYkY0?=
- =?utf-8?B?eUIzS3pCU0Foc0lDcExqN2xOMVlqcHd6MEQ3Qm9lMlBtNlp6d0VKZFFHL0VX?=
- =?utf-8?B?M3JNcTNMSVZScE1ac3dFditYRzlOOTZkcXFUUVFCRmFGRFg4OTMwcUdJQTdv?=
- =?utf-8?B?QUVNbkJOUU5FWFJNNlZBem4yTnVOQ21LdmZmRlAxTWw5ZXY3a3I3S25kOHhu?=
- =?utf-8?B?S1g4ZXlzek5Tbm8yQVgyb3JiSGFOZFhFUGhmWmJTSnVkWlFLck1obkVBMysx?=
- =?utf-8?B?T1lVcUlZaFIvT2lBMWYzdWZZeXdHQXFBRWFDRTIrQTIzTWYwMWlVdGtxbXB0?=
- =?utf-8?B?UlZiWG50TDkxb2JoTXRlOGo3YjhiOTJCS3F5Q3pObXN0WHpEczJhZTZrdHVY?=
- =?utf-8?B?YnJOeFo0RXorNjBCeHh0Z3FxNG9mMXpzdGNSMllNZ1V5Ukpsa3dqU05QNlJt?=
- =?utf-8?B?M2FLN0Mvc1VKMFJ0Uk5wYk9USEFhRUcxR0dOZHlac2lVNEl1YnBzc1d1WGRl?=
- =?utf-8?B?VXFqWTYxb3lCYzdualVTbXFVOUxDNzJ3RGh1L0FRVm0yaFlRNSs3NmN0WkJq?=
- =?utf-8?B?RUVJbFl1Nnp3RWxRQ2xVNXVLc0g2UEpBWGZwSDZBLy9Sd2ZiME1LMW1wUkV1?=
- =?utf-8?B?aXVKcmtSRGpMaERPeSs3VGVjcU95L1JhVGFzUWYwUmtJSXBHSzBiL0xQdXM1?=
- =?utf-8?B?SVBJc21SQ1hkdVRNUTRYcEU4VGtEaFFRY25HS2VoWTFTMHRRKzZQOHZGbTlB?=
- =?utf-8?B?UG9SN3R0Q2NDcHhVRnNmdm5PdnlGZ054ZzQxMklLVXNuVGs5cncwb0Z5Wis1?=
- =?utf-8?B?b1JUSUwzbC82NFpVRnBlREJENldDdUZ0NjBnVnhLMmVlWDlrNG0reTZ5dVhO?=
- =?utf-8?B?WGJHRThLZDB6ZldIRXBsYlliNUNRcS9qZnY4b3BvNjhHcm16aWN6bUxzSGFa?=
- =?utf-8?B?L2hDSnlPRWRVZ3BxL05rUThkQmp1UERYV1BvV3BqVU80TjRzUWNidGpYMVRu?=
- =?utf-8?B?bmRVc0U3MTV1RjRZdjhzRUxrQ2NyT0phd2UvaUJzY1V0ekdxdGVvYVhMbitO?=
- =?utf-8?B?aHZYTi9EbnhWWU9ZWXF0UkNVZFozSnZzZ1AyMHkycDQ0c2tHL3QweEtibzhV?=
- =?utf-8?B?eVMvV0xsTVJKR1pKbXgxc1BoRmt5SHhzWVV5NGg3a0JaL3dCbEVxWUVCQnJj?=
- =?utf-8?B?Wjg1a1hnMnVDNkpFNkU1VFpCcUdBcXZzSnczdmtRdHBWc01PbzhvNkl5OFZu?=
- =?utf-8?B?V2kycjVMekVDNUFXWmVqb3NLM1c2anFmTTdlN2tRUUhFN0xEcTNIWTRqVzRs?=
- =?utf-8?B?MjRtbUJUbDlIVWRsT1RmZE81RnRZN1Z1My8rZmxqVnZ4NjA1eXBMWG5oT0JV?=
- =?utf-8?B?b0pCWmhHaDRQQ0F6TWZWWDRrWnlRZlI4ZkZVaUFFY3h1SFJsV1ptMFFzQm1s?=
- =?utf-8?Q?quTDRmfqrsFf4JNKxkK50tIac?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0de9b34-8d95-4e32-46ed-08dd65bc623a
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 01:29:53.4978
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: so1gV4n+Cj2eMkmjq6ULKey6j+udQElJcPkaVHRgn4/fkivRFmjVOseQ8w2lpKh4RCbn64eK0LnI5w3vKBZatA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7199
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAIsWRmVeSWpSXmKPExsXC9ZZnke4KjZvpBptOcFrMWb+GzWL61AuM
+	FiduNrJZ/Lx7nN2iefF6NovVm3wt7i97xmJxu/8cq8WqhdfYLI5vncduse8iUMPOh2/ZLJbv
+	62e0uLxrDpvFvTX/WS3mfpnKbLF6TYaDoMfhN++ZPXbOusvu0d12md2j5chbVo/Fe14yeWxa
+	1cnmsenTJHaPEzN+s3jsfGjpsbBhKrPH/rlr2D3OXazw+Pj0FovH501yAXxRXDYpqTmZZalF
+	+nYJXBlta8IL1upV/Dqwjq2BcYZKFyMnh4SAicT6Rd+YYexrXQuYQGw2AQ2Jg4dOAsU5OEQE
+	VCXarrh3MXJxMAu0sUjcfLWYEaRGWCBC4tyj0ywgNgtQTd/sl+wgNq+AucT5/nnsEDM1JRou
+	3QObySlgJjHtyG2wuJAAj8SrDfsZIeoFJU7OfMICsotZQF1i/TwhkDCzgLxE89bZzCB7JQSO
+	sUusefwfaqakxMEVN1gmMArMQtI+C6F9FpL2BYzMqxiFMvPKchMzc0z0MirzMiv0kvNzNzEC
+	43FZ7Z/oHYyfLgQfYhTgYFTi4d3BfiNdiDWxrLgy9xCjBAezkgiv+5Pr6UK8KYmVValF+fFF
+	pTmpxYcYpTlYlMR5jb6VpwgJpCeWpGanphakFsFkmTg4pRoYRefF9+vN0RQInrXH/I3NxMVa
+	fy9KG8d3nHo4M+h62JV1J9/fnXmx/ZHe7wWMEWlrq1Ysa7eT6PvhtV70Vts6O2P981e6Nk78
+	sb+05TOP6tY71ny9zyP/xW0L/HP3SbHSHemUgJ4t4vKrq53uTcjZvFdhaXVSjfDRjRWCz4MY
+	xLec5ixpm5u7Q4mlOCPRUIu5qDgRAMCmBzHDAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrKIsWRmVeSWpSXmKPExsXCNUNWR3e5xs10g+4L5hZz1q9hs5g+9QKj
+	xYmbjWwWP+8eZ7doXryezWL1Jl+L+8uesVh8fvaa2eJ2/zlWi1ULr7FZHN86j91i30WgrsNz
+	T7Ja7Hz4ls1i+b5+RovLu+awWdxb85/VYu6XqcwWh649Z7VYvSbDQcTj8Jv3zB47Z91l9+hu
+	u8zu0XLkLavH4j0vmTw2repk89j0aRK7x4kZv1k8dj609FjYMJXZY//cNewe5y5WeHx8eovF
+	49ttD4/FLz4weXzeJBcgEMVlk5Kak1mWWqRvl8CV0bYmvGCtXsWvA+vYGhhnqHQxcnJICJhI
+	XOtawARiswloSBw8dJK5i5GDQ0RAVaLtinsXIxcHs0Abi8TNV4sZQWqEBSIkzj06zQJiswDV
+	9M1+yQ5i8wqYS5zvn8cOMVNTouHSPbCZnAJmEtOO3AaLCwnwSLzasJ8Rol5Q4uTMJywgu5gF
+	1CXWzxMCCTMLyEs0b53NPIGRdxaSqlkIVbOQVC1gZF7FKJKZV5abmJljqlecnVGZl1mhl5yf
+	u4kRGHnLav9M3MH45bL7IUYBDkYlHt4d7DfShVgTy4orcw8xSnAwK4nwuj+5ni7Em5JYWZVa
+	lB9fVJqTWnyIUZqDRUmc1ys8NUFIID2xJDU7NbUgtQgmy8TBKdXAqO3q8NsoN/mrx6LJs/+z
+	c87PbPVY93N1mnJz5l9TXrarnrd/Cbs+zLguFZnW+cJiW07t/kl/P39c9uxK7bHfbEatW+v3
+	f/vYKdPSkhRk883bMa5+i4t6wYTNcrsKysMkefbULD8qupl/g8vj9ufLjWo2/C/UePP3raDw
+	d4tyh0/sh0JdzJtvKLEUZyQaajEXFScCALU/Yo+4AgAA
+X-CFilter-Loop: Reflected
 
-<snip>
+Hi Gregory, I have one more question below.
+
+On Tue, 11 Mar 2025 00:42:49 -0400 Gregory Price <gourry@gourry.net> wrote:
+> On Tue, Mar 11, 2025 at 01:02:07PM +0900, Yunjeong Mun wrote:
 > 
-> I made the service request 205423744 on February 12th, 2025, and after 
-> collecting the details until February 14th, 2025, Dell replied on March 
-> 4th, 2025, that there L3 support and engineering team was able to 
-> reproduce the issue, and they are going to provide a firmware update, 
-> currently estimated for June.
+> forenote - Hi Andrew, please hold off on the auto-configuration patch
+> for now, the sk group has identified a hotplug issue we need to work out
+> and we'll likely need to merge these two patch set together.  I really
+> appreciate your patience with this feature.
 > 
-> I am still surprised, that Dell’s QA overlooked this. Does AMD provide 
-> them test suites (does FWTS check for this). `dmesg --level=warning` is 
-> unfortunately not empty, so maybe they ignore it.
+> > Hi Gregory,
+> >
+> > In my understanding, the reason we are seeing 12 NUMA node is because
+> > it loops through node_states[N_POSSIBLE] and its value is 4095 (twelves ones)
+> > in the code [1]  below:
+> > 
+> ... snip ...
+> 
+> Appreciated, so yes this confirms what i thought was going on.  There's
+> 4 host bridges, 2 devices on each host bridge, and an extra CFMWS per
+> socket that is intended to interleave across the host bridges.
 > 
 
-IIRC FWTS doesn't test for this.  Perhaps you can add check to klog.json 
-for the message you saw?  There is an existing pattern for a CPPC 
-related error message:
+Thanks for confirm. Honggyu represented it as a tree sturcture:
+rootport/ 
+├── socket0
+│   ├── cross-host-bridge0 -> SRAT && CEDT (interleave on) --> NODE 2
+│   │   ├── host-bridge0 -> CEDT
+│   │   │   ├── cxl0 -> CEDT
+│   │   │   └── cxl1-> CEDT
+│   │   └── host-bridge1 -> CEDT
+│   │       ├── cxl2 -> CEDT
+│   │       └── cxl3 -> CEDT
+│   └── dram0 -> SRAT ---------------------------------------> NODE 0
+└── socket1
+    ├── cross-host-bridge1 -> SRAT && CEDT (interleave on)---> NODE 3
+    │   ├── host-bridge2 -> CEDT
+    │   │   ├── cxl4 -> CEDT
+    │   │   └── cxl5 -> CEDT
+    │   └── host-bridge3 -> CEDT
+    │       ├── cxl6 -> CEDT
+    │       └── cxl7 -> CEDT
+    └── dram1 -> SRAT ---------------------------------------> NODE 1
 
-https://github.com/fwts/fwts/blob/ec33c8ee1d99211a9cb2081324ec909a325e93d8/data/klog.json#L56
+> As you mention below, the code in acpi/numa/srat.c will create 1 NUMA
+> node per SRAT Memory Affinity Entry - and then also 1 NUMA node per
+> CFMWS that doesn't have a matching SRAT entry (with a known corner case
+> for a missing SRAT which doesn't apply here).
+> 
+> So essentialy what the system is doing is marking that it's absolutely
+> possible to create 1 region per device and also 1 region that
+> interleaves across host each pair of host bridges (I presume this is a
+> dual socket system?).
+> 
+> So, tl;dr: All these nodes are valid and this configuration is correct.
 
-A similar pattern could be added for your case.
+I am wondering if all 12 nodes specifed as 'possible' is indeed correct.
+The definiton of 'possible' is:
+ - 'Nodes that could be possibly become online at some point'. 
+IMHO, it seems like there should only be 4 nodes specified as 'possible'.
 
-> Would it make sense to make the warning an error, so it’s less likely 
-> overlooked?
+> 
+> Weighted interleave presently works fine as intended, but with the
+> inclusion of the auto-configuration, there will be issues for your
+> system configuration. This means we probably need to consider
+> merging these as a group.
+> 
+> During boot, the following will occur
+> 
+> 1) drivers/acpi/numa/srat.c marks 12 nodes as possible
+>    0-1) Socket nodes
+>    2-3) Cross-host-bridge interleave nodes
+>    4-11) single region nodes
+> 
+> 2) drivers/cxl/* will probe the various devices and create
+>    a root decoder for each CXL Fixed Memory Window
+>    decoder0.0 - decoder11.0  (or maybe decoder0.0 - decoder0.11)
+> 
+> 3) during probe auto-configuration of wieghted interleave occurs as a
+>    result of this code being called with hmat or cdat data:
+> 
+> void node_set_perf_attrs() {
+> ...
+> 	/* When setting CPU access coordinates, update mempolicy */
+> 	if (access == ACCESS_COORDINATE_CPU) {
+> 		if (mempolicy_set_node_perf(nid, coord)) {
+> 			pr_info("failed to set mempolicy attrs for node %d\n",
+> 				nid);
+> 		}
+> 	}
+> ...
+> }
+> 
+> under the current system, since we calculate with N_POSSIBLE, all nodes
+> will be assigned weights (assuming HMAT or CDAT data is available for
+> all of them).
+> 
+> We actually have a few issues here
+> 
+> 1) If all nodes are included in the weighting reduction, we're actually
+>    over-representing a particular set of hardware.  The interleave node
+>    and the individual device nodes would actually over-represent the
+>    bandwidth available (comparative to the CPU nodes).
+> 
+> 2) As stated on this patch line, just switching to N_MEMORY causes
+>    issues with hotplug - where the bandwidth can be reported, but if
+>    memory hasn't been added yet then we'll end up with wrong weights
+>    because it wasn't included in the calculation.
+> 
+> 3) However, not exposing the nodes because N_MEMORY isn't set yet
+>    a) prevents pre-configuration before memory is onlined, and
+>    b) hides the implications of hotplugging memory into a node from the
+>       user (adding memory causes a re-weight and may affect an
+>       interleave-all configuration).
+> 
+> but - i think it's reasonable that anyone using weighted-interleave is
+> *probably* not going to have nodes come and go.  It just seems like a
+> corner case that isn't reasonable to spend time supporting.
+> 
+> So coming back around to the hotplug patch line, I do think it's
+> reasonable hide nodes marked !N_MEMORY, but consider two issues:
+> 
+> 1) In auto mode, we need to re-weight on hotplug to only include
+>    onlined nodes.  This is because the reduction may be sensitive
+>    to the available bandwidth changes.
+> 
+>    This behavior needs to be clearly documented.
+> 
+> 2) We need to clearly define what the weight of a node will be when
+>    in manual mode and a node goes (memory -> no memory -> memory)
+>    a) does it retain it's old, manually set weight?
+>    b) does it revert to 1?
+> 
+> Sorry for the long email, just working through all the implications.
+> 
+> I think the proposed hotplug patch is a requirement for the
+> auto-configuration patch set.
+> 
+> ~Gregory
 > 
 
-If they don't run dmesg --level=warning, why would dmesg --level=error 
-would be more likely to be run?
-
-FWIW For 6.15 we're introducing another warning for BIOS failures.
-
-https://web.git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/commit/?h=linux-next&id=a9ba0fd452d82ca0da170eb6291aac01075a17d5
+Best regards,
+Yunjeong
 
