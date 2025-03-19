@@ -1,275 +1,383 @@
-Return-Path: <linux-acpi+bounces-12352-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12353-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96997A69331
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 16:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D05A69344
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 16:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B08007ABB1B
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 15:22:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A3D27A3754
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 15:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43BB1C9B62;
-	Wed, 19 Mar 2025 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A99B1C5D79;
+	Wed, 19 Mar 2025 15:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eAsOR6BA"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="XYRmszfl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azolkn19010007.outbound.protection.outlook.com [52.103.10.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D711AF0BC;
-	Wed, 19 Mar 2025 15:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742397833; cv=none; b=iVtcfBR/h3vOG5ZhpfE4PG7G8AdxXIcZd6XgADzZv8btEy/wJEcqIYgRHeFiQOpEiL5F+QWprVrPAePLbe+tlSpS5Zvf3tYHHVDZBXZMOm3QS04u9HcRM42mhmzDWXc2I2SnGDdLPIt2wkJvUmFxOi2JSAXCm6zjmyq0H/JXrfc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742397833; c=relaxed/simple;
-	bh=+ND2GQ1ucjL2Fbj/gHU8rnxTiLp8tL39vHpjDRl8G5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZLyj+tpYoWp+pv/JeVzRtKcA1HPWa3NgTm8b4+TjaSsfhO3YW+pIxMALKVlfzcocOg8PpFeIhvmHI1D7ToPV6hae6RCDxRmJI7J/k7wflT+6FJyUM38tRW1KoCnyx7ACaiET83PY8S66iAzPRbTCD1vkAx+Wv+zGY9pWcVesnjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eAsOR6BA; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742397832; x=1773933832;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+ND2GQ1ucjL2Fbj/gHU8rnxTiLp8tL39vHpjDRl8G5A=;
-  b=eAsOR6BAWppqkOMXNXLsbA4C/Jn/nP33uZFU67qC0+VZtmufHdiaNXBc
-   /4ImQGuriHjwy/AAz0az7uk6VUO1wCIHyYmVPrCWpHx528T9aCyyRzBu0
-   lYoiKEx1N4KixKyNjH1aQ7ZF0p+I3wK8S6GhI/zHwNVv1nblmoxX6d49h
-   s2M65DAlv46bWHosW4DZ8kU/d5kt6c18ie2MDiCbrJZVfl1CuZVzZD4wX
-   8dpc0KqI1DrjLchMTKkYg7/3lWEKGqsgv2sI+AgXiOsYjTdNpY1f8x8TQ
-   OZTjCQRqaBrJIAXxW8YETgf5cH5XZRfgl+t4O7uoeQ3mqn5LvbI7H9bGh
-   A==;
-X-CSE-ConnectionGUID: KBFwm3yhRfK8Lt0TtqUqFQ==
-X-CSE-MsgGUID: F8LdNn8fS66zhmF+LDD3tA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="31174872"
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; 
-   d="scan'208";a="31174872"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2025 08:23:51 -0700
-X-CSE-ConnectionGUID: 1KhLNtoLQ4eE7Zyd8ixR4w==
-X-CSE-MsgGUID: 6RmOKgCuQwGgjoIUotAsvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; 
-   d="scan'208";a="153527828"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2025 08:23:45 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 5A9F811F998;
-	Wed, 19 Mar 2025 17:23:40 +0200 (EET)
-Date: Wed, 19 Mar 2025 15:23:40 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH v8 02/10] property: Add functions to iterate named child
-Message-ID: <Z9rhfJUlCbi7kA2m@kekkonen.localdomain>
-References: <cover.1742225817.git.mazziesaccount@gmail.com>
- <9c3880f74476436f39d796b5c10c540ae50b722c.1742225817.git.mazziesaccount@gmail.com>
- <Z9mQPJwnKAkPHriT@kekkonen.localdomain>
- <b6b62ddd-ab59-4112-8f6e-c72618c45910@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE19CF9DA;
+	Wed, 19 Mar 2025 15:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.10.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742397984; cv=fail; b=rJVtC77TUf9adE0aWr0AfY8ogJGAo9Q9UePKlH1qzePNsJlXigy3cHtCDgUV05qjijwkURMJdBD3GWzIcKvtnbyPTKuVfOhi+UL9OPUT4T/gxxuUX3OH4OiwhEsr7uvFiGXxEOnrh/JhILQ6ph1BOgvju43uv2F6jll+Q36TsXU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742397984; c=relaxed/simple;
+	bh=BsqalKRBGQHMZYZCW2TBkWWwFoD499DeSKYhc6WzmRc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mW6Skp9/D83n9InSZ6AqZnv7TeR6GuSy79FGYIdkfdEj76grdWI/DvkyEW/UuB6QZRM1N6LFOntEV5DlW7pZ+/rjuZluLsQJt8UNnt+q7E/G3T5T8sq10x6Xkd6rvnmnWWWEgK9iigq4nPmpoWYdF/yeMQTNtPu+TvsZNpeHO5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=XYRmszfl; arc=fail smtp.client-ip=52.103.10.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=i8Kys8qJvMxEvuXf63os3XhU4xAQx8o/pZBLQzgnSwQwH1raoyGvGxvlvoXScdnXIIqypnS+7HnQjrsRW/k/BWVWo+ytF+XL3zwx4x0EduGeXvMOD3qtln1A+y/S4aNBJOFqZZWM3AlB5nYSYdYi+f5n/E20l8nIjJK7TjlgVq1DP+TNQsJ8+B9XNwB7qTBBKqUCyKPwjs+SFo8GsDp19lQHDZEKAr2Ulcj5WLlsGdhtiGjbl9ohWyy0JxTA5FJPAYXbPTEH1XYJkits6MCMvN/jIg0m+GQBs4wIzRpbphJB+xK+INdJNWEf8319LnfACfm41rpYAZbKaaqFoch8Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bagEGXFeCf6g39RY6S7vx8WP7V7WhyENHVEbs8MBkAY=;
+ b=uQeloKoJ7LXNk0qHqYiK4P7qlO+/r+6T9aCfyvDsVE+/NLezvo+yW3eyKhoc2SgsygmyXJd2m85JZEAGbMubFFdMGjQuh7rZzBgrds2vVdUA5Q2wYwTvULIc3r+iT3ebaBinQBJsIovo6cTyVqF8iAw2d5UAlRdTNDic6VEv3evk3ORiGpOwJcFKJ3i2DTqQEKpwRh+2DJPiZxX8hvyzEDlq7ryb5kruscVzEAsUF4GdvOVye+wSyDqhfKGVeN7iNcLpPEdSjN9seJEiiZGUFHseZtLQH+x6DAoE8T1rnBmHMcSG0N5M2xGj4mflu1RmKjyAZAL0Jer66R7WHIGsZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bagEGXFeCf6g39RY6S7vx8WP7V7WhyENHVEbs8MBkAY=;
+ b=XYRmszfla0UR1MbwysmcxbmsZQFJb8sQ/dwhIqd5HOZLmta6D3DvIT6EpDvifnCXFVk4W3n3MN5yh6uJEVv83EYgJe0q10H2zdbXb3TtNjMw4IIzjUOTzHqVfryvP/S65vkE6ojQMZFWwciAkk16nmJvvL/oiCtf9g0E1Wrdly/fcAI0lf+yssoAMJRwUM5XH222Kjw2hBkTHs1KoDAZtLFzvHtIpr2ZMglSrwj3FIdiKllTo8jvHZ4uBILc21Kpp/GuBtx5VUJI9hTL+QxJWUUQK9pxgo1isyjeGxsuNBRFQ3Oq+mvK0moBNJ3R0Zjh+4sAhF6ot8X/8acxRQcgKA==
+Received: from BN7PR02MB4148.namprd02.prod.outlook.com (2603:10b6:406:f6::17)
+ by DM6PR02MB6620.namprd02.prod.outlook.com (2603:10b6:5:222::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Wed, 19 Mar
+ 2025 15:26:20 +0000
+Received: from BN7PR02MB4148.namprd02.prod.outlook.com
+ ([fe80::1c3a:f677:7a85:4911]) by BN7PR02MB4148.namprd02.prod.outlook.com
+ ([fe80::1c3a:f677:7a85:4911%4]) with mapi id 15.20.8534.034; Wed, 19 Mar 2025
+ 15:26:20 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Michael Kelley <mhklinux@outlook.com>, Nuno Das Neves
+	<nunodasneves@linux.microsoft.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arch@vger.kernel.org"
+	<linux-arch@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>
+CC: "kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
+	<haiyangz@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>, "catalin.marinas@arm.com"
+	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+	"joro@8bytes.org" <joro@8bytes.org>, "robin.murphy@arm.com"
+	<robin.murphy@arm.com>, "arnd@arndb.de" <arnd@arndb.de>,
+	"jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
+	"muminulrussell@gmail.com" <muminulrussell@gmail.com>,
+	"skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
+	"mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
+	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+	"apais@linux.microsoft.com" <apais@linux.microsoft.com>,
+	"Tianyu.Lan@microsoft.com" <Tianyu.Lan@microsoft.com>,
+	"stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "prapal@linux.microsoft.com"
+	<prapal@linux.microsoft.com>, "muislam@microsoft.com"
+	<muislam@microsoft.com>, "anrayabh@linux.microsoft.com"
+	<anrayabh@linux.microsoft.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
+Subject: RE: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
+ expose /dev/mshv to VMMs
+Thread-Topic: [PATCH v5 10/10] Drivers: hv: Introduce mshv_root module to
+ expose /dev/mshv to VMMs
+Thread-Index: AQHbiKNt140GtdgK20KtRyAXlJwH1rNxYTIggAha0QCAAAvV4IAA6oYQ
+Date: Wed, 19 Mar 2025 15:26:20 +0000
+Message-ID:
+ <BN7PR02MB4148D51FFF965676AD155A3ED4D92@BN7PR02MB4148.namprd02.prod.outlook.com>
+References:
+ <1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com>
+ <1740611284-27506-11-git-send-email-nunodasneves@linux.microsoft.com>
+ <SN6PR02MB4157BE8AF5A1CDD39CF31124D4DF2@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <afd87eba-742f-4b67-9171-fd8486416b7b@linux.microsoft.com>
+ <SN6PR02MB41574DE5535222985147134CD4D92@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To:
+ <SN6PR02MB41574DE5535222985147134CD4D92@SN6PR02MB4157.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN7PR02MB4148:EE_|DM6PR02MB6620:EE_
+x-ms-office365-filtering-correlation-id: 672b8ef5-7b68-42af-9527-08dd66fa669b
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199028|15080799006|8062599003|8060799006|19110799003|102099032|3412199025|440099028|12091999003|41001999003|1710799026;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?+b3tbGp0RWBgYKpApB13tp4JDnrlUshlkX/TTJ0JC24WqK/GZO1f1cJGDOGs?=
+ =?us-ascii?Q?AkxcfOyezVKJKWhxCQxntiHqr80+EBR/bpw7gMsn0KT0zl8wAt/ekeeFDpB8?=
+ =?us-ascii?Q?DxyV/HKLmjd+sY76fssftijg0ofNoaQM/xBm+/EKYuWfLifBbFwaHvv7Fo3a?=
+ =?us-ascii?Q?UYtn2yQ9jRCjuemLPHjuWNRJE6mKJ0TnOLRTY5dXZwDWWhZlU2Eqt7pDfFgo?=
+ =?us-ascii?Q?28mo4GhShXJrfSj2yvXyh7+NjHrsyTS/FjDTgW3KaBpzbzaq68t+aYNY1D8n?=
+ =?us-ascii?Q?RGuCgqsO8xpAamdsixU+PGAUT5DMxLKRDil1V5lPNAzRd3f2sV2sNFc0ot1u?=
+ =?us-ascii?Q?uxioTLArJ620JSltz26+3uc+hb7hbEy1auc0sSwzVCKq0Sp+mwqjdiOZ8Sjs?=
+ =?us-ascii?Q?dD7qktLN0p1gWt1JJDcD6UJ50h6SgstIofRg5/+k6umePXe6GB1iPfnO6kH7?=
+ =?us-ascii?Q?zSDhFjA6BZjDRq9bAtGfon29YfemEPXOi7oO1mEEI191Roo8LFA0k7SFlmIH?=
+ =?us-ascii?Q?O2Zu50P+5xkKq+1a/4wrocxyLXaMxWNvqs9Qc8/QKCXmJ+5cmER1ZrQ86Pdf?=
+ =?us-ascii?Q?YMhasxKOxEeSUkhmw9dlSkekSnscSmYEQReprGXIGUCUhFEekHU1XIwr5lEg?=
+ =?us-ascii?Q?UmV0BaaWCzh2WODXFY9QARc2zhfAh8jXyvZgBjjVd79XoTlVNkonpci7PChz?=
+ =?us-ascii?Q?2+FhnyYyXp/1Wf6mZyQzJbFDE+KAbAbaPqLYCxjxZB8EKKXWB6dyxHQoVuAZ?=
+ =?us-ascii?Q?nyFPPS1Yw38H1oVuWed8PG3zH93gavveSYji84Yu82P/yPJeO2/G5Bf71+Rq?=
+ =?us-ascii?Q?AU32kRY6vaCPf8aYsJYIg7GIOazoXPfsYiW5T2HVABRdRRpxIA0fXfitJFCm?=
+ =?us-ascii?Q?0dfksc4vmdSr5mcJ3rob2wFR1o8XujBoXn2kyZ9+GC3O9G7m6UwpxjyzlLds?=
+ =?us-ascii?Q?ua4KeAyXvHKgEzbdCK3SuLibuiBx0kAMET7bg6/qxVnDoRzNLFHYqizEvWgU?=
+ =?us-ascii?Q?KCVx6o22kitWpqLebVTdN4NTq3i/XgUfR6rPeLnnrPo+rYXDbZqaF4r4GcmC?=
+ =?us-ascii?Q?naW1vJ6SxsQj0xNhfruUlPSMf+ydeAtKxF7EKILXpYCKlBNfaIF5eJ2hgk72?=
+ =?us-ascii?Q?c6hFtQowhahZIv6SDJ1cae2htZKEG83FG7YpYBdM5WXuZwMggCnn3YE=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?/djkSBd1q/14QvruGH+4K2vCPQDvuGjbMDhomOpYZqGepFnEBJWlNZazgjwa?=
+ =?us-ascii?Q?ZFaLJH9GwoYq1tIvzPmxUJL4Czv2HAeIb/iIfFhU+IGUUbRZyW8g9YgVo0yQ?=
+ =?us-ascii?Q?b4pBSh+ehnG2KjqWHjPOVDNclXhSsuCyCUbqcaf3ixhCPI3jE069sWGpP7Zu?=
+ =?us-ascii?Q?Jh+Om2nBzm0udMp7T6RC1fmGFTqXiM860S+LivjZ1ubfiVY9Oxujejz+R2EV?=
+ =?us-ascii?Q?Yu/e0ByDg4pKLqsbX2OQFHXhe3zmuqoZCgKdxxZrG0a9O+zWulM+xkwuifMi?=
+ =?us-ascii?Q?P6dXhShvaLStY2BQj4Acb3FgU725KKqJkOIqBLxXLLIZm7qBi6pBL0nk1ZRA?=
+ =?us-ascii?Q?I5lLFg3nI5L2ddnXABlEpuH+EyiMXT9gJFuQk4dNhiaJ/nLfW5CvBFqLzDv/?=
+ =?us-ascii?Q?YOTFCnTdS2pHvyHa4+zeNgoyu1OZJXc9PAq1fi3Lltyq/r2VNsqT1JOA5b4K?=
+ =?us-ascii?Q?++Uwxb0Qdsv3HaJYUN6zPBpoHt2sg84LHo7Hy4asvHXP+LBfL+cyZKaIqRES?=
+ =?us-ascii?Q?4GvfRaNqCzK2ZxgLDsrTbiejPgEZzByfNBM/Y7Lin4EDFFY+R4Lr1qt7QKt8?=
+ =?us-ascii?Q?ahwJjVKMDlBcMxH2JBsF+FrBwy5CGoPbYiTq8ea/182iBlJC3X4j+MP3rBS/?=
+ =?us-ascii?Q?uadCBbwVTFOMYQUGydLw6NNo1zQo5z/6Hncq9UwyHJLfjg0rfZywia4vTZVp?=
+ =?us-ascii?Q?GSK6uL7emyETDXAFfeg8hev2W5Cmez+0ZBuVvGjXIfLkjNZfhRJ/RjjB8YD0?=
+ =?us-ascii?Q?Y/h/6ICZNUDULRrUyZvsVRmooyMCnPTUYGe6ytAa0XKz8scSi0EIS/V7LeK7?=
+ =?us-ascii?Q?An6kqL//OJsL5DxNxUToczvTj4QSLJy+f/IZzUvV9S75O3dePfvkUD1iM5zd?=
+ =?us-ascii?Q?6xzTN7ImRGClZmyoPwUyogfQWxV7UrHGkkcsTFu7CV1u9yg7LVTw3cjKIRBA?=
+ =?us-ascii?Q?lIjzQY9VKx0F55qWkQAuAKGT7faXG3qEWxHs1bYBwqCxQA3ICfRIoJGPnn12?=
+ =?us-ascii?Q?VMAN1pX5ZJM6IA6cETbi7gkex763uFN1Upu1sHC60wz/uRRbL/cAXHKJJhBJ?=
+ =?us-ascii?Q?GBT+0WQYLJRHGLcQARVdw+zYpGsDrXYj2cmaNTIA+ilj+m9udjEZs3L6PfO/?=
+ =?us-ascii?Q?hZOzn2lQcJRrym4qzbJpJ3mpEPxKzHpezs0ZPFwMZI/gei2A2Y0Wkjuj4p+l?=
+ =?us-ascii?Q?fuaMTFukQL1Uf3DV1ohro4sDJ5kx15O81e4rqJn99hSUiqt7Mvrz8hroWss?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b6b62ddd-ab59-4112-8f6e-c72618c45910@gmail.com>
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR02MB4148.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 672b8ef5-7b68-42af-9527-08dd66fa669b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2025 15:26:20.5662
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6620
 
-Hei Matti,
+From: Michael Kelley <mhklinux@outlook.com> Sent: Tuesday, March 18, 2025 7=
+:10 PM
+>=20
+> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Tuesday, Ma=
+rch
+> 18, 2025 5:34 PM
+> >
+> > On 3/17/2025 4:51 PM, Michael Kelley wrote:
+> > > From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Wednesd=
+ay, February 26, 2025 3:08 PM
 
-On Wed, Mar 19, 2025 at 08:02:24AM +0200, Matti Vaittinen wrote:
-> Moro Sakari,
-> 
-> Thanks for the review.
-> 
-> On 18/03/2025 17:24, Sakari Ailus wrote:
-> > Moi,
-> > 
-> > On Mon, Mar 17, 2025 at 05:50:38PM +0200, Matti Vaittinen wrote:
-> > > There are a few use-cases where child nodes with a specific name need to
-> > > be parsed. Code like:
-> > > 
-> > > fwnode_for_each_child_node()
-> > > 	if (fwnode_name_eq())
-> > > 		...
-> > > 
-> > > can be found from a various drivers/subsystems. Adding a macro for this
-> > > can simplify things a bit.
-> > > 
-> > > In a few cases the data from the found nodes is later added to an array,
-> > > which is allocated based on the number of found nodes. One example of
-> > > such use is the IIO subsystem's ADC channel nodes, where the relevant
-> > > nodes are named as channel[@N].
-> > > 
-> > > Add helpers for iterating and counting device's sub-nodes with certain
-> > > name instead of open-coding this in every user.
-> > > 
-> > > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> > > ---
-> > > Revision history:
-> > > v7 => v8:
-> > >   - Fix the example in fwnode_get_named_child_node_count() documentation
-> > >     to use the fwnode_get_named_child_node_count() and not the
-> > >     device_get_named_child_node_count()
-> > >   - Fix the rest of the new macro's indentiations
-> > > v6 => v7:
-> > >   - Improve kerneldoc
-> > >   - Inline device_get_named_child_node_count() and change it to call
-> > >     fwnode_get_named_child_node_count() inside
-> > >   - Fix indentiation of the new macros
-> > > v5 => v6:
-> > >   - Add helpers to also iterate through the nodes.
-> > > v4 => v5:
-> > >   - Use given name instead of string 'channel' when counting the nodes
-> > >   - Add also fwnode_get_child_node_count_named() as suggested by Rob.
-> > > v3 => v4:
-> > >   - New patch as suggested by Jonathan, see discussion in:
-> > > https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
-> > > ---
-> > >   drivers/base/property.c  | 27 +++++++++++++++++++++++++++
-> > >   include/linux/property.h | 24 ++++++++++++++++++++++++
-> > >   2 files changed, 51 insertions(+)
-> > > 
-> > > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > > index c1392743df9c..f42f32ff45fc 100644
-> > > --- a/drivers/base/property.c
-> > > +++ b/drivers/base/property.c
-> > > @@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct device *dev)
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(device_get_child_node_count);
-> > > +/**
-> > > + * fwnode_get_named_child_node_count - number of child nodes with given name
-> > > + * @fwnode: Node which child nodes are counted.
-> > > + * @name: String to match child node name against.
-> > > + *
-> > > + * Scan child nodes and count all the nodes with a specific name. Potential
-> > > + * 'number' -ending after the 'at sign' for scanned names is ignored.
-> > > + * E.g.::
-> > > + *   fwnode_get_named_child_node_count(fwnode, "channel");
-> > > + * would match all the nodes::
-> > > + *   channel { }, channel@0 {}, channel@0xabba {}...
-> > > + *
-> > > + * Return: the number of child nodes with a matching name for a given device.
-> > > + */
-> > > +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
-> > > +					       const char *name)
-> > > +{
-> > > +	struct fwnode_handle *child;
-> > > +	unsigned int count = 0;
-> > > +
-> > > +	fwnode_for_each_named_child_node(fwnode, child, name)
-> > > +		count++;
-> > > +
-> > > +	return count;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
-> > > +
-> > >   bool device_dma_supported(const struct device *dev)
-> > >   {
-> > >   	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
-> > > diff --git a/include/linux/property.h b/include/linux/property.h
-> > > index e214ecd241eb..a1856e6b714c 100644
-> > > --- a/include/linux/property.h
-> > > +++ b/include/linux/property.h
-> > > @@ -167,10 +167,18 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
-> > >   	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
-> > >   	     child = fwnode_get_next_child_node(fwnode, child))
-> > > +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
-> > > +	fwnode_for_each_child_node(fwnode, child)			\
-> > > +		if (!fwnode_name_eq(child, name)) { } else
-> > > +
-> > >   #define fwnode_for_each_available_child_node(fwnode, child)		       \
-> > >   	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
-> > >   	     child = fwnode_get_next_available_child_node(fwnode, child))
-> > > +#define fwnode_for_each_available_named_child_node(fwnode, child, name)	\
-> > > +	fwnode_for_each_available_child_node(fwnode, child)		\
-> > > +		if (!fwnode_name_eq(child, name)) { } else
-> > > +
-> > 
-> > OF only enumerates available nodes via the fwnode API, software nodes don't
-> > have the concept but on ACPI I guess you could have a difference in nodes
-> > where you have device sub-nodes that aren't available. Still, these ACPI
-> > device nodes don't have meaningful names in this context (they're
-> > 4-character object names) so you wouldn't use them like this anyway.
-> 
-> I believe you have far better understanding on these concepts than I do. The
-> reason behind adding fwnode_for_each_available_child_node() was the patch
-> 10/10:
-> 
-> -	fwnode_for_each_available_child_node(sensors, node) {
-> -		if (fwnode_name_eq(node, "sensor")) {
-> -			if (!thp7312_sensor_parse_dt(thp7312, node))
-> -				num_sensors++;
-> -		}
-> +	fwnode_for_each_available_named_child_node(sensors, node, "sensor") {
-> +		if (!thp7312_sensor_parse_dt(thp7312, node))
-> +			num_sensors++;
->  	}
-> 
-> 
-> > So my question is: is it useful to provide this besides
-> > fwnode_for_each_named_child_node(), given that both are effectively the
-> > same?
-> 
-> So, I suppose you're saying the existing thp7312 -driver has no real reason
-> to use the 'fwnode_for_each_available_child_node()', but it could be using
-> fwnode_for_each_child_node() instead?
-> 
-> If so, I am Ok with dropping the
-> 'fwnode_for_each_available_named_child_node()' and changing the 10/10 to:
-> 
-> -	fwnode_for_each_available_child_node(sensors, node) {
-> -		if (fwnode_name_eq(node, "sensor")) {
-> -			if (!thp7312_sensor_parse_dt(thp7312, node))
-> -				num_sensors++;
-> -		}
-> +	fwnode_for_each_named_child_node(sensors, node, "sensor") {
-> +		if (!thp7312_sensor_parse_dt(thp7312, node))
-> +			num_sensors++;
->  	}
-> 
-> Do you think that'd be correct?
+[snip]
 
-I'd say so. Feel free to cc me to the last patch as well.
+> > >> +
+> > >> +	region =3D mshv_partition_region_by_gfn(partition, mem.guest_pfn);
+> > >> +	if (!region)
+> > >> +		return -EINVAL;
+> > <snip>
+> >> +	case MSHV_GPAP_ACCESS_TYPE_ACCESSED:
+> > >> +		hv_type_mask =3D 1;
+> > >> +		if (args.access_op =3D=3D MSHV_GPAP_ACCESS_OP_CLEAR) {
+> > >> +			hv_flags.clear_accessed =3D 1;
+> > >> +			/* not accessed implies not dirty */
+> > >> +			hv_flags.clear_dirty =3D 1;
+> > >> +		} else { // MSHV_GPAP_ACCESS_OP_SET
+> > >
+> > > Avoid C++ style comments.
+> > >
+> > Ack
+> >
+> > >> +			hv_flags.set_accessed =3D 1;
+> > >> +		}
+> > >> +		break;
+> > >> +	case MSHV_GPAP_ACCESS_TYPE_DIRTY:
+> > >> +		hv_type_mask =3D 2;
+> > >> +		if (args.access_op =3D=3D MSHV_GPAP_ACCESS_OP_CLEAR) {
+> > >> +			hv_flags.clear_dirty =3D 1;
+> > >> +		} else { // MSHV_GPAP_ACCESS_OP_SET
+> > >
+> > > Same here.
+> > >
+> > Ack
+> >
+> > >> +			hv_flags.set_dirty =3D 1;
+> > >> +			/* dirty implies accessed */
+> > >> +			hv_flags.set_accessed =3D 1;
+> > >> +		}
+> > >> +		break;
+> > >> +	}
+> > >> +
+> > >> +	states =3D vzalloc(states_buf_sz);
+> > >> +	if (!states)
+> > >> +		return -ENOMEM;
+> > >> +
+> > >> +	ret =3D hv_call_get_gpa_access_states(partition->pt_id, args.page_=
+count,
+> > >> +					    args.gpap_base, hv_flags, &written,
+> > >> +					    states);
+> > >> +	if (ret)
+> > >> +		goto free_return;
+> > >> +
+> > >> +	/*
+> > >> +	 * Overwrite states buffer with bitmap - the bits in hv_type_mask
+> > >> +	 * correspond to bitfields in hv_gpa_page_access_state
+> > >> +	 */
+> > >> +	for (i =3D 0; i < written; ++i)
+> > >> +		assign_bit(i, (ulong *)states,
+> > >
+> > > Why the cast to ulong *?  I think this argument to assign_bit() is vo=
+id *, in
+> > > which case the cast wouldn't be needed.
+> > >
+> > It looks like assign_bit() and friends resolve to a set of functions wh=
+ich do
+> > take an unsigned long pointer, e.g.:
+> >
+> > __set_bit() -> generic___set_bit(unsigned long nr, volatile unsigned lo=
+ng *addr)
+> > set_bit() -> arch_set_bit(unsigned int nr, volatile unsigned long *p)
+> > etc...
+> >
+> > So a cast is necessary.
+>=20
+> Indeed, you are right.  Seems like set_bit() and friends should take a vo=
+id *.
+> But that's a different kettle of fish.
+>=20
+> >
+> > > Also, assign_bit() does atomic bit operations. Doing such in a loop l=
+ike
+> > > here will really hammer the hardware memory bus with atomic
+> > > read-modify-write cycles. Use __assign_bit() instead, which does
+> > > non-atomic operations. You don't need atomic here as no other
+> > > threads are modifying the bit array.
+> > >
+> > I didn't realize it was atomic. I'll change it to __assign_bit().
+> >
+> > >> +			   states[i].as_uint8 & hv_type_mask);
+> > >
+> > > OK, so the starting contents of "states" is an array of bytes. The en=
+ding
+> > > contents is an array of bits. This works because every bit in the end=
+ing
+> > > bit array is set to either 0 or 1. Overlap occurs on the first iterat=
+ion
+> > > where the code reads the 0th byte, and writes the 0th bit, which is p=
+art of
+> > > the 0th byte. The second iteration reads the 1st byte, and writes the=
+ 1st bit,
+> > > which doesn't overlap, and there's no overlap from then on.
+> > >
+> > > Suppose "written" is not a multiple of 8. The last byte of "states" a=
+s an
+> > > array of bits will have some bits that have not been set to either 0 =
+or 1 and
+> > > might be leftover garbage from when "states" was an array of bytes. T=
+hat
+> > > garbage will get copied to user space. Is that OK? Even if user space=
+ knows
+> > > enough to ignore those bits, it seems a little dubious to be copying =
+even
+> > > a few bits of garbage to user space.
+> > >
+> > > Some comments might help here.
+> > >
+> > This is a good point. The expectation is indeed that userspace knows wh=
+ich
+> > bits are valid from the returned "written" value, but I agree it's a bi=
+t
+> > odd to have some garbage bits in the last byte. How does this look (to =
+be
+> > inserted here directly after the loop):
+> >
+> > +       /* zero the unused bits in the last byte of the returned bitmap=
+ */
+> > +       if (written > 0) {
+> > +               u8 last_bits_mask;
+> > +               int last_byte_idx;
+> > +               int bits_rem =3D written % 8;
+> > +
+> > +               /* bits_rem =3D=3D 0 when all bits in the last byte wer=
+e assigned */
+> > +               if (bits_rem > 0) {
+> > +                       /* written > 0 ensures last_byte_idx >=3D 0 */
+> > +                       last_byte_idx =3D ((written + 7) / 8) - 1;
+> > +                       /* bits_rem > 0 ensures this masks 1 to 7 bits =
+*/
+> > +                       last_bits_mask =3D (1 << bits_rem) - 1;
+> > +                       states[last_byte_idx].as_uint8 &=3D last_bits_m=
+ask;
+> > +               }
+> > +       }
+>=20
+> A simpler approach is to "continue" the previous loop.  And if "written"
+> is zero, this additional loop won't do anything either:
+>=20
+> 	for (i =3D written; i < ALIGN(written, 8); ++i)
+> 		__clear_bit(i, (ulong *)states);
+>=20
 
-I guess one way to make this clearer is to switch to
-fwnode_for_each_child_node() in a separate patch before
-fwnode_for_each_named_child_node() conversion.
+One further thought here: Could "written" be less than
+args.page_count at this point? That would require
+hv_call_get_gpa_access_states() to not fail, but still return
+a value for written that is less than args.page_count. If that
+could happen, then the above loop should be:
 
-There are also just a handful of users of
-fwnode_for_each_available_child_node() and I guess these could be
-converted, too, but I think it's outside the scope of the set.
+	for (i =3D written; i < bitmap_buf_sz * 8; ++i)
+		__clear_bit(i, (ulong *)states);
 
--- 
-Terveisin,
+so that all the uninitialized bits and bytes that will be written
+back to user space are cleared.
 
-Sakari Ailus
+> >
+> > The remaining bytes could be memset() to zero but I think it's fine to =
+leave
+> > them.
+>=20
+> I agree.  The remaining bytes aren't written back to user space anyway
+> since the copy_to_user() uses bitmap_buf_sz.
+
+Maybe I misunderstood what you meant by "remaining bytes".  I think
+all bits and bytes that are written back to user space should have
+valid data or zeros so that no garbage is written back.
+
+Michael
+
+>=20
+> >
+> > >> +
+> > >> +	args.page_count =3D written;
+> > >> +
+> > >> +	if (copy_to_user(user_args, &args, sizeof(args))) {
+> > >> +		ret =3D -EFAULT;
+> > >> +		goto free_return;
+> > >> +	}
+> > >> +	if (copy_to_user((void __user *)args.bitmap_ptr, states, bitmap_bu=
+f_sz))
+> > >> +		ret =3D -EFAULT;
+> > >> +
+> > >> +free_return:
+> > >> +	vfree(states);
+> > >> +	return ret;
+> > >> +}
 
