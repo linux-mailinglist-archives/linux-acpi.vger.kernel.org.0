@@ -1,80 +1,48 @@
-Return-Path: <linux-acpi+bounces-12345-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12346-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCF1A684BB
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 07:03:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611B0A6862A
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 08:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8C533AA294
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 06:02:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A08119C1427
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 07:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3460214204;
-	Wed, 19 Mar 2025 06:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5F424EF78;
+	Wed, 19 Mar 2025 07:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4J4lsZu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZawpNJqW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5B91598F4;
-	Wed, 19 Mar 2025 06:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39626207DEA;
+	Wed, 19 Mar 2025 07:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742364150; cv=none; b=gfYRFuJeSbD6+0VLckv2f4jdXif/zo0WsXkEeXAPZwxXyen5tPWNlki94ueJpBWZbSuJ4EQD/qKhQbmP0swZNguYXs7QfUt7a8tAzmnFzajHyxrbumTKYJ2Mp/4FOiFWWQp3zEs4dRXLsvwFAAvz9d0c4D7yvJdgsYsDeyrptm0=
+	t=1742370769; cv=none; b=jSL9XOal2h7TUAO/2DvZbCTo+6H1wP99M3iwWFbT4/nIGVQEFddzZRL9ZieiPrMKUlp6rO3zWFdudHvUlWKucZ0tV/erd/GRXIoDkJc4oSKcdNC6D3iBTheKOlYbHDdEjrjRdco0xVLWaUAOnj7fQH9B/fM+hUjTfWuZO4cXQjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742364150; c=relaxed/simple;
-	bh=eORVI6Tzy9mBaDTciuUmVp6KL8cFOQLJyGQ3DFrXIdY=;
+	s=arc-20240116; t=1742370769; c=relaxed/simple;
+	bh=ydElR4BEsnGqBeQsKA4b4OztiPjBOlEfUTp4FQDIRF4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ABE2HUw6iuXtzlT1Yzqxs/C3Y6lHBHUnLL7FuDChR7u1zvXnC1D1PCUbN2DEc/ymsSgD7Au84jBPXCPSRuytW48XKTOCHe1FNBhZjvVSGrOx+MT+BEbuf06rvl0Ig2mU6AUOYNv546+rkj+i36aUmAOYjgp0GK5f/ow870iGs3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4J4lsZu; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30795988ebeso65576861fa.3;
-        Tue, 18 Mar 2025 23:02:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742364147; x=1742968947; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VSxloc0O1A/DITw8sYD24uS54HnF7dqpvc1vk/u6miM=;
-        b=G4J4lsZueHLWP2G9le7AQ3Y0kVPmglj3/HrIXFStUHghghU9Q0Yeg5Xoo6wXo0QY8h
-         2fzuPCtPEflQYvazFlKVvOgO11ri14QrSXIMiC9Cv0qOjKgGrrS5nzP4k9u9E+r4xkIN
-         J175W9EigU6bgFLS59jWM8JCtoYUkt2v3FMvcSZxuLKdWcz6pg+SqSQqcr7IHCs1XLK2
-         Zg+7D0qogoS20mRb6To+Gv71RH2GC8/tcm6zA9y2+r0AkqGkXg83EGH7fHrZ93F/6krv
-         RBeCqTioXujuW+BI5bFQ6W1o40SAPnz/JgmBVgA7hPVGAeiITotXqs6grCTZ32ae23XF
-         bP6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742364147; x=1742968947;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VSxloc0O1A/DITw8sYD24uS54HnF7dqpvc1vk/u6miM=;
-        b=OqJjmT4kSeO06/jPzSYYCQ/6xx40jh9wUUh1saOGevXCc2ibn4Q6LdK1c1DrHpuXbS
-         pR+sf2pEuUNyjrno6NdnXnAhceCAP+wZBUbktvgH8oqcVbaURqjIkltzsQoSrh8qTOR6
-         nSU1Cjew3OQkdn1XIruxeCiqBQsNkw0XFuprFZk1CBc+6pGjoZZu6uA8Dr8mWGZ1A43Y
-         9DGopO73wGqByY4IToIBeaw5J+1c7EUULLOYFkc1XMw0Kl04BkfItwPOIfSK62yBJDn0
-         pO28tbrWjRSmXmZqH5cKoodueQpqKsUIn2WkT0Pyn0sn5CYzr2t+LI8O6TcpOlOQlJSu
-         yAMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAHbRl4qVSudWeqCXFf7IlhVsC6Wq8iq+0sqX1Rs8Td219jwHbua92PQnxpOCfHy8wlZQ57TOCPzE9zuDq@vger.kernel.org, AJvYcCVC9fyuOl0dmQ+veyLKzAP+IbdMJisG5MpwA58VSA66yf7LLo31/WnmuHm2ObXPXWpj7TCRoB+HGtn7@vger.kernel.org, AJvYcCVF2AGOiZko/3YELXs7cD0LlxelO4O+Gt+5vUsN7KMjTFMmES2v0Or2/yTlCCAo2SmBmJULFiW2+v+R@vger.kernel.org, AJvYcCW7154Ynh/qEf9JZViUDHZPtqjUP4G4cq9NfeIgmt2A3OxRxlpNzzRjsJTh/aR6DEmP+Wuetj7G@vger.kernel.org, AJvYcCXC+wBUZRdEUTBX+Pg8WVxOBj1hbrf/AH93N/nkkU78w6k04+7QqrFbJfnxSD5CqONTiEKJC9vFHDq+zA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh+m9qPme2T6nID+AmHAzMbb+Y9ZKZCEMB//Lzt2kp5o9eoXUc
-	hL+8fsKm/h52m1xCXpDYZ7tnI+vtW+hOkdWgEva4UF/CsHG5gOg5
-X-Gm-Gg: ASbGncs53NiBpa812zdslwca0ukk8fseizLy9zRZrqcNvShO+EJUEHhxL8BXNmw0St1
-	2ABdFVWq5kRj3w1iliiz/lZixonnemMkVEijzQtIkZBiPqO0r5i0BrhCz5a3ZllmkM5GzZgAYUj
-	76nlJCooHorsYHGcpaqTZo4j9yAXWRz31XO+Vou+ZbsyFYYIOaPfCZXNS7cgbYAYZgC8e+/e760
-	WXv4BmwlkchyZjNqLh03rRK9ThQAwvoJJnv24ArYqywLvdyHqom8QdQ34U70SVX2txQzqPUc5JQ
-	pqcAksfu/MgHOI7x719rGck2N5IRXpnMAzebq+p9D+NHgOUwfvDfMC5vxiQ8ALXfoo38XfAMSST
-	l/g2w2CoYRxDTt1ZZ37VkK23hyA==
-X-Google-Smtp-Source: AGHT+IECU/HaiXIpx+kOzl0KCkWIkHUEs4v7kwUKNX6P59xrQ+6eN+uCfNBLwQp9ZO06uKklNlVcGg==
-X-Received: by 2002:a2e:a54b:0:b0:30c:5c6:91e0 with SMTP id 38308e7fff4ca-30d6a3c622bmr5069121fa.2.1742364146428;
-        Tue, 18 Mar 2025 23:02:26 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c3f10ab4bsm22288601fa.50.2025.03.18.23.02.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Mar 2025 23:02:25 -0700 (PDT)
-Message-ID: <b6b62ddd-ab59-4112-8f6e-c72618c45910@gmail.com>
-Date: Wed, 19 Mar 2025 08:02:24 +0200
+	 In-Reply-To:Content-Type; b=EfFSKoukvgIh1G1NCjS5zy0sGX0t+huxgoZcMT4UHMsWQR2KLvCqTcGHRVrKZ6/PnPLGp6JmsgZTyfggajLza1k6DjfVTOViSlJx8S9m/2eQXxzkufzHdyq+k7IMPfTkoSky8Lc6Lc1Yy1gO2QiWjpKbg+okOk2lPHVrIhtDQdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZawpNJqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECE8C4CEE9;
+	Wed, 19 Mar 2025 07:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742370768;
+	bh=ydElR4BEsnGqBeQsKA4b4OztiPjBOlEfUTp4FQDIRF4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZawpNJqW5F0nJzlIxTHQe8wIH6OvMljjK6B733L1oIEAIzDw3xMf/thgshXafMZfc
+	 lcFSHyUDn+Kr/ygEMw2gs+IXUrGshCSz5jlYhHoGURroJoUgoKS5XJl+hsosBlzr9Z
+	 cHWUBQzgJrg5JRTNW+YwzCmiIzWopgIwxI1IOFYzqO86GtPrYf+fR82vk6S92rJwnf
+	 a+FZGT1CEdbodIsGN1EwdG/2Dpzh+QOvupoU8CjvRllbvPYvHi0wKifyJgIAaexVEM
+	 ZzesVa0L9JtBJCpSecd3tutKPxTnZbsHZcZ3qXbZuRFicVzsIJh0v6tthIJlsulFvN
+	 x6T+bpJXD4gsw==
+Message-ID: <17d37eab-2275-49ff-97b9-6b6706756f04@kernel.org>
+Date: Wed, 19 Mar 2025 08:52:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -82,190 +50,201 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 02/10] property: Add functions to iterate named child
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <cover.1742225817.git.mazziesaccount@gmail.com>
- <9c3880f74476436f39d796b5c10c540ae50b722c.1742225817.git.mazziesaccount@gmail.com>
- <Z9mQPJwnKAkPHriT@kekkonen.localdomain>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <Z9mQPJwnKAkPHriT@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
+ mailbox
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, rafael@kernel.org, lenb@kernel.org,
+ kirill.shutemov@linux.intel.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-acpi@vger.kernel.org, ricardo.neri@intel.com, ravi.v.shankar@intel.com
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
+ <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
+ <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
+ <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
+ <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
+ <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
+ <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
+ <20250303222102.GA16733@ranerica-svr.sc.intel.com>
+ <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
+ <20250312055118.GA29492@ranerica-svr.sc.intel.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250312055118.GA29492@ranerica-svr.sc.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Moro Sakari,
-
-Thanks for the review.
-
-On 18/03/2025 17:24, Sakari Ailus wrote:
-> Moi,
+On 12/03/2025 06:51, Ricardo Neri wrote:
+> On Tue, Mar 11, 2025 at 11:01:28AM +0100, Krzysztof Kozlowski wrote:
+>> On 03/03/2025 23:21, Ricardo Neri wrote:
+>>> On Fri, Sep 20, 2024 at 01:15:41PM +0200, Krzysztof Kozlowski wrote:
+>>>
+>>> [...]
+>>>  
+>>>> enable-method is part of CPUs, so you probably should match the CPUs...
+>>>> I am not sure, I don't have the big picture here.
+>>>>
+>>>> Maybe if companies want to push more of bindings for purely virtual
+>>>> systems, then they should first get involved more, instead of relying on
+>>>> us. Provide reviews for your virtual stuff, provide guidance. There is
+>>>> resistance in accepting bindings for such cases for a reason - I don't
+>>>> even know what exactly is this and judging/reviewing based on my
+>>>> practices will no be accurate.
+>>>
+>>> Hi Krzysztof,
+>>>
+>>> I am taking over this work from Yunhong.
+>>>
+>>> First of all, I apologize for the late reply. I will make sure
+>>> communications are timely in the future.
+>>>
+>>> Our goal is to describe in the device tree a mechanism or artifact to boot
+>>> secondary CPUs.
+>>>
+>>> In our setup, the firmware puts secondary CPUs to monitor a memory location
+>>> (i.e., the wakeup mailbox) while spinning. From the boot CPU, the OS writes
+>>> in the mailbox the wakeup vector and the ID of the secondary CPU it wants
+>>> to boot. When a secondary CPU sees its own ID it will jump to the wakeup
+>>> vector.
+>>>
+>>> This is similar to the spin-table described in the Device Tree
+>>> specification. The key difference is that with the spin-table CPUs spin
+>>> until a non-zero value is written in `cpu-release-addr`. The wakeup mailbox
+>>> uses CPU IDs.
+>>>
+>>> You raised the issue of the lack of a `compatible` property, and the fact
+>>> that we are not describing an actual device.
+>>>
+>>> I took your suggestion of matching by node and I came up with the binding
+>>> below. I see these advantages in this approach:
+>>>
+>>>   * I define a new node with a `compatible` property.
+>>>   * There is precedent: the psci node. In the `cpus` node, each cpu@n has
+>>
 > 
-> On Mon, Mar 17, 2025 at 05:50:38PM +0200, Matti Vaittinen wrote:
->> There are a few use-cases where child nodes with a specific name need to
->> be parsed. Code like:
->>
->> fwnode_for_each_child_node()
->> 	if (fwnode_name_eq())
->> 		...
->>
->> can be found from a various drivers/subsystems. Adding a macro for this
->> can simplify things a bit.
->>
->> In a few cases the data from the found nodes is later added to an array,
->> which is allocated based on the number of found nodes. One example of
->> such use is the IIO subsystem's ADC channel nodes, where the relevant
->> nodes are named as channel[@N].
->>
->> Add helpers for iterating and counting device's sub-nodes with certain
->> name instead of open-coding this in every user.
->>
->> Suggested-by: Jonathan Cameron <jic23@kernel.org>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
->> ---
->> Revision history:
->> v7 => v8:
->>   - Fix the example in fwnode_get_named_child_node_count() documentation
->>     to use the fwnode_get_named_child_node_count() and not the
->>     device_get_named_child_node_count()
->>   - Fix the rest of the new macro's indentiations
->> v6 => v7:
->>   - Improve kerneldoc
->>   - Inline device_get_named_child_node_count() and change it to call
->>     fwnode_get_named_child_node_count() inside
->>   - Fix indentiation of the new macros
->> v5 => v6:
->>   - Add helpers to also iterate through the nodes.
->> v4 => v5:
->>   - Use given name instead of string 'channel' when counting the nodes
->>   - Add also fwnode_get_child_node_count_named() as suggested by Rob.
->> v3 => v4:
->>   - New patch as suggested by Jonathan, see discussion in:
->> https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
->> ---
->>   drivers/base/property.c  | 27 +++++++++++++++++++++++++++
->>   include/linux/property.h | 24 ++++++++++++++++++++++++
->>   2 files changed, 51 insertions(+)
->>
->> diff --git a/drivers/base/property.c b/drivers/base/property.c
->> index c1392743df9c..f42f32ff45fc 100644
->> --- a/drivers/base/property.c
->> +++ b/drivers/base/property.c
->> @@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct device *dev)
->>   }
->>   EXPORT_SYMBOL_GPL(device_get_child_node_count);
->>   
->> +/**
->> + * fwnode_get_named_child_node_count - number of child nodes with given name
->> + * @fwnode: Node which child nodes are counted.
->> + * @name: String to match child node name against.
->> + *
->> + * Scan child nodes and count all the nodes with a specific name. Potential
->> + * 'number' -ending after the 'at sign' for scanned names is ignored.
->> + * E.g.::
->> + *   fwnode_get_named_child_node_count(fwnode, "channel");
->> + * would match all the nodes::
->> + *   channel { }, channel@0 {}, channel@0xabba {}...
->> + *
->> + * Return: the number of child nodes with a matching name for a given device.
->> + */
->> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
->> +					       const char *name)
->> +{
->> +	struct fwnode_handle *child;
->> +	unsigned int count = 0;
->> +
->> +	fwnode_for_each_named_child_node(fwnode, child, name)
->> +		count++;
->> +
->> +	return count;
->> +}
->> +EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
->> +
->>   bool device_dma_supported(const struct device *dev)
->>   {
->>   	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
->> diff --git a/include/linux/property.h b/include/linux/property.h
->> index e214ecd241eb..a1856e6b714c 100644
->> --- a/include/linux/property.h
->> +++ b/include/linux/property.h
->> @@ -167,10 +167,18 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
->>   	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
->>   	     child = fwnode_get_next_child_node(fwnode, child))
->>   
->> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
->> +	fwnode_for_each_child_node(fwnode, child)			\
->> +		if (!fwnode_name_eq(child, name)) { } else
->> +
->>   #define fwnode_for_each_available_child_node(fwnode, child)		       \
->>   	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
->>   	     child = fwnode_get_next_available_child_node(fwnode, child))
->>   
->> +#define fwnode_for_each_available_named_child_node(fwnode, child, name)	\
->> +	fwnode_for_each_available_child_node(fwnode, child)		\
->> +		if (!fwnode_name_eq(child, name)) { } else
->> +
+> Thanks for your feedback!
 > 
-> OF only enumerates available nodes via the fwnode API, software nodes don't
-> have the concept but on ACPI I guess you could have a difference in nodes
-> where you have device sub-nodes that aren't available. Still, these ACPI
-> device nodes don't have meaningful names in this context (they're
-> 4-character object names) so you wouldn't use them like this anyway.
+>> psci is a standard. If you are documenting here a standard, clearly
+>> express it and provide reference to the specification.
+> 
+> It is not really a standard, but this mailbox behaves indentically to the
+> wakeup mailbox described in the ACPI spec [1]. I am happy reference the
+> spec in the documentation of the binding... or describe in full the
+> mechanism of mailbox without referring to ACPI. You had indicated you don't
+> care about what ACPI does [2].
 
-I believe you have far better understanding on these concepts than I do. 
-The reason behind adding fwnode_for_each_available_child_node() was the 
-patch 10/10:
+Behaving like ACPI and implementing a spec are two different things. The
+question is whether you need to implement it like that and I believe
+answer is: no.
 
--	fwnode_for_each_available_child_node(sensors, node) {
--		if (fwnode_name_eq(node, "sensor")) {
--			if (!thp7312_sensor_parse_dt(thp7312, node))
--				num_sensors++;
--		}
-+	fwnode_for_each_available_named_child_node(sensors, node, "sensor") {
-+		if (!thp7312_sensor_parse_dt(thp7312, node))
-+			num_sensors++;
-  	}
+> 
+> In a nutshell, the wakeup mailbox is similar to the spin table used in ARM
+> boards: it is reserved memory region that secondary CPUs monitor while
+> spinning.
+> 
+>>
+>>
+>>>     an `enable-method` property that specify `psci`.
+>>>   * The mailbox is a device as it is located in a reserved memory region.
+>>>     This true regardless of the device tree describing bare-metal or
+>>>     virtualized machines.
+>>>
+>>> Thanks in advance for your feedback!
+>>>
+>>> Best,
+>>> Ricardo
+>>>
+>>> (only the relevant sections of the binding are shown for brevity)
+>>>
+>>> properties:
+>>>   $nodename:
+>>>     const: wakeup-mailbox
+>>>
+>>>   compatible:
+>>>     const: x86,wakeup-mailbox
+>>
+>> You need vendor prefix for this particular device. If I pointed out lack
+>> of device and specific compatible, then adding random compatible does
+>> not solve it. I understand it solves for you, but not from the bindings
+>> point of view.
+> 
+> I see. Platform firmware will implement the mailbox. It would not be any
+> specific hardware from Intel. Perhaps `intel,wakeup-mailbox`?
+> 
+>>
+>>>
+>>>   mailbox-addr:
+>>>     $ref: /schemas/types.yaml#/definitions/uint64
+>>
+>> So is this some sort of reserved memory?
+> 
+> Yes, the mailbox is located in reserved memory.
 
 
-> So my question is: is it useful to provide this besides
-> fwnode_for_each_named_child_node(), given that both are effectively the
-> same?
+Then why reserved memory bindings are not working?
 
-So, I suppose you're saying the existing thp7312 -driver has no real 
-reason to use the 'fwnode_for_each_available_child_node()', but it could 
-be using fwnode_for_each_child_node() instead?
+Anyway this was half a year ago. None of the emails are in my inbox.
+None of the context is in my head.
 
-If so, I am Ok with dropping the 
-'fwnode_for_each_available_named_child_node()' and changing the 10/10 to:
+It's the second or third email this month someone responds to my email
+from 2024.
 
--	fwnode_for_each_available_child_node(sensors, node) {
--		if (fwnode_name_eq(node, "sensor")) {
--			if (!thp7312_sensor_parse_dt(thp7312, node))
--				num_sensors++;
--		}
-+	fwnode_for_each_named_child_node(sensors, node, "sensor") {
-+		if (!thp7312_sensor_parse_dt(thp7312, node))
-+			num_sensors++;
-  	}
+Frankly, that's a neat trick. I won't remember anything, but it would be
+impolite to say just "no" without arguments. So now you will resend the
+same code leading to the same discussions we had half a year ago. Or
+ignoring that discussions.
 
-Do you think that'd be correct?
+I don't understand why this should be reviewers problem, so no, that's
+just unfair.
 
-Yours,
-	-- Matti
+
+Best regards,
+Krzysztof
 
