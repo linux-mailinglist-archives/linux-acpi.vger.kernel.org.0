@@ -1,250 +1,188 @@
-Return-Path: <linux-acpi+bounces-12346-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12347-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611B0A6862A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 08:52:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DBEA688F1
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 10:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A08119C1427
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 07:53:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8285C1628CE
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Mar 2025 09:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5F424EF78;
-	Wed, 19 Mar 2025 07:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZawpNJqW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7ACF213230;
+	Wed, 19 Mar 2025 09:56:42 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39626207DEA;
-	Wed, 19 Mar 2025 07:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944B8202C5C;
+	Wed, 19 Mar 2025 09:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742370769; cv=none; b=jSL9XOal2h7TUAO/2DvZbCTo+6H1wP99M3iwWFbT4/nIGVQEFddzZRL9ZieiPrMKUlp6rO3zWFdudHvUlWKucZ0tV/erd/GRXIoDkJc4oSKcdNC6D3iBTheKOlYbHDdEjrjRdco0xVLWaUAOnj7fQH9B/fM+hUjTfWuZO4cXQjw=
+	t=1742378202; cv=none; b=pHJ2T++S6LyHJz4Hew5sFm6a2ZRRuZzK7wMSNrxEP/uBjG/rqXXBNAXA1sAcEyZnL1DWLcRLQvJWtdou56Q29mS+wPMa1FqfxcjR/WCaqVKTgkNkBTayKQ1SassFjiTbXvCBY2p5vsPewT+47GeCykoRAlVwDX8qVV3NSV9b8qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742370769; c=relaxed/simple;
-	bh=ydElR4BEsnGqBeQsKA4b4OztiPjBOlEfUTp4FQDIRF4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EfFSKoukvgIh1G1NCjS5zy0sGX0t+huxgoZcMT4UHMsWQR2KLvCqTcGHRVrKZ6/PnPLGp6JmsgZTyfggajLza1k6DjfVTOViSlJx8S9m/2eQXxzkufzHdyq+k7IMPfTkoSky8Lc6Lc1Yy1gO2QiWjpKbg+okOk2lPHVrIhtDQdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZawpNJqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECE8C4CEE9;
-	Wed, 19 Mar 2025 07:52:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742370768;
-	bh=ydElR4BEsnGqBeQsKA4b4OztiPjBOlEfUTp4FQDIRF4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZawpNJqW5F0nJzlIxTHQe8wIH6OvMljjK6B733L1oIEAIzDw3xMf/thgshXafMZfc
-	 lcFSHyUDn+Kr/ygEMw2gs+IXUrGshCSz5jlYhHoGURroJoUgoKS5XJl+hsosBlzr9Z
-	 cHWUBQzgJrg5JRTNW+YwzCmiIzWopgIwxI1IOFYzqO86GtPrYf+fR82vk6S92rJwnf
-	 a+FZGT1CEdbodIsGN1EwdG/2Dpzh+QOvupoU8CjvRllbvPYvHi0wKifyJgIAaexVEM
-	 ZzesVa0L9JtBJCpSecd3tutKPxTnZbsHZcZ3qXbZuRFicVzsIJh0v6tthIJlsulFvN
-	 x6T+bpJXD4gsw==
-Message-ID: <17d37eab-2275-49ff-97b9-6b6706756f04@kernel.org>
-Date: Wed, 19 Mar 2025 08:52:37 +0100
+	s=arc-20240116; t=1742378202; c=relaxed/simple;
+	bh=4sEeMuXL5HIcpxs6iW8rxCZgQ9Iil/jn+d60m+Jgr5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XAd1woxiBMpLdU0CXbml6kACrNARoFjyLcbKmrJ04ngRg+l1OSg0YK1uZg/uVPYyR/iBQF7N21PeubbCAabYD4GF3wRyLHg5pix7QwtNRxcdE4fSZ8xKQSBKdwhdCbNDC0NjEYMpqiS/Jc5UJIOrtB9U3rb4sp0DSGNOiHIs1CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-681ff7000002311f-74-67da94d1fc57
+From: Yunjeong Mun <yunjeong.mun@sk.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: kernel_team@skhynix.com,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	harry.yoo@oracle.com,
+	ying.huang@linux.alibaba.com,
+	gregkh@linuxfoundation.org,
+	rakie.kim@sk.com,
+	akpm@linux-foundation.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave.jiang@intel.com,
+	horen.chuang@linux.dev,
+	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: Re: [PATCH 2/2 v6] mm/mempolicy: Don't create weight sysfs for memoryless nodes
+Date: Wed, 19 Mar 2025 18:56:21 +0900
+Message-ID: <20250319095630.1075-1-yunjeong.mun@sk.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+In-Reply-To: <Z9mNiWm1pNIxiu0t@gourry-fedora-PF4VCD3F>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
- mailbox
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, rafael@kernel.org, lenb@kernel.org,
- kirill.shutemov@linux.intel.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-acpi@vger.kernel.org, ricardo.neri@intel.com, ravi.v.shankar@intel.com
-References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
- <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
- <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
- <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
- <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
- <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
- <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
- <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
- <20250303222102.GA16733@ranerica-svr.sc.intel.com>
- <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
- <20250312055118.GA29492@ranerica-svr.sc.intel.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250312055118.GA29492@ranerica-svr.sc.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIIsWRmVeSWpSXmKPExsXC9ZZnoe7FKbfSDebMk7eYs34Nm8X0qRcY
+	LU7cbGSz+Hn3OLtF8+L1bBarN/la3F/2jMXidv85VotVC6+xWRzfOo/dYt9FoIadD9+yWSzf
+	189ocXnXHDaLe2v+s1rM/TKV2WL1mgwHQY/Db94ze+ycdZfdo7vtMrtHy5G3rB6L97xk8ti0
+	qpPNY9OnSeweJ2b8ZvHY+dDSY2HDVGaP/XPXsHucu1jh8fHpLRaPz5vkAviiuGxSUnMyy1KL
+	9O0SuDIWbf/CUvBBsqKr5Qt7A+McoS5GTg4JAROJlSfPMsLYZ+bNZAOx2QQ0JA4eOsncxcjB
+	ISKgKtF2xb2LkYuDWaCNReLmq8Vg9cICERLnHp1mAbFZgGpW9vWA2bwC5hLXlj9ih5ipKdFw
+	6R4TiM0pYCYxvfkt2HwhAR6JVxv2M0LUC0qcnPmEBWQXs4C6xPp5YKcxC8hLNG+dzQyyV0Lg
+	FLvEn0uTmCFmSkocXHGDZQKjwCwk7bMQ2mchaV/AyLyKUSgzryw3MTPHRC+jMi+zQi85P3cT
+	IzAil9X+id7B+OlC8CFGAQ5GJR5eg6Cb6UKsiWXFlbmHGCU4mJVEeN2fXE8X4k1JrKxKLcqP
+	LyrNSS0+xCjNwaIkzmv0rTxFSCA9sSQ1OzW1ILUIJsvEwSnVwKi3Q0NsB3uufm9NkNJ6P462
+	D8aci3sfHdp9ccKLeyEhzc8kPnc2PLiXcWqbkdfst0fXBdzabpi5mEv79LVQL76yf75yVlEN
+	PzuPLtFkVz7d4X3R1sni0Zrddmc6r3tO3CL2NU9uzmzxRbGpM37dWOtRIC6k9PpaeNjXifte
+	nTwoy/fE4du8hrlKLMUZiYZazEXFiQBGu0ERxAIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsXCNUNWR/filFvpBls7uS3mrF/DZjF96gVG
+	ixM3G9ksft49zm7RvHg9m8XqTb4W95c9Y7H4/Ow1s8Xt/nOsFqsWXmOzOL51HrvFvotAXYfn
+	nmS12PnwLZvF8n39jBaXd81hs7i35j+rxdwvU5ktDl17zmqxek2Gg4jH4TfvmT12zrrL7tHd
+	dpndo+XIW1aPxXteMnlsWtXJ5rHp0yR2jxMzfrN47Hxo6bGwYSqzx/65a9g9zl2s8Pj49BaL
+	x7fbHh6LX3xg8vi8SS5AIIrLJiU1J7MstUjfLoErY9H2LywFHyQrulq+sDcwzhHqYuTkkBAw
+	kTgzbyYbiM0moCFx8NBJ5i5GDg4RAVWJtivuXYxcHMwCbSwSN18tZgSpERaIkDj36DQLiM0C
+	VLOyrwfM5hUwl7i2/BE7xExNiYZL95hAbE4BM4npzW/B5gsJ8Ei82rCfEaJeUOLkzCcsILuY
+	BdQl1s8DO4dZQF6ieets5gmMvLOQVM1CqJqFpGoBI/MqRpHMvLLcxMwcU73i7IzKvMwKveT8
+	3E2MwNhbVvtn4g7GL5fdDzEKcDAq8fAaBN1MF2JNLCuuzD3EKMHBrCTC6/7keroQb0piZVVq
+	UX58UWlOavEhRmkOFiVxXq/w1AQhgfTEktTs1NSC1CKYLBMHp1QDo8jWq51v3DKePTwtOX1x
+	styGi9uY70yJX8L86dr02csV1vx+t+P08oSYZM2o3doh/5nereBd+unyf5vYWtHjCwKf24tc
+	AhqgaZ4/bXKI98pfSZstHWZXxh5m3CZ5jG9NfmQaD+ef4M95zwQ+Waxj8NizNHjm5fjgG7u4
+	Jfy2zZj58efZww+X7ldiKc5INNRiLipOBABZ/3vbuQIAAA==
+X-CFilter-Loop: Reflected
 
-On 12/03/2025 06:51, Ricardo Neri wrote:
-> On Tue, Mar 11, 2025 at 11:01:28AM +0100, Krzysztof Kozlowski wrote:
->> On 03/03/2025 23:21, Ricardo Neri wrote:
->>> On Fri, Sep 20, 2024 at 01:15:41PM +0200, Krzysztof Kozlowski wrote:
->>>
->>> [...]
->>>  
->>>> enable-method is part of CPUs, so you probably should match the CPUs...
->>>> I am not sure, I don't have the big picture here.
->>>>
->>>> Maybe if companies want to push more of bindings for purely virtual
->>>> systems, then they should first get involved more, instead of relying on
->>>> us. Provide reviews for your virtual stuff, provide guidance. There is
->>>> resistance in accepting bindings for such cases for a reason - I don't
->>>> even know what exactly is this and judging/reviewing based on my
->>>> practices will no be accurate.
->>>
->>> Hi Krzysztof,
->>>
->>> I am taking over this work from Yunhong.
->>>
->>> First of all, I apologize for the late reply. I will make sure
->>> communications are timely in the future.
->>>
->>> Our goal is to describe in the device tree a mechanism or artifact to boot
->>> secondary CPUs.
->>>
->>> In our setup, the firmware puts secondary CPUs to monitor a memory location
->>> (i.e., the wakeup mailbox) while spinning. From the boot CPU, the OS writes
->>> in the mailbox the wakeup vector and the ID of the secondary CPU it wants
->>> to boot. When a secondary CPU sees its own ID it will jump to the wakeup
->>> vector.
->>>
->>> This is similar to the spin-table described in the Device Tree
->>> specification. The key difference is that with the spin-table CPUs spin
->>> until a non-zero value is written in `cpu-release-addr`. The wakeup mailbox
->>> uses CPU IDs.
->>>
->>> You raised the issue of the lack of a `compatible` property, and the fact
->>> that we are not describing an actual device.
->>>
->>> I took your suggestion of matching by node and I came up with the binding
->>> below. I see these advantages in this approach:
->>>
->>>   * I define a new node with a `compatible` property.
->>>   * There is precedent: the psci node. In the `cpus` node, each cpu@n has
->>
+Hi Gregory, thanks for your kind explanation.
+
+On Tue, 18 Mar 2025 11:13:13 -0400 Gregory Price <gourry@gourry.net> wrote:
+> On Tue, Mar 18, 2025 at 08:02:46PM +0900, Honggyu Kim wrote:
+> > 
+> > 
+> > On 3/18/2025 5:02 PM, Yunjeong Mun wrote:
+> > 
+> > Some simple corrections here.  host-bridge{0-3} above aren't detected from CEDT.
+> > The corrected structure is as follows.
+> > 
+> > rootport/
+> > ├── socket0
+> > │   ├── cross-host-bridge0 -> SRAT && CEDT (interleave on) --> NODE 2
+> > │   │   ├── host-bridge0
+> > │   │   │   ├── cxl0 -> CEDT
+>                           node 4
+> > │   │   │   └── cxl1-> CEDT
+>                           node 5
+> > │   │   └── host-bridge1
+> > │   │       ├── cxl2 -> CEDT
+>                           node 6
+> > │   │       └── cxl3 -> CEDT
+>                           node 7
+> > │   └── dram0 -> SRAT ---------------------------------------> NODE 0
+> > └── socket1
+> >      ├── cross-host-bridge1 -> SRAT && CEDT (interleave on)---> NODE 3
+> >      │   ├── host-bridge2
+> >      │   │   ├── cxl4 -> CEDT
+>                            node 8
+> >      │   │   └── cxl5 -> CEDT
+>                            node 9
+> >      │   └── host-bridge3
+> >      │       ├── cxl6 -> CEDT
+>                            node 10
+> >      │       └── cxl7 -> CEDT
+>                            node 11
+> >      └── dram1 -> SRAT ---------------------------------------> NODE 1
+> > 
 > 
-> Thanks for your feedback!
+> This is correct and expected.
 > 
->> psci is a standard. If you are documenting here a standard, clearly
->> express it and provide reference to the specification.
+> All of these nodes are "possible" depending on how the user decides to
+> program the CXL decoders and expose memory to the page allocator.
 > 
-> It is not really a standard, but this mailbox behaves indentically to the
-> wakeup mailbox described in the ACPI spec [1]. I am happy reference the
-> spec in the documentation of the binding... or describe in full the
-> mechanism of mailbox without referring to ACPI. You had indicated you don't
-> care about what ACPI does [2].
+> In your /sys/bus/cxl/devices/ you should have something like
+> 
+>   decoder0.0  decoder0.1  decoder0.2   decoder0.3
+>   decoder0.4  decoder0.5  decoder0.6   decoder0.7
+>   decoder0.8  decoder0.9
+> 
 
-Behaving like ACPI and implementing a spec are two different things. The
-question is whether you need to implement it like that and I believe
-answer is: no.
+Yes, I can see many decoder#.# files in there, and their devtype values are
+shown below:
+    $ cat /sys/bus/cxl/devices/decoder*/devtype
+    cxl_decoder_root
+    ...
+    cxl_decoder_switch
+    ...
+    cxl_decoder_endpoint
+
+> These are the root decoders that should map up directly with each CEDT
+> CFMWS entry.
+> 
+> 2 of them should have interleave settings.
+> 
+> If you were to then program the endpoint and hostbridge decoders with
+> the matching non-interleave address values from the other CEDT entries,
+> you could bring each individual device online in its own NUMA node.
+> 
+
+I think this means that I can program the endpoint(=cxl_decoder_endpoint)
+to map to the 8 CFMWS, and the hostbridge decoder (=cxl_decoder switch) to map
+to another 2 CFMWS(cross-host bridge).
+
+> Or, you can do what you're doing now, and program the endpoints to map
+> to the 2 cross-host bridge interleave root decoders.
+
+In my understanding, that kind of programming is done at the firmware or BIOS 
+layer, right?
 
 > 
-> In a nutshell, the wakeup mailbox is similar to the spin table used in ARM
-> boards: it is reserved memory region that secondary CPUs monitor while
-> spinning.
+> So your platform is giving you the option of how to online your devices,
+> and as such it needs to mark nodes as "possible" even if they're unused.
 > 
->>
->>
->>>     an `enable-method` property that specify `psci`.
->>>   * The mailbox is a device as it is located in a reserved memory region.
->>>     This true regardless of the device tree describing bare-metal or
->>>     virtualized machines.
->>>
->>> Thanks in advance for your feedback!
->>>
->>> Best,
->>> Ricardo
->>>
->>> (only the relevant sections of the binding are shown for brevity)
->>>
->>> properties:
->>>   $nodename:
->>>     const: wakeup-mailbox
->>>
->>>   compatible:
->>>     const: x86,wakeup-mailbox
->>
->> You need vendor prefix for this particular device. If I pointed out lack
->> of device and specific compatible, then adding random compatible does
->> not solve it. I understand it solves for you, but not from the bindings
->> point of view.
+
+Thank you for the clear explanation. I now understand why 'possible' has such
+value.
+
+> ~Gregory
 > 
-> I see. Platform firmware will implement the mailbox. It would not be any
-> specific hardware from Intel. Perhaps `intel,wakeup-mailbox`?
-> 
->>
->>>
->>>   mailbox-addr:
->>>     $ref: /schemas/types.yaml#/definitions/uint64
->>
->> So is this some sort of reserved memory?
-> 
-> Yes, the mailbox is located in reserved memory.
-
-
-Then why reserved memory bindings are not working?
-
-Anyway this was half a year ago. None of the emails are in my inbox.
-None of the context is in my head.
-
-It's the second or third email this month someone responds to my email
-from 2024.
-
-Frankly, that's a neat trick. I won't remember anything, but it would be
-impolite to say just "no" without arguments. So now you will resend the
-same code leading to the same discussions we had half a year ago. Or
-ignoring that discussions.
-
-I don't understand why this should be reviewers problem, so no, that's
-just unfair.
-
 
 Best regards,
-Krzysztof
+Yunjeong
 
