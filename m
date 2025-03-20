@@ -1,144 +1,160 @@
-Return-Path: <linux-acpi+bounces-12374-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12375-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECBCA6AC90
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 18:57:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECC7A6ACAF
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 19:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 899FC487E94
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 17:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CAD1896B09
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 18:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925AB226CF4;
-	Thu, 20 Mar 2025 17:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IgdTDTb1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320C41EB18F;
+	Thu, 20 Mar 2025 18:05:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09504225403
-	for <linux-acpi@vger.kernel.org>; Thu, 20 Mar 2025 17:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28592AD20;
+	Thu, 20 Mar 2025 18:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742493446; cv=none; b=luxnsWE8OxX6i7Loydfl2kmJglJLCiI/K0HDMd1mrBiGdBYBDlEZUp/NGw04wnJ9lJJ/fsJUJoD8pO/+EIgRxvdNrwGmg2W4Z0duXP5pdHAz3H1DRtl3+11i13ZrFZcAKKIRbIztJm9nTCxF/A4yexLmYp/9dDbMqBQ/YfFd2So=
+	t=1742493934; cv=none; b=pT6LMTj/kCm5Xb+7V2W8lsU1McLTuU/4Yn1x3oB6EwvD8NXT7qme6C/97+yqGcOd16BvMTCbMCyToxn2B70zf9vonpba4WwXtZDb2G9OJPv8YZVwHNxfm/O911qzCHHlUqWsmoECQlGbo/CSVJH7wUfAk9uL9EsJObGpGnaqpFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742493446; c=relaxed/simple;
-	bh=mO6ApbMHzxFMCtQxPMSGmJnnaUVaxpdYXWiMJjhdnYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PVV9uA0f1h5A647KyGdXebHKlnnb8ICE4+F+GkQGgBpUEjaZENwjptprRA7dpBm81vfxqsFPmqI3Uo3vEGGfKoBxgOmcVtcXxkyGGq1nyI3U8wOzzNTyVM61Vl20BiA7GIIk1Qtx22SZyVnX1DH0dPEtVJOKRQgAI0MHG0FDvaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IgdTDTb1; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ff615a114bso3588259a91.0
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Mar 2025 10:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1742493444; x=1743098244; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KZBuAO/4lH4CVBlD86N+IBRXOKzZiRkJHD/4cEnzLg8=;
-        b=IgdTDTb1X2qtQtOkDRsbcKFEP0YT598B/9Y24roSjP6k+N94B0usGnhtgNhRHvg0oA
-         ug/vDzEqKyvbWyEoPZoWX7T1fP0ze0kP5URxeXtgHY3H1yKyh+FQBkONrq/sUv+v4HRb
-         SAI/w/sQUA+DLKkcAVN5KHw+yH3qNxSmovIy4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742493444; x=1743098244;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KZBuAO/4lH4CVBlD86N+IBRXOKzZiRkJHD/4cEnzLg8=;
-        b=nd8lVYaTpXO5tNg+OmRmTzJ+vLd8V3yU+A4RGVRU0I50co5jyOTx9+Wem6lQS6UlTQ
-         gIFB1b37a+LqF4RLBZ3cjNlgRqvu8zecShIoqAg0d9GXLcxelB9GoA1uVUazXhTupwnA
-         OPT1L2BNIlvwP1HUcvlm70O9eJqoI674rB15hlVx/UpSEpTYqt5cyOil9YJH08eqffZD
-         TlCffpbt4+EZVaZrfY8tUN6DHLrM2O8MrtraPovO5z4Afkfr7SqG4DdVAePoOSHJPxnB
-         seuj6xZ3EnSXcdmvKpCHlG1k8TvyqixrbMjlGIHicPHHxAmK9F8+17ToB0aF/BKMQY8+
-         cZGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWeLHJz8rxiEPyEoeDapcqIKkhPyzxL3zGd69uKfJxIsOR3Rz5S+elvQmHXUTPIYS3/FudhEalIfIJ7@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzW67u4t7zB/R8deBJ9O5eF2/PlxaWBIZR9pEEIg+Z+2G3GU0D
-	Z7m0pDTQEWRatALTsIVkynppVEN44j+EilS6oYBNMpWnwRAKqN0fvBDZX2KGWVVSc2K1/yIDssw
-	=
-X-Gm-Gg: ASbGncswK1YEbNybZNaK1ydWIz/Q/IQUnRn3HEURXCaaqdOcyrxKdxvs7ROK8tjf7JX
-	PsgBnoCt/5NToJjRgIuwPwbuc8W5QUPZMIl0srRXy/jjP1MpT5JeXM3fWnFHopFInLJuAJ7Tiur
-	XJEYf0VSboPVrHWf1erjI6Hmak3lhN7+qGMC1W054prL3wYPjqKG4LtbwO57hkz8lp5VKSGWCe5
-	QOy1vQCeVz+28tgBw55AFOXDyDLtw+tX6CEHfk/kT2F1d2zuCyCigLHBWO0CVuzNtpR9uyMqKZ/
-	LKZKOWx9UQR+G6OR/cLxnA852W51SpEEcGpTd/mtp7y6fTFw0Kv7hRg5mM+OE5f0hjkrsezKiWD
-	KbhIoqMQ=
-X-Google-Smtp-Source: AGHT+IE7xF5qbvgKRnHfx2I3KfMDgIwTK12qXs2qkhWYJrmEZMMPOAnefkb2h4CcUxPOX3VUqrZHNw==
-X-Received: by 2002:a17:90b:54c7:b0:2fe:93be:7c9d with SMTP id 98e67ed59e1d1-3030ec2a985mr625654a91.7.1742493444134;
-        Thu, 20 Mar 2025 10:57:24 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:9e6b:24df:389d:f71b])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-301a5ea4e9asm2514396a91.1.2025.03.20.10.57.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Mar 2025 10:57:23 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:57:21 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-	Hsin-Yi Wang <hsinyi@chromium.org>, linux-kernel@vger.kernel.org,
-	mika.westerberg@linux.intel.com, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, lukas@wunner.de
-Subject: Re: [PATCH v5] PCI: Allow PCI bridges to go to D3Hot on all
- Devicetree based platforms
-Message-ID: <Z9xXAYA4KS5BabhE@google.com>
-References: <20241126151711.v5.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid>
- <20250228174509.GA58365@bhelgaas>
- <Z8IC_WDmix3YjOkv@google.com>
- <CAJZ5v0j_6jeMAQ7eFkZBe5Yi+USGzysxAgfemYh=-zq4h5W+Qg@mail.gmail.com>
- <20250313052113.zk5yuz5e76uinbq5@thinkpad>
+	s=arc-20240116; t=1742493934; c=relaxed/simple;
+	bh=0t4PiwsiSc6juoFtUbzI40uzV16dx23LcTpGllWaXdM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aNYeOf076Cc6+aQRjzyhIN9C/x370xtes6Hm12ugA/q3b1x+xZ+yMTYP1syYWgeiL2kRWaX78gOHSy+GI+2jfJx9RxN2xdzEvKkWakVlOpo5CqgvZGd9PeMTqahHXRyhDXhQPtL/X1zufbLUADVWoOERUczc/l45yjH+sb+0ItM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZJYM93p9Wz6K9M6;
+	Fri, 21 Mar 2025 02:02:29 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id 103481405A0;
+	Fri, 21 Mar 2025 02:05:28 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.156.145) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 20 Mar 2025 19:05:25 +0100
+From: <shiju.jose@huawei.com>
+To: <linux-cxl@vger.kernel.org>, <dan.j.williams@intel.com>,
+	<dave@stgolabs.net>, <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>
+CC: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <bp@alien8.de>,
+	<tony.luck@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<mchehab@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <yazen.ghannam@amd.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v2 0/8] cxl: support CXL memory RAS features
+Date: Thu, 20 Mar 2025 18:04:37 +0000
+Message-ID: <20250320180450.539-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250313052113.zk5yuz5e76uinbq5@thinkpad>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ frapeml500007.china.huawei.com (7.182.85.172)
 
-Hi Rafael, Manivannan,
+From: Shiju Jose <shiju.jose@huawei.com>
 
-On Thu, Mar 13, 2025 at 10:51:13AM +0530, Manivannan Sadhasivam wrote:
-> On Wed, Mar 05, 2025 at 02:41:26PM +0100, Rafael J. Wysocki wrote:
-> > There were hardware issues related to PM on x86 platforms predating
-> > the introduction of Connected Standby in Windows.  For instance,
-> > programming a port into D3hot by writing to its PMCSR might cause the
-> > PCIe link behind it to go down and the only way to revive it was to
-> > power cycle the Root Complex.  And similar.
-> > 
-> > Also, PM has never really worked correctly on PCI (non-PCIe) bridges
-> > and there is this case where the platform firmware handles hotplug and
-> > doesn't want the OS to get in the way (the bridge->is_hotplug_bridge
-> > && !pciehp_is_native(bridge) check in pci_bridge_d3_possible()).
-> > 
-> > The DMI check at the end of pci_bridge_d3_possible() is really
-> > something to the effect of "there is no particular reason to prevent
-> > this bridge from going into D3, but try to avoid platforms where it
-> > may not work".
-> > 
-> 
-> Thanks for sharing the background. This could go in the commit message IMO.
+Support for CXL memory RAS features: patrol scrub, ECS, soft-PPR and
+memory sparing.
 
-Yes, thanks Rafael. This adds a bit more than the guesswork I've done so
-far.
+This CXL series was part of the EDAC series [1].
 
-> > Basically, as far as I'm concerned, this check can be changed into
-> > something like
-> > 
-> > if (!IS_ENABLED(CONFIG_X86) || dmi_get_bios_year() >= 2015)
-> >         return true;
+The code is based on cxl.git next branch [2] merged with ras.git edac-cxl
+branch [3].
 
-I suppose if this harms any non-x86 BIOS systems, we can just add to
-bridge_d3_blacklist[]. This works for me too.
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://web.git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=next
+3. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-cxl
 
-> > which also requires updating the comment above it accordingly.
-> > 
-> > This would have been better than the check added by the $subject patch IMV.
-> 
-> Looks good to me. Brian, could you please respin incorporating the comments?
+Userspace code for CXL memory repair features [4] and
+sample boot-script for CXL memory repair [5].
 
-Sure, will send shortly.
+[4]: https://lore.kernel.org/lkml/20250207143028.1865-1-shiju.jose@huawei.com/
+[5]: https://lore.kernel.org/lkml/20250207143028.1865-5-shiju.jose@huawei.com/
 
-Brian
+Changes
+=======
+v1 -> v2:
+1. Feedbacks from Dan Williams on v1,
+   https://lore.kernel.org/linux-mm/20250307091137.00006a0a@huawei.com/T/
+  - Fixed lock issues in region scrubbing, added local cxl_acquire()
+    and cxl_unlock.
+  - Replaced CXL examples using cat and echo from EDAC .rst docs
+    with short description and ref to ABI docs. Also corrections
+    in existing descriptions as suggested by Dan.
+  - Add policy description for the scrub control feature.
+    However this may require inputs from CXL experts. 
+  - Replaced CONFIG_CXL_RAS_FEATURES with CONFIG_CXL_EDAC_MEM_FEATURES.
+  - Few changes to depends part of CONFIG_CXL_EDAC_MEM_FEATURES.
+  - Rename drivers/cxl/core/memfeatures.c as drivers/cxl/core/edac.c
+  - snprintf() -> kasprintf() in few places.
+  
+2. Feedbacks from Alison on v1,
+  - In cxl_get_feature_entry()(patch 1), return NULL on failures and
+    reintroduced checks in cxl_get_feature_entry().
+  - Changed logic in for loop in region based scrubbing code.
+  - Replace cxl_are_decoders_committed() to cxl_is_memdev_memory_online()
+    and add as a local function to drivers/cxl/core/edac.c
+  - Changed few multiline comments to single line comments.
+  - Removed unnecessary comments from the code.
+  - Reduced line length of few macros in ECS and memory repair code.
+  - In new files, changed "GPL-2.0-or-later" -> "GPL-2.0-only".
+  - Ran clang-format for new files and updated.                                                                                                                                                                       
+3. Changes for feedbacks from Jonathan on v1.
+  - Changed few multiline comments to single line comments.
+
+Shiju Jose (8):
+  cxl: Add helper function to retrieve a feature entry
+  EDAC: Update documentation for the CXL memory patrol scrub control
+    feature
+  cxl/edac: Add CXL memory device patrol scrub control feature
+  cxl/edac: Add CXL memory device ECS control feature
+  cxl/mbox: Add support for PERFORM_MAINTENANCE mailbox command
+  cxl: Support for finding memory operation attributes from the current
+    boot
+  cxl/memfeature: Add CXL memory device soft PPR control feature
+  cxl/memfeature: Add CXL memory device memory sparing control feature
+
+ Documentation/edac/memory_repair.rst |   31 +
+ Documentation/edac/scrub.rst         |   47 +
+ drivers/cxl/Kconfig                  |   27 +
+ drivers/cxl/core/Makefile            |    1 +
+ drivers/cxl/core/core.h              |    2 +
+ drivers/cxl/core/edac.c              | 1730 ++++++++++++++++++++++++++
+ drivers/cxl/core/features.c          |   23 +
+ drivers/cxl/core/mbox.c              |   45 +-
+ drivers/cxl/core/memdev.c            |    9 +
+ drivers/cxl/core/ras.c               |  145 +++
+ drivers/cxl/core/region.c            |    5 +
+ drivers/cxl/cxlmem.h                 |   73 ++
+ drivers/cxl/mem.c                    |    4 +
+ drivers/cxl/pci.c                    |    3 +
+ drivers/edac/mem_repair.c            |    9 +
+ include/linux/edac.h                 |    7 +
+ 16 files changed, 2159 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/cxl/core/edac.c
+
+-- 
+2.43.0
+
 
