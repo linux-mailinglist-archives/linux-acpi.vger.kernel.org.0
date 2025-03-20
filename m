@@ -1,88 +1,60 @@
-Return-Path: <linux-acpi+bounces-12386-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12387-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39074A6AF2B
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 21:29:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC0BA6AFB2
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 22:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2D383B8B69
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 20:29:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57E4E487E61
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 21:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ED522839A;
-	Thu, 20 Mar 2025 20:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F1C22A1ED;
+	Thu, 20 Mar 2025 21:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gFR5E6BQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaMJ49FB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323552A1A4;
-	Thu, 20 Mar 2025 20:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E51E5B7E;
+	Thu, 20 Mar 2025 21:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742502549; cv=none; b=gEYg6oWr1/kdH9MG0iB8geQSBfKaADl+cELMOmvj4O4MTgTE3j+LTARcm25gStxEAN2JmgrHCKzioYOW9+9R0g8s74h5jR9s1GJ7Rm51fNXpxpG5D7QNTd3XpnQmyimz2gf0w1CjkqGXmjxvCIK0ch6ohT4XLmBjcCUgmWVoZmY=
+	t=1742505216; cv=none; b=tMUYL740RmojMHkcuC6jiiRm9TUIJzaQS1ms2Q5Mtuq2JvRhv1c6TbQIJe2ns+Op10ATzf8n3MYeFlaeHNjH+Y3eG5JKPi+FkJelR0MWWjgvYacAX2ENaIb/RsOn2z6GCl+gJHA1SE+BH0hVXfsqdxuWmPCkY5PHci201+XNbDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742502549; c=relaxed/simple;
-	bh=/A7i/1Uro6h6eIUjAdKuaXPvRrA3wGaUjO4OFnhofeM=;
+	s=arc-20240116; t=1742505216; c=relaxed/simple;
+	bh=qT3pRQIRt1i35oXtu0ODXFreqqI/+Y7zQS4P0enG44U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DtWS7TflIo/6uY/ru6x5u8cUoPfj3KZXtvUsESNUSzIswrNO0uSE0hJ/r52Pshcnb3WXPrO5Gs+UjJR4PUH/cXGXdxqT7z9+qjLYIVkJLiklh83DZOViW6hjeCdtqh5aKx/eLXjsgIz8Af2iPTj9Prf7O7GBfT76PJMdVyCxiWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gFR5E6BQ; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742502547; x=1774038547;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/A7i/1Uro6h6eIUjAdKuaXPvRrA3wGaUjO4OFnhofeM=;
-  b=gFR5E6BQkeWuoPW9RqJAX0QSTbjHWq7anj9p94nVASl0lA1+/SbQLYQr
-   bNETSC6nxylpk4c8dMiq+78mDZV5j5YbOPUNSqbhPU06BwlsYuchpEfzP
-   2KnyFkt0bWLOyYOSErdLnGJ136uT8FWVBnLBwqDqSaMMmZo7Vj2doGJNd
-   dRKLb5fHHYS8BjKJnGSnHh1Ujvt2F6/KMK+Ekb7iTDN423xl3WBelemSh
-   t9a6ncU5EzoqR+ydJJ2VyjntF7IkhS/cCEqEZ8wET2yf6CYeYyk4VForK
-   gTXALtEiDbJft6ggk2A7Gb5RNznxx7Wk1w1WbTZ9OGLzNLPmEqsb6zmBF
-   A==;
-X-CSE-ConnectionGUID: v/SpxdCBS4mPPxJ1l+UoYw==
-X-CSE-MsgGUID: XyxZxKqmSMy33vGqH3ok5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43641584"
-X-IronPort-AV: E=Sophos;i="6.14,262,1736841600"; 
-   d="scan'208";a="43641584"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2025 13:29:06 -0700
-X-CSE-ConnectionGUID: zWGEOKDhRA6107exREHPMQ==
-X-CSE-MsgGUID: mqxpcH5pQA2dGiRObZSJvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,262,1736841600"; 
-   d="scan'208";a="122921213"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2025 13:29:06 -0700
-Date: Thu, 20 Mar 2025 13:34:51 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
-	lenb@kernel.org, kirill.shutemov@linux.intel.com,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
-	ricardo.neri@intel.com, ravi.v.shankar@intel.com
-Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
- mailbox
-Message-ID: <20250320203451.GA8338@ranerica-svr.sc.intel.com>
-References: <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
- <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
- <20240910061227.GA76@yjiang5-mobl.amr.corp.intel.com>
- <1d0ba3fc-1504-4af3-a0bc-fba86abe41e8@kernel.org>
- <20240919191725.GA11928@yjiang5-mobl.amr.corp.intel.com>
- <874d5908-f1db-412f-96a2-83fcebe8dd98@kernel.org>
- <20250303222102.GA16733@ranerica-svr.sc.intel.com>
- <acb5fa11-9dce-44d0-85e3-e67a6a10c48f@kernel.org>
- <20250312055118.GA29492@ranerica-svr.sc.intel.com>
- <17d37eab-2275-49ff-97b9-6b6706756f04@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFLP9rJN421yN2FCYYVq4Pp2at8LvlIYUekpNWy9/cP77CsMee7b5EOJl9eC1Yqzecjdm3PYc7/pQ1ehiwDpGVGUdtZRnVu/ymzkBDKcDv5PrW16XiFNpKQEL2BzI5JZ8OiAeQNbOJCZ3Zy0O9sVkS4YF5O9t0jWcIJCyo82BQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaMJ49FB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F231C4CEDD;
+	Thu, 20 Mar 2025 21:13:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742505215;
+	bh=qT3pRQIRt1i35oXtu0ODXFreqqI/+Y7zQS4P0enG44U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iaMJ49FB16G+FlJRuy97OCfjA+ZbWBl3XVzcBMcaKwrB06G5d36541muYB5cmaXHu
+	 YMMt/nHuOhUyOpB+eQ4xO2cyWMn+axk3d7aTdXz2tEEpUBygHFk0M9oDEEwHS0uJPd
+	 EKgLazyXP8IsrH66Cm5uouuHXXVNfRPzAwLWxRrU=
+Date: Thu, 20 Mar 2025 14:12:15 -0700
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	james.morse@arm.com, conor@kernel.org,
+	Yicong Yang <yangyicong@huawei.com>, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linuxarm@huawei.com,
+	Yushan Wang <wangyushan12@huawei.com>, linux-mm@kvack.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 3/6] cache: coherency device class
+Message-ID: <2025032013-venus-request-b026@gregkh>
+References: <20250320174118.39173-1-Jonathan.Cameron@huawei.com>
+ <20250320174118.39173-4-Jonathan.Cameron@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -91,139 +63,192 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <17d37eab-2275-49ff-97b9-6b6706756f04@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20250320174118.39173-4-Jonathan.Cameron@huawei.com>
 
-On Wed, Mar 19, 2025 at 08:52:37AM +0100, Krzysztof Kozlowski wrote:
-> On 12/03/2025 06:51, Ricardo Neri wrote:
-> > On Tue, Mar 11, 2025 at 11:01:28AM +0100, Krzysztof Kozlowski wrote:
-> >> On 03/03/2025 23:21, Ricardo Neri wrote:
-> >>> On Fri, Sep 20, 2024 at 01:15:41PM +0200, Krzysztof Kozlowski wrote:
-> >>>
-> >>> [...]
-> >>>  
-> >>>> enable-method is part of CPUs, so you probably should match the CPUs...
-> >>>> I am not sure, I don't have the big picture here.
-> >>>>
-> >>>> Maybe if companies want to push more of bindings for purely virtual
-> >>>> systems, then they should first get involved more, instead of relying on
-> >>>> us. Provide reviews for your virtual stuff, provide guidance. There is
-> >>>> resistance in accepting bindings for such cases for a reason - I don't
-> >>>> even know what exactly is this and judging/reviewing based on my
-> >>>> practices will no be accurate.
-> >>>
-> >>> Hi Krzysztof,
-> >>>
-> >>> I am taking over this work from Yunhong.
-> >>>
-> >>> First of all, I apologize for the late reply. I will make sure
-> >>> communications are timely in the future.
-> >>>
-> >>> Our goal is to describe in the device tree a mechanism or artifact to boot
-> >>> secondary CPUs.
-> >>>
-> >>> In our setup, the firmware puts secondary CPUs to monitor a memory location
-> >>> (i.e., the wakeup mailbox) while spinning. From the boot CPU, the OS writes
-> >>> in the mailbox the wakeup vector and the ID of the secondary CPU it wants
-> >>> to boot. When a secondary CPU sees its own ID it will jump to the wakeup
-> >>> vector.
-> >>>
-> >>> This is similar to the spin-table described in the Device Tree
-> >>> specification. The key difference is that with the spin-table CPUs spin
-> >>> until a non-zero value is written in `cpu-release-addr`. The wakeup mailbox
-> >>> uses CPU IDs.
-> >>>
-> >>> You raised the issue of the lack of a `compatible` property, and the fact
-> >>> that we are not describing an actual device.
-> >>>
-> >>> I took your suggestion of matching by node and I came up with the binding
-> >>> below. I see these advantages in this approach:
-> >>>
-> >>>   * I define a new node with a `compatible` property.
-> >>>   * There is precedent: the psci node. In the `cpus` node, each cpu@n has
-> >>
-> > 
-> > Thanks for your feedback!
-> > 
-> >> psci is a standard. If you are documenting here a standard, clearly
-> >> express it and provide reference to the specification.
-> > 
-> > It is not really a standard, but this mailbox behaves indentically to the
-> > wakeup mailbox described in the ACPI spec [1]. I am happy reference the
-> > spec in the documentation of the binding... or describe in full the
-> > mechanism of mailbox without referring to ACPI. You had indicated you don't
-> > care about what ACPI does [2].
-> 
-> Behaving like ACPI and implementing a spec are two different things. The
-> question is whether you need to implement it like that and I believe
-> answer is: no.
-> 
-> > 
-> > In a nutshell, the wakeup mailbox is similar to the spin table used in ARM
-> > boards: it is reserved memory region that secondary CPUs monitor while
-> > spinning.
-> > 
-> >>
-> >>
-> >>>     an `enable-method` property that specify `psci`.
-> >>>   * The mailbox is a device as it is located in a reserved memory region.
-> >>>     This true regardless of the device tree describing bare-metal or
-> >>>     virtualized machines.
-> >>>
-> >>> Thanks in advance for your feedback!
-> >>>
-> >>> Best,
-> >>> Ricardo
-> >>>
-> >>> (only the relevant sections of the binding are shown for brevity)
-> >>>
-> >>> properties:
-> >>>   $nodename:
-> >>>     const: wakeup-mailbox
-> >>>
-> >>>   compatible:
-> >>>     const: x86,wakeup-mailbox
-> >>
-> >> You need vendor prefix for this particular device. If I pointed out lack
-> >> of device and specific compatible, then adding random compatible does
-> >> not solve it. I understand it solves for you, but not from the bindings
-> >> point of view.
-> > 
-> > I see. Platform firmware will implement the mailbox. It would not be any
-> > specific hardware from Intel. Perhaps `intel,wakeup-mailbox`?
-> > 
-> >>
-> >>>
-> >>>   mailbox-addr:
-> >>>     $ref: /schemas/types.yaml#/definitions/uint64
-> >>
-> >> So is this some sort of reserved memory?
-> > 
-> > Yes, the mailbox is located in reserved memory.
-> 
-> 
-> Then why reserved memory bindings are not working?
-> 
-> Anyway this was half a year ago. None of the emails are in my inbox.
-> None of the context is in my head.
-> 
-> It's the second or third email this month someone responds to my email
-> from 2024.
-> 
-> Frankly, that's a neat trick. I won't remember anything, but it would be
-> impolite to say just "no" without arguments. So now you will resend the
-> same code leading to the same discussions we had half a year ago. Or
-> ignoring that discussions.
-> 
-> I don't understand why this should be reviewers problem, so no, that's
-> just unfair.
-> 
+On Thu, Mar 20, 2025 at 05:41:15PM +0000, Jonathan Cameron wrote:
+> --- a/drivers/cache/Kconfig
+> +++ b/drivers/cache/Kconfig
+> @@ -1,6 +1,12 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  menu "Cache Drivers"
+>  
+> +config CACHE_COHERENCY_CLASS
+> +	bool "Cache coherency control class"
 
-Thank you again for your feedback. I will send a third version of the
-patchset. This will give the full context. I will incorporate your feedback
-in such version.
+Why can't this be a module?  And why would anyone want to turn it off?
 
-Thanks and BR,
-Ricardo
+> +	help
+> +	  Class to which coherency control drivers register allowing core kernel
+> +	  subsystems to issue invalidations and similar coherency operations.
 
+What "core kernel subsystems"?
+
+> +
+>  config AX45MP_L2_CACHE
+>  	bool "Andes Technology AX45MP L2 Cache controller"
+>  	depends on RISCV
+
+Shouldn't all of these now depend on CACHE_COHERENCY_CLASS?
+
+> diff --git a/drivers/cache/Makefile b/drivers/cache/Makefile
+> index 55c5e851034d..b72b20f4248f 100644
+> --- a/drivers/cache/Makefile
+> +++ b/drivers/cache/Makefile
+> @@ -3,3 +3,5 @@
+>  obj-$(CONFIG_AX45MP_L2_CACHE)		+= ax45mp_cache.o
+>  obj-$(CONFIG_SIFIVE_CCACHE)		+= sifive_ccache.o
+>  obj-$(CONFIG_STARFIVE_STARLINK_CACHE)	+= starfive_starlink_cache.o
+> +
+> +obj-$(CONFIG_CACHE_COHERENCY_CLASS)	+= coherency_core.o
+
+Why the blank line?
+
+> diff --git a/drivers/cache/coherency_core.c b/drivers/cache/coherency_core.c
+> new file mode 100644
+> index 000000000000..52cb4ceae00c
+> --- /dev/null
+> +++ b/drivers/cache/coherency_core.c
+> @@ -0,0 +1,130 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Class to manage OS controlled coherency agents within the system.
+> + * Specifically to enable operations such as write back and invalidate.
+> + *
+> + * Copyright: Huawei 2025
+> + * Some elements based on fwctl class as an example of a modern
+> + * lightweight class.
+> + */
+> +
+> +#include <linux/cache_coherency.h>
+> +#include <linux/container_of.h>
+> +#include <linux/idr.h>
+> +#include <linux/fs.h>
+> +#include <linux/module.h>
+> +#include <linux/slab.h>
+> +
+> +#include <asm/cacheflush.h>
+> +
+> +static DEFINE_IDA(cache_coherency_ida);
+> +
+> +static void cache_coherency_device_release(struct device *device)
+> +{
+> +	struct cache_coherency_device *ccd =
+> +		container_of(device, struct cache_coherency_device, dev);
+> +
+> +	ida_free(&cache_coherency_ida, ccd->id);
+> +}
+> +
+> +static struct class cache_coherency_class = {
+> +	.name = "cache_coherency",
+> +	.dev_release = cache_coherency_device_release,
+> +};
+> +
+> +static int cache_inval_one(struct device *dev, void *data)
+> +{
+> +	struct cache_coherency_device *ccd =
+> +		container_of(dev, struct cache_coherency_device, dev);
+> +
+> +	if (!ccd->ops)
+> +		return -EINVAL;
+> +
+> +	return ccd->ops->wbinv(ccd, data);
+> +}
+> +
+> +static int cache_inval_done_one(struct device *dev, void *data)
+> +{
+> +	struct cache_coherency_device *ccd =
+> +		container_of(dev, struct cache_coherency_device, dev);
+> +	if (!ccd->ops)
+> +		return -EINVAL;
+> +
+> +	return ccd->ops->done(ccd);
+> +}
+> +
+> +static int cache_invalidate_memregion(int res_desc,
+> +				      phys_addr_t addr, size_t size)
+> +{
+> +	int ret;
+> +	struct cc_inval_params params = {
+> +		.addr = addr,
+> +		.size = size,
+> +	};
+> +
+> +	ret = class_for_each_device(&cache_coherency_class, NULL, &params,
+> +				    cache_inval_one);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return class_for_each_device(&cache_coherency_class, NULL, NULL,
+> +				     cache_inval_done_one);
+> +}
+> +
+> +static const struct system_cache_flush_method cache_flush_method = {
+> +	.invalidate_memregion = cache_invalidate_memregion,
+> +};
+> +
+> +struct cache_coherency_device *
+> +_cache_coherency_alloc_device(struct device *parent,
+> +			      const struct coherency_ops *ops, size_t size)
+> +{
+> +
+> +	if (!ops || !ops->wbinv)
+> +		return NULL;
+> +
+> +	struct cache_coherency_device *ccd __free(kfree) = kzalloc(size, GFP_KERNEL);
+> +
+> +	if (!ccd)
+> +		return NULL;
+> +
+> +	ccd->dev.class = &cache_coherency_class;
+> +	ccd->dev.parent = parent;
+> +	ccd->ops = ops;
+> +	ccd->id = ida_alloc(&cache_coherency_ida, GFP_KERNEL);
+> +
+> +	if (dev_set_name(&ccd->dev, "cache_coherency%d", ccd->id))
+> +		return NULL;
+> +
+> + 	device_initialize(&ccd->dev);
+> +
+> +	return_ptr(ccd);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(_cache_coherency_alloc_device, "CACHE_COHERENCY");
+> +
+> +int cache_coherency_device_register(struct cache_coherency_device *ccd)
+> +{
+> +	return device_add(&ccd->dev);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_register, "CACHE_COHERENCY");
+> +
+> +void cache_coherency_device_unregister(struct cache_coherency_device *ccd)
+> +{
+> +	device_del(&ccd->dev);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_unregister, "CACHE_COHERENCY");
+> +
+> +static int __init cache_coherency_init(void)
+> +{
+> +	int ret;
+> +
+> +	ret = class_register(&cache_coherency_class);
+> +	if (ret)
+> +		return ret;
+> +
+> +	//TODO: generalize
+> +	arm64_set_sys_cache_flush_method(&cache_flush_method);
+
+I'm guessing this will blow up the build on non-x86 builds :)
+
+> +struct cache_coherency_device {
+> +	struct device dev;
+> +	const struct coherency_ops *ops;
+> +	int id;
+> +};
+
+Classes are normally for user/kernel apis, what is this going to be used
+for?  I don't see any new user/kernel apis happening, so why do you need
+a struct device to be created?
+
+thanks,
+
+greg k-h
 
