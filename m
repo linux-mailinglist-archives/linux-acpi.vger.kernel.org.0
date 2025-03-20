@@ -1,48 +1,56 @@
-Return-Path: <linux-acpi+bounces-12366-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12367-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968E0A6A2BF
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 10:35:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4A4A6AC40
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 18:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCED58A4CF8
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 09:33:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 591984627C1
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 17:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2725B222577;
-	Thu, 20 Mar 2025 09:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8782253A7;
+	Thu, 20 Mar 2025 17:41:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19F42222CA;
-	Thu, 20 Mar 2025 09:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4216F1EDA06;
+	Thu, 20 Mar 2025 17:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742463185; cv=none; b=Tvy8LcGcBYY3rBQzBiGsWnxzuT07HqdPHfpA+t95/iP3rGumty7ITbkDNwyLePMdED/vWk8s3wUwZKF7EVGpb6q+NehoiTLGfBBlerT/Cx2ytQsr33Ki//frzh8tArHWhb9QvCxjWyXKw21gIDCu0481XtTVdmj1y6oGzA9kUic=
+	t=1742492491; cv=none; b=mUNus2WUgmuVRrl3NGV/x/DZbZvAe56TuZLSTrR5as6vM8g5D90Q/2UczoUUcIrp0RKJ3YltWYS6p4zm8T6LuQgDsY0DISJvXm+Qw46iksRF8mBQo33NFPLkueudDbBUAC1IQGnY1SvPfJ9WqszzedfF5P1ErOurFS99OndjLPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742463185; c=relaxed/simple;
-	bh=zGVoYuexyNAYTW+12AY61QB9oJUhu0/d1dOlv0Die0w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JZp8dYPMLPDPOa/a6yd30Qa5cnKZ+rEOQ3wXKB2nA9aDKmA6h8AEN6UWfc2aL84/FJHCj4qcdI9WzERqOdcSna2tkJf9ya83O9z/5f1RVxuEBmpfh/FsoH1r0MwJCBMkwgSomta3aXUI6IEnQPM4MTK6mXnDGKcs3Eexcfb9BRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [210.73.43.1])
-	by APP-05 (Coremail) with SMTP id zQCowADn7qLC4Ntn6cmWFg--.39879S2;
-	Thu, 20 Mar 2025 17:32:51 +0800 (CST)
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
-To: qiaozhe@iscas.ac.cn,
-	robert.moore@intel.com,
-	rafael.j.wysocki@intel.com,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPICA: Adjust the position of code lines.
-Date: Thu, 20 Mar 2025 17:29:43 +0800
-Message-Id: <20250320092943.92790-1-qiaozhe@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1742492491; c=relaxed/simple;
+	bh=hxjPa9gLyx/uSoYJ8lGX6yMc386x4cSQCX5Ayf/sbug=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Gu/kVT2Qd8fjiu0nWU6MRpo/8UZ9Siho+PtwSLc+EpHciEiNCKBuFP+PrJ8YBhqFEXjFotAygVafnBj0oxheYpOl0+q8lAFXaQq++6RBvpeUxL9fEoN/BkB615YaUeijeMHDSWkrswwH5DyR/H4winQLshCY0nGYTiHLxzlFScE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZJXpw37tQz6M4k2;
+	Fri, 21 Mar 2025 01:38:00 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id B399614050A;
+	Fri, 21 Mar 2025 01:41:20 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 20 Mar 2025 18:41:19 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<james.morse@arm.com>, <conor@kernel.org>, Yicong Yang
+	<yangyicong@huawei.com>, <linux-acpi@vger.kernel.org>
+CC: <linux-arch@vger.kernel.org>, <linuxarm@huawei.com>, Yushan Wang
+	<wangyushan12@huawei.com>, <linux-mm@kvack.org>,
+	<gregkh@linuxfoundation.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Dan Williams <dan.j.williams@intel.com>
+Subject: [RFC PATCH 0/6] Cache coherency management subsystem
+Date: Thu, 20 Mar 2025 17:41:12 +0000
+Message-ID: <20250320174118.39173-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,51 +58,108 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADn7qLC4Ntn6cmWFg--.39879S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7XFykXF18Zr4fAFWrCw15Jwb_yoWDXFc_WF
-	nxJFs3XFWFyF1xWw10qa4fWr4av3y7uFWxKFy7try3Aw1xZry2v34UCr1fZa1Ykw4F9Fsx
-	X3yDXryfAr9F9jkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbsAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r126r1DMxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUUKFAJUUUUU==
-X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-In the acpica/utcache.c file, adjust the position of the
-"ACPI_MEM_TRACKING(cache->total_allocated++);" code line
-to ensure that the increment operation on total_allocated
-is included within the ACPI_DBG_TRACK_ALLOCATIONS configuration.
+Note that I've only a vague idea of who will care about this
+so please do +CC others as needed.
 
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
----
- drivers/acpi/acpica/utcache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On x86 there is the much loved WBINVD instruction that causes a write back
+and invalidate of all caches in the system. It is expensive but it is
+necessary in a few corner cases. These are cases where the contents of
+Physical Memory may change without any writes from the host. Whilst there
+are a few reasons this might happen, the one I care about here is when
+we are adding or removing mappings on CXL. So typically going from
+there being actual memory at a host Physical Address to nothing there
+(reads as zero, writes dropped) or visa-versa. That involves the
+reprogramming of address decoders (HDM Decoders); in the near future
+it may also include the device offering dynamic capacity extents. The
+thing that makes it very hard to handle with CPU flushes is that the
+instructions are normally VA based and not guaranteed to reach beyond
+the Point of Coherence or similar. You might be able to (ab)use
+various flush operations intended to ensure persistence memory but
+in general they don't work either.
 
-diff --git a/drivers/acpi/acpica/utcache.c b/drivers/acpi/acpica/utcache.c
-index 85a85f7cf750..046e6ba127d4 100644
---- a/drivers/acpi/acpica/utcache.c
-+++ b/drivers/acpi/acpica/utcache.c
-@@ -251,9 +251,9 @@ void *acpi_os_acquire_object(struct acpi_memory_list *cache)
- 	} else {
- 		/* The cache is empty, create a new object */
- 
-+#ifdef ACPI_DBG_TRACK_ALLOCATIONS
- 		ACPI_MEM_TRACKING(cache->total_allocated++);
- 
--#ifdef ACPI_DBG_TRACK_ALLOCATIONS
- 		if ((cache->total_allocated - cache->total_freed) >
- 		    cache->max_occupied) {
- 			cache->max_occupied =
+So on other architectures such as ARM64 we have no instruction similar to
+WBINVD but we may have device interfaces in the system that provide a way
+to ensure a PA range undergoes the write back and invalidate action. This
+RFC is to find a way to support those cache maintenance device interfaces.
+The ones I know about are much more flexible than WBINVD, allowing
+invalidation of particular PA ranges, or a much richer set of flush types
+(not supported yet as not needed for upstream use cases).
+
+To illustrate how a solution might work, I've taken both a HiSilicon
+design (slight quirk as registers overlap with existing PMU driver)
+and more controversially a firmware interface proposal from ARM
+(wrapped up in made up ACPI) that was dropped from the released spec
+but for which the alpha spec is still available.
+
+Why drivers/cache?
+- Mainly because it exists and smells like a reasonable place.
+- Conor, you are maintainer for this currently do you mind us putting this
+  stuff in there?
+
+Why not just register a singleton function pointer?
+- Systems may include multiple cache control devices, responsible
+  for different parts of the PA address range (interleaving etc make
+  this complex).  They may not all share a common hardware interface.
+- A device class is more convenient than managing multiple homogeneous
+  device instances within a driver.
+- Disadvantage is that we need this small class
+
+Generalizing to more arch?
+- I've started with ARM64, but if useful elsewhere the small amount
+  of arch code could be moved to a generic location.
+
+QEMU emulation code at
+http://gitlab.com/jic23/qemu cxl-2025-03-20 
+
+Why an RFC?
+- I'm really just looking for feedback on whether the class approach
+  is the way to go at this stage.  I'm not strongly attached to it but
+  it feels like the right balance of complexity and flexibility to me.
+- I made up the ACPI spec - it's not documented, non official and
+  honestly needs work. I would however like to get feedback on whether
+  it is something we want to try and get through the ACPI Working group
+  as a much improved code first proposal?  The potential justification
+  being to avoid the need for lots trivial drivers where maybe a bit
+  of DSDT interpreted code does the job better.
+
+Jonathan Cameron (3):
+  cache: coherency device class
+  acpi: PoC of Cache control via ACPI0019 and _DSM
+  Hack: Pretend we have PSCI 1.2
+
+Yicong Yang (3):
+  memregion: Support fine grained invalidate by
+    cpu_cache_invalidate_memregion()
+  arm64: Support ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+  cache: Support cache maintenance for HiSilicon SoC Hydra Home Agent
+
+ arch/arm64/Kconfig                  |   1 +
+ arch/arm64/include/asm/cacheflush.h |  14 ++
+ arch/arm64/mm/flush.c               |  42 ++++++
+ arch/x86/mm/pat/set_memory.c        |   2 +-
+ drivers/acpi/Makefile               |   1 +
+ drivers/cache/Kconfig               |  26 ++++
+ drivers/cache/Makefile              |   4 +
+ drivers/cache/acpi_cache_control.c  | 157 ++++++++++++++++++++++
+ drivers/cache/coherency_core.c      | 130 +++++++++++++++++++
+ drivers/cache/hisi_soc_hha.c        | 193 ++++++++++++++++++++++++++++
+ drivers/cxl/core/region.c           |   6 +-
+ drivers/firmware/psci/psci.c        |   2 +
+ drivers/nvdimm/region.c             |   3 +-
+ drivers/nvdimm/region_devs.c        |   3 +-
+ include/linux/cache_coherency.h     |  60 +++++++++
+ include/linux/memregion.h           |   8 +-
+ 16 files changed, 646 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/cache/acpi_cache_control.c
+ create mode 100644 drivers/cache/coherency_core.c
+ create mode 100644 drivers/cache/hisi_soc_hha.c
+ create mode 100644 include/linux/cache_coherency.h
+
 -- 
-2.34.1
+2.43.0
 
 
