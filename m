@@ -1,60 +1,58 @@
-Return-Path: <linux-acpi+bounces-12387-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12388-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC0BA6AFB2
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 22:13:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E77FA6B001
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 22:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57E4E487E61
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 21:13:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01C4A188AFBE
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 21:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F1C22A1ED;
-	Thu, 20 Mar 2025 21:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9D5215171;
+	Thu, 20 Mar 2025 21:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaMJ49FB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnqBDVwF"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E51E5B7E;
-	Thu, 20 Mar 2025 21:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA3C1CB332;
+	Thu, 20 Mar 2025 21:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742505216; cv=none; b=tMUYL740RmojMHkcuC6jiiRm9TUIJzaQS1ms2Q5Mtuq2JvRhv1c6TbQIJe2ns+Op10ATzf8n3MYeFlaeHNjH+Y3eG5JKPi+FkJelR0MWWjgvYacAX2ENaIb/RsOn2z6GCl+gJHA1SE+BH0hVXfsqdxuWmPCkY5PHci201+XNbDw=
+	t=1742506729; cv=none; b=Rn01o3XSfKHfO7trrOisOY+xmzfpubaS9+Hg4NYsnUxr8S8ulkZfk7kQ43OwjNSww/eLyMrA58JPBkeKVAsajHmSZFMIqmBe1I9qPuFhKlaTYtawdfPY3y8NzuVeje9itx27EPivW40ZXyANokMpsnUy0eLjGZT2jR+dXL4BRhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742505216; c=relaxed/simple;
-	bh=qT3pRQIRt1i35oXtu0ODXFreqqI/+Y7zQS4P0enG44U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qFLP9rJN421yN2FCYYVq4Pp2at8LvlIYUekpNWy9/cP77CsMee7b5EOJl9eC1Yqzecjdm3PYc7/pQ1ehiwDpGVGUdtZRnVu/ymzkBDKcDv5PrW16XiFNpKQEL2BzI5JZ8OiAeQNbOJCZ3Zy0O9sVkS4YF5O9t0jWcIJCyo82BQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaMJ49FB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F231C4CEDD;
-	Thu, 20 Mar 2025 21:13:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742505215;
-	bh=qT3pRQIRt1i35oXtu0ODXFreqqI/+Y7zQS4P0enG44U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iaMJ49FB16G+FlJRuy97OCfjA+ZbWBl3XVzcBMcaKwrB06G5d36541muYB5cmaXHu
-	 YMMt/nHuOhUyOpB+eQ4xO2cyWMn+axk3d7aTdXz2tEEpUBygHFk0M9oDEEwHS0uJPd
-	 EKgLazyXP8IsrH66Cm5uouuHXXVNfRPzAwLWxRrU=
-Date: Thu, 20 Mar 2025 14:12:15 -0700
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	james.morse@arm.com, conor@kernel.org,
-	Yicong Yang <yangyicong@huawei.com>, linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linuxarm@huawei.com,
-	Yushan Wang <wangyushan12@huawei.com>, linux-mm@kvack.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [RFC PATCH 3/6] cache: coherency device class
-Message-ID: <2025032013-venus-request-b026@gregkh>
-References: <20250320174118.39173-1-Jonathan.Cameron@huawei.com>
- <20250320174118.39173-4-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1742506729; c=relaxed/simple;
+	bh=xBq+kuml8gUMhTga7dWd9x5psa834hL/dQF5A53Fuwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ghMQpp+IJfmQEwZMl0RAAi+jMyHOdgvHPXJBnNUQK8oGKLMfwvzcN1ypywP6rSrgfHuQBR6eew4EJpB3WH3ht5yyoTcpqXX4pMR0lSr6G48XqalhSaveGdnHse19mir2BGUOseoBqLzz90zgBdAvqvXUMmWN1hSnWr6IfXpE1Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnqBDVwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34C7C4CEDD;
+	Thu, 20 Mar 2025 21:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742506728;
+	bh=xBq+kuml8gUMhTga7dWd9x5psa834hL/dQF5A53Fuwg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=nnqBDVwFcnvXBfRcM1fqHqEcO5t6SXY96MSB9SBtkXDp4d0BmGpdpRGIM1Bu5v6BK
+	 G0G63Wc04deBl1r4Iwaw0NAdhJN+19SfIbJzddvIdUNxU4eLWIeeyVAaDpw8Svl7bS
+	 PZD9s91uI41s74lvPJNXzd67JcTiJ/8zp2tfNY9Rdr4iLOuXnpW14mKthbMi5YpLNR
+	 wJWdStZ7gd0TfH087g481gTcybLronAdouheIdSylefpXkSi2fHRqo5tEY4ZF2y6Dr
+	 YypqTWoejWrIYHt4an6w1nMqZsw7gdSOP5VNOm1q1MgjlsVLSaxiDJ7CUSPQiZexqP
+	 SYxPFRoNzZjAw==
+Date: Thu, 20 Mar 2025 16:38:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Hsin-Yi Wang <hsinyi@chromium.org>, lukas@wunner.de,
+	mika.westerberg@linux.intel.com,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v6] PCI: Allow PCI bridges to go to D3Hot on all non-x86
+Message-ID: <20250320213847.GA1101373@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,192 +61,94 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250320174118.39173-4-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20250320110604.v6.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid>
 
-On Thu, Mar 20, 2025 at 05:41:15PM +0000, Jonathan Cameron wrote:
-> --- a/drivers/cache/Kconfig
-> +++ b/drivers/cache/Kconfig
-> @@ -1,6 +1,12 @@
->  # SPDX-License-Identifier: GPL-2.0
->  menu "Cache Drivers"
+On Thu, Mar 20, 2025 at 11:06:04AM -0700, Brian Norris wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> 
+> Currently, pci_bridge_d3_possible() encodes a variety of decision
+> factors when deciding whether a given bridge can be put into D3. A
+> particular one of note is for "recent enough PCIe ports." Per Rafael [0]:
+> 
+>   "There were hardware issues related to PM on x86 platforms predating
+>    the introduction of Connected Standby in Windows.  For instance,
+>    programming a port into D3hot by writing to its PMCSR might cause the
+>    PCIe link behind it to go down and the only way to revive it was to
+>    power cycle the Root Complex.  And similar."
+> 
+> Thus, this function contains a DMI-based check for post-2015 BIOS.
+> 
+> The above factors (Windows, x86) don't really apply to non-x86 systems,
+> and also, many such systems don't have BIOS or DMI. However, we'd like
+> to be able to suspend bridges on non-x86 systems too.
+> 
+> Restrict the "recent enough" check to x86. If we find further
+> incompatibilities, it probably makes sense to expand on the deny-list
+> approach (i.e., bridge_d3_blacklist or similar).
+> 
+> Link: https://lore.kernel.org/linux-pci/CAJZ5v0j_6jeMAQ7eFkZBe5Yi+USGzysxAgfemYh=-zq4h5W+Qg@mail.gmail.com/ [0]
+> Link: https://lore.kernel.org/linux-pci/20240227225442.GA249898@bhelgaas/ [1]
+> Link: https://lore.kernel.org/linux-pci/20240828210705.GA37859@bhelgaas/ [2]
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> [Brian: rewrite to !X86 based on Rafael's suggestions]
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+
+OK, I give up.  It seems like we don't have any better way than to
+guess which platforms don't have issues.
+
+Applied to pci/pm for v6.15, thanks!
+
+> ---
+> Based on prior work by Manivannan Sadhasivam that was part of a bigger
+> series that stalled:
+> 
+> [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all Devicetree based platforms
+> https://lore.kernel.org/linux-pci/20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org/
+> 
+> I'm resubmitting this single patch, since it's useful and seemingly had
+> agreement.
+> 
+> Changes in v6:
+> - Include more background lore (thanks Rafael)
+> - Switch to "non-x86" instead of "uses Device Tree" condition
+> 
+> Changes in v5:
+> - Pulled out of the larger series, as there were more controversial
+>   changes in there, while this one had agreement (Link [1][2]).
+> - Rewritten with a relaxed set of rules, because the above patch
+>   required us to modify many device trees to add bridge nodes.
+> 
+>  drivers/pci/pci.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index ff69f3d653ce..4d7c9f64ea24 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3031,7 +3031,7 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
+>   * @bridge: Bridge to check
+>   *
+>   * This function checks if it is possible to move the bridge to D3.
+> - * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
+> + * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
+>   */
+>  bool pci_bridge_d3_possible(struct pci_dev *bridge)
+>  {
+> @@ -3075,10 +3075,10 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+>  			return false;
 >  
-> +config CACHE_COHERENCY_CLASS
-> +	bool "Cache coherency control class"
-
-Why can't this be a module?  And why would anyone want to turn it off?
-
-> +	help
-> +	  Class to which coherency control drivers register allowing core kernel
-> +	  subsystems to issue invalidations and similar coherency operations.
-
-What "core kernel subsystems"?
-
-> +
->  config AX45MP_L2_CACHE
->  	bool "Andes Technology AX45MP L2 Cache controller"
->  	depends on RISCV
-
-Shouldn't all of these now depend on CACHE_COHERENCY_CLASS?
-
-> diff --git a/drivers/cache/Makefile b/drivers/cache/Makefile
-> index 55c5e851034d..b72b20f4248f 100644
-> --- a/drivers/cache/Makefile
-> +++ b/drivers/cache/Makefile
-> @@ -3,3 +3,5 @@
->  obj-$(CONFIG_AX45MP_L2_CACHE)		+= ax45mp_cache.o
->  obj-$(CONFIG_SIFIVE_CCACHE)		+= sifive_ccache.o
->  obj-$(CONFIG_STARFIVE_STARLINK_CACHE)	+= starfive_starlink_cache.o
-> +
-> +obj-$(CONFIG_CACHE_COHERENCY_CLASS)	+= coherency_core.o
-
-Why the blank line?
-
-> diff --git a/drivers/cache/coherency_core.c b/drivers/cache/coherency_core.c
-> new file mode 100644
-> index 000000000000..52cb4ceae00c
-> --- /dev/null
-> +++ b/drivers/cache/coherency_core.c
-> @@ -0,0 +1,130 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Class to manage OS controlled coherency agents within the system.
-> + * Specifically to enable operations such as write back and invalidate.
-> + *
-> + * Copyright: Huawei 2025
-> + * Some elements based on fwctl class as an example of a modern
-> + * lightweight class.
-> + */
-> +
-> +#include <linux/cache_coherency.h>
-> +#include <linux/container_of.h>
-> +#include <linux/idr.h>
-> +#include <linux/fs.h>
-> +#include <linux/module.h>
-> +#include <linux/slab.h>
-> +
-> +#include <asm/cacheflush.h>
-> +
-> +static DEFINE_IDA(cache_coherency_ida);
-> +
-> +static void cache_coherency_device_release(struct device *device)
-> +{
-> +	struct cache_coherency_device *ccd =
-> +		container_of(device, struct cache_coherency_device, dev);
-> +
-> +	ida_free(&cache_coherency_ida, ccd->id);
-> +}
-> +
-> +static struct class cache_coherency_class = {
-> +	.name = "cache_coherency",
-> +	.dev_release = cache_coherency_device_release,
-> +};
-> +
-> +static int cache_inval_one(struct device *dev, void *data)
-> +{
-> +	struct cache_coherency_device *ccd =
-> +		container_of(dev, struct cache_coherency_device, dev);
-> +
-> +	if (!ccd->ops)
-> +		return -EINVAL;
-> +
-> +	return ccd->ops->wbinv(ccd, data);
-> +}
-> +
-> +static int cache_inval_done_one(struct device *dev, void *data)
-> +{
-> +	struct cache_coherency_device *ccd =
-> +		container_of(dev, struct cache_coherency_device, dev);
-> +	if (!ccd->ops)
-> +		return -EINVAL;
-> +
-> +	return ccd->ops->done(ccd);
-> +}
-> +
-> +static int cache_invalidate_memregion(int res_desc,
-> +				      phys_addr_t addr, size_t size)
-> +{
-> +	int ret;
-> +	struct cc_inval_params params = {
-> +		.addr = addr,
-> +		.size = size,
-> +	};
-> +
-> +	ret = class_for_each_device(&cache_coherency_class, NULL, &params,
-> +				    cache_inval_one);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return class_for_each_device(&cache_coherency_class, NULL, NULL,
-> +				     cache_inval_done_one);
-> +}
-> +
-> +static const struct system_cache_flush_method cache_flush_method = {
-> +	.invalidate_memregion = cache_invalidate_memregion,
-> +};
-> +
-> +struct cache_coherency_device *
-> +_cache_coherency_alloc_device(struct device *parent,
-> +			      const struct coherency_ops *ops, size_t size)
-> +{
-> +
-> +	if (!ops || !ops->wbinv)
-> +		return NULL;
-> +
-> +	struct cache_coherency_device *ccd __free(kfree) = kzalloc(size, GFP_KERNEL);
-> +
-> +	if (!ccd)
-> +		return NULL;
-> +
-> +	ccd->dev.class = &cache_coherency_class;
-> +	ccd->dev.parent = parent;
-> +	ccd->ops = ops;
-> +	ccd->id = ida_alloc(&cache_coherency_ida, GFP_KERNEL);
-> +
-> +	if (dev_set_name(&ccd->dev, "cache_coherency%d", ccd->id))
-> +		return NULL;
-> +
-> + 	device_initialize(&ccd->dev);
-> +
-> +	return_ptr(ccd);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(_cache_coherency_alloc_device, "CACHE_COHERENCY");
-> +
-> +int cache_coherency_device_register(struct cache_coherency_device *ccd)
-> +{
-> +	return device_add(&ccd->dev);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_register, "CACHE_COHERENCY");
-> +
-> +void cache_coherency_device_unregister(struct cache_coherency_device *ccd)
-> +{
-> +	device_del(&ccd->dev);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_unregister, "CACHE_COHERENCY");
-> +
-> +static int __init cache_coherency_init(void)
-> +{
-> +	int ret;
-> +
-> +	ret = class_register(&cache_coherency_class);
-> +	if (ret)
-> +		return ret;
-> +
-> +	//TODO: generalize
-> +	arm64_set_sys_cache_flush_method(&cache_flush_method);
-
-I'm guessing this will blow up the build on non-x86 builds :)
-
-> +struct cache_coherency_device {
-> +	struct device dev;
-> +	const struct coherency_ops *ops;
-> +	int id;
-> +};
-
-Classes are normally for user/kernel apis, what is this going to be used
-for?  I don't see any new user/kernel apis happening, so why do you need
-a struct device to be created?
-
-thanks,
-
-greg k-h
+>  		/*
+> -		 * It should be safe to put PCIe ports from 2015 or newer
+> -		 * to D3.
+> +		 * Out of caution, we only allow PCIe ports from 2015 or newer
+> +		 * into D3 on x86.
+>  		 */
+> -		if (dmi_get_bios_year() >= 2015)
+> +		if (!IS_ENABLED(CONFIG_X86) || dmi_get_bios_year() >= 2015)
+>  			return true;
+>  		break;
+>  	}
+> -- 
+> 2.49.0.395.g12beb8f557-goog
+> 
 
