@@ -1,76 +1,77 @@
-Return-Path: <linux-acpi+bounces-12362-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12363-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8BA3A6A112
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 09:20:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F78EA6A120
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 09:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 063B7188C61C
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 08:20:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1C5D461A27
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Mar 2025 08:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF1420AF69;
-	Thu, 20 Mar 2025 08:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E543121C186;
+	Thu, 20 Mar 2025 08:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nR0vIyLX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NgvVMNOW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A0679C0;
-	Thu, 20 Mar 2025 08:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C252135A1;
+	Thu, 20 Mar 2025 08:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742458845; cv=none; b=AJVSjp0EgzpNEvw8ozeu7K7Le6Md1Xp/1/3mMxfwcSRlzE4/yQHPyvoIEVo5AZI+sR60CA1N6BDQUkeCtgdIQPdQJQgAmDhvBQqfEdTMBG+2dn7Qw8d0KHl2xrr9n++hrbB8koLkH/hHNg02pwg8V4TYIhM9KYwGiELIGmfPcvI=
+	t=1742458873; cv=none; b=uwsiuXGc16EnWh4mghAclzRfh8k0gQlMAh3ew8jVTiaYyfDbkFPnRwgv3npWOiIeBGeicgvhXd0tkiXi8gdnAgzYj8KeVcObkjvEZUUppSDqqytkFWV1ba2Nfuv4TSC5UXaio0T86s3jcTyXAsHG37A3xkoPYgTnaJrr8E5B/kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742458845; c=relaxed/simple;
-	bh=ChysvofED6/qp4H6ckCX8CPGxxeohDJRgBl7V7bQEk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=m9n9akBfwapWOEOwEsWiwk/ER4x5gfR+tvuPY988KDjf1WwBBByGpHAMdzCiro1ycKT7i9mPlbog0J10jPbcvITM+DG1DcFDUVVlr6tdWg7qWqFKXpFCgYtWHC2emzvp+C1sw0FbUxo1L3KyCXjNGHCOpLbmRlEbxpuusyLWzjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nR0vIyLX; arc=none smtp.client-ip=209.85.208.175
+	s=arc-20240116; t=1742458873; c=relaxed/simple;
+	bh=9RDEkfUAtOtIDvk2ej8pElhGQ26MOiuQJ/PWR+OiWEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=saQd4jNIOnn4jq3i9oJszmGMOEEfdFoPPgcMmWl4c4IANtakaDAolV9PCpCxLEiAgUkmnvPB+gflSnGgXReiEjzUVZx9F7S9cmiAX4y7ZN604KjvwMxP+OMltTYeoybWPK/KfVnSWarLF/NhN/PW4uGFzgLUhiC/XjQKVl7Gvs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NgvVMNOW; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30bd11bfec6so5595931fa.0;
-        Thu, 20 Mar 2025 01:20:42 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-543d8badc30so652221e87.0;
+        Thu, 20 Mar 2025 01:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742458841; x=1743063641; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qcBMPfg10XMsOOKKKa4T9Z75+9TBcciaNtXWqiNMB48=;
-        b=nR0vIyLXkcstFYYEDevlVVa+W07TW8ZT8beyauOzMqWAIfxLsRExDGzg5TSy4Vv7xe
-         dwmBpshgdOJn0vTZZN/LRN2AEGaZxVOS6KvDqPIxkFzhDnlKG4aGPEwajLKUFTSsx3uW
-         LeoIE6S/cKzX01I7VJUgPGhtDHct8dJStQPkjzkUeXXD4z/ZBD8B8rjkqz/EgiTth+Wf
-         fyYx6sJai6i0f5QiSYUnmR70+qqUXpwsgDTRvvCNw1CwglON8pvoNzj3tUUS3PY+IY59
-         Vn2gqQ+deuxnZUa/uU7DJtY7LYrbkuRDVqYoLNfKBR0P9TbU/G6NnNA7HnIWtkvFdE1V
-         GHhQ==
+        d=gmail.com; s=20230601; t=1742458870; x=1743063670; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o8YCQKSCMbcpjqvqGVAud+bsNcc/Isbjy4a8q5O0R/8=;
+        b=NgvVMNOWrK2s8/dPr5JqlbGGlig+dLY4/cXervoZ+A9c7rj6/iF3shIwfFcqzbPTKL
+         H6JKgeJuiolVWweTRZV1+tMfPiMmRhjds0+860i6Iwyi3YTjM4lOa+6qRMhdcFdbJHRA
+         i7N5VjSKIZtc2epUpq2ijw+OvVBqV83Wf3hdMDH9/liAFUluukxmXvjHEkO2dXZb4MzW
+         7f92dQE0flACrneey0ToLtJ54mEj7DJ2bpB0vT0gfQD7ovE7T/ApC4zXHrGT0oulPau5
+         8x+aDLyBMyeyySyGh0wuxHeyFmbN7zrbIhrL3WuftCejxb1V2J/Xi9PBiLuFn/5js3uC
+         46Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742458841; x=1743063641;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qcBMPfg10XMsOOKKKa4T9Z75+9TBcciaNtXWqiNMB48=;
-        b=YYCxGwedfCFLEBlaOPOn2ZqiZxkvo67/oQG+jBF+JDfoxWWp11Wucpj2UY0QOweTpN
-         wd2NImewb5Be1WLnHhNue1oIyoxpO1r+CzVwwLodE2W+gVMAUUqJUYlkepvttMvaAw+c
-         LN/S9S+W+7VLqJSmrr+nJXfMgbCA6yDlKWxEz87VCU7A73ZIZKHkI2K2QX/cmPGI56le
-         hgG6yJs+yJG7qhw3WpHxaxcshLTdltCsPUMEHCnRzoiAeCO0dTi30bWPFzpdjE4MnXDR
-         KEQtQZ3nfFmTbI4/86QzhCYpFn8TSKhwIvRhw7dy9uw/qbJoqtJOu2Ho1d/+/NyT++7f
-         6Fbg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKN9RsAPtDuJCP8CatxvnP3yTMe3f0k5LVIpgDJVMo8xOeDkh/n8NtMLxzSRKSq5rloCCezughhqfy@vger.kernel.org, AJvYcCWQ/TVbUzzxjLBQ6EF2NoqBQsXiOT2f4IZn4bOZl41KYQ0LcyHNyCns3eMmHVPaQWH9KDyTX59BJTS2rg==@vger.kernel.org, AJvYcCWyeT0cBEysUyy1YY54z4MBoatH8bRsmwB9NBdlSBxsEZpRGM/gcy1GAfMGQCD5k1NcR/CYrjlEZgu5@vger.kernel.org, AJvYcCXHsFG2eFKvvnoDiDc93QSYNSz3y5JaH3eg8perqpaDbR1eHXIFCaPFM/7Hnj07m1CXC6HVjb30wP/p+bCzHycjWP8=@vger.kernel.org, AJvYcCXU1xPW0Jl2AR0iOzROwhpiCUVLE2W/e/waUeKLw3YunOkta7+rB3kftXkttf+Kl3v6IJbUHjbE3T5TJgIL@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjlP1QHkFA6E8bKruvh5gOJAY1jiOtZEBPLpAGoNP7QKCWKOGP
-	Zc2E1alSvGY7TSzy4LL6KiuG7tYnya2SOUl+9aY/tIxWCWVmYCar
-X-Gm-Gg: ASbGncvEXA3OrxT/uuhsyp8RebLAV7MCWxyrNPFXciV+uuRreQvcgsgzjI0hwOQZS4+
-	XehkEMJ5fXUGbrOgQDPtoD7+xbj0PoLmmFRqcFu3+7/6B5hAnvsjQGIbj+paRb563zrHwSc3bLZ
-	FPBKF4Wt4CB2YTiQSK4KccE06pD6kMjfzzaPLeSxECoLHV/fsQsdTjqjd51yUDh+ShtHzHwjg2s
-	xJQT3OpJ1y2iyGagdvxtPyIOti/GvGTW1fXhghiWrdPgERkGSXaTHWcnHDCVEbqRM77cOKyEhV/
-	+iVhvaeQnIPu+EyPeHczy1DKBER2JuNBKnl0YLAFcRQxvv5dRVk=
-X-Google-Smtp-Source: AGHT+IEB7xNRabtoDCrqpRPpYSHi1cLEIKy0GXAIlYchpxKvuhgZzcxQviLJ3YHh+2p0B1Ru98dxhA==
-X-Received: by 2002:a2e:bc0f:0:b0:304:4e03:f9d9 with SMTP id 38308e7fff4ca-30d6a44cc9fmr22997491fa.28.1742458840786;
-        Thu, 20 Mar 2025 01:20:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742458870; x=1743063670;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o8YCQKSCMbcpjqvqGVAud+bsNcc/Isbjy4a8q5O0R/8=;
+        b=OBJwIPCMd5aUZOwQZN2NqgK3uTGcrvcnirEZ7SDwjH8iS27pZr+G9p0fMLMTnbRwPK
+         i+NCnc1EI47Yo/ssTGBWFtWLv1DUqpQOk98LaSbb8l3r/HMerQ9h6utRsxANqRxpi2sz
+         ZDPyVWkYHnilZCNrSmnahW3Efx0/dJ9mreGzMn2gXz79dmUj/HNzbQ8EkPq4nYMlRtzI
+         +N2SAKfsigXT7dkSqzCS63/f42fcCHjqXUmeTQzsoyHzHjfwoIQPlinfbRYAvoVAKRUk
+         rAG+c2yy5u32IGXX9JgZBrjc3UoZDWW5R2oIwhBKsyemgMpsi9AKaaIauftjNYKAW2jw
+         kKTw==
+X-Forwarded-Encrypted: i=1; AJvYcCW67GvEEiPeHdfOSfQ/fG4az4r0wonIoe+gVgXnZWdmH5WnRGF6uFMpwLHqR9YZt0riR/ENoZH0+Uqz@vger.kernel.org, AJvYcCWMx1rSV/7bdzlnt+swyU8J2GlN5QkoET+vW2Jyhd4ArzINSx8rilHsmynQu5jRiSLgYQ8ZbqHXgOmEVA==@vger.kernel.org, AJvYcCXUSP8NPO3keFS6O9guBcW1I1MThUmbvtHPOss+/f+GRG38meTlc7Z//8vpaPQLtNekYVdhj14f88zOx0v6Y/vQQ2E=@vger.kernel.org, AJvYcCXqTYIu7rs2DhDsHRE0YH199biAePa9mtzLL1EIvr+6y8HHi1h3TENGJehTygDVJ5XcS81PAGfbsuQv@vger.kernel.org, AJvYcCXtlsdTG2wz/sTAECrVIZOfnkSrlDHfG2Gd0wU7Aixbe46jtvEkHtRNWZtueZGcuAXReOezgQEI4/PnqYrQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSdKJlPdrNU13PmfVzXFlxjQ45QXBc5MKuDjsvbjADBJwbA0Tq
+	0l768xO6BVaUyb2SQuxD4XJcBb8R0eWFq0jDN4Fa/82gp+mBNzQh
+X-Gm-Gg: ASbGnctlh1XMufV2naLg+hJZe6FridNICFwkAr76+6LrVZ7OabB4TP9qobN2ur9zvBg
+	isTwCbl3mwb4Qv/M0/9wcAj3qUjL5l7Q0DtREpnFqbVTlpFpoa4592oIlq/9XWGONYhNo9mnI5j
+	R5+0Weimd6TRab+gt1w1iW/x+1+IQ9+NFWtV6s7/ijkrlEkwOmvmaPERRj1qya/hX3NeApu13Cu
+	n80dRJ4YZOHP04+UNaaERfHiel91ZjfpPDUjoJku/9yJCLcgp2fqhOgzN7IS0FBwkRPFsQhJrn3
+	D3vKiA96h9//2iKHlF3eDJNXTb5Ml0sF8o65//hVN2uzksSw8pY=
+X-Google-Smtp-Source: AGHT+IEtQcDT1hKcr/hyPc4GQAHaaV6Ce4tKlVEIYYQ9CJsshWPNPgEWDxvASx6328HXCmwcR69h0Q==
+X-Received: by 2002:a05:6512:ea5:b0:549:8d16:7267 with SMTP id 2adb3069b0e04-54acb1a3327mr1879960e87.10.1742458869558;
+        Thu, 20 Mar 2025 01:21:09 -0700 (PDT)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c3f1db81esm25239221fa.99.2025.03.20.01.20.38
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba88536csm2134374e87.177.2025.03.20.01.21.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 01:20:39 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:20:32 +0200
+        Thu, 20 Mar 2025 01:21:07 -0700 (PDT)
+Date: Thu, 20 Mar 2025 10:21:02 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -105,8 +106,9 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: [PATCH v9 0/8] Support ROHM BD79124 ADC
-Message-ID: <cover.1742457420.git.mazziesaccount@gmail.com>
+Subject: [PATCH v9 2/8] property: Add functions to iterate named child
+Message-ID: <fd959b10904a401d3f6fb855933be1a4750ef670.1742457420.git.mazziesaccount@gmail.com>
+References: <cover.1742457420.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -114,171 +116,183 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="YoKLVAxRz7wFwxMC"
+	protocol="application/pgp-signature"; boundary="YRU/gfTfRaKrfWT3"
 Content-Disposition: inline
+In-Reply-To: <cover.1742457420.git.mazziesaccount@gmail.com>
 
 
---YoKLVAxRz7wFwxMC
+--YRU/gfTfRaKrfWT3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Support ROHM BD79124 ADC.
+There are a few use-cases where child nodes with a specific name need to
+be parsed. Code like:
 
-This series adds also couple of IIO ADC helper functions for parsing the
-channel information from the device tree. There are also new helpers
-included for iterating and counting firmware child nodes with a specific
-name.
+fwnode_for_each_child_node()
+	if (fwnode_name_eq())
+		...
 
-The rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
+can be found from a various drivers/subsystems. Adding a macro for this
+can simplify things a bit.
 
-There has been some discussion about how useful these ADC helpers are,
-and whether they should support also differential and single ended channel
-configurations. This version does not include support for those - with the
-benefit of reduced complexity and easier to use API.
+In a few cases the data from the found nodes is later added to an array,
+which is allocated based on the number of found nodes. One example of
+such use is the IIO subsystem's ADC channel nodes, where the relevant
+nodes are named as channel[@N].
 
-NOTE: The rzg2l_adc and the sun20i-gpadc are untested as I lack of relevant
-HW. They have been compile tested only.
+Add helpers for iterating and counting device's sub-nodes with certain
+name instead of open-coding this in every user.
 
-The ROHM BD79124 ADC itself is quite usual stuff. 12-bit, 8-channel ADC
-with threshold monitoring.
-
-Except that:
- - each ADC input pin can be configured as a general purpose output.
- - manually starting an ADC conversion and reading the result would
-   require the I2C _master_ to do clock stretching(!) for the duration
-   of the conversion... Let's just say this is not well supported.
- - IC supports 'autonomous measurement mode' and storing latest results
-   to the result registers. This mode is used by the driver due to the
-   "peculiar" I2C when doing manual reads.
-
-Furthermore, the ADC uses this continuous autonomous measuring,
-and the IC keeps producing new 'out of window' IRQs if measurements are
-out of window - the driver disables the event for 1 seconds when sending
-it to user. This prevents generating storm of events
-
-Revision history:
-
-v8 =3D> v9:
- - Drop the gianfar and the thp7312 drivers from the series to limit the
-   review noise and to simplify the merging. They can be submitted later
-   as separate changes.
- - Drop the fwnode_for_each_available_named_child() as suggested by
-   Sakari.
- - BD79124 driver styling and fixes
-
-v7 =3D> v8:
-  property helpers:
-    - Fix the example in fwnode_get_named_child_node_count() documentation
-      to use the fwnode_get_named_child_node_count() and not the
-      device_get_named_child_node_count()
-    - Fix the rest of the new macro's indentiations
-  adc helpers:
-    - Treat 0 ADC channels as an error in
-      devm_iio_adc_device_alloc_chaninfo_se().
-  rzg2l_adc / sun20i-gpadc:
-    - Drop zero channels check from the ADC drivers using
-      devm_iio_adc_device_alloc_chaninfo_se()
-  BD79124:
-    - Use unsigned for regmap values
-    - Commit message fine tuning
-    - Check devm_mutex_init() return value
-    - Handle 'ALL pins as ADC or GPO' cleanly in BD79124 driver
-    - BD79124 styling / typofixes
-
-v6 =3D> v7:
- - Inline device_get_named_child_node_count()
- - Fix kernel-doc for fwnode_get_named_child_node_count()
- - Minor styling fixes
- More accurate changelog in individual patches.
-
-v5 =3D> v6:
- - Drop applied patch
- - Add *_for_each_named_child_* iterators
- - Add a patch converting the thp7312 driver to use the new helper
- - Styling and minor things pointed by reviewers
-
-v4 =3D> v5: Fixes as per various review comments. Most notably:
- - Drop the patch making the TI's ADC driver to respect device tree.
- - Add (RFC) patch converting gianfar driver to use new name child-node
-   counting API as suggested by Andy.
- - Add fwnode_get_child_node_count_named() as suggested by Rob.
- - rebase to v6.14-rc5
- More accurate changelog in individual patches.
-
-v3 =3D> v4:
- - Drop the ADC helper support for differential channels
- - Drop the ADC helper for getting only channel IDs by fwnode.
- - "Promote" the function counting the number of child nodes with a
-   specific name to the property.h (As suggested by Jonathan).
- - Add ADC helpers to a namespace.
- - Rebase on v6.14-rc3
- - More minor changes described in individual patches.
-
-v2 =3D> v3:
- - Restrict BD79124 channel numbers as suggested by Conor and add
-   Conor's Reviewed-by tag.
- - Support differential and single-ended inputs
- - Convert couple of existing drivers to use the added ADC helpers
- - Minor fixes based on reviews
-Link to v2:
-https://lore.kernel.org/all/cover.1738761899.git.mazziesaccount@gmail.com/
-
-RFC v1 =3D> v2:
- - Drop MFD and pinmux.
- - Automatically re-enable events after 1 second.
- - Export fwnode parsing helpers for finding the ADC channels.
-
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 ---
+Revision history:
+v8 =3D> v9:
+ - Drop the fwnode_for_each_available_named_child_node() as suggested
+   by Sakari during v8 review:
+   https://lore.kernel.org/all/Z9mQPJwnKAkPHriT@kekkonen.localdomain/
+v7 =3D> v8:
+ - Fix the example in fwnode_get_named_child_node_count() documentation
+   to use the fwnode_get_named_child_node_count() and not the
+   device_get_named_child_node_count()
+ - Fix the rest of the new macro's indentiations
+v6 =3D> v7:
+ - Improve kerneldoc
+ - Inline device_get_named_child_node_count() and change it to call
+   fwnode_get_named_child_node_count() inside
+ - Fix indentiation of the new macros
+v5 =3D> v6:
+ - Add helpers to also iterate through the nodes.
+v4 =3D> v5:
+ - Use given name instead of string 'channel' when counting the nodes
+ - Add also fwnode_get_child_node_count_named() as suggested by Rob.
+v3 =3D> v4:
+ - New patch as suggested by Jonathan, see discussion in:
+https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
+---
+ drivers/base/property.c  | 27 +++++++++++++++++++++++++++
+ include/linux/property.h | 20 ++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-Matti Vaittinen (8):
-  dt-bindings: ROHM BD79124 ADC/GPO
-  property: Add functions to iterate named child
-  iio: adc: add helpers for parsing ADC nodes
-  iio: adc: rzg2l_adc: Use adc-helpers
-  iio: adc: sun20i-gpadc: Use adc-helpers
-  iio: adc: Support ROHM BD79124 ADC
-  MAINTAINERS: Add IIO ADC helpers
-  MAINTAINERS: Add ROHM BD79124 ADC/GPO
-
- .../bindings/iio/adc/rohm,bd79124.yaml        |  114 ++
- MAINTAINERS                                   |   12 +
- drivers/base/property.c                       |   27 +
- drivers/iio/adc/Kconfig                       |   17 +
- drivers/iio/adc/Makefile                      |    3 +
- drivers/iio/adc/industrialio-adc.c            |   82 ++
- drivers/iio/adc/rohm-bd79124.c                | 1138 +++++++++++++++++
- drivers/iio/adc/rzg2l_adc.c                   |   39 +-
- drivers/iio/adc/sun20i-gpadc-iio.c            |   39 +-
- include/linux/iio/adc-helpers.h               |   27 +
- include/linux/property.h                      |   20 +
- 11 files changed, 1470 insertions(+), 48 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/rohm,bd79124.=
-yaml
- create mode 100644 drivers/iio/adc/industrialio-adc.c
- create mode 100644 drivers/iio/adc/rohm-bd79124.c
- create mode 100644 include/linux/iio/adc-helpers.h
-
-
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index c1392743df9c..f42f32ff45fc 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct =
+device *dev)
+ }
+ EXPORT_SYMBOL_GPL(device_get_child_node_count);
+=20
++/**
++ * fwnode_get_named_child_node_count - number of child nodes with given na=
+me
++ * @fwnode: Node which child nodes are counted.
++ * @name: String to match child node name against.
++ *
++ * Scan child nodes and count all the nodes with a specific name. Potential
++ * 'number' -ending after the 'at sign' for scanned names is ignored.
++ * E.g.::
++ *   fwnode_get_named_child_node_count(fwnode, "channel");
++ * would match all the nodes::
++ *   channel { }, channel@0 {}, channel@0xabba {}...
++ *
++ * Return: the number of child nodes with a matching name for a given devi=
+ce.
++ */
++unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle =
+*fwnode,
++					       const char *name)
++{
++	struct fwnode_handle *child;
++	unsigned int count =3D 0;
++
++	fwnode_for_each_named_child_node(fwnode, child, name)
++		count++;
++
++	return count;
++}
++EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
++
+ bool device_dma_supported(const struct device *dev)
+ {
+ 	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
+diff --git a/include/linux/property.h b/include/linux/property.h
+index e214ecd241eb..3e83babac0b0 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -167,6 +167,10 @@ struct fwnode_handle *fwnode_get_next_available_child_=
+node(
+ 	for (child =3D fwnode_get_next_child_node(fwnode, NULL); child;	\
+ 	     child =3D fwnode_get_next_child_node(fwnode, child))
+=20
++#define fwnode_for_each_named_child_node(fwnode, child, name)		\
++	fwnode_for_each_child_node(fwnode, child)			\
++		if (!fwnode_name_eq(child, name)) { } else
++
+ #define fwnode_for_each_available_child_node(fwnode, child)		       \
+ 	for (child =3D fwnode_get_next_available_child_node(fwnode, NULL); child;\
+ 	     child =3D fwnode_get_next_available_child_node(fwnode, child))
+@@ -178,11 +182,19 @@ struct fwnode_handle *device_get_next_child_node(cons=
+t struct device *dev,
+ 	for (child =3D device_get_next_child_node(dev, NULL); child;	\
+ 	     child =3D device_get_next_child_node(dev, child))
+=20
++#define device_for_each_named_child_node(dev, child, name)		\
++	device_for_each_child_node(dev, child)				\
++		if (!fwnode_name_eq(child, name)) { } else
++
+ #define device_for_each_child_node_scoped(dev, child)			\
+ 	for (struct fwnode_handle *child __free(fwnode_handle) =3D	\
+ 		device_get_next_child_node(dev, NULL);			\
+ 	     child; child =3D device_get_next_child_node(dev, child))
+=20
++#define device_for_each_named_child_node_scoped(dev, child, name)	\
++	device_for_each_child_node_scoped(dev, child)			\
++		if (!fwnode_name_eq(child, name)) { } else
++
+ struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_hand=
+le *fwnode,
+ 						  const char *childname);
+ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+@@ -210,6 +222,14 @@ int fwnode_irq_get_byname(const struct fwnode_handle *=
+fwnode, const char *name);
+=20
+ unsigned int device_get_child_node_count(const struct device *dev);
+=20
++unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle =
+*fwnode,
++					       const char *name);
++static inline unsigned int device_get_named_child_node_count(const struct =
+device *dev,
++							     const char *name)
++{
++	return fwnode_get_named_child_node_count(dev_fwnode(dev), name);
++}
++
+ static inline int device_property_read_u8(const struct device *dev,
+ 					  const char *propname, u8 *val)
+ {
 --=20
 2.48.1
 
 
---YoKLVAxRz7wFwxMC
+--YRU/gfTfRaKrfWT3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfbz8wACgkQeFA3/03a
-ocW2+Af/XifXJoPI6HJO09tF8ui3zqe7MXsN3HOrb+oqgxrNofGdGysmeb3+vqvE
-4nyq5fXZZe0gv0KxwCqLba9TdOvwR5drPIZAVwW/UcVY/VAF2OFTxMnO452AqAIH
-mtZG8kYI35jOwMZKODEU4hGkSgktm+KLdg0ifwLd9W5XZrQ6Je6mp31XMm8DOuMh
-lCHIpWu7LUhOeMkRHs1WQuttYiyZzhHsa65Myrj04x2Pf7eMiS00MAOMFGLqvObi
-ogV2CJD3ZqfGRQiBFbKeZltIDKnrTqetJb2F5cdEFKtmlPvyZ+jxaQhi9ilUbPaO
-SsqjcdK5qBal2wasXx6P82n/+u1gqw==
-=kDea
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfbz+4ACgkQeFA3/03a
+ocV5kwgAqP6S8zt8MaFdvTnQ26ACvVcKar6Gy2oM/5KkY544czu7VyYtNPYp0dHi
+PIrWhfxOMHKsPcqMHe4nHxSVVjFKdBBMq/6/kNS5AEqSiMSnP7XgPo25MtyEwwSI
+bECHybECCeTuPpaYlNSY6mKDaefr0IyZEiJbG6vlAnUd3nZ1LhGMzNAkllSsPI4f
+nQrXBfIldS49i5cjLFfkybaia7iKsOheKcafo3TniFyUFIm55dG5v5yv6Eh2Ofwf
+RfvHs6Do3ThWkOOtVY/AlxWqkSD63Hq//vXaZJ7T4GAiJNHGFI+GJ8JcKy6gfI+o
+ZUBbkH6QfVjUCMha/CCymXxh4aIvrw==
+=xACW
 -----END PGP SIGNATURE-----
 
---YoKLVAxRz7wFwxMC--
+--YRU/gfTfRaKrfWT3--
 
