@@ -1,140 +1,96 @@
-Return-Path: <linux-acpi+bounces-12399-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12400-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730E5A6BC37
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 14:58:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2185CA6BFB9
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 17:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 440A97A7363
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 13:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B3943A80A8
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 16:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDE278F3E;
-	Fri, 21 Mar 2025 13:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7053D1D86DC;
+	Fri, 21 Mar 2025 16:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Liw89G9J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890EB78F29;
-	Fri, 21 Mar 2025 13:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F98414601C;
+	Fri, 21 Mar 2025 16:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742565435; cv=none; b=Aqy2JtfWWNmnhHB8a1yhe28nrmsjplZfLdbDuUvhJSSIASaIved8M6xystvFhSpe/SLLCzpyfYaJb0jIabd4ByRscV1iesonvXmDA/lR63o+qpL+JLLbI64SitfukyMZwCSh1jWPrCDfn9vbqzS7+IZy60vlehZMrTOs7HZ3Z5w=
+	t=1742573996; cv=none; b=XCS1h5ADTBo870vlHoKdO3GQ/jrQTSU+eyN7nznyRynRiC4WBvH9fKmmwLuhcPgKiU2BKip5OFKba21eFrlkeSCCjK11NCbB7WPhke9LhaxfzJ3dEemMKnRjS/gizmkYar07RB9qiHXyb+VPp4Ji+J+8xPFRSLYe9idpH81RTgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742565435; c=relaxed/simple;
-	bh=mt5VrjA3cDeDU5iaGmha+OBFVRPyZDe+YhTGWVzJhKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xe64v9jsIOIfNUNm/LIzOv+2Ouz1uKGmvAL/y7ctmitR0XGyrJZrATRTHRSAlDVM4bl4S9eDMtoknZT3Pzg3Def0XZP44tU9Uc/zQcB4rRst1JTf9igSjBEPr5fSjoiGMqDDoySUIUBi7ftPXHVq3/YKOt3g8ZMKlOwkemqZFfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13B44106F;
-	Fri, 21 Mar 2025 06:57:20 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7343D3F673;
-	Fri, 21 Mar 2025 06:57:10 -0700 (PDT)
-Date: Fri, 21 Mar 2025 13:57:07 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>, Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Robbie King <robbiek@xsightlabs.com>,
-	Andi Shyti <andi.shyti@kernel.org>, <linux-i2c@vger.kernel.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v3 00/13] mailbox: pcc: Fixes and cleanup/refactoring
-Message-ID: <20250321-elegant-ruby-bull-7d9c50@sudeepholla>
-References: <20250313-pcc_fixes_updates-v3-0-019a4aa74d0f@arm.com>
+	s=arc-20240116; t=1742573996; c=relaxed/simple;
+	bh=XI2f7SgbQyb+AjtyGj/tTNrFlGkFGsaPs29m6a6WOvg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=h7iFtDZH8RlD/HZR2ICu6BU/TL6LKEoXeg+QQnG3ppQxKSwZVby7vBkHHgb/yK9Lp5PiXCczIJhbfi5WjSLRVR3taMYFDu1ygXu4dLdYaQwg0I+JcqikvHuny4qQOPvqF+1O495NfNP6/wt3+q1P7L0Q70owyatT1I0FtPWCOK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Liw89G9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3447C4CEE3;
+	Fri, 21 Mar 2025 16:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742573995;
+	bh=XI2f7SgbQyb+AjtyGj/tTNrFlGkFGsaPs29m6a6WOvg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Liw89G9JebAAheTFGPYolng/r/+euxjKQK+sJFI4TrqTrKYLQRHVbvcRQ/cBk+UVz
+	 5nhfYLQHDxA+gubhPIX/1xxcAZ7mt/hNfftQON3JbzzwBeE3g8oGNTS+bKrhNsh8QI
+	 ZHbtZoZ+aMGmkJRNMypGw1p3Gf92SK3ZSEmv4S65j6IY9IQtQTpWa4ZJ/OFUsXhmXH
+	 DFxXrfg96Zi7aDVu/DBm1R3ssg6ut6k52DxOERAQWd2qPMLTXBmAsJQr9eSykde5hY
+	 bp2Rev6o3RCi4m78rkwZAMcMxqxJDPV7/raGRMQfAYLU75KhLqFmmnYpqmfaysku+2
+	 djJW8iK6RmiWQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EBF0A3806659;
+	Fri, 21 Mar 2025 16:20:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250313-pcc_fixes_updates-v3-0-019a4aa74d0f@arm.com>
+Subject: Re: [PATCH] net: remove sb1000 cable modem driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174257403177.2538209.5678698281791174462.git-patchwork-notify@kernel.org>
+Date: Fri, 21 Mar 2025 16:20:31 +0000
+References: <20250312085236.2531870-1-arnd@kernel.org>
+In-Reply-To: <20250312085236.2531870-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, arnd@arndb.de, horms@kernel.org,
+ corbet@lwn.net, christophe.leroy@csgroup.eu, rafael@kernel.org,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-acpi@vger.kernel.org
 
-On Thu, Mar 13, 2025 at 03:28:46PM +0000, Sudeep Holla wrote:
-> Here is a summary of the changes in this patch series:
-> 
-> 1. Fix for race condition in updating of the chan_in_use flag
-> 
->    Ensures correct updating of the chan_in_use flag to avoid potential race
->    conditions.
-> 
-> 2. Interrupt handling fix
-> 
->    Ensures platform acknowledgment interrupts are always cleared to avoid
->    leaving the interrupt asserted forever.
-> 
-> 3. Endian conversion cleanup
-> 
->    Removes unnecessary endianness conversion in the PCC mailbox driver.
-> 
-> 4. Memory mapping improvements
-> 
->    Uses acpi_os_ioremap() instead of direct mapping methods for better ACPI
->    compatibility.
-> 
-> 5. Return early if the command complete register is absent
-> 
->    Ensures that if no GAS (Generic Address Structure) register is available,
->    the function exits early.
-> 
-> 6. Refactor IRQ handler and move error handling to a separate function
-> 
->    Improves readability of error handling in the PCC mailbox driver’s
->    interrupt handler.
-> 
-> 7. Shared memory mapping refactoring/enhancements
-> 
->    Ensures the shared memory is always mapped and unmapped in the PCC
->    mailbox driver when the PCC channel is requested and release.
-> 
-> 8. Refactored check_and_ack() Function
-> 
->    Simplifies and improves the logic for handling type4 platform notification
->    acknowledgments.
-> 
-> 09-13. Shared memory handling simplifications across multiple drivers
-> 
->     Simplifies shared memory handling in:
->         Kunpeng HCCS driver (soc: hisilicon)
->         Apm X-Gene Slimpro I2C driver
->         X-Gene hardware monitoring driver (hwmon)
->         ACPI PCC driver
->         ACPI CPPC driver
-> 
-> The X-gene related changes now change the mapping attributes to align
-> with ACPI specification. There are possibilities for more cleanups on
-> top of these changes around how the shmem is accessed within these
-> driver.
-> 
-> Also, my main aim is to get 1-8 merged first and target 9-13 for
-> following merge window through respective tree.
-> 
-> Overall, the patch series focuses on improving correctness, efficiency, and
-> maintainability of the PCC mailbox driver and related components by fixing
-> race conditions, optimizing memory handling, simplifying shared memory
-> interactions, and refactoring code for clarity.
-> 
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
-> Jassi,
-> 
-> Please take patch [1-8]/13 through the mailbox tree if and when you are
-> happy with the changes.
+Hello:
 
-Hi Jassi,
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-I2C change is also acked now. Let me know if you prefer pull request or
-you prefer to take it via ACPI tree which may need you ACK.
+On Wed, 12 Mar 2025 09:51:19 +0100 you wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> This one is hilariously outdated, it provided a faster downlink over
+> TV cable for users of analog modems in the 1990s, through an ISA card.
+> 
+> The web page for the userspace tools has been broken for 25 years, and
+> the driver has only ever seen mechanical updates.
+> 
+> [...]
 
+Here is the summary with links:
+  - net: remove sb1000 cable modem driver
+    https://git.kernel.org/netdev/net-next/c/3fed9fda150d
+
+You are awesome, thank you!
 -- 
-Regards,
-Sudeep
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
