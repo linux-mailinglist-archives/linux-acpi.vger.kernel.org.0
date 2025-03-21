@@ -1,61 +1,69 @@
-Return-Path: <linux-acpi+bounces-12394-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12395-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33C8A6B7D2
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 10:42:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DCBA6B86D
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 11:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C65617F2A1
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 09:40:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20BDA161262
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 10:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD52221F3A;
-	Fri, 21 Mar 2025 09:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E14C1F153E;
+	Fri, 21 Mar 2025 10:03:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5EB221578;
-	Fri, 21 Mar 2025 09:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179DB41C72;
+	Fri, 21 Mar 2025 10:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742549913; cv=none; b=AVMblDJI2ABOxmagjgWjWqD1qPI3Rd9x5X75oQMyjtQKTuv4xEndWsmh8T079Qqxs4bjQHN8zuXmDc3ctvmLMnFhp25JRENerV9ATu9KMARD9h5y+Y246WcO22AWHAEW7ksvcT3pehuCDedozR9nKB2K/KvdbSE9aN65sqSlYqg=
+	t=1742551395; cv=none; b=WTWgMYH+gcpIlxUoduSEPC0CcpDWXfIOPEI9Jj6des2bpSeh2EQPPQUl/xRHdScSj925C08Pl6pKT9jyoVQ1xZpjo+WQyV/t5dfySrxqpM2br9r101sKAvsgKDxECxtbIALy+psKxMD+lJVLgii9X6S/UIRBw1EOl6Jcfp9wwDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742549913; c=relaxed/simple;
-	bh=6dg2biAD9hbahf/em6rIXS/4r8rvWiaQYmnzlJhQZsM=;
+	s=arc-20240116; t=1742551395; c=relaxed/simple;
+	bh=mr6l2LLuKAGbHkCuYwjPvSvm/d7AOLglFWNvz7o9a+c=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L0t+gX+3pagjH6MulnJSwuDot6R9C9dXuMlsVYZiZQuLyFNWTpq8DWnEWgXRHfgMQwGVRc0iWdimmiZ40Yfyweig3S3iOCu+pqd3OM/GAkGa3+5O74m6oi5exxX+Osl4UdBlCK1FxU9jabeR7VXnRSbYbmzv1sOZ/4Yl0NwiLZc=
+	 MIME-Version:Content-Type; b=mtnDZAeD3gsSZ0qW/kCt/vwgTZpr4iOiBmcLKQeXKzzH8EmokKukHjyd75rHlaOUUkkkoffWXTn9I3wGInObXGfzlRa65mrcEu1Twna/0VDShjoVhmUlt4+MEOlg7xgweuKYSddgOZ2lVTw7Qy9Q1Mw7fGY9mh5KkkguAuDwJNc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZJy1R5Bsvz6L5GL;
-	Fri, 21 Mar 2025 17:33:31 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZJyc82vtFz6K9V7;
+	Fri, 21 Mar 2025 18:00:08 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4DB00140517;
-	Fri, 21 Mar 2025 17:38:28 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id CC66A140146;
+	Fri, 21 Mar 2025 18:03:08 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 21 Mar
- 2025 10:38:27 +0100
-Date: Fri, 21 Mar 2025 09:38:25 +0000
+ 2025 11:03:07 +0100
+Date: Fri, 21 Mar 2025 10:03:05 +0000
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<james.morse@arm.com>, <conor@kernel.org>, Yicong Yang
-	<yangyicong@huawei.com>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, <linux-mm@kvack.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, Dan Williams
-	<dan.j.williams@intel.com>
-Subject: Re: [RFC PATCH 3/6] cache: coherency device class
-Message-ID: <20250321093825.00004d6b@huawei.com>
-In-Reply-To: <2025032013-venus-request-b026@gregkh>
-References: <20250320174118.39173-1-Jonathan.Cameron@huawei.com>
-	<20250320174118.39173-4-Jonathan.Cameron@huawei.com>
-	<2025032013-venus-request-b026@gregkh>
+To: <shiju.jose@huawei.com>
+CC: <linux-cxl@vger.kernel.org>, <dan.j.williams@intel.com>,
+	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>, <david@redhat.com>,
+	<Vilas.Sridharan@amd.com>, <linux-edac@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <bp@alien8.de>, <tony.luck@intel.com>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <mchehab@kernel.org>,
+	<leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 2/8] EDAC: Update documentation for the CXL memory
+ patrol scrub control feature
+Message-ID: <20250321100305.000018d2@huawei.com>
+In-Reply-To: <20250320180450.539-3-shiju.jose@huawei.com>
+References: <20250320180450.539-1-shiju.jose@huawei.com>
+	<20250320180450.539-3-shiju.jose@huawei.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -63,240 +71,168 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 20 Mar 2025 14:12:15 -0700
-Greg KH <gregkh@linuxfoundation.org> wrote:
+On Thu, 20 Mar 2025 18:04:39 +0000
+<shiju.jose@huawei.com> wrote:
 
-> On Thu, Mar 20, 2025 at 05:41:15PM +0000, Jonathan Cameron wrote:
-> > --- a/drivers/cache/Kconfig
-> > +++ b/drivers/cache/Kconfig
-> > @@ -1,6 +1,12 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >  menu "Cache Drivers"
-> >  
-> > +config CACHE_COHERENCY_CLASS
-> > +	bool "Cache coherency control class"  
-> 
-> Why can't this be a module?  And why would anyone want to turn it off?
+> From: Shiju Jose <shiju.jose@huawei.com>
+>=20
+> Update the Documentation/edac/scrub.rst to include descriptions and
+> policies for CXL memory device-based and CXL region-based patrol scrub
+> control.
+>=20
+> Note: This may require inputs from CXL memory experts regarding
+> region-based scrubbing policies.
 
-If you don't have the hardware you won't want the infrastructure.
-I'll add a note.  If you do have the hardware and don't have memory subsystems
-that need to use it (maybe no CXL hardware for instance and that's the only
-user on a particular platform).
+So I suggested the region interfaces in the first place.  It's all about
+usecases and 'why' we might increase the scrub rate.
+Ultimately the hardware is controlled in a device wide way, so we could
+have made it complex userspace problem to deal with it on a perf device.
+The region interfaces are there as a simplification not because they
+are strictly necessary.
 
-> 
-> > +	help
-> > +	  Class to which coherency control drivers register allowing core kernel
-> > +	  subsystems to issue invalidations and similar coherency operations.  
-> 
-> What "core kernel subsystems".
+Anyhow, the use cases:
 
-I'll expand on that.  Memory hotplug related stuff (currently CXL and NVDIMM)
-but the thing is more general that that.
+1) Scrubbing because a device is showing unexpectedly high errors.  That
+   control needs to be at device granularity.  If one device in an interlea=
+ve
+   set (backing a region) is dodgy, why make them all do more work?
 
-> 
-> > +
-> >  config AX45MP_L2_CACHE
-> >  	bool "Andes Technology AX45MP L2 Cache controller"
-> >  	depends on RISCV  
-> 
-> Shouldn't all of these now depend on CACHE_COHERENCY_CLASS?
+2) Scrubbing may apply to memory that isn't online at all yet.  Nice to know
+   if we have a problem before we start using it!  Likely this is setting
+   system wide defaults on boot.
 
-Nope. They are unrelated existing cache related drivers.   The question
-to Conor is whether he minds me putting this in the existing directory
-and to others on whether it's a good idea.
+3) Scrubbing at higher rate because software has decided that we want
+   more reliability for particular data.  I've been calling this
+   Differentiated Reliability.  That data sits in a region which
+   may cover part of multiple devices. The region interfaces are about
+   supporting this use case.
 
-> 
-> > diff --git a/drivers/cache/Makefile b/drivers/cache/Makefile
-> > index 55c5e851034d..b72b20f4248f 100644
-> > --- a/drivers/cache/Makefile
-> > +++ b/drivers/cache/Makefile
-> > @@ -3,3 +3,5 @@
-> >  obj-$(CONFIG_AX45MP_L2_CACHE)		+= ax45mp_cache.o
-> >  obj-$(CONFIG_SIFIVE_CCACHE)		+= sifive_ccache.o
-> >  obj-$(CONFIG_STARFIVE_STARLINK_CACHE)	+= starfive_starlink_cache.o
-> > +
-> > +obj-$(CONFIG_CACHE_COHERENCY_CLASS)	+= coherency_core.o  
-> 
-> Why the blank line?
+So now the question is what do we do if both interfaces are poked
+because someone cares simultaneously about 1 and 3?
 
-To separate existing stuff that happens to be cache related from this new
-class.  Kind of camping in a directory because seemed silly to have
-drivers/cache and drivers/cache_coherency
+I'd suggest just laying out a set for rules on how to set the scrub rates
+for any mixture of requirements, rather than making the driver work out
+the optimum combination.
+=20
+>=20
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  Documentation/edac/scrub.rst | 47 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>=20
+> diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
+> index daab929cdba1..d1c02bd90090 100644
+> --- a/Documentation/edac/scrub.rst
+> +++ b/Documentation/edac/scrub.rst
+> @@ -264,3 +264,51 @@ Sysfs files are documented in
+>  `Documentation/ABI/testing/sysfs-edac-scrub`
+> =20
+>  `Documentation/ABI/testing/sysfs-edac-ecs`
+> +
+> +Examples
+> +--------
+> +
+> +The usage takes the form shown in these examples:
+> +
+> +1. CXL memory device patrol scrubber
+> +
+> +1.1 Device based scrubbing
+> +
+> +CXL memory is exposed to memory management subsystem and ultimately user=
+space
+> +via CXL devices.
+> +
+> +For cases where hardware interleave controls do not directly map to regi=
+ons of
+> +Physical Address space, perhaps due to interleave the approach described=
+ in=A0
+> +1.2 Region based scrubbing section, which is specific to CXL regions sho=
+uld be
+> +followed.
+
+These sentences end up a bit unwieldy. Perhaps simply a forwards reference.
+
+When combining control via the device interfaces and region interfaces see
+1.2 Region bases scrubbing.
 
 
-> 
-> > diff --git a/drivers/cache/coherency_core.c b/drivers/cache/coherency_core.c
-> > new file mode 100644
-> > index 000000000000..52cb4ceae00c
-> > --- /dev/null
-> > +++ b/drivers/cache/coherency_core.c
-> > @@ -0,0 +1,130 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Class to manage OS controlled coherency agents within the system.
-> > + * Specifically to enable operations such as write back and invalidate.
-> > + *
-> > + * Copyright: Huawei 2025
-> > + * Some elements based on fwctl class as an example of a modern
-> > + * lightweight class.
-> > + */
-> > +
-> > +#include <linux/cache_coherency.h>
-> > +#include <linux/container_of.h>
-> > +#include <linux/idr.h>
-> > +#include <linux/fs.h>
-> > +#include <linux/module.h>
-> > +#include <linux/slab.h>
-> > +
-> > +#include <asm/cacheflush.h>
-> > +
-> > +static DEFINE_IDA(cache_coherency_ida);
-> > +
-> > +static void cache_coherency_device_release(struct device *device)
-> > +{
-> > +	struct cache_coherency_device *ccd =
-> > +		container_of(device, struct cache_coherency_device, dev);
-> > +
-> > +	ida_free(&cache_coherency_ida, ccd->id);
-> > +}
-> > +
-> > +static struct class cache_coherency_class = {
-> > +	.name = "cache_coherency",
-> > +	.dev_release = cache_coherency_device_release,
-> > +};
-> > +
-> > +static int cache_inval_one(struct device *dev, void *data)
-> > +{
-> > +	struct cache_coherency_device *ccd =
-> > +		container_of(dev, struct cache_coherency_device, dev);
-> > +
-> > +	if (!ccd->ops)
-> > +		return -EINVAL;
-> > +
-> > +	return ccd->ops->wbinv(ccd, data);
-> > +}
-> > +
-> > +static int cache_inval_done_one(struct device *dev, void *data)
-> > +{
-> > +	struct cache_coherency_device *ccd =
-> > +		container_of(dev, struct cache_coherency_device, dev);
-> > +	if (!ccd->ops)
-> > +		return -EINVAL;
-> > +
-> > +	return ccd->ops->done(ccd);
-> > +}
-> > +
-> > +static int cache_invalidate_memregion(int res_desc,
-> > +				      phys_addr_t addr, size_t size)
-> > +{
-> > +	int ret;
-> > +	struct cc_inval_params params = {
-> > +		.addr = addr,
-> > +		.size = size,
-> > +	};
-> > +
-> > +	ret = class_for_each_device(&cache_coherency_class, NULL, &params,
-> > +				    cache_inval_one);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return class_for_each_device(&cache_coherency_class, NULL, NULL,
-> > +				     cache_inval_done_one);
-> > +}
-> > +
-> > +static const struct system_cache_flush_method cache_flush_method = {
-> > +	.invalidate_memregion = cache_invalidate_memregion,
-> > +};
-> > +
-> > +struct cache_coherency_device *
-> > +_cache_coherency_alloc_device(struct device *parent,
-> > +			      const struct coherency_ops *ops, size_t size)
-> > +{
-> > +
-> > +	if (!ops || !ops->wbinv)
-> > +		return NULL;
-> > +
-> > +	struct cache_coherency_device *ccd __free(kfree) = kzalloc(size, GFP_KERNEL);
-> > +
-> > +	if (!ccd)
-> > +		return NULL;
-> > +
-> > +	ccd->dev.class = &cache_coherency_class;
-> > +	ccd->dev.parent = parent;
-> > +	ccd->ops = ops;
-> > +	ccd->id = ida_alloc(&cache_coherency_ida, GFP_KERNEL);
-> > +
-> > +	if (dev_set_name(&ccd->dev, "cache_coherency%d", ccd->id))
-> > +		return NULL;
-> > +
-> > + 	device_initialize(&ccd->dev);
-> > +
-> > +	return_ptr(ccd);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(_cache_coherency_alloc_device, "CACHE_COHERENCY");
-> > +
-> > +int cache_coherency_device_register(struct cache_coherency_device *ccd)
-> > +{
-> > +	return device_add(&ccd->dev);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_register, "CACHE_COHERENCY");
-> > +
-> > +void cache_coherency_device_unregister(struct cache_coherency_device *ccd)
-> > +{
-> > +	device_del(&ccd->dev);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_unregister, "CACHE_COHERENCY");
-> > +
-> > +static int __init cache_coherency_init(void)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = class_register(&cache_coherency_class);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	//TODO: generalize
-> > +	arm64_set_sys_cache_flush_method(&cache_flush_method);  
-> 
-> I'm guessing this will blow up the build on non-x86 builds :)
+=20
+> In those cases settings on the presented interface may interact with
+> +direct control via a device instance specific interface and care must be=
+ taken.
+> +
+> +Sysfs files for scrubbing are documented in
+> +`Documentation/ABI/testing/sysfs-edac-scrub`
+> +
+> +1.2. Region based scrubbing
+> +
+> +CXL memory is exposed to memory management subsystem and ultimately user=
+space
+> +via CXL regions. CXL Regions represent mapped memory capacity in system
+> +physical address space. These can incorporate one or more parts of multi=
+ple CXL
+> +memory devices with traffic interleaved across them. The user may want t=
+o control
+> +the scrub rate via this more abstract region instead of having to figure=
+ out the
+> +constituent devices and program them separately. The scrub rate for each=
+ device
+> +covers the whole device. Thus if multiple regions use parts of that devi=
+ce then
+> +requests for scrubbing of other regions may result in a higher scrub rat=
+e than
+> +requested for this specific region.
+> +
+> +1. When user sets scrub rate for a memory region, the scrub rate for all=
+ the CXL
+> +   memory devices interleaved under that region is updated with the same=
+ scrub
+> +   rate.=20
 
-Yup. That's a TODO That needs fixing.
+Note that this may affect multiple regions.
 
-> 
-> > +struct cache_coherency_device {
-> > +	struct device dev;
-> > +	const struct coherency_ops *ops;
-> > +	int id;
-> > +};  
-> 
-> Classes are normally for user/kernel apis, what is this going to be used
-> for?  I don't see any new user/kernel apis happening, so why do you need
-> a struct device to be created?
+> +
+> +2. When user sets scrub rate for a memory device, only the scrub rate fo=
+r that
+> +   memory devices is updated though device may be part of a memory regio=
+n and
+> +   does not change scrub rate of other memory devices of that memory reg=
+ion.
+> +
+> +3. Scrub rate of a CXL memory device may be set via EDAC device or regio=
+n scrub
+> +   interface simultaneously. Care must be taken to prevent a race condit=
+ion, or
+> +   only region-based setting may be allowed.
 
-I'm kind of expecting to grow some userspace ABI around a few things but
-indeed there isn't any yet.  Stuff that has been suggested is:
-* Descriptive stuff useful for performance estimation.
-* Cache locking - as kind of the opposite of flushes.
-* Maybe more direct user interfaces to control it (I'm wary of that though).
+So is this saying if you want to mix and match, set region first then device
+next?  Can we just lay out the rules to set up a weird mixture.  We could
+add more smarts to the driver but do we care as mixing 1 and 3 above is pro=
+bably
+unusual?
 
-Mostly thought, the idea was  avoid rolling my own similar registration
-infrastructure for this case.  Absolutely can do a subsystem without
-a class if that seems to be the way to go. It'll be a little more complex
-though.
+1. Taking each region in turn from lowest desired scrub rate to highest and=
+ set
+   their scrub rates.  Later regions may override the scrub rate on individ=
+ual
+   devices (and hence potentially whole regions).
 
-Thanks,
+2. Take each device for which enhanced scrubbing is required (higher rate) =
+and
+   set those scrub rates.  This will override the scrub rates of individual=
+ devices
+   leaving any that are not specifically set to scrub at the maximum rate r=
+equired
+   for any of the regions they are involved in backing.
+  =20
 
-Jonathan
-
-> 
-> thanks,
-> 
-> greg k-h
-> 
+> +
+> +Sysfs files for scrubbing are documented in
+> +`Documentation/ABI/testing/sysfs-edac-scrub`
 
 
