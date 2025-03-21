@@ -1,148 +1,179 @@
-Return-Path: <linux-acpi+bounces-12392-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12393-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7837A6B30A
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 03:38:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8E9A6B579
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 08:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E0B3A6238
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 02:37:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ABC118920B4
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 07:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA461E5713;
-	Fri, 21 Mar 2025 02:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574151E9906;
+	Fri, 21 Mar 2025 07:50:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC08208A7;
-	Fri, 21 Mar 2025 02:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFA726ACB;
+	Fri, 21 Mar 2025 07:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742524639; cv=none; b=bGGtqtH97LAZDBzY6/MrP7wdE+zFmjEyOznC2xLt6/kGv+iWAd80vKgABIVatritHWqb75DIsV2z49OUeko69l9UFZYQNgp+gb2SJ6i+dZGy5aTC3ZgyhKxrCMclp6Y9HOjOvmx5h0mkfbGpvY5F+94gOjs92/wnESsLeZTwllI=
+	t=1742543407; cv=none; b=uPtQJxg/sw6WTilRssFVW3iHVsE1WkJxYmLPHrNRZUt7fD70fZ11ey7DUR9fdK/RudHo6NXQGNbMYMOEVY/G5JeMS43p/Ui1i0BEPIeWbM4LjeDVxIEJsN52CJUOyOSAFtXsHs77/610h1HUA6t2vDLQeicZi4exrofWeUU9c2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742524639; c=relaxed/simple;
-	bh=gNa9WH3CbpnyjD0jwvZJ/5xvl2hPG86rsEve7RWuBlo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TKdJ5qnBeXizf4JKaI/YBYYOATZfaHS8dj64d8tlGpeXuP/3YgUVk99HTEJ/b4X7bYaI3moq99EREbVU0bYAuo8MiYo1yAjnzEOZdFIedyyLAtoXvH3L+Lto4h3meTLS2WDZdREz2wzpzvO2sI9eeSgdCyQpsoKpTUUVfKnkcCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=209.97.181.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAnLa3R0NxnLZ27Cw--.15429S2;
-	Fri, 21 Mar 2025 10:37:05 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
-	by mail (Coremail) with SMTP id AQAAfwB3fIii0NxnWXpPAA--.1469S5;
-	Fri, 21 Mar 2025 10:36:57 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	bfaccini@nvidia.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dave@stgolabs.net,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	rrichter@amd.com,
-	haibo1.xu@intel.com
-Cc: linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chenbaozi@phytium.com.cn,
-	Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [RFC PATCH v3 2/2] ACPI: NUMA: debug invalid unused PXM value for CFMWs
-Date: Fri, 21 Mar 2025 10:36:02 +0800
-Message-Id: <20250321023602.2609614-3-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250321023602.2609614-1-wangyuquan1236@phytium.com.cn>
-References: <20250321023602.2609614-1-wangyuquan1236@phytium.com.cn>
+	s=arc-20240116; t=1742543407; c=relaxed/simple;
+	bh=6hI6HTb0SjrdNqP1YFqTh6hXn9ZSUNy1APKZfKSSCjY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DBoC8pIpZswCPs8stqF06r3JQHt9gNBxu8fQwARvxEqIt5EGQ90G8XiG8/zUzl2uubNRmb/kmrgw0eMUQtii6QJ7SjfSb16dZpZTJm8TsiO3fwnF/lY4O3BBFnPrVUX+ze1ciM1dGFHkvtDFdq7A1ZR5aVF7MX7s1ngVaB3ZYbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4ZJvVF4Pn7z9sRy;
+	Fri, 21 Mar 2025 08:39:49 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id F-EBTBk1L9WD; Fri, 21 Mar 2025 08:39:49 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZJvVF2zQJz9sRs;
+	Fri, 21 Mar 2025 08:39:49 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 427FB8B79C;
+	Fri, 21 Mar 2025 08:39:49 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 6L_KAMM1K10W; Fri, 21 Mar 2025 08:39:49 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 491FB8B763;
+	Fri, 21 Mar 2025 08:39:47 +0100 (CET)
+Message-ID: <eff21b9b-0b03-4dbc-aa0a-7d3771df9082@csgroup.eu>
+Date: Fri, 21 Mar 2025 08:39:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] cxl: support CXL memory RAS features
+To: shiju.jose@huawei.com, linux-cxl@vger.kernel.org,
+ dan.j.williams@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
+ dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+ ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com
+Cc: linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bp@alien8.de,
+ tony.luck@intel.com, rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+ leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+ jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+ somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+ duenwen@google.com, gthelen@google.com, wschwartz@amperecomputing.com,
+ dferguson@amperecomputing.com, wbs@os.amperecomputing.com,
+ nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+ roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+ wanghuiqiang@huawei.com, linuxarm@huawei.com
+References: <20250320180450.539-1-shiju.jose@huawei.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250320180450.539-1-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwB3fIii0NxnWXpPAA--.1469S5
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAQAWfcdA4BvAAAss
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
-	1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7Kry7JrWxXFW5Zw43ZrWfAFb_yoW5JFWxpF
-	WIkF95JryxGrWxCa4Ivr4jv34fC3WxCFZ8KF9rCry3ZanxWry3Zr47JF9IvFyjy3y8ur10
-	vr4vvF15ua48ZFDanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
 
-The absence of SRAT would cause the fake_pxm to be -1 and increment
-to 0, then send to acpi_parse_cfmws(). If there exists CXL memory
-ranges that are defined in the CFMWS and not already defined in the
-SRAT, the new node (node0) for the CXL memory would be invalid, as
-node0 is already in "used", and all CXL memory might be online on
-node0.
 
-This utilizes node_set(0, nodes_found_map) to set pxm&node map. With
-this setting, acpi_map_pxm_to_node() could return the expected node
-value even if no SRAT.
 
-If SRAT is valid, the numa_memblks_init() would then utilize
-numa_move_tail_memblk() to move the numa_memblk from numa_meminfo to
-numa_reserved_meminfo in CFMWs fake node situation.
+Le 20/03/2025 à 19:04, shiju.jose@huawei.com a écrit :
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Support for CXL memory RAS features: patrol scrub, ECS, soft-PPR and
+> memory sparing.
+> 
+> This CXL series was part of the EDAC series [1].
+> 
+> The code is based on cxl.git next branch [2] merged with ras.git edac-cxl
+> branch [3].
+> 
+> 1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+> 2. https://web.git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=next
+> 3. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-cxl
+> 
+> Userspace code for CXL memory repair features [4] and
+> sample boot-script for CXL memory repair [5].
+> 
+> [4]: https://lore.kernel.org/lkml/20250207143028.1865-1-shiju.jose@huawei.com/
+> [5]: https://lore.kernel.org/lkml/20250207143028.1865-5-shiju.jose@huawei.com/
 
-If SRAT is missing or bad, the numa_memblks_init() would fail since
-init_func() would fail. And it causes that no numa_memblk in
-numa_reserved_meminfo list and the following dax_cxl driver could
-find the expected fake node.
+The title for the series is quite confusing, CXL seems to be something 
+else. There is a series here [1] that removes CXL driver, but after 
+looking it seems to be something completely different.
 
-Use numa_add_reserved_memblk() to replace numa_add_memblk(), since
-the cxl numa_memblk added by numa_add_memblk() would finally be moved
-to numa_reserved_meminfo, and numa_add_reserved_memblk() here could
-add cxl numa_memblk into reserved list directly. Hence, no matter
-SRAT is good or not, cxl numa_memblk could be allocated to reserved
-list.
+[1] https://lore.kernel.org/all/20250219070007.177725-1-ajd@linux.ibm.com/
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
- drivers/acpi/numa/srat.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Christophe
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 00ac0d7bb8c9..50bfecfb9c16 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -458,11 +458,12 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 		return -EINVAL;
- 	}
- 
--	if (numa_add_memblk(node, start, end) < 0) {
-+	if (numa_add_reserved_memblk(node, start, end) < 0) {
- 		/* CXL driver must handle the NUMA_NO_NODE case */
- 		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
- 			node, start, end);
- 	}
-+
- 	node_set(node, numa_nodes_parsed);
- 
- 	/* Set the next available fake_pxm value */
-@@ -646,8 +647,12 @@ int __init acpi_numa_init(void)
- 		if (node_to_pxm_map[i] > fake_pxm)
- 			fake_pxm = node_to_pxm_map[i];
- 	}
--	last_real_pxm = fake_pxm;
--	fake_pxm++;
-+
-+	/* Make sure CFMWs fake node >= 1 */
-+	fake_pxm = max(fake_pxm, 0);
-+	last_real_pxm = fake_pxm++;
-+	node_set(0, nodes_found_map);
-+
- 	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
- 			      &fake_pxm);
- 
--- 
-2.34.1
+
+> 
+> Changes
+> =======
+> v1 -> v2:
+> 1. Feedbacks from Dan Williams on v1,
+>     https://lore.kernel.org/linux-mm/20250307091137.00006a0a@huawei.com/T/
+>    - Fixed lock issues in region scrubbing, added local cxl_acquire()
+>      and cxl_unlock.
+>    - Replaced CXL examples using cat and echo from EDAC .rst docs
+>      with short description and ref to ABI docs. Also corrections
+>      in existing descriptions as suggested by Dan.
+>    - Add policy description for the scrub control feature.
+>      However this may require inputs from CXL experts.
+>    - Replaced CONFIG_CXL_RAS_FEATURES with CONFIG_CXL_EDAC_MEM_FEATURES.
+>    - Few changes to depends part of CONFIG_CXL_EDAC_MEM_FEATURES.
+>    - Rename drivers/cxl/core/memfeatures.c as drivers/cxl/core/edac.c
+>    - snprintf() -> kasprintf() in few places.
+>    
+> 2. Feedbacks from Alison on v1,
+>    - In cxl_get_feature_entry()(patch 1), return NULL on failures and
+>      reintroduced checks in cxl_get_feature_entry().
+>    - Changed logic in for loop in region based scrubbing code.
+>    - Replace cxl_are_decoders_committed() to cxl_is_memdev_memory_online()
+>      and add as a local function to drivers/cxl/core/edac.c
+>    - Changed few multiline comments to single line comments.
+>    - Removed unnecessary comments from the code.
+>    - Reduced line length of few macros in ECS and memory repair code.
+>    - In new files, changed "GPL-2.0-or-later" -> "GPL-2.0-only".
+>    - Ran clang-format for new files and updated.
+> 3. Changes for feedbacks from Jonathan on v1.
+>    - Changed few multiline comments to single line comments.
+> 
+> Shiju Jose (8):
+>    cxl: Add helper function to retrieve a feature entry
+>    EDAC: Update documentation for the CXL memory patrol scrub control
+>      feature
+>    cxl/edac: Add CXL memory device patrol scrub control feature
+>    cxl/edac: Add CXL memory device ECS control feature
+>    cxl/mbox: Add support for PERFORM_MAINTENANCE mailbox command
+>    cxl: Support for finding memory operation attributes from the current
+>      boot
+>    cxl/memfeature: Add CXL memory device soft PPR control feature
+>    cxl/memfeature: Add CXL memory device memory sparing control feature
+> 
+>   Documentation/edac/memory_repair.rst |   31 +
+>   Documentation/edac/scrub.rst         |   47 +
+>   drivers/cxl/Kconfig                  |   27 +
+>   drivers/cxl/core/Makefile            |    1 +
+>   drivers/cxl/core/core.h              |    2 +
+>   drivers/cxl/core/edac.c              | 1730 ++++++++++++++++++++++++++
+>   drivers/cxl/core/features.c          |   23 +
+>   drivers/cxl/core/mbox.c              |   45 +-
+>   drivers/cxl/core/memdev.c            |    9 +
+>   drivers/cxl/core/ras.c               |  145 +++
+>   drivers/cxl/core/region.c            |    5 +
+>   drivers/cxl/cxlmem.h                 |   73 ++
+>   drivers/cxl/mem.c                    |    4 +
+>   drivers/cxl/pci.c                    |    3 +
+>   drivers/edac/mem_repair.c            |    9 +
+>   include/linux/edac.h                 |    7 +
+>   16 files changed, 2159 insertions(+), 2 deletions(-)
+>   create mode 100644 drivers/cxl/core/edac.c
+> 
 
 
