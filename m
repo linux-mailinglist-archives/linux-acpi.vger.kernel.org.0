@@ -1,179 +1,302 @@
-Return-Path: <linux-acpi+bounces-12393-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12394-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8E9A6B579
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 08:50:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33C8A6B7D2
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 10:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ABC118920B4
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 07:50:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C65617F2A1
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 09:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574151E9906;
-	Fri, 21 Mar 2025 07:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD52221F3A;
+	Fri, 21 Mar 2025 09:38:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFA726ACB;
-	Fri, 21 Mar 2025 07:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5EB221578;
+	Fri, 21 Mar 2025 09:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742543407; cv=none; b=uPtQJxg/sw6WTilRssFVW3iHVsE1WkJxYmLPHrNRZUt7fD70fZ11ey7DUR9fdK/RudHo6NXQGNbMYMOEVY/G5JeMS43p/Ui1i0BEPIeWbM4LjeDVxIEJsN52CJUOyOSAFtXsHs77/610h1HUA6t2vDLQeicZi4exrofWeUU9c2M=
+	t=1742549913; cv=none; b=AVMblDJI2ABOxmagjgWjWqD1qPI3Rd9x5X75oQMyjtQKTuv4xEndWsmh8T079Qqxs4bjQHN8zuXmDc3ctvmLMnFhp25JRENerV9ATu9KMARD9h5y+Y246WcO22AWHAEW7ksvcT3pehuCDedozR9nKB2K/KvdbSE9aN65sqSlYqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742543407; c=relaxed/simple;
-	bh=6hI6HTb0SjrdNqP1YFqTh6hXn9ZSUNy1APKZfKSSCjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DBoC8pIpZswCPs8stqF06r3JQHt9gNBxu8fQwARvxEqIt5EGQ90G8XiG8/zUzl2uubNRmb/kmrgw0eMUQtii6QJ7SjfSb16dZpZTJm8TsiO3fwnF/lY4O3BBFnPrVUX+ze1ciM1dGFHkvtDFdq7A1ZR5aVF7MX7s1ngVaB3ZYbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4ZJvVF4Pn7z9sRy;
-	Fri, 21 Mar 2025 08:39:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id F-EBTBk1L9WD; Fri, 21 Mar 2025 08:39:49 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZJvVF2zQJz9sRs;
-	Fri, 21 Mar 2025 08:39:49 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 427FB8B79C;
-	Fri, 21 Mar 2025 08:39:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 6L_KAMM1K10W; Fri, 21 Mar 2025 08:39:49 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 491FB8B763;
-	Fri, 21 Mar 2025 08:39:47 +0100 (CET)
-Message-ID: <eff21b9b-0b03-4dbc-aa0a-7d3771df9082@csgroup.eu>
-Date: Fri, 21 Mar 2025 08:39:46 +0100
+	s=arc-20240116; t=1742549913; c=relaxed/simple;
+	bh=6dg2biAD9hbahf/em6rIXS/4r8rvWiaQYmnzlJhQZsM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L0t+gX+3pagjH6MulnJSwuDot6R9C9dXuMlsVYZiZQuLyFNWTpq8DWnEWgXRHfgMQwGVRc0iWdimmiZ40Yfyweig3S3iOCu+pqd3OM/GAkGa3+5O74m6oi5exxX+Osl4UdBlCK1FxU9jabeR7VXnRSbYbmzv1sOZ/4Yl0NwiLZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZJy1R5Bsvz6L5GL;
+	Fri, 21 Mar 2025 17:33:31 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4DB00140517;
+	Fri, 21 Mar 2025 17:38:28 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 21 Mar
+ 2025 10:38:27 +0100
+Date: Fri, 21 Mar 2025 09:38:25 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<james.morse@arm.com>, <conor@kernel.org>, Yicong Yang
+	<yangyicong@huawei.com>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linuxarm@huawei.com>, Yushan Wang
+	<wangyushan12@huawei.com>, <linux-mm@kvack.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, Dan Williams
+	<dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 3/6] cache: coherency device class
+Message-ID: <20250321093825.00004d6b@huawei.com>
+In-Reply-To: <2025032013-venus-request-b026@gregkh>
+References: <20250320174118.39173-1-Jonathan.Cameron@huawei.com>
+	<20250320174118.39173-4-Jonathan.Cameron@huawei.com>
+	<2025032013-venus-request-b026@gregkh>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] cxl: support CXL memory RAS features
-To: shiju.jose@huawei.com, linux-cxl@vger.kernel.org,
- dan.j.williams@intel.com, dave@stgolabs.net, jonathan.cameron@huawei.com,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com
-Cc: linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bp@alien8.de,
- tony.luck@intel.com, rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
- leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
- jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
- naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
- somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
- duenwen@google.com, gthelen@google.com, wschwartz@amperecomputing.com,
- dferguson@amperecomputing.com, wbs@os.amperecomputing.com,
- nifan.cxl@gmail.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
- roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
- wanghuiqiang@huawei.com, linuxarm@huawei.com
-References: <20250320180450.539-1-shiju.jose@huawei.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250320180450.539-1-shiju.jose@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
+On Thu, 20 Mar 2025 14:12:15 -0700
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-
-Le 20/03/2025 à 19:04, shiju.jose@huawei.com a écrit :
-> From: Shiju Jose <shiju.jose@huawei.com>
+> On Thu, Mar 20, 2025 at 05:41:15PM +0000, Jonathan Cameron wrote:
+> > --- a/drivers/cache/Kconfig
+> > +++ b/drivers/cache/Kconfig
+> > @@ -1,6 +1,12 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >  menu "Cache Drivers"
+> >  
+> > +config CACHE_COHERENCY_CLASS
+> > +	bool "Cache coherency control class"  
 > 
-> Support for CXL memory RAS features: patrol scrub, ECS, soft-PPR and
-> memory sparing.
-> 
-> This CXL series was part of the EDAC series [1].
-> 
-> The code is based on cxl.git next branch [2] merged with ras.git edac-cxl
-> branch [3].
-> 
-> 1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
-> 2. https://web.git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=next
-> 3. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-cxl
-> 
-> Userspace code for CXL memory repair features [4] and
-> sample boot-script for CXL memory repair [5].
-> 
-> [4]: https://lore.kernel.org/lkml/20250207143028.1865-1-shiju.jose@huawei.com/
-> [5]: https://lore.kernel.org/lkml/20250207143028.1865-5-shiju.jose@huawei.com/
+> Why can't this be a module?  And why would anyone want to turn it off?
 
-The title for the series is quite confusing, CXL seems to be something 
-else. There is a series here [1] that removes CXL driver, but after 
-looking it seems to be something completely different.
-
-[1] https://lore.kernel.org/all/20250219070007.177725-1-ajd@linux.ibm.com/
-
-Christophe
-
+If you don't have the hardware you won't want the infrastructure.
+I'll add a note.  If you do have the hardware and don't have memory subsystems
+that need to use it (maybe no CXL hardware for instance and that's the only
+user on a particular platform).
 
 > 
-> Changes
-> =======
-> v1 -> v2:
-> 1. Feedbacks from Dan Williams on v1,
->     https://lore.kernel.org/linux-mm/20250307091137.00006a0a@huawei.com/T/
->    - Fixed lock issues in region scrubbing, added local cxl_acquire()
->      and cxl_unlock.
->    - Replaced CXL examples using cat and echo from EDAC .rst docs
->      with short description and ref to ABI docs. Also corrections
->      in existing descriptions as suggested by Dan.
->    - Add policy description for the scrub control feature.
->      However this may require inputs from CXL experts.
->    - Replaced CONFIG_CXL_RAS_FEATURES with CONFIG_CXL_EDAC_MEM_FEATURES.
->    - Few changes to depends part of CONFIG_CXL_EDAC_MEM_FEATURES.
->    - Rename drivers/cxl/core/memfeatures.c as drivers/cxl/core/edac.c
->    - snprintf() -> kasprintf() in few places.
->    
-> 2. Feedbacks from Alison on v1,
->    - In cxl_get_feature_entry()(patch 1), return NULL on failures and
->      reintroduced checks in cxl_get_feature_entry().
->    - Changed logic in for loop in region based scrubbing code.
->    - Replace cxl_are_decoders_committed() to cxl_is_memdev_memory_online()
->      and add as a local function to drivers/cxl/core/edac.c
->    - Changed few multiline comments to single line comments.
->    - Removed unnecessary comments from the code.
->    - Reduced line length of few macros in ECS and memory repair code.
->    - In new files, changed "GPL-2.0-or-later" -> "GPL-2.0-only".
->    - Ran clang-format for new files and updated.
-> 3. Changes for feedbacks from Jonathan on v1.
->    - Changed few multiline comments to single line comments.
+> > +	help
+> > +	  Class to which coherency control drivers register allowing core kernel
+> > +	  subsystems to issue invalidations and similar coherency operations.  
 > 
-> Shiju Jose (8):
->    cxl: Add helper function to retrieve a feature entry
->    EDAC: Update documentation for the CXL memory patrol scrub control
->      feature
->    cxl/edac: Add CXL memory device patrol scrub control feature
->    cxl/edac: Add CXL memory device ECS control feature
->    cxl/mbox: Add support for PERFORM_MAINTENANCE mailbox command
->    cxl: Support for finding memory operation attributes from the current
->      boot
->    cxl/memfeature: Add CXL memory device soft PPR control feature
->    cxl/memfeature: Add CXL memory device memory sparing control feature
+> What "core kernel subsystems".
+
+I'll expand on that.  Memory hotplug related stuff (currently CXL and NVDIMM)
+but the thing is more general that that.
+
 > 
->   Documentation/edac/memory_repair.rst |   31 +
->   Documentation/edac/scrub.rst         |   47 +
->   drivers/cxl/Kconfig                  |   27 +
->   drivers/cxl/core/Makefile            |    1 +
->   drivers/cxl/core/core.h              |    2 +
->   drivers/cxl/core/edac.c              | 1730 ++++++++++++++++++++++++++
->   drivers/cxl/core/features.c          |   23 +
->   drivers/cxl/core/mbox.c              |   45 +-
->   drivers/cxl/core/memdev.c            |    9 +
->   drivers/cxl/core/ras.c               |  145 +++
->   drivers/cxl/core/region.c            |    5 +
->   drivers/cxl/cxlmem.h                 |   73 ++
->   drivers/cxl/mem.c                    |    4 +
->   drivers/cxl/pci.c                    |    3 +
->   drivers/edac/mem_repair.c            |    9 +
->   include/linux/edac.h                 |    7 +
->   16 files changed, 2159 insertions(+), 2 deletions(-)
->   create mode 100644 drivers/cxl/core/edac.c
+> > +
+> >  config AX45MP_L2_CACHE
+> >  	bool "Andes Technology AX45MP L2 Cache controller"
+> >  	depends on RISCV  
+> 
+> Shouldn't all of these now depend on CACHE_COHERENCY_CLASS?
+
+Nope. They are unrelated existing cache related drivers.   The question
+to Conor is whether he minds me putting this in the existing directory
+and to others on whether it's a good idea.
+
+> 
+> > diff --git a/drivers/cache/Makefile b/drivers/cache/Makefile
+> > index 55c5e851034d..b72b20f4248f 100644
+> > --- a/drivers/cache/Makefile
+> > +++ b/drivers/cache/Makefile
+> > @@ -3,3 +3,5 @@
+> >  obj-$(CONFIG_AX45MP_L2_CACHE)		+= ax45mp_cache.o
+> >  obj-$(CONFIG_SIFIVE_CCACHE)		+= sifive_ccache.o
+> >  obj-$(CONFIG_STARFIVE_STARLINK_CACHE)	+= starfive_starlink_cache.o
+> > +
+> > +obj-$(CONFIG_CACHE_COHERENCY_CLASS)	+= coherency_core.o  
+> 
+> Why the blank line?
+
+To separate existing stuff that happens to be cache related from this new
+class.  Kind of camping in a directory because seemed silly to have
+drivers/cache and drivers/cache_coherency
+
+
+> 
+> > diff --git a/drivers/cache/coherency_core.c b/drivers/cache/coherency_core.c
+> > new file mode 100644
+> > index 000000000000..52cb4ceae00c
+> > --- /dev/null
+> > +++ b/drivers/cache/coherency_core.c
+> > @@ -0,0 +1,130 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Class to manage OS controlled coherency agents within the system.
+> > + * Specifically to enable operations such as write back and invalidate.
+> > + *
+> > + * Copyright: Huawei 2025
+> > + * Some elements based on fwctl class as an example of a modern
+> > + * lightweight class.
+> > + */
+> > +
+> > +#include <linux/cache_coherency.h>
+> > +#include <linux/container_of.h>
+> > +#include <linux/idr.h>
+> > +#include <linux/fs.h>
+> > +#include <linux/module.h>
+> > +#include <linux/slab.h>
+> > +
+> > +#include <asm/cacheflush.h>
+> > +
+> > +static DEFINE_IDA(cache_coherency_ida);
+> > +
+> > +static void cache_coherency_device_release(struct device *device)
+> > +{
+> > +	struct cache_coherency_device *ccd =
+> > +		container_of(device, struct cache_coherency_device, dev);
+> > +
+> > +	ida_free(&cache_coherency_ida, ccd->id);
+> > +}
+> > +
+> > +static struct class cache_coherency_class = {
+> > +	.name = "cache_coherency",
+> > +	.dev_release = cache_coherency_device_release,
+> > +};
+> > +
+> > +static int cache_inval_one(struct device *dev, void *data)
+> > +{
+> > +	struct cache_coherency_device *ccd =
+> > +		container_of(dev, struct cache_coherency_device, dev);
+> > +
+> > +	if (!ccd->ops)
+> > +		return -EINVAL;
+> > +
+> > +	return ccd->ops->wbinv(ccd, data);
+> > +}
+> > +
+> > +static int cache_inval_done_one(struct device *dev, void *data)
+> > +{
+> > +	struct cache_coherency_device *ccd =
+> > +		container_of(dev, struct cache_coherency_device, dev);
+> > +	if (!ccd->ops)
+> > +		return -EINVAL;
+> > +
+> > +	return ccd->ops->done(ccd);
+> > +}
+> > +
+> > +static int cache_invalidate_memregion(int res_desc,
+> > +				      phys_addr_t addr, size_t size)
+> > +{
+> > +	int ret;
+> > +	struct cc_inval_params params = {
+> > +		.addr = addr,
+> > +		.size = size,
+> > +	};
+> > +
+> > +	ret = class_for_each_device(&cache_coherency_class, NULL, &params,
+> > +				    cache_inval_one);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return class_for_each_device(&cache_coherency_class, NULL, NULL,
+> > +				     cache_inval_done_one);
+> > +}
+> > +
+> > +static const struct system_cache_flush_method cache_flush_method = {
+> > +	.invalidate_memregion = cache_invalidate_memregion,
+> > +};
+> > +
+> > +struct cache_coherency_device *
+> > +_cache_coherency_alloc_device(struct device *parent,
+> > +			      const struct coherency_ops *ops, size_t size)
+> > +{
+> > +
+> > +	if (!ops || !ops->wbinv)
+> > +		return NULL;
+> > +
+> > +	struct cache_coherency_device *ccd __free(kfree) = kzalloc(size, GFP_KERNEL);
+> > +
+> > +	if (!ccd)
+> > +		return NULL;
+> > +
+> > +	ccd->dev.class = &cache_coherency_class;
+> > +	ccd->dev.parent = parent;
+> > +	ccd->ops = ops;
+> > +	ccd->id = ida_alloc(&cache_coherency_ida, GFP_KERNEL);
+> > +
+> > +	if (dev_set_name(&ccd->dev, "cache_coherency%d", ccd->id))
+> > +		return NULL;
+> > +
+> > + 	device_initialize(&ccd->dev);
+> > +
+> > +	return_ptr(ccd);
+> > +}
+> > +EXPORT_SYMBOL_NS_GPL(_cache_coherency_alloc_device, "CACHE_COHERENCY");
+> > +
+> > +int cache_coherency_device_register(struct cache_coherency_device *ccd)
+> > +{
+> > +	return device_add(&ccd->dev);
+> > +}
+> > +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_register, "CACHE_COHERENCY");
+> > +
+> > +void cache_coherency_device_unregister(struct cache_coherency_device *ccd)
+> > +{
+> > +	device_del(&ccd->dev);
+> > +}
+> > +EXPORT_SYMBOL_NS_GPL(cache_coherency_device_unregister, "CACHE_COHERENCY");
+> > +
+> > +static int __init cache_coherency_init(void)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = class_register(&cache_coherency_class);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	//TODO: generalize
+> > +	arm64_set_sys_cache_flush_method(&cache_flush_method);  
+> 
+> I'm guessing this will blow up the build on non-x86 builds :)
+
+Yup. That's a TODO That needs fixing.
+
+> 
+> > +struct cache_coherency_device {
+> > +	struct device dev;
+> > +	const struct coherency_ops *ops;
+> > +	int id;
+> > +};  
+> 
+> Classes are normally for user/kernel apis, what is this going to be used
+> for?  I don't see any new user/kernel apis happening, so why do you need
+> a struct device to be created?
+
+I'm kind of expecting to grow some userspace ABI around a few things but
+indeed there isn't any yet.  Stuff that has been suggested is:
+* Descriptive stuff useful for performance estimation.
+* Cache locking - as kind of the opposite of flushes.
+* Maybe more direct user interfaces to control it (I'm wary of that though).
+
+Mostly thought, the idea was  avoid rolling my own similar registration
+infrastructure for this case.  Absolutely can do a subsystem without
+a class if that seems to be the way to go. It'll be a little more complex
+though.
+
+Thanks,
+
+Jonathan
+
+> 
+> thanks,
+> 
+> greg k-h
 > 
 
 
