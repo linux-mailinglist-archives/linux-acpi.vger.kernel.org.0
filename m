@@ -1,47 +1,56 @@
-Return-Path: <linux-acpi+bounces-12402-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12403-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091FAA6C307
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 20:12:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B527A6C532
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 22:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 959FA7A55E7
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 19:11:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9F7189ED7E
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 21:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C065722DF84;
-	Fri, 21 Mar 2025 19:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E711EC006;
+	Fri, 21 Mar 2025 21:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hkOKtvIi"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="iRUrWpM/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5C733F6;
-	Fri, 21 Mar 2025 19:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A0A2A1C9;
+	Fri, 21 Mar 2025 21:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742584363; cv=none; b=PSGQDhKCyN7XtpCDTlRSo90SdZNvwl32dJdQf3qmXlz2ziCeM6s/GAb1hjFC1PbDlo7PG2UxnKHwvQwt6iYLqyi9QI82NHd0fk5+hDdNspxhyr0O0gam+LRUVZxyifdk87BRY8X1dxkjfZ2b/xgmYCcISCAOTvzay+BLSBBgWoQ=
+	t=1742592732; cv=none; b=KDIcxK0DvIVsihDCogRfzVBLXhWgXrIwcwQfLcRnkCf+jzMEz9/mALH1JD8WR6Kc11SNFiIHA6K8y7PS8XAi5qAH2HCxJYLpQKvxxbMFsNxFGstpsHg6U00mFeSYOuK+QJeQ5pJquaS8m5miP7FwOR3l0s9vW5MfM0ReOujiWdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742584363; c=relaxed/simple;
-	bh=jW4BFVW6F6ZHJ0JVY+4D7LdfF5AiBFgZxnhhzjkSkbE=;
+	s=arc-20240116; t=1742592732; c=relaxed/simple;
+	bh=AiSF0taCPtAbCj/Jo802euiTTy2pybGWqqQuMyKK00Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HHo5m0cy5kqN+K3jgCAuksf2VH3TDubNAgO/xvRHpRpPsIN+XfEr8Toxrl76PNqi2nS0Gh1cK32Lb4RSF07AvZhA1SWm+cEDERQVkrLXsD3Zj4zJsi1U74sJYtZP7L5nzNfWuocHIJOgvQIDg4yXxaqrCF+sdnZTfkwMn40/t0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=hkOKtvIi; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CF4992025382;
-	Fri, 21 Mar 2025 12:12:40 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CF4992025382
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1742584361;
-	bh=RpBlJrTh2SiAQ7XsqitwZTpLQOS2kEOUFkxFqjobLOc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hkOKtvIis368GA/nBLiPIbVRZnLqR4lZuZfuJK5omjdr4orl62qBol7YKN0jDJT1F
-	 Ej+n9pHTJ20rq+9UpKtUghqYc4p5HqagBt1wmktxPJbXnqz1Q9a0vY9gsg7I+VFmFo
-	 08qTYLhhG9NKHnxoDyfrpqKvTXEcIJWSlmUpelQk=
-Message-ID: <7bc80505-686e-40db-b3bf-dd2f846ea66c@linux.microsoft.com>
-Date: Fri, 21 Mar 2025 12:12:35 -0700
+	 In-Reply-To:Content-Type; b=jhbJcK8XleNnZ+kzegdb0QxCpCuyzBBnPEeqpF0KwKKgrpboLsDlSVNP+z/4nf8pkFlqQoh+Jgik/oMaYJdhknZw0BDiD9+Ebp6VwgV0+COkQr4yy4+9q4ksjbhpaoixihvFMyzmX1TQXQ7bmSPDW7+2PTtsxx/8Ca4GkXZ8IrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=iRUrWpM/; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1742592727; x=1743197527; i=w_armin@gmx.de;
+	bh=3e5ug+4xA4zpPk5sovOFRoxjUepViknWU7eJy3SktRY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=iRUrWpM/8JMZAgV878aYcmsOoW0QjMSOriIbxXnW0hCHcWC7hc7mQ180Ip+XSPMl
+	 IxVHGlmx3fMNwaH5OWSs+c0vnL/aoYv/eoU9QYgHXKIWhVqwArXUEofB+uyD7QY1M
+	 f3zl40/W4IAR7fdD9mXnz+wVUJT2C6btcIET5mpj/x7lCwMj+Ymmdzt8F3M30mRHW
+	 o7S/koRqWdC+L1X1fFlITNpL4Jssc4PyoLEKd4cCgvo1+YX08/2l/cRGyUTA7YJ5i
+	 /LuwhhfP3i4On8CRgHHt7mfVsv06cSk8hpzRvkHbh6RFsLFSCaHBLEviAKzThcU8M
+	 NNVVkxW/7rkrjfWLKw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N4hzZ-1tCkV60m0d-017RCN; Fri, 21
+ Mar 2025 22:32:07 +0100
+Message-ID: <07e2fb25-625b-441e-86f7-d0d54138c4aa@gmx.de>
+Date: Fri, 21 Mar 2025 22:32:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,347 +58,168 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/10] hyperv: Log hypercall status codes as strings
-To: Michael Kelley <mhklinux@outlook.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "ltykernel@gmail.com" <ltykernel@gmail.com>,
- "stanislav.kinsburskiy@gmail.com" <stanislav.kinsburskiy@gmail.com>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "eahariha@linux.microsoft.com" <eahariha@linux.microsoft.com>,
- "jeff.johnson@oss.qualcomm.com" <jeff.johnson@oss.qualcomm.com>
-Cc: "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "decui@microsoft.com" <decui@microsoft.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
- "joro@8bytes.org" <joro@8bytes.org>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>, "arnd@arndb.de"
- <arnd@arndb.de>,
- "jinankjain@linux.microsoft.com" <jinankjain@linux.microsoft.com>,
- "muminulrussell@gmail.com" <muminulrussell@gmail.com>,
- "skinsburskii@linux.microsoft.com" <skinsburskii@linux.microsoft.com>,
- "mrathor@linux.microsoft.com" <mrathor@linux.microsoft.com>,
- "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
- "apais@linux.microsoft.com" <apais@linux.microsoft.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "prapal@linux.microsoft.com" <prapal@linux.microsoft.com>,
- "anrayabh@linux.microsoft.com" <anrayabh@linux.microsoft.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>
-References: <1741980536-3865-1-git-send-email-nunodasneves@linux.microsoft.com>
- <1741980536-3865-2-git-send-email-nunodasneves@linux.microsoft.com>
- <SN6PR02MB4157E630EC520DC487139372D4DE2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Subject: Re: ACPI Error: AE_AML_LOOP_TIMEOUT in \_SB.PCI0.SBUS.RDWD &
+ \_SB.PCI0.SBRG.ADP1._PSR
+To: Naveen Kumar P <naveenkumar.parna@gmail.com>, linux-acpi@vger.kernel.org,
+ rafael@kernel.org
+Cc: linux-kernel@vger.kernel.org
+References: <CAMciSVUVjLj44LW+3ALB1fJQsUiw_2BQ5tLgpNJH08Xmj=Wr9w@mail.gmail.com>
 Content-Language: en-US
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB4157E630EC520DC487139372D4DE2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <CAMciSVUVjLj44LW+3ALB1fJQsUiw_2BQ5tLgpNJH08Xmj=Wr9w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:P/5BBG/1gjEzQ+E7mlrpDnBID5LzOqKzMaIevweO9qcbL0PSLC8
+ Z+7QvdOUJm5Us9ONOm6nMHjQ8IoTHf6MDexk3B8YJ/AqiR+U0TMttYtXRSka87KfBciwl/e
+ YbVFhbjup0kQolcQnzbYNJIMZp+pQOhPAy+yOMOJzUbXDBY8Ecztp3SVU1GilB+V2p01O9Z
+ 5pPCT6kOvHfJfTtGBIjzA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2jAwyIpRlzU=;06BjuQ5K2n520XRgdWcPXUlxUH7
+ isQDA3J0dQOJ1/nq5aO84yiSTTkJZfFfM/SCoFJBE29uUun/Xvi4+kJkwDZ/g4nQsLZMuhdWA
+ UBHlIcwL+8uiXlZMoUnqnMVIEn3mMaT826bamgW7jKN36GoMB+j5P5HIvqdfd8N2Spz5jeko/
+ qyFRfZcXGKUiTYkBlDGpEWHAK9GvyZW7wGvTia7ANbQAok0njw4/CiNWvWmV59b++mMn2+hAn
+ 9oUrBjz7nE072Tk3ERDok+xz5xlEULYhoHWV/dbjyrxd9Qd8gMBO4uh4hbRehN78Orwmq59Pp
+ Ng1hQP4sy6mGUBgWjuACAZsvD977oP0wFOVB/9SYt/RHUjeiwZX5i3ODdDuIbTPXF97iUia4I
+ vzn5R1/4udlaR2erl7leKzbQ18i0mtCuL7vCrRo9SDbLdil5Uw/xIs40H4bXvlSyIU55XjcL5
+ cxPBbUp4MEf5qrsKCp3hEskc7KVmjlP1YetUU4zIqPQ64Hnu7zkD2Jffdcyy2ltaiAZ9j7y7i
+ VMVAHOP4mbvkz+g7XgeNnNPuRECHUDT/IJxKiDvLP8u6sC03R3w7QjxP4jvPf+MjmcyUeC0hf
+ Ref/F/Qyt0xTsVdMs3146hcq7XkaWruwaWSEPkxD5rpB+Isong1+XEp6MaqUw09Tur5FDQ74q
+ lwoGMjepjgl45Oh/RqKLALd+KuKAe/z8kEU35ImOAt216ukOC5flf4XEVbV9zPWq8C5zEuphf
+ mAwtOVt3XOY/wgu9oRd4q9TKrGZw8UNRRIDA6sRjooVYZSbqMT2v1qSga1eaLwosvmq2AF73N
+ 8APg9izV8PZpufxMLheNxmovxPNN9YTNn+oN4yUj7Dukur1agJWU39ZNUSj/EahahqaQv0KtG
+ jUOaZQufKClh29aYw4Pkt7ZBAgSdTbKlNkK5AThpiZ1+xu1tU4ln5GuvWUQa3lUJqlyExxSVJ
+ R/wgW6QPDIho6C+2jxokUU/rL50oIk2XREEA0GAk+xzXRFcwcqCEEll930EXleYvoJfAiZvcd
+ iEBmFCvcy3YotvnVjie4/w9yLUccWI0Tsywq3gULm0+H+pFhhWX9dnQZqtb7PdzSuLr1RoGf2
+ j3QlttknUJ5kAWbgP7c6HfT6Cv61k87j33KXvq+VooReQXHJkvciyddG4IXx+wfD83cPIE0KC
+ YMHFcpLo8phJq70zz0Zyqxu0TiCz/HK87Q0jr84SSv6euuc+iqxAGsVyl/E/ZIVucbfR2prU7
+ BEnif76dhgOPkvD2W86/eUn6UjRW6gMwlg7noxtu/nYE4SmDrL4bI/hZkv5Wj2sWf3XiD9u7u
+ V7AdCyDjaThkqjkhcQumCIqWiZqyRAvyog/r5WK/uwwaj8QO52ua9TLMPsEG82KcQmdajaU16
+ DKtylO5l45VmxISRWQloyhOZ33qQjofIdX7hjFNhLgN/LJeo+89bj2TO4eK/h47EQ9symLr4B
+ HkNsXNo0toBF1M/FGB3H551TgFKw=
 
-On 3/18/2025 11:01 AM, Michael Kelley wrote:
-> From: Nuno Das Neves <nunodasneves@linux.microsoft.com> Sent: Friday, March 14, 2025 12:29 PM
->>
->> Introduce hv_status_printk() macros as a convenience to log hypercall
->> errors, formatting them with the status code (HV_STATUS_*) as a raw hex
->> value and also as a string, which saves some time while debugging.
->>
->> Create a table of HV_STATUS_ codes with strings and mapped errnos, and
->> use it for hv_result_to_string() and hv_result_to_errno().
->>
->> Use the new hv_status_printk()s in hv_proc.c, hyperv-iommu.c, and
->> irqdomain.c hypercalls to aid debugging in the root partition.
->>
->> Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
->> Reviewed-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
->> ---
->>  arch/x86/hyperv/irqdomain.c    |   6 +-
->>  drivers/hv/hv_common.c         | 129 ++++++++++++++++++++++++---------
->>  drivers/hv/hv_proc.c           |  10 +--
->>  drivers/iommu/hyperv-iommu.c   |   4 +-
->>  include/asm-generic/mshyperv.h |  13 ++++
->>  5 files changed, 118 insertions(+), 44 deletions(-)
->>
-> 
-> [snip]
->  
->> +
->> +struct hv_status_info {
->> +	char *string;
->> +	int errno;
->> +	u16 code;
->> +};
->> +
->> +/*
->> + * Note on the errno mappings:
->> + * A failed hypercall is usually only recoverable (or loggable) near
->> + * the call site where the HV_STATUS_* code is known. So the errno
->> + * it gets converted to is not too useful further up the stack.
->> + * Provide a few mappings that could be useful, and revert to -EIO
->> + * as a fallback.
->> + */
->> +static const struct hv_status_info hv_status_infos[] = {
->> +#define _STATUS_INFO(status, errno) { #status, (errno), (status) }
->> +	_STATUS_INFO(HV_STATUS_SUCCESS,				0),
->> +	_STATUS_INFO(HV_STATUS_INVALID_HYPERCALL_CODE,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INVALID_HYPERCALL_INPUT,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INVALID_ALIGNMENT,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_INVALID_PARAMETER,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_ACCESS_DENIED,			-EIO),
->> +	_STATUS_INFO(HV_STATUS_INVALID_PARTITION_STATE,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_OPERATION_DENIED,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_UNKNOWN_PROPERTY,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_PROPERTY_VALUE_OUT_OF_RANGE,	-EIO),
->> +	_STATUS_INFO(HV_STATUS_INSUFFICIENT_MEMORY,		-ENOMEM),
->> +	_STATUS_INFO(HV_STATUS_INVALID_PARTITION_ID,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INVALID_VP_INDEX,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_NOT_FOUND,			-EIO),
->> +	_STATUS_INFO(HV_STATUS_INVALID_PORT_ID,			-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INVALID_CONNECTION_ID,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INSUFFICIENT_BUFFERS,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_NOT_ACKNOWLEDGED,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_INVALID_VP_STATE,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_NO_RESOURCES,			-EIO),
->> +	_STATUS_INFO(HV_STATUS_PROCESSOR_FEATURE_NOT_SUPPORTED,	-EIO),
->> +	_STATUS_INFO(HV_STATUS_INVALID_LP_INDEX,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INVALID_REGISTER_VALUE,		-EINVAL),
->> +	_STATUS_INFO(HV_STATUS_INVALID_LP_INDEX,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_INVALID_REGISTER_VALUE,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_OPERATION_FAILED,		-EIO),
->> +	_STATUS_INFO(HV_STATUS_TIME_OUT,			-EIO),
->> +	_STATUS_INFO(HV_STATUS_CALL_PENDING,			-EIO),
->> +	_STATUS_INFO(HV_STATUS_VTL_ALREADY_ENABLED,		-EIO),
->> +#undef _STATUS_INFO
->> +};
->> +
->> +static inline const struct hv_status_info *find_hv_status_info(u64 hv_status)
->> +{
->> +	int i;
->> +	u16 code = hv_result(hv_status);
->> +
->> +	for (i = 0; i < ARRAY_SIZE(hv_status_infos); ++i) {
->> +		const struct hv_status_info *info = &hv_status_infos[i];
->> +
->> +		if (info->code == code)
->> +			return info;
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->> +/* Convert a hypercall result into a linux-friendly error code. */
->> +int hv_result_to_errno(u64 status)
->> +{
->> +	const struct hv_status_info *info;
->> +
->> +	/* hv_do_hypercall() may return U64_MAX, hypercalls aren't possible */
->> +	if (unlikely(status == U64_MAX))
->> +		return -EOPNOTSUPP;
->> +
->> +	info = find_hv_status_info(status);
->> +	if (info)
->> +		return info->errno;
->> +
->> +	return -EIO;
->> +}
->> +EXPORT_SYMBOL_GPL(hv_result_to_errno);
->> +
->> +const char *hv_result_to_string(u64 status)
->> +{
->> +	const struct hv_status_info *info;
->> +
->> +	if (unlikely(status == U64_MAX))
->> +		return "Hypercall page missing!";
->> +
->> +	info = find_hv_status_info(status);
->> +	if (info)
->> +		return info->string;
->> +
->> +	return "Unknown";
->> +}
->> +EXPORT_SYMBOL_GPL(hv_result_to_string);
-> 
-> I think the table-driven approach worked out pretty well. But here's a version that
-> is even more compact, and avoids the duplicate testing for U64_MAX and having
-> to special case both U64_MAX and not finding a match:
-> 
-> +
-> +struct hv_status_info {
-> +	char *string;
-> +	int errno;
-> +	int code;
-> +};
-> +
-> +/*
-> + * Note on the errno mappings:
-> + * A failed hypercall is usually only recoverable (or loggable) near
-> + * the call site where the HV_STATUS_* code is known. So the errno
-> + * it gets converted to is not too useful further up the stack.
-> + * Provide a few mappings that could be useful, and revert to -EIO
-> + * as a fallback.
-> + */
-> +static const struct hv_status_info hv_status_infos[] = {
-> +#define _STATUS_INFO(status, errno) { #status, (errno), (status) }
-> +	_STATUS_INFO(HV_STATUS_SUCCESS,				0),
-> +	_STATUS_INFO(HV_STATUS_INVALID_HYPERCALL_CODE,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INVALID_HYPERCALL_INPUT,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INVALID_ALIGNMENT,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_INVALID_PARAMETER,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_ACCESS_DENIED,			-EIO),
-> +	_STATUS_INFO(HV_STATUS_INVALID_PARTITION_STATE,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_OPERATION_DENIED,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_UNKNOWN_PROPERTY,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_PROPERTY_VALUE_OUT_OF_RANGE,	-EIO),
-> +	_STATUS_INFO(HV_STATUS_INSUFFICIENT_MEMORY,		-ENOMEM),
-> +	_STATUS_INFO(HV_STATUS_INVALID_PARTITION_ID,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INVALID_VP_INDEX,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_NOT_FOUND,			-EIO),
-> +	_STATUS_INFO(HV_STATUS_INVALID_PORT_ID,			-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INVALID_CONNECTION_ID,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INSUFFICIENT_BUFFERS,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_NOT_ACKNOWLEDGED,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_INVALID_VP_STATE,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_NO_RESOURCES,			-EIO),
-> +	_STATUS_INFO(HV_STATUS_PROCESSOR_FEATURE_NOT_SUPPORTED,	-EIO),
-> +	_STATUS_INFO(HV_STATUS_INVALID_LP_INDEX,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INVALID_REGISTER_VALUE,		-EINVAL),
-> +	_STATUS_INFO(HV_STATUS_INVALID_LP_INDEX,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_INVALID_REGISTER_VALUE,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_OPERATION_FAILED,		-EIO),
-> +	_STATUS_INFO(HV_STATUS_TIME_OUT,			-EIO),
-> +	_STATUS_INFO(HV_STATUS_CALL_PENDING,			-EIO),
-> +	_STATUS_INFO(HV_STATUS_VTL_ALREADY_ENABLED,		-EIO),
-> +	{"Hypercall page missing!", -EOPNOTSUPP, -1}, /* code -1 is "no hypercall page" */
-> +	{"Unknown", -EIO, -2},  /* code -2 is "Not found" entry; must be last */
-> +#undef _STATUS_INFO
-> +};
-> +
-> +static inline const struct hv_status_info *find_hv_status_info(u64 hv_status)
-> +{
-> +	int i, code;
-> +	const struct hv_status_info *info;
-> +
-> +	/* hv_do_hypercall() may return U64_MAX, hypercalls aren't possible */
-> +	if (unlikely(hv_status == U64_MAX))
-> +		code = -1;
-> +	else
-> +		code = hv_result(hv_status);
-> +
-> +	for (i = 0; i < ARRAY_SIZE(hv_status_infos); ++i) {
-> +		info = &hv_status_infos[i];
-> +		if (info->code == code || info->code == -2)
-> +			break;
-> +	}
-> +
-> +	return info;
-> +}
-> +
-> +/* Convert a hypercall result into a linux-friendly error code. */
-> +int hv_result_to_errno(u64 status)
-> +{
-> +	return find_hv_status_info(status)->errno;
-> +}
-> +EXPORT_SYMBOL_GPL(hv_result_to_errno);
-> +
-> +const char *hv_result_to_string(u64 status)
-> +{
-> +	return find_hv_status_info(status)->string;
-> +}
-> +EXPORT_SYMBOL_GPL(hv_result_to_string);
-> 
-> It could be even more compact by exporting find_hv_status_info() and
-> letting  hv_result_to_errno() and hv_result_to_string() be #defines to
-> find_hv_status_info()->errno and find_hv_status_info()->string,
-> respectively.
-> 
-> Note that in struct hv_status_info, the "code" field is defined as "int"
-> instead of "u16" so that it can contain sentinel values -1 and -2 that
-> won't overlap with HV_STATUS_* values.
-> 
-Played around with this some more.
+Am 19.03.25 um 12:29 schrieb Naveen Kumar P:
 
-I like your idea of making it more compact by dealing with U64_MAX and
-unknown in find_hv_status_info(), however I'm not as keen on putting
-these cases in the array and iterating over the whole array when they
-could just be static constants or inline struct initializers. See below.
+> Hi all,
+>
+> I am encountering repeated AE_AML_LOOP_TIMEOUT errors in the ACPI RDWD
+> & \_SB.PCI0.SBRG.ADP1._PSR methods. Below are relevant log entries
+> from my system running Linux kernel 6.13.0+:
+>
+> [77998.038653]
+>                 Initialized Local Variables for Method [RDWD]:
+> [77998.038691]   Local1: 00000000d0fe9fee <Obj>           Integer
+> 0000000000000015
+> [77998.038862]   Local6: 00000000f41c1645 <Obj>           Integer
+> 0000000000000000
+> [77998.039031]   Local7: 0000000040665c5c <Obj>           Integer
+> 000000000000AA55
+>
+> [77998.039237] Initialized Arguments for Method [RDWD]:  (2 arguments
+> defined for method invocation)
+> [77998.039273]   Arg0:   00000000397dc53d <Obj>           Integer
+> 0000000000000014
+> [77998.039442]   Arg1:   000000001099e334 <Obj>           Integer
+> 0000000000000002
+>
+> [77998.039673] ACPI Error: Aborting method \_SB.PCI0.SBUS.RDWD due to
+> previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
+> [77998.040455] ACPI Error: Aborting method \_SB.PCI0.SBRG.ADP1._PSR
+> due to previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
+> [77998.043659] ACPI: \_SB_.PCI0.SBRG.ADP1: Error reading AC Adapter
+> state: AE_AML_LOOP_TIMEOUT
+>
+> [78028.442980]
+>                 Initialized Local Variables for Method [RDWD]:
+> [78028.443019]   Local1: 00000000898a9a7e <Obj>           Integer
+> 0000000000000017
+> [78028.443192]   Local6: 000000000cf0c853 <Obj>           Integer
+> 0000000000000000
+> [78028.443362]   Local7: 00000000bb4aa65f <Obj>           Integer
+> 000000000000AA55
+>
+> [78028.443569] Initialized Arguments for Method [RDWD]:  (2 arguments
+> defined for method invocation)
+> [78028.443606]   Arg0:   00000000ef8d445b <Obj>           Integer
+> 0000000000000016
+> [78028.443775]   Arg1:   000000006cacc887 <Obj>           Integer
+> 0000000000000003
+>
+> [78028.444006] ACPI Error: Aborting method \_SB.PCI0.SBUS.RDWD due to
+> previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
+> [78028.446366] ACPI Error: Aborting method \_SB.PCI0.SBRG.ADP1._PSR
+> due to previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
+> [78028.451179] ACPI: \_SB_.PCI0.SBRG.ADP1: Error reading AC Adapter
+> state: AE_AML_LOOP_TIMEOUT
+>
+> [78032.877472]
+>                 Initialized Local Variables for Method [RDWD]:
+> [78032.877509]   Local1: 00000000cf6291ae <Obj>           Integer
+> 0000000000000017
+> [78032.877682]   Local6: 0000000026aa8a7a <Obj>           Integer
+> 0000000000000003
+> [78032.877851]   Local7: 00000000acfa20e0 <Obj>           Integer
+> 000000000000AA55
+>
+> [78032.878058] Initialized Arguments for Method [RDWD]:  (2 arguments
+> defined for method invocation)
+> [78032.878094]   Arg0:   00000000a186096f <Obj>           Integer
+> 0000000000000016
+> [78032.878262]   Arg1:   00000000d0e1eefe <Obj>           Integer
+> 0000000000000003
+>
+> [78032.878492] ACPI Error: Aborting method \_SB.PCI0.SBUS.RDWD due to
+> previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
+> [78032.881011] ACPI Error: Aborting method \_SB.PCI0.SBRG.ADP1._PSR
+> due to previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
+> [78032.883061] ACPI: \_SB_.PCI0.SBRG.ADP1: Error reading AC Adapter
+> state: AE_AML_LOOP_TIMEOUT
+>
+>
+> This issue appears randomly, affecting the RDWD method, which is
+> likely responsible for reading data from a bus, and consequently
+> causing the _PSR method (power state read) to fail.
+>
+>
+> Questions:
+> 1. What typically causes AE_AML_LOOP_TIMEOUT errors?
 
-I also like the idea of making hv_result_to_*() functions into simple
-macros and exporting find_hv_status_info(). However, if it gets used
-elsewhere it makes more sense if the returned hv_status_info for the
-"Unknown" case contains the actual status code instead of replacing
-that information with -2, so then I'd want to return it by value
-instead of pointer:
+AFAIK this error is caused by a while loop taking too long to finish. I suspect that
+the ACPI bytecode tries to wait for a non-responsive hardware device.
 
-+static const struct hv_status_info hv_status_infos[] = {
-+#define _STATUS_INFO(status, errno) { #status, (status), (errno) }
-+       _STATUS_INFO(HV_STATUS_SUCCESS,                         0),
-<snip>
-+       _STATUS_INFO(HV_STATUS_VTL_ALREADY_ENABLED,             -EIO),
-+#undef _STATUS_INFO
-+};
-+
-+struct hv_status_info hv_get_status_info(u64 hv_status)
-+{
-+       int i;
-+       const struct hv_status_info *info;
-+       u16 code = hv_result(hv_status);
-+       struct hv_status_info ret = {"Unknown", code, -EIO};
-+
-+       if (hv_status == U64_MAX)
-+               ret = (struct hv_status_info){"Hypercall page missing!", -1,
-+                                             -EOPNOTSUPP};
-+       else
-+               for (i = 0; i < ARRAY_SIZE(hv_status_infos); ++i) {
-+                       info = &hv_status_infos[i];
-+                       if (info->code == code) {
-+                               ret = *info;
-+                               break;
-+                       }
-+               }
-+
-+       return ret;
-+}
-+EXPORT_SYMBOL_GPL(hv_get_status_info);
+> 2. Could these ACPI errors impact PCI device access?
+> Since the error originates from _SB.PCI0.SBUS.RDWD, could this failure
+> affect PCI device communication or cause failures when accessing PCI
+> devices?
 
-and in mshyperv.h:
+I do not think so, the SBUS device is likely just a SMBus controller attached to the PCI bus.
 
-+#define hv_result_to_string(hv_status) hv_get_status_info(hv_status).string
-+#define hv_result_to_errno(hv_status) hv_get_status_info(hv_status).errno
-+
-+struct hv_status_info {
-+       char *string;
-+       int code;
-+       int errno;
-+};
-+
-+struct hv_status_info hv_get_status_info(u64 hv_status);
+>
+> 3. Could this be a firmware/BIOS issue?If so, what tools or steps
+> should I use to verify and debug the ACPI tables?
 
-Note also I switched the order of code and errno in hv_status_info,
-mainly because I think the struct initializers for "Unknown" and
-"Hypercall page missing!" are more readable with that order:
-{string, code, errno}
+It is either a hardware issue or a BIOS bug. Can you share the output of the "acpidump" utility
+provided by the ACPICA project? Many Linux distributions already package ACPICA in their package repositories.
 
-Do you see any problems with the above?
+>
+> 4. Is there a recommended workaround to mitigate this issue?
 
-> Anyway, just a suggestion. The current code works from what I can
-> see.
-Thanks, it's not a bad idea at all to make it as compact and readable
-as possible on the first try, but not a big loss either way.
+You can check if a BIOS update is available for your device.
 
-Thanks
-Nuno
+>
+> 4. How can I debug this further?I can enable additional ACPI debugging
+> logs or provide dumps of ACPI tables if necessary.
 
-> 
-> Michael
+I can take a look at the \_SB.PCI0.SBUS.RDWD method inside the ACPI table dumps
+to see where the error is coming from.
 
+Thanks,
+Armin Wolf
+
+>
+> Any guidance on resolving or further diagnosing this issue would be
+> highly appreciated.
+>
+> Best regards,
+> Naveen
+>
 
