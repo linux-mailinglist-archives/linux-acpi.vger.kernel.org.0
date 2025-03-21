@@ -1,37 +1,38 @@
-Return-Path: <linux-acpi+bounces-12390-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12391-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994C8A6B303
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 03:36:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFA4A6B306
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 03:37:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1621A48146B
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 02:36:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38BB13AC3D4
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Mar 2025 02:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DC31E25EF;
-	Fri, 21 Mar 2025 02:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C205318A6CF;
+	Fri, 21 Mar 2025 02:37:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C69208A7;
-	Fri, 21 Mar 2025 02:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9811E22FA;
+	Fri, 21 Mar 2025 02:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742524604; cv=none; b=S8Z3IB6kSxRrqmSxItGmanqeZ1TjTd/OReFBdRAG8/SNuxErpg2qMoN7pet1lPXU+xu8ZoyQR1qzrwWwigHLESBIV8zgDFfiv/434zTdtngXQ+Nvtt09iq4YjoCn+F+ekUHprTiSHY0fSpB2yMtCRyX9fsCAaFe8OtPNSELU0DE=
+	t=1742524638; cv=none; b=qWkWCJuV12WiFGKsdFdcg5rtyFN8BxqDttRWMCU+81LKHkS4U5NaFRupE9TxuiwIH0b1+efmBC7YPHfs0hvyx1c8/NeSEY2YD8eF5ZUUwNRNGZy37A2HD6DDybsbH05jPVgTUnSmU+AUxqqiIWu0XroKGtz2OR5X4PSuRbKBF6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742524604; c=relaxed/simple;
-	bh=cOHiCkZ0kCvx9YP1VgRKpKS6XVggYgoU3Q211q7VYGc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i+Xwx5nUCKjI8w+shXaHeBxg1A8QEh1R8fS6dm+h67bMOY9fUg2UEB66uGyYEZTT9N9WK+U/UnROxG+sktwM/lzzPV5PUHwO9I0NRVDOngqnurFR5nQKpdMNzRS8ZeV42B5ctquFixwuUBTGfrPiCPmjy/P1X8phi/TL5lOCIQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=162.243.164.118
+	s=arc-20240116; t=1742524638; c=relaxed/simple;
+	bh=bSSPfp5wQHv84WQnZjxG+HqfSddAKKTcsknWCc99ZRI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dXXicjVdjmh+a+aBKsurd9gUu20s/SSuU93Axai1EO6Yl5zPRd8o70KH9SXiQWyOqa8vo9/2xTpshD2m5kX8pDldWYAWdU6L1242On0dnGVzlIgwlgZNfQwbvjXE0ayyS9nh2tTrn1dT51sFekoloh2bd3V7hSdP6A3bMbG/Qo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=129.150.39.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAH6r6r0Nxn5pO7Cw--.15567S2;
-	Fri, 21 Mar 2025 10:36:27 +0800 (CST)
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwBXXaXP0NxnvZy7Cw--.15643S2;
+	Fri, 21 Mar 2025 10:37:03 +0800 (CST)
 Received: from phytium.com.cn (unknown [123.150.8.50])
-	by mail (Coremail) with SMTP id AQAAfwB3fIii0NxnWXpPAA--.1469S3;
-	Fri, 21 Mar 2025 10:36:20 +0800 (CST)
+	by mail (Coremail) with SMTP id AQAAfwB3fIii0NxnWXpPAA--.1469S4;
+	Fri, 21 Mar 2025 10:36:51 +0800 (CST)
 From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 To: Jonathan.Cameron@huawei.com,
 	dan.j.williams@intel.com,
@@ -53,10 +54,12 @@ Cc: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	chenbaozi@phytium.com.cn,
 	Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [RFC PATCH v3 0/2] ACPI: NUMA: debug invalid unused PXM value for CFMWs
-Date: Fri, 21 Mar 2025 10:36:00 +0800
-Message-Id: <20250321023602.2609614-1-wangyuquan1236@phytium.com.cn>
+Subject: [RFC PATCH v3 1/2] mm: numa_memblks: introduce numa_add_reserved_memblk
+Date: Fri, 21 Mar 2025 10:36:01 +0800
+Message-Id: <20250321023602.2609614-2-wangyuquan1236@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250321023602.2609614-1-wangyuquan1236@phytium.com.cn>
+References: <20250321023602.2609614-1-wangyuquan1236@phytium.com.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,85 +67,68 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwB3fIii0NxnWXpPAA--.1469S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAOAWfZ0Q4EnABHsw
+X-CM-TRANSID:AQAAfwB3fIii0NxnWXpPAA--.1469S4
+X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAQAWfcdA4BugAAsq
 Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
 	1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxCrWDCw13uryxWF15tw48Crg_yoW5WF15pF
-	W3KFnxXFyxGr1xGw4fZr18t34ak3W8AFWDWFnrWrn3Zrs8Cry7Zr4UJF4fZFyUtrWUCr18
-	Jr45Zrn8uw1jyaUanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+X-Coremail-Antispam: 1Uk129KBjvJXoW7ZF1xXFyfZw48Jw15ZF1kZrb_yoW8CF1Dpa
+	1DG3W5Wa18Gw4xWw1xury0kw1Sg3WFkFyDJry7Gr43Zr1Fqry2vr4UAFs3Zrn0yrW2kr1r
+	Gr4vyr15uw1rGFUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
 	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
 	UUUUU
 
-Changes in v3:
-- Introduce numa_add_reserved_memblk()
-- Use more explicit way to make sure CFMWs fake node >= 1 
-- Replace numa_add_memblk() with numa_add_reserved_memblk() in acpi_parse_cfmws()
+With numa_add_reserved_memblk(), kernel could add numa_memblk into
+numa_reserved_meminfo directly.
 
-Problem
--------
-The absence of SRAT would cause the fake_pxm to be -1 and increment
-to 0, then send to acpi_parse_cfmws(). If there exists CXL memory
-ranges that are defined in the CFMWS and not already defined in the
-SRAT, the new node (node0) for the CXL memory would be invalid, as
-node0 is already in "used", and all CXL memory might be online on
-node0.
+In previous, such process relies on numa_add_memblk() adding to
+numa_meminfo list first and then uses numa_move_tail_memblk() to
+move one from numa_meminfo to numa_reserved_meminfo.
 
-Control cxl fake node value
----------------------------
-This utilizes node_set(0, nodes_found_map) to set pxm&node map. With
-this setting, acpi_map_pxm_to_node() could return the expected node
-value even if no SRAT.
-
-numa_add_memblk() problem on this issue
----------------------------------------
-If SRAT is valid, the numa_memblks_init() would then utilize
-numa_move_tail_memblk() to move the numa_memblk from numa_meminfo to
-numa_reserved_meminfo in CFMWs fake node situation.
-
-If SRAT is missing or bad, the numa_memblks_init() would fail since
-init_func() would fail. And it causes that no numa_memblk in
-numa_reserved_meminfo list and the following dax_cxl driver could
-find the expected fake node.
-
-numa_add_reserved_memblk()
---------------------------
-Use numa_add_reserved_memblk() to replace numa_add_memblk(), since
-the cxl numa_memblk added by numa_add_memblk() would finally be moved
-to numa_reserved_meminfo, and numa_add_reserved_memblk() here could
-add cxl numa_memblk into reserved list directly. Hence, no matter
-SRAT is good or not, cxl numa_memblk could be allocated to reserved
-list.
-
-dax_kmem problem
-----------------
-The dax_kmem driver will fail if no SRAT because something wrong in
-memory_group_register_static(). The good result is our cxl memory would
-not be assigned to node0 anymore!
-
-Discussion
-----------
-As papering these things looks like not easily, in v2 patch[1] I chose
-to aggressively fail the acpi_parse_cfmws() in srat.c since it mainly
-works for building cxl fake nodes and also fail the CXL init in
-cxl_acpi_probe per the discussion from Jonathan[2]. Actually, I am not
-sure if this(v3) is the best way to handle this issue, so hopes more
-comments to guide me!
-
-Link:
-[1] https://lore.kernel.org/linux-cxl/Z9RfnXQlr9G1qz00@aschofie-mobl2.lan/T/#t
-[2] https://lists.nongnu.org/archive/html/qemu-devel/2025-03/msg03668.html
-
-
-Yuquan Wang (2):
-  mm: numa_memblks: introduce numa_add_reserved_memblk
-  ACPI: NUMA: debug invalid unused PXM value for CFMWs
-
- drivers/acpi/numa/srat.c     | 11 ++++++++---
+Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+---
  include/linux/numa_memblks.h |  1 +
  mm/numa_memblks.c            | 16 ++++++++++++++++
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ 2 files changed, 17 insertions(+)
 
+diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+index dd85613cdd86..991076cba7c5 100644
+--- a/include/linux/numa_memblks.h
++++ b/include/linux/numa_memblks.h
+@@ -22,6 +22,7 @@ struct numa_meminfo {
+ };
+ 
+ int __init numa_add_memblk(int nodeid, u64 start, u64 end);
++int __init numa_add_reserved_memblk(int nid, u64 start, u64 end);
+ void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
+ 
+ int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index ff4054f4334d..e70c76cc46dd 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -200,6 +200,22 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
+ 	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
+ }
+ 
++/**
++ * numa_add_reserved_memblk - Add one numa_memblk to numa_reserved_meminfo
++ * @nid: NUMA node ID of the new memblk
++ * @start: Start address of the new memblk
++ * @end: End address of the new memblk
++ *
++ * Add a new memblk to the numa_reserved_meminfo.
++ *
++ * RETURNS:
++ * 0 on success, -errno on failure.
++ */
++int __init numa_add_reserved_memblk(int nid, u64 start, u64 end)
++{
++	return numa_add_memblk_to(nid, start, end, &numa_reserved_meminfo);
++}
++
+ /**
+  * numa_cleanup_meminfo - Cleanup a numa_meminfo
+  * @mi: numa_meminfo to clean up
 -- 
 2.34.1
 
