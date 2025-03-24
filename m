@@ -1,170 +1,301 @@
-Return-Path: <linux-acpi+bounces-12413-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12414-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82521A6D4CD
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 08:15:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D411EA6D864
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 11:37:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E938189218D
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 07:14:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2503B0599
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 10:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE17250C1F;
-	Mon, 24 Mar 2025 07:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k+VzRx7n"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABB925DCE0;
+	Mon, 24 Mar 2025 10:37:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15FA2505B8;
-	Mon, 24 Mar 2025 07:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488FA433A8;
+	Mon, 24 Mar 2025 10:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742800446; cv=none; b=OIAThJjlp++wK05igh50FIJefOu4REJ/dbnSHxd65ZUkim4s2S8WUJcrds8gaREIo41EH3JrufEHXBdgkYWA7XO74n3XPddrc1zW25v3uxKftom3uXUW7Dhe/FNYhsj9Nxlj0l8Zd57OjVkH5vArTr6NsV3ilUQ8uMOB9MQ7mb8=
+	t=1742812640; cv=none; b=RCpgbL+1GHNczGTOOKaBwnzeBb6TVL9VIuMLIzPOw1nJFOVavva+x1cj01DCpHwnXYkhi549tkd1uIFpMp0Ysx7FEZhpKT5yyCw9ERp3vxMB4LktGHACmT9Z7ywJXFpHTqqVoIZTdWO1fTjYTpDqC2UuZORcPhEkgBMt/NmttTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742800446; c=relaxed/simple;
-	bh=03F0ih1tk5WKssRMk6SjUSW/lpf6r8D8f+sSTU3X1SU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D7irCbWmm7yhR1+F74nXrcbDdd8fambuM23B/lZ3ZCNsUnPcM/qsNvfy8AePpvmVVOPAUro0W25BdRMAh0Q6f1+9Hraw3Vjv5qkcb157o1hv0ZjXBDZo/0gPDpAh+BHcsY6FDN8gptJ64SfiRFV4ERMbI4y6lg9FkKKII6QbCwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k+VzRx7n; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5497e7bf2e0so4692025e87.3;
-        Mon, 24 Mar 2025 00:14:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742800443; x=1743405243; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X5zlbJSpWOHIuaaWvEqgFmQJc2MPl83PxDlEmoP1fD0=;
-        b=k+VzRx7nxMc+4PgPG/hHk9yiCFJVYXqn6Bx+MCMgX9BFGlEhDVXj20BYSGOXlx/ZFU
-         Kwo+aa/w9kX4jgdRQnJjkaTVKQ+iGh7WHIpLB7922PmZ5OVIyXNanSgQRuend4f9Frwf
-         +1/clJ816XIfjx9EGQlze/igpETNm9fWzY0kcFPHQMBo5DekBBoLi4ZGe9ltDujiWLC+
-         qDKdFHwRgfowEDtJb6mOFYDs4jP/rnvX6FbWI4feHsdvry+eVJJ4dKyHhdN6vqhfXplL
-         7qyg6uBsODqgYqySAYu12IO9AUs5fz9E3ftiUwxtU/vdCj/KGBfiK4g4RpynrUvlDRyh
-         SrDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742800443; x=1743405243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X5zlbJSpWOHIuaaWvEqgFmQJc2MPl83PxDlEmoP1fD0=;
-        b=f9hcHGONWRchBkB0bOArCXiSNTpJBZl2UhQp9fFEN4lVv1TCg/j0bdytMV3iUAtdsT
-         Nmn1eD/GmR3CKlF3PT+xJwYOSUB6y/xb/tQm2EDcqjt4TJSo5xaxAASyO/hv6d+nedCz
-         cyfqC0F2WkVF8LNKYaV5NnUuzg3nDlQcYKOe8ieSChpZuMi+hhR+5OStn/I4RRFIL7MA
-         hgeO5K6YehvWTNM2K1fGmSqYqsR7ZvN1HVAINe0oSsP2cFEff7UudOk/hs3G5X0T2q/k
-         IMu4dSHhlZVKIFkzTHrErskvgEociWlH9zhwW/sS5WOYBSkdmbKndtW94nSNPH/3Os4X
-         6bKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYj0DWgWN0oAvYmrRVZ1sHqE/HTvb7jpydUH9EPF36NPSvHDFdq5BE03FRsB3/xWxswNcjIEK4/C/ZIl1+5We6+cY=@vger.kernel.org, AJvYcCUqXW+z/tRl71fpZJgC1RkJk8UGQERhOXhtRK4aljrY1V2id3lAvEKnXv5B45Ok9a9q6JDnCCPBiCn+aoRn@vger.kernel.org, AJvYcCWpwVqpv/xtDLMTcJZJZIiz8w8ti/mOtAEkNoGLzX52G+nb0xPViCi2/SGJ5/jMJbashvEle9Pvr4li1w==@vger.kernel.org, AJvYcCWqA+m7wav6dKuhZJDXH70Em6YTOazrBr4lZtx6O8RPTU3LaaGDASYw+7l0zB13uWhITTmKDmclUZOm@vger.kernel.org, AJvYcCXLFNRwfkufXMDXTT+z2QtwT65SPofe1OulqlNf/Hj2Gsci9SOuNQwv/dwgLer2vS8FOpHGFcd3+zYn@vger.kernel.org
-X-Gm-Message-State: AOJu0YwScaWeCoetiWT3ZMpj8bv25hPKZDpsXqKxrVvZYr+d5jh5+uaL
-	iZJWDZs2PprqpmoEE34TC30O0kIQqJIK2Ik+UdoPC7XtFxS1zo86
-X-Gm-Gg: ASbGncvKwLlBoKFb5rg0PVvSiSbVYJ9YXU3wXnwJujNfo0F07YoVcsT3TV/wZeowGel
-	6eG/C05MMAqwsEjKJqBCU6nb9A8a4NieidgS9Dk5IShzftcYIeMmUSotDBHki985QcVmvyZpVqz
-	gnMsuo8MGbaSVxbS3z/NUyZNFhbbUVgti6JzI7Ee0GBzQHiQS/TU2GxTee9OagEzE5HQfaZLs/w
-	erFd8n9JE8DELDLq0eKCnYmOlrKYAfOnmCIgzMRYsVPIVKTNkRxWN/krnqgU2/rxzBGApj2Sz/Q
-	BsmIuyP0DLku3fzCXwaWlxohd7ub8AiSHYDVb62RO/Klbfw9jJM=
-X-Google-Smtp-Source: AGHT+IE0hw/y0ZYh+MtPyuslvaGnvl9GM9JaduCS84yGygiOiK+LICzgtUkhqkQ6zjlppVQT0t4I/Q==
-X-Received: by 2002:a05:6512:3a8f:b0:549:8f06:8239 with SMTP id 2adb3069b0e04-54ad6509abfmr3719359e87.51.1742800442609;
-        Mon, 24 Mar 2025 00:14:02 -0700 (PDT)
-Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54ad65081a1sm1027115e87.163.2025.03.24.00.13.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 00:14:00 -0700 (PDT)
-Date: Mon, 24 Mar 2025 09:13:56 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: [PATCH v10 7/8] MAINTAINERS: Add IIO ADC helpers
-Message-ID: <1263c954cfb74223f322a9c31bd57f13d5516680.1742560649.git.mazziesaccount@gmail.com>
-References: <cover.1742560649.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1742812640; c=relaxed/simple;
+	bh=LnUAMeG9pWRqCjGh/oaX9QtJIz5JX5VGvxwU+xEdGF0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XW4FPhUkKj1qZ17ekzecHyiEah98RL/6eNKfB74lPxiQt5f72coIzH2tzrmTnS4eYPKkl1bxoI2uUpM26GpOJnxrkRF0+onEs1MfTmtV7ZyorRIMVqAdpY7kWcsGGGXg1LWWYKN/q4oi+2qHJWYhZ2DibwPBgxQPzq4ze6Uznyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZLqHK4jGKz6L540;
+	Mon, 24 Mar 2025 18:37:01 +0800 (CST)
+Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
+	by mail.maildlp.com (Postfix) with ESMTPS id 94EAB14050C;
+	Mon, 24 Mar 2025 18:37:08 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Mar 2025 11:37:08 +0100
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Mon, 24 Mar 2025 11:37:08 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
+	<dave@stgolabs.net>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
+	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
+	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
+	<gthelen@google.com>, "wschwartz@amperecomputing.com"
+	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
+	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v2 2/8] EDAC: Update documentation for the CXL memory
+ patrol scrub control feature
+Thread-Topic: [PATCH v2 2/8] EDAC: Update documentation for the CXL memory
+ patrol scrub control feature
+Thread-Index: AQHbmcKs9aOZDT4yoEmIHT6+0TZ4QbN9TJeAgATOjJA=
+Date: Mon, 24 Mar 2025 10:37:08 +0000
+Message-ID: <f9fa8335c52444398e1736854c887fb7@huawei.com>
+References: <20250320180450.539-1-shiju.jose@huawei.com>
+	<20250320180450.539-3-shiju.jose@huawei.com>
+ <20250321100305.000018d2@huawei.com>
+In-Reply-To: <20250321100305.000018d2@huawei.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Ewp2VBF8ttFnYinD"
-Content-Disposition: inline
-In-Reply-To: <cover.1742560649.git.mazziesaccount@gmail.com>
 
 
---Ewp2VBF8ttFnYinD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>-----Original Message-----
+>From: Jonathan Cameron <jonathan.cameron@huawei.com>
+>Sent: 21 March 2025 10:03
+>To: Shiju Jose <shiju.jose@huawei.com>
+>Cc: linux-cxl@vger.kernel.org; dan.j.williams@intel.com; dave@stgolabs.net=
+;
+>dave.jiang@intel.com; alison.schofield@intel.com; vishal.l.verma@intel.com=
+;
+>ira.weiny@intel.com; david@redhat.com; Vilas.Sridharan@amd.com; linux-
+>edac@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linu=
+x-
+>kernel@vger.kernel.org; bp@alien8.de; tony.luck@intel.com; rafael@kernel.o=
+rg;
+>lenb@kernel.org; mchehab@kernel.org; leo.duran@amd.com;
+>Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
+>Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
+>naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
+>somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
+>duenwen@google.com; gthelen@google.com;
+>wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
+>wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
+><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
+>Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
+>wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
+><linuxarm@huawei.com>
+>Subject: Re: [PATCH v2 2/8] EDAC: Update documentation for the CXL memory
+>patrol scrub control feature
+>
+>On Thu, 20 Mar 2025 18:04:39 +0000
+><shiju.jose@huawei.com> wrote:
+>
+>> From: Shiju Jose <shiju.jose@huawei.com>
+>>
+>> Update the Documentation/edac/scrub.rst to include descriptions and
+>> policies for CXL memory device-based and CXL region-based patrol scrub
+>> control.
+>>
+>> Note: This may require inputs from CXL memory experts regarding
+>> region-based scrubbing policies.
+>
+>So I suggested the region interfaces in the first place.  It's all about u=
+secases and
+>'why' we might increase the scrub rate.
+>Ultimately the hardware is controlled in a device wide way, so we could ha=
+ve
+>made it complex userspace problem to deal with it on a perf device.
+>The region interfaces are there as a simplification not because they are s=
+trictly
+>necessary.
+>
+>Anyhow, the use cases:
+>
+>1) Scrubbing because a device is showing unexpectedly high errors.  That
+>   control needs to be at device granularity.  If one device in an interle=
+ave
+>   set (backing a region) is dodgy, why make them all do more work?
+>
+>2) Scrubbing may apply to memory that isn't online at all yet.  Nice to kn=
+ow
+>   if we have a problem before we start using it!  Likely this is setting
+>   system wide defaults on boot.
+>
+>3) Scrubbing at higher rate because software has decided that we want
+>   more reliability for particular data.  I've been calling this
+>   Differentiated Reliability.  That data sits in a region which
+>   may cover part of multiple devices. The region interfaces are about
+>   supporting this use case.
+>
+>So now the question is what do we do if both interfaces are poked because
+>someone cares simultaneously about 1 and 3?
+>
+>I'd suggest just laying out a set for rules on how to set the scrub rates =
+for any
+>mixture of requirements, rather than making the driver work out the optimu=
+m
+>combination.
+>
+>>
+>> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+>> ---
+>>  Documentation/edac/scrub.rst | 47
+>> ++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 47 insertions(+)
+>>
+>> diff --git a/Documentation/edac/scrub.rst
+>> b/Documentation/edac/scrub.rst index daab929cdba1..d1c02bd90090 100644
+>> --- a/Documentation/edac/scrub.rst
+>> +++ b/Documentation/edac/scrub.rst
+>> @@ -264,3 +264,51 @@ Sysfs files are documented in
+>> `Documentation/ABI/testing/sysfs-edac-scrub`
+>>
+>>  `Documentation/ABI/testing/sysfs-edac-ecs`
+>> +
+>> +Examples
+>> +--------
+>> +
+>> +The usage takes the form shown in these examples:
+>> +
+>> +1. CXL memory device patrol scrubber
+>> +
+>> +1.1 Device based scrubbing
+>> +
+>> +CXL memory is exposed to memory management subsystem and ultimately
+>> +userspace via CXL devices.
+>> +
+>> +For cases where hardware interleave controls do not directly map to
+>> +regions of Physical Address space, perhaps due to interleave the
+>> +approach described in
+>> +1.2 Region based scrubbing section, which is specific to CXL regions
+>> +should be followed.
+>
+>These sentences end up a bit unwieldy. Perhaps simply a forwards reference=
+.
+>
+>When combining control via the device interfaces and region interfaces see
+>1.2 Region bases scrubbing.
+>
+>
+>
+>> In those cases settings on the presented interface may interact with
+>> +direct control via a device instance specific interface and care must b=
+e taken.
+>> +
+>> +Sysfs files for scrubbing are documented in
+>> +`Documentation/ABI/testing/sysfs-edac-scrub`
+>> +
+>> +1.2. Region based scrubbing
+>> +
+>> +CXL memory is exposed to memory management subsystem and ultimately
+>> +userspace via CXL regions. CXL Regions represent mapped memory
+>> +capacity in system physical address space. These can incorporate one
+>> +or more parts of multiple CXL memory devices with traffic interleaved
+>> +across them. The user may want to control the scrub rate via this
+>> +more abstract region instead of having to figure out the constituent
+>> +devices and program them separately. The scrub rate for each device
+>> +covers the whole device. Thus if multiple regions use parts of that
+>> +device then requests for scrubbing of other regions may result in a hig=
+her
+>scrub rate than requested for this specific region.
+>> +
+>> +1. When user sets scrub rate for a memory region, the scrub rate for al=
+l the
+>CXL
+>> +   memory devices interleaved under that region is updated with the sam=
+e
+>scrub
+>> +   rate.
+>
+>Note that this may affect multiple regions.
+>
+>> +
+>> +2. When user sets scrub rate for a memory device, only the scrub rate f=
+or
+>that
+>> +   memory devices is updated though device may be part of a memory regi=
+on
+>and
+>> +   does not change scrub rate of other memory devices of that memory
+>region.
+>> +
+>> +3. Scrub rate of a CXL memory device may be set via EDAC device or regi=
+on
+>scrub
+>> +   interface simultaneously. Care must be taken to prevent a race condi=
+tion,
+>or
+>> +   only region-based setting may be allowed.
+>
+>So is this saying if you want to mix and match, set region first then devi=
+ce next?
+>Can we just lay out the rules to set up a weird mixture.  We could add mor=
+e
+>smarts to the driver but do we care as mixing 1 and 3 above is probably
+>unusual?
+>
+>1. Taking each region in turn from lowest desired scrub rate to highest an=
+d set
+>   their scrub rates.  Later regions may override the scrub rate on indivi=
+dual
+>   devices (and hence potentially whole regions).
+>
+>2. Take each device for which enhanced scrubbing is required (higher rate)=
+ and
+>   set those scrub rates.  This will override the scrub rates of individua=
+l devices
+>   leaving any that are not specifically set to scrub at the maximum rate =
+required
+>   for any of the regions they are involved in backing.
 
-Add undersigned as a maintainer for the IIO ADC helpers.
+Thanks. Will incorporate these info and rules in the next version.
+>
+>
+>> +
+>> +Sysfs files for scrubbing are documented in
+>> +`Documentation/ABI/testing/sysfs-edac-scrub`
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-Revision history:
-v2 =3D>
- - No changes
-RFC v1 =3D> v2:
- - New patch
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+Shiju
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e0736dc2ee0..5b96fb864227 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11208,6 +11208,13 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/rc/iguanair.c
-=20
-+IIO ADC HELPERS
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	drivers/iio/adc/industrialio-adc.c
-+F:	include/linux/iio/adc-helpers.h
-+
- IIO BACKEND FRAMEWORK
- M:	Nuno Sa <nuno.sa@analog.com>
- R:	Olivier Moysan <olivier.moysan@foss.st.com>
---=20
-2.49.0
-
-
---Ewp2VBF8ttFnYinD
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfhBjQACgkQeFA3/03a
-ocXCSwgAxVnQyxRhTT58mImS7G6uU/aFQDiXlM08CUZ9gObNjgFta9MMnPovZwHU
-Nr4fO3MvZD4foJ6OMB0MVKDZlTX6KOg+K2o/delnE1l+tH9PCcPnTSm8Fc5H83Oz
-QwMNIhQbwKN06KMJsRyVW5iNLPIwil2Uf/3+Q4J7CNbglnrlXsocA00rke/9BFRE
-K2Y5r3WxJapmyacQHa0xauNlv9kPViNh9Vy0VF2io+oy8d9hNMzfQpGM32xoqmC2
-+UTIlAzEplINymAM/399yLCxCT6t2lH13ZrjeTiKsc38DvXHyz3pE6K/xX38RE+G
-I+1fM4p0O/8GpMnKLKGyWhk0IyfBTQ==
-=vwYn
------END PGP SIGNATURE-----
-
---Ewp2VBF8ttFnYinD--
 
