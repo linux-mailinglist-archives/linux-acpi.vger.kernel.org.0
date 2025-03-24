@@ -1,490 +1,289 @@
-Return-Path: <linux-acpi+bounces-12409-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12410-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772A6A6D3FE
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 07:06:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11FAA6D4AA
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 08:12:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECFD616CE2D
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 06:06:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F99D1889C6E
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Mar 2025 07:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33A5130AC8;
-	Mon, 24 Mar 2025 06:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779E42505AF;
+	Mon, 24 Mar 2025 07:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a3w0aIHO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WeSQS9Yi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A50134D4;
-	Mon, 24 Mar 2025 06:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587EE2500C9;
+	Mon, 24 Mar 2025 07:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742796401; cv=none; b=L3YstnareVPKMZQb6evTeKit0uSKCsWfkll6XQe1Abq4DA/yR+mkOaB2d8Vvex2reunF7Jp36Zuimn7+UhoSCuzrt3UDTG4b3b8LLT28LTDl+4UVroQn9bk7JSF6mhNbl6mqZGZgAptbKJoZiUboaZs1wmYboEzlwjL1drYmcME=
+	t=1742800352; cv=none; b=s1paD6thWQ4Gqjonw04W3ZPHjKpByRbS+ataUJbxrRZwiuN2JFx7wUbyOop53Dvb6GVUwZMCYeWAeVqGAArkY5koQ7p4zgKe6ygvIjBkd1kExPKKslcenLQ1wKUz6f7gdK4Q3GxPKA2M5nE3/jnpDiL6WVnaJ9UU5Tl3lVsTz9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742796401; c=relaxed/simple;
-	bh=3QWPYrygkvKmdtfY4tZoIshUamWMQpOTc/38UZ24KRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ffRbzBIcLtHJQzvcWj3OdtC1t+C5yk0fvc6gqiLVqFW3UuYm5HDDYCDuERb9ZyaM/wrvPz3XBh3Vsw//Y5UA3tRuFvWl0wQ+bwHn9U8OGKCCnTReDRsZo5chdbk2ItCN6EHBCk6fQeL65HKs4+RdHmEZzTSfZNi3f9zrl8qOAL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a3w0aIHO; arc=none smtp.client-ip=209.85.167.41
+	s=arc-20240116; t=1742800352; c=relaxed/simple;
+	bh=xxsp+OscMoZLwTVJ4/Cttaosh9NZrmtqrfWjgfCbC0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=DOQDNF84sJZWAKgop7K3xBClAcGBGGDUCePjEIaLD4C+2uG8aGsmDFao6S+tUXDFNk49OgfL1dzCf1ZVKRrjFd7Pvqnvv8w2QkYLYkBfHMRHvEz0aNjAWp8nrp0MYxrQRfoFJKMCmO5s6sbxwTI8Hm4lapUNEsegLR9aOqczkts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WeSQS9Yi; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5499659e669so4448359e87.3;
-        Sun, 23 Mar 2025 23:06:39 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-307c13298eeso46357271fa.0;
+        Mon, 24 Mar 2025 00:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742796397; x=1743401197; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i6+La/06o/hNpfO9Htb9ip8NKJGTUg/3Nh9D7pegwlw=;
-        b=a3w0aIHObUnG07IoI8SEcptnY40eGXrj5p40PMYX+QxCym6E7zZbBDE1goGXl2U9Ho
-         /8J7y2yHUSzsZlIR+FVRNpv2YdvTBfHDGA17foxzqVSonmwFWrnjbooV9m+3S3JCOH8R
-         Y8CUAeAt5Ca92buQLbEDBofkZJLnYgOYqSCOfYzKm/qtDU08THxUsV0pBuKF3CLcBo6d
-         jt/iVDoUHW0RM1R8ryUeBE6HGgSa766GvWUFfwstbpcJUhIGmTqgRf6EtW9YLG1dtyfE
-         NqBHkID4g+kUTHLh/A9xMy7cLGZZkOHh+iL8vSOhmqLRLysFSOqHZnNXJbwskEXp56Hg
-         3LZQ==
+        d=gmail.com; s=20230601; t=1742800348; x=1743405148; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sowTRCf+Tb5j3/bsFU0jjdH3gxVyOrbSH7sFKvyOG64=;
+        b=WeSQS9YiEHeOGxJNW9vkxkffKcNfpHT2sgHbbu3wedLpFZ1w/wzFdumQPCB4pOgLzM
+         hldP1r0ncQCGbQBBtAlUXpnE3byfxLehRJZU7h6V0gMLdXIAeDyKpCG02ntWHCsNNa88
+         l0gVNfLLqAKvTpEwVeKB1B9df1kifWqQvvmNom5DdheKCm2iLGyybQQrvDws6084O6Md
+         ZnqCZAi4o/jYQUFnb0XOLWL48+POM2uqFaT4tYXEIsY0xAz32r+GeNOdpFhuYhDIFY2u
+         FTDk1R7btTdUcUn00H2R/4TeXhQeHAkyE07zVW9dC1d3417uDXQ8YoPzG+aiFd0YjAZv
+         uL3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742796397; x=1743401197;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i6+La/06o/hNpfO9Htb9ip8NKJGTUg/3Nh9D7pegwlw=;
-        b=OVQam5N3vhMnYCMIejkNmuxvB6TKfBoiWTVeDWLz3930bLqx+5cgxOE2wign34G6TO
-         LN7rBNyQplYfe4PSFgyrxLs6F2jw/g0/EiQ0BI023tI8JJcCjJjagtPkqRYUuM4rIN08
-         2wOPaY18bGYe1Yvo3UbbG8QsUsH+7aH7VDOUoTpwzLHWq35H8zG2JkRffi4YVSSFCWZL
-         ZLxMOE+hAWCDXVUxLkVBiOKD3af55pkUVWKpAgHb88b+P7Dn7/ToHA90tRz9UL1FIIeE
-         iOKgdwc55DPjYk4ePyGf51r4nbOHYhzLy2eHV6b/kORDP7NC1TA/5CYPoThsrNSHVaSb
-         KNwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWH/hDyHg1vX2v6+64YkMz8wfX+ZfW9i1HXWDruUp5cvA4iDtCa14vF3/oMjdHb4bdvyQrh14fym20BPNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiXaxhOqq6oZbJsCeW20WkxmH5zikb/Ll+gOTrEG0eQ5X4Bo0I
-	97pQQEBLwE03bw0wWXFn7n9eUzajMtO9F6c42MfMRsFzAkA4tJgqTtvz7fAyZlY5E/lHSCGW8N9
-	FrVPJn50NNoEN8D2Kin2oJAIkkg==
-X-Gm-Gg: ASbGncsQCbnroeaq4X0X/qZXPB2dU01nRR6DujUXClDBPszF5XUJTd59ZN3iiGWqwMW
-	/or79HF96X7vjHnwAuvq7Q4hmutDqvXNe00du0Ro25RYSl+OImxGVshP5ago5nBvuK0RR7nkt54
-	O8H0a/mywRLpCavd3tYGMB8d96Tw==
-X-Google-Smtp-Source: AGHT+IFUhll+7JSFc8Ehk+nfMsa+fstfVxwLN2MBZJKqMDOB5JXE9rTKNth6TDiI6hA68CStQDxsHp58xpR6VrXrnaI=
-X-Received: by 2002:ac2:51d2:0:b0:549:490e:240d with SMTP id
- 2adb3069b0e04-54ad64a6d4amr4148109e87.28.1742796397011; Sun, 23 Mar 2025
- 23:06:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742800348; x=1743405148;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sowTRCf+Tb5j3/bsFU0jjdH3gxVyOrbSH7sFKvyOG64=;
+        b=crUbHmvK62U8gQevQKxuubm+8r1qN14gC3rBeIzMc0kwt9hO0RNFATimiU6O4PF8Jf
+         tZNPndZKfx9YT6SVE86khVxFmzmZfQZAz+6mnxI0A81A6hRmorQtU5qHZwSZ6JTVMAbT
+         kk0jx47l3yxI9IaDgm8UOEAx+ToB92cmjFyClUSOk0XEzorGppSrX1I3r7l7xUFMOsDz
+         BKy/KW5CwbCEiy1/M3KmCdFplUVWEVyUOssSRlLsvVPLd8ERpxz1axGt8vb/7V0PuM3R
+         7JiQj0ixde5vlaJnBOuJE/Nsyc7sa+CS+P5MKqruZNt5ZlxcW0lWNYNNYBpiLXXpUK+W
+         VpfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDb3iwLDomehZ8LfNJCnc/plVEVCmUqQlZaNyEWLtH3hi9RejR29WPCxFJfT1ll3OHmnWJ4D38K7Wf@vger.kernel.org, AJvYcCWK1Sb4i8cv8Tsy1wlBEl6RE+GpDA8FbCIDrledceBy69gw2CXyYPIGyfqxHclP3sOLBuIcye2HR89e@vger.kernel.org, AJvYcCWfPxNNK+QxURYs/M3H53nGU3VFbayxQ4q0le0TZDnH6bn1zINjGsRIblzzTHyYxRvwI00F98KAO1HW7g==@vger.kernel.org, AJvYcCWzI5Cm+62h+IndJkz+o/iRX6/pzaZxwR8bg8mSTaX0KuOaQPon0ejr0pCNloERE77tRjvw1ru1XDHf4Q2K@vger.kernel.org, AJvYcCXXghqBQgS/E1F1/Ys6+6MHICG46o8Tx1my7kBCPgKEI19jMhqLl2hL8iK9t5PqlxnWtBo47Eki4U+tDW5P3l1n25U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOkCg2C2lZKobPrTHpMdO/mQ0gKCIXVid5gsjuRCFnvdMjA0I0
+	V4D5m/4Cb09TQtRXAUu+cXeXeM3wvnxC3RSDBlbASSYOGxW0vPNB
+X-Gm-Gg: ASbGncuM2ai6D5TiZH13f8zAFMqSRfYWWQGJwydEOGjUUIOQ0dmcCuUUw9JyNB3zri4
+	aPDqSK1iyrSLs1fe9Rn1AF3WBW9XbMvm+iC2CD8uM5btMqUJnKnBB09o69zoR3Uc9L2u3I/q2wL
+	/yO3WVUu9CDe7NCK5VLuB4KQC9SNHhBF7Yz/Megcu/BWW/CeyTnbApD+KAyXvKMOJj1GrsRZRMk
+	GEStVjRI7JVAcGJMCeBER4TQUibqmkB3k48B9QvK+4idb6taNlUobzslU9vS/5/Q1MHPGLbxlKn
+	eGoMXuegLDOFNq85psde9bMWhEj4e3kY6ezVWeuKiYRbusKNUKw=
+X-Google-Smtp-Source: AGHT+IEnPPDATgowgnImDNLSvusoM0BTZl2CHm0V3kdZ6FVCrucX9v/2JU56loHRJqHxxkYiE05MEQ==
+X-Received: by 2002:a2e:6817:0:b0:30b:f599:d78f with SMTP id 38308e7fff4ca-30d727317a3mr56663871fa.7.1742800347972;
+        Mon, 24 Mar 2025 00:12:27 -0700 (PDT)
+Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30d7d7c19c3sm13336481fa.4.2025.03.24.00.12.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 00:12:26 -0700 (PDT)
+Date: Mon, 24 Mar 2025 09:12:17 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: [PATCH v10 0/8] Support ROHM BD79124 ADC
+Message-ID: <cover.1742560649.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMciSVUVjLj44LW+3ALB1fJQsUiw_2BQ5tLgpNJH08Xmj=Wr9w@mail.gmail.com>
- <07e2fb25-625b-441e-86f7-d0d54138c4aa@gmx.de> <CAMciSVUwy2cB4=hdX7Qki4Uc3maYdyrWa9t=_c9Uth=Pzh-KAg@mail.gmail.com>
- <d713393c-5d08-4b7f-8d5a-1a65f6f29f59@gmx.de>
-In-Reply-To: <d713393c-5d08-4b7f-8d5a-1a65f6f29f59@gmx.de>
-From: Naveen Kumar P <naveenkumar.parna@gmail.com>
-Date: Mon, 24 Mar 2025 11:36:24 +0530
-X-Gm-Features: AQ5f1Joc9gp_QYXoM8kK28SXOFU9NAgdFxv8TpxqkfkgKqKt5_4fMS21KGIwDko
-Message-ID: <CAMciSVXLkCrhUTXcf2WZiDkhHSO-Wdp3MhuK6ASkUL+ObtWvmw@mail.gmail.com>
-Subject: Re: ACPI Error: AE_AML_LOOP_TIMEOUT in \_SB.PCI0.SBUS.RDWD & \_SB.PCI0.SBRG.ADP1._PSR
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: linux-acpi@vger.kernel.org, rafael@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="x9LRqC/eTzOvp8+V"
+Content-Disposition: inline
+
+
+--x9LRqC/eTzOvp8+V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 24, 2025 at 3:25=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 22.03.25 um 16:40 schrieb Naveen Kumar P:
->
-> > On Sat, Mar 22, 2025 at 3:02=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
-te:
-> >> Am 19.03.25 um 12:29 schrieb Naveen Kumar P:
-> >>
-> >>> Hi all,
-> >>>
-> >>> I am encountering repeated AE_AML_LOOP_TIMEOUT errors in the ACPI RDW=
-D
-> >>> & \_SB.PCI0.SBRG.ADP1._PSR methods. Below are relevant log entries
-> >>> from my system running Linux kernel 6.13.0+:
-> >>>
-> >>> [77998.038653]
-> >>>                  Initialized Local Variables for Method [RDWD]:
-> >>> [77998.038691]   Local1: 00000000d0fe9fee <Obj>           Integer
-> >>> 0000000000000015
-> >>> [77998.038862]   Local6: 00000000f41c1645 <Obj>           Integer
-> >>> 0000000000000000
-> >>> [77998.039031]   Local7: 0000000040665c5c <Obj>           Integer
-> >>> 000000000000AA55
-> >>>
-> >>> [77998.039237] Initialized Arguments for Method [RDWD]:  (2 arguments
-> >>> defined for method invocation)
-> >>> [77998.039273]   Arg0:   00000000397dc53d <Obj>           Integer
-> >>> 0000000000000014
-> >>> [77998.039442]   Arg1:   000000001099e334 <Obj>           Integer
-> >>> 0000000000000002
-> >>>
-> >>> [77998.039673] ACPI Error: Aborting method \_SB.PCI0.SBUS.RDWD due to
-> >>> previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
-> >>> [77998.040455] ACPI Error: Aborting method \_SB.PCI0.SBRG.ADP1._PSR
-> >>> due to previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
-> >>> [77998.043659] ACPI: \_SB_.PCI0.SBRG.ADP1: Error reading AC Adapter
-> >>> state: AE_AML_LOOP_TIMEOUT
-> >>>
-> >>> [78028.442980]
-> >>>                  Initialized Local Variables for Method [RDWD]:
-> >>> [78028.443019]   Local1: 00000000898a9a7e <Obj>           Integer
-> >>> 0000000000000017
-> >>> [78028.443192]   Local6: 000000000cf0c853 <Obj>           Integer
-> >>> 0000000000000000
-> >>> [78028.443362]   Local7: 00000000bb4aa65f <Obj>           Integer
-> >>> 000000000000AA55
-> >>>
-> >>> [78028.443569] Initialized Arguments for Method [RDWD]:  (2 arguments
-> >>> defined for method invocation)
-> >>> [78028.443606]   Arg0:   00000000ef8d445b <Obj>           Integer
-> >>> 0000000000000016
-> >>> [78028.443775]   Arg1:   000000006cacc887 <Obj>           Integer
-> >>> 0000000000000003
-> >>>
-> >>> [78028.444006] ACPI Error: Aborting method \_SB.PCI0.SBUS.RDWD due to
-> >>> previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
-> >>> [78028.446366] ACPI Error: Aborting method \_SB.PCI0.SBRG.ADP1._PSR
-> >>> due to previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
-> >>> [78028.451179] ACPI: \_SB_.PCI0.SBRG.ADP1: Error reading AC Adapter
-> >>> state: AE_AML_LOOP_TIMEOUT
-> >>>
-> >>> [78032.877472]
-> >>>                  Initialized Local Variables for Method [RDWD]:
-> >>> [78032.877509]   Local1: 00000000cf6291ae <Obj>           Integer
-> >>> 0000000000000017
-> >>> [78032.877682]   Local6: 0000000026aa8a7a <Obj>           Integer
-> >>> 0000000000000003
-> >>> [78032.877851]   Local7: 00000000acfa20e0 <Obj>           Integer
-> >>> 000000000000AA55
-> >>>
-> >>> [78032.878058] Initialized Arguments for Method [RDWD]:  (2 arguments
-> >>> defined for method invocation)
-> >>> [78032.878094]   Arg0:   00000000a186096f <Obj>           Integer
-> >>> 0000000000000016
-> >>> [78032.878262]   Arg1:   00000000d0e1eefe <Obj>           Integer
-> >>> 0000000000000003
-> >>>
-> >>> [78032.878492] ACPI Error: Aborting method \_SB.PCI0.SBUS.RDWD due to
-> >>> previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
-> >>> [78032.881011] ACPI Error: Aborting method \_SB.PCI0.SBRG.ADP1._PSR
-> >>> due to previous error (AE_AML_LOOP_TIMEOUT) (20240827/psparse-529)
-> >>> [78032.883061] ACPI: \_SB_.PCI0.SBRG.ADP1: Error reading AC Adapter
-> >>> state: AE_AML_LOOP_TIMEOUT
-> >>>
-> >>>
-> >>> This issue appears randomly, affecting the RDWD method, which is
-> >>> likely responsible for reading data from a bus, and consequently
-> >>> causing the _PSR method (power state read) to fail.
-> >>>
-> >>>
-> >>> Questions:
-> >>> 1. What typically causes AE_AML_LOOP_TIMEOUT errors?
-> >> AFAIK this error is caused by a while loop taking too long to finish. =
-I suspect that
-> >> the ACPI bytecode tries to wait for a non-responsive hardware device.
-> >>
-> >>> 2. Could these ACPI errors impact PCI device access?
-> >>> Since the error originates from _SB.PCI0.SBUS.RDWD, could this failur=
-e
-> >>> affect PCI device communication or cause failures when accessing PCI
-> >>> devices?
-> >> I do not think so, the SBUS device is likely just a SMBus controller a=
-ttached to the PCI bus.
-> >>
-> >>> 3. Could this be a firmware/BIOS issue?If so, what tools or steps
-> >>> should I use to verify and debug the ACPI tables?
-> >> It is either a hardware issue or a BIOS bug. Can you share the output =
-of the "acpidump" utility
-> >> provided by the ACPICA project? Many Linux distributions already packa=
-ge ACPICA in their package repositories.
-> > I have attached the acpi.tar.gz file as requested. This archive
-> > contains the output from the "acpidump" utility. Below is a list of
-> > the files included in the archive:
-> >
-> > ls -ltr acpi
-> > total 760
-> > -rw-rw-r-- 1 murphy murphy 205609 Mar 19 18:30 acpi_tables.txt
-> > -rw-r--r-- 1 root   root       60 Mar 19 18:31 mcfg.dat
-> > -rw-r--r-- 1 root   root      132 Mar 19 18:31 apic.dat
-> > -rw-r--r-- 1 root   root      656 Mar 19 18:31 ssdt2.dat
-> > -rw-r--r-- 1 root   root       66 Mar 19 18:31 uefi.dat
-> > -rw-r--r-- 1 root   root    36402 Mar 19 18:31 dsdt.dat
-> > -rw-r--r-- 1 root   root      260 Mar 19 18:31 lpit.dat
-> > -rw-r--r-- 1 root   root      378 Mar 19 18:31 ssdt3.dat
-> > -rw-r--r-- 1 root   root      268 Mar 19 18:31 facp.dat
-> > -rw-r--r-- 1 root   root       68 Mar 19 18:31 fpdt.dat
-> > -rw-r--r-- 1 root   root     1891 Mar 19 18:31 ssdt1.dat
-> > -rw-r--r-- 1 root   root      332 Mar 19 18:31 csrt.dat
-> > -rw-r--r-- 1 root   root       56 Mar 19 18:31 hpet.dat
-> > -rw-r--r-- 1 root   root       64 Mar 19 18:31 facs.dat
-> > -rw-r--r-- 1 root   root      890 Mar 19 18:31 ssdt4.dat
-> > -rw-r--r-- 1 root   root      141 Mar 19 18:31 ssdt7.dat
-> > -rw-r--r-- 1 root   root     1075 Mar 19 18:31 ssdt5.dat
-> > -rw-r--r-- 1 root   root      351 Mar 19 18:31 ssdt6.dat
-> > -rw-rw-r-- 1 murphy murphy   5919 Mar 19 18:31 apic.dsl
-> > -rw-rw-r-- 1 murphy murphy   8131 Mar 19 18:31 csrt.dsl
-> > -rw-rw-r-- 1 murphy murphy 337832 Mar 19 18:31 dsdt.dsl
-> > -rw-rw-r-- 1 murphy murphy  10103 Mar 19 18:31 facp.dsl
-> > -rw-rw-r-- 1 murphy murphy   1368 Mar 19 18:31 facs.dsl
-> > -rw-rw-r-- 1 murphy murphy   1802 Mar 19 18:31 fpdt.dsl
-> > -rw-rw-r-- 1 murphy murphy   1863 Mar 19 18:31 hpet.dsl
-> > -rw-rw-r-- 1 murphy murphy   7523 Mar 19 18:31 lpit.dsl
-> > -rw-rw-r-- 1 murphy murphy   1524 Mar 19 18:31 mcfg.dsl
-> > -rw-rw-r-- 1 murphy murphy   9996 Mar 19 18:31 ssdt1.dsl
-> > -rw-rw-r-- 1 murphy murphy   7692 Mar 19 18:31 ssdt2.dsl
-> > -rw-rw-r-- 1 murphy murphy   4296 Mar 19 18:31 ssdt3.dsl
-> > -rw-rw-r-- 1 murphy murphy   8290 Mar 19 18:31 ssdt4.dsl
-> > -rw-rw-r-- 1 murphy murphy  16968 Mar 19 18:31 ssdt5.dsl
-> > -rw-rw-r-- 1 murphy murphy   2843 Mar 19 18:31 ssdt6.dsl
-> > -rw-rw-r-- 1 murphy murphy   1337 Mar 19 18:31 ssdt7.dsl
-> > -rw-rw-r-- 1 murphy murphy   1383 Mar 19 18:31 uefi.dsl
-> >
-> >
-> > Please let me know if you need any further details or additional
-> > information to assist in debugging the ACPI tables.
-> >
-> > Thank you for your help.
->
-> Alright, it seems that the ACPI bytecode is trying to access the charger =
-using the smbus interface.
-> For some reason this takes over 30 seconds which causes the ACPI interpre=
-ter to throw this error.
->
-> Can you check how long it normally takes to read the "online" sysfs attri=
-bute of the charger located
-> under "/sys/class/power_supply/ADP1"?
-I have written a script to measure the time it takes to read the
-"online" sysfs attribute of the charger located under
-/sys/class/power_supply/ADP1. Below is the script and the results:
+Support ROHM BD79124 ADC.
 
-$cat test.sh
-#!/bin/bash
+This series adds also couple of IIO ADC helper functions for parsing the
+channel information from the device tree. There are also new helpers
+included for iterating and counting firmware child nodes with a specific
+name.
 
-start_time=3D$(date +%s%N)
-cat /sys/class/power_supply/ADP1/online
-end_time=3D$(date +%s%N)
+The rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
 
-elapsed_time=3D$((end_time - start_time))
-echo "Time taken: $((elapsed_time / 1000000)) ms"
+There has been some discussion about how useful these ADC helpers are,
+and whether they should support also differential and single ended channel
+configurations. This version does not include support for those - with the
+benefit of reduced complexity and easier to use API.
 
-$ sudo ./test.sh
-1
-Time taken: 3809 ms
+NOTE: The rzg2l_adc and the sun20i-gpadc are untested as I lack of relevant
+HW. They have been compile tested only.
 
-$ sudo ./test.sh
-1
-Time taken: 1688 ms
+The ROHM BD79124 ADC itself is quite usual stuff. 12-bit, 8-channel ADC
+with threshold monitoring.
 
-$ sudo ./test.sh
-1
-Time taken: 1685 ms
+Except that:
+ - each ADC input pin can be configured as a general purpose output.
+ - manually starting an ADC conversion and reading the result would
+   require the I2C _master_ to do clock stretching(!) for the duration
+   of the conversion... Let's just say this is not well supported.
+ - IC supports 'autonomous measurement mode' and storing latest results
+   to the result registers. This mode is used by the driver due to the
+   "peculiar" I2C when doing manual reads.
 
-$ sudo ./test.sh
-1
-Time taken: 1688 ms
+Furthermore, the ADC uses this continuous autonomous measuring,
+and the IC keeps producing new 'out of window' IRQs if measurements are
+out of window - the driver disables the event for 1 seconds when sending
+it to user. This prevents generating storm of events
+
+Revision history:
+v9 =3D> v10:
+ BD79124 driver fixes as suggested by Andy:
+   - Use regmap_assign_bits()
+   - dont change the mask for caller in bd79124gpo_set_multiple()
+   - styling
+
+v8 =3D> v9:
+ - Drop the gianfar and the thp7312 drivers from the series to limit the
+   review noise and to simplify the merging. They can be submitted later
+   as separate changes.
+ - Drop the fwnode_for_each_available_named_child() as suggested by
+   Sakari.
+ - BD79124 driver styling and fixes
+
+v7 =3D> v8:
+  property helpers:
+    - Fix the example in fwnode_get_named_child_node_count() documentation
+      to use the fwnode_get_named_child_node_count() and not the
+      device_get_named_child_node_count()
+    - Fix the rest of the new macro's indentiations
+  adc helpers:
+    - Treat 0 ADC channels as an error in
+      devm_iio_adc_device_alloc_chaninfo_se().
+  rzg2l_adc / sun20i-gpadc:
+    - Drop zero channels check from the ADC drivers using
+      devm_iio_adc_device_alloc_chaninfo_se()
+  BD79124:
+    - Use unsigned for regmap values
+    - Commit message fine tuning
+    - Check devm_mutex_init() return value
+    - Handle 'ALL pins as ADC or GPO' cleanly in BD79124 driver
+    - BD79124 styling / typofixes
+
+v6 =3D> v7:
+ - Inline device_get_named_child_node_count()
+ - Fix kernel-doc for fwnode_get_named_child_node_count()
+ - Minor styling fixes
+ More accurate changelog in individual patches.
+
+v5 =3D> v6:
+ - Drop applied patch
+ - Add *_for_each_named_child_* iterators
+ - Add a patch converting the thp7312 driver to use the new helper
+ - Styling and minor things pointed by reviewers
+
+v4 =3D> v5: Fixes as per various review comments. Most notably:
+ - Drop the patch making the TI's ADC driver to respect device tree.
+ - Add (RFC) patch converting gianfar driver to use new name child-node
+   counting API as suggested by Andy.
+ - Add fwnode_get_child_node_count_named() as suggested by Rob.
+ - rebase to v6.14-rc5
+ More accurate changelog in individual patches.
+
+v3 =3D> v4:
+ - Drop the ADC helper support for differential channels
+ - Drop the ADC helper for getting only channel IDs by fwnode.
+ - "Promote" the function counting the number of child nodes with a
+   specific name to the property.h (As suggested by Jonathan).
+ - Add ADC helpers to a namespace.
+ - Rebase on v6.14-rc3
+ - More minor changes described in individual patches.
+
+v2 =3D> v3:
+ - Restrict BD79124 channel numbers as suggested by Conor and add
+   Conor's Reviewed-by tag.
+ - Support differential and single-ended inputs
+ - Convert couple of existing drivers to use the added ADC helpers
+ - Minor fixes based on reviews
+Link to v2:
+https://lore.kernel.org/all/cover.1738761899.git.mazziesaccount@gmail.com/
+
+RFC v1 =3D> v2:
+ - Drop MFD and pinmux.
+ - Automatically re-enable events after 1 second.
+ - Export fwnode parsing helpers for finding the ADC channels.
+
+---
+
+Matti Vaittinen (8):
+  dt-bindings: ROHM BD79124 ADC/GPO
+  property: Add functions to iterate named child
+  iio: adc: add helpers for parsing ADC nodes
+  iio: adc: rzg2l_adc: Use adc-helpers
+  iio: adc: sun20i-gpadc: Use adc-helpers
+  iio: adc: Support ROHM BD79124 ADC
+  MAINTAINERS: Add IIO ADC helpers
+  MAINTAINERS: Add ROHM BD79124 ADC/GPO
+
+ .../bindings/iio/adc/rohm,bd79124.yaml        |  114 ++
+ MAINTAINERS                                   |   12 +
+ drivers/base/property.c                       |   27 +
+ drivers/iio/adc/Kconfig                       |   17 +
+ drivers/iio/adc/Makefile                      |    3 +
+ drivers/iio/adc/industrialio-adc.c            |   82 ++
+ drivers/iio/adc/rohm-bd79124.c                | 1147 +++++++++++++++++
+ drivers/iio/adc/rzg2l_adc.c                   |   39 +-
+ drivers/iio/adc/sun20i-gpadc-iio.c            |   39 +-
+ include/linux/iio/adc-helpers.h               |   27 +
+ include/linux/property.h                      |   20 +
+ 11 files changed, 1479 insertions(+), 48 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/rohm,bd79124.=
+yaml
+ create mode 100644 drivers/iio/adc/industrialio-adc.c
+ create mode 100644 drivers/iio/adc/rohm-bd79124.c
+ create mode 100644 include/linux/iio/adc-helpers.h
 
 
-As you can see, the first run took 3809 ms, and the subsequent runs
-took around 1688 ms.
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+--=20
+2.49.0
 
->
-> Also please share the output of "lspci -v".
-$ sudo lspci -v
-00:00.0 Host bridge: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series SoC Transaction Register (rev 11)
-        Subsystem: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series SoC Transaction Register
-        Flags: bus master, fast devsel, latency 0
-        Kernel driver in use: iosf_mbi_pci
 
-00:02.0 VGA compatible controller: Intel Corporation Atom Processor
-Z36xxx/Z37xxx Series Graphics & Display (rev 11) (prog-if 00 [VGA
-controller])
-        DeviceName:  Onboard IGD
-        Subsystem: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series Graphics & Display
-        Flags: bus master, fast devsel, latency 0, IRQ 97
-        Memory at b0000000 (32-bit, non-prefetchable) [size=3D4M]
-        Memory at a0000000 (32-bit, prefetchable) [size=3D256M]
-        I/O ports at e080 [size=3D8]
-        Expansion ROM at 000c0000 [virtual] [disabled] [size=3D128K]
-        Capabilities: [d0] Power Management version 2
-        Capabilities: [90] MSI: Enable+ Count=3D1/1 Maskable- 64bit-
-        Capabilities: [b0] Vendor Specific Information: Len=3D07 <?>
-        Kernel driver in use: i915
-        Kernel modules: i915
+--x9LRqC/eTzOvp8+V
+Content-Type: application/pgp-signature; name=signature.asc
 
-00:13.0 SATA controller: Intel Corporation Atom Processor E3800 Series
-SATA AHCI Controller (rev 11) (prog-if 01 [AHCI 1.0])
-        Subsystem: Intel Corporation Atom Processor E3800 Series SATA
-AHCI Controller
-        Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 91
-        I/O ports at e070 [size=3D8]
-        I/O ports at e060 [size=3D4]
-        I/O ports at e050 [size=3D8]
-        I/O ports at e040 [size=3D4]
-        I/O ports at e020 [size=3D32]
-        Memory at b0b17000 (32-bit, non-prefetchable) [size=3D2K]
-        Capabilities: [80] MSI: Enable+ Count=3D1/1 Maskable- 64bit-
-        Capabilities: [70] Power Management version 3
-        Capabilities: [a8] SATA HBA v1.0
-        Kernel driver in use: ahci
-        Kernel modules: ahci
+-----BEGIN PGP SIGNATURE-----
 
-00:14.0 USB controller: Intel Corporation Atom Processor
-Z36xxx/Z37xxx, Celeron N2000 Series USB xHCI (rev 11) (prog-if 30
-[XHCI])
-        Subsystem: Intel Corporation Atom Processor Z36xxx/Z37xxx,
-Celeron N2000 Series USB xHCI
-        Flags: bus master, medium devsel, latency 0, IRQ 90
-        Memory at b0b00000 (64-bit, non-prefetchable) [size=3D64K]
-        Capabilities: [70] Power Management version 2
-        Capabilities: [80] MSI: Enable+ Count=3D1/8 Maskable- 64bit+
-        Kernel driver in use: xhci_hcd
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfhBc4ACgkQeFA3/03a
+ocWangf+NI4B0saJ44yhPgbEq325fSJhMOfkikVYiNQDzf5tPKqdhE3H2+EJitTR
+Q3uQ6HF0uvIhH+sVBIPZpFSDeiS/80JCyyaeXyqaIaAwhyrctLf8wJ0Np8M/c7kt
+kNdnEQPK2zPPSEurLI7f6GmskY71NXfH1Ogdtve32GfLvm89NIPwolg3MmC43/T3
+TteJLSflBgs8HLarrggxMuz4sW1QSIp8My2iIim9A4SKfeHh6VabjqVx1Pgt+9Pd
+aRVXRV+j9OpBkvViz3602kp4TWCGnP3/uJSYGPPaqdFUPD+9ylptoTPBW9e8ZbbT
+ak6Ih1C9yZ6LE/GY2JLdRu+3U2vhpw==
+=yHBg
+-----END PGP SIGNATURE-----
 
-00:17.0 SD Host controller: Intel Corporation Atom Processor E3800
-Series eMMC 4.5 Controller (rev 11) (prog-if 01)
-        Flags: bus master, fast devsel, latency 0, IRQ 23
-        Memory at b0b16000 (32-bit, non-prefetchable) [size=3D4K]
-        Memory at b0b15000 (32-bit, non-prefetchable) [size=3D4K]
-        Capabilities: [80] Power Management version 3
-        Kernel driver in use: sdhci-pci
-        Kernel modules: sdhci_pci
-
-00:1a.0 Encryption controller: Intel Corporation Atom Processor
-Z36xxx/Z37xxx Series Trusted Execution Engine (rev 11)
-        Subsystem: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series Trusted Execution Engine
-        Flags: bus master, fast devsel, latency 0, IRQ 98
-        Memory at b0900000 (32-bit, non-prefetchable) [size=3D1M]
-        Memory at b0800000 (32-bit, non-prefetchable) [size=3D1M]
-        Capabilities: [80] Power Management version 3
-        Capabilities: [a0] MSI: Enable+ Count=3D1/1 Maskable- 64bit-
-        Kernel driver in use: mei_txe
-        Kernel modules: mei_txe
-
-00:1b.0 Audio device: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series High Definition Audio Controller (rev 11)
-        Subsystem: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series High Definition Audio Controller
-        Flags: bus master, fast devsel, latency 0, IRQ 10
-        Memory at b0b10000 (64-bit, non-prefetchable) [size=3D16K]
-        Capabilities: [50] Power Management version 2
-        Capabilities: [60] MSI: Enable- Count=3D1/1 Maskable- 64bit+
-        Kernel modules: snd_hda_intel
-
-00:1c.0 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI
-Express Root Port 1 (rev 11) (prog-if 00 [Normal decode])
-        Flags: bus master, fast devsel, latency 0, IRQ 87
-        Bus: primary=3D00, secondary=3D01, subordinate=3D01, sec-latency=3D=
-0
-        I/O behind bridge: 00001000-00001fff [size=3D4K]
-        Memory behind bridge: b0400000-b07fffff [size=3D4M]
-        Prefetchable memory behind bridge: [disabled]
-        Capabilities: [40] Express Root Port (Slot+), MSI 00
-        Capabilities: [80] MSI: Enable+ Count=3D1/1 Maskable- 64bit-
-        Capabilities: [90] Subsystem: Intel Corporation Atom Processor
-E3800 Series PCI Express Root Port 1
-        Capabilities: [a0] Power Management version 3
-        Kernel driver in use: pcieport
-
-00:1c.2 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI
-Express Root Port 3 (rev 11) (prog-if 00 [Normal decode])
-        Flags: bus master, fast devsel, latency 0, IRQ 88
-        Bus: primary=3D00, secondary=3D02, subordinate=3D02, sec-latency=3D=
-0
-        I/O behind bridge: 00002000-00002fff [size=3D4K]
-        Memory behind bridge: [disabled]
-        Prefetchable memory behind bridge: [disabled]
-        Capabilities: [40] Express Root Port (Slot+), MSI 00
-        Capabilities: [80] MSI: Enable+ Count=3D1/1 Maskable- 64bit-
-        Capabilities: [90] Subsystem: Intel Corporation Atom Processor
-E3800 Series PCI Express Root Port 3
-        Capabilities: [a0] Power Management version 3
-        Kernel driver in use: pcieport
-
-00:1c.3 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI
-Express Root Port 4 (rev 11) (prog-if 00 [Normal decode])
-        Flags: bus master, fast devsel, latency 0, IRQ 89
-        Bus: primary=3D00, secondary=3D03, subordinate=3D03, sec-latency=3D=
-0
-        I/O behind bridge: 0000d000-0000dfff [size=3D4K]
-        Memory behind bridge: b0a00000-b0afffff [size=3D1M]
-        Prefetchable memory behind bridge: [disabled]
-        Capabilities: [40] Express Root Port (Slot+), MSI 00
-        Capabilities: [80] MSI: Enable+ Count=3D1/1 Maskable- 64bit-
-        Capabilities: [90] Subsystem: Intel Corporation Atom Processor
-E3800 Series PCI Express Root Port 4
-        Capabilities: [a0] Power Management version 3
-        Kernel driver in use: pcieport
-
-00:1f.0 ISA bridge: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series Power Control Unit (rev 11)
-        Subsystem: Intel Corporation Atom Processor Z36xxx/Z37xxx
-Series Power Control Unit
-        Flags: bus master, medium devsel, latency 0
-        Capabilities: [e0] Vendor Specific Information: Len=3D0c <?>
-        Kernel driver in use: lpc_ich
-        Kernel modules: lpc_ich
-
-00:1f.3 SMBus: Intel Corporation Atom Processor E3800 Series SMBus
-Controller (rev 11)
-        Subsystem: Intel Corporation Atom Processor E3800 Series SMBus
-Controller
-        Flags: medium devsel, IRQ 18
-        Memory at b0b14000 (32-bit, non-prefetchable) [size=3D32]
-        I/O ports at e000 [size=3D32]
-        Capabilities: [50] Power Management version 3
-        Kernel driver in use: i801_smbus
-        Kernel modules: i2c_i801
-
-01:00.0 RAM memory: PLDA Device 5555
-        Subsystem: Device 4000:0000
-        Flags: fast devsel, IRQ 11
-        Memory at b0400000 (32-bit, non-prefetchable) [virtual] [size=3D4M]
-        Capabilities: [40] Power Management version 3
-        Capabilities: [48] MSI: Enable- Count=3D1/1 Maskable- 64bit-
-        Capabilities: [60] Express Endpoint, MSI 00
-
-03:00.0 Ethernet controller: Intel Corporation I210 Gigabit Network
-Connection (rev 03)
-        Flags: bus master, fast devsel, latency 0, IRQ 19
-        Memory at b0a00000 (32-bit, non-prefetchable) [size=3D512K]
-        I/O ports at d000 [size=3D32]
-        Memory at b0a80000 (32-bit, non-prefetchable) [size=3D16K]
-        Capabilities: [40] Power Management version 3
-        Capabilities: [50] MSI: Enable- Count=3D1/1 Maskable+ 64bit+
-        Capabilities: [70] MSI-X: Enable+ Count=3D5 Masked-
-        Capabilities: [a0] Express Endpoint, MSI 00
-        Capabilities: [100] Advanced Error Reporting
-        Capabilities: [140] Device Serial Number 00-30-64-ff-ff-a2-59-aa
-        Capabilities: [1a0] Transaction Processing Hints
-        Kernel driver in use: igb
-        Kernel modules: igb
-
->
-> Thanks,
-> Armin Wolf
->
-> >>> 4. Is there a recommended workaround to mitigate this issue?
-> >> You can check if a BIOS update is available for your device.
-> >>
-> >>> 4. How can I debug this further?I can enable additional ACPI debuggin=
-g
-> >>> logs or provide dumps of ACPI tables if necessary.
-> >> I can take a look at the \_SB.PCI0.SBUS.RDWD method inside the ACPI ta=
-ble dumps
-> >> to see where the error is coming from.
-> >>
-> >> Thanks,
-> >> Armin Wolf
-> >>
-> >>> Any guidance on resolving or further diagnosing this issue would be
-> >>> highly appreciated.
-> >>>
-> >>> Best regards,
-> >>> Naveen
-> >>>
+--x9LRqC/eTzOvp8+V--
 
