@@ -1,125 +1,181 @@
-Return-Path: <linux-acpi+bounces-12426-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12427-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832FBA70B1E
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 21:11:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADA2A70BA8
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 21:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE38119A0A7E
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 20:10:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62D271881F97
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 20:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C69267F5F;
-	Tue, 25 Mar 2025 20:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5F9266573;
+	Tue, 25 Mar 2025 20:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="khCB68gx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="No1TN7R0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A88F267B9E;
-	Tue, 25 Mar 2025 20:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67445242918;
+	Tue, 25 Mar 2025 20:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742933224; cv=none; b=elFYqINr8V3aMDAlrcG4zcsGU4MLpVn4nvebXZuS/RnisTr7UnCJuh/z3zV64Z1FHiljXhUyYdKorYrHPujfsA5OTmB1QXap2yt/u8gEbK2HUh0UJiieztVFoB2+Sepnb+7lhQmgXmi2AkibfM8DYqcyas1zfJlQBat8E847TTE=
+	t=1742935208; cv=none; b=ZNz7Q6cSRRcft/d2PZrEDP16tqgCwEXq4GBm6Rtl9M08Rk7uR66BEJ2zyPxUjqchH4ExsL5WOFk90pOw0wJ7ymQOXSZZNcbHtR4peb5pW+8DKMIkd4JJuHMpvqdCabeSiAGgNsGr28+zCAgEvMjQM7E0YCOmL6+FjEAlGQ8wLLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742933224; c=relaxed/simple;
-	bh=tj0V8WO1QBHCvlLieT9zL79MvFmfnXHh40llfNUDrnw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ZQorr3h+Gu8mPlGTBCv1gvDPOtZHRdgWI7Vv8CsATDABXhNt4Tdim2qidOnuUuuFSAOj3oL0sd1dvLQm5reEEhHtAR7wtNVHjAm4Ec9ZUxTdVChTNPCC33zqp0vDVNcNgY9akA10OgTnaXxTYQv7aRlfmIvNUQFL3VoWiHUbvmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=khCB68gx; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1742935208; c=relaxed/simple;
+	bh=D86E6BYFMd2Fp5J90ilzXhmKsq3mI7+tGtgKlnXeE2w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V7Mr4qxGCojxixKSH1wZtRcS50u6FaeUL1hdyF0E7H3LMRLVCgwfSiywJO5zJPsAr1lAn+rVML4JD5aXlL+Ia9lYMx5x0iqbQW/iRzaC0s21KDWR60CEoMMr2ZE6xGqfPZ7egP1BKn9pcIh9AocPFRkeqzSf6Vtre6j3JIk/bK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=No1TN7R0; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-223f4c06e9fso3953795ad.1;
-        Tue, 25 Mar 2025 13:07:03 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-223fd89d036so125873845ad.1;
+        Tue, 25 Mar 2025 13:40:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742933222; x=1743538022; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tj0V8WO1QBHCvlLieT9zL79MvFmfnXHh40llfNUDrnw=;
-        b=khCB68gx2zeYn5+4lu4SLeF0W8MHPn6IkoNvdNc8dqyHC7Sw5Hv4GopsthfHMHkzTJ
-         //uCIgxSf7liM3jWcQTSnfPbNzZG3PfzWDpyChqX6z9fUNdI+NakSbQ7EgjRA7MiH2F7
-         A4pxL5ddHe1pmtLDLxE0mV9R/xAyxW1fztX6Jo0o1WO3k1EXcx58O7Ut564kiFUgXbc6
-         5f56+RKlkmSjtn9NOpXbaiu6dQemK6GxXB4TrywNui8G/MDt3g0TKoyMhwvtKqWQjkB5
-         Ea4eQyxgeVtdS+XwZiYzIFQVRi7tpLGH5QiUHz/xnzH/fSZMFzAP6LhOrvA8eXnvdVXf
-         PU3w==
+        d=gmail.com; s=20230601; t=1742935206; x=1743540006; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KCSIZbSYnkrCmNqKo+NkuiBjeNp8i28kuq9+kFrqnns=;
+        b=No1TN7R0f1gZt3LUTVLUMzYMdIzd+cL9IHTAbG0lQcuf4KTADtcvglQibrvmsK9BaN
+         Qow1qgfj9ms/AQqhbmkCBm/g3/M2YEePOD39YbSMx9XGeZvZg18t/tgXnLWtLYKVnkol
+         VIJ8pBxoKz0nlSgcWNpzxdQ0yZcL5eSyEzHLpakULhs72oekYRYGpi+yq34UItD9oZRN
+         XDlOlcYVA55GvsFX4+X/t4kqJFa8ZuGMsyRIEMQ8D9uGhtN4kqjFC2txEyQuCIel2o6s
+         0RfDrKQUPeXaKLesE7e6R/coc2myBB9TLSEIk4TAZBv9EmKZs+yu21dBL/MTCIZZhnYx
+         DCVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742933222; x=1743538022;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tj0V8WO1QBHCvlLieT9zL79MvFmfnXHh40llfNUDrnw=;
-        b=doCWiTzrrC6t8e8AwDRh1wvGBisvtE9GBuscaB+Upe2Y3e5xXl8lGrB+PXVklLJi3F
-         9ogzpPmAfoId14td23017+45BUU2pecsCNZanr8rwjqfszfJPkEbdSGLIPsTGSqFblVh
-         qBjuAEoq88VkprzZVejopvnTO+uYUYXNJ8tqDCMq0TVeJxsDT9S+asUMvahWjQLJX7Yg
-         cndZIrB3QIb4Vn4Ua8hSorKVr/hJ6HL4CPSFDohHsSik6wZMhCO+VFVr0+a7K1jJrMl+
-         jy/Wh5zQqb9XN4KsJA1L6h8IM7A90mO3hpQnq4pkMeCASbu6tVWDYLLdYWaW8oERVTJp
-         9ZKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUIyYct1DukGdkSb2JT2uMCUYMqQohpt5XujjB1mAj1cJ6dU4P8Ijuf2P4K81FJO/kmP+3HpBBB9hDHp9Ko@vger.kernel.org, AJvYcCV4AyCF871IeQXpBcLYskRScJr6g6D5PI66g49EYC1gftFm6QNDuXWoXKXq2RnikLk4oug0j8pSwAE4@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjbrtJLcSNxu7EeaSH5DQ8iE/DJPyQ3LAHoLaAnswpObd+rLNy
-	D+vUMfnV8tAsXVy1CqLYqr4qDtcyvZVtpDdq638FwoOc2ApeGffe
-X-Gm-Gg: ASbGncusKhmAeLbI10HjOEWCgLckH0hJEG1GBQCcLAerBIwriH/r/f3EnXkzTGwLTam
-	BqazVVWZ3IRiJ/7j3M5JZdQz7BiLMdWSPU3cFD2j7BL8UyspNy6BCvPsjogCJ5RLwh2s729KYFK
-	IAFnKo0Z4q0Z3z1/YKIT1sYzUH8tV4kqrVKrocdZqtowxRqcwJMcJl9NAcfx1cME5LZjKOdmlW4
-	FuRNvdbLa6M1qhPGAEJFf8OErEA1Jib0F+Mta0g2z1GPdlH06X17L21FJkOLhOVRwy3tFYLz/wN
-	oiLLJ3c7qFaboJ68qqLojwyt1ePQBvpdgEAbj0hDPRwex5W2
-X-Google-Smtp-Source: AGHT+IE+lzdM+Ptk09dWS8IoLI3bFfZRmtMysmn4d27tUOZ9HPEFhuMB+8v3KUg2zEBCEiB9ShFc7A==
-X-Received: by 2002:a17:902:f547:b0:225:abd2:5e5a with SMTP id d9443c01a7336-227efaa0686mr12163825ad.4.1742933222434;
-        Tue, 25 Mar 2025 13:07:02 -0700 (PDT)
-Received: from localhost ([181.91.133.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811da32fsm94335935ad.182.2025.03.25.13.07.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Mar 2025 13:07:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742935206; x=1743540006;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KCSIZbSYnkrCmNqKo+NkuiBjeNp8i28kuq9+kFrqnns=;
+        b=iVIYX0FKGzMBvuLC6QdLqpDlzK4BRwxpNWnXdU53RierRNzqDPk+Wyjuamx1T+1COp
+         nrtRvq+/Cte2drpbYUNyWuEYQzr9+zEzUd2FG5NGyvEQuzxweyKZPOm5Si3i6IgAZqza
+         /5cz7qut+DXsPFpVx91ZbTm7XAPV9DHWKbu7/EsachsaFLnn280sZbex2DBUwIkTgnC+
+         u9y6SYfeUEO2IqpBA33RrFn6lmdHDAN/onfau8ANoBrE20Gl6fP0dUL3ql6JrmWeFrle
+         njMDVsrPsIhl9/psuskdMlc97zDUXs2PM66U0vyUzme/ELlCfc2wovKF5ncXAWt/kQJN
+         s4zw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3D2CbewLbxPosRvYKJureoDr4dWqyawLy+4pYM8+d/lP2p/wShQt7CzXrpfETOYd/n3AE6MxJA/bq@vger.kernel.org, AJvYcCXgAGuVkdKDG8cMRJW7pPK/JqNlD8NK6JCEvWYehSCoCnYMJW7pxx3hgnaF1zO0EMwjdgNllTEM4lLM9qao@vger.kernel.org
+X-Gm-Message-State: AOJu0Yznzudeiu6SZgO0vvpSEVbzeTAdgh9+534V6sRCn3mbeKkQ+7PN
+	QjZ24x4XZeqGx/oRtFb2h5PFUyoFnCAzrLiR5QolvCJgrphwHLFH
+X-Gm-Gg: ASbGncuzJlJQVZY2y4crmKlF5HRk/VhIbcMPvPhECB9bOrIt32fHy8lXeYCJLJq0jEO
+	7gTOXDRR9fh7ENW8EWIRA9ymD1D0Q/s7B7bQqHtYjrDWy7epmarQUZ5i6If2Uzm3ORIULSTDEBr
+	5q3AQmbF66CApRXRjXDGy1cLUwPgkiHcP21reMmJEOnVzARZrnd7ZKVfSqsMWGEX6k8EDx2hCUr
+	yg8vHGJ5GsCTPHTVyq7x1uuoT9hPD+Rco9DqB9UN0Grn+eYbWQS6YbBVbu+QbE7oe9KLyVqEoVl
+	/5fF8TOCSoXIDazwfyYqOFljbSz0OQYMLKTSZjkOkx3d
+X-Google-Smtp-Source: AGHT+IFsrXEZJouBZVR1sHC3IfRdJf5FCp29tGxgVj0TxQnh2e8ChT8ApBwtcQBi31rolwXpdISRrA==
+X-Received: by 2002:a17:902:f548:b0:21f:2a2:3c8b with SMTP id d9443c01a7336-22780c7e29emr255787495ad.11.1742935206478;
+        Tue, 25 Mar 2025 13:40:06 -0700 (PDT)
+Received: from [192.168.1.26] ([181.91.133.137])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390611cafesm10967566b3a.109.2025.03.25.13.40.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 13:40:06 -0700 (PDT)
+From: Kurt Borja <kuurtb@gmail.com>
+Date: Tue, 25 Mar 2025 17:39:53 -0300
+Subject: [PATCH v2] ACPI: platform_profile: Optimize _aggregate_choices()
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Mar 2025 17:06:58 -0300
-Message-Id: <D8PM9ESWNN10.QARF2AMDMH6W@gmail.com>
-Cc: "Mario Limonciello" <mario.limonciello@amd.com>, "Len Brown"
- <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: platform_profile: Optimize _aggregate_choices()
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Armin Wolf" <W_Armin@gmx.de>, "Rafael J. Wysocki" <rafael@kernel.org>,
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Mark
- Pearson" <mpearson-lenovo@squebb.ca>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250322-pprof-opt-v1-1-105455879a82@gmail.com>
- <a66f55aa-9ee1-404b-8f78-258b307ea361@gmx.de>
-In-Reply-To: <a66f55aa-9ee1-404b-8f78-258b307ea361@gmx.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250325-pprof-opt-v2-1-736291e6e66b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJgU42cC/22MwQrDIBAFfyXsuRaziWh6yn+UHKzVZKGJokFag
+ v9em3N5p3kMc0CykWyCW3NAtJkS+a0CXhowi95my+hZGZCj4B0iCyF6x3zYmdFaOum6fngoqH6
+ I1tH7bN2nygul3cfPmc7t7/1XyS2r46IXQslBKxznVdPravwKUynlC1z3mN+iAAAA
+X-Change-ID: 20250322-pprof-opt-caa7f7f349b8
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, 
+ Armin Wolf <W_Armin@gmx.de>, Len Brown <lenb@kernel.org>, 
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.2
 
-On Tue Mar 25, 2025 at 4:36 PM -03, Armin Wolf wrote:
-> Am 22.03.25 um 22:03 schrieb Kurt Borja:
->
->> Choices aggregates passed to _aggregate_choices() are already filled
->> with ones, therefore we can avoid copying a new bitmap on the first
->> iteration.
->>
->> This makes setting the PLATFORM_PROFILE_LAST bit on aggregates
->> unnecessary, so drop it as well.
->>
->> While at it, add a couple empty lines to improve style.
->>
-> Please add a comment to signal future developers that the bitmap needs to=
- be filled with ones
-> before being passed to _aggregate_choices().
+Choices aggregates passed to _aggregate_choices() are already filled
+with ones, therefore we can avoid copying a new bitmap on the first
+iteration.
 
-Sure, I'll mention it in the kernel-doc for v2.
+This makes setting the PLATFORM_PROFILE_LAST bit on aggregates
+unnecessary, so drop it as well.
 
->
-> With this being addressed:
->
-> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+While at it, add a couple empty lines to improve style.
 
-Thank you Mario and Armin for the reviews!
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Changes in v2:
+- Mention bitmap requirements in kernel-doc
+- Link to v1: https://lore.kernel.org/r/20250322-pprof-opt-v1-1-105455879a82@gmail.com
+---
+ drivers/acpi/platform_profile.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---=20
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index ef9444482db1982b19d2a17884e1c3ab0e5cb55c..26d7ba49e9dcff1fded246cb6b5c836b180e07e8 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -245,7 +245,8 @@ static const struct class platform_profile_class = {
+ /**
+  * _aggregate_choices - Aggregate the available profile choices
+  * @dev: The device
+- * @arg: struct aggregate_choices_data
++ * @arg: struct aggregate_choices_data, with it's aggregate member bitmap
++ *	 initially filled with ones
+  *
+  * Return: 0 on success, -errno on failure
+  */
+@@ -256,12 +257,10 @@ static int _aggregate_choices(struct device *dev, void *arg)
+ 	struct platform_profile_handler *handler;
+ 
+ 	lockdep_assert_held(&profile_lock);
++
+ 	handler = to_pprof_handler(dev);
+ 	bitmap_or(tmp, handler->choices, handler->hidden_choices, PLATFORM_PROFILE_LAST);
+-	if (test_bit(PLATFORM_PROFILE_LAST, data->aggregate))
+-		bitmap_copy(data->aggregate, tmp, PLATFORM_PROFILE_LAST);
+-	else
+-		bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LAST);
++	bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LAST);
+ 	data->count++;
+ 
+ 	return 0;
+@@ -305,7 +304,6 @@ static ssize_t platform_profile_choices_show(struct device *dev,
+ 	};
+ 	int err;
+ 
+-	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
+ 	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+ 		err = class_for_each_device(&platform_profile_class, NULL,
+ 					    &data, _aggregate_choices);
+@@ -422,7 +420,7 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	i = sysfs_match_string(profile_names, buf);
+ 	if (i < 0 || i == PLATFORM_PROFILE_CUSTOM)
+ 		return -EINVAL;
+-	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
++
+ 	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+ 		ret = class_for_each_device(&platform_profile_class, NULL,
+ 					    &data, _aggregate_choices);
+@@ -502,7 +500,6 @@ int platform_profile_cycle(void)
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+ 	int err;
+ 
+-	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
+ 	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+ 		err = class_for_each_device(&platform_profile_class, NULL,
+ 					    &profile, _aggregate_profiles);
+
+---
+base-commit: 9a43102daf64dd0d172d8b39836dbc1dba4da1ea
+change-id: 20250322-pprof-opt-caa7f7f349b8
+
+Best regards,
+-- 
  ~ Kurt
+
 
