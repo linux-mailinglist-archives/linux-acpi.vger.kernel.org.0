@@ -1,128 +1,183 @@
-Return-Path: <linux-acpi+bounces-12424-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12425-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F70A709EE
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 20:06:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA9CA70A9C
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 20:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A4919A0251
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 18:59:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A77547A4959
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 19:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFB44A21;
-	Tue, 25 Mar 2025 18:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE54A1C84B2;
+	Tue, 25 Mar 2025 19:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iz9YJ/Eh"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="i+uptN6X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F82019049A;
-	Tue, 25 Mar 2025 18:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E471DF98F;
+	Tue, 25 Mar 2025 19:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742929168; cv=none; b=IjKU4m1rUVOfNTGO0l0stSTI9oTryKhDKnHlyIBi6CQk8bbCbodCayCeZzhxcIdNnnR26qjeuV0bNC5IVJANGstD09suKRo3AZMAE3cxe1ewriAmwkdIIa2ZuzQMx9n01LbcrNhQihHVc8DGITU4DYpyWOHnpyckEWFEfyNh7bE=
+	t=1742931400; cv=none; b=qFsjO9viyGlIX2vM3g+ZxBNSrpQDw/94xbR2yLMiQWExheieU0TNtaTAwwpsuDR5H449dxbeapC4HzoCo4+UyFPV0zBPNgGKxb+DYHSHAUDx5RtbJshaN/lx+2pYL9Fx7uYqiHXTb8UIsyy0ckvzBs0MnvLTCE1Ec6roD4IDxrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742929168; c=relaxed/simple;
-	bh=9LVQC+aIvaoTYsz1PD07JOGItrLOSYoDZl8VS7cgO18=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d8JGFsbWokIpMYiq2A2QJNWw9cVKHDzABGtkrc/shCj3l9DznJEt+1R5FKfWl7hpiMeGJqcUOUSvbTHmgezGTgVAZWoPw8koCsTcZTX2hTJhbrO4tqJmAxicOCm3Mu/MyU0qp/71RSeAzW3j3q3UcHD63+bh+hH49XLdqJ59rtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iz9YJ/Eh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2945BC4CEE4;
-	Tue, 25 Mar 2025 18:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742929168;
-	bh=9LVQC+aIvaoTYsz1PD07JOGItrLOSYoDZl8VS7cgO18=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Iz9YJ/EhQZXeGnQD4IYmnwuPI0GmITr9xbroo1tjRiHIe21N+VYnK0kOhpEyKCGYj
-	 c7Ss4gE2LcryCD8MIkGYoSX2eCv9LFewUf/KSellZb8YumK1pLf8b1+l/Gw+MmizOa
-	 T7oYpcrI7Q8sopsTkRuLJBZsxNNhkpn45Q2YZLgOVYTH0R3Hd6aGLEIYFKZhdxvOLL
-	 equ4yP8y9fz5fhnvYb//YRvpF7m4M3K/TIpuRI3OWRf3ItCj63YaB1GcgFYZGsVc60
-	 7WBB9r3Gi/ZhxaAUUHIccTdYRfySvw82vFqkTKYe8YaGMzmQzVOnnJ54pQmY0kqjD3
-	 RjIlgbeTXpsLw==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2c2ada8264aso2608612fac.2;
-        Tue, 25 Mar 2025 11:59:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUGjbRlwXJteJHIIOYIZ67zCxA4LUXfhBjAY516Zx1GsY76c7p3bSBFEf2hZgLxO0JplZyz5gtIyM2EU183@vger.kernel.org, AJvYcCVgKzxsgBuFzBDIosHp54F0zmfIefgtlVnKQpioOdCm/qh15GMvlKfvLfwbptT5dmGFanx3NKrZEEpwkljuMPY=@vger.kernel.org, AJvYcCWxz79TAgxawb413mOXicIsjlUn/C35JYiFJez2IF2hd4UkNI1tmlYfuxAgjzgRr+fP9uL261k2hsAB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5dsY7Sa3wV/igrAetx0EpMJ4ZQpVENCJCqvMcNcbita8cRIEO
-	ud9/+fr00QYan7YOathPaYu4ehDn6FadaqujCxXA9LVuXlTK8qKLVMZimU5nd6SnI2DxSA2Rc8Y
-	cX32HMmHne0XYSDdiUknKVy9K55w=
-X-Google-Smtp-Source: AGHT+IGYFDih76ZCcI4DFKFSbsLWidus3XA5/4LpT4w95waG2KqujFRpK+jyOo/5/j2lGBD6q/ezXcymcHZJHmVrqTs=
-X-Received: by 2002:a05:6870:46a8:b0:2c2:3ae9:5b9c with SMTP id
- 586e51a60fabf-2c7801fe4d5mr12078147fac.2.1742929167443; Tue, 25 Mar 2025
- 11:59:27 -0700 (PDT)
+	s=arc-20240116; t=1742931400; c=relaxed/simple;
+	bh=DUTM7ztKjFmkSDEZYYjGIaN2pOjh/5as/gUaUsrAHCI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tZwK0GtKJ1YiQnBxejzSZQHvhFd4k+/MhkZrfAEn2cHyDnN+XTOBotNL9Z3gFwPuk0gfDsuwOPHYM8Vp4fJCoAuBGGsb+6fXbrvQaqMMAgZbvfDYQaVJf8QiZOu0C89U3Hq46KIVhAAmhec+0VgJ3PyOoavDw9T4wMBB/xEu4mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=i+uptN6X; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1742931385; x=1743536185; i=w_armin@gmx.de;
+	bh=w2rUU1hQX5apf6NgBk8mjjsIeJ2b5QAp1KZy+bb5PAA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=i+uptN6XHmA+yfQToCxf2jy/V0VL4j99LufTKAF4qv16loWWeh/ac/2qPNVBdTku
+	 d5exj6jK4uBzGXLwiT0dc3yBLoglWaqTN5SK0ONY883MVGIdUWdQWcN3k75TTfzRK
+	 OWOitPy23vhps/5Soe0EMqQ+GLk97FNNNe/c8FEEtnLKnU6779TXT4G70zqdR2Ady
+	 WEep099rBYeww8Op5MnaG99gaf1zwqufBkPz2GzMAk9Tu5kIeaDTkSBPWP2Nwaejv
+	 MIjUcosedj96d+AwE25q4dP/WPY1shgH9ITZ9qdBV0edr56Y3iJJlxw9yGTnlsyWb
+	 dN7dvtlMVBLJAEUrcg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.124.146] ([141.76.8.146]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNbp3-1tlQuI2T3z-00S1zW; Tue, 25
+ Mar 2025 20:36:25 +0100
+Message-ID: <a66f55aa-9ee1-404b-8f78-258b307ea361@gmx.de>
+Date: Tue, 25 Mar 2025 20:36:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250317-ivo-intel_oc_wdt-v3-0-32c396f4eefd@siemens.com>
- <20250317-ivo-intel_oc_wdt-v3-2-32c396f4eefd@siemens.com> <1beeb77c-83d6-4634-ba39-2b40efbb8437@siemens.com>
-In-Reply-To: <1beeb77c-83d6-4634-ba39-2b40efbb8437@siemens.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 25 Mar 2025 19:59:14 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jh1jJy+YRMtLDnYqAhPrN2Pox+NY0Vqh_uqb7F=NwqEg@mail.gmail.com>
-X-Gm-Features: AQ5f1JpddNTTHybEk3zZj11Lb5Jq8iuktb-1Vetg4y60p60aQiC_Sr6tzkoGS6k
-Message-ID: <CAJZ5v0jh1jJy+YRMtLDnYqAhPrN2Pox+NY0Vqh_uqb7F=NwqEg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP
- device list
-To: Diogo Ivo <diogo.ivo@siemens.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com, 
-	benedikt.niedermayr@siemens.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: platform_profile: Optimize _aggregate_choices()
+To: Kurt Borja <kuurtb@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, Len Brown
+ <lenb@kernel.org>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250322-pprof-opt-v1-1-105455879a82@gmail.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20250322-pprof-opt-v1-1-105455879a82@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KSxO+wDvcf8a7WrXYKlHDkbpkbjAD1j7r+uUxQ4lmVKaj+/pnNK
+ SWhWHC8KVXIuS4HVSqRIODnb/7MT24uurFHmowf6Gme0KtlUgyMtTdlf27mEUlp5bC86JJ7
+ 8ZrkjcDafXYokWfowZwafd1pahvDfzN8ELdb9nDYPJeX27pD+cGV2aQUigd8XZVnC2vtuiC
+ ekPmvVrtwy7nlfQKKkjgg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ZSYWGQOiG5M=;XLK0EbOElR7+swyocv4Ly0nbB3N
+ 8GVMOMmCKLjwxFPltKpgEqspCMgup1He/zS1jKk9Np+1Ecx5XYezZD4hg2j7V2RNrLzDJbmYo
+ WGpotl4cmWZWRi75fsu1j7Aw0NN/rAUpzRMIUlXrw51ENofTOhF7D1lJ6NOja1X8KHheBADIc
+ QSAaWljl0aRvhgEl6w09XjMhJStfWLzt4/qPnOacuCa6txL9x9hQBKbjR0ZOPPYzgMTP27n3d
+ ZC7+UrTHN/nN4c5tO9Yl92SbyoPJ6KYNp6tcvExrJzHeM0jXKHzl9J5qxbDd6xNZTy8Iw1VUL
+ ZV96MpQLjpsrY00nDHAigGap33le24KHpGmoa8lIIiuXycOliWOZLe2BYc36tnFW0yaQOvrqn
+ 5M25PLSKZwmGegcmo6iCcmDj8CPb5ypSCIYf0jDty3E66bVG6m/95ohmg86qgUNYVqkPj+Op9
+ p8H7AnqFeRwtvd7s/jhUFAPHxYQCBbPkQT05T2S7bLdq1ilopEIFcY3y/lEmDKUozHI/LSn5E
+ kkEu/P+K/59PhKIFNvj+W/kwA/XgGaDEmM+FJqFQj1PDEIT6OmRGs3SuLWMtoOcAG+JkWWIC0
+ RGflubmmNgLxFQUOKIp/V2WIbWAX+F5mFLtG8PTKly8xwIPlBtmpBXD0JgNMN/P2zxAFGcWIM
+ fIiSRjZmQ9EU6a83tzPjNUKZzCtBlRmOGKhTUiy3ytj1pNvX1Xk7kIFIudtuotWewYNY32RrC
+ QVCNBYBxeLrLDSvIZ2ZrRmByKu+z1tN7ROK5BkWtvcB1bJkKu4VAZUtsui7WwmF4uvcfp4sVt
+ Q7wogVblGEO2e40mjmqAUOTj4RK+BCIwxMi42jNx0IjUnUd895/dYFt0MgDMq1hDzdVlZC+4R
+ IoOzsl+4+FxBoZ2L9U6VDsSUQSelXooqNkNp5XWTHVgCjgygYgJUwwlIF/nl/U/7dsW+3BQPb
+ LBy0zqfnhPO/xWO88DKFZBBSNcdPurxuKj5Gylw2SbnaiiUXyWksBGll4HwnVHSkF0E5dsEO/
+ TqHgM5kJ3R85EaPecicHKcE86FEef7W+JuJwUyugNWUtjVS1y0cpLQlq4qGKOoBEgQdHgC2oF
+ hVxw8TPuBRZhaGP1l/FxiWUyMPNTHbSCOOV+5aO7Ly8VmzULYn8zLDDxZVUswnRtZYIkxYXcI
+ d6b/Bezp7v+E9TUaLDOfrsYTA6PYy1RFMWhBuRNA1WQWvduZ2uG7AHAXg5AhYyR7RW4BbhbEY
+ N3fwGna9OyB3hrMr6Sykdup0QaWT4aGCntKsJtBb3/fPLwOU+KuOq9pwcmaatGGXLVa8cehQb
+ Vsy/uwd6WmQ9OyplydHAi4lEJ3QgL9429pq2kaOXoTEsHQRtNAxyzzuPSHxHk5VizNtlHr4eE
+ 7YEx5xRg6CCuWaU8JMSeP87BnAFRnT1CkpuZ6kvRWh6AeuQh/r/eM8FdvF1uAo04uRPIWk+Gc
+ 2Fhifsk/M6Re2ICaPQkSic17M5ePWRWZ2WKqyOp39y1aEN1DQg5GGQ+Qgv0o72fiH6ZPDuA==
 
-On Tue, Mar 25, 2025 at 6:19=E2=80=AFPM Diogo Ivo <diogo.ivo@siemens.com> w=
-rote:
->
-> Hello,
->
-> On 3/17/25 10:55 AM, Diogo Ivo wrote:
-> > Intel Over-Clocking Watchdogs are described in ACPI tables by both the
-> > generic PNP0C02 _CID and their ACPI _HID. The presence of the _CID then
-> > causes the PNP scan handler to attach to the watchdog, preventing the
-> > actual watchdog driver from binding. Address this by adding the ACPI
-> > _HIDs to the list of non-PNP devices, so that the PNP scan handler is
-> > bypassed.
-> >
-> > Note that these watchdogs can be described by multiple _HIDs for what
-> > seems to be identical hardware. This commit is not a complete list of
-> > all the possible watchdog ACPI _HIDs.
-> >
-> > Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
-> > ---
-> > v2->v3:
-> >   - Reword the commit message to clarify purpose of patch
-> > ---
-> > ---
-> >   drivers/acpi/acpi_pnp.c | 2 ++
-> >   1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-> > index 01abf26764b00c86f938dea2ed138424f041f880..3f5a1840f573303c71f5d57=
-9e32963a5b29d2587 100644
-> > --- a/drivers/acpi/acpi_pnp.c
-> > +++ b/drivers/acpi/acpi_pnp.c
-> > @@ -355,8 +355,10 @@ static bool acpi_pnp_match(const char *idstr, cons=
-t struct acpi_device_id **matc
-> >    * device represented by it.
-> >    */
-> >   static const struct acpi_device_id acpi_nonpnp_device_ids[] =3D {
-> > +     {"INT3F0D"},
-> >       {"INTC1080"},
-> >       {"INTC1081"},
-> > +     {"INTC1099"},
-> >       {""},
-> >   };
-> >
-> >
->
-> Gentle ping on this patch.
+Am 22.03.25 um 22:03 schrieb Kurt Borja:
 
-Do you want me to pick it up or do you want to route it through a
-different tree?
+> Choices aggregates passed to _aggregate_choices() are already filled
+> with ones, therefore we can avoid copying a new bitmap on the first
+> iteration.
+>
+> This makes setting the PLATFORM_PROFILE_LAST bit on aggregates
+> unnecessary, so drop it as well.
+>
+> While at it, add a couple empty lines to improve style.
+>
+Please add a comment to signal future developers that the bitmap needs to =
+be filled with ones
+before being passed to _aggregate_choices().
+
+With this being addressed:
+
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> ---
+>   drivers/acpi/platform_profile.c | 10 +++-------
+>   1 file changed, 3 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
+file.c
+> index ef9444482db1982b19d2a17884e1c3ab0e5cb55c..b5b24b075af6dfa612d56eb9=
+5342c6af87a60d3e 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -256,12 +256,10 @@ static int _aggregate_choices(struct device *dev, =
+void *arg)
+>   	struct platform_profile_handler *handler;
+>
+>   	lockdep_assert_held(&profile_lock);
+> +
+>   	handler =3D to_pprof_handler(dev);
+>   	bitmap_or(tmp, handler->choices, handler->hidden_choices, PLATFORM_PR=
+OFILE_LAST);
+> -	if (test_bit(PLATFORM_PROFILE_LAST, data->aggregate))
+> -		bitmap_copy(data->aggregate, tmp, PLATFORM_PROFILE_LAST);
+> -	else
+> -		bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LA=
+ST);
+> +	bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LAS=
+T);
+>   	data->count++;
+>
+>   	return 0;
+> @@ -305,7 +303,6 @@ static ssize_t platform_profile_choices_show(struct =
+device *dev,
+>   	};
+>   	int err;
+>
+> -	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
+>   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>   		err =3D class_for_each_device(&platform_profile_class, NULL,
+>   					    &data, _aggregate_choices);
+> @@ -422,7 +419,7 @@ static ssize_t platform_profile_store(struct device =
+*dev,
+>   	i =3D sysfs_match_string(profile_names, buf);
+>   	if (i < 0 || i =3D=3D PLATFORM_PROFILE_CUSTOM)
+>   		return -EINVAL;
+> -	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
+> +
+>   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>   		ret =3D class_for_each_device(&platform_profile_class, NULL,
+>   					    &data, _aggregate_choices);
+> @@ -502,7 +499,6 @@ int platform_profile_cycle(void)
+>   	enum platform_profile_option profile =3D PLATFORM_PROFILE_LAST;
+>   	int err;
+>
+> -	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
+>   	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
+>   		err =3D class_for_each_device(&platform_profile_class, NULL,
+>   					    &profile, _aggregate_profiles);
+>
+> ---
+> base-commit: 9a43102daf64dd0d172d8b39836dbc1dba4da1ea
+> change-id: 20250322-pprof-opt-caa7f7f349b8
+>
+> Best regards,
 
