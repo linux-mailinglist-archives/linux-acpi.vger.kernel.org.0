@@ -1,181 +1,120 @@
-Return-Path: <linux-acpi+bounces-12427-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12428-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADA2A70BA8
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 21:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62464A70BE3
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 22:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62D271881F97
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 20:40:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41480189821C
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Mar 2025 21:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5F9266573;
-	Tue, 25 Mar 2025 20:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF35264F89;
+	Tue, 25 Mar 2025 21:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="No1TN7R0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q50rQ7dU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67445242918;
-	Tue, 25 Mar 2025 20:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A4D22B8B2
+	for <linux-acpi@vger.kernel.org>; Tue, 25 Mar 2025 21:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742935208; cv=none; b=ZNz7Q6cSRRcft/d2PZrEDP16tqgCwEXq4GBm6Rtl9M08Rk7uR66BEJ2zyPxUjqchH4ExsL5WOFk90pOw0wJ7ymQOXSZZNcbHtR4peb5pW+8DKMIkd4JJuHMpvqdCabeSiAGgNsGr28+zCAgEvMjQM7E0YCOmL6+FjEAlGQ8wLLQ=
+	t=1742936709; cv=none; b=omoL7FKz5jIBByMi69bVwiuek0HyQNHRKmqwykI16LbB6azhG7u6KYDG8pyyhvrj1VIfk14oh5mArYKC3rcrmLLMmEEJMTHALg5CsZQ2OxfznyQStq9uGaJT/6azZsqi92SWIeY/RsjBBq5XmuHSSyar7GG266wrTy1BG752a8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742935208; c=relaxed/simple;
-	bh=D86E6BYFMd2Fp5J90ilzXhmKsq3mI7+tGtgKlnXeE2w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V7Mr4qxGCojxixKSH1wZtRcS50u6FaeUL1hdyF0E7H3LMRLVCgwfSiywJO5zJPsAr1lAn+rVML4JD5aXlL+Ia9lYMx5x0iqbQW/iRzaC0s21KDWR60CEoMMr2ZE6xGqfPZ7egP1BKn9pcIh9AocPFRkeqzSf6Vtre6j3JIk/bK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=No1TN7R0; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-223fd89d036so125873845ad.1;
-        Tue, 25 Mar 2025 13:40:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742935206; x=1743540006; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KCSIZbSYnkrCmNqKo+NkuiBjeNp8i28kuq9+kFrqnns=;
-        b=No1TN7R0f1gZt3LUTVLUMzYMdIzd+cL9IHTAbG0lQcuf4KTADtcvglQibrvmsK9BaN
-         Qow1qgfj9ms/AQqhbmkCBm/g3/M2YEePOD39YbSMx9XGeZvZg18t/tgXnLWtLYKVnkol
-         VIJ8pBxoKz0nlSgcWNpzxdQ0yZcL5eSyEzHLpakULhs72oekYRYGpi+yq34UItD9oZRN
-         XDlOlcYVA55GvsFX4+X/t4kqJFa8ZuGMsyRIEMQ8D9uGhtN4kqjFC2txEyQuCIel2o6s
-         0RfDrKQUPeXaKLesE7e6R/coc2myBB9TLSEIk4TAZBv9EmKZs+yu21dBL/MTCIZZhnYx
-         DCVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742935206; x=1743540006;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KCSIZbSYnkrCmNqKo+NkuiBjeNp8i28kuq9+kFrqnns=;
-        b=iVIYX0FKGzMBvuLC6QdLqpDlzK4BRwxpNWnXdU53RierRNzqDPk+Wyjuamx1T+1COp
-         nrtRvq+/Cte2drpbYUNyWuEYQzr9+zEzUd2FG5NGyvEQuzxweyKZPOm5Si3i6IgAZqza
-         /5cz7qut+DXsPFpVx91ZbTm7XAPV9DHWKbu7/EsachsaFLnn280sZbex2DBUwIkTgnC+
-         u9y6SYfeUEO2IqpBA33RrFn6lmdHDAN/onfau8ANoBrE20Gl6fP0dUL3ql6JrmWeFrle
-         njMDVsrPsIhl9/psuskdMlc97zDUXs2PM66U0vyUzme/ELlCfc2wovKF5ncXAWt/kQJN
-         s4zw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3D2CbewLbxPosRvYKJureoDr4dWqyawLy+4pYM8+d/lP2p/wShQt7CzXrpfETOYd/n3AE6MxJA/bq@vger.kernel.org, AJvYcCXgAGuVkdKDG8cMRJW7pPK/JqNlD8NK6JCEvWYehSCoCnYMJW7pxx3hgnaF1zO0EMwjdgNllTEM4lLM9qao@vger.kernel.org
-X-Gm-Message-State: AOJu0Yznzudeiu6SZgO0vvpSEVbzeTAdgh9+534V6sRCn3mbeKkQ+7PN
-	QjZ24x4XZeqGx/oRtFb2h5PFUyoFnCAzrLiR5QolvCJgrphwHLFH
-X-Gm-Gg: ASbGncuzJlJQVZY2y4crmKlF5HRk/VhIbcMPvPhECB9bOrIt32fHy8lXeYCJLJq0jEO
-	7gTOXDRR9fh7ENW8EWIRA9ymD1D0Q/s7B7bQqHtYjrDWy7epmarQUZ5i6If2Uzm3ORIULSTDEBr
-	5q3AQmbF66CApRXRjXDGy1cLUwPgkiHcP21reMmJEOnVzARZrnd7ZKVfSqsMWGEX6k8EDx2hCUr
-	yg8vHGJ5GsCTPHTVyq7x1uuoT9hPD+Rco9DqB9UN0Grn+eYbWQS6YbBVbu+QbE7oe9KLyVqEoVl
-	/5fF8TOCSoXIDazwfyYqOFljbSz0OQYMLKTSZjkOkx3d
-X-Google-Smtp-Source: AGHT+IFsrXEZJouBZVR1sHC3IfRdJf5FCp29tGxgVj0TxQnh2e8ChT8ApBwtcQBi31rolwXpdISRrA==
-X-Received: by 2002:a17:902:f548:b0:21f:2a2:3c8b with SMTP id d9443c01a7336-22780c7e29emr255787495ad.11.1742935206478;
-        Tue, 25 Mar 2025 13:40:06 -0700 (PDT)
-Received: from [192.168.1.26] ([181.91.133.137])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390611cafesm10967566b3a.109.2025.03.25.13.40.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 13:40:06 -0700 (PDT)
-From: Kurt Borja <kuurtb@gmail.com>
-Date: Tue, 25 Mar 2025 17:39:53 -0300
-Subject: [PATCH v2] ACPI: platform_profile: Optimize _aggregate_choices()
+	s=arc-20240116; t=1742936709; c=relaxed/simple;
+	bh=RRzKB9jKRXaAw68uR4HOI6psfkepueaqKVYwROP88CM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=amv05+5/wEZDIMqZ8+C6W3WAGxm3J/sIVmsknd2ZAgnVB1IqKlF5vHFQIE2q1ycovBFW98KAKnvZ4gWPLb7U9+B71p0dfWZVqYhy2+TC173NhcgBMcORbw+wMrQXTcTRlFJFppMemi8ReuIfwXxAjQLiqecclcJyYdZ73hE9Lvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q50rQ7dU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742936706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nYPo0x0dKf9DX0OrvIOCSnF7qUC8RxKeg8hu98cG3ik=;
+	b=Q50rQ7dUBo4K8MJwP4Bo1DU99coF4cxeBO8d6rccw5KhPtFA5qExb2s+UMzWSYjEz+Kkd9
+	oUbepxPEKBfPhEEV43lESKruT/MNako+Zy5Sc0qpX7EnG8NYQIwL7iyyFCfRAlkIGXKgST
+	0R3l7GRxfbQPScZ2JtJL2mTmCS/eXF4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-490-Huqs8eapPTuqutx2gJdm9g-1; Tue,
+ 25 Mar 2025 17:05:03 -0400
+X-MC-Unique: Huqs8eapPTuqutx2gJdm9g-1
+X-Mimecast-MFC-AGG-ID: Huqs8eapPTuqutx2gJdm9g_1742936702
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 055D4190308B;
+	Tue, 25 Mar 2025 21:05:02 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.44.32.136])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B67B11800944;
+	Tue, 25 Mar 2025 21:04:59 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	linux-acpi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	Agoston Lorincz <pipacsba@gmail.com>,
+	stable@kernel.org
+Subject: [PATCH] ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
+Date: Tue, 25 Mar 2025 22:04:50 +0100
+Message-ID: <20250325210450.358506-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250325-pprof-opt-v2-1-736291e6e66b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJgU42cC/22MwQrDIBAFfyXsuRaziWh6yn+UHKzVZKGJokFag
- v9em3N5p3kMc0CykWyCW3NAtJkS+a0CXhowi95my+hZGZCj4B0iCyF6x3zYmdFaOum6fngoqH6
- I1tH7bN2nygul3cfPmc7t7/1XyS2r46IXQslBKxznVdPravwKUynlC1z3mN+iAAAA
-X-Change-ID: 20250322-pprof-opt-caa7f7f349b8
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: Mario Limonciello <mario.limonciello@amd.com>, 
- Armin Wolf <W_Armin@gmx.de>, Len Brown <lenb@kernel.org>, 
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Kurt Borja <kuurtb@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Choices aggregates passed to _aggregate_choices() are already filled
-with ones, therefore we can avoid copying a new bitmap on the first
-iteration.
+Depending on the secureboot signature on EFI\BOOT\BOOTX86.EFI the
+Lenovo Yoga Tab 3 UEFI will switch its OSID ACPI variable between
+1 (Windows) and 4 (Android(GMIN)).
 
-This makes setting the PLATFORM_PROFILE_LAST bit on aggregates
-unnecessary, so drop it as well.
+In Windows mode a GPIO event handler gets installed for GPO1 pin 5,
+causing Linux' x86-android-tables code which deals with the general
+brokenness of this device's ACPI tables to fail to probe with:
 
-While at it, add a couple empty lines to improve style.
+[   17.853705] x86_android_tablets: error -16 getting GPIO INT33FF:01 5
+[   17.859623] x86_android_tablets x86_android_tablets: probe with driver
 
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+which renders sound, the touchscreen, charging-management,
+battery-monitoring and more non functional.
+
+Add ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS to the existing quirks for this
+device to fix this.
+
+Reported-by: Agoston Lorincz <pipacsba@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAMEzqD+DNXrAvUOHviB2O2bjtcbmo3xH=kunKr4nubuMLbb_0A@mail.gmail.com/
+Cc: stable@kernel.org
+Fixes: fe820db35275 ("ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-Changes in v2:
-- Mention bitmap requirements in kernel-doc
-- Link to v1: https://lore.kernel.org/r/20250322-pprof-opt-v1-1-105455879a82@gmail.com
----
- drivers/acpi/platform_profile.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/acpi/x86/utils.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index ef9444482db1982b19d2a17884e1c3ab0e5cb55c..26d7ba49e9dcff1fded246cb6b5c836b180e07e8 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -245,7 +245,8 @@ static const struct class platform_profile_class = {
- /**
-  * _aggregate_choices - Aggregate the available profile choices
-  * @dev: The device
-- * @arg: struct aggregate_choices_data
-+ * @arg: struct aggregate_choices_data, with it's aggregate member bitmap
-+ *	 initially filled with ones
-  *
-  * Return: 0 on success, -errno on failure
-  */
-@@ -256,12 +257,10 @@ static int _aggregate_choices(struct device *dev, void *arg)
- 	struct platform_profile_handler *handler;
- 
- 	lockdep_assert_held(&profile_lock);
-+
- 	handler = to_pprof_handler(dev);
- 	bitmap_or(tmp, handler->choices, handler->hidden_choices, PLATFORM_PROFILE_LAST);
--	if (test_bit(PLATFORM_PROFILE_LAST, data->aggregate))
--		bitmap_copy(data->aggregate, tmp, PLATFORM_PROFILE_LAST);
--	else
--		bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LAST);
-+	bitmap_and(data->aggregate, tmp, data->aggregate, PLATFORM_PROFILE_LAST);
- 	data->count++;
- 
- 	return 0;
-@@ -305,7 +304,6 @@ static ssize_t platform_profile_choices_show(struct device *dev,
- 	};
- 	int err;
- 
--	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
- 	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
- 		err = class_for_each_device(&platform_profile_class, NULL,
- 					    &data, _aggregate_choices);
-@@ -422,7 +420,7 @@ static ssize_t platform_profile_store(struct device *dev,
- 	i = sysfs_match_string(profile_names, buf);
- 	if (i < 0 || i == PLATFORM_PROFILE_CUSTOM)
- 		return -EINVAL;
--	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
-+
- 	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
- 		ret = class_for_each_device(&platform_profile_class, NULL,
- 					    &data, _aggregate_choices);
-@@ -502,7 +500,6 @@ int platform_profile_cycle(void)
- 	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
- 	int err;
- 
--	set_bit(PLATFORM_PROFILE_LAST, data.aggregate);
- 	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &profile_lock) {
- 		err = class_for_each_device(&platform_profile_class, NULL,
- 					    &profile, _aggregate_profiles);
-
----
-base-commit: 9a43102daf64dd0d172d8b39836dbc1dba4da1ea
-change-id: 20250322-pprof-opt-caa7f7f349b8
-
-Best regards,
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 068c1612660b..4ee30c2897a2 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -374,7 +374,8 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+-					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
++					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
+ 		/* Medion Lifetab S10346 */
 -- 
- ~ Kurt
+2.49.0
 
 
