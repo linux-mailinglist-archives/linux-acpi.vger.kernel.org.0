@@ -1,128 +1,110 @@
-Return-Path: <linux-acpi+bounces-12463-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12472-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAE6A72085
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 22:11:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835A5A720C1
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 22:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67EB17A403
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:10:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EE9C3BCAAB
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E6025EFAC;
-	Wed, 26 Mar 2025 21:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F63A25EFAE;
+	Wed, 26 Mar 2025 21:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipevxhGM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TbyAMKOl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070249659;
-	Wed, 26 Mar 2025 21:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C4224EF7C;
+	Wed, 26 Mar 2025 21:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743023430; cv=none; b=q1xlMx8/NPMRMG5KUvRIaAKi0T5LKlmx44VXlHaxXcTNzK6my/Lshf7KPKaH1PQKDAuTjIi/ohgOTB799fMHGIBF91MUyTZABYXfruh9AtHksgGc/aQ5+liYFT0GIFEc/DNyeUaZ0Yd2kjzw309fWrVPNkvAuCpT/wR45mFwMr4=
+	t=1743024361; cv=none; b=idEb0xzwLzkTuQame5qwDYNSayhC4CAcWuN7TG4BWLt48jMehxjD3ckeF9zox13boDUUEvOgg/PdJqSQOFnoBum/ZtGLKoo6rDlVEovj7F2tw6Z4bHIrXMh+xiuOhja0l8thIusLo6R2U0cbxqc78mfh+gckefHbxew2ZuQqY+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743023430; c=relaxed/simple;
-	bh=iRDZJi2k5yP2Vo5JX6MJ6DeS8rM0uYFO+Y9AZyRctyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffY5CwiggQij7EkRbC/fpDU8HC0XlRxQ2b02iO98rpyqWuT3IDowPN1EFIQTcXSM6JKHRcUXACPA8pUz0ihvFlAXhTAp1Rz9BN/Jj9gZCv23QWIGx+s2x3euxHEHdTpftJX4N76cttsTFDhHAeMr2nilME4rMtlH0C6X4EMrOGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipevxhGM; arc=none smtp.client-ip=209.85.167.178
+	s=arc-20240116; t=1743024361; c=relaxed/simple;
+	bh=5dd6mTNGubCGg1g4nFzCM8Oi/0JxeDqx+tX2b+VPkns=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xz51dGJdoKgTsdKvt0h7PJ3H0saArr3P7n3hRYku4uSW60w0xACsfopfV5AVNPAxiQM9d2axJhr9OCZl67Pi4H2wBw+5IX9M8+HRSCWp1j/NDreOwLf0X0rUm2HzesjAepec9tJC5SEQXl3DUgCzsx/USSlG/3bhVFSrXGob9Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TbyAMKOl; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3feb0db95e6so141379b6e.1;
-        Wed, 26 Mar 2025 14:10:28 -0700 (PDT)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so56225a91.2;
+        Wed, 26 Mar 2025 14:25:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743023428; x=1743628228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1743024359; x=1743629159; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BmXIx6lw3bResXaqVN0/2AUl10eW55ftDrxkKYdDctE=;
-        b=ipevxhGMGu+5172Q9JibPP07eiD0NjL60ORUcf/hEYdJ0bokVuGNqbNd+hVmYkjanU
-         bz64SyDI8dXY15rFqQxC4Vr0hxikdguFOS/5exQ8cdA9Qxk4Y2fYm9yUf5KunjwdYFBU
-         76h8syFGz/h6Is+ANumN6XSKoO8vzYWwzxNFKcLnUfqIeB8K3YAi27QdiUhF+Ql9tQ8J
-         NcdBteb7tnEvg56TvwSnVviz9SHL6+vmcdESUjb1Zv56WZk80W9Gaow9A8q6xycK4/q2
-         HR/AHcXSHdNXSQTlKQDWgVuAQifR9MSI4N6gbCeRFk44zWKDERECPOHo22v+mLHlNMvJ
-         7DHA==
+        bh=5dd6mTNGubCGg1g4nFzCM8Oi/0JxeDqx+tX2b+VPkns=;
+        b=TbyAMKOlvkq+bGfxrrfGJ5ETNVACo+g/nBUoq1ULP89GameFvBBytVMP0QiqIEAUVm
+         jY/ZF/R6ZwDUIkZHUn55PKAOBHjiyMNRm5hWhwBN0NHVaVyZ/vgG5N3q6xVrUDpLxxWF
+         cWzQImTtkEqPU/g5XrGjArolyK2iUMpzClXgK69MfV3cPA6G3zCZblzmqTBkZtboC4c4
+         ojac0FiYlbIsPhShX4H/eatefqZjk0okuxqyeBgEOIt9h4Yi4bKOGPSWP2693W7PFT+Q
+         NPFXaizC6kvLlAWryYIbXRuLSbs8haRe6rn5VBUctapTwl2/ewCV8wJ+0XQ//DF3499s
+         hglw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743023428; x=1743628228;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1743024359; x=1743629159;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BmXIx6lw3bResXaqVN0/2AUl10eW55ftDrxkKYdDctE=;
-        b=JVQPABWxYVuIaVDgaGxATHVWPx1/jI3TUP2/ps1xBKKfIO23v831IGJmR2KbfZw3TC
-         Hy8DzpfLjBB0L3ExrjKSXEQrUhJyfmgjoJ7sStdVYg9NLmM7wqNs2Bs5l1Bbt5+x0QfE
-         SS6+Pdy4sXUCrdshYinAHNNUuMWhpIiYcK5cgnDNNlUFfUQdtSL0iI6r9CnKmzkKpzav
-         lLo9iT9CBk7U+A8zBMmBxbMfBvMk31pCMUQu1iVRL4FedGbyTw4CSicbUHovnODkLCWc
-         LGaD+NOCsPMNyOBjklzCF26xvKBadEEPwToDN9PQs3pxuDrT1sSlRSsdzwENGVpCw/Lt
-         zTEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlQpaeYa1T95/mEE0IShbksCtKJw4mVOv4Xf1yVyCzmhzBVFF99nKbv322wEcJbCy7NcBBOdxZHQibLUebkAs=@vger.kernel.org, AJvYcCX1DoGR40yWbP66fG3PkwaPStruE2Dgq9LJLb1MNo/10QLMKZzEHkcbLoZEo2y20fIhti3yvRJpaknqFww9@vger.kernel.org, AJvYcCXK1TC3MdRnDflM6qjZH8vqLCK5VOMi9xt0nqa9lD0AOnUTpEwx5dpqxeMtDGmYZu04IxQWSkmgRpXz@vger.kernel.org, AJvYcCXVqPPEwoA0SnufXi9pW7oYU09o11zW8ndSCJ/VmCROxi9iOs7SZUsXUe3y4ydL7ctBljAhgdo14ZNn9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYeDmXUSF2Un2HCbN0+CXi4B7dmn/G61YshXSV422UR+RU2Eh3
-	/qUD9cC5oDdbJgLZt4oZcvKBhvPfLHPxYJwqozaXKXB4eTkC84vJ
-X-Gm-Gg: ASbGncu6RJ/lAQU0xhXomc147l8z/akImOkk9KksJrvbzLw834J1IiAQ7C0zPG7s4Zm
-	vuOk2VGQVQYqcRs0gwl9Fm20YJvlpTmufpJK4xOHZZAX2b3LONtOwDhvtb5oqJHBZad1C/6+cxl
-	TkoiG8F4YHHU9l2ztEqeAuLpDitph3Fb62C5sq2Ch4hTSZVzpP9OPLx08JirJmmucUqU1o99zhj
-	KTjRpbRbCo6N33oOF7MmamiwuAWSh4+RsKGzjnO+ng/xJZL13aRIO9MA/bSaKKCLIg/snigMqbB
-	qAnYW5RFg4HBFoJoYlbxh40HUJer0uNzT8++J2FbIVb62AM6H9eIhcZeZ0WDC1lkfyyBnJ6NYGW
-	XBFFnkfgC7MwdorsEezqMwonMylg=
-X-Google-Smtp-Source: AGHT+IGr7K3MeJvrN0pjniNa9v3V5nH4q3LMTZ9m/DyIjiFtUWjHaZNIloO5JjzQVN0t73CR/ha4rA==
-X-Received: by 2002:a05:6808:6f93:b0:3fe:b0ad:f935 with SMTP id 5614622812f47-3fefa4eaa14mr713457b6e.4.1743023427977;
-        Wed, 26 Mar 2025 14:10:27 -0700 (PDT)
-Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 5614622812f47-3febf6e94e7sm2538721b6e.17.2025.03.26.14.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 14:10:27 -0700 (PDT)
-From: Andrew Ballance <andrewjballance@gmail.com>
-To: remo@buenzli.dev
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	andriy.shevchenko@linux.intel.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	devicetree@vger.kernel.org,
-	dirk.behme@de.bosch.com,
-	djrscally@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	heikki.krogerus@linux.intel.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	robh@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sakari.ailus@linux.intel.com,
-	saravanak@google.com,
-	tmgross@umich.edu,
-	andrewjballance@gmail.com
-Subject: Re: [PATCH 09/10] rust: property: Add PropertyGuard
-Date: Wed, 26 Mar 2025 16:10:06 -0500
-Message-ID: <20250326211006.696727-1-andrewjballance@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250326171411.590681-10-remo@buenzli.dev>
-References: <20250326171411.590681-10-remo@buenzli.dev>
+        bh=5dd6mTNGubCGg1g4nFzCM8Oi/0JxeDqx+tX2b+VPkns=;
+        b=BvZgpWoYwQBzMKofDM146lA6L/ZipZm59Hw7v4Xb4AMFU4ZMGeLt5uo3FG28ynKhdJ
+         cqEszevy2XnCp9TTsKM8nXj/WajmjfLNYgNXqe7Mi+xBdef4vfIKsM1DJ70G8lmm7SBF
+         wgGE/NzvL2EyOL4bTU9IUYLvY9qspRsUJ4gGj88GuysbRiLdQ2E47WfqXjJarRGzn3o+
+         C6r+YLN7YWknrJ3SGByqYccURSE+UnZZ1wgKkCKvvew0ZP2SPNaNiy9jFvS7Sm4kKXCa
+         SZizzGvGOddqbCl8SWa4dAy8iu6Gj7dLXJzKfcWkYCsqwBxZ5V48d3eWAEMrcotUdkTj
+         8ybw==
+X-Forwarded-Encrypted: i=1; AJvYcCUin4JPoylc2b4WJHYg82y790zfFrgSTDaQT2kE9QtCIF6lU6DDAFOgHxiTC54gy9iGtjbAkfrp/h2l1A==@vger.kernel.org, AJvYcCUsAHIWEM8HoQoc1nQMDvbeXKCp/XPeSHtBLHr+bZTqmWExj8jafY8G2hm8y5pySxOhoSxWwiMvfWADI+3BV1w=@vger.kernel.org, AJvYcCWpaIMFVMc/+qM4LljseC9DtV0QhN9ngF2cWzGzLPiatobiEBl2SVSOuMYQKdclxIfoHDk1DlOlEBvvh8Hv@vger.kernel.org, AJvYcCXEH14pwJLdTuLl1XCHO8VFqFDps+vFxzs5l8g4YZRYC3cE9X1Dgrq6zbJ8NGUK6F+K/375pMV8YUI7@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMLj6UVzurinENqH+ogjXKJKZgcRErdFXbrziekTJ5jGeU4keZ
+	BqHQmpQJR6GwT90AsMYa9WkCKtnyfyDimoi3g17C50kKP48g587ms+mhPLxidE/t+cQcGGyP895
+	pT6LSxSVz5M2Lzr+qlCwS6L4QGiA=
+X-Gm-Gg: ASbGncvf20ZPphsj3bTSU+rQxcCaqMEvY2eexCYjXXErN1W+M76Q0CBHa44L2GjlXW/
+	ZQgIH2IcA7r6MwGOAS1lS2mfTa1RiIFI14zs1mie/yc47+YdOFuWmT+ltXKhjSQpOLE6r7i4yWZ
+	ArPEzHCTSuxvlLee1PGbosQgCn
+X-Google-Smtp-Source: AGHT+IEED3VZRyXSj1RWmXvdwtqZOUHywyrSkL0ECd59uK04S5vf0a3JXMoziVw+bs6ZQOSa5dnlhNjG/4as8bSJVCk=
+X-Received: by 2002:a17:90b:4b0f:b0:2fe:b77a:2eba with SMTP id
+ 98e67ed59e1d1-303a7d5b70cmr671784a91.1.1743024358841; Wed, 26 Mar 2025
+ 14:25:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250326171411.590681-9-remo@buenzli.dev> <20250326210735.696416-1-andrewjballance@gmail.com>
+In-Reply-To: <20250326210735.696416-1-andrewjballance@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 26 Mar 2025 22:25:46 +0100
+X-Gm-Features: AQ5f1Jp0Rp7E84Il1vwCrqKhN7FBkfP8izd3SLqtwQoJKmWnVsdDbD-_koYxdjo
+Message-ID: <CANiq72nP3EEYH6cdZRj2S9XZUYyi=RyyQARypGCFj3ULEB=+fQ@mail.gmail.com>
+Subject: Re: [PATCH 08/10] rust: property: Add property_get_reference_args
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: remo@buenzli.dev, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, andriy.shevchenko@linux.intel.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, devicetree@vger.kernel.org, dirk.behme@de.bosch.com, 
+	djrscally@gmail.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	heikki.krogerus@linux.intel.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, rafael@kernel.org, 
+	robh@kernel.org, rust-for-linux@vger.kernel.org, sakari.ailus@linux.intel.com, 
+	saravanak@google.com, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 26, 2025 at 12:13 PM Remo Senekowitsch Wrote: 
-> +/// A helper for reading device properties.
-> +///
-> +/// Use [Self::required] if a missing property is considered a bug and
-> +/// [Self::optional] otherwise.
-> +///
-> +/// For convenience, [Self::or] and [Self::or_default] are provided.
-> +pub struct PropertyGuard<'fwnode, 'name, T> {
+On Wed, Mar 26, 2025 at 10:07=E2=80=AFPM Andrew Ballance
+<andrewjballance@gmail.com> wrote:
+>
+> This function is missing safety comments.
 
-nit: when linking items in rustdoc comments you should suround them like [`this`]
+Yeah -- that should be spotted by Clippy.
 
-Andrew
+Remo: did you build with `CLIPPY=3D1`?
+
+Thanks!
+
+Cheers,
+Miguel
 
