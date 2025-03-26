@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-12462-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12463-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FBDA72070
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 22:08:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAE6A72085
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 22:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8500C7A2989
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67EB17A403
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F0C25E473;
-	Wed, 26 Mar 2025 21:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E6025EFAC;
+	Wed, 26 Mar 2025 21:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwVKtNKW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipevxhGM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166C249659;
-	Wed, 26 Mar 2025 21:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070249659;
+	Wed, 26 Mar 2025 21:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743023277; cv=none; b=JfjNFy6CYXTyPwbAN1sYjt+Atk1mZJikuM3qHqEkbL9F/hg3y+aE3cuTzjLa74QcvZhUUoXd8retSlFKKUZkXqYBQvdcHgkJMvZEnWNmULYLaMIyeC8HXKahlcyNIvirkkv1eFMhpkplY8qN9POtez9yAYRxMjAGb5RV7Mc2g7E=
+	t=1743023430; cv=none; b=q1xlMx8/NPMRMG5KUvRIaAKi0T5LKlmx44VXlHaxXcTNzK6my/Lshf7KPKaH1PQKDAuTjIi/ohgOTB799fMHGIBF91MUyTZABYXfruh9AtHksgGc/aQ5+liYFT0GIFEc/DNyeUaZ0Yd2kjzw309fWrVPNkvAuCpT/wR45mFwMr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743023277; c=relaxed/simple;
-	bh=jmbqtD4LiwyaAg4ke+KGdaXaPri7TsWFk0ZUUjhHzmY=;
+	s=arc-20240116; t=1743023430; c=relaxed/simple;
+	bh=iRDZJi2k5yP2Vo5JX6MJ6DeS8rM0uYFO+Y9AZyRctyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKIZTfurqjgUork0HRfChdI03y7Ft1b2aAEuMoyOyYv8zH/L7BmfhoCmUFsG0jMtmcYVpUwokDQw1XxONcggJyjUdQLQlFxJnM3xYVoUmiGsm+2oatRXwJPazth17YX3ChYrrcnQaL2uLSEz2TiNiiUoBcvYH/TA76tBunxZxNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwVKtNKW; arc=none smtp.client-ip=209.85.167.169
+	 MIME-Version; b=ffY5CwiggQij7EkRbC/fpDU8HC0XlRxQ2b02iO98rpyqWuT3IDowPN1EFIQTcXSM6JKHRcUXACPA8pUz0ihvFlAXhTAp1Rz9BN/Jj9gZCv23QWIGx+s2x3euxHEHdTpftJX4N76cttsTFDhHAeMr2nilME4rMtlH0C6X4EMrOGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipevxhGM; arc=none smtp.client-ip=209.85.167.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3f6eaa017d0so167018b6e.0;
-        Wed, 26 Mar 2025 14:07:55 -0700 (PDT)
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3feb0db95e6so141379b6e.1;
+        Wed, 26 Mar 2025 14:10:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743023275; x=1743628075; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743023428; x=1743628228; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b9znL/gfjemJ+KXWcUzaQgpfYO6FdHTZCtOPGxnSFho=;
-        b=mwVKtNKWy966RUgg97DCXdfDAVed6wIOYVxjEA0NHEyvnTRaMlDn3ge5aM9asbm7nD
-         vBhWjGF4noTs7YJUt5jS2BkNmhshh2FlATn3h0t2K8H9YBGoZ/q3Qml3TawKfc4XWs8h
-         7hb1TvqbBStwjO+bzz/Rt5SMCc3oZXT1vhG8z8TS2ZHTBQ0ZdQMqlxT2QpIlxgyN3WbI
-         OQmqfugkOyXwO3Epw2uV68zroeWp8JRCI8EZ+zH3gXZRVhQDti7C9z7ZfIGdLGPuywXq
-         iptXY4PrJOP6dIMzgXuFR47vl0D1eVMab5ygs3YBlz5S2kFFQLJJXGNb5ACPDGsS4yfy
-         NFCQ==
+        bh=BmXIx6lw3bResXaqVN0/2AUl10eW55ftDrxkKYdDctE=;
+        b=ipevxhGMGu+5172Q9JibPP07eiD0NjL60ORUcf/hEYdJ0bokVuGNqbNd+hVmYkjanU
+         bz64SyDI8dXY15rFqQxC4Vr0hxikdguFOS/5exQ8cdA9Qxk4Y2fYm9yUf5KunjwdYFBU
+         76h8syFGz/h6Is+ANumN6XSKoO8vzYWwzxNFKcLnUfqIeB8K3YAi27QdiUhF+Ql9tQ8J
+         NcdBteb7tnEvg56TvwSnVviz9SHL6+vmcdESUjb1Zv56WZk80W9Gaow9A8q6xycK4/q2
+         HR/AHcXSHdNXSQTlKQDWgVuAQifR9MSI4N6gbCeRFk44zWKDERECPOHo22v+mLHlNMvJ
+         7DHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743023275; x=1743628075;
+        d=1e100.net; s=20230601; t=1743023428; x=1743628228;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b9znL/gfjemJ+KXWcUzaQgpfYO6FdHTZCtOPGxnSFho=;
-        b=GcKn9Rc9Uc3YcMJi454oqWF8LKAF4CSGVE757TyD4R7TT9YI2TIR1Kk8EAFMp37XZo
-         919qGqaINlP+DTInDvJZeb4jHeEBatDwSZ0nhYU6+PwUTZfSpqW/3PZR6Q/QnghA/ld5
-         ykb2U8yTt5w5z2P8Lrb0912Gf9Y0IVtHqeIHiDkske1aTrKxg3P5fNdDAx7lPLMdFbCf
-         lngCpkCcmVAu+AK++MoUZ8cZ5XWYTZrYcCbSwRds5a4koXOjuwetlG6wuobeL3ZamSCd
-         c9oZQUBcPXupOtnmxlOVQRCiqd3q3ythtHXTGDqJYbity7lB2qv6rRUNUgTOqZVQIn1j
-         WTOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVF7FKpmIuwid7CI0MYWHdM+d+CnvF/IDtL8fRQueNJiGgE4CspbRrF3IkkOxHS+J75/GoVW6IyiBm7@vger.kernel.org, AJvYcCVVijhNI9thTjF8Lfgbo0BaSGwWmJCpNAcrQpzDqJy+MxHDjkQzUItynEyzgqWzj9RjwtvR59uaYku8Hg==@vger.kernel.org, AJvYcCVuOHeJxMxbmwSzyHNZ8HHDcK4/K6/6h1/WQMkVNSqOn3a4nox9JLu36lwPZtS5gUXR/Az5RsJhtkltTOyz4jc=@vger.kernel.org, AJvYcCW5JZnYMbRsjZVwPbiyxxEv577FQSnP7TbjTOU9UWXBxXrawMqUg8AT9oQP4b4ZxHaezbmLjAes3QE0/vVO@vger.kernel.org
-X-Gm-Message-State: AOJu0YynhUeOMh6M73/FWNzKT4Qc7STVWRe+Y1hrc1bKtQKNbUnYfub0
-	1KAM8CygyuEqe0ApELBjoQMk3cWBsj1RnOcmGDE31DZ5LnIHMtYg
-X-Gm-Gg: ASbGnctBVYbBjYVFmuCgWwyZx8S5Mm3bpIXmmjA944vyeTKxRt+UP5fIhGqoiHFQbHa
-	Vd1Xnf9tUEme22RmWa1yYNexhpfxDx8jreDN4euPR9SjTEkivc+npXkqqoAW9cf6u3DvDKnghWR
-	w4VCHo2aW2Q2FclrmeoU60VcKwEFcMO/kCE76l3oWz+7oZlKD+qphQU0Qz0SBovBtQ7wg9HTECH
-	ycxQXw1vsm8Sfrbn96EX4aC6JKHSYXSWfS0HWKepsLrMIQP55Ha2VI7T1QClDGe9OgS+EAF0B7o
-	ENlD+hfVIi9WN9+Xw2/PTQ0UhaJelrmogaj8HWs5cGwfp4dZTVxGEbTwNThg2ZIX2UdX1cCbJl2
-	6NiG7/4ydt+mvDcG6
-X-Google-Smtp-Source: AGHT+IHGlSz2JhKYJ/vK1VoVPk1F9VLiFYz2AZWwMLdwOM6QUxtEq4lCiOjisnM3b7gChCZNmlPl0A==
-X-Received: by 2002:a05:6808:6905:b0:3f9:cbc0:7420 with SMTP id 5614622812f47-3fefa5c263emr602333b6e.27.1743023274896;
-        Wed, 26 Mar 2025 14:07:54 -0700 (PDT)
+        bh=BmXIx6lw3bResXaqVN0/2AUl10eW55ftDrxkKYdDctE=;
+        b=JVQPABWxYVuIaVDgaGxATHVWPx1/jI3TUP2/ps1xBKKfIO23v831IGJmR2KbfZw3TC
+         Hy8DzpfLjBB0L3ExrjKSXEQrUhJyfmgjoJ7sStdVYg9NLmM7wqNs2Bs5l1Bbt5+x0QfE
+         SS6+Pdy4sXUCrdshYinAHNNUuMWhpIiYcK5cgnDNNlUFfUQdtSL0iI6r9CnKmzkKpzav
+         lLo9iT9CBk7U+A8zBMmBxbMfBvMk31pCMUQu1iVRL4FedGbyTw4CSicbUHovnODkLCWc
+         LGaD+NOCsPMNyOBjklzCF26xvKBadEEPwToDN9PQs3pxuDrT1sSlRSsdzwENGVpCw/Lt
+         zTEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlQpaeYa1T95/mEE0IShbksCtKJw4mVOv4Xf1yVyCzmhzBVFF99nKbv322wEcJbCy7NcBBOdxZHQibLUebkAs=@vger.kernel.org, AJvYcCX1DoGR40yWbP66fG3PkwaPStruE2Dgq9LJLb1MNo/10QLMKZzEHkcbLoZEo2y20fIhti3yvRJpaknqFww9@vger.kernel.org, AJvYcCXK1TC3MdRnDflM6qjZH8vqLCK5VOMi9xt0nqa9lD0AOnUTpEwx5dpqxeMtDGmYZu04IxQWSkmgRpXz@vger.kernel.org, AJvYcCXVqPPEwoA0SnufXi9pW7oYU09o11zW8ndSCJ/VmCROxi9iOs7SZUsXUe3y4ydL7ctBljAhgdo14ZNn9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYeDmXUSF2Un2HCbN0+CXi4B7dmn/G61YshXSV422UR+RU2Eh3
+	/qUD9cC5oDdbJgLZt4oZcvKBhvPfLHPxYJwqozaXKXB4eTkC84vJ
+X-Gm-Gg: ASbGncu6RJ/lAQU0xhXomc147l8z/akImOkk9KksJrvbzLw834J1IiAQ7C0zPG7s4Zm
+	vuOk2VGQVQYqcRs0gwl9Fm20YJvlpTmufpJK4xOHZZAX2b3LONtOwDhvtb5oqJHBZad1C/6+cxl
+	TkoiG8F4YHHU9l2ztEqeAuLpDitph3Fb62C5sq2Ch4hTSZVzpP9OPLx08JirJmmucUqU1o99zhj
+	KTjRpbRbCo6N33oOF7MmamiwuAWSh4+RsKGzjnO+ng/xJZL13aRIO9MA/bSaKKCLIg/snigMqbB
+	qAnYW5RFg4HBFoJoYlbxh40HUJer0uNzT8++J2FbIVb62AM6H9eIhcZeZ0WDC1lkfyyBnJ6NYGW
+	XBFFnkfgC7MwdorsEezqMwonMylg=
+X-Google-Smtp-Source: AGHT+IGr7K3MeJvrN0pjniNa9v3V5nH4q3LMTZ9m/DyIjiFtUWjHaZNIloO5JjzQVN0t73CR/ha4rA==
+X-Received: by 2002:a05:6808:6f93:b0:3fe:b0ad:f935 with SMTP id 5614622812f47-3fefa4eaa14mr713457b6e.4.1743023427977;
+        Wed, 26 Mar 2025 14:10:27 -0700 (PDT)
 Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-60234783ac2sm1874282eaf.23.2025.03.26.14.07.49
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-3febf6e94e7sm2538721b6e.17.2025.03.26.14.10.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 14:07:54 -0700 (PDT)
+        Wed, 26 Mar 2025 14:10:27 -0700 (PDT)
 From: Andrew Ballance <andrewjballance@gmail.com>
 To: remo@buenzli.dev
 Cc: a.hindborg@kernel.org,
@@ -99,12 +99,12 @@ Cc: a.hindborg@kernel.org,
 	saravanak@google.com,
 	tmgross@umich.edu,
 	andrewjballance@gmail.com
-Subject: Re: [PATCH 08/10] rust: property: Add property_get_reference_args
-Date: Wed, 26 Mar 2025 16:07:35 -0500
-Message-ID: <20250326210735.696416-1-andrewjballance@gmail.com>
+Subject: Re: [PATCH 09/10] rust: property: Add PropertyGuard
+Date: Wed, 26 Mar 2025 16:10:06 -0500
+Message-ID: <20250326211006.696727-1-andrewjballance@gmail.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250326171411.590681-9-remo@buenzli.dev>
-References: <20250326171411.590681-9-remo@buenzli.dev>
+In-Reply-To: <20250326171411.590681-10-remo@buenzli.dev>
+References: <20250326171411.590681-10-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -114,45 +114,15 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 On Wed, Mar 26, 2025 at 12:13 PM Remo Senekowitsch Wrote: 
-> +    pub fn property_get_reference_args(
-> +        &self,
-> +        prop: &CStr,
-> +        nargs: NArgs<'_>,
-> +        index: u32,
-> +    ) -> Result<(
-> +        ARef<Self>,
-> +        ArrayVec<{ bindings::NR_FWNODE_REFERENCE_ARGS as usize }, u64>,
-> +    )> {
-> +        let mut out_args = bindings::fwnode_reference_args::default();
-> +
-> +        let (nargs_prop, nargs) = match nargs {
-> +            NArgs::Prop(nargs_prop) => (nargs_prop.as_char_ptr(), 0),
-> +            NArgs::N(nargs) => (ptr::null(), nargs),
-> +        };
-> +
-> +        let ret = unsafe {
-> +            bindings::fwnode_property_get_reference_args(
-> +                self.0.get(),
-> +                prop.as_char_ptr(),
-> +                nargs_prop,
-> +                nargs,
-> +                index,
-> +                &mut out_args,
-> +            )
-> +        };
-> +        to_result(ret)?;
-> +
-> +        let node = unsafe { FwNode::from_raw(out_args.fwnode) };
-> +        let mut args = ArrayVec::default();
-> +
-> +        for i in 0..out_args.nargs {
-> +            args.push(out_args.args[i as usize]);
-> +        }
-> +
-> +        Ok((node, args))
-> +    }
+> +/// A helper for reading device properties.
+> +///
+> +/// Use [Self::required] if a missing property is considered a bug and
+> +/// [Self::optional] otherwise.
+> +///
+> +/// For convenience, [Self::or] and [Self::or_default] are provided.
+> +pub struct PropertyGuard<'fwnode, 'name, T> {
 
-This function is missing safety comments.
+nit: when linking items in rustdoc comments you should suround them like [`this`]
 
 Andrew
 
