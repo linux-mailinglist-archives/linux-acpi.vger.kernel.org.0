@@ -1,206 +1,190 @@
-Return-Path: <linux-acpi+bounces-12432-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12433-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6997DA71807
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 15:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A7CA719A0
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 16:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577E016FE26
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 14:02:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4AB17B7FB
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 14:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29DE1B0435;
-	Wed, 26 Mar 2025 14:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CF81F3BB2;
+	Wed, 26 Mar 2025 14:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJVLJ0Md"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HX6aTZbf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371A314A09C;
-	Wed, 26 Mar 2025 14:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1471EEA36;
+	Wed, 26 Mar 2025 14:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742997745; cv=none; b=N3KnnQpFnli2YXX/1I/VhISDsXvzjOwAXTNU0jRTWFzv+PBDW7kRicpD3GYjCrylISgbVJck3D35aMbHVFCi1wtUwRW41i6fpVKn7fgDtHPmFXdmh885q0m/j84oq5+o3MHeFjIKa4Y+dmZLnAjwb3YFlk6VZQXP12rWwg10xkI=
+	t=1743000928; cv=none; b=ZBnDrQqNqtPVR5d3WT+NObr7pfoX9FG4ABKkemqRLWNGDXlfJ13aFo43zCQWP0TQbiTd1PbL5RWRKp8TBZ/j0U++RZuFBVcm5tnNMwmvtGQAudwMPYjLoKx+t8LgefYBXPBI6dSXkHkKs8ZA+/zI8EW6ttQo/76o8g4lpbOYGys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742997745; c=relaxed/simple;
-	bh=rLEliCf3UoNKRw3bhcnFCVsLu17piM66/Kf7LWsn94k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MHWfic4DXkuTPkEgkbFo6RvXgGfMxM23fBdw2Vp8O29p1JcEYMhbaPDDASPsLHP8HHDIb6Sq42hUi7ci6V6yzCP0jb1zEOcf34Vlk0c82RAz/FnggjW9BRUFEozyTDnuuH37/GS4JRo79D9czRm/h3XGSi2KpaItWtDtagcCHvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJVLJ0Md; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223fb0f619dso139598885ad.1;
-        Wed, 26 Mar 2025 07:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742997743; x=1743602543; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=LtfkNbhavg1rWc7Eqt04TBE6Sf4QfZ1CihUPZWQbiNE=;
-        b=dJVLJ0Mdt5XI1YET4eEDzPNHrj84za+GaZeYngqZNJLjld5oyXDyBb7hpi2b/b7QM0
-         iNI2IzuSwzZjHXC3AX+rSdHUxBXbPs8CAC6edHbDiTICiucNYPfWf6l8e4SB00RZ+mrP
-         Gfhwn1TFdHbGESAeDDZnPzgs31Ve2yvmR6mJpRiBTYFNFDeU9AmxpQtQWyp359BhxjR9
-         mnWa48HE63EhrzEl95pcJcTIYhJGglwKuTq3liyADywBqg7YrbtDcMVT78xFYsQ0QTun
-         M3aTss7jmAkIg6aNgrv6LqUv32ondK93IU6m1bw+k/AYfTvUe762W+pwPENI+cu2Dqnd
-         tcmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742997743; x=1743602543;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LtfkNbhavg1rWc7Eqt04TBE6Sf4QfZ1CihUPZWQbiNE=;
-        b=LRdT3gk9oCJWQaQKXF6+QnVF1MgWC7MKVlAxIQuuIw/0VnscK31JIAVfmrgHSJ6T4r
-         TIQ+LBaKeRlWBMQNH66pFDKWpUT1uTRZRQ76svjOA+Wr0Q0+W5I+c1P1N32GbgESyfA8
-         UA5SwZY5eN3I0LFlHSsaAYg6vtos5Bl801wGUi7+MARMyEWpTKKkdDb79QIgMLEwmje3
-         0IXkytBHW+OatbgnV3oQ2MZSgIkUiFeEl+KSIpfu21Piov0kd7oZo7Z+/5tWs0dpXbHo
-         uq4sogdoM+3qsjuzWDNrm9SHQwTRCHHXFcx8Oxirsx9PrGANiZ3oo5jU8TW/NJqzC+SC
-         Nt9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV4LfLyRXPpAQoeJvxQAU6qUb8tth53KAz4scS4fj3ACRbVcGgO9dGdfhszEiS7paLSn9WvRaAmMcsjjLsz@vger.kernel.org, AJvYcCVjkeCbLUnw4EydnW2Obpz+6Q5iop/MvCzQLuHEiU7XnYciTFLmU2NfkJHYjmNqHbdH2e80gb0pK8hKeOLAeOU=@vger.kernel.org, AJvYcCVtIqZXxMjPpByyL7KbcmcK/00q2bQgDQvHuTwvNbQhdFeMKnG7R8bbIru47TfrFV1IyGqFnxT9rFJC@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF7GsrBRvPSSYTqzKOV1VYDJu5/DY8myfL36at71C6lGqqwC19
-	3m+DKCtl2sfxUQYximrNQNPLq3CF67MdSbYC1GjddmKNC1P6WBzE
-X-Gm-Gg: ASbGncvpyox9+xNUDbfJKUMhqYgnxj6m98165xpWNBi9KylqCy/uW/qPiEDnaaVHETH
-	0W6IGWUTYYAML6G071Kas+UHpPT2zOK93rWtG12HyqPqDtG7Z8vAY90KL06E4bOdgRy6HH1eZeQ
-	Vv4cTX95jrJP9p4ZRq/lpCgxyxL0JvaVU2XtBl9KPWlTkqE2hDiP08K6LzivArCGJtlakP1uHt9
-	+nnglzKPYF40nfRgAgQx+yeNphODdNzVXGUnzVzQ/OPg55vP+A6j0mkEeaOsSAK3ENOmXtolarC
-	REkcYSUuGm2eXkR6F75th6vmUAUT51rmI/KxfrxAkmrvSrXF5RyYhUUP5bLR6BSzIHJH3Sp154L
-	sd/Qi7eTC7OJ/JPXZNw==
-X-Google-Smtp-Source: AGHT+IGFnv6QfkelFAzb2LcGXDlP4HTrJFjgvnFepmRe/Y1eFAkIt3hMwFZdpxLi9Y8NZu0oAF5h/A==
-X-Received: by 2002:a05:6a00:14cc:b0:736:6ecd:8e32 with SMTP id d2e1a72fcca58-73905a23927mr31336614b3a.21.1742997743160;
-        Wed, 26 Mar 2025 07:02:23 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390600bbdbsm12195408b3a.80.2025.03.26.07.02.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Mar 2025 07:02:22 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9f4e560e-35c1-413f-be83-d537abf41183@roeck-us.net>
-Date: Wed, 26 Mar 2025 07:02:21 -0700
+	s=arc-20240116; t=1743000928; c=relaxed/simple;
+	bh=2FjJkXZ1Sr7UVOgZLzCfOaayYT0ey4QBq9TK9OK+P/E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iny8sHywRy1KDbeDQ8bEOeoLWeS1yRNjap40ktcb3yMCdjkyEfceIfsqdJeUTQgKG49caAwF1cPGvHqOINZLTHf0aqZyZKw7Au8JqWQ4MeTWJiYHGfE10lUYCv63ivspVyEhYd3nhB7vgqgW3XT8D5Mmd9MFksXJBH9qBvaA6Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HX6aTZbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CA9C4CEE2;
+	Wed, 26 Mar 2025 14:55:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743000927;
+	bh=2FjJkXZ1Sr7UVOgZLzCfOaayYT0ey4QBq9TK9OK+P/E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HX6aTZbfmKW3A2e/vn8L0G+6m4LL7IV/4qxaFFkyjSE9WQc2yJgVcmxtQn0yvGNkB
+	 j6/G1HeyjUGGQ+beZvHvcO588uANwt91E4OKcxRzxTXZI5mCXQTIZ2GG9s8mhOZjSp
+	 TS0R+5Y4qCBs+JMfbnbCvadMlrkMaksBOO3waBiF05sW9mCoLUbEcMF8Yx3tUsMpXq
+	 fHw/Kn1InTPrQzu2NX8fmA9qXnwoc+6z/41+WHWS62uemtTQ1oQHUCZj9FZzfLavBp
+	 5C39yp2vgvXV6jaJWKLHkNQxTEJwn3NhnThF88ek5cHtzIAmEj4Zxl7WPMuPhOcEm9
+	 Z//hTubBOrTcw==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2c2c754af3cso3523539fac.3;
+        Wed, 26 Mar 2025 07:55:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU/nLXbfqNxVE6AKjH4vRNioLbDxaMz94xZdKU7DF6o8QZZx7QJ5OT5LNAnsj5HJfj0DT1mcfO2OZD/7Asw@vger.kernel.org, AJvYcCVBwVumVtKSzzDL3fRQgHJsNyZitgY5rtR7MooIXKcotd/J2MM2zwlANPKYDWd7tDG2pJkuSWqEkkdB@vger.kernel.org, AJvYcCVLM2AEqUVI6S5NEaf4QGYR/jksq1lONKFoboKm6tM38msGE4e/glC1DIjKdEIdOChN8wJvRpT7mAT//Q==@vger.kernel.org, AJvYcCWZE/EOvRFCRUzrabNmjb5ZEUm3KJpMXQzK5uZvlOD4tSgHY0k57YM3XWVseGIHDahL04QAKAcnKdz1@vger.kernel.org, AJvYcCXO77w8RQlvdpbARz9KV2CX/7pEmkYSZyoImlBt6ppwx3eEiFFXyjkYX8rcLxD6uGsMsIuyMtduYoZXNOal@vger.kernel.org, AJvYcCXjeHZ97FWu/c0b7Nyew0lu4N3lIEt7maak/pm5VLy+r/BYjrnTgrn1DvLZoYfygOFokG3uqQaTTFOL4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHW6hqHItVobhEdS17eTiFOAWMBtIy0LkA/0afBker09U/MIYI
+	NMA45GSvzl7+/vKcjiFF5w0uZho8JHLUCfjKgxby8qW7W73zLfWWZQ88gg7aTTN2f7r3SxcC8er
+	Vsol+BoEQRLRMxkKn4NVTVi3D4pU=
+X-Google-Smtp-Source: AGHT+IEYYA/6LylePhPYpVsBFlVh+o1a/2X6ugf3+5Zk77UyBnBXpaSo0UzJzWGtji5Mqp0Q8hwWmxY8a4Ns27KKFng=
+X-Received: by 2002:a05:6871:5223:b0:2bd:455e:c22e with SMTP id
+ 586e51a60fabf-2c7803002damr12663712fac.19.1743000926945; Wed, 26 Mar 2025
+ 07:55:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP
- device list
-To: Diogo Ivo <diogo.ivo@siemens.com>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, Wim Van Sebroeck <wim@linux-watchdog.org>,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com,
- benedikt.niedermayr@siemens.com
-References: <20250317-ivo-intel_oc_wdt-v3-0-32c396f4eefd@siemens.com>
- <20250317-ivo-intel_oc_wdt-v3-2-32c396f4eefd@siemens.com>
- <1beeb77c-83d6-4634-ba39-2b40efbb8437@siemens.com>
- <CAJZ5v0jh1jJy+YRMtLDnYqAhPrN2Pox+NY0Vqh_uqb7F=NwqEg@mail.gmail.com>
- <54d3c7a8-1392-4870-9bd6-48aebe3881f1@siemens.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <54d3c7a8-1392-4870-9bd6-48aebe3881f1@siemens.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250315001931.631210-1-romank@linux.microsoft.com> <20250315001931.631210-11-romank@linux.microsoft.com>
+In-Reply-To: <20250315001931.631210-11-romank@linux.microsoft.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 26 Mar 2025 15:55:15 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0g1bX_3zRUUf-=euuvhm1dPB6bjEXPH9O-kMGcZjRspcw@mail.gmail.com>
+X-Gm-Features: AQ5f1Jr4yQ264W4Fr4uvYbe-kFtKKfam4-v0_OqzzA1JU-y-jScH9oT2tKvFv-0
+Message-ID: <CAJZ5v0g1bX_3zRUUf-=euuvhm1dPB6bjEXPH9O-kMGcZjRspcw@mail.gmail.com>
+Subject: Re: [PATCH hyperv-next v6 10/11] ACPI: irq: Introduce acpi_get_gsi_dispatcher()
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de, catalin.marinas@arm.com, 
+	conor+dt@kernel.org, dan.carpenter@linaro.org, dave.hansen@linux.intel.com, 
+	decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com, 
+	joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com, 
+	lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org, 
+	mark.rutland@arm.com, maz@kernel.org, mingo@redhat.com, 
+	oliver.upton@linux.dev, rafael@kernel.org, robh@kernel.org, 
+	ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com, 
+	tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com, 
+	devicetree@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org, 
+	apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com, 
+	sunilmut@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/26/25 02:01, Diogo Ivo wrote:
-> On 3/25/25 6:59 PM, Rafael J. Wysocki wrote:
->> On Tue, Mar 25, 2025 at 6:19 PM Diogo Ivo <diogo.ivo@siemens.com> wrote:
->>>
->>> Hello,
->>>
->>> On 3/17/25 10:55 AM, Diogo Ivo wrote:
->>>> Intel Over-Clocking Watchdogs are described in ACPI tables by both the
->>>> generic PNP0C02 _CID and their ACPI _HID. The presence of the _CID then
->>>> causes the PNP scan handler to attach to the watchdog, preventing the
->>>> actual watchdog driver from binding. Address this by adding the ACPI
->>>> _HIDs to the list of non-PNP devices, so that the PNP scan handler is
->>>> bypassed.
->>>>
->>>> Note that these watchdogs can be described by multiple _HIDs for what
->>>> seems to be identical hardware. This commit is not a complete list of
->>>> all the possible watchdog ACPI _HIDs.
->>>>
->>>> Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
->>>> ---
->>>> v2->v3:
->>>>    - Reword the commit message to clarify purpose of patch
->>>> ---
->>>> ---
->>>>    drivers/acpi/acpi_pnp.c | 2 ++
->>>>    1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
->>>> index 01abf26764b00c86f938dea2ed138424f041f880..3f5a1840f573303c71f5d579e32963a5b29d2587 100644
->>>> --- a/drivers/acpi/acpi_pnp.c
->>>> +++ b/drivers/acpi/acpi_pnp.c
->>>> @@ -355,8 +355,10 @@ static bool acpi_pnp_match(const char *idstr, const struct acpi_device_id **matc
->>>>     * device represented by it.
->>>>     */
->>>>    static const struct acpi_device_id acpi_nonpnp_device_ids[] = {
->>>> +     {"INT3F0D"},
->>>>        {"INTC1080"},
->>>>        {"INTC1081"},
->>>> +     {"INTC1099"},
->>>>        {""},
->>>>    };
->>>>
->>>>
->>>
->>> Gentle ping on this patch.
->>
->> Do you want me to pick it up or do you want to route it through a
->> different tree?
-> 
-> Unless the watchdog maintainers have any objections it's fine if you
-> pick it up.
-> 
+On Sat, Mar 15, 2025 at 1:19=E2=80=AFAM Roman Kisel <romank@linux.microsoft=
+.com> wrote:
+>
+> Using acpi_irq_create_hierarchy() in the cases where the code
+> also handles OF leads to code duplication as the ACPI subsystem
+> doesn't provide means to compute the IRQ domain parent whereas
+> the OF does.
+>
+> Introduce acpi_get_gsi_dispatcher() so that the drivers relying
+> on both ACPI and OF may use irq_domain_create_hierarchy() in the
+> common code paths.
+>
+> No functional changes.
+>
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
 
-Ok with me.
+This basically looks OK to me except for a couple of coding style
+related nits below.
 
-Guenter
+> ---
+>  drivers/acpi/irq.c   | 15 +++++++++++++--
+>  include/linux/acpi.h |  5 ++++-
+>  2 files changed, 17 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+> index 1687483ff319..8eb09e45e5c5 100644
+> --- a/drivers/acpi/irq.c
+> +++ b/drivers/acpi/irq.c
+> @@ -12,7 +12,7 @@
+>
+>  enum acpi_irq_model_id acpi_irq_model;
+>
+> -static struct fwnode_handle *(*acpi_get_gsi_domain_id)(u32 gsi);
+> +static acpi_gsi_domain_disp_fn acpi_get_gsi_domain_id;
+>  static u32 (*acpi_gsi_to_irq_fallback)(u32 gsi);
+>
+>  /**
+> @@ -307,12 +307,23 @@ EXPORT_SYMBOL_GPL(acpi_irq_get);
+>   *     for a given GSI
+>   */
+>  void __init acpi_set_irq_model(enum acpi_irq_model_id model,
+> -                              struct fwnode_handle *(*fn)(u32))
 
+Please retain the indentation here and analogously below.
 
+> +       acpi_gsi_domain_disp_fn fn)
+>  {
+>         acpi_irq_model =3D model;
+>         acpi_get_gsi_domain_id =3D fn;
+>  }
+>
+> +/**
+> + * acpi_get_gsi_dispatcher - Returns dispatcher function that
+> + *                           computes the domain fwnode for a
+> + *                           given GSI.
+> + */
+
+I would format this kerneldoc comment a bit differently:
+
+/*
+ * acpi_get_gsi_dispatcher() - Get the GSI dispatcher function
+ *
+ * Return the dispatcher function that computes the domain fwnode for
+a given GSI.
+ */
+
+> +acpi_gsi_domain_disp_fn acpi_get_gsi_dispatcher(void)
+> +{
+> +       return acpi_get_gsi_domain_id;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_get_gsi_dispatcher);
+> +
+>  /**
+>   * acpi_set_gsi_to_irq_fallback - Register a GSI transfer
+>   * callback to fallback to arch specified implementation.
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 4e495b29c640..abc51288e867 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -336,8 +336,11 @@ int acpi_register_gsi (struct device *dev, u32 gsi, =
+int triggering, int polarity
+>  int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
+>  int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
+>
+> +typedef struct fwnode_handle *(*acpi_gsi_domain_disp_fn)(u32);
+> +
+>  void acpi_set_irq_model(enum acpi_irq_model_id model,
+> -                       struct fwnode_handle *(*)(u32));
+> +       acpi_gsi_domain_disp_fn fn);
+> +acpi_gsi_domain_disp_fn acpi_get_gsi_dispatcher(void);
+>  void acpi_set_gsi_to_irq_fallback(u32 (*)(u32));
+>
+>  struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
+> --
+
+With the above addressed, please feel free to add
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+to the patch and route it along with the rest of the series.
+
+Thanks!
 
