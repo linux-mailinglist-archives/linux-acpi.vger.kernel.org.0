@@ -1,120 +1,182 @@
-Return-Path: <linux-acpi+bounces-12437-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12438-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC02A71A45
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 16:30:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D69A71A66
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 16:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8B63BDD25
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 15:25:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4010116D4C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 15:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFF21F1908;
-	Wed, 26 Mar 2025 15:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251651F3BB2;
+	Wed, 26 Mar 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LC7IxoH9"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="h9CXDAO1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A306814A4C6;
-	Wed, 26 Mar 2025 15:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8431F2369;
+	Wed, 26 Mar 2025 15:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743002719; cv=none; b=ZarIMqNo+3IVc9Qpw7/dYxpVQF9goBb7mIT5AFQWY8obyZKqIPAsylmWcq2+DrAyNlUXlghKoA7tKDimo1DAgBvB7QaPRVjnaTtPOXP/rb7lQ5HJUHzaOrn3NOoE9poUNoLqsvS1VtifI0DZj4Ifk7t9pGWDaNbHv3Yc1auGCIQ=
+	t=1743003176; cv=none; b=hUQXm4FDE3TSnkqysZJ6rmZR/N+xmxESqrZqGDOQeqyGSy3GJQvcTSh+3gZGTAscYdXDBtG5uKD7StB8stB+1scZf78j7uvOBdmpFSL2bv0L9+JeEsGT/nI/4f04dbYw/KnqhAT32w/vfgqgCX66hkKqrUx0Xm3vSchqE35Rt48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743002719; c=relaxed/simple;
-	bh=fAuSUL7yObr2JsUjb/aNOLhrRIjNLcrPE9UvoJPnNnI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iaX3b7kBYsWitGo0eSy3edVisTGh/Oa+b1Cc/jFgyCuWatk1uZ1DTYRDNWMh+READg3LRlr+683jTJf3WH0oH0Qn+WSIhEMRKQcSqcsuZ0J16B1/sky646lAU/77QSEJ3/vLEJ7kJ+XTsbiE3+nGA4qNOUUXe5tiNHbEhUBOYFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LC7IxoH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0E2C4CEEE;
-	Wed, 26 Mar 2025 15:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743002719;
-	bh=fAuSUL7yObr2JsUjb/aNOLhrRIjNLcrPE9UvoJPnNnI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LC7IxoH9s5uM7aSYG/LyfJ4Z5BDoAFUQW2ObD3P6edGM/15AQNyWnoi4/6FtTuxB1
-	 zt++n3xiCp/p6sbpXBN3wei5zXQPLPMAuMo4m9N6YoAh3mteB8fDXBctQgF8pkgdDq
-	 /5+2F7aOfH5hbs7LcHtsFIs6pP/X2RAPnn6A7uDZ+y9wwfDJKq5R+Jp+W5Isg97Sqy
-	 nBK3wDXYQQ9RPYt/TfemxoDMn68CuhImCWWOKfOTz/4YWMU3RZl44/VLmnlVkCBYtL
-	 GssFM4Rwc3wiTypr67jT2ge+vbTe278RM8KVcVNpy8SzifYh6CQEZSV7G7MV2XaG5Q
-	 KUhgVlW6eohbg==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-72c14138668so1138808a34.2;
-        Wed, 26 Mar 2025 08:25:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUGw/qjFOQs5W4Sju+kHJu2D3mUdj2AGgJwdUb7Sa0w7J1em28EIhYx/XPWrQ0aCeHEc03AZDi+wOPQ@vger.kernel.org, AJvYcCXfsHcmgzsrAGMLj5NXirDYTNx0TB15RxLM+sFu+e+/X4BM09gTGlGiX1wT8jQfOURts1Vi15yK4kBnWquQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHJQmaJlC2QNq05M0B10vDoVh9WKMR9CBxRKluRe7483bOfhQ7
-	tpoIFGwkqbwqDtycICCEoBsYR4mPWm6Y/ILn4V0FpjaPUm6zlOH7ADao4xhtE0QwJO8fXWko3GW
-	nwUYqM9TKoeLgZO5OF5iZuBHi9n4=
-X-Google-Smtp-Source: AGHT+IHr5tsGpOngZIcIxU/BshH+uj+SEmFWZRPxZ1xT9KDNCl5JkjcXIT/guU1z2fkpt2dop7yD15PAh+5hCWL/xAA=
-X-Received: by 2002:a05:6870:20d:b0:2c6:72d3:fc93 with SMTP id
- 586e51a60fabf-2c7802ef8b5mr11720539fac.12.1743002718471; Wed, 26 Mar 2025
- 08:25:18 -0700 (PDT)
+	s=arc-20240116; t=1743003176; c=relaxed/simple;
+	bh=QfFKHtPjhnsVEIyS3XzuUBPioCudwzrqL/GSdI3aKa8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MrR3+R4CLs0PFi1jp19GbhXBjZyEif48CJhoGDk2avP0TCepY6sHjgKngSInTbbjmRLWH1VBUrd1zBuEKfEjQFDFluG+SROraYYlaasND8PED7opOLEfB3Y3UCD5JWsrOsTK6VKaaVwTciv45zDo+HKzvWrGCfQFSes9nk2sCa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=h9CXDAO1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id A914B210C320;
+	Wed, 26 Mar 2025 08:32:53 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A914B210C320
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1743003174;
+	bh=5dEhZXpJIQDYjKp44/xRbSpFUSHWMuuE2+/dnL6k/lU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h9CXDAO1ZrAH2QmyDPeZh9D575YKdAtnwcuvQxr+2h+cWYYQEZjW0lE1GdOfjm8h0
+	 WTL8D4VFuAxQbfVPl4CANyl7MImvzKVJrV1UkEJ6ZDQRtMcF1/oXVnUIM04GP/33qq
+	 SoTHHkrgirDlGx5JlRlVXulkrfzJWIihHsu4hJNE=
+Message-ID: <f8ccc874-e153-4b78-8159-9923dfa77fc3@linux.microsoft.com>
+Date: Wed, 26 Mar 2025 08:32:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250320092943.92790-1-qiaozhe@iscas.ac.cn>
-In-Reply-To: <20250320092943.92790-1-qiaozhe@iscas.ac.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 26 Mar 2025 16:25:05 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gUDxrAn4W+Rf3ifjrg8Z9ZzTTOZjPFSSN5488mPqzXeA@mail.gmail.com>
-X-Gm-Features: AQ5f1JrFEpUN-GlO-VC4xnjHPMjRt4YSppHgFV2CAH6qLqsSxNLTbDaOdzQZnd4
-Message-ID: <CAJZ5v0gUDxrAn4W+Rf3ifjrg8Z9ZzTTOZjPFSSN5488mPqzXeA@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Adjust the position of code lines.
-To: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next v6 10/11] ACPI: irq: Introduce
+ acpi_get_gsi_dispatcher()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+ catalin.marinas@arm.com, conor+dt@kernel.org, dan.carpenter@linaro.org,
+ dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com,
+ hpa@zytor.com, joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com,
+ kys@microsoft.com, lenb@kernel.org, lpieralisi@kernel.org,
+ manivannan.sadhasivam@linaro.org, mark.rutland@arm.com, maz@kernel.org,
+ mingo@redhat.com, oliver.upton@linux.dev, robh@kernel.org,
+ ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com,
+ tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org,
+ yuzenghui@huawei.com, devicetree@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
+ apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
+ sunilmut@microsoft.com
+References: <20250315001931.631210-1-romank@linux.microsoft.com>
+ <20250315001931.631210-11-romank@linux.microsoft.com>
+ <CAJZ5v0g1bX_3zRUUf-=euuvhm1dPB6bjEXPH9O-kMGcZjRspcw@mail.gmail.com>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <CAJZ5v0g1bX_3zRUUf-=euuvhm1dPB6bjEXPH9O-kMGcZjRspcw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 20, 2025 at 10:33=E2=80=AFAM Zhe Qiao <qiaozhe@iscas.ac.cn> wro=
-te:
->
-> In the acpica/utcache.c file, adjust the position of the
-> "ACPI_MEM_TRACKING(cache->total_allocated++);" code line
-> to ensure that the increment operation on total_allocated
-> is included within the ACPI_DBG_TRACK_ALLOCATIONS configuration.
->
-> Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-In order to modify ACPICA code in the Linux kernel, please first
-submit the change in question to the upstream ACPICA project on GitHub
-as a pull request.  Once that pull request has been merged, you can
-send a corresponding Linux patch with a Link: tag pointing to it, but
-in principle it is not necessary to do so because ACPICA changes are
-automatically integrated into the Linux code base on a more-or-less
-regular basis.
 
-Thanks!
+On 3/26/2025 7:55 AM, Rafael J. Wysocki wrote:
+> On Sat, Mar 15, 2025 at 1:19 AM Roman Kisel <romank@linux.microsoft.com> wrote:
+[...]
+> 
+> This basically looks OK to me except for a couple of coding style
+> related nits below.
+> 
 
-> ---
->  drivers/acpi/acpica/utcache.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpica/utcache.c b/drivers/acpi/acpica/utcache.=
-c
-> index 85a85f7cf750..046e6ba127d4 100644
-> --- a/drivers/acpi/acpica/utcache.c
-> +++ b/drivers/acpi/acpica/utcache.c
-> @@ -251,9 +251,9 @@ void *acpi_os_acquire_object(struct acpi_memory_list =
-*cache)
->         } else {
->                 /* The cache is empty, create a new object */
->
-> +#ifdef ACPI_DBG_TRACK_ALLOCATIONS
->                 ACPI_MEM_TRACKING(cache->total_allocated++);
->
-> -#ifdef ACPI_DBG_TRACK_ALLOCATIONS
->                 if ((cache->total_allocated - cache->total_freed) >
->                     cache->max_occupied) {
->                         cache->max_occupied =3D
-> --
-> 2.34.1
->
->
+Appreciate taking time to review this very much! Will squash the nits in
+the next version.
+
+>> ---
+>>   drivers/acpi/irq.c   | 15 +++++++++++++--
+>>   include/linux/acpi.h |  5 ++++-
+>>   2 files changed, 17 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+>> index 1687483ff319..8eb09e45e5c5 100644
+>> --- a/drivers/acpi/irq.c
+>> +++ b/drivers/acpi/irq.c
+>> @@ -12,7 +12,7 @@
+>>
+>>   enum acpi_irq_model_id acpi_irq_model;
+>>
+>> -static struct fwnode_handle *(*acpi_get_gsi_domain_id)(u32 gsi);
+>> +static acpi_gsi_domain_disp_fn acpi_get_gsi_domain_id;
+>>   static u32 (*acpi_gsi_to_irq_fallback)(u32 gsi);
+>>
+>>   /**
+>> @@ -307,12 +307,23 @@ EXPORT_SYMBOL_GPL(acpi_irq_get);
+>>    *     for a given GSI
+>>    */
+>>   void __init acpi_set_irq_model(enum acpi_irq_model_id model,
+>> -                              struct fwnode_handle *(*fn)(u32))
+> 
+> Please retain the indentation here and analogously below.
+> 
+>> +       acpi_gsi_domain_disp_fn fn)
+>>   {
+>>          acpi_irq_model = model;
+>>          acpi_get_gsi_domain_id = fn;
+>>   }
+>>
+>> +/**
+>> + * acpi_get_gsi_dispatcher - Returns dispatcher function that
+>> + *                           computes the domain fwnode for a
+>> + *                           given GSI.
+>> + */
+> 
+> I would format this kerneldoc comment a bit differently:
+> 
+> /*
+>   * acpi_get_gsi_dispatcher() - Get the GSI dispatcher function
+>   *
+>   * Return the dispatcher function that computes the domain fwnode for
+> a given GSI.
+>   */
+> 
+>> +acpi_gsi_domain_disp_fn acpi_get_gsi_dispatcher(void)
+>> +{
+>> +       return acpi_get_gsi_domain_id;
+>> +}
+>> +EXPORT_SYMBOL_GPL(acpi_get_gsi_dispatcher);
+>> +
+>>   /**
+>>    * acpi_set_gsi_to_irq_fallback - Register a GSI transfer
+>>    * callback to fallback to arch specified implementation.
+>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> index 4e495b29c640..abc51288e867 100644
+>> --- a/include/linux/acpi.h
+>> +++ b/include/linux/acpi.h
+>> @@ -336,8 +336,11 @@ int acpi_register_gsi (struct device *dev, u32 gsi, int triggering, int polarity
+>>   int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
+>>   int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
+>>
+>> +typedef struct fwnode_handle *(*acpi_gsi_domain_disp_fn)(u32);
+>> +
+>>   void acpi_set_irq_model(enum acpi_irq_model_id model,
+>> -                       struct fwnode_handle *(*)(u32));
+>> +       acpi_gsi_domain_disp_fn fn);
+>> +acpi_gsi_domain_disp_fn acpi_get_gsi_dispatcher(void);
+>>   void acpi_set_gsi_to_irq_fallback(u32 (*)(u32));
+>>
+>>   struct irq_domain *acpi_irq_create_hierarchy(unsigned int flags,
+>> --
+> 
+> With the above addressed, please feel free to add
+> 
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> to the patch and route it along with the rest of the series.
+> 
+
+Will do, thanks!
+
+> Thanks!
+
+-- 
+Thank you,
+Roman
+
 
