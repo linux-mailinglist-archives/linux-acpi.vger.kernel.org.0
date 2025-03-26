@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-12458-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12459-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A112EA72048
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:58:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86088A7204A
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086373BA917
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 20:57:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6BE18978E3
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 20:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F225E800;
-	Wed, 26 Mar 2025 20:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D6025E833;
+	Wed, 26 Mar 2025 20:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQg5n+Ht"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2BHT/sS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ABD1A2541;
-	Wed, 26 Mar 2025 20:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F8C1A2541;
+	Wed, 26 Mar 2025 20:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743022677; cv=none; b=UgFOFcKBaStWwb/PjfGatxFfEIzVLWWoJWxHeJ64pG96dgaQG+TcDmlNKj7vEj5TiaevUDbJj5AaeNneZWeXsPkFnrxLG4pTGZ44+I4SXtmqpp1qB45KdQrwA+xiwmi3SuzzUozXT+/fIZBTto3fYv7jh6xEVTlo2iCLkrcxnGs=
+	t=1743022741; cv=none; b=PJER/dooEzHcJGmJr92yCQrn6zffMV3UODclhwpHGr7MBNGxpjlODq5Ba4PatL0BcrjOza2G9FZaB3pU6sfgraXK+e5b+NXXaiH6Yx22ipEd0lexPxEn2HmgV/GvhSwS6zIbgV6/Zgyuh4HZ1pJ8tCPf+rWt7erVF9jCb80lzQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743022677; c=relaxed/simple;
-	bh=Xv/Edr5Hb3rTIzpN5V6OcljHL4M6WZIYMoDXNiM7P5k=;
+	s=arc-20240116; t=1743022741; c=relaxed/simple;
+	bh=e+GGi5UAmM6CVgxPTUQNBJPDl18un1EucT6xzYFlgk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5gwj/hOXM4MZoR+l0lGoio9JPfy0iZmNsZUI6hQyxvQzfldH+uPcVjYNTf5fFPZfrLxSHCZXSfy7S6eqezVsFvzmzwQ5CbPO4uoOdnkKYpAQVDRIzRykwQHGZJBMMDctT9FJqA1jSlB/06He8RNn9XDovx7bKQis0uDLPdtUyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQg5n+Ht; arc=none smtp.client-ip=209.85.161.42
+	 MIME-Version; b=a1bohUCaEO7zHlhJPwNBAnpAKCiHh5w8LtpM6ubqSteewL8ovQefpl7jUapLpUa9zGYYn7TCrE32HxF0iSya9/8ds21Fs1lEQ4xsYDcAOu+qxaKGZYZAGFaLhswVHKbWZpFolnuDKUIGCJUXpJpSz8VDFHmnt0HVjpjl/V2FVjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2BHT/sS; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6003d977ab7so191515eaf.2;
-        Wed, 26 Mar 2025 13:57:55 -0700 (PDT)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-72bb9725de1so94831a34.2;
+        Wed, 26 Mar 2025 13:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743022675; x=1743627475; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743022739; x=1743627539; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HYHrkcoZFZa1vLsLrjHkrL3wMK0K9pCcIzH7DNM6+0c=;
-        b=QQg5n+Ht7l3YHRZQ5MtJABwpBiOQqE4oiz05fAQXvpG+fAoEZ4K2/SSPNVTnSBNQAb
-         HcjidJ3C5Zp3HEVUnP5dBicqdCyGt390A3VWSO7ZwNqIORAGRQqZP/Acelwo040n+wMI
-         sKkH95xbj3IxgyboPlr4SdyfZ9Zg/M//4Smk7W1fpKT3WcGRQYj+o0kP/CCRBC4Og70G
-         awEixFG3rojJqz6T6cMrkb28v4pJD/FMtlAEcmkQ+bPhb18LeExBn/xt0jOv/vlu1CJs
-         YpMzdPOtWEiJoTZRi+s8LL5Rb1/ubQh4pWsQ4ydUjNXm+DeKKZDU0ioYODyVvTaYDIGa
-         zWpQ==
+        bh=WXN/ZGcBHJP5iRy6/nH6o1Y5X0gNKUlaCg+l1e82JK0=;
+        b=G2BHT/sS9m/tb21oAhS691GPACCGIyUgJtW8/zMXiGjnleEgN+kvPJLu8OgekQdeNL
+         ikLgzd2jeMvtS0AsjcmXffj15NlGqUHSyrn8u8GMpdme4Q0E7weLqpMkaf5x2wQhnZGJ
+         3EwNf/FaZ2X3xumS7y7EMN87w80bEUIbc0/Wn9iDco5q5XwpwGj8FwAlb4sfGGpNrdHx
+         0Yx7t8ZobHzfZP2grMOT8PyfE+/iWrRreenK4KPwyITq6xR5AZgaqA/1Xa2q0h+PeLER
+         HzPWbP9aIxS5BlvmWD8rL7EpTi3YeKvJiKAGXiKjUWagvLJMIgKoqfPAYKXYSj76VHSL
+         1/Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743022675; x=1743627475;
+        d=1e100.net; s=20230601; t=1743022739; x=1743627539;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HYHrkcoZFZa1vLsLrjHkrL3wMK0K9pCcIzH7DNM6+0c=;
-        b=ZwrzbrVmCvQjy9lSenJHsRYUp59idA++YzF6JqRrscdYbkXr+5AQKYhuE9IFGAumVv
-         CiDPErwnig4pQZQ3YRy1qOfOCQpTPZnTOJFI/q4hJYsnSVEVfrKtxzK/1bOKw+FqZa10
-         Jqbe11IvyMqrWHzsdSrdXgNJTl6RqbJXqDSVDWSETjdSNhh8LQN64Y8v2q7q4hZhWTbH
-         opCANLTIV7uY5CKlb7+5Xl7agkWWTqYqYqLS0CB6bUPW9JG7Bx0OClqcyP8OjMVZzRdN
-         T79Z3EbQtHGQcOCnn5z+2c+wVVZ8rjZlfyuGwIWEr9ij+l+yN/eHl440vqv+u5F5n3c7
-         yctQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWexXmkysn82QPBrSuLjGd9WGKg3zIK9xls6vO4B2ozHkZWpjtPd6OLXjvueD7GECagT4R2YYHr92LW8ROhLUU=@vger.kernel.org, AJvYcCXAzXvFhzFT8yY9qKZ58pwT7Bd+pKQ+3DAqscfv4CD2pyH2SZtC0F8Y6JZJIx0V6WlAgd7o9NHHZ9h/pg==@vger.kernel.org, AJvYcCXqNm1YfnaRDM2ZZYXdGA3XCDCLDLD4dFYvv0kcbfGBilCc9JDDNNorvX4SiCBgHBDeJSuuHGXlqpZEbKBz@vger.kernel.org, AJvYcCXuHNcfFSeEokC7rWrI1PBM7KwWGSqEw9OHPcg3MOVCh7mToZAq+YAEJhqj93uuCFWeSz1tqBQ0jaos@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ8WFhCTL5Vgw9vVDTYfLF/BE6ELPkPGKhXwtgOJlfE3skW/1U
-	I0MAlS+RFoYkr5hNjE5kux6nr/CHUp540U1N+daDniwHladFehS2
-X-Gm-Gg: ASbGncsRzqovqDnbgxZAF2Yn/iaPMxMx5ydVwtX4CASEc97KvlACMjsF7lVuv3Y9eNh
-	d/t52A1liCbrMuZn+6IUhvKLkmdlqPrqiCRI3DQRLS0cGmkTJJgPOSroG+h2uBey7NibnzO1IqT
-	Au3b/NBUac5h/B1FqYHkMKcafiy9SnykoaAYA/Td6mxE9us9MyNn0wspB0wrGqJMrvtqK72FvmH
-	+m8KXVGGdomWVn5xSwM0swciPZQ+yefzksZkqG6yo8Qxt5dsaNFL2WxUPGrOncfJgUs8/lWQSfI
-	ib7g3c5Cd2VnFsXz+dp677LbEw/ZKr9tgZgJMDTvOC8v28R4WpbjJd4QYcPS7dJDWNFCaTN7oG7
-	jmQVCsfUkLIeFtr/DBqgPpzF5aes=
-X-Google-Smtp-Source: AGHT+IEUmSEVdaGxQzHRlalvt7gxWnlUq6R1qC4LIh6BmNt4i8VcMR3YrCDJk0WyRPA+5ibCH5mT3A==
-X-Received: by 2002:a05:6871:7b0a:b0:2c1:5fe3:22eb with SMTP id 586e51a60fabf-2c847f73257mr612937fac.15.1743022674554;
-        Wed, 26 Mar 2025 13:57:54 -0700 (PDT)
+        bh=WXN/ZGcBHJP5iRy6/nH6o1Y5X0gNKUlaCg+l1e82JK0=;
+        b=TKg+ODP6EXxLKkWQi49D+UtJOuSvPCqGuerdBT64ztxTnINX8nbB8zm63bIXXOUPhw
+         U/RWQUnM9TSdkl9rW1D/9N3LmrF6F8Joo0vx+Q+b4fa57tPcaB7kzkSBDn37U89Ccdcv
+         jt4vxGAr+QZEHxvtTwkrExzX6FeJX8XJ7emFS0GULJspxXymaefVzQsp3UiG5JI/xdZ5
+         nA/hNPnTbf4Hni0DgAsgnyXJQbLEaQkShmH81fK3h4II4p4jNXvKuPpmTMnpLuZcM3wx
+         FpGJkr/vSyPOCmMBCBVqZXM2qnNceg5shQ+WBTREx5fTIJ1lpHE7fLcm5M3JqNMrtAsY
+         d6QA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeykMmuwbfi+GCOSxYO2ADRyDQBdZGFp/IJwPGcZBWXczWyGxSO0XcwigVOjINaRpPIYw1rOs+9J9T/WOPsJA=@vger.kernel.org, AJvYcCWIaVpFbfiSQbi+6Ou70uPzHxGPIrQEP8M9RAvlzAQRbjBxGhsTDFmbDyEV50RadmDMCRwvb3Dzk0Qctw==@vger.kernel.org, AJvYcCXExLvJUdC6opEo6RNdOdLlo2Qvxl5oeRSr8VYuBLRjJcWVt5Pe1cdh2cDbbHkqJcwzw1Mnb4tQDssk@vger.kernel.org, AJvYcCXHX+2x3u+EvDiWl6nXtC1s7GG3Ko3hiBwYeSutLBx92eEO92sOCdG9UY1RbzFJ5IlKzD/2y4QSWTPkXAFa@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9IfS+8o43WwTFPSNfeAYwytOkZFy1jzhkz7YS+BKeZDYwNNe1
+	+JG4CWAH3yasexHrhZw1/pexiSQNguQah6snfRHSgVNfOBGkamX9
+X-Gm-Gg: ASbGncu0jnlhDT6Iz4umWGNeQ9TW2qfjrs3oHtZDUpRzTmjroivDxVlA6kPryRsyWAa
+	0u7zO+7mb9P7KJ/FWfqdPOs2UNRN8RgyiurQVcuDB6yMyqxmoxZMQiyGHAv3oakLZ4IeoYhEeWa
+	i8ZN8dvNWC974xkyd5nSCg9Mn3hPELibC1vqTUpgLfM9Xi8Z1CTmsgnYkoDznHJsIU0Jnafh13i
+	suRxc5URpK3nz28SjuTvMUaQ79p7oh+nE7t6Vwm6VhlhYU5kv/LIoSKKzKs/GaZc8Rg/4mIn34K
+	ecHDaCelMIRZ8Ub/hMTX1dUNCJxm6nfkLzvLGW9GJp18KIcLOIbeaCgeuMThb0LtvBJ4Hm17tRa
+	NRnZHgtPEiJkHGWtH
+X-Google-Smtp-Source: AGHT+IExZRuAc5UJfWGIbTEZTnqZsDFY3noP0suiYY1Ncy03PZIt5gv/Z9c/ftM829fSUbo+KHtRtw==
+X-Received: by 2002:a05:6830:651a:b0:72b:9bb3:67cf with SMTP id 46e09a7af769-72c4c96f232mr1041730a34.9.1743022738446;
+        Wed, 26 Mar 2025 13:58:58 -0700 (PDT)
 Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-2c77ec51be0sm3159443fac.16.2025.03.26.13.57.49
+        by smtp.googlemail.com with ESMTPSA id 46e09a7af769-72c419ccf46sm553122a34.12.2025.03.26.13.58.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 13:57:54 -0700 (PDT)
+        Wed, 26 Mar 2025 13:58:58 -0700 (PDT)
 From: Andrew Ballance <andrewjballance@gmail.com>
 To: remo@buenzli.dev
 Cc: a.hindborg@kernel.org,
@@ -98,12 +98,12 @@ Cc: a.hindborg@kernel.org,
 	sakari.ailus@linux.intel.com,
 	saravanak@google.com,
 	tmgross@umich.edu
-Subject: Re: [PATCH 0/10] More Rust bindings for device property reads 
-Date: Wed, 26 Mar 2025 15:54:09 -0500
-Message-ID: <20250326205409.694744-1-andrewjballance@gmail.com>
+Subject: Re: [PATCH 01/10] rust: Move property_present to property.rs
+Date: Wed, 26 Mar 2025 15:58:38 -0500
+Message-ID: <20250326205838.695261-1-andrewjballance@gmail.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250326171411.590681-1-remo@buenzli.dev>
-References: <20250326171411.590681-1-remo@buenzli.dev>
+In-Reply-To: <20250326171411.590681-2-remo@buenzli.dev>
+References: <20250326171411.590681-2-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -112,26 +112,15 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi thanks for sending these in.
-
 On Wed, Mar 26, 2025 at 12:13 PM Remo Senekowitsch Wrote: 
-> This is my first time posting to the mailing list, please let me know if
-> I did anything wrong.
+> +        // SAFETY: `fwnode_handle` is valid. Its lifetime is tied to `&self`. We
+> +        // return a reference instead of an `ARef<FwNode>` because `dev_fwnode()`
+> +        // doesn't increment the refcount.
+> +        unsafe { &*fwnode_handle.cast() }
 
-you probably will have to resubmit in the patch canonical format[1]
 
-I would recomend reading the docs but in summary:
- - all of your patches should have the subsystem in the subject line.
- - patch 6 is missing a commit message
- - commit messages should be written in the imperitive tone
- - a couple of your commit messages give a reason for the changes but
-   do not have a summary of the changes
- - for your v2 you should add a diffstat to your cover letter running
-   `git format-patch --base=auto --cover-letter` does this automatically
-   for you
+this safety comment should say why it is safe to cast from a
+struct fwnode_handle* to a *const FwNode
 
 Andrew
-
-
-[1] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#the-canonical-patch-format
 
