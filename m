@@ -1,110 +1,209 @@
-Return-Path: <linux-acpi+bounces-12472-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12473-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835A5A720C1
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 22:26:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E34A720C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 22:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EE9C3BCAAB
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:25:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2616118950F9
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F63A25EFAE;
-	Wed, 26 Mar 2025 21:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B2825FA0E;
+	Wed, 26 Mar 2025 21:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TbyAMKOl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJdT/eTR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C4224EF7C;
-	Wed, 26 Mar 2025 21:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26B619FA93;
+	Wed, 26 Mar 2025 21:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743024361; cv=none; b=idEb0xzwLzkTuQame5qwDYNSayhC4CAcWuN7TG4BWLt48jMehxjD3ckeF9zox13boDUUEvOgg/PdJqSQOFnoBum/ZtGLKoo6rDlVEovj7F2tw6Z4bHIrXMh+xiuOhja0l8thIusLo6R2U0cbxqc78mfh+gckefHbxew2ZuQqY+I=
+	t=1743024475; cv=none; b=K36D74DxGE/bDzWec+g2KhGZeTsaaGMWon68qafngMNP2s00pNAEFUKX+ACuWZ0zOlmPm+tTWDOK+DcrsYTz8yHGXdHkbi1iqtxjcBNtRoHFNzxQOUZsWAmJqXOZNwQvLwKpAxQ8BP536JTTqTtM01Aia10K23sF/qi1m0sw5rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743024361; c=relaxed/simple;
-	bh=5dd6mTNGubCGg1g4nFzCM8Oi/0JxeDqx+tX2b+VPkns=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xz51dGJdoKgTsdKvt0h7PJ3H0saArr3P7n3hRYku4uSW60w0xACsfopfV5AVNPAxiQM9d2axJhr9OCZl67Pi4H2wBw+5IX9M8+HRSCWp1j/NDreOwLf0X0rUm2HzesjAepec9tJC5SEQXl3DUgCzsx/USSlG/3bhVFSrXGob9Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TbyAMKOl; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so56225a91.2;
-        Wed, 26 Mar 2025 14:25:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743024359; x=1743629159; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5dd6mTNGubCGg1g4nFzCM8Oi/0JxeDqx+tX2b+VPkns=;
-        b=TbyAMKOlvkq+bGfxrrfGJ5ETNVACo+g/nBUoq1ULP89GameFvBBytVMP0QiqIEAUVm
-         jY/ZF/R6ZwDUIkZHUn55PKAOBHjiyMNRm5hWhwBN0NHVaVyZ/vgG5N3q6xVrUDpLxxWF
-         cWzQImTtkEqPU/g5XrGjArolyK2iUMpzClXgK69MfV3cPA6G3zCZblzmqTBkZtboC4c4
-         ojac0FiYlbIsPhShX4H/eatefqZjk0okuxqyeBgEOIt9h4Yi4bKOGPSWP2693W7PFT+Q
-         NPFXaizC6kvLlAWryYIbXRuLSbs8haRe6rn5VBUctapTwl2/ewCV8wJ+0XQ//DF3499s
-         hglw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743024359; x=1743629159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5dd6mTNGubCGg1g4nFzCM8Oi/0JxeDqx+tX2b+VPkns=;
-        b=BvZgpWoYwQBzMKofDM146lA6L/ZipZm59Hw7v4Xb4AMFU4ZMGeLt5uo3FG28ynKhdJ
-         cqEszevy2XnCp9TTsKM8nXj/WajmjfLNYgNXqe7Mi+xBdef4vfIKsM1DJ70G8lmm7SBF
-         wgGE/NzvL2EyOL4bTU9IUYLvY9qspRsUJ4gGj88GuysbRiLdQ2E47WfqXjJarRGzn3o+
-         C6r+YLN7YWknrJ3SGByqYccURSE+UnZZ1wgKkCKvvew0ZP2SPNaNiy9jFvS7Sm4kKXCa
-         SZizzGvGOddqbCl8SWa4dAy8iu6Gj7dLXJzKfcWkYCsqwBxZ5V48d3eWAEMrcotUdkTj
-         8ybw==
-X-Forwarded-Encrypted: i=1; AJvYcCUin4JPoylc2b4WJHYg82y790zfFrgSTDaQT2kE9QtCIF6lU6DDAFOgHxiTC54gy9iGtjbAkfrp/h2l1A==@vger.kernel.org, AJvYcCUsAHIWEM8HoQoc1nQMDvbeXKCp/XPeSHtBLHr+bZTqmWExj8jafY8G2hm8y5pySxOhoSxWwiMvfWADI+3BV1w=@vger.kernel.org, AJvYcCWpaIMFVMc/+qM4LljseC9DtV0QhN9ngF2cWzGzLPiatobiEBl2SVSOuMYQKdclxIfoHDk1DlOlEBvvh8Hv@vger.kernel.org, AJvYcCXEH14pwJLdTuLl1XCHO8VFqFDps+vFxzs5l8g4YZRYC3cE9X1Dgrq6zbJ8NGUK6F+K/375pMV8YUI7@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMLj6UVzurinENqH+ogjXKJKZgcRErdFXbrziekTJ5jGeU4keZ
-	BqHQmpQJR6GwT90AsMYa9WkCKtnyfyDimoi3g17C50kKP48g587ms+mhPLxidE/t+cQcGGyP895
-	pT6LSxSVz5M2Lzr+qlCwS6L4QGiA=
-X-Gm-Gg: ASbGncvf20ZPphsj3bTSU+rQxcCaqMEvY2eexCYjXXErN1W+M76Q0CBHa44L2GjlXW/
-	ZQgIH2IcA7r6MwGOAS1lS2mfTa1RiIFI14zs1mie/yc47+YdOFuWmT+ltXKhjSQpOLE6r7i4yWZ
-	ArPEzHCTSuxvlLee1PGbosQgCn
-X-Google-Smtp-Source: AGHT+IEED3VZRyXSj1RWmXvdwtqZOUHywyrSkL0ECd59uK04S5vf0a3JXMoziVw+bs6ZQOSa5dnlhNjG/4as8bSJVCk=
-X-Received: by 2002:a17:90b:4b0f:b0:2fe:b77a:2eba with SMTP id
- 98e67ed59e1d1-303a7d5b70cmr671784a91.1.1743024358841; Wed, 26 Mar 2025
- 14:25:58 -0700 (PDT)
+	s=arc-20240116; t=1743024475; c=relaxed/simple;
+	bh=rel0LO6wnZX0yamOBZ2Hr0Q9Kjf4GnVHzzI1nENcclc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eBgHdCC4ixKk7RLNq9eHMcVWOSsN/+XbEfnrzn8NaUEKcBBxSnistrCxGW6jZOra3tcR4GfvqZ2WVuFCtCvaOc9KnThgGRheI1bxPrFHt34TPZERVi3x7C5EjaLLRBDGWbF1h3VyVuEUQeXi2CsoKoPYJzkhcSymRgABY+6j7xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJdT/eTR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E69C4CEE2;
+	Wed, 26 Mar 2025 21:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743024474;
+	bh=rel0LO6wnZX0yamOBZ2Hr0Q9Kjf4GnVHzzI1nENcclc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mJdT/eTRAHvGAOCaMQrlGca1CdQRPyRIC4GWPhsZdS5Cveg6IVcs06MFgLWOoiFc6
+	 7eDhVMI1FPp513/EB/liAG5epgFpDSbrWW6qcuxu5fT/I84tAi1mLO4DGPuZFoy/hl
+	 yhJFsxFWW4duYwMY5UEWQTBiIxWrJTaGEFWSMZUkAUVlgIi54fcTBXl+z/i26zNJ7h
+	 Tes2xS47a7G4y4ITvCWvx7Up40J35SfQGMmTomRhTwLVWDi/pulQuINith0lKr/Sza
+	 CzoXM+2/etQGpvOB6ot50QsmGuCCK/YYUGczOHpHn4ZpMid4el9wWyK9UDQUHXmGjd
+	 20iq6iCgQ46Mw==
+Date: Wed, 26 Mar 2025 16:27:53 -0500
+From: Rob Herring <robh@kernel.org>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 04/10] rust: Add bindings for reading device properties
+Message-ID: <20250326212753.GA2844851-robh@kernel.org>
+References: <20250326171411.590681-1-remo@buenzli.dev>
+ <20250326171411.590681-5-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326171411.590681-9-remo@buenzli.dev> <20250326210735.696416-1-andrewjballance@gmail.com>
-In-Reply-To: <20250326210735.696416-1-andrewjballance@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 26 Mar 2025 22:25:46 +0100
-X-Gm-Features: AQ5f1Jp0Rp7E84Il1vwCrqKhN7FBkfP8izd3SLqtwQoJKmWnVsdDbD-_koYxdjo
-Message-ID: <CANiq72nP3EEYH6cdZRj2S9XZUYyi=RyyQARypGCFj3ULEB=+fQ@mail.gmail.com>
-Subject: Re: [PATCH 08/10] rust: property: Add property_get_reference_args
-To: Andrew Ballance <andrewjballance@gmail.com>
-Cc: remo@buenzli.dev, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	aliceryhl@google.com, andriy.shevchenko@linux.intel.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, devicetree@vger.kernel.org, dirk.behme@de.bosch.com, 
-	djrscally@gmail.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	heikki.krogerus@linux.intel.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, rafael@kernel.org, 
-	robh@kernel.org, rust-for-linux@vger.kernel.org, sakari.ailus@linux.intel.com, 
-	saravanak@google.com, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250326171411.590681-5-remo@buenzli.dev>
 
-On Wed, Mar 26, 2025 at 10:07=E2=80=AFPM Andrew Ballance
-<andrewjballance@gmail.com> wrote:
->
-> This function is missing safety comments.
+On Wed, Mar 26, 2025 at 06:13:43PM +0100, Remo Senekowitsch wrote:
+> The device property API is a firmware agnostic API for reading
+> properties from firmware (DT/ACPI) devices nodes and swnodes.
+> 
+> While the C API takes a pointer to a caller allocated variable/buffer,
+> the rust API is designed to return a value and can be used in struct
+> initialization. Rust generics are also utilized to support different
+> sizes of properties (e.g. u8, u16, u32).
+> 
+> Co-developed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+> ---
+>  rust/kernel/property.rs | 153 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 151 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/property.rs b/rust/kernel/property.rs
+> index b0a4bb63a..4756ea766 100644
+> --- a/rust/kernel/property.rs
+> +++ b/rust/kernel/property.rs
+> @@ -4,9 +4,17 @@
+>  //!
+>  //! C header: [`include/linux/property.h`](srctree/include/linux/property.h)
+>  
+> -use core::ptr;
+> +use core::{ffi::c_void, mem::MaybeUninit, ptr};
+>  
+> -use crate::{bindings, device::Device, str::CStr, types::Opaque};
+> +use crate::{
+> +    alloc::KVec,
+> +    bindings,
+> +    device::Device,
+> +    error::{to_result, Result},
+> +    prelude::*,
+> +    str::{CStr, CString},
+> +    types::{Integer, Opaque},
+> +};
+>  
+>  impl Device {
+>      /// Obtain the fwnode corresponding to the device.
+> @@ -26,6 +34,41 @@ fn fwnode(&self) -> &FwNode {
+>      pub fn property_present(&self, name: &CStr) -> bool {
+>          self.fwnode().property_present(name)
+>      }
+> +
+> +    /// Returns if a firmware property `name` is true or false
+> +    pub fn property_read_bool(&self, name: &CStr) -> bool {
+> +        self.fwnode().property_read_bool(name)
+> +    }
+> +
+> +    /// Returns the index of matching string `match_str` for firmware string property `name`
 
-Yeah -- that should be spotted by Clippy.
+Comment doesn't match the function.
 
-Remo: did you build with `CLIPPY=3D1`?
+> +    pub fn property_read_string(&self, name: &CStr) -> Result<CString> {
+> +        self.fwnode().property_read_string(name)
+> +    }
+> +
+> +    /// Returns the index of matching string `match_str` for firmware string property `name`
+> +    pub fn property_match_string(&self, name: &CStr, match_str: &CStr) -> Result<usize> {
+> +        self.fwnode().property_match_string(name, match_str)
+> +    }
+> +
+> +    /// Returns firmware property `name` integer scalar value
+> +    pub fn property_read<T: Integer>(&self, name: &CStr) -> Result<T> {
+> +        self.fwnode().property_read(name)
+> +    }
+> +
+> +    /// Returns firmware property `name` integer array values
+> +    pub fn property_read_array<T: Integer, const N: usize>(&self, name: &CStr) -> Result<[T; N]> {
+> +        self.fwnode().property_read_array(name)
+> +    }
+> +
+> +    /// Returns firmware property `name` integer array values in a KVec
+> +    pub fn property_read_array_vec<T: Integer>(&self, name: &CStr, len: usize) -> Result<KVec<T>> {
+> +        self.fwnode().property_read_array_vec(name, len)
+> +    }
+> +
+> +    /// Returns integer array length for firmware property `name`
+> +    pub fn property_count_elem<T: Integer>(&self, name: &CStr) -> Result<usize> {
+> +        self.fwnode().property_count_elem::<T>(name)
+> +    }
+>  }
+>  
+>  /// A reference-counted fwnode_handle.
+> @@ -57,6 +100,112 @@ pub fn property_present(&self, name: &CStr) -> bool {
+>          // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
+>          unsafe { bindings::fwnode_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
+>      }
+> +
+> +    /// Returns if a firmware property `name` is true or false
+> +    pub fn property_read_bool(&self, name: &CStr) -> bool {
+> +        // SAFETY: `name` is non-null and null-terminated. `self.as_raw` is valid
+> +        // because `self` is valid.
+> +        unsafe { bindings::fwnode_property_read_bool(self.as_raw(), name.as_char_ptr()) }
+> +    }
+> +
+> +    /// Returns the index of matching string `match_str` for firmware string property `name`
 
-Thanks!
+Same comment copy-n-paste mismatch.
 
-Cheers,
-Miguel
+> +    pub fn property_read_string(&self, name: &CStr) -> Result<CString> {
+> +        let mut str = core::ptr::null_mut();
+> +        let pstr: *mut _ = &mut str;
+> +
+> +        // SAFETY: `name` is non-null and null-terminated. `self.as_raw` is
+> +        // valid because `self` is valid.
+> +        let ret = unsafe {
+> +            bindings::fwnode_property_read_string(self.as_raw(), name.as_char_ptr(), pstr as _)
+> +        };
+> +        to_result(ret)?;
+> +
+> +        // SAFETY: `pstr` contains a non-null ptr on success
+> +        let str = unsafe { CStr::from_char_ptr(*pstr) };
+> +        Ok(str.try_into()?)
+> +    }
+
+There's a problem with the C version of this function that I'd like to 
+not repeat in Rust especially since ownership is clear. 
+
+The issue is that we never know when the returned string is no longer 
+needed. For DT overlays, we need to be able free the string when/if an 
+overlay is removed. Though overlays are somewhat orthogonal to this. 
+It's really just when the property's node refcount goes to 0 that the 
+property value could be freed.
+
+So this function should probably return a copy of the string that the 
+caller owns.
+
+Rob
 
