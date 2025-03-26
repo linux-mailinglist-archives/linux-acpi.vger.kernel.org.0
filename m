@@ -1,270 +1,137 @@
-Return-Path: <linux-acpi+bounces-12457-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12458-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36527A7203A
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:51:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A112EA72048
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 158F43B9739
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 20:50:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086373BA917
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 20:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85EA259C88;
-	Wed, 26 Mar 2025 20:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F225E800;
+	Wed, 26 Mar 2025 20:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqudimeM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQg5n+Ht"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88221F4717;
-	Wed, 26 Mar 2025 20:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ABD1A2541;
+	Wed, 26 Mar 2025 20:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743022267; cv=none; b=kBgMsfUFdVx1iTrRp3op/Y8QgulpTZ8cetyMbdBeJhuKfWjm8UOfpBBuw5aXgIzBEr4b3e982Lp7Ux6ypeYQZwQy2ymbNmiqYLfac9pa+5C2r58+VlUG56G3cF4BfhiMBMOcq0WhRXvVM5BBfMVbgpx92VMCqWpjR8Yv4nWgmPM=
+	t=1743022677; cv=none; b=UgFOFcKBaStWwb/PjfGatxFfEIzVLWWoJWxHeJ64pG96dgaQG+TcDmlNKj7vEj5TiaevUDbJj5AaeNneZWeXsPkFnrxLG4pTGZ44+I4SXtmqpp1qB45KdQrwA+xiwmi3SuzzUozXT+/fIZBTto3fYv7jh6xEVTlo2iCLkrcxnGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743022267; c=relaxed/simple;
-	bh=S27gZEX4GCylozEOPuY+M4umPDYp6zAXe1i1PawRNPA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nPb7jmTuQ8N6uSjDLBLFDcA0g2538oDykwgctKqdfLYySnvGKa0N6/tn7rNvLyPn8zXnu+aC4OS1nq3B6Z2mkzjit0fw2tjKXVqsLvLcs9S6mLi7tx30O8FgxokO6V6MJoaZ6Bh1/OLVgDWiJU+hYnrb/6538oo4Gqs6Cche+mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqudimeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026ACC4CEE2;
-	Wed, 26 Mar 2025 20:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743022267;
-	bh=S27gZEX4GCylozEOPuY+M4umPDYp6zAXe1i1PawRNPA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fqudimeMa7tpJCKwxfluvocGRhmS9Kih5in7bjvHTzBF0sgpTDNG1LtJxRzpZ9hbN
-	 z0djoeV1epts9cd6ZtJESN3GXiPgBj5OfGJ2hD2mT/JzXKM2FplFv4ARxaN/HkYC+Z
-	 EvqK0cDD2hmbQ8/pDhIPGPC0RULvuBsRSVt39cTg6vu8AYUZ66wyrAjXbTlFapQ/nH
-	 8mEos+cGY+pDeqfcxJ0NDH4P64gX9koHZsZV/y/XoAJrEd4poCUBvRCg8y3xB5dtIx
-	 8kqMrQ+8hG2CcZFdSH5OHA5AIX2V1jWcJ3w9Eun1O6PKCzvhZ7h7owXQ1FHqy1ZpTE
-	 yLyp1gTA4wnIA==
-Date: Wed, 26 Mar 2025 15:51:06 -0500
-From: Rob Herring <robh@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 01/10] rust: Move property_present to property.rs
-Message-ID: <20250326205106.GB2787672-robh@kernel.org>
+	s=arc-20240116; t=1743022677; c=relaxed/simple;
+	bh=Xv/Edr5Hb3rTIzpN5V6OcljHL4M6WZIYMoDXNiM7P5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R5gwj/hOXM4MZoR+l0lGoio9JPfy0iZmNsZUI6hQyxvQzfldH+uPcVjYNTf5fFPZfrLxSHCZXSfy7S6eqezVsFvzmzwQ5CbPO4uoOdnkKYpAQVDRIzRykwQHGZJBMMDctT9FJqA1jSlB/06He8RNn9XDovx7bKQis0uDLPdtUyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQg5n+Ht; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6003d977ab7so191515eaf.2;
+        Wed, 26 Mar 2025 13:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743022675; x=1743627475; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HYHrkcoZFZa1vLsLrjHkrL3wMK0K9pCcIzH7DNM6+0c=;
+        b=QQg5n+Ht7l3YHRZQ5MtJABwpBiOQqE4oiz05fAQXvpG+fAoEZ4K2/SSPNVTnSBNQAb
+         HcjidJ3C5Zp3HEVUnP5dBicqdCyGt390A3VWSO7ZwNqIORAGRQqZP/Acelwo040n+wMI
+         sKkH95xbj3IxgyboPlr4SdyfZ9Zg/M//4Smk7W1fpKT3WcGRQYj+o0kP/CCRBC4Og70G
+         awEixFG3rojJqz6T6cMrkb28v4pJD/FMtlAEcmkQ+bPhb18LeExBn/xt0jOv/vlu1CJs
+         YpMzdPOtWEiJoTZRi+s8LL5Rb1/ubQh4pWsQ4ydUjNXm+DeKKZDU0ioYODyVvTaYDIGa
+         zWpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743022675; x=1743627475;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HYHrkcoZFZa1vLsLrjHkrL3wMK0K9pCcIzH7DNM6+0c=;
+        b=ZwrzbrVmCvQjy9lSenJHsRYUp59idA++YzF6JqRrscdYbkXr+5AQKYhuE9IFGAumVv
+         CiDPErwnig4pQZQ3YRy1qOfOCQpTPZnTOJFI/q4hJYsnSVEVfrKtxzK/1bOKw+FqZa10
+         Jqbe11IvyMqrWHzsdSrdXgNJTl6RqbJXqDSVDWSETjdSNhh8LQN64Y8v2q7q4hZhWTbH
+         opCANLTIV7uY5CKlb7+5Xl7agkWWTqYqYqLS0CB6bUPW9JG7Bx0OClqcyP8OjMVZzRdN
+         T79Z3EbQtHGQcOCnn5z+2c+wVVZ8rjZlfyuGwIWEr9ij+l+yN/eHl440vqv+u5F5n3c7
+         yctQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWexXmkysn82QPBrSuLjGd9WGKg3zIK9xls6vO4B2ozHkZWpjtPd6OLXjvueD7GECagT4R2YYHr92LW8ROhLUU=@vger.kernel.org, AJvYcCXAzXvFhzFT8yY9qKZ58pwT7Bd+pKQ+3DAqscfv4CD2pyH2SZtC0F8Y6JZJIx0V6WlAgd7o9NHHZ9h/pg==@vger.kernel.org, AJvYcCXqNm1YfnaRDM2ZZYXdGA3XCDCLDLD4dFYvv0kcbfGBilCc9JDDNNorvX4SiCBgHBDeJSuuHGXlqpZEbKBz@vger.kernel.org, AJvYcCXuHNcfFSeEokC7rWrI1PBM7KwWGSqEw9OHPcg3MOVCh7mToZAq+YAEJhqj93uuCFWeSz1tqBQ0jaos@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ8WFhCTL5Vgw9vVDTYfLF/BE6ELPkPGKhXwtgOJlfE3skW/1U
+	I0MAlS+RFoYkr5hNjE5kux6nr/CHUp540U1N+daDniwHladFehS2
+X-Gm-Gg: ASbGncsRzqovqDnbgxZAF2Yn/iaPMxMx5ydVwtX4CASEc97KvlACMjsF7lVuv3Y9eNh
+	d/t52A1liCbrMuZn+6IUhvKLkmdlqPrqiCRI3DQRLS0cGmkTJJgPOSroG+h2uBey7NibnzO1IqT
+	Au3b/NBUac5h/B1FqYHkMKcafiy9SnykoaAYA/Td6mxE9us9MyNn0wspB0wrGqJMrvtqK72FvmH
+	+m8KXVGGdomWVn5xSwM0swciPZQ+yefzksZkqG6yo8Qxt5dsaNFL2WxUPGrOncfJgUs8/lWQSfI
+	ib7g3c5Cd2VnFsXz+dp677LbEw/ZKr9tgZgJMDTvOC8v28R4WpbjJd4QYcPS7dJDWNFCaTN7oG7
+	jmQVCsfUkLIeFtr/DBqgPpzF5aes=
+X-Google-Smtp-Source: AGHT+IEUmSEVdaGxQzHRlalvt7gxWnlUq6R1qC4LIh6BmNt4i8VcMR3YrCDJk0WyRPA+5ibCH5mT3A==
+X-Received: by 2002:a05:6871:7b0a:b0:2c1:5fe3:22eb with SMTP id 586e51a60fabf-2c847f73257mr612937fac.15.1743022674554;
+        Wed, 26 Mar 2025 13:57:54 -0700 (PDT)
+Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-2c77ec51be0sm3159443fac.16.2025.03.26.13.57.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Mar 2025 13:57:54 -0700 (PDT)
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: remo@buenzli.dev
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	andriy.shevchenko@linux.intel.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	devicetree@vger.kernel.org,
+	dirk.behme@de.bosch.com,
+	djrscally@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	heikki.krogerus@linux.intel.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rafael@kernel.org,
+	robh@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	sakari.ailus@linux.intel.com,
+	saravanak@google.com,
+	tmgross@umich.edu
+Subject: Re: [PATCH 0/10] More Rust bindings for device property reads 
+Date: Wed, 26 Mar 2025 15:54:09 -0500
+Message-ID: <20250326205409.694744-1-andrewjballance@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250326171411.590681-1-remo@buenzli.dev>
 References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250326171411.590681-2-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326171411.590681-2-remo@buenzli.dev>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 26, 2025 at 06:13:40PM +0100, Remo Senekowitsch wrote:
-> Not all property-related APIs can be exposed directly on a device.
-> For example, iterating over child nodes of a device will yield
-> fwnode_handle. Thus, in order to access properties on these child nodes,
-> the APIs has to be duplicated on a fwnode as they are in C.
+Hi thanks for sending these in.
 
-s/has/have/
+On Wed, Mar 26, 2025 at 12:13 PM Remo Senekowitsch Wrote: 
+> This is my first time posting to the mailing list, please let me know if
+> I did anything wrong.
 
-> 
-> A related discussion can be found on the R4L Zulip[1].
-> 
-> [1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/near/505415697
+you probably will have to resubmit in the patch canonical format[1]
 
-Useful below the '---', but I don't think we want to keep this link 
-forever. And who knows how long it will be valid? The commit msg needs 
-to stand on its own, and I think it does.
+I would recomend reading the docs but in summary:
+ - all of your patches should have the subsystem in the subject line.
+ - patch 6 is missing a commit message
+ - commit messages should be written in the imperitive tone
+ - a couple of your commit messages give a reason for the changes but
+   do not have a summary of the changes
+ - for your v2 you should add a diffstat to your cover letter running
+   `git format-patch --base=auto --cover-letter` does this automatically
+   for you
 
-> 
-> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> ---
->  rust/helpers/helpers.c  |  1 +
->  rust/helpers/property.c | 13 ++++++++
->  rust/kernel/device.rs   |  7 ----
->  rust/kernel/lib.rs      |  1 +
->  rust/kernel/property.rs | 73 +++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 88 insertions(+), 7 deletions(-)
->  create mode 100644 rust/helpers/property.c
->  create mode 100644 rust/kernel/property.rs
-> 
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 0640b7e11..b4eec5bf2 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -23,6 +23,7 @@
->  #include "platform.c"
->  #include "pci.c"
->  #include "pid_namespace.c"
-> +#include "property.c"
->  #include "rbtree.c"
->  #include "rcu.c"
->  #include "refcount.c"
-> diff --git a/rust/helpers/property.c b/rust/helpers/property.c
-> new file mode 100644
-> index 000000000..c37c74488
-> --- /dev/null
-> +++ b/rust/helpers/property.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/property.h>
-> +
-> +struct fwnode_handle *rust_helper_dev_fwnode(struct device *dev)
-> +{
-> +	return dev_fwnode(dev);
-> +}
-> +
-> +void rust_helper_fwnode_handle_put(struct fwnode_handle *fwnode)
-> +{
-> +	fwnode_handle_put(fwnode);
-> +}
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index db2d9658b..d5e6a19ff 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -6,7 +6,6 @@
->  
->  use crate::{
->      bindings,
-> -    str::CStr,
->      types::{ARef, Opaque},
->  };
->  use core::{fmt, ptr};
-> @@ -181,12 +180,6 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
->              )
->          };
->      }
-> -
-> -    /// Checks if property is present or not.
-> -    pub fn property_present(&self, name: &CStr) -> bool {
-> -        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-> -        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-> -    }
->  }
->  
->  // SAFETY: Instances of `Device` are always reference-counted.
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 496ed32b0..ca233fd20 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -67,6 +67,7 @@
->  pub mod platform;
->  pub mod prelude;
->  pub mod print;
-> +pub mod property;
->  pub mod rbtree;
->  pub mod revocable;
->  pub mod security;
-> diff --git a/rust/kernel/property.rs b/rust/kernel/property.rs
-> new file mode 100644
-> index 000000000..b0a4bb63a
-> --- /dev/null
-> +++ b/rust/kernel/property.rs
-> @@ -0,0 +1,73 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Unified device property interface.
-> +//!
-> +//! C header: [`include/linux/property.h`](srctree/include/linux/property.h)
-> +
-> +use core::ptr;
-> +
-> +use crate::{bindings, device::Device, str::CStr, types::Opaque};
-> +
-> +impl Device {
-> +    /// Obtain the fwnode corresponding to the device.
-> +    fn fwnode(&self) -> &FwNode {
-> +        // SAFETY: `self` is valid.
-> +        let fwnode_handle = unsafe { bindings::dev_fwnode(self.as_raw()) };
-> +        if fwnode_handle.is_null() {
-> +            panic!("fwnode_handle cannot be null");
+Andrew
 
-It's usually not a good idea to panic the kernel especially with 
-something a driver calls as that's probably recoverable.
 
-Users/drivers testing fwnode_handle/of_node for NULL is pretty common. 
-Though often that's a legacy code path, so maybe not allowing NULL is 
-fine for now.
-
-> +        }
-> +        // SAFETY: `fwnode_handle` is valid. Its lifetime is tied to `&self`. We
-> +        // return a reference instead of an `ARef<FwNode>` because `dev_fwnode()`
-> +        // doesn't increment the refcount.
-> +        unsafe { &*fwnode_handle.cast() }
-> +    }
-> +
-> +    /// Checks if property is present or not.
-> +    pub fn property_present(&self, name: &CStr) -> bool {
-> +        self.fwnode().property_present(name)
-> +    }
-> +}
-
-The C developer in me wants to put this after the FwNode stuff since 
-this uses it.
-
-> +
-> +/// A reference-counted fwnode_handle.
-> +///
-> +/// This structure represents the Rust abstraction for a
-> +/// C `struct fwnode_handle`. This implementation abstracts the usage of an
-> +/// already existing C `struct fwnode_handle` within Rust code that we get
-> +/// passed from the C side.
-> +///
-> +/// # Invariants
-> +///
-> +/// A `FwNode` instance represents a valid `struct fwnode_handle` created by the
-> +/// C portion of the kernel.
-> +///
-> +/// Instances of this type are always reference-counted, that is, a call to
-> +/// `fwnode_handle_get` ensures that the allocation remains valid at least until
-> +/// the matching call to `fwnode_handle_put`.
-> +#[repr(transparent)]
-> +pub struct FwNode(Opaque<bindings::fwnode_handle>);
-> +
-> +impl FwNode {
-> +    /// Obtain the raw `struct fwnode_handle *`.
-> +    pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
-> +        self.0.get()
-> +    }
-> +
-> +    /// Checks if property is present or not.
-> +    pub fn property_present(&self, name: &CStr) -> bool {
-> +        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-> +        unsafe { bindings::fwnode_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-> +    }
-> +}
-> +
-> +// SAFETY: Instances of `FwNode` are always reference-counted.
-> +unsafe impl crate::types::AlwaysRefCounted for FwNode {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-> +        unsafe { bindings::fwnode_handle_get(self.as_raw()) };
-> +    }
-> +
-> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> +        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-> +        unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
-> +    }
-> +}
-> -- 
-> 2.49.0
-> 
+[1] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#the-canonical-patch-format
 
