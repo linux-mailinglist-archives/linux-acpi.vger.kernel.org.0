@@ -1,145 +1,101 @@
-Return-Path: <linux-acpi+bounces-12455-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12456-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD2FA71FCE
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:00:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0910A71FF1
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 21:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 907583B4CE9
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 20:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357051782DC
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Mar 2025 20:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBAF2517AF;
-	Wed, 26 Mar 2025 20:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981D22571A8;
+	Wed, 26 Mar 2025 20:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Coz3br1C"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="lVlzVs2g"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376C1137930;
-	Wed, 26 Mar 2025 20:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE93A253B59;
+	Wed, 26 Mar 2025 20:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743019233; cv=none; b=Y2Ambe/gWxH3a1vVtsWy4WMds47n3VP4feQO1RUjqQI2Dw9ly5UtJLrn443G+EbJOp2qsSS3pMEhNYeA4HKB7+YyWpmjZknOylOiaViHVUMoSj9Ugry4hCOaPrZ+F9FCEnl5II0Wj35G9sHa0Z8qcTsqZctzIeO/Rn1repo6vFs=
+	t=1743019935; cv=none; b=VLgtVaDBF2T7RWoEN7qfhDHGHoOV4ZlDHIJFO+zqcK25r+6sxgWLqxH5xgO5+3j+RNlroM66vBR74cgHCMGS6LSTgal1pEsJvy07vBcVCZT9fuk1NCsytRzASeODuqn1rGuk4LdT7+T0SfJpVaK2sqiaSuL9KcI1c0bdy72GyLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743019233; c=relaxed/simple;
-	bh=bvMdOWoWq0TBIL9gpxTw+jRmtDhjTC4zq9zMiMKAk0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ecXqZGIpcRY1K8/2J2ckihFzMgw4x0/WmMjVRWIQTxsQ9DFX/Qk72N8lNFfVbxzrFd9P/QfWXe8fcUJ2u1551wRe9cWcfqNSErudu2qb/JdnvMXVZk5kuAP2J9Br84hvKtREmh5rSVy21tuzv1vDh8PpYKLNhAUXJw2O0c8FLho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Coz3br1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9D8C4CEE2;
-	Wed, 26 Mar 2025 20:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743019232;
-	bh=bvMdOWoWq0TBIL9gpxTw+jRmtDhjTC4zq9zMiMKAk0Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Coz3br1C085AjKg3xpEu3rqJOSHK4+9FHNRPrwigy2X+ZSLurJxOOx8bi6irynCeN
-	 Jk3QfzJoZpmz7BnBy2Fyj7sU68qAZhxCpbCrsDPouLni+XXcl5sN8xFHotAEy5IeBf
-	 N4SC0tRAJNR34XzWtelXMe5InrO3ipA2XNQdyrtb6bBU5MiSDw1u6pBmzEb0MKSu0F
-	 /4FOGMFT+bbQyqe1HaWzkhP66gSQMUbYhjc3fd4cbKvvhgxeLLbMdcM1n4Om0kojCo
-	 c3oeg0tPGGladfi9fiQIPJx4I5NZmS9M/IOt9vpyjkuOD++cmRNNSUsiI9GSWAYy9S
-	 3kF2HnsBEUJWg==
-Date: Wed, 26 Mar 2025 15:00:31 -0500
-From: Rob Herring <robh@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 02/10] rust: Add an Integer trait
-Message-ID: <20250326200031.GA2787672-robh@kernel.org>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250326171411.590681-3-remo@buenzli.dev>
+	s=arc-20240116; t=1743019935; c=relaxed/simple;
+	bh=DLVhu0vtl8L7mHg1TiLT36ykzz3ITYF1djo57NTnUSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OGbwbmjry4nLND2oCa/r5p1oFi0KALM1RU0IFduicxn88pcvx3kU2yIb5HWoH0oSUF4PrPmm02tE7w7h00Wmr7g0AYs5R2PeDA7GfxavrYN4bgdUyCnfIje5GseKJnH+NBZWvAMSBDAzhjrHKRV8IQ6dZAZJ0FUFR+7RMavVxus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=lVlzVs2g; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.3.1)
+ id b1b41c0b5c00127b; Wed, 26 Mar 2025 21:12:10 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 3A72F7F6388;
+	Wed, 26 Mar 2025 21:12:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1743019930;
+	bh=DLVhu0vtl8L7mHg1TiLT36ykzz3ITYF1djo57NTnUSw=;
+	h=From:Subject:Date;
+	b=lVlzVs2gOkOpqnTEzpKwmDe0VjpB2bGyfEc5qiDrFLPGslBZiYPc5Ih45+hYbAuD1
+	 twyNiKsN8DiCqU9mBuIpjDCmgRLNQiEupDpc4FOkiRRQhFcF0U2NvvstUoH0wBBIFt
+	 9yDmq1a0qzovSbWL2eSSm2pptO9l3MSse55IWh5i/GCl0GZCn6j+dbVA4eYUhzBYeb
+	 JAbwCPQwGRFSNPmzqLzWwyUBXRbEoJtV1GV46sYAj5YMUZOsfu1fH/rTvH7WHsvNxd
+	 0cZSxOqZIQ1uxmhmvLR7PWRD2P2ZlUL7h7+hcemyaBUA7dynUz/ehAjzd2ocJiUTNK
+	 /oZL3+/rk2mjA==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
+ Saket Dumbre <saket.dumbre@intel.com>
+Subject: [PATCH v1 0/8] ACPICA: ACPICA 20241212
+Date: Wed, 26 Mar 2025 21:04:13 +0100
+Message-ID: <5873907.DvuYhMxLoT@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326171411.590681-3-remo@buenzli.dev>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieeigeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhjfiesrhhjfiihshhotghkihdrnhgvthdpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnthgvlhdrtghomhdprhgtphhtthhopehsrghkvghtrdguuhhmsghrvgesihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
-On Wed, Mar 26, 2025 at 06:13:41PM +0100, Remo Senekowitsch wrote:
-> From: "Rob Herring (Arm)" <robh@kernel.org>
-> 
-> Add an "Integer" trait similar to crate::num::Integer. This is useful
-> for implementing generic methods which operate on different sizes of
-> integers. One example is reading DT/ACPI firmware properties.
-> 
-> This was originally proposed by Alice Ryhl[1].
-> 
-> [1] https://lore.kernel.org/rust-for-linux/CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com/
-> 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Hi All,
 
-This needs your Signed-off-by too because you are sending it.
+This series of patches represents upstream ACPICA changes made between
+the 20240827 release and the 20241212 release that have not been included
+into the Linux source code yet.
 
-> ---
->  rust/kernel/types.rs | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 2bbaab83b..21647b7ba 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -3,10 +3,11 @@
->  //! Kernel types.
->  
->  use crate::init::{self, PinInit};
-> +use crate::transmute::{AsBytes, FromBytes};
->  use core::{
->      cell::UnsafeCell,
->      marker::{PhantomData, PhantomPinned},
-> -    mem::{ManuallyDrop, MaybeUninit},
-> +    mem::{size_of, ManuallyDrop, MaybeUninit},
->      ops::{Deref, DerefMut},
->      ptr::NonNull,
->  };
-> @@ -553,6 +554,25 @@ pub enum Either<L, R> {
->      Right(R),
->  }
->  
-> +/// Trait defined for all integer types similar to `crate::num::Integer`
-> +pub trait Integer: FromBytes + AsBytes + Copy {
-> +    /// Size of the integer in bytes
-> +    const SIZE: usize;
-> +}
-> +
-> +macro_rules! impl_int {
-> +    ($($typ:ty),* $(,)?) => {$(
-> +        impl Integer for $typ {
-> +            const SIZE: usize = size_of::<Self>();
-> +        }
-> +    )*};
-> +}
-> +
-> +impl_int! {
-> +    u8, u16, u32, u64, usize,
-> +    i8, i16, i32, i64, isize,
-> +}
-> +
->  /// Zero-sized type to mark types not [`Send`].
->  ///
->  /// Add this type as a field to your struct if your type should not be sent to a different task.
-> -- 
-> 2.49.0
-> 
+It contains the following material:
+
+Adam Lackorzynski (1):
+      ACPICA: Fix typo in comments for SRAT structures
+
+Saket Dumbre (3):
+      ACPICA: New release 20240927
+      ACPICA: Fix warnings from PR #295 merge
+      ACPICA: Logfile: Changes for version 20241212
+
+Seunghun Han (2):
+      ACPICA: fix acpi operand cache leak in dswstate.c
+      ACPICA: fix acpi parse and parseext cache leaks
+
+Zaid Alali (2):
+      ACPICA: actbl1: Update values to hex to follow ACPI specs
+      ACPICA: actbl1: Add EINJv2 get error type action
+
+Thanks!
+
+
+
 
