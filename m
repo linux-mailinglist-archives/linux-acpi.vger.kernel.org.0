@@ -1,459 +1,217 @@
-Return-Path: <linux-acpi+bounces-12493-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12494-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BFDA72CB2
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 10:47:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7EEA72D84
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 11:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CC133B68CE
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 09:47:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1B4016B903
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 10:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F84020D4F3;
-	Thu, 27 Mar 2025 09:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049E320E320;
+	Thu, 27 Mar 2025 10:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ShKgLqAI"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PfEYJezL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6D3171C9
-	for <linux-acpi@vger.kernel.org>; Thu, 27 Mar 2025 09:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A685A20E308
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Mar 2025 10:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743068832; cv=none; b=T3abuAPeULKN0UWkcHvlsyq3iPS59GzewVhMeQs8k6PT0Xm0VGEXV/nrW9wSWdLg7kttEaex1jTABhooTmQI5nf1AXkzJ0E4hSUGUoxMAY/hqXEbWuRpZeDUqJp6x3gkz54iwnWqiXaatzF0assFC2hqaD01VNu9oyKQc82cqtM=
+	t=1743070482; cv=none; b=AmLMgw89bLUtUiIY61F4Cli02GuPmCyI9RfbAL/8UKBlV9wNgRiw+ObrvvqHISpNMG2G78D9df5uZWzwdD4JsoVo2IaGcrNE73w9mvOOGdqco6TqsTDxsj7heNLtNDMKxWhPkaQvEQXvPpKt8OKAgVHBGLR9olbFUFn/EuV0AUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743068832; c=relaxed/simple;
-	bh=pT9PkSrT7mqR+WQ6DEQw+ntfETqkmHkkVbQrJp/Yxyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZDPIPK+2+zM7PJYgsVPl0NvuLMkSl3pHBCVOQ0QMsZx0/afqtnkIijpts1wCfiTCbkiYuzwV7hPJsno5nmbSgz9K3rorVFb0ZioCKGciWyi5f3vF58N/A0R8Sp2Ya2qlRSzw/yhPYKjeQ3SiPbriygdlCO2pIArudfOcH4UrdLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ShKgLqAI; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff615a114bso2921887a91.0
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Mar 2025 02:47:08 -0700 (PDT)
+	s=arc-20240116; t=1743070482; c=relaxed/simple;
+	bh=mBOblcfMWCKyDXGapWwCTQYegZlR2y8I30LIqPbI/Es=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nq8VuQbNlW2gVvhwF2yMhlKjoTB4lfMqFWg4ay3BXzh3zGdBXo6hsoq6ghVa96c1vabF4r6S1KbFLO0rqPQ+Aq5PJ52+l0jTfADNhl+oQ1B2i8rOmecm9hIjDqKwklj3luLgf4hpMJ3frVS8CIJRgibD3Zdw9Uz2nkLwJlvG/HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PfEYJezL; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3914bc3e01aso373691f8f.2
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Mar 2025 03:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1743068828; x=1743673628; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SW9HCzyLQIZzY69YplM0Pf2SuZh3YD6bPueDr3mT+uc=;
-        b=ShKgLqAIBVI6t6MoN6R7UM0qFNopGJWRD8L/eFlvlA5xTes03oCWNuwAXETlZsWK6m
-         nwGOQBTVY6fuuD1U0+VIU/hltO4JB6CafXFWrPtgB2uv/6i9Y0nhsSBcL2t1eC8r5/mL
-         MqnfpvhJ6uaIH10W2tfX9XrLk08OX/Rc0Jcqk=
+        d=suse.com; s=google; t=1743070479; x=1743675279; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8QIJATbl4wLG4OdrsHUeIGEbyiXBb/oACeqPdaFMavw=;
+        b=PfEYJezLvNy0MVvcoUjw7/Qux2PDaYy4eXc+7k/+c+jYtiLht+5y3KjdqU/YhPjbiS
+         OGu1/vAb8WDy0nbQH6/IipDgOQ5aw8U9jOAo/Dt4ZQbceyvnmPXj59tO2kzdTfcqEsmw
+         M44ieoC4YTKym9j/JVWmvapQcl2vYN0g30XDkvlwKZkQQj6U7U3B0cRT6KzDCK2DVAMQ
+         iHGo/BqUcOrzaq043GIbI7GIKjmaADV3Y6XDrqVifTHNNE0VcJojc62pgNmdIlpNFChJ
+         JCsnhyvnGsRbVZDWRDej1Ddzh1yD1m8TOLoNX2eFPtOE+AHVoBzQK8P3ZJ5F1GIMHM+v
+         TKNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743068828; x=1743673628;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1743070479; x=1743675279;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SW9HCzyLQIZzY69YplM0Pf2SuZh3YD6bPueDr3mT+uc=;
-        b=EDrqT/i0oZH/pn55mEmrdYX/QyYzLuKv16fN+NJr8tQpytYhflrX6s+/Mu09R677n4
-         yDxQehKTxHcophiYy4b8ku2hHPwYTILF67Xd420hWLqfc3KHsmHxF/Mnao/7iY173HG7
-         wEs1scM6BRp4HRzhDr5fcUJMPJGxrGCh50nEYJhwTuRLRUP0CT9LRRhMBKahqhGNYvm3
-         nUC59RQhatdDItkZJ3hMd3IXEMeyiFx1Sqq7H0Wp0JCS+3A8p7WZ7wztNyhRqRXaq4Cj
-         d43PS7Py3fenLSgoDzbICPXQytznwH2rNtgzA9BDg76Ou024pQ/hfVXzJfLjCmG01hCC
-         mzwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhE4M1QgklpV1D9kLLyP3qLWW9CZ9ie4ppeQWH5WOOOplbYMYfDMIGd4UvNw3ZUFTcx8e1GSJq/A8I@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSk/TkXDx1GHoSN33idAYz63Ih8zV2ARVCunvseZ1oah44h/OE
-	vHk80//+vNn6wxFBhM7WdlVBBzXrN9LR0IgZC7e4ZAzjdAsSDmDSVEWADG6kEg==
-X-Gm-Gg: ASbGnctJ1hjiJbFpjfWonAiX7dL/YQCWZMI6xDOntjssPcpI79ab+YSX0iSwD63bpKY
-	dY2y6uK60qJoWa5B8j8cIGfwFL7X7vdNnx12O9TALsQUHaIY72rCWFZJkwjxBTLPFbCpNJBdEGO
-	UsDPhh4Fis5maY0+Shxzn4Rj3IePg7cno7HSdHxzQ2w8tnuXP7PaC8YSh7uqVya43UKHBzQDddo
-	u5pQ/9n+/S4VjY6diEYLlfzHyG8OiaGEvsE0PRX7ChPL3kesDCMi5/QiKCnQEjTc1uVSyIBHWO/
-	e8Vo0sYZTvsGx7dOOcHCT2KXBga8yR356I3hJw==
-X-Google-Smtp-Source: AGHT+IFJkmLWd/lonFB+EtD7O5kAypEs9+uoWSd7MhEjp5k731wZKwYQHKuuFIZHJ3I3Aw60m3IKpg==
-X-Received: by 2002:a17:90b:5703:b0:2fa:603e:905c with SMTP id 98e67ed59e1d1-303788c1d9amr11144403a91.2.1743068827905;
-        Thu, 27 Mar 2025 02:47:07 -0700 (PDT)
-Received: from google.com ([2401:fa00:1:10:2c04:d30e:5507:f399])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3039dfd499csm1946525a91.10.2025.03.27.02.47.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Mar 2025 02:47:07 -0700 (PDT)
-Date: Thu, 27 Mar 2025 17:47:01 +0800
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-Message-ID: <20250327094701.GA791706@google.com>
-References: <cover.1740753261.git.robin.murphy@arm.com>
- <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
+        bh=8QIJATbl4wLG4OdrsHUeIGEbyiXBb/oACeqPdaFMavw=;
+        b=EY7rfXoSgKk329h49NfGO/m/ChP9ugrpd5ZD3ogMtPuD3zm+3Xw4yZVemCvRYdXzaR
+         ltOxN/DVdTYQelILkgPJ553tUXM1YnH1c084NnE8vGP6YYieAGg3Mv5CEbrzQM/pmdbk
+         E8XNo18ghxytPcMU+TV2DKUzBPsWWpvsVaVxE7oosyA1hq8MN0BLH9W+K0O1fpgKqLmr
+         B2twBth8idvgom51rlUvgR7HZNm02dzP1ya3KOfMi2n3VogGL6mVvFrPIl6WXkyrNW+7
+         SyU8y7gyS5aupsucqAhtvppyA6U0EOThJoIG8q71NNyakR3HvChAOmcQaS3CcD8HHtXv
+         T7eA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyJkyd1TN05XGkzigtmRnOH/G3bLIP/sKWGhXNwzpcalaAfjoKjLJ/TqRU6LCo4/IVFa2Yihvz2jsL@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfR/+CKe5VOPWS336fWqxbD60xaizq3e9KAV1JOfWrs4MZn5P4
+	dsd+erNmGi/R4BWI5liVd4aO4cz1rlRSlFIaUljjwJRaYB7ltP5WE97g2zRE9w==
+X-Gm-Gg: ASbGncuYCXXpFx3YKgJuUg22sKxO3tlVdqgz5DR4CD3CHKeoNiGKL6HEejKOHLsvEal
+	leZPavUk6rUnApgtxhUSJGBVPPR0wb4dqJTRu105L491G5ylBaC0NDjieoCuJxJqJBCkUKeoK77
+	VCFPhNqoHsBrDwhuqhghy6hnfq8NuUTJ1HFLqtNB4H+gkKWb4PZF4B9HIqDzngH9OFMJu/md+Ke
+	HxyLnWlDLrt+qEcz0ip5NGXC4KABcnuzue5/ddzHbmGONX3xDC9DYylnB8IZoFJWp1FaN6rTWY5
+	SSMn92hCV4AChKmfWF1vQVtA6ahEsFmm781/8fy5pZCE+U+IUs0//8gB82ZX0DiumG0Co3CTaT3
+	96U7+SHhASjhA6W0T8K+GczSWO6RhHg==
+X-Google-Smtp-Source: AGHT+IHgHVz/7dbVkSCT2Llln75bv9PXy0vAF5ynyfKbcKddVwqAfZuLGuMyHldhkr298BSA9jh8aw==
+X-Received: by 2002:a05:6000:2ca:b0:38f:503a:d93f with SMTP id ffacd0b85a97d-39ad1770526mr2679967f8f.40.1743070478824;
+        Thu, 27 Mar 2025 03:14:38 -0700 (PDT)
+Received: from [10.156.60.236] (ip-037-024-206-209.um08.pools.vodafone-ip.de. [37.24.206.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f995423sm19196181f8f.20.2025.03.27.03.14.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Mar 2025 03:14:38 -0700 (PDT)
+Message-ID: <3796f2d9-738f-4cdf-a4a2-61c4aa99c310@suse.com>
+Date: Thu, 27 Mar 2025 11:14:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: NULL pointer dereference in cpufreq_update_limits(?) under Xen PV
+ dom0 - regression in 6.13
+To: =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, xen-devel <xen-devel@lists.xenproject.org>,
+ Juergen Gross <jgross@suse.com>, regressions@lists.linux.dev,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>
+References: <Z-ShAR59cTow0KcR@mail-itl>
+Content-Language: en-US
+From: Jan Beulich <jbeulich@suse.com>
+Autocrypt: addr=jbeulich@suse.com; keydata=
+ xsDiBFk3nEQRBADAEaSw6zC/EJkiwGPXbWtPxl2xCdSoeepS07jW8UgcHNurfHvUzogEq5xk
+ hu507c3BarVjyWCJOylMNR98Yd8VqD9UfmX0Hb8/BrA+Hl6/DB/eqGptrf4BSRwcZQM32aZK
+ 7Pj2XbGWIUrZrd70x1eAP9QE3P79Y2oLrsCgbZJfEwCgvz9JjGmQqQkRiTVzlZVCJYcyGGsD
+ /0tbFCzD2h20ahe8rC1gbb3K3qk+LpBtvjBu1RY9drYk0NymiGbJWZgab6t1jM7sk2vuf0Py
+ O9Hf9XBmK0uE9IgMaiCpc32XV9oASz6UJebwkX+zF2jG5I1BfnO9g7KlotcA/v5ClMjgo6Gl
+ MDY4HxoSRu3i1cqqSDtVlt+AOVBJBACrZcnHAUSuCXBPy0jOlBhxPqRWv6ND4c9PH1xjQ3NP
+ nxJuMBS8rnNg22uyfAgmBKNLpLgAGVRMZGaGoJObGf72s6TeIqKJo/LtggAS9qAUiuKVnygo
+ 3wjfkS9A3DRO+SpU7JqWdsveeIQyeyEJ/8PTowmSQLakF+3fote9ybzd880fSmFuIEJldWxp
+ Y2ggPGpiZXVsaWNoQHN1c2UuY29tPsJgBBMRAgAgBQJZN5xEAhsDBgsJCAcDAgQVAggDBBYC
+ AwECHgECF4AACgkQoDSui/t3IH4J+wCfQ5jHdEjCRHj23O/5ttg9r9OIruwAn3103WUITZee
+ e7Sbg12UgcQ5lv7SzsFNBFk3nEQQCACCuTjCjFOUdi5Nm244F+78kLghRcin/awv+IrTcIWF
+ hUpSs1Y91iQQ7KItirz5uwCPlwejSJDQJLIS+QtJHaXDXeV6NI0Uef1hP20+y8qydDiVkv6l
+ IreXjTb7DvksRgJNvCkWtYnlS3mYvQ9NzS9PhyALWbXnH6sIJd2O9lKS1Mrfq+y0IXCP10eS
+ FFGg+Av3IQeFatkJAyju0PPthyTqxSI4lZYuJVPknzgaeuJv/2NccrPvmeDg6Coe7ZIeQ8Yj
+ t0ARxu2xytAkkLCel1Lz1WLmwLstV30g80nkgZf/wr+/BXJW/oIvRlonUkxv+IbBM3dX2OV8
+ AmRv1ySWPTP7AAMFB/9PQK/VtlNUJvg8GXj9ootzrteGfVZVVT4XBJkfwBcpC/XcPzldjv+3
+ HYudvpdNK3lLujXeA5fLOH+Z/G9WBc5pFVSMocI71I8bT8lIAzreg0WvkWg5V2WZsUMlnDL9
+ mpwIGFhlbM3gfDMs7MPMu8YQRFVdUvtSpaAs8OFfGQ0ia3LGZcjA6Ik2+xcqscEJzNH+qh8V
+ m5jjp28yZgaqTaRbg3M/+MTbMpicpZuqF4rnB0AQD12/3BNWDR6bmh+EkYSMcEIpQmBM51qM
+ EKYTQGybRCjpnKHGOxG0rfFY1085mBDZCH5Kx0cl0HVJuQKC+dV2ZY5AqjcKwAxpE75MLFkr
+ wkkEGBECAAkFAlk3nEQCGwwACgkQoDSui/t3IH7nnwCfcJWUDUFKdCsBH/E5d+0ZnMQi+G0A
+ nAuWpQkjM1ASeQwSHEeAWPgskBQL
+In-Reply-To: <Z-ShAR59cTow0KcR@mail-itl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
-> In hindsight, there were some crucial subtleties overlooked when moving
-> {of,acpi}_dma_configure() to driver probe time to allow waiting for
-> IOMMU drivers with -EPROBE_DEFER, and these have become an
-> ever-increasing source of problems. The IOMMU API has some fundamental
-> assumptions that iommu_probe_device() is called for every device added
-> to the system, in the order in which they are added. Calling it in a
-> random order or not at all dependent on driver binding leads to
-> malformed groups, a potential lack of isolation for devices with no
-> driver, and all manner of unexpected concurrency and race conditions.
-> We've attempted to mitigate the latter with point-fix bodges like
-> iommu_probe_device_lock, but it's a losing battle and the time has come
-> to bite the bullet and address the true source of the problem instead.
+On 27.03.2025 01:51, Marek Marczykowski-Górecki wrote:
+> Hi,
 > 
-> The crux of the matter is that the firmware parsing actually serves two
-> distinct purposes; one is identifying the IOMMU instance associated with
-> a device so we can check its availability, the second is actually
-> telling that instance about the relevant firmware-provided data for the
-> device. However the latter also depends on the former, and at the time
-> there was no good place to defer and retry that separately from the
-> availability check we also wanted for client driver probe.
+> I've got a report[1] that 6.13.6 crashes as listed below. It worked fine in
+> 6.12.11. We've tried few simple things to narrow the problem down, but
+> without much success.
 > 
-> Nowadays, though, we have a proper notion of multiple IOMMU instances in
-> the core API itself, and each one gets a chance to probe its own devices
-> upon registration, so we can finally make that work as intended for
-> DT/IORT/VIOT platforms too. All we need is for iommu_probe_device() to
-> be able to run the iommu_fwspec machinery currently buried deep in the
-> wrong end of {of,acpi}_dma_configure(). Luckily it turns out to be
-> surprisingly straightforward to bootstrap this transformation by pretty
-> much just calling the same path twice. At client driver probe time,
-> dev->driver is obviously set; conversely at device_add(), or a
-> subsequent bus_iommu_probe(), any device waiting for an IOMMU really
-> should *not* have a driver already, so we can use that as a condition to
-> disambiguate the two cases, and avoid recursing back into the IOMMU core
-> at the wrong times.
+> This is running in Xen 4.17.5, PV dom0, which probably is relevant here.
+> This is running on AMD Ryzen 9 7950X3D, with ASRock X670E Taichi
+> motherboard.
+> There are few more details in the original report (link below).
 > 
-> Obviously this isn't the nicest thing, but for now it gives us a
-> functional baseline to then unpick the layers in between without many
-> more awkward cross-subsystem patches. There are some minor side-effects
-> like dma_range_map potentially being created earlier, and some debug
-> prints being repeated, but these aren't significantly detrimental. Let's
-> make things work first, then deal with making them nice.
+> The kernel package (including its config saved into /boot) is here:
+> https://yum.qubes-os.org/r4.2/current/host/fc37/rpm/kernel-latest-6.13.6-1.qubes.fc37.x86_64.rpm
+> https://yum.qubes-os.org/r4.2/current/host/fc37/rpm/kernel-latest-modules-6.13.6-1.qubes.fc37.x86_64.rpm
 > 
-> With the basic flow finally in the right order again, the next step is
-> probably turning the bus->dma_configure paths inside-out, since all we
-> really need from bus code is its notion of which device and input ID(s)
-> to parse the common firmware properties with...
+> The crash message:
+> [    9.367048] BUG: kernel NULL pointer dereference, address: 0000000000000070
+> [    9.368251] #PF: supervisor read access in kernel mode
+> [    9.369273] #PF: error_code(0x0000) - not-present page
+> [    9.370346] PGD 0 P4D 0
+> [    9.371222] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+> [    9.372114] CPU: 0 UID: 0 PID: 128 Comm: kworker/0:2 Not tainted 6.13.6-1.qubes.fc37.x86_64 #1
+> [    9.373184] Hardware name: ASRock X670E Taichi/X670E Taichi, BIOS 3.20 02/21/2025
+> [    9.374183] Workqueue: kacpi_notify acpi_os_execute_deferred
+> [    9.375124] RIP: e030:cpufreq_update_limits+0x10/0x30
+> [    9.375840] Code: 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 05 98 e4 21 02 <48> 8b 40 70 48 85 c0 74 06 e9 a2 36 38 00 cc e9 ec fe ff ff 66 66
+> [    9.377009] RSP: e02b:ffffc9004058be28 EFLAGS: 00010246
+> [    9.377667] RAX: 0000000000000000 RBX: ffff888005bf4800 RCX: ffff88805d635fa8
+> [    9.378415] RDX: ffff888005bf4800 RSI: 0000000000000085 RDI: 0000000000000000
+> [    9.379127] RBP: ffff888005cd7800 R08: 0000000000000000 R09: 8080808080808080
+> [    9.379887] R10: ffff88800391abc0 R11: fefefefefefefeff R12: ffff888004e8aa00
+> [    9.380669] R13: ffff88805d635f80 R14: ffff888004e8aa15 R15: ffff8880059baf00
+> [    9.381514] FS:  0000000000000000(0000) GS:ffff88805d600000(0000) knlGS:0000000000000000
+> [    9.382345] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    9.383045] CR2: 0000000000000070 CR3: 000000000202c000 CR4: 0000000000050660
+> [    9.383786] Call Trace:
+> [    9.384335]  <TASK>
+> [    9.384886]  ? __die+0x23/0x70
+> [    9.385456]  ? page_fault_oops+0x95/0x190
+> [    9.386036]  ? exc_page_fault+0x76/0x190
+> [    9.386636]  ? asm_exc_page_fault+0x26/0x30
+> [    9.387215]  ? cpufreq_update_limits+0x10/0x30
+> [    9.387805]  acpi_processor_notify.part.0+0x79/0x150
+> [    9.388402]  acpi_ev_notify_dispatch+0x4b/0x80
+> [    9.389013]  acpi_os_execute_deferred+0x1a/0x30
+> [    9.389610]  process_one_work+0x186/0x3b0
+> [    9.390205]  worker_thread+0x251/0x360
+> [    9.390765]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    9.391376]  ? __pfx_worker_thread+0x10/0x10
+> [    9.391957]  kthread+0xd2/0x100
+> [    9.392493]  ? __pfx_kthread+0x10/0x10
+> [    9.393043]  ret_from_fork+0x34/0x50
+> [    9.393575]  ? __pfx_kthread+0x10/0x10
+> [    9.394090]  ret_from_fork_asm+0x1a/0x30
+> [    9.394621]  </TASK>
+> [    9.395106] Modules linked in: gpio_generic amd_3d_vcache acpi_pad(-) loop fuse xenfs dm_thin_pool dm_persistent_data dm_bio_prison amdgpu amdxcp i2c_algo_bit drm_ttm_helper ttm crct10dif_pclmul drm_exec crc32_pclmul gpu_sched
+> crc32c_intel drm_suballoc_helper polyval_clmulni drm_panel_backlight_quirks polyval_generic drm_buddy ghash_clmulni_intel sha512_ssse3 drm_display_helper sha256_ssse3 sha1_ssse3 xhci_pci cec nvme sp5100_tco xhci_hcd nvme_core nvme_auth
+> video wmi xen_acpi_processor xen_privcmd xen_pciback xen_blkback xen_gntalloc xen_gntdev xen_evtchn scsi_dh_rdac scsi_dh_emc scsi_dh_alua uinput dm_multipath
+> [    9.398698] CR2: 0000000000000070
+> [    9.399266] ---[ end trace 0000000000000000 ]---
+> [    9.399880] RIP: e030:cpufreq_update_limits+0x10/0x30
+> [    9.400528] Code: 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 05 98 e4 21 02 <48> 8b 40 70 48 85 c0 74 06 e9 a2 36 38 00 cc e9 ec fe ff ff 66 66
+> [    9.401673] RSP: e02b:ffffc9004058be28 EFLAGS: 00010246
+> [    9.402316] RAX: 0000000000000000 RBX: ffff888005bf4800 RCX: ffff88805d635fa8
+> [    9.403060] RDX: ffff888005bf4800 RSI: 0000000000000085 RDI: 0000000000000000
+> [    9.403819] RBP: ffff888005cd7800 R08: 0000000000000000 R09: 8080808080808080
+> [    9.404581] R10: ffff88800391abc0 R11: fefefefefefefeff R12: ffff888004e8aa00
+> [    9.405332] R13: ffff88805d635f80 R14: ffff888004e8aa15 R15: ffff8880059baf00
+> [    9.406063] FS:  0000000000000000(0000) GS:ffff88805d600000(0000) knlGS:0000000000000000
+> [    9.406830] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    9.407561] CR2: 0000000000000070 CR3: 000000000202c000 CR4: 0000000000050660
+> [    9.408318] Kernel panic - not syncing: Fatal exception
+> [    9.409022] Kernel Offset: disabled
+> (XEN) Hardware Dom0 crashed: 'noreboot' set - not rebooting.
 > 
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com> # pci-driver.c
-> Acked-by: Rob Herring (Arm) <robh@kernel.org> # of/device.c
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-
-This change causes the MediaTek IOMMU driver to panic on probe,
-resulting in multiple MediaTek platforms not being able to boot.
-This was observed on Linus's tree at commit 1a9239bb4253
-("Merge tag 'net-next-6.15' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next")
-which just received the IOMMU updates a couple merge commits
-prior.
-
-The regression was bisected down to this patch on MT8183 Juniper
-Chromebook. The error is a NULL pointer dereference. Here's the
-decoded backtrace:
-
-    Unable to handle kernel read from unreadable memory at virtual address 0000000000000000
-    Mem abort info:
-      ESR = 0x0000000096000005
-    usb 1-1.1.2: new high-speed USB device number 6 using xhci-mtk
-      EC = 0x25: DABT (current EL), IL = 32 bits
-      SET = 0, FnV = 0
-      EA = 0, S1PTW = 0
-      FSC = 0x05: level 1 translation fault
-    Data abort info:
-      ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-    [0000000000000000] user address but active_mm is swapper
-    Internal error: Oops: 0000000096000005 [#1]  SMP
-    Modules linked in:
-    CPU: 4 UID: 0 PID: 68 Comm: kworker/u34:1 Tainted: G    B              6.14.0-05877-g1a9239bb4253 #621 PREEMPT  a6631d3f04612a5c23866dc67cf38316c6b023e0
-    Tainted: [B]=BAD_PAGE
-    Hardware name: Google juniper sku16 board (DT)
-    Workqueue: events_unbound deferred_probe_work_func
-    pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : mtk_iommu_device_group (drivers/iommu/mtk_iommu.c:368 drivers/iommu/mtk_iommu.c:940)
-    lr : mtk_iommu_device_group (drivers/iommu/mtk_iommu.c:368 drivers/iommu/mtk_iommu.c:940)
-    sp : ffffffc0809674a0
-    x29: ffffffc0809674a0 x28: ffffff80c1f0f078 x27: ffffff80c1f0f460
-    x26: ffffff80c1f0f458 x25: ffffffdb1b738788 x24: ffffffc0809676d0
-    x23: ffffff80c8fe4130 x22: ffffffffffffffed x21: 0000000000000000
-    x20: ffffff80c1f0f010 x19: ffffff80c8fd7d00 x18: 0000000000000000
-    x17: 000000040044ffff x16: 00500072b5593510 x15: 0000000000000000
-    x14: ffffff80c09fbb80 x13: ffffffa5bf03f000 x12: ffffffbb6399cdf1
-    x11: 1ffffffb6399cdf0 x10: ffffffbb6399cdf0 x9 : dfffffc000000000
-    x8 : 000000449c663210 x7 : ffffffdb1cce6f87 x6 : 0000000000000001
-    x5 : ffffffdb1cce6f80 x4 : ffffffbb6399cdf1 x3 : 0000000000000000
-    x2 : 0000000000000020 x1 : ffffff80c22ed940 x0 : 0000000000000001
-    Call trace:
-    mtk_iommu_device_group (drivers/iommu/mtk_iommu.c:368 drivers/iommu/mtk_iommu.c:940) (P)
-    __iommu_probe_device (drivers/iommu/iommu.c:461 drivers/iommu/iommu.c:563)
-    probe_iommu_group (drivers/iommu/iommu.c:1722)
-    bus_for_each_dev (drivers/base/bus.c:370)
-    iommu_device_register (drivers/iommu/iommu.c:1875 drivers/iommu/iommu.c:276)
-    mtk_iommu_probe (drivers/iommu/mtk_iommu.c:1380)
-    platform_probe (drivers/base/platform.c:1404)
-    really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
-    __driver_probe_device (drivers/base/dd.c:800)
-    driver_probe_device (drivers/base/dd.c:830)
-    __device_attach_driver (drivers/base/dd.c:959)
-    bus_for_each_drv (drivers/base/bus.c:462)
-    __device_attach (drivers/base/dd.c:1032)
-    device_initial_probe (drivers/base/dd.c:1080)
-    bus_probe_device (drivers/base/bus.c:537)
-    deferred_probe_work_func (drivers/base/dd.c:124)
-    process_one_work (./arch/arm64/include/asm/jump_label.h:36 ./include/trace/events/workqueue.h:110 kernel/workqueue.c:3243)
-    worker_thread (kernel/workqueue.c:3313 (discriminator 2) kernel/workqueue.c:3400 (discriminator 2))
-    kthread (kernel/kthread.c:464)
-    ret_from_fork (arch/arm64/kernel/entry.S:863)
-    Code: 92800256 f940d2b5 aa1503e0 97e8dbd7 (f94002b5)
-    All code
-    ========
-       0:	92800256 	mov	x22, #0xffffffffffffffed    	// #-19
-       4:	f940d2b5 	ldr	x21, [x21, #416]
-       8:	aa1503e0 	mov	x0, x21
-       c:	97e8dbd7 	bl	0xffffffffffa36f68
-      10:*	f94002b5 	ldr	x21, [x21]		<-- trapping instruction
-
-    Code starting with the faulting instruction
-    ===========================================
-       0:	f94002b5 	ldr	x21, [x21]
-    ---[ end trace 0000000000000000 ]---
-
-
-ChenYu
-
-> ---
+> Looking at the call trace, it's likely related to ACPI, and Xen too, so
+> I'm adding relevant lists too.
 > 
-> v2:
->  - Comment bus driver changes for clarity
->  - Use dev->iommu as the now-robust replay condition
->  - Drop the device_iommu_mapped() checks in the firmware paths as they
->    weren't doing much - we can't replace probe_device_lock just yet...
->  
->  drivers/acpi/arm64/dma.c        |  5 +++++
->  drivers/acpi/scan.c             |  7 -------
->  drivers/amba/bus.c              |  3 ++-
->  drivers/base/platform.c         |  3 ++-
->  drivers/bus/fsl-mc/fsl-mc-bus.c |  3 ++-
->  drivers/cdx/cdx.c               |  3 ++-
->  drivers/iommu/iommu.c           | 24 +++++++++++++++++++++---
->  drivers/iommu/of_iommu.c        |  7 ++++++-
->  drivers/of/device.c             |  7 ++++++-
->  drivers/pci/pci-driver.c        |  3 ++-
->  10 files changed, 48 insertions(+), 17 deletions(-)
+> Any ideas?
 > 
-> diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
-> index 52b2abf88689..f30f138352b7 100644
-> --- a/drivers/acpi/arm64/dma.c
-> +++ b/drivers/acpi/arm64/dma.c
-> @@ -26,6 +26,11 @@ void acpi_arch_dma_setup(struct device *dev)
->  	else
->  		end = (1ULL << 32) - 1;
->  
-> +	if (dev->dma_range_map) {
-> +		dev_dbg(dev, "dma_range_map already set\n");
-> +		return;
-> +	}
-> +
->  	ret = acpi_dma_get_range(dev, &map);
->  	if (!ret && map) {
->  		end = dma_range_map_max(map);
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 9f4efa8f75a6..fb1fe9f3b1a3 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1632,13 +1632,6 @@ static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
->  		err = viot_iommu_configure(dev);
->  	mutex_unlock(&iommu_probe_device_lock);
->  
-> -	/*
-> -	 * If we have reason to believe the IOMMU driver missed the initial
-> -	 * iommu_probe_device() call for dev, replay it to get things in order.
-> -	 */
-> -	if (!err && dev->bus)
-> -		err = iommu_probe_device(dev);
-> -
->  	return err;
->  }
->  
-> diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-> index 8ef259b4d037..71482d639a6d 100644
-> --- a/drivers/amba/bus.c
-> +++ b/drivers/amba/bus.c
-> @@ -364,7 +364,8 @@ static int amba_dma_configure(struct device *dev)
->  		ret = acpi_dma_configure(dev, attr);
->  	}
->  
-> -	if (!ret && !drv->driver_managed_dma) {
-> +	/* @drv may not be valid when we're called from the IOMMU layer */
-> +	if (!ret && dev->driver && !drv->driver_managed_dma) {
->  		ret = iommu_device_use_default_domain(dev);
->  		if (ret)
->  			arch_teardown_dma_ops(dev);
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 6f2a33722c52..1813cfd0c4bd 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -1451,7 +1451,8 @@ static int platform_dma_configure(struct device *dev)
->  		attr = acpi_get_dma_attr(to_acpi_device_node(fwnode));
->  		ret = acpi_dma_configure(dev, attr);
->  	}
-> -	if (ret || drv->driver_managed_dma)
-> +	/* @drv may not be valid when we're called from the IOMMU layer */
-> +	if (ret || !dev->driver || drv->driver_managed_dma)
->  		return ret;
->  
->  	ret = iommu_device_use_default_domain(dev);
-> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> index d1f3d327ddd1..a8be8cf246fb 100644
-> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> @@ -153,7 +153,8 @@ static int fsl_mc_dma_configure(struct device *dev)
->  	else
->  		ret = acpi_dma_configure_id(dev, DEV_DMA_COHERENT, &input_id);
->  
-> -	if (!ret && !mc_drv->driver_managed_dma) {
-> +	/* @mc_drv may not be valid when we're called from the IOMMU layer */
-> +	if (!ret && dev->driver && !mc_drv->driver_managed_dma) {
->  		ret = iommu_device_use_default_domain(dev);
->  		if (ret)
->  			arch_teardown_dma_ops(dev);
-> diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
-> index c573ed2ee71a..780fb0c4adba 100644
-> --- a/drivers/cdx/cdx.c
-> +++ b/drivers/cdx/cdx.c
-> @@ -360,7 +360,8 @@ static int cdx_dma_configure(struct device *dev)
->  		return ret;
->  	}
->  
-> -	if (!ret && !cdx_drv->driver_managed_dma) {
-> +	/* @cdx_drv may not be valid when we're called from the IOMMU layer */
-> +	if (!ret && dev->driver && !cdx_drv->driver_managed_dma) {
->  		ret = iommu_device_use_default_domain(dev);
->  		if (ret)
->  			arch_teardown_dma_ops(dev);
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index a3b45b84f42b..1cec7074367a 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -414,9 +414,21 @@ static int iommu_init_device(struct device *dev)
->  	if (!dev_iommu_get(dev))
->  		return -ENOMEM;
->  	/*
-> -	 * For FDT-based systems and ACPI IORT/VIOT, drivers register IOMMU
-> -	 * instances with non-NULL fwnodes, and client devices should have been
-> -	 * identified with a fwspec by this point. Otherwise, we can currently
-> +	 * For FDT-based systems and ACPI IORT/VIOT, the common firmware parsing
-> +	 * is buried in the bus dma_configure path. Properly unpicking that is
-> +	 * still a big job, so for now just invoke the whole thing. The device
-> +	 * already having a driver bound means dma_configure has already run and
-> +	 * either found no IOMMU to wait for, or we're in its replay call right
-> +	 * now, so either way there's no point calling it again.
-> +	 */
-> +	if (!dev->driver && dev->bus->dma_configure) {
-> +		mutex_unlock(&iommu_probe_device_lock);
-> +		dev->bus->dma_configure(dev);
-> +		mutex_lock(&iommu_probe_device_lock);
-> +	}
-> +	/*
-> +	 * At this point, relevant devices either now have a fwspec which will
-> +	 * match ops registered with a non-NULL fwnode, or we can reasonably
->  	 * assume that only one of Intel, AMD, s390, PAMU or legacy SMMUv2 can
->  	 * be present, and that any of their registered instances has suitable
->  	 * ops for probing, and thus cheekily co-opt the same mechanism.
-> @@ -426,6 +438,12 @@ static int iommu_init_device(struct device *dev)
->  		ret = -ENODEV;
->  		goto err_free;
->  	}
-> +	/*
-> +	 * And if we do now see any replay calls, they would indicate someone
-> +	 * misusing the dma_configure path outside bus code.
-> +	 */
-> +	if (dev->driver)
-> +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
->  
->  	if (!try_module_get(ops->owner)) {
->  		ret = -EINVAL;
-> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-> index e10a68b5ffde..6b989a62def2 100644
-> --- a/drivers/iommu/of_iommu.c
-> +++ b/drivers/iommu/of_iommu.c
-> @@ -155,7 +155,12 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
->  		dev_iommu_free(dev);
->  	mutex_unlock(&iommu_probe_device_lock);
->  
-> -	if (!err && dev->bus)
-> +	/*
-> +	 * If we're not on the iommu_probe_device() path (as indicated by the
-> +	 * initial dev->iommu) then try to simulate it. This should no longer
-> +	 * happen unless of_dma_configure() is being misused outside bus code.
-> +	 */
-> +	if (!err && dev->bus && !dev_iommu_present)
->  		err = iommu_probe_device(dev);
->  
->  	if (err && err != -EPROBE_DEFER)
-> diff --git a/drivers/of/device.c b/drivers/of/device.c
-> index edf3be197265..5053e5d532cc 100644
-> --- a/drivers/of/device.c
-> +++ b/drivers/of/device.c
-> @@ -99,6 +99,11 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
->  	bool coherent, set_map = false;
->  	int ret;
->  
-> +	if (dev->dma_range_map) {
-> +		dev_dbg(dev, "dma_range_map already set\n");
-> +		goto skip_map;
-> +	}
-> +
->  	if (np == dev->of_node)
->  		bus_np = __of_get_dma_parent(np);
->  	else
-> @@ -119,7 +124,7 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
->  		end = dma_range_map_max(map);
->  		set_map = true;
->  	}
-> -
-> +skip_map:
->  	/*
->  	 * If @dev is expected to be DMA-capable then the bus code that created
->  	 * it should have initialised its dma_mask pointer by this point. For
-> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> index f57ea36d125d..4468b7327cab 100644
-> --- a/drivers/pci/pci-driver.c
-> +++ b/drivers/pci/pci-driver.c
-> @@ -1653,7 +1653,8 @@ static int pci_dma_configure(struct device *dev)
->  
->  	pci_put_host_bridge_device(bridge);
->  
-> -	if (!ret && !driver->driver_managed_dma) {
-> +	/* @driver may not be valid when we're called from the IOMMU layer */
-> +	if (!ret && dev->driver && !driver->driver_managed_dma) {
->  		ret = iommu_device_use_default_domain(dev);
->  		if (ret)
->  			arch_teardown_dma_ops(dev);
-> -- 
-> 2.39.2.101.g768bb238c484.dirty
-> 
+> #regzbot introduced: v6.12.11..v6.13.6
+
+That code looks to have been introduced for 6.9, so I wonder if so far you merely
+were lucky not to have observed any "highest perf changed" notification. See
+9c4a13a08a9b ("ACPI: cpufreq: Add highest perf change notification"), which imo
+merely adds a 2nd path to a pre-existing problem: cpufreq_update_limits() assumes
+that cpufreq_driver is non-NULL, and only checks cpufreq_driver->update_limits.
+But of course the assumption there may be legitimate, and it's logic elsewhere
+which is or has become flawed.
+
+Jan
 
