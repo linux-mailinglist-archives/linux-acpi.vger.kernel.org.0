@@ -1,130 +1,198 @@
-Return-Path: <linux-acpi+bounces-12510-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12511-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC5BA73CB7
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 18:49:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A380DA73E39
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 19:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F6A3189BED1
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 17:49:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75B85189A87A
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 18:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6F7218E9F;
-	Thu, 27 Mar 2025 17:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6921ADAB;
+	Thu, 27 Mar 2025 18:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D840APvf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJ1q1wZu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D191A3150;
-	Thu, 27 Mar 2025 17:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CE41C5D44;
+	Thu, 27 Mar 2025 18:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743097756; cv=none; b=itsp95FSskg1a1IH/30eO4GiWVdgHni2fe2yPwl+/EiihRfaYmM139J+SW2VoZ+9tkNm00lzKs02QHUjwWvtMOEgWCs71wCLZseCm0NHLz6mr1dES0bLRDd1ZPpPF6OuRTiX5kYjg1XWoMnscdQib7ArotJ0CRcefUAVNMtQjdU=
+	t=1743101882; cv=none; b=L5CaC8MJGxA+92YNkdQqFCTdNxtmHm8Gu9CB3o8OXcjCQJkkSuxOpHzDzdyrQQJvWRmS5Xw0Kn/X+JaPFoqOYPP9unYPsgrf2zdNeaYIaeOezb/3RNg5w5sqK0D7PIiERC2pZH97I9k7U7LOlhbR/kjx7R9NQnZpuc8wXFYPn0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743097756; c=relaxed/simple;
-	bh=HQ/FzZVtjQERReDmzXONMLGbORUdtOvwHc5UTpdvpxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlVIMWg1ii3JGEEhNV4kOCHG/g0YYe9mKad7vNa+bF3sbllc+LpZ8w8osrqt3x/iPqO1cA8bu98wBKBQOPvuZKG8WnbG8FwAAbgTMvqXpz3GJThxtziDUFjSiaz2pu7gfnqDT/zCrvJ20ydKqPgytnj0moG48BY4tpbzwFQw2LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D840APvf; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743097754; x=1774633754;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=HQ/FzZVtjQERReDmzXONMLGbORUdtOvwHc5UTpdvpxc=;
-  b=D840APvfNVSXm4ML9mH/yW2c/f8mfBO4jJ+RMy88vTOtwiV4JMO9hmzB
-   1Pa0P9S6CD4IhoLF4KP9YcqCk3IgTLQZZvJ75XjZieVUyUoeJhlx5QVmO
-   EAG80NO6NJXbWWbuTfK35EGfiZ0dJiSufItcpmhj8mUSeWbl3GDLpYFYn
-   Aw1Tk56Fi/2pqMv1Y/n1g2fapGeUqPN5EWLJABADshAPrNK67okmd/P2N
-   oUZiLcLfptRBK7oAqtkZYweSlvyYLMBa7i8G8ifN06gOoAyJ2dpwvpPEU
-   y+COob7U82PZMEw+1E+lWgtZsN9Op/7gdCzfpiiVQB63tECXli+gSbUrV
-   A==;
-X-CSE-ConnectionGUID: qHBuWnODSMGnhEV96QDATg==
-X-CSE-MsgGUID: FaI1B/9ySC6cEah4FN1X5A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="66917216"
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; 
-   d="scan'208";a="66917216"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 10:49:14 -0700
-X-CSE-ConnectionGUID: ysmv07ksQC2FCgRw2Cr6Cw==
-X-CSE-MsgGUID: YS9fTSY5RcyHPGEzYIJgpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; 
-   d="scan'208";a="148393660"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 10:49:09 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1txrLl-00000006VGp-16M8;
-	Thu, 27 Mar 2025 19:49:05 +0200
-Date: Thu, 27 Mar 2025 19:49:05 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Remo Senekowitsch <remo@buenzli.dev>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 01/10] rust: Move property_present to property.rs
-Message-ID: <Z-WPkSJRO6_SrOz-@smile.fi.intel.com>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250326171411.590681-2-remo@buenzli.dev>
- <Z-UOUKq8GKZM1wuo@smile.fi.intel.com>
- <CAL_JsqKY17zfLo5rUd9zvO46M1_dR0-V1X-d-NmsO+exDbGY5A@mail.gmail.com>
+	s=arc-20240116; t=1743101882; c=relaxed/simple;
+	bh=NCRgSlQwiTeN8gTk1gYPpD6+NtqKakLmbR8E4o+Ga3A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tw8XmF/Yr+dMf75Gzt8/2X5SMGb9wQsnHnDBi9D7VLh6bCvJDsWC/H+d1m+/bMbbHEnoNprImdiiOQGM6OmBL4iKVD9FUO7XBxMfYfdUV+uIzeZvoycYMk7DNERbECID0tS5vdyL65aLQ6AJpGkx2ga6U0N571+LPq5fbl0xlrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJ1q1wZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0918C4CEE5;
+	Thu, 27 Mar 2025 18:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743101881;
+	bh=NCRgSlQwiTeN8gTk1gYPpD6+NtqKakLmbR8E4o+Ga3A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WJ1q1wZuQ9iz9n544qCGhY7nAYiEdWN8bufMkmbmn2NSTuJz9pIqYy6X6khzKWo51
+	 92dD2fdBWguyo2H+9J4/wM0ViHVsA9t2KqShsOms8p1v0utWF4HbOjS3t4/7a1g3mq
+	 iosY3vvg8r8nYgRsD9PvR/qcPLMfoHqqN4RT/qVP3xjUBXrilNKgDRATmxWgfAJ2oX
+	 fEcUlTK7ReTjqnEmcNGngD+UxFCQrrsskhA1EBNjm+UF05QNkBxV8fS13+Hye+lwef
+	 mP+vxD0zxNP7N9YI4HIgJ6UxAG64mkqM7QgE4EzwHlsuui/x8O5gj4x4Jm//bWjJ75
+	 8dXivYyJEGRbA==
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2c77f0136e9so393672fac.3;
+        Thu, 27 Mar 2025 11:58:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU9vkC7WX5a/lguvcoKkjkqNezn+7syDJBRg9CiATwsRmvn1vdhsLhA7hQ7EPWJtR/LTlbl7xrI9l4j@vger.kernel.org, AJvYcCUvImwkj+DbLB57Uh2oMNe2QrkVvf/dlXTLzM+srRd1Nb/kKgKL71/0XILf2F7n32Ubu83UxKDGK8TwsYO0@vger.kernel.org, AJvYcCWtjxX37zLJ5BqiC/q1hv07L7wMpYAuHTlxpVsnBlha2XBCTFmH1OCuSwimWTurmn56lbRmICYwRxZn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5n8WjqtPkn+so9ylbEBhoe81U3eC7osdWHCaJFWMIy2+Guh/A
+	ST7zboUf+S9KKk1LDmd+l6wMUPpcEIyWvF0oaZk+HQ2p4DmfeBSnzvuhhNZOQD5ZtzunTpUQTRo
+	a7z90vrCEbaEtSCG26MyBn1mtRFk=
+X-Google-Smtp-Source: AGHT+IHYW2ZTnoKkUTlzbiUwZcIeb1IO+JEoeqODsoDJB/s8N43IeFO6nFa7Oes6d62s9LbY8f2hVLzaHXcM+PQPbbw=
+X-Received: by 2002:a05:6870:b85:b0:2c2:416e:cf43 with SMTP id
+ 586e51a60fabf-2c847fad778mr2816156fac.12.1743101881047; Thu, 27 Mar 2025
+ 11:58:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqKY17zfLo5rUd9zvO46M1_dR0-V1X-d-NmsO+exDbGY5A@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250313100658.15805-1-zhoushengqing@ttyinfo.com>
+In-Reply-To: <20250313100658.15805-1-zhoushengqing@ttyinfo.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 27 Mar 2025 19:57:49 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jBrTuuf_RJ45Eu2OwpRNXS-hFyL-PxGMv2K+jYVQtn2w@mail.gmail.com>
+X-Gm-Features: AQ5f1Jp1J_eN6hewA6UUzyBXH_BVl2jaLQ_7gV07nxC_OS-JOnVwRvNKQ-vuaFs
+Message-ID: <CAJZ5v0jBrTuuf_RJ45Eu2OwpRNXS-hFyL-PxGMv2K+jYVQtn2w@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] Add rev 2 check for PRESERVE_BOOT_CONFIG function
+To: Zhou Shengqing <zhoushengqing@ttyinfo.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, rafael@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 27, 2025 at 08:55:42AM -0500, Rob Herring wrote:
-> On Thu, Mar 27, 2025 at 3:37 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, Mar 26, 2025 at 06:13:40PM +0100, Remo Senekowitsch wrote:
+On Thu, Mar 13, 2025 at 11:07=E2=80=AFAM Zhou Shengqing
+<zhoushengqing@ttyinfo.com> wrote:
+>
+> Per PCI Firmware Specification Revision 3.3 Table 4-7 _DSM Definitions
+> for PCI. Preserve PCI Boot Configuration Initial Revision ID changed to 2=
+.
+>
+> And add acpi_check_dsm() for DSM_PCI_PRESERVE_BOOT_CONFIG.
+>
+> Signed-off-by: Zhou Shengqing <zhoushengqing@ttyinfo.com>
+> ---
+> v5:follow Bjorn advice, add acpi_check_dsm for PCI _DSM.
+> v4:Initialize *obj to NULL.
+> v3:try revision id 1 first, then try revision id 2.
+> v2:add Fixes tag.
+>
+> Fixes: 9d7d5db8e78e ("PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to p=
+ci_re")
+> ---
+>  drivers/pci/pci-acpi.c | 43 ++++++++++++++++++++++++++++++------------
+>  1 file changed, 31 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index af370628e583..4f9e0548c96d 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -122,24 +122,43 @@ phys_addr_t acpi_pci_root_get_mcfg_addr(acpi_handle=
+ handle)
+>
+>  bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
+>  {
+> -       if (ACPI_HANDLE(&host_bridge->dev)) {
+> -               union acpi_object *obj;
+> +       bool rc =3D false;
+> +       union acpi_object *obj;
 
-...
++ u64 rev;
 
-> > > +struct fwnode_handle *rust_helper_dev_fwnode(struct device *dev)
-> > > +{
-> > > +     return dev_fwnode(dev);
-> > > +}
-> >
-> > Why not const? For most of the property retrieval APIs the parameter is const.
-> 
-> Because you might need to modify the refcount.
-> 
-> Though the rust code should probably use __dev_fwnode() and/or
-> __dev_fwnode_const() directly and avoid the need for the helper here.
+>
+> -               /*
+> -                * Evaluate the "PCI Boot Configuration" _DSM Function.  =
+If it
+> -                * exists and returns 0, we must preserve any PCI resourc=
+e
+> -                * assignments made by firmware for this host bridge.
+> -                */
+> +       if (!ACPI_HANDLE(&host_bridge->dev))
+> +               return false;
+> +
+> +       /*
+> +        * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
+> +        * exists and returns 0, we must preserve any PCI resource
+> +        * assignments made by firmware for this host bridge.
+> +        *
+> +        * Per PCI Firmware r3.2, released Jan 26, 2015,
+> +        * DSM_PCI_PRESERVE_BOOT_CONFIG Revision ID is 1. But PCI Firmwar=
+e r3.3,
+> +        * released Jan 20, 2021, changed sec 4.6.5 to say
+> +        * "lowest valid Revision ID value: 2". So check rev 1 first, the=
+n rev 2.
+> +        */
 
-Indeed, that would help at least to understand the intention.
++         for (rev =3D 1; rev <=3D 2; rev++) {
++                 if (!acpi_check_dsm(ACPI_HANDLE(&host_bridge->dev),
+&pci_acpi_dsm_guid,
++                                   rev, BIT(DSM_PCI_PRESERVE_BOOT_CONFIG))=
+)
++                         continue;
++
++                obj =3D
+acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge->dev), ,
+&pci_acpi_dsm_guid,
++                                  rev, BIT(DSM_PCI_PRESERVE_BOOT_CONFIG));
++                if (obj && obj->integer.value =3D=3D 0)
++                        rc =3D true;
++
++                ACPI_FREE(obj);
++
++                if (rc)
++                       return true;
++         }
++
++         return false;
 
--- 
-With Best Regards,
-Andy Shevchenko
+would achieve the same with fewer lines of code and less code
+duplication if I'm not mistaken.
 
-
+> +       if (acpi_check_dsm(ACPI_HANDLE(&host_bridge->dev),
+> +                               &pci_acpi_dsm_guid, 1, BIT(DSM_PCI_PRESER=
+VE_BOOT_CONFIG))) {
+>                 obj =3D acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge-=
+>dev),
+> -                                             &pci_acpi_dsm_guid,
+> -                                             1, DSM_PCI_PRESERVE_BOOT_CO=
+NFIG,
+> -                                             NULL, ACPI_TYPE_INTEGER);
+> +                                               &pci_acpi_dsm_guid,
+> +                                               1, DSM_PCI_PRESERVE_BOOT_=
+CONFIG,
+> +                                               NULL, ACPI_TYPE_INTEGER);
+>                 if (obj && obj->integer.value =3D=3D 0)
+> -                       return true;
+> +                       rc =3D true;
+> +               ACPI_FREE(obj);
+> +       } else if (acpi_check_dsm(ACPI_HANDLE(&host_bridge->dev),
+> +                                       &pci_acpi_dsm_guid, 2, BIT(DSM_PC=
+I_PRESERVE_BOOT_CONFIG))) {
+> +               obj =3D acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge-=
+>dev),
+> +                                               &pci_acpi_dsm_guid,
+> +                                               2, DSM_PCI_PRESERVE_BOOT_=
+CONFIG,
+> +                                               NULL, ACPI_TYPE_INTEGER);
+> +               if (obj && obj->integer.value =3D=3D 0)
+> +                       rc =3D true;
+>                 ACPI_FREE(obj);
+>         }
+>
+> -       return false;
+> +       return rc;
+>  }
+>
+>  /* _HPX PCI Setting Record (Type 0); same as _HPP */
+> --
 
