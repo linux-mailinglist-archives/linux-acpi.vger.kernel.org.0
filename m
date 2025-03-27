@@ -1,266 +1,488 @@
-Return-Path: <linux-acpi+bounces-12487-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12488-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4E6A727E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 01:51:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7D8A72848
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 02:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CCA918977DF
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 00:51:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8C827A39F7
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 01:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF0CDDD3;
-	Thu, 27 Mar 2025 00:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9089619C56C;
+	Thu, 27 Mar 2025 01:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="v6Nk7hWc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nw4zHffZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dYDxTkNB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF72C2C8;
-	Thu, 27 Mar 2025 00:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743036680; cv=none; b=F0useipYIL8bIT+nzDW/GolA0PNZcKULGBLDnkg451yRhWWW85z3iwAF/KkZQvGarkv66r5AH1OzH9DrivqRnPfjs4gWrckWH0zjhlO28VkT2aKwQO2/+b23rTRrPHbT3G8Hw+bh7cvIbwYFnLrHB86/L4jwt8CJ0etWgb195CE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743036680; c=relaxed/simple;
-	bh=AmXMEkqXE1h1h0eF9MwFI2oBkJ4mzzLnIbNGT9AgyE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=YYz15RboNkVGdTl0eIq+J2KtRQhYlzvrVJ6CKOFIigGJAgC7oQeyn413iFWxpc80oiV2vShP88BmlN/0OD6m1SLJcycJEPnXRtKlQbHrVc9G+jnRVvvc6gHuc/DVKHVtZu5mHyK9UvH3ppVrTJdgOwU56OFOUtPtmpS10ko1ee0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=v6Nk7hWc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nw4zHffZ; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8156D1382D8F;
-	Wed, 26 Mar 2025 20:51:17 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Wed, 26 Mar 2025 20:51:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1743036677; x=1743123077; bh=aH
-	gpfGvsQEpk4WJmGuLs0xRXWghu0gspE2h/8NA1P04=; b=v6Nk7hWcAZiXa1h681
-	IFRM5aviXQ7RY/dzHCryRBc1p7z7LX9Wb+TY0OdSowW06eGHnm4Okyk1dy+OFKCM
-	BWb5tzehwVwqR9adnSSTSeojJxT+LsuyNrfaOH1P15vGIaJHfQ4LhKl8n+f03jpm
-	8Hs0Bcwz13mwTQpEWa0MevDO+4bwsi14FukJQhkc2lfQWrmNZr6ic+3IOgYTqSnA
-	4WSTbwzjbsSm0y7Xn9pOL5WzFny3Z1E7mL2RNaiTPaHmXKuS47q1bWvcTo6LR+Qi
-	pS6K+UFlKgA8P/MMBEthcqWxDoaB5a4X6c4IPUMF0JUyxbO2ns7r2paWYyW38sOM
-	uYMg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:message-id
-	:mime-version:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1743036677; x=
-	1743123077; bh=aHgpfGvsQEpk4WJmGuLs0xRXWghu0gspE2h/8NA1P04=; b=n
-	w4zHffZ4rADErIe1X+uJIswEdPUn1G9Y1D6PvI9JfjsX3uGbcX3wuKH+c2V8mxqI
-	4ggCFqeC1RnlXGP+gVOpKUoVmnckoKq9Ft+k82dNN9DJKfOWVqrP9vhT3+LGo1WF
-	69hUrwaGFW1WKL5O/ccsxLv+DNNlrBdTd/TL4qoMf4lEpfr9AMSKZ9VIET972nUa
-	1dgd7NaEjXEm7myusMQBsIJBL+io7BywRfe92hs4MLKjvIYp6LGOEyyWpB4buWAg
-	flwLaKJyF0cY0xndwyZVeiZL73yWAoGPVW8W1+OVm+obea4SAW9MsAzm2EL0zNIy
-	fz1Lr3Kxv4hRfWBErl60w==
-X-ME-Sender: <xms:BaHkZzE2pJgqRmZOc3r0CjC7u86x9HrNtj8qEhIgaJn1557CB-IAVQ>
-    <xme:BaHkZwU1vUFBOhiFcNR_pajS27VUDnzhxbfc_MXQ6df8hKd3uFbqyn425OVujLS2W
-    A4h0FpzSYicEQ>
-X-ME-Received: <xmr:BaHkZ1JpLiljDaaSJ_EzTIA21sXWkev5kw7oBJVY_qM4OzfQucMZeRo0BTZnURJpsZx4fTHGc0bh7KS-w_3DF7RWLUTjioC4gA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieejtdduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkgggtugesghdtreertddtjeen
-    ucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomh
-    grrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggft
-    rfgrthhtvghrnhepgfdtgfdvteetffeluefgudfggeejkefgfeffvdehfffhtdefgefgue
-    ehtdffueelnecuffhomhgrihhnpehquhgsvghsqdhoshdrohhrghenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvh
-    hishhisghlvghthhhinhhgshhlrggsrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepvhhirhgvshhhrdhkuhhmrghrsehlihhnrghrohdrohhrghdprhgtphht
-    thhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    igvghnqdguvghvvghlsehlihhsthhsrdigvghnphhrohhjvggtthdrohhrghdprhgtphht
-    thhopehjghhrohhsshesshhushgvrdgtohhmpdhrtghpthhtoheprhgvghhrvghsshhioh
-    hnsheslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:BaHkZxHw3bMVFOEj4GGqr1F7NTButjSDBu25haS8k-b_IJPV6SGnhg>
-    <xmx:BaHkZ5VBHkXyjj6geWdGr8S8gX93KOaq2dco7UjC7KVc2Ua93MzO1A>
-    <xmx:BaHkZ8NmEMl3cQl7QcXC9X-_NQa7Kq-BplrfKg4Yox3SDVUNwtOrRA>
-    <xmx:BaHkZ42EsKC3pRiXmr64C9QNIYUJ9869j1N5sDLyvw_fkfzNzJIrlA>
-    <xmx:BaHkZ1pKcoIr0UaT5Kl3lc8iL4zvRqhhuVLqJYut77Enhw7a8HVr5uUr>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Mar 2025 20:51:15 -0400 (EDT)
-Date: Thu, 27 Mar 2025 01:51:13 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	xen-devel <xen-devel@lists.xenproject.org>,
-	Juergen Gross <jgross@suse.com>, regressions@lists.linux.dev
-Subject: NULL pointer dereference in cpufreq_update_limits(?) under Xen PV
- dom0 - regression in 6.13
-Message-ID: <Z-ShAR59cTow0KcR@mail-itl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845F19ABAB;
+	Thu, 27 Mar 2025 01:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743040079; cv=fail; b=ZOvZDgXuL/ALFNexnRhl9qpQrdHXadOUD9+CmYemLd8wbeK3Tzq8FwwAty+MRjs/n5kPtKru7pyJ6uEsl+6JdOmRqACUSW7i5KYJq5tF1PsK4Bc2HnGMvmzoYeGDXsS28g46fbzHSxR5G/Bb5+HevTob5Eoxw7OZAIhhSx3nUio=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743040079; c=relaxed/simple;
+	bh=7Irr8NK7G455uFpiRkXRAN9aSx3WYM2Ed8jy0336pwU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZpaYFzNKtDF8WTlJcC8zOxCYs5dhmI+exnQcGlCAjgc/tr1ZZbY+yVijHY1XZpzhu2gWfFIHg5Z2K4klpUx3lnRH37IO2HltlkmJv66zyAI9cvXUaMsisxII6IWzjei9c+2GRv70EQHTwB9NUpACFld2nWje/frMkOZdgcYTdUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dYDxTkNB; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743040077; x=1774576077;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=7Irr8NK7G455uFpiRkXRAN9aSx3WYM2Ed8jy0336pwU=;
+  b=dYDxTkNBM0083zqGt56ywyuVH2HGc13cq3L8xJPftWn3kA2bjuHfKcNm
+   y0MJ3h1cjltej8R+sK5yUshi64YWn16/6dxWmthB6fX1trbluk3mfrs5i
+   Ae12/gPVlCHxdm99Fg1sdTxjWSW49MilZXlCCBgL5eMjM7sQ9q3nONek8
+   zsijWxzHgzYWUcw5FEC5Xhg2CC6TDanvGF/33vCz2mrAgYghRK4Di+RIv
+   yV/VLujfwk9eUhDDedla9RVdxVtCzCNG1a10G2+cjsFlVuPKnM8gxXncA
+   fj8uHJ9Ra7GtlhyG4s+15I6bgFEEwByw4HlEkBtHD4C5TEAs52mWwUPJD
+   w==;
+X-CSE-ConnectionGUID: nZTlF7HzQ9aEk829ftsDig==
+X-CSE-MsgGUID: gyi9AgzhTZqoCjoXOuDiBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="54557400"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="54557400"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 18:47:55 -0700
+X-CSE-ConnectionGUID: xyb1D1KrQcmOrCu2u5+FwA==
+X-CSE-MsgGUID: jkhFA3oCQwyDWVL5Yy6kjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="125804260"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 18:47:54 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.14; Wed, 26 Mar 2025 18:47:53 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 26 Mar 2025 18:47:53 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.46) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 26 Mar 2025 18:47:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nDz8eaWTraxNBn2a/wqDImDH3rwRxIMouqlNS00wsrb1fcrko7iHAeG0s2yo7z9yxhOTVCVOOcAHncL+YzyAf7J4X7NQf8dkc+pezqq8I7b0ZOxIutYPsA/skrIZPRcWBIJiYVAkX55FtUF+oXbsQhSUsB4B7olb1rQad0R2D1iS4sKSVqzoK4PmH3z6ui5UPJw2uJj+G9x+YNVFEJ5hTMOGlFhlerQuZrpazm/iUXMIhZHlbfPSbU8sqHAGCJnIRzbzXeZGZhilrEMOQMWyrUWPse1z11wvAIsv6J+/C47N1ZYeAkP2DoxTH5cXRRn/20A953G4BpcyFefoRH2rww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KpNRxZC1bYF4TSKaaICXxbsUw9Wbh9NrHE1z0kPV3j8=;
+ b=VAPhoXts9E0WfNvx49fHmrzW/nT4lpAcb08xNzyn61LS0WyF+dwByK7SYMCGTppYG/d6KQs3dyzn6EHkmnJFkW2ayrhdjXdh22Gz8HAtWWjkQE8L2EX1/xpn2wMUNV7h5sPGUvP6Bej2njaNTPBlVKLi7DBBll7aitYFsOrTJ3GGMahaEmVVPkgNZ7vqc+ljvRQW0B0Q+0pnF8FWgdLsEpgK4Vl+b3tK6uCsD3uIoiMRHzxc5EJ6WK+lJRBoWTFuvU/pgv9cWcd6JMjB3/DgzE8xuXY3IjCSIk5bLxwcJ6tQY1ks3GpK5ZAVPBE6OGG5OoE6hhSH84WXogQyJHhxAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 27 Mar
+ 2025 01:47:20 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
+ 01:47:19 +0000
+Date: Wed, 26 Mar 2025 21:47:08 -0400
+From: Dan Williams <dan.j.williams@intel.com>
+To: <shiju.jose@huawei.com>, <linux-cxl@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <dave@stgolabs.net>,
+	<jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>
+CC: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <bp@alien8.de>,
+	<tony.luck@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<mchehab@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: Re: [PATCH v2 3/8] cxl/edac: Add CXL memory device patrol scrub
+ control feature
+Message-ID: <67e4ae1cb0cdd_152c29462@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20250320180450.539-1-shiju.jose@huawei.com>
+ <20250320180450.539-4-shiju.jose@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250320180450.539-4-shiju.jose@huawei.com>
+X-ClientProxiedBy: MW4PR04CA0119.namprd04.prod.outlook.com
+ (2603:10b6:303:83::34) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jK9RafVCHRtlVVtN"
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM3PR11MB8735:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc03042f-6ee8-47d4-3b39-08dd6cd14f50
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?lv0m/AZdiRhiOcdLTmiT4jIcFTL5/aEzpVI/0TVilgQEvOgG4PYo4jEdSK9R?=
+ =?us-ascii?Q?13A+EgVbKyt+DpgOoX0NOf6v8xxSF4ms8BdkS8dr9kKxpCHt7aav8X7uf5ul?=
+ =?us-ascii?Q?qH4tE6B9LR4MLAhKGMGe9lsIniGiEtx/hSDKv00laZZ26GZQX99D2xVUumRU?=
+ =?us-ascii?Q?6Ks7qhGq2BIqCbLFOGb8SDKNd7XZ2MvxZVIOqDJ2QtA74PAIOTNYEXir3HGW?=
+ =?us-ascii?Q?tQTcsJ8niIFq/iebg09n1qZBGdSKhCzVemJlq+2A0TkDUemxVdeziTJFGl6O?=
+ =?us-ascii?Q?sffNIglnY+fCdDxbZRywOWhFPkgJS/+nENl2YyHYhQyLFhVWCqOyXYkeY/WX?=
+ =?us-ascii?Q?ClQDuIzLLV4bfvJ2GNfdYff9HdY/r7J8+3mCWOpRq+1/qN9BbfGAeZ7bVW17?=
+ =?us-ascii?Q?DJ3lJoJBOkHqhhQDyst45LWr7tmVwG1hlM/YGVZ59/1Lhsl3tniuGrsHNM3j?=
+ =?us-ascii?Q?4B3sFsgTqa3CfgWYUGTf/jjEbDv02Fsd5MB1ox9870CKmoEeyE+3UBAMe+3e?=
+ =?us-ascii?Q?esXIhPwBKbKeoa+2Ti6ZropZOiLoczOMfvoC+/Az0OVtVo40TwypcDHaekMw?=
+ =?us-ascii?Q?X0/2NwVAH19Y5KTQQJ8QslUMJVV8WCPoKM/WxpOwe88hPA1rVV39anzeRJzk?=
+ =?us-ascii?Q?0GDOV803ky9YeQ0ldffiNLSp6zVwgWqOzPnq18RXhBVwXjJM+knWm4uodspa?=
+ =?us-ascii?Q?xXsPm/drgt8asOi9hqkjbxZSaF0843wEWF0V7uV3P2aRyi0lQycnPnhhjEVM?=
+ =?us-ascii?Q?poQ7NrlscjY565PdtiR6t8wmZhN/sZrliYchG8euQVr89XzyClDp9mMRNN87?=
+ =?us-ascii?Q?Ok5wp3KYemCF+uIWwFNnMNph1r81lf4gyldhmTcQr9MLeMvJ5jpPudhbMWCu?=
+ =?us-ascii?Q?4woO1h7PsEGAUfid7hQTJZkuLf0GTG3FDsN3uVsuvFS5vTGLzgx09cKZcglh?=
+ =?us-ascii?Q?HoxHtA9l/NxpoyF5MpkI6dFe23085fMnZdRzodMc7EcFAMeEdFzxWOgEO7OO?=
+ =?us-ascii?Q?DidMpT+QyWt5SZJoUxrq3k/2SDE14XMDraGj1bJfr3G5X2ho0QPEgSiOEGaN?=
+ =?us-ascii?Q?f9POTmMC+iK8WQUrVc1EBb9PJquWkwzzvB/LuRGPynho8OqtYwk1fy/JApPd?=
+ =?us-ascii?Q?3tEbxSqwrQOVRuT/LE5QxuAYFB6L0Fq6WZDgrbps2qwt2o00mdUC2vJwrEG9?=
+ =?us-ascii?Q?V3sKABVNoikqLU6CrFP4jhjSvbzQRmrcRV0Y6j8qN/b84lyGLnibeuBemAp7?=
+ =?us-ascii?Q?vN5ycEolVmzWoQfXgrYvooKp/ad3r0+8PP2BVSYiW4MbgBRijRN+xBlnOwET?=
+ =?us-ascii?Q?HvE5YTFvjIcPCTudZRtv4rGYZYoVBj7Rwp7AFfugBHGDk8dWpacVAigd/ubE?=
+ =?us-ascii?Q?ICtVvj3R9bWqR1Rj9nyXlPDaKaxePkHAxgy4IkMhbV8q7JqedSbJTwle3Hyv?=
+ =?us-ascii?Q?lAr4UyUwQ6fhprCOLQIKuI/asa4+epUcqeJylvgaNzVyAxKTd1fz1A=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9IozETgtEwY++yn2DAcD8x1UjD7HM7BpVQzCBZwidq8yjlq7hraVWpRysoHc?=
+ =?us-ascii?Q?HJ7M0EAk9rhXzmwcWA0DzSUkBy0S1hHDPFi47r5qt8/2fWCGhJbJizFnGKZw?=
+ =?us-ascii?Q?6eZTADLICV7LlPPu6DfAuAyS/iNdWSwA9I38wdBdqcD7cLvwquZ1p92T0fhl?=
+ =?us-ascii?Q?FeG4ufmwS+gytnaTPjo3QLq2O4X9Q+VFoOWFWY/HChzNSOWV38Vwmmtr5ALr?=
+ =?us-ascii?Q?nMIgIpjXH3NSW7H1V2OWYy3jyW8BFjWaP/x68ybahLwdu/DvVOcd7JXz8R/r?=
+ =?us-ascii?Q?bb1v1A9+ryodwYrk2vS2yP2qdi/jYkryphQaiKkkC6Oo4dCGkPh0EXmi/MYI?=
+ =?us-ascii?Q?nhgBB06WLJWl4ZTzBhUD5AoLTDOdAj3unNYQT60q+clmCOJkims73Zm20QAs?=
+ =?us-ascii?Q?vISgVSt9I56W99aPayximiDw4l2WgaeQ5V+sFrVDZuTIz76Onhg4wmr0hWYd?=
+ =?us-ascii?Q?kUbcKeRbpSdt3ppBLIU7xL3HaMoZ46c/PtjxpKpcKZe4B102CcE8YzeYpKr3?=
+ =?us-ascii?Q?1rf5uEVjQRwiamvfC8DmfaTHxBzwblpXFAetAVa0VdNA/NEFrO+WYtMglOGl?=
+ =?us-ascii?Q?ctbaVBiC65k/gv0zhzWgKds1bugkobBLL66DqzOMmV9F4sEEdir9JNzO/iFI?=
+ =?us-ascii?Q?D8jCXpsTlHz3UntYT6V4uWEFvdXyFDIPFwP/E2V+VM4WTEEKbw4fRqjOMr/b?=
+ =?us-ascii?Q?mG8k3mmXHRsJkCfcC16kDeVObpdeasAUDABd8KPXfadSWqUqrSLJrHdHrMFF?=
+ =?us-ascii?Q?wvjBpXDTcfnWaQaMvWG6zSAsZZiL01WKON3q7sHbUw0psEYxQlkJh0VvKLyx?=
+ =?us-ascii?Q?egmIgK+1W+53j56dmFYcvOPmZ6J6+xHCYJov+VaugJsy9GTa60SY0tpkmpkE?=
+ =?us-ascii?Q?mfBTd3K+1SoKe3nrFs/RtgN75mxxDYhgHt8Rj6Z3MJc5DAv4GkTtnfz8Qoj1?=
+ =?us-ascii?Q?DxnS71mHNjJVI4n9ANomd6ijSuoFFOdWy3dD27E9vxtjKl7u0i3NpvZSnyox?=
+ =?us-ascii?Q?nD7o5N6Yoklocfhg5dmxaL8any2j0bqxVM6qGQ4lRxFP12es9xPGGMMwMx5h?=
+ =?us-ascii?Q?/wVarW4fZJvYJYn1Cl4TYTc7zObOniBYxIy01FHCwioc9620gSAI+cVXC3mV?=
+ =?us-ascii?Q?VwTVQnmW4ym8q5T5BZOdUtVH+mcGkqZB4MAq2xEaOE7jnXwO/QUxKZXtH4wu?=
+ =?us-ascii?Q?3qz7spMzjeq8Z51JaPudhe6Hr2zodPwpLyuGGR532NFtN6OAZBxdhCcJyBX+?=
+ =?us-ascii?Q?kE+26mJ9/PcF1K3wyOJRm0t0It8GHReTasz/o58Rm+XZV0bGruoolTOGydD5?=
+ =?us-ascii?Q?XKm5R/pzZwOOKHWa5pKnq0AdWZ8z/vT97QDlP6oDKvStiPM5nkUzLmx+gTj7?=
+ =?us-ascii?Q?AMQxqb85kH/HD4NAYVe/FGefLKw1WmD2BUN6vCQF+IE/+MyJ57c84UN9oxpj?=
+ =?us-ascii?Q?x1Rv+qPDvT1eeEB+M1nzpRRMWdsutsDc5f0EYyNHca2v40j8fdXIK3VUmimb?=
+ =?us-ascii?Q?53xp6JyGrj6/XiNeVFRawAvyednIvU7gjtXC5CBNzaN6GQ9lwh9fOEOo3B+P?=
+ =?us-ascii?Q?kvMB53SVu1KxrWTA4EisJp2ZqVmu36LxHNwxZVyIsltGCqjpWGpfv4LOsGSm?=
+ =?us-ascii?Q?xw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc03042f-6ee8-47d4-3b39-08dd6cd14f50
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 01:47:19.4406
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: STvWqv3BavjWjMPXzRsjyI2XjuIAihpwAp9z4uZhOvGRYIZgSgcAXnXYI715IXpHrDTBYyXlzc99eopyVkRFsBJ5J/SeIMZF5rhRzI8qLQ8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR11MB8735
+X-OriginatorOrg: intel.com
 
+shiju.jose@ wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> CXL spec 3.2 section 8.2.10.9.11.1 describes the device patrol scrub
+> control feature. The device patrol scrub proactively locates and makes
+> corrections to errors in regular cycle.
+> 
+> Allow specifying the number of hours within which the patrol scrub must be
+> completed, subject to minimum and maximum limits reported by the device.
+> Also allow disabling scrub allowing trade-off error rates against
+> performance.
+> 
+> Add support for patrol scrub control on CXL memory devices.
+> Register with the EDAC device driver, which retrieves the scrub attribute
+> descriptors from EDAC scrub and exposes the sysfs scrub control attributes
+> to userspace. For example, scrub control for the CXL memory device
+> "cxl_mem0" is exposed in /sys/bus/edac/devices/cxl_mem0/scrubX/.
+> 
+> Additionally, add support for region-based CXL memory patrol scrub control.
+> CXL memory regions may be interleaved across one or more CXL memory
+> devices. For example, region-based scrub control for "cxl_region1" is
+> exposed in /sys/bus/edac/devices/cxl_region1/scrubX/.
+> 
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/cxl/Kconfig       |  25 ++
+>  drivers/cxl/core/Makefile |   1 +
+>  drivers/cxl/core/edac.c   | 474 ++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/region.c |   5 +
+>  drivers/cxl/cxlmem.h      |  10 +
+>  drivers/cxl/mem.c         |   4 +
+>  6 files changed, 519 insertions(+)
+>  create mode 100644 drivers/cxl/core/edac.c
+> 
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> index 205547e5543a..b5ede1308425 100644
+> --- a/drivers/cxl/Kconfig
+> +++ b/drivers/cxl/Kconfig
+> @@ -113,6 +113,31 @@ config CXL_FEATURES
+>  
+>  	  If unsure say 'n'
+>  
+> +config CXL_EDAC_MEM_FEATURES
+> +	bool "CXL: EDAC Memory Features"
+> +	depends on EXPERT
+> +	depends on CXL_MEM
+> +	depends on CXL_FEATURES
+> +	depends on EDAC >= CXL_BUS
+> +	depends on EDAC_SCRUB
+> +	help
+> +	  The CXL EDAC memory feature control is optional and allows host
+> +	  to control the EDAC memory features configurations of CXL memory
+> +	  expander devices.
+> +
+> +	  When enabled 'cxl_mem' and 'cxl_region' EDAC devices are published
+> +	  with memory scrub control attributes as described by
+> +	  Documentation/ABI/testing/sysfs-edac-scrub.
+> +
+> +	  When enabled 'cxl_mem' EDAC devices are published with memory ECS
+> +	  and repair control attributes as described by
+> +	  Documentation/ABI/testing/sysfs-edac-ecs and
+> +	  Documentation/ABI/testing/sysfs-edac-memory-repair respectively.
+> +
+> +	  Say 'y/m' if you have an expert need to change default settings
+> +	  of a memory RAS feature established by the platform/device (eg.
+> +	  scrub rates for the patrol scrub feature). otherwise say 'n'.
+> +
+>  config CXL_PORT
+>  	default CXL_BUS
+>  	tristate
+> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+> index 139b349b3a52..9b86fb22e5de 100644
+> --- a/drivers/cxl/core/Makefile
+> +++ b/drivers/cxl/core/Makefile
+> @@ -19,4 +19,5 @@ cxl_core-y += ras.o
+>  cxl_core-$(CONFIG_TRACING) += trace.o
+>  cxl_core-$(CONFIG_CXL_REGION) += region.o
+>  cxl_core-$(CONFIG_CXL_FEATURES) += features.o
+> +cxl_core-$(CONFIG_CXL_EDAC_MEM_FEATURES) += edac.o
+>  cxl_core-$(CONFIG_CXL_MCE) += mce.o
+> diff --git a/drivers/cxl/core/edac.c b/drivers/cxl/core/edac.c
+> new file mode 100644
+> index 000000000000..5ec3535785e1
+> --- /dev/null
+> +++ b/drivers/cxl/core/edac.c
+> @@ -0,0 +1,474 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * CXL EDAC memory feature driver.
+> + *
+> + * Copyright (c) 2024-2025 HiSilicon Limited.
+> + *
+> + *  - Supports functions to configure EDAC features of the
+> + *    CXL memory devices.
+> + *  - Registers with the EDAC device subsystem driver to expose
+> + *    the features sysfs attributes to the user for configuring
+> + *    CXL memory RAS feature.
+> + */
+> +
+> +#include <linux/cleanup.h>
+> +#include <linux/edac.h>
+> +#include <linux/limits.h>
+> +#include <cxl/features.h>
+> +#include <cxl.h>
+> +#include <cxlmem.h>
+> +#include "core.h"
+> +
+> +#define CXL_NR_EDAC_DEV_FEATURES 1
+> +
+> +static struct rw_semaphore *cxl_acquire(struct rw_semaphore *rwsem)
+> +{
+> +	if (down_read_interruptible(rwsem))
+> +		return NULL;
+> +
+> +	return rwsem;
+> +}
+> +
+> +DEFINE_FREE(cxl_unlock, struct rw_semaphore *, if (_T) up_read(_T))
 
---jK9RafVCHRtlVVtN
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 27 Mar 2025 01:51:13 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	xen-devel <xen-devel@lists.xenproject.org>,
-	Juergen Gross <jgross@suse.com>, regressions@lists.linux.dev
-Subject: NULL pointer dereference in cpufreq_update_limits(?) under Xen PV
- dom0 - regression in 6.13
+I know I suggested cxl_acquire() and cxl_unlock(), but this really is a
+generic facility.
 
-Hi,
+Let's call it rwsem_read_intr_acquire() and rwsem_read_release(), and
+I'll follow up later with Peter to see if he wants this to graduate from
+CXL.
 
-I've got a report[1] that 6.13.6 crashes as listed below. It worked fine in
-6.12.11. We've tried few simple things to narrow the problem down, but
-without much success.
+Also, go ahead and define it in cxl.h for now as I think other places in
+the subsystem could benefit from this approach.
 
-This is running in Xen 4.17.5, PV dom0, which probably is relevant here.
-This is running on AMD Ryzen 9 7950X3D, with ASRock X670E Taichi
-motherboard.
-There are few more details in the original report (link below).
+> +
+> +/*
+> + * CXL memory patrol scrub control
+> + */
+> +struct cxl_patrol_scrub_context {
 
-The kernel package (including its config saved into /boot) is here:
-https://yum.qubes-os.org/r4.2/current/host/fc37/rpm/kernel-latest-6.13.6-1.=
-qubes.fc37.x86_64.rpm
-https://yum.qubes-os.org/r4.2/current/host/fc37/rpm/kernel-latest-modules-6=
-=2E13.6-1.qubes.fc37.x86_64.rpm
+I like "patrol_scrub" spelled out here compared to "ps" used everywhere
+else.
 
-The crash message:
-[    9.367048] BUG: kernel NULL pointer dereference, address: 0000000000000=
-070
-[    9.368251] #PF: supervisor read access in kernel mode
-[    9.369273] #PF: error_code(0x0000) - not-present page
-[    9.370346] PGD 0 P4D 0
-[    9.371222] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-[    9.372114] CPU: 0 UID: 0 PID: 128 Comm: kworker/0:2 Not tainted 6.13.6-=
-1.qubes.fc37.x86_64 #1
-[    9.373184] Hardware name: ASRock X670E Taichi/X670E Taichi, BIOS 3.20 0=
-2/21/2025
-[    9.374183] Workqueue: kacpi_notify acpi_os_execute_deferred
-[    9.375124] RIP: e030:cpufreq_update_limits+0x10/0x30
-[    9.375840] Code: 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 =
-90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 05 98 e4 21 02 <48=
-> 8b 40 70 48 85 c0 74 06 e9 a2 36 38 00 cc e9 ec fe ff ff 66 66
-[    9.377009] RSP: e02b:ffffc9004058be28 EFLAGS: 00010246
-[    9.377667] RAX: 0000000000000000 RBX: ffff888005bf4800 RCX: ffff88805d6=
-35fa8
-[    9.378415] RDX: ffff888005bf4800 RSI: 0000000000000085 RDI: 00000000000=
-00000
-[    9.379127] RBP: ffff888005cd7800 R08: 0000000000000000 R09: 80808080808=
-08080
-[    9.379887] R10: ffff88800391abc0 R11: fefefefefefefeff R12: ffff888004e=
-8aa00
-[    9.380669] R13: ffff88805d635f80 R14: ffff888004e8aa15 R15: ffff8880059=
-baf00
-[    9.381514] FS:  0000000000000000(0000) GS:ffff88805d600000(0000) knlGS:=
-0000000000000000
-[    9.382345] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    9.383045] CR2: 0000000000000070 CR3: 000000000202c000 CR4: 00000000000=
-50660
-[    9.383786] Call Trace:
-[    9.384335]  <TASK>
-[    9.384886]  ? __die+0x23/0x70
-[    9.385456]  ? page_fault_oops+0x95/0x190
-[    9.386036]  ? exc_page_fault+0x76/0x190
-[    9.386636]  ? asm_exc_page_fault+0x26/0x30
-[    9.387215]  ? cpufreq_update_limits+0x10/0x30
-[    9.387805]  acpi_processor_notify.part.0+0x79/0x150
-[    9.388402]  acpi_ev_notify_dispatch+0x4b/0x80
-[    9.389013]  acpi_os_execute_deferred+0x1a/0x30
-[    9.389610]  process_one_work+0x186/0x3b0
-[    9.390205]  worker_thread+0x251/0x360
-[    9.390765]  ? srso_alias_return_thunk+0x5/0xfbef5
-[    9.391376]  ? __pfx_worker_thread+0x10/0x10
-[    9.391957]  kthread+0xd2/0x100
-[    9.392493]  ? __pfx_kthread+0x10/0x10
-[    9.393043]  ret_from_fork+0x34/0x50
-[    9.393575]  ? __pfx_kthread+0x10/0x10
-[    9.394090]  ret_from_fork_asm+0x1a/0x30
-[    9.394621]  </TASK>
-[    9.395106] Modules linked in: gpio_generic amd_3d_vcache acpi_pad(-) lo=
-op fuse xenfs dm_thin_pool dm_persistent_data dm_bio_prison amdgpu amdxcp i=
-2c_algo_bit drm_ttm_helper ttm crct10dif_pclmul drm_exec crc32_pclmul gpu_s=
-ched
-crc32c_intel drm_suballoc_helper polyval_clmulni drm_panel_backlight_quirks=
- polyval_generic drm_buddy ghash_clmulni_intel sha512_ssse3 drm_display_hel=
-per sha256_ssse3 sha1_ssse3 xhci_pci cec nvme sp5100_tco xhci_hcd nvme_core=
- nvme_auth
-video wmi xen_acpi_processor xen_privcmd xen_pciback xen_blkback xen_gntall=
-oc xen_gntdev xen_evtchn scsi_dh_rdac scsi_dh_emc scsi_dh_alua uinput dm_mu=
-ltipath
-[    9.398698] CR2: 0000000000000070
-[    9.399266] ---[ end trace 0000000000000000 ]---
-[    9.399880] RIP: e030:cpufreq_update_limits+0x10/0x30
-[    9.400528] Code: 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 =
-90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 05 98 e4 21 02 <48=
-> 8b 40 70 48 85 c0 74 06 e9 a2 36 38 00 cc e9 ec fe ff ff 66 66
-[    9.401673] RSP: e02b:ffffc9004058be28 EFLAGS: 00010246
-[    9.402316] RAX: 0000000000000000 RBX: ffff888005bf4800 RCX: ffff88805d6=
-35fa8
-[    9.403060] RDX: ffff888005bf4800 RSI: 0000000000000085 RDI: 00000000000=
-00000
-[    9.403819] RBP: ffff888005cd7800 R08: 0000000000000000 R09: 80808080808=
-08080
-[    9.404581] R10: ffff88800391abc0 R11: fefefefefefefeff R12: ffff888004e=
-8aa00
-[    9.405332] R13: ffff88805d635f80 R14: ffff888004e8aa15 R15: ffff8880059=
-baf00
-[    9.406063] FS:  0000000000000000(0000) GS:ffff88805d600000(0000) knlGS:=
-0000000000000000
-[    9.406830] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    9.407561] CR2: 0000000000000070 CR3: 000000000202c000 CR4: 00000000000=
-50660
-[    9.408318] Kernel panic - not syncing: Fatal exception
-[    9.409022] Kernel Offset: disabled
-(XEN) Hardware Dom0 crashed: 'noreboot' set - not rebooting.
+> +	u8 instance;
+> +	u16 get_feat_size;
+> +	u16 set_feat_size;
+> +	u8 get_version;
+> +	u8 set_version;
+> +	u16 effects;
+> +	struct cxl_memdev *cxlmd;
+> +	struct cxl_region *cxlr;
+> +};
+> +
+> +/**
+> + * struct cxl_memdev_ps_params - CXL memory patrol scrub parameter data structure.
+> + * @enable:     [IN & OUT] enable(1)/disable(0) patrol scrub.
+> + * @scrub_cycle_changeable: [OUT] scrub cycle attribute of patrol scrub is changeable.
+> + * @scrub_cycle_hrs:    [IN] Requested patrol scrub cycle in hours.
+> + *                      [OUT] Current patrol scrub cycle in hours.
+> + * @min_scrub_cycle_hrs:[OUT] minimum patrol scrub cycle in hours supported.
+> + */
+> +struct cxl_memdev_ps_params {
+> +	bool enable;
+> +	bool scrub_cycle_changeable;
 
-Looking at the call trace, it's likely related to ACPI, and Xen too, so
-I'm adding relevant lists too.
+This is set but unused. Even if it were to be used I would expect it to
+be set in the cxl_patrol_scrub_context.
 
-Any ideas?
+> +	u8 scrub_cycle_hrs;
+> +	u8 min_scrub_cycle_hrs;
+> +};
 
-#regzbot introduced: v6.12.11..v6.13.6
+I do not understand the point of this extra object and would prefer to
+keep intermediate data structures to a minimum.
 
-[1] https://forum.qubes-os.org/t/kernel-latest-6-13-6-boot-loop/32926
+It looks like all this does is provide for short lived parsed caching of
+the raw hardware patrol scrube attributes. Just pass those raw objects
+around and provide helpers to do the conversion.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+The less data structures the less confusion for the next person that has
+to read this code a few years down the road.
 
---jK9RafVCHRtlVVtN
-Content-Type: application/pgp-signature; name=signature.asc
+> +
+> +enum cxl_scrub_param {
+> +	CXL_PS_PARAM_ENABLE,
+> +	CXL_PS_PARAM_SCRUB_CYCLE,
+> +};
 
------BEGIN PGP SIGNATURE-----
+This seems unforuntate, why not make non-zero scrub rate an implied
+enable and zero to disable? A non-zero sentinel value like U32_MAX can
+indicate "keep scrub rate unchanged".
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmfkoQEACgkQ24/THMrX
-1yw1pQgAiGheqvBVAzHRFCalG+1EJQd6wmukzpCgFaXCkqkogTtXUbL5pnar1ZGK
-1FzPFjP788c944gItnjaT3DhndMNBosTVjxe3PuogF7hwZVM7DuJ3zsWpoQq9cyO
-jsR/A3B25Nq9j4CM09Q74U+NRpS1sy3QtUH71D8+U0qhsc/RwrKzfrDD4RT/Az7X
-OFU/6dT2hfi+4tlGWCSwPlSFss7oL6h2OvlfEBb8bKUoNX1C6r9wA4pMSqTI4mSz
-HMUaAnKegjA5LekTjYiCoCX+CAm4yE03SPrVOimmLQa/Elh3s7PDt9PNesatzGxn
-B5oM/RNS+k73QptVRsjTpl/DH8fS+w==
-=zTtu
------END PGP SIGNATURE-----
+> +#define CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK BIT(0)
 
---jK9RafVCHRtlVVtN--
+This CXL_MEMDEV_PS prefix is awkward due to overload with 'struct
+cxl_memdev'. Minimize it to something like:
+
+CXL_SCRUB_CONTROL_CHANGEABLE
+CXL_SCRUB_CONTROL_REALTIME
+CXL_SCRUB_CONTROL_CYCLE_MASK
+CXL_SCRUB_CONTROL_MIN_CYCLE_MASK
+
+> +#define CXL_MEMDEV_PS_SCRUB_CYCLE_REALTIME_REPORT_CAP_MASK BIT(1)
+> +#define CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK GENMASK(7, 0)
+> +#define CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK GENMASK(15, 8)
+> +#define CXL_MEMDEV_PS_FLAG_ENABLED_MASK BIT(0)
+
+CXL_SCRUB_CONTROL_ENABLE
+
+...no need to call it a mask when it is just a single-bit, and when it
+is both the status and the control just call it "enable".
+
+> +
+> +/*
+> + * See CXL spec rev 3.2 @8.2.10.9.11.1 Table 8-222 Device Patrol Scrub Control
+> + * Feature Readable Attributes.
+> + */
+> +struct cxl_memdev_ps_rd_attrs {
+> +	u8 scrub_cycle_cap;
+> +	__le16 scrub_cycle_hrs;
+
+"hours" is just 2 more characters than "hrs", I think we can afford the
+extra bytes.
+
+[..]
+> +int devm_cxl_memdev_edac_register(struct cxl_memdev *cxlmd)
+> +{
+> +	struct edac_dev_feature ras_features[CXL_NR_EDAC_DEV_FEATURES];
+> +	int num_ras_features = 0;
+> +	u8 scrub_inst = 0;
+> +	int rc;
+> +
+> +	rc = cxl_memdev_scrub_init(cxlmd, &ras_features[num_ras_features],
+> +				   scrub_inst);
+> +	if (rc < 0 && rc != -EOPNOTSUPP)
+> +		return rc;
+> +
+> +	if (rc != -EOPNOTSUPP)
+> +		num_ras_features++;
+> +
+> +	char *cxl_dev_name __free(kfree) =
+> +		kasprintf(GFP_KERNEL, "cxl_%s", dev_name(&cxlmd->dev));
+
+if (!cxl_dev_name)
+	return -ENOMEM;
+
+> +
+> +	return edac_dev_register(&cxlmd->dev, cxl_dev_name, NULL,
+> +				 num_ras_features, ras_features);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(devm_cxl_memdev_edac_register, "CXL");
+> +
+> +int devm_cxl_region_edac_register(struct cxl_region *cxlr)
+> +{
+> +	struct edac_dev_feature ras_features[CXL_NR_EDAC_DEV_FEATURES];
+> +	int num_ras_features = 0;
+> +	u8 scrub_inst = 0;
+> +	int rc;
+> +
+> +	rc = cxl_region_scrub_init(cxlr, &ras_features[num_ras_features],
+> +				   scrub_inst);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	num_ras_features++;
+> +
+> +	char *cxl_dev_name __free(kfree) =
+> +		kasprintf(GFP_KERNEL, "cxl_%s", dev_name(&cxlr->dev));
+> +
+> +	return edac_dev_register(&cxlr->dev, cxl_dev_name, NULL,
+> +				 num_ras_features, ras_features);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(devm_cxl_region_edac_register, "CXL");
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index b3260d433ec7..2aa6eb675fdf 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -3542,6 +3542,11 @@ static int cxl_region_probe(struct device *dev)
+>  	case CXL_PARTMODE_PMEM:
+>  		return devm_cxl_add_pmem_region(cxlr);
+>  	case CXL_PARTMODE_RAM:
+> +		rc = devm_cxl_region_edac_register(cxlr);
+
+Why do only volatile regions get EDAC support? PMEM patrol scrub seems
+equally valid.
 
