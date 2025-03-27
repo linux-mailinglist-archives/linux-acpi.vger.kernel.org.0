@@ -1,147 +1,178 @@
-Return-Path: <linux-acpi+bounces-12503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12504-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF56A734B0
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 15:40:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A22A73796
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 18:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B68D1897A7B
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 14:40:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2172B17A1BD
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Mar 2025 16:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ECF214A98;
-	Thu, 27 Mar 2025 14:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBV24t6e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C2D218EBE;
+	Thu, 27 Mar 2025 16:59:22 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77331217F36;
-	Thu, 27 Mar 2025 14:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6C218EB1;
+	Thu, 27 Mar 2025 16:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743086414; cv=none; b=SNSO0f5OVW5IyVACjsNo9bFcReVTnMLvNOClpV1G3rf7g1LvgoxBZcdCk6cH83KaKl1d1jVsSeEj4RSUrAT6/BELZ+WgYjGRD07HinLFQCNFVyySsVQTBnF7+C2Z0qc3m+oX6Pn24YlGr4+35d8zTXdBAvr3CzYSkiI5E1nNDbE=
+	t=1743094762; cv=none; b=p4tS7+SHak4EzsbfbzbgrYLXHI+8fjhZeEy8EXw6Cw2U+Npn1MabG8oODqSwTobwiupc3seXjxKHJvlIChDxgAuu02+xQPaIt0uaROgChbIT4baDzE0scc6/E9e+3CmrNyJJqzggh8tk9oPopZwniQ22oGXqOZi/x+Vfi/5zUPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743086414; c=relaxed/simple;
-	bh=xLojPGVZuKTt2T24et9s0pONVfQDrJThoOxlvufCtd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MUqDu6L+9/7JTkXC/gZwg/Mybj5OL0IvF5nGpeddZpZ/gIeU33ofhVM46M1gIuYtLkf8x17oTT9AHXcGrTXFNYswFJCtCwclot6IiIdp5uIWrd9zDEbol0Nm2WrwYjOsP7/aWmByAZLpx2yEneV9jr5yTMJ9ErAwbn0OdIvriaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBV24t6e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9E4C4CEDD;
-	Thu, 27 Mar 2025 14:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743086414;
-	bh=xLojPGVZuKTt2T24et9s0pONVfQDrJThoOxlvufCtd4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WBV24t6e4qika/ZQS+tyW6B3U/U0XkMB/HQ+aVjR8QunDh47/Arl+KSULt3Egbd0e
-	 auAPkY54FvT+5SV8s6UQs0FlWTLAZVfMcSNHC5SPzCJ3ZwWKoThP0XGpeSBtCZ7z25
-	 46tFOmjujK43S/2vTsduvvtxgmvLukWYX+KMepOvQw4Z+rGDIm8++oWLfNzvSvbFF8
-	 ENYMV1+QPBaNO8N24KBY9T62kSshmYVlcCwVRSd6V1nYQrPOVPp2MOqixmtR/1Q7I0
-	 kDiWHt5Vxw3vsJKsgidrT+vL7GTpoqx45/i5V/ZMCwwDgFebEnToo53FsHB6RjwbNU
-	 kEZih7H4TxZqw==
-Date: Thu, 27 Mar 2025 15:40:06 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Rob Herring <robh@kernel.org>, Dirk Behme <dirk.behme@de.bosch.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 07/10] rust: Add arrayvec
-Message-ID: <Z-VjRmiWDj6teoFL@cassiopeiae>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250326171411.590681-8-remo@buenzli.dev>
+	s=arc-20240116; t=1743094762; c=relaxed/simple;
+	bh=ZBWtgGydzDpTfxzGWzX9C6AwYBx8VOMDnHl+miUOL4E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=g4PKwTLZLjPM0aFl23JVATrVf8dBDSZtPKkKA3ZMtLbP9DQV/xUYkPQwnUxfiNNRvlHcx9tSsk7hSefGk2Z+yYoMFidQCttYPvW6VRL0J2FPyYwQBvkpJ65XUiQnS/6BO5qIUviTiQr/2txuGkcige/tK8/irYVkAvag3+iyqt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZNqXr6JTqz6M4Ql;
+	Fri, 28 Mar 2025 00:55:40 +0800 (CST)
+Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
+	by mail.maildlp.com (Postfix) with ESMTPS id 26E2A14051A;
+	Fri, 28 Mar 2025 00:59:11 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 27 Mar 2025 17:59:10 +0100
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Thu, 27 Mar 2025 17:59:10 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>
+CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
+	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
+	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
+	<gthelen@google.com>, "wschwartz@amperecomputing.com"
+	<wschwartz@amperecomputing.com>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "wbs@os.amperecomputing.com"
+	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v2 1/8] cxl: Add helper function to retrieve a feature
+ entry
+Thread-Topic: [PATCH v2 1/8] cxl: Add helper function to retrieve a feature
+ entry
+Thread-Index: AQHbmcKr5anTvL2xzU6u4SEaFigSYLOF6PqAgAFGedA=
+Date: Thu, 27 Mar 2025 16:59:10 +0000
+Message-ID: <610691bb7c6949b5a2137c568bc66fe2@huawei.com>
+References: <20250320180450.539-1-shiju.jose@huawei.com>
+	<20250320180450.539-2-shiju.jose@huawei.com>
+ <67e47285c1974_152c29442@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <67e47285c1974_152c29442@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326171411.590681-8-remo@buenzli.dev>
 
-On Wed, Mar 26, 2025 at 06:13:46PM +0100, Remo Senekowitsch wrote:
-> This patch is basically a proof of concept intendend to gather feedback
-> about how to do this properly. Normally I would want to use the crate
-> from crates.io[1], but that's not an option in the kernel. We could also
-> vendor the entire source code of arrayvec. I'm not sure if people will
-> be happy with that.
+>-----Original Message-----
+>From: Dan Williams <dan.j.williams@intel.com>
+>Sent: 26 March 2025 21:33
+>To: Shiju Jose <shiju.jose@huawei.com>; linux-cxl@vger.kernel.org;
+>dan.j.williams@intel.com; dave@stgolabs.net; Jonathan Cameron
+><jonathan.cameron@huawei.com>; dave.jiang@intel.com;
+>alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
+>david@redhat.com; Vilas.Sridharan@amd.com
+>Cc: linux-edac@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
+>mm@kvack.org; linux-kernel@vger.kernel.org; bp@alien8.de;
+>tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
+>mchehab@kernel.org; leo.duran@amd.com; Yazen.Ghannam@amd.com;
+>rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
+>dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
+>james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
+>erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
+>gthelen@google.com; wschwartz@amperecomputing.com;
+>dferguson@amperecomputing.com; wbs@os.amperecomputing.com;
+>nifan.cxl@gmail.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
+><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
+>kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
+>Linuxarm <linuxarm@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
+>Subject: Re: [PATCH v2 1/8] cxl: Add helper function to retrieve a feature=
+ entry
+>
+>shiju.jose@ wrote:
+>> From: Shiju Jose <shiju.jose@huawei.com>
+>>
+>> Add helper function to retrieve a feature entry from the supported
+>> features list, if supported.
+>>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+>> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+>> ---
+>>  drivers/cxl/core/core.h     |  2 ++
+>>  drivers/cxl/core/features.c | 23 +++++++++++++++++++++++
+>>  2 files changed, 25 insertions(+)
+>>
+>> diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h index
+>> 1803aedb25ca..16bc717376fc 100644
+>> --- a/drivers/cxl/core/core.h
+>> +++ b/drivers/cxl/core/core.h
+>> @@ -123,6 +123,8 @@ int cxl_ras_init(void);  void cxl_ras_exit(void);
+>>
+>>  #ifdef CONFIG_CXL_FEATURES
+>> +struct cxl_feat_entry *cxl_get_feature_entry(struct cxl_dev_state *cxld=
+s,
+>> +					     const uuid_t *feat_uuid);
+>
+>It is unfortunate that this naming choice is too similar to cxl_get_featur=
+e().
+>However, as I go to suggest a new name I find that this is a duplicate of
+>get_support_feature_info() in Dave's fwctl series. Just drop this patch in=
+ favor of
+>that.
 
-Do we really need this? The only user in this series I could spot was
-property_get_reference_args(). And I think that with a proper abstraction of
-struct fwnode_reference_args we could avoid to copy memory at all.
+Hi Dan,
 
-If it turns out we actually need something like this, I'd prefer to move it to
-rust/kernel/alloc/ and see if it's worth to derive a common trait that maybe can
-share a few things between ArrayVec and Vec.
+I am fine to use get_support_feature_info() for the EDAC features.=20
+However this function is defined as static in the fwctl series and=20
+takes struct fwctl_rpc_cxl * as input for RPC instead of  uuid_t *
+as in cxl_get_feature_entry().
 
-> 
-> [1] https://crates.io/crates/arrayvec
-> 
-> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> ---
->  rust/kernel/arrayvec.rs | 81 +++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs      |  1 +
->  2 files changed, 82 insertions(+)
->  create mode 100644 rust/kernel/arrayvec.rs
-> 
-> diff --git a/rust/kernel/arrayvec.rs b/rust/kernel/arrayvec.rs
-> new file mode 100644
-> index 000000000..041e7dcce
-> --- /dev/null
-> +++ b/rust/kernel/arrayvec.rs
-> @@ -0,0 +1,81 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Provides [ArrayVec], a stack-allocated vector with static capacity.
-> +
-> +use core::mem::MaybeUninit;
-> +
-> +/// A stack-allocated vector with statically fixed capacity.
-> +///
-> +/// This can be useful to avoid heap allocation and still ensure safety where a
-> +/// small but dynamic number of elements is needed.
-> +///
-> +/// For example, consider a function that returns a variable number of values,
-> +/// but no more than 8. In C, one might achieve this by passing a pointer to
-> +/// a stack-allocated array as an out-parameter and making the function return
-> +/// the actual number of elements. This is not safe, because nothing prevents
-> +/// the caller from reading elements from the array that weren't actually
-> +/// initialized by the function. `ArrayVec` solves this problem, users are
-> +/// prevented from accessing uninitialized elements.
-> +///
-> +/// This basically exists already (in a much more mature form) on crates.io:
-> +/// <https://crates.io/crates/arrayvec>
-> +#[derive(Debug)]
-> +pub struct ArrayVec<const N: usize, T> {
-> +    array: [core::mem::MaybeUninit<T>; N],
-> +    len: usize,
-> +}
-> +
-> +impl<const N: usize, T> ArrayVec<N, T> {
-> +    /// Adds a new element to the end of the vector.
-> +    ///
-> +    /// # Panics
-> +    ///
-> +    /// Panics if the vector is already full.
-> +    pub fn push(&mut self, elem: T) {
-> +        if self.len == N {
-> +            panic!("OOM")
+static struct cxl_feat_entry *
+get_support_feature_info(struct cxl_features_state *cxlfs,
+			 const struct fwctl_rpc_cxl *rpc_in)
 
-Please do not panic, this should return a Result instead.
+Can you suggest how to use get_support_feature_info() from within the CXL d=
+river=20
+to retrieve a supported feature entry (for e.g an EDAC feature)?
+
+>
+
+Thanks,
+Shiju
 
