@@ -1,137 +1,131 @@
-Return-Path: <linux-acpi+bounces-12519-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12520-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2995FA7429B
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Mar 2025 03:53:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686E0A744B7
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Mar 2025 08:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6609F189BEAA
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Mar 2025 02:52:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B6C63A4FFA
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Mar 2025 07:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B26A20DD64;
-	Fri, 28 Mar 2025 02:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EE3211A05;
+	Fri, 28 Mar 2025 07:48:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915A720DD6B;
-	Fri, 28 Mar 2025 02:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33F421171A;
+	Fri, 28 Mar 2025 07:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743130301; cv=none; b=WtzaXJnZC/h3NcsriYNsheXUm7jVq9FHa9wHn3dFCTZf7hmB+TWTKJqgDTAOlAHEeXk4BqfnsTSkaOhZZQzC/GWwPRyWo75GdGD0SG+Yoi5Q/87LWm/Kxo/uT1t+xnMEVUWKMQbE5J2yBM9s5YG2TvYNliGtFHEPxIP+6R7nDkk=
+	t=1743148089; cv=none; b=Oj8mugeMqj1EguaHzK/dE8WXaRhfXM9GfbOyDn0gEYNhIjzPQ9ImJNuOOC20aUCeJQSYjghdlc0YZ8BUfXJdYWYgMaOtPoO+d7vNRnK1nQuj9+aX0149jafk61N/g81VtKIt1hRVqytviBqcooNL+3rbIgKhbV6IZqcwHrL7sms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743130301; c=relaxed/simple;
-	bh=OfSMEoXcKwYz9G/YAO5ukyb0YgaWhOSY50U/Dlz3TLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=CnQW2xU9mAqqc23XXHsuw9snVjnwEQ8hTtExACy5qPAqqoaA9eTkWGjiPQ0bE2fRUVeWX2hcemYVU+ZR44hwJDfB7D1avAQ+uSRrXoh1ktyzJyghHtkTdQfPUzlpcYhhrETzzybCnNkBI1wxBg/RQFtuhREDH2XafwsHDqVuhUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b692a2.dsl.pool.telekom.hu [::ffff:81.182.146.162])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 00000000000800FA.0000000067E60D82.0006A495; Fri, 28 Mar 2025 03:46:26 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-  Len Brown <lenb@kernel.org>,
-  Mario Limonciello <mario.limonciello@amd.com>,
-  Rodrigo Siqueira <siqueira@igalia.com>,
-  Alex Hung <alex.hung@amd.com>,
-  Alex Deucher <alexander.deucher@amd.com>
-Cc: linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-  linux-kernel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH] ACPI: video: Handle fetching EDID as ACPI_TYPE_PACKAGE
-Date: Fri, 28 Mar 2025 03:44:00 +0100
-Message-ID: <4cef341fdf7a0e877c50b502fc95ee8be28aa811.1743129387.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743148089; c=relaxed/simple;
+	bh=IWSfYK3ukHnxWl3RBO25f4Y1+/GOZMUiZZVobtATz8A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VT0TpaHwyqolCqX2qJCIacRMT2glpBhufl7nkx0p9eBiEwgKM3fZ2gODcqFyZpa8bUIwNu6Vgtvp4LkxS7QiEfy7qDh7QQJwA22otW7V0rHKAJANuYD3FBXfXMZPGF/gdoLzMLoyyC1xvOn2bTOnXiwObODfd+kaOBTQRg/7b9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: f5e55b0a0ba811f0a216b1d71e6e1362-20250328
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_T1
+	AMN_GOOD, AMN_C_TI, AMN_C_BU
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:cc3b53a5-0111-4e00-96bc-dfa742625284,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-INFO: VERSION:1.1.45,REQID:cc3b53a5-0111-4e00-96bc-dfa742625284,IP:0,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:re
+	lease,TS:5
+X-CID-META: VersionHash:6493067,CLOUDID:0cf768b468af5a1b5f3fb68e35504a8d,BulkI
+	D:250328154248NRJDV73B,BulkQuantity:2,Recheck:0,SF:19|38|66|72|78|102,TC:n
+	il,Content:0|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil
+	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
+X-UUID: f5e55b0a0ba811f0a216b1d71e6e1362-20250328
+X-User: luriwen@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <luriwen@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1370077647; Fri, 28 Mar 2025 15:47:55 +0800
+From: Riwen Lu <luriwen@kylinos.cn>
+To: o-takashi@sakamocchi.jp,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	robert.moore@intel.com
+Cc: linux1394-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	Riwen Lu <luriwen@kylinos.cn>,
+	k2ci <kernel-bot@kylinos.cn>
+Subject: [PATCH v1] tools: Fix compile error of pfrut/firewire
+Date: Fri, 28 Mar 2025 15:47:50 +0800
+Message-Id: <20250328074750.3524280-1-luriwen@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Some Lenovo laptops incorrectly return EDID as
-buffer in ACPI package (instead of just a buffer)
-when calling _DDC.
+The value -rR of MAKEFLAGS implicit do not use make's built-in rules and
+variables. Previous commit d1d096312176 ("tools: fix annoying "mkdir -p
+..." logs when building tools in parallel") removed the MAKEFLAGS=
+command for tools and caused the built-in rules for pfrut/firewire
+failed to take effect.
 
-Calling _DDC generates this ACPI Warning:
-ACPI Warning: \_SB.PCI0.GP17.VGA.LCD._DDC: Return type mismatch - \
-found Package, expected Integer/Buffer (20240827/nspredef-254)
-
-Use the first element of the package to get the EDID buffer.
-
-The DSDT:
-
-Name (AUOP, Package (0x01)
-{
-	Buffer (0x80)
-	{
-	...
-	}
-})
-
-...
-
-Method (_DDC, 1, NotSerialized)  // _DDC: Display Data Current
-{
-	If ((PAID == AUID))
-        {
-		Return (AUOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.AUOP */
-	}
-	ElseIf ((PAID == IVID))
-	{
-		Return (IVOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.IVOP */
-	}
-	ElseIf ((PAID == BOID))
-	{
-		Return (BOEP) /* \_SB_.PCI0.GP17.VGA_.LCD_.BOEP */
-	}
-	ElseIf ((PAID == SAID))
-	{
-		Return (SUNG) /* \_SB_.PCI0.GP17.VGA_.LCD_.SUNG */
-	}
-
-	Return (Zero)
-}
-
-Cc: stable@vger.kernel.org
-Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if available for eDP")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4085
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Reported-by: k2ci <kernel-bot@kylinos.cn>
+Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
 ---
- drivers/acpi/acpi_video.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/firewire/Makefile               | 7 +++++++
+ tools/power/acpi/tools/pfrut/Makefile | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index efdadc74e3f4..65cf36796506 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -649,6 +649,9 @@ acpi_video_device_EDID(struct acpi_video_device *device, void **edid, int length
+diff --git a/tools/firewire/Makefile b/tools/firewire/Makefile
+index 67b6e9fca83c..8ba53e1173c6 100644
+--- a/tools/firewire/Makefile
++++ b/tools/firewire/Makefile
+@@ -12,6 +12,13 @@ nosy-dump : LDFLAGS = -g
+ nosy-dump : LDLIBS = -lpopt
  
- 	obj = buffer.pointer;
- 
-+	if (obj && obj->type == ACPI_TYPE_PACKAGE && obj->package.count == 1)
-+		obj = &obj->package.elements[0];
+ nosy-dump : nosy-dump.o decode-fcp.o
++	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 +
- 	if (obj && obj->type == ACPI_TYPE_BUFFER) {
- 		*edid = kmemdup(obj->buffer.pointer, obj->buffer.length, GFP_KERNEL);
- 		ret = *edid ? obj->buffer.length : -ENOMEM;
-@@ -658,7 +661,7 @@ acpi_video_device_EDID(struct acpi_video_device *device, void **edid, int length
- 		ret = -EFAULT;
- 	}
++nosy-dump.o : nosy-dump.c
++	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
++
++decode-fcp.o : decode-fcp.c
++	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
  
--	kfree(obj);
-+	kfree(buffer.pointer);
- 	return ret;
- }
+ clean :
+ 	rm -rf *.o nosy-dump
+diff --git a/tools/power/acpi/tools/pfrut/Makefile b/tools/power/acpi/tools/pfrut/Makefile
+index 61c1a96fd433..e682ee135f1d 100644
+--- a/tools/power/acpi/tools/pfrut/Makefile
++++ b/tools/power/acpi/tools/pfrut/Makefile
+@@ -8,7 +8,7 @@ EXTRA_UNINSTALL = uninstall-man
  
+ CFLAGS += -Wall -O2
+ CFLAGS += -DPFRUT_HEADER='"../../../../../include/uapi/linux/pfrut.h"'
+-LDFLAGS += -luuid
++override LDFLAGS += -luuid
+ 
+ TOOL_OBJS = \
+ 	pfrut.o
 -- 
-2.49.0
+2.25.1
 
 
