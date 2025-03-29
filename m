@@ -1,144 +1,107 @@
-Return-Path: <linux-acpi+bounces-12536-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12537-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A11A753CC
-	for <lists+linux-acpi@lfdr.de>; Sat, 29 Mar 2025 02:07:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC8BA75492
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Mar 2025 08:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73ABA175044
-	for <lists+linux-acpi@lfdr.de>; Sat, 29 Mar 2025 01:07:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD1F27A4B74
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Mar 2025 07:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61AE17991;
-	Sat, 29 Mar 2025 01:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="baHwbji8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="F4ngpkAK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4813B2F37;
+	Sat, 29 Mar 2025 07:14:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3974A1D;
-	Sat, 29 Mar 2025 01:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C585EE555;
+	Sat, 29 Mar 2025 07:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743210450; cv=none; b=EmqEpmwlBVOz/dyf/6+Qk1WLR6PUnDxoaJzXD32Nxr1KMmS/xoNUkBS/i2wpW5yHmPlLZUGHkoNMGANfK5ecJpXD4BSa+CMiiaEvUIHnBjz5iwJIRiF8dHl6xv/HtU045rl1lb3xHzansVN5weytdg4C++RCUooV/HHXl+PGMhg=
+	t=1743232464; cv=none; b=brFRUl+/ETDuqQgIbe58fFHOOP6IGU6v+MrqOHpvaBd3LloSPeULiw+KLv2IZLF/zjOji92Wq66ikUGimjsiBcVyrNuowgUaWWmeH1/Zpm/S+ZKIfiiuCDnpFFipu2ZePypOof3V/scoiDu9Pa5vHv+8sNZLhnpc/QV/LVjVBTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743210450; c=relaxed/simple;
-	bh=9VHMgg8XVI03DXLD39IVNu73KXwzIK1KERt6YTLgiE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eiAY4Cv4tKLj9V2CqchF9xfp5TM134n1FlTJWV89QfyzU2SHg+AE0kJ1/JiYZLT+Wf2XrCu0tz8jiHhxkr4Hmf0TKJkFzCbwPmnbkbYJn78tf2/JWDj6VmYZLYnRc7wclqaHpmWuNXAd9ukUhZxK4DP8KcwdVMd51CgtLpq/J5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=baHwbji8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=F4ngpkAK; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3BAF125401CC;
-	Fri, 28 Mar 2025 21:07:27 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Fri, 28 Mar 2025 21:07:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1743210447; x=
-	1743296847; bh=wKO8nLwVZ/c6d2peXPF8XkbDrw0UaTn7gMMaej/9ejg=; b=b
-	aHwbji8vf+26Z3AhA/3BOLPo/6KL/u1O6ZQ9sgVTT1ZIMQQIdC65DWB2ksyOLFuv
-	e+Zyjdo+V9IZhPHd2WI3sRF3S6JefkeezDN4r2ubtSeD4H/uNzTI2h1+WQZnkN64
-	MPyyoI1G0uuT5+q1HppvbjOtBCZe07Fs4tn/FYbV4zfSV4pKlqRfkYoChz199cnV
-	7Uptv60tU5WxjZK/g8D2CuwZwpOp6Vv5cgPhqrG+ZGYfjHcVuq1R7n9FicOHOt+C
-	Wba6lMfAb8MNEcaZP9+avFL4Wqn/L2wBGmHdrFD4Z2N5tQyDNSbT5HmbYLWjphTB
-	dFQMFfJkBKyvsznRl9LAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1743210447; x=1743296847; bh=wKO8nLwVZ/c6d2peXPF8XkbDrw0UaTn7gMM
-	aej/9ejg=; b=F4ngpkAKSoehP3OLsF/lxLU0TZmnIpoyTC+9EeeZ2cTRWwPf8Kl
-	cJRlLd5djqHUayoozyF2W8oU8EX1fyP1kGNaQLt99Id93137/AhAHbTJEyn+Nq7U
-	x7h/5Lt1J3FFLZ/BuuUdnucZ0JHbZuHPZGNEb0TmrNH1mlbRKmfg/86TLdRizwBi
-	9rZUjkt8Tp0ph3DoxQZnGC12hNzZJy2x+5bz7vFBs+g8Vd3DLqRPQYKOkSsE+qh/
-	N6EATpXXu9h7+M2P5ZpaYNOxfFz2N2qK8AWfpJkQt3bTWhjqH2eCM0OiN/ETNbnX
-	DmljxKUOf4sou+ntsh7MbWa8mg0qwTmdYfA==
-X-ME-Sender: <xms:zkfnZ5cv0tN7H6h2b0G8kIC-F1SM83Tdr4kvIT266XcRHosBJSvPBw>
-    <xme:zkfnZ3MJaiAkJKzPMdvFuFhVRNuscMZPGgKH89d880-yDO5xjuQbxPmcxWM-leK7H
-    wBwmvizMHbxEj7EC7M>
-X-ME-Received: <xmr:zkfnZyiwB3mb2sXBjbeH0Yvk1tYzndaq7o_l1ONTx1MUySF-yllp6RwoggJzPGxdc1IvM684cJ3bWLTnCGtWNLVyqrErFph94GQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujedvkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepvfgrkhgrshhhihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhih
-    esshgrkhgrmhhotggthhhirdhjpheqnecuggftrfgrthhtvghrnhephefhhfettefgkedv
-    ieeuffevveeufedtlefhjeeiieetvdelfedtgfefuedukeeunecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepohdqthgrkhgrshhhihesshgrkhgr
-    mhhotggthhhirdhjphdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtoheplhhurhhifigvnheskhihlhhinhhoshdrtghnpdhrtghpthhtoheprhgr
-    fhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhr
-    tghpthhtoheplhhinhhugidufeelgedquggvvhgvlheslhhishhtshdrshhouhhrtggvfh
-    horhhgvgdrnhgvthdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopegrtghpihgtrgdquggvvhgvlheslhhishhtshdr
-    lhhinhhugidruggvvhdprhgtphhtthhopehkvghrnhgvlhdqsghotheskhihlhhinhhosh
-    drtghn
-X-ME-Proxy: <xmx:zkfnZy9dTcq5_GooPo6FBhesS3-eTeFA9FJ5mnYztXhSZoT7VaLZwQ>
-    <xmx:zkfnZ1urQIo1HtXOxIXOyfszpprewy-pWXPkxDHpNYkpabXocAaBiQ>
-    <xmx:zkfnZxFUR1qUFUbRj_KHGKjaWLsMGdSkr4jIRd7_rc0e3cefm0YmFw>
-    <xmx:zkfnZ8OiLzZxmWIFGXvxyjOt9IjSqjrlNng4W8_-dzycsaWRKNtDtg>
-    <xmx:z0fnZ7InwO7RsxXU6AfioiRJ9a1GHj4X_mbER07cpjox-XHj7BV4djb1>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 28 Mar 2025 21:07:23 -0400 (EDT)
-Date: Sat, 29 Mar 2025 10:07:21 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: Riwen Lu <luriwen@kylinos.cn>
-Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
-	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	k2ci <kernel-bot@kylinos.cn>
-Subject: Re: [PATCH v1] tools: Fix compile error of pfrut/firewire
-Message-ID: <20250329010721.GA11319@workstation.local>
-Mail-Followup-To: Riwen Lu <luriwen@kylinos.cn>, rafael@kernel.org,
-	lenb@kernel.org, robert.moore@intel.com,
-	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	k2ci <kernel-bot@kylinos.cn>
-References: <20250328074750.3524280-1-luriwen@kylinos.cn>
+	s=arc-20240116; t=1743232464; c=relaxed/simple;
+	bh=JSJAaEbxKHrj1mtwJ0nQl9ZXA31VR3uimlpharCw9+0=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=kbuz1j/RxL5x0/ulJHASnUJbvUoes5siJYu3DAZoPkyorgmdM3oRHacgsXH9/lqWfjNF6hJrJQJ1xmxtrtIb0yyb1VpfMQWmjuaKylvhu849svuLnuq5X4iY6OOkWydoY+9+L1BOIE27z/PE1ilBIsRVVTMxhR84oPBZAqWNCIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZPpWQ2TNJztRbD;
+	Sat, 29 Mar 2025 15:12:50 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4C43E1800B4;
+	Sat, 29 Mar 2025 15:14:16 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Sat, 29 Mar 2025 15:14:15 +0800
+CC: <yangyicong@hisilicon.com>, <linux-cxl@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <james.morse@arm.com>,
+	<conor@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linuxarm@huawei.com>, Yushan Wang
+	<wangyushan12@huawei.com>, <linux-mm@kvack.org>,
+	<gregkh@linuxfoundation.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, Dan Williams
+	<dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 2/6] arm64: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+To: Catalin Marinas <catalin.marinas@arm.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>
+References: <20250320174118.39173-1-Jonathan.Cameron@huawei.com>
+ <20250320174118.39173-3-Jonathan.Cameron@huawei.com>
+ <Z-bo7AQ1h6VQr65V@arm.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <64ae0e68-b025-4a33-9389-5393ee887fb4@huawei.com>
+Date: Sat, 29 Mar 2025 15:14:14 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250328074750.3524280-1-luriwen@kylinos.cn>
+In-Reply-To: <Z-bo7AQ1h6VQr65V@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
 
-Hi,
-
-On Fri, Mar 28, 2025 at 03:47:50PM +0800, Riwen Lu wrote:
-> The value -rR of MAKEFLAGS implicit do not use make's built-in rules and
-> variables. Previous commit d1d096312176 ("tools: fix annoying "mkdir -p
-> ..." logs when building tools in parallel") removed the MAKEFLAGS=
-> command for tools and caused the built-in rules for pfrut/firewire
-> failed to take effect.
+On 2025/3/29 2:22, Catalin Marinas wrote:
+> On Thu, Mar 20, 2025 at 05:41:14PM +0000, Jonathan Cameron wrote:
+>> +struct system_cache_flush_method {
+>> +	int (*invalidate_memregion)(int res_desc,
+>> +				    phys_addr_t start, size_t len);
+>> +};
+> [...]
+>> +int cpu_cache_invalidate_memregion(int res_desc, phys_addr_t start, size_t len)
+>> +{
+>> +	guard(spinlock_irqsave)(&scfm_lock);
+>> +	if (!scfm_data)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	return scfm_data->invalidate_memregion(res_desc, start, len);
+>> +}
 > 
-> Reported-by: k2ci <kernel-bot@kylinos.cn>
-> Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
-> ---
->  tools/firewire/Makefile               | 7 +++++++
->  tools/power/acpi/tools/pfrut/Makefile | 2 +-
->  2 files changed, 8 insertions(+), 1 deletion(-)
+> WBINVD on x86 deals with the CPU caches as well. Even the API naming in
+> Linux implies CPU caches. IIUC, devices registering to the above on Arm
+> SoCs can only deal with system caches. Is it sufficient?
+> 
 
-As long as testing with v6.14 release, I can not find such failure. I
-guess that some one has fixed the issue between the commit and the
-release.
+The device driver who register this method should handle this. If the
+hardware support maintaining the coherency among the system, for example
+on system cache invalidation the hardware is also able to invalidate the
+involved cachelines on all the subordinate caches (L1/L2/etc, by back
+invalidate snoop or other ways), then software don't need to invalidate
+the non-system cache explicitly. Otherwise the driver need to explicitly
+invalidate the non-system cache explicitly in their
+scfm_data::invalidate_memregion() method. Here in the generally code we
+simply don't know the capability of the hardware.
 
-Would you please recheck the issue?
+Thanks.
 
-
-Thanks
-
-Takashi Sakamoto
 
