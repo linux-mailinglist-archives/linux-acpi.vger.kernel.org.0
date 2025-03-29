@@ -1,58 +1,110 @@
-Return-Path: <linux-acpi+bounces-12535-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12536-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08509A7529C
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Mar 2025 23:53:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A11A753CC
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Mar 2025 02:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A094E17271B
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Mar 2025 22:53:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73ABA175044
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Mar 2025 01:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE07C1F4170;
-	Fri, 28 Mar 2025 22:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61AE17991;
+	Sat, 29 Mar 2025 01:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGyNjFrs"
+	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="baHwbji8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="F4ngpkAK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C501B1EEA5D;
-	Fri, 28 Mar 2025 22:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3974A1D;
+	Sat, 29 Mar 2025 01:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743202411; cv=none; b=PiOQa0I7yT6YKA0YOESOtXpeSgyxUBCRD3cgsM67pg0v2TBz6R8MtMlfzOXRcjKXNU8CIuAiHc7f6tnC/x/IzqIAibxkg8Kl4uPnH4HryE5mzHdOfMsEo3GW51msUMJjCiT2qH3y0HCUz456aWoMu/neyDta15KJgaX9VeCBRvU=
+	t=1743210450; cv=none; b=EmqEpmwlBVOz/dyf/6+Qk1WLR6PUnDxoaJzXD32Nxr1KMmS/xoNUkBS/i2wpW5yHmPlLZUGHkoNMGANfK5ecJpXD4BSa+CMiiaEvUIHnBjz5iwJIRiF8dHl6xv/HtU045rl1lb3xHzansVN5weytdg4C++RCUooV/HHXl+PGMhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743202411; c=relaxed/simple;
-	bh=X8QzRMcFsniUFRx5vA7MHEqQC/yTTdlJQdKOdbyOdCg=;
+	s=arc-20240116; t=1743210450; c=relaxed/simple;
+	bh=9VHMgg8XVI03DXLD39IVNu73KXwzIK1KERt6YTLgiE0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a255wv3hLMdp5kAKe701QlWUCuMmN253We5NZ8kjV7ciPv1pLFnu/FpTn8EjGL0p0s3BgtXW0RAqwJv3FUqJTYCMgpssZHVokYNtBNPXKTMax4EbTTnk3arBhRQHoIxS+ueqnx5OJN3Km/vDshTKrZlckbipGdXQ/YOGXWE2NB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGyNjFrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2604C4CEE4;
-	Fri, 28 Mar 2025 22:53:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743202411;
-	bh=X8QzRMcFsniUFRx5vA7MHEqQC/yTTdlJQdKOdbyOdCg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oGyNjFrsB84ZD2gSZSoDKhui0JmIK/RMefONuzx6vRZDoAXKClqQ8TWFqrqfecofS
-	 kL1GFnZk6s0cNy3nP/etxlUOrkZousXfaWLtxsZUd9Ky3zRHfXOkxGHIsGffdsehIV
-	 8HcUnkAhXxaPDlduhMDsLRkh2y8FfUXo2QcxmEB+sw7RzwujnrKxx3itYVyoO80wXu
-	 UZthIA3EpRHjHqn3NdKK5uK4RITBpuDVCDt0oYqOrvFD5qeWLEwkwkwk1lzeCeJL9K
-	 Ob46hbj6s9Wt2FyqUME251vPI20EViHGEXPFwLsfvs3R728YUanJk2B85OcbRW1ihp
-	 AW8/fn5c7x01Q==
-Date: Sat, 29 Mar 2025 01:53:22 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Cc: Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
-	rafael@kernel.org, lenb@kernel.org, akpm@linux-foundation.org,
-	alison.schofield@intel.com, rrichter@amd.com, bfaccini@nvidia.com,
-	haibo1.xu@intel.com, david@redhat.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	chenbaozi@phytium.com.cn
-Subject: Re: [PATCH v2] mm: numa_memblks: introduce numa_add_reserved_memblk
-Message-ID: <Z-coYimFFwK0q5dr@kernel.org>
-References: <20250328092132.2695299-1-wangyuquan1236@phytium.com.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eiAY4Cv4tKLj9V2CqchF9xfp5TM134n1FlTJWV89QfyzU2SHg+AE0kJ1/JiYZLT+Wf2XrCu0tz8jiHhxkr4Hmf0TKJkFzCbwPmnbkbYJn78tf2/JWDj6VmYZLYnRc7wclqaHpmWuNXAd9ukUhZxK4DP8KcwdVMd51CgtLpq/J5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=baHwbji8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=F4ngpkAK; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3BAF125401CC;
+	Fri, 28 Mar 2025 21:07:27 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Fri, 28 Mar 2025 21:07:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1743210447; x=
+	1743296847; bh=wKO8nLwVZ/c6d2peXPF8XkbDrw0UaTn7gMMaej/9ejg=; b=b
+	aHwbji8vf+26Z3AhA/3BOLPo/6KL/u1O6ZQ9sgVTT1ZIMQQIdC65DWB2ksyOLFuv
+	e+Zyjdo+V9IZhPHd2WI3sRF3S6JefkeezDN4r2ubtSeD4H/uNzTI2h1+WQZnkN64
+	MPyyoI1G0uuT5+q1HppvbjOtBCZe07Fs4tn/FYbV4zfSV4pKlqRfkYoChz199cnV
+	7Uptv60tU5WxjZK/g8D2CuwZwpOp6Vv5cgPhqrG+ZGYfjHcVuq1R7n9FicOHOt+C
+	Wba6lMfAb8MNEcaZP9+avFL4Wqn/L2wBGmHdrFD4Z2N5tQyDNSbT5HmbYLWjphTB
+	dFQMFfJkBKyvsznRl9LAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1743210447; x=1743296847; bh=wKO8nLwVZ/c6d2peXPF8XkbDrw0UaTn7gMM
+	aej/9ejg=; b=F4ngpkAKSoehP3OLsF/lxLU0TZmnIpoyTC+9EeeZ2cTRWwPf8Kl
+	cJRlLd5djqHUayoozyF2W8oU8EX1fyP1kGNaQLt99Id93137/AhAHbTJEyn+Nq7U
+	x7h/5Lt1J3FFLZ/BuuUdnucZ0JHbZuHPZGNEb0TmrNH1mlbRKmfg/86TLdRizwBi
+	9rZUjkt8Tp0ph3DoxQZnGC12hNzZJy2x+5bz7vFBs+g8Vd3DLqRPQYKOkSsE+qh/
+	N6EATpXXu9h7+M2P5ZpaYNOxfFz2N2qK8AWfpJkQt3bTWhjqH2eCM0OiN/ETNbnX
+	DmljxKUOf4sou+ntsh7MbWa8mg0qwTmdYfA==
+X-ME-Sender: <xms:zkfnZ5cv0tN7H6h2b0G8kIC-F1SM83Tdr4kvIT266XcRHosBJSvPBw>
+    <xme:zkfnZ3MJaiAkJKzPMdvFuFhVRNuscMZPGgKH89d880-yDO5xjuQbxPmcxWM-leK7H
+    wBwmvizMHbxEj7EC7M>
+X-ME-Received: <xmr:zkfnZyiwB3mb2sXBjbeH0Yvk1tYzndaq7o_l1ONTx1MUySF-yllp6RwoggJzPGxdc1IvM684cJ3bWLTnCGtWNLVyqrErFph94GQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujedvkeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepvfgrkhgrshhhihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhih
+    esshgrkhgrmhhotggthhhirdhjpheqnecuggftrfgrthhtvghrnhephefhhfettefgkedv
+    ieeuffevveeufedtlefhjeeiieetvdelfedtgfefuedukeeunecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepohdqthgrkhgrshhhihesshgrkhgr
+    mhhotggthhhirdhjphdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtoheplhhurhhifigvnheskhihlhhinhhoshdrtghnpdhrtghpthhtoheprhgr
+    fhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhr
+    tghpthhtoheplhhinhhugidufeelgedquggvvhgvlheslhhishhtshdrshhouhhrtggvfh
+    horhhgvgdrnhgvthdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopegrtghpihgtrgdquggvvhgvlheslhhishhtshdr
+    lhhinhhugidruggvvhdprhgtphhtthhopehkvghrnhgvlhdqsghotheskhihlhhinhhosh
+    drtghn
+X-ME-Proxy: <xmx:zkfnZy9dTcq5_GooPo6FBhesS3-eTeFA9FJ5mnYztXhSZoT7VaLZwQ>
+    <xmx:zkfnZ1urQIo1HtXOxIXOyfszpprewy-pWXPkxDHpNYkpabXocAaBiQ>
+    <xmx:zkfnZxFUR1qUFUbRj_KHGKjaWLsMGdSkr4jIRd7_rc0e3cefm0YmFw>
+    <xmx:zkfnZ8OiLzZxmWIFGXvxyjOt9IjSqjrlNng4W8_-dzycsaWRKNtDtg>
+    <xmx:z0fnZ7InwO7RsxXU6AfioiRJ9a1GHj4X_mbER07cpjox-XHj7BV4djb1>
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Mar 2025 21:07:23 -0400 (EDT)
+Date: Sat, 29 Mar 2025 10:07:21 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: Riwen Lu <luriwen@kylinos.cn>
+Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
+	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	k2ci <kernel-bot@kylinos.cn>
+Subject: Re: [PATCH v1] tools: Fix compile error of pfrut/firewire
+Message-ID: <20250329010721.GA11319@workstation.local>
+Mail-Followup-To: Riwen Lu <luriwen@kylinos.cn>, rafael@kernel.org,
+	lenb@kernel.org, robert.moore@intel.com,
+	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	k2ci <kernel-bot@kylinos.cn>
+References: <20250328074750.3524280-1-luriwen@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -61,100 +113,32 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250328092132.2695299-1-wangyuquan1236@phytium.com.cn>
+In-Reply-To: <20250328074750.3524280-1-luriwen@kylinos.cn>
 
-On Fri, Mar 28, 2025 at 05:21:32PM +0800, Yuquan Wang wrote:
-> With numa_add_reserved_memblk(), kernel could add numa_memblk into
-> numa_reserved_meminfo directly.
+Hi,
+
+On Fri, Mar 28, 2025 at 03:47:50PM +0800, Riwen Lu wrote:
+> The value -rR of MAKEFLAGS implicit do not use make's built-in rules and
+> variables. Previous commit d1d096312176 ("tools: fix annoying "mkdir -p
+> ..." logs when building tools in parallel") removed the MAKEFLAGS=
+> command for tools and caused the built-in rules for pfrut/firewire
+> failed to take effect.
 > 
-> acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
-> with the expectation that numa_cleanup_meminfo moves them to
-> numa_reserved_meminfo. There is no need for that indirection when it is
-> known in advance that these unpopulated ranges are meant for
-> numa_reserved_meminfo in suppot of future hotplug / CXL provisioning.
-> 
-> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+> Reported-by: k2ci <kernel-bot@kylinos.cn>
+> Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
 > ---
-> 
-> Changes in v2 (Thanks to Dan):
-> - Use numa_add_reserved_memblk() to replace numa_add_memblk() in acpi_parse_cfmws()
-> - Add comments to describe the usage of numa_add_reserved_memblk()
-> - Provide a more explicit commit message
-> 
->  drivers/acpi/numa/srat.c     |  2 +-
->  include/linux/numa_memblks.h |  1 +
->  mm/numa_memblks.c            | 22 ++++++++++++++++++++++
+>  tools/firewire/Makefile               | 7 +++++++
+>  tools/power/acpi/tools/pfrut/Makefile | 2 +-
+>  2 files changed, 8 insertions(+), 1 deletion(-)
 
-For numa_memblks
+As long as testing with v6.14 release, I can not find such failure. I
+guess that some one has fixed the issue between the commit and the
+release.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Would you please recheck the issue?
 
->  3 files changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 00ac0d7bb8c9..70f1a7c6b54a 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -458,7 +458,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
->  		return -EINVAL;
->  	}
->  
-> -	if (numa_add_memblk(node, start, end) < 0) {
-> +	if (numa_add_reserved_memblk(node, start, end) < 0) {
->  		/* CXL driver must handle the NUMA_NO_NODE case */
->  		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
->  			node, start, end);
-> diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-> index dd85613cdd86..991076cba7c5 100644
-> --- a/include/linux/numa_memblks.h
-> +++ b/include/linux/numa_memblks.h
-> @@ -22,6 +22,7 @@ struct numa_meminfo {
->  };
->  
->  int __init numa_add_memblk(int nodeid, u64 start, u64 end);
-> +int __init numa_add_reserved_memblk(int nid, u64 start, u64 end);
->  void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
->  
->  int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
-> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> index ff4054f4334d..541a99c4071a 100644
-> --- a/mm/numa_memblks.c
-> +++ b/mm/numa_memblks.c
-> @@ -200,6 +200,28 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
->  	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
->  }
->  
-> +/**
-> + * numa_add_reserved_memblk - Add one numa_memblk to numa_reserved_meminfo
-> + * @nid: NUMA node ID of the new memblk
-> + * @start: Start address of the new memblk
-> + * @end: End address of the new memblk
-> + *
-> + * Add a new memblk to the numa_reserved_meminfo.
-> + *
-> + * Usage Case: numa_cleanup_meminfo() reconciles all numa_memblk instances
-> + * against memblock_type information and moves any that intersect reserved
-> + * ranges to numa_reserved_meminfo. However, when that information is known
-> + * ahead of time, we use numa_add_reserved_memblk() to add the numa_memblk
-> + * to numa_reserved_meminfo directly.
-> + *
-> + * RETURNS:
-> + * 0 on success, -errno on failure.
-> + */
-> +int __init numa_add_reserved_memblk(int nid, u64 start, u64 end)
-> +{
-> +	return numa_add_memblk_to(nid, start, end, &numa_reserved_meminfo);
-> +}
-> +
->  /**
->   * numa_cleanup_meminfo - Cleanup a numa_meminfo
->   * @mi: numa_meminfo to clean up
-> -- 
-> 2.34.1
-> 
-> 
 
--- 
-Sincerely yours,
-Mike.
+Thanks
+
+Takashi Sakamoto
 
