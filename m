@@ -1,73 +1,77 @@
-Return-Path: <linux-acpi+bounces-12542-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12543-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21ED1A75ACE
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 18:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC61A75AF8
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 18:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDDD31683BF
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 16:08:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E768165F9F
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 16:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590C01D7999;
-	Sun, 30 Mar 2025 16:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56F21D7E5B;
+	Sun, 30 Mar 2025 16:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd9BOLmb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSlP+kHK"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E20F9461;
-	Sun, 30 Mar 2025 16:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0E8175D50;
+	Sun, 30 Mar 2025 16:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743350881; cv=none; b=PHfLhot+71Eit3v8N25IuZn2m0ux1bEHGjcsGuRJjr4ahGRVjgnyNouHp+RC2PFT5eV5qKm3vY08O85ClPU7sXw1gO6BdBKjQxpVgV+yYajxJ5JjSCzswVZkl3ssjg/s0qH9OI3irBkexBtirigk20WxcjnrRg6xlc/IumaiS0o=
+	t=1743352783; cv=none; b=UFHE6rC1To+nGxga1nZa4SDrKax3nYAg+M1BpGsTLk2DEm7bNVMD0hnADZg0QAn8a1UWelLgrKXphbNfi5zeJbIvddD9GJdybn4tOFAqkorJ02HFvmKuvrfUjgedAJkEOWjNBqsD7L3iHamF20ubxQiQf+L410BK7zSgejZxWzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743350881; c=relaxed/simple;
-	bh=H+MtWmTdkziBn0VV5vZW/5X6QRHEOhzJFpXEfO/uuYM=;
+	s=arc-20240116; t=1743352783; c=relaxed/simple;
+	bh=V5j1W1nJpZdHJRcysq7Oe534M79h+6sw32lCrhO5bko=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QPo2Z+IiVXMZKOK2MKH6HPC2KhyyPyAo+DVLD9ZNCK0sqES5SivNLakZ9c1+DQtJxxZ+VzKpBkOaAqy7ubEfHxjUBuGI200OjrWVtnkfpGlTHwnkKhwCx0LvPzggnFEPG9jXgY0WFF0a5Nl308bSO3VQuDFeUdN8KQxWbW94xJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd9BOLmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B76C4CEDD;
-	Sun, 30 Mar 2025 16:07:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H687h5A76VYm0nK4WxqPE3+Ia7tJ0LNC+447PFAg6Zgc5G4zpYhbSGRejr/HYNRxv8o/eCoSzbLS0rr4KbkQ+wBg67PHmZ/z1OQSa2fud0lJ5wcXDoJ4Y7Gb97QfGBt2GGdkzmaZ2InDujMGBV3I7KDU8djRa859FUGQlDWbZV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSlP+kHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07588C4CEDD;
+	Sun, 30 Mar 2025 16:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743350880;
-	bh=H+MtWmTdkziBn0VV5vZW/5X6QRHEOhzJFpXEfO/uuYM=;
+	s=k20201202; t=1743352783;
+	bh=V5j1W1nJpZdHJRcysq7Oe534M79h+6sw32lCrhO5bko=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Vd9BOLmb075F+HnfLLGKxhbHRX0hJJX5BI4L04rjlF/64bkg3m4Je0iC8TADr+FMG
-	 lldP4dFPVBrTUStmKGetqxwU7XftMHotWF96OvgidAZK7uGK4N+DvzFFE1g9sqEDxA
-	 qsQAUE0QCAQq387ldy8hawwWgYdgNy23X4Ujt6UNiDRXj7j7dkkUyJa61ahuGhZZow
-	 oPpJm8vFk/yMNn5cMZPC2F3rD4gLZvhB91ofA7oSc1zHm3Y6H7NiemTMnaAeztEKAa
-	 FGPWGJvkbAvk8x6ioZ166CNp+81D53AO2keT4PDNRdmBffZwOIj/QooDczn7KGhrxe
-	 fLSLvvo00EqUw==
-Date: Sun, 30 Mar 2025 17:07:49 +0100
+	b=DSlP+kHKxiKQhEBGuOxQvTYGW2bothqLP6dIcRecKrLJBpk2FAQQ1Sd6hhBeuzeRq
+	 uzc+n5Lat8DYzJqEunPmSYRE3SWpFes1lhxdokXGw03tLAp23GJKKluvvimOCXPXzr
+	 9UmTF60kHO92zccmwnCHVjfMlIklx5i4nr51Nr805xZSQQTjGsz6cSApKud+Fzabh+
+	 eHNWEZR4K7lM2YOA8ejB3M+0umjyLGGLRxj71D4WjHFXKgtGlKse1d6MhXjelM7wwm
+	 Rjrd49yz8AqS0I3NW6FBkjhGZOMp4ePleRmbdgPmKCS5dcaBzjQB7IfZSR5Jn1sy6G
+	 sB4EyXezgVr5Q==
+Date: Sun, 30 Mar 2025 17:39:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
- <heikki.krogerus@linux.intel.com>, Greg Kroah-Hartman
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Claudiu Manoil
- <claudiu.manoil@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- netdev@vger.kernel.org, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH v8 02/10] property: Add functions to iterate named child
-Message-ID: <20250330170749.7fe553cd@jic23-huawei>
-In-Reply-To: <726281b2-66f5-45e9-94f2-4f79b4ab159d@gmail.com>
-References: <cover.1742225817.git.mazziesaccount@gmail.com>
-	<9c3880f74476436f39d796b5c10c540ae50b722c.1742225817.git.mazziesaccount@gmail.com>
-	<Z9mQPJwnKAkPHriT@kekkonen.localdomain>
-	<b6b62ddd-ab59-4112-8f6e-c72618c45910@gmail.com>
-	<Z9rhfJUlCbi7kA2m@kekkonen.localdomain>
-	<726281b2-66f5-45e9-94f2-4f79b4ab159d@gmail.com>
+ Danilo Krummrich <dakr@kernel.org>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <joao.goncalves@toradex.com>, Ramona Alexandra Nechita
+ <ramona.nechita@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v10 2/8] property: Add functions to iterate named child
+Message-ID: <20250330173929.155477d1@jic23-huawei>
+In-Reply-To: <2767173b7b18e974c0bac244688214bd3863ff06.1742560649.git.mazziesaccount@gmail.com>
+References: <cover.1742560649.git.mazziesaccount@gmail.com>
+	<2767173b7b18e974c0bac244688214bd3863ff06.1742560649.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -78,122 +82,154 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 20 Mar 2025 08:43:44 +0200
+On Mon, 24 Mar 2025 09:12:50 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 19/03/2025 17:23, Sakari Ailus wrote:
-> > On Wed, Mar 19, 2025 at 08:02:24AM +0200, Matti Vaittinen wrote:  
-> >> On 18/03/2025 17:24, Sakari Ailus wrote:  
-> >>> On Mon, Mar 17, 2025 at 05:50:38PM +0200, Matti Vaittinen wrote:  
-> >>>> There are a few use-cases where child nodes with a specific name need to
-> >>>> be parsed. Code like:  
+> There are a few use-cases where child nodes with a specific name need to
+> be parsed. Code like:
 > 
-> ...
+> fwnode_for_each_child_node()
+> 	if (fwnode_name_eq())
+> 		...
 > 
-> >>>> --- a/include/linux/property.h
-> >>>> +++ b/include/linux/property.h
-> >>>> @@ -167,10 +167,18 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
-> >>>>    	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
-> >>>>    	     child = fwnode_get_next_child_node(fwnode, child))
-> >>>> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
-> >>>> +	fwnode_for_each_child_node(fwnode, child)			\
-> >>>> +		if (!fwnode_name_eq(child, name)) { } else
-> >>>> +
-> >>>>    #define fwnode_for_each_available_child_node(fwnode, child)		       \
-> >>>>    	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
-> >>>>    	     child = fwnode_get_next_available_child_node(fwnode, child))
-> >>>> +#define fwnode_for_each_available_named_child_node(fwnode, child, name)	\
-> >>>> +	fwnode_for_each_available_child_node(fwnode, child)		\
-> >>>> +		if (!fwnode_name_eq(child, name)) { } else
-> >>>> +  
-> >>>
-> >>> OF only enumerates available nodes via the fwnode API, software nodes don't
-> >>> have the concept but on ACPI I guess you could have a difference in nodes
-> >>> where you have device sub-nodes that aren't available. Still, these ACPI
-> >>> device nodes don't have meaningful names in this context (they're
-> >>> 4-character object names) so you wouldn't use them like this anyway.  
-> >>
-> >> I believe you have far better understanding on these concepts than I do. The
-> >> reason behind adding fwnode_for_each_available_child_node() was the patch
-> >> 10/10:
-> >>
-> >> -	fwnode_for_each_available_child_node(sensors, node) {
-> >> -		if (fwnode_name_eq(node, "sensor")) {
-> >> -			if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> -				num_sensors++;
-> >> -		}
-> >> +	fwnode_for_each_available_named_child_node(sensors, node, "sensor") {
-> >> +		if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> +			num_sensors++;
-> >>   	}
-> >>
-> >>  
-> >>> So my question is: is it useful to provide this besides
-> >>> fwnode_for_each_named_child_node(), given that both are effectively the
-> >>> same?  
-> >>
-> >> So, I suppose you're saying the existing thp7312 -driver has no real reason
-> >> to use the 'fwnode_for_each_available_child_node()', but it could be using
-> >> fwnode_for_each_child_node() instead?
-> >>
-> >> If so, I am Ok with dropping the
-> >> 'fwnode_for_each_available_named_child_node()' and changing the 10/10 to:
-> >>
-> >> -	fwnode_for_each_available_child_node(sensors, node) {
-> >> -		if (fwnode_name_eq(node, "sensor")) {
-> >> -			if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> -				num_sensors++;
-> >> -		}
-> >> +	fwnode_for_each_named_child_node(sensors, node, "sensor") {
-> >> +		if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> +			num_sensors++;
-> >>   	}
-> >>
-> >> Do you think that'd be correct?  
-> > 
-> > I'd say so. Feel free to cc me to the last patch as well.  
+> can be found from a various drivers/subsystems. Adding a macro for this
+> can simplify things a bit.
 > 
-> Thanks. I'll drop the fwnode_for_each_available_named_child_node() then.
+> In a few cases the data from the found nodes is later added to an array,
+> which is allocated based on the number of found nodes. One example of
+> such use is the IIO subsystem's ADC channel nodes, where the relevant
+> nodes are named as channel[@N].
 > 
-> > I guess one way to make this clearer is to switch to
-> > fwnode_for_each_child_node() in a separate patch before
-> > fwnode_for_each_named_child_node() conversion.  
+> Add helpers for iterating and counting device's sub-nodes with certain
+> name instead of open-coding this in every user.
 > 
-> I suppose this makes sense.
-
-this _available_ thing is ancient history that has tripped us up
-many times before. I've very keen to not see another case sneaking
-in.  Whether we can definitely 'fix' all existing cases is a different
-question..
-
-> 
-> I think this series can't make it to 6.15-rc1. Meaning, these 
-> *_named_*() APIs perhaps land in 6.16-rc1. I assume these *_named_*() 
-> APIs will go through the IIO. This rather simple IIO driver's review 
-> took longer than I predicted, with more versions I intended (as always) 
-> - and I kind of dislike respinning the whole series, with this large 
-> audience, when changes are not interesting to the most.
-> 
-> Maybe it is simplest to drop the thp7312 (and gianfar) from this series, 
-> and respin them only when the 6.16-rc1 is out. It's going to be couple 
-> of months though - so there's always a risk that I forget.
-> 
-> The proposed change for the thp7312, from 
-> fwnode_for_each_available_child_node() to fwnode_for_each_child_node() 
-> can be done earlier though.
-> 
-> > There are also just a handful of users of
-> > fwnode_for_each_available_child_node() and I guess these could be
-> > converted, too, but I think it's outside the scope of the set.  
-> 
-> Definitely not in the scope of the bd79124 support :)
-Agreed. Break this series up however you like and entirely up to
-you whether you do further cleanup of other bits of the kernel!
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Whilst I've queued up the series, I'll be rebasing on rc1 anyway
+so if Sakari or anyone else still wants to comment on this patch
+or offer tags, go ahead!
 
 Jonathan
-
+> ---
+> Revision history:
+> v9 =>
+>  - No changes
+> v8 => v9:
+>  - Drop the fwnode_for_each_available_named_child_node() as suggested
+>    by Sakari during v8 review:
+>    https://lore.kernel.org/all/Z9mQPJwnKAkPHriT@kekkonen.localdomain/
+> v7 => v8:
+>  - Fix the example in fwnode_get_named_child_node_count() documentation
+>    to use the fwnode_get_named_child_node_count() and not the
+>    device_get_named_child_node_count()
+>  - Fix the rest of the new macro's indentiations
+> v6 => v7:
+>  - Improve kerneldoc
+>  - Inline device_get_named_child_node_count() and change it to call
+>    fwnode_get_named_child_node_count() inside
+>  - Fix indentiation of the new macros
+> v5 => v6:
+>  - Add helpers to also iterate through the nodes.
+> v4 => v5:
+>  - Use given name instead of string 'channel' when counting the nodes
+>  - Add also fwnode_get_child_node_count_named() as suggested by Rob.
+> v3 => v4:
+>  - New patch as suggested by Jonathan, see discussion in:
+> https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
+> ---
+>  drivers/base/property.c  | 27 +++++++++++++++++++++++++++
+>  include/linux/property.h | 20 ++++++++++++++++++++
+>  2 files changed, 47 insertions(+)
 > 
-> Yours,
-> 	-- Matti
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index c1392743df9c..f42f32ff45fc 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct device *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(device_get_child_node_count);
+>  
+> +/**
+> + * fwnode_get_named_child_node_count - number of child nodes with given name
+> + * @fwnode: Node which child nodes are counted.
+> + * @name: String to match child node name against.
+> + *
+> + * Scan child nodes and count all the nodes with a specific name. Potential
+> + * 'number' -ending after the 'at sign' for scanned names is ignored.
+> + * E.g.::
+> + *   fwnode_get_named_child_node_count(fwnode, "channel");
+> + * would match all the nodes::
+> + *   channel { }, channel@0 {}, channel@0xabba {}...
+> + *
+> + * Return: the number of child nodes with a matching name for a given device.
+> + */
+> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
+> +					       const char *name)
+> +{
+> +	struct fwnode_handle *child;
+> +	unsigned int count = 0;
+> +
+> +	fwnode_for_each_named_child_node(fwnode, child, name)
+> +		count++;
+> +
+> +	return count;
+> +}
+> +EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
+> +
+>  bool device_dma_supported(const struct device *dev)
+>  {
+>  	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index e214ecd241eb..3e83babac0b0 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -167,6 +167,10 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
+>  	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
+>  	     child = fwnode_get_next_child_node(fwnode, child))
+>  
+> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
+> +	fwnode_for_each_child_node(fwnode, child)			\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
+>  #define fwnode_for_each_available_child_node(fwnode, child)		       \
+>  	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
+>  	     child = fwnode_get_next_available_child_node(fwnode, child))
+> @@ -178,11 +182,19 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+>  	for (child = device_get_next_child_node(dev, NULL); child;	\
+>  	     child = device_get_next_child_node(dev, child))
+>  
+> +#define device_for_each_named_child_node(dev, child, name)		\
+> +	device_for_each_child_node(dev, child)				\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
+>  #define device_for_each_child_node_scoped(dev, child)			\
+>  	for (struct fwnode_handle *child __free(fwnode_handle) =	\
+>  		device_get_next_child_node(dev, NULL);			\
+>  	     child; child = device_get_next_child_node(dev, child))
+>  
+> +#define device_for_each_named_child_node_scoped(dev, child, name)	\
+> +	device_for_each_child_node_scoped(dev, child)			\
+> +		if (!fwnode_name_eq(child, name)) { } else
+> +
+>  struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+>  						  const char *childname);
+>  struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+> @@ -210,6 +222,14 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+>  
+>  unsigned int device_get_child_node_count(const struct device *dev);
+>  
+> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
+> +					       const char *name);
+> +static inline unsigned int device_get_named_child_node_count(const struct device *dev,
+> +							     const char *name)
+> +{
+> +	return fwnode_get_named_child_node_count(dev_fwnode(dev), name);
+> +}
+> +
+>  static inline int device_property_read_u8(const struct device *dev,
+>  					  const char *propname, u8 *val)
+>  {
 
 
