@@ -1,235 +1,167 @@
-Return-Path: <linux-acpi+bounces-12543-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12544-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC61A75AF8
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 18:39:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E389A75C25
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 22:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E768165F9F
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 16:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFBC13A63C4
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Mar 2025 20:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56F21D7E5B;
-	Sun, 30 Mar 2025 16:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1D01DDA17;
+	Sun, 30 Mar 2025 20:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSlP+kHK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAstD51j"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0E8175D50;
-	Sun, 30 Mar 2025 16:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9D12AE8E;
+	Sun, 30 Mar 2025 20:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743352783; cv=none; b=UFHE6rC1To+nGxga1nZa4SDrKax3nYAg+M1BpGsTLk2DEm7bNVMD0hnADZg0QAn8a1UWelLgrKXphbNfi5zeJbIvddD9GJdybn4tOFAqkorJ02HFvmKuvrfUjgedAJkEOWjNBqsD7L3iHamF20ubxQiQf+L410BK7zSgejZxWzw=
+	t=1743365884; cv=none; b=nb8oxkNzNbdgjGSG4dRNo4rtd6CksdtTlawdutllk7FV0sh+Rozipdnjb7tnCG7c4wjKIDekriZVWcWw4yP9nZLbOFqhLiGAp8ZOFL2zTeElPhc+QsvJ1pcgrAQZ1CZM2ACi0ICgDRVFm2dj4jDYyQt2SyiyDPYtfm40qeLhh6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743352783; c=relaxed/simple;
-	bh=V5j1W1nJpZdHJRcysq7Oe534M79h+6sw32lCrhO5bko=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H687h5A76VYm0nK4WxqPE3+Ia7tJ0LNC+447PFAg6Zgc5G4zpYhbSGRejr/HYNRxv8o/eCoSzbLS0rr4KbkQ+wBg67PHmZ/z1OQSa2fud0lJ5wcXDoJ4Y7Gb97QfGBt2GGdkzmaZ2InDujMGBV3I7KDU8djRa859FUGQlDWbZV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSlP+kHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07588C4CEDD;
-	Sun, 30 Mar 2025 16:39:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743352783;
-	bh=V5j1W1nJpZdHJRcysq7Oe534M79h+6sw32lCrhO5bko=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DSlP+kHKxiKQhEBGuOxQvTYGW2bothqLP6dIcRecKrLJBpk2FAQQ1Sd6hhBeuzeRq
-	 uzc+n5Lat8DYzJqEunPmSYRE3SWpFes1lhxdokXGw03tLAp23GJKKluvvimOCXPXzr
-	 9UmTF60kHO92zccmwnCHVjfMlIklx5i4nr51Nr805xZSQQTjGsz6cSApKud+Fzabh+
-	 eHNWEZR4K7lM2YOA8ejB3M+0umjyLGGLRxj71D4WjHFXKgtGlKse1d6MhXjelM7wwm
-	 Rjrd49yz8AqS0I3NW6FBkjhGZOMp4ePleRmbdgPmKCS5dcaBzjQB7IfZSR5Jn1sy6G
-	 sB4EyXezgVr5Q==
-Date: Sun, 30 Mar 2025 17:39:29 +0100
-From: Jonathan Cameron <jic23@kernel.org>
+	s=arc-20240116; t=1743365884; c=relaxed/simple;
+	bh=i/zZuquizU3rNnjsaeo6z64PLYbXEl+OVKP9uiO7kOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lw9GLiid4UP9ciu7/snS2gljGqRN5ywgDZnfuqGrmIPb226GnX+ycl5tTGjLnm+0GVSZFp3Rwct0UbMqfUKPxTldbXwUJxo9uFJpAe/mLYIAAS9ZB00CqDA87d6WMnLjMcok3iGhkY4PQeHhSWAeCy5uDMDdyn6zkKjsTyIJ5Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAstD51j; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2255003f4c6so70755275ad.0;
+        Sun, 30 Mar 2025 13:18:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743365882; x=1743970682; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d5coYYRPMmYyk90hyfQos6Hfk3JtJvsesMjWEHhnPPg=;
+        b=ZAstD51jAMgdtjHUjKHWIFNE3TvCRhxeTwfkGLGMRWcjgVqIIQ+wnPT/F+lZKYRmX1
+         PRLI1iiHmrs5g3AAo9ztulw8kPdn2DmiNR9FfLE/VrmbVwhrjCYlJi4lbER2oaFbHmeP
+         LpyUlhqegAE4Ku8cbk/vNm4yOVrJovetdnZTJFYaFYEbmRNF1XwfdumcNm9RhnMvMn+x
+         MXyJxsHA6UPJqv37g5DF+U7vVGVX/r5bSl99KPeqnRwPBl1ixYhq4r13FNBsxGbtlXP8
+         EEpnvAiOweFRLF8ztwLaAwVxHbBzvsSi5Xj2Hyfzz5nNNpvQUoSYZhBgzTS5jl/ZDn8N
+         YxAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743365882; x=1743970682;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d5coYYRPMmYyk90hyfQos6Hfk3JtJvsesMjWEHhnPPg=;
+        b=j2df6jkqZohoZxWx/RW5MUjN81XMuzNqCVXeAUmZjU3nJUoxfWaPMFpWcIH+AIiDa1
+         NXcUHzY9vxKgV3c5UMyHmsUJJwnrF7vwODy9Deoq6zEcs7KEZQKbdpIqFWkKcGa9fwmV
+         B8vynotON6f2cRupHirabVdiCU5Q3cSIxeg8gZvC5v5uN1IPf+wMzyVjbCqKh9fzZOlY
+         1awwNmD2HiAfZtU6I4kX43hIBskhjUxiezntIf7nWaT9fU8Hr+sZXOz6gqzseeOrBbdc
+         hYFWVWlm5TTU80nTk+tSR/uOiylw9ujqa7Eup/AXz6+NrEi4d/BfmeEO8fpAGBEPo6RZ
+         z72A==
+X-Forwarded-Encrypted: i=1; AJvYcCUM+EyU+IPCxsouef8DPlVcv6zngh7RjrMRWRfRReYTFXKUitctPnBace6N6MtprjF4zsVzBzMO22AV@vger.kernel.org, AJvYcCUrcZil60q6ylltCv8MdzmfU8gyOBWCLUTMFQSCA3CexTTL/diUrCuk0CnSzl3JDG8iLdXLpoi5vaqf7sICoHdwacM=@vger.kernel.org, AJvYcCUt1yYC2VVWylN4GAtPuAngViSyFRDFJCJopCSJGkzI9pXRTQoMVUevNTu6uRNI5KgaB9aS3H6RtzZ1FGuW@vger.kernel.org, AJvYcCW4ctXMlWPCM6I88hQkuQDP/CALpsHvfGT3cKVoGepW/HdG6D+VkFKbTJjBzVAL3VSN2c6TvnfM3tId@vger.kernel.org, AJvYcCXNxP+pmwcHvM2v06wcpJEmnMeIRu4LkvF9lfP/bNEXlf+mqxYlx2qZ8Ud10qTfVFa229Xikd+SPK2SXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEJ4GDoHyIulx2iOIeiWg0NvVsPShqVw2qGtFzq88rprzFyJQk
+	JXgYs6XqEStHvRtrV/TmdwFOMsGxPLzijQKq10Ddb7CvjcoOfpQtjoZc59Su8pk=
+X-Gm-Gg: ASbGncv7o7uObYjHycYvn93NMqQjMegv71THfKGFvfB6w7Qa1R3WSCGTCmlemu3tf8Q
+	v8YpgPPX2I075G3hvI1c4Z2w45URJKAwCdw2RMHAawuLldVHYLay5u/+DhEmhJrj4LEiB54caTU
+	DH/HVj6B+VqWVmQ2MGBYXZITPQSJMdiEzR95CR81LhDwwTIShOmG12PhE+vqmNvDaZVEv0Gma7L
+	8nJea7LdUAjCQFuGd6YxnoT7EQOsdkImSGKOHLM79kkJqm68cFdehzOxlwrgtLxUhiAAii75h8D
+	yG+Ea0KaYn53XyhaXP5jK9xri/ZktsEdCTuRxjVxUEdKBlsXxR3vdg==
+X-Google-Smtp-Source: AGHT+IGdRb8RSEY/uMCLsBXs2PCUKzrfAlPuylZyCRqePE4ThlWVOzd97jd96fvdyjccpN5hsZkrrA==
+X-Received: by 2002:a17:902:f644:b0:224:1af1:87f4 with SMTP id d9443c01a7336-2292f974b63mr133802185ad.22.1743365882249;
+        Sun, 30 Mar 2025 13:18:02 -0700 (PDT)
+Received: from localhost ([2804:30c:b03:ee00:e0b8:a8b8:44aa:8d0b])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3039e1139fasm9042555a91.25.2025.03.30.13.18.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Mar 2025 13:18:01 -0700 (PDT)
+Date: Sun, 30 Mar 2025 17:19:02 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>, David Lechner
- <dlechner@baylibre.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli
- <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <joao.goncalves@toradex.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v10 2/8] property: Add functions to iterate named child
-Message-ID: <20250330173929.155477d1@jic23-huawei>
-In-Reply-To: <2767173b7b18e974c0bac244688214bd3863ff06.1742560649.git.mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v10 3/8] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <Z-mnNtYLkwsTYjMh@debian-BULLSEYE-live-builder-AMD64>
 References: <cover.1742560649.git.mazziesaccount@gmail.com>
-	<2767173b7b18e974c0bac244688214bd3863ff06.1742560649.git.mazziesaccount@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+ <f1d8b3e15237947738912c0d297b3e1e21d8b03e.1742560649.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f1d8b3e15237947738912c0d297b3e1e21d8b03e.1742560649.git.mazziesaccount@gmail.com>
 
-On Mon, 24 Mar 2025 09:12:50 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+Hi Matti,
 
-> There are a few use-cases where child nodes with a specific name need to
-> be parsed. Code like:
+The new helpers for ADC drivers look good to me.
+I am now very late to complain about anything but am leaving some minor comments
+below that can be completely ignored.
+
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+
+Thanks,
+Marcelo
+
+On 03/24, Matti Vaittinen wrote:
+> There are ADC ICs which may have some of the AIN pins usable for other
+> functions. These ICs may have some of the AIN pins wired so that they
+> should not be used for ADC.
 > 
-> fwnode_for_each_child_node()
-> 	if (fwnode_name_eq())
-> 		...
+> (Preferred?) way for marking pins which can be used as ADC inputs is to
+> add corresponding channels@N nodes in the device tree as described in
+> the ADC binding yaml.
+Not sure it's preferred to have ADC channels always declared in dt. That
+question was somewhat also raised during ADC doc review [1]. In short, ADC
+channel may and may not be declared under ADC dt node. ADC bindings often don't
+enforce channels to be declared. On IIO side of things, many ADC drivers just
+populate channels even if they are not declared in dt.
+The ADCs you are supporting in the other patches of this series seem to require 
+dt declared channels though.
+
+[1]: https://lore.kernel.org/linux-iio/20250118155153.2574dbe5@jic23-huawei/
+
+Would something like
+
+A common way of marking pins that can be used as ADC inputs is to add
+corresponding channel@N nodes in the device tree as described in the ADC
+binding yaml.
+
+be a good rephrasing of the above paragraph?
+
 > 
-> can be found from a various drivers/subsystems. Adding a macro for this
-> can simplify things a bit.
+> Add couple of helper functions which can be used to retrieve the channel
+> information from the device node.
 > 
-> In a few cases the data from the found nodes is later added to an array,
-> which is allocated based on the number of found nodes. One example of
-> such use is the IIO subsystem's ADC channel nodes, where the relevant
-> nodes are named as channel[@N].
-> 
-> Add helpers for iterating and counting device's sub-nodes with certain
-> name instead of open-coding this in every user.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Whilst I've queued up the series, I'll be rebasing on rc1 anyway
-so if Sakari or anyone else still wants to comment on this patch
-or offer tags, go ahead!
-
-Jonathan
-> ---
-> Revision history:
-> v9 =>
->  - No changes
-> v8 => v9:
->  - Drop the fwnode_for_each_available_named_child_node() as suggested
->    by Sakari during v8 review:
->    https://lore.kernel.org/all/Z9mQPJwnKAkPHriT@kekkonen.localdomain/
-> v7 => v8:
->  - Fix the example in fwnode_get_named_child_node_count() documentation
->    to use the fwnode_get_named_child_node_count() and not the
->    device_get_named_child_node_count()
->  - Fix the rest of the new macro's indentiations
-> v6 => v7:
->  - Improve kerneldoc
->  - Inline device_get_named_child_node_count() and change it to call
->    fwnode_get_named_child_node_count() inside
->  - Fix indentiation of the new macros
-> v5 => v6:
->  - Add helpers to also iterate through the nodes.
-> v4 => v5:
->  - Use given name instead of string 'channel' when counting the nodes
->  - Add also fwnode_get_child_node_count_named() as suggested by Rob.
-> v3 => v4:
->  - New patch as suggested by Jonathan, see discussion in:
-> https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
-> ---
->  drivers/base/property.c  | 27 +++++++++++++++++++++++++++
->  include/linux/property.h | 20 ++++++++++++++++++++
->  2 files changed, 47 insertions(+)
 > 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index c1392743df9c..f42f32ff45fc 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct device *dev)
->  }
->  EXPORT_SYMBOL_GPL(device_get_child_node_count);
->  
-> +/**
-> + * fwnode_get_named_child_node_count - number of child nodes with given name
-> + * @fwnode: Node which child nodes are counted.
-> + * @name: String to match child node name against.
-> + *
-> + * Scan child nodes and count all the nodes with a specific name. Potential
-> + * 'number' -ending after the 'at sign' for scanned names is ignored.
-> + * E.g.::
-> + *   fwnode_get_named_child_node_count(fwnode, "channel");
-> + * would match all the nodes::
-> + *   channel { }, channel@0 {}, channel@0xabba {}...
-> + *
-> + * Return: the number of child nodes with a matching name for a given device.
-> + */
-> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
-> +					       const char *name)
+...
+> +static inline int iio_adc_device_num_channels(struct device *dev)
 > +{
-> +	struct fwnode_handle *child;
-> +	unsigned int count = 0;
-> +
-> +	fwnode_for_each_named_child_node(fwnode, child, name)
-> +		count++;
-> +
-> +	return count;
+> +	return device_get_named_child_node_count(dev, "channel");
 > +}
-> +EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
-> +
->  bool device_dma_supported(const struct device *dev)
->  {
->  	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index e214ecd241eb..3e83babac0b0 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -167,6 +167,10 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
->  	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
->  	     child = fwnode_get_next_child_node(fwnode, child))
->  
-> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
-> +	fwnode_for_each_child_node(fwnode, child)			\
-> +		if (!fwnode_name_eq(child, name)) { } else
-> +
->  #define fwnode_for_each_available_child_node(fwnode, child)		       \
->  	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
->  	     child = fwnode_get_next_available_child_node(fwnode, child))
-> @@ -178,11 +182,19 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
->  	for (child = device_get_next_child_node(dev, NULL); child;	\
->  	     child = device_get_next_child_node(dev, child))
->  
-> +#define device_for_each_named_child_node(dev, child, name)		\
-> +	device_for_each_child_node(dev, child)				\
-> +		if (!fwnode_name_eq(child, name)) { } else
-> +
->  #define device_for_each_child_node_scoped(dev, child)			\
->  	for (struct fwnode_handle *child __free(fwnode_handle) =	\
->  		device_get_next_child_node(dev, NULL);			\
->  	     child; child = device_get_next_child_node(dev, child))
->  
-> +#define device_for_each_named_child_node_scoped(dev, child, name)	\
-> +	device_for_each_child_node_scoped(dev, child)			\
-> +		if (!fwnode_name_eq(child, name)) { } else
-> +
->  struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
->  						  const char *childname);
->  struct fwnode_handle *device_get_named_child_node(const struct device *dev,
-> @@ -210,6 +222,14 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
->  
->  unsigned int device_get_child_node_count(const struct device *dev);
->  
-> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
-> +					       const char *name);
-> +static inline unsigned int device_get_named_child_node_count(const struct device *dev,
-> +							     const char *name)
-> +{
-> +	return fwnode_get_named_child_node_count(dev_fwnode(dev), name);
-> +}
-> +
->  static inline int device_property_read_u8(const struct device *dev,
->  					  const char *propname, u8 *val)
->  {
+I wonder if this function name can eventually become misleading.
 
+In Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml we have
+temperature sensor with channel nodes named after external hardware connected to
+the sensor, leading to channels having different node names. Can anything like
+that ever be accepted for ADC bindings?
 
