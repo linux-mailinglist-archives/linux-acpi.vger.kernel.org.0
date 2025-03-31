@@ -1,217 +1,178 @@
-Return-Path: <linux-acpi+bounces-12551-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12552-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E21A763AA
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Mar 2025 11:58:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4801A76523
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Mar 2025 13:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CA441671ED
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Mar 2025 09:58:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CDB0169E7A
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Mar 2025 11:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3481F1DF751;
-	Mon, 31 Mar 2025 09:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5755A1BEF77;
+	Mon, 31 Mar 2025 11:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CIR839RD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEYtBSlO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0BB1DE3AA;
-	Mon, 31 Mar 2025 09:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D23F3FE4;
+	Mon, 31 Mar 2025 11:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743415082; cv=none; b=he5ZxibNDIGRZ6ItZGVC0RKrif/YZEuIykkccPPpWBhp5yqYOCfi+XqtQkIOIU7Gn0NuS2fWA2gTpSNhB5HPA0sOYBHRoJ672Tt7yqM6RgGuALWPuZ2KpEPLD8/OM0A8PI+jXXccpY7LUhJYT5ML+3klDGWxMyJLOmYhqpyiS4Y=
+	t=1743421582; cv=none; b=mvQ3Qw/uL7wzLmoKO9hsQzsjR1PpRmErQn5cLUDo5E5cmu8Ne7GE47fD5B5Dw+ikVTjb9Z++ociFLkJHgLk42QC8OcXZXXuLbm1E389KR0E6nwUZE19Vklt/tctQKgvICwWtMhBpRkGDigKbecPnOCSg9lEWKF1qLCgVUg2rLZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743415082; c=relaxed/simple;
-	bh=yK7nu7eWJM3nujHNfRadysWMa7kXdY+e6WXSaZJuUlg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rz0eehTs6n3767PJp3QqrlNcpKC3v43ZQGDATTdyAEl0OzvJvrZdP+S6GOhnn2TTTo+c2VDuECieKYaBe2dKTYtMqIvKVUwrz5ItyF0dgMHJLpCkWN9BWYR+jdteRnvyVquJsE/nnV1kAt9UK3Pez6TILGVjPXH3s9preCxo66w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CIR839RD; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54af20849bbso2678160e87.0;
-        Mon, 31 Mar 2025 02:57:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743415078; x=1744019878; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uGBJfvaNnxtRD6hIkqEgxjYX8qkJ7qsN5lK/+BN2aO0=;
-        b=CIR839RDBhQyMuLnCcPV1LrqYJJQ5zoRT0N4FO5efd2kxXv6rhvIpgOTMNYN2NVXt2
-         VUZvRgGRnaLcstwWAVJeywAhPUEwvB78xuNbevAHU0fkpWcG6ZnMuUkj+jjVlF3DiUY6
-         eguVLIUTGObxOf3ss4GtBNY+HzJoqk2vnPpUDNDAdXlWeIE0K9Ln20zRnkNNltyk2+SW
-         t8Rz5rIfF6x4+OTwesPWDt4DIu7SiKBOrFWxOy3Bj3w6dKJJFQzFmFyK9+HaxDKCj+AX
-         CdMET2AFNCSDujk/dFP5krDHB3zH49IsBDZ3xbNyozmjqLJJFUnAUsB5GukWYGxVL56Y
-         qUAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743415078; x=1744019878;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uGBJfvaNnxtRD6hIkqEgxjYX8qkJ7qsN5lK/+BN2aO0=;
-        b=eLaSx8hCEBFT7Wd+lUuSRSN5P1UhHDQ/4UukN0GyF4EaCuXn7vot0yCOOR9afX/r5+
-         lOZvEKauVdxj8rOh65gEkIIWBISatUBzDyUOAhzcAPlgwmklM98fsa/Rg0o3ubB2q2lH
-         IwerK4BW5tAYJUcbB6chmucbJEJH31qcAQVvbOkoGXRjpb/fKSeOLTcmBlmr+cznAyae
-         y9Eg3McNYIWg7VNx46PXVJ7Hur+bOnN3da58AQQil63SUYVF4GgYVStpcdJgxunYoL4M
-         qnC0+uMIrkVgByh0EFb4V0w2SULvADFWXY7cqkTlTpZOTdA13elsFV4kZwPq5/vpAKh7
-         eRyw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9c9gV9FGOnz0ub3XKCZ+LEt7uaWr7eXe0qPTA3rAiHBQnifxqKB1gY3/+8WTLKqz2U+CsTxuanfBl@vger.kernel.org, AJvYcCUYLCamRjRg2H42fr5yiRcUBg9Fj463Cnx/9jxTq+uFr+LKZ0na6RtLyreW6yCbeoyQB/v4aXEvsxBkQg==@vger.kernel.org, AJvYcCVD99Xd/CcFGI6xlY/cfVt4zqg2IH/I6atGwbcpPLZOlD1/kqd4kWxvQ4KR4u9mePgn2odPlRXTY3yDwfZZ@vger.kernel.org, AJvYcCVvbPoAcnKebA5tAc01jeokX7/1gQNddjk8fOw0dV74V4PZd57n0srU9GiqUdmONlGWqpCCAEv1pWkhkIKf3vhvzFw=@vger.kernel.org, AJvYcCXAGvkeUCzPnH87k6yUykOiDgrrh7FascVuLy0G8ANrHL7xL+zdgmmFUhq13b42f0V2pWQYo6IptoVt@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+4FWhGY4EUCXNk8K8M1ssMaETcqFfUC/+vnywJ2DcXeOZbsDe
-	I1ZwNyqwlIDYq29QgUtHjtsXK94My10PooxQvgIuwDVooOinXSms
-X-Gm-Gg: ASbGncvsT8vfeQJl6M+mIb3INKON0FIpnCr7YeTwOLre0+2hIGs31ae141dFGiRG8pU
-	d+cxLiR28D8DThEXSp7S8FuqqNP3y9lk6YBnypApQdAbfGhwmU3ggnPcW4rNkcl2JtFfjVhHRBV
-	D90+ySB9ZccHctJTuwz2aI0ldaBUKxWbjp8c2f0IKBRKRUg51E/5CDsUWfE1uJEJRl/wZWceyRe
-	b5ddxKnpYBg8/96d4USy19oNIrpuH0ZMkOUJ/lcLCfHwDN2NyicmxgKF9efPO+KG0rlZhl6RKbg
-	xieaE6u+7br01KegHToQDxG67dIirZyqDbI7vv1ygEltKVqhAtqKBk+EWbbveEeuw/zQMGOnc23
-	I7CHgCuYAcdt5dxNHMagRhdh3eQ==
-X-Google-Smtp-Source: AGHT+IGqeY06WugE+f6xFNsS8xeFCBQw/6TOQOGCtpw4PCZBd5XxHX4TAt+/prfgf/QFIXCNENTg8Q==
-X-Received: by 2002:a05:6512:a95:b0:549:8cbb:5441 with SMTP id 2adb3069b0e04-54b10dc7c04mr2303336e87.15.1743415078069;
-        Mon, 31 Mar 2025 02:57:58 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b103721f6sm786241e87.108.2025.03.31.02.57.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Mar 2025 02:57:57 -0700 (PDT)
-Message-ID: <2f977814-bd9b-4b54-aa77-a36edb56e194@gmail.com>
-Date: Mon, 31 Mar 2025 12:57:55 +0300
+	s=arc-20240116; t=1743421582; c=relaxed/simple;
+	bh=u9p15OXm9QZMTai0Gqz2IJw0gWsmXXWW9BWXZRpKvQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EUMJ6dHVCr0nG/CKAZrnUEfNc56WrprzTllbgjlzagcOZ4xjQFJrTf2Jl6E2WF7Q+ScRwjBdoqJ4G24z+Y1emZ+lc/Otz03PfQ7RBm+vR4F1gmEkmHF5notG7iI8v4t0noIDi3EB/vN1LuRcEvJ1gFMoJ92hX4cTiUZdiyqIbfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEYtBSlO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E01C4CEE3;
+	Mon, 31 Mar 2025 11:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743421581;
+	bh=u9p15OXm9QZMTai0Gqz2IJw0gWsmXXWW9BWXZRpKvQs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fEYtBSlOFmnS9FWcnFnLjzCgnlu7b2kKqKIw2MwC6epbB64lpGjYpJAzNDcFNB64d
+	 HUL8cagWLDUpWkuXxeFhxZLJpgfy2SCg/zth7Wwh2VcSiUj40U1h224UBYOcH/Vo0r
+	 G+i3rMyfJePmIQ8SNvkS17L8STUl8Akw+9AI7u9PDNbXdYCX2+yTkuH0xOww4qffQ8
+	 DfkhtlfzOSqW7Bku5XGtGFvPaPQ6qON/iKiiWDGqN8VU7KVxEvGzxEx95NSGmjXFoB
+	 8S/nWukTs0YkAMte1jcgd+H2GXgvA4X0vFOPs7alu9LjcHt3eWFFJRNU0QoJpOmpaZ
+	 EeeJT6Af9u53g==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2c764f2c223so1023045fac.0;
+        Mon, 31 Mar 2025 04:46:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUK6nq4ZBAayyJh/9U+8BK4UjThOYTo9H7l5x8U+q1EOJvGe3BGE1bvv8vfL5nPAZylcE6EkKGlSP0i@vger.kernel.org, AJvYcCXaZYuzOd+VD46e2RN5HcanvqvoIXv9LLKB3lcG6TXl7aUOVcvQ4L/VUgB0fkd6ZYEzO3hd38ZYYOvMVUww@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOeuzYwcNYJbNbVQ24GvS5wwkJpUvH6zXSRpJxcgAKJgfSfL2d
+	bmMCOZ7i8jTJ4Lz7UyYkbf4cTB7BnOeRMOuAQyiFIYzRToOd1ckFYH5jQ3/DNvS9eWGWjQJp2yM
+	VBgLIdMvgGrtO8bAcpyszlLkhXo4=
+X-Google-Smtp-Source: AGHT+IGLHSPjnj0ONYF56bwe4e8CV95FtIHFoYEUDj6FI0sTgHCoDe9OUqqcTrF3/hupBFyV4rvUitZaUVoNtiZpj4k=
+X-Received: by 2002:a05:6870:418d:b0:29e:255e:9551 with SMTP id
+ 586e51a60fabf-2cbcf474c3cmr4598743fac.2.1743421580976; Mon, 31 Mar 2025
+ 04:46:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 3/8] iio: adc: add helpers for parsing ADC nodes
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Guillaume Stols <gstols@baylibre.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1742560649.git.mazziesaccount@gmail.com>
- <f1d8b3e15237947738912c0d297b3e1e21d8b03e.1742560649.git.mazziesaccount@gmail.com>
- <Z-mnNtYLkwsTYjMh@debian-BULLSEYE-live-builder-AMD64>
- <4d66b3b5-bfcb-42f0-9096-7c448c863dfc@gmail.com>
- <20250331104849.3eb748a8@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250331104849.3eb748a8@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <61c3df83ab73aba0bc7a941a443cd7faf4cf7fb0.1743195250.git.soyer@irl.hu>
+In-Reply-To: <61c3df83ab73aba0bc7a941a443cd7faf4cf7fb0.1743195250.git.soyer@irl.hu>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 31 Mar 2025 13:46:10 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jBONZ7UFL0HCOV=7xmnUphL_UTV=_1PnYmR6n0oN4pcg@mail.gmail.com>
+X-Gm-Features: AQ5f1JpzlMUyTy2jsegu95KUagJIz4NmCHKhw5-yyzojW0dsktwnVlH68O3aG4M
+Message-ID: <CAJZ5v0jBONZ7UFL0HCOV=7xmnUphL_UTV=_1PnYmR6n0oN4pcg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: video: Handle fetching EDID as ACPI_TYPE_PACKAGE
+To: Gergo Koteles <soyer@irl.hu>, Hans de Goede <hdegoede@redhat.com>
+Cc: Len Brown <lenb@kernel.org>, Alex Hung <alex.hung@amd.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, linux-acpi@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 31/03/2025 12:48, Jonathan Cameron wrote:
-> On Mon, 31 Mar 2025 08:39:35 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Hi Marcelo,
->>
->> Thanks for the review!
->>
->> On 30/03/2025 23:19, Marcelo Schmitt wrote:
->>> Hi Matti,
->>>
->>> The new helpers for ADC drivers look good to me.
->>> I am now very late to complain about anything but am leaving some minor comments
->>> below that can be completely ignored.
->>>
->>> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
->>>
->>> Thanks,
->>> Marcelo
->>>
->>> On 03/24, Matti Vaittinen wrote:
->>>> There are ADC ICs which may have some of the AIN pins usable for other
->>>> functions. These ICs may have some of the AIN pins wired so that they
->>>> should not be used for ADC.
->>>>
->>>> (Preferred?) way for marking pins which can be used as ADC inputs is to
->>>> add corresponding channels@N nodes in the device tree as described in
->>>> the ADC binding yaml.
->>> Not sure it's preferred to have ADC channels always declared in dt. That
->>> question was somewhat also raised during ADC doc review [1].
->>
->> I had missed that doc and the review. Interesting read, thanks for
->> pointing it :)
->>
->> We did also do a bit discussion about this during the review of the
->> earlier versions. I am not sure if we found an ultimate common consensus
->> though :)
->>
->> A recap as seen through my eyes:
->>
->> - It is preferred to have either _all_ or _none_ of the channels
->> described in the device tree.
->> https://lore.kernel.org/all/20250201162631.2eab9a9a@jic23-huawei/
->>
->> - This, however, is not _always_ required to be followed, and it may be
->> impractical in some cases:
->> https://lore.kernel.org/linux-iio/6f6e6550-5246-476f-9168-5e24151ab165@baylibre.com/#t
->>
->> - We do have bunch of existing drivers which we need to support. With
->> some very different approaches to bindings.
->> https://lore.kernel.org/linux-iio/20250302032054.1fb8a011@jic23-huawei/
->>
->>
->> My _personal_ thinking is that:
->>
->> This means that we can't hide the binding parsing in the IIO-core. We
->> can't go and change the channels in existing drivers.
->>
->> But, we can provide helpers (like this one) for drivers to use. I also
->> believe we should still try to have common (and preferred!) approach for
->> the _new_ drivers. Eventually, the new ones will be majority. Some of
->> the old ones die, and if we keep same practices for new ones, the old
->> ones will become rare exceptions while majority follows same principles ;)
->>
->>> In short, ADC
->>> channel may and may not be declared under ADC dt node. ADC bindings often don't
->>> enforce channels to be declared. On IIO side of things, many ADC drivers just
->>> populate channels even if they are not declared in dt.
->>> The ADCs you are supporting in the other patches of this series seem to require
->>> dt declared channels though.
->>>
->>> [1]: https://lore.kernel.org/linux-iio/20250118155153.2574dbe5@jic23-huawei/
->>>
->>> Would something like
->>>
->>> A common way of marking pins that can be used as ADC inputs is to add
->>> corresponding channel@N nodes in the device tree as described in the ADC
->>> binding yaml.
->>>
->>> be a good rephrasing of the above paragraph?
->>
->> Yes, if we don't want to guide new drivers to either have all usable
->> channels, or no channels in the device tree.
->>
->> I think Jonathan said he'll be rebasing this to rc1. I am a newcomer and
->> I should not enforce my view over more experienced ones ;) So, feel free
->> to reword the description as Marcelo suggests if you don't think we
->> should prefer one direction or the other.
-> 
-> I've gone with Marcelo's suggestion because I don't want to be too specific
-> here given the complex history.   We can absolutely encourage the all or
-> nothing description going forwards though as it is logical in the vast
-> majority of cases.
+On Fri, Mar 28, 2025 at 10:09=E2=80=AFPM Gergo Koteles <soyer@irl.hu> wrote=
+:
+>
+> The _DDC method should return a buffer, or an integer in case of an error=
+.
+> But some Lenovo laptops incorrectly return EDID as buffer in ACPI package=
+.
+>
+> Calling _DDC generates this ACPI Warning:
+> ACPI Warning: \_SB.PCI0.GP17.VGA.LCD._DDC: Return type mismatch - \
+> found Package, expected Integer/Buffer (20240827/nspredef-254)
+>
+> Use the first element of the package to get the EDID buffer.
+>
+> The DSDT:
+>
+> Name (AUOP, Package (0x01)
+> {
+>         Buffer (0x80)
+>         {
+>         ...
+>         }
+> })
+>
+> ...
+>
+> Method (_DDC, 1, NotSerialized)  // _DDC: Display Data Current
+> {
+>         If ((PAID =3D=3D AUID))
+>         {
+>                 Return (AUOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.AUOP */
+>         }
+>         ElseIf ((PAID =3D=3D IVID))
+>         {
+>                 Return (IVOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.IVOP */
+>         }
+>         ElseIf ((PAID =3D=3D BOID))
+>         {
+>                 Return (BOEP) /* \_SB_.PCI0.GP17.VGA_.LCD_.BOEP */
+>         }
+>         ElseIf ((PAID =3D=3D SAID))
+>         {
+>                 Return (SUNG) /* \_SB_.PCI0.GP17.VGA_.LCD_.SUNG */
+>         }
+>
+>         Return (Zero)
+> }
+>
+> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/Apx_B_Video_Extension=
+s/output-device-specific-methods.html#ddc-return-the-edid-for-this-device
+> Cc: stable@vger.kernel.org
+> Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if availa=
+ble for eDP")
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4085
+> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+> ---
+> Changes in v2:
+>  - Added comment
+>  - Improved commit message
+>  - Link to v1: https://lore.kernel.org/all/4cef341fdf7a0e877c50b502fc95ee=
+8be28aa811.1743129387.git.soyer@irl.hu/
 
-Thanks for taking care of it :)
+Hans, any concerns here?
 
-Yours,
-	-- Matti
-
+>  drivers/acpi/acpi_video.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index efdadc74e3f4..103f29661576 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -649,6 +649,13 @@ acpi_video_device_EDID(struct acpi_video_device *dev=
+ice, void **edid, int length
+>
+>         obj =3D buffer.pointer;
+>
+> +       /*
+> +        * Some buggy implementations incorrectly return the EDID buffer =
+in an ACPI package.
+> +        * In this case, extract the buffer from the package.
+> +        */
+> +       if (obj && obj->type =3D=3D ACPI_TYPE_PACKAGE && obj->package.cou=
+nt =3D=3D 1)
+> +               obj =3D &obj->package.elements[0];
+> +
+>         if (obj && obj->type =3D=3D ACPI_TYPE_BUFFER) {
+>                 *edid =3D kmemdup(obj->buffer.pointer, obj->buffer.length=
+, GFP_KERNEL);
+>                 ret =3D *edid ? obj->buffer.length : -ENOMEM;
+> @@ -658,7 +665,7 @@ acpi_video_device_EDID(struct acpi_video_device *devi=
+ce, void **edid, int length
+>                 ret =3D -EFAULT;
+>         }
+>
+> -       kfree(obj);
+> +       kfree(buffer.pointer);
+>         return ret;
+>  }
+>
+> --
+> 2.49.0
+>
 
